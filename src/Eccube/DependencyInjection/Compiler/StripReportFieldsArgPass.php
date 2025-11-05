@@ -43,7 +43,7 @@ final class StripReportFieldsArgPass implements CompilerPassInterface
         // 2) MappingDriverChain の addDriver() 呼び出しを修正
         foreach ($c->getDefinitions() as $id => $def) {
             if ($this->isMappingDriverChainId($id)) {
-                $this->fixMappingDriverChainCalls($c, $id, $def);
+                $this->fixMappingDriverChainCalls($c, $def);
             }
         }
 
@@ -75,7 +75,7 @@ final class StripReportFieldsArgPass implements CompilerPassInterface
         }
     }
 
-    private function fixMappingDriverChainCalls(ContainerBuilder $c, string $chainId, Definition $def): void
+    private function fixMappingDriverChainCalls(ContainerBuilder $c, Definition $def): void
     {
         $calls = $def->getMethodCalls();
         foreach ($calls as $i => [$method, $args]) {

@@ -1246,7 +1246,7 @@ class CsvImportController extends AbstractCsvImportController
                     } else {
                         foreach ($Category->getPath() as $ParentCategory) {
                             if (!isset($categoriesIdList[$ParentCategory->getId()])) {
-                                $ProductCategory = $this->makeProductCategory($Product, $ParentCategory, $sortNo);
+                                $ProductCategory = $this->makeProductCategory($Product, $ParentCategory);
                                 $this->entityManager->persist($ProductCategory);
                                 $sortNo++;
 
@@ -1255,7 +1255,7 @@ class CsvImportController extends AbstractCsvImportController
                             }
                         }
                         if (!isset($categoriesIdList[$Category->getId()])) {
-                            $ProductCategory = $this->makeProductCategory($Product, $Category, $sortNo);
+                            $ProductCategory = $this->makeProductCategory($Product, $Category);
                             $sortNo++;
                             $this->entityManager->persist($ProductCategory);
                             $Product->addProductCategory($ProductCategory);
@@ -1913,7 +1913,7 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * ProductCategory作成
      */
-    private function makeProductCategory(Product $Product, Category $Category, int $sortNo): ProductCategory
+    private function makeProductCategory(Product $Product, Category $Category): ProductCategory
     {
         $ProductCategory = new ProductCategory();
         $ProductCategory->setProduct($Product);

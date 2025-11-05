@@ -550,7 +550,7 @@ class ProductController extends AbstractController
                 foreach ($Categories as $Category) {
                     foreach ($Category->getPath() as $ParentCategory) {
                         if (!isset($categoriesIdList[$ParentCategory->getId()])) {
-                            $ProductCategory = $this->createProductCategory($Product, $ParentCategory, $count);
+                            $ProductCategory = $this->createProductCategory($Product, $ParentCategory);
                             $this->entityManager->persist($ProductCategory);
                             $count++;
                             /* @var \Eccube\Entity\Product $Product */
@@ -559,7 +559,7 @@ class ProductController extends AbstractController
                         }
                     }
                     if (!isset($categoriesIdList[$Category->getId()])) {
-                        $ProductCategory = $this->createProductCategory($Product, $Category, $count);
+                        $ProductCategory = $this->createProductCategory($Product, $Category);
                         $this->entityManager->persist($ProductCategory);
                         $count++;
                         /* @var \Eccube\Entity\Product $Product */
@@ -1045,7 +1045,7 @@ class ProductController extends AbstractController
     /**
      * ProductCategory作成
      */
-    private function createProductCategory(Product $Product, Category $Category, int $count): ProductCategory
+    private function createProductCategory(Product $Product, Category $Category): ProductCategory
     {
         $ProductCategory = new ProductCategory();
         $ProductCategory->setProduct($Product);
