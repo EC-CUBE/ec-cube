@@ -21,14 +21,11 @@ use Symfony\Component\Form\FormEvents;
 
 class ShippingMultipleType extends AbstractType
 {
-    protected ShippingRepository $shippingRepository;
-
     /**
      * ShippingMultipleType constructor.
      */
-    public function __construct(ShippingRepository $shippingRepository)
+    public function __construct(protected ShippingRepository $shippingRepository)
     {
-        $this->shippingRepository = $shippingRepository;
     }
 
     /**

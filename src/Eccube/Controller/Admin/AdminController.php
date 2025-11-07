@@ -46,24 +46,6 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class AdminController extends AbstractController
 {
-    protected AuthorizationCheckerInterface $authorizationChecker;
-
-    protected AuthenticationUtils $helper;
-
-    protected MemberRepository $memberRepository;
-
-    protected UserPasswordHasherInterface $passwordHasher;
-
-    protected OrderRepository $orderRepository;
-
-    protected OrderStatusRepository $orderStatusRepository;
-
-    protected CustomerRepository $customerRepository;
-
-    protected ProductRepository $productRepository;
-
-    protected PluginApiService $pluginApiService;
-
     /**
      * @var array<int, int> 売り上げ状況用受注状況
      */
@@ -72,26 +54,8 @@ class AdminController extends AbstractController
     /**
      * AdminController constructor.
      */
-    public function __construct(
-        AuthorizationCheckerInterface $authorizationChecker,
-        AuthenticationUtils $helper,
-        MemberRepository $memberRepository,
-        UserPasswordHasherInterface $passwordHasher,
-        OrderRepository $orderRepository,
-        OrderStatusRepository $orderStatusRepository,
-        CustomerRepository $custmerRepository,
-        ProductRepository $productRepository,
-        PluginApiService $pluginApiService,
-    ) {
-        $this->authorizationChecker = $authorizationChecker;
-        $this->helper = $helper;
-        $this->memberRepository = $memberRepository;
-        $this->passwordHasher = $passwordHasher;
-        $this->orderRepository = $orderRepository;
-        $this->orderStatusRepository = $orderStatusRepository;
-        $this->customerRepository = $custmerRepository;
-        $this->productRepository = $productRepository;
-        $this->pluginApiService = $pluginApiService;
+    public function __construct(protected AuthorizationCheckerInterface $authorizationChecker, protected AuthenticationUtils $helper, protected MemberRepository $memberRepository, protected UserPasswordHasherInterface $passwordHasher, protected OrderRepository $orderRepository, protected OrderStatusRepository $orderStatusRepository, protected CustomerRepository $customerRepository, protected ProductRepository $productRepository, protected PluginApiService $pluginApiService)
+    {
     }
 
     /**

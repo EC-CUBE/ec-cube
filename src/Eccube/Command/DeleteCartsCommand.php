@@ -26,8 +26,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 #[AsCommand(name: 'eccube:delete-carts', description: 'Delete Carts from the database')]
 class DeleteCartsCommand extends Command
 {
-    protected EccubeConfig $eccubeConfig;
-
     protected SymfonyStyle $io;
 
     protected string $locale;
@@ -36,16 +34,9 @@ class DeleteCartsCommand extends Command
 
     protected \IntlDateFormatter $formatter;
 
-    protected EntityManagerInterface $entityManager;
-    private readonly CartRepository $cartRepository;
-
-    public function __construct(EccubeConfig $eccubeConfig, EntityManagerInterface $entityManager, CartRepository $cartRepository)
+    public function __construct(protected EccubeConfig $eccubeConfig, protected EntityManagerInterface $entityManager, private readonly CartRepository $cartRepository)
     {
         parent::__construct();
-
-        $this->eccubeConfig = $eccubeConfig;
-        $this->entityManager = $entityManager;
-        $this->cartRepository = $cartRepository;
     }
 
     #[\Override]

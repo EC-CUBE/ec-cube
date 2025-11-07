@@ -102,14 +102,8 @@ class InstallController extends AbstractController
         'composer.lock',
     ];
 
-    protected UserPasswordHasherInterface $passwordHasher;
-
-    protected CacheUtil $cacheUtil;
-
-    public function __construct(UserPasswordHasherInterface $passwordHasher, CacheUtil $cacheUtil)
+    public function __construct(protected UserPasswordHasherInterface $passwordHasher, protected CacheUtil $cacheUtil)
     {
-        $this->passwordHasher = $passwordHasher;
-        $this->cacheUtil = $cacheUtil;
     }
 
     /**

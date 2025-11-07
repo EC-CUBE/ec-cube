@@ -20,14 +20,11 @@ use Twig\TwigFunction;
 
 class CsrfExtension extends AbstractExtension
 {
-    protected CsrfTokenManagerInterface $tokenManager;
-
     /**
      * CsrfExtension constructor.
      */
-    public function __construct(CsrfTokenManagerInterface $tokenManager)
+    public function __construct(protected CsrfTokenManagerInterface $tokenManager)
     {
-        $this->tokenManager = $tokenManager;
     }
 
     /**

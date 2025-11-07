@@ -22,11 +22,8 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class BoomerangController extends AbstractController
 {
-    private readonly CartRepository $cartRepository;
-
-    public function __construct(CartRepository $cartRepository)
+    public function __construct(private readonly CartRepository $cartRepository)
     {
-        $this->cartRepository = $cartRepository;
     }
 
     /**

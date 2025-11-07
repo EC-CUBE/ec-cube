@@ -29,23 +29,11 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class MemberController extends AbstractController
 {
-    protected TokenStorageInterface $tokenStorage;
-
-    protected MemberRepository $memberRepository;
-
-    protected UserPasswordHasherInterface $passwordHasher;
-
     /**
      * MemberController constructor.
      */
-    public function __construct(
-        UserPasswordHasherInterface $passwordHasher,
-        MemberRepository $memberRepository,
-        TokenStorageInterface $tokenStorage,
-    ) {
-        $this->passwordHasher = $passwordHasher;
-        $this->memberRepository = $memberRepository;
-        $this->tokenStorage = $tokenStorage;
+    public function __construct(protected UserPasswordHasherInterface $passwordHasher, protected MemberRepository $memberRepository, protected TokenStorageInterface $tokenStorage)
+    {
     }
 
     /**

@@ -30,17 +30,11 @@ use Twig\Environment;
  */
 class ShopController extends AbstractController
 {
-    protected Environment $twig;
-
-    protected BaseInfoRepository $baseInfoRepository;
-
     /**
      * ShopController constructor.
      */
-    public function __construct(Environment $twig, BaseInfoRepository $baseInfoRepository)
+    public function __construct(protected Environment $twig, protected BaseInfoRepository $baseInfoRepository)
     {
-        $this->baseInfoRepository = $baseInfoRepository;
-        $this->twig = $twig;
     }
 
     /**

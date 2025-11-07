@@ -42,22 +42,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[Route(path: '/%eccube_admin_route%/store/plugin/api')]
 class OwnerStoreController extends AbstractController
 {
-    protected PluginRepository $pluginRepository;
-
-    protected PluginService $pluginService;
-
-    protected ValidatorInterface $validator;
-
-    protected ComposerServiceInterface $composerService;
-
-    protected SystemService $systemService;
-
-    protected PluginApiService $pluginApiService;
     private static string $vendorName = 'ec-cube';
 
     private readonly BaseInfo $BaseInfo;
-
-    private readonly CacheUtil $cacheUtil;
 
     /**
      * OwnerStoreController constructor.
@@ -66,25 +53,16 @@ class OwnerStoreController extends AbstractController
      * @throws \Doctrine\ORM\NonUniqueResultException|\Exception
      */
     public function __construct(
-        PluginRepository $pluginRepository,
-        PluginService $pluginService,
-        ComposerServiceInterface $composerService,
-        SystemService $systemService,
-        PluginApiService $pluginApiService,
+        protected PluginRepository $pluginRepository,
+        protected PluginService $pluginService,
+        protected ComposerServiceInterface $composerService,
+        protected SystemService $systemService,
+        protected PluginApiService $pluginApiService,
         BaseInfoRepository $baseInfoRepository,
-        CacheUtil $cacheUtil,
-        ValidatorInterface $validatorInterface,
+        private readonly CacheUtil $cacheUtil,
+        protected ValidatorInterface $validator,
     ) {
-        $this->pluginRepository = $pluginRepository;
-        $this->pluginService = $pluginService;
-        $this->systemService = $systemService;
-        $this->pluginApiService = $pluginApiService;
         $this->BaseInfo = $baseInfoRepository->get();
-        $this->cacheUtil = $cacheUtil;
-        $this->validator = $validatorInterface;
-
-        // TODO: Check the flow of the composer service below
-        $this->composerService = $composerService;
     }
 
     /**

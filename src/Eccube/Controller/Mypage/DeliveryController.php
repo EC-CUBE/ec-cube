@@ -34,18 +34,12 @@ class DeliveryController extends AbstractController
 {
     protected BaseInfo $BaseInfo;
 
-    protected CustomerAddressRepository $customerAddressRepository;
-
-    protected MailService $mailService;
-
     public function __construct(
         BaseInfoRepository $baseInfoRepository,
-        CustomerAddressRepository $customerAddressRepository,
-        MailService $mailService,
+        protected CustomerAddressRepository $customerAddressRepository,
+        protected MailService $mailService,
     ) {
         $this->BaseInfo = $baseInfoRepository->get();
-        $this->customerAddressRepository = $customerAddressRepository;
-        $this->mailService = $mailService;
     }
 
     /**

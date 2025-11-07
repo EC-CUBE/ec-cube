@@ -24,14 +24,11 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
  */
 class OrderUpdateProcessor extends AbstractPurchaseProcessor
 {
-    private readonly OrderStatusRepository $orderStatusRepository;
-
     /**
      * OrderUpdateProcessor constructor.
      */
-    public function __construct(OrderStatusRepository $orderStatusRepository)
+    public function __construct(private readonly OrderStatusRepository $orderStatusRepository)
     {
-        $this->orderStatusRepository = $orderStatusRepository;
     }
 
     /**

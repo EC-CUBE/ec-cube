@@ -34,23 +34,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class MainEditType extends AbstractType
 {
-    protected EntityManagerInterface $entityManager;
-
-    protected DeviceTypeRepository $deviceTypeRepository;
-
-    protected EccubeConfig $eccubeConfig;
-
     /**
      * MainEditType constructor.
      */
-    public function __construct(
-        EntityManagerInterface $entityManager,
-        DeviceTypeRepository $deviceTypeRepository,
-        EccubeConfig $eccubeConfig,
-    ) {
-        $this->entityManager = $entityManager;
-        $this->deviceTypeRepository = $deviceTypeRepository;
-        $this->eccubeConfig = $eccubeConfig;
+    public function __construct(protected EntityManagerInterface $entityManager, protected DeviceTypeRepository $deviceTypeRepository, protected EccubeConfig $eccubeConfig)
+    {
     }
 
     /**

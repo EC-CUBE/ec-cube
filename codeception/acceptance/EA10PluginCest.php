@@ -483,8 +483,6 @@ class EA10PluginCest
 
 abstract class Abstract_Plugin
 {
-    protected AcceptanceTester $I;
-
     protected EntityManager $em;
 
     protected Connection $conn;
@@ -505,9 +503,8 @@ abstract class Abstract_Plugin
 
     protected $traits = [];
 
-    public function __construct(AcceptanceTester $I)
+    public function __construct(protected AcceptanceTester $I)
     {
-        $this->I = $I;
         $this->em = Fixtures::get('entityManager');
         $this->conn = $this->em->getConnection();
         $this->pluginRepository = $this->em->getRepository(Plugin::class);
@@ -609,19 +606,16 @@ class Store_Plugin extends Abstract_Plugin
 
     protected Plugin $Plugin;
 
-    protected $code;
-
     protected Store_Plugin $dependency;
 
-    public function __construct(AcceptanceTester $I, $code, ?Store_Plugin $dependency = null)
+    public function __construct(AcceptanceTester $I, protected $code, ?Store_Plugin $dependency = null)
     {
         parent::__construct($I);
-        $this->code = $code;
         $this->publishPlugin($this->code.'-1.0.0.tgz');
         if ($dependency) {
             $this->dependency = $dependency;
             $this->ManagePage = $dependency->ManagePage;
-            $this->Plugin = $this->pluginRepository->findByCode($code);
+            $this->Plugin = $this->pluginRepository->findByCode($this->code);
         }
     }
 
@@ -758,12 +752,9 @@ class Local_Plugin extends Abstract_Plugin
 
     private Plugin $Plugin;
 
-    private readonly string $code;
-
-    public function __construct(AcceptanceTester $I, $code)
+    public function __construct(AcceptanceTester $I, private readonly string $code)
     {
         parent::__construct($I);
-        $this->code = $code;
     }
 
     public function インストール()

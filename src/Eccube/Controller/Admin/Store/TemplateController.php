@@ -33,19 +33,11 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class TemplateController extends AbstractController
 {
-    protected TemplateRepository $templateRepository;
-
-    protected DeviceTypeRepository $deviceTypeRepository;
-
     /**
      * TemplateController constructor.
      */
-    public function __construct(
-        TemplateRepository $templateRepository,
-        DeviceTypeRepository $deviceTypeRepository,
-    ) {
-        $this->templateRepository = $templateRepository;
-        $this->deviceTypeRepository = $deviceTypeRepository;
+    public function __construct(protected TemplateRepository $templateRepository, protected DeviceTypeRepository $deviceTypeRepository)
+    {
     }
 
     /**

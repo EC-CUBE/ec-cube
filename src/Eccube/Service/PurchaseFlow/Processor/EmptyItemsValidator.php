@@ -23,14 +23,11 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 class EmptyItemsValidator extends ItemHolderValidator
 {
-    protected EntityManagerInterface $entityManager;
-
     /**
      * EmptyItemsProcessor constructor.
      */
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(protected EntityManagerInterface $entityManager)
     {
-        $this->entityManager = $entityManager;
     }
 
     /**

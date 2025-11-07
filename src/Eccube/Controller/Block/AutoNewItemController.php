@@ -22,16 +22,8 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class AutoNewItemController extends AbstractController
 {
-    private readonly ProductRepository $productRepository;
-
-    private readonly ProductListOrderByRepository $productListOrderByRepository;
-
-    public function __construct(
-        ProductRepository $productRepository,
-        ProductListOrderByRepository $productListOrderByRepository,
-    ) {
-        $this->productRepository = $productRepository;
-        $this->productListOrderByRepository = $productListOrderByRepository;
+    public function __construct(private readonly ProductRepository $productRepository, private readonly ProductListOrderByRepository $productListOrderByRepository)
+    {
     }
 
     /**

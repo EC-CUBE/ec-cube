@@ -28,15 +28,12 @@ use Eccube\Entity\Layout;
  */
 class BlockPositionRepository extends AbstractRepository
 {
-    protected BlockRepository $blockRepository;
-
     /**
      * BlockPositionRepository constructor.
      */
-    public function __construct(BlockRepository $blockRepository, RegistryInterface $registry)
+    public function __construct(protected BlockRepository $blockRepository, RegistryInterface $registry)
     {
         parent::__construct($registry, BlockPosition::class);
-        $this->blockRepository = $blockRepository;
     }
 
     /**

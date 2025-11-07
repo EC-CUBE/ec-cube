@@ -23,11 +23,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SearchProductBlockType extends AbstractType
 {
-    protected CategoryRepository $categoryRepository;
-
-    public function __construct(CategoryRepository $categoryRepository)
+    public function __construct(protected CategoryRepository $categoryRepository)
     {
-        $this->categoryRepository = $categoryRepository;
     }
 
     /**

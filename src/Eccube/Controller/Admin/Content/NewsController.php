@@ -29,14 +29,11 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class NewsController extends AbstractController
 {
-    protected NewsRepository $newsRepository;
-
     /**
      * NewsController constructor.
      */
-    public function __construct(NewsRepository $newsRepository)
+    public function __construct(protected NewsRepository $newsRepository)
     {
-        $this->newsRepository = $newsRepository;
     }
 
     /**

@@ -31,17 +31,14 @@ use Eccube\Entity\Category;
  */
 class CategoryRepository extends AbstractRepository
 {
-    protected ?EccubeConfig $eccubeConfig = null;
-
     /**
      * CategoryRepository constructor.
      */
     public function __construct(
         RegistryInterface $registry,
-        EccubeConfig $eccubeConfig,
+        protected ?EccubeConfig $eccubeConfig,
     ) {
         parent::__construct($registry, Category::class);
-        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**

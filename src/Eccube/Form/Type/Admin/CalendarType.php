@@ -32,20 +32,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CalendarType extends AbstractType
 {
-    protected EccubeConfig $eccubeConfig;
-
-    protected CalendarRepository $calendarRepository;
-
-    protected ValidatorInterface $validator;
-
     /**
      * CalendarType constructor.
      */
-    public function __construct(EccubeConfig $eccubeConfig, ValidatorInterface $validator, CalendarRepository $calendarRepository)
+    public function __construct(protected EccubeConfig $eccubeConfig, protected ValidatorInterface $validator, protected CalendarRepository $calendarRepository)
     {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->calendarRepository = $calendarRepository;
-        $this->validator = $validator;
     }
 
     /**

@@ -28,11 +28,8 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class TagController extends AbstractController
 {
-    protected TagRepository $tagRepository;
-
-    public function __construct(TagRepository $tagRepository)
+    public function __construct(protected TagRepository $tagRepository)
     {
-        $this->tagRepository = $tagRepository;
     }
 
     /**

@@ -17,17 +17,14 @@ use Eccube\Entity\ItemHolderInterface;
 
 class PurchaseFlowResult
 {
-    private readonly ItemHolderInterface $itemHolder;
-
     /** @var ProcessResult[] */
     private array $processResults = [];
 
     /**
      * PurchaseFlowResult constructor.
      */
-    public function __construct(ItemHolderInterface $itemHolder)
+    public function __construct(private readonly ItemHolderInterface $itemHolder)
     {
-        $this->itemHolder = $itemHolder;
     }
 
     public function addProcessResult(ProcessResult $processResult): void

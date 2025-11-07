@@ -25,17 +25,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class LogType extends AbstractType
 {
-    protected EccubeConfig $eccubeConfig;
-
-    protected KernelInterface $kernel;
-
     /**
      * LogType constructor.
      */
-    public function __construct(EccubeConfig $eccubeConfig, KernelInterface $kernel)
+    public function __construct(protected EccubeConfig $eccubeConfig, protected KernelInterface $kernel)
     {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->kernel = $kernel;
     }
 
     /**

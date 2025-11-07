@@ -32,39 +32,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class ShippingMultipleItemType extends AbstractType
 {
-    protected EccubeConfig $eccubeConfig;
-
-    protected Session $session;
-
-    protected AuthorizationCheckerInterface $authorizationChecker;
-
-    protected TokenStorageInterface $tokenStorage;
-
-    protected PrefRepository $prefRepository;
-
-    protected EntityManagerInterface $entityManager;
-
-    protected OrderHelper $orderHelper;
-
     /**
      * ShippingMultipleItemType constructor.
      */
-    public function __construct(
-        EccubeConfig $eccubeConfig,
-        Session $session,
-        AuthorizationCheckerInterface $authorizationChecker,
-        TokenStorageInterface $tokenStorage,
-        PrefRepository $prefRepository,
-        EntityManagerInterface $entityManager,
-        OrderHelper $orderHelper,
-    ) {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->session = $session;
-        $this->authorizationChecker = $authorizationChecker;
-        $this->tokenStorage = $tokenStorage;
-        $this->prefRepository = $prefRepository;
-        $this->entityManager = $entityManager;
-        $this->orderHelper = $orderHelper;
+    public function __construct(protected EccubeConfig $eccubeConfig, protected Session $session, protected AuthorizationCheckerInterface $authorizationChecker, protected TokenStorageInterface $tokenStorage, protected PrefRepository $prefRepository, protected EntityManagerInterface $entityManager, protected OrderHelper $orderHelper)
+    {
     }
 
     /**

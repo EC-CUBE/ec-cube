@@ -24,20 +24,11 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
  */
 class EntityToIdTransformer implements DataTransformerInterface
 {
-    private readonly ObjectManager $om;
-
-    /**
-     * @var class-string<T>
-     */
-    private $className;
-
     /**
      * @param class-string<T> $className
      */
-    public function __construct(ObjectManager $om, $className)
+    public function __construct(private readonly ObjectManager $om, private $className)
     {
-        $this->om = $om;
-        $this->className = $className;
     }
 
     /**

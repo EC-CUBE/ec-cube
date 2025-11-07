@@ -29,11 +29,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class DeliveryType extends AbstractType
 {
-    protected EccubeConfig $eccubeConfig;
-
-    public function __construct(EccubeConfig $eccubeConfig)
+    public function __construct(protected EccubeConfig $eccubeConfig)
     {
-        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**

@@ -29,11 +29,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class DoctrineOrmExtension extends AbstractTypeExtension
 {
-    protected EntityManagerInterface $em;
-
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(protected EntityManagerInterface $em)
     {
-        $this->em = $em;
     }
 
     /**

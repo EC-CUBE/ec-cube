@@ -23,12 +23,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'eccube:composer:install')]
 class ComposerInstallCommand extends Command
 {
-    private readonly ComposerApiService $composerService;
-
-    public function __construct(ComposerApiService $composerService)
+    public function __construct(private readonly ComposerApiService $composerService)
     {
         parent::__construct();
-        $this->composerService = $composerService;
     }
 
     #[\Override]

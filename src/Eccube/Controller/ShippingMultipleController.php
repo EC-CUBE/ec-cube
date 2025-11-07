@@ -39,43 +39,11 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class ShippingMultipleController extends AbstractShoppingController
 {
-    protected PrefRepository $prefRepository;
-
-    protected OrderItemTypeRepository $orderItemTypeRepository;
-
-    protected OrderHelper $orderHelper;
-
-    protected CartService $cartService;
-
-    protected PurchaseFlow $cartPurchaseFlow;
-
-    protected OrderRepository $orderRepository;
-
-    protected MailService $mailService;
-
-    protected BaseInfoRepository $baseInfoRepository;
-
     /**
      * ShippingMultipleController constructor.
      */
-    public function __construct(
-        PrefRepository $prefRepository,
-        OrderRepository $orderRepository,
-        OrderItemTypeRepository $orderItemTypeRepository,
-        OrderHelper $orderHelper,
-        CartService $cartService,
-        PurchaseFlow $cartPurchaseFlow,
-        BaseInfoRepository $baseInfoRepository,
-        MailService $mailService,
-    ) {
-        $this->prefRepository = $prefRepository;
-        $this->orderRepository = $orderRepository;
-        $this->orderItemTypeRepository = $orderItemTypeRepository;
-        $this->orderHelper = $orderHelper;
-        $this->cartService = $cartService;
-        $this->cartPurchaseFlow = $cartPurchaseFlow;
-        $this->baseInfoRepository = $baseInfoRepository;
-        $this->mailService = $mailService;
+    public function __construct(protected PrefRepository $prefRepository, protected OrderRepository $orderRepository, protected OrderItemTypeRepository $orderItemTypeRepository, protected OrderHelper $orderHelper, protected CartService $cartService, protected PurchaseFlow $cartPurchaseFlow, protected BaseInfoRepository $baseInfoRepository, protected MailService $mailService)
+    {
     }
 
     /**

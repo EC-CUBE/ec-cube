@@ -34,14 +34,11 @@ use Twig\Environment;
  */
 class MailController extends AbstractController
 {
-    protected MailTemplateRepository $mailTemplateRepository;
-
     /**
      * MailController constructor.
      */
-    public function __construct(MailTemplateRepository $mailTemplateRepository)
+    public function __construct(protected MailTemplateRepository $mailTemplateRepository)
     {
-        $this->mailTemplateRepository = $mailTemplateRepository;
     }
 
     /**

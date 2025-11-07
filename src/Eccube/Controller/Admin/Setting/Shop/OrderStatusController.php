@@ -26,20 +26,8 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class OrderStatusController extends AbstractController
 {
-    protected OrderStatusRepository $orderStatusRepository;
-
-    protected OrderStatusColorRepository $orderStatusColorRepository;
-
-    protected CustomerOrderStatusRepository $customerOrderStatusRepository;
-
-    public function __construct(
-        OrderStatusRepository $orderStatusRepository,
-        OrderStatusColorRepository $orderStatusColorRepository,
-        CustomerOrderStatusRepository $customerOrderStatusRepository,
-    ) {
-        $this->orderStatusRepository = $orderStatusRepository;
-        $this->orderStatusColorRepository = $orderStatusColorRepository;
-        $this->customerOrderStatusRepository = $customerOrderStatusRepository;
+    public function __construct(protected OrderStatusRepository $orderStatusRepository, protected OrderStatusColorRepository $orderStatusColorRepository, protected CustomerOrderStatusRepository $customerOrderStatusRepository)
+    {
     }
 
     /**

@@ -22,11 +22,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class HTMLPurifierTextTypeExtension extends AbstractTypeExtension
 {
-    private readonly Context $context;
-
-    public function __construct(Context $context)
+    public function __construct(private readonly Context $context)
     {
-        $this->context = $context;
     }
 
     #[\Override]

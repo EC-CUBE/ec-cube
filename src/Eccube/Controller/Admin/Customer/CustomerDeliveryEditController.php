@@ -29,12 +29,8 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class CustomerDeliveryEditController extends AbstractController
 {
-    protected CustomerAddressRepository $customerAddressRepository;
-
-    public function __construct(
-        CustomerAddressRepository $customerAddressRepository,
-    ) {
-        $this->customerAddressRepository = $customerAddressRepository;
+    public function __construct(protected CustomerAddressRepository $customerAddressRepository)
+    {
     }
 
     /**

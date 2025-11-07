@@ -17,11 +17,8 @@ use Facebook\WebDriver\WebDriverAction;
 
 class WaitAction implements WebDriverAction
 {
-    private readonly int $timeout_in_second;
-
-    public function __construct(int $timeout_in_second)
+    public function __construct(private readonly int $timeout_in_second)
     {
-        $this->timeout_in_second = $timeout_in_second;
     }
 
     public function perform()

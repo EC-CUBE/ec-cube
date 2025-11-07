@@ -23,15 +23,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'eccube:generate:proxies', description: 'Generate entity proxies')]
 class GenerateProxyCommand extends Command
 {
-    private readonly EntityProxyService $entityProxyService;
-
-    private readonly EccubeConfig $eccubeConfig;
-
-    public function __construct(EntityProxyService $entityProxyService, EccubeConfig $eccubeConfig)
+    public function __construct(private readonly EntityProxyService $entityProxyService, private readonly EccubeConfig $eccubeConfig)
     {
         parent::__construct();
-        $this->entityProxyService = $entityProxyService;
-        $this->eccubeConfig = $eccubeConfig;
     }
 
     #[\Override]

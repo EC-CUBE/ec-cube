@@ -25,15 +25,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class OrderMailType extends AbstractType
 {
-    protected EccubeConfig $eccubeConfig;
-
     /**
      * MailType constructor.
      */
-    public function __construct(
-        EccubeConfig $eccubeConfig,
-    ) {
-        $this->eccubeConfig = $eccubeConfig;
+    public function __construct(protected EccubeConfig $eccubeConfig)
+    {
     }
 
     /**

@@ -25,14 +25,11 @@ use Eccube\Service\TaxRuleService;
 #[AsDoctrineListener(event: Events::postUpdate)]
 class TaxRuleEventSubscriber
 {
-    protected TaxRuleService $taxRuleService;
-
     /**
      * TaxRuleEventSubscriber constructor.
      */
-    public function __construct(TaxRuleService $taxRuleService)
+    public function __construct(protected TaxRuleService $taxRuleService)
     {
-        $this->taxRuleService = $taxRuleService;
     }
 
     public function getTaxRuleService(): ?object

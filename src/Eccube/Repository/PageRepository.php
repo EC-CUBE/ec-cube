@@ -29,8 +29,6 @@ use Eccube\Entity\Page;
  */
 class PageRepository extends AbstractRepository
 {
-    protected ?EccubeConfig $eccubeConfig = null;
-
     /**
      * @path %eccube_theme_user_data_dir% (app/template/user_data)
      */
@@ -49,13 +47,12 @@ class PageRepository extends AbstractRepository
     /**
      * PageRepository constructor.
      */
-    public function __construct(RegistryInterface $registry, EccubeConfig $eccubeConfig)
+    public function __construct(RegistryInterface $registry, protected ?EccubeConfig $eccubeConfig)
     {
         parent::__construct($registry, Page::class);
-        $this->eccubeConfig = $eccubeConfig;
-        $this->userDataRealDir = $eccubeConfig->get('eccube_theme_user_data_dir');
-        $this->templateRealDir = $eccubeConfig->get('eccube_theme_app_dir');
-        $this->templateDefaultRealDir = $eccubeConfig->get('eccube_theme_src_dir');
+        $this->userDataRealDir = $this->eccubeConfig->get('eccube_theme_user_data_dir');
+        $this->templateRealDir = $this->eccubeConfig->get('eccube_theme_app_dir');
+        $this->templateDefaultRealDir = $this->eccubeConfig->get('eccube_theme_src_dir');
     }
 
     public function getPageByRoute(?string $route): Page

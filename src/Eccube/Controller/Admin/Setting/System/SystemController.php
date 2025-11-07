@@ -23,19 +23,11 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class SystemController
 {
-    protected EccubeConfig $eccubeConfig;
-
-    protected SystemService $systemService;
-
     /**
      * SystemController constructor.
      */
-    public function __construct(
-        EccubeConfig $eccubeConfig,
-        SystemService $systemService,
-    ) {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->systemService = $systemService;
+    public function __construct(protected EccubeConfig $eccubeConfig, protected SystemService $systemService)
+    {
     }
 
     /**

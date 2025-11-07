@@ -34,26 +34,11 @@ use Twig\Error\SyntaxError;
 
 class MailController extends AbstractController
 {
-    protected MailService $mailService;
-
-    protected MailHistoryRepository $mailHistoryRepository;
-
-    protected OrderRepository $orderRepository;
-    protected Environment $twig;
-
     /**
      * MailController constructor.
      */
-    public function __construct(
-        MailService $mailService,
-        MailHistoryRepository $mailHistoryRepository,
-        OrderRepository $orderRepository,
-        Environment $twig,
-    ) {
-        $this->mailService = $mailService;
-        $this->mailHistoryRepository = $mailHistoryRepository;
-        $this->orderRepository = $orderRepository;
-        $this->twig = $twig;
+    public function __construct(protected MailService $mailService, protected MailHistoryRepository $mailHistoryRepository, protected OrderRepository $orderRepository, protected Environment $twig)
+    {
     }
 
     /**

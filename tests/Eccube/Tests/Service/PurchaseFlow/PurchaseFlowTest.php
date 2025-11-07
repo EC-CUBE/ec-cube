@@ -164,16 +164,13 @@ class PurchaseFlowTest_ItemPreprocessor implements ItemPreprocessor
 
 class PurchaseFlowTest_FailValidator extends ItemValidator
 {
-    private $errorMessage;
-
     /**
      * PurchaseFlowTest_FailProcessor constructor.
      *
      * @param $errorMessage
      */
-    public function __construct($errorMessage)
+    public function __construct(private $errorMessage)
     {
-        $this->errorMessage = $errorMessage;
     }
 
     protected function validate(ItemInterface $item, PurchaseContext $context): void
@@ -184,16 +181,13 @@ class PurchaseFlowTest_FailValidator extends ItemValidator
 
 class PurchaseFlowTest_FailItemHolderValidator extends ItemHolderValidator
 {
-    private $errorMessage;
-
     /**
      * PurchaseFlowTest_FailProcessor constructor.
      *
      * @param $errorMessage
      */
-    public function __construct($errorMessage)
+    public function __construct(private $errorMessage)
     {
-        $this->errorMessage = $errorMessage;
     }
 
     protected function validate(ItemHolderInterface $item, PurchaseContext $context): never

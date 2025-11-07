@@ -30,14 +30,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class MailType extends AbstractType
 {
-    private readonly MailTemplateRepository $mailTemplateRepository;
-
-    private EccubeConfig $eccubeConfig;
-
-    public function __construct(MailTemplateRepository $mailTemplateRepository, EccubeConfig $eccubeConfig)
+    public function __construct(private readonly MailTemplateRepository $mailTemplateRepository, private EccubeConfig $eccubeConfig)
     {
-        $this->mailTemplateRepository = $mailTemplateRepository;
-        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**

@@ -20,11 +20,8 @@ use Twig\TwigFunction;
 
 class TwigIncludeExtension extends AbstractExtension
 {
-    protected Environment $twig;
-
-    public function __construct(Environment $twig)
+    public function __construct(protected Environment $twig)
     {
-        $this->twig = $twig;
     }
 
     #[\Override]

@@ -37,14 +37,6 @@ use Eccube\Util\StringUtil;
  */
 class CustomerRepository extends AbstractRepository
 {
-    protected Queries $queries;
-
-    protected EntityManagerInterface $entityManager;
-
-    protected OrderRepository $orderRepository;
-
-    protected ?EccubeConfig $eccubeConfig = null;
-
     public const COLUMNS = [
         'customer_id' => 'c.id', 'name' => 'c.name01',
     ];
@@ -54,17 +46,12 @@ class CustomerRepository extends AbstractRepository
      */
     public function __construct(
         RegistryInterface $registry,
-        Queries $queries,
-        EntityManagerInterface $entityManager,
-        OrderRepository $orderRepository,
-        EccubeConfig $eccubeConfig,
+        protected Queries $queries,
+        protected EntityManagerInterface $entityManager,
+        protected OrderRepository $orderRepository,
+        protected ?EccubeConfig $eccubeConfig,
     ) {
         parent::__construct($registry, Customer::class);
-
-        $this->queries = $queries;
-        $this->entityManager = $entityManager;
-        $this->orderRepository = $orderRepository;
-        $this->eccubeConfig = $eccubeConfig;
     }
 
     public function newCustomer(): Customer

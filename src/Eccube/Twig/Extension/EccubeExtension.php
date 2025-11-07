@@ -28,17 +28,11 @@ use Twig\TwigTest;
 
 class EccubeExtension extends AbstractExtension
 {
-    protected EccubeConfig $eccubeConfig;
-
-    private readonly ProductRepository $productRepository;
-
     /**
      * EccubeExtension constructor.
      */
-    public function __construct(EccubeConfig $eccubeConfig, ProductRepository $productRepository)
+    public function __construct(protected EccubeConfig $eccubeConfig, private readonly ProductRepository $productRepository)
     {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->productRepository = $productRepository;
     }
 
     /**

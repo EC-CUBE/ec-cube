@@ -31,12 +31,9 @@ class PluginGenerateCommand extends Command
 
     protected Filesystem $fs;
 
-    protected EccubeConfig $eccubeConfig;
-
-    public function __construct(EccubeConfig $eccubeConfig)
+    public function __construct(protected EccubeConfig $eccubeConfig)
     {
         parent::__construct();
-        $this->eccubeConfig = $eccubeConfig;
     }
 
     #[\Override]

@@ -32,25 +32,18 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class CartController extends AbstractController
 {
-    protected ProductClassRepository $productClassRepository;
-
-    protected CartService $cartService;
-
-    protected PurchaseFlow $purchaseFlow;
-
     protected BaseInfo $baseInfo;
+    protected PurchaseFlow $purchaseFlow;
 
     /**
      * CartController constructor.
      */
     public function __construct(
-        ProductClassRepository $productClassRepository,
-        CartService $cartService,
-        PurchaseFlow $cartPurchaseFlow,
+        protected ProductClassRepository $productClassRepository,
+        protected CartService $cartService,
+        protected PurchaseFlow $cartPurchaseFlow,
         BaseInfoRepository $baseInfoRepository,
     ) {
-        $this->productClassRepository = $productClassRepository;
-        $this->cartService = $cartService;
         $this->purchaseFlow = $cartPurchaseFlow;
         $this->baseInfo = $baseInfoRepository->get();
     }
@@ -126,10 +119,14 @@ class CartController extends AbstractController
         }, $Carts);
 
         // 復旧不可のエラーが発生した場合はカートをクリアして再描画
+        // ただし、警告がある場合（在庫調整などの復旧可能な問題）はクリアしない
         $hasError = false;
         foreach ($flowResults as $result) {
             if ($result->hasError()) {
-                $hasError = true;
+                // 警告もある場合は復旧可能なのでクリアしない
+                if (!$result->hasWarning()) {
+                    $hasError = true;
+                }
                 foreach ($result->getErrors() as $error) {
                     $this->addRequestError($error->getMessage());
                 }

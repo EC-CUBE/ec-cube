@@ -40,27 +40,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProductClassEditType extends AbstractType
 {
-    protected EntityManagerInterface $entityManager;
-
-    protected ValidatorInterface $validator;
-
-    protected BaseInfoRepository $baseInfoRepository;
-
-    protected EccubeConfig $eccubeConfig;
-
     /**
      * ProductClassEditType constructor.
      */
-    public function __construct(
-        EntityManagerInterface $entityManager,
-        ValidatorInterface $validator,
-        BaseInfoRepository $baseInfoRepository,
-        EccubeConfig $eccubeConfig,
-    ) {
-        $this->entityManager = $entityManager;
-        $this->validator = $validator;
-        $this->baseInfoRepository = $baseInfoRepository;
-        $this->eccubeConfig = $eccubeConfig;
+    public function __construct(protected EntityManagerInterface $entityManager, protected ValidatorInterface $validator, protected BaseInfoRepository $baseInfoRepository, protected EccubeConfig $eccubeConfig)
+    {
     }
 
     /**

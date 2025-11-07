@@ -29,19 +29,11 @@ use Symfony\Component\Routing\Attribute\Route;
  */
 class LoginHistoryController extends AbstractController
 {
-    protected PageMaxRepository $pageMaxRepository;
-
-    protected LoginHistoryRepository $loginHistoryRepository;
-
     /**
      * LoginHistoryController constructor.
      */
-    public function __construct(
-        PageMaxRepository $pageMaxRepository,
-        LoginHistoryRepository $loginHistoryRepository,
-    ) {
-        $this->pageMaxRepository = $pageMaxRepository;
-        $this->loginHistoryRepository = $loginHistoryRepository;
+    public function __construct(protected PageMaxRepository $pageMaxRepository, protected LoginHistoryRepository $loginHistoryRepository)
+    {
     }
 
     /**

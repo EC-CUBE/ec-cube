@@ -29,27 +29,8 @@ use Symfony\Component\Security\Http\SecurityEvents;
 
 class LoginHistoryListener implements EventSubscriberInterface
 {
-    private readonly EntityManagerInterface $entityManager;
-
-    private readonly RequestStack $requestStack;
-
-    private readonly Context $requestContext;
-    private readonly MemberRepository $memberRepository;
-
-    private readonly LoginHistoryStatusRepository $loginHistoryStatusRepository;
-
-    public function __construct(
-        EntityManagerInterface $em,
-        RequestStack $requestStack,
-        Context $requestContext,
-        MemberRepository $memberRepository,
-        LoginHistoryStatusRepository $loginHistoryStatusRepository,
-    ) {
-        $this->entityManager = $em;
-        $this->requestStack = $requestStack;
-        $this->requestContext = $requestContext;
-        $this->memberRepository = $memberRepository;
-        $this->loginHistoryStatusRepository = $loginHistoryStatusRepository;
+    public function __construct(private readonly EntityManagerInterface $entityManager, private readonly RequestStack $requestStack, private readonly Context $requestContext, private readonly MemberRepository $memberRepository, private readonly LoginHistoryStatusRepository $loginHistoryStatusRepository)
+    {
     }
 
     /**

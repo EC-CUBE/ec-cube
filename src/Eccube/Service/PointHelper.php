@@ -25,17 +25,11 @@ use Eccube\Service\PurchaseFlow\Processor\PointProcessor;
 
 class PointHelper
 {
-    protected BaseInfoRepository $baseInfoRepository;
-
-    protected EntityManagerInterface $entityManager;
-
     /**
      * PointHelper constructor.
      */
-    public function __construct(BaseInfoRepository $baseInfoRepository, EntityManagerInterface $entityManager)
+    public function __construct(protected BaseInfoRepository $baseInfoRepository, protected EntityManagerInterface $entityManager)
     {
-        $this->baseInfoRepository = $baseInfoRepository;
-        $this->entityManager = $entityManager;
     }
 
     /**

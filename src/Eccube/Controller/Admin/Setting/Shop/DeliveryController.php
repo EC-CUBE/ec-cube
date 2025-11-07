@@ -44,29 +44,11 @@ use Symfony\Component\Routing\Attribute\Route;
  */
 class DeliveryController extends AbstractController
 {
-    protected PaymentOptionRepository $paymentOptionRepository;
-
-    protected DeliveryFeeRepository $deliveryFeeRepository;
-
-    protected PrefRepository $prefRepository;
-
-    protected DeliveryRepository $deliveryRepository;
-
-    protected DeliveryTimeRepository $deliveryTimeRepository;
-
-    protected SaleTypeRepository $saleTypeRepository;
-
     /**
      * DeliveryController constructor.
      */
-    public function __construct(PaymentOptionRepository $paymentOptionRepository, DeliveryFeeRepository $deliveryFeeRepository, PrefRepository $prefRepository, DeliveryRepository $deliveryRepository, DeliveryTimeRepository $deliveryTimeRepository, SaleTypeRepository $saleTypeRepository)
+    public function __construct(protected PaymentOptionRepository $paymentOptionRepository, protected DeliveryFeeRepository $deliveryFeeRepository, protected PrefRepository $prefRepository, protected DeliveryRepository $deliveryRepository, protected DeliveryTimeRepository $deliveryTimeRepository, protected SaleTypeRepository $saleTypeRepository)
     {
-        $this->paymentOptionRepository = $paymentOptionRepository;
-        $this->deliveryFeeRepository = $deliveryFeeRepository;
-        $this->prefRepository = $prefRepository;
-        $this->deliveryRepository = $deliveryRepository;
-        $this->deliveryTimeRepository = $deliveryTimeRepository;
-        $this->saleTypeRepository = $saleTypeRepository;
     }
 
     /**

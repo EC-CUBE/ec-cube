@@ -23,14 +23,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class OrderStatusType extends AbstractType
 {
-    protected OrderRepository $orderRepository;
-
     /**
      * OrderStatusType constructor.
      */
-    public function __construct(OrderRepository $orderRepository)
+    public function __construct(protected OrderRepository $orderRepository)
     {
-        $this->orderRepository = $orderRepository;
     }
 
     /**

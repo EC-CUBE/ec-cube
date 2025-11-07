@@ -26,15 +26,8 @@ use Symfony\Component\RateLimiter\RateLimiterFactory;
 
 class RateLimiterListener implements EventSubscriberInterface
 {
-    private readonly ContainerInterface $locator;
-    private EccubeConfig $eccubeConfig;
-    private readonly Context $requestContext;
-
-    public function __construct(ContainerInterface $locator, EccubeConfig $eccubeConfig, Context $requestContext)
+    public function __construct(private readonly ContainerInterface $locator, private EccubeConfig $eccubeConfig, private readonly Context $requestContext)
     {
-        $this->locator = $locator;
-        $this->eccubeConfig = $eccubeConfig;
-        $this->requestContext = $requestContext;
     }
 
     /**

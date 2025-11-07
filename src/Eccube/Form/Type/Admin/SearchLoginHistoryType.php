@@ -23,15 +23,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class SearchLoginHistoryType extends AbstractType
 {
-    protected EccubeConfig $eccubeConfig;
-
     /**
      * SearchContactType constructor.
      */
-    public function __construct(
-        EccubeConfig $eccubeConfig,
-    ) {
-        $this->eccubeConfig = $eccubeConfig;
+    public function __construct(protected EccubeConfig $eccubeConfig)
+    {
     }
 
     /**

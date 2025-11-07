@@ -31,27 +31,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class NonMemberShoppingController extends AbstractShoppingController
 {
-    protected ValidatorInterface $validator;
-
-    protected PrefRepository $prefRepository;
-
-    protected OrderHelper $orderHelper;
-
-    protected CartService $cartService;
-
     /**
      * NonMemberShoppingController constructor.
      */
-    public function __construct(
-        ValidatorInterface $validator,
-        PrefRepository $prefRepository,
-        OrderHelper $orderHelper,
-        CartService $cartService,
-    ) {
-        $this->validator = $validator;
-        $this->prefRepository = $prefRepository;
-        $this->orderHelper = $orderHelper;
-        $this->cartService = $cartService;
+    public function __construct(protected ValidatorInterface $validator, protected PrefRepository $prefRepository, protected OrderHelper $orderHelper, protected CartService $cartService)
+    {
     }
 
     /**

@@ -75,83 +75,33 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
  */
 class Generator
 {
-    protected $locale;
-
-    protected ?EntityManagerInterface $entityManager = null;
-
-    protected ?UserPasswordHasherInterface $passwordHasher = null;
-
-    protected ?MemberRepository $memberRepository = null;
-
-    private ?CategoryRepository $categoryRepository = null;
-
-    protected ?CustomerRepository $customerRepository = null;
-
-    protected ?ClassNameRepository $classNameRepository = null;
-
-    protected ?ClassCategoryRepository $classCategoryRepository = null;
-
-    protected ?DeliveryDurationRepository $durationRepository = null;
-
-    protected ?DeliveryFeeRepository $deliveryFeeRepository = null;
-
     /**
      * @var PaymentRepository;
      */
     protected $paymentRepository;
 
-    private ?TagRepository $tagRepository = null;
-
-    protected ?TaxRuleRepository $taxRuleRepository = null;
-
-    protected ?PageRepository $pageRepository = null;
-
-    protected ?PrefRepository $PrefRepository = null;
-
-    private ?PrefRepository $prefRepository = null;
-
     protected ?SessionInterface $session = null;
 
-    protected ?RequestStack $requestStack = null;
-
-    protected ?PurchaseFlow $orderPurchaseFlow = null;
-
     public function __construct(
-        EntityManagerInterface $entityManager,
-        UserPasswordHasherInterface $passwordHasher,
-        MemberRepository $memberRepository,
-        CategoryRepository $categoryRepository,
-        CustomerRepository $customerRepository,
-        ClassNameRepository $classNameRepository,
-        ClassCategoryRepository $classCategoryRepository,
-        DeliveryDurationRepository $durationRepository,
-        DeliveryFeeRepository $deliveryFeeRepository,
+        protected ?EntityManagerInterface $entityManager,
+        protected ?UserPasswordHasherInterface $passwordHasher,
+        protected ?MemberRepository $memberRepository,
+        private readonly ?CategoryRepository $categoryRepository,
+        protected ?CustomerRepository $customerRepository,
+        protected ?ClassNameRepository $classNameRepository,
+        protected ?ClassCategoryRepository $classCategoryRepository,
+        protected ?DeliveryDurationRepository $durationRepository,
+        protected ?DeliveryFeeRepository $deliveryFeeRepository,
         PaymentRepository $paymentRepository,
-        PageRepository $pageRepository,
-        PrefRepository $prefRepository,
-        TagRepository $tagRepository,
-        TaxRuleRepository $taxRuleRepository,
-        PurchaseFlow $orderPurchaseFlow,
-        RequestStack $requestStack,
-        $locale = 'ja_JP',
+        protected ?PageRepository $pageRepository,
+        private readonly ?PrefRepository $prefRepository,
+        private readonly ?TagRepository $tagRepository,
+        protected ?TaxRuleRepository $taxRuleRepository,
+        protected ?PurchaseFlow $orderPurchaseFlow,
+        protected ?RequestStack $requestStack,
+        protected $locale = 'ja_JP',
     ) {
-        $this->locale = $locale;
-        $this->entityManager = $entityManager;
-        $this->passwordHasher = $passwordHasher;
-        $this->memberRepository = $memberRepository;
-        $this->categoryRepository = $categoryRepository;
-        $this->customerRepository = $customerRepository;
-        $this->classNameRepository = $classNameRepository;
-        $this->classCategoryRepository = $classCategoryRepository;
-        $this->durationRepository = $durationRepository;
-        $this->deliveryFeeRepository = $deliveryFeeRepository;
         $this->paymentRepository = $paymentRepository;
-        $this->pageRepository = $pageRepository;
-        $this->prefRepository = $prefRepository;
-        $this->tagRepository = $tagRepository;
-        $this->taxRuleRepository = $taxRuleRepository;
-        $this->orderPurchaseFlow = $orderPurchaseFlow;
-        $this->requestStack = $requestStack;
     }
 
     /**

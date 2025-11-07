@@ -22,11 +22,8 @@ use Symfony\Component\HttpFoundation\Session\Storage\MetadataBag;
 
 class Session implements SessionInterface, FlashBagAwareSessionInterface
 {
-    private readonly RequestStack $requestStack;
-
-    public function __construct(RequestStack $requestStack)
+    public function __construct(private readonly RequestStack $requestStack)
     {
-        $this->requestStack = $requestStack;
     }
 
     private function getSession(): SessionInterface

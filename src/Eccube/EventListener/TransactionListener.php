@@ -28,19 +28,13 @@ use Symfony\Component\HttpKernel\KernelEvents;
  */
 class TransactionListener implements EventSubscriberInterface
 {
-    protected EntityManagerInterface $em;
-
-    protected bool $isEnabled = true;
-
     /**
      * TransactionListener constructor.
      *
      * @param EntityManager $em
      */
-    public function __construct(EntityManagerInterface $em, bool $isEnabled = true)
+    public function __construct(protected EntityManagerInterface $em, protected bool $isEnabled = true)
     {
-        $this->em = $em;
-        $this->isEnabled = $isEnabled;
     }
 
     /**

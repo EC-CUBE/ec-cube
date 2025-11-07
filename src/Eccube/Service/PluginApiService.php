@@ -29,23 +29,11 @@ class PluginApiService
      */
     private string $apiUrl;
 
-    private readonly EccubeConfig $eccubeConfig;
-
-    private readonly RequestStack $requestStack;
-
-    private readonly BaseInfoRepository $baseInfoRepository;
-
-    private readonly PluginRepository $pluginRepository;
-
     /**
      * PluginApiService constructor.
      */
-    public function __construct(EccubeConfig $eccubeConfig, RequestStack $requestStack, BaseInfoRepository $baseInfoRepository, PluginRepository $pluginRepository)
+    public function __construct(private readonly EccubeConfig $eccubeConfig, private readonly RequestStack $requestStack, private readonly BaseInfoRepository $baseInfoRepository, private readonly PluginRepository $pluginRepository)
     {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->requestStack = $requestStack;
-        $this->baseInfoRepository = $baseInfoRepository;
-        $this->pluginRepository = $pluginRepository;
     }
 
     public function getApiUrl(): string

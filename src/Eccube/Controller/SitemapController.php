@@ -30,30 +30,18 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class SitemapController extends AbstractController
 {
-    private readonly CategoryRepository $categoryRepository;
-
-    private readonly PageRepository $pageRepository;
-
-    private readonly ProductListOrderByRepository $productListOrderByRepository;
-
-    private readonly ProductRepository $productRepository;
-
     protected BaseInfo $BaseInfo;
 
     /**
      * SitemapController constructor.
      */
     public function __construct(
-        CategoryRepository $categoryRepository,
-        PageRepository $pageRepository,
-        ProductListOrderByRepository $productListOrderByRepository,
-        ProductRepository $productRepository,
+        private readonly CategoryRepository $categoryRepository,
+        private readonly PageRepository $pageRepository,
+        private readonly ProductListOrderByRepository $productListOrderByRepository,
+        private readonly ProductRepository $productRepository,
         BaseInfoRepository $baseInfoRepository,
     ) {
-        $this->categoryRepository = $categoryRepository;
-        $this->pageRepository = $pageRepository;
-        $this->productListOrderByRepository = $productListOrderByRepository;
-        $this->productRepository = $productRepository;
         $this->BaseInfo = $baseInfoRepository->get();
     }
 

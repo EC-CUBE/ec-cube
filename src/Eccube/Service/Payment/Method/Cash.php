@@ -28,16 +28,13 @@ class Cash implements PaymentMethodInterface
 {
     private Order $Order;
 
-    private readonly PurchaseFlow $purchaseFlow;
-
     private FormInterface $form;
 
     /**
      * Cash constructor.
      */
-    public function __construct(PurchaseFlow $shoppingPurchaseFlow)
+    public function __construct(private readonly PurchaseFlow $shoppingPurchaseFlow)
     {
-        $this->purchaseFlow = $shoppingPurchaseFlow;
     }
 
     /**
@@ -48,7 +45,7 @@ class Cash implements PaymentMethodInterface
     #[\Override]
     public function checkout(): PaymentResult
     {
-        $this->purchaseFlow->commit($this->Order, new PurchaseContext());
+        $this->shoppingPurchaseFlow->commit($this->Order, new PurchaseContext());
 
         $result = new PaymentResult();
         $result->setSuccess(true);
@@ -64,7 +61,7 @@ class Cash implements PaymentMethodInterface
     #[\Override]
     public function apply(): PaymentDispatcher|bool
     {
-        $this->purchaseFlow->prepare($this->Order, new PurchaseContext());
+        $this->shoppingPurchaseFlow->prepare($this->Order, new PurchaseContext());
 
         return false;
     }

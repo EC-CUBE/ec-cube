@@ -28,21 +28,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'eccube:fixtures:generate', description: 'Dummy data generator')]
 class GenerateDummyDataCommand extends Command
 {
-    protected Generator $generator;
-
-    protected EntityManagerInterface $entityManager;
-
-    protected DeliveryRepository $deliveryRepository;
-
-    protected ProductRepository $productRepository;
-
-    public function __construct(?Generator $generator = null, ?EntityManagerInterface $entityManager = null, ?DeliveryRepository $deliveryRepository = null, ?ProductRepository $productRepository = null)
+    public function __construct(protected ?Generator $generator = null, protected ?EntityManagerInterface $entityManager = null, protected ?DeliveryRepository $deliveryRepository = null, protected ?ProductRepository $productRepository = null)
     {
         parent::__construct();
-        $this->generator = $generator;
-        $this->entityManager = $entityManager;
-        $this->deliveryRepository = $deliveryRepository;
-        $this->productRepository = $productRepository;
     }
 
     #[\Override]

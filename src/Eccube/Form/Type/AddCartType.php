@@ -35,19 +35,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class AddCartType extends AbstractType
 {
-    protected EccubeConfig $config;
-
     protected EntityManager $em;
 
     protected Product $Product;
 
     protected ProductClassRepository $productClassRepository;
-    protected ManagerRegistry $doctrine;
 
-    public function __construct(ManagerRegistry $doctrine, EccubeConfig $config)
+    public function __construct(protected ManagerRegistry $doctrine, protected EccubeConfig $config)
     {
-        $this->doctrine = $doctrine;
-        $this->config = $config;
     }
 
     /**

@@ -44,21 +44,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class OrderItemType extends AbstractType
 {
-    protected EntityManagerInterface $entityManager;
-
-    protected EccubeConfig $eccubeConfig;
-
     protected BaseInfo $BaseInfo;
-
-    protected ProductClassRepository $productClassRepository;
-
-    protected OrderItemRepository $orderItemRepository;
-
-    protected OrderItemTypeRepository $orderItemTypeRepository;
-
-    protected TaxRuleRepository $taxRuleRepository;
-
-    protected ValidatorInterface $validator;
 
     /**
      * OrderItemType constructor.
@@ -66,23 +52,16 @@ class OrderItemType extends AbstractType
      * @throws \Exception
      */
     public function __construct(
-        EntityManagerInterface $entityManager,
-        EccubeConfig $eccubeConfig,
+        protected EntityManagerInterface $entityManager,
+        protected EccubeConfig $eccubeConfig,
         BaseInfoRepository $baseInfoRepository,
-        ProductClassRepository $productClassRepository,
-        OrderItemRepository $orderItemRepository,
-        OrderItemTypeRepository $orderItemTypeRepository,
-        TaxRuleRepository $taxRuleRepository,
-        ValidatorInterface $validator,
+        protected ProductClassRepository $productClassRepository,
+        protected OrderItemRepository $orderItemRepository,
+        protected OrderItemTypeRepository $orderItemTypeRepository,
+        protected TaxRuleRepository $taxRuleRepository,
+        protected ValidatorInterface $validator,
     ) {
-        $this->entityManager = $entityManager;
-        $this->eccubeConfig = $eccubeConfig;
         $this->BaseInfo = $baseInfoRepository->get();
-        $this->productClassRepository = $productClassRepository;
-        $this->orderItemRepository = $orderItemRepository;
-        $this->orderItemTypeRepository = $orderItemTypeRepository;
-        $this->taxRuleRepository = $taxRuleRepository;
-        $this->validator = $validator;
     }
 
     /**

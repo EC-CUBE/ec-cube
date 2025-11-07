@@ -25,14 +25,11 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class SecurityController extends AbstractController
 {
-    protected TokenStorageInterface $tokenStorage;
-
     /**
      * SecurityController constructor.
      */
-    public function __construct(TokenStorageInterface $tokenStorage)
+    public function __construct(protected TokenStorageInterface $tokenStorage)
     {
-        $this->tokenStorage = $tokenStorage;
     }
 
     /**

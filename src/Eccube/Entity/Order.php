@@ -654,7 +654,7 @@ if (!class_exists(Order::class)) {
         /**
          * Constructor
          */
-        public function __construct(?OrderStatus $orderStatus = null)
+        public function __construct(?OrderStatus $OrderStatus = null)
         {
             $this->setDiscount('0')
                 ->setSubtotal('0')
@@ -662,12 +662,15 @@ if (!class_exists(Order::class)) {
                 ->setPaymentTotal('0')
                 ->setCharge('0')
                 ->setTax('0')
-                ->setDeliveryFeeTotal('0')
-                ->setOrderStatus($orderStatus);
+                ->setDeliveryFeeTotal('0');
 
             $this->OrderItems = new ArrayCollection();
             $this->Shippings = new ArrayCollection();
             $this->MailHistories = new ArrayCollection();
+
+            if ($OrderStatus !== null) {
+                $this->setOrderStatus($OrderStatus);
+            }
         }
 
         /**

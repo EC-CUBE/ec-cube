@@ -34,19 +34,11 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class CategoryController extends AbstractController
 {
-    protected CsvExportService $csvExportService;
-
-    protected CategoryRepository $categoryRepository;
-
     /**
      * CategoryController constructor.
      */
-    public function __construct(
-        CsvExportService $csvExportService,
-        CategoryRepository $categoryRepository,
-    ) {
-        $this->csvExportService = $csvExportService;
-        $this->categoryRepository = $categoryRepository;
+    public function __construct(protected CsvExportService $csvExportService, protected CategoryRepository $categoryRepository)
+    {
     }
 
     /**

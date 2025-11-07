@@ -27,14 +27,11 @@ use Symfony\Component\Routing\Attribute\Route;
  */
 class CalendarController extends AbstractController
 {
-    protected CalendarRepository $calendarRepository;
-
     /**
      * CalendarController constructor.
      */
-    public function __construct(CalendarRepository $calendarRepository)
+    public function __construct(protected CalendarRepository $calendarRepository)
     {
-        $this->calendarRepository = $calendarRepository;
     }
 
     /**

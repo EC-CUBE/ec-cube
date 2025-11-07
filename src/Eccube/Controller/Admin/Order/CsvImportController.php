@@ -27,16 +27,8 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class CsvImportController extends AbstractCsvImportController
 {
-    private readonly ShippingRepository $shippingRepository;
-
-    protected OrderStateMachine $orderStateMachine;
-
-    public function __construct(
-        ShippingRepository $shippingRepository,
-        OrderStateMachine $orderStateMachine,
-    ) {
-        $this->shippingRepository = $shippingRepository;
-        $this->orderStateMachine = $orderStateMachine;
+    public function __construct(private readonly ShippingRepository $shippingRepository, protected OrderStateMachine $orderStateMachine)
+    {
     }
 
     /**
@@ -179,13 +171,16 @@ class CsvImportController extends AbstractCsvImportController
                 if ($this->orderStateMachine->can($Order, $OrderStatus)) {
                     $this->orderStateMachine->apply($Order, $OrderStatus);
                 } else {
-                    $from = $Order->getOrderStatus()->getName();
-                    $to = $OrderStatus->getName();
-                    $errors[] = trans('admin.order.failed_to_change_status', [
-                        '%name%' => $Shipping->getId(),
-                        '%from%' => $from,
-                        '%to%' => $to,
-                    ]);
+                    $currentOrderStatus = $Order->getOrderStatus();
+                    if ($currentOrderStatus) {
+                        $from = $currentOrderStatus->getName();
+                        $to = $OrderStatus->getName();
+                        $errors[] = trans('admin.order.failed_to_change_status', [
+                            '%name%' => $Shipping->getId(),
+                            '%from%' => $from,
+                            '%to%' => $to,
+                        ]);
+                    }
                 }
             }
         }

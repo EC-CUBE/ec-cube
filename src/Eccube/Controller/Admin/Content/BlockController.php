@@ -33,16 +33,8 @@ use Twig\Environment;
 
 class BlockController extends AbstractController
 {
-    protected BlockRepository $blockRepository;
-
-    protected DeviceTypeRepository $deviceTypeRepository;
-
-    public function __construct(
-        BlockRepository $blockRepository,
-        DeviceTypeRepository $deviceTypeRepository,
-    ) {
-        $this->blockRepository = $blockRepository;
-        $this->deviceTypeRepository = $deviceTypeRepository;
+    public function __construct(protected BlockRepository $blockRepository, protected DeviceTypeRepository $deviceTypeRepository)
+    {
     }
 
     /**

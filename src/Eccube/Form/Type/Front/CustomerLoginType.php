@@ -25,14 +25,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class CustomerLoginType extends AbstractType
 {
-    protected EccubeConfig $eccubeConfig;
-
-    protected AuthenticationUtils $authenticationUtils;
-
-    public function __construct(AuthenticationUtils $authenticationUtils, EccubeConfig $eccubeConfig)
+    public function __construct(protected AuthenticationUtils $authenticationUtils, protected EccubeConfig $eccubeConfig)
     {
-        $this->authenticationUtils = $authenticationUtils;
-        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**

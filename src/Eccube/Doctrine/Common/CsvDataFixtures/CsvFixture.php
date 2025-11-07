@@ -25,14 +25,11 @@ use Doctrine\Persistence\ObjectManager;
  */
 class CsvFixture implements FixtureInterface
 {
-    protected \SplFileObject $file;
-
     /**
      * CsvFixture constructor.
      */
-    public function __construct(?\SplFileObject $file = null)
+    public function __construct(protected ?\SplFileObject $file = null)
     {
-        $this->file = $file;
     }
 
     /**

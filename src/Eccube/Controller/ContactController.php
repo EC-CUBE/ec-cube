@@ -27,19 +27,11 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class ContactController extends AbstractController
 {
-    protected MailService $mailService;
-
-    private readonly PageRepository $pageRepository;
-
     /**
      * ContactController constructor.
      */
-    public function __construct(
-        MailService $mailService,
-        PageRepository $pageRepository)
+    public function __construct(protected MailService $mailService, private readonly PageRepository $pageRepository)
     {
-        $this->mailService = $mailService;
-        $this->pageRepository = $pageRepository;
     }
 
     /**

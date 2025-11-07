@@ -32,35 +32,11 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class WithdrawController extends AbstractController
 {
-    protected MailService $mailService;
-
-    protected CustomerStatusRepository $customerStatusRepository;
-
-    protected TokenStorageInterface $tokenStorage;
-
-    private readonly CartService $cartService;
-
-    private readonly OrderHelper $orderHelper;
-
-    private readonly PageRepository $pageRepository;
-
     /**
      * WithdrawController constructor.
      */
-    public function __construct(
-        MailService $mailService,
-        CustomerStatusRepository $customerStatusRepository,
-        TokenStorageInterface $tokenStorage,
-        CartService $cartService,
-        OrderHelper $orderHelper,
-        PageRepository $pageRepository,
-    ) {
-        $this->mailService = $mailService;
-        $this->customerStatusRepository = $customerStatusRepository;
-        $this->tokenStorage = $tokenStorage;
-        $this->cartService = $cartService;
-        $this->orderHelper = $orderHelper;
-        $this->pageRepository = $pageRepository;
+    public function __construct(protected MailService $mailService, protected CustomerStatusRepository $customerStatusRepository, protected TokenStorageInterface $tokenStorage, private readonly CartService $cartService, private readonly OrderHelper $orderHelper, private readonly PageRepository $pageRepository)
+    {
     }
 
     /**

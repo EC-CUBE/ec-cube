@@ -31,27 +31,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ForgotController extends AbstractController
 {
-    protected ValidatorInterface $validator;
-
-    protected MailService $mailService;
-
-    protected CustomerRepository $customerRepository;
-
-    protected UserPasswordHasherInterface $passwordHasher;
-
     /**
      * ForgotController constructor.
      */
-    public function __construct(
-        ValidatorInterface $validator,
-        MailService $mailService,
-        CustomerRepository $customerRepository,
-        UserPasswordHasherInterface $passwordHasher,
-    ) {
-        $this->validator = $validator;
-        $this->mailService = $mailService;
-        $this->customerRepository = $customerRepository;
-        $this->passwordHasher = $passwordHasher;
+    public function __construct(protected ValidatorInterface $validator, protected MailService $mailService, protected CustomerRepository $customerRepository, protected UserPasswordHasherInterface $passwordHasher)
+    {
     }
 
     /**

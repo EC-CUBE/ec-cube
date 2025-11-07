@@ -28,11 +28,7 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
  */
 class EccubeDataCollector extends DataCollector
 {
-    protected EccubeConfig $eccubeConfig;
-
-    protected PluginRepository $pluginRepository;
-
-    public function __construct(EccubeConfig $eccubeConfig, PluginRepository $pluginRepository)
+    public function __construct(protected EccubeConfig $eccubeConfig, protected PluginRepository $pluginRepository)
     {
         $this->data = [
             'version' => Constant::VERSION,
@@ -42,8 +38,6 @@ class EccubeDataCollector extends DataCollector
             'locale_code' => null,
             'plugins' => [],
         ];
-        $this->eccubeConfig = $eccubeConfig;
-        $this->pluginRepository = $pluginRepository;
     }
 
     public function getVersion(): string

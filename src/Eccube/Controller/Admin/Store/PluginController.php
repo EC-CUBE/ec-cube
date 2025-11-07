@@ -44,17 +44,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class PluginController extends AbstractController
 {
-    protected PluginService $pluginService;
-
     protected BaseInfo $BaseInfo;
-
-    protected PluginRepository $pluginRepository;
-
-    protected PluginApiService $pluginApiService;
-
-    private readonly ComposerServiceInterface $composerService;
-
-    private readonly SystemService $systemService;
 
     /**
      * PluginController constructor.
@@ -63,19 +53,14 @@ class PluginController extends AbstractController
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function __construct(
-        PluginRepository $pluginRepository,
-        PluginService $pluginService,
+        protected PluginRepository $pluginRepository,
+        protected PluginService $pluginService,
         BaseInfoRepository $baseInfoRepository,
-        PluginApiService $pluginApiService,
-        ComposerServiceInterface $composerService,
-        SystemService $systemService,
+        protected PluginApiService $pluginApiService,
+        private readonly ComposerServiceInterface $composerService,
+        private readonly SystemService $systemService,
     ) {
-        $this->pluginRepository = $pluginRepository;
-        $this->pluginService = $pluginService;
         $this->BaseInfo = $baseInfoRepository->get();
-        $this->pluginApiService = $pluginApiService;
-        $this->composerService = $composerService;
-        $this->systemService = $systemService;
     }
 
     /**

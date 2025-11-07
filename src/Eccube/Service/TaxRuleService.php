@@ -26,11 +26,8 @@ class TaxRuleService
 {
     protected BaseInfo $BaseInfo;
 
-    protected TaxRuleRepository $taxRuleRepository;
-
-    public function __construct(TaxRuleRepository $taxRuleRepository, BaseInfoRepository $baseInfoRepository)
+    public function __construct(protected TaxRuleRepository $taxRuleRepository, BaseInfoRepository $baseInfoRepository)
     {
-        $this->taxRuleRepository = $taxRuleRepository;
         $this->BaseInfo = $baseInfoRepository->get();
     }
 

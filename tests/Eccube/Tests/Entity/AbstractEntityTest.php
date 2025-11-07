@@ -421,13 +421,16 @@ class TestChildEntity extends TestExtendsEntity
 
 class TestChildren extends AbstractEntity
 {
-    #[Id]
-    private $childField;
-
-    public function __construct($childField)
-    {
-        $this->childField = $childField;
+    public function __construct(
+        #[Id]
+        private $childField,
+    ) {
     }
+    //    public function __construct(
+    // #[Id]
+    //        private $childField,
+    // ) {
+    // }
 
     public function getChildField()
     {

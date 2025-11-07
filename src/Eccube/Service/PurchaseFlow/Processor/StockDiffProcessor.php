@@ -28,14 +28,11 @@ use Eccube\Service\PurchaseFlow\PurchaseProcessor;
  */
 class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcessor
 {
-    protected ProductClassRepository $productClassRepository;
-
     /**
      * StockProcessor constructor.
      */
-    public function __construct(ProductClassRepository $productClassRepository)
+    public function __construct(protected ProductClassRepository $productClassRepository)
     {
-        $this->productClassRepository = $productClassRepository;
     }
 
     /**

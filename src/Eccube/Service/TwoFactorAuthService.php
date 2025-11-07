@@ -33,12 +33,6 @@ class TwoFactorAuthService
      */
     public const DEFAULT_COOKIE_NAME = 'eccube_2fa';
 
-    protected EccubeConfig $eccubeConfig;
-
-    protected PasswordHasherFactoryInterface $passwordHasherFactory;
-
-    protected RequestStack $requestStack;
-
     protected ?Request $request;
 
     protected string $cookieName = self::DEFAULT_COOKIE_NAME;
@@ -51,14 +45,11 @@ class TwoFactorAuthService
      * constructor.
      */
     public function __construct(
-        EccubeConfig $eccubeConfig,
-        PasswordHasherFactoryInterface $passwordHasherFactory,
-        RequestStack $requestStack,
+        protected EccubeConfig $eccubeConfig,
+        protected PasswordHasherFactoryInterface $passwordHasherFactory,
+        protected RequestStack $requestStack,
     ) {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->passwordHasherFactory = $passwordHasherFactory;
-        $this->requestStack = $requestStack;
-        $this->request = $requestStack->getCurrentRequest();
+        $this->request = $this->requestStack->getCurrentRequest();
         $this->tfa = new TwoFactorAuth();
 
         if ($this->eccubeConfig->get('eccube_2fa_cookie_name')) {

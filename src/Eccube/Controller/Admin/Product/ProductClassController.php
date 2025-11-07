@@ -39,31 +39,11 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class ProductClassController extends AbstractController
 {
-    protected ProductRepository $productRepository;
-
-    protected ProductClassRepository $productClassRepository;
-
-    protected ClassCategoryRepository $classCategoryRepository;
-
-    protected BaseInfoRepository $baseInfoRepository;
-
-    protected TaxRuleRepository $taxRuleRepository;
-
     /**
      * ProductClassController constructor.
      */
-    public function __construct(
-        ProductRepository $productRepository,
-        ProductClassRepository $productClassRepository,
-        ClassCategoryRepository $classCategoryRepository,
-        BaseInfoRepository $baseInfoRepository,
-        TaxRuleRepository $taxRuleRepository,
-    ) {
-        $this->productRepository = $productRepository;
-        $this->productClassRepository = $productClassRepository;
-        $this->classCategoryRepository = $classCategoryRepository;
-        $this->baseInfoRepository = $baseInfoRepository;
-        $this->taxRuleRepository = $taxRuleRepository;
+    public function __construct(protected ProductRepository $productRepository, protected ProductClassRepository $productClassRepository, protected ClassCategoryRepository $classCategoryRepository, protected BaseInfoRepository $baseInfoRepository, protected TaxRuleRepository $taxRuleRepository)
+    {
     }
 
     /**

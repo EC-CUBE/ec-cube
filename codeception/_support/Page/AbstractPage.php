@@ -15,14 +15,11 @@ namespace Page;
 
 abstract class AbstractPage
 {
-    protected \AcceptanceTester $tester;
-
     /**
      * AbstractAdminPage constructor.
      */
-    public function __construct(\AcceptanceTester $I)
+    public function __construct(protected \AcceptanceTester $tester)
     {
-        $this->tester = $I;
     }
 
     /**

@@ -23,14 +23,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class CategoryType extends AbstractType
 {
-    protected EccubeConfig $eccubeConfig;
-
     /**
      * CategoryType constructor.
      */
-    public function __construct(EccubeConfig $eccubeConfig)
+    public function __construct(protected EccubeConfig $eccubeConfig)
     {
-        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**

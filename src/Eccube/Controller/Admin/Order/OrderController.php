@@ -54,71 +54,15 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class OrderController extends AbstractController
 {
-    protected PurchaseFlow $purchaseFlow;
-
-    protected CsvExportService $csvExportService;
-
-    protected CustomerRepository $customerRepository;
-
-    protected PaymentRepository $paymentRepository;
-
-    protected SexRepository $sexRepository;
-
-    protected OrderStatusRepository $orderStatusRepository;
-
-    protected PageMaxRepository $pageMaxRepository;
-
-    protected ProductStatusRepository $productStatusRepository;
-
-    protected OrderRepository $orderRepository;
-
-    protected OrderPdfRepository $orderPdfRepository;
-
-    protected ProductStockRepository $productStockRepository;
-
     protected OrderPdfService $orderPdfService;
-
-    protected ValidatorInterface $validator;
-
-    protected OrderStateMachine $orderStateMachine;
-
-    protected MailService $mailService;
 
     /**
      * OrderController constructor.
      *
      * @param OrderStateMachine $orderStateMachine ;
      */
-    public function __construct(
-        PurchaseFlow $orderPurchaseFlow,
-        CsvExportService $csvExportService,
-        CustomerRepository $customerRepository,
-        PaymentRepository $paymentRepository,
-        SexRepository $sexRepository,
-        OrderStatusRepository $orderStatusRepository,
-        PageMaxRepository $pageMaxRepository,
-        ProductStatusRepository $productStatusRepository,
-        ProductStockRepository $productStockRepository,
-        OrderRepository $orderRepository,
-        OrderPdfRepository $orderPdfRepository,
-        ValidatorInterface $validator,
-        OrderStateMachine $orderStateMachine,
-        MailService $mailService,
-    ) {
-        $this->purchaseFlow = $orderPurchaseFlow;
-        $this->csvExportService = $csvExportService;
-        $this->customerRepository = $customerRepository;
-        $this->paymentRepository = $paymentRepository;
-        $this->sexRepository = $sexRepository;
-        $this->orderStatusRepository = $orderStatusRepository;
-        $this->pageMaxRepository = $pageMaxRepository;
-        $this->productStatusRepository = $productStatusRepository;
-        $this->productStockRepository = $productStockRepository;
-        $this->orderRepository = $orderRepository;
-        $this->orderPdfRepository = $orderPdfRepository;
-        $this->validator = $validator;
-        $this->orderStateMachine = $orderStateMachine;
-        $this->mailService = $mailService;
+    public function __construct(protected PurchaseFlow $purchaseFlow, protected CsvExportService $csvExportService, protected CustomerRepository $customerRepository, protected PaymentRepository $paymentRepository, protected SexRepository $sexRepository, protected OrderStatusRepository $orderStatusRepository, protected PageMaxRepository $pageMaxRepository, protected ProductStatusRepository $productStatusRepository, protected ProductStockRepository $productStockRepository, protected OrderRepository $orderRepository, protected OrderPdfRepository $orderPdfRepository, protected ValidatorInterface $validator, protected OrderStateMachine $orderStateMachine, protected MailService $mailService)
+    {
     }
 
     /**
@@ -138,14 +82,12 @@ class OrderController extends AbstractController
      *   - 初期表示
      *      - 検索条件は空配列, ページ番号は1で初期化し, セッションに保存します.
      *
-     * @param string|null $page_no
-     *
      * @return array<string, mixed>
      */
     #[Route(path: '/%eccube_admin_route%/order', name: 'admin_order', methods: ['GET', 'POST'])]
     #[Route(path: '/%eccube_admin_route%/order/page/{page_no}', name: 'admin_order_page', requirements: ['page_no' => '\d+'], methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Order/index.twig')]
-    public function index(Request $request, PaginatorInterface $paginator, $page_no = null): array
+    public function index(Request $request, PaginatorInterface $paginator, ?int $page_no = null): array
     {
         $builder = $this->formFactory
             ->createBuilder(SearchOrderType::class);

@@ -23,17 +23,11 @@ use Twig\Environment;
 
 class ExceptionListener implements EventSubscriberInterface
 {
-    private readonly Environment $twig;
-
-    protected Context $requestContext;
-
     /**
      * ExceptionListener constructor.
      */
-    public function __construct(Environment $twig, Context $requestContext)
+    public function __construct(private readonly Environment $twig, protected Context $requestContext)
     {
-        $this->twig = $twig;
-        $this->requestContext = $requestContext;
     }
 
     public function onKernelException(ExceptionEvent $event): void

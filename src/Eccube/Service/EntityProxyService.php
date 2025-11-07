@@ -25,19 +25,11 @@ use Symfony\Component\Finder\Finder;
 
 class EntityProxyService
 {
-    protected EntityManagerInterface $entityManager;
-
-    protected EccubeConfig $eccubeConfig;
-
     /**
      * EntityProxyService constructor.
      */
-    public function __construct(
-        EntityManagerInterface $entityManager,
-        EccubeConfig $eccubeConfig,
-    ) {
-        $this->entityManager = $entityManager;
-        $this->eccubeConfig = $eccubeConfig;
+    public function __construct(protected EntityManagerInterface $entityManager, protected EccubeConfig $eccubeConfig)
+    {
     }
 
     /**

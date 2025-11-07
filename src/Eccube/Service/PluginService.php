@@ -35,18 +35,6 @@ use Symfony\Component\Finder\Finder;
 
 class PluginService
 {
-    protected EccubeConfig $eccubeConfig;
-
-    protected EntityManagerInterface $entityManager;
-
-    protected PluginRepository $pluginRepository;
-
-    protected EntityProxyService $entityProxyService;
-
-    protected SchemaService $schemaService;
-
-    protected ComposerServiceInterface $composerService;
-
     public const VENDOR_NAME = 'ec-cube';
 
     /**
@@ -69,41 +57,23 @@ class PluginService
      */
     private readonly string $environment;
 
-    protected ContainerInterface $container;
-
-    protected CacheUtil $cacheUtil;
-
-    private readonly PluginApiService $pluginApiService;
-
-    private readonly PluginContext $pluginContext;
-
     /**
      * PluginService constructor.
      */
     public function __construct(
-        EntityManagerInterface $entityManager,
-        PluginRepository $pluginRepository,
-        EntityProxyService $entityProxyService,
-        SchemaService $schemaService,
-        EccubeConfig $eccubeConfig,
-        ContainerInterface $container,
-        CacheUtil $cacheUtil,
-        ComposerServiceInterface $composerService,
-        PluginApiService $pluginApiService,
-        PluginContext $pluginContext,
+        protected EntityManagerInterface $entityManager,
+        protected PluginRepository $pluginRepository,
+        protected EntityProxyService $entityProxyService,
+        protected SchemaService $schemaService,
+        protected EccubeConfig $eccubeConfig,
+        protected ContainerInterface $container,
+        protected CacheUtil $cacheUtil,
+        protected ComposerServiceInterface $composerService,
+        private readonly PluginApiService $pluginApiService,
+        private readonly PluginContext $pluginContext,
     ) {
-        $this->entityManager = $entityManager;
-        $this->pluginRepository = $pluginRepository;
-        $this->entityProxyService = $entityProxyService;
-        $this->schemaService = $schemaService;
-        $this->eccubeConfig = $eccubeConfig;
-        $this->projectRoot = $eccubeConfig->get('kernel.project_dir');
-        $this->environment = $eccubeConfig->get('kernel.environment');
-        $this->container = $container;
-        $this->cacheUtil = $cacheUtil;
-        $this->composerService = $composerService;
-        $this->pluginApiService = $pluginApiService;
-        $this->pluginContext = $pluginContext;
+        $this->projectRoot = $this->eccubeConfig->get('kernel.project_dir');
+        $this->environment = $this->eccubeConfig->get('kernel.environment');
     }
 
     /**

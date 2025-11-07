@@ -62,29 +62,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CsvImportController extends AbstractCsvImportController
 {
-    protected DeliveryDurationRepository $deliveryDurationRepository;
-
-    protected SaleTypeRepository $saleTypeRepository;
-
-    protected TagRepository $tagRepository;
-
-    protected CategoryRepository $categoryRepository;
-
-    protected ClassCategoryRepository $classCategoryRepository;
-
-    protected ClassNameRepository $classNameRepository;
-
-    protected ProductImageRepository $productImageRepository;
-
-    protected ProductStatusRepository $productStatusRepository;
-
-    protected ProductRepository $productRepository;
-
-    private readonly TaxRuleRepository $taxRuleRepository;
-
     protected BaseInfo $BaseInfo;
-
-    protected ValidatorInterface $validator;
     /**
      * @var array<int, mixed>
      */
@@ -96,41 +74,27 @@ class CsvImportController extends AbstractCsvImportController
     protected ?int $csvFileNo = 1;
     protected ?int $currentLineNo = 1;
 
-    private readonly \HTMLPurifier $purifier;
-
     /**
      * CsvImportController constructor.
      *
      * @throws \Exception
      */
     public function __construct(
-        DeliveryDurationRepository $deliveryDurationRepository,
-        SaleTypeRepository $saleTypeRepository,
-        TagRepository $tagRepository,
-        CategoryRepository $categoryRepository,
-        ClassNameRepository $classNameRepository,
-        ClassCategoryRepository $classCategoryRepository,
-        ProductImageRepository $productImageRepository,
-        ProductStatusRepository $productStatusRepository,
-        ProductRepository $productRepository,
-        TaxRuleRepository $taxRuleRepository,
+        protected DeliveryDurationRepository $deliveryDurationRepository,
+        protected SaleTypeRepository $saleTypeRepository,
+        protected TagRepository $tagRepository,
+        protected CategoryRepository $categoryRepository,
+        protected ClassNameRepository $classNameRepository,
+        protected ClassCategoryRepository $classCategoryRepository,
+        protected ProductImageRepository $productImageRepository,
+        protected ProductStatusRepository $productStatusRepository,
+        protected ProductRepository $productRepository,
+        private readonly TaxRuleRepository $taxRuleRepository,
         BaseInfoRepository $baseInfoRepository,
-        ValidatorInterface $validator,
-        \HTMLPurifier $purifier,
+        protected ValidatorInterface $validator,
+        private readonly \HTMLPurifier $purifier,
     ) {
-        $this->deliveryDurationRepository = $deliveryDurationRepository;
-        $this->saleTypeRepository = $saleTypeRepository;
-        $this->tagRepository = $tagRepository;
-        $this->categoryRepository = $categoryRepository;
-        $this->classNameRepository = $classNameRepository;
-        $this->classCategoryRepository = $classCategoryRepository;
-        $this->productImageRepository = $productImageRepository;
-        $this->productStatusRepository = $productStatusRepository;
-        $this->productRepository = $productRepository;
-        $this->taxRuleRepository = $taxRuleRepository;
         $this->BaseInfo = $baseInfoRepository->get();
-        $this->validator = $validator;
-        $this->purifier = $purifier;
     }
 
     /**
@@ -1127,6 +1091,7 @@ class CsvImportController extends AbstractCsvImportController
      * @return JsonResponse|array<mixed>
      *
      * @throws \Doctrine\DBAL\ConnectionException|\Doctrine\DBAL\Exception
+     * @throws \Exception
      */
     protected function renderWithError(FormInterface $form, array $headers, bool $rollback = true): JsonResponse|array
     {

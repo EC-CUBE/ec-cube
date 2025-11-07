@@ -19,24 +19,8 @@ use Psr\Log\LoggerInterface;
 
 class Logger extends AbstractLogger
 {
-    protected Context $context;
-
-    protected LoggerInterface $logger;
-
-    protected LoggerInterface $frontLogger;
-
-    protected LoggerInterface $adminLogger;
-
-    public function __construct(
-        Context $context,
-        LoggerInterface $logger,
-        LoggerInterface $frontLogger,
-        LoggerInterface $adminLogger,
-    ) {
-        $this->context = $context;
-        $this->logger = $logger;
-        $this->frontLogger = $frontLogger;
-        $this->adminLogger = $adminLogger;
+    public function __construct(protected Context $context, protected LoggerInterface $logger, protected LoggerInterface $frontLogger, protected LoggerInterface $adminLogger)
+    {
     }
 
     /**

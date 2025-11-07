@@ -43,31 +43,19 @@ class MypageController extends AbstractController
 {
     protected ProductRepository $productRepository;
 
-    protected CustomerFavoriteProductRepository $customerFavoriteProductRepository;
-
     protected BaseInfo $BaseInfo;
-
-    protected CartService $cartService;
-
-    protected OrderRepository $orderRepository;
-
-    protected PurchaseFlow $purchaseFlow;
 
     /**
      * MypageController constructor.
      */
     public function __construct(
-        OrderRepository $orderRepository,
-        CustomerFavoriteProductRepository $customerFavoriteProductRepository,
-        CartService $cartService,
+        protected OrderRepository $orderRepository,
+        protected CustomerFavoriteProductRepository $customerFavoriteProductRepository,
+        protected CartService $cartService,
         BaseInfoRepository $baseInfoRepository,
-        PurchaseFlow $purchaseFlow,
+        protected PurchaseFlow $purchaseFlow,
     ) {
-        $this->orderRepository = $orderRepository;
-        $this->customerFavoriteProductRepository = $customerFavoriteProductRepository;
         $this->BaseInfo = $baseInfoRepository->get();
-        $this->cartService = $cartService;
-        $this->purchaseFlow = $purchaseFlow;
     }
 
     /**

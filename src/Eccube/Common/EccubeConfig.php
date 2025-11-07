@@ -20,11 +20,8 @@ use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
  */
 class EccubeConfig implements \ArrayAccess
 {
-    protected ContainerBagInterface $container;
-
-    public function __construct(ContainerBagInterface $container)
+    public function __construct(protected ContainerBagInterface $container)
     {
-        $this->container = $container;
     }
 
     public function get(string $key): mixed

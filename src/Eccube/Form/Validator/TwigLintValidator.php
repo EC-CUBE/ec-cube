@@ -22,14 +22,11 @@ use Twig\Source;
 
 class TwigLintValidator extends ConstraintValidator
 {
-    protected Environment $twig;
-
     /**
      * TwigLintValidator constructor.
      */
-    public function __construct(Environment $twig)
+    public function __construct(protected Environment $twig)
     {
-        $this->twig = $twig;
     }
 
     /**

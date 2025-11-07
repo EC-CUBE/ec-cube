@@ -38,19 +38,11 @@ class SystemService implements EventSubscriberInterface
      */
     private string $maintenanceMode;
 
-    protected EntityManagerInterface $entityManager;
-
-    protected EccubeConfig $eccubeConfig;
-
     /**
      * SystemService constructor.
      */
-    public function __construct(
-        EntityManagerInterface $entityManager,
-        EccubeConfig $eccubeConfig,
-    ) {
-        $this->entityManager = $entityManager;
-        $this->eccubeConfig = $eccubeConfig;
+    public function __construct(protected EntityManagerInterface $entityManager, protected EccubeConfig $eccubeConfig)
+    {
     }
 
     /**

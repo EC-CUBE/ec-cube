@@ -26,16 +26,11 @@ use Symfony\Component\Finder\Finder;
 
 class SchemaService
 {
-    protected EntityManagerInterface $entityManager;
-    private readonly PluginContext $pluginContext;
-
     /**
      * SchemaService constructor.
      */
-    public function __construct(EntityManagerInterface $entityManager, PluginContext $pluginContext)
+    public function __construct(protected EntityManagerInterface $entityManager, private readonly PluginContext $pluginContext)
     {
-        $this->entityManager = $entityManager;
-        $this->pluginContext = $pluginContext;
     }
 
     /**

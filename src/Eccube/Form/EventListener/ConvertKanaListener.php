@@ -19,14 +19,8 @@ use Symfony\Component\Form\FormEvents;
 
 class ConvertKanaListener implements EventSubscriberInterface
 {
-    protected string $option;
-
-    protected string $encoding;
-
-    public function __construct(string $option = 'a', string $encoding = 'utf-8')
+    public function __construct(protected string $option = 'a', protected string $encoding = 'utf-8')
     {
-        $this->option = $option;
-        $this->encoding = $encoding;
     }
 
     #[\Override]

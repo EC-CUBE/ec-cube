@@ -63,11 +63,8 @@ class JoinCustomizerTest extends EccubeTestCase
 
 class JoinCustomizerTest_Customizer extends JoinCustomizer
 {
-    private $callback;
-
-    public function __construct($callback)
+    public function __construct(private $callback)
     {
-        $this->callback = $callback;
     }
 
     /**

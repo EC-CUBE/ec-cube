@@ -24,16 +24,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class PurchaseContext extends \SplObjectStorage
 {
-    /**
-     * @var UserInterface|Customer|null 会員情報
-     */
-    private readonly UserInterface|Customer|null $user;
-
-    /**
-     * @var ItemHolderInterface|null PurchaseFlow実行前の{@link ItemHolderInterface}
-     */
-    private readonly ?ItemHolderInterface $originHolder;
-
     private ?string $flowType = null;
 
     public const ORDER_FLOW = 'order';
@@ -42,10 +32,10 @@ class PurchaseContext extends \SplObjectStorage
 
     public const CART_FLOW = 'cart';
 
-    public function __construct(?ItemHolderInterface $originHolder = null, UserInterface|Customer|null $user = null)
-    {
-        $this->originHolder = $originHolder;
-        $this->user = $user;
+    public function __construct(
+        private readonly ?ItemHolderInterface $originHolder = null,
+        private readonly UserInterface|Customer|null $user = null,
+    ) {
     }
 
     /**

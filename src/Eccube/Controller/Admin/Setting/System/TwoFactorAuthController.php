@@ -25,23 +25,11 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class TwoFactorAuthController extends AbstractController
 {
-    protected TokenStorageInterface $tokenStorage;
-
-    protected MemberRepository $memberRepository;
-
-    protected TwoFactorAuthService $twoFactorAuthService;
-
     /**
      * TwoFactorAuthController constructor.
      */
-    public function __construct(
-        MemberRepository $memberRepository,
-        TokenStorageInterface $tokenStorage,
-        TwoFactorAuthService $twoFactorAuthService,
-    ) {
-        $this->memberRepository = $memberRepository;
-        $this->tokenStorage = $tokenStorage;
-        $this->twoFactorAuthService = $twoFactorAuthService;
+    public function __construct(protected MemberRepository $memberRepository, protected TokenStorageInterface $tokenStorage, protected TwoFactorAuthService $twoFactorAuthService)
+    {
     }
 
     /**
@@ -89,12 +77,9 @@ class TwoFactorAuthController extends AbstractController
         ];
     }
 
-    /**
-     * @return array<string, mixed>|RedirectResponse
-     */
     #[Route(path: '/%eccube_admin_route%/two_factor_auth/set', name: 'admin_two_factor_auth_set', methods: ['GET', 'POST'])]
     #[Template(template: '@admin/two_factor_auth_set.twig')]
-    public function set(Request $request): array|RedirectResponse
+    public function set(Request $request): RedirectResponse
     {
         /** @var \Eccube\Entity\Member $Member */
         $Member = $this->getUser();
@@ -105,12 +90,9 @@ class TwoFactorAuthController extends AbstractController
         return $this->createResponse($request);
     }
 
-    /**
-     * @return array<string, mixed>|RedirectResponse
-     */
     #[Route(path: '/%eccube_admin_route%/setting/system/two_factor_auth/edit', name: 'admin_setting_system_two_factor_auth_edit', methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Setting/System/two_factor_auth_edit.twig')]
-    public function edit(Request $request): array|RedirectResponse
+    public function edit(Request $request): RedirectResponse
     {
         /** @var \Eccube\Entity\Member $Member */
         $Member = $this->getUser();

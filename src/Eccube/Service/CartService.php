@@ -39,52 +39,16 @@ class CartService
      */
     protected ?array $carts = null;
 
-    protected Session $session;
-
-    protected EntityManagerInterface $entityManager;
-
     /**
      * @deprecated
      */
     protected ItemHolderInterface $cart;
 
-    protected ProductClassRepository $productClassRepository;
-
-    protected CartRepository $cartRepository;
-
-    protected CartItemComparator $cartItemComparator;
-
-    protected CartItemAllocator $cartItemAllocator;
-
-    protected OrderRepository $orderRepository;
-
-    protected TokenStorageInterface $tokenStorage;
-
-    protected AuthorizationCheckerInterface $authorizationChecker;
-
     /**
      * CartService constructor.
      */
-    public function __construct(
-        Session $session,
-        EntityManagerInterface $entityManager,
-        ProductClassRepository $productClassRepository,
-        CartRepository $cartRepository,
-        CartItemComparator $cartItemComparator,
-        CartItemAllocator $cartItemAllocator,
-        OrderRepository $orderRepository,
-        TokenStorageInterface $tokenStorage,
-        AuthorizationCheckerInterface $authorizationChecker,
-    ) {
-        $this->session = $session;
-        $this->entityManager = $entityManager;
-        $this->productClassRepository = $productClassRepository;
-        $this->cartRepository = $cartRepository;
-        $this->cartItemComparator = $cartItemComparator;
-        $this->cartItemAllocator = $cartItemAllocator;
-        $this->orderRepository = $orderRepository;
-        $this->tokenStorage = $tokenStorage;
-        $this->authorizationChecker = $authorizationChecker;
+    public function __construct(protected Session $session, protected EntityManagerInterface $entityManager, protected ProductClassRepository $productClassRepository, protected CartRepository $cartRepository, protected CartItemComparator $cartItemComparator, protected CartItemAllocator $cartItemAllocator, protected OrderRepository $orderRepository, protected TokenStorageInterface $tokenStorage, protected AuthorizationCheckerInterface $authorizationChecker)
+    {
     }
 
     /**

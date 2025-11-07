@@ -27,17 +27,11 @@ use Eccube\Service\PurchaseFlow\PurchaseProcessor;
  */
 class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcessor
 {
-    protected EntityManagerInterface $entityManager;
-
-    protected PointHelper $pointHelper;
-
     /**
      * PointDiffProcessor constructor.
      */
-    public function __construct(EntityManagerInterface $entityManager, PointHelper $pointHelper)
+    public function __construct(protected EntityManagerInterface $entityManager, protected PointHelper $pointHelper)
     {
-        $this->entityManager = $entityManager;
-        $this->pointHelper = $pointHelper;
     }
 
     /*

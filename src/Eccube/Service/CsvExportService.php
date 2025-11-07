@@ -47,11 +47,7 @@ class CsvExportService
 
     protected ?\Closure $convertEncodingCallBack = null;
 
-    protected ?EntityManagerInterface $entityManager = null;
-
     protected ?QueryBuilder $qb = null;
-
-    protected EccubeConfig $eccubeConfig;
 
     protected ?CsvType $CsvType = null;
 
@@ -60,47 +56,11 @@ class CsvExportService
      */
     protected ?array $Csvs = null;
 
-    protected CsvRepository $csvRepository;
-
-    protected CsvTypeRepository $csvTypeRepository;
-
-    protected OrderRepository $orderRepository;
-
-    protected ShippingRepository $shippingRepository;
-
-    protected CustomerRepository $customerRepository;
-
-    protected ProductRepository $productRepository;
-
-    protected FormFactoryInterface $formFactory;
-
-    protected PaginatorInterface $paginator;
-
     /**
      * CsvExportService constructor.
      */
-    public function __construct(
-        EntityManagerInterface $entityManager,
-        CsvRepository $csvRepository,
-        CsvTypeRepository $csvTypeRepository,
-        OrderRepository $orderRepository,
-        ShippingRepository $shippingRepository,
-        CustomerRepository $customerRepository,
-        ProductRepository $productRepository,
-        EccubeConfig $eccubeConfig,
-        FormFactoryInterface $formFactory,
-        PaginatorInterface $paginator,
-    ) {
-        $this->entityManager = $entityManager;
-        $this->csvRepository = $csvRepository;
-        $this->csvTypeRepository = $csvTypeRepository;
-        $this->orderRepository = $orderRepository;
-        $this->shippingRepository = $shippingRepository;
-        $this->customerRepository = $customerRepository;
-        $this->eccubeConfig = $eccubeConfig;
-        $this->productRepository = $productRepository;
-        $this->formFactory = $formFactory;
-        $this->paginator = $paginator;
+    public function __construct(protected ?EntityManagerInterface $entityManager, protected CsvRepository $csvRepository, protected CsvTypeRepository $csvTypeRepository, protected OrderRepository $orderRepository, protected ShippingRepository $shippingRepository, protected CustomerRepository $customerRepository, protected ProductRepository $productRepository, protected EccubeConfig $eccubeConfig, protected FormFactoryInterface $formFactory, protected PaginatorInterface $paginator)
+    {
     }
 
     public function setConfig(EccubeConfig $config): void

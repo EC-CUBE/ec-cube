@@ -37,14 +37,11 @@ use Symfony\Component\Routing\Attribute\Route;
  */
 class PaymentController extends AbstractController
 {
-    protected PaymentRepository $paymentRepository;
-
     /**
      * PaymentController constructor.
      */
-    public function __construct(PaymentRepository $paymentRepository)
+    public function __construct(protected PaymentRepository $paymentRepository)
     {
-        $this->paymentRepository = $paymentRepository;
     }
 
     /**

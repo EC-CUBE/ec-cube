@@ -36,19 +36,7 @@ use setasign\Fpdi\Tcpdf\Fpdi;
  */
 class OrderPdfService extends Fpdi
 {
-    protected OrderRepository $orderRepository;
-
-    protected ShippingRepository $shippingRepository;
-
     protected OrderPdfRepository $orderPdfRepository;
-
-    protected TaxRuleService $taxRuleService;
-
-    protected EccubeConfig $eccubeConfig;
-
-    protected EccubeExtension $eccubeExtension;
-
-    protected TaxExtension $taxExtension;
 
     // ====================================
     // 定数宣言
@@ -104,15 +92,9 @@ class OrderPdfService extends Fpdi
      *
      * @throws \Exception
      */
-    public function __construct(EccubeConfig $eccubeConfig, OrderRepository $orderRepository, ShippingRepository $shippingRepository, TaxRuleService $taxRuleService, BaseInfoRepository $baseInfoRepository, EccubeExtension $eccubeExtension, TaxExtension $taxExtension)
+    public function __construct(protected EccubeConfig $eccubeConfig, protected OrderRepository $orderRepository, protected ShippingRepository $shippingRepository, protected TaxRuleService $taxRuleService, BaseInfoRepository $baseInfoRepository, protected EccubeExtension $eccubeExtension, protected TaxExtension $taxExtension)
     {
-        $this->eccubeConfig = $eccubeConfig;
         $this->baseInfoRepository = $baseInfoRepository->get();
-        $this->orderRepository = $orderRepository;
-        $this->shippingRepository = $shippingRepository;
-        $this->taxRuleService = $taxRuleService;
-        $this->eccubeExtension = $eccubeExtension;
-        $this->taxExtension = $taxExtension;
 
         parent::__construct();
 

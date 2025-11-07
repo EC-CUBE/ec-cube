@@ -28,23 +28,8 @@ use Symfony\Component\Security\Http\SecurityEvents;
 
 class SecurityListener implements EventSubscriberInterface
 {
-    protected EntityManagerInterface $em;
-    protected CartService $cartService;
-
-    protected PurchaseFlow $purchaseFlow;
-
-    protected RequestStack $requestStack;
-
-    public function __construct(
-        EntityManagerInterface $em,
-        CartService $cartService,
-        PurchaseFlow $cartPurchaseFlow,
-        RequestStack $requestStack,
-    ) {
-        $this->em = $em;
-        $this->cartService = $cartService;
-        $this->purchaseFlow = $cartPurchaseFlow;
-        $this->requestStack = $requestStack;
+    public function __construct(protected EntityManagerInterface $em, protected CartService $cartService, protected PurchaseFlow $purchaseFlow, protected RequestStack $requestStack)
+    {
     }
 
     public function onInteractiveLogin(InteractiveLoginEvent $event): void

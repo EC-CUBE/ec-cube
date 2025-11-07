@@ -76,11 +76,8 @@ ob_start();
 
 class MockSessionHandler extends SessionHandler
 {
-    private $data;
-
-    public function __construct($data = '')
+    public function __construct(private $data = '')
     {
-        $this->data = $data;
     }
 
     public function getData()

@@ -33,15 +33,12 @@ class TaxRuleController extends AbstractController
 {
     protected BaseInfo $BaseInfo;
 
-    protected TaxRuleRepository $taxRuleRepository;
-
     /**
      * TaxRuleController constructor.
      */
-    public function __construct(BaseInfoRepository $baseInfoRepository, TaxRuleRepository $taxRuleRepository)
+    public function __construct(BaseInfoRepository $baseInfoRepository, protected TaxRuleRepository $taxRuleRepository)
     {
         $this->BaseInfo = $baseInfoRepository->get();
-        $this->taxRuleRepository = $taxRuleRepository;
     }
 
     /**

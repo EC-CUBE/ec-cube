@@ -65,56 +65,8 @@ class OrderHelper
      */
     public const SESSION_CART_DIVIDE_FLAG = 'eccube.front.cart.divide';
 
-    protected Session $session;
-
-    protected PrefRepository $prefRepository;
-
-    protected OrderRepository $orderRepository;
-
-    protected OrderItemTypeRepository $orderItemTypeRepository;
-
-    protected OrderStatusRepository $orderStatusRepository;
-
-    protected DeliveryRepository $deliveryRepository;
-
-    protected PaymentRepository $paymentRepository;
-
-    protected DeviceTypeRepository $deviceTypeRepository;
-
-    protected MobileDetect $mobileDetector;
-
-    protected EntityManagerInterface $entityManager;
-
-    protected AuthorizationCheckerInterface $authorizationChecker;
-
-    protected TokenStorageInterface $tokenStorage;
-
-    public function __construct(
-        EntityManagerInterface $entityManager,
-        OrderRepository $orderRepository,
-        OrderItemTypeRepository $orderItemTypeRepository,
-        OrderStatusRepository $orderStatusRepository,
-        DeliveryRepository $deliveryRepository,
-        PaymentRepository $paymentRepository,
-        DeviceTypeRepository $deviceTypeRepository,
-        PrefRepository $prefRepository,
-        MobileDetect $mobileDetector,
-        Session $session,
-        AuthorizationCheckerInterface $authorizationChecker,
-        TokenStorageInterface $tokenStorage,
-    ) {
-        $this->orderRepository = $orderRepository;
-        $this->orderStatusRepository = $orderStatusRepository;
-        $this->orderItemTypeRepository = $orderItemTypeRepository;
-        $this->deliveryRepository = $deliveryRepository;
-        $this->paymentRepository = $paymentRepository;
-        $this->deviceTypeRepository = $deviceTypeRepository;
-        $this->entityManager = $entityManager;
-        $this->prefRepository = $prefRepository;
-        $this->mobileDetector = $mobileDetector;
-        $this->session = $session;
-        $this->authorizationChecker = $authorizationChecker;
-        $this->tokenStorage = $tokenStorage;
+    public function __construct(protected EntityManagerInterface $entityManager, protected OrderRepository $orderRepository, protected OrderItemTypeRepository $orderItemTypeRepository, protected OrderStatusRepository $orderStatusRepository, protected DeliveryRepository $deliveryRepository, protected PaymentRepository $paymentRepository, protected DeviceTypeRepository $deviceTypeRepository, protected PrefRepository $prefRepository, protected MobileDetect $mobileDetector, protected Session $session, protected AuthorizationCheckerInterface $authorizationChecker, protected TokenStorageInterface $tokenStorage)
+    {
     }
 
     /**
@@ -125,7 +77,8 @@ class OrderHelper
     public function createPurchaseProcessingOrder(Cart $Cart, Customer $Customer): Order
     {
         $OrderStatus = $this->orderStatusRepository->find(OrderStatus::PROCESSING);
-        $Order = new Order($OrderStatus);
+        $Order = new Order();
+        $Order->setOrderStatus($OrderStatus);
 
         $preOrderId = $this->createPreOrderId();
         $Order->setPreOrderId($preOrderId);

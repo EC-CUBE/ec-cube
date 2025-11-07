@@ -29,19 +29,15 @@ use Symfony\Component\Process\Process;
 #[AsCommand(name: 'eccube:install', description: 'Install EC-CUBE')]
 class InstallerCommand extends Command
 {
-    protected EccubeConfig $eccubeConfig;
-
     protected SymfonyStyle $io;
 
     protected string $databaseUrl;
 
     private readonly object $envFileUpdater;
 
-    public function __construct(EccubeConfig $eccubeConfig)
+    public function __construct(protected EccubeConfig $eccubeConfig)
     {
         parent::__construct();
-
-        $this->eccubeConfig = $eccubeConfig;
 
         /* env更新処理無名クラス */
         $this->envFileUpdater = new class {

@@ -29,17 +29,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SearchProductType extends AbstractType
 {
-    protected CategoryRepository $categoryRepository;
-
-    protected EntityManagerInterface $entityManager;
-
     /**
      * SearchProductType constructor.
      */
-    public function __construct(CategoryRepository $categoryRepository, EntityManagerInterface $entityManager)
+    public function __construct(protected CategoryRepository $categoryRepository, protected EntityManagerInterface $entityManager)
     {
-        $this->categoryRepository = $categoryRepository;
-        $this->entityManager = $entityManager;
     }
 
     /**

@@ -28,23 +28,11 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 class PaymentChargePreprocessor implements ItemHolderPreprocessor
 {
-    protected OrderItemTypeRepository $orderItemTypeRepository;
-
-    protected TaxDisplayTypeRepository $taxDisplayTypeRepository;
-
-    protected TaxTypeRepository $taxTypeRepository;
-
     /**
      * PaymentChargePreprocessor constructor.
      */
-    public function __construct(
-        OrderItemTypeRepository $orderItemTypeRepository,
-        TaxDisplayTypeRepository $taxDisplayTypeRepository,
-        TaxTypeRepository $taxTypeRepository,
-    ) {
-        $this->orderItemTypeRepository = $orderItemTypeRepository;
-        $this->taxDisplayTypeRepository = $taxDisplayTypeRepository;
-        $this->taxTypeRepository = $taxTypeRepository;
+    public function __construct(protected OrderItemTypeRepository $orderItemTypeRepository, protected TaxDisplayTypeRepository $taxDisplayTypeRepository, protected TaxTypeRepository $taxTypeRepository)
+    {
     }
 
     /**

@@ -42,40 +42,24 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class ProductController extends AbstractController
 {
-    protected PurchaseFlow $purchaseFlow;
-
-    protected CustomerFavoriteProductRepository $customerFavoriteProductRepository;
-
-    protected CartService $cartService;
-
-    protected ProductRepository $productRepository;
-
     protected BaseInfo $BaseInfo;
-
-    protected AuthenticationUtils $helper;
-
-    protected ProductListMaxRepository $productListMaxRepository;
+    protected PurchaseFlow $purchaseFlow;
     private string $title = '';
 
     /**
      * ProductController constructor.
      */
     public function __construct(
-        PurchaseFlow $cartPurchaseFlow,
-        CustomerFavoriteProductRepository $customerFavoriteProductRepository,
-        CartService $cartService,
-        ProductRepository $productRepository,
+        protected PurchaseFlow $cartPurchaseFlow,
+        protected CustomerFavoriteProductRepository $customerFavoriteProductRepository,
+        protected CartService $cartService,
+        protected ProductRepository $productRepository,
         BaseInfoRepository $baseInfoRepository,
-        AuthenticationUtils $helper,
-        ProductListMaxRepository $productListMaxRepository,
+        protected AuthenticationUtils $helper,
+        protected ProductListMaxRepository $productListMaxRepository,
     ) {
         $this->purchaseFlow = $cartPurchaseFlow;
-        $this->customerFavoriteProductRepository = $customerFavoriteProductRepository;
-        $this->cartService = $cartService;
-        $this->productRepository = $productRepository;
         $this->BaseInfo = $baseInfoRepository->get();
-        $this->helper = $helper;
-        $this->productListMaxRepository = $productListMaxRepository;
     }
 
     /**

@@ -28,17 +28,14 @@ use Eccube\Entity\Master\DeviceType;
  */
 class BlockRepository extends AbstractRepository
 {
-    protected ?EccubeConfig $eccubeConfig = null;
-
     /**
      * BlockRepository constructor.
      */
     public function __construct(
         RegistryInterface $registry,
-        EccubeConfig $eccubeConfig,
+        protected ?EccubeConfig $eccubeConfig,
     ) {
         parent::__construct($registry, Block::class);
-        $this->eccubeConfig = $eccubeConfig;
     }
 
     public function newBlock(DeviceType $DeviceType): Block

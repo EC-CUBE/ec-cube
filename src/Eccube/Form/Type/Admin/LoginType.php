@@ -24,16 +24,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class LoginType extends AbstractType
 {
-    protected EccubeConfig $eccubeConfig;
-
-    protected Session $session;
-
-    public function __construct(
-        EccubeConfig $eccubeConfig,
-        Session $session,
-    ) {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->session = $session;
+    public function __construct(protected EccubeConfig $eccubeConfig, protected Session $session)
+    {
     }
 
     /**

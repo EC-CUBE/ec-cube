@@ -40,33 +40,13 @@ class LayoutController extends AbstractController
 {
     public const DUMMY_BLOCK_ID = 9999999999;
 
-    protected BlockRepository $blockRepository;
-    protected BlockPositionRepository $blockPositionRepository;
-
-    protected LayoutRepository $layoutRepository;
-
-    protected PageLayoutRepository $pageLayoutRepository;
-
-    protected PageRepository $pageRepository;
-
-    protected ProductRepository $productRepository;
-
-    protected DeviceTypeRepository $deviceTypeRepository;
-
     protected bool $isPreview = false;
 
     /**
      * LayoutController constructor.
      */
-    public function __construct(BlockRepository $blockRepository, BlockPositionRepository $blockPositionRepository, LayoutRepository $layoutRepository, PageLayoutRepository $pageLayoutRepository, PageRepository $pageRepository, ProductRepository $productRepository, DeviceTypeRepository $deviceTypeRepository)
+    public function __construct(protected BlockRepository $blockRepository, protected BlockPositionRepository $blockPositionRepository, protected LayoutRepository $layoutRepository, protected PageLayoutRepository $pageLayoutRepository, protected PageRepository $pageRepository, protected ProductRepository $productRepository, protected DeviceTypeRepository $deviceTypeRepository)
     {
-        $this->blockRepository = $blockRepository;
-        $this->blockPositionRepository = $blockPositionRepository;
-        $this->layoutRepository = $layoutRepository;
-        $this->pageLayoutRepository = $pageLayoutRepository;
-        $this->pageRepository = $pageRepository;
-        $this->productRepository = $productRepository;
-        $this->deviceTypeRepository = $deviceTypeRepository;
     }
 
     /**

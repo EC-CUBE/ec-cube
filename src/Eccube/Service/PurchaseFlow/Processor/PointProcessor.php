@@ -27,17 +27,11 @@ use Eccube\Service\PurchaseFlow\PurchaseProcessor;
  */
 class PointProcessor implements DiscountProcessor, PurchaseProcessor
 {
-    protected EntityManagerInterface $entityManager;
-
-    protected PointHelper $pointHelper;
-
     /**
      * PointProcessor constructor.
      */
-    public function __construct(EntityManagerInterface $entityManager, PointHelper $pointHelper)
+    public function __construct(protected EntityManagerInterface $entityManager, protected PointHelper $pointHelper)
     {
-        $this->entityManager = $entityManager;
-        $this->pointHelper = $pointHelper;
     }
 
     /*

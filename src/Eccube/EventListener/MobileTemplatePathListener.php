@@ -24,20 +24,8 @@ use Twig\Loader\FilesystemLoader;
 
 class MobileTemplatePathListener implements EventSubscriberInterface
 {
-    protected Context $context;
-
-    protected Environment $twig;
-
-    protected MobileDetect $detector;
-
-    protected EccubeConfig $eccubeConfig;
-
-    public function __construct(Context $context, Environment $twig, MobileDetect $detector, EccubeConfig $eccubeConfig)
+    public function __construct(protected Context $context, protected Environment $twig, protected MobileDetect $detector, protected EccubeConfig $eccubeConfig)
     {
-        $this->context = $context;
-        $this->twig = $twig;
-        $this->detector = $detector;
-        $this->eccubeConfig = $eccubeConfig;
     }
 
     public function onKernelRequest(RequestEvent $event): void

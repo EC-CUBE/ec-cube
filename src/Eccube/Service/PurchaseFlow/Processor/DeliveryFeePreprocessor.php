@@ -36,25 +36,16 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
 {
     protected BaseInfo $BaseInfo;
 
-    protected EntityManagerInterface $entityManager;
-
-    protected TaxRuleRepository $taxRuleRepository;
-
-    protected DeliveryFeeRepository $deliveryFeeRepository;
-
     /**
      * DeliveryFeePreprocessor constructor.
      */
     public function __construct(
         BaseInfoRepository $baseInfoRepository,
-        EntityManagerInterface $entityManager,
-        TaxRuleRepository $taxRuleRepository,
-        DeliveryFeeRepository $deliveryFeeRepository,
+        protected EntityManagerInterface $entityManager,
+        protected TaxRuleRepository $taxRuleRepository,
+        protected DeliveryFeeRepository $deliveryFeeRepository,
     ) {
         $this->BaseInfo = $baseInfoRepository->get();
-        $this->entityManager = $entityManager;
-        $this->taxRuleRepository = $taxRuleRepository;
-        $this->deliveryFeeRepository = $deliveryFeeRepository;
     }
 
     /**

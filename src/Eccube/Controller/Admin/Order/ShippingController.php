@@ -43,47 +43,11 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class ShippingController extends AbstractController
 {
-    protected OrderItemRepository $orderItemRepository;
-
-    protected CategoryRepository $categoryRepository;
-
-    protected DeliveryRepository $deliveryRepository;
-
-    protected TaxRuleService $taxRuleService;
-
-    protected ShippingRepository $shippingRepository;
-
-    protected SerializerInterface $serializer;
-
-    protected MailService $mailService;
-
-    protected OrderStateMachine $orderStateMachine;
-
-    protected PurchaseFlow $purchaseFlow;
-
     /**
      * EditController constructor.
      */
-    public function __construct(
-        MailService $mailService,
-        OrderItemRepository $orderItemRepository,
-        CategoryRepository $categoryRepository,
-        DeliveryRepository $deliveryRepository,
-        TaxRuleService $taxRuleService,
-        ShippingRepository $shippingRepository,
-        SerializerInterface $serializer,
-        OrderStateMachine $orderStateMachine,
-        PurchaseFlow $orderPurchaseFlow,
-    ) {
-        $this->mailService = $mailService;
-        $this->orderItemRepository = $orderItemRepository;
-        $this->categoryRepository = $categoryRepository;
-        $this->deliveryRepository = $deliveryRepository;
-        $this->taxRuleService = $taxRuleService;
-        $this->shippingRepository = $shippingRepository;
-        $this->serializer = $serializer;
-        $this->orderStateMachine = $orderStateMachine;
-        $this->purchaseFlow = $orderPurchaseFlow;
+    public function __construct(protected MailService $mailService, protected OrderItemRepository $orderItemRepository, protected CategoryRepository $categoryRepository, protected DeliveryRepository $deliveryRepository, protected TaxRuleService $taxRuleService, protected ShippingRepository $shippingRepository, protected SerializerInterface $serializer, protected OrderStateMachine $orderStateMachine, protected PurchaseFlow $orderPurchaseFlow)
+    {
     }
 
     /**
@@ -194,7 +158,7 @@ class ShippingController extends AbstractController
                 $TargetShipping->setOrder($Order);
             }
 
-            $flowResult = $this->purchaseFlow->validate($Order, $purchaseContext);
+            $flowResult = $this->orderPurchaseFlow->validate($Order, $purchaseContext);
 
             if ($flowResult->hasWarning()) {
                 foreach ($flowResult->getWarning() as $warning) {
@@ -212,8 +176,8 @@ class ShippingController extends AbstractController
                 log_info('出荷登録開始', [$Order->getId()]);
 
                 try {
-                    $this->purchaseFlow->prepare($Order, $purchaseContext);
-                    $this->purchaseFlow->commit($Order, $purchaseContext);
+                    $this->orderPurchaseFlow->prepare($Order, $purchaseContext);
+                    $this->orderPurchaseFlow->commit($Order, $purchaseContext);
                     $this->entityManager->persist($Order);
 
                     foreach ($TargetShippings as $TargetShipping) {

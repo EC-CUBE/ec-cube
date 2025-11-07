@@ -37,23 +37,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class SearchProductType extends AbstractType
 {
-    protected ProductStatusRepository $productStatusRepository;
-
-    protected CategoryRepository $categoryRepository;
-
-    protected TagRepository $tagRepository;
-
     /**
      * SearchProductType constructor.
      */
-    public function __construct(
-        ProductStatusRepository $productStatusRepository,
-        CategoryRepository $categoryRepository,
-        TagRepository $tagRepository,
-    ) {
-        $this->productStatusRepository = $productStatusRepository;
-        $this->categoryRepository = $categoryRepository;
-        $this->tagRepository = $tagRepository;
+    public function __construct(protected ProductStatusRepository $productStatusRepository, protected CategoryRepository $categoryRepository, protected TagRepository $tagRepository)
+    {
     }
 
     /**

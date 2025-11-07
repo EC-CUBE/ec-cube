@@ -33,19 +33,11 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class ClassNameController extends AbstractController
 {
-    protected ClassNameRepository $classNameRepository;
-
-    protected CsvExportService $csvExportService;
-
     /**
      * ClassNameController constructor.
      */
-    public function __construct(
-        ClassNameRepository $classNameRepository,
-        CsvExportService $csvExportService,
-    ) {
-        $this->classNameRepository = $classNameRepository;
-        $this->csvExportService = $csvExportService;
+    public function __construct(protected ClassNameRepository $classNameRepository, protected CsvExportService $csvExportService)
+    {
     }
 
     /**

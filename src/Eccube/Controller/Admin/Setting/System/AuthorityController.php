@@ -26,14 +26,11 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class AuthorityController extends AbstractController
 {
-    protected AuthorityRoleRepository $authorityRoleRepository;
-
     /**
      * AuthorityController constructor.
      */
-    public function __construct(AuthorityRoleRepository $authorityRoleRepository)
+    public function __construct(protected AuthorityRoleRepository $authorityRoleRepository)
     {
-        $this->authorityRoleRepository = $authorityRoleRepository;
     }
 
     /**

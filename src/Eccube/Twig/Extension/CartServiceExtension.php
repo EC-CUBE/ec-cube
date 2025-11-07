@@ -20,11 +20,8 @@ use Twig\TwigFunction;
 
 class CartServiceExtension extends AbstractExtension
 {
-    protected CartService $cartService;
-
-    public function __construct(CartService $cartService)
+    public function __construct(protected CartService $cartService)
     {
-        $this->cartService = $cartService;
     }
 
     #[\Override]

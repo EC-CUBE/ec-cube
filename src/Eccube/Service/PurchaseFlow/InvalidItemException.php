@@ -18,20 +18,11 @@ use Eccube\Entity\ProductClass;
 class InvalidItemException extends \Exception
 {
     /**
-     * @var array<int|string, string>|null
-     */
-    private readonly ?array $messageArgs;
-
-    private readonly bool $warning;
-
-    /**
      * @param array<int|string, string>|null $messageArgs
      */
-    public function __construct(?string $message = null, ?array $messageArgs = [], bool $warning = false)
+    public function __construct(?string $message = null, private readonly ?array $messageArgs = [], private readonly bool $warning = false)
     {
         parent::__construct($message);
-        $this->messageArgs = $messageArgs;
-        $this->warning = $warning;
     }
 
     /**

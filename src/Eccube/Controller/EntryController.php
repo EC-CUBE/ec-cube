@@ -38,47 +38,23 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class EntryController extends AbstractController
 {
-    protected CustomerStatusRepository $customerStatusRepository;
-
-    protected ValidatorInterface $recursiveValidator;
-
-    protected MailService $mailService;
-
     protected BaseInfo $BaseInfo;
-
-    protected CustomerRepository $customerRepository;
-
-    protected UserPasswordHasherInterface $passwordHasher;
-
-    protected TokenStorageInterface $tokenStorage;
-
-    protected CartService $cartService;
-
-    protected PageRepository $pageRepository;
 
     /**
      * EntryController constructor.
      */
     public function __construct(
-        CartService $cartService,
-        CustomerStatusRepository $customerStatusRepository,
-        MailService $mailService,
+        protected CartService $cartService,
+        protected CustomerStatusRepository $customerStatusRepository,
+        protected MailService $mailService,
         BaseInfoRepository $baseInfoRepository,
-        CustomerRepository $customerRepository,
-        UserPasswordHasherInterface $passwordHasher,
-        ValidatorInterface $validatorInterface,
-        TokenStorageInterface $tokenStorage,
-        PageRepository $pageRepository,
+        protected CustomerRepository $customerRepository,
+        protected UserPasswordHasherInterface $passwordHasher,
+        protected ValidatorInterface $recursiveValidator,
+        protected TokenStorageInterface $tokenStorage,
+        protected PageRepository $pageRepository,
     ) {
-        $this->customerStatusRepository = $customerStatusRepository;
-        $this->mailService = $mailService;
         $this->BaseInfo = $baseInfoRepository->get();
-        $this->customerRepository = $customerRepository;
-        $this->passwordHasher = $passwordHasher;
-        $this->recursiveValidator = $validatorInterface;
-        $this->tokenStorage = $tokenStorage;
-        $this->cartService = $cartService;
-        $this->pageRepository = $pageRepository;
     }
 
     /**

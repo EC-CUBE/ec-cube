@@ -51,53 +51,13 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class ShoppingController extends AbstractShoppingController
 {
-    protected CartService $cartService;
-
-    protected MailService $mailService;
-
-    protected OrderHelper $orderHelper;
-
-    protected OrderRepository $orderRepository;
-
-    protected ContainerInterface $serviceContainer;
-
-    protected BaseInfoRepository $baseInfoRepository;
-
-    protected TradeLawRepository $tradeLawRepository;
-
-    protected RateLimiterFactory $shoppingConfirmIpLimiter;
-
-    protected RateLimiterFactory $shoppingConfirmCustomerLimiter;
-
-    protected RateLimiterFactory $shoppingCheckoutIpLimiter;
-
-    protected RateLimiterFactory $shoppingCheckoutCustomerLimiter;
-
-    public function __construct(
-        CartService $cartService,
-        MailService $mailService,
-        OrderRepository $orderRepository,
-        OrderHelper $orderHelper,
-        ContainerInterface $serviceContainer,
-        TradeLawRepository $tradeLawRepository,
-        RateLimiterFactory $shoppingConfirmIpLimiter,
-        RateLimiterFactory $shoppingConfirmCustomerLimiter,
-        RateLimiterFactory $shoppingCheckoutIpLimiter,
-        RateLimiterFactory $shoppingCheckoutCustomerLimiter,
-        BaseInfoRepository $baseInfoRepository,
-    ) {
-        $this->cartService = $cartService;
-        $this->mailService = $mailService;
-        $this->orderRepository = $orderRepository;
-        $this->orderHelper = $orderHelper;
-        $this->serviceContainer = $serviceContainer;
-        $this->tradeLawRepository = $tradeLawRepository;
-        $this->shoppingConfirmIpLimiter = $shoppingConfirmIpLimiter;
-        $this->shoppingConfirmCustomerLimiter = $shoppingConfirmCustomerLimiter;
-        $this->shoppingCheckoutIpLimiter = $shoppingCheckoutIpLimiter;
-        $this->shoppingCheckoutCustomerLimiter = $shoppingCheckoutCustomerLimiter;
-        $this->baseInfoRepository = $baseInfoRepository;
+    public function __construct(protected CartService $cartService, protected MailService $mailService, protected OrderRepository $orderRepository, protected OrderHelper $orderHelper, protected ContainerInterface $serviceContainer, protected TradeLawRepository $tradeLawRepository, protected RateLimiterFactory $shoppingConfirmIpLimiter, protected RateLimiterFactory $shoppingConfirmCustomerLimiter, protected RateLimiterFactory $shoppingCheckoutIpLimiter, protected RateLimiterFactory $shoppingCheckoutCustomerLimiter, protected BaseInfoRepository $baseInfoRepository)
+    {
     }
+
+    //    public function __construct(protected CartService $cartService, protected MailService $mailService, protected OrderRepository $orderRepository, protected OrderHelper $orderHelper, protected ContainerInterface $serviceContainer, protected TradeLawRepository $tradeLawRepository, protected RateLimiterFactory $shoppingConfirmIpLimiter, protected RateLimiterFactory $shoppingConfirmCustomerLimiter, protected RateLimiterFactory $shoppingCheckoutIpLimiter, protected RateLimiterFactory $shoppingCheckoutCustomerLimiter, protected BaseInfoRepository $baseInfoRepository)
+    //    {
+    //    }
 
     /**
      * 注文手続き画面を表示する

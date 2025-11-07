@@ -27,27 +27,11 @@ use Eccube\Service\TaxRuleService;
 
 class TaxProcessor implements ItemHolderPreprocessor
 {
-    protected EntityManagerInterface $entityManager;
-
-    protected TaxRuleRepository $taxRuleRepository;
-
-    protected TaxRuleService $taxRuleService;
-
-    protected OrderHelper $orderHelper;
-
     /**
      * TaxProcessor constructor.
      */
-    public function __construct(
-        EntityManagerInterface $entityManager,
-        TaxRuleRepository $taxRuleRepository,
-        TaxRuleService $taxRuleService,
-        OrderHelper $orderHelper,
-    ) {
-        $this->entityManager = $entityManager;
-        $this->taxRuleRepository = $taxRuleRepository;
-        $this->taxRuleService = $taxRuleService;
-        $this->orderHelper = $orderHelper;
+    public function __construct(protected EntityManagerInterface $entityManager, protected TaxRuleRepository $taxRuleRepository, protected TaxRuleService $taxRuleService, protected OrderHelper $orderHelper)
+    {
     }
 
     /**

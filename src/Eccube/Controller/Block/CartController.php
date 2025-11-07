@@ -22,12 +22,8 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class CartController extends AbstractController
 {
-    protected CartService $cartService;
-
-    public function __construct(
-        CartService $cartService,
-    ) {
-        $this->cartService = $cartService;
+    public function __construct(protected CartService $cartService)
+    {
     }
 
     #[Route(path: '/block/cart', name: 'block_cart', methods: ['GET'])]

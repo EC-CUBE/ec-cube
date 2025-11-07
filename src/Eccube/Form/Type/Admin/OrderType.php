@@ -47,27 +47,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class OrderType extends AbstractType
 {
-    protected EntityManagerInterface $entityManager;
-
-    protected EccubeConfig $eccubeConfig;
-
-    protected OrderStateMachine $orderStateMachine;
-
-    protected OrderStatusRepository $orderStatusRepository;
-
     /**
      * OrderType constructor.
      */
-    public function __construct(
-        EntityManagerInterface $entityManager,
-        EccubeConfig $eccubeConfig,
-        OrderStateMachine $orderStateMachine,
-        OrderStatusRepository $orderStatusRepository,
-    ) {
-        $this->entityManager = $entityManager;
-        $this->eccubeConfig = $eccubeConfig;
-        $this->orderStateMachine = $orderStateMachine;
-        $this->orderStatusRepository = $orderStatusRepository;
+    public function __construct(protected EntityManagerInterface $entityManager, protected EccubeConfig $eccubeConfig, protected OrderStateMachine $orderStateMachine, protected OrderStatusRepository $orderStatusRepository)
+    {
     }
 
     /**

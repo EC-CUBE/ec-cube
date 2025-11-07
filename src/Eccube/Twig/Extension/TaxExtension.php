@@ -20,14 +20,11 @@ use Twig\TwigFunction;
 
 class TaxExtension extends AbstractExtension
 {
-    private readonly TaxRuleRepository $taxRuleRepository;
-
     /**
      * TaxExtension constructor.
      */
-    public function __construct(TaxRuleRepository $taxRuleRepository)
+    public function __construct(private readonly TaxRuleRepository $taxRuleRepository)
     {
-        $this->taxRuleRepository = $taxRuleRepository;
     }
 
     /**

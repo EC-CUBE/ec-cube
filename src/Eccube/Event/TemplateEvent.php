@@ -21,17 +21,6 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 class TemplateEvent extends Event
 {
-    private ?string $view;
-
-    private ?string $source;
-
-    /**
-     * @var array<mixed>
-     */
-    private array $parameters;
-
-    private ?Response $response;
-
     /**
      * @var array<mixed>
      */
@@ -47,12 +36,8 @@ class TemplateEvent extends Event
      *
      * @param array<mixed> $parameters
      */
-    public function __construct(?string $view, ?string $source, array $parameters = [], ?Response $response = null)
+    public function __construct(private ?string $view, private ?string $source, private array $parameters = [], private ?Response $response = null)
     {
-        $this->view = $view;
-        $this->source = $source;
-        $this->parameters = $parameters;
-        $this->response = $response;
     }
 
     public function getView(): ?string

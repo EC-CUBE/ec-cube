@@ -216,7 +216,13 @@ if (!class_exists(Product::class)) {
          */
         public function getClassCategories2AsFlip(string $class_category1): array
         {
-            return array_flip($this->getClassCategories2($class_category1));
+            $categories = $this->getClassCategories2($class_category1);
+            // null値を除外してからarray_flipを実行
+            $filteredCategories = array_filter($categories, function ($value) {
+                return $value !== null;
+            });
+
+            return array_flip($filteredCategories);
         }
 
         /**

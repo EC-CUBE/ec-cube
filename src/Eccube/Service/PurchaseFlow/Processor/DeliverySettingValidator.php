@@ -24,14 +24,11 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
  */
 class DeliverySettingValidator extends ItemValidator
 {
-    protected DeliveryRepository $deliveryRepository;
-
     /**
      * DeliverySettingValidator constructor.
      */
-    public function __construct(DeliveryRepository $deliveryRepository)
+    public function __construct(protected DeliveryRepository $deliveryRepository)
     {
-        $this->deliveryRepository = $deliveryRepository;
     }
 
     /**

@@ -24,11 +24,8 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class SearchProductController extends AbstractController
 {
-    protected RequestStack $requestStack;
-
-    public function __construct(RequestStack $requestStack,
-    ) {
-        $this->requestStack = $requestStack;
+    public function __construct(protected RequestStack $requestStack)
+    {
     }
 
     /**

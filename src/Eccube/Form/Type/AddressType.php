@@ -25,16 +25,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class AddressType extends AbstractType
 {
-    protected EccubeConfig $config;
-
     /**
      * {@inheritdoc}
      *
      * AddressType constructor.
      */
-    public function __construct(EccubeConfig $eccubeConfig)
+    public function __construct(protected EccubeConfig $config)
     {
-        $this->config = $eccubeConfig;
     }
 
     /**

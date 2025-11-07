@@ -24,14 +24,8 @@ use Eccube\Request\Context;
 #[AsDoctrineListener(event: Events::preUpdate)]
 class SaveEventSubscriber
 {
-    protected Context $requestContext;
-
-    protected EccubeConfig $eccubeConfig;
-
-    public function __construct(Context $requestContext, EccubeConfig $eccubeConfig)
+    public function __construct(protected Context $requestContext, protected EccubeConfig $eccubeConfig)
     {
-        $this->requestContext = $requestContext;
-        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**

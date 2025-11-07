@@ -27,17 +27,11 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
  */
 class StockReduceProcessor extends AbstractPurchaseProcessor
 {
-    protected ProductStockRepository $productStockRepository;
-
-    protected EntityManagerInterface $entityManager;
-
     /**
      * StockReduceProcessor constructor.
      */
-    public function __construct(ProductStockRepository $productStockRepository, EntityManagerInterface $entityManager)
+    public function __construct(protected ProductStockRepository $productStockRepository, protected EntityManagerInterface $entityManager)
     {
-        $this->productStockRepository = $productStockRepository;
-        $this->entityManager = $entityManager;
     }
 
     /**

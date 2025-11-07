@@ -40,19 +40,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class ProductType extends AbstractType
 {
-    protected CategoryRepository $categoryRepository;
-
-    protected EccubeConfig $eccubeConfig;
-
     /**
      * ProductType constructor.
      */
-    public function __construct(
-        CategoryRepository $categoryRepository,
-        EccubeConfig $eccubeConfig,
-    ) {
-        $this->categoryRepository = $categoryRepository;
-        $this->eccubeConfig = $eccubeConfig;
+    public function __construct(protected CategoryRepository $categoryRepository, protected EccubeConfig $eccubeConfig)
+    {
     }
 
     /**

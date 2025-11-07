@@ -19,11 +19,8 @@ use Symfony\Component\HttpFoundation\Exception\SessionNotFoundException;
 
 class SessionProcessor
 {
-    protected Session $session;
-
-    public function __construct(Session $session)
+    public function __construct(protected Session $session)
     {
-        $this->session = $session;
     }
 
     public function __invoke(LogRecord $record): LogRecord

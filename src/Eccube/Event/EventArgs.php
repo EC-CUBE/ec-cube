@@ -19,7 +19,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class EventArgs extends GenericEvent
 {
-    private ?Request $request = null;
     private ?Response $response = null;
 
     /**
@@ -27,10 +26,9 @@ class EventArgs extends GenericEvent
      *
      * @param array<mixed> $arguments
      */
-    public function __construct(array $arguments = [], ?Request $request = null)
+    public function __construct(array $arguments = [], private ?Request $request = null)
     {
         parent::__construct(null, $arguments);
-        $this->request = $request;
     }
 
     public function setRequest(Request $request): void

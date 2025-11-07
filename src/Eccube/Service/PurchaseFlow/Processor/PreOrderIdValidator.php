@@ -22,14 +22,11 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class PreOrderIdValidator implements PurchaseProcessor
 {
-    private readonly CartService $cartService;
-
     /**
      * PreOrderIdValidator constructor.
      */
-    public function __construct(CartService $cartService)
+    public function __construct(private readonly CartService $cartService)
     {
-        $this->cartService = $cartService;
     }
 
     /**

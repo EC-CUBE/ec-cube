@@ -41,32 +41,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CustomerController extends AbstractController
 {
-    protected CsvExportService $csvExportService;
-
-    protected MailService $mailService;
-
-    protected PrefRepository $prefRepository;
-
-    protected SexRepository $sexRepository;
-
-    protected PageMaxRepository $pageMaxRepository;
-
-    protected CustomerRepository $customerRepository;
-
-    public function __construct(
-        PageMaxRepository $pageMaxRepository,
-        CustomerRepository $customerRepository,
-        SexRepository $sexRepository,
-        PrefRepository $prefRepository,
-        MailService $mailService,
-        CsvExportService $csvExportService,
-    ) {
-        $this->pageMaxRepository = $pageMaxRepository;
-        $this->customerRepository = $customerRepository;
-        $this->sexRepository = $sexRepository;
-        $this->prefRepository = $prefRepository;
-        $this->mailService = $mailService;
-        $this->csvExportService = $csvExportService;
+    public function __construct(protected PageMaxRepository $pageMaxRepository, protected CustomerRepository $customerRepository, protected SexRepository $sexRepository, protected PrefRepository $prefRepository, protected MailService $mailService, protected CsvExportService $csvExportService)
+    {
     }
 
     /**

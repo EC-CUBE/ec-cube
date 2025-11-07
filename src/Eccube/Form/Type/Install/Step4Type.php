@@ -28,15 +28,11 @@ use Symfony\Component\Validator\Context\ExecutionContext;
 
 class Step4Type extends AbstractType
 {
-    protected RequestStack $requestStack;
-
     /**
      * Step4Type constructor.
      */
-    public function __construct(
-        RequestStack $requestStack,
-    ) {
-        $this->requestStack = $requestStack;
+    public function __construct(protected RequestStack $requestStack)
+    {
     }
 
     /**

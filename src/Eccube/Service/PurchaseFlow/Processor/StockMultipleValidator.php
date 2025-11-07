@@ -24,14 +24,11 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 class StockMultipleValidator extends ItemHolderValidator
 {
-    protected ProductClassRepository $productClassRepository;
-
     /**
      * StockProcessor constructor.
      */
-    public function __construct(ProductClassRepository $productClassRepository)
+    public function __construct(protected ProductClassRepository $productClassRepository)
     {
-        $this->productClassRepository = $productClassRepository;
     }
 
     /**

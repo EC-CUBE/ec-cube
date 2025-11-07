@@ -44,63 +44,11 @@ class TwigInitializeListener implements EventSubscriberInterface
      */
     protected bool $initialized = false;
 
-    protected Environment $twig;
-
-    protected BaseInfoRepository $baseInfoRepository;
-
-    protected DeviceTypeRepository $deviceTypeRepository;
-
-    protected PageRepository $pageRepository;
-
-    protected PageLayoutRepository $pageLayoutRepository;
-
-    protected BlockPositionRepository $blockPositionRepository;
-
-    protected Context $requestContext;
-
-    private readonly AuthorityRoleRepository $authorityRoleRepository;
-
-    private EccubeConfig $eccubeConfig;
-
-    private readonly MobileDetect $mobileDetector;
-
-    private readonly UrlGeneratorInterface $router;
-
-    private readonly LayoutRepository $layoutRepository;
-
-    protected SystemService $systemService;
-
     /**
      * TwigInitializeListener constructor.
      */
-    public function __construct(
-        Environment $twig,
-        BaseInfoRepository $baseInfoRepository,
-        PageRepository $pageRepository,
-        PageLayoutRepository $pageLayoutRepository,
-        BlockPositionRepository $blockPositionRepository,
-        DeviceTypeRepository $deviceTypeRepository,
-        AuthorityRoleRepository $authorityRoleRepository,
-        EccubeConfig $eccubeConfig,
-        Context $context,
-        MobileDetect $mobileDetector,
-        UrlGeneratorInterface $router,
-        LayoutRepository $layoutRepository,
-        SystemService $systemService,
-    ) {
-        $this->twig = $twig;
-        $this->baseInfoRepository = $baseInfoRepository;
-        $this->pageRepository = $pageRepository;
-        $this->pageLayoutRepository = $pageLayoutRepository;
-        $this->blockPositionRepository = $blockPositionRepository;
-        $this->deviceTypeRepository = $deviceTypeRepository;
-        $this->authorityRoleRepository = $authorityRoleRepository;
-        $this->eccubeConfig = $eccubeConfig;
-        $this->requestContext = $context;
-        $this->mobileDetector = $mobileDetector;
-        $this->router = $router;
-        $this->layoutRepository = $layoutRepository;
-        $this->systemService = $systemService;
+    public function __construct(protected Environment $twig, protected BaseInfoRepository $baseInfoRepository, protected PageRepository $pageRepository, protected PageLayoutRepository $pageLayoutRepository, protected BlockPositionRepository $blockPositionRepository, protected DeviceTypeRepository $deviceTypeRepository, private readonly AuthorityRoleRepository $authorityRoleRepository, private EccubeConfig $eccubeConfig, protected Context $requestContext, private readonly MobileDetect $mobileDetector, private readonly UrlGeneratorInterface $router, private readonly LayoutRepository $layoutRepository, protected SystemService $systemService)
+    {
     }
 
     /**

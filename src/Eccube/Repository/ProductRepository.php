@@ -37,10 +37,6 @@ use Eccube\Util\StringUtil;
  */
 class ProductRepository extends AbstractRepository
 {
-    protected Queries $queries;
-
-    protected ?EccubeConfig $eccubeConfig = null;
-
     public const COLUMNS = [
         'product_id' => 'p.id', 'name' => 'p.name', 'product_code' => 'pc.code', 'stock' => 'pc.stock', 'status' => 'p.Status', 'create_date' => 'p.create_date', 'update_date' => 'p.update_date',
     ];
@@ -50,12 +46,10 @@ class ProductRepository extends AbstractRepository
      */
     public function __construct(
         RegistryInterface $registry,
-        Queries $queries,
-        EccubeConfig $eccubeConfig,
+        protected Queries $queries,
+        protected ?EccubeConfig $eccubeConfig,
     ) {
         parent::__construct($registry, Product::class);
-        $this->queries = $queries;
-        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**

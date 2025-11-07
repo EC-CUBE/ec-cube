@@ -30,27 +30,11 @@ class TwoFactorAuthListener implements EventSubscriberInterface
      */
     public const ROUTE_EXCLUDE = ['admin_two_factor_auth', 'admin_two_factor_auth_set'];
 
-    protected EccubeConfig $eccubeConfig;
-
-    protected Context $requestContext;
-
-    protected UrlGeneratorInterface $router;
-
-    protected TwoFactorAuthService $twoFactorAuthService;
-
     /**
      * @param Context $requestContext,
      */
-    public function __construct(
-        EccubeConfig $eccubeConfig,
-        Context $requestContext,
-        UrlGeneratorInterface $router,
-        TwoFactorAuthService $twoFactorAuthService,
-    ) {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->requestContext = $requestContext;
-        $this->router = $router;
-        $this->twoFactorAuthService = $twoFactorAuthService;
+    public function __construct(protected EccubeConfig $eccubeConfig, protected Context $requestContext, protected UrlGeneratorInterface $router, protected TwoFactorAuthService $twoFactorAuthService)
+    {
     }
 
     public function onKernelController(ControllerArgumentsEvent $event): void

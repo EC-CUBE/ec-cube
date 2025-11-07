@@ -62,51 +62,24 @@ use Symfony\Component\Routing\RouterInterface;
 
 class ProductController extends AbstractController
 {
-    protected CsvExportService $csvExportService;
-
-    protected ProductClassRepository $productClassRepository;
-
-    protected ProductImageRepository $productImageRepository;
-
-    protected TaxRuleRepository $taxRuleRepository;
-
-    protected CategoryRepository $categoryRepository;
-
-    protected ProductRepository $productRepository;
-
     protected BaseInfo $BaseInfo;
-
-    protected PageMaxRepository $pageMaxRepository;
-
-    protected ProductStatusRepository $productStatusRepository;
-
-    protected TagRepository $tagRepository;
 
     /**
      * ProductController constructor.
      */
     public function __construct(
-        CsvExportService $csvExportService,
-        ProductClassRepository $productClassRepository,
-        ProductImageRepository $productImageRepository,
-        TaxRuleRepository $taxRuleRepository,
-        CategoryRepository $categoryRepository,
-        ProductRepository $productRepository,
+        protected CsvExportService $csvExportService,
+        protected ProductClassRepository $productClassRepository,
+        protected ProductImageRepository $productImageRepository,
+        protected TaxRuleRepository $taxRuleRepository,
+        protected CategoryRepository $categoryRepository,
+        protected ProductRepository $productRepository,
         BaseInfoRepository $baseInfoRepository,
-        PageMaxRepository $pageMaxRepository,
-        ProductStatusRepository $productStatusRepository,
-        TagRepository $tagRepository,
+        protected PageMaxRepository $pageMaxRepository,
+        protected ProductStatusRepository $productStatusRepository,
+        protected TagRepository $tagRepository,
     ) {
-        $this->csvExportService = $csvExportService;
-        $this->productClassRepository = $productClassRepository;
-        $this->productImageRepository = $productImageRepository;
-        $this->taxRuleRepository = $taxRuleRepository;
-        $this->categoryRepository = $categoryRepository;
-        $this->productRepository = $productRepository;
         $this->BaseInfo = $baseInfoRepository->get();
-        $this->pageMaxRepository = $pageMaxRepository;
-        $this->productStatusRepository = $productStatusRepository;
-        $this->tagRepository = $tagRepository;
     }
 
     /**

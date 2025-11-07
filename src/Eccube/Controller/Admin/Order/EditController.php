@@ -58,73 +58,15 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class EditController extends AbstractController
 {
-    protected TaxRuleService $taxRuleService;
-
-    protected DeviceTypeRepository $deviceTypeRepository;
-
-    protected ProductRepository $productRepository;
-
-    protected CategoryRepository $categoryRepository;
-
-    protected CustomerRepository $customerRepository;
-
-    protected SerializerInterface $serializer;
-
-    protected DeliveryRepository $deliveryRepository;
-
-    protected PurchaseFlow $purchaseFlow;
-
-    protected OrderRepository $orderRepository;
-
-    protected OrderNoProcessor $orderNoProcessor;
-
-    protected OrderItemTypeRepository $orderItemTypeRepository;
-
-    protected OrderStateMachine $orderStateMachine;
-
-    protected OrderStatusRepository $orderStatusRepository;
-
-    private readonly OrderHelper $orderHelper;
-
     /**
      * EditController constructor.
      */
-    public function __construct(
-        TaxRuleService $taxRuleService,
-        DeviceTypeRepository $deviceTypeRepository,
-        ProductRepository $productRepository,
-        CategoryRepository $categoryRepository,
-        CustomerRepository $customerRepository,
-        SerializerInterface $serializer,
-        DeliveryRepository $deliveryRepository,
-        PurchaseFlow $orderPurchaseFlow,
-        OrderRepository $orderRepository,
-        OrderNoProcessor $orderNoProcessor,
-        OrderItemTypeRepository $orderItemTypeRepository,
-        OrderStatusRepository $orderStatusRepository,
-        OrderStateMachine $orderStateMachine,
-        OrderHelper $orderHelper,
-    ) {
-        $this->taxRuleService = $taxRuleService;
-        $this->deviceTypeRepository = $deviceTypeRepository;
-        $this->productRepository = $productRepository;
-        $this->categoryRepository = $categoryRepository;
-        $this->customerRepository = $customerRepository;
-        $this->serializer = $serializer;
-        $this->deliveryRepository = $deliveryRepository;
-        $this->purchaseFlow = $orderPurchaseFlow;
-        $this->orderRepository = $orderRepository;
-        $this->orderNoProcessor = $orderNoProcessor;
-        $this->orderItemTypeRepository = $orderItemTypeRepository;
-        $this->orderStatusRepository = $orderStatusRepository;
-        $this->orderStateMachine = $orderStateMachine;
-        $this->orderHelper = $orderHelper;
+    public function __construct(protected TaxRuleService $taxRuleService, protected DeviceTypeRepository $deviceTypeRepository, protected ProductRepository $productRepository, protected CategoryRepository $categoryRepository, protected CustomerRepository $customerRepository, protected SerializerInterface $serializer, protected DeliveryRepository $deliveryRepository, protected PurchaseFlow $orderPurchaseFlow, protected OrderRepository $orderRepository, protected OrderNoProcessor $orderNoProcessor, protected OrderItemTypeRepository $orderItemTypeRepository, protected OrderStatusRepository $orderStatusRepository, protected OrderStateMachine $orderStateMachine, private readonly OrderHelper $orderHelper)
+    {
     }
 
     /**
      * 受注登録/編集画面.
-     *
-     * @param string|null $id
      *
      * @return RedirectResponse|array<string, mixed>
      *
@@ -133,7 +75,7 @@ class EditController extends AbstractController
     #[Route(path: '/%eccube_admin_route%/order/new', name: 'admin_order_new', methods: ['GET', 'POST'])]
     #[Route(path: '/%eccube_admin_route%/order/{id}/edit', name: 'admin_order_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Order/edit.twig')]
-    public function index(Request $request, RouterInterface $router, $id = null): RedirectResponse|array
+    public function index(Request $request, RouterInterface $router, ?int $id = null): RedirectResponse|array
     {
         if (null === $id) {
             // 空のエンティティを作成.
@@ -191,7 +133,7 @@ class EditController extends AbstractController
             );
             $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_EDIT_INDEX_PROGRESS);
 
-            $flowResult = $this->purchaseFlow->validate($TargetOrder, $purchaseContext);
+            $flowResult = $this->orderPurchaseFlow->validate($TargetOrder, $purchaseContext);
 
             if ($flowResult->hasWarning()) {
                 foreach ($flowResult->getWarning() as $warning) {
@@ -212,8 +154,8 @@ class EditController extends AbstractController
 
                     if (!$flowResult->hasError() && $form->isValid()) {
                         try {
-                            $this->purchaseFlow->prepare($TargetOrder, $purchaseContext);
-                            $this->purchaseFlow->commit($TargetOrder, $purchaseContext);
+                            $this->orderPurchaseFlow->prepare($TargetOrder, $purchaseContext);
+                            $this->orderPurchaseFlow->commit($TargetOrder, $purchaseContext);
                         } catch (PurchaseException $e) {
                             $this->addError($e->getMessage(), 'admin');
                             break;
@@ -378,8 +320,6 @@ class EditController extends AbstractController
     /**
      * 顧客情報を検索する.
      *
-     * @param int|null $page_no
-     *
      * @return array<string, mixed>
      *
      * @throws BadRequestHttpException
@@ -387,7 +327,7 @@ class EditController extends AbstractController
     #[Route(path: '/%eccube_admin_route%/order/search/customer/html', name: 'admin_order_search_customer_html', methods: ['GET', 'POST'])]
     #[Route(path: '/%eccube_admin_route%/order/search/customer/html/page/{page_no}', name: 'admin_order_search_customer_html_page', requirements: ['page_no' => '\d+'], methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Order/search_customer.twig')]
-    public function searchCustomerHtml(Request $request, PaginatorInterface $paginator, $page_no = null): array
+    public function searchCustomerHtml(Request $request, PaginatorInterface $paginator, ?int $page_no = null): array
     {
         if ($request->isXmlHttpRequest() && $this->isTokenValid()) {
             log_debug('search customer start.');
@@ -539,8 +479,6 @@ class EditController extends AbstractController
 
     /**
      * @return array<string, mixed>
-     *
-     * @throws \Exception
      */
     #[Route(
         path: '/%eccube_admin_route%/order/search/product',

@@ -28,23 +28,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SecurityType extends AbstractType
 {
-    protected EccubeConfig $eccubeConfig;
-
-    protected ValidatorInterface $validator;
-
-    protected RequestStack $requestStack;
-
-    protected RouterInterface $router;
-
     /**
      * SecurityType constructor.
      */
-    public function __construct(EccubeConfig $eccubeConfig, ValidatorInterface $validator, RequestStack $requestStack, RouterInterface $router)
+    public function __construct(protected EccubeConfig $eccubeConfig, protected ValidatorInterface $validator, protected RequestStack $requestStack, protected RouterInterface $router)
     {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->validator = $validator;
-        $this->requestStack = $requestStack;
-        $this->router = $router;
     }
 
     /**

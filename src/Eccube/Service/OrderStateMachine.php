@@ -26,19 +26,12 @@ use Symfony\Component\Workflow\WorkflowInterface;
 
 class OrderStateMachine implements EventSubscriberInterface
 {
-    private readonly WorkflowInterface $machine;
-
-    private readonly OrderStatusRepository $orderStatusRepository;
-
-    private readonly PointProcessor $pointProcessor;
-    private readonly StockReduceProcessor $stockReduceProcessor;
-
-    public function __construct(WorkflowInterface $_orderStateMachine, OrderStatusRepository $orderStatusRepository, PointProcessor $pointProcessor, StockReduceProcessor $stockReduceProcessor)
-    {
-        $this->machine = $_orderStateMachine;
-        $this->orderStatusRepository = $orderStatusRepository;
-        $this->pointProcessor = $pointProcessor;
-        $this->stockReduceProcessor = $stockReduceProcessor;
+    public function __construct(
+        private readonly WorkflowInterface $_orderStateMachine,
+        private readonly OrderStatusRepository $orderStatusRepository,
+        private readonly PointProcessor $pointProcessor,
+        private readonly StockReduceProcessor $stockReduceProcessor,
+    ) {
     }
 
     /**
@@ -52,7 +45,7 @@ class OrderStateMachine implements EventSubscriberInterface
         $context = $this->newContext($Order);
         $transition = $this->getTransition($context, $OrderStatus);
         if ($transition) {
-            $this->machine->apply($context, $transition->getName());
+            $this->_orderStateMachine->apply($context, $transition->getName());
         } else {
             throw new \InvalidArgumentException();
         }
@@ -68,12 +61,17 @@ class OrderStateMachine implements EventSubscriberInterface
      */
     public function can(Order $Order, OrderStatus $OrderStatus): bool
     {
+        // OrderStatusが設定されていない場合は遷移不可
+        if (!$Order->getOrderStatus()) {
+            return false;
+        }
+
         return !is_null($this->getTransition($this->newContext($Order), $OrderStatus));
     }
 
     private function getTransition(OrderStateMachineContext $context, OrderStatus $OrderStatus): ?Transition
     {
-        $transitions = $this->machine->getEnabledTransitions($context);
+        $transitions = $this->_orderStateMachine->getEnabledTransitions($context);
         foreach ($transitions as $t) {
             if (in_array($OrderStatus->getId(), $t->getTos())) {
                 return $t;
@@ -198,23 +196,20 @@ class OrderStateMachine implements EventSubscriberInterface
 
     private function newContext(Order $Order): OrderStateMachineContext
     {
-        return new OrderStateMachineContext((string) $Order->getOrderStatus()->getId(), $Order);
+        $orderStatus = $Order->getOrderStatus();
+        $statusId = $orderStatus ? (string) $orderStatus->getId() : '';
+
+        return new OrderStateMachineContext($statusId, $Order);
     }
 }
 
 class OrderStateMachineContext
 {
-    private string $status;
-
-    private readonly Order $Order;
-
     /**
      * OrderStateMachineContext constructor.
      */
-    public function __construct(string $status, Order $Order)
+    public function __construct(private string $status, private readonly Order $Order)
     {
-        $this->status = $status;
-        $this->Order = $Order;
     }
 
     public function getStatus(): string

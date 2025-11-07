@@ -28,14 +28,11 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
  */
 class PaymentValidator extends ItemHolderPostValidator
 {
-    protected DeliveryRepository $deliveryRepository;
-
     /**
      * PaymentProcessor constructor.
      */
-    public function __construct(DeliveryRepository $deliveryRepository)
+    public function __construct(protected DeliveryRepository $deliveryRepository)
     {
-        $this->deliveryRepository = $deliveryRepository;
     }
 
     /**

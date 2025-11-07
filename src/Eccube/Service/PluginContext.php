@@ -30,11 +30,8 @@ class PluginContext
      */
     private array $composerJson;
 
-    private readonly EccubeConfig $eccubeConfig;
-
-    public function __construct(EccubeConfig $eccubeConfig)
+    public function __construct(private readonly EccubeConfig $eccubeConfig)
     {
-        $this->eccubeConfig = $eccubeConfig;
     }
 
     public function isInstall(): bool

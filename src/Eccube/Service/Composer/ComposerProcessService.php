@@ -28,24 +28,17 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ComposerProcessService implements ComposerServiceInterface
 {
     /**
-     * @var EccubeConfig config parameter
-     */
-    protected EccubeConfig $eccubeConfig;
-
-    protected EntityManagerInterface $entityManager;
-
-    private readonly ComposerApiService $composerApiService;
-    private readonly BaseInfoRepository $baseInfoRepository;
-
-    /**
      * ComposerProcessService constructor.
      */
-    public function __construct(EccubeConfig $eccubeConfig, EntityManagerInterface $entityManager, ComposerApiService $composerApiService, BaseInfoRepository $baseInfoRepository)
-    {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->entityManager = $entityManager;
-        $this->composerApiService = $composerApiService;
-        $this->baseInfoRepository = $baseInfoRepository;
+    public function __construct(
+        /**
+         * @var EccubeConfig config parameter
+         */
+        protected EccubeConfig $eccubeConfig,
+        protected EntityManagerInterface $entityManager,
+        private readonly ComposerApiService $composerApiService,
+        private readonly BaseInfoRepository $baseInfoRepository,
+    ) {
     }
 
     #[\Override]

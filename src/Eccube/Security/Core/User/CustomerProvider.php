@@ -29,14 +29,8 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
  */
 class CustomerProvider implements UserProviderInterface, PasswordUpgraderInterface
 {
-    protected CustomerRepository $customerRepository;
-
-    private readonly EntityManagerInterface $entityManager;
-
-    public function __construct(CustomerRepository $customerRepository, EntityManagerInterface $entityManager)
+    public function __construct(protected CustomerRepository $customerRepository, private readonly EntityManagerInterface $entityManager)
     {
-        $this->customerRepository = $customerRepository;
-        $this->entityManager = $entityManager;
     }
 
     /**

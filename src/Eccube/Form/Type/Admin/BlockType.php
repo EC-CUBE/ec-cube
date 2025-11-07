@@ -31,19 +31,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class BlockType extends AbstractType
 {
-    protected EntityManagerInterface $entityManager;
-
-    protected EccubeConfig $eccubeConfig;
-
     /**
      * BlockType constructor.
      *
      * @param $entityManager
      */
-    public function __construct(EntityManagerInterface $entityManager, EccubeConfig $eccubeConfig)
+    public function __construct(protected EntityManagerInterface $entityManager, protected EccubeConfig $eccubeConfig)
     {
-        $this->entityManager = $entityManager;
-        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**

@@ -19,11 +19,8 @@ use Twig\TwigFunction;
 
 class RepositoryExtension extends AbstractExtension
 {
-    protected EntityManagerInterface $em;
-
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(protected EntityManagerInterface $em)
     {
-        $this->em = $em;
     }
 
     #[\Override]

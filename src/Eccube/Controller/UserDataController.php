@@ -25,19 +25,11 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class UserDataController extends AbstractController
 {
-    protected PageRepository $pageRepository;
-
-    protected DeviceTypeRepository $deviceTypeRepository;
-
     /**
      * UserDataController constructor.
      */
-    public function __construct(
-        PageRepository $pageRepository,
-        DeviceTypeRepository $deviceTypeRepository,
-    ) {
-        $this->pageRepository = $pageRepository;
-        $this->deviceTypeRepository = $deviceTypeRepository;
+    public function __construct(protected PageRepository $pageRepository, protected DeviceTypeRepository $deviceTypeRepository)
+    {
     }
 
     /**

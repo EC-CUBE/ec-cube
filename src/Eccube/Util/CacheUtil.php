@@ -34,16 +34,11 @@ class CacheUtil implements EventSubscriberInterface
     public const DOCTRINE_APP_CACHE_KEY = 'doctrine.app_cache_pool';
     private mixed $clearCacheAfterResponse = false;
 
-    protected KernelInterface $kernel;
-    private readonly ContainerInterface $container;
-
     /**
      * CacheUtil constructor.
      */
-    public function __construct(KernelInterface $kernel, ContainerInterface $container)
+    public function __construct(protected KernelInterface $kernel, private readonly ContainerInterface $container)
     {
-        $this->kernel = $kernel;
-        $this->container = $container;
     }
 
     /**

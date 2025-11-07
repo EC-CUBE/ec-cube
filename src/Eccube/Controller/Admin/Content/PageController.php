@@ -34,23 +34,11 @@ use Twig\Environment;
 
 class PageController extends AbstractController
 {
-    protected PageRepository $pageRepository;
-
-    protected PageLayoutRepository $pageLayoutRepository;
-
-    protected DeviceTypeRepository $deviceTypeRepository;
-
     /**
      * PageController constructor.
      */
-    public function __construct(
-        PageRepository $pageRepository,
-        PageLayoutRepository $pageLayoutRepository,
-        DeviceTypeRepository $deviceTypeRepository,
-    ) {
-        $this->pageRepository = $pageRepository;
-        $this->pageLayoutRepository = $pageLayoutRepository;
-        $this->deviceTypeRepository = $deviceTypeRepository;
+    public function __construct(protected PageRepository $pageRepository, protected PageLayoutRepository $pageLayoutRepository, protected DeviceTypeRepository $deviceTypeRepository)
+    {
     }
 
     /**
