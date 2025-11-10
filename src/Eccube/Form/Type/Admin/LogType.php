@@ -44,9 +44,7 @@ class LogType extends AbstractType
         $finder = new Finder();
         $finder->name('*.log')
             ->depth('== 0')
-            ->sort(function (\SplFileInfo $a, \SplFileInfo $b) {
-                return strcmp((string) $b->getMTime(), (string) $a->getMTime());
-            });
+            ->sort(fn (\SplFileInfo $a, \SplFileInfo $b) => strcmp((string) $b->getMTime(), (string) $a->getMTime()));
         $dirs = $this->kernel->getLogDir().DIRECTORY_SEPARATOR.$this->kernel->getEnvironment();
 
         // ログディレクトリが存在しない場合は作成（Monolog StreamHandlerと同様の実装）

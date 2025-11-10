@@ -31,10 +31,8 @@ class CategoryType extends AbstractType
             'class' => Category::class,
             'choice_label' => 'NameWithLevel',
             // なぜかDESC
-            'query_builder' => function (EntityRepository $er) {
-                return $er->createQueryBuilder('c')
-                    ->orderBy('c.sort_no', 'DESC');
-            },
+            'query_builder' => fn (EntityRepository $er) => $er->createQueryBuilder('c')
+                ->orderBy('c.sort_no', 'DESC'),
         ]);
     }
 

@@ -70,8 +70,6 @@ class PaymentChargeProcessorTest extends EccubeTestCase
 
     private function getChargesItems(Order $Order)
     {
-        return array_filter($Order->getOrderItems()->toArray(), function ($OrderItem) {
-            return $OrderItem->isCharge();
-        });
+        return array_filter($Order->getOrderItems()->toArray(), fn ($OrderItem) => $OrderItem->isCharge());
     }
 }

@@ -278,9 +278,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
             ['form' => ['file' => [$uploadFile]]]
         );
 
-        $messages = $crawler->filter('p.errormsg')->each(function (Crawler $node) {
-            return $node->text();
-        });
+        $messages = $crawler->filter('p.errormsg')->each(fn (Crawler $node) => $node->text());
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
@@ -322,9 +320,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
             ['form' => ['file' => [$quotefile]]]
         );
 
-        $messages = $crawler->filter('p.errormsg')->each(function (Crawler $node) {
-            return $node->text();
-        });
+        $messages = $crawler->filter('p.errormsg')->each(fn (Crawler $node) => $node->text());
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         $this->assertContains('使用できない文字が含まれています。', $messages);

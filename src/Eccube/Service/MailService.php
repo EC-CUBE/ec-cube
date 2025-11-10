@@ -691,9 +691,7 @@ class MailService
     {
         /** @var OrderItem[] $OrderItems */
         $OrderItems = $Shipping->getOrderItems()->toArray();
-        $ShippingItems = array_filter($OrderItems, function (OrderItem $OrderItem) use ($Order) {
-            return $OrderItem->getOrderId() === $Order->getId();
-        });
+        $ShippingItems = array_filter($OrderItems, fn (OrderItem $OrderItem) => $OrderItem->getOrderId() === $Order->getId());
 
         if (is_null($templateName)) {
             /** @var MailTemplate $MailTemplate */

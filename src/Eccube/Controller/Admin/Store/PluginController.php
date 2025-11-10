@@ -249,9 +249,7 @@ class PluginController extends AbstractController
                     return $DependPlugin->isEnabled() == false;
                 });
                 if (!empty($requires)) {
-                    $names = array_map(function ($req) {
-                        return "「{$req['description']}」";
-                    }, $requires);
+                    $names = array_map(fn ($req) => "「{$req['description']}」", $requires);
                     $message = trans('%depend_name%を先に有効化してください。', ['%name%' => $Plugin->getName(), '%depend_name%' => implode(', ', $names)]);
 
                     if ($request->isXmlHttpRequest()) {

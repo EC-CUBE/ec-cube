@@ -550,9 +550,7 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
         $this->entityManager->flush();
 
         // Paymentの検索リストを作成
-        $Payments = array_filter($Payments, function ($Payment) use ($searchPaymentNos) {
-            return in_array($Payment->getId(), $searchPaymentNos);
-        });
+        $Payments = array_filter($Payments, fn ($Payment) => in_array($Payment->getId(), $searchPaymentNos));
 
         // 検索
         $this->searchData = [

@@ -1041,9 +1041,7 @@ class EA07BasicinfoCest
 
         $I->expect('納品書を出力します');
         $findOrders = Fixtures::get('findOrders'); // Closure
-        $TargetOrders = array_filter($findOrders(), function ($Order) {
-            return !in_array($Order->getOrderStatus()->getId(), [OrderStatus::PROCESSING, OrderStatus::PENDING]);
-        });
+        $TargetOrders = array_filter($findOrders(), fn ($Order) => !in_array($Order->getOrderStatus()->getId(), [OrderStatus::PROCESSING, OrderStatus::PENDING]));
         $OrderListPage = OrderManagePage::go($I)->検索();
         $I->waitForText('検索結果：'.count($TargetOrders).'件が該当しました', 10, OrderManagePage::$検索結果_メッセージ);
 

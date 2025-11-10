@@ -1124,9 +1124,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->flush();
 
         $data = $this->createFormData();
-        $data['delete_images'] = $Product1->getProductImage()->map(static function (ProductImage $ProductImage) {
-            return $ProductImage->getFileName();
-        })->toArray();
+        $data['delete_images'] = $Product1->getProductImage()->map(static fn (ProductImage $ProductImage) => $ProductImage->getFileName())->toArray();
         $this->client->request(
             'POST',
             $this->generateUrl('admin_product_product_edit', ['id' => $Product1->getId()]),

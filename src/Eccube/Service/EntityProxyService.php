@@ -162,13 +162,12 @@ class EntityProxyService
             $includedFileSets[] = $includedFiles;
         }
 
-        $declaredTraits = array_map(function ($fqcn) {
+        $declaredTraits = array_map(fn ($fqcn) =>
             // FQCNが'\'で始まるように正規化
-            return str_starts_with($fqcn, '\\') ? $fqcn : '\\'.$fqcn;
-        }, get_declared_traits());
+            str_starts_with($fqcn, '\\') ? $fqcn : '\\'.$fqcn, get_declared_traits());
 
         // ディレクトリセットに含まれるTraitの一覧を作成
-        $traitSets = array_map(function () { return []; }, $dirSets);
+        $traitSets = array_map(fn () => [], $dirSets);
         foreach ($declaredTraits as $className) {
             $rc = new \ReflectionClass($className);
             $sourceFile = $rc->getFileName();
@@ -254,11 +253,7 @@ class EntityProxyService
             $traitsTokens = array_slice($entityTokens->toArray(), $useTraitIndex + 1, $useTraitEndIndex - $useTraitIndex - 1);
 
             // Trait名の配列に変換
-            $traitNames = explode(',', implode('', array_map(function ($token) {
-                return $token->getContent();
-            }, array_filter($traitsTokens, function ($token) {
-                return $token->getId() != T_WHITESPACE;
-            }))));
+            $traitNames = explode(',', implode('', array_map(fn ($token) => $token->getContent(), array_filter($traitsTokens, fn ($token) => $token->getId() != T_WHITESPACE))));
 
             // 削除対象を取り除く
             foreach ($traitNames as $i => $name) {

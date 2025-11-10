@@ -73,11 +73,9 @@ class DeliveryTimeType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => DeliveryTime::class,
-            'query_builder' => function (EntityRepository $er) {
-                return $er
-                    ->createQueryBuilder('dt')
-                    ->orderBy('dt.sort_no', 'ASC');
-            },
+            'query_builder' => fn (EntityRepository $er) => $er
+                ->createQueryBuilder('dt')
+                ->orderBy('dt.sort_no', 'ASC'),
         ]);
     }
 

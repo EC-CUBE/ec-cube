@@ -37,9 +37,7 @@ class ReloadSafeAttributeDriver extends TraitProxyAttributeDriver
      */
     public function setNewProxyFiles(array $newProxyFiles): void
     {
-        $this->newProxyFiles = array_map(function ($file) {
-            return realpath($file);
-        }, $newProxyFiles);
+        $this->newProxyFiles = array_map(fn ($file) => realpath($file), $newProxyFiles);
     }
 
     public function setOutputDir(string $outputDir): void

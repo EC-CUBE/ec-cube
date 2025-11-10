@@ -189,9 +189,7 @@ class ShippingType extends AbstractType
                 $Delivery = $Shipping->getDelivery();
                 if ($Delivery) {
                     $DeliveryTimes = $Delivery->getDeliveryTimes();
-                    $DeliveryTimes = $DeliveryTimes->filter(function (DeliveryTime $DeliveryTime) {
-                        return $DeliveryTime->isVisible();
-                    });
+                    $DeliveryTimes = $DeliveryTimes->filter(fn (DeliveryTime $DeliveryTime) => $DeliveryTime->isVisible());
 
                     foreach ($DeliveryTimes as $deliveryTime) {
                         if ($deliveryTime->getId() == $Shipping->getTimeId()) {

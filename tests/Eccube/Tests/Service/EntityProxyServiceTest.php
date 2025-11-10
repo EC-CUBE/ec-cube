@@ -84,12 +84,10 @@ class EntityProxyServiceTest extends EccubeTestCase
     {
         $this->markTestIncomplete();
 
-        $findSequence = static function (Tokens $tokens) {
-            return $tokens->findSequence([
-                [T_PRIVATE, 'private'],
-                [T_VARIABLE, '$hoge'],
-            ]);
-        };
+        $findSequence = (static fn (Tokens $tokens) => $tokens->findSequence([
+            [T_PRIVATE, 'private'],
+            [T_VARIABLE, '$hoge'],
+        ]));
 
         $this->entityProxyService->generate([__DIR__], [], $this->tempOutputDir);
 

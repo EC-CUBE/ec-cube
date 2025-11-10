@@ -115,9 +115,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         self::assertNull($Shipping->getTrackingNumber());
         self::assertNull($Shipping->getShippingDate());
 
-        $errors = $this->loadCsv(array_map(function ($row) use ($Shipping) {
-            return preg_replace('/\{id}/', (string) $Shipping->getId(), $row);
-        }, $csv));
+        $errors = $this->loadCsv(array_map(fn ($row) => preg_replace('/\{id}/', (string) $Shipping->getId(), (string) $row), $csv));
 
         $this->entityManager->refresh($Shipping);
 

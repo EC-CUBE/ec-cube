@@ -67,7 +67,7 @@ return RectorConfig::configure()
                // 特定のルールを除外する場合
                // Rector\CodeQuality\Rector\Class_\InlineConstructorDefaultToPropertyRector::class,
                //ClassPropertyAssignToConstructorPromotionRector::class, // プロモーション構文に変換する際に、@paramなどが削除されるため除外
-               ClosureToArrowFunctionRector::class, // アロー関数への変換は一旦スキップ
+               //ClosureToArrowFunctionRector::class, // アロー関数への変換は一旦スキップ
                // 8.3以上で対応可能
                AddOverrideAttributeToOverriddenMethodsRector::class, // オーバーライドメソッドに @Override 属性を追加する PHP 8.3 以降で有効
                AddTypeToConstRector::class, // [BC]定数に型を追加する PHP 8.3 以降で有効

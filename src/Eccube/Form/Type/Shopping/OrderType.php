@@ -274,9 +274,7 @@ class OrderType extends AbstractType
 
             return true;
         })->toArray();
-        usort($PaymentArrays, function (Payment $a, Payment $b) {
-            return $a->getSortNo() < $b->getSortNo() ? 1 : -1;
-        });
+        usort($PaymentArrays, fn (Payment $a, Payment $b) => $a->getSortNo() < $b->getSortNo() ? 1 : -1);
 
         return $PaymentArrays;
     }

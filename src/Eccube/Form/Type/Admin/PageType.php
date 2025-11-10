@@ -34,12 +34,10 @@ class PageType extends AbstractType
                 'label' => false,
                 'class' => Page::class,
                 'choice_label' => 'name',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er
-                        ->createQueryBuilder('l')
-                        ->where('l.id <> 0')
-                        ->orderBy('l.id', 'ASC');
-                },
+                'query_builder' => fn (EntityRepository $er) => $er
+                    ->createQueryBuilder('l')
+                    ->where('l.id <> 0')
+                    ->orderBy('l.id', 'ASC'),
             ]);
     }
 

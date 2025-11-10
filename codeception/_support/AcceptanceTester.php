@@ -181,15 +181,9 @@ class AcceptanceTester extends Actor
     {
         $downloadDir = __DIR__.'/_downloads/';
         $files = scandir($downloadDir);
-        $files = array_map(function ($fileName) use ($downloadDir) {
-            return $downloadDir.$fileName;
-        }, $files);
-        $files = array_filter($files, function ($f) use ($fileNameRegex) {
-            return is_file($f) && preg_match($fileNameRegex, basename($f));
-        });
-        usort($files, function ($l, $r) {
-            return filemtime($l) - filemtime($r);
-        });
+        $files = array_map(fn ($fileName) => $downloadDir.$fileName, $files);
+        $files = array_filter($files, fn ($f) => is_file($f) && preg_match($fileNameRegex, basename($f)));
+        usort($files, fn ($l, $r) => filemtime($l) - filemtime($r));
 
         if (empty($files)) {
             if ($retryCount > 0) {

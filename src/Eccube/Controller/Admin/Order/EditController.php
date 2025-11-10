@@ -244,9 +244,7 @@ class EditController extends AbstractController
                                 $returnLink = preg_replace($pattern, '', (string) $returnLink);
                                 $result = $router->match($returnLink);
                                 // パラメータのみ抽出
-                                $params = array_filter($result, function ($key) {
-                                    return !str_starts_with($key, '_');
-                                }, ARRAY_FILTER_USE_KEY);
+                                $params = array_filter($result, fn ($key) => !str_starts_with((string) $key, '_'), ARRAY_FILTER_USE_KEY);
 
                                 // pathからurlを再構築してリダイレクト.
                                 return $this->redirectToRoute($result['_route'], $params);

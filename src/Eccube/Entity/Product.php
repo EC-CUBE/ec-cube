@@ -218,9 +218,7 @@ if (!class_exists(Product::class)) {
         {
             $categories = $this->getClassCategories2($class_category1);
             // null値を除外してからarray_flipを実行
-            $filteredCategories = array_filter($categories, function ($value) {
-                return $value !== null;
-            });
+            $filteredCategories = array_filter($categories, fn ($value) => $value !== null);
 
             return array_flip($filteredCategories);
         }
@@ -902,9 +900,7 @@ if (!class_exists(Product::class)) {
                 $tags[] = $productTag->getTag();
             }
 
-            usort($tags, function (Tag $tag1, Tag $tag2) {
-                return $tag1->getSortNo() <=> $tag2->getSortNo();
-            });
+            usort($tags, fn (Tag $tag1, Tag $tag2) => $tag1->getSortNo() <=> $tag2->getSortNo());
 
             return $tags;
         }

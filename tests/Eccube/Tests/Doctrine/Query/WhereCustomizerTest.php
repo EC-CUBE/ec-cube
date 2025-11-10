@@ -23,7 +23,7 @@ class WhereCustomizerTest extends EccubeTestCase
     public function testCustomizeNOP()
     {
         $builder = $this->createQueryBuilder();
-        $customizer = new WhereCustomizerTest_Customizer(function () { return []; });
+        $customizer = new WhereCustomizerTest_Customizer(fn () => []);
         $customizer->customize($builder, null, '');
 
         self::assertSame('SELECT p FROM Product p', $builder->getDQL());
@@ -32,7 +32,7 @@ class WhereCustomizerTest extends EccubeTestCase
     public function testCustomizeAddWhereClause()
     {
         $builder = $this->createQueryBuilder();
-        $customizer = new WhereCustomizerTest_Customizer(function () { return [WhereClause::eq('name', ':Name', 'hoge')]; });
+        $customizer = new WhereCustomizerTest_Customizer(fn () => [WhereClause::eq('name', ':Name', 'hoge')]);
         $customizer->customize($builder, null, '');
 
         self::assertSame('SELECT p FROM Product p WHERE name = :Name', $builder->getDQL());
@@ -41,12 +41,10 @@ class WhereCustomizerTest extends EccubeTestCase
     public function testCustomizeAddMultipleWhereClause()
     {
         $builder = $this->createQueryBuilder();
-        $customizer = new WhereCustomizerTest_Customizer(function () {
-            return [
-                WhereClause::eq('name', ':Name', 'hoge'),
-                WhereClause::eq('delFlg', ':DelFlg', 0),
-            ];
-        });
+        $customizer = new WhereCustomizerTest_Customizer(fn () => [
+            WhereClause::eq('name', ':Name', 'hoge'),
+            WhereClause::eq('delFlg', ':DelFlg', 0),
+        ]);
         $customizer->customize($builder, null, '');
 
         self::assertSame('SELECT p FROM Product p WHERE name = :Name AND delFlg = :DelFlg', $builder->getDQL());

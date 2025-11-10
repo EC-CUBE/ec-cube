@@ -105,9 +105,7 @@ if (!class_exists(Layout::class)) {
             }
 
             // blockRow順にsort
-            uasort($TargetBlockPositions, function (BlockPosition $a, BlockPosition $b) {
-                return ($a->getBlockRow() < $b->getBlockRow()) ? -1 : 1;
-            });
+            uasort($TargetBlockPositions, fn (BlockPosition $a, BlockPosition $b) => ($a->getBlockRow() < $b->getBlockRow()) ? -1 : 1);
 
             // Blockの配列を作成
             $TargetBlocks = [];
@@ -124,9 +122,7 @@ if (!class_exists(Layout::class)) {
         public function getBlockPositionsByTargetId(int $targetId): Collection
         {
             return $this->BlockPositions->filter(
-                function ($BlockPosition) use ($targetId) {
-                    return $BlockPosition->getSection() == $targetId;
-                }
+                fn ($BlockPosition) => $BlockPosition->getSection() == $targetId
             );
         }
 

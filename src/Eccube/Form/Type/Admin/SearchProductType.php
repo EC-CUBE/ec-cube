@@ -65,9 +65,7 @@ class SearchProductType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'choices' => $this->categoryRepository->getList(null, true),
-                'choice_value' => function (?Category $Category = null) {
-                    return $Category ? $Category->getId() : null;
-                },
+                'choice_value' => fn (?Category $Category = null) => $Category ? $Category->getId() : null,
             ])
             ->add('status', ProductStatusType::class, [
                 'label' => 'admin.product.display_status',
@@ -96,10 +94,8 @@ class SearchProductType extends AbstractType
                 'required' => false,
                 'multiple' => false,
                 'expanded' => false,
-                'query_builder' => function ($er) {
-                    return $er->createQueryBuilder('t')
-                    ->orderBy('t.sort_no', 'DESC');
-                },
+                'query_builder' => fn ($er) => $er->createQueryBuilder('t')
+                ->orderBy('t.sort_no', 'DESC'),
             ])
             ->add('create_date_start', DateType::class, [
                 'label' => 'admin.common.create_date__start',

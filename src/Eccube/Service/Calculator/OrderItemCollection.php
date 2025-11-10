@@ -54,9 +54,7 @@ class OrderItemCollection extends ArrayCollection
     public function getProductClasses(): ArrayCollection
     {
         return $this->filter(
-            function (ItemInterface $OrderItem) {
-                return $OrderItem->isProduct();
-            });
+            fn (ItemInterface $OrderItem) => $OrderItem->isProduct());
     }
 
     /**
@@ -65,9 +63,7 @@ class OrderItemCollection extends ArrayCollection
     public function getDeliveryFees(): ArrayCollection
     {
         return $this->filter(
-            function (ItemInterface $OrderItem) {
-                return $OrderItem->isDeliveryFee();
-            });
+            fn (ItemInterface $OrderItem) => $OrderItem->isDeliveryFee());
     }
 
     /**
@@ -76,9 +72,7 @@ class OrderItemCollection extends ArrayCollection
     public function getCharges(): ArrayCollection
     {
         return $this->filter(
-            function (ItemInterface $OrderItem) {
-                return $OrderItem->isCharge();
-            });
+            fn (ItemInterface $OrderItem) => $OrderItem->isCharge());
     }
 
     /**
@@ -87,9 +81,7 @@ class OrderItemCollection extends ArrayCollection
     public function getDiscounts(): ArrayCollection
     {
         return $this->filter(
-            function (ItemInterface $OrderItem) {
-                return $OrderItem->isDiscount() || $OrderItem->isPoint();
-            });
+            fn (ItemInterface $OrderItem) => $OrderItem->isDiscount() || $OrderItem->isPoint());
     }
 
     /**
@@ -115,10 +107,9 @@ class OrderItemCollection extends ArrayCollection
      */
     public function hasItemByOrderItemType(OrderItemType $OrderItemType): bool
     {
-        $filteredItems = $this->filter(function (ItemInterface $OrderItem) use ($OrderItemType) {
+        $filteredItems = $this->filter(fn (ItemInterface $OrderItem) =>
             /* @var OrderItem $OrderItem */
-            return $OrderItem->getOrderItemType() && $OrderItem->getOrderItemType()->getId() == $OrderItemType->getId();
-        });
+            $OrderItem->getOrderItemType() && $OrderItem->getOrderItemType()->getId() == $OrderItemType->getId());
 
         return !$filteredItems->isEmpty();
     }

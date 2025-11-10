@@ -56,25 +56,17 @@ class SecurityController extends AbstractController
             $env = file_get_contents($envFile);
 
             $frontAllowHosts = \json_encode(
-                array_filter(\explode("\n", StringUtil::convertLineFeed($data['front_allow_hosts'])), function ($str) {
-                    return StringUtil::isNotBlank($str);
-                })
+                array_filter(\explode("\n", StringUtil::convertLineFeed($data['front_allow_hosts'])), fn ($str) => StringUtil::isNotBlank($str))
             );
             $frontDenyHosts = \json_encode(
-                array_filter(\explode("\n", StringUtil::convertLineFeed($data['front_deny_hosts'])), function ($str) {
-                    return StringUtil::isNotBlank($str);
-                })
+                array_filter(\explode("\n", StringUtil::convertLineFeed($data['front_deny_hosts'])), fn ($str) => StringUtil::isNotBlank($str))
             );
 
             $adminAllowHosts = \json_encode(
-                array_filter(\explode("\n", StringUtil::convertLineFeed($data['admin_allow_hosts'])), function ($str) {
-                    return StringUtil::isNotBlank($str);
-                })
+                array_filter(\explode("\n", StringUtil::convertLineFeed($data['admin_allow_hosts'])), fn ($str) => StringUtil::isNotBlank($str))
             );
             $adminDenyHosts = \json_encode(
-                array_filter(\explode("\n", StringUtil::convertLineFeed($data['admin_deny_hosts'])), function ($str) {
-                    return StringUtil::isNotBlank($str);
-                })
+                array_filter(\explode("\n", StringUtil::convertLineFeed($data['admin_deny_hosts'])), fn ($str) => StringUtil::isNotBlank($str))
             );
 
             $env = StringUtil::replaceOrAddEnv($env, [

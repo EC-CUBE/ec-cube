@@ -216,21 +216,17 @@ $categories = $entityManager->getRepository(Category::class)
 /* カテゴリ一覧の配列. */
 Fixtures::add('categories', $categories);
 
-$findOrders = function () use ($entityManager) {
-    return $entityManager->getRepository(Order::class)
-        ->createQueryBuilder('o')
-        ->getQuery()
-        ->getResult();
-};
+$findOrders = (fn () => $entityManager->getRepository(Order::class)
+    ->createQueryBuilder('o')
+    ->getQuery()
+    ->getResult());
 /* 受注を検索するクロージャ. */
 Fixtures::add('findOrders', $findOrders);
 
-$findShippings = function () use ($entityManager) {
-    return $entityManager->getRepository(Shipping::class)
-        ->createQueryBuilder('o')
-        ->getQuery()
-        ->getResult();
-};
+$findShippings = (fn () => $entityManager->getRepository(Shipping::class)
+    ->createQueryBuilder('o')
+    ->getQuery()
+    ->getResult());
 /* 出荷を検索するクロージャ. */
 Fixtures::add('findShippings', $findShippings);
 
@@ -277,18 +273,14 @@ $deleteShippingNotExistsOfItem = function () use ($entityManager) {
 /* OrderItemの存在しない出荷を削除するクロージャ. */
 Fixtures::add('deleteShippingNotExistsOfItem', $deleteShippingNotExistsOfItem);
 
-$findProducts = function () use ($entityManager) {
-    return $entityManager->getRepository(Product::class)
-        ->createQueryBuilder('p')
-        ->getQuery()
-        ->getResult();
-};
+$findProducts = (fn () => $entityManager->getRepository(Product::class)
+    ->createQueryBuilder('p')
+    ->getQuery()
+    ->getResult());
 /* 商品を検索するクロージャ. */
 Fixtures::add('findProducts', $findProducts);
 
-$createProduct = function ($product_name = null, $product_class_num = 3) use ($container) {
-    return createProduct($container, $product_name, $product_class_num);
-};
+$createProduct = (fn ($product_name = null, $product_class_num = 3) => createProduct($container, $product_name, $product_class_num));
 Fixtures::add('createProduct', $createProduct);
 
 $createCustomer = function ($email = null, $active = true) use ($container, $faker) {
@@ -331,32 +323,24 @@ $createOrders = function ($Customer, $numberOfOrders = 5, $ProductClasses = [], 
 /* 受注を生成するクロージャ. */
 Fixtures::add('createOrders', $createOrders);
 
-$findPlugins = function () use ($entityManager) {
-    return $entityManager->getRepository(Plugin::class)->findAll();
-};
+$findPlugins = (fn () => $entityManager->getRepository(Plugin::class)->findAll());
 /* プラグインを検索するクロージャ */
 Fixtures::add('findPlugins', $findPlugins);
 
-$findPluginByCode = function ($code = null) use ($entityManager) {
-    return $entityManager->getRepository(Plugin::class)->findOneBy(['code' => $code]);
-};
+$findPluginByCode = (fn ($code = null) => $entityManager->getRepository(Plugin::class)->findOneBy(['code' => $code]));
 /* プラグインを検索するクロージャ */
 Fixtures::add('findPluginByCode', $findPluginByCode);
 
-$findCustomers = function () use ($entityManager) {
-    return $entityManager->getRepository(Customer::class)
-        ->createQueryBuilder('c')
-        ->getQuery()
-        ->getResult();
-};
+$findCustomers = (fn () => $entityManager->getRepository(Customer::class)
+    ->createQueryBuilder('c')
+    ->getQuery()
+    ->getResult());
 /* 会員を検索するクロージャ */
 Fixtures::add('findCustomers', $findCustomers);
 
 /* 新着情報を検索するクロージャ */
-Fixtures::add('findNews', function () use ($entityManager) {
-    return $entityManager->getRepository(News::class)
-        ->findBy(['visible' => true], ['publish_date' => 'DESC', 'id' => 'DESC']);
-});
+Fixtures::add('findNews', fn () => $entityManager->getRepository(News::class)
+    ->findBy(['visible' => true], ['publish_date' => 'DESC', 'id' => 'DESC']));
 
 /* 新着情報を登録するクロージャ */
 Fixtures::add('createNews', function ($publishDate, $title, $description, $url = null) use ($entityManager) {

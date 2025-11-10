@@ -159,7 +159,7 @@ class PluginService
             });
 
             if (!empty($notInstalledOrDisabled)) {
-                $names = array_map(function ($p) { return $p['name']; }, $notInstalledOrDisabled);
+                $names = array_map(fn ($p) => $p['name'], $notInstalledOrDisabled);
                 throw new PluginException(implode(', ', $names).'を有効化してください。');
             }
         }
@@ -613,9 +613,7 @@ class PluginService
             }
         }
 
-        $enabledPluginEntityDirs = array_map(function ($code) {
-            return $this->projectRoot."/app/Plugin/{$code}/Entity";
-        }, $enabledPluginCodes);
+        $enabledPluginEntityDirs = array_map(fn ($code) => $this->projectRoot."/app/Plugin/{$code}/Entity", $enabledPluginCodes);
 
         return $this->entityProxyService->generate(
             array_merge([$this->projectRoot.'/app/Customize/Entity'], $enabledPluginEntityDirs),
@@ -860,9 +858,7 @@ class PluginService
     {
         $result = array_keys($packages);
         if ($getVersion) {
-            $result = array_map(function ($package, $version) {
-                return $package.':'.$version;
-            }, array_keys($packages), array_values($packages));
+            $result = array_map(fn ($package, $version) => $package.':'.$version, array_keys($packages), array_values($packages));
         }
 
         return implode(' ', $result);

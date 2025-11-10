@@ -948,9 +948,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $Product = $this->createProduct('商品規格が1つの商品を生成', 1);
         /** @var ProductClass $ProductClass */
         $ProductClass = $Product->getProductClasses()->filter(
-            function (ProductClass $ProductClass) {
-                return $ProductClass->getClassCategory1() !== null;
-            }
+            fn (ProductClass $ProductClass) => $ProductClass->getClassCategory1() !== null
         )[0];
         /** @var Generator $faker */
         $faker = $this->getFaker();
@@ -981,9 +979,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $Product = $this->createProduct('商品規格が1つの商品を生成', 1);
         /** @var ProductClass $ProductClass */
         $ProductClass = $Product->getProductClasses()->filter(
-            function (ProductClass $ProductClass) {
-                return $ProductClass->getClassCategory1() !== null;
-            }
+            fn (ProductClass $ProductClass) => $ProductClass->getClassCategory1() !== null
         )[0];
         /** @var Generator $faker */
         $faker = $this->getFaker();

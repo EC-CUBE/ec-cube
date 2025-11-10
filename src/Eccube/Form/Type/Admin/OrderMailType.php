@@ -44,10 +44,8 @@ class OrderMailType extends AbstractType
             ->add('template', MailTemplateType::class, [
                 'required' => false,
                 'mapped' => false,
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('mt')
-                        ->orderBy('mt.id', 'ASC');
-                },
+                'query_builder' => fn (EntityRepository $er) => $er->createQueryBuilder('mt')
+                    ->orderBy('mt.id', 'ASC'),
             ])
             ->add('mail_subject', TextType::class, [
                 'required' => true,

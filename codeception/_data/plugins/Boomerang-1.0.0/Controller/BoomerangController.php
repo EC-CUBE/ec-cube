@@ -34,7 +34,7 @@ class BoomerangController extends AbstractController
     {
         /** @var Cart[] $list */
         $list = $this->cartRepository->findAll();
-        $ids = array_map(function (Cart $c) { return $c->getId(); }, $list);
+        $ids = array_map(fn (Cart $c) => $c->getId(), $list);
 
         return $this->json($ids);
     }

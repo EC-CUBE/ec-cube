@@ -98,9 +98,7 @@ class Kernel extends BaseKernel
             ->sortByName()
             ->depth(0)
             ->directories();
-        $plugins = array_map(function ($dir) {
-            return $dir->getBaseName();
-        }, iterator_to_array($finder));
+        $plugins = array_map(fn ($dir) => $dir->getBaseName(), iterator_to_array($finder));
 
         foreach ($plugins as $code) {
             $pluginBundles = $pluginDir.'/'.$code.'/Resource/config/bundles.php';
@@ -314,9 +312,7 @@ class Kernel extends BaseKernel
             ->sortByName()
             ->depth(0)
             ->directories();
-        $plugins = array_map(function ($dir) {
-            return $dir->getBaseName();
-        }, iterator_to_array($finder));
+        $plugins = array_map(fn ($dir) => $dir->getBaseName(), iterator_to_array($finder));
 
         foreach ($plugins as $code) {
             if (file_exists($pluginDir.'/'.$code.'/Entity')) {

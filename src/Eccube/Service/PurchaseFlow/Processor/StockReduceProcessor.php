@@ -41,9 +41,7 @@ class StockReduceProcessor extends AbstractPurchaseProcessor
     public function prepare(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         // 在庫を減らす
-        $this->eachProductOrderItems($itemHolder, function ($currentStock, $itemQuantity) {
-            return bcsub((string) $currentStock, (string) $itemQuantity);
-        });
+        $this->eachProductOrderItems($itemHolder, fn ($currentStock, $itemQuantity) => bcsub((string) $currentStock, (string) $itemQuantity));
     }
 
     /**
@@ -53,9 +51,7 @@ class StockReduceProcessor extends AbstractPurchaseProcessor
     public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         // 在庫を戻す
-        $this->eachProductOrderItems($itemHolder, function ($currentStock, $itemQuantity) {
-            return bcadd((string) $currentStock, (string) $itemQuantity);
-        });
+        $this->eachProductOrderItems($itemHolder, fn ($currentStock, $itemQuantity) => bcadd((string) $currentStock, (string) $itemQuantity));
     }
 
     /**

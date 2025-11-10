@@ -97,11 +97,7 @@ class CsvImportController extends AbstractCsvImportController
         }
 
         // 必須カラムの確認
-        $requiredColumns = array_map(function ($value) {
-            return $value['name'];
-        }, array_filter($columnConfig, function ($value) {
-            return $value['required'];
-        }));
+        $requiredColumns = array_map(fn ($value) => $value['name'], array_filter($columnConfig, fn ($value) => $value['required']));
         $csvColumns = $csv->getColumnHeaders();
         if (count(array_diff(array_values($requiredColumns), $csvColumns)) > 0) {
             $errors[] = trans('admin.common.csv_invalid_format');

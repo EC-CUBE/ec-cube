@@ -154,9 +154,7 @@ class SitemapController extends AbstractController
         });
 
         // 管理画面から作成されたページ
-        $UserPages = array_filter($Pages, function (Page $Page) {
-            return $Page->getEditType() === Page::EDIT_TYPE_USER;
-        });
+        $UserPages = array_filter($Pages, fn (Page $Page) => $Page->getEditType() === Page::EDIT_TYPE_USER);
 
         return $this->outputXml([
             'DefaultPages' => $DefaultPages,

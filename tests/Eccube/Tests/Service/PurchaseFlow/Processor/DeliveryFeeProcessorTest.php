@@ -101,8 +101,6 @@ class DeliveryFeeProcessorTest extends EccubeTestCase
 
     private function getDeliveryFees(Order $Order)
     {
-        return array_filter($Order->getOrderItems()->toArray(), function ($OrderItem) {
-            return $OrderItem->isDeliveryFee();
-        });
+        return array_filter($Order->getOrderItems()->toArray(), fn ($OrderItem) => $OrderItem->isDeliveryFee());
     }
 }

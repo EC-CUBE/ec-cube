@@ -131,16 +131,12 @@ class ShippingType extends AbstractType
             ->add('Delivery', EntityType::class, [
                 'required' => false,
                 'class' => Delivery::class,
-                'choice_label' => function (Delivery $Delivery) {
-                    return $Delivery->isVisible()
-                        ? $Delivery->getServiceName()
-                        : $Delivery->getServiceName().trans('admin.common.hidden_label');
-                },
-                'query_builder' => function ($er) {
-                    return $er->createQueryBuilder('d')
-                        ->orderBy('d.visible', 'DESC') // 非表示は下に配置
-                        ->addOrderBy('d.sort_no', 'ASC');
-                },
+                'choice_label' => fn (Delivery $Delivery) => $Delivery->isVisible()
+                    ? $Delivery->getServiceName()
+                    : $Delivery->getServiceName().trans('admin.common.hidden_label'),
+                'query_builder' => fn ($er) => $er->createQueryBuilder('d')
+                    ->orderBy('d.visible', 'DESC') // 非表示は下に配置
+                    ->addOrderBy('d.sort_no', 'ASC'),
                 'placeholder' => false,
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -209,11 +205,9 @@ class ShippingType extends AbstractType
                 // お届け時間を配送業者で絞り込み
                 $form->add('DeliveryTime', EntityType::class, [
                     'class' => DeliveryTime::class,
-                    'choice_label' => function (DeliveryTime $DeliveryTime) {
-                        return $DeliveryTime->isVisible()
-                            ? $DeliveryTime->getDeliveryTime()
-                            : $DeliveryTime->getDeliveryTime().trans('admin.common.hidden_label');
-                    },
+                    'choice_label' => fn (DeliveryTime $DeliveryTime) => $DeliveryTime->isVisible()
+                        ? $DeliveryTime->getDeliveryTime()
+                        : $DeliveryTime->getDeliveryTime().trans('admin.common.hidden_label'),
                     'placeholder' => 'common.select__unspecified',
                     'required' => false,
                     'data' => $DeliveryTime,

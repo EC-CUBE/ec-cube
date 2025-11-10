@@ -52,17 +52,13 @@ class CartServiceExtension extends AbstractExtension
     {
         $Carts = $this->cartService->getCarts();
 
-        return array_reduce($Carts, function (string $total, Cart $Cart) {
-            return bcadd($total, $Cart->getTotalPrice());
-        }, '0');
+        return array_reduce($Carts, fn (string $total, Cart $Cart) => bcadd($total, $Cart->getTotalPrice()), '0');
     }
 
     public function get_carts_total_quantity(): string
     {
         $Carts = $this->cartService->getCarts();
 
-        return array_reduce($Carts, function ($total, Cart $Cart) {
-            return bcadd($total, $Cart->getTotalQuantity());
-        }, '0');
+        return array_reduce($Carts, fn ($total, Cart $Cart) => bcadd($total, $Cart->getTotalQuantity()), '0');
     }
 }

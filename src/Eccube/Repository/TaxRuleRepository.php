@@ -212,9 +212,7 @@ class TaxRuleRepository extends AbstractRepository
         }
 
         // 適用日降順, sortNo 降順にソートする
-        usort($TaxRules, function ($a, $b) {
-            return $a->compareTo($b);
-        });
+        usort($TaxRules, fn ($a, $b) => $a->compareTo($b));
 
         if (!empty($TaxRules)) {
             $this->rules[$cacheKey] = $TaxRules[0];

@@ -37,9 +37,7 @@ class PurchaseFlowResult
      */
     public function getErrors(): array
     {
-        return array_filter($this->processResults, function (ProcessResult $processResult) {
-            return $processResult->isError();
-        });
+        return array_filter($this->processResults, fn (ProcessResult $processResult) => $processResult->isError());
     }
 
     /**
@@ -47,9 +45,7 @@ class PurchaseFlowResult
      */
     public function getWarning(): array
     {
-        return array_filter($this->processResults, function (ProcessResult $processResult) {
-            return $processResult->isWarning();
-        });
+        return array_filter($this->processResults, fn (ProcessResult $processResult) => $processResult->isWarning());
     }
 
     public function hasError(): bool

@@ -267,9 +267,7 @@ class PurchaseFlow implements \Stringable
 
     protected function calculateTotal(ItemHolderInterface $itemHolder): void
     {
-        $total = array_reduce($itemHolder->getItems()->toArray(), function ($sum, ItemInterface $item) {
-            return bcadd($sum, bcmul($item->getPriceIncTax(), $item->getQuantity(), 2), 2);
-        }, '0');
+        $total = array_reduce($itemHolder->getItems()->toArray(), fn ($sum, ItemInterface $item) => bcadd($sum, bcmul($item->getPriceIncTax(), $item->getQuantity(), 2), 2), '0');
         $itemHolder->setTotal($total);
         // TODO
         if ($itemHolder instanceof Order) {
@@ -282,9 +280,7 @@ class PurchaseFlow implements \Stringable
     {
         $total = $itemHolder->getItems()
             ->getProductClasses()
-            ->reduce(function ($sum, ItemInterface $item) {
-                return bcadd($sum, bcmul($item->getPriceIncTax(), $item->getQuantity(), 2), 2);
-            }, '0');
+            ->reduce(fn ($sum, ItemInterface $item) => bcadd((string) $sum, bcmul($item->getPriceIncTax(), $item->getQuantity(), 2), 2), '0');
         // TODO
         if ($itemHolder instanceof Order) {
             // Order の場合は SubTotal をセットする
@@ -296,9 +292,7 @@ class PurchaseFlow implements \Stringable
     {
         $total = $itemHolder->getItems()
             ->getDeliveryFees()
-            ->reduce(function ($sum, ItemInterface $item) {
-                return bcadd($sum, bcmul($item->getPriceIncTax(), $item->getQuantity(), 2), 2);
-            }, '0');
+            ->reduce(fn ($sum, ItemInterface $item) => bcadd((string) $sum, bcmul($item->getPriceIncTax(), $item->getQuantity(), 2), 2), '0');
         $itemHolder->setDeliveryFeeTotal($total);
     }
 
@@ -306,9 +300,7 @@ class PurchaseFlow implements \Stringable
     {
         $total = $itemHolder->getItems()
             ->getDiscounts()
-            ->reduce(function ($sum, ItemInterface $item) {
-                return bcadd($sum, bcmul($item->getPriceIncTax(), $item->getQuantity(), 2), 2);
-            }, '0');
+            ->reduce(fn ($sum, ItemInterface $item) => bcadd((string) $sum, bcmul($item->getPriceIncTax(), $item->getQuantity(), 2), 2), '0');
         // TODO 後方互換のため discount には正の整数を代入する
         $itemHolder->setDiscount(bcmul((string) $total, '-1', 2));
     }
@@ -317,18 +309,14 @@ class PurchaseFlow implements \Stringable
     {
         $total = $itemHolder->getItems()
             ->getCharges()
-            ->reduce(function ($sum, ItemInterface $item) {
-                return bcadd($sum, bcmul($item->getPriceIncTax(), $item->getQuantity(), 2), 2);
-            }, '0');
+            ->reduce(fn ($sum, ItemInterface $item) => bcadd((string) $sum, bcmul($item->getPriceIncTax(), $item->getQuantity(), 2), 2), '0');
         $itemHolder->setCharge($total);
     }
 
     protected function calculateTax(ItemHolderInterface $itemHolder): void
     {
         if ($itemHolder instanceof Order) {
-            $total = array_reduce($itemHolder->getTaxByTaxRate(), function ($sum, $tax) {
-                return bcadd($sum, $tax, 2);
-            }, '0');
+            $total = array_reduce($itemHolder->getTaxByTaxRate(), fn ($sum, $tax) => bcadd($sum, $tax, 2), '0');
         } else {
             $total = $itemHolder->getItems()
                 ->reduce(function ($sum, ItemInterface $item) {
@@ -356,9 +344,7 @@ class PurchaseFlow implements \Stringable
     public function dump(): string
     {
         /** @var \Closure(mixed): mixed $callback */
-        $callback = function ($processor) {
-            return $processor::class;
-        };
+        $callback = (fn ($processor) => $processor::class);
         $flows = [
             0 => $this->flowType.' flow',
             'ItemValidator' => $this->itemValidators->map($callback)->toArray(),

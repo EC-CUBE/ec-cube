@@ -129,12 +129,8 @@ class CsvImportController extends AbstractCsvImportController
 
                         return $this->renderWithError($form, $headers, false);
                     }
-                    $getId = function ($item) {
-                        return $item['id'];
-                    };
-                    $requireHeader = array_keys(array_map($getId, array_filter($headers, function ($value) {
-                        return $value['required'];
-                    })));
+                    $getId = (fn ($item) => $item['id']);
+                    $requireHeader = array_keys(array_map($getId, array_filter($headers, fn ($value) => $value['required'])));
 
                     $columnHeaders = $data->getColumnHeaders();
 
@@ -660,12 +656,8 @@ class CsvImportController extends AbstractCsvImportController
                         return $this->renderWithError($form, $headers, false);
                     }
 
-                    $getId = function ($item) {
-                        return $item['id'];
-                    };
-                    $requireHeader = array_keys(array_map($getId, array_filter($headers, function ($value) {
-                        return $value['required'];
-                    })));
+                    $getId = (fn ($item) => $item['id']);
+                    $requireHeader = array_keys(array_map($getId, array_filter($headers, fn ($value) => $value['required'])));
 
                     $headerByKey = array_flip(array_map($getId, $headers));
 
@@ -823,12 +815,8 @@ class CsvImportController extends AbstractCsvImportController
                         return $this->renderWithError($form, $headers, false);
                     }
 
-                    $getId = function ($item) {
-                        return $item['id'];
-                    };
-                    $requireHeader = array_keys(array_map($getId, array_filter($headers, function ($value) {
-                        return $value['required'];
-                    })));
+                    $getId = (fn ($item) => $item['id']);
+                    $requireHeader = array_keys(array_map($getId, array_filter($headers, fn ($value) => $value['required'])));
 
                     $headerByKey = array_flip(array_map($getId, $headers));
 
@@ -943,12 +931,8 @@ class CsvImportController extends AbstractCsvImportController
                         return $this->renderWithError($form, $headers, false);
                     }
 
-                    $getId = function ($item) {
-                        return $item['id'];
-                    };
-                    $requireHeader = array_keys(array_map($getId, array_filter($headers, function ($value) {
-                        return $value['required'];
-                    })));
+                    $getId = (fn ($item) => $item['id']);
+                    $requireHeader = array_keys(array_map($getId, array_filter($headers, fn ($value) => $value['required'])));
 
                     $headerByKey = array_flip(array_map($getId, $headers));
 

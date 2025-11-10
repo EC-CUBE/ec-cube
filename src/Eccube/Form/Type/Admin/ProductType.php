@@ -91,18 +91,14 @@ class ProductType extends AbstractType
                 'mapped' => false,
                 'expanded' => true,
                 'choices' => $this->categoryRepository->getList(null, true),
-                'choice_value' => function (?Category $Category = null) {
-                    return $Category ? $Category->getId() : null;
-                },
+                'choice_value' => fn (?Category $Category = null) => $Category ? $Category->getId() : null,
             ])
 
             // 詳細な説明
             ->add('Tag', EntityType::class, [
                 'class' => Tag::class,
-                'query_builder' => function ($er) {
-                    return $er->createQueryBuilder('t')
-                    ->orderBy('t.sort_no', 'DESC');
-                },
+                'query_builder' => fn ($er) => $er->createQueryBuilder('t')
+                ->orderBy('t.sort_no', 'DESC'),
                 'required' => false,
                 'multiple' => true,
                 'expanded' => true,

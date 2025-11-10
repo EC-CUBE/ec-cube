@@ -80,12 +80,10 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
 
         // 配送先1, 配送先2の情報を返す
         $shippings = $crawler->filter('#form_shipping_multiple_0_shipping_0_customer_address > option')->each(
-            function ($node, $i) {
-                return [
-                    'customer_address' => $node->attr('value'),
-                    'quantity' => 1,
-                ];
-            }
+            fn ($node, $i) => [
+                'customer_address' => $node->attr('value'),
+                'quantity' => 1,
+            ]
         );
 
         // 複数配送設定
@@ -1288,12 +1286,10 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         $crawler = $this->client->request('GET', $this->generateUrl('shopping_shipping_multiple'));
 
         $shipping = $crawler->filter('#form_shipping_multiple_0_shipping_0_customer_address > option')->each(
-            function ($node, $i) {
-                return [
-                    'customer_address' => $node->attr('value'),
-                    'quantity' => 1,
-                ];
-            }
+            fn ($node, $i) => [
+                'customer_address' => $node->attr('value'),
+                'quantity' => 1,
+            ]
         );
 
         // add multi shipping
@@ -1414,9 +1410,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         $this->assertStringContainsString('× 3', $shipping);
 
         $deliver = $crawler->filter('#shopping_order_Shippings_0_Delivery > option')->each(
-            function ($node, $i) {
-                return $node->text();
-            }
+            fn ($node, $i) => $node->text()
         );
 
         $this->expected = 'サンプル業者';

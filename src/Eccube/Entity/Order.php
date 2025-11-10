@@ -207,9 +207,7 @@ if (!class_exists(Order::class)) {
             /** @var OrderItem[] $items */
             $items = (new ItemCollection($this->getTaxableItems()))->sort()->toArray();
 
-            return array_filter($items, function (OrderItem $Item) {
-                return $Item->isDiscount();
-            });
+            return array_filter($items, fn (OrderItem $Item) => $Item->isDiscount());
         }
 
         /**
@@ -217,9 +215,7 @@ if (!class_exists(Order::class)) {
          */
         public function getTaxableDiscount(): string
         {
-            return array_reduce($this->getTaxableDiscountItems(), function ($sum, OrderItem $Item) {
-                return bcadd($sum, $Item->getTotalPrice(), 2);
-            }, '0');
+            return array_reduce($this->getTaxableDiscountItems(), fn ($sum, OrderItem $Item) => bcadd($sum, $Item->getTotalPrice(), 2), '0');
         }
 
         /**
@@ -232,9 +228,7 @@ if (!class_exists(Order::class)) {
             /** @var OrderItem[] $items */
             $items = (new ItemCollection($this->getOrderItems()))->sort()->toArray();
 
-            return array_filter($items, function (OrderItem $Item) {
-                return $Item->isPoint() || ($Item->isDiscount() && $Item->getTaxType()->getId() != TaxType::TAXATION);
-            });
+            return array_filter($items, fn (OrderItem $Item) => $Item->isPoint() || ($Item->isDiscount() && $Item->getTaxType()->getId() != TaxType::TAXATION));
         }
 
         /**
@@ -242,9 +236,7 @@ if (!class_exists(Order::class)) {
          */
         public function getTaxFreeDiscount(): string
         {
-            return array_reduce($this->getTaxFreeDiscountItems(), function ($sum, OrderItem $Item) {
-                return bcadd($sum, $Item->getTotalPrice(), 2);
-            }, '0');
+            return array_reduce($this->getTaxFreeDiscountItems(), fn ($sum, OrderItem $Item) => bcadd($sum, $Item->getTotalPrice(), 2), '0');
         }
 
         /**
