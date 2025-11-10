@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin\Order;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Controller\Admin\Order\CsvImportController;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Service\CsvImportService;
@@ -212,7 +213,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $file = new UploadedFile($tempFile, 'shipping.csv', 'text/csv', null, true);
 
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_shipping_csv_import'),
             [
                 'admin_csv_import' => [

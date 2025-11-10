@@ -13,6 +13,8 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\String\ByteString;
 
@@ -34,9 +36,9 @@ class TradeLawControllerTest extends AbstractAdminWebTestCase
      */
     public function testIndexView(): void
     {
-        $response = $this->client->request('GET', $this->generateUrl('admin_setting_shop_tradelaw'));
+        $response = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_shop_tradelaw'));
         // Has success code response
-        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
         $inputFieldsName = $response->filter('input[id*="_name"]');
         $inputFieldsDescription = $response->filter('textarea[id*="_description"]');
 
@@ -84,12 +86,12 @@ class TradeLawControllerTest extends AbstractAdminWebTestCase
         $form = $this->createBaseForm();
         $form['TradeLaws'][0]['name'] = ByteString::fromRandom(256)->toString();
         $responseCrawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop_tradelaw'),
             ['form' => $form]
         );
         // Validation errors return success response.
-        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
         $failedInput = $responseCrawler->filter('#form_TradeLaws_0_name.is-invalid');
         // Check that the correct cell is failing validation with red border
         $this->assertSame(1, $failedInput->count());
@@ -108,12 +110,12 @@ class TradeLawControllerTest extends AbstractAdminWebTestCase
         $form = $this->createBaseForm();
         $form['TradeLaws'][0]['description'] = ByteString::fromRandom(4001)->toString();
         $responseCrawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop_tradelaw'),
             ['form' => $form]
         );
         // Validation errors return success response.
-        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
         $failedInput = $responseCrawler->filter('#form_TradeLaws_0_description.is-invalid');
         // Check that the correct cell is failing validation with red border
         $this->assertSame(1, $failedInput->count());
@@ -135,12 +137,12 @@ class TradeLawControllerTest extends AbstractAdminWebTestCase
         $form['TradeLaws'][10]['displayOrderScreen'] = '1';
 
         $responseCrawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop_tradelaw'),
             ['form' => $form]
         );
         // Validation errors return success response with redirect 302 (error will respond 200).
-        $this->assertSame(302, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
         $responseCrawler = $this->client->followRedirect();
 
         $editedName = $responseCrawler->filter('#form_TradeLaws_10_name');

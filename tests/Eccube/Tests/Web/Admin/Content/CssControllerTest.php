@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin\Content;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -43,7 +44,7 @@ class CssControllerTest extends AbstractAdminWebTestCase
 
     public function testRoutingAdminContentCssIndex()
     {
-        $this->client->request('GET', $this->generateUrl('admin_content_css'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_content_css'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -55,7 +56,7 @@ class CssControllerTest extends AbstractAdminWebTestCase
 }
 __CSS_CONTENTS__;
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_content_css'),
             ['form' => [
                 'css' => $css,
@@ -83,7 +84,7 @@ __CSS_CONTENTS__;
 }
 __CSS_CONTENTS__;
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_content_css'),
             ['form' => [
                 'css' => $css,
@@ -108,7 +109,7 @@ __CSS_CONTENTS__;
 }
 __CSS_CONTENTS__;
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_content_css'),
             ['form' => [
                 'css' => $css,

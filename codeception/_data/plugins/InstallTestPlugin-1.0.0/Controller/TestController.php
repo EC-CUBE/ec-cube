@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class TestController extends AbstractController
 {
     #[Route(path: '/plugin/install-test-plugin/test', name: 'plugin_install_test_plugin_test')]
-    public function test()
+    public function test(): Response
     {
         return new Response('InstallTestPlugin is working correctly!');
     }

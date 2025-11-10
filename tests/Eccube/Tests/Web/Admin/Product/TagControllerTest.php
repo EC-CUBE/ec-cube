@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin\Product;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\Tag;
 use Eccube\Repository\TagRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
@@ -31,7 +32,7 @@ class TagControllerTest extends AbstractAdminWebTestCase
 
     public function testRouting()
     {
-        $this->client->request('GET', $this->generateUrl('admin_product_tag'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_product_tag'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -44,7 +45,7 @@ class TagControllerTest extends AbstractAdminWebTestCase
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_product_tag_sort_no_move'),
             $idAndSortNo,
             [],
@@ -73,7 +74,7 @@ class TagControllerTest extends AbstractAdminWebTestCase
             $formData['method'] = '';
         }
 
-        $this->client->request('POST',
+        $this->client->request(Request::METHOD_POST,
             $this->generateUrl('admin_product_tag'),
             [
                 'admin_product_tag' => $formData,
@@ -91,7 +92,7 @@ class TagControllerTest extends AbstractAdminWebTestCase
 
         $Item = $this->TagRepo->find(1);
 
-        $this->client->request('POST',
+        $this->client->request(Request::METHOD_POST,
             $this->generateUrl('admin_product_tag'),
             [
                 'tag_'.$Item->getId() => $formData,
@@ -109,7 +110,7 @@ class TagControllerTest extends AbstractAdminWebTestCase
     {
         $Item = $this->TagRepo->find(1);
 
-        $crawler = $this->client->request('POST',
+        $crawler = $this->client->request(Request::METHOD_POST,
             $this->generateUrl('admin_product_tag'),
             [
                 'tag_'.$Item->getId() => [
@@ -132,7 +133,7 @@ class TagControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->flush();
 
         $TagId = $Item->getId();
-        $this->client->request('DELETE',
+        $this->client->request(Request::METHOD_DELETE,
             $this->generateUrl('admin_product_tag_delete', ['id' => $TagId])
         );
 
@@ -146,10 +147,10 @@ class TagControllerTest extends AbstractAdminWebTestCase
     {
         $tagId = 9999;
         $this->client->request(
-            'DELETE',
+            Request::METHOD_DELETE,
             $this->generateUrl('admin_product_tag_delete', ['id' => $tagId])
         );
-        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 
     public function createFormData()

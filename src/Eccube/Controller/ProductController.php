@@ -86,7 +86,7 @@ class ProductController extends AbstractController
         $builder = $this->formFactory->createNamedBuilder('', SearchProductType::class);
 
         if ($request->getMethod() === 'GET') {
-            $builder->setMethod('GET');
+            $builder->setMethod(Request::METHOD_GET);
         }
 
         $event = new EventArgs(

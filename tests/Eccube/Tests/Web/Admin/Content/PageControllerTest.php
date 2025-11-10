@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin\Content;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\Page;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
@@ -20,13 +21,13 @@ class PageControllerTest extends AbstractAdminWebTestCase
 {
     public function testRoutingAdminContentPageIndex()
     {
-        $this->client->request('GET', $this->generateUrl('admin_content_page'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_content_page'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testRoutingAdminContentPageEdit()
     {
-        $this->client->request('GET',
+        $this->client->request(Request::METHOD_GET,
             $this->generateUrl(
                 'admin_content_page_edit',
                 ['id' => 1]
@@ -39,7 +40,7 @@ class PageControllerTest extends AbstractAdminWebTestCase
     {
         $redirectUrl = $this->generateUrl('admin_content_page');
 
-        $this->client->request('DELETE',
+        $this->client->request(Request::METHOD_DELETE,
             $this->generateUrl(
                 'admin_content_page_delete',
                 ['id' => 1]
@@ -61,7 +62,7 @@ class PageControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->persist($Page);
         $this->entityManager->flush();
 
-        $this->client->request('DELETE',
+        $this->client->request(Request::METHOD_DELETE,
             $this->generateUrl(
                 'admin_content_page_delete',
                 ['id' => $Page->getId()]
@@ -83,7 +84,7 @@ class PageControllerTest extends AbstractAdminWebTestCase
             ->getCode();
 
         $client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl(
                 'admin_content_page_edit',
                 ['id' => $Page->getId()]
@@ -121,7 +122,7 @@ class PageControllerTest extends AbstractAdminWebTestCase
         $name = $faker->word();
         $source = $faker->realText();
         $client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl(
                 'admin_content_page_new'
             ),
@@ -162,7 +163,7 @@ class PageControllerTest extends AbstractAdminWebTestCase
             ->getCode();
 
         $client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl(
                 'admin_content_page_edit',
                 ['id' => $Page->getId()]
@@ -200,7 +201,7 @@ class PageControllerTest extends AbstractAdminWebTestCase
         $name = $faker->word();
         $source = $faker->realText();
         $client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl(
                 'admin_content_page_new'
             ),
@@ -229,7 +230,7 @@ class PageControllerTest extends AbstractAdminWebTestCase
             ->getCode();
 
         $client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl(
                 'admin_content_page_edit',
                 ['id' => $Page->getId()]
@@ -253,7 +254,7 @@ class PageControllerTest extends AbstractAdminWebTestCase
         $name = $faker->word();
         $source = $faker->realText();
         $client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl(
                 'admin_content_page_new'
             ),

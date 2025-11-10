@@ -13,6 +13,8 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Eccube\Entity\Calendar;
 use Eccube\Repository\CalendarRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
@@ -45,7 +47,7 @@ class CalendarControllerTest extends AbstractAdminWebTestCase
     public function testRouting()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_setting_shop_calendar_new')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -54,7 +56,7 @@ class CalendarControllerTest extends AbstractAdminWebTestCase
     public function testRoutingNew()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_setting_shop_calendar')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -68,7 +70,7 @@ class CalendarControllerTest extends AbstractAdminWebTestCase
         $redirectUrl = $this->generateUrl('admin_setting_shop_calendar');
 
         $this->client->request(
-            'DELETE',
+            Request::METHOD_DELETE,
             $this->generateUrl('admin_setting_shop_calendar_delete', ['id' => $id])
         );
 
@@ -81,10 +83,10 @@ class CalendarControllerTest extends AbstractAdminWebTestCase
         $id = 99999;
 
         $this->client->request(
-            'DELETE',
+            Request::METHOD_DELETE,
             $this->generateUrl('admin_setting_shop_calendar_delete', ['id' => $id])
         );
-        $this->assertSame(404, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 
     public function testEditSuccess()
@@ -99,7 +101,7 @@ class CalendarControllerTest extends AbstractAdminWebTestCase
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop_calendar'),
             [
                 'calendar' => $form,
@@ -131,7 +133,7 @@ class CalendarControllerTest extends AbstractAdminWebTestCase
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop_calendar'),
             [
                 'calendar' => $form,

@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Member;
 use Eccube\Entity\Order;
@@ -38,13 +39,13 @@ class IndexControllerTest extends AbstractAdminWebTestCase
 
     public function testRoutingAdminIndex()
     {
-        $this->client->request('GET', $this->generateUrl('admin_homepage'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_homepage'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testRoutingAdminChangePassword()
     {
-        $this->client->request('GET', $this->generateUrl('admin_change_password'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_change_password'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -96,7 +97,7 @@ class IndexControllerTest extends AbstractAdminWebTestCase
         }
 
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_homepage')
         );
 
@@ -152,7 +153,7 @@ class IndexControllerTest extends AbstractAdminWebTestCase
         self::assertFalse($hasher->isPasswordValid($this->Member, $new_password));
 
         $client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_change_password'),
             ['admin_change_password' => $form]
         );
@@ -169,7 +170,7 @@ class IndexControllerTest extends AbstractAdminWebTestCase
         $client = $this->client;
 
         $client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_change_password'),
             []
         );

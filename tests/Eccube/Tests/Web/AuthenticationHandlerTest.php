@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\Customer;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -29,7 +30,7 @@ final class AuthenticationHandlerTest extends AbstractWebTestCase
 
     public function testAuthenticationSuccessHandler()
     {
-        $this->client->request('POST', $this->generateUrl('mypage_login'), [
+        $this->client->request(Request::METHOD_POST, $this->generateUrl('mypage_login'), [
             '_csrf_token' => 'dummy',
             '_target_path' => $this->generateUrl('shopping'),
             '_failure_path' => $this->generateUrl('shopping_login'),
@@ -41,7 +42,7 @@ final class AuthenticationHandlerTest extends AbstractWebTestCase
 
     public function testAuthenticationFailureHandler()
     {
-        $this->client->request('POST', $this->generateUrl('mypage_login'), [
+        $this->client->request(Request::METHOD_POST, $this->generateUrl('mypage_login'), [
             '_csrf_token' => 'dummy',
             '_target_path' => $this->generateUrl('shopping'),
             '_failure_path' => $this->generateUrl('shopping_login'),
@@ -53,7 +54,7 @@ final class AuthenticationHandlerTest extends AbstractWebTestCase
 
     public function testAuthenticationSuccessHandlerWithInvalidPath()
     {
-        $this->client->request('POST', $this->generateUrl('mypage_login'), [
+        $this->client->request(Request::METHOD_POST, $this->generateUrl('mypage_login'), [
             '_csrf_token' => 'dummy',
             '_target_path' => 'http://example.com/bar',
             '_failure_path' => $this->generateUrl('shopping_login'),
@@ -66,7 +67,7 @@ final class AuthenticationHandlerTest extends AbstractWebTestCase
 
     public function testAuthenticationFailureHandlerWithInvalidPath()
     {
-        $this->client->request('POST', $this->generateUrl('mypage_login'), [
+        $this->client->request(Request::METHOD_POST, $this->generateUrl('mypage_login'), [
             '_csrf_token' => 'dummy',
             '_target_path' => $this->generateUrl('shopping'),
             '_failure_path' => 'http://example.com/baz',

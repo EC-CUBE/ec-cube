@@ -13,6 +13,8 @@
 
 namespace Eccube\Tests\Web\Admin\Content;
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Eccube\Entity\Layout;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Page;
@@ -47,14 +49,14 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
 
     public function testIndex()
     {
-        $this->client->request('GET', $this->generateUrl('admin_content_layout'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_content_layout'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testIndexWithPost()
     {
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl(
                 'admin_content_layout_edit',
                 ['id' => 1]
@@ -83,7 +85,7 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
     public function testIndexWithNew()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl(
                 'admin_content_layout_new'
             )
@@ -94,7 +96,7 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
     public function testIndexWithPostPreview()
     {
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl(
                 'admin_content_layout_preview',
                 ['id' => 1]
@@ -133,7 +135,7 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->flush();
 
         $this->client->request(
-            'DELETE',
+            Request::METHOD_DELETE,
             $this->generateUrl('admin_content_layout_delete', ['id' => $Layout->getId()])
         );
         $crawler = $this->client->followRedirect();
@@ -150,13 +152,13 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->flush();
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_content_layout_delete', ['id' => $Layout->getId()])
         );
-        $this->assertSame(405, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_METHOD_NOT_ALLOWED, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
 
         $this->client->request(
-            'DELETE',
+            Request::METHOD_DELETE,
             $this->generateUrl('admin_content_layout_delete', ['id' => 999999])
         );
         $this->assertTrue($this->client->getResponse()->isNotFound());
@@ -191,7 +193,7 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->flush();
 
         $this->client->request(
-            'DELETE',
+            Request::METHOD_DELETE,
             $this->generateUrl('admin_content_layout_delete', ['id' => $Layout->getId()])
         );
         $crawler = $this->client->followRedirect();

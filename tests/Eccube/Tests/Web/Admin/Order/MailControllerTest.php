@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin\Order;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Entity\MailHistory;
@@ -74,7 +75,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
     public function testIndex()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_order_mail', ['id' => $this->Order->getId()])
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -84,7 +85,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
     {
         $form = $this->createFormData();
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_mail', ['id' => $this->Order->getId()]),
             [
                 'mail' => $form,
@@ -98,7 +99,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
     {
         $form = $this->createFormData();
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_mail', ['id' => $this->Order->getId()]),
             [
                 'admin_order_mail' => $form,
@@ -126,7 +127,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
         // 注文完了メール
         $form['template'] = 1;
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_mail', ['id' => $this->Order->getId()]),
             [
                 'admin_order_mail' => $form,
@@ -143,7 +144,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
         // 会員仮登録完了メール
         $form['template'] = 2;
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_mail', ['id' => $this->Order->getId()]),
             [
                 'admin_order_mail' => $form,

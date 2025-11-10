@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin\Content;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -43,7 +44,7 @@ class JsControllerTest extends AbstractAdminWebTestCase
 
     public function testRoutingAdminContentJsIndex()
     {
-        $this->client->request('GET', $this->generateUrl('admin_content_js'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_content_js'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -55,7 +56,7 @@ $(function() {
 });
 __JS_CONTENTS__;
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_content_js'),
             ['form' => [
                 'js' => $js,
@@ -83,7 +84,7 @@ $(function() {
 });
 __JS_CONTENTS__;
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_content_js'),
             ['form' => [
                 'js' => $js,
@@ -108,7 +109,7 @@ $(function() {
 });
 __JS_CONTENTS__;
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_content_js'),
             ['form' => [
                 'js' => $js,

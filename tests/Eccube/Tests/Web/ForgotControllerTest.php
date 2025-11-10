@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Common\Constant;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
@@ -40,7 +41,7 @@ class ForgotControllerTest extends AbstractWebTestCase
 
     public function testIndex()
     {
-        $crawler = $this->client->request('GET', $this->generateUrl('forgot'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('forgot'));
 
         $this->expected = 'パスワードの再発行';
         $this->actual = $crawler->filter('div.ec-pageHeader > h1')->text();
@@ -57,7 +58,7 @@ class ForgotControllerTest extends AbstractWebTestCase
 
         // パスワード再発行リクエスト
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('forgot'),
             [
                 'login_email' => $Customer->getEmail(),
@@ -82,7 +83,7 @@ class ForgotControllerTest extends AbstractWebTestCase
 
         // メール URL クリック
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $forgot_path
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -94,7 +95,7 @@ class ForgotControllerTest extends AbstractWebTestCase
         // パスワード再設定リクエスト
         $password = 'password_Changed';
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('forgot_reset'),
             [
                 'login_email' => $Customer->getEmail(),
@@ -111,7 +112,7 @@ class ForgotControllerTest extends AbstractWebTestCase
     {
         $client = $this->client;
         $client->request(
-            'GET',
+            Request::METHOD_GET,
             '/forgot/reset/a___aaa'
         );
 
@@ -124,7 +125,7 @@ class ForgotControllerTest extends AbstractWebTestCase
     {
         $client = $this->client;
         $client->request(
-            'GET',
+            Request::METHOD_GET,
             '/forgot/reset/aaaa'
         );
         $this->expected = 404;

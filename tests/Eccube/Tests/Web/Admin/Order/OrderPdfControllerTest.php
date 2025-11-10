@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin\Order;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Common\Constant;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Master\OrderStatus;
@@ -57,7 +58,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
     {
         $Order = $this->createOrderForSearch();
 
-        $this->client->request('POST',
+        $this->client->request(Request::METHOD_POST,
             $this->generateUrl('admin_order_export_pdf'),
             [
                 '_token' => 'dummy',
@@ -80,7 +81,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
          * @var Crawler
          */
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_order')
         );
 
@@ -103,7 +104,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         /**
          * @var Crawler
          */
-        $crawler = $this->client->request('POST',
+        $crawler = $this->client->request(Request::METHOD_POST,
             $this->generateUrl('admin_order_export_pdf'),
             [
                 '_token' => 'dummy',
@@ -130,7 +131,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         /**
          * @var Crawler
          */
-        $crawler = $this->client->request('POST',
+        $crawler = $this->client->request(Request::METHOD_POST,
             $this->generateUrl('admin_order_export_pdf'),
             [
                 '_token' => 'dummy',
@@ -156,7 +157,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $this->expected = 'application/pdf';
         $this->verify();
 
-        $crawler = $this->client->request('GET', $this->generateUrl('admin_order_export_pdf'),
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_order_export_pdf'),
             [
                 '_token' => 'dummy',
                 'ids' => [$shippingId],
@@ -179,7 +180,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
      */
     public function testDownloadIdInvalid()
     {
-        $this->client->request('GET', $this->generateUrl('admin_order_export_pdf'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_order_export_pdf'));
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order')));
         /**
          * @var Crawler
@@ -210,7 +211,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         /**
          * @var Crawler
          */
-        $crawler = $client->request('POST', $this->generateUrl('admin_order_export_pdf'),
+        $crawler = $client->request(Request::METHOD_POST, $this->generateUrl('admin_order_export_pdf'),
             [
                 '_token' => 'dummy',
                 'ids' => [$shippingId],
@@ -269,7 +270,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         /**
          * @var Crawler
          */
-        $crawler = $client->request('POST', $this->generateUrl('admin_order_export_pdf'),
+        $crawler = $client->request(Request::METHOD_POST, $this->generateUrl('admin_order_export_pdf'),
             [
                 '_token' => 'dummy',
                 'ids' => [$shippingId],
@@ -325,7 +326,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->persist($OrderPdf);
         $this->entityManager->flush($OrderPdf);
 
-        $crawler = $client->request('POST', $this->generateUrl('admin_order_export_pdf'),
+        $crawler = $client->request(Request::METHOD_POST, $this->generateUrl('admin_order_export_pdf'),
             [
                 '_token' => 'dummy',
                 'ids' => [$shippingId],
@@ -359,7 +360,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $Shippings = $Order->getShippings();
         $shippingId = $Shippings[0]->getId();
 
-        $crawler = $this->client->request('POST', $this->generateUrl('admin_order_export_pdf'),
+        $crawler = $this->client->request(Request::METHOD_POST, $this->generateUrl('admin_order_export_pdf'),
             [
                 '_token' => 'dummy',
                 'ids' => [$shippingId],

@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin\Store;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Template;
 use Eccube\Repository\Master\DeviceTypeRepository;
@@ -88,7 +89,7 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
      */
     public function testDisplayList()
     {
-        $this->client->request('GET', $this->generateUrl('admin_store_template'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_store_template'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -106,7 +107,7 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
         $Template = $this->templateRepository->findOneBy(['code' => $this->code]);
 
         // テンプレートを選択
-        $this->client->request('POST', $this->generateUrl('admin_store_template'), [
+        $this->client->request(Request::METHOD_POST, $this->generateUrl('admin_store_template'), [
             'form' => [
                 '_token' => 'dummy',
                 'selected' => $Template->getId(),
@@ -123,7 +124,7 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
      */
     public function testDiaplayUpload()
     {
-        $this->client->request('GET', $this->generateUrl('admin_store_template_install'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_store_template_install'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -161,7 +162,7 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
         $Template = $this->templateRepository->findOneBy(['code' => $this->code]);
 
         // XXX failed to open stream: No such file or directoryが発生する
-        $this->client->request('GET',
+        $this->client->request(Request::METHOD_GET,
             $this->generateUrl('admin_store_template_download', ['id' => $Template->getId()]));
     }
 
@@ -180,7 +181,7 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
         $code = $Template->getCode();
 
         // 削除
-        $this->client->request('DELETE',
+        $this->client->request(Request::METHOD_DELETE,
             $this->generateUrl('admin_store_template_delete', ['id' => $Template->getId()]));
 
         $this->assertTrue($this->client->getResponse()->isRedirection());
@@ -196,7 +197,7 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
         $fileData = $this->createFileData($uppercase);
 
         return $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_store_template_install'),
             [
                 'admin_template' => $formData,

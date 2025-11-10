@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\System;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\Member;
 use Eccube\Repository\MemberRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
@@ -33,13 +34,13 @@ class MemberControllerTest extends AbstractAdminWebTestCase
 
     public function testRoutingAdminSettingSystemMember()
     {
-        $this->client->request('GET', $this->generateUrl('admin_setting_system_member'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_system_member'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testRoutingAdminSettingSystemMemberNew()
     {
-        $this->client->request('GET', $this->generateUrl('admin_setting_system_member_new'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_system_member_new'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -54,7 +55,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
             ->getId();
 
         // main
-        $this->client->request('GET',
+        $this->client->request(Request::METHOD_GET,
             $this->generateUrl('admin_setting_system_member_edit', ['id' => $memberId])
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -72,7 +73,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
 
         // main
         $redirectUrl = $this->generateUrl('admin_setting_system_member');
-        $this->client->request('DELETE',
+        $this->client->request(Request::METHOD_DELETE,
             $this->generateUrl('admin_setting_system_member_delete', ['id' => $test_member_id])
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
@@ -90,7 +91,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
 
         // main
         $redirectUrl = $this->generateUrl('admin_setting_system_member');
-        $this->client->request('PUT',
+        $this->client->request(Request::METHOD_PUT,
             $this->generateUrl('admin_setting_system_member_up', ['id' => $memberId])
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
@@ -108,7 +109,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
 
         // main
         $redirectUrl = $this->generateUrl('admin_setting_system_member');
-        $this->client->request('PUT',
+        $this->client->request(Request::METHOD_PUT,
             $this->generateUrl('admin_setting_system_member_down', ['id' => $test_member_id])
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
@@ -120,7 +121,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         $memberId = 99999;
 
         // main
-        $this->client->request('GET',
+        $this->client->request(Request::METHOD_GET,
             $this->generateUrl('admin_setting_system_member_edit', ['id' => $memberId])
         );
 
@@ -135,7 +136,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         $formData = $this->createFormData();
 
         // main
-        $this->client->request('POST',
+        $this->client->request(Request::METHOD_POST,
             $this->generateUrl('admin_setting_system_member_new'),
             [
                 'admin_member' => $formData,
@@ -158,7 +159,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         $formData = $this->createFormData();
         $formData['login_id'] = '';
         // main
-        $this->client->request('POST',
+        $this->client->request(Request::METHOD_POST,
             $this->generateUrl('admin_setting_system_member_new'),
             [
                 'admin_member' => $formData,
@@ -184,7 +185,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         $mid = $Member->getId();
 
         // main
-        $this->client->request('POST',
+        $this->client->request(Request::METHOD_POST,
             $this->generateUrl('admin_setting_system_member_edit', ['id' => $mid]),
             ['admin_member' => $formData]
         );
@@ -212,7 +213,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         $mid = $Member->getId();
 
         // main
-        $this->client->request('POST',
+        $this->client->request(Request::METHOD_POST,
             $this->generateUrl('admin_setting_system_member_edit', ['id' => $mid]),
             ['admin_member' => $formData]
         );
@@ -238,7 +239,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         $mid = $Member->getId();
 
         // main
-        $this->client->request('POST',
+        $this->client->request(Request::METHOD_POST,
             $this->generateUrl('admin_setting_system_member_edit', ['id' => $mid]),
             ['admin_member' => $formData]
         );
@@ -252,7 +253,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         $mid = 9999;
 
         // main
-        $this->client->request('PUT',
+        $this->client->request(Request::METHOD_PUT,
             $this->generateUrl('admin_setting_system_member_up', ['id' => $mid])
         );
 
@@ -275,7 +276,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         $newSortNo = $MemberTwo->getSortNo();
         $mid = $MemberOne->getId();
         // main
-        $this->client->request('PUT',
+        $this->client->request(Request::METHOD_PUT,
             $this->generateUrl('admin_setting_system_member_up', ['id' => $mid])
         );
 
@@ -293,7 +294,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         $mid = 9999;
 
         // main
-        $this->client->request('PUT',
+        $this->client->request(Request::METHOD_PUT,
             $this->generateUrl('admin_setting_system_member_down', ['id' => $mid])
         );
 
@@ -309,7 +310,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         $mid = $Member->getId();
         $oldSortNo = $Member->getSortNo();
         // main
-        $this->client->request('PUT',
+        $this->client->request(Request::METHOD_PUT,
             $this->generateUrl('admin_setting_system_member_down', ['id' => $mid])
         );
 
@@ -335,7 +336,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         $newSortNo = $MemberTwo->getSortNo();
         $mid = $MemberTwo->getId();
         // main
-        $this->client->request('PUT',
+        $this->client->request(Request::METHOD_PUT,
             $this->generateUrl('admin_setting_system_member_down', ['id' => $mid])
         );
 
@@ -353,7 +354,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         $mid = 99999;
 
         // main
-        $this->client->request('DELETE',
+        $this->client->request(Request::METHOD_DELETE,
             $this->generateUrl('admin_setting_system_member_delete', ['id' => $mid])
         );
 

@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin\Content;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class MaintenanceControllerTest extends AbstractAdminWebTestCase
@@ -42,7 +43,7 @@ class MaintenanceControllerTest extends AbstractAdminWebTestCase
 
     public function testIndex()
     {
-        $crawler = $this->client->request('GET',
+        $crawler = $this->client->request(Request::METHOD_GET,
             $this->generateUrl('admin_content_maintenance')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -51,7 +52,7 @@ class MaintenanceControllerTest extends AbstractAdminWebTestCase
 
         touch($this->maintenance_file_path);
 
-        $crawler = $this->client->request('GET',
+        $crawler = $this->client->request(Request::METHOD_GET,
             $this->generateUrl('admin_content_maintenance')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -63,14 +64,14 @@ class MaintenanceControllerTest extends AbstractAdminWebTestCase
     {
         touch($this->maintenance_file_path);
 
-        $crawler = $this->client->request('GET',
+        $crawler = $this->client->request(Request::METHOD_GET,
             $this->generateUrl('admin_content_maintenance')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         $this->assertTrue(file_exists($this->maintenance_file_path));
         $this->assertSame('無効にする', $crawler->filter('button.btn-ec-conversion')->text());
 
-        $crawler = $this->client->request('POST',
+        $crawler = $this->client->request(Request::METHOD_POST,
             $this->generateUrl('admin_disable_maintenance', ['mode' => 'manual']),
             [],
             [],
@@ -81,7 +82,7 @@ class MaintenanceControllerTest extends AbstractAdminWebTestCase
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $crawler = $this->client->request('GET',
+        $crawler = $this->client->request(Request::METHOD_GET,
             $this->generateUrl('admin_content_maintenance')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());

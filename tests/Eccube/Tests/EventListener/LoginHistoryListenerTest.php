@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\EventListener;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\LoginHistory;
 use Eccube\Entity\Master\LoginHistoryStatus;
 use Eccube\Tests\Web\AbstractWebTestCase;
@@ -22,7 +23,7 @@ class LoginHistoryListenerTest extends AbstractWebTestCase
     public function activeLogin()
     {
         $this->client->request(
-            'POST', $this->generateUrl('admin_login'),
+            Request::METHOD_POST, $this->generateUrl('admin_login'),
             [
                 'login_id' => 'admin',
                 'password' => 'password',
@@ -43,7 +44,7 @@ class LoginHistoryListenerTest extends AbstractWebTestCase
     public function testOnAuthenticationFailure()
     {
         $this->client->request(
-            'POST', $this->generateUrl('admin_login'),
+            Request::METHOD_POST, $this->generateUrl('admin_login'),
             [
                 'login_id' => 'admin',
                 'password' => 'password2',

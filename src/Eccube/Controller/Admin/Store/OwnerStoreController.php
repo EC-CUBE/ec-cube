@@ -39,13 +39,10 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-#[Route(path: '/%eccube_admin_route%/store/plugin/api')]
 class OwnerStoreController extends AbstractController
 {
     private static string $vendorName = 'ec-cube';
-
     private readonly BaseInfo $BaseInfo;
-
     /**
      * OwnerStoreController constructor.
      *
@@ -64,7 +61,6 @@ class OwnerStoreController extends AbstractController
     ) {
         $this->BaseInfo = $baseInfoRepository->get();
     }
-
     /**
      * Owner's Store Plugin Installation Screen - Search function
      *
@@ -72,8 +68,8 @@ class OwnerStoreController extends AbstractController
      *
      * @return array<string, mixed>|RedirectResponse
      */
-    #[Route(path: '/search', name: 'admin_store_plugin_owners_search', methods: ['GET', 'POST'])]
-    #[Route(path: '/search/page/{page_no}', name: 'admin_store_plugin_owners_search_page', requirements: ['page_no' => '\d+'], methods: ['GET', 'POST'])]
+    #[Route(path: '/%eccube_admin_route%/store/plugin/api/search', name: 'admin_store_plugin_owners_search', methods: ['GET', 'POST'])]
+    #[Route(path: '/%eccube_admin_route%/store/plugin/api/search/page/{page_no}', name: 'admin_store_plugin_owners_search_page', requirements: ['page_no' => '\d+'], methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Store/plugin_search.twig')]
     public function search(Request $request, PaginatorInterface $paginator, $page_no = null): array|RedirectResponse
     {
@@ -168,7 +164,6 @@ class OwnerStoreController extends AbstractController
             'Categories' => $category,
         ];
     }
-
     /**
      * Do confirm page
      *
@@ -176,8 +171,8 @@ class OwnerStoreController extends AbstractController
      *
      * @throws PluginException
      */
-    #[Route(path: '/install/{id}/confirm', name: 'admin_store_plugin_install_confirm', requirements: ['id' => '\d+'], methods: ['GET'])]
-    public function doConfirm(Request $request, $id): RedirectResponse|Response
+    #[Route(path: '/%eccube_admin_route%/store/plugin/api/install/{id}/confirm', name: 'admin_store_plugin_install_confirm', requirements: ['id' => '\d+'], methods: ['GET'])]
+    public function doConfirm($id): RedirectResponse|Response
     {
         try {
             $item = $this->pluginApiService->getPlugin($id);
@@ -195,11 +190,10 @@ class OwnerStoreController extends AbstractController
             return $this->redirectToRoute('admin_store_authentication_setting');
         }
     }
-
     /**
      * Api Install plugin by composer connect with package repo
      */
-    #[Route(path: '/install', name: 'admin_store_plugin_api_install', methods: ['POST'])]
+    #[Route(path: '/%eccube_admin_route%/store/plugin/api/install', name: 'admin_store_plugin_api_install', methods: ['POST'])]
     public function apiInstall(Request $request): JsonResponse
     {
         $this->isTokenValid();
@@ -241,11 +235,10 @@ class OwnerStoreController extends AbstractController
 
         return $this->json(['success' => false, 'log' => $log], 500);
     }
-
     /**
      * New ways to remove plugin: using composer command
      */
-    #[Route(path: '/delete/{id}/uninstall', name: 'admin_store_plugin_api_uninstall', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    #[Route(path: '/%eccube_admin_route%/store/plugin/api/delete/{id}/uninstall', name: 'admin_store_plugin_api_uninstall', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function apiUninstall(Plugin $Plugin): JsonResponse
     {
         $this->isTokenValid();
@@ -286,11 +279,10 @@ class OwnerStoreController extends AbstractController
             return $this->json(['success' => false, 'log' => $e->getMessage()], 500);
         }
     }
-
     /**
      * オーナーズブラグインインストール、アップデート
      */
-    #[Route(path: '/upgrade', name: 'admin_store_plugin_api_upgrade', methods: ['POST'])]
+    #[Route(path: '/%eccube_admin_route%/store/plugin/api/upgrade', name: 'admin_store_plugin_api_upgrade', methods: ['POST'])]
     public function apiUpgrade(Request $request): JsonResponse
     {
         $this->isTokenValid();
@@ -351,11 +343,10 @@ class OwnerStoreController extends AbstractController
 
         return $this->json(['success' => false, 'log' => $log], 500);
     }
-
     /**
      * オーナーズブラグインインストール、スキーマ更新
      */
-    #[Route(path: '/schema_update', name: 'admin_store_plugin_api_schema_update', methods: ['POST'])]
+    #[Route(path: '/%eccube_admin_route%/store/plugin/api/schema_update', name: 'admin_store_plugin_api_schema_update', methods: ['POST'])]
     public function apiSchemaUpdate(Request $request): JsonResponse
     {
         $this->isTokenValid();
@@ -397,11 +388,10 @@ class OwnerStoreController extends AbstractController
             return $this->json(['success' => false, 'log' => $log], 500);
         }
     }
-
     /**
      * オーナーズブラグインインストール、更新処理
      */
-    #[Route(path: '/update', name: 'admin_store_plugin_api_update', methods: ['POST'])]
+    #[Route(path: '/%eccube_admin_route%/store/plugin/api/update', name: 'admin_store_plugin_api_update', methods: ['POST'])]
     public function apiUpdate(Request $request): JsonResponse
     {
         $this->isTokenValid();
@@ -432,13 +422,12 @@ class OwnerStoreController extends AbstractController
 
         return $this->json(['success' => false, 'log' => $log], 500);
     }
-
     /**
      * Do confirm update page
      *
      * @return array<string, mixed>|RedirectResponse
      */
-    #[Route(path: '/upgrade/{id}/confirm', name: 'admin_store_plugin_update_confirm', requirements: ['id' => '\d+'], methods: ['GET'])]
+    #[Route(path: '/%eccube_admin_route%/store/plugin/api/upgrade/{id}/confirm', name: 'admin_store_plugin_update_confirm', requirements: ['id' => '\d+'], methods: ['GET'])]
     #[Template(template: '@admin/Store/plugin_confirm.twig')]
     public function doUpdateConfirm(Plugin $Plugin): array|RedirectResponse
     {

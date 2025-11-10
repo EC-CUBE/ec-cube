@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\Page;
 use Eccube\Entity\TradeLaw;
 use Eccube\Repository\TradeLawRepository;
@@ -29,7 +30,7 @@ class TradeLawControllerTest extends AbstractWebTestCase
 
     public function testRoutingIndex()
     {
-        $this->client->request('GET', $this->generateUrl('help_tradelaw'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('help_tradelaw'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -48,7 +49,7 @@ class TradeLawControllerTest extends AbstractWebTestCase
         }
         $this->entityManager->flush();
 
-        $crawler = $this->client->request('GET', $this->generateUrl('help_tradelaw'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('help_tradelaw'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         for ($i = 0; $i < $id; $i++) {
             $this->assertStringContainsString('Trade名称_'.$i, $crawler->outerHtml());
@@ -71,7 +72,7 @@ class TradeLawControllerTest extends AbstractWebTestCase
         }
         $this->entityManager->flush();
 
-        $crawler = $this->client->request('GET', $this->generateUrl('help_tradelaw'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('help_tradelaw'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         for ($i = 0; $i < $id; $i++) {
             $this->assertStringNotContainsString('Trade名称_'.$i, $crawler->outerHtml());

@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Transaction;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Application;
 use Eccube\Tests\ServiceProvider\CsrfMockServiceProvider;
 use Eccube\Tests\ServiceProvider\FixtureServiceProvider;
@@ -74,7 +75,7 @@ class TransactionListenerTest extends WebTestCase
     public function testTran1()
     {
         $client = $this->createClient();
-        $client->request('GET', '/tran1');
+        $client->request(Request::METHOD_GET, '/tran1');
 
         $this->verify('tran1');
     }
@@ -88,7 +89,7 @@ class TransactionListenerTest extends WebTestCase
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
         $companyName = $BaseInfo->getCompanyName();
         $client = $this->createClient();
-        $client->request('GET', '/tran2');
+        $client->request(Request::METHOD_GET, '/tran2');
 
         $this->verify($companyName);
     }
@@ -105,7 +106,7 @@ class TransactionListenerTest extends WebTestCase
         }
 
         $client = $this->createClient();
-        $client->request('GET', '/tran3');
+        $client->request(Request::METHOD_GET, '/tran3');
 
         $this->verify('tran3');
     }
@@ -128,7 +129,7 @@ class TransactionListenerTest extends WebTestCase
         $companyName = $BaseInfo->getCompanyName();
 
         $client = $this->createClient();
-        $client->request('GET', '/tran4');
+        $client->request(Request::METHOD_GET, '/tran4');
 
         $this->verify($companyName);
     }
@@ -153,7 +154,7 @@ class TransactionListenerTest extends WebTestCase
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
         $companyName = $BaseInfo->getCompanyName();
         $client = $this->createClient();
-        $client->request('GET', '/tran5');
+        $client->request(Request::METHOD_GET, '/tran5');
 
         $this->verify($companyName);
     }
@@ -177,7 +178,7 @@ class TransactionListenerTest extends WebTestCase
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
         $companyName = $BaseInfo->getCompanyName();
         $client = $this->createClient();
-        $client->request('GET', '/tran6');
+        $client->request(Request::METHOD_GET, '/tran6');
 
         $this->verify($companyName);
     }
@@ -204,7 +205,7 @@ class TransactionListenerTest extends WebTestCase
         }
 
         $client = $this->createClient();
-        $client->request('GET', '/tran7');
+        $client->request(Request::METHOD_GET, '/tran7');
 
         $this->verify('tran7-3');
     }
@@ -233,7 +234,7 @@ class TransactionListenerTest extends WebTestCase
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
         $companyName = $BaseInfo->getCompanyName();
         $client = $this->createClient();
-        $client->request('GET', '/tran8');
+        $client->request(Request::METHOD_GET, '/tran8');
 
         $this->verify($companyName);
     }
@@ -255,7 +256,7 @@ class TransactionListenerTest extends WebTestCase
     public function testTran9()
     {
         $client = $this->createClient();
-        $client->request('GET', '/tran9');
+        $client->request(Request::METHOD_GET, '/tran9');
 
         $this->verify('tran9-3');
     }

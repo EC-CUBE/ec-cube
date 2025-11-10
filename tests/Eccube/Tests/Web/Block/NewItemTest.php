@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Block;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Tests\Web\AbstractWebTestCase;
 
 class NewItemTest extends AbstractWebTestCase
@@ -48,7 +49,7 @@ class NewItemTest extends AbstractWebTestCase
     public function testNewItemBlock()
     {
         // 新着商品が表示されている
-        $crawler = $this->client->request('GET', $this->generateUrl('homepage'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('homepage'));
         $node = $crawler->filter('.ec-newItemRole__listItemTitle');
         $this->assertTrue(count($node) > 0);
     }
@@ -56,7 +57,7 @@ class NewItemTest extends AbstractWebTestCase
     public function testAutoNewItemBlock()
     {
         // 自動取得の新着商品が表示されている
-        $crawler = $this->client->request('GET', $this->generateUrl('homepage'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('homepage'));
         $node = $crawler->filter('.__getAutoNewItemBlock');
         $this->assertTrue(count($node) > 0);
     }

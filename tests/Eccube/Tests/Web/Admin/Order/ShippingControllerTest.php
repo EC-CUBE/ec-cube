@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin\Order;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Order;
@@ -42,7 +43,7 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
     public function testIndex()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_shipping_edit', ['id' => '99999'])
         );
         $this->assertTrue($this->client->getResponse()->isNotFound());
@@ -55,7 +56,7 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
         $Order = $this->createOrder($Customer);
 
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_shipping_edit', ['id' => $Order->getId()])
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -82,7 +83,7 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
         $this->assertNull($Shipping->getTrackingNumber());
 
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_shipping_edit', ['id' => $Order->getId()])
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -116,7 +117,7 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
 
         // 出荷登録画面表示
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_shipping_edit', ['id' => $Order->getId()])
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -143,7 +144,7 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
 
         // 登録
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_shipping_edit', ['id' => $Order->getId()]),
             [
                 'form' => $formData,
@@ -164,7 +165,7 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
 
         // 登録
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_shipping_edit', ['id' => $Order->getId()]),
             [
                 'form' => $formData,
@@ -193,7 +194,7 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
         $this->entityManager->flush();
 
         $this->client->request(
-            'PUT',
+            Request::METHOD_PUT,
             $this->generateUrl('admin_shipping_notify_mail', ['id' => $Shipping->getId()])
         );
 
@@ -224,7 +225,7 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
         $this->entityManager->flush();
 
         $this->client->request(
-            'PUT',
+            Request::METHOD_PUT,
             $this->generateUrl('admin_shipping_notify_mail', ['id' => $Shipping->getId()])
         );
 
@@ -250,7 +251,7 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
         $Shipping = $Order->getShippings()->first();
 
         $this->client->request(
-            'PUT',
+            Request::METHOD_PUT,
             $this->generateUrl('admin_shipping_notify_mail', ['id' => $Shipping->getId()])
         );
 
@@ -301,7 +302,7 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
         $formData['add_shipping'] = '';
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_shipping_edit', ['id' => $Order->getId()]),
             [
                 'form' => $formData,

@@ -34,39 +34,31 @@ class CalendarController extends AbstractController
      */
     #[Route(path: '/block/calendar', name: 'block_calendar', methods: ['GET'])]
     #[Template(template: 'Block/calendar.twig')]
-    public function index(Request $request): array
+    public function index(): array
     {
         $today = Carbon::now();
         $firstDateOfThisMonth = $today->copy()->startOfMonth();
         $firstDateOfNextMonth = $today->copy()->startOfMonth()->addMonth()->startOfMonth();
         $endDateOfNextMonth = $today->copy()->startOfMonth()->addMonth()->endOfMonth();
-
         // 2ヶ月間の定休日を取得
         $HolidaysOfTwoMonths = $this->calendarRepository->getHolidayList($firstDateOfThisMonth, $endDateOfNextMonth);
-
         // 今月のカレンダー配列を取得
         $thisMonthCalendar = $this->createCalendar($firstDateOfThisMonth);
-
         // 来月のカレンダー配列を取得
         $nextMonthCalendar = $this->createCalendar($firstDateOfNextMonth);
-
         // 定休日リストを取得
         $holidayListOfTwoMonths = [];
         foreach ($HolidaysOfTwoMonths as $Holiday) {
             $holidayListOfTwoMonths[] = $Holiday->getHoliday();
         }
-
         // 今月のカレンダー配列に定休日フラグを設定
         $thisMonthCalendar = $this->setHolidayAndTodayFlag($thisMonthCalendar, $holidayListOfTwoMonths, $today->copy());
-
         // 来月のカレンダー配列に定休日フラグを設定
         $nextMonthCalendar = $this->setHolidayAndTodayFlag($nextMonthCalendar, $holidayListOfTwoMonths, $today->copy()->startOfMonth()->addMonth());
-
         // 各カレンダータイトルを作成
         $monthFormat = $this->translator->trans('front.block.calendar.month_format');
         $thisMonthTitle = $firstDateOfThisMonth->format($monthFormat);
         $nextMonthTitle = $firstDateOfNextMonth->format($monthFormat);
-
         return [
             'ThisMonthTitle' => $thisMonthTitle,
             'NextMonthTitle' => $nextMonthTitle,

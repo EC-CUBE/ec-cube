@@ -13,6 +13,8 @@
 
 namespace Eccube\Tests\Web\Admin\Store;
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Eccube\Entity\BaseInfo;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -25,7 +27,7 @@ class PluginControllerTest extends AbstractAdminWebTestCase
     public function testRoutingAuthentication()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_store_authentication_setting')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -40,7 +42,7 @@ class PluginControllerTest extends AbstractAdminWebTestCase
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_store_authentication_setting'),
             [
                 'admin_authentication' => $form,
@@ -67,7 +69,7 @@ class PluginControllerTest extends AbstractAdminWebTestCase
             'version' => $param2,
         ];
 
-        $this->client->request('POST',
+        $this->client->request(Request::METHOD_POST,
             $this->generateUrl('admin_store_plugin_api_install', $form),
             [],
             [],
@@ -77,7 +79,7 @@ class PluginControllerTest extends AbstractAdminWebTestCase
             ]
         );
         //　ダウンロードできないことを確認
-        $this->assertSame(500, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_INTERNAL_SERVER_ERROR, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
         //　ログを確認
         $this->assertContains($message, json_decode($this->client->getResponse()->getContent())->log);
     }
@@ -97,7 +99,7 @@ class PluginControllerTest extends AbstractAdminWebTestCase
             'version' => $param2,
         ];
 
-        $this->client->request('POST',
+        $this->client->request(Request::METHOD_POST,
             $this->generateUrl('admin_store_plugin_api_upgrade', $form),
             [],
             [],
@@ -107,7 +109,7 @@ class PluginControllerTest extends AbstractAdminWebTestCase
             ]
         );
         //　ダウンロードできないことを確認
-        $this->assertSame(500, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_INTERNAL_SERVER_ERROR, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
 
         //　ログを確認
         $this->assertStringContainsString($message, implode(',', json_decode($this->client->getResponse()->getContent())->log));

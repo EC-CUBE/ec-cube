@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\MailTemplate;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\Filesystem\Filesystem;
@@ -37,7 +38,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
      */
     public function testRouting(): void
     {
-        $this->client->request('GET', $this->generateUrl('admin_setting_shop_mail'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_shop_mail'));
         $this->assertTrue($this->client->getResponse()->isOk());
     }
 
@@ -107,7 +108,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $this->verify();
 
         // 編集画面を表示
-        $this->client->request('GET',
+        $this->client->request(Request::METHOD_GET,
             $this->generateUrl('admin_setting_shop_mail_edit', ['id' => $id])
         );
         $this->assertTrue($this->client->getResponse()->isOk());
@@ -231,7 +232,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
 
         // 削除されず残っている
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_setting_shop_mail_edit', ['id' => $MailTemplate->getId()]),
         );
         // 編集画面を表示可能
@@ -251,7 +252,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
         ], $form);
 
         return $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop_mail'),
             ['mail' => $form]
         );
@@ -270,7 +271,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
         ], $form);
 
         return $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop_mail_edit', ['id' => $id]),
             ['mail' => $form]
         );
@@ -279,7 +280,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
     private function senarioDelete($id)
     {
         return $this->client->request(
-            'DELETE',
+            Request::METHOD_DELETE,
             $this->generateUrl('admin_setting_shop_mail_delete', ['id' => $id]),
         );
     }

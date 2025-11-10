@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Page;
 use Eccube\Repository\BaseInfoRepository;
@@ -22,13 +23,13 @@ class TopControllerTest extends AbstractWebTestCase
 {
     public function testRoutingIndex()
     {
-        $this->client->request('GET', $this->generateUrl('homepage'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('homepage'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testCheckFavicon()
     {
-        $crawler = $this->client->request('GET', $this->generateUrl('homepage'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('homepage'));
         $node = $crawler->filter('link[rel=icon]');
         $this->assertSame('/html/user_data/assets/img/common/favicon.ico', $node->attr('href'));
     }
@@ -40,7 +41,7 @@ class TopControllerTest extends AbstractWebTestCase
         $BaseInfo->setGaId('UA-12345678-1');
         $this->entityManager->flush();
 
-        $crawler = $this->client->request('GET', $this->generateUrl('homepage'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('homepage'));
         $node = $crawler->filterXPath('//script[contains(@src, "googletagmanager")]');
         $this->assertSame('https://www.googletagmanager.com/gtag/js?id=UA-12345678-1', $node->attr('src'));
 
@@ -48,7 +49,7 @@ class TopControllerTest extends AbstractWebTestCase
         $BaseInfo->setGaId('');
         $this->entityManager->flush();
 
-        $crawler = $this->client->request('GET', $this->generateUrl('homepage'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('homepage'));
         $node = $crawler->filterXPath('//script[contains(@src, "googletagmanager")]');
         $this->assertEmpty($node);
     }
@@ -71,7 +72,7 @@ class TopControllerTest extends AbstractWebTestCase
         $shopName = $baseInfoRepository->get()->getShopName();
         $expected_desc = mb_substr($description, 0, 120, 'utf-8');
 
-        $crawler = $this->client->request('GET', $this->generateUrl('homepage'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('homepage'));
 
         $this->assertEquals($shopName, $crawler->filter('meta[property="og:site_name"]')->attr('content'));
         $this->assertSame('website', $crawler->filter('meta[property="og:type"]')->attr('content'));

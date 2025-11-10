@@ -66,8 +66,6 @@ return RectorConfig::configure()
                __DIR__ . '/src/Eccube/Rector',
                // 特定のルールを除外する場合
                // Rector\CodeQuality\Rector\Class_\InlineConstructorDefaultToPropertyRector::class,
-               //ClassPropertyAssignToConstructorPromotionRector::class, // プロモーション構文に変換する際に、@paramなどが削除されるため除外
-               //ClosureToArrowFunctionRector::class, // アロー関数への変換は一旦スキップ
                // 8.3以上で対応可能
                AddOverrideAttributeToOverriddenMethodsRector::class, // オーバーライドメソッドに @Override 属性を追加する PHP 8.3 以降で有効
                AddTypeToConstRector::class, // [BC]定数に型を追加する PHP 8.3 以降で有効
@@ -91,7 +89,7 @@ return RectorConfig::configure()
                SetList::DEAD_CODE,
                LevelSetList::UP_TO_PHP_84, // PHPバージョンに合わせる
                SymfonySetList::SYMFONY_74, // Symfonyのバージョンに合わせる (EC-CUBEのバージョンによって調整が必要)
-               // SymfonySetList::SYMFONY_CODE_QUALITY,
+               SymfonySetList::SYMFONY_CODE_QUALITY,
                // SymfonySetList::SYMFONY_CONSTRUCTOR_INJECTION,
                // DoctrineSetList::DOCTRINE_CODE_QUALITY,
                // DoctrineSetList::DOCTRINE_DBAL_30, // Doctrine DBALのバージョンに合わせる

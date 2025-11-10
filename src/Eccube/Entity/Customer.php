@@ -45,6 +45,7 @@ if (!class_exists(Customer::class)) {
     #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
     #[ORM\HasLifecycleCallbacks]
     #[ORM\Entity(repositoryClass: CustomerRepository::class)]
+    #[UniqueEntity(fields: 'email', message: 'form_error.customer_already_exists', repositoryMethod: 'getNonWithdrawingCustomers')]
     class Customer extends AbstractEntity implements UserInterface, PasswordAuthenticatedUserInterface, LegacyPasswordAuthenticatedUserInterface, \Serializable, \Stringable
     {
         /**
@@ -299,16 +300,6 @@ if (!class_exists(Customer::class)) {
         #[\Override]
         public function eraseCredentials(): void
         {
-        }
-
-        // TODO: できればFormTypeで行いたい
-        public static function loadValidatorMetadata(ClassMetadata $metadata): void
-        {
-            $metadata->addConstraint(new UniqueEntity([
-                'fields' => 'email',
-                'message' => 'form_error.customer_already_exists',
-                'repositoryMethod' => 'getNonWithdrawingCustomers',
-            ]));
         }
 
         /**

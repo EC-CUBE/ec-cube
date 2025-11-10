@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin\Customer;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
@@ -67,7 +68,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
     public function testIndex()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_customer_edit', ['id' => $this->Customer->getId()])
         );
 
@@ -80,7 +81,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
     public function testIndexBackButton()
     {
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_customer_edit', ['id' => $this->Customer->getId()])
         );
 
@@ -96,7 +97,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
     {
         $form = $this->createFormData();
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_customer_edit', ['id' => $this->Customer->getId()]),
             ['admin_customer' => $form]
         );
@@ -119,7 +120,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
     public function testNew()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_customer_new')
         );
 
@@ -133,7 +134,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
     {
         $form = $this->createFormData();
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_customer_new'),
             ['admin_customer' => $form]
         );
@@ -159,7 +160,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->flush();
 
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_customer_edit', ['id' => $id])
         );
 
@@ -184,7 +185,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
         unset($this->Customer);
 
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_customer_edit', ['id' => $id])
         );
 
@@ -208,7 +209,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->flush();
 
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_customer_edit', ['id' => $id])
         );
 
@@ -218,19 +219,19 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
         $this->verify('デフォルトの表示件数確認テスト');
 
         // 表示件数入力値は正しくない場合はデフォルトの表示件数になるテスト
-        $crawler = $this->client->request('GET', $this->generateUrl('admin_customer_edit', ['id' => $id, 'page_no' => 1, 'page_count' => 999999]));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_customer_edit', ['id' => $id, 'page_no' => 1, 'page_count' => 999999]));
         $this->expected = '50件';
         $this->actual = $crawler->filter('#orderHistory select.form-select > option[selected]')->text();
         $this->verify('表示件数入力値は正しくない場合はデフォルトの表示件数になるテスト');
 
         // 表示件数70件テスト
-        $crawler = $this->client->request('GET', $this->generateUrl('admin_customer_edit', ['id' => $id, 'page_no' => 1, 'page_count' => 70]));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_customer_edit', ['id' => $id, 'page_no' => 1, 'page_count' => 70]));
         $this->expected = '70件';
         $this->actual = $crawler->filter('#orderHistory select.form-select > option[selected]')->text();
         $this->verify('表示件数70件テスト');
 
         // 表示件数はSESSIONから取得するテスト
-        $crawler = $this->client->request('GET', $this->generateUrl('admin_customer_edit', ['id' => $id, 'page_no' => 1, 'page_count' => 100]));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_customer_edit', ['id' => $id, 'page_no' => 1, 'page_count' => 100]));
         $this->expected = '100件';
         $this->actual = $crawler->filter('#orderHistory select.form-select >  option[selected]')->text();
         $this->verify('表示件数はSESSIONから取得するテスト');
@@ -244,7 +245,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
         $form = $this->createFormData();
         $form['status'] = 3;
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_customer_edit', ['id' => $this->Customer->getId()]),
             ['admin_customer' => $form]
         );
@@ -264,7 +265,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
         $form['email'] = 'aa..@example.com';
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_customer_edit', ['id' => $this->Customer->getId()]),
             ['admin_customer' => $form]
         );

@@ -13,12 +13,14 @@
 
 namespace Eccube\Tests\Web;
 
+use Symfony\Component\HttpFoundation\Request;
+
 class BlockControllerTest extends AbstractWebTestCase
 {
     public function testIndex()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('block_search_product')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());

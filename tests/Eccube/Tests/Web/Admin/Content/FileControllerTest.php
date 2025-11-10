@@ -13,6 +13,8 @@
 
 namespace Eccube\Tests\Web\Admin\Content;
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\DomCrawler\Crawler;
@@ -22,7 +24,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
 {
     public function testIndex()
     {
-        $this->client->request('GET', $this->generateUrl('admin_content_file'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_content_file'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -33,7 +35,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
         file_put_contents($filepath, $contents);
 
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_content_file_view').'?file='.$this->getJailDir($filepath)
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -50,11 +52,11 @@ class FileControllerTest extends AbstractAdminWebTestCase
         file_put_contents($filepath, $contents);
 
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_content_file_view').'?file=/../user_data/aaa.html'
         );
         $this->assertFalse($this->client->getResponse()->isSuccessful());
-        $this->assertSame(404, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 
     public function testDownload()
@@ -64,7 +66,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
         file_put_contents($filepath, $contents);
 
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_content_file_download').'?select_file='.$this->getJailDir($filepath)
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -81,7 +83,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
         file_put_contents($filepath, $contents);
 
         $this->client->request(
-            'DELETE',
+            Request::METHOD_DELETE,
             $this->generateUrl('admin_content_file_delete').'?select_file='.$this->getJailDir($filepath)
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_content_file', ['tree_select_file' => dirname((string) $this->getJailDir($filepath))])));
@@ -96,7 +98,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
     public function testDeleteWithEmpty()
     {
         $this->client->request(
-            'DELETE',
+            Request::METHOD_DELETE,
             $this->generateUrl('admin_content_file_delete').'?select_file='
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_content_file')));
@@ -106,7 +108,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
     {
         $folder = 'create_folder';
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_content_file'),
             [
                 'form' => [
@@ -129,7 +131,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
     {
         $folder = 'create_folder';
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_content_file'),
             [
                 'form' => [
@@ -144,7 +146,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         $this->assertTrue(is_dir($this->getUserDataDir().'/'.$folder));
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_content_file'),
             [
                 'form' => [
@@ -186,7 +188,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
             true                // test mode
         );
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_content_file'),
             [
                 'form' => [
@@ -264,7 +266,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
         );
 
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_content_file'),
             [
                 'form' => [
@@ -306,7 +308,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
         );
 
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_content_file'),
             [
                 'form' => [

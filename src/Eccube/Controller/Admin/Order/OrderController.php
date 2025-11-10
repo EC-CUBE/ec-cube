@@ -240,7 +240,7 @@ class OrderController extends AbstractController
 
         $this->addSuccess('admin.common.delete_complete', 'admin');
 
-        return $this->redirect($this->generateUrl('admin_order', ['resume' => Constant::ENABLED]));
+        return $this->redirectToRoute('admin_order', ['resume' => Constant::ENABLED]);
     }
 
     /**
@@ -573,7 +573,7 @@ class OrderController extends AbstractController
         // ダウンロードする
         $response = new Response(
             $orderPdfService->outputPdf(),
-            200,
+            Response::HTTP_OK,
             ['content-type' => 'application/pdf']
         );
 

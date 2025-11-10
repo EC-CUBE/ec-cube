@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin\Product;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Common\Constant;
 use Eccube\Entity\ClassCategory;
 use Eccube\Entity\ClassName;
@@ -49,7 +50,7 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
             ->getId();
 
         // main
-        $this->client->request('GET',
+        $this->client->request(Request::METHOD_GET,
             $this->generateUrl('admin_product_class_category', ['class_name_id' => $test_class_name_id])
         );
 
@@ -80,7 +81,7 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
             ->getId();
 
         // main
-        $this->client->request('GET',
+        $this->client->request(Request::METHOD_GET,
             $this->generateUrl('admin_product_class_category_edit',
                 ['class_name_id' => $test_class_name_id, 'id' => $test_class_category_id]),
             ['_token' => 'dummy']
@@ -106,7 +107,7 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
         $editName = 'new name';
 
         // main
-        $this->client->request('GET',
+        $this->client->request(Request::METHOD_GET,
             $this->generateUrl('admin_product_class_category',
                 ['class_name_id' => $classNameId])
         );
@@ -118,7 +119,7 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
                 Constant::TOKEN_NAME => 'dummy',
             ],
         ];
-        $this->client->request('POST',
+        $this->client->request(Request::METHOD_POST,
             $this->generateUrl('admin_product_class_category_edit', ['class_name_id' => $classNameId, 'id' => $classCategoryId]),
             $editInlineForm
         );
@@ -151,7 +152,7 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
 
         // main
         $redirectUrl = $this->generateUrl('admin_product_class_category', ['class_name_id' => $test_class_name_id]);
-        $this->client->request('DELETE',
+        $this->client->request(Request::METHOD_DELETE,
             $this->generateUrl('admin_product_class_category_delete',
                 ['class_name_id' => $test_class_name_id, 'id' => $test_class_category_id]
             ),
@@ -184,7 +185,7 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
 
         // main
         $redirectUrl = $this->generateUrl('admin_product_class_category', ['class_name_id' => $test_class_name_id]);
-        $this->client->request('PUT',
+        $this->client->request(Request::METHOD_PUT,
             $this->generateUrl('admin_product_class_category_visibility',
                 ['class_name_id' => $test_class_name_id, 'id' => $test_class_category_id]),
             ['_token' => 'dummy']
@@ -218,14 +219,14 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->flush($ClassCategory);
 
         $client = $this->client;
-        $client->request('POST', $this->generateUrl('admin_product_class_category_sort_no_move'),
+        $client->request(Request::METHOD_POST, $this->generateUrl('admin_product_class_category_sort_no_move'),
             $testData,
             [],
             ['HTTP_X-Requested-With' => 'XMLHttpRequest']
         );
         $this->assertTrue($client->getResponse()->isSuccessful());
         /** @var Crawler $crawler */
-        $crawler = $client->request('GET', $this->generateUrl('admin_product_class_category', ['class_name_id' => 1]));
+        $crawler = $client->request(Request::METHOD_GET, $this->generateUrl('admin_product_class_category', ['class_name_id' => 1]));
 
         // チョコ, 抹茶, バニラ sort by rank setup above.
         $this->expected = '抹茶';

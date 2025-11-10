@@ -13,6 +13,8 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Eccube\Common\Constant;
 use Eccube\Entity\Csv;
 use Eccube\Entity\Master\CsvType;
@@ -23,7 +25,7 @@ class CsvControllerTest extends AbstractAdminWebTestCase
 {
     public function testRoutingCsv()
     {
-        $this->client->request('GET', $this->generateUrl('admin_setting_shop_csv', ['id' => 1]));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_shop_csv', ['id' => 1]));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -54,9 +56,9 @@ class CsvControllerTest extends AbstractAdminWebTestCase
 
     public function testRoutingCsvFail()
     {
-        $this->client->request('GET', $this->generateUrl('admin_setting_shop_csv', ['id' => 9999]));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_shop_csv', ['id' => 9999]));
 
-        $this->assertSame(404, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 
     public function testSubmit()
@@ -77,7 +79,7 @@ class CsvControllerTest extends AbstractAdminWebTestCase
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop_csv', ['id' => $csvType]),
             ['form' => $form]
         );

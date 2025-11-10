@@ -106,10 +106,10 @@ class CustomerDeliveryEditController extends AbstractController
 
             $this->addSuccess('admin.common.save_complete', 'admin');
 
-            return $this->redirect($this->generateUrl('admin_customer_delivery_edit', [
+            return $this->redirectToRoute('admin_customer_delivery_edit', [
                 'id' => $Customer->getId(),
                 'did' => $CustomerAddress->getId(),
-            ]));
+            ]);
         }
 
         return [
@@ -138,7 +138,7 @@ class CustomerDeliveryEditController extends AbstractController
             if ($CustomerAddress->getCustomer()->getId() != $Customer->getId()) {
                 $this->deleteMessage();
 
-                return $this->redirect($this->generateUrl('admin_customer_edit', ['id' => $Customer->getId()]));
+                return $this->redirectToRoute('admin_customer_edit', ['id' => $Customer->getId()]);
             }
         }
 
@@ -163,6 +163,6 @@ class CustomerDeliveryEditController extends AbstractController
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_CUSTOMER_DELIVERY_DELETE_COMPLETE);
 
-        return $this->redirect($this->generateUrl('admin_customer_edit', ['id' => $Customer->getId()]));
+        return $this->redirectToRoute('admin_customer_edit', ['id' => $Customer->getId()]);
     }
 }

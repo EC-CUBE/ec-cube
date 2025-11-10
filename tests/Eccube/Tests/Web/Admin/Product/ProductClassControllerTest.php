@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin\Product;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Common\Constant;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\ClassCategory;
@@ -59,7 +60,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
     {
         $Product = $this->createProduct();
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_product_product_class', ['id' => $Product->getId()])
         );
 
@@ -78,7 +79,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
     {
         $Product = $this->createProduct(null, 0);
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_product_product_class', ['id' => $Product->getId()])
         );
 
@@ -108,7 +109,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // select class name
         /* @var Crawler $crawler */
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_product_product_class', ['id' => $product->getId()])
         );
         $form = $crawler->selectButton('商品規格の設定')->form();
@@ -152,7 +153,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // select class name
         /* @var Crawler $crawler */
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_product_product_class', ['id' => $product->getId()])
         );
         $form = $crawler->selectButton('商品規格の設定')->form();
@@ -201,7 +202,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // select class name
         /* @var Crawler $crawler */
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_product_product_class', ['id' => $product->getId()])
         );
         $form = $crawler->selectButton('商品規格の設定')->form();
@@ -248,7 +249,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // select class name
         /* @var Crawler $crawler */
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_product_product_class', ['id' => $product->getId()])
         );
         $form = $crawler->selectButton('商品規格の設定')->form();
@@ -292,7 +293,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // select class name
         /* @var Crawler $crawler */
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_product_product_class', ['id' => $id])
         );
 
@@ -331,7 +332,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // select class name
         /* @var Crawler $crawler */
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_product_product_class', ['id' => $id])
         );
 
@@ -371,7 +372,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // select class name
         /* @var Crawler $crawler */
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_product_product_class', ['id' => $id])
         );
 
@@ -411,7 +412,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
 
         /* @var Crawler $crawler */
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_product_product_class', ['id' => $id])
         );
 
@@ -466,7 +467,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // select class name
         /* @var Crawler $crawler */
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_product_product_class', ['id' => $product->getId()])
         );
 
@@ -507,7 +508,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // select class name
         /* @var Crawler $crawler */
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_product_product_class', ['id' => $id])
         );
 
@@ -567,7 +568,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // select class name
         /* @var Crawler $crawler */
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_product_product_class', ['id' => $id])
         );
 
@@ -625,7 +626,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         $this->entityManager->persist($ClassCategory);
         $this->entityManager->flush($ClassCategory);
         $client = $this->client;
-        $crawler = $client->request('GET', $this->generateUrl('admin_product_product_class', ['id' => 1]));
+        $crawler = $client->request(Request::METHOD_GET, $this->generateUrl('admin_product_product_class', ['id' => 1]));
         $this->assertTrue($client->getResponse()->isSuccessful());
 
         $classCategories = [];
@@ -663,7 +664,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
             'id' => $Product->getId(),
             Constant::TOKEN_NAME => 'dummy',
         ];
-        $this->client->request('POST', $this->generateUrl('admin_product_product_copy', $params));
+        $this->client->request(Request::METHOD_POST, $this->generateUrl('admin_product_product_copy', $params));
         $this->assertTrue($this->client->getResponse()->isRedirect(), '商品コピーが正常に完了しました');
 
         preg_match('|product/product/([0-9]+)/edit|', $this->client->getResponse()->headers->get('Location') ?? '', $matches);
@@ -676,7 +677,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         );
         $this->assertCount(3, $ProductClasses, '規格の数が3個であること');
 
-        $crawler = $this->client->request('GET', $this->generateUrl('admin_product_product_class', ['id' => $product_id]));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_product_product_class', ['id' => $product_id]));
 
         $form = $crawler->selectButton('規格を初期化')->form();
         $this->client->submit($form);

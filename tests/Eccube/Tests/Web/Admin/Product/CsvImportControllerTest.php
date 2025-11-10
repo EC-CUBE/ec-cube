@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin\Product;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Category;
 use Eccube\Entity\Product;
@@ -382,7 +383,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->expectOutputString('商品ID,公開ステータス(ID),商品名,ショップ用メモ欄,商品説明(一覧),商品説明(詳細),検索ワード,フリーエリア,商品削除フラグ,商品画像,商品カテゴリ(ID),タグ(ID),販売種別(ID),規格分類1(ID),規格分類2(ID),発送日目安(ID),商品コード,在庫数,在庫数無制限フラグ,販売制限数,通常価格,販売価格,送料,税率'."\n");
 
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_product_csv_template', ['type' => 'product'])
         );
 
@@ -607,7 +608,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->expectOutputString('カテゴリID,カテゴリ名,親カテゴリID,カテゴリ削除フラグ'."\n");
 
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_product_csv_template', ['type' => 'category'])
         );
 
@@ -817,7 +818,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         );
 
         return $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl($bind),
             [
                 'admin_csv_import' => [
@@ -1117,7 +1118,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         copy($this->filepath, $this->eccubeConfig['eccube_csv_temp_realdir'].'/'.$fileName);
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_product_csv_split_import'),
             [
                 'file_name' => $fileName,
@@ -1141,7 +1142,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         touch($this->eccubeConfig['eccube_csv_temp_realdir'].'/'.$fileName);
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_product_csv_split_cleanup'),
             [
                 'files' => [$fileName],

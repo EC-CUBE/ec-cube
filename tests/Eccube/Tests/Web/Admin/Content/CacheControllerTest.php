@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin\Content;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 /**
@@ -23,7 +24,7 @@ class CacheControllerTest extends AbstractAdminWebTestCase
     public function testRoutingAdminContentCache()
     {
         $client = $this->client;
-        $client->request('GET',
+        $client->request(Request::METHOD_GET,
             $this->generateUrl('admin_content_cache')
         );
         $this->assertTrue($client->getResponse()->isSuccessful());
@@ -38,7 +39,7 @@ class CacheControllerTest extends AbstractAdminWebTestCase
         $cacheDir = static::getContainer()->getParameter('kernel.cache_dir');
         file_put_contents($cacheDir.'/twig/sample', 'test');
 
-        $client->request('POST', $url, [
+        $client->request(Request::METHOD_POST, $url, [
             'form' => [
                 '_token' => 'dummy',
             ],

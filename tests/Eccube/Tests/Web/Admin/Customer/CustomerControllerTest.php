@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin\Customer;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CsvType;
@@ -65,7 +66,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
     public function testIndex()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_customer')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -81,7 +82,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         }
 
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_customer_page', ['page_no' => 2])
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -93,7 +94,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
     public function testIndexWithPost()
     {
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_customer'),
             ['admin_search_customer' => ['_token' => 'dummy']]
         );
@@ -110,7 +111,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
     public function testIndexWithPostSex()
     {
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_customer'),
             ['admin_search_customer' => ['_token' => 'dummy', 'sex' => [2]]]
         );
@@ -125,7 +126,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
     public function testIndexWithPostSearchByEmail()
     {
         $crawler = $this->client->request(
-            'POST', $this->generateUrl('admin_customer'),
+            Request::METHOD_POST, $this->generateUrl('admin_customer'),
             ['admin_search_customer' => ['_token' => 'dummy', 'multi' => 'ser-7']]
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -143,7 +144,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         $Customer = $this->entityManager->getRepository(Customer::class)->findOneBy([], ['id' => 'DESC']);
 
         $crawler = $this->client->request(
-            'POST', $this->generateUrl('admin_customer'),
+            Request::METHOD_POST, $this->generateUrl('admin_customer'),
             ['admin_search_customer' => ['_token' => 'dummy', 'multi' => $Customer->getId()]]
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -170,7 +171,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         $ProductName = $Order->getOrderItems()->filter(fn ($OrderItems) => $OrderItems->isProduct())->first()->getProductName();
 
         $crawler = $this->client->request(
-            'POST', $this->generateUrl('admin_customer'),
+            Request::METHOD_POST, $this->generateUrl('admin_customer'),
             ['admin_search_customer' => ['_token' => 'dummy', 'buy_product_name' => $ProductName]]
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -204,7 +205,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
     {
         $Customer = $this->createCustomer();
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_customer_resend', ['id' => $Customer->getId()])
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_customer')));
@@ -229,14 +230,14 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
     {
         $Customer = $this->createCustomer();
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_customer_resend', ['id' => $Customer->getId()])
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_customer')));
         $MessageFistTime = $this->getMailerMessage(0);
 
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_customer_resend', ['id' => $Customer->getId()])
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_customer')));
@@ -258,7 +259,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         $Customer = $this->createCustomer();
         $id = $Customer->getId();
         $this->client->request(
-            'DELETE',
+            Request::METHOD_DELETE,
             $this->generateUrl('admin_customer_delete', ['id' => $Customer->getId()])
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_customer_page',
@@ -275,7 +276,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
     public function testExport()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_customer_export'),
             ['admin_search_customer' => ['_token' => 'dummy']]
         );

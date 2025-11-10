@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Mypage;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\Customer;
 use Eccube\Tests\Web\AbstractWebTestCase;
 
@@ -74,7 +75,7 @@ class ChangeControllerTest extends AbstractWebTestCase
         $this->loginTo($this->Customer);
 
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('mypage_change')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -86,7 +87,7 @@ class ChangeControllerTest extends AbstractWebTestCase
 
         $form = $this->createFormData();
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('mypage_change'),
             ['entry' => $form]
         );
@@ -108,7 +109,7 @@ class ChangeControllerTest extends AbstractWebTestCase
             'second' => $this->eccubeConfig['eccube_default_password'],
         ];
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('mypage_change'),
             ['entry' => $form]
         );
@@ -121,7 +122,7 @@ class ChangeControllerTest extends AbstractWebTestCase
         $this->loginTo($this->Customer);
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('mypage_change'),
             []
         );
@@ -133,7 +134,7 @@ class ChangeControllerTest extends AbstractWebTestCase
         $this->loginTo($this->Customer);
 
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('mypage_change_complete')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());

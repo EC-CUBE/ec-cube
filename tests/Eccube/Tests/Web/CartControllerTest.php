@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Common\Constant;
 use Eccube\Entity\ProductClass;
 
@@ -20,13 +21,13 @@ class CartControllerTest extends AbstractWebTestCase
 {
     public function testRoutingCart()
     {
-        $this->client->request('GET', '/cart');
+        $this->client->request(Request::METHOD_GET, '/cart');
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testRoutingCartUp()
     {
-        $this->client->request('PUT', '/cart/up/1',
+        $this->client->request(Request::METHOD_PUT, '/cart/up/1',
             [Constant::TOKEN_NAME => 'dummy']
         );
         $this->assertTrue($this->client->getResponse()->isRedirection());
@@ -34,7 +35,7 @@ class CartControllerTest extends AbstractWebTestCase
 
     public function testRoutingCartDown()
     {
-        $this->client->request('PUT', '/cart/down/1',
+        $this->client->request(Request::METHOD_PUT, '/cart/down/1',
             [Constant::TOKEN_NAME => 'dummy']
         );
         $this->assertTrue($this->client->getResponse()->isRedirection());
@@ -42,7 +43,7 @@ class CartControllerTest extends AbstractWebTestCase
 
     public function testRoutingCartRemove()
     {
-        $this->client->request('PUT', '/cart/remove/1',
+        $this->client->request(Request::METHOD_PUT, '/cart/remove/1',
             [Constant::TOKEN_NAME => 'dummy']
         );
         $this->assertTrue($this->client->getResponse()->isRedirection());
@@ -65,7 +66,7 @@ class CartControllerTest extends AbstractWebTestCase
         $this->entityManager->flush();
 
         // エラーが2件表示される
-        $crawler = $this->client->request('GET', '/cart');
+        $crawler = $this->client->request(Request::METHOD_GET, '/cart');
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         $this->assertCount(2, $crawler->filter('div.ec-cartRole__error'));
     }
@@ -73,7 +74,7 @@ class CartControllerTest extends AbstractWebTestCase
     private function cartIn($product_class_id)
     {
         $this->client->request(
-            'PUT',
+            Request::METHOD_PUT,
             $this->generateUrl(
                 'cart_handle_item',
                 [

@@ -112,7 +112,7 @@ class WithdrawController extends AbstractController
 
                     log_info('ログアウト完了');
 
-                    return $this->redirect($this->generateUrl('mypage_withdraw_complete'));
+                    return $this->redirectToRoute('mypage_withdraw_complete');
             }
         }
 
@@ -128,7 +128,7 @@ class WithdrawController extends AbstractController
      */
     #[Route(path: '/mypage/withdraw_complete', name: 'mypage_withdraw_complete', methods: ['GET'])]
     #[Template(template: 'Mypage/withdraw_complete.twig')]
-    public function complete(Request $request): array
+    public function complete(): array
     {
         return [];
     }

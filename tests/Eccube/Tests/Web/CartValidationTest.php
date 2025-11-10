@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Common\Constant;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
@@ -70,7 +71,7 @@ class CartValidationTest extends AbstractWebTestCase
         $client = $this->client;
 
         $client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('product_detail', ['id' => $Product->getId()])
         );
 
@@ -88,7 +89,7 @@ class CartValidationTest extends AbstractWebTestCase
         }
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('product_add_cart', ['id' => $Product->getId()]),
             $form
         );
@@ -124,7 +125,7 @@ class CartValidationTest extends AbstractWebTestCase
 
         // render
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('product_detail', ['id' => $productId])
         );
 
@@ -133,7 +134,7 @@ class CartValidationTest extends AbstractWebTestCase
 
         // submit
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('product_add_cart', ['id' => $productId]),
             $arrForm
         );
@@ -161,7 +162,7 @@ class CartValidationTest extends AbstractWebTestCase
 
         // render
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('product_detail', ['id' => $productId])
         );
 
@@ -170,7 +171,7 @@ class CartValidationTest extends AbstractWebTestCase
 
         // submit
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('product_add_cart', ['id' => $productId]),
             $arrForm
         );
@@ -200,7 +201,7 @@ class CartValidationTest extends AbstractWebTestCase
 
         // render
         $client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('product_detail', ['id' => $productId])
         );
 
@@ -220,7 +221,7 @@ class CartValidationTest extends AbstractWebTestCase
         ];
 
         $crawler = $client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('product_add_cart', ['id' => $productId]),
             $arrForm
         );
@@ -258,7 +259,7 @@ class CartValidationTest extends AbstractWebTestCase
 
         // render
         $client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('product_detail', ['id' => $productId])
         );
 
@@ -277,7 +278,7 @@ class CartValidationTest extends AbstractWebTestCase
         }
 
         $crawler = $client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('product_add_cart', ['id' => $productId]),
             $arrForm
         );
@@ -308,7 +309,7 @@ class CartValidationTest extends AbstractWebTestCase
 
         // render
         $client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('product_detail', ['id' => $productId])
         );
 
@@ -327,7 +328,7 @@ class CartValidationTest extends AbstractWebTestCase
         }
 
         $client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('product_add_cart', ['id' => $productId]),
             $arrForm
         );
@@ -362,7 +363,7 @@ class CartValidationTest extends AbstractWebTestCase
 
         // render
         $client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('product_detail', ['id' => $Product->getId()])
         );
         // submit
@@ -380,7 +381,7 @@ class CartValidationTest extends AbstractWebTestCase
         }
 
         $client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('product_add_cart', ['id' => $Product->getId()]),
             $arrForm
         );
@@ -394,7 +395,7 @@ class CartValidationTest extends AbstractWebTestCase
 
         // render
         $client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('product_detail', ['id' => $productId])
         );
 
@@ -413,7 +414,7 @@ class CartValidationTest extends AbstractWebTestCase
         }
 
         $crawler = $client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('product_add_cart', ['id' => $productId]),
             $arrForm
         );
@@ -457,7 +458,7 @@ class CartValidationTest extends AbstractWebTestCase
 
         // render
         $client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('product_detail', ['id' => $productId])
         );
 
@@ -476,7 +477,7 @@ class CartValidationTest extends AbstractWebTestCase
         }
 
         $client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('product_add_cart', ['id' => $productId]),
             $arrForm
         );
@@ -491,7 +492,7 @@ class CartValidationTest extends AbstractWebTestCase
         ];
 
         $client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('product_add_cart', ['id' => 1]),
             $arrForm
         );
@@ -534,7 +535,7 @@ class CartValidationTest extends AbstractWebTestCase
 
         // render
         $client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('product_detail', ['id' => $productId])
         );
 
@@ -554,7 +555,7 @@ class CartValidationTest extends AbstractWebTestCase
         }
 
         $client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('product_detail', ['id' => $productId]),
             $arrForm
         );
@@ -571,7 +572,7 @@ class CartValidationTest extends AbstractWebTestCase
         ];
 
         $client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('product_detail', ['id' => 1]),
             $arrForm
         );
@@ -612,7 +613,7 @@ class CartValidationTest extends AbstractWebTestCase
 
         // render
         $client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('product_detail', ['id' => $productId])
         );
 
@@ -630,7 +631,7 @@ class CartValidationTest extends AbstractWebTestCase
             $arrForm['classcategory_id2'] = $ProductClass->getClassCategory2()->getId();
         }
         $client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('product_add_cart', ['id' => $productId]),
             $arrForm
         );
@@ -1463,13 +1464,13 @@ class CartValidationTest extends AbstractWebTestCase
         $this->scenarioCartIn($Customer, $ProductClass, $stockInCart);
 
         // Move to top
-        $crawler = $this->client->request('GET', $this->generateUrl('homepage'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('homepage'));
 
         // Remove product (delete flg)
         $this->changeStatus($Product, ProductStatus::DISPLAY_HIDE);
 
         // move to cart
-        $crawler = $this->client->request('GET', $this->generateUrl('cart'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('cart'));
 
         // THEN
         // check message error
@@ -1501,7 +1502,7 @@ class CartValidationTest extends AbstractWebTestCase
         $this->changeStatus($Product, ProductStatus::DISPLAY_HIDE);
 
         // move to cart
-        $crawler = $this->client->request('GET', $this->generateUrl('cart'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('cart'));
 
         // THEN
         // check message error
@@ -1534,7 +1535,7 @@ class CartValidationTest extends AbstractWebTestCase
         $this->changeStock($ProductClass, $stock);
 
         // move to cart
-        $crawler = $this->client->request('GET', $this->generateUrl('cart'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('cart'));
 
         // THEN
         // check message error
@@ -1567,7 +1568,7 @@ class CartValidationTest extends AbstractWebTestCase
         $this->changeStock($ProductClass, $stock);
 
         // move to cart
-        $crawler = $this->client->request('GET', $this->generateUrl('cart'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('cart'));
 
         // THEN
         // check message error
@@ -1597,7 +1598,7 @@ class CartValidationTest extends AbstractWebTestCase
         $this->scenarioCartIn($Customer, $ProductClass, $stockInCart);
 
         // Move to top
-        $crawler = $this->client->request('GET', $this->generateUrl('homepage'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('homepage'));
 
         // sale limit
         $saleLimit = 1;
@@ -1607,7 +1608,7 @@ class CartValidationTest extends AbstractWebTestCase
         $this->entityManager->flush();
 
         // move to cart
-        $crawler = $this->client->request('GET', $this->generateUrl('cart'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('cart'));
 
         // THEN
         // check message error
@@ -1644,7 +1645,7 @@ class CartValidationTest extends AbstractWebTestCase
 
         // back to cart
         $urlBackToCart = $crawler->filter('.ec-orderRole__summary .ec-blockBtn--cancel')->selectLink('カートに戻る')->link()->getUri();
-        $crawler = $this->client->request('GET', $urlBackToCart);
+        $crawler = $this->client->request(Request::METHOD_GET, $urlBackToCart);
 
         // THEN
         // check message error
@@ -1681,7 +1682,7 @@ class CartValidationTest extends AbstractWebTestCase
 
         // back to cart
         $urlBackToCart = $crawler->filter('.ec-orderRole__summary .ec-blockBtn--cancel')->selectLink('カートに戻る')->link()->getUri();
-        $crawler = $this->client->request('GET', $urlBackToCart);
+        $crawler = $this->client->request(Request::METHOD_GET, $urlBackToCart);
 
         // THEN
         // check message error
@@ -1719,7 +1720,7 @@ class CartValidationTest extends AbstractWebTestCase
 
         // back to cart
         $urlBackToCart = $crawler->filter('.ec-orderRole__summary .ec-blockBtn--cancel')->selectLink('カートに戻る')->link()->getUri();
-        $crawler = $this->client->request('GET', $urlBackToCart);
+        $crawler = $this->client->request(Request::METHOD_GET, $urlBackToCart);
 
         // THEN
         // check message error
@@ -1758,7 +1759,7 @@ class CartValidationTest extends AbstractWebTestCase
 
         // back to cart
         $urlBackToCart = $crawler->filter('.ec-orderRole__summary .ec-blockBtn--cancel')->selectLink('カートに戻る')->link()->getUri();
-        $crawler = $this->client->request('GET', $urlBackToCart);
+        $crawler = $this->client->request(Request::METHOD_GET, $urlBackToCart);
 
         // THEN
         // check message error
@@ -1800,7 +1801,7 @@ class CartValidationTest extends AbstractWebTestCase
 
         // back to cart
         $urlBackToCart = $crawler->filter('.ec-orderRole__summary .ec-blockBtn--cancel')->selectLink('カートに戻る')->link()->getUri();
-        $crawler = $this->client->request('GET', $urlBackToCart);
+        $crawler = $this->client->request(Request::METHOD_GET, $urlBackToCart);
 
         // THEN
         // check message error
@@ -1844,7 +1845,7 @@ class CartValidationTest extends AbstractWebTestCase
                 ['Delivery' => 1],
             ],
         ];
-        $this->client->request('POST', $this->generateUrl('shopping_redirect_to'), ['_shopping_order' => $paymentForm]);
+        $this->client->request(Request::METHOD_POST, $this->generateUrl('shopping_redirect_to'), ['_shopping_order' => $paymentForm]);
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_error')));
 
         // THEN
@@ -1890,7 +1891,7 @@ class CartValidationTest extends AbstractWebTestCase
                 ['Delivery' => 1],
             ],
         ];
-        $this->client->request('POST', $this->generateUrl('shopping_redirect_to'), ['_shopping_order' => $paymentForm]);
+        $this->client->request(Request::METHOD_POST, $this->generateUrl('shopping_redirect_to'), ['_shopping_order' => $paymentForm]);
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_error')));
 
         // THEN
@@ -1937,7 +1938,7 @@ class CartValidationTest extends AbstractWebTestCase
                 ['Delivery' => 1],
             ],
         ];
-        $this->client->request('POST', $this->generateUrl('shopping_redirect_to'), ['_shopping_order' => $paymentForm]);
+        $this->client->request(Request::METHOD_POST, $this->generateUrl('shopping_redirect_to'), ['_shopping_order' => $paymentForm]);
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_error')));
 
         // THEN
@@ -1984,7 +1985,7 @@ class CartValidationTest extends AbstractWebTestCase
                 ['Delivery' => 1],
             ],
         ];
-        $this->client->request('POST', $this->generateUrl('shopping_redirect_to'), ['_shopping_order' => $paymentForm]);
+        $this->client->request(Request::METHOD_POST, $this->generateUrl('shopping_redirect_to'), ['_shopping_order' => $paymentForm]);
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
 
         // THEN
@@ -2034,7 +2035,7 @@ class CartValidationTest extends AbstractWebTestCase
                 ['Delivery' => 1],
             ],
         ];
-        $this->client->request('POST', $this->generateUrl('shopping_redirect_to'), ['_shopping_order' => $paymentForm]);
+        $this->client->request(Request::METHOD_POST, $this->generateUrl('shopping_redirect_to'), ['_shopping_order' => $paymentForm]);
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
 
         // THEN
@@ -2072,12 +2073,12 @@ class CartValidationTest extends AbstractWebTestCase
         $this->client->followRedirect();
 
         // my page
-        $crawler = $this->client->request('GET', $this->generateUrl('mypage'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('mypage'));
         $orderNode = $crawler->filter('.ec-historyRole .ec-historyListHeader__action .ec-inlineBtn')->first();
         $historyLink = $orderNode->selectLink('詳細を見る')->link()->getUri();
 
         // history view
-        $crawler = $this->client->request('GET', $historyLink);
+        $crawler = $this->client->request(Request::METHOD_GET, $historyLink);
         $product = $crawler->filter('#detail_list_box__list')->text();
 
         // check order product name
@@ -2092,7 +2093,7 @@ class CartValidationTest extends AbstractWebTestCase
 
         // Order again
         $orderLink = $crawler->filter('body #confirm_side')->selectLink('再注文する')->link()->getUri();
-        $this->client->request('PUT', $orderLink, ['_token' => 'dummy']);
+        $this->client->request(Request::METHOD_PUT, $orderLink, ['_token' => 'dummy']);
         $crawler = $this->client->followRedirect();
 
         // THEN
@@ -2143,12 +2144,12 @@ class CartValidationTest extends AbstractWebTestCase
         $client->followRedirect();
 
         // my page
-        $crawler = $client->request('GET', $this->generateUrl('mypage'));
+        $crawler = $client->request(Request::METHOD_GET, $this->generateUrl('mypage'));
         $orderNode = $crawler->filter('#history_list__body .historylist_column')->first();
         $historyLink = $orderNode->selectLink('詳細を見る')->link()->getUri();
 
         // history view
-        $crawler = $client->request('GET', $historyLink);
+        $crawler = $client->request(Request::METHOD_GET, $historyLink);
         $product = $crawler->filter('#detail_list_box__list')->text();
 
         // check order product name
@@ -2159,7 +2160,7 @@ class CartValidationTest extends AbstractWebTestCase
 
         // Order again
         $orderLink = $crawler->filter('body #confirm_side')->selectLink('再注文する')->link()->getUri();
-        $client->request('PUT', $orderLink, ['_token' => 'dummy']);
+        $client->request(Request::METHOD_PUT, $orderLink, ['_token' => 'dummy']);
         $crawler = $client->followRedirect();
 
         // THEN
@@ -2210,12 +2211,12 @@ class CartValidationTest extends AbstractWebTestCase
         $client->followRedirect();
 
         // my page
-        $crawler = $client->request('GET', $this->generateUrl('mypage'));
+        $crawler = $client->request(Request::METHOD_GET, $this->generateUrl('mypage'));
         $orderNode = $crawler->filter('#history_list__body .historylist_column')->first();
         $historyLink = $orderNode->selectLink('詳細を見る')->link()->getUri();
 
         // history view
-        $crawler = $client->request('GET', $historyLink);
+        $crawler = $client->request(Request::METHOD_GET, $historyLink);
         $product = $crawler->filter('#detail_list_box__list')->text();
 
         // check order product name
@@ -2227,7 +2228,7 @@ class CartValidationTest extends AbstractWebTestCase
 
         // Order again
         $orderLink = $crawler->filter('body #confirm_side')->selectLink('再注文する')->link()->getUri();
-        $client->request('PUT', $orderLink, ['_token' => 'dummy']);
+        $client->request(Request::METHOD_PUT, $orderLink, ['_token' => 'dummy']);
         $crawler = $client->followRedirect();
 
         // THEN
@@ -2276,12 +2277,12 @@ class CartValidationTest extends AbstractWebTestCase
         $client->followRedirect();
 
         // my page
-        $crawler = $client->request('GET', $this->generateUrl('mypage'));
+        $crawler = $client->request(Request::METHOD_GET, $this->generateUrl('mypage'));
         $orderNode = $crawler->filter('#history_list__body .historylist_column')->first();
         $historyLink = $orderNode->selectLink('詳細を見る')->link()->getUri();
 
         // history view
-        $crawler = $client->request('GET', $historyLink);
+        $crawler = $client->request(Request::METHOD_GET, $historyLink);
         $product = $crawler->filter('#detail_list_box__list')->text();
 
         // check order product name
@@ -2293,7 +2294,7 @@ class CartValidationTest extends AbstractWebTestCase
 
         // Order again
         $orderLink = $crawler->filter('body #confirm_side')->selectLink('再注文する')->link()->getUri();
-        $client->request('PUT', $orderLink, ['_token' => 'dummy']);
+        $client->request(Request::METHOD_PUT, $orderLink, ['_token' => 'dummy']);
         $crawler = $client->followRedirect();
 
         // THEN
@@ -2342,12 +2343,12 @@ class CartValidationTest extends AbstractWebTestCase
         $client->followRedirect();
 
         // my page
-        $crawler = $client->request('GET', $this->generateUrl('mypage'));
+        $crawler = $client->request(Request::METHOD_GET, $this->generateUrl('mypage'));
         $orderNode = $crawler->filter('#history_list__body .historylist_column')->first();
         $historyLink = $orderNode->selectLink('詳細を見る')->link()->getUri();
 
         // history view
-        $crawler = $client->request('GET', $historyLink);
+        $crawler = $client->request(Request::METHOD_GET, $historyLink);
         $product = $crawler->filter('#detail_list_box__list')->text();
 
         // check order product name
@@ -2361,7 +2362,7 @@ class CartValidationTest extends AbstractWebTestCase
 
         // Order again
         $orderLink = $crawler->filter('body #confirm_side')->selectLink('再注文する')->link()->getUri();
-        $client->request('PUT', $orderLink, ['_token' => 'dummy']);
+        $client->request(Request::METHOD_PUT, $orderLink, ['_token' => 'dummy']);
         $crawler = $client->followRedirect();
 
         // THEN
@@ -2421,12 +2422,12 @@ class CartValidationTest extends AbstractWebTestCase
         $client->followRedirect();
 
         // my page
-        $crawler = $client->request('GET', $this->generateUrl('mypage'));
+        $crawler = $client->request(Request::METHOD_GET, $this->generateUrl('mypage'));
         $orderNode = $crawler->filter('#history_list__body .historylist_column')->first();
         $historyLink = $orderNode->selectLink('詳細を見る')->link()->getUri();
 
         // history view
-        $crawler = $client->request('GET', $historyLink);
+        $crawler = $client->request(Request::METHOD_GET, $historyLink);
         $product = $crawler->filter('#detail_list_box__list')->text();
 
         // check order product name
@@ -2441,7 +2442,7 @@ class CartValidationTest extends AbstractWebTestCase
 
         // Order again
         $orderLink = $crawler->filter('body #confirm_side')->selectLink('再注文する')->link()->getUri();
-        $client->request('PUT', $orderLink, ['_token' => 'dummy']);
+        $client->request(Request::METHOD_PUT, $orderLink, ['_token' => 'dummy']);
         $crawler = $client->followRedirect();
 
         // THEN
@@ -2495,12 +2496,12 @@ class CartValidationTest extends AbstractWebTestCase
         $client->followRedirect();
 
         // my page
-        $crawler = $client->request('GET', $this->generateUrl('mypage'));
+        $crawler = $client->request(Request::METHOD_GET, $this->generateUrl('mypage'));
         $orderNode = $crawler->filter('#history_list__body .historylist_column')->first();
         $historyLink = $orderNode->selectLink('詳細を見る')->link()->getUri();
 
         // history view
-        $crawler = $client->request('GET', $historyLink);
+        $crawler = $client->request(Request::METHOD_GET, $historyLink);
         $product = $crawler->filter('#detail_list_box__list')->text();
 
         // check order product name
@@ -2515,7 +2516,7 @@ class CartValidationTest extends AbstractWebTestCase
 
         // Order again
         $orderLink = $crawler->filter('body #confirm_side')->selectLink('再注文する')->link()->getUri();
-        $client->request('PUT', $orderLink, ['_token' => 'dummy']);
+        $client->request(Request::METHOD_PUT, $orderLink, ['_token' => 'dummy']);
         $crawler = $client->followRedirect();
 
         // THEN
@@ -2529,7 +2530,7 @@ class CartValidationTest extends AbstractWebTestCase
         $this->loginTo($Customer);
 
         return $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('product_add_cart', ['id' => $ProductClass->getProduct()->getId()]),
             [
                 'ProductClass' => $ProductClass->getId(),
@@ -2548,7 +2549,7 @@ class CartValidationTest extends AbstractWebTestCase
         $this->loginTo($Customer);
         $cart_key = $Customer->getId().'_'.$ProductClass->getSaleType()->getId();
 
-        return $this->client->request('GET', $this->generateUrl('cart_buystep', ['cart_key' => $cart_key]));
+        return $this->client->request(Request::METHOD_GET, $this->generateUrl('cart_buystep', ['cart_key' => $cart_key]));
     }
 
     /**
@@ -2577,7 +2578,7 @@ class CartValidationTest extends AbstractWebTestCase
         $this->loginTo($Customer);
 
         return $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $confirmUrl,
             ['_shopping_order' => $arrShopping]
         );
@@ -2591,7 +2592,7 @@ class CartValidationTest extends AbstractWebTestCase
     {
         $this->loginTo($Customer);
 
-        return $this->client->request('PUT', $this->generateUrl('cart_handle_item', [
+        return $this->client->request(Request::METHOD_PUT, $this->generateUrl('cart_handle_item', [
             'operation' => 'up',
             'productClassId' => $ProductClass->getId(),
         ]));
@@ -2601,7 +2602,7 @@ class CartValidationTest extends AbstractWebTestCase
     {
         $this->loginTo($Customer);
 
-        return $this->client->request('PUT', $this->generateUrl('cart_handle_item', [
+        return $this->client->request(Request::METHOD_PUT, $this->generateUrl('cart_handle_item', [
             'operation' => 'down',
             'productClassId' => $ProductClass->getId(),
         ]));

@@ -13,6 +13,8 @@
 
 namespace Eccube\Tests\Web;
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ObjectRepository;
 use Eccube\Entity\BaseInfo;
@@ -53,7 +55,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
     public function testRoutingShoppingLogin()
     {
-        $crawler = $this->client->request('GET', '/shopping/login');
+        $crawler = $this->client->request(Request::METHOD_GET, '/shopping/login');
         $this->expected = 'ログイン';
         $this->actual = $crawler->filter('.ec-pageHeader h1')->text();
         $this->verify();
@@ -68,7 +70,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $session->set('eccube.front.shopping.order.id', $Order->getId());
         $session->save();
 
-        $this->client->request('GET', $this->generateUrl('shopping_complete'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('shopping_complete'));
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         $this->assertNull($session->get('eccube.front.shopping.order.id'));
@@ -103,7 +105,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $session = $this->createSession($this->client);
         $session->set('eccube.front.shopping.order.id', $Order->getId());
         $session->save();
-        $crawler = $this->client->request('GET', $this->generateUrl('shopping_complete'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('shopping_complete'));
 
         // <div>タグから危険なid属性が削除されていることを確認する。
         // Find that dangerous id attributes are removed from <div> tags.
@@ -127,7 +129,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
     public function testShoppingError()
     {
-        $this->client->request('GET', $this->generateUrl('shopping_error'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('shopping_error'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -324,7 +326,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
         // 支払い方法選択
         $crawler = $client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_payment'),
             [
                 'shopping' => [
@@ -482,7 +484,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $shipping_url = str_replace('shipping_change', 'shipping', $shipping_url);
 
         $crawler = $client->request(
-            'GET',
+            Request::METHOD_GET,
             $shipping_url
         );
 
@@ -496,7 +498,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
         // お届け先入力画面
         $client->request(
-            'GET',
+            Request::METHOD_GET,
             $shipping_edit_url
         );
         $this->assertTrue($client->getResponse()->isSuccessful());
@@ -505,7 +507,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $formData = $this->createShippingFormData();
         $formData['phone_number'] = $faker->phoneNumber;
         $client->request(
-            'POST',
+            Request::METHOD_POST,
             $shipping_edit_url,
             ['shopping_shipping' => $formData]
         );
@@ -546,7 +548,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $url = str_replace('shipping_change', 'shipping_edit', $url);
 
         // Get shipping edit
-        $crawler = $client->request('GET', $url);
+        $crawler = $client->request(Request::METHOD_GET, $url);
 
         // Title
         $this->assertStringContainsString('お届け先の追加', $crawler->html());
@@ -879,7 +881,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         // Request delivery page
         $crawler = $this->scenarioConfirm($Customer);
 
-        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
         $this->assertStringNotContainsString('Trade：テスト説明', $crawler->outerHtml());
     }
 
@@ -912,7 +914,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         // ご注文手続きページ
         // Request delivery page
         $crawler = $this->scenarioConfirm($Customer);
-        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
         $this->assertStringNotContainsString('Trade：テスト名称', $crawler->outerHtml());
     }
 
@@ -958,7 +960,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
             ]
         );
 
-        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
         $this->assertStringNotContainsString('Trade：テスト名称', $crawler->outerHtml());
     }
 
@@ -1004,7 +1006,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
             ]
         );
 
-        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
         $this->assertStringNotContainsString('Trade：テスト説明', $crawler->outerHtml());
     }
 

@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin\Customer;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
@@ -61,7 +62,7 @@ class CustomerDeliveryEditControllerTest extends AbstractAdminWebTestCase
     public function testRoutingDelivery()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_customer_delivery_new', ['id' => $this->Customer->getId()])
         );
 
@@ -75,7 +76,7 @@ class CustomerDeliveryEditControllerTest extends AbstractAdminWebTestCase
     {
         $form = $this->deliveryFormData();
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_customer_delivery_new', ['id' => $this->Customer->getId()]),
             ['customer_address' => $form]
         );
@@ -90,7 +91,7 @@ class CustomerDeliveryEditControllerTest extends AbstractAdminWebTestCase
     public function testDeliveryDelete()
     {
         $this->client->request(
-            'DELETE',
+            Request::METHOD_DELETE,
             $this->generateUrl('admin_customer_delivery_delete', [
                 'id' => $this->Customer->getId(),
                 'did' => $this->CustomerAddress->getId(),

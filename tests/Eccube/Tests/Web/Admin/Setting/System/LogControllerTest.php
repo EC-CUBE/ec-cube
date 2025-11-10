@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\System;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Faker\Generator;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -65,7 +66,7 @@ class LogControllerTest extends AbstractAdminWebTestCase
     public function testRoutingAdminSettingSystemLog()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_setting_system_log')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -77,7 +78,7 @@ class LogControllerTest extends AbstractAdminWebTestCase
     public function testSystemLogSubmit()
     {
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_system_log'),
             ['admin_system_log' => $this->formData]
         );
@@ -100,7 +101,7 @@ class LogControllerTest extends AbstractAdminWebTestCase
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_system_log'),
             ['admin_system_log' => $this->formData]
         );

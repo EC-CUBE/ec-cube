@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin\Content;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\News;
 use Eccube\Repository\NewsRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
@@ -34,13 +35,13 @@ class NewsControllerTest extends AbstractAdminWebTestCase
 
     public function testRoutingAdminContentNews()
     {
-        $this->client->request('GET', $this->generateUrl('admin_content_news'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_content_news'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testRoutingAdminContentNewsNew()
     {
-        $this->client->request('GET', $this->generateUrl('admin_content_news_new'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_content_news_new'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -49,7 +50,7 @@ class NewsControllerTest extends AbstractAdminWebTestCase
         $Member = $this->createMember();
         $News = $this->createNews($Member);
 
-        $this->client->request('GET',
+        $this->client->request(Request::METHOD_GET,
             $this->generateUrl('admin_content_news_edit', ['id' => $News->getId()])
         );
 
@@ -63,7 +64,7 @@ class NewsControllerTest extends AbstractAdminWebTestCase
 
         $this->loginTo($Member);
 
-        $this->client->request('DELETE',
+        $this->client->request(Request::METHOD_DELETE,
             $this->generateUrl('admin_content_news_delete', ['id' => $News->getId()])
         );
 
@@ -99,7 +100,7 @@ class NewsControllerTest extends AbstractAdminWebTestCase
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_content_news_edit', ['id' => $News->getId()]),
             ['admin_news' => $formData]
         );

@@ -33,16 +33,9 @@ if (!class_exists(Member::class)) {
     #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
     #[ORM\HasLifecycleCallbacks]
     #[ORM\Entity(repositoryClass: MemberRepository::class)]
+    #[UniqueEntity(fields: 'login_id', message: 'form_error.member_already_exists')]
     class Member extends AbstractEntity implements UserInterface, PasswordAuthenticatedUserInterface, LegacyPasswordAuthenticatedUserInterface, \Serializable, \Stringable
     {
-        public static function loadValidatorMetadata(ClassMetadata $metadata): void
-        {
-            $metadata->addConstraint(new UniqueEntity([
-                'fields' => 'login_id',
-                'message' => 'form_error.member_already_exists',
-            ]));
-        }
-
         #[\Override]
         public function __toString(): string
         {

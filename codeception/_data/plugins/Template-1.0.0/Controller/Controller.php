@@ -22,14 +22,14 @@ class Controller extends AbstractController
 {
     #[Route(path: '/template', name: 'template')]
     #[Template(template: '@Template/index.twig')]
-    public function front(Request $request)
+    public function front()
     {
         return [];
     }
 
     #[Route(path: '/%eccube_admin_route%/template', name: 'template_admin')]
     #[Template(template: '@Template/admin/index.twig')]
-    public function admin(Request $request)
+    public function admin()
     {
         return [];
     }

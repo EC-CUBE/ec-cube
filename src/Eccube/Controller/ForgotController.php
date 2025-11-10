@@ -120,12 +120,11 @@ class ForgotController extends AbstractController
      */
     #[Route(path: '/forgot/complete', name: 'forgot_complete', methods: ['GET'])]
     #[Template(template: 'Forgot/complete.twig')]
-    public function complete(Request $request): array
+    public function complete(): array
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             throw new HttpException\NotFoundHttpException();
         }
-
         return [];
     }
 

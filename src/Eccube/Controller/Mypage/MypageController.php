@@ -280,7 +280,7 @@ class MypageController extends AbstractController
 
         log_info('再注文完了', [$order_no]);
 
-        return $this->redirect($this->generateUrl('cart'));
+        return $this->redirectToRoute('cart');
     }
 
     /**
@@ -356,6 +356,6 @@ class MypageController extends AbstractController
 
         log_info('お気に入り商品削除完了', [$Customer->getId(), $CustomerFavoriteProduct->getId()]);
 
-        return $this->redirect($this->generateUrl('mypage_favorite'));
+        return $this->redirectToRoute('mypage_favorite');
     }
 }

@@ -13,6 +13,8 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Eccube\Entity\Payment;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
@@ -50,13 +52,13 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
 
     public function testRouting()
     {
-        $this->client->request('GET', $this->generateUrl('admin_setting_shop_payment'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_shop_payment'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testRoutingNew()
     {
-        $this->client->request('GET', $this->generateUrl('admin_setting_shop_payment_new'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_shop_payment_new'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -72,7 +74,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
             $formData['method'] = '';
         }
 
-        $this->client->request('POST',
+        $this->client->request(Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop_payment_new'),
             [
                 'payment_register' => $formData,
@@ -87,7 +89,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
     public function testRoutingEdit()
     {
         $Payment = $this->paymentRepository->find(1);
-        $this->client->request('GET', $this->generateUrl('admin_setting_shop_payment_edit', ['id' => $Payment->getId()]));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_shop_payment_edit', ['id' => $Payment->getId()]));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -105,7 +107,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
 
         $Payment = $this->paymentRepository->find(1);
 
-        $this->client->request('POST',
+        $this->client->request(Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop_payment_edit', ['id' => $Payment->getId()]),
             [
                 'payment_register' => $formData,
@@ -131,7 +133,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->flush();
 
         $pid = $Payment->getId();
-        $this->client->request('DELETE',
+        $this->client->request(Request::METHOD_DELETE,
             $this->generateUrl('admin_setting_shop_payment_delete', ['id' => $pid])
         );
 
@@ -145,10 +147,10 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
     {
         $pid = 9999;
         $this->client->request(
-            'DELETE',
+            Request::METHOD_DELETE,
             $this->generateUrl('admin_setting_shop_payment_delete', ['id' => $pid])
         );
-        $this->assertSame(404, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 
     /**
@@ -172,7 +174,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
         $formData['payment_image'] = 'new_image.png';
         $Payment = $this->paymentRepository->find(1);
 
-        $this->client->request('POST',
+        $this->client->request(Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop_payment_edit', ['id' => $Payment->getId()]),
             [
                 'payment_register' => $formData,
@@ -209,7 +211,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
         $formData['payment_image'] = '../temp_image/new_image.png';
         $Payment = $this->paymentRepository->find(1);
 
-        $this->client->request('POST',
+        $this->client->request(Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop_payment_edit', ['id' => $Payment->getId()]),
             [
                 'payment_register' => $formData,
@@ -241,7 +243,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
         $this->expected[$firstKey] = $this->expected[$lastKey];
         $this->expected[$lastKey] = $tmp;
 
-        $this->client->request('POST',
+        $this->client->request(Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop_payment_sort_no_move'),
             $this->expected,
             [],

@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin\Product;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Common\Constant;
 use Eccube\Entity\ClassCategory;
 use Eccube\Entity\ClassName;
@@ -75,7 +76,7 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
 
     public function testRoutingAdminProductClassName()
     {
-        $this->client->request('GET',
+        $this->client->request(Request::METHOD_GET,
             $this->generateUrl('admin_product_class_name')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -85,7 +86,7 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
     {
         $client = $this->client;
         $client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_product_class_name'),
             [
                 'admin_class_name' => [
@@ -100,7 +101,7 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
     {
         $client = $this->client;
         $client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_product_class_name'),
             [
                 'admin_class_name' => [
@@ -126,7 +127,7 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
             ->getId();
 
         // main
-        $this->client->request('GET',
+        $this->client->request(Request::METHOD_GET,
             $this->generateUrl('admin_product_class_name_edit', ['id' => $test_class_name_id])
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -146,7 +147,7 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
             ->getId();
 
         // main
-        $this->client->request('GET',
+        $this->client->request(Request::METHOD_GET,
             $this->generateUrl('admin_product_class_name_edit', ['id' => $test_class_name_id])
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -167,7 +168,7 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
 
         // main
         $redirectUrl = $this->generateUrl('admin_product_class_name');
-        $this->client->request('DELETE',
+        $this->client->request(Request::METHOD_DELETE,
             $this->generateUrl('admin_product_class_name_delete', ['id' => $test_class_name_id]),
             [
                 Constant::TOKEN_NAME => 'dummy',
@@ -182,7 +183,7 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
         $ClassName = $this->classNameRepo->findOneBy(['backend_name' => 'class-1']);
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_product_class_name_sort_no_move'),
             [$ClassName->getId() => 10],
             [],

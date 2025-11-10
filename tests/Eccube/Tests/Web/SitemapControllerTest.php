@@ -13,35 +13,38 @@
 
 namespace Eccube\Tests\Web;
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
 class SitemapControllerTest extends AbstractWebTestCase
 {
     public function testIndex()
     {
-        $this->client->request('GET', $this->generateUrl('sitemap_xml'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('sitemap_xml'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testProduct()
     {
-        $this->client->request('GET', $this->generateUrl('sitemap_product_xml', ['page' => 1]));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('sitemap_product_xml', ['page' => 1]));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testProduct404()
     {
-        $this->client->request('GET', $this->generateUrl('sitemap_product_xml', ['page' => 9999]));
-        $this->assertSame(404, $this->client->getResponse()->getStatusCode());
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('sitemap_product_xml', ['page' => 9999]));
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 
     public function testCategory()
     {
-        $this->client->request('GET', $this->generateUrl('sitemap_category_xml'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('sitemap_category_xml'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testPage()
     {
-        $this->client->request('GET', $this->generateUrl('sitemap_page_xml'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('sitemap_page_xml'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 }

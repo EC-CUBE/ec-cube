@@ -103,7 +103,7 @@ class ChangeController extends AbstractController
                 );
                 $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_MYPAGE_CHANGE_INDEX_COMPLETE);
 
-                return $this->redirect($this->generateUrl('mypage_change_complete'));
+                return $this->redirectToRoute('mypage_change_complete');
             }
             // see https://github.com/EC-CUBE/ec-cube/issues/6103
             $this->entityManager->refresh($Customer);
@@ -124,7 +124,7 @@ class ChangeController extends AbstractController
      */
     #[Route(path: '/mypage/change_complete', name: 'mypage_change_complete', methods: ['GET'])]
     #[Template(template: 'Mypage/change_complete.twig')]
-    public function complete(Request $request): array
+    public function complete(): array
     {
         return [];
     }

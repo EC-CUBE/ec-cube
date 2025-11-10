@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Twig\Extension;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\Page;
 use Eccube\Tests\Web\AbstractWebTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -34,7 +35,7 @@ class IgnoreTwigSandboxErrorExtensionTest extends AbstractWebTestCase
         $Product->setFreeArea('__RENDERED__'.$snippet);
         $this->entityManager->flush();
 
-        $crawler = $this->client->request('GET', $this->generateUrl('product_detail', ['id' => $Product->getId()]));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('product_detail', ['id' => $Product->getId()]));
         $text = $crawler->text();
 
         // $snippetがsandboxで制限された場合はフリーエリアは空で出力されるため、__RENDERED__の出力有無で結果を確認する
@@ -53,7 +54,7 @@ class IgnoreTwigSandboxErrorExtensionTest extends AbstractWebTestCase
         $Page->setMetaTags('__RENDERED__'.$snippet);
         $this->entityManager->flush();
 
-        $crawler = $this->client->request('GET', $this->generateUrl($Page->getUrl()));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl($Page->getUrl()));
         $text = $crawler->text();
 
         // ホワイトリストに入っている場合__RENDERED__が表示される

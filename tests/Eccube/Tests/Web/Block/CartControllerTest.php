@@ -13,13 +13,14 @@
 
 namespace Eccube\Tests\Web\Block;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Tests\Web\AbstractWebTestCase;
 
 class CartControllerTest extends AbstractWebTestCase
 {
     public function testRoutingCart()
     {
-        $this->client->request('GET', '/block/cart');
+        $this->client->request(Request::METHOD_GET, '/block/cart');
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 }

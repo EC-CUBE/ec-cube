@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\Master\CustomerOrderStatus;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\OrderStatusColor;
@@ -39,7 +40,7 @@ class OrderStatusControllerTest extends AbstractAdminWebTestCase
 
     public function testRouting()
     {
-        $this->client->request('GET', $this->generateUrl('admin_setting_shop_order_status'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_shop_order_status'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -50,9 +51,9 @@ class OrderStatusControllerTest extends AbstractAdminWebTestCase
         $formData['OrderStatuses'][0]['customer_order_status_name'] = 'テスト名称(マイページ)';
         $formData['OrderStatuses'][0]['color'] = 'テスト色';
 
-        $this->client->request('GET', $this->generateUrl('admin_setting_shop_order_status'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_shop_order_status'));
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop_order_status'),
             ['form' => $formData]
         );
@@ -75,9 +76,9 @@ class OrderStatusControllerTest extends AbstractAdminWebTestCase
         $formData['OrderStatuses'][0]['customer_order_status_name'] = '';
         $formData['OrderStatuses'][0]['color'] = '';
 
-        $this->client->request('GET', $this->generateUrl('admin_setting_shop_order_status'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_shop_order_status'));
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop_order_status'),
             ['form' => $formData]
         );

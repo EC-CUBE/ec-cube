@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Block;
 
+use Symfony\Component\HttpFoundation\Request;
 use Carbon\Carbon;
 use Eccube\Entity\Calendar;
 use Eccube\Tests\Web\AbstractWebTestCase;
@@ -21,13 +22,13 @@ class CalendarControllerTest extends AbstractWebTestCase
 {
     public function testRoutingCalendar()
     {
-        $this->client->request('GET', '/block/calendar');
+        $this->client->request(Request::METHOD_GET, '/block/calendar');
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testThisMonthTitle()
     {
-        $crawler = $this->client->request('GET', $this->generateUrl('block_calendar'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('block_calendar'));
         $this->expected = Carbon::now()->startOfMonth()->format('Y年n月');
         $this->actual = $crawler->filter('#this-month-title')->text();
         $this->verify();
@@ -35,7 +36,7 @@ class CalendarControllerTest extends AbstractWebTestCase
 
     public function testNextMonthTitle()
     {
-        $crawler = $this->client->request('GET', $this->generateUrl('block_calendar'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('block_calendar'));
         $this->expected = Carbon::now()->startOfMonth()->addMonth()->format('Y年n月');
         $this->actual = $crawler->filter('#next-month-title')->text();
         $this->verify();
@@ -49,7 +50,7 @@ class CalendarControllerTest extends AbstractWebTestCase
         $this->entityManager->persist($Calendar);
         $this->entityManager->flush();
 
-        $crawler = $this->client->request('GET', $this->generateUrl('block_calendar'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('block_calendar'));
         $this->expected = Carbon::now()->format('j');
         $this->actual = $crawler->filter('#today-and-holiday')->text();
         $this->verify();
@@ -80,7 +81,7 @@ class CalendarControllerTest extends AbstractWebTestCase
         $this->entityManager->persist($Calendar);
         $this->entityManager->flush();
 
-        $crawler = $this->client->request('GET', $this->generateUrl('block_calendar'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('block_calendar'));
         $this->expected = $targetHoliday->format('j');
         $this->actual = $crawler->filter(($targetHoliday->isCurrentMonth() ? '#this-month-holiday-' : '#next-month-holiday-').$this->expected)->text();
         $this->verify();
@@ -117,7 +118,7 @@ class CalendarControllerTest extends AbstractWebTestCase
             $saturday = $sunday->copy()->addDays(6);
         }
 
-        $crawler = $this->client->request('GET', $this->generateUrl('block_calendar'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('block_calendar'));
 
         // 土曜日の確認
         $this->expected = $saturday->format('j');
@@ -134,7 +135,7 @@ class CalendarControllerTest extends AbstractWebTestCase
     {
         $today = new \DateTime();
 
-        $crawler = $this->client->request('GET', $this->generateUrl('block_calendar'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('block_calendar'));
         $this->expected = $today->format('j');
         $this->actual = $crawler->filter('#today')->text();
         $this->verify();

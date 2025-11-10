@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\System;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\AuthorityRole;
 use Eccube\Entity\Master\Authority;
 use Eccube\Entity\Member;
@@ -51,7 +52,7 @@ class AuthorityControllerTest extends AbstractAdminWebTestCase
     {
         $client = $this->client;
         $client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_setting_system_authority')
         );
         $this->assertTrue($client->getResponse()->isSuccessful());
@@ -67,7 +68,7 @@ class AuthorityControllerTest extends AbstractAdminWebTestCase
         $url = $this->generateUrl('admin_setting_system_authority');
 
         $client->request(
-            'GET',
+            Request::METHOD_GET,
             $url,
             [
                 'form' => [
@@ -91,7 +92,7 @@ class AuthorityControllerTest extends AbstractAdminWebTestCase
         $url = $this->generateUrl('admin_setting_system_authority');
         // makes the POST request
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $url,
             [
                 'form' => [
@@ -124,7 +125,7 @@ class AuthorityControllerTest extends AbstractAdminWebTestCase
         $url = $this->generateUrl('admin_setting_system_authority');
         // makes the POST request
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $url,
             [
                 'form' => [
@@ -160,7 +161,7 @@ class AuthorityControllerTest extends AbstractAdminWebTestCase
         $url = $this->generateUrl('admin_setting_system_authority');
         // makes the POST request
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $url,
             [
                 'form' => [

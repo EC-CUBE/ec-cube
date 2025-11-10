@@ -13,18 +13,21 @@
 
 namespace Eccube\Tests\Web\Admin;
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Eccube\Tests\Web\AbstractWebTestCase;
 
 class LoginControllerTest extends AbstractWebTestCase
 {
     public function testRoutingAdminLogin()
     {
-        $this->client->request('GET', $this->generateUrl('admin_login'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_login'));
 
         // ログイン
         $this->assertSame(
-            200,
-            $this->client->getResponse()->getStatusCode()
+            Response::HTTP_OK,
+            $this->client->getResponse()->getStatusCode(),
+            (string) $this->client->getResponse()->getContent()
         );
     }
 
@@ -32,7 +35,7 @@ class LoginControllerTest extends AbstractWebTestCase
     {
         // see https://stackoverflow.com/a/38661340/4956633
         $this->client->request(
-            'POST', $this->generateUrl('admin_login'),
+            Request::METHOD_POST, $this->generateUrl('admin_login'),
             [
                 'login_id' => 'admin',
                 'password' => 'password',
@@ -45,12 +48,13 @@ class LoginControllerTest extends AbstractWebTestCase
 
     public function testRoutingAdminLoginÃ�グインしていない場合は302エラーがかえる()
     {
-        $this->client->request('GET', $this->generateUrl('admin_homepage'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_homepage'));
 
         // ログイン
         $this->assertSame(
-            302,
-            $this->client->getResponse()->getStatusCode()
+            Response::HTTP_FOUND,
+            $this->client->getResponse()->getStatusCode(),
+            (string) $this->client->getResponse()->getContent()
         );
     }
 }

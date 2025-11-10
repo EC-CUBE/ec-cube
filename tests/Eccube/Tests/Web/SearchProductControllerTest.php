@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\Category;
 use Eccube\Repository\CategoryRepository;
 
@@ -114,7 +115,7 @@ class SearchProductControllerTest extends AbstractWebTestCase
 
     public function testRoutingSearchProduct()
     {
-        $this->client->request('GET', $this->generateUrl('block_search_product'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('block_search_product'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -124,7 +125,7 @@ class SearchProductControllerTest extends AbstractWebTestCase
         $Category = $this->categoryRepository->findOneBy(['name' => '孫1']);
 
         // When
-        $crawler = $this->client->request('GET', $this->generateUrl('block_search_product'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('block_search_product'));
 
         // Then
         $this->assertTrue($this->client->getResponse()->isSuccessful());

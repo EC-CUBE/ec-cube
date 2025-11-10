@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\BaseInfo;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
 use Symfony\Component\Mime\Email;
@@ -51,7 +52,7 @@ class ContactControllerTest extends AbstractWebTestCase
 
     public function testRoutingIndex()
     {
-        $this->client->request('GET', $this->generateUrl('contact'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('contact'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -59,7 +60,7 @@ class ContactControllerTest extends AbstractWebTestCase
     {
         $this->markTestIncomplete('FIXME title');
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('contact'),
             ['contact' => $this->createFormData(),
                 'mode' => 'confirm', ]
@@ -76,7 +77,7 @@ class ContactControllerTest extends AbstractWebTestCase
     public function testComplete()
     {
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('contact'),
             ['contact' => $this->createFormData(),
                 'mode' => 'complete', ]
@@ -100,7 +101,7 @@ class ContactControllerTest extends AbstractWebTestCase
         $form = $this->createFormData();
         $form['name']['name01'] .= '<Sanitize&>';
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('contact'),
             ['contact' => $form,
                 'mode' => 'complete', ]
@@ -140,7 +141,7 @@ class ContactControllerTest extends AbstractWebTestCase
 
         $this->client->enableProfiler();
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('contact'),
             ['contact' => $formData,
                 'mode' => 'complete', ]
@@ -165,7 +166,7 @@ class ContactControllerTest extends AbstractWebTestCase
         $this->logInTo($this->createCustomer());
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('contact'),
             ['contact' => $formData,
                 'mode' => 'complete', ]
@@ -186,7 +187,7 @@ class ContactControllerTest extends AbstractWebTestCase
 
     public function testRoutingComplete()
     {
-        $this->client->request('GET', $this->generateUrl('contact_complete'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('contact_complete'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -197,7 +198,7 @@ class ContactControllerTest extends AbstractWebTestCase
         $formData['email'] = 'aa..@example.com';
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('contact'),
             ['contact' => $formData,
                 'mode' => 'complete', ]

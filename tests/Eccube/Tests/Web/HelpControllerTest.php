@@ -13,6 +13,8 @@
 
 namespace Eccube\Tests\Web;
 
+use Symfony\Component\HttpFoundation\Request;
+
 class HelpControllerTest extends AbstractWebTestCase
 {
     /**
@@ -21,7 +23,7 @@ class HelpControllerTest extends AbstractWebTestCase
     public function testRoutingHelpTradelaw()
     {
         $client = $this->client;
-        $client->request('GET', $this->generateUrl('help_tradelaw'));
+        $client->request(Request::METHOD_GET, $this->generateUrl('help_tradelaw'));
         $response = $client->getResponse();
         $this->assertTrue($response->isSuccessful(), 'Response status: '.$response->getStatusCode().' - Content: '.$response->getContent());
     }
@@ -32,7 +34,7 @@ class HelpControllerTest extends AbstractWebTestCase
     public function testRoutingHelpAbout()
     {
         $client = $this->client;
-        $client->request('GET', $this->generateUrl('help_about'));
+        $client->request(Request::METHOD_GET, $this->generateUrl('help_about'));
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 
@@ -42,7 +44,7 @@ class HelpControllerTest extends AbstractWebTestCase
     public function testRoutingHelpGuide()
     {
         $client = $this->client;
-        $client->request('GET', $this->generateUrl('help_guide'));
+        $client->request(Request::METHOD_GET, $this->generateUrl('help_guide'));
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 
@@ -52,7 +54,7 @@ class HelpControllerTest extends AbstractWebTestCase
     public function testRoutingHelpPrivacy()
     {
         $client = $this->client;
-        $client->request('GET', $this->generateUrl('help_privacy'));
+        $client->request(Request::METHOD_GET, $this->generateUrl('help_privacy'));
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 }

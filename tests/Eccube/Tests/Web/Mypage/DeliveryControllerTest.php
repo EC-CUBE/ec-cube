@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Mypage;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Tests\Web\AbstractWebTestCase;
@@ -60,7 +61,7 @@ class DeliveryControllerTest extends AbstractWebTestCase
         $client = $this->client;
 
         $client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('mypage_delivery')
         );
         $this->assertTrue($client->getResponse()->isSuccessful());
@@ -72,7 +73,7 @@ class DeliveryControllerTest extends AbstractWebTestCase
         $client = $this->client;
 
         $client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('mypage_delivery_new')
         );
         $this->assertTrue($client->getResponse()->isSuccessful());
@@ -85,7 +86,7 @@ class DeliveryControllerTest extends AbstractWebTestCase
 
         $form = $this->createFormData();
         $client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('mypage_delivery_new'),
             ['customer_address' => $form]
         );
@@ -103,7 +104,7 @@ class DeliveryControllerTest extends AbstractWebTestCase
         );
 
         $client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('mypage_delivery_edit', ['id' => $CustomerAddress->getId()])
         );
 
@@ -120,7 +121,7 @@ class DeliveryControllerTest extends AbstractWebTestCase
 
         $form = $this->createFormData();
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('mypage_delivery_edit', ['id' => $CustomerAddress->getId()]),
             ['customer_address' => $form]
         );
@@ -143,7 +144,7 @@ class DeliveryControllerTest extends AbstractWebTestCase
 
         $this->createFormData();
         $this->client->request(
-            'DELETE',
+            Request::METHOD_DELETE,
             $this->generateUrl('mypage_delivery_delete', ['id' => $id])
         );
 
@@ -158,7 +159,7 @@ class DeliveryControllerTest extends AbstractWebTestCase
         $this->logInTo($this->Customer);
 
         $this->client->request(
-            'DELETE',
+            Request::METHOD_DELETE,
             $this->generateUrl('mypage_delivery_delete', ['id' => 999999999])
         );
 
@@ -175,7 +176,7 @@ class DeliveryControllerTest extends AbstractWebTestCase
         $this->logInTo($this->Customer);
 
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('mypage_delivery')
         );
 
@@ -189,7 +190,7 @@ class DeliveryControllerTest extends AbstractWebTestCase
         }
 
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('mypage_delivery')
         );
 

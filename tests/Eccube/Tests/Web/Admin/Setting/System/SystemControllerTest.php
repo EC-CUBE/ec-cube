@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\System;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 /**
@@ -26,7 +27,7 @@ class SystemControllerTest extends AbstractAdminWebTestCase
     public function testRoutingAdminSettingSystemSystemIndex()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_setting_system_system')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -38,7 +39,7 @@ class SystemControllerTest extends AbstractAdminWebTestCase
     public function testInfoAdminSettingSystemSystem()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_setting_system_system', ['mode' => 'info'])
         );
 

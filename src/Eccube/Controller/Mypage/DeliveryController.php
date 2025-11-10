@@ -49,10 +49,9 @@ class DeliveryController extends AbstractController
      */
     #[Route(path: '/mypage/delivery', name: 'mypage_delivery', methods: ['GET'])]
     #[Template(template: 'Mypage/delivery.twig')]
-    public function index(Request $request): array
+    public function index(): array
     {
         $Customer = $this->getUser();
-
         return [
             'Customer' => $Customer,
         ];
@@ -154,7 +153,7 @@ class DeliveryController extends AbstractController
             );
             $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_MYPAGE_DELIVERY_EDIT_COMPLETE);
 
-            return $this->redirect($this->generateUrl('mypage_delivery'));
+            return $this->redirectToRoute('mypage_delivery');
         }
 
         return [
@@ -203,6 +202,6 @@ class DeliveryController extends AbstractController
 
         log_info('お届け先削除完了', [$CustomerAddress->getId()]);
 
-        return $this->redirect($this->generateUrl('mypage_delivery'));
+        return $this->redirectToRoute('mypage_delivery');
     }
 }

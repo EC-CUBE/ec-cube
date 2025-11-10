@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\System;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 /**
@@ -48,7 +49,7 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
      */
     public function testRouting()
     {
-        $this->client->request('GET', $this->generateUrl('admin_setting_system_security'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_system_security'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -63,7 +64,7 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
         $formData = $this->createFormData();
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_system_security'),
             [
                 'admin_security' => $formData,
@@ -95,7 +96,7 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
         $formData['force_ssl'] = null;
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_system_security'),
             [
                 'admin_security' => $formData,

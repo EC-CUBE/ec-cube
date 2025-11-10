@@ -13,6 +13,8 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Eccube\Controller\Admin\Setting\Shop\DeliveryController;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\DeliveryFee;
@@ -83,7 +85,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
      */
     public function testRouting()
     {
-        $this->client->request('GET', $this->generateUrl('admin_setting_shop_delivery'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_shop_delivery'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -92,7 +94,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
      */
     public function testRoutingNew()
     {
-        $this->client->request('GET', $this->generateUrl('admin_setting_shop_delivery_new'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_shop_delivery_new'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -111,7 +113,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
         }
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop_delivery_new'),
             [
                 'delivery' => $formData,
@@ -129,7 +131,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
     public function testRoutingEdit()
     {
         $Delivery = $this->createDelivery();
-        $this->client->request('GET', $this->generateUrl('admin_setting_shop_delivery_edit', ['id' => $Delivery->getId()]));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_shop_delivery_edit', ['id' => $Delivery->getId()]));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -149,7 +151,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
 
         $Delivery = $this->createDelivery();
 
-        $this->client->request('POST',
+        $this->client->request(Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop_delivery_edit', ['id' => $Delivery->getId()]),
             [
                 'delivery' => $formData,
@@ -169,7 +171,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
         $Delivery = $this->createDelivery();
         $pid = $Delivery->getId();
         $this->client->request(
-            'DELETE',
+            Request::METHOD_DELETE,
             $this->generateUrl('admin_setting_shop_delivery_delete', ['id' => $pid])
         );
 
@@ -185,10 +187,10 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
     {
         $pid = 9999;
         $this->client->request(
-            'DELETE',
+            Request::METHOD_DELETE,
             $this->generateUrl('admin_setting_shop_delivery_delete', ['id' => $pid])
         );
-        $this->assertSame(404, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 
     public function testMoveSortNo()
@@ -204,7 +206,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop_delivery_sort_no_move'),
             $request,
             [],

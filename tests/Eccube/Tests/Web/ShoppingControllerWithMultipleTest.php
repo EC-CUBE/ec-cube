@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
@@ -90,7 +91,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->verify();
 
         // 複数配送画面
-        $crawler = $this->client->request('GET', $this->generateUrl('shopping_shipping_multiple'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('shopping_shipping_multiple'));
 
         // 配送先1, 配送先2の情報を返す
         $shippings = $crawler->filter('#form_shipping_multiple_0_shipping_0_customer_address > option')->each(
@@ -101,7 +102,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         );
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => [
                 'shipping_multiple' => [0 => [
@@ -167,7 +168,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->verify();
 
         // 複数配送画面
-        $crawler = $this->client->request('GET', $this->generateUrl('shopping_shipping_multiple'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('shopping_shipping_multiple'));
         // 配送先1, 配送先2の情報を返す
         $shippings = $crawler->filter('#form_shipping_multiple_0_shipping_0_customer_address > option')->each(
             fn ($node, $i) => [
@@ -224,7 +225,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => $multiForm]
         );
@@ -244,7 +245,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
     {
         $Customer = $this->createCustomer();
 
-        $this->client->request('POST', '/cart/add', ['product_class_id' => 1, 'quantity' => 1]);
+        $this->client->request(Request::METHOD_POST, '/cart/add', ['product_class_id' => 1, 'quantity' => 1]);
 
         $this->scenarioCartIn($Customer);
         $this->scenarioCartIn($Customer);
@@ -287,7 +288,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => $multiForm]
         );
@@ -378,7 +379,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => $multiForm]
         );
@@ -466,7 +467,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => $multiForm]
         );
@@ -560,7 +561,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => $multiForm]
         );
@@ -667,7 +668,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => $multiForm]
         );
@@ -777,7 +778,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => $multiForm]
         );
@@ -889,7 +890,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => $multiForm]
         );
@@ -913,9 +914,9 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $Customer->addCustomerAddress($this->createCustomerAddress($Customer));
         $Customer->addCustomerAddress($this->createCustomerAddress($Customer));
 
-        $this->client->request('POST', '/cart/add', ['product_class_id' => 10, 'quantity' => 2]);
-        $this->client->request('POST', '/cart/add', ['product_class_id' => 1, 'quantity' => 1]);
-        $this->client->request('POST', '/cart/add', ['product_class_id' => 2, 'quantity' => 1]);
+        $this->client->request(Request::METHOD_POST, '/cart/add', ['product_class_id' => 10, 'quantity' => 2]);
+        $this->client->request(Request::METHOD_POST, '/cart/add', ['product_class_id' => 1, 'quantity' => 1]);
+        $this->client->request(Request::METHOD_POST, '/cart/add', ['product_class_id' => 2, 'quantity' => 1]);
 
         $this->scenarioCartIn($Customer);
 
@@ -981,7 +982,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $cartService->clear();
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => $multiForm]
         );
@@ -1119,7 +1120,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => $beforeForm]
         );
@@ -1127,7 +1128,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => $afterForm]
         );
@@ -1209,7 +1210,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => $multiForm]
         );

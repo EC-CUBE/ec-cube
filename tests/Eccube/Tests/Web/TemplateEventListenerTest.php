@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Event\TemplateEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
@@ -30,7 +31,7 @@ class TemplateEventListenerTest extends AbstractWebTestCase
         $eventDispatcher->addListener('index.twig', $listener);
         $eventDispatcher->addListener('Block/login.twig', $listener);
 
-        $this->client->request('GET', $this->generateUrl('homepage'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('homepage'));
         self::assertSame([
             'index.twig',
             'Block/login.twig',

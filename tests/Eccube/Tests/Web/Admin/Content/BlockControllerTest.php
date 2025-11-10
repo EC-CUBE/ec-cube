@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin\Content;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
@@ -20,13 +21,13 @@ class BlockControllerTest extends AbstractAdminWebTestCase
 {
     public function testRoutingAdminContentBlockIndex()
     {
-        $this->client->request('GET', $this->generateUrl('admin_content_block'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_content_block'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testRoutingAdminContentBlockEdit()
     {
-        $this->client->request('GET',
+        $this->client->request(Request::METHOD_GET,
             $this->generateUrl(
                 'admin_content_block_edit',
                 ['id' => 1]
@@ -38,7 +39,7 @@ class BlockControllerTest extends AbstractAdminWebTestCase
     public function testRoutingAdminContentBlockEditWithPost()
     {
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_content_block_edit', ['id' => 1]),
             [
                 'block' => [
@@ -73,7 +74,7 @@ class BlockControllerTest extends AbstractAdminWebTestCase
     {
         $this->loginTo($this->createMember());
 
-        $this->client->request('DELETE',
+        $this->client->request(Request::METHOD_DELETE,
             $this->generateUrl('admin_content_block_delete', ['id' => 1])
         );
 

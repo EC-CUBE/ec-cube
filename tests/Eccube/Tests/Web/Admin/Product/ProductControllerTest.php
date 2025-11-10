@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin\Product;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Common\Constant;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\ProductStatus;
@@ -126,13 +127,13 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
     public function testRoutingAdminProductProduct()
     {
-        $this->client->request('GET', $this->generateUrl('admin_product'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_product'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testRoutingAdminProductProductNew()
     {
-        $this->client->request('GET', $this->generateUrl('admin_product_product_new'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_product_product_new'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -155,7 +156,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             ],
         ];
 
-        $crawler = $this->client->request('POST', $this->generateUrl('admin_product'), $post);
+        $crawler = $this->client->request(Request::METHOD_POST, $this->generateUrl('admin_product'), $post);
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         $this->expected = '検索結果：'.$cnt.'件が該当しました';
@@ -168,19 +169,19 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->verify('デフォルトの表示件数確認テスト');
 
         // 表示件数100件テスト
-        $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', ['page_no' => 1]), ['page_count' => 100]);
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_product_page', ['page_no' => 1]), ['page_count' => 100]);
         $this->expected = '100件';
         $this->actual = $crawler->filter('select.form-select > option:selected')->text();
         $this->verify('表示件数100件テスト');
 
         // 表示件数入力値は正しくない場合はデフォルトの表示件数になるテスト
-        $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', ['page_no' => 1]), ['page_count' => 999999]);
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_product_page', ['page_no' => 1]), ['page_count' => 999999]);
         $this->expected = '検索結果：13件が該当しました';
         $this->actual = $crawler->filter('#search_form > div:nth-child(4) > span')->text();
         $this->verify('表示件数入力値は正しくない場合はデフォルトの表示件数になるテスト');
 
         // 表示件数はSESSIONから取得するテスト
-        $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', ['page_no' => 1]), ['status' => 1]);
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_product_page', ['page_no' => 1]), ['status' => 1]);
         $this->expected = '100件';
         $this->actual = $crawler->filter('select.form-select > option:selected')->text();
         $this->verify('表示件数はSESSIONから取得するテスト');
@@ -205,7 +206,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             ],
         ];
 
-        $crawler = $this->client->request('POST', $this->generateUrl('admin_product'), $post);
+        $crawler = $this->client->request(Request::METHOD_POST, $this->generateUrl('admin_product'), $post);
         $this->expected = '検索結果：1件が該当しました';
         $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
         $this->verify('検索結果件数の確認テスト');
@@ -216,19 +217,19 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->verify('デフォルトの表示件数確認テスト');
 
         // 表示件数100件テスト
-        $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', ['page_no' => 1]), ['page_count' => 100]);
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_product_page', ['page_no' => 1]), ['page_count' => 100]);
         $this->expected = '100件';
         $this->actual = $crawler->filter('select.form-select > option:selected')->text();
         $this->verify('表示件数100件テスト');
 
         // 表示件数入力値は正しくない場合はデフォルトの表示件数になるテスト
-        $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', ['page_no' => 1]), ['page_count' => 999999]);
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_product_page', ['page_no' => 1]), ['page_count' => 999999]);
         $this->expected = '検索結果：1件が該当しました';
         $this->actual = $crawler->filter('#search_form > div:nth-child(4) > span')->text();
         $this->verify('表示件数入力値は正しくない場合はデフォルトの表示件数になるテスト');
 
         // 表示件数はSESSIONから取得するテスト
-        $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', ['page_no' => 1]), ['status' => 1]);
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_product_page', ['page_no' => 1]), ['status' => 1]);
         $this->expected = '100件';
         $this->actual = $crawler->filter('select.form-select > option:selected')->text();
         $this->verify('表示件数はSESSIONから取得するテスト');
@@ -250,7 +251,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             ],
         ];
 
-        $crawler = $this->client->request('POST', $this->generateUrl('admin_product'), $post);
+        $crawler = $this->client->request(Request::METHOD_POST, $this->generateUrl('admin_product'), $post);
         $this->expected = '検索結果：1件が該当しました';
         $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
         $this->verify('検索結果件数の確認テスト');
@@ -261,19 +262,19 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->verify('デフォルトの表示件数確認テスト');
 
         // 表示件数100件テスト
-        $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', ['page_no' => 1]), ['page_count' => 100]);
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_product_page', ['page_no' => 1]), ['page_count' => 100]);
         $this->expected = '100件';
         $this->actual = $crawler->filter('select.form-select > option:selected')->text();
         $this->verify();
 
         // 表示件数入力値は正しくない場合はデフォルトのの表示件数になるテスト
-        $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', ['page_no' => 1]), ['page_count' => 999999]);
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_product_page', ['page_no' => 1]), ['page_count' => 999999]);
         $this->expected = '検索結果：1件が該当しました';
         $this->actual = $crawler->filter('#search_form > div:nth-child(4) > span')->text();
         $this->verify();
 
         // 表示件数はSESSIONから取得するテスト
-        $crawler = $this->client->request('GET', $this->generateUrl('admin_product_page', ['page_no' => 1]), ['status' => 1]);
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_product_page', ['page_no' => 1]), ['status' => 1]);
 
         $this->expected = '100件';
         $this->actual = $crawler->filter('select.form-select > option:selected')->text();
@@ -296,7 +297,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             ],
         ];
 
-        $crawler = $this->client->request('POST', $this->generateUrl('admin_product'), $post);
+        $crawler = $this->client->request(Request::METHOD_POST, $this->generateUrl('admin_product'), $post);
         $this->expected = '検索条件に合致するデータが見つかりませんでした';
         $this->actual = $crawler->filter('div.text-center.text-muted.mb-4.h5')->text();
         $this->verify();
@@ -318,7 +319,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             ],
         ];
 
-        $crawler = $this->client->request('POST', $this->generateUrl('admin_product'), $post);
+        $crawler = $this->client->request(Request::METHOD_POST, $this->generateUrl('admin_product'), $post);
         $this->expected = '検索条件に合致するデータが見つかりませんでした';
         $this->actual = $crawler->filter('div.text-center.text-muted.mb-4.h5')->text();
         $this->verify();
@@ -332,7 +333,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             ->findOneBy(['name' => $TestProduct->getName()])
             ->getId();
 
-        $this->client->request('GET', $this->generateUrl('admin_product_product_edit', ['id' => $id]));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_product_product_edit', ['id' => $id]));
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
@@ -343,7 +344,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $formData = $this->createFormData();
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()]),
             ['admin_product' => $formData]
         );
@@ -362,7 +363,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         $formData['return_link'] = $this->generateUrl('admin_product_category');
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()]),
             ['admin_product' => $formData]
         );
@@ -386,7 +387,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $productClassNum = 0;
         $Product = $this->createProduct('Test', $productClassNum);
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()])
         );
 
@@ -401,7 +402,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $productClassNum = 3;
         $Product = $this->createProduct('Test', $productClassNum);
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()])
         );
 
@@ -438,7 +439,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         $productTagId = $Product->getProductTag()->first()->getId();
 
-        $this->client->request('DELETE', $this->generateUrl('admin_product_product_delete', $params));
+        $this->client->request(Request::METHOD_DELETE, $this->generateUrl('admin_product_product_delete', $params));
 
         $rUrl = $this->generateUrl('admin_product_page', ['page_no' => 1]).'?resume=1';
 
@@ -458,7 +459,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             Constant::TOKEN_NAME => 'dummy',
         ];
 
-        $this->client->request('POST', $this->generateUrl('admin_product_product_copy', $params));
+        $this->client->request(Request::METHOD_POST, $this->generateUrl('admin_product_product_copy', $params));
 
         $this->assertTrue($this->client->getResponse()->isRedirect());
 
@@ -482,7 +483,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $formData['class']['tax_rate'] = $taxRate;
         // When
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_product_product_new'),
             ['admin_product' => $formData]
         );
@@ -520,7 +521,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_product'),
             ['admin_search_product' => $searchForm]
         );
@@ -533,13 +534,13 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         // No stock click button
         $noStockUrl = $crawler->selectLink('在庫なし')->link()->getUri();
-        $crawler = $this->client->request('GET', $noStockUrl);
+        $crawler = $this->client->request(Request::METHOD_GET, $noStockUrl);
         $this->expected = '検索結果 1 件 が該当しました';
         $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
         $this->verify();
 
         $csvExportUrl = $crawler->filter('ul.dropdown-menu')->selectLink('CSVダウンロード')->link()->getUri();
-        $this->client->request('GET', $csvExportUrl);
+        $this->client->request(Request::METHOD_GET, $csvExportUrl);
 
         $content = $this->client->getInternalResponse()->getContent();
         $this->assertMatchesRegularExpression('/Product with stock 01/', $content);
@@ -561,7 +562,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_product'),
             ['admin_search_product' => $searchForm]
         );
@@ -574,13 +575,13 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         // private click button
         $privateUrl = $crawler->selectLink('非公開')->link()->getUri();
-        $crawler = $this->client->request('GET', $privateUrl);
+        $crawler = $this->client->request(Request::METHOD_GET, $privateUrl);
         $this->expected = '検索結果 1 件 が該当しました';
         $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
         $this->verify();
 
         $csvExportUrl = $crawler->filter('ul.dropdown-menu')->selectLink('CSVダウンロード')->link()->getUri();
-        $this->client->request('GET', $csvExportUrl);
+        $this->client->request(Request::METHOD_GET, $csvExportUrl);
 
         $content = $this->client->getInternalResponse()->getContent();
         $this->assertMatchesRegularExpression('/Product with status 01/', $content);
@@ -602,7 +603,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_product'),
             ['admin_search_product' => $searchForm]
         );
@@ -615,13 +616,13 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         // public click button
         $privateUrl = $crawler->selectLink('公開')->link()->getUri();
-        $crawler = $this->client->request('GET', $privateUrl);
+        $crawler = $this->client->request(Request::METHOD_GET, $privateUrl);
         $this->expected = '検索結果 1 件 が該当しました';
         $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
         $this->verify();
 
         $csvExportUrl = $crawler->filter('ul.dropdown-menu')->selectLink('CSVダウンロード')->link()->getUri();
-        $this->client->request('GET', $csvExportUrl);
+        $this->client->request(Request::METHOD_GET, $csvExportUrl);
 
         $content = $this->client->getInternalResponse()->getContent();
         $this->assertMatchesRegularExpression('/[Product with status 01]{1}/', $content);
@@ -645,7 +646,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_product'),
             ['admin_search_product' => $searchForm]
         );
@@ -658,13 +659,13 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         // private click button
         $privateUrl = $crawler->selectLink('非公開')->link()->getUri();
-        $crawler = $this->client->request('GET', $privateUrl);
+        $crawler = $this->client->request(Request::METHOD_GET, $privateUrl);
         $this->expected = '検索結果 1 件 が該当しました';
         $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
         $this->verify();
 
         $csvExportUrl = $crawler->filter('ul.dropdown-menu')->selectLink('CSVダウンロード')->link()->getUri();
-        $this->client->request('GET', $csvExportUrl);
+        $this->client->request(Request::METHOD_GET, $csvExportUrl);
     }
 
     /**
@@ -695,7 +696,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_product'),
             ['admin_search_product' => $searchForm]
         );
@@ -705,7 +706,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->verify('検索結果件数の確認テスト');
 
         $csvExportUrl = $crawler->filter('.btn-ec-regular')->selectLink('CSVダウンロード')->link()->getUri();
-        $this->client->request('GET', $csvExportUrl);
+        $this->client->request(Request::METHOD_GET, $csvExportUrl);
 
         $content = $this->client->getInternalResponse()->getContent();
         $this->assertMatchesRegularExpression('/Product name [10-1]/', $content);
@@ -774,7 +775,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         // When
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()]),
             ['admin_product' => $formData]
         );
@@ -833,7 +834,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()]);
         // When
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $url,
             ['admin_product' => $formData]
         );
@@ -868,8 +869,8 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->expectOutputRegex("/$productName/");
         $this->createProduct($productName);
 
-        $this->client->request('POST', $this->generateUrl('admin_product'), ['admin_search_product' => $this->createSearchForm()]);
-        $this->client->request('GET', $this->generateUrl('admin_product_export'));
+        $this->client->request(Request::METHOD_POST, $this->generateUrl('admin_product'), ['admin_search_product' => $this->createSearchForm()]);
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_product_export'));
 
         $this->expected = 'application/octet-stream';
         $this->actual = $this->client->getResponse()->headers->get('Content-Type');
@@ -883,19 +884,19 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     {
         // case invalid method
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_product_bulk_product_status', ['id' => ProductStatus::DISPLAY_SHOW]),
             []
         );
-        $this->assertSame(405, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_METHOD_NOT_ALLOWED, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
 
         // case invalid product status id
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_product_bulk_product_status', ['id' => 0]),
             []
         );
-        $this->assertSame(404, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
 
         // case true
         $productIds = [];
@@ -913,7 +914,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         foreach ($productStatuses as $productStatusId) {
             $ProductStatus = $this->productStatusRepository->find($productStatusId);
             $this->client->request(
-                'POST',
+                Request::METHOD_POST,
                 $this->generateUrl('admin_product_bulk_product_status', ['id' => $productStatusId]),
                 ['ids' => $productIds]
             );
@@ -925,7 +926,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     public function testLoadProductClass()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_product_classes_load', ['id' => 1]),
             [],
             [],
@@ -934,7 +935,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             ]
         );
 
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 
     /**
@@ -959,7 +960,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $formData['add_images'][] = 'new_image.png';
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()]),
             ['admin_product' => $formData]
         );
@@ -994,7 +995,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $formData['add_images'][] = '../temp_image/new_image.png';
 
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()]),
             ['admin_product' => $formData]
         );
@@ -1009,7 +1010,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     public function testImageLoad()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_product_image_load', ['source' => 'sand-1.png']),
             [],
             [],
@@ -1018,13 +1019,13 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             ]
         );
 
-        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 
     public function testImageLoadWithFailure()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_product_image_load', ['source' => '../save_image/sand-1.png']),
             [],
             [],
@@ -1033,13 +1034,13 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             ]
         );
 
-        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 
     public function testImageLoadWithNotfound()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_product_image_load', ['source' => 'xxxxx.png']),
             [],
             [],
@@ -1048,7 +1049,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             ]
         );
 
-        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 
     /**
@@ -1126,7 +1127,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $data = $this->createFormData();
         $data['delete_images'] = $Product1->getProductImage()->map(static fn (ProductImage $ProductImage) => $ProductImage->getFileName())->toArray();
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_product_product_edit', ['id' => $Product1->getId()]),
             ['admin_product' => $data]
         );
@@ -1165,7 +1166,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             Constant::TOKEN_NAME => 'dummy',
         ];
 
-        $this->client->request('DELETE', $this->generateUrl('admin_product_product_delete', $params));
+        $this->client->request(Request::METHOD_DELETE, $this->generateUrl('admin_product_product_delete', $params));
 
         $rUrl = $this->generateUrl('admin_product_page', ['page_no' => 1]).'?resume=1';
 
@@ -1179,7 +1180,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     public function test絵文字()
     {
         $name = '🍣🍺';
-        $crawler = $this->client->request('GET', $this->generateUrl('product_list', ['name' => $name]));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('product_list', ['name' => $name]));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         $message = $crawler->filter('.ec-searchnavRole__counter > span')->text();
@@ -1188,7 +1189,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         // 絵文字の商品を登録
         $this->createProduct($name);
 
-        $crawler = $this->client->request('GET', $this->generateUrl('product_list', ['name' => $name]));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('product_list', ['name' => $name]));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         $message = $crawler->filter('.ec-searchnavRole__counter > span')->text();
@@ -1220,7 +1221,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         </div>";
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()]),
             ['admin_product' => $formData]
         );

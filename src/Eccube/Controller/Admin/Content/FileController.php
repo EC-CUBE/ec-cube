@@ -13,6 +13,7 @@
 
 namespace Eccube\Controller\Admin\Content;
 
+use Symfony\Component\HttpFoundation\Response;
 use Eccube\Controller\AbstractController;
 use Eccube\Util\FilesystemUtil;
 use Symfony\Bridge\Twig\Attribute\Template;
@@ -256,7 +257,7 @@ class FileController extends AbstractController
                 if (strlen((string) $str) === 0) {
                     return (new BinaryFileResponse($file))->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
                 } else {
-                    return new BinaryFileResponse($file, 200, [
+                    return new BinaryFileResponse($file, Response::HTTP_OK, [
                         'Content-Type' => 'aplication/octet-stream;',
                         'Content-Disposition' => "attachment; filename*=UTF-8\'\'".rawurlencode($this->convertStrFromServer($pathParts['basename'])),
                     ]);

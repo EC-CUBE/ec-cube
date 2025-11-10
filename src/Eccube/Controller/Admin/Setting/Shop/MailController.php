@@ -175,7 +175,7 @@ class MailController extends AbstractController
     }
 
     #[Route(path: '/%eccube_admin_route%/setting/shop/mail/{id}/delete', name: 'admin_setting_shop_mail_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, MailTemplate $Mail): RedirectResponse
+    public function delete(MailTemplate $Mail): RedirectResponse
     {
         $this->isTokenValid();
 

@@ -13,6 +13,8 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Eccube\Entity\TaxRule;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
@@ -34,7 +36,7 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
     public function testRoutingAdminBasisTaxIndex()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_setting_shop_tax')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -45,7 +47,7 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
         $redirectUrl = $this->generateUrl('admin_setting_shop_tax');
 
         $this->client->request(
-            'DELETE',
+            Request::METHOD_DELETE,
             $this->generateUrl('admin_setting_shop_tax_delete', ['id' => 1])
         );
 
@@ -67,7 +69,7 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop_tax'),
             [
                 'tax_rule' => $form,
@@ -92,7 +94,7 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
         $redirectUrl = $this->generateUrl('admin_setting_shop_tax');
 
         $this->client->request(
-            'DELETE',
+            Request::METHOD_DELETE,
             $this->generateUrl('admin_setting_shop_tax_delete', ['id' => $TaxRule->getId()])
         );
 
@@ -105,10 +107,10 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
         $tid = 99999;
 
         $this->client->request(
-            'DELETE',
+            Request::METHOD_DELETE,
             $this->generateUrl('admin_setting_shop_tax_delete', ['id' => $tid])
         );
-        $this->assertSame(404, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 
     public function testEditWithTime()
@@ -124,7 +126,7 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop_tax'),
             [
                 'tax_rule' => $form,

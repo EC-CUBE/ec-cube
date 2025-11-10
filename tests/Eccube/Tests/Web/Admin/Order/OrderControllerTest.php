@@ -13,6 +13,8 @@
 
 namespace Eccube\Tests\Web\Admin\Order;
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CsvType;
@@ -101,7 +103,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
     public function testIndex()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_order')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -111,7 +113,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
     {
         // 初期表示時検索条件テスト
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_order')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -126,7 +128,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $Order = $this->orderRepository->findOneBy([]);
 
         $crawler = $this->client->request(
-            'POST', $this->generateUrl('admin_order'), [
+            Request::METHOD_POST, $this->generateUrl('admin_order'), [
                 'admin_search_order' => [
                     '_token' => 'dummy',
                     'multi' => $Order->getOrderNo(),
@@ -140,7 +142,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $this->verify();
 
         $crawler = $this->client->request(
-            'POST', $this->generateUrl('admin_order'), [
+            Request::METHOD_POST, $this->generateUrl('admin_order'), [
                 'admin_search_order' => [
                     '_token' => 'dummy',
                     'order_no' => $Order->getOrderNo(),
@@ -162,7 +164,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $cnt = count($OrderList);
 
         $crawler = $this->client->request(
-            'POST', $this->generateUrl('admin_order'), [
+            Request::METHOD_POST, $this->generateUrl('admin_order'), [
                 'admin_search_order' => [
                     '_token' => 'dummy',
                     'multi' => $companyName,
@@ -176,7 +178,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $this->verify();
 
         $crawler = $this->client->request(
-            'POST', $this->generateUrl('admin_order'), [
+            Request::METHOD_POST, $this->generateUrl('admin_order'), [
                 'admin_search_order' => [
                     '_token' => 'dummy',
                     'company_name' => $companyName,
@@ -193,7 +195,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
     public function testIndexWithPost()
     {
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order'),
             [
                 'admin_search_order' => [
@@ -211,7 +213,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
     public function testIndexWithNext()
     {
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order').'?page_count=3',
             [
                 'admin_search_order' => [
@@ -225,7 +227,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
 
         // 次のページへ遷移
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_order_page', ['page_no' => 2])
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -247,7 +249,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->flush();
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_bulk_delete'),
             ['ids' => $orderIds]
         );
@@ -266,7 +268,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
 
         // 10件ヒットするはずの検索条件
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order'),
             [
                 'admin_search_order' => [
@@ -281,7 +283,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $this->verify();
 
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_order_export_order')
         );
 
@@ -302,7 +304,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         ];
         /** @var Crawler $crawler */
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order'),
             [
                 'admin_search_order' => $form,
@@ -337,7 +339,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             $Shippings = $Order->getShippings();
             foreach ($Shippings as $Shipping) {
                 $this->client->request(
-                    'PUT',
+                    Request::METHOD_PUT,
                     $this->generateUrl('admin_shipping_update_order_status', ['id' => $Shipping->getId()]),
                     [
                         'order_status' => $orderStatusId,
@@ -375,7 +377,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
     public function testBulkOrderStatusInvalidMethod()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_shipping_update_order_status', ['id' => 1]),
             [
                 Constant::TOKEN_NAME => 'dummy',
@@ -386,7 +388,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
                 'CONTENT_TYPE' => 'application/json',
             ]
         );
-        $this->assertSame(405, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_METHOD_NOT_ALLOWED, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 
     public function testBulkOrderStatusInvalidStatus()
@@ -394,7 +396,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $Order = $this->orderRepository->findOneBy([]);
         $Shipping = $Order->getShippings()->first();
         $this->client->request(
-            'PUT',
+            Request::METHOD_PUT,
             $this->generateUrl('admin_shipping_update_order_status', ['id' => $Shipping->getId()]),
             [
                 'order_status' => 0,
@@ -406,13 +408,13 @@ class OrderControllerTest extends AbstractAdminWebTestCase
                 'CONTENT_TYPE' => 'application/json',
             ]
         );
-        $this->assertSame(400, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_BAD_REQUEST, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 
     public function testBulkOrderStatusShippingNotFound()
     {
         $this->client->request(
-            'PUT',
+            Request::METHOD_PUT,
             $this->generateUrl('admin_shipping_update_order_status', ['id' => 0]),
             [
                 'order_status' => OrderStatus::IN_PROGRESS,
@@ -424,7 +426,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
                 'CONTENT_TYPE' => 'application/json',
             ]
         );
-        $this->assertSame(404, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 
     public function testSimpleUpdateOrderStatusWithSendMail()
@@ -439,7 +441,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             $Shippings = $Order->getShippings();
             foreach ($Shippings as $Shipping) {
                 $crawler = $this->client->request(
-                    'PUT',
+                    Request::METHOD_PUT,
                     $this->generateUrl('admin_shipping_update_order_status', ['id' => $Shipping->getId()]),
                     [
                         'order_status' => $OrderStatusDelivered->getId(),
@@ -481,7 +483,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $Order = $this->orderRepository->findOneBy([]);
         $Shipping = $Order->getShippings()->first();
         $this->client->request(
-            'PUT',
+            Request::METHOD_PUT,
             $this->generateUrl('admin_shipping_update_tracking_number', ['id' => $Shipping->getId()]),
             [
                 'tracking_number' => '0000-0000-0000',
@@ -507,7 +509,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $Order = $this->orderRepository->findOneBy([]);
         $Shipping = $Order->getShippings()->first();
         $this->client->request(
-            'PUT',
+            Request::METHOD_PUT,
             $this->generateUrl('admin_shipping_update_tracking_number', ['id' => $Shipping->getId()]),
             [
                 'tracking_number' => '0000_0000_0000',
@@ -542,7 +544,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->flush();
 
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_order').'?order_status_id=4'
         );
 

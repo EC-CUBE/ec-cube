@@ -113,7 +113,7 @@ class CalendarController extends AbstractController
      * @throws \Doctrine\ORM\NoResultException|\Doctrine\ORM\Exception\ORMException
      */
     #[Route(path: '/%eccube_admin_route%/setting/shop/calendar/{id}/delete', name: 'admin_setting_shop_calendar_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, Calendar $Calendar): RedirectResponse
+    public function delete(Calendar $Calendar): RedirectResponse
     {
         $this->isTokenValid();
         $this->calendarRepository->delete($Calendar);

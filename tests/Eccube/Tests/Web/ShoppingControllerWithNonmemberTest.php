@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Service\OrderHelper;
@@ -36,7 +37,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
 
     public function testRoutingShoppingLogin()
     {
-        $crawler = $this->client->request('GET', '/shopping/login');
+        $crawler = $this->client->request(Request::METHOD_GET, '/shopping/login');
         $this->expected = 'ログイン';
         $this->actual = $crawler->filter('.ec-pageHeader h1')->text();
         $this->verify();
@@ -49,7 +50,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $session->set(OrderHelper::SESSION_NON_MEMBER, new Customer());
         $session->save();
 
-        $crawl = $this->client->request('GET', '/shopping');
+        $crawl = $this->client->request(Request::METHOD_GET, '/shopping');
         $crawl->text();
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('cart')));
@@ -109,7 +110,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
 
     public function testNonmemberWithCartUnlock()
     {
-        $this->client->request('GET', $this->generateUrl('shopping_nonmember'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('shopping_nonmember'));
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('cart')));
     }
@@ -121,7 +122,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->scenarioCartIn($Customer);
 
         $this->loginTo($Customer);
-        $this->client->request('GET', $this->generateUrl('shopping_nonmember'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('shopping_nonmember'));
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
     }
 
@@ -129,7 +130,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
     {
         $this->scenarioCartIn();
 
-        $this->client->request('GET', $this->generateUrl('shopping_nonmember'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('shopping_nonmember'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -180,7 +181,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
 
         // 値を保持してお届け先設定画面へ遷移
         $crawler = $client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->app->path('shopping_redirect_to'),
             [
                 '_shopping_order' => [
@@ -204,7 +205,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->assertTrue($client->getResponse()->isRedirect($shipping_edit_url));
 
         // お届け先設定画面が表示される.
-        $crawler = $client->request('GET', $shipping_edit_url);
+        $crawler = $client->request(Request::METHOD_GET, $shipping_edit_url);
         $this->assertTrue($client->getResponse()->isSuccessful());
 
         $this->expected = 'お届け先の変更';
@@ -237,7 +238,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
 
         // 値を保持してお届け先設定画面へ遷移
         $crawler = $client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->app->path('shopping_redirect_to'),
             [
                 '_shopping_order' => [
@@ -261,7 +262,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->assertTrue($client->getResponse()->isRedirect($shipping_edit_url));
 
         // お届け先設定画面が表示される.
-        $crawler = $client->request('GET', $shipping_edit_url);
+        $crawler = $client->request(Request::METHOD_GET, $shipping_edit_url);
         $this->assertTrue($client->getResponse()->isSuccessful());
 
         $this->expected = 'お届け先の変更';
@@ -273,7 +274,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         unset($formData['email']);
 
         $client->request(
-            'POST',
+            Request::METHOD_POST,
             $shipping_edit_url,
             ['shopping_shipping' => $formData]
         );
@@ -310,7 +311,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
 
         $faker = $this->getFaker();
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             '/shopping/customer',
             [
                 'customer_name01' => $faker->lastName,
@@ -352,7 +353,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
 
         $faker = $this->getFaker();
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             '/shopping/customer',
             [
                 'customer_name01' => $faker->lastName,
@@ -394,7 +395,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
 
         $faker = $this->getFaker();
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             '/shopping/customer',
             [
                 'customer_name01' => $faker->lastName,

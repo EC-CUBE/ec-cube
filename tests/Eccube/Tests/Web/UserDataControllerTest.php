@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\Page;
 
 class UserDataControllerTest extends AbstractWebTestCase
@@ -55,7 +56,7 @@ class UserDataControllerTest extends AbstractWebTestCase
         );
 
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             '/user_data/'.$this->fileName
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -68,7 +69,7 @@ class UserDataControllerTest extends AbstractWebTestCase
     public function testIndexWithNotFound()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             '/user_data/aaa'
         );
         $this->expected = 404;

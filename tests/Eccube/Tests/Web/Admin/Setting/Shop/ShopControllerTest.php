@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\BaseInfo;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -29,7 +30,7 @@ class ShopControllerTest extends AbstractAdminWebTestCase
      */
     public function testRouting()
     {
-        $this->client->request('GET', $this->generateUrl('admin_setting_shop'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_shop'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -47,7 +48,7 @@ class ShopControllerTest extends AbstractAdminWebTestCase
             $formData['shop_name'] = '';
         }
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop'),
             ['shop_master' => $formData]
         );
@@ -119,7 +120,7 @@ class ShopControllerTest extends AbstractAdminWebTestCase
         $formData['email03'] = 'aa..@example.com';
         $formData['email04'] = 'aa..@example.com';
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop'),
             ['shop_master' => $formData]
         );

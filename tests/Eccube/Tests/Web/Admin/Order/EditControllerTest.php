@@ -13,6 +13,8 @@
 
 namespace Eccube\Tests\Web\Admin\Order;
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Eccube\Common\Constant;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
@@ -60,7 +62,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
     public function testRoutingAdminOrderNew()
     {
-        $this->client->request('GET', $this->generateUrl('admin_order_new'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_order_new'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -69,7 +71,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $formData = $this->createFormData($this->Customer, $this->Product);
         unset($formData['OrderStatus']);
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_new'),
             [
                 'order' => $formData,
@@ -90,7 +92,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
     {
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
-        $this->client->request('GET', $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -103,7 +105,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
         $formData = $this->createFormData($Customer, $this->Product);
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]),
             [
                 'order' => $formData,
@@ -136,7 +138,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
         $formData = $this->createFormData($Customer, $this->Product);
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]),
             [
                 'order' => $formData,
@@ -182,8 +184,8 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
         // 1つの新着情報を保存した後にホームページにアクセスする。
         // Request Homepage after saving a single news item
-        $crawler = $this->client->request('GET', $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]));
-        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]));
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
 
         // <div>タグから危険なid属性が削除されていることを確認する。
         // Find that dangerous id attributes are removed from <div> tags.
@@ -217,7 +219,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
         $formData = $this->createFormData($Customer, $this->Product);
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]),
             [
                 'order' => $formData,
@@ -248,7 +250,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
         $formData = $this->createFormData($Customer, $this->Product);
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]),
             [
                 'order' => $formData,
@@ -272,7 +274,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
     public function testSearchCustomerHtml()
     {
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_search_customer_html'),
             [
                 'search_word' => $this->Customer->getId(),
@@ -290,7 +292,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
     public function testSearchCustomerById()
     {
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_search_customer_by_id'),
             [
                 'id' => $this->Customer->getId(),
@@ -311,7 +313,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
     public function testSearchProduct()
     {
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_search_product'),
             [
                 'id' => $this->Product->getId(),
@@ -339,7 +341,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $formData['OrderStatus'] = OrderStatus::PROCESSING; // 購入処理中で受注を登録する
         // 管理画面から受注登録
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]),
             [
                 'order' => $formData,
@@ -357,7 +359,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         // フロント側から, product_class_id = 1 をカート投入
         $client = $this->client;
         $client->request(
-            'PUT',
+            Request::METHOD_PUT,
             $this->generateUrl(
                 'cart_handle_item',
                 [
@@ -396,13 +398,13 @@ class EditControllerTest extends AbstractEditControllerTestCase
         ];
 
         $client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_nonmember'),
             ['nonmember' => $clientFormData]
         );
         $this->cartService->lock();
 
-        $crawler = $client->request('GET', $this->generateUrl('shopping'));
+        $crawler = $client->request(Request::METHOD_GET, $this->generateUrl('shopping'));
         $this->expected = 'ご注文内容のご確認';
         $this->actual = $crawler->filter('h1.page-heading')->text();
         $this->verify();
@@ -442,7 +444,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
         // 管理画面から受注登録
         $this->client->request(
-            'POST', $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]), [
+            Request::METHOD_POST, $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]), [
                 'order' => $formData,
                 'mode' => 'register',
             ]
@@ -461,7 +463,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
         // 管理画面で受注編集する
         $this->client->request(
-            'POST', $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]), [
+            Request::METHOD_POST, $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]), [
                 'order' => $formDataForEdit,
                 'mode' => 'register',
             ]
@@ -506,7 +508,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $formData = $this->createFormData($this->Customer, $this->Product);
         unset($formData['OrderStatus']);
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_new'),
             [
                 'order' => $formData,
@@ -542,7 +544,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
         unset($formData['OrderStatus']);
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_new'),
             [
                 'order' => $formData,
@@ -583,7 +585,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $formData['Shipping']['DeliveryTime'] = $delivery_time_id;
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]),
             [
                 'order' => $formData,
@@ -608,7 +610,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
         // 管理画面で受注編集する
         $this->client->request(
-            'POST', $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]), [
+            Request::METHOD_POST, $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]), [
                 'order' => $formDataForEdit,
                 'mode' => 'register',
             ]
@@ -666,7 +668,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $formData['OrderItems'][0]['tax_rate'] = '10';
 
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_new'),
             [
                 'order' => $formData,
@@ -702,7 +704,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
         $formData = $this->createFormData($Customer, $this->Product);
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]),
             [
                 'order' => $formData,
@@ -729,7 +731,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $formData = $this->createFormData($this->Customer, $Product, $charge);
         unset($formData['OrderStatus']);
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_new'),
             [
                 'order' => $formData,

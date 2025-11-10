@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Security\PasswordHasher;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\Member;
 use Eccube\Security\PasswordHasher\PasswordHasher;
 use Eccube\Tests\EccubeTestCase;
@@ -47,7 +48,7 @@ class PasswordMigrationTest extends EccubeTestCase
         $this->entityManager->flush();
 
         // ログイン
-        $crawler = $this->client->request('GET', '/admin/login');
+        $crawler = $this->client->request(Request::METHOD_GET, '/admin/login');
         self::assertTrue($this->client->getResponse()->isSuccessful());
 
         $form = $crawler->selectButton('ログイン')->form();

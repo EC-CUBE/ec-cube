@@ -102,7 +102,7 @@ class ContactController extends AbstractController
                     // メール送信
                     $this->mailService->sendContactMail($data);
 
-                    return $this->redirect($this->generateUrl('contact_complete'));
+                    return $this->redirectToRoute('contact_complete');
             }
         }
 
