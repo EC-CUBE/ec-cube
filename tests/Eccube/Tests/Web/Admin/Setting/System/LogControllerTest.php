@@ -13,11 +13,11 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\System;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Faker\Generator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class LogControllerTest

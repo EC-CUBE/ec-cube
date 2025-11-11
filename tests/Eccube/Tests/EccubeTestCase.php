@@ -31,6 +31,7 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 /**
  * Abstract class that other unit tests can extend, provides generic methods for EC-CUBE tests.
@@ -58,7 +59,7 @@ abstract class EccubeTestCase extends WebTestCase
     {
         parent::setUp();
         $this->client = static::$booted ? static::getClient() : static::createClient();
-        $this->entityManager = static::getContainer()->get('doctrine')->getManager();
+        $this->entityManager = static::getContainer()->get(EntityManagerInterface::class);
         $this->eccubeConfig = static::getContainer()->get(EccubeConfig::class);
     }
 
@@ -274,7 +275,7 @@ abstract class EccubeTestCase extends WebTestCase
      */
     protected function generateUrl(string $route, array $parameters = [], int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): string
     {
-        return static::getContainer()->get('router')->generate($route, $parameters, $referenceType);
+        return static::getContainer()->get(UrlGeneratorInterface::class)->generate($route, $parameters, $referenceType);
     }
 
     /**
@@ -287,11 +288,11 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @return CsrfToken The CSRF token
      *
-     * @see \Symfony\Component\Security\Csrf\CsrfTokenManagerInterface
+     * @see CsrfTokenManagerInterface
      * @see https://stackoverflow.com/a/38661340/4956633
      */
     protected function getCsrfToken(string $csrfTokenId): CsrfToken
     {
-        return static::getContainer()->get('security.csrf.token_manager')->getToken($csrfTokenId);
+        return static::getContainer()->get(CsrfTokenManagerInterface::class)->getToken($csrfTokenId);
     }
 }

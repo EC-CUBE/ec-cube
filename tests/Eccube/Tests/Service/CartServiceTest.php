@@ -63,7 +63,10 @@ class CartServiceTest extends AbstractServiceTestCase
         $this->saleTypeRepository = $this->entityManager->getRepository(SaleType::class);
         $this->orderRepository = $this->entityManager->getRepository(Order::class);
         $this->productClassRepository = $this->entityManager->getRepository(ProductClass::class);
-        $this->purchaseFlow = static::getContainer()->get('eccube.purchase.flow.cart');
+        // PurchaseFlowは同じクラスで複数インスタンス（cart/shopping/order）があるため、
+        // クラス名のエイリアスを作成できないため、文字列サービスIDのまま使用
+        $serviceId = 'eccube.purchase.flow.cart';
+        $this->purchaseFlow = static::getContainer()->get($serviceId);
 
         $this->SaleType1 = $this->saleTypeRepository->find(1);
         $this->SaleType2 = $this->saleTypeRepository->find(2);

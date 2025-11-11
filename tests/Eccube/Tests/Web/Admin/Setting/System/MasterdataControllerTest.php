@@ -13,10 +13,10 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\System;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\Sex;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class MasterdataControllerTest

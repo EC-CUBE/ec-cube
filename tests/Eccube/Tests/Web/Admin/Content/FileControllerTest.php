@@ -13,12 +13,12 @@
 
 namespace Eccube\Tests\Web\Admin\Content;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class FileControllerTest extends AbstractAdminWebTestCase
 {

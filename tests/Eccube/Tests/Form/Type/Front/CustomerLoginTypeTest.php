@@ -17,6 +17,7 @@ use Eccube\Form\Type\Front\CustomerLoginType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class CustomerLoginTypeTest extends AbstractTypeTestCase
 {
@@ -33,7 +34,7 @@ class CustomerLoginTypeTest extends AbstractTypeTestCase
         parent::setUp();
 
         $request = Request::createFromGlobals();
-        static::getContainer()->get('request_stack')->push($request);
+        static::getContainer()->get(RequestStack::class)->push($request);
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory

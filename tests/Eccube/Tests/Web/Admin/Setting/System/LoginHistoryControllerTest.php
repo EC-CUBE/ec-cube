@@ -13,10 +13,10 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\System;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\Master\LoginHistoryStatus;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Component\HttpFoundation\Request;
 
 class LoginHistoryControllerTest extends AbstractAdminWebTestCase
 {

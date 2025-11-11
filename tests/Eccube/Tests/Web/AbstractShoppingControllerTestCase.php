@@ -13,11 +13,11 @@
 
 namespace Eccube\Tests\Web;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
 use Eccube\Entity\ProductClass;
 use Eccube\Util\StringUtil;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * ShoppingController 用 WebTest の抽象クラス.

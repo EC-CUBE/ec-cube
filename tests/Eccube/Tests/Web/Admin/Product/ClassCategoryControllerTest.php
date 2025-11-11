@@ -13,7 +13,6 @@
 
 namespace Eccube\Tests\Web\Admin\Product;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Common\Constant;
 use Eccube\Entity\ClassCategory;
 use Eccube\Entity\ClassName;
@@ -21,6 +20,7 @@ use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\ClassNameRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\HttpFoundation\Request;
 
 class ClassCategoryControllerTest extends AbstractAdminWebTestCase
 {

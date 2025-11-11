@@ -13,7 +13,6 @@
 
 namespace Eccube\Tests\Web\Admin\Order;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Common\Constant;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Master\OrderStatus;
@@ -27,7 +26,9 @@ use Faker\Generator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\DomCrawler\Form;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Client;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Class OrderPdfControllerTest.
@@ -393,7 +394,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $this->assertCount(1, $OrderPdfs, '1件保存されているはず');
 
         $OrderPdf = current($OrderPdfs);
-        $token = static::getContainer()->get('security.token_storage')->getToken();
+        $token = static::getContainer()->get(TokenStorageInterface::class)->getToken();
         $adminTest = $token->getUser();
         $this->assertEquals($adminTest->getId(), $OrderPdf->getMemberId(), '管理ユーザーのIDと一致するはず');
 

@@ -125,6 +125,7 @@ class ForgotController extends AbstractController
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             throw new HttpException\NotFoundHttpException();
         }
+
         return [];
     }
 

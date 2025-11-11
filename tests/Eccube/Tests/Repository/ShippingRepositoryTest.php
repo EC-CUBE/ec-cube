@@ -29,6 +29,7 @@ use Eccube\Repository\MemberRepository;
 use Eccube\Repository\ShippingRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
+use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Tests\EccubeTestCase;
 
 /**
@@ -117,7 +118,7 @@ class ShippingRepositoryTest extends EccubeTestCase
             $this->Shippings[$i] = $Shipping;
         }
 
-        $purchaseFlow = static::getContainer()->get('eccube.purchase.flow.order');
+        $purchaseFlow = static::getContainer()->get(PurchaseFlow::class);
         $purchaseFlow->validate($this->Order, new PurchaseContext($this->Order));
         $this->entityManager->flush();
     }

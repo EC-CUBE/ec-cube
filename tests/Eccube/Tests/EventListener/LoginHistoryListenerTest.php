@@ -13,10 +13,10 @@
 
 namespace Eccube\Tests\EventListener;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\LoginHistory;
 use Eccube\Entity\Master\LoginHistoryStatus;
 use Eccube\Tests\Web\AbstractWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 class LoginHistoryListenerTest extends AbstractWebTestCase
 {

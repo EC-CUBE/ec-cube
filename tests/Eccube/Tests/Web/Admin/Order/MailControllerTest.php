@@ -13,7 +13,6 @@
 
 namespace Eccube\Tests\Web\Admin\Order;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Entity\MailHistory;
@@ -21,6 +20,7 @@ use Eccube\Entity\MailTemplate;
 use Eccube\Entity\Order;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mime\Email;
 
 class MailControllerTest extends AbstractAdminWebTestCase

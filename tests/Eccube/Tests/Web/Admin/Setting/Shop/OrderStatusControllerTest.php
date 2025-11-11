@@ -13,7 +13,6 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\Master\CustomerOrderStatus;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\OrderStatusColor;
@@ -21,6 +20,7 @@ use Eccube\Repository\Master\CustomerOrderStatusRepository;
 use Eccube\Repository\Master\OrderStatusColorRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 class OrderStatusControllerTest extends AbstractAdminWebTestCase
 {

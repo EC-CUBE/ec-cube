@@ -17,7 +17,6 @@ use Eccube\Controller\AbstractController;
 use Eccube\Repository\Master\ProductListOrderByRepository;
 use Eccube\Repository\ProductRepository;
 use Symfony\Bridge\Twig\Attribute\Template;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
 class AutoNewItemController extends AbstractController
@@ -37,6 +36,7 @@ class AutoNewItemController extends AbstractController
             'orderby' => $this->productListOrderByRepository->find($this->eccubeConfig['eccube_product_order_newer']),
         ])
             ->setMaxResults($this->eccubeConfig['eccube_max_number_new_items_get']);
+
         return [
             'Products' => $qb->getQuery()->getResult(),
         ];

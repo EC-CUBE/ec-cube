@@ -13,10 +13,10 @@
 
 namespace Eccube\Tests\Web\Admin\Product;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\Category;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 class CategoryControllerTest extends AbstractAdminWebTestCase
 {

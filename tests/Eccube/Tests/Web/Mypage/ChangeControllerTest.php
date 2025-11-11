@@ -13,9 +13,9 @@
 
 namespace Eccube\Tests\Web\Mypage;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\Customer;
 use Eccube\Tests\Web\AbstractWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 class ChangeControllerTest extends AbstractWebTestCase
 {

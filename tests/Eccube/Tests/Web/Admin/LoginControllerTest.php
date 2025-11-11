@@ -13,9 +13,10 @@
 
 namespace Eccube\Tests\Web\Admin;
 
+use Eccube\Tests\Web\AbstractWebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Eccube\Tests\Web\AbstractWebTestCase;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class LoginControllerTest extends AbstractWebTestCase
 {
@@ -43,7 +44,7 @@ class LoginControllerTest extends AbstractWebTestCase
             ]
         );
 
-        $this->assertNotNull(static::getContainer()->get('security.token_storage')->getToken(), 'ログインしているかどうか');
+        $this->assertNotNull(static::getContainer()->get(TokenStorageInterface::class)->getToken(), 'ログインしているかどうか');
     }
 
     public function testRoutingAdminLoginÃ�グインしていない場合は302エラーがかえる()

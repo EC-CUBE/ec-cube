@@ -13,7 +13,6 @@
 
 namespace Eccube\Tests\Web\Admin\Product;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Common\Constant;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\ClassCategory;
@@ -26,6 +25,7 @@ use Eccube\Repository\ProductRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\DomCrawler\Form;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class ProductClassControllerTest

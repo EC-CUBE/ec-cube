@@ -13,11 +13,11 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Eccube\Entity\Calendar;
 use Eccube\Repository\CalendarRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class CalendarControllerTest extends AbstractAdminWebTestCase
 {

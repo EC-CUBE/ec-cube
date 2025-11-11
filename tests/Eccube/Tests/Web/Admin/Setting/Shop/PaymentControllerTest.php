@@ -13,13 +13,13 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Eccube\Entity\Payment;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class PaymentControllerTest extends AbstractAdminWebTestCase
 {

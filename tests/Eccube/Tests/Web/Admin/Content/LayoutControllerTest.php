@@ -13,8 +13,6 @@
 
 namespace Eccube\Tests\Web\Admin\Content;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Eccube\Entity\Layout;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Page;
@@ -24,6 +22,8 @@ use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\PageLayoutRepository;
 use Eccube\Repository\PageRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class LayoutControllerTest extends AbstractAdminWebTestCase
 {

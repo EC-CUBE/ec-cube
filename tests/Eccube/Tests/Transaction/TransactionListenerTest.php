@@ -13,11 +13,11 @@
 
 namespace Eccube\Tests\Transaction;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Application;
 use Eccube\Tests\ServiceProvider\CsrfMockServiceProvider;
 use Eccube\Tests\ServiceProvider\FixtureServiceProvider;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * TransactinoListener のテストケース.

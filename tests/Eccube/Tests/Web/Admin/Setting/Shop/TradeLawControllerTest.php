@@ -13,9 +13,9 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
+use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\String\ByteString;
 
 class TradeLawControllerTest extends AbstractAdminWebTestCase

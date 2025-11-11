@@ -13,8 +13,6 @@
 
 namespace Eccube\Tests\Web;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ObjectRepository;
 use Eccube\Entity\BaseInfo;
@@ -32,6 +30,8 @@ use Eccube\Repository\TradeLawRepository;
 use Eccube\Tests\Fixture\Generator;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 

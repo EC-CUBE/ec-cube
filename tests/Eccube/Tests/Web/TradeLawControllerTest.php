@@ -13,10 +13,10 @@
 
 namespace Eccube\Tests\Web;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\Page;
 use Eccube\Entity\TradeLaw;
 use Eccube\Repository\TradeLawRepository;
+use Symfony\Component\HttpFoundation\Request;
 
 class TradeLawControllerTest extends AbstractWebTestCase
 {

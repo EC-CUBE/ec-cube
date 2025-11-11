@@ -13,13 +13,14 @@
 
 namespace Eccube\Tests\Web\Admin;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Member;
 use Eccube\Entity\Order;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\OrderRepository;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class IndexControllerTest extends AbstractAdminWebTestCase
 {
@@ -148,7 +149,7 @@ class IndexControllerTest extends AbstractAdminWebTestCase
         $current_password = $form['current_password'];
         $new_password = $form['change_password']['first'];
 
-        $hasher = static::getContainer()->get('security.user_password_hasher');
+        $hasher = static::getContainer()->get(UserPasswordHasherInterface::class);
         self::assertTrue($hasher->isPasswordValid($this->Member, $current_password));
         self::assertFalse($hasher->isPasswordValid($this->Member, $new_password));
 

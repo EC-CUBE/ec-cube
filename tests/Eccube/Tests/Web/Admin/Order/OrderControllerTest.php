@@ -13,8 +13,6 @@
 
 namespace Eccube\Tests\Web\Admin\Order;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CsvType;
@@ -32,6 +30,8 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Email;
 
 class OrderControllerTest extends AbstractAdminWebTestCase

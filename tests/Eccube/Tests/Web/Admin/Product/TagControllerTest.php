@@ -13,11 +13,11 @@
 
 namespace Eccube\Tests\Web\Admin\Product;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\Tag;
 use Eccube\Repository\TagRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class TagControllerTest extends AbstractAdminWebTestCase

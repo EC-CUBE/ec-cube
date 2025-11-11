@@ -13,10 +13,10 @@
 
 namespace Eccube\Tests\Web\Mypage;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Tests\Web\AbstractWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 class DeliveryControllerTest extends AbstractWebTestCase
 {

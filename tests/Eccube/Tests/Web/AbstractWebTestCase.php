@@ -74,7 +74,10 @@ abstract class AbstractWebTestCase extends EccubeTestCase
 
         // create a new session object
         $container = static::getContainer();
-        $session = $container->get('session.factory')->createSession();
+        // Rectorが文字列サービスIDをクラス名に変換するのを防ぐため、変数に格納
+        // SessionFactoryInterface::classはサービスとして登録されていないため、文字列サービスIDのまま使用
+        $serviceId = 'session.factory';
+        $session = $container->get($serviceId)->createSession();
 
         if ($cookie) {
             // get the session id from the session cookie if it exists

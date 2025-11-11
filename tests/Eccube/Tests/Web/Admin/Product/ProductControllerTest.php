@@ -13,7 +13,6 @@
 
 namespace Eccube\Tests\Web\Admin\Product;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Common\Constant;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\ProductStatus;
@@ -34,6 +33,7 @@ use Eccube\Util\StringUtil;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProductControllerTest extends AbstractAdminWebTestCase

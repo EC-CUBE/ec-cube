@@ -13,9 +13,10 @@
 
 namespace Eccube\Tests\Web\Admin\Content;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\Page;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
+use Twig\Environment;
 
 class PageControllerTest extends AbstractAdminWebTestCase
 {
@@ -78,7 +79,7 @@ class PageControllerTest extends AbstractAdminWebTestCase
         $templatePath = static::getContainer()->getParameter('eccube_theme_front_dir');
         $Page = $this->entityManager->getRepository(Page::class)->find(1);
 
-        $source = static::getContainer()->get('twig')
+        $source = static::getContainer()->get(Environment::class)
             ->getLoader()
             ->getSourceContext($Page->getFileName().'.twig')
             ->getCode();
@@ -157,7 +158,7 @@ class PageControllerTest extends AbstractAdminWebTestCase
         $templatePath = static::getContainer()->getParameter('eccube_theme_front_dir');
         $Page = $this->entityManager->getRepository(Page::class)->find(42); // Shoppin/index
 
-        $source = static::getContainer()->get('twig')
+        $source = static::getContainer()->get(Environment::class)
             ->getLoader()
             ->getSourceContext($Page->getFileName().'.twig')
             ->getCode();
@@ -224,7 +225,7 @@ class PageControllerTest extends AbstractAdminWebTestCase
         $this->actual = $Page->getName();
         $this->verify('ページ新規作成');
 
-        $source = static::getContainer()->get('twig')
+        $source = static::getContainer()->get(Environment::class)
             ->getLoader()
             ->getSourceContext('@user_data/'.$Page->getFileName().'.twig')
             ->getCode();

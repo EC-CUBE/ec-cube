@@ -13,9 +13,9 @@
 
 namespace Eccube\Tests\Web;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Common\Constant;
 use Eccube\Entity\ProductClass;
+use Symfony\Component\HttpFoundation\Request;
 
 class CartControllerTest extends AbstractWebTestCase
 {

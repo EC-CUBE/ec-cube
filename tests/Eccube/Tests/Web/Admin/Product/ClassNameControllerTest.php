@@ -13,7 +13,6 @@
 
 namespace Eccube\Tests\Web\Admin\Product;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Common\Constant;
 use Eccube\Entity\ClassCategory;
 use Eccube\Entity\ClassName;
@@ -23,6 +22,7 @@ use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\ClassNameRepository;
 use Eccube\Repository\ProductClassRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 class ClassNameControllerTest extends AbstractAdminWebTestCase
 {

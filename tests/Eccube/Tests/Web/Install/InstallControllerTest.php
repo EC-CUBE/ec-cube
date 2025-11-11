@@ -18,6 +18,7 @@ use Eccube\Controller\Install\InstallController;
 use Eccube\Session\Session as EccubeSession;
 use Eccube\Tests\Web\AbstractWebTestCase;
 use Eccube\Util\CacheUtil;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -56,7 +57,7 @@ class InstallControllerTest extends AbstractWebTestCase
             unlink($favicon);
         }
 
-        $formFactory = static::getContainer()->get('form.factory');
+        $formFactory = static::getContainer()->get(FormFactoryInterface::class);
         $passwordHasher = static::getContainer()->get(UserPasswordHasherInterface::class);
         $cacheUtil = static::getContainer()->get(CacheUtil::class);
 
@@ -107,7 +108,7 @@ class InstallControllerTest extends AbstractWebTestCase
 
     public function testStep3()
     {
-        $entityManager = static::getContainer()->get('doctrine')->getManager();
+        $entityManager = static::getContainer()->get(EntityManagerInterface::class);
         $this->actual = $this->controller->step3($this->request, $entityManager);
         $this->assertTrue(is_array($this->actual));
         $this->assertInstanceOf(FormView::class, $this->actual['form']);

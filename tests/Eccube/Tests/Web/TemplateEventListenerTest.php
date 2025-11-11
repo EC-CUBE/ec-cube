@@ -13,17 +13,17 @@
 
 namespace Eccube\Tests\Web;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Event\TemplateEvent;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class TemplateEventListenerTest extends AbstractWebTestCase
 {
     public function test()
     {
         $calledEvents = [];
-        /** @var EventDispatcher $eventDispatcher */
-        $eventDispatcher = static::getContainer()->get('event_dispatcher');
+        /** @var EventDispatcherInterface $eventDispatcher */
+        $eventDispatcher = static::getContainer()->get(EventDispatcherInterface::class);
         $listener = function ($event) use (&$calledEvents) {
             /* @var TemplateEvent $event */
             $calledEvents[] = $event->getView();

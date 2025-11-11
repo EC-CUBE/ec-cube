@@ -13,11 +13,11 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\MailTemplate;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class MailControllerTest

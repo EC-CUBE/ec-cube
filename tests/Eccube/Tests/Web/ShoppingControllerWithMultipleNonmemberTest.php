@@ -13,12 +13,12 @@
 
 namespace Eccube\Tests\Web;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Order;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\OrderRepository;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mime\Email;
 
 /**

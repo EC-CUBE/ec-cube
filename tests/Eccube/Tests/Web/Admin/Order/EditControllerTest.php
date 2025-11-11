@@ -13,8 +13,6 @@
 
 namespace Eccube\Tests\Web\Admin\Order;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Eccube\Common\Constant;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
@@ -33,6 +31,8 @@ use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\TaxRuleService;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class EditControllerTest extends AbstractEditControllerTestCase
 {

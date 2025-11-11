@@ -13,11 +13,11 @@
 
 namespace Eccube\Tests\Security\PasswordHasher;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\Member;
 use Eccube\Security\PasswordHasher\PasswordHasher;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Util\StringUtil;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\LegacyPasswordHasherInterface;
 
 class PasswordMigrationTest extends EccubeTestCase

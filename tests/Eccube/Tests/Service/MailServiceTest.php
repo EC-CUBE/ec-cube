@@ -20,8 +20,10 @@ use Eccube\Entity\Order;
 use Eccube\Service\MailService;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
+use Twig\Environment;
 
 /**
  * MailService test cases.
@@ -51,8 +53,8 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->mailService = static::getContainer()->get(MailService::class);
 
         $request = Request::createFromGlobals();
-        static::getContainer()->get('request_stack')->push($request);
-        $twig = static::getContainer()->get('twig');
+        static::getContainer()->get(RequestStack::class)->push($request);
+        $twig = static::getContainer()->get(Environment::class);
         $twig->addGlobal('BaseInfo', $this->BaseInfo);
     }
 

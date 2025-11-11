@@ -36,7 +36,7 @@ class TaxRuleServiceTest extends AbstractServiceTestCase
         $this->BaseInfo->setOptionProductTaxRule(0);
         $this->TaxRule1 = $this->entityManager->getRepository(TaxRule::class)->find(1);
         $this->TaxRule1->setApplyDate(new \DateTime('-1 day'));
-        static::getContainer()->get('doctrine')->getManager()->flush();
+        $this->entityManager->flush();
         $this->taxRuleService = static::getContainer()->get(TaxRuleService::class);
     }
 

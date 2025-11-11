@@ -13,7 +13,6 @@
 
 namespace Eccube\Tests\Web\Admin\Product;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Category;
 use Eccube\Entity\Product;
@@ -29,6 +28,7 @@ use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Request;
 
 class CsvImportControllerTest extends AbstractAdminWebTestCase
 {

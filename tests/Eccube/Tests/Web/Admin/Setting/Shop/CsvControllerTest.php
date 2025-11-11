@@ -13,13 +13,13 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Eccube\Common\Constant;
 use Eccube\Entity\Csv;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\Product;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class CsvControllerTest extends AbstractAdminWebTestCase
 {

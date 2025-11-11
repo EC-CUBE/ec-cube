@@ -13,10 +13,10 @@
 
 namespace Eccube\Tests\Web\Block;
 
-use Symfony\Component\HttpFoundation\Request;
 use Carbon\Carbon;
 use Eccube\Entity\Calendar;
 use Eccube\Tests\Web\AbstractWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 class CalendarControllerTest extends AbstractWebTestCase
 {

@@ -13,8 +13,8 @@
 
 namespace Eccube\Tests\Web;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\Page;
+use Symfony\Component\HttpFoundation\Request;
 
 class UserDataControllerTest extends AbstractWebTestCase
 {

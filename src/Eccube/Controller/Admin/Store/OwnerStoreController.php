@@ -43,6 +43,7 @@ class OwnerStoreController extends AbstractController
 {
     private static string $vendorName = 'ec-cube';
     private readonly BaseInfo $BaseInfo;
+
     /**
      * OwnerStoreController constructor.
      *
@@ -61,6 +62,7 @@ class OwnerStoreController extends AbstractController
     ) {
         $this->BaseInfo = $baseInfoRepository->get();
     }
+
     /**
      * Owner's Store Plugin Installation Screen - Search function
      *
@@ -164,6 +166,7 @@ class OwnerStoreController extends AbstractController
             'Categories' => $category,
         ];
     }
+
     /**
      * Do confirm page
      *
@@ -190,6 +193,7 @@ class OwnerStoreController extends AbstractController
             return $this->redirectToRoute('admin_store_authentication_setting');
         }
     }
+
     /**
      * Api Install plugin by composer connect with package repo
      */
@@ -235,6 +239,7 @@ class OwnerStoreController extends AbstractController
 
         return $this->json(['success' => false, 'log' => $log], 500);
     }
+
     /**
      * New ways to remove plugin: using composer command
      */
@@ -279,6 +284,7 @@ class OwnerStoreController extends AbstractController
             return $this->json(['success' => false, 'log' => $e->getMessage()], 500);
         }
     }
+
     /**
      * オーナーズブラグインインストール、アップデート
      */
@@ -343,6 +349,7 @@ class OwnerStoreController extends AbstractController
 
         return $this->json(['success' => false, 'log' => $log], 500);
     }
+
     /**
      * オーナーズブラグインインストール、スキーマ更新
      */
@@ -388,6 +395,7 @@ class OwnerStoreController extends AbstractController
             return $this->json(['success' => false, 'log' => $log], 500);
         }
     }
+
     /**
      * オーナーズブラグインインストール、更新処理
      */
@@ -422,6 +430,7 @@ class OwnerStoreController extends AbstractController
 
         return $this->json(['success' => false, 'log' => $log], 500);
     }
+
     /**
      * Do confirm update page
      *

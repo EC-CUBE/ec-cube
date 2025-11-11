@@ -13,8 +13,8 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\System;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class SystemControllerTest

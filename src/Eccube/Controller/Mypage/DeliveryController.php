@@ -52,6 +52,7 @@ class DeliveryController extends AbstractController
     public function index(): array
     {
         $Customer = $this->getUser();
+
         return [
             'Customer' => $Customer,
         ];

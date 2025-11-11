@@ -13,10 +13,10 @@
 
 namespace Eccube\Tests\Twig\Extension;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\Page;
 use Eccube\Tests\Web\AbstractWebTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @group twig-sandbox-extension

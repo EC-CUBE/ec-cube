@@ -16,6 +16,7 @@ namespace Eccube\Tests\Command;
 use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Column;
+use Doctrine\Persistence\ManagerRegistry;
 use Eccube\Command\UpdateSchemaDoctrineCommand;
 use Eccube\Entity\Plugin;
 use Eccube\Repository\PluginRepository;
@@ -370,7 +371,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
             $this->pluginRepository,
             $this->pluginService,
             $this->schemaService,
-            static::getContainer()->get('doctrine')
+            static::getContainer()->get(ManagerRegistry::class)
         );
         $application = new Application($kernel);
         $application->add($command);

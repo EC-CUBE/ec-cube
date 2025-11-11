@@ -13,7 +13,6 @@
 
 namespace Eccube\Tests\Web\Admin\Store;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Template;
 use Eccube\Repository\Master\DeviceTypeRepository;
@@ -22,6 +21,7 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Eccube\Util\StringUtil;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Request;
 
 class TemplateControllerTest extends AbstractAdminWebTestCase
 {

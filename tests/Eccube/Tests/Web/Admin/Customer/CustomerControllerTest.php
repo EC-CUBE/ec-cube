@@ -13,7 +13,6 @@
 
 namespace Eccube\Tests\Web\Admin\Customer;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CsvType;
@@ -22,6 +21,7 @@ use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mime\Email;
 
 /**

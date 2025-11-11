@@ -13,13 +13,13 @@
 
 namespace Eccube\Tests\Web;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Common\Constant;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerRepository;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mime\Email;
 
 class ForgotControllerTest extends AbstractWebTestCase

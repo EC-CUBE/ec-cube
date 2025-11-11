@@ -13,10 +13,10 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\System;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\Member;
 use Eccube\Repository\MemberRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 class MemberControllerTest extends AbstractAdminWebTestCase
 {

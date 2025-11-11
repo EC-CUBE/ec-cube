@@ -13,11 +13,11 @@
 
 namespace Eccube\Tests\Web;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Page;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\PageRepository;
+use Symfony\Component\HttpFoundation\Request;
 
 class TopControllerTest extends AbstractWebTestCase
 {

@@ -40,7 +40,7 @@ class TwigExtensionPassTest extends TestCase
         $this->containerBuilder->register(IgnoreRoutingNotFoundExtension::class)
             ->setAutowired(true);
         $this->containerBuilder->register(LoaderInterface::class, ArrayLoader::class);
-        $this->containerBuilder->register('twig', Environment::class)
+        $this->containerBuilder->register(Environment::class, Environment::class)
             ->setPublic(true)
             ->setAutowired(true);
     }
@@ -52,7 +52,7 @@ class TwigExtensionPassTest extends TestCase
         $this->containerBuilder->compile();
 
         /** @var Environment $twig */
-        $twig = $this->containerBuilder->get('twig');
+        $twig = $this->containerBuilder->get(Environment::class);
         self::assertTrue($twig->hasExtension(IgnoreRoutingNotFoundExtension::class));
         self::assertInstanceOf(
             IgnoreRoutingNotFoundExtension::class,

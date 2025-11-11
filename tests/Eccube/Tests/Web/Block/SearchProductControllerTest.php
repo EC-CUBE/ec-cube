@@ -13,8 +13,8 @@
 
 namespace Eccube\Tests\Web\Block;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Tests\Web\AbstractWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 class SearchProductControllerTest extends AbstractWebTestCase
 {

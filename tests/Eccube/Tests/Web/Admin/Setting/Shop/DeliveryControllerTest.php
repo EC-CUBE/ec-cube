@@ -13,8 +13,6 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Eccube\Controller\Admin\Setting\Shop\DeliveryController;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\DeliveryFee;
@@ -23,6 +21,8 @@ use Eccube\Entity\Payment;
 use Eccube\Entity\PaymentOption;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class DeliveryControllerTest

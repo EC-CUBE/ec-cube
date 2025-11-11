@@ -13,11 +13,11 @@
 
 namespace Eccube\Tests\Web\Mypage;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Tests\Web\AbstractWebTestCase;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mime\Email;
 
 class WithdrawControllerTest extends AbstractWebTestCase

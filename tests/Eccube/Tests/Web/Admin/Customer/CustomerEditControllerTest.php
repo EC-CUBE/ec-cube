@@ -13,10 +13,10 @@
 
 namespace Eccube\Tests\Web\Admin\Customer;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class CustomerEditControllerTest

@@ -23,6 +23,6 @@ abstract class AbstractTypeTestCase extends EccubeTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->formFactory = static::getContainer()->get('form.factory');
+        $this->formFactory = static::getContainer()->get(FormFactoryInterface::class);
     }
 }

@@ -13,11 +13,11 @@
 
 namespace Eccube\Tests\Web\Admin\Content;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\News;
 use Eccube\Repository\NewsRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\HttpFoundation\Request;
 
 class NewsControllerTest extends AbstractAdminWebTestCase
 {

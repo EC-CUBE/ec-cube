@@ -13,7 +13,6 @@
 
 namespace Eccube\Tests\Web\Admin\Order;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Order;
@@ -23,6 +22,7 @@ use Eccube\Entity\Shipping;
 use Eccube\Repository\ShippingRepository;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mime\Email;
 
 class ShippingControllerTest extends AbstractEditControllerTestCase

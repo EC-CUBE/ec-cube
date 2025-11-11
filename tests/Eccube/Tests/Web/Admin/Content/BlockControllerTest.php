@@ -13,9 +13,9 @@
 
 namespace Eccube\Tests\Web\Admin\Content;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 class BlockControllerTest extends AbstractAdminWebTestCase
 {

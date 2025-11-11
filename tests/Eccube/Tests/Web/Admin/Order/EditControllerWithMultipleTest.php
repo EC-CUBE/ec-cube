@@ -13,9 +13,9 @@
 
 namespace Eccube\Tests\Web\Admin\Order;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderStatus;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * 複数配送設定用 EditController のテストケース.

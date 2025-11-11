@@ -17,6 +17,7 @@ use Eccube\Form\Type\Admin\PaymentRegisterType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class PaymentRegisterTypeTest extends AbstractTypeTestCase
 {
@@ -41,7 +42,7 @@ class PaymentRegisterTypeTest extends AbstractTypeTestCase
                 'csrf_protection' => false,
             ])
             ->getForm();
-        static::getContainer()->get('request_stack')->push(new Request());
+        static::getContainer()->get(RequestStack::class)->push(new Request());
     }
 
     public function testValidData()

@@ -13,13 +13,13 @@
 
 namespace Eccube\Tests\Web\Mypage;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerFavoriteProduct;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Product;
 use Eccube\Tests\Fixture\Generator;
 use Eccube\Tests\Web\AbstractWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 class MypageControllerTest extends AbstractWebTestCase
 {

@@ -13,7 +13,6 @@
 
 namespace Eccube\Tests\Web;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Common\Constant;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
@@ -23,6 +22,7 @@ use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\Master\ProductStatusRepository;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Client;
 
 class CartValidationTest extends AbstractWebTestCase

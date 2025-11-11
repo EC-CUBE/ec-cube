@@ -17,6 +17,7 @@ use Eccube\Form\Type\Admin\OrderType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class OrderTypeTest extends AbstractTypeTestCase
 {
@@ -77,7 +78,7 @@ class OrderTypeTest extends AbstractTypeTestCase
                 'csrf_protection' => false,
             ])
             ->getForm();
-        static::getContainer()->get('request_stack')->push(new Request());
+        static::getContainer()->get(RequestStack::class)->push(new Request());
     }
 
     public function testInValidData()

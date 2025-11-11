@@ -90,7 +90,7 @@ return RectorConfig::configure()
                LevelSetList::UP_TO_PHP_84, // PHPバージョンに合わせる
                SymfonySetList::SYMFONY_74, // Symfonyのバージョンに合わせる (EC-CUBEのバージョンによって調整が必要)
                SymfonySetList::SYMFONY_CODE_QUALITY,
-               // SymfonySetList::SYMFONY_CONSTRUCTOR_INJECTION,
+               SymfonySetList::SYMFONY_CONSTRUCTOR_INJECTION,
                // DoctrineSetList::DOCTRINE_CODE_QUALITY,
                // DoctrineSetList::DOCTRINE_DBAL_30, // Doctrine DBALのバージョンに合わせる
                // DoctrineSetList::ANNOTATIONS_TO_ATTRIBUTES, // Doctrine Annotations を Attributes に変換

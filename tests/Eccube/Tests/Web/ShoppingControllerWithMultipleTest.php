@@ -13,7 +13,6 @@
 
 namespace Eccube\Tests\Web;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
@@ -22,6 +21,7 @@ use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\CartService;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 

@@ -17,7 +17,6 @@ use Carbon\Carbon;
 use Eccube\Controller\AbstractController;
 use Eccube\Repository\CalendarRepository;
 use Symfony\Bridge\Twig\Attribute\Template;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
 class CalendarController extends AbstractController
@@ -59,6 +58,7 @@ class CalendarController extends AbstractController
         $monthFormat = $this->translator->trans('front.block.calendar.month_format');
         $thisMonthTitle = $firstDateOfThisMonth->format($monthFormat);
         $nextMonthTitle = $firstDateOfNextMonth->format($monthFormat);
+
         return [
             'ThisMonthTitle' => $thisMonthTitle,
             'NextMonthTitle' => $nextMonthTitle,

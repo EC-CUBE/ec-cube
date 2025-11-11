@@ -13,7 +13,6 @@
 
 namespace Eccube\Tests\Web;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\ClassCategory;
 use Eccube\Entity\Product;
@@ -22,6 +21,7 @@ use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\ProductRepository;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Client;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
