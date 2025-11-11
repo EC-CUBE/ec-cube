@@ -74,8 +74,8 @@ abstract class AbstractWebTestCase extends EccubeTestCase
 
         // create a new session object
         $container = static::getContainer();
-        // Rectorが文字列サービスIDをクラス名に変換するのを防ぐため、変数に格納
-        // SessionFactoryInterface::classはサービスとして登録されていないため、文字列サービスIDのまま使用
+        // SymfonyのFrameworkBundleが内部で登録するサービスだが、
+        // クラス名のエイリアスが標準では存在しないため、文字列サービスIDのまま使用
         $serviceId = 'session.factory';
         $session = $container->get($serviceId)->createSession();
 

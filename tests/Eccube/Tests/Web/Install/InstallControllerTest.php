@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Install;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\Constant;
 use Eccube\Controller\Install\InstallController;
 use Eccube\Session\Session as EccubeSession;
