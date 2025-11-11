@@ -155,7 +155,8 @@ if (!class_exists(OrderItem::class)) {
         private ?string $price = '0';
 
         #[ORM\Column(name: 'quantity', type: Types::DECIMAL, precision: 10, scale: 0, options: ['default' => 0])]
-        private string $quantity = '0';
+        /** @phpstan-ignore-next-line property.unusedType, property.onlyRead */
+        private ?string $quantity = '0';
 
         #[ORM\Column(name: 'tax', type: Types::DECIMAL, precision: 10, scale: 0, options: ['default' => 0])]
         private string $tax = '0';
