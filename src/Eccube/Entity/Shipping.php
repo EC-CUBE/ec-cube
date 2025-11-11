@@ -14,6 +14,7 @@
 namespace Eccube\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\Master\Country;
 use Eccube\Entity\Master\Pref;
@@ -48,93 +49,54 @@ if (!class_exists(Shipping::class)) {
             return $this->getName01().' '.$this->getPref()->getName().' '.$this->getAddr01().' '.$this->getAddr02();
         }
 
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         /** @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
-        private $id;
+        private ?int $id = null;
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'name01', type: 'string', length: 255)]
-        private $name01;
+        #[ORM\Column(name: 'name01', type: Types::STRING, length: 255)]
+        private ?string $name01 = null;
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'name02', type: 'string', length: 255)]
-        private $name02;
+        #[ORM\Column(name: 'name02', type: Types::STRING, length: 255)]
+        private ?string $name02 = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'kana01', type: 'string', length: 255, nullable: true)]
-        private $kana01;
+        #[ORM\Column(name: 'kana01', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $kana01 = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'kana02', type: 'string', length: 255, nullable: true)]
-        private $kana02;
+        #[ORM\Column(name: 'kana02', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $kana02 = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'company_name', type: 'string', length: 255, nullable: true)]
-        private $company_name;
+        #[ORM\Column(name: 'company_name', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $company_name = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'phone_number', type: 'string', length: 14, nullable: true)]
-        private $phone_number;
+        #[ORM\Column(name: 'phone_number', type: Types::STRING, length: 14, nullable: true)]
+        private ?string $phone_number = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'postal_code', type: 'string', length: 8, nullable: true)]
-        private $postal_code;
+        #[ORM\Column(name: 'postal_code', type: Types::STRING, length: 8, nullable: true)]
+        private ?string $postal_code = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'addr01', type: 'string', length: 255, nullable: true)]
-        private $addr01;
+        #[ORM\Column(name: 'addr01', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $addr01 = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'addr02', type: 'string', length: 255, nullable: true)]
-        private $addr02;
+        #[ORM\Column(name: 'addr02', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $addr02 = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'delivery_name', type: 'string', length: 255, nullable: true)]
-        private $shipping_delivery_name;
+        #[ORM\Column(name: 'delivery_name', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $shipping_delivery_name = null;
 
-        /**
-         * @var int|null
-         */
-        #[ORM\Column(name: 'time_id', type: 'integer', options: ['unsigned' => true], nullable: true)]
-        private $time_id;
+        #[ORM\Column(name: 'time_id', type: Types::INTEGER, options: ['unsigned' => true], nullable: true)]
+        private ?int $time_id = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'delivery_time', type: 'string', length: 255, nullable: true)]
-        private $shipping_delivery_time;
+        #[ORM\Column(name: 'delivery_time', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $shipping_delivery_time = null;
 
         /**
          * お届け予定日/お届け希望日
          *
          * @var \DateTime|null
          */
-        #[ORM\Column(name: 'delivery_date', type: 'datetimetz', nullable: true)]
+        #[ORM\Column(name: 'delivery_date', type: Types::DATETIMETZ_MUTABLE, nullable: true)]
         private $shipping_delivery_date;
 
         /**
@@ -142,51 +104,39 @@ if (!class_exists(Shipping::class)) {
          *
          * @var \DateTime|null
          */
-        #[ORM\Column(name: 'shipping_date', type: 'datetimetz', nullable: true)]
+        #[ORM\Column(name: 'shipping_date', type: Types::DATETIMETZ_MUTABLE, nullable: true)]
         private $shipping_date;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'tracking_number', type: 'string', length: 255, nullable: true)]
-        private $tracking_number;
+        #[ORM\Column(name: 'tracking_number', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $tracking_number = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'note', type: 'string', length: 4000, nullable: true)]
-        private $note;
+        #[ORM\Column(name: 'note', type: Types::STRING, length: 4000, nullable: true)]
+        private ?string $note = null;
 
-        /**
-         * @var int|null
-         */
-        #[ORM\Column(name: 'sort_no', type: 'smallint', nullable: true, options: ['unsigned' => true])]
-        private $sort_no;
+        #[ORM\Column(name: 'sort_no', type: Types::SMALLINT, nullable: true, options: ['unsigned' => true])]
+        private ?int $sort_no = null;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
         private $create_date;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
         private $update_date;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'mail_send_date', type: 'datetimetz', nullable: true)]
+        #[ORM\Column(name: 'mail_send_date', type: Types::DATETIMETZ_MUTABLE, nullable: true)]
         private $mail_send_date;
 
-        /**
-         * @var Order|null
-         */
         #[ORM\ManyToOne(targetEntity: Order::class, cascade: ['persist'], inversedBy: 'Shippings')]
         #[ORM\JoinColumn(name: 'order_id', referencedColumnName: 'id')]
-        private $Order;
+        private ?Order $Order = null;
 
         /**
          * @var \Doctrine\Common\Collections\Collection<int, OrderItem>
@@ -194,35 +144,23 @@ if (!class_exists(Shipping::class)) {
         #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'Shipping', cascade: ['persist'])]
         private $OrderItems;
 
-        /**
-         * @var Country|null
-         */
         #[ORM\ManyToOne(targetEntity: Country::class)]
         #[ORM\JoinColumn(name: 'country_id', referencedColumnName: 'id')]
-        private $Country;
+        private ?Country $Country = null;
 
-        /**
-         * @var Pref|null
-         */
         #[ORM\ManyToOne(targetEntity: Pref::class)]
         #[ORM\JoinColumn(name: 'pref_id', referencedColumnName: 'id')]
-        private $Pref;
+        private ?Pref $Pref = null;
 
-        /**
-         * @var Delivery|null
-         */
         #[ORM\ManyToOne(targetEntity: Delivery::class)]
         #[ORM\JoinColumn(name: 'delivery_id', referencedColumnName: 'id')]
-        private $Delivery;
+        private ?Delivery $Delivery = null;
 
         private ProductClass $ProductClassOfTemp;
 
-        /**
-         * @var Member|null
-         */
         #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
-        private $Creator;
+        private ?Member $Creator = null;
 
         /**
          * Constructor

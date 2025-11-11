@@ -13,6 +13,7 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Repository\DeliveryDurationRepository;
 
@@ -33,32 +34,20 @@ if (!class_exists(DeliveryDuration::class)) {
             return (string) $this->getName();
         }
 
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         /**  @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
-        private $id;
+        private ?int $id = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
-        private $name;
+        #[ORM\Column(name: 'name', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $name = null;
 
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'duration', type: 'smallint', options: ['default' => 0])]
-        private $duration = 0;
+        #[ORM\Column(name: 'duration', type: Types::SMALLINT, options: ['default' => 0])]
+        private int $duration = 0;
 
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'sort_no', type: 'integer', options: ['unsigned' => true])]
-        private $sort_no;
+        #[ORM\Column(name: 'sort_no', type: Types::INTEGER, options: ['unsigned' => true])]
+        private ?int $sort_no = null;
 
         /**
          * Get id.

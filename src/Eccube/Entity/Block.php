@@ -15,6 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Repository\BlockRepository;
@@ -36,48 +37,33 @@ if (!class_exists(Block::class)) {
          */
         public const UNUSED_BLOCK_ID = 0;
 
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-        private $id;
+        private ?int $id = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'block_name', type: 'string', length: 255, nullable: true)]
-        private $name;
+        #[ORM\Column(name: 'block_name', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $name = null;
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'file_name', type: 'string', length: 255)]
-        private $file_name;
+        #[ORM\Column(name: 'file_name', type: Types::STRING, length: 255)]
+        private ?string $file_name = null;
 
-        /**
-         * @var bool
-         */
-        #[ORM\Column(name: 'use_controller', type: 'boolean', options: ['default' => false])]
-        private $use_controller = false;
+        #[ORM\Column(name: 'use_controller', type: Types::BOOLEAN, options: ['default' => false])]
+        private bool $use_controller = false;
 
-        /**
-         * @var bool
-         */
-        #[ORM\Column(name: 'deletable', type: 'boolean', options: ['default' => true])]
-        private $deletable = true;
+        #[ORM\Column(name: 'deletable', type: Types::BOOLEAN, options: ['default' => true])]
+        private bool $deletable = true;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
         private $create_date;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
         private $update_date;
 
         /**
@@ -86,12 +72,9 @@ if (!class_exists(Block::class)) {
         #[ORM\OneToMany(targetEntity: BlockPosition::class, mappedBy: 'Block', cascade: ['persist', 'remove'])]
         private $BlockPositions;
 
-        /**
-         * @var DeviceType|null
-         */
         #[ORM\ManyToOne(targetEntity: DeviceType::class)]
         #[ORM\JoinColumn(name: 'device_type_id', referencedColumnName: 'id')]
-        private $DeviceType;
+        private ?DeviceType $DeviceType = null;
 
         /**
          * Constructor

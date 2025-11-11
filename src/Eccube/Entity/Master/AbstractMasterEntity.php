@@ -13,6 +13,7 @@
 
 namespace Eccube\Entity\Master;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\AbstractEntity;
 
@@ -28,25 +29,16 @@ abstract class AbstractMasterEntity extends AbstractEntity implements \Stringabl
         return $this->getName();
     }
 
-    /**
-     * @var int|null
-     */
     #[ORM\Id]
-    #[ORM\Column(name: 'id', type: 'smallint', options: ['unsigned' => true])]
+    #[ORM\Column(name: 'id', type: Types::SMALLINT, options: ['unsigned' => true])]
     #[ORM\GeneratedValue(strategy: 'NONE')]
-    protected $id;
+    protected ?int $id = null;
 
-    /**
-     * @var string
-     */
-    #[ORM\Column(name: 'name', type: 'string', length: 255)]
-    protected $name;
+    #[ORM\Column(name: 'name', type: Types::STRING, length: 255)]
+    protected ?string $name = null;
 
-    /**
-     * @var int
-     */
-    #[ORM\Column(name: 'sort_no', type: 'smallint', options: ['unsigned' => true])]
-    protected $sort_no;
+    #[ORM\Column(name: 'sort_no', type: Types::SMALLINT, options: ['unsigned' => true])]
+    protected ?int $sort_no = null;
 
     /**
      * Set id.

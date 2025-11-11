@@ -13,6 +13,7 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\Master\Country;
 use Eccube\Entity\Master\Pref;
@@ -27,236 +28,129 @@ if (!class_exists(BaseInfo::class)) {
     #[ORM\Cache(usage: 'NONSTRICT_READ_WRITE')]
     class BaseInfo extends AbstractEntity
     {
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         /** @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 **/
-        private $id;
+        private ?int $id = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'company_name', type: 'string', length: 255, nullable: true)]
-        private $company_name;
+        #[ORM\Column(name: 'company_name', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $company_name = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'company_kana', type: 'string', length: 255, nullable: true)]
-        private $company_kana;
+        #[ORM\Column(name: 'company_kana', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $company_kana = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'postal_code', type: 'string', length: 8, nullable: true)]
-        private $postal_code;
+        #[ORM\Column(name: 'postal_code', type: Types::STRING, length: 8, nullable: true)]
+        private ?string $postal_code = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'addr01', type: 'string', length: 255, nullable: true)]
-        private $addr01;
+        #[ORM\Column(name: 'addr01', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $addr01 = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'addr02', type: 'string', length: 255, nullable: true)]
-        private $addr02;
+        #[ORM\Column(name: 'addr02', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $addr02 = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'phone_number', type: 'string', length: 14, nullable: true)]
-        private $phone_number;
+        #[ORM\Column(name: 'phone_number', type: Types::STRING, length: 14, nullable: true)]
+        private ?string $phone_number = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'business_hour', type: 'string', length: 255, nullable: true)]
-        private $business_hour;
+        #[ORM\Column(name: 'business_hour', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $business_hour = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'email01', type: 'string', length: 255, nullable: true)]
-        private $email01;
+        #[ORM\Column(name: 'email01', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $email01 = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'email02', type: 'string', length: 255, nullable: true)]
-        private $email02;
+        #[ORM\Column(name: 'email02', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $email02 = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'email03', type: 'string', length: 255, nullable: true)]
-        private $email03;
+        #[ORM\Column(name: 'email03', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $email03 = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'email04', type: 'string', length: 255, nullable: true)]
-        private $email04;
+        #[ORM\Column(name: 'email04', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $email04 = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'shop_name', type: 'string', length: 255, nullable: true)]
-        private $shop_name;
+        #[ORM\Column(name: 'shop_name', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $shop_name = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'shop_kana', type: 'string', length: 255, nullable: true)]
-        private $shop_kana;
+        #[ORM\Column(name: 'shop_kana', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $shop_kana = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'shop_name_eng', type: 'string', length: 255, nullable: true)]
-        private $shop_name_eng;
+        #[ORM\Column(name: 'shop_name_eng', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $shop_name_eng = null;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
         private $update_date;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'good_traded', type: 'string', length: 4000, nullable: true)]
-        private $good_traded;
+        #[ORM\Column(name: 'good_traded', type: Types::STRING, length: 4000, nullable: true)]
+        private ?string $good_traded = null;
+
+        #[ORM\Column(name: 'message', type: Types::STRING, length: 4000, nullable: true)]
+        private ?string $message = null;
+
+        #[ORM\Column(name: 'delivery_free_amount', type: Types::DECIMAL, precision: 12, scale: 2, nullable: true, options: ['unsigned' => true])]
+        private ?string $delivery_free_amount = null;
+
+        #[ORM\Column(name: 'delivery_free_quantity', type: Types::INTEGER, nullable: true, options: ['unsigned' => true])]
+        private ?int $delivery_free_quantity = null;
+
+        #[ORM\Column(name: 'option_mypage_order_status_display', type: Types::BOOLEAN, options: ['default' => true])]
+        private bool $option_mypage_order_status_display = true;
+
+        #[ORM\Column(name: 'option_nostock_hidden', type: Types::BOOLEAN, options: ['default' => false])]
+        private bool $option_nostock_hidden = false;
+
+        #[ORM\Column(name: 'option_favorite_product', type: Types::BOOLEAN, options: ['default' => true])]
+        private bool $option_favorite_product = true;
+
+        #[ORM\Column(name: 'option_product_delivery_fee', type: Types::BOOLEAN, options: ['default' => false])]
+        private bool $option_product_delivery_fee = false;
+
+        #[ORM\Column(name: 'invoice_registration_number', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $invoice_registration_number = null;
+
+        #[ORM\Column(name: 'option_product_tax_rule', type: Types::BOOLEAN, options: ['default' => false])]
+        private bool $option_product_tax_rule = false;
+
+        #[ORM\Column(name: 'option_customer_activate', type: Types::BOOLEAN, options: ['default' => true])]
+        private bool $option_customer_activate = true;
+
+        #[ORM\Column(name: 'option_remember_me', type: Types::BOOLEAN, options: ['default' => true])]
+        private bool $option_remember_me = true;
+
+        #[ORM\Column(name: 'option_mail_notifier', type: Types::BOOLEAN, options: ['default' => false])]
+        private bool $option_mail_notifier = false;
+
+        #[ORM\Column(name: 'authentication_key', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $authentication_key = null;
 
         /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'message', type: 'string', length: 4000, nullable: true)]
-        private $message;
-
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'delivery_free_amount', type: 'decimal', precision: 12, scale: 2, nullable: true, options: ['unsigned' => true])]
-        private $delivery_free_amount;
-
-        /**
-         * @var int|null
-         */
-        #[ORM\Column(name: 'delivery_free_quantity', type: 'integer', nullable: true, options: ['unsigned' => true])]
-        private $delivery_free_quantity;
-
-        /**
-         * @var bool
-         */
-        #[ORM\Column(name: 'option_mypage_order_status_display', type: 'boolean', options: ['default' => true])]
-        private $option_mypage_order_status_display = true;
-
-        /**
-         * @var bool
-         */
-        #[ORM\Column(name: 'option_nostock_hidden', type: 'boolean', options: ['default' => false])]
-        private $option_nostock_hidden = false;
-
-        /**
-         * @var bool
-         */
-        #[ORM\Column(name: 'option_favorite_product', type: 'boolean', options: ['default' => true])]
-        private $option_favorite_product = true;
-
-        /**
-         * @var bool
-         */
-        #[ORM\Column(name: 'option_product_delivery_fee', type: 'boolean', options: ['default' => false])]
-        private $option_product_delivery_fee = false;
-
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'invoice_registration_number', type: 'string', length: 255, nullable: true)]
-        private $invoice_registration_number;
-
-        /**
-         * @var bool
-         */
-        #[ORM\Column(name: 'option_product_tax_rule', type: 'boolean', options: ['default' => false])]
-        private $option_product_tax_rule = false;
-
-        /**
-         * @var bool
-         */
-        #[ORM\Column(name: 'option_customer_activate', type: 'boolean', options: ['default' => true])]
-        private $option_customer_activate = true;
-
-        /**
-         * @var bool
-         */
-        #[ORM\Column(name: 'option_remember_me', type: 'boolean', options: ['default' => true])]
-        private $option_remember_me = true;
-
-        /**
-         * @var bool
-         */
-        #[ORM\Column(name: 'option_mail_notifier', type: 'boolean', options: ['default' => false])]
-        private $option_mail_notifier = false;
-
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'authentication_key', type: 'string', length: 255, nullable: true)]
-        private $authentication_key;
-
-        /**
-         * @var string|null
-         *
          * @deprecated 使用していないため、削除予定
          */
-        #[ORM\Column(name: 'php_path', type: 'string', length: 255, nullable: true)]
-        private $php_path;
+        #[ORM\Column(name: 'php_path', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $php_path = null;
 
-        /**
-         * @var bool
-         */
-        #[ORM\Column(name: 'option_point', type: 'boolean', options: ['default' => true])]
-        private $option_point = true;
+        #[ORM\Column(name: 'option_point', type: Types::BOOLEAN, options: ['default' => true])]
+        private bool $option_point = true;
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'basic_point_rate', type: 'decimal', precision: 10, scale: 0, options: ['unsigned' => true, 'default' => 1], nullable: true)]
-        private $basic_point_rate = '1';
+        #[ORM\Column(name: 'basic_point_rate', type: Types::DECIMAL, precision: 10, scale: 0, options: ['unsigned' => true, 'default' => 1], nullable: true)]
+        private ?string $basic_point_rate = '1';
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'point_conversion_rate', type: 'decimal', precision: 10, scale: 0, options: ['unsigned' => true, 'default' => 1], nullable: true)]
-        private $point_conversion_rate = '1';
+        #[ORM\Column(name: 'point_conversion_rate', type: Types::DECIMAL, precision: 10, scale: 0, options: ['unsigned' => true, 'default' => 1], nullable: true)]
+        private ?string $point_conversion_rate = '1';
 
-        /**
-         * @var Country|null
-         */
         #[ORM\ManyToOne(targetEntity: Country::class)]
         #[ORM\Cache(usage: 'NONSTRICT_READ_WRITE')]
         #[ORM\JoinColumn(name: 'country_id', referencedColumnName: 'id')]
-        private $Country;
+        private ?Country $Country = null;
 
-        /**
-         * @var Pref|null
-         */
         #[ORM\ManyToOne(targetEntity: Pref::class)]
         #[ORM\Cache(usage: 'NONSTRICT_READ_WRITE')]
         #[ORM\JoinColumn(name: 'pref_id', referencedColumnName: 'id')]
-        private $Pref;
+        private ?Pref $Pref = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'ga_id', type: 'string', length: 255, nullable: true)]
-        private $gaId;
+        #[ORM\Column(name: 'ga_id', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $gaId = null;
 
         /**
          * Get id.

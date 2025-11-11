@@ -13,6 +13,7 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Repository\ProductCategoryRepository;
 
@@ -27,35 +28,23 @@ if (!class_exists(ProductCategory::class)) {
     #[ORM\Entity(repositoryClass: ProductCategoryRepository::class)]
     class ProductCategory extends AbstractEntity
     {
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'product_id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Column(name: 'product_id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'NONE')]
-        private $product_id;
+        private ?int $product_id = null;
 
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'category_id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Column(name: 'category_id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'NONE')]
-        private $category_id;
+        private ?int $category_id = null;
 
-        /**
-         * @var Product|null
-         */
         #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'ProductCategories')]
         #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id')]
-        private $Product;
+        private ?Product $Product = null;
 
-        /**
-         * @var Category|null
-         */
         #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'ProductCategories')]
         #[ORM\JoinColumn(name: 'category_id', referencedColumnName: 'id')]
-        private $Category;
+        private ?Category $Category = null;
 
         /**
          * Set productId.

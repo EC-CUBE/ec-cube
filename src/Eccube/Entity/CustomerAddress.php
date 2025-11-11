@@ -13,6 +13,7 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\Master\Country;
 use Eccube\Entity\Master\Pref;
@@ -78,101 +79,62 @@ if (!class_exists(CustomerAddress::class)) {
             return $this;
         }
 
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         /**  @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
-        private $id;
+        private ?int $id = null;
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'name01', type: 'string', length: 255)]
-        private $name01;
+        #[ORM\Column(name: 'name01', type: Types::STRING, length: 255)]
+        private ?string $name01 = null;
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'name02', type: 'string', length: 255)]
-        private $name02;
+        #[ORM\Column(name: 'name02', type: Types::STRING, length: 255)]
+        private ?string $name02 = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'kana01', type: 'string', length: 255, nullable: true)]
-        private $kana01;
+        #[ORM\Column(name: 'kana01', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $kana01 = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'kana02', type: 'string', length: 255, nullable: true)]
-        private $kana02;
+        #[ORM\Column(name: 'kana02', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $kana02 = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'company_name', type: 'string', length: 255, nullable: true)]
-        private $company_name;
+        #[ORM\Column(name: 'company_name', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $company_name = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'postal_code', type: 'string', length: 8, nullable: true)]
-        private $postal_code;
+        #[ORM\Column(name: 'postal_code', type: Types::STRING, length: 8, nullable: true)]
+        private ?string $postal_code = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'addr01', type: 'string', length: 255, nullable: true)]
-        private $addr01;
+        #[ORM\Column(name: 'addr01', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $addr01 = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'addr02', type: 'string', length: 255, nullable: true)]
-        private $addr02;
+        #[ORM\Column(name: 'addr02', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $addr02 = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'phone_number', type: 'string', length: 14, nullable: true)]
-        private $phone_number;
+        #[ORM\Column(name: 'phone_number', type: Types::STRING, length: 14, nullable: true)]
+        private ?string $phone_number = null;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
         private $create_date;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
         private $update_date;
 
-        /**
-         * @var Customer|null
-         */
         #[ORM\ManyToOne(targetEntity: Customer::class, inversedBy: 'CustomerAddresses')]
         #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'id')]
-        private $Customer;
+        private ?Customer $Customer = null;
 
-        /**
-         * @var Country|null
-         */
         #[ORM\ManyToOne(targetEntity: Country::class)]
         #[ORM\JoinColumn(name: 'country_id', referencedColumnName: 'id')]
-        private $Country;
+        private ?Country $Country = null;
 
-        /**
-         * @var Pref|null
-         */
         #[ORM\ManyToOne(targetEntity: Pref::class)]
         #[ORM\JoinColumn(name: 'pref_id', referencedColumnName: 'id')]
-        private $Pref;
+        private ?Pref $Pref = null;
 
         /**
          * Get id.

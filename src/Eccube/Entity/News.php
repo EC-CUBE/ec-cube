@@ -13,6 +13,7 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Repository\NewsRepository;
 
@@ -34,69 +35,48 @@ if (!class_exists(News::class)) {
             return $this->getTitle();
         }
 
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         /**  @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
-        private $id;
+        private ?int $id = null;
 
         /**
          * @var \DateTime|null
          */
-        #[ORM\Column(name: 'publish_date', type: 'datetimetz', nullable: true)]
+        #[ORM\Column(name: 'publish_date', type: Types::DATETIMETZ_MUTABLE, nullable: true)]
         private $publish_date;
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'title', type: 'string', length: 255)]
-        private $title;
+        #[ORM\Column(name: 'title', type: Types::STRING, length: 255)]
+        private ?string $title = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'description', type: 'text', nullable: true)]
-        private $description;
+        #[ORM\Column(name: 'description', type: Types::TEXT, nullable: true)]
+        private ?string $description = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'url', type: 'string', length: 4000, nullable: true)]
-        private $url;
+        #[ORM\Column(name: 'url', type: Types::STRING, length: 4000, nullable: true)]
+        private ?string $url = null;
 
-        /**
-         * @var bool
-         */
-        #[ORM\Column(name: 'link_method', type: 'boolean', options: ['default' => false])]
-        private $link_method = false;
+        #[ORM\Column(name: 'link_method', type: Types::BOOLEAN, options: ['default' => false])]
+        private bool $link_method = false;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
         private $create_date;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
         private $update_date;
 
-        /**
-         * @var bool
-         */
-        #[ORM\Column(name: 'visible', type: 'boolean', options: ['default' => true])]
-        private $visible;
+        #[ORM\Column(name: 'visible', type: Types::BOOLEAN, options: ['default' => true])]
+        private ?bool $visible = null;
 
-        /**
-         * @var Member|null
-         */
         #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
-        private $Creator;
+        private ?Member $Creator = null;
 
         /**
          * Get id.

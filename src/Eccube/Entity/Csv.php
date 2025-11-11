@@ -13,6 +13,7 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Repository\CsvRepository;
@@ -28,76 +29,49 @@ if (!class_exists(Csv::class)) {
     #[ORM\Entity(repositoryClass: CsvRepository::class)]
     class Csv extends AbstractEntity
     {
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         /**  @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
-        private $id;
+        private ?int $id = null;
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'entity_name', type: 'string', length: 255)]
-        private $entity_name;
+        #[ORM\Column(name: 'entity_name', type: Types::STRING, length: 255)]
+        private ?string $entity_name = null;
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'field_name', type: 'string', length: 255)]
-        private $field_name;
+        #[ORM\Column(name: 'field_name', type: Types::STRING, length: 255)]
+        private ?string $field_name = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'reference_field_name', type: 'string', length: 255, nullable: true)]
-        private $reference_field_name;
+        #[ORM\Column(name: 'reference_field_name', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $reference_field_name = null;
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'disp_name', type: 'string', length: 255)]
-        private $disp_name;
+        #[ORM\Column(name: 'disp_name', type: Types::STRING, length: 255)]
+        private ?string $disp_name = null;
 
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'sort_no', type: 'smallint', options: ['unsigned' => true])]
-        private $sort_no;
+        #[ORM\Column(name: 'sort_no', type: Types::SMALLINT, options: ['unsigned' => true])]
+        private ?int $sort_no = null;
 
-        /**
-         * @var bool
-         */
-        #[ORM\Column(name: 'enabled', type: 'boolean', options: ['default' => true])]
-        private $enabled = true;
+        #[ORM\Column(name: 'enabled', type: Types::BOOLEAN, options: ['default' => true])]
+        private bool $enabled = true;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
         private $create_date;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
         private $update_date;
 
-        /**
-         * @var CsvType|null
-         */
         #[ORM\ManyToOne(targetEntity: CsvType::class)]
         #[ORM\JoinColumn(name: 'csv_type_id', referencedColumnName: 'id')]
-        private $CsvType;
+        private ?CsvType $CsvType = null;
 
-        /**
-         * @var Member|null
-         */
         #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
-        private $Creator;
+        private ?Member $Creator = null;
 
         /**
          * Get id.

@@ -13,6 +13,7 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\RoundingType;
@@ -43,7 +44,7 @@ if (!class_exists(OrderItem::class)) {
                 return $this->price;
             }
 
-            return bcadd($this->price, $this->tax, 2);
+            return bcadd((string) $this->price, $this->tax, 2);
         }
 
         public function getTotalPrice(): string
@@ -126,154 +127,85 @@ if (!class_exists(OrderItem::class)) {
             return $this->getOrderItemTypeId() === OrderItemType::POINT;
         }
 
-        /**
-         * @var int|null
-         */
-        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         /** @phpstan-ignore-next-line property.unusedType, property.onlyRead */
-        private $id;
+        private ?int $id = null;
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'product_name', type: 'string', length: 255)]
-        private $product_name;
+        #[ORM\Column(name: 'product_name', type: Types::STRING, length: 255)]
+        private ?string $product_name = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'product_code', type: 'string', length: 255, nullable: true)]
-        private $product_code;
+        #[ORM\Column(name: 'product_code', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $product_code = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'class_name1', type: 'string', length: 255, nullable: true)]
-        private $class_name1;
+        #[ORM\Column(name: 'class_name1', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $class_name1 = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'class_name2', type: 'string', length: 255, nullable: true)]
-        private $class_name2;
+        #[ORM\Column(name: 'class_name2', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $class_name2 = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'class_category_name1', type: 'string', length: 255, nullable: true)]
-        private $class_category_name1;
+        #[ORM\Column(name: 'class_category_name1', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $class_category_name1 = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'class_category_name2', type: 'string', length: 255, nullable: true)]
-        private $class_category_name2;
+        #[ORM\Column(name: 'class_category_name2', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $class_category_name2 = null;
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'price', type: 'decimal', precision: 12, scale: 2, options: ['default' => 0])]
-        private $price = '0';
+        #[ORM\Column(name: 'price', type: Types::DECIMAL, precision: 12, scale: 2, options: ['default' => 0])]
+        private ?string $price = '0';
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'quantity', type: 'decimal', precision: 10, scale: 0, options: ['default' => 0])]
-        private $quantity = '0';
+        #[ORM\Column(name: 'quantity', type: Types::DECIMAL, precision: 10, scale: 0, options: ['default' => 0])]
+        private string $quantity = '0';
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'tax', type: 'decimal', precision: 10, scale: 0, options: ['default' => 0])]
-        private $tax = '0';
+        #[ORM\Column(name: 'tax', type: Types::DECIMAL, precision: 10, scale: 0, options: ['default' => 0])]
+        private string $tax = '0';
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'tax_rate', type: 'decimal', precision: 10, scale: 0, options: ['unsigned' => true, 'default' => 0])]
-        private $tax_rate = '0';
+        #[ORM\Column(name: 'tax_rate', type: Types::DECIMAL, precision: 10, scale: 0, options: ['unsigned' => true, 'default' => 0])]
+        private string $tax_rate = '0';
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'tax_adjust', type: 'decimal', precision: 10, scale: 0, options: ['unsigned' => true, 'default' => 0])]
-        private $tax_adjust = '0';
+        #[ORM\Column(name: 'tax_adjust', type: Types::DECIMAL, precision: 10, scale: 0, options: ['unsigned' => true, 'default' => 0])]
+        private string $tax_adjust = '0';
 
-        /**
-         * @var int|null
-         */
-        #[ORM\Column(name: 'tax_rule_id', type: 'smallint', nullable: true, options: ['unsigned' => true])]
-        private $tax_rule_id;
+        #[ORM\Column(name: 'tax_rule_id', type: Types::SMALLINT, nullable: true, options: ['unsigned' => true])]
+        private ?int $tax_rule_id = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'currency_code', type: 'string', nullable: true)]
-        private $currency_code;
+        #[ORM\Column(name: 'currency_code', type: Types::STRING, nullable: true)]
+        private ?string $currency_code = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'processor_name', type: 'string', nullable: true)]
-        private $processor_name;
+        #[ORM\Column(name: 'processor_name', type: Types::STRING, nullable: true)]
+        private ?string $processor_name = null;
 
-        /**
-         * @var Order|null
-         */
         #[ORM\ManyToOne(targetEntity: Order::class, inversedBy: 'OrderItems')]
         #[ORM\JoinColumn(name: 'order_id', referencedColumnName: 'id')]
-        private $Order;
+        private ?Order $Order = null;
 
-        /**
-         * @var Product|null
-         */
         #[ORM\ManyToOne(targetEntity: Product::class)]
         #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id')]
-        private $Product;
+        private ?Product $Product = null;
 
-        /**
-         * @var ProductClass|null
-         */
         #[ORM\ManyToOne(targetEntity: ProductClass::class)]
         #[ORM\JoinColumn(name: 'product_class_id', referencedColumnName: 'id')]
-        private $ProductClass;
+        private ?ProductClass $ProductClass = null;
 
-        /**
-         * @var Shipping|null
-         */
         #[ORM\ManyToOne(targetEntity: Shipping::class, inversedBy: 'OrderItems')]
         #[ORM\JoinColumn(name: 'shipping_id', referencedColumnName: 'id')]
-        private $Shipping;
+        private ?Shipping $Shipping = null;
 
-        /**
-         * @var RoundingType|null
-         */
         #[ORM\ManyToOne(targetEntity: RoundingType::class)]
         #[ORM\JoinColumn(name: 'rounding_type_id', referencedColumnName: 'id')]
-        private $RoundingType;
+        private ?RoundingType $RoundingType = null;
 
-        /**
-         * @var TaxType|null
-         */
         #[ORM\ManyToOne(targetEntity: TaxType::class)]
         #[ORM\JoinColumn(name: 'tax_type_id', referencedColumnName: 'id')]
-        private $TaxType;
+        private ?TaxType $TaxType = null;
 
-        /**
-         * @var TaxDisplayType|null
-         */
         #[ORM\ManyToOne(targetEntity: TaxDisplayType::class)]
         #[ORM\JoinColumn(name: 'tax_display_type_id', referencedColumnName: 'id')]
-        private $TaxDisplayType;
+        private ?TaxDisplayType $TaxDisplayType = null;
 
-        /**
-         * @var OrderItemType|null
-         */
         #[ORM\ManyToOne(targetEntity: OrderItemType::class)]
         #[ORM\JoinColumn(name: 'order_item_type_id', referencedColumnName: 'id')]
-        private $OrderItemType;
+        private ?OrderItemType $OrderItemType = null;
 
         /**
          * Get id.

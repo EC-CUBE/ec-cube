@@ -15,6 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\Master\ProductStatus;
 use Eccube\Repository\ProductRepository;
@@ -447,61 +448,40 @@ if (!class_exists(Product::class)) {
             return false;
         }
 
-        /**
-         * @var int|null
-         */
-        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         /**  @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
-        private $id;
+        private ?int $id = null;
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'name', type: 'string', length: 255)]
-        private $name;
+        #[ORM\Column(name: 'name', type: Types::STRING, length: 255)]
+        private ?string $name = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'note', type: 'text', nullable: true)]
-        private $note;
+        #[ORM\Column(name: 'note', type: Types::TEXT, nullable: true)]
+        private ?string $note = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'description_list', type: 'text', nullable: true)]
-        private $description_list;
+        #[ORM\Column(name: 'description_list', type: Types::TEXT, nullable: true)]
+        private ?string $description_list = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'description_detail', type: 'text', nullable: true)]
-        private $description_detail;
+        #[ORM\Column(name: 'description_detail', type: Types::TEXT, nullable: true)]
+        private ?string $description_detail = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'search_word', type: 'text', nullable: true)]
-        private $search_word;
+        #[ORM\Column(name: 'search_word', type: Types::TEXT, nullable: true)]
+        private ?string $search_word = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'free_area', type: 'text', nullable: true)]
-        private $free_area;
+        #[ORM\Column(name: 'free_area', type: Types::TEXT, nullable: true)]
+        private ?string $free_area = null;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
         private $create_date;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
         private $update_date;
 
         /**
@@ -535,19 +515,13 @@ if (!class_exists(Product::class)) {
         #[ORM\OneToMany(targetEntity: CustomerFavoriteProduct::class, mappedBy: 'Product')]
         private $CustomerFavoriteProducts;
 
-        /**
-         * @var Member|null
-         */
         #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
-        private $Creator;
+        private ?Member $Creator = null;
 
-        /**
-         * @var ProductStatus|null
-         */
         #[ORM\ManyToOne(targetEntity: ProductStatus::class)]
         #[ORM\JoinColumn(name: 'product_status_id', referencedColumnName: 'id')]
-        private $Status;
+        private ?ProductStatus $Status = null;
 
         /**
          * Constructor
@@ -819,7 +793,7 @@ if (!class_exists(Product::class)) {
         /**
          * Get productClasses.
          *
-         * @return Collection<int, ProductClass>|null
+         * @return Collection<int, ProductClass>
          */
         public function getProductClasses(): ?Collection
         {

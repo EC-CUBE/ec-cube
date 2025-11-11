@@ -15,6 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Repository\CartRepository;
@@ -36,27 +37,18 @@ if (!class_exists(Cart::class)) {
     {
         use PointTrait;
 
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         /** @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
-        private $id;
+        private ?int $id = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'cart_key', type: 'string', nullable: true)]
-        private $cart_key;
+        #[ORM\Column(name: 'cart_key', type: Types::STRING, nullable: true)]
+        private ?string $cart_key = null;
 
-        /**
-         * @var Customer|null
-         */
         #[ORM\ManyToOne(targetEntity: Customer::class)]
         #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'id')]
-        private $Customer;
+        private ?Customer $Customer = null;
 
         private bool $lock = false;
 
@@ -67,40 +59,28 @@ if (!class_exists(Cart::class)) {
         #[ORM\OrderBy(['id' => 'ASC'])]
         private $CartItems;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'pre_order_id', type: 'string', length: 255, nullable: true)]
-        private $pre_order_id;
+        #[ORM\Column(name: 'pre_order_id', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $pre_order_id = null;
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'total_price', type: 'decimal', precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
-        private $total_price;
+        #[ORM\Column(name: 'total_price', type: Types::DECIMAL, precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
+        private ?string $total_price = null;
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'delivery_fee_total', type: 'decimal', precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
-        private $delivery_fee_total;
+        #[ORM\Column(name: 'delivery_fee_total', type: Types::DECIMAL, precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
+        private ?string $delivery_fee_total = null;
 
-        /**
-         * @var int|null
-         */
-        #[ORM\Column(name: 'sort_no', type: 'smallint', nullable: true, options: ['unsigned' => true])]
-        private $sort_no;
+        #[ORM\Column(name: 'sort_no', type: Types::SMALLINT, nullable: true, options: ['unsigned' => true])]
+        private ?int $sort_no = null;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
         private $create_date;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
         private $update_date;
 
         /**

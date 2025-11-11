@@ -13,6 +13,7 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Repository\PaymentOptionRepository;
 
@@ -27,35 +28,23 @@ if (!class_exists(PaymentOption::class)) {
     #[ORM\Entity(repositoryClass: PaymentOptionRepository::class)]
     class PaymentOption extends AbstractEntity
     {
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'delivery_id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Column(name: 'delivery_id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'NONE')]
-        private $delivery_id;
+        private ?int $delivery_id = null;
 
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'payment_id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Column(name: 'payment_id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'NONE')]
-        private $payment_id;
+        private ?int $payment_id = null;
 
-        /**
-         * @var Delivery|null
-         */
         #[ORM\ManyToOne(targetEntity: Delivery::class, inversedBy: 'PaymentOptions')]
         #[ORM\JoinColumn(name: 'delivery_id', referencedColumnName: 'id')]
-        private $Delivery;
+        private ?Delivery $Delivery = null;
 
-        /**
-         * @var Payment|null
-         */
         #[ORM\ManyToOne(targetEntity: Payment::class, inversedBy: 'PaymentOptions')]
         #[ORM\JoinColumn(name: 'payment_id', referencedColumnName: 'id')]
-        private $Payment;
+        private ?Payment $Payment = null;
 
         /**
          * Set deliveryId.

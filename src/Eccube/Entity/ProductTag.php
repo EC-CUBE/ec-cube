@@ -13,6 +13,7 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Repository\ProductTagRepository;
 
@@ -40,41 +41,29 @@ if (!class_exists(ProductTag::class)) {
             return $this->Tag->getId();
         }
 
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         /**  @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
-        private $id;
+        private ?int $id = null;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
         private $create_date;
 
-        /**
-         * @var Product|null
-         */
         #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'ProductTag')]
         #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id')]
-        private $Product;
+        private ?Product $Product = null;
 
-        /**
-         * @var Tag|null
-         */
         #[ORM\ManyToOne(targetEntity: Tag::class, inversedBy: 'ProductTag')]
         #[ORM\JoinColumn(name: 'tag_id', referencedColumnName: 'id')]
-        private $Tag;
+        private ?Tag $Tag = null;
 
-        /**
-         * @var Member|null
-         */
         #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
-        private $Creator;
+        private ?Member $Creator = null;
 
         /**
          * Get id.

@@ -15,6 +15,7 @@ namespace Eccube\Tests\Doctrine\ORM\Tools;
 
 use Doctrine\DBAL\ConnectionException;
 use Doctrine\DBAL\Driver\Connection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Exception\ORMException;
@@ -334,12 +335,12 @@ class PaginationTest extends EccubeTestCase
 class TestEntity
 {
     #[ORM\Id]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: Types::INTEGER)]
     #[ORM\GeneratedValue(strategy: 'NONE')]
-    public $id;
+    public ?int $id = null;
 
-    #[ORM\Column(type: 'integer')]
-    public $col;
+    #[ORM\Column(type: Types::INTEGER)]
+    public ?int $col = null;
 }
 
 class TestRepository extends EntityRepository

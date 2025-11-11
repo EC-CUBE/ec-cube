@@ -13,6 +13,7 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\Master\Authority;
 use Eccube\Entity\Master\Work;
@@ -63,28 +64,19 @@ if (!class_exists(Member::class)) {
         {
         }
 
-        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         private ?int $id = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
-        private $name;
+        #[ORM\Column(name: 'name', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $name = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'department', type: 'string', length: 255, nullable: true)]
-        private $department;
+        #[ORM\Column(name: 'department', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $department = null;
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'login_id', type: 'string', length: 255)]
-        private $login_id;
+        #[ORM\Column(name: 'login_id', type: Types::STRING, length: 255)]
+        private ?string $login_id = null;
 
         /**
          * @var string|null
@@ -93,74 +85,50 @@ if (!class_exists(Member::class)) {
         #[Assert\Length(max: 4096)]
         private $plainPassword;
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'password', type: 'string', length: 255)]
-        private $password;
+        #[ORM\Column(name: 'password', type: Types::STRING, length: 255)]
+        private ?string $password = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'salt', type: 'string', length: 255, nullable: true)]
-        private $salt;
+        #[ORM\Column(name: 'salt', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $salt = null;
 
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'sort_no', type: 'smallint', options: ['unsigned' => true])]
-        private $sort_no;
+        #[ORM\Column(name: 'sort_no', type: Types::SMALLINT, options: ['unsigned' => true])]
+        private ?int $sort_no = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'two_factor_auth_key', type: 'string', length: 255, nullable: true, options: ['fixed' => false])]
-        private $two_factor_auth_key;
+        #[ORM\Column(name: 'two_factor_auth_key', type: Types::STRING, length: 255, nullable: true, options: ['fixed' => false])]
+        private ?string $two_factor_auth_key = null;
 
-        /**
-         * @var bool
-         */
-        #[ORM\Column(name: 'two_factor_auth_enabled', type: 'boolean', nullable: false, options: ['default' => false])]
-        private $two_factor_auth_enabled = false;
+        #[ORM\Column(name: 'two_factor_auth_enabled', type: Types::BOOLEAN, nullable: false, options: ['default' => false])]
+        private bool $two_factor_auth_enabled = false;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
         private $create_date;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
         private $update_date;
 
         /**
          * @var \DateTime|null
          */
-        #[ORM\Column(name: 'login_date', type: 'datetimetz', nullable: true)]
+        #[ORM\Column(name: 'login_date', type: Types::DATETIMETZ_MUTABLE, nullable: true)]
         private $login_date;
 
-        /**
-         * @var Work|null
-         */
         #[ORM\ManyToOne(targetEntity: Work::class)]
         #[ORM\JoinColumn(name: 'work_id', referencedColumnName: 'id')]
-        private $Work;
+        private ?Work $Work = null;
 
-        /**
-         * @var Authority|null
-         */
         #[ORM\ManyToOne(targetEntity: Authority::class)]
         #[ORM\JoinColumn(name: 'authority_id', referencedColumnName: 'id')]
-        private $Authority;
+        private ?Authority $Authority = null;
 
-        /**
-         * @var Member|null
-         */
         #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
-        private $Creator;
+        private ?Member $Creator = null;
 
         /**
          * Get id.

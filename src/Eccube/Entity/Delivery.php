@@ -15,6 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\Master\SaleType;
 use Eccube\Repository\DeliveryRepository;
@@ -36,61 +37,40 @@ if (!class_exists(Delivery::class)) {
             return (string) $this->name;
         }
 
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         /**  @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
-        private $id;
+        private ?int $id = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
-        private $name;
+        #[ORM\Column(name: 'name', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $name = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'service_name', type: 'string', length: 255, nullable: true)]
-        private $service_name;
+        #[ORM\Column(name: 'service_name', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $service_name = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'description', type: 'string', length: 4000, nullable: true)]
-        private $description;
+        #[ORM\Column(name: 'description', type: Types::STRING, length: 4000, nullable: true)]
+        private ?string $description = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'confirm_url', type: 'string', length: 4000, nullable: true)]
-        private $confirm_url;
+        #[ORM\Column(name: 'confirm_url', type: Types::STRING, length: 4000, nullable: true)]
+        private ?string $confirm_url = null;
 
-        /**
-         * @var int|null
-         */
-        #[ORM\Column(name: 'sort_no', type: 'integer', nullable: true, options: ['unsigned' => true])]
-        private $sort_no;
+        #[ORM\Column(name: 'sort_no', type: Types::INTEGER, nullable: true, options: ['unsigned' => true])]
+        private ?int $sort_no = null;
 
-        /**
-         * @var bool
-         */
-        #[ORM\Column(name: 'visible', type: 'boolean', options: ['default' => true])]
-        private $visible = true;
+        #[ORM\Column(name: 'visible', type: Types::BOOLEAN, options: ['default' => true])]
+        private bool $visible = true;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
         private $create_date;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
         private $update_date;
 
         /**
@@ -112,19 +92,13 @@ if (!class_exists(Delivery::class)) {
         #[ORM\OrderBy(['sort_no' => 'ASC'])]
         private $DeliveryTimes;
 
-        /**
-         * @var Member|null
-         */
         #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
-        private $Creator;
+        private ?Member $Creator = null;
 
-        /**
-         * @var SaleType|null
-         */
         #[ORM\ManyToOne(targetEntity: SaleType::class)]
         #[ORM\JoinColumn(name: 'sale_type_id', referencedColumnName: 'id')]
-        private $SaleType;
+        private ?SaleType $SaleType = null;
 
         /**
          * Constructor

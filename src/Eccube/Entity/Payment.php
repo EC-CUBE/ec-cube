@@ -15,6 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Repository\PaymentRepository;
 
@@ -35,79 +36,49 @@ if (!class_exists(Payment::class)) {
             return (string) $this->getMethod();
         }
 
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         /**  @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
-        private $id;
+        private ?int $id = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'payment_method', type: 'string', length: 255, nullable: true)]
-        private $method;
+        #[ORM\Column(name: 'payment_method', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $method = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'charge', type: 'decimal', precision: 12, scale: 2, nullable: true, options: ['unsigned' => true, 'default' => 0])]
-        private $charge = '0';
+        #[ORM\Column(name: 'charge', type: Types::DECIMAL, precision: 12, scale: 2, nullable: true, options: ['unsigned' => true, 'default' => 0])]
+        private ?string $charge = '0';
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'rule_max', type: 'decimal', precision: 12, scale: 2, nullable: true, options: ['unsigned' => true])]
-        private $rule_max;
+        #[ORM\Column(name: 'rule_max', type: Types::DECIMAL, precision: 12, scale: 2, nullable: true, options: ['unsigned' => true])]
+        private ?string $rule_max = null;
 
-        /**
-         * @var int|null
-         */
-        #[ORM\Column(name: 'sort_no', type: 'smallint', nullable: true, options: ['unsigned' => true])]
-        private $sort_no;
+        #[ORM\Column(name: 'sort_no', type: Types::SMALLINT, nullable: true, options: ['unsigned' => true])]
+        private ?int $sort_no = null;
 
-        /**
-         * @var bool
-         */
-        #[ORM\Column(name: 'fixed', type: 'boolean', options: ['default' => true])]
-        private $fixed = true;
+        #[ORM\Column(name: 'fixed', type: Types::BOOLEAN, options: ['default' => true])]
+        private ?bool $fixed = true;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'payment_image', type: 'string', length: 255, nullable: true)]
-        private $payment_image;
+        #[ORM\Column(name: 'payment_image', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $payment_image = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'rule_min', type: 'decimal', precision: 12, scale: 2, nullable: true, options: ['unsigned' => true])]
-        private $rule_min;
+        #[ORM\Column(name: 'rule_min', type: Types::DECIMAL, precision: 12, scale: 2, nullable: true, options: ['unsigned' => true])]
+        private ?string $rule_min = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'method_class', type: 'string', length: 255, nullable: true)]
-        private $method_class;
+        #[ORM\Column(name: 'method_class', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $method_class = null;
 
-        /**
-         * @var bool
-         */
-        #[ORM\Column(name: 'visible', type: 'boolean', options: ['default' => true])]
-        private $visible;
+        #[ORM\Column(name: 'visible', type: Types::BOOLEAN, options: ['default' => true])]
+        private ?bool $visible = null;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
         private $create_date;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
         private $update_date;
 
         /**
@@ -116,12 +87,9 @@ if (!class_exists(Payment::class)) {
         #[ORM\OneToMany(targetEntity: PaymentOption::class, mappedBy: 'Payment')]
         private $PaymentOptions;
 
-        /**
-         * @var Member|null
-         */
         #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
-        private $Creator;
+        private ?Member $Creator = null;
 
         /**
          * Constructor

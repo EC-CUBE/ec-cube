@@ -13,6 +13,7 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Repository\PluginRepository;
 
@@ -27,61 +28,40 @@ if (!class_exists(Plugin::class)) {
     #[ORM\Entity(repositoryClass: PluginRepository::class)]
     class Plugin extends AbstractEntity
     {
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         /**  @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
-        private $id;
+        private ?int $id = null;
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'name', type: 'string', length: 255)]
-        private $name;
+        #[ORM\Column(name: 'name', type: Types::STRING, length: 255)]
+        private ?string $name = null;
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'code', type: 'string', length: 255)]
-        private $code;
+        #[ORM\Column(name: 'code', type: Types::STRING, length: 255)]
+        private ?string $code = null;
 
-        /**
-         * @var bool
-         */
-        #[ORM\Column(name: 'enabled', type: 'boolean', options: ['default' => false])]
-        private $enabled = false;
+        #[ORM\Column(name: 'enabled', type: Types::BOOLEAN, options: ['default' => false])]
+        private bool $enabled = false;
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'version', type: 'string', length: 255)]
-        private $version;
+        #[ORM\Column(name: 'version', type: Types::STRING, length: 255)]
+        private ?string $version = null;
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'source', type: 'string', length: 255)]
-        private $source;
+        #[ORM\Column(name: 'source', type: Types::STRING, length: 255)]
+        private ?string $source = null;
 
-        /**
-         * @var bool
-         */
-        #[ORM\Column(name: 'initialized', type: 'boolean', options: ['default' => false])]
-        private $initialized = false;
+        #[ORM\Column(name: 'initialized', type: Types::BOOLEAN, options: ['default' => false])]
+        private bool $initialized = false;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
         private $create_date;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
         private $update_date;
 
         /**

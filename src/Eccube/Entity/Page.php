@@ -15,6 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Repository\PageRepository;
 
@@ -55,79 +56,49 @@ if (!class_exists(Page::class)) {
             return $Layouts;
         }
 
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-        private $id;
+        private ?int $id = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'page_name', type: 'string', length: 255, nullable: true)]
-        private $name;
+        #[ORM\Column(name: 'page_name', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $name = null;
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'url', type: 'string', length: 255)]
-        private $url;
+        #[ORM\Column(name: 'url', type: Types::STRING, length: 255)]
+        private ?string $url = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'file_name', type: 'string', length: 255, nullable: true)]
-        private $file_name;
+        #[ORM\Column(name: 'file_name', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $file_name = null;
 
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'edit_type', type: 'smallint', options: ['unsigned' => true, 'default' => 1])]
-        private $edit_type = 1;
+        #[ORM\Column(name: 'edit_type', type: Types::SMALLINT, options: ['unsigned' => true, 'default' => 1])]
+        private int $edit_type = 1;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'author', type: 'string', length: 255, nullable: true)]
-        private $author;
+        #[ORM\Column(name: 'author', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $author = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'description', type: 'string', length: 255, nullable: true)]
-        private $description;
+        #[ORM\Column(name: 'description', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $description = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'keyword', type: 'string', length: 255, nullable: true)]
-        private $keyword;
+        #[ORM\Column(name: 'keyword', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $keyword = null;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
         private $create_date;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
         private $update_date;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'meta_robots', type: 'string', length: 255, nullable: true)]
-        private $meta_robots;
+        #[ORM\Column(name: 'meta_robots', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $meta_robots = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'meta_tags', type: 'string', length: 4000, nullable: true)]
-        private $meta_tags;
+        #[ORM\Column(name: 'meta_tags', type: Types::STRING, length: 4000, nullable: true)]
+        private ?string $meta_tags = null;
 
         /**
          * @var Collection<int, PageLayout>
@@ -135,12 +106,9 @@ if (!class_exists(Page::class)) {
         #[ORM\OneToMany(targetEntity: PageLayout::class, mappedBy: 'Page', cascade: ['persist', 'remove'])]
         private $PageLayouts;
 
-        /**
-         * @var Page|null
-         */
         #[ORM\ManyToOne(targetEntity: Page::class)]
         #[ORM\JoinColumn(name: 'master_page_id', referencedColumnName: 'id')]
-        private $MasterPage;
+        private ?Page $MasterPage = null;
 
         /**
          * Constructor

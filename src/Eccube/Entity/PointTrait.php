@@ -13,21 +13,16 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 trait PointTrait
 {
-    /**
-     * @var string
-     */
-    #[ORM\Column(name: 'add_point', type: 'decimal', precision: 12, scale: 0, options: ['unsigned' => true, 'default' => 0])]
-    private $add_point = '0';
+    #[ORM\Column(name: 'add_point', type: Types::DECIMAL, precision: 12, scale: 0, options: ['unsigned' => true, 'default' => 0])]
+    private ?string $add_point = '0';
 
-    /**
-     * @var string
-     */
-    #[ORM\Column(name: 'use_point', type: 'decimal', precision: 12, scale: 0, options: ['unsigned' => true, 'default' => 0])]
-    private $use_point = '0';
+    #[ORM\Column(name: 'use_point', type: Types::DECIMAL, precision: 12, scale: 0, options: ['unsigned' => true, 'default' => 0])]
+    private ?string $use_point = '0';
 
     /**
      * Set addPoint

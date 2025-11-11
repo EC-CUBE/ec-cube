@@ -13,6 +13,7 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\Master\Pref;
 use Eccube\Repository\DeliveryFeeRepository;
@@ -28,34 +29,22 @@ if (!class_exists(DeliveryFee::class)) {
     #[ORM\Entity(repositoryClass: DeliveryFeeRepository::class)]
     class DeliveryFee extends AbstractEntity
     {
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         /**  @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
-        private $id;
+        private ?int $id = null;
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'fee', type: 'decimal', precision: 12, scale: 2, options: ['unsigned' => true])]
-        private $fee;
+        #[ORM\Column(name: 'fee', type: Types::DECIMAL, precision: 12, scale: 2, options: ['unsigned' => true])]
+        private ?string $fee = null;
 
-        /**
-         * @var Delivery|null
-         */
         #[ORM\ManyToOne(targetEntity: Delivery::class, inversedBy: 'DeliveryFees')]
         #[ORM\JoinColumn(name: 'delivery_id', referencedColumnName: 'id', nullable: false)]
-        private $Delivery;
+        private ?Delivery $Delivery = null;
 
-        /**
-         * @var Pref|null
-         */
         #[ORM\ManyToOne(targetEntity: Pref::class)]
         #[ORM\JoinColumn(name: 'pref_id', referencedColumnName: 'id')]
-        private $Pref;
+        private ?Pref $Pref = null;
 
         /**
          * Get id.

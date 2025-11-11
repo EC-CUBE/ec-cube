@@ -13,6 +13,7 @@
 
 namespace Plugin\Boomerang\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Attribute\EntityExtension;
 use Eccube\Entity\Cart;
@@ -20,16 +21,10 @@ use Eccube\Entity\Cart;
 #[EntityExtension(Cart::class)]
 trait CartTrait
 {
-    /**
-     * @var bool
-     */
-    #[ORM\Column(name: 'is_boomerang', type: 'boolean', nullable: true, options: ['default' => false])]
-    public $is_boomerang;
+    #[ORM\Column(name: 'is_boomerang', type: Types::BOOLEAN, nullable: true, options: ['default' => false])]
+    public ?bool $is_boomerang = null;
 
-    /**
-     * @var Bar
-     */
     #[ORM\ManyToOne(targetEntity: Bar::class)]
     #[ORM\JoinColumn(name: 'bar_id', referencedColumnName: 'id')]
-    public $bar;
+    public ?Bar $bar = null;
 }

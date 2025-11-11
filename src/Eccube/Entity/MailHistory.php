@@ -13,6 +13,7 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Repository\MailHistoryRepository;
 
@@ -33,52 +34,34 @@ if (!class_exists(MailHistory::class)) {
             return (string) $this->getMailSubject();
         }
 
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         /**  @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
-        private $id;
+        private ?int $id = null;
 
         /**
          * @var \DateTime|null
          */
-        #[ORM\Column(name: 'send_date', type: 'datetimetz', nullable: true)]
+        #[ORM\Column(name: 'send_date', type: Types::DATETIMETZ_MUTABLE, nullable: true)]
         private $send_date;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'mail_subject', type: 'string', length: 255, nullable: true)]
-        private $mail_subject;
+        #[ORM\Column(name: 'mail_subject', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $mail_subject = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'mail_body', type: 'text', nullable: true)]
-        private $mail_body;
+        #[ORM\Column(name: 'mail_body', type: Types::TEXT, nullable: true)]
+        private ?string $mail_body = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'mail_html_body', type: 'text', nullable: true)]
-        private $mail_html_body;
+        #[ORM\Column(name: 'mail_html_body', type: Types::TEXT, nullable: true)]
+        private ?string $mail_html_body = null;
 
-        /**
-         * @var Order|null
-         */
         #[ORM\ManyToOne(targetEntity: Order::class, inversedBy: 'MailHistories')]
         #[ORM\JoinColumn(name: 'order_id', referencedColumnName: 'id', nullable: true)]
-        private $Order;
+        private ?Order $Order = null;
 
-        /**
-         * @var Member|null
-         */
         #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id', nullable: true)]
-        private $Creator;
+        private ?Member $Creator = null;
 
         /**
          * Get id.

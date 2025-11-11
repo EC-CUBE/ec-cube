@@ -13,6 +13,7 @@
 
 namespace Plugin\Emperor\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Plugin\Emperor\Repository\FooRepository;
 
@@ -27,18 +28,12 @@ if (!class_exists(Foo::class)) {
     #[ORM\Entity(repositoryClass: FooRepository::class)]
     class Foo
     {
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-        public $id;
+        public ?int $id = null;
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'name', type: 'string', length: 255)]
-        public $name;
+        #[ORM\Column(name: 'name', type: Types::STRING, length: 255)]
+        public ?string $name = null;
     }
 }

@@ -13,6 +13,7 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Repository\TradeLawRepository;
 
@@ -27,21 +28,21 @@ if (!class_exists(TradeLaw::class)) {
     #[ORM\Entity(repositoryClass: TradeLawRepository::class)]
     class TradeLaw extends AbstractEntity implements \Stringable
     {
-        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         private int $id;
 
-        #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
+        #[ORM\Column(name: 'name', type: Types::STRING, length: 255, nullable: true)]
         private ?string $name = null;
 
-        #[ORM\Column(name: 'description', type: 'string', length: 4000, nullable: true)]
+        #[ORM\Column(name: 'description', type: Types::STRING, length: 4000, nullable: true)]
         private ?string $description = null;
 
-        #[ORM\Column(name: 'sort_no', type: 'smallint', nullable: false)]
+        #[ORM\Column(name: 'sort_no', type: Types::SMALLINT, nullable: false)]
         private int $sortNo;
 
-        #[ORM\Column(name: 'display_order_screen', type: 'boolean')]
+        #[ORM\Column(name: 'display_order_screen', type: Types::BOOLEAN)]
         private bool $displayOrderScreen = false;
 
         #[\Override]

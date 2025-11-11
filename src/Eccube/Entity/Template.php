@@ -13,6 +13,7 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Repository\TemplateRepository;
@@ -44,45 +45,33 @@ if (!class_exists(Template::class)) {
             return $this->getName();
         }
 
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         /**  @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
-        private $id;
+        private ?int $id = null;
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'template_code', type: 'string', length: 255)]
-        private $code;
+        #[ORM\Column(name: 'template_code', type: Types::STRING, length: 255)]
+        private ?string $code = null;
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'template_name', type: 'string', length: 255)]
-        private $name;
+        #[ORM\Column(name: 'template_name', type: Types::STRING, length: 255)]
+        private ?string $name = null;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
         private $create_date;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
         private $update_date;
 
-        /**
-         * @var DeviceType|null
-         */
         #[ORM\ManyToOne(targetEntity: DeviceType::class)]
         #[ORM\JoinColumn(name: 'device_type_id', referencedColumnName: 'id')]
-        private $DeviceType;
+        private ?DeviceType $DeviceType = null;
 
         /**
          * Get id.

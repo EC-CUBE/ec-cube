@@ -13,6 +13,7 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Repository\OrderPdfRepository;
 
@@ -31,72 +32,45 @@ if (!class_exists(OrderPdf::class)) {
         public \DateTime|string $issue_date;
         public mixed $default;
 
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'member_id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Column(name: 'member_id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
-        private $member_id;
+        private ?int $member_id = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'title', type: 'string', nullable: true)]
-        private $title;
+        #[ORM\Column(name: 'title', type: Types::STRING, nullable: true)]
+        private ?string $title = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'message1', type: 'string', nullable: true)]
-        private $message1;
+        #[ORM\Column(name: 'message1', type: Types::STRING, nullable: true)]
+        private ?string $message1 = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'message2', type: 'string', nullable: true)]
-        private $message2;
+        #[ORM\Column(name: 'message2', type: Types::STRING, nullable: true)]
+        private ?string $message2 = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'message3', type: 'string', nullable: true)]
-        private $message3;
+        #[ORM\Column(name: 'message3', type: Types::STRING, nullable: true)]
+        private ?string $message3 = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'note1', type: 'string', nullable: true)]
-        private $note1;
+        #[ORM\Column(name: 'note1', type: Types::STRING, nullable: true)]
+        private ?string $note1 = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'note2', type: 'string', nullable: true)]
-        private $note2;
+        #[ORM\Column(name: 'note2', type: Types::STRING, nullable: true)]
+        private ?string $note2 = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'note3', type: 'string', nullable: true)]
-        private $note3;
+        #[ORM\Column(name: 'note3', type: Types::STRING, nullable: true)]
+        private ?string $note3 = null;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
         private $create_date;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
         private $update_date;
 
-        /**
-         * @var bool
-         */
-        #[ORM\Column(name: 'visible', type: 'boolean', options: ['default' => true])]
-        private $visible = true;
+        #[ORM\Column(name: 'visible', type: Types::BOOLEAN, options: ['default' => true])]
+        private bool $visible = true;
 
         public function getMemberId(): int
         {

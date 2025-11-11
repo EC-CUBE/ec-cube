@@ -13,6 +13,7 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\Master\SaleType;
 use Eccube\Repository\ProductClassRepository;
@@ -142,137 +143,83 @@ if (!class_exists(ProductClass::class)) {
             return isset($this->ClassCategory2);
         }
 
-        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         /** @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
         private ?int $id = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'product_code', type: 'string', length: 255, nullable: true)]
-        private $code;
+        #[ORM\Column(name: 'product_code', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $code = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'stock', type: 'decimal', precision: 10, scale: 0, nullable: true)]
-        private $stock;
+        #[ORM\Column(name: 'stock', type: Types::DECIMAL, precision: 10, scale: 0, nullable: true)]
+        private ?string $stock = null;
 
-        /**
-         * @var bool
-         */
-        #[ORM\Column(name: 'stock_unlimited', type: 'boolean', options: ['default' => false])]
-        private $stock_unlimited = false;
+        #[ORM\Column(name: 'stock_unlimited', type: Types::BOOLEAN, options: ['default' => false])]
+        private bool $stock_unlimited = false;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'sale_limit', type: 'decimal', precision: 10, scale: 0, nullable: true, options: ['unsigned' => true])]
-        private $sale_limit;
+        #[ORM\Column(name: 'sale_limit', type: Types::DECIMAL, precision: 10, scale: 0, nullable: true, options: ['unsigned' => true])]
+        private ?string $sale_limit = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'price01', type: 'decimal', precision: 12, scale: 2, nullable: true)]
-        private $price01;
+        #[ORM\Column(name: 'price01', type: Types::DECIMAL, precision: 12, scale: 2, nullable: true)]
+        private ?string $price01 = null;
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'price02', type: 'decimal', precision: 12, scale: 2)]
-        private $price02;
+        #[ORM\Column(name: 'price02', type: Types::DECIMAL, precision: 12, scale: 2)]
+        private ?string $price02 = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'delivery_fee', type: 'decimal', precision: 12, scale: 2, nullable: true, options: ['unsigned' => true])]
-        private $delivery_fee;
+        #[ORM\Column(name: 'delivery_fee', type: Types::DECIMAL, precision: 12, scale: 2, nullable: true, options: ['unsigned' => true])]
+        private ?string $delivery_fee = null;
 
-        /**
-         * @var bool
-         */
-        #[ORM\Column(name: 'visible', type: 'boolean', options: ['default' => true])]
-        private $visible;
+        #[ORM\Column(name: 'visible', type: Types::BOOLEAN, options: ['default' => true])]
+        private ?bool $visible = null;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
         private $create_date;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
         private $update_date;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'currency_code', type: 'string', nullable: true)]
-        private $currency_code;
+        #[ORM\Column(name: 'currency_code', type: Types::STRING, nullable: true)]
+        private ?string $currency_code = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'point_rate', type: 'decimal', precision: 10, scale: 0, options: ['unsigned' => true], nullable: true)]
-        private $point_rate;
+        #[ORM\Column(name: 'point_rate', type: Types::DECIMAL, precision: 10, scale: 0, options: ['unsigned' => true], nullable: true)]
+        private ?string $point_rate = null;
 
-        /**
-         * @var ProductStock|null
-         */
         #[ORM\OneToOne(targetEntity: ProductStock::class, mappedBy: 'ProductClass', cascade: ['persist', 'remove'])]
-        private $ProductStock;
+        private ?ProductStock $ProductStock = null;
 
-        /**
-         * @var TaxRule|null
-         */
         #[ORM\OneToOne(targetEntity: TaxRule::class, mappedBy: 'ProductClass', cascade: ['persist', 'remove'])]
-        private $TaxRule;
+        private ?TaxRule $TaxRule = null;
 
-        /**
-         * @var Product|null
-         */
         #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'ProductClasses')]
         #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id')]
-        private $Product;
+        private ?Product $Product = null;
 
-        /**
-         * @var SaleType|null
-         */
         #[ORM\ManyToOne(targetEntity: SaleType::class)]
         #[ORM\JoinColumn(name: 'sale_type_id', referencedColumnName: 'id')]
-        private $SaleType;
+        private ?SaleType $SaleType = null;
 
-        /**
-         * @var ClassCategory|null
-         */
         #[ORM\ManyToOne(targetEntity: ClassCategory::class)]
         #[ORM\JoinColumn(name: 'class_category_id1', referencedColumnName: 'id', nullable: true)]
-        private $ClassCategory1;
+        private ?ClassCategory $ClassCategory1 = null;
 
-        /**
-         * @var ClassCategory|null
-         */
         #[ORM\ManyToOne(targetEntity: ClassCategory::class)]
         #[ORM\JoinColumn(name: 'class_category_id2', referencedColumnName: 'id', nullable: true)]
-        private $ClassCategory2;
+        private ?ClassCategory $ClassCategory2 = null;
 
-        /**
-         * @var DeliveryDuration|null
-         */
         #[ORM\ManyToOne(targetEntity: DeliveryDuration::class)]
         #[ORM\JoinColumn(name: 'delivery_duration_id', referencedColumnName: 'id')]
-        private $DeliveryDuration;
+        private ?DeliveryDuration $DeliveryDuration = null;
 
-        /**
-         * @var Member|null
-         */
         #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
-        private $Creator;
+        private ?Member $Creator = null;
 
         public function __clone()
         {

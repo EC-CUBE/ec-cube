@@ -13,6 +13,7 @@
 
 namespace Plugin\Horizon\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Attribute\EntityExtension;
 use Eccube\Entity\Cart;
@@ -20,16 +21,10 @@ use Eccube\Entity\Cart;
 #[EntityExtension(Cart::class)]
 trait CartTrait
 {
-    /**
-     * @var bool
-     */
-    #[ORM\Column(name: 'is_horizon', type: 'boolean', options: ['default' => false])]
-    public $is_horizon;
+    #[ORM\Column(name: 'is_horizon', type: Types::BOOLEAN, options: ['default' => false])]
+    public ?bool $is_horizon = null;
 
-    /**
-     * @var Dash
-     */
     #[ORM\ManyToOne(targetEntity: Dash::class)]
     #[ORM\JoinColumn(name: 'dash_id', referencedColumnName: 'id')]
-    public $dash;
+    public ?Dash $dash = null;
 }

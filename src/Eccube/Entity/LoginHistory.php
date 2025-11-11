@@ -13,6 +13,7 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\Master\LoginHistoryStatus;
 use Eccube\Repository\LoginHistoryRepository;
@@ -28,52 +29,37 @@ if (!class_exists(LoginHistory::class)) {
     #[ORM\Entity(repositoryClass: LoginHistoryRepository::class)]
     class LoginHistory extends AbstractEntity
     {
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         /**  @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
-        private $id;
+        private ?int $id = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(type: 'text', nullable: true)]
-        private $user_name;
+        #[ORM\Column(type: Types::TEXT, nullable: true)]
+        private ?string $user_name = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(type: 'text', nullable: true)]
-        private $client_ip;
+        #[ORM\Column(type: Types::TEXT, nullable: true)]
+        private ?string $client_ip = null;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
         private $create_date;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
         private $update_date;
 
-        /**
-         * @var LoginHistoryStatus
-         */
         #[ORM\ManyToOne(targetEntity: LoginHistoryStatus::class)]
         #[ORM\JoinColumn(name: 'login_history_status_id', referencedColumnName: 'id', nullable: false)]
-        private $Status;
+        private ?LoginHistoryStatus $Status = null;
 
-        /**
-         * @var Member|null
-         */
         #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'member_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
-        private $LoginUser;
+        private ?Member $LoginUser = null;
 
         /**
          * Get id

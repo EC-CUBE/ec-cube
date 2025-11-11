@@ -20,10 +20,7 @@ use Eccube\Entity\Cart;
 #[EntityExtension(Cart::class)]
 trait Cart2Trait
 {
-    /**
-     * @var bar
-     */
     #[ORM\OneToOne(targetEntity: Bar::class)]
     #[ORM\JoinColumn(name: 'bar_id', referencedColumnName: 'id', nullable: true)]
-    public $bar;
+    public ?Bar $bar = null;
 }

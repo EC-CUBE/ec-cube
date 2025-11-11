@@ -13,6 +13,7 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Repository\CartItemRepository;
@@ -30,40 +31,25 @@ if (!class_exists(CartItem::class)) {
     {
         use PointRateTrait;
 
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         /** @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
-        private $id;
+        private ?int $id = null;
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'price', type: 'decimal', precision: 12, scale: 2, options: ['default' => 0])]
-        private $price = '0';
+        #[ORM\Column(name: 'price', type: Types::DECIMAL, precision: 12, scale: 2, options: ['default' => 0])]
+        private ?string $price = '0';
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'quantity', type: 'decimal', precision: 10, scale: 0, options: ['default' => 0])]
-        private $quantity = '0';
+        #[ORM\Column(name: 'quantity', type: Types::DECIMAL, precision: 10, scale: 0, options: ['default' => 0])]
+        private string $quantity = '0';
 
-        /**
-         * @var ProductClass|null
-         */
         #[ORM\ManyToOne(targetEntity: ProductClass::class)]
         #[ORM\JoinColumn(name: 'product_class_id', referencedColumnName: 'id')]
-        private $ProductClass;
+        private ?ProductClass $ProductClass = null;
 
-        /**
-         * @var Cart|null
-         */
         #[ORM\ManyToOne(targetEntity: Cart::class, inversedBy: 'CartItems', cascade: ['persist'])]
         #[ORM\JoinColumn(name: 'cart_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-        private $Cart;
+        private ?Cart $Cart = null;
 
         /**
          * sessionのシリアライズのために使われる

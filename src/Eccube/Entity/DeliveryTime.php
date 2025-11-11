@@ -13,6 +13,7 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Repository\DeliveryTimeRepository;
 
@@ -33,50 +34,35 @@ if (!class_exists(DeliveryTime::class)) {
             return (string) $this->delivery_time;
         }
 
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         /**  @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
-        private $id;
+        private ?int $id = null;
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'delivery_time', type: 'string', length: 255)]
-        private $delivery_time;
+        #[ORM\Column(name: 'delivery_time', type: Types::STRING, length: 255)]
+        private ?string $delivery_time = null;
 
-        /**
-         * @var Delivery|null
-         */
         #[ORM\ManyToOne(targetEntity: Delivery::class, inversedBy: 'DeliveryTimes')]
         #[ORM\JoinColumn(name: 'delivery_id', referencedColumnName: 'id')]
-        private $Delivery;
+        private ?Delivery $Delivery = null;
 
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'sort_no', type: 'smallint', options: ['unsigned' => true])]
-        protected $sort_no;
+        #[ORM\Column(name: 'sort_no', type: Types::SMALLINT, options: ['unsigned' => true])]
+        protected ?int $sort_no = null;
 
-        /**
-         * @var bool
-         */
-        #[ORM\Column(name: 'visible', type: 'boolean', options: ['default' => true])]
-        private $visible;
+        #[ORM\Column(name: 'visible', type: Types::BOOLEAN, options: ['default' => true])]
+        private ?bool $visible = null;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
         private $create_date;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
         private $update_date;
 
         /**

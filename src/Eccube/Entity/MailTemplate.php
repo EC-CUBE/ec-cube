@@ -13,6 +13,7 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Repository\MailTemplateRepository;
 
@@ -33,56 +34,41 @@ if (!class_exists(MailTemplate::class)) {
             return $this->getName() ?: '';
         }
 
-        /**
-         * @var int|null
-         */
-        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         /**  @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
-        private $id;
+        private ?int $id = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
-        private $name;
+        #[ORM\Column(name: 'name', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $name = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'file_name', type: 'string', length: 255, nullable: true)]
-        private $file_name;
+        #[ORM\Column(name: 'file_name', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $file_name = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'mail_subject', type: 'string', length: 255, nullable: true)]
-        private $mail_subject;
+        #[ORM\Column(name: 'mail_subject', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $mail_subject = null;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
         private $create_date;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
         private $update_date;
 
-        /**
-         * @var Member|null
-         */
         #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
-        private $Creator;
+        private ?Member $Creator = null;
 
         /**
          * テンプレートの削除可否。
          */
-        #[ORM\Column(name: 'deletable', type: 'boolean', options: ['default' => false])]
+        #[ORM\Column(name: 'deletable', type: Types::BOOLEAN, options: ['default' => false])]
         private bool $deletable = false;
 
         /**

@@ -13,6 +13,7 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Repository\CalendarRepository;
 
@@ -40,37 +41,31 @@ if (!class_exists(Calendar::class)) {
             return self::DEFAULT_CALENDAR_ID === $this->getId();
         }
 
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         /** @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
-        private $id;
+        private ?int $id = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'title', type: 'string', length: 255, nullable: true)]
-        private $title;
+        #[ORM\Column(name: 'title', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $title = null;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'holiday', type: 'datetimetz')]
+        #[ORM\Column(name: 'holiday', type: Types::DATETIMETZ_MUTABLE)]
         private $holiday;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
         private $create_date;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
         private $update_date;
 
         /**

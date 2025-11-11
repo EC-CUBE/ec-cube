@@ -13,6 +13,7 @@
 
 namespace Eccube\Entity\Master;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Repository\Master\OrderStatusRepository;
 
@@ -47,11 +48,9 @@ if (!class_exists(OrderStatus::class, false)) {
 
         /**
          * 受注一覧画面で, ステータスごとの受注件数を表示するかどうか
-         *
-         * @var bool
          */
-        #[ORM\Column(name: 'display_order_count', type: 'boolean', options: ['default' => false])]
-        private $display_order_count = false;
+        #[ORM\Column(name: 'display_order_count', type: Types::BOOLEAN, options: ['default' => false])]
+        private bool $display_order_count = false;
 
         public function isDisplayOrderCount(): bool
         {

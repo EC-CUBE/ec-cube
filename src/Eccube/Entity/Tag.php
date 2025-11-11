@@ -15,6 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Repository\TagRepository;
 
@@ -36,25 +37,16 @@ if (!class_exists(Tag::class)) {
             return $this->getName() ?? '';
         }
 
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-        protected $id;
+        protected ?int $id = null;
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'name', type: 'string', length: 255)]
-        protected $name;
+        #[ORM\Column(name: 'name', type: Types::STRING, length: 255)]
+        protected ?string $name = null;
 
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'sort_no', type: 'smallint', options: ['unsigned' => true])]
-        protected $sort_no;
+        #[ORM\Column(name: 'sort_no', type: Types::SMALLINT, options: ['unsigned' => true])]
+        protected ?int $sort_no = null;
 
         /**
          * @var Collection<int, ProductTag>

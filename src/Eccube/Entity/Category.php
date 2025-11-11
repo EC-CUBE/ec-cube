@@ -16,6 +16,7 @@ namespace Eccube\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
@@ -146,43 +147,31 @@ if (!class_exists(Category::class)) {
             return $ProductCategories->matching($criteria)->count() > 0;
         }
 
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         /** @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
-        private $id;
+        private ?int $id = null;
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'category_name', type: 'string', length: 255)]
-        private $name;
+        #[ORM\Column(name: 'category_name', type: Types::STRING, length: 255)]
+        private ?string $name = null;
 
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'hierarchy', type: 'integer', options: ['unsigned' => true])]
-        private $hierarchy;
+        #[ORM\Column(name: 'hierarchy', type: Types::INTEGER, options: ['unsigned' => true])]
+        private ?int $hierarchy = null;
 
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'sort_no', type: 'integer')]
-        private $sort_no;
+        #[ORM\Column(name: 'sort_no', type: Types::INTEGER)]
+        private ?int $sort_no = null;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
         private $create_date;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
         private $update_date;
 
         /**
@@ -198,19 +187,13 @@ if (!class_exists(Category::class)) {
         #[ORM\OrderBy(['sort_no' => 'DESC'])]
         private $Children;
 
-        /**
-         * @var Category|null
-         */
         #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'Children')]
         #[ORM\JoinColumn(name: 'parent_category_id', referencedColumnName: 'id')]
-        private $Parent;
+        private ?Category $Parent = null;
 
-        /**
-         * @var Member|null
-         */
         #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
-        private $Creator;
+        private ?Member $Creator = null;
 
         /**
          * Constructor

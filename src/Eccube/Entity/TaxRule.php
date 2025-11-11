@@ -13,6 +13,7 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\Master\Country;
 use Eccube\Entity\Master\Pref;
@@ -63,86 +64,59 @@ if (!class_exists(TaxRule::class)) {
             return $this->sort_no;
         }
 
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         /** @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
-        private $id;
+        private ?int $id = null;
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'tax_rate', type: 'decimal', precision: 10, scale: 0, options: ['unsigned' => true, 'default' => 0])]
-        private $tax_rate = '0';
+        #[ORM\Column(name: 'tax_rate', type: Types::DECIMAL, precision: 10, scale: 0, options: ['unsigned' => true, 'default' => 0])]
+        private ?string $tax_rate = '0';
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'tax_adjust', type: 'decimal', precision: 10, scale: 0, options: ['unsigned' => true, 'default' => 0])]
-        private $tax_adjust = '0';
+        #[ORM\Column(name: 'tax_adjust', type: Types::DECIMAL, precision: 10, scale: 0, options: ['unsigned' => true, 'default' => 0])]
+        private string $tax_adjust = '0';
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'apply_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'apply_date', type: Types::DATETIMETZ_MUTABLE)]
         private $apply_date;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
         private $create_date;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
         private $update_date;
 
-        /**
-         * @var ProductClass|null
-         */
         #[ORM\OneToOne(targetEntity: ProductClass::class, inversedBy: 'TaxRule')]
         #[ORM\JoinColumn(name: 'product_class_id', referencedColumnName: 'id')]
-        private $ProductClass;
+        private ?ProductClass $ProductClass = null;
 
-        /**
-         * @var Member|null
-         */
         #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
-        private $Creator;
+        private ?Member $Creator = null;
 
-        /**
-         * @var Country|null
-         */
         #[ORM\ManyToOne(targetEntity: Country::class)]
         #[ORM\JoinColumn(name: 'country_id', referencedColumnName: 'id')]
-        private $Country;
+        private ?Country $Country = null;
 
-        /**
-         * @var Pref|null
-         */
         #[ORM\ManyToOne(targetEntity: Pref::class)]
         #[ORM\JoinColumn(name: 'pref_id', referencedColumnName: 'id')]
-        private $Pref;
+        private ?Pref $Pref = null;
 
-        /**
-         * @var Product|null
-         */
         #[ORM\ManyToOne(targetEntity: Product::class)]
         #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id')]
-        private $Product;
+        private ?Product $Product = null;
 
-        /**
-         * @var RoundingType|null
-         */
         #[ORM\ManyToOne(targetEntity: RoundingType::class)]
         #[ORM\JoinColumn(name: 'rounding_type_id', referencedColumnName: 'id')]
-        private $RoundingType;
+        private ?RoundingType $RoundingType = null;
 
         /**
          * Get id.

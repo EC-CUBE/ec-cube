@@ -13,6 +13,7 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Repository\BlockPositionRepository;
 
@@ -27,49 +28,31 @@ if (!class_exists(BlockPosition::class)) {
     #[ORM\Entity(repositoryClass: BlockPositionRepository::class)]
     class BlockPosition extends AbstractEntity
     {
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'section', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Column(name: 'section', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'NONE')]
-        private $section;
+        private ?int $section = null;
 
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'block_id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Column(name: 'block_id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'NONE')]
-        private $block_id;
+        private ?int $block_id = null;
 
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'layout_id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Column(name: 'layout_id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'NONE')]
-        private $layout_id;
+        private ?int $layout_id = null;
 
-        /**
-         * @var int|null
-         */
-        #[ORM\Column(name: 'block_row', type: 'integer', nullable: true, options: ['unsigned' => true])]
-        private $block_row;
+        #[ORM\Column(name: 'block_row', type: Types::INTEGER, nullable: true, options: ['unsigned' => true])]
+        private ?int $block_row = null;
 
-        /**
-         * @var Block|null
-         */
         #[ORM\ManyToOne(targetEntity: Block::class, inversedBy: 'BlockPositions')]
         #[ORM\JoinColumn(name: 'block_id', referencedColumnName: 'id')]
-        private $Block;
+        private ?Block $Block = null;
 
-        /**
-         * @var Layout|null
-         */
         #[ORM\ManyToOne(targetEntity: Layout::class, inversedBy: 'BlockPositions')]
         #[ORM\JoinColumn(name: 'layout_id', referencedColumnName: 'id')]
-        private $Layout;
+        private ?Layout $Layout = null;
 
         /**
          * Set section.

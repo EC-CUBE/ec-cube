@@ -16,6 +16,7 @@ namespace Eccube\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
 use Eccube\Entity\Master\Country;
@@ -348,184 +349,113 @@ if (!class_exists(Order::class)) {
             return $this->getPaymentTotal();
         }
 
-        /**
-         * @var int|null
-         */
-        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         /**  @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
-        private $id;
+        private ?int $id = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'pre_order_id', type: 'string', length: 255, nullable: true)]
-        private $pre_order_id;
+        #[ORM\Column(name: 'pre_order_id', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $pre_order_id = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'order_no', type: 'string', length: 255, nullable: true)]
-        private $order_no;
+        #[ORM\Column(name: 'order_no', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $order_no = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'message', type: 'string', length: 4000, nullable: true)]
-        private $message;
+        #[ORM\Column(name: 'message', type: Types::STRING, length: 4000, nullable: true)]
+        private ?string $message = null;
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'name01', type: 'string', length: 255)]
-        private $name01;
+        #[ORM\Column(name: 'name01', type: Types::STRING, length: 255)]
+        private ?string $name01 = null;
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'name02', type: 'string', length: 255)]
-        private $name02;
+        #[ORM\Column(name: 'name02', type: Types::STRING, length: 255)]
+        private ?string $name02 = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'kana01', type: 'string', length: 255, nullable: true)]
-        private $kana01;
+        #[ORM\Column(name: 'kana01', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $kana01 = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'kana02', type: 'string', length: 255, nullable: true)]
-        private $kana02;
+        #[ORM\Column(name: 'kana02', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $kana02 = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'company_name', type: 'string', length: 255, nullable: true)]
-        private $company_name;
+        #[ORM\Column(name: 'company_name', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $company_name = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'email', type: 'string', length: 255, nullable: true)]
-        private $email;
+        #[ORM\Column(name: 'email', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $email = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'phone_number', type: 'string', length: 14, nullable: true)]
-        private $phone_number;
+        #[ORM\Column(name: 'phone_number', type: Types::STRING, length: 14, nullable: true)]
+        private ?string $phone_number = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'postal_code', type: 'string', length: 8, nullable: true)]
-        private $postal_code;
+        #[ORM\Column(name: 'postal_code', type: Types::STRING, length: 8, nullable: true)]
+        private ?string $postal_code = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'addr01', type: 'string', length: 255, nullable: true)]
-        private $addr01;
+        #[ORM\Column(name: 'addr01', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $addr01 = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'addr02', type: 'string', length: 255, nullable: true)]
-        private $addr02;
+        #[ORM\Column(name: 'addr02', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $addr02 = null;
 
         /**
          * @var \DateTime|null
          */
-        #[ORM\Column(name: 'birth', type: 'datetimetz', nullable: true)]
+        #[ORM\Column(name: 'birth', type: Types::DATETIMETZ_MUTABLE, nullable: true)]
         private $birth;
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'subtotal', type: 'decimal', precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
-        private $subtotal = '0';
+        #[ORM\Column(name: 'subtotal', type: Types::DECIMAL, precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
+        private string $subtotal = '0';
+
+        #[ORM\Column(name: 'discount', type: Types::DECIMAL, precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
+        private string $discount = '0';
+
+        #[ORM\Column(name: 'delivery_fee_total', type: Types::DECIMAL, precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
+        private string $delivery_fee_total = '0';
+
+        #[ORM\Column(name: 'charge', type: Types::DECIMAL, precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
+        private string $charge = '0';
 
         /**
-         * @var string
-         */
-        #[ORM\Column(name: 'discount', type: 'decimal', precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
-        private $discount = '0';
-
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'delivery_fee_total', type: 'decimal', precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
-        private $delivery_fee_total = '0';
-
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'charge', type: 'decimal', precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
-        private $charge = '0';
-
-        /**
-         * @var string
-         *
          * @deprecated 明細ごとに集計した税額と差異が発生する場合があるため非推奨
          */
-        #[ORM\Column(name: 'tax', type: 'decimal', precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
-        private $tax = '0';
+        #[ORM\Column(name: 'tax', type: Types::DECIMAL, precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
+        private string $tax = '0';
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'total', type: 'decimal', precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
-        private $total = '0';
+        #[ORM\Column(name: 'total', type: Types::DECIMAL, precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
+        private string $total = '0';
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: 'payment_total', type: 'decimal', precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
-        private $payment_total = '0';
+        #[ORM\Column(name: 'payment_total', type: Types::DECIMAL, precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
+        private string $payment_total = '0';
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'payment_method', type: 'string', length: 255, nullable: true)]
-        private $payment_method;
+        #[ORM\Column(name: 'payment_method', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $payment_method = null;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'note', type: 'string', length: 4000, nullable: true)]
-        private $note;
+        #[ORM\Column(name: 'note', type: Types::STRING, length: 4000, nullable: true)]
+        private ?string $note = null;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
         private $create_date;
 
         /**
          * @var \DateTime
          */
-        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
+        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
         private $update_date;
 
         /**
          * @var \DateTime|null
          */
-        #[ORM\Column(name: 'order_date', type: 'datetimetz', nullable: true)]
+        #[ORM\Column(name: 'order_date', type: Types::DATETIMETZ_MUTABLE, nullable: true)]
         private $order_date;
 
         /**
          * @var \DateTime|null
          */
-        #[ORM\Column(name: 'payment_date', type: 'datetimetz', nullable: true)]
+        #[ORM\Column(name: 'payment_date', type: Types::DATETIMETZ_MUTABLE, nullable: true)]
         private $payment_date;
 
-        /**
-         * @var string|null
-         */
-        #[ORM\Column(name: 'currency_code', type: 'string', nullable: true)]
-        private $currency_code;
+        #[ORM\Column(name: 'currency_code', type: Types::STRING, nullable: true)]
+        private ?string $currency_code = null;
 
         /**
          * 注文完了画面に表示するメッセージ
@@ -533,22 +463,18 @@ if (!class_exists(Order::class)) {
          * プラグインから注文完了時にメッセージを表示したい場合, このフィールドにセットすることで, 注文完了画面で表示されます。
          * 複数のプラグインから利用されるため, appendCompleteMesssage()で追加してください.
          * 表示する際にHTMLは利用可能です。
-         *
-         * @var string|null
          */
-        #[ORM\Column(name: 'complete_message', type: 'text', nullable: true)]
-        private $complete_message;
+        #[ORM\Column(name: 'complete_message', type: Types::TEXT, nullable: true)]
+        private ?string $complete_message = null;
 
         /**
          * 注文完了メールに表示するメッセージ
          *
          * プラグインから注文完了メールにメッセージを表示したい場合, このフィールドにセットすることで, 注文完了メールで表示されます。
          * 複数のプラグインから利用されるため, appendCompleteMailMesssage()で追加してください.
-         *
-         * @var string|null
          */
-        #[ORM\Column(name: 'complete_mail_message', type: 'text', nullable: true)]
-        private $complete_mail_message;
+        #[ORM\Column(name: 'complete_mail_message', type: Types::TEXT, nullable: true)]
+        private ?string $complete_mail_message = null;
 
         /**
          * @var Collection<int, OrderItem>
@@ -569,79 +495,51 @@ if (!class_exists(Order::class)) {
         #[ORM\OrderBy(['send_date' => 'DESC'])]
         private $MailHistories;
 
-        /**
-         * @var Customer|null
-         */
         #[ORM\ManyToOne(targetEntity: Customer::class, inversedBy: 'Orders')]
         #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'id')]
-        private $Customer;
+        private ?Customer $Customer = null;
 
-        /**
-         * @var Country|null
-         */
         #[ORM\ManyToOne(targetEntity: Country::class)]
         #[ORM\JoinColumn(name: 'country_id', referencedColumnName: 'id')]
-        private $Country;
+        private ?Country $Country = null;
 
-        /**
-         * @var Pref|null
-         */
         #[ORM\ManyToOne(targetEntity: Pref::class)]
         #[ORM\JoinColumn(name: 'pref_id', referencedColumnName: 'id')]
-        private $Pref;
+        private ?Pref $Pref = null;
 
-        /**
-         * @var Sex|null
-         */
         #[ORM\ManyToOne(targetEntity: Sex::class)]
         #[ORM\JoinColumn(name: 'sex_id', referencedColumnName: 'id')]
-        private $Sex;
+        private ?Sex $Sex = null;
 
-        /**
-         * @var Job|null
-         */
         #[ORM\ManyToOne(targetEntity: Job::class)]
         #[ORM\JoinColumn(name: 'job_id', referencedColumnName: 'id')]
-        private $Job;
+        private ?Job $Job = null;
 
-        /**
-         * @var Payment|null
-         */
         #[ORM\ManyToOne(targetEntity: Payment::class)]
         #[ORM\JoinColumn(name: 'payment_id', referencedColumnName: 'id')]
-        private $Payment;
+        private ?Payment $Payment = null;
 
-        /**
-         * @var DeviceType|null
-         */
         #[ORM\ManyToOne(targetEntity: DeviceType::class)]
         #[ORM\JoinColumn(name: 'device_type_id', referencedColumnName: 'id')]
-        private $DeviceType;
+        private ?DeviceType $DeviceType = null;
 
         /**
          * OrderStatusより先にプロパティを定義しておかないとセットされなくなる
-         *
-         * @var CustomerOrderStatus|null
          */
         #[ORM\ManyToOne(targetEntity: CustomerOrderStatus::class)]
         #[ORM\JoinColumn(name: 'order_status_id', referencedColumnName: 'id')]
-        private $CustomerOrderStatus;
+        private ?CustomerOrderStatus $CustomerOrderStatus = null;
 
         /**
          * OrderStatusより先にプロパティを定義しておかないとセットされなくなる
-         *
-         * @var OrderStatusColor|null
          */
         #[ORM\ManyToOne(targetEntity: OrderStatusColor::class)]
         #[ORM\JoinColumn(name: 'order_status_id', referencedColumnName: 'id')]
-        private $OrderStatusColor;
+        private ?OrderStatusColor $OrderStatusColor = null;
 
-        /**
-         * @var OrderStatus|null
-         */
         #[ORM\ManyToOne(targetEntity: OrderStatus::class)]
         #[ORM\JoinColumn(name: 'order_status_id', referencedColumnName: 'id')]
-        private $OrderStatus;
+        private ?OrderStatus $OrderStatus = null;
 
         /**
          * Constructor

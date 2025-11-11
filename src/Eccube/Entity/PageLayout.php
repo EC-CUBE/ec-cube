@@ -13,6 +13,7 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Repository\PageLayoutRepository;
 
@@ -27,41 +28,26 @@ if (!class_exists(PageLayout::class)) {
     #[ORM\Entity(repositoryClass: PageLayoutRepository::class)]
     class PageLayout extends AbstractEntity
     {
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'page_id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Column(name: 'page_id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'NONE')]
-        private $page_id;
+        private ?int $page_id = null;
 
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'layout_id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Column(name: 'layout_id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'NONE')]
-        private $layout_id;
+        private ?int $layout_id = null;
 
-        /**
-         * @var int
-         */
-        #[ORM\Column(name: 'sort_no', type: 'smallint', options: ['unsigned' => true])]
-        private $sort_no;
+        #[ORM\Column(name: 'sort_no', type: Types::SMALLINT, options: ['unsigned' => true])]
+        private ?int $sort_no = null;
 
-        /**
-         * @var Page|null
-         */
         #[ORM\ManyToOne(targetEntity: Page::class, inversedBy: 'PageLayouts')]
         #[ORM\JoinColumn(name: 'page_id', referencedColumnName: 'id')]
-        private $Page;
+        private ?Page $Page = null;
 
-        /**
-         * @var Layout|null
-         */
         #[ORM\ManyToOne(targetEntity: Layout::class, inversedBy: 'PageLayouts')]
         #[ORM\JoinColumn(name: 'layout_id', referencedColumnName: 'id')]
-        private $Layout;
+        private ?Layout $Layout = null;
 
         /**
          * Set pageId
