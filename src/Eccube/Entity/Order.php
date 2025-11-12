@@ -404,13 +404,16 @@ if (!class_exists(Order::class)) {
         private string $subtotal = '0';
 
         #[ORM\Column(name: 'discount', type: Types::DECIMAL, precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
-        private string $discount = '0';
+        /** @phpstan-ignore-next-line property.unusedType (フォームバリデーションでnullが設定される可能性があるため) */
+        private ?string $discount = '0';
 
         #[ORM\Column(name: 'delivery_fee_total', type: Types::DECIMAL, precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
-        private string $delivery_fee_total = '0';
+        /** @phpstan-ignore-next-line property.unusedType (フォームバリデーションでnullが設定される可能性があるため) */
+        private ?string $delivery_fee_total = '0';
 
         #[ORM\Column(name: 'charge', type: Types::DECIMAL, precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
-        private string $charge = '0';
+        /** @phpstan-ignore-next-line property.unusedType (フォームバリデーションでnullが設定される可能性があるため) */
+        private ?string $charge = '0';
 
         /**
          * @deprecated 明細ごとに集計した税額と差異が発生する場合があるため非推奨
