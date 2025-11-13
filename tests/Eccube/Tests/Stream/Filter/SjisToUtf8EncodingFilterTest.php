@@ -36,7 +36,7 @@ class SjisToUtf8EncodingFilterTest extends TestCase
         $utf8Value = 'あ,い,う';
         $sjisValue = $this->getSjisValue($utf8Value);
         $resource = $this->createReadableResource($sjisValue);
-        self::assertSame(['あ', 'い', 'う'], \fgetcsv($resource));
+        $this->assertSame(['あ', 'い', 'う'], \fgetcsv($resource));
     }
 
     #[Test]
@@ -49,7 +49,7 @@ class SjisToUtf8EncodingFilterTest extends TestCase
         // SJIS string will be separated into 5 chunks like following:
         //  1 2 3 4 5   1 2 3 4 5   1 2 3 4 5   1 2 3 4 5   1 2 3 4 5
         // [k a k i k] [u k e k o] [, s a s i] [s u s e s] [o        ]
-        self::assertSame(['かきくけこ', 'さしすせそ'], \fgetcsv($resource));
+        $this->assertSame(['かきくけこ', 'さしすせそ'], \fgetcsv($resource));
     }
 
     #[Test]
@@ -57,12 +57,9 @@ class SjisToUtf8EncodingFilterTest extends TestCase
     {
         $utf8Value = '"表"';
         $sjisValue = $this->getSjisValue($utf8Value);
-        self::assertSame(
-            '22 95 5c 22 ',
-            \chunk_split(\bin2hex($sjisValue), 2, ' ')
-        );
+        $this->assertSame('22 95 5c 22 ', \chunk_split(\bin2hex($sjisValue), 2, ' '));
         $resource = $this->createReadableResource($sjisValue);
-        self::assertSame(['表'], \fgetcsv($resource));
+        $this->assertSame(['表'], \fgetcsv($resource));
     }
 
     #[Test]
@@ -71,13 +68,13 @@ class SjisToUtf8EncodingFilterTest extends TestCase
         SjisToUtf8EncodingFilter::setBufferSizeLimit(1);
         $utf8Value = 'あ あ あ あ '; // 82 a0 20 * 4 (12 bytes)
         $sjisValue = $this->getSjisValue($utf8Value);
-        self::assertSame(12, \strlen($sjisValue));
+        $this->assertSame(12, \strlen($sjisValue));
         $resource = $this->createReadableResource($sjisValue);
         $this->changeStreamChunkSize($resource, 2);
         // 82 a0 / 20   82 / a0 20 / 82 a0 / 20   82 / a0 20 (chunked data)
         //       /      82 /       /       /      82 /       (buffered content)
         // 82 a0 / 20 / 82   a0 20 / 82 a0 / 20 / 82 a0 20   (encoding unit)
-        self::assertSame([$utf8Value], \fgetcsv($resource));
+        $this->assertSame([$utf8Value], \fgetcsv($resource));
     }
 
     private function getSjisValue(string $utf8Value): string
@@ -104,7 +101,7 @@ class SjisToUtf8EncodingFilterTest extends TestCase
      */
     private function changeStreamChunkSize($resource, int $chunkSize): void
     {
-        self::assertIsResource($resource);
+        $this->assertIsResource($resource);
         \stream_set_chunk_size($resource, $chunkSize);
         \stream_set_read_buffer($resource, $chunkSize);
     }

@@ -48,7 +48,7 @@ class OrderTypeTest extends AbstractTypeTestCase
         $refMethod = $refObj->getMethod('filterPayments');
         $FilterResults = $refMethod->invokeArgs($this->orderType, [new ArrayCollection([$Payment]), $total]);
 
-        self::assertCount($result, $FilterResults);
+        $this->assertCount($result, $FilterResults);
     }
 
     public static function filterPaymentsProvider()

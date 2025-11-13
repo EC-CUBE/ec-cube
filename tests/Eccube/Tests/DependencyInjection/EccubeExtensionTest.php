@@ -31,18 +31,18 @@ class EccubeExtensionTest extends KernelTestCase
     public function testLoad()
     {
         $this->extension->load([], new ContainerBuilder());
-        self::assertIsArray($this->extension->getProcessedConfigs());
+        $this->assertIsArray($this->extension->getProcessedConfigs());
     }
 
     public function testGetAlias()
     {
-        self::assertSame('eccube', $this->extension->getAlias());
+        $this->assertSame('eccube', $this->extension->getAlias());
     }
 
     public function testGetConfiguration()
     {
         $container = new ContainerBuilder();
         $configuration = $this->extension->getConfiguration([], $container);
-        self::assertInstanceOf(Configuration::class, $configuration);
+        $this->assertInstanceOf(Configuration::class, $configuration);
     }
 }

@@ -27,28 +27,26 @@ class Step1TypeTest extends AbstractTypeTestCase
      *
      * 正常系のデータパターンを返す
      */
-    public static function getValidTestData(): array
+    public static function getValidTestData(): \Iterator
     {
-        return [
+        yield [
             [
-                'data' => [
-                    'agree' => true,
-                ],
+                'agree' => true,
             ],
+        ];
+        yield [
             [
-                'data' => [
-                    'agree' => false,
-                ],
+                'agree' => false,
             ],
+        ];
+        yield [
             [
-                'data' => [
-                    'agree' => null,
-                ],
+                'agree' => null,
             ],
+        ];
+        yield [
             [
-                'data' => [
-                    'agree' => '',
-                ],
+                'agree' => '',
             ],
         ];
     }

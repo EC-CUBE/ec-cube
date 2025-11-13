@@ -35,7 +35,7 @@ class PaymentChargeProcessorTest extends EccubeTestCase
             }
         }
         $processor->process($Order, new PurchaseContext());
-        self::assertNotEmpty($this->getChargesItems($Order));
+        $this->assertNotEmpty($this->getChargesItems($Order));
     }
 
     /**
@@ -64,8 +64,8 @@ class PaymentChargeProcessorTest extends EccubeTestCase
         $processor->process($Order, new PurchaseContext());
 
         $ChargeItems = $this->getChargesItems($Order);
-        self::assertCount(1, $ChargeItems);
-        self::assertSame($ChargeItem, array_shift($ChargeItems));
+        $this->assertCount(1, $ChargeItems);
+        $this->assertSame($ChargeItem, array_shift($ChargeItems));
     }
 
     private function getChargesItems(Order $Order)

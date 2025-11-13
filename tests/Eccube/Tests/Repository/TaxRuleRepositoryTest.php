@@ -93,7 +93,7 @@ class TaxRuleRepositoryTest extends EccubeTestCase
         $TaxRule->setTaxRate($tax_rate)
             ->setApplyDate($apply_date)
             ->setRoundingType($RoundingType)
-            ->setTaxAdjust(0)
+            ->setTaxAdjust('0')
             ->setCreator($Member);
         $this->entityManager->persist($TaxRule);
         $this->entityManager->flush();

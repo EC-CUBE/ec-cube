@@ -67,23 +67,21 @@ class PurchaseFlowPassTest extends EccubeTestCase
         $purchaseFlow->validate($Order, new PurchaseContext());
         $purchaseFlow->prepare($Order, new PurchaseContext());
 
-        self::assertTrue(PurchaseFlowPassTest::$called);
+        $this->assertTrue(PurchaseFlowPassTest::$called);
     }
 
-    public static function dataProcessorProvider()
+    public static function dataProcessorProvider(): \Iterator
     {
-        return [
-            [PurchaseFlowPassTest_CartFlow::class, 'eccube.purchase.flow.cart', PurchaseFlowPass::ITEM_HOLDER_VALIDATOR_TAG],
-            [PurchaseFlowPassTest_ShoppingFlow::class, 'eccube.purchase.flow.shopping', PurchaseFlowPass::ITEM_HOLDER_VALIDATOR_TAG],
-            [PurchaseFlowPassTest_OrderFlow::class, 'eccube.purchase.flow.order', PurchaseFlowPass::ITEM_HOLDER_VALIDATOR_TAG],
-            [PurchaseFlowPassTest_ItemPreprocessor::class, 'eccube.purchase.flow.cart', PurchaseFlowPass::ITEM_PREPROCESSOR_TAG],
-            [PurchaseFlowPassTest_ItemValidator::class, 'eccube.purchase.flow.cart', PurchaseFlowPass::ITEM_VALIDATOR_TAG],
-            [PurchaseFlowPassTest_ItemHolderPreprocessor::class, 'eccube.purchase.flow.cart', PurchaseFlowPass::ITEM_HOLDER_PREPROCESSOR_TAG],
-            [PurchaseFlowPassTest_ItemHolderValidator::class, 'eccube.purchase.flow.cart', PurchaseFlowPass::ITEM_HOLDER_VALIDATOR_TAG],
-            [PurchaseFlowPassTest_ItemHolderPostValidator::class, 'eccube.purchase.flow.cart', PurchaseFlowPass::ITEM_HOLDER_POST_VALIDATOR_TAG],
-            [PurchaseFlowPassTest_DiscountProcessor::class, 'eccube.purchase.flow.cart', PurchaseFlowPass::DISCOUNT_PROCESSOR_TAG],
-            [PurchaseFlowPassTest_PurchaseProcessor::class, 'eccube.purchase.flow.cart', PurchaseFlowPass::PURCHASE_PROCESSOR_TAG],
-        ];
+        yield [PurchaseFlowPassTest_CartFlow::class, 'eccube.purchase.flow.cart', PurchaseFlowPass::ITEM_HOLDER_VALIDATOR_TAG];
+        yield [PurchaseFlowPassTest_ShoppingFlow::class, 'eccube.purchase.flow.shopping', PurchaseFlowPass::ITEM_HOLDER_VALIDATOR_TAG];
+        yield [PurchaseFlowPassTest_OrderFlow::class, 'eccube.purchase.flow.order', PurchaseFlowPass::ITEM_HOLDER_VALIDATOR_TAG];
+        yield [PurchaseFlowPassTest_ItemPreprocessor::class, 'eccube.purchase.flow.cart', PurchaseFlowPass::ITEM_PREPROCESSOR_TAG];
+        yield [PurchaseFlowPassTest_ItemValidator::class, 'eccube.purchase.flow.cart', PurchaseFlowPass::ITEM_VALIDATOR_TAG];
+        yield [PurchaseFlowPassTest_ItemHolderPreprocessor::class, 'eccube.purchase.flow.cart', PurchaseFlowPass::ITEM_HOLDER_PREPROCESSOR_TAG];
+        yield [PurchaseFlowPassTest_ItemHolderValidator::class, 'eccube.purchase.flow.cart', PurchaseFlowPass::ITEM_HOLDER_VALIDATOR_TAG];
+        yield [PurchaseFlowPassTest_ItemHolderPostValidator::class, 'eccube.purchase.flow.cart', PurchaseFlowPass::ITEM_HOLDER_POST_VALIDATOR_TAG];
+        yield [PurchaseFlowPassTest_DiscountProcessor::class, 'eccube.purchase.flow.cart', PurchaseFlowPass::DISCOUNT_PROCESSOR_TAG];
+        yield [PurchaseFlowPassTest_PurchaseProcessor::class, 'eccube.purchase.flow.cart', PurchaseFlowPass::PURCHASE_PROCESSOR_TAG];
     }
 
     public function createContainer()

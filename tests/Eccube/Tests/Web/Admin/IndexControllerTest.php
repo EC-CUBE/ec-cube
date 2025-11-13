@@ -132,12 +132,10 @@ class IndexControllerTest extends AbstractAdminWebTestCase
         $this->verify('今月の売上件数');
     }
 
-    public static function indexWithSalesProvider()
+    public static function indexWithSalesProvider(): \Iterator
     {
-        return [
-            [8],
-            [10],
-        ];
+        yield [8];
+        yield [10];
     }
 
     public function testChangePasswordWithPost()
@@ -150,8 +148,8 @@ class IndexControllerTest extends AbstractAdminWebTestCase
         $new_password = $form['change_password']['first'];
 
         $hasher = static::getContainer()->get(UserPasswordHasherInterface::class);
-        self::assertTrue($hasher->isPasswordValid($this->Member, $current_password));
-        self::assertFalse($hasher->isPasswordValid($this->Member, $new_password));
+        $this->assertTrue($hasher->isPasswordValid($this->Member, $current_password));
+        $this->assertFalse($hasher->isPasswordValid($this->Member, $new_password));
 
         $client->request(
             Request::METHOD_POST,
@@ -161,8 +159,8 @@ class IndexControllerTest extends AbstractAdminWebTestCase
 
         $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('admin_change_password')));
 
-        self::assertFalse($hasher->isPasswordValid($this->Member, $current_password));
-        self::assertTrue($hasher->isPasswordValid($this->Member, $new_password));
+        $this->assertFalse($hasher->isPasswordValid($this->Member, $current_password));
+        $this->assertTrue($hasher->isPasswordValid($this->Member, $new_password));
     }
 
     public function testChangePasswordWithPostInvalid()

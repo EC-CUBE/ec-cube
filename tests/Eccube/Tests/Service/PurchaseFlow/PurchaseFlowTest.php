@@ -70,7 +70,7 @@ class PurchaseFlowTest extends EccubeTestCase
         $itemHolder = new Cart();
 
         $expected = new PurchaseFlowResult($itemHolder);
-        self::assertEquals($expected, $this->flow->validate($itemHolder, new PurchaseContext()));
+        $this->assertEquals($expected, $this->flow->validate($itemHolder, new PurchaseContext()));
     }
 
     public function testProcessItemHolderProcessor()
@@ -79,7 +79,7 @@ class PurchaseFlowTest extends EccubeTestCase
         $itemHolder = new Cart();
 
         $expected = new PurchaseFlowResult($itemHolder);
-        self::assertEquals($expected, $this->flow->validate($itemHolder, new PurchaseContext()));
+        $this->assertEquals($expected, $this->flow->validate($itemHolder, new PurchaseContext()));
     }
 
     public function testProcessItemHolderProcessorValidationErrors()
@@ -89,7 +89,7 @@ class PurchaseFlowTest extends EccubeTestCase
 
         $expected = new PurchaseFlowResult($itemHolder);
         $expected->addProcessResult(ProcessResult::error('error 1', PurchaseFlowTest_FailItemHolderValidator::class));
-        self::assertEquals($expected, $this->flow->validate($itemHolder, new PurchaseContext()));
+        $this->assertEquals($expected, $this->flow->validate($itemHolder, new PurchaseContext()));
     }
 
     public function testProcessItemProcessorsValidationErrors()
@@ -102,7 +102,7 @@ class PurchaseFlowTest extends EccubeTestCase
         $expected = new PurchaseFlowResult($itemHolder);
         $expected->addProcessResult(ProcessResult::warn('error 1', PurchaseFlowTest_FailValidator::class));
         $expected->addProcessResult(ProcessResult::warn('error 2', PurchaseFlowTest_FailValidator::class));
-        self::assertEquals($expected, $this->flow->validate($itemHolder, new PurchaseContext()));
+        $this->assertEquals($expected, $this->flow->validate($itemHolder, new PurchaseContext()));
     }
 
     public function testProcessItemProcessorsValidationErrorsWithMultiItems()
@@ -118,7 +118,7 @@ class PurchaseFlowTest extends EccubeTestCase
         $expected->addProcessResult(ProcessResult::warn('error 2', PurchaseFlowTest_FailValidator::class));
         $expected->addProcessResult(ProcessResult::warn('error 1', PurchaseFlowTest_FailValidator::class));
         $expected->addProcessResult(ProcessResult::warn('error 2', PurchaseFlowTest_FailValidator::class));
-        self::assertEquals($expected, $this->flow->validate($itemHolder, new PurchaseContext()));
+        $this->assertEquals($expected, $this->flow->validate($itemHolder, new PurchaseContext()));
     }
 
     /**
@@ -135,16 +135,14 @@ class PurchaseFlowTest extends EccubeTestCase
         $expected = new PurchaseFlowResult($itemHolder);
         $expected->addProcessResult(ProcessResult::error($message, PurchaseFlowTest_FlowTypeValidator::class));
         $this->flow->setFlowType($flow);
-        self::assertEquals($expected, $this->flow->validate($itemHolder, new PurchaseContext()));
+        $this->assertEquals($expected, $this->flow->validate($itemHolder, new PurchaseContext()));
     }
 
-    public static function flowTypeProvider()
+    public static function flowTypeProvider(): \Iterator
     {
-        return [
-            ['cart', 'Cart Flow'],
-            ['shopping', 'Shopping Flow'],
-            ['order', 'Order Flow'],
-        ];
+        yield ['cart', 'Cart Flow'];
+        yield ['shopping', 'Shopping Flow'];
+        yield ['order', 'Order Flow'];
     }
 }
 

@@ -99,13 +99,10 @@ class ShopControllerTest extends AbstractAdminWebTestCase
         ];
     }
 
-    public static function dataSubmitProvider()
+    public static function dataSubmitProvider(): \Iterator
     {
-        return [
-            [false, false],
-            [true, true],
-            // To do implement
-        ];
+        yield [false, false];
+        yield [true, true];
     }
 
     /**
@@ -125,6 +122,7 @@ class ShopControllerTest extends AbstractAdminWebTestCase
             ['shop_master' => $formData]
         );
         $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->find(1);
+        $this->assertInstanceOf(BaseInfo::class, $BaseInfo);
 
         $this->expected = $BaseInfo->getEmail01();
         $this->actual = $formData['email01'];

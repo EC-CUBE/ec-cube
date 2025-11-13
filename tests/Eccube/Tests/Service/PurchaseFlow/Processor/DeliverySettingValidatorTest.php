@@ -47,7 +47,7 @@ class DeliverySettingValidatorTest extends EccubeTestCase
 
     public function testInstance()
     {
-        self::assertInstanceOf(DeliverySettingValidator::class, $this->validator);
+        $this->assertInstanceOf(DeliverySettingValidator::class, $this->validator);
     }
 
     /**
@@ -57,7 +57,7 @@ class DeliverySettingValidatorTest extends EccubeTestCase
     {
         $result = $this->validator->execute($this->cartItem, new PurchaseContext());
 
-        self::assertFalse($result->isError());
+        $this->assertFalse($result->isError());
     }
 
     /**
@@ -71,6 +71,6 @@ class DeliverySettingValidatorTest extends EccubeTestCase
 
         $this->validator->execute($this->cartItem, new PurchaseContext());
 
-        self::assertSame('0', $this->cartItem->getQuantity());
+        $this->assertSame('0', $this->cartItem->getQuantity());
     }
 }

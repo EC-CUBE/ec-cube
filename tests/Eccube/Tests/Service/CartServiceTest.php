@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Service;
 
+use Eccube\Entity\Cart;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\Master\SaleType;
 use Eccube\Entity\Order;
@@ -90,7 +91,7 @@ class CartServiceTest extends AbstractServiceTestCase
 
         $this->cartService->clear();
 
-        $this->assertNull($this->cartService->getCart());
+        $this->assertNotInstanceOf(Cart::class, $this->cartService->getCart());
     }
 
     public function testAddProductsProductClassEntity()
@@ -154,9 +155,9 @@ class CartServiceTest extends AbstractServiceTestCase
 
         /* @var \Eccube\Entity\CartItem[] $CartItems */
         $CartItems = $this->cartService->getCart()->getCartItems();
-        self::assertSame(1, count($CartItems));
-        self::assertSame(2, $CartItems[0]->getProductClassId());
-        self::assertSame('2', $CartItems[0]->getQuantity());
+        $this->assertCount(1, $CartItems);
+        $this->assertSame(2, $CartItems[0]->getProductClassId());
+        $this->assertSame('2', $CartItems[0]->getQuantity());
 
         $this->cartService->addProduct($ProductClass, '1');
         $this->purchaseFlow->validate($this->cartService->getCart(), new PurchaseContext());
@@ -164,11 +165,11 @@ class CartServiceTest extends AbstractServiceTestCase
 
         /* @var \Eccube\Entity\CartItem[] $CartItems */
         $CartItems = $this->cartService->getCart()->getCartItems();
-        self::assertSame(2, count($CartItems));
-        self::assertSame(2, $CartItems[0]->getProductClassId());
-        self::assertSame('2', $CartItems[0]->getQuantity());
-        self::assertSame(2, $CartItems[1]->getProductClassId());
-        self::assertSame('1', $CartItems[1]->getQuantity());
+        $this->assertCount(2, $CartItems);
+        $this->assertSame(2, $CartItems[0]->getProductClassId());
+        $this->assertSame('2', $CartItems[0]->getQuantity());
+        $this->assertSame(2, $CartItems[1]->getProductClassId());
+        $this->assertSame('1', $CartItems[1]->getQuantity());
     }
 
     public function testUpProductQuantity()
@@ -211,7 +212,7 @@ class CartServiceTest extends AbstractServiceTestCase
 
         $this->cartService->removeProduct(1);
 
-        $this->assertNull($this->cartService->getCart());
+        $this->assertNotInstanceOf(Cart::class, $this->cartService->getCart());
     }
 
     public function testSave()

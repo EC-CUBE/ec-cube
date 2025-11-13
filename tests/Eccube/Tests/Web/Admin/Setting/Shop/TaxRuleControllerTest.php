@@ -53,7 +53,7 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
 
         $actual = $this->client->getResponse()->isRedirect($redirectUrl);
 
-        $this->assertSame(true, $actual);
+        $this->assertTrue($actual);
     }
 
     public function testEdit()
@@ -99,7 +99,7 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
-        $this->assertNull($this->entityManager->getRepository(TaxRule::class)->find($taxRuleId));
+        $this->assertNotInstanceOf(TaxRule::class, $this->entityManager->getRepository(TaxRule::class)->find($taxRuleId));
     }
 
     public function testTaxDeleteFail()

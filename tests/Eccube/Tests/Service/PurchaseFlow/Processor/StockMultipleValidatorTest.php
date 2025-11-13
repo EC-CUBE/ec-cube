@@ -54,9 +54,9 @@ class StockMultipleValidatorTest extends EccubeTestCase
 
     public function testInstance()
     {
-        self::assertInstanceOf(StockMultipleValidator::class, $this->validator);
-        self::assertSame($this->ProductClass, $this->OrderItem1->getProductClass());
-        self::assertSame($this->ProductClass, $this->OrderItem2->getProductClass());
+        $this->assertInstanceOf(StockMultipleValidator::class, $this->validator);
+        $this->assertSame($this->ProductClass, $this->OrderItem1->getProductClass());
+        $this->assertSame($this->ProductClass, $this->OrderItem2->getProductClass());
     }
 
     public function testValidStock()
@@ -67,7 +67,7 @@ class StockMultipleValidatorTest extends EccubeTestCase
         $this->OrderItem2->setQuantity(1);
         try {
             $this->validator->validate($this->Order, new PurchaseContext());
-            self::assertTrue(true);
+            $this->assertTrue(true);
         } catch (InvalidItemException) {
             self::fail();
         }
@@ -82,7 +82,7 @@ class StockMultipleValidatorTest extends EccubeTestCase
 
         try {
             $this->validator->validate($this->Order, new PurchaseContext());
-            self::assertTrue(true);
+            $this->assertTrue(true);
         } catch (InvalidItemException) {
             self::fail();
         }

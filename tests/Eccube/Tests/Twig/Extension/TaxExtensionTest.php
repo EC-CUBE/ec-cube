@@ -37,9 +37,9 @@ class TaxExtensionTest extends EccubeTestCase
         $Order = $this->createOrder($Customer);
 
         $OrderItem = $Order->getProductOrderItems()[0];
-        self::assertFalse($this->taxExtension->isReducedTaxRate($OrderItem));
+        $this->assertFalse($this->taxExtension->isReducedTaxRate($OrderItem));
 
-        $OrderItem->setTaxRate(99);
-        self::assertTrue($this->taxExtension->isReducedTaxRate($OrderItem));
+        $OrderItem->setTaxRate('99');
+        $this->assertTrue($this->taxExtension->isReducedTaxRate($OrderItem));
     }
 }

@@ -356,6 +356,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         /** @var Product $PreProduct */
         $PreProduct = $this->productRepository->findOneBy(['id' => $Product->getId()]);
         $PreUpdateDate = $PreProduct->getUpdateDate();
+        $this->assertInstanceOf(\DateTime::class, $PreUpdateDate);
         $preTimestamp = $PreUpdateDate->getTimestamp();
 
         // タイムスタンプが変わっていることを確認するために3秒待って更新
@@ -371,6 +372,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         $EditedProduct = $this->productRepository->find($Product->getId());
         $this->expected = $formData['name'];
+        $this->assertInstanceOf(Product::class, $EditedProduct);
         $this->actual = $EditedProduct->getName();
         $this->verify();
 
@@ -445,9 +447,9 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         $this->assertTrue($this->client->getResponse()->isRedirect($rUrl));
 
-        $this->assertNull($this->productRepository->find($params['id']));
+        $this->assertNotInstanceOf(Product::class, $this->productRepository->find($params['id']));
 
-        $this->assertNull($this->productTagRepository->find($productTagId));
+        $this->assertNotInstanceOf(ProductTag::class, $this->productTagRepository->find($productTagId));
     }
 
     public function testCopy()
@@ -497,9 +499,9 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         $this->expected = $expected;
         $Taxrule = $this->taxRuleRepository->findOneBy(['Product' => $Product]);
-        $taxRate = is_null($taxRate) ? null : $Taxrule->getTaxRate();
+        $taxRate = is_null($taxRate) ? null : $Taxrule?->getTaxRate();
         $this->actual = $taxRate;
-        $this->assertTrue($this->actual === $this->expected);
+        $this->assertSame($this->expected, $this->actual);
     }
 
     /**
@@ -511,7 +513,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->createProduct('Product with stock 02', 1);
         /** @var ProductClass $ProductClass */
         $ProductClass = $testProduct->getProductClasses()->first();
-        $ProductClass->setStock(0);
+        $ProductClass->setStock('0');
         $ProductClass->getProductStock()->setStock(0);
         $this->entityManager->flush();
 
@@ -766,7 +768,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 ->setProduct($Product)
                 ->setRoundingType($RoundingType)
                 ->setTaxRate($before)
-                ->setTaxAdjust(0)
+                ->setTaxAdjust('0')
                 ->setApplyDate(new \DateTime());
             $ProductClass->setTaxRule($TaxRule);
             $this->entityManager->persist($TaxRule);
@@ -825,7 +827,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 ->setProduct(null)
                 ->setRoundingType($RoundingType)
                 ->setTaxRate($tax_rate)
-                ->setTaxAdjust(0)
+                ->setTaxAdjust('0')
                 ->setApplyDate(new \DateTime('-1 days'));
             $this->entityManager->persist($TaxRule);
             $this->entityManager->flush();
@@ -919,7 +921,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
                 ['ids' => $productIds]
             );
             $result = $this->productRepository->findBy(['id' => $productIds, 'Status' => $ProductStatus]);
-            $this->assertSame(count($productIds), count($result));
+            $this->assertCount(count($productIds), $result);
         }
     }
 
@@ -1134,8 +1136,8 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect());
 
         $dir = __DIR__.'/../../../../../../html/upload/save_image/';
-        $this->assertTrue(file_exists($dir.$DuplicatedImage->getFileName()));
-        $this->assertFalse(file_exists($dir.$NotDuplicatedImage->getFileName()));
+        $this->assertFileExists($dir.$DuplicatedImage->getFileName());
+        $this->assertFileDoesNotExist($dir.$NotDuplicatedImage->getFileName());
     }
 
     public function testDeleteAndDeleteProductImage()
@@ -1173,8 +1175,8 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($rUrl));
 
         $dir = __DIR__.'/../../../../../../html/upload/save_image/';
-        $this->assertTrue(file_exists($dir.$DuplicatedImage->getFileName()));
-        $this->assertFalse(file_exists($dir.$NotDuplicatedImage->getFileName()));
+        $this->assertFileExists($dir.$DuplicatedImage->getFileName());
+        $this->assertFileDoesNotExist($dir.$NotDuplicatedImage->getFileName());
     }
 
     public function test絵文字()
@@ -1231,12 +1233,12 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         // <div>タグから危険なid属性が削除されていることを確認する。
         // Find that dangerous id attributes are removed from <div> tags.
         $target = $crawler->filter('#dangerous-id');
-        $this->assertSame(0, $target->count());
+        $this->assertCount(0, $target);
 
         // 安全なclass属性が出力されているかどうかを確認する。
         // Find if classes (which are safe) have been outputted
         $target = $crawler->filter('.safe_to_use_class');
-        $this->assertSame(1, $target->count());
+        $this->assertCount(1, $target);
 
         // 安全なHTMLが存在するかどうかを確認する
         // Find if the safe HTML exists

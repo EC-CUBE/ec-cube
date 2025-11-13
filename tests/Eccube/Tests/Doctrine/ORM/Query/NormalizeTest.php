@@ -26,16 +26,16 @@ class NormalizeTest extends EccubeTestCase
             ->getQuery()->getSql();
         switch ($this->entityManager->getConnection()->getDriver()->getDatabasePlatform()->getName()) {
             case 'postgresql':
-                $this->assertStringContainsString('LOWER(TRANSLATE(', $sql);
-                $this->assertStringContainsString('あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをんがぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽぁぃぅぇぉっゃゅょゎゐゑー', $sql);
-                $this->assertStringContainsString('アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポァィゥェォッャュョヮヰヱー', $sql);
+                $this->assertStringContainsString('LOWER(TRANSLATE(', (string) $sql);
+                $this->assertStringContainsString('あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをんがぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽぁぃぅぇぉっゃゅょゎゐゑー', (string) $sql);
+                $this->assertStringContainsString('アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポァィゥェォッャュョヮヰヱー', (string) $sql);
                 break;
             case 'mysql':
-                $this->assertStringContainsString('CONVERT(', $sql);
-                $this->assertStringContainsString('USING utf8) COLLATE utf8_unicode_ci', $sql);
+                $this->assertStringContainsString('CONVERT(', (string) $sql);
+                $this->assertStringContainsString('USING utf8) COLLATE utf8_unicode_ci', (string) $sql);
                 break;
             case 'sqlite':
-                $this->assertStringContainsString('LOWER(', $sql);
+                $this->assertStringContainsString('LOWER(', (string) $sql);
                 break;
         }
     }

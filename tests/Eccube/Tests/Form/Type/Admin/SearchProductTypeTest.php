@@ -52,14 +52,12 @@ class SearchProductTypeTest extends AbstractTypeTestCase
     /**
      * Data provider date form test.
      */
-    public static function dataFormDateProvider(): array
+    public static function dataFormDateProvider(): \Iterator
     {
-        return [
-            ['create_date_start'],
-            ['update_date_start'],
-            ['create_date_end'],
-            ['update_date_end'],
-        ];
+        yield ['create_date_start'];
+        yield ['update_date_start'];
+        yield ['create_date_end'];
+        yield ['update_date_end'];
     }
 
     /**
@@ -79,13 +77,11 @@ class SearchProductTypeTest extends AbstractTypeTestCase
     /**
      * Data provider datetime form test.
      */
-    public static function dataFormDateTimeProvider(): array
+    public static function dataFormDateTimeProvider(): \Iterator
     {
-        return [
-            ['create_datetime_start'],
-            ['update_datetime_start'],
-            ['create_datetime_end'],
-            ['update_datetime_end'],
-        ];
+        yield ['create_datetime_start'];
+        yield ['update_datetime_start'];
+        yield ['create_datetime_end'];
+        yield ['update_datetime_end'];
     }
 }

@@ -697,7 +697,7 @@ EOD;
 
         $config = $this->service->readConfig($pluginDir);
 
-        self::assertSame(0, $config['source']);
+        $this->assertSame(0, $config['source']);
     }
 
     /**

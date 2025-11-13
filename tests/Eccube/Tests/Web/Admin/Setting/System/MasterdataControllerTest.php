@@ -137,7 +137,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         // Cannot save
         $entityName = str_replace('-', '\\', $formData['masterdata']);
         $actual = $this->entityManager->getRepository($entityName)->find($id);
-        $this->assertTrue(empty($actual));
+        $this->assertEmpty($actual);
     }
 
     /**

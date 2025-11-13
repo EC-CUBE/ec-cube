@@ -42,7 +42,7 @@ class DeliveryFeeChangeValidatorTest extends EccubeTestCase
     {
         $validator = new DeliveryFeeChangeValidator();
 
-        self::assertInstanceOf(DeliveryFeeChangeValidator::class, $validator);
+        $this->assertInstanceOf(DeliveryFeeChangeValidator::class, $validator);
     }
 
     public function testValidateWithCart()
@@ -50,7 +50,7 @@ class DeliveryFeeChangeValidatorTest extends EccubeTestCase
         $result = $this->validator->execute(new Cart(), new PurchaseContext());
 
         // カートの場合は何もしない.
-        self::assertTrue($result->isSuccess());
+        $this->assertTrue($result->isSuccess());
     }
 
     public function testValidateNochanged()
@@ -61,7 +61,7 @@ class DeliveryFeeChangeValidatorTest extends EccubeTestCase
 
         $result = $this->validator->execute($this->Order, new PurchaseContext($CloneOrder));
 
-        self::assertTrue($result->isSuccess());
+        $this->assertTrue($result->isSuccess());
     }
 
     public function testValidateChanged()
@@ -72,6 +72,6 @@ class DeliveryFeeChangeValidatorTest extends EccubeTestCase
 
         $result = $this->validator->execute($this->Order, new PurchaseContext($CloneOrder));
 
-        self::assertTrue($result->isWarning());
+        $this->assertTrue($result->isWarning());
     }
 }

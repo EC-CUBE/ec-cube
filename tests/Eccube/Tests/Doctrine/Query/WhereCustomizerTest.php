@@ -26,7 +26,7 @@ class WhereCustomizerTest extends EccubeTestCase
         $customizer = new WhereCustomizerTest_Customizer(fn () => []);
         $customizer->customize($builder, null, '');
 
-        self::assertSame('SELECT p FROM Product p', $builder->getDQL());
+        $this->assertSame('SELECT p FROM Product p', $builder->getDQL());
     }
 
     public function testCustomizeAddWhereClause()
@@ -35,7 +35,7 @@ class WhereCustomizerTest extends EccubeTestCase
         $customizer = new WhereCustomizerTest_Customizer(fn () => [WhereClause::eq('name', ':Name', 'hoge')]);
         $customizer->customize($builder, null, '');
 
-        self::assertSame('SELECT p FROM Product p WHERE name = :Name', $builder->getDQL());
+        $this->assertSame('SELECT p FROM Product p WHERE name = :Name', $builder->getDQL());
     }
 
     public function testCustomizeAddMultipleWhereClause()
@@ -47,7 +47,7 @@ class WhereCustomizerTest extends EccubeTestCase
         ]);
         $customizer->customize($builder, null, '');
 
-        self::assertSame('SELECT p FROM Product p WHERE name = :Name AND delFlg = :DelFlg', $builder->getDQL());
+        $this->assertSame('SELECT p FROM Product p WHERE name = :Name AND delFlg = :DelFlg', $builder->getDQL());
     }
 
     private function createQueryBuilder(): QueryBuilder

@@ -45,10 +45,10 @@ class RateLimiterListenerTest extends EccubeTestCase
         $request->method('getMethod')
             ->willReturn('POST');
         $request->method('get')
-            ->will($this->returnValueMap([
+            ->willReturnMap([
                 ['mode', null, 'complete'],
                 ['next', null, 'confirm'],
-            ]));
+            ]);
 
         $request->attributes = new ParameterBag();
         $request->attributes->set('_route', 'test');
@@ -80,7 +80,7 @@ class RateLimiterListenerTest extends EccubeTestCase
 
         $config = $this->createStub(EccubeConfig::class);
         $config->method('offsetGet')
-            ->will($this->returnValueMap($map));
+            ->willReturnMap($map);
 
         $i = 0;
         $listener = new RateLimiterListener($this->getContainer(), $config, $context);
@@ -92,28 +92,23 @@ class RateLimiterListenerTest extends EccubeTestCase
             $listener->onController($event);
             self::fail();
         } catch (\Exception $e) {
-            self::assertInstanceOf(TooManyRequestsHttpException::class, $e);
+            $this->assertInstanceOf(TooManyRequestsHttpException::class, $e);
         }
 
         // 2回目でTooManyRequestsHttpExceptionがthrowされる.
         // キャッシュが残っている場合は、bin/console cache:pool:clear rate_limiter.cache --env=test を実行する
-        self::assertSame(2, $i);
+        $this->assertSame(2, $i);
     }
 
-    public static function onControllerProvider()
+    public static function onControllerProvider(): \Iterator
     {
-        return [
-            ['test_ip', 'ip', []],
-            ['test_customer', 'customer', []],
-            ['test_params', 'customer', ['mode' => 'complete', 'next' => 'confirm']],
-        ];
+        yield ['test_ip', 'ip', []];
+        yield ['test_customer', 'customer', []];
+        yield ['test_params', 'customer', ['mode' => 'complete', 'next' => 'confirm']];
     }
 
     public function testGetSubscribedEvents()
     {
-        self::assertSame(
-            [KernelEvents::CONTROLLER => ['onController', 0]],
-            RateLimiterListener::getSubscribedEvents()
-        );
+        $this->assertSame([KernelEvents::CONTROLLER => ['onController', 0]], RateLimiterListener::getSubscribedEvents());
     }
 }

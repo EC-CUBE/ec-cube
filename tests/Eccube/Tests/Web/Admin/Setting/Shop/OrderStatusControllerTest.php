@@ -63,9 +63,12 @@ class OrderStatusControllerTest extends AbstractAdminWebTestCase
         $OrderStatus = $this->orderStatusRepository->findOneBy([], ['sort_no' => 'ASC']);
         $CustomerOrderStatus = $this->customerOrderStatusRepository->findOneBy([], ['sort_no' => 'ASC']);
         $OrderStatusColor = $this->orderStatusColorRepository->findOneBy([], ['sort_no' => 'ASC']);
+        $this->assertInstanceOf(OrderStatus::class, $OrderStatus);
 
         $this->assertSame('テスト名称(受注管理)', $OrderStatus->getName());
+        $this->assertInstanceOf(CustomerOrderStatus::class, $CustomerOrderStatus);
         $this->assertSame('テスト名称(マイページ)', $CustomerOrderStatus->getName());
+        $this->assertInstanceOf(OrderStatusColor::class, $OrderStatusColor);
         $this->assertSame('テスト色', $OrderStatusColor->getName());
     }
 

@@ -90,6 +90,7 @@ class ContactControllerTest extends AbstractWebTestCase
         $this->assertEmailCount(1);
         /** @var Email $Message */
         $Message = $this->getMailerMessage(0);
+        $this->assertInstanceOf(BaseInfo::class, $BaseInfo);
 
         $this->expected = '['.$BaseInfo->getShopName().'] お問い合わせを受け付けました。';
         $this->actual = $Message->getSubject();
@@ -114,13 +115,14 @@ class ContactControllerTest extends AbstractWebTestCase
         $this->assertEmailCount(1);
         /** @var Email $Message */
         $Message = $this->getMailerMessage(0);
+        $this->assertInstanceOf(BaseInfo::class, $BaseInfo);
 
         $this->expected = '['.$BaseInfo->getShopName().'] お問い合わせを受け付けました。';
         $this->actual = $Message->getSubject();
         $this->verify();
 
-        $this->assertStringContainsString('＜Sanitize＆＞', $Message->getTextBody(), 'テキストメールがサニタイズされている');
-        $this->assertStringContainsString('＜Sanitize＆＞', $Message->getHtmlBody(), 'HTMLメールがサニタイズされている');
+        $this->assertStringContainsString('＜Sanitize＆＞', (string) $Message->getTextBody(), 'テキストメールがサニタイズされている');
+        $this->assertStringContainsString('＜Sanitize＆＞', (string) $Message->getHtmlBody(), 'HTMLメールがサニタイズされている');
     }
 
     /**
@@ -153,6 +155,7 @@ class ContactControllerTest extends AbstractWebTestCase
         $this->assertEmailCount(1);
         /** @var Email $Message */
         $Message = $this->getMailerMessage(0);
+        $this->assertInstanceOf(BaseInfo::class, $BaseInfo);
 
         $this->expected = '['.$BaseInfo->getShopName().'] お問い合わせを受け付けました。';
         $this->actual = $Message->getSubject();
@@ -179,6 +182,7 @@ class ContactControllerTest extends AbstractWebTestCase
         $this->assertEmailCount(1);
         /** @var Email $Message */
         $Message = $this->getMailerMessage(0);
+        $this->assertInstanceOf(BaseInfo::class, $BaseInfo);
 
         $this->expected = '['.$BaseInfo->getShopName().'] お問い合わせを受け付けました。';
         $this->actual = $Message->getSubject();

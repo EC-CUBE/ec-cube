@@ -81,6 +81,6 @@ class BlockControllerTest extends AbstractAdminWebTestCase
         $redirectUrl = $this->generateUrl('admin_content_block');
         $actual = $this->client->getResponse()->isRedirect($redirectUrl);
 
-        $this->assertSame(true, $actual);
+        $this->assertTrue($actual);
     }
 }

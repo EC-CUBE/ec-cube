@@ -27,14 +27,12 @@ class PriceTypeTest extends AbstractTypeTestCase
      *
      * 正常系のデータパターンを返す
      */
-    public static function getValidTestData(): array
+    public static function getValidTestData(): \Iterator
     {
-        return [
-            ['data' => 0],
-            ['data' => 1],
-            ['data' => '0'],
-            ['data' => '1'],
-        ];
+        yield [0];
+        yield [1];
+        yield ['0'];
+        yield ['1'];
     }
 
     protected function setUp(): void

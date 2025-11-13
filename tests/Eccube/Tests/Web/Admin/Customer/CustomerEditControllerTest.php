@@ -110,6 +110,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
         $EditedCustomer = $this->entityManager->getRepository(Customer::class)->find($this->Customer->getId());
 
         $this->expected = $form['email'];
+        $this->assertInstanceOf(Customer::class, $EditedCustomer);
         $this->actual = $EditedCustomer->getEmail();
         $this->verify();
     }
@@ -140,8 +141,8 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
         );
 
         $NewCustomer = $this->entityManager->getRepository(Customer::class)->findOneBy(['email' => $form['email']]);
-        $this->assertNotNull($NewCustomer);
-        $this->assertTrue($form['email'] == $NewCustomer->getEmail());
+        $this->assertInstanceOf(Customer::class, $NewCustomer);
+        $this->assertEquals($NewCustomer->getEmail(), $form['email']);
     }
 
     /**
@@ -251,6 +252,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
         );
 
         $EditedCustomer = $this->entityManager->getRepository(Customer::class)->find($this->Customer->getId());
+        $this->assertInstanceOf(Customer::class, $EditedCustomer);
 
         $this->assertMatchesRegularExpression('/@dummy.dummy/', $EditedCustomer->getEmail());
     }
@@ -278,6 +280,7 @@ class CustomerEditControllerTest extends AbstractAdminWebTestCase
         $EditedCustomer = $this->entityManager->getRepository(Customer::class)->find($this->Customer->getId());
 
         $this->expected = $form['email'];
+        $this->assertInstanceOf(Customer::class, $EditedCustomer);
         $this->actual = $EditedCustomer->getEmail();
         $this->verify();
     }

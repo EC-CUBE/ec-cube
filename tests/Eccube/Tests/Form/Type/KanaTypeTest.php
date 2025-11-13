@@ -37,39 +37,37 @@ class KanaTypeTest extends AbstractTypeTestCase
      *
      * 正常系のデータパターンを返す
      */
-    public static function getValidTestData(): array
+    public static function getValidTestData(): \Iterator
     {
-        return [
+        yield [
             [
-                'data' => [
-                    'kana' => [
-                        'kana01' => 'たかはし',
-                        'kana02' => 'しんいち',
-                    ],
+                'kana' => [
+                    'kana01' => 'たかはし',
+                    'kana02' => 'しんいち',
                 ],
             ],
+        ];
+        yield [
             [
-                'data' => [
-                    'kana' => [
-                        'kana01' => 'タカハシ',
-                        'kana02' => 'しんいち',
-                    ],
+                'kana' => [
+                    'kana01' => 'タカハシ',
+                    'kana02' => 'しんいち',
                 ],
             ],
+        ];
+        yield [
             [
-                'data' => [
-                    'kana' => [
-                        'kana01' => 'たかはし',
-                        'kana02' => 'シンイチ',
-                    ],
+                'kana' => [
+                    'kana01' => 'たかはし',
+                    'kana02' => 'シンイチ',
                 ],
             ],
+        ];
+        yield [
             [
-                'data' => [
-                    'kana' => [
-                        'kana01' => str_repeat('ア', self::maxLength),
-                        'kana02' => str_repeat('ア', self::maxLength),
-                    ],
+                'kana' => [
+                    'kana01' => str_repeat('ア', self::maxLength),
+                    'kana02' => str_repeat('ア', self::maxLength),
                 ],
             ],
         ];

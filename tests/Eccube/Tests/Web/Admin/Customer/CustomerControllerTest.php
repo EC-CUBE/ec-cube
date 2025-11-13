@@ -23,6 +23,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\RawMessage;
 
 /**
  * Class CustomerControllerTest
@@ -142,6 +143,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
     public function testIndexWithPostSearchById()
     {
         $Customer = $this->entityManager->getRepository(Customer::class)->findOneBy([], ['id' => 'DESC']);
+        $this->assertInstanceOf(Customer::class, $Customer);
 
         $crawler = $this->client->request(
             Request::METHOD_POST, $this->generateUrl('admin_customer'),
@@ -182,20 +184,25 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
-     * @return array[]
+     * @return \Iterator<(int | string), array<mixed>>
      */
-    public static function indexWithPostSearchByProductNameProvider(): array
+    public static function indexWithPostSearchByProductNameProvider(): \Iterator
     {
-        return [
-            [OrderStatus::NEW, '検索結果：1件が該当しました'], // 新規受付
-            [OrderStatus::CANCEL, '検索結果：1件が該当しました'], // 注文取消し
-            [OrderStatus::IN_PROGRESS, '検索結果：1件が該当しました'], // 対応中
-            [OrderStatus::DELIVERED, '検索結果：1件が該当しました'], // 発送済み
-            [OrderStatus::PAID, '検索結果：1件が該当しました'], // 入金済み
-            [OrderStatus::PENDING, '検索結果：0件が該当しました'], // 決済処理中
-            [OrderStatus::PROCESSING, '検索結果：0件が該当しました'], // 購入処理中
-            [OrderStatus::RETURNED, '検索結果：1件が該当しました'], // 返品
-        ];
+        yield [OrderStatus::NEW, '検索結果：1件が該当しました'];
+        // 新規受付
+        yield [OrderStatus::CANCEL, '検索結果：1件が該当しました'];
+        // 注文取消し
+        yield [OrderStatus::IN_PROGRESS, '検索結果：1件が該当しました'];
+        // 対応中
+        yield [OrderStatus::DELIVERED, '検索結果：1件が該当しました'];
+        // 発送済み
+        yield [OrderStatus::PAID, '検索結果：1件が該当しました'];
+        // 入金済み
+        yield [OrderStatus::PENDING, '検索結果：0件が該当しました'];
+        // 決済処理中
+        yield [OrderStatus::PROCESSING, '検索結果：0件が該当しました'];
+        // 購入処理中
+        yield [OrderStatus::RETURNED, '検索結果：1件が該当しました'];
     }
 
     /**
@@ -242,9 +249,11 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_customer')));
         $MessageSecondTime = $this->getMailerMessage(0);
+        $this->assertInstanceOf(RawMessage::class, $MessageFistTime);
 
         // test mail resend to 仮会員. (シークレットキーが毎回変わることを確認)
         $FirstTimeMail = $MessageFistTime->toString();
+        $this->assertInstanceOf(RawMessage::class, $MessageSecondTime);
         $SecondTimeMail = $MessageSecondTime->toString();
         $secretKeyFirstTime = mb_substr($FirstTimeMail, mb_strrpos($FirstTimeMail, '/activate/') + 10, 32);
         $secretKeySecondTime = mb_substr($SecondTimeMail, mb_strrpos($SecondTimeMail, '/activate/') + 10, 32);
@@ -267,7 +276,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
 
         $DeletedCustomer = $this->entityManager->getRepository(Customer::class)->find($id);
 
-        $this->assertNull($DeletedCustomer);
+        $this->assertNotInstanceOf(Customer::class, $DeletedCustomer);
     }
 
     /**

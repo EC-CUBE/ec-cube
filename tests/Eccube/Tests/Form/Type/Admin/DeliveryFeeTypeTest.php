@@ -27,28 +27,26 @@ class DeliveryFeeTypeTest extends AbstractTypeTestCase
      *
      * 正常系のデータパターンを返す
      */
-    public static function getValidTestData(): array
+    public static function getValidTestData(): \Iterator
     {
-        return [
+        yield [
             [
-                'data' => [
-                    'fee' => 0,
-                ],
+                'fee' => 0,
             ],
+        ];
+        yield [
             [
-                'data' => [
-                    'fee' => 1,
-                ],
+                'fee' => 1,
             ],
+        ];
+        yield [
             [
-                'data' => [
-                    'fee' => '0',
-                ],
+                'fee' => '0',
             ],
+        ];
+        yield [
             [
-                'data' => [
-                    'fee' => '1',
-                ],
+                'fee' => '1',
             ],
         ];
     }

@@ -102,6 +102,7 @@ class DeliveryControllerTest extends AbstractWebTestCase
         $CustomerAddress = $this->entityManager->getRepository(CustomerAddress::class)->findOneBy(
             ['Customer' => $this->Customer]
         );
+        $this->assertInstanceOf(CustomerAddress::class, $CustomerAddress);
 
         $client->request(
             Request::METHOD_GET,
@@ -120,6 +121,7 @@ class DeliveryControllerTest extends AbstractWebTestCase
         );
 
         $form = $this->createFormData();
+        $this->assertInstanceOf(CustomerAddress::class, $CustomerAddress);
         $this->client->request(
             Request::METHOD_POST,
             $this->generateUrl('mypage_delivery_edit', ['id' => $CustomerAddress->getId()]),
@@ -140,6 +142,7 @@ class DeliveryControllerTest extends AbstractWebTestCase
         $CustomerAddress = $this->entityManager->getRepository(CustomerAddress::class)->findOneBy(
             ['Customer' => $this->Customer]
         );
+        $this->assertInstanceOf(CustomerAddress::class, $CustomerAddress);
         $id = $CustomerAddress->getId();
 
         $this->createFormData();
@@ -151,7 +154,7 @@ class DeliveryControllerTest extends AbstractWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('mypage_delivery')));
 
         $CustomerAddress = $this->entityManager->getRepository(CustomerAddress::class)->find($id);
-        $this->assertNull($CustomerAddress);
+        $this->assertNotInstanceOf(CustomerAddress::class, $CustomerAddress);
     }
 
     public function testDeleteWithFailure()

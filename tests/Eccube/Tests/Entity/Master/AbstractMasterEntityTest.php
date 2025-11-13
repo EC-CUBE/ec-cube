@@ -30,13 +30,13 @@ class AbstractMasterEntityTest extends EccubeTestCase
 
     public function testGetConstant()
     {
-        self::assertSame(1, TestSexDecorator::TEST_MALE, 'constant access');
-        self::assertSame(1, TestSexDecorator::TEST_MALE, 'enum like access');
+        $this->assertSame(1, TestSexDecorator::TEST_MALE, 'constant access');
+        $this->assertSame(1, TestSexDecorator::TEST_MALE, 'enum like access');
     }
 
     public function testGetConstantWithTrait()
     {
-        self::assertSame(2, TestSexDecorator::$TEST_FEMALE, 'enum like access via trait');
+        $this->assertSame(2, TestSexDecorator::$TEST_FEMALE, 'enum like access via trait');
     }
 
     public function testInvalidFields()
@@ -46,19 +46,19 @@ class AbstractMasterEntityTest extends EccubeTestCase
             $c = TestSexDecorator::id();
             self::fail();
         } catch (\InvalidArgumentException $e) {
-            self::assertInstanceOf(\InvalidArgumentException::class, $e);
+            $this->assertInstanceOf(\InvalidArgumentException::class, $e);
         }
         try {
             $c = TestSexDecorator::name();
             self::fail();
         } catch (\InvalidArgumentException $e) {
-            self::assertInstanceOf(\InvalidArgumentException::class, $e);
+            $this->assertInstanceOf(\InvalidArgumentException::class, $e);
         }
         try {
             $c = TestSexDecorator::sortNo();
             self::fail();
         } catch (\InvalidArgumentException $e) {
-            self::assertInstanceOf(\InvalidArgumentException::class, $e);
+            $this->assertInstanceOf(\InvalidArgumentException::class, $e);
         }
     }
 }

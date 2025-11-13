@@ -235,23 +235,21 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
 
         $this->assertTrue($client->getResponse()->isSuccessful());
         $html = $crawler->filter('#order_pdf_form')->html();
-        $this->assertStringContainsString($message, $html);
+        $this->assertStringContainsString($message, (string) $html);
     }
 
     /**
      * Data provider for max length test.
      */
-    public static function dataDownloadMaxLengthProvider(): array
+    public static function dataDownloadMaxLengthProvider(): \Iterator
     {
-        return [
-            ['order_pdf[title]', 'この値は、255文字以内で入力してください。'],
-            ['order_pdf[message1]', 'この値は、30文字以内で入力してください。'],
-            ['order_pdf[message2]', 'この値は、30文字以内で入力してください。'],
-            ['order_pdf[message3]', 'この値は、30文字以内で入力してください。'],
-            ['order_pdf[note1]', 'この値は、255文字以内で入力してください。'],
-            ['order_pdf[note2]', 'この値は、255文字以内で入力してください。'],
-            ['order_pdf[note3]', 'この値は、255文字以内で入力してください。'],
-        ];
+        yield ['order_pdf[title]', 'この値は、255文字以内で入力してください。'];
+        yield ['order_pdf[message1]', 'この値は、30文字以内で入力してください。'];
+        yield ['order_pdf[message2]', 'この値は、30文字以内で入力してください。'];
+        yield ['order_pdf[message3]', 'この値は、30文字以内で入力してください。'];
+        yield ['order_pdf[note1]', 'この値は、255文字以内で入力してください。'];
+        yield ['order_pdf[note2]', 'この値は、255文字以内で入力してください。'];
+        yield ['order_pdf[note3]', 'この値は、255文字以内で入力してください。'];
     }
 
     /**
@@ -335,14 +333,14 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         );
         $html = $crawler->filter('#order_pdf_form')->html();
 
-        $this->assertStringContainsString((string) $shippingId, $html);
-        $this->assertStringContainsString($OrderPdf->getTitle(), $html);
-        $this->assertStringContainsString($OrderPdf->getMessage1(), $html);
-        $this->assertStringContainsString($OrderPdf->getMessage2(), $html);
-        $this->assertStringContainsString($OrderPdf->getMessage3(), $html);
-        $this->assertStringContainsString($OrderPdf->getNote1(), $html);
-        $this->assertStringContainsString($OrderPdf->getNote2(), $html);
-        $this->assertStringContainsString($OrderPdf->getNote3(), $html);
+        $this->assertStringContainsString((string) $shippingId, (string) $html);
+        $this->assertStringContainsString($OrderPdf->getTitle(), (string) $html);
+        $this->assertStringContainsString($OrderPdf->getMessage1(), (string) $html);
+        $this->assertStringContainsString($OrderPdf->getMessage2(), (string) $html);
+        $this->assertStringContainsString($OrderPdf->getMessage3(), (string) $html);
+        $this->assertStringContainsString($OrderPdf->getNote1(), (string) $html);
+        $this->assertStringContainsString($OrderPdf->getNote2(), (string) $html);
+        $this->assertStringContainsString($OrderPdf->getNote3(), (string) $html);
 
         $form = $this->getForm($crawler);
         $client->submit($form);

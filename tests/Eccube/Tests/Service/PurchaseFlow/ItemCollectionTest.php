@@ -46,13 +46,13 @@ class ItemCollectionTest extends EccubeTestCase
     public function testInstance()
     {
         $actual = new ItemCollection($this->Items);
-        self::assertInstanceOf(ItemCollection::class, $actual);
+        $this->assertInstanceOf(ItemCollection::class, $actual);
     }
 
     public function testInstanceWithCollection()
     {
         $actual = new ItemCollection($this->ItemHolder->getItems());
-        self::assertInstanceOf(ItemCollection::class, $actual);
+        $this->assertInstanceOf(ItemCollection::class, $actual);
     }
 
     public function testReduce()
@@ -68,7 +68,7 @@ class ItemCollectionTest extends EccubeTestCase
     {
         $Items = (new ItemCollection($this->Items))->getProductClasses();
         foreach ($Items as $Item) {
-            self::assertTrue($Item->isProduct());
+            $this->assertTrue($Item->isProduct());
         }
     }
 
@@ -76,7 +76,7 @@ class ItemCollectionTest extends EccubeTestCase
     {
         $Items = (new ItemCollection($this->Items))->getDeliveryFees();
         foreach ($Items as $Item) {
-            self::assertTrue($Item->isDeliveryFee());
+            $this->assertTrue($Item->isDeliveryFee());
         }
     }
 
@@ -84,7 +84,7 @@ class ItemCollectionTest extends EccubeTestCase
     {
         $Items = (new ItemCollection($this->Items))->getCharges();
         foreach ($Items as $Item) {
-            self::assertTrue($Item->isCharge());
+            $this->assertTrue($Item->isCharge());
         }
     }
 
@@ -92,7 +92,7 @@ class ItemCollectionTest extends EccubeTestCase
     {
         $Items = (new ItemCollection($this->Items))->getCharges();
         foreach ($Items as $Item) {
-            self::assertTrue($Item->isCharge());
+            $this->assertTrue($Item->isCharge());
         }
     }
 
@@ -105,10 +105,10 @@ class ItemCollectionTest extends EccubeTestCase
 
         $Items = new ItemCollection($this->Items);
 
-        self::assertTrue($Items->hasItemByOrderItemType($ProductClassType));
-        self::assertTrue($Items->hasItemByOrderItemType($DeliveryFeeType));
-        self::assertTrue($Items->hasItemByOrderItemType($ChargeType));
-        self::assertTrue($Items->hasItemByOrderItemType($DiscountType));
+        $this->assertTrue($Items->hasItemByOrderItemType($ProductClassType));
+        $this->assertTrue($Items->hasItemByOrderItemType($DeliveryFeeType));
+        $this->assertTrue($Items->hasItemByOrderItemType($ChargeType));
+        $this->assertTrue($Items->hasItemByOrderItemType($DiscountType));
     }
 
     public function testSort()

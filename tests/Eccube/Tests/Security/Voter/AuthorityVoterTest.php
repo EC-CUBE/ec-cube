@@ -65,18 +65,16 @@ class AuthorityVoterTest extends EccubeTestCase
         $token = $this->createMock(TokenInterface::class);
         $token->method('getUser')->willReturn($Member);
 
-        self::assertEquals($expected, $voter->vote($token, null, []));
+        $this->assertEquals($expected, $voter->vote($token, null, []));
     }
 
-    public static function voteProvider()
+    public static function voteProvider(): \Iterator
     {
-        return [
-            [[], '/admin/content', VoterInterface::ACCESS_GRANTED],
-            [['/content'], '/admin/content', VoterInterface::ACCESS_DENIED],
-            [['/content'], '/admin/content/page', VoterInterface::ACCESS_DENIED],
-            [['/content'], '/content', VoterInterface::ACCESS_GRANTED],
-            [['/content'], '/admin', VoterInterface::ACCESS_GRANTED],
-            [['/content'], '/admin/product', VoterInterface::ACCESS_GRANTED],
-        ];
+        yield [[], '/admin/content', VoterInterface::ACCESS_GRANTED];
+        yield [['/content'], '/admin/content', VoterInterface::ACCESS_DENIED];
+        yield [['/content'], '/admin/content/page', VoterInterface::ACCESS_DENIED];
+        yield [['/content'], '/content', VoterInterface::ACCESS_GRANTED];
+        yield [['/content'], '/admin', VoterInterface::ACCESS_GRANTED];
+        yield [['/content'], '/admin/product', VoterInterface::ACCESS_GRANTED];
     }
 }

@@ -49,20 +49,22 @@ class PasswordMigrationTest extends EccubeTestCase
 
         // ログイン
         $crawler = $this->client->request(Request::METHOD_GET, '/admin/login');
-        self::assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         $form = $crawler->selectButton('ログイン')->form();
         $form['login_id'] = $username;
         $form['password'] = $password;
         $this->client->submit($form);
 
-        self::assertTrue($this->client->getResponse()->isRedirection());
+        $this->assertTrue($this->client->getResponse()->isRedirection());
 
         // ログイン後、パスワードがマイグレーションされていることを確認.
         $this->entityManager->clear();
         $Member = $this->entityManager->find(Member::class, $Member->getId());
+        $this->assertInstanceOf(Member::class, $Member);
 
-        self::assertNotSame($hash, $Member->getPassword(), $hash.':'.$Member->getPassword());
-        self::assertStringStartsWith('$', $Member->getPassword(), $Member->getPassword());
+        $this->assertNotSame($hash, $Member->getPassword(), $hash.':'.$Member->getPassword());
+        $this->assertInstanceOf(Member::class, $Member);
+        $this->assertStringStartsWith('$', $Member->getPassword(), $Member->getPassword());
     }
 }

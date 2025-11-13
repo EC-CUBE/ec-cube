@@ -46,6 +46,6 @@ class CacheControllerTest extends AbstractAdminWebTestCase
         ]);
 
         $this->assertTrue($client->getResponse()->isSuccessful());
-        $this->assertFalse(file_exists($cacheDir.'/twig/sample'), 'sampleは削除済');
+        $this->assertFileDoesNotExist($cacheDir.'/twig/sample', 'sampleは削除済');
     }
 }

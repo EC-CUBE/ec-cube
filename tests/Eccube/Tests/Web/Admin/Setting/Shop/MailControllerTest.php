@@ -125,6 +125,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
         // 更新を確認
         $MailTemplate = $this->entityManager->find(MailTemplate::class, $id);
         $this->expected = $subject;
+        $this->assertInstanceOf(MailTemplate::class, $MailTemplate);
         $this->actual = $MailTemplate->getMailSubject();
         $this->verify();
     }
@@ -150,8 +151,8 @@ class MailControllerTest extends AbstractAdminWebTestCase
 
         // テンプレートファイルが生成されていることを確認
         $themeDir = static::getContainer()->getParameter('eccube_theme_front_dir');
-        $this->assertTrue(file_exists($themeDir.'/Mail/test_edit_clear_html.twig'));
-        $this->assertTrue(file_exists($themeDir.'/Mail/test_edit_clear_html.html.twig'));
+        $this->assertFileExists($themeDir.'/Mail/test_edit_clear_html.twig');
+        $this->assertFileExists($themeDir.'/Mail/test_edit_clear_html.html.twig');
 
         // HTMLを空で更新
         $this->senarioEdit($id, ['html_tpl_data' => '']);
@@ -162,8 +163,8 @@ class MailControllerTest extends AbstractAdminWebTestCase
 
         // HTMLテンプレートファイルが削除されていることを確認
         $themeDir = static::getContainer()->getParameter('eccube_theme_front_dir');
-        $this->assertTrue(file_exists($themeDir.'/Mail/test_edit_clear_html.twig'));
-        $this->assertFalse(file_exists($themeDir.'/Mail/test_edit_clear_html.html.twig'));
+        $this->assertFileExists($themeDir.'/Mail/test_edit_clear_html.twig');
+        $this->assertFileDoesNotExist($themeDir.'/Mail/test_edit_clear_html.html.twig');
     }
 
     /**
@@ -224,6 +225,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
 
         // deletable => falseに更新
         $MailTemplate = $this->entityManager->find(MailTemplate::class, $id);
+        $this->assertInstanceOf(MailTemplate::class, $MailTemplate);
         $MailTemplate->setDeletable(false);
         $this->entityManager->flush();
 

@@ -51,6 +51,7 @@ class CsvExportServiceTest extends AbstractServiceTestCase
         $Property->setValue($this->csvExportService, fopen($this->url, 'w'));
 
         $Csv = $this->csvRepository->find(1);
+        $this->assertInstanceOf(Csv::class, $Csv);
         $Csv->setSortNo(1);
         $Csv->setEnabled(false);
         $this->entityManager->flush();

@@ -131,6 +131,7 @@ class SearchProductControllerTest extends AbstractWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         $categoryNameLastElement = $crawler->filter('.category_id option')->last()->text();
+        $this->assertInstanceOf(Category::class, $Category);
 
         $this->expected = $Category->getNameWithLevel();
         $this->actual = $categoryNameLastElement;

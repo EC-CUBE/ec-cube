@@ -44,7 +44,7 @@ class ClassCategoryValidatorTest extends EccubeTestCase
 
     public function testInstance()
     {
-        self::assertInstanceOf(ClassCategoryValidator::class, $this->validator);
+        $this->assertInstanceOf(ClassCategoryValidator::class, $this->validator);
     }
 
     /**
@@ -56,7 +56,7 @@ class ClassCategoryValidatorTest extends EccubeTestCase
 
         $this->validator->execute($this->cartItem, new PurchaseContext());
 
-        self::assertSame('0', $this->cartItem->getQuantity());
+        $this->assertSame('0', $this->cartItem->getQuantity());
     }
 
     /**
@@ -68,6 +68,6 @@ class ClassCategoryValidatorTest extends EccubeTestCase
 
         $this->validator->execute($this->cartItem, new PurchaseContext());
 
-        self::assertSame('0', $this->cartItem->getQuantity());
+        $this->assertSame('0', $this->cartItem->getQuantity());
     }
 }

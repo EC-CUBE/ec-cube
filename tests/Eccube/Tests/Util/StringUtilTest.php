@@ -39,7 +39,7 @@ class StringUtilTest extends TestCase
         $this->actual = strlen($result);
         // デフォルトは16桁
         $this->assertSame($this->expected, $this->actual);
-        $this->assertTrue(preg_match('/[A-Za-z0-9]{16}/', $result) === 1);
+        $this->assertMatchesRegularExpression('/[A-Za-z0-9]{16}/', $result);
     }
 
     public function testRandomWithParams()
@@ -49,7 +49,7 @@ class StringUtilTest extends TestCase
         $this->actual = strlen($result);
 
         $this->assertSame($this->expected, $this->actual);
-        $this->assertTrue(preg_match('/[A-Za-z0-9]{'.$this->expected.'}/', $result) === 1);
+        $this->assertMatchesRegularExpression('/[A-Za-z0-9]{'.$this->expected.'}/', $result);
     }
 
     public function testRandomException()
@@ -72,7 +72,7 @@ class StringUtilTest extends TestCase
         $this->actual = strlen($result);
         // デフォルトは16桁
         $this->assertSame($this->expected, $this->actual);
-        $this->assertTrue(preg_match('/[A-Za-z0-9]{16}/', $result) === 1);
+        $this->assertMatchesRegularExpression('/[A-Za-z0-9]{16}/', $result);
     }
 
     public function testQuickRandomWithParams()
@@ -82,7 +82,7 @@ class StringUtilTest extends TestCase
         $this->actual = strlen($result);
 
         $this->assertSame($this->expected, $this->actual);
-        $this->assertTrue(preg_match('/[A-Za-z0-9]{'.$this->expected.'}/', $result) === 1);
+        $this->assertMatchesRegularExpression('/[A-Za-z0-9]{'.$this->expected.'}/', $result);
     }
 
     public function testConvertLineFeed()
@@ -495,17 +495,17 @@ class StringUtilTest extends TestCase
         $text = 0;
         $this->expected = 0;
         $this->actual = StringUtil::trimAll($text);
-        $this->assertTrue($this->expected === $this->actual);
+        $this->assertSame($this->expected, $this->actual);
 
         $text = '0';
         $this->expected = '0';
         $this->actual = StringUtil::trimAll($text);
-        $this->assertTrue($this->expected === $this->actual);
+        $this->assertSame($this->expected, $this->actual);
 
         $text = " 0\n0\r\n\t";
         $this->expected = "0\n0";
         $this->actual = StringUtil::trimAll($text);
-        $this->assertTrue($this->expected === $this->actual);
+        $this->assertSame($this->expected, $this->actual);
     }
 
     /**
@@ -516,19 +516,17 @@ class StringUtilTest extends TestCase
     #[DataProvider(methodName: 'replaceOrAddEnvProvider')]
     public function testReplaceOrAddEnv($env, $replacement, $expected)
     {
-        self::assertEquals($expected, StringUtil::replaceOrAddEnv($env, $replacement));
+        $this->assertEquals($expected, StringUtil::replaceOrAddEnv($env, $replacement));
     }
 
-    public static function replaceOrAddEnvProvider()
+    public static function replaceOrAddEnvProvider(): \Iterator
     {
-        return [
-            ['HOGE=HOGE', ['HOGE' => 'BAR'], 'HOGE=BAR'],
-            ['HOGE=HOGE', ['FOO' => 'BAR'], 'HOGE=HOGE'.PHP_EOL.'FOO=BAR'],
-            ['HOGE_HOGE=HOGE', ['HOGE' => 'BAR'], 'HOGE_HOGE=HOGE'.PHP_EOL.'HOGE=BAR'],
-            ['#HOGE=HOGE', ['HOGE' => 'BAR'], '#HOGE=HOGE'.PHP_EOL.'HOGE=BAR'],
-            ['HOGE=HOGE'.PHP_EOL.'FOO=FOO', ['HOGE' => 'BAR'], 'HOGE=BAR'.PHP_EOL.'FOO=FOO'],
-            ['HOGE=HOGE'.PHP_EOL.'FOO=FOO', ['FOO' => 'BAR'], 'HOGE=HOGE'.PHP_EOL.'FOO=BAR'],
-            ['HOGE=HOGE'.PHP_EOL.'FOO=FOO', ['HOGE' => 'hoge', 'FOO' => 'foo'], 'HOGE=hoge'.PHP_EOL.'FOO=foo'],
-        ];
+        yield ['HOGE=HOGE', ['HOGE' => 'BAR'], 'HOGE=BAR'];
+        yield ['HOGE=HOGE', ['FOO' => 'BAR'], 'HOGE=HOGE'.PHP_EOL.'FOO=BAR'];
+        yield ['HOGE_HOGE=HOGE', ['HOGE' => 'BAR'], 'HOGE_HOGE=HOGE'.PHP_EOL.'HOGE=BAR'];
+        yield ['#HOGE=HOGE', ['HOGE' => 'BAR'], '#HOGE=HOGE'.PHP_EOL.'HOGE=BAR'];
+        yield ['HOGE=HOGE'.PHP_EOL.'FOO=FOO', ['HOGE' => 'BAR'], 'HOGE=BAR'.PHP_EOL.'FOO=FOO'];
+        yield ['HOGE=HOGE'.PHP_EOL.'FOO=FOO', ['FOO' => 'BAR'], 'HOGE=HOGE'.PHP_EOL.'FOO=BAR'];
+        yield ['HOGE=HOGE'.PHP_EOL.'FOO=FOO', ['HOGE' => 'hoge', 'FOO' => 'foo'], 'HOGE=hoge'.PHP_EOL.'FOO=foo'];
     }
 }

@@ -37,7 +37,7 @@ class TaxRateChangeValidatorTest extends EccubeTestCase
 
     public function testInstance()
     {
-        self::assertInstanceOf(TaxRateChangeValidator::class, $this->validator);
+        $this->assertInstanceOf(TaxRateChangeValidator::class, $this->validator);
     }
 
     public function testValidateWithCart()
@@ -45,38 +45,38 @@ class TaxRateChangeValidatorTest extends EccubeTestCase
         $result = $this->validator->execute(new Cart(), new PurchaseContext());
 
         // カートの場合な何もしない
-        self::assertTrue($result->isSuccess());
+        $this->assertTrue($result->isSuccess());
     }
 
     public function testValidateNoChanged()
     {
         $CloneOrder = clone $this->Order;
         foreach ($CloneOrder->getTaxableItems() as $orderItem) {
-            $orderItem->setTaxRate(10);
+            $orderItem->setTaxRate('10');
         }
 
         foreach ($this->Order->getTaxableItems() as $orderItem) {
-            $orderItem->setTaxRate(10);
+            $orderItem->setTaxRate('10');
         }
 
         $result = $this->validator->execute($this->Order, new PurchaseContext($CloneOrder));
 
-        self::assertTrue($result->isSuccess());
+        $this->assertTrue($result->isSuccess());
     }
 
     public function testValidateChanged()
     {
         $CloneOrder = clone $this->Order;
         foreach ($CloneOrder->getTaxableItems() as $orderItem) {
-            $orderItem->setTaxRate(10);
+            $orderItem->setTaxRate('10');
         }
 
         foreach ($this->Order->getTaxableItems() as $orderItem) {
-            $orderItem->setTaxRate(50);
+            $orderItem->setTaxRate('50');
         }
 
         $result = $this->validator->execute($this->Order, new PurchaseContext($CloneOrder));
 
-        self::assertTrue($result->isWarning());
+        $this->assertTrue($result->isWarning());
     }
 }

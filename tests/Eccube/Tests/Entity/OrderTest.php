@@ -114,7 +114,7 @@ class OrderTest extends EccubeTestCase
         $this->actual = $Order->getDeliveryFeeTotal();
         $this->verify();
 
-        $this->assertNull($Order->getOrderStatus());
+        $this->assertNotInstanceOf(OrderStatus::class, $Order->getOrderStatus());
     }
 
     public function testGetSaleTypes()
@@ -193,10 +193,10 @@ class OrderTest extends EccubeTestCase
     public function testGetTaxableItems()
     {
         $Order = $this->createTestOrder();
-        self::assertCount(7, $Order->getTaxableItems());
+        $this->assertCount(7, $Order->getTaxableItems());
         /** @var OrderItem $Item */
         foreach ($Order->getTaxableItems() as $Item) {
-            self::assertSame(TaxType::TAXATION, $Item->getTaxType()->getId());
+            $this->assertSame(TaxType::TAXATION, $Item->getTaxType()->getId());
         }
     }
 
@@ -206,7 +206,7 @@ class OrderTest extends EccubeTestCase
     public function testGetTaxableTotal()
     {
         $Order = $this->createTestOrder();
-        self::assertSame('790187.00', $Order->getTaxableTotal());
+        $this->assertSame('790187.00', $Order->getTaxableTotal());
     }
 
     /**
@@ -215,13 +215,13 @@ class OrderTest extends EccubeTestCase
     public function testGetTaxableTotalByTaxRate()
     {
         $Order = $this->createTestOrder();
-        self::assertSame(['10' => '724431.00', '8' => '65756.00'], $Order->getTaxableTotalByTaxRate());
+        $this->assertSame(['10' => '724431.00', '8' => '65756.00'], $Order->getTaxableTotalByTaxRate());
     }
 
     public function testGetTaxableDiscountItems()
     {
         $Order = $this->createTestOrder();
-        self::assertCount(2, $Order->getTaxableDiscountItems());
+        $this->assertCount(2, $Order->getTaxableDiscountItems());
     }
 
     /**
@@ -230,16 +230,16 @@ class OrderTest extends EccubeTestCase
     public function testGetTaxableDiscount()
     {
         $Order = $this->createTestOrder();
-        self::assertSame('-94694.00', $Order->getTaxableDiscount());
+        $this->assertSame('-94694.00', $Order->getTaxableDiscount());
     }
 
     public function testGetTaxFreeDiscountItems()
     {
         $Order = $this->createTestOrder();
-        self::assertCount(2, $Order->getTaxFreeDiscountItems());
+        $this->assertCount(2, $Order->getTaxFreeDiscountItems());
         /** @var OrderItem $Item */
         foreach ($Order->getTaxFreeDiscountItems() as $Item) {
-            self::assertNotSame(TaxType::TAXATION, $Item->getTaxType()->getId());
+            $this->assertNotSame(TaxType::TAXATION, $Item->getTaxType()->getId());
         }
     }
 
@@ -250,7 +250,7 @@ class OrderTest extends EccubeTestCase
     {
         $Order = $this->createTestOrder();
 
-        self::assertSame('-7159.00', $Order->getTaxFreeDiscount());
+        $this->assertSame('-7159.00', $Order->getTaxFreeDiscount());
     }
 
     /**
@@ -260,8 +260,8 @@ class OrderTest extends EccubeTestCase
     {
         $Order = $this->createTestOrder();
 
-        self::assertSame('65160', $Order->getTotalByTaxRate()['8'], '8%対象値引き後合計');
-        self::assertSame('717868', $Order->getTotalByTaxRate()['10'], '10%対象値引き後合計');
+        $this->assertSame('65160', $Order->getTotalByTaxRate()['8'], '8%対象値引き後合計');
+        $this->assertSame('717868', $Order->getTotalByTaxRate()['10'], '10%対象値引き後合計');
     }
 
     /**
@@ -271,8 +271,8 @@ class OrderTest extends EccubeTestCase
     {
         $Order = $this->createTestOrder();
 
-        self::assertSame('4827', $Order->getTaxByTaxRate()['8'], '8%対象値引き後消費税額');
-        self::assertSame('65261', $Order->getTaxByTaxRate()['10'], '10%対象値引き後消費税額');
+        $this->assertSame('4827', $Order->getTaxByTaxRate()['8'], '8%対象値引き後消費税額');
+        $this->assertSame('65261', $Order->getTaxByTaxRate()['10'], '10%対象値引き後消費税額');
     }
 
     protected function createTestOrder()

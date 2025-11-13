@@ -34,10 +34,10 @@ class NavCompilerPassTest extends EccubeTestCase
         $eccubeNav = $container->getParameter('eccube_nav');
 
         // DefaultNavの全要素が含まれている
-        self::assertSame(DefaultNav::getNav(), $eccubeNav);
+        $this->assertSame(DefaultNav::getNav(), $eccubeNav);
 
         // DefaultNav以外の要素が含まれていない
-        self::assertSame(DefaultNav::getNav(), $eccubeNav);
+        $this->assertSame(DefaultNav::getNav(), $eccubeNav);
     }
 
     /**
@@ -60,7 +60,7 @@ class NavCompilerPassTest extends EccubeTestCase
         $eccubeNav = $container->getParameter('eccube_nav');
 
         // AddNavの全要素が含まれている
-        self::assertSame($expected, $eccubeNav);
+        $this->assertSame($expected, $eccubeNav);
     }
 
     public static function addNavProvider()
@@ -88,10 +88,10 @@ class NavCompilerPassTest extends EccubeTestCase
         $eccubeNav = $container->getParameter('eccube_nav');
 
         // DefaultNavから変更されている
-        self::assertNotEquals(DefaultNav::getNav(), $eccubeNav);
+        $this->assertNotEquals(DefaultNav::getNav(), $eccubeNav);
 
         // UpdateNavの全要素が含まれている
-        self::assertSame(UpdateNav::getExpect(), $eccubeNav);
+        $this->assertSame(UpdateNav::getExpect(), $eccubeNav);
     }
 
     public function createContainer(): ContainerBuilder

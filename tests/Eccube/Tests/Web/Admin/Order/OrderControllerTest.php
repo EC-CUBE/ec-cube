@@ -126,6 +126,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
     public function testSearchOrderByOrderNo()
     {
         $Order = $this->orderRepository->findOneBy([]);
+        $this->assertInstanceOf(Order::class, $Order);
 
         $crawler = $this->client->request(
             Request::METHOD_POST, $this->generateUrl('admin_order'), [
@@ -159,6 +160,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
     public function testSearchOrderByName()
     {
         $Order = $this->orderRepository->findOneBy([]);
+        $this->assertInstanceOf(Order::class, $Order);
         $companyName = $Order->getCompanyName();
         $OrderList = $this->orderRepository->findBy(['company_name' => $companyName]);
         $cnt = count($OrderList);
@@ -359,19 +361,17 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $result = $this->orderRepository->findBy(['id' => $orderIds, 'OrderStatus' => $OrderStatus]);
         if ($orderStatusId == OrderStatus::PAID) {
             foreach ($result as $Order) {
-                $this->assertNotNull($Order->getPaymentDate());
+                $this->assertInstanceOf(\DateTime::class, $Order->getPaymentDate());
             }
         }
 
-        $this->assertSame(count($orderIds), count($result));
+        $this->assertCount(count($orderIds), $result);
     }
 
-    public static function dataBulkOrderStatusProvider(): array
+    public static function dataBulkOrderStatusProvider(): \Iterator
     {
-        return [
-            [OrderStatus::PAID],
-            [OrderStatus::DELIVERED],
-        ];
+        yield [OrderStatus::PAID];
+        yield [OrderStatus::DELIVERED];
     }
 
     public function testBulkOrderStatusInvalidMethod()
@@ -394,6 +394,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
     public function testBulkOrderStatusInvalidStatus()
     {
         $Order = $this->orderRepository->findOneBy([]);
+        $this->assertInstanceOf(Order::class, $Order);
         $Shipping = $Order->getShippings()->first();
         $this->client->request(
             Request::METHOD_PUT,
@@ -461,7 +462,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
                 /** @var Email $Message */
                 $Message = $this->getMailerMessage(0);
 
-                $this->assertStringContainsString('商品出荷のお知らせ', $Message->getSubject());
+                $this->assertStringContainsString('商品出荷のお知らせ', (string) $Message->getSubject());
                 $this->assertEquals($Order->getEmail(), $Message->getTo()[0]->getAddress());
             }
         }
@@ -470,17 +471,18 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         foreach ($result as $Order) {
             $Shippings = $Order->getShippings();
             foreach ($Shippings as $Shipping) {
-                $this->assertNotNull($Shipping->getShippingDate());
-                $this->assertNotNull($Shipping->getMailSendDate());
+                $this->assertInstanceOf(\DateTime::class, $Shipping->getShippingDate());
+                $this->assertInstanceOf(\DateTime::class, $Shipping->getMailSendDate());
             }
         }
 
-        $this->assertSame(count($orderIds), count($result));
+        $this->assertCount(count($orderIds), $result);
     }
 
     public function testUpdateTrackingNumber()
     {
         $Order = $this->orderRepository->findOneBy([]);
+        $this->assertInstanceOf(Order::class, $Order);
         $Shipping = $Order->getShippings()->first();
         $this->client->request(
             Request::METHOD_PUT,
@@ -507,6 +509,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
     public function testUpdateTrackingNumberFailure()
     {
         $Order = $this->orderRepository->findOneBy([]);
+        $this->assertInstanceOf(Order::class, $Order);
         $Shipping = $Order->getShippings()->first();
         $this->client->request(
             Request::METHOD_PUT,

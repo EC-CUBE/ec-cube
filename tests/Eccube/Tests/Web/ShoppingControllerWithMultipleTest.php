@@ -144,6 +144,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
 
         $OrderNew = $this->orderStatusRepository->find(OrderStatus::NEW);
         $this->expected = $OrderNew;
+        $this->assertInstanceOf(Order::class, $Order);
         $this->actual = $Order->getOrderStatus();
         $this->verify();
 
@@ -233,6 +234,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
 
         $Order = $this->orderRepository->findOneBy(['Customer' => $Customer]);
+        $this->assertInstanceOf(Order::class, $Order);
 
         // One shipping
         $this->assertCount(1, $Order->getShippings());
@@ -296,6 +298,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
 
         $Order = $this->orderRepository->findOneBy(['Customer' => $Customer]);
+        $this->assertInstanceOf(Order::class, $Order);
 
         // One shipping
         $this->assertCount(1, $Order->getShippings());
@@ -387,6 +390,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
 
         $Order = $this->orderRepository->findOneBy(['Customer' => $Customer]);
+        $this->assertInstanceOf(Order::class, $Order);
         $Order->getShippings();
 
         // One shipping
@@ -475,6 +479,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
 
         $Order = $this->orderRepository->findOneBy(['Customer' => $Customer]);
+        $this->assertInstanceOf(Order::class, $Order);
 
         // Two shipping
         $this->assertCount(2, $Order->getShippings());
@@ -569,6 +574,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
 
         $Order = $this->orderRepository->findOneBy(['Customer' => $Customer]);
+        $this->assertInstanceOf(Order::class, $Order);
 
         // Two shipping
         $this->assertCount(2, $Order->getShippings());
@@ -676,6 +682,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
 
         $Order = $this->orderRepository->findOneBy(['Customer' => $Customer]);
+        $this->assertInstanceOf(Order::class, $Order);
 
         // One shipping
         $this->assertCount(1, $Order->getShippings());
@@ -786,6 +793,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
 
         $Order = $this->orderRepository->findOneBy(['Customer' => $Customer]);
+        $this->assertInstanceOf(Order::class, $Order);
 
         // Two shipping
         $this->assertCount(2, $Order->getShippings());
@@ -898,6 +906,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
 
         $Order = $this->orderRepository->findOneBy(['Customer' => $Customer]);
+        $this->assertInstanceOf(Order::class, $Order);
 
         // Three shipping
         $this->assertCount(3, $Order->getShippings());
@@ -1136,6 +1145,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
 
         $Order = $this->orderRepository->findOneBy(['Customer' => $Customer]);
+        $this->assertInstanceOf(Order::class, $Order);
         $Shipping = $Order->getShippings();
 
         // Three shipping
@@ -1218,6 +1228,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
 
         $Order = $this->orderRepository->findOneBy(['Customer' => $Customer]);
+        $this->assertInstanceOf(Order::class, $Order);
         $Shipping = $Order->getShippings();
 
         // still only one shipping
@@ -1230,7 +1241,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
 
         // item number on the screen
         $shipping = $crawler->filter('#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div.ec-orderDelivery__item > ul')->text();
-        $this->assertStringContainsString('× 3', $shipping);
+        $this->assertStringContainsString('× 3', (string) $shipping);
 
         $deliver = $crawler->filter('#shopping_order_Shippings_0_Delivery > option')->each(
             fn ($node, $i) => $node->text()
@@ -1238,7 +1249,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
 
         $this->expected = 'サンプル業者';
         $this->actual = $deliver;
-        $this->assertTrue(in_array($this->expected, $this->actual));
+        $this->assertContains($this->expected, $this->actual);
 
         // 完了画面
         $this->scenarioComplete(

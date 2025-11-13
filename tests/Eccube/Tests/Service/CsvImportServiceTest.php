@@ -110,7 +110,7 @@ class CsvImportServiceTest extends AbstractServiceTestCase
     {
         $file = new \SplFileObject(__DIR__.'/../../../Fixtures/data_no_column_headers.csv');
         $CsvImportService = new CsvImportService($file);
-        $this->assertSame(3, $CsvImportService->count());
+        $this->assertCount(3, $CsvImportService);
     }
 
     public function testCountWithHeaders()
@@ -118,7 +118,7 @@ class CsvImportServiceTest extends AbstractServiceTestCase
         $file = new \SplFileObject(__DIR__.'/../../../Fixtures/data_column_headers.csv');
         $CsvImportService = new CsvImportService($file);
         $CsvImportService->setHeaderRowNumber(0);
-        $this->assertSame(3, $CsvImportService->count(), 'Row count should not include header');
+        $this->assertCount(3, $CsvImportService, 'Row count should not include header');
     }
 
     public function testCountDoesNotMoveFilePointer()
@@ -199,7 +199,7 @@ class CsvImportServiceTest extends AbstractServiceTestCase
             .",1,1,\"11テスト機構\",2800,100,\n"
             .',1,1,"12テスト機構",2800,100,';
 
-        self::assertSame($expected, $actual);
+        $this->assertSame($expected, $actual);
     }
 
     protected function getReader($filename)

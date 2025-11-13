@@ -57,7 +57,8 @@ class TagControllerTest extends AbstractAdminWebTestCase
 
         $this->expected = 6;
         $Tag = $this->TagRepo->find(3);
-        $this->entityManager->refresh($Tag); // Refresh しないとリクエストの値(string)が入ってしまう
+        $this->entityManager->refresh($Tag);
+        $this->assertInstanceOf(Tag::class, $Tag); // Refresh しないとリクエストの値(string)が入ってしまう
         $this->actual = $Tag->getSortNo();
         $this->verify();
     }
@@ -91,6 +92,7 @@ class TagControllerTest extends AbstractAdminWebTestCase
         $formData = $this->createFormData();
 
         $Item = $this->TagRepo->find(1);
+        $this->assertInstanceOf(Tag::class, $Item);
 
         $this->client->request(Request::METHOD_POST,
             $this->generateUrl('admin_product_tag'),
@@ -109,6 +111,7 @@ class TagControllerTest extends AbstractAdminWebTestCase
     public function testEditInvalid()
     {
         $Item = $this->TagRepo->find(1);
+        $this->assertInstanceOf(Tag::class, $Item);
 
         $crawler = $this->client->request(Request::METHOD_POST,
             $this->generateUrl('admin_product_tag'),
@@ -140,7 +143,7 @@ class TagControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirection());
 
         $Item = $this->TagRepo->find($TagId);
-        $this->assertNull($Item);
+        $this->assertNotInstanceOf(Tag::class, $Item);
     }
 
     public function testDeleteFailNotFound()
@@ -161,11 +164,9 @@ class TagControllerTest extends AbstractAdminWebTestCase
         ];
     }
 
-    public static function dataSubmitProvider()
+    public static function dataSubmitProvider(): \Iterator
     {
-        return [
-            [false, false],
-            [true, true],
-        ];
+        yield [false, false];
+        yield [true, true];
     }
 }

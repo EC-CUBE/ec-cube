@@ -31,7 +31,7 @@ class PaymentTotalLimitValidatorTest extends EccubeTestCase
         $cart->setTotal(100);
 
         $result = $validator->execute($cart, new PurchaseContext());
-        self::assertFalse($result->isError());
+        $this->assertFalse($result->isError());
     }
 
     public function testCartValidateFail()
@@ -42,7 +42,7 @@ class PaymentTotalLimitValidatorTest extends EccubeTestCase
         $cart->setTotal(1001);
 
         $result = $validator->execute($cart, new PurchaseContext());
-        self::assertTrue($result->isError());
+        $this->assertTrue($result->isError());
     }
 
     public function testOrderValidate()
@@ -53,7 +53,7 @@ class PaymentTotalLimitValidatorTest extends EccubeTestCase
         $order->setTotal(100);
 
         $result = $validator->execute($order, new PurchaseContext());
-        self::assertFalse($result->isError());
+        $this->assertFalse($result->isError());
     }
 
     public function testOrderValidateFail()
@@ -64,7 +64,7 @@ class PaymentTotalLimitValidatorTest extends EccubeTestCase
         $order->setTotal(1001);
 
         $result = $validator->execute($order, new PurchaseContext());
-        self::assertTrue($result->isError());
+        $this->assertTrue($result->isError());
     }
 
     /**

@@ -17,6 +17,7 @@ use Eccube\Entity\BaseInfo;
 use Eccube\Entity\ClassCategory;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
+use Eccube\Entity\ProductStock;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\ProductRepository;
@@ -103,11 +104,13 @@ class ProductControllerTest extends AbstractWebTestCase
         $this->entityManager->flush($ClassCategory);
         // set 抹茶 rank
         $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => '抹茶']);
+        $this->assertInstanceOf(ClassCategory::class, $ClassCategory);
         $ClassCategory->setSortNo(2);
         $this->entityManager->persist($ClassCategory);
         $this->entityManager->flush($ClassCategory);
         // set バニラ rank
         $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => 'バニラ']);
+        $this->assertInstanceOf(ClassCategory::class, $ClassCategory);
         $ClassCategory->setSortNo(1);
         $this->entityManager->persist($ClassCategory);
         $this->entityManager->flush($ClassCategory);
@@ -135,9 +138,10 @@ class ProductControllerTest extends AbstractWebTestCase
         /** @var ProductClass $ProductClass */
         $ProductClass = $Product->getProductClasses()->first();
         $ProductClass->setStockUnlimited(false);
-        $ProductClass->setStock(0);
+        $ProductClass->setStock('0');
         $ProductStock = $ProductClass->getProductStock();
-        $ProductStock->setStock(0);
+        $this->assertInstanceOf(ProductStock::class, $ProductStock);
+        $ProductStock->setStock('0');
         $this->entityManager->flush();
         $id = $Product->getId();
         $user = $this->createCustomer();
@@ -162,8 +166,8 @@ class ProductControllerTest extends AbstractWebTestCase
 
         // Case 2: after add favorite check
         $html = $crawler->filter('div.ec-productRole__profile')->html();
-        $this->assertStringContainsString('ただいま品切れ中です', $html);
-        $this->assertStringContainsString('お気に入りに追加済です', $html);
+        $this->assertStringContainsString('ただいま品切れ中です', (string) $html);
+        $this->assertStringContainsString('お気に入りに追加済です', (string) $html);
     }
 
     /**
@@ -200,8 +204,8 @@ class ProductControllerTest extends AbstractWebTestCase
 
         // Case 4: after add favorite when 商品在庫>0
         $html = $crawler->filter('div.ec-productRole__profile')->html();
-        $this->assertStringContainsString('カートに入れる', $html);
-        $this->assertStringContainsString('お気に入りに追加済です', $html);
+        $this->assertStringContainsString('カートに入れる', (string) $html);
+        $this->assertStringContainsString('お気に入りに追加済です', (string) $html);
     }
 
     /**
@@ -248,7 +252,7 @@ class ProductControllerTest extends AbstractWebTestCase
         $crawler = $client->followRedirect();
 
         $html = $crawler->filter('div.ec-productRole__profile')->html();
-        $this->assertStringContainsString('お気に入りに追加済です', $html);
+        $this->assertStringContainsString('お気に入りに追加済です', (string) $html);
     }
 
     /**
@@ -260,7 +264,7 @@ class ProductControllerTest extends AbstractWebTestCase
         $json = json_decode(html_entity_decode($crawler->filter('script[type="application/ld+json"]')->html()));
         $this->assertSame('Product', $json->{'@type'});
         $this->assertSame('チェリーアイスサンド', $json->name);
-        $this->assertSame(3080.00, $json->offers->price);
+        $this->assertEqualsWithDelta(3080.00, $json->offers->price, PHP_FLOAT_EPSILON);
         $this->assertSame('InStock', $json->offers->availability);
 
         // 在庫なし商品のテスト
@@ -269,7 +273,8 @@ class ProductControllerTest extends AbstractWebTestCase
         $ProductClass->setStockUnlimited(false);
         $ProductClass->setStock(0);
         $ProductStock = $ProductClass->getProductStock();
-        $ProductStock->setStock(0);
+        $this->assertInstanceOf(ProductStock::class, $ProductStock);
+        $ProductStock->setStock('0');
         $this->entityManager->flush();
 
         $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('product_detail', ['id' => $Product->getId()]));
@@ -311,6 +316,7 @@ class ProductControllerTest extends AbstractWebTestCase
         $product = $this->productRepository->find(2);
         $description_detail = 'またそのなかでいっしょになったたくさんのひとたち、ファゼーロとロザーロ、羊飼のミーロや、顔の赤いこどもたち、地主のテーモ、山猫博士のボーガント・デストゥパーゴなど、いまこの暗い巨きな石の建物のなかで考えていると、みんなむかし風のなつかしい青い幻燈のように思われます。';
         $description_list = 'では、わたくしはいつかの小さなみだしをつけながら、しずかにあの年のイーハトーヴォの五月から十月までを書きつけましょう。';
+        $this->assertInstanceOf(Product::class, $product);
 
         // 商品に description_list と description_detail を設定
         //  → meta descriotion には description_listが設定される
@@ -358,7 +364,8 @@ class ProductControllerTest extends AbstractWebTestCase
         $ProductClass->setStockUnlimited(false);
         $ProductClass->setStock(0);
         $ProductStock = $ProductClass->getProductStock();
-        $ProductStock->setStock(0);
+        $this->assertInstanceOf(ProductStock::class, $ProductStock);
+        $ProductStock->setStock('0');
         $this->entityManager->flush();
 
         $crawler = $this->client->request(Request::METHOD_GET, $productUrl);

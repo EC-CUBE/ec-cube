@@ -27,28 +27,26 @@ class Step5TypeTest extends AbstractTypeTestCase
      *
      * 正常系のデータパターンを返す
      */
-    public static function getValidTestData(): array
+    public static function getValidTestData(): \Iterator
     {
-        return [
+        yield [
             [
-                'data' => [
-                    'no_update' => true,
-                ],
+                'no_update' => true,
             ],
+        ];
+        yield [
             [
-                'data' => [
-                    'no_update' => false,
-                ],
+                'no_update' => false,
             ],
+        ];
+        yield [
             [
-                'data' => [
-                    'no_update' => null,
-                ],
+                'no_update' => null,
             ],
+        ];
+        yield [
             [
-                'data' => [
-                    'no_update' => '',
-                ],
+                'no_update' => '',
             ],
         ];
     }

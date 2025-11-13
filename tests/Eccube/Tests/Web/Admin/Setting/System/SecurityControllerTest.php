@@ -79,7 +79,7 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
         $this->expected = 'admin.setting.system.security.admin_url_changed';
         $this->verify();
 
-        self::assertMatchesRegularExpression('/ECCUBE_ADMIN_ROUTE='.$formData['admin_route_dir'].'/', file_get_contents($this->envFile));
+        $this->assertMatchesRegularExpression('/ECCUBE_ADMIN_ROUTE='.$formData['admin_route_dir'].'/', file_get_contents($this->envFile));
     }
 
     /**
@@ -103,10 +103,10 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
             ]
         );
 
-        self::assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         $newEnv = file_exists($this->envFile) ? file_get_contents($this->envFile) : null;
-        self::assertSame($this->env, $newEnv);
+        $this->assertSame($this->env, $newEnv);
     }
 
     /**

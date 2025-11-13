@@ -28,7 +28,7 @@ class PaymentTotalNegativeValidatorTest extends EccubeTestCase
         $cart->setTotal(100);
 
         $result = $validator->execute($cart, new PurchaseContext());
-        self::assertTrue($result->isSuccess());
+        $this->assertTrue($result->isSuccess());
     }
 
     public function testNegativeValidate()
@@ -39,7 +39,7 @@ class PaymentTotalNegativeValidatorTest extends EccubeTestCase
         $cart->setTotal(-100);
 
         $result = $validator->execute($cart, new PurchaseContext());
-        self::assertTrue($result->isError());
+        $this->assertTrue($result->isError());
     }
 
     private function newValidator(): PaymentTotalNegativeValidator

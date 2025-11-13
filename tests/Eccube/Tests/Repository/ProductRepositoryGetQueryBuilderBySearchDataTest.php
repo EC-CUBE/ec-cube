@@ -125,15 +125,15 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
         $Products = $this->productRepository->findAll();
         $Products[0]->setName('りんご');
         foreach ($Products[0]->getProductClasses() as $ProductClass) {
-            $ProductClass->setPrice02(100);
+            $ProductClass->setPrice02('100');
         }
         $Products[1]->setName('アイス');
         foreach ($Products[1]->getProductClasses() as $ProductClass) {
-            $ProductClass->setPrice02(1000);
+            $ProductClass->setPrice02('1000');
         }
         $Products[2]->setName('お鍋');
         foreach ($Products[2]->getProductClasses() as $ProductClass) {
-            $ProductClass->setPrice02(10000);
+            $ProductClass->setPrice02('10000');
         }
         $this->entityManager->flush();
 
@@ -159,15 +159,15 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
         $Products = $this->productRepository->findAll();
         $Products[0]->setName('りんご');
         foreach ($Products[0]->getProductClasses() as $ProductClass) {
-            $ProductClass->setPrice02(100);
+            $ProductClass->setPrice02('100');
         }
         $Products[1]->setName('アイス');
         foreach ($Products[1]->getProductClasses() as $ProductClass) {
-            $ProductClass->setPrice02(1000);
+            $ProductClass->setPrice02('1000');
         }
         $Products[2]->setName('お鍋');
         foreach ($Products[2]->getProductClasses() as $ProductClass) {
-            $ProductClass->setPrice02(10000);
+            $ProductClass->setPrice02('10000');
         }
         $this->entityManager->flush();
 

@@ -64,9 +64,9 @@ class SaleLimitMultipleValidatorTest extends EccubeTestCase
 
     public function testInstance()
     {
-        self::assertInstanceOf(SaleLimitMultipleValidator::class, $this->validator);
-        self::assertSame($this->ProductClass, $this->OrderItem1->getProductClass());
-        self::assertSame($this->ProductClass, $this->OrderItem2->getProductClass());
+        $this->assertInstanceOf(SaleLimitMultipleValidator::class, $this->validator);
+        $this->assertSame($this->ProductClass, $this->OrderItem1->getProductClass());
+        $this->assertSame($this->ProductClass, $this->OrderItem2->getProductClass());
     }
 
     public function testNonLimit()
@@ -77,7 +77,7 @@ class SaleLimitMultipleValidatorTest extends EccubeTestCase
 
         try {
             $this->validator->validate($this->Order, new PurchaseContext());
-            self::assertTrue(true);
+            $this->assertTrue(true);
         } catch (InvalidItemException) {
             self::fail();
         }
@@ -91,7 +91,7 @@ class SaleLimitMultipleValidatorTest extends EccubeTestCase
 
         try {
             $this->validator->validate($this->Order, new PurchaseContext());
-            self::assertTrue(true);
+            $this->assertTrue(true);
         } catch (InvalidItemException) {
             self::fail();
         }

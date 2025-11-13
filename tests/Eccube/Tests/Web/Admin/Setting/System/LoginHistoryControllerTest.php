@@ -151,14 +151,12 @@ class LoginHistoryControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
-     * @return array[]
+     * @return \Iterator<(int | string), array<mixed>>
      */
-    public static function dataStatusProvider(): array
+    public static function dataStatusProvider(): \Iterator
     {
-        return [
-            [[LoginHistoryStatus::SUCCESS], 5],
-            [[LoginHistoryStatus::FAILURE], 5],
-            [[LoginHistoryStatus::SUCCESS, LoginHistoryStatus::FAILURE], 10],
-        ];
+        yield [[LoginHistoryStatus::SUCCESS], 5];
+        yield [[LoginHistoryStatus::FAILURE], 5];
+        yield [[LoginHistoryStatus::SUCCESS, LoginHistoryStatus::FAILURE], 10];
     }
 }

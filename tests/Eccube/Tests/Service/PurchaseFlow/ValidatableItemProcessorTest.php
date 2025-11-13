@@ -58,8 +58,8 @@ class ValidatableItemProcessorTest extends EccubeTestCase
         $item = new OrderItem();
 
         $result = $validator->execute($item, new PurchaseContext());
-        self::assertFalse($validator->handleCalled);
-        self::assertFalse($result->isError());
+        $this->assertFalse($validator->handleCalled);
+        $this->assertFalse($result->isError());
     }
 
     public function testValidateOrderFail()
@@ -68,8 +68,8 @@ class ValidatableItemProcessorTest extends EccubeTestCase
         $item = new OrderItem();
 
         $result = $validator->execute($item, new PurchaseContext());
-        self::assertTrue($validator->handleCalled);
-        self::assertTrue($result->isWarning());
+        $this->assertTrue($validator->handleCalled);
+        $this->assertTrue($result->isWarning());
     }
 }
 

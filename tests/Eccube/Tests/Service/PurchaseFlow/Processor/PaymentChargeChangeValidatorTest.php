@@ -42,7 +42,7 @@ class PaymentChargeChangeValidatorTest extends EccubeTestCase
     {
         $validator = new PaymentChargeChangeValidator();
 
-        self::assertInstanceOf(PaymentChargeChangeValidator::class, $validator);
+        $this->assertInstanceOf(PaymentChargeChangeValidator::class, $validator);
     }
 
     public function testValidateWithCart()
@@ -50,7 +50,7 @@ class PaymentChargeChangeValidatorTest extends EccubeTestCase
         $result = $this->validator->execute(new Cart(), new PurchaseContext());
 
         // カートの場合は何もしない.
-        self::assertTrue($result->isSuccess());
+        $this->assertTrue($result->isSuccess());
     }
 
     public function testValidateNoCharged()
@@ -61,7 +61,7 @@ class PaymentChargeChangeValidatorTest extends EccubeTestCase
 
         $result = $this->validator->execute($this->Order, new PurchaseContext($CloneOrder));
 
-        self::assertTrue($result->isSuccess());
+        $this->assertTrue($result->isSuccess());
     }
 
     public function testValidateChanged()
@@ -72,6 +72,6 @@ class PaymentChargeChangeValidatorTest extends EccubeTestCase
 
         $result = $this->validator->execute($this->Order, new PurchaseContext($CloneOrder));
 
-        self::assertTrue($result->isWarning());
+        $this->assertTrue($result->isWarning());
     }
 }

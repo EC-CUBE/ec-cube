@@ -159,6 +159,7 @@ class MemberTypeTest extends AbstractTypeTestCase
     {
         $Authority = $this->entityManager->getRepository(Authority::class)
             ->findOneBy([], ['id' => 'DESC']);
+        $this->assertInstanceOf(Authority::class, $Authority);
         $id = $Authority->getId() + 1;
 
         $this->formData['Authority'] = $id;
@@ -179,6 +180,7 @@ class MemberTypeTest extends AbstractTypeTestCase
     {
         $Work = $this->entityManager->getRepository(Work::class)
             ->findOneBy([], ['id' => 'DESC']);
+        $this->assertInstanceOf(Work::class, $Work);
         $id = $Work->getId() + 1;
 
         $this->formData['Work'] = $id;

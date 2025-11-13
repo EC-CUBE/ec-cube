@@ -27,13 +27,12 @@ class CacheUtilTest extends TestCase
 {
     private $app;
     private $root;
-    private $dirs;
 
     protected function setUp(): void
     {
         // 仮想ファイルを生成
         $this->root = vfsStream::setup('rootDir');
-        $this->dirs = ['doctrine', 'profiler', 'twig'];
+        $dirs = ['doctrine', 'profiler', 'twig'];
         $this->app = [
             'config' => [
                 'root_dir' => vfsStream::url('rootDir'),
@@ -42,7 +41,7 @@ class CacheUtilTest extends TestCase
         mkdir($this->app['config']['root_dir'].'/app/cache', 0777, true);
         file_put_contents($this->app['config']['root_dir'].'/app/cache/.gitkeep', 'test');
         // ランダムなファイルを生成しておく
-        foreach ($this->dirs as $dir) {
+        foreach ($dirs as $dir) {
             mkdir($this->app['config']['root_dir'].'/app/cache/'.$dir, 0777, true);
             $n = mt_rand(5, 10);
             for ($i = 0; $i < $n; $i++) {

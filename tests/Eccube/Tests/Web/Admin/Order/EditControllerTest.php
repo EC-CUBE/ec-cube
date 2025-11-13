@@ -148,6 +148,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_edit', ['id' => $Order->getId()])));
         $EditedCustomer = $this->customerRepository->find($Customer->getId());
         $this->expected = $Customer->getLastBuyDate();
+        $this->assertInstanceOf(Customer::class, $EditedCustomer);
         $this->actual = $EditedCustomer->getLastBuyDate();
         $this->verify();
     }
@@ -190,12 +191,12 @@ class EditControllerTest extends AbstractEditControllerTestCase
         // <div>タグから危険なid属性が削除されていることを確認する。
         // Find that dangerous id attributes are removed from <div> tags.
         $testNewsArea_notFoundTest = $crawler->filter('#dangerous-id');
-        $this->assertSame(0, $testNewsArea_notFoundTest->count());
+        $this->assertCount(0, $testNewsArea_notFoundTest);
 
         // 安全なclass属性が出力されているかどうかを確認する。
         // Find if classes (which are safe) have been outputted
         $testNewsArea = $crawler->filter('.safe_to_use_class');
-        $this->assertSame(1, $testNewsArea->count());
+        $this->assertCount(1, $testNewsArea);
 
         // 安全なHTMLが存在するかどうかを確認する
         // Find if the safe HTML exists
@@ -229,10 +230,12 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_edit', ['id' => $Order->getId()])));
 
         $EditedOrder = $this->orderRepository->find($Order->getId());
+        $this->assertInstanceOf(Order::class, $EditedOrder);
         $EditedCustomer = $this->customerRepository->find($EditedOrder->getCustomer()->getId());
         // decimal の値を反映させるために refresh する
         $this->entityManager->refresh($EditedOrder);
         $this->entityManager->refresh($EditedCustomer);
+        $this->assertInstanceOf(Order::class, $EditedOrder);
 
         // 顧客の購入回数と購入金額確認
         $totalPrice = $EditedOrder->getTotalPrice();
@@ -260,9 +263,10 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_edit', ['id' => $Order->getId()])));
 
         $EditedOrder = $this->orderRepository->find($Order->getId());
+        $this->assertInstanceOf(Order::class, $EditedOrder);
 
         // 顧客の購入回数と購入金額確認
-        $this->expected = bcadd((string) $totalPrice, (string) $EditedOrder->getTotalPrice(), 2);
+        $this->expected = bcadd($totalPrice, $EditedOrder->getTotalPrice(), 2);
         // XXX SQLite の場合、小数点以下の '.00' が省略されるため、bcadd() で正規化して比較する
         $this->actual = bcadd((string) $EditedOrder->getCustomer()->getBuyTotal(), '0', 2);
         $this->verify();
@@ -522,7 +526,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $savedOderId = preg_replace('/.*\/admin\/order\/(\d+)\/edit/', '$1', $url);
         $SavedOrder = $this->orderRepository->find($savedOderId);
 
-        $this->assertNotNull($SavedOrder);
+        $this->assertInstanceOf(Order::class, $SavedOrder);
         $this->expected = $this->Customer->getSex();
         $this->actual = $SavedOrder->getSex();
         $this->verify('会員の性別が保存されている');
@@ -558,7 +562,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $savedOderId = preg_replace('/.*\/admin\/order\/(\d+)\/edit/', '$1', $url);
         $SavedOrder = $this->orderRepository->find($savedOderId);
 
-        $this->assertNotNull($SavedOrder);
+        $this->assertInstanceOf(Order::class, $SavedOrder);
         $this->expected = $SavedOrder->getEmail();
         $this->actual = $formData['email'];
         $this->verify();
@@ -579,6 +583,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $formData = $this->createFormData($this->Customer, $this->Product);
         // まずお届け時間に何か指定する(便宜上、最初に取得できたものを利用)
         $Delivery = $this->entityManager->getRepository(Delivery::class)->find($formData['Shipping']['Delivery']);
+        $this->assertInstanceOf(Delivery::class, $Delivery);
         $DeliveryTime = $Delivery->getDeliveryTimes()[0];
         $delivery_time_id = $DeliveryTime->getId();
         $delivery_time = $DeliveryTime->getDeliveryTime();
@@ -595,6 +600,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_edit', ['id' => $Order->getId()])));
 
         $EditedOrder = $this->orderRepository->find($Order->getId());
+        $this->assertInstanceOf(Order::class, $EditedOrder);
         $EditedShipping = $EditedOrder->getShippings()[0];
 
         $this->expected = $delivery_time_id;
@@ -618,6 +624,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_edit', ['id' => $Order->getId()])));
 
         $EditedOrderafterEdit = $this->orderRepository->find($Order->getId());
+        $this->assertInstanceOf(Order::class, $EditedOrderafterEdit);
         $EditedShippingafterEdit = $EditedOrderafterEdit->getShippings()[0];
 
         $this->expected = null;
@@ -645,12 +652,12 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
         /** @var ProductClass $ProductClass */
         $ProductClass = $this->Product->getProductClasses()[0];
-        $ProductClass->setPrice02(1000);
+        $ProductClass->setPrice02('1000');
         $this->entityManager->persist($ProductClass);
 
         $TaxRule = new TaxRule();
-        $TaxRule->setTaxRate(8)
-            ->setTaxAdjust(0)
+        $TaxRule->setTaxRate('8')
+            ->setTaxAdjust('0')
             ->setRoundingType($RoundingType)
             ->setProduct($Product)
             ->setProductClass($ProductClass)
@@ -682,8 +689,8 @@ class EditControllerTest extends AbstractEditControllerTestCase
         // 税率が10%で登録されている
         /** @var Order $Order */
         $Order = $this->orderRepository->findBy([], ['create_date' => 'DESC'])[0];
-        self::assertSame('10', $Order->getProductOrderItems()[0]->getTaxRate());
-        self::assertSame('100.00', $Order->getProductOrderItems()[0]->getTax());
+        $this->assertSame('10', $Order->getProductOrderItems()[0]->getTaxRate());
+        $this->assertSame('100.00', $Order->getProductOrderItems()[0]->getTax());
     }
 
     public function testRoutingAdminOrderEditPostWithCustomerInfo()
@@ -714,9 +721,10 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_edit', ['id' => $Order->getId()])));
 
         $EditedOrder = $this->orderRepository->find($Order->getId());
-        $this->assertNull($EditedOrder->getSex());
-        $this->assertNull($EditedOrder->getJob());
-        $this->assertNull($EditedOrder->getBirth());
+        $this->assertInstanceOf(Order::class, $EditedOrder);
+        $this->assertNotInstanceOf(Sex::class, $EditedOrder->getSex());
+        $this->assertNotInstanceOf(Job::class, $EditedOrder->getJob());
+        $this->assertNotInstanceOf(\DateTime::class, $EditedOrder->getBirth());
     }
 
     /**

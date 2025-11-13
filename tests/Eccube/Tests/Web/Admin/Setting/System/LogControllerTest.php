@@ -115,19 +115,16 @@ class LogControllerTest extends AbstractAdminWebTestCase
         }
     }
 
-    public static function dataProvider(): array
+    public static function dataProvider(): \Iterator
     {
-        return [
-            // FIXME 以下のメッセージが翻訳されない
-            // https://github.com/symfony/validator/blob/4.4/Resources/translations/validators.ja.xlf#L270
-            ['', '', '入力されていません。'],
-            ['a', '', '有効な数値ではありません。'],
-            // [0, '', '1以上でなければなりません。'],
-            [0, '', ''],
-            [50000, '', ''],
-            [1.1, '', ''],
-            // [100001, '', '50000以下でなければなりません。'],
-        ];
+        // FIXME 以下のメッセージが翻訳されない
+        // https://github.com/symfony/validator/blob/4.4/Resources/translations/validators.ja.xlf#L270
+        yield ['', '', '入力されていません。'];
+        yield ['a', '', '有効な数値ではありません。'];
+        // [0, '', '1以上でなければなりません。'],
+        yield [0, '', ''];
+        yield [50000, '', ''];
+        yield [1.1, '', ''];
     }
 
     private function createTestFile($number)

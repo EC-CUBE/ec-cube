@@ -32,67 +32,65 @@ class PhoneNumberTypeTest extends AbstractTypeTestCase
      *
      * 正常系のデータパターンを返す
      */
-    public static function getValidTestData(): array
+    public static function getValidTestData(): \Iterator
     {
-        return [
+        yield [
             [
-                'data' => [
-                    'phone_number' => '012-345-6789',
-                ],
+                'phone_number' => '012-345-6789',
             ],
+        ];
+        yield [
             [
-                'data' => [
-                    'phone_number' => '1-345-6789',
-                ],
+                'phone_number' => '1-345-6789',
             ],
+        ];
+        yield [
             [
-                'data' => [
-                    'phone_number' => '012-34-6789',
-                ],
+                'phone_number' => '012-34-6789',
             ],
+        ];
+        yield [
             [
-                'data' => [
-                    'phone_number' => '012-34522-6789',
-                ],
+                'phone_number' => '012-34522-6789',
             ],
+        ];
+        yield [
             [
-                'data' => [
-                    'phone_number' => '01222-345-6789',
-                ],
+                'phone_number' => '01222-345-6789',
             ],
-            // 携帯,PHS
+        ];
+        // 携帯,PHS
+        yield [
             [
-                'data' => [
-                    'phone_number' => '012-3455-6789',
-                ],
+                'phone_number' => '012-3455-6789',
             ],
-            // フリーダイヤル
+        ];
+        // フリーダイヤル
+        yield [
             [
-                'data' => [
-                    'phone_number' => '0122-345-678',
-                ],
+                'phone_number' => '0122-345-678',
             ],
+        ];
+        yield [
             [
-                'data' => [
-                    'phone_number' => '０３-１２３４-５６７８',
-                ],
+                'phone_number' => '０３-１２３４-５６７８',
             ],
+        ];
+        yield [
             [
-                'data' => [
-                    'phone_number' => '０３-12345-12345',
-                ],
+                'phone_number' => '０３-12345-12345',
             ],
-            // 全部空はOK
+        ];
+        // 全部空はOK
+        yield [
             [
-                'data' => [
-                    'phone_number' => '',
-                ],
+                'phone_number' => '',
             ],
-            // max length
+        ];
+        // max length
+        yield [
             [
-                'data' => [
-                    'phone_number' => '01234567891011',
-                ],
+                'phone_number' => '01234567891011',
             ],
         ];
     }

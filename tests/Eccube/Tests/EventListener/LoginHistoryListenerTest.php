@@ -36,6 +36,7 @@ class LoginHistoryListenerTest extends AbstractWebTestCase
                 'user_name' => 'admin',
                 'Status' => LoginHistoryStatus::SUCCESS,
             ]);
+        $this->assertInstanceOf(LoginHistory::class, $LoginHistory);
 
         // $LoginHistoryの比較だと、RECURSIONが発生するため、IDの有無で確認
         $this->assertNotNull($LoginHistory->getId());
@@ -58,6 +59,6 @@ class LoginHistoryListenerTest extends AbstractWebTestCase
                 'Status' => LoginHistoryStatus::FAILURE,
             ]);
 
-        $this->assertNotNull($LoginHistory);
+        $this->assertInstanceOf(LoginHistory::class, $LoginHistory);
     }
 }

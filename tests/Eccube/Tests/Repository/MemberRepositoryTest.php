@@ -115,6 +115,7 @@ class MemberRepositoryTest extends EccubeTestCase
 
         // verify
         $member = $this->memberRepo->findOneBy(['login_id' => 'member-100']);
+        $this->assertInstanceOf(Member::class, $member);
         $this->actual = $member->getPassword();
         $this->expected = $Member->getPassword();
         $this->verify();
@@ -149,7 +150,7 @@ class MemberRepositoryTest extends EccubeTestCase
         $this->memberRepo->delete($Member);
 
         $Member = $this->memberRepo->find($id);
-        $this->assertNull($Member);
+        $this->assertNotInstanceOf(Member::class, $Member);
     }
 
     public function testDeleteWithException()
@@ -180,6 +181,6 @@ class MemberRepositoryTest extends EccubeTestCase
 
         // 削除できることを確認
         $this->memberRepo->delete($Member1);
-        self::assertNull($Member1->getId());
+        $this->assertNull($Member1->getId());
     }
 }

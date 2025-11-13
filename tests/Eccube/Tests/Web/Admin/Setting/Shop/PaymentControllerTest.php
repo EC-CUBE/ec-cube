@@ -89,6 +89,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
     public function testRoutingEdit()
     {
         $Payment = $this->paymentRepository->find(1);
+        $this->assertInstanceOf(Payment::class, $Payment);
         $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_shop_payment_edit', ['id' => $Payment->getId()]));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
@@ -123,9 +124,9 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
         $Member = $this->createMember();
         $Payment = new Payment();
         $Payment->setMethod('testDeleteSuccess')
-            ->setCharge(0)
-            ->setRuleMin(0)
-            ->setRuleMax(9999)
+            ->setCharge('0')
+            ->setRuleMin('0')
+            ->setRuleMax('9999')
             ->setCreator($Member)
             ->setVisible(true);
 
@@ -140,7 +141,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirection());
 
         $Payment = $this->paymentRepository->find($pid);
-        $this->assertNull($Payment);
+        $this->assertNotInstanceOf(Payment::class, $Payment);
     }
 
     public function testDeleteFailNotFound()
@@ -173,6 +174,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
         $formData = $this->createFormData();
         $formData['payment_image'] = 'new_image.png';
         $Payment = $this->paymentRepository->find(1);
+        $this->assertInstanceOf(Payment::class, $Payment);
 
         $this->client->request(Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop_payment_edit', ['id' => $Payment->getId()]),
@@ -210,6 +212,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
         $formData = $this->createFormData();
         $formData['payment_image'] = '../temp_image/new_image.png';
         $Payment = $this->paymentRepository->find(1);
+        $this->assertInstanceOf(Payment::class, $Payment);
 
         $this->client->request(Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop_payment_edit', ['id' => $Payment->getId()]),
@@ -287,13 +290,10 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
         ];
     }
 
-    public static function dataSubmitProvider()
+    public static function dataSubmitProvider(): \Iterator
     {
-        return [
-            [false, false],
-            [true, true],
-            // To do implement
-        ];
+        yield [false, false];
+        yield [true, true];
     }
 
     //    TO DO : implement

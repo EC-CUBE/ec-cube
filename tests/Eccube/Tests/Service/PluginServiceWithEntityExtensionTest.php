@@ -98,7 +98,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
         $this->service->install($fileA);
 
         // Proxyは生成されない
-        self::assertFalse(file_exists(static::getContainer()->getParameter('kernel.project_dir').'/app/proxy/entity/Customer.php'));
+        $this->assertFileDoesNotExist(static::getContainer()->getParameter('kernel.project_dir').'/app/proxy/entity/Customer.php');
     }
 
     /**

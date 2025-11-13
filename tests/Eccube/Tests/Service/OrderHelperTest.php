@@ -50,7 +50,7 @@ class OrderHelperTest extends EccubeTestCase
         $Customer->setName01('hoge');
 
         $this->helper->updateCustomerInfo($Order, $Customer);
-        self::assertNull($Order->getName01());
+        $this->assertNull($Order->getName01());
     }
 
     /**
@@ -66,8 +66,8 @@ class OrderHelperTest extends EccubeTestCase
         $Customer->setName01('hoge');
 
         $this->helper->updateCustomerInfo($Order, $Customer);
-        self::assertNotNull($Order->getName01());
-        self::assertSame($Order->getName01(), $Customer->getName01());
+        $this->assertNotNull($Order->getName01());
+        $this->assertSame($Order->getName01(), $Customer->getName01());
     }
 
     /**
@@ -81,10 +81,10 @@ class OrderHelperTest extends EccubeTestCase
     {
         $TaxDisplayType = $this->entityManager->find(TaxDisplayType::class, $TaxDisplayType);
 
-        self::assertSame($this->helper->getTaxDisplayType($OrderItemType), $TaxDisplayType);
+        $this->assertSame($this->helper->getTaxDisplayType($OrderItemType), $TaxDisplayType);
     }
 
-    public static function taxDisplayTypeProvider()
+    public static function taxDisplayTypeProvider(): \Iterator
     {
         // - 商品: 税抜
         // - 送料: 税込
@@ -92,13 +92,11 @@ class OrderHelperTest extends EccubeTestCase
         // - 値引き: 税抜
         // - 税: 税抜
         // - ポイント値引き: 税込
-        return [
-            [OrderItemType::PRODUCT, TaxDisplayType::EXCLUDED],
-            [OrderItemType::DELIVERY_FEE, TaxDisplayType::INCLUDED],
-            [OrderItemType::CHARGE, TaxDisplayType::INCLUDED],
-            [OrderItemType::DISCOUNT, TaxDisplayType::EXCLUDED],
-            [OrderItemType::TAX, TaxDisplayType::EXCLUDED],
-            [OrderItemType::POINT, TaxDisplayType::INCLUDED],
-        ];
+        yield [OrderItemType::PRODUCT, TaxDisplayType::EXCLUDED];
+        yield [OrderItemType::DELIVERY_FEE, TaxDisplayType::INCLUDED];
+        yield [OrderItemType::CHARGE, TaxDisplayType::INCLUDED];
+        yield [OrderItemType::DISCOUNT, TaxDisplayType::EXCLUDED];
+        yield [OrderItemType::TAX, TaxDisplayType::EXCLUDED];
+        yield [OrderItemType::POINT, TaxDisplayType::INCLUDED];
     }
 }

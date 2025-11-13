@@ -418,22 +418,20 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
      * - tomorrow: 明日の00:00:00
      * - yesterday: 昨日の00:00:00
      */
-    public static function dataFormDateProvider(): array
+    public static function dataFormDateProvider(): \Iterator
     {
-        return [
-            ['order_date_start', 'today', 2],
-            ['order_date_start', 'tomorrow', 0],
-            ['payment_date_start', 'today', 1, OrderStatus::PAID],
-            ['payment_date_start', 'tomorrow', 0, OrderStatus::PAID],
-            ['update_date_start', 'today', 2],
-            ['update_date_start', 'tomorrow', 0],
-            ['order_date_end', 'today', 2],
-            ['order_date_end', 'yesterday', 0],
-            ['payment_date_end', 'today', 1, OrderStatus::PAID],
-            ['payment_date_end', 'yesterday', 0, OrderStatus::PAID],
-            ['update_date_end', 'today', 2],
-            ['update_date_end', 'yesterday', 0],
-        ];
+        yield ['order_date_start', 'today', 2];
+        yield ['order_date_start', 'tomorrow', 0];
+        yield ['payment_date_start', 'today', 1, OrderStatus::PAID];
+        yield ['payment_date_start', 'tomorrow', 0, OrderStatus::PAID];
+        yield ['update_date_start', 'today', 2];
+        yield ['update_date_start', 'tomorrow', 0];
+        yield ['order_date_end', 'today', 2];
+        yield ['order_date_end', 'yesterday', 0];
+        yield ['payment_date_end', 'today', 1, OrderStatus::PAID];
+        yield ['payment_date_end', 'yesterday', 0, OrderStatus::PAID];
+        yield ['update_date_end', 'today', 2];
+        yield ['update_date_end', 'yesterday', 0];
     }
 
     #[DataProvider(methodName: 'dataFormDateTimeProvider')]
@@ -458,22 +456,20 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
     /**
      * Data provider datetime form test.
      */
-    public static function dataFormDateTimeProvider(): array
+    public static function dataFormDateTimeProvider(): \Iterator
     {
-        return [
-            ['order_datetime_start', '- 1 hour', 2],
-            ['order_datetime_start', '+ 1 hour', 0],
-            ['payment_datetime_start', '- 1 hour', 1, OrderStatus::PAID],
-            ['payment_datetime_start', '+ 1 hour', 0, OrderStatus::PAID],
-            ['update_datetime_start', '- 1 hour', 2],
-            ['update_datetime_start', '+ 1 hour', 0],
-            ['order_datetime_end', '+ 1 hour', 2],
-            ['order_datetime_end', '- 1 hour', 0],
-            ['payment_datetime_end', '+ 1 hour', 1, OrderStatus::PAID],
-            ['payment_datetime_end', '- 1 hour', 0, OrderStatus::PAID],
-            ['update_datetime_end', '+ 1 hour', 2],
-            ['update_datetime_end', '- 1 hour', 0],
-        ];
+        yield ['order_datetime_start', '- 1 hour', 2];
+        yield ['order_datetime_start', '+ 1 hour', 0];
+        yield ['payment_datetime_start', '- 1 hour', 1, OrderStatus::PAID];
+        yield ['payment_datetime_start', '+ 1 hour', 0, OrderStatus::PAID];
+        yield ['update_datetime_start', '- 1 hour', 2];
+        yield ['update_datetime_start', '+ 1 hour', 0];
+        yield ['order_datetime_end', '+ 1 hour', 2];
+        yield ['order_datetime_end', '- 1 hour', 0];
+        yield ['payment_datetime_end', '+ 1 hour', 1, OrderStatus::PAID];
+        yield ['payment_datetime_end', '- 1 hour', 0, OrderStatus::PAID];
+        yield ['update_datetime_end', '+ 1 hour', 2];
+        yield ['update_datetime_end', '- 1 hour', 0];
     }
 
     public function testPaymentTotalStart()
@@ -567,14 +563,12 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
     /**
      * Data for case check Payment.
      */
-    public static function dataPaymentProvider(): array
+    public static function dataPaymentProvider(): \Iterator
     {
-        return [
-            [[1], 1],
-            [[1, 2], 2],
-            [[2, 3], 1],
-            [[3], 0],
-        ];
+        yield [[1], 1];
+        yield [[1, 2], 2];
+        yield [[2, 3], 1];
+        yield [[3], 0];
     }
 
     public function testCompanyName()
@@ -641,14 +635,12 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
     /**
      * Data for case check shipping mail.
      */
-    public static function dataShippingMailProvider(): array
+    public static function dataShippingMailProvider(): \Iterator
     {
-        return [
-            [[], 2],
-            [[Shipping::SHIPPING_MAIL_SENT], 1],
-            [[Shipping::SHIPPING_MAIL_UNSENT], 1],
-            [[Shipping::SHIPPING_MAIL_SENT, Shipping::SHIPPING_MAIL_UNSENT], 2],
-        ];
+        yield [[], 2];
+        yield [[Shipping::SHIPPING_MAIL_SENT], 1];
+        yield [[Shipping::SHIPPING_MAIL_UNSENT], 1];
+        yield [[Shipping::SHIPPING_MAIL_SENT, Shipping::SHIPPING_MAIL_UNSENT], 2];
     }
 
     /**

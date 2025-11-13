@@ -49,6 +49,6 @@ class ConvertLineFeedFilterTest extends TestCase
         $expected = "あいうえお\n"
             ."かきくけこ\n"
             ."さしすせそ\n";
-        self::assertSame($expected, $actual);
+        $this->assertSame($expected, $actual);
     }
 }

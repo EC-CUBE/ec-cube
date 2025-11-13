@@ -140,6 +140,7 @@ class AuthorityControllerTest extends AbstractAdminWebTestCase
 
         $this->expected = $form[0]['deny_url'];
         $AuthorityRole = $this->authorityRoleRepository->findOneBy(['deny_url' => $form[0]['deny_url']]);
+        $this->assertInstanceOf(AuthorityRole::class, $AuthorityRole);
         $this->actual = $AuthorityRole->getDenyUrl();
         $this->verify();
     }

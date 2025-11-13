@@ -40,10 +40,10 @@ class PluginPassTest extends TestCase
         $this->containerBuilder->compile();
 
         $def = $this->containerBuilder->getDefinition(\Plugin\Sample\TestClass::class);
-        self::assertTrue($def->hasTag('test_tag'));
+        $this->assertTrue($def->hasTag('test_tag'));
 
         $def = $this->containerBuilder->getDefinition(\Plugin\SamplePayment\TestClass::class);
-        self::assertTrue($def->hasTag('test_tag'));
+        $this->assertTrue($def->hasTag('test_tag'));
     }
 
     public function testSampleDisabled()
@@ -54,9 +54,9 @@ class PluginPassTest extends TestCase
 
         $def = $this->containerBuilder->getDefinition(\Plugin\Sample\TestClass::class);
 
-        self::assertFalse($def->hasTag('test_tag'), 'Sampleはタグが外れる');
+        $this->assertFalse($def->hasTag('test_tag'), 'Sampleはタグが外れる');
         $def = $this->containerBuilder->getDefinition(\Plugin\SamplePayment\TestClass::class);
-        self::assertTrue($def->hasTag('test_tag'), 'SamplePaymentは残っているはず');
+        $this->assertTrue($def->hasTag('test_tag'), 'SamplePaymentは残っているはず');
     }
 }
 

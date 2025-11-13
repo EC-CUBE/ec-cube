@@ -66,18 +66,16 @@ class SearchOrderTypeTest extends AbstractTypeTestCase
     /**
      * Data provider date form test.
      */
-    public static function dataFormDateProvider(): array
+    public static function dataFormDateProvider(): \Iterator
     {
-        return [
-            ['order_date_start'],
-            ['payment_date_start'],
-            ['update_date_start'],
-            ['shipping_delivery_date_start'],
-            ['order_date_end'],
-            ['payment_date_end'],
-            ['update_date_end'],
-            ['shipping_delivery_date_end'],
-        ];
+        yield ['order_date_start'];
+        yield ['payment_date_start'];
+        yield ['update_date_start'];
+        yield ['shipping_delivery_date_start'];
+        yield ['order_date_end'];
+        yield ['payment_date_end'];
+        yield ['update_date_end'];
+        yield ['shipping_delivery_date_end'];
     }
 
     /**
@@ -97,17 +95,15 @@ class SearchOrderTypeTest extends AbstractTypeTestCase
     /**
      * Data provider datetime form test.
      */
-    public static function dataFormDateTimeProvider(): array
+    public static function dataFormDateTimeProvider(): \Iterator
     {
-        return [
-            ['order_datetime_start'],
-            ['payment_datetime_start'],
-            ['update_datetime_start'],
-            ['shipping_delivery_datetime_start'],
-            ['order_datetime_end'],
-            ['payment_datetime_end'],
-            ['update_datetime_end'],
-            ['shipping_delivery_datetime_end'],
-        ];
+        yield ['order_datetime_start'];
+        yield ['payment_datetime_start'];
+        yield ['update_datetime_start'];
+        yield ['shipping_delivery_datetime_start'];
+        yield ['order_datetime_end'];
+        yield ['payment_datetime_end'];
+        yield ['update_datetime_end'];
+        yield ['shipping_delivery_datetime_end'];
     }
 }

@@ -110,7 +110,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertSame(1, count($this->Results));
+        $this->assertCount(1, $this->Results);
         $this->actual = $this->Results[0]->getId();
         $this->verify();
     }
@@ -136,7 +136,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertSame(1, count($this->Results));
+        $this->assertCount(1, $this->Results);
 
         $this->expected = 'customer@example.com';
         $this->actual = $this->Results[0]->getEmail();
@@ -167,7 +167,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertSame(1, count($this->Results));
+        $this->assertCount(1, $this->Results);
 
         $this->expected = '姓';
         $this->actual = $this->Results[0]->getName01();
@@ -186,7 +186,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertSame(1, count($this->Results));
+        $this->assertCount(1, $this->Results);
 
         $this->expected = '姓';
         $this->actual = $this->Results[0]->getName01();
@@ -208,7 +208,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertSame(1, count($this->Results));
+        $this->assertCount(1, $this->Results);
 
         $this->expected = '姓';
         $this->actual = $this->Results[0]->getName01();
@@ -230,7 +230,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertSame(1, count($this->Results));
+        $this->assertCount(1, $this->Results);
 
         $this->expected = 'メイ';
         $this->actual = $this->Results[0]->getKana02();
@@ -249,7 +249,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertSame(1, count($this->Results));
+        $this->assertCount(1, $this->Results);
 
         $this->expected = 'メイ';
         $this->actual = $this->Results[0]->getKana02();
@@ -268,7 +268,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertSame(1, count($this->Results));
+        $this->assertCount(1, $this->Results);
 
         $this->expected = 'セイ';
         $this->actual = $this->Results[0]->getKana01();
@@ -290,7 +290,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertSame(1, count($this->Results));
+        $this->assertCount(1, $this->Results);
 
         $this->expected = 'セイ';
         $this->actual = $this->Results[0]->getKana01();
@@ -317,7 +317,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertSame(1, count($this->Results));
+        $this->assertCount(1, $this->Results);
 
         $this->expected = $pref_id;
         $this->actual = $this->Results[0]->getPref()->getId();
@@ -596,22 +596,20 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
      * - tomorrow: 明日の00:00:00
      * - yesterday: 昨日の00:00:00
      */
-    public static function dataFormDateProvider(): array
+    public static function dataFormDateProvider(): \Iterator
     {
-        return [
-            ['create_date_start', 'today', 4],
-            ['create_date_start', 'tomorrow', 0],
-            ['update_date_start', 'today', 4],
-            ['update_date_start', 'tomorrow', 0],
-            ['last_buy_start', 'today', 1],
-            ['last_buy_start', 'tomorrow', 0],
-            ['create_date_end', 'today', 4],
-            ['create_date_end', 'yesterday', 0],
-            ['update_date_end', 'today', 4],
-            ['update_date_end', 'yesterday', 0],
-            ['last_buy_end', 'today', 1],
-            ['last_buy_end', 'yesterday', 0],
-        ];
+        yield ['create_date_start', 'today', 4];
+        yield ['create_date_start', 'tomorrow', 0];
+        yield ['update_date_start', 'today', 4];
+        yield ['update_date_start', 'tomorrow', 0];
+        yield ['last_buy_start', 'today', 1];
+        yield ['last_buy_start', 'tomorrow', 0];
+        yield ['create_date_end', 'today', 4];
+        yield ['create_date_end', 'yesterday', 0];
+        yield ['update_date_end', 'today', 4];
+        yield ['update_date_end', 'yesterday', 0];
+        yield ['last_buy_end', 'today', 1];
+        yield ['last_buy_end', 'yesterday', 0];
     }
 
     #[DataProvider(methodName: 'dataFormDateTimeProvider')]
@@ -634,22 +632,20 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
     /**
      * Data provider datetime form test.
      */
-    public static function dataFormDateTimeProvider(): array
+    public static function dataFormDateTimeProvider(): \Iterator
     {
-        return [
-            ['create_datetime_start', '- 1 hour', 4],
-            ['create_datetime_start', '+ 1 hour', 0],
-            ['update_datetime_start', '- 1 hour', 4],
-            ['update_datetime_start', '+ 1 hour', 0],
-            ['last_buy_datetime_start', '- 1 hour', 1],
-            ['last_buy_datetime_start', '+ 1 hour', 0],
-            ['create_datetime_end', '+ 1 hour', 4],
-            ['create_datetime_end', '- 1 hour', 0],
-            ['update_datetime_end', '+ 1 hour', 4],
-            ['update_datetime_end', '- 1 hour', 0],
-            ['last_buy_datetime_end', '+ 1 hour', 1],
-            ['last_buy_datetime_end', '- 1 hour', 0],
-        ];
+        yield ['create_datetime_start', '- 1 hour', 4];
+        yield ['create_datetime_start', '+ 1 hour', 0];
+        yield ['update_datetime_start', '- 1 hour', 4];
+        yield ['update_datetime_start', '+ 1 hour', 0];
+        yield ['last_buy_datetime_start', '- 1 hour', 1];
+        yield ['last_buy_datetime_start', '+ 1 hour', 0];
+        yield ['create_datetime_end', '+ 1 hour', 4];
+        yield ['create_datetime_end', '- 1 hour', 0];
+        yield ['update_datetime_end', '+ 1 hour', 4];
+        yield ['update_datetime_end', '- 1 hour', 0];
+        yield ['last_buy_datetime_end', '+ 1 hour', 1];
+        yield ['last_buy_datetime_end', '- 1 hour', 0];
     }
 
     public function testStatus()

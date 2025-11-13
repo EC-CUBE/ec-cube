@@ -1248,7 +1248,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
 
         // shipping number on the screen
         $lastShipping = $crawler->filter('#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery div.ec-orderDelivery__title')->last()->text();
-        $this->assertStringContainsString("({$addressNumber})", $lastShipping);
+        $this->assertStringContainsString("({$addressNumber})", (string) $lastShipping);
     }
 
     /**
@@ -1324,7 +1324,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
 
         // shipping number on the screen
         $lastShipping = $crawler->filter('#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery div.ec-orderDelivery__title')->last()->text();
-        $this->assertStringContainsString((string) $maxAddress, $lastShipping);
+        $this->assertStringContainsString((string) $maxAddress, (string) $lastShipping);
     }
 
     /**
@@ -1408,7 +1408,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
 
         // item number on the screen
         $shipping = $crawler->filter('#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div.ec-orderDelivery__item > ul')->text();
-        $this->assertStringContainsString('× 3', $shipping);
+        $this->assertStringContainsString('× 3', (string) $shipping);
 
         $deliver = $crawler->filter('#shopping_order_Shippings_0_Delivery > option')->each(
             fn ($node, $i) => $node->text()
@@ -1416,7 +1416,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
 
         $this->expected = 'サンプル業者';
         $this->actual = $deliver;
-        $this->assertTrue(in_array($this->expected, $this->actual));
+        $this->assertContains($this->expected, $this->actual);
 
         // 完了画面
         $this->scenarioComplete(

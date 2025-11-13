@@ -49,7 +49,7 @@ class TaxProcessorTest extends EccubeTestCase
         /** @var RoundingType $RoundingType */
         $RoundingType = $this->entityManager->find(RoundingType::class, RoundingType::ROUND);
         $this->TaxRule = new TaxRule();
-        $this->TaxRule->setTaxRate(8)
+        $this->TaxRule->setTaxRate('8')
             ->setApplyDate(new \DateTime('yesterday'))
             ->setRoundingType($RoundingType);
         $this->entityManager->persist($this->TaxRule);
@@ -77,8 +77,8 @@ class TaxProcessorTest extends EccubeTestCase
         /** @var OrderItem[] $ProductOrderItems */
         $ProductOrderItems = $this->Order->getProductOrderItems();
 
-        self::assertSame(1, count($ProductOrderItems));
-        self::assertSame('1080.00', $ProductOrderItems[0]->getTotalPrice());
+        $this->assertCount(1, $ProductOrderItems);
+        $this->assertSame('1080.00', $ProductOrderItems[0]->getTotalPrice());
     }
 
     /**
@@ -98,8 +98,8 @@ class TaxProcessorTest extends EccubeTestCase
         /** @var OrderItem[] $ProductOrderItems */
         $ProductOrderItems = $this->Order->getProductOrderItems();
 
-        self::assertSame(1, count($ProductOrderItems));
-        self::assertSame('1100.00', $ProductOrderItems[0]->getTotalPrice());
+        $this->assertCount(1, $ProductOrderItems);
+        $this->assertSame('1100.00', $ProductOrderItems[0]->getTotalPrice());
     }
 
     /**
@@ -119,8 +119,8 @@ class TaxProcessorTest extends EccubeTestCase
         /** @var OrderItem[] $ProductOrderItems */
         $ProductOrderItems = $this->Order->getProductOrderItems();
 
-        self::assertSame(1, count($ProductOrderItems));
-        self::assertSame('1080.00', $ProductOrderItems[0]->getTotalPrice());
+        $this->assertCount(1, $ProductOrderItems);
+        $this->assertSame('1080.00', $ProductOrderItems[0]->getTotalPrice());
     }
 
     /**
@@ -131,6 +131,7 @@ class TaxProcessorTest extends EccubeTestCase
     public function testProductTaxRule()
     {
         $BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
+        $this->assertInstanceOf(BaseInfo::class, $BaseInfo);
         $BaseInfo->setOptionProductTaxRule(true);
 
         $this->TaxRule->setTaxRate(10);
@@ -139,7 +140,7 @@ class TaxProcessorTest extends EccubeTestCase
         $RoundingType = $this->entityManager->find(RoundingType::class, RoundingType::ROUND);
         // 商品別税率を設定し, 受注を生成
         $TaxRule = new TaxRule();
-        $TaxRule->setTaxRate(8)
+        $TaxRule->setTaxRate('8')
             ->setApplyDate(new \DateTime('-3 days'))
             ->setRoundingType($RoundingType)
             ->setProduct($this->Product)
@@ -152,7 +153,7 @@ class TaxProcessorTest extends EccubeTestCase
 
         $this->taxRuleRepository->clearCache();
         $actual = $this->taxRuleRepository->getByRule($this->Product, $this->ProductClass);
-        self::assertEquals($TaxRule, $actual);
+        $this->assertEquals($TaxRule, $actual);
 
         $Customer = $this->createCustomer();
         $Order = $this->createOrderWithProductClasses($Customer, $this->Product->getProductClasses()->toArray());
@@ -166,7 +167,7 @@ class TaxProcessorTest extends EccubeTestCase
         /** @var OrderItem[] $ProductOrderItems */
         $ProductOrderItems = $Order->getProductOrderItems();
 
-        self::assertSame(1, count($ProductOrderItems));
-        self::assertSame('1080.00', $ProductOrderItems[0]->getTotalPrice());
+        $this->assertCount(1, $ProductOrderItems);
+        $this->assertSame('1080.00', $ProductOrderItems[0]->getTotalPrice());
     }
 }

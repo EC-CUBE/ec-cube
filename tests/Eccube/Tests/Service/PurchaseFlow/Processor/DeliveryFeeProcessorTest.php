@@ -56,7 +56,7 @@ class DeliveryFeeProcessorTest extends EccubeTestCase
             }
         }
         $processor->process($Order, new PurchaseContext());
-        self::assertNotEmpty($this->getDeliveryFees($Order));
+        $this->assertNotEmpty($this->getDeliveryFees($Order));
     }
 
     public function testProcessWithDeliveryFeePerProduct()

@@ -19,6 +19,7 @@ use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\ProductClass;
+use Eccube\Entity\ProductStock;
 use Eccube\Repository\Master\OrderItemTypeRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Service\PurchaseFlow\Processor\StockDiffProcessor;
@@ -100,46 +101,44 @@ class StockDiffProcessorTest extends EccubeTestCase
         }
     }
 
-    public static function validateProvider()
+    public static function validateProvider(): \Iterator
     {
-        return [
-            [10, 2, 12, false, OrderStatus::NEW, OrderStatus::NEW],
-            [1, 3, 2, false, OrderStatus::NEW, OrderStatus::PAID],
-            [1, 1, 2, false, OrderStatus::NEW, OrderStatus::IN_PROGRESS],
-            [0, 3, 6, false, OrderStatus::NEW, OrderStatus::CANCEL],
-            [2, 4, 6, false, OrderStatus::NEW, OrderStatus::DELIVERED],
-            [3, 1, 1, false, OrderStatus::PAID, OrderStatus::PAID],
-            [1, 1, 1, false, OrderStatus::PAID, OrderStatus::IN_PROGRESS],
-            [1, 1, 10, false, OrderStatus::PAID, OrderStatus::CANCEL],
-            [1, 12, 13, false, OrderStatus::PAID, OrderStatus::DELIVERED],
-            [1, 1, 1, false, OrderStatus::IN_PROGRESS, OrderStatus::IN_PROGRESS],
-            [1, 1, 1, false, OrderStatus::IN_PROGRESS, OrderStatus::CANCEL],
-            [1, 1, 1, false, OrderStatus::IN_PROGRESS, OrderStatus::DELIVERED],
-            [1, 1, 1, false, OrderStatus::CANCEL, OrderStatus::IN_PROGRESS],
-            [1, 1, 2, false, OrderStatus::CANCEL, OrderStatus::CANCEL],
-            [1, 1, 2, false, OrderStatus::DELIVERED, OrderStatus::DELIVERED],
-            [1, 1, 2, false, OrderStatus::DELIVERED, OrderStatus::RETURNED],
-            [3, 3, 6, false, OrderStatus::RETURNED, OrderStatus::DELIVERED],
-            [3, 3, 6, false, OrderStatus::RETURNED, OrderStatus::RETURNED],
-            [10, 2, 13, true, OrderStatus::NEW, OrderStatus::NEW],
-            [1, 3, 5, true, OrderStatus::NEW, OrderStatus::PAID],
-            [1, 1, 3, true, OrderStatus::NEW, OrderStatus::IN_PROGRESS],
-            [0, 3, -1, true, OrderStatus::NEW, OrderStatus::CANCEL],
-            [2, 4, 7, true, OrderStatus::NEW, OrderStatus::DELIVERED],
-            [3, 1, 7, true, OrderStatus::PAID, OrderStatus::PAID],
-            [1, 1, 3, true, OrderStatus::PAID, OrderStatus::IN_PROGRESS],
-            [1, 1, -2, true, OrderStatus::PAID, OrderStatus::CANCEL],
-            [1, 12, 14, true, OrderStatus::PAID, OrderStatus::DELIVERED],
-            [1, 1, 3, true, OrderStatus::IN_PROGRESS, OrderStatus::IN_PROGRESS],
-            [1, 1, -2, true, OrderStatus::IN_PROGRESS, OrderStatus::CANCEL],
-            [1, 1, 3, true, OrderStatus::IN_PROGRESS, OrderStatus::DELIVERED],
-            [1, 1, 3, true, OrderStatus::CANCEL, OrderStatus::IN_PROGRESS],
-            [0, 1, 2, true, OrderStatus::CANCEL, OrderStatus::CANCEL],
-            [1, 1, 3, true, OrderStatus::DELIVERED, OrderStatus::DELIVERED],
-            [1, 1, 3, true, OrderStatus::DELIVERED, OrderStatus::RETURNED],
-            [3, 3, 7, true, OrderStatus::RETURNED, OrderStatus::DELIVERED],
-            [3, 3, 7, true, OrderStatus::RETURNED, OrderStatus::RETURNED],
-        ];
+        yield [10, 2, 12, false, OrderStatus::NEW, OrderStatus::NEW];
+        yield [1, 3, 2, false, OrderStatus::NEW, OrderStatus::PAID];
+        yield [1, 1, 2, false, OrderStatus::NEW, OrderStatus::IN_PROGRESS];
+        yield [0, 3, 6, false, OrderStatus::NEW, OrderStatus::CANCEL];
+        yield [2, 4, 6, false, OrderStatus::NEW, OrderStatus::DELIVERED];
+        yield [3, 1, 1, false, OrderStatus::PAID, OrderStatus::PAID];
+        yield [1, 1, 1, false, OrderStatus::PAID, OrderStatus::IN_PROGRESS];
+        yield [1, 1, 10, false, OrderStatus::PAID, OrderStatus::CANCEL];
+        yield [1, 12, 13, false, OrderStatus::PAID, OrderStatus::DELIVERED];
+        yield [1, 1, 1, false, OrderStatus::IN_PROGRESS, OrderStatus::IN_PROGRESS];
+        yield [1, 1, 1, false, OrderStatus::IN_PROGRESS, OrderStatus::CANCEL];
+        yield [1, 1, 1, false, OrderStatus::IN_PROGRESS, OrderStatus::DELIVERED];
+        yield [1, 1, 1, false, OrderStatus::CANCEL, OrderStatus::IN_PROGRESS];
+        yield [1, 1, 2, false, OrderStatus::CANCEL, OrderStatus::CANCEL];
+        yield [1, 1, 2, false, OrderStatus::DELIVERED, OrderStatus::DELIVERED];
+        yield [1, 1, 2, false, OrderStatus::DELIVERED, OrderStatus::RETURNED];
+        yield [3, 3, 6, false, OrderStatus::RETURNED, OrderStatus::DELIVERED];
+        yield [3, 3, 6, false, OrderStatus::RETURNED, OrderStatus::RETURNED];
+        yield [10, 2, 13, true, OrderStatus::NEW, OrderStatus::NEW];
+        yield [1, 3, 5, true, OrderStatus::NEW, OrderStatus::PAID];
+        yield [1, 1, 3, true, OrderStatus::NEW, OrderStatus::IN_PROGRESS];
+        yield [0, 3, -1, true, OrderStatus::NEW, OrderStatus::CANCEL];
+        yield [2, 4, 7, true, OrderStatus::NEW, OrderStatus::DELIVERED];
+        yield [3, 1, 7, true, OrderStatus::PAID, OrderStatus::PAID];
+        yield [1, 1, 3, true, OrderStatus::PAID, OrderStatus::IN_PROGRESS];
+        yield [1, 1, -2, true, OrderStatus::PAID, OrderStatus::CANCEL];
+        yield [1, 12, 14, true, OrderStatus::PAID, OrderStatus::DELIVERED];
+        yield [1, 1, 3, true, OrderStatus::IN_PROGRESS, OrderStatus::IN_PROGRESS];
+        yield [1, 1, -2, true, OrderStatus::IN_PROGRESS, OrderStatus::CANCEL];
+        yield [1, 1, 3, true, OrderStatus::IN_PROGRESS, OrderStatus::DELIVERED];
+        yield [1, 1, 3, true, OrderStatus::CANCEL, OrderStatus::IN_PROGRESS];
+        yield [0, 1, 2, true, OrderStatus::CANCEL, OrderStatus::CANCEL];
+        yield [1, 1, 3, true, OrderStatus::DELIVERED, OrderStatus::DELIVERED];
+        yield [1, 1, 3, true, OrderStatus::DELIVERED, OrderStatus::RETURNED];
+        yield [3, 3, 7, true, OrderStatus::RETURNED, OrderStatus::DELIVERED];
+        yield [3, 3, 7, true, OrderStatus::RETURNED, OrderStatus::RETURNED];
     }
 
     /**
@@ -193,32 +192,31 @@ class StockDiffProcessorTest extends EccubeTestCase
 
         $ProductStock = $ProductClass->getProductStock();
         $this->expected = $afterStock === null ? null : (string) $afterStock;
+        $this->assertInstanceOf(ProductStock::class, $ProductStock);
         $this->actual = $ProductStock->getStock();
         $this->verify('dtb_product_stock の在庫数(stock)が正しくセットされていない。');
     }
 
-    public static function prepareProvider()
+    public static function prepareProvider(): \Iterator
     {
-        return [
-            [10, 0, 2, 12, OrderStatus::NEW, OrderStatus::NEW],
-            [1, 2, 3, 2, OrderStatus::NEW, OrderStatus::PAID],
-            [1, 0, 1, 2, OrderStatus::NEW, OrderStatus::IN_PROGRESS],
-            [0, 1, 3, 2, OrderStatus::NEW, OrderStatus::CANCEL],
-            [2, 0, 4, 6, OrderStatus::NEW, OrderStatus::DELIVERED],
-            [3, 3, 1, 1, OrderStatus::PAID, OrderStatus::PAID],
-            [1, 1, 1, 1, OrderStatus::PAID, OrderStatus::IN_PROGRESS],
-            [1, 0, 1, 2, OrderStatus::PAID, OrderStatus::CANCEL],
-            [1, 0, 12, 13, OrderStatus::PAID, OrderStatus::DELIVERED],
-            [1, 2, 1, 0, OrderStatus::IN_PROGRESS, OrderStatus::IN_PROGRESS],
-            [1, 1, 1, 1, OrderStatus::IN_PROGRESS, OrderStatus::CANCEL],
-            [1, 2, 1, 0, OrderStatus::IN_PROGRESS, OrderStatus::DELIVERED],
-            [1, 2, 1, 0, OrderStatus::CANCEL, OrderStatus::IN_PROGRESS],
-            [1, 0, 1, 2, OrderStatus::CANCEL, OrderStatus::CANCEL],
-            [1, 0, 1, 2, OrderStatus::DELIVERED, OrderStatus::DELIVERED],
-            [1, 0, 1, 2, OrderStatus::DELIVERED, OrderStatus::RETURNED],
-            [3, 0, 3, 6, OrderStatus::RETURNED, OrderStatus::DELIVERED],
-            [3, 0, 3, 6, OrderStatus::RETURNED, OrderStatus::RETURNED],
-        ];
+        yield [10, 0, 2, 12, OrderStatus::NEW, OrderStatus::NEW];
+        yield [1, 2, 3, 2, OrderStatus::NEW, OrderStatus::PAID];
+        yield [1, 0, 1, 2, OrderStatus::NEW, OrderStatus::IN_PROGRESS];
+        yield [0, 1, 3, 2, OrderStatus::NEW, OrderStatus::CANCEL];
+        yield [2, 0, 4, 6, OrderStatus::NEW, OrderStatus::DELIVERED];
+        yield [3, 3, 1, 1, OrderStatus::PAID, OrderStatus::PAID];
+        yield [1, 1, 1, 1, OrderStatus::PAID, OrderStatus::IN_PROGRESS];
+        yield [1, 0, 1, 2, OrderStatus::PAID, OrderStatus::CANCEL];
+        yield [1, 0, 12, 13, OrderStatus::PAID, OrderStatus::DELIVERED];
+        yield [1, 2, 1, 0, OrderStatus::IN_PROGRESS, OrderStatus::IN_PROGRESS];
+        yield [1, 1, 1, 1, OrderStatus::IN_PROGRESS, OrderStatus::CANCEL];
+        yield [1, 2, 1, 0, OrderStatus::IN_PROGRESS, OrderStatus::DELIVERED];
+        yield [1, 2, 1, 0, OrderStatus::CANCEL, OrderStatus::IN_PROGRESS];
+        yield [1, 0, 1, 2, OrderStatus::CANCEL, OrderStatus::CANCEL];
+        yield [1, 0, 1, 2, OrderStatus::DELIVERED, OrderStatus::DELIVERED];
+        yield [1, 0, 1, 2, OrderStatus::DELIVERED, OrderStatus::RETURNED];
+        yield [3, 0, 3, 6, OrderStatus::RETURNED, OrderStatus::DELIVERED];
+        yield [3, 0, 3, 6, OrderStatus::RETURNED, OrderStatus::RETURNED];
     }
 
     private function newOrderItem($ProductClass, $price, $quantity)

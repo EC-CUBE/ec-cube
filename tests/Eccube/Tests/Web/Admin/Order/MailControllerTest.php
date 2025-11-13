@@ -113,6 +113,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $Message = $this->getMailerMessage(0);
 
         $BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
+        $this->assertInstanceOf(BaseInfo::class, $BaseInfo);
         $this->expected = '['.$BaseInfo->getShopName().'] '.$form['mail_subject'];
         $this->actual = $Message->getSubject();
         $this->verify();

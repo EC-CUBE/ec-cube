@@ -144,6 +144,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         );
 
         $Member = $this->memberRepository->findOneBy(['login_id' => $formData['login_id']]);
+        $this->assertInstanceOf(Member::class, $Member);
 
         $redirectUrl = $this->generateUrl('admin_setting_system_member_edit', ['id' => $Member->getId()]);
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
@@ -307,6 +308,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
     {
         // before
         $Member = $this->memberRepository->findOneBy(['sort_no' => 1]);
+        $this->assertInstanceOf(Member::class, $Member);
         $mid = $Member->getId();
         $oldSortNo = $Member->getSortNo();
         // main

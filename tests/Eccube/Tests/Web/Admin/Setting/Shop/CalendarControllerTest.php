@@ -75,7 +75,7 @@ class CalendarControllerTest extends AbstractAdminWebTestCase
         );
 
         $actual = $this->client->getResponse()->isRedirect($redirectUrl);
-        $this->assertSame(true, $actual);
+        $this->assertTrue($actual);
     }
 
     public function testDeleteFailNotFound()
@@ -112,11 +112,14 @@ class CalendarControllerTest extends AbstractAdminWebTestCase
 
         $Calendar = $this->calendarRepository->find($id);
         $this->expected = $form['title'];
+        $this->assertInstanceOf(Calendar::class, $Calendar);
         $this->actual = $Calendar->getTitle();
         $this->verify();
 
         $this->expected = $form['holiday'];
+        $this->assertInstanceOf(Calendar::class, $Calendar);
         $holiday = $Calendar->getHoliday();
+        $this->assertInstanceOf(\DateTime::class, $holiday);
         $holiday->setTimezone(new \DateTimeZone('Asia/Tokyo'));
         $this->actual = $holiday->format('Y-n-j');
         $this->verify();
@@ -143,11 +146,14 @@ class CalendarControllerTest extends AbstractAdminWebTestCase
         $Calendar = $this->calendarRepository->find($id + 1);
 
         $this->expected = $form['title'];
+        $this->assertInstanceOf(Calendar::class, $Calendar);
         $this->actual = $Calendar->getTitle();
         $this->verify();
 
         $this->expected = $form['holiday'];
+        $this->assertInstanceOf(Calendar::class, $Calendar);
         $holiday = $Calendar->getHoliday();
+        $this->assertInstanceOf(\DateTime::class, $holiday);
         $holiday->setTimezone(new \DateTimeZone('Asia/Tokyo'));
         $this->actual = $holiday->format('Y-n-j');
         $this->verify();

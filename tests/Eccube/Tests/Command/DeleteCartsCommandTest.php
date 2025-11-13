@@ -28,13 +28,13 @@ class DeleteCartsCommandTest extends EccubeTestCase
         /** @var ProductClass $ProductClass */
         $ProductClass = $Product->getProductClasses()[0];
         $Cart = new Cart();
-        $Cart->setTotalPrice(1000);
+        $Cart->setTotalPrice('1000');
         $Cart->setDeliveryFeeTotal(0);
 
         $CartItem = new CartItem();
         $CartItem->setProductClass($ProductClass);
         $CartItem->setQuantity(1);
-        $CartItem->setPrice(1000);
+        $CartItem->setPrice('1000');
         $CartItem->setCart($Cart);
         $Cart->addCartItem($CartItem);
 
@@ -43,7 +43,7 @@ class DeleteCartsCommandTest extends EccubeTestCase
 
         $id = $Cart->getId();
 
-        self::assertNotNull($this->entityManager->find(Cart::class, $id));
+        $this->assertInstanceOf(Cart::class, $this->entityManager->find(Cart::class, $id));
 
         /** @var DeleteCartsCommand $command */
         $command = static::getContainer()->get(DeleteCartsCommand::class);
@@ -54,7 +54,7 @@ class DeleteCartsCommandTest extends EccubeTestCase
 
         $this->entityManager->clear();
 
-        self::assertNull($this->entityManager->find(Cart::class, $id));
+        $this->assertNotInstanceOf(Cart::class, $this->entityManager->find(Cart::class, $id));
     }
 
     public function testShouldNotDeleteFutureCarts()
@@ -63,13 +63,13 @@ class DeleteCartsCommandTest extends EccubeTestCase
         /** @var ProductClass $ProductClass */
         $ProductClass = $Product->getProductClasses()[0];
         $Cart = new Cart();
-        $Cart->setTotalPrice(1000);
+        $Cart->setTotalPrice('1000');
         $Cart->setDeliveryFeeTotal(0);
 
         $CartItem = new CartItem();
         $CartItem->setProductClass($ProductClass);
         $CartItem->setQuantity(1);
-        $CartItem->setPrice(1000);
+        $CartItem->setPrice('1000');
         $CartItem->setCart($Cart);
         $Cart->addCartItem($CartItem);
 
@@ -78,7 +78,7 @@ class DeleteCartsCommandTest extends EccubeTestCase
 
         $id = $Cart->getId();
 
-        self::assertNotNull($this->entityManager->find(Cart::class, $id));
+        $this->assertInstanceOf(Cart::class, $this->entityManager->find(Cart::class, $id));
 
         /** @var DeleteCartsCommand $command */
         $command = static::getContainer()->get(DeleteCartsCommand::class);
@@ -89,6 +89,6 @@ class DeleteCartsCommandTest extends EccubeTestCase
 
         $this->entityManager->clear();
 
-        self::assertNotNull($this->entityManager->find(Cart::class, $id));
+        $this->assertInstanceOf(Cart::class, $this->entityManager->find(Cart::class, $id));
     }
 }

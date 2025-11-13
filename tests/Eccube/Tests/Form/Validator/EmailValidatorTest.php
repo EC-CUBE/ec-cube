@@ -40,7 +40,7 @@ class EmailValidatorTest extends AbstractTypeTestCase
         $validator = $this->validator;
 
         $errors = $validator->validate($email, $constraint);
-        self::assertSame($rfc, count($errors) === 0);
+        $this->assertSame($rfc, count($errors) === 0);
     }
 
     /**
@@ -55,20 +55,18 @@ class EmailValidatorTest extends AbstractTypeTestCase
         $validator = $this->validator;
 
         $errors = $validator->validate($email, $constraint);
-        self::assertSame($norfc, count($errors) === 0);
+        $this->assertSame($norfc, count($errors) === 0);
     }
 
     /**
      * @return array[email, rfc result, no rfc result]
      */
-    public static function EmailProvider()
+    public static function EmailProvider(): \Iterator
     {
-        return [
-            ['test@example.com', true, true],
-            ['test.@example.com', false, true],
-            ['tes..t@example.com', false, true],
-            ['test@@example.com', false, false],
-            ['test@test@example.com', false, false],
-        ];
+        yield ['test@example.com', true, true];
+        yield ['test.@example.com', false, true];
+        yield ['tes..t@example.com', false, true];
+        yield ['test@@example.com', false, false];
+        yield ['test@test@example.com', false, false];
     }
 }

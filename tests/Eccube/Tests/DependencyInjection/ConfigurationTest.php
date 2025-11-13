@@ -24,7 +24,7 @@ class ConfigurationTest extends KernelTestCase
     {
         $configuration = new Configuration();
         $builder = $configuration->getConfigTreeBuilder();
-        self::assertInstanceOf(TreeBuilder::class, $builder);
+        $this->assertInstanceOf(TreeBuilder::class, $builder);
     }
 
     public function testProcessConfiguration()
@@ -75,6 +75,6 @@ class ConfigurationTest extends KernelTestCase
         $configuration = new Configuration();
         $actual = $processor->processConfiguration($configuration, $configs);
 
-        self::assertSame($expected, $actual);
+        $this->assertSame($expected, $actual);
     }
 }

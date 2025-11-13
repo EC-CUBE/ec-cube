@@ -26,6 +26,6 @@ class CartRepositoryTest extends EccubeTestCase
         $this->assertInstanceOf(CartRepository::class, $CartRepository);
 
         $Cart = $CartRepository->find(1);
-        $this->assertEmpty($Cart);
+        $this->assertNotInstanceOf(Cart::class, $Cart);
     }
 }

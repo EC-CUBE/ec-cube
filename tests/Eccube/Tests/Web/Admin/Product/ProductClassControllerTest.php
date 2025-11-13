@@ -227,6 +227,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
 
         // check database
         $taxRule = $this->taxRuleRepository->findOneBy(['Product' => $product]);
+        $this->assertInstanceOf(TaxRule::class, $taxRule);
         $this->assertSame($taxRate, $taxRule->getTaxRate());
     }
 
@@ -274,6 +275,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // check database
         /* @var TaxRule $taxRule */
         $taxRule = $this->taxRuleRepository->findOneBy(['Product' => $product]);
+        $this->assertInstanceOf(TaxRule::class, $taxRule);
 
         $this->assertEquals($form['product_class_matrix[product_classes][0][tax_rate]']->getValue(), $taxRule->getTaxRate());
     }
@@ -355,7 +357,8 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         $product = $this->productRepository->find($id);
         /* @var TaxRule $taxRule */
         $taxRule = $this->taxRuleRepository->findOneBy(['Product' => $product]);
-        $this->assertSame('0', (string) $taxRule->getTaxRate());
+        $this->assertInstanceOf(TaxRule::class, $taxRule);
+        $this->assertSame('0', $taxRule->getTaxRate());
     }
 
     /**
@@ -395,7 +398,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         $product = $this->productRepository->find($id);
         /* @var TaxRule $taxRule */
         $taxRule = $this->taxRuleRepository->findOneBy(['Product' => $product]);
-        $this->assertNull($taxRule);
+        $this->assertNotInstanceOf(TaxRule::class, $taxRule);
     }
 
     /**
@@ -434,7 +437,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         $product = $this->productRepository->find($id);
         /* @var TaxRule $taxRule */
         $taxRule = $this->taxRuleRepository->findOneBy(['Product' => $product]);
-        $this->assertNotNull($taxRule);
+        $this->assertInstanceOf(TaxRule::class, $taxRule);
     }
 
     /**
@@ -593,6 +596,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         $ProductTaxRule = $this->taxRuleRepository->findOneBy(['Product' => $product]);
 
         $this->expected = RoundingType::CEIL;
+        $this->assertInstanceOf(TaxRule::class, $ProductTaxRule);
         $this->actual = $ProductTaxRule->getRoundingType()->getId();
         $this->verify();
     }

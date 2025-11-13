@@ -94,7 +94,7 @@ return RectorConfig::configure()
                DoctrineSetList::DOCTRINE_CODE_QUALITY,
                DoctrineSetList::DOCTRINE_DBAL_30, // Doctrine DBALのバージョンに合わせる
                DoctrineSetList::ANNOTATIONS_TO_ATTRIBUTES, // Doctrine Annotations を Attributes に変換
-               // PHPUnitSetList::PHPUNIT_CODE_QUALITY,
+               PHPUnitSetList::PHPUNIT_CODE_QUALITY,
                PHPUnitSetList::PHPUNIT_110, // PHPUnitのバージョンに合わせる
            ])
            // オプション: SymfonyのコンテナXMLパス (EC-CUBEの構成に合わせて調整が必要な場合があります)

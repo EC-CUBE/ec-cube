@@ -196,6 +196,7 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
             'name' => 'テストカテゴリ',
         ];
         $Parent = $this->categoryRepository->findOneBy(['name' => '子1']);
+        $this->assertInstanceOf(Category::class, $Parent);
         $this->client->request(
             Request::METHOD_POST,
             $this->generateUrl('admin_product_category_show', ['parent_id' => $Parent->getId()]),
@@ -278,6 +279,7 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
     public function testMoveSortNo()
     {
         $Category = $this->categoryRepository->findOneBy(['name' => '子1']);
+        $this->assertInstanceOf(Category::class, $Category);
 
         $this->client->request(
             Request::METHOD_POST,
@@ -295,6 +297,7 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
 
         $this->entityManager->refresh($MovedCategory); // Refresh しないとリクエストの値(string)が入ってしまう
         $this->expected = 10;
+        $this->assertInstanceOf(Category::class, $MovedCategory);
         $this->actual = $MovedCategory->getSortNo();
         $this->verify();
     }
@@ -340,6 +343,8 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
         // Give
         $Category = $this->categoryRepository->findOneBy(['name' => '親1']);
         $Category2 = $this->categoryRepository->findOneBy(['name' => '親2']);
+        $this->assertInstanceOf(Category::class, $Category);
+        $this->assertInstanceOf(Category::class, $Category2);
         $newSortNos = [
             $Category->getId() => $Category2->getSortNo(),
             $Category2->getId() => $Category->getSortNo(),
@@ -370,6 +375,7 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
 
         $CategoryLast = $this->categoryRepository->findOneBy(['name' => '子2-2']);
         $categoryNameLastElement = $crawler->filter('.c-directoryTree--register label')->last()->text();
+        $this->assertInstanceOf(Category::class, $CategoryLast);
         $this->expected = $CategoryLast->getName();
         $this->actual = $categoryNameLastElement;
         $this->verify();

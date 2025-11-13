@@ -40,9 +40,9 @@ class QueryCustomizerPassTest extends TestCase
         $prop = $ref->getProperty('customizers');
         $customizers = $prop->getValue($queries);
 
-        self::assertCount(1, $customizers);
-        self::assertArrayHasKey(QueryKey::CUSTOMER_SEARCH, $customizers);
-        self::assertInstanceOf(TestQueryCustomizer::class, $customizers[QueryKey::CUSTOMER_SEARCH][0]);
+        $this->assertCount(1, $customizers);
+        $this->assertArrayHasKey(QueryKey::CUSTOMER_SEARCH, $customizers);
+        $this->assertInstanceOf(TestQueryCustomizer::class, $customizers[QueryKey::CUSTOMER_SEARCH][0]);
     }
 }
 

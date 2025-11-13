@@ -32,7 +32,7 @@ class TemplateEventListenerTest extends AbstractWebTestCase
         $eventDispatcher->addListener('Block/login.twig', $listener);
 
         $this->client->request(Request::METHOD_GET, $this->generateUrl('homepage'));
-        self::assertSame([
+        $this->assertSame([
             'index.twig',
             'Block/login.twig',
         ], $calledEvents);

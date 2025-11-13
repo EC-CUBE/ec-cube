@@ -28,7 +28,7 @@ class QueriesTest extends EccubeTestCase
 
         $queries->customize(QueriesTest::class, $this->queryBuilder(), null);
 
-        self::assertTrue($customizer->customized);
+        $this->assertTrue($customizer->customized);
     }
 
     public function testCustomizerShouldNotBeCalled()
@@ -39,7 +39,7 @@ class QueriesTest extends EccubeTestCase
 
         $queries->customize('Dummy', $this->queryBuilder(), null);
 
-        self::assertFalse($customizer->customized);
+        $this->assertFalse($customizer->customized);
     }
 
     private function queryBuilder(): QueryBuilder

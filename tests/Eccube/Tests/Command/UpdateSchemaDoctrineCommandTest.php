@@ -160,7 +160,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $this->entityManager->detach($pluginA);
 
         $pluginA = $this->pluginRepository->findOneBy(['code' => $configA['code']]);
-        $this->assertNull($pluginA);
+        $this->assertNotInstanceOf(Plugin::class, $pluginA);
     }
 
     /**
@@ -197,7 +197,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $this->entityManager->detach($pluginA);
 
         $pluginA = $this->pluginRepository->findOneBy(['code' => $configA['code']]);
-        $this->assertNull($pluginA);
+        $this->assertNotInstanceOf(Plugin::class, $pluginA);
     }
 
     /**
@@ -238,7 +238,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $this->entityManager->detach($pluginA);
 
         $pluginA = $this->pluginRepository->findOneBy(['code' => $configA['code']]);
-        $this->assertNull($pluginA);
+        $this->assertNotInstanceOf(Plugin::class, $pluginA);
     }
 
     /**
@@ -276,7 +276,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $this->entityManager->detach($pluginA);
 
         $pluginA = $this->pluginRepository->findOneBy(['code' => $configA['code']]);
-        $this->assertNull($pluginA);
+        $this->assertNotInstanceOf(Plugin::class, $pluginA);
     }
 
     /**
@@ -320,7 +320,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $this->entityManager->detach($pluginA);
 
         $pluginA = $this->pluginRepository->findOneBy(['code' => $configA['code']]);
-        $this->assertNull($pluginA);
+        $this->assertNotInstanceOf(Plugin::class, $pluginA);
     }
 
     /**
@@ -361,7 +361,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $this->entityManager->detach($pluginA);
 
         $pluginA = $this->pluginRepository->findOneBy(['code' => $configA['code']]);
-        $this->assertNull($pluginA);
+        $this->assertNotInstanceOf(Plugin::class, $pluginA);
     }
 
     private function getCommandTester(string $name): CommandTester

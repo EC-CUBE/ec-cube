@@ -88,11 +88,12 @@ class NewsRepositoryTest extends EccubeTestCase
         $News = $this->newsRepo->findOneBy(
             ['title' => 'news-0']
         );
+        $this->assertInstanceOf(News::class, $News);
 
         $newsId = $News->getId();
         $this->newsRepo->delete($News);
 
-        self::assertNull($this->newsRepo->find($newsId));
+        $this->assertNotInstanceOf(News::class, $this->newsRepo->find($newsId));
     }
 
     public function testGetList()

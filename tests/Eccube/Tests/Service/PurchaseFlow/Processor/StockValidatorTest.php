@@ -47,15 +47,15 @@ class StockValidatorTest extends EccubeTestCase
 
     public function testInstance()
     {
-        self::assertInstanceOf(StockValidator::class, $this->validator);
-        self::assertSame($this->ProductClass, $this->cartItem->getProductClass());
+        $this->assertInstanceOf(StockValidator::class, $this->validator);
+        $this->assertSame($this->ProductClass, $this->cartItem->getProductClass());
     }
 
     public function testValidStock()
     {
         $this->cartItem->setQuantity(1);
         $this->validator->execute($this->cartItem, new PurchaseContext());
-        self::assertSame('1', $this->cartItem->getQuantity());
+        $this->assertSame('1', $this->cartItem->getQuantity());
     }
 
     public function testValidStockFail()
@@ -63,8 +63,8 @@ class StockValidatorTest extends EccubeTestCase
         $this->cartItem->setQuantity(PHP_INT_MAX);
         $result = $this->validator->execute($this->cartItem, new PurchaseContext());
 
-        self::assertEquals($this->ProductClass->getStock(), $this->cartItem->getQuantity());
-        self::assertTrue($result->isWarning());
+        $this->assertEquals($this->ProductClass->getStock(), $this->cartItem->getQuantity());
+        $this->assertTrue($result->isWarning());
     }
 
     public function testValidStockOrder()
@@ -72,12 +72,12 @@ class StockValidatorTest extends EccubeTestCase
         $Customer = $this->createCustomer();
         $Order = static::getContainer()->get(Generator::class)->createOrder($Customer, [$this->ProductClass]);
 
-        self::assertEquals($Order->getOrderItems()[0]->getProductClass(), $this->ProductClass);
+        $this->assertEquals($Order->getOrderItems()[0]->getProductClass(), $this->ProductClass);
 
         $Order->getOrderItems()[0]->setQuantity(1);
         $this->ProductClass->setStock(100);
 
         $this->validator->execute($Order->getOrderItems()[0], new PurchaseContext());
-        self::assertSame('1', $Order->getOrderItems()[0]->getQuantity());
+        $this->assertSame('1', $Order->getOrderItems()[0]->getQuantity());
     }
 }

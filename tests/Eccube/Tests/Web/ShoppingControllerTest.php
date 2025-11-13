@@ -110,12 +110,12 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         // <div>タグから危険なid属性が削除されていることを確認する。
         // Find that dangerous id attributes are removed from <div> tags.
         $testNewsArea_notFoundTest = $crawler->filter('#test-news-id');
-        $this->assertSame(0, $testNewsArea_notFoundTest->count());
+        $this->assertCount(0, $testNewsArea_notFoundTest);
 
         // 安全なclass属性が出力されているかどうかを確認する。
         // Find if classes (which are safe) have been outputted
         $testNewsArea = $crawler->filter('.safe_to_use_class');
-        $this->assertSame(1, $testNewsArea->count());
+        $this->assertCount(1, $testNewsArea);
 
         // 安全なHTMLが存在するかどうかを確認する
         // Find if the safe HTML exists
@@ -177,6 +177,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
         $OrderNew = $this->entityManager->getRepository(OrderStatus::class)->find(OrderStatus::NEW);
         $this->expected = $OrderNew;
+        $this->assertInstanceOf(Order::class, $Order);
         $this->actual = $Order->getOrderStatus();
         $this->verify();
 
@@ -411,8 +412,8 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         // 支払い方法のMINとMAXルール変更
         $PaymentColl = $this->paymentRepository->findAll();
         foreach ($PaymentColl as $Payment) {
-            $Payment->setRuleMin(0);
-            $Payment->setRuleMax(0);
+            $Payment->setRuleMin('0');
+            $Payment->setRuleMax('0');
         }
         // 確認画面
         $crawler = $this->scenarioConfirm($Customer);
@@ -621,6 +622,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
         $OrderNew = $this->entityManager->getRepository(OrderStatus::class)->find(OrderStatus::NEW);
         $this->expected = $OrderNew;
+        $this->assertInstanceOf(Order::class, $Order);
         $this->actual = $Order->getOrderStatus();
         $this->verify();
 
@@ -718,8 +720,8 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         // ご注文手続きページ
         // Request delivery page
         $crawler = $this->scenarioConfirm($Customer);
-        $this->assertStringNotContainsString('Trade名称', $crawler->outerHtml());
-        $this->assertStringNotContainsString('Trade説明', $crawler->outerHtml());
+        $this->assertStringNotContainsString('Trade名称', (string) $crawler->outerHtml());
+        $this->assertStringNotContainsString('Trade説明', (string) $crawler->outerHtml());
     }
 
     /**
@@ -751,7 +753,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $headerId = 5;
 
         foreach ($tradeLaws as $tradeLaw) {
-            $this->assertStringContainsString($tradeLaw->getDescription(), $crawler->outerHtml());
+            $this->assertStringContainsString($tradeLaw->getDescription(), (string) $crawler->outerHtml());
             // Check sort order
             $this->assertEquals(
                 $tradeLaw->getName(),
@@ -798,8 +800,8 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
             ]
         );
 
-        $this->assertStringNotContainsString('Trade名称', $crawler->outerHtml());
-        $this->assertStringNotContainsString('Trade説明', $crawler->outerHtml());
+        $this->assertStringNotContainsString('Trade名称', (string) $crawler->outerHtml());
+        $this->assertStringNotContainsString('Trade説明', (string) $crawler->outerHtml());
     }
 
     /**
@@ -841,7 +843,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
         $headerId = 5;
         foreach ($tradeLaws as $tradeLaw) {
-            $this->assertStringContainsString($tradeLaw->getDescription(), $crawler->outerHtml());
+            $this->assertStringContainsString($tradeLaw->getDescription(), (string) $crawler->outerHtml());
             // Check sort order
             $this->assertEquals(
                 $tradeLaw->getName(),
@@ -882,7 +884,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $crawler = $this->scenarioConfirm($Customer);
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
-        $this->assertStringNotContainsString('Trade：テスト説明', $crawler->outerHtml());
+        $this->assertStringNotContainsString('Trade：テスト説明', (string) $crawler->outerHtml());
     }
 
     /**
@@ -915,7 +917,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         // Request delivery page
         $crawler = $this->scenarioConfirm($Customer);
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
-        $this->assertStringNotContainsString('Trade：テスト名称', $crawler->outerHtml());
+        $this->assertStringNotContainsString('Trade：テスト名称', (string) $crawler->outerHtml());
     }
 
     /**
@@ -961,7 +963,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         );
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
-        $this->assertStringNotContainsString('Trade：テスト名称', $crawler->outerHtml());
+        $this->assertStringNotContainsString('Trade：テスト名称', (string) $crawler->outerHtml());
     }
 
     /**
@@ -1007,7 +1009,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         );
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
-        $this->assertStringNotContainsString('Trade：テスト説明', $crawler->outerHtml());
+        $this->assertStringNotContainsString('Trade：テスト説明', (string) $crawler->outerHtml());
     }
 
     /**
@@ -1017,7 +1019,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
     public function testPaymentLimitAndPointCombination()
     {
         $Customer = $this->createCustomer();
-        $Customer->setPoint(99999);
+        $Customer->setPoint('99999');
         $this->entityManager->flush($Customer);
 
         $price = 27777;

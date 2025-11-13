@@ -55,10 +55,7 @@ class TwigExtensionPassTest extends TestCase
 
         /** @var Environment $twig */
         $twig = $this->containerBuilder->get(Environment::class);
-        self::assertTrue($twig->hasExtension(IgnoreRoutingNotFoundExtension::class));
-        self::assertInstanceOf(
-            IgnoreRoutingNotFoundExtension::class,
-            $twig->getExtension(IgnoreRoutingNotFoundExtension::class)
-        );
+        $this->assertTrue($twig->hasExtension(IgnoreRoutingNotFoundExtension::class));
+        $this->assertInstanceOf(IgnoreRoutingNotFoundExtension::class, $twig->getExtension(IgnoreRoutingNotFoundExtension::class));
     }
 }

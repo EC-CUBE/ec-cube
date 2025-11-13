@@ -27,33 +27,31 @@ class ForgotTypeTest extends AbstractTypeTestCase
     /**
      * 異常系のデータパターンを返す
      */
-    public static function getInvalidTestData(): array
+    public static function getInvalidTestData(): \Iterator
     {
-        return [
+        yield [
             [
-                'data' => [
-                    'login_email' => '',
-                ],
+                'login_email' => '',
             ],
+        ];
+        yield [
             [
-                'data' => [
-                    'login_email' => 'example',
-                ],
+                'login_email' => 'example',
             ],
-            // [
-            //     'data' => [
-            //         'login_email' => 'a..a@aa',
-            //     ],
-            // ],
-            // [
-            //     'data' => [
-            //         'login_email' => 'aa.@aa',
-            //     ],
-            // ],
+        ];
+        // [
+        //     'data' => [
+        //         'login_email' => 'a..a@aa',
+        //     ],
+        // ],
+        // [
+        //     'data' => [
+        //         'login_email' => 'aa.@aa',
+        //     ],
+        // ],
+        yield [
             [
-                'data' => [
-                    'login_email' => 'aa@adf@a.com',
-                ],
+                'login_email' => 'aa@adf@a.com',
             ],
         ];
     }

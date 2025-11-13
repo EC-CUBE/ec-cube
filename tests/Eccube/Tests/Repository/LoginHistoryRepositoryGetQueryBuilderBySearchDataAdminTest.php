@@ -105,15 +105,13 @@ class LoginHistoryRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeT
     }
 
     /**
-     * @return array[]
+     * @return \Iterator<(int | string), array<mixed>>
      */
-    public static function dataStatusProvider(): array
+    public static function dataStatusProvider(): \Iterator
     {
-        return [
-            [[LoginHistoryStatus::SUCCESS], 1],
-            [[LoginHistoryStatus::FAILURE], 2],
-            [[LoginHistoryStatus::SUCCESS, LoginHistoryStatus::FAILURE], 3],
-        ];
+        yield [[LoginHistoryStatus::SUCCESS], 1];
+        yield [[LoginHistoryStatus::FAILURE], 2];
+        yield [[LoginHistoryStatus::SUCCESS, LoginHistoryStatus::FAILURE], 3];
     }
 
     #[DataProvider(methodName: 'dataFormDateProvider')]
@@ -138,14 +136,12 @@ class LoginHistoryRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeT
      * - tomorrow: 明日の00:00:00
      * - yesterday: 昨日の00:00:00
      */
-    public static function dataFormDateProvider(): array
+    public static function dataFormDateProvider(): \Iterator
     {
-        return [
-            ['create_date_start', 'today', 3],
-            ['create_date_start', 'tomorrow', 0],
-            ['create_date_end', 'today', 3],
-            ['create_date_end', 'yesterday', 0],
-        ];
+        yield ['create_date_start', 'today', 3];
+        yield ['create_date_start', 'tomorrow', 0];
+        yield ['create_date_end', 'today', 3];
+        yield ['create_date_end', 'yesterday', 0];
     }
 
     #[DataProvider(methodName: 'dataFormDateTimeProvider')]
@@ -165,13 +161,11 @@ class LoginHistoryRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeT
     /**
      * Data provider datetime form test.
      */
-    public static function dataFormDateTimeProvider(): array
+    public static function dataFormDateTimeProvider(): \Iterator
     {
-        return [
-            ['create_datetime_start', '- 1 hour', 3],
-            ['create_datetime_start', '+ 1 hour', 0],
-            ['create_datetime_end', '+ 1 hour', 3],
-            ['create_datetime_end', '- 1 hour', 0],
-        ];
+        yield ['create_datetime_start', '- 1 hour', 3];
+        yield ['create_datetime_start', '+ 1 hour', 0];
+        yield ['create_datetime_end', '+ 1 hour', 3];
+        yield ['create_datetime_end', '- 1 hour', 0];
     }
 }

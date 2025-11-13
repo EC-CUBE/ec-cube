@@ -181,6 +181,7 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
     public function testMoveSortNo()
     {
         $ClassName = $this->classNameRepo->findOneBy(['backend_name' => 'class-1']);
+        $this->assertInstanceOf(ClassName::class, $ClassName);
 
         $this->client->request(
             Request::METHOD_POST,
@@ -195,6 +196,7 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
         $MovedClassName = $this->classNameRepo->find($ClassName->getId());
         $this->entityManager->refresh($MovedClassName); // Refresh しないとリクエストの値(string)が入ってしまう
         $this->expected = 10;
+        $this->assertInstanceOf(ClassName::class, $MovedClassName);
         $this->actual = $MovedClassName->getSortNo();
         $this->verify();
     }

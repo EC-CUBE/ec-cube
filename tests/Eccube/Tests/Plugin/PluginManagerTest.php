@@ -41,11 +41,11 @@ class PluginManagerTest extends EccubeTestCase
         // migration用のテーブルが生成されていることを確認
         $tables = $connection->createSchemaManager()->listTableNames();
         $migrationTableName = AbstractPluginManager::MIGRATION_TABLE_PREFIX.strtolower($pluginCode);
-        self::assertContains($migrationTableName, $tables);
+        $this->assertContains($migrationTableName, $tables);
 
         // migrationが実行され、バージョンが記録されることを確認
         $expected = Version20181101012712::class;
         $actual = $connection->fetchOne('select version from '.$migrationTableName);
-        self::assertSame($expected, $actual);
+        $this->assertSame($expected, $actual);
     }
 }

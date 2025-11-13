@@ -49,11 +49,9 @@ class SearchLoginHistoryTypeTest extends AbstractTypeTestCase
     /**
      * Data provider datetime form test.
      */
-    public static function dataFormDateTimeProvider(): array
+    public static function dataFormDateTimeProvider(): \Iterator
     {
-        return [
-            ['create_datetime_start'],
-            ['create_datetime_end'],
-        ];
+        yield ['create_datetime_start'];
+        yield ['create_datetime_end'];
     }
 }

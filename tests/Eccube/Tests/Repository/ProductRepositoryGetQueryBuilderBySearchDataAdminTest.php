@@ -16,6 +16,7 @@ namespace Eccube\Tests\Repository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Entity\Category;
 use Eccube\Entity\Master\ProductStatus;
+use Eccube\Entity\Product;
 use Eccube\Entity\ProductStock;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\Master\ProductStatusRepository;
@@ -57,6 +58,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
     public function testId()
     {
         $Product = $this->productRepository->findOneBy(['name' => '商品-2']);
+        $this->assertInstanceOf(Product::class, $Product);
         $id = $Product->getId();
 
         $this->searchData = [
@@ -120,6 +122,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
     {
         $Product = $this->productRepository->findOneBy(['name' => '商品-1']);
         $ProductStatus = $this->productStatusRepository->find(ProductStatus::DISPLAY_HIDE);
+        $this->assertInstanceOf(Product::class, $Product);
         $Product->setStatus($ProductStatus);
         $this->entityManager->flush();
 
@@ -138,6 +141,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
     {
         $Product = $this->productRepository->findOneBy(['name' => '商品-1']);
         $ProductStatus = $this->productStatusRepository->find(ProductStatus::DISPLAY_HIDE);
+        $this->assertInstanceOf(Product::class, $Product);
         $Product->setStatus($ProductStatus);
         $this->entityManager->flush();
 
@@ -170,7 +174,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
         foreach ($Product->getProductClasses() as $ProductClass) {
             $ProductClass
                 ->setStockUnlimited(false)
-                ->setStock(0);
+                ->setStock('0');
         }
         $this->entityManager->flush();
 
@@ -193,7 +197,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
             foreach ($Product->getProductClasses() as $ProductClass) {
                 $ProductClass
                     ->setStockUnlimited(false)
-                    ->setStock(0);
+                    ->setStock('0');
             }
         }
         $this->entityManager->flush();
@@ -203,7 +207,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
         foreach ($Product->getProductClasses() as $ProductClass) {
             $ProductClass
                 ->setStockUnlimited(true)
-                ->setStock(0);
+                ->setStock('0');
         }
         $this->entityManager->flush();
 
@@ -239,18 +243,16 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
      * - tomorrow: 明日の00:00:00
      * - yesterday: 昨日の00:00:00
      */
-    public static function dataFormDateProvider(): array
+    public static function dataFormDateProvider(): \Iterator
     {
-        return [
-            ['create_date_start', 'today', 3],
-            ['create_date_start', 'tomorrow', 0],
-            ['update_date_start', 'today', 3],
-            ['update_date_start', 'tomorrow', 0],
-            ['create_date_end', 'today', 3],
-            ['create_date_end', 'yesterday', 0],
-            ['update_date_end', 'today', 3],
-            ['update_date_end', 'yesterday', 0],
-        ];
+        yield ['create_date_start', 'today', 3];
+        yield ['create_date_start', 'tomorrow', 0];
+        yield ['update_date_start', 'today', 3];
+        yield ['update_date_start', 'tomorrow', 0];
+        yield ['create_date_end', 'today', 3];
+        yield ['create_date_end', 'yesterday', 0];
+        yield ['update_date_end', 'today', 3];
+        yield ['update_date_end', 'yesterday', 0];
     }
 
     #[DataProvider(methodName: 'dataFormDateTimeProvider')]
@@ -270,18 +272,16 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
     /**
      * Data provider datetime form test.
      */
-    public static function dataFormDateTimeProvider(): array
+    public static function dataFormDateTimeProvider(): \Iterator
     {
-        return [
-            ['create_datetime_start', '- 1 hour', 3],
-            ['create_datetime_start', '+ 1 hour', 0],
-            ['update_datetime_start', '- 1 hour', 3],
-            ['update_datetime_start', '+ 1 hour', 0],
-            ['create_datetime_end', '+ 1 hour', 3],
-            ['create_datetime_end', '- 1 hour', 0],
-            ['update_datetime_end', '+ 1 hour', 3],
-            ['update_datetime_end', '- 1 hour', 0],
-        ];
+        yield ['create_datetime_start', '- 1 hour', 3];
+        yield ['create_datetime_start', '+ 1 hour', 0];
+        yield ['update_datetime_start', '- 1 hour', 3];
+        yield ['update_datetime_start', '+ 1 hour', 0];
+        yield ['create_datetime_end', '+ 1 hour', 3];
+        yield ['create_datetime_end', '- 1 hour', 0];
+        yield ['update_datetime_end', '+ 1 hour', 3];
+        yield ['update_datetime_end', '- 1 hour', 0];
     }
 
     public function testCategory()

@@ -70,6 +70,7 @@ class LayoutTypeTest extends AbstractTypeTestCase
     {
         $PageLayout = $this->entityManager->getRepository(PageLayout::class)
             ->findOneBy([], ['page_id' => 'DESC']);
+        $this->assertInstanceOf(PageLayout::class, $PageLayout);
         $id = $PageLayout->getPageId() + 1;
 
         $this->formData['Page'] = $id;

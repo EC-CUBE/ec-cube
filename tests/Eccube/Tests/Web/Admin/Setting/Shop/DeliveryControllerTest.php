@@ -269,13 +269,10 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
         ];
     }
 
-    public static function dataSubmitProvider()
+    public static function dataSubmitProvider(): \Iterator
     {
-        return [
-            [false, false],
-            [true, true],
-            // To do implement
-        ];
+        yield [false, false];
+        yield [true, true];
     }
 
     /**
@@ -303,27 +300,25 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
         $this->assertCount($expected, $result);
     }
 
-    public static function getMergeRulesProvider()
+    public static function getMergeRulesProvider(): \Iterator
     {
-        return [
-            // 利用不可の金額帯なし
+        // 利用不可の金額帯なし
+        yield [
             [
-                [
-                    ['min' => 0, 'max' => 1000, 'charge' => 0],
-                    ['min' => 1001, 'max' => 2000, 'charge' => 0],
-                    ['min' => 2001, 'max' => 3000, 'charge' => 0],
-                ],
-                1,
+                ['min' => 0, 'max' => 1000, 'charge' => 0],
+                ['min' => 1001, 'max' => 2000, 'charge' => 0],
+                ['min' => 2001, 'max' => 3000, 'charge' => 0],
             ],
-            // 利用不可の金額帯あり(2001〜2499)
+            1,
+        ];
+        // 利用不可の金額帯あり(2001〜2499)
+        yield [
             [
-                [
-                    ['min' => 0, 'max' => 1000, 'charge' => 0],
-                    ['min' => 1001, 'max' => 2000, 'charge' => 0],
-                    ['min' => 2500, 'max' => 2000, 'charge' => 0],
-                ],
-                2,
+                ['min' => 0, 'max' => 1000, 'charge' => 0],
+                ['min' => 1001, 'max' => 2000, 'charge' => 0],
+                ['min' => 2500, 'max' => 2000, 'charge' => 0],
             ],
+            2,
         ];
     }
 }

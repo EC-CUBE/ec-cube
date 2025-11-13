@@ -32,7 +32,7 @@ class CsvControllerTest extends AbstractAdminWebTestCase
     public function testGetCsv()
     {
         $CsvType = $this->entityManager->getRepository(CsvType::class)->find(1);
-        $this->assertNotEmpty($CsvType);
+        $this->assertInstanceOf(CsvType::class, $CsvType);
 
         $Csv = $this->entityManager->getRepository(Csv::class)->findBy(['CsvType' => $CsvType, 'enabled' => true], ['sort_no' => 'ASC']);
         $this->assertNotEmpty($Csv);
@@ -43,12 +43,14 @@ class CsvControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->getConnection()->beginTransaction();
 
         $Csv = $this->entityManager->getRepository(Csv::class)->find(1);
+        $this->assertInstanceOf(Csv::class, $Csv);
         $Csv->setSortNo(1);
         $Csv->setEnabled(false);
 
         $this->entityManager->flush();
 
         $Csv2 = $this->entityManager->getRepository(Csv::class)->find(1);
+        $this->assertInstanceOf(Csv::class, $Csv2);
         $this->assertEquals(false, $Csv2->isEnabled());
 
         $this->entityManager->getConnection()->rollback();

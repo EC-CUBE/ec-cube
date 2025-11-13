@@ -58,6 +58,7 @@ class TimeZoneTest extends EccubeTestCase
 
         // jstに変換されて取得されるはず.
         $expected = '2000-01-01 00:00:00';
+        $this->assertInstanceOf(Product::class, $product);
         $actual = $product->getCreateDate()->format('Y-m-d H:i:s');
 
         $this->assertSame($expected, $actual);
@@ -92,6 +93,7 @@ class TimeZoneTest extends EccubeTestCase
         // jstに変換されて取得できるはず
         $product = $this->productRepository->find($id);
         $expected = '2000-01-01 00:00:00';
+        $this->assertInstanceOf(Product::class, $product);
         $actual = $product->getCreateDate()->format('Y-m-d H:i:s');
 
         $this->assertSame($expected, $actual);

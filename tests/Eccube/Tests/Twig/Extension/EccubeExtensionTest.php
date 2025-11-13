@@ -96,13 +96,11 @@ class EccubeExtensionTest extends EccubeTestCase
         $this->assertEquals($expected, $actual);
     }
 
-    public static function extensionProvider()
+    public static function extensionProvider(): \Iterator
     {
-        return [
-            ['jpg', false, '<i class="fa fa-file-image-o" ></i>'],
-            ['JPG', false, '<i class="fa fa-file-image-o" ></i>'],
-            ['jpg', true, 'fa-file-image-o'],
-            ['JPG', true, 'fa-file-image-o'],
-        ];
+        yield ['jpg', false, '<i class="fa fa-file-image-o" ></i>'];
+        yield ['JPG', false, '<i class="fa fa-file-image-o" ></i>'];
+        yield ['jpg', true, 'fa-file-image-o'];
+        yield ['JPG', true, 'fa-file-image-o'];
     }
 }

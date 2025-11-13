@@ -45,7 +45,7 @@ class DeliveryFeeFreeProcessorTest extends EccubeTestCase
 
     public function testNewInstance()
     {
-        self::assertInstanceOf(DeliveryFeeFreePreprocessor::class, $this->processor);
+        $this->assertInstanceOf(DeliveryFeeFreePreprocessor::class, $this->processor);
     }
 
     /**
@@ -57,7 +57,7 @@ class DeliveryFeeFreeProcessorTest extends EccubeTestCase
 
         $items = $this->getDeliveryFeeItems($this->Order);
         foreach ($items as $item) {
-            self::assertSame('1', $item->getQuantity());
+            $this->assertSame('1', $item->getQuantity());
         }
     }
 
@@ -68,13 +68,13 @@ class DeliveryFeeFreeProcessorTest extends EccubeTestCase
     {
         /** @var BaseInfo $BaseInfo */
         $BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
-        $BaseInfo->setDeliveryFreeAmount(1); // 1円以上で送料無料
+        $BaseInfo->setDeliveryFreeAmount('1'); // 1円以上で送料無料
 
         $this->processor->process($this->Order, new PurchaseContext());
 
         $items = $this->getDeliveryFeeItems($this->Order);
         foreach ($items as $item) {
-            self::assertSame('0', $item->getQuantity());
+            $this->assertSame('0', $item->getQuantity());
         }
     }
 
@@ -91,7 +91,7 @@ class DeliveryFeeFreeProcessorTest extends EccubeTestCase
 
         $items = $this->getDeliveryFeeItems($this->Order);
         foreach ($items as $item) {
-            self::assertSame('0', $item->getQuantity());
+            $this->assertSame('0', $item->getQuantity());
         }
     }
 

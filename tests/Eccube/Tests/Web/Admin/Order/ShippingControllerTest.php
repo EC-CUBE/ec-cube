@@ -98,6 +98,7 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
         $this->assertStringContainsString('保存しました', $success);
 
         $expectedShipping = $this->entityManager->find(Shipping::class, $shippingId);
+        $this->assertInstanceOf(Shipping::class, $expectedShipping);
         $this->assertSame($trackingNumber, $expectedShipping->getTrackingNumber());
     }
 
@@ -113,7 +114,7 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
         $Shipping = $Order->getShippings()->first();
 
         // 編集前は出荷先が１個
-        $this->assertSame(1, $Order->getShippings()->count());
+        $this->assertCount(1, $Order->getShippings());
 
         // 出荷登録画面表示
         $crawler = $this->client->request(
@@ -156,7 +157,8 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
 
         // 出荷先が２個で登録されていることを確認
         $expectedOrder = $this->entityManager->find(Order::class, $OrderId);
-        $this->assertSame(2, $expectedOrder->getShippings()->count());
+        $this->assertInstanceOf(Order::class, $expectedOrder);
+        $this->assertCount(2, $expectedOrder->getShippings());
 
         // 1個の出荷登録フォームを作成
         $formData['shippings'] = [$shippingFormData];
@@ -176,7 +178,8 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
 
         // 出荷先が1個で登録されていることを確認
         $expectedOrder = $this->entityManager->find(Order::class, $OrderId);
-        $this->assertSame(1, $expectedOrder->getShippings()->count());
+        $this->assertInstanceOf(Order::class, $expectedOrder);
+        $this->assertCount(1, $expectedOrder->getShippings());
     }
 
     /**
@@ -207,7 +210,7 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
         $this->assertEmailTextBodyContains($Message, 'お客さまがご注文された以下の商品を発送いたしました');
         $this->assertEmailHtmlBodyContains($Message, 'お客さまがご注文された以下の商品を発送いたしました');
 
-        self::assertEquals($Order->getEmail(), $Message->getTo()[0]->getAddress());
+        $this->assertEquals($Order->getEmail(), $Message->getTo()[0]->getAddress());
     }
 
     public function testSendNotifyMailWithSanitize()
@@ -238,7 +241,7 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
         $this->assertEmailTextBodyContains($Message, 'お客さまがご注文された以下の商品を発送いたしました');
         $this->assertEmailHtmlBodyContains($Message, 'お客さまがご注文された以下の商品を発送いたしました');
 
-        self::assertEquals($Order->getEmail(), $Message->getTo()[0]->getAddress());
+        $this->assertEquals($Order->getEmail(), $Message->getTo()[0]->getAddress());
 
         $this->assertEmailTextBodyContains($Message, '＜Sanitize&＞', 'テキストメールがサニタイズされている');
         $this->assertEmailHtmlBodyContains($Message, '&lt;Sanitize&amp;&gt;', 'HTMLメールがサニタイズされている');
@@ -272,10 +275,10 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
         $Product = $this->createProduct('test', 2);
         /** @var ProductClass $ProductClass1 */
         $ProductClass1 = $Product->getProductClasses()[0];
-        $ProductClass1->setPrice02(1000);
+        $ProductClass1->setPrice02('1000');
         /** @var ProductClass $ProductClass2 */
         $ProductClass2 = $Product->getProductClasses()[1];
-        $ProductClass2->setPrice02(2000);
+        $ProductClass2->setPrice02('2000');
 
         $this->entityManager->persist($Product);
         $this->entityManager->persist($ProductClass1);
@@ -313,7 +316,7 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
         // 税額が計算されている
         /** @var Order $Order */
         $Order = $this->entityManager->find(Order::class, $Order->getId());
-        self::assertSame('100.00', $Order->getProductOrderItems()[0]->getTax());
-        self::assertSame('200.00', $Order->getProductOrderItems()[1]->getTax());
+        $this->assertSame('100.00', $Order->getProductOrderItems()[0]->getTax());
+        $this->assertSame('200.00', $Order->getProductOrderItems()[1]->getTax());
     }
 }

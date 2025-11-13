@@ -13,22 +13,26 @@
 
 namespace Eccube\Tests\Repository;
 
+use Eccube\Entity\Product;
+
 class ProductRepositoryTest extends AbstractProductRepositoryTestCase
 {
     public function testFindWithSortedClassCategories()
     {
         $Product = $this->createProduct(null, 3);
         $Result = $this->productRepository->findWithSortedClassCategories($Product->getId());
+        $this->assertInstanceOf(Product::class, $Result);
 
         // visible = falseも取得するため, 合計4件.
-        self::assertCount(4, $Result->getProductClasses());
+        $this->assertCount(4, $Result->getProductClasses());
 
         $this->entityManager->clear();
 
         $Result = $this->productRepository->findWithSortedClassCategories($Product->getId());
+        $this->assertInstanceOf(Product::class, $Result);
 
         // visible = trueのみ取得する, 合計3件.
-        self::assertCount(3, $Result->getProductClasses());
+        $this->assertCount(3, $Result->getProductClasses());
     }
 
     public function testGetQueryBuilderBySearchDataForAdminId2147483648()
@@ -42,6 +46,6 @@ class ProductRepositoryTest extends AbstractProductRepositoryTestCase
         $qb = $this->productRepository->getQueryBuilderBySearchDataForAdmin(['id' => '2147483648']);
         $result = $qb->getQuery()->getResult();
 
-        self::assertEquals($Product, $result[0]);
+        $this->assertEquals($Product, $result[0]);
     }
 }

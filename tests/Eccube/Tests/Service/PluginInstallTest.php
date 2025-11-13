@@ -115,7 +115,7 @@ class PluginInstallTest extends AbstractServiceTestCase
 
             // プラグインがデータベースに登録されているかチェック
             $plugin = $this->pluginRepository->findOneBy(['code' => 'InstallTestPlugin']);
-            $this->assertNotNull($plugin, 'Plugin should be registered in database');
+            $this->assertInstanceOf(Plugin::class, $plugin, 'Plugin should be registered in database');
             $this->assertSame('InstallTestPlugin', $plugin->getCode());
             $this->assertSame('1.0.0', $plugin->getVersion());
             $this->assertSame(Constant::DISABLED, (int) $plugin->isEnabled());
@@ -190,7 +190,7 @@ class PluginInstallTest extends AbstractServiceTestCase
             $this->assertTrue($result, 'Installation should succeed');
 
             $plugin = $this->pluginRepository->findOneBy(['code' => 'InstallTestPlugin']);
-            $this->assertNotNull($plugin, 'Plugin should be found after installation');
+            $this->assertInstanceOf(Plugin::class, $plugin, 'Plugin should be found after installation');
             $this->assertSame(Constant::DISABLED, (int) $plugin->isEnabled(), 'Plugin should be disabled after installation');
 
             // 2. 有効化
@@ -211,7 +211,7 @@ class PluginInstallTest extends AbstractServiceTestCase
             // 5. アンインストール
             $this->service->uninstall($plugin);
             $plugin = $this->pluginRepository->findOneBy(['code' => 'InstallTestPlugin']);
-            $this->assertNull($plugin, 'Plugin should be removed from database after uninstall');
+            $this->assertNotInstanceOf(Plugin::class, $plugin, 'Plugin should be removed from database after uninstall');
         } finally {
             if (file_exists($tempFile)) {
                 unlink($tempFile);

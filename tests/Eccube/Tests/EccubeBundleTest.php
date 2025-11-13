@@ -22,6 +22,6 @@ class EccubeBundleTest extends KernelTestCase
     {
         $bundle = new EccubeBundle();
         $extension = $bundle->getContainerExtension();
-        self::assertInstanceOf(EccubeExtension::class, $extension);
+        $this->assertInstanceOf(EccubeExtension::class, $extension);
     }
 }

@@ -59,10 +59,12 @@ class CartControllerTest extends AbstractWebTestCase
 
         $ProductClass1 = $this->entityManager->find(ProductClass::class, 1);
         $ProductClass2 = $this->entityManager->find(ProductClass::class, 2);
+        $this->assertInstanceOf(ProductClass::class, $ProductClass1);
 
         // 販売制限数を0に設定
-        $ProductClass1->setSaleLimit(0);
-        $ProductClass2->setSaleLimit(0);
+        $ProductClass1->setSaleLimit('0');
+        $this->assertInstanceOf(ProductClass::class, $ProductClass2);
+        $ProductClass2->setSaleLimit('0');
         $this->entityManager->flush();
 
         // エラーが2件表示される

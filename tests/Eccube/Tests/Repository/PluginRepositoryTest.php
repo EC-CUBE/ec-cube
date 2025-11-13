@@ -58,20 +58,18 @@ class PluginRepositoryTest extends EccubeTestCase
 
         $Result = $this->pluginRepository->findByCode($search);
         if ($isNotNull) {
-            $this->assertNotNull($Result);
+            $this->assertInstanceOf(Plugin::class, $Result);
         } else {
-            $this->assertNull($Result);
+            $this->assertNotInstanceOf(Plugin::class, $Result);
         }
     }
 
-    public static function dataFormCodeProvider()
+    public static function dataFormCodeProvider(): \Iterator
     {
-        return [
-            ['Enable1', 'Enable1', true],
-            ['Enable1', 'EnAbLe1', true],
-            ['Enable1', 'enable1', true],
-            ['Enable1', 'disable1', false],
-        ];
+        yield ['Enable1', 'Enable1', true];
+        yield ['Enable1', 'EnAbLe1', true];
+        yield ['Enable1', 'enable1', true];
+        yield ['Enable1', 'disable1', false];
     }
 
     private function createPlugin(string $code): Plugin

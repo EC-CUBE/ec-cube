@@ -51,7 +51,7 @@ class NewItemTest extends AbstractWebTestCase
         // 新着商品が表示されている
         $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('homepage'));
         $node = $crawler->filter('.ec-newItemRole__listItemTitle');
-        $this->assertTrue(count($node) > 0);
+        $this->assertGreaterThan(0, count($node));
     }
 
     public function testAutoNewItemBlock()
@@ -59,6 +59,6 @@ class NewItemTest extends AbstractWebTestCase
         // 自動取得の新着商品が表示されている
         $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('homepage'));
         $node = $crawler->filter('.__getAutoNewItemBlock');
-        $this->assertTrue(count($node) > 0);
+        $this->assertGreaterThan(0, count($node));
     }
 }

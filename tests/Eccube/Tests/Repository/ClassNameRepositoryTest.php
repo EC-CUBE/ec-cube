@@ -135,10 +135,11 @@ class ClassNameRepositoryTest extends EccubeTestCase
         $ClassName = $this->classNameRepository->findOneBy(
             ['backend_name' => 'class-0']
         );
+        $this->assertInstanceOf(ClassName::class, $ClassName);
         $ClassNameId = $ClassName->getId();
         $this->classNameRepository->delete($ClassName);
 
-        self::assertNull($this->entityManager->find(ClassName::class, $ClassNameId));
+        $this->assertNotInstanceOf(ClassName::class, $this->entityManager->find(ClassName::class, $ClassNameId));
     }
 
     public function testDeleteWithException()

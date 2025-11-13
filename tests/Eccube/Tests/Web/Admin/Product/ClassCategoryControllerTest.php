@@ -207,12 +207,15 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->flush($ClassCategory);
         // set 抹茶 rank
         $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => '抹茶']);
+        $this->assertInstanceOf(ClassCategory::class, $ClassCategory);
         $testData[$ClassCategory->getId()] = 3;
+        $this->assertInstanceOf(ClassCategory::class, $ClassCategory);
         $ClassCategory->setSortNo(2);
         $this->entityManager->persist($ClassCategory);
         $this->entityManager->flush($ClassCategory);
         // set バニラ rank
         $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => 'バニラ']);
+        $this->assertInstanceOf(ClassCategory::class, $ClassCategory);
         $testData[$ClassCategory->getId()] = 2;
         $ClassCategory->setSortNo(1);
         $this->entityManager->persist($ClassCategory);

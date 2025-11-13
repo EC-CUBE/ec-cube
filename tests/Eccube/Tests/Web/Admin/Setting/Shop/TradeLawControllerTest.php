@@ -43,9 +43,9 @@ class TradeLawControllerTest extends AbstractAdminWebTestCase
         $inputFieldsDescription = $response->filter('textarea[id*="_description"]');
 
         // Contains 15x2 initial input fields + toggle switch
-        $this->assertSame(15, $inputFieldsName->count());
-        $this->assertSame(15, $inputFieldsDescription->count());
-        $this->assertSame(15, $response->filter('.c-toggleSwitch')->count());
+        $this->assertCount(15, $inputFieldsName);
+        $this->assertCount(15, $inputFieldsDescription);
+        $this->assertCount(15, $response->filter('.c-toggleSwitch'));
 
         // Check initial fields show and in order
         $notFoundNames = [
@@ -94,7 +94,7 @@ class TradeLawControllerTest extends AbstractAdminWebTestCase
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
         $failedInput = $responseCrawler->filter('#form_TradeLaws_0_name.is-invalid');
         // Check that the correct cell is failing validation with red border
-        $this->assertSame(1, $failedInput->count());
+        $this->assertCount(1, $failedInput);
 
         // Check Text
         $this->assertSame('<span class="form-error-message">この値は、255文字以内で入力してください。</span>',
@@ -118,7 +118,7 @@ class TradeLawControllerTest extends AbstractAdminWebTestCase
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
         $failedInput = $responseCrawler->filter('#form_TradeLaws_0_description.is-invalid');
         // Check that the correct cell is failing validation with red border
-        $this->assertSame(1, $failedInput->count());
+        $this->assertCount(1, $failedInput);
 
         // Check Text
         $this->assertSame('<span class="form-error-message">この値は、4000文字以内で入力してください。</span>',
@@ -150,17 +150,17 @@ class TradeLawControllerTest extends AbstractAdminWebTestCase
         $editedToggle = $responseCrawler->filter('#form_TradeLaws_10_displayOrderScreen');
 
         // Check that the correct cell is *not* failing validation with red border and contains registered value
-        $this->assertStringNotContainsString('is-invalid', $editedName->attr('class'));
+        $this->assertStringNotContainsString('is-invalid', (string) $editedName->attr('class'));
         $this->assertSame('UTテスト：名称', $editedName->attr('value'));
 
-        $this->assertStringNotContainsString('is-invalid', $editedDescription->attr('class'));
+        $this->assertStringNotContainsString('is-invalid', (string) $editedDescription->attr('class'));
         $this->assertSame('UTテスト: 説明', $editedDescription->innerText());
 
         $this->assertStringNotContainsString('is-invalid', $editedToggle->attr('class') ?: '');
         $this->assertSame('1', $editedToggle->attr('value'));
 
         // Check save success message exists
-        $this->assertSame(1, $responseCrawler->filter('.alert.alert-success')->count());
+        $this->assertCount(1, $responseCrawler->filter('.alert.alert-success'));
     }
 
     protected function createBaseForm(): array

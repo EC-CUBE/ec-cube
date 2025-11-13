@@ -44,7 +44,7 @@ class CustomizeBundleTest extends KernelTestCase
             $bundleNames[] = $bundle::class;
         }
 
-        self::assertContains(CustomizeBundle::class, $bundleNames);
+        $this->assertContains(CustomizeBundle::class, $bundleNames);
     }
 
     public function testNotContainsCustomizeBundle()
@@ -55,6 +55,6 @@ class CustomizeBundleTest extends KernelTestCase
             $bundleNames[] = $bundle::class;
         }
 
-        self::assertNotContains(CustomizeBundle::class, $bundleNames);
+        $this->assertNotContains(CustomizeBundle::class, $bundleNames);
     }
 }

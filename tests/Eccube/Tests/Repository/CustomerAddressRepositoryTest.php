@@ -49,6 +49,6 @@ class CustomerAddressRepositoryTest extends EccubeTestCase
         $this->customerAddressRepository->delete($CustomerAddress);
 
         $CustomerAddress = $this->customerAddressRepository->find($id);
-        $this->assertNull($CustomerAddress);
+        $this->assertNotInstanceOf(CustomerAddress::class, $CustomerAddress);
     }
 }

@@ -47,7 +47,7 @@ class MaintenanceControllerTest extends AbstractAdminWebTestCase
             $this->generateUrl('admin_content_maintenance')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertFalse(file_exists($this->maintenance_file_path));
+        $this->assertFileDoesNotExist($this->maintenance_file_path);
         $this->assertSame('有効にする', $crawler->filter('button.btn-ec-conversion')->text());
 
         touch($this->maintenance_file_path);
@@ -56,7 +56,7 @@ class MaintenanceControllerTest extends AbstractAdminWebTestCase
             $this->generateUrl('admin_content_maintenance')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertTrue(file_exists($this->maintenance_file_path));
+        $this->assertFileExists($this->maintenance_file_path);
         $this->assertSame('無効にする', $crawler->filter('button.btn-ec-conversion')->text());
     }
 
@@ -68,7 +68,7 @@ class MaintenanceControllerTest extends AbstractAdminWebTestCase
             $this->generateUrl('admin_content_maintenance')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertTrue(file_exists($this->maintenance_file_path));
+        $this->assertFileExists($this->maintenance_file_path);
         $this->assertSame('無効にする', $crawler->filter('button.btn-ec-conversion')->text());
 
         $crawler = $this->client->request(Request::METHOD_POST,
@@ -86,7 +86,7 @@ class MaintenanceControllerTest extends AbstractAdminWebTestCase
             $this->generateUrl('admin_content_maintenance')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertFalse(file_exists($this->maintenance_file_path));
+        $this->assertFileDoesNotExist($this->maintenance_file_path);
         $this->assertSame('有効にする', $crawler->filter('button.btn-ec-conversion')->text());
     }
 }
