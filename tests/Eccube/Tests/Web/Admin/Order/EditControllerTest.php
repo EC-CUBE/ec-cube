@@ -31,6 +31,7 @@ use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\TaxRuleService;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -208,9 +209,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->assertStringNotContainsString("<script>alert('XSS Attack')</script>", $testNewsArea->outerHtml());
     }
 
-    /**
-     * @group decimal
-     */
+    #[Group(name: 'decimal')]
     public function testOrderCustomerInfo()
     {
         $Customer = $this->createCustomer();
@@ -433,9 +432,8 @@ class EditControllerTest extends AbstractEditControllerTestCase
      * 受注編集時に、dtb_order.taxの値が正しく保存されているかどうかのテスト
      *
      * @see https://github.com/EC-CUBE/ec-cube/issues/1606
-     *
-     * @group decimal
      */
+    #[Group(name: 'decimal')]
     public function testOrderProcessingWithTax()
     {
         $this->markTestSkipped('インボイス対応に伴い Order::tax が非推奨となったためスキップ');
@@ -639,9 +637,8 @@ class EditControllerTest extends AbstractEditControllerTestCase
      * 受注管理で税率を変更できる
      *
      * @see https://github.com/EC-CUBE/ec-cube/issues/4269
-     *
-     * @group decimal
      */
+    #[Group(name: 'decimal')]
     public function testChangeOrderItemTaxRate()
     {
         /** @var RoundingType $RoundingType */

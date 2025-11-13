@@ -16,6 +16,7 @@ namespace Eccube\Tests\Util;
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Util\StringUtil;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -337,10 +338,9 @@ class StringUtilTest extends TestCase
     }
 
     /**
-     * @group legacy
-     *
      * @expectedDeprecation \Eccube\Util\StringUtil::isBlank() の第一引数は文字型、数値を使用してください
      */
+    #[Group(name: 'legacy')]
     public function testIsBlankWithObject()
     {
         $text = new \stdClass();
@@ -350,10 +350,9 @@ class StringUtilTest extends TestCase
     }
 
     /**
-     * @group legacy
-     *
      * @expectedDeprecation \Eccube\Util\StringUtil::isBlank() の第一引数は文字型、数値を使用してください
      */
+    #[Group(name: 'legacy')]
     public function testIsBlankWithArray()
     {
         $text = [];
@@ -363,10 +362,9 @@ class StringUtilTest extends TestCase
     }
 
     /**
-     * @group legacy
-     *
      * @expectedDeprecation \Eccube\Util\StringUtil::isBlank() の第一引数は文字型、数値を使用してください
      */
+    #[Group(name: 'legacy')]
     public function testIsBlankWithArrayGreedy()
     {
         // $greedy = true のテスト
@@ -377,10 +375,9 @@ class StringUtilTest extends TestCase
     }
 
     /**
-     * @group legacy
-     *
      * @expectedDeprecation \Eccube\Util\StringUtil::isBlank() の第一引数は文字型、数値を使用してください
      */
+    #[Group(name: 'legacy')]
     public function testIsBlankWithArrayGreedy2()
     {
         // $greedy = true のテスト
@@ -391,10 +388,9 @@ class StringUtilTest extends TestCase
     }
 
     /**
-     * @group legacy
-     *
      * @expectedDeprecation \Eccube\Util\StringUtil::isBlank() の第一引数は文字型、数値を使用してください
      */
+    #[Group(name: 'legacy')]
     public function testIsBlankWithArrayGreedy3()
     {
         // $greedy = true のテスト
@@ -405,10 +401,9 @@ class StringUtilTest extends TestCase
     }
 
     /**
-     * @group legacy
-     *
      * @expectedDeprecation  \Eccube\Util\StringUtil::isBlank() の第一引数は文字型、数値を使用してください
      */
+    #[Group(name: 'legacy')]
     public function testIsNotBlankWithArray()
     {
         $text = [];
@@ -418,10 +413,9 @@ class StringUtilTest extends TestCase
     }
 
     /**
-     * @group legacy
-     *
      * @expectedDeprecation \Eccube\Util\StringUtil::isBlank() の第一引数は文字型、数値を使用してください
      */
+    #[Group(name: 'legacy')]
     public function testIsBlankWithArrayCollectionEmpty()
     {
         $value = new ArrayCollection();
@@ -431,10 +425,9 @@ class StringUtilTest extends TestCase
     }
 
     /**
-     * @group legacy
-     *
      * @expectedDeprecation \Eccube\Util\StringUtil::isBlank() の第一引数は文字型、数値を使用してください
      */
+    #[Group(name: 'legacy')]
     public function testIsBlankWithArrayCollectionNotEmpty()
     {
         $value = new ArrayCollection(['a']);

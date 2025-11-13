@@ -19,6 +19,7 @@ use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\TemplateRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Eccube\Util\StringUtil;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -95,9 +96,8 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
 
     /**
      * テンプレートの変更
-     *
-     * @group cache-clear
      */
+    #[Group(name: 'cache-clear')]
     public function testChangeTemplate()
     {
         // テンプレートをアップロード

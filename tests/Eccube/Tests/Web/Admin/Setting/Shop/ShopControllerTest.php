@@ -16,13 +16,13 @@ namespace Eccube\Tests\Web\Admin\Setting\Shop;
 use Eccube\Entity\BaseInfo;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class ShopControllerTest
- *
- * @group cache-clear
  */
+#[Group('cache-clear')]
 class ShopControllerTest extends AbstractAdminWebTestCase
 {
     /**
@@ -37,10 +37,9 @@ class ShopControllerTest extends AbstractAdminWebTestCase
     /**
      * @param bool $isSuccess
      * @param bool $expected
-     *
-     * @group cache-clear
      */
     #[DataProvider(methodName: 'dataSubmitProvider')]
+    #[Group(name: 'cache-clear')]
     public function testSubmit($isSuccess, $expected)
     {
         $formData = $this->createFormData();

@@ -28,6 +28,7 @@ use Eccube\Entity\TaxRule;
 use Eccube\Service\TaxRuleService;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Tests\Fixture\Generator;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * AbstractEntity test cases.
@@ -124,9 +125,7 @@ class OrderTest extends EccubeTestCase
         $this->verify();
     }
 
-    /**
-     * @group decimal
-     */
+    #[Group(name: 'decimal')]
     public function testGetTotalPrice()
     {
         $faker = $this->getFaker();
@@ -200,18 +199,14 @@ class OrderTest extends EccubeTestCase
         }
     }
 
-    /**
-     * @group decimal
-     */
+    #[Group(name: 'decimal')]
     public function testGetTaxableTotal()
     {
         $Order = $this->createTestOrder();
         $this->assertSame('790187.00', $Order->getTaxableTotal());
     }
 
-    /**
-     * @group decimal
-     */
+    #[Group(name: 'decimal')]
     public function testGetTaxableTotalByTaxRate()
     {
         $Order = $this->createTestOrder();
@@ -224,9 +219,7 @@ class OrderTest extends EccubeTestCase
         $this->assertCount(2, $Order->getTaxableDiscountItems());
     }
 
-    /**
-     * @group decimal
-     */
+    #[Group(name: 'decimal')]
     public function testGetTaxableDiscount()
     {
         $Order = $this->createTestOrder();
@@ -243,9 +236,7 @@ class OrderTest extends EccubeTestCase
         }
     }
 
-    /**
-     * @group decimal
-     */
+    #[Group(name: 'decimal')]
     public function testGetTaxFreeDiscount()
     {
         $Order = $this->createTestOrder();
@@ -253,9 +244,7 @@ class OrderTest extends EccubeTestCase
         $this->assertSame('-7159.00', $Order->getTaxFreeDiscount());
     }
 
-    /**
-     * @group decimal
-     */
+    #[Group(name: 'decimal')]
     public function testGetTotalByTaxRate()
     {
         $Order = $this->createTestOrder();
@@ -264,9 +253,7 @@ class OrderTest extends EccubeTestCase
         $this->assertSame('717868', $Order->getTotalByTaxRate()['10'], '10%対象値引き後合計');
     }
 
-    /**
-     * @group decimal
-     */
+    #[Group(name: 'decimal')]
     public function testGetTaxByTaxRate()
     {
         $Order = $this->createTestOrder();

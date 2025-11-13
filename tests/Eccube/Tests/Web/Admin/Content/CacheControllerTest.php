@@ -14,11 +14,10 @@
 namespace Eccube\Tests\Web\Admin\Content;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @group cache-clear
- */
+#[Group('cache-clear')]
 class CacheControllerTest extends AbstractAdminWebTestCase
 {
     public function testRoutingAdminContentCache()

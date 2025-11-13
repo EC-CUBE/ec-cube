@@ -69,10 +69,6 @@ return RectorConfig::configure()
                // 8.3以上で対応可能
                AddOverrideAttributeToOverriddenMethodsRector::class, // オーバーライドメソッドに @Override 属性を追加する PHP 8.3 以降で有効
                AddTypeToConstRector::class, // [BC]定数に型を追加する PHP 8.3 以降で有効
-               /* Rector 2系へアップデート */
-               // アトリビュート系を適用
-               AnnotationWithValueToAttributeRector::class, // PHPUnitのバージョンアップ必須
-               RequiresAnnotationWithValueToAttributeRector::class, // @requires アノテーションを属性に変換する。↑と同時に進める。
                RenameMethodRector::class, //addがaddCommandに変換されてしまうため一旦スキップ
            ])
            // 個別にルールを追加する場合はここに記述

@@ -24,15 +24,14 @@ use Eccube\Service\PluginService;
 use Eccube\Service\SchemaService;
 use Eccube\Tests\EccubeTestCase;
 use Faker\Generator;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\Process;
 
-/**
- * @group update-schema-doctrine
- */
+#[Group('update-schema-doctrine')]
 class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
 {
     private ?PluginService $pluginService = null;
@@ -123,9 +122,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $this->assertStringContainsString('eccube:schema:update --dump-sql', $display);
     }
 
-    /**
-     * @group update-schema-doctrine-install
-     */
+    #[Group(name: 'update-schema-doctrine-install')]
     public function testInstallPluginWithNoProxy(): never
     {
         $this->markTestIncomplete('一時的にスキップ');
@@ -163,9 +160,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $this->assertNotInstanceOf(Plugin::class, $pluginA);
     }
 
-    /**
-     * @group update-schema-doctrine-install
-     */
+    #[Group(name: 'update-schema-doctrine-install')]
     public function testInstallPluginWithProxy(): never
     {
         $this->markTestIncomplete('一時的にスキップ');
@@ -200,9 +195,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $this->assertNotInstanceOf(Plugin::class, $pluginA);
     }
 
-    /**
-     * @group update-schema-doctrine-install
-     */
+    #[Group(name: 'update-schema-doctrine-install')]
     public function testEnablePluginWithNoProxy(): never
     {
         $this->markTestIncomplete('Fatal error: Cannot declare class になってしまうためスキップ');
@@ -241,9 +234,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $this->assertNotInstanceOf(Plugin::class, $pluginA);
     }
 
-    /**
-     * @group update-schema-doctrine-install
-     */
+    #[Group(name: 'update-schema-doctrine-install')]
     public function testEnablePluginWithProxy(): never
     {
         $this->markTestIncomplete('一時的にスキップ');
@@ -279,9 +270,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $this->assertNotInstanceOf(Plugin::class, $pluginA);
     }
 
-    /**
-     * @group update-schema-doctrine-install
-     */
+    #[Group(name: 'update-schema-doctrine-install')]
     public function testDisablePluginWithNoProxy(): never
     {
         $this->markTestIncomplete('Fatal error: Cannot declare class になってしまうためスキップ');
@@ -323,9 +312,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $this->assertNotInstanceOf(Plugin::class, $pluginA);
     }
 
-    /**
-     * @group update-schema-doctrine-install
-     */
+    #[Group(name: 'update-schema-doctrine-install')]
     public function testDisablePluginWithProxy(): never
     {
         $this->markTestIncomplete('一時的にスキップ');

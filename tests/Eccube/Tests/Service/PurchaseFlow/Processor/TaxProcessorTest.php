@@ -24,6 +24,7 @@ use Eccube\Repository\TaxRuleRepository;
 use Eccube\Service\PurchaseFlow\Processor\TaxProcessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\Group;
 
 class TaxProcessorTest extends EccubeTestCase
 {
@@ -67,9 +68,7 @@ class TaxProcessorTest extends EccubeTestCase
         $this->entityManager->flush();
     }
 
-    /**
-     * @group decimal
-     */
+    #[Group(name: 'decimal')]
     public function testCalcTax()
     {
         $this->processor->process($this->Order, new PurchaseContext());
@@ -83,9 +82,8 @@ class TaxProcessorTest extends EccubeTestCase
 
     /**
      * @see https://github.com/EC-CUBE/ec-cube/issues/4236
-     *
-     * @group decimal
      */
+    #[Group(name: 'decimal')]
     public function testTaxRateChangedShoppingFlow()
     {
         // 受注作成後に税率を変更
@@ -104,9 +102,8 @@ class TaxProcessorTest extends EccubeTestCase
 
     /**
      * @see https://github.com/EC-CUBE/ec-cube/issues/4269
-     *
-     * @group decimal
      */
+    #[Group(name: 'decimal')]
     public function testTaxRateChangedOrderFlow()
     {
         // 受注作成後に税率を変更
@@ -125,9 +122,8 @@ class TaxProcessorTest extends EccubeTestCase
 
     /**
      * @see https://github.com/EC-CUBE/ec-cube/issues/4330
-     *
-     * @group decimal
      */
+    #[Group(name: 'decimal')]
     public function testProductTaxRule()
     {
         $BaseInfo = $this->entityManager->find(BaseInfo::class, 1);

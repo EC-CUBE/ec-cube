@@ -19,6 +19,7 @@ use Eccube\Entity\Order;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\OrderRepository;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -54,10 +55,9 @@ class IndexControllerTest extends AbstractAdminWebTestCase
      * @see https://github.com/EC-CUBE/ec-cube/issues/1143
      *
      * @param int $hour
-     *
-     * @group decimal
      */
     #[DataProvider(methodName: 'indexWithSalesProvider')]
+    #[Group(name: 'decimal')]
     public function testIndexWithSales($hour)
     {
         $Customer = $this->createCustomer();

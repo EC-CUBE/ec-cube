@@ -24,6 +24,7 @@ use Eccube\Service\PurchaseFlow\Processor\DeliveryFeePreprocessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 
 class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
 {
@@ -43,9 +44,8 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
 
     /**
      * 送料無料条件が設定されていない場合
-     *
-     * @group decimal
      */
+    #[Group(name: 'decimal')]
     public function testWithoutDeliveryFreeSettings()
     {
         $this->newBaseInfo(0, 0);
@@ -67,10 +67,9 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
      *
      * @param string $amount 受注金額
      * @param string $expectedFee 期待する送料
-     *
-     * @group decimal
      */
     #[DataProvider(methodName: 'deliveryFreeAmountProvider')]
+    #[Group(name: 'decimal')]
     public function testWithDeliveryFreeAmount($amount, $expectedFee)
     {
         $this->newBaseInfo('1000.00', '0');
@@ -101,10 +100,9 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
      *
      * @param $quantity int 数量
      * @param $expectedFee int 期待する送料
-     *
-     * @group decimal
      */
     #[DataProvider(methodName: 'deliveryFreeQuantityProvider')]
+    #[Group(name: 'decimal')]
     public function testWithDeliveryFreeQuantity($quantity, $expectedFee)
     {
         $this->newBaseInfo('0', '10');
@@ -133,9 +131,8 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
 
     /**
      * 複数配送で送料無料条件(金額)が設定されている場合
-     *
-     * @group decimal
      */
+    #[Group(name: 'decimal')]
     public function testMultipleShippingWithDeliveryFreeAmount()
     {
         $this->newBaseInfo('1000', '0');
@@ -166,9 +163,8 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
 
     /**
      * 複数配送で送料無料条件(数量)が設定されている場合
-     *
-     * @group decimal
      */
+    #[Group(name: 'decimal')]
     public function testMultipleShippingWithDeliveryFreeQuantity()
     {
         $this->newBaseInfo(0, 5);

@@ -19,15 +19,15 @@ use Eccube\Exception\PluginException;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\PluginService;
 use Faker\Generator;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class PluginServiceTest
- *
- * @group plugin-service
  */
+#[Group('plugin-service')]
 class PluginServiceTest extends AbstractServiceTestCase
 {
     private ?PluginService $service = null;
@@ -527,10 +527,9 @@ EOD;
 
     /**
      * Test Entity and Trait
-     *
-     * @group update-schema-doctrine
-     * @group update-schema-doctrine-install
      */
+    #[Group(name: 'update-schema-doctrine')]
+    #[Group(name: 'update-schema-doctrine-install')]
     public function testCreateEntityAndTrait()
     {
         $conn = $this->entityManager->getConnection();

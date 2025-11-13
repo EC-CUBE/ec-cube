@@ -29,6 +29,7 @@ use Eccube\Service\PurchaseFlow\PurchaseException;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Tests\EccubeTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 
 class PointProcessorTest extends EccubeTestCase
 {
@@ -46,9 +47,7 @@ class PointProcessorTest extends EccubeTestCase
         $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
     }
 
-    /**
-     * @group decimal
-     */
+    #[Group(name: 'decimal')]
     public function testUsePointA()
     {
         $Customer = new Customer();
@@ -114,10 +113,9 @@ class PointProcessorTest extends EccubeTestCase
     /**
      * @param $usePoint int 利用ポイント
      * @param $isError boolean エラーかどうか
-     *
-     * @group decimal
      */
     #[DataProvider(methodName: 'usePointOverPriceProvider')]
+    #[Group(name: 'decimal')]
     public function testUsePointOverPrice($usePoint, $isError)
     {
         $price = 100; // 商品の値段
@@ -151,10 +149,9 @@ class PointProcessorTest extends EccubeTestCase
     /**
      * @param string $usePoint  利用ポイント
      * @param bool $isError エラーかどうか
-     *
-     * @group decimal
      */
     #[DataProvider(methodName: 'usePointOverPriceProvider')]
+    #[Group(name: 'decimal')]
     public function testUsePointOverPriceShoppingFlow($usePoint, $isError)
     {
         $price = '100'; // 商品の値段
@@ -195,9 +192,8 @@ class PointProcessorTest extends EccubeTestCase
 
     /**
      * @throws PurchaseException
-     *
-     * @group decimal
      */
+    #[Group(name: 'decimal')]
     public function testReduceCustomerPoint()
     {
         $Customer = new Customer();
@@ -224,10 +220,9 @@ class PointProcessorTest extends EccubeTestCase
      * @param string $price 商品の値段
      * @param string $usePoint 利用ポイント
      * @param string $addPoint 期待する付与ポイント
-     *
-     * @group decimal
      */
     #[DataProvider(methodName: 'useAddPointProvider')]
+    #[Group(name: 'decimal')]
     public function testAddPoint($price, $usePoint, $addPoint)
     {
         $Customer = new Customer();
@@ -264,10 +259,9 @@ class PointProcessorTest extends EccubeTestCase
      * @param $price int 商品の値段
      * @param $deliveryFee int
      * @param $addPoint int 期待する付与ポイント
-     *
-     * @group decimal
      */
     #[DataProvider(methodName: 'useAddPointExcludeShippingFeeProvider')]
+    #[Group(name: 'decimal')]
     public function testAddPointExcludeShippingFee($price, $deliveryFee, $addPoint)
     {
         $Customer = new Customer();
@@ -319,10 +313,9 @@ class PointProcessorTest extends EccubeTestCase
      * @param $pointConversionRate int 商品の値段
      *
      * @throws PurchaseException
-     *
-     * @group decimal
      */
     #[DataProvider(methodName: 'pointConversionRateProvider')]
+    #[Group(name: 'decimal')]
     public function testPointConversionRate($pointConversionRate)
     {
         $productPrice = 1000;
@@ -370,10 +363,9 @@ class PointProcessorTest extends EccubeTestCase
      * ポイント付与率のテスト
      *
      * @param $basicPointRate int 商品の値段
-     *
-     * @group decimal
      */
     #[DataProvider(methodName: 'basicPointRateProvider')]
+    #[Group(name: 'decimal')]
     public function testBasicPointRate($basicPointRate)
     {
         $ProductPrice = 1000;

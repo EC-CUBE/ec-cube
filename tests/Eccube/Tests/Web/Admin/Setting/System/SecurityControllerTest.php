@@ -14,11 +14,10 @@
 namespace Eccube\Tests\Web\Admin\Setting\System;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @group cache-clear
- */
+#[Group('cache-clear')]
 class SecurityControllerTest extends AbstractAdminWebTestCase
 {
     protected $envFile;
@@ -55,9 +54,8 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
 
     /**
      * Submit test
-     *
-     * @group cache-clear
      */
+    #[Group(name: 'cache-clear')]
     public function testSubmit()
     {
         $session = $this->createSession($this->client);

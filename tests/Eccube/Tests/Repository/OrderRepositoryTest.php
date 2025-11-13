@@ -22,6 +22,7 @@ use Eccube\Entity\Shipping;
 use Eccube\Repository\OrderRepository;
 use Eccube\Tests\EccubeTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * OrderRepository test cases.
@@ -90,9 +91,7 @@ class OrderRepositoryTest extends EccubeTestCase
         $this->assertCount(1, $this->Order->getShippings());
     }
 
-    /**
-     * @group decimal
-     */
+    #[Group(name: 'decimal')]
     public function testUpdateOrderSummary()
     {
         $Customer = $this->createCustomer();

@@ -23,6 +23,7 @@ use Eccube\Entity\TaxRule;
 use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Repository\TaxRuleRepository;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\DomCrawler\Form;
 use Symfony\Component\HttpFoundation\Request;
@@ -185,9 +186,8 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
      * Test product class new.
      * Test when product tax rule enable.
      * Case: Tax rule is zero.
-     *
-     * @group decimal
      */
+    #[Group(name: 'decimal')]
     public function testProductClassNewWhenProductTaxRuleEnableAndEditTaxRuleIsZero()
     {
         // GIVE
@@ -321,9 +321,8 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
      * Test product class edit.
      * Test when product tax rule enable.
      * Case: Tax rule is zero.
-     *
-     * @group decimal
      */
+    #[Group(name: 'decimal')]
     public function testProductClassEditWhenProductTaxRuleEnableAndEditTaxRuleIsZero()
     {
         // GIVE

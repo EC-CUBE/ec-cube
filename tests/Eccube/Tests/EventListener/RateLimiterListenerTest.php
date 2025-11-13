@@ -19,6 +19,7 @@ use Eccube\EventListener\RateLimiterListener;
 use Eccube\Request\Context;
 use Eccube\Tests\EccubeTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
@@ -26,9 +27,7 @@ use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-/**
- * @group rate-limiter-listener
- */
+#[Group('rate-limiter-listener')]
 class RateLimiterListenerTest extends EccubeTestCase
 {
     /**

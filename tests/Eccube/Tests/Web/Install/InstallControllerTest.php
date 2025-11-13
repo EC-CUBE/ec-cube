@@ -19,6 +19,7 @@ use Eccube\Controller\Install\InstallController;
 use Eccube\Session\Session as EccubeSession;
 use Eccube\Tests\Web\AbstractWebTestCase;
 use Eccube\Util\CacheUtil;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -28,9 +29,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-/**
- * @group cache-clear-install
- */
+#[Group('cache-clear-install')]
 class InstallControllerTest extends AbstractWebTestCase
 {
     protected ?InstallController $controller = null;

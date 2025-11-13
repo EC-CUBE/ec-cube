@@ -17,15 +17,15 @@ use Eccube\Common\Constant;
 use Eccube\Entity\Plugin;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\PluginService;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
 /**
  * Class PluginInstallTest
- *
- * @group plugin-service
- * @group plugin-install-test
  */
+#[Group('plugin-service')]
+#[Group('plugin-install-test')]
 class PluginInstallTest extends AbstractServiceTestCase
 {
     private ?PluginService $service = null;

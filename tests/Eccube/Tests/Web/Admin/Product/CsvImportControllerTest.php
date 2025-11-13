@@ -24,6 +24,7 @@ use Eccube\Repository\ProductRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Faker\Generator;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -894,10 +895,9 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      * @param string|null $postTaxRate
      *
      * @throws \Exception
-     *
-     * @group decimal
      */
     #[DataProvider(methodName: 'dataTaxRuleProvider')]
+    #[Group(name: 'decimal')]
     public function testImportTaxRule($optionTaxRule, $preTaxRate, $postTaxRate)
     {
         /** @var BaseInfo $BaseInfo */

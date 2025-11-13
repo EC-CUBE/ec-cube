@@ -16,11 +16,10 @@ namespace Eccube\Tests\Twig\Extension;
 use Eccube\Entity\Page;
 use Eccube\Tests\Web\AbstractWebTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @group twig-sandbox-extension
- */
+#[Group('twig-sandbox-extension')]
 class IgnoreTwigSandboxErrorExtensionTest extends AbstractWebTestCase
 {
     /**

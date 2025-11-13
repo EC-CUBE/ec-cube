@@ -15,12 +15,11 @@ namespace Eccube\Tests\Plugin;
 
 use Eccube\Plugin\AbstractPluginManager;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\Group;
 use Plugin\MigrationSample\DoctrineMigrations\Version20181101012712;
 use Plugin\MigrationSample\PluginManager;
 
-/**
- * @group plugin-service
- */
+#[Group('plugin-service')]
 class PluginManagerTest extends EccubeTestCase
 {
     protected function setUp(): void

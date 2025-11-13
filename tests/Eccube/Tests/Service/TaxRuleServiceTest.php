@@ -17,6 +17,7 @@ use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\RoundingType;
 use Eccube\Entity\TaxRule;
 use Eccube\Service\TaxRuleService;
+use PHPUnit\Framework\Attributes\Group;
 
 class TaxRuleServiceTest extends AbstractServiceTestCase
 {
@@ -40,9 +41,7 @@ class TaxRuleServiceTest extends AbstractServiceTestCase
         $this->taxRuleService = static::getContainer()->get(TaxRuleService::class);
     }
 
-    /**
-     * @group decimal
-     */
+    #[Group(name: 'decimal')]
     public function testRoundByCalcRuleWithDefault()
     {
         $input = '100.4';
@@ -66,9 +65,7 @@ class TaxRuleServiceTest extends AbstractServiceTestCase
         $this->verify();
     }
 
-    /**
-     * @group decimal
-     */
+    #[Group(name: 'decimal')]
     public function testRoundByRoundingTypeWithCeil()
     {
         $input = '100.4';
@@ -92,9 +89,7 @@ class TaxRuleServiceTest extends AbstractServiceTestCase
         $this->verify();
     }
 
-    /**
-     * @group decimal
-     */
+    #[Group(name: 'decimal')]
     public function testRoundByRoundingTypeWithRound()
     {
         $input = '100.4';
@@ -118,9 +113,7 @@ class TaxRuleServiceTest extends AbstractServiceTestCase
         $this->verify();
     }
 
-    /**
-     * @group decimal
-     */
+    #[Group(name: 'decimal')]
     public function testRoundByRoundingTypeWithFloor()
     {
         $input = '100.4';
@@ -144,9 +137,7 @@ class TaxRuleServiceTest extends AbstractServiceTestCase
         $this->verify();
     }
 
-    /**
-     * @group decimal
-     */
+    #[Group(name: 'decimal')]
     public function testCalcTax()
     {
         $input = '1000';
@@ -156,9 +147,7 @@ class TaxRuleServiceTest extends AbstractServiceTestCase
         $this->verify();
     }
 
-    /**
-     * @group decimal
-     */
+    #[Group(name: 'decimal')]
     public function testCalcTaxWithAdjust()
     {
         $input = '1008';
@@ -169,9 +158,7 @@ class TaxRuleServiceTest extends AbstractServiceTestCase
         $this->verify();
     }
 
-    /**
-     * @group decimal
-     */
+    #[Group(name: 'decimal')]
     public function testGetTax()
     {
         $input = '1000';
@@ -180,9 +167,7 @@ class TaxRuleServiceTest extends AbstractServiceTestCase
         $this->verify();
     }
 
-    /**
-     * @group decimal
-     */
+    #[Group(name: 'decimal')]
     public function testCalcIncTax()
     {
         $input = '1000';

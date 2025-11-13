@@ -16,12 +16,11 @@ namespace Eccube\Tests\Web\Admin\Store;
 use Eccube\Entity\BaseInfo;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @group cache-clear
- */
+#[Group('cache-clear')]
 class PluginControllerTest extends AbstractAdminWebTestCase
 {
     public function testRoutingAuthentication()
