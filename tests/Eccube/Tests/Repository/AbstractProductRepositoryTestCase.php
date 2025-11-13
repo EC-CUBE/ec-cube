@@ -35,6 +35,7 @@ abstract class AbstractProductRepositoryTestCase extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

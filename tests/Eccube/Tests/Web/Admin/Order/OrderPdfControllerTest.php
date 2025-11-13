@@ -43,6 +43,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
 
     protected ?EccubeConfig $config = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

@@ -23,6 +23,7 @@ class NewItemTest extends AbstractWebTestCase
      *
      * @throws \Doctrine\DBAL\DBALException
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

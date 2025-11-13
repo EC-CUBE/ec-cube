@@ -31,6 +31,7 @@ class MemberRepositoryTest extends EccubeTestCase
 
     protected ?PasswordHasher $passwordHasher = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

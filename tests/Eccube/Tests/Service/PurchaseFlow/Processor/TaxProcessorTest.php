@@ -40,6 +40,7 @@ class TaxProcessorTest extends EccubeTestCase
 
     private ?TaxRuleRepository $taxRuleRepository = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

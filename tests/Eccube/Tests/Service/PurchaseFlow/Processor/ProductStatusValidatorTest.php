@@ -31,6 +31,7 @@ class ProductStatusValidatorTest extends EccubeTestCase
 
     protected ?ProductClass $ProductClass = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

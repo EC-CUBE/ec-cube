@@ -33,6 +33,7 @@ class BlockTypeTest extends AbstractTypeTestCase
         'id' => 1,
     ];
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

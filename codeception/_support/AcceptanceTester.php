@@ -47,6 +47,7 @@ class AcceptanceTester extends Actor
 {
     use AcceptanceTesterActions;
 
+    #[Override]
     public function getScenario(): Scenario
     {
         return $this->scenario;

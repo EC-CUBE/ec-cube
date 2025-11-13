@@ -34,6 +34,7 @@ class NameTypeTest extends AbstractTypeTestCase
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -43,6 +44,7 @@ class NameTypeTest extends AbstractTypeTestCase
             ->getForm();
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();

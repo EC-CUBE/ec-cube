@@ -32,6 +32,7 @@ class EntityProxyServiceTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -46,6 +47,7 @@ class EntityProxyServiceTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function tearDown(): void
     {
         $files = Finder::create()

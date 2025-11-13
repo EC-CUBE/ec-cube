@@ -25,6 +25,7 @@ class MailTemplateTypeTest extends AbstractTypeTestCase
 
     protected ?MailTemplateRepository $mailTemplateRepo = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

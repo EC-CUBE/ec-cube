@@ -48,6 +48,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
      *
      * @throws \Doctrine\DBAL\Exception
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -68,6 +69,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $this->schemaService = static::getContainer()->get(SchemaService::class);
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         $schema = $this->getSchemaManager();
@@ -87,6 +89,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
     /**
      * 中のプロパティをクリアしている
      */
+    #[\Override]
     public static function tearDownAfterClass(): void
     {
     }

@@ -342,6 +342,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
         return $jailPath ?: '/';
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();

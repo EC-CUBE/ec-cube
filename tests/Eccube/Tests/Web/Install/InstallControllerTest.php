@@ -42,6 +42,7 @@ class InstallControllerTest extends AbstractWebTestCase
 
     protected ?EccubeSession $session = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -77,6 +78,7 @@ class InstallControllerTest extends AbstractWebTestCase
         $this->request = $this->createMock(Request::class);
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         if (file_exists($this->envFileBackup)) {

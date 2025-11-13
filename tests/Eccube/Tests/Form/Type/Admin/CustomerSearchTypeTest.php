@@ -21,6 +21,7 @@ class CustomerSearchTypeTest extends AbstractTypeTestCase
 {
     protected ?FormInterface $form = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

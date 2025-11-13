@@ -66,6 +66,7 @@ abstract class EccubeTestCase extends WebTestCase
     /**
      * トランザクションをロールバックする.
      */
+    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();

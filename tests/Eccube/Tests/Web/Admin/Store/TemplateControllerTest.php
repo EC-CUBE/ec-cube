@@ -40,6 +40,7 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
 
     protected ?string $env = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -68,6 +69,7 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
         }
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         $fs = new Filesystem();

@@ -29,6 +29,7 @@ class PointRateProcessorTest extends EccubeTestCase
 
     private ?Order $Order = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

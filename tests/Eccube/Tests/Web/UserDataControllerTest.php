@@ -25,6 +25,7 @@ class UserDataControllerTest extends AbstractWebTestCase
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -39,6 +40,7 @@ class UserDataControllerTest extends AbstractWebTestCase
         $this->entityManager->flush();
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         if (file_exists($this->userDataDir.'/'.$this->fileName.'.twig')) {

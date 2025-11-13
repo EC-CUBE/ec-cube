@@ -95,6 +95,7 @@ class PhoneNumberTypeTest extends AbstractTypeTestCase
         ];
     }
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

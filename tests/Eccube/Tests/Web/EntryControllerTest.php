@@ -24,6 +24,7 @@ class EntryControllerTest extends AbstractWebTestCase
 {
     use MailerAssertionsTrait;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

@@ -21,6 +21,7 @@ class SearchProductControllerTest extends AbstractWebTestCase
 {
     protected ?CategoryRepository $categoryRepository = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

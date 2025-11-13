@@ -46,6 +46,7 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
     protected ?SexRepository $sexRepo = null;
     protected ?PaymentRepository $paymentRepo = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

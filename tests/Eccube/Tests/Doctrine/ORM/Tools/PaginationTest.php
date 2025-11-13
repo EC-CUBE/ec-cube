@@ -51,6 +51,7 @@ class PaginationTest extends EccubeTestCase
      * @throws ORMException
      * @throws OptimisticLockException
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -90,6 +91,7 @@ class PaginationTest extends EccubeTestCase
         }
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         // TEMPORARY テーブルを明示的に削除

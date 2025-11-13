@@ -37,6 +37,7 @@ class PurchaseFlowPassTest extends EccubeTestCase
 {
     public static $called = false;
 
+    #[\Override]
     protected function setUp(): void
     {
         self::$called = false;

@@ -19,6 +19,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class CustomizeBundleTest extends KernelTestCase
 {
+    #[\Override]
     public function tearDown(): void
     {
         $fs = new Filesystem();

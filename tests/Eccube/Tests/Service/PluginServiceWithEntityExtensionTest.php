@@ -35,6 +35,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
      *
      * @throws \ReflectionException
      */
+    #[\Override]
     protected function setUp(): void
     {
         // Fixme: because the proxy entity still not working, it's can not help to run this test case
@@ -51,6 +52,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
         $this->pluginRepository = $this->entityManager->getRepository(Plugin::class);
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         $finder = new Finder();

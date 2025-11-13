@@ -28,6 +28,7 @@ class AuthorityVoterTest extends EccubeTestCase
 {
     protected ?AuthorityRoleRepository $authorityRoleRepository = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

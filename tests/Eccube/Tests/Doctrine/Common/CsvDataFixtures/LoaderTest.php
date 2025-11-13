@@ -28,6 +28,7 @@ class LoaderTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

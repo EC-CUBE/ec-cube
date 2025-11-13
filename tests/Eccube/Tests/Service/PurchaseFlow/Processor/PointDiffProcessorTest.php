@@ -35,6 +35,7 @@ class PointDiffProcessorTest extends EccubeTestCase
 
     private ?OrderStatusRepository $OrderStatusRepository = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

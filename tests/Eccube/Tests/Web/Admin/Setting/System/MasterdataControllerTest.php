@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class MasterdataControllerTest extends AbstractAdminWebTestCase
 {
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

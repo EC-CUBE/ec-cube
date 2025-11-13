@@ -40,6 +40,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

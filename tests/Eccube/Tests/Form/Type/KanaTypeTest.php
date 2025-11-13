@@ -73,6 +73,7 @@ class KanaTypeTest extends AbstractTypeTestCase
         ];
     }
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -82,6 +83,7 @@ class KanaTypeTest extends AbstractTypeTestCase
             ->getForm();
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();

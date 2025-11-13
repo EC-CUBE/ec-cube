@@ -31,6 +31,7 @@ class PaymentRegisterTypeTest extends AbstractTypeTestCase
         'rule_max' => '10000',
     ];
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

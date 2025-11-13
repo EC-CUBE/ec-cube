@@ -26,6 +26,7 @@ class PostalTypeTest extends AbstractTypeTestCase
         'postal_code' => '060-0000',
     ];
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

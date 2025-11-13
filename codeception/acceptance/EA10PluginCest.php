@@ -848,6 +848,7 @@ class Horizon_Local extends Local_Plugin
         $this->traits[CartTrait::class] = 'src/Eccube/Entity/Cart';
     }
 
+    #[Override]
     public function アップデート()
     {
         // アップデートで新たしいカラムが追加される
@@ -873,6 +874,7 @@ class Horizon_Store extends Store_Plugin
         $this->traits[CartTrait::class] = 'src/Eccube/Entity/Cart';
     }
 
+    #[Override]
     public function アップデート()
     {
         // アップデートで新たしいカラムが追加される
@@ -928,6 +930,7 @@ class Emperor_Store extends Store_Plugin
         return new self($I, $dependency);
     }
 
+    #[Override]
     public function アップデート()
     {
         $this->tables = ['dtb_bar'];
@@ -1022,6 +1025,7 @@ class Bundle_Store extends Store_Plugin
         $this->tables[] = 'oauth2_authorization_code';
     }
 
+    #[Override]
     public function 有効化()
     {
         parent::有効化();
@@ -1029,6 +1033,7 @@ class Bundle_Store extends Store_Plugin
         return $this;
     }
 
+    #[Override]
     public function 無効化()
     {
         parent::無効化();

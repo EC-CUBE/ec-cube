@@ -46,6 +46,7 @@ class ItemCollection extends ArrayCollection
      *
      * @return mixed|null
      */
+    #[\Override]
     public function reduce(\Closure $func, mixed $initial = null): mixed
     {
         return array_reduce($this->toArray(), $func, $initial);

@@ -18,6 +18,7 @@ use Psr\Container\ContainerInterface;
 
 class PluginManager extends AbstractPluginManager
 {
+    #[\Override]
     public function install(array $config, ContainerInterface $container)
     {
         echo '*******************************************'.PHP_EOL;
@@ -28,6 +29,7 @@ class PluginManager extends AbstractPluginManager
         $this->createTestTable($container);
     }
 
+    #[\Override]
     public function enable(array $config, ContainerInterface $container)
     {
         echo '*******************************************'.PHP_EOL;
@@ -38,6 +40,7 @@ class PluginManager extends AbstractPluginManager
         $this->insertTestData($container);
     }
 
+    #[\Override]
     public function disable(array $config, ContainerInterface $container)
     {
         echo '*******************************************'.PHP_EOL;
@@ -48,6 +51,7 @@ class PluginManager extends AbstractPluginManager
         $this->clearTestData($container);
     }
 
+    #[\Override]
     public function update(array $config, ContainerInterface $container)
     {
         echo '*******************************************'.PHP_EOL;
@@ -55,6 +59,7 @@ class PluginManager extends AbstractPluginManager
         echo '*******************************************'.PHP_EOL;
     }
 
+    #[\Override]
     public function uninstall(array $config, ContainerInterface $container)
     {
         echo '*******************************************'.PHP_EOL;

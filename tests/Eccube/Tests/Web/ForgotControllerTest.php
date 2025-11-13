@@ -30,6 +30,7 @@ class ForgotControllerTest extends AbstractWebTestCase
 
     protected ?CustomerRepository $customerRepository = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

@@ -22,6 +22,7 @@ class EmailValidatorTest extends AbstractTypeTestCase
 {
     protected ?ValidatorInterface $validator = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

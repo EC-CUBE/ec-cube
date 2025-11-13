@@ -67,7 +67,6 @@ return RectorConfig::configure()
                // 特定のルールを除外する場合
                // Rector\CodeQuality\Rector\Class_\InlineConstructorDefaultToPropertyRector::class,
                // 8.3以上で対応可能
-               AddOverrideAttributeToOverriddenMethodsRector::class, // オーバーライドメソッドに @Override 属性を追加する PHP 8.3 以降で有効
                AddTypeToConstRector::class, // [BC]定数に型を追加する PHP 8.3 以降で有効
                RenameMethodRector::class, //addがaddCommandに変換されてしまうため一旦スキップ
            ])

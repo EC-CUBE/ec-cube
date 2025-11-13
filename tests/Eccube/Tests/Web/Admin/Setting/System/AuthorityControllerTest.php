@@ -36,6 +36,7 @@ class AuthorityControllerTest extends AbstractAdminWebTestCase
 
     protected ?AuthorityRoleRepository $authorityRoleRepository = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

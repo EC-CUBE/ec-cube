@@ -20,6 +20,7 @@ class DeliveryDurationTest extends EccubeTestCase
 {
     private $deliveryDurationRepository;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

@@ -46,6 +46,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

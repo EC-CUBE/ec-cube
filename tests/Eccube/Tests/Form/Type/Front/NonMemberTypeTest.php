@@ -45,6 +45,7 @@ class NonMemberTypeTest extends AbstractTypeTestCase
         ],
     ];
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

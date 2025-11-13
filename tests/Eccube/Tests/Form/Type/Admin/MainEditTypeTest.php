@@ -34,6 +34,7 @@ class MainEditTypeTest extends AbstractTypeTestCase
         'meta_tags' => '',
     ];
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

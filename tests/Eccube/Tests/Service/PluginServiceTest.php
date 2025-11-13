@@ -37,6 +37,7 @@ class PluginServiceTest extends AbstractServiceTestCase
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -46,6 +47,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         $this->pluginRepository = $this->entityManager->getRepository(Plugin::class);
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         $dirs = [];

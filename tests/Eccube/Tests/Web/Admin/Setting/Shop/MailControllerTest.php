@@ -24,6 +24,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class MailControllerTest extends AbstractAdminWebTestCase
 {
+    #[\Override]
     protected function tearDown(): void
     {
         $themeDir = static::getContainer()->getParameter('eccube_theme_front_dir');

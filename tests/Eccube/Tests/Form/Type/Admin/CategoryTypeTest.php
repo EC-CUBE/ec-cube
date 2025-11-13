@@ -26,6 +26,7 @@ class CategoryTypeTest extends AbstractTypeTestCase
         'name' => 'テスト家具',
     ];
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

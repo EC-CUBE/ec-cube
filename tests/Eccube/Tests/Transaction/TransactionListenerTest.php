@@ -61,6 +61,7 @@ class TransactionListenerTest extends WebTestCase
         $this->app->mount('', $c);
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         if ($this->app['orm.em']) {

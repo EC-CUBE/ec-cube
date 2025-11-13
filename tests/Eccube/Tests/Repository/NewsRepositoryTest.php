@@ -28,6 +28,7 @@ class NewsRepositoryTest extends EccubeTestCase
 
     protected ?NewsRepository $newsRepo = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

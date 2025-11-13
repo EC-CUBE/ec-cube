@@ -37,6 +37,7 @@ class PluginInstallTest extends AbstractServiceTestCase
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -48,6 +49,7 @@ class PluginInstallTest extends AbstractServiceTestCase
         $this->mockServerUrl = $_ENV['ECCUBE_PACKAGE_API_URL'] ?? 'http://127.0.0.1:8080';
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         $this->cleanupTestPlugins();

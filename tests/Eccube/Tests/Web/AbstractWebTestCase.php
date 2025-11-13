@@ -23,11 +23,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 abstract class AbstractWebTestCase extends EccubeTestCase
 {
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();

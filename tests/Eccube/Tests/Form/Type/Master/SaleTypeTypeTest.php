@@ -25,6 +25,7 @@ class SaleTypeTypeTest extends AbstractTypeTestCase
 
     protected ?SaleTypeRepository $saleTypeRepo = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

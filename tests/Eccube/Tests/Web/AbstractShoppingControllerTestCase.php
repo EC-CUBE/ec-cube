@@ -28,11 +28,13 @@ use Symfony\Component\HttpFoundation\Request;
  */
 abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
 {
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();

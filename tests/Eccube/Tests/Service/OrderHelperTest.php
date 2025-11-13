@@ -25,6 +25,7 @@ class OrderHelperTest extends EccubeTestCase
 {
     protected ?OrderHelper $helper = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

@@ -65,6 +65,7 @@ class ShippingRepositoryTest extends EccubeTestCase
      *
      * @throws NoResultException
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

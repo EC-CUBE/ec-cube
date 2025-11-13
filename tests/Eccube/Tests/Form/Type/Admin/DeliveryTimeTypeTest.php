@@ -27,6 +27,7 @@ class DeliveryTimeTypeTest extends AbstractTypeTestCase
         'sort_no' => '1',
     ];
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

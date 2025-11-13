@@ -25,6 +25,7 @@ class JsControllerTest extends AbstractAdminWebTestCase
 
     private ?string $contents = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -34,6 +35,7 @@ class JsControllerTest extends AbstractAdminWebTestCase
         $fs->dumpFile($this->dir.self::JS_FILE, '');
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         chmod($this->dir, 0755);

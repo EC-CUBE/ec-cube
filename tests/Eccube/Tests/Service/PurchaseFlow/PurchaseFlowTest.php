@@ -36,6 +36,7 @@ class PurchaseFlowTest extends EccubeTestCase
 
     protected $Product;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

@@ -25,6 +25,7 @@ class ProductStatusTypeTest extends AbstractTypeTestCase
 
     protected ?ProductStatusRepository $productStatusRepo = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

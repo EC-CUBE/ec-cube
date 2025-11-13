@@ -36,6 +36,7 @@ class OrderRepositoryTest extends EccubeTestCase
 
     protected ?OrderRepository $orderRepository = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

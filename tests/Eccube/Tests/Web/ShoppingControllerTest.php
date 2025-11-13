@@ -45,6 +45,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
     private EntityRepository|ObjectRepository|TradeLawRepository|null $tradeLawRepository = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

@@ -25,6 +25,7 @@ class TaxRateChangeValidatorTest extends EccubeTestCase
 
     protected ?Order $Order = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

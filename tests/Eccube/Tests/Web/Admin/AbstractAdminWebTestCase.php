@@ -17,6 +17,7 @@ use Eccube\Tests\Web\AbstractWebTestCase;
 
 abstract class AbstractAdminWebTestCase extends AbstractWebTestCase
 {
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -28,6 +29,7 @@ abstract class AbstractAdminWebTestCase extends AbstractWebTestCase
      *
      * @param mixed|null $user
      */
+    #[\Override]
     public function logIn(mixed $user = null)
     {
         if (!is_object($user)) {
