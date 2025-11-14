@@ -12,7 +12,7 @@
     },
     "minimum-stability": "stable",
     "require": {
-        "php": "^8.3",
+        "php": "^8.2",
         "ext-curl": "*",
         "ext-intl": "*",
         "ext-json": "*",

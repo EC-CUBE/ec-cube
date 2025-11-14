@@ -244,13 +244,13 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
      */
     public static function dataDownloadMaxLengthProvider(): \Iterator
     {
-        yield ['order_pdf[title]', 'この値は、255文字以内で入力してください。'];
-        yield ['order_pdf[message1]', 'この値は、30文字以内で入力してください。'];
-        yield ['order_pdf[message2]', 'この値は、30文字以内で入力してください。'];
-        yield ['order_pdf[message3]', 'この値は、30文字以内で入力してください。'];
-        yield ['order_pdf[note1]', 'この値は、255文字以内で入力してください。'];
-        yield ['order_pdf[note2]', 'この値は、255文字以内で入力してください。'];
-        yield ['order_pdf[note3]', 'この値は、255文字以内で入力してください。'];
+        yield ['order_pdf[title]', '長すぎます。この値は255文字以下で入力してください。'];
+        yield ['order_pdf[message1]', '長すぎます。この値は30文字以下で入力してください。'];
+        yield ['order_pdf[message2]', '長すぎます。この値は30文字以下で入力してください。'];
+        yield ['order_pdf[message3]', '長すぎます。この値は30文字以下で入力してください。'];
+        yield ['order_pdf[note1]', '長すぎます。この値は255文字以下で入力してください。'];
+        yield ['order_pdf[note2]', '長すぎます。この値は255文字以下で入力してください。'];
+        yield ['order_pdf[note3]', '長すぎます。この値は255文字以下で入力してください。'];
     }
 
     /**

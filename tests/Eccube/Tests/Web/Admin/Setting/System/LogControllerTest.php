@@ -122,7 +122,7 @@ class LogControllerTest extends AbstractAdminWebTestCase
         // FIXME 以下のメッセージが翻訳されない
         // https://github.com/symfony/validator/blob/4.4/Resources/translations/validators.ja.xlf#L270
         yield ['', '', '入力されていません。'];
-        yield ['a', '', '有効な数値ではありません。'];
+        yield ['a', '', 'この値は有効な数値でなければなりません。'];
         // [0, '', '1以上でなければなりません。'],
         yield [0, '', ''];
         yield [50000, '', ''];
