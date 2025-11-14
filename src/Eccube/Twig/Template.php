@@ -21,6 +21,8 @@ use Eccube\Event\TemplateEvent;
 use Symfony\Bridge\Twig\AppVariable;
 use Symfony\Component\EventDispatcher\Debug\TraceableEventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Twig\Error\LoaderError;
+use Twig\Error\SyntaxError;
 use Twig\Source;
 
 class Template extends \Twig\Template
@@ -31,8 +33,8 @@ class Template extends \Twig\Template
      * @param array<string, AppVariable|BaseInfo|EccubeConfig|TraceableEventDispatcher|Layout|Page|string|bool> $context
      * @param array<string, array<int, string|object>>  $blocks
      *
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\SyntaxError
+     * @throws LoaderError
+     * @throws SyntaxError
      */
     #[\Override]
     public function display(array $context, array $blocks = []): void

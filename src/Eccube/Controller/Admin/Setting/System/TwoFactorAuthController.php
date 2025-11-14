@@ -14,6 +14,7 @@
 namespace Eccube\Controller\Admin\Setting\System;
 
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\Member;
 use Eccube\Form\Type\Admin\TwoFactorAuthType;
 use Eccube\Repository\MemberRepository;
 use Eccube\Service\TwoFactorAuthService;
@@ -39,7 +40,7 @@ class TwoFactorAuthController extends AbstractController
     #[Template(template: '@admin/two_factor_auth.twig')]
     public function auth(Request $request): RedirectResponse|array
     {
-        /** @var \Eccube\Entity\Member $Member */
+        /** @var Member $Member */
         $Member = $this->getUser();
 
         if (!$this->twoFactorAuthService->isEnabled() || $this->twoFactorAuthService->isAuth($Member)) {
@@ -84,7 +85,7 @@ class TwoFactorAuthController extends AbstractController
     #[Template(template: '@admin/two_factor_auth_set.twig')]
     public function set(Request $request): RedirectResponse|array
     {
-        /** @var \Eccube\Entity\Member $Member */
+        /** @var Member $Member */
         $Member = $this->getUser();
         if (!$this->twoFactorAuthService->isEnabled() || $this->twoFactorAuthService->isAuth($Member)) {
             return $this->redirectToRoute('admin_homepage');
@@ -100,7 +101,7 @@ class TwoFactorAuthController extends AbstractController
     #[Template(template: '@admin/Setting/System/two_factor_auth_edit.twig')]
     public function edit(Request $request): RedirectResponse|array
     {
-        /** @var \Eccube\Entity\Member $Member */
+        /** @var Member $Member */
         $Member = $this->getUser();
         if (!$this->twoFactorAuthService->isAuth($Member)) {
             return $this->redirectToRoute('admin_homepage');
@@ -119,7 +120,7 @@ class TwoFactorAuthController extends AbstractController
     private function createResponse(Request $request): array|RedirectResponse
     {
         $error = null;
-        /** @var \Eccube\Entity\Member $Member */
+        /** @var Member $Member */
         $Member = $this->getUser();
         $builder = $this->formFactory->createBuilder(TwoFactorAuthType::class);
         $form = null;

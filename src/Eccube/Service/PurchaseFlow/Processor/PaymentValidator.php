@@ -20,6 +20,7 @@ use Eccube\Entity\Master\SaleType;
 use Eccube\Entity\Order;
 use Eccube\Entity\Payment;
 use Eccube\Repository\DeliveryRepository;
+use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\ItemHolderPostValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 
@@ -39,7 +40,7 @@ class PaymentValidator extends ItemHolderPostValidator
      * @param ItemHolderInterface $itemHolder カート or 受注
      * @param PurchaseContext $context 購入フローのコンテキスト
      *
-     * @throws \Eccube\Service\PurchaseFlow\InvalidItemException 支払い方法が異なる場合
+     * @throws InvalidItemException 支払い方法が異なる場合
      */
     #[\Override]
     protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context): void

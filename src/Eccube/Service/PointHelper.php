@@ -14,6 +14,8 @@
 namespace Eccube\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\TaxDisplayType;
@@ -35,8 +37,8 @@ class PointHelper
     /**
      * ポイント設定が有効かどうか.
      *
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     public function isPointEnabled(): bool
     {
@@ -52,8 +54,8 @@ class PointHelper
      *
      * @return string 金額
      *
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     public function pointToPrice(string $point): string
     {
@@ -69,8 +71,8 @@ class PointHelper
      *
      * @return string 金額
      *
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     public function pointToDiscount(string $point): string
     {
@@ -82,8 +84,8 @@ class PointHelper
      *
      * @return string ポイント
      *
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     public function priceToPoint(string $price): string
     {

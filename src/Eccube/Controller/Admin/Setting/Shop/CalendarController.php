@@ -13,6 +13,8 @@
 
 namespace Eccube\Controller\Admin\Setting\Shop;
 
+use Doctrine\ORM\Exception\ORMException;
+use Doctrine\ORM\NoResultException;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Calendar;
 use Eccube\Form\Type\Admin\CalendarType;
@@ -110,7 +112,7 @@ class CalendarController extends AbstractController
     /**
      * カレンダー設定の削除
      *
-     * @throws \Doctrine\ORM\NoResultException|\Doctrine\ORM\Exception\ORMException
+     * @throws NoResultException|ORMException
      */
     #[Route(path: '/%eccube_admin_route%/setting/shop/calendar/{id}/delete', name: 'admin_setting_shop_calendar_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function delete(Calendar $Calendar): RedirectResponse

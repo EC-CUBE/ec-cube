@@ -13,6 +13,7 @@
 
 namespace Eccube\Repository;
 
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Entity\Layout;
@@ -33,7 +34,7 @@ class LayoutRepository extends AbstractRepository
     }
 
     /**
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function get(int|string $id): ?Layout
     {

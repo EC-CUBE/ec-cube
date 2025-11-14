@@ -15,6 +15,7 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\ItemHolderInterface;
+use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\ItemHolderPostValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 
@@ -37,7 +38,7 @@ class PaymentTotalLimitValidator extends ItemHolderPostValidator
      * @param ItemHolderInterface $itemHolder カート or 注文
      * @param PurchaseContext $context 購入フローのコンテキスト
      *
-     * @throws \Eccube\Service\PurchaseFlow\InvalidItemException 合計金額が上限を超えている場合
+     * @throws InvalidItemException 合計金額が上限を超えている場合
      */
     #[\Override]
     protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context): void

@@ -26,6 +26,8 @@ use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
+use Eccube\Entity\Product;
+use Eccube\Entity\ProductClass;
 use Eccube\Entity\Shipping;
 use Eccube\EventListener\SecurityListener;
 use Eccube\Repository\DeliveryRepository;
@@ -277,9 +279,9 @@ class OrderHelper
 
         return array_map(function ($item) use ($ProductItemType) {
             /** @var CartItem $item */
-            /** @var \Eccube\Entity\ProductClass $ProductClass */
+            /** @var ProductClass $ProductClass */
             $ProductClass = $item->getProductClass();
-            /** @var \Eccube\Entity\Product $Product */
+            /** @var Product $Product */
             $Product = $ProductClass->getProduct();
 
             $OrderItem = new OrderItem();

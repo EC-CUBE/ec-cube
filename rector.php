@@ -103,7 +103,7 @@ return RectorConfig::configure()
            // オプション: import文の整理
            ->withImportNames(
                importShortClasses: false,
-               importDocBlockNames: false,
+               importDocBlockNames: true,
                importNames: true
            )
            // アノテーション→アトリビュートの変更

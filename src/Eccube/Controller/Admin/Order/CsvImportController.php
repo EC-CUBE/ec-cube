@@ -13,6 +13,7 @@
 
 namespace Eccube\Controller\Admin\Order;
 
+use Doctrine\DBAL\ConnectionException;
 use Eccube\Controller\Admin\AbstractCsvImportController;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Shipping;
@@ -36,7 +37,7 @@ class CsvImportController extends AbstractCsvImportController
      *
      * @return array<string, mixed>
      *
-     * @throws \Doctrine\DBAL\ConnectionException
+     * @throws ConnectionException
      */
     #[Route(path: '/%eccube_admin_route%/order/shipping_csv_upload', name: 'admin_shipping_csv_import', methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Order/csv_shipping.twig')]

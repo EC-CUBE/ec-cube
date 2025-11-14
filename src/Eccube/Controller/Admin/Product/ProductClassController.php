@@ -15,6 +15,7 @@ namespace Eccube\Controller\Admin\Product;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\ClassName;
@@ -53,7 +54,7 @@ class ProductClassController extends AbstractController
      *
      * @return RedirectResponse|array<string, mixed>
      *
-     * @throws NotFoundHttpException|\Doctrine\ORM\NonUniqueResultException
+     * @throws NotFoundHttpException|NonUniqueResultException
      */
     #[Route(path: '/%eccube_admin_route%/product/product/class/{id}', name: 'admin_product_product_class', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Product/product_class.twig')]
@@ -404,7 +405,7 @@ class ProductClassController extends AbstractController
      * 商品を取得する.
      * 商品規格はvisible=trueのものだけを取得し, 規格分類はsort_no=DESCでソートされている.
      *
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     protected function findProduct(string|int $id): ?Product
     {

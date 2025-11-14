@@ -20,9 +20,11 @@ use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\ORMSetup;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\Tools\SchemaTool;
+use Doctrine\ORM\Tools\ToolsException;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Doctrine\Common\CsvDataFixtures\Executor\DbalExecutor;
@@ -587,7 +589,7 @@ class InstallController extends AbstractController
     }
 
     /**
-     * @throws \Doctrine\ORM\Exception\ORMException
+     * @throws ORMException
      */
     protected function createEntityManager(Connection $conn): EntityManager
     {
@@ -803,7 +805,7 @@ class InstallController extends AbstractController
     }
 
     /**
-     * @throws \Doctrine\ORM\Tools\ToolsException
+     * @throws ToolsException
      */
     protected function createTables(EntityManager $em): void
     {

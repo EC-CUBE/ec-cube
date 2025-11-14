@@ -35,6 +35,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
@@ -188,7 +189,7 @@ class ShippingType extends AbstractType
             ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event): void {
                 /** @var Shipping|null $data */
                 $data = $event->getData();
-                /** @var \Symfony\Component\Form\Form $form */
+                /** @var Form $form */
                 $form = $event->getForm();
 
                 if (!$data) {

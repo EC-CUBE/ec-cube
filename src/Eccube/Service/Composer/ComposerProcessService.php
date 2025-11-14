@@ -14,6 +14,8 @@
 namespace Eccube\Service\Composer;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Exception\PluginException;
@@ -93,8 +95,8 @@ class ComposerProcessService implements ComposerServiceInterface
      * Set init
      *
      * @throws PluginException
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     private function init(?BaseInfo $BaseInfo = null): void
     {
@@ -141,8 +143,8 @@ class ComposerProcessService implements ComposerServiceInterface
      * @param int $level
      *
      * @throws PluginException
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     #[\Override]
     public function foreachRequires($packageName, $version, $callback, $typeFilter = null, $level = 0): void

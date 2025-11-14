@@ -14,6 +14,7 @@
 namespace Eccube\Controller;
 
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -25,6 +26,8 @@ use Eccube\Repository\PageRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\MailService;
 use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -73,10 +76,10 @@ class EntryController extends AbstractController
             return $this->redirectToRoute('mypage');
         }
 
-        /** @var \Eccube\Entity\Customer $Customer */
+        /** @var Customer $Customer */
         $Customer = $this->customerRepository->newCustomer();
 
-        /** @var \Symfony\Component\Form\FormBuilderInterface $builder */
+        /** @var FormBuilderInterface $builder */
         $builder = $this->formFactory->createBuilder(EntryType::class, $Customer);
 
         $event = new EventArgs(
@@ -88,7 +91,7 @@ class EntryController extends AbstractController
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_ENTRY_INDEX_INITIALIZE);
 
-        /** @var \Symfony\Component\Form\FormInterface $form */
+        /** @var FormInterface $form */
         $form = $builder->getForm();
 
         $form->handleRequest($request);

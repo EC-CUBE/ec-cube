@@ -14,6 +14,7 @@
 namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NoResultException;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\TaxDisplayType;
@@ -38,7 +39,7 @@ class TaxProcessor implements ItemHolderPreprocessor
      * @param ItemHolderInterface $itemHolder 受注 or カート
      * @param PurchaseContext $context 購入フローのコンテキスト
      *
-     * @throws \Doctrine\ORM\NoResultException
+     * @throws NoResultException
      */
     #[\Override]
     public function process(ItemHolderInterface $itemHolder, PurchaseContext $context): void

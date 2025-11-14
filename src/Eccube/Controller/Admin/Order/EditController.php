@@ -45,8 +45,10 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseException;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\TaxRuleService;
+use Knp\Component\Pager\Pagination\SlidingPagination;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -364,7 +366,7 @@ class EditController extends AbstractController
             );
             $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_SEARCH);
 
-            /** @var \Knp\Component\Pager\Pagination\SlidingPagination<int, Customer> $pagination */
+            /** @var SlidingPagination<int, Customer> $pagination */
             $pagination = $paginator->paginate(
                 $qb,
                 $page_no,
@@ -532,7 +534,7 @@ class EditController extends AbstractController
             );
             $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_SEARCH);
 
-            /** @var \Knp\Component\Pager\Pagination\SlidingPagination<int, Product> $pagination */
+            /** @var SlidingPagination<int, Product> $pagination */
             $pagination = $paginator->paginate(
                 $qb,
                 $page_no,
@@ -549,7 +551,7 @@ class EditController extends AbstractController
 
             $forms = [];
             foreach ($Products as $Product) {
-                /** @var \Symfony\Component\Form\FormBuilderInterface $builder */
+                /** @var FormBuilderInterface $builder */
                 $builder = $this->formFactory->createNamedBuilder('', AddCartType::class, null, [
                     'product' => $Product,
                 ]);

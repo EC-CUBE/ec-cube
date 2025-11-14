@@ -13,6 +13,7 @@
 
 namespace Eccube\Repository;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
@@ -67,45 +68,7 @@ class OrderRepository extends AbstractRepository
     }
 
     /**
-     * @param array{
-     *         order_id?:string|int,
-     *         order_no?:string,
-     *         order_id_start?:string|int,
-     *         order_id_end?:string|int,
-     *         multi?:string|int|null,
-     *         status?:OrderStatus[]|int[],
-     *         company_name?:string,
-     *         name?:string,
-     *         kana?:string,
-     *         email?:string,
-     *         phone_number?:string,
-     *         sex?:\Doctrine\Common\Collections\ArrayCollection<int, Sex>,
-     *         payment?:\Doctrine\Common\Collections\ArrayCollection<int, Payment>,
-     *         order_datetime_start?:\DateTime,
-     *         order_datetime_end?:\DateTime,
-     *         order_date_start?:\DateTime,
-     *         order_date_end?:\DateTime,
-     *         payment_datetime_start?:\DateTime,
-     *         payment_datetime_end?:\DateTime,
-     *         payment_date_start?:\DateTime,
-     *         payment_date_end?:\DateTime,
-     *         update_datetime_start?:\DateTime,
-     *         update_datetime_end?:\DateTime,
-     *         update_date_start?:\DateTime,
-     *         update_date_end?:\DateTime,
-     *         payment_total_start?:string|int,
-     *         payment_total_end?:string|int,
-     *         payment_product_name?:string,
-     *         shipping_mail?:Shipping::SHIPPING_MAIL_UNSENT|Shipping::SHIPPING_MAIL_SENT|\Doctrine\Common\Collections\ArrayCollection<int, int>,
-     *         tracking_number?:string,
-     *         shipping_delivery_datetime_start?:\DateTime,
-     *         shipping_delivery_datetime_end?:\DateTime,
-     *         shipping_delivery_date_start?:\DateTime,
-     *         shipping_delivery_date_end?:\DateTime,
-     *         sortkey?:string,
-     *         sorttype?:string,
-     *         buy_product_name?:string
-     *     } $searchData
+     * @param array{order_id?: string|int, order_no?: string, order_id_start?: string|int, order_id_end?: string|int, multi?: string|int|null, status?: OrderStatus[]|int[], company_name?: string, name?: string, kana?: string, email?: string, phone_number?: string, sex?: ArrayCollection<int, Sex>, payment?: ArrayCollection<int, Payment>, order_datetime_start?: \DateTime, order_datetime_end?: \DateTime, order_date_start?: \DateTime, order_date_end?: \DateTime, payment_datetime_start?: \DateTime, payment_datetime_end?: \DateTime, payment_date_start?: \DateTime, payment_date_end?: \DateTime, update_datetime_start?: \DateTime, update_datetime_end?: \DateTime, update_date_start?: \DateTime, update_date_end?: \DateTime, payment_total_start?: string|int, payment_total_end?: string|int, payment_product_name?: string, shipping_mail?: Shipping::SHIPPING_MAIL_UNSENT|Shipping::SHIPPING_MAIL_SENT|ArrayCollection<int, int>, tracking_number?: string, shipping_delivery_datetime_start?: \DateTime, shipping_delivery_datetime_end?: \DateTime, shipping_delivery_date_start?: \DateTime, shipping_delivery_date_end?: \DateTime, sortkey?: string, sorttype?: string, buy_product_name?: string} $searchData
      */
     public function getQueryBuilderBySearchDataForAdmin(array $searchData): QueryBuilder
     {

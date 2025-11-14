@@ -13,9 +13,11 @@
 
 namespace Eccube\Form\Type;
 
+use Eccube\Entity\OrderItem;
 use Eccube\Repository\ShippingRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvents;
 
@@ -38,9 +40,9 @@ class ShippingMultipleType extends AbstractType
     {
         $builder
             ->addEventListener(FormEvents::POST_SET_DATA, function ($event): void {
-                /** @var \Eccube\Entity\OrderItem|null $data */
+                /** @var OrderItem|null $data */
                 $data = $event->getData();
-                /** @var \Symfony\Component\Form\Form $form */
+                /** @var Form $form */
                 $form = $event->getForm();
 
                 if (is_null($data)) {

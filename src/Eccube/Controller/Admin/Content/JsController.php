@@ -19,6 +19,7 @@ use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -26,7 +27,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class JsController extends AbstractController
 {
     /**
-     * @return RedirectResponse|array<string, \Symfony\Component\Form\FormView>
+     * @return RedirectResponse|array<string, FormView>
      *
      * @throws IOException
      */

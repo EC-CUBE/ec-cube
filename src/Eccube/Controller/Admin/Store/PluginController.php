@@ -13,6 +13,8 @@
 
 namespace Eccube\Controller\Admin\Store;
 
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BaseInfo;
@@ -49,8 +51,8 @@ class PluginController extends AbstractController
     /**
      * PluginController constructor.
      *
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     public function __construct(
         protected PluginRepository $pluginRepository,

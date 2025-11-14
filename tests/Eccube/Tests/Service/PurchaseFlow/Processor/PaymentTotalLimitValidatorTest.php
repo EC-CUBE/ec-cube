@@ -20,6 +20,7 @@ use Eccube\Service\PurchaseFlow\Processor\PaymentTotalLimitValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 use PHPUnit\Framework\MockObject\Exception;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class PaymentTotalLimitValidatorTest extends EccubeTestCase
 {
@@ -76,7 +77,7 @@ class PaymentTotalLimitValidatorTest extends EccubeTestCase
     {
         // PaymentTotalLimitValidatorのmaxTotalFeeをreadonlyに設定したため、
         // EccubeConfigをモックして、指定した値を返すようにする
-        /** @var EccubeConfig&\PHPUnit\Framework\MockObject\MockObject $eccubeConfig */
+        /** @var EccubeConfig&MockObject $eccubeConfig */
         $eccubeConfig = $this->createMock(EccubeConfig::class);
         $eccubeConfig->method('offsetGet')
             ->with('eccube_max_total_fee')

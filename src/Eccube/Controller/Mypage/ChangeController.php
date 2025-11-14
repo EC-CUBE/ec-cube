@@ -13,6 +13,7 @@
 
 namespace Eccube\Controller\Mypage;
 
+use Doctrine\ORM\NonUniqueResultException;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Customer;
 use Eccube\Event\EccubeEvents;
@@ -22,11 +23,16 @@ use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Service\MailService;
 use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class ChangeController extends AbstractController
 {
@@ -41,8 +47,8 @@ class ChangeController extends AbstractController
      *
      * @return RedirectResponse|array<string, mixed>
      *
-     * @throws \Twig\Error\LoaderError|\Twig\Error\RuntimeError|\Twig\Error\SyntaxError
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws LoaderError|RuntimeError|SyntaxError
+     * @throws NonUniqueResultException
      */
     #[Route(path: '/mypage/change', name: 'mypage_change', methods: ['GET', 'POST'])]
     #[Template(template: 'Mypage/change.twig')]
@@ -52,7 +58,7 @@ class ChangeController extends AbstractController
         $Customer = $this->getUser();
         $Customer->setPlainPassword($this->eccubeConfig['eccube_default_password']);
 
-        /** @var \Symfony\Component\Form\FormBuilderInterface $builder */
+        /** @var FormBuilderInterface $builder */
         $builder = $this->formFactory->createBuilder(EntryType::class, $Customer);
 
         $event = new EventArgs(
@@ -64,7 +70,7 @@ class ChangeController extends AbstractController
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_MYPAGE_CHANGE_INDEX_INITIALIZE);
 
-        /** @var \Symfony\Component\Form\FormInterface $form */
+        /** @var FormInterface $form */
         $form = $builder->getForm();
         $form->handleRequest($request);
 

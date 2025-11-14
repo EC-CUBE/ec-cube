@@ -15,12 +15,14 @@ namespace Eccube\Controller\Admin;
 
 use Carbon\Carbon;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\ProductStatus;
+use Eccube\Entity\Member;
 use Eccube\Entity\Order;
 use Eccube\Entity\ProductStock;
 use Eccube\Event\EccubeEvents;
@@ -93,7 +95,7 @@ class AdminController extends AbstractController
      * @return array<string, mixed>
      *
      * @throws NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     #[Route(path: '/%eccube_admin_route%/', name: 'admin_homepage', methods: ['GET'])]
     #[Template(template: '@admin/index.twig')]
@@ -261,7 +263,7 @@ class AdminController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var \Eccube\Entity\Member $Member */
+            /** @var Member $Member */
             $Member = $this->getUser();
             $salt = $Member->getSalt();
             $password = $form->get('change_password')->getData();
@@ -360,7 +362,7 @@ class AdminController extends AbstractController
     /**
      * @return array<string, int>
      *
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     protected function getSalesByDay(\DateTime $dateTime): array
     {
@@ -395,7 +397,7 @@ class AdminController extends AbstractController
     /**
      * @return array<string, int>
      *
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     protected function getSalesByMonth(\DateTime $dateTime): array
     {
@@ -432,7 +434,7 @@ class AdminController extends AbstractController
     /**
      * 在庫切れ商品数を取得
      *
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     protected function countNonStockProducts(): int|string|null
     {
@@ -450,7 +452,7 @@ class AdminController extends AbstractController
     /**
      * 商品数を取得
      *
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     protected function countProducts(): int|string|null
     {
@@ -465,7 +467,7 @@ class AdminController extends AbstractController
     /**
      * 本会員数を取得
      *
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     protected function countCustomers(): int|string|null
     {

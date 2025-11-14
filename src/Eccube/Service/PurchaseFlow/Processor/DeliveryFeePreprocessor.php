@@ -14,6 +14,7 @@
 namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NoResultException;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\DeliveryFee;
 use Eccube\Entity\ItemHolderInterface;
@@ -52,7 +53,7 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
      * @param ItemHolderInterface $itemHolder カート or 注文
      * @param PurchaseContext $context 購入フローのコンテキスト
      *
-     * @throws \Doctrine\ORM\NoResultException
+     * @throws NoResultException
      */
     #[\Override]
     public function process(ItemHolderInterface $itemHolder, PurchaseContext $context): void
@@ -80,7 +81,7 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
     }
 
     /**
-     * @throws \Doctrine\ORM\NoResultException
+     * @throws NoResultException
      */
     private function saveDeliveryFeeItem(ItemHolderInterface $itemHolder): void
     {
