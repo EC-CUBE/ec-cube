@@ -119,7 +119,7 @@ class PluginControllerTest extends AbstractAdminWebTestCase
      */
     public static function OwnerStoreInstallParam(): \Iterator
     {
-        yield ['api42+symfony/yaml:5.3', '4.3.0', '無効な値です。'];
+        yield ['api42+symfony/yaml:5.3', '4.3.0', '有効な値ではありません。'];
         yield ['', '4.3.0', '入力されていません。'];
     }
 
@@ -128,8 +128,8 @@ class PluginControllerTest extends AbstractAdminWebTestCase
      */
     public static function OwnerStoreUpgradeParam(): \Iterator
     {
-        yield ['api42+symfony/yaml:5.3', '4.3.0', '無効な値です。'];
-        yield ['api42', '4.3.0 symfony/yaml:5.3', '無効な値です。'];
+        yield ['api42+symfony/yaml:5.3', '4.3.0', '有効な値ではありません。'];
+        yield ['api42', '4.3.0 symfony/yaml:5.3', '有効な値ではありません。'];
         yield ['api42', '', '入力されていません。'];
         yield ['', '4.3.0', '入力されていません。'];
     }
