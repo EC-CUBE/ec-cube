@@ -60,6 +60,7 @@ if (!class_exists(Member::class)) {
          * {@inheritdoc}
          */
         #[\Override]
+        #[\Deprecated(message: 'eraseCredentials() is empty as we moved the logic to __serialize()', since: 'eccube/eccube 7.3')]
         public function eraseCredentials(): void
         {
         }

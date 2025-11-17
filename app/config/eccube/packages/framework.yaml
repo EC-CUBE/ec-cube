@@ -57,3 +57,7 @@ framework:
         enable_attributes: true
         email_validation_mode: html5
     # templating: { engines: ['twig'] }
+    
+    # Symfony 7.3 deprecation fixes
+    property_info:
+        with_constructor_extractor: true
