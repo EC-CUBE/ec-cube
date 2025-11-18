@@ -199,8 +199,8 @@ final class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
     private function newBaseInfo($deliveryFeeAmount, $deliveryFeeQuantity)
     {
         $BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
-        $BaseInfo->setDeliveryFreeAmount($deliveryFeeAmount);
-        $BaseInfo->setDeliveryFreeQuantity($deliveryFeeQuantity);
+        $BaseInfo->setDeliveryFreeAmount(is_int($deliveryFeeAmount) ? (string) $deliveryFeeAmount : $deliveryFeeAmount);
+        $BaseInfo->setDeliveryFreeQuantity(is_string($deliveryFeeQuantity) ? (int) $deliveryFeeQuantity : $deliveryFeeQuantity);
         $this->entityManager->flush();
 
         return $BaseInfo;
@@ -221,7 +221,7 @@ final class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
     {
         $OrderItem = new OrderItem();
         $OrderItem->setOrderItemType($this->ProductType);
-        $OrderItem->setPrice($price);
+        $OrderItem->setPrice((string) $price);
         $OrderItem->setQuantity($quantity);
         $OrderItem->setShipping($Shipping);
         $Shipping->addOrderItem($OrderItem);

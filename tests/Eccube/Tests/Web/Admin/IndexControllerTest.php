@@ -108,7 +108,7 @@ final class IndexControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         preg_match('/^￥([0-9,]+) \/ ([0-9]+)/u', trim($crawler->filter('#chart-statistics > div.card-body > div.row:nth-child(1) > div:nth-child(2) > div')->text()), $match);
-        $this->expected = number_format($todaysSales);
+        $this->expected = number_format((float) $todaysSales);
         $this->actual = $match[1];
         $this->verify('本日の売上');
 
@@ -117,7 +117,7 @@ final class IndexControllerTest extends AbstractAdminWebTestCase
         $this->verify('本日の売上件数');
 
         preg_match('/^￥([0-9,]+) \/ ([0-9]+)/u', trim($crawler->filter('#chart-statistics > div.card-body > div.row:nth-child(1) > div:nth-child(3) > div')->text()), $match);
-        $this->expected = number_format($yesterdaysSales);
+        $this->expected = number_format((float) $yesterdaysSales);
         $this->actual = $match[1];
         $this->verify('昨日の売上');
 
@@ -126,7 +126,7 @@ final class IndexControllerTest extends AbstractAdminWebTestCase
         $this->verify('昨日の売上件数');
 
         preg_match('/^￥([0-9,]+) \/ ([0-9]+)/u', trim($crawler->filter('#chart-statistics > div.card-body > div.row:nth-child(1) > div:nth-child(1) > div')->text()), $match);
-        $this->expected = number_format((new \DateTime('today'))->format('m') === (new \DateTime('yesterday'))->format('m') ? bcadd($todaysSales, $yesterdaysSales, 2) : $todaysSales);
+        $this->expected = number_format((float) ((new \DateTime('today'))->format('m') === (new \DateTime('yesterday'))->format('m') ? bcadd($todaysSales, $yesterdaysSales, 2) : $todaysSales));
         $this->actual = $match[1];
         $this->verify('今月の売上');
 

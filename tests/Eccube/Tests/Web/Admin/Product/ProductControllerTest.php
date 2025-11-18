@@ -70,7 +70,7 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
             $this->createProduct();
         }
 
-        $this->imageDir = sys_get_temp_dir().'/'.sha1(mt_rand());
+        $this->imageDir = sys_get_temp_dir().'/'.sha1((string) mt_rand());
         $fs = new Filesystem();
         $fs->mkdir($this->imageDir);
     }
@@ -518,7 +518,7 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
         /** @var ProductClass $ProductClass */
         $ProductClass = $testProduct->getProductClasses()->first();
         $ProductClass->setStock('0');
-        $ProductClass->getProductStock()->setStock(0);
+        $ProductClass->getProductStock()->setStock('0');
         $this->entityManager->flush();
 
         $searchForm = $this->createSearchForm();
@@ -1110,8 +1110,8 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
     {
         /** @var Generator $generator */
         $generator = static::getContainer()->get(Generator::class);
-        $Product1 = $generator->createProduct(null, 0, 'abstract');
-        $Product2 = $generator->createProduct(null, 0, 'abstract');
+        $Product1 = $generator->createProduct(null, 0, true);
+        $Product2 = $generator->createProduct(null, 0, true);
 
         $DuplicatedImage = $Product1->getProductImage()->first();
         $this->assertInstanceOf(ProductImage::class, $DuplicatedImage);
@@ -1147,8 +1147,8 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
     {
         /** @var Generator $generator */
         $generator = static::getContainer()->get(Generator::class);
-        $Product1 = $generator->createProduct(null, 0, 'abstract');
-        $Product2 = $generator->createProduct(null, 0, 'abstract');
+        $Product1 = $generator->createProduct(null, 0, true);
+        $Product2 = $generator->createProduct(null, 0, true);
 
         $DuplicatedImage = $Product1->getProductImage()->first();
         $this->assertInstanceOf(ProductImage::class, $DuplicatedImage);

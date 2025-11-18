@@ -28,6 +28,7 @@ $rules = [
     'phpdoc_add_missing_param_annotation' => true,
     'phpdoc_param_order' => true,
     'phpdoc_to_comment' => false, // /** @var */ を変換してしまうため
+    'phpdoc_trim' => true,
     'global_namespace_import' => [
         'import_classes' => false,
         'import_constants' => false,
@@ -37,8 +38,6 @@ $rules = [
     'phpdoc_to_param_type'   => true,
     'phpdoc_to_return_type'  => true,
     'phpdoc_to_property_type' => true,
-
-    'phpdoc_trim' => true,
 ];
 
 $finder = \PhpCsFixer\Finder::create()

@@ -62,7 +62,7 @@ final class TaxProcessorTest extends EccubeTestCase
         $this->Product = $this->createProduct('test', 1);
 
         $this->ProductClass = $this->Product->getProductClasses()[0];
-        $this->ProductClass->setPrice02(1000);
+        $this->ProductClass->setPrice02('1000');
         $this->entityManager->persist($this->ProductClass);
 
         $this->Order = $this->createOrderWithProductClasses($Customer, $this->Product->getProductClasses()->toArray());
@@ -90,7 +90,7 @@ final class TaxProcessorTest extends EccubeTestCase
     public function testTaxRateChangedShoppingFlow()
     {
         // 受注作成後に税率を変更
-        $this->TaxRule->setTaxRate(10);
+        $this->TaxRule->setTaxRate('10');
 
         $context = new PurchaseContext();
         $context->setFlowType(PurchaseContext::SHOPPING_FLOW);
@@ -110,7 +110,7 @@ final class TaxProcessorTest extends EccubeTestCase
     public function testTaxRateChangedOrderFlow()
     {
         // 受注作成後に税率を変更
-        $this->TaxRule->setTaxRate(10);
+        $this->TaxRule->setTaxRate('10');
 
         $context = new PurchaseContext();
         $context->setFlowType(PurchaseContext::ORDER_FLOW);
@@ -133,7 +133,7 @@ final class TaxProcessorTest extends EccubeTestCase
         $this->assertInstanceOf(BaseInfo::class, $BaseInfo);
         $BaseInfo->setOptionProductTaxRule(true);
 
-        $this->TaxRule->setTaxRate(10);
+        $this->TaxRule->setTaxRate('10');
 
         /** @var RoundingType $RoundingType */
         $RoundingType = $this->entityManager->find(RoundingType::class, RoundingType::ROUND);
