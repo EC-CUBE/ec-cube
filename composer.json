@@ -10,7 +10,8 @@
     "support": {
         "issues": "https://github.com/EC-CUBE/ec-cube/issues"
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "RC",
+    "prefer-stable": true,
     "require": {
         "php": "^8.2",
         "ext-curl": "*",
@@ -53,48 +54,48 @@
         "setasign/fpdi": "^2.2",
         "skorp/detect-incompatible-samesite-useragents": "^1.0",
         "softcreatr/jsonpath": "^0.8",
-        "symfony/asset": "^7.3",
-        "symfony/cache": "^7.3",
-        "symfony/config": "^7.3",
-        "symfony/console": "^7.3",
-        "symfony/css-selector": "^7.3",
-        "symfony/debug-bundle": "^7.3",
-        "symfony/dependency-injection": "^7.3",
-        "symfony/doctrine-bridge": "^7.3",
-        "symfony/dom-crawler": "^7.3",
-        "symfony/dotenv": "^7.3",
-        "symfony/event-dispatcher": "^7.3",
-        "symfony/expression-language": "^7.3",
-        "symfony/filesystem": "^7.3",
-        "symfony/finder": "^7.3",
+        "symfony/asset": "^7.4",
+        "symfony/cache": "^7.4",
+        "symfony/config": "^7.4",
+        "symfony/console": "^7.4",
+        "symfony/css-selector": "^7.4",
+        "symfony/debug-bundle": "^7.4",
+        "symfony/dependency-injection": "^7.4",
+        "symfony/doctrine-bridge": "^7.4",
+        "symfony/dom-crawler": "^7.4",
+        "symfony/dotenv": "^7.4",
+        "symfony/event-dispatcher": "^7.4",
+        "symfony/expression-language": "^7.4",
+        "symfony/filesystem": "^7.4",
+        "symfony/finder": "^7.4",
         "symfony/flex": "^2.7",
-        "symfony/form": "^7.3",
-        "symfony/framework-bundle": "^7.3",
-        "symfony/http-foundation": "^7.3",
-        "symfony/http-kernel": "^7.3",
-        "symfony/intl": "^7.3",
-        "symfony/lock": "^7.3",
-        "symfony/mailer": "^7.3",
+        "symfony/form": "^7.4",
+        "symfony/framework-bundle": "^7.4",
+        "symfony/http-foundation": "^7.4",
+        "symfony/http-kernel": "^7.4",
+        "symfony/intl": "^7.4",
+        "symfony/lock": "^7.4",
+        "symfony/mailer": "^7.4",
         "symfony/maker-bundle": "^1.0",
-        "symfony/monolog-bridge": "^7.3",
+        "symfony/monolog-bridge": "^7.4",
         "symfony/monolog-bundle": "^3.1",
-        "symfony/options-resolver": "^7.3",
-        "symfony/password-hasher": "^7.3",
-        "symfony/process": "^7.3",
-        "symfony/property-access": "^7.3",
-        "symfony/rate-limiter": "^7.3",
-        "symfony/routing": "^7.3",
-        "symfony/security-bundle": "^7.3",
-        "symfony/serializer": "^7.3",
-        "symfony/stopwatch": "^7.3",
-        "symfony/translation": "^7.3",
-        "symfony/twig-bridge": "^7.3",
-        "symfony/twig-bundle": "^7.3",
-        "symfony/validator": "^7.3",
-        "symfony/var-dumper": "^7.3",
-        "symfony/web-profiler-bundle": "^7.3",
-        "symfony/workflow": "^7.3",
-        "symfony/yaml": "^7.3",
+        "symfony/options-resolver": "^7.4",
+        "symfony/password-hasher": "^7.4",
+        "symfony/process": "^7.4",
+        "symfony/property-access": "^7.4",
+        "symfony/rate-limiter": "^7.4",
+        "symfony/routing": "^7.4",
+        "symfony/security-bundle": "^7.4",
+        "symfony/serializer": "^7.4",
+        "symfony/stopwatch": "^7.4",
+        "symfony/translation": "^7.4",
+        "symfony/twig-bridge": "^7.4",
+        "symfony/twig-bundle": "^7.4",
+        "symfony/validator": "^7.4",
+        "symfony/var-dumper": "^7.4",
+        "symfony/web-profiler-bundle": "^7.4",
+        "symfony/workflow": "^7.4",
+        "symfony/yaml": "^7.4",
         "tecnickcom/tcpdf": "^6.2",
         "twig/extra-bundle": "^3.21",
         "twig/intl-extra": "^3.21",
@@ -114,8 +115,8 @@
         "phpstan/phpstan": "^2.1",
         "phpunit/phpunit": "^11.0",
         "rector/rector": "^2.1",
-        "symfony/browser-kit": "^7.3",
-        "symfony/phpunit-bridge": "^7.0"
+        "symfony/browser-kit": "^7.4",
+        "symfony/phpunit-bridge": "^7.4"
     },
     "autoload": {
         "files": [
@@ -181,7 +182,7 @@
     },
     "config": {
         "platform": {
-            "php": "8.2.0"
+            "php": "8.3.24"
         },
         "preferred-install": {
             "*": "dist"
@@ -195,8 +196,9 @@
             "symfony/flex": true
         }
     },
-    "repositories": {
-        "eccube": {
+    "repositories": [
+        {
+            "name": "eccube",
             "type": "composer",
             "url": "https://package-api-c2.ec-cube.net/v43",
             "options": {
@@ -205,5 +207,5 @@
                 }
             }
         }
-    }
+        ]
 }
