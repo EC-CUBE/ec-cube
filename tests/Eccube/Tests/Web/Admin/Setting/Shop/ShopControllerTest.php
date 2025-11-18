@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -23,7 +25,7 @@ use Symfony\Component\HttpFoundation\Request;
  * Class ShopControllerTest
  */
 #[Group('cache-clear')]
-class ShopControllerTest extends AbstractAdminWebTestCase
+final class ShopControllerTest extends AbstractAdminWebTestCase
 {
     /**
      * Routing

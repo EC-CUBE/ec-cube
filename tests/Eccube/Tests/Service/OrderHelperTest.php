@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,7 +23,7 @@ use Eccube\Service\OrderHelper;
 use Eccube\Tests\EccubeTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-class OrderHelperTest extends EccubeTestCase
+final class OrderHelperTest extends EccubeTestCase
 {
     protected ?OrderHelper $helper = null;
 

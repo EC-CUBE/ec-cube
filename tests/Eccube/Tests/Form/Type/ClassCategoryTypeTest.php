@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -16,7 +18,7 @@ namespace Eccube\Tests\Form\Type;
 use Eccube\Form\Type\Admin\ClassCategoryType;
 use Symfony\Component\Form\FormInterface;
 
-class ClassCategoryTypeTest extends AbstractTypeTestCase
+final class ClassCategoryTypeTest extends AbstractTypeTestCase
 {
     protected ?FormInterface $form = null;
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -16,7 +18,7 @@ namespace Eccube\Tests\Web;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class SitemapControllerTest extends AbstractWebTestCase
+final class SitemapControllerTest extends AbstractWebTestCase
 {
     public function testIndex()
     {

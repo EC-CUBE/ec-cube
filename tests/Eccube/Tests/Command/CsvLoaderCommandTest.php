@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,14 +19,14 @@ use Eccube\Command\CsvLoaderCommand;
 use Eccube\Entity\Master\Job;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class CsvLoaderCommandTest extends CommandTestCase
+final class CsvLoaderCommandTest extends CommandTestCase
 {
     protected \SplFileObject $file;
 
     #[\Override]
     protected function setUp(): void
     {
-        $this->markTestIncomplete(static::class.' は未実装です');
+        $this->markTestIncomplete(self::class.' は未実装です');
         parent::setUp();
         if ($this->app['config']['database']['driver'] == 'pdo_sqlite') {
             $this->markTestSkipped('Can not support for sqlite3');

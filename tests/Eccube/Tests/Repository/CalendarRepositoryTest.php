@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -23,7 +25,7 @@ use Eccube\Tests\EccubeTestCase;
  *
  * @author Yuko Kajihara
  */
-class CalendarRepositoryTest extends EccubeTestCase
+final class CalendarRepositoryTest extends EccubeTestCase
 {
     protected ?\DateTime $DateTimeNow = null;
 

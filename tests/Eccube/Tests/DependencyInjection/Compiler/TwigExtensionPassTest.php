@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -25,7 +27,7 @@ use Twig\Environment;
 use Twig\Loader\ArrayLoader;
 use Twig\Loader\LoaderInterface;
 
-class TwigExtensionPassTest extends TestCase
+final class TwigExtensionPassTest extends TestCase
 {
     protected ?ContainerBuilder $containerBuilder = null;
 

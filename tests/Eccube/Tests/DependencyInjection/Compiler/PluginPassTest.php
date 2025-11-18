@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,7 +19,7 @@ use Eccube\DependencyInjection\Compiler\PluginPass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class PluginPassTest extends TestCase
+final class PluginPassTest extends TestCase
 {
     private ?ContainerBuilder $containerBuilder = null;
 

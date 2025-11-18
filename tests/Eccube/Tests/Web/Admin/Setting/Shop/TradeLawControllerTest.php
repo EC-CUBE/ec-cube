@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,7 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\String\ByteString;
 
-class TradeLawControllerTest extends AbstractAdminWebTestCase
+final class TradeLawControllerTest extends AbstractAdminWebTestCase
 {
     #[\Override]
     public function setUp(): void

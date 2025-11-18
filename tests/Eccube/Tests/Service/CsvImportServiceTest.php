@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -42,7 +44,7 @@ use Eccube\Stream\Filter\SjisToUtf8EncodingFilter;
  *
  * @see https://github.com/ddeboer/data-import/blob/master/tests/Reader/CsvReaderTest.php
  */
-class CsvImportServiceTest extends AbstractServiceTestCase
+final class CsvImportServiceTest extends AbstractServiceTestCase
 {
     public function testReadCsvFileWithColumnHeaders()
     {

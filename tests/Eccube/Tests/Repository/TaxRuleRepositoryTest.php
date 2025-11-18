@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -31,7 +33,7 @@ use Eccube\Tests\EccubeTestCase;
  *
  * @author Kentaro Ohkouchi
  */
-class TaxRuleRepositoryTest extends EccubeTestCase
+final class TaxRuleRepositoryTest extends EccubeTestCase
 {
     protected ?\DateTime $DateTimeNow = null;
 
@@ -69,7 +71,7 @@ class TaxRuleRepositoryTest extends EccubeTestCase
         $this->prefRepository = $this->entityManager->getRepository(Pref::class);
         $this->countryRepository = $this->entityManager->getRepository(Country::class);
 
-        $this->BaseInfo->setOptionProductTaxRule(0);
+        $this->BaseInfo->setOptionProductTaxRule(false);
         $this->Product = $this->createProduct('生活必需品');
         // 2017-04-01とか指定すると, 2017年以降で結果が変わってしまうので1年後の日付を指定する
         $ApplyDate = new \DateTime('+1 years');
@@ -91,7 +93,7 @@ class TaxRuleRepositoryTest extends EccubeTestCase
         if (is_null($apply_date)) {
             $apply_date = $this->DateTimeNow;
         }
-        $TaxRule->setTaxRate($tax_rate)
+        $TaxRule->setTaxRate((string) $tax_rate)
             ->setApplyDate($apply_date)
             ->setRoundingType($RoundingType)
             ->setTaxAdjust('0')
@@ -202,7 +204,7 @@ class TaxRuleRepositoryTest extends EccubeTestCase
 
     public function testGetByRuleWithProduct()
     {
-        $this->BaseInfo->setOptionProductTaxRule(1); // 商品別税率ON
+        $this->BaseInfo->setOptionProductTaxRule(true); // 商品別税率ON
         $this->entityManager->flush();
         $oneDayBefore = new \DateTime('-1 days');
 
@@ -221,7 +223,7 @@ class TaxRuleRepositoryTest extends EccubeTestCase
 
     public function testGetByRuleWithProductClass()
     {
-        $this->BaseInfo->setOptionProductTaxRule(1); // 商品別税率ON
+        $this->BaseInfo->setOptionProductTaxRule(true); // 商品別税率ON
         $this->entityManager->flush();
         $oneDayBefore = new \DateTime('-1 days');
 
@@ -242,7 +244,7 @@ class TaxRuleRepositoryTest extends EccubeTestCase
 
     public function testGetByRuleWithMulti()
     {
-        $this->BaseInfo->setOptionProductTaxRule(1); // 商品別税率ON
+        $this->BaseInfo->setOptionProductTaxRule(true); // 商品別税率ON
         $this->entityManager->flush();
         $oneDayBefore = new \DateTime('-1 days');
 

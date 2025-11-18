@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -19,7 +21,7 @@ use org\bovigo\vfs\vfsStream;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
-class EccubeBlockExtensionTest extends EccubeTestCase
+final class EccubeBlockExtensionTest extends EccubeTestCase
 {
     protected $templateDir;
 

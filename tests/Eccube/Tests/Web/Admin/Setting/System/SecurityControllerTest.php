@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,7 +20,7 @@ use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 
 #[Group('cache-clear')]
-class SecurityControllerTest extends AbstractAdminWebTestCase
+final class SecurityControllerTest extends AbstractAdminWebTestCase
 {
     protected $envFile;
 

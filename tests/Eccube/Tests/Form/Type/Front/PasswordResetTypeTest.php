@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,7 +19,7 @@ use Eccube\Form\Type\Front\PasswordResetType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use Symfony\Component\Form\FormInterface;
 
-class PasswordResetTypeTest extends AbstractTypeTestCase
+final class PasswordResetTypeTest extends AbstractTypeTestCase
 {
     protected ?FormInterface $form = null;
 

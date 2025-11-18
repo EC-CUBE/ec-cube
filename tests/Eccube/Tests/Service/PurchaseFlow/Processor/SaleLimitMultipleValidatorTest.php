@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -23,7 +25,7 @@ use Eccube\Service\PurchaseFlow\Processor\SaleLimitMultipleValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
-class SaleLimitMultipleValidatorTest extends EccubeTestCase
+final class SaleLimitMultipleValidatorTest extends EccubeTestCase
 {
     protected ?SaleLimitMultipleValidator $validator = null;
 
@@ -86,7 +88,7 @@ class SaleLimitMultipleValidatorTest extends EccubeTestCase
 
     public function testValidLimit()
     {
-        $this->ProductClass->setSaleLimit(10);
+        $this->ProductClass->setSaleLimit('10');
         $this->OrderItem1->setQuantity(4);
         $this->OrderItem2->setQuantity(6);
 
@@ -100,7 +102,7 @@ class SaleLimitMultipleValidatorTest extends EccubeTestCase
 
     public function testOverLimit()
     {
-        $this->ProductClass->setSaleLimit(10);
+        $this->ProductClass->setSaleLimit('10');
         $this->OrderItem1->setQuantity(5);
         $this->OrderItem2->setQuantity(6);
 

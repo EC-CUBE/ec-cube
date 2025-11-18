@@ -97,7 +97,7 @@ class DeliveryController extends AbstractController
             }
         }
 
-        $parentPage = $request->get('parent_page', null);
+        $parentPage = $request->get('parent_page');
 
         // 正しい遷移かをチェック
         $allowedParents = [

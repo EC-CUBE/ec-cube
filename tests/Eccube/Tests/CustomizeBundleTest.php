@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,7 +19,7 @@ use Customize\Bundle\CustomizeBundle;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
-class CustomizeBundleTest extends KernelTestCase
+final class CustomizeBundleTest extends KernelTestCase
 {
     #[\Override]
     public function tearDown(): void

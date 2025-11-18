@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -35,7 +37,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class ShoppingControllerTest extends AbstractShoppingControllerTestCase
+final class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 {
     use MailerAssertionsTrait;
 
@@ -1027,7 +1029,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $pointUse = 27777;
         /** @var ProductClass $ProductClass */
         $ProductClass = $this->entityManager->getRepository(ProductClass::class)->find(2);
-        $ProductClass->setPrice02($price);
+        $ProductClass->setPrice02((string) $price);
         $this->entityManager->flush($ProductClass);
 
         $Delivery = static::getContainer()->get(Generator::class)->createDelivery();

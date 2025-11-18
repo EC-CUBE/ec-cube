@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,7 +17,7 @@ namespace Eccube\Tests\Repository;
 
 use Eccube\Entity\Product;
 
-class ProductRepositoryTest extends AbstractProductRepositoryTestCase
+final class ProductRepositoryTest extends AbstractProductRepositoryTestCase
 {
     public function testFindWithSortedClassCategories()
     {

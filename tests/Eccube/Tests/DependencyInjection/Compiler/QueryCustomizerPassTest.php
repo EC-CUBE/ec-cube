@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -20,7 +22,7 @@ use Eccube\Repository\QueryKey;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class QueryCustomizerPassTest extends TestCase
+final class QueryCustomizerPassTest extends TestCase
 {
     public function testAppendCustomizerToQueries()
     {

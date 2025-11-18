@@ -354,14 +354,14 @@ class OrderPdfService extends Fpdi
             $this->Cell(0, 10, '', 0, 1, 'C', false, '');
         }
         $this->SetFont(self::FONT_GOTHIC, 'B', 9);
-        $this->MultiCell(0, 6, '＜ 備考 ＞', 'T', 'L', false, 0, null);
+        $this->MultiCell(0, 6, '＜ 備考 ＞', 'T', 'L', false, 0);
 
         $this->SetFont(self::FONT_SJIS, '', 8);
 
         $this->Ln();
         // rtrimを行う
         $text = preg_replace('/\s+$/us', '', $formData['note1']."\n".$formData['note2']."\n".$formData['note3']);
-        $this->MultiCell(0, 4, $text, '', 'L', false, 0, null);
+        $this->MultiCell(0, 4, $text, '', 'L', false, 0);
 
         // フォント情報の復元
         $this->restoreFont();

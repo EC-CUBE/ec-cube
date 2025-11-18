@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -22,7 +24,7 @@ use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
-class OrderStatusControllerTest extends AbstractAdminWebTestCase
+final class OrderStatusControllerTest extends AbstractAdminWebTestCase
 {
     private ?OrderStatusRepository $orderStatusRepository = null;
 

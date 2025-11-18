@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,7 +20,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\Test\FormInterface;
 
-class ConvertKanaListenerTest extends TestCase
+final class ConvertKanaListenerTest extends TestCase
 {
     public function testConvertKanaString()
     {

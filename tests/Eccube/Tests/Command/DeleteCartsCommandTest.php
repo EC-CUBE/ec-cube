@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -20,7 +22,7 @@ use Eccube\Entity\ProductClass;
 use Eccube\Tests\EccubeTestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class DeleteCartsCommandTest extends EccubeTestCase
+final class DeleteCartsCommandTest extends EccubeTestCase
 {
     public function testShouldDeletePastCarts()
     {

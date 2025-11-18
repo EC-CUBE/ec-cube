@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -28,7 +30,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 #[Group('rate-limiter-listener')]
-class RateLimiterListenerTest extends EccubeTestCase
+final class RateLimiterListenerTest extends EccubeTestCase
 {
     /**
      * @param mixed $limiterId

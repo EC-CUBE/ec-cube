@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,7 +23,7 @@ use Eccube\Tests\Fixture\Generator;
 use Eccube\Tests\Web\AbstractWebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
-class MypageControllerTest extends AbstractWebTestCase
+final class MypageControllerTest extends AbstractWebTestCase
 {
     protected ?Customer $Customer = null;
 

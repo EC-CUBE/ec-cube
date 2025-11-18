@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,7 +19,7 @@ use Eccube\Event\TemplateEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class TemplateEventListenerTest extends AbstractWebTestCase
+final class TemplateEventListenerTest extends AbstractWebTestCase
 {
     public function test()
     {

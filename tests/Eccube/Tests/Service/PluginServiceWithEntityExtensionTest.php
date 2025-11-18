@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -22,7 +24,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
-class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
+final class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
 {
     private ?PluginService $service = null;
 

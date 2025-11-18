@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,7 +19,7 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 
-class JsControllerTest extends AbstractAdminWebTestCase
+final class JsControllerTest extends AbstractAdminWebTestCase
 {
     public const JS_FILE = 'customize.js';
 

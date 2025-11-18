@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -22,7 +24,7 @@ use Eccube\Service\PurchaseFlow\Processor\StockMultipleValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
-class StockMultipleValidatorTest extends EccubeTestCase
+final class StockMultipleValidatorTest extends EccubeTestCase
 {
     protected ?StockMultipleValidator $validator = null;
 
@@ -63,7 +65,7 @@ class StockMultipleValidatorTest extends EccubeTestCase
     public function testValidStock()
     {
         $this->ProductClass->setStockUnlimited(false);
-        $this->ProductClass->setStock(2);
+        $this->ProductClass->setStock('2');
         $this->OrderItem1->setQuantity(1);
         $this->OrderItem2->setQuantity(1);
         try {
@@ -92,7 +94,7 @@ class StockMultipleValidatorTest extends EccubeTestCase
     public function testStockZero()
     {
         $this->ProductClass->setStockUnlimited(false);
-        $this->ProductClass->setStock(0);
+        $this->ProductClass->setStock('0');
         $this->OrderItem1->setQuantity(1000);
         $this->OrderItem2->setQuantity(50);
 
@@ -103,7 +105,7 @@ class StockMultipleValidatorTest extends EccubeTestCase
     public function testStockOver()
     {
         $this->ProductClass->setStockUnlimited(false);
-        $this->ProductClass->setStock(100);
+        $this->ProductClass->setStock('100');
         $this->OrderItem1->setQuantity(50);
         $this->OrderItem2->setQuantity(51);
 

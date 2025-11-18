@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -20,7 +22,7 @@ use Symfony\Component\Form\FormInterface;
 /**
  * CustomerAddressTypeと同じものなので基本不要
  */
-class ShoppingShippingTypeTest extends AbstractTypeTestCase
+final class ShoppingShippingTypeTest extends AbstractTypeTestCase
 {
     protected ?FormInterface $form = null;
 

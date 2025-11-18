@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,7 +23,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 
-class CsvImportControllerTest extends AbstractAdminWebTestCase
+final class CsvImportControllerTest extends AbstractAdminWebTestCase
 {
     public function testLoadCsv()
     {

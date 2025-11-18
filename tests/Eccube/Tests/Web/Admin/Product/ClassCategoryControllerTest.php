@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -22,7 +24,7 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 
-class ClassCategoryControllerTest extends AbstractAdminWebTestCase
+final class ClassCategoryControllerTest extends AbstractAdminWebTestCase
 {
     protected ?ClassNameRepository $classNameRepository = null;
 
@@ -260,7 +262,7 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
         $TestClassCategory->setName('立方体')
             ->setSortNo(100)
             ->setClassName($TestClassName)
-            ->setBackendName($TestClassName)
+            ->setBackendName($TestClassName->getName())
             ->setVisible(true)
             ->setCreator($TestCreator);
 

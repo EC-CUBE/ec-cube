@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,7 +20,7 @@ use Eccube\Entity\ProductClass;
 use Eccube\Service\Cart\ProductClassComparator;
 use Eccube\Tests\EccubeTestCase;
 
-class DefaultCartItemComparatorTest extends EccubeTestCase
+final class DefaultCartItemComparatorTest extends EccubeTestCase
 {
     private ?ProductClassComparator $comparator = null;
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -28,7 +30,7 @@ use Symfony\Component\Yaml\Yaml;
  * Class PluginServiceTest
  */
 #[Group('plugin-service')]
-class PluginServiceTest extends AbstractServiceTestCase
+final class PluginServiceTest extends AbstractServiceTestCase
 {
     private ?PluginService $service = null;
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,7 +20,7 @@ use Eccube\Doctrine\Query\JoinClause;
 use Eccube\Doctrine\Query\JoinCustomizer;
 use Eccube\Tests\EccubeTestCase;
 
-class JoinCustomizerTest extends EccubeTestCase
+final class JoinCustomizerTest extends EccubeTestCase
 {
     public function testCustomize()
     {

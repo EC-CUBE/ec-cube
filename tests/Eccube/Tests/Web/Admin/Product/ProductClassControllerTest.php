@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -31,7 +33,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Class ProductClassControllerTest
  */
-class ProductClassControllerTest extends AbstractProductCommonTestCase
+final class ProductClassControllerTest extends AbstractProductCommonTestCase
 {
     protected ?BaseInfo $BaseInfo = null;
 

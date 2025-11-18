@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -84,10 +86,10 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
             ->setCode('test code')
             ->setStock('100')
             ->setStockUnlimited(false)
-            ->setSaleLimit($this->faker->numberBetween(1, 99))
-            ->setPrice01($this->faker->randomNumber(4))
-            ->setPrice02($this->faker->randomNumber(4))
-            ->setDeliveryFee($this->faker->randomNumber(4))
+            ->setSaleLimit((string) $this->faker->numberBetween(1, 99))
+            ->setPrice01((string) $this->faker->randomNumber(4))
+            ->setPrice02((string) $this->faker->randomNumber(4))
+            ->setDeliveryFee((string) $this->faker->randomNumber(4))
             ->setCreator($TestCreator)
             ->setVisible(true);
 

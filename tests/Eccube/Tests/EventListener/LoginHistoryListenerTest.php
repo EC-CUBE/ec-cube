@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,7 +20,7 @@ use Eccube\Entity\Master\LoginHistoryStatus;
 use Eccube\Tests\Web\AbstractWebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
-class LoginHistoryListenerTest extends AbstractWebTestCase
+final class LoginHistoryListenerTest extends AbstractWebTestCase
 {
     public function activeLogin()
     {

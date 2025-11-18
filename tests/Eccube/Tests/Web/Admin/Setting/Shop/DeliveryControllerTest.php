@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -27,7 +29,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Class DeliveryControllerTest
  */
-class DeliveryControllerTest extends AbstractAdminWebTestCase
+final class DeliveryControllerTest extends AbstractAdminWebTestCase
 {
     public function createDelivery(): mixed
     {
@@ -53,7 +55,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
                 $DeliveryFee->setDelivery($Delivery)
                     ->setPref($Pref);
             }
-            $DeliveryFee->setFee($faker->randomNumber(3));
+            $DeliveryFee->setFee((string) $faker->randomNumber(3));
 
             $this->entityManager->persist($DeliveryFee);
             $this->entityManager->flush();
@@ -284,9 +286,9 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
     {
         $Payments = array_map(function ($rule) {
             $Payment = new Payment();
-            $Payment->setRuleMin($rule['min']);
-            $Payment->setRuleMax($rule['max']);
-            $Payment->setCharge($rule['charge']);
+            $Payment->setRuleMin((string) $rule['min']);
+            $Payment->setRuleMax((string) $rule['max']);
+            $Payment->setCharge((string) $rule['charge']);
 
             return $Payment;
         }, $rules);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -27,7 +29,7 @@ use Knp\Component\Pager\PaginatorInterface;
  *
  * @author Kentaro Ohkouchi
  */
-class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRepositoryTestCase
+final class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRepositoryTestCase
 {
     protected ?array $Results = null;
 
@@ -288,7 +290,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
         /** @var SlidingPagination $pagination */
         $pagination = $this->paginator->paginate(
             $this->Results,
-            $this->searchData['pageno'],
+            (int) $this->searchData['pageno'], // フォームからはstringで来るが、paginateはintを要求
             $this->searchData['disp_number']->getId()
         );
 
@@ -320,7 +322,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
         /** @var SlidingPagination $pagination */
         $pagination = $this->paginator->paginate(
             $this->Results,
-            $this->searchData['pageno'],
+            (int) $this->searchData['pageno'], // フォームからはstringで来るが、paginateはintを要求
             $this->searchData['disp_number']->getId()
         );
 

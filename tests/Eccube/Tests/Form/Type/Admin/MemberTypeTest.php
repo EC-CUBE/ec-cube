@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -20,7 +22,7 @@ use Eccube\Form\Type\Admin\MemberType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use Symfony\Component\Form\FormInterface;
 
-class MemberTypeTest extends AbstractTypeTestCase
+final class MemberTypeTest extends AbstractTypeTestCase
 {
     protected ?FormInterface $form = null;
 

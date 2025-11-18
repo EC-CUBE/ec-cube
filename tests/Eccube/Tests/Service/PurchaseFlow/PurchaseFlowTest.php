@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -30,11 +32,9 @@ use Eccube\Service\PurchaseFlow\PurchaseFlowResult;
 use Eccube\Tests\EccubeTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-class PurchaseFlowTest extends EccubeTestCase
+final class PurchaseFlowTest extends EccubeTestCase
 {
     protected ?PurchaseFlow $flow = null;
-
-    protected $Product;
 
     #[\Override]
     protected function setUp(): void

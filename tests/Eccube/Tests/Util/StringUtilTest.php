@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -24,7 +26,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @author Kentaro Ohkouchi
  */
-class StringUtilTest extends TestCase
+final class StringUtilTest extends TestCase
 {
     private $actual;
     private $expected;
@@ -305,7 +307,7 @@ class StringUtilTest extends TestCase
         // $greedy = true のテスト
         $text = '　a　';
         $this->actual = StringUtil::isBlank($text);
-        $this->assertFalse($this->actual, true);
+        $this->assertFalse($this->actual);
 
         // $greedy = true のテスト
         $text = "　\n\t　";

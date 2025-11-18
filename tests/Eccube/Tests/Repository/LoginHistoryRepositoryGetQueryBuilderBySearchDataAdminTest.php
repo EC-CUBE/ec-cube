@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -22,7 +24,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 /**
  * LoginHistoryRepository test cases.
  */
-class LoginHistoryRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
+final class LoginHistoryRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
 {
     protected ?array $Results = null;
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,7 +23,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 #[Group('cache-clear')]
-class PluginControllerTest extends AbstractAdminWebTestCase
+final class PluginControllerTest extends AbstractAdminWebTestCase
 {
     public function testRoutingAuthentication()
     {

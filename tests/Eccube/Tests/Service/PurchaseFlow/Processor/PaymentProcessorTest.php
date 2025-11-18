@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -25,7 +27,7 @@ use Eccube\Service\PurchaseFlow\Processor\PaymentValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
-class PaymentProcessorTest extends EccubeTestCase
+final class PaymentProcessorTest extends EccubeTestCase
 {
     protected ?PaymentValidator $validator = null;
 

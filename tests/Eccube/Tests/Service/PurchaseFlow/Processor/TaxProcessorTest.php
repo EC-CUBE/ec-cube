@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -26,7 +28,7 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 use PHPUnit\Framework\Attributes\Group;
 
-class TaxProcessorTest extends EccubeTestCase
+final class TaxProcessorTest extends EccubeTestCase
 {
     private ?TaxProcessor $processor = null;
 
@@ -154,8 +156,7 @@ class TaxProcessorTest extends EccubeTestCase
 
         $Customer = $this->createCustomer();
         $Order = $this->createOrderWithProductClasses($Customer, $this->Product->getProductClasses()->toArray());
-        $Order->getProductOrderItems()[0]
-            ->setRoundingType(null)
+        $Order->getProductOrderItems()[0]->setRoundingType()
             ->setQuantity(1);
         $this->entityManager->flush();
 

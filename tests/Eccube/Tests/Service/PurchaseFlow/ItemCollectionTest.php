@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,7 +23,7 @@ use Eccube\Service\PurchaseFlow\ItemCollection;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Tests\Fixture\Generator;
 
-class ItemCollectionTest extends EccubeTestCase
+final class ItemCollectionTest extends EccubeTestCase
 {
     protected ?Order $ItemHolder = null;
 

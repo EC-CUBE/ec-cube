@@ -124,7 +124,7 @@ class MemberRepository extends AbstractRepository
 
         // ログインしたメンバーの外部参照制約を解除する
         // https://github.com/EC-CUBE/ec-cube/issues/5119
-        $Member->setCreator(null);
+        $Member->setCreator();
         $em->flush();
 
         $em->remove($Member);

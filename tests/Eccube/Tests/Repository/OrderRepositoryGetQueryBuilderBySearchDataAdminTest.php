@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -33,7 +35,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
  *
  * @author Kentaro Ohkouchi
  */
-class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
+final class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
 {
     protected ?Customer $Customer = null;
     protected ?Order $Order = null;
@@ -475,9 +477,9 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
 
     public function testPaymentTotalStart()
     {
-        $this->Order->setPaymentTotal(99);
-        $this->Order1->setPaymentTotal(100);
-        $this->Order2->setPaymentTotal(101);
+        $this->Order->setPaymentTotal('99');
+        $this->Order1->setPaymentTotal('100');
+        $this->Order2->setPaymentTotal('101');
         $this->entityManager->flush();
 
         // XXX 0 が無視されてしまう
@@ -494,9 +496,9 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
 
     public function testPaymentTotalEnd()
     {
-        $this->Order->setPaymentTotal(99);
-        $this->Order1->setPaymentTotal(100);
-        $this->Order2->setPaymentTotal(101);
+        $this->Order->setPaymentTotal('99');
+        $this->Order1->setPaymentTotal('100');
+        $this->Order2->setPaymentTotal('101');
         $this->entityManager->flush();
 
         $this->searchData = [

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,13 +20,13 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class TaxRuleControllerTest extends AbstractAdminWebTestCase
+final class TaxRuleControllerTest extends AbstractAdminWebTestCase
 {
     public function createTaxRule(): TaxRule
     {
         $faker = $this->getFaker();
         $TargetTaxRule = $this->entityManager->getRepository(TaxRule::class)->newTaxRule();
-        $TargetTaxRule->setTaxRate($faker->randomNumber(2));
+        $TargetTaxRule->setTaxRate((string) $faker->randomNumber(2));
         $now = new \DateTime();
         $TargetTaxRule->setApplyDate($now);
         $this->entityManager->persist($TargetTaxRule);

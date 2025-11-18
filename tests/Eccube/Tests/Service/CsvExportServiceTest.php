@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,7 +23,7 @@ use Eccube\Repository\OrderRepository;
 use Eccube\Service\CsvExportService;
 use org\bovigo\vfs\vfsStream;
 
-class CsvExportServiceTest extends AbstractServiceTestCase
+final class CsvExportServiceTest extends AbstractServiceTestCase
 {
     protected ?string $url = null;
 

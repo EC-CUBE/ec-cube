@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,7 +19,7 @@ use Eccube\Form\Type\Install\Step3Type;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use Symfony\Component\Form\FormInterface;
 
-class Step3TypeTest extends AbstractTypeTestCase
+final class Step3TypeTest extends AbstractTypeTestCase
 {
     protected ?FormInterface $form = null;
 

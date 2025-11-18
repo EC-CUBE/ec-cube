@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -28,7 +30,7 @@ use Twig\Environment;
 /**
  * MailService test cases.
  */
-class MailServiceTest extends AbstractServiceTestCase
+final class MailServiceTest extends AbstractServiceTestCase
 {
     use MailerAssertionsTrait;
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,7 +23,7 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class CsvControllerTest extends AbstractAdminWebTestCase
+final class CsvControllerTest extends AbstractAdminWebTestCase
 {
     public function testRoutingCsv()
     {

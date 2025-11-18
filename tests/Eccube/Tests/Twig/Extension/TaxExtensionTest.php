@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,7 +20,7 @@ use Eccube\Repository\TaxRuleRepository;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Twig\Extension\TaxExtension;
 
-class TaxExtensionTest extends EccubeTestCase
+final class TaxExtensionTest extends EccubeTestCase
 {
     protected ?TaxExtension $taxExtension = null;
 

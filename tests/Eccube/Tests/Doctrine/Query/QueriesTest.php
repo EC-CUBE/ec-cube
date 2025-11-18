@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,7 +20,7 @@ use Eccube\Doctrine\Query\Queries;
 use Eccube\Doctrine\Query\QueryCustomizer;
 use Eccube\Tests\EccubeTestCase;
 
-class QueriesTest extends EccubeTestCase
+final class QueriesTest extends EccubeTestCase
 {
     public function testCustomizerShouldBeCalled()
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -34,7 +36,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Email;
 
-class OrderControllerTest extends AbstractAdminWebTestCase
+final class OrderControllerTest extends AbstractAdminWebTestCase
 {
     use MailerAssertionsTrait;
 

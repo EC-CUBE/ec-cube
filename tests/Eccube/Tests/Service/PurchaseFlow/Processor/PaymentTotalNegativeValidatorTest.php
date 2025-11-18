@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,7 +20,7 @@ use Eccube\Service\PurchaseFlow\Processor\PaymentTotalNegativeValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
-class PaymentTotalNegativeValidatorTest extends EccubeTestCase
+final class PaymentTotalNegativeValidatorTest extends EccubeTestCase
 {
     public function testPositiveValidate()
     {

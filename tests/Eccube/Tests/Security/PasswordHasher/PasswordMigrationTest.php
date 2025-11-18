@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -20,7 +22,7 @@ use Eccube\Util\StringUtil;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\LegacyPasswordHasherInterface;
 
-class PasswordMigrationTest extends EccubeTestCase
+final class PasswordMigrationTest extends EccubeTestCase
 {
     private ?LegacyPasswordHasherInterface $legacyPasswordHasher = null;
 

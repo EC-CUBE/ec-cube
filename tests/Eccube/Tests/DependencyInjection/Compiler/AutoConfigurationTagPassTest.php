@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -20,7 +22,7 @@ use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
 
-class AutoConfigurationTagPassTest extends EccubeTestCase
+final class AutoConfigurationTagPassTest extends EccubeTestCase
 {
     public function testConfigureDoctrineEventSubscriberTag()
     {

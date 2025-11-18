@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -26,7 +28,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @author Kentaro Ohkouchi
  */
-class CustomerRepositoryTest extends EccubeTestCase
+final class CustomerRepositoryTest extends EccubeTestCase
 {
     protected ?string $email = null;
 

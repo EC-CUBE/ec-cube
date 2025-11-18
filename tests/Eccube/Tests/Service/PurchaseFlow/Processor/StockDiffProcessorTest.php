@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -29,7 +31,7 @@ use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Tests\EccubeTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-class StockDiffProcessorTest extends EccubeTestCase
+final class StockDiffProcessorTest extends EccubeTestCase
 {
     private ?StockDiffProcessor $processor = null;
 
@@ -69,7 +71,7 @@ class StockDiffProcessorTest extends EccubeTestCase
         $BeforeOrderStatus = $this->OrderStatusRepository->find($beforeOrderStatus);
         $BeforeOrder->setOrderStatus($BeforeOrderStatus);
         $BeforeOrder->setCustomer($Customer);
-        $ProductClass->setStock($stock);
+        $ProductClass->setStock((string) $stock);
         $beforeOrderItem = $this->newOrderItem($ProductClass, 1000, $beforeQuantity);
         $beforeOrderItem->setOrderItemType($OrderItemType);
         $BeforeOrder->addOrderItem($beforeOrderItem);
@@ -79,7 +81,7 @@ class StockDiffProcessorTest extends EccubeTestCase
         $AfterOrderStatus = $this->OrderStatusRepository->find($afterOrderStatus);
         $AfterOrder->setOrderStatus($AfterOrderStatus);
         $AfterOrder->setCustomer($Customer);
-        $ProductClass->setStock($stock);
+        $ProductClass->setStock((string) $stock);
         $afterOrderItem = $this->newOrderItem($ProductClass, 1000, $afterQuantity);
         $afterOrderItem->setOrderItemType($OrderItemType);
         $AfterOrder->addOrderItem($afterOrderItem);
@@ -167,7 +169,7 @@ class StockDiffProcessorTest extends EccubeTestCase
         $BeforeOrderStatus = $this->OrderStatusRepository->find($beforeOrderStatus);
         $BeforeOrder->setOrderStatus($BeforeOrderStatus);
         $BeforeOrder->setCustomer($Customer);
-        $ProductClass->setStock($beforeStock);
+        $ProductClass->setStock((string) $beforeStock);
         $beforeOrderItem = $this->newOrderItem($ProductClass, 1000, $beforeQuantity);
         $beforeOrderItem->setOrderItemType($OrderItemType);
         $BeforeOrder->addOrderItem($beforeOrderItem);
@@ -177,7 +179,7 @@ class StockDiffProcessorTest extends EccubeTestCase
         $AfterOrderStatus = $this->OrderStatusRepository->find($afterOrderStatus);
         $AfterOrder->setOrderStatus($AfterOrderStatus);
         $AfterOrder->setCustomer($Customer);
-        $ProductClass->setStock($beforeStock);
+        $ProductClass->setStock((string) $beforeStock);
         $afterOrderItem = $this->newOrderItem($ProductClass, 1000, $afterQuantity);
         $afterOrderItem->setOrderItemType($OrderItemType);
         $AfterOrder->addOrderItem($afterOrderItem);
@@ -224,7 +226,7 @@ class StockDiffProcessorTest extends EccubeTestCase
     {
         $OrderItem = new OrderItem();
         $OrderItem->setProductClass($ProductClass);
-        $OrderItem->setPrice($price);
+        $OrderItem->setPrice((string) $price);
         $OrderItem->setQuantity($quantity);
 
         return $OrderItem;

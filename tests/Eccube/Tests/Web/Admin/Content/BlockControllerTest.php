@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,7 +19,7 @@ use Eccube\Entity\Master\DeviceType;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
-class BlockControllerTest extends AbstractAdminWebTestCase
+final class BlockControllerTest extends AbstractAdminWebTestCase
 {
     public function testRoutingAdminContentBlockIndex()
     {

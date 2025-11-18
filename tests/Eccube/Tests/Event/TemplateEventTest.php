@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,7 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Class TemplateEventTest
  */
-class TemplateEventTest extends EccubeTestCase
+final class TemplateEventTest extends EccubeTestCase
 {
     /**
      * View test

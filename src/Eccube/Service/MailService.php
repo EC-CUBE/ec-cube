@@ -108,8 +108,7 @@ class MailService
                 'Customer' => $Customer,
                 'BaseInfo' => $this->BaseInfo,
                 'activateUrl' => $activateUrl,
-            ],
-            null
+            ]
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_CUSTOMER_CONFIRM);
 
@@ -169,8 +168,7 @@ class MailService
                 'message' => $message,
                 'Customer' => $Customer,
                 'BaseInfo' => $this->BaseInfo,
-            ],
-            null
+            ]
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_CUSTOMER_COMPLETE);
 
@@ -232,8 +230,7 @@ class MailService
                 'Customer' => $Customer,
                 'BaseInfo' => $this->BaseInfo,
                 'email' => $email,
-            ],
-            null
+            ]
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_CUSTOMER_WITHDRAW);
 
@@ -294,8 +291,7 @@ class MailService
                 'message' => $message,
                 'formData' => $formData,
                 'BaseInfo' => $this->BaseInfo,
-            ],
-            null
+            ]
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_CONTACT);
 
@@ -350,8 +346,7 @@ class MailService
                 'Order' => $Order,
                 'MailTemplate' => $MailTemplate,
                 'BaseInfo' => $this->BaseInfo,
-            ],
-            null
+            ]
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_ORDER);
 
@@ -433,8 +428,7 @@ class MailService
                 'Customer' => $Customer,
                 'BaseInfo' => $this->BaseInfo,
                 'activateUrl' => $activateUrl,
-            ],
-            null
+            ]
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_ADMIN_CUSTOMER_CONFIRM);
 
@@ -477,8 +471,7 @@ class MailService
                 'Order' => $Order,
                 'formData' => $formData,
                 'BaseInfo' => $this->BaseInfo,
-            ],
-            null
+            ]
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_ADMIN_ORDER);
 
@@ -544,8 +537,7 @@ class MailService
                 'Customer' => $Customer,
                 'BaseInfo' => $this->BaseInfo,
                 'resetUrl' => $reset_url,
-            ],
-            null
+            ]
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_PASSWORD_RESET);
 
@@ -608,8 +600,7 @@ class MailService
                 'Customer' => $Customer,
                 'BaseInfo' => $this->BaseInfo,
                 'password' => $password,
-            ],
-            null
+            ]
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_PASSWORD_RESET_COMPLETE);
 

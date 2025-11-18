@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,7 +19,7 @@ use Eccube\Common\Constant;
 use Eccube\Entity\ProductClass;
 use Symfony\Component\HttpFoundation\Request;
 
-class CartControllerTest extends AbstractWebTestCase
+final class CartControllerTest extends AbstractWebTestCase
 {
     public function testRoutingCart()
     {

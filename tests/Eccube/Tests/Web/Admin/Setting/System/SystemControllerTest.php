@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -19,7 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Class SystemControllerTest
  */
-class SystemControllerTest extends AbstractAdminWebTestCase
+final class SystemControllerTest extends AbstractAdminWebTestCase
 {
     /**
      * testRoutingAdminSettingSystemSystemIndex

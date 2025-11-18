@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,7 +20,7 @@ use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class EmailValidatorTest extends AbstractTypeTestCase
+final class EmailValidatorTest extends AbstractTypeTestCase
 {
     protected ?ValidatorInterface $validator = null;
 

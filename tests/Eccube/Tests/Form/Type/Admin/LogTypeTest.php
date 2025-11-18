@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,14 +19,12 @@ use Eccube\Form\Type\Admin\LogType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use Symfony\Component\Form\FormInterface;
 
-class LogTypeTest extends AbstractTypeTestCase
+final class LogTypeTest extends AbstractTypeTestCase
 {
     protected ?FormInterface $form = null;
 
     /** @var array デフォルト値（正常系）を設定 */
     protected ?array $formData = null;
-
-    protected $fileName;
 
     protected $logTest;
 
@@ -33,8 +33,8 @@ class LogTypeTest extends AbstractTypeTestCase
     {
         parent::setUp();
 
-        $this->fileName = '_test_site_'.date('YmdHis').'.log';
-        $this->logTest = static::getContainer()->getParameter('kernel.logs_dir').'/test/'.$this->fileName;
+        $fileName = '_test_site_'.date('YmdHis').'.log';
+        $this->logTest = static::getContainer()->getParameter('kernel.logs_dir').'/test/'.$fileName;
 
         // Check and create the file to test if it does not exist
         if (!file_exists($this->logTest)) {
@@ -49,7 +49,7 @@ class LogTypeTest extends AbstractTypeTestCase
         }
 
         $this->formData = [
-            'files' => $this->fileName,
+            'files' => $fileName,
             'line_max' => '50',
         ];
 

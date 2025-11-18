@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -35,7 +37,7 @@ use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class EditControllerTest extends AbstractEditControllerTestCase
+final class EditControllerTest extends AbstractEditControllerTestCase
 {
     protected ?Customer $Customer = null;
 
@@ -696,9 +698,9 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
         $Order->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
-        $Order->setSex(null);
-        $Order->setJob(null);
-        $Order->setBirth(null);
+        $Order->setSex();
+        $Order->setJob();
+        $Order->setBirth();
 
         $this->entityManager->flush($Order);
 

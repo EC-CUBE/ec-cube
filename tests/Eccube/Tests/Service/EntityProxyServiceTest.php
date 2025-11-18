@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -23,7 +25,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
-class EntityProxyServiceTest extends EccubeTestCase
+final class EntityProxyServiceTest extends EccubeTestCase
 {
     private ?string $tempOutputDir = null;
 

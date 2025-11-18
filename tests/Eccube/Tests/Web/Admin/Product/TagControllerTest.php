@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -20,7 +22,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class TagControllerTest extends AbstractAdminWebTestCase
+final class TagControllerTest extends AbstractAdminWebTestCase
 {
     private ?TagRepository $TagRepo = null;
 

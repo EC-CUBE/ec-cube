@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,7 +20,7 @@ use Eccube\Repository\PluginRepository;
 use Eccube\Tests\EccubeTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-class PluginRepositoryTest extends EccubeTestCase
+final class PluginRepositoryTest extends EccubeTestCase
 {
     protected ?PluginRepository $pluginRepository = null;
 

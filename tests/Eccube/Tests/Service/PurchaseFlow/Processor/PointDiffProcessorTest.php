@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -27,7 +29,7 @@ use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Tests\EccubeTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-class PointDiffProcessorTest extends EccubeTestCase
+final class PointDiffProcessorTest extends EccubeTestCase
 {
     private ?PointDiffProcessor $processor = null;
 
@@ -54,7 +56,7 @@ class PointDiffProcessorTest extends EccubeTestCase
     public function testUsePointOverCustomerPoint($beforeUsePoint, $afterUsePoint, $customerPoint, $isError)
     {
         $Customer = new Customer();
-        $Customer->setPoint($customerPoint);
+        $Customer->setPoint((string) $customerPoint);
 
         /* @var ProductClass $ProductClass */
         $ProductClass = $this->createProduct('テスト', 1)->getProductClasses()[0];
@@ -65,14 +67,14 @@ class PointDiffProcessorTest extends EccubeTestCase
         $BeforeOrder = new Order();
         $BeforeOrder->setOrderStatus($OrderStatus);
         $BeforeOrder->setCustomer($Customer);
-        $BeforeOrder->setUsePoint($beforeUsePoint);
+        $BeforeOrder->setUsePoint((string) $beforeUsePoint);
         $BeforeOrder->addOrderItem($this->newOrderItem($ProductClass, 1000, 1));
 
         // 編集後の受注
         $AfterOrder = new Order();
         $AfterOrder->setOrderStatus($OrderStatus);
         $AfterOrder->setCustomer($Customer);
-        $AfterOrder->setUsePoint($afterUsePoint);
+        $AfterOrder->setUsePoint((string) $afterUsePoint);
         $AfterOrder->addOrderItem($this->newOrderItem($ProductClass, 1000, 1));
 
         $purchaseFlow = new PurchaseFlow();
@@ -134,14 +136,14 @@ class PointDiffProcessorTest extends EccubeTestCase
         $BeforeOrder = new Order();
         $BeforeOrder->setOrderStatus($OrderStatus);
         $BeforeOrder->setCustomer($Customer);
-        $BeforeOrder->setUsePoint($beforeUsePoint);
+        $BeforeOrder->setUsePoint((string) $beforeUsePoint);
         $BeforeOrder->addOrderItem($this->newOrderItem($ProductClass, $price, 1));
 
         // 編集後の受注
         $AfterOrder = new Order();
         $AfterOrder->setOrderStatus($OrderStatus);
         $AfterOrder->setCustomer($Customer);
-        $AfterOrder->setUsePoint($afterUsePoint);
+        $AfterOrder->setUsePoint((string) $afterUsePoint);
         $AfterOrder->addOrderItem($this->newOrderItem($ProductClass, $price, 1));
 
         $purchaseFlow = new PurchaseFlow();
@@ -191,14 +193,14 @@ class PointDiffProcessorTest extends EccubeTestCase
         $BeforeOrder = new Order();
         $BeforeOrder->setOrderStatus($OrderStatus);
         $BeforeOrder->setCustomer($Customer);
-        $BeforeOrder->setUsePoint($beforeUsePoint);
+        $BeforeOrder->setUsePoint((string) $beforeUsePoint);
         $BeforeOrder->addOrderItem($this->newOrderItem($ProductClass, 100, 1));
 
         // 編集後の受注
         $AfterOrder = new Order();
         $AfterOrder->setOrderStatus($OrderStatus);
         $AfterOrder->setCustomer($Customer);
-        $AfterOrder->setUsePoint($afterUsePoint);
+        $AfterOrder->setUsePoint((string) $afterUsePoint);
         $AfterOrder->addOrderItem($this->newOrderItem($ProductClass, 100, 1));
 
         $purchaseFlow = new PurchaseFlow();
@@ -282,7 +284,7 @@ class PointDiffProcessorTest extends EccubeTestCase
     {
         $OrderItem = new OrderItem();
         $OrderItem->setProductClass($ProductClass);
-        $OrderItem->setPrice($price);
+        $OrderItem->setPrice((string) $price);
         $OrderItem->setQuantity($quantity);
 
         return $OrderItem;

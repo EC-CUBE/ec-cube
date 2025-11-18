@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -32,7 +34,7 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\Process;
 
 #[Group('update-schema-doctrine')]
-class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
+final class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
 {
     private ?PluginService $pluginService = null;
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -22,7 +24,7 @@ use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mime\Email;
 
-class ForgotControllerTest extends AbstractWebTestCase
+final class ForgotControllerTest extends AbstractWebTestCase
 {
     use MailerAssertionsTrait;
 

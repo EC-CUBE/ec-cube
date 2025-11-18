@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -22,7 +24,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
-class IpAddrListenerTest extends AbstractWebTestCase
+final class IpAddrListenerTest extends AbstractWebTestCase
 {
     protected $clientIp = '192.168.56.1';
 

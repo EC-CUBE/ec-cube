@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -27,7 +29,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
  *
  * @author Kentaro Ohkouchi
  */
-class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProductRepositoryTestCase
+final class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProductRepositoryTestCase
 {
     protected ?array $Results = null;
 
@@ -165,7 +167,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
             foreach ($Product->getProductClasses() as $ProductClass) {
                 $ProductClass
                     ->setStockUnlimited(false)
-                    ->setStock($faker->numberBetween(1, 999));
+                    ->setStock((string) $faker->numberBetween(1, 999));
             }
         }
         $this->entityManager->flush();

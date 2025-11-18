@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -16,7 +18,7 @@ namespace Eccube\Tests\Web\Admin\Content;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
-class MaintenanceControllerTest extends AbstractAdminWebTestCase
+final class MaintenanceControllerTest extends AbstractAdminWebTestCase
 {
     private $maintenance_file_path;
 

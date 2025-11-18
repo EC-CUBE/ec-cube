@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,7 +20,7 @@ use Eccube\DependencyInjection\EccubeExtension;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class EccubeExtensionTest extends KernelTestCase
+final class EccubeExtensionTest extends KernelTestCase
 {
     private ?EccubeExtension $extension = null;
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,7 +17,7 @@ namespace Eccube\Tests\Web;
 
 use Symfony\Component\HttpFoundation\Request;
 
-class HelpControllerTest extends AbstractWebTestCase
+final class HelpControllerTest extends AbstractWebTestCase
 {
     /**
      * 特定商取引法のテスト

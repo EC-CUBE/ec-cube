@@ -155,7 +155,7 @@ class CsvImportController extends AbstractCsvImportController
                     $headerByKey = array_flip(array_map($getId, $headers));
                     $deleteImages = [];
 
-                    $this->entityManager->getConfiguration()->setSQLLogger(null);
+                    $this->entityManager->getConfiguration()->setSQLLogger();
                     $this->entityManager->getConnection()->beginTransaction();
                     // CSVファイルの登録処理
                     foreach ($data as $row) {
@@ -250,7 +250,7 @@ class CsvImportController extends AbstractCsvImportController
                             if (StringUtil::isNotBlank($row[$headerByKey['note']])) {
                                 $Product->setNote(StringUtil::trimAll($row[$headerByKey['note']]));
                             } else {
-                                $Product->setNote(null);
+                                $Product->setNote();
                             }
                         }
 
@@ -258,7 +258,7 @@ class CsvImportController extends AbstractCsvImportController
                             if (StringUtil::isNotBlank($row[$headerByKey['description_list']])) {
                                 $Product->setDescriptionList($this->purifier->purify(StringUtil::trimAll($row[$headerByKey['description_list']])));
                             } else {
-                                $Product->setDescriptionList(null);
+                                $Product->setDescriptionList();
                             }
                         }
 
@@ -277,7 +277,7 @@ class CsvImportController extends AbstractCsvImportController
                                     $Product->setDescriptionDetail($this->purifier->purify(StringUtil::trimAll($row[$headerByKey['description_detail']])));
                                 }
                             } else {
-                                $Product->setDescriptionDetail(null);
+                                $Product->setDescriptionDetail();
                             }
                         }
 
@@ -285,7 +285,7 @@ class CsvImportController extends AbstractCsvImportController
                             if (StringUtil::isNotBlank($row[$headerByKey['search_word']])) {
                                 $Product->setSearchWord(StringUtil::trimAll($row[$headerByKey['search_word']]));
                             } else {
-                                $Product->setSearchWord(null);
+                                $Product->setSearchWord();
                             }
                         }
 
@@ -293,7 +293,7 @@ class CsvImportController extends AbstractCsvImportController
                             if (StringUtil::isNotBlank($row[$headerByKey['free_area']])) {
                                 $Product->setFreeArea($this->purifier->purify(StringUtil::trimAll($row[$headerByKey['free_area']])));
                             } else {
-                                $Product->setFreeArea(null);
+                                $Product->setFreeArea();
                             }
                         }
 
@@ -352,7 +352,7 @@ class CsvImportController extends AbstractCsvImportController
                                     // 税率の入力がなければ税率の設定を削除
                                     if ($ProductClassOrg->getTaxRule()) {
                                         $this->taxRuleRepository->delete($ProductClassOrg->getTaxRule());
-                                        $ProductClassOrg->setTaxRule(null);
+                                        $ProductClassOrg->setTaxRule();
                                     }
                                 }
                             }
@@ -477,7 +477,7 @@ class CsvImportController extends AbstractCsvImportController
                                             // 税率の入力がなければ税率の設定を削除
                                             if ($pc->getTaxRule()) {
                                                 $this->taxRuleRepository->delete($pc->getTaxRule());
-                                                $pc->setTaxRule(null);
+                                                $pc->setTaxRule();
                                             }
                                         }
                                     }
@@ -677,7 +677,7 @@ class CsvImportController extends AbstractCsvImportController
 
                         return $this->renderWithError($form, $headers, false);
                     }
-                    $this->entityManager->getConfiguration()->setSQLLogger(null);
+                    $this->entityManager->getConfiguration()->setSQLLogger();
                     $this->entityManager->getConnection()->beginTransaction();
                     // CSVファイルの登録処理
                     foreach ($data as $row) {
@@ -836,7 +836,7 @@ class CsvImportController extends AbstractCsvImportController
 
                         return $this->renderWithError($form, $headers, false);
                     }
-                    $this->entityManager->getConfiguration()->setSQLLogger(null);
+                    $this->entityManager->getConfiguration()->setSQLLogger();
                     $this->entityManager->getConnection()->beginTransaction();
                     // CSVファイルの登録処理
                     foreach ($data as $row) {
@@ -952,7 +952,7 @@ class CsvImportController extends AbstractCsvImportController
 
                         return $this->renderWithError($form, $headers, false);
                     }
-                    $this->entityManager->getConfiguration()->setSQLLogger(null);
+                    $this->entityManager->getConfiguration()->setSQLLogger();
                     $this->entityManager->getConnection()->beginTransaction();
                     // CSVファイルの登録処理
                     foreach ($data as $row) {
@@ -1333,7 +1333,7 @@ class CsvImportController extends AbstractCsvImportController
             if (StringUtil::isNotBlank($row[$headerByKey['product_code']])) {
                 $ProductClass->setCode(StringUtil::trimAll($row[$headerByKey['product_code']]));
             } else {
-                $ProductClass->setCode(null);
+                $ProductClass->setCode();
             }
         }
 
@@ -1357,7 +1357,7 @@ class CsvImportController extends AbstractCsvImportController
             }
         } elseif ($row[$headerByKey['stock_unlimited']] == (string) Constant::ENABLED) {
             $ProductClass->setStockUnlimited(true);
-            $ProductClass->setStock(null);
+            $ProductClass->setStock();
         } else {
             $message = trans('admin.common.csv_invalid_required', ['%line%' => $line, '%name%' => $headerByKey['stock_unlimited']]);
             $this->addErrors($message);
@@ -1421,7 +1421,7 @@ class CsvImportController extends AbstractCsvImportController
             $ProductStock->setStock($ProductClass->getStock());
         } else {
             // 在庫無制限時はnullを設定
-            $ProductStock->setStock(null);
+            $ProductStock->setStock();
         }
 
         $this->entityManager->persist($ProductClass);
@@ -1510,7 +1510,7 @@ class CsvImportController extends AbstractCsvImportController
             if (StringUtil::isNotBlank($row[$headerByKey['product_code']])) {
                 $ProductClass->setCode(StringUtil::trimAll($row[$headerByKey['product_code']]));
             } else {
-                $ProductClass->setCode(null);
+                $ProductClass->setCode();
             }
         }
 
@@ -1534,7 +1534,7 @@ class CsvImportController extends AbstractCsvImportController
             }
         } elseif ($row[$headerByKey['stock_unlimited']] == (string) Constant::ENABLED) {
             $ProductClass->setStockUnlimited(true);
-            $ProductClass->setStock(null);
+            $ProductClass->setStock();
         } else {
             $message = trans('admin.common.csv_invalid_required', ['%line%' => $line, '%name%' => $headerByKey['stock_unlimited']]);
             $this->addErrors($message);
@@ -1550,7 +1550,7 @@ class CsvImportController extends AbstractCsvImportController
                     $this->addErrors($message);
                 }
             } else {
-                $ProductClass->setSaleLimit(null);
+                $ProductClass->setSaleLimit();
             }
         }
 
@@ -1565,7 +1565,7 @@ class CsvImportController extends AbstractCsvImportController
                     $this->addErrors($message);
                 }
             } else {
-                $ProductClass->setPrice01(null);
+                $ProductClass->setPrice01();
             }
         }
 
@@ -1596,7 +1596,7 @@ class CsvImportController extends AbstractCsvImportController
             $ProductStock->setStock($ProductClass->getStock());
         } else {
             // 在庫無制限時はnullを設定
-            $ProductStock->setStock(null);
+            $ProductStock->setStock();
         }
 
         if (isset($row[$headerByKey['product_class_visible_flg']])

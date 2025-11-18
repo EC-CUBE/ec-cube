@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -22,7 +24,7 @@ use Eccube\Tests\EccubeTestCase;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 
-class PaymentTotalLimitValidatorTest extends EccubeTestCase
+final class PaymentTotalLimitValidatorTest extends EccubeTestCase
 {
     public function testCartValidate()
     {

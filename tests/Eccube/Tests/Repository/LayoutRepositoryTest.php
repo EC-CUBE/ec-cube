@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,7 +23,7 @@ use Eccube\Tests\EccubeTestCase;
 /**
  * LayoutRepository test cases.
  */
-class LayoutRepositoryTest extends EccubeTestCase
+final class LayoutRepositoryTest extends EccubeTestCase
 {
     protected ?DeviceType $DeviceType = null;
 

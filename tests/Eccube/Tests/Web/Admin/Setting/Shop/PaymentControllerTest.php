@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,7 +23,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class PaymentControllerTest extends AbstractAdminWebTestCase
+final class PaymentControllerTest extends AbstractAdminWebTestCase
 {
     protected ?PaymentRepository $paymentRepository = null;
 
@@ -36,7 +38,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
         parent::setUp();
 
         $this->paymentRepository = $this->entityManager->getRepository(Payment::class);
-        $this->imageDir = sys_get_temp_dir().'/'.sha1(mt_rand());
+        $this->imageDir = sys_get_temp_dir().'/'.sha1((string) mt_rand());
         $fs = new Filesystem();
         $fs->mkdir($this->imageDir);
     }

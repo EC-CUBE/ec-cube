@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -19,7 +21,7 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class CalendarControllerTest extends AbstractAdminWebTestCase
+final class CalendarControllerTest extends AbstractAdminWebTestCase
 {
     protected ?CalendarRepository $calendarRepository = null;
 

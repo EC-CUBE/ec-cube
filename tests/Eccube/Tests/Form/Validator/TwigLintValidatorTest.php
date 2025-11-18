@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,7 +19,7 @@ use Eccube\Form\Validator\TwigLint;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class TwigLintValidatorTest extends AbstractTypeTestCase
+final class TwigLintValidatorTest extends AbstractTypeTestCase
 {
     protected ?ValidatorInterface $validator = null;
 

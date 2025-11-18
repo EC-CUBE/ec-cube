@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -30,7 +32,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
  *
  * @author Kentaro Ohkouchi
  */
-class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
+final class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 {
     protected ?array $Results = null;
 
@@ -470,7 +472,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
     public function testBuyTotalStart()
     {
-        $this->Customer->setBuyTotal(1);
+        $this->Customer->setBuyTotal('1');
         $this->entityManager->flush();
 
         $this->searchData = [
@@ -486,10 +488,10 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
     public function testBuyTotalStartWithZero()
     {
-        $this->Customer->setBuyTotal(0);
-        $this->Customer1->setBuyTotal(1);
-        $this->Customer2->setBuyTotal(1);
-        $this->Customer3->setBuyTotal(1);
+        $this->Customer->setBuyTotal('0');
+        $this->Customer1->setBuyTotal('1');
+        $this->Customer2->setBuyTotal('1');
+        $this->Customer3->setBuyTotal('1');
         $this->entityManager->flush();
 
         $this->searchData = [
@@ -506,7 +508,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
     public function testBuyTotalEnd()
     {
-        $this->Customer->setBuyTotal(1);
+        $this->Customer->setBuyTotal('1');
         $this->entityManager->flush();
 
         $this->searchData = [
@@ -522,7 +524,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
     public function testBuyTimesStart()
     {
-        $this->Customer->setBuyTimes(1);
+        $this->Customer->setBuyTimes('1');
         $this->entityManager->flush();
 
         $this->searchData = [
@@ -538,10 +540,10 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
     public function testBuyTimesStartWithZero()
     {
-        $this->Customer->setBuyTimes(0);
-        $this->Customer1->setBuyTimes(1);
-        $this->Customer2->setBuyTimes(1);
-        $this->Customer3->setBuyTimes(1);
+        $this->Customer->setBuyTimes('0');
+        $this->Customer1->setBuyTimes('1');
+        $this->Customer2->setBuyTimes('1');
+        $this->Customer3->setBuyTimes('1');
         $this->entityManager->flush();
 
         $this->searchData = [
@@ -558,7 +560,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
     public function testBuyTimesEnd()
     {
-        $this->Customer->setBuyTimes(1);
+        $this->Customer->setBuyTimes('1');
         $this->entityManager->flush();
 
         $this->searchData = [

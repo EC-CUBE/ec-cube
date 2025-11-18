@@ -188,7 +188,7 @@ class ForgotController extends AbstractController
                 $Customer->setPassword($password);
 
                 // リセットキーをクリア
-                $Customer->setResetKey(null);
+                $Customer->setResetKey();
 
                 // パスワードを更新
                 $this->entityManager->persist($Customer);

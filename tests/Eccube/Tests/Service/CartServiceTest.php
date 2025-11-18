@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -29,7 +31,7 @@ use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Session\Session;
 use Eccube\Util\StringUtil;
 
-class CartServiceTest extends AbstractServiceTestCase
+final class CartServiceTest extends AbstractServiceTestCase
 {
     protected ?Product $Product = null;
 
@@ -115,7 +117,7 @@ class CartServiceTest extends AbstractServiceTestCase
 
     public function testAddProductsQuantityOverSaleLimit()
     {
-        $this->cartService->addProduct(10, 6);
+        $this->cartService->addProduct(10, '6');
 
         $quantity = $this->cartService->getCart()->getItems()->reduce(fn ($q, $item) => $q + $item->getQuantity());
         // 明細の丸め処理はpurchaseFlowで実行されるため、販売制限数を超えてもカートには入る
@@ -127,11 +129,11 @@ class CartServiceTest extends AbstractServiceTestCase
         /** @var ProductClass $ProductClass */
         $ProductClass = $this->productClassRepository->find(11);
 
-        $this->cartService->addProduct($ProductClass, 101);
+        $this->cartService->addProduct($ProductClass, '101');
         $this->purchaseFlow->validate($this->cartService->getCart(), new PurchaseContext());
         $this->cartService->save();
 
-        $this->cartService->addProduct($ProductClass, 6);
+        $this->cartService->addProduct($ProductClass, '6');
         $this->purchaseFlow->validate($this->cartService->getCart(), new PurchaseContext());
         $this->cartService->save();
 
@@ -178,10 +180,10 @@ class CartServiceTest extends AbstractServiceTestCase
         $this->cartService->clear();
         /** @var ProductClass $ProductClass */
         $ProductClass = $this->productClassRepository->find(10);
-        $this->cartService->addProduct($ProductClass, 1);
+        $this->cartService->addProduct($ProductClass, '1');
         $this->purchaseFlow->validate($this->cartService->getCart(), new PurchaseContext());
         $this->cartService->save();
-        $this->cartService->addProduct($ProductClass, 1);
+        $this->cartService->addProduct($ProductClass, '1');
         $this->purchaseFlow->validate($this->cartService->getCart(), new PurchaseContext());
         $this->cartService->save();
 
@@ -194,10 +196,10 @@ class CartServiceTest extends AbstractServiceTestCase
         $this->cartService->clear();
         /** @var ProductClass $ProductClass */
         $ProductClass = $this->productClassRepository->find(10);
-        $this->cartService->addProduct($ProductClass, 2);
+        $this->cartService->addProduct($ProductClass, '2');
         $this->purchaseFlow->validate($this->cartService->getCart(), new PurchaseContext());
         $this->cartService->save();
-        $this->cartService->addProduct($ProductClass, -1);
+        $this->cartService->addProduct($ProductClass, '-1');
         $this->purchaseFlow->validate($this->cartService->getCart(), new PurchaseContext());
         $this->cartService->save();
 
@@ -207,7 +209,7 @@ class CartServiceTest extends AbstractServiceTestCase
 
     public function testRemoveProduct()
     {
-        $this->cartService->addProduct(1, 2);
+        $this->cartService->addProduct(1, '2');
         $this->purchaseFlow->validate($this->cartService->getCart(), new PurchaseContext());
         $this->cartService->save();
 
@@ -221,7 +223,7 @@ class CartServiceTest extends AbstractServiceTestCase
         $preOrderId = sha1(StringUtil::random(32));
 
         $ProductClass = $this->productClassRepository->find(1);
-        $this->cartService->addProduct($ProductClass, 1);
+        $this->cartService->addProduct($ProductClass, '1');
         $this->cartService->setPreOrderId($preOrderId);
         $this->purchaseFlow->validate($this->cartService->getCart(), new PurchaseContext());
 

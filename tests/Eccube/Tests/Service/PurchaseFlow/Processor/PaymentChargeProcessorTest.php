@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -20,7 +22,7 @@ use Eccube\Service\PurchaseFlow\Processor\PaymentChargePreprocessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
-class PaymentChargeProcessorTest extends EccubeTestCase
+final class PaymentChargeProcessorTest extends EccubeTestCase
 {
     public function testProcess()
     {

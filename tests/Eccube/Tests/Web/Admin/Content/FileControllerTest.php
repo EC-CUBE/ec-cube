@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -20,7 +22,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class FileControllerTest extends AbstractAdminWebTestCase
+final class FileControllerTest extends AbstractAdminWebTestCase
 {
     public function testIndex()
     {
@@ -337,7 +339,8 @@ class FileControllerTest extends AbstractAdminWebTestCase
     private function getJailDir($path)
     {
         $realpath = realpath($path);
-        $jailPath = str_replace(realpath($this->getUserDataDir()), '', $realpath);
+        $userDataDirRealpath = realpath($this->getUserDataDir());
+        $jailPath = ($realpath !== false && $userDataDirRealpath !== false) ? str_replace($userDataDirRealpath, '', $realpath) : '/';
 
         return $jailPath ?: '/';
     }

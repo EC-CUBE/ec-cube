@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,7 +20,7 @@ use Eccube\Doctrine\Query\WhereClause;
 use Eccube\Doctrine\Query\WhereCustomizer;
 use Eccube\Tests\EccubeTestCase;
 
-class WhereCustomizerTest extends EccubeTestCase
+final class WhereCustomizerTest extends EccubeTestCase
 {
     public function testCustomizeNOP()
     {

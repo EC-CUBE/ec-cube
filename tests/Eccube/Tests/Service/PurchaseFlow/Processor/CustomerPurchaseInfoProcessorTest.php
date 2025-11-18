@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,7 +20,7 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseException;
 use Eccube\Tests\EccubeTestCase;
 
-class CustomerPurchaseInfoProcessorTest extends EccubeTestCase
+final class CustomerPurchaseInfoProcessorTest extends EccubeTestCase
 {
     /**
      * @throws PurchaseException

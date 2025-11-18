@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -19,7 +21,7 @@ use Eccube\Tests\EccubeTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class NavCompilerPassTest extends EccubeTestCase
+final class NavCompilerPassTest extends EccubeTestCase
 {
     /**
      * DefaultNavを追加

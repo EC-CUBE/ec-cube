@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,7 +23,7 @@ use Eccube\Service\PurchaseFlow\Processor\ProductStatusValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
-class ProductStatusValidatorTest extends EccubeTestCase
+final class ProductStatusValidatorTest extends EccubeTestCase
 {
     protected ?ProductStatusValidator $validator = null;
 

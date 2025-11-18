@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -20,7 +22,7 @@ use Eccube\Service\PurchaseFlow\Processor\PriceChangeValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
-class PriceChangeValidatorTest extends EccubeTestCase
+final class PriceChangeValidatorTest extends EccubeTestCase
 {
     protected ?PriceChangeValidator $validator = null;
 
@@ -53,7 +55,7 @@ class PriceChangeValidatorTest extends EccubeTestCase
 
     public function testNoChange()
     {
-        $this->ProductClass->setPrice02(100);
+        $this->ProductClass->setPrice02('100');
         $this->cartItem->setPrice($this->ProductClass->getPrice02IncTax());
         $result = $this->validator->execute($this->cartItem, new PurchaseContext());
         $this->assertTrue($result->isSuccess());
@@ -61,8 +63,8 @@ class PriceChangeValidatorTest extends EccubeTestCase
 
     public function testChange()
     {
-        $this->ProductClass->setPrice02(100);
-        $this->cartItem->setPrice(50);
+        $this->ProductClass->setPrice02('100');
+        $this->cartItem->setPrice('50');
         $result = $this->validator->execute($this->cartItem, new PurchaseContext());
         $this->assertTrue($result->isWarning());
         $this->assertSame($this->ProductClass->getPrice02IncTax(), $this->cartItem->getPrice());

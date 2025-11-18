@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -19,7 +21,7 @@ use Eccube\Entity\TaxRule;
 use Eccube\Service\TaxRuleService;
 use PHPUnit\Framework\Attributes\Group;
 
-class TaxRuleServiceTest extends AbstractServiceTestCase
+final class TaxRuleServiceTest extends AbstractServiceTestCase
 {
     private ?TaxRuleService $taxRuleService = null;
 

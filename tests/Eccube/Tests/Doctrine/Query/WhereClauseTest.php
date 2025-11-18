@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,7 +20,7 @@ use Doctrine\ORM\QueryBuilder;
 use Eccube\Doctrine\Query\WhereClause;
 use Eccube\Tests\EccubeTestCase;
 
-class WhereClauseTest extends EccubeTestCase
+final class WhereClauseTest extends EccubeTestCase
 {
     public function testEq()
     {

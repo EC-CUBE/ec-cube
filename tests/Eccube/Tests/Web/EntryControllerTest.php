@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -20,7 +22,7 @@ use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mime\Email;
 
-class EntryControllerTest extends AbstractWebTestCase
+final class EntryControllerTest extends AbstractWebTestCase
 {
     use MailerAssertionsTrait;
 
@@ -144,7 +146,7 @@ class EntryControllerTest extends AbstractWebTestCase
     public function testCompleteWithActivate()
     {
         $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->get();
-        $BaseInfo->setOptionCustomerActivate(1);
+        $BaseInfo->setOptionCustomerActivate(true);
         $this->entityManager->flush();
 
         $client = $this->client;
@@ -170,7 +172,7 @@ class EntryControllerTest extends AbstractWebTestCase
     public function testCompleteWithActivateWithMultipartSanitize()
     {
         $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->get();
-        $BaseInfo->setOptionCustomerActivate(1);
+        $BaseInfo->setOptionCustomerActivate(true);
         $this->entityManager->flush();
 
         $client = $this->client;

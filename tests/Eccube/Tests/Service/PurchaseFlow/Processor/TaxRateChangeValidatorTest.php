@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -19,7 +21,7 @@ use Eccube\Service\PurchaseFlow\Processor\TaxRateChangeValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
-class TaxRateChangeValidatorTest extends EccubeTestCase
+final class TaxRateChangeValidatorTest extends EccubeTestCase
 {
     protected ?TaxRateChangeValidator $validator = null;
 

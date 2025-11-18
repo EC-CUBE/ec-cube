@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,7 +23,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Class MasterdataControllerTest
  */
-class MasterdataControllerTest extends AbstractAdminWebTestCase
+final class MasterdataControllerTest extends AbstractAdminWebTestCase
 {
     #[\Override]
     protected function setUp(): void

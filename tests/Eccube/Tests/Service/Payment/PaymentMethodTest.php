@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,7 +19,7 @@ use Eccube\Service\Payment\Method\Cash;
 use Eccube\Tests\EccubeTestCase;
 use Symfony\Component\Form\Test\FormInterface;
 
-class PaymentMethodTest extends EccubeTestCase
+final class PaymentMethodTest extends EccubeTestCase
 {
     public function testConstructorInjection(): never
     {

@@ -38,7 +38,7 @@ class DragAndDropBy extends WebDriverActions
             new WaitAction(1)
         );
         $this->action->addAction(
-            new WebDriverButtonReleaseAction($this->mouse, null)
+            new WebDriverButtonReleaseAction($this->mouse)
         );
         $this->action->addAction(
             new WaitAction(1)

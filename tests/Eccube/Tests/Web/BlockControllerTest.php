@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,7 +17,7 @@ namespace Eccube\Tests\Web;
 
 use Symfony\Component\HttpFoundation\Request;
 
-class BlockControllerTest extends AbstractWebTestCase
+final class BlockControllerTest extends AbstractWebTestCase
 {
     public function testIndex()
     {

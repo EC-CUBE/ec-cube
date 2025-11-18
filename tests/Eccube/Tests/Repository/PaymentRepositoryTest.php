@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -22,7 +24,7 @@ use Eccube\Repository\PaymentOptionRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Tests\EccubeTestCase;
 
-class PaymentRepositoryTest extends EccubeTestCase
+final class PaymentRepositoryTest extends EccubeTestCase
 {
     protected ?DeliveryRepository $deliveryRepository = null;
 

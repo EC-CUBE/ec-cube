@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -19,7 +21,7 @@ use Eccube\Tests\EccubeTestCase;
 use Eccube\Twig\Extension\EccubeExtension;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-class EccubeExtensionTest extends EccubeTestCase
+final class EccubeExtensionTest extends EccubeTestCase
 {
     protected ?EccubeExtension $Extension = null;
 
@@ -42,7 +44,7 @@ class EccubeExtensionTest extends EccubeTestCase
         foreach ($Product->getClassCategories1() as $class_category_id => $name) {
             $this->assertArrayHasKey($class_category_id, $actuals);
 
-            $ClassCategory2 = $Product->getClassCategories2($class_category_id);
+            $ClassCategory2 = $Product->getClassCategories2((string) $class_category_id);
             if (empty($ClassCategory2)) {
                 $this->markTestSkipped('ClassCategory2 is empty.');
             }
@@ -63,19 +65,19 @@ class EccubeExtensionTest extends EccubeTestCase
 
                 if ($ProductClass->getPrice01IncTax()) {
                     if ($ProductClass->getPrice01() !== null) {
-                        $this->assertSame(number_format($ProductClass->getPrice01()), $actual['price01']);
+                        $this->assertSame(number_format((float) $ProductClass->getPrice01()), $actual['price01']);
                         $this->assertSame($this->Extension->getPriceFilter($ProductClass->getPrice01()), $actual['price01_with_currency']);
                     }
-                    if (number_format($ProductClass->getPrice01IncTax()) === '0') {
+                    if (number_format((float) $ProductClass->getPrice01IncTax()) === '0') {
                         $this->assertSame('', $actual['price01_inc_tax']);
                         $this->assertSame('', $actual['price01_inc_tax_with_currency']);
                     } else {
-                        $this->assertSame(number_format($ProductClass->getPrice01IncTax()), number_format($actual['price01_inc_tax']));
+                        $this->assertSame(number_format((float) $ProductClass->getPrice01IncTax()), number_format((float) $actual['price01_inc_tax']));
                         $this->assertSame($this->Extension->getPriceFilter($ProductClass->getPrice01IncTax()), $actual['price01_inc_tax_with_currency']);
                     }
                 }
-                $this->assertSame(number_format($ProductClass->getPrice02()), $actual['price02']);
-                $this->assertSame(number_format($ProductClass->getPrice02IncTax()), $actual['price02_inc_tax']);
+                $this->assertSame(number_format((float) $ProductClass->getPrice02()), $actual['price02']);
+                $this->assertSame(number_format((float) $ProductClass->getPrice02IncTax()), $actual['price02_inc_tax']);
                 $this->assertSame($this->Extension->getPriceFilter($ProductClass->getPrice02()), $actual['price02_with_currency']);
                 $this->assertSame($this->Extension->getPriceFilter($ProductClass->getPrice02IncTax()), $actual['price02_inc_tax_with_currency']);
                 $this->assertEquals($ProductClass->getCode(), $actual['product_code']);

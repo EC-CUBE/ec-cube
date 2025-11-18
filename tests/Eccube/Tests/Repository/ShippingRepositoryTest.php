@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -37,7 +39,7 @@ use Eccube\Tests\EccubeTestCase;
  *
  * @author Kentaro Ohkouchi
  */
-class ShippingRepositoryTest extends EccubeTestCase
+final class ShippingRepositoryTest extends EccubeTestCase
 {
     protected ?Customer $Customer = null;
 

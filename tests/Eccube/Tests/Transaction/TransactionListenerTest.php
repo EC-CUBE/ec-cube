@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -31,7 +33,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @author Kentaro Ohkouchi
  */
-class TransactionListenerTest extends WebTestCase
+final class TransactionListenerTest extends WebTestCase
 {
     protected function isSqlite()
     {
@@ -40,7 +42,7 @@ class TransactionListenerTest extends WebTestCase
 
     protected function setUp(): void
     {
-        $this->markTestIncomplete(static::class.' は未実装です');
+        $this->markTestIncomplete(self::class.' は未実装です');
         parent::setUp();
 
         if ($this->isSqlite()) {

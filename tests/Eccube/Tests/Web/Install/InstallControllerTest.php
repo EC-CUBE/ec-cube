@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -30,7 +32,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[Group('cache-clear-install')]
-class InstallControllerTest extends AbstractWebTestCase
+final class InstallControllerTest extends AbstractWebTestCase
 {
     protected ?InstallController $controller = null;
 

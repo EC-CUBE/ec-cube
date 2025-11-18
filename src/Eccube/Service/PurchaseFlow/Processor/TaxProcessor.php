@@ -63,7 +63,7 @@ class TaxProcessor implements ItemHolderPreprocessor
             if ($item->getTaxType() && $item->getTaxType()->getId() != TaxType::TAXATION) {
                 $item->setTax('0');
                 $item->setTaxRate('0');
-                $item->setRoundingType(null);
+                $item->setRoundingType();
 
                 continue;
             }

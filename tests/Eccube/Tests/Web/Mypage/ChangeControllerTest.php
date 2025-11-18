@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,7 +19,7 @@ use Eccube\Entity\Customer;
 use Eccube\Tests\Web\AbstractWebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
-class ChangeControllerTest extends AbstractWebTestCase
+final class ChangeControllerTest extends AbstractWebTestCase
 {
     protected ?Customer $Customer = null;
 

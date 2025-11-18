@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -22,7 +24,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Class LogControllerTest
  */
-class LogControllerTest extends AbstractAdminWebTestCase
+final class LogControllerTest extends AbstractAdminWebTestCase
 {
     /** log Test   */
     protected $logTest;

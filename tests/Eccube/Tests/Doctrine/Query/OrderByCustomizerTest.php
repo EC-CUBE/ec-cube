@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,7 +20,7 @@ use Eccube\Doctrine\Query\OrderByClause;
 use Eccube\Doctrine\Query\OrderByCustomizer;
 use Eccube\Tests\EccubeTestCase;
 
-class OrderByCustomizerTest extends EccubeTestCase
+final class OrderByCustomizerTest extends EccubeTestCase
 {
     public function testCustomizeNop()
     {

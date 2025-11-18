@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,7 +20,7 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Twig\Environment;
 
-class PageControllerTest extends AbstractAdminWebTestCase
+final class PageControllerTest extends AbstractAdminWebTestCase
 {
     public function testRoutingAdminContentPageIndex()
     {

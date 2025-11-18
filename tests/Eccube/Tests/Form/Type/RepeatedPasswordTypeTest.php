@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,7 +19,7 @@ use Eccube\Form\Type\RepeatedPasswordType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormInterface;
 
-class RepeatedPasswordTypeTest extends AbstractTypeTestCase
+final class RepeatedPasswordTypeTest extends AbstractTypeTestCase
 {
     protected ?FormInterface $form = null;
 

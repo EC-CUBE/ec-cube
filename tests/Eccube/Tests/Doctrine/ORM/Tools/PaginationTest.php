@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -32,7 +34,7 @@ use Eccube\Repository\TagRepository;
 use Eccube\Tests\EccubeTestCase;
 use Knp\Component\Pager\PaginatorInterface;
 
-class PaginationTest extends EccubeTestCase
+final class PaginationTest extends EccubeTestCase
 {
     protected ?array $expectedIds = null;
 
@@ -85,7 +87,7 @@ class PaginationTest extends EccubeTestCase
             $ProductClasses = $Product->getProductClasses();
             foreach ($ProductClasses as $ProductClass) {
                 // product.idの昇順になるよう, product_class.price02を設定する
-                $ProductClass->setPrice02($price02 - $i);
+                $ProductClass->setPrice02(bcsub((string) $price02, (string) $i, 0));
                 $em->flush();
             }
         }

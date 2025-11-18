@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,7 +20,7 @@ use Eccube\Entity\Master\Job;
 use Eccube\Repository\Master\JobRepository;
 use Eccube\Tests\EccubeTestCase;
 
-class CsvFixtureTest extends EccubeTestCase
+final class CsvFixtureTest extends EccubeTestCase
 {
     protected ?CsvFixture $fixture = null;
 

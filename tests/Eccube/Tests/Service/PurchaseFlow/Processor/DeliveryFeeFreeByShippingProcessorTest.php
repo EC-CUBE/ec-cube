@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -26,7 +28,7 @@ use Eccube\Tests\EccubeTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 
-class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
+final class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
 {
     private ?OrderItemType $ProductType = null;
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -19,7 +21,7 @@ use Eccube\Form\Type\Shopping\OrderType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-class OrderTypeTest extends AbstractTypeTestCase
+final class OrderTypeTest extends AbstractTypeTestCase
 {
     private $orderType;
 
@@ -57,12 +59,12 @@ class OrderTypeTest extends AbstractTypeTestCase
         return [
             // charge, total, min, max, result
             [null, null, null, null, 1],
-            [50, 50, 99, null, 1],
-            [50, 50, 100, null, 1],
-            [50, 50, 101, null, 0],
-            [50, 50, null, 99, 0],
-            [50, 50, null, 100, 1],
-            [50, 50, null, 101, 1],
+            ['50', '50', '99', null, 1],
+            ['50', '50', '100', null, 1],
+            ['50', '50', '101', null, 0],
+            ['50', '50', null, '99', 0],
+            ['50', '50', null, '100', 1],
+            ['50', '50', null, '101', 1],
         ];
     }
 }

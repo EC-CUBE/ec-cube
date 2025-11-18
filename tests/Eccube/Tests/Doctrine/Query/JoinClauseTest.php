@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -20,7 +22,7 @@ use Eccube\Doctrine\Query\OrderByClause;
 use Eccube\Doctrine\Query\WhereClause;
 use Eccube\Tests\EccubeTestCase;
 
-class JoinClauseTest extends EccubeTestCase
+final class JoinClauseTest extends EccubeTestCase
 {
     public function testInnerJoin()
     {

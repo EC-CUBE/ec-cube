@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -36,7 +38,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class ProductControllerTest extends AbstractAdminWebTestCase
+final class ProductControllerTest extends AbstractAdminWebTestCase
 {
     protected ?ProductRepository $productRepository = null;
 
@@ -88,14 +90,14 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     {
         $faker = $this->getFaker();
 
-        $price01 = $faker->randomNumber(5);
+        $price01 = (string) $faker->randomNumber(5);
         if (mt_rand(0, 1)) {
-            $price01 = number_format($price01);
+            $price01 = number_format((int) $price01);
         }
 
-        $price02 = $faker->randomNumber(5);
+        $price02 = (string) $faker->randomNumber(5);
         if (mt_rand(0, 1)) {
-            $price02 = number_format($price02);
+            $price02 = number_format((int) $price02);
         }
 
         return [
@@ -824,9 +826,8 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         if ($currentRoundingTypeId !== null) {
             $RoundingType = $this->entityManager->find(RoundingType::class, $currentRoundingTypeId);
             $TaxRule = new TaxRule();
-            $TaxRule->setProductClass(null)
-                ->setCreator($Product->getCreator())
-                ->setProduct(null)
+            $TaxRule->setProductClass()
+                ->setCreator($Product->getCreator())->setProduct()
                 ->setRoundingType($RoundingType)
                 ->setTaxRate($tax_rate)
                 ->setTaxAdjust('0')
@@ -1113,10 +1114,10 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $Product2 = $generator->createProduct(null, 0, 'abstract');
 
         $DuplicatedImage = $Product1->getProductImage()->first();
-        assert($DuplicatedImage instanceof ProductImage);
+        $this->assertInstanceOf(ProductImage::class, $DuplicatedImage);
 
         $NotDuplicatedImage = $Product1->getProductImage()->last();
-        assert($NotDuplicatedImage instanceof ProductImage);
+        $this->assertInstanceOf(ProductImage::class, $NotDuplicatedImage);
 
         $NewProduct2Image = new ProductImage();
         $NewProduct2Image
@@ -1150,10 +1151,10 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $Product2 = $generator->createProduct(null, 0, 'abstract');
 
         $DuplicatedImage = $Product1->getProductImage()->first();
-        assert($DuplicatedImage instanceof ProductImage);
+        $this->assertInstanceOf(ProductImage::class, $DuplicatedImage);
 
         $NotDuplicatedImage = $Product1->getProductImage()->last();
-        assert($NotDuplicatedImage instanceof ProductImage);
+        $this->assertInstanceOf(ProductImage::class, $NotDuplicatedImage);
 
         $NewProduct2Image = new ProductImage();
         $NewProduct2Image

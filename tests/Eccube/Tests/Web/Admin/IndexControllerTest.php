@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -23,7 +25,7 @@ use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class IndexControllerTest extends AbstractAdminWebTestCase
+final class IndexControllerTest extends AbstractAdminWebTestCase
 {
     protected ?Member $Member = null;
 

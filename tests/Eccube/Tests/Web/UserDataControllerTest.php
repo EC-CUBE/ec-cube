@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -16,7 +18,7 @@ namespace Eccube\Tests\Web;
 use Eccube\Entity\Page;
 use Symfony\Component\HttpFoundation\Request;
 
-class UserDataControllerTest extends AbstractWebTestCase
+final class UserDataControllerTest extends AbstractWebTestCase
 {
     protected $userDataDir;
 

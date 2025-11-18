@@ -687,7 +687,7 @@ class ProductController extends AbstractController
         $TagsList = $this->tagRepository->getList();
 
         // ツリー表示のため、ルートからのカテゴリを取得
-        $TopCategories = $this->categoryRepository->getList(null);
+        $TopCategories = $this->categoryRepository->getList();
         $ChoicedCategoryIds = array_map(fn ($Category) => $Category->getId(), $form->get('Category')->getData());
 
         return [
@@ -919,7 +919,7 @@ class ProductController extends AbstractController
 
         // sql loggerを無効にする.
         $em = $this->entityManager;
-        $em->getConfiguration()->setSQLLogger(null);
+        $em->getConfiguration()->setSQLLogger();
 
         $response = new StreamedResponse();
         $response->setCallback(function () use ($request): void {

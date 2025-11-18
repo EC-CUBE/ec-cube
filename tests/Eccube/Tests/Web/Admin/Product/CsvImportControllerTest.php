@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -31,7 +33,7 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 
-class CsvImportControllerTest extends AbstractAdminWebTestCase
+final class CsvImportControllerTest extends AbstractAdminWebTestCase
 {
     protected ?ProductRepository $productRepo = null;
     protected ?CategoryRepository $categoryRepo = null;
@@ -1007,14 +1009,14 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
     {
         /** @var \Eccube\Tests\Fixture\Generator $generator */
         $generator = static::getContainer()->get(\Eccube\Tests\Fixture\Generator::class);
-        $Product1 = $generator->createProduct(null, 0, 'abstract');
-        $Product2 = $generator->createProduct(null, 0, 'abstract');
+        $Product1 = $generator->createProduct(null, 0, true);
+        $Product2 = $generator->createProduct(null, 0, true);
 
         $DuplicatedImage = $Product1->getProductImage()->first();
-        assert($DuplicatedImage instanceof ProductImage);
+        $this->assertInstanceOf(ProductImage::class, $DuplicatedImage);
 
         $NotDuplicatedImage = $Product1->getProductImage()->last();
-        assert($NotDuplicatedImage instanceof ProductImage);
+        $this->assertInstanceOf(ProductImage::class, $NotDuplicatedImage);
 
         $NewProduct2Image = new ProductImage();
         $NewProduct2Image

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -26,7 +28,7 @@ use Symfony\Component\Finder\Finder;
  */
 #[Group('plugin-service')]
 #[Group('plugin-install-test')]
-class PluginInstallTest extends AbstractServiceTestCase
+final class PluginInstallTest extends AbstractServiceTestCase
 {
     private ?PluginService $service = null;
 

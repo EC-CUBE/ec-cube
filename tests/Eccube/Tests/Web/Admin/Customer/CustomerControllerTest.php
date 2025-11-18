@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -28,7 +30,7 @@ use Symfony\Component\Mime\RawMessage;
 /**
  * Class CustomerControllerTest
  */
-class CustomerControllerTest extends AbstractAdminWebTestCase
+final class CustomerControllerTest extends AbstractAdminWebTestCase
 {
     use MailerAssertionsTrait;
 

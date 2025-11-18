@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,7 +23,7 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Tests\Fixture\Generator;
 
-class StockValidatorTest extends EccubeTestCase
+final class StockValidatorTest extends EccubeTestCase
 {
     protected ?StockValidator $validator = null;
 
@@ -76,7 +78,7 @@ class StockValidatorTest extends EccubeTestCase
         $this->assertEquals($Order->getOrderItems()[0]->getProductClass(), $this->ProductClass);
 
         $Order->getOrderItems()[0]->setQuantity(1);
-        $this->ProductClass->setStock(100);
+        $this->ProductClass->setStock('100');
 
         $this->validator->execute($Order->getOrderItems()[0], new PurchaseContext());
         $this->assertSame('1', $Order->getOrderItems()[0]->getQuantity());

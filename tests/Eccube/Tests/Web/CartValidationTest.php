@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -26,7 +28,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Client;
 
-class CartValidationTest extends AbstractWebTestCase
+final class CartValidationTest extends AbstractWebTestCase
 {
     private ?ProductStatusRepository $productStatusRepository = null;
 
@@ -209,7 +211,7 @@ class CartValidationTest extends AbstractWebTestCase
         );
 
         // Stock out
-        $ProductClass->setStock(0);
+        $ProductClass->setStock('0');
 
         $this->entityManager->persist($ProductClass);
         $this->entityManager->persist($Product);
@@ -254,7 +256,7 @@ class CartValidationTest extends AbstractWebTestCase
         $client = $this->client;
 
         // Stock out
-        $ProductClass->setStock(0);
+        $ProductClass->setStock('0');
 
         $this->entityManager->persist($ProductClass);
         $this->entityManager->persist($Product);
@@ -359,7 +361,7 @@ class CartValidationTest extends AbstractWebTestCase
         /** @var Product $Product */
         $Product = parent::createProduct($productName, 1);
         $ProductClass = $Product->getProductClasses()->first();
-        $ProductClass->setPrice02(999999911);
+        $ProductClass->setPrice02('999999911');
         $this->changeStock($ProductClass, 10);
         /** @var Client $client */
         $client = $this->client;
@@ -607,7 +609,7 @@ class CartValidationTest extends AbstractWebTestCase
         $productId = $Product->getId();
 
         // Sale limit
-        $ProductClass->setSaleLimit($limit);
+        $ProductClass->setSaleLimit((string) $limit);
         $this->entityManager->persist($ProductClass);
         $this->entityManager->flush();
 
@@ -795,7 +797,7 @@ class CartValidationTest extends AbstractWebTestCase
         $this->scenarioCartIn($Customer, $ProductClass, $stockInCart);
 
         // Sale limit
-        $ProductClass->setSaleLimit($limit);
+        $ProductClass->setSaleLimit((string) $limit);
         $this->entityManager->persist($ProductClass);
         $this->entityManager->flush();
 
@@ -1038,7 +1040,7 @@ class CartValidationTest extends AbstractWebTestCase
 
         // sale limit
         $saleLimit = 1;
-        $ProductClass->setSaleLimit($saleLimit);
+        $ProductClass->setSaleLimit((string) $saleLimit);
         $this->entityManager->persist($ProductClass);
         $this->entityManager->flush();
 
@@ -1326,7 +1328,7 @@ class CartValidationTest extends AbstractWebTestCase
         $saleLimit = 1;
         $ProductClass = $this->entityManager->find(ProductClass::class, $ProductClass->getId());
         $this->assertInstanceOf(ProductClass::class, $ProductClass);
-        $ProductClass->setSaleLimit($saleLimit);
+        $ProductClass->setSaleLimit((string) $saleLimit);
         $this->entityManager->persist($ProductClass);
         $this->entityManager->flush();
 
@@ -1609,7 +1611,7 @@ class CartValidationTest extends AbstractWebTestCase
         $saleLimit = 1;
         $ProductClass = $this->entityManager->find(ProductClass::class, $ProductClass->getId());
         $this->assertInstanceOf(ProductClass::class, $ProductClass);
-        $ProductClass->setSaleLimit($saleLimit);
+        $ProductClass->setSaleLimit((string) $saleLimit);
         $this->entityManager->persist($ProductClass);
         $this->entityManager->flush();
 
@@ -1802,7 +1804,7 @@ class CartValidationTest extends AbstractWebTestCase
         $saleLimit = 1;
         $ProductClass = $this->entityManager->find(ProductClass::class, $ProductClass->getId());
         $this->assertInstanceOf(ProductClass::class, $ProductClass);
-        $ProductClass->setSaleLimit($saleLimit);
+        $ProductClass->setSaleLimit((string) $saleLimit);
         $this->entityManager->persist($ProductClass);
         $this->entityManager->flush();
 
@@ -2029,7 +2031,7 @@ class CartValidationTest extends AbstractWebTestCase
         $saleLimit = 1;
         $ProductClass = $this->entityManager->find(ProductClass::class, $ProductClass->getId());
         $this->assertInstanceOf(ProductClass::class, $ProductClass);
-        $ProductClass->setSaleLimit($saleLimit);
+        $ProductClass->setSaleLimit((string) $saleLimit);
         $this->entityManager->persist($ProductClass);
         $this->entityManager->flush();
 
@@ -2364,7 +2366,7 @@ class CartValidationTest extends AbstractWebTestCase
 
         // sale limit
         $saleLimit = 1;
-        $ProductClass->setSaleLimit($saleLimit);
+        $ProductClass->setSaleLimit((string) $saleLimit);
         $this->entityManager->persist($ProductClass);
         $this->entityManager->flush();
 
@@ -2631,7 +2633,7 @@ class CartValidationTest extends AbstractWebTestCase
     protected function changeStock(ProductClass $ProductClass, int $stock = 0): ProductClass
     {
         $ProductClass = $this->entityManager->find(ProductClass::class, $ProductClass->getId());
-        $ProductClass->setStock($stock);
+        $ProductClass->setStock((string) $stock);
 
         $this->entityManager->persist($ProductClass);
         $this->entityManager->flush();

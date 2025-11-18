@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -20,7 +22,7 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-class OrderNoProcessorTest extends EccubeTestCase
+final class OrderNoProcessorTest extends EccubeTestCase
 {
     /**
      * @param $orderNoFormat

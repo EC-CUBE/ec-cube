@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -22,16 +24,15 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @author Kentaro Ohkouchi
  */
-class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
+final class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
 {
     protected $Customer;
-    protected $Order;
     protected $Product;
 
     #[\Override]
     protected function setUp(): void
     {
-        $this->markTestIncomplete(static::class.' は未実装です');
+        $this->markTestIncomplete(self::class.' は未実装です');
         parent::setUp();
         $this->Customer = $this->createCustomer();
         $this->Product = $this->createProduct();
@@ -464,7 +465,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
      */
     public function createFormDataForMultiple(Customer $Customer, array $Shippings): array
     {
-        $formData = parent::createFormData($Customer, null);
+        $formData = parent::createFormData($Customer);
         $formData['Shippings'] = $Shippings;
         $OrderItems = [];
         foreach ($Shippings as $Shipping) {

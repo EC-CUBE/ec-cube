@@ -83,7 +83,7 @@ class CategoryController extends AbstractController
         $Categories = $this->categoryRepository->getList($Parent);
 
         // ツリー表示のため、ルートからのカテゴリを取得
-        $TopCategories = $this->categoryRepository->getList(null);
+        $TopCategories = $this->categoryRepository->getList();
 
         $builder = $this->formFactory
             ->createBuilder(CategoryType::class, $TargetCategory);
@@ -292,7 +292,7 @@ class CategoryController extends AbstractController
 
         // sql loggerを無効にする.
         $em = $this->entityManager;
-        $em->getConfiguration()->setSQLLogger(null);
+        $em->getConfiguration()->setSQLLogger();
 
         $response = new StreamedResponse();
         $response->setCallback(function () use ($request): void {

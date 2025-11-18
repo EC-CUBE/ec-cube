@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -20,7 +22,7 @@ use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 
 #[Group('twig-sandbox-extension')]
-class IgnoreTwigSandboxErrorExtensionTest extends AbstractWebTestCase
+final class IgnoreTwigSandboxErrorExtensionTest extends AbstractWebTestCase
 {
     /**
      * @param mixed $snippet

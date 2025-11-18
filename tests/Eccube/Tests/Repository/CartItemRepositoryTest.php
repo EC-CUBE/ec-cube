@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,7 +19,7 @@ use Eccube\Entity\CartItem;
 use Eccube\Repository\CartItemRepository;
 use Eccube\Tests\EccubeTestCase;
 
-class CartItemRepositoryTest extends EccubeTestCase
+final class CartItemRepositoryTest extends EccubeTestCase
 {
     public function testConstruct()
     {

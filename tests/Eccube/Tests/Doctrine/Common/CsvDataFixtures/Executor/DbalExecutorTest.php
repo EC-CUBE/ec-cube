@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -19,7 +21,7 @@ use Eccube\Entity\Master\Job;
 use Eccube\Repository\Master\JobRepository;
 use Eccube\Tests\EccubeTestCase;
 
-class DbalExecutorTest extends EccubeTestCase
+final class DbalExecutorTest extends EccubeTestCase
 {
     protected ?\SplFileObject $file = null;
 

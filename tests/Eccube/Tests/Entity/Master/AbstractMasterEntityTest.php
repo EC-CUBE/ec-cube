@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,7 +23,7 @@ use Eccube\Tests\EccubeTestCase;
  *
  * @author Kentaro Ohkouchi
  */
-class AbstractMasterEntityTest extends EccubeTestCase
+final class AbstractMasterEntityTest extends EccubeTestCase
 {
     #[\Override]
     protected function setUp(): void

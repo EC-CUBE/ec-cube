@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,7 +20,7 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 
-class LoginHistoryControllerTest extends AbstractAdminWebTestCase
+final class LoginHistoryControllerTest extends AbstractAdminWebTestCase
 {
     /**
      * {@inheritdoc}

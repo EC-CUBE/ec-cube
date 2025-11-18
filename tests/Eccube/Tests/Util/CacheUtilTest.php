@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -23,7 +25,7 @@ use Symfony\Component\Finder\Finder;
  *
  * @author Kentaro Ohkouchi
  */
-class CacheUtilTest extends TestCase
+final class CacheUtilTest extends TestCase
 {
     private $app;
     private $root;

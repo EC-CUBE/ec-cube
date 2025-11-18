@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -19,7 +21,7 @@ use Symfony\Component\HttpKernel\Client;
 /**
  * Class AdminControllerProductNonStockTest.
  */
-class AdminControllerProductNonStockTest extends AbstractAdminWebTestCase
+final class AdminControllerProductNonStockTest extends AbstractAdminWebTestCase
 {
     protected ?string $target = '#shop-statistical';
 

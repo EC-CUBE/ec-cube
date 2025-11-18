@@ -147,7 +147,7 @@ class EntityProxyService
         $includedFileSets = [];
         foreach ($dirSets as $dirSet) {
             $includedFiles = [];
-            $dirs = array_filter($dirSet, 'file_exists');
+            $dirs = array_filter($dirSet, file_exists(...));
             if (!empty($dirs)) {
                 $files = Finder::create()
                     ->in($dirs)

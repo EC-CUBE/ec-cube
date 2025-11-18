@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -20,7 +22,7 @@ use Eccube\Service\PurchaseFlow\Processor\DeliveryFeeChangeValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
-class DeliveryFeeChangeValidatorTest extends EccubeTestCase
+final class DeliveryFeeChangeValidatorTest extends EccubeTestCase
 {
     private ?DeliveryFeeChangeValidator $validator = null;
 

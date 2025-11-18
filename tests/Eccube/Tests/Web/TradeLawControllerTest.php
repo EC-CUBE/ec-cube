@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,7 +20,7 @@ use Eccube\Entity\TradeLaw;
 use Eccube\Repository\TradeLawRepository;
 use Symfony\Component\HttpFoundation\Request;
 
-class TradeLawControllerTest extends AbstractWebTestCase
+final class TradeLawControllerTest extends AbstractWebTestCase
 {
     private ?TradeLawRepository $tradeLawRepository = null;
 

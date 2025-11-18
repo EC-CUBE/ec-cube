@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -29,7 +31,7 @@ use PHPUnit\Framework\Attributes\Group;
  *
  * @author Kentaro Ohkouchi
  */
-class OrderRepositoryTest extends EccubeTestCase
+final class OrderRepositoryTest extends EccubeTestCase
 {
     protected ?Customer $Customer = null;
     protected ?Order $Order = null;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,7 +20,7 @@ use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Form\FormInterface;
 
-class DeliveryFeeTypeTest extends AbstractTypeTestCase
+final class DeliveryFeeTypeTest extends AbstractTypeTestCase
 {
     protected ?FormInterface $form = null;
 

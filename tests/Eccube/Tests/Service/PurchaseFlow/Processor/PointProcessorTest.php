@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -31,7 +33,7 @@ use Eccube\Tests\EccubeTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 
-class PointProcessorTest extends EccubeTestCase
+final class PointProcessorTest extends EccubeTestCase
 {
     private ?PointProcessor $processor = null;
 
@@ -78,14 +80,14 @@ class PointProcessorTest extends EccubeTestCase
     public function testUsePointOverCustomerPointShoppingFlow($usePoint, $customerPoint, $isError)
     {
         $Customer = new Customer();
-        $Customer->setPoint($customerPoint);
+        $Customer->setPoint((string) $customerPoint);
 
         /* @var ProductClass $ProductClass */
         $ProductClass = $this->createProduct('テスト', 1)->getProductClasses()[0];
         $Order = new Order();
         $Order->setTotal(1000);
         $Order->setCustomer($Customer);
-        $Order->setUsePoint($usePoint);
+        $Order->setUsePoint((string) $usePoint);
         $Order->addOrderItem($this->newOrderItem($ProductClass, 1000, 1));
 
         $context = new PurchaseContext(null, $Customer);
@@ -129,7 +131,7 @@ class PointProcessorTest extends EccubeTestCase
         $Order = new Order();
         $Order->setTotal(100);
         $Order->setCustomer($Customer);
-        $Order->setUsePoint($usePoint);
+        $Order->setUsePoint((string) $usePoint);
         $Order->addOrderItem($this->newOrderItem($ProductClass, $price, 1));
 
         $context = new PurchaseContext(null, $Customer);
@@ -165,7 +167,7 @@ class PointProcessorTest extends EccubeTestCase
         $Order = new Order();
         $Order->setTotal('100');
         $Order->setCustomer($Customer);
-        $Order->setUsePoint($usePoint);
+        $Order->setUsePoint((string) $usePoint);
         $Order->addOrderItem($this->newOrderItem($ProductClass, $price, 1));
 
         $context = new PurchaseContext(null, $Customer);
@@ -233,7 +235,7 @@ class PointProcessorTest extends EccubeTestCase
         $ProductClass = $this->createProduct('テスト', 1)->getProductClasses()[0];
         $Order = new Order();
         $Order->setCustomer($Customer);
-        $Order->setUsePoint($usePoint);
+        $Order->setUsePoint((string) $usePoint);
         $Order->addOrderItem($this->newOrderItem($ProductClass, $price, 1));
 
         $purchaseFlow = new PurchaseFlow();
@@ -284,7 +286,7 @@ class PointProcessorTest extends EccubeTestCase
         $OrderItem = new OrderItem();
         $this->assertInstanceOf(OrderItemType::class, $DeliveryFeeType);
         $OrderItem->setProductName($DeliveryFeeType->getName())
-            ->setPrice($deliveryFee)
+            ->setPrice((string) $deliveryFee)
             ->setQuantity(1)
             ->setOrderItemType($DeliveryFeeType)
             ->setOrder($Order)
@@ -322,7 +324,7 @@ class PointProcessorTest extends EccubeTestCase
         $productPrice = 1000;
         $usePoint = 10;
 
-        $this->BaseInfo->setPointConversionRate($pointConversionRate);
+        $this->BaseInfo->setPointConversionRate((string) $pointConversionRate);
 
         $Customer = new Customer();
         $Customer->setPoint('1000');
@@ -331,7 +333,7 @@ class PointProcessorTest extends EccubeTestCase
         $ProductClass = $this->createProduct('テスト', 1)->getProductClasses()[0];
         $Order = new Order();
         $Order->setCustomer($Customer);
-        $Order->setUsePoint($usePoint);
+        $Order->setUsePoint((string) $usePoint);
         $Order->addOrderItem($this->newOrderItem($ProductClass, $productPrice, 1));
 
         $purchaseFlow = new PurchaseFlow();
@@ -371,7 +373,7 @@ class PointProcessorTest extends EccubeTestCase
     {
         $ProductPrice = 1000;
 
-        $this->BaseInfo->setBasicPointRate($basicPointRate);
+        $this->BaseInfo->setBasicPointRate((string) $basicPointRate);
 
         $Customer = new Customer();
 
@@ -401,7 +403,7 @@ class PointProcessorTest extends EccubeTestCase
     {
         $OrderItem = new OrderItem();
         $OrderItem->setProductClass($ProductClass);
-        $OrderItem->setPrice($price);
+        $OrderItem->setPrice((string) $price);
         $OrderItem->setQuantity($quantity);
         $ProductType = $this->entityManager->getRepository(OrderItemType::class)->find(OrderItemType::PRODUCT);
         $OrderItem->setOrderItemType($ProductType);

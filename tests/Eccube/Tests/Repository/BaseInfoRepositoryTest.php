@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -28,9 +30,9 @@ use Eccube\Tests\EccubeTestCase;
  *
  * @author Kentaro Ohkouchi
  */
-class BaseInfoRepositoryTest extends EccubeTestCase
+final class BaseInfoRepositoryTest extends EccubeTestCase
 {
-    private ?string $id = null;
+    private ?int $id = null;
 
     protected ?BaseInfoRepository $baseInfoRepository = null;
 

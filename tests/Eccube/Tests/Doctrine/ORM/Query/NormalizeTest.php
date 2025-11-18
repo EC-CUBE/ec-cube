@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -16,7 +18,7 @@ namespace Eccube\Tests\Doctrine\ORM\Query;
 use Eccube\Entity\Product;
 use Eccube\Tests\EccubeTestCase;
 
-class NormalizeTest extends EccubeTestCase
+final class NormalizeTest extends EccubeTestCase
 {
     public function testGetSql()
     {

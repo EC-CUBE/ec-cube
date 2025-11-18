@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -26,7 +28,7 @@ use Symfony\Component\Mime\Email;
  *
  * @author Kentaro Ohkouchi
  */
-class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingControllerTestCase
+final class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingControllerTestCase
 {
     use MailerAssertionsTrait;
 
@@ -255,12 +257,12 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         // Product test 1 with type 1
         $Product1 = $this->createProduct();
         $ProductClass1 = $Product1->getProductClasses()->first();
-        $ProductClass1->setStock(111);
+        $ProductClass1->setStock('111');
 
         // Product test 2
         $Product2 = $this->createProduct();
         $ProductClass2 = $Product2->getProductClasses()->first();
-        $ProductClass2->setStock(111);
+        $ProductClass2->setStock('111');
 
         $this->entityManager->persist($ProductClass1);
         $this->entityManager->persist($ProductClass2);
@@ -327,12 +329,12 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         // Product test 1 with type 1
         $Product1 = $this->createProduct();
         $ProductClass1 = $Product1->getProductClasses()->first();
-        $ProductClass1->setStock(111);
+        $ProductClass1->setStock('111');
 
         // Product test 2
         $Product2 = $this->createProduct();
         $ProductClass2 = $Product2->getProductClasses()->first();
-        $ProductClass2->setStock(111);
+        $ProductClass2->setStock('111');
 
         $this->entityManager->persist($ProductClass1);
         $this->entityManager->persist($ProductClass2);
@@ -418,12 +420,12 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         // Product test 1 with type 1
         $Product1 = $this->createProduct();
         $ProductClass1 = $Product1->getProductClasses()->first();
-        $ProductClass1->setStock(111);
+        $ProductClass1->setStock('111');
 
         // Product test 2
         $Product2 = $this->createProduct();
         $ProductClass2 = $Product2->getProductClasses()->first();
-        $ProductClass2->setStock(111);
+        $ProductClass2->setStock('111');
 
         $this->entityManager->persist($ProductClass1);
         $this->entityManager->persist($ProductClass2);
@@ -515,17 +517,17 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         // Product test 1 with type 1
         $Product1 = $this->createProduct();
         $ProductClass = $Product1->getProductClasses()->first();
-        $ProductClass->setStock(111);
+        $ProductClass->setStock('111');
 
         // Product test 2
         $Product2 = $this->createProduct();
         $ProductClass2 = $Product2->getProductClasses()->first();
-        $ProductClass2->setStock(111);
+        $ProductClass2->setStock('111');
 
         // Product test 3
         $Product3 = $this->createProduct();
         $ProductClass3 = $Product3->getProductClasses()->first();
-        $ProductClass3->setStock(111);
+        $ProductClass3->setStock('111');
 
         $this->entityManager->persist($ProductClass);
         $this->entityManager->persist($ProductClass2);
@@ -617,17 +619,17 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         // Product test 1 with type 1
         $Product1 = $this->createProduct();
         $ProductClass1 = $Product1->getProductClasses()->first();
-        $ProductClass1->setStock(111);
+        $ProductClass1->setStock('111');
 
         // Product test 2
         $Product2 = $this->createProduct();
         $ProductClass2 = $Product2->getProductClasses()->first();
-        $ProductClass2->setStock(111);
+        $ProductClass2->setStock('111');
 
         // Product test 3
         $Product3 = $this->createProduct();
         $ProductClass3 = $Product3->getProductClasses()->first();
-        $ProductClass3->setStock(111);
+        $ProductClass3->setStock('111');
 
         $this->entityManager->persist($ProductClass1);
         $this->entityManager->persist($ProductClass2);
@@ -731,17 +733,17 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         // Product test 1 with type 1
         $Product1 = $this->createProduct();
         $ProductClass1 = $Product1->getProductClasses()->first();
-        $ProductClass1->setStock(111);
+        $ProductClass1->setStock('111');
 
         // Product test 2
         $Product2 = $this->createProduct();
         $ProductClass2 = $Product2->getProductClasses()->first();
-        $ProductClass2->setStock(111);
+        $ProductClass2->setStock('111');
 
         // Product test 3
         $Product3 = $this->createProduct();
         $ProductClass3 = $Product3->getProductClasses()->first();
-        $ProductClass3->setStock(111);
+        $ProductClass3->setStock('111');
 
         $this->entityManager->persist($ProductClass1);
         $this->entityManager->persist($ProductClass2);
@@ -1118,17 +1120,17 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         // Product test 1 with type 1
         $Product1 = $this->createProduct();
         $ProductClass1 = $Product1->getProductClasses()->first();
-        $ProductClass1->setStock(111);
+        $ProductClass1->setStock('111');
 
         // Product test 2
         $Product2 = $this->createProduct();
         $ProductClass2 = $Product2->getProductClasses()->first();
-        $ProductClass2->setStock(111);
+        $ProductClass2->setStock('111');
 
         // Product test 3
         $Product3 = $this->createProduct();
         $ProductClass3 = $Product3->getProductClasses()->first();
-        $ProductClass3->setStock(111);
+        $ProductClass3->setStock('111');
 
         $this->entityManager->persist($ProductClass1);
         $this->entityManager->persist($ProductClass2);
@@ -1352,7 +1354,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
     {
         $Product = $this->createProduct();
         $ProductClass = $Product->getProductClasses()->first();
-        $ProductClass->setStock(111);
+        $ProductClass->setStock('111');
         $this->entityManager->persist($ProductClass);
         $this->entityManager->flush();
 

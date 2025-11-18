@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -25,7 +27,7 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class LayoutControllerTest extends AbstractAdminWebTestCase
+final class LayoutControllerTest extends AbstractAdminWebTestCase
 {
     private ?PageLayoutRepository $PageLayoutRepo = null;
 

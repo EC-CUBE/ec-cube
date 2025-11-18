@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -20,7 +22,7 @@ use Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreePreprocessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
-class DeliveryFeeFreeProcessorTest extends EccubeTestCase
+final class DeliveryFeeFreeProcessorTest extends EccubeTestCase
 {
     protected ?DeliveryFeeFreePreprocessor $processor = null;
 

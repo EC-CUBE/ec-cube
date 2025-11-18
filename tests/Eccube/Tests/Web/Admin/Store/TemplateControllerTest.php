@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -24,7 +26,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 
-class TemplateControllerTest extends AbstractAdminWebTestCase
+final class TemplateControllerTest extends AbstractAdminWebTestCase
 {
     protected ?string $dir = null;
 

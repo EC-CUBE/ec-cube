@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,7 +19,7 @@ use Eccube\Form\Type\PostalType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormInterface;
 
-class PostalTypeTest extends AbstractTypeTestCase
+final class PostalTypeTest extends AbstractTypeTestCase
 {
     protected ?FormInterface $form = null;
 

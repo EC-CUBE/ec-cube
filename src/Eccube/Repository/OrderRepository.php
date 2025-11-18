@@ -411,8 +411,8 @@ class OrderRepository extends AbstractRepository
                 ->getSingleResult();
         } catch (NoResultException) {
             // 受注データが存在しなければ初期化
-            $Customer->setFirstBuyDate(null);
-            $Customer->setLastBuyDate(null);
+            $Customer->setFirstBuyDate();
+            $Customer->setLastBuyDate();
             $Customer->setBuyTimes('0');
             $Customer->setBuyTotal('0');
 

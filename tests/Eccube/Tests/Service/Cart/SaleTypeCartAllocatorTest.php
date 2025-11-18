@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,7 +19,7 @@ use Eccube\Entity\CartItem;
 use Eccube\Service\Cart\SaleTypeCartAllocator;
 use Eccube\Tests\EccubeTestCase;
 
-class SaleTypeCartAllocatorTest extends EccubeTestCase
+final class SaleTypeCartAllocatorTest extends EccubeTestCase
 {
     private ?SaleTypeCartAllocator $allocator = null;
 

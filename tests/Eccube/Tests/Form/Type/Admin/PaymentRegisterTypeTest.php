@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -19,7 +21,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class PaymentRegisterTypeTest extends AbstractTypeTestCase
+final class PaymentRegisterTypeTest extends AbstractTypeTestCase
 {
     protected ?FormInterface $form = null;
 

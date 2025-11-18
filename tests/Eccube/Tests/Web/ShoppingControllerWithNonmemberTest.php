@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -23,7 +25,7 @@ use Symfony\Component\Mime\Email;
 /**
  * Class ShoppingControllerWithNonmemberTest
  */
-class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTestCase
+final class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTestCase
 {
     use MailerAssertionsTrait;
 

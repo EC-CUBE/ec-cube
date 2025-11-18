@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -26,7 +28,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Client;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class ProductControllerTest extends AbstractWebTestCase
+final class ProductControllerTest extends AbstractWebTestCase
 {
     private ?BaseInfoRepository $baseInfoRepository = null;
 
@@ -272,7 +274,7 @@ class ProductControllerTest extends AbstractWebTestCase
         $Product = $this->createProduct('Product no stock', 1);
         $ProductClass = $Product->getProductClasses()->first();
         $ProductClass->setStockUnlimited(false);
-        $ProductClass->setStock(0);
+        $ProductClass->setStock('0');
         $ProductStock = $ProductClass->getProductStock();
         $this->assertInstanceOf(ProductStock::class, $ProductStock);
         $ProductStock->setStock('0');
@@ -341,7 +343,7 @@ class ProductControllerTest extends AbstractWebTestCase
 
         // 商品の description_list を削除
         //   → meta description には description_detail が設定される
-        $product->setDescriptionList(null);
+        $product->setDescriptionList();
         $this->entityManager->flush();
         $expected_desc = mb_substr($description_detail, 0, 120, 'utf-8');
 
@@ -363,7 +365,7 @@ class ProductControllerTest extends AbstractWebTestCase
         // 在庫切れ商品
         $ProductClass = $Product->getProductClasses()->first();
         $ProductClass->setStockUnlimited(false);
-        $ProductClass->setStock(0);
+        $ProductClass->setStock('0');
         $ProductStock = $ProductClass->getProductStock();
         $this->assertInstanceOf(ProductStock::class, $ProductStock);
         $ProductStock->setStock('0');

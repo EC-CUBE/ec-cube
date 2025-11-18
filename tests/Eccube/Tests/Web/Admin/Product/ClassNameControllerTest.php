@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -24,7 +26,7 @@ use Eccube\Repository\ProductClassRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
-class ClassNameControllerTest extends AbstractAdminWebTestCase
+final class ClassNameControllerTest extends AbstractAdminWebTestCase
 {
     private ?Member $Member = null;
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,7 +19,7 @@ use Eccube\Form\Type\NameType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormInterface;
 
-class NameTypeTest extends AbstractTypeTestCase
+final class NameTypeTest extends AbstractTypeTestCase
 {
     protected ?FormInterface $form = null;
 

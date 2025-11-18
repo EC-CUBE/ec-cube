@@ -228,13 +228,13 @@ class ShippingType extends AbstractType
             if ($Delivery) {
                 $Shipping->setShippingDeliveryName($Delivery->getName());
             } else {
-                $Shipping->setShippingDeliveryName(null);
+                $Shipping->setShippingDeliveryName();
             }
             $DeliveryDate = $form['shipping_delivery_date']->getData();
             if ($DeliveryDate) {
                 $Shipping->setShippingDeliveryDate(new \DateTime($DeliveryDate));
             } else {
-                $Shipping->setShippingDeliveryDate(null);
+                $Shipping->setShippingDeliveryDate();
             }
 
             $DeliveryTime = $form['DeliveryTime']->getData();
@@ -242,7 +242,7 @@ class ShippingType extends AbstractType
                 $Shipping->setShippingDeliveryTime($DeliveryTime->getDeliveryTime());
                 $Shipping->setTimeId($DeliveryTime->getId());
             } else {
-                $Shipping->setShippingDeliveryTime(null);
+                $Shipping->setShippingDeliveryTime();
                 $Shipping->setTimeId(null);
             }
         });

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -25,7 +27,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
-class AuthorityVoterTest extends EccubeTestCase
+final class AuthorityVoterTest extends EccubeTestCase
 {
     protected ?AuthorityRoleRepository $authorityRoleRepository = null;
 

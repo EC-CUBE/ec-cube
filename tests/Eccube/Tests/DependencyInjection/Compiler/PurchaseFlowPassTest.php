@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -33,7 +35,7 @@ use Eccube\Tests\EccubeTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class PurchaseFlowPassTest extends EccubeTestCase
+final class PurchaseFlowPassTest extends EccubeTestCase
 {
     public static $called = false;
 

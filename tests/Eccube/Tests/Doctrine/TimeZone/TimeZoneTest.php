@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,7 +19,7 @@ use Eccube\Entity\Product;
 use Eccube\Repository\ProductRepository;
 use Eccube\Tests\EccubeTestCase;
 
-class TimeZoneTest extends EccubeTestCase
+final class TimeZoneTest extends EccubeTestCase
 {
     protected ?ProductRepository $productRepository = null;
 

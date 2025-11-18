@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -23,7 +25,7 @@ use Eccube\Tests\EccubeTestCase;
  *
  * @author Kentaro Ohkouchi
  */
-class AbstractEntityTest extends EccubeTestCase
+final class AbstractEntityTest extends EccubeTestCase
 {
     private $objEntity;
 

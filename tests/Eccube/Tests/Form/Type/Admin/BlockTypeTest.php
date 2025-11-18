@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -20,7 +22,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class BlockTypeTest extends AbstractTypeTestCase
+final class BlockTypeTest extends AbstractTypeTestCase
 {
     protected ?FormInterface $form = null;
 

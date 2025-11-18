@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -24,7 +26,7 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Tests\Fixture\Generator;
 
-class DeliveryFeeProcessorTest extends EccubeTestCase
+final class DeliveryFeeProcessorTest extends EccubeTestCase
 {
     protected ?BaseInfoRepository $BaseInfoRepository = null;
     protected ?Product $Product = null;
@@ -67,7 +69,7 @@ class DeliveryFeeProcessorTest extends EccubeTestCase
         $this->entityManager->persist($BaseInfo);
         $this->entityManager->flush($BaseInfo);
         $deliveryFee = 10000;
-        $this->ProductClass->setDeliveryFee($deliveryFee);
+        $this->ProductClass->setDeliveryFee((string) $deliveryFee);
         $this->entityManager->persist($this->ProductClass);
         $this->entityManager->flush($this->ProductClass);
 

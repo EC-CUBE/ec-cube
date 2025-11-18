@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -16,7 +18,7 @@ namespace Eccube\Tests\Entity;
 use Eccube\Entity\DeliveryDuration;
 use Eccube\Tests\EccubeTestCase;
 
-class DeliveryDurationTest extends EccubeTestCase
+final class DeliveryDurationTest extends EccubeTestCase
 {
     private $deliveryDurationRepository;
 

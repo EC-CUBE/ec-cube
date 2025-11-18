@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -16,7 +18,7 @@ namespace Eccube\Tests\Form\Type;
 use Eccube\Form\Type\Admin\CalendarType;
 use Symfony\Component\Form\FormInterface;
 
-class CalendarTypeTest extends AbstractTypeTestCase
+final class CalendarTypeTest extends AbstractTypeTestCase
 {
     /** @var array デフォルト値（正常系）を設定 */
     protected ?array $formData = [

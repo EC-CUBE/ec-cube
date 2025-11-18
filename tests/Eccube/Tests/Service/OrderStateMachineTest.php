@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -23,7 +25,7 @@ use Eccube\Service\OrderStateMachine;
 use Eccube\Tests\EccubeTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-class OrderStateMachineTest extends EccubeTestCase
+final class OrderStateMachineTest extends EccubeTestCase
 {
     private ?OrderStateMachine $stateMachine = null;
 
@@ -95,7 +97,7 @@ class OrderStateMachineTest extends EccubeTestCase
     {
         $Order = $this->createOrder($this->createCustomer());
         $Order->setOrderStatus($this->statusOf(OrderStatus::NEW));
-        $Order->setPaymentDate(null);
+        $Order->setPaymentDate();
 
         $this->stateMachine->apply($Order, $this->statusOf(OrderStatus::PAID));
 
@@ -113,11 +115,11 @@ class OrderStateMachineTest extends EccubeTestCase
          * ProductClass2 - 20
          */
         $ProductClass1 = $ProductClasses[0];
-        $ProductClass1->getProductStock()->setStock(10);
+        $ProductClass1->getProductStock()->setStock('10');
         $ProductClass1->setStock('10');
 
         $ProductClass2 = $ProductClasses[1];
-        $ProductClass2->getProductStock()->setStock(20);
+        $ProductClass2->getProductStock()->setStock('20');
         $ProductClass2->setStock('20');
 
         $this->entityManager->flush();
@@ -167,11 +169,11 @@ class OrderStateMachineTest extends EccubeTestCase
          * ProductClass2 - 20
          */
         $ProductClass1 = $ProductClasses[0];
-        $ProductClass1->getProductStock()->setStock(10);
+        $ProductClass1->getProductStock()->setStock('10');
         $ProductClass1->setStock('10');
 
         $ProductClass2 = $ProductClasses[1];
-        $ProductClass2->getProductStock()->setStock(20);
+        $ProductClass2->getProductStock()->setStock('20');
         $ProductClass2->setStock('20');
 
         $this->entityManager->flush();

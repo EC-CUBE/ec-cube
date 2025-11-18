@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -20,7 +22,7 @@ use Plugin\MigrationSample\DoctrineMigrations\Version20181101012712;
 use Plugin\MigrationSample\PluginManager;
 
 #[Group('plugin-service')]
-class PluginManagerTest extends EccubeTestCase
+final class PluginManagerTest extends EccubeTestCase
 {
     #[\Override]
     protected function setUp(): void

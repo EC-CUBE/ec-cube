@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,7 +19,7 @@ use Eccube\Stream\Filter\SjisToUtf8EncodingFilter;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-class SjisToUtf8EncodingFilterTest extends TestCase
+final class SjisToUtf8EncodingFilterTest extends TestCase
 {
     private const FILTER_NAME = 'sjis_to_utf8_encoding_filter';
 

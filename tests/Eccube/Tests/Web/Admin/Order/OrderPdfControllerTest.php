@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -33,7 +35,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 /**
  * Class OrderPdfControllerTest.
  */
-class OrderPdfControllerTest extends AbstractAdminWebTestCase
+final class OrderPdfControllerTest extends AbstractAdminWebTestCase
 {
     protected ?OrderStatusRepository $orderStatusRepo = null;
 
@@ -319,7 +321,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
             ->setNote1($faker->text(50))
             ->setNote2($faker->text(50))
             ->setNote3($faker->text(50))
-            ->setVisible(Constant::DISABLED)
+            ->setVisible((bool) Constant::DISABLED)
             ->setCreateDate(new \DateTime())
             ->setUpdateDate(new \DateTime());
 

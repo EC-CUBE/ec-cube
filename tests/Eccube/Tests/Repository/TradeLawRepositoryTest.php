@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,7 +19,7 @@ use Eccube\Entity\TradeLaw;
 use Eccube\Repository\TradeLawRepository;
 use Eccube\Tests\EccubeTestCase;
 
-class TradeLawRepositoryTest extends EccubeTestCase
+final class TradeLawRepositoryTest extends EccubeTestCase
 {
     private ?TradeLawRepository $tradeLawRepository = null;
 

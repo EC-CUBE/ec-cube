@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -25,11 +27,11 @@ use Eccube\Tests\EccubeTestCase;
 /**
  * BlockPositionRepository test cases.
  */
-class BlockPositionRepositoryTest extends EccubeTestCase
+final class BlockPositionRepositoryTest extends EccubeTestCase
 {
     protected ?DeviceType $DeviceType = null;
 
-    private ?string $layout_id = null;
+    private ?int $layout_id = null;
 
     /**
      * @var  Block[]|null

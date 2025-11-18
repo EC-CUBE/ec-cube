@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -22,7 +24,7 @@ use Eccube\Service\PurchaseFlow\Processor\EmptyItemsValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
-class EmptyItemsValidatorTest extends EccubeTestCase
+final class EmptyItemsValidatorTest extends EccubeTestCase
 {
     protected ?EmptyItemsValidator $validator = null;
 

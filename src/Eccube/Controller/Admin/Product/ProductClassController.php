@@ -362,7 +362,7 @@ class ProductClassController extends AbstractController
                 } else {
                     if ($TaxRule) {
                         $this->taxRuleRepository->delete($TaxRule);
-                        $pc->setTaxRule(null);
+                        $pc->setTaxRule();
                     }
                 }
             }
