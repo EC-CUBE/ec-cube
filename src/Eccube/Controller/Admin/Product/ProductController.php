@@ -327,7 +327,7 @@ class ProductController extends AbstractController
         ];
 
         foreach ($dirs as $dir) {
-            if (str_contains($request->query->get('source'), '..')) {
+            if (str_contains((string) $request->query->get('source'), '..')) {
                 throw new NotFoundHttpException();
             }
             $image = \realpath($dir.'/'.$request->query->get('source'));

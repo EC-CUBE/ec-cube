@@ -645,6 +645,12 @@ final class ProductClassControllerTest extends AbstractProductCommonTestCase
             }
         }
 
+        // デバッグ: 配列の内容を確認
+        $this->assertNotEmpty($classCategories, 'Class categories should not be empty');
+        $this->assertArrayHasKey(1, $classCategories, 'Index 1 should exist. Actual array: '.print_r($classCategories, true));
+        $this->assertArrayHasKey(4, $classCategories, 'Index 4 should exist. Actual array: '.print_r($classCategories, true));
+        $this->assertArrayHasKey(7, $classCategories, 'Index 7 should exist. Actual array: '.print_r($classCategories, true));
+
         // チョコ, 抹茶, バニラ sort by rank setup above.
         $this->expected = 'チョコ';
         $this->actual = $classCategories[1];
