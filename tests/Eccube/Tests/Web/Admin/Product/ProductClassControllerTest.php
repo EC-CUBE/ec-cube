@@ -636,20 +636,14 @@ final class ProductClassControllerTest extends AbstractProductCommonTestCase
         $this->assertTrue($client->getResponse()->isSuccessful());
 
         $classCategories = [];
-        foreach ($crawler->filterXPath('//table/tr') as $tr) {
-            $crawler = new Crawler($tr);
-            foreach ($crawler->filter('td') as $j => $td) {
-                if ($j === 1) {
-                    $classCategories[] = trim((string) $td->nodeValue);
-                }
+        // PHP 8.4対応: XPathではなくCSSセレクタを使用
+        foreach ($crawler->filter('table tr') as $tr) {
+            $trCrawler = new Crawler($tr);
+            $tds = $trCrawler->filter('td');
+            if ($tds->count() > 1) {
+                $classCategories[] = trim($tds->eq(1)->text());
             }
         }
-
-        // デバッグ: 配列の内容を確認
-        $this->assertNotEmpty($classCategories, 'Class categories should not be empty');
-        $this->assertArrayHasKey(1, $classCategories, 'Index 1 should exist. Actual array: '.print_r($classCategories, true));
-        $this->assertArrayHasKey(4, $classCategories, 'Index 4 should exist. Actual array: '.print_r($classCategories, true));
-        $this->assertArrayHasKey(7, $classCategories, 'Index 7 should exist. Actual array: '.print_r($classCategories, true));
 
         // チョコ, 抹茶, バニラ sort by rank setup above.
         $this->expected = 'チョコ';
