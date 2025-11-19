@@ -27,9 +27,10 @@ jobs:
 
       - name: Install ext-redis 6.1+
         run: |
-          sudo pecl uninstall redis || true
-          sudo pecl install redis
+          sudo apt-get update
+          sudo apt-get install -y php8.4-redis
           sudo phpenmod -s cli redis
+          php -m | grep -i redis
 
       - name: Install to Composer
         run: composer install --no-scripts --no-dev --no-interaction --optimize-autoloader

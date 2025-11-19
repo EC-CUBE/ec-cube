@@ -66,9 +66,10 @@ jobs:
 
       - name: Install ext-redis 6.1+
         run: |
-          sudo pecl uninstall redis || true
-          sudo pecl install redis
+          sudo apt-get update
+          sudo apt-get install -y php${{ matrix.php }}-redis
           sudo phpenmod -s cli redis
+          php -m | grep -i redis
 
       - name: Initialize Composer
         uses: ./.github/actions/composer
@@ -225,9 +226,10 @@ jobs:
 
       - name: Install ext-redis 6.1+
         run: |
-          sudo pecl uninstall redis || true
-          sudo pecl install redis
+          sudo apt-get update
+          sudo apt-get install -y php${{ matrix.php }}-redis
           sudo phpenmod -s cli redis
+          php -m | grep -i redis
 
       - name: Install to Composer
         run: composer install --dev --no-interaction -o --apcu-autoloader
@@ -384,9 +386,10 @@ jobs:
 
       - name: Install ext-redis 6.1+
         run: |
-          sudo pecl uninstall redis || true
-          sudo pecl install redis
+          sudo apt-get update
+          sudo apt-get install -y php${{ matrix.php }}-redis
           sudo phpenmod -s cli redis
+          php -m | grep -i redis
 
       - name: Install to Composer
         run: composer install --dev --no-interaction -o --apcu-autoloader
@@ -546,9 +549,10 @@ jobs:
 
       - name: Install ext-redis 6.1+
         run: |
-          sudo pecl uninstall redis || true
-          sudo pecl install redis
+          sudo apt-get update
+          sudo apt-get install -y php${{ matrix.php }}-redis
           sudo phpenmod -s cli redis
+          php -m | grep -i redis
 
       - name: Install to Composer
         run: composer install --dev --no-interaction -o --apcu-autoloader

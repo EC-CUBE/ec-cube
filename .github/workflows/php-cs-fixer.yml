@@ -19,9 +19,10 @@ jobs:
 
       - name: Install ext-redis 6.1+
         run: |
-          sudo pecl uninstall redis || true
-          sudo pecl install redis
+          sudo apt-get update
+          sudo apt-get install -y php8.3-redis
           sudo phpenmod -s cli redis
+          php -m | grep -i redis
 
       - name: Initialize Composer
         uses: ./.github/actions/composer
