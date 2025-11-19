@@ -46,6 +46,7 @@ $finder = \PhpCsFixer\Finder::create()
     ->in(__DIR__ . '/app')
     ->in(__DIR__ . '/codeception')
     ->name('*.php')
+    ->notName('reference.php')
 ;
 $config = new \PhpCsFixer\Config();
 return $config

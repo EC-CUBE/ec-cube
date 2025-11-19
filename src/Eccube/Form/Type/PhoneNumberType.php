@@ -64,10 +64,10 @@ class PhoneNumberType extends AbstractType
                 'max' => $this->eccubeConfig['eccube_tel_len_max'],
             ]);
 
-            $constraints[] = new Assert\Type([
-                'type' => 'digit',
-                'message' => 'form_error.numeric_only',
-            ]);
+            $constraints[] = new Assert\Type(
+                type: 'digit',
+                message: 'form_error.numeric_only'
+            );
 
             return array_merge($constraints, $value);
         });
