@@ -64,6 +64,12 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
 
+      - name: Install ext-redis 6.1+
+        run: |
+          sudo pecl uninstall redis || true
+          sudo pecl install redis
+          sudo phpenmod -s cli redis
+
       - name: Initialize Composer
         uses: ./.github/actions/composer
 
@@ -217,6 +223,12 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
 
+      - name: Install ext-redis 6.1+
+        run: |
+          sudo pecl uninstall redis || true
+          sudo pecl install redis
+          sudo phpenmod -s cli redis
+
       - name: Install to Composer
         run: composer install --dev --no-interaction -o --apcu-autoloader
 
@@ -369,6 +381,12 @@ jobs:
         uses: nanasess/setup-php@master
         with:
           php-version: ${{ matrix.php }}
+
+      - name: Install ext-redis 6.1+
+        run: |
+          sudo pecl uninstall redis || true
+          sudo pecl install redis
+          sudo phpenmod -s cli redis
 
       - name: Install to Composer
         run: composer install --dev --no-interaction -o --apcu-autoloader
@@ -525,6 +543,12 @@ jobs:
         uses: nanasess/setup-php@master
         with:
           php-version: ${{ matrix.php }}
+
+      - name: Install ext-redis 6.1+
+        run: |
+          sudo pecl uninstall redis || true
+          sudo pecl install redis
+          sudo phpenmod -s cli redis
 
       - name: Install to Composer
         run: composer install --dev --no-interaction -o --apcu-autoloader

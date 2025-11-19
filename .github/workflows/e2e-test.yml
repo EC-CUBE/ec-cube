@@ -57,6 +57,12 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
 
+      - name: Install ext-redis 6.1+
+        run: |
+          sudo pecl uninstall redis || true
+          sudo pecl install redis
+          sudo phpenmod -s cli redis
+
       - name: Initialize Composer
         uses: ./.github/actions/composer
 
