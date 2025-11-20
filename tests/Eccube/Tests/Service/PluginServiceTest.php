@@ -43,7 +43,6 @@ final class PluginServiceTest extends AbstractServiceTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->markTestIncomplete('Symfony 7.4 アップグレード後に対応予定');
 
         $this->service = static::getContainer()->get(PluginService::class);
         $this->pluginRepository = $this->entityManager->getRepository(Plugin::class);
@@ -89,7 +88,7 @@ final class PluginServiceTest extends AbstractServiceTestCase
     // テスト用のダミープラグインを配置する
     private function createTempDir()
     {
-        $t = sys_get_temp_dir().'/plugintest.'.sha1(mt_rand());
+        $t = sys_get_temp_dir().'/plugintest.'.sha1((string) mt_rand());
         if (!mkdir($t)) {
             throw new \Exception("$t ".$php_errormsg);
         }
@@ -108,7 +107,7 @@ final class PluginServiceTest extends AbstractServiceTestCase
     public function testInstallPluginMinimum()
     {
         // インストールするプラグインを作成する
-        $tmpname = 'dummy'.sha1(mt_rand());
+        $tmpname = 'dummy'.sha1((string) mt_rand());
         $config = [
             'version' => $tmpname.'_version',
             'description' => $tmpname.'_name',
@@ -155,7 +154,7 @@ final class PluginServiceTest extends AbstractServiceTestCase
     {
         $this->expectException(PluginException::class);
         // インストールするプラグインを作成する
-        sha1(mt_rand());
+        sha1((string) mt_rand());
         $tmpdir = $this->createTempDir();
         $tmpfile = $tmpdir.'/plugin.tar';
 
@@ -261,7 +260,7 @@ final class PluginServiceTest extends AbstractServiceTestCase
         $tar = new \PharData($tmpfile);
 
         // インストールするプラグインを作成する
-        $tmpname = 'dummy'.sha1(mt_rand());
+        $tmpname = 'dummy'.sha1((string) mt_rand());
         $config = [];
         $config['code'] = $tmpname;
         $config['version'] = $tmpname;
@@ -275,7 +274,7 @@ final class PluginServiceTest extends AbstractServiceTestCase
     public function testInstallPluginWithBrokenManagerAfterInstall()
     {
         // インストールするプラグインを作成する
-        $tmpname = 'dummy'.sha1(mt_rand());
+        $tmpname = 'dummy'.sha1((string) mt_rand());
         $config = [
             'version' => $tmpname,
             'description' => $tmpname,
@@ -298,23 +297,30 @@ use Psr\Container\ContainerInterface;
 
 class PluginManager extends AbstractPluginManager
 {
-    public function install(array $meta, ContainerInterface $container)
+    #[\Override]
+    public function install(array $meta, ContainerInterface $container): void
     {
         echo "";
     }
-    public function uninstall(array $meta, ContainerInterface $container)
+
+    #[\Override]
+    public function uninstall(array $meta, ContainerInterface $container): void
+    {
+        throw new \Exception('hoge', 1);
+    }
+
+    #[\Override]
+    public function enable(array $meta, ContainerInterface $container): void
     {
         throw new \Exception('hoge',1);
     }
-    public function enable(array $meta, ContainerInterface $container)
+    #[\Override]
+    public function disable(array $meta, ContainerInterface $container): void
     {
         throw new \Exception('hoge',1);
     }
-    public function disable(array $meta, ContainerInterface $container)
-    {
-        throw new \Exception('hoge',1);
-    }
-    public function update(array $meta, ContainerInterface $container)
+    #[\Override]
+    public function update(array $meta, ContainerInterface $container): void
     {
         throw new \Exception('hoge',1);
     }
@@ -342,7 +348,7 @@ EOD;
     public function testInstallPluginWithManager()
     {
         // インストールするプラグインを作成する
-        $tmpname = 'dummy'.sha1(mt_rand());
+        $tmpname = 'dummy'.sha1((string) mt_rand());
         $config = [
             'version' => $tmpname,
             'description' => $tmpname,
@@ -365,27 +371,32 @@ use Psr\Container\ContainerInterface;
 
 class PluginManager extends AbstractPluginManager
 {
-    public function install(array $meta, ContainerInterface $container)
+    #[\Override]
+    public function install(array $meta, ContainerInterface $container): void
     {
         echo "Installed";
     }
 
-    public function uninstall(array $meta, ContainerInterface $container)
+    #[\Override]
+    public function uninstall(array $meta, ContainerInterface $container): void
     {
         echo "Uninstalled";
     }
 
-    public function enable(array $meta, ContainerInterface $container)
+    #[\Override]
+    public function enable(array $meta, ContainerInterface $container): void
     {
         echo "Enabled";
     }
 
-    public function disable(array $meta, ContainerInterface $container)
+    #[\Override]
+    public function disable(array $meta, ContainerInterface $container): void
     {
         echo "Disabled";
     }
 
-    public function update(array $meta, ContainerInterface $container)
+    #[\Override]
+    public function update(array $meta, ContainerInterface $container): void
     {
         echo "Updated";
     }
@@ -426,7 +437,7 @@ EOD;
      */
     public function testGetDependentByCodeEccubePlugin()
     {
-        $tmpname = 'dummy'.sha1(mt_rand());
+        $tmpname = 'dummy'.sha1((string) mt_rand());
         $config = [];
         $config['name'] = $tmpname.'_name';
         $config['code'] = $tmpname;
@@ -462,7 +473,7 @@ EOD;
      */
     public function testGetDependentByCodeOtherPlugin()
     {
-        $tmpname = 'dummy'.sha1(mt_rand());
+        $tmpname = 'dummy'.sha1((string) mt_rand());
         $config = [];
         $config['name'] = $tmpname.'_name';
         $config['code'] = $tmpname;
@@ -497,7 +508,7 @@ EOD;
      */
     public function testGetDependentByCodeAllPlugin()
     {
-        $tmpname = 'dummy'.sha1(mt_rand());
+        $tmpname = 'dummy'.sha1((string) mt_rand());
         $config = [];
         $config['name'] = $tmpname.'_name';
         $config['code'] = $tmpname;
@@ -567,27 +578,32 @@ use Psr\Container\ContainerInterface;
 
 class PluginManager extends AbstractPluginManager
 {
-    public function install(array $meta, ContainerInterface $container)
+    #[\Override]
+    public function install(array $meta, ContainerInterface $container): void
     {
         echo "Installed";
     }
 
-    public function uninstall(array $meta, ContainerInterface $container)
+    #[\Override]
+    public function uninstall(array $meta, ContainerInterface $container): void
     {
         echo "Uninstalled";
     }
 
-    public function enable(array $meta, ContainerInterface $container)
+    #[\Override]
+    public function enable(array $meta, ContainerInterface $container): void
     {
         echo "Enabled";
     }
 
-    public function disable(array $meta, ContainerInterface $container)
+    #[\Override]
+    public function disable(array $meta, ContainerInterface $container): void
     {
         echo "Disabled";
     }
 
-    public function update(array $meta, ContainerInterface $container)
+    #[\Override]
+    public function update(array $meta, ContainerInterface $container): void
     {
         echo "Updated";
     }

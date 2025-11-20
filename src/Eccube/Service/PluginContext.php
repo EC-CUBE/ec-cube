@@ -21,14 +21,14 @@ class PluginContext
     private const MODE_INSTALL = 'install';
     private const MODE_UNINSTALL = 'uninstall';
 
-    private string $mode;
+    private ?string $mode = null;
 
-    private string $code;
+    private ?string $code = null;
 
     /**
-     * @var array<string, mixed>
+     * @var array<string, mixed>|null
      */
-    private array $composerJson;
+    private ?array $composerJson = null;
 
     public function __construct(private readonly EccubeConfig $eccubeConfig)
     {
