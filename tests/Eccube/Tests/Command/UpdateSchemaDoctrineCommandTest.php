@@ -128,9 +128,11 @@ final class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
     }
 
     #[Group(name: 'update-schema-doctrine-install')]
-    public function testInstallPluginWithNoProxy(): never
+    public function testInstallPluginWithNoProxy(): void
     {
-        $this->markTestIncomplete('一時的にスキップ');
+        // TODO: Symfony 7.4でのEntityManager/メタデータ管理の動作変更により、--no-proxy実行時も前のメタデータが残り,"Nothing to update"となる。
+        $this->markTestIncomplete('--no-proxy実行時のメタデータ管理の動作変更により、失敗するためスキップ');
+
         $commandTester = $this->getCommandTester(self::NAME);
 
         [$configA, $fileA] = $this->createDummyPluginWithEntityExtension();
@@ -166,10 +168,8 @@ final class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
     }
 
     #[Group(name: 'update-schema-doctrine-install')]
-    public function testInstallPluginWithProxy(): never
+    public function testInstallPluginWithProxy(): void
     {
-        $this->markTestIncomplete('一時的にスキップ');
-
         $commandTester = $this->getCommandTester(self::NAME);
 
         [$configA, $fileA] = $this->createDummyPluginWithEntityExtension();
@@ -201,9 +201,10 @@ final class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
     }
 
     #[Group(name: 'update-schema-doctrine-install')]
-    public function testEnablePluginWithNoProxy(): never
+    public function testEnablePluginWithNoProxy(): void
     {
-        $this->markTestIncomplete('Fatal error: Cannot declare class になってしまうためスキップ');
+        // TODO: Symfony 7.4でのEntityManager/メタデータ管理の動作変更により、--no-proxy実行時も前のメタデータが残り,"Nothing to update"となる。
+        $this->markTestIncomplete('--no-proxy実行時のメタデータ管理の動作変更により、失敗するためスキップ');
         $commandTester = $this->getCommandTester(self::NAME);
 
         [$configA, $fileA] = $this->createDummyPluginWithEntityExtension();
@@ -240,10 +241,8 @@ final class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
     }
 
     #[Group(name: 'update-schema-doctrine-install')]
-    public function testEnablePluginWithProxy(): never
+    public function testEnablePluginWithProxy(): void
     {
-        $this->markTestIncomplete('一時的にスキップ');
-
         $commandTester = $this->getCommandTester(self::NAME);
         [$configA, $fileA] = $this->createDummyPluginWithEntityExtension();
         $this->pluginService->install($fileA);
@@ -276,9 +275,10 @@ final class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
     }
 
     #[Group(name: 'update-schema-doctrine-install')]
-    public function testDisablePluginWithNoProxy(): never
+    public function testDisablePluginWithNoProxy(): void
     {
-        $this->markTestIncomplete('Fatal error: Cannot declare class になってしまうためスキップ');
+        // TODO: Symfony 7.4でのEntityManager/メタデータ管理の動作変更により、--no-proxy実行時も前のメタデータが残り,"Nothing to update"となる。
+        $this->markTestIncomplete('--no-proxy実行時のメタデータ管理の動作変更により、失敗するためスキップ');
         $commandTester = $this->getCommandTester(self::NAME);
 
         [$configA, $fileA] = $this->createDummyPluginWithEntityExtension();
@@ -318,10 +318,8 @@ final class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
     }
 
     #[Group(name: 'update-schema-doctrine-install')]
-    public function testDisablePluginWithProxy(): never
+    public function testDisablePluginWithProxy(): void
     {
-        $this->markTestIncomplete('一時的にスキップ');
-
         $commandTester = $this->getCommandTester(self::NAME);
 
         [$configA, $fileA] = $this->createDummyPluginWithEntityExtension();
@@ -358,7 +356,11 @@ final class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
 
     private function getCommandTester(string $name): CommandTester
     {
-        $kernel = static::createKernel();
+        // 既存のカーネルを使う（連続実行時にキャッシュが正しく生成される）
+        $kernel = static::$kernel ?? static::createKernel();
+        if (!$kernel->getContainer()) {
+            $kernel->boot();
+        }
         $command = new UpdateSchemaDoctrineCommand(
             $this->pluginRepository,
             $this->pluginService,
@@ -379,7 +381,7 @@ final class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
     // テスト用のダミープラグインを配置する
     private function createTempDir()
     {
-        $t = sys_get_temp_dir().'/plugintest.'.sha1(mt_rand());
+        $t = sys_get_temp_dir().'/plugintest.'.sha1((string) mt_rand());
         if (!mkdir($t)) {
             throw new \Exception("$t ".$php_errormsg);
         }
@@ -389,7 +391,7 @@ final class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
 
     private function createDummyPluginConfig()
     {
-        $tmpname = 'dummy'.sha1(mt_rand());
+        $tmpname = 'dummy'.sha1((string) mt_rand());
 
         return [
             'name' => $tmpname.'_name',
@@ -463,7 +465,7 @@ EOT
      *
      * @return string output
      */
-    private function executeExternalProcess(string $command): string
+    private function executeExternalProcess(string $command): ?string
     {
         StaticDriver::commit();
         StaticDriver::beginTransaction();
@@ -475,6 +477,7 @@ EOT
         } catch (\Exception) {
             // ignore Fatal error: Cannot declare class
             // $this->fail($e->getMessage());
+            return null;
         }
     }
 

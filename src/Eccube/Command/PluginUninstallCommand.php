@@ -30,7 +30,7 @@ class PluginUninstallCommand extends Command
     {
         $this
             ->addOption('code', null, InputOption::VALUE_OPTIONAL, 'plugin code')
-            ->addOption('uninstall-force', null, InputOption::VALUE_OPTIONAL, 'if set true, remove directory');
+            ->addOption('uninstall-force', null, InputOption::VALUE_NONE, 'if set true, remove directory');
     }
 
     #[\Override]
