@@ -63,8 +63,9 @@ jobs:
       - name: Enable register_argc_argv for Codeception
         if: matrix.php == '8.5'
         run: |
-          INI_FILE=$(php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||")
-          echo "register_argc_argv = On" | sudo tee -a $INI_FILE
+          INI_FILE=$(php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||" | tr -d '"')
+          echo "Using php.ini: $INI_FILE"
+          echo "register_argc_argv = On" | sudo tee -a "$INI_FILE"
           php -i | grep register_argc_argv
 
       - name: Initialize Composer
