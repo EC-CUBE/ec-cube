@@ -57,7 +57,6 @@ jobs:
            bin/console eccube:composer:require "ec-cube/securitychecker42"
            bin/console eccube:composer:require "ec-cube/productreview42"
            bin/console eccube:composer:require "ec-cube/api42"
-           bin/console eccube:composer:require "ec-cube/sitekit42"
 
       - name: revert to config platform.php
         run: composer config platform.php 8.1.0
