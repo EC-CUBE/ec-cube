@@ -19,7 +19,7 @@ use Psr\Container\ContainerInterface;
 class PluginManager extends AbstractPluginManager
 {
     #[\Override]
-    public function install(array $config, ContainerInterface $container)
+    public function install(array $config, ContainerInterface $container): void
     {
         echo '*******************************************'.PHP_EOL;
         echo 'Install Boomerang 1.0.0'.PHP_EOL;
@@ -27,7 +27,7 @@ class PluginManager extends AbstractPluginManager
     }
 
     #[\Override]
-    public function enable(array $config, ContainerInterface $container)
+    public function enable(array $config, ContainerInterface $container): void
     {
         echo '*******************************************'.PHP_EOL;
         echo 'Enable Boomerang 1.0.0'.PHP_EOL;
@@ -35,7 +35,7 @@ class PluginManager extends AbstractPluginManager
     }
 
     #[\Override]
-    public function disable(array $config, ContainerInterface $container)
+    public function disable(array $config, ContainerInterface $container): void
     {
         echo '*******************************************'.PHP_EOL;
         echo 'Disable Boomerang 1.0.0'.PHP_EOL;
@@ -43,7 +43,7 @@ class PluginManager extends AbstractPluginManager
     }
 
     #[\Override]
-    public function update(array $config, ContainerInterface $container)
+    public function update(array $config, ContainerInterface $container): void
     {
         echo '*******************************************'.PHP_EOL;
         echo 'Update Boomerang 1.0.0'.PHP_EOL;
@@ -51,7 +51,7 @@ class PluginManager extends AbstractPluginManager
     }
 
     #[\Override]
-    public function uninstall(array $config, ContainerInterface $container)
+    public function uninstall(array $config, ContainerInterface $container): void
     {
         echo '*******************************************'.PHP_EOL;
         echo 'Uninstall Boomerang 1.0.0'.PHP_EOL;

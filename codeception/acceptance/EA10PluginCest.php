@@ -13,6 +13,7 @@
 
 use Codeception\Util\FileSystem;
 use Codeception\Util\Fixtures;
+use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManager;
 use Eccube\Common\EccubeConfig;
@@ -604,7 +605,7 @@ class Store_Plugin extends Abstract_Plugin
 {
     protected PluginManagePage $ManagePage;
 
-    protected Plugin $Plugin;
+    protected ?Plugin $Plugin;
 
     protected Store_Plugin $dependency;
 
@@ -629,6 +630,13 @@ class Store_Plugin extends Abstract_Plugin
             ->インストール();
 
         $this->検証();
+
+        // ブラウザ経由でインストールされたデータを取得するため、トランザクションをコミット/再開始
+        StaticDriver::commit();
+        StaticDriver::beginTransaction();
+
+        // EntityManagerをクリアして、データベースから最新のデータを取得
+        $this->em->clear();
 
         $this->Plugin = $this->pluginRepository->findByCode($this->code);
         $this->I->assertFalse($this->Plugin->isInitialized(), '初期化されていない');
@@ -750,7 +758,7 @@ class Local_Plugin extends Abstract_Plugin
 {
     private PluginManagePage $ManagePage;
 
-    private Plugin $Plugin;
+    private ?Plugin $Plugin = null;
 
     public function __construct(AcceptanceTester $I, private readonly string $code)
     {
@@ -767,6 +775,13 @@ class Local_Plugin extends Abstract_Plugin
         $this->I->see('プラグインをインストールしました。', PluginManagePage::完了メーッセージ);
 
         $this->検証();
+
+        // ブラウザ経由でインストールされたデータを取得するため、トランザクションをコミット/再開始
+        StaticDriver::commit();
+        StaticDriver::beginTransaction();
+
+        // EntityManagerをクリアして、データベースから最新のデータを取得
+        $this->em->clear();
 
         $this->Plugin = $this->pluginRepository->findByCode($this->code);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されていない');
