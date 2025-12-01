@@ -421,11 +421,8 @@ use Doctrine\ORM\Mapping as ORM;
  #[\Eccube\Attribute\EntityExtension(\Eccube\Entity\Customer::class)]
 trait HogeTrait
 {
-    /**
-     * @var string|null
-     */
     #[ORM\Column(name: 'test_update_schema_command', type: 'text', nullable: true)]
-    public \$testUpdateSchemaCommand;
+    public ?string \$testUpdateSchemaCommand = null;
 }
 EOT
         );
