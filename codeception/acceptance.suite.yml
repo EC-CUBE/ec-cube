@@ -59,6 +59,7 @@ env:
                     browser: chrome
                     capabilities:
                         goog:chromeOptions:
+                            args: ["--ignore-certificate-errors", "--allow-insecure-localhost"]
                             prefs:
                                 download.default_directory: '%PWD%/codeception/_support/_downloads'
     chrome-headless:
@@ -68,6 +69,6 @@ env:
                     browser: chrome
                     capabilities:
                         goog:chromeOptions:
-                            args: ["--headless", "--disable-gpu"]
+                            args: ["--headless", "--disable-gpu", "--ignore-certificate-errors", "--allow-insecure-localhost"]
                             prefs:
                                 download.default_directory: '%PWD%/codeception/_support/_downloads'
