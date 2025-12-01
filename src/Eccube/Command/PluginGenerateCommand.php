@@ -242,9 +242,9 @@ use Eccube\\Common\\EccubeTwigBlock;
 class TwigBlock implements EccubeTwigBlock
 {
     /**
-     * @return array
+     * @return array<mixed>
      */
-    public static function getTwigBlock()
+    public static function getTwigBlock(): array
     {
         return [];
     }
@@ -266,9 +266,9 @@ use Eccube\\Common\\EccubeNav;
 class Nav implements EccubeNav
 {
     /**
-     * @return array
+     * @return array<mixed>
      */
-    public static function getNav()
+    public static function getNav(): array
     {
         return [];
     }
