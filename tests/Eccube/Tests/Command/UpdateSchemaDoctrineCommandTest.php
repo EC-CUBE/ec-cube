@@ -130,25 +130,16 @@ final class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
     #[Group(name: 'update-schema-doctrine-install')]
     public function testInstallPluginWithNoProxy(): void
     {
-        // TODO: Symfony 7.4でのEntityManager/メタデータ管理の動作変更により、--no-proxy実行時も前のメタデータが残り,"Nothing to update"となる。
-        $this->markTestIncomplete('--no-proxy実行時のメタデータ管理の動作変更により、失敗するためスキップ');
-
-        $commandTester = $this->getCommandTester(self::NAME);
-
         [$configA, $fileA] = $this->createDummyPluginWithEntityExtension();
         $this->pluginService->install($fileA);
 
-        $commandTester->execute(
-            [
-                'command' => self::NAME,
-                '--no-proxy' => true,
-                '--dump-sql' => true,
-            ]
-        );
-        $display = $commandTester->getDisplay();
+        // Symfony 7.4以降では、同一プロセス内でEntityManagerのメタデータが永続化されるため、
+        // 外部プロセスでコマンドを実行してメタデータをリセットする
+        $display = $this->executeExternalProcess('bin/console '.self::NAME.' --no-proxy --dump-sql');
+
         $this->assertStringContainsString(
             'ALTER TABLE dtb_customer DROP test_update_schema_command',
-            $display,
+            (string) $display,
             '--no-proxy is do not use proxy'
         );
 
@@ -203,10 +194,6 @@ final class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
     #[Group(name: 'update-schema-doctrine-install')]
     public function testEnablePluginWithNoProxy(): void
     {
-        // TODO: Symfony 7.4でのEntityManager/メタデータ管理の動作変更により、--no-proxy実行時も前のメタデータが残り,"Nothing to update"となる。
-        $this->markTestIncomplete('--no-proxy実行時のメタデータ管理の動作変更により、失敗するためスキップ');
-        $commandTester = $this->getCommandTester(self::NAME);
-
         [$configA, $fileA] = $this->createDummyPluginWithEntityExtension();
 
         $this->pluginService->install($fileA);
@@ -215,15 +202,11 @@ final class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
 
         $pluginA = $this->pluginRepository->findOneBy(['code' => $configA['code']]);
 
-        $commandTester->execute(
-            [
-                'command' => self::NAME,
-                '--no-proxy' => true,
-                '--dump-sql' => true,
-            ]
-        );
-        $display = $commandTester->getDisplay();
-        $this->assertStringContainsString('[OK] Nothing to update', $display, '--no-proxy is do not use proxy');
+        // Symfony 7.4以降では、同一プロセス内でEntityManagerのメタデータが永続化されるため、
+        // 外部プロセスでコマンドを実行してメタデータをリセットする
+        $display = $this->executeExternalProcess('bin/console '.self::NAME.' --no-proxy --dump-sql');
+
+        $this->assertStringContainsString('[OK] Nothing to update', (string) $display, '--no-proxy is do not use proxy');
 
         /** @var AbstractSchemaManager $schema */
         $schema = $this->getSchemaManager();
@@ -277,29 +260,28 @@ final class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
     #[Group(name: 'update-schema-doctrine-install')]
     public function testDisablePluginWithNoProxy(): void
     {
-        // TODO: Symfony 7.4でのEntityManager/メタデータ管理の動作変更により、--no-proxy実行時も前のメタデータが残り,"Nothing to update"となる。
-        $this->markTestIncomplete('--no-proxy実行時のメタデータ管理の動作変更により、失敗するためスキップ');
-        $commandTester = $this->getCommandTester(self::NAME);
-
         [$configA, $fileA] = $this->createDummyPluginWithEntityExtension();
         $this->pluginService->install($fileA);
 
         $this->executeExternalProcess('bin/console eccube:plugin:enable --code='.$configA['code']);
         $this->executeExternalProcess('bin/console eccube:plugin:disable --code='.$configA['code']);
 
+        // プラグインを無効化した後、プロキシファイルを削除してメタデータをクリアする
+        $files = Finder::create()
+            ->in(static::getContainer()->getParameter('kernel.project_dir').'/app/proxy/entity')
+            ->files();
+        $f = new Filesystem();
+        $f->remove($files);
+
         $pluginA = $this->pluginRepository->findOneBy(['code' => $configA['code']]);
 
-        $commandTester->execute(
-            [
-                'command' => self::NAME,
-                '--no-proxy' => true,
-                '--dump-sql' => true,
-            ]
-        );
-        $display = $commandTester->getDisplay();
+        // Symfony 7.4以降では、同一プロセス内でEntityManagerのメタデータが永続化されるため、
+        // 外部プロセスでコマンドを実行してメタデータをリセットする
+        $display = $this->executeExternalProcess('bin/console '.self::NAME.' --no-proxy --dump-sql');
+
         $this->assertStringContainsString(
             'ALTER TABLE dtb_customer DROP test_update_schema_command',
-            $display,
+            (string) $display,
             '--no-proxy is do not use proxy'
         );
 
@@ -470,7 +452,12 @@ EOT
             $process = new Process(explode(' ', $command));
             $process->mustRun();
 
-            return $process->getOutput();
+            // Symfony ConsoleのOutputInterfaceはstderrに出力する場合がある
+            $output = $process->getOutput();
+            $errorOutput = $process->getErrorOutput();
+
+            // 両方を結合して返す（通常はどちらか一方のみに出力される）
+            return $output ?: $errorOutput;
         } catch (\Exception) {
             // ignore Fatal error: Cannot declare class
             // $this->fail($e->getMessage());
