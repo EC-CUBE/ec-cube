@@ -152,13 +152,13 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: plugin-install-${{ matrix.php }}-${{ matrix.db }}-evidence
+          name: plugin-install-${{ matrix.php }}-${{ matrix.db }}-${{ matrix.method }}-evidence
           path: codeception/_output/
       - name: Upload logs
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: plugin-install-${{ matrix.php }}-${{ matrix.db }}-logs
+          name: plugin-install-${{ matrix.php }}-${{ matrix.db }}-${{ matrix.method }}-logs
           path: var/log/
 
   plugin-update:
@@ -316,13 +316,13 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: plugin-update-${{ matrix.php }}-${{ matrix.db }}-evidence
+          name: plugin-update-${{ matrix.php }}-${{ matrix.db }}-${{ matrix.method }}-evidence
           path: codeception/_output/
       - name: Upload logs
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: plugin-update-${{ matrix.php }}-${{ matrix.db }}-logs
+          name: plugin-update-${{ matrix.php }}-${{ matrix.db }}-${{ matrix.method }}-logs
           path: var/log/
 
   plugin-extend:
@@ -480,13 +480,13 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: plugin-extend-${{ matrix.php }}-${{ matrix.db }}-evidence
+          name: plugin-extend-${{ matrix.php }}-${{ matrix.db }}-${{ matrix.method }}-evidence
           path: codeception/_output/
       - name: Upload logs
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: plugin-extend-${{ matrix.php }}-${{ matrix.db }}-logs
+          name: plugin-extend-${{ matrix.php }}-${{ matrix.db }}-${{ matrix.method }}-logs
           path: var/log/
 
   plugin-depend:
@@ -647,11 +647,11 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: plugin-depend-${{ matrix.php }}-${{ matrix.db }}-evidence
+          name: plugin-depend-${{ matrix.php }}-${{ matrix.db }}-${{ matrix.method }}-evidence
           path: codeception/_output/
       - name: Upload logs
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: plugin-depend-${{ matrix.php }}-${{ matrix.db }}-logs
+          name: plugin-depend-${{ matrix.php }}-${{ matrix.db }}-${{ matrix.method }}-logs
           path: var/log/
