@@ -133,8 +133,9 @@ jobs:
 
       - name: Configure PHP for Codeception
         run: |
-          PHP_INI=$(php --ini | grep "Loaded Configuration" | awk '{print $NF}')
-          echo "register_argc_argv=On" | sudo tee -a $PHP_INI
+          PHP_INI=$(php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||" | tr -d '"')
+          echo "Using php.ini: $PHP_INI"
+          echo "register_argc_argv=On" | sudo tee -a "$PHP_INI"
 
       - name: Run to Codeception
         env:
@@ -298,8 +299,9 @@ jobs:
 
       - name: Configure PHP for Codeception
         run: |
-          PHP_INI=$(php --ini | grep "Loaded Configuration" | awk '{print $NF}')
-          echo "register_argc_argv=On" | sudo tee -a $PHP_INI
+          PHP_INI=$(php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||" | tr -d '"')
+          echo "Using php.ini: $PHP_INI"
+          echo "register_argc_argv=On" | sudo tee -a "$PHP_INI"
 
       - name: Run to Codeception
         env:
@@ -463,8 +465,9 @@ jobs:
 
       - name: Configure PHP for Codeception
         run: |
-          PHP_INI=$(php --ini | grep "Loaded Configuration" | awk '{print $NF}')
-          echo "register_argc_argv=On" | sudo tee -a $PHP_INI
+          PHP_INI=$(php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||" | tr -d '"')
+          echo "Using php.ini: $PHP_INI"
+          echo "register_argc_argv=On" | sudo tee -a "$PHP_INI"
 
       - name: Run to Codeception
         env:
@@ -631,8 +634,9 @@ jobs:
 
       - name: Configure PHP for Codeception
         run: |
-          PHP_INI=$(php --ini | grep "Loaded Configuration" | awk '{print $NF}')
-          echo "register_argc_argv=On" | sudo tee -a $PHP_INI
+          PHP_INI=$(php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||" | tr -d '"')
+          echo "Using php.ini: $PHP_INI"
+          echo "register_argc_argv=On" | sudo tee -a "$PHP_INI"
 
       - name: Run to Codeception
         env:
