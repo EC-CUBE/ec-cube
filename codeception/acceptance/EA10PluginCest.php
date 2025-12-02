@@ -603,9 +603,9 @@ abstract class Abstract_Plugin
 
 class Store_Plugin extends Abstract_Plugin
 {
-    protected PluginManagePage $ManagePage;
+    protected ?PluginManagePage $ManagePage = null;
 
-    protected ?Plugin $Plugin;
+    protected ?Plugin $Plugin = null;
 
     protected ?Store_Plugin $dependency = null;
 
@@ -756,7 +756,7 @@ class Store_Plugin extends Abstract_Plugin
 
 class Local_Plugin extends Abstract_Plugin
 {
-    private PluginManagePage $ManagePage;
+    private ?PluginManagePage $ManagePage = null;
 
     private ?Plugin $Plugin = null;
 
