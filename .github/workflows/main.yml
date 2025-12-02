@@ -14,6 +14,8 @@ on:
       - '**'
       - '!*.md'
 jobs:
+  plugin-test:
+    uses: ./.github/workflows/plugin-test.yml
   phpstan:
     uses: ./.github/workflows/phpstan.yml
   php-cs-fixer:
@@ -24,9 +26,6 @@ jobs:
   e2e-test:
     needs: [ unit-test ]
     uses: ./.github/workflows/e2e-test.yml
-  plugin-test:
-    needs: [ e2e-test ]
-    uses: ./.github/workflows/plugin-test.yml
   e2e-test-throttling:
     needs: [ plugin-test ]
     uses: ./.github/workflows/e2e-test-throttling.yml

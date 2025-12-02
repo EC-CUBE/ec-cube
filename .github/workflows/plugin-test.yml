@@ -132,7 +132,8 @@ jobs:
           docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
 
       - name: Configure PHP for Codeception
-        run: echo "register_argc_argv=On" >> $HOME/.phpenv/versions/${{ matrix.php }}/etc/php.ini
+        run: |
+          echo "register_argc_argv=On" | sudo tee -a $(php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||")
 
       - name: Run to Codeception
         env:
@@ -295,7 +296,8 @@ jobs:
           docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
 
       - name: Configure PHP for Codeception
-        run: echo "register_argc_argv=On" >> $HOME/.phpenv/versions/${{ matrix.php }}/etc/php.ini
+        run: |
+          echo "register_argc_argv=On" | sudo tee -a $(php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||")
 
       - name: Run to Codeception
         env:
@@ -458,7 +460,8 @@ jobs:
           docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
 
       - name: Configure PHP for Codeception
-        run: echo "register_argc_argv=On" >> $HOME/.phpenv/versions/${{ matrix.php }}/etc/php.ini
+        run: |
+          echo "register_argc_argv=On" | sudo tee -a $(php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||")
 
       - name: Run to Codeception
         env:
@@ -624,7 +627,8 @@ jobs:
           docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
 
       - name: Configure PHP for Codeception
-        run: echo "register_argc_argv=On" >> $HOME/.phpenv/versions/${{ matrix.php }}/etc/php.ini
+        run: |
+          echo "register_argc_argv=On" | sudo tee -a $(php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||")
 
       - name: Run to Codeception
         env:
