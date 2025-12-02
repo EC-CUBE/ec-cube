@@ -131,7 +131,10 @@ jobs:
           if [[ ! -d ${PWD}/repos ]]; then mkdir -p ${PWD}/repos ; fi
           docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
 
-      - name: Codeception
+      - name: Configure PHP for Codeception
+        run: echo "register_argc_argv=On" >> $HOME/.phpenv/versions/${{ matrix.php }}/etc/php.ini
+
+      - name: Run to Codeception
         env:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
@@ -148,13 +151,13 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: plugin-install-${{ matrix.php }}-${{ matrix.method }}-evidence
+          name: plugin-install-${{ matrix.php }}-${{ matrix.db }}-evidence
           path: codeception/_output/
       - name: Upload logs
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: plugin-install-${{ matrix.php }}-${{ matrix.method }}-logs
+          name: plugin-install-${{ matrix.php }}-${{ matrix.db }}-logs
           path: var/log/
 
   plugin-update:
@@ -291,6 +294,9 @@ jobs:
           if [[ ! -d ${PWD}/repos ]]; then mkdir -p ${PWD}/repos ; fi
           docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
 
+      - name: Configure PHP for Codeception
+        run: echo "register_argc_argv=On" >> $HOME/.phpenv/versions/${{ matrix.php }}/etc/php.ini
+
       - name: Run to Codeception
         env:
           APP_ENV: ${{ matrix.app_env }}
@@ -308,13 +314,13 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: plugin-update-${{ matrix.method }}-evidence
+          name: plugin-update-${{ matrix.php }}-${{ matrix.db }}-evidence
           path: codeception/_output/
       - name: Upload logs
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: plugin-update-${{ matrix.php }}-${{ matrix.method }}-logs
+          name: plugin-update-${{ matrix.php }}-${{ matrix.db }}-logs
           path: var/log/
 
   plugin-extend:
@@ -451,6 +457,9 @@ jobs:
           if [[ ! -d ${PWD}/repos ]]; then mkdir -p ${PWD}/repos ; fi
           docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
 
+      - name: Configure PHP for Codeception
+        run: echo "register_argc_argv=On" >> $HOME/.phpenv/versions/${{ matrix.php }}/etc/php.ini
+
       - name: Run to Codeception
         env:
           APP_ENV: ${{ matrix.app_env }}
@@ -468,13 +477,13 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: plugin-extend-${{ matrix.php }}-${{ matrix.method }}-evidence
+          name: plugin-extend-${{ matrix.php }}-${{ matrix.db }}-evidence
           path: codeception/_output/
       - name: Upload logs
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: plugin-extend-${{ matrix.php }}-${{ matrix.method }}-logs
+          name: plugin-extend-${{ matrix.php }}-${{ matrix.db }}-logs
           path: var/log/
 
   plugin-depend:
@@ -614,6 +623,9 @@ jobs:
           if [[ ! -d ${PWD}/repos ]]; then mkdir -p ${PWD}/repos ; fi
           docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
 
+      - name: Configure PHP for Codeception
+        run: echo "register_argc_argv=On" >> $HOME/.phpenv/versions/${{ matrix.php }}/etc/php.ini
+
       - name: Run to Codeception
         env:
           APP_ENV: ${{ matrix.app_env }}
@@ -631,11 +643,11 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: plugin-depend-${{ matrix.php }}-${{ matrix.method }}-evidence
+          name: plugin-depend-${{ matrix.php }}-${{ matrix.db }}-evidence
           path: codeception/_output/
       - name: Upload logs
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: plugin-depend-${{ matrix.php }}-${{ matrix.method }}-logs
+          name: plugin-depend-${{ matrix.php }}-${{ matrix.db }}-logs
           path: var/log/
