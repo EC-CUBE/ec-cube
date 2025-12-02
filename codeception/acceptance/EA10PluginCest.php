@@ -607,7 +607,7 @@ class Store_Plugin extends Abstract_Plugin
 
     protected ?Plugin $Plugin;
 
-    protected ?Store_Plugin $dependency;
+    protected ?Store_Plugin $dependency = null;
 
     public function __construct(AcceptanceTester $I, protected $code, ?Store_Plugin $dependency = null)
     {
