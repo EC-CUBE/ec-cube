@@ -659,7 +659,8 @@ class Store_Plugin extends Abstract_Plugin
 
         $this->検証();
 
-        $this->em->refresh($this->Plugin);
+        $this->em->clear();
+        $this->Plugin = $this->pluginRepository->findByCode($this->code);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
         $this->I->assertTrue($this->Plugin->isEnabled(), '有効化されている');
 
@@ -675,7 +676,8 @@ class Store_Plugin extends Abstract_Plugin
 
         $this->検証();
 
-        $this->em->refresh($this->Plugin);
+        $this->em->clear();
+        $this->Plugin = $this->pluginRepository->findByCode($this->code);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
         $this->I->assertTrue($this->Plugin->isEnabled(), '有効化されている');
 
@@ -690,7 +692,8 @@ class Store_Plugin extends Abstract_Plugin
 
         $this->検証();
 
-        $this->em->refresh($this->Plugin);
+        $this->em->clear();
+        $this->Plugin = $this->pluginRepository->findByCode($this->code);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
         $this->I->assertFalse($this->Plugin->isEnabled(), '無効化されている');
 
@@ -705,7 +708,8 @@ class Store_Plugin extends Abstract_Plugin
 
         $this->検証();
 
-        $this->em->refresh($this->Plugin);
+        $this->em->clear();
+        $this->Plugin = $this->pluginRepository->findByCode($this->code);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
         $this->I->assertFalse($this->Plugin->isEnabled(), '無効化されている');
 
@@ -721,7 +725,8 @@ class Store_Plugin extends Abstract_Plugin
 
         $this->検証();
 
-        $this->em->refresh($this->Plugin);
+        // 削除後はエンティティが管理されていないため、refreshではなくclearしてから再取得
+        $this->em->clear();
         $this->Plugin = $this->pluginRepository->findByCode($this->code);
         $this->I->assertNull($this->Plugin, '削除されている');
 
@@ -740,7 +745,8 @@ class Store_Plugin extends Abstract_Plugin
 
         $this->検証();
 
-        $this->em->refresh($this->Plugin);
+        $this->em->clear();
+        $this->Plugin = $this->pluginRepository->findByCode($this->code);
         $this->I->assertEquals($this->initialized, $this->Plugin->isInitialized(), '初期化');
         $this->I->assertEquals($this->enabled, $this->Plugin->isEnabled(), '有効/無効');
 
@@ -798,7 +804,8 @@ class Local_Plugin extends Abstract_Plugin
 
         $this->検証();
 
-        $this->em->refresh($this->Plugin);
+        $this->em->clear();
+        $this->Plugin = $this->pluginRepository->findByCode($this->code);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
         $this->I->assertTrue($this->Plugin->isEnabled(), '有効化されている');
 
@@ -813,7 +820,8 @@ class Local_Plugin extends Abstract_Plugin
 
         $this->検証();
 
-        $this->em->refresh($this->Plugin);
+        $this->em->clear();
+        $this->Plugin = $this->pluginRepository->findByCode($this->code);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
         $this->I->assertFalse($this->Plugin->isEnabled(), '無効化されている');
 
@@ -831,7 +839,8 @@ class Local_Plugin extends Abstract_Plugin
 
         $this->検証();
 
-        $this->em->refresh($this->Plugin);
+        // 削除後はエンティティが管理されていないため、refreshではなくclearしてから再取得
+        $this->em->clear();
         $this->Plugin = $this->pluginRepository->findByCode($this->code);
         $this->I->assertNull($this->Plugin, '削除されている');
 
@@ -844,7 +853,8 @@ class Local_Plugin extends Abstract_Plugin
 
         $this->検証();
 
-        $this->em->refresh($this->Plugin);
+        $this->em->clear();
+        $this->Plugin = $this->pluginRepository->findByCode($this->code);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
         $this->I->assertEquals($this->enabled, $this->Plugin->isEnabled(), '有効/無効');
 
@@ -909,7 +919,8 @@ class Horizon_Store extends Store_Plugin
 
         $this->検証();
 
-        $this->em->refresh($this->Plugin);
+        $this->em->clear();
+        $this->Plugin = $this->pluginRepository->findByCode($this->code);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されているはず');
         $this->I->assertTrue($this->Plugin->isEnabled(), '有効化されているはず');
 
@@ -922,7 +933,7 @@ class Horizon_Store extends Store_Plugin
 
         $this->検証();
 
-        $this->em->refresh($this->Plugin);
+        $this->em->clear();
         $this->Plugin = $this->pluginRepository->findByCode($this->code);
         $this->I->assertNotNull($this->Plugin, '削除されていない');
 
@@ -961,7 +972,8 @@ class Emperor_Store extends Store_Plugin
 
         $this->検証();
 
-        $this->em->refresh($this->Plugin);
+        $this->em->clear();
+        $this->Plugin = $this->pluginRepository->findByCode($this->code);
         $this->I->assertFalse($this->Plugin->isInitialized(), '初期化されていないはず');
         $this->I->assertFalse($this->Plugin->isEnabled(), '有効化されていないはず');
 
