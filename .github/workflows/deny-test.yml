@@ -24,12 +24,12 @@ jobs:
       - name: Setup PHP
         uses: nanasess/setup-php@master
         with:
-          php-version: '8.1'
+          php-version: '8.3'
 
       - name: Install ext-redis 6.1+
         run: |
           sudo apt-get update
-          sudo apt-get install -y php8.1-redis
+          sudo apt-get install -y php8.2-redis
           sudo phpenmod -s cli redis
           php -m | grep -i redis
 
