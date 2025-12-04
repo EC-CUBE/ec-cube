@@ -39,6 +39,9 @@ jobs:
       - name: Translate to templates
         run: php bin/template_jp.php
 
+      - name: Generate ECCUBE_AUTH_MAGIC
+        run: echo "ECCUBE_AUTH_MAGIC=$(openssl rand -hex 32)" >> $GITHUB_ENV
+
       - name: Setup to EC-CUBE
         env:
           APP_ENV: 'prod'
