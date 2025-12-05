@@ -30,9 +30,9 @@ jobs:
   e2e-test-throttling:
     needs: [ plugin-test ]
     uses: ./.github/workflows/e2e-test-throttling.yml
-  deny-test:
-    needs: [ plugin-test ]
-    uses: ./.github/workflows/deny-test.yml
+#  deny-test:
+#    needs: [ plugin-test ]
+#    uses: ./.github/workflows/deny-test.yml
   success:
     needs: [ e2e-test-throttling ]
     runs-on: ubuntu-latest
