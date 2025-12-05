@@ -79,7 +79,7 @@ class PluginService
     /**
      * ファイル指定してのプラグインインストール
      *
-     * @param string $path   path to tar.gz/zip plugin file
+     * @param string $path path to tar.gz/zip plugin file
      *
      * @throws PluginException
      * @throws \Exception
@@ -196,8 +196,6 @@ class PluginService
      */
     public function postInstall(array $config, string|int $source): void
     {
-        // dbにプラグイン登録
-        $this->entityManager->getConnection()->beginTransaction();
         try {
             /** @var Plugin|null $Plugin */
             $Plugin = $this->pluginRepository->findByCode($config['code']);
@@ -221,22 +219,7 @@ class PluginService
             $Plugin->setInitialized(true);
             $this->entityManager->persist($Plugin);
             $this->entityManager->flush();
-
-            /** @var \PDO $nativeConnection */
-            $nativeConnection = $this->entityManager->getConnection()->getNativeConnection();
-
-            if ($nativeConnection->inTransaction()) {
-                $this->entityManager->getConnection()->commit();
-            }
         } catch (\Exception $e) {
-            /** @var \PDO $nativeConnection */
-            $nativeConnection = $this->entityManager->getConnection()->getNativeConnection();
-            if ($nativeConnection->inTransaction()) {
-                if ($this->entityManager->getConnection()->isRollbackOnly()) {
-                    $this->entityManager->getConnection()->rollback();
-                }
-            }
-
             throw new PluginException($e->getMessage(), $e->getCode(), $e);
         }
     }

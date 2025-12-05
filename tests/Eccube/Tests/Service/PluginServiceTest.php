@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Service;
 
+use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
 use Eccube\Common\Constant;
 use Eccube\Entity\Plugin;
 use Eccube\Exception\PluginException;
@@ -76,13 +77,35 @@ final class PluginServiceTest extends AbstractServiceTestCase
         parent::tearDown();
     }
 
+    // PluginServiceTest ではプラグインインストール時に SchemaTool が DDL を実行する。
+    // MySQL + dama/doctrine-test-bundle 環境だと暗黙の COMMIT が発生し、SAVEPOINT(DAMA_TEST) が破棄され、
+    // "SAVEPOINT ... does not exist" エラーが発生する。
+    // そのため本テストクラス実行中は StaticDriver の static connection を無効化し、
+    // DAMA のトランザクション制御を介さずに DDL を流すようにしている。
+    public static function setUpBeforeClass(): void
+    {
+        parent::setUpBeforeClass();
+
+        // このテストクラスの間だけ DAMA の static connection を無効化
+        if (class_exists(StaticDriver::class)) {
+            StaticDriver::setKeepStaticConnections(false);
+        }
+    }
+
+    public static function tearDownBeforeClass(): void
+    {
+        // setUpBeforeClass での StaticDriver 設定を元に戻す。
+        if (class_exists(StaticDriver::class)) {
+            StaticDriver::setKeepStaticConnections(true);
+        }
+    }
+
     /*
        正しいプラグインの条件
        * tar/zipアーカイブである
        * 展開した直下のディレクトリにcomposer.jsonがあり、正しいファイルである
        * composer.jsonの必須要素が規定の文字数、文字種で定義されている
        * event.ymlが存在する場合、正しいである
-
      */
 
     // テスト用のダミープラグインを配置する
