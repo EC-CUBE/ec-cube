@@ -75,7 +75,7 @@ jobs:
         run: |
           echo "session.save_path=$PWD/var/sessions/test" > php.ini
           echo "memory_limit=1012M" >> php.ini
-          php -c php.ini -dpcov.enabled=1 vendor/bin/phpunit --exclude-group cache-clear --exclude-group cache-clear-install --exclude-group update-schema-doctrine --coverage-clover=coverage1.xml --test-dox
+          php -c php.ini -dpcov.enabled=1 vendor/bin/phpunit --exclude-group cache-clear --exclude-group cache-clear-install --exclude-group update-schema-doctrine --coverage-clover=coverage1.xml --testdox --debug
       - name: Upload report
         if: success()
         uses: actions/upload-artifact@v4
