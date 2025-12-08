@@ -49,7 +49,7 @@ final class LoginControllerTest extends AbstractWebTestCase
         $this->assertNotNull(static::getContainer()->get(TokenStorageInterface::class)->getToken(), 'ログインしているかどうか');
     }
 
-    public function testRoutingAdminLoginÃ�グインしていない場合は302エラーがかえる()
+    public function testRoutingAdminLoginNotLoggedInReturns302()
     {
         $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_homepage'));
 
