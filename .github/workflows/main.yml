@@ -40,6 +40,6 @@ jobs:
       - name: success
         run: echo "::notice::success!"
   coverage:
-    needs: [ e2e-test-throttling ]
+#    needs: [ e2e-test-throttling ]
     if: ${{ github.event.pull_request.user.login != 'dependabot[bot]' }}
     uses: ./.github/workflows/coverage.yml
