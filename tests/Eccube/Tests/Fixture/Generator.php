@@ -116,6 +116,7 @@ class Generator
         if (is_null($username)) {
             $username = $faker->word();
             do {
+                // 無限ループが発生したため、wordではなくuuidを使用する
                 $loginId = $faker->uuid();
             } while ($this->memberRepository->findBy(['login_id' => $loginId]));
         } else {
