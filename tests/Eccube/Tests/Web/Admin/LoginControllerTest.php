@@ -49,6 +49,9 @@ final class LoginControllerTest extends AbstractWebTestCase
         $this->assertNotNull(static::getContainer()->get(TokenStorageInterface::class)->getToken(), 'ログインしているかどうか');
     }
 
+    /**
+     * 管理画面: 未ログイン時は 302 でログイン画面にリダイレクトされる
+     */
     public function testRoutingAdminLoginNotLoggedInReturns302()
     {
         $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_homepage'));

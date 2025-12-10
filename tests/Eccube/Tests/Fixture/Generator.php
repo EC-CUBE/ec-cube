@@ -116,7 +116,7 @@ class Generator
         if (is_null($username)) {
             $username = $faker->word();
             do {
-                $loginId = $faker->word();
+                $loginId = $faker->uuid();
             } while ($this->memberRepository->findBy(['login_id' => $loginId]));
         } else {
             $loginId = $username;
