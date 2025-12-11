@@ -25,6 +25,7 @@ use Rector\DeadCode\Rector\If_\RemoveAlwaysTrueIfConditionRector;
 use Rector\DeadCode\Rector\Property\RemoveUnusedPrivatePropertyRector;
 use Rector\DeadCode\Rector\Property\RemoveUselessVarTagRector;
 use Rector\DeadCode\Rector\Switch_\RemoveDuplicatedCaseInSwitchRector;
+use Rector\Doctrine\Bundle210\Rector\Class_\EventSubscriberInterfaceToAttributeRector;
 use Rector\Doctrine\Set\DoctrineSetList;
 use Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector;
 use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
@@ -76,6 +77,7 @@ return RectorConfig::configure()
                CommandConfigureToAttributeRector::class, // Symfonyコマンドのconfigureメソッドをアトリビュートに変換する
                CommandPropertyToAttributeRector::class, // Symfonyコマンドのプロパティをアトリビュートに変換する,
                StaticDataProviderClassMethodRector::class, // PHPUnitのデータプロバイダを静的メソッドに変換する
+               EventSubscriberInterfaceToAttributeRector::class, // Doctrine EventSubscriberをAsDoctrineListenerアトリビュートに変換する
                AttributeArgumentsOrderRector::class, // すべての Attribute の引数をコンストラクタ引数順序に統一する
                NormalizePhpDocArrayGenericSpacingRector::class, // PHPDoc の配列ジェネリクス表記のカンマ後のスペースを統一する
            ])
