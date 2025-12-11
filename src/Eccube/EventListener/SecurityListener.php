@@ -28,43 +28,11 @@ use Symfony\Component\Security\Http\SecurityEvents;
 
 class SecurityListener implements EventSubscriberInterface
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $em;
-    /**
-     * @var CartService
-     */
-    protected $cartService;
-
-    /**
-     * @var PurchaseFlow
-     */
-    protected $purchaseFlow;
-
-    /**
-     * @var RequestStack
-     */
-    protected $requestStack;
-
-    public function __construct(
-        EntityManagerInterface $em,
-        CartService $cartService,
-        PurchaseFlow $cartPurchaseFlow,
-        RequestStack $requestStack,
-    ) {
-        $this->em = $em;
-        $this->cartService = $cartService;
-        $this->purchaseFlow = $cartPurchaseFlow;
-        $this->requestStack = $requestStack;
+    public function __construct(protected EntityManagerInterface $em, protected CartService $cartService, protected PurchaseFlow $purchaseFlow, protected RequestStack $requestStack)
+    {
     }
 
-    /**
-     * @param InteractiveLoginEvent $event
-     *
-     * @return void
-     */
-    public function onInteractiveLogin(InteractiveLoginEvent $event)
+    public function onInteractiveLogin(InteractiveLoginEvent $event): void
     {
         $user = $event
             ->getAuthenticationToken()
@@ -87,12 +55,7 @@ class SecurityListener implements EventSubscriberInterface
         }
     }
 
-    /**
-     * @param LoginFailureEvent $event
-     *
-     * @return void
-     */
-    public function onAuthenticationFailure(LoginFailureEvent $event)
+    public function onAuthenticationFailure(LoginFailureEvent $event): void
     {
         $request = $this->requestStack->getCurrentRequest();
         $request->getSession()->set('_security.login_memory', (bool) $request->request->get('login_memory', 0));
@@ -114,10 +77,10 @@ class SecurityListener implements EventSubscriberInterface
      * * array('eventName' => array('methodName', $priority))
      * * array('eventName' => array(array('methodName1', $priority), array('methodName2'))
      *
-     * @return array<string,string> The event names to listen to
+     * @return array<string, string> The event names to listen to
      */
     #[\Override]
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             SecurityEvents::INTERACTIVE_LOGIN => 'onInteractiveLogin',

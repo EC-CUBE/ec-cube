@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -16,17 +18,20 @@ namespace Eccube\Tests\Web;
 use Eccube\Entity\Customer;
 use Eccube\Tests\EccubeTestCase;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Symfony\Component\BrowserKit\AbstractBrowser;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 abstract class AbstractWebTestCase extends EccubeTestCase
 {
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();
@@ -37,7 +42,7 @@ abstract class AbstractWebTestCase extends EccubeTestCase
      *
      * @param mixed|null $user
      */
-    public function logIn($user = null)
+    public function logIn(mixed $user = null)
     {
         if (!is_object($user)) {
             $user = $this->createCustomer();
@@ -54,11 +59,9 @@ abstract class AbstractWebTestCase extends EccubeTestCase
      *
      * @param UserInterface $User ログインさせる User
      *
-     * @return KernelBrowser|\Symfony\Component\BrowserKit\AbstractBrowser
-     *
      * @see EccubeTestCase::getCsrfToken()
      */
-    public function loginTo(UserInterface $User)
+    public function loginTo(UserInterface $User): KernelBrowser|AbstractBrowser
     {
         $firewallContext = $User instanceof Customer ? 'customer' : 'admin';
         $this->client->loginUser($User, $firewallContext);
@@ -68,8 +71,6 @@ abstract class AbstractWebTestCase extends EccubeTestCase
 
     /**
      * https://github.com/symfony/symfony/discussions/46961
-     *
-     * @param KernelBrowser $client
      */
     public function createSession(KernelBrowser $client): Session
     {
@@ -77,7 +78,10 @@ abstract class AbstractWebTestCase extends EccubeTestCase
 
         // create a new session object
         $container = static::getContainer();
-        $session = $container->get('session.factory')->createSession();
+        // SymfonyのFrameworkBundleが内部で登録するサービスだが、
+        // クラス名のエイリアスが標準では存在しないため、文字列サービスIDのまま使用
+        $serviceId = 'session.factory';
+        $session = $container->get($serviceId)->createSession();
 
         if ($cookie) {
             // get the session id from the session cookie if it exists

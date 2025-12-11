@@ -40,9 +40,9 @@ class DeliveryRepository extends AbstractRepository
      *
      * @return array<int, Delivery>
      */
-    public function getDeliveries($saleTypes)
+    public function getDeliveries(array $saleTypes): array
     {
-        $deliveries = $this->createQueryBuilder('d')
+        return $this->createQueryBuilder('d')
             ->where('d.SaleType in (:saleTypes)')
             ->andWhere('d.visible = :visible')
             ->setParameter('saleTypes', $saleTypes)
@@ -50,8 +50,6 @@ class DeliveryRepository extends AbstractRepository
             ->orderBy('d.sort_no', 'DESC')
             ->getQuery()
             ->getResult();
-
-        return $deliveries;
     }
 
     /**
@@ -62,7 +60,7 @@ class DeliveryRepository extends AbstractRepository
      *
      * @return array<int, Delivery>
      */
-    public function findAllowedDeliveries($saleTypes, $payments)
+    public function findAllowedDeliveries(array $saleTypes, array $payments): array
     {
         $d = $this->getDeliveries($saleTypes);
         $arr = [];

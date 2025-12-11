@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -30,6 +32,8 @@ use Faker\Factory as Faker;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 /**
  * Abstract class that other unit tests can extend, provides generic methods for EC-CUBE tests.
@@ -44,20 +48,11 @@ abstract class EccubeTestCase extends WebTestCase
     protected $actual;
     protected $expected;
 
-    /**
-     * @var KernelBrowser
-     */
-    protected $client;
+    protected ?KernelBrowser $client = null;
 
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
+    protected ?EntityManagerInterface $entityManager = null;
 
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
+    protected ?EccubeConfig $eccubeConfig = null;
 
     /**
      * Client を生成しトランザクションを開始する.
@@ -66,16 +61,23 @@ abstract class EccubeTestCase extends WebTestCase
     {
         parent::setUp();
         $this->client = static::$booted ? static::getClient() : static::createClient();
-        $this->entityManager = static::getContainer()->get('doctrine')->getManager();
+        $this->entityManager = static::getContainer()->get(EntityManagerInterface::class);
         $this->eccubeConfig = static::getContainer()->get(EccubeConfig::class);
     }
 
     /**
      * トランザクションをロールバックする.
      */
+    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();
+
+        // Remove all exception handlers set by Symfony to avoid "risky test" warning
+        // This ensures PHPUnit's exception handler detection doesn't flag the test as risky
+        while (set_exception_handler(null) !== null) {
+            // Keep removing until no handler exists
+        }
 
         $this->cleanUpProperties();
     }
@@ -89,7 +91,7 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @see https://github.com/fzaninotto/Faker
      */
-    public function getFaker($locale = 'ja_JP')
+    public function getFaker(string $locale = 'ja_JP'): \Faker\Generator
     {
         return Faker::create($locale);
     }
@@ -101,7 +103,7 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @see http://objectclub.jp/community/memorial/homepage3.nifty.com/masarl/article/junit/scenario-based-testcase.html#verify%20%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89
      */
-    public function verify($message = '')
+    public function verify(string $message = '')
     {
         $this->assertSame($this->expected, $this->actual, $message);
     }
@@ -110,10 +112,8 @@ abstract class EccubeTestCase extends WebTestCase
      * Member オブジェクトを生成して返す.
      *
      * @param string $username . null の場合は, ランダムなユーザーIDが生成される.
-     *
-     * @return Member
      */
-    public function createMember($username = null)
+    public function createMember(?string $username = null): Member
     {
         return static::getContainer()->get(Generator::class)->createMember($username);
     }
@@ -122,10 +122,8 @@ abstract class EccubeTestCase extends WebTestCase
      * Customer オブジェクトを生成して返す.
      *
      * @param string $email メールアドレス. null の場合は, ランダムなメールアドレスが生成される.
-     *
-     * @return Customer
      */
-    public function createCustomer($email = null)
+    public function createCustomer(?string $email = null): Customer
     {
         return static::getContainer()->get(Generator::class)->createCustomer($email);
     }
@@ -135,10 +133,8 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @param Customer $Customer 対象の Customer インスタンス
      * @param bool $is_nonmember 非会員の場合 true
-     *
-     * @return CustomerAddress
      */
-    public function createCustomerAddress(Customer $Customer, $is_nonmember = false)
+    public function createCustomerAddress(Customer $Customer, bool $is_nonmember = false): CustomerAddress
     {
         return static::getContainer()->get(Generator::class)->createCustomerAddress($Customer, $is_nonmember);
     }
@@ -147,10 +143,8 @@ abstract class EccubeTestCase extends WebTestCase
      * 非会員の Customer オブジェクトを生成して返す.
      *
      * @param string $email メールアドレス. null の場合は, ランダムなメールアドレスが生成される.
-     *
-     * @return Customer
      */
-    public function createNonMember($email = null)
+    public function createNonMember(?string $email = null): Customer
     {
         return static::getContainer()->get(Generator::class)->createNonMember($email);
     }
@@ -160,10 +154,8 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @param string $product_name 商品名. null の場合はランダムな文字列が生成される.
      * @param int $product_class_num 商品規格の生成数
-     *
-     * @return Product
      */
-    public function createProduct($product_name = null, $product_class_num = 3)
+    public function createProduct(?string $product_name = null, int $product_class_num = 3): Product
     {
         return static::getContainer()->get(Generator::class)->createProduct($product_name, $product_class_num);
     }
@@ -172,10 +164,8 @@ abstract class EccubeTestCase extends WebTestCase
      * Order オブジェクトを生成して返す.
      *
      * @param Customer $Customer Customer インスタンス
-     *
-     * @return Order
      */
-    public function createOrder(Customer $Customer)
+    public function createOrder(Customer $Customer): Order
     {
         $Product = $this->createProduct();
         $ProductClasses = $Product->getProductClasses();
@@ -189,10 +179,8 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @param Customer $Customer Customer インスタンス
      * @param ProductClass[] $ProductClasses
-     *
-     * @return Order
      */
-    public function createOrderWithProductClasses(Customer $Customer, array $ProductClasses)
+    public function createOrderWithProductClasses(Customer $Customer, array $ProductClasses): Order
     {
         return static::getContainer()->get(Generator::class)->createOrder($Customer, $ProductClasses);
     }
@@ -205,20 +193,16 @@ abstract class EccubeTestCase extends WebTestCase
      * @param int $charge 手数料
      * @param int $rule_min 下限金額
      * @param int $rule_max 上限金額
-     *
-     * @return Payment
      */
-    public function createPayment(Delivery $Delivery, $method, $charge = 0, $rule_min = 0, $rule_max = 999999999)
+    public function createPayment(Delivery $Delivery, string $method, int $charge = 0, int $rule_min = 0, int $rule_max = 999999999): Payment
     {
         return static::getContainer()->get(Generator::class)->createPayment($Delivery, $method, $charge, $rule_min, $rule_max);
     }
 
     /**
      * Page オブジェクトを生成して返す
-     *
-     * @return Page
      */
-    public function createPage()
+    public function createPage(): Page
     {
         return static::getContainer()->get(Generator::class)->createPage();
     }
@@ -226,14 +210,10 @@ abstract class EccubeTestCase extends WebTestCase
     /**
      * LoginHistory オブジェクトを生成して返す
      *
-     * @param mixed $user_name
      * @param mixed|null $client_ip
-     * @param mixed $status
      * @param mixed|null $Member
-     *
-     * @return LoginHistory
      */
-    public function createLoginHistory($user_name, $client_ip = null, $status = 0, $Member = null)
+    public function createLoginHistory(mixed $user_name, mixed $client_ip = null, mixed $status = 0, mixed $Member = null): LoginHistory
     {
         return static::getContainer()->get(Generator::class)->createLoginHistory($user_name, $client_ip, $status, $Member);
     }
@@ -246,7 +226,7 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @param array $tables 削除対象のテーブル名の配列
      */
-    public function deleteAllRows(array $tables)
+    public function deleteAllRows(array $tables): void
     {
         /** @var Connection $conn */
         $conn = $this->entityManager->getConnection();
@@ -274,12 +254,11 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @see http://stackoverflow.com/questions/13537545/clear-memory-being-used-by-php
      */
-    protected function cleanUpProperties()
+    protected function cleanUpProperties(): void
     {
         $refl = new \ReflectionObject($this);
         foreach ($refl->getProperties() as $prop) {
             if (!$prop->isStatic() && !str_starts_with($prop->getDeclaringClass()->getName(), 'PHPUnit')) {
-                $prop->setAccessible(true);
                 $prop->setValue($this, null);
             }
         }
@@ -297,9 +276,9 @@ abstract class EccubeTestCase extends WebTestCase
      * @see UrlGeneratorInterface
      * @see \Symfony\Bundle\FrameworkBundle\Controller\ControllerTrait::generateUrl
      */
-    protected function generateUrl($route, $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
+    protected function generateUrl(string $route, array $parameters = [], int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): string
     {
-        return static::getContainer()->get('router')->generate($route, $parameters, $referenceType);
+        return static::getContainer()->get(UrlGeneratorInterface::class)->generate($route, $parameters, $referenceType);
     }
 
     /**
@@ -312,11 +291,11 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @return CsrfToken The CSRF token
      *
-     * @see \Symfony\Component\Security\Csrf\CsrfTokenManagerInterface
+     * @see CsrfTokenManagerInterface
      * @see https://stackoverflow.com/a/38661340/4956633
      */
-    protected function getCsrfToken($csrfTokenId)
+    protected function getCsrfToken(string $csrfTokenId): CsrfToken
     {
-        return static::getContainer()->get('security.csrf.token_manager')->getToken($csrfTokenId);
+        return static::getContainer()->get(CsrfTokenManagerInterface::class)->getToken($csrfTokenId);
     }
 }

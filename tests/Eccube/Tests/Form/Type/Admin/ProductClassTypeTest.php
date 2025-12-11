@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,17 +19,14 @@ use Eccube\Form\Type\Admin\ProductClassType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use Symfony\Component\Form\FormInterface;
 
-class ProductClassTypeTest extends AbstractTypeTestCase
+final class ProductClassTypeTest extends AbstractTypeTestCase
 {
-    /**
-     * @var FormInterface
-     */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /**
      * @var array デフォルト値（正常系）を設定
      */
-    protected $formData = [
+    protected ?array $formData = [
         'code' => 'code',
         'stock' => '100',
         'sale_limit' => '100',
@@ -40,6 +39,7 @@ class ProductClassTypeTest extends AbstractTypeTestCase
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

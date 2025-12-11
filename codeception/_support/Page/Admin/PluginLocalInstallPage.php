@@ -24,10 +24,8 @@ class PluginLocalInstallPage extends AbstractAdminPageStyleGuide
 
     /**
      * @param $pluginDirName
-     *
-     * @return PluginManagePage
      */
-    public function アップロード($pluginDirName)
+    public function アップロード($pluginDirName): PluginManagePage
     {
         $this->tester->compressPlugin($pluginDirName, codecept_data_dir('plugins'));
         $this->tester->attachFile(['id' => 'plugin_local_install_plugin_archive'], 'plugins/'.$pluginDirName.'.tgz');

@@ -21,28 +21,11 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class RestrictFileUploadListener implements EventSubscriberInterface
 {
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
-     * @var Context
-     */
-    protected $requestContext;
-
-    public function __construct(EccubeConfig $eccubeConfig, Context $requestContext)
+    public function __construct(protected EccubeConfig $eccubeConfig, protected Context $requestContext)
     {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->requestContext = $requestContext;
     }
 
-    /**
-     * @param RequestEvent $event
-     *
-     * @return void
-     */
-    public function onKernelRequest(RequestEvent $event)
+    public function onKernelRequest(RequestEvent $event): void
     {
         if (!$event->isMainRequest()) {
             return;
@@ -60,7 +43,7 @@ class RestrictFileUploadListener implements EventSubscriberInterface
     }
 
     #[\Override]
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             'kernel.request' => ['onKernelRequest', 7], // RouterListener より必ず後で実行する

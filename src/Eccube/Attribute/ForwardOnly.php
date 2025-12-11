@@ -11,27 +11,23 @@
  * file that was distributed with this source code.
  */
 
-namespace Eccube\Annotation;
+namespace Eccube\Attribute;
 
 #[\Attribute(\Attribute::TARGET_METHOD)]
 final class ForwardOnly
 {
     /**
      * Returns the alias name for an annotated configuration.
-     *
-     * @return string
      */
-    public function getAliasName()
+    public function getAliasName(): string
     {
         return 'forward_only';
     }
 
     /**
      * Returns whether multiple annotations of this type are allowed.
-     *
-     * @return bool
      */
-    public function allowArray()
+    public function allowArray(): bool
     {
         return false;
     }

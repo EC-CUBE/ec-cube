@@ -14,6 +14,7 @@
 namespace Eccube\Form\Type\Admin;
 
 use Doctrine\ORM\EntityRepository;
+use Eccube\Entity\Page;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -23,25 +24,20 @@ class PageType extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('layout', EntityType::class, [
                 'label' => false,
-                'class' => \Eccube\Entity\Page::class,
+                'class' => Page::class,
                 'choice_label' => 'name',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er
-                        ->createQueryBuilder('l')
-                        ->where('l.id <> 0')
-                        ->orderBy('l.id', 'ASC');
-                },
+                'query_builder' => fn (EntityRepository $er) => $er
+                    ->createQueryBuilder('l')
+                    ->where('l.id <> 0')
+                    ->orderBy('l.id', 'ASC'),
             ]);
     }
 
@@ -49,7 +45,7 @@ class PageType extends AbstractType
      * {@inheritdoc}
      */
     #[\Override]
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'admin_page';
     }

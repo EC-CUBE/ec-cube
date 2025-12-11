@@ -16,6 +16,7 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Order;
+use Eccube\Entity\OrderItem;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Service\PurchaseFlow\ItemHolderPreprocessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
@@ -26,29 +27,18 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
  */
 class DeliveryFeeFreeByShippingPreprocessor implements ItemHolderPreprocessor
 {
-    /**
-     * @var BaseInfo
-     */
-    protected $BaseInfo;
+    protected BaseInfo $BaseInfo;
 
     /**
      * DeliveryFeeProcessor constructor.
-     *
-     * @param BaseInfoRepository $baseInfoRepository
      */
     public function __construct(BaseInfoRepository $baseInfoRepository)
     {
         $this->BaseInfo = $baseInfoRepository->get();
     }
 
-    /**
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
-     *
-     * @return void
-     */
     #[\Override]
-    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         if (!($this->BaseInfo->getDeliveryFreeAmount() || $this->BaseInfo->getDeliveryFreeQuantity())) {
             return;
@@ -79,7 +69,7 @@ class DeliveryFeeFreeByShippingPreprocessor implements ItemHolderPreprocessor
                     }
                 }
                 if ($isFree) {
-                    /** @var \Eccube\Entity\OrderItem $Item */
+                    /** @var OrderItem $Item */
                     foreach ($Shipping->getOrderItems() as $Item) {
                         if ($Item->getProcessorName() == DeliveryFeePreprocessor::class) {
                             $Item->setQuantity('0');

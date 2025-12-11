@@ -13,60 +13,40 @@
 
 namespace Eccube\Doctrine\EventSubscriber;
 
-use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Events;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Eccube\Entity\ProductClass;
 use Eccube\Service\TaxRuleService;
 
-class TaxRuleEventSubscriber implements EventSubscriber
+#[AsDoctrineListener(event: Events::prePersist)]
+#[AsDoctrineListener(event: Events::postLoad)]
+#[AsDoctrineListener(event: Events::postPersist)]
+#[AsDoctrineListener(event: Events::postUpdate)]
+class TaxRuleEventSubscriber
 {
-    /**
-     * @var TaxRuleService
-     */
-    protected $taxRuleService;
-
     /**
      * TaxRuleEventSubscriber constructor.
      */
-    public function __construct(TaxRuleService $taxRuleService)
+    public function __construct(protected TaxRuleService $taxRuleService)
     {
-        $this->taxRuleService = $taxRuleService;
     }
 
-    /**
-     * @return object|null
-     */
-    public function getTaxRuleService()
+    public function getTaxRuleService(): ?object
     {
         return $this->taxRuleService;
     }
 
     /**
-     * @return array|string[]
+     * @param LifecycleEventArgs<EntityManagerInterface> $args
      */
-    #[\Override]
-    public function getSubscribedEvents()
-    {
-        return [
-            Events::prePersist,
-            Events::postLoad,
-            Events::postPersist,
-            Events::postUpdate,
-        ];
-    }
-
-    /**
-     * @param LifecycleEventArgs $args
-     *
-     * @return void
-     */
-    public function prePersist(LifecycleEventArgs $args)
+    public function prePersist(LifecycleEventArgs $args): void
     {
         $entity = $args->getObject();
 
         if ($entity instanceof ProductClass) {
-            $entity->setPrice01IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice01() === null ? '0' : $entity->getPrice01(),
+            $entity->setPrice01IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice01() ?? '0',
                 $entity->getProduct(), $entity));
             $entity->setPrice02IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice02(),
                 $entity->getProduct(), $entity));
@@ -74,16 +54,14 @@ class TaxRuleEventSubscriber implements EventSubscriber
     }
 
     /**
-     * @param LifecycleEventArgs $args
-     *
-     * @return void
+     * @param LifecycleEventArgs<EntityManagerInterface> $args
      */
-    public function postLoad(LifecycleEventArgs $args)
+    public function postLoad(LifecycleEventArgs $args): void
     {
         $entity = $args->getObject();
 
         if ($entity instanceof ProductClass) {
-            $entity->setPrice01IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice01() === null ? '0' : $entity->getPrice01(),
+            $entity->setPrice01IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice01() ?? '0',
                 $entity->getProduct(), $entity));
             $entity->setPrice02IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice02(),
                 $entity->getProduct(), $entity));
@@ -91,16 +69,14 @@ class TaxRuleEventSubscriber implements EventSubscriber
     }
 
     /**
-     * @param LifecycleEventArgs $args
-     *
-     * @return void
+     * @param LifecycleEventArgs<EntityManagerInterface> $args
      */
-    public function postPersist(LifecycleEventArgs $args)
+    public function postPersist(LifecycleEventArgs $args): void
     {
         $entity = $args->getObject();
 
         if ($entity instanceof ProductClass) {
-            $entity->setPrice01IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice01() === null ? '0' : $entity->getPrice01(),
+            $entity->setPrice01IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice01() ?? '0',
                 $entity->getProduct(), $entity));
             $entity->setPrice02IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice02(),
                 $entity->getProduct(), $entity));
@@ -108,16 +84,14 @@ class TaxRuleEventSubscriber implements EventSubscriber
     }
 
     /**
-     * @param LifecycleEventArgs $args
-     *
-     * @return void
+     * @param LifecycleEventArgs<EntityManagerInterface> $args
      */
-    public function postUpdate(LifecycleEventArgs $args)
+    public function postUpdate(LifecycleEventArgs $args): void
     {
         $entity = $args->getObject();
 
         if ($entity instanceof ProductClass) {
-            $entity->setPrice01IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice01() === null ? '0' : $entity->getPrice01(),
+            $entity->setPrice01IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice01() ?? '0',
                 $entity->getProduct(), $entity));
             $entity->setPrice02IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice02(),
                 $entity->getProduct(), $entity));

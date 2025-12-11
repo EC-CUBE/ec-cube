@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,12 +17,14 @@ namespace Eccube\Tests\Web\Admin\Setting\System;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Faker\Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class LogControllerTest
  */
-class LogControllerTest extends AbstractAdminWebTestCase
+final class LogControllerTest extends AbstractAdminWebTestCase
 {
     /** log Test   */
     protected $logTest;
@@ -28,6 +32,7 @@ class LogControllerTest extends AbstractAdminWebTestCase
     /** form Data   */
     protected $formData;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -50,6 +55,7 @@ class LogControllerTest extends AbstractAdminWebTestCase
     /**
      * rollback
      */
+    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();
@@ -64,7 +70,7 @@ class LogControllerTest extends AbstractAdminWebTestCase
     public function testRoutingAdminSettingSystemLog()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_setting_system_log')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -76,7 +82,7 @@ class LogControllerTest extends AbstractAdminWebTestCase
     public function testSystemLogSubmit()
     {
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_system_log'),
             ['admin_system_log' => $this->formData]
         );
@@ -89,9 +95,8 @@ class LogControllerTest extends AbstractAdminWebTestCase
      * @param string|int $value
      * @param string $expected
      * @param string $message
-     *
-     * @dataProvider dataProvider
      */
+    #[DataProvider(methodName: 'dataProvider')]
     public function testSystemLogValidate($value, $expected, $message)
     {
         $this->createTestFile(1);
@@ -100,7 +105,7 @@ class LogControllerTest extends AbstractAdminWebTestCase
 
         /** @var Crawler $crawler */
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_system_log'),
             ['admin_system_log' => $this->formData]
         );
@@ -114,22 +119,16 @@ class LogControllerTest extends AbstractAdminWebTestCase
         }
     }
 
-    /**
-     * @return array
-     */
-    public function dataProvider()
+    public static function dataProvider(): \Iterator
     {
-        return [
-            // FIXME 以下のメッセージが翻訳されない
-            // https://github.com/symfony/validator/blob/4.4/Resources/translations/validators.ja.xlf#L270
-            ['', '', '入力されていません。'],
-            ['a', '', '有効な数値ではありません。'],
-            // [0, '', '1以上でなければなりません。'],
-            [0, '', ''],
-            [50000, '', ''],
-            [1.1, '', ''],
-            // [100001, '', '50000以下でなければなりません。'],
-        ];
+        // FIXME 以下のメッセージが翻訳されない
+        // https://github.com/symfony/validator/blob/4.4/Resources/translations/validators.ja.xlf#L270
+        yield ['', '', '入力されていません。'];
+        yield ['a', '', 'この値は有効な数値でなければなりません。'];
+        // [0, '', '1以上でなければなりません。'],
+        yield [0, '', ''];
+        yield [50000, '', ''];
+        yield [1.1, '', ''];
     }
 
     private function createTestFile($number)

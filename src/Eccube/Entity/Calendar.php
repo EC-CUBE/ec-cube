@@ -13,22 +13,19 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\CalendarRepository;
 
 if (!class_exists(Calendar::class)) {
     /**
      * Calendar
-     *
-     * @ORM\Table(name="dtb_calendar")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\CalendarRepository")
      */
+    #[ORM\Table(name: 'dtb_calendar')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: CalendarRepository::class)]
     class Calendar extends AbstractEntity
     {
         /**
@@ -38,73 +35,51 @@ if (!class_exists(Calendar::class)) {
 
         /**
          * is default
-         *
-         * @return bool
          */
-        public function isDefaultCalendar()
+        public function isDefaultCalendar(): bool
         {
             return self::DEFAULT_CALENDAR_ID === $this->getId();
         }
 
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
-         *
-         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
-         */
-        private $id;
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+        /** @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
+        private ?int $id = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="title", type="string", length=255, nullable=true)
-         */
-        private $title;
+        #[ORM\Column(name: 'title', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $title = null;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="holiday", type="datetimetz")
          */
+        #[ORM\Column(name: 'holiday', type: Types::DATETIMETZ_MUTABLE)]
         private $holiday;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
         private $create_date;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
         private $update_date;
 
         /**
          * Get id.
-         *
-         * @return int
          */
-        public function getId()
+        public function getId(): ?int
         {
             return $this->id;
         }
 
         /**
          * Set title.
-         *
-         * @param string $title
-         *
-         * @return Calendar
          */
-        public function setTitle($title)
+        public function setTitle(string $title): Calendar
         {
             $this->title = $title;
 
@@ -113,22 +88,16 @@ if (!class_exists(Calendar::class)) {
 
         /**
          * Get title.
-         *
-         * @return string
          */
-        public function getTitle()
+        public function getTitle(): string
         {
             return $this->title;
         }
 
         /**
          * Set holiday.
-         *
-         * @param \DateTime $holiday
-         *
-         * @return Calendar
          */
-        public function setHoliday($holiday)
+        public function setHoliday(\DateTime $holiday): Calendar
         {
             $this->holiday = $holiday;
 
@@ -137,22 +106,16 @@ if (!class_exists(Calendar::class)) {
 
         /**
          * Get holiday.
-         *
-         * @return \DateTime
          */
-        public function getHoliday()
+        public function getHoliday(): ?\DateTime
         {
             return $this->holiday;
         }
 
         /**
          * Set createDate.
-         *
-         * @param \DateTime $createDate
-         *
-         * @return Calendar
          */
-        public function setCreateDate($createDate)
+        public function setCreateDate(\DateTime $createDate): Calendar
         {
             $this->create_date = $createDate;
 
@@ -161,22 +124,16 @@ if (!class_exists(Calendar::class)) {
 
         /**
          * Get createDate.
-         *
-         * @return \DateTime
          */
-        public function getCreateDate()
+        public function getCreateDate(): ?\DateTime
         {
             return $this->create_date;
         }
 
         /**
          * Set updateDate.
-         *
-         * @param \DateTime $updateDate
-         *
-         * @return Calendar
          */
-        public function setUpdateDate($updateDate)
+        public function setUpdateDate(\DateTime $updateDate): Calendar
         {
             $this->update_date = $updateDate;
 
@@ -185,10 +142,8 @@ if (!class_exists(Calendar::class)) {
 
         /**
          * Get updateDate.
-         *
-         * @return \DateTime
          */
-        public function getUpdateDate()
+        public function getUpdateDate(): ?\DateTime
         {
             return $this->update_date;
         }

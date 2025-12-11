@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,6 +19,7 @@ use Eccube\Tests\Web\AbstractWebTestCase;
 
 abstract class AbstractAdminWebTestCase extends AbstractWebTestCase
 {
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -28,7 +31,8 @@ abstract class AbstractAdminWebTestCase extends AbstractWebTestCase
      *
      * @param mixed|null $user
      */
-    public function logIn($user = null)
+    #[\Override]
+    public function logIn(mixed $user = null)
     {
         if (!is_object($user)) {
             $user = $this->createMember();

@@ -18,44 +18,20 @@ use Eccube\Entity\Member;
 use Eccube\Repository\AuthorityRoleRepository;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class AuthorityVoter implements VoterInterface
 {
-    /**
-     * @var AuthorityRoleRepository
-     */
-    protected $authorityRoleRepository;
-
-    /**
-     * @var RequestStack
-     */
-    protected $requestStack;
-
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    public function __construct(
-        AuthorityRoleRepository $authorityRoleRepository,
-        RequestStack $requestStack,
-        EccubeConfig $eccubeConfig,
-    ) {
-        $this->authorityRoleRepository = $authorityRoleRepository;
-        $this->requestStack = $requestStack;
-        $this->eccubeConfig = $eccubeConfig;
+    public function __construct(protected AuthorityRoleRepository $authorityRoleRepository, protected RequestStack $requestStack, protected EccubeConfig $eccubeConfig)
+    {
     }
 
     /**
-     * @param TokenInterface $token
-     * @param mixed $subject
      * @param array<mixed> $attributes
-     *
-     * @return int
      */
     #[\Override]
-    public function vote(TokenInterface $token, $subject, array $attributes): int
+    public function vote(TokenInterface $token, mixed $subject, array $attributes, ?Vote $vote = null): int
     {
         $path = null;
 

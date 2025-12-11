@@ -15,43 +15,26 @@ namespace Eccube\Command;
 
 use Eccube\Common\EccubeConfig;
 use Eccube\Service\EntityProxyService;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'eccube:generate:proxies', description: 'Generate entity proxies')]
 class GenerateProxyCommand extends Command
 {
-    protected static $defaultName = 'eccube:generate:proxies';
-
-    /**
-     * @var EntityProxyService
-     */
-    private $entityProxyService;
-
-    /**
-     * @var EccubeConfig
-     */
-    private $eccubeConfig;
-
-    public function __construct(EntityProxyService $entityProxyService, EccubeConfig $eccubeConfig)
+    public function __construct(private readonly EntityProxyService $entityProxyService, private readonly EccubeConfig $eccubeConfig)
     {
         parent::__construct();
-        $this->entityProxyService = $entityProxyService;
-        $this->eccubeConfig = $eccubeConfig;
     }
 
-    /**
-     * @return void
-     */
     #[\Override]
-    protected function configure()
+    protected function configure(): void
     {
-        $this
-            ->setDescription('Generate entity proxies');
     }
 
     #[\Override]
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $projectDir = $this->eccubeConfig->get('kernel.project_dir');
         $includeDirs = [$projectDir.'/app/Customize/Entity'];

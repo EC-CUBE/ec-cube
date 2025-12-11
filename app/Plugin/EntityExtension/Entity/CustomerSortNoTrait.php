@@ -14,13 +14,14 @@
 namespace Plugin\EntityExtension\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Eccube\Annotation\EntityExtension;
+use Eccube\Attribute\EntityExtension;
 
 #[EntityExtension(\Eccube\Entity\Customer::class)]
 trait CustomerSortNoTrait
 {
     /**
-     * @ORM\Column(type="smallint", nullable=true)
+     * @var int|null
      */
+    #[ORM\Column(name: 'sort_no', type: 'smallint', nullable: true)]
     public $sort_no;
 }

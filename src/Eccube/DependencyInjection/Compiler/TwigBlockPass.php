@@ -22,14 +22,10 @@ class TwigBlockPass implements CompilerPassInterface
     public const TWIG_BLOCK_TAG = 'eccube.twig_block';
 
     /**
-     * @param ContainerBuilder $container
-     *
-     * @return void
-     *
      * @throws \InvalidArgumentException
      */
     #[\Override]
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $ids = $container->findTaggedServiceIds(self::TWIG_BLOCK_TAG);
         $templates = $container->getParameter('eccube_twig_block_templates');

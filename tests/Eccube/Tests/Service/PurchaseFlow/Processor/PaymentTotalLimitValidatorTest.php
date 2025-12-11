@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -13,13 +15,16 @@
 
 namespace Eccube\Tests\Service\PurchaseFlow\Processor;
 
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Cart;
 use Eccube\Entity\Order;
 use Eccube\Service\PurchaseFlow\Processor\PaymentTotalLimitValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\MockObject\Exception;
+use PHPUnit\Framework\MockObject\MockObject;
 
-class PaymentTotalLimitValidatorTest extends EccubeTestCase
+final class PaymentTotalLimitValidatorTest extends EccubeTestCase
 {
     public function testCartValidate()
     {
@@ -29,7 +34,7 @@ class PaymentTotalLimitValidatorTest extends EccubeTestCase
         $cart->setTotal(100);
 
         $result = $validator->execute($cart, new PurchaseContext());
-        self::assertFalse($result->isError());
+        $this->assertFalse($result->isError());
     }
 
     public function testCartValidateFail()
@@ -40,7 +45,7 @@ class PaymentTotalLimitValidatorTest extends EccubeTestCase
         $cart->setTotal(1001);
 
         $result = $validator->execute($cart, new PurchaseContext());
-        self::assertTrue($result->isError());
+        $this->assertTrue($result->isError());
     }
 
     public function testOrderValidate()
@@ -51,7 +56,7 @@ class PaymentTotalLimitValidatorTest extends EccubeTestCase
         $order->setTotal(100);
 
         $result = $validator->execute($order, new PurchaseContext());
-        self::assertFalse($result->isError());
+        $this->assertFalse($result->isError());
     }
 
     public function testOrderValidateFail()
@@ -62,24 +67,24 @@ class PaymentTotalLimitValidatorTest extends EccubeTestCase
         $order->setTotal(1001);
 
         $result = $validator->execute($order, new PurchaseContext());
-        self::assertTrue($result->isError());
+        $this->assertTrue($result->isError());
     }
 
     /**
      * @param $maxTotalFee
      *
-     * @return PaymentTotalLimitValidator
-     *
-     * @throws \ReflectionException
+     * @throws Exception
      */
-    private function newValidator($maxTotalFee)
+    private function newValidator($maxTotalFee): PaymentTotalLimitValidator
     {
-        $result = static::getContainer()->get(PaymentTotalLimitValidator::class);
-        $rc = new \ReflectionClass(PaymentTotalLimitValidator::class);
-        $prop = $rc->getProperty('maxTotalFee');
-        $prop->setAccessible(true);
-        $prop->setValue($result, $maxTotalFee);
+        // PaymentTotalLimitValidatorのmaxTotalFeeをreadonlyに設定したため、
+        // EccubeConfigをモックして、指定した値を返すようにする
+        /** @var EccubeConfig&MockObject $eccubeConfig */
+        $eccubeConfig = $this->createMock(EccubeConfig::class);
+        $eccubeConfig->method('offsetGet')
+            ->with('eccube_max_total_fee')
+            ->willReturn($maxTotalFee);
 
-        return $result;
+        return new PaymentTotalLimitValidator($eccubeConfig);
     }
 }

@@ -12,114 +12,91 @@
  */
 
 use Eccube\DependencyInjection\Facade\LoggerFacade;
+use Monolog\Logger;
 
 /**
- * @param string $message
  * @param array<mixed> $context
- *
- * @return void
  *
  * @throws Exception
  */
-function log_emergency($message, array $context = [])
+function log_emergency(string $message, array $context = []): void
 {
     $logger = LoggerFacade::create();
     $logger->emergency($message, $context);
 }
 
 /**
- * @param string $message
  * @param array<mixed> $context
- *
- * @return void
  *
  * @throws Exception
  */
-function log_alert($message, array $context = [])
+function log_alert(string $message, array $context = []): void
 {
     $logger = LoggerFacade::create();
     $logger->alert($message, $context);
 }
 
 /**
- * @param string $message
  * @param array<mixed> $context
- *
- * @return void
  *
  * @throws Exception
  */
-function log_critical($message, array $context = [])
+function log_critical(string $message, array $context = []): void
 {
     $logger = LoggerFacade::create();
     $logger->critical($message, $context);
 }
 
 /**
- * @param string $message
  * @param array<mixed> $context
- *
- * @return void
  *
  * @throws Exception
  */
-function log_error($message, array $context = [])
+function log_error(string $message, array $context = []): void
 {
     $logger = LoggerFacade::create();
     $logger->error($message, $context);
 }
 
 /**
- * @param string $message
  * @param array<mixed> $context
- *
- * @return void
  *
  * @throws Exception
  */
-function log_warning($message, array $context = [])
+function log_warning(string $message, array $context = []): void
 {
     $logger = LoggerFacade::create();
     $logger->warning($message, $context);
 }
 
 /**
- * @param string $message
  * @param array<mixed> $context
- *
- * @return void
  *
  * @throws Exception
  */
-function log_notice($message, array $context = [])
+function log_notice(string $message, array $context = []): void
 {
     $logger = LoggerFacade::create();
     $logger->notice($message, $context);
 }
 
 /**
- * @param string $message
  * @param array<mixed> $context
- *
- * @return void
  *
  * @throws Exception
  */
-function log_info($message, array $context = [])
+function log_info(string $message, array $context = []): void
 {
     $logger = LoggerFacade::create();
     $logger->info($message, $context);
 }
 
 /**
- * @param string $message
  * @param array<mixed> $context
- *
- * @return void
  *
  * @throws Exception
  */
-function log_debug($message, array $context = [])
+function log_debug(string $message, array $context = []): void
 {
     $logger = LoggerFacade::create();
     $logger->debug($message, $context);
@@ -129,10 +106,8 @@ function log_debug($message, array $context = [])
  * プラグイン用ログ出力関数
  *
  * @param string $channel 設定されたchannel名
- *
- * @return Symfony\Bridge\Monolog\Logger
  */
-function logs($channel)
+function logs(string $channel): Logger
 {
     return LoggerFacade::getLoggerBy($channel);
 }

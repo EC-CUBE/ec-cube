@@ -13,29 +13,27 @@
 
 namespace Eccube\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(name: 'eccube:plugin:disable')]
 class PluginDisableCommand extends Command
 {
     use PluginCommandTrait;
-    protected static $defaultName = 'eccube:plugin:disable';
 
-    /**
-     * @return void
-     */
     #[\Override]
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addOption('code', null, InputOption::VALUE_OPTIONAL, 'plugin code');
     }
 
     #[\Override]
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 

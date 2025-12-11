@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,6 +20,7 @@ use Eccube\Entity\Order;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\OrderRepository;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mime\Email;
 
 /**
@@ -25,16 +28,15 @@ use Symfony\Component\Mime\Email;
  *
  * @author Kentaro Ohkouchi
  */
-class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingControllerTestCase
+final class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingControllerTestCase
 {
     use MailerAssertionsTrait;
 
-    /** @var BaseInfoRepository */
-    private $baseInfoRepository;
+    private ?BaseInfoRepository $baseInfoRepository = null;
 
-    /** @var OrderRepository */
-    private $orderRepository;
+    private ?OrderRepository $orderRepository = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -42,6 +44,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         $this->orderRepository = $this->entityManager->getRepository(Order::class);
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();
@@ -64,35 +67,33 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         $this->verify();
 
         // 複数配送画面
-        $crawler = $this->client->request('GET', $this->generateUrl('shopping_shipping_multiple'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('shopping_shipping_multiple'));
 
         // お届け先情報入力画面
-        $crawler = $this->client->request('GET', $this->generateUrl('shopping_shipping_multiple_edit'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('shopping_shipping_multiple_edit'));
 
         $form = $this->createShippingFormData();
 
         // お届け先追加
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple_edit'),
             ['shopping_shipping' => $form]
         );
 
-        $crawler = $this->client->request('GET', $this->generateUrl('shopping_shipping_multiple'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('shopping_shipping_multiple'));
 
         // 配送先1, 配送先2の情報を返す
         $shippings = $crawler->filter('#form_shipping_multiple_0_shipping_0_customer_address > option')->each(
-            function ($node, $i) {
-                return [
-                    'customer_address' => $node->attr('value'),
-                    'quantity' => 1,
-                ];
-            }
+            fn ($node, $i) => [
+                'customer_address' => $node->attr('value'),
+                'quantity' => 1,
+            ]
         );
 
         // 複数配送設定
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => [
                 'shipping_multiple' => [0 => [
@@ -181,7 +182,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => $multiForm]
         );
@@ -231,7 +232,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => $multiForm]
         );
@@ -256,12 +257,12 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         // Product test 1 with type 1
         $Product1 = $this->createProduct();
         $ProductClass1 = $Product1->getProductClasses()->first();
-        $ProductClass1->setStock(111);
+        $ProductClass1->setStock('111');
 
         // Product test 2
         $Product2 = $this->createProduct();
         $ProductClass2 = $Product2->getProductClasses()->first();
-        $ProductClass2->setStock(111);
+        $ProductClass2->setStock('111');
 
         $this->entityManager->persist($ProductClass1);
         $this->entityManager->persist($ProductClass2);
@@ -302,7 +303,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => $multiForm]
         );
@@ -328,12 +329,12 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         // Product test 1 with type 1
         $Product1 = $this->createProduct();
         $ProductClass1 = $Product1->getProductClasses()->first();
-        $ProductClass1->setStock(111);
+        $ProductClass1->setStock('111');
 
         // Product test 2
         $Product2 = $this->createProduct();
         $ProductClass2 = $Product2->getProductClasses()->first();
-        $ProductClass2->setStock(111);
+        $ProductClass2->setStock('111');
 
         $this->entityManager->persist($ProductClass1);
         $this->entityManager->persist($ProductClass2);
@@ -358,7 +359,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         unset($formData['email']);
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple_edit'),
             ['shopping_shipping' => $formData]
         );
@@ -394,7 +395,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => $multiForm]
         );
@@ -419,12 +420,12 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         // Product test 1 with type 1
         $Product1 = $this->createProduct();
         $ProductClass1 = $Product1->getProductClasses()->first();
-        $ProductClass1->setStock(111);
+        $ProductClass1->setStock('111');
 
         // Product test 2
         $Product2 = $this->createProduct();
         $ProductClass2 = $Product2->getProductClasses()->first();
-        $ProductClass2->setStock(111);
+        $ProductClass2->setStock('111');
 
         $this->entityManager->persist($ProductClass1);
         $this->entityManager->persist($ProductClass2);
@@ -451,7 +452,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         unset($formData['email']);
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple_edit'),
             ['shopping_shipping' => $formData]
         );
@@ -491,7 +492,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => $multiForm]
         );
@@ -516,17 +517,17 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         // Product test 1 with type 1
         $Product1 = $this->createProduct();
         $ProductClass = $Product1->getProductClasses()->first();
-        $ProductClass->setStock(111);
+        $ProductClass->setStock('111');
 
         // Product test 2
         $Product2 = $this->createProduct();
         $ProductClass2 = $Product2->getProductClasses()->first();
-        $ProductClass2->setStock(111);
+        $ProductClass2->setStock('111');
 
         // Product test 3
         $Product3 = $this->createProduct();
         $ProductClass3 = $Product3->getProductClasses()->first();
-        $ProductClass3->setStock(111);
+        $ProductClass3->setStock('111');
 
         $this->entityManager->persist($ProductClass);
         $this->entityManager->persist($ProductClass2);
@@ -592,7 +593,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => $multiForm]
         );
@@ -618,17 +619,17 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         // Product test 1 with type 1
         $Product1 = $this->createProduct();
         $ProductClass1 = $Product1->getProductClasses()->first();
-        $ProductClass1->setStock(111);
+        $ProductClass1->setStock('111');
 
         // Product test 2
         $Product2 = $this->createProduct();
         $ProductClass2 = $Product2->getProductClasses()->first();
-        $ProductClass2->setStock(111);
+        $ProductClass2->setStock('111');
 
         // Product test 3
         $Product3 = $this->createProduct();
         $ProductClass3 = $Product3->getProductClasses()->first();
-        $ProductClass3->setStock(111);
+        $ProductClass3->setStock('111');
 
         $this->entityManager->persist($ProductClass1);
         $this->entityManager->persist($ProductClass2);
@@ -658,7 +659,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         unset($formData['email']);
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple_edit'),
             ['shopping_shipping' => $formData]
         );
@@ -706,7 +707,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => $multiForm]
         );
@@ -732,17 +733,17 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         // Product test 1 with type 1
         $Product1 = $this->createProduct();
         $ProductClass1 = $Product1->getProductClasses()->first();
-        $ProductClass1->setStock(111);
+        $ProductClass1->setStock('111');
 
         // Product test 2
         $Product2 = $this->createProduct();
         $ProductClass2 = $Product2->getProductClasses()->first();
-        $ProductClass2->setStock(111);
+        $ProductClass2->setStock('111');
 
         // Product test 3
         $Product3 = $this->createProduct();
         $ProductClass3 = $Product3->getProductClasses()->first();
-        $ProductClass3->setStock(111);
+        $ProductClass3->setStock('111');
 
         $this->entityManager->persist($ProductClass1);
         $this->entityManager->persist($ProductClass2);
@@ -774,7 +775,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         unset($formData['email']);
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple_edit'),
             ['shopping_shipping' => $formData]
         );
@@ -787,7 +788,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         unset($formData['email']);
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple_edit'),
             ['shopping_shipping' => $formData]
         );
@@ -843,7 +844,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => $multiForm]
         );
@@ -864,13 +865,13 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
     /**
      * Test add multi shipping
      */
-    public function testAddMultiShippingCartUnlock()
+    public function testAddMultiShippingCartUnlock(): never
     {
         $this->markTestIncomplete('カートのアンロック対応');
 
-        $this->client->request('POST', '/cart/add', ['product_class_id' => 10, 'quantity' => 2]);
-        $this->client->request('POST', '/cart/add', ['product_class_id' => 1, 'quantity' => 1]);
-        $this->client->request('POST', '/cart/add', ['product_class_id' => 2, 'quantity' => 1]);
+        $this->client->request(Request::METHOD_POST, '/cart/add', ['product_class_id' => 10, 'quantity' => 2]);
+        $this->client->request(Request::METHOD_POST, '/cart/add', ['product_class_id' => 1, 'quantity' => 1]);
+        $this->client->request(Request::METHOD_POST, '/cart/add', ['product_class_id' => 2, 'quantity' => 1]);
 
         $this->scenarioCartIn();
 
@@ -886,7 +887,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
     /**
      * Test multi shipping with nonmember
      */
-    public function testAddMultiShippingWithoutCart()
+    public function testAddMultiShippingWithoutCart(): never
     {
         $this->markTestIncomplete('カートのクリア対応');
 
@@ -922,7 +923,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         $cartService->clear();
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => $multiForm]
         );
@@ -933,13 +934,13 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
     /**
      * Test multi shipping with nonmember
      */
-    public function testAddMultiShippingShippingUnlock()
+    public function testAddMultiShippingShippingUnlock(): never
     {
         $this->markTestIncomplete('カートのアンロック対応');
 
         $client = $this->client;
 
-        $client->request('POST', '/cart/add', ['product_class_id' => 1, 'quantity' => 1]);
+        $client->request(Request::METHOD_POST, '/cart/add', ['product_class_id' => 1, 'quantity' => 1]);
         $this->scenarioCartIn($client);
 
         $this->createNonmemberFormData();
@@ -974,7 +975,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         $this->app['eccube.service.cart']->unlock();
 
         $client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => $multiForm]
         );
@@ -1011,14 +1012,14 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => $multiForm]
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
 
-        $crawler = $this->client->request('GET', $this->generateUrl('shopping'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('shopping'));
         $shipping = $crawler->filter('#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div.ec-orderDelivery__item > ul')->last()->text();
         $this->assertStringContainsString('× 3', $shipping);
     }
@@ -1043,7 +1044,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         unset($formData['email']);
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple_edit'),
             ['shopping_shipping' => $formData]
         );
@@ -1067,7 +1068,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => $multiForm]
         );
@@ -1094,7 +1095,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => $multiForm]
         );
@@ -1119,17 +1120,17 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         // Product test 1 with type 1
         $Product1 = $this->createProduct();
         $ProductClass1 = $Product1->getProductClasses()->first();
-        $ProductClass1->setStock(111);
+        $ProductClass1->setStock('111');
 
         // Product test 2
         $Product2 = $this->createProduct();
         $ProductClass2 = $Product2->getProductClasses()->first();
-        $ProductClass2->setStock(111);
+        $ProductClass2->setStock('111');
 
         // Product test 3
         $Product3 = $this->createProduct();
         $ProductClass3 = $Product3->getProductClasses()->first();
-        $ProductClass3->setStock(111);
+        $ProductClass3->setStock('111');
 
         $this->entityManager->persist($ProductClass1);
         $this->entityManager->persist($ProductClass2);
@@ -1161,7 +1162,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         unset($formData['email']);
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple_edit'),
             ['shopping_shipping' => $formData]
         );
@@ -1174,7 +1175,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         unset($formData['email']);
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple_edit'),
             ['shopping_shipping' => $formData]
         );
@@ -1230,7 +1231,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => $multiForm]
         );
@@ -1251,7 +1252,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
 
         // shipping number on the screen
         $lastShipping = $crawler->filter('#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery div.ec-orderDelivery__title')->last()->text();
-        $this->assertStringContainsString("({$addressNumber})", $lastShipping);
+        $this->assertStringContainsString("({$addressNumber})", (string) $lastShipping);
     }
 
     /**
@@ -1262,7 +1263,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         // Max address need to test
         $maxAddress = 25;
 
-        $this->client->request('POST', $this->generateUrl('product_add_cart', ['id' => '1']), [
+        $this->client->request(Request::METHOD_POST, $this->generateUrl('product_add_cart', ['id' => '1']), [
             'ProductClass' => '1',
             'quantity' => $maxAddress,
             '_token' => 'dummy',
@@ -1281,21 +1282,19 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         for ($i = 0; $i < $maxAddress; $i++) {
             $formData['address']['addr02'] = "addr02_{$i}";
             $crawler = $this->client->request(
-                'POST',
+                Request::METHOD_POST,
                 $this->generateUrl('shopping_shipping_multiple_edit'),
                 ['shopping_shipping' => $formData]
             );
         }
 
-        $crawler = $this->client->request('GET', $this->generateUrl('shopping_shipping_multiple'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('shopping_shipping_multiple'));
 
         $shipping = $crawler->filter('#form_shipping_multiple_0_shipping_0_customer_address > option')->each(
-            function ($node, $i) {
-                return [
-                    'customer_address' => $node->attr('value'),
-                    'quantity' => 1,
-                ];
-            }
+            fn ($node, $i) => [
+                'customer_address' => $node->attr('value'),
+                'quantity' => 1,
+            ]
         );
 
         // add multi shipping
@@ -1309,7 +1308,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => $multiForm]
         );
@@ -1329,7 +1328,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
 
         // shipping number on the screen
         $lastShipping = $crawler->filter('#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery div.ec-orderDelivery__title')->last()->text();
-        $this->assertStringContainsString((string) $maxAddress, $lastShipping);
+        $this->assertStringContainsString((string) $maxAddress, (string) $lastShipping);
     }
 
     /**
@@ -1355,7 +1354,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
     {
         $Product = $this->createProduct();
         $ProductClass = $Product->getProductClasses()->first();
-        $ProductClass->setStock(111);
+        $ProductClass->setStock('111');
         $this->entityManager->persist($ProductClass);
         $this->entityManager->flush();
 
@@ -1393,7 +1392,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => $multiForm]
         );
@@ -1413,17 +1412,15 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
 
         // item number on the screen
         $shipping = $crawler->filter('#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div.ec-orderDelivery__item > ul')->text();
-        $this->assertStringContainsString('× 3', $shipping);
+        $this->assertStringContainsString('× 3', (string) $shipping);
 
         $deliver = $crawler->filter('#shopping_order_Shippings_0_Delivery > option')->each(
-            function ($node, $i) {
-                return $node->text();
-            }
+            fn ($node, $i) => $node->text()
         );
 
         $this->expected = 'サンプル業者';
         $this->actual = $deliver;
-        $this->assertTrue(in_array($this->expected, $this->actual));
+        $this->assertContains($this->expected, $this->actual);
 
         // 完了画面
         $this->scenarioComplete(
@@ -1455,10 +1452,7 @@ class ShoppingControllerWithMultipleNonmemberTest extends AbstractShoppingContro
         $this->assertEmailTextBodyContains($Message, '◎お届け先', '複数配送のため, お届け先1が存在する');
     }
 
-    /**
-     * @return Order
-     */
-    private function getLastOrder()
+    private function getLastOrder(): Order
     {
         return $this->orderRepository->findOneBy([], ['id' => 'desc']);
     }

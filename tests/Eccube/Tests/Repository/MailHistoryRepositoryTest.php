@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -27,36 +29,25 @@ use Eccube\Tests\EccubeTestCase;
  *
  * @author Kentaro Ohkouchi
  */
-class MailHistoryRepositoryTest extends EccubeTestCase
+final class MailHistoryRepositoryTest extends EccubeTestCase
 {
-    /**
-     * @var Member
-     */
-    protected $Member;
+    protected ?Member $Member = null;
 
-    /**
-     * @var Customer
-     */
-    protected $Customer;
+    protected ?Customer $Customer = null;
 
-    /**
-     * @var Order
-     */
-    protected $Order;
+    protected ?Order $Order = null;
 
     /**
      * @var MailHistory[]
      */
-    protected $MailHistories;
+    protected ?array $MailHistories = null;
 
-    /**
-     * @var MailHistoryRepository
-     */
-    protected $mailHistoryRepo;
+    protected ?MailHistoryRepository $mailHistoryRepo = null;
 
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -68,8 +59,8 @@ class MailHistoryRepositoryTest extends EccubeTestCase
         $this->Order = $this->createOrder($this->Customer);
         $MailTemplate = new MailTemplate();
         $MailTemplate
-            ->setName($faker->word)
-            ->setMailSubject($faker->word)
+            ->setName($faker->word())
+            ->setMailSubject($faker->word())
             ->setCreator($this->Member);
         $this->entityManager->persist($MailTemplate);
         $this->entityManager->flush();

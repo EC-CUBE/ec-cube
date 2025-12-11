@@ -20,18 +20,11 @@ use Symfony\Component\Security\Http\Event\LogoutEvent;
 
 class EccubeLogoutSuccessHandler implements EventSubscriberInterface
 {
-    /** @var Context */
-    protected $context;
-
-    public function __construct(Context $context)
+    public function __construct(protected Context $context)
     {
-        $this->context = $context;
     }
 
-    /**
-     * @return void
-     */
-    public function onLogout(LogoutEvent $event)
+    public function onLogout(LogoutEvent $event): void
     {
         if ($this->context->isAdmin()) {
             $response = $event->getResponse();
@@ -43,7 +36,7 @@ class EccubeLogoutSuccessHandler implements EventSubscriberInterface
      * @return array<string, string>
      */
     #[\Override]
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [LogoutEvent::class => 'onLogout'];
     }

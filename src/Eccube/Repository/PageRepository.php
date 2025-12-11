@@ -13,6 +13,7 @@
 
 namespace Eccube\Repository;
 
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Common\EccubeConfig;
@@ -29,52 +30,32 @@ use Eccube\Entity\Page;
 class PageRepository extends AbstractRepository
 {
     /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
-     * @var string
-     *
      * @path %eccube_theme_user_data_dir% (app/template/user_data)
      */
-    protected $userDataRealDir;
+    protected string $userDataRealDir;
 
     /**
-     * @var string
-     *
      * @path %eccube_theme_app_dir% (app/template)
      */
-    protected $templateRealDir;
+    protected string $templateRealDir;
 
     /**
-     * @var string
-     *
      * @path %eccube_theme_src_dir% (src/Eccube/Resource/template)
      */
-    protected $templateDefaultRealDir;
+    protected string $templateDefaultRealDir;
 
     /**
      * PageRepository constructor.
-     *
-     * @param RegistryInterface $registry
-     * @param EccubeConfig $eccubeConfig
      */
-    public function __construct(RegistryInterface $registry, EccubeConfig $eccubeConfig)
+    public function __construct(RegistryInterface $registry, protected ?EccubeConfig $eccubeConfig)
     {
         parent::__construct($registry, Page::class);
-        $this->eccubeConfig = $eccubeConfig;
-        $this->userDataRealDir = $eccubeConfig->get('eccube_theme_user_data_dir');
-        $this->templateRealDir = $eccubeConfig->get('eccube_theme_app_dir');
-        $this->templateDefaultRealDir = $eccubeConfig->get('eccube_theme_src_dir');
+        $this->userDataRealDir = $this->eccubeConfig->get('eccube_theme_user_data_dir');
+        $this->templateRealDir = $this->eccubeConfig->get('eccube_theme_app_dir');
+        $this->templateDefaultRealDir = $this->eccubeConfig->get('eccube_theme_src_dir');
     }
 
-    /**
-     * @param string $route
-     *
-     * @return Page
-     */
-    public function getPageByRoute($route)
+    public function getPageByRoute(?string $route): Page
     {
         $qb = $this->createQueryBuilder('p');
 
@@ -86,7 +67,7 @@ class PageRepository extends AbstractRepository
                 ->where('p.url = :url')
                 ->setParameter('url', $route)
                 ->getQuery()
-                ->useResultCache(true, $this->getCacheLifetime())
+                ->setResultCacheLifetime($this->getCacheLifetime())
                 ->getSingleResult();
         } catch (\Exception) {
             return $this->newPage();
@@ -96,30 +77,22 @@ class PageRepository extends AbstractRepository
     }
 
     /**
-     * @param string $url
-     *
-     * @return Page
-     *
      * @throws NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
-    public function getByUrl($url)
+    public function getByUrl(string $url): Page
     {
         $qb = $this->createQueryBuilder('p');
-        $Page = $qb->select('p')
+
+        return $qb->select('p')
             ->where('p.url = :route')
             ->setParameter('route', $url)
             ->getQuery()
-            ->useResultCache(true, $this->getCacheLifetime())
+            ->setResultCacheLifetime($this->getCacheLifetime())
             ->getSingleResult();
-
-        return $Page;
     }
 
-    /**
-     * @return Page
-     */
-    public function newPage()
+    public function newPage(): Page
     {
         $Page = new Page();
         $Page->setEditType(Page::EDIT_TYPE_USER);
@@ -137,7 +110,7 @@ class PageRepository extends AbstractRepository
      *
      * @return array<int, mixed> ページ属性の配列
      */
-    public function getPageList($where = null, $parameters = [])
+    public function getPageList(?string $where = null, array $parameters = []): array
     {
         $qb = $this->createQueryBuilder('p')
             ->andWhere('p.id <> 0')
@@ -151,10 +124,8 @@ class PageRepository extends AbstractRepository
             }
         }
 
-        $Pages = $qb
+        return $qb
             ->getQuery()
             ->getResult();
-
-        return $Pages;
     }
 }

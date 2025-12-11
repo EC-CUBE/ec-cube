@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -14,6 +16,7 @@
 namespace Eccube\Tests\Web\Admin\Order;
 
 use Eccube\Common\Constant;
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderPdf;
@@ -22,27 +25,27 @@ use Eccube\Repository\OrderPdfRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Faker\Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\DomCrawler\Form;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Client;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Class OrderPdfControllerTest.
  */
-class OrderPdfControllerTest extends AbstractAdminWebTestCase
+final class OrderPdfControllerTest extends AbstractAdminWebTestCase
 {
-    /** @var OrderStatusRepository */
-    protected $orderStatusRepo;
+    protected ?OrderStatusRepository $orderStatusRepo = null;
 
-    /** @var OrderRepository */
-    protected $orderRepo;
+    protected ?OrderRepository $orderRepo = null;
 
-    /** @var OrderPdfRepository */
-    protected $orderPdfRepository;
+    protected ?OrderPdfRepository $orderPdfRepository = null;
 
-    /** @var array */
-    protected $config;
+    protected ?EccubeConfig $config = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -59,7 +62,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
     {
         $Order = $this->createOrderForSearch();
 
-        $this->client->request('POST',
+        $this->client->request(Request::METHOD_POST,
             $this->generateUrl('admin_order_export_pdf'),
             [
                 '_token' => 'dummy',
@@ -82,7 +85,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
          * @var Crawler
          */
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_order')
         );
 
@@ -105,7 +108,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         /**
          * @var Crawler
          */
-        $crawler = $this->client->request('POST',
+        $crawler = $this->client->request(Request::METHOD_POST,
             $this->generateUrl('admin_order_export_pdf'),
             [
                 '_token' => 'dummy',
@@ -132,7 +135,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         /**
          * @var Crawler
          */
-        $crawler = $this->client->request('POST',
+        $crawler = $this->client->request(Request::METHOD_POST,
             $this->generateUrl('admin_order_export_pdf'),
             [
                 '_token' => 'dummy',
@@ -158,7 +161,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $this->expected = 'application/pdf';
         $this->verify();
 
-        $crawler = $this->client->request('GET', $this->generateUrl('admin_order_export_pdf'),
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_order_export_pdf'),
             [
                 '_token' => 'dummy',
                 'ids' => [$shippingId],
@@ -181,7 +184,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
      */
     public function testDownloadIdInvalid()
     {
-        $this->client->request('GET', $this->generateUrl('admin_order_export_pdf'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_order_export_pdf'));
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order')));
         /**
          * @var Crawler
@@ -197,9 +200,8 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
      *
      * @param string $field
      * @param string $message
-     *
-     * @dataProvider dataDownloadMaxLengthProvider
      */
+    #[DataProvider(methodName: 'dataDownloadMaxLengthProvider')]
     public function testDownloadMaxLength($field, $message)
     {
         $Order = $this->createOrderForSearch();
@@ -213,7 +215,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         /**
          * @var Crawler
          */
-        $crawler = $client->request('POST', $this->generateUrl('admin_order_export_pdf'),
+        $crawler = $client->request(Request::METHOD_POST, $this->generateUrl('admin_order_export_pdf'),
             [
                 '_token' => 'dummy',
                 'ids' => [$shippingId],
@@ -236,25 +238,21 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
 
         $this->assertTrue($client->getResponse()->isSuccessful());
         $html = $crawler->filter('#order_pdf_form')->html();
-        $this->assertStringContainsString($message, $html);
+        $this->assertStringContainsString($message, (string) $html);
     }
 
     /**
      * Data provider for max length test.
-     *
-     * @return array
      */
-    public function dataDownloadMaxLengthProvider()
+    public static function dataDownloadMaxLengthProvider(): \Iterator
     {
-        return [
-            ['order_pdf[title]', 'この値は、255文字以内で入力してください。'],
-            ['order_pdf[message1]', 'この値は、30文字以内で入力してください。'],
-            ['order_pdf[message2]', 'この値は、30文字以内で入力してください。'],
-            ['order_pdf[message3]', 'この値は、30文字以内で入力してください。'],
-            ['order_pdf[note1]', 'この値は、255文字以内で入力してください。'],
-            ['order_pdf[note2]', 'この値は、255文字以内で入力してください。'],
-            ['order_pdf[note3]', 'この値は、255文字以内で入力してください。'],
-        ];
+        yield ['order_pdf[title]', '長すぎます。この値は255文字以下で入力してください。'];
+        yield ['order_pdf[message1]', '長すぎます。この値は30文字以下で入力してください。'];
+        yield ['order_pdf[message2]', '長すぎます。この値は30文字以下で入力してください。'];
+        yield ['order_pdf[message3]', '長すぎます。この値は30文字以下で入力してください。'];
+        yield ['order_pdf[note1]', '長すぎます。この値は255文字以下で入力してください。'];
+        yield ['order_pdf[note2]', '長すぎます。この値は255文字以下で入力してください。'];
+        yield ['order_pdf[note3]', '長すぎます。この値は255文字以下で入力してください。'];
     }
 
     /**
@@ -274,7 +272,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         /**
          * @var Crawler
          */
-        $crawler = $client->request('POST', $this->generateUrl('admin_order_export_pdf'),
+        $crawler = $client->request(Request::METHOD_POST, $this->generateUrl('admin_order_export_pdf'),
             [
                 '_token' => 'dummy',
                 'ids' => [$shippingId],
@@ -323,12 +321,14 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
             ->setNote1($faker->text(50))
             ->setNote2($faker->text(50))
             ->setNote3($faker->text(50))
-            ->setVisible(Constant::DISABLED);
+            ->setVisible((bool) Constant::DISABLED)
+            ->setCreateDate(new \DateTime())
+            ->setUpdateDate(new \DateTime());
 
         $this->entityManager->persist($OrderPdf);
         $this->entityManager->flush($OrderPdf);
 
-        $crawler = $client->request('POST', $this->generateUrl('admin_order_export_pdf'),
+        $crawler = $client->request(Request::METHOD_POST, $this->generateUrl('admin_order_export_pdf'),
             [
                 '_token' => 'dummy',
                 'ids' => [$shippingId],
@@ -336,14 +336,14 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         );
         $html = $crawler->filter('#order_pdf_form')->html();
 
-        $this->assertStringContainsString((string) $shippingId, $html);
-        $this->assertStringContainsString($OrderPdf->getTitle(), $html);
-        $this->assertStringContainsString($OrderPdf->getMessage1(), $html);
-        $this->assertStringContainsString($OrderPdf->getMessage2(), $html);
-        $this->assertStringContainsString($OrderPdf->getMessage3(), $html);
-        $this->assertStringContainsString($OrderPdf->getNote1(), $html);
-        $this->assertStringContainsString($OrderPdf->getNote2(), $html);
-        $this->assertStringContainsString($OrderPdf->getNote3(), $html);
+        $this->assertStringContainsString((string) $shippingId, (string) $html);
+        $this->assertStringContainsString($OrderPdf->getTitle(), (string) $html);
+        $this->assertStringContainsString($OrderPdf->getMessage1(), (string) $html);
+        $this->assertStringContainsString($OrderPdf->getMessage2(), (string) $html);
+        $this->assertStringContainsString($OrderPdf->getMessage3(), (string) $html);
+        $this->assertStringContainsString($OrderPdf->getNote1(), (string) $html);
+        $this->assertStringContainsString($OrderPdf->getNote2(), (string) $html);
+        $this->assertStringContainsString($OrderPdf->getNote3(), (string) $html);
 
         $form = $this->getForm($crawler);
         $client->submit($form);
@@ -362,7 +362,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $Shippings = $Order->getShippings();
         $shippingId = $Shippings[0]->getId();
 
-        $crawler = $this->client->request('POST', $this->generateUrl('admin_order_export_pdf'),
+        $crawler = $this->client->request(Request::METHOD_POST, $this->generateUrl('admin_order_export_pdf'),
             [
                 '_token' => 'dummy',
                 'ids' => [$shippingId],
@@ -395,7 +395,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $this->assertCount(1, $OrderPdfs, '1件保存されているはず');
 
         $OrderPdf = current($OrderPdfs);
-        $token = static::getContainer()->get('security.token_storage')->getToken();
+        $token = static::getContainer()->get(TokenStorageInterface::class)->getToken();
         $adminTest = $token->getUser();
         $this->assertEquals($adminTest->getId(), $OrderPdf->getMemberId(), '管理ユーザーのIDと一致するはず');
 
@@ -408,12 +408,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $this->assertNull($OrderPdf->getNote3());
     }
 
-    /**
-     * @param Crawler $crawler
-     *
-     * @return Form
-     */
-    private function getForm(Crawler $crawler)
+    private function getForm(Crawler $crawler): Form
     {
         $form = $crawler->selectButton('作成')->form();
         $form['order_pdf[_token]'] = 'dummy';
@@ -423,10 +418,8 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
 
     /**
      * Create order data for search function.
-     *
-     * @return Order
      */
-    private function createOrderForSearch()
+    private function createOrderForSearch(): Order
     {
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);

@@ -13,93 +13,59 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\CustomerFavoriteProductRepository;
 
 if (!class_exists(CustomerFavoriteProduct::class)) {
     /**
      * CustomerFavoriteProduct
-     *
-     * @ORM\Table(name="dtb_customer_favorite_product")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\CustomerFavoriteProductRepository")
      */
+    #[ORM\Table(name: 'dtb_customer_favorite_product')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: CustomerFavoriteProductRepository::class)]
     class CustomerFavoriteProduct extends AbstractEntity
     {
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
-         *
-         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
-         */
-        private $id;
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+        /**  @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
+        private ?int $id = null;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
         private $create_date;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
         private $update_date;
 
-        /**
-         * @var Customer|null
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Customer", inversedBy="CustomerFavoriteProducts")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
-         * })
-         */
-        private $Customer;
+        #[ORM\ManyToOne(targetEntity: Customer::class, inversedBy: 'CustomerFavoriteProducts')]
+        #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'id')]
+        private ?Customer $Customer = null;
 
-        /**
-         * @var Product|null
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Product", inversedBy="CustomerFavoriteProducts")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="product_id", referencedColumnName="id")
-         * })
-         */
-        private $Product;
+        #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'CustomerFavoriteProducts')]
+        #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id')]
+        private ?Product $Product = null;
 
         /**
          * Get id.
-         *
-         * @return int
          */
-        public function getId()
+        public function getId(): ?int
         {
             return $this->id;
         }
 
         /**
          * Set createDate.
-         *
-         * @param \DateTime $createDate
-         *
-         * @return CustomerFavoriteProduct
          */
-        public function setCreateDate($createDate)
+        public function setCreateDate(\DateTime $createDate): CustomerFavoriteProduct
         {
             $this->create_date = $createDate;
 
@@ -108,22 +74,16 @@ if (!class_exists(CustomerFavoriteProduct::class)) {
 
         /**
          * Get createDate.
-         *
-         * @return \DateTime
          */
-        public function getCreateDate()
+        public function getCreateDate(): ?\DateTime
         {
             return $this->create_date;
         }
 
         /**
          * Set updateDate.
-         *
-         * @param \DateTime $updateDate
-         *
-         * @return CustomerFavoriteProduct
          */
-        public function setUpdateDate($updateDate)
+        public function setUpdateDate(\DateTime $updateDate): CustomerFavoriteProduct
         {
             $this->update_date = $updateDate;
 
@@ -132,22 +92,16 @@ if (!class_exists(CustomerFavoriteProduct::class)) {
 
         /**
          * Get updateDate.
-         *
-         * @return \DateTime
          */
-        public function getUpdateDate()
+        public function getUpdateDate(): ?\DateTime
         {
             return $this->update_date;
         }
 
         /**
          * Set customer.
-         *
-         * @param Customer|null $customer
-         *
-         * @return CustomerFavoriteProduct
          */
-        public function setCustomer(?Customer $customer = null)
+        public function setCustomer(?Customer $customer = null): CustomerFavoriteProduct
         {
             $this->Customer = $customer;
 
@@ -156,22 +110,16 @@ if (!class_exists(CustomerFavoriteProduct::class)) {
 
         /**
          * Get customer.
-         *
-         * @return Customer|null
          */
-        public function getCustomer()
+        public function getCustomer(): ?Customer
         {
             return $this->Customer;
         }
 
         /**
          * Set product.
-         *
-         * @param Product|null $product
-         *
-         * @return CustomerFavoriteProduct
          */
-        public function setProduct(?Product $product = null)
+        public function setProduct(?Product $product = null): CustomerFavoriteProduct
         {
             $this->Product = $product;
 
@@ -180,10 +128,8 @@ if (!class_exists(CustomerFavoriteProduct::class)) {
 
         /**
          * Get product.
-         *
-         * @return Product|null
          */
-        public function getProduct()
+        public function getProduct(): ?Product
         {
             return $this->Product;
         }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,7 +19,7 @@ use Eccube\Entity\Cart;
 use Eccube\Repository\CartRepository;
 use Eccube\Tests\EccubeTestCase;
 
-class CartRepositoryTest extends EccubeTestCase
+final class CartRepositoryTest extends EccubeTestCase
 {
     public function testConstruct()
     {
@@ -26,6 +28,6 @@ class CartRepositoryTest extends EccubeTestCase
         $this->assertInstanceOf(CartRepository::class, $CartRepository);
 
         $Cart = $CartRepository->find(1);
-        $this->assertEmpty($Cart);
+        $this->assertNotInstanceOf(Cart::class, $Cart);
     }
 }

@@ -31,8 +31,6 @@ class MailHistoryRepository extends AbstractRepository
 {
     /**
      * MailHistoryRepository constructor.
-     *
-     * @param RegistryInterface $registry
      */
     public function __construct(RegistryInterface $registry)
     {
@@ -40,16 +38,11 @@ class MailHistoryRepository extends AbstractRepository
     }
 
     /**
-     * @param Customer $Customer
-     * @param int $id
-     *
-     * @return MailHistory
-     *
      * @throws \Exception
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    public function getByCustomerAndId(Customer $Customer, $id)
+    public function getByCustomerAndId(Customer $Customer, int $id): MailHistory
     {
         $qb = $this->createQueryBuilder('mh')
             ->leftJoin('mh.Order', 'o')

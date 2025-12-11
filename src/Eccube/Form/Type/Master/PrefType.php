@@ -13,6 +13,7 @@
 
 namespace Eccube\Form\Type\Master;
 
+use Eccube\Entity\Master\Pref;
 use Eccube\Form\Type\MasterType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -24,38 +25,30 @@ class PrefType extends AbstractType
 {
     /**
      * {@inheritdoc}
-     *
-     * @param OptionsResolver $resolver
-     *
-     * @return void
      */
     #[\Override]
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'class' => \Eccube\Entity\Master\Pref::class,
+            'class' => Pref::class,
             'placeholder' => 'common.select__pref',
         ]);
     }
 
     /**
      * {@inheritdoc}
-     *
-     * @return string
      */
     #[\Override]
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'pref';
     }
 
     /**
      * {@inheritdoc}
-     *
-     * @return string
      */
     #[\Override]
-    public function getParent()
+    public function getParent(): string
     {
         return MasterType::class;
     }

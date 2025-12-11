@@ -28,25 +28,10 @@ use Eccube\Service\PurchaseFlow\PurchaseProcessor;
 class PointProcessor implements DiscountProcessor, PurchaseProcessor
 {
     /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
-     * @var PointHelper
-     */
-    protected $pointHelper;
-
-    /**
      * PointProcessor constructor.
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param PointHelper $pointHelper
      */
-    public function __construct(EntityManagerInterface $entityManager, PointHelper $pointHelper)
+    public function __construct(protected EntityManagerInterface $entityManager, protected PointHelper $pointHelper)
     {
-        $this->entityManager = $entityManager;
-        $this->pointHelper = $pointHelper;
     }
 
     /*
@@ -57,7 +42,7 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
      * {@inheritdoc}
      */
     #[\Override]
-    public function removeDiscountItem(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function removeDiscountItem(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         if (!$this->supports($itemHolder)) {
             return;
@@ -70,7 +55,7 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
      * {@inheritdoc}
      */
     #[\Override]
-    public function addDiscountItem(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function addDiscountItem(ItemHolderInterface $itemHolder, PurchaseContext $context): ?ProcessResult
     {
         if (!$this->supports($itemHolder)) {
             return null;
@@ -88,10 +73,11 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
             if ($context->isShoppingFlow()) {
                 // 支払い金額 < 利用ポイントによる値引き額.
                 if ($itemHolder->getTotal() + $discount < 0) { // @phpstan-ignore-line TODO bcmath-polyfill を使用する
+                    /** @phpstan-ignore-next-line bcmathの実装次第、削除する */
                     $minus = $itemHolder->getTotal() + $discount;
                     // 利用ポイントが支払い金額を上回っていた場合は支払い金額が0円以上となるようにポイントを調整
                     $overPoint = $this->pointHelper->priceToPoint($minus);
-                    $usePoint = bcadd($itemHolder->getUsePoint(), $overPoint);
+                    $usePoint = bcadd((string) $itemHolder->getUsePoint(), $overPoint);
                     $discount = $this->pointHelper->pointToDiscount($usePoint);
                     $result = ProcessResult::warn(trans('purchase_flow.over_payment_total'), self::class);
                 }
@@ -131,7 +117,7 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
      * {@inheritdoc}
      */
     #[\Override]
-    public function prepare(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function prepare(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         if (!$this->supports($itemHolder)) {
             return;
@@ -145,7 +131,7 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
      * {@inheritdoc}
      */
     #[\Override]
-    public function commit(ItemHolderInterface $target, PurchaseContext $context)
+    public function commit(ItemHolderInterface $target, PurchaseContext $context): void
     {
         // 何もしない
     }
@@ -154,7 +140,7 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
      * {@inheritdoc}
      */
     #[\Override]
-    public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         // 利用したポイントをユーザに戻す.
         if (!$this->supports($itemHolder)) {
@@ -167,7 +153,6 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
     /*
      * Helper methods
      */
-
     /**
      * Processorが実行出来るかどうかを返す.
      *
@@ -176,12 +161,8 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
      * - ポイント設定が有効であること.
      * - $itemHolderがOrderエンティティであること.
      * - 会員のOrderであること.
-     *
-     * @param ItemHolderInterface $itemHolder
-     *
-     * @return bool
      */
-    private function supports(ItemHolderInterface $itemHolder)
+    private function supports(ItemHolderInterface $itemHolder): bool
     {
         if (!$this->pointHelper->isPointEnabled()) {
             return false;

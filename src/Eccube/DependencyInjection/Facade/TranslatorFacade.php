@@ -18,25 +18,16 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class TranslatorFacade
 {
     /** @var self|null */
-    private static $instance;
+    private static ?self $instance = null;
 
-    /** @var TranslatorInterface */
-    private static $Translator;
+    private static ?TranslatorInterface $Translator = null;
 
-    /**
-     * @param TranslatorInterface $Translator
-     */
     private function __construct(TranslatorInterface $Translator)
     {
         self::$Translator = $Translator;
     }
 
-    /**
-     * @param TranslatorInterface $Translator
-     *
-     * @return TranslatorFacade|null
-     */
-    public static function init(TranslatorInterface $Translator)
+    public static function init(TranslatorInterface $Translator): ?TranslatorFacade
     {
         if (null === self::$instance) {
             self::$instance = new self($Translator);
@@ -46,11 +37,9 @@ class TranslatorFacade
     }
 
     /**
-     * @return TranslatorInterface
-     *
      * @throws \Exception
      */
-    public static function create()
+    public static function create(): TranslatorInterface
     {
         if (null === self::$instance) {
             throw new \Exception('Facade is not instantiated');

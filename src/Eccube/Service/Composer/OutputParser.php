@@ -21,11 +21,9 @@ class OutputParser
     /**
      * Parse to array
      *
-     * @param string $output
-     *
-     * @return array<string,array<string,string>>
+     * @return array<string, array<string, string>>
      */
-    public static function parseRequire($output)
+    public static function parseRequire(string $output): array
     {
         $rowArray = explode(PHP_EOL, str_replace('\r\n', PHP_EOL, $output));
         $installedLogs = array_filter(
@@ -47,11 +45,9 @@ class OutputParser
     /**
      * Parse to array
      *
-     * @param string $output
-     *
-     * @return array<int|string,array<int,string>|string>
+     * @return array<int|string,array<string, string>|string>
      */
-    public static function parseInfo($output)
+    public static function parseInfo(string $output): array
     {
         $rowArray = explode(PHP_EOL, str_replace('\r\n', PHP_EOL, $output));
         $infoLogs = array_filter(array_map(function ($line) {
@@ -72,16 +68,12 @@ class OutputParser
     /**
      * Parse to array
      *
-     * @param string $output
-     *
-     * @return array|mixed
+     * @return array<int|string, array<int, string>>|null
      */
-    public static function parseConfig($output)
+    public static function parseConfig(string $output): ?array
     {
         $rowArray = explode(PHP_EOL, str_replace('\r\n', PHP_EOL, $output));
-        $rowArray = array_filter($rowArray, function ($line) {
-            return !preg_match('/^<warning>.*/', $line);
-        });
+        $rowArray = array_filter($rowArray, fn ($line) => !preg_match('/^<warning>.*/', $line));
 
         return $rowArray ? json_decode(array_shift($rowArray), true) : [];
     }
@@ -89,11 +81,9 @@ class OutputParser
     /**
      * Parse to array
      *
-     * @param string $output
-     *
      * @return array<mixed>
      */
-    public static function parseList($output)
+    public static function parseList(string $output): array
     {
         $rowArray = explode(PHP_EOL, str_replace('\r\n', PHP_EOL, $output));
         $rawConfig = array_map(function ($line) {
@@ -109,7 +99,7 @@ class OutputParser
 
         foreach ($rawConfig as $path => $value) {
             $arr = &$result;
-            $keys = explode('.', $path);
+            $keys = explode('.', (string) $path);
             foreach ($keys as $key) {
                 $arr = &$arr[$key];
             }
@@ -121,11 +111,10 @@ class OutputParser
 
     /**
      * @param array<mixed> $rowArray
-     * @param string $key
      *
      * @return array<string, string>
      */
-    private static function parseArrayInfoOutput($rowArray, $key)
+    private static function parseArrayInfoOutput(array $rowArray, string $key): array
     {
         $result = [];
         $start = false;
@@ -148,17 +137,11 @@ class OutputParser
 
     /**
      * Parse to composer version
-     *
-     * @param string $output
-     *
-     * @return array|mixed|string
      */
-    public static function parseComposerVersion($output)
+    public static function parseComposerVersion(string $output): ?string
     {
         $rowArray = explode(PHP_EOL, str_replace('\r\n', PHP_EOL, $output));
-        $rowArray = array_filter($rowArray, function ($line) {
-            return preg_match('/^Composer */', $line);
-        });
+        $rowArray = array_filter($rowArray, fn ($line) => preg_match('/^Composer */', $line));
 
         return array_shift($rowArray);
     }

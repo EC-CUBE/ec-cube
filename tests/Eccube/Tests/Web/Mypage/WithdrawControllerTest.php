@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,23 +19,23 @@ use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Tests\Web\AbstractWebTestCase;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mime\Email;
 
-class WithdrawControllerTest extends AbstractWebTestCase
+final class WithdrawControllerTest extends AbstractWebTestCase
 {
     use MailerAssertionsTrait;
 
-    /**
-     * @var Customer
-     */
-    protected $Customer;
+    protected ?Customer $Customer = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
         $this->Customer = $this->createCustomer();
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();
@@ -44,7 +46,7 @@ class WithdrawControllerTest extends AbstractWebTestCase
         $this->logInTo($this->Customer);
 
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('mypage_withdraw')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -55,7 +57,7 @@ class WithdrawControllerTest extends AbstractWebTestCase
         $this->logInTo($this->Customer);
 
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('mypage_withdraw'),
             [
                 'form' => ['_token' => 'dummy'],
@@ -75,7 +77,7 @@ class WithdrawControllerTest extends AbstractWebTestCase
         $this->logInTo($this->Customer);
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('mypage_withdraw'),
             [
                 'form' => ['_token' => 'dummy'],
@@ -106,7 +108,7 @@ class WithdrawControllerTest extends AbstractWebTestCase
         $this->logInTo($this->Customer);
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('mypage_withdraw'),
             [
                 'form' => ['_token' => 'dummy'],
@@ -134,7 +136,7 @@ class WithdrawControllerTest extends AbstractWebTestCase
     public function testComplete()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('mypage_withdraw_complete')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -16,20 +18,23 @@ namespace Eccube\Tests\Web\Admin\Setting\Shop;
 use Eccube\Common\Constant;
 use Eccube\Entity\Csv;
 use Eccube\Entity\Master\CsvType;
+use Eccube\Entity\Product;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-class CsvControllerTest extends AbstractAdminWebTestCase
+final class CsvControllerTest extends AbstractAdminWebTestCase
 {
     public function testRoutingCsv()
     {
-        $this->client->request('GET', $this->generateUrl('admin_setting_shop_csv', ['id' => 1]));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_shop_csv', ['id' => 1]));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testGetCsv()
     {
         $CsvType = $this->entityManager->getRepository(CsvType::class)->find(1);
-        $this->assertNotEmpty($CsvType);
+        $this->assertInstanceOf(CsvType::class, $CsvType);
 
         $Csv = $this->entityManager->getRepository(Csv::class)->findBy(['CsvType' => $CsvType, 'enabled' => true], ['sort_no' => 'ASC']);
         $this->assertNotEmpty($Csv);
@@ -40,12 +45,14 @@ class CsvControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->getConnection()->beginTransaction();
 
         $Csv = $this->entityManager->getRepository(Csv::class)->find(1);
+        $this->assertInstanceOf(Csv::class, $Csv);
         $Csv->setSortNo(1);
         $Csv->setEnabled(false);
 
         $this->entityManager->flush();
 
         $Csv2 = $this->entityManager->getRepository(Csv::class)->find(1);
+        $this->assertInstanceOf(Csv::class, $Csv2);
         $this->assertEquals(false, $Csv2->isEnabled());
 
         $this->entityManager->getConnection()->rollback();
@@ -53,9 +60,9 @@ class CsvControllerTest extends AbstractAdminWebTestCase
 
     public function testRoutingCsvFail()
     {
-        $this->client->request('GET', $this->generateUrl('admin_setting_shop_csv', ['id' => 9999]));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_shop_csv', ['id' => 9999]));
 
-        $this->assertSame(404, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 
     public function testSubmit()
@@ -76,7 +83,7 @@ class CsvControllerTest extends AbstractAdminWebTestCase
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop_csv', ['id' => $csvType]),
             ['form' => $form]
         );
@@ -89,7 +96,7 @@ class CsvControllerTest extends AbstractAdminWebTestCase
         $this->verify();
     }
 
-    protected function createCsv($csvType = CsvType::CSV_TYPE_PRODUCT, $field = 'id', $entity = \Eccube\Entity\Product::class, $ref = null)
+    protected function createCsv($csvType = CsvType::CSV_TYPE_PRODUCT, $field = 'id', $entity = Product::class, $ref = null)
     {
         $CsvType = $this->entityManager->getRepository(CsvType::class)->find($csvType);
         $Creator = $this->createMember();

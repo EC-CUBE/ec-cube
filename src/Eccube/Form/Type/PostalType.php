@@ -14,6 +14,8 @@
 namespace Eccube\Form\Type;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Form\EventListener\ConvertKanaListener;
+use Eccube\Form\EventListener\TruncateHyphenListener;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -26,44 +28,29 @@ use Symfony\Component\Validator\Constraints as Assert;
 class PostalType extends AbstractType
 {
     /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
      * ZipType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
-    public function __construct(EccubeConfig $eccubeConfig)
+    public function __construct(protected EccubeConfig $eccubeConfig)
     {
-        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->addEventSubscriber(new \Eccube\Form\EventListener\ConvertKanaListener());
-        $builder->addEventSubscriber(new \Eccube\Form\EventListener\TruncateHyphenListener());
+        $builder->addEventSubscriber(new ConvertKanaListener());
+        $builder->addEventSubscriber(new TruncateHyphenListener());
     }
 
     /**
      * {@inheritdoc}
-     *
-     * @param OptionsResolver $resolver
-     *
-     * @return void
      */
     #[\Override]
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setNormalizer('constraints', function ($options, $value) {
             $constraints = [];
@@ -76,10 +63,10 @@ class PostalType extends AbstractType
                 'max' => $this->eccubeConfig['eccube_postal_code'],
             ]);
 
-            $constraints[] = new Assert\Type([
-                'type' => 'digit',
-                'message' => 'form_error.numeric_only',
-            ]);
+            $constraints[] = new Assert\Type(
+                type: 'digit',
+                message: 'form_error.numeric_only'
+            );
 
             return array_merge($constraints, $value);
         });
@@ -98,7 +85,7 @@ class PostalType extends AbstractType
      * {@inheritdoc}
      */
     #[\Override]
-    public function getParent()
+    public function getParent(): ?string
     {
         return TelType::class;
     }
@@ -107,7 +94,7 @@ class PostalType extends AbstractType
      * {@inheritdoc}
      */
     #[\Override]
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'postal';
     }

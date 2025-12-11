@@ -20,7 +20,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-24.04 ]
-        php: [ '8.3', '8.4' ]
+        php: [ '8.4', '8.5' ]
         db: [ pgsql ]
         group: [ admin01 ]
         include:
@@ -33,6 +33,8 @@ jobs:
             tag: '8.3-apache'
           - php: '8.4'
             tag: '8.4-apache'
+          - php: '8.5'
+            tag: '8.5-apache'
 
     steps:
       - name: downcase REPO
@@ -50,6 +52,21 @@ jobs:
         uses: nanasess/setup-php@master
         with:
           php-version: ${{ matrix.php }}
+
+      - name: Install ext-redis 6.1+
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y php${{ matrix.php }}-redis
+          sudo phpenmod -s cli redis
+          php -m | grep -i redis
+
+      - name: Enable register_argc_argv for Codeception
+        if: matrix.php == '8.5'
+        run: |
+          INI_FILE=$(php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||" | tr -d '"')
+          echo "Using php.ini: $INI_FILE"
+          echo "register_argc_argv = On" | sudo tee -a "$INI_FILE"
+          php -i | grep register_argc_argv
 
       - name: Initialize Composer
         uses: ./.github/actions/composer

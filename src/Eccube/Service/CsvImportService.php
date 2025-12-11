@@ -51,62 +51,46 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
 
     /**
      * Number of the row that contains the column names
-     *
-     * @var int
      */
-    protected $headerRowNumber;
+    protected ?int $headerRowNumber = null;
 
     /**
      * CSV file
-     *
-     * @var \SplFileObject
      */
-    protected $file;
+    protected \SplFileObject $file;
 
     /**
      * Column headers as read from the CSV file
      *
      * @var array<int, string|int>
      */
-    protected $columnHeaders = [];
+    protected array $columnHeaders = [];
 
     /**
      * Number of column headers, stored and re-used for performance
      *
      * In case of duplicate headers, this is always the number of unmerged headers.
-     *
-     * @var int
      */
-    protected $headersCount;
+    protected int $headersCount = 0;
 
     /**
      * Total number of rows in the CSV file
-     *
-     * @var int
      */
-    protected $count;
+    protected ?int $count = null;
 
     /**
      * Faulty CSV rows
      *
      * @var array<int, string>
      */
-    protected $errors = [];
+    protected array $errors = [];
 
     /**
      * How to handle duplicate headers
-     *
-     * @var int
      */
-    protected $duplicateHeadersFlag;
+    protected ?int $duplicateHeadersFlag = null;
 
-    /**
-     * @param \SplFileObject $file
-     * @param string $delimiter
-     * @param string $enclosure
-     * @param string $escape
-     */
-    public function __construct(\SplFileObject $file, $delimiter = ',', $enclosure = '"', $escape = '\\')
+    public function __construct(\SplFileObject $file, string $delimiter = ',', string $enclosure = '"', string $escape = '\\')
     {
         // stream filter を適用して文字エンコーディングと改行コードの変換を行う
         // see https://github.com/EC-CUBE/ec-cube/issues/5252
@@ -141,7 +125,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      */
     #[\ReturnTypeWillChange]
     #[\Override]
-    public function current()
+    public function current(): ?array
     {
         // If the CSV has no column headers just return the line
         if (empty($this->columnHeaders)) {
@@ -175,7 +159,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      *
      * @return array<int, string|int>
      */
-    public function getColumnHeaders()
+    public function getColumnHeaders(): array
     {
         return array_keys($this->columnHeaders);
     }
@@ -184,10 +168,8 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      * Set column headers
      *
      * @param array<int, string> $columnHeaders
-     *
-     * @return void
      */
-    public function setColumnHeaders(array $columnHeaders)
+    public function setColumnHeaders(array $columnHeaders): void
     {
         $this->columnHeaders = array_count_values($columnHeaders);
         $this->headersCount = count($columnHeaders);
@@ -203,10 +185,8 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      *                        - CsvReader::DUPLICATE_HEADERS_MERGE; merges
      *                        values for duplicate headers into an array
      *                        (dup => [value1, value2, value3])
-     *
-     * @return bool
      */
-    public function setHeaderRowNumber($rowNumber, $duplicates = null)
+    public function setHeaderRowNumber(int $rowNumber, ?int $duplicates = null): bool
     {
         $this->duplicateHeadersFlag = $duplicates;
         $this->headerRowNumber = $rowNumber;
@@ -226,12 +206,10 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      * If a header row has been set, the pointer is set just below the header
      * row. That way, when you iterate over the rows, that header row is
      * skipped.
-     *
-     * @return void
      */
     #[\ReturnTypeWillChange]
     #[\Override]
-    public function rewind()
+    public function rewind(): void
     {
         $this->file->rewind();
         if (null !== $this->headerRowNumber) {
@@ -244,7 +222,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      */
     #[\ReturnTypeWillChange]
     #[\Override]
-    public function count()
+    public function count(): int
     {
         if (null === $this->count) {
             $position = $this->key();
@@ -292,7 +270,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      */
     #[\ReturnTypeWillChange]
     #[\Override]
-    public function seek($pointer)
+    public function seek($pointer): void
     {
         $this->file->seek($pointer);
     }
@@ -300,7 +278,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
     /**
      * @return array<int, string>
      */
-    public function getFields()
+    public function getFields(): array
     {
         return $this->getColumnHeaders();
     }
@@ -312,7 +290,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      *
      * @return array<int, string>|null
      */
-    public function getRow($number)
+    public function getRow(int $number): ?array
     {
         $this->seek($number);
 
@@ -324,7 +302,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      *
      * @return array<mixed>
      */
-    public function getErrors()
+    public function getErrors(): array
     {
         if (0 === $this->key()) {
             // Iterator has not yet been processed, so do that now
@@ -337,10 +315,8 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
 
     /**
      * Does the reader contain any invalid rows?
-     *
-     * @return bool
      */
-    public function hasErrors()
+    public function hasErrors(): bool
     {
         return count($this->getErrors()) > 0;
     }
@@ -382,12 +358,11 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      *
      * @return array<int, string>|string|false
      */
-    protected function readHeaderRow($rowNumber)
+    protected function readHeaderRow(int $rowNumber): array|string|false
     {
         $this->file->seek($rowNumber);
-        $headers = $this->file->current();
 
-        return $headers;
+        return $this->file->current();
     }
 
     /**
@@ -404,7 +379,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      *
      * @return array<int, string>
      */
-    protected function incrementHeaders(array $headers)
+    protected function incrementHeaders(array $headers): array
     {
         $incrementedHeaders = [];
         foreach (array_count_values($headers) as $header => $count) {
@@ -435,7 +410,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      *
      * @return array<int, string>
      */
-    protected function mergeDuplicates(array $line)
+    protected function mergeDuplicates(array $line): array
     {
         $values = [];
 

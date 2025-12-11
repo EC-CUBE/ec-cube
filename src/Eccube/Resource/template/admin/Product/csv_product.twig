@@ -202,7 +202,7 @@ file that was distributed with this source code.
                         <div class="row">
                             <div class="col-2"><span>{{ 'admin.common.csv_select'|trans }}</span></div>
                             <div class="col">
-                                <form id="upload-form" method="post" action="{{ url('admin_product_csv_split') }}" enctype="multipart/form-data">
+                                <form id="upload-form" method="post" action="{{ url('admin_product_csv_import') }}" enctype="multipart/form-data">
                                     {{ form_widget(form._token) }}
                                     <div class="mb-2">
                                         <span id="file-select" class="btn btn-ec-regular me-2">{{ 'admin.common.file_select'|trans }}</span>

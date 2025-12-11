@@ -26,16 +26,12 @@ use Eccube\Entity\OrderItem;
  */
 class ItemCollection extends ArrayCollection
 {
-    /**
-     * @var mixed|string
-     */
-    protected $type;
+    protected string $type;
 
     /**
-     * @param array<int,ItemInterface>|array<int,OrderItem>|Collection<int, ItemInterface>|Collection<int,OrderItem>|array<int,CartItem>|Collection<int,CartItem> $Items
-     * @param string|null $type
+     * @param array<int, ItemInterface>|array<int, OrderItem>|Collection<int, ItemInterface>|Collection<int, OrderItem>|array<int, CartItem>|Collection<int, CartItem>|null $Items
      */
-    public function __construct($Items, $type = null)
+    public function __construct(array|Collection|null $Items = null, ?string $type = null)
     {
         $this->type = is_null($type) ? Order::class : $type;
 
@@ -46,12 +42,12 @@ class ItemCollection extends ArrayCollection
     }
 
     /**
-     * @param \Closure $func
      * @param mixed|null $initial
      *
      * @return mixed|null
      */
-    public function reduce(\Closure $func, $initial = null)
+    #[\Override]
+    public function reduce(\Closure $func, mixed $initial = null): mixed
     {
         return array_reduce($this->toArray(), $func, $initial);
     }
@@ -60,57 +56,45 @@ class ItemCollection extends ArrayCollection
      * @return ItemCollection<int, ItemInterface>
      */
     // 明細種別ごとに返すメソッド作る
-    public function getProductClasses()
+    public function getProductClasses(): ItemCollection
     {
         return $this->filter(
-            function (ItemInterface $OrderItem) {
-                return $OrderItem->isProduct();
-            });
+            fn (ItemInterface $OrderItem) => $OrderItem->isProduct());
     }
 
     /**
      * @return ItemCollection<int, ItemInterface>
      */
-    public function getDeliveryFees()
+    public function getDeliveryFees(): ItemCollection
     {
         return $this->filter(
-            function (ItemInterface $OrderItem) {
-                return $OrderItem->isDeliveryFee();
-            });
+            fn (ItemInterface $OrderItem) => $OrderItem->isDeliveryFee());
     }
 
     /**
      * @return ItemCollection<int, ItemInterface>
      */
-    public function getCharges()
+    public function getCharges(): ItemCollection
     {
         return $this->filter(
-            function (ItemInterface $OrderItem) {
-                return $OrderItem->isCharge();
-            });
+            fn (ItemInterface $OrderItem) => $OrderItem->isCharge());
     }
 
     /**
      * @return ItemCollection<int, ItemInterface>
      */
-    public function getDiscounts()
+    public function getDiscounts(): ItemCollection
     {
         return $this->filter(
-            function (ItemInterface $OrderItem) {
-                return $OrderItem->isDiscount() || $OrderItem->isPoint();
-            });
+            fn (ItemInterface $OrderItem) => $OrderItem->isDiscount() || $OrderItem->isPoint());
     }
 
     /**
      * 同名の明細が存在するかどうか.
      *
      * TODO 暫定対応. 本来は明細種別でチェックする.
-     *
-     * @param string $productName
-     *
-     * @return bool
      */
-    public function hasProductByName($productName)
+    public function hasProductByName(string $productName): bool
     {
         $OrderItems = $this->filter(
             function (ItemInterface $OrderItem) use ($productName) {
@@ -125,31 +109,22 @@ class ItemCollection extends ArrayCollection
      * 指定した受注明細区分の明細が存在するかどうか.
      *
      * @param OrderItemType $OrderItemType 受注区分
-     *
-     * @return bool
      */
-    public function hasItemByOrderItemType($OrderItemType)
+    public function hasItemByOrderItemType(OrderItemType $OrderItemType): bool
     {
-        $filteredItems = $this->filter(function (ItemInterface $OrderItem) use ($OrderItemType) {
+        $filteredItems = $this->filter(fn (ItemInterface $OrderItem) =>
             /* @var OrderItem $OrderItem */
-            return $OrderItem->getOrderItemType() && $OrderItem->getOrderItemType()->getId() == $OrderItemType->getId();
-        });
+            $OrderItem->getOrderItemType() && $OrderItem->getOrderItemType()->getId() == $OrderItemType->getId());
 
         return !$filteredItems->isEmpty();
     }
 
-    /**
-     * @return mixed|string
-     */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
 
-    /**
-     * @return self
-     */
-    public function sort()
+    public function sort(): ItemCollection
     {
         $Items = $this->toArray();
         usort($Items, function (ItemInterface $a, ItemInterface $b) {

@@ -15,6 +15,7 @@ namespace Eccube\Form\Type\Admin;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\Shipping;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -31,34 +32,20 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class OrderPdfType extends AbstractType
 {
-    /** @var EccubeConfig */
-    private $eccubeConfig;
-
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
     /**
      * OrderPdfType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
-     * @param EntityManagerInterface $entityManager
      */
-    public function __construct(EccubeConfig $eccubeConfig, EntityManagerInterface $entityManager)
+    public function __construct(private readonly EccubeConfig $eccubeConfig, private readonly EntityManagerInterface $entityManager)
     {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->entityManager = $entityManager;
     }
 
     /**
      * Build config type form.
      *
-     * @param FormBuilderInterface $builder
      * @param array<string, mixed>         $options
-     *
-     * @return void
      */
     #[\Override]
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $config = $this->eccubeConfig;
         $builder
@@ -157,7 +144,7 @@ class OrderPdfType extends AbstractType
                 'label' => 'admin.order.delivery_note_save_input',
                 'required' => false,
             ])
-            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
                 $form = $event->getForm();
                 $data = $form->getData();
                 if (!isset($data['ids']) || !is_string($data['ids'])) {
@@ -167,7 +154,7 @@ class OrderPdfType extends AbstractType
 
                 $qb = $this->entityManager->createQueryBuilder();
                 $qb->select('count(s.id)')
-                    ->from(\Eccube\Entity\Shipping::class, 's')
+                    ->from(Shipping::class, 's')
                     ->where($qb->expr()->in('s.id', ':ids'))
                     ->setParameter('ids', $ids);
                 $actual = $qb->getQuery()->getSingleScalarResult();
@@ -182,10 +169,8 @@ class OrderPdfType extends AbstractType
 
     /**
      * Get name method (form factory name).
-     *
-     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return 'admin_order_pdf';
     }

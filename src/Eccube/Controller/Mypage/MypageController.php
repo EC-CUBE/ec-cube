@@ -31,7 +31,9 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -39,70 +41,31 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class MypageController extends AbstractController
 {
-    /**
-     * @var ProductRepository
-     */
-    protected $productRepository;
+    protected ProductRepository $productRepository;
 
-    /**
-     * @var CustomerFavoriteProductRepository
-     */
-    protected $customerFavoriteProductRepository;
-
-    /**
-     * @var BaseInfo
-     */
-    protected $BaseInfo;
-
-    /**
-     * @var CartService
-     */
-    protected $cartService;
-
-    /**
-     * @var OrderRepository
-     */
-    protected $orderRepository;
-
-    /**
-     * @var PurchaseFlow
-     */
-    protected $purchaseFlow;
+    protected BaseInfo $BaseInfo;
 
     /**
      * MypageController constructor.
-     *
-     * @param OrderRepository $orderRepository
-     * @param CustomerFavoriteProductRepository $customerFavoriteProductRepository
-     * @param CartService $cartService
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param PurchaseFlow $purchaseFlow
      */
     public function __construct(
-        OrderRepository $orderRepository,
-        CustomerFavoriteProductRepository $customerFavoriteProductRepository,
-        CartService $cartService,
+        protected OrderRepository $orderRepository,
+        protected CustomerFavoriteProductRepository $customerFavoriteProductRepository,
+        protected CartService $cartService,
         BaseInfoRepository $baseInfoRepository,
-        PurchaseFlow $purchaseFlow,
+        protected PurchaseFlow $purchaseFlow,
     ) {
-        $this->orderRepository = $orderRepository;
-        $this->customerFavoriteProductRepository = $customerFavoriteProductRepository;
         $this->BaseInfo = $baseInfoRepository->get();
-        $this->cartService = $cartService;
-        $this->purchaseFlow = $purchaseFlow;
     }
 
     /**
      * ログイン画面.
      *
-     * @param Request $request
-     * @param AuthenticationUtils $utils
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      */
-    #[Route('/mypage/login', name: 'mypage_login', methods: ['GET', 'POST'])]
-    #[Template('Mypage/login.twig')]
-    public function login(Request $request, AuthenticationUtils $utils)
+    #[Route(path: '/mypage/login', name: 'mypage_login', methods: ['GET', 'POST'])]
+    #[Template(template: 'Mypage/login.twig')]
+    public function login(Request $request, AuthenticationUtils $utils): RedirectResponse|array
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             log_info('認証済のためログイン処理をスキップ');
@@ -142,14 +105,11 @@ class MypageController extends AbstractController
     /**
      * マイページ.
      *
-     * @param Request $request
-     * @param PaginatorInterface $paginator
-     *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
-    #[Route('/mypage/', name: 'mypage', methods: ['GET'])]
-    #[Template('Mypage/index.twig')]
-    public function index(Request $request, PaginatorInterface $paginator)
+    #[Route(path: '/mypage/', name: 'mypage', methods: ['GET'])]
+    #[Template(template: 'Mypage/index.twig')]
+    public function index(Request $request, PaginatorInterface $paginator): array
     {
         /** @var Customer $Customer */
         $Customer = $this->getUser();
@@ -185,14 +145,13 @@ class MypageController extends AbstractController
     /**
      * 購入履歴詳細を表示する.
      *
-     * @param Request $request
      * @param string|int $order_no
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
-    #[Route('/mypage/history/{order_no}', name: 'mypage_history', methods: ['GET'])]
-    #[Template('Mypage/history.twig')]
-    public function history(Request $request, $order_no)
+    #[Route(path: '/mypage/history/{order_no}', name: 'mypage_history', methods: ['GET'])]
+    #[Template(template: 'Mypage/history.twig')]
+    public function history(Request $request, $order_no): array
     {
         $this->entityManager->getFilters()
             ->enable('incomplete_order_status_hidden');
@@ -235,15 +194,12 @@ class MypageController extends AbstractController
     /**
      * 再購入を行う.
      *
-     * @param Request $request
      * @param int|string $order_no
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      *
      * @throws NotFoundHttpException
      */
-    #[Route('/mypage/order/{order_no}', name: 'mypage_order', methods: ['PUT'])]
-    public function order(Request $request, $order_no)
+    #[Route(path: '/mypage/order/{order_no}', name: 'mypage_order', methods: ['PUT'])]
+    public function order(Request $request, $order_no): RedirectResponse|Response
     {
         $this->isTokenValid();
 
@@ -324,22 +280,19 @@ class MypageController extends AbstractController
 
         log_info('再注文完了', [$order_no]);
 
-        return $this->redirect($this->generateUrl('cart'));
+        return $this->redirectToRoute('cart');
     }
 
     /**
      * お気に入り商品を表示する.
      *
-     * @param Request $request
-     * @param PaginatorInterface $paginator
-     *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      *
      * @throws NotFoundHttpException
      */
-    #[Route('/mypage/favorite', name: 'mypage_favorite', methods: ['GET'])]
-    #[Template('Mypage/favorite.twig')]
-    public function favorite(Request $request, PaginatorInterface $paginator)
+    #[Route(path: '/mypage/favorite', name: 'mypage_favorite', methods: ['GET'])]
+    #[Template(template: 'Mypage/favorite.twig')]
+    public function favorite(Request $request, PaginatorInterface $paginator): array
     {
         if (!$this->BaseInfo->isOptionFavoriteProduct()) {
             throw new NotFoundHttpException();
@@ -374,15 +327,10 @@ class MypageController extends AbstractController
     /**
      * お気に入り商品を削除する.
      *
-     * @param Request $request
-     * @param Product $Product
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     *
      * @throws BadRequestHttpException
      */
-    #[Route('/mypage/favorite/{id}/delete', name: 'mypage_favorite_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, Product $Product)
+    #[Route(path: '/mypage/favorite/{id}/delete', name: 'mypage_favorite_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    public function delete(Request $request, Product $Product): RedirectResponse
     {
         $this->isTokenValid();
         /** @var Customer $Customer */
@@ -408,6 +356,6 @@ class MypageController extends AbstractController
 
         log_info('お気に入り商品削除完了', [$Customer->getId(), $CustomerFavoriteProduct->getId()]);
 
-        return $this->redirect($this->generateUrl('mypage_favorite'));
+        return $this->redirectToRoute('mypage_favorite');
     }
 }

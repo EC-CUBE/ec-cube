@@ -20,61 +20,15 @@ use Doctrine\ORM\QueryBuilder;
  */
 class JoinClause
 {
-    /**
-     * @var string
-     */
-    private $join;
+    private readonly JoinClauseWhereCustomizer $whereCustomizer;
 
-    /**
-     * @var string
-     */
-    private $alias;
-
-    /**
-     * @var string|null
-     */
-    private $conditionType;
-    /**
-     * @var string|null
-     */
-    private $condition;
-    /**
-     * @var string|null
-     */
-    private $indexBy;
-    /**
-     * @var bool
-     */
-    private $leftJoin;
-
-    /**
-     * @var JoinClauseWhereCustomizer
-     */
-    private $whereCustomizer;
-
-    /**
-     * @var JoinClauseOrderByCustomizer
-     */
-    private $orderByCustomizer;
+    private readonly JoinClauseOrderByCustomizer $orderByCustomizer;
 
     /**
      * JoinClause constructor.
-     *
-     * @param bool $leftJoin
-     * @param string $join
-     * @param string $alias
-     * @param string|null $conditionType
-     * @param string|null $condition
-     * @param string|null $indexBy
      */
-    private function __construct(bool $leftJoin, $join, $alias, $conditionType = null, $condition = null, $indexBy = null)
+    private function __construct(private readonly bool $leftJoin, private readonly string $join, private readonly string $alias, private readonly ?string $conditionType = null, private readonly ?string $condition = null, private readonly ?string $indexBy = null)
     {
-        $this->leftJoin = $leftJoin;
-        $this->join = $join;
-        $this->alias = $alias;
-        $this->conditionType = $conditionType;
-        $this->condition = $condition;
-        $this->indexBy = $indexBy;
         $this->whereCustomizer = new JoinClauseWhereCustomizer();
         $this->orderByCustomizer = new JoinClauseOrderByCustomizer();
     }
@@ -83,16 +37,8 @@ class JoinClause
      * INNER JOIN用のファクトリメソッド。
      *
      * @see QueryBuilder::innerJoin()
-     *
-     * @param string $join
-     * @param string $alias
-     * @param string|null $conditionType
-     * @param string|null $condition
-     * @param string|null $indexBy
-     *
-     * @return JoinClause
      */
-    public static function innerJoin($join, $alias, $conditionType = null, $condition = null, $indexBy = null): JoinClause
+    public static function innerJoin(string $join, string $alias, ?string $conditionType = null, ?string $condition = null, ?string $indexBy = null): JoinClause
     {
         return new JoinClause(false, $join, $alias, $conditionType, $condition, $indexBy);
     }
@@ -101,16 +47,8 @@ class JoinClause
      * LEFT JOIN用のファクトリメソッド。
      *
      * @see QueryBuilder::leftJoin()
-     *
-     * @param string $join
-     * @param string $alias
-     * @param string|null $conditionType
-     * @param string|null $condition
-     * @param string|null $indexBy
-     *
-     * @return JoinClause
      */
-    public static function leftJoin($join, $alias, $conditionType = null, $condition = null, $indexBy = null): JoinClause
+    public static function leftJoin(string $join, string $alias, ?string $conditionType = null, ?string $condition = null, ?string $indexBy = null): JoinClause
     {
         return new JoinClause(true, $join, $alias, $conditionType, $condition, $indexBy);
     }
@@ -118,11 +56,9 @@ class JoinClause
     /**
      * WHERE句を追加します。
      *
-     * @param WhereClause $whereClause
-     *
      * @return $this
      */
-    public function addWhere(WhereClause $whereClause): self
+    public function addWhere(WhereClause $whereClause): static
     {
         $this->whereCustomizer->add($whereClause);
 
@@ -132,23 +68,16 @@ class JoinClause
     /**
      * ORDER BY句を追加します。
      *
-     * @param OrderByClause $orderByClause
-     *
      * @return $this
      */
-    public function addOrderBy(OrderByClause $orderByClause): self
+    public function addOrderBy(OrderByClause $orderByClause): static
     {
         $this->orderByCustomizer->add($orderByClause);
 
         return $this;
     }
 
-    /**
-     * @param QueryBuilder $builder
-     *
-     * @return void
-     */
-    public function build(QueryBuilder $builder)
+    public function build(QueryBuilder $builder): void
     {
         if ($this->leftJoin) {
             $builder->leftJoin($this->join, $this->alias, $this->conditionType, $this->condition, $this->indexBy);
@@ -165,7 +94,7 @@ class JoinClauseWhereCustomizer extends WhereCustomizer
     /**
      * @var WhereClause[]
      */
-    private $whereClauses = [];
+    private array $whereClauses = [];
 
     public function add(WhereClause $whereClause): void
     {
@@ -186,8 +115,6 @@ class JoinClauseWhereCustomizer extends WhereCustomizer
 
     /**
      * カスタマイズ対象のキーを返します。
-     *
-     * @return string
      */
     #[\Override]
     public function getQueryKey(): string
@@ -201,14 +128,9 @@ class JoinClauseOrderByCustomizer extends OrderByCustomizer
     /**
      * @var OrderByClause[]
      */
-    private $orderByClauses = [];
+    private array $orderByClauses = [];
 
-    /**
-     * @param OrderByClause $orderByClause
-     *
-     * @return void
-     */
-    public function add(OrderByClause $orderByClause)
+    public function add(OrderByClause $orderByClause): void
     {
         $this->orderByClauses[] = $orderByClause;
     }
@@ -227,8 +149,6 @@ class JoinClauseOrderByCustomizer extends OrderByCustomizer
 
     /**
      * カスタマイズ対象のキーを返します。
-     *
-     * @return string
      */
     #[\Override]
     public function getQueryKey(): string

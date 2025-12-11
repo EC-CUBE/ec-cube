@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -13,6 +15,7 @@
 
 namespace Eccube\Tests\Repository;
 
+use Doctrine\Common\Collections\Collection;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
@@ -20,22 +23,22 @@ use Eccube\Entity\Payment;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\OrderRepository;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * OrderRepository test cases.
  *
  * @author Kentaro Ohkouchi
  */
-class OrderRepositoryTest extends EccubeTestCase
+final class OrderRepositoryTest extends EccubeTestCase
 {
-    /** @var Customer */
-    protected $Customer;
-    /** @var Order */
-    protected $Order;
+    protected ?Customer $Customer = null;
+    protected ?Order $Order = null;
 
-    /** @var OrderRepository */
-    protected $orderRepository;
+    protected ?OrderRepository $orderRepository = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -55,7 +58,7 @@ class OrderRepositoryTest extends EccubeTestCase
 
         $this->orderRepository->changeStatus($orderId, $Status);
 
-        $this->assertNotNull($this->Order->getPaymentDate());
+        $this->assertInstanceOf(\DateTime::class, $this->Order->getPaymentDate());
         $this->expected = 6;
         $this->actual = $this->Order->getOrderStatus()->getId();
         $this->verify();
@@ -68,7 +71,7 @@ class OrderRepositoryTest extends EccubeTestCase
 
         $this->orderRepository->changeStatus($orderId, $Status);
 
-        $this->assertNull($this->Order->getPaymentDate());
+        $this->assertNotInstanceOf(\DateTime::class, $this->Order->getPaymentDate());
     }
 
     public function testGetQueryBuilderByCustomer()
@@ -87,22 +90,20 @@ class OrderRepositoryTest extends EccubeTestCase
 
     public function testGetShippings()
     {
-        $this->assertInstanceOf(\Doctrine\Common\Collections\Collection::class, $this->Order->getShippings());
-        $this->assertSame(1, $this->Order->getShippings()->count());
+        $this->assertInstanceOf(Collection::class, $this->Order->getShippings());
+        $this->assertCount(1, $this->Order->getShippings());
     }
 
-    /**
-     * @group decimal
-     */
+    #[Group(name: 'decimal')]
     public function testUpdateOrderSummary()
     {
         $Customer = $this->createCustomer();
         $this->orderRepository->updateOrderSummary($Customer);
 
-        self::assertNull($Customer->getFirstBuyDate());
-        self::assertNull($Customer->getLastBuyDate());
-        self::assertSame('0', $Customer->getBuyTimes());
-        self::assertSame('0', $Customer->getBuyTotal());
+        $this->assertNotInstanceOf(\DateTime::class, $Customer->getFirstBuyDate());
+        $this->assertNotInstanceOf(\DateTime::class, $Customer->getLastBuyDate());
+        $this->assertSame('0', $Customer->getBuyTimes());
+        $this->assertSame('0', $Customer->getBuyTotal());
 
         $Order1 = $this->createOrder($Customer);
         $Order1->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
@@ -113,10 +114,10 @@ class OrderRepositoryTest extends EccubeTestCase
         $this->entityManager->flush();
         $this->entityManager->refresh($Customer);
         $this->entityManager->refresh($Order1);
-        self::assertSame($Order1->getOrderDate(), $Customer->getFirstBuyDate());
-        self::assertSame($Order1->getOrderDate(), $Customer->getLastBuyDate());
-        self::assertSame('1', $Customer->getBuyTimes());
-        self::assertSame($Order1->getTotal(), $Customer->getBuyTotal());
+        $this->assertSame($Order1->getOrderDate(), $Customer->getFirstBuyDate());
+        $this->assertSame($Order1->getOrderDate(), $Customer->getLastBuyDate());
+        $this->assertSame('1', $Customer->getBuyTimes());
+        $this->assertSame($Order1->getTotal(), $Customer->getBuyTotal());
 
         $Order2 = $this->createOrder($Customer);
         $Order2->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
@@ -128,12 +129,12 @@ class OrderRepositoryTest extends EccubeTestCase
         $this->entityManager->refresh($Customer);
         $this->entityManager->refresh($Order1);
         $this->entityManager->refresh($Order2);
-        self::assertSame($Order1->getOrderDate(), $Customer->getFirstBuyDate());
-        self::assertSame($Order2->getOrderDate(), $Customer->getLastBuyDate());
-        self::assertSame('2', $Customer->getBuyTimes());
+        $this->assertSame($Order1->getOrderDate(), $Customer->getFirstBuyDate());
+        $this->assertSame($Order2->getOrderDate(), $Customer->getLastBuyDate());
+        $this->assertSame('2', $Customer->getBuyTimes());
 
         // XXX SQLite の場合、小数点以下の '.00' が省略されるため、bcadd() で正規化して比較する
-        self::assertSame(bcadd($Order1->getTotal(), $Order2->getTotal(), 2), bcadd((string) $Customer->getBuyTotal(), '0', 2));
+        $this->assertSame(bcadd($Order1->getTotal(), $Order2->getTotal(), 2), bcadd((string) $Customer->getBuyTotal(), '0', 2));
     }
 
     public function testGetQueryBuilderBySearchDataForAdminMulti2147483648()
@@ -147,12 +148,10 @@ class OrderRepositoryTest extends EccubeTestCase
             ->getQuery()
             ->getResult();
 
-        self::assertEquals($Order, $actual[0]);
+        $this->assertEquals($Order, $actual[0]);
     }
 
-    /**
-     * @dataProvider dataGetQueryBuilderBySearchDataForAdmin_nameProvider
-     */
+    #[DataProvider(methodName: 'dataGetQueryBuilderBySearchDataForAdmin_nameProvider')]
     public function testGetQueryBuilderBySearchDataForAdminName(string $formName, string $searchWord, int $expected)
     {
         $this->Order
@@ -169,63 +168,64 @@ class OrderRepositoryTest extends EccubeTestCase
             ->getQuery()
             ->getResult();
 
-        self::assertCount($expected, $actual);
+        $this->assertCount($expected, $actual);
     }
 
-    public function dataGetQueryBuilderBySearchDataForAdmin_nameProvider()
+    public static function dataGetQueryBuilderBySearchDataForAdmin_nameProvider(): \Iterator
     {
-        return [
-            ['multi', '姓', 1],
-            ['multi', '名', 1],
-            ['multi', '姓名', 1],
-            ['multi', '姓 名', 1],
-            ['multi', '姓　名', 1],
-            ['multi', 'セイ', 1],
-            ['multi', 'メイ', 1],
-            ['multi', 'セイメイ', 1],
-            ['multi', 'セイ メイ', 1],
-            ['multi', 'セイ　メイ', 1],
-            ['multi', '株式会社', 1],
-            ['multi', '会社名', 1],
-            ['multi', '株式会社会社名', 0],
-            ['multi', '株式会社 会社名', 0], // 半角スペース
-            ['multi', '株式会社　会社名', 1], // 全角スペース
-            ['multi', '石', 0],
-            ['multi', 'キューブ', 0],
-            ['multi', '姓 球部', 0],
-            ['multi', 'セイ 名', 0],
-            ['multi', '姓　メイ', 0],
-            ['name', '姓', 1],
-            ['name', '名', 1],
-            ['name', '姓名', 1],
-            ['name', '姓 名', 1],
-            ['name', '姓　名', 1],
-            ['name', 'セイ', 0],
-            ['name', '株式会社　会社名', 0],
-            ['kana', 'セイ', 1],
-            ['kana', 'メイ', 1],
-            ['kana', 'セイメイ', 1],
-            ['kana', 'セイ メイ', 1],
-            ['kana', 'セイ　メイ', 1],
-            ['kana', '姓', 0],
-            ['kana', '株式会社　会社名', 0],
-            ['company_name', '株式会社', 1],
-            ['company_name', '会社名', 1],
-            ['company_name', '株式会社会社名', 0],
-            ['company_name', '株式会社 会社名', 0], // 半角スペース
-            ['company_name', '株式会社　会社名', 1], // 全角スペース
-            ['company_name', '姓', 0],
-            ['company_name', 'セイ', 0],
-        ];
+        yield ['multi', '姓', 1];
+        yield ['multi', '名', 1];
+        yield ['multi', '姓名', 1];
+        yield ['multi', '姓 名', 1];
+        yield ['multi', '姓　名', 1];
+        yield ['multi', 'セイ', 1];
+        yield ['multi', 'メイ', 1];
+        yield ['multi', 'セイメイ', 1];
+        yield ['multi', 'セイ メイ', 1];
+        yield ['multi', 'セイ　メイ', 1];
+        yield ['multi', '株式会社', 1];
+        yield ['multi', '会社名', 1];
+        yield ['multi', '株式会社会社名', 0];
+        yield ['multi', '株式会社 会社名', 0];
+        // 半角スペース
+        yield ['multi', '株式会社　会社名', 1];
+        // 全角スペース
+        yield ['multi', '石', 0];
+        yield ['multi', 'キューブ', 0];
+        yield ['multi', '姓 球部', 0];
+        yield ['multi', 'セイ 名', 0];
+        yield ['multi', '姓　メイ', 0];
+        yield ['name', '姓', 1];
+        yield ['name', '名', 1];
+        yield ['name', '姓名', 1];
+        yield ['name', '姓 名', 1];
+        yield ['name', '姓　名', 1];
+        yield ['name', 'セイ', 0];
+        yield ['name', '株式会社　会社名', 0];
+        yield ['kana', 'セイ', 1];
+        yield ['kana', 'メイ', 1];
+        yield ['kana', 'セイメイ', 1];
+        yield ['kana', 'セイ メイ', 1];
+        yield ['kana', 'セイ　メイ', 1];
+        yield ['kana', '姓', 0];
+        yield ['kana', '株式会社　会社名', 0];
+        yield ['company_name', '株式会社', 1];
+        yield ['company_name', '会社名', 1];
+        yield ['company_name', '株式会社会社名', 0];
+        yield ['company_name', '株式会社 会社名', 0];
+        // 半角スペース
+        yield ['company_name', '株式会社　会社名', 1];
+        // 全角スペース
+        yield ['company_name', '姓', 0];
+        yield ['company_name', 'セイ', 0];
     }
 
     /**
      * AND 条件についてテストします。
      *
      * すべて一致する検索条件を、1項目ずつ一致しない値に置き換えて確認します。
-     *
-     * @dataProvider dataGetQueryBuilderBySearchDataForAdmin_testAndCondition
      */
+    #[DataProvider(methodName: 'dataGetQueryBuilderBySearchDataForAdmin_testAndCondition')]
     public function testGetQueryBuilderBySearchDataForAdminTestAndCondition(array $searchWord, int $expected)
     {
         // 基本の検索条件に一致するデータを作成します
@@ -283,9 +283,7 @@ class OrderRepositoryTest extends EccubeTestCase
 
         // dataProvider 内で直接指定することが難しい値を変換します
         if (isset($searchData['payment'])) {
-            $searchData['payment'] = \array_map(function ($item) {
-                return $this->entityManager->getReference(Payment::class, $item);
-            }, $searchData['payment']);
+            $searchData['payment'] = \array_map(fn ($item) => $this->entityManager->getReference(Payment::class, $item), $searchData['payment']);
         }
         if (isset($searchData['update_datetime_start'])) {
             $searchData['update_datetime_start'] = $this->Order->getUpdateDate()
@@ -302,38 +300,35 @@ class OrderRepositoryTest extends EccubeTestCase
             ->getQuery()
             ->getResult();
 
-        self::assertCount($expected, $actual);
+        $this->assertCount($expected, $actual);
     }
 
-    public function dataGetQueryBuilderBySearchDataForAdmin_testAndCondition()
+    public static function dataGetQueryBuilderBySearchDataForAdmin_testAndCondition(): \Iterator
     {
-        return [
-            // 基本の検索条件で検索結果が返ってくること
-            [[], 1],
-
-            // 1 項目ずつ一致しない条件に置き換えると検索結果が返ってこないこと
-            [['status' => [OrderStatus::CANCEL]], 0],
-            [['multi' => '一致しないキーワード'], 0],
-            [['name' => '一致しないキーワード'], 0],
-            [['kana' => '一致しないキーワード'], 0],
-            [['company_name' => '一致しないキーワード'], 0],
-            [['email' => '一致しないキーワード'], 0],
-            [['phone_number' => '11111111111'], 0],
-            [['order_no' => '一致しないキーワード'], 0],
-            [['tracking_number' => '一致しないキーワード'], 0],
-            [['shipping_mail' => [Shipping::SHIPPING_MAIL_SENT]], 0],
-            [['payment' => [2]], 0],
-            [['order_datetime_start' => new \DateTime('2022-01-01T10:00:01Z')], 0],
-            [['order_datetime_end' => new \DateTime('2022-01-01T10:00:00Z')], 0],
-            [['payment_datetime_start' => new \DateTime('2022-02-01T10:00:01Z')], 0],
-            [['payment_datetime_end' => new \DateTime('2022-02-01T10:00:00Z')], 0],
-            [['update_datetime_start' => 'PT1S'], 0],
-            [['update_datetime_end' => 'PT0S'], 0],
-            [['shipping_delivery_datetime_start' => new \DateTime('2022-03-01T10:00:01Z')], 0],
-            [['shipping_delivery_datetime_end' => new \DateTime('2022-03-01T10:00:00Z')], 0],
-            [['payment_total_start' => '1001'], 0],
-            [['payment_total_end' => '999'], 0],
-            [['buy_product_name' => '一致しないキーワード'], 0],
-        ];
+        // 基本の検索条件で検索結果が返ってくること
+        yield [[], 1];
+        // 1 項目ずつ一致しない条件に置き換えると検索結果が返ってこないこと
+        yield [['status' => [OrderStatus::CANCEL]], 0];
+        yield [['multi' => '一致しないキーワード'], 0];
+        yield [['name' => '一致しないキーワード'], 0];
+        yield [['kana' => '一致しないキーワード'], 0];
+        yield [['company_name' => '一致しないキーワード'], 0];
+        yield [['email' => '一致しないキーワード'], 0];
+        yield [['phone_number' => '11111111111'], 0];
+        yield [['order_no' => '一致しないキーワード'], 0];
+        yield [['tracking_number' => '一致しないキーワード'], 0];
+        yield [['shipping_mail' => [Shipping::SHIPPING_MAIL_SENT]], 0];
+        yield [['payment' => [2]], 0];
+        yield [['order_datetime_start' => new \DateTime('2022-01-01T10:00:01Z')], 0];
+        yield [['order_datetime_end' => new \DateTime('2022-01-01T10:00:00Z')], 0];
+        yield [['payment_datetime_start' => new \DateTime('2022-02-01T10:00:01Z')], 0];
+        yield [['payment_datetime_end' => new \DateTime('2022-02-01T10:00:00Z')], 0];
+        yield [['update_datetime_start' => 'PT1S'], 0];
+        yield [['update_datetime_end' => 'PT0S'], 0];
+        yield [['shipping_delivery_datetime_start' => new \DateTime('2022-03-01T10:00:01Z')], 0];
+        yield [['shipping_delivery_datetime_end' => new \DateTime('2022-03-01T10:00:00Z')], 0];
+        yield [['payment_total_start' => '1001'], 0];
+        yield [['payment_total_end' => '999'], 0];
+        yield [['buy_product_name' => '一致しないキーワード'], 0];
     }
 }

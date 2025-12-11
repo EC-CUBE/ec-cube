@@ -19,68 +19,40 @@ use Symfony\Component\HttpFoundation\Response;
 
 class EventArgs extends GenericEvent
 {
-    /**
-     * @var Request
-     */
-    private $request;
-    /**
-     * @var Response
-     */
-    private $response;
+    private ?Response $response = null;
 
     /**
      * EventArgs constructor.
      *
      * @param array<mixed> $arguments
-     * @param Request|null $request
      */
-    public function __construct(array $arguments = [], ?Request $request = null)
+    public function __construct(array $arguments = [], private ?Request $request = null)
     {
         parent::__construct(null, $arguments);
-        $this->request = $request;
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return void
-     */
-    public function setRequest(Request $request)
+    public function setRequest(Request $request): void
     {
         $this->request = $request;
     }
 
-    /**
-     * @return Request
-     */
-    public function getRequest()
+    public function getRequest(): ?Request
     {
         return $this->request;
     }
 
-    /**
-     * @param Response $response
-     *
-     * @return void
-     */
-    public function setResponse(Response $response)
+    public function setResponse(?Response $response): void
     {
         $this->response = $response;
     }
 
-    /**
-     * @return Response|null
-     */
-    public function getResponse()
+    public function getResponse(): ?Response
     {
         return $this->response;
     }
 
-    /**
-     * @return bool
-     */
-    public function hasResponse()
+    public function hasResponse(): bool
     {
-        return $this->response instanceof Response;
+        return $this->response !== null;
     }
 }

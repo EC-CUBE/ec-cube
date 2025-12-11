@@ -17,6 +17,7 @@ use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Category;
 use Eccube\Entity\ExportCsvRow;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\Master\ProductStatus;
@@ -46,7 +47,9 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -59,105 +62,35 @@ use Symfony\Component\Routing\RouterInterface;
 
 class ProductController extends AbstractController
 {
-    /**
-     * @var CsvExportService
-     */
-    protected $csvExportService;
-
-    /**
-     * @var ProductClassRepository
-     */
-    protected $productClassRepository;
-
-    /**
-     * @var ProductImageRepository
-     */
-    protected $productImageRepository;
-
-    /**
-     * @var TaxRuleRepository
-     */
-    protected $taxRuleRepository;
-
-    /**
-     * @var CategoryRepository
-     */
-    protected $categoryRepository;
-
-    /**
-     * @var ProductRepository
-     */
-    protected $productRepository;
-
-    /**
-     * @var BaseInfo
-     */
-    protected $BaseInfo;
-
-    /**
-     * @var PageMaxRepository
-     */
-    protected $pageMaxRepository;
-
-    /**
-     * @var ProductStatusRepository
-     */
-    protected $productStatusRepository;
-
-    /**
-     * @var TagRepository
-     */
-    protected $tagRepository;
+    protected BaseInfo $BaseInfo;
 
     /**
      * ProductController constructor.
-     *
-     * @param CsvExportService $csvExportService
-     * @param ProductClassRepository $productClassRepository
-     * @param ProductImageRepository $productImageRepository
-     * @param TaxRuleRepository $taxRuleRepository
-     * @param CategoryRepository $categoryRepository
-     * @param ProductRepository $productRepository
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param PageMaxRepository $pageMaxRepository
-     * @param ProductStatusRepository $productStatusRepository
-     * @param TagRepository $tagRepository
      */
     public function __construct(
-        CsvExportService $csvExportService,
-        ProductClassRepository $productClassRepository,
-        ProductImageRepository $productImageRepository,
-        TaxRuleRepository $taxRuleRepository,
-        CategoryRepository $categoryRepository,
-        ProductRepository $productRepository,
+        protected CsvExportService $csvExportService,
+        protected ProductClassRepository $productClassRepository,
+        protected ProductImageRepository $productImageRepository,
+        protected TaxRuleRepository $taxRuleRepository,
+        protected CategoryRepository $categoryRepository,
+        protected ProductRepository $productRepository,
         BaseInfoRepository $baseInfoRepository,
-        PageMaxRepository $pageMaxRepository,
-        ProductStatusRepository $productStatusRepository,
-        TagRepository $tagRepository,
+        protected PageMaxRepository $pageMaxRepository,
+        protected ProductStatusRepository $productStatusRepository,
+        protected TagRepository $tagRepository,
     ) {
-        $this->csvExportService = $csvExportService;
-        $this->productClassRepository = $productClassRepository;
-        $this->productImageRepository = $productImageRepository;
-        $this->taxRuleRepository = $taxRuleRepository;
-        $this->categoryRepository = $categoryRepository;
-        $this->productRepository = $productRepository;
         $this->BaseInfo = $baseInfoRepository->get();
-        $this->pageMaxRepository = $pageMaxRepository;
-        $this->productStatusRepository = $productStatusRepository;
-        $this->tagRepository = $tagRepository;
     }
 
     /**
-     * @param Request $request
-     * @param PaginatorInterface $paginator
      * @param string|null $page_no
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
-    #[Route('/%eccube_admin_route%/product', name: 'admin_product', methods: ['POST', 'GET'])]
-    #[Route('/%eccube_admin_route%/product/page/{page_no}', name: 'admin_product_page', requirements: ['page_no' => '\d+'], methods: ['POST', 'GET'])]
-    #[Template('@admin/Product/index.twig')]
-    public function index(Request $request, PaginatorInterface $paginator, $page_no = null)
+    #[Route(path: '/%eccube_admin_route%/product', name: 'admin_product', methods: ['POST', 'GET'])]
+    #[Route(path: '/%eccube_admin_route%/product/page/{page_no}', name: 'admin_product_page', requirements: ['page_no' => '\d+'], methods: ['POST', 'GET'])]
+    #[Template(template: '@admin/Product/index.twig')]
+    public function index(Request $request, PaginatorInterface $paginator, $page_no = null): array
     {
         $builder = $this->formFactory
             ->createBuilder(SearchProductType::class);
@@ -289,16 +222,15 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @param Request $request
      * @param Product $Product
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      *
      * @throws BadRequestHttpException
      */
-    #[Route('/%eccube_admin_route%/product/classes/{id}/load', name: 'admin_product_classes_load', requirements: ['id' => '\d+'], methods: ['GET'])]
-    #[Template('@admin/Product/product_class_popup.twig')]
-    public function loadProductClasses(Request $request, #[MapEntity(expr: 'repository.findWithSortedClassCategories(id)')] ?Product $Product)
+    #[Route(path: '/%eccube_admin_route%/product/classes/{id}/load', name: 'admin_product_classes_load', requirements: ['id' => '\d+'], methods: ['GET'])]
+    #[Template(template: '@admin/Product/product_class_popup.twig')]
+    public function loadProductClasses(Request $request, #[MapEntity(expr: 'repository.findWithSortedClassCategories(id)')] ?Product $Product): array
     {
         if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
             throw new BadRequestHttpException();
@@ -327,14 +259,10 @@ class ProductController extends AbstractController
      *
      * @see https://pqina.nl/filepond/docs/api/server/#process
      *
-     * @param Request $request
-     *
-     * @return Response
-     *
      * @throws BadRequestHttpException|UnsupportedMediaTypeHttpException
      */
-    #[Route('/%eccube_admin_route%/product/product/image/process', name: 'admin_product_image_process', methods: ['POST'])]
-    public function imageProcess(Request $request)
+    #[Route(path: '/%eccube_admin_route%/product/product/image/process', name: 'admin_product_image_process', methods: ['POST'])]
+    public function imageProcess(Request $request): Response
     {
         if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
             throw new BadRequestHttpException();
@@ -384,14 +312,10 @@ class ProductController extends AbstractController
      *
      * @see https://pqina.nl/filepond/docs/api/server/#load
      *
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
-     *
      * @throws BadRequestHttpException|NotFoundHttpException
      */
-    #[Route('/%eccube_admin_route%/product/product/image/load', name: 'admin_product_image_load', methods: ['GET'])]
-    public function imageLoad(Request $request)
+    #[Route(path: '/%eccube_admin_route%/product/product/image/load', name: 'admin_product_image_load', methods: ['GET'])]
+    public function imageLoad(Request $request): BinaryFileResponse
     {
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();
@@ -403,7 +327,7 @@ class ProductController extends AbstractController
         ];
 
         foreach ($dirs as $dir) {
-            if (str_contains($request->query->get('source'), '..')) {
+            if (str_contains((string) $request->query->get('source'), '..')) {
                 throw new NotFoundHttpException();
             }
             $image = \realpath($dir.'/'.$request->query->get('source'));
@@ -424,14 +348,10 @@ class ProductController extends AbstractController
      *
      * @see https://pqina.nl/filepond/docs/api/server/#revert
      *
-     * @param Request $request
-     *
-     * @return Response
-     *
      * @throws BadRequestHttpException|NotFoundHttpException
      */
-    #[Route('/%eccube_admin_route%/product/product/image/revert', name: 'admin_product_image_revert', methods: ['DELETE'])]
-    public function imageRevert(Request $request)
+    #[Route(path: '/%eccube_admin_route%/product/product/image/revert', name: 'admin_product_image_revert', methods: ['DELETE'])]
+    public function imageRevert(Request $request): Response
     {
         if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
             throw new BadRequestHttpException();
@@ -449,19 +369,16 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param RouterInterface $router
-     * @param CacheUtil $cacheUtil
      * @param int|string|null $id
      *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      *
      * @throws NotFoundHttpException|\Exception
      */
-    #[Route('/%eccube_admin_route%/product/product/new', name: 'admin_product_product_new', methods: ['GET', 'POST'])]
-    #[Route('/%eccube_admin_route%/product/product/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_product_product_edit', methods: ['GET', 'POST'])]
-    #[Template('@admin/Product/product.twig')]
-    public function edit(Request $request, RouterInterface $router, CacheUtil $cacheUtil, $id = null)
+    #[Route(path: '/%eccube_admin_route%/product/product/new', name: 'admin_product_product_new', methods: ['GET', 'POST'])]
+    #[Route(path: '/%eccube_admin_route%/product/product/{id}/edit', name: 'admin_product_product_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Product/product.twig')]
+    public function edit(Request $request, RouterInterface $router, CacheUtil $cacheUtil, $id = null): RedirectResponse|array
     {
         $has_class = false;
         if (is_null($id)) {
@@ -606,7 +523,7 @@ class ProductController extends AbstractController
                 foreach ($Categories as $Category) {
                     foreach ($Category->getPath() as $ParentCategory) {
                         if (!isset($categoriesIdList[$ParentCategory->getId()])) {
-                            $ProductCategory = $this->createProductCategory($Product, $ParentCategory, $count);
+                            $ProductCategory = $this->createProductCategory($Product, $ParentCategory);
                             $this->entityManager->persist($ProductCategory);
                             $count++;
                             /* @var \Eccube\Entity\Product $Product */
@@ -615,7 +532,7 @@ class ProductController extends AbstractController
                         }
                     }
                     if (!isset($categoriesIdList[$Category->getId()])) {
-                        $ProductCategory = $this->createProductCategory($Product, $Category, $count);
+                        $ProductCategory = $this->createProductCategory($Product, $Category);
                         $this->entityManager->persist($ProductCategory);
                         $count++;
                         /* @var \Eccube\Entity\Product $Product */
@@ -667,7 +584,7 @@ class ProductController extends AbstractController
                 $this->entityManager->flush();
 
                 /**
-                 * @var array<string, Product>|Product[] $admin_product
+                 * @var array<string, Product>|Product[]|null $admin_product
                  */
                 $admin_product = $request->request->all()['admin_product'] ?? null;
                 if (is_array($admin_product) && array_key_exists('product_image', $admin_product)) {
@@ -731,9 +648,7 @@ class ProductController extends AbstractController
                         $returnLink = preg_replace($pattern, '', (string) $returnLink);
                         $result = $router->match($returnLink);
                         // パラメータのみ抽出
-                        $params = array_filter($result, function ($key) {
-                            return !str_starts_with($key, '_');
-                        }, ARRAY_FILTER_USE_KEY);
+                        $params = array_filter($result, fn ($key) => !str_starts_with((string) $key, '_'), ARRAY_FILTER_USE_KEY);
 
                         // pathからurlを再構築してリダイレクト.
                         return $this->redirectToRoute($result['_route'], $params);
@@ -772,10 +687,8 @@ class ProductController extends AbstractController
         $TagsList = $this->tagRepository->getList();
 
         // ツリー表示のため、ルートからのカテゴリを取得
-        $TopCategories = $this->categoryRepository->getList(null);
-        $ChoicedCategoryIds = array_map(function ($Category) {
-            return $Category->getId();
-        }, $form->get('Category')->getData());
+        $TopCategories = $this->categoryRepository->getList();
+        $ChoicedCategoryIds = array_map(fn ($Category) => $Category->getId(), $form->get('Category')->getData());
 
         return [
             'Product' => $Product,
@@ -791,16 +704,12 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param CacheUtil $cacheUtil
      * @param int|string|null $id
-     *
-     * @return RedirectResponse|\Symfony\Component\HttpFoundation\JsonResponse
      *
      * @throws \Exception
      */
-    #[Route('/%eccube_admin_route%/product/product/{id}/delete', name: 'admin_product_product_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, CacheUtil $cacheUtil, $id = null)
+    #[Route(path: '/%eccube_admin_route%/product/product/{id}/delete', name: 'admin_product_product_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    public function delete(Request $request, CacheUtil $cacheUtil, $id = null): RedirectResponse|JsonResponse
     {
         $this->isTokenValid();
         $session = $request->getSession();
@@ -889,26 +798,31 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @param Request $request
      * @param int|string|null $id
-     *
-     * @return RedirectResponse
      *
      * @throws \Exception
      */
-    #[Route('/%eccube_admin_route%/product/product/{id}/copy', requirements: ['id' => '\d+'], name: 'admin_product_product_copy', methods: ['POST'])]
-    public function copy(Request $request, $id = null)
+    #[Route(path: '/%eccube_admin_route%/product/product/{id}/copy', name: 'admin_product_product_copy', requirements: ['id' => '\d+'], methods: ['POST'])]
+    public function copy(Request $request, $id = null): RedirectResponse
     {
         $this->isTokenValid();
 
         if (!is_null($id)) {
             $Product = $this->productRepository->find($id);
             if ($Product instanceof Product) {
-                $CopyProduct = clone $Product;
-                $CopyProduct->copy();
+                $CopyProduct = new Product();
+                $CopyProduct->copyProperties($Product, ['id']);
                 $ProductStatus = $this->productStatusRepository->find(ProductStatus::DISPLAY_HIDE);
                 $CopyProduct->setStatus($ProductStatus);
 
+                // 商品IDの確定
+                $this->entityManager->persist($CopyProduct);
+                $this->entityManager->flush();
+
+                // 商品関連のコピー
+                $CopyProduct->copy($Product);
+
+                // 商品カテゴリの登録
                 $CopyProductCategories = $CopyProduct->getProductCategories();
                 foreach ($CopyProductCategories as $Category) {
                     $this->entityManager->persist($Category);
@@ -996,23 +910,19 @@ class ProductController extends AbstractController
 
     /**
      * 商品CSVの出力.
-     *
-     * @param Request $request
-     *
-     * @return StreamedResponse
      */
-    #[Route('/%eccube_admin_route%/product/export', name: 'admin_product_export', methods: ['GET'])]
-    public function export(Request $request)
+    #[Route(path: '/%eccube_admin_route%/product/export', name: 'admin_product_export', methods: ['GET'])]
+    public function export(Request $request): StreamedResponse
     {
         // タイムアウトを無効にする.
         set_time_limit(0);
 
         // sql loggerを無効にする.
         $em = $this->entityManager;
-        $em->getConfiguration()->setSQLLogger(null);
+        $em->getConfiguration()->setSQLLogger();
 
         $response = new StreamedResponse();
-        $response->setCallback(function () use ($request) {
+        $response->setCallback(function () use ($request): void {
             // CSV種別を元に初期化.
             $this->csvExportService->initCsvType(CsvType::CSV_TYPE_PRODUCT);
 
@@ -1049,7 +959,7 @@ class ProductController extends AbstractController
             // データ行の出力.
             $this->csvExportService->setExportQueryBuilder($qb);
 
-            $this->csvExportService->exportData(function ($entity, CsvExportService $csvService) use ($request) {
+            $this->csvExportService->exportData(function ($entity, CsvExportService $csvService) use ($request): void {
                 $Csvs = $csvService->getCsvs();
 
                 /** @var Product $Product */
@@ -1103,14 +1013,8 @@ class ProductController extends AbstractController
 
     /**
      * ProductCategory作成
-     *
-     * @param Product $Product
-     * @param \Eccube\Entity\Category $Category
-     * @param int $count
-     *
-     * @return ProductCategory
      */
-    private function createProductCategory($Product, $Category, $count)
+    private function createProductCategory(Product $Product, Category $Category): ProductCategory
     {
         $ProductCategory = new ProductCategory();
         $ProductCategory->setProduct($Product);
@@ -1123,15 +1027,9 @@ class ProductController extends AbstractController
 
     /**
      * Bulk public action
-     *
-     * @param Request $request
-     * @param ProductStatus $ProductStatus
-     * @param CacheUtil $cacheUtil
-     *
-     * @return RedirectResponse
      */
-    #[Route('/%eccube_admin_route%/product/bulk/product-status/{id}', requirements: ['id' => '\d+'], name: 'admin_product_bulk_product_status', methods: ['POST'])]
-    public function bulkProductStatus(Request $request, ProductStatus $ProductStatus, CacheUtil $cacheUtil)
+    #[Route(path: '/%eccube_admin_route%/product/bulk/product-status/{id}', name: 'admin_product_bulk_product_status', requirements: ['id' => '\d+'], methods: ['POST'])]
+    public function bulkProductStatus(Request $request, ProductStatus $ProductStatus, CacheUtil $cacheUtil): RedirectResponse
     {
         $this->isTokenValid();
 

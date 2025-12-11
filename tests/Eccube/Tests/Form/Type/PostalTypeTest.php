@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,16 +19,16 @@ use Eccube\Form\Type\PostalType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormInterface;
 
-class PostalTypeTest extends AbstractTypeTestCase
+final class PostalTypeTest extends AbstractTypeTestCase
 {
-    /** @var FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = [
+    protected ?array $formData = [
         'postal_code' => '060-0000',
     ];
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

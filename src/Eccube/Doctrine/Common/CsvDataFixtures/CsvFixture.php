@@ -26,27 +26,17 @@ use Doctrine\Persistence\ObjectManager;
 class CsvFixture implements FixtureInterface
 {
     /**
-     * @var \SplFileObject
-     */
-    protected $file;
-
-    /**
      * CsvFixture constructor.
-     *
-     * @param \SplFileObject|null $file
      */
-    public function __construct(?\SplFileObject $file = null)
+    public function __construct(protected ?\SplFileObject $file = null)
     {
-        $this->file = $file;
     }
 
     /**
      * {@inheritdoc}
-     *
-     * @return void
      */
     #[\Override]
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         if ($manager instanceof EntityManagerInterface === false) {
             return;
@@ -141,21 +131,19 @@ class CsvFixture implements FixtureInterface
      * INSERT を生成する.
      *
      * @param string $table_name テーブル名
-     * @param array<int,string> $headers カラム名の配列
+     * @param array<int, string> $headers カラム名の配列
      *
      * @return string INSERT 文
      */
-    public function getSql($table_name, array $headers)
+    public function getSql(string $table_name, array $headers): string
     {
         return 'INSERT INTO '.$table_name.' ('.implode(', ', $headers).') VALUES ('.implode(', ', array_fill(0, count($headers), '?')).')';
     }
 
     /**
      * 保持している \SplFileObject を返す.
-     *
-     * @return \SplFileObject
      */
-    public function getFile()
+    public function getFile(): \SplFileObject
     {
         return $this->file;
     }

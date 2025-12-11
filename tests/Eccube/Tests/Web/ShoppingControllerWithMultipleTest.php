@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,6 +23,7 @@ use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\CartService;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -45,19 +48,17 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  *
  * @author Kentaro Ohkouchi
  */
-class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestCase
+final class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestCase
 {
     use MailerAssertionsTrait;
 
-    /** @var BaseInfoRepository */
-    private $baseInfoRepository;
+    private ?BaseInfoRepository $baseInfoRepository = null;
 
-    /** @var OrderRepository */
-    private $orderRepository;
+    private ?OrderRepository $orderRepository = null;
 
-    /** @var OrderStatusRepository */
-    private $orderStatusRepository;
+    private ?OrderStatusRepository $orderStatusRepository = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -69,6 +70,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
     /**
      * tearDown: rollback and clear mail
      */
+    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();
@@ -93,20 +95,18 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->verify();
 
         // 複数配送画面
-        $crawler = $this->client->request('GET', $this->generateUrl('shopping_shipping_multiple'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('shopping_shipping_multiple'));
 
         // 配送先1, 配送先2の情報を返す
         $shippings = $crawler->filter('#form_shipping_multiple_0_shipping_0_customer_address > option')->each(
-            function ($node, $i) {
-                return [
-                    'customer_address' => $node->attr('value'),
-                    'quantity' => 1,
-                ];
-            }
+            fn ($node, $i) => [
+                'customer_address' => $node->attr('value'),
+                'quantity' => 1,
+            ]
         );
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => [
                 'shipping_multiple' => [0 => [
@@ -148,6 +148,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
 
         $OrderNew = $this->orderStatusRepository->find(OrderStatus::NEW);
         $this->expected = $OrderNew;
+        $this->assertInstanceOf(Order::class, $Order);
         $this->actual = $Order->getOrderStatus();
         $this->verify();
 
@@ -172,15 +173,13 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->verify();
 
         // 複数配送画面
-        $crawler = $this->client->request('GET', $this->generateUrl('shopping_shipping_multiple'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('shopping_shipping_multiple'));
         // 配送先1, 配送先2の情報を返す
         $shippings = $crawler->filter('#form_shipping_multiple_0_shipping_0_customer_address > option')->each(
-            function ($node, $i) {
-                return [
-                    'customer_address' => $node->html(),
-                    'quantity' => 1,
-                ];
-            }
+            fn ($node, $i) => [
+                'customer_address' => $node->html(),
+                'quantity' => 1,
+            ]
         );
 
         $address = $Customer->getName01().' '.$Customer->getPref()->getName().' '.$Customer->getAddr01().' '.$Customer->getAddr02();
@@ -231,7 +230,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => $multiForm]
         );
@@ -239,6 +238,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
 
         $Order = $this->orderRepository->findOneBy(['Customer' => $Customer]);
+        $this->assertInstanceOf(Order::class, $Order);
 
         // One shipping
         $this->assertCount(1, $Order->getShippings());
@@ -251,7 +251,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
     {
         $Customer = $this->createCustomer();
 
-        $this->client->request('POST', '/cart/add', ['product_class_id' => 1, 'quantity' => 1]);
+        $this->client->request(Request::METHOD_POST, '/cart/add', ['product_class_id' => 1, 'quantity' => 1]);
 
         $this->scenarioCartIn($Customer);
         $this->scenarioCartIn($Customer);
@@ -294,7 +294,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => $multiForm]
         );
@@ -302,6 +302,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
 
         $Order = $this->orderRepository->findOneBy(['Customer' => $Customer]);
+        $this->assertInstanceOf(Order::class, $Order);
 
         // One shipping
         $this->assertCount(1, $Order->getShippings());
@@ -317,12 +318,12 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         // Product test 1 with type 1
         $Product1 = $this->createProduct();
         $ProductClass1 = $Product1->getProductClasses()->first();
-        $ProductClass1->setStock(111);
+        $ProductClass1->setStock('111');
 
         // Product test 2
         $Product2 = $this->createProduct();
         $ProductClass2 = $Product2->getProductClasses()->first();
-        $ProductClass2->setStock(111);
+        $ProductClass2->setStock('111');
 
         $this->entityManager->persist($ProductClass1);
         $this->entityManager->persist($ProductClass2);
@@ -385,7 +386,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => $multiForm]
         );
@@ -393,6 +394,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
 
         $Order = $this->orderRepository->findOneBy(['Customer' => $Customer]);
+        $this->assertInstanceOf(Order::class, $Order);
         $Order->getShippings();
 
         // One shipping
@@ -410,12 +412,12 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         // Product test 1 with type 1
         $Product1 = $this->createProduct();
         $ProductClass1 = $Product1->getProductClasses()->first();
-        $ProductClass1->setStock(111);
+        $ProductClass1->setStock('111');
 
         // Product test 2
         $Product2 = $this->createProduct();
         $ProductClass2 = $Product2->getProductClasses()->first();
-        $ProductClass2->setStock(111);
+        $ProductClass2->setStock('111');
 
         $this->entityManager->persist($ProductClass1);
         $this->entityManager->persist($ProductClass2);
@@ -473,7 +475,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => $multiForm]
         );
@@ -481,6 +483,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
 
         $Order = $this->orderRepository->findOneBy(['Customer' => $Customer]);
+        $this->assertInstanceOf(Order::class, $Order);
 
         // Two shipping
         $this->assertCount(2, $Order->getShippings());
@@ -497,12 +500,12 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         // Product test 1 with type 1
         $Product1 = $this->createProduct();
         $ProductClass1 = $Product1->getProductClasses()->first();
-        $ProductClass1->setStock(111);
+        $ProductClass1->setStock('111');
 
         // Product test 2
         $Product2 = $this->createProduct();
         $ProductClass2 = $Product2->getProductClasses()->first();
-        $ProductClass2->setStock(111);
+        $ProductClass2->setStock('111');
 
         $this->entityManager->persist($ProductClass1);
         $this->entityManager->persist($ProductClass2);
@@ -567,7 +570,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => $multiForm]
         );
@@ -575,6 +578,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
 
         $Order = $this->orderRepository->findOneBy(['Customer' => $Customer]);
+        $this->assertInstanceOf(Order::class, $Order);
 
         // Two shipping
         $this->assertCount(2, $Order->getShippings());
@@ -590,17 +594,17 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         // Product test 1 with type 1
         $Product1 = $this->createProduct();
         $ProductClass1 = $Product1->getProductClasses()->first();
-        $ProductClass1->setStock(111);
+        $ProductClass1->setStock('111');
 
         // Product test 2
         $Product2 = $this->createProduct();
         $ProductClass2 = $Product2->getProductClasses()->first();
-        $ProductClass2->setStock(111);
+        $ProductClass2->setStock('111');
 
         // Product test 3
         $Product3 = $this->createProduct();
         $ProductClass3 = $Product3->getProductClasses()->first();
-        $ProductClass3->setStock(111);
+        $ProductClass3->setStock('111');
 
         $this->entityManager->persist($ProductClass1);
         $this->entityManager->persist($ProductClass2);
@@ -674,7 +678,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => $multiForm]
         );
@@ -682,6 +686,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
 
         $Order = $this->orderRepository->findOneBy(['Customer' => $Customer]);
+        $this->assertInstanceOf(Order::class, $Order);
 
         // One shipping
         $this->assertCount(1, $Order->getShippings());
@@ -698,17 +703,17 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         // Product test 1 with type 1
         $Product1 = $this->createProduct();
         $ProductClass1 = $Product1->getProductClasses()->first();
-        $ProductClass1->setStock(111);
+        $ProductClass1->setStock('111');
 
         // Product test 2
         $Product2 = $this->createProduct();
         $ProductClass2 = $Product2->getProductClasses()->first();
-        $ProductClass2->setStock(111);
+        $ProductClass2->setStock('111');
 
         // Product test 3
         $Product3 = $this->createProduct();
         $ProductClass3 = $Product3->getProductClasses()->first();
-        $ProductClass3->setStock(111);
+        $ProductClass3->setStock('111');
 
         $this->entityManager->persist($ProductClass1);
         $this->entityManager->persist($ProductClass2);
@@ -784,7 +789,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => $multiForm]
         );
@@ -792,6 +797,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
 
         $Order = $this->orderRepository->findOneBy(['Customer' => $Customer]);
+        $this->assertInstanceOf(Order::class, $Order);
 
         // Two shipping
         $this->assertCount(2, $Order->getShippings());
@@ -809,17 +815,17 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         // Product test 1 with type 1
         $Product1 = $this->createProduct();
         $ProductClass1 = $Product1->getProductClasses()->first();
-        $ProductClass1->setStock(111);
+        $ProductClass1->setStock('111');
 
         // Product test 2
         $Product2 = $this->createProduct();
         $ProductClass2 = $Product2->getProductClasses()->first();
-        $ProductClass2->setStock(111);
+        $ProductClass2->setStock('111');
 
         // Product test 3
         $Product3 = $this->createProduct();
         $ProductClass3 = $Product3->getProductClasses()->first();
-        $ProductClass3->setStock(111);
+        $ProductClass3->setStock('111');
 
         $this->entityManager->persist($ProductClass1);
         $this->entityManager->persist($ProductClass2);
@@ -896,7 +902,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => $multiForm]
         );
@@ -904,6 +910,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
 
         $Order = $this->orderRepository->findOneBy(['Customer' => $Customer]);
+        $this->assertInstanceOf(Order::class, $Order);
 
         // Three shipping
         $this->assertCount(3, $Order->getShippings());
@@ -912,7 +919,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
     /**
      * Test add multi shipping
      */
-    public function testAddMultiShippingWithoutCart()
+    public function testAddMultiShippingWithoutCart(): never
     {
         $this->markTestIncomplete('カートのクリア処理');
 
@@ -920,9 +927,9 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $Customer->addCustomerAddress($this->createCustomerAddress($Customer));
         $Customer->addCustomerAddress($this->createCustomerAddress($Customer));
 
-        $this->client->request('POST', '/cart/add', ['product_class_id' => 10, 'quantity' => 2]);
-        $this->client->request('POST', '/cart/add', ['product_class_id' => 1, 'quantity' => 1]);
-        $this->client->request('POST', '/cart/add', ['product_class_id' => 2, 'quantity' => 1]);
+        $this->client->request(Request::METHOD_POST, '/cart/add', ['product_class_id' => 10, 'quantity' => 2]);
+        $this->client->request(Request::METHOD_POST, '/cart/add', ['product_class_id' => 1, 'quantity' => 1]);
+        $this->client->request(Request::METHOD_POST, '/cart/add', ['product_class_id' => 2, 'quantity' => 1]);
 
         $this->scenarioCartIn($Customer);
 
@@ -988,7 +995,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $cartService->clear();
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => $multiForm]
         );
@@ -1008,17 +1015,17 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         // Product test 1 with type 1
         $Product1 = $this->createProduct();
         $ProductClass1 = $Product1->getProductClasses()->first();
-        $ProductClass1->setStock(111);
+        $ProductClass1->setStock('111');
 
         // Product test 2
         $Product2 = $this->createProduct();
         $ProductClass2 = $Product2->getProductClasses()->first();
-        $ProductClass2->setStock(111);
+        $ProductClass2->setStock('111');
 
         // Product test 3
         $Product3 = $this->createProduct();
         $ProductClass3 = $Product3->getProductClasses()->first();
-        $ProductClass3->setStock(111);
+        $ProductClass3->setStock('111');
 
         $this->entityManager->persist($ProductClass1);
         $this->entityManager->persist($ProductClass2);
@@ -1126,7 +1133,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => $beforeForm]
         );
@@ -1134,7 +1141,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => $afterForm]
         );
@@ -1142,6 +1149,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
 
         $Order = $this->orderRepository->findOneBy(['Customer' => $Customer]);
+        $this->assertInstanceOf(Order::class, $Order);
         $Shipping = $Order->getShippings();
 
         // Three shipping
@@ -1175,7 +1183,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         // Product
         $Product = $this->createProduct();
         $ProductClass = $Product->getProductClasses()->first();
-        $ProductClass->setStock(111);
+        $ProductClass->setStock('111');
         $this->entityManager->persist($ProductClass);
         $this->entityManager->flush();
 
@@ -1216,7 +1224,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => $multiForm]
         );
@@ -1224,6 +1232,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
 
         $Order = $this->orderRepository->findOneBy(['Customer' => $Customer]);
+        $this->assertInstanceOf(Order::class, $Order);
         $Shipping = $Order->getShippings();
 
         // still only one shipping
@@ -1236,17 +1245,15 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
 
         // item number on the screen
         $shipping = $crawler->filter('#shopping-form > div > div.ec-orderRole__detail > div.ec-orderDelivery > div.ec-orderDelivery__item > ul')->text();
-        $this->assertStringContainsString('× 3', $shipping);
+        $this->assertStringContainsString('× 3', (string) $shipping);
 
         $deliver = $crawler->filter('#shopping_order_Shippings_0_Delivery > option')->each(
-            function ($node, $i) {
-                return $node->text();
-            }
+            fn ($node, $i) => $node->text()
         );
 
         $this->expected = 'サンプル業者';
         $this->actual = $deliver;
-        $this->assertTrue(in_array($this->expected, $this->actual));
+        $this->assertContains($this->expected, $this->actual);
 
         // 完了画面
         $this->scenarioComplete(

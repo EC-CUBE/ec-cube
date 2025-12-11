@@ -13,6 +13,8 @@
 
 namespace Eccube\Entity;
 
+use Eccube\Entity\Master\OrderItemType;
+
 interface ItemInterface
 {
     /**
@@ -20,89 +22,64 @@ interface ItemInterface
      *
      * @return bool 商品明細の場合 true
      */
-    public function isProduct();
+    public function isProduct(): bool;
 
     /**
      * 送料明細かどうか.
      *
      * @return bool 送料明細の場合 true
      */
-    public function isDeliveryFee();
+    public function isDeliveryFee(): bool;
 
     /**
      * 手数料明細かどうか.
      *
      * @return bool 手数料明細の場合 true
      */
-    public function isCharge();
+    public function isCharge(): bool;
 
     /**
      * 値引き明細かどうか.
      *
      * @return bool 値引き明細の場合 true
      */
-    public function isDiscount();
+    public function isDiscount(): bool;
 
     /**
      * ポイント明細かどうか.
      *
      * @return bool ポイント明細の場合 true
      */
-    public function isPoint();
+    public function isPoint(): bool;
 
     /**
      * 税額明細かどうか.
      *
      * @return bool 税額明細の場合 true
      */
-    public function isTax();
+    public function isTax(): bool;
+
+    public function getOrderItemType(): ?OrderItemType;
+
+    public function getProductClass(): ?ProductClass;
+
+    public function getPrice(): ?string;
+
+    public function getQuantity(): string;
 
     /**
-     * @return Master\OrderItemType|null
-     */
-    public function getOrderItemType();
-
-    /**
-     * @return ?ProductClass
-     */
-    public function getProductClass();
-
-    /**
-     * @return string
-     */
-    public function getPrice();
-
-    /**
-     * @return string
-     */
-    public function getQuantity();
-
-    /**
-     * @param string $quantity
-     *
-     * @return ItemInterface
-     */
-    public function setQuantity($quantity);
-
-    /**
-     * @return int
-     */
-    public function getId();
-
-    /**
-     * @return string
-     */
-    public function getPointRate();
-
-    /**
-     * @param string $price
-     *
      * @return $this
      */
-    public function setPrice($price);
+    public function setQuantity(string $quantity): static;
+
+    public function getId(): ?int;
+
+    public function getPointRate(): ?string;
 
     /**
-     * @return string
+     * @return $this
      */
-    public function getPriceIncTax();
+    public function setPrice(?string $price): static;
+
+    public function getPriceIncTax(): string;
 }

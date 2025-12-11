@@ -29,45 +29,26 @@ use Symfony\Component\HttpKernel\KernelEvents;
 class TransactionListener implements EventSubscriberInterface
 {
     /**
-     * @var EntityManagerInterface
-     */
-    protected $em;
-
-    /**
-     * @var bool
-     */
-    protected $isEnabled = true;
-
-    /**
      * TransactionListener constructor.
      *
      * @param EntityManager $em
-     * @param bool $isEnabled
      */
-    public function __construct(EntityManagerInterface $em, $isEnabled = true)
+    public function __construct(protected EntityManagerInterface $em, protected bool $isEnabled = true)
     {
-        $this->em = $em;
-        $this->isEnabled = $isEnabled;
     }
 
     /**
      * Disable transaction listener.
-     *
-     * @return void
      */
-    public function disable()
+    public function disable(): void
     {
         $this->isEnabled = false;
     }
 
     /**
      * Kernel request listener callback.
-     *
-     * @param RequestEvent $event
-     *
-     * @return void
      */
-    public function onKernelRequest(RequestEvent $event)
+    public function onKernelRequest(RequestEvent $event): void
     {
         if (!$this->isEnabled) {
             log_debug('Transaction Listener is disabled.');
@@ -92,12 +73,8 @@ class TransactionListener implements EventSubscriberInterface
 
     /**
      * Kernel exception listener callback.
-     *
-     * @param ExceptionEvent $event
-     *
-     * @return void
      */
-    public function onKernelException(ExceptionEvent $event)
+    public function onKernelException(ExceptionEvent $event): void
     {
         if (!$this->isEnabled) {
             log_debug('Transaction Listener is disabled.');
@@ -123,12 +100,8 @@ class TransactionListener implements EventSubscriberInterface
 
     /**
      *  Kernel terminate listener callback.
-     *
-     * @param TerminateEvent $event
-     *
-     * @return void
      */
-    public function onKernelTerminate(TerminateEvent $event)
+    public function onKernelTerminate(TerminateEvent $event): void
     {
         if (!$this->isEnabled) {
             log_debug('Transaction Listener is disabled.');
@@ -155,10 +128,10 @@ class TransactionListener implements EventSubscriberInterface
     /**
      * Return the events to subscribe to.
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
     #[\Override]
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::REQUEST => 'onKernelRequest',

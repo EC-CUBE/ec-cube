@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,17 +19,14 @@ use Eccube\Form\Type\RepeatedEmailType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormInterface;
 
-class RepeatedEmailTypeTest extends AbstractTypeTestCase
+final class RepeatedEmailTypeTest extends AbstractTypeTestCase
 {
-    /**
-     * @var FormInterface
-     */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /**
      * @var array デフォルト値（正常系）を設定
      */
-    protected $formData = [
+    protected ?array $formData = [
         'email' => [
             'first' => 'eccube@example.com',
             'second' => 'eccube@example.com',
@@ -37,6 +36,7 @@ class RepeatedEmailTypeTest extends AbstractTypeTestCase
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -48,6 +48,7 @@ class RepeatedEmailTypeTest extends AbstractTypeTestCase
             ->getForm();
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();

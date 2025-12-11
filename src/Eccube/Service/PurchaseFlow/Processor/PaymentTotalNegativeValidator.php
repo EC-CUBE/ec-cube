@@ -27,12 +27,10 @@ class PaymentTotalNegativeValidator extends ItemHolderPostValidator
      * @param ItemHolderInterface $itemHolder カート or 注文
      * @param PurchaseContext $context 購入フローのコンテキスト
      *
-     * @return void
-     *
      * @throws InvalidItemException 合計金額がマイナスの場合
      */
     #[\Override]
-    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         if ($itemHolder->getTotal() < 0) {
             $this->throwInvalidItemException(trans('front.shopping.payment_total_invalid'));

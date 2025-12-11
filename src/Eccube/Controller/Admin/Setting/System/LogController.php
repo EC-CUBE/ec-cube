@@ -28,9 +28,9 @@ class LogController extends AbstractController
     /**
      * @return array<string, mixed>|StreamedResponse
      */
-    #[Route('/%eccube_admin_route%/setting/system/log', name: 'admin_setting_system_log', methods: ['GET', 'POST'])]
-    #[Template('@admin/Setting/System/log.twig')]
-    public function index(Request $request)
+    #[Route(path: '/%eccube_admin_route%/setting/system/log', name: 'admin_setting_system_log', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Setting/System/log.twig')]
+    public function index(Request $request): array|StreamedResponse
     {
         $formData = [];
         // default
@@ -79,7 +79,7 @@ class LogController extends AbstractController
             $response->headers->set('Content-Length', (string) $fileSizeLogFile);
             $response->headers->set('Content-Disposition', 'attachment; filename='.basename($logFile));
             $response->headers->set('Content-Type', 'application/octet-stream');
-            $response->setCallback(function () use ($logFile, $bufferSize) {
+            $response->setCallback(function () use ($logFile, $bufferSize): void {
                 if ($fh = fopen($logFile, 'r')) {
                     while (!feof($fh)) {
                         echo fread($fh, $bufferSize);
@@ -99,12 +99,11 @@ class LogController extends AbstractController
     /**
      * parse log file
      *
-     * @param string $logFile
-     * @param array<string,string> $formData
+     * @param array<string, string> $formData
      *
-     * @return array<int,mixed>
+     * @return array<int, mixed>
      */
-    private function parseLogFile($logFile, $formData)
+    private function parseLogFile(string $logFile, array $formData): array
     {
         $log = [];
 

@@ -28,20 +28,7 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
  */
 class EccubeDataCollector extends DataCollector
 {
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
-     * @var PluginRepository
-     */
-    protected $pluginRepository;
-
-    /**
-     * @param EccubeConfig $eccubeConfig
-     */
-    public function __construct(EccubeConfig $eccubeConfig, PluginRepository $pluginRepository)
+    public function __construct(protected EccubeConfig $eccubeConfig, protected PluginRepository $pluginRepository)
     {
         $this->data = [
             'version' => Constant::VERSION,
@@ -51,71 +38,53 @@ class EccubeDataCollector extends DataCollector
             'locale_code' => null,
             'plugins' => [],
         ];
-        $this->eccubeConfig = $eccubeConfig;
-        $this->pluginRepository = $pluginRepository;
     }
 
-    /**
-     * @return string
-     */
-    public function getVersion()
+    public function getVersion(): string
     {
         return $this->data['version'];
     }
 
     /**
-     * @return array<string, array<string,mixed>>
+     * @return array<string, array<string, mixed>>
      */
-    public function getPlugins()
+    public function getPlugins(): array
     {
         return $this->data['plugins'];
     }
 
-    /**
-     * @return string
-     */
-    public function getCurrencyCode()
+    public function getCurrencyCode(): string
     {
         return $this->data['currency_code'];
     }
 
-    /**
-     * @return string
-     */
-    public function getLocaleCode()
+    public function getLocaleCode(): string
     {
         return $this->data['locale_code'];
     }
 
-    /**
-     * @return string
-     */
-    public function getDefaultCurrencyCode()
+    public function getDefaultCurrencyCode(): string
     {
         return $this->data['base_currency_code'];
     }
 
-    /**
-     * @return string
-     */
-    public function getDefaultLocaleCode()
+    public function getDefaultLocaleCode(): string
     {
         return $this->data['default_locale_code'];
     }
 
     /**
      * {@inheritdoc}
-     *
-     * @return void
      */
     #[\Override]
-    public function collect(Request $request, Response $response, ?\Throwable $exception = null)
+    public function collect(Request $request, Response $response, ?\Throwable $exception = null): void
     {
         $this->data['base_currency_code'] = $this->eccubeConfig->get('currency');
         $this->data['currency_code'] = $this->eccubeConfig->get('currency');
 
         try {
             $this->data['locale_code'] = $this->eccubeConfig->get('locale');
+            $this->data['default_locale_code'] = $this->eccubeConfig->get('locale');
         } catch (\Exception) {
         }
 
@@ -147,11 +116,8 @@ class EccubeDataCollector extends DataCollector
         }
     }
 
-    /**
-     * @return void
-     */
     #[\Override]
-    public function reset()
+    public function reset(): void
     {
         $this->data = [];
     }
@@ -160,7 +126,7 @@ class EccubeDataCollector extends DataCollector
      * {@inheritdoc}
      */
     #[\Override]
-    public function getName()
+    public function getName(): string
     {
         return 'eccube_core';
     }

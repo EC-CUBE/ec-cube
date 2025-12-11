@@ -31,26 +31,17 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class TaxRuleType extends AbstractType
 {
-    /**
-     * @var TaxRuleRepository
-     */
-    protected $taxRuleRepository;
-
-    public function __construct(TaxRuleRepository $taxRuleRepository)
+    public function __construct(protected TaxRuleRepository $taxRuleRepository)
     {
-        $this->taxRuleRepository = $taxRuleRepository;
     }
 
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('tax_rate', IntegerType::class, [
@@ -79,7 +70,7 @@ class TaxRuleType extends AbstractType
                 ],
             ]);
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             /** @var TaxRule $TaxRule */
             $TaxRule = $event->getData();
             $qb = $this->taxRuleRepository->createQueryBuilder('t');
@@ -105,13 +96,9 @@ class TaxRuleType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @param OptionsResolver $resolver
-     *
-     * @return void
      */
     #[\Override]
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => TaxRule::class,
@@ -122,7 +109,7 @@ class TaxRuleType extends AbstractType
      * {@inheritdoc}
      */
     #[\Override]
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'tax_rule';
     }

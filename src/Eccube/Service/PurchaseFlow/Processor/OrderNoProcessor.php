@@ -25,34 +25,17 @@ use Symfony\Component\String\ByteString;
 class OrderNoProcessor implements ItemHolderPreprocessor
 {
     /**
-     * @var EccubeConfig
-     */
-    private $eccubeConfig;
-
-    /**
-     * @var OrderRepository
-     */
-    private $orderRepository;
-
-    /**
      * OrderNoProcessor constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
-     * @param OrderRepository $orderRepository
      */
-    public function __construct(EccubeConfig $eccubeConfig, OrderRepository $orderRepository)
+    public function __construct(private EccubeConfig $eccubeConfig, private readonly OrderRepository $orderRepository)
     {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->orderRepository = $orderRepository;
     }
 
     /**
      * {@inheritdoc}
-     *
-     * @return void
      */
     #[\Override]
-    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         $Order = $itemHolder;
 
@@ -72,6 +55,7 @@ class OrderNoProcessor implements ItemHolderPreprocessor
             } else {
                 do {
                     $orderNo = preg_replace_callback('/\{(.*)}/U', function ($matches) use ($Order) {
+                        /** @phpstan-ignore-next-line */
                         if (count($matches) === 2) {
                             $dateTime = new \DateTime('now', new \DateTimeZone($this->eccubeConfig->get('timezone')));
                             switch ($matches[1]) {

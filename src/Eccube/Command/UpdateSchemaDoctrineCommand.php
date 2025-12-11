@@ -13,15 +13,17 @@
 
 namespace Eccube\Command;
 
-use Doctrine\Bundle\DoctrineBundle\Command\Proxy\UpdateSchemaDoctrineCommand as BaseUpdateSchemaDoctrineCommand;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper;
+use Doctrine\ORM\Tools\Console\Command\SchemaTool\UpdateCommand as OrmUpdateCommand;
+use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
 use Doctrine\ORM\Tools\SchemaTool;
+use Doctrine\Persistence\ManagerRegistry;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\PluginService;
 use Eccube\Service\SchemaService;
 use Eccube\Util\StringUtil;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -33,32 +35,20 @@ use Symfony\Component\Finder\Finder;
  * Command to generate the SQL needed to update the database schema to match
  * the current mapping information.
  */
-class UpdateSchemaDoctrineCommand extends BaseUpdateSchemaDoctrineCommand
+#[AsCommand(name: 'eccube:schema:update', aliases: ['doctrine:schema:update'])]
+class UpdateSchemaDoctrineCommand extends OrmUpdateCommand
 {
-    /**
-     * @var PluginRepository
-     */
-    protected $pluginRepository;
-
-    /**
-     * @var PluginService
-     */
-    protected $pluginService;
-
-    /**
-     * @var SchemaService
-     */
-    protected $schemaService;
+    protected ManagerRegistry $managerRegistry;
 
     public function __construct(
-        PluginRepository $pluginRepository,
-        PluginService $pluginService,
-        SchemaService $schemaService,
+        protected PluginRepository $pluginRepository,
+        protected PluginService $pluginService,
+        protected SchemaService $schemaService,
+        ManagerRegistry $managerRegistry,
     ) {
-        parent::__construct();
-        $this->pluginRepository = $pluginRepository;
-        $this->pluginService = $pluginService;
-        $this->schemaService = $schemaService;
+        /** @var EntityManagerInterface $em */
+        $em = $managerRegistry->getManager();
+        parent::__construct(new SingleManagerProvider($em));
     }
 
     /**
@@ -70,8 +60,6 @@ class UpdateSchemaDoctrineCommand extends BaseUpdateSchemaDoctrineCommand
         parent::configure();
 
         $this
-            ->setName('eccube:schema:update')
-            ->setAliases(['doctrine:schema:update'])
             ->addOption('no-proxy', null, InputOption::VALUE_NONE, 'Does not use the proxy class and behaves the same as the original doctrine:schema:update command');
     }
 
@@ -86,7 +74,7 @@ class UpdateSchemaDoctrineCommand extends BaseUpdateSchemaDoctrineCommand
         $eccubeKernel = $app->getKernel();
         $em = $eccubeKernel->getContainer()->get('doctrine')->getManager($input->getOption('em'));
         assert($em instanceof EntityManagerInterface);
-        $this->getApplication()->getHelperSet()->set(new EntityManagerHelper($em), 'em');
+
         $noProxy = true === $input->getOption('no-proxy');
         $dumpSql = true === $input->getOption('dump-sql');
         $force = true === $input->getOption('force');
@@ -104,7 +92,7 @@ class UpdateSchemaDoctrineCommand extends BaseUpdateSchemaDoctrineCommand
             $Plugins = $this->pluginRepository->findAll();
             foreach ($Plugins as $Plugin) {
                 $config = ['code' => $Plugin->getCode()];
-                $this->pluginService->generateProxyAndCallback(function ($generateFiles) use (&$generateAllFiles) {
+                $this->pluginService->generateProxyAndCallback(function ($generateFiles) use (&$generateAllFiles): void {
                     $generateAllFiles = array_merge($generateAllFiles, $generateFiles);
                 }, $Plugin, $config, false, $tmpProxyOutputDir);
             }
@@ -113,7 +101,7 @@ class UpdateSchemaDoctrineCommand extends BaseUpdateSchemaDoctrineCommand
             $command = $this;
 
             // Generate Doctrine metadata and execute schema command
-            $this->schemaService->executeCallback(function (SchemaTool $schemaTool, array $metaData) use ($command, $input, $output, &$result) {
+            $this->schemaService->executeCallback(function (SchemaTool $schemaTool, array $metaData) use ($command, $input, $output, &$result): void {
                 $ui = new SymfonyStyle($input, $output);
                 if (empty($metaData)) {
                     $ui->success('No Metadata Classes to process.');
@@ -130,12 +118,7 @@ class UpdateSchemaDoctrineCommand extends BaseUpdateSchemaDoctrineCommand
         }
     }
 
-    /**
-     * @param string $outputDir
-     *
-     * @return void
-     */
-    protected function removeOutputDir($outputDir)
+    protected function removeOutputDir(string $outputDir): void
     {
         if (file_exists($outputDir)) {
             $files = Finder::create()

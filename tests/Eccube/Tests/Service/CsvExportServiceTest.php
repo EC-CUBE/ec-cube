@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,31 +23,20 @@ use Eccube\Repository\OrderRepository;
 use Eccube\Service\CsvExportService;
 use org\bovigo\vfs\vfsStream;
 
-class CsvExportServiceTest extends AbstractServiceTestCase
+final class CsvExportServiceTest extends AbstractServiceTestCase
 {
-    /**
-     * @var string
-     */
-    protected $url;
+    protected ?string $url = null;
 
-    /**
-     * @var CsvExportService
-     */
-    protected $csvExportService;
+    protected ?CsvExportService $csvExportService = null;
 
-    /**
-     * @var CsvRepository
-     */
-    protected $csvRepository;
+    protected ?CsvRepository $csvRepository = null;
 
-    /**
-     * @var OrderRepository
-     */
-    protected $orderRepository;
+    protected ?OrderRepository $orderRepository = null;
 
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -60,10 +51,10 @@ class CsvExportServiceTest extends AbstractServiceTestCase
         // CsvExportService のファイルポインタを Vfs のファイルポインタにしておく
         $objReflect = new \ReflectionClass($this->csvExportService);
         $Property = $objReflect->getProperty('fp');
-        $Property->setAccessible(true);
         $Property->setValue($this->csvExportService, fopen($this->url, 'w'));
 
         $Csv = $this->csvRepository->find(1);
+        $this->assertInstanceOf(Csv::class, $Csv);
         $Csv->setSortNo(1);
         $Csv->setEnabled(false);
         $this->entityManager->flush();

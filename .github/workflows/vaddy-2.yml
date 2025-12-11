@@ -44,6 +44,13 @@ jobs:
         with:
           php-version: '8.4'
 
+      - name: Install ext-redis 6.1+
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y php8.4-redis
+          sudo phpenmod -s cli redis
+          php -m | grep -i redis
+
       - name: setup-chromedriver
         uses: nanasess/setup-chromedriver@master
 

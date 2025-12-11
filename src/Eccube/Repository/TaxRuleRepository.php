@@ -18,7 +18,11 @@ use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
+use Eccube\Entity\Master\Country;
+use Eccube\Entity\Master\Pref;
 use Eccube\Entity\Master\RoundingType;
+use Eccube\Entity\Product;
+use Eccube\Entity\ProductClass;
 use Eccube\Entity\TaxRule;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -34,42 +38,21 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 class TaxRuleRepository extends AbstractRepository
 {
     /** @var array<string, TaxRule> */
-    private $rules = [];
+    private array $rules = [];
 
-    /**
-     * @var BaseInfo
-     */
-    protected $baseInfo;
-
-    /**
-     * @var AuthorizationCheckerInterface
-     */
-    protected $authorizationChecker;
-
-    /**
-     * @var TokenStorageInterface
-     */
-    protected $tokenStorage;
+    protected BaseInfo $baseInfo;
 
     /**
      * TaxRuleRepository constructor.
-     *
-     * @param RegistryInterface $registry
-     * @param TokenStorageInterface $tokenStorage
-     * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         RegistryInterface $registry,
-        TokenStorageInterface $tokenStorage,
-        AuthorizationCheckerInterface $authorizationChecker,
+        protected TokenStorageInterface $tokenStorage,
+        protected AuthorizationCheckerInterface $authorizationChecker,
         BaseInfoRepository $baseInfoRepository,
         EccubeConfig $eccubeConfig,
     ) {
         parent::__construct($registry, TaxRule::class);
-        $this->tokenStorage = $tokenStorage;
-        $this->authorizationChecker = $authorizationChecker;
         $this->baseInfo = $baseInfoRepository->get();
         $this->eccubeConfig = $eccubeConfig;
     }
@@ -79,10 +62,8 @@ class TaxRuleRepository extends AbstractRepository
      *
      * 現在適用されている丸め規則を設定する.
      * 現在適用されている丸め規則が取得できない場合は四捨五入を設定する.
-     *
-     * @return TaxRule
      */
-    public function newTaxRule()
+    public function newTaxRule(): TaxRule
     {
         /** @var RoundingType $RoundingType */
         $RoundingType = $this->getEntityManager()->getRepository(RoundingType::class)->find(RoundingType::ROUND);
@@ -102,26 +83,24 @@ class TaxRuleRepository extends AbstractRepository
     /**
      * 現在有効な税率設定情報を返す
      *
-     * @param  int|\Eccube\Entity\Product|null        $Product      商品
-     * @param  int|\Eccube\Entity\ProductClass|null   $ProductClass 商品規格
-     * @param  int|\Eccube\Entity\Master\Pref|null    $Pref         都道府県
-     * @param  int|\Eccube\Entity\Master\Country|null $Country      国
+     * @param  int|Product|null        $Product      商品
+     * @param  int|ProductClass|null   $ProductClass 商品規格
+     * @param  int|Pref|null    $Pref         都道府県
+     * @param  int|Country|null $Country      国
      *
      * @return TaxRule                 税設定情報
      *
      * @throws NoResultException
      */
-    public function getByRule($Product = null, $ProductClass = null, $Pref = null, $Country = null)
+    public function getByRule(int|Product|null $Product = null, int|ProductClass|null $ProductClass = null, int|Pref|null $Pref = null, int|Country|null $Country = null): TaxRule
     {
         // Pref Country 設定
         if (!$Pref && !$Country && $this->tokenStorage->getToken() && $this->authorizationChecker->isGranted('ROLE_USER')) {
             /** @var Customer $Customer */
             $Customer = $this->tokenStorage->getToken()->getUser();
             // FIXME なぜか管理画面でも実行されている.
-            if ($Customer instanceof Customer) {
-                $Pref = $Customer->getPref();
-                $Country = $Customer->getCountry();
-            }
+            $Pref = $Customer->getPref();
+            $Country = $Customer->getCountry();
         }
 
         // 商品単位税率設定がOFFの場合
@@ -131,28 +110,28 @@ class TaxRuleRepository extends AbstractRepository
         }
 
         // Cache Key 設定
-        if ($Product instanceof \Eccube\Entity\Product) {
+        if ($Product instanceof Product) {
             $productId = $Product->getId();
         } elseif ($Product) {
             $productId = $Product;
         } else {
             $productId = '0';
         }
-        if ($ProductClass instanceof \Eccube\Entity\ProductClass) {
+        if ($ProductClass instanceof ProductClass) {
             $productClassId = $ProductClass->getId();
         } elseif ($ProductClass) {
             $productClassId = $ProductClass;
         } else {
             $productClassId = '0';
         }
-        if ($Pref instanceof \Eccube\Entity\Master\Pref) {
+        if ($Pref instanceof Pref) {
             $prefId = $Pref->getId();
         } elseif ($Pref) {
             $prefId = $Pref;
         } else {
             $prefId = '0';
         }
-        if ($Country instanceof \Eccube\Entity\Master\Country) {
+        if ($Country instanceof Country) {
             $countryId = $Country->getId();
         } elseif ($Country) {
             $countryId = $Country;
@@ -165,16 +144,15 @@ class TaxRuleRepository extends AbstractRepository
         if (isset($this->rules[$cacheKey])) {
             return $this->rules[$cacheKey];
         }
-
-        $parameters = [];
+        $apply_date = new \DateTime();
         $qb = $this->createQueryBuilder('t')
-            ->where('t.apply_date < :apply_date');
-        $parameters[':apply_date'] = new \DateTime();
+            ->where('t.apply_date < :apply_date')
+            ->setParameter('apply_date', $apply_date);
 
         // Pref
         if ($Pref) {
             $qb->andWhere('t.Pref IS NULL OR t.Pref = :Pref');
-            $parameters['Pref'] = $Pref;
+            $qb->setParameter('Pref', $Pref);
         } else {
             $qb->andWhere('t.Pref IS NULL');
         }
@@ -182,7 +160,7 @@ class TaxRuleRepository extends AbstractRepository
         // Country
         if ($Country) {
             $qb->andWhere('t.Country IS NULL OR t.Country = :Country');
-            $parameters['Country'] = $Country;
+            $qb->setParameter('Country', $Country);
         } else {
             $qb->andWhere('t.Country IS NULL');
         }
@@ -196,21 +174,20 @@ class TaxRuleRepository extends AbstractRepository
         // Product
         if ($Product && $productId > 0) {
             $qb->andWhere('t.Product IS NULL OR t.Product = :Product');
-            $parameters['Product'] = $Product;
+            $qb->setParameter('Product', $Product);
         } else {
             $qb->andWhere('t.Product IS NULL');
         }
 
         // ProductClass
-        if ($ProductClass && '0' !== $productClassId) {
+        if ($ProductClass && 0 !== $productClassId) {
             $qb->andWhere('t.ProductClass IS NULL OR t.ProductClass = :ProductClass');
-            $parameters['ProductClass'] = $ProductClass;
+            $qb->setParameter('ProductClass', $ProductClass);
         } else {
             $qb->andWhere('t.ProductClass IS NULL');
         }
 
         $TaxRules = $qb
-            ->setParameters($parameters)
             ->orderBy('t.apply_date', 'DESC') // 実際は usort() でソートする
             ->getQuery()
             ->getResult();
@@ -235,9 +212,7 @@ class TaxRuleRepository extends AbstractRepository
         }
 
         // 適用日降順, sortNo 降順にソートする
-        usort($TaxRules, function ($a, $b) {
-            return $a->compareTo($b);
-        });
+        usort($TaxRules, fn ($a, $b) => $a->compareTo($b));
 
         if (!empty($TaxRules)) {
             $this->rules[$cacheKey] = $TaxRules[0];
@@ -253,16 +228,15 @@ class TaxRuleRepository extends AbstractRepository
      *
      * @return TaxRule[]|null
      */
-    public function getList()
+    public function getList(): ?array
     {
         $qb = $this->createQueryBuilder('t')
             ->orderBy('t.apply_date', 'DESC')
             ->where('t.Product IS NULL AND t.ProductClass IS NULL');
-        $TaxRules = $qb
+
+        return $qb
             ->getQuery()
             ->getResult();
-
-        return $TaxRules;
     }
 
     /**
@@ -273,7 +247,7 @@ class TaxRuleRepository extends AbstractRepository
      * @throws NoResultException
      */
     #[\Override]
-    public function delete($TaxRule)
+    public function delete($TaxRule): void
     {
         if (!$TaxRule instanceof TaxRule) {
             $TaxRule = $this->find($TaxRule);
@@ -291,10 +265,8 @@ class TaxRuleRepository extends AbstractRepository
      *
      * getByRule() をコールすると、結果をキャッシュし、2回目以降はデータベースへアクセスしない.
      * このメソッドをコールすると、キャッシュをクリアし、再度データベースを参照して結果を取得する.
-     *
-     * @return void
      */
-    public function clearCache()
+    public function clearCache(): void
     {
         $this->rules = [];
     }

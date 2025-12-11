@@ -13,17 +13,16 @@
 
 namespace Eccube\Twig\Sandbox;
 
+use Twig\Sandbox\SecurityError;
+use Twig\Sandbox\SecurityNotAllowedMethodError;
+use Twig\Sandbox\SecurityNotAllowedPropertyError;
 use Twig\Sandbox\SecurityPolicy as BasePolicy;
 use Twig\Sandbox\SecurityPolicyInterface;
 
 class SecurityPolicyDecorator implements SecurityPolicyInterface
 {
-    /** @var BasePolicy */
-    private $securityPolicy;
-
-    public function __construct(BasePolicy $securityPolicy)
+    public function __construct(private readonly BasePolicy $securityPolicy)
     {
-        $this->securityPolicy = $securityPolicy;
     }
 
     /**
@@ -31,9 +30,7 @@ class SecurityPolicyDecorator implements SecurityPolicyInterface
      * @param array<mixed> $filters
      * @param array<mixed> $functions
      *
-     * @return void
-     *
-     * @throws \Twig\Sandbox\SecurityError
+     * @throws SecurityError
      */
     #[\Override]
     public function checkSecurity($tags, $filters, $functions): void
@@ -45,9 +42,7 @@ class SecurityPolicyDecorator implements SecurityPolicyInterface
      * @param mixed $obj
      * @param string $method
      *
-     * @return void
-     *
-     * @throws \Twig\Sandbox\SecurityNotAllowedMethodError
+     * @throws SecurityNotAllowedMethodError
      */
     #[\Override]
     public function checkMethodAllowed($obj, $method): void
@@ -63,9 +58,7 @@ class SecurityPolicyDecorator implements SecurityPolicyInterface
      * @param mixed $obj
      * @param string $method
      *
-     * @return void
-     *
-     * @throws \Twig\Sandbox\SecurityNotAllowedPropertyError
+     * @throws SecurityNotAllowedPropertyError
      */
     #[\Override]
     public function checkPropertyAllowed($obj, $method): void

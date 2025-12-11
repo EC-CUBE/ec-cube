@@ -13,7 +13,7 @@
 
 namespace Eccube\EventListener;
 
-use Eccube\Entity;
+use Eccube\Entity\Member;
 use Eccube\Request\Context;
 use Eccube\Service\SystemService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -23,32 +23,19 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class MaintenanceListener implements EventSubscriberInterface
 {
-    /** @var Context */
-    protected $requestContext;
-
-    /** @var SystemService */
-    protected $systemService;
-
-    public function __construct(Context $requestContext, SystemService $systemService)
+    public function __construct(protected Context $requestContext, protected SystemService $systemService)
     {
-        $this->requestContext = $requestContext;
-        $this->systemService = $systemService;
     }
 
     #[\Override]
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::RESPONSE => ['onResponse'],
         ];
     }
 
-    /**
-     * @param ResponseEvent $event
-     *
-     * @return void
-     */
-    public function onResponse(ResponseEvent $event)
+    public function onResponse(ResponseEvent $event): void
     {
         $response = $event->getResponse();
 
@@ -59,7 +46,7 @@ class MaintenanceListener implements EventSubscriberInterface
         }
 
         $user = $this->requestContext->getCurrentUser();
-        if ($user instanceof Entity\Member && $this->requestContext->isAdmin()) {
+        if ($user instanceof Member && $this->requestContext->isAdmin()) {
             $cookie = (new Cookie(
                 SystemService::MAINTENANCE_TOKEN_KEY,
                 $this->systemService->getMaintenanceToken()

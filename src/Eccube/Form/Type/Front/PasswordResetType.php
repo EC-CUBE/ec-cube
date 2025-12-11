@@ -27,30 +27,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 class PasswordResetType extends AbstractType
 {
     /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
      * EntryType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
-    public function __construct(EccubeConfig $eccubeConfig)
+    public function __construct(protected EccubeConfig $eccubeConfig)
     {
-        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('login_email', EmailType::class, [
             'attr' => [
@@ -62,7 +51,7 @@ class PasswordResetType extends AbstractType
             ],
         ])->add('password', RepeatedPasswordType::class);
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             $form = $event->getForm();
             if ($form['password']['first']->getData() == $form['login_email']->getData()) {
                 $form['password']['first']->addError(new FormError(trans('common.password_eq_email')));
@@ -74,7 +63,7 @@ class PasswordResetType extends AbstractType
      * {@inheritdoc}
      */
     #[\Override]
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'forgot_reset';
     }

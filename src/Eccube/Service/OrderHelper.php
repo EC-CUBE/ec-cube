@@ -26,6 +26,8 @@ use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
+use Eccube\Entity\Product;
+use Eccube\Entity\ProductClass;
 use Eccube\Entity\Shipping;
 use Eccube\EventListener\SecurityListener;
 use Eccube\Repository\DeliveryRepository;
@@ -65,106 +67,20 @@ class OrderHelper
      */
     public const SESSION_CART_DIVIDE_FLAG = 'eccube.front.cart.divide';
 
-    /**
-     * @var Session
-     */
-    protected $session;
-
-    /**
-     * @var PrefRepository
-     */
-    protected $prefRepository;
-
-    /**
-     * @var OrderRepository
-     */
-    protected $orderRepository;
-
-    /**
-     * @var OrderItemTypeRepository
-     */
-    protected $orderItemTypeRepository;
-
-    /**
-     * @var OrderStatusRepository
-     */
-    protected $orderStatusRepository;
-
-    /**
-     * @var DeliveryRepository
-     */
-    protected $deliveryRepository;
-
-    /**
-     * @var PaymentRepository
-     */
-    protected $paymentRepository;
-
-    /**
-     * @var DeviceTypeRepository
-     */
-    protected $deviceTypeRepository;
-
-    /**
-     * @var MobileDetect
-     */
-    protected $mobileDetector;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
-     * @var AuthorizationCheckerInterface
-     */
-    protected $authorizationChecker;
-
-    /**
-     * @var TokenStorageInterface
-     */
-    protected $tokenStorage;
-
-    public function __construct(
-        EntityManagerInterface $entityManager,
-        OrderRepository $orderRepository,
-        OrderItemTypeRepository $orderItemTypeRepository,
-        OrderStatusRepository $orderStatusRepository,
-        DeliveryRepository $deliveryRepository,
-        PaymentRepository $paymentRepository,
-        DeviceTypeRepository $deviceTypeRepository,
-        PrefRepository $prefRepository,
-        MobileDetect $mobileDetector,
-        Session $session,
-        AuthorizationCheckerInterface $authorizationChecker,
-        TokenStorageInterface $tokenStorage,
-    ) {
-        $this->orderRepository = $orderRepository;
-        $this->orderStatusRepository = $orderStatusRepository;
-        $this->orderItemTypeRepository = $orderItemTypeRepository;
-        $this->deliveryRepository = $deliveryRepository;
-        $this->paymentRepository = $paymentRepository;
-        $this->deviceTypeRepository = $deviceTypeRepository;
-        $this->entityManager = $entityManager;
-        $this->prefRepository = $prefRepository;
-        $this->mobileDetector = $mobileDetector;
-        $this->session = $session;
-        $this->authorizationChecker = $authorizationChecker;
-        $this->tokenStorage = $tokenStorage;
+    public function __construct(protected EntityManagerInterface $entityManager, protected OrderRepository $orderRepository, protected OrderItemTypeRepository $orderItemTypeRepository, protected OrderStatusRepository $orderStatusRepository, protected DeliveryRepository $deliveryRepository, protected PaymentRepository $paymentRepository, protected DeviceTypeRepository $deviceTypeRepository, protected PrefRepository $prefRepository, protected MobileDetect $mobileDetector, protected Session $session, protected AuthorizationCheckerInterface $authorizationChecker, protected TokenStorageInterface $tokenStorage)
+    {
     }
 
     /**
      * 購入処理中の受注を生成する.
      *
-     * @param Customer $Customer
      * @param $CartItems
-     *
-     * @return Order
      */
-    public function createPurchaseProcessingOrder(Cart $Cart, Customer $Customer)
+    public function createPurchaseProcessingOrder(Cart $Cart, Customer $Customer): Order
     {
         $OrderStatus = $this->orderStatusRepository->find(OrderStatus::PROCESSING);
-        $Order = new Order($OrderStatus);
+        $Order = new Order();
+        $Order->setOrderStatus($OrderStatus);
 
         $preOrderId = $this->createPreOrderId();
         $Order->setPreOrderId($preOrderId);
@@ -201,12 +117,7 @@ class OrderHelper
         return $Order;
     }
 
-    /**
-     * @param Cart $Cart
-     *
-     * @return bool
-     */
-    public function verifyCart(Cart $Cart)
+    public function verifyCart(Cart $Cart): bool
     {
         if (count($Cart->getCartItems()) > 0) {
             $divide = $this->session->get(self::SESSION_CART_DIVIDE_FLAG);
@@ -226,10 +137,8 @@ class OrderHelper
 
     /**
      * 注文手続き画面でログインが必要かどうかの判定
-     *
-     * @return bool
      */
-    public function isLoginRequired()
+    public function isLoginRequired(): bool
     {
         // フォームログイン済はログイン不要
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -251,12 +160,8 @@ class OrderHelper
 
     /**
      * 購入処理中の受注を取得する.
-     *
-     * @param string|null $preOrderId
-     *
-     * @return Order|null
      */
-    public function getPurchaseProcessingOrder($preOrderId = null)
+    public function getPurchaseProcessingOrder(?string $preOrderId = null): ?Order
     {
         if (null === $preOrderId) {
             return null;
@@ -271,12 +176,8 @@ class OrderHelper
     /**
      * セッションに保持されている非会員情報を取得する.
      * 非会員購入時に入力されたお客様情報を返す.
-     *
-     * @param string $session_key
-     *
-     * @return Customer|null
      */
-    public function getNonMember($session_key = self::SESSION_NON_MEMBER)
+    public function getNonMember(string $session_key = self::SESSION_NON_MEMBER): ?Customer
     {
         $data = $this->session->get($session_key);
         if (empty($data)) {
@@ -303,13 +204,7 @@ class OrderHelper
         return $Customer;
     }
 
-    /**
-     * @param Cart $Cart
-     * @param Customer $Customer
-     *
-     * @return Order|null
-     */
-    public function initializeOrder(Cart $Cart, Customer $Customer)
+    public function initializeOrder(Cart $Cart, Customer $Customer): ?Order
     {
         // 購入処理中の受注情報を取得
         if ($Order = $this->getPurchaseProcessingOrder($Cart->getPreOrderId())) {
@@ -323,10 +218,7 @@ class OrderHelper
         return $Order;
     }
 
-    /**
-     * @return void
-     */
-    public function removeSession()
+    public function removeSession(): void
     {
         $this->session->remove(self::SESSION_ORDER_ID);
         $this->session->remove(self::SESSION_NON_MEMBER);
@@ -335,23 +227,15 @@ class OrderHelper
 
     /**
      * 会員情報の更新日時が受注の作成日時よりも新しければ, 受注の注文者情報を更新する.
-     *
-     * @param Order $Order
-     * @param Customer $Customer
-     *
-     * @return void
      */
-    public function updateCustomerInfo(Order $Order, Customer $Customer)
+    public function updateCustomerInfo(Order $Order, Customer $Customer): void
     {
         if ($Order->getCreateDate() < $Customer->getUpdateDate()) {
             $this->setCustomer($Order, $Customer);
         }
     }
 
-    /**
-     * @return string
-     */
-    public function createPreOrderId()
+    public function createPreOrderId(): string
     {
         // ランダムなpre_order_idを作成
         do {
@@ -367,13 +251,7 @@ class OrderHelper
         return $preOrderId;
     }
 
-    /**
-     * @param Order $Order
-     * @param Customer $Customer
-     *
-     * @return void
-     */
-    protected function setCustomer(Order $Order, Customer $Customer)
+    protected function setCustomer(Order $Order, Customer $Customer): void
     {
         if ($Customer->getId()) {
             $Order->setCustomer($Customer);
@@ -395,15 +273,15 @@ class OrderHelper
      *
      * @return OrderItem[]
      */
-    protected function createOrderItemsFromCartItems($CartItems)
+    protected function createOrderItemsFromCartItems(Collection|ArrayCollection|array $CartItems): array
     {
         $ProductItemType = $this->orderItemTypeRepository->find(OrderItemType::PRODUCT);
 
         return array_map(function ($item) use ($ProductItemType) {
             /** @var CartItem $item */
-            /** @var \Eccube\Entity\ProductClass $ProductClass */
+            /** @var ProductClass $ProductClass */
             $ProductClass = $item->getProductClass();
-            /** @var \Eccube\Entity\Product $Product */
+            /** @var Product $Product */
             $Product = $ProductClass->getProduct();
 
             $OrderItem = new OrderItem();
@@ -431,12 +309,7 @@ class OrderHelper
         }, $CartItems instanceof Collection ? $CartItems->toArray() : $CartItems);
     }
 
-    /**
-     * @param Customer $Customer
-     *
-     * @return Shipping
-     */
-    protected function createShippingFromCustomer(Customer $Customer)
+    protected function createShippingFromCustomer(Customer $Customer): Shipping
     {
         $Shipping = new Shipping();
         $Shipping
@@ -454,12 +327,7 @@ class OrderHelper
         return $Shipping;
     }
 
-    /**
-     * @param Shipping $Shipping
-     *
-     * @return void
-     */
-    protected function setDefaultDelivery(Shipping $Shipping)
+    protected function setDefaultDelivery(Shipping $Shipping): void
     {
         // 配送商品に含まれる販売種別を抽出.
         $OrderItems = $Shipping->getOrderItems();
@@ -480,12 +348,7 @@ class OrderHelper
         $Shipping->setShippingDeliveryName($Delivery->getName());
     }
 
-    /**
-     * @param Order $Order
-     *
-     * @return void
-     */
-    protected function setDefaultPayment(Order $Order)
+    protected function setDefaultPayment(Order $Order): void
     {
         $OrderItems = $Order->getOrderItems();
 
@@ -518,13 +381,9 @@ class OrderHelper
     }
 
     /**
-     * @param Order $Order
-     * @param Shipping $Shipping
      * @param array<int, OrderItem> $OrderItems
-     *
-     * @return void
      */
-    protected function addOrderItems(Order $Order, Shipping $Shipping, array $OrderItems)
+    protected function addOrderItems(Order $Order, Shipping $Shipping, array $OrderItems): void
     {
         foreach ($OrderItems as $OrderItem) {
             $Shipping->addOrderItem($OrderItem);
@@ -535,24 +394,15 @@ class OrderHelper
     }
 
     /**
-     * @param mixed $attribute
-     * @param null $subject
-     * @param string $attribute
-     * @param string|null $subject
-     *
-     * @return bool
-     *
      * @see Symfony\Bundle\FrameworkBundle\Controller\AbstractController
      */
-    private function isGranted($attribute, $subject = null): bool
+    private function isGranted(string $attribute, ?string $subject = null): bool
     {
         return $this->authorizationChecker->isGranted($attribute, $subject);
     }
 
     /**
      * @see Symfony\Bundle\FrameworkBundle\Controller\AbstractController
-     *
-     * @return UserInterface|null
      */
     private function getUser(): ?UserInterface
     {
@@ -575,16 +425,10 @@ class OrderHelper
      * - 値引き: 税抜
      * - 手数料: 税込
      * - ポイント値引き: 税込
-     *
-     * @param OrderItemType $OrderItemType
-     *
-     * @return TaxDisplayType
      */
-    public function getTaxDisplayType($OrderItemType)
+    public function getTaxDisplayType(OrderItemType|int $OrderItemType): TaxDisplayType
     {
-        if ($OrderItemType instanceof OrderItemType) {
-            $OrderItemType = $OrderItemType->getId();
-        }
+        $OrderItemType = is_object($OrderItemType) ? $OrderItemType->getId() : $OrderItemType;
 
         return match ($OrderItemType) {
             OrderItemType::PRODUCT => $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::EXCLUDED),

@@ -16,36 +16,27 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\ProductClassRepository;
+use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\ItemHolderValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 class SaleLimitMultipleValidator extends ItemHolderValidator
 {
     /**
-     * @var ProductClassRepository
-     */
-    protected $productClassRepository;
-
-    /**
      * StockProcessor constructor.
-     *
-     * @param ProductClassRepository $productClassRepository
      */
-    public function __construct(ProductClassRepository $productClassRepository)
+    public function __construct(protected ProductClassRepository $productClassRepository)
     {
-        $this->productClassRepository = $productClassRepository;
     }
 
     /**
      * @param ItemHolderInterface $itemHolder 商品
      * @param PurchaseContext $context 購入フローのコンテキスト
      *
-     * @return void
-     *
-     * @throws \Eccube\Service\PurchaseFlow\InvalidItemException 商品の購入数が在庫数を超えている場合
+     * @throws InvalidItemException 商品の購入数が在庫数を超えている場合
      */
     #[\Override]
-    public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         $OrderItemsByProductClass = [];
         foreach ($itemHolder->getItems() as $Item) {

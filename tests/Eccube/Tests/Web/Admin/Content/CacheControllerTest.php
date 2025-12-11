@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -14,16 +16,16 @@
 namespace Eccube\Tests\Web\Admin\Content;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use PHPUnit\Framework\Attributes\Group;
+use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @group cache-clear
- */
-class CacheControllerTest extends AbstractAdminWebTestCase
+#[Group('cache-clear')]
+final class CacheControllerTest extends AbstractAdminWebTestCase
 {
     public function testRoutingAdminContentCache()
     {
         $client = $this->client;
-        $client->request('GET',
+        $client->request(Request::METHOD_GET,
             $this->generateUrl('admin_content_cache')
         );
         $this->assertTrue($client->getResponse()->isSuccessful());
@@ -38,13 +40,13 @@ class CacheControllerTest extends AbstractAdminWebTestCase
         $cacheDir = static::getContainer()->getParameter('kernel.cache_dir');
         file_put_contents($cacheDir.'/twig/sample', 'test');
 
-        $client->request('POST', $url, [
+        $client->request(Request::METHOD_POST, $url, [
             'form' => [
                 '_token' => 'dummy',
             ],
         ]);
 
         $this->assertTrue($client->getResponse()->isSuccessful());
-        $this->assertFalse(file_exists($cacheDir.'/twig/sample'), 'sampleは削除済');
+        $this->assertFileDoesNotExist($cacheDir.'/twig/sample', 'sampleは削除済');
     }
 }

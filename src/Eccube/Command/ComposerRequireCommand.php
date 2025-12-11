@@ -13,41 +13,36 @@
 
 namespace Eccube\Command;
 
+use Eccube\Exception\PluginException;
 use Eccube\Service\Composer\ComposerApiService;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'eccube:composer:require')]
 class ComposerRequireCommand extends Command
 {
-    protected static $defaultName = 'eccube:composer:require';
-
-    /**
-     * @var ComposerApiService
-     */
-    private $composerService;
-
-    public function __construct(ComposerApiService $composerService)
+    public function __construct(private readonly ComposerApiService $composerService)
     {
         parent::__construct();
-        $this->composerService = $composerService;
     }
 
-    /**
-     * @return void
-     */
     #[\Override]
-    protected function configure()
+    protected function configure(): void
     {
         $this->addArgument('package', InputArgument::REQUIRED)
             ->addArgument('version', InputArgument::OPTIONAL)
             ->addOption('from', null, InputOption::VALUE_OPTIONAL, 'Path of composer repository');
     }
 
+    /**
+     * @throws PluginException
+     */
     #[\Override]
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $packageName = $input->getArgument('package');
         if ($input->getArgument('version')) {

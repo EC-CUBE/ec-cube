@@ -41,7 +41,7 @@ class LoginHistoryPage extends AbstractAdminPageStyleGuide
      *
      * @return $this
      */
-    public function 検索($multi = '')
+    public function 検索(string $multi = '')
     {
         $this->tester->fillField(self::$検索条件, $multi);
         $this->tester->click(self::$検索ボタン);

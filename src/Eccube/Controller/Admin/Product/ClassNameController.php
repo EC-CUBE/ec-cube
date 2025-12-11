@@ -15,6 +15,7 @@ namespace Eccube\Controller\Admin\Product;
 
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\ClassName;
+use Eccube\Entity\ExportCsvRow;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -22,6 +23,7 @@ use Eccube\Form\Type\Admin\ClassNameType;
 use Eccube\Repository\ClassNameRepository;
 use Eccube\Service\CsvExportService;
 use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -32,41 +34,23 @@ use Symfony\Component\Routing\Attribute\Route;
 class ClassNameController extends AbstractController
 {
     /**
-     * @var ClassNameRepository
-     */
-    protected $classNameRepository;
-
-    /**
-     * @var CsvExportService
-     */
-    protected $csvExportService;
-
-    /**
      * ClassNameController constructor.
-     *
-     * @param ClassNameRepository $classNameRepository
-     * @param CsvExportService $csvExportService
      */
-    public function __construct(
-        ClassNameRepository $classNameRepository,
-        CsvExportService $csvExportService,
-    ) {
-        $this->classNameRepository = $classNameRepository;
-        $this->csvExportService = $csvExportService;
+    public function __construct(protected ClassNameRepository $classNameRepository, protected CsvExportService $csvExportService)
+    {
     }
 
     /**
-     * @param Request $request
      * @param string|null $id
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      *
      * @throws NotFoundHttpException
      */
-    #[Route('/%eccube_admin_route%/product/class_name', name: 'admin_product_class_name', methods: ['GET', 'POST'])]
-    #[Route('/%eccube_admin_route%/product/class_name/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_product_class_name_edit', methods: ['GET', 'POST'])]
-    #[Template('@admin/Product/class_name.twig')]
-    public function index(Request $request, $id = null)
+    #[Route(path: '/%eccube_admin_route%/product/class_name', name: 'admin_product_class_name', methods: ['GET', 'POST'])]
+    #[Route(path: '/%eccube_admin_route%/product/class_name/{id}/edit', name: 'admin_product_class_name_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Product/class_name.twig')]
+    public function index(Request $request, $id = null): RedirectResponse|array
     {
         if ($id) {
             $TargetClassName = $this->classNameRepository->find($id);
@@ -153,15 +137,10 @@ class ClassNameController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param ClassName $ClassName
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     *
      * @throws \Exception
      */
-    #[Route('/%eccube_admin_route%/product/class_name/{id}/delete', name: 'admin_product_class_name_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, ClassName $ClassName)
+    #[Route(path: '/%eccube_admin_route%/product/class_name/{id}/delete', name: 'admin_product_class_name_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    public function delete(Request $request, ClassName $ClassName): RedirectResponse
     {
         $this->isTokenValid();
 
@@ -187,16 +166,12 @@ class ClassNameController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     *
-     * @return Response|void
-     *
      * @throws BadRequestHttpException
      */
-    #[Route('/%eccube_admin_route%/product/class_name/sort_no/move', name: 'admin_product_class_name_sort_no_move', methods: ['POST'])]
-    public function moveSortNo(Request $request)
+    #[Route(path: '/%eccube_admin_route%/product/class_name/sort_no/move', name: 'admin_product_class_name_sort_no_move', methods: ['POST'])]
+    public function moveSortNo(Request $request): Response
     {
-        if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
+        if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();
         }
 
@@ -212,27 +187,25 @@ class ClassNameController extends AbstractController
 
             return new Response();
         }
+
+        throw new BadRequestHttpException();
     }
 
     /**
      * 規格CSVの出力.
-     *
-     * @param Request $request
-     *
-     * @return StreamedResponse
      */
-    #[Route('/%eccube_admin_route%/product/class_name/export', name: 'admin_product_class_name_export', methods: ['GET'])]
-    public function export(Request $request)
+    #[Route(path: '/%eccube_admin_route%/product/class_name/export', name: 'admin_product_class_name_export', methods: ['GET'])]
+    public function export(Request $request): StreamedResponse
     {
         // タイムアウトを無効にする.
         set_time_limit(0);
 
         // sql loggerを無効にする.
         $em = $this->entityManager;
-        $em->getConfiguration()->setSQLLogger(null);
+        $em->getConfiguration()->setSQLLogger();
 
         $response = new StreamedResponse();
-        $response->setCallback(function () use ($request) {
+        $response->setCallback(function () use ($request): void {
             // CSV種別を元に初期化.
             $this->csvExportService->initCsvType(CsvType::CSV_TYPE_CLASS_NAME);
 
@@ -245,14 +218,14 @@ class ClassNameController extends AbstractController
 
             // データ行の出力.
             $this->csvExportService->setExportQueryBuilder($qb);
-            $this->csvExportService->exportData(function ($entity, $csvService) use ($request) {
+            $this->csvExportService->exportData(function ($entity, $csvService) use ($request): void {
                 $Csvs = $csvService->getCsvs();
 
                 /** @var ClassName $ClassName */
                 $ClassName = $entity;
 
                 // CSV出力項目と合致するデータを取得.
-                $ExportCsvRow = new \Eccube\Entity\ExportCsvRow();
+                $ExportCsvRow = new ExportCsvRow();
                 foreach ($Csvs as $Csv) {
                     $ExportCsvRow->setData($csvService->getData($Csv, $ClassName));
 

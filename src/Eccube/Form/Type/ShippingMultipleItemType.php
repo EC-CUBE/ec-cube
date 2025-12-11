@@ -17,12 +17,14 @@ use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
+use Eccube\Entity\Shipping;
 use Eccube\Repository\Master\PrefRepository;
 use Eccube\Service\OrderHelper;
 use Eccube\Session\Session;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -33,76 +35,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ShippingMultipleItemType extends AbstractType
 {
     /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
-     * @var Session
-     */
-    protected $session;
-
-    /**
-     * @var AuthorizationCheckerInterface
-     */
-    protected $authorizationChecker;
-
-    /**
-     * @var TokenStorageInterface
-     */
-    protected $tokenStorage;
-
-    /**
-     * @var PrefRepository
-     */
-    protected $prefRepository;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
-     * @var OrderHelper
-     */
-    protected $orderHelper;
-
-    /**
      * ShippingMultipleItemType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
-     * @param Session $session
-     * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param TokenStorageInterface $tokenStorage
      */
-    public function __construct(
-        EccubeConfig $eccubeConfig,
-        Session $session,
-        AuthorizationCheckerInterface $authorizationChecker,
-        TokenStorageInterface $tokenStorage,
-        PrefRepository $prefRepository,
-        EntityManagerInterface $entityManager,
-        OrderHelper $orderHelper,
-    ) {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->session = $session;
-        $this->authorizationChecker = $authorizationChecker;
-        $this->tokenStorage = $tokenStorage;
-        $this->prefRepository = $prefRepository;
-        $this->entityManager = $entityManager;
-        $this->orderHelper = $orderHelper;
+    public function __construct(protected EccubeConfig $eccubeConfig, protected Session $session, protected AuthorizationCheckerInterface $authorizationChecker, protected TokenStorageInterface $tokenStorage, protected PrefRepository $prefRepository, protected EntityManagerInterface $entityManager, protected OrderHelper $orderHelper)
+    {
     }
 
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('quantity', IntegerType::class, [
@@ -118,7 +63,7 @@ class ShippingMultipleItemType extends AbstractType
                     new Assert\Regex(['pattern' => '/^\d+$/']),
                 ],
             ])
-            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
                 $form = $event->getForm();
 
                 if ($this->authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -154,10 +99,10 @@ class ShippingMultipleItemType extends AbstractType
                     ],
                 ]);
             })
-            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
-                /** @var \Eccube\Entity\Shipping|null $data */
+            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event): void {
+                /** @var Shipping|null $data */
                 $data = $event->getData();
-                /** @var \Symfony\Component\Form\Form $form */
+                /** @var Form $form */
                 $form = $event->getForm();
 
                 if (is_null($data)) {
@@ -190,7 +135,7 @@ class ShippingMultipleItemType extends AbstractType
      * {@inheritdoc}
      */
     #[\Override]
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'shipping_multiple_item';
     }

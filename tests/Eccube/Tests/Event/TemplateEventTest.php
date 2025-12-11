@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,7 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Class TemplateEventTest
  */
-class TemplateEventTest extends EccubeTestCase
+final class TemplateEventTest extends EccubeTestCase
 {
     /**
      * View test
@@ -45,18 +47,18 @@ class TemplateEventTest extends EccubeTestCase
     public function testResponse()
     {
         $event = new TemplateEvent(null, null);
-        $this->assertNull($event->getResponse());
+        $this->assertNotInstanceOf(Response::class, $event->getResponse());
 
         // setResponse test
         $response = new Response();
         $event->setResponse($response);
-        $this->assertNotNull($event->getResponse());
+        $this->assertInstanceOf(Response::class, $event->getResponse());
 
         // リダイレクトレスポンスの検証
         $response = new RedirectResponse('http://www.ec-cube.net/');
         $event->setResponse($response);
 
-        $this->assertNotNull($event->getResponse());
+        $this->assertInstanceOf(Response::class, $event->getResponse());
     }
 
     /**

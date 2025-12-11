@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,21 +23,16 @@ use Eccube\Tests\EccubeTestCase;
 /**
  * LayoutRepository test cases.
  */
-class LayoutRepositoryTest extends EccubeTestCase
+final class LayoutRepositoryTest extends EccubeTestCase
 {
-    /**
-     * @var  DeviceType
-     */
-    protected $DeviceType;
+    protected ?DeviceType $DeviceType = null;
 
-    /**
-     * @var  LayoutRepository
-     */
-    protected $layoutRepository;
+    protected ?LayoutRepository $layoutRepository = null;
 
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

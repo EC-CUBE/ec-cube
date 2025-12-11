@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,11 +19,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Entity\Payment;
 use Eccube\Form\Type\Shopping\OrderType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-class OrderTypeTest extends AbstractTypeTestCase
+final class OrderTypeTest extends AbstractTypeTestCase
 {
     private $orderType;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -29,14 +33,13 @@ class OrderTypeTest extends AbstractTypeTestCase
     }
 
     /**
-     * @dataProvider filterPaymentsProvider
-     *
      * @param mixed $charge
      * @param mixed $total
      * @param mixed $min
      * @param mixed $max
      * @param mixed $result
      */
+    #[DataProvider(methodName: 'filterPaymentsProvider')]
     public function testFilterPayments($charge, $total, $min, $max, $result)
     {
         $Payment = new Payment();
@@ -46,23 +49,22 @@ class OrderTypeTest extends AbstractTypeTestCase
 
         $refObj = new \ReflectionObject($this->orderType);
         $refMethod = $refObj->getMethod('filterPayments');
-        $refMethod->setAccessible(true);
         $FilterResults = $refMethod->invokeArgs($this->orderType, [new ArrayCollection([$Payment]), $total]);
 
-        self::assertCount($result, $FilterResults);
+        $this->assertCount($result, $FilterResults);
     }
 
-    public function filterPaymentsProvider()
+    public static function filterPaymentsProvider()
     {
         return [
             // charge, total, min, max, result
             [null, null, null, null, 1],
-            [50, 50, 99, null, 1],
-            [50, 50, 100, null, 1],
-            [50, 50, 101, null, 0],
-            [50, 50, null, 99, 0],
-            [50, 50, null, 100, 1],
-            [50, 50, null, 101, 1],
+            ['50', '50', '99', null, 1],
+            ['50', '50', '100', null, 1],
+            ['50', '50', '101', null, 0],
+            ['50', '50', null, '99', 0],
+            ['50', '50', null, '100', 1],
+            ['50', '50', null, '101', 1],
         ];
     }
 }

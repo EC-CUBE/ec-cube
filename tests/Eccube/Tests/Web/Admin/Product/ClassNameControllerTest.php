@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -22,29 +24,19 @@ use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\ClassNameRepository;
 use Eccube\Repository\ProductClassRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
-class ClassNameControllerTest extends AbstractAdminWebTestCase
+final class ClassNameControllerTest extends AbstractAdminWebTestCase
 {
-    /**
-     * @var Member
-     */
-    private $Member;
+    private ?Member $Member = null;
 
-    /**
-     * @var ProductClassRepository
-     */
-    private $productClassRepo;
+    private ?ProductClassRepository $productClassRepo = null;
 
-    /**
-     * @var ClassCategoryRepository
-     */
-    private $classCategoryRepo;
+    private ?ClassCategoryRepository $classCategoryRepo = null;
 
-    /**
-     * @var ClassNameRepository
-     */
-    private $classNameRepo;
+    private ?ClassNameRepository $classNameRepo = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -87,7 +79,7 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
 
     public function testRoutingAdminProductClassName()
     {
-        $this->client->request('GET',
+        $this->client->request(Request::METHOD_GET,
             $this->generateUrl('admin_product_class_name')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -97,7 +89,7 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
     {
         $client = $this->client;
         $client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_product_class_name'),
             [
                 'admin_class_name' => [
@@ -112,7 +104,7 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
     {
         $client = $this->client;
         $client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_product_class_name'),
             [
                 'admin_class_name' => [
@@ -138,7 +130,7 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
             ->getId();
 
         // main
-        $this->client->request('GET',
+        $this->client->request(Request::METHOD_GET,
             $this->generateUrl('admin_product_class_name_edit', ['id' => $test_class_name_id])
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -158,7 +150,7 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
             ->getId();
 
         // main
-        $this->client->request('GET',
+        $this->client->request(Request::METHOD_GET,
             $this->generateUrl('admin_product_class_name_edit', ['id' => $test_class_name_id])
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -179,7 +171,7 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
 
         // main
         $redirectUrl = $this->generateUrl('admin_product_class_name');
-        $this->client->request('DELETE',
+        $this->client->request(Request::METHOD_DELETE,
             $this->generateUrl('admin_product_class_name_delete', ['id' => $test_class_name_id]),
             [
                 Constant::TOKEN_NAME => 'dummy',
@@ -192,9 +184,10 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
     public function testMoveSortNo()
     {
         $ClassName = $this->classNameRepo->findOneBy(['backend_name' => 'class-1']);
+        $this->assertInstanceOf(ClassName::class, $ClassName);
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_product_class_name_sort_no_move'),
             [$ClassName->getId() => 10],
             [],
@@ -206,6 +199,7 @@ class ClassNameControllerTest extends AbstractAdminWebTestCase
         $MovedClassName = $this->classNameRepo->find($ClassName->getId());
         $this->entityManager->refresh($MovedClassName); // Refresh しないとリクエストの値(string)が入ってしまう
         $this->expected = 10;
+        $this->assertInstanceOf(ClassName::class, $MovedClassName);
         $this->actual = $MovedClassName->getSortNo();
         $this->verify();
     }

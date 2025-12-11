@@ -26,13 +26,10 @@ class MasterdataEditType extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('data', CollectionType::class, [
@@ -42,7 +39,7 @@ class MasterdataEditType extends AbstractType
                 'prototype' => true,
             ])
             ->add('masterdata_name', HiddenType::class)
-            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
                 $form = $event->getForm();
                 $data = $event->getData();
 
@@ -75,7 +72,7 @@ class MasterdataEditType extends AbstractType
      * {@inheritdoc}
      */
     #[\Override]
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'admin_system_masterdata_edit';
     }

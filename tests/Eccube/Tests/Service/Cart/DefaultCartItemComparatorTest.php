@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,16 +20,14 @@ use Eccube\Entity\ProductClass;
 use Eccube\Service\Cart\ProductClassComparator;
 use Eccube\Tests\EccubeTestCase;
 
-class DefaultCartItemComparatorTest extends EccubeTestCase
+final class DefaultCartItemComparatorTest extends EccubeTestCase
 {
-    /**
-     * @var ProductClassComparator
-     */
-    private $comparator;
+    private ?ProductClassComparator $comparator = null;
 
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -37,7 +37,7 @@ class DefaultCartItemComparatorTest extends EccubeTestCase
     public function testCompareSameCartItem()
     {
         $CartItem = $this->cartItem($this->createProduct()->getProductClasses()[0]);
-        self::assertTrue($this->comparator->compare($CartItem, $CartItem));
+        $this->assertTrue($this->comparator->compare($CartItem, $CartItem));
     }
 
     public function testCompareDifferentCartItemWithSameProductClass()
@@ -45,8 +45,8 @@ class DefaultCartItemComparatorTest extends EccubeTestCase
         $ProductClass = $this->createProduct()->getProductClasses()[0];
         $CartItem1 = $this->cartItem($ProductClass);
         $CartItem2 = $this->cartItem($ProductClass);
-        self::assertTrue($this->comparator->compare($CartItem1, $CartItem2));
-        self::assertTrue($this->comparator->compare($CartItem2, $CartItem1));
+        $this->assertTrue($this->comparator->compare($CartItem1, $CartItem2));
+        $this->assertTrue($this->comparator->compare($CartItem2, $CartItem1));
     }
 
     public function testCompareDifferentCartItemWithDifferentProductClass()
@@ -54,8 +54,8 @@ class DefaultCartItemComparatorTest extends EccubeTestCase
         $Product = $this->createProduct('test', 2);
         $CartItem1 = $this->cartItem($Product->getProductClasses()[0]);
         $CartItem2 = $this->cartItem($Product->getProductClasses()[1]);
-        self::assertFalse($this->comparator->compare($CartItem1, $CartItem2));
-        self::assertFalse($this->comparator->compare($CartItem2, $CartItem1));
+        $this->assertFalse($this->comparator->compare($CartItem1, $CartItem2));
+        $this->assertFalse($this->comparator->compare($CartItem2, $CartItem1));
     }
 
     private function cartItem(ProductClass $ProductClass)

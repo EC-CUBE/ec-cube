@@ -38,39 +38,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 class SearchCustomerType extends AbstractType
 {
     /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
-     * @var CustomerStatusRepository
-     */
-    protected $customerStatusRepository;
-
-    /**
      * SearchCustomerType constructor.
-     *
-     * @param CustomerStatusRepository $customerStatusRepository
-     * @param EccubeConfig $eccubeConfig
      */
-    public function __construct(
-        CustomerStatusRepository $customerStatusRepository,
-        EccubeConfig $eccubeConfig,
-    ) {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->customerStatusRepository = $customerStatusRepository;
+    public function __construct(protected CustomerStatusRepository $customerStatusRepository, protected EccubeConfig $eccubeConfig)
+    {
     }
 
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
-     * @param array<string,mixed> $options
-     *
-     * @return void
+     * @param array<string, mixed> $options
      */
     #[\Override]
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $months = range(1, 12);
         $builder
@@ -405,7 +385,7 @@ class SearchCustomerType extends AbstractType
                 'label' => 'admin.list.sort.type',
                 'required' => false,
             ])
-            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
                 $form = $event->getForm();
 
                 // 登録日
@@ -445,7 +425,7 @@ class SearchCustomerType extends AbstractType
      * {@inheritdoc}
      */
     #[\Override]
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'admin_search_customer';
     }

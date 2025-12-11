@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -19,14 +21,13 @@ use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Product;
 use Eccube\Tests\Fixture\Generator;
 use Eccube\Tests\Web\AbstractWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
-class MypageControllerTest extends AbstractWebTestCase
+final class MypageControllerTest extends AbstractWebTestCase
 {
-    /**
-     * @var Customer
-     */
-    protected $Customer;
+    protected ?Customer $Customer = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -37,7 +38,7 @@ class MypageControllerTest extends AbstractWebTestCase
     {
         $this->logInTo($this->Customer);
 
-        $this->client->request('GET', $this->generateUrl('mypage_favorite'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('mypage_favorite'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -53,7 +54,7 @@ class MypageControllerTest extends AbstractWebTestCase
         // main
         $redirectUrl = $this->generateUrl('mypage_favorite');
         // mypage_favorite_deleteはprocutt_idを受け取る
-        $this->client->request('DELETE',
+        $this->client->request(Request::METHOD_DELETE,
             $this->generateUrl('mypage_favorite_delete', ['id' => $TestFavorite->getProduct()->getId()])
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
@@ -70,7 +71,7 @@ class MypageControllerTest extends AbstractWebTestCase
 
         $Order = $this->createOrder($this->Customer);
 
-        $client->request('PUT',
+        $client->request(Request::METHOD_PUT,
             $this->generateUrl('mypage_order', ['order_no' => $Order->getOrderNo()])
         );
 
@@ -81,7 +82,7 @@ class MypageControllerTest extends AbstractWebTestCase
     {
         $this->logInTo($this->Customer);
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('mypage_login')
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('mypage')));
@@ -90,7 +91,7 @@ class MypageControllerTest extends AbstractWebTestCase
     public function testLoginWithFailure()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('mypage_login')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -102,7 +103,7 @@ class MypageControllerTest extends AbstractWebTestCase
         $this->logInTo($this->Customer);
 
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('mypage')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -119,7 +120,7 @@ class MypageControllerTest extends AbstractWebTestCase
         $client = $this->client;
 
         $client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('mypage_history', ['order_no' => $Order->getOrderNo()])
         );
         $this->assertTrue($client->getResponse()->isSuccessful());
@@ -135,7 +136,7 @@ class MypageControllerTest extends AbstractWebTestCase
         $this->loginTo($this->Customer);
 
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('mypage_history', ['order_no' => $Order->getOrderNo()])
         );
 
@@ -149,7 +150,7 @@ class MypageControllerTest extends AbstractWebTestCase
         $this->loginTo($this->Customer);
 
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('mypage_history', ['order_no' => 999999999])
         );
 
@@ -185,7 +186,7 @@ class MypageControllerTest extends AbstractWebTestCase
 
         $this->loginTo($this->Customer);
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('mypage_favorite')
         );
         // 最初の画面で表示されているお気に入りの ID を取得する

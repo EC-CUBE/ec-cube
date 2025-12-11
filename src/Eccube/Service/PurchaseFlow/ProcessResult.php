@@ -20,93 +20,43 @@ class ProcessResult
     public const SUCCESS = 'SUCCESS';
 
     /**
-     * @var string
-     */
-    protected $type;
-
-    /**
-     * @var string|null
-     */
-    protected $message;
-
-    /**
-     * @var string|null
-     */
-    protected $class;
-
-    /**
-     * @param string $type
-     * @param string|null $message
      * @param string|null $class 呼び出し元クラス
      */
-    private function __construct($type, ?string $message = null, $class = null)
+    private function __construct(protected string $type, protected ?string $message = null, protected ?string $class = null)
     {
-        $this->type = $type;
-        $this->message = $message;
-        $this->class = $class;
     }
 
-    /**
-     * @param string|null $message
-     * @param string|null $class
-     *
-     * @return ProcessResult
-     */
-    public static function warn($message = null, $class = null)
+    public static function warn(?string $message = null, ?string $class = null): ProcessResult
     {
         return new self(self::WARNING, $message, $class);
     }
 
-    /**
-     * @param string|null $message
-     * @param string|null $class
-     *
-     * @return ProcessResult
-     */
-    public static function error($message = null, $class = null)
+    public static function error(?string $message = null, ?string $class = null): ProcessResult
     {
         return new self(self::ERROR, $message, $class);
     }
 
-    /**
-     * @param string|null $message
-     * @param string|null $class
-     *
-     * @return ProcessResult
-     */
-    public static function success($message = null, $class = null)
+    public static function success(?string $message = null, ?string $class = null): ProcessResult
     {
         return new self(self::SUCCESS, $message, $class);
     }
 
-    /**
-     * @return bool
-     */
-    public function isError()
+    public function isError(): bool
     {
         return $this->type === self::ERROR;
     }
 
-    /**
-     * @return bool
-     */
-    public function isWarning()
+    public function isWarning(): bool
     {
         return $this->type === self::WARNING;
     }
 
-    /**
-     * @return bool
-     */
-    public function isSuccess()
+    public function isSuccess(): bool
     {
         return $this->type === self::SUCCESS;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getMessage()
+    public function getMessage(): ?string
     {
         return $this->message;
     }

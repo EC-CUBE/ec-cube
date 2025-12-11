@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,9 +20,9 @@ use Eccube\DependencyInjection\EccubeExtension;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class EccubeExtensionTest extends KernelTestCase
+final class EccubeExtensionTest extends KernelTestCase
 {
-    private EccubeExtension $extension;
+    private ?EccubeExtension $extension = null;
 
     public function setUp(): void
     {
@@ -31,18 +33,18 @@ class EccubeExtensionTest extends KernelTestCase
     public function testLoad()
     {
         $this->extension->load([], new ContainerBuilder());
-        self::assertIsArray($this->extension->getProcessedConfigs());
+        $this->assertIsArray($this->extension->getProcessedConfigs());
     }
 
     public function testGetAlias()
     {
-        self::assertSame('eccube', $this->extension->getAlias());
+        $this->assertSame('eccube', $this->extension->getAlias());
     }
 
     public function testGetConfiguration()
     {
         $container = new ContainerBuilder();
         $configuration = $this->extension->getConfiguration([], $container);
-        self::assertInstanceOf(Configuration::class, $configuration);
+        $this->assertInstanceOf(Configuration::class, $configuration);
     }
 }

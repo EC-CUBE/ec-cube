@@ -25,6 +25,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -33,40 +34,20 @@ use Symfony\Component\Routing\Attribute\Route;
 class TemplateController extends AbstractController
 {
     /**
-     * @var TemplateRepository
-     */
-    protected $templateRepository;
-
-    /**
-     * @var DeviceTypeRepository
-     */
-    protected $deviceTypeRepository;
-
-    /**
      * TemplateController constructor.
-     *
-     * @param TemplateRepository $templateRepository
-     * @param DeviceTypeRepository $deviceTypeRepository
      */
-    public function __construct(
-        TemplateRepository $templateRepository,
-        DeviceTypeRepository $deviceTypeRepository,
-    ) {
-        $this->templateRepository = $templateRepository;
-        $this->deviceTypeRepository = $deviceTypeRepository;
+    public function __construct(protected TemplateRepository $templateRepository, protected DeviceTypeRepository $deviceTypeRepository)
+    {
     }
 
     /**
      * テンプレート一覧画面
      *
-     * @param Request $request
-     * @param CacheUtil $cacheUtil
-     *
-     * @return array<string,mixed>|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return array<string, mixed>|RedirectResponse
      */
-    #[Route('/%eccube_admin_route%/store/template', name: 'admin_store_template', methods: ['GET', 'POST'])]
-    #[Template('@admin/Store/template.twig')]
-    public function index(Request $request, CacheUtil $cacheUtil)
+    #[Route(path: '/%eccube_admin_route%/store/template', name: 'admin_store_template', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Store/template.twig')]
+    public function index(Request $request, CacheUtil $cacheUtil): array|RedirectResponse
     {
         $DeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_PC);
 
@@ -104,14 +85,9 @@ class TemplateController extends AbstractController
 
     /**
      * テンプレート一覧からのダウンロード
-     *
-     * @param Request $request
-     * @param \Eccube\Entity\Template $Template
-     *
-     * @return BinaryFileResponse
      */
-    #[Route('/%eccube_admin_route%/store/template/{id}/download', name: 'admin_store_template_download', requirements: ['id' => '\d+'], methods: ['GET'])]
-    public function download(Request $request, \Eccube\Entity\Template $Template)
+    #[Route(path: '/%eccube_admin_route%/store/template/{id}/download', name: 'admin_store_template_download', requirements: ['id' => '\d+'], methods: ['GET'])]
+    public function download(Request $request, \Eccube\Entity\Template $Template): BinaryFileResponse
     {
         // 該当テンプレートのディレクトリ
         $templateCode = $Template->getCode();
@@ -151,7 +127,7 @@ class TemplateController extends AbstractController
             $tmpDir,
             $tarFile,
             $tarGzFile
-        ) {
+        ): void {
             log_debug('remove temp file: '.$tmpDir);
             log_debug('remove temp file: '.$tarFile);
             log_debug('remove temp file: '.$tarGzFile);
@@ -167,14 +143,8 @@ class TemplateController extends AbstractController
         return $response;
     }
 
-    /**
-     * @param Request $request
-     * @param \Eccube\Entity\Template $Template
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    #[Route('/%eccube_admin_route%/store/template/{id}/delete', name: 'admin_store_template_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, \Eccube\Entity\Template $Template)
+    #[Route(path: '/%eccube_admin_route%/store/template/{id}/delete', name: 'admin_store_template_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    public function delete(Request $request, \Eccube\Entity\Template $Template): RedirectResponse
     {
         $this->isTokenValid();
 
@@ -213,13 +183,11 @@ class TemplateController extends AbstractController
     /**
      * テンプレートの追加画面.
      *
-     * @param Request $request
-     *
-     * @return array<string,mixed>|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return array<string, mixed>|RedirectResponse
      */
-    #[Route('/%eccube_admin_route%/store/template/install', name: 'admin_store_template_install', methods: ['GET', 'POST'])]
-    #[Template('@admin/Store/template_add.twig')]
-    public function install(Request $request)
+    #[Route(path: '/%eccube_admin_route%/store/template/install', name: 'admin_store_template_install', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Store/template_add.twig')]
+    public function install(Request $request): array|RedirectResponse
     {
         $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');
 

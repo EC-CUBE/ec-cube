@@ -22,30 +22,24 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class BoomerangController extends AbstractController
 {
-    /**
-     * @var CartRepository
-     */
-    private $cartRepository;
-
-    public function __construct(CartRepository $cartRepository)
+    public function __construct(private readonly CartRepository $cartRepository)
     {
-        $this->cartRepository = $cartRepository;
     }
 
     /**
      * @return JsonResponse
      */
-    #[Route('/boomerang', name: 'boomerang', methods: ['GET'])]
+    #[Route(path: '/boomerang', name: 'boomerang', methods: ['GET'])]
     public function index()
     {
         /** @var Cart[] $list */
         $list = $this->cartRepository->findAll();
-        $ids = array_map(function (Cart $c) { return $c->getId(); }, $list);
+        $ids = array_map(fn (Cart $c) => $c->getId(), $list);
 
         return $this->json($ids);
     }
 
-    #[Route('/boomerang/new')]
+    #[Route(path: '/boomerang/new')]
     public function new()
     {
         $Bar = new Bar();

@@ -13,6 +13,7 @@
 
 namespace Eccube\Controller\Admin\Order;
 
+use Doctrine\DBAL\ConnectionException;
 use Eccube\Controller\Admin\AbstractCsvImportController;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Shipping;
@@ -22,40 +23,25 @@ use Eccube\Service\CsvImportService;
 use Eccube\Service\OrderStateMachine;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
 class CsvImportController extends AbstractCsvImportController
 {
-    /**
-     * @var ShippingRepository
-     */
-    private $shippingRepository;
-
-    /**
-     * @var OrderStateMachine
-     */
-    protected $orderStateMachine;
-
-    public function __construct(
-        ShippingRepository $shippingRepository,
-        OrderStateMachine $orderStateMachine,
-    ) {
-        $this->shippingRepository = $shippingRepository;
-        $this->orderStateMachine = $orderStateMachine;
+    public function __construct(private readonly ShippingRepository $shippingRepository, protected OrderStateMachine $orderStateMachine)
+    {
     }
 
     /**
      * 出荷CSVアップロード
      *
-     * @param Request $request
+     * @return array<string, mixed>
      *
-     * @return array<string,mixed>
-     *
-     * @throws \Doctrine\DBAL\ConnectionException
+     * @throws ConnectionException
      */
-    #[Route('/%eccube_admin_route%/order/shipping_csv_upload', name: 'admin_shipping_csv_import', methods: ['GET', 'POST'])]
-    #[Template('@admin/Order/csv_shipping.twig')]
-    public function csvShipping(Request $request)
+    #[Route(path: '/%eccube_admin_route%/order/shipping_csv_upload', name: 'admin_shipping_csv_import', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Order/csv_shipping.twig')]
+    public function csvShipping(Request $request): array
     {
         $form = $this->formFactory->createBuilder(CsvImportType::class)->getForm();
         $columnConfig = $this->getColumnConfig();
@@ -70,7 +56,7 @@ class CsvImportController extends AbstractCsvImportController
                     $csv = $this->getImportData($formFile);
 
                     try {
-                        $this->entityManager->getConfiguration()->setSQLLogger(null);
+                        $this->entityManager->getConfiguration()->setSQLLogger();
                         $this->entityManager->getConnection()->beginTransaction();
 
                         $this->loadCsv($csv, $errors);
@@ -98,27 +84,23 @@ class CsvImportController extends AbstractCsvImportController
     }
 
     /**
-     * @param CsvImportService<int,mixed>|bool $csv
-     * @param array<int,string> $errors
-     *
-     * @return void
+     * @param CsvImportService<int, mixed>|bool $csv
+     * @param array<int, string> $errors
      */
-    protected function loadCsv($csv, &$errors)
+    protected function loadCsv(CsvImportService|bool $csv, array &$errors): void
     {
         $columnConfig = $this->getColumnConfig();
 
         if ($csv === false) {
             $errors[] = trans('admin.common.csv_invalid_format');
+
+            return;
         }
 
         // 必須カラムの確認
-        $requiredColumns = array_map(function ($value) {
-            return $value['name'];
-        }, array_filter($columnConfig, function ($value) {
-            return $value['required'];
-        }));
+        $requiredColumns = array_map(fn ($value) => $value['name'], array_filter($columnConfig, fn ($value) => $value['required']));
         $csvColumns = $csv->getColumnHeaders();
-        if (count(array_diff($requiredColumns, $csvColumns)) > 0) {
+        if (count(array_diff(array_values($requiredColumns), $csvColumns)) > 0) {
             $errors[] = trans('admin.common.csv_invalid_format');
 
             return;
@@ -152,7 +134,7 @@ class CsvImportController extends AbstractCsvImportController
 
             if (isset($row[$columnNames['tracking_number']])) {
                 // 半角英数字ハイフン以外エラー
-                if (!preg_match('/^[0-9a-zA-Z-]*$/u', (string) $row[$columnNames['tracking_number']])) {
+                if (!preg_match('/^[0-9a-zA-Z-]*$/u', $row[$columnNames['tracking_number']])) {
                     $errors[] = trans('admin.common.csv_invalid_format_line_name', ['%line%' => $line + 1, '%name%' => $columnNames['tracking_number']]);
                     continue;
                 }
@@ -186,13 +168,16 @@ class CsvImportController extends AbstractCsvImportController
                 if ($this->orderStateMachine->can($Order, $OrderStatus)) {
                     $this->orderStateMachine->apply($Order, $OrderStatus);
                 } else {
-                    $from = $Order->getOrderStatus()->getName();
-                    $to = $OrderStatus->getName();
-                    $errors[] = trans('admin.order.failed_to_change_status', [
-                        '%name%' => $Shipping->getId(),
-                        '%from%' => $from,
-                        '%to%' => $to,
-                    ]);
+                    $currentOrderStatus = $Order->getOrderStatus();
+                    if ($currentOrderStatus) {
+                        $from = $currentOrderStatus->getName();
+                        $to = $OrderStatus->getName();
+                        $errors[] = trans('admin.order.failed_to_change_status', [
+                            '%name%' => $Shipping->getId(),
+                            '%from%' => $from,
+                            '%to%' => $to,
+                        ]);
+                    }
                 }
             }
         }
@@ -200,13 +185,9 @@ class CsvImportController extends AbstractCsvImportController
 
     /**
      * アップロード用CSV雛形ファイルダウンロード
-     *
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\StreamedResponse
      */
-    #[Route('/%eccube_admin_route%/order/csv_template', name: 'admin_shipping_csv_template', methods: ['GET'])]
-    public function csvTemplate(Request $request)
+    #[Route(path: '/%eccube_admin_route%/order/csv_template', name: 'admin_shipping_csv_template', methods: ['GET'])]
+    public function csvTemplate(Request $request): StreamedResponse
     {
         $columns = array_column($this->getColumnConfig(), 'name');
 
@@ -214,9 +195,9 @@ class CsvImportController extends AbstractCsvImportController
     }
 
     /**
-     * @return array<string,array<string,bool|string>>
+     * @return array<string, array<string, bool|string>>
      */
-    protected function getColumnConfig()
+    protected function getColumnConfig(): array
     {
         return [
             'id' => [

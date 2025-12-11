@@ -37,58 +37,24 @@ use Eccube\Util\StringUtil;
  */
 class CustomerRepository extends AbstractRepository
 {
-    /**
-     * @var Queries
-     */
-    protected $queries;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
-     * @var OrderRepository
-     */
-    protected $orderRepository;
-
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
     public const COLUMNS = [
         'customer_id' => 'c.id', 'name' => 'c.name01',
     ];
 
     /**
      * CustomerRepository constructor.
-     *
-     * @param RegistryInterface $registry
-     * @param Queries $queries
-     * @param EntityManagerInterface $entityManager
-     * @param OrderRepository $orderRepository
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         RegistryInterface $registry,
-        Queries $queries,
-        EntityManagerInterface $entityManager,
-        OrderRepository $orderRepository,
-        EccubeConfig $eccubeConfig,
+        protected Queries $queries,
+        protected EntityManagerInterface $entityManager,
+        protected OrderRepository $orderRepository,
+        protected ?EccubeConfig $eccubeConfig,
     ) {
         parent::__construct($registry, Customer::class);
-
-        $this->queries = $queries;
-        $this->entityManager = $entityManager;
-        $this->orderRepository = $orderRepository;
-        $this->eccubeConfig = $eccubeConfig;
     }
 
-    /**
-     * @return Customer
-     */
-    public function newCustomer()
+    public function newCustomer(): Customer
     {
         $CustomerStatus = $this->getEntityManager()
             ->find(CustomerStatus::class, CustomerStatus::PROVISIONAL);
@@ -97,7 +63,9 @@ class CustomerRepository extends AbstractRepository
         $Customer
             ->setStatus($CustomerStatus)
             ->setSecretKey($this->getUniqueSecretKey())
-            ->setPoint('0');
+            ->setPoint('0')
+            ->setCreateDate(new \DateTime())
+            ->setUpdateDate(new \DateTime());
 
         return $Customer;
     }
@@ -133,11 +101,9 @@ class CustomerRepository extends AbstractRepository
      *         sorttype?:string
      *     } $searchData
      *
-     * @return QueryBuilder
-     *
      * @throws Exception
      */
-    public function getQueryBuilderBySearchData($searchData)
+    public function getQueryBuilderBySearchData(array $searchData): QueryBuilder
     {
         $qb = $this->createQueryBuilder('c')
             ->select('c');
@@ -337,10 +303,8 @@ class CustomerRepository extends AbstractRepository
 
     /**
      * ユニークなシークレットキーを返す.
-     *
-     * @return string
      */
-    public function getUniqueSecretKey()
+    public function getUniqueSecretKey(): string
     {
         do {
             $key = StringUtil::random(32);
@@ -352,10 +316,8 @@ class CustomerRepository extends AbstractRepository
 
     /**
      * ユニークなパスワードリセットキーを返す
-     *
-     * @return string
      */
-    public function getUniqueResetKey()
+    public function getUniqueResetKey(): string
     {
         do {
             $key = StringUtil::random(32);
@@ -368,11 +330,9 @@ class CustomerRepository extends AbstractRepository
     /**
      * 仮会員をシークレットキーで検索する.
      *
-     * @param string $secretKey
-     *
      * @return Customer|null 見つからない場合はnullを返す.
      */
-    public function getProvisionalCustomerBySecretKey($secretKey)
+    public function getProvisionalCustomerBySecretKey(string $secretKey): ?Customer
     {
         return $this->findOneBy([
             'secret_key' => $secretKey,
@@ -383,11 +343,9 @@ class CustomerRepository extends AbstractRepository
     /**
      * 本会員をemailで検索する.
      *
-     * @param string $email
-     *
      * @return Customer|null 見つからない場合はnullを返す.
      */
-    public function getRegularCustomerByEmail($email)
+    public function getRegularCustomerByEmail(string $email): ?Customer
     {
         return $this->findOneBy([
             'email' => $email,
@@ -398,12 +356,9 @@ class CustomerRepository extends AbstractRepository
     /**
      * 本会員をリセットキー、またはリセットキーとメールアドレスで検索する.
      *
-     * @param string $resetKey
-     * @param string|null $email
-     *
      * @return Customer|null 見つからない場合はnullを返す.
      */
-    public function getRegularCustomerByResetKey($resetKey, $email = null)
+    public function getRegularCustomerByResetKey(string $resetKey, ?string $email = null): ?Customer
     {
         $qb = $this->createQueryBuilder('c')
             ->where('c.reset_key = :reset_key AND c.Status = :status AND c.reset_expire >= :reset_expire')
@@ -424,10 +379,8 @@ class CustomerRepository extends AbstractRepository
 
     /**
      * リセット用パスワードを生成する.
-     *
-     * @return string
      */
-    public function getResetPassword()
+    public function getResetPassword(): string
     {
         return StringUtil::random(8);
     }
@@ -440,7 +393,7 @@ class CustomerRepository extends AbstractRepository
      *
      * @return array<int, Customer>
      */
-    public function getNonWithdrawingCustomers(array $criteria = [])
+    public function getNonWithdrawingCustomers(array $criteria = []): array
     {
         $criteria['Status'] = [
             CustomerStatus::PROVISIONAL,

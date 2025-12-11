@@ -33,57 +33,23 @@ class TwoFactorAuthService
      */
     public const DEFAULT_COOKIE_NAME = 'eccube_2fa';
 
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
+    protected ?Request $request;
 
-    /**
-     * @var PasswordHasherFactoryInterface
-     */
-    protected $passwordHasherFactory;
+    protected string $cookieName = self::DEFAULT_COOKIE_NAME;
 
-    /**
-     * @var RequestStack
-     */
-    protected $requestStack;
+    protected int $expire = self::DEFAULT_EXPIRE_DATE;
 
-    /**
-     * @var Request|null
-     */
-    protected $request;
-
-    /**
-     * @var string
-     */
-    protected $cookieName = self::DEFAULT_COOKIE_NAME;
-
-    /**
-     * @var int
-     */
-    protected $expire = self::DEFAULT_EXPIRE_DATE;
-
-    /**
-     * @var TwoFactorAuth
-     */
-    protected $tfa;
+    protected TwoFactorAuth $tfa;
 
     /**
      * constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
-     * @param PasswordHasherFactoryInterface $passwordHasherFactory
-     * @param RequestStack $requestStack
      */
     public function __construct(
-        EccubeConfig $eccubeConfig,
-        PasswordHasherFactoryInterface $passwordHasherFactory,
-        RequestStack $requestStack,
+        protected EccubeConfig $eccubeConfig,
+        protected PasswordHasherFactoryInterface $passwordHasherFactory,
+        protected RequestStack $requestStack,
     ) {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->passwordHasherFactory = $passwordHasherFactory;
-        $this->requestStack = $requestStack;
-        $this->request = $requestStack->getCurrentRequest();
+        $this->request = $this->requestStack->getCurrentRequest();
         $this->tfa = new TwoFactorAuth();
 
         if ($this->eccubeConfig->get('eccube_2fa_cookie_name')) {
@@ -96,12 +62,7 @@ class TwoFactorAuthService
         }
     }
 
-    /**
-     * @param Member $Member
-     *
-     * @return bool
-     */
-    public function isAuth($Member)
+    public function isAuth(Member $Member): bool
     {
         if ($json = $this->request->cookies->get($this->cookieName)) {
             $configs = json_decode($json);
@@ -125,12 +86,7 @@ class TwoFactorAuthService
         return false;
     }
 
-    /**
-     * @param Member $Member
-     *
-     * @return Cookie
-     */
-    public function createAuthedCookie($Member)
+    public function createAuthedCookie(Member $Member): Cookie
     {
         $hasher = $this->passwordHasherFactory->getPasswordHasher($Member);
         $encodedString = $hasher->hash($Member->getId().$Member->getTwoFactorAuthKey());
@@ -144,7 +100,7 @@ class TwoFactorAuthService
             'date' => time(),
         ];
 
-        $cookie = new Cookie(
+        return new Cookie(
             $this->cookieName, // name
             json_encode($configs), // value
             $this->expire == 0 ? 0 : time() + ($this->expire * 24 * 60 * 60), // expire
@@ -155,33 +111,19 @@ class TwoFactorAuthService
             false, // raw
             $this->eccubeConfig->get('eccube_force_ssl') ? Cookie::SAMESITE_NONE : null // sameSite
         );
-
-        return $cookie;
     }
 
-    /**
-     * @param string $authKey
-     * @param string $token
-     *
-     * @return bool
-     */
-    public function verifyCode($authKey, $token)
+    public function verifyCode(string $authKey, string $token): bool
     {
         return $this->tfa->verifyCode($authKey, $token, 2);
     }
 
-    /**
-     * @return string
-     */
-    public function createSecret()
+    public function createSecret(): string
     {
         return $this->tfa->createSecret();
     }
 
-    /**
-     * @return bool
-     */
-    public function isEnabled()
+    public function isEnabled(): bool
     {
         $enabled = $this->eccubeConfig->get('eccube_2fa_enabled');
         if (is_string($enabled) && $enabled === '0' || $enabled === false) {

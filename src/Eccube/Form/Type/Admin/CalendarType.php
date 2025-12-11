@@ -33,40 +33,19 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class CalendarType extends AbstractType
 {
     /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
-     * @var CalendarRepository
-     */
-    protected $calendarRepository;
-
-    /**
-     * @var ValidatorInterface
-     */
-    protected $validator;
-
-    /**
      * CalendarType constructor.
      */
-    public function __construct(EccubeConfig $eccubeConfig, ValidatorInterface $validator, CalendarRepository $calendarRepository)
+    public function __construct(protected EccubeConfig $eccubeConfig, protected ValidatorInterface $validator, protected CalendarRepository $calendarRepository)
     {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->calendarRepository = $calendarRepository;
-        $this->validator = $validator;
     }
 
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
-     * @param array<string,mixed> $options
-     *
-     * @return void
+     * @param array<string, mixed> $options
      */
     #[\Override]
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('title', TextType::class, [
@@ -97,7 +76,7 @@ class CalendarType extends AbstractType
             ])
         ;
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             // 日付重複チェック
             /** @var Calendar $Calendar */
             $Calendar = $event->getData();
@@ -138,13 +117,9 @@ class CalendarType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @param OptionsResolver $resolver
-     *
-     * @return void
      */
     #[\Override]
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Calendar::class,
@@ -155,7 +130,7 @@ class CalendarType extends AbstractType
      * {@inheritdoc}
      */
     #[\Override]
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'calendar';
     }

@@ -36,7 +36,7 @@ class AuthorityRoleRepository extends AbstractRepository
      *
      * @return array<int, AuthorityRole>
      */
-    public function findAllSort()
+    public function findAllSort(): array
     {
         return $this->findBy([], ['Authority' => 'ASC', 'deny_url' => 'ASC']);
     }

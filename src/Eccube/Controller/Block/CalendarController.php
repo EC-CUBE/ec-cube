@@ -17,59 +17,43 @@ use Carbon\Carbon;
 use Eccube\Controller\AbstractController;
 use Eccube\Repository\CalendarRepository;
 use Symfony\Bridge\Twig\Attribute\Template;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
 class CalendarController extends AbstractController
 {
     /**
-     * @var CalendarRepository
-     */
-    protected $calendarRepository;
-
-    /**
      * CalendarController constructor.
      */
-    public function __construct(CalendarRepository $calendarRepository)
+    public function __construct(protected CalendarRepository $calendarRepository)
     {
-        $this->calendarRepository = $calendarRepository;
     }
 
     /**
-     * @param Request $request
-     *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
-    #[Route('/block/calendar', name: 'block_calendar', methods: ['GET'])]
-    #[Template('Block/calendar.twig')]
-    public function index(Request $request)
+    #[Route(path: '/block/calendar', name: 'block_calendar', methods: ['GET'])]
+    #[Template(template: 'Block/calendar.twig')]
+    public function index(): array
     {
         $today = Carbon::now();
         $firstDateOfThisMonth = $today->copy()->startOfMonth();
         $firstDateOfNextMonth = $today->copy()->startOfMonth()->addMonth()->startOfMonth();
         $endDateOfNextMonth = $today->copy()->startOfMonth()->addMonth()->endOfMonth();
-
         // 2ヶ月間の定休日を取得
         $HolidaysOfTwoMonths = $this->calendarRepository->getHolidayList($firstDateOfThisMonth, $endDateOfNextMonth);
-
         // 今月のカレンダー配列を取得
         $thisMonthCalendar = $this->createCalendar($firstDateOfThisMonth);
-
         // 来月のカレンダー配列を取得
         $nextMonthCalendar = $this->createCalendar($firstDateOfNextMonth);
-
         // 定休日リストを取得
         $holidayListOfTwoMonths = [];
         foreach ($HolidaysOfTwoMonths as $Holiday) {
             $holidayListOfTwoMonths[] = $Holiday->getHoliday();
         }
-
         // 今月のカレンダー配列に定休日フラグを設定
         $thisMonthCalendar = $this->setHolidayAndTodayFlag($thisMonthCalendar, $holidayListOfTwoMonths, $today->copy());
-
         // 来月のカレンダー配列に定休日フラグを設定
         $nextMonthCalendar = $this->setHolidayAndTodayFlag($nextMonthCalendar, $holidayListOfTwoMonths, $today->copy()->startOfMonth()->addMonth());
-
         // 各カレンダータイトルを作成
         $monthFormat = $this->translator->trans('front.block.calendar.month_format');
         $thisMonthTitle = $firstDateOfThisMonth->format($monthFormat);
@@ -90,9 +74,9 @@ class CalendarController extends AbstractController
      * @param array<mixed> $holidayListOfTwoMonths 定休日リスト
      * @param Carbon $targetDate ターゲット日
      *
-     * @return array<int,array<string,string>> カレンダーの配列
+     * @return array<int, array<string, string>> カレンダーの配列
      */
-    private function setHolidayAndTodayFlag($targetMonthCalendar, $holidayListOfTwoMonths, Carbon $targetDate)
+    private function setHolidayAndTodayFlag(array $targetMonthCalendar, array $holidayListOfTwoMonths, Carbon $targetDate): array
     {
         for ($i = 0; $i < count($targetMonthCalendar); $i++) {
             // カレンダー配列の日が空の場合は処理をスキップ
@@ -129,9 +113,9 @@ class CalendarController extends AbstractController
      *
      * @param Carbon $firstDateOfTargetMonth 月初日
      *
-     * @return array<int,array<string,string>> カレンダーの配列
+     * @return array<int, array<string, string>> カレンダーの配列
      */
-    private function createCalendar(Carbon $firstDateOfTargetMonth)
+    private function createCalendar(Carbon $firstDateOfTargetMonth): array
     {
         // 週のうちの何日目か 0 (日曜)から 6 (土曜)を取得
         $firstDayOfWeek = $firstDateOfTargetMonth->dayOfWeek;
@@ -188,7 +172,7 @@ class CalendarController extends AbstractController
      *
      * @return string 曜日の文字 : Sun(日曜)からSat(土曜)
      */
-    private function getDayOfWeekString($dayOfWeekNumber)
+    private function getDayOfWeekString(int $dayOfWeekNumber): string
     {
         $weekday = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 

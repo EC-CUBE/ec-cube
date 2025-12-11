@@ -35,9 +35,18 @@ class EccubeAuthenticationSuccessHandler extends DefaultAuthenticationSuccessHan
         } catch (RouteNotFoundException $e) {
             throw new BadRequestHttpException($e->getMessage(), $e, $e->getCode());
         }
-
-        if (preg_match('/^https?:\\\\/i', $response->getTargetUrl())) {
-            $response->setTargetUrl($request->getUriForPath('/'));
+        // 絶対URLの場合のみ、パス部分を抽出して相対パスに変換
+        $targetUrl = $response->getTargetUrl();
+        if (preg_match('/^https?:\/\//i', $targetUrl)) {
+            // 絶対URLからパス部分を抽出
+            $parsedUrl = parse_url($targetUrl);
+            $path = $parsedUrl['path'] ?? '/';
+            // ベースパスがある場合は追加
+            $basePath = $request->getBasePath();
+            if ($basePath && !str_starts_with($path, $basePath)) {
+                $path = $basePath.$path;
+            }
+            $response->setTargetUrl($path);
         }
 
         return $response;

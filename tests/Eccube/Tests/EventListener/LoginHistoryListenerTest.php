@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -16,13 +18,14 @@ namespace Eccube\Tests\EventListener;
 use Eccube\Entity\LoginHistory;
 use Eccube\Entity\Master\LoginHistoryStatus;
 use Eccube\Tests\Web\AbstractWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
-class LoginHistoryListenerTest extends AbstractWebTestCase
+final class LoginHistoryListenerTest extends AbstractWebTestCase
 {
-    public function testOnInteractiveLogin()
+    public function activeLogin()
     {
         $this->client->request(
-            'POST', $this->generateUrl('admin_login'),
+            Request::METHOD_POST, $this->generateUrl('admin_login'),
             [
                 'login_id' => 'admin',
                 'password' => 'password',
@@ -35,6 +38,7 @@ class LoginHistoryListenerTest extends AbstractWebTestCase
                 'user_name' => 'admin',
                 'Status' => LoginHistoryStatus::SUCCESS,
             ]);
+        $this->assertInstanceOf(LoginHistory::class, $LoginHistory);
 
         // $LoginHistoryの比較だと、RECURSIONが発生するため、IDの有無で確認
         $this->assertNotNull($LoginHistory->getId());
@@ -43,7 +47,7 @@ class LoginHistoryListenerTest extends AbstractWebTestCase
     public function testOnAuthenticationFailure()
     {
         $this->client->request(
-            'POST', $this->generateUrl('admin_login'),
+            Request::METHOD_POST, $this->generateUrl('admin_login'),
             [
                 'login_id' => 'admin',
                 'password' => 'password2',
@@ -57,6 +61,6 @@ class LoginHistoryListenerTest extends AbstractWebTestCase
                 'Status' => LoginHistoryStatus::FAILURE,
             ]);
 
-        $this->assertNotNull($LoginHistory);
+        $this->assertInstanceOf(LoginHistory::class, $LoginHistory);
     }
 }

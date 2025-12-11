@@ -15,7 +15,9 @@ namespace Eccube\Repository;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
+use Eccube\Entity\AbstractEntity;
 use Eccube\Entity\News;
 
 /**
@@ -36,12 +38,10 @@ class NewsRepository extends AbstractRepository
     /**
      * 新着情報を登録します.
      *
-     * @param $News
-     *
-     * @return void
+     * @param News $News
      */
     #[\Override]
-    public function save($News)
+    public function save(AbstractEntity $News): void
     {
         $em = $this->getEntityManager();
         $em->persist($News);
@@ -52,21 +52,16 @@ class NewsRepository extends AbstractRepository
      * 新着情報を削除します.
      *
      * @param News $News
-     *
-     * @return void
      */
     #[\Override]
-    public function delete($News)
+    public function delete($News): void
     {
         $em = $this->getEntityManager();
         $em->remove($News);
         $em->flush();
     }
 
-    /**
-     * @return \Doctrine\ORM\QueryBuilder
-     */
-    public function getQueryBuilderAll()
+    public function getQueryBuilderAll(): QueryBuilder
     {
         $qb = $this->createQueryBuilder('n');
         $qb->orderBy('n.publish_date', 'DESC')
@@ -78,7 +73,7 @@ class NewsRepository extends AbstractRepository
     /**
      * @return ArrayCollection<int, News>
      */
-    public function getList()
+    public function getList(): ArrayCollection
     {
         // second level cacheを効かせるためfindByで取得
         $Results = $this->findBy(['visible' => true], ['publish_date' => 'DESC', 'id' => 'DESC']);

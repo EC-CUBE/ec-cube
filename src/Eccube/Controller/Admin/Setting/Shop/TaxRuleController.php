@@ -13,6 +13,7 @@
 
 namespace Eccube\Controller\Admin\Setting\Shop;
 
+use Doctrine\ORM\NoResultException;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\TaxRule;
@@ -22,6 +23,8 @@ use Eccube\Form\Type\Admin\TaxRuleType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -30,39 +33,25 @@ use Symfony\Component\Routing\Attribute\Route;
  */
 class TaxRuleController extends AbstractController
 {
-    /**
-     * @var BaseInfo
-     */
-    protected $BaseInfo;
-
-    /**
-     * @var TaxRuleRepository
-     */
-    protected $taxRuleRepository;
+    protected BaseInfo $BaseInfo;
 
     /**
      * TaxRuleController constructor.
-     *
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param TaxRuleRepository $taxRuleRepository
      */
-    public function __construct(BaseInfoRepository $baseInfoRepository, TaxRuleRepository $taxRuleRepository)
+    public function __construct(BaseInfoRepository $baseInfoRepository, protected TaxRuleRepository $taxRuleRepository)
     {
         $this->BaseInfo = $baseInfoRepository->get();
-        $this->taxRuleRepository = $taxRuleRepository;
     }
 
     /**
      * 税率設定の初期表示・登録
      *
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      */
-    #[Route('/%eccube_admin_route%/setting/shop/tax', name: 'admin_setting_shop_tax', methods: ['GET', 'POST'])]
-    #[Route('/%eccube_admin_route%/setting/shop/tax/new', name: 'admin_setting_shop_tax_new', methods: ['GET', 'POST'])]
-    #[Template('@admin/Setting/Shop/tax_rule.twig')]
-    public function index(Request $request)
+    #[Route(path: '/%eccube_admin_route%/setting/shop/tax', name: 'admin_setting_shop_tax', methods: ['GET', 'POST'])]
+    #[Route(path: '/%eccube_admin_route%/setting/shop/tax/new', name: 'admin_setting_shop_tax_new', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Setting/Shop/tax_rule.twig')]
+    public function index(Request $request): RedirectResponse|array
     {
         $TargetTaxRule = $this->taxRuleRepository->newTaxRule();
         $builder = $this->formFactory
@@ -111,7 +100,7 @@ class TaxRuleController extends AbstractController
         $errors = [];
         /** @var TaxRule $TaxRule */
         foreach ($TaxRules as $TaxRule) {
-            /** @var \Symfony\Component\Form\FormBuilderInterface $builder */
+            /** @var FormBuilderInterface $builder */
             $builder = $this->formFactory->createBuilder(TaxRuleType::class, $TaxRule);
             if ($TaxRule->isDefaultTaxRule()) {
                 $builder->remove('apply_date');
@@ -153,15 +142,10 @@ class TaxRuleController extends AbstractController
     /**
      * 税率設定の削除
      *
-     * @param Request $request
-     * @param TaxRule $TaxRule
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     *
-     * @throws \Doctrine\ORM\NoResultException
+     * @throws NoResultException
      */
-    #[Route('/%eccube_admin_route%/setting/shop/tax/{id}/delete', name: 'admin_setting_shop_tax_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, TaxRule $TaxRule)
+    #[Route(path: '/%eccube_admin_route%/setting/shop/tax/{id}/delete', name: 'admin_setting_shop_tax_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    public function delete(Request $request, TaxRule $TaxRule): RedirectResponse
     {
         $this->isTokenValid();
 

@@ -21,6 +21,7 @@ use Eccube\Util\FormUtil;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 /**
@@ -29,40 +30,24 @@ use Symfony\Component\Routing\Attribute\Route;
 class LoginHistoryController extends AbstractController
 {
     /**
-     * @var PageMaxRepository
-     */
-    protected $pageMaxRepository;
-
-    /**
-     * @var LoginHistoryRepository
-     */
-    protected $loginHistoryRepository;
-
-    /**
      * LoginHistoryController constructor.
      */
-    public function __construct(
-        PageMaxRepository $pageMaxRepository,
-        LoginHistoryRepository $loginHistoryRepository,
-    ) {
-        $this->pageMaxRepository = $pageMaxRepository;
-        $this->loginHistoryRepository = $loginHistoryRepository;
+    public function __construct(protected PageMaxRepository $pageMaxRepository, protected LoginHistoryRepository $loginHistoryRepository)
+    {
     }
 
     /**
      * ログイン履歴検索画面を表示する.
      * 左ナビゲーションの選択はGETで遷移する.
      *
-     * @param Request $request
-     * @param PaginatorInterface $paginator
      * @param int|null $page_no
      *
-     * @return \Symfony\Component\HttpFoundation\Response|array<string,mixed>
+     * @return Response|array<string, mixed>
      */
-    #[Route('/%eccube_admin_route%/setting/system/login_history', name: 'admin_setting_system_login_history', methods: ['GET', 'POST'])]
-    #[Route('/%eccube_admin_route%/setting/system/login_history/{page_no}', name: 'admin_setting_system_login_history_page', requirements: ['page_no' => '\d+'], methods: ['GET', 'POST'])]
-    #[Template('@admin/Setting/System/login_history.twig')]
-    public function index(Request $request, PaginatorInterface $paginator, $page_no = null)
+    #[Route(path: '/%eccube_admin_route%/setting/system/login_history', name: 'admin_setting_system_login_history', methods: ['GET', 'POST'])]
+    #[Route(path: '/%eccube_admin_route%/setting/system/login_history/{page_no}', name: 'admin_setting_system_login_history_page', requirements: ['page_no' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Setting/System/login_history.twig')]
+    public function index(Request $request, PaginatorInterface $paginator, $page_no = null): Response|array
     {
         $session = $request->getSession();
         $pageNo = $page_no;

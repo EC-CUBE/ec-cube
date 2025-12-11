@@ -28,20 +28,13 @@ class BaseInfoRepository extends AbstractRepository
 {
     /**
      * BaseInfoRepository constructor.
-     *
-     * @param RegistryInterface $registry
      */
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, BaseInfo::class);
     }
 
-    /**
-     * @param int $id
-     *
-     * @return BaseInfo
-     */
-    public function get($id = 1)
+    public function get(int $id = 1): BaseInfo
     {
         $BaseInfo = $this->find($id);
 

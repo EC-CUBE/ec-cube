@@ -14,25 +14,20 @@
 namespace Eccube\Service;
 
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Master\Country;
+use Eccube\Entity\Master\Pref;
+use Eccube\Entity\Master\RoundingType;
+use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\TaxRuleRepository;
 
 class TaxRuleService
 {
-    /**
-     * @var BaseInfo
-     */
-    protected $BaseInfo;
+    protected BaseInfo $BaseInfo;
 
-    /**
-     * @var TaxRuleRepository
-     */
-    protected $taxRuleRepository;
-
-    public function __construct(TaxRuleRepository $taxRuleRepository, BaseInfoRepository $baseInfoRepository)
+    public function __construct(protected TaxRuleRepository $taxRuleRepository, BaseInfoRepository $baseInfoRepository)
     {
-        $this->taxRuleRepository = $taxRuleRepository;
         $this->BaseInfo = $baseInfoRepository->get();
     }
 
@@ -40,14 +35,14 @@ class TaxRuleService
      * 設定情報に基づいて税金の金額を返す
      *
      * @param  string                                    $price        計算対象の金額
-     * @param  int|\Eccube\Entity\Product|null        $product      商品
+     * @param  int|Product|null        $product      商品
      * @param  int|ProductClass|null   $productClass 商品規格
-     * @param  int|\Eccube\Entity\Master\Pref|null    $pref         都道府県
-     * @param  int|\Eccube\Entity\Master\Country|null $country      国
+     * @param  int|Pref|null    $pref         都道府県
+     * @param  int|Country|null $country      国
      *
      * @return string                                 税金付与した金額
      */
-    public function getTax($price, $product = null, $productClass = null, $pref = null, $country = null)
+    public function getTax(string $price, int|Product|null $product = null, int|ProductClass|null $productClass = null, int|Pref|null $pref = null, int|Country|null $country = null): string
     {
         /*
          * 商品別税率が有効で商品別税率が設定されている場合は商品別税率
@@ -72,14 +67,12 @@ class TaxRuleService
      * calcIncTax
      *
      * @param  string                                    $price        計算対象の金額
-     * @param  int|\Eccube\Entity\Product|null        $product      商品
+     * @param  int|Product|null        $product      商品
      * @param  int|ProductClass|null   $productClass 商品規格
-     * @param  int|\Eccube\Entity\Master\Pref|null    $pref         都道府県
-     * @param  int|\Eccube\Entity\Master\Country|null $country      国
-     *
-     * @return string
+     * @param  int|Pref|null    $pref         都道府県
+     * @param  int|Country|null $country      国
      */
-    public function getPriceIncTax($price, $product = null, $productClass = null, $pref = null, $country = null)
+    public function getPriceIncTax(string $price, int|Product|null $product = null, int|ProductClass|null $productClass = null, int|Pref|null $pref = null, int|Country|null $country = null): string
     {
         return bcadd($price, $this->getTax($price, $product, $productClass, $pref, $country), 2);
     }
@@ -94,7 +87,7 @@ class TaxRuleService
      *
      * @return string 税金額
      */
-    public function calcTax($price, $taxRate, $RoundingType, $taxAdjust = '0')
+    public function calcTax(string $price, string $taxRate, int $RoundingType, string $taxAdjust = '0'): string
     {
         // tax = price * taxRate / 100
         $tax = bcdiv(bcmul($price, $taxRate, 4), '100', 4);
@@ -113,7 +106,7 @@ class TaxRuleService
      *
      * @return string  税金額
      */
-    public function calcTaxIncluded($price, $taxRate, $RoundingType, $taxAdjust = '0')
+    public function calcTaxIncluded(string $price, string $taxRate, int $RoundingType, string $taxAdjust = '0'): string
     {
         // tax = (price - taxAdjust) * taxRate / (100 + taxRate)
         $priceAfterAdjust = bcsub($price, $taxAdjust, 4);
@@ -127,23 +120,20 @@ class TaxRuleService
      * 課税規則に応じて端数処理を行う
      *
      * @param string $value    端数処理を行う数値
-     * @param int $RoundingType
      *
      * @return string        端数処理後の数値
      */
-    public static function roundByRoundingType($value, $RoundingType)
+    public static function roundByRoundingType(string $value, int $RoundingType): string
     {
-        $ret = match ($RoundingType) {
+        return match ($RoundingType) {
             // 四捨五入
-            \Eccube\Entity\Master\RoundingType::ROUND => bcround($value),
+            RoundingType::ROUND => bcround($value),
             // 切り捨て
-            \Eccube\Entity\Master\RoundingType::FLOOR => bcfloor($value),
+            RoundingType::FLOOR => bcfloor($value),
             // 切り上げ
-            \Eccube\Entity\Master\RoundingType::CEIL => bcceil($value),
+            RoundingType::CEIL => bcceil($value),
             // デフォルト:切り上げ
             default => bcceil($value),
         };
-
-        return $ret;
     }
 }

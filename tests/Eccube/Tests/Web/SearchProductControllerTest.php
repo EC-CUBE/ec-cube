@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,14 +17,13 @@ namespace Eccube\Tests\Web;
 
 use Eccube\Entity\Category;
 use Eccube\Repository\CategoryRepository;
+use Symfony\Component\HttpFoundation\Request;
 
-class SearchProductControllerTest extends AbstractWebTestCase
+final class SearchProductControllerTest extends AbstractWebTestCase
 {
-    /**
-     * @var CategoryRepository
-     */
-    protected $categoryRepository;
+    protected ?CategoryRepository $categoryRepository = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -117,7 +118,7 @@ class SearchProductControllerTest extends AbstractWebTestCase
 
     public function testRoutingSearchProduct()
     {
-        $this->client->request('GET', $this->generateUrl('block_search_product'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('block_search_product'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -127,12 +128,13 @@ class SearchProductControllerTest extends AbstractWebTestCase
         $Category = $this->categoryRepository->findOneBy(['name' => '孫1']);
 
         // When
-        $crawler = $this->client->request('GET', $this->generateUrl('block_search_product'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('block_search_product'));
 
         // Then
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         $categoryNameLastElement = $crawler->filter('.category_id option')->last()->text();
+        $this->assertInstanceOf(Category::class, $Category);
 
         $this->expected = $Category->getNameWithLevel();
         $this->actual = $categoryNameLastElement;

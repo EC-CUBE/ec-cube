@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -22,28 +24,20 @@ use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
-class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
+final class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
 {
-    /**
-     * @var PluginService
-     */
-    private $service;
+    private ?PluginService $service = null;
 
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
-    private $mockSchemaService;
+    private \PHPUnit_Framework_MockObject_MockObject $mockSchemaService;
 
-    /**
-     * @var PluginRepository
-     */
-    private $pluginRepository;
+    private ?PluginRepository $pluginRepository = null;
 
     /**
      * {@inheritdoc}
      *
      * @throws \ReflectionException
      */
+    #[\Override]
     protected function setUp(): void
     {
         // Fixme: because the proxy entity still not working, it's can not help to run this test case
@@ -55,12 +49,12 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
         $this->service = static::getContainer()->get(PluginService::class);
         $rc = new \ReflectionClass($this->service);
         $prop = $rc->getProperty('schemaService');
-        $prop->setAccessible(true);
         $prop->setValue($this->service, $this->mockSchemaService);
 
         $this->pluginRepository = $this->entityManager->getRepository(Plugin::class);
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         $finder = new Finder();
@@ -108,7 +102,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
         $this->service->install($fileA);
 
         // Proxyは生成されない
-        self::assertFalse(file_exists(static::getContainer()->getParameter('kernel.project_dir').'/app/proxy/entity/Customer.php'));
+        $this->assertFileDoesNotExist(static::getContainer()->getParameter('kernel.project_dir').'/app/proxy/entity/Customer.php');
     }
 
     /**
@@ -311,9 +305,9 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
 
 namespace Plugin\\{$tmpname}\\Entity;
 
-use Eccube\Annotation\EntityExtension;
+use Eccube\Attribute\EntityExtension;
 
- #[\Eccube\Annotation\EntityExtension(\Eccube\Entity\Customer::class)]
+ #[\Eccube\Attribute\EntityExtension(\Eccube\Entity\Customer::class)]
 trait HogeTrait
 {
 }

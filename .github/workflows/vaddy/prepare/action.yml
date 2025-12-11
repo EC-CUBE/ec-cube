@@ -29,6 +29,13 @@ runs:
       with:
         php-version: '7.4'
 
+    - name: Install ext-redis 6.1+
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y php7.4-redis || (sudo pecl uninstall redis || true; sudo pecl install redis)
+        sudo phpenmod -s cli redis || true
+        php -m | grep -i redis || echo "Redis extension may not be available for PHP 7.4"
+
     - name: setup-chromedriver
       uses: nanasess/setup-chromedriver@master
 

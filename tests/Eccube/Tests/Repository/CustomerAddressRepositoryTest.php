@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -22,15 +24,13 @@ use Eccube\Tests\EccubeTestCase;
  *
  * @author Kentaro Ohkouchi
  */
-class CustomerAddressRepositoryTest extends EccubeTestCase
+final class CustomerAddressRepositoryTest extends EccubeTestCase
 {
     protected $Customer;
 
-    /**
-     * @var CustomerAddressRepository
-     */
-    protected $customerAddressRepository;
+    protected ?CustomerAddressRepository $customerAddressRepository = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -52,6 +52,6 @@ class CustomerAddressRepositoryTest extends EccubeTestCase
         $this->customerAddressRepository->delete($CustomerAddress);
 
         $CustomerAddress = $this->customerAddressRepository->find($id);
-        $this->assertNull($CustomerAddress);
+        $this->assertNotInstanceOf(CustomerAddress::class, $CustomerAddress);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -23,36 +25,22 @@ use Eccube\Tests\EccubeTestCase;
  *
  * @author Yuko Kajihara
  */
-class CalendarRepositoryTest extends EccubeTestCase
+final class CalendarRepositoryTest extends EccubeTestCase
 {
-    /**
-     * @var \DateTime
-     */
-    protected $DateTimeNow;
+    protected ?\DateTime $DateTimeNow = null;
 
-    /**
-     * @var Calendar
-     */
-    protected $Calendar1;
+    protected ?Calendar $Calendar1 = null;
 
-    /**
-     * @var Calendar
-     */
-    protected $Calendar2;
+    protected ?Calendar $Calendar2 = null;
 
-    /**
-     * @var Calendar
-     */
-    protected $Calendar3;
+    protected ?Calendar $Calendar3 = null;
 
-    /**
-     * @var CalendarRepository
-     */
-    protected $calendarRepository;
+    protected ?CalendarRepository $calendarRepository = null;
 
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function setUp(): void
     {
         $this->DateTimeNow = new \DateTime('+1 minutes');
@@ -68,13 +56,8 @@ class CalendarRepositoryTest extends EccubeTestCase
 
     /**
      * Create Calendar entity
-     *
-     * @param string $title
-     * @param null $holiday
-     *
-     * @return Calendar
      */
-    public function createCalendar($title = 'title', $holiday = null)
+    public function createCalendar(string $title = 'title', ?\DateTime $holiday = null): Calendar
     {
         /** @var Calendar $Calendar */
         $Calendar = new Calendar();

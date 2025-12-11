@@ -13,6 +13,7 @@
 
 namespace Eccube\Form\Type;
 
+use Eccube\Entity\Category;
 use Eccube\Repository\CategoryRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -22,32 +23,23 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SearchProductBlockType extends AbstractType
 {
-    /**
-     * @var CategoryRepository
-     */
-    protected $categoryRepository;
-
-    public function __construct(CategoryRepository $categoryRepository)
+    public function __construct(protected CategoryRepository $categoryRepository)
     {
-        $this->categoryRepository = $categoryRepository;
     }
 
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $Categories = $this->categoryRepository
             ->getList(null, true);
 
         $builder->add('category_id', EntityType::class, [
-            'class' => \Eccube\Entity\Category::class,
+            'class' => Category::class,
             'choice_label' => 'NameWithLevel',
             'choices' => $Categories,
             'placeholder' => 'common.select__all_products',
@@ -64,13 +56,9 @@ class SearchProductBlockType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @param OptionsResolver $resolver
-     *
-     * @return void
      */
     #[\Override]
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'csrf_protection' => false,
@@ -82,7 +70,7 @@ class SearchProductBlockType extends AbstractType
      * {@inheritdoc}
      */
     #[\Override]
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'search_product_block';
     }

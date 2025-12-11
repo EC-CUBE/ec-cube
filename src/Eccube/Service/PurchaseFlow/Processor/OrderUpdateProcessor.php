@@ -25,28 +25,18 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 class OrderUpdateProcessor extends AbstractPurchaseProcessor
 {
     /**
-     * @var OrderStatusRepository
-     */
-    private $orderStatusRepository;
-
-    /**
      * OrderUpdateProcessor constructor.
-     *
-     * @param OrderStatusRepository $orderStatusRepository
      */
-    public function __construct(OrderStatusRepository $orderStatusRepository)
+    public function __construct(private readonly OrderStatusRepository $orderStatusRepository)
     {
-        $this->orderStatusRepository = $orderStatusRepository;
     }
 
     /**
      * @param ItemHolderInterface $target 注文 or カート
      * @param PurchaseContext $context 購入フローのコンテキスト
-     *
-     * @return void
      */
     #[\Override]
-    public function commit(ItemHolderInterface $target, PurchaseContext $context)
+    public function commit(ItemHolderInterface $target, PurchaseContext $context): void
     {
         if (!$target instanceof Order) {
             return;

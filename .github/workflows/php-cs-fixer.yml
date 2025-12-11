@@ -15,7 +15,14 @@ jobs:
       - name: Setup PHP
         uses: nanasess/setup-php@master
         with:
-          php-version: '8.4'
+          php-version: '8.3'
+
+      - name: Install ext-redis 6.1+
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y php8.3-redis
+          sudo phpenmod -s cli redis
+          php -m | grep -i redis
 
       - name: Initialize Composer
         uses: ./.github/actions/composer

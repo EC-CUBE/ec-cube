@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,6 +19,7 @@ use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
 use Eccube\Entity\ProductClass;
 use Eccube\Util\StringUtil;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * ShoppingController 用 WebTest の抽象クラス.
@@ -27,11 +30,13 @@ use Eccube\Util\StringUtil;
  */
 abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
 {
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();
@@ -69,7 +74,7 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
         }
 
         $this->client->request(
-            'PUT',
+            Request::METHOD_PUT,
             $this->generateUrl(
                 'cart_handle_item',
                 [
@@ -89,7 +94,7 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
         }
 
         return $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('cart_buystep', ['cart_key' => $cart_key])
         );
     }
@@ -99,7 +104,7 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
         $formData[Constant::TOKEN_NAME] = '_dummy';
 
         return $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_nonmember'),
             ['nonmember' => $formData]
         );
@@ -111,7 +116,7 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
             $this->loginTo($Customer);
         }
 
-        return $this->client->request('GET', $this->generateUrl('shopping'));
+        return $this->client->request(Request::METHOD_GET, $this->generateUrl('shopping'));
     }
 
     protected function scenarioRedirectTo(Customer $Cusotmer, $parameters)
@@ -121,7 +126,7 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
         }
 
         return $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_redirect_to'),
             $parameters
         );
@@ -166,7 +171,7 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
         }
 
         return $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $confirm_url,
             $parameters
         );
@@ -187,7 +192,7 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
         ];
 
         return $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_checkout'),
             $parameters
         );

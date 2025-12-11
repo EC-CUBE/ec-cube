@@ -21,23 +21,19 @@ class UTCDateTimeTzType extends DateTimeTzType
 {
     /**
      * UTCのタイムゾーン
-     *
-     * @var \DateTimeZone|null
      */
-    protected static $utc;
+    protected static ?\DateTimeZone $utc = null;
 
     /**
      * アプリケーションのタイムゾーン
-     *
-     * @var \DateTimeZone|null
      */
-    protected static $timezone;
+    protected static ?\DateTimeZone $timezone = null;
 
     /**
      * {@inheritdoc}
      */
     #[\Override]
-    public function convertToDatabaseValue($value, AbstractPlatform $platform)
+    public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
     {
         if ($value instanceof \DateTime) {
             $value->setTimezone(self::getUtcTimeZone());
@@ -50,7 +46,7 @@ class UTCDateTimeTzType extends DateTimeTzType
      * {@inheritdoc}
      */
     #[\Override]
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue($value, AbstractPlatform $platform): ?\DateTimeInterface
     {
         if ($value === null || $value instanceof \DateTime) {
             return $value;
@@ -71,10 +67,7 @@ class UTCDateTimeTzType extends DateTimeTzType
         return $converted;
     }
 
-    /**
-     * @return \DateTimeZone
-     */
-    protected static function getUtcTimeZone()
+    protected static function getUtcTimeZone(): \DateTimeZone
     {
         if (is_null(self::$utc)) {
             self::$utc = new \DateTimeZone('UTC');
@@ -83,10 +76,7 @@ class UTCDateTimeTzType extends DateTimeTzType
         return self::$utc;
     }
 
-    /**
-     * @return \DateTimeZone
-     */
-    public static function getTimezone()
+    public static function getTimezone(): \DateTimeZone
     {
         if (is_null(self::$timezone)) {
             throw new \LogicException(sprintf('%s::$timezone is undefined.', self::class));
@@ -95,23 +85,13 @@ class UTCDateTimeTzType extends DateTimeTzType
         return self::$timezone;
     }
 
-    /**
-     * @param string $timezone
-     *
-     * @return void
-     */
-    public static function setTimeZone($timezone = 'Asia/Tokyo')
+    public static function setTimeZone(string $timezone = 'Asia/Tokyo'): void
     {
         self::$timezone = new \DateTimeZone($timezone);
     }
 
-    /**
-     * @param AbstractPlatform $platform
-     *
-     * @return true
-     */
     #[\Override]
-    public function requiresSQLCommentHint(AbstractPlatform $platform)
+    public function requiresSQLCommentHint(AbstractPlatform $platform): true
     {
         return true;
     }

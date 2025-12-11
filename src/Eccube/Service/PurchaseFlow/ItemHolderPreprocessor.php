@@ -24,11 +24,6 @@ interface ItemHolderPreprocessor
 {
     /**
      * 受注データ調整処理。
-     *
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext     $context
-     *
-     * @return void
      */
-    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context);
+    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context): void;
 }

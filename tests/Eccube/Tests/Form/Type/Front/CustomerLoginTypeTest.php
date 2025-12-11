@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,24 +19,25 @@ use Eccube\Form\Type\Front\CustomerLoginType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
-class CustomerLoginTypeTest extends AbstractTypeTestCase
+final class CustomerLoginTypeTest extends AbstractTypeTestCase
 {
-    /** @var FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = [
+    protected ?array $formData = [
         'login_email' => 'eccube@example.com',
         'login_pass' => '111111111',
     ];
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
 
         $request = Request::createFromGlobals();
-        static::getContainer()->get('request_stack')->push($request);
+        static::getContainer()->get(RequestStack::class)->push($request);
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory

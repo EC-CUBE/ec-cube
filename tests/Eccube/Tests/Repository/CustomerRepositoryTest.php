@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -26,31 +28,20 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @author Kentaro Ohkouchi
  */
-class CustomerRepositoryTest extends EccubeTestCase
+final class CustomerRepositoryTest extends EccubeTestCase
 {
-    /**
-     * @var string
-     */
-    protected $email;
+    protected ?string $email = null;
 
-    /**
-     * @var Customer
-     */
-    protected $Customer;
+    protected ?Customer $Customer = null;
 
-    /**
-     * @var CustomerRepository
-     */
-    protected $customerRepo;
+    protected ?CustomerRepository $customerRepo = null;
 
-    /**
-     * @var OrderStatusRepository
-     */
-    protected $masterOrderStatusRepo;
+    protected ?OrderStatusRepository $masterOrderStatusRepo = null;
 
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -80,6 +71,7 @@ class CustomerRepositoryTest extends EccubeTestCase
         $this->entityManager->flush();
 
         $Customer = $this->customerRepo->getProvisionalCustomerBySecretKey($this->expected);
+        $this->assertInstanceOf(Customer::class, $Customer);
         $this->actual = $Customer->getSecretKey();
         $this->verify('secretは'.$this->expected.'ではありません');
     }
@@ -90,7 +82,7 @@ class CustomerRepositoryTest extends EccubeTestCase
 
         // CustomerStatus::REGULARなので取得できないはず
         $Customer = $this->customerRepo->getProvisionalCustomerBySecretKey($secret);
-        $this->assertNull($Customer);
+        $this->assertNotInstanceOf(Customer::class, $Customer);
     }
 
     public function testGetRegularCustomerByEmail()
@@ -112,7 +104,7 @@ class CustomerRepositoryTest extends EccubeTestCase
 
         $Customer = $this->customerRepo->getRegularCustomerByResetKey($reset_key);
 
-        $this->assertNotNull($Customer);
+        $this->assertInstanceOf(Customer::class, $Customer);
     }
 
     public function testGetRegularCustomerByResetKeyWithException()
@@ -125,7 +117,7 @@ class CustomerRepositoryTest extends EccubeTestCase
         $this->entityManager->flush();
 
         $Customer = $this->customerRepo->getRegularCustomerByResetKey($reset_key);
-        $this->assertNull($Customer);
+        $this->assertNotInstanceOf(Customer::class, $Customer);
     }
 
     public function testGetQueryBuilderBySearchDataByMulti2147483648()
@@ -135,7 +127,7 @@ class CustomerRepositoryTest extends EccubeTestCase
             ->getQuery()
             ->getResult();
 
-        self::assertEquals($Customer, $actual[0]);
+        $this->assertEquals($Customer, $actual[0]);
     }
 }
 

@@ -14,18 +14,13 @@
 namespace Plugin\Emperor\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Eccube\Annotation\EntityExtension;
+use Eccube\Attribute\EntityExtension;
+use Eccube\Entity\Cart;
 
-#[EntityExtension(\Eccube\Entity\Cart::class)]
+#[EntityExtension(Cart::class)]
 trait CartTrait
 {
-    /**
-     * @ORM\OneToOne(targetEntity="Plugin\Emperor\Entity\Foo")
-     *
-     * @ORM\JoinColumns({
-     *
-     *   @ORM\JoinColumn(name="foo_id", referencedColumnName="id")
-     * })
-     */
-    public $foo;
+    #[ORM\OneToOne(targetEntity: Foo::class)]
+    #[ORM\JoinColumn(name: 'foo_id', referencedColumnName: 'id', nullable: true)]
+    public ?Foo $foo = null;
 }

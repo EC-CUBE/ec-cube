@@ -29,47 +29,17 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 class PaymentChargePreprocessor implements ItemHolderPreprocessor
 {
     /**
-     * @var OrderItemTypeRepository
-     */
-    protected $orderItemTypeRepository;
-
-    /**
-     * @var TaxDisplayTypeRepository
-     */
-    protected $taxDisplayTypeRepository;
-
-    /**
-     * @var TaxTypeRepository
-     */
-    protected $taxTypeRepository;
-
-    /**
      * PaymentChargePreprocessor constructor.
-     *
-     * @param OrderItemTypeRepository $orderItemTypeRepository
-     * @param TaxDisplayTypeRepository $taxDisplayTypeRepository
-     * @param TaxTypeRepository $taxTypeRepository
      */
-    public function __construct(
-        OrderItemTypeRepository $orderItemTypeRepository,
-        TaxDisplayTypeRepository $taxDisplayTypeRepository,
-        TaxTypeRepository $taxTypeRepository,
-    ) {
-        $this->orderItemTypeRepository = $orderItemTypeRepository;
-        $this->taxDisplayTypeRepository = $taxDisplayTypeRepository;
-        $this->taxTypeRepository = $taxTypeRepository;
+    public function __construct(protected OrderItemTypeRepository $orderItemTypeRepository, protected TaxDisplayTypeRepository $taxDisplayTypeRepository, protected TaxTypeRepository $taxTypeRepository)
+    {
     }
 
     /**
      * {@inheritdoc}
-     *
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
-     *
-     * @return void
      */
     #[\Override]
-    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         if (!$itemHolder instanceof Order) {
             return;
@@ -91,12 +61,8 @@ class PaymentChargePreprocessor implements ItemHolderPreprocessor
 
     /**
      * Add charge item to item holder
-     *
-     * @param ItemHolderInterface $itemHolder
-     *
-     * @return void
      */
-    protected function addChargeItem(ItemHolderInterface $itemHolder)
+    protected function addChargeItem(ItemHolderInterface $itemHolder): void
     {
         /** @var Order $itemHolder */
         /** @var OrderItemType $OrderItemType */

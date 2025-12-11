@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ 8.3, 8.4 ]
+        php: [ '8.2', '8.3', '8.4', '8.5' ]
         db: [ pgsql ]
         group: [ 'admin01', 'admin02', 'admin03', 'front', 'restrict-fileupload', 'change-display-order', 'installer' ]
         include:
@@ -57,8 +57,26 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
 
+      - name: Install ext-redis 6.1+
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y php${{ matrix.php }}-redis
+          sudo phpenmod -s cli redis
+          php -m | grep -i redis
+
+      - name: Enable register_argc_argv for Codeception
+        if: matrix.php == '8.5'
+        run: |
+          INI_FILE=$(php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||" | tr -d '"')
+          echo "Using php.ini: $INI_FILE"
+          echo "register_argc_argv = On" | sudo tee -a "$INI_FILE"
+          php -i | grep register_argc_argv
+
       - name: Initialize Composer
         uses: ./.github/actions/composer
+
+      - name: Generate ECCUBE_AUTH_MAGIC
+        run: echo "ECCUBE_AUTH_MAGIC=$(openssl rand -hex 32)" >> $GITHUB_ENV
 
       - name: Build Sass and JavaScript
         run: |
@@ -70,9 +88,11 @@ jobs:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
         run: |
           echo "APP_ENV=${APP_ENV}" > .env
           echo "TRUSTED_HOSTS=127.0.0.1,localhost" >> .env
+          echo "ECCUBE_AUTH_MAGIC=${ECCUBE_AUTH_MAGIC}" >> .env
           bin/console doctrine:database:create --env=dev
           bin/console doctrine:schema:create --env=dev
           bin/console eccube:fixtures:load --env=dev
@@ -109,6 +129,7 @@ jobs:
           MAILER_DSN: 'smtp://127.0.0.1:1025'
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           ECCUBE_RESTRICT_FILE_UPLOAD: '1'
+          ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
         run: php -S 127.0.0.1:8000 codeception/router.php &
 
       - name: Start PHP Development Server
@@ -120,6 +141,7 @@ jobs:
           MAILER_DSN: 'smtp://127.0.0.1:1025'
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           ECCUBE_RESTRICT_FILE_UPLOAD: '0'
+          ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
         run: php -S 127.0.0.1:8000 codeception/router.php &
 
       - name: Codeception

@@ -20,46 +20,29 @@ use Eccube\Form\Type\Front\ContactType;
 use Eccube\Repository\PageRepository;
 use Eccube\Service\MailService;
 use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 class ContactController extends AbstractController
 {
     /**
-     * @var MailService
-     */
-    protected $mailService;
-
-    /**
-     * @var PageRepository
-     */
-    private $pageRepository;
-
-    /**
      * ContactController constructor.
-     *
-     * @param MailService $mailService
-     * @param PageRepository $pageRepository
      */
-    public function __construct(
-        MailService $mailService,
-        PageRepository $pageRepository)
+    public function __construct(protected MailService $mailService, private readonly PageRepository $pageRepository)
     {
-        $this->mailService = $mailService;
-        $this->pageRepository = $pageRepository;
     }
 
     /**
      * お問い合わせ画面.
      *
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     * @return Response|RedirectResponse|array<string, mixed>
      */
-    #[Route('/contact', name: 'contact', methods: ['GET', 'POST'])]
-    #[Route('/contact', name: 'contact_confirm', methods: ['GET', 'POST'])]
-    #[Template('Contact/index.twig')]
-    public function index(Request $request)
+    #[Route(path: '/contact', name: 'contact', methods: ['GET', 'POST'])]
+    #[Route(path: '/contact', name: 'contact_confirm', methods: ['GET', 'POST'])]
+    #[Template(template: 'Contact/index.twig')]
+    public function index(Request $request): Response|RedirectResponse|array
     {
         $builder = $this->formFactory->createBuilder(ContactType::class);
 
@@ -119,7 +102,7 @@ class ContactController extends AbstractController
                     // メール送信
                     $this->mailService->sendContactMail($data);
 
-                    return $this->redirect($this->generateUrl('contact_complete'));
+                    return $this->redirectToRoute('contact_complete');
             }
         }
 
@@ -133,9 +116,9 @@ class ContactController extends AbstractController
      *
      * @return array<empty>
      */
-    #[Route('/contact/complete', name: 'contact_complete', methods: ['GET'])]
-    #[Template('Contact/complete.twig')]
-    public function complete()
+    #[Route(path: '/contact/complete', name: 'contact_complete', methods: ['GET'])]
+    #[Template(template: 'Contact/complete.twig')]
+    public function complete(): array
     {
         return [];
     }

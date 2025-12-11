@@ -25,32 +25,17 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 class EntityToIdTransformer implements DataTransformerInterface
 {
     /**
-     * @var ObjectManager
-     */
-    private $om;
-
-    /**
-     * @var class-string<T>
-     */
-    private $className;
-
-    /**
-     * @param ObjectManager $om
      * @param class-string<T> $className
      */
-    public function __construct(ObjectManager $om, $className)
+    public function __construct(private readonly ObjectManager $om, private $className)
     {
-        $this->om = $om;
-        $this->className = $className;
     }
 
     /**
      * @param T|null $entity
-     *
-     * @return string|int|null
      */
     #[\Override]
-    public function transform($entity)
+    public function transform(mixed $entity): string|int|null
     {
         if (null === $entity) {
             return '';
@@ -65,7 +50,7 @@ class EntityToIdTransformer implements DataTransformerInterface
      * @return T|null
      */
     #[\Override]
-    public function reverseTransform($id)
+    public function reverseTransform(mixed $id): ?object
     {
         if ('' === $id || null === $id) {
             return null;

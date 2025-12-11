@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -19,14 +21,13 @@ use Eccube\Repository\DeliveryDurationRepository;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use Symfony\Component\Form\FormInterface;
 
-class DeliveryDurationTypeTest extends AbstractTypeTestCase
+final class DeliveryDurationTypeTest extends AbstractTypeTestCase
 {
-    /** @var FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
-    /** @var DeliveryDurationRepository */
-    protected $deliveryDurationRepo;
+    protected ?DeliveryDurationRepository $deliveryDurationRepo = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

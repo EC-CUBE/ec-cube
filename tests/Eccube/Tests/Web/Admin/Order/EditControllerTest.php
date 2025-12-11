@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -31,39 +33,25 @@ use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\TaxRuleService;
+use PHPUnit\Framework\Attributes\Group;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-class EditControllerTest extends AbstractEditControllerTestCase
+final class EditControllerTest extends AbstractEditControllerTestCase
 {
-    /**
-     * @var Customer
-     */
-    protected $Customer;
+    protected ?Customer $Customer = null;
 
-    /**
-     * @var Order
-     */
-    protected $Order;
+    protected ?Order $Order = null;
 
-    /**
-     * @var Product
-     */
-    protected $Product;
+    protected ?Product $Product = null;
 
-    /**
-     * @var CartService
-     */
-    protected $cartService;
+    protected ?CartService $cartService = null;
 
-    /**
-     * @var OrderRepository
-     */
-    protected $orderRepository;
+    protected ?OrderRepository $orderRepository = null;
 
-    /**
-     * @var CustomerRepository
-     */
-    protected $customerRepository;
+    protected ?CustomerRepository $customerRepository = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -78,7 +66,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
     public function testRoutingAdminOrderNew()
     {
-        $this->client->request('GET', $this->generateUrl('admin_order_new'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_order_new'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -87,7 +75,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $formData = $this->createFormData($this->Customer, $this->Product);
         unset($formData['OrderStatus']);
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_new'),
             [
                 'order' => $formData,
@@ -108,7 +96,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
     {
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
-        $this->client->request('GET', $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -121,7 +109,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
         $formData = $this->createFormData($Customer, $this->Product);
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]),
             [
                 'order' => $formData,
@@ -154,7 +142,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
         $formData = $this->createFormData($Customer, $this->Product);
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]),
             [
                 'order' => $formData,
@@ -164,6 +152,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_edit', ['id' => $Order->getId()])));
         $EditedCustomer = $this->customerRepository->find($Customer->getId());
         $this->expected = $Customer->getLastBuyDate();
+        $this->assertInstanceOf(Customer::class, $EditedCustomer);
         $this->actual = $EditedCustomer->getLastBuyDate();
         $this->verify();
     }
@@ -176,10 +165,8 @@ class EditControllerTest extends AbstractEditControllerTestCase
      *     ・ <script> スクリプトインジェクション
      *
      * @see https://github.com/EC-CUBE/ec-cube/issues/5372
-     *
-     * @return void
      */
-    public function testOrderMailXSSAttackPrevention()
+    public function testOrderMailXSSAttackPrevention(): void
     {
         // Create a new news item for the homepage with a XSS attack (via <script> AND id attribute injection)
         $Customer = $this->createCustomer();
@@ -202,18 +189,18 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
         // 1つの新着情報を保存した後にホームページにアクセスする。
         // Request Homepage after saving a single news item
-        $crawler = $this->client->request('GET', $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]));
-        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]));
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
 
         // <div>タグから危険なid属性が削除されていることを確認する。
         // Find that dangerous id attributes are removed from <div> tags.
         $testNewsArea_notFoundTest = $crawler->filter('#dangerous-id');
-        $this->assertSame(0, $testNewsArea_notFoundTest->count());
+        $this->assertCount(0, $testNewsArea_notFoundTest);
 
         // 安全なclass属性が出力されているかどうかを確認する。
         // Find if classes (which are safe) have been outputted
         $testNewsArea = $crawler->filter('.safe_to_use_class');
-        $this->assertSame(1, $testNewsArea->count());
+        $this->assertCount(1, $testNewsArea);
 
         // 安全なHTMLが存在するかどうかを確認する
         // Find if the safe HTML exists
@@ -225,9 +212,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->assertStringNotContainsString("<script>alert('XSS Attack')</script>", $testNewsArea->outerHtml());
     }
 
-    /**
-     * @group decimal
-     */
+    #[Group(name: 'decimal')]
     public function testOrderCustomerInfo()
     {
         $Customer = $this->createCustomer();
@@ -237,7 +222,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
         $formData = $this->createFormData($Customer, $this->Product);
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]),
             [
                 'order' => $formData,
@@ -247,10 +232,12 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_edit', ['id' => $Order->getId()])));
 
         $EditedOrder = $this->orderRepository->find($Order->getId());
+        $this->assertInstanceOf(Order::class, $EditedOrder);
         $EditedCustomer = $this->customerRepository->find($EditedOrder->getCustomer()->getId());
         // decimal の値を反映させるために refresh する
         $this->entityManager->refresh($EditedOrder);
         $this->entityManager->refresh($EditedCustomer);
+        $this->assertInstanceOf(Order::class, $EditedOrder);
 
         // 顧客の購入回数と購入金額確認
         $totalPrice = $EditedOrder->getTotalPrice();
@@ -268,7 +255,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
         $formData = $this->createFormData($Customer, $this->Product);
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]),
             [
                 'order' => $formData,
@@ -278,9 +265,10 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_edit', ['id' => $Order->getId()])));
 
         $EditedOrder = $this->orderRepository->find($Order->getId());
+        $this->assertInstanceOf(Order::class, $EditedOrder);
 
         // 顧客の購入回数と購入金額確認
-        $this->expected = bcadd((string) $totalPrice, (string) $EditedOrder->getTotalPrice(), 2);
+        $this->expected = bcadd($totalPrice, $EditedOrder->getTotalPrice(), 2);
         // XXX SQLite の場合、小数点以下の '.00' が省略されるため、bcadd() で正規化して比較する
         $this->actual = bcadd((string) $EditedOrder->getCustomer()->getBuyTotal(), '0', 2);
         $this->verify();
@@ -292,7 +280,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
     public function testSearchCustomerHtml()
     {
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_search_customer_html'),
             [
                 'search_word' => $this->Customer->getId(),
@@ -310,7 +298,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
     public function testSearchCustomerById()
     {
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_search_customer_by_id'),
             [
                 'id' => $this->Customer->getId(),
@@ -331,7 +319,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
     public function testSearchProduct()
     {
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_search_product'),
             [
                 'id' => $this->Product->getId(),
@@ -359,7 +347,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $formData['OrderStatus'] = OrderStatus::PROCESSING; // 購入処理中で受注を登録する
         // 管理画面から受注登録
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]),
             [
                 'order' => $formData,
@@ -377,7 +365,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         // フロント側から, product_class_id = 1 をカート投入
         $client = $this->client;
         $client->request(
-            'PUT',
+            Request::METHOD_PUT,
             $this->generateUrl(
                 'cart_handle_item',
                 [
@@ -416,13 +404,13 @@ class EditControllerTest extends AbstractEditControllerTestCase
         ];
 
         $client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_nonmember'),
             ['nonmember' => $clientFormData]
         );
         $this->cartService->lock();
 
-        $crawler = $client->request('GET', $this->generateUrl('shopping'));
+        $crawler = $client->request(Request::METHOD_GET, $this->generateUrl('shopping'));
         $this->expected = 'ご注文内容のご確認';
         $this->actual = $crawler->filter('h1.page-heading')->text();
         $this->verify();
@@ -447,9 +435,8 @@ class EditControllerTest extends AbstractEditControllerTestCase
      * 受注編集時に、dtb_order.taxの値が正しく保存されているかどうかのテスト
      *
      * @see https://github.com/EC-CUBE/ec-cube/issues/1606
-     *
-     * @group decimal
      */
+    #[Group(name: 'decimal')]
     public function testOrderProcessingWithTax()
     {
         $this->markTestSkipped('インボイス対応に伴い Order::tax が非推奨となったためスキップ');
@@ -462,7 +449,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
         // 管理画面から受注登録
         $this->client->request(
-            'POST', $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]), [
+            Request::METHOD_POST, $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]), [
                 'order' => $formData,
                 'mode' => 'register',
             ]
@@ -481,7 +468,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
         // 管理画面で受注編集する
         $this->client->request(
-            'POST', $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]), [
+            Request::METHOD_POST, $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]), [
                 'order' => $formDataForEdit,
                 'mode' => 'register',
             ]
@@ -491,9 +478,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $EditedOrderafterEdit = $this->orderRepository->find($Order->getId());
 
         // 税金計算
-        $taxableItem = array_filter($EditedOrder->getOrderItems()->toArray(), function ($OrderItem) {
-            return !is_null($OrderItem->getTaxType()) && $OrderItem->getTaxType()->getId() === TaxType::TAXATION;
-        });
+        $taxableItem = array_filter($EditedOrder->getOrderItems()->toArray(), fn ($OrderItem) => !is_null($OrderItem->getTaxType()) && $OrderItem->getTaxType()->getId() === TaxType::TAXATION);
         $totalTaxByTaxRate = [];
         $totalByTaxRate = [];
         foreach ($taxableItem as $OrderItem) {
@@ -509,9 +494,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
                 ->roundByRoundingType($taxValue, RoundingType::ROUND);
             $totalTaxByTaxRate[$rate] = $tax;
         }
-        $totalTax = array_reduce($totalTaxByTaxRate, function ($sum, $tax) {
-            return bcadd($sum, (string) $tax, 2);
-        }, '0');
+        $totalTax = array_reduce($totalTaxByTaxRate, fn ($sum, $tax) => bcadd($sum, (string) $tax, 2), '0');
 
         // 確認する「トータル税金」
         $this->expected = $totalTax;
@@ -530,7 +513,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $formData = $this->createFormData($this->Customer, $this->Product);
         unset($formData['OrderStatus']);
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_new'),
             [
                 'order' => $formData,
@@ -544,7 +527,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $savedOderId = preg_replace('/.*\/admin\/order\/(\d+)\/edit/', '$1', $url);
         $SavedOrder = $this->orderRepository->find($savedOderId);
 
-        $this->assertNotNull($SavedOrder);
+        $this->assertInstanceOf(Order::class, $SavedOrder);
         $this->expected = $this->Customer->getSex();
         $this->actual = $SavedOrder->getSex();
         $this->verify('会員の性別が保存されている');
@@ -566,7 +549,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
         unset($formData['OrderStatus']);
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_new'),
             [
                 'order' => $formData,
@@ -580,7 +563,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $savedOderId = preg_replace('/.*\/admin\/order\/(\d+)\/edit/', '$1', $url);
         $SavedOrder = $this->orderRepository->find($savedOderId);
 
-        $this->assertNotNull($SavedOrder);
+        $this->assertInstanceOf(Order::class, $SavedOrder);
         $this->expected = $SavedOrder->getEmail();
         $this->actual = $formData['email'];
         $this->verify();
@@ -601,13 +584,14 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $formData = $this->createFormData($this->Customer, $this->Product);
         // まずお届け時間に何か指定する(便宜上、最初に取得できたものを利用)
         $Delivery = $this->entityManager->getRepository(Delivery::class)->find($formData['Shipping']['Delivery']);
+        $this->assertInstanceOf(Delivery::class, $Delivery);
         $DeliveryTime = $Delivery->getDeliveryTimes()[0];
         $delivery_time_id = $DeliveryTime->getId();
         $delivery_time = $DeliveryTime->getDeliveryTime();
         $formData['Shipping']['DeliveryTime'] = $delivery_time_id;
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]),
             [
                 'order' => $formData,
@@ -617,6 +601,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_edit', ['id' => $Order->getId()])));
 
         $EditedOrder = $this->orderRepository->find($Order->getId());
+        $this->assertInstanceOf(Order::class, $EditedOrder);
         $EditedShipping = $EditedOrder->getShippings()[0];
 
         $this->expected = $delivery_time_id;
@@ -632,7 +617,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
         // 管理画面で受注編集する
         $this->client->request(
-            'POST', $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]), [
+            Request::METHOD_POST, $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]), [
                 'order' => $formDataForEdit,
                 'mode' => 'register',
             ]
@@ -640,6 +625,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_edit', ['id' => $Order->getId()])));
 
         $EditedOrderafterEdit = $this->orderRepository->find($Order->getId());
+        $this->assertInstanceOf(Order::class, $EditedOrderafterEdit);
         $EditedShippingafterEdit = $EditedOrderafterEdit->getShippings()[0];
 
         $this->expected = null;
@@ -654,29 +640,30 @@ class EditControllerTest extends AbstractEditControllerTestCase
      * 受注管理で税率を変更できる
      *
      * @see https://github.com/EC-CUBE/ec-cube/issues/4269
-     *
-     * @group decimal
      */
+    #[Group(name: 'decimal')]
     public function testChangeOrderItemTaxRate()
     {
         /** @var RoundingType $RoundingType */
         $RoundingType = $this->entityManager->find(RoundingType::class, RoundingType::ROUND);
         /** @var Product $Product */
-        $Product = $this->createProduct($this->Customer, 1);
+        $Product = $this->createProduct(null, 1);
         $this->entityManager->persist($Product);
 
         /** @var ProductClass $ProductClass */
         $ProductClass = $this->Product->getProductClasses()[0];
-        $ProductClass->setPrice02(1000);
+        $ProductClass->setPrice02('1000');
         $this->entityManager->persist($ProductClass);
 
         $TaxRule = new TaxRule();
-        $TaxRule->setTaxRate(8)
-            ->setTaxAdjust(0)
+        $TaxRule->setTaxRate('8')
+            ->setTaxAdjust('0')
             ->setRoundingType($RoundingType)
             ->setProduct($Product)
             ->setProductClass($ProductClass)
-            ->setApplyDate(new \DateTime('yesterday'));
+            ->setApplyDate(new \DateTime('yesterday'))
+            ->setCreateDate(new \DateTime())
+            ->setUpdateDate(new \DateTime());
         $this->entityManager->persist($TaxRule);
 
         $this->entityManager->flush();
@@ -688,7 +675,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $formData['OrderItems'][0]['tax_rate'] = '10';
 
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_new'),
             [
                 'order' => $formData,
@@ -702,8 +689,8 @@ class EditControllerTest extends AbstractEditControllerTestCase
         // 税率が10%で登録されている
         /** @var Order $Order */
         $Order = $this->orderRepository->findBy([], ['create_date' => 'DESC'])[0];
-        self::assertSame(10, $Order->getProductOrderItems()[0]->getTaxRate());
-        self::assertSame('100.00', $Order->getProductOrderItems()[0]->getTax());
+        $this->assertSame('10', $Order->getProductOrderItems()[0]->getTaxRate());
+        $this->assertSame('100.00', $Order->getProductOrderItems()[0]->getTax());
     }
 
     public function testRoutingAdminOrderEditPostWithCustomerInfo()
@@ -711,9 +698,9 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
         $Order->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
-        $Order->setSex(null);
-        $Order->setJob(null);
-        $Order->setBirth(null);
+        $Order->setSex();
+        $Order->setJob();
+        $Order->setBirth();
 
         $this->entityManager->flush($Order);
 
@@ -724,7 +711,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
         $formData = $this->createFormData($Customer, $this->Product);
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]),
             [
                 'order' => $formData,
@@ -734,9 +721,10 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_edit', ['id' => $Order->getId()])));
 
         $EditedOrder = $this->orderRepository->find($Order->getId());
-        $this->assertNull($EditedOrder->getSex());
-        $this->assertNull($EditedOrder->getJob());
-        $this->assertNull($EditedOrder->getBirth());
+        $this->assertInstanceOf(Order::class, $EditedOrder);
+        $this->assertNotInstanceOf(Sex::class, $EditedOrder->getSex());
+        $this->assertNotInstanceOf(Job::class, $EditedOrder->getJob());
+        $this->assertNotInstanceOf(\DateTime::class, $EditedOrder->getBirth());
     }
 
     /**
@@ -751,7 +739,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $formData = $this->createFormData($this->Customer, $Product, $charge);
         unset($formData['OrderStatus']);
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_new'),
             [
                 'order' => $formData,

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,10 +20,11 @@ use Eccube\Service\PurchaseFlow\Processor\StockReduceProcessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
-class StockReduceProcessorTest extends EccubeTestCase
+final class StockReduceProcessorTest extends EccubeTestCase
 {
     private $processor;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -33,6 +36,7 @@ class StockReduceProcessorTest extends EccubeTestCase
         // 在庫10の商品
         /* @var ProductClass $ProductClass */
         $ProductClass = $this->createProduct('test', 1)->getProductClasses()[0];
+        $this->assertInstanceOf(ProductClass::class, $ProductClass);
         $ProductClass->setStockUnlimited(false);
         $ProductClass->setStock('10');
         $ProductClass->getProductStock()->setStock('10');
@@ -50,7 +54,8 @@ class StockReduceProcessorTest extends EccubeTestCase
 
         // 在庫が減っている
         $ProductClass = $this->entityManager->find(ProductClass::class, $ProductClass->getId());
-        self::assertSame('7', $ProductClass->getStock());
+        $this->assertInstanceOf(ProductClass::class, $ProductClass);
+        $this->assertSame('7', $ProductClass->getStock());
     }
 
     public function testRollback()
@@ -58,6 +63,7 @@ class StockReduceProcessorTest extends EccubeTestCase
         // 在庫7の商品
         /* @var ProductClass $ProductClass */
         $ProductClass = $this->createProduct('test', 1)->getProductClasses()[0];
+        $this->assertInstanceOf(ProductClass::class, $ProductClass);
         $ProductClass->setStockUnlimited(false);
         $ProductClass->setStock('7');
         $ProductClass->getProductStock()->setStock('7');
@@ -75,7 +81,8 @@ class StockReduceProcessorTest extends EccubeTestCase
 
         // 在庫が戻っている
         $ProductClass = $this->entityManager->find(ProductClass::class, $ProductClass->getId());
-        self::assertSame('10', $ProductClass->getStock());
+        $this->assertInstanceOf(ProductClass::class, $ProductClass);
+        $this->assertSame('10', $ProductClass->getStock());
     }
 
     public function testMultiShipping()
@@ -83,6 +90,7 @@ class StockReduceProcessorTest extends EccubeTestCase
         // 在庫10の商品
         /* @var ProductClass $ProductClass */
         $ProductClass = $this->createProduct('test', 1)->getProductClasses()[0];
+        $this->assertInstanceOf(ProductClass::class, $ProductClass);
         $ProductClass->setStockUnlimited(false);
         $ProductClass->setStock('10');
         $ProductClass->getProductStock()->setStock('10');
@@ -103,6 +111,7 @@ class StockReduceProcessorTest extends EccubeTestCase
 
         // 複数のOrderItemで同じProductClassの場合、合算した在庫数が減っている
         $ProductClass = $this->entityManager->find(ProductClass::class, $ProductClass->getId());
-        self::assertSame('0', $ProductClass->getStock());
+        $this->assertInstanceOf(ProductClass::class, $ProductClass);
+        $this->assertSame('0', $ProductClass->getStock());
     }
 }

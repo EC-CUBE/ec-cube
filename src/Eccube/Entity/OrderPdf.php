@@ -13,262 +13,179 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\OrderPdfRepository;
 
 if (!class_exists(OrderPdf::class)) {
     /**
      * OrderPdf
-     *
-     * @ORM\Table(name="dtb_order_pdf")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\OrderPdfRepository")
      */
+    #[ORM\Table(name: 'dtb_order_pdf')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: OrderPdfRepository::class)]
     class OrderPdf extends AbstractEntity
     {
-        /** @var mixed */
-        public $ids;
-        /** @var \DateTime|string */
-        public $issue_date;
-        /** @var mixed */
-        public $default;
+        public mixed $ids;
+        public \DateTime|string $issue_date;
+        public mixed $default;
 
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="member_id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         */
-        private $member_id;
+        #[ORM\Column(name: 'member_id', type: Types::INTEGER, options: ['unsigned' => true])]
+        #[ORM\Id]
+        private ?int $member_id = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="title", type="string", nullable=true)
-         */
-        private $title;
+        #[ORM\Column(name: 'title', type: Types::STRING, nullable: true)]
+        private ?string $title = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="message1", type="string", nullable=true)
-         */
-        private $message1;
+        #[ORM\Column(name: 'message1', type: Types::STRING, nullable: true)]
+        private ?string $message1 = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="message2", type="string", nullable=true)
-         */
-        private $message2;
+        #[ORM\Column(name: 'message2', type: Types::STRING, nullable: true)]
+        private ?string $message2 = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="message3", type="string", nullable=true)
-         */
-        private $message3;
+        #[ORM\Column(name: 'message3', type: Types::STRING, nullable: true)]
+        private ?string $message3 = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="note1", type="string", nullable=true)
-         */
-        private $note1;
+        #[ORM\Column(name: 'note1', type: Types::STRING, nullable: true)]
+        private ?string $note1 = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="note2", type="string", nullable=true)
-         */
-        private $note2;
+        #[ORM\Column(name: 'note2', type: Types::STRING, nullable: true)]
+        private ?string $note2 = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="note3", type="string", nullable=true)
-         */
-        private $note3;
+        #[ORM\Column(name: 'note3', type: Types::STRING, nullable: true)]
+        private ?string $note3 = null;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
         private $create_date;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
         private $update_date;
 
-        /**
-         * @var bool
-         *
-         * @ORM\Column(name="visible", type="boolean", options={"default":true})
-         */
-        private $visible = true;
+        #[ORM\Column(name: 'visible', type: Types::BOOLEAN, options: ['default' => true])]
+        private bool $visible = true;
 
-        /**
-         * @return int
-         */
-        public function getMemberId()
+        public function getMemberId(): int
         {
             return $this->member_id;
         }
 
         /**
-         * @param int $member_id
-         *
          * @return $this
          */
-        public function setMemberId($member_id)
+        public function setMemberId(int $member_id): static
         {
             $this->member_id = $member_id;
 
             return $this;
         }
 
-        /**
-         * @return string
-         */
-        public function getTitle()
+        public function getTitle(): string
         {
             return $this->title;
         }
 
         /**
-         * @param string $title
-         *
          * @return $this
          */
-        public function setTitle($title)
+        public function setTitle(string $title): static
         {
             $this->title = $title;
 
             return $this;
         }
 
-        /**
-         * @return string
-         */
-        public function getMessage1()
+        public function getMessage1(): ?string
         {
             return $this->message1;
         }
 
         /**
-         * @param string $message1
-         *
          * @return $this
          */
-        public function setMessage1($message1)
+        public function setMessage1(?string $message1): static
         {
             $this->message1 = $message1;
 
             return $this;
         }
 
-        /**
-         * @return string
-         */
-        public function getMessage2()
+        public function getMessage2(): ?string
         {
             return $this->message2;
         }
 
         /**
-         * @param string $message2
-         *
          * @return $this
          */
-        public function setMessage2($message2)
+        public function setMessage2(?string $message2): static
         {
             $this->message2 = $message2;
 
             return $this;
         }
 
-        /**
-         * @return string
-         */
-        public function getMessage3()
+        public function getMessage3(): ?string
         {
             return $this->message3;
         }
 
         /**
-         * @param string|null $message3
-         *
          * @return $this
          */
-        public function setMessage3($message3)
+        public function setMessage3(?string $message3): static
         {
             $this->message3 = $message3;
 
             return $this;
         }
 
-        /**
-         * @return string
-         */
-        public function getNote1()
+        public function getNote1(): ?string
         {
             return $this->note1;
         }
 
         /**
-         * @param string $note1
-         *
          * @return $this
          */
-        public function setNote1($note1)
+        public function setNote1(?string $note1): static
         {
             $this->note1 = $note1;
 
             return $this;
         }
 
-        /**
-         * @return string
-         */
-        public function getNote2()
+        public function getNote2(): ?string
         {
             return $this->note2;
         }
 
         /**
-         * @param string $note2
-         *
          * @return $this
          */
-        public function setNote2($note2)
+        public function setNote2(?string $note2): static
         {
             $this->note2 = $note2;
 
             return $this;
         }
 
-        /**
-         * @return string
-         */
-        public function getNote3()
+        public function getNote3(): ?string
         {
             return $this->note3;
         }
 
         /**
-         * @param string $note3
-         *
          * @return $this
          */
-        public function setNote3($note3)
+        public function setNote3(?string $note3): static
         {
             $this->note3 = $note3;
 
@@ -278,17 +195,15 @@ if (!class_exists(OrderPdf::class)) {
         /**
          * @return \DateTime
          */
-        public function getCreateDate()
+        public function getCreateDate(): ?\DateTime
         {
             return $this->create_date;
         }
 
         /**
-         * @param \DateTime|string $create_date
-         *
          * @return $this
          */
-        public function setCreateDate($create_date)
+        public function setCreateDate(\DateTime|string $create_date): static
         {
             $this->create_date = $create_date;
 
@@ -298,17 +213,15 @@ if (!class_exists(OrderPdf::class)) {
         /**
          * @return \DateTime
          */
-        public function getUpdateDate()
+        public function getUpdateDate(): ?\DateTime
         {
             return $this->update_date;
         }
 
         /**
-         * @param \DateTime|string $update_date
-         *
          * @return $this
          */
-        public function setUpdateDate($update_date)
+        public function setUpdateDate(\DateTime|string $update_date): static
         {
             $this->update_date = $update_date;
 
@@ -317,12 +230,8 @@ if (!class_exists(OrderPdf::class)) {
 
         /**
          * Set visible
-         *
-         * @param bool $visible
-         *
-         * @return OrderPdf
          */
-        public function setVisible($visible)
+        public function setVisible(bool $visible): OrderPdf
         {
             $this->visible = $visible;
 
@@ -331,10 +240,8 @@ if (!class_exists(OrderPdf::class)) {
 
         /**
          * Is the visibility visible?
-         *
-         * @return bool
          */
-        public function isVisible()
+        public function isVisible(): bool
         {
             return $this->visible;
         }

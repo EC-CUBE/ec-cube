@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,17 +19,16 @@ use Eccube\Entity\News;
 use Eccube\Repository\NewsRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\HttpFoundation\Request;
 
-class NewsControllerTest extends AbstractAdminWebTestCase
+final class NewsControllerTest extends AbstractAdminWebTestCase
 {
-    /**
-     * @var NewsRepository
-     */
-    protected $newsRepository;
+    protected ?NewsRepository $newsRepository = null;
 
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -37,13 +38,13 @@ class NewsControllerTest extends AbstractAdminWebTestCase
 
     public function testRoutingAdminContentNews()
     {
-        $this->client->request('GET', $this->generateUrl('admin_content_news'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_content_news'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testRoutingAdminContentNewsNew()
     {
-        $this->client->request('GET', $this->generateUrl('admin_content_news_new'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_content_news_new'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -52,7 +53,7 @@ class NewsControllerTest extends AbstractAdminWebTestCase
         $Member = $this->createMember();
         $News = $this->createNews($Member);
 
-        $this->client->request('GET',
+        $this->client->request(Request::METHOD_GET,
             $this->generateUrl('admin_content_news_edit', ['id' => $News->getId()])
         );
 
@@ -66,7 +67,7 @@ class NewsControllerTest extends AbstractAdminWebTestCase
 
         $this->loginTo($Member);
 
-        $this->client->request('DELETE',
+        $this->client->request(Request::METHOD_DELETE,
             $this->generateUrl('admin_content_news_delete', ['id' => $News->getId()])
         );
 
@@ -102,7 +103,7 @@ class NewsControllerTest extends AbstractAdminWebTestCase
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_content_news_edit', ['id' => $News->getId()]),
             ['admin_news' => $formData]
         );
@@ -112,12 +113,12 @@ class NewsControllerTest extends AbstractAdminWebTestCase
         // <div>タグから危険なid属性が削除されていることを確認する。
         // Find that dangerous id attributes are removed from <div> tags.
         $target = $crawler->filter('#dangerous-id');
-        $this->assertSame(0, $target->count());
+        $this->assertCount(0, $target);
 
         // 安全なclass属性が出力されているかどうかを確認する。
         // Find if classes (which are safe) have been outputted
         $target = $crawler->filter('.safe_to_use_class');
-        $this->assertSame(1, $target->count());
+        $this->assertCount(1, $target);
 
         // 安全なHTMLが存在するかどうかを確認する
         // Find if the safe HTML exists

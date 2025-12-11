@@ -24,30 +24,20 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 class EmptyItemsValidator extends ItemHolderValidator
 {
     /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
      * EmptyItemsProcessor constructor.
-     *
-     * @param EntityManagerInterface $entityManager
      */
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(protected EntityManagerInterface $entityManager)
     {
-        $this->entityManager = $entityManager;
     }
 
     /**
      * @param ItemHolderInterface $itemHolder カート or 注文
      * @param PurchaseContext $context 購入フローのコンテキスト
      *
-     * @return void
-     *
      * @throws InvalidItemException 商品明細がない場合
      */
     #[\Override]
-    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         foreach ($itemHolder->getItems() as $item) {
             if ($item->isProduct() && $item->getQuantity() <= 0) {

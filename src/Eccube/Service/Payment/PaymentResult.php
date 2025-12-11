@@ -23,28 +23,18 @@ class PaymentResult
     /**
      * @var array<int, string>
      */
-    private $errors = [];
+    private array $errors = [];
 
-    /**
-     * @var bool
-     */
-    private $success;
+    private bool $success;
 
-    /**
-     * @var Response
-     */
-    private $response;
+    private ?Response $response = null;
 
     /**
      * 決済が成功したかどうかを設定します.
      *
      * 決済が成功した場合は true, 失敗した場合は false を設定します.
-     *
-     * @param bool $success
-     *
-     * @return PaymentResult
      */
-    public function setSuccess($success)
+    public function setSuccess(bool $success): PaymentResult
     {
         $this->success = $success;
 
@@ -55,10 +45,8 @@ class PaymentResult
      * 決済が成功したかどうか.
      *
      * 決済が成功した場合 true
-     *
-     * @return bool
      */
-    public function isSuccess()
+    public function isSuccess(): bool
     {
         return $this->success;
     }
@@ -68,7 +56,7 @@ class PaymentResult
      *
      * @return array<int, string>
      */
-    public function getErrors()
+    public function getErrors(): array
     {
         return $this->errors;
     }
@@ -77,10 +65,8 @@ class PaymentResult
      * 決済が失敗した場合のエラーの配列を設定します.
      *
      * @param array<int, string> $errors
-     *
-     * @return PaymentResult
      */
-    public function setErrors(array $errors)
+    public function setErrors(array $errors): PaymentResult
     {
         $this->errors = $errors;
 
@@ -91,12 +77,8 @@ class PaymentResult
      * Response を設定します.
      *
      * 3Dセキュアなど, 決済中に他のサイトへリダイレクトが必要な特殊な用途に使用します.
-     *
-     * @param Response $response
-     *
-     * @return PaymentResult
      */
-    public function setResponse(Response $response)
+    public function setResponse(Response $response): PaymentResult
     {
         $this->response = $response;
 
@@ -105,10 +87,8 @@ class PaymentResult
 
     /**
      * Response を返します.
-     *
-     * @return Response
      */
-    public function getResponse()
+    public function getResponse(): ?Response
     {
         return $this->response;
     }

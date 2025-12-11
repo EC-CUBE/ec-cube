@@ -13,22 +13,22 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\PageRepository;
 
 if (!class_exists(Page::class)) {
     /**
      * Page
-     *
-     * @ORM\Table(name="dtb_page", indexes={@ORM\Index(name="dtb_page_url_idx", columns={"url"})})
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\PageRepository")
      */
+    #[ORM\Table(name: 'dtb_page')]
+    #[ORM\Index(columns: ['url'], name: 'dtb_page_url_idx')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: PageRepository::class)]
     class Page extends AbstractEntity
     {
         // 編集可能フラグ
@@ -46,7 +46,7 @@ if (!class_exists(Page::class)) {
         /**
          * @return array|Layout[]
          */
-        public function getLayouts()
+        public function getLayouts(): array
         {
             $Layouts = [];
             foreach ($this->PageLayouts as $PageLayout) {
@@ -56,129 +56,72 @@ if (!class_exists(Page::class)) {
             return $Layouts;
         }
 
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
-         */
-        private $id;
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+        private ?int $id = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="page_name", type="string", length=255, nullable=true)
-         */
-        private $name;
+        #[ORM\Column(name: 'page_name', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $name = null;
 
-        /**
-         * @var string
-         *
-         * @ORM\Column(name="url", type="string", length=255)
-         */
-        private $url;
+        #[ORM\Column(name: 'url', type: Types::STRING, length: 255)]
+        private ?string $url = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="file_name", type="string", length=255, nullable=true)
-         */
-        private $file_name;
+        #[ORM\Column(name: 'file_name', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $file_name = null;
 
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="edit_type", type="smallint", options={"unsigned":true,"default":1})
-         */
-        private $edit_type = 1;
+        #[ORM\Column(name: 'edit_type', type: Types::SMALLINT, options: ['unsigned' => true, 'default' => 1])]
+        private int $edit_type = 1;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="author", type="string", length=255, nullable=true)
-         */
-        private $author;
+        #[ORM\Column(name: 'author', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $author = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="description", type="string", length=255, nullable=true)
-         */
-        private $description;
+        #[ORM\Column(name: 'description', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $description = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="keyword", type="string", length=255, nullable=true)
-         */
-        private $keyword;
+        #[ORM\Column(name: 'keyword', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $keyword = null;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
         private $create_date;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
         private $update_date;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="meta_robots", type="string", length=255, nullable=true)
-         */
-        private $meta_robots;
+        #[ORM\Column(name: 'meta_robots', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $meta_robots = null;
+
+        #[ORM\Column(name: 'meta_tags', type: Types::STRING, length: 4000, nullable: true)]
+        private ?string $meta_tags = null;
 
         /**
-         * @var string|null
-         *
-         * @ORM\Column(name="meta_tags", type="string", length=4000, nullable=true)
+         * @var Collection<int, PageLayout>
          */
-        private $meta_tags;
-
-        /**
-         * @var \Doctrine\Common\Collections\Collection<int,PageLayout>
-         *
-         * @ORM\OneToMany(targetEntity="Eccube\Entity\PageLayout", mappedBy="Page", cascade={"persist","remove"})
-         */
+        #[ORM\OneToMany(targetEntity: PageLayout::class, mappedBy: 'Page', cascade: ['persist', 'remove'])]
         private $PageLayouts;
 
-        /**
-         * @var Page|null
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Page")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="master_page_id", referencedColumnName="id")
-         * })
-         */
-        private $MasterPage;
+        #[ORM\ManyToOne(targetEntity: Page::class)]
+        #[ORM\JoinColumn(name: 'master_page_id', referencedColumnName: 'id')]
+        private ?Page $MasterPage = null;
 
         /**
          * Constructor
          */
         public function __construct()
         {
-            $this->PageLayouts = new \Doctrine\Common\Collections\ArrayCollection();
+            $this->PageLayouts = new ArrayCollection();
         }
 
         /**
          * Set id
-         *
-         * @param int $id
-         *
-         * @return Page
          */
-        public function setId($id)
+        public function setId(int $id): Page
         {
             $this->id = $id;
 
@@ -187,22 +130,16 @@ if (!class_exists(Page::class)) {
 
         /**
          * Get id
-         *
-         * @return int|null
          */
-        public function getId()
+        public function getId(): ?int
         {
             return $this->id;
         }
 
         /**
          * Set name.
-         *
-         * @param string|null $name
-         *
-         * @return Page
          */
-        public function setName($name = null)
+        public function setName(?string $name = null): Page
         {
             $this->name = $name;
 
@@ -211,22 +148,16 @@ if (!class_exists(Page::class)) {
 
         /**
          * Get name.
-         *
-         * @return string|null
          */
-        public function getName()
+        public function getName(): ?string
         {
             return $this->name;
         }
 
         /**
          * Set url.
-         *
-         * @param string $url
-         *
-         * @return Page
          */
-        public function setUrl($url)
+        public function setUrl(?string $url): Page
         {
             $this->url = $url;
 
@@ -235,22 +166,16 @@ if (!class_exists(Page::class)) {
 
         /**
          * Get url.
-         *
-         * @return string
          */
-        public function getUrl()
+        public function getUrl(): ?string
         {
             return $this->url;
         }
 
         /**
          * Set fileName.
-         *
-         * @param string|null $fileName
-         *
-         * @return Page
          */
-        public function setFileName($fileName = null)
+        public function setFileName(?string $fileName = null): Page
         {
             $this->file_name = $fileName;
 
@@ -259,22 +184,16 @@ if (!class_exists(Page::class)) {
 
         /**
          * Get fileName.
-         *
-         * @return string|null
          */
-        public function getFileName()
+        public function getFileName(): ?string
         {
             return $this->file_name;
         }
 
         /**
          * Set editType.
-         *
-         * @param int $editType
-         *
-         * @return Page
          */
-        public function setEditType($editType)
+        public function setEditType(int $editType): Page
         {
             $this->edit_type = $editType;
 
@@ -283,22 +202,16 @@ if (!class_exists(Page::class)) {
 
         /**
          * Get editType.
-         *
-         * @return int
          */
-        public function getEditType()
+        public function getEditType(): int
         {
             return $this->edit_type;
         }
 
         /**
          * Set author.
-         *
-         * @param string|null $author
-         *
-         * @return Page
          */
-        public function setAuthor($author = null)
+        public function setAuthor(?string $author = null): Page
         {
             $this->author = $author;
 
@@ -307,22 +220,16 @@ if (!class_exists(Page::class)) {
 
         /**
          * Get author.
-         *
-         * @return string|null
          */
-        public function getAuthor()
+        public function getAuthor(): ?string
         {
             return $this->author;
         }
 
         /**
          * Set description.
-         *
-         * @param string|null $description
-         *
-         * @return Page
          */
-        public function setDescription($description = null)
+        public function setDescription(?string $description = null): Page
         {
             $this->description = $description;
 
@@ -331,22 +238,16 @@ if (!class_exists(Page::class)) {
 
         /**
          * Get description.
-         *
-         * @return string|null
          */
-        public function getDescription()
+        public function getDescription(): ?string
         {
             return $this->description;
         }
 
         /**
          * Set keyword.
-         *
-         * @param string|null $keyword
-         *
-         * @return Page
          */
-        public function setKeyword($keyword = null)
+        public function setKeyword(?string $keyword = null): Page
         {
             $this->keyword = $keyword;
 
@@ -355,22 +256,16 @@ if (!class_exists(Page::class)) {
 
         /**
          * Get keyword.
-         *
-         * @return string|null
          */
-        public function getKeyword()
+        public function getKeyword(): ?string
         {
             return $this->keyword;
         }
 
         /**
          * Set createDate.
-         *
-         * @param \DateTime $createDate
-         *
-         * @return Page
          */
-        public function setCreateDate($createDate)
+        public function setCreateDate(\DateTime $createDate): Page
         {
             $this->create_date = $createDate;
 
@@ -379,22 +274,16 @@ if (!class_exists(Page::class)) {
 
         /**
          * Get createDate.
-         *
-         * @return \DateTime
          */
-        public function getCreateDate()
+        public function getCreateDate(): ?\DateTime
         {
             return $this->create_date;
         }
 
         /**
          * Set updateDate.
-         *
-         * @param \DateTime $updateDate
-         *
-         * @return Page
          */
-        public function setUpdateDate($updateDate)
+        public function setUpdateDate(\DateTime $updateDate): Page
         {
             $this->update_date = $updateDate;
 
@@ -403,22 +292,16 @@ if (!class_exists(Page::class)) {
 
         /**
          * Get updateDate.
-         *
-         * @return \DateTime
          */
-        public function getUpdateDate()
+        public function getUpdateDate(): ?\DateTime
         {
             return $this->update_date;
         }
 
         /**
          * Set metaRobots.
-         *
-         * @param string|null $metaRobots
-         *
-         * @return Page
          */
-        public function setMetaRobots($metaRobots = null)
+        public function setMetaRobots(?string $metaRobots = null): Page
         {
             $this->meta_robots = $metaRobots;
 
@@ -427,22 +310,16 @@ if (!class_exists(Page::class)) {
 
         /**
          * Get metaRobots.
-         *
-         * @return string|null
          */
-        public function getMetaRobots()
+        public function getMetaRobots(): ?string
         {
             return $this->meta_robots;
         }
 
         /**
          * Set meta_tags
-         *
-         * @param string $metaTags
-         *
-         * @return Page
          */
-        public function setMetaTags($metaTags)
+        public function setMetaTags(?string $metaTags): Page
         {
             $this->meta_tags = $metaTags;
 
@@ -451,10 +328,8 @@ if (!class_exists(Page::class)) {
 
         /**
          * Get meta_tags
-         *
-         * @return string
          */
-        public function getMetaTags()
+        public function getMetaTags(): ?string
         {
             return $this->meta_tags;
         }
@@ -462,21 +337,17 @@ if (!class_exists(Page::class)) {
         /**
          * Get pageLayoutLayout.
          *
-         * @return \Doctrine\Common\Collections\Collection<int,PageLayout>
+         * @return Collection<int, PageLayout>
          */
-        public function getPageLayouts()
+        public function getPageLayouts(): Collection
         {
             return $this->PageLayouts;
         }
 
         /**
          * Add pageLayoutLayout
-         *
-         * @param PageLayout $PageLayout
-         *
-         * @return Page
          */
-        public function addPageLayout(PageLayout $PageLayout)
+        public function addPageLayout(PageLayout $PageLayout): Page
         {
             $this->PageLayouts[] = $PageLayout;
 
@@ -485,24 +356,16 @@ if (!class_exists(Page::class)) {
 
         /**
          * Remove pageLayoutLayout
-         *
-         * @param PageLayout $PageLayout
-         *
-         * @return void
          */
-        public function removePageLayout(PageLayout $PageLayout)
+        public function removePageLayout(PageLayout $PageLayout): void
         {
             $this->PageLayouts->removeElement($PageLayout);
         }
 
         /**
          * Set MasterPage.
-         *
-         * @param Page|null $page
-         *
-         * @return Page
          */
-        public function setMasterPage(?Page $page = null)
+        public function setMasterPage(?Page $page = null): Page
         {
             $this->MasterPage = $page;
 
@@ -511,20 +374,13 @@ if (!class_exists(Page::class)) {
 
         /**
          * Get MasterPage.
-         *
-         * @return Page|null
          */
-        public function getMasterPage()
+        public function getMasterPage(): ?Page
         {
             return $this->MasterPage;
         }
 
-        /**
-         * @param int $layoutId
-         *
-         * @return int|null
-         */
-        public function getSortNo($layoutId)
+        public function getSortNo(int $layoutId): ?int
         {
             $pageLayouts = $this->getPageLayouts();
 

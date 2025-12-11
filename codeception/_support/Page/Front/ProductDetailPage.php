@@ -23,10 +23,8 @@ class ProductDetailPage extends AbstractFrontPage
     /**
      * @param $I
      * @param $id
-     *
-     * @return ProductDetailPage
      */
-    public static function go($I, $id)
+    public static function go($I, $id): ProductDetailPage
     {
         $page = new self($I);
 
@@ -67,14 +65,7 @@ class ProductDetailPage extends AbstractFrontPage
         return $this;
     }
 
-    /**
-     * @param $num |int
-     * @param null $category1
-     * @param null $category2
-     *
-     * @return ProductDetailPage
-     */
-    public function カートに入れる($num, $category1 = null, $category2 = null)
+    public function カートに入れる(int $num, ?array $category1 = null, ?array $category2 = null): ProductDetailPage
     {
         $this->tester->fillField(['id' => 'quantity'], $num);
         if (!is_null($category1)) {
@@ -103,10 +94,7 @@ class ProductDetailPage extends AbstractFrontPage
         return $this->tester->grabTextFrom(['xpath' => '//*[@id="ec-modal-header"]']);
     }
 
-    /**
-     * @return CartPage
-     */
-    public function カートへ進む()
+    public function カートへ進む(): CartPage
     {
         $this->tester->click('div.ec-modal-box > div > a');
 

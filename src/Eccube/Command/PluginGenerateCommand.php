@@ -14,6 +14,7 @@
 namespace Eccube\Command;
 
 use Eccube\Common\EccubeConfig;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputInterface;
@@ -23,65 +24,36 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Filesystem\Filesystem;
 
+#[AsCommand(name: 'eccube:plugin:generate', description: 'Generate plugin skeleton.')]
 class PluginGenerateCommand extends Command
 {
-    protected static $defaultName = 'eccube:plugin:generate';
+    protected SymfonyStyle $io;
 
-    /**
-     * @var SymfonyStyle
-     */
-    protected $io;
+    protected Filesystem $fs;
 
-    /**
-     * @var Filesystem
-     */
-    protected $fs;
-
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    public function __construct(EccubeConfig $eccubeConfig)
+    public function __construct(protected EccubeConfig $eccubeConfig)
     {
         parent::__construct();
-        $this->eccubeConfig = $eccubeConfig;
     }
 
-    /**
-     * @return void
-     */
     #[\Override]
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addArgument('name', InputOption::VALUE_REQUIRED, 'plugin name')
             ->addArgument('code', InputOption::VALUE_REQUIRED, 'plugin code')
-            ->addArgument('ver', InputOption::VALUE_REQUIRED, 'plugin version')
-            ->setDescription('Generate plugin skeleton.');
+            ->addArgument('ver', InputOption::VALUE_REQUIRED, 'plugin version');
     }
 
-    /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     *
-     * @return void
-     */
     #[\Override]
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
         $this->fs = new Filesystem();
     }
 
-    /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     *
-     * @return void
-     */
     #[\Override]
-    protected function interact(InputInterface $input, OutputInterface $output)
+    protected function interact(InputInterface $input, OutputInterface $output): void
     {
         if (null !== $input->getArgument('name') && null !== $input->getArgument('code') && null !== $input->getArgument('ver')) {
             return;
@@ -118,7 +90,7 @@ class PluginGenerateCommand extends Command
     }
 
     #[\Override]
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $name = $input->getArgument('name');
         $code = $input->getArgument('code');
@@ -144,12 +116,7 @@ class PluginGenerateCommand extends Command
         return 0;
     }
 
-    /**
-     * @param mixed $code
-     *
-     * @return string
-     */
-    public function validateCode($code)
+    public function validateCode(mixed $code): string
     {
         if (empty($code)) {
             throw new InvalidArgumentException('The code can not be empty.');
@@ -169,23 +136,13 @@ class PluginGenerateCommand extends Command
         return $code;
     }
 
-    /**
-     * @param string $version
-     *
-     * @return mixed
-     */
-    public function validateVersion($version)
+    public function validateVersion(string $version): string
     {
         // TODO
         return $version;
     }
 
-    /**
-     * @param string $pluginDir
-     *
-     * @return void
-     */
-    protected function createDirectories($pluginDir)
+    protected function createDirectories(string $pluginDir): void
     {
         $dirs = [
             'Controller/Admin',
@@ -204,17 +161,9 @@ class PluginGenerateCommand extends Command
         }
     }
 
-    /**
-     * @param string $pluginDir
-     * @param string $name
-     * @param string $code
-     * @param string $version
-     *
-     * @return void
-     */
-    protected function createConfig($pluginDir, $name, $code, $version)
+    protected function createConfig(string $pluginDir, string $name, string $code, string $version): void
     {
-        $lowerCode = mb_strtolower((string) $code);
+        $lowerCode = mb_strtolower($code);
         $source = <<<EOL
 {
   "name": "ec-cube/$lowerCode",
@@ -233,12 +182,7 @@ EOL;
         $this->fs->dumpFile($pluginDir.'/composer.json', $source);
     }
 
-    /**
-     * @param string $pluginDir
-     *
-     * @return void
-     */
-    protected function createGithubActions($pluginDir)
+    protected function createGithubActions(string $pluginDir): void
     {
         $source = '
 name: Packaging for EC-CUBE Plugin
@@ -268,12 +212,7 @@ jobs:
         $this->fs->dumpFile($pluginDir.'/.github/workflows/release.yml', $source);
     }
 
-    /**
-     * @param string $pluginDir
-     *
-     * @return void
-     */
-    protected function createGitattributes($pluginDir)
+    protected function createGitattributes(string $pluginDir): void
     {
         $source = <<<EOL
 /.gitattributes             export-ignore
@@ -285,24 +224,13 @@ EOL;
         $this->fs->dumpFile($pluginDir.'/.gitattributes', $source);
     }
 
-    /**
-     * @param string $pluginDir
-     *
-     * @return void
-     */
-    protected function createMessages($pluginDir)
+    protected function createMessages(string $pluginDir): void
     {
         $this->fs->dumpFile($pluginDir.'/Resource/locale/messages.ja.yaml', '');
         $this->fs->dumpFile($pluginDir.'/Resource/locale/validators.ja.yaml', '');
     }
 
-    /**
-     * @param string $pluginDir
-     * @param string $code
-     *
-     * @return void
-     */
-    protected function createTwigBlock($pluginDir, $code)
+    protected function createTwigBlock(string $pluginDir, string $code): void
     {
         $source = <<<EOL
 <?php
@@ -314,9 +242,9 @@ use Eccube\\Common\\EccubeTwigBlock;
 class TwigBlock implements EccubeTwigBlock
 {
     /**
-     * @return array
+     * @return array<mixed>
      */
-    public static function getTwigBlock()
+    public static function getTwigBlock(): array
     {
         return [];
     }
@@ -326,13 +254,7 @@ EOL;
         $this->fs->dumpFile($pluginDir.'/TwigBlock.php', $source);
     }
 
-    /**
-     * @param string $pluginDir
-     * @param string $code
-     *
-     * @return void
-     */
-    protected function createNav($pluginDir, $code)
+    protected function createNav(string $pluginDir, string $code): void
     {
         $source = <<<EOL
 <?php
@@ -344,9 +266,9 @@ use Eccube\\Common\\EccubeNav;
 class Nav implements EccubeNav
 {
     /**
-     * @return array
+     * @return array<mixed>
      */
-    public static function getNav()
+    public static function getNav(): array
     {
         return [];
     }
@@ -356,13 +278,7 @@ EOL;
         $this->fs->dumpFile($pluginDir.'/Nav.php', $source);
     }
 
-    /**
-     * @param string $pluginDir
-     * @param string $code
-     *
-     * @return void
-     */
-    protected function createEvent($pluginDir, $code)
+    protected function createEvent(string $pluginDir, string $code): void
     {
         $source = <<<EOL
 <?php
@@ -386,13 +302,7 @@ EOL;
         $this->fs->dumpFile($pluginDir.'/Event.php', $source);
     }
 
-    /**
-     * @param string $pluginDir
-     * @param string $code
-     *
-     * @return void
-     */
-    protected function createConfigController($pluginDir, $code)
+    protected function createConfigController(string $pluginDir, string $code): void
     {
         $snakecased = Container::underscore($code);
 
@@ -425,7 +335,7 @@ class ConfigController extends AbstractController
         \$this->configRepository = \$configRepository;
     }
 
-     #[Route('/%eccube_admin_route%/{$snakecased}/config', name: '{$snakecased}_admin_config', methods: ['GET', 'POST'])]
+     #[Route(path: '/%eccube_admin_route%/{$snakecased}/config', name: '{$snakecased}_admin_config', methods: ['GET', 'POST'])]
      #[Template("@{$code}/admin/config.twig")]
     public function index(Request \$request)
     {
@@ -462,26 +372,24 @@ use Doctrine\\ORM\\Mapping as ORM;
 if (!class_exists('\\Plugin\\{$code}\\Entity\\Config', false)) {
     /**
      * Config
-     *
-     * @ORM\Table(name="plg_{$snakecased}_config")
-     * @ORM\Entity(repositoryClass="Plugin\\{$code}\\Repository\\ConfigRepository")
      */
+    #[ORM\Table(name: "plg_{$snakecased}_config")]
+    #[ORM\Entity(repositoryClass: "Plugin\\{$code}\\Repository\\ConfigRepository")]
     class Config
     {
         /**
          * @var int
          *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         * @ORM\Id
-         * @ORM\GeneratedValue(strategy="IDENTITY")
          */
+        #[ORM\Id]
+        #[ORM\Column(name: "id", type: "integer", options: ["unsigned" => true])]
+        #[ORM\GeneratedValue(strategy: "IDENTITY")]
         private \$id;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="name", type="string", length=255)
          */
+        #[ORM\Column(name: "name", type: "string", length: 255)]
         private \$name;
 
         /**

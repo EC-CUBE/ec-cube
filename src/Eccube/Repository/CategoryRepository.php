@@ -32,22 +32,13 @@ use Eccube\Entity\Category;
 class CategoryRepository extends AbstractRepository
 {
     /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
      * CategoryRepository constructor.
-     *
-     * @param RegistryInterface $registry
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         RegistryInterface $registry,
-        EccubeConfig $eccubeConfig,
+        protected ?EccubeConfig $eccubeConfig,
     ) {
         parent::__construct($registry, Category::class);
-        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
@@ -55,7 +46,7 @@ class CategoryRepository extends AbstractRepository
      *
      * @return int 全カテゴリの合計数
      */
-    public function getTotalCount()
+    public function getTotalCount(): int
     {
         return $this
             ->createQueryBuilder('c')
@@ -74,7 +65,7 @@ class CategoryRepository extends AbstractRepository
      *
      * @return Category[] カテゴリの配列
      */
-    public function getList(?Category $Parent = null, $flat = false)
+    public function getList(?Category $Parent = null, bool $flat = false): array
     {
         $qb = $this->createQueryBuilder('c1')
             ->select('c1, c2, c3, c4, c5')
@@ -94,7 +85,7 @@ class CategoryRepository extends AbstractRepository
             $qb->where('c1.Parent IS NULL');
         }
         $Categories = $qb->getQuery()
-            ->useResultCache(true, $this->getCacheLifetime())
+            ->setResultCacheLifetime($this->getCacheLifetime())
             ->getResult();
 
         if ($flat) {
@@ -113,13 +104,11 @@ class CategoryRepository extends AbstractRepository
      *
      * @param Category $Category カテゴリ
      *
-     * @return void
-     *
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
     #[\Override]
-    public function save($Category)
+    public function save($Category): void
     {
         if (!$Category->getId()) {
             $Parent = $Category->getParent();
@@ -154,13 +143,11 @@ class CategoryRepository extends AbstractRepository
      *
      * @param  Category $Category 削除対象のカテゴリ
      *
-     * @return void
-     *
      * @throws ForeignKeyConstraintViolationException 外部キー制約違反の場合
      * @throws DriverException SQLiteの場合, 外部キー制約違反が発生すると, DriverExceptionをthrowします.
      */
     #[\Override]
-    public function delete($Category)
+    public function delete($Category): void
     {
         $this
             ->createQueryBuilder('c')

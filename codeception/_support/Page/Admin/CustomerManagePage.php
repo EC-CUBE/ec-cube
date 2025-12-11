@@ -90,21 +90,14 @@ class CustomerManagePage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
-    /**
-     * @param int $rowNum
-     */
-    public function 一覧_編集($rowNum)
+    public function 一覧_編集(int $rowNum)
     {
         $this->tester->click("#search_form > div.c-contentsArea__cols > div > div > div.card.rounded.border-0.mb-4 > div > table > tbody > tr:nth-child({$rowNum}) > td:nth-child(2) > a");
 
         return $this;
     }
 
-    /**
-     * @param int $rowNum
-     * @param mixed $execute
-     */
-    public function 一覧_削除($rowNum, $execute = true)
+    public function 一覧_削除(int $rowNum, mixed $execute = true)
     {
         $this->tester->click("#search_form > div.c-contentsArea__cols > div > div > div.card.rounded.border-0.mb-4 > div > table > tbody > tr:nth-child({$rowNum}) > td.align-middle.pe-3 > div > div > a");
         $this->tester->waitForElementVisible("#search_form > div.c-contentsArea__cols > div > div > div.card.rounded.border-0.mb-4 > div > table > tbody > tr:nth-child({$rowNum}) > td.align-middle.pe-3 > div > div.modal");
@@ -117,11 +110,7 @@ class CustomerManagePage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
-    /**
-     * @param int $rowNum
-     * @param mixed $execute
-     */
-    public function 一覧_仮会員メール再送($rowNum, $execute = true)
+    public function 一覧_仮会員メール再送(int $rowNum, mixed $execute = true)
     {
         $this->tester->click(['xpath' => "//*[@id='search_form']//div/table/tbody/tr[{$rowNum}]/td[6]/div/div[1]/a"]);
         $this->tester->wait(5);
@@ -146,10 +135,7 @@ class CustomerManagePage extends AbstractAdminPageStyleGuide
         $this->tester->click('#search_form > div.c-contentsArea__cols > div > div > div.row.justify-content-between.mb-2 > div.col-5.text-end > div:nth-child(2) > div > a:nth-child(2)');
     }
 
-    /**
-     * @param int $rowNum
-     */
-    public function 一覧_会員ID($rowNum)
+    public function 一覧_会員ID(int $rowNum)
     {
         return $this->tester->grabTextFrom("#search_form > div.c-contentsArea__cols > div > div > div.card.rounded.border-0.mb-4 > div > table > tbody > tr:nth-child({$rowNum}) > td.align-middle.ps-3");
     }
@@ -170,10 +156,9 @@ class CustomerManagePage extends AbstractAdminPageStyleGuide
 
     public function assertSortedNameList($order)
     {
-        $values = array_map(function ($s) {
+        $values = array_map(fn ($s) =>
             // 一覧の会員名の文字列から姓だけを抽出
-            return preg_replace('/ .*$/', '', $s);
-        }, $this->tester->grabMultiple('.c-contentsArea__primaryCol tr > td:nth-child(2)'));
+            preg_replace('/ .*$/', '', $s), $this->tester->grabMultiple('.c-contentsArea__primaryCol tr > td:nth-child(2)'));
 
         $expect = $values;
         if ($order === 'asc') {

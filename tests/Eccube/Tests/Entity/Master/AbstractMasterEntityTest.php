@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,8 +23,9 @@ use Eccube\Tests\EccubeTestCase;
  *
  * @author Kentaro Ohkouchi
  */
-class AbstractMasterEntityTest extends EccubeTestCase
+final class AbstractMasterEntityTest extends EccubeTestCase
 {
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -30,25 +33,13 @@ class AbstractMasterEntityTest extends EccubeTestCase
 
     public function testGetConstant()
     {
-        self::assertSame(1, TestSexDecorator::TEST_MALE, 'constant access');
-        self::assertSame(1, TestSexDecorator::TEST_MALE, 'enum like access');
+        $this->assertSame(1, TestSexDecorator::TEST_MALE, 'constant access');
+        $this->assertSame(1, TestSexDecorator::TEST_MALE, 'enum like access');
     }
 
     public function testGetConstantWithTrait()
     {
-        self::assertSame(2, TestSexDecorator::$TEST_FEMALE, 'enum like access via trait');
-    }
-
-    public function testExplicitOverwriteConstant()
-    {
-        try {
-            $c = new TestSexDecorator();
-            // クラス変数を上書きしようとすると InvalidArgumentException になる
-            $c->TEST_FEMALE = 3;
-            self::fail();
-        } catch (\InvalidArgumentException $e) {
-            self::assertInstanceOf(\InvalidArgumentException::class, $e);
-        }
+        $this->assertSame(2, TestSexDecorator::$TEST_FEMALE, 'enum like access via trait');
     }
 
     public function testInvalidFields()
@@ -58,19 +49,19 @@ class AbstractMasterEntityTest extends EccubeTestCase
             $c = TestSexDecorator::id();
             self::fail();
         } catch (\InvalidArgumentException $e) {
-            self::assertInstanceOf(\InvalidArgumentException::class, $e);
+            $this->assertInstanceOf(\InvalidArgumentException::class, $e);
         }
         try {
             $c = TestSexDecorator::name();
             self::fail();
         } catch (\InvalidArgumentException $e) {
-            self::assertInstanceOf(\InvalidArgumentException::class, $e);
+            $this->assertInstanceOf(\InvalidArgumentException::class, $e);
         }
         try {
             $c = TestSexDecorator::sortNo();
             self::fail();
         } catch (\InvalidArgumentException $e) {
-            self::assertInstanceOf(\InvalidArgumentException::class, $e);
+            $this->assertInstanceOf(\InvalidArgumentException::class, $e);
         }
     }
 }

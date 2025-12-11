@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,7 +20,7 @@ use Eccube\Doctrine\Query\Queries;
 use Eccube\Doctrine\Query\QueryCustomizer;
 use Eccube\Tests\EccubeTestCase;
 
-class QueriesTest extends EccubeTestCase
+final class QueriesTest extends EccubeTestCase
 {
     public function testCustomizerShouldBeCalled()
     {
@@ -28,7 +30,7 @@ class QueriesTest extends EccubeTestCase
 
         $queries->customize(QueriesTest::class, $this->queryBuilder(), null);
 
-        self::assertTrue($customizer->customized);
+        $this->assertTrue($customizer->customized);
     }
 
     public function testCustomizerShouldNotBeCalled()
@@ -39,13 +41,10 @@ class QueriesTest extends EccubeTestCase
 
         $queries->customize('Dummy', $this->queryBuilder(), null);
 
-        self::assertFalse($customizer->customized);
+        $this->assertFalse($customizer->customized);
     }
 
-    /**
-     * @return QueryBuilder
-     */
-    private function queryBuilder()
+    private function queryBuilder(): QueryBuilder
     {
         return $this->entityManager->createQueryBuilder()
             ->select('p')->from('Product', 'p');
@@ -56,23 +55,15 @@ class QueriesTest_Customizer implements QueryCustomizer
 {
     public $customized = false;
 
-    /**
-     * @param mixed $params
-     * @param mixed $queryKey
-     *
-     * @return void
-     */
-    public function customize(QueryBuilder $builder, $params, $queryKey)
+    public function customize(QueryBuilder $builder, mixed $params, mixed $queryKey): void
     {
         $this->customized = true;
     }
 
     /**
      * カスタマイズ対象のキーを返します。
-     *
-     * @return string
      */
-    public function getQueryKey()
+    public function getQueryKey(): string
     {
         return QueriesTest::class;
     }
@@ -80,20 +71,11 @@ class QueriesTest_Customizer implements QueryCustomizer
 
 class QueriesTest_CustomizerWithoutAnnotation implements QueryCustomizer
 {
-    /**
-     * @param mixed $params
-     * @param mixed $queryKey
-     *
-     * @return void
-     */
-    public function customize(QueryBuilder $builder, $params, $queryKey)
+    public function customize(QueryBuilder $builder, mixed $params, mixed $queryKey): void
     {
     }
 
-    /**
-     * @return string
-     */
-    public function getQueryKey()
+    public function getQueryKey(): string
     {
         return '';
     }

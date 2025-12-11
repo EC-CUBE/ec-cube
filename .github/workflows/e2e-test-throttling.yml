@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ 8.3 ]
+        php: [ '8.2', '8.3', '8.4', '8.5' ]
         db: [ pgsql ]
         method: [ フロント画面ログイン_IP, フロント画面ログイン_会員, 管理画面ログイン_IP, 管理画面ログイン_会員, 会員登録, 問い合わせ, パスワード再発行, 注文確認_非会員購入, 注文確認_会員購入, 注文完了_非会員購入, 注文完了_会員購入, 会員情報編集, 配送先情報_追加, 配送先情報_編集, 配送先情報_削除, order_お届け先追加, order_お届け先変更, 新規会員登録_入力, 管理画面二段階認証 ]
         include:
@@ -38,6 +38,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
 
+      # codeception環境ではprodの設定が読み込まれないため、ベース設定を作成
+      - name: Prepare rate limiter config
+        run: |
+          cp app/config/eccube/packages/prod/eccube_rate_limiter.yaml app/config/eccube/packages/codeception/eccube_rate_limiter.yaml
+
       # ShoppingController::checkoutをテストするため、confirmの上限値を変更する
       - name: Fix limiter limit
         if: startsWith(matrix.method, '注文完了')
@@ -59,7 +64,7 @@ jobs:
                   shopping_checkout_customer:
                       route: ~
                       limit: 10
-                      interval: '30 minutes'" > app/config/eccube/packages/prod/eccube_rate_limiter.yaml
+                      interval: '30 minutes'" > app/config/eccube/packages/codeception/eccube_rate_limiter.yaml
 
       # delivery deleteのテストするため、delivery addの上限値を変更する
       - name: Fix limiter limi for delivery delete
@@ -78,30 +83,63 @@ jobs:
                       method: [ 'DELETE' ]
                       type: customer
                       limit: 10
-                      interval: '30 minutes'" > app/config/eccube/packages/prod/eccube_rate_limiter.yaml
+                      interval: '30 minutes'" > app/config/eccube/packages/codeception/eccube_rate_limiter.yaml
 
       - name: Setup PHP
         uses: nanasess/setup-php@master
         with:
           php-version: ${{ matrix.php }}
 
+      - name: Install ext-redis 6.1+
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y php${{ matrix.php }}-redis
+          sudo phpenmod -s cli redis
+          php -m | grep -i redis
+
+      - name: Enable register_argc_argv for Codeception
+        if: matrix.php == '8.5'
+        run: |
+          INI_FILE=$(php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||" | tr -d '"')
+          echo "Using php.ini: $INI_FILE"
+          echo "register_argc_argv = On" | sudo tee -a "$INI_FILE"
+          php -i | grep register_argc_argv
+
       - name: Initialize Composer
         uses: ./.github/actions/composer
 
+      - name: Generate ECCUBE_AUTH_MAGIC
+        run: echo "ECCUBE_AUTH_MAGIC=$(openssl rand -hex 32)" >> $GITHUB_ENV
+
+      - name: Build Sass and JavaScript
+        run: |
+          npm ci
+          npm run build
+
       - name: Setup to EC-CUBE
         env:
-          APP_ENV: 'prod'
+          APP_ENV: 'codeception'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
         run: |
           echo "APP_ENV=${APP_ENV}" > .env
           echo "TRUSTED_HOSTS=127.0.0.1,localhost" >> .env
+          echo "ECCUBE_AUTH_MAGIC=${ECCUBE_AUTH_MAGIC}" >> .env
           bin/console doctrine:database:create --env=dev
           bin/console doctrine:schema:create --env=dev
           bin/console eccube:fixtures:load --env=dev
 
       - name: setup-chromedriver
         uses: nanasess/setup-chromedriver@master
+
+      - name: Prepare Throttling Test
+        run: |
+          echo "framework:
+              cache:
+                  pools:
+                      rate_limiter.cache:
+                          adapter: cache.adapter.filesystem" > app/config/eccube/packages/codeception/rate_limiter.yml
 
       - name: Install fonts
         run: sudo apt install fonts-ipafont fonts-ipaexfont
@@ -116,16 +154,17 @@ jobs:
 
       - name: Start PHP Development Server
         env:
-          APP_ENV: 'prod'
+          APP_ENV: 'codeception'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           MAILER_DSN: 'smtp://127.0.0.1:1025'
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
+          ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
         run: php -S 127.0.0.1:8000 codeception/router.php &
 
       - name: Codeception
         env:
-          APP_ENV: 'prod'
+          APP_ENV: 'codeception'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           MAILER_DSN: 'smtp://127.0.0.1:1025'

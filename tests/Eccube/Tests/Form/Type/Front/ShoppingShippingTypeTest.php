@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -20,13 +22,12 @@ use Symfony\Component\Form\FormInterface;
 /**
  * CustomerAddressTypeと同じものなので基本不要
  */
-class ShoppingShippingTypeTest extends AbstractTypeTestCase
+final class ShoppingShippingTypeTest extends AbstractTypeTestCase
 {
-    /** @var FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = [
+    protected ?array $formData = [
         'name' => [
             'name01' => 'たかはし',
             'name02' => 'しんいち',
@@ -45,6 +46,7 @@ class ShoppingShippingTypeTest extends AbstractTypeTestCase
         'phone_number' => '012-345-6789',
     ];
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

@@ -13,91 +13,55 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\PluginRepository;
 
 if (!class_exists(Plugin::class)) {
     /**
      * Plugin
-     *
-     * @ORM\Table(name="dtb_plugin")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\PluginRepository")
      */
+    #[ORM\Table(name: 'dtb_plugin')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: PluginRepository::class)]
     class Plugin extends AbstractEntity
     {
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
-         *
-         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
-         */
-        private $id;
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+        /**  @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
+        private ?int $id = null;
 
-        /**
-         * @var string
-         *
-         * @ORM\Column(name="name", type="string", length=255)
-         */
-        private $name;
+        #[ORM\Column(name: 'name', type: Types::STRING, length: 255)]
+        private ?string $name = null;
 
-        /**
-         * @var string
-         *
-         * @ORM\Column(name="code", type="string", length=255)
-         */
-        private $code;
+        #[ORM\Column(name: 'code', type: Types::STRING, length: 255)]
+        private ?string $code = null;
 
-        /**
-         * @var bool
-         *
-         * @ORM\Column(name="enabled", type="boolean", options={"default":false})
-         */
-        private $enabled = false;
+        #[ORM\Column(name: 'enabled', type: Types::BOOLEAN, options: ['default' => false])]
+        private bool $enabled = false;
 
-        /**
-         * @var string
-         *
-         * @ORM\Column(name="version", type="string", length=255)
-         */
-        private $version;
+        #[ORM\Column(name: 'version', type: Types::STRING, length: 255)]
+        private ?string $version = null;
 
-        /**
-         * @var string
-         *
-         * @ORM\Column(name="source", type="string", length=255)
-         */
-        private $source;
+        #[ORM\Column(name: 'source', type: Types::STRING, length: 255)]
+        private ?string $source = null;
 
-        /**
-         * @var bool
-         *
-         * @ORM\Column(name="initialized", type="boolean", options={"default":false})
-         */
-        private $initialized = false;
+        #[ORM\Column(name: 'initialized', type: Types::BOOLEAN, options: ['default' => false])]
+        private bool $initialized = false;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
         private $create_date;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
         private $update_date;
 
         /**
@@ -105,19 +69,15 @@ if (!class_exists(Plugin::class)) {
          *
          * @return int
          */
-        public function getId()
+        public function getId(): ?int
         {
             return $this->id;
         }
 
         /**
          * Set name.
-         *
-         * @param string $name
-         *
-         * @return Plugin
          */
-        public function setName($name)
+        public function setName(string $name): Plugin
         {
             $this->name = $name;
 
@@ -126,22 +86,16 @@ if (!class_exists(Plugin::class)) {
 
         /**
          * Get name.
-         *
-         * @return string
          */
-        public function getName()
+        public function getName(): string
         {
             return $this->name;
         }
 
         /**
          * Set code.
-         *
-         * @param string $code
-         *
-         * @return Plugin
          */
-        public function setCode($code)
+        public function setCode(string $code): Plugin
         {
             $this->code = $code;
 
@@ -150,22 +104,16 @@ if (!class_exists(Plugin::class)) {
 
         /**
          * Get code.
-         *
-         * @return string
          */
-        public function getCode()
+        public function getCode(): string
         {
             return $this->code;
         }
 
         /**
          * Set enabled.
-         *
-         * @param bool $enabled
-         *
-         * @return Plugin
          */
-        public function setEnabled($enabled)
+        public function setEnabled(bool $enabled): Plugin
         {
             $this->enabled = $enabled;
 
@@ -174,22 +122,16 @@ if (!class_exists(Plugin::class)) {
 
         /**
          * Get enabled.
-         *
-         * @return bool
          */
-        public function isEnabled()
+        public function isEnabled(): bool
         {
             return $this->enabled;
         }
 
         /**
          * Set version.
-         *
-         * @param string $version
-         *
-         * @return Plugin
          */
-        public function setVersion($version)
+        public function setVersion(string $version): Plugin
         {
             $this->version = $version;
 
@@ -198,22 +140,16 @@ if (!class_exists(Plugin::class)) {
 
         /**
          * Get version.
-         *
-         * @return string
          */
-        public function getVersion()
+        public function getVersion(): string
         {
             return $this->version;
         }
 
         /**
          * Set source.
-         *
-         * @param string|int $source
-         *
-         * @return Plugin
          */
-        public function setSource($source)
+        public function setSource(string|int $source): Plugin
         {
             $this->source = $source;
 
@@ -222,18 +158,14 @@ if (!class_exists(Plugin::class)) {
 
         /**
          * Get source.
-         *
-         * @return string
          */
-        public function getSource()
+        public function getSource(): string
         {
             return $this->source;
         }
 
         /**
          * Get initialized.
-         *
-         * @return bool
          */
         public function isInitialized(): bool
         {
@@ -242,12 +174,8 @@ if (!class_exists(Plugin::class)) {
 
         /**
          * Set initialized.
-         *
-         * @param bool $initialized
-         *
-         * @return Plugin
          */
-        public function setInitialized(bool $initialized)
+        public function setInitialized(bool $initialized): Plugin
         {
             $this->initialized = $initialized;
 
@@ -256,12 +184,8 @@ if (!class_exists(Plugin::class)) {
 
         /**
          * Set createDate.
-         *
-         * @param \DateTime $createDate
-         *
-         * @return Plugin
          */
-        public function setCreateDate($createDate)
+        public function setCreateDate(\DateTime $createDate): Plugin
         {
             $this->create_date = $createDate;
 
@@ -270,22 +194,16 @@ if (!class_exists(Plugin::class)) {
 
         /**
          * Get createDate.
-         *
-         * @return \DateTime
          */
-        public function getCreateDate()
+        public function getCreateDate(): ?\DateTime
         {
             return $this->create_date;
         }
 
         /**
          * Set updateDate.
-         *
-         * @param \DateTime $updateDate
-         *
-         * @return Plugin
          */
-        public function setUpdateDate($updateDate)
+        public function setUpdateDate(\DateTime $updateDate): Plugin
         {
             $this->update_date = $updateDate;
 
@@ -294,10 +212,8 @@ if (!class_exists(Plugin::class)) {
 
         /**
          * Get updateDate.
-         *
-         * @return \DateTime
          */
-        public function getUpdateDate()
+        public function getUpdateDate(): ?\DateTime
         {
             return $this->update_date;
         }

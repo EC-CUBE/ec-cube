@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -13,7 +15,9 @@
 
 namespace Eccube\Tests\Web;
 
-class HelpControllerTest extends AbstractWebTestCase
+use Symfony\Component\HttpFoundation\Request;
+
+final class HelpControllerTest extends AbstractWebTestCase
 {
     /**
      * 特定商取引法のテスト
@@ -21,8 +25,9 @@ class HelpControllerTest extends AbstractWebTestCase
     public function testRoutingHelpTradelaw()
     {
         $client = $this->client;
-        $client->request('GET', $this->generateUrl('help_tradelaw'));
-        $this->assertTrue($client->getResponse()->isSuccessful());
+        $client->request(Request::METHOD_GET, $this->generateUrl('help_tradelaw'));
+        $response = $client->getResponse();
+        $this->assertTrue($response->isSuccessful(), 'Response status: '.$response->getStatusCode().' - Content: '.$response->getContent());
     }
 
     /**
@@ -31,7 +36,7 @@ class HelpControllerTest extends AbstractWebTestCase
     public function testRoutingHelpAbout()
     {
         $client = $this->client;
-        $client->request('GET', $this->generateUrl('help_about'));
+        $client->request(Request::METHOD_GET, $this->generateUrl('help_about'));
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 
@@ -41,7 +46,7 @@ class HelpControllerTest extends AbstractWebTestCase
     public function testRoutingHelpGuide()
     {
         $client = $this->client;
-        $client->request('GET', $this->generateUrl('help_guide'));
+        $client->request(Request::METHOD_GET, $this->generateUrl('help_guide'));
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 
@@ -51,7 +56,7 @@ class HelpControllerTest extends AbstractWebTestCase
     public function testRoutingHelpPrivacy()
     {
         $client = $this->client;
-        $client->request('GET', $this->generateUrl('help_privacy'));
+        $client->request(Request::METHOD_GET, $this->generateUrl('help_privacy'));
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 }

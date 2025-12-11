@@ -26,13 +26,12 @@ class EntityUtil
      *
      * @return array<mixed> エンティティのプロパティの配列
      */
-    public static function dumpToArray($entity)
+    public static function dumpToArray(object $entity): array
     {
         $objReflect = new \ReflectionClass($entity);
         $arrProperties = $objReflect->getProperties();
         $arrResults = [];
         foreach ($arrProperties as $objProperty) {
-            $objProperty->setAccessible(true);
             $name = $objProperty->getName();
             $value = $objProperty->getValue($entity);
             $arrResults[$name] = is_object($value) ? $value::class : $value;

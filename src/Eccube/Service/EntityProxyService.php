@@ -14,7 +14,7 @@
 namespace Eccube\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Eccube\Annotation\EntityExtension;
+use Eccube\Attribute\EntityExtension;
 use Eccube\Common\EccubeConfig;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
@@ -26,34 +26,17 @@ use Symfony\Component\Finder\Finder;
 class EntityProxyService
 {
     /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
      * EntityProxyService constructor.
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param EccubeConfig $eccubeConfig
      */
-    public function __construct(
-        EntityManagerInterface $entityManager,
-        EccubeConfig $eccubeConfig,
-    ) {
-        $this->entityManager = $entityManager;
-        $this->eccubeConfig = $eccubeConfig;
+    public function __construct(protected EntityManagerInterface $entityManager, protected EccubeConfig $eccubeConfig)
+    {
     }
 
     /**
      * EntityのProxyを生成します。
      *
-     * @param array<int,string> $includesDirs Proxyに含めるTraitがあるディレクトリ一覧
-     * @param array<int,string> $excludeDirs Proxyから除外するTraitがあるディレクトリ一覧
+     * @param array<int, string> $includesDirs Proxyに含めるTraitがあるディレクトリ一覧
+     * @param array<int, string> $excludeDirs Proxyから除外するTraitがあるディレクトリ一覧
      * @param string $outputDir 出力先
      * @param OutputInterface|null $output ログ出力
      *
@@ -61,7 +44,7 @@ class EntityProxyService
      *
      * @throws \ReflectionException
      */
-    public function generate($includesDirs, $excludeDirs, $outputDir, ?OutputInterface $output = null)
+    public function generate(array $includesDirs, array $excludeDirs, string $outputDir, ?OutputInterface $output = null): array
     {
         if (is_null($output)) {
             $output = new ConsoleOutput();
@@ -158,13 +141,13 @@ class EntityProxyService
      *
      * @throws \ReflectionException
      */
-    private function scanTraits($dirSets)
+    private function scanTraits(array $dirSets): array
     {
         // ディレクトリセットごとのファイルをロードしつつ一覧を作成
         $includedFileSets = [];
         foreach ($dirSets as $dirSet) {
             $includedFiles = [];
-            $dirs = array_filter($dirSet, 'file_exists');
+            $dirs = array_filter($dirSet, file_exists(...));
             if (!empty($dirs)) {
                 $files = Finder::create()
                     ->in($dirs)
@@ -179,13 +162,12 @@ class EntityProxyService
             $includedFileSets[] = $includedFiles;
         }
 
-        $declaredTraits = array_map(function ($fqcn) {
+        $declaredTraits = array_map(fn ($fqcn) =>
             // FQCNが'\'で始まるように正規化
-            return str_starts_with($fqcn, '\\') ? $fqcn : '\\'.$fqcn;
-        }, get_declared_traits());
+            str_starts_with($fqcn, '\\') ? $fqcn : '\\'.$fqcn, get_declared_traits());
 
         // ディレクトリセットに含まれるTraitの一覧を作成
-        $traitSets = array_map(function () { return []; }, $dirSets);
+        $traitSets = array_map(fn () => [], $dirSets);
         foreach ($declaredTraits as $className) {
             $rc = new \ReflectionClass($className);
             $sourceFile = $rc->getFileName();
@@ -220,10 +202,8 @@ class EntityProxyService
      *
      * @param Tokens $entityTokens Tokens Entityのトークン
      * @param string $trait 追加するTraitのFQCN
-     *
-     * @return void
      */
-    private function addTrait($entityTokens, $trait)
+    private function addTrait(Tokens $entityTokens, string $trait): void
     {
         $newTraitTokens = $this->convertTraitNameToTokens($trait);
 
@@ -264,10 +244,8 @@ class EntityProxyService
      *
      * @param Tokens $entityTokens Tokens Entityのトークン
      * @param string $trait  削除するTraitのFQCN
-     *
-     * @return void
      */
-    private function removeTrait($entityTokens, $trait)
+    private function removeTrait(Tokens $entityTokens, string $trait): void
     {
         $useTraitIndex = $entityTokens->getNextTokenOfKind(0, [[CT::T_USE_TRAIT]]);
         if ($useTraitIndex > 0) {
@@ -275,11 +253,7 @@ class EntityProxyService
             $traitsTokens = array_slice($entityTokens->toArray(), $useTraitIndex + 1, $useTraitEndIndex - $useTraitIndex - 1);
 
             // Trait名の配列に変換
-            $traitNames = explode(',', implode('', array_map(function ($token) {
-                return $token->getContent();
-            }, array_filter($traitsTokens, function ($token) {
-                return $token->getId() != T_WHITESPACE;
-            }))));
+            $traitNames = explode(',', implode('', array_map(fn ($token) => $token->getContent(), array_filter($traitsTokens, fn ($token) => $token->getId() != T_WHITESPACE))));
 
             // 削除対象を取り除く
             foreach ($traitNames as $i => $name) {
@@ -305,15 +279,13 @@ class EntityProxyService
      * - プラグインのTrait -> \Plugin\Xxx\Entity\XxxTrait
      * - 本体でuseされているTrait -> PointTrait
      *
-     * @param string $name
-     *
      * @return array<int, Token>|Token[]
      */
-    private function convertTraitNameToTokens($name)
+    private function convertTraitNameToTokens(string $name): array
     {
         $result = [];
         $i = 0;
-        foreach (explode('\\', (string) $name) as $part) {
+        foreach (explode('\\', $name) as $part) {
             // プラグインのtraitの場合は、0番目は空文字
             // 本体でuseされているtraitは0番目にtrait名がくる
             if ($part) {
@@ -331,12 +303,8 @@ class EntityProxyService
 
     /**
      * remove block to 'if (!class_exists(<class name>)) { }'
-     *
-     * @param Tokens $entityTokens
-     *
-     * @return void
      */
-    private function removeClassExistsBlock(Tokens $entityTokens)
+    private function removeClassExistsBlock(Tokens $entityTokens): void
     {
         $startIndex = $entityTokens->getNextTokenOfKind(0, [[T_IF]]);
         $classIndex = $entityTokens->getNextTokenOfKind(0, [[T_CLASS]]);

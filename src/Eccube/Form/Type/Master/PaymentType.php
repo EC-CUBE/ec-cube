@@ -14,6 +14,7 @@
 namespace Eccube\Form\Type\Master;
 
 use Doctrine\ORM\EntityRepository;
+use Eccube\Entity\Payment;
 use Eccube\Form\Type\MasterType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -22,44 +23,34 @@ class PaymentType extends AbstractType
 {
     /**
      * {@inheritdoc}
-     *
-     * @param OptionsResolver $resolver
-     *
-     * @return void
      */
     #[\Override]
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'class' => \Eccube\Entity\Payment::class,
+            'class' => Payment::class,
             'choice_label' => 'method',
             'placeholder' => '-',
             // fixme 何故かここはDESC
-            'query_builder' => function (EntityRepository $er) {
-                return $er->createQueryBuilder('m')
-                    ->orderBy('m.sort_no', 'DESC');
-            },
+            'query_builder' => fn (EntityRepository $er) => $er->createQueryBuilder('m')
+                ->orderBy('m.sort_no', 'DESC'),
         ]);
     }
 
     /**
      * {@inheritdoc}
-     *
-     * @return string
      */
     #[\Override]
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'payment';
     }
 
     /**
      * {@inheritdoc}
-     *
-     * @return string
      */
     #[\Override]
-    public function getParent()
+    public function getParent(): string
     {
         return MasterType::class;
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -19,19 +21,23 @@ use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\RawMessage;
 
 /**
  * Class CustomerControllerTest
  */
-class CustomerControllerTest extends AbstractAdminWebTestCase
+final class CustomerControllerTest extends AbstractAdminWebTestCase
 {
     use MailerAssertionsTrait;
 
     /**
      * Setup
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -53,6 +59,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
     /**
      * tearDown
      */
+    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();
@@ -64,7 +71,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
     public function testIndex()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_customer')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -80,7 +87,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         }
 
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_customer_page', ['page_no' => 2])
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -92,7 +99,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
     public function testIndexWithPost()
     {
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_customer'),
             ['admin_search_customer' => ['_token' => 'dummy']]
         );
@@ -109,7 +116,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
     public function testIndexWithPostSex()
     {
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_customer'),
             ['admin_search_customer' => ['_token' => 'dummy', 'sex' => [2]]]
         );
@@ -124,7 +131,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
     public function testIndexWithPostSearchByEmail()
     {
         $crawler = $this->client->request(
-            'POST', $this->generateUrl('admin_customer'),
+            Request::METHOD_POST, $this->generateUrl('admin_customer'),
             ['admin_search_customer' => ['_token' => 'dummy', 'multi' => 'ser-7']]
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -140,9 +147,10 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
     public function testIndexWithPostSearchById()
     {
         $Customer = $this->entityManager->getRepository(Customer::class)->findOneBy([], ['id' => 'DESC']);
+        $this->assertInstanceOf(Customer::class, $Customer);
 
         $crawler = $this->client->request(
-            'POST', $this->generateUrl('admin_customer'),
+            Request::METHOD_POST, $this->generateUrl('admin_customer'),
             ['admin_search_customer' => ['_token' => 'dummy', 'multi' => $Customer->getId()]]
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -154,9 +162,8 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
 
     /**
      * testIndexWithPostSearchByProductName
-     *
-     * @dataProvider indexWithPostSearchByProductNameProvider
      */
+    #[DataProvider(methodName: 'indexWithPostSearchByProductNameProvider')]
     public function testIndexWithPostSearchByProductName(int $orderStatusId, string $expected)
     {
         $Customer = $this->entityManager->getRepository(Customer::class)->findOneBy([], ['id' => 'DESC']);
@@ -167,12 +174,10 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         $Order->setOrderStatus($OrderStatus);
         $this->entityManager->flush();
 
-        $ProductName = $Order->getOrderItems()->filter(function ($OrderItems) {
-            return $OrderItems->isProduct();
-        })->first()->getProductName();
+        $ProductName = $Order->getOrderItems()->filter(fn ($OrderItems) => $OrderItems->isProduct())->first()->getProductName();
 
         $crawler = $this->client->request(
-            'POST', $this->generateUrl('admin_customer'),
+            Request::METHOD_POST, $this->generateUrl('admin_customer'),
             ['admin_search_customer' => ['_token' => 'dummy', 'buy_product_name' => $ProductName]]
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -183,20 +188,25 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
-     * @return array[]
+     * @return \Iterator<(int | string), array<mixed>>
      */
-    public function indexWithPostSearchByProductNameProvider()
+    public static function indexWithPostSearchByProductNameProvider(): \Iterator
     {
-        return [
-            [OrderStatus::NEW, '検索結果：1件が該当しました'], // 新規受付
-            [OrderStatus::CANCEL, '検索結果：1件が該当しました'], // 注文取消し
-            [OrderStatus::IN_PROGRESS, '検索結果：1件が該当しました'], // 対応中
-            [OrderStatus::DELIVERED, '検索結果：1件が該当しました'], // 発送済み
-            [OrderStatus::PAID, '検索結果：1件が該当しました'], // 入金済み
-            [OrderStatus::PENDING, '検索結果：0件が該当しました'], // 決済処理中
-            [OrderStatus::PROCESSING, '検索結果：0件が該当しました'], // 購入処理中
-            [OrderStatus::RETURNED, '検索結果：1件が該当しました'], // 返品
-        ];
+        yield [OrderStatus::NEW, '検索結果：1件が該当しました'];
+        // 新規受付
+        yield [OrderStatus::CANCEL, '検索結果：1件が該当しました'];
+        // 注文取消し
+        yield [OrderStatus::IN_PROGRESS, '検索結果：1件が該当しました'];
+        // 対応中
+        yield [OrderStatus::DELIVERED, '検索結果：1件が該当しました'];
+        // 発送済み
+        yield [OrderStatus::PAID, '検索結果：1件が該当しました'];
+        // 入金済み
+        yield [OrderStatus::PENDING, '検索結果：0件が該当しました'];
+        // 決済処理中
+        yield [OrderStatus::PROCESSING, '検索結果：0件が該当しました'];
+        // 購入処理中
+        yield [OrderStatus::RETURNED, '検索結果：1件が該当しました'];
     }
 
     /**
@@ -206,7 +216,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
     {
         $Customer = $this->createCustomer();
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_customer_resend', ['id' => $Customer->getId()])
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_customer')));
@@ -231,21 +241,23 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
     {
         $Customer = $this->createCustomer();
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_customer_resend', ['id' => $Customer->getId()])
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_customer')));
         $MessageFistTime = $this->getMailerMessage(0);
 
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_customer_resend', ['id' => $Customer->getId()])
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_customer')));
         $MessageSecondTime = $this->getMailerMessage(0);
+        $this->assertInstanceOf(RawMessage::class, $MessageFistTime);
 
         // test mail resend to 仮会員. (シークレットキーが毎回変わることを確認)
         $FirstTimeMail = $MessageFistTime->toString();
+        $this->assertInstanceOf(RawMessage::class, $MessageSecondTime);
         $SecondTimeMail = $MessageSecondTime->toString();
         $secretKeyFirstTime = mb_substr($FirstTimeMail, mb_strrpos($FirstTimeMail, '/activate/') + 10, 32);
         $secretKeySecondTime = mb_substr($SecondTimeMail, mb_strrpos($SecondTimeMail, '/activate/') + 10, 32);
@@ -260,7 +272,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
         $Customer = $this->createCustomer();
         $id = $Customer->getId();
         $this->client->request(
-            'DELETE',
+            Request::METHOD_DELETE,
             $this->generateUrl('admin_customer_delete', ['id' => $Customer->getId()])
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_customer_page',
@@ -268,7 +280,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
 
         $DeletedCustomer = $this->entityManager->getRepository(Customer::class)->find($id);
 
-        $this->assertNull($DeletedCustomer);
+        $this->assertNotInstanceOf(Customer::class, $DeletedCustomer);
     }
 
     /**
@@ -277,7 +289,7 @@ class CustomerControllerTest extends AbstractAdminWebTestCase
     public function testExport()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_customer_export'),
             ['admin_search_customer' => ['_token' => 'dummy']]
         );

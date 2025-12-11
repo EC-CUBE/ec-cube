@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -19,46 +21,28 @@ use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\TemplateRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Eccube\Util\StringUtil;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Request;
 
-class TemplateControllerTest extends AbstractAdminWebTestCase
+final class TemplateControllerTest extends AbstractAdminWebTestCase
 {
-    /**
-     * @var string
-     */
-    protected $dir;
+    protected ?string $dir = null;
 
-    /**
-     * @var UploadedFile
-     */
-    protected $file;
+    protected ?UploadedFile $file = null;
 
-    /**
-     * @var string
-     */
-    protected $code;
+    protected ?string $code = null;
 
-    /**
-     * @var TemplateRepository
-     */
-    protected $templateRepository;
+    protected ?TemplateRepository $templateRepository = null;
 
-    /**
-     * @var DeviceTypeRepository
-     */
-    protected $deviceTypeRepository;
+    protected ?DeviceTypeRepository $deviceTypeRepository = null;
 
-    /**
-     * @var string
-     */
-    protected $envFile;
+    protected ?string $envFile = null;
 
-    /**
-     * @var string
-     */
-    protected $env;
+    protected ?string $env = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -87,6 +71,7 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
         }
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         $fs = new Filesystem();
@@ -109,15 +94,14 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
      */
     public function testDisplayList()
     {
-        $this->client->request('GET', $this->generateUrl('admin_store_template'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_store_template'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     /**
      * テンプレートの変更
-     *
-     * @group cache-clear
      */
+    #[Group(name: 'cache-clear')]
     public function testChangeTemplate()
     {
         // テンプレートをアップロード
@@ -125,9 +109,10 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
         $this->verifyUpload();
 
         $Template = $this->templateRepository->findOneBy(['code' => $this->code]);
+        $this->assertInstanceOf(Template::class, $Template);
 
         // テンプレートを選択
-        $this->client->request('POST', $this->generateUrl('admin_store_template'), [
+        $this->client->request(Request::METHOD_POST, $this->generateUrl('admin_store_template'), [
             'form' => [
                 '_token' => 'dummy',
                 'selected' => $Template->getId(),
@@ -136,7 +121,7 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirection());
 
         // .envが更新されている
-        self::assertMatchesRegularExpression('/ECCUBE_TEMPLATE_CODE='.$Template->getCode().'/', file_get_contents($this->envFile));
+        $this->assertMatchesRegularExpression('/ECCUBE_TEMPLATE_CODE='.$Template->getCode().'/', file_get_contents($this->envFile));
     }
 
     /**
@@ -144,7 +129,7 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
      */
     public function testDiaplayUpload()
     {
-        $this->client->request('GET', $this->generateUrl('admin_store_template_install'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_store_template_install'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -171,7 +156,7 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
     /**
      * ダウンロード
      */
-    public function testDownload()
+    public function testDownload(): never
     {
         $this->markTestIncomplete("See: \Eccube\Controller\Admin\Store\TemplateController::L151");
 
@@ -180,9 +165,10 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
         $this->verifyUpload();
 
         $Template = $this->templateRepository->findOneBy(['code' => $this->code]);
+        $this->assertInstanceOf(Template::class, $Template);
 
         // XXX failed to open stream: No such file or directoryが発生する
-        $this->client->request('GET',
+        $this->client->request(Request::METHOD_GET,
             $this->generateUrl('admin_store_template_download', ['id' => $Template->getId()]));
     }
 
@@ -196,19 +182,21 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
         $this->verifyUpload();
 
         $Template = $this->templateRepository->findOneBy(['code' => $this->code]);
+        $this->assertInstanceOf(Template::class, $Template);
 
         $id = $Template->getId();
+        $this->assertInstanceOf(Template::class, $Template);
         $code = $Template->getCode();
 
         // 削除
-        $this->client->request('DELETE',
+        $this->client->request(Request::METHOD_DELETE,
             $this->generateUrl('admin_store_template_delete', ['id' => $Template->getId()]));
 
         $this->assertTrue($this->client->getResponse()->isRedirection());
 
         $Template = $this->templateRepository->find($id);
-        self::assertNull($Template);
-        self::assertFalse(file_exists(static::getContainer()->getParameter('kernel.project_dir').'/app/template/'.$code));
+        $this->assertNotInstanceOf(Template::class, $Template);
+        $this->assertFileDoesNotExist(static::getContainer()->getParameter('kernel.project_dir').'/app/template/'.$code);
     }
 
     protected function scenarioUpload($uppercase = false)
@@ -217,7 +205,7 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
         $fileData = $this->createFileData($uppercase);
 
         return $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_store_template_install'),
             [
                 'admin_template' => $formData,
@@ -230,7 +218,7 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
     protected function verifyUpload()
     {
         $Template = $this->templateRepository->findOneBy(['code' => $this->code]);
-        self::assertInstanceOf(Template::class, $Template);
+        $this->assertInstanceOf(Template::class, $Template);
     }
 
     protected function createFormData()

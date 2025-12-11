@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,62 +17,59 @@ namespace Eccube\Tests\Form\Validator;
 
 use Eccube\Form\Validator\Email;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class EmailValidatorTest extends AbstractTypeTestCase
+final class EmailValidatorTest extends AbstractTypeTestCase
 {
-    /** @var ValidatorInterface */
-    protected $validator;
+    protected ?ValidatorInterface $validator = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-        $this->validator = static::getContainer()->get('validator');
+        $this->validator = static::getContainer()->get(ValidatorInterface::class);
     }
 
     /**
-     * @dataProvider EmailProvider
-     *
      * @param mixed $email
      * @param mixed $rfc
      * @param mixed $norfc
      */
+    #[DataProvider(methodName: 'EmailProvider')]
     public function testValidateEmailStrict($email, $rfc, $norfc)
     {
         $constraint = new Email(null, null, Email::VALIDATION_MODE_STRICT);
         $validator = $this->validator;
 
         $errors = $validator->validate($email, $constraint);
-        self::assertSame($rfc, count($errors) === 0);
+        $this->assertSame($rfc, count($errors) === 0);
     }
 
     /**
-     * @dataProvider EmailProvider
-     *
      * @param mixed $email
      * @param mixed $rfc
      * @param mixed $norfc
      */
+    #[DataProvider(methodName: 'EmailProvider')]
     public function testValidateEmailNoStrict($email, $rfc, $norfc)
     {
-        $constraint = new Email(null, null, Email::VALIDATION_MODE_LOOSE);
+        $constraint = new Email(null, null, Email::VALIDATION_MODE_HTML5);
         $validator = $this->validator;
 
         $errors = $validator->validate($email, $constraint);
-        self::assertSame($norfc, count($errors) === 0);
+        $this->assertSame($norfc, count($errors) === 0);
     }
 
     /**
      * @return array[email, rfc result, no rfc result]
      */
-    public function EmailProvider()
+    public static function EmailProvider(): \Iterator
     {
-        return [
-            ['test@example.com', true, true],
-            ['test.@example.com', false, true],
-            ['tes..t@example.com', false, true],
-            ['test@@example.com', false, false],
-            ['test@test@example.com', false, false],
-        ];
+        yield ['test@example.com', true, true];
+        yield ['test.@example.com', false, true];
+        yield ['tes..t@example.com', false, true];
+        yield ['test@@example.com', false, false];
+        yield ['test@test@example.com', false, false];
     }
 }

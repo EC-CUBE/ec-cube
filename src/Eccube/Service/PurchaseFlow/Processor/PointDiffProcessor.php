@@ -28,38 +28,20 @@ use Eccube\Service\PurchaseFlow\PurchaseProcessor;
 class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcessor
 {
     /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
-     * @var PointHelper
-     */
-    protected $pointHelper;
-
-    /**
      * PointDiffProcessor constructor.
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param PointHelper $pointHelper
      */
-    public function __construct(EntityManagerInterface $entityManager, PointHelper $pointHelper)
+    public function __construct(protected EntityManagerInterface $entityManager, protected PointHelper $pointHelper)
     {
-        $this->entityManager = $entityManager;
-        $this->pointHelper = $pointHelper;
     }
 
     /*
      * ItemHolderValidator
      */
-
     /**
      * {@inheritdoc}
-     *
-     * @return void
      */
     #[\Override]
-    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         if (!$this->supports($itemHolder, $context)) {
             return;
@@ -77,14 +59,11 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
     /*
      * PurchaseProcessor
      */
-
     /**
      * {@inheritdoc}
-     *
-     * @return void
      */
     #[\Override]
-    public function prepare(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function prepare(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         if (!$this->supports($itemHolder, $context)) {
             return;
@@ -98,22 +77,18 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
 
     /**
      * {@inheritdoc}
-     *
-     * @return void
      */
     #[\Override]
-    public function commit(ItemHolderInterface $target, PurchaseContext $context)
+    public function commit(ItemHolderInterface $target, PurchaseContext $context): void
     {
         // 何もしない
     }
 
     /**
      * {@inheritdoc}
-     *
-     * @return void
      */
     #[\Override]
-    public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         if (!$this->supports($itemHolder, $context)) {
             return;
@@ -127,7 +102,6 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
     /*
      * Helper methods
      */
-
     /**
      * Processorが実行出来るかどうかを返す.
      *
@@ -138,13 +112,8 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
      * - OrderStatusが新規受付、入金済み、対応中、発送済みのどれかであること
      * - 会員のOrderであること.
      * - PurchaseContextでOriginHolderが渡ってきている
-     *
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
-     *
-     * @return bool
      */
-    private function supports(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    private function supports(ItemHolderInterface $itemHolder, PurchaseContext $context): bool
     {
         if (!$this->pointHelper->isPointEnabled()) {
             return false;
@@ -186,13 +155,8 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
      * 使用ポイントが増えた場合プラスとなる
      * 50 -> 100 : 50
      * 100 -> 50 : -50
-     *
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
-     *
-     * @return string
      */
-    protected function getDiffOfUsePoint(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    protected function getDiffOfUsePoint(ItemHolderInterface $itemHolder, PurchaseContext $context): string
     {
         if ($context->getOriginHolder()) {
             $fromUsePoint = $context->getOriginHolder()->getUsePoint();
@@ -201,6 +165,6 @@ class PointDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
         }
         $toUsePoint = $itemHolder->getUsePoint();
 
-        return bcsub($toUsePoint, $fromUsePoint);
+        return bcsub((string) $toUsePoint, (string) $fromUsePoint);
     }
 }

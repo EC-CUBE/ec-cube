@@ -14,9 +14,11 @@
 namespace Eccube\Doctrine\ORM\Query;
 
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
-use Doctrine\ORM\Query\Lexer;
+use Doctrine\ORM\Query\AST\Node;
 use Doctrine\ORM\Query\Parser;
+use Doctrine\ORM\Query\QueryException;
 use Doctrine\ORM\Query\SqlWalker;
+use Doctrine\ORM\Query\TokenType;
 
 /**
  * EXTRACT (field FROM [type] source)
@@ -41,23 +43,14 @@ use Doctrine\ORM\Query\SqlWalker;
  */
 class Extract extends FunctionNode
 {
-    /**
-     * @var string
-     */
-    protected $field;
-    /**
-     * @var string
-     */
-    protected $type;
-    /**
-     * @var \Doctrine\ORM\Query\AST\Node|string
-     */
-    protected $source;
+    protected string $field;
+    protected string $type = '';
+    protected Node|string $source;
 
     /**
      * @var string[]
      */
-    protected $formats = [
+    protected array $formats = [
         'YEAR' => '%Y',
         'MONTH' => '%m',
         'DAY' => '%d',
@@ -69,44 +62,47 @@ class Extract extends FunctionNode
     /**
      * @var string[]
      */
-    protected $dateTimeTypes = [
+    protected array $dateTimeTypes = [
         'TIMESTAMP',
         'DATE',
         'TIME',
     ];
 
+    /**
+     * @throws QueryException
+     */
     #[\Override]
-    public function parse(Parser $parser)
+    public function parse(Parser $parser): void
     {
         $lexer = $parser->getLexer();
-        $parser->match(Lexer::T_IDENTIFIER);
-        $parser->match(Lexer::T_OPEN_PARENTHESIS);
+        $parser->match(TokenType::T_IDENTIFIER);
+        $parser->match(TokenType::T_OPEN_PARENTHESIS);
 
-        $upperField = strtoupper((string) $lexer->lookahead['value']);
-        if ($lexer->lookahead['type'] !== Lexer::T_IDENTIFIER || !isset($this->formats[$upperField])) {
+        $parser->match(TokenType::T_IDENTIFIER);        // ★ MONTH / YEAR / ...
+        $upperField = strtoupper((string) $lexer->token->value);
+        if ($lexer->token->type !== TokenType::T_IDENTIFIER || !isset($this->formats[$upperField])) {
             $parser->syntaxError(implode('/', array_keys($this->formats)));
         }
 
-        $parser->match(Lexer::T_IDENTIFIER);
         $this->field = $upperField;
-        $parser->match(Lexer::T_FROM);
+        $parser->match(TokenType::T_FROM);
 
         $next = $lexer->glimpse();
-        if (isset($next['type']) && $next['type'] === Lexer::T_STRING) {
-            $upperType = strtoupper((string) $lexer->lookahead['value']);
+        if (isset($next->type) && $next->type === TokenType::T_STRING) {
+            $upperType = strtoupper((string) $lexer->token->value);
             if (!in_array($upperType, $this->dateTimeTypes, true)) {
                 $parser->syntaxError(implode('/', $this->dateTimeTypes));
             }
-            $parser->match(Lexer::T_IDENTIFIER);
+            $parser->match(TokenType::T_IDENTIFIER);
             $this->type = $upperType;
         }
 
         $this->source = $parser->ArithmeticPrimary();
-        $parser->match(Lexer::T_CLOSE_PARENTHESIS);
+        $parser->match(TokenType::T_CLOSE_PARENTHESIS);
     }
 
     #[\Override]
-    public function getSql(SqlWalker $sqlWalker)
+    public function getSql(SqlWalker $sqlWalker): string
     {
         $driver = $sqlWalker->getConnection()->getDriver()->getDatabasePlatform()->getName();
         // UTCとの時差(秒数)
@@ -114,7 +110,7 @@ class Extract extends FunctionNode
         $second = abs($diff);
         $op = ($diff === $second) ? '+' : '-';
 
-        $sql = match ($driver) {
+        return match ($driver) {
             'sqlite' => sprintf(
                 "CAST(STRFTIME('%s', DATETIME(%s, '{$op}{$second} SECONDS')) AS INTEGER)",
                 $this->formats[$this->field],
@@ -122,15 +118,13 @@ class Extract extends FunctionNode
             'postgresql' => sprintf(
                 "EXTRACT(%s FROM %s %s $op INTERVAL '$second SECONDS')",
                 $this->field,
-                (string) $this->type,
+                $this->type,
                 $this->source->dispatch($sqlWalker)),
             default => sprintf(
                 "EXTRACT(%s FROM %s %s $op INTERVAL $second SECOND)",
                 $this->field,
-                (string) $this->type,
+                $this->type,
                 $this->source->dispatch($sqlWalker)),
         };
-
-        return $sql;
     }
 }

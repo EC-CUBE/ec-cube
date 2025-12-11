@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,7 +17,7 @@ namespace Eccube\Tests\Service;
 
 use Eccube\Service\SystemService;
 
-class SystemServiceTest extends AbstractServiceTestCase
+final class SystemServiceTest extends AbstractServiceTestCase
 {
     public function testgetDbversion()
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -14,14 +16,16 @@
 namespace Eccube\Tests\Web\Block;
 
 use Eccube\Tests\Web\AbstractWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
-class NewItemTest extends AbstractWebTestCase
+final class NewItemTest extends AbstractWebTestCase
 {
     /**
      * {@inheritdoc}
      *
      * @throws \Doctrine\DBAL\DBALException
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -48,16 +52,16 @@ class NewItemTest extends AbstractWebTestCase
     public function testNewItemBlock()
     {
         // 新着商品が表示されている
-        $crawler = $this->client->request('GET', $this->generateUrl('homepage'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('homepage'));
         $node = $crawler->filter('.ec-newItemRole__listItemTitle');
-        $this->assertTrue(count($node) > 0);
+        $this->assertGreaterThan(0, count($node));
     }
 
     public function testAutoNewItemBlock()
     {
         // 自動取得の新着商品が表示されている
-        $crawler = $this->client->request('GET', $this->generateUrl('homepage'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('homepage'));
         $node = $crawler->filter('.__getAutoNewItemBlock');
-        $this->assertTrue(count($node) > 0);
+        $this->assertGreaterThan(0, count($node));
     }
 }

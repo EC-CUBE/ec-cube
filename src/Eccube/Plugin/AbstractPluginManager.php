@@ -40,10 +40,8 @@ abstract class AbstractPluginManager
      * @param string $pluginCode プラグインコード
      * @param string $version マイグレーション先のバージョン
      * @param string $migrationFilePath マイグレーションファイルを格納したファイルパス. 指定しない場合は app/Plugin/<pluginCode>/DoctrineMigrations を使用する
-     *
-     * @return void
      */
-    public function migration(Connection $connection, $pluginCode, $version = null, $migrationFilePath = null)
+    public function migration(Connection $connection, string $pluginCode, ?string $version = null, ?string $migrationFilePath = null): void
     {
         if (null === $migrationFilePath) {
             $migrationFilePath = __DIR__.'/../../../app/Plugin/'.$pluginCode.'/DoctrineMigrations';
@@ -87,11 +85,8 @@ abstract class AbstractPluginManager
      * Install the plugin.
      *
      * @param array{code:string, name:string, version:string, source:int} $meta
-     * @param ContainerInterface $container
-     *
-     * @return void
      */
-    public function install(array $meta, ContainerInterface $container)
+    public function install(array $meta, ContainerInterface $container): void
     {
         // quiet.
     }
@@ -100,11 +95,8 @@ abstract class AbstractPluginManager
      * Update the plugin.
      *
      * @param array{code:string, name:string, version:string, source:int} $meta
-     * @param ContainerInterface $container
-     *
-     * @return void
      */
-    public function update(array $meta, ContainerInterface $container)
+    public function update(array $meta, ContainerInterface $container): void
     {
         // quiet.
     }
@@ -113,11 +105,8 @@ abstract class AbstractPluginManager
      * Enable the plugin.
      *
      * @param array{code:string, name:string, version:string, source:int} $meta
-     * @param ContainerInterface $container
-     *
-     * @return void
      */
-    public function enable(array $meta, ContainerInterface $container)
+    public function enable(array $meta, ContainerInterface $container): void
     {
         // quiet.
     }
@@ -126,11 +115,8 @@ abstract class AbstractPluginManager
      * Disable the plugin.
      *
      * @param array{code:string, name:string, version:string, source:int} $meta
-     * @param ContainerInterface $container
-     *
-     * @return void
      */
-    public function disable(array $meta, ContainerInterface $container)
+    public function disable(array $meta, ContainerInterface $container): void
     {
         // quiet.
     }
@@ -139,11 +125,8 @@ abstract class AbstractPluginManager
      * Uninstall the plugin.
      *
      * @param array{code:string, name:string, version:string, source:int} $meta
-     * @param ContainerInterface $container
-     *
-     * @return void
      */
-    public function uninstall(array $meta, ContainerInterface $container)
+    public function uninstall(array $meta, ContainerInterface $container): void
     {
         // quiet.
     }

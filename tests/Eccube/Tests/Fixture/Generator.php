@@ -75,151 +75,49 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
  */
 class Generator
 {
-    protected $locale;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
-     * @var UserPasswordHasherInterface
-     */
-    protected $passwordHasher;
-
-    /**
-     * @var MemberRepository
-     */
-    protected $memberRepository;
-
-    /**
-     * @var CategoryRepository
-     */
-    private $categoryRepository;
-
-    /**
-     * @var CustomerRepository
-     */
-    protected $customerRepository;
-
-    /**
-     * @var ClassNameRepository
-     */
-    protected $classNameRepository;
-
-    /**
-     * @var ClassCategoryRepository
-     */
-    protected $classCategoryRepository;
-
-    /**
-     * @var DeliveryDurationRepository
-     */
-    protected $durationRepository;
-
-    /**
-     * @var DeliveryFeeRepository
-     */
-    protected $deliveryFeeRepository;
-
     /**
      * @var PaymentRepository;
      */
     protected $paymentRepository;
 
-    /**
-     * @var TagRepository
-     */
-    private $tagRepository;
-
-    /**
-     * @var TaxRuleRepository
-     */
-    protected $taxRuleRepository;
-
-    /**
-     * @var PageRepository
-     */
-    protected $pageRepository;
-
-    /**
-     * @var PrefRepository
-     */
-    protected $PrefRepository;
-
-    /**
-     * @var PrefRepository
-     */
-    private $prefRepository;
-
-    /**
-     * @var SessionInterface
-     */
-    protected $session;
-
-    /**
-     * @var RequestStack
-     */
-    protected $requestStack;
-
-    /**
-     * @var PurchaseFlow
-     */
-    protected $orderPurchaseFlow;
+    protected ?SessionInterface $session = null;
 
     public function __construct(
-        EntityManagerInterface $entityManager,
-        UserPasswordHasherInterface $passwordHasher,
-        MemberRepository $memberRepository,
-        CategoryRepository $categoryRepository,
-        CustomerRepository $customerRepository,
-        ClassNameRepository $classNameRepository,
-        ClassCategoryRepository $classCategoryRepository,
-        DeliveryDurationRepository $durationRepository,
-        DeliveryFeeRepository $deliveryFeeRepository,
+        protected ?EntityManagerInterface $entityManager,
+        protected ?UserPasswordHasherInterface $passwordHasher,
+        protected ?MemberRepository $memberRepository,
+        private readonly ?CategoryRepository $categoryRepository,
+        protected ?CustomerRepository $customerRepository,
+        protected ?ClassNameRepository $classNameRepository,
+        protected ?ClassCategoryRepository $classCategoryRepository,
+        protected ?DeliveryDurationRepository $durationRepository,
+        protected ?DeliveryFeeRepository $deliveryFeeRepository,
         PaymentRepository $paymentRepository,
-        PageRepository $pageRepository,
-        PrefRepository $prefRepository,
-        TagRepository $tagRepository,
-        TaxRuleRepository $taxRuleRepository,
-        PurchaseFlow $orderPurchaseFlow,
-        RequestStack $requestStack,
-        $locale = 'ja_JP',
+        protected ?PageRepository $pageRepository,
+        private readonly ?PrefRepository $prefRepository,
+        private readonly ?TagRepository $tagRepository,
+        protected ?TaxRuleRepository $taxRuleRepository,
+        protected ?PurchaseFlow $orderPurchaseFlow,
+        protected ?RequestStack $requestStack,
+        protected $locale = 'ja_JP',
     ) {
-        $this->locale = $locale;
-        $this->entityManager = $entityManager;
-        $this->passwordHasher = $passwordHasher;
-        $this->memberRepository = $memberRepository;
-        $this->categoryRepository = $categoryRepository;
-        $this->customerRepository = $customerRepository;
-        $this->classNameRepository = $classNameRepository;
-        $this->classCategoryRepository = $classCategoryRepository;
-        $this->durationRepository = $durationRepository;
-        $this->deliveryFeeRepository = $deliveryFeeRepository;
         $this->paymentRepository = $paymentRepository;
-        $this->pageRepository = $pageRepository;
-        $this->prefRepository = $prefRepository;
-        $this->tagRepository = $tagRepository;
-        $this->taxRuleRepository = $taxRuleRepository;
-        $this->orderPurchaseFlow = $orderPurchaseFlow;
-        $this->requestStack = $requestStack;
     }
 
     /**
      * Member オブジェクトを生成して返す.
      *
      * @param string $username . null の場合は, ランダムなユーザーIDが生成される.
-     *
-     * @return Member
      */
-    public function createMember($username = null)
+    public function createMember(?string $username = null): Member
     {
         $faker = $this->getFaker();
         $Member = new Member();
         if (is_null($username)) {
-            $username = $faker->word;
+            $username = $faker->word();
             do {
-                $loginId = $faker->word;
+                // 無限ループが発生したため、wordではなくuuidを使用する
+                $loginId = $faker->uuid();
             } while ($this->memberRepository->findBy(['login_id' => $loginId]));
         } else {
             $loginId = $username;
@@ -237,7 +135,9 @@ class Generator
             ->setPassword($password)
             ->setWork($Work)
             ->setAuthority($Authority)
-            ->setCreator($Creator);
+            ->setCreator($Creator)
+            ->setCreateDate(new \DateTime())
+            ->setUpdateDate(new \DateTime());
         $this->memberRepository->save($Member);
 
         return $Member;
@@ -247,10 +147,8 @@ class Generator
      * Customer オブジェクトを生成して返す.
      *
      * @param string $email メールアドレス. null の場合は, ランダムなメールアドレスが生成される.
-     *
-     * @return Customer
      */
-    public function createCustomer($email = null)
+    public function createCustomer(?string $email = null): Customer
     {
         /** @var Generator_Faker $faker */
         $faker = $this->getFaker();
@@ -299,10 +197,8 @@ class Generator
      *
      * @param Customer $Customer 対象の Customer インスタンス
      * @param bool $is_nonmember 非会員の場合 true
-     *
-     * @return CustomerAddress
      */
-    public function createCustomerAddress(Customer $Customer, $is_nonmember = false)
+    public function createCustomerAddress(Customer $Customer, bool $is_nonmember = false): CustomerAddress
     {
         $faker = $this->getFaker();
         $Pref = $this->entityManager->find(Pref::class, $faker->numberBetween(1, 47));
@@ -342,10 +238,8 @@ class Generator
      * 非会員の Customer オブジェクトを生成して返す.
      *
      * @param string $email メールアドレス. null の場合は, ランダムなメールアドレスが生成される.
-     *
-     * @return Customer
      */
-    public function createNonMember($email = null)
+    public function createNonMember(?string $email = null): Customer
     {
         $sessionKey = 'eccube.front.shopping.nonmember';
         $sessionCustomerAddressKey = 'eccube.front.shopping.nonmember.customeraddress';
@@ -390,10 +284,8 @@ class Generator
      * @param string $product_name 商品名. null の場合はランダムな文字列が生成される.
      * @param int $product_class_num 商品規格の生成数
      * @param bool $with_image 画像を生成する場合 true, 生成しない場合 false
-     *
-     * @return Product
      */
-    public function createProduct($product_name = null, $product_class_num = 3, $with_image = false)
+    public function createProduct(?string $product_name = null, int $product_class_num = 3, bool $with_image = false): Product
     {
         $faker = $this->getFaker();
         $Member = $this->entityManager->find(Member::class, 2);
@@ -429,7 +321,7 @@ class Generator
                 $fs = new Filesystem();
                 $fs->copy($src, $dist);
             } else {
-                $image = $faker->word.'.jpg';
+                $image = $faker->word().'.jpg';
             }
             $ProductImage
                 ->setCreator($Member)
@@ -466,7 +358,7 @@ class Generator
             $this->entityManager->flush();
             $ProductClass = new ProductClass();
             do {
-                $ProductCode = $faker->word;
+                $ProductCode = $faker->word();
             } while (in_array($ProductCode, $ProductCodesGenerated));
             $ProductCodesGenerated[] = $ProductCode;
             $ProductClass
@@ -515,7 +407,7 @@ class Generator
             $ProductClass->setVisible(true);
         }
         do {
-            $ProductCode = $faker->word;
+            $ProductCode = $faker->word();
         } while (in_array($ProductCode, $ProductCodesGenerated));
         $ProductCodesGenerated[] = $ProductCode;
         $ProductClass
@@ -580,10 +472,8 @@ class Generator
      * @param int $add_charge Order に加算される手数料
      * @param int $add_discount Order に加算される値引き額
      * @param int $statusTypeId OrderStatus:id
-     *
-     * @return Order
      */
-    public function createOrder(Customer $Customer, array $ProductClasses = [], ?Delivery $Delivery = null, $add_charge = 0, $add_discount = 0, $statusTypeId = null)
+    public function createOrder(Customer $Customer, array $ProductClasses = [], ?Delivery $Delivery = null, int $add_charge = 0, int $add_discount = 0, ?int $statusTypeId = null): Order
     {
         $faker = $this->getFaker();
         $quantity = $faker->randomNumber(2);
@@ -640,7 +530,9 @@ class Generator
             ->setOrder($Order)
             ->setPref($Pref)
             ->setDelivery($Delivery)
-            ->setShippingDeliveryName($Delivery->getName());
+            ->setShippingDeliveryName($Delivery->getName())
+            ->setCreateDate(new \DateTime())
+            ->setUpdateDate(new \DateTime());
 
         $Order->addShipping($Shipping);
 
@@ -767,10 +659,8 @@ class Generator
      * @param int $charge 手数料
      * @param int $rule_min 下限金額
      * @param int $rule_max 上限金額
-     *
-     * @return Payment
      */
-    public function createPayment(Delivery $Delivery, $method, $charge = 0, $rule_min = 0, $rule_max = 999999999)
+    public function createPayment(Delivery $Delivery, string $method, int $charge = 0, int $rule_min = 0, int $rule_max = 999999999): Payment
     {
         $Member = $this->entityManager->find(Member::class, 2);
         $Payment = new Payment();
@@ -780,7 +670,9 @@ class Generator
             ->setRuleMin($rule_min)
             ->setRuleMax($rule_max)
             ->setCreator($Member)
-            ->setVisible(true);
+            ->setVisible(true)
+            ->setCreateDate(new \DateTime())
+            ->setUpdateDate(new \DateTime());
         $this->entityManager->persist($Payment);
         $this->entityManager->flush();
 
@@ -805,10 +697,8 @@ class Generator
      * 配送方法を生成する.
      *
      * @param int $delivery_time_max_pattern 配送時間の最大パターン数
-     *
-     * @return Delivery
      */
-    public function createDelivery($delivery_time_max_pattern = 5)
+    public function createDelivery(int $delivery_time_max_pattern = 5): Delivery
     {
         $Member = $this->entityManager->find(Member::class, 2);
         $SaleType = $this->entityManager->find(SaleType::class, 1);
@@ -816,8 +706,8 @@ class Generator
         $faker = $this->getFaker();
         $Delivery = new Delivery();
         $Delivery
-            ->setServiceName($faker->word)
-            ->setName($faker->word)
+            ->setServiceName($faker->word())
+            ->setName($faker->word())
             ->setDescription($faker->paragraph())
             ->setConfirmUrl($faker->url)
             ->setSortNo($faker->randomNumber(2))
@@ -834,9 +724,11 @@ class Generator
             $DeliveryTime = new DeliveryTime();
             $DeliveryTime
                 ->setDelivery($Delivery)
-                ->setDeliveryTime($faker->word)
+                ->setDeliveryTime($faker->word())
                 ->setSortNo($i + 1)
-                ->setVisible(true);
+                ->setVisible(true)
+                ->setCreateDate(new \DateTime())
+                ->setUpdateDate(new \DateTime());
             $this->entityManager->persist($DeliveryTime);
             $this->entityManager->flush();
             $Delivery->addDeliveryTime($DeliveryTime);
@@ -862,29 +754,27 @@ class Generator
 
     /**
      * ページを生成する
-     *
-     * @return Page
      */
-    public function createPage()
+    public function createPage(): Page
     {
         $faker = $this->getFaker();
         /** @var Page $Page */
         $Page = $this->pageRepository->newPage();
         do {
-            $url = $faker->word;
+            $url = $faker->word();
         } while ($this->pageRepository->findBy(['url' => $url]));
         do {
-            $filename = $faker->word;
+            $filename = $faker->word();
         } while ($this->pageRepository->findBy(['file_name' => $filename]));
         $Page
-            ->setName($faker->word)
+            ->setName($faker->word())
             ->setUrl($url)
             ->setFileName($filename)
-            ->setAuthor($faker->word)
-            ->setDescription($faker->word)
-            ->setKeyword($faker->word)
-            ->setMetaRobots($faker->word)
-            ->setMetaTags('<meta name="meta_tags_test" content="'.str_replace('\'', '', $faker->word).'" />')
+            ->setAuthor($faker->word())
+            ->setDescription($faker->word())
+            ->setKeyword($faker->word())
+            ->setMetaRobots($faker->word())
+            ->setMetaTags('<meta name="meta_tags_test" content="'.str_replace('\'', '', $faker->word()).'" />')
         ;
         $this->entityManager->persist($Page);
         $this->entityManager->flush();
@@ -894,15 +784,12 @@ class Generator
 
     /**
      * ログイン履歴を生成する
-     *
-     * @param string $user_name
-     * @param string|null $client_ip
-     * @param int|null $status
-     * @param Member|null $Member
-     *
-     * @return LoginHistory
      */
-    public function createLoginHistory($user_name, $client_ip = null, $status = null, $Member = null)
+    public function createLoginHistory(
+        string $user_name,
+        ?string $client_ip = null,
+        int|LoginHistoryStatus|null $status = null,
+        ?Member $Member = null): LoginHistory
     {
         $faker = $this->getFaker();
         $LoginHistory = new LoginHistory();
@@ -923,10 +810,8 @@ class Generator
 
     /**
      * Faker を生成する.
-     *
-     * @return \Faker\Generator
      */
-    protected function getFaker()
+    protected function getFaker(): \Faker\Generator
     {
         return Factory::create($this->locale);
     }

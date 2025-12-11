@@ -40,63 +40,19 @@ use Symfony\Component\Validator\Constraints\Regex;
 class OrderType extends AbstractType
 {
     /**
-     * @var OrderRepository
-     */
-    protected $orderRepository;
-
-    /**
-     * @var DeliveryRepository
-     */
-    protected $deliveryRepository;
-
-    /**
-     * @var PaymentRepository
-     */
-    protected $paymentRepository;
-
-    /**
-     * @var BaseInfoRepository
-     */
-    protected $baseInfoRepository;
-
-    /**
-     * @var Context
-     */
-    protected $requestContext;
-
-    /**
      * OrderType constructor.
-     *
-     * @param OrderRepository $orderRepository
-     * @param DeliveryRepository $deliveryRepository
-     * @param PaymentRepository $paymentRepository
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param Context $requestContext
      */
-    public function __construct(
-        OrderRepository $orderRepository,
-        DeliveryRepository $deliveryRepository,
-        PaymentRepository $paymentRepository,
-        BaseInfoRepository $baseInfoRepository,
-        Context $requestContext,
-    ) {
-        $this->orderRepository = $orderRepository;
-        $this->deliveryRepository = $deliveryRepository;
-        $this->paymentRepository = $paymentRepository;
-        $this->baseInfoRepository = $baseInfoRepository;
-        $this->requestContext = $requestContext;
+    public function __construct(protected OrderRepository $orderRepository, protected DeliveryRepository $deliveryRepository, protected PaymentRepository $paymentRepository, protected BaseInfoRepository $baseInfoRepository, protected Context $requestContext)
+    {
     }
 
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         // ShoppingController::checkoutから呼ばれる場合は, フォーム項目の定義をスキップする.
         if ($options['skip_add_form']) {
@@ -130,7 +86,7 @@ class OrderType extends AbstractType
         }
 
         // 支払い方法のプルダウンを生成
-        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event): void {
             /** @var Order|null $Order */
             $Order = $event->getData();
             if (null === $Order || !$Order->getId()) {
@@ -149,7 +105,7 @@ class OrderType extends AbstractType
 
         // 支払い方法のプルダウンを生成(Submit時)
         // 配送方法の選択によって使用できる支払い方法がかわるため, フォームを再生成する.
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event): void {
             /** @var Order $Order */
             $Order = $event->getForm()->getData();
             $data = $event->getData();
@@ -175,7 +131,7 @@ class OrderType extends AbstractType
             $this->addPaymentForm($form, $Payments);
         });
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             /** @var Order $Order */
             $Order = $event->getData();
             $Payment = $Order->getPayment();
@@ -187,13 +143,9 @@ class OrderType extends AbstractType
 
     /**
      * {@inheritDoc}
-     *
-     * @param OptionsResolver $resolver
-     *
-     * @return void
      */
     #[\Override]
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(
             [
@@ -204,19 +156,15 @@ class OrderType extends AbstractType
     }
 
     #[\Override]
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return '_shopping_order';
     }
 
     /**
-     * @param FormInterface $form
      * @param Payment[] $choices
-     * @param Payment|null $data
-     *
-     * @return void
      */
-    private function addPaymentForm(FormInterface $form, array $choices, ?Payment $data = null)
+    private function addPaymentForm(FormInterface $form, array $choices, ?Payment $data = null): void
     {
         $message = trans('front.shopping.payment_method_unselected');
 
@@ -242,11 +190,9 @@ class OrderType extends AbstractType
     /**
      * 出荷に紐づく配送方法を取得する.
      *
-     * @param Order $Order
-     *
      * @return Delivery[]
      */
-    private function getDeliveries(Order $Order)
+    private function getDeliveries(Order $Order): array
     {
         $Deliveries = [];
         foreach ($Order->getShippings() as $Shipping) {
@@ -267,7 +213,7 @@ class OrderType extends AbstractType
      *
      * @return ArrayCollection<int, Payment>
      */
-    private function getPayments($Deliveries)
+    private function getPayments(array $Deliveries): ArrayCollection
     {
         $PaymentsByDeliveries = [];
         foreach ($Deliveries as $Delivery) {
@@ -303,16 +249,20 @@ class OrderType extends AbstractType
      * 支払い方法の利用条件でフィルタをかける.
      *
      * @param ArrayCollection<int, Payment> $Payments
-     * @param string $total
      *
      * @return Payment[]
      */
-    private function filterPayments(ArrayCollection $Payments, $total)
+    private function filterPayments(ArrayCollection $Payments, ?string $total): array
     {
         $PaymentArrays = $Payments->filter(function (Payment $Payment) use ($total) {
             $charge = $Payment->getCharge();
             $min = $Payment->getRuleMin();
             $max = $Payment->getRuleMax();
+
+            // $totalがnullの場合は制限チェックをスキップ
+            if ($total === null) {
+                return true;
+            }
 
             if (null !== $min && bcadd($total, $charge) < $min) {
                 return false;
@@ -324,9 +274,7 @@ class OrderType extends AbstractType
 
             return true;
         })->toArray();
-        usort($PaymentArrays, function (Payment $a, Payment $b) {
-            return $a->getSortNo() < $b->getSortNo() ? 1 : -1;
-        });
+        usort($PaymentArrays, fn (Payment $a, Payment $b) => $a->getSortNo() < $b->getSortNo() ? 1 : -1);
 
         return $PaymentArrays;
     }

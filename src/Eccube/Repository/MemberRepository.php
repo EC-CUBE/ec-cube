@@ -36,13 +36,9 @@ class MemberRepository extends AbstractRepository
     /**
      * 管理ユーザの表示順を一つ上げる.
      *
-     * @param Member $Member
-     *
-     * @return void
-     *
      * @throws \Exception 更新対象のユーザより上位のユーザが存在しない場合.
      */
-    public function up(Member $Member)
+    public function up(Member $Member): void
     {
         $sortNo = $Member->getSortNo();
         $Member2 = $this->findOneBy(['sort_no' => $sortNo + 1]);
@@ -63,13 +59,9 @@ class MemberRepository extends AbstractRepository
     /**
      * 管理ユーザの表示順を一つ下げる.
      *
-     * @param Member $Member
-     *
-     * @return void
-     *
      * @throws \Exception 更新対象のユーザより下位のユーザが存在しない場合.
      */
-    public function down(Member $Member)
+    public function down(Member $Member): void
     {
         $sortNo = $Member->getSortNo();
         $Member2 = $this->findOneBy(['sort_no' => $sortNo - 1]);
@@ -92,13 +84,11 @@ class MemberRepository extends AbstractRepository
      *
      * @param Member $Member
      *
-     * @return void
-     *
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
     #[\Override]
-    public function save($Member)
+    public function save($Member): void
     {
         if (!$Member->getId()) {
             $sortNo = $this->createQueryBuilder('m')
@@ -118,11 +108,9 @@ class MemberRepository extends AbstractRepository
      * 管理ユーザを削除します.
      *
      * @param Member $Member
-     *
-     * @return void
      */
     #[\Override]
-    public function delete($Member)
+    public function delete($Member): void
     {
         $this->createQueryBuilder('m')
             ->update()
@@ -136,7 +124,7 @@ class MemberRepository extends AbstractRepository
 
         // ログインしたメンバーの外部参照制約を解除する
         // https://github.com/EC-CUBE/ec-cube/issues/5119
-        $Member->setCreator(null);
+        $Member->setCreator();
         $em->flush();
 
         $em->remove($Member);

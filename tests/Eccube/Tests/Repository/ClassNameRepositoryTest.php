@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -27,31 +29,20 @@ use Eccube\Tests\EccubeTestCase;
  *
  * @author Kentaro Ohkouchi
  */
-class ClassNameRepositoryTest extends EccubeTestCase
+final class ClassNameRepositoryTest extends EccubeTestCase
 {
-    /**
-     * @var  Member
-     */
-    protected $Member;
+    protected ?Member $Member = null;
 
-    /**
-     * @var  ProductClassRepository
-     */
-    protected $productClassRepository;
+    protected ?ProductClassRepository $productClassRepository = null;
 
-    /**
-     * @var  ClassCategoryRepository
-     */
-    protected $classCategoryRepository;
+    protected ?ClassCategoryRepository $classCategoryRepository = null;
 
-    /**
-     * @var  ClassNameRepository
-     */
-    protected $classNameRepository;
+    protected ?ClassNameRepository $classNameRepository = null;
 
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -147,10 +138,11 @@ class ClassNameRepositoryTest extends EccubeTestCase
         $ClassName = $this->classNameRepository->findOneBy(
             ['backend_name' => 'class-0']
         );
+        $this->assertInstanceOf(ClassName::class, $ClassName);
         $ClassNameId = $ClassName->getId();
         $this->classNameRepository->delete($ClassName);
 
-        self::assertNull($this->entityManager->find(ClassName::class, $ClassNameId));
+        $this->assertNotInstanceOf(ClassName::class, $this->entityManager->find(ClassName::class, $ClassNameId));
     }
 
     public function testDeleteWithException()

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -33,29 +35,18 @@ use Faker\Generator;
  */
 abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
 {
-    /**
-     * @var Generator
-     */
-    protected $faker;
+    protected ?Generator $faker = null;
 
-    /**
-     * @var ProductStatusRepository
-     */
-    protected $productStatusRepository;
+    protected ?ProductStatusRepository $productStatusRepository = null;
 
-    /**
-     * @var SaleTypeRepository
-     */
-    protected $saleTypeRepository;
+    protected ?SaleTypeRepository $saleTypeRepository = null;
 
-    /**
-     * @var DeliveryDurationRepository
-     */
-    protected $deliveryDurationRepository;
+    protected ?DeliveryDurationRepository $deliveryDurationRepository = null;
 
     /**
      * Set up function
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -67,10 +58,8 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
 
     /**
      * @param Member $TestCreator
-     *
-     * @return Product
      */
-    protected function createTestProduct(?Member $TestCreator = null)
+    protected function createTestProduct(?Member $TestCreator = null): Product
     {
         if (!$TestCreator) {
             $TestCreator = $this->createMember();
@@ -95,12 +84,12 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
         $ProductClass->setProduct($TestProduct)
             ->setSaleType($SaleType)
             ->setCode('test code')
-            ->setStock(100)
+            ->setStock('100')
             ->setStockUnlimited(false)
-            ->setSaleLimit($this->faker->numberBetween(1, 99))
-            ->setPrice01($this->faker->randomNumber(4))
-            ->setPrice02($this->faker->randomNumber(4))
-            ->setDeliveryFee($this->faker->randomNumber(4))
+            ->setSaleLimit((string) $this->faker->numberBetween(1, 99))
+            ->setPrice01((string) $this->faker->randomNumber(4))
+            ->setPrice02((string) $this->faker->randomNumber(4))
+            ->setDeliveryFee((string) $this->faker->randomNumber(4))
             ->setCreator($TestCreator)
             ->setVisible(true);
 
@@ -116,12 +105,8 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
 
     /**
      * Create class name
-     *
-     * @param Member|null $Creator
-     *
-     * @return ClassName
      */
-    protected function createClassName(?Member $Creator = null)
+    protected function createClassName(?Member $Creator = null): ClassName
     {
         if (!$Creator) {
             $Creator = $this->createMember();
@@ -140,13 +125,8 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
 
     /**
      * Create class category
-     *
-     * @param Member $Creator
-     * @param ClassName $TestClassName
-     *
-     * @return ClassCategory
      */
-    protected function createClassCategory(Member $Creator, ClassName &$TestClassName)
+    protected function createClassCategory(Member $Creator, ClassName &$TestClassName): ClassCategory
     {
         if (!$Creator) {
             $Creator = $this->createMember();
@@ -168,20 +148,13 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
 
     /**
      * Create product class
-     *
-     * @param Member $Creator
-     * @param Product $TestProduct
-     * @param ClassCategory $TestClassCategory1
-     * @param ClassCategory $TestClassCategory2
-     *
-     * @return ProductClass
      */
     protected function createProductClass(
         Member $Creator,
         Product &$TestProduct,
         ClassCategory $TestClassCategory1,
         ClassCategory $TestClassCategory2,
-    ) {
+    ): ProductClass {
         if (!$Creator) {
             $Creator = $this->createMember();
         }
@@ -194,12 +167,12 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
             ->setClassCategory2($TestClassCategory2)
             ->setSaleType($SaleType)
             ->setCode('test')
-            ->setStock(100)
+            ->setStock('100')
             ->setStockUnlimited(false)
-            ->setSaleLimit(10)
-            ->setPrice01(10000)
-            ->setPrice02(5000)
-            ->setDeliveryFee(1000)
+            ->setSaleLimit('10')
+            ->setPrice01('10000')
+            ->setPrice02('5000')
+            ->setDeliveryFee('1000')
             ->setDeliveryDuration($DeliveryDurations[$this->faker->numberBetween(0, 8)])
             ->setCreator($Creator)
             ->setVisible(true);
@@ -221,13 +194,8 @@ abstract class AbstractProductCommonTestCase extends AbstractAdminWebTestCase
 
     /**
      * Create product stock
-     *
-     * @param Member $Creator
-     * @param ProductClass $TestProductClass
-     *
-     * @return ProductStock
      */
-    protected function createProductStock(Member $Creator, ProductClass &$TestProductClass)
+    protected function createProductStock(Member $Creator, ProductClass &$TestProductClass): ProductStock
     {
         if (!$Creator) {
             $Creator = $this->createMember();

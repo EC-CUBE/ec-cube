@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -22,41 +24,24 @@ use Eccube\Service\PurchaseFlow\Processor\StockMultipleValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
-class StockMultipleValidatorTest extends EccubeTestCase
+final class StockMultipleValidatorTest extends EccubeTestCase
 {
-    /**
-     * @var StockMultipleValidator
-     */
-    protected $validator;
+    protected ?StockMultipleValidator $validator = null;
 
-    /**
-     * @var Order
-     */
-    protected $Order;
+    protected ?Order $Order = null;
 
-    /**
-     * @var OrderItem
-     */
-    protected $OrderItem1;
+    protected ?OrderItem $OrderItem1 = null;
 
-    /**
-     * @var OrderItem
-     */
-    protected $OrderItem2;
+    protected ?OrderItem $OrderItem2 = null;
 
-    /**
-     * @var Product
-     */
-    protected $Product;
+    protected ?Product $Product = null;
 
-    /**
-     * @var ProductClass
-     */
-    protected $ProductClass;
+    protected ?ProductClass $ProductClass = null;
 
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -72,20 +57,20 @@ class StockMultipleValidatorTest extends EccubeTestCase
 
     public function testInstance()
     {
-        self::assertInstanceOf(StockMultipleValidator::class, $this->validator);
-        self::assertSame($this->ProductClass, $this->OrderItem1->getProductClass());
-        self::assertSame($this->ProductClass, $this->OrderItem2->getProductClass());
+        $this->assertInstanceOf(StockMultipleValidator::class, $this->validator);
+        $this->assertSame($this->ProductClass, $this->OrderItem1->getProductClass());
+        $this->assertSame($this->ProductClass, $this->OrderItem2->getProductClass());
     }
 
     public function testValidStock()
     {
         $this->ProductClass->setStockUnlimited(false);
-        $this->ProductClass->setStock(2);
+        $this->ProductClass->setStock('2');
         $this->OrderItem1->setQuantity(1);
         $this->OrderItem2->setQuantity(1);
         try {
             $this->validator->validate($this->Order, new PurchaseContext());
-            self::assertTrue(true);
+            $this->assertTrue(true);
         } catch (InvalidItemException) {
             self::fail();
         }
@@ -100,7 +85,7 @@ class StockMultipleValidatorTest extends EccubeTestCase
 
         try {
             $this->validator->validate($this->Order, new PurchaseContext());
-            self::assertTrue(true);
+            $this->assertTrue(true);
         } catch (InvalidItemException) {
             self::fail();
         }
@@ -109,7 +94,7 @@ class StockMultipleValidatorTest extends EccubeTestCase
     public function testStockZero()
     {
         $this->ProductClass->setStockUnlimited(false);
-        $this->ProductClass->setStock(0);
+        $this->ProductClass->setStock('0');
         $this->OrderItem1->setQuantity(1000);
         $this->OrderItem2->setQuantity(50);
 
@@ -120,7 +105,7 @@ class StockMultipleValidatorTest extends EccubeTestCase
     public function testStockOver()
     {
         $this->ProductClass->setStockUnlimited(false);
-        $this->ProductClass->setStock(100);
+        $this->ProductClass->setStock('100');
         $this->OrderItem1->setQuantity(50);
         $this->OrderItem2->setQuantity(51);
 

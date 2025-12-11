@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,14 +19,14 @@ use Eccube\Form\Type\Admin\OrderType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
-class OrderTypeTest extends AbstractTypeTestCase
+final class OrderTypeTest extends AbstractTypeTestCase
 {
-    /** @var FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = [
+    protected ?array $formData = [
         'name' => [
             'name01' => 'たかはし',
             'name02' => 'しんいち',
@@ -67,6 +69,7 @@ class OrderTypeTest extends AbstractTypeTestCase
         ],
     ];
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -78,7 +81,7 @@ class OrderTypeTest extends AbstractTypeTestCase
                 'csrf_protection' => false,
             ])
             ->getForm();
-        static::getContainer()->get('request_stack')->push(new Request());
+        static::getContainer()->get(RequestStack::class)->push(new Request());
     }
 
     public function testInValidData()

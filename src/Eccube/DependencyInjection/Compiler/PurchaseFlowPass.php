@@ -13,9 +13,9 @@
 
 namespace Eccube\DependencyInjection\Compiler;
 
-use Eccube\Annotation\CartFlow;
-use Eccube\Annotation\OrderFlow;
-use Eccube\Annotation\ShoppingFlow;
+use Eccube\Attribute\CartFlow;
+use Eccube\Attribute\OrderFlow;
+use Eccube\Attribute\ShoppingFlow;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PriorityTaggedServiceTrait;
@@ -36,14 +36,10 @@ class PurchaseFlowPass implements CompilerPassInterface
     public const PURCHASE_PROCESSOR_TAG = 'eccube.purchase.processor';
 
     /**
-     * @param ContainerBuilder $container
-     *
-     * @return void
-     *
      * @throws \ReflectionException
      */
     #[\Override]
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $flowTypes = [
             PurchaseContext::CART_FLOW => $container->findDefinition('eccube.purchase.flow.cart'),
@@ -141,12 +137,6 @@ class PurchaseFlowPass implements CompilerPassInterface
 
     /**
      * 既に同一メソッド・同一サービスIDが登録済みかを定義から判定し、二重登録を防ぐ。
-     *
-     * @param Definition $flowDef
-     * @param string     $methodName
-     * @param string     $serviceId
-     *
-     * @return bool
      */
     private function alreadyWired(Definition $flowDef, string $methodName, string $serviceId): bool
     {

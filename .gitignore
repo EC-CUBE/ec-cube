@@ -50,3 +50,7 @@ node_modules
 /.php-cs-fixer.cache
 /.php-cs-fixer.*.php
 ###< friendsofphp/php-cs-fixer ###
+
+###> symfony/flex ###
+/app/config/eccube/reference.php
+###< symfony/flex ###

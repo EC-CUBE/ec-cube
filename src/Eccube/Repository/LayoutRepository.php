@@ -13,6 +13,7 @@
 
 namespace Eccube\Repository;
 
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Entity\Layout;
@@ -33,13 +34,9 @@ class LayoutRepository extends AbstractRepository
     }
 
     /**
-     * @param int|string $id
-     *
-     * @return float|int|mixed|string|null
-     *
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
-    public function get($id)
+    public function get(int|string $id): ?Layout
     {
         try {
             $Layout = $this->createQueryBuilder('l')
@@ -50,7 +47,7 @@ class LayoutRepository extends AbstractRepository
                 ->orderBy('bp.block_row', 'ASC')
                 ->setParameter('id', $id)
                 ->getQuery()
-                ->useResultCache(true, $this->getCacheLifetime())
+                ->setResultCacheLifetime($this->getCacheLifetime())
                 ->getSingleResult();
         } catch (NoResultException) {
             return null;

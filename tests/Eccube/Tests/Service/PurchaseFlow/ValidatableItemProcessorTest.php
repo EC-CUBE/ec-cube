@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,7 +23,7 @@ use Eccube\Service\PurchaseFlow\ItemValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
-class ValidatableItemProcessorTest extends EccubeTestCase
+final class ValidatableItemProcessorTest extends EccubeTestCase
 {
     /*
      * カートの場合
@@ -41,7 +43,7 @@ class ValidatableItemProcessorTest extends EccubeTestCase
         $this->assertFalse($validator->handleCalled);
     }
 
-    public function testValidateCartFail()
+    public function testValidateCartFail(): never
     {
         // TODO: FIXME
         $this->markTestIncomplete(__METHOD__.'may be not implement');
@@ -58,8 +60,8 @@ class ValidatableItemProcessorTest extends EccubeTestCase
         $item = new OrderItem();
 
         $result = $validator->execute($item, new PurchaseContext());
-        self::assertFalse($validator->handleCalled);
-        self::assertFalse($result->isError());
+        $this->assertFalse($validator->handleCalled);
+        $this->assertFalse($result->isError());
     }
 
     public function testValidateOrderFail()
@@ -68,8 +70,8 @@ class ValidatableItemProcessorTest extends EccubeTestCase
         $item = new OrderItem();
 
         $result = $validator->execute($item, new PurchaseContext());
-        self::assertTrue($validator->handleCalled);
-        self::assertTrue($result->isWarning());
+        $this->assertTrue($validator->handleCalled);
+        $this->assertTrue($result->isWarning());
     }
 }
 
@@ -77,11 +79,11 @@ class ItemValidatorTest_NormalValidator extends ItemValidator
 {
     public $handleCalled = false;
 
-    protected function validate(ItemInterface $item, PurchaseContext $context)
+    protected function validate(ItemInterface $item, PurchaseContext $context): void
     {
     }
 
-    protected function handle(ItemInterface $item, PurchaseContext $context)
+    protected function handle(ItemInterface $item, PurchaseContext $context): void
     {
         $this->handleCalled = true;
     }
@@ -91,12 +93,12 @@ class ItemValidatorTest_FailValidator extends ItemValidator
 {
     public $handleCalled = false;
 
-    protected function validate(ItemInterface $item, PurchaseContext $context): never
+    protected function validate(ItemInterface $item, PurchaseContext $context): void
     {
         throw new InvalidItemException();
     }
 
-    protected function handle(ItemInterface $item, PurchaseContext $context)
+    protected function handle(ItemInterface $item, PurchaseContext $context): void
     {
         $this->handleCalled = true;
     }

@@ -14,6 +14,7 @@
 namespace Eccube\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Eccube\Common\EccubeConfig;
 use Eccube\Util\StringUtil;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -29,47 +30,27 @@ class SystemService implements EventSubscriberInterface
 
     /**
      * メンテナンスモードを無効にする場合はtrue
-     *
-     * @var bool
      */
-    private $disableMaintenanceAfterResponse = false;
+    private bool $disableMaintenanceAfterResponse = false;
 
     /**
      * メンテナンスモードの識別子
-     *
-     * @var string
      */
-    private $maintenanceMode;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
+    private string $maintenanceMode;
 
     /**
      * SystemService constructor.
      */
-    public function __construct(
-        EntityManagerInterface $entityManager,
-        EccubeConfig $eccubeConfig,
-    ) {
-        $this->entityManager = $entityManager;
-        $this->eccubeConfig = $eccubeConfig;
+    public function __construct(protected EntityManagerInterface $entityManager, protected EccubeConfig $eccubeConfig)
+    {
     }
 
     /**
      * get DB version
-     *
-     * @return string
      */
-    public function getDbversion()
+    public function getDbversion(): string
     {
-        $rsm = new \Doctrine\ORM\Query\ResultSetMapping();
+        $rsm = new ResultSetMapping();
         $rsm->addScalarResult('v', 'v');
 
         $platform = $this->entityManager->getConnection()->getDatabasePlatform()->getName();
@@ -101,10 +82,8 @@ class SystemService implements EventSubscriberInterface
      * Try to set new values memory_limit | return true
      *
      * @param string $memory | EX: 1536M
-     *
-     * @return bool
      */
-    public function canSetMemoryLimit($memory)
+    public function canSetMemoryLimit(string $memory): bool
     {
         try {
             $ret = ini_set('memory_limit', $memory);
@@ -117,10 +96,8 @@ class SystemService implements EventSubscriberInterface
 
     /**
      * Get memory_limit | Megabyte
-     *
-     * @return float|int
      */
-    public function getMemoryLimit()
+    public function getMemoryLimit(): float|int
     {
         // Data type: bytes
         $memoryLimit = (new MemoryDataCollector())->getMemoryLimit();
@@ -136,14 +113,8 @@ class SystemService implements EventSubscriberInterface
      *
      * - $isEnable = true の場合, $mode の文字列が記載された .maintenance ファイルを生成する
      * - $isEnable = false の場合, $mode の文字列が記載された .maintenance ファイルを削除する
-     *
-     * @param bool $isEnable
-     * @param string $mode
-     * @param bool $force
-     *
-     * @return void
      */
-    public function switchMaintenance($isEnable = false, $mode = self::AUTO_MAINTENANCE, bool $force = false)
+    public function switchMaintenance(bool $isEnable = false, string $mode = self::AUTO_MAINTENANCE, bool $force = false): void
     {
         if ($isEnable) {
             $this->enableMaintenance($mode, $force);
@@ -152,9 +123,6 @@ class SystemService implements EventSubscriberInterface
         }
     }
 
-    /**
-     * @return string|null
-     */
     public function getMaintenanceToken(): ?string
     {
         $path = $this->eccubeConfig->get('eccube_content_maintenance_file_path');
@@ -169,25 +137,15 @@ class SystemService implements EventSubscriberInterface
 
     /**
      * KernelEvents::TERMINATE で設定されるEvent
-     *
-     * @param TerminateEvent $event
-     *
-     * @return void
      */
-    public function disableMaintenanceEvent(TerminateEvent $event)
+    public function disableMaintenanceEvent(TerminateEvent $event): void
     {
         if ($this->disableMaintenanceAfterResponse) {
             $this->switchMaintenance(false, $this->maintenanceMode);
         }
     }
 
-    /**
-     * @param string $mode
-     * @param bool $force
-     *
-     * @return void
-     */
-    public function enableMaintenance($mode = self::AUTO_MAINTENANCE, bool $force = false): void
+    public function enableMaintenance(string $mode = self::AUTO_MAINTENANCE, bool $force = false): void
     {
         if ($force || !$this->isMaintenanceMode()) {
             $path = $this->eccubeConfig->get('eccube_content_maintenance_file_path');
@@ -200,24 +158,14 @@ class SystemService implements EventSubscriberInterface
      * メンテナンスモードを解除する
      *
      * KernelEvents::TERMINATE で解除のEventを設定し、メンテナンスモードを解除する
-     *
-     * @param string $mode
-     *
-     * @return void
      */
-    public function disableMaintenance($mode = self::AUTO_MAINTENANCE)
+    public function disableMaintenance(string $mode = self::AUTO_MAINTENANCE): void
     {
         $this->disableMaintenanceAfterResponse = true;
         $this->maintenanceMode = $mode;
     }
 
-    /**
-     * @param string $mode
-     * @param bool $force
-     *
-     * @return void
-     */
-    public function disableMaintenanceNow($mode = self::AUTO_MAINTENANCE, bool $force = false): void
+    public function disableMaintenanceNow(string $mode = self::AUTO_MAINTENANCE, bool $force = false): void
     {
         if (!$this->isMaintenanceMode()) {
             return;
@@ -225,7 +173,7 @@ class SystemService implements EventSubscriberInterface
 
         $path = $this->eccubeConfig->get('eccube_content_maintenance_file_path');
         $contents = \file_get_contents($path);
-        $currentMode = \explode(':', $contents)[0] ?? null;
+        $currentMode = \explode(':', $contents)[0];
 
         if ($force || $currentMode === $mode) {
             \unlink($path);
@@ -234,10 +182,8 @@ class SystemService implements EventSubscriberInterface
 
     /**
      *　メンテナンスモードの状態を判定する
-     *
-     * @return bool
      */
-    public function isMaintenanceMode()
+    public function isMaintenanceMode(): bool
     {
         // .maintenanceが存在しているかチェック
         return \file_exists($this->eccubeConfig->get('eccube_content_maintenance_file_path'));
@@ -247,7 +193,7 @@ class SystemService implements EventSubscriberInterface
      * {@inheritdoc}
      */
     #[\Override]
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [KernelEvents::TERMINATE => 'disableMaintenanceEvent'];
     }

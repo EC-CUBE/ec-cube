@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,12 +17,15 @@ namespace Eccube\Tests\Web\Admin\Setting\System;
 
 use Eccube\Entity\Master\LoginHistoryStatus;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Component\HttpFoundation\Request;
 
-class LoginHistoryControllerTest extends AbstractAdminWebTestCase
+final class LoginHistoryControllerTest extends AbstractAdminWebTestCase
 {
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -40,7 +45,7 @@ class LoginHistoryControllerTest extends AbstractAdminWebTestCase
 
     public function testIndex()
     {
-        $crawler = $this->client->request('GET', $this->generateUrl('admin_setting_system_login_history'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_system_login_history'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         $this->expected = '検索結果：10件が該当しました';
@@ -51,19 +56,19 @@ class LoginHistoryControllerTest extends AbstractAdminWebTestCase
     public function testIndexPage()
     {
         // 表示件数100件テスト
-        $crawler = $this->client->request('GET', $this->generateUrl('admin_setting_system_login_history_page', ['page_no' => 1]), ['page_count' => 100]);
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_system_login_history_page', ['page_no' => 1]), ['page_count' => 100]);
         $this->expected = '100件';
         $this->actual = $crawler->filter('select.form-select > option:selected')->text();
         $this->verify('表示件数100件テスト');
 
         // 表示件数入力値は正しくない場合はデフォルトの表示件数になるテスト
-        $crawler = $this->client->request('GET', $this->generateUrl('admin_setting_system_login_history_page', ['page_no' => 1]), ['page_count' => 999999]);
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_system_login_history_page', ['page_no' => 1]), ['page_count' => 999999]);
         $this->expected = '検索結果：10件が該当しました';
         $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
         $this->verify('表示件数入力値は正しくない場合はデフォルトの表示件数になるテスト');
 
         // 表示件数はSESSIONから取得するテスト
-        $crawler = $this->client->request('GET', $this->generateUrl('admin_setting_system_login_history_page', ['page_no' => 1]), ['status' => 1]);
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_system_login_history_page', ['page_no' => 1]), ['status' => 1]);
         $this->expected = '100件';
         $this->actual = $crawler->filter('select.form-select > option:selected')->text();
         $this->verify('表示件数はSESSIONから取得するテスト');
@@ -79,7 +84,7 @@ class LoginHistoryControllerTest extends AbstractAdminWebTestCase
         ];
 
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_system_login_history'), $post
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -101,7 +106,7 @@ class LoginHistoryControllerTest extends AbstractAdminWebTestCase
         ];
 
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_system_login_history'), $post
         );
 
@@ -117,7 +122,7 @@ class LoginHistoryControllerTest extends AbstractAdminWebTestCase
         ];
 
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_system_login_history'), $post
         );
 
@@ -127,11 +132,10 @@ class LoginHistoryControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
-     * @dataProvider dataStatusProvider
-     *
      * @param mixed $status
      * @param mixed $count
      */
+    #[DataProvider(methodName: 'dataStatusProvider')]
     public function testIndexWithPostSearchByStatus($status, $count)
     {
         $post = [
@@ -139,7 +143,7 @@ class LoginHistoryControllerTest extends AbstractAdminWebTestCase
         ];
 
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_system_login_history'),
             $post
         );
@@ -150,14 +154,12 @@ class LoginHistoryControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
-     * @return array[]
+     * @return \Iterator<(int | string), array<mixed>>
      */
-    public function dataStatusProvider()
+    public static function dataStatusProvider(): \Iterator
     {
-        return [
-            [[LoginHistoryStatus::SUCCESS], 5],
-            [[LoginHistoryStatus::FAILURE], 5],
-            [[LoginHistoryStatus::SUCCESS, LoginHistoryStatus::FAILURE], 10],
-        ];
+        yield [[LoginHistoryStatus::SUCCESS], 5];
+        yield [[LoginHistoryStatus::FAILURE], 5];
+        yield [[LoginHistoryStatus::SUCCESS, LoginHistoryStatus::FAILURE], 10];
     }
 }

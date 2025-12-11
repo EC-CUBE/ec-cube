@@ -6,7 +6,6 @@
          backupGlobals="false"
          colors="true"
          bootstrap="tests/bootstrap.php"
-         convertDeprecationsToExceptions="false"
 >
     <php>
         <ini name="memory_limit" value="-1" />
@@ -16,20 +15,15 @@
         <server name="SYMFONY_DEPRECATIONS_HELPER" value="weak" />
         <server name="APP_ENV" value="test" force="true" />
         <server name="SHELL_VERBOSITY" value="-1" />
-        <server name="SYMFONY_PHPUNIT_REMOVE" value="symfony/yaml" />
-        <server name="SYMFONY_PHPUNIT_VERSION" value="9.5" />
     </php>
 
     <testsuites>
         <testsuite name="Project Test Suite">
             <directory>tests</directory>
-            <exclude>./tests/Eccube/Tests/Plugin/PluginManagerTest.php</exclude>
-            <exclude>./tests/Eccube/Tests/Service/PluginServiceTest.php</exclude>
-            <exclude>./tests/Eccube/Tests/Command/GenerateDummyDataCommandTest.php</exclude>
         </testsuite>
     </testsuites>
 
-    <coverage processUncoveredFiles="true">
+    <source>
         <include>
             <directory suffix=".php">src</directory>
         </include>
@@ -37,17 +31,9 @@
             <directory suffix=".php">./src/Eccube/Resource</directory>
             <directory suffix=".php">./src/Eccube/Command</directory>
         </exclude>
-    </coverage>
+    </source>
 
-    <listeners>
-        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
-        <listener class="\DAMA\DoctrineTestBundle\PHPUnit\PHPUnitListener" />
-    </listeners>
-
-    <!-- Run `composer require symfony/panther` before enabling this extension -->
-    <!--
     <extensions>
-        <extension class="Symfony\Component\Panther\ServerExtension" />
+        <bootstrap class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension"/>
     </extensions>
-    -->
 </phpunit>

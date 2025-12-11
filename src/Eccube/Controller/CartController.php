@@ -14,6 +14,7 @@
 namespace Eccube\Controller;
 
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Cart;
 use Eccube\Entity\ProductClass;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -25,47 +26,25 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\PurchaseFlow\PurchaseFlowResult;
 use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 class CartController extends AbstractController
 {
-    /**
-     * @var ProductClassRepository
-     */
-    protected $productClassRepository;
-
-    /**
-     * @var CartService
-     */
-    protected $cartService;
-
-    /**
-     * @var PurchaseFlow
-     */
-    protected $purchaseFlow;
-
-    /**
-     * @var BaseInfo
-     */
-    protected $baseInfo;
+    protected BaseInfo $baseInfo;
+    protected PurchaseFlow $purchaseFlow;
 
     /**
      * CartController constructor.
-     *
-     * @param ProductClassRepository $productClassRepository
-     * @param CartService $cartService
-     * @param PurchaseFlow $cartPurchaseFlow
-     * @param BaseInfoRepository $baseInfoRepository
      */
     public function __construct(
-        ProductClassRepository $productClassRepository,
-        CartService $cartService,
-        PurchaseFlow $cartPurchaseFlow,
+        protected ProductClassRepository $productClassRepository,
+        protected CartService $cartService,
+        protected PurchaseFlow $cartPurchaseFlow,
         BaseInfoRepository $baseInfoRepository,
     ) {
-        $this->productClassRepository = $productClassRepository;
-        $this->cartService = $cartService;
         $this->purchaseFlow = $cartPurchaseFlow;
         $this->baseInfo = $baseInfoRepository->get();
     }
@@ -73,13 +52,11 @@ class CartController extends AbstractController
     /**
      * カート画面.
      *
-     * @param Request $request
-     *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
-    #[Route('/cart', name: 'cart', methods: ['GET'])]
-    #[Template('Cart/index.twig')]
-    public function index(Request $request)
+    #[Route(path: '/cart', name: 'cart', methods: ['GET'])]
+    #[Template(template: 'Cart/index.twig')]
+    public function index(Request $request): array
     {
         // カートを取得して明細の正規化を実行
         $Carts = $this->cartService->getCarts();
@@ -131,11 +108,9 @@ class CartController extends AbstractController
     }
 
     /**
-     * @param \Eccube\Entity\Cart[] $Carts
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|null
+     * @param Cart[] $Carts
      */
-    protected function execPurchaseFlow($Carts)
+    protected function execPurchaseFlow(array $Carts): ?RedirectResponse
     {
         /** @var PurchaseFlowResult[] $flowResults */
         $flowResults = array_map(function ($Cart) {
@@ -145,10 +120,14 @@ class CartController extends AbstractController
         }, $Carts);
 
         // 復旧不可のエラーが発生した場合はカートをクリアして再描画
+        // ただし、警告がある場合（在庫調整などの復旧可能な問題）はクリアしない
         $hasError = false;
         foreach ($flowResults as $result) {
             if ($result->hasError()) {
-                $hasError = true;
+                // 警告もある場合は復旧可能なのでクリアしない
+                if (!$result->hasWarning()) {
+                    $hasError = true;
+                }
                 foreach ($result->getErrors() as $error) {
                     $this->addRequestError($error->getMessage());
                 }
@@ -190,11 +169,9 @@ class CartController extends AbstractController
      *
      * @param string $operation
      * @param string|int $productClassId
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    #[Route('/cart/{operation}/{productClassId}', name: 'cart_handle_item', requirements: ['operation' => 'up|down|remove', 'productClassId' => '\d+'], methods: ['PUT'])]
-    public function handleCartItem($operation, $productClassId)
+    #[Route(path: '/cart/{operation}/{productClassId}', name: 'cart_handle_item', requirements: ['operation' => 'up|down|remove', 'productClassId' => '\d+'], methods: ['PUT'])]
+    public function handleCartItem($operation, $productClassId): RedirectResponse
     {
         log_info('カート明細操作開始', ['operation' => $operation, 'product_class_id' => $productClassId]);
 
@@ -234,13 +211,10 @@ class CartController extends AbstractController
     /**
      * カートをロック状態に設定し、購入確認画面へ遷移する.
      *
-     * @param Request $request
      * @param string $cart_key
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response|null
      */
-    #[Route('/cart/buystep/{cart_key}', name: 'cart_buystep', requirements: ['cart_key' => '[a-zA-Z0-9]+[_][\x20-\x7E]+'], methods: ['GET'])]
-    public function buystep(Request $request, $cart_key)
+    #[Route(path: '/cart/buystep/{cart_key}', name: 'cart_buystep', requirements: ['cart_key' => '[a-zA-Z0-9]+[_][\x20-\x7E]+'], methods: ['GET'])]
+    public function buystep(Request $request, $cart_key): RedirectResponse|Response|null
     {
         $Carts = $this->cartService->getCart();
         if (!is_object($Carts)) {

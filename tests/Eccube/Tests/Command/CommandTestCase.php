@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -24,48 +26,35 @@ use Symfony\Bridge\Twig\Command\DebugCommand;
 use Symfony\Bridge\Twig\Command\LintCommand;
 use Symfony\Component\Console\Tester\CommandTester;
 
-abstract class AbstractCommandTest extends EccubeTestCase
+abstract class CommandTestCase extends EccubeTestCase
 {
     public const LOOP_MAX_LIMIT = 5;
 
-    /**
-     * @var Command
-     */
-    protected $command;
+    protected ?Command $command = null;
 
-    /**
-     * @var CommandTester
-     */
-    protected $tester;
+    protected ?CommandTester $tester = null;
 
     /**
      * $contentCnt
-     *
-     * @var int
      */
-    protected $contentCnt = 0;
+    protected ?int $contentCnt = 0;
 
     /**
      * $content
-     *
-     * @var string
      */
-    protected $content = '';
+    protected ?string $content = '';
 
     /**
      * $loopCnt
-     *
-     * @var int
      */
-    protected $loopCnt = 0;
+    protected ?int $loopCnt = 0;
 
     /**
      * $loopCheckSum
-     *
-     * @var int
      */
-    protected $loopCheckSum = 0;
+    protected ?int $loopCheckSum = 0;
 
+    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();
@@ -74,10 +63,8 @@ abstract class AbstractCommandTest extends EccubeTestCase
 
     /**
      * $PluginCommand
-     *
-     * @param Command $PluginCommand
      */
-    protected function initCommand($PluginCommand)
+    protected function initCommand(Command $PluginCommand)
     {
         $this->command = $PluginCommand;
         $this->addCommand($this->command);
@@ -85,11 +72,8 @@ abstract class AbstractCommandTest extends EccubeTestCase
 
     /**
      * executeTester
-     *
-     * @param array $callback
-     * @param array $commandArg
      */
-    protected function executeTester($callback, $commandArg)
+    protected function executeTester(array $callback, array $commandArg)
     {
         $cmd = $this->app['console']->find($this->command->getName());
         $this->assertEquals($this->command->getName(), $cmd->getName());
@@ -102,11 +86,9 @@ abstract class AbstractCommandTest extends EccubeTestCase
     /**
      * getLastContent
      *
-     * @return string
-     *
      * @throws \Exception
      */
-    protected function getLastContent()
+    protected function getLastContent(): string
     {
         $display = $this->tester->getDisplay();
         $displayCnt = mb_strlen($display);
@@ -115,10 +97,10 @@ abstract class AbstractCommandTest extends EccubeTestCase
             $this->content = mb_substr($display, $oldDisplayCnt);
             $this->contentCnt = $displayCnt;
         }
-        if (md5($this->content) == $this->loopCheckSum) {
+        if (md5((string) $this->content) == $this->loopCheckSum) {
             $this->loopCnt++;
         } else {
-            $this->loopCheckSum = md5($this->content);
+            $this->loopCheckSum = md5((string) $this->content);
             $this->loopCnt = 0;
         }
 
@@ -131,10 +113,8 @@ abstract class AbstractCommandTest extends EccubeTestCase
 
     /**
      * addCommand
-     *
-     * @param Command $command
      */
-    protected function addCommand($command)
+    protected function addCommand(Command $command)
     {
         $this->assertInstanceOf('\Knp\Command\Command', $command);
         $this->app['console']->add($command);
@@ -142,11 +122,8 @@ abstract class AbstractCommandTest extends EccubeTestCase
 
     /**
      * mockQuestionHelper
-     *
-     * @param Command $cmd
-     * @param callable $mockHandler
      */
-    protected function mockQuestionHelper(Command $cmd, $mockHandler)
+    protected function mockQuestionHelper(Command $cmd, callable $mockHandler)
     {
         $helper = new QuestionHelperMock();
         $helper->setMockHandler($mockHandler);
@@ -155,12 +132,8 @@ abstract class AbstractCommandTest extends EccubeTestCase
 
     /**
      * getQuestionMark
-     *
-     * @param int $no
-     *
-     * @return string
      */
-    protected function getQuestionMark($no)
+    protected function getQuestionMark(int $no): string
     {
         return AbstractPluginGenerator::INPUT_OPEN.$no.AbstractPluginGenerator::INPUT_CLOSE;
     }
@@ -181,13 +154,9 @@ abstract class AbstractCommandTest extends EccubeTestCase
                     'console.project_directory' => __DIR__.'/..',
                 ]
             );
-            $app->extend('console.command.twig.debug', function ($command, $app) {
-                return new DebugCommand($app['twig']);
-            });
+            $app->extend('console.command.twig.debug', fn ($command, $app) => new DebugCommand($app['twig']));
 
-            $app->extend('console.command.twig.lint', function ($command, $app) {
-                return new LintCommand($app['twig']);
-            });
+            $app->extend('console.command.twig.lint', fn ($command, $app) => new LintCommand($app['twig']));
         }
 
         // Migration

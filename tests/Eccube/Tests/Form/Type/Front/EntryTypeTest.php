@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,13 +19,12 @@ use Eccube\Form\Type\Front\EntryType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use Symfony\Component\Form\FormInterface;
 
-class EntryTypeTest extends AbstractTypeTestCase
+final class EntryTypeTest extends AbstractTypeTestCase
 {
-    /** @var FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = [
+    protected ?array $formData = [
         'name' => [
             'name01' => 'たかはし',
             'name02' => 'しんいち',
@@ -57,6 +58,7 @@ class EntryTypeTest extends AbstractTypeTestCase
         'job' => 1,
     ];
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -186,6 +188,6 @@ class EntryTypeTest extends AbstractTypeTestCase
         $this->formData['plain_password']['second'] = $this->formData['email']['first'];
 
         $this->form->submit($this->formData);
-        $this->assertEquals(trans('common.password_eq_email'), $this->form->getErrors(true)[0]->getMessage());
+        $this->assertSame(trans('common.password_eq_email'), $this->form->getErrors(true)[0]->getMessage());
     }
 }

@@ -14,6 +14,8 @@
 namespace Eccube\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\TaxDisplayType;
@@ -26,36 +28,19 @@ use Eccube\Service\PurchaseFlow\Processor\PointProcessor;
 class PointHelper
 {
     /**
-     * @var BaseInfoRepository
-     */
-    protected $baseInfoRepository;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
      * PointHelper constructor.
-     *
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param EntityManagerInterface $entityManager
      */
-    public function __construct(BaseInfoRepository $baseInfoRepository, EntityManagerInterface $entityManager)
+    public function __construct(protected BaseInfoRepository $baseInfoRepository, protected EntityManagerInterface $entityManager)
     {
-        $this->baseInfoRepository = $baseInfoRepository;
-        $this->entityManager = $entityManager;
     }
 
     /**
      * ポイント設定が有効かどうか.
      *
-     * @return bool
-     *
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
-    public function isPointEnabled()
+    public function isPointEnabled(): bool
     {
         $BaseInfo = $this->baseInfoRepository->get();
 
@@ -69,10 +54,10 @@ class PointHelper
      *
      * @return string 金額
      *
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
-    public function pointToPrice($point)
+    public function pointToPrice(string $point): string
     {
         $BaseInfo = $this->baseInfoRepository->get();
 
@@ -86,10 +71,10 @@ class PointHelper
      *
      * @return string 金額
      *
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
-    public function pointToDiscount($point)
+    public function pointToDiscount(string $point): string
     {
         return bcmul($this->pointToPrice($point), '-1', 0);
     }
@@ -97,14 +82,12 @@ class PointHelper
     /**
      * 金額をポイントに変換する.
      *
-     * @param string $price
-     *
      * @return string ポイント
      *
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
-    public function priceToPoint($price)
+    public function priceToPoint(string $price): string
     {
         $BaseInfo = $this->baseInfoRepository->get();
 
@@ -114,14 +97,9 @@ class PointHelper
     /**
      * 明細追加処理.
      *
-     * @param ItemHolderInterface $itemHolder
-     * @param string $discount
-     *
-     * @return void
-     *
      * @throws \Exception
      */
-    public function addPointDiscountItem(ItemHolderInterface $itemHolder, $discount)
+    public function addPointDiscountItem(ItemHolderInterface $itemHolder, string $discount): void
     {
         // 注文明細以外は処理しない.
         if ($itemHolder instanceof Order === false) {
@@ -148,8 +126,7 @@ class PointHelper
             ->setPointRate($pointRate)
             ->setQuantity('1')
             ->setTax('0')
-            ->setTaxRate('0')
-            ->setRoundingType(null)
+            ->setTaxRate('0')->setRoundingType()
             ->setOrderItemType($DiscountType)
             ->setTaxDisplayType($TaxInclude)
             ->setTaxType($Taxation)
@@ -160,12 +137,8 @@ class PointHelper
 
     /**
      * 既存のポイント明細を削除する.
-     *
-     * @param ItemHolderInterface $itemHolder
-     *
-     * @return void
      */
-    public function removePointDiscountItem(ItemHolderInterface $itemHolder)
+    public function removePointDiscountItem(ItemHolderInterface $itemHolder): void
     {
         if ($itemHolder instanceof Order) {
             foreach ($itemHolder->getItems() as $item) {
@@ -177,29 +150,17 @@ class PointHelper
         }
     }
 
-    /**
-     * @param ItemHolderInterface $itemHolder
-     * @param string $point
-     *
-     * @return void
-     */
-    public function prepare(ItemHolderInterface $itemHolder, $point)
+    public function prepare(ItemHolderInterface $itemHolder, string $point): void
     {
         // ユーザの保有ポイントを減算
         $Customer = $itemHolder->getCustomer();
-        $Customer->setPoint(bcsub($Customer->getPoint(), $point));
+        $Customer->setPoint(bcsub((string) $Customer->getPoint(), $point));
     }
 
-    /**
-     * @param ItemHolderInterface $itemHolder
-     * @param string $point
-     *
-     * @return void
-     */
-    public function rollback(ItemHolderInterface $itemHolder, $point)
+    public function rollback(ItemHolderInterface $itemHolder, string $point): void
     {
         // 利用したポイントをユーザに戻す.
         $Customer = $itemHolder->getCustomer();
-        $Customer->setPoint(bcadd($Customer->getPoint(), $point));
+        $Customer->setPoint(bcadd((string) $Customer->getPoint(), $point));
     }
 }

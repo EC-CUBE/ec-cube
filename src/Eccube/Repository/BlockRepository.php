@@ -29,30 +29,16 @@ use Eccube\Entity\Master\DeviceType;
 class BlockRepository extends AbstractRepository
 {
     /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
      * BlockRepository constructor.
-     *
-     * @param RegistryInterface $registry
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         RegistryInterface $registry,
-        EccubeConfig $eccubeConfig,
+        protected ?EccubeConfig $eccubeConfig,
     ) {
         parent::__construct($registry, Block::class);
-        $this->eccubeConfig = $eccubeConfig;
     }
 
-    /**
-     * @param DeviceType $DeviceType
-     *
-     * @return Block
-     */
-    public function newBlock($DeviceType)
+    public function newBlock(DeviceType $DeviceType): Block
     {
         $Block = new Block();
         $Block
@@ -66,17 +52,16 @@ class BlockRepository extends AbstractRepository
     /**
      * ブロック一覧の取得.
      *
-     * @param  DeviceType $DeviceType
-     *
-     * @return \Symfony\Component\HttpFoundation\Request|null
+     * @return Block[]
      */
-    public function getList($DeviceType)
+    public function getList(DeviceType $DeviceType): array
     {
         $qb = $this->createQueryBuilder('b')
             ->orderBy('b.id', 'DESC')
             ->where('b.DeviceType = :DeviceType')
             ->setParameter('DeviceType', $DeviceType);
 
+        /** @var Block[] $Blocks */
         $Blocks = $qb
             ->getQuery()
             ->getResult();
@@ -91,15 +76,13 @@ class BlockRepository extends AbstractRepository
      *
      * @return array<int, Block>|null
      */
-    public function getUnusedBlocks($Blocks)
+    public function getUnusedBlocks(array $Blocks): ?array
     {
-        $UnusedBlocks = $this->createQueryBuilder('b')
+        return $this->createQueryBuilder('b')
             ->select('b')
             ->where('b not in (:blocks)')
             ->setParameter('blocks', $Blocks)
             ->getQuery()
             ->getResult();
-
-        return $UnusedBlocks;
     }
 }

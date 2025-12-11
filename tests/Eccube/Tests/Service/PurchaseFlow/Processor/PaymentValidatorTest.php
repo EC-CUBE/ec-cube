@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,18 +20,16 @@ use Eccube\Service\PurchaseFlow\Processor\PaymentValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
-class PaymentValidatorTest extends EccubeTestCase
+final class PaymentValidatorTest extends EccubeTestCase
 {
-    /**
-     * @var PaymentValidator
-     */
-    private $validator;
+    private ?PaymentValidator $validator = null;
 
     /**
      * @var
      */
     private $Order;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -43,7 +43,7 @@ class PaymentValidatorTest extends EccubeTestCase
 
     public function testInstance()
     {
-        self::assertInstanceOf(PaymentValidator::class, $this->validator);
+        $this->assertInstanceOf(PaymentValidator::class, $this->validator);
     }
 
     public function testValidatePaymentVisibleFalse()
@@ -52,6 +52,6 @@ class PaymentValidatorTest extends EccubeTestCase
 
         $result = $this->validator->execute($this->Order, new PurchaseContext());
 
-        self::assertTrue($result->isError());
+        $this->assertTrue($result->isError());
     }
 }

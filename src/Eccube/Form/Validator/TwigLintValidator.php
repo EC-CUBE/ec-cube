@@ -15,6 +15,7 @@ namespace Eccube\Form\Validator;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Twig\Environment;
 use Twig\Error\Error;
 use Twig\Loader\ArrayLoader;
 use Twig\Source;
@@ -22,28 +23,17 @@ use Twig\Source;
 class TwigLintValidator extends ConstraintValidator
 {
     /**
-     * @var \Twig\Environment
-     */
-    protected $twig;
-
-    /**
      * TwigLintValidator constructor.
-     *
-     * @param \Twig\Environment $twig
      */
-    public function __construct(\Twig\Environment $twig)
+    public function __construct(protected Environment $twig)
     {
-        $this->twig = $twig;
     }
 
     /**
      * @param mixed $value
-     * @param Constraint $constraint
-     *
-     * @return void
      */
     #[\Override]
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         // valueがnullの場合は "Template is not defined"のエラーが投げられるので, 空文字でチェックする.
         if (is_null($value)) {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -20,16 +22,16 @@ use Eccube\Entity\Master\Pref;
 use Eccube\Entity\Payment;
 use Eccube\Entity\PaymentOption;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class DeliveryControllerTest
  */
-class DeliveryControllerTest extends AbstractAdminWebTestCase
+final class DeliveryControllerTest extends AbstractAdminWebTestCase
 {
-    /**
-     * @return mixed
-     */
-    public function createDelivery()
+    public function createDelivery(): mixed
     {
         $faker = $this->getFaker();
         // create new delivery
@@ -53,7 +55,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
                 $DeliveryFee->setDelivery($Delivery)
                     ->setPref($Pref);
             }
-            $DeliveryFee->setFee($faker->randomNumber(3));
+            $DeliveryFee->setFee((string) $faker->randomNumber(3));
 
             $this->entityManager->persist($DeliveryFee);
             $this->entityManager->flush();
@@ -85,7 +87,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
      */
     public function testRouting()
     {
-        $this->client->request('GET', $this->generateUrl('admin_setting_shop_delivery'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_shop_delivery'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -94,7 +96,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
      */
     public function testRoutingNew()
     {
-        $this->client->request('GET', $this->generateUrl('admin_setting_shop_delivery_new'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_shop_delivery_new'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -103,9 +105,8 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
      *
      * @param bool $isSuccess
      * @param bool $expected
-     *
-     * @dataProvider dataSubmitProvider
      */
+    #[DataProvider(methodName: 'dataSubmitProvider')]
     public function testNew($isSuccess, $expected)
     {
         $formData = $this->createFormData();
@@ -114,7 +115,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
         }
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop_delivery_new'),
             [
                 'delivery' => $formData,
@@ -132,7 +133,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
     public function testRoutingEdit()
     {
         $Delivery = $this->createDelivery();
-        $this->client->request('GET', $this->generateUrl('admin_setting_shop_delivery_edit', ['id' => $Delivery->getId()]));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_shop_delivery_edit', ['id' => $Delivery->getId()]));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -141,9 +142,8 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
      *
      * @param bool $isSuccess
      * @param bool $expected
-     *
-     * @dataProvider dataSubmitProvider
      */
+    #[DataProvider(methodName: 'dataSubmitProvider')]
     public function testEdit($isSuccess, $expected)
     {
         $formData = $this->createFormData();
@@ -153,7 +153,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
 
         $Delivery = $this->createDelivery();
 
-        $this->client->request('POST',
+        $this->client->request(Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop_delivery_edit', ['id' => $Delivery->getId()]),
             [
                 'delivery' => $formData,
@@ -173,7 +173,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
         $Delivery = $this->createDelivery();
         $pid = $Delivery->getId();
         $this->client->request(
-            'DELETE',
+            Request::METHOD_DELETE,
             $this->generateUrl('admin_setting_shop_delivery_delete', ['id' => $pid])
         );
 
@@ -189,10 +189,10 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
     {
         $pid = 9999;
         $this->client->request(
-            'DELETE',
+            Request::METHOD_DELETE,
             $this->generateUrl('admin_setting_shop_delivery_delete', ['id' => $pid])
         );
-        $this->assertSame(404, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 
     public function testMoveSortNo()
@@ -208,7 +208,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop_delivery_sort_no_move'),
             $request,
             [],
@@ -242,9 +242,9 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
 
         return [
             '_token' => 'dummy',
-            'name' => $faker->word,
-            'service_name' => $faker->word,
-            'description' => $faker->word,
+            'name' => $faker->word(),
+            'service_name' => $faker->word(),
+            'description' => $faker->word(),
             'confirm_url' => $faker->url,
             'sale_type' => random_int(1, 2),
             'payments' => ['1'],
@@ -252,47 +252,43 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
             'delivery_times' => [
                 ['delivery_time' => 'AM', 'sort_no' => $i++, 'visible' => 1],
                 ['delivery_time' => 'PM', 'sort_no' => $i++, 'visible' => 1],
-                ['delivery_time' => $faker->word, 'sort_no' => $i++, 'visible' => 1],
-                ['delivery_time' => $faker->word, 'sort_no' => $i++, 'visible' => 1],
-                ['delivery_time' => $faker->word, 'sort_no' => $i++, 'visible' => 1],
-                ['delivery_time' => $faker->word, 'sort_no' => $i++, 'visible' => 1],
-                ['delivery_time' => $faker->word, 'sort_no' => $i++, 'visible' => 1],
-                ['delivery_time' => $faker->word, 'sort_no' => $i++, 'visible' => 1],
-                ['delivery_time' => $faker->word, 'sort_no' => $i++, 'visible' => 1],
-                ['delivery_time' => $faker->word, 'sort_no' => $i++, 'visible' => 1],
-                ['delivery_time' => $faker->word, 'sort_no' => $i++, 'visible' => 1],
-                ['delivery_time' => $faker->word, 'sort_no' => $i++, 'visible' => 1],
-                ['delivery_time' => $faker->word, 'sort_no' => $i++, 'visible' => 1],
-                ['delivery_time' => $faker->word, 'sort_no' => $i++, 'visible' => 1],
-                ['delivery_time' => $faker->word, 'sort_no' => $i++, 'visible' => 1],
+                ['delivery_time' => $faker->word(), 'sort_no' => $i++, 'visible' => 1],
+                ['delivery_time' => $faker->word(), 'sort_no' => $i++, 'visible' => 1],
+                ['delivery_time' => $faker->word(), 'sort_no' => $i++, 'visible' => 1],
+                ['delivery_time' => $faker->word(), 'sort_no' => $i++, 'visible' => 1],
+                ['delivery_time' => $faker->word(), 'sort_no' => $i++, 'visible' => 1],
+                ['delivery_time' => $faker->word(), 'sort_no' => $i++, 'visible' => 1],
+                ['delivery_time' => $faker->word(), 'sort_no' => $i++, 'visible' => 1],
+                ['delivery_time' => $faker->word(), 'sort_no' => $i++, 'visible' => 1],
+                ['delivery_time' => $faker->word(), 'sort_no' => $i++, 'visible' => 1],
+                ['delivery_time' => $faker->word(), 'sort_no' => $i++, 'visible' => 1],
+                ['delivery_time' => $faker->word(), 'sort_no' => $i++, 'visible' => 1],
+                ['delivery_time' => $faker->word(), 'sort_no' => $i++, 'visible' => 1],
+                ['delivery_time' => $faker->word(), 'sort_no' => $i++, 'visible' => 1],
             ],
             'free_all' => $faker->randomNumber(5),
             'delivery_fees' => $deliveryFree,
         ];
     }
 
-    public function dataSubmitProvider()
+    public static function dataSubmitProvider(): \Iterator
     {
-        return [
-            [false, false],
-            [true, true],
-            // To do implement
-        ];
+        yield [false, false];
+        yield [true, true];
     }
 
     /**
-     * @dataProvider getMergeRulesProvider
-     *
      * @param mixed $rules
      * @param mixed $expected
      */
+    #[DataProvider(methodName: 'getMergeRulesProvider')]
     public function testGetMergeRules($rules, $expected)
     {
         $Payments = array_map(function ($rule) {
             $Payment = new Payment();
-            $Payment->setRuleMin($rule['min']);
-            $Payment->setRuleMax($rule['max']);
-            $Payment->setCharge($rule['charge']);
+            $Payment->setRuleMin((string) $rule['min']);
+            $Payment->setRuleMax((string) $rule['max']);
+            $Payment->setCharge((string) $rule['charge']);
 
             return $Payment;
         }, $rules);
@@ -301,33 +297,30 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
         $controller = $class->newInstanceWithoutConstructor();
         $object = new \ReflectionObject($controller);
         $method = $object->getMethod('getMergeRules');
-        $method->setAccessible(true);
         $result = $method->invokeArgs($controller, [$Payments]);
 
         $this->assertCount($expected, $result);
     }
 
-    public function getMergeRulesProvider()
+    public static function getMergeRulesProvider(): \Iterator
     {
-        return [
-            // 利用不可の金額帯なし
+        // 利用不可の金額帯なし
+        yield [
             [
-                [
-                    ['min' => 0, 'max' => 1000, 'charge' => 0],
-                    ['min' => 1001, 'max' => 2000, 'charge' => 0],
-                    ['min' => 2001, 'max' => 3000, 'charge' => 0],
-                ],
-                1,
+                ['min' => 0, 'max' => 1000, 'charge' => 0],
+                ['min' => 1001, 'max' => 2000, 'charge' => 0],
+                ['min' => 2001, 'max' => 3000, 'charge' => 0],
             ],
-            // 利用不可の金額帯あり(2001〜2499)
+            1,
+        ];
+        // 利用不可の金額帯あり(2001〜2499)
+        yield [
             [
-                [
-                    ['min' => 0, 'max' => 1000, 'charge' => 0],
-                    ['min' => 1001, 'max' => 2000, 'charge' => 0],
-                    ['min' => 2500, 'max' => 2000, 'charge' => 0],
-                ],
-                2,
+                ['min' => 0, 'max' => 1000, 'charge' => 0],
+                ['min' => 1001, 'max' => 2000, 'charge' => 0],
+                ['min' => 2500, 'max' => 2000, 'charge' => 0],
             ],
+            2,
         ];
     }
 }

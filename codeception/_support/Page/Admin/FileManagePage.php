@@ -110,10 +110,8 @@ class FileManagePage extends AbstractAdminPageStyleGuide
      * パンくずのパスを取得
      *
      * @param $index int 1から始まる(1はuser_data)
-     *
-     * @return string
      */
-    public function パンくず($index)
+    public function パンくず($index): string
     {
         return "//*[@id=\"bread\"]/li[{$index}]";
     }

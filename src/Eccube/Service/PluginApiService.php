@@ -13,6 +13,7 @@
 
 namespace Eccube\Service;
 
+use Composer\CaBundle\CaBundle;
 use Eccube\Common\Constant;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Plugin;
@@ -25,54 +26,17 @@ class PluginApiService
 {
     /**
      * Url for Api
-     *
-     * @var string
      */
-    private $apiUrl;
-
-    /**
-     * @var EccubeConfig
-     */
-    private $eccubeConfig;
-
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
-     * @var BaseInfoRepository
-     */
-    private $baseInfoRepository;
-
-    /**
-     * @var PluginRepository
-     */
-    private $pluginRepository;
+    private string $apiUrl;
 
     /**
      * PluginApiService constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
-     * @param RequestStack $requestStack
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param PluginRepository $pluginRepository
-     *
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function __construct(EccubeConfig $eccubeConfig, RequestStack $requestStack, BaseInfoRepository $baseInfoRepository, PluginRepository $pluginRepository)
+    public function __construct(private readonly EccubeConfig $eccubeConfig, private readonly RequestStack $requestStack, private readonly BaseInfoRepository $baseInfoRepository, private readonly PluginRepository $pluginRepository)
     {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->requestStack = $requestStack;
-        $this->baseInfoRepository = $baseInfoRepository;
-        $this->pluginRepository = $pluginRepository;
     }
 
-    /**
-     * @return string
-     */
-    public function getApiUrl()
+    public function getApiUrl(): string
     {
         if (empty($this->apiUrl)) {
             return $this->eccubeConfig->get('eccube_package_api_url');
@@ -81,12 +45,7 @@ class PluginApiService
         return $this->apiUrl;
     }
 
-    /**
-     * @param string $apiUrl
-     *
-     * @return void
-     */
-    public function setApiUrl($apiUrl)
+    public function setApiUrl(string $apiUrl): void
     {
         $this->apiUrl = $apiUrl;
     }
@@ -96,7 +55,7 @@ class PluginApiService
      *
      * @return string|bool|array<string, string|int|array<int, string>>
      */
-    public function getCategory()
+    public function getCategory(): string|bool|array
     {
         try {
             $urlCategory = $this->getApiUrl().'/category';
@@ -116,7 +75,7 @@ class PluginApiService
      *
      * @throws PluginApiException
      */
-    public function getPlugins($data)
+    public function getPlugins(array $data): array
     {
         $url = $this->getApiUrl().'/plugins';
         $params['category_id'] = $data['category_id'];
@@ -143,7 +102,7 @@ class PluginApiService
      *
      * @throws PluginApiException
      */
-    public function getPurchased()
+    public function getPurchased(): array
     {
         $url = $this->getApiUrl().'/plugins/purchased';
 
@@ -160,7 +119,7 @@ class PluginApiService
      *
      * @throws PluginApiException
      */
-    public function getRecommended()
+    public function getRecommended(): array
     {
         $url = $this->getApiUrl().'/plugins/recommended';
 
@@ -175,7 +134,7 @@ class PluginApiService
      *
      * @return array<int, array<string, string|int>>
      */
-    private function buildPlugins(&$plugins)
+    private function buildPlugins(array &$plugins): array
     {
         /** @var Plugin[] $pluginInstalled */
         $pluginInstalled = $this->pluginRepository->findAll();
@@ -206,13 +165,8 @@ class PluginApiService
 
     /**
      * Is update
-     *
-     * @param string $pluginVersion
-     * @param string $remoteVersion
-     *
-     * @return bool
      */
-    private function isUpdate($pluginVersion, $remoteVersion)
+    private function isUpdate(string $pluginVersion, string $remoteVersion): bool
     {
         return version_compare($pluginVersion, $remoteVersion, '<');
     }
@@ -226,7 +180,7 @@ class PluginApiService
      *
      * @throws PluginApiException
      */
-    public function getPlugin($id)
+    public function getPlugin(int|string $id): array
     {
         $url = $this->getApiUrl().'/plugin/'.$id;
 
@@ -236,53 +190,27 @@ class PluginApiService
         return $this->buildInfo($json);
     }
 
-    /**
-     * @param Plugin $Plugin
-     *
-     * @return void
-     */
-    public function pluginInstalled(Plugin $Plugin)
+    public function pluginInstalled(Plugin $Plugin): void
     {
         $this->updatePluginStatus('/status/installed', $Plugin);
     }
 
-    /**
-     * @param Plugin $Plugin
-     *
-     * @return void
-     */
-    public function pluginEnabled(Plugin $Plugin)
+    public function pluginEnabled(Plugin $Plugin): void
     {
         $this->updatePluginStatus('/status/enabled', $Plugin);
     }
 
-    /**
-     * @param Plugin $Plugin
-     *
-     * @return void
-     */
-    public function pluginDisabled(Plugin $Plugin)
+    public function pluginDisabled(Plugin $Plugin): void
     {
         $this->updatePluginStatus('/status/disabled', $Plugin);
     }
 
-    /**
-     * @param Plugin $Plugin
-     *
-     * @return void
-     */
-    public function pluginUninstalled(Plugin $Plugin)
+    public function pluginUninstalled(Plugin $Plugin): void
     {
         $this->updatePluginStatus('/status/uninstalled', $Plugin);
     }
 
-    /**
-     * @param string $url
-     * @param Plugin $Plugin
-     *
-     * @return void
-     */
-    private function updatePluginStatus($url, Plugin $Plugin)
+    private function updatePluginStatus(string $url, Plugin $Plugin): void
     {
         if ($Plugin->getSource()) {
             try {
@@ -295,15 +223,11 @@ class PluginApiService
     /**
      * API request processing
      *
-     * @param string $url
      * @param array<string, mixed> $data
-     * @param bool $post
-     *
-     * @return string|bool
      *
      * @throws PluginApiException
      */
-    public function requestApi($url, $data = [], $post = false)
+    public function requestApi(string $url, array $data = [], bool $post = false): string|bool
     {
         if ($post === false && count($data) > 0) {
             $url .= '?'.http_build_query($data);
@@ -312,7 +236,7 @@ class PluginApiService
         $curl = curl_init($url);
 
         if ($post) {
-            curl_setopt($curl, CURLOPT_POST, 1);
+            curl_setopt($curl, CURLOPT_POST, true);
 
             if (count($data) > 0) {
                 curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
@@ -338,7 +262,7 @@ class PluginApiService
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_FAILONERROR => true,
-            CURLOPT_CAINFO => \Composer\CaBundle\CaBundle::getSystemCaRootBundlePath(),
+            CURLOPT_CAINFO => CaBundle::getSystemCaRootBundlePath(),
             CURLOPT_TIMEOUT_MS => 5000,
         ];
 
@@ -362,11 +286,11 @@ class PluginApiService
     /**
      * Get plugin information
      *
-     * @param array<string, string|int|array<int, string>>  $plugin
+     * @param array<string, string|int|array<int, string|float>|bool>  $plugin
      *
-     * @return array<string, string|int|array<int, string>>
+     * @return array<string, string|int|array<int, string|float>|bool>
      */
-    public function buildInfo(&$plugin)
+    public function buildInfo(array &$plugin): array
     {
         $this->supportedVersion($plugin);
 
@@ -376,11 +300,9 @@ class PluginApiService
     /**
      * Check support version
      *
-     * @param array<string, string|int|array<int, string|float>> $plugin
-     *
-     * @return void
+     * @param array<string, string|int|array<int, string|float>|bool> $plugin
      */
-    public function supportedVersion(&$plugin)
+    public function supportedVersion(array &$plugin): void
     {
         // Check the eccube version that the plugin supports.
         $plugin['version_check'] = false;

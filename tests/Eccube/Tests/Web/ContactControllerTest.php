@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,9 +17,10 @@ namespace Eccube\Tests\Web;
 
 use Eccube\Entity\BaseInfo;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mime\Email;
 
-class ContactControllerTest extends AbstractWebTestCase
+final class ContactControllerTest extends AbstractWebTestCase
 {
     use MailerAssertionsTrait;
 
@@ -51,15 +54,15 @@ class ContactControllerTest extends AbstractWebTestCase
 
     public function testRoutingIndex()
     {
-        $this->client->request('GET', $this->generateUrl('contact'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('contact'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    public function testConfirm()
+    public function testConfirm(): never
     {
         $this->markTestIncomplete('FIXME title');
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('contact'),
             ['contact' => $this->createFormData(),
                 'mode' => 'confirm', ]
@@ -76,7 +79,7 @@ class ContactControllerTest extends AbstractWebTestCase
     public function testComplete()
     {
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('contact'),
             ['contact' => $this->createFormData(),
                 'mode' => 'complete', ]
@@ -89,6 +92,7 @@ class ContactControllerTest extends AbstractWebTestCase
         $this->assertEmailCount(1);
         /** @var Email $Message */
         $Message = $this->getMailerMessage(0);
+        $this->assertInstanceOf(BaseInfo::class, $BaseInfo);
 
         $this->expected = '['.$BaseInfo->getShopName().'] お問い合わせを受け付けました。';
         $this->actual = $Message->getSubject();
@@ -100,7 +104,7 @@ class ContactControllerTest extends AbstractWebTestCase
         $form = $this->createFormData();
         $form['name']['name01'] .= '<Sanitize&>';
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('contact'),
             ['contact' => $form,
                 'mode' => 'complete', ]
@@ -113,13 +117,14 @@ class ContactControllerTest extends AbstractWebTestCase
         $this->assertEmailCount(1);
         /** @var Email $Message */
         $Message = $this->getMailerMessage(0);
+        $this->assertInstanceOf(BaseInfo::class, $BaseInfo);
 
         $this->expected = '['.$BaseInfo->getShopName().'] お問い合わせを受け付けました。';
         $this->actual = $Message->getSubject();
         $this->verify();
 
-        $this->assertStringContainsString('＜Sanitize＆＞', $Message->getTextBody(), 'テキストメールがサニタイズされている');
-        $this->assertStringContainsString('＜Sanitize＆＞', $Message->getHtmlBody(), 'HTMLメールがサニタイズされている');
+        $this->assertStringContainsString('＜Sanitize＆＞', (string) $Message->getTextBody(), 'テキストメールがサニタイズされている');
+        $this->assertStringContainsString('＜Sanitize＆＞', (string) $Message->getHtmlBody(), 'HTMLメールがサニタイズされている');
     }
 
     /**
@@ -140,7 +145,7 @@ class ContactControllerTest extends AbstractWebTestCase
 
         $this->client->enableProfiler();
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('contact'),
             ['contact' => $formData,
                 'mode' => 'complete', ]
@@ -152,6 +157,7 @@ class ContactControllerTest extends AbstractWebTestCase
         $this->assertEmailCount(1);
         /** @var Email $Message */
         $Message = $this->getMailerMessage(0);
+        $this->assertInstanceOf(BaseInfo::class, $BaseInfo);
 
         $this->expected = '['.$BaseInfo->getShopName().'] お問い合わせを受け付けました。';
         $this->actual = $Message->getSubject();
@@ -165,7 +171,7 @@ class ContactControllerTest extends AbstractWebTestCase
         $this->logInTo($this->createCustomer());
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('contact'),
             ['contact' => $formData,
                 'mode' => 'complete', ]
@@ -178,6 +184,7 @@ class ContactControllerTest extends AbstractWebTestCase
         $this->assertEmailCount(1);
         /** @var Email $Message */
         $Message = $this->getMailerMessage(0);
+        $this->assertInstanceOf(BaseInfo::class, $BaseInfo);
 
         $this->expected = '['.$BaseInfo->getShopName().'] お問い合わせを受け付けました。';
         $this->actual = $Message->getSubject();
@@ -186,7 +193,7 @@ class ContactControllerTest extends AbstractWebTestCase
 
     public function testRoutingComplete()
     {
-        $this->client->request('GET', $this->generateUrl('contact_complete'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('contact_complete'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -197,7 +204,7 @@ class ContactControllerTest extends AbstractWebTestCase
         $formData['email'] = 'aa..@example.com';
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('contact'),
             ['contact' => $formData,
                 'mode' => 'complete', ]

@@ -24,29 +24,21 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class SearchProductController extends AbstractController
 {
-    /**
-     * @var RequestStack
-     */
-    protected $requestStack;
-
-    public function __construct(RequestStack $requestStack,
-    ) {
-        $this->requestStack = $requestStack;
+    public function __construct(protected RequestStack $requestStack)
+    {
     }
 
     /**
-     * @param Request $request
-     *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
-    #[Route('/block/search_product', name: 'block_search_product', methods: ['GET'])]
-    #[Route('/block/search_product_sp', name: 'block_search_product_sp', methods: ['GET'])]
-    #[Template('Block/search_product.twig')]
-    public function index(Request $request)
+    #[Route(path: '/block/search_product', name: 'block_search_product', methods: ['GET'])]
+    #[Route(path: '/block/search_product_sp', name: 'block_search_product_sp', methods: ['GET'])]
+    #[Template(template: 'Block/search_product.twig')]
+    public function index(Request $request): array
     {
         $builder = $this->formFactory
             ->createNamedBuilder('', SearchProductBlockType::class)
-            ->setMethod('GET');
+            ->setMethod(Request::METHOD_GET);
 
         $event = new EventArgs(
             [

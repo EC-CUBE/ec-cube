@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,13 +19,12 @@ use Eccube\Form\Type\Front\CustomerAddressType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use Symfony\Component\Form\FormInterface;
 
-class CustomerAddressTypeTest extends AbstractTypeTestCase
+final class CustomerAddressTypeTest extends AbstractTypeTestCase
 {
-    /** @var FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = [
+    protected ?array $formData = [
         'name' => [
             'name01' => 'たかはし',
             'name02' => 'しんいち',
@@ -42,6 +43,7 @@ class CustomerAddressTypeTest extends AbstractTypeTestCase
         'phone_number' => '012-345-6789',
     ];
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

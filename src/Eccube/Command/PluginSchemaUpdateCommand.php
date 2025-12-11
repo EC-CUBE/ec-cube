@@ -14,31 +14,27 @@
 namespace Eccube\Command;
 
 use Eccube\Entity\Plugin;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(name: 'eccube:plugin:schema-update', description: 'Execute plugin schema update.')]
 class PluginSchemaUpdateCommand extends Command
 {
     use PluginCommandTrait;
 
-    protected static $defaultName = 'eccube:plugin:schema-update';
-
-    /**
-     * @return void
-     */
     #[\Override]
-    protected function configure()
+    protected function configure(): void
     {
         $this
-            ->addArgument('code', InputArgument::REQUIRED, 'Plugin code')
-            ->setDescription('Execute plugin schema update.');
+            ->addArgument('code', InputArgument::REQUIRED, 'Plugin code');
     }
 
     #[\Override]
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 

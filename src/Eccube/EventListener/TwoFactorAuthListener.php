@@ -31,49 +31,13 @@ class TwoFactorAuthListener implements EventSubscriberInterface
     public const ROUTE_EXCLUDE = ['admin_two_factor_auth', 'admin_two_factor_auth_set'];
 
     /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
-     * @var Context
-     */
-    protected $requestContext;
-
-    /**
-     * @var UrlGeneratorInterface
-     */
-    protected $router;
-
-    /**
-     * @var TwoFactorAuthService
-     */
-    protected $twoFactorAuthService;
-
-    /**
-     * @param EccubeConfig $eccubeConfig
      * @param Context $requestContext,
-     * @param UrlGeneratorInterface $router
-     * @param TwoFactorAuthService $twoFactorAuthService
      */
-    public function __construct(
-        EccubeConfig $eccubeConfig,
-        Context $requestContext,
-        UrlGeneratorInterface $router,
-        TwoFactorAuthService $twoFactorAuthService,
-    ) {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->requestContext = $requestContext;
-        $this->router = $router;
-        $this->twoFactorAuthService = $twoFactorAuthService;
+    public function __construct(protected EccubeConfig $eccubeConfig, protected Context $requestContext, protected UrlGeneratorInterface $router, protected TwoFactorAuthService $twoFactorAuthService)
+    {
     }
 
-    /**
-     * @param ControllerArgumentsEvent $event
-     *
-     * @return void
-     */
-    public function onKernelController(ControllerArgumentsEvent $event)
+    public function onKernelController(ControllerArgumentsEvent $event): void
     {
         if (!$event->isMainRequest()) {
             return;
@@ -107,17 +71,15 @@ class TwoFactorAuthListener implements EventSubscriberInterface
             else {
                 $url = $this->router->generate('admin_two_factor_auth_set', [], UrlGeneratorInterface::ABSOLUTE_PATH);
             }
-            $event->setController(function () use ($url) {
-                return new RedirectResponse($url, $status = 302);
-            });
+            $event->setController(fn () => new RedirectResponse($url, $status = 302));
         }
     }
 
     /**
-     * @return array<string,array<int|string>>
+     * @return array<string, array<int|string>>
      */
     #[\Override]
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::CONTROLLER_ARGUMENTS => ['onKernelController', 7],

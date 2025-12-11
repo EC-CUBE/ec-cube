@@ -20,11 +20,5 @@ use Eccube\Entity\ItemInterface;
  */
 interface ItemPreprocessor
 {
-    /**
-     * @param ItemInterface   $item
-     * @param PurchaseContext $context
-     *
-     * @return void
-     */
-    public function process(ItemInterface $item, PurchaseContext $context);
+    public function process(ItemInterface $item, PurchaseContext $context): void;
 }

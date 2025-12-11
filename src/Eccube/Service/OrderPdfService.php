@@ -36,32 +36,7 @@ use setasign\Fpdi\Tcpdf\Fpdi;
  */
 class OrderPdfService extends Fpdi
 {
-    /** @var OrderRepository */
-    protected $orderRepository;
-
-    /** @var ShippingRepository */
-    protected $shippingRepository;
-
-    /** @var OrderPdfRepository */
-    protected $orderPdfRepository;
-
-    /** @var TaxRuleService */
-    protected $taxRuleService;
-
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
-     * @var EccubeExtension
-     */
-    protected $eccubeExtension;
-
-    /**
-     * @var TaxExtension
-     */
-    protected $taxExtension;
+    protected OrderPdfRepository $orderPdfRepository;
 
     // ====================================
     // 定数宣言
@@ -78,71 +53,48 @@ class OrderPdfService extends Fpdi
     // ====================================
     // 変数宣言
     // ====================================
-
-    /** @var BaseInfo */
-    public $baseInfoRepository;
+    public BaseInfo $baseInfoRepository;
 
     /** 購入詳細情報 ラベル配列
      * @var array<int, string>
      */
-    protected $labelCell = [];
+    protected array $labelCell = [];
 
     /** 購入詳細情報 幅サイズ配列
      * @var array<int, float|int>
      */
-    protected $widthCell = [];
+    protected array $widthCell = [];
 
     /** @var string|null 最後に処理した注文番号 */
-    protected $lastOrderId;
+    protected ?string $lastOrderId = null;
 
     // --------------------------------------
     // Font情報のバックアップデータ
     /** @var string フォント名 */
-    protected $bakFontFamily;
+    protected string $bakFontFamily;
     /** @var string フォントスタイル */
-    protected $bakFontStyle;
+    protected string $bakFontStyle;
     /** @var string|float|null フォントサイズ */
-    protected $bakFontSize;
+    protected string|float|null $bakFontSize = null;
     // --------------------------------------
-
     // lfTextのoffset
-    /**
-     * @var int
-     */
-    protected $baseOffsetX = 0;
-    /**
-     * @var int
-     */
-    protected $baseOffsetY = -4;
+    protected int $baseOffsetX = 0;
+    protected int $baseOffsetY = -4;
 
     /** @var string|null ダウンロードファイル名 */
-    protected $downloadFileName;
+    protected ?string $downloadFileName = null;
 
     /** @var string 発行日 */
-    protected $issueDate = '';
+    protected string $issueDate = '';
 
     /**
      * OrderPdfService constructor.
      *
-     * @param EccubeConfig $eccubeConfig
-     * @param OrderRepository $orderRepository
-     * @param ShippingRepository $shippingRepository
-     * @param TaxRuleService $taxRuleService
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param EccubeExtension $eccubeExtension
-     * @param TaxExtension $taxExtension
-     *
      * @throws \Exception
      */
-    public function __construct(EccubeConfig $eccubeConfig, OrderRepository $orderRepository, ShippingRepository $shippingRepository, TaxRuleService $taxRuleService, BaseInfoRepository $baseInfoRepository, EccubeExtension $eccubeExtension, TaxExtension $taxExtension)
+    public function __construct(protected EccubeConfig $eccubeConfig, protected OrderRepository $orderRepository, protected ShippingRepository $shippingRepository, protected TaxRuleService $taxRuleService, BaseInfoRepository $baseInfoRepository, protected EccubeExtension $eccubeExtension, protected TaxExtension $taxExtension)
     {
-        $this->eccubeConfig = $eccubeConfig;
         $this->baseInfoRepository = $baseInfoRepository->get();
-        $this->orderRepository = $orderRepository;
-        $this->shippingRepository = $shippingRepository;
-        $this->taxRuleService = $taxRuleService;
-        $this->eccubeExtension = $eccubeExtension;
-        $this->taxExtension = $taxExtension;
 
         parent::__construct();
 
@@ -194,15 +146,13 @@ class OrderPdfService extends Fpdi
      *  note2: 備考2行目
      *  note3: 備考3行目
      *
-     * @return bool
-     *
      * @throws CrossReferenceException
      * @throws FilterException
      * @throws PdfParserException
      * @throws PdfReaderException
      * @throws PdfTypeException
      */
-    public function makePdf(array $formData)
+    public function makePdf(array $formData): bool
     {
         // 発行日の設定
         $this->issueDate = '作成日: '.$formData['issue_date']->format('Y年m月d日');
@@ -251,7 +201,12 @@ class OrderPdfService extends Fpdi
             $this->renderOrderData($Shipping);
 
             // メッセージを描画する
-            $this->renderMessageData($formData);
+            $messageData = [
+                'message1' => $formData['message1'],
+                'message2' => $formData['message2'],
+                'message3' => $formData['message3'],
+            ];
+            $this->renderMessageData($messageData);
 
             // 出荷詳細情報を描画する
             $this->renderOrderDetailData($Shipping);
@@ -265,10 +220,8 @@ class OrderPdfService extends Fpdi
 
     /**
      * PDFファイルを出力する.
-     *
-     * @return string|mixed
      */
-    public function outputPdf()
+    public function outputPdf(): string
     {
         return $this->Output($this->getPdfFileName(), 'S');
     }
@@ -279,7 +232,7 @@ class OrderPdfService extends Fpdi
      *
      * @return string ファイル名
      */
-    public function getPdfFileName()
+    public function getPdfFileName(): string
     {
         if (!is_null($this->downloadFileName)) {
             return $this->downloadFileName;
@@ -294,11 +247,9 @@ class OrderPdfService extends Fpdi
 
     /**
      * フッターに発行日を出力する.
-     *
-     * @return void
      */
     #[\Override]
-    public function Footer()
+    public function Footer(): void
     {
         $this->Cell(0, 0, $this->issueDate, 0, 0, 'R');
     }
@@ -306,15 +257,13 @@ class OrderPdfService extends Fpdi
     /**
      * 作成するPDFのテンプレートファイルを指定する.
      *
-     * @return void
-     *
      * @throws CrossReferenceException
      * @throws FilterException
      * @throws PdfParserException
      * @throws PdfTypeException
      * @throws PdfReaderException
      */
-    protected function addPdfPage()
+    protected function addPdfPage(): void
     {
         // ページを追加
         $this->AddPage();
@@ -330,10 +279,8 @@ class OrderPdfService extends Fpdi
     /**
      * PDFに店舗情報を設定する
      * ショップ名、ロゴ画像以外はdtb_helpに登録されたデータを使用する.
-     *
-     * @return void
      */
-    protected function renderShopData()
+    protected function renderShopData(): void
     {
         // 基準座標を設定する
         $this->setBasePosition();
@@ -382,10 +329,8 @@ class OrderPdfService extends Fpdi
      * メッセージを設定する.
      *
      * @param array<string, string> $formData
-     *
-     * @return void
      */
-    protected function renderMessageData(array $formData)
+    protected function renderMessageData(array $formData): void
     {
         $this->lfText(27, 70, $formData['message1'], 8); // メッセージ1
         $this->lfText(27, 74, $formData['message2'], 8); // メッセージ2
@@ -395,11 +340,9 @@ class OrderPdfService extends Fpdi
     /**
      * PDFに備考を設定数.
      *
-     * @param array<string, string> $formData
-     *
-     * @return void
+     * @param array<string, string|\DateTime> $formData
      */
-    protected function renderEtcData(array $formData)
+    protected function renderEtcData(array $formData): void
     {
         // フォント情報のバックアップ
         $this->backupFont();
@@ -411,14 +354,14 @@ class OrderPdfService extends Fpdi
             $this->Cell(0, 10, '', 0, 1, 'C', false, '');
         }
         $this->SetFont(self::FONT_GOTHIC, 'B', 9);
-        $this->MultiCell(0, 6, '＜ 備考 ＞', 'T', 'L', false, 0, null);
+        $this->MultiCell(0, 6, '＜ 備考 ＞', 'T', 'L', false, 0);
 
         $this->SetFont(self::FONT_SJIS, '', 8);
 
         $this->Ln();
         // rtrimを行う
         $text = preg_replace('/\s+$/us', '', $formData['note1']."\n".$formData['note2']."\n".$formData['note3']);
-        $this->MultiCell(0, 4, $text, '', 'L', false, 0, null);
+        $this->MultiCell(0, 4, $text, '', 'L', false, 0);
 
         // フォント情報の復元
         $this->restoreFont();
@@ -426,12 +369,8 @@ class OrderPdfService extends Fpdi
 
     /**
      * タイトルをPDFに描画する.
-     *
-     * @param string $title
-     *
-     * @return void
      */
-    protected function renderTitle($title)
+    protected function renderTitle(string $title): void
     {
         // 基準座標を設定する
         $this->setBasePosition();
@@ -451,12 +390,8 @@ class OrderPdfService extends Fpdi
 
     /**
      * 購入者情報を設定する.
-     *
-     * @param Shipping $Shipping
-     *
-     * @return void
      */
-    protected function renderOrderData(Shipping $Shipping)
+    protected function renderOrderData(Shipping $Shipping): void
     {
         // 基準座標を設定する
         $this->setBasePosition();
@@ -528,12 +463,8 @@ class OrderPdfService extends Fpdi
 
     /**
      * 購入商品詳細情報を設定する.
-     *
-     * @param Shipping $Shipping
-     *
-     * @return void
      */
-    protected function renderOrderDetailData(Shipping $Shipping)
+    protected function renderOrderDetailData(Shipping $Shipping): void
     {
         $arrOrder = [];
         // テーブルの微調整を行うための購入商品詳細情報をarrayに変換する
@@ -671,9 +602,7 @@ class OrderPdfService extends Fpdi
         if (270 <= $this->GetY()) {
             $this->Cell(0, 0, '', 0, 1, 'C', false, '');
         }
-        $width = array_reduce($this->widthCell, function (float $n, float $w) {
-            return $n + $w;
-        }, 0.0);
+        $width = array_reduce($this->widthCell, fn (float $n, float $w) => $n + $w, 0.0);
         $this->SetX(20);
         $message = '';
         foreach ($Order->getTotalByTaxRate() as $rate => $total) {
@@ -691,20 +620,18 @@ class OrderPdfService extends Fpdi
      *
      * @param int $x X座標
      * @param int $y Y座標
-     * @param string $text テキスト
+     * @param string|null $text テキスト
      * @param int $size フォントサイズ
      * @param string $style フォントスタイル
-     *
-     * @return void
      */
-    protected function lfText($x, $y, $text, $size = 0, $style = '')
+    protected function lfText(int $x, int $y, ?string $text, int $size = 0, string $style = ''): void
     {
         // 退避
         $bakFontStyle = $this->FontStyle;
         $bakFontSize = $this->FontSizePt;
 
         $this->SetFont('', $style, $size);
-        $this->Text($x + $this->baseOffsetX, $y + $this->baseOffsetY, $text);
+        $this->Text($x + $this->baseOffsetX, $y + $this->baseOffsetY, $text ?? '');
 
         // 復元
         $this->SetFont('', $bakFontStyle, $bakFontSize);
@@ -716,10 +643,8 @@ class OrderPdfService extends Fpdi
      * @param array<int, string> $header 出力するラベル名一覧
      * @param array<int, array<int, string>> $data 出力するデータ
      * @param array<int, int> $w 出力するセル幅一覧
-     *
-     * @return void
      */
-    protected function setFancyTable($header, $data, $w)
+    protected function setFancyTable(array $header, array $data, array $w): void
     {
         // フォント情報のバックアップ
         $this->backupFont();
@@ -812,13 +737,8 @@ class OrderPdfService extends Fpdi
 
     /**
      * 基準座標を設定する.
-     *
-     * @param int|float|null $x
-     * @param int|float|null $y
-     *
-     * @return void
      */
-    protected function setBasePosition($x = null, $y = null)
+    protected function setBasePosition(int|float|null $x = null, int|float|null $y = null): void
     {
         // 現在のマージンを取得する
         $result = $this->getMargins();
@@ -832,10 +752,8 @@ class OrderPdfService extends Fpdi
 
     /**
      * Font情報のバックアップ.
-     *
-     * @return void
      */
-    protected function backupFont()
+    protected function backupFont(): void
     {
         // フォント情報のバックアップ
         $this->bakFontFamily = $this->FontFamily;
@@ -845,10 +763,8 @@ class OrderPdfService extends Fpdi
 
     /**
      * Font情報の復元.
-     *
-     * @return void
      */
-    protected function restoreFont()
+    protected function restoreFont(): void
     {
         $this->SetFont($this->bakFontFamily, $this->bakFontStyle, $this->bakFontSize);
     }

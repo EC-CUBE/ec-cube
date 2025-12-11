@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,14 +20,12 @@ use Symfony\Component\Form\FormFactoryInterface;
 
 abstract class AbstractTypeTestCase extends EccubeTestCase
 {
-    /**
-     * @var FormFactoryInterface
-     */
-    protected $formFactory;
+    protected ?FormFactoryInterface $formFactory = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-        $this->formFactory = static::getContainer()->get('form.factory');
+        $this->formFactory = static::getContainer()->get(FormFactoryInterface::class);
     }
 }

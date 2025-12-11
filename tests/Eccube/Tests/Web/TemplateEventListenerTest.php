@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -14,15 +16,16 @@
 namespace Eccube\Tests\Web;
 
 use Eccube\Event\TemplateEvent;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\Request;
 
-class TemplateEventListenerTest extends AbstractWebTestCase
+final class TemplateEventListenerTest extends AbstractWebTestCase
 {
     public function test()
     {
         $calledEvents = [];
-        /** @var EventDispatcher $eventDispatcher */
-        $eventDispatcher = static::getContainer()->get('event_dispatcher');
+        /** @var EventDispatcherInterface $eventDispatcher */
+        $eventDispatcher = static::getContainer()->get(EventDispatcherInterface::class);
         $listener = function ($event) use (&$calledEvents) {
             /* @var TemplateEvent $event */
             $calledEvents[] = $event->getView();
@@ -30,8 +33,8 @@ class TemplateEventListenerTest extends AbstractWebTestCase
         $eventDispatcher->addListener('index.twig', $listener);
         $eventDispatcher->addListener('Block/login.twig', $listener);
 
-        $this->client->request('GET', $this->generateUrl('homepage'));
-        self::assertSame([
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('homepage'));
+        $this->assertSame([
             'index.twig',
             'Block/login.twig',
         ], $calledEvents);

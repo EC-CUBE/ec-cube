@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -26,21 +28,16 @@ use Symfony\Component\Yaml\Yaml;
  * このクラスは、 setUp()/tearDown() で begin/rollback しないようにし、
  * 実装コード内での rollback を検証する.
  */
-class PluginServiceWithExceptionTest extends AbstractServiceTestCase
+final class PluginServiceWithExceptionTest extends AbstractServiceTestCase
 {
-    /**
-     * @var PluginRepository
-     */
-    protected $pluginRepository;
+    protected ?PluginRepository $pluginRepository = null;
 
-    /**
-     * @var PluginService
-     */
-    protected $pluginService;
+    protected ?PluginService $pluginService = null;
 
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -53,7 +50,7 @@ class PluginServiceWithExceptionTest extends AbstractServiceTestCase
     public function testInstallPluginWithBrokenManager()
     {
         // インストールするプラグインを作成する
-        $tmpname = 'dummy'.sha1(mt_rand());
+        $tmpname = 'dummy'.sha1((string) mt_rand());
         $config = [];
         $config['name'] = $tmpname;
         $config['code'] = $tmpname;
@@ -95,7 +92,7 @@ EOD;
 
     private function createTempDir()
     {
-        $t = sys_get_temp_dir().'/plugintest.'.sha1(mt_rand());
+        $t = sys_get_temp_dir().'/plugintest.'.sha1((string) mt_rand());
         if (!mkdir($t)) {
             throw new \Exception("$t ".$php_errormsg);
         }

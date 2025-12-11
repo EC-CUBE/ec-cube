@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -16,46 +18,35 @@ namespace Eccube\Tests\Service;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\Pref;
+use Eccube\Entity\Order;
 use Eccube\Service\MailService;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
+use Twig\Environment;
 
 /**
  * MailService test cases.
  */
-class MailServiceTest extends AbstractServiceTestCase
+final class MailServiceTest extends AbstractServiceTestCase
 {
     use MailerAssertionsTrait;
 
-    /**
-     * @var Customer
-     */
-    protected $Customer;
+    protected ?Customer $Customer = null;
 
-    /**
-     * @var Order
-     */
-    protected $Order;
-    /**
-     * @var BaseInfo
-     */
-    protected $BaseInfo;
+    protected ?Order $Order = null;
+    protected ?BaseInfo $BaseInfo = null;
 
-    /**
-     * @var MailService
-     */
-    protected $mailService;
+    protected ?MailService $mailService = null;
 
-    /**
-     * @var OrderRepository
-     */
-    protected $orderRepository;
+    protected ?OrderRepository $orderRepository = null;
 
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -65,8 +56,8 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->mailService = static::getContainer()->get(MailService::class);
 
         $request = Request::createFromGlobals();
-        static::getContainer()->get('request_stack')->push($request);
-        $twig = static::getContainer()->get('twig');
+        static::getContainer()->get(RequestStack::class)->push($request);
+        $twig = static::getContainer()->get(Environment::class);
         $twig->addGlobal('BaseInfo', $this->BaseInfo);
     }
 

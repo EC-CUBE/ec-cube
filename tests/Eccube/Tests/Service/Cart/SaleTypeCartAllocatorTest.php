@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,16 +19,14 @@ use Eccube\Entity\CartItem;
 use Eccube\Service\Cart\SaleTypeCartAllocator;
 use Eccube\Tests\EccubeTestCase;
 
-class SaleTypeCartAllocatorTest extends EccubeTestCase
+final class SaleTypeCartAllocatorTest extends EccubeTestCase
 {
-    /**
-     * @var SaleTypeCartAllocator
-     */
-    private $allocator;
+    private ?SaleTypeCartAllocator $allocator = null;
 
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -43,6 +43,6 @@ class SaleTypeCartAllocatorTest extends EccubeTestCase
 
         $expected = (string) $ProductClass->getSaleType()->getId();
         $actual = $this->allocator->allocate($CartItem);
-        self::assertSame($expected, $actual);
+        $this->assertSame($expected, $actual);
     }
 }

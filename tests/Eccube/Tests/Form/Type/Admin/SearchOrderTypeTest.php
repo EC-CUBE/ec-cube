@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,18 +17,17 @@ namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Form\Type\Admin\SearchOrderType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Form\FormInterface;
 
-class SearchOrderTypeTest extends AbstractTypeTestCase
+final class SearchOrderTypeTest extends AbstractTypeTestCase
 {
-    /**
-     * @var FormInterface
-     */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -39,11 +40,8 @@ class SearchOrderTypeTest extends AbstractTypeTestCase
 
     /**
      * EC-CUBE 4.0.4 以前のバージョンで互換性を保つため yyyy-MM-dd のフォーマットもチェック
-     *
-     * @dataProvider dataFormDateProvider
-     *
-     * @param string $formName
      */
+    #[DataProvider(methodName: 'dataFormDateProvider')]
     public function testDateSearch(string $formName)
     {
         $formData = [
@@ -56,11 +54,8 @@ class SearchOrderTypeTest extends AbstractTypeTestCase
 
     /**
      * EC-CUBE 4.0.4 以前のバージョンで互換性を保つため yyyy-MM-dd のフォーマットもチェック
-     *
-     * @dataProvider dataFormDateProvider
-     *
-     * @param string $formName
      */
+    #[DataProvider(methodName: 'dataFormDateProvider')]
     public function testOutOfRangeSearch(string $formName)
     {
         $formData = [
@@ -73,30 +68,23 @@ class SearchOrderTypeTest extends AbstractTypeTestCase
 
     /**
      * Data provider date form test.
-     *
-     * @return array
      */
-    public function dataFormDateProvider()
+    public static function dataFormDateProvider(): \Iterator
     {
-        return [
-            ['order_date_start'],
-            ['payment_date_start'],
-            ['update_date_start'],
-            ['shipping_delivery_date_start'],
-            ['order_date_end'],
-            ['payment_date_end'],
-            ['update_date_end'],
-            ['shipping_delivery_date_end'],
-        ];
+        yield ['order_date_start'];
+        yield ['payment_date_start'];
+        yield ['update_date_start'];
+        yield ['shipping_delivery_date_start'];
+        yield ['order_date_end'];
+        yield ['payment_date_end'];
+        yield ['update_date_end'];
+        yield ['shipping_delivery_date_end'];
     }
 
     /**
      * EC-CUBE 4.0.5 以降で yyyy-MM-dd HH:mm:ss のフォーマットでの検索機能を追加
-     *
-     * @dataProvider dataFormDateTimeProvider
-     *
-     * @param string $formName
      */
+    #[DataProvider(methodName: 'dataFormDateTimeProvider')]
     public function testDateTimeSearch(string $formName)
     {
         $formData = [
@@ -109,20 +97,16 @@ class SearchOrderTypeTest extends AbstractTypeTestCase
 
     /**
      * Data provider datetime form test.
-     *
-     * @return array
      */
-    public function dataFormDateTimeProvider()
+    public static function dataFormDateTimeProvider(): \Iterator
     {
-        return [
-            ['order_datetime_start'],
-            ['payment_datetime_start'],
-            ['update_datetime_start'],
-            ['shipping_delivery_datetime_start'],
-            ['order_datetime_end'],
-            ['payment_datetime_end'],
-            ['update_datetime_end'],
-            ['shipping_delivery_datetime_end'],
-        ];
+        yield ['order_datetime_start'];
+        yield ['payment_datetime_start'];
+        yield ['update_datetime_start'];
+        yield ['shipping_delivery_datetime_start'];
+        yield ['order_datetime_end'];
+        yield ['payment_datetime_end'];
+        yield ['update_datetime_end'];
+        yield ['shipping_delivery_datetime_end'];
     }
 }

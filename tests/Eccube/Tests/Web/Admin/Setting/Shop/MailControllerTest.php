@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,12 +19,14 @@ use Eccube\Entity\MailTemplate;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class MailControllerTest
  */
-class MailControllerTest extends AbstractAdminWebTestCase
+final class MailControllerTest extends AbstractAdminWebTestCase
 {
+    #[\Override]
     protected function tearDown(): void
     {
         $themeDir = static::getContainer()->getParameter('eccube_theme_front_dir');
@@ -34,21 +38,17 @@ class MailControllerTest extends AbstractAdminWebTestCase
 
     /**
      * メール設定画面の表示
-     *
-     * @return void
      */
-    public function testRouting()
+    public function testRouting(): void
     {
-        $this->client->request('GET', $this->generateUrl('admin_setting_shop_mail'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_shop_mail'));
         $this->assertTrue($this->client->getResponse()->isOk());
     }
 
     /**
      * 新規登録
-     *
-     * @return void
      */
-    public function testCreate()
+    public function testCreate(): void
     {
         // 新規登録
         $crawler = $this->senarioCreate();
@@ -61,10 +61,8 @@ class MailControllerTest extends AbstractAdminWebTestCase
 
     /**
      * バリデーションエラー
-     *
-     * @return void
      */
-    public function testValidationError()
+    public function testValidationError(): void
     {
         // 必須項目を空で登録し、バリデーションエラーを発生させる
         $crawler = $this->senarioCreate(['file_name' => '']);
@@ -76,10 +74,8 @@ class MailControllerTest extends AbstractAdminWebTestCase
 
     /**
      * ファイル名が既に使用されている
-     *
-     * @return void
      */
-    public function testFileAlreadyExists()
+    public function testFileAlreadyExists(): void
     {
         // 新規登録
         $crawler = $this->senarioCreate(['file_name' => 'test_exists']);
@@ -100,10 +96,8 @@ class MailControllerTest extends AbstractAdminWebTestCase
 
     /**
      * 編集
-     *
-     * @return void
      */
-    public function testEdit()
+    public function testEdit(): void
     {
         // 新規登録
         $crawler = $this->senarioCreate();
@@ -117,7 +111,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $this->verify();
 
         // 編集画面を表示
-        $this->client->request('GET',
+        $this->client->request(Request::METHOD_GET,
             $this->generateUrl('admin_setting_shop_mail_edit', ['id' => $id])
         );
         $this->assertTrue($this->client->getResponse()->isOk());
@@ -134,16 +128,15 @@ class MailControllerTest extends AbstractAdminWebTestCase
         // 更新を確認
         $MailTemplate = $this->entityManager->find(MailTemplate::class, $id);
         $this->expected = $subject;
+        $this->assertInstanceOf(MailTemplate::class, $MailTemplate);
         $this->actual = $MailTemplate->getMailSubject();
         $this->verify();
     }
 
     /**
      * HTMLを空で登録すると、HTMLテンプレートファイルが削除されることを確認
-     *
-     * @return void
      */
-    public function testEditClearHtml()
+    public function testEditClearHtml(): void
     {
         // 新規登録
         $crawler = $this->senarioCreate([
@@ -161,8 +154,8 @@ class MailControllerTest extends AbstractAdminWebTestCase
 
         // テンプレートファイルが生成されていることを確認
         $themeDir = static::getContainer()->getParameter('eccube_theme_front_dir');
-        $this->assertTrue(file_exists($themeDir.'/Mail/test_edit_clear_html.twig'));
-        $this->assertTrue(file_exists($themeDir.'/Mail/test_edit_clear_html.html.twig'));
+        $this->assertFileExists($themeDir.'/Mail/test_edit_clear_html.twig');
+        $this->assertFileExists($themeDir.'/Mail/test_edit_clear_html.html.twig');
 
         // HTMLを空で更新
         $this->senarioEdit($id, ['html_tpl_data' => '']);
@@ -173,16 +166,14 @@ class MailControllerTest extends AbstractAdminWebTestCase
 
         // HTMLテンプレートファイルが削除されていることを確認
         $themeDir = static::getContainer()->getParameter('eccube_theme_front_dir');
-        $this->assertTrue(file_exists($themeDir.'/Mail/test_edit_clear_html.twig'));
-        $this->assertFalse(file_exists($themeDir.'/Mail/test_edit_clear_html.html.twig'));
+        $this->assertFileExists($themeDir.'/Mail/test_edit_clear_html.twig');
+        $this->assertFileDoesNotExist($themeDir.'/Mail/test_edit_clear_html.html.twig');
     }
 
     /**
      * 存在しないテンプレートIDを指定
-     *
-     * @return void
      */
-    public function testEditNotExists()
+    public function testEditNotExists(): void
     {
         $id = 99999;
         $crawler = $this->senarioEdit($id);
@@ -195,10 +186,8 @@ class MailControllerTest extends AbstractAdminWebTestCase
 
     /**
      * 削除
-     *
-     * @return void
      */
-    public function testDelete()
+    public function testDelete(): void
     {
         // 新規登録
         $crawler = $this->senarioCreate();
@@ -222,10 +211,8 @@ class MailControllerTest extends AbstractAdminWebTestCase
 
     /**
      * 削除不可のテンプレートを削除
-     *
-     * @return void
      */
-    public function testDeleteNotDeletable()
+    public function testDeleteNotDeletable(): void
     {
         // 新規登録
         $crawler = $this->senarioCreate();
@@ -241,6 +228,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
 
         // deletable => falseに更新
         $MailTemplate = $this->entityManager->find(MailTemplate::class, $id);
+        $this->assertInstanceOf(MailTemplate::class, $MailTemplate);
         $MailTemplate->setDeletable(false);
         $this->entityManager->flush();
 
@@ -249,7 +237,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
 
         // 削除されず残っている
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_setting_shop_mail_edit', ['id' => $MailTemplate->getId()]),
         );
         // 編集画面を表示可能
@@ -261,15 +249,15 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $faker = $this->getFaker();
         $form = array_merge([
             '_token' => 'dummy',
-            'name' => $faker->word,
+            'name' => $faker->word(),
             'file_name' => 'test_'.$faker->lexify('????????'),
-            'mail_subject' => $faker->word,
+            'mail_subject' => $faker->word(),
             'tpl_data' => $faker->realText,
             'html_tpl_data' => $faker->realText,
         ], $form);
 
         return $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop_mail'),
             ['mail' => $form]
         );
@@ -281,14 +269,14 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $form = array_merge([
             '_token' => 'dummy',
             'template' => $id,
-            'name' => $faker->word,
-            'mail_subject' => $faker->word,
+            'name' => $faker->word(),
+            'mail_subject' => $faker->word(),
             'tpl_data' => $faker->realText,
             'html_tpl_data' => $faker->realText,
         ], $form);
 
         return $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop_mail_edit', ['id' => $id]),
             ['mail' => $form]
         );
@@ -297,7 +285,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
     private function senarioDelete($id)
     {
         return $this->client->request(
-            'DELETE',
+            Request::METHOD_DELETE,
             $this->generateUrl('admin_setting_shop_mail_delete', ['id' => $id]),
         );
     }

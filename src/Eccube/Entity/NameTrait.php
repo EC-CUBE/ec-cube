@@ -15,18 +15,12 @@ namespace Eccube\Entity;
 
 trait NameTrait
 {
-    /**
-     * @return string
-     */
-    public function getFullName()
+    public function getFullName(): string
     {
         return $this->name01.' '.$this->name02;
     }
 
-    /**
-     * @return string
-     */
-    public function getFullNameKana()
+    public function getFullNameKana(): string
     {
         return $this->kana01.' '.$this->kana02;
     }

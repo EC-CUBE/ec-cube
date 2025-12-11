@@ -15,13 +15,14 @@ namespace Eccube\Doctrine\Filter;
 
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Filter\SQLFilter;
+use Eccube\Entity\ProductClass;
 
 class NoStockHiddenFilter extends SQLFilter
 {
     #[\Override]
-    public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias)
+    public function addFilterConstraint(ClassMetadata $targetEntity, string $targetTableAlias): string
     {
-        if ($targetEntity->reflClass->getName() === \Eccube\Entity\ProductClass::class) {
+        if ($targetEntity->reflClass->getName() === ProductClass::class) {
             return $targetTableAlias.'.stock >= 1 OR '.$targetTableAlias.'.stock_unlimited = true';
         } else {
             return '';

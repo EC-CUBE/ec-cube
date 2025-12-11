@@ -36,8 +36,7 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
     public static $一括削除エラー = ['id' => 'bulkErrors'];
     public static $アラートメッセージ = ['css' => '.c-contentsArea > .alert'];
 
-    /** @var \AcceptanceTester */
-    protected $tester;
+    protected \AcceptanceTester $tester;
 
     /**
      * ProductListPage constructor.
@@ -73,7 +72,7 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
      *
      * @return $this
      */
-    public function 検索($product = '')
+    public function 検索(string $product = '')
     {
         $this->tester->fillField(self::$検索条件_プロダクト, $product);
         $this->tester->click(self::$検索ボタン);
@@ -129,7 +128,7 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
      *
      * @return $this
      */
-    public function 検索結果_規格設定($rowNum)
+    public function 検索結果_規格設定(int $rowNum)
     {
         $this->tester->click("#main #result_list__list > div > div:nth-child({$rowNum}) > div:nth-child(4) > div > ul > li:nth-child(1) > a");
 
@@ -143,7 +142,7 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
      *
      * @return $this
      */
-    public function 検索結果_複製($rowNum)
+    public function 検索結果_複製(int $rowNum)
     {
         $this->tester->click("#page_admin_product > div > div.c-contentsArea > div.c-contentsArea__cols > div > div > form > div.card.rounded.border-0.mb-4 > div.card-body.p-0 > table > tbody > tr:nth-child({$rowNum}) > td.align-middle.pe-3 > div > div:nth-child(2) > a");
 
@@ -157,7 +156,7 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
      *
      * @return $this
      */
-    public function 検索結果_確認($rowNum)
+    public function 検索結果_確認(int $rowNum)
     {
         $this->tester->click("#page_admin_product > div > div.c-contentsArea > div.c-contentsArea__cols > div > div > form > div.card.rounded.border-0.mb-4 > div.card-body.p-0 > table > tbody > tr:nth-child({$rowNum}) > td.align-middle.pe-3 > div > div:nth-child(1) > a");
 
@@ -171,7 +170,7 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
      *
      * @return $this
      */
-    public function 検索結果_選択($rowNum)
+    public function 検索結果_選択(int $rowNum)
     {
         $this->tester->click("#form_bulk > div.card.rounded.border-0.mb-4 > div.card-body.p-0 > table > tbody > tr:nth-child({$rowNum}) > td:nth-child(4) > a");
 
@@ -185,7 +184,7 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
      *
      * @return $this
      */
-    public function 規格確認ボタンをクリック($rowNum)
+    public function 規格確認ボタンをクリック(int $rowNum)
     {
         $this->tester->click(['css' => "#ex-product-{$rowNum} > td:nth-child(7) > button"]);
         $this->tester->waitForElementVisible(['id' => 'productClassesModal']);

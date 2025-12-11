@@ -14,8 +14,8 @@
 namespace Eccube\Form\Validator;
 
 /**
- * @Annotation
- * @Target({"PROPERTY", "METHOD", "ANNOTATION"})
+ * Annotation
+ * Target({"PROPERTY", "METHOD", "ANNOTATION"})
  *
  * ANNOTATIONは存在しないため、TARGET_CLASSとIS_REPEATABLE で代用
  */

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,33 +19,37 @@ use Eccube\Form\Type\Admin\LogType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use Symfony\Component\Form\FormInterface;
 
-class LogTypeTest extends AbstractTypeTestCase
+final class LogTypeTest extends AbstractTypeTestCase
 {
-    /** @var FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData;
-
-    protected $fileName;
+    protected ?array $formData = null;
 
     protected $logTest;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->fileName = '_test_site_'.date('YmdHis').'.log';
-        $this->logTest = static::getContainer()->getParameter('kernel.logs_dir').'/test/'.$this->fileName;
+        $fileName = '_test_site_'.date('YmdHis').'.log';
+        $this->logTest = static::getContainer()->getParameter('kernel.logs_dir').'/test/'.$fileName;
 
         // Check and create the file to test if it does not exist
         if (!file_exists($this->logTest)) {
-            @mkdir(dirname($this->logTest));
+            $dir = dirname($this->logTest);
+            if (!is_dir($dir)) {
+                mkdir($dir, 0777, true);
+            }
             file_put_contents($this->logTest, 'Lorem Ipsum is simply dummy text ...');
+            // ファイルシステムキャッシュをクリア
+            clearstatcache(true, $this->logTest);
+            clearstatcache(true, $dir);
         }
 
         $this->formData = [
-            'files' => $this->fileName,
+            'files' => $fileName,
             'line_max' => '50',
         ];
 
@@ -55,6 +61,7 @@ class LogTypeTest extends AbstractTypeTestCase
             ->getForm();
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         // Delete the previously created file

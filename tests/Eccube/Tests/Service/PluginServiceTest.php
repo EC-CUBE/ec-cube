@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -13,36 +15,32 @@
 
 namespace Eccube\Tests\Service;
 
+use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
 use Eccube\Common\Constant;
 use Eccube\Entity\Plugin;
 use Eccube\Exception\PluginException;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\PluginService;
 use Faker\Generator;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class PluginServiceTest
- *
- * @group plugin-service
  */
-class PluginServiceTest extends AbstractServiceTestCase
+#[Group('plugin-service')]
+final class PluginServiceTest extends AbstractServiceTestCase
 {
-    /**
-     * @var PluginService
-     */
-    private $service;
+    private ?PluginService $service = null;
 
-    /**
-     * @var PluginRepository
-     */
-    private $pluginRepository;
+    private ?PluginRepository $pluginRepository = null;
 
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -51,6 +49,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         $this->pluginRepository = $this->entityManager->getRepository(Plugin::class);
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         $dirs = [];
@@ -78,19 +77,41 @@ class PluginServiceTest extends AbstractServiceTestCase
         parent::tearDown();
     }
 
+    // PluginServiceTest ではプラグインインストール時に SchemaTool が DDL を実行する。
+    // MySQL + dama/doctrine-test-bundle 環境だと暗黙の COMMIT が発生し、SAVEPOINT(DAMA_TEST) が破棄され、
+    // "SAVEPOINT ... does not exist" エラーが発生する。
+    // そのため本テストクラス実行中は StaticDriver の static connection を無効化し、
+    // DAMA のトランザクション制御を介さずに DDL を流すようにしている。
+    public static function setUpBeforeClass(): void
+    {
+        parent::setUpBeforeClass();
+
+        // このテストクラスの間だけ DAMA の static connection を無効化
+        if (class_exists(StaticDriver::class)) {
+            StaticDriver::setKeepStaticConnections(false);
+        }
+    }
+
+    public static function tearDownBeforeClass(): void
+    {
+        // setUpBeforeClass での StaticDriver 設定を元に戻す。
+        if (class_exists(StaticDriver::class)) {
+            StaticDriver::setKeepStaticConnections(true);
+        }
+    }
+
     /*
        正しいプラグインの条件
        * tar/zipアーカイブである
        * 展開した直下のディレクトリにcomposer.jsonがあり、正しいファイルである
        * composer.jsonの必須要素が規定の文字数、文字種で定義されている
        * event.ymlが存在する場合、正しいである
-
      */
 
     // テスト用のダミープラグインを配置する
     private function createTempDir()
     {
-        $t = sys_get_temp_dir().'/plugintest.'.sha1(mt_rand());
+        $t = sys_get_temp_dir().'/plugintest.'.sha1((string) mt_rand());
         if (!mkdir($t)) {
             throw new \Exception("$t ".$php_errormsg);
         }
@@ -109,7 +130,7 @@ class PluginServiceTest extends AbstractServiceTestCase
     public function testInstallPluginMinimum()
     {
         // インストールするプラグインを作成する
-        $tmpname = 'dummy'.sha1(mt_rand());
+        $tmpname = 'dummy'.sha1((string) mt_rand());
         $config = [
             'version' => $tmpname.'_version',
             'description' => $tmpname.'_name',
@@ -156,7 +177,7 @@ class PluginServiceTest extends AbstractServiceTestCase
     {
         $this->expectException(PluginException::class);
         // インストールするプラグインを作成する
-        sha1(mt_rand());
+        sha1((string) mt_rand());
         $tmpdir = $this->createTempDir();
         $tmpfile = $tmpdir.'/plugin.tar';
 
@@ -262,7 +283,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         $tar = new \PharData($tmpfile);
 
         // インストールするプラグインを作成する
-        $tmpname = 'dummy'.sha1(mt_rand());
+        $tmpname = 'dummy'.sha1((string) mt_rand());
         $config = [];
         $config['code'] = $tmpname;
         $config['version'] = $tmpname;
@@ -276,7 +297,7 @@ class PluginServiceTest extends AbstractServiceTestCase
     public function testInstallPluginWithBrokenManagerAfterInstall()
     {
         // インストールするプラグインを作成する
-        $tmpname = 'dummy'.sha1(mt_rand());
+        $tmpname = 'dummy'.sha1((string) mt_rand());
         $config = [
             'version' => $tmpname,
             'description' => $tmpname,
@@ -299,23 +320,30 @@ use Psr\Container\ContainerInterface;
 
 class PluginManager extends AbstractPluginManager
 {
-    public function install(array $meta, ContainerInterface $container)
+    #[\Override]
+    public function install(array $meta, ContainerInterface $container): void
     {
         echo "";
     }
-    public function uninstall(array $meta, ContainerInterface $container)
+
+    #[\Override]
+    public function uninstall(array $meta, ContainerInterface $container): void
+    {
+        throw new \Exception('hoge', 1);
+    }
+
+    #[\Override]
+    public function enable(array $meta, ContainerInterface $container): void
     {
         throw new \Exception('hoge',1);
     }
-    public function enable(array $meta, ContainerInterface $container)
+    #[\Override]
+    public function disable(array $meta, ContainerInterface $container): void
     {
         throw new \Exception('hoge',1);
     }
-    public function disable(array $meta, ContainerInterface $container)
-    {
-        throw new \Exception('hoge',1);
-    }
-    public function update(array $meta, ContainerInterface $container)
+    #[\Override]
+    public function update(array $meta, ContainerInterface $container): void
     {
         throw new \Exception('hoge',1);
     }
@@ -343,7 +371,7 @@ EOD;
     public function testInstallPluginWithManager()
     {
         // インストールするプラグインを作成する
-        $tmpname = 'dummy'.sha1(mt_rand());
+        $tmpname = 'dummy'.sha1((string) mt_rand());
         $config = [
             'version' => $tmpname,
             'description' => $tmpname,
@@ -366,27 +394,32 @@ use Psr\Container\ContainerInterface;
 
 class PluginManager extends AbstractPluginManager
 {
-    public function install(array $meta, ContainerInterface $container)
+    #[\Override]
+    public function install(array $meta, ContainerInterface $container): void
     {
         echo "Installed";
     }
 
-    public function uninstall(array $meta, ContainerInterface $container)
+    #[\Override]
+    public function uninstall(array $meta, ContainerInterface $container): void
     {
         echo "Uninstalled";
     }
 
-    public function enable(array $meta, ContainerInterface $container)
+    #[\Override]
+    public function enable(array $meta, ContainerInterface $container): void
     {
         echo "Enabled";
     }
 
-    public function disable(array $meta, ContainerInterface $container)
+    #[\Override]
+    public function disable(array $meta, ContainerInterface $container): void
     {
         echo "Disabled";
     }
 
-    public function update(array $meta, ContainerInterface $container)
+    #[\Override]
+    public function update(array $meta, ContainerInterface $container): void
     {
         echo "Updated";
     }
@@ -427,7 +460,7 @@ EOD;
      */
     public function testGetDependentByCodeEccubePlugin()
     {
-        $tmpname = 'dummy'.sha1(mt_rand());
+        $tmpname = 'dummy'.sha1((string) mt_rand());
         $config = [];
         $config['name'] = $tmpname.'_name';
         $config['code'] = $tmpname;
@@ -463,7 +496,7 @@ EOD;
      */
     public function testGetDependentByCodeOtherPlugin()
     {
-        $tmpname = 'dummy'.sha1(mt_rand());
+        $tmpname = 'dummy'.sha1((string) mt_rand());
         $config = [];
         $config['name'] = $tmpname.'_name';
         $config['code'] = $tmpname;
@@ -498,7 +531,7 @@ EOD;
      */
     public function testGetDependentByCodeAllPlugin()
     {
-        $tmpname = 'dummy'.sha1(mt_rand());
+        $tmpname = 'dummy'.sha1((string) mt_rand());
         $config = [];
         $config['name'] = $tmpname.'_name';
         $config['code'] = $tmpname;
@@ -532,10 +565,9 @@ EOD;
 
     /**
      * Test Entity and Trait
-     *
-     * @group update-schema-doctrine
-     * @group update-schema-doctrine-install
      */
+    #[Group(name: 'update-schema-doctrine')]
+    #[Group(name: 'update-schema-doctrine-install')]
     public function testCreateEntityAndTrait()
     {
         $conn = $this->entityManager->getConnection();
@@ -546,7 +578,7 @@ EOD;
 
         $faker = $this->getFaker();
         // インストールするプラグインを作成する
-        $tmpname = 'dummy'.$faker->word;
+        $tmpname = 'dummy'.$faker->word();
         $config = [
             'version' => $tmpname,
             'description' => $tmpname,
@@ -569,27 +601,32 @@ use Psr\Container\ContainerInterface;
 
 class PluginManager extends AbstractPluginManager
 {
-    public function install(array $meta, ContainerInterface $container)
+    #[\Override]
+    public function install(array $meta, ContainerInterface $container): void
     {
         echo "Installed";
     }
 
-    public function uninstall(array $meta, ContainerInterface $container)
+    #[\Override]
+    public function uninstall(array $meta, ContainerInterface $container): void
     {
         echo "Uninstalled";
     }
 
-    public function enable(array $meta, ContainerInterface $container)
+    #[\Override]
+    public function enable(array $meta, ContainerInterface $container): void
     {
         echo "Enabled";
     }
 
-    public function disable(array $meta, ContainerInterface $container)
+    #[\Override]
+    public function disable(array $meta, ContainerInterface $container): void
     {
         echo "Disabled";
     }
 
-    public function update(array $meta, ContainerInterface $container)
+    #[\Override]
+    public function update(array $meta, ContainerInterface $container): void
     {
         echo "Updated";
     }
@@ -605,21 +642,21 @@ namespace Plugin\@@@@\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Blocknn
+ * Block
  *
- * @ORM\Table(name="plg_@@@@")
- * @ORM\Entity(repositoryClass="Plugin\@@@@\Repository\BlockRepository")
  */
 if (!class_exists('\Plugin\@@@@\Entity\Block')) {
+#[ORM\Table(name:"plg_@@@@")]
+#[ORM\Entity(repositoryClass: "Plugin\@@@@\Repository\BlockRepository")]
 class Block
 {
     /**
      * @var int
      *
-     * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
+    #[ORM\Id]
+    #[ORM\Column(name: "id", type: "integer", options: ["unsigned" => true])]
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
     private $id;
 
     /**
@@ -677,7 +714,9 @@ EOD;
     {
         $code = 'remove_assets_dir';
         $dir = $this->eccubeConfig['plugin_html_realdir'].$code;
-        mkdir($dir, 0777, true);
+        if (!file_exists($dir)) {
+            mkdir($dir, 0777, true);
+        }
 
         $this->assertFileExists($dir);
 
@@ -700,22 +739,20 @@ EOD;
 
         $config = $this->service->readConfig($pluginDir);
 
-        self::assertSame(0, $config['source']);
+        $this->assertSame(0, $config['source']);
     }
 
     /**
      * @param $config
-     *
-     * @return array
      */
-    private function createComposerJsonFile($config)
+    private function createComposerJsonFile($config): array
     {
         /** @var Generator $faker */
         $faker = $this->getFaker();
 
         return [
             'name' => $config['name'],
-            'description' => $faker->word,
+            'description' => $faker->word(),
             'version' => $config['version'],
             'type' => 'eccube-plugin',
             'require' => [

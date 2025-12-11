@@ -29,51 +29,19 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class SecurityType extends AbstractType
 {
     /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
-     * @var ValidatorInterface
-     */
-    protected $validator;
-
-    /**
-     * @var RequestStack
-     */
-    protected $requestStack;
-
-    /**
-     * @var RouterInterface
-     */
-    protected $router;
-
-    /**
      * SecurityType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
-     * @param ValidatorInterface $validator
-     * @param RequestStack $requestStack
-     * @param RouterInterface $router
      */
-    public function __construct(EccubeConfig $eccubeConfig, ValidatorInterface $validator, RequestStack $requestStack, RouterInterface $router)
+    public function __construct(protected EccubeConfig $eccubeConfig, protected ValidatorInterface $validator, protected RequestStack $requestStack, protected RouterInterface $router)
     {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->validator = $validator;
-        $this->requestStack = $requestStack;
-        $this->router = $router;
     }
 
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $allowHosts = $this->eccubeConfig->get('eccube_admin_allow_hosts');
         $allowHosts = implode("\n", $allowHosts);
@@ -145,7 +113,7 @@ class SecurityType extends AbstractType
                 ],
                 'data' => env('TRUSTED_HOSTS'),
             ])
-            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function ($event): void {
                 $form = $event->getForm();
                 $data = $form->getData();
 
@@ -156,12 +124,12 @@ class SecurityType extends AbstractType
 
                     foreach ($ips as $ip) {
                         // 適切なIPとビットマスクになっているか
-                        $errors = $this->validator->validate($ip, new Assert\AtLeastOneOf([
-                            'constraints' => [
+                        $errors = $this->validator->validate($ip, new Assert\AtLeastOneOf(
+                            constraints: [
                                 new Assert\Ip(),
                                 new Assert\Cidr(),
-                            ],
-                        ]));
+                            ]
+                        ));
                         if ($errors->count() > 0) {
                             $form['front_allow_hosts']->addError(new FormError(trans('admin.setting.system.security.ip_limit_invalid_ip_and_submask', ['%ip%' => $ip])));
                         }
@@ -175,12 +143,12 @@ class SecurityType extends AbstractType
 
                     foreach ($ips as $ip) {
                         // 適切なIPとビットマスクになっているか
-                        $errors = $this->validator->validate($ip, new Assert\AtLeastOneOf([
-                            'constraints' => [
+                        $errors = $this->validator->validate($ip, new Assert\AtLeastOneOf(
+                            constraints: [
                                 new Assert\Ip(),
                                 new Assert\Cidr(),
-                            ],
-                        ]));
+                            ]
+                        ));
                         if ($errors->count() > 0) {
                             $form['front_deny_hosts']->addError(new FormError(trans('admin.setting.system.security.ip_limit_invalid_ip_and_submask', ['%ip%' => $ip])));
                         }
@@ -194,12 +162,12 @@ class SecurityType extends AbstractType
 
                     foreach ($ips as $ip) {
                         // 適切なIPとビットマスクになっているか
-                        $errors = $this->validator->validate($ip, new Assert\AtLeastOneOf([
-                            'constraints' => [
+                        $errors = $this->validator->validate($ip, new Assert\AtLeastOneOf(
+                            constraints: [
                                 new Assert\Ip(),
                                 new Assert\Cidr(),
-                            ],
-                        ]));
+                            ]
+                        ));
                         if ($errors->count() != 0) {
                             $form['admin_allow_hosts']->addError(new FormError(trans('admin.setting.system.security.ip_limit_invalid_ipv4', ['%ip%' => $ip])));
                         }
@@ -213,12 +181,12 @@ class SecurityType extends AbstractType
 
                     foreach ($ips as $ip) {
                         // 適切なIPとビットマスクになっているか
-                        $errors = $this->validator->validate($ip, new Assert\AtLeastOneOf([
-                            'constraints' => [
+                        $errors = $this->validator->validate($ip, new Assert\AtLeastOneOf(
+                            constraints: [
                                 new Assert\Ip(),
                                 new Assert\Cidr(),
-                            ],
-                        ]));
+                            ]
+                        ));
                         if ($errors->count() != 0) {
                             $form['admin_deny_hosts']->addError(new FormError(trans('admin.setting.system.security.ip_limit_invalid_ipv4', ['%ip%' => $ip])));
                         }
@@ -235,8 +203,6 @@ class SecurityType extends AbstractType
 
     /**
      * フロントURL一覧を取得
-     *
-     * @return string
      */
     private function getRouteCollection(): string
     {
@@ -266,7 +232,7 @@ class SecurityType extends AbstractType
      * {@inheritdoc}
      */
     #[\Override]
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'admin_security';
     }

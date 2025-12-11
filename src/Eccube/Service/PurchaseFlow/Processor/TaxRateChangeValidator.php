@@ -28,12 +28,10 @@ class TaxRateChangeValidator extends ItemHolderPostValidator
      * @param ItemHolderInterface $itemHolder 受注 or カート
      * @param PurchaseContext $context 購入フローのコンテキスト
      *
-     * @return void
-     *
      * @throws InvalidItemException 税率が変更された場合
      */
     #[\Override]
-    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         if (!$itemHolder instanceof Order) {
             return;

@@ -25,18 +25,10 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 class DeliverySettingValidator extends ItemValidator
 {
     /**
-     * @var DeliveryRepository
-     */
-    protected $deliveryRepository;
-
-    /**
      * DeliverySettingValidator constructor.
-     *
-     * @param DeliveryRepository $deliveryRepository
      */
-    public function __construct(DeliveryRepository $deliveryRepository)
+    public function __construct(protected DeliveryRepository $deliveryRepository)
     {
-        $this->deliveryRepository = $deliveryRepository;
     }
 
     /**
@@ -47,17 +39,14 @@ class DeliverySettingValidator extends ItemValidator
      *
      * @throws InvalidItemException
      */
-
     /**
      * @param ItemInterface $item 明細アイテム
      * @param PurchaseContext $context 購入フローのコンテキスト
      *
-     * @return void
-     *
      * @throws InvalidItemException 配送業者が設定されていない場合
      */
     #[\Override]
-    protected function validate(ItemInterface $item, PurchaseContext $context)
+    protected function validate(ItemInterface $item, PurchaseContext $context): void
     {
         if (!$item->isProduct()) {
             return;
@@ -76,11 +65,9 @@ class DeliverySettingValidator extends ItemValidator
      *
      * @param ItemInterface $item 明細アイテム
      * @param PurchaseContext $context 購入フローのコンテキスト
-     *
-     * @return void
      */
     #[\Override]
-    protected function handle(ItemInterface $item, PurchaseContext $context)
+    protected function handle(ItemInterface $item, PurchaseContext $context): void
     {
         $item->setQuantity('0');
     }

@@ -19,29 +19,19 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class LoggerFacade
 {
     /** @var self|null */
-    private static $instance;
+    private static ?self $instance = null;
 
-    /** @var ContainerInterface */
-    private static $Container;
+    private static ?ContainerInterface $Container = null;
 
-    /** @var Logger */
-    private static $Logger;
+    private static ?Logger $Logger = null;
 
-    /**
-     * @param ContainerInterface $container
-     */
     private function __construct(ContainerInterface $container, Logger $Logger)
     {
         self::$Container = $container;
         self::$Logger = $Logger;
     }
 
-    /**
-     * @param ContainerInterface $container
-     *
-     * @return LoggerFacade|null
-     */
-    public static function init(ContainerInterface $container, Logger $Logger)
+    public static function init(ContainerInterface $container, Logger $Logger): ?LoggerFacade
     {
         if (null === self::$instance) {
             self::$instance = new self($container, $Logger);
@@ -51,11 +41,9 @@ class LoggerFacade
     }
 
     /**
-     * @return Logger
-     *
      * @throws \Exception
      */
-    public static function create()
+    public static function create(): Logger
     {
         if (null === self::$instance) {
             throw new \Exception('Facade is not instantiated');
@@ -64,12 +52,7 @@ class LoggerFacade
         return self::$Logger;
     }
 
-    /**
-     * @param string $channel
-     *
-     * @return \Symfony\Bridge\Monolog\Logger
-     */
-    public static function getLoggerBy($channel)
+    public static function getLoggerBy(string $channel): \Monolog\Logger
     {
         return self::$Container->get('monolog.logger.'.$channel);
     }

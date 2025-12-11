@@ -13,6 +13,7 @@
 
 namespace Eccube\Controller\Mypage;
 
+use Doctrine\ORM\NonUniqueResultException;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Customer;
 use Eccube\Event\EccubeEvents;
@@ -22,73 +23,42 @@ use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Service\MailService;
 use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class ChangeController extends AbstractController
 {
-    /**
-     * @var TokenStorageInterface
-     */
-    protected $tokenStorage;
+    private const SESSION_KEY_PRE_EMAIL = 'eccube.front.mypage.change.preEmail';
 
-    /**
-     * @var CustomerRepository
-     */
-    protected $customerRepository;
-
-    /**
-     * @var UserPasswordHasherInterface
-     */
-    protected $passwordHasher;
-
-    /**
-     * @var MailService
-     */
-    protected $mailService;
-
-    /**
-     * @var BaseInfoRepository
-     */
-    protected $baseInfoRepository;
-
-    private const string SESSION_KEY_PRE_EMAIL = 'eccube.front.mypage.change.preEmail';
-
-    public function __construct(
-        CustomerRepository $customerRepository,
-        UserPasswordHasherInterface $passwordHasher,
-        TokenStorageInterface $tokenStorage,
-        BaseInfoRepository $baseInfoRepository,
-        MailService $mailService,
-    ) {
-        $this->customerRepository = $customerRepository;
-        $this->passwordHasher = $passwordHasher;
-        $this->tokenStorage = $tokenStorage;
-        $this->baseInfoRepository = $baseInfoRepository;
-        $this->mailService = $mailService;
+    public function __construct(protected CustomerRepository $customerRepository, protected UserPasswordHasherInterface $passwordHasher, protected TokenStorageInterface $tokenStorage, protected BaseInfoRepository $baseInfoRepository, protected MailService $mailService)
+    {
     }
 
     /**
      * 会員情報編集画面.
      *
-     * @param Request $request
+     * @return RedirectResponse|array<string, mixed>
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
-     *
-     * @throws \Twig\Error\LoaderError|\Twig\Error\RuntimeError|\Twig\Error\SyntaxError
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws LoaderError|RuntimeError|SyntaxError
+     * @throws NonUniqueResultException
      */
-    #[Route('/mypage/change', name: 'mypage_change', methods: ['GET', 'POST'])]
-    #[Template('Mypage/change.twig')]
-    public function index(Request $request)
+    #[Route(path: '/mypage/change', name: 'mypage_change', methods: ['GET', 'POST'])]
+    #[Template(template: 'Mypage/change.twig')]
+    public function index(Request $request): RedirectResponse|array
     {
         /** @var Customer $Customer */
         $Customer = $this->getUser();
         $Customer->setPlainPassword($this->eccubeConfig['eccube_default_password']);
 
-        /** @var \Symfony\Component\Form\FormBuilderInterface $builder */
+        /** @var FormBuilderInterface $builder */
         $builder = $this->formFactory->createBuilder(EntryType::class, $Customer);
 
         $event = new EventArgs(
@@ -100,7 +70,7 @@ class ChangeController extends AbstractController
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_MYPAGE_CHANGE_INDEX_INITIALIZE);
 
-        /** @var \Symfony\Component\Form\FormInterface $form */
+        /** @var FormInterface $form */
         $form = $builder->getForm();
         $form->handleRequest($request);
 
@@ -139,7 +109,7 @@ class ChangeController extends AbstractController
                 );
                 $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_MYPAGE_CHANGE_INDEX_COMPLETE);
 
-                return $this->redirect($this->generateUrl('mypage_change_complete'));
+                return $this->redirectToRoute('mypage_change_complete');
             }
             // see https://github.com/EC-CUBE/ec-cube/issues/6103
             $this->entityManager->refresh($Customer);
@@ -156,13 +126,11 @@ class ChangeController extends AbstractController
     /**
      * 会員情報編集完了画面.
      *
-     * @param Request $request
-     *
      * @return array<empty>
      */
-    #[Route('/mypage/change_complete', name: 'mypage_change_complete', methods: ['GET'])]
-    #[Template('Mypage/change_complete.twig')]
-    public function complete(Request $request)
+    #[Route(path: '/mypage/change_complete', name: 'mypage_change_complete', methods: ['GET'])]
+    #[Template(template: 'Mypage/change_complete.twig')]
+    public function complete(): array
     {
         return [];
     }

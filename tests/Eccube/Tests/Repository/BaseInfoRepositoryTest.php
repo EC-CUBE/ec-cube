@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -28,21 +30,16 @@ use Eccube\Tests\EccubeTestCase;
  *
  * @author Kentaro Ohkouchi
  */
-class BaseInfoRepositoryTest extends EccubeTestCase
+final class BaseInfoRepositoryTest extends EccubeTestCase
 {
-    /**
-     * @var  string
-     */
-    private $id;
+    private ?int $id = null;
 
-    /**
-     * @var  BaseInfoRepository
-     */
-    protected $baseInfoRepository;
+    protected ?BaseInfoRepository $baseInfoRepository = null;
 
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

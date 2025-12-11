@@ -13,85 +13,46 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\PageLayoutRepository;
 
 if (!class_exists(PageLayout::class)) {
     /**
      * PageLayout
-     *
-     * @ORM\Table(name="dtb_page_layout")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\PageLayoutRepository")
      */
+    #[ORM\Table(name: 'dtb_page_layout')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: PageLayoutRepository::class)]
     class PageLayout extends AbstractEntity
     {
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="page_id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="NONE")
-         */
-        private $page_id;
+        #[ORM\Column(name: 'page_id', type: Types::INTEGER, options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'NONE')]
+        private ?int $page_id = null;
 
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="layout_id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="NONE")
-         */
-        private $layout_id;
+        #[ORM\Column(name: 'layout_id', type: Types::INTEGER, options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'NONE')]
+        private ?int $layout_id = null;
 
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="sort_no", type="smallint", options={"unsigned":true})
-         */
-        private $sort_no;
+        #[ORM\Column(name: 'sort_no', type: Types::SMALLINT, options: ['unsigned' => true])]
+        private ?int $sort_no = null;
 
-        /**
-         * @var Page|null
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Page", inversedBy="PageLayouts")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="page_id", referencedColumnName="id")
-         * })
-         */
-        private $Page;
+        #[ORM\ManyToOne(targetEntity: Page::class, inversedBy: 'PageLayouts')]
+        #[ORM\JoinColumn(name: 'page_id', referencedColumnName: 'id')]
+        private ?Page $Page = null;
 
-        /**
-         * @var Layout|null
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Layout", inversedBy="PageLayouts")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="layout_id", referencedColumnName="id")
-         * })
-         */
-        private $Layout;
+        #[ORM\ManyToOne(targetEntity: Layout::class, inversedBy: 'PageLayouts')]
+        #[ORM\JoinColumn(name: 'layout_id', referencedColumnName: 'id')]
+        private ?Layout $Layout = null;
 
         /**
          * Set pageId
-         *
-         * @param int $pageId
-         *
-         * @return PageLayout
          */
-        public function setPageId($pageId)
+        public function setPageId(int $pageId): PageLayout
         {
             $this->page_id = $pageId;
 
@@ -100,22 +61,16 @@ if (!class_exists(PageLayout::class)) {
 
         /**
          * Get pageId
-         *
-         * @return int
          */
-        public function getPageId()
+        public function getPageId(): int
         {
             return $this->page_id;
         }
 
         /**
          * Set layoutId
-         *
-         * @param int $layoutId
-         *
-         * @return PageLayout
          */
-        public function setLayoutId($layoutId)
+        public function setLayoutId(int $layoutId): PageLayout
         {
             $this->layout_id = $layoutId;
 
@@ -124,22 +79,16 @@ if (!class_exists(PageLayout::class)) {
 
         /**
          * Get layoutId
-         *
-         * @return int
          */
-        public function getLayoutId()
+        public function getLayoutId(): int
         {
             return $this->layout_id;
         }
 
         /**
          * Set sort_no
-         *
-         * @param int $sortNo
-         *
-         * @return PageLayout
          */
-        public function setSortNo($sortNo)
+        public function setSortNo(int $sortNo): PageLayout
         {
             $this->sort_no = $sortNo;
 
@@ -148,10 +97,8 @@ if (!class_exists(PageLayout::class)) {
 
         /**
          * Get sort_no
-         *
-         * @return int
          */
-        public function getSortNo()
+        public function getSortNo(): int
         {
             return $this->sort_no;
         }
@@ -160,10 +107,8 @@ if (!class_exists(PageLayout::class)) {
          * Set pageLayout
          *
          * @param Page $Page
-         *
-         * @return PageLayout
          */
-        public function setPage(?Page $Page = null)
+        public function setPage(?Page $Page = null): PageLayout
         {
             $this->Page = $Page;
 
@@ -172,10 +117,8 @@ if (!class_exists(PageLayout::class)) {
 
         /**
          * Get pageLayout
-         *
-         * @return Page
          */
-        public function getPage()
+        public function getPage(): Page
         {
             return $this->Page;
         }
@@ -184,10 +127,8 @@ if (!class_exists(PageLayout::class)) {
          * Set layout
          *
          * @param Layout $layout
-         *
-         * @return PageLayout
          */
-        public function setLayout(?Layout $layout = null)
+        public function setLayout(?Layout $layout = null): PageLayout
         {
             $this->Layout = $layout;
 
@@ -196,10 +137,8 @@ if (!class_exists(PageLayout::class)) {
 
         /**
          * Get layout
-         *
-         * @return Layout
          */
-        public function getLayout()
+        public function getLayout(): Layout
         {
             return $this->Layout;
         }
@@ -207,10 +146,8 @@ if (!class_exists(PageLayout::class)) {
         /**
          * DeviceTypeがあればDeviceTypeIdを返す
          * DeviceTypeがなければnullを返す
-         *
-         * @return int|null
          */
-        public function getDeviceTypeId()
+        public function getDeviceTypeId(): ?int
         {
             if ($this->Layout->getDeviceType()) {
                 return $this->Layout->getDeviceType()->getId();

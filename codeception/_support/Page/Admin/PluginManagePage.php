@@ -31,11 +31,8 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
 
     /**
      * @param $pluginCode
-     * @param string $message
-     *
-     * @return PluginManagePage
      */
-    public function ストアプラグイン_有効化($pluginCode, $message = '有効にしました。')
+    public function ストアプラグイン_有効化($pluginCode, string $message = '有効にしました。'): PluginManagePage
     {
         $this->ストアプラグイン_ボタンクリック($pluginCode, '有効化');
         $this->tester->see($message, self::完了メーッセージ);
@@ -45,11 +42,8 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
 
     /**
      * @param $pluginCode
-     * @param string $message
-     *
-     * @return PluginManagePage
      */
-    public function ストアプラグイン_無効化($pluginCode, $message = '無効にしました。')
+    public function ストアプラグイン_無効化($pluginCode, string $message = '無効にしました。'): PluginManagePage
     {
         $this->ストアプラグイン_ボタンクリック($pluginCode, '無効化');
         $this->tester->see($message, self::完了メーッセージ);
@@ -59,13 +53,10 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
 
     /**
      * @param $pluginCode
-     * @param string $message
-     *
-     * @return PluginManagePage
      *
      * @throws \Exception
      */
-    public function ストアプラグイン_削除($pluginCode, $message = '削除が完了しました。')
+    public function ストアプラグイン_削除($pluginCode, string $message = '削除が完了しました。'): PluginManagePage
     {
         $this->ストアプラグイン_ボタンクリック($pluginCode, '削除');
         $this->tester->waitForElementVisible(['id' => 'officialPluginDeleteButton'], 60);
@@ -79,10 +70,8 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
 
     /**
      * @param $pluginCode
-     *
-     * @return PluginStoreUpgradePage
      */
-    public function ストアプラグイン_アップデート($pluginCode)
+    public function ストアプラグイン_アップデート($pluginCode): PluginStoreUpgradePage
     {
         echo $this->tester->grabTextFrom(['xpath' => '//*[@id="page_admin_store_plugin"]']);
         $this->tester->click(['xpath' => $this->ストアプラグイン_セレクタ($pluginCode).'/../../td[5]/a']);

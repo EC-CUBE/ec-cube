@@ -33,31 +33,15 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class InstallPluginController extends InstallController
 {
-    /** @var CacheUtil */
-    protected $cacheUtil;
-
-    /** @var PluginRepository */
-    protected $pluginReposigoty;
-
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
-    public function __construct(CacheUtil $cacheUtil, PluginRepository $pluginRespository, EventDispatcherInterface $eventDispatcher)
+    public function __construct(protected CacheUtil $cacheUtil, protected PluginRepository $pluginReposigoty, protected EventDispatcherInterface $eventDispatcher)
     {
-        $this->cacheUtil = $cacheUtil;
-        $this->pluginReposigoty = $pluginRespository;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
      * 有効化可能なプラグイン一覧を返します.
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
      */
-    #[Route('/install/plugins', name: 'install_plugins', methods: ['GET'])]
-    public function plugins(Request $request)
+    #[Route(path: '/install/plugins', name: 'install_plugins', methods: ['GET'])]
+    public function plugins(Request $request): JsonResponse
     {
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();
@@ -77,20 +61,14 @@ class InstallPluginController extends InstallController
     /**
      * プラグインを有効にします。
      *
-     * @param Request $request
-     * @param SystemService $systemService
-     * @param PluginService $pluginService
      * @param string $code
-     * @param EventDispatcherInterface $dispatcher
-     *
-     * @return JsonResponse
      *
      * @throws BadRequestHttpException
      * @throws NotFoundHttpException
      * @throws PluginException
      */
-    #[Route('/install/plugin/{code}/enable', name: 'install_plugin_enable', requirements: ['code' => '\w+'], methods: ['PUT'])]
-    public function pluginEnable(Request $request, SystemService $systemService, PluginService $pluginService, $code, EventDispatcherInterface $dispatcher)
+    #[Route(path: '/install/plugin/{code}/enable', name: 'install_plugin_enable', requirements: ['code' => '\w+'], methods: ['PUT'])]
+    public function pluginEnable(Request $request, SystemService $systemService, PluginService $pluginService, $code, EventDispatcherInterface $dispatcher): JsonResponse
     {
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();
@@ -138,11 +116,9 @@ class InstallPluginController extends InstallController
 
     /**
      * トランザクションファイルを削除し, 管理画面に遷移します.
-     *
-     * @return RedirectResponse
      */
-    #[Route('/install/plugin/redirect', name: 'install_plugin_redirect', methods: ['GET'])]
-    public function redirectAdmin(Request $request)
+    #[Route(path: '/install/plugin/redirect', name: 'install_plugin_redirect', methods: ['GET'])]
+    public function redirectAdmin(Request $request): RedirectResponse
     {
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();
@@ -167,12 +143,8 @@ class InstallPluginController extends InstallController
 
     /**
      * トランザクションチェックファイルの有効期限を確認する
-     *
-     * @param string $token
-     *
-     * @return bool
      */
-    public function isValidTransaction($token)
+    public function isValidTransaction(string $token): bool
     {
         $projectDir = $this->getParameter('kernel.project_dir');
         if (!file_exists($projectDir.parent::TRANSACTION_CHECK_FILE)) {
@@ -192,16 +164,10 @@ class InstallPluginController extends InstallController
      * WebApiプラグインのシステム要件をチェックする
      * sodium拡張がインストールされていない場合、WebApiプラグインをアンインストールする
      *
-     * @param Request $request
-     * @param ComposerApiService $composerApiService
-     * @param EventDispatcherInterface $dispatcher
-     *
-     * @return JsonResponse
-     *
      * @throws BadRequestHttpException|NotFoundHttpException
      */
-    #[Route('/install/plugin/check_api', name: 'install_plugin_check_api', methods: ['PUT'])]
-    public function checkWebApiRequirements(Request $request, ComposerApiService $composerApiService, EventDispatcherInterface $dispatcher)
+    #[Route(path: '/install/plugin/check_api', name: 'install_plugin_check_api', methods: ['PUT'])]
+    public function checkWebApiRequirements(Request $request, ComposerApiService $composerApiService, EventDispatcherInterface $dispatcher): JsonResponse
     {
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();
@@ -232,14 +198,11 @@ class InstallPluginController extends InstallController
         return $this->json(['success' => true]);
     }
 
-    /**
-     * @return void
-     */
-    private function clearCacheOnTerminate()
+    private function clearCacheOnTerminate(): void
     {
         // KernelEvents::TERMINATE で強制的にキャッシュを削除する
         // see https://github.com/EC-CUBE/ec-cube/issues/5498#issuecomment-1205904083
-        $this->eventDispatcher->addListener(KernelEvents::TERMINATE, function () {
+        $this->eventDispatcher->addListener(KernelEvents::TERMINATE, function (): void {
             $fs = new Filesystem();
             $fs->remove($this->getParameter('kernel.project_dir').'/var/cache/'.env('APP_ENV', 'prod'));
         });

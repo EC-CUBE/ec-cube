@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,17 +17,18 @@ namespace Eccube\Tests\Service\Payment;
 
 use Eccube\Service\Payment\Method\Cash;
 use Eccube\Tests\EccubeTestCase;
+use Symfony\Component\Form\Test\FormInterface;
 
-class PaymentMethodTest extends EccubeTestCase
+final class PaymentMethodTest extends EccubeTestCase
 {
-    public function testConstructorInjection()
+    public function testConstructorInjection(): never
     {
         $this->markTestIncomplete();
 
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
 
-        $form = $this->getMockBuilder(\Symfony\Component\Form\Test\FormInterface::class)->getMock();
+        $form = $this->createMock(FormInterface::class);
         $paymentMethod = static::getContainer()->get($Order->getPayment()->getMethodClass());
         $paymentMethod->setFormType($form);
         $paymentMethod->setOrder($Order);

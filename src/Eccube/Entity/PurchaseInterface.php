@@ -13,26 +13,22 @@
 
 namespace Eccube\Entity;
 
+use Eccube\Service\PurchaseFlow\ItemCollection;
+
 interface PurchaseInterface
 {
     /**
      * 合計金額を設定します。
-     *
-     * @param int|float|string $total
-     *
-     * @return ItemHolderInterface
      */
-    public function setTotal($total);
+    public function setTotal(int|float|string $total): ItemHolderInterface;
 
     /**
      * 合計金額を返す。
-     *
-     * @return string
      */
-    public function getTotal();
+    public function getTotal(): string;
 
     /**
-     * @return \Eccube\Service\PurchaseFlow\ItemCollection<int,ItemInterface>
+     * @return ItemCollection<int, ItemInterface>
      */
-    public function getItems();
+    public function getItems(): ItemCollection;
 }

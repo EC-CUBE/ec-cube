@@ -33,91 +33,27 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
 class ShippingMultipleController extends AbstractShoppingController
 {
     /**
-     * @var PrefRepository
-     */
-    protected $prefRepository;
-
-    /**
-     * @var OrderItemTypeRepository
-     */
-    protected $orderItemTypeRepository;
-
-    /**
-     * @var OrderHelper
-     */
-    protected $orderHelper;
-
-    /**
-     * @var CartService
-     */
-    protected $cartService;
-
-    /**
-     * @var PurchaseFlow
-     */
-    protected $cartPurchaseFlow;
-
-    /**
-     * @var OrderRepository
-     */
-    protected $orderRepository;
-
-    /**
-     * @var MailService
-     */
-    protected $mailService;
-
-    /**
-     * @var BaseInfoRepository
-     */
-    protected $baseInfoRepository;
-
-    /**
      * ShippingMultipleController constructor.
-     *
-     * @param PrefRepository $prefRepository
-     * @param OrderRepository $orderRepository
-     * @param OrderItemTypeRepository $orderItemTypeRepository
-     * @param OrderHelper $orderHelper
-     * @param CartService $cartService
-     * @param PurchaseFlow $cartPurchaseFlow
      */
-    public function __construct(
-        PrefRepository $prefRepository,
-        OrderRepository $orderRepository,
-        OrderItemTypeRepository $orderItemTypeRepository,
-        OrderHelper $orderHelper,
-        CartService $cartService,
-        PurchaseFlow $cartPurchaseFlow,
-        BaseInfoRepository $baseInfoRepository,
-        MailService $mailService,
-    ) {
-        $this->prefRepository = $prefRepository;
-        $this->orderRepository = $orderRepository;
-        $this->orderItemTypeRepository = $orderItemTypeRepository;
-        $this->orderHelper = $orderHelper;
-        $this->cartService = $cartService;
-        $this->cartPurchaseFlow = $cartPurchaseFlow;
-        $this->baseInfoRepository = $baseInfoRepository;
-        $this->mailService = $mailService;
+    public function __construct(protected PrefRepository $prefRepository, protected OrderRepository $orderRepository, protected OrderItemTypeRepository $orderItemTypeRepository, protected OrderHelper $orderHelper, protected CartService $cartService, protected PurchaseFlow $cartPurchaseFlow, protected BaseInfoRepository $baseInfoRepository, protected MailService $mailService)
+    {
     }
 
     /**
      * 複数配送処理
      *
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      */
-    #[Route('/shopping/shipping_multiple', name: 'shopping_shipping_multiple', methods: ['GET', 'POST'])]
-    #[Template('Shopping/shipping_multiple.twig')]
-    public function index(Request $request)
+    #[Route(path: '/shopping/shipping_multiple', name: 'shopping_shipping_multiple', methods: ['GET', 'POST'])]
+    #[Template(template: 'Shopping/shipping_multiple.twig')]
+    public function index(Request $request): RedirectResponse|array
     {
         // ログイン状態のチェック.
         if ($this->orderHelper->isLoginRequired()) {
@@ -387,13 +323,11 @@ class ShippingMultipleController extends AbstractShoppingController
      * 会員ログイン時は会員のお届け先に追加する
      * 非会員時はセッションに追加する
      *
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      */
-    #[Route('/shopping/shipping_multiple_edit', name: 'shopping_shipping_multiple_edit', methods: ['GET', 'POST'])]
-    #[Template('Shopping/shipping_multiple_edit.twig')]
-    public function shippingMultipleEdit(Request $request)
+    #[Route(path: '/shopping/shipping_multiple_edit', name: 'shopping_shipping_multiple_edit', methods: ['GET', 'POST'])]
+    #[Template(template: 'Shopping/shipping_multiple_edit.twig')]
+    public function shippingMultipleEdit(Request $request): RedirectResponse|array
     {
         // ログイン状態のチェック.
         if ($this->orderHelper->isLoginRequired()) {

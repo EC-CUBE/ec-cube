@@ -14,6 +14,7 @@
 namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NoResultException;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\DeliveryFee;
 use Eccube\Entity\ItemHolderInterface;
@@ -34,54 +35,28 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
  */
 class DeliveryFeePreprocessor implements ItemHolderPreprocessor
 {
-    /** @var BaseInfo */
-    protected $BaseInfo;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
-     * @var TaxRuleRepository
-     */
-    protected $taxRuleRepository;
-
-    /**
-     * @var DeliveryFeeRepository
-     */
-    protected $deliveryFeeRepository;
+    protected BaseInfo $BaseInfo;
 
     /**
      * DeliveryFeePreprocessor constructor.
-     *
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param EntityManagerInterface $entityManager
-     * @param TaxRuleRepository $taxRuleRepository
-     * @param DeliveryFeeRepository $deliveryFeeRepository
      */
     public function __construct(
         BaseInfoRepository $baseInfoRepository,
-        EntityManagerInterface $entityManager,
-        TaxRuleRepository $taxRuleRepository,
-        DeliveryFeeRepository $deliveryFeeRepository,
+        protected EntityManagerInterface $entityManager,
+        protected TaxRuleRepository $taxRuleRepository,
+        protected DeliveryFeeRepository $deliveryFeeRepository,
     ) {
         $this->BaseInfo = $baseInfoRepository->get();
-        $this->entityManager = $entityManager;
-        $this->taxRuleRepository = $taxRuleRepository;
-        $this->deliveryFeeRepository = $deliveryFeeRepository;
     }
 
     /**
      * @param ItemHolderInterface $itemHolder カート or 注文
      * @param PurchaseContext $context 購入フローのコンテキスト
      *
-     * @return void
-     *
-     * @throws \Doctrine\ORM\NoResultException
+     * @throws NoResultException
      */
     #[\Override]
-    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         if ($itemHolder instanceof Order) {
             $this->removeDeliveryFeeItem($itemHolder);
@@ -89,12 +64,7 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
         }
     }
 
-    /**
-     * @param ItemHolderInterface $itemHolder
-     *
-     * @return void
-     */
-    private function removeDeliveryFeeItem(ItemHolderInterface $itemHolder)
+    private function removeDeliveryFeeItem(ItemHolderInterface $itemHolder): void
     {
         if ($itemHolder instanceof Order) {
             foreach ($itemHolder->getShippings() as $Shipping) {
@@ -111,13 +81,9 @@ class DeliveryFeePreprocessor implements ItemHolderPreprocessor
     }
 
     /**
-     * @param ItemHolderInterface $itemHolder
-     *
-     * @return void
-     *
-     * @throws \Doctrine\ORM\NoResultException
+     * @throws NoResultException
      */
-    private function saveDeliveryFeeItem(ItemHolderInterface $itemHolder)
+    private function saveDeliveryFeeItem(ItemHolderInterface $itemHolder): void
     {
         $DeliveryFeeType = $this->entityManager
             ->find(OrderItemType::class, OrderItemType::DELIVERY_FEE);

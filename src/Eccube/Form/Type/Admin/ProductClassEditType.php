@@ -17,7 +17,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\ClassCategory;
 use Eccube\Entity\ProductClass;
-use Eccube\Form\DataTransformer;
+use Eccube\Form\DataTransformer\EntityToIdTransformer;
 use Eccube\Form\Type\Master\DeliveryDurationType;
 use Eccube\Form\Type\Master\SaleTypeType;
 use Eccube\Form\Type\PriceType;
@@ -41,54 +41,19 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class ProductClassEditType extends AbstractType
 {
     /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
-     * @var ValidatorInterface
-     */
-    protected $validator;
-
-    /**
-     * @var BaseInfoRepository
-     */
-    protected $baseInfoRepository;
-
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
      * ProductClassEditType constructor.
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param ValidatorInterface $validator
-     * @param BaseInfoRepository $baseInfoRepository
      */
-    public function __construct(
-        EntityManagerInterface $entityManager,
-        ValidatorInterface $validator,
-        BaseInfoRepository $baseInfoRepository,
-        EccubeConfig $eccubeConfig,
-    ) {
-        $this->entityManager = $entityManager;
-        $this->validator = $validator;
-        $this->baseInfoRepository = $baseInfoRepository;
-        $this->eccubeConfig = $eccubeConfig;
+    public function __construct(protected EntityManagerInterface $entityManager, protected ValidatorInterface $validator, protected BaseInfoRepository $baseInfoRepository, protected EccubeConfig $eccubeConfig)
+    {
     }
 
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('checked', CheckboxType::class, [
@@ -135,7 +100,7 @@ class ProductClassEditType extends AbstractType
                 'placeholder' => 'common.select__unspecified',
             ]);
 
-        $transformer = new DataTransformer\EntityToIdTransformer($this->entityManager, ClassCategory::class);
+        $transformer = new EntityToIdTransformer($this->entityManager, ClassCategory::class);
         $builder
             ->add($builder->create('ClassCategory1', HiddenType::class)
                 ->addModelTransformer($transformer)
@@ -156,13 +121,9 @@ class ProductClassEditType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @param OptionsResolver $resolver
-     *
-     * @return void
      */
     #[\Override]
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => ProductClass::class,
@@ -171,17 +132,13 @@ class ProductClassEditType extends AbstractType
 
     /**
      * 各行の個別税率設定の制御.
-     *
-     * @param FormBuilderInterface $builder
-     *
-     * @return void
      */
-    protected function setTaxRate(FormBuilderInterface $builder)
+    protected function setTaxRate(FormBuilderInterface $builder): void
     {
         if (!$this->baseInfoRepository->get()->isOptionProductTaxRule()) {
             return;
         }
-        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event): void {
             $data = $event->getData();
             if (!$data instanceof ProductClass) {
                 return;
@@ -195,14 +152,10 @@ class ProductClassEditType extends AbstractType
 
     /**
      * 各行の登録チェックボックスの制御.
-     *
-     * @param FormBuilderInterface $builder
-     *
-     * @return void
      */
-    protected function setCheckbox(FormBuilderInterface $builder)
+    protected function setCheckbox(FormBuilderInterface $builder): void
     {
-        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event): void {
             $data = $event->getData();
             if (!$data instanceof ProductClass) {
                 return;
@@ -213,21 +166,16 @@ class ProductClassEditType extends AbstractType
             }
         });
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             $form = $event->getForm();
             $data = $event->getData();
             $data->setVisible($form['checked']->getData() ? true : false);
         });
     }
 
-    /**
-     * @param FormBuilderInterface $builder
-     *
-     * @return void
-     */
-    protected function addValidations(FormBuilderInterface $builder)
+    protected function addValidations(FormBuilderInterface $builder): void
     {
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             $form = $event->getForm();
             $data = $form->getData();
 
@@ -290,14 +238,7 @@ class ProductClassEditType extends AbstractType
         });
     }
 
-    /**
-     * @param string $key
-     * @param FormInterface $form
-     * @param ConstraintViolationListInterface $errors
-     *
-     * @return void
-     */
-    protected function addErrors($key, FormInterface $form, ConstraintViolationListInterface $errors)
+    protected function addErrors(string $key, FormInterface $form, ConstraintViolationListInterface $errors): void
     {
         foreach ($errors as $error) {
             $form[$key]->addError(new FormError($error->getMessage()));

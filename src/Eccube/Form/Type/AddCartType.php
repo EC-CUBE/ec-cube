@@ -17,6 +17,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\CartItem;
+use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Form\DataTransformer\EntityToIdTransformer;
 use Eccube\Repository\ProductClassRepository;
@@ -34,48 +35,25 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class AddCartType extends AbstractType
 {
-    /**
-     * @var EccubeConfig
-     */
-    protected $config;
+    protected EntityManager $em;
 
-    /**
-     * @var EntityManager
-     */
-    protected $em;
+    protected Product $Product;
 
-    /**
-     * @var \Eccube\Entity\Product
-     */
-    protected $Product;
+    protected ProductClassRepository $productClassRepository;
 
-    /**
-     * @var ProductClassRepository
-     */
-    protected $productClassRepository;
-    /**
-     * @var ManagerRegistry
-     */
-    protected $doctrine;
-
-    public function __construct(ManagerRegistry $doctrine, EccubeConfig $config)
+    public function __construct(protected ManagerRegistry $doctrine, protected EccubeConfig $config)
     {
-        $this->doctrine = $doctrine;
-        $this->config = $config;
     }
 
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        /** @var \Eccube\Entity\Product $Product */
+        /** @var Product $Product */
         $Product = $options['product'];
         $this->Product = $Product;
         $ProductClasses = $Product->getProductClasses();
@@ -133,7 +111,7 @@ class AddCartType extends AbstractType
                 }
             }
 
-            $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($Product) {
+            $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($Product): void {
                 $data = $event->getData();
                 $form = $event->getForm();
                 if (isset($data['classcategory_id1']) && !is_null($Product->getClassName2())) {
@@ -147,7 +125,7 @@ class AddCartType extends AbstractType
                 }
             });
 
-            $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
                 /** @var CartItem $CartItem */
                 $CartItem = $event->getData();
                 $ProductClass = $CartItem->getProductClass();
@@ -163,13 +141,9 @@ class AddCartType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @param OptionsResolver $resolver
-     *
-     * @return void
      */
     #[\Override]
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired('product');
         $resolver->setDefaults([
@@ -183,14 +157,10 @@ class AddCartType extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param FormView $view
-     * @param FormInterface $form
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
-    public function finishView(FormView $view, FormInterface $form, array $options)
+    public function finishView(FormView $view, FormInterface $form, array $options): void
     {
         if ($options['id_add_product_id']) {
             foreach ($view->vars['form']->children as $child) {
@@ -203,7 +173,7 @@ class AddCartType extends AbstractType
      * {@inheritdoc}
      */
     #[\Override]
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'add_cart';
     }

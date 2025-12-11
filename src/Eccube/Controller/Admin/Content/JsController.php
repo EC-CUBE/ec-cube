@@ -19,19 +19,21 @@ use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
 class JsController extends AbstractController
 {
     /**
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,\Symfony\Component\Form\FormView>
+     * @return RedirectResponse|array<string, FormView>
      *
      * @throws IOException
      */
-    #[Route('/%eccube_admin_route%/content/js', name: 'admin_content_js', methods: ['GET', 'POST'])]
-    #[Template('@admin/Content/js.twig')]
-    public function index(Request $request)
+    #[Route(path: '/%eccube_admin_route%/content/js', name: 'admin_content_js', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Content/js.twig')]
+    public function index(Request $request): RedirectResponse|array
     {
         $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');
 

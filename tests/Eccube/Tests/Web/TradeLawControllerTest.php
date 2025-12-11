@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -16,14 +18,13 @@ namespace Eccube\Tests\Web;
 use Eccube\Entity\Page;
 use Eccube\Entity\TradeLaw;
 use Eccube\Repository\TradeLawRepository;
+use Symfony\Component\HttpFoundation\Request;
 
-class TradeLawControllerTest extends AbstractWebTestCase
+final class TradeLawControllerTest extends AbstractWebTestCase
 {
-    /**
-     * @var TradeLawRepository
-     */
-    private $tradeLawRepository;
+    private ?TradeLawRepository $tradeLawRepository = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -32,17 +33,15 @@ class TradeLawControllerTest extends AbstractWebTestCase
 
     public function testRoutingIndex()
     {
-        $this->client->request('GET', $this->generateUrl('help_tradelaw'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('help_tradelaw'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     /**
      * Ensure that the line with both the name/description registered appears on the specific transaction law page.
      * 名称/説明の両方が登録されている行が、特定商取引法ページに表示されることを確認する。
-     *
-     * @return void
      */
-    public function testTradeLawsNotEmpty()
+    public function testTradeLawsNotEmpty(): void
     {
         $tradeLaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
         $id = 0;
@@ -53,7 +52,7 @@ class TradeLawControllerTest extends AbstractWebTestCase
         }
         $this->entityManager->flush();
 
-        $crawler = $this->client->request('GET', $this->generateUrl('help_tradelaw'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('help_tradelaw'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         for ($i = 0; $i < $id; $i++) {
             $this->assertStringContainsString('Trade名称_'.$i, $crawler->outerHtml());
@@ -64,10 +63,8 @@ class TradeLawControllerTest extends AbstractWebTestCase
     /**
      * Ensure that lines that do not have both a name/description registered do not appear on the specific transaction law page.
      * 名称/説明の両方が登録されていない行は、特定商取引法ページに表示されないことを確認する。
-     *
-     * @return void
      */
-    public function testTradeLawsEmpty()
+    public function testTradeLawsEmpty(): void
     {
         $tradeLaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
         $id = 0;
@@ -78,7 +75,7 @@ class TradeLawControllerTest extends AbstractWebTestCase
         }
         $this->entityManager->flush();
 
-        $crawler = $this->client->request('GET', $this->generateUrl('help_tradelaw'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('help_tradelaw'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         for ($i = 0; $i < $id; $i++) {
             $this->assertStringNotContainsString('Trade名称_'.$i, $crawler->outerHtml());

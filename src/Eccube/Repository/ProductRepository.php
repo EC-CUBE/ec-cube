@@ -14,6 +14,7 @@
 namespace Eccube\Repository;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Doctrine\Query\Queries;
@@ -36,45 +37,25 @@ use Eccube\Util\StringUtil;
  */
 class ProductRepository extends AbstractRepository
 {
-    /**
-     * @var Queries
-     */
-    protected $queries;
-
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
     public const COLUMNS = [
         'product_id' => 'p.id', 'name' => 'p.name', 'product_code' => 'pc.code', 'stock' => 'pc.stock', 'status' => 'p.Status', 'create_date' => 'p.create_date', 'update_date' => 'p.update_date',
     ];
 
     /**
      * ProductRepository constructor.
-     *
-     * @param RegistryInterface $registry
-     * @param Queries $queries
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
         RegistryInterface $registry,
-        Queries $queries,
-        EccubeConfig $eccubeConfig,
+        protected Queries $queries,
+        protected ?EccubeConfig $eccubeConfig,
     ) {
         parent::__construct($registry, Product::class);
-        $this->queries = $queries;
-        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
      * Find the Product with sorted ClassCategories.
-     *
-     * @param int $productId
-     *
-     * @return Product|null
      */
-    public function findWithSortedClassCategories($productId)
+    public function findWithSortedClassCategories(int $productId): ?Product
     {
         $qb = $this->createQueryBuilder('p');
         $qb->addSelect(['pc', 'cc1', 'cc2', 'pi', 'pt'])
@@ -90,11 +71,9 @@ class ProductRepository extends AbstractRepository
             ->orderBy('cc1.sort_no', 'DESC')
             ->addOrderBy('cc2.sort_no', 'DESC');
 
-        $product = $qb
+        return $qb
             ->getQuery()
             ->getSingleResult();
-
-        return $product;
     }
 
     /**
@@ -105,7 +84,7 @@ class ProductRepository extends AbstractRepository
      *
      * @return ArrayCollection<int, mixed>|array<int, mixed>|null
      */
-    public function findProductsWithSortedClassCategories(array $ids, $indexBy = null)
+    public function findProductsWithSortedClassCategories(array $ids, ?string $indexBy = null): ArrayCollection|array|null
     {
         if (count($ids) < 1) {
             return [];
@@ -126,12 +105,10 @@ class ProductRepository extends AbstractRepository
             ->orderBy('cc1.sort_no', 'DESC')
             ->addOrderBy('cc2.sort_no', 'DESC');
 
-        $products = $qb
+        return $qb
             ->getQuery()
-            ->useResultCache(true, $this->eccubeConfig['eccube_result_cache_lifetime_short'])
+            ->setResultCacheLifetime($this->eccubeConfig['eccube_result_cache_lifetime_short'])
             ->getResult();
-
-        return $products;
     }
 
     /**
@@ -144,10 +121,8 @@ class ProductRepository extends AbstractRepository
      *         disp_number?:ProductListMax,
      *         orderby?:ProductListOrderBy
      *     } $searchData
-     *
-     * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getQueryBuilderBySearchData($searchData)
+    public function getQueryBuilderBySearchData(array $searchData): QueryBuilder
     {
         $qb = $this->createQueryBuilder('p')
             ->andWhere('p.Status = 1');
@@ -245,10 +220,8 @@ class ProductRepository extends AbstractRepository
      *         sortkey?:string,
      *         sorttype?:string
      *     } $searchData
-     *
-     * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getQueryBuilderBySearchDataForAdmin($searchData)
+    public function getQueryBuilderBySearchDataForAdmin(array $searchData): QueryBuilder
     {
         $qb = $this->createQueryBuilder('p')
             ->addSelect('pc', 'pi', 'tr', 'ps')
@@ -261,7 +234,7 @@ class ProductRepository extends AbstractRepository
 
         // id
         if (isset($searchData['id']) && StringUtil::isNotBlank($searchData['id'])) {
-            $id = preg_match('/^\d{0,10}$/', $searchData['id']) ? $searchData['id'] : null;
+            $id = preg_match('/^\d{0,10}$/', (string) $searchData['id']) ? $searchData['id'] : null;
             if ($id && $id > '2147483647' && $this->isPostgreSQL()) {
                 $id = null;
             }

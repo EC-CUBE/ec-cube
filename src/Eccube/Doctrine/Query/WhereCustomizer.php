@@ -18,25 +18,21 @@ use Doctrine\ORM\QueryBuilder;
 abstract class WhereCustomizer implements QueryCustomizer
 {
     /**
-     * @param QueryBuilder $builder
-     * @param array<string,mixed> $params
-     * @param string $queryKey
-     *
-     * @return void
+     * @param array<string, mixed>|null $params
      */
     #[\Override]
-    final public function customize(QueryBuilder $builder, $params, $queryKey)
+    final public function customize(QueryBuilder $builder, ?array $params, string $queryKey): void
     {
+        $params ??= [];
         foreach ($this->createStatements($params, $queryKey) as $whereClause) {
             $whereClause->build($builder);
         }
     }
 
     /**
-     * @param array<string,mixed> $params
-     * @param string $queryKey
+     * @param array<string, mixed> $params
      *
      * @return WhereClause[]
      */
-    abstract protected function createStatements($params, $queryKey);
+    abstract protected function createStatements(array $params, string $queryKey): array;
 }

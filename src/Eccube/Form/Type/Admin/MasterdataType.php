@@ -13,10 +13,8 @@
 
 namespace Eccube\Form\Type\Admin;
 
-use Doctrine\Bundle\DoctrineBundle\Mapping\MappingDriver;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\Persistence\Mapping\Driver\MappingDriverChain;
+use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 use Eccube\Entity\Master\CustomerOrderStatus;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\OrderStatusColor;
@@ -31,61 +29,42 @@ use Symfony\Component\Validator\Constraints as Assert;
 class MasterdataType extends AbstractType
 {
     /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
      * MasterdataType constructor.
-     *
-     * @param EntityManagerInterface $entityManager
      */
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(protected EntityManagerInterface $entityManager)
     {
-        $this->entityManager = $entityManager;
     }
 
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $masterdata = [];
-        /** @var MappingDriver $mappingDriver */
-        $mappingDriver = $this->entityManager->getConfiguration()->getMetadataDriverImpl();
-        /** @var MappingDriverChain $driverChain */
-        $driverChain = $mappingDriver->getDriver();
-        /** @var MappingDriver[] $drivers */
-        $drivers = $driverChain->getDrivers();
 
-        foreach ($drivers as $namespace => $driver) {
-            if ($namespace == 'Eccube\Entity') {
-                $classNames = $driver->getAllClassNames();
-                foreach ($classNames as $className) {
-                    /** @var ClassMetadata<object> $meta */
-                    $meta = $this->entityManager->getMetadataFactory()->getMetadataFor($className);
+        // AttributeDriver でも有効なメタデータ一括取得に変更
+        foreach ($this->entityManager->getMetadataFactory()->getAllMetadata() as $meta) {
+            // 抽象クラスは除外
+            $rc = $meta->getReflectionClass();
+            if ($rc->isAbstract()) {
+                continue;
+            }
 
-                    // OrderStatus/OrderStatusColorは対象外
-                    // @see https://github.com/EC-CUBE/ec-cube/pull/4844
-                    if (in_array($meta->getName(), [OrderStatus::class, OrderStatusColor::class, CustomerOrderStatus::class])) {
-                        continue;
-                    }
+            // OrderStatus/OrderStatusColor/CustomerOrderStatus は対象外
+            if (in_array($meta->getName(), [OrderStatus::class, OrderStatusColor::class, CustomerOrderStatus::class], true)) {
+                continue;
+            }
 
-                    if (str_contains($meta->rootEntityName, 'Master')
-                        && $meta->hasField('id')
-                        && $meta->hasField('name')
-                        && $meta->hasField('sort_no')
-                    ) {
-                        $metadataName = str_replace('\\', '-', $meta->getName());
-                        $masterdata[$metadataName] = $meta->getTableName();
-                    }
-                }
+            if (str_contains($meta->rootEntityName, 'Master')
+                && $meta->hasField('id')
+                && $meta->hasField('name')
+                && $meta->hasField('sort_no')
+            ) {
+                $metadataName = str_replace('\\', '-', $meta->getName());
+                $masterdata[$metadataName] = $meta->getTableName();
             }
         }
 
@@ -105,7 +84,7 @@ class MasterdataType extends AbstractType
      * {@inheritdoc}
      */
     #[\Override]
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'admin_system_masterdata';
     }

@@ -24,29 +24,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 class SearchLoginHistoryType extends AbstractType
 {
     /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
      * SearchContactType constructor.
      */
-    public function __construct(
-        EccubeConfig $eccubeConfig,
-    ) {
-        $this->eccubeConfig = $eccubeConfig;
+    public function __construct(protected EccubeConfig $eccubeConfig)
+    {
     }
 
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
-     * @param array<string,mixed> $options
-     *
-     * @return void
+     * @param array<string, mixed> $options
      */
     #[\Override]
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             // ログインID・IPアドレス
@@ -118,7 +108,7 @@ class SearchLoginHistoryType extends AbstractType
      * {@inheritdoc}
      */
     #[\Override]
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'admin_search_login_history';
     }

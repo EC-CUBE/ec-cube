@@ -30,57 +30,26 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class SitemapController extends AbstractController
 {
-    /**
-     * @var CategoryRepository
-     */
-    private $categoryRepository;
-
-    /**
-     * @var PageRepository
-     */
-    private $pageRepository;
-
-    /**
-     * @var ProductListOrderByRepository
-     */
-    private $productListOrderByRepository;
-
-    /**
-     * @var ProductRepository
-     */
-    private $productRepository;
-
-    /**
-     * @var BaseInfo
-     */
-    protected $BaseInfo;
+    protected BaseInfo $BaseInfo;
 
     /**
      * SitemapController constructor.
      */
     public function __construct(
-        CategoryRepository $categoryRepository,
-        PageRepository $pageRepository,
-        ProductListOrderByRepository $productListOrderByRepository,
-        ProductRepository $productRepository,
+        private readonly CategoryRepository $categoryRepository,
+        private readonly PageRepository $pageRepository,
+        private readonly ProductListOrderByRepository $productListOrderByRepository,
+        private readonly ProductRepository $productRepository,
         BaseInfoRepository $baseInfoRepository,
     ) {
-        $this->categoryRepository = $categoryRepository;
-        $this->pageRepository = $pageRepository;
-        $this->productListOrderByRepository = $productListOrderByRepository;
-        $this->productRepository = $productRepository;
         $this->BaseInfo = $baseInfoRepository->get();
     }
 
     /**
      * Output sitemap index
-     *
-     * @param PaginatorInterface $paginator
-     *
-     * @return Response
      */
-    #[Route('/sitemap.xml', name: 'sitemap_xml', methods: ['GET'])]
-    public function index(PaginatorInterface $paginator)
+    #[Route(path: '/sitemap.xml', name: 'sitemap_xml', methods: ['GET'])]
+    public function index(PaginatorInterface $paginator): Response
     {
         $pageQueryBuilder = $this->pageRepository->createQueryBuilder('p');
         $Page = $pageQueryBuilder->select('p')
@@ -120,11 +89,9 @@ class SitemapController extends AbstractController
 
     /**
      * Output sitemap of product categories
-     *
-     * @return Response
      */
-    #[Route('/sitemap_category.xml', name: 'sitemap_category_xml', methods: ['GET'])]
-    public function category()
+    #[Route(path: '/sitemap_category.xml', name: 'sitemap_category_xml', methods: ['GET'])]
+    public function category(): Response
     {
         $Categories = $this->categoryRepository->getList(null, true);
 
@@ -135,11 +102,9 @@ class SitemapController extends AbstractController
      * Output sitemap of products
      *
      * Output sitemap of products as status is 1
-     *
-     * @return Response
      */
-    #[Route('/sitemap_product_{page}.xml', name: 'sitemap_product_xml', requirements: ['page' => '\d+'], methods: ['GET'])]
-    public function product(Request $request, PaginatorInterface $paginator)
+    #[Route(path: '/sitemap_product_{page}.xml', name: 'sitemap_product_xml', requirements: ['page' => '\d+'], methods: ['GET'])]
+    public function product(Request $request, PaginatorInterface $paginator): Response
     {
         // Doctrine SQLFilter
         if ($this->BaseInfo->isOptionNostockHidden()) {
@@ -167,11 +132,9 @@ class SitemapController extends AbstractController
      * Output sitemap of pages
      *
      * Output sitemap of pages without 'noindex' in meta robots.
-     *
-     * @return Response
      */
-    #[Route('/sitemap_page.xml', name: 'sitemap_page_xml', methods: ['GET'])]
-    public function page()
+    #[Route(path: '/sitemap_page.xml', name: 'sitemap_page_xml', methods: ['GET'])]
+    public function page(): Response
     {
         $Pages = $this->pageRepository->getPageList("((p.meta_robots not like '%noindex%' and p.meta_robots not like '%none%') or p.meta_robots IS NULL)");
 
@@ -191,9 +154,7 @@ class SitemapController extends AbstractController
         });
 
         // 管理画面から作成されたページ
-        $UserPages = array_filter($Pages, function (Page $Page) {
-            return $Page->getEditType() === Page::EDIT_TYPE_USER;
-        });
+        $UserPages = array_filter($Pages, fn (Page $Page) => $Page->getEditType() === Page::EDIT_TYPE_USER);
 
         return $this->outputXml([
             'DefaultPages' => $DefaultPages,
@@ -204,12 +165,9 @@ class SitemapController extends AbstractController
     /**
      * Output XML response by data.
      *
-     * @param array<string,mixed> $data
-     * @param string $template_name
-     *
-     * @return Response
+     * @param array<string, mixed> $data
      */
-    private function outputXml(array $data, $template_name = 'sitemap.xml.twig')
+    private function outputXml(array $data, string $template_name = 'sitemap.xml.twig'): Response
     {
         $response = new Response();
         $response->headers->set('Content-Type', 'application/xml'); // Content-Typeを設定

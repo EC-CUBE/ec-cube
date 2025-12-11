@@ -27,20 +27,18 @@ class Loader
     /**
      * @var CsvFixture[]|FixtureInterface[]
      */
-    protected $fixtures;
+    protected array $fixtures;
 
     /**
      * Load fixtures from directory.
      *
      * 同一階層に, Fixture のロード順を定義した definition.yml が必要.
      *
-     * @param string $dir
-     *
      * @return array<mixed> fixtures.
      *
      * @throws \InvalidArgumentException|\Exception
      */
-    public function loadFromDirectory($dir)
+    public function loadFromDirectory(string $dir): array
     {
         if (!dir($dir)) {
             throw new \InvalidArgumentException(sprintf('"%s" does not exist', $dir));
@@ -92,9 +90,9 @@ class Loader
      *
      * @param \Iterator $Iterator Iterator of \SplFileInfo
      *
-     * @return array<int,CsvFixture> fixtures.
+     * @return array<int, CsvFixture> fixtures.
      */
-    public function loadFromIterator(\Iterator $Iterator)
+    public function loadFromIterator(\Iterator $Iterator): array
     {
         $fixtures = [];
         foreach ($Iterator as $fixture) {
@@ -110,17 +108,12 @@ class Loader
     /**
      * @return FixtureInterface[]|CsvFixture[]
      */
-    public function getFixtures()
+    public function getFixtures(): array
     {
         return $this->fixtures;
     }
 
-    /**
-     * @param FixtureInterface $fixture
-     *
-     * @return void
-     */
-    public function addFixture(FixtureInterface $fixture)
+    public function addFixture(FixtureInterface $fixture): void
     {
         $this->fixtures[] = $fixture;
     }

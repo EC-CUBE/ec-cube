@@ -20,27 +20,18 @@ class Queries
     /**
      * @var QueryCustomizer[]
      */
-    private $customizers = [];
+    private array $customizers = [];
 
-    /**
-     * @param QueryCustomizer $customizer
-     *
-     * @return void
-     */
-    public function addCustomizer(QueryCustomizer $customizer)
+    public function addCustomizer(QueryCustomizer $customizer): void
     {
         $queryKey = $customizer->getQueryKey();
         $this->customizers[$queryKey][] = $customizer;
     }
 
     /**
-     * @param string $queryKey
-     * @param QueryBuilder $builder
-     * @param array<mixed> $params
-     *
-     * @return QueryBuilder
+     * @param array<mixed>|null $params
      */
-    public function customize($queryKey, QueryBuilder $builder, $params)
+    public function customize(string $queryKey, QueryBuilder $builder, ?array $params): QueryBuilder
     {
         if (isset($this->customizers[$queryKey])) {
             /* @var QueryCustomizer $customizer */

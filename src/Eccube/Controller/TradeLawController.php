@@ -19,24 +19,16 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class TradeLawController extends AbstractController
 {
-    /** @var TradeLawRepository */
-    protected $tradeLawRepository;
-
-    /**
-     * @param TradeLawRepository $tradeLawRepository
-     */
-    public function __construct(
-        TradeLawRepository $tradeLawRepository,
-    ) {
-        $this->tradeLawRepository = $tradeLawRepository;
+    public function __construct(protected TradeLawRepository $tradeLawRepository)
+    {
     }
 
     /**
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
-    #[Route('/help/tradelaw', name: 'help_tradelaw', methods: ['GET'])]
-    #[Template('Help/tradelaw.twig')]
-    public function index()
+    #[Route(path: '/help/tradelaw', name: 'help_tradelaw', methods: ['GET'])]
+    #[Template(template: 'Help/tradelaw.twig')]
+    public function index(): array
     {
         $tradelaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
 

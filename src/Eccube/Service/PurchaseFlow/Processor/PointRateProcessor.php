@@ -25,26 +25,18 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
  */
 class PointRateProcessor extends ItemHolderPostValidator
 {
-    /**
-     * @var BaseInfoRepository
-     */
-    protected $baseInfoRepository;
-
-    public function __construct(BaseInfoRepository $baseInfoRepository)
+    public function __construct(protected BaseInfoRepository $baseInfoRepository)
     {
-        $this->baseInfoRepository = $baseInfoRepository;
     }
 
     /**
      * @param ItemHolderInterface $itemHolder 注文 or カート
      * @param PurchaseContext $context 購入フローのコンテキスト
      *
-     * @return void
-     *
      * @throws \Exception
      */
     #[\Override]
-    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         if (!$itemHolder instanceof Order) {
             return;

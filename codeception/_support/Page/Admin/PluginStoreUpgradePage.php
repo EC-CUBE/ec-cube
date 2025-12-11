@@ -28,11 +28,9 @@ class PluginStoreUpgradePage extends AbstractAdminPageStyleGuide
     }
 
     /**
-     * @return PluginManagePage
-     *
      * @throws \Exception
      */
-    public function アップデート()
+    public function アップデート(): PluginManagePage
     {
         $this->tester->click(['css' => '#plugin-list > div.card-body > div:nth-child(2) > div > button.btn.btn-primary']);
         $this->tester->waitForElementVisible(['id' => 'installBtn']);

@@ -20,7 +20,8 @@ use Psr\Container\ContainerInterface;
 
 class PluginManager extends AbstractPluginManager
 {
-    public function install(array $config, ContainerInterface $container)
+    #[\Override]
+    public function install(array $config, ContainerInterface $container): void
     {
         echo '*******************************************'.PHP_EOL;
         echo 'Install Horizon 1.0.1'.PHP_EOL;
@@ -33,10 +34,11 @@ class PluginManager extends AbstractPluginManager
         $horizon->name = 'Horizon';
 
         $entityManager->persist($horizon);
-        $entityManager->flush($horizon);
+        $entityManager->flush();
     }
 
-    public function enable(array $config, ContainerInterface $container)
+    #[\Override]
+    public function enable(array $config, ContainerInterface $container): void
     {
         echo '*******************************************'.PHP_EOL;
         echo 'Enable Horizon 1.0.1'.PHP_EOL;
@@ -45,7 +47,8 @@ class PluginManager extends AbstractPluginManager
         $entityManager->find(Dash::class, 1);
     }
 
-    public function disable(array $config, ContainerInterface $container)
+    #[\Override]
+    public function disable(array $config, ContainerInterface $container): void
     {
         echo '*******************************************'.PHP_EOL;
         echo 'Disable Horizon 1.0.1'.PHP_EOL;
@@ -54,7 +57,8 @@ class PluginManager extends AbstractPluginManager
         $entityManager->find(Dash::class, 1);
     }
 
-    public function update(array $config, ContainerInterface $container)
+    #[\Override]
+    public function update(array $config, ContainerInterface $container): void
     {
         echo '*******************************************'.PHP_EOL;
         echo 'Update Horizon 1.0.1'.PHP_EOL;
@@ -68,10 +72,11 @@ class PluginManager extends AbstractPluginManager
         $newHorizon->name = 'New Horizon';
 
         $entityManager->persist($newHorizon);
-        $entityManager->flush($newHorizon);
+        $entityManager->flush();
     }
 
-    public function uninstall(array $config, ContainerInterface $container)
+    #[\Override]
+    public function uninstall(array $config, ContainerInterface $container): void
     {
         echo '*******************************************'.PHP_EOL;
         echo 'Uninstall Horizon 1.0.1'.PHP_EOL;

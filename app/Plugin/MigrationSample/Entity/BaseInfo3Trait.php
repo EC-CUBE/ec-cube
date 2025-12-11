@@ -14,15 +14,14 @@
 namespace Plugin\MigrationSample\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Eccube\Annotation\EntityExtension;
+use Eccube\Attribute\EntityExtension;
 
 #[EntityExtension(\Eccube\Entity\BaseInfo::class)]
 trait BaseInfo3Trait
 {
     /**
      * @var string
-     *
-     * @ORM\Column(name="migration_sample", type="string", length=255, nullable=true)
      */
+    #[ORM\Column(name: 'migration_sample', type: 'string', length: 255, nullable: true)]
     private $migration_sample;
 }

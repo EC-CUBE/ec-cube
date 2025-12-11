@@ -14,6 +14,7 @@
 namespace Eccube\Controller\Admin\Setting\System;
 
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\Member;
 use Eccube\Form\Type\Admin\TwoFactorAuthType;
 use Eccube\Repository\MemberRepository;
 use Eccube\Service\TwoFactorAuthService;
@@ -26,46 +27,20 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 class TwoFactorAuthController extends AbstractController
 {
     /**
-     * @var TokenStorageInterface
-     */
-    protected $tokenStorage;
-
-    /**
-     * @var MemberRepository
-     */
-    protected $memberRepository;
-
-    /**
-     * @var TwoFactorAuthService
-     */
-    protected $twoFactorAuthService;
-
-    /**
      * TwoFactorAuthController constructor.
-     *
-     * @param MemberRepository $memberRepository
-     * @param TokenStorageInterface $tokenStorage
      */
-    public function __construct(
-        MemberRepository $memberRepository,
-        TokenStorageInterface $tokenStorage,
-        TwoFactorAuthService $twoFactorAuthService,
-    ) {
-        $this->memberRepository = $memberRepository;
-        $this->tokenStorage = $tokenStorage;
-        $this->twoFactorAuthService = $twoFactorAuthService;
+    public function __construct(protected MemberRepository $memberRepository, protected TokenStorageInterface $tokenStorage, protected TwoFactorAuthService $twoFactorAuthService)
+    {
     }
 
     /**
-     * @param Request $request
-     *
-     * @return RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      */
-    #[Route('/%eccube_admin_route%/two_factor_auth', name: 'admin_two_factor_auth', methods: ['GET', 'POST'])]
-    #[Template('@admin/two_factor_auth.twig')]
-    public function auth(Request $request)
+    #[Route(path: '/%eccube_admin_route%/two_factor_auth', name: 'admin_two_factor_auth', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/two_factor_auth.twig')]
+    public function auth(Request $request): RedirectResponse|array
     {
-        /** @var \Eccube\Entity\Member $Member */
+        /** @var Member $Member */
         $Member = $this->getUser();
 
         if (!$this->twoFactorAuthService->isEnabled() || $this->twoFactorAuthService->isAuth($Member)) {
@@ -104,34 +79,29 @@ class TwoFactorAuthController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     *
-     * @return RedirectResponse
+     * @return RedirectResponse|array<string, mixed>
      */
-    #[Route('/%eccube_admin_route%/two_factor_auth/set', name: 'admin_two_factor_auth_set', methods: ['GET', 'POST'])]
-    #[Template('@admin/two_factor_auth_set.twig')]
-    public function set(Request $request)
+    #[Route(path: '/%eccube_admin_route%/two_factor_auth/set', name: 'admin_two_factor_auth_set', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/two_factor_auth_set.twig')]
+    public function set(Request $request): RedirectResponse|array
     {
-        /** @var \Eccube\Entity\Member $Member */
+        /** @var Member $Member */
         $Member = $this->getUser();
         if (!$this->twoFactorAuthService->isEnabled() || $this->twoFactorAuthService->isAuth($Member)) {
             return $this->redirectToRoute('admin_homepage');
         }
-        $res = $this->createResponse($request);
 
-        return $res;
+        return $this->createResponse($request);
     }
 
     /**
-     * @param Request $request
-     *
-     * @return RedirectResponse
+     * @return RedirectResponse|array<string, mixed>
      */
-    #[Route('/%eccube_admin_route%/setting/system/two_factor_auth/edit', name: 'admin_setting_system_two_factor_auth_edit', methods: ['GET', 'POST'])]
-    #[Template('@admin/Setting/System/two_factor_auth_edit.twig')]
-    public function edit(Request $request)
+    #[Route(path: '/%eccube_admin_route%/setting/system/two_factor_auth/edit', name: 'admin_setting_system_two_factor_auth_edit', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Setting/System/two_factor_auth_edit.twig')]
+    public function edit(Request $request): RedirectResponse|array
     {
-        /** @var \Eccube\Entity\Member $Member */
+        /** @var Member $Member */
         $Member = $this->getUser();
         if (!$this->twoFactorAuthService->isAuth($Member)) {
             return $this->redirectToRoute('admin_homepage');
@@ -145,14 +115,12 @@ class TwoFactorAuthController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     *
-     * @return array<string,mixed>|RedirectResponse
+     * @return array<string, mixed>|RedirectResponse
      */
-    private function createResponse(Request $request)
+    private function createResponse(Request $request): array|RedirectResponse
     {
         $error = null;
-        /** @var \Eccube\Entity\Member $Member */
+        /** @var Member $Member */
         $Member = $this->getUser();
         $builder = $this->formFactory->createBuilder(TwoFactorAuthType::class);
         $form = null;

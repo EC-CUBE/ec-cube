@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -19,12 +21,9 @@ use Twig\Environment;
 use Twig\Extension\CoreExtension;
 use Twig\Loader\ArrayLoader;
 
-class IntlExtensionTest extends TestCase
+final class IntlExtensionTest extends TestCase
 {
-    /**
-     * @var Environment
-     */
-    protected $twig;
+    protected ?Environment $twig = null;
 
     protected function setUp(): void
     {

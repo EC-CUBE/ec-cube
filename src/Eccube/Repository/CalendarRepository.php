@@ -14,9 +14,9 @@
 namespace Eccube\Repository;
 
 use Carbon\Carbon;
+use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Entity\Calendar;
 
@@ -39,13 +39,9 @@ class CalendarRepository extends AbstractRepository
     }
 
     /**
-     * @param int $id
-     *
-     * @return Calendar
-     *
      * @throws \Exception
      */
-    public function get($id = 1)
+    public function get(int $id = 1): Calendar
     {
         $calendar = $this->find($id);
 
@@ -61,7 +57,7 @@ class CalendarRepository extends AbstractRepository
      *
      * @return array<int, Calendar>|null
      */
-    public function getListOrderByIdDesc()
+    public function getListOrderByIdDesc(): ?array
     {
         $qb = $this->createQueryBuilder('c')
             ->orderBy('c.id', 'DESC');
@@ -79,7 +75,7 @@ class CalendarRepository extends AbstractRepository
      *
      * @return array<int, Calendar>|null
      */
-    public function getHolidayList(Carbon $startDate, Carbon $endDate)
+    public function getHolidayList(Carbon $startDate, Carbon $endDate): ?array
     {
         $qb = $this->createQueryBuilder('c')
             ->orderBy('c.id', 'DESC')
@@ -99,14 +95,12 @@ class CalendarRepository extends AbstractRepository
      *
      * @param int|Calendar $Calendar
      *
-     * @return void
-     *
      * @throws NoResultException
      * @throws ORMException
      * @throws OptimisticLockException
      */
     #[\Override]
-    public function delete($Calendar)
+    public function delete($Calendar): void
     {
         if (!$Calendar instanceof Calendar) {
             $Calendar = $this->find($Calendar);

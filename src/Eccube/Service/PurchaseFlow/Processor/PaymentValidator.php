@@ -20,6 +20,7 @@ use Eccube\Entity\Master\SaleType;
 use Eccube\Entity\Order;
 use Eccube\Entity\Payment;
 use Eccube\Repository\DeliveryRepository;
+use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\ItemHolderPostValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 
@@ -29,30 +30,20 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 class PaymentValidator extends ItemHolderPostValidator
 {
     /**
-     * @var DeliveryRepository
-     */
-    protected $deliveryRepository;
-
-    /**
      * PaymentProcessor constructor.
-     *
-     * @param DeliveryRepository $deliveryRepository
      */
-    public function __construct(DeliveryRepository $deliveryRepository)
+    public function __construct(protected DeliveryRepository $deliveryRepository)
     {
-        $this->deliveryRepository = $deliveryRepository;
     }
 
     /**
      * @param ItemHolderInterface $itemHolder カート or 受注
      * @param PurchaseContext $context 購入フローのコンテキスト
      *
-     * @return void
-     *
-     * @throws \Eccube\Service\PurchaseFlow\InvalidItemException 支払い方法が異なる場合
+     * @throws InvalidItemException 支払い方法が異なる場合
      */
     #[\Override]
-    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         // 明細の個数が1以下の場合はOK
         if (count($itemHolder->getItems()) <= 1) {
@@ -100,11 +91,9 @@ class PaymentValidator extends ItemHolderPostValidator
     }
 
     /**
-     * @param SaleType $SaleType
-     *
      * @return array<int, Delivery>
      */
-    private function getDeliveries(SaleType $SaleType)
+    private function getDeliveries(SaleType $SaleType): array
     {
         /** @var Delivery[] $Deliveries */
         $Deliveries = $this->deliveryRepository->findBy(
@@ -122,7 +111,7 @@ class PaymentValidator extends ItemHolderPostValidator
      *
      * @return ArrayCollection<int, Payment>
      */
-    private function getPayments($Deliveries)
+    private function getPayments(array $Deliveries): ArrayCollection
     {
         $Payments = new ArrayCollection();
         foreach ($Deliveries as $Delivery) {

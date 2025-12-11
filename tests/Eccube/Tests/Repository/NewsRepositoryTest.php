@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -22,13 +24,11 @@ use Eccube\Tests\EccubeTestCase;
  *
  * @author Kentaro Ohkouchi
  */
-class NewsRepositoryTest extends EccubeTestCase
+final class NewsRepositoryTest extends EccubeTestCase
 {
-    protected $Member;
+    protected ?NewsRepository $newsRepo = null;
 
-    /** @var NewsRepository */
-    protected $newsRepo;
-
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -42,7 +42,7 @@ class NewsRepositoryTest extends EccubeTestCase
                 ->setTitle('news-'.$i)
                 ->setDescription($faker->realText())
                 ->setUrl($faker->url)
-                ->setLinkMethod(1)
+                ->setLinkMethod(true)
                 ->setVisible(true)
                 ->setPublishDate(new \DateTime());
             $this->entityManager->persist($News);
@@ -72,7 +72,7 @@ class NewsRepositoryTest extends EccubeTestCase
             ->setDescription($faker->realText())
             ->setUrl($url)
             ->setVisible(true)
-            ->setLinkMethod(1);
+            ->setLinkMethod(true);
 
         $this->newsRepo->save($News);
 
@@ -89,11 +89,12 @@ class NewsRepositoryTest extends EccubeTestCase
         $News = $this->newsRepo->findOneBy(
             ['title' => 'news-0']
         );
+        $this->assertInstanceOf(News::class, $News);
 
         $newsId = $News->getId();
         $this->newsRepo->delete($News);
 
-        self::assertNull($this->newsRepo->find($newsId));
+        $this->assertNotInstanceOf(News::class, $this->newsRepo->find($newsId));
     }
 
     public function testGetList()

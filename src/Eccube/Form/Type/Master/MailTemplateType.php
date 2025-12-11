@@ -14,6 +14,7 @@
 namespace Eccube\Form\Type\Master;
 
 use Doctrine\ORM\EntityRepository;
+use Eccube\Entity\MailTemplate;
 use Eccube\Form\Type\MasterType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -25,43 +26,33 @@ class MailTemplateType extends AbstractType
 {
     /**
      * {@inheritdoc}
-     *
-     * @param OptionsResolver $resolver
-     *
-     * @return void
      */
     #[\Override]
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'class' => \Eccube\Entity\MailTemplate::class,
+            'class' => MailTemplate::class,
             'placeholder' => 'common.select',
             // なぜかsortNoを持っていない
-            'query_builder' => function (EntityRepository $er) {
-                return $er->createQueryBuilder('mt')
-                    ->orderBy('mt.id', 'ASC');
-            },
+            'query_builder' => fn (EntityRepository $er) => $er->createQueryBuilder('mt')
+                ->orderBy('mt.id', 'ASC'),
         ]);
     }
 
     /**
      * {@inheritdoc}
-     *
-     * @return string
      */
     #[\Override]
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'mail_template';
     }
 
     /**
      * {@inheritdoc}
-     *
-     * @return string
      */
     #[\Override]
-    public function getParent()
+    public function getParent(): string
     {
         return MasterType::class;
     }

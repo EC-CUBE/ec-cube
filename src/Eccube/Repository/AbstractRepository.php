@@ -21,9 +21,9 @@ use Eccube\Entity\AbstractEntity;
  * ECCUBE AbstractRepository
  *
  * @method T|null find($id, $lockMode = null, $lockVersion = null)
- * @method T|null findOneBy(array $criteria, array $orderBy = null)
+ * @method T|null findOneBy(array<string, mixed> $criteria, array<string, string>|null $orderBy = null)
  * @method T[]    findAll()
- * @method T[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method T[]    findBy(array<string, mixed> $criteria, array<string, string>|null $orderBy = null, ?int $limit = null, ?int $offset = null)
  *
  * @template T of AbstractEntity
  *
@@ -31,39 +31,25 @@ use Eccube\Entity\AbstractEntity;
  */
 abstract class AbstractRepository extends ServiceEntityRepository
 {
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
+    protected ?EccubeConfig $eccubeConfig = null;
 
     /**
      * エンティティを削除します。
-     *
-     * @param T $entity
-     *
-     * @return void
      */
-    public function delete($entity)
+    public function delete(AbstractEntity $entity): void
     {
         $this->getEntityManager()->remove($entity);
     }
 
     /**
      * エンティティの登録/保存します。
-     *
-     * @param T $entity
-     *
-     * @return void
      */
-    public function save($entity)
+    public function save(AbstractEntity $entity): void
     {
         $this->getEntityManager()->persist($entity);
     }
 
-    /**
-     * @return int|string|null
-     */
-    protected function getCacheLifetime()
+    protected function getCacheLifetime(): int|string|null
     {
         if ($this->eccubeConfig !== null) {
             return $this->eccubeConfig['eccube_result_cache_lifetime'];
@@ -74,20 +60,16 @@ abstract class AbstractRepository extends ServiceEntityRepository
 
     /**
      * PostgreSQL環境かどうかを判定します。
-     *
-     * @return bool
      */
-    protected function isPostgreSQL()
+    protected function isPostgreSQL(): bool
     {
         return 'postgresql' == $this->getEntityManager()->getConnection()->getDatabasePlatform()->getName();
     }
 
     /**
      * MySQL環境かどうかを判定します。
-     *
-     * @return bool
      */
-    protected function isMySQL()
+    protected function isMySQL(): bool
     {
         return 'mysql' == $this->getEntityManager()->getConnection()->getDatabasePlatform()->getName();
     }

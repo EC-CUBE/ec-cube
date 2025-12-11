@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,18 +17,17 @@ namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Form\Type\Admin\SearchLoginHistoryType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Form\FormInterface;
 
-class SearchLoginHistoryTypeTest extends AbstractTypeTestCase
+final class SearchLoginHistoryTypeTest extends AbstractTypeTestCase
 {
-    /**
-     * @var FormInterface
-     */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -37,11 +38,7 @@ class SearchLoginHistoryTypeTest extends AbstractTypeTestCase
             ->getForm();
     }
 
-    /**
-     * @dataProvider dataFormDateTimeProvider
-     *
-     * @param string $formName
-     */
+    #[DataProvider(methodName: 'dataFormDateTimeProvider')]
     public function testDateTimeSearch(string $formName)
     {
         $formData = [
@@ -54,14 +51,10 @@ class SearchLoginHistoryTypeTest extends AbstractTypeTestCase
 
     /**
      * Data provider datetime form test.
-     *
-     * @return array
      */
-    public function dataFormDateTimeProvider()
+    public static function dataFormDateTimeProvider(): \Iterator
     {
-        return [
-            ['create_datetime_start'],
-            ['create_datetime_end'],
-        ];
+        yield ['create_datetime_start'];
+        yield ['create_datetime_end'];
     }
 }

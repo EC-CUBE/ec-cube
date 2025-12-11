@@ -18,5 +18,5 @@ interface EccubeNav
     /**
      * @return array<mixed>
      */
-    public static function getNav();
+    public static function getNav(): array;
 }

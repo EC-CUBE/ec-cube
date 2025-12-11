@@ -24,20 +24,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class PurchaseContext extends \SplObjectStorage
 {
-    /**
-     * @var UserInterface|Customer|null 会員情報
-     */
-    private $user;
-
-    /**
-     * @var ItemHolderInterface|null PurchaseFlow実行前の{@link ItemHolderInterface}
-     */
-    private $originHolder;
-
-    /**
-     * @var string
-     */
-    private $flowType;
+    private ?string $flowType = null;
 
     public const ORDER_FLOW = 'order';
 
@@ -45,66 +32,44 @@ class PurchaseContext extends \SplObjectStorage
 
     public const CART_FLOW = 'cart';
 
-    /**
-     * @param ItemHolderInterface|null $originHolder
-     * @param UserInterface|Customer|null $user
-     */
-    public function __construct(?ItemHolderInterface $originHolder = null, UserInterface|Customer|null $user = null)
-    {
-        $this->originHolder = $originHolder;
-        $this->user = $user;
+    public function __construct(
+        private readonly ?ItemHolderInterface $originHolder = null,
+        private readonly UserInterface|Customer|null $user = null,
+    ) {
     }
 
     /**
      * PurchaseFlow実行前の{@link ItemHolderInterface}を取得.
-     *
-     * @return ItemHolderInterface|null
      */
-    public function getOriginHolder()
+    public function getOriginHolder(): ?ItemHolderInterface
     {
         return $this->originHolder;
     }
 
     /**
      * 会員情報を取得.
-     *
-     * @return Customer|UserInterface|null
      */
-    public function getUser()
+    public function getUser(): Customer|UserInterface|null
     {
         return $this->user;
     }
 
-    /**
-     * @param string $flowType
-     *
-     * @return void
-     */
-    public function setFlowType($flowType)
+    public function setFlowType(?string $flowType): void
     {
         $this->flowType = $flowType;
     }
 
-    /**
-     * @return bool
-     */
-    public function isOrderFlow()
+    public function isOrderFlow(): bool
     {
         return $this->flowType === self::ORDER_FLOW;
     }
 
-    /**
-     * @return bool
-     */
-    public function isShoppingFlow()
+    public function isShoppingFlow(): bool
     {
         return $this->flowType === self::SHOPPING_FLOW;
     }
 
-    /**
-     * @return bool
-     */
-    public function isCartFlow()
+    public function isCartFlow(): bool
     {
         return $this->flowType === self::CART_FLOW;
     }

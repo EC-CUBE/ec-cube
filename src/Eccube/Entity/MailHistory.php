@@ -13,116 +13,70 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\MailHistoryRepository;
 
 if (!class_exists(MailHistory::class)) {
     /**
      * MailHistory
-     *
-     * @ORM\Table(name="dtb_mail_history")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\MailHistoryRepository")
      */
+    #[ORM\Table(name: 'dtb_mail_history')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: MailHistoryRepository::class)]
     class MailHistory extends AbstractEntity implements \Stringable
     {
-        /**
-         * @return string
-         */
         #[\Override]
         public function __toString(): string
         {
             return (string) $this->getMailSubject();
         }
 
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
-         *
-         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
-         */
-        private $id;
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+        /**  @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
+        private ?int $id = null;
 
         /**
          * @var \DateTime|null
-         *
-         * @ORM\Column(name="send_date", type="datetimetz", nullable=true)
          */
+        #[ORM\Column(name: 'send_date', type: Types::DATETIMETZ_MUTABLE, nullable: true)]
         private $send_date;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="mail_subject", type="string", length=255, nullable=true)
-         */
-        private $mail_subject;
+        #[ORM\Column(name: 'mail_subject', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $mail_subject = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="mail_body", type="text", nullable=true)
-         */
-        private $mail_body;
+        #[ORM\Column(name: 'mail_body', type: Types::TEXT, nullable: true)]
+        private ?string $mail_body = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="mail_html_body", type="text", nullable=true)
-         */
-        private $mail_html_body;
+        #[ORM\Column(name: 'mail_html_body', type: Types::TEXT, nullable: true)]
+        private ?string $mail_html_body = null;
 
-        /**
-         * @var Order|null
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Order", inversedBy="MailHistories")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="order_id", referencedColumnName="id")
-         * })
-         */
-        private $Order;
+        #[ORM\ManyToOne(targetEntity: Order::class, inversedBy: 'MailHistories')]
+        #[ORM\JoinColumn(name: 'order_id', referencedColumnName: 'id', nullable: true)]
+        private ?Order $Order = null;
 
-        /**
-         * @var Member|null
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id", nullable=true)
-         * })
-         */
-        private $Creator;
+        #[ORM\ManyToOne(targetEntity: Member::class)]
+        #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id', nullable: true)]
+        private ?Member $Creator = null;
 
         /**
          * Get id.
          *
          * @return int
          */
-        public function getId()
+        public function getId(): ?int
         {
             return $this->id;
         }
 
         /**
          * Set sendDate.
-         *
-         * @param \DateTime|null $sendDate
-         *
-         * @return MailHistory
          */
-        public function setSendDate($sendDate = null)
+        public function setSendDate(?\DateTime $sendDate = null): MailHistory
         {
             $this->send_date = $sendDate;
 
@@ -131,22 +85,16 @@ if (!class_exists(MailHistory::class)) {
 
         /**
          * Get sendDate.
-         *
-         * @return \DateTime|null
          */
-        public function getSendDate()
+        public function getSendDate(): ?\DateTime
         {
             return $this->send_date;
         }
 
         /**
          * Set mailSubject.
-         *
-         * @param string|null $mailSubject
-         *
-         * @return MailHistory
          */
-        public function setMailSubject($mailSubject = null)
+        public function setMailSubject(?string $mailSubject = null): MailHistory
         {
             $this->mail_subject = $mailSubject;
 
@@ -155,22 +103,16 @@ if (!class_exists(MailHistory::class)) {
 
         /**
          * Get mailSubject.
-         *
-         * @return string|null
          */
-        public function getMailSubject()
+        public function getMailSubject(): ?string
         {
             return $this->mail_subject;
         }
 
         /**
          * Set mailBody.
-         *
-         * @param string|null $mailBody
-         *
-         * @return MailHistory
          */
-        public function setMailBody($mailBody = null)
+        public function setMailBody(?string $mailBody = null): MailHistory
         {
             $this->mail_body = $mailBody;
 
@@ -179,22 +121,16 @@ if (!class_exists(MailHistory::class)) {
 
         /**
          * Get mailBody.
-         *
-         * @return string|null
          */
-        public function getMailBody()
+        public function getMailBody(): ?string
         {
             return $this->mail_body;
         }
 
         /**
          * Set mailHtmlBody.
-         *
-         * @param string|null $mailHtmlBody
-         *
-         * @return MailHistory
          */
-        public function setMailHtmlBody($mailHtmlBody = null)
+        public function setMailHtmlBody(?string $mailHtmlBody = null): MailHistory
         {
             $this->mail_html_body = $mailHtmlBody;
 
@@ -203,22 +139,16 @@ if (!class_exists(MailHistory::class)) {
 
         /**
          * Get mailHtmlBody.
-         *
-         * @return string|null
          */
-        public function getMailHtmlBody()
+        public function getMailHtmlBody(): ?string
         {
             return $this->mail_html_body;
         }
 
         /**
          * Set order.
-         *
-         * @param Order|null $order
-         *
-         * @return MailHistory
          */
-        public function setOrder(?Order $order = null)
+        public function setOrder(?Order $order = null): MailHistory
         {
             $this->Order = $order;
 
@@ -227,22 +157,16 @@ if (!class_exists(MailHistory::class)) {
 
         /**
          * Get order.
-         *
-         * @return Order|null
          */
-        public function getOrder()
+        public function getOrder(): ?Order
         {
             return $this->Order;
         }
 
         /**
          * Set creator.
-         *
-         * @param Member|null $creator
-         *
-         * @return MailHistory
          */
-        public function setCreator(?Member $creator = null)
+        public function setCreator(?Member $creator = null): MailHistory
         {
             $this->Creator = $creator;
 
@@ -251,10 +175,8 @@ if (!class_exists(MailHistory::class)) {
 
         /**
          * Get creator.
-         *
-         * @return Member|null
          */
-        public function getCreator()
+        public function getCreator(): ?Member
         {
             return $this->Creator;
         }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -13,12 +15,14 @@
 
 namespace Eccube\Tests\Web;
 
-class BlockControllerTest extends AbstractWebTestCase
+use Symfony\Component\HttpFoundation\Request;
+
+final class BlockControllerTest extends AbstractWebTestCase
 {
     public function testIndex()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('block_search_product')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());

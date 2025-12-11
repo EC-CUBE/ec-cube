@@ -313,12 +313,8 @@ class EF09ThrottlingCest
     /**
      * checkoutでのスロットリングのテスト
      * confirmでの制限に引っかかるため、confirmLimiterの上限値を変更してから実施してください。
-     *
-     * @param AcceptanceTester $I
-     *
-     * @return void
      */
-    public function 注文完了_非会員購入(AcceptanceTester $I)
+    public function 注文完了_非会員購入(AcceptanceTester $I): void
     {
         $I->wantTo('EF0901-UC01-T10_注文完了_非会員購入');
 
@@ -358,12 +354,8 @@ class EF09ThrottlingCest
     /**
      * checkoutでのスロットリングのテスト
      * confirmでの制限に引っかかるため、confirmLimiterの上限値を変更してから実施してください。
-     *
-     * @param AcceptanceTester $I
-     *
-     * @return void
      */
-    public function 注文完了_会員購入(AcceptanceTester $I)
+    public function 注文完了_会員購入(AcceptanceTester $I): void
     {
         $I->wantTo('EF0901-UC01-T11_注文完了_会員購入');
 
@@ -396,12 +388,7 @@ class EF09ThrottlingCest
         $I->see('購入処理で予期しないエラーが発生しました。恐れ入りますがお問い合わせページよりご連絡ください。', 'div.ec-cartRole__error');
     }
 
-    /**
-     * @param AcceptanceTester $I
-     *
-     * @return void
-     */
-    public function 会員情報編集(AcceptanceTester $I)
+    public function 会員情報編集(AcceptanceTester $I): void
     {
         $I->wantTo('EF0901-UC01-T12_会員情報編集');
         $createCustomer = Fixtures::get('createCustomer');
@@ -430,12 +417,7 @@ class EF09ThrottlingCest
         $I->see('試行回数の上限を超過しました。しばらくお待ちいただき、再度お試しください。', 'p.ec-reportDescription');
     }
 
-    /**
-     * @param AcceptanceTester $I
-     *
-     * @return void
-     */
-    public function 配送先情報_追加(AcceptanceTester $I)
+    public function 配送先情報_追加(AcceptanceTester $I): void
     {
         $I->wantTo('EF0901-UC01-T13_配送先情報_追加');
         $createCustomer = Fixtures::get('createCustomer');
@@ -489,12 +471,7 @@ class EF09ThrottlingCest
         $I->see('試行回数の上限を超過しました。しばらくお待ちいただき、再度お試しください。', 'p.ec-reportDescription');
     }
 
-    /**
-     * @param AcceptanceTester $I
-     *
-     * @return void
-     */
-    public function 配送先情報_編集(AcceptanceTester $I)
+    public function 配送先情報_編集(AcceptanceTester $I): void
     {
         $I->wantTo('EF0901-UC01-T14_配送先情報_編集');
         $createCustomer = Fixtures::get('createCustomer');
@@ -569,12 +546,8 @@ class EF09ThrottlingCest
     /**
      * customer_delivery_deleteでのスロットリングのテスト
      * customer_delivery_newでの制限に引っかかるため、customer_delivery_newのlimiter上限値を変更してから実施してください。
-     *
-     * @param AcceptanceTester $I
-     *
-     * @return void
      */
-    public function 配送先情報_削除(AcceptanceTester $I)
+    public function 配送先情報_削除(AcceptanceTester $I): void
     {
         $I->wantTo('EF0901-UC01-T15_配送先情報_削除');
         $createCustomer = Fixtures::get('createCustomer');
@@ -634,12 +607,7 @@ class EF09ThrottlingCest
         $I->see('試行回数の上限を超過しました。しばらくお待ちいただき、再度お試しください。', 'p.ec-reportDescription');
     }
 
-    /**
-     * @param AcceptanceTester $I
-     *
-     * @return void
-     */
-    public function order_お届け先追加(AcceptanceTester $I)
+    public function order_お届け先追加(AcceptanceTester $I): void
     {
         $I->wantTo('EF0901-UC01-T16_order_お届け先追加');
         $I->logoutAsMember();
@@ -700,12 +668,7 @@ class EF09ThrottlingCest
         $I->see('試行回数の上限を超過しました。しばらくお待ちいただき、再度お試しください。', 'p.ec-reportDescription');
     }
 
-    /**
-     * @param AcceptanceTester $I
-     *
-     * @return void
-     */
-    public function order_お届け先変更(AcceptanceTester $I)
+    public function order_お届け先変更(AcceptanceTester $I): void
     {
         $I->wantTo('EF0901-UC01-T17_order_お届け先変更');
         $I->logoutAsMember();

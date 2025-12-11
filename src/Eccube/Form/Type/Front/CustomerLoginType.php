@@ -25,32 +25,17 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class CustomerLoginType extends AbstractType
 {
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
-     * @var AuthenticationUtils
-     */
-    protected $authenticationUtils;
-
-    public function __construct(AuthenticationUtils $authenticationUtils, EccubeConfig $eccubeConfig)
+    public function __construct(protected AuthenticationUtils $authenticationUtils, protected EccubeConfig $eccubeConfig)
     {
-        $this->authenticationUtils = $authenticationUtils;
-        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('login_email', EmailType::class, [
             'attr' => [
@@ -79,7 +64,7 @@ class CustomerLoginType extends AbstractType
      * {@inheritdoc}
      */
     #[\Override]
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'customer_login';
     }

@@ -13,6 +13,7 @@
 
 namespace Eccube\Repository;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
@@ -36,34 +37,19 @@ use Eccube\Util\StringUtil;
  */
 class OrderRepository extends AbstractRepository
 {
-    /**
-     * @var Queries
-     */
-    protected $queries;
-
     public const COLUMNS = [
         'order' => 'o.name01', 'orderer' => 'o.id', 'shipping_id' => 's.id', 'purchase_product' => 'oi.product_name', 'quantity' => 'oi.quantity', 'payment_method' => 'o.payment_method', 'order_status' => 'o.OrderStatus', 'purchase_price' => 'o.total', 'shipping_status' => 's.shipping_date', 'tracking_number' => 's.tracking_number', 'delivery' => 's.name01',
     ];
 
     /**
      * OrderRepository constructor.
-     *
-     * @param RegistryInterface $registry
-     * @param Queries $queries
      */
-    public function __construct(RegistryInterface $registry, Queries $queries)
+    public function __construct(RegistryInterface $registry, protected Queries $queries)
     {
         parent::__construct($registry, Order::class);
-        $this->queries = $queries;
     }
 
-    /**
-     * @param int $orderId
-     * @param OrderStatus $Status
-     *
-     * @return void
-     */
-    public function changeStatus($orderId, OrderStatus $Status)
+    public function changeStatus(int $orderId, OrderStatus $Status): void
     {
         $Order = $this
             ->find($orderId)
@@ -82,49 +68,9 @@ class OrderRepository extends AbstractRepository
     }
 
     /**
-     * @param array{
-     *         order_id?:string|int,
-     *         order_no?:string,
-     *         order_id_start?:string|int,
-     *         order_id_end?:string|int,
-     *         multi?:string|int|null,
-     *         status?:OrderStatus[]|int[],
-     *         company_name?:string,
-     *         name?:string,
-     *         kana?:string,
-     *         email?:string,
-     *         phone_number?:string,
-     *         sex?:\Doctrine\Common\Collections\ArrayCollection<int, Sex>,
-     *         payment?:\Doctrine\Common\Collections\ArrayCollection<int, Payment>,
-     *         order_datetime_start?:\DateTime,
-     *         order_datetime_end?:\DateTime,
-     *         order_date_start?:\DateTime,
-     *         order_date_end?:\DateTime,
-     *         payment_datetime_start?:\DateTime,
-     *         payment_datetime_end?:\DateTime,
-     *         payment_date_start?:\DateTime,
-     *         payment_date_end?:\DateTime,
-     *         update_datetime_start?:\DateTime,
-     *         update_datetime_end?:\DateTime,
-     *         update_date_start?:\DateTime,
-     *         update_date_end?:\DateTime,
-     *         payment_total_start?:string|int,
-     *         payment_total_end?:string|int,
-     *         payment_product_name?:string,
-     *         shipping_mail?:Shipping::SHIPPING_MAIL_UNSENT|Shipping::SHIPPING_MAIL_SENT|\Doctrine\Common\Collections\ArrayCollection<int, int>,
-     *         tracking_number?:string,
-     *         shipping_delivery_datetime_start?:\DateTime,
-     *         shipping_delivery_datetime_end?:\DateTime,
-     *         shipping_delivery_date_start?:\DateTime,
-     *         shipping_delivery_date_end?:\DateTime,
-     *         sortkey?:string,
-     *         sorttype?:string,
-     *         buy_product_name?:string
-     *     } $searchData
-     *
-     * @return QueryBuilder
+     * @param array{order_id?: string|int, order_no?: string, order_id_start?: string|int, order_id_end?: string|int, multi?: string|int|null, status?: OrderStatus[]|int[], company_name?: string, name?: string, kana?: string, email?: string, phone_number?: string, sex?: ArrayCollection<int, Sex>, payment?: ArrayCollection<int, Payment>, order_datetime_start?: \DateTime, order_datetime_end?: \DateTime, order_date_start?: \DateTime, order_date_end?: \DateTime, payment_datetime_start?: \DateTime, payment_datetime_end?: \DateTime, payment_date_start?: \DateTime, payment_date_end?: \DateTime, update_datetime_start?: \DateTime, update_datetime_end?: \DateTime, update_date_start?: \DateTime, update_date_end?: \DateTime, payment_total_start?: string|int, payment_total_end?: string|int, payment_product_name?: string, shipping_mail?: Shipping::SHIPPING_MAIL_UNSENT|Shipping::SHIPPING_MAIL_SENT|ArrayCollection<int, int>, tracking_number?: string, shipping_delivery_datetime_start?: \DateTime, shipping_delivery_datetime_end?: \DateTime, shipping_delivery_date_start?: \DateTime, shipping_delivery_date_end?: \DateTime, sortkey?: string, sorttype?: string, buy_product_name?: string} $searchData
      */
-    public function getQueryBuilderBySearchDataForAdmin($searchData)
+    public function getQueryBuilderBySearchDataForAdmin(array $searchData): QueryBuilder
     {
         $qb = $this->createQueryBuilder('o')
             ->select('o, s')
@@ -156,7 +102,7 @@ class OrderRepository extends AbstractRepository
         // multi
         if (isset($searchData['multi']) && StringUtil::isNotBlank($searchData['multi'])) {
             // スペース除去
-            $clean_key_multi = preg_replace('/\s+|[　]+/u', '', $searchData['multi']);
+            $clean_key_multi = preg_replace('/\s+|[　]+/u', '', (string) $searchData['multi']);
             $multi = preg_match('/^\d{0,10}$/', (string) $clean_key_multi) ? $clean_key_multi : null;
             if ($multi && $multi > '2147483647' && $this->isPostgreSQL()) {
                 $multi = null;
@@ -416,12 +362,7 @@ class OrderRepository extends AbstractRepository
         return $this->queries->customize(QueryKey::ORDER_SEARCH_ADMIN, $qb, $searchData);
     }
 
-    /**
-     * @param  Customer $Customer
-     *
-     * @return QueryBuilder
-     */
-    public function getQueryBuilderByCustomer(Customer $Customer)
+    public function getQueryBuilderByCustomer(Customer $Customer): QueryBuilder
     {
         $qb = $this->createQueryBuilder('o')
             ->where('o.Customer = :Customer')
@@ -436,14 +377,10 @@ class OrderRepository extends AbstractRepository
     /**
      * ステータスごとの受注件数を取得する.
      *
-     * @param int $OrderStatusOrId
-     *
-     * @return int
-     *
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    public function countByOrderStatus($OrderStatusOrId)
+    public function countByOrderStatus(int $OrderStatusOrId): int
     {
         return (int) $this->createQueryBuilder('o')
             ->select('COALESCE(COUNT(o.id), 0)')
@@ -456,14 +393,11 @@ class OrderRepository extends AbstractRepository
     /**
      * 会員の購入金額, 購入回数, 初回購入日, 最終購入費を更新する
      *
-     * @param Customer $Customer
      * @param array<int, int> $OrderStatuses
-     *
-     * @return void
      *
      * @throws NonUniqueResultException
      */
-    public function updateOrderSummary(Customer $Customer, array $OrderStatuses = [OrderStatus::NEW, OrderStatus::PAID, OrderStatus::DELIVERED, OrderStatus::IN_PROGRESS])
+    public function updateOrderSummary(Customer $Customer, array $OrderStatuses = [OrderStatus::NEW, OrderStatus::PAID, OrderStatus::DELIVERED, OrderStatus::IN_PROGRESS]): void
     {
         try {
             $result = $this->createQueryBuilder('o')
@@ -477,8 +411,8 @@ class OrderRepository extends AbstractRepository
                 ->getSingleResult();
         } catch (NoResultException) {
             // 受注データが存在しなければ初期化
-            $Customer->setFirstBuyDate(null);
-            $Customer->setLastBuyDate(null);
+            $Customer->setFirstBuyDate();
+            $Customer->setLastBuyDate();
             $Customer->setBuyTimes('0');
             $Customer->setBuyTotal('0');
 

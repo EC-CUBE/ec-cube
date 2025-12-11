@@ -13,6 +13,8 @@
 
 namespace Eccube\Controller\Admin\Store;
 
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BaseInfo;
@@ -44,74 +46,35 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class PluginController extends AbstractController
 {
-    /**
-     * @var PluginService
-     */
-    protected $pluginService;
-
-    /**
-     * @var BaseInfo
-     */
-    protected $BaseInfo;
-
-    /**
-     * @var PluginRepository
-     */
-    protected $pluginRepository;
-
-    /**
-     * @var PluginApiService
-     */
-    protected $pluginApiService;
-
-    /**
-     * @var ComposerServiceInterface
-     */
-    private $composerService;
-
-    /**
-     * @var SystemService
-     */
-    private $systemService;
+    protected BaseInfo $BaseInfo;
 
     /**
      * PluginController constructor.
      *
-     * @param PluginRepository $pluginRepository
-     * @param PluginService $pluginService
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param PluginApiService $pluginApiService
-     * @param ComposerServiceInterface $composerService
-     *
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     public function __construct(
-        PluginRepository $pluginRepository,
-        PluginService $pluginService,
+        protected PluginRepository $pluginRepository,
+        protected PluginService $pluginService,
         BaseInfoRepository $baseInfoRepository,
-        PluginApiService $pluginApiService,
-        ComposerServiceInterface $composerService,
-        SystemService $systemService,
+        protected PluginApiService $pluginApiService,
+        private readonly ComposerServiceInterface $composerService,
+        private readonly SystemService $systemService,
     ) {
-        $this->pluginRepository = $pluginRepository;
-        $this->pluginService = $pluginService;
         $this->BaseInfo = $baseInfoRepository->get();
-        $this->pluginApiService = $pluginApiService;
-        $this->composerService = $composerService;
-        $this->systemService = $systemService;
     }
 
     /**
      * インストール済プラグイン画面
      *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      *
      * @throws PluginException
      */
-    #[Route('/%eccube_admin_route%/store/plugin', name: 'admin_store_plugin', methods: ['GET'])]
-    #[Template('@admin/Store/plugin.twig')]
-    public function index()
+    #[Route(path: '/%eccube_admin_route%/store/plugin', name: 'admin_store_plugin', methods: ['GET'])]
+    #[Template(template: '@admin/Store/plugin.twig')]
+    public function index(): array
     {
         $pluginForms = [];
         $configPages = [];
@@ -193,15 +156,9 @@ class PluginController extends AbstractController
 
     /**
      * インストール済プラグインからのアップデート
-     *
-     * @param Request $request
-     * @param Plugin $Plugin
-     * @param CacheUtil $cacheUtil
-     *
-     * @return RedirectResponse
      */
-    #[Route('/%eccube_admin_route%/store/plugin/{id}/update', name: 'admin_store_plugin_update', requirements: ['id' => '\d+'], methods: ['POST'])]
-    public function update(Request $request, Plugin $Plugin, CacheUtil $cacheUtil)
+    #[Route(path: '/%eccube_admin_route%/store/plugin/{id}/update', name: 'admin_store_plugin_update', requirements: ['id' => '\d+'], methods: ['POST'])]
+    public function update(Request $request, Plugin $Plugin, CacheUtil $cacheUtil): RedirectResponse
     {
         $form = $this->formFactory
             ->createNamedBuilder(
@@ -260,14 +217,10 @@ class PluginController extends AbstractController
     /**
      * 対象のプラグインを有効にします。
      *
-     * @param Plugin $Plugin
-     *
-     * @return RedirectResponse|JsonResponse
-     *
      * @throws PluginException
      */
-    #[Route('/%eccube_admin_route%/store/plugin/{id}/enable', name: 'admin_store_plugin_enable', requirements: ['id' => '\d+'], methods: ['POST'])]
-    public function enable(Plugin $Plugin, CacheUtil $cacheUtil, Request $request)
+    #[Route(path: '/%eccube_admin_route%/store/plugin/{id}/enable', name: 'admin_store_plugin_enable', requirements: ['id' => '\d+'], methods: ['POST'])]
+    public function enable(Plugin $Plugin, CacheUtil $cacheUtil, Request $request): RedirectResponse|JsonResponse
     {
         $this->isTokenValid();
         // QueryString maintenance_modeがない場合
@@ -298,9 +251,7 @@ class PluginController extends AbstractController
                     return $DependPlugin->isEnabled() == false;
                 });
                 if (!empty($requires)) {
-                    $names = array_map(function ($req) {
-                        return "「{$req['description']}」";
-                    }, $requires);
+                    $names = array_map(fn ($req) => "「{$req['description']}」", $requires);
                     $message = trans('%depend_name%を先に有効化してください。', ['%name%' => $Plugin->getName(), '%depend_name%' => implode(', ', $names)]);
 
                     if ($request->isXmlHttpRequest()) {
@@ -344,15 +295,9 @@ class PluginController extends AbstractController
 
     /**
      * 対象のプラグインを無効にします。
-     *
-     * @param Request $request
-     * @param Plugin $Plugin
-     * @param CacheUtil $cacheUtil
-     *
-     * @return JsonResponse|RedirectResponse
      */
-    #[Route('/%eccube_admin_route%/store/plugin/{id}/disable', name: 'admin_store_plugin_disable', requirements: ['id' => '\d+'], methods: ['POST'])]
-    public function disable(Request $request, Plugin $Plugin, CacheUtil $cacheUtil)
+    #[Route(path: '/%eccube_admin_route%/store/plugin/{id}/disable', name: 'admin_store_plugin_disable', requirements: ['id' => '\d+'], methods: ['POST'])]
+    public function disable(Request $request, Plugin $Plugin, CacheUtil $cacheUtil): JsonResponse|RedirectResponse
     {
         $this->isTokenValid();
 
@@ -424,15 +369,10 @@ class PluginController extends AbstractController
     /**
      * 対象のプラグインを削除します。
      *
-     * @param Plugin $Plugin
-     * @param CacheUtil $cacheUtil
-     *
-     * @return RedirectResponse
-     *
      * @throws \Exception
      */
-    #[Route('/%eccube_admin_route%/store/plugin/{id}/uninstall', name: 'admin_store_plugin_uninstall', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function uninstall(Plugin $Plugin, CacheUtil $cacheUtil)
+    #[Route(path: '/%eccube_admin_route%/store/plugin/{id}/uninstall', name: 'admin_store_plugin_uninstall', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    public function uninstall(Plugin $Plugin, CacheUtil $cacheUtil): RedirectResponse
     {
         $this->isTokenValid();
 
@@ -468,14 +408,11 @@ class PluginController extends AbstractController
     /**
      * プラグインファイルアップロード画面
      *
-     * @param Request $request
-     * @param CacheUtil $cacheUtil
-     *
-     * @return array<string,mixed>|RedirectResponse
+     * @return array<string, mixed>|RedirectResponse
      */
-    #[Route('/%eccube_admin_route%/store/plugin/install', name: 'admin_store_plugin_install', methods: ['GET', 'POST'])]
-    #[Template('@admin/Store/plugin_install.twig')]
-    public function install(Request $request, CacheUtil $cacheUtil)
+    #[Route(path: '/%eccube_admin_route%/store/plugin/install', name: 'admin_store_plugin_install', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Store/plugin_install.twig')]
+    public function install(Request $request, CacheUtil $cacheUtil): array|RedirectResponse
     {
         $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');
 
@@ -534,14 +471,11 @@ class PluginController extends AbstractController
     /**
      * 認証キー設定画面
      *
-     * @param Request $request
-     * @param CacheUtil $cacheUtil
-     *
-     * @return array<string,mixed>|RedirectResponse
+     * @return array<string, mixed>|RedirectResponse
      */
-    #[Route('/%eccube_admin_route%/store/plugin/authentication_setting', name: 'admin_store_authentication_setting', methods: ['GET', 'POST'])]
-    #[Template('@admin/Store/authentication_setting.twig')]
-    public function authenticationSetting(Request $request, CacheUtil $cacheUtil)
+    #[Route(path: '/%eccube_admin_route%/store/plugin/authentication_setting', name: 'admin_store_authentication_setting', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Store/authentication_setting.twig')]
+    public function authenticationSetting(Request $request, CacheUtil $cacheUtil): array|RedirectResponse
     {
         $builder = $this->formFactory
             ->createBuilder(AuthenticationType::class, $this->BaseInfo);
@@ -579,7 +513,7 @@ class PluginController extends AbstractController
      *
      * @throws PluginException
      */
-    protected function getUnregisteredPlugins(array $plugins)
+    protected function getUnregisteredPlugins(array $plugins): array
     {
         $finder = new Finder();
         $pluginCodes = [];

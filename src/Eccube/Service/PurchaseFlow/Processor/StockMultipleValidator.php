@@ -25,30 +25,20 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 class StockMultipleValidator extends ItemHolderValidator
 {
     /**
-     * @var ProductClassRepository
-     */
-    protected $productClassRepository;
-
-    /**
      * StockProcessor constructor.
-     *
-     * @param ProductClassRepository $productClassRepository
      */
-    public function __construct(ProductClassRepository $productClassRepository)
+    public function __construct(protected ProductClassRepository $productClassRepository)
     {
-        $this->productClassRepository = $productClassRepository;
     }
 
     /**
      * @param ItemHolderInterface $itemHolder 商品
      * @param PurchaseContext $context 購入フローのコンテキスト
      *
-     * @return void
-     *
      * @throws InvalidItemException
      */
     #[\Override]
-    public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         if ($itemHolder instanceof Order) {
             $OrderItemsByProductClass = [];
@@ -78,8 +68,8 @@ class StockMultipleValidator extends ItemHolderValidator
                 }
                 $isOver = false;
                 foreach ($Items as $Item) {
-                    if (bcsub($stock, $Item->getQuantity()) >= 0) {
-                        $stock = bcsub($stock, $Item->getQuantity());
+                    if (bcsub((string) $stock, $Item->getQuantity()) >= 0) {
+                        $stock = bcsub((string) $stock, $Item->getQuantity());
                     } else {
                         $Item->setQuantity($stock);
                         $stock = 0;

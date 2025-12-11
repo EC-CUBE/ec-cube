@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -19,18 +21,13 @@ use Eccube\Service\PurchaseFlow\Processor\TaxRateChangeValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
-class TaxRateChangeValidatorTest extends EccubeTestCase
+final class TaxRateChangeValidatorTest extends EccubeTestCase
 {
-    /**
-     * @var TaxRateChangeValidator
-     */
-    protected $validator;
+    protected ?TaxRateChangeValidator $validator = null;
 
-    /**
-     * @var Order
-     */
-    protected $Order;
+    protected ?Order $Order = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -43,7 +40,7 @@ class TaxRateChangeValidatorTest extends EccubeTestCase
 
     public function testInstance()
     {
-        self::assertInstanceOf(TaxRateChangeValidator::class, $this->validator);
+        $this->assertInstanceOf(TaxRateChangeValidator::class, $this->validator);
     }
 
     public function testValidateWithCart()
@@ -51,38 +48,38 @@ class TaxRateChangeValidatorTest extends EccubeTestCase
         $result = $this->validator->execute(new Cart(), new PurchaseContext());
 
         // カートの場合な何もしない
-        self::assertTrue($result->isSuccess());
+        $this->assertTrue($result->isSuccess());
     }
 
     public function testValidateNoChanged()
     {
         $CloneOrder = clone $this->Order;
         foreach ($CloneOrder->getTaxableItems() as $orderItem) {
-            $orderItem->setTaxRate(10);
+            $orderItem->setTaxRate('10');
         }
 
         foreach ($this->Order->getTaxableItems() as $orderItem) {
-            $orderItem->setTaxRate(10);
+            $orderItem->setTaxRate('10');
         }
 
         $result = $this->validator->execute($this->Order, new PurchaseContext($CloneOrder));
 
-        self::assertTrue($result->isSuccess());
+        $this->assertTrue($result->isSuccess());
     }
 
     public function testValidateChanged()
     {
         $CloneOrder = clone $this->Order;
         foreach ($CloneOrder->getTaxableItems() as $orderItem) {
-            $orderItem->setTaxRate(10);
+            $orderItem->setTaxRate('10');
         }
 
         foreach ($this->Order->getTaxableItems() as $orderItem) {
-            $orderItem->setTaxRate(50);
+            $orderItem->setTaxRate('50');
         }
 
         $result = $this->validator->execute($this->Order, new PurchaseContext($CloneOrder));
 
-        self::assertTrue($result->isWarning());
+        $this->assertTrue($result->isWarning());
     }
 }

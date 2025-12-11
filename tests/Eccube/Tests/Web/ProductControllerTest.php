@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,30 +19,24 @@ use Eccube\Entity\BaseInfo;
 use Eccube\Entity\ClassCategory;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
+use Eccube\Entity\ProductStock;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\ProductRepository;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Client;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class ProductControllerTest extends AbstractWebTestCase
+final class ProductControllerTest extends AbstractWebTestCase
 {
-    /**
-     * @var BaseInfoRepository
-     */
-    private $baseInfoRepository;
+    private ?BaseInfoRepository $baseInfoRepository = null;
 
-    /**
-     * @var ProductRepository
-     */
-    private $productRepository;
+    private ?ProductRepository $productRepository = null;
 
-    /**
-     * @var ClassCategoryRepository
-     */
-    private $classCategoryRepository;
+    private ?ClassCategoryRepository $classCategoryRepository = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -52,14 +48,14 @@ class ProductControllerTest extends AbstractWebTestCase
     public function testRoutingList()
     {
         $client = $this->client;
-        $client->request('GET', $this->generateUrl('product_list'));
+        $client->request(Request::METHOD_GET, $this->generateUrl('product_list'));
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 
     public function testRoutingDetail()
     {
         $client = $this->client;
-        $client->request('GET', $this->generateUrl('product_detail', ['id' => '1']));
+        $client->request(Request::METHOD_GET, $this->generateUrl('product_detail', ['id' => '1']));
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 
@@ -70,7 +66,7 @@ class ProductControllerTest extends AbstractWebTestCase
         $BaseInfo->setOptionFavoriteProduct(true);
 
         $client = $this->client;
-        $client->request('POST',
+        $client->request(Request::METHOD_POST,
             $this->generateUrl('product_add_favorite', ['id' => '1'])
         );
         $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('mypage_login')));
@@ -83,7 +79,7 @@ class ProductControllerTest extends AbstractWebTestCase
     {
         $client = $this->client;
         $message = 'ご指定のカテゴリは存在しません';
-        $crawler = $client->request('GET', $this->generateUrl('product_list', ['category_id' => 'XXX']));
+        $crawler = $client->request(Request::METHOD_GET, $this->generateUrl('product_list', ['category_id' => 'XXX']));
         $this->assertStringContainsString($message, $crawler->html());
     }
 
@@ -94,7 +90,7 @@ class ProductControllerTest extends AbstractWebTestCase
     {
         $client = $this->client;
         $message = '商品が見つかりました';
-        $crawler = $client->request('GET', $this->generateUrl('product_list', ['category_id' => '6']));
+        $crawler = $client->request(Request::METHOD_GET, $this->generateUrl('product_list', ['category_id' => '6']));
         $this->assertStringContainsString($message, $crawler->html());
     }
 
@@ -111,16 +107,18 @@ class ProductControllerTest extends AbstractWebTestCase
         $this->entityManager->flush($ClassCategory);
         // set 抹茶 rank
         $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => '抹茶']);
+        $this->assertInstanceOf(ClassCategory::class, $ClassCategory);
         $ClassCategory->setSortNo(2);
         $this->entityManager->persist($ClassCategory);
         $this->entityManager->flush($ClassCategory);
         // set バニラ rank
         $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => 'バニラ']);
+        $this->assertInstanceOf(ClassCategory::class, $ClassCategory);
         $ClassCategory->setSortNo(1);
         $this->entityManager->persist($ClassCategory);
         $this->entityManager->flush($ClassCategory);
         $client = $this->client;
-        $crawler = $client->request('GET', $this->generateUrl('product_detail', ['id' => '1']));
+        $crawler = $client->request(Request::METHOD_GET, $this->generateUrl('product_detail', ['id' => '1']));
         $this->assertTrue($client->getResponse()->isSuccessful());
         $classCategory = $crawler->filter('#classcategory_id1')->text();
         // 選択してください, チョコ, 抹茶, バニラ sort by rank setup above.
@@ -143,9 +141,10 @@ class ProductControllerTest extends AbstractWebTestCase
         /** @var ProductClass $ProductClass */
         $ProductClass = $Product->getProductClasses()->first();
         $ProductClass->setStockUnlimited(false);
-        $ProductClass->setStock(0);
+        $ProductClass->setStock('0');
         $ProductStock = $ProductClass->getProductStock();
-        $ProductStock->setStock(0);
+        $this->assertInstanceOf(ProductStock::class, $ProductStock);
+        $ProductStock->setStock('0');
         $this->entityManager->flush();
         $id = $Product->getId();
         $user = $this->createCustomer();
@@ -154,7 +153,7 @@ class ProductControllerTest extends AbstractWebTestCase
         /** @var Client $client */
         $client = $this->client;
         /** @var Crawler $crawler */
-        $crawler = $client->request('GET', $this->generateUrl('product_detail', ['id' => $id]));
+        $crawler = $client->request(Request::METHOD_GET, $this->generateUrl('product_detail', ['id' => $id]));
 
         $this->assertTrue($client->getResponse()->isSuccessful());
 
@@ -170,8 +169,8 @@ class ProductControllerTest extends AbstractWebTestCase
 
         // Case 2: after add favorite check
         $html = $crawler->filter('div.ec-productRole__profile')->html();
-        $this->assertStringContainsString('ただいま品切れ中です', $html);
-        $this->assertStringContainsString('お気に入りに追加済です', $html);
+        $this->assertStringContainsString('ただいま品切れ中です', (string) $html);
+        $this->assertStringContainsString('お気に入りに追加済です', (string) $html);
     }
 
     /**
@@ -192,7 +191,7 @@ class ProductControllerTest extends AbstractWebTestCase
         /** @var Client $client */
         $client = $this->client;
         /** @var Crawler $crawler */
-        $crawler = $client->request('GET', $this->generateUrl('product_detail', ['id' => $id]));
+        $crawler = $client->request(Request::METHOD_GET, $this->generateUrl('product_detail', ['id' => $id]));
 
         $this->assertTrue($client->getResponse()->isSuccessful());
 
@@ -208,8 +207,8 @@ class ProductControllerTest extends AbstractWebTestCase
 
         // Case 4: after add favorite when 商品在庫>0
         $html = $crawler->filter('div.ec-productRole__profile')->html();
-        $this->assertStringContainsString('カートに入れる', $html);
-        $this->assertStringContainsString('お気に入りに追加済です', $html);
+        $this->assertStringContainsString('カートに入れる', (string) $html);
+        $this->assertStringContainsString('お気に入りに追加済です', (string) $html);
     }
 
     /**
@@ -229,7 +228,7 @@ class ProductControllerTest extends AbstractWebTestCase
         $client = $this->client;
 
         /** @var Crawler $crawler */
-        $crawler = $client->request('GET', $this->generateUrl('product_detail', ['id' => $id]));
+        $crawler = $client->request(Request::METHOD_GET, $this->generateUrl('product_detail', ['id' => $id]));
 
         $this->assertTrue($client->getResponse()->isSuccessful());
 
@@ -248,7 +247,7 @@ class ProductControllerTest extends AbstractWebTestCase
         $client->submit($loginForm);
 
         // ログイン実行後、お気に入り追加へリダイレクト
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('product_add_favorite', ['id' => $Product->getId()], UrlGeneratorInterface::ABSOLUTE_URL)));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('product_add_favorite', ['id' => $Product->getId()], UrlGeneratorInterface::ABSOLUTE_PATH)));
         $crawler = $client->followRedirect();
 
         // お気に入り追加実行後、商品詳細ページへリダイレクト
@@ -256,7 +255,7 @@ class ProductControllerTest extends AbstractWebTestCase
         $crawler = $client->followRedirect();
 
         $html = $crawler->filter('div.ec-productRole__profile')->html();
-        $this->assertStringContainsString('お気に入りに追加済です', $html);
+        $this->assertStringContainsString('お気に入りに追加済です', (string) $html);
     }
 
     /**
@@ -264,23 +263,24 @@ class ProductControllerTest extends AbstractWebTestCase
      */
     public function testProductStructureData()
     {
-        $crawler = $this->client->request('GET', $this->generateUrl('product_detail', ['id' => 2]));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('product_detail', ['id' => 2]));
         $json = json_decode(html_entity_decode($crawler->filter('script[type="application/ld+json"]')->html()));
         $this->assertSame('Product', $json->{'@type'});
         $this->assertSame('チェリーアイスサンド', $json->name);
-        $this->assertSame(3080.00, $json->offers->price);
+        $this->assertEqualsWithDelta(3080.00, $json->offers->price, PHP_FLOAT_EPSILON);
         $this->assertSame('InStock', $json->offers->availability);
 
         // 在庫なし商品のテスト
         $Product = $this->createProduct('Product no stock', 1);
         $ProductClass = $Product->getProductClasses()->first();
         $ProductClass->setStockUnlimited(false);
-        $ProductClass->setStock(0);
+        $ProductClass->setStock('0');
         $ProductStock = $ProductClass->getProductStock();
-        $ProductStock->setStock(0);
+        $this->assertInstanceOf(ProductStock::class, $ProductStock);
+        $ProductStock->setStock('0');
         $this->entityManager->flush();
 
-        $crawler = $this->client->request('GET', $this->generateUrl('product_detail', ['id' => $Product->getId()]));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('product_detail', ['id' => $Product->getId()]));
         $json = json_decode(html_entity_decode($crawler->filter('script[type="application/ld+json"]')->html()));
         $this->assertSame('Product no stock', $json->name);
         $this->assertSame('OutOfStock', $json->offers->availability);
@@ -293,7 +293,7 @@ class ProductControllerTest extends AbstractWebTestCase
     {
         // カテゴリ指定なし
         $url = $this->generateUrl('product_list', [], UrlGeneratorInterface::ABSOLUTE_URL);
-        $crawler = $this->client->request('GET', $url);
+        $crawler = $this->client->request(Request::METHOD_GET, $url);
         $this->assertSame('article', $crawler->filter('meta[property="og:type"]')->attr('content'));
         $this->assertSame($url, $crawler->filter('link[rel="canonical"]')->attr('href'));
         $this->assertSame($url, $crawler->filter('meta[property="og:url"]')->attr('content'));
@@ -301,12 +301,12 @@ class ProductControllerTest extends AbstractWebTestCase
 
         // カテゴリ指定あり
         $url = $this->generateUrl('product_list', ['category_id' => 1], UrlGeneratorInterface::ABSOLUTE_URL);
-        $crawler = $this->client->request('GET', $url);
+        $crawler = $this->client->request(Request::METHOD_GET, $url);
         $this->assertSame($url, $crawler->filter('link[rel="canonical"]')->attr('href'));
 
         // 検索 0件 → noindex 確認
         $url = $this->generateUrl('product_list', ['category_id' => 1, 'name' => 'notfoundquery'], UrlGeneratorInterface::ABSOLUTE_URL);
-        $crawler = $this->client->request('GET', $url);
+        $crawler = $this->client->request(Request::METHOD_GET, $url);
         $this->assertStringContainsString('お探しの商品は見つかりませんでした', $crawler->html());
         $this->assertSame('noindex', $crawler->filter('meta[name="robots"]')->attr('content'));
     }
@@ -319,6 +319,7 @@ class ProductControllerTest extends AbstractWebTestCase
         $product = $this->productRepository->find(2);
         $description_detail = 'またそのなかでいっしょになったたくさんのひとたち、ファゼーロとロザーロ、羊飼のミーロや、顔の赤いこどもたち、地主のテーモ、山猫博士のボーガント・デストゥパーゴなど、いまこの暗い巨きな石の建物のなかで考えていると、みんなむかし風のなつかしい青い幻燈のように思われます。';
         $description_list = 'では、わたくしはいつかの小さなみだしをつけながら、しずかにあの年のイーハトーヴォの五月から十月までを書きつけましょう。';
+        $this->assertInstanceOf(Product::class, $product);
 
         // 商品に description_list と description_detail を設定
         //  → meta descriotion には description_listが設定される
@@ -330,7 +331,7 @@ class ProductControllerTest extends AbstractWebTestCase
         $url = $this->generateUrl('product_detail', ['id' => 2], UrlGeneratorInterface::ABSOLUTE_URL);
         $imgPath = $this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL).'html/upload/save_image/'.$product->getMainListImage()->getFileName();
 
-        $crawler = $this->client->request('GET', $url);
+        $crawler = $this->client->request(Request::METHOD_GET, $url);
 
         $this->assertSame($expected_desc, $crawler->filter('meta[name="description"]')->attr('content'));
         $this->assertSame($expected_desc, $crawler->filter('meta[property="og:description"]')->attr('content'));
@@ -342,11 +343,11 @@ class ProductControllerTest extends AbstractWebTestCase
 
         // 商品の description_list を削除
         //   → meta description には description_detail が設定される
-        $product->setDescriptionList(null);
+        $product->setDescriptionList();
         $this->entityManager->flush();
         $expected_desc = mb_substr($description_detail, 0, 120, 'utf-8');
 
-        $crawler = $this->client->request('GET', $url);
+        $crawler = $this->client->request(Request::METHOD_GET, $url);
 
         $this->assertSame($expected_desc, $crawler->filter('meta[name="description"]')->attr('content'));
         $this->assertSame($expected_desc, $crawler->filter('meta[property="og:description"]')->attr('content'));
@@ -364,12 +365,13 @@ class ProductControllerTest extends AbstractWebTestCase
         // 在庫切れ商品
         $ProductClass = $Product->getProductClasses()->first();
         $ProductClass->setStockUnlimited(false);
-        $ProductClass->setStock(0);
+        $ProductClass->setStock('0');
         $ProductStock = $ProductClass->getProductStock();
-        $ProductStock->setStock(0);
+        $this->assertInstanceOf(ProductStock::class, $ProductStock);
+        $ProductStock->setStock('0');
         $this->entityManager->flush();
 
-        $crawler = $this->client->request('GET', $productUrl);
+        $crawler = $this->client->request(Request::METHOD_GET, $productUrl);
 
         $this->assertSame('noindex', $crawler->filter('meta[name="robots"]')->attr('content'));
     }

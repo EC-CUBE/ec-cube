@@ -19,8 +19,6 @@ class CsvSettingsPage extends AbstractAdminPageStyleGuide
 
     public static $登録完了メッセージ = '#page_admin_setting_shop_csv > div.c-container > div.c-contentsArea > div.alert.alert-success.alert-dismissible.fade.show.m-3 > span';
 
-    protected $tester;
-
     /**
      * CsvSettingsPage constructor.
      */

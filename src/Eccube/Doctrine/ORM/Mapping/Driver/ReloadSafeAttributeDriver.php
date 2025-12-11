@@ -13,62 +13,52 @@
 
 namespace Eccube\Doctrine\ORM\Mapping\Driver;
 
-use Doctrine\ORM\Mapping\MappingException;
+use Doctrine\Persistence\Mapping\MappingException;
 use Eccube\Util\StringUtil;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * 同じプロセス内で新しく生成されたProxyクラスからマッピングメタデータを抽出するためのAnnotationDriver.
+ * 同じプロセス内で新しく生成されたProxyクラスからマッピングメタデータを抽出するためのAttributeDriver.
  *
  * 同じプロセス内で、Proxy元のEntityがロードされた後に同じFQCNを持つProxyをロードしようとすると、Fatalエラーが発生する.
  * このエラーを回避するために、新しく生成されたProxyクラスは一時的にクラス名を変更してからロードして、マッピングメタデータを抽出する.
  */
-class ReloadSafeAnnotationDriver extends AnnotationDriver
+class ReloadSafeAttributeDriver extends TraitProxyAttributeDriver
 {
     /**
-     * @var array<int,string|false> 新しく生成されたProxyファイルのリスト
+     * @var array<int, string|false> 新しく生成されたProxyファイルのリスト
      */
-    protected $newProxyFiles;
-    /**
-     * @var string
-     */
-    protected $outputDir;
+    protected array $newProxyFiles;
+    protected string $outputDir;
 
     /**
-     * @param array<int,string> $newProxyFiles
-     *
-     * @return void
+     * @param array<int, string> $newProxyFiles
      */
-    public function setNewProxyFiles($newProxyFiles)
+    public function setNewProxyFiles(array $newProxyFiles): void
     {
-        $this->newProxyFiles = array_map(function ($file) {
-            return realpath($file);
-        }, $newProxyFiles);
+        $this->newProxyFiles = array_map(realpath(...), $newProxyFiles);
     }
 
-    /**
-     * @param string $outputDir
-     *
-     * @return void
-     */
-    public function setOutputDir($outputDir)
+    public function setOutputDir(string $outputDir): void
     {
         $this->outputDir = $outputDir;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @throws MappingException
      */
     #[\Override]
-    public function getAllClassNames()
+    public function getAllClassNames(): ?array
     {
         if ($this->classNames !== null) {
             return $this->classNames;
         }
 
         if (!$this->paths) {
-            throw MappingException::pathRequired();
+            throw MappingException::pathRequiredForDriver(static::class);
         }
 
         foreach ($this->paths as $path) {
@@ -128,9 +118,9 @@ class ReloadSafeAnnotationDriver extends AnnotationDriver
      *
      * @param string $sourceFile  ソースファイル
      *
-     * @return array<int,string> ソースファイルに含まれるクラス名のリスト
+     * @return array<int, string> ソースファイルに含まれるクラス名のリスト
      */
-    private function getClassNamesFromTokens($sourceFile)
+    private function getClassNamesFromTokens(string $sourceFile): array
     {
         $tokens = Tokens::fromCode(file_get_contents($sourceFile));
         $results = [];

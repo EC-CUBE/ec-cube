@@ -31,8 +31,6 @@ class OrderStatusRepository extends AbstractRepository
 {
     /**
      * OrderStatusRepository constructor.
-     *
-     * @param RegistryInterface $registry
      */
     public function __construct(RegistryInterface $registry)
     {
@@ -53,7 +51,7 @@ class OrderStatusRepository extends AbstractRepository
      *
      * @see EntityRepository::findBy()
      */
-    public function findNotContainsBy(array $criteria, ?array $orderBy = null, $limit = null, $offset = null)
+    public function findNotContainsBy(array $criteria, ?array $orderBy = null, ?int $limit = null, ?int $offset = null): array
     {
         $qb = $this->createQueryBuilder('o');
 
@@ -87,16 +85,14 @@ class OrderStatusRepository extends AbstractRepository
      *
      * @return array<int, array<int, mixed>>
      */
-    public function findAllArray()
+    public function findAllArray(): array
     {
         $query = $this
             ->getEntityManager()
             ->createQuery('SELECT os FROM Eccube\Entity\Master\OrderStatus os INDEX BY os.id ORDER BY os.sort_no ASC')
         ;
-        $result = $query
-            ->getResult(Query::HYDRATE_ARRAY)
-        ;
 
-        return $result;
+        return $query
+            ->getResult(Query::HYDRATE_ARRAY);
     }
 }

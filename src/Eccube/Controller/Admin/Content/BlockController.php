@@ -25,39 +25,25 @@ use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
+use Twig\Error\LoaderError;
 
 class BlockController extends AbstractController
 {
-    /**
-     * @var BlockRepository
-     */
-    protected $blockRepository;
-
-    /**
-     * @var DeviceTypeRepository
-     */
-    protected $deviceTypeRepository;
-
-    public function __construct(
-        BlockRepository $blockRepository,
-        DeviceTypeRepository $deviceTypeRepository,
-    ) {
-        $this->blockRepository = $blockRepository;
-        $this->deviceTypeRepository = $deviceTypeRepository;
+    public function __construct(protected BlockRepository $blockRepository, protected DeviceTypeRepository $deviceTypeRepository)
+    {
     }
 
     /**
-     * @param Request $request
-     *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      */
-    #[Route('/%eccube_admin_route%/content/block', name: 'admin_content_block', methods: ['GET'])]
-    #[Template('@admin/Content/block.twig')]
-    public function index(Request $request)
+    #[Route(path: '/%eccube_admin_route%/content/block', name: 'admin_content_block', methods: ['GET'])]
+    #[Template(template: '@admin/Content/block.twig')]
+    public function index(Request $request): array
     {
         $DeviceType = $this->deviceTypeRepository
             ->find(DeviceType::DEVICE_TYPE_PC);
@@ -80,20 +66,16 @@ class BlockController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param Environment $twig
-     * @param Filesystem $fs
-     * @param CacheUtil $cacheUtil
      * @param int|null $id
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      *
-     * @throws NotFoundHttpException|\Twig\Error\LoaderError
+     * @throws NotFoundHttpException|LoaderError
      */
-    #[Route('/%eccube_admin_route%/content/block/new', name: 'admin_content_block_new', methods: ['GET', 'POST'])]
-    #[Route('/%eccube_admin_route%/content/block/{id}/edit', name: 'admin_content_block_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
-    #[Template('@admin/Content/block_edit.twig')]
-    public function edit(Request $request, Environment $twig, Filesystem $fs, CacheUtil $cacheUtil, $id = null)
+    #[Route(path: '/%eccube_admin_route%/content/block/new', name: 'admin_content_block_new', methods: ['GET', 'POST'])]
+    #[Route(path: '/%eccube_admin_route%/content/block/{id}/edit', name: 'admin_content_block_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Content/block_edit.twig')]
+    public function edit(Request $request, Environment $twig, Filesystem $fs, CacheUtil $cacheUtil, $id = null): RedirectResponse|array
     {
         $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');
 
@@ -193,11 +175,8 @@ class BlockController extends AbstractController
         ];
     }
 
-    /**
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    #[Route('/%eccube_admin_route%/content/block/{id}/delete', name: 'admin_content_block_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, Block $Block, Filesystem $fs, CacheUtil $cacheUtil)
+    #[Route(path: '/%eccube_admin_route%/content/block/{id}/delete', name: 'admin_content_block_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    public function delete(Request $request, Block $Block, Filesystem $fs, CacheUtil $cacheUtil): RedirectResponse
     {
         $this->isTokenValid();
 

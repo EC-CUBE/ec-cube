@@ -19,18 +19,12 @@ use Twig\TwigFunction;
 
 class RepositoryExtension extends AbstractExtension
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $em;
-
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(protected EntityManagerInterface $em)
     {
-        $this->em = $em;
     }
 
     #[\Override]
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('repository', function ($entity) {

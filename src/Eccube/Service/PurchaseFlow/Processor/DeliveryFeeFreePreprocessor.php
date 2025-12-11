@@ -24,29 +24,18 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
  */
 class DeliveryFeeFreePreprocessor implements ItemHolderPreprocessor
 {
-    /**
-     * @var BaseInfo
-     */
-    protected $BaseInfo;
+    protected BaseInfo $BaseInfo;
 
     /**
      * DeliveryFeeProcessor constructor.
-     *
-     * @param BaseInfoRepository $baseInfoRepository
      */
     public function __construct(BaseInfoRepository $baseInfoRepository)
     {
         $this->BaseInfo = $baseInfoRepository->get();
     }
 
-    /**
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext     $context
-     *
-     * @return void
-     */
     #[\Override]
-    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         $isDeliveryFree = false;
 

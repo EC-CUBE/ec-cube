@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,12 +19,14 @@ use Eccube\Common\Constant;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\CustomerStatus;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mime\Email;
 
-class EntryControllerTest extends AbstractWebTestCase
+final class EntryControllerTest extends AbstractWebTestCase
 {
     use MailerAssertionsTrait;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -75,7 +79,7 @@ class EntryControllerTest extends AbstractWebTestCase
     public function testRoutingIndex()
     {
         $client = $this->client;
-        $crawler = $client->request('GET', $this->generateUrl('entry'));
+        $crawler = $client->request(Request::METHOD_GET, $this->generateUrl('entry'));
 
         $this->expected = '新規会員登録';
         $this->actual = $crawler->filter('.ec-pageHeader > h1')->text();
@@ -86,7 +90,7 @@ class EntryControllerTest extends AbstractWebTestCase
 
     public function testConfirm()
     {
-        $crawler = $this->client->request('POST',
+        $crawler = $this->client->request(Request::METHOD_POST,
             $this->generateUrl('entry'),
             [
                 'entry' => $this->createFormData(),
@@ -103,7 +107,7 @@ class EntryControllerTest extends AbstractWebTestCase
 
     public function testConfirmWithError()
     {
-        $crawler = $this->client->request('POST',
+        $crawler = $this->client->request(Request::METHOD_POST,
             $this->generateUrl('entry'),
             [
                 'entry' => [
@@ -124,7 +128,7 @@ class EntryControllerTest extends AbstractWebTestCase
     {
         $client = $this->client;
 
-        $crawler = $client->request('POST',
+        $crawler = $client->request(Request::METHOD_POST,
             $this->generateUrl('entry'),
             [
                 'entry' => $this->createFormData(),
@@ -142,11 +146,11 @@ class EntryControllerTest extends AbstractWebTestCase
     public function testCompleteWithActivate()
     {
         $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->get();
-        $BaseInfo->setOptionCustomerActivate(1);
+        $BaseInfo->setOptionCustomerActivate(true);
         $this->entityManager->flush();
 
         $client = $this->client;
-        $client->request('POST',
+        $client->request(Request::METHOD_POST,
             $this->generateUrl('entry'),
             [
                 'entry' => $this->createFormData(),
@@ -168,13 +172,13 @@ class EntryControllerTest extends AbstractWebTestCase
     public function testCompleteWithActivateWithMultipartSanitize()
     {
         $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->get();
-        $BaseInfo->setOptionCustomerActivate(1);
+        $BaseInfo->setOptionCustomerActivate(true);
         $this->entityManager->flush();
 
         $client = $this->client;
         $form = $this->createFormData();
         $form['name']['name01'] .= '<Sanitize&>'; // サニタイズ対象の文字列
-        $client->request('POST',
+        $client->request(Request::METHOD_POST,
             $this->generateUrl('entry'),
             [
                 'entry' => $form,
@@ -199,7 +203,7 @@ class EntryControllerTest extends AbstractWebTestCase
     public function testRoutingComplete()
     {
         $client = $this->client;
-        $client->request('GET', $this->generateUrl('entry_complete'));
+        $client->request(Request::METHOD_GET, $this->generateUrl('entry_complete'));
 
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
@@ -214,7 +218,7 @@ class EntryControllerTest extends AbstractWebTestCase
         $this->entityManager->flush();
 
         $client = $this->client;
-        $client->request('GET', $this->generateUrl('entry_activate', ['secret_key' => $secret_key]));
+        $client->request(Request::METHOD_GET, $this->generateUrl('entry_activate', ['secret_key' => $secret_key]));
 
         $this->assertTrue($client->getResponse()->isSuccessful());
         $this->assertEmailCount(1);
@@ -236,7 +240,7 @@ class EntryControllerTest extends AbstractWebTestCase
         $this->entityManager->flush();
 
         $client = $this->client;
-        $client->request('GET', $this->generateUrl('entry_activate', ['secret_key' => $secret_key]));
+        $client->request(Request::METHOD_GET, $this->generateUrl('entry_activate', ['secret_key' => $secret_key]));
 
         $this->assertTrue($client->getResponse()->isSuccessful());
         $this->assertEmailCount(1);
@@ -252,7 +256,7 @@ class EntryControllerTest extends AbstractWebTestCase
 
     public function testActivateWithNotFound()
     {
-        $this->client->request('GET', $this->generateUrl('entry_activate', ['secret_key' => 'aaaaa']));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('entry_activate', ['secret_key' => 'aaaaa']));
         $this->expected = 404;
         $this->actual = $this->client->getResponse()->getStatusCode();
         $this->verify();
@@ -260,7 +264,7 @@ class EntryControllerTest extends AbstractWebTestCase
 
     public function testActivateWithAbort()
     {
-        $this->client->request('GET', $this->generateUrl('entry_activate', ['secret_key' => '+++++++']));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('entry_activate', ['secret_key' => '+++++++']));
         $this->expected = 404;
         $this->actual = $this->client->getResponse()->getStatusCode();
         $this->verify();
@@ -271,7 +275,7 @@ class EntryControllerTest extends AbstractWebTestCase
         $formData = $this->createFormData();
         $formData['company_name'] = '<script>alert()</script>';
 
-        $crawler = $this->client->request('POST',
+        $crawler = $this->client->request(Request::METHOD_POST,
             $this->generateUrl('entry'),
             [
                 'entry' => $formData,
@@ -279,8 +283,8 @@ class EntryControllerTest extends AbstractWebTestCase
             ]
         );
 
-        self::assertSame('新規会員登録(確認)', $crawler->filter('.ec-pageHeader > h1')->text());
-        self::assertSame('＜script＞alert()＜/script＞', $crawler->filter('#entry_company_name')->attr('value'));
+        $this->assertSame('新規会員登録(確認)', $crawler->filter('.ec-pageHeader > h1')->text());
+        $this->assertSame('＜script＞alert()＜/script＞', $crawler->filter('#entry_company_name')->attr('value'));
     }
 
     public function testConfirmWithAmpersand()
@@ -288,7 +292,7 @@ class EntryControllerTest extends AbstractWebTestCase
         $formData = $this->createFormData();
         $formData['company_name'] = '&';
 
-        $crawler = $this->client->request('POST',
+        $crawler = $this->client->request(Request::METHOD_POST,
             $this->generateUrl('entry'),
             [
                 'entry' => $formData,
@@ -296,7 +300,7 @@ class EntryControllerTest extends AbstractWebTestCase
             ]
         );
 
-        self::assertSame('新規会員登録(確認)', $crawler->filter('.ec-pageHeader > h1')->text());
-        self::assertSame('＆', $crawler->filter('#entry_company_name')->attr('value'));
+        $this->assertSame('新規会員登録(確認)', $crawler->filter('.ec-pageHeader > h1')->text());
+        $this->assertSame('＆', $crawler->filter('#entry_company_name')->attr('value'));
     }
 }

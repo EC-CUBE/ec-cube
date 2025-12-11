@@ -45,8 +45,12 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseException;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\TaxRuleService;
+use Knp\Component\Pager\Pagination\SlidingPagination;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -57,140 +61,23 @@ use Symfony\Component\Serializer\SerializerInterface;
 class EditController extends AbstractController
 {
     /**
-     * @var TaxRuleService
-     */
-    protected $taxRuleService;
-
-    /**
-     * @var DeviceTypeRepository
-     */
-    protected $deviceTypeRepository;
-
-    /**
-     * @var ProductRepository
-     */
-    protected $productRepository;
-
-    /**
-     * @var CategoryRepository
-     */
-    protected $categoryRepository;
-
-    /**
-     * @var CustomerRepository
-     */
-    protected $customerRepository;
-
-    /**
-     * @var SerializerInterface
-     */
-    protected $serializer;
-
-    /**
-     * @var DeliveryRepository
-     */
-    protected $deliveryRepository;
-
-    /**
-     * @var PurchaseFlow
-     */
-    protected $purchaseFlow;
-
-    /**
-     * @var OrderRepository
-     */
-    protected $orderRepository;
-
-    /**
-     * @var OrderNoProcessor
-     */
-    protected $orderNoProcessor;
-
-    /**
-     * @var OrderItemTypeRepository
-     */
-    protected $orderItemTypeRepository;
-
-    /**
-     * @var OrderStateMachine
-     */
-    protected $orderStateMachine;
-
-    /**
-     * @var OrderStatusRepository
-     */
-    protected $orderStatusRepository;
-
-    /**
-     * @var OrderHelper
-     */
-    private $orderHelper;
-
-    /**
      * EditController constructor.
-     *
-     * @param TaxRuleService $taxRuleService
-     * @param DeviceTypeRepository $deviceTypeRepository
-     * @param ProductRepository $productRepository
-     * @param CategoryRepository $categoryRepository
-     * @param CustomerRepository $customerRepository
-     * @param SerializerInterface $serializer
-     * @param DeliveryRepository $deliveryRepository
-     * @param PurchaseFlow $orderPurchaseFlow
-     * @param OrderRepository $orderRepository
-     * @param OrderNoProcessor $orderNoProcessor
-     * @param OrderItemTypeRepository $orderItemTypeRepository
-     * @param OrderStatusRepository $orderStatusRepository
-     * @param OrderStateMachine $orderStateMachine
-     * @param OrderHelper $orderHelper
      */
-    public function __construct(
-        TaxRuleService $taxRuleService,
-        DeviceTypeRepository $deviceTypeRepository,
-        ProductRepository $productRepository,
-        CategoryRepository $categoryRepository,
-        CustomerRepository $customerRepository,
-        SerializerInterface $serializer,
-        DeliveryRepository $deliveryRepository,
-        PurchaseFlow $orderPurchaseFlow,
-        OrderRepository $orderRepository,
-        OrderNoProcessor $orderNoProcessor,
-        OrderItemTypeRepository $orderItemTypeRepository,
-        OrderStatusRepository $orderStatusRepository,
-        OrderStateMachine $orderStateMachine,
-        OrderHelper $orderHelper,
-    ) {
-        $this->taxRuleService = $taxRuleService;
-        $this->deviceTypeRepository = $deviceTypeRepository;
-        $this->productRepository = $productRepository;
-        $this->categoryRepository = $categoryRepository;
-        $this->customerRepository = $customerRepository;
-        $this->serializer = $serializer;
-        $this->deliveryRepository = $deliveryRepository;
-        $this->purchaseFlow = $orderPurchaseFlow;
-        $this->orderRepository = $orderRepository;
-        $this->orderNoProcessor = $orderNoProcessor;
-        $this->orderItemTypeRepository = $orderItemTypeRepository;
-        $this->orderStatusRepository = $orderStatusRepository;
-        $this->orderStateMachine = $orderStateMachine;
-        $this->orderHelper = $orderHelper;
+    public function __construct(protected TaxRuleService $taxRuleService, protected DeviceTypeRepository $deviceTypeRepository, protected ProductRepository $productRepository, protected CategoryRepository $categoryRepository, protected CustomerRepository $customerRepository, protected SerializerInterface $serializer, protected DeliveryRepository $deliveryRepository, protected PurchaseFlow $orderPurchaseFlow, protected OrderRepository $orderRepository, protected OrderNoProcessor $orderNoProcessor, protected OrderItemTypeRepository $orderItemTypeRepository, protected OrderStatusRepository $orderStatusRepository, protected OrderStateMachine $orderStateMachine, private readonly OrderHelper $orderHelper)
+    {
     }
 
     /**
      * 受注登録/編集画面.
      *
-     * @param Request $request
-     * @param RouterInterface $router
-     * @param string|null $id
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string,mixed>
+     * @return RedirectResponse|array<string, mixed>
      *
      * @throws NotFoundHttpException
      */
-    #[Route('/%eccube_admin_route%/order/new', name: 'admin_order_new', methods: ['GET', 'POST'])]
-    #[Route('/%eccube_admin_route%/order/{id}/edit', name: 'admin_order_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
-    #[Template('@admin/Order/edit.twig')]
-    public function index(Request $request, RouterInterface $router, $id = null)
+    #[Route(path: '/%eccube_admin_route%/order/new', name: 'admin_order_new', methods: ['GET', 'POST'])]
+    #[Route(path: '/%eccube_admin_route%/order/{id}/edit', name: 'admin_order_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Order/edit.twig')]
+    public function index(Request $request, RouterInterface $router, ?int $id = null): RedirectResponse|array
     {
         if (null === $id) {
             // 空のエンティティを作成.
@@ -248,7 +135,7 @@ class EditController extends AbstractController
             );
             $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_EDIT_INDEX_PROGRESS);
 
-            $flowResult = $this->purchaseFlow->validate($TargetOrder, $purchaseContext);
+            $flowResult = $this->orderPurchaseFlow->validate($TargetOrder, $purchaseContext);
 
             if ($flowResult->hasWarning()) {
                 foreach ($flowResult->getWarning() as $warning) {
@@ -269,8 +156,8 @@ class EditController extends AbstractController
 
                     if (!$flowResult->hasError() && $form->isValid()) {
                         try {
-                            $this->purchaseFlow->prepare($TargetOrder, $purchaseContext);
-                            $this->purchaseFlow->commit($TargetOrder, $purchaseContext);
+                            $this->orderPurchaseFlow->prepare($TargetOrder, $purchaseContext);
+                            $this->orderPurchaseFlow->commit($TargetOrder, $purchaseContext);
                         } catch (PurchaseException $e) {
                             $this->addError($e->getMessage(), 'admin');
                             break;
@@ -283,7 +170,7 @@ class EditController extends AbstractController
                         if ($TargetOrder->getId() && $OldStatus->getId() != $NewStatus->getId()) {
                             // 発送済に変更された場合は, 発送日をセットする.
                             if ($NewStatus->getId() == OrderStatus::DELIVERED) {
-                                $TargetOrder->getShippings()->map(function (Shipping $Shipping) {
+                                $TargetOrder->getShippings()->map(function (Shipping $Shipping): void {
                                     if (!$Shipping->isShipped()) {
                                         $Shipping->setShippingDate(new \DateTime());
                                     }
@@ -298,6 +185,23 @@ class EditController extends AbstractController
                                 $this->addError($e->getMessage(), 'admin');
                                 break;
                             }
+                        }
+
+                        // 新規登録時はcreate_dateを設定
+                        $now = new \DateTime();
+                        if (null === $TargetOrder->getId()) {
+                            $TargetOrder->setCreateDate($now);
+                            $TargetOrder->setUpdateDate($now);
+
+                            // Shipping にも create_date を設定
+                            foreach ($TargetOrder->getShippings() as $Shipping) {
+                                if (null === $Shipping->getId()) {
+                                    $Shipping->setCreateDate($now);
+                                    $Shipping->setUpdateDate($now);
+                                }
+                            }
+                        } else {
+                            $TargetOrder->setUpdateDate($now);
                         }
 
                         $this->entityManager->persist($TargetOrder);
@@ -342,9 +246,7 @@ class EditController extends AbstractController
                                 $returnLink = preg_replace($pattern, '', (string) $returnLink);
                                 $result = $router->match($returnLink);
                                 // パラメータのみ抽出
-                                $params = array_filter($result, function ($key) {
-                                    return !str_starts_with($key, '_');
-                                }, ARRAY_FILTER_USE_KEY);
+                                $params = array_filter($result, fn ($key) => !str_starts_with((string) $key, '_'), ARRAY_FILTER_USE_KEY);
 
                                 // pathからurlを再構築してリダイレクト.
                                 return $this->redirectToRoute($result['_route'], $params);
@@ -418,18 +320,14 @@ class EditController extends AbstractController
     /**
      * 顧客情報を検索する.
      *
-     * @param Request $request
-     * @param PaginatorInterface $paginator
-     * @param int|null $page_no
-     *
-     * @return array<string,mixed>
+     * @return array<string, mixed>
      *
      * @throws BadRequestHttpException
      */
-    #[Route('/%eccube_admin_route%/order/search/customer/html', name: 'admin_order_search_customer_html', methods: ['GET', 'POST'])]
-    #[Route('/%eccube_admin_route%/order/search/customer/html/page/{page_no}', name: 'admin_order_search_customer_html_page', requirements: ['page_no' => '\d+'], methods: ['GET', 'POST'])]
-    #[Template('@admin/Order/search_customer.twig')]
-    public function searchCustomerHtml(Request $request, PaginatorInterface $paginator, $page_no = null)
+    #[Route(path: '/%eccube_admin_route%/order/search/customer/html', name: 'admin_order_search_customer_html', methods: ['GET', 'POST'])]
+    #[Route(path: '/%eccube_admin_route%/order/search/customer/html/page/{page_no}', name: 'admin_order_search_customer_html_page', requirements: ['page_no' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Order/search_customer.twig')]
+    public function searchCustomerHtml(Request $request, PaginatorInterface $paginator, ?int $page_no = null): array
     {
         if ($request->isXmlHttpRequest() && $this->isTokenValid()) {
             log_debug('search customer start.');
@@ -468,7 +366,7 @@ class EditController extends AbstractController
             );
             $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_SEARCH);
 
-            /** @var \Knp\Component\Pager\Pagination\SlidingPagination<int, Customer> $pagination */
+            /** @var SlidingPagination<int, Customer> $pagination */
             $pagination = $paginator->paginate(
                 $qb,
                 $page_no,
@@ -488,9 +386,13 @@ class EditController extends AbstractController
             foreach ($Customers as $Customer) {
                 $data[] = [
                     'id' => $Customer->getId(),
-                    'name' => sprintf($formatName, $Customer->getName01(), $Customer->getName02(),
+                    'name' => sprintf(
+                        $formatName,
+                        $Customer->getName01(),
+                        $Customer->getName02(),
                         $Customer->getKana01(),
-                        $Customer->getKana02()),
+                        $Customer->getKana02()
+                    ),
                     'phone_number' => $Customer->getPhoneNumber(),
                     'email' => $Customer->getEmail(),
                 ];
@@ -517,13 +419,9 @@ class EditController extends AbstractController
 
     /**
      * 顧客情報を検索する.
-     *
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    #[Route('/%eccube_admin_route%/order/search/customer/id', name: 'admin_order_search_customer_by_id', methods: ['POST'])]
-    public function searchCustomerById(Request $request)
+    #[Route(path: '/%eccube_admin_route%/order/search/customer/id', name: 'admin_order_search_customer_by_id', methods: ['POST'])]
+    public function searchCustomerById(Request $request): JsonResponse
     {
         if ($request->isXmlHttpRequest() && $this->isTokenValid()) {
             log_debug('search customer by id start.');
@@ -580,16 +478,21 @@ class EditController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param PaginatorInterface $paginator
-     * @param string|null $page_no
-     *
-     * @return array<string,mixed>|void
+     * @return array<string, mixed>
      */
-    #[Route('/%eccube_admin_route%/order/search/product', name: 'admin_order_search_product', methods: ['GET', 'POST'])]
-    #[Route('/%eccube_admin_route%/order/search/product/page/{page_no}', name: 'admin_order_search_product_page', requirements: ['page_no' => '\d+'], methods: ['GET', 'POST'])]
-    #[Template('@admin/Order/search_product.twig')]
-    public function searchProduct(Request $request, PaginatorInterface $paginator, $page_no = null)
+    #[Route(
+        path: '/%eccube_admin_route%/order/search/product',
+        name: 'admin_order_search_product',
+        methods: ['GET', 'POST']
+    )]
+    #[Route(
+        path: '/%eccube_admin_route%/order/search/product/page/{page_no}',
+        name: 'admin_order_search_product_page',
+        requirements: ['page_no' => '\d+'],
+        methods: ['GET', 'POST']
+    )]
+    #[Template(template: '@admin/Order/search_product.twig')]
+    public function searchProduct(Request $request, PaginatorInterface $paginator, ?int $page_no = null): array
     {
         if ($request->isXmlHttpRequest() && $this->isTokenValid()) {
             log_debug('search product start.');
@@ -631,7 +534,7 @@ class EditController extends AbstractController
             );
             $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_SEARCH);
 
-            /** @var \Knp\Component\Pager\Pagination\SlidingPagination<int, Product> $pagination */
+            /** @var SlidingPagination<int, Product> $pagination */
             $pagination = $paginator->paginate(
                 $qb,
                 $page_no,
@@ -648,7 +551,7 @@ class EditController extends AbstractController
 
             $forms = [];
             foreach ($Products as $Product) {
-                /** @var \Symfony\Component\Form\FormBuilderInterface $builder */
+                /** @var FormBuilderInterface $builder */
                 $builder = $this->formFactory->createNamedBuilder('', AddCartType::class, null, [
                     'product' => $Product,
                 ]);
@@ -672,20 +575,20 @@ class EditController extends AbstractController
                 'pagination' => $pagination,
             ];
         }
+
+        return [];
     }
 
     /**
      * その他明細情報を取得
      *
-     * @param Request $request
-     *
      * @return array<string, array<int, array<string, OrderItemType|TaxType|null>>>
      *
      * @throws BadRequestHttpException
      */
-    #[Route('/%eccube_admin_route%/order/search/order_item_type', name: 'admin_order_search_order_item_type', methods: ['POST'])]
-    #[Template('@admin/Order/order_item_type.twig')]
-    public function searchOrderItemType(Request $request)
+    #[Route(path: '/%eccube_admin_route%/order/search/order_item_type', name: 'admin_order_search_order_item_type', methods: ['POST'])]
+    #[Template(template: '@admin/Order/order_item_type.twig')]
+    public function searchOrderItemType(Request $request): array
     {
         if ($request->isXmlHttpRequest() && $this->isTokenValid()) {
             log_debug('search order item type start.');

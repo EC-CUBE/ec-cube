@@ -21,15 +21,12 @@ use Doctrine\ORM\QueryBuilder;
 abstract class JoinCustomizer implements QueryCustomizer
 {
     /**
-     * @param QueryBuilder $builder
-     * @param array<mixed> $params
-     * @param string $queryKey
-     *
-     * @return void
+     * @param array<mixed>|null $params
      */
     #[\Override]
-    final public function customize(QueryBuilder $builder, $params, $queryKey)
+    final public function customize(QueryBuilder $builder, ?array $params, string $queryKey): void
     {
+        $params ??= [];
         foreach ($this->createStatements($params, $queryKey) as $joinClause) {
             $joinClause->build($builder);
         }
@@ -40,9 +37,8 @@ abstract class JoinCustomizer implements QueryCustomizer
      * このメソッドの戻り値が、元のクエリのJOIN句に追加されます。
      *
      * @param array<mixed> $params
-     * @param string $queryKey
      *
      * @return JoinClause[]
      */
-    abstract public function createStatements($params, $queryKey);
+    abstract public function createStatements(array $params, string $queryKey): array;
 }

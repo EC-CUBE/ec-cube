@@ -13,32 +13,23 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 trait PointTrait
 {
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="add_point", type="decimal", precision=12, scale=0, options={"unsigned":true,"default":0})
-     */
-    private $add_point = '0';
+    #[ORM\Column(name: 'add_point', type: Types::DECIMAL, precision: 12, scale: 0, options: ['unsigned' => true, 'default' => 0])]
+    private ?string $add_point = '0';
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="use_point", type="decimal", precision=12, scale=0, options={"unsigned":true,"default":0})
-     */
-    private $use_point = '0';
+    #[ORM\Column(name: 'use_point', type: Types::DECIMAL, precision: 12, scale: 0, options: ['unsigned' => true, 'default' => 0])]
+    private ?string $use_point = '0';
 
     /**
      * Set addPoint
      *
-     * @param string $addPoint
-     *
      * @return $this
      */
-    public function setAddPoint($addPoint)
+    public function setAddPoint(string $addPoint): static
     {
         $this->add_point = $addPoint;
 
@@ -47,10 +38,8 @@ trait PointTrait
 
     /**
      * Get addPoint
-     *
-     * @return string
      */
-    public function getAddPoint()
+    public function getAddPoint(): string
     {
         return $this->add_point;
     }
@@ -58,11 +47,9 @@ trait PointTrait
     /**
      * Set usePoint
      *
-     * @param string $usePoint
-     *
      * @return $this
      */
-    public function setUsePoint($usePoint)
+    public function setUsePoint(?string $usePoint): static
     {
         $this->use_point = $usePoint;
 
@@ -71,10 +58,8 @@ trait PointTrait
 
     /**
      * Get usePoint
-     *
-     * @return string
      */
-    public function getUsePoint()
+    public function getUsePoint(): ?string
     {
         return $this->use_point;
     }

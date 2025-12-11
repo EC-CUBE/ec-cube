@@ -32,53 +32,30 @@ use Symfony\Component\HttpKernel\KernelInterface;
 class CacheUtil implements EventSubscriberInterface
 {
     public const DOCTRINE_APP_CACHE_KEY = 'doctrine.app_cache_pool';
-    /**
-     * @var mixed
-     */
-    private $clearCacheAfterResponse = false;
-
-    /**
-     * @var KernelInterface
-     */
-    protected $kernel;
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+    private mixed $clearCacheAfterResponse = false;
 
     /**
      * CacheUtil constructor.
-     *
-     * @param KernelInterface $kernel
-     * @param ContainerInterface $container
      */
-    public function __construct(KernelInterface $kernel, ContainerInterface $container)
+    public function __construct(protected KernelInterface $kernel, private readonly ContainerInterface $container)
     {
-        $this->kernel = $kernel;
-        $this->container = $container;
     }
 
     /**
      * @param string $env
-     *
-     * @return void
      */
-    public function clearCache($env = null)
+    public function clearCache(?string $env = null): void
     {
         $this->clearCacheAfterResponse = $env;
     }
 
     /**
-     * @param TerminateEvent $event
-     *
-     * @return string|void
-     *
      * @throws \Exception
      */
-    public function forceClearCache(TerminateEvent $event)
+    public function forceClearCache(TerminateEvent $event): string
     {
         if ($this->clearCacheAfterResponse === false) {
-            return;
+            return '';
         }
 
         $console = new Application($this->kernel);
@@ -122,11 +99,9 @@ class CacheUtil implements EventSubscriberInterface
     /**
      * Doctrineのキャッシュを削除します.
      *
-     * @return string|null
-     *
      * @throws \Exception
      */
-    public function clearDoctrineCache()
+    public function clearDoctrineCache(): ?string
     {
         /** @var Psr6CacheClearer $poolClearer */
         $poolClearer = $this->container->get('cache.global_clearer');
@@ -157,10 +132,8 @@ class CacheUtil implements EventSubscriberInterface
 
     /**
      * Twigキャッシュを削除します.
-     *
-     * @return void
      */
-    public function clearTwigCache()
+    public function clearTwigCache(): void
     {
         $cacheDir = $this->kernel->getCacheDir().'/twig';
         $fs = new Filesystem();
@@ -173,7 +146,7 @@ class CacheUtil implements EventSubscriberInterface
      * doctrine, profiler, twig によって生成されたキャッシュディレクトリを削除する.
      * キャッシュは $app['config']['root_dir'].'/app/cache' に生成されます.
      *
-     * @param Application $app
+     * @param Application|array{config: array{root_dir: string}} $app
      * @param bool $isAll .gitkeep を残してすべてのファイル・ディレクトリを削除する場合 true, 各ディレクトリのみを削除する場合 false
      * @param bool $isTwig Twigキャッシュファイルのみ削除する場合 true
      *
@@ -181,7 +154,7 @@ class CacheUtil implements EventSubscriberInterface
      *
      * @deprecated CacheUtil::clearCacheを利用すること
      */
-    public static function clear($app, $isAll, $isTwig = false)
+    public static function clear(Application|array $app, bool $isAll, bool $isTwig = false): bool
     {
         $cacheDir = $app['config']['root_dir'].'/app/cache';
 
@@ -234,7 +207,7 @@ class CacheUtil implements EventSubscriberInterface
      * {@inheritdoc}
      */
     #[\Override]
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [KernelEvents::TERMINATE => 'forceClearCache'];
     }

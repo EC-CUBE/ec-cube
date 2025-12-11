@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -19,14 +21,13 @@ use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Order;
 use Eccube\Service\OrderHelper;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-class OrderHelperTest extends EccubeTestCase
+final class OrderHelperTest extends EccubeTestCase
 {
-    /**
-     * @var OrderHelper
-     */
-    protected $helper;
+    protected ?OrderHelper $helper = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -52,7 +53,7 @@ class OrderHelperTest extends EccubeTestCase
         $Customer->setName01('hoge');
 
         $this->helper->updateCustomerInfo($Order, $Customer);
-        self::assertNull($Order->getName01());
+        $this->assertNull($Order->getName01());
     }
 
     /**
@@ -68,26 +69,25 @@ class OrderHelperTest extends EccubeTestCase
         $Customer->setName01('hoge');
 
         $this->helper->updateCustomerInfo($Order, $Customer);
-        self::assertNotNull($Order->getName01());
-        self::assertSame($Order->getName01(), $Customer->getName01());
+        $this->assertNotNull($Order->getName01());
+        $this->assertSame($Order->getName01(), $Customer->getName01());
     }
 
     /**
      * 税表示区分が問題ないかを確認する
      *
-     * @dataProvider taxDisplayTypeProvider
-     *
      * @param mixed $OrderItemType
      * @param mixed $TaxDisplayType
      */
+    #[DataProvider(methodName: 'taxDisplayTypeProvider')]
     public function testTaxDisplayType($OrderItemType, $TaxDisplayType)
     {
         $TaxDisplayType = $this->entityManager->find(TaxDisplayType::class, $TaxDisplayType);
 
-        self::assertSame($this->helper->getTaxDisplayType($OrderItemType), $TaxDisplayType);
+        $this->assertSame($this->helper->getTaxDisplayType($OrderItemType), $TaxDisplayType);
     }
 
-    public function taxDisplayTypeProvider()
+    public static function taxDisplayTypeProvider(): \Iterator
     {
         // - 商品: 税抜
         // - 送料: 税込
@@ -95,13 +95,11 @@ class OrderHelperTest extends EccubeTestCase
         // - 値引き: 税抜
         // - 税: 税抜
         // - ポイント値引き: 税込
-        return [
-            [OrderItemType::PRODUCT, TaxDisplayType::EXCLUDED],
-            [OrderItemType::DELIVERY_FEE, TaxDisplayType::INCLUDED],
-            [OrderItemType::CHARGE, TaxDisplayType::INCLUDED],
-            [OrderItemType::DISCOUNT, TaxDisplayType::EXCLUDED],
-            [OrderItemType::TAX, TaxDisplayType::EXCLUDED],
-            [OrderItemType::POINT, TaxDisplayType::INCLUDED],
-        ];
+        yield [OrderItemType::PRODUCT, TaxDisplayType::EXCLUDED];
+        yield [OrderItemType::DELIVERY_FEE, TaxDisplayType::INCLUDED];
+        yield [OrderItemType::CHARGE, TaxDisplayType::INCLUDED];
+        yield [OrderItemType::DISCOUNT, TaxDisplayType::EXCLUDED];
+        yield [OrderItemType::TAX, TaxDisplayType::EXCLUDED];
+        yield [OrderItemType::POINT, TaxDisplayType::INCLUDED];
     }
 }

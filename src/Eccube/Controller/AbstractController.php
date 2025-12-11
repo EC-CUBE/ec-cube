@@ -21,6 +21,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\FlashBagAwareSessionInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
@@ -30,274 +31,135 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AbstractController extends Controller
 {
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
+    protected EccubeConfig $eccubeConfig;
 
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
+    protected EntityManagerInterface $entityManager;
 
-    /**
-     * @var TranslatorInterface
-     */
-    protected $translator;
+    protected TranslatorInterface $translator;
 
-    /**
-     * @var FormFactoryInterface
-     */
-    protected $formFactory;
+    protected FormFactoryInterface $formFactory;
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
+    protected EventDispatcherInterface $eventDispatcher;
 
-    /**
-     * @var FlashBagAwareSessionInterface
-     */
-    protected $session;
+    protected FlashBagAwareSessionInterface $session;
 
-    /**
-     * @var RouterInterface
-     */
-    protected $router;
+    protected RouterInterface $router;
 
-    /**
-     * @param EccubeConfig $eccubeConfig
-     *
-     * @return void
-     */
     #[Required]
-    public function setEccubeConfig(EccubeConfig $eccubeConfig)
+    public function setEccubeConfig(EccubeConfig $eccubeConfig): void
     {
         $this->eccubeConfig = $eccubeConfig;
     }
 
-    /**
-     * @param EntityManagerInterface $entityManager
-     *
-     * @return void
-     */
     #[Required]
-    public function setEntityManager(EntityManagerInterface $entityManager)
+    public function setEntityManager(EntityManagerInterface $entityManager): void
     {
         $this->entityManager = $entityManager;
     }
 
-    /**
-     * @param TranslatorInterface $translator
-     *
-     * @return void
-     */
     #[Required]
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
 
-    /**
-     * @param Session $session
-     *
-     * @return void
-     */
     #[Required]
-    public function setSession(Session $session)
+    public function setSession(Session $session): void
     {
         $this->session = $session;
     }
 
-    /**
-     * @param FormFactoryInterface $formFactory
-     *
-     * @return void
-     */
     #[Required]
-    public function setFormFactory(FormFactoryInterface $formFactory)
+    public function setFormFactory(FormFactoryInterface $formFactory): void
     {
         $this->formFactory = $formFactory;
     }
 
-    /**
-     * @param EventDispatcherInterface $eventDispatcher
-     *
-     * @return void
-     */
     #[Required]
-    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
     {
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * @param RouterInterface $router
-     *
-     * @return void
-     */
     #[Required]
-    public function setRouter(RouterInterface $router)
+    public function setRouter(RouterInterface $router): void
     {
         $this->router = $router;
     }
 
-    /**
-     * @param string $message
-     * @param string $namespace
-     *
-     * @return void
-     */
-    public function addSuccess($message, $namespace = 'front')
+    public function addSuccess(string $message, string $namespace = 'front'): void
     {
         $this->addFlash('eccube.'.$namespace.'.success', $message);
     }
 
-    /**
-     * @param string $message
-     * @param string $namespace
-     *
-     * @return void
-     */
-    public function addSuccessOnce($message, $namespace = 'front')
+    public function addSuccessOnce(string $message, string $namespace = 'front'): void
     {
         $this->addFlashOnce('eccube.'.$namespace.'.success', $message);
     }
 
-    /**
-     * @param string $message
-     * @param string $namespace
-     *
-     * @return void
-     */
-    public function addError($message, $namespace = 'front')
+    public function addError(string $message, string $namespace = 'front'): void
     {
         $this->addFlash('eccube.'.$namespace.'.error', $message);
     }
 
-    /**
-     * @param string $message
-     * @param string $namespace
-     *
-     * @return void
-     */
-    public function addErrorOnce($message, $namespace = 'front')
+    public function addErrorOnce(string $message, string $namespace = 'front'): void
     {
         $this->addFlashOnce('eccube.'.$namespace.'.error', $message);
     }
 
-    /**
-     * @param string $message
-     * @param string $namespace
-     *
-     * @return void
-     */
-    public function addDanger($message, $namespace = 'front')
+    public function addDanger(string $message, string $namespace = 'front'): void
     {
         $this->addFlash('eccube.'.$namespace.'.danger', $message);
     }
 
-    /**
-     * @param string $message
-     * @param string $namespace
-     *
-     * @return void
-     */
-    public function addDangerOnce($message, $namespace = 'front')
+    public function addDangerOnce(string $message, string $namespace = 'front'): void
     {
         $this->addFlashOnce('eccube.'.$namespace.'.danger', $message);
     }
 
-    /**
-     * @param string $message
-     * @param string $namespace
-     *
-     * @return void
-     */
-    public function addWarning($message, $namespace = 'front')
+    public function addWarning(string $message, string $namespace = 'front'): void
     {
         $this->addFlash('eccube.'.$namespace.'.warning', $message);
     }
 
-    /**
-     * @param string $message
-     * @param string $namespace
-     *
-     * @return void
-     */
-    public function addWarningOnce($message, $namespace = 'front')
+    public function addWarningOnce(string $message, string $namespace = 'front'): void
     {
         $this->addFlashOnce('eccube.'.$namespace.'.warning', $message);
     }
 
-    /**
-     * @param string $message
-     * @param string $namespace
-     *
-     * @return void
-     */
-    public function addInfo($message, $namespace = 'front')
+    public function addInfo(string $message, string $namespace = 'front'): void
     {
         $this->addFlash('eccube.'.$namespace.'.info', $message);
     }
 
-    /**
-     * @param string $message
-     * @param string $namespace
-     *
-     * @return void
-     */
-    public function addInfoOnce($message, $namespace = 'front')
+    public function addInfoOnce(string $message, string $namespace = 'front'): void
     {
         $this->addFlashOnce('eccube.'.$namespace.'.info', $message);
     }
 
-    /**
-     * @param string $message
-     * @param string $namespace
-     *
-     * @return void
-     */
-    public function addRequestError($message, $namespace = 'front')
+    public function addRequestError(string $message, string $namespace = 'front'): void
     {
         $this->addFlash('eccube.'.$namespace.'.request.error', $message);
     }
 
-    /**
-     * @param string $message
-     * @param string $namespace
-     *
-     * @return void
-     */
-    public function addRequestErrorOnce($message, $namespace = 'front')
+    public function addRequestErrorOnce(string $message, string $namespace = 'front'): void
     {
         $this->addFlashOnce('eccube.'.$namespace.'.request.error', $message);
     }
 
-    /**
-     * @return void
-     */
-    public function clearMessage()
+    public function clearMessage(): void
     {
         /** @var Session $session */
         $session = $this->session;
         $session->getFlashBag()->clear();
     }
 
-    /**
-     * @return void
-     */
-    public function deleteMessage()
+    public function deleteMessage(): void
     {
         $this->clearMessage();
         $this->addWarning('admin.common.delete_error_already_deleted', 'admin');
     }
 
-    /**
-     * @param string $type
-     *
-     * @return bool
-     */
     public function hasMessage(string $type): bool
     {
         /** @var Session $session */
@@ -306,13 +168,7 @@ class AbstractController extends Controller
         return $session->getFlashBag()->has($type);
     }
 
-    /**
-     * @param string $type
-     * @param string $message
-     *
-     * @return void
-     */
-    public function addFlashOnce(string $type, $message): void
+    public function addFlashOnce(string $type, string $message): void
     {
         if (!$this->hasMessage($type)) {
             $this->addFlash($type, $message);
@@ -337,13 +193,7 @@ class AbstractController extends Controller
         }
     }
 
-    /**
-     * @param string $targetPath
-     * @param string|null $namespace
-     *
-     * @return void
-     */
-    public function setLoginTargetPath($targetPath, $namespace = null)
+    public function setLoginTargetPath(string $targetPath, ?string $namespace = null): void
     {
         if (is_null($namespace)) {
             /** @var Session $session */
@@ -360,12 +210,12 @@ class AbstractController extends Controller
      * Forwards the request to another controller.
      *
      * @param string $route The name of the route
-     * @param array<string,string>  $path An array of path parameters
-     * @param array<string,string>  $query An array of query parameters
+     * @param array<string, string>  $path An array of path parameters
+     * @param array<string, string>  $query An array of query parameters
      *
-     * @return \Symfony\Component\HttpFoundation\Response A Response instance
+     * @return Response A Response instance
      */
-    public function forwardToRoute($route, array $path = [], array $query = [])
+    public function forwardToRoute(string $route, array $path = [], array $query = []): Response
     {
         $Route = $this->router->getRouteCollection()->get($route);
         if (!$Route) {
@@ -380,11 +230,9 @@ class AbstractController extends Controller
      *
      * if token is invalid, throws AccessDeniedHttpException.
      *
-     * @return bool
-     *
      * @throws AccessDeniedHttpException
      */
-    protected function isTokenValid()
+    protected function isTokenValid(): bool
     {
         /** @var Request $request */
         $request = $this->container->get('request_stack')->getCurrentRequest();

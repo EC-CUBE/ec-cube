@@ -15,28 +15,26 @@ namespace Eccube\Exception;
 
 class PluginApiException extends \Exception
 {
-    /** @var array<string, string>|null */
-    private $curlInfo;
+    /** @var array<string, mixed>|null */
+    private readonly ?array $curlInfo;
 
     /**
      * PluginApiException constructor.
      *
-     * @param array<string, string>|null $curlInfo
+     * @param array<string, mixed>|null $curlInfo
      *
      * @return void
      */
-    public function __construct($curlInfo)
+    public function __construct(?array $curlInfo)
     {
         parent::__construct(self::getResponseErrorMessage($curlInfo), (int) $curlInfo['http_code']);
         $this->curlInfo = $curlInfo;
     }
 
     /**
-     * @param array<string,mixed> $info
-     *
-     * @return string
+     * @param array<string, mixed> $info
      */
-    private static function getResponseErrorMessage($info)
+    private static function getResponseErrorMessage(array $info): string
     {
         if (!empty($info)) {
             $messageId = 'admin.store.package.api.'.$info['http_code'].'.error';
@@ -56,7 +54,7 @@ class PluginApiException extends \Exception
     /**
      * @return array<string, array<string, string>|null>
      */
-    public function __debugInfo()
+    public function __debugInfo(): array
     {
         return [
             'curlInfo' => $this->curlInfo,
@@ -73,9 +71,6 @@ class PluginApiException extends \Exception
         ];
     }
 
-    /**
-     * @return string
-     */
     public function __toString(): string
     {
         return parent::__toString().', CURL_INFO:'.json_encode($this->curlInfo ?? []);

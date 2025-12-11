@@ -14,7 +14,9 @@
 namespace Eccube\Service\Payment\Method;
 
 use Eccube\Entity\Order;
+use Eccube\Service\Payment\PaymentDispatcher;
 use Eccube\Service\Payment\PaymentMethodInterface;
+use Eccube\Service\Payment\PaymentResult;
 use Symfony\Component\Form\FormInterface;
 
 /**
@@ -24,40 +26,37 @@ use Symfony\Component\Form\FormInterface;
  */
 abstract class CreditCard implements PaymentMethodInterface
 {
-    /**
-     * @var Order
-     */
-    protected $Order;
+    protected Order $Order;
 
     /**
      * {@inheritdoc}
      */
     #[\Override]
-    abstract public function verify();
+    abstract public function verify(): PaymentResult|bool;
 
     /**
      * {@inheritdoc}
      */
     #[\Override]
-    abstract public function checkout();
+    abstract public function checkout(): PaymentResult;
 
     /**
      * {@inheritdoc}
      */
     #[\Override]
-    abstract public function apply();
+    abstract public function apply(): PaymentDispatcher|bool;
 
     /**
      * {@inheritdoc}
      */
     #[\Override]
-    abstract public function setFormType(FormInterface $form);
+    abstract public function setFormType(FormInterface $form): PaymentMethodInterface;
 
     /**
      * {@inheritdoc}
      */
     #[\Override]
-    public function setOrder(Order $Order)
+    public function setOrder(Order $Order): PaymentMethodInterface
     {
         $this->Order = $Order;
 

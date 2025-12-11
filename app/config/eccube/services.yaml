@@ -200,18 +200,6 @@ services:
         # autoconfigureはfalseにし, CompilerPassで追加する.
         autoconfigure: false
 
-    native_file_session_handler:
-        class: Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler
-        arguments:
-            - '%session.save_path%'
-
-    Eccube\Session\Storage\Handler\SameSiteNoneCompatSessionHandler:
-        arguments:
-            - '@native_file_session_handler'
-
-    Eccube\DependencyInjection\Facade\AnnotationReaderFacade:
-        public: true
-
     Detection\MobileDetect:
         tags:
           - { name: mobile_detect.mobile_detector.default }

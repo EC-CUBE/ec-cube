@@ -14,23 +14,18 @@
 namespace Eccube\Entity\Master;
 
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\Master\RoundingTypeRepository;
 
 if (!class_exists(RoundingType::class, false)) {
     /**
      * RoundingType
-     *
-     * @ORM\Table(name="mtb_rounding_type")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\Master\RoundingTypeRepository")
-     *
-     * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
      */
+    #[ORM\Table(name: 'mtb_rounding_type')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: RoundingTypeRepository::class)]
+    #[ORM\Cache(usage: 'NONSTRICT_READ_WRITE')]
     class RoundingType extends AbstractMasterEntity
     {
         /**

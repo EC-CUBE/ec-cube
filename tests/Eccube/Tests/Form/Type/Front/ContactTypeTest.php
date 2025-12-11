@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,13 +19,12 @@ use Eccube\Form\Type\Front\ContactType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use Symfony\Component\Form\FormInterface;
 
-class ContactTypeTest extends AbstractTypeTestCase
+final class ContactTypeTest extends AbstractTypeTestCase
 {
-    /** @var FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = [
+    protected ?array $formData = [
         'name' => [
             'name01' => 'たかはし',
             'name02' => 'しんいち',
@@ -43,6 +44,7 @@ class ContactTypeTest extends AbstractTypeTestCase
         'contents' => 'ほげほげ',
     ];
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

@@ -14,6 +14,7 @@
 namespace Eccube\EventListener;
 
 use Detection\MobileDetect;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\AuthorityRole;
@@ -32,6 +33,7 @@ use Eccube\Repository\PageRepository;
 use Eccube\Request\Context;
 use Eccube\Service\SystemService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -42,115 +44,20 @@ class TwigInitializeListener implements EventSubscriberInterface
     /**
      * @var bool 初期化済かどうか.
      */
-    protected $initialized = false;
-
-    /**
-     * @var Environment
-     */
-    protected $twig;
-
-    /**
-     * @var BaseInfoRepository
-     */
-    protected $baseInfoRepository;
-
-    /**
-     * @var DeviceTypeRepository
-     */
-    protected $deviceTypeRepository;
-
-    /**
-     * @var PageRepository
-     */
-    protected $pageRepository;
-
-    /**
-     * @var PageLayoutRepository
-     */
-    protected $pageLayoutRepository;
-
-    /**
-     * @var BlockPositionRepository
-     */
-    protected $blockPositionRepository;
-
-    /**
-     * @var Context
-     */
-    protected $requestContext;
-
-    /**
-     * @var AuthorityRoleRepository
-     */
-    private $authorityRoleRepository;
-
-    /**
-     * @var EccubeConfig
-     */
-    private $eccubeConfig;
-
-    /**
-     * @var MobileDetect
-     */
-    private $mobileDetector;
-
-    /**
-     * @var UrlGeneratorInterface
-     */
-    private $router;
-
-    /**
-     * @var LayoutRepository
-     */
-    private $layoutRepository;
-
-    /**
-     * @var SystemService
-     */
-    protected $systemService;
+    protected bool $initialized = false;
 
     /**
      * TwigInitializeListener constructor.
      */
-    public function __construct(
-        Environment $twig,
-        BaseInfoRepository $baseInfoRepository,
-        PageRepository $pageRepository,
-        PageLayoutRepository $pageLayoutRepository,
-        BlockPositionRepository $blockPositionRepository,
-        DeviceTypeRepository $deviceTypeRepository,
-        AuthorityRoleRepository $authorityRoleRepository,
-        EccubeConfig $eccubeConfig,
-        Context $context,
-        MobileDetect $mobileDetector,
-        UrlGeneratorInterface $router,
-        LayoutRepository $layoutRepository,
-        SystemService $systemService,
-    ) {
-        $this->twig = $twig;
-        $this->baseInfoRepository = $baseInfoRepository;
-        $this->pageRepository = $pageRepository;
-        $this->pageLayoutRepository = $pageLayoutRepository;
-        $this->blockPositionRepository = $blockPositionRepository;
-        $this->deviceTypeRepository = $deviceTypeRepository;
-        $this->authorityRoleRepository = $authorityRoleRepository;
-        $this->eccubeConfig = $eccubeConfig;
-        $this->requestContext = $context;
-        $this->mobileDetector = $mobileDetector;
-        $this->router = $router;
-        $this->layoutRepository = $layoutRepository;
-        $this->systemService = $systemService;
+    public function __construct(protected Environment $twig, protected BaseInfoRepository $baseInfoRepository, protected PageRepository $pageRepository, protected PageLayoutRepository $pageLayoutRepository, protected BlockPositionRepository $blockPositionRepository, protected DeviceTypeRepository $deviceTypeRepository, private readonly AuthorityRoleRepository $authorityRoleRepository, private EccubeConfig $eccubeConfig, protected Context $requestContext, private readonly MobileDetect $mobileDetector, private readonly UrlGeneratorInterface $router, private readonly LayoutRepository $layoutRepository, protected SystemService $systemService)
+    {
     }
 
     /**
-     * @param RequestEvent $event
-     *
-     * @return void
-     *
      * @throws NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
-    public function onKernelRequest(RequestEvent $event)
+    public function onKernelRequest(RequestEvent $event): void
     {
         if ($this->initialized) {
             return;
@@ -168,16 +75,12 @@ class TwigInitializeListener implements EventSubscriberInterface
     }
 
     /**
-     * @param RequestEvent $event
-     *
-     * @return void
-     *
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
-    public function setFrontVariables(RequestEvent $event)
+    public function setFrontVariables(RequestEvent $event): void
     {
         $request = $event->getRequest();
-        /** @var \Symfony\Component\HttpFoundation\ParameterBag $attributes */
+        /** @var ParameterBag $attributes */
         $attributes = $request->attributes;
         $route = $attributes->get('_route');
         if ($route == 'user_data') {
@@ -246,12 +149,7 @@ class TwigInitializeListener implements EventSubscriberInterface
         $this->twig->addGlobal('isDebugMode', env('APP_DEBUG'));
     }
 
-    /**
-     * @param RequestEvent $event
-     *
-     * @return void
-     */
-    public function setAdminGlobals(RequestEvent $event)
+    public function setAdminGlobals(RequestEvent $event): void
     {
         // メニュー表示用配列.
         $menus = [];
@@ -274,13 +172,12 @@ class TwigInitializeListener implements EventSubscriberInterface
     /**
      * URLに対する権限有無チェックして表示するNavを返す
      *
-     * @param array<string, array<string,mixed>> $parentNav
+     * @param array<string, array<string, mixed>> $parentNav
      * @param AuthorityRole[] $AuthorityRoles
-     * @param string $baseUrl
      *
-     * @return array<string, array<string,mixed>>
+     * @return array<string, array<string, mixed>>
      */
-    private function getDisplayEccubeNav($parentNav, $AuthorityRoles, $baseUrl)
+    private function getDisplayEccubeNav(array $parentNav, array $AuthorityRoles, string $baseUrl): array
     {
         $restrictUrls = $this->eccubeConfig['eccube_restrict_file_upload_urls'];
 
@@ -319,7 +216,7 @@ class TwigInitializeListener implements EventSubscriberInterface
      * {@inheritdoc}
      */
     #[\Override]
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::REQUEST => [

@@ -37,11 +37,9 @@ class OrderPdfRepository extends AbstractRepository
      * Save admin history.
      *
      * @param AbstractEntity|array<mixed> $arrData
-     *
-     * @return bool
      */
     #[\Override]
-    public function save($arrData)
+    public function save($arrData): void
     {
         /**
          * @var Member $Member
@@ -61,10 +59,10 @@ class OrderPdfRepository extends AbstractRepository
             ->setNote1($arrData['note1'])
             ->setNote2($arrData['note2'])
             ->setNote3($arrData['note3'])
-            ->setVisible(true);
+            ->setVisible(true)
+            ->setCreateDate(new \DateTime())
+            ->setUpdateDate(new \DateTime());
         $this->getEntityManager()->persist($OrderPdf);
         $this->getEntityManager()->flush();
-
-        return true;
     }
 }

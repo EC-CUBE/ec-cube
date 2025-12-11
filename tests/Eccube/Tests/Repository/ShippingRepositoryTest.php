@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -29,6 +31,7 @@ use Eccube\Repository\MemberRepository;
 use Eccube\Repository\ShippingRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
+use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Tests\EccubeTestCase;
 
 /**
@@ -36,58 +39,35 @@ use Eccube\Tests\EccubeTestCase;
  *
  * @author Kentaro Ohkouchi
  */
-class ShippingRepositoryTest extends EccubeTestCase
+final class ShippingRepositoryTest extends EccubeTestCase
 {
-    /**
-     * @var Customer
-     */
-    protected $Customer;
+    protected ?Customer $Customer = null;
 
-    /**
-     * @var Order
-     */
-    protected $Order;
+    protected ?Order $Order = null;
 
-    /**
-     * @var Product
-     */
-    protected $Product;
+    protected ?Product $Product = null;
 
-    /**
-     * @var ProductClass
-     */
-    protected $ProductClass;
+    protected ?ProductClass $ProductClass = null;
 
     /**
      * @var Shipping[]
      */
-    protected $Shippings;
+    protected ?array $Shippings = null;
 
-    /**
-     * @var Member
-     */
-    protected $Member;
+    protected ?Member $Member = null;
 
-    /**
-     * @var MemberRepository
-     */
-    protected $memberRepository;
+    protected ?MemberRepository $memberRepository = null;
 
-    /**
-     * @var TaxRuleRepository
-     */
-    protected $taxRuleRepository;
+    protected ?TaxRuleRepository $taxRuleRepository = null;
 
-    /**
-     * @var ShippingRepository
-     */
-    protected $shippingRepository;
+    protected ?ShippingRepository $shippingRepository = null;
 
     /**
      * {@inheritdoc}
      *
      * @throws NoResultException
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -141,7 +121,7 @@ class ShippingRepositoryTest extends EccubeTestCase
             $this->Shippings[$i] = $Shipping;
         }
 
-        $purchaseFlow = static::getContainer()->get('eccube.purchase.flow.order');
+        $purchaseFlow = static::getContainer()->get(PurchaseFlow::class);
         $purchaseFlow->validate($this->Order, new PurchaseContext($this->Order));
         $this->entityManager->flush();
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,11 +19,11 @@ use Eccube\Form\Type\Admin\SearchOrderType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use Symfony\Component\Form\FormInterface;
 
-class OrderSearchTypeTest extends AbstractTypeTestCase
+final class OrderSearchTypeTest extends AbstractTypeTestCase
 {
-    /** @var FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

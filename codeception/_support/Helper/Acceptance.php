@@ -29,9 +29,7 @@ class Acceptance extends Module
         $downloadDir = dirname(__DIR__).'/_downloads/';
         if (file_exists($downloadDir)) {
             $files = scandir($downloadDir);
-            $files = array_filter($files, function ($fileName) use ($downloadDir) {
-                return is_file($downloadDir.$fileName) && (!str_starts_with($fileName, '.'));
-            });
+            $files = array_filter($files, fn ($fileName) => is_file($downloadDir.$fileName) && (!str_starts_with($fileName, '.')));
             foreach ($files as $f) {
                 unlink($downloadDir.$f);
             }
@@ -44,10 +42,9 @@ class Acceptance extends Module
     }
 
     /**
-     * @param mixed $keys
      * @param string|string[]
      */
-    public function sendKeys($keys)
+    public function sendKeys(mixed $keys)
     {
         return $this->getModule('WebDriver')->webDriver->getKeyboard()->sendKeys($keys);
     }

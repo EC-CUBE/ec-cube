@@ -29,20 +29,8 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
  */
 class CustomerProvider implements UserProviderInterface, PasswordUpgraderInterface
 {
-    /**
-     * @var CustomerRepository
-     */
-    protected $customerRepository;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
-    public function __construct(CustomerRepository $customerRepository, EntityManagerInterface $entityManager)
+    public function __construct(protected CustomerRepository $customerRepository, private readonly EntityManagerInterface $entityManager)
     {
-        $this->customerRepository = $customerRepository;
-        $this->entityManager = $entityManager;
     }
 
     /**
@@ -52,8 +40,6 @@ class CustomerProvider implements UserProviderInterface, PasswordUpgraderInterfa
      * totally reloaded (e.g. from the database), or if the UserInterface
      * object can just be merged into some internal array of users / identity
      * map.
-     *
-     * @return UserInterface
      *
      * @throws UnsupportedUserException if the user is not supported
      */
@@ -71,8 +57,6 @@ class CustomerProvider implements UserProviderInterface, PasswordUpgraderInterfa
      * Whether this provider supports the given user class.
      *
      * @param string $class
-     *
-     * @return bool
      */
     #[\Override]
     public function supportsClass($class): bool

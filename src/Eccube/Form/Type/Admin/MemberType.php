@@ -33,39 +33,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 class MemberType extends AbstractType
 {
     /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
-     * @var MemberRepository
-     */
-    protected $memberRepository;
-
-    /**
      * MemberType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
-     * @param MemberRepository $memberRepository
      */
-    public function __construct(
-        EccubeConfig $eccubeConfig,
-        MemberRepository $memberRepository,
-    ) {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->memberRepository = $memberRepository;
+    public function __construct(protected EccubeConfig $eccubeConfig, protected MemberRepository $memberRepository)
+    {
     }
 
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('name', TextType::class, [
@@ -117,7 +97,7 @@ class MemberType extends AbstractType
             ]);
 
         // login idの入力は新規登録時のみとし、編集時はdisabledにする
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
             $form = $event->getForm();
             $data = $event->getData();
 
@@ -149,7 +129,7 @@ class MemberType extends AbstractType
             $form->add('login_id', TextType::class, $options);
         });
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             /** @var Member $Member */
             $Member = $event->getData();
 
@@ -176,13 +156,9 @@ class MemberType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @param OptionsResolver $resolver
-     *
-     * @return void
      */
     #[\Override]
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Member::class,
@@ -193,7 +169,7 @@ class MemberType extends AbstractType
      * {@inheritdoc}
      */
     #[\Override]
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'admin_member';
     }

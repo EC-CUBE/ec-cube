@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,21 +17,17 @@ namespace Eccube\Tests\Web\Admin\Content;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\Request;
 
-class JsControllerTest extends AbstractAdminWebTestCase
+final class JsControllerTest extends AbstractAdminWebTestCase
 {
     public const JS_FILE = 'customize.js';
 
-    /**
-     * @var string
-     */
-    private $dir;
+    private ?string $dir = null;
 
-    /**
-     * @var string
-     */
-    private $contents;
+    private ?string $contents = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -39,6 +37,7 @@ class JsControllerTest extends AbstractAdminWebTestCase
         $fs->dumpFile($this->dir.self::JS_FILE, '');
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         chmod($this->dir, 0755);
@@ -49,7 +48,7 @@ class JsControllerTest extends AbstractAdminWebTestCase
 
     public function testRoutingAdminContentJsIndex()
     {
-        $this->client->request('GET', $this->generateUrl('admin_content_js'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_content_js'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -61,7 +60,7 @@ $(function() {
 });
 __JS_CONTENTS__;
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_content_js'),
             ['form' => [
                 'js' => $js,
@@ -89,7 +88,7 @@ $(function() {
 });
 __JS_CONTENTS__;
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_content_js'),
             ['form' => [
                 'js' => $js,
@@ -114,7 +113,7 @@ $(function() {
 });
 __JS_CONTENTS__;
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_content_js'),
             ['form' => [
                 'js' => $js,

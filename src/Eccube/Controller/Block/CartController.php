@@ -17,29 +17,18 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\Cart;
 use Eccube\Service\CartService;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 class CartController extends AbstractController
 {
-    /**
-     * @var CartService
-     */
-    protected $cartService;
-
-    public function __construct(
-        CartService $cartService,
-    ) {
-        $this->cartService = $cartService;
+    public function __construct(protected CartService $cartService)
+    {
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    #[Route('/block/cart', name: 'block_cart', methods: ['GET'])]
-    #[Route('/block/cart_sp', name: 'block_cart_sp', methods: ['GET'])]
-    public function index(Request $request)
+    #[Route(path: '/block/cart', name: 'block_cart', methods: ['GET'])]
+    #[Route(path: '/block/cart_sp', name: 'block_cart_sp', methods: ['GET'])]
+    public function index(Request $request): Response
     {
         $Carts = $this->cartService->getCarts();
 

@@ -14,9 +14,11 @@
 namespace Eccube\Service\Payment\Method;
 
 use Eccube\Entity\Order;
+use Eccube\Service\Payment\PaymentDispatcher;
 use Eccube\Service\Payment\PaymentMethodInterface;
 use Eccube\Service\Payment\PaymentResult;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
+use Eccube\Service\PurchaseFlow\PurchaseException;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Symfony\Component\Form\FormInterface;
 
@@ -25,34 +27,26 @@ use Symfony\Component\Form\FormInterface;
  */
 class Cash implements PaymentMethodInterface
 {
-    /** @var Order */
-    private $Order;
+    private Order $Order;
 
-    /** @var PurchaseFlow */
-    private $purchaseFlow;
-
-    /** @var FormInterface */
-    private $form;
+    private FormInterface $form;
 
     /**
      * Cash constructor.
-     *
-     * @param PurchaseFlow $shoppingPurchaseFlow
      */
-    public function __construct(PurchaseFlow $shoppingPurchaseFlow)
+    public function __construct(private readonly PurchaseFlow $shoppingPurchaseFlow)
     {
-        $this->purchaseFlow = $shoppingPurchaseFlow;
     }
 
     /**
      * {@inheritdoc}
      *
-     * @throws \Eccube\Service\PurchaseFlow\PurchaseException
+     * @throws PurchaseException
      */
     #[\Override]
-    public function checkout()
+    public function checkout(): PaymentResult
     {
-        $this->purchaseFlow->commit($this->Order, new PurchaseContext());
+        $this->shoppingPurchaseFlow->commit($this->Order, new PurchaseContext());
 
         $result = new PaymentResult();
         $result->setSuccess(true);
@@ -63,12 +57,12 @@ class Cash implements PaymentMethodInterface
     /**
      * {@inheritdoc}
      *
-     * @throws \Eccube\Service\PurchaseFlow\PurchaseException
+     * @throws PurchaseException
      */
     #[\Override]
-    public function apply()
+    public function apply(): PaymentDispatcher|bool
     {
-        $this->purchaseFlow->prepare($this->Order, new PurchaseContext());
+        $this->shoppingPurchaseFlow->prepare($this->Order, new PurchaseContext());
 
         return false;
     }
@@ -77,17 +71,14 @@ class Cash implements PaymentMethodInterface
      * {@inheritdoc}
      */
     #[\Override]
-    public function setFormType(FormInterface $form)
+    public function setFormType(FormInterface $form): PaymentMethodInterface
     {
         $this->form = $form;
 
         return $this;
     }
 
-    /**
-     * @return FormInterface
-     */
-    public function getFormType()
+    public function getFormType(): FormInterface
     {
         return $this->form;
     }
@@ -96,7 +87,7 @@ class Cash implements PaymentMethodInterface
      * {@inheritdoc}
      */
     #[\Override]
-    public function verify()
+    public function verify(): PaymentResult|bool
     {
         return false;
     }
@@ -105,7 +96,7 @@ class Cash implements PaymentMethodInterface
      * {@inheritdoc}
      */
     #[\Override]
-    public function setOrder(Order $Order)
+    public function setOrder(Order $Order): PaymentMethodInterface
     {
         $this->Order = $Order;
 

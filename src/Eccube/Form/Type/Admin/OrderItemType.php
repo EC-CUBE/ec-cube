@@ -20,7 +20,7 @@ use Eccube\Entity\Master\OrderItemType as OrderItemTypeMaster;
 use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\ProductClass;
-use Eccube\Form\DataTransformer;
+use Eccube\Form\DataTransformer\EntityToIdTransformer;
 use Eccube\Form\Type\PriceType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\Master\OrderItemTypeRepository;
@@ -44,98 +44,39 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class OrderItemType extends AbstractType
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
-     * @var BaseInfo
-     */
-    protected $BaseInfo;
-
-    /**
-     * @var ProductClassRepository
-     */
-    protected $productClassRepository;
-
-    /**
-     * @var OrderItemRepository
-     */
-    protected $orderItemRepository;
-
-    /**
-     * @var OrderItemTypeRepository
-     */
-    protected $orderItemTypeRepository;
-
-    /**
-     * @var TaxRuleRepository
-     */
-    protected $taxRuleRepository;
-
-    /**
-     * @var ValidatorInterface
-     */
-    protected $validator;
+    protected BaseInfo $BaseInfo;
 
     /**
      * OrderItemType constructor.
      *
-     * @param EntityManagerInterface $entityManager
-     * @param EccubeConfig $eccubeConfig
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param ProductClassRepository $productClassRepository
-     * @param OrderItemRepository $orderItemRepository
-     * @param OrderItemTypeRepository $orderItemTypeRepository
-     * @param TaxRuleRepository $taxRuleRepository
-     * @param ValidatorInterface $validator
-     *
      * @throws \Exception
      */
     public function __construct(
-        EntityManagerInterface $entityManager,
-        EccubeConfig $eccubeConfig,
+        protected EntityManagerInterface $entityManager,
+        protected EccubeConfig $eccubeConfig,
         BaseInfoRepository $baseInfoRepository,
-        ProductClassRepository $productClassRepository,
-        OrderItemRepository $orderItemRepository,
-        OrderItemTypeRepository $orderItemTypeRepository,
-        TaxRuleRepository $taxRuleRepository,
-        ValidatorInterface $validator,
+        protected ProductClassRepository $productClassRepository,
+        protected OrderItemRepository $orderItemRepository,
+        protected OrderItemTypeRepository $orderItemTypeRepository,
+        protected TaxRuleRepository $taxRuleRepository,
+        protected ValidatorInterface $validator,
     ) {
-        $this->entityManager = $entityManager;
-        $this->eccubeConfig = $eccubeConfig;
         $this->BaseInfo = $baseInfoRepository->get();
-        $this->productClassRepository = $productClassRepository;
-        $this->orderItemRepository = $orderItemRepository;
-        $this->orderItemTypeRepository = $orderItemTypeRepository;
-        $this->taxRuleRepository = $taxRuleRepository;
-        $this->validator = $validator;
     }
 
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('product_name', TextType::class, [
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_mtext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_mtext_len']),
                 ],
             ])
             ->add('price', PriceType::class, [
@@ -144,53 +85,51 @@ class OrderItemType extends AbstractType
             ->add('quantity', IntegerType::class, [
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_int_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_int_len']),
                 ],
             ])
             ->add('tax_rate', IntegerType::class, [
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Range(['min' => 0]),
-                    new Assert\Regex([
-                        'pattern' => "/^\d+(\.\d+)?$/u",
-                        'message' => 'form_error.float_only',
-                    ]),
+                    new Assert\Range(min: 0),
+                    new Assert\Regex(
+                        pattern: "/^\d+(\.\d+)?$/u",
+                        message: 'form_error.float_only'
+                    ),
                 ],
             ])
             ->add('point_rate', HiddenType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Range(['min' => 0]),
-                    new Assert\Regex([
-                        'pattern' => "/^\d+(\.\d+)?$/u",
-                        'message' => 'form_error.float_only',
-                    ]),
+                    new Assert\Range(min: 0),
+                    new Assert\Regex(
+                        pattern: "/^\d+(\.\d+)?$/u",
+                        message: 'form_error.float_only'
+                    ),
                 ],
             ])
         ;
 
         $builder
             ->add($builder->create('order_item_type', HiddenType::class)
-                ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
+                ->addModelTransformer(new EntityToIdTransformer(
                     $this->entityManager,
                     OrderItemTypeMaster::class
                 )))
             ->add($builder->create('tax_type', HiddenType::class)
-                ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
+                ->addModelTransformer(new EntityToIdTransformer(
                     $this->entityManager,
                     TaxType::class
                 )))
             ->add($builder->create('ProductClass', HiddenType::class)
-                ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
+                ->addModelTransformer(new EntityToIdTransformer(
                     $this->entityManager,
                     ProductClass::class
                 )));
 
         // 受注明細フォームの税率を補完する
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event): void {
             $OrderItem = $event->getData();
 
             if (!isset($OrderItem['tax_rate']) || StringUtil::isBlank($OrderItem['tax_rate'])) {
@@ -221,7 +160,7 @@ class OrderItemType extends AbstractType
             }
         });
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             /** @var OrderItem $OrderItem */
             $OrderItem = $event->getData();
 
@@ -265,7 +204,7 @@ class OrderItemType extends AbstractType
         });
 
         // price, quantityのバリデーション
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             $form = $event->getForm();
             /** @var OrderItem $OrderItem */
             $OrderItem = $event->getData();
@@ -305,13 +244,9 @@ class OrderItemType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @param OptionsResolver $resolver
-     *
-     * @return void
      */
     #[\Override]
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => OrderItem::class,
@@ -322,18 +257,12 @@ class OrderItemType extends AbstractType
      * {@inheritdoc}
      */
     #[\Override]
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'order_item';
     }
 
-    /**
-     * @param FormInterface $form
-     * @param ConstraintViolationListInterface $errors
-     *
-     * @return void
-     */
-    protected function addErrorsIfExists(FormInterface $form, ConstraintViolationListInterface $errors)
+    protected function addErrorsIfExists(FormInterface $form, ConstraintViolationListInterface $errors): void
     {
         if (count($errors) < 1) {
             return;

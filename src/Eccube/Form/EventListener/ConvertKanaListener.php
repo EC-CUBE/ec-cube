@@ -19,40 +19,19 @@ use Symfony\Component\Form\FormEvents;
 
 class ConvertKanaListener implements EventSubscriberInterface
 {
-    /**
-     * @var string
-     */
-    protected $option;
-
-    /**
-     * @var string
-     */
-    protected $encoding;
-
-    /**
-     * @param string $option
-     * @param string $encoding
-     */
-    public function __construct($option = 'a', $encoding = 'utf-8')
+    public function __construct(protected string $option = 'a', protected string $encoding = 'utf-8')
     {
-        $this->option = $option;
-        $this->encoding = $encoding;
     }
 
     #[\Override]
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             FormEvents::PRE_SUBMIT => 'onPreSubmit',
         ];
     }
 
-    /**
-     * @param FormEvent $event
-     *
-     * @return void
-     */
-    public function onPreSubmit(FormEvent $event)
+    public function onPreSubmit(FormEvent $event): void
     {
         $data = $event->getData();
 

@@ -20,7 +20,7 @@ class ConvertLineFeedFilter extends \php_user_filter
     /**
      * @param resource $in
      * @param resource $out
-     * @param int $consumed
+     * @param float|int $consumed
      * @param bool $closing
      */
     #[\Override]
@@ -28,7 +28,7 @@ class ConvertLineFeedFilter extends \php_user_filter
     {
         while ($bucket = \stream_bucket_make_writeable($in)) {
             $bucket->data = StringUtil::convertLineFeed($bucket->data);
-            $consumed += $bucket->datalen;
+            $consumed += (int) $bucket->datalen;
             \stream_bucket_append($out, $bucket);
         }
 

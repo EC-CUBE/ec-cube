@@ -14,36 +14,27 @@
 namespace Eccube\Command;
 
 use Eccube\Service\Composer\ComposerApiService;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'eccube:composer:update')]
 class ComposerUpdateCommand extends Command
 {
-    protected static $defaultName = 'eccube:composer:update';
-
-    /**
-     * @var ComposerApiService
-     */
-    private $composerService;
-
-    public function __construct(ComposerApiService $composerService)
+    public function __construct(private readonly ComposerApiService $composerService)
     {
         parent::__construct();
-        $this->composerService = $composerService;
     }
 
-    /**
-     * @return void
-     */
     #[\Override]
-    protected function configure()
+    protected function configure(): void
     {
         $this->addOption('dry-run');
     }
 
     #[\Override]
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->composerService->execUpdate($input->getOption('dry-run'), $output);
 

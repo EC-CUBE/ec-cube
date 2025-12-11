@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,18 +19,16 @@ use Eccube\Entity\Product;
 use Eccube\Repository\ProductRepository;
 use Eccube\Tests\EccubeTestCase;
 
-class TimeZoneTest extends EccubeTestCase
+final class TimeZoneTest extends EccubeTestCase
 {
-    /**
-     * @var ProductRepository
-     */
-    protected $productRepository;
+    protected ?ProductRepository $productRepository = null;
 
     /**
      * {@inheritdoc}
      *
      * @throws \Doctrine\DBAL\DBALException
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -61,6 +61,7 @@ class TimeZoneTest extends EccubeTestCase
 
         // jstに変換されて取得されるはず.
         $expected = '2000-01-01 00:00:00';
+        $this->assertInstanceOf(Product::class, $product);
         $actual = $product->getCreateDate()->format('Y-m-d H:i:s');
 
         $this->assertSame($expected, $actual);
@@ -95,6 +96,7 @@ class TimeZoneTest extends EccubeTestCase
         // jstに変換されて取得できるはず
         $product = $this->productRepository->find($id);
         $expected = '2000-01-01 00:00:00';
+        $this->assertInstanceOf(Product::class, $product);
         $actual = $product->getCreateDate()->format('Y-m-d H:i:s');
 
         $this->assertSame($expected, $actual);

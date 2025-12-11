@@ -22,44 +22,34 @@ class MasterType extends AbstractType
 {
     /**
      * {@inheritdoc}
-     *
-     * @param OptionsResolver $resolver
-     *
-     * @return void
      */
     #[\Override]
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'multiple' => false,
             'expanded' => false,
             'required' => false,
             'placeholder' => false,
-            'query_builder' => function (EntityRepository $er) {
-                return $er->createQueryBuilder('m')
-                    ->orderBy('m.sort_no', 'ASC');
-            },
+            'query_builder' => fn (EntityRepository $er) => $er->createQueryBuilder('m')
+                ->orderBy('m.sort_no', 'ASC'),
         ]);
     }
 
     /**
      * {@inheritdoc}
-     *
-     * @return string
      */
     #[\Override]
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'master';
     }
 
     /**
      * {@inheritdoc}
-     *
-     * @return string
      */
     #[\Override]
-    public function getParent()
+    public function getParent(): string
     {
         return EntityType::class;
     }

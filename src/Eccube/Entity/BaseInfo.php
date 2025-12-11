@@ -13,325 +13,159 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Entity\Master\Country;
+use Eccube\Entity\Master\Pref;
+use Eccube\Repository\BaseInfoRepository;
 
 if (!class_exists(BaseInfo::class)) {
-    /**
-     * BaseInfo
-     *
-     * @ORM\Table(name="dtb_base_info")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\BaseInfoRepository")
-     *
-     * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
-     */
+    #[ORM\Table(name: 'dtb_base_info')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: BaseInfoRepository::class)]
+    #[ORM\Cache(usage: 'NONSTRICT_READ_WRITE')]
     class BaseInfo extends AbstractEntity
     {
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
-         *
-         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
-         */
-        private $id;
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+        /** @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 **/
+        private ?int $id = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="company_name", type="string", length=255, nullable=true)
-         */
-        private $company_name;
+        #[ORM\Column(name: 'company_name', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $company_name = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="company_kana", type="string", length=255, nullable=true)
-         */
-        private $company_kana;
+        #[ORM\Column(name: 'company_kana', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $company_kana = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="postal_code", type="string", length=8, nullable=true)
-         */
-        private $postal_code;
+        #[ORM\Column(name: 'postal_code', type: Types::STRING, length: 8, nullable: true)]
+        private ?string $postal_code = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="addr01", type="string", length=255, nullable=true)
-         */
-        private $addr01;
+        #[ORM\Column(name: 'addr01', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $addr01 = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="addr02", type="string", length=255, nullable=true)
-         */
-        private $addr02;
+        #[ORM\Column(name: 'addr02', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $addr02 = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="phone_number", type="string", length=14, nullable=true)
-         */
-        private $phone_number;
+        #[ORM\Column(name: 'phone_number', type: Types::STRING, length: 14, nullable: true)]
+        private ?string $phone_number = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="business_hour", type="string", length=255, nullable=true)
-         */
-        private $business_hour;
+        #[ORM\Column(name: 'business_hour', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $business_hour = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="email01", type="string", length=255, nullable=true)
-         */
-        private $email01;
+        #[ORM\Column(name: 'email01', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $email01 = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="email02", type="string", length=255, nullable=true)
-         */
-        private $email02;
+        #[ORM\Column(name: 'email02', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $email02 = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="email03", type="string", length=255, nullable=true)
-         */
-        private $email03;
+        #[ORM\Column(name: 'email03', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $email03 = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="email04", type="string", length=255, nullable=true)
-         */
-        private $email04;
+        #[ORM\Column(name: 'email04', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $email04 = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="shop_name", type="string", length=255, nullable=true)
-         */
-        private $shop_name;
+        #[ORM\Column(name: 'shop_name', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $shop_name = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="shop_kana", type="string", length=255, nullable=true)
-         */
-        private $shop_kana;
+        #[ORM\Column(name: 'shop_kana', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $shop_kana = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="shop_name_eng", type="string", length=255, nullable=true)
-         */
-        private $shop_name_eng;
+        #[ORM\Column(name: 'shop_name_eng', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $shop_name_eng = null;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
         private $update_date;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="good_traded", type="string", length=4000, nullable=true)
-         */
-        private $good_traded;
+        #[ORM\Column(name: 'good_traded', type: Types::STRING, length: 4000, nullable: true)]
+        private ?string $good_traded = null;
+
+        #[ORM\Column(name: 'message', type: Types::STRING, length: 4000, nullable: true)]
+        private ?string $message = null;
+
+        #[ORM\Column(name: 'delivery_free_amount', type: Types::DECIMAL, precision: 12, scale: 2, nullable: true, options: ['unsigned' => true])]
+        private ?string $delivery_free_amount = null;
+
+        #[ORM\Column(name: 'delivery_free_quantity', type: Types::INTEGER, nullable: true, options: ['unsigned' => true])]
+        private ?int $delivery_free_quantity = null;
+
+        #[ORM\Column(name: 'option_mypage_order_status_display', type: Types::BOOLEAN, options: ['default' => true])]
+        private bool $option_mypage_order_status_display = true;
+
+        #[ORM\Column(name: 'option_nostock_hidden', type: Types::BOOLEAN, options: ['default' => false])]
+        private bool $option_nostock_hidden = false;
+
+        #[ORM\Column(name: 'option_favorite_product', type: Types::BOOLEAN, options: ['default' => true])]
+        private bool $option_favorite_product = true;
+
+        #[ORM\Column(name: 'option_product_delivery_fee', type: Types::BOOLEAN, options: ['default' => false])]
+        private bool $option_product_delivery_fee = false;
+
+        #[ORM\Column(name: 'invoice_registration_number', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $invoice_registration_number = null;
+
+        #[ORM\Column(name: 'option_product_tax_rule', type: Types::BOOLEAN, options: ['default' => false])]
+        private bool $option_product_tax_rule = false;
+
+        #[ORM\Column(name: 'option_customer_activate', type: Types::BOOLEAN, options: ['default' => true])]
+        private bool $option_customer_activate = true;
+
+        #[ORM\Column(name: 'option_remember_me', type: Types::BOOLEAN, options: ['default' => true])]
+        private bool $option_remember_me = true;
+
+        #[ORM\Column(name: 'option_mail_notifier', type: Types::BOOLEAN, options: ['default' => false])]
+        private bool $option_mail_notifier = false;
+
+        #[ORM\Column(name: 'authentication_key', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $authentication_key = null;
 
         /**
-         * @var string|null
-         *
-         * @ORM\Column(name="message", type="string", length=4000, nullable=true)
-         */
-        private $message;
-
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="delivery_free_amount", type="decimal", precision=12, scale=2, nullable=true, options={"unsigned":true})
-         */
-        private $delivery_free_amount;
-
-        /**
-         * @var int|null
-         *
-         * @ORM\Column(name="delivery_free_quantity", type="integer", nullable=true, options={"unsigned":true})
-         */
-        private $delivery_free_quantity;
-
-        /**
-         * @var bool
-         *
-         * @ORM\Column(name="option_mypage_order_status_display", type="boolean", options={"default":true})
-         */
-        private $option_mypage_order_status_display = true;
-
-        /**
-         * @var bool
-         *
-         * @ORM\Column(name="option_nostock_hidden", type="boolean", options={"default":false})
-         */
-        private $option_nostock_hidden = false;
-
-        /**
-         * @var bool
-         *
-         * @ORM\Column(name="option_favorite_product", type="boolean", options={"default":true})
-         */
-        private $option_favorite_product = true;
-
-        /**
-         * @var bool
-         *
-         * @ORM\Column(name="option_product_delivery_fee", type="boolean", options={"default":false})
-         */
-        private $option_product_delivery_fee = false;
-
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="invoice_registration_number", type="string", length=255, nullable=true)
-         */
-        private $invoice_registration_number;
-
-        /**
-         * @var bool
-         *
-         * @ORM\Column(name="option_product_tax_rule", type="boolean", options={"default":false})
-         */
-        private $option_product_tax_rule = false;
-
-        /**
-         * @var bool
-         *
-         * @ORM\Column(name="option_customer_activate", type="boolean", options={"default":true})
-         */
-        private $option_customer_activate = true;
-
-        /**
-         * @var bool
-         *
-         * @ORM\Column(name="option_remember_me", type="boolean", options={"default":true})
-         */
-        private $option_remember_me = true;
-
-        /**
-         * @var bool
-         *
-         * @ORM\Column(name="option_mail_notifier", type="boolean", options={"default":false})
-         */
-        private $option_mail_notifier = false;
-
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="authentication_key", type="string", length=255, nullable=true)
-         */
-        private $authentication_key;
-
-        /**
-         * @var string|null
-         *
          * @deprecated 使用していないため、削除予定
-         *
-         * @ORM\Column(name="php_path", type="string", length=255, nullable=true)
          */
-        private $php_path;
+        #[ORM\Column(name: 'php_path', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $php_path = null;
 
-        /**
-         * @var bool
-         *
-         * @ORM\Column(name="option_point", type="boolean", options={"default":true})
-         */
-        private $option_point = true;
+        #[ORM\Column(name: 'option_point', type: Types::BOOLEAN, options: ['default' => true])]
+        private bool $option_point = true;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="basic_point_rate", type="decimal", precision=10, scale=0, options={"unsigned":true, "default":1}, nullable=true)
-         */
-        private $basic_point_rate = '1';
+        #[ORM\Column(name: 'basic_point_rate', type: Types::DECIMAL, precision: 10, scale: 0, options: ['unsigned' => true, 'default' => 1], nullable: true)]
+        private ?string $basic_point_rate = '1';
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="point_conversion_rate", type="decimal", precision=10, scale=0, options={"unsigned":true, "default":1}, nullable=true)
-         */
-        private $point_conversion_rate = '1';
+        #[ORM\Column(name: 'point_conversion_rate', type: Types::DECIMAL, precision: 10, scale: 0, options: ['unsigned' => true, 'default' => 1], nullable: true)]
+        private ?string $point_conversion_rate = '1';
 
-        /**
-         * @var Master\Country|null
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Country")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="country_id", referencedColumnName="id")
-         * })
-         *
-         * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
-         */
-        private $Country;
+        #[ORM\ManyToOne(targetEntity: Country::class)]
+        #[ORM\Cache(usage: 'NONSTRICT_READ_WRITE')]
+        #[ORM\JoinColumn(name: 'country_id', referencedColumnName: 'id')]
+        private ?Country $Country = null;
 
-        /**
-         * @var Master\Pref|null
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Pref")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="pref_id", referencedColumnName="id")
-         * })
-         *
-         * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
-         */
-        private $Pref;
+        #[ORM\ManyToOne(targetEntity: Pref::class)]
+        #[ORM\Cache(usage: 'NONSTRICT_READ_WRITE')]
+        #[ORM\JoinColumn(name: 'pref_id', referencedColumnName: 'id')]
+        private ?Pref $Pref = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="ga_id", type="string", length=255, nullable=true)
-         */
-        private $gaId;
+        #[ORM\Column(name: 'ga_id', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $gaId = null;
 
         /**
          * Get id.
          *
          * @return int
          */
-        public function getId()
+        public function getId(): ?int
         {
             return $this->id;
         }
 
         /**
          * Set companyName.
-         *
-         * @param string|null $companyName
-         *
-         * @return BaseInfo
          */
-        public function setCompanyName($companyName = null)
+        public function setCompanyName(?string $companyName = null): BaseInfo
         {
             $this->company_name = $companyName;
 
@@ -340,22 +174,16 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get companyName.
-         *
-         * @return string|null
          */
-        public function getCompanyName()
+        public function getCompanyName(): ?string
         {
             return $this->company_name;
         }
 
         /**
          * Set companyKana.
-         *
-         * @param string|null $companyKana
-         *
-         * @return BaseInfo
          */
-        public function setCompanyKana($companyKana = null)
+        public function setCompanyKana(?string $companyKana = null): BaseInfo
         {
             $this->company_kana = $companyKana;
 
@@ -364,22 +192,16 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get companyKana.
-         *
-         * @return string|null
          */
-        public function getCompanyKana()
+        public function getCompanyKana(): ?string
         {
             return $this->company_kana;
         }
 
         /**
          * Set postal_code.
-         *
-         * @param string|null $postal_code
-         *
-         * @return BaseInfo
          */
-        public function setPostalCode($postal_code = null)
+        public function setPostalCode(?string $postal_code = null): BaseInfo
         {
             $this->postal_code = $postal_code;
 
@@ -388,22 +210,16 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get postal_code.
-         *
-         * @return string|null
          */
-        public function getPostalCode()
+        public function getPostalCode(): ?string
         {
             return $this->postal_code;
         }
 
         /**
          * Set addr01.
-         *
-         * @param string|null $addr01
-         *
-         * @return BaseInfo
          */
-        public function setAddr01($addr01 = null)
+        public function setAddr01(?string $addr01 = null): BaseInfo
         {
             $this->addr01 = $addr01;
 
@@ -412,22 +228,16 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get addr01.
-         *
-         * @return string|null
          */
-        public function getAddr01()
+        public function getAddr01(): ?string
         {
             return $this->addr01;
         }
 
         /**
          * Set addr02.
-         *
-         * @param string|null $addr02
-         *
-         * @return BaseInfo
          */
-        public function setAddr02($addr02 = null)
+        public function setAddr02(?string $addr02 = null): BaseInfo
         {
             $this->addr02 = $addr02;
 
@@ -436,22 +246,16 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get addr02.
-         *
-         * @return string|null
          */
-        public function getAddr02()
+        public function getAddr02(): ?string
         {
             return $this->addr02;
         }
 
         /**
          * Set phone_number.
-         *
-         * @param string|null $phone_number
-         *
-         * @return BaseInfo
          */
-        public function setPhoneNumber($phone_number = null)
+        public function setPhoneNumber(?string $phone_number = null): BaseInfo
         {
             $this->phone_number = $phone_number;
 
@@ -460,22 +264,16 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get phone_number.
-         *
-         * @return string|null
          */
-        public function getPhoneNumber()
+        public function getPhoneNumber(): ?string
         {
             return $this->phone_number;
         }
 
         /**
          * Set businessHour.
-         *
-         * @param string|null $businessHour
-         *
-         * @return BaseInfo
          */
-        public function setBusinessHour($businessHour = null)
+        public function setBusinessHour(?string $businessHour = null): BaseInfo
         {
             $this->business_hour = $businessHour;
 
@@ -484,22 +282,16 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get businessHour.
-         *
-         * @return string|null
          */
-        public function getBusinessHour()
+        public function getBusinessHour(): ?string
         {
             return $this->business_hour;
         }
 
         /**
          * Set email01.
-         *
-         * @param string|null $email01
-         *
-         * @return BaseInfo
          */
-        public function setEmail01($email01 = null)
+        public function setEmail01(?string $email01 = null): BaseInfo
         {
             $this->email01 = $email01;
 
@@ -508,22 +300,16 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get email01.
-         *
-         * @return string|null
          */
-        public function getEmail01()
+        public function getEmail01(): ?string
         {
             return $this->email01;
         }
 
         /**
          * Set email02.
-         *
-         * @param string|null $email02
-         *
-         * @return BaseInfo
          */
-        public function setEmail02($email02 = null)
+        public function setEmail02(?string $email02 = null): BaseInfo
         {
             $this->email02 = $email02;
 
@@ -532,22 +318,16 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get email02.
-         *
-         * @return string|null
          */
-        public function getEmail02()
+        public function getEmail02(): ?string
         {
             return $this->email02;
         }
 
         /**
          * Set email03.
-         *
-         * @param string|null $email03
-         *
-         * @return BaseInfo
          */
-        public function setEmail03($email03 = null)
+        public function setEmail03(?string $email03 = null): BaseInfo
         {
             $this->email03 = $email03;
 
@@ -556,22 +336,16 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get email03.
-         *
-         * @return string|null
          */
-        public function getEmail03()
+        public function getEmail03(): ?string
         {
             return $this->email03;
         }
 
         /**
          * Set email04.
-         *
-         * @param string|null $email04
-         *
-         * @return BaseInfo
          */
-        public function setEmail04($email04 = null)
+        public function setEmail04(?string $email04 = null): BaseInfo
         {
             $this->email04 = $email04;
 
@@ -580,22 +354,16 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get email04.
-         *
-         * @return string|null
          */
-        public function getEmail04()
+        public function getEmail04(): ?string
         {
             return $this->email04;
         }
 
         /**
          * Set shopName.
-         *
-         * @param string|null $shopName
-         *
-         * @return BaseInfo
          */
-        public function setShopName($shopName = null)
+        public function setShopName(?string $shopName = null): BaseInfo
         {
             $this->shop_name = $shopName;
 
@@ -604,22 +372,16 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get shopName.
-         *
-         * @return string|null
          */
-        public function getShopName()
+        public function getShopName(): ?string
         {
             return $this->shop_name;
         }
 
         /**
          * Set shopKana.
-         *
-         * @param string|null $shopKana
-         *
-         * @return BaseInfo
          */
-        public function setShopKana($shopKana = null)
+        public function setShopKana(?string $shopKana = null): BaseInfo
         {
             $this->shop_kana = $shopKana;
 
@@ -628,22 +390,16 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get shopKana.
-         *
-         * @return string|null
          */
-        public function getShopKana()
+        public function getShopKana(): ?string
         {
             return $this->shop_kana;
         }
 
         /**
          * Set shopNameEng.
-         *
-         * @param string|null $shopNameEng
-         *
-         * @return BaseInfo
          */
-        public function setShopNameEng($shopNameEng = null)
+        public function setShopNameEng(?string $shopNameEng = null): BaseInfo
         {
             $this->shop_name_eng = $shopNameEng;
 
@@ -652,22 +408,16 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get shopNameEng.
-         *
-         * @return string|null
          */
-        public function getShopNameEng()
+        public function getShopNameEng(): ?string
         {
             return $this->shop_name_eng;
         }
 
         /**
          * Set updateDate.
-         *
-         * @param \DateTime $updateDate
-         *
-         * @return BaseInfo
          */
-        public function setUpdateDate($updateDate)
+        public function setUpdateDate(\DateTime $updateDate): BaseInfo
         {
             $this->update_date = $updateDate;
 
@@ -676,22 +426,16 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get updateDate.
-         *
-         * @return \DateTime
          */
-        public function getUpdateDate()
+        public function getUpdateDate(): ?\DateTime
         {
             return $this->update_date;
         }
 
         /**
          * Set goodTraded.
-         *
-         * @param string|null $goodTraded
-         *
-         * @return BaseInfo
          */
-        public function setGoodTraded($goodTraded = null)
+        public function setGoodTraded(?string $goodTraded = null): BaseInfo
         {
             $this->good_traded = $goodTraded;
 
@@ -700,22 +444,16 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get goodTraded.
-         *
-         * @return string|null
          */
-        public function getGoodTraded()
+        public function getGoodTraded(): ?string
         {
             return $this->good_traded;
         }
 
         /**
          * Set message.
-         *
-         * @param string|null $message
-         *
-         * @return BaseInfo
          */
-        public function setMessage($message = null)
+        public function setMessage(?string $message = null): BaseInfo
         {
             $this->message = $message;
 
@@ -724,22 +462,16 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get message.
-         *
-         * @return string|null
          */
-        public function getMessage()
+        public function getMessage(): ?string
         {
             return $this->message;
         }
 
         /**
          * Set deliveryFreeAmount.
-         *
-         * @param string|null $deliveryFreeAmount
-         *
-         * @return BaseInfo
          */
-        public function setDeliveryFreeAmount($deliveryFreeAmount = null)
+        public function setDeliveryFreeAmount(?string $deliveryFreeAmount = null): BaseInfo
         {
             $this->delivery_free_amount = $deliveryFreeAmount;
 
@@ -748,22 +480,16 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get deliveryFreeAmount.
-         *
-         * @return string|null
          */
-        public function getDeliveryFreeAmount()
+        public function getDeliveryFreeAmount(): ?string
         {
             return $this->delivery_free_amount;
         }
 
         /**
          * Set deliveryFreeQuantity.
-         *
-         * @param int|null $deliveryFreeQuantity
-         *
-         * @return BaseInfo
          */
-        public function setDeliveryFreeQuantity($deliveryFreeQuantity = null)
+        public function setDeliveryFreeQuantity(?int $deliveryFreeQuantity = null): BaseInfo
         {
             $this->delivery_free_quantity = $deliveryFreeQuantity;
 
@@ -772,22 +498,16 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get deliveryFreeQuantity.
-         *
-         * @return int|null
          */
-        public function getDeliveryFreeQuantity()
+        public function getDeliveryFreeQuantity(): ?int
         {
             return $this->delivery_free_quantity;
         }
 
         /**
          * Set optionMypageOrderStatusDisplay.
-         *
-         * @param bool $optionMypageOrderStatusDisplay
-         *
-         * @return BaseInfo
          */
-        public function setOptionMypageOrderStatusDisplay($optionMypageOrderStatusDisplay)
+        public function setOptionMypageOrderStatusDisplay(bool $optionMypageOrderStatusDisplay): BaseInfo
         {
             $this->option_mypage_order_status_display = $optionMypageOrderStatusDisplay;
 
@@ -796,22 +516,16 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get optionMypageOrderStatusDisplay.
-         *
-         * @return bool
          */
-        public function isOptionMypageOrderStatusDisplay()
+        public function isOptionMypageOrderStatusDisplay(): bool
         {
             return $this->option_mypage_order_status_display;
         }
 
         /**
          * Set optionNostockHidden.
-         *
-         * @param bool $optionNostockHidden
-         *
-         * @return BaseInfo
          */
-        public function setOptionNostockHidden($optionNostockHidden)
+        public function setOptionNostockHidden(bool $optionNostockHidden): BaseInfo
         {
             $this->option_nostock_hidden = $optionNostockHidden;
 
@@ -820,22 +534,16 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get optionNostockHidden.
-         *
-         * @return bool
          */
-        public function isOptionNostockHidden()
+        public function isOptionNostockHidden(): bool
         {
             return $this->option_nostock_hidden;
         }
 
         /**
          * Set optionFavoriteProduct.
-         *
-         * @param bool $optionFavoriteProduct
-         *
-         * @return BaseInfo
          */
-        public function setOptionFavoriteProduct($optionFavoriteProduct)
+        public function setOptionFavoriteProduct(bool $optionFavoriteProduct): BaseInfo
         {
             $this->option_favorite_product = $optionFavoriteProduct;
 
@@ -844,22 +552,16 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get optionFavoriteProduct.
-         *
-         * @return bool
          */
-        public function isOptionFavoriteProduct()
+        public function isOptionFavoriteProduct(): bool
         {
             return $this->option_favorite_product;
         }
 
         /**
          * Set optionProductDeliveryFee.
-         *
-         * @param bool $optionProductDeliveryFee
-         *
-         * @return BaseInfo
          */
-        public function setOptionProductDeliveryFee($optionProductDeliveryFee)
+        public function setOptionProductDeliveryFee(bool $optionProductDeliveryFee): BaseInfo
         {
             $this->option_product_delivery_fee = $optionProductDeliveryFee;
 
@@ -868,22 +570,16 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get optionProductDeliveryFee.
-         *
-         * @return bool
          */
-        public function isOptionProductDeliveryFee()
+        public function isOptionProductDeliveryFee(): bool
         {
             return $this->option_product_delivery_fee;
         }
 
         /**
          * Set invoiceRegistrationNumber.
-         *
-         * @param string $invoiceRegistrationNumber
-         *
-         * @return BaseInfo
          */
-        public function setInvoiceRegistrationNumber($invoiceRegistrationNumber)
+        public function setInvoiceRegistrationNumber(string $invoiceRegistrationNumber): BaseInfo
         {
             $this->invoice_registration_number = $invoiceRegistrationNumber;
 
@@ -892,22 +588,16 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get invoiceRegistrationNumber.
-         *
-         * @return string|null
          */
-        public function getInvoiceRegistrationNumber()
+        public function getInvoiceRegistrationNumber(): ?string
         {
             return $this->invoice_registration_number;
         }
 
         /**
          * Set optionProductTaxRule.
-         *
-         * @param bool $optionProductTaxRule
-         *
-         * @return BaseInfo
          */
-        public function setOptionProductTaxRule($optionProductTaxRule)
+        public function setOptionProductTaxRule(bool $optionProductTaxRule): BaseInfo
         {
             $this->option_product_tax_rule = $optionProductTaxRule;
 
@@ -916,22 +606,16 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get optionProductTaxRule.
-         *
-         * @return bool
          */
-        public function isOptionProductTaxRule()
+        public function isOptionProductTaxRule(): bool
         {
             return $this->option_product_tax_rule;
         }
 
         /**
          * Set optionCustomerActivate.
-         *
-         * @param bool $optionCustomerActivate
-         *
-         * @return BaseInfo
          */
-        public function setOptionCustomerActivate($optionCustomerActivate)
+        public function setOptionCustomerActivate(bool $optionCustomerActivate): BaseInfo
         {
             $this->option_customer_activate = $optionCustomerActivate;
 
@@ -940,22 +624,16 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get optionCustomerActivate.
-         *
-         * @return bool
          */
-        public function isOptionCustomerActivate()
+        public function isOptionCustomerActivate(): bool
         {
             return $this->option_customer_activate;
         }
 
         /**
          * Set optionRememberMe.
-         *
-         * @param bool $optionRememberMe
-         *
-         * @return BaseInfo
          */
-        public function setOptionRememberMe($optionRememberMe)
+        public function setOptionRememberMe(bool $optionRememberMe): BaseInfo
         {
             $this->option_remember_me = $optionRememberMe;
 
@@ -964,22 +642,16 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get optionRememberMe.
-         *
-         * @return bool
          */
-        public function isOptionRememberMe()
+        public function isOptionRememberMe(): bool
         {
             return $this->option_remember_me;
         }
 
         /**
          * Set optionMailNotifier.
-         *
-         * @param bool $optionRememberMe
-         *
-         * @return BaseInfo
          */
-        public function setOptionMailNotifier($optionRememberMe)
+        public function setOptionMailNotifier(bool $optionRememberMe): BaseInfo
         {
             $this->option_mail_notifier = $optionRememberMe;
 
@@ -988,22 +660,16 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get optionRememberMe.
-         *
-         * @return bool
          */
-        public function isOptionMailNotifier()
+        public function isOptionMailNotifier(): bool
         {
             return $this->option_mail_notifier;
         }
 
         /**
          * Set authenticationKey.
-         *
-         * @param string|null $authenticationKey
-         *
-         * @return BaseInfo
          */
-        public function setAuthenticationKey($authenticationKey = null)
+        public function setAuthenticationKey(?string $authenticationKey = null): BaseInfo
         {
             $this->authentication_key = $authenticationKey;
 
@@ -1012,22 +678,16 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get authenticationKey.
-         *
-         * @return string|null
          */
-        public function getAuthenticationKey()
+        public function getAuthenticationKey(): ?string
         {
             return $this->authentication_key;
         }
 
         /**
          * Set country.
-         *
-         * @param Master\Country|null $country
-         *
-         * @return BaseInfo
          */
-        public function setCountry(?Master\Country $country = null)
+        public function setCountry(?Country $country = null): BaseInfo
         {
             $this->Country = $country;
 
@@ -1036,22 +696,16 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get country.
-         *
-         * @return Master\Country|null
          */
-        public function getCountry()
+        public function getCountry(): ?Country
         {
             return $this->Country;
         }
 
         /**
          * Set pref.
-         *
-         * @param Master\Pref|null $pref
-         *
-         * @return BaseInfo
          */
-        public function setPref(?Master\Pref $pref = null)
+        public function setPref(?Pref $pref = null): BaseInfo
         {
             $this->Pref = $pref;
 
@@ -1060,22 +714,16 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get pref.
-         *
-         * @return Master\Pref|null
          */
-        public function getPref()
+        public function getPref(): ?Pref
         {
             return $this->Pref;
         }
 
         /**
          * Set optionPoint
-         *
-         * @param bool $optionPoint
-         *
-         * @return BaseInfo
          */
-        public function setOptionPoint($optionPoint)
+        public function setOptionPoint(bool $optionPoint): BaseInfo
         {
             $this->option_point = $optionPoint;
 
@@ -1084,22 +732,16 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get optionPoint
-         *
-         * @return bool
          */
-        public function isOptionPoint()
+        public function isOptionPoint(): bool
         {
             return $this->option_point;
         }
 
         /**
          * Set pointConversionRate
-         *
-         * @param string $pointConversionRate
-         *
-         * @return BaseInfo
          */
-        public function setPointConversionRate($pointConversionRate)
+        public function setPointConversionRate(?string $pointConversionRate): BaseInfo
         {
             $this->point_conversion_rate = $pointConversionRate;
 
@@ -1108,22 +750,16 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get pointConversionRate
-         *
-         * @return string|null
          */
-        public function getPointConversionRate()
+        public function getPointConversionRate(): ?string
         {
             return $this->point_conversion_rate;
         }
 
         /**
          * Set basicPointRate
-         *
-         * @param string $basicPointRate
-         *
-         * @return BaseInfo
          */
-        public function setBasicPointRate($basicPointRate)
+        public function setBasicPointRate(?string $basicPointRate): BaseInfo
         {
             $this->basic_point_rate = $basicPointRate;
 
@@ -1132,32 +768,26 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get basicPointRate
-         *
-         * @return string
          */
-        public function getBasicPointRate()
+        public function getBasicPointRate(): string
         {
             return $this->basic_point_rate;
         }
 
         /**
-         * @return string|null
-         *
          * @deprecated 使用していないため、削除予定
          */
-        public function getPhpPath()
+        public function getPhpPath(): ?string
         {
             return $this->php_path;
         }
 
         /**
-         * @param string|null $php_path
-         *
          * @deprecated 使用していないため、削除予定
          *
          * @return $this
          */
-        public function setPhpPath($php_path)
+        public function setPhpPath(?string $php_path): static
         {
             $this->php_path = $php_path;
 
@@ -1166,12 +796,8 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Set gaId.
-         *
-         * @param string|null $gaId
-         *
-         * @return BaseInfo
          */
-        public function setGaId($gaId = null)
+        public function setGaId(?string $gaId = null): BaseInfo
         {
             $this->gaId = $gaId;
 
@@ -1180,10 +806,8 @@ if (!class_exists(BaseInfo::class)) {
 
         /**
          * Get gaId.
-         *
-         * @return string|null
          */
-        public function getGaId()
+        public function getGaId(): ?string
         {
             return $this->gaId;
         }

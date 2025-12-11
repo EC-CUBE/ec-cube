@@ -13,77 +13,44 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\TradeLawRepository;
 
 if (!class_exists(TradeLaw::class)) {
     /**
      * TradeLaw
-     *
-     * @ORM\Table(name="dtb_tradelaw")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\TradeLawRepository")
      */
+    #[ORM\Table(name: 'dtb_tradelaw')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: TradeLawRepository::class)]
     class TradeLaw extends AbstractEntity implements \Stringable
     {
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
-         */
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         private int $id;
 
-        /**
-         * @var ?string
-         *
-         * @ORM\Column(name="name", type="string", length=255, nullable=true)
-         */
+        #[ORM\Column(name: 'name', type: Types::STRING, length: 255, nullable: true)]
         private ?string $name = null;
 
-        /**
-         * @var ?string
-         *
-         * @ORM\Column(name="description", type="string", length=4000, nullable=true)
-         */
+        #[ORM\Column(name: 'description', type: Types::STRING, length: 4000, nullable: true)]
         private ?string $description = null;
 
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="sort_no", type="smallint", nullable=false)
-         */
+        #[ORM\Column(name: 'sort_no', type: Types::SMALLINT, nullable: false)]
         private int $sortNo;
 
-        /**
-         * @var bool
-         *
-         * @ORM\Column(name="display_order_screen", type="boolean")
-         */
+        #[ORM\Column(name: 'display_order_screen', type: Types::BOOLEAN)]
         private bool $displayOrderScreen = false;
 
-        /**
-         * @return string
-         */
         #[\Override]
         public function __toString(): string
         {
-            return (string) $this->getName();
+            return $this->getName() ?? '';
         }
 
-        /**
-         * @param int $id
-         *
-         * @return TradeLaw
-         */
         public function setId(int $id): TradeLaw
         {
             $this->id = $id;
@@ -94,15 +61,13 @@ if (!class_exists(TradeLaw::class)) {
         /**
          * @return int
          */
-        public function getId(): int
+        public function getId(): ?int
         {
             return $this->id;
         }
 
         /**
          * @param string $name
-         *
-         * @return TradeLaw
          */
         public function setName(?string $name): TradeLaw
         {
@@ -111,9 +76,6 @@ if (!class_exists(TradeLaw::class)) {
             return $this;
         }
 
-        /**
-         * @return string
-         */
         public function getName(): ?string
         {
             return $this->name;
@@ -121,8 +83,6 @@ if (!class_exists(TradeLaw::class)) {
 
         /**
          * @param string $description
-         *
-         * @return TradeLaw
          */
         public function setDescription(?string $description): TradeLaw
         {
@@ -131,19 +91,11 @@ if (!class_exists(TradeLaw::class)) {
             return $this;
         }
 
-        /**
-         * @return string
-         */
         public function getDescription(): ?string
         {
             return $this->description;
         }
 
-        /**
-         * @param int $sortNo
-         *
-         * @return TradeLaw
-         */
         public function setSortNo(int $sortNo): TradeLaw
         {
             $this->sortNo = $sortNo;
@@ -151,19 +103,11 @@ if (!class_exists(TradeLaw::class)) {
             return $this;
         }
 
-        /**
-         * @return int
-         */
         public function getSortNo(): int
         {
             return $this->sortNo;
         }
 
-        /**
-         * @param bool $displayOrderScreen
-         *
-         * @return TradeLaw
-         */
         public function setDisplayOrderScreen(bool $displayOrderScreen): TradeLaw
         {
             $this->displayOrderScreen = $displayOrderScreen;
@@ -171,9 +115,6 @@ if (!class_exists(TradeLaw::class)) {
             return $this;
         }
 
-        /**
-         * @return bool
-         */
         public function isDisplayOrderScreen(): bool
         {
             return $this->displayOrderScreen;

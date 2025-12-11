@@ -13,85 +13,56 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\DeliveryDurationRepository;
 
 if (!class_exists(DeliveryDuration::class)) {
     /**
      * DeliveryDuration
-     *
-     * @ORM\Table(name="dtb_delivery_duration")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\DeliveryDurationRepository")
      */
+    #[ORM\Table(name: 'dtb_delivery_duration')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: DeliveryDurationRepository::class)]
     class DeliveryDuration extends AbstractEntity implements \Stringable
     {
-        /**
-         * @return string
-         */
         #[\Override]
         public function __toString(): string
         {
             return (string) $this->getName();
         }
 
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
-         *
-         * @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要
-         */
-        private $id;
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+        /**  @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
+        private ?int $id = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="name", type="string", length=255, nullable=true)
-         */
-        private $name;
+        #[ORM\Column(name: 'name', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $name = null;
 
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="duration", type="smallint", options={"default":0})
-         */
-        private $duration = 0;
+        #[ORM\Column(name: 'duration', type: Types::SMALLINT, options: ['default' => 0])]
+        private int $duration = 0;
 
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="sort_no", type="integer", options={"unsigned":true})
-         */
-        private $sort_no;
+        #[ORM\Column(name: 'sort_no', type: Types::INTEGER, options: ['unsigned' => true])]
+        private ?int $sort_no = null;
 
         /**
          * Get id.
          *
          * @return int
          */
-        public function getId()
+        public function getId(): ?int
         {
             return $this->id;
         }
 
         /**
          * Set name.
-         *
-         * @param string|null $name
-         *
-         * @return DeliveryDuration
          */
-        public function setName($name = null)
+        public function setName(?string $name = null): DeliveryDuration
         {
             $this->name = $name;
 
@@ -100,22 +71,16 @@ if (!class_exists(DeliveryDuration::class)) {
 
         /**
          * Get name.
-         *
-         * @return string|null
          */
-        public function getName()
+        public function getName(): ?string
         {
             return $this->name;
         }
 
         /**
          * Set duration.
-         *
-         * @param int $duration
-         *
-         * @return DeliveryDuration
          */
-        public function setDuration($duration)
+        public function setDuration(int $duration): DeliveryDuration
         {
             $this->duration = $duration;
 
@@ -124,22 +89,16 @@ if (!class_exists(DeliveryDuration::class)) {
 
         /**
          * Get duration.
-         *
-         * @return int
          */
-        public function getDuration()
+        public function getDuration(): int
         {
             return $this->duration;
         }
 
         /**
          * Set sortNo.
-         *
-         * @param int $sortNo
-         *
-         * @return DeliveryDuration
          */
-        public function setSortNo($sortNo)
+        public function setSortNo(int $sortNo): DeliveryDuration
         {
             $this->sort_no = $sortNo;
 
@@ -148,10 +107,8 @@ if (!class_exists(DeliveryDuration::class)) {
 
         /**
          * Get sortNo.
-         *
-         * @return int
          */
-        public function getSortNo()
+        public function getSortNo(): int
         {
             return $this->sort_no;
         }

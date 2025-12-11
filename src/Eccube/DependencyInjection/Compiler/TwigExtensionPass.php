@@ -20,17 +20,16 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class TwigExtensionPass implements CompilerPassInterface
 {
-    /**
-     * @param ContainerBuilder $container
-     *
-     * @return void
-     */
     #[\Override]
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         // 本番時はtwigのurl(), path()を差し替える.
         if (!$container->getParameter('kernel.debug')) {
-            $definition = $container->getDefinition('twig');
+            // SymfonyのTwigBundleが'twig'というサービスIDで登録するが、
+            // Environment::classのエイリアスはコンパイル時点では存在しない可能性があるため、
+            // 文字列サービスIDを使用（Rectorの変換を防ぐため変数に格納）
+            $serviceId = 'twig';
+            $definition = $container->getDefinition($serviceId);
             $definition->addMethodCall(
                 'addExtension',
                 [new Reference(IgnoreRoutingNotFoundExtension::class)]

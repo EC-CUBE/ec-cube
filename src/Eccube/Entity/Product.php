@@ -14,90 +14,74 @@
 namespace Eccube\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Entity\Master\ProductStatus;
+use Eccube\Repository\ProductRepository;
 
 if (!class_exists(Product::class)) {
     /**
      * Product
-     *
-     * @ORM\Table(name="dtb_product")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\ProductRepository")
      */
+    #[ORM\Table(name: 'dtb_product')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: ProductRepository::class)]
     class Product extends AbstractEntity implements \Stringable
     {
+        private bool $_calc = false;
         /**
-         * @var bool
+         * @var array<int, bool>
          */
-        private $_calc = false;
-        /**
-         * @var array<int,bool>
-         */
-        private $stockFinds = [];
-        /**
-         * @var array<int,string|null>
-         */
-        private $stocks = [];
-        /**
-         * @var array<int,bool>
-         */
-        private $stockUnlimiteds = [];
+        private array $stockFinds = [];
         /**
          * @var array<int, string|null>
          */
-        private $price01 = [];
+        private array $stocks = [];
+        /**
+         * @var array<int, bool>
+         */
+        private array $stockUnlimiteds = [];
         /**
          * @var array<int, string|null>
          */
-        private $price02 = [];
+        private array $price01 = [];
         /**
          * @var array<int, string|null>
          */
-        private $price01IncTaxs = [];
+        private array $price02 = [];
         /**
          * @var array<int, string|null>
          */
-        private $price02IncTaxs = [];
+        private array $price01IncTaxs = [];
         /**
          * @var array<int, string|null>
          */
-        private $codes = [];
+        private array $price02IncTaxs = [];
+        /**
+         * @var array<int, string|null>
+         */
+        private array $codes = [];
         /**
          * @var array<string|int, string|null>
          */
-        private $classCategories1 = [];
+        private array $classCategories1 = [];
         /**
          * @var array<string|int, string|null>
          */
-        private $classCategories2 = [];
-        /**
-         * @var string
-         */
-        private $className1;
-        /**
-         * @var string
-         */
-        private $className2;
+        private array $classCategories2 = [];
+        private ?string $className1 = null;
+        private ?string $className2 = null;
 
-        /**
-         * @return string
-         */
         #[\Override]
         public function __toString(): string
         {
-            return (string) $this->getName();
+            return $this->getName();
         }
 
-        /**
-         * @return void
-         */
-        public function _calc()
+        public function _calc(): void
         {
             if (!$this->_calc) {
                 $i = 0;
@@ -169,21 +153,17 @@ if (!class_exists(Product::class)) {
         /**
          * Is Enable
          *
-         * @return bool
-         *
          * @deprecated
          */
-        public function isEnable()
+        public function isEnable(): bool
         {
-            return $this->getStatus()->getId() === Master\ProductStatus::DISPLAY_SHOW ? true : false;
+            return $this->getStatus()->getId() === ProductStatus::DISPLAY_SHOW ? true : false;
         }
 
         /**
          * Get ClassName1
-         *
-         * @return string|null
          */
-        public function getClassName1()
+        public function getClassName1(): ?string
         {
             $this->_calc();
 
@@ -192,10 +172,8 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get ClassName2
-         *
-         * @return string|null
          */
-        public function getClassName2()
+        public function getClassName2(): ?string
         {
             $this->_calc();
 
@@ -207,7 +185,7 @@ if (!class_exists(Product::class)) {
          *
          * @return array<int, string|null>
          */
-        public function getClassCategories1()
+        public function getClassCategories1(): array
         {
             $this->_calc();
 
@@ -215,9 +193,9 @@ if (!class_exists(Product::class)) {
         }
 
         /**
-         * @return array<string,int>
+         * @return array<string, int>
          */
-        public function getClassCategories1AsFlip()
+        public function getClassCategories1AsFlip(): array
         {
             return array_flip($this->getClassCategories1());
         }
@@ -225,11 +203,9 @@ if (!class_exists(Product::class)) {
         /**
          * Get getClassCategories2
          *
-         * @param string $class_category1
-         *
          * @return array<int, string|null>
          */
-        public function getClassCategories2($class_category1)
+        public function getClassCategories2(string $class_category1): array
         {
             $this->_calc();
 
@@ -237,21 +213,21 @@ if (!class_exists(Product::class)) {
         }
 
         /**
-         * @param string $class_category1
-         *
-         * @return array<string,int>
+         * @return array<string, int>
          */
-        public function getClassCategories2AsFlip($class_category1)
+        public function getClassCategories2AsFlip(string $class_category1): array
         {
-            return array_flip($this->getClassCategories2($class_category1));
+            $categories = $this->getClassCategories2($class_category1);
+            // null値を除外してからarray_flipを実行
+            $filteredCategories = array_filter($categories, fn ($value) => $value !== null);
+
+            return array_flip($filteredCategories);
         }
 
         /**
          * Get StockFind
-         *
-         * @return bool|null
          */
-        public function getStockFind()
+        public function getStockFind(): ?bool
         {
             $this->_calc();
 
@@ -262,10 +238,8 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get Stock min
-         *
-         * @return string|null
          */
-        public function getStockMin()
+        public function getStockMin(): ?string
         {
             $this->_calc();
 
@@ -276,10 +250,8 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get Stock max
-         *
-         * @return string|null
          */
-        public function getStockMax()
+        public function getStockMax(): ?string
         {
             $this->_calc();
 
@@ -290,10 +262,8 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get StockUnlimited min
-         *
-         * @return bool|null
          */
-        public function getStockUnlimitedMin()
+        public function getStockUnlimitedMin(): ?bool
         {
             $this->_calc();
 
@@ -304,10 +274,8 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get StockUnlimited max
-         *
-         * @return bool|null
          */
-        public function getStockUnlimitedMax()
+        public function getStockUnlimitedMax(): ?bool
         {
             $this->_calc();
 
@@ -318,10 +286,8 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get Price01 min
-         *
-         * @return string|null
          */
-        public function getPrice01Min()
+        public function getPrice01Min(): ?string
         {
             $this->_calc();
 
@@ -334,10 +300,8 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get Price01 max
-         *
-         * @return string|null
          */
-        public function getPrice01Max()
+        public function getPrice01Max(): ?string
         {
             $this->_calc();
 
@@ -350,10 +314,8 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get Price02 min
-         *
-         * @return string|null
          */
-        public function getPrice02Min()
+        public function getPrice02Min(): ?string
         {
             $this->_calc();
 
@@ -364,10 +326,8 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get Price02 max
-         *
-         * @return string|null
          */
-        public function getPrice02Max()
+        public function getPrice02Max(): ?string
         {
             $this->_calc();
 
@@ -378,10 +338,8 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get Price01IncTax min
-         *
-         * @return string|null
          */
-        public function getPrice01IncTaxMin()
+        public function getPrice01IncTaxMin(): ?string
         {
             $this->_calc();
 
@@ -392,10 +350,8 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get Price01IncTax max
-         *
-         * @return string|null
          */
-        public function getPrice01IncTaxMax()
+        public function getPrice01IncTaxMax(): ?string
         {
             $this->_calc();
 
@@ -406,10 +362,8 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get Price02IncTax min
-         *
-         * @return string|null
          */
-        public function getPrice02IncTaxMin()
+        public function getPrice02IncTaxMin(): ?string
         {
             $this->_calc();
 
@@ -420,10 +374,8 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get Price02IncTax max
-         *
-         * @return string|null
          */
-        public function getPrice02IncTaxMax()
+        public function getPrice02IncTaxMax(): ?string
         {
             $this->_calc();
 
@@ -434,10 +386,8 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get Product_code min
-         *
-         * @return string|null
          */
-        public function getCodeMin()
+        public function getCodeMin(): ?string
         {
             $this->_calc();
 
@@ -453,10 +403,8 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get Product_code max
-         *
-         * @return string|null
          */
-        public function getCodeMax()
+        public function getCodeMax(): ?string
         {
             $this->_calc();
 
@@ -470,20 +418,14 @@ if (!class_exists(Product::class)) {
             return count($codes) ? max($codes) : null;
         }
 
-        /**
-         * @return ProductImage|null
-         */
-        public function getMainListImage()
+        public function getMainListImage(): ?ProductImage
         {
             $ProductImages = $this->getProductImage();
 
             return $ProductImages->isEmpty() ? null : $ProductImages[0];
         }
 
-        /**
-         * @return ProductImage|null
-         */
-        public function getMainFileName()
+        public function getMainFileName(): ?ProductImage
         {
             if (count($this->ProductImage) > 0) {
                 return $this->ProductImage[0];
@@ -492,10 +434,7 @@ if (!class_exists(Product::class)) {
             }
         }
 
-        /**
-         * @return bool
-         */
-        public function hasProductClass()
+        public function hasProductClass(): bool
         {
             foreach ($this->ProductClasses as $ProductClass) {
                 if (!$ProductClass->isVisible()) {
@@ -509,135 +448,80 @@ if (!class_exists(Product::class)) {
             return false;
         }
 
-        /**
-         * @var int|null
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
-         */
-        private $id;
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+        /**  @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
+        private ?int $id = null;
 
-        /**
-         * @var string
-         *
-         * @ORM\Column(name="name", type="string", length=255)
-         */
-        private $name;
+        #[ORM\Column(name: 'name', type: Types::STRING, length: 255)]
+        private ?string $name = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="note", type="text", nullable=true)
-         */
-        private $note;
+        #[ORM\Column(name: 'note', type: Types::TEXT, nullable: true)]
+        private ?string $note = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="description_list", type="text", nullable=true)
-         */
-        private $description_list;
+        #[ORM\Column(name: 'description_list', type: Types::TEXT, nullable: true)]
+        private ?string $description_list = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="description_detail", type="text", nullable=true)
-         */
-        private $description_detail;
+        #[ORM\Column(name: 'description_detail', type: Types::TEXT, nullable: true)]
+        private ?string $description_detail = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="search_word", type="text", nullable=true)
-         */
-        private $search_word;
+        #[ORM\Column(name: 'search_word', type: Types::TEXT, nullable: true)]
+        private ?string $search_word = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="free_area", type="text", nullable=true)
-         */
-        private $free_area;
+        #[ORM\Column(name: 'free_area', type: Types::TEXT, nullable: true)]
+        private ?string $free_area = null;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
         private $create_date;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
         private $update_date;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection<int,ProductCategory>
-         *
-         * @ORM\OneToMany(targetEntity="Eccube\Entity\ProductCategory", mappedBy="Product", cascade={"persist","remove"})
+         * @var Collection<int, ProductCategory>
          */
+        #[ORM\OneToMany(targetEntity: ProductCategory::class, mappedBy: 'Product', cascade: ['persist', 'remove'])]
         private $ProductCategories;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection<int,ProductClass>
-         *
-         * @ORM\OneToMany(targetEntity="Eccube\Entity\ProductClass", mappedBy="Product", cascade={"persist","remove"})
+         * @var Collection<int, ProductClass>
          */
+        #[ORM\OneToMany(targetEntity: ProductClass::class, mappedBy: 'Product', cascade: ['persist', 'remove'])]
         private $ProductClasses;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection<int,ProductImage>
-         *
-         * @ORM\OneToMany(targetEntity="Eccube\Entity\ProductImage", mappedBy="Product", cascade={"remove"})
-         *
-         * @ORM\OrderBy({
-         *     "sort_no"="ASC"
-         * })
+         * @var Collection<int, ProductImage>
          */
+        #[ORM\OneToMany(targetEntity: ProductImage::class, mappedBy: 'Product', cascade: ['remove'])]
+        #[ORM\OrderBy(['sort_no' => 'ASC'])]
         private $ProductImage;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection<int,ProductTag>
-         *
-         * @ORM\OneToMany(targetEntity="Eccube\Entity\ProductTag", mappedBy="Product", cascade={"remove"})
+         * @var Collection<int, ProductTag>
          */
+        #[ORM\OneToMany(targetEntity: ProductTag::class, mappedBy: 'Product', cascade: ['remove'])]
         private $ProductTag;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection<int,CustomerFavoriteProduct>
-         *
-         * @ORM\OneToMany(targetEntity="Eccube\Entity\CustomerFavoriteProduct", mappedBy="Product")
+         * @var Collection<int, CustomerFavoriteProduct>
          */
+        #[ORM\OneToMany(targetEntity: CustomerFavoriteProduct::class, mappedBy: 'Product')]
         private $CustomerFavoriteProducts;
 
-        /**
-         * @var Member|null
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
-         * })
-         */
-        private $Creator;
+        #[ORM\ManyToOne(targetEntity: Member::class)]
+        #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
+        private ?Member $Creator = null;
 
-        /**
-         * @var Master\ProductStatus|null
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\ProductStatus")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="product_status_id", referencedColumnName="id")
-         * })
-         */
-        private $Status;
+        #[ORM\ManyToOne(targetEntity: ProductStatus::class)]
+        #[ORM\JoinColumn(name: 'product_status_id', referencedColumnName: 'id')]
+        private ?ProductStatus $Status = null;
 
         /**
          * Constructor
@@ -657,30 +541,35 @@ if (!class_exists(Product::class)) {
         }
 
         /**
-         * @return Product
+         * Productエンティティのコピーを作成する.
+         *
+         * コピー元のProductを受け取り,
+         * 関連エンティティも再帰的にコピーする.
          */
-        public function copy()
+        public function copy(Product $Product): Product
         {
             // コピー対象外
             $this->CustomerFavoriteProducts = new ArrayCollection();
 
-            $Categories = $this->getProductCategories();
+            $Categories = $Product->getProductCategories();
             $this->ProductCategories = new ArrayCollection();
             foreach ($Categories as $Category) {
                 $CopyCategory = clone $Category;
+                $CopyCategory->setProductId($this->getId());
                 $this->addProductCategory($CopyCategory);
                 $CopyCategory->setProduct($this);
             }
 
-            $Classes = $this->getProductClasses();
+            $Classes = $Product->getProductClasses();
             $this->ProductClasses = new ArrayCollection();
             foreach ($Classes as $Class) {
-                $CopyClass = clone $Class;
+                $CopyClass = new ProductClass();
+                $CopyClass->copyProperties($Class, ['id', 'product_id']);
                 $this->addProductClass($CopyClass);
                 $CopyClass->setProduct($this);
             }
 
-            $Images = $this->getProductImage();
+            $Images = $Product->getProductImage();
             $this->ProductImage = new ArrayCollection();
             foreach ($Images as $Image) {
                 $CloneImage = clone $Image;
@@ -688,7 +577,7 @@ if (!class_exists(Product::class)) {
                 $CloneImage->setProduct($this);
             }
 
-            $Tags = $this->getProductTag();
+            $Tags = $Product->getProductTag();
             $this->ProductTag = new ArrayCollection();
             foreach ($Tags as $Tag) {
                 $CloneTag = clone $Tag;
@@ -701,22 +590,16 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get id.
-         *
-         * @return int
          */
-        public function getId()
+        public function getId(): ?int
         {
             return $this->id;
         }
 
         /**
          * Set name.
-         *
-         * @param string $name
-         *
-         * @return Product
          */
-        public function setName($name)
+        public function setName(string $name): Product
         {
             $this->name = $name;
 
@@ -725,22 +608,16 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get name.
-         *
-         * @return string
          */
-        public function getName()
+        public function getName(): string
         {
             return $this->name;
         }
 
         /**
          * Set note.
-         *
-         * @param string|null $note
-         *
-         * @return Product
          */
-        public function setNote($note = null)
+        public function setNote(?string $note = null): Product
         {
             $this->note = $note;
 
@@ -749,22 +626,16 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get note.
-         *
-         * @return string|null
          */
-        public function getNote()
+        public function getNote(): ?string
         {
             return $this->note;
         }
 
         /**
          * Set descriptionList.
-         *
-         * @param string|null $descriptionList
-         *
-         * @return Product
          */
-        public function setDescriptionList($descriptionList = null)
+        public function setDescriptionList(?string $descriptionList = null): Product
         {
             $this->description_list = $descriptionList;
 
@@ -773,22 +644,16 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get descriptionList.
-         *
-         * @return string|null
          */
-        public function getDescriptionList()
+        public function getDescriptionList(): ?string
         {
             return $this->description_list;
         }
 
         /**
          * Set descriptionDetail.
-         *
-         * @param string|null $descriptionDetail
-         *
-         * @return Product
          */
-        public function setDescriptionDetail($descriptionDetail = null)
+        public function setDescriptionDetail(?string $descriptionDetail = null): Product
         {
             $this->description_detail = $descriptionDetail;
 
@@ -797,22 +662,16 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get descriptionDetail.
-         *
-         * @return string|null
          */
-        public function getDescriptionDetail()
+        public function getDescriptionDetail(): ?string
         {
             return $this->description_detail;
         }
 
         /**
          * Set searchWord.
-         *
-         * @param string|null $searchWord
-         *
-         * @return Product
          */
-        public function setSearchWord($searchWord = null)
+        public function setSearchWord(?string $searchWord = null): Product
         {
             $this->search_word = $searchWord;
 
@@ -821,22 +680,16 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get searchWord.
-         *
-         * @return string|null
          */
-        public function getSearchWord()
+        public function getSearchWord(): ?string
         {
             return $this->search_word;
         }
 
         /**
          * Set freeArea.
-         *
-         * @param string|null $freeArea
-         *
-         * @return Product
          */
-        public function setFreeArea($freeArea = null)
+        public function setFreeArea(?string $freeArea = null): Product
         {
             $this->free_area = $freeArea;
 
@@ -845,22 +698,16 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get freeArea.
-         *
-         * @return string|null
          */
-        public function getFreeArea()
+        public function getFreeArea(): ?string
         {
             return $this->free_area;
         }
 
         /**
          * Set createDate.
-         *
-         * @param \DateTime $createDate
-         *
-         * @return Product
          */
-        public function setCreateDate($createDate)
+        public function setCreateDate(\DateTime $createDate): Product
         {
             $this->create_date = $createDate;
 
@@ -869,22 +716,16 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get createDate.
-         *
-         * @return \DateTime
          */
-        public function getCreateDate()
+        public function getCreateDate(): ?\DateTime
         {
             return $this->create_date;
         }
 
         /**
          * Set updateDate.
-         *
-         * @param \DateTime $updateDate
-         *
-         * @return Product
          */
-        public function setUpdateDate($updateDate)
+        public function setUpdateDate(\DateTime $updateDate): Product
         {
             $this->update_date = $updateDate;
 
@@ -893,22 +734,16 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get updateDate.
-         *
-         * @return \DateTime
          */
-        public function getUpdateDate()
+        public function getUpdateDate(): ?\DateTime
         {
             return $this->update_date;
         }
 
         /**
          * Add productCategory.
-         *
-         * @param ProductCategory $productCategory
-         *
-         * @return Product
          */
-        public function addProductCategory(ProductCategory $productCategory)
+        public function addProductCategory(ProductCategory $productCategory): Product
         {
             $this->ProductCategories[] = $productCategory;
 
@@ -918,11 +753,9 @@ if (!class_exists(Product::class)) {
         /**
          * Remove productCategory.
          *
-         * @param ProductCategory $productCategory
-         *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
-        public function removeProductCategory(ProductCategory $productCategory)
+        public function removeProductCategory(ProductCategory $productCategory): bool
         {
             return $this->ProductCategories->removeElement($productCategory);
         }
@@ -930,21 +763,17 @@ if (!class_exists(Product::class)) {
         /**
          * Get productCategories.
          *
-         * @return \Doctrine\Common\Collections\Collection<int, ProductCategory>
+         * @return Collection<int, ProductCategory>
          */
-        public function getProductCategories()
+        public function getProductCategories(): Collection
         {
             return $this->ProductCategories;
         }
 
         /**
          * Add productClass.
-         *
-         * @param ProductClass $productClass
-         *
-         * @return Product
          */
-        public function addProductClass(ProductClass $productClass)
+        public function addProductClass(ProductClass $productClass): Product
         {
             $this->ProductClasses[] = $productClass;
 
@@ -954,11 +783,9 @@ if (!class_exists(Product::class)) {
         /**
          * Remove productClass.
          *
-         * @param ProductClass $productClass
-         *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
-        public function removeProductClass(ProductClass $productClass)
+        public function removeProductClass(ProductClass $productClass): bool
         {
             return $this->ProductClasses->removeElement($productClass);
         }
@@ -966,21 +793,17 @@ if (!class_exists(Product::class)) {
         /**
          * Get productClasses.
          *
-         * @return \Doctrine\Common\Collections\Collection<int, ProductClass>|null
+         * @return Collection<int, ProductClass>
          */
-        public function getProductClasses()
+        public function getProductClasses(): ?Collection
         {
             return $this->ProductClasses;
         }
 
         /**
          * Add productImage.
-         *
-         * @param ProductImage $productImage
-         *
-         * @return Product
          */
-        public function addProductImage(ProductImage $productImage)
+        public function addProductImage(ProductImage $productImage): Product
         {
             $this->ProductImage[] = $productImage;
 
@@ -990,11 +813,9 @@ if (!class_exists(Product::class)) {
         /**
          * Remove productImage.
          *
-         * @param ProductImage $productImage
-         *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
-        public function removeProductImage(ProductImage $productImage)
+        public function removeProductImage(ProductImage $productImage): bool
         {
             return $this->ProductImage->removeElement($productImage);
         }
@@ -1002,21 +823,17 @@ if (!class_exists(Product::class)) {
         /**
          * Get productImage.
          *
-         * @return \Doctrine\Common\Collections\Collection<int,ProductImage>
+         * @return Collection<int, ProductImage>
          */
-        public function getProductImage()
+        public function getProductImage(): Collection
         {
             return $this->ProductImage;
         }
 
         /**
          * Add productTag.
-         *
-         * @param ProductTag $productTag
-         *
-         * @return Product
          */
-        public function addProductTag(ProductTag $productTag)
+        public function addProductTag(ProductTag $productTag): Product
         {
             $this->ProductTag[] = $productTag;
 
@@ -1026,11 +843,9 @@ if (!class_exists(Product::class)) {
         /**
          * Remove productTag.
          *
-         * @param ProductTag $productTag
-         *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
-        public function removeProductTag(ProductTag $productTag)
+        public function removeProductTag(ProductTag $productTag): bool
         {
             return $this->ProductTag->removeElement($productTag);
         }
@@ -1038,9 +853,9 @@ if (!class_exists(Product::class)) {
         /**
          * Get productTag.
          *
-         * @return \Doctrine\Common\Collections\Collection<int,ProductTag>
+         * @return Collection<int, ProductTag>
          */
-        public function getProductTag()
+        public function getProductTag(): Collection
         {
             return $this->ProductTag;
         }
@@ -1051,7 +866,7 @@ if (!class_exists(Product::class)) {
          *
          * @return Tag[]
          */
-        public function getTags()
+        public function getTags(): array
         {
             $tags = [];
 
@@ -1059,21 +874,15 @@ if (!class_exists(Product::class)) {
                 $tags[] = $productTag->getTag();
             }
 
-            usort($tags, function (Tag $tag1, Tag $tag2) {
-                return $tag1->getSortNo() <=> $tag2->getSortNo();
-            });
+            usort($tags, fn (Tag $tag1, Tag $tag2) => $tag1->getSortNo() <=> $tag2->getSortNo());
 
             return $tags;
         }
 
         /**
          * Add customerFavoriteProduct.
-         *
-         * @param CustomerFavoriteProduct $customerFavoriteProduct
-         *
-         * @return Product
          */
-        public function addCustomerFavoriteProduct(CustomerFavoriteProduct $customerFavoriteProduct)
+        public function addCustomerFavoriteProduct(CustomerFavoriteProduct $customerFavoriteProduct): Product
         {
             $this->CustomerFavoriteProducts[] = $customerFavoriteProduct;
 
@@ -1083,11 +892,9 @@ if (!class_exists(Product::class)) {
         /**
          * Remove customerFavoriteProduct.
          *
-         * @param CustomerFavoriteProduct $customerFavoriteProduct
-         *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
-        public function removeCustomerFavoriteProduct(CustomerFavoriteProduct $customerFavoriteProduct)
+        public function removeCustomerFavoriteProduct(CustomerFavoriteProduct $customerFavoriteProduct): bool
         {
             return $this->CustomerFavoriteProducts->removeElement($customerFavoriteProduct);
         }
@@ -1095,21 +902,17 @@ if (!class_exists(Product::class)) {
         /**
          * Get customerFavoriteProducts.
          *
-         * @return \Doctrine\Common\Collections\Collection<int,CustomerFavoriteProduct>
+         * @return Collection<int, CustomerFavoriteProduct>
          */
-        public function getCustomerFavoriteProducts()
+        public function getCustomerFavoriteProducts(): Collection
         {
             return $this->CustomerFavoriteProducts;
         }
 
         /**
          * Set creator.
-         *
-         * @param Member|null $creator
-         *
-         * @return Product
          */
-        public function setCreator(?Member $creator = null)
+        public function setCreator(?Member $creator = null): Product
         {
             $this->Creator = $creator;
 
@@ -1118,22 +921,16 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get creator.
-         *
-         * @return Member|null
          */
-        public function getCreator()
+        public function getCreator(): ?Member
         {
             return $this->Creator;
         }
 
         /**
          * Set status.
-         *
-         * @param Master\ProductStatus|null $status
-         *
-         * @return Product
          */
-        public function setStatus(?Master\ProductStatus $status = null)
+        public function setStatus(?ProductStatus $status = null): Product
         {
             $this->Status = $status;
 
@@ -1142,10 +939,8 @@ if (!class_exists(Product::class)) {
 
         /**
          * Get status.
-         *
-         * @return Master\ProductStatus|null
          */
-        public function getStatus()
+        public function getStatus(): ?ProductStatus
         {
             return $this->Status;
         }

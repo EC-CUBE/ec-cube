@@ -18,75 +18,43 @@ use Eccube\Exception\PluginException;
 
 class PluginContext
 {
-    private const string MODE_INSTALL = 'install';
-    private const string MODE_UNINSTALL = 'uninstall';
+    private const MODE_INSTALL = 'install';
+    private const MODE_UNINSTALL = 'uninstall';
+
+    private ?string $mode = null;
+
+    private ?string $code = null;
 
     /**
-     * @var string
+     * @var array<string, mixed>|null
      */
-    private $mode;
+    private ?array $composerJson = null;
 
-    /**
-     * @var string|int
-     */
-    private $code;
-
-    /**
-     * @var array<string, mixed>
-     */
-    private $composerJson;
-
-    /**
-     * @var EccubeConfig
-     */
-    private $eccubeConfig;
-
-    /**
-     * @param EccubeConfig $eccubeConfig
-     */
-    public function __construct(EccubeConfig $eccubeConfig)
+    public function __construct(private readonly EccubeConfig $eccubeConfig)
     {
-        $this->eccubeConfig = $eccubeConfig;
     }
 
-    /**
-     * @return bool
-     */
-    public function isInstall()
+    public function isInstall(): bool
     {
         return $this->mode === self::MODE_INSTALL;
     }
 
-    /**
-     * @return bool
-     */
-    public function isUninstall()
+    public function isUninstall(): bool
     {
         return $this->mode === self::MODE_UNINSTALL;
     }
 
-    /**
-     * @return string
-     */
-    public function setInstall()
+    public function setInstall(): string
     {
         return $this->mode = self::MODE_INSTALL;
     }
 
-    /**
-     * @return string
-     */
-    public function setUninstall()
+    public function setUninstall(): string
     {
         return $this->mode = self::MODE_UNINSTALL;
     }
 
-    /**
-     * @param string $code
-     *
-     * @return void
-     */
-    public function setCode(string $code)
+    public function setCode(string $code): void
     {
         $this->code = $code;
     }
@@ -108,9 +76,6 @@ class PluginContext
             throw new PluginException("{$composerJsonPath} not found.");
         }
         $this->composerJson = json_decode(file_get_contents($composerJsonPath), true);
-        if ($this->composerJson === null) {
-            throw new PluginException("Invalid json format. [{$composerJsonPath}]");
-        }
 
         return $this->composerJson;
     }

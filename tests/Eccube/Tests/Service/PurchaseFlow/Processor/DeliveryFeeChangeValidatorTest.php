@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -20,23 +22,15 @@ use Eccube\Service\PurchaseFlow\Processor\DeliveryFeeChangeValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
-class DeliveryFeeChangeValidatorTest extends EccubeTestCase
+final class DeliveryFeeChangeValidatorTest extends EccubeTestCase
 {
-    /**
-     * @var DeliveryFeeChangeValidator
-     */
-    private $validator;
+    private ?DeliveryFeeChangeValidator $validator = null;
 
-    /**
-     * @var Customer
-     */
-    private $Customer;
+    private ?Customer $Customer = null;
 
-    /**
-     * @var Order
-     */
-    private $Order;
+    private ?Order $Order = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -51,7 +45,7 @@ class DeliveryFeeChangeValidatorTest extends EccubeTestCase
     {
         $validator = new DeliveryFeeChangeValidator();
 
-        self::assertInstanceOf(DeliveryFeeChangeValidator::class, $validator);
+        $this->assertInstanceOf(DeliveryFeeChangeValidator::class, $validator);
     }
 
     public function testValidateWithCart()
@@ -59,7 +53,7 @@ class DeliveryFeeChangeValidatorTest extends EccubeTestCase
         $result = $this->validator->execute(new Cart(), new PurchaseContext());
 
         // カートの場合は何もしない.
-        self::assertTrue($result->isSuccess());
+        $this->assertTrue($result->isSuccess());
     }
 
     public function testValidateNochanged()
@@ -70,7 +64,7 @@ class DeliveryFeeChangeValidatorTest extends EccubeTestCase
 
         $result = $this->validator->execute($this->Order, new PurchaseContext($CloneOrder));
 
-        self::assertTrue($result->isSuccess());
+        $this->assertTrue($result->isSuccess());
     }
 
     public function testValidateChanged()
@@ -81,6 +75,6 @@ class DeliveryFeeChangeValidatorTest extends EccubeTestCase
 
         $result = $this->validator->execute($this->Order, new PurchaseContext($CloneOrder));
 
-        self::assertTrue($result->isWarning());
+        $this->assertTrue($result->isWarning());
     }
 }

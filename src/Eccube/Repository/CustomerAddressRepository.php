@@ -28,8 +28,6 @@ class CustomerAddressRepository extends AbstractRepository
 {
     /**
      * CustomerAddressRepository constructor.
-     *
-     * @param RegistryInterface $registry
      */
     public function __construct(RegistryInterface $registry)
     {
@@ -40,11 +38,9 @@ class CustomerAddressRepository extends AbstractRepository
      * お届け先を削除します.
      *
      * @param CustomerAddress $CustomerAddress
-     *
-     * @return void
      */
     #[\Override]
-    public function delete($CustomerAddress)
+    public function delete($CustomerAddress): void
     {
         $em = $this->getEntityManager();
         $em->remove($CustomerAddress);

@@ -20,34 +20,14 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class Context
 {
-    /**
-     * @var RequestStack
-     */
-    protected $requestStack;
-
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
-     * @var TokenStorageInterface
-     */
-    private $tokenStorage;
-
-    public function __construct(RequestStack $requestStack, EccubeConfig $eccubeConfig, TokenStorageInterface $tokenStorage)
+    public function __construct(protected RequestStack $requestStack, protected EccubeConfig $eccubeConfig, private readonly TokenStorageInterface $tokenStorage)
     {
-        $this->requestStack = $requestStack;
-        $this->eccubeConfig = $eccubeConfig;
-        $this->tokenStorage = $tokenStorage;
     }
 
     /**
      * 管理画面へのアクセスかどうか.
-     *
-     * @return bool
      */
-    public function isAdmin()
+    public function isAdmin(): bool
     {
         $request = $this->requestStack->getMainRequest();
 
@@ -64,10 +44,8 @@ class Context
 
     /**
      * フロント画面へのアクセスかどうか.
-     *
-     * @return bool
      */
-    public function isFront()
+    public function isFront(): bool
     {
         $request = $this->requestStack->getMainRequest();
 
@@ -78,10 +56,7 @@ class Context
         return false === $this->isAdmin();
     }
 
-    /**
-     * @return UserInterface|null
-     */
-    public function getCurrentUser()
+    public function getCurrentUser(): ?UserInterface
     {
         $request = $this->requestStack->getMainRequest();
 

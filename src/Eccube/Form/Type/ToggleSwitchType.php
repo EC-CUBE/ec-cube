@@ -24,14 +24,10 @@ class ToggleSwitchType extends AbstractType
     /**
      * {@inheritDoc}
      *
-     * @param FormView $view
-     * @param FormInterface $form
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['label_on'] = $options['label_on'];
         $view->vars['label_off'] = $options['label_off'];
@@ -39,13 +35,9 @@ class ToggleSwitchType extends AbstractType
 
     /**
      * {@inheritDoc}
-     *
-     * @param OptionsResolver $resolver
-     *
-     * @return void
      */
     #[\Override]
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'label' => false,
@@ -54,11 +46,8 @@ class ToggleSwitchType extends AbstractType
         ]);
     }
 
-    /**
-     * @return string
-     */
     #[\Override]
-    public function getParent()
+    public function getParent(): string
     {
         return CheckboxType::class;
     }

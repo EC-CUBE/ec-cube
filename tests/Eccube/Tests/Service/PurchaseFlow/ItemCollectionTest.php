@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,21 +23,19 @@ use Eccube\Service\PurchaseFlow\ItemCollection;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Tests\Fixture\Generator;
 
-class ItemCollectionTest extends EccubeTestCase
+final class ItemCollectionTest extends EccubeTestCase
 {
-    /**
-     * @var Order
-     */
-    protected $ItemHolder;
+    protected ?Order $ItemHolder = null;
 
     /**
      * @var OrderItem[]
      */
-    protected $Items;
+    protected ?array $Items = null;
 
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -49,20 +49,18 @@ class ItemCollectionTest extends EccubeTestCase
     public function testInstance()
     {
         $actual = new ItemCollection($this->Items);
-        self::assertInstanceOf(ItemCollection::class, $actual);
+        $this->assertInstanceOf(ItemCollection::class, $actual);
     }
 
     public function testInstanceWithCollection()
     {
         $actual = new ItemCollection($this->ItemHolder->getItems());
-        self::assertInstanceOf(ItemCollection::class, $actual);
+        $this->assertInstanceOf(ItemCollection::class, $actual);
     }
 
     public function testReduce()
     {
-        $reducer = function ($sum, ItemInterface $item) {
-            return $sum + $item->getPrice() * $item->getQuantity();
-        };
+        $reducer = (fn ($sum, ItemInterface $item) => $sum + $item->getPrice() * $item->getQuantity());
 
         $this->expected = array_reduce($this->Items, $reducer, 0);
         $this->actual = (new ItemCollection($this->Items))->reduce($reducer, 0);
@@ -73,7 +71,7 @@ class ItemCollectionTest extends EccubeTestCase
     {
         $Items = (new ItemCollection($this->Items))->getProductClasses();
         foreach ($Items as $Item) {
-            self::assertTrue($Item->isProduct());
+            $this->assertTrue($Item->isProduct());
         }
     }
 
@@ -81,7 +79,7 @@ class ItemCollectionTest extends EccubeTestCase
     {
         $Items = (new ItemCollection($this->Items))->getDeliveryFees();
         foreach ($Items as $Item) {
-            self::assertTrue($Item->isDeliveryFee());
+            $this->assertTrue($Item->isDeliveryFee());
         }
     }
 
@@ -89,7 +87,7 @@ class ItemCollectionTest extends EccubeTestCase
     {
         $Items = (new ItemCollection($this->Items))->getCharges();
         foreach ($Items as $Item) {
-            self::assertTrue($Item->isCharge());
+            $this->assertTrue($Item->isCharge());
         }
     }
 
@@ -97,7 +95,7 @@ class ItemCollectionTest extends EccubeTestCase
     {
         $Items = (new ItemCollection($this->Items))->getCharges();
         foreach ($Items as $Item) {
-            self::assertTrue($Item->isCharge());
+            $this->assertTrue($Item->isCharge());
         }
     }
 
@@ -110,10 +108,10 @@ class ItemCollectionTest extends EccubeTestCase
 
         $Items = new ItemCollection($this->Items);
 
-        self::assertTrue($Items->hasItemByOrderItemType($ProductClassType));
-        self::assertTrue($Items->hasItemByOrderItemType($DeliveryFeeType));
-        self::assertTrue($Items->hasItemByOrderItemType($ChargeType));
-        self::assertTrue($Items->hasItemByOrderItemType($DiscountType));
+        $this->assertTrue($Items->hasItemByOrderItemType($ProductClassType));
+        $this->assertTrue($Items->hasItemByOrderItemType($DeliveryFeeType));
+        $this->assertTrue($Items->hasItemByOrderItemType($ChargeType));
+        $this->assertTrue($Items->hasItemByOrderItemType($DiscountType));
     }
 
     public function testSort()
@@ -140,9 +138,7 @@ class ItemCollectionTest extends EccubeTestCase
 
         $ids = (new ItemCollection($this->Items))
             ->getProductClasses()
-            ->map(function (ItemInterface $Item) {
-                return $Item->getId();
-            })->toArray();
+            ->map(fn (ItemInterface $Item) => $Item->getId())->toArray();
         sort($ids);
 
         $this->expected = $ids;

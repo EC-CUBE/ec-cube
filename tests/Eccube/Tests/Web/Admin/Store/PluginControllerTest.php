@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,16 +17,18 @@ namespace Eccube\Tests\Web\Admin\Store;
 
 use Eccube\Entity\BaseInfo;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @group cache-clear
- */
-class PluginControllerTest extends AbstractAdminWebTestCase
+#[Group('cache-clear')]
+final class PluginControllerTest extends AbstractAdminWebTestCase
 {
     public function testRoutingAuthentication()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_store_authentication_setting')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -39,7 +43,7 @@ class PluginControllerTest extends AbstractAdminWebTestCase
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_store_authentication_setting'),
             [
                 'admin_authentication' => $form,
@@ -54,12 +58,11 @@ class PluginControllerTest extends AbstractAdminWebTestCase
     /**
      * 異常系を確認。正常系のインストールはE2Eテストの方で実施
      *
-     * @dataProvider OwnerStoreInstallParam
-     *
      * @param mixed $param1
      * @param mixed $param2
      * @param mixed $message
      */
+    #[DataProvider(methodName: 'OwnerStoreInstallParam')]
     public function testFailureInstall($param1, $param2, $message)
     {
         $form = [
@@ -67,7 +70,7 @@ class PluginControllerTest extends AbstractAdminWebTestCase
             'version' => $param2,
         ];
 
-        $this->client->request('POST',
+        $this->client->request(Request::METHOD_POST,
             $this->generateUrl('admin_store_plugin_api_install', $form),
             [],
             [],
@@ -77,7 +80,7 @@ class PluginControllerTest extends AbstractAdminWebTestCase
             ]
         );
         //　ダウンロードできないことを確認
-        $this->assertSame(500, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_INTERNAL_SERVER_ERROR, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
         //　ログを確認
         $this->assertContains($message, json_decode($this->client->getResponse()->getContent())->log);
     }
@@ -85,12 +88,11 @@ class PluginControllerTest extends AbstractAdminWebTestCase
     /**
      * 異常系を確認。正常系のアップデートはE2Eテストの方で実施
      *
-     * @dataProvider OwnerStoreUpgradeParam
-     *
      * @param mixed $param1
      * @param mixed $param2
      * @param mixed $message
      */
+    #[DataProvider(methodName: 'OwnerStoreUpgradeParam')]
     public function testFailureUpgrade($param1, $param2, $message)
     {
         $form = [
@@ -98,7 +100,7 @@ class PluginControllerTest extends AbstractAdminWebTestCase
             'version' => $param2,
         ];
 
-        $this->client->request('POST',
+        $this->client->request(Request::METHOD_POST,
             $this->generateUrl('admin_store_plugin_api_upgrade', $form),
             [],
             [],
@@ -108,7 +110,7 @@ class PluginControllerTest extends AbstractAdminWebTestCase
             ]
         );
         //　ダウンロードできないことを確認
-        $this->assertSame(500, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_INTERNAL_SERVER_ERROR, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
 
         //　ログを確認
         $this->assertStringContainsString($message, implode(',', json_decode($this->client->getResponse()->getContent())->log));
@@ -117,24 +119,20 @@ class PluginControllerTest extends AbstractAdminWebTestCase
     /**
      * 異常系のテストケース
      */
-    public function OwnerStoreInstallParam()
+    public static function OwnerStoreInstallParam(): \Iterator
     {
-        return [
-            ['api42+symfony/yaml:5.3', '4.3.0', '無効な値です。'],
-            ['', '4.3.0', '入力されていません。'],
-        ];
+        yield ['api42+symfony/yaml:5.3', '4.3.0', '有効な値ではありません。'];
+        yield ['', '4.3.0', '入力されていません。'];
     }
 
     /**
      * 異常系のテストケース
      */
-    public function OwnerStoreUpgradeParam()
+    public static function OwnerStoreUpgradeParam(): \Iterator
     {
-        return [
-            ['api42+symfony/yaml:5.3', '4.3.0', '無効な値です。'],
-            ['api42', '4.3.0 symfony/yaml:5.3', '無効な値です。'],
-            ['api42', '', '入力されていません。'],
-            ['', '4.3.0', '入力されていません。'],
-        ];
+        yield ['api42+symfony/yaml:5.3', '4.3.0', '有効な値ではありません。'];
+        yield ['api42', '4.3.0 symfony/yaml:5.3', '有効な値ではありません。'];
+        yield ['api42', '', '入力されていません。'];
+        yield ['', '4.3.0', '入力されていません。'];
     }
 }

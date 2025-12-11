@@ -22,30 +22,14 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class IpAddrListener implements EventSubscriberInterface
 {
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
-     * @var Context
-     */
-    protected $requestContext;
-
-    public function __construct(EccubeConfig $eccubeConfig, Context $requestContext)
+    public function __construct(protected EccubeConfig $eccubeConfig, protected Context $requestContext)
     {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->requestContext = $requestContext;
     }
 
     /**
-     * @param RequestEvent $event
-     *
-     * @return void
-     *
      * @throws AccessDeniedHttpException|\Exception
      */
-    public function onKernelRequest(RequestEvent $event)
+    public function onKernelRequest(RequestEvent $event): void
     {
         if (!$event->isMainRequest()) {
             return;
@@ -84,18 +68,13 @@ class IpAddrListener implements EventSubscriberInterface
     }
 
     /**
-     * @param array<int,string> $hostList
-     * @param string|null $clientIp
-     *
-     * @return bool
+     * @param array<int, string> $hostList
      */
-    private function isClientIpInList($hostList, $clientIp)
+    private function isClientIpInList(array $hostList, ?string $clientIp): bool
     {
         log_debug('Host List: '.implode(',', $hostList));
         if ($hostList) {
-            $isInList = array_filter($hostList, function ($host) use ($clientIp) {
-                return IpUtils::checkIp($clientIp, $host);
-            });
+            $isInList = array_filter($hostList, fn ($host) => IpUtils::checkIp($clientIp, $host));
 
             return count($isInList) > 0;
         }
@@ -104,10 +83,10 @@ class IpAddrListener implements EventSubscriberInterface
     }
 
     /**
-     * @return array<string,array<int, string|int>>
+     * @return array<string, array<int, string|int>>
      */
     #[\Override]
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             'kernel.request' => ['onKernelRequest', 512],

@@ -11,35 +11,21 @@
  * file that was distributed with this source code.
  */
 
-// TODO: Change namespace Eccube\Attribute;
-
-namespace Eccube\Annotation;
+namespace Eccube\Attribute;
 
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 final class FormAppend
 {
-    /**
-     * @var bool
-     */
-    public $auto_render;
+    public bool $auto_render;
+
+    public string $form_theme;
+
+    public string $type;
 
     /**
-     * @var string
+     * @var array<string, mixed>
      */
-    public $form_theme;
+    public array $options;
 
-    /**
-     * @var string
-     */
-    public $type;
-
-    /**
-     * @var array<string,mixed>
-     */
-    public $options;
-
-    /**
-     * @var string
-     */
-    public $style_class;
+    public string $style_class;
 }

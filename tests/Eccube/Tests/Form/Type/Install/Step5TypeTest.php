@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,48 +17,43 @@ namespace Eccube\Tests\Form\Type\Install;
 
 use Eccube\Form\Type\Install\Step5Type;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Form\FormInterface;
 
-class Step5TypeTest extends AbstractTypeTestCase
+final class Step5TypeTest extends AbstractTypeTestCase
 {
-    /**
-     * @var FormInterface
-     */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /**
      * getValidTestData
      *
      * 正常系のデータパターンを返す
-     *
-     * @return array
      */
-    public function getValidTestData()
+    public static function getValidTestData(): \Iterator
     {
-        return [
+        yield [
             [
-                'data' => [
-                    'no_update' => true,
-                ],
+                'no_update' => true,
             ],
+        ];
+        yield [
             [
-                'data' => [
-                    'no_update' => false,
-                ],
+                'no_update' => false,
             ],
+        ];
+        yield [
             [
-                'data' => [
-                    'no_update' => null,
-                ],
+                'no_update' => null,
             ],
+        ];
+        yield [
             [
-                'data' => [
-                    'no_update' => '',
-                ],
+                'no_update' => '',
             ],
         ];
     }
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -68,10 +65,9 @@ class Step5TypeTest extends AbstractTypeTestCase
     }
 
     /**
-     * @dataProvider getValidTestData
-     *
      * @param mixed $data
      */
+    #[DataProvider(methodName: 'getValidTestData')]
     public function testValidData($data)
     {
         $this->form->submit($data);

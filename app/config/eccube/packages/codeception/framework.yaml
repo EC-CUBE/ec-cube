@@ -1,0 +1,10 @@
+framework:
+    session:
+        # Codeception E2E tests run on PHP built-in web server (HTTP only)
+        # The built-in server does not support HTTPS, so cookie_secure must be false
+        # cookie_samesite must be 'lax' or 'strict' (not 'none') for HTTP connections
+        # because browsers require Secure flag when SameSite=None
+        # This setting is ONLY applied in APP_ENV=codeception (test environment)
+        # and does NOT affect production or development environments
+        cookie_secure: false
+        cookie_samesite: lax

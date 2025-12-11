@@ -30,26 +30,17 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class MailType extends AbstractType
 {
-    private readonly MailTemplateRepository $mailTemplateRepository;
-
-    private EccubeConfig $eccubeConfig;
-
-    public function __construct(MailTemplateRepository $mailTemplateRepository, EccubeConfig $eccubeConfig)
+    public function __construct(private readonly MailTemplateRepository $mailTemplateRepository, private EccubeConfig $eccubeConfig)
     {
-        $this->mailTemplateRepository = $mailTemplateRepository;
-        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
      * @param array<string, mixed> $options
-     *
-     * @return void
      */
     #[\Override]
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('template', MailTemplateType::class, [
@@ -87,7 +78,7 @@ class MailType extends AbstractType
             ])
         ;
 
-        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event): void {
             $data = $event->getData();
             if (null === $data->getId()) {
                 $form = $event->getForm();
@@ -101,7 +92,7 @@ class MailType extends AbstractType
             }
         });
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             $data = $event->getData();
             if (null === $data->getId()) {
                 $filename = 'Mail/'.$data->getFileName().'.twig';
@@ -120,7 +111,7 @@ class MailType extends AbstractType
      * {@inheritdoc}
      */
     #[\Override]
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => MailTemplate::class,
@@ -131,7 +122,7 @@ class MailType extends AbstractType
      * {@inheritdoc}
      */
     #[\Override]
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'mail';
     }

@@ -14,6 +14,7 @@
 namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\ItemInterface;
+use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\ItemValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 
@@ -26,12 +27,10 @@ class StockValidator extends ItemValidator
      * @param ItemInterface $item 商品
      * @param PurchaseContext $context 購入フローのコンテキスト
      *
-     * @return void
-     *
-     * @throws \Eccube\Service\PurchaseFlow\InvalidItemException 在庫切れの場合
+     * @throws InvalidItemException 在庫切れの場合
      */
     #[\Override]
-    protected function validate(ItemInterface $item, PurchaseContext $context)
+    protected function validate(ItemInterface $item, PurchaseContext $context): void
     {
         if (!$item->isProduct()) {
             return;
@@ -52,11 +51,9 @@ class StockValidator extends ItemValidator
     /**
      * @param ItemInterface $item 商品
      * @param PurchaseContext $context  購入フローのコンテキスト
-     *
-     * @return void
      */
     #[\Override]
-    protected function handle(ItemInterface $item, PurchaseContext $context)
+    protected function handle(ItemInterface $item, PurchaseContext $context): void
     {
         $stock = $item->getProductClass()->getStock();
         $item->setQuantity($stock);

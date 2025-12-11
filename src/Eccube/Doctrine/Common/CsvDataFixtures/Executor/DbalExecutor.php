@@ -25,25 +25,17 @@ use Doctrine\ORM\EntityManagerInterface;
 class DbalExecutor extends AbstractExecutor
 {
     /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
      * DbalExecutor constructor.
-     *
-     * @param EntityManagerInterface $entityManager
      */
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(protected EntityManagerInterface $entityManager)
     {
-        $this->entityManager = $entityManager;
     }
 
     /**
      * {@inheritdoc}
      */
     #[\Override]
-    public function execute(array $fixtures, $append = false)
+    public function execute(array $fixtures, $append = false): void
     {
         if ($append) {
             trigger_error('$append parameter is not supported.', E_USER_WARNING);

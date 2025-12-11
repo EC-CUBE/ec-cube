@@ -42,15 +42,10 @@ final class SjisToUtf8EncodingFilter extends \php_user_filter
 {
     /**
      * Buffer size limit (bytes)
-     *
-     * @var int
      */
-    private static $bufferSizeLimit = 1024;
+    private static int $bufferSizeLimit = 1024;
 
-    /**
-     * @var string
-     */
-    private $buffer = '';
+    private string $buffer = '';
 
     public static function setBufferSizeLimit(int $bufferSizeLimit): void
     {
@@ -60,7 +55,7 @@ final class SjisToUtf8EncodingFilter extends \php_user_filter
     /**
      * @param resource $in
      * @param resource $out
-     * @param int $consumed
+     * @param float|int $consumed
      * @param bool $closing
      */
     #[\Override]
@@ -72,7 +67,7 @@ final class SjisToUtf8EncodingFilter extends \php_user_filter
 
         while ($bucket = \stream_bucket_make_writeable($in)) {
             $data = $previousData.$bucket->data;
-            $consumed += $bucket->datalen;
+            $consumed += (int) $bucket->datalen;
 
             while ($this->needsToNarrowEncodingDataScope($data)) {
                 $deferredData = \substr($data, -1).$deferredData;

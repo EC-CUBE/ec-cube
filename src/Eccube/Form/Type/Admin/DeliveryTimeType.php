@@ -30,13 +30,10 @@ class DeliveryTimeType extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param FormBuilderInterface $builder
-     * @param array<string,mixed> $options
-     *
-     * @return void
+     * @param array<string, mixed> $options
      */
     #[\Override]
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('delivery_time', TextType::class, [
@@ -61,7 +58,7 @@ class DeliveryTimeType extends AbstractType
                 'expanded' => false,
             ])
         ;
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             /** @var DeliveryTime $DeliveryTime */
             $DeliveryTime = $event->getData();
             $DeliveryTime->setVisible(true);
@@ -70,21 +67,15 @@ class DeliveryTimeType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * @param OptionsResolver $resolver
-     *
-     * @return void
      */
     #[\Override]
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => DeliveryTime::class,
-            'query_builder' => function (EntityRepository $er) {
-                return $er
-                    ->createQueryBuilder('dt')
-                    ->orderBy('dt.sort_no', 'ASC');
-            },
+            'query_builder' => fn (EntityRepository $er) => $er
+                ->createQueryBuilder('dt')
+                ->orderBy('dt.sort_no', 'ASC'),
         ]);
     }
 
@@ -92,7 +83,7 @@ class DeliveryTimeType extends AbstractType
      * {@inheritdoc}
      */
     #[\Override]
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'delivery_time';
     }

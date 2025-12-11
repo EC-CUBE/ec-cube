@@ -17,6 +17,7 @@ use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\Payment;
+use Eccube\Entity\PaymentOption;
 
 /**
  * PaymentRepository
@@ -30,8 +31,6 @@ class PaymentRepository extends AbstractRepository
 {
     /**
      * PaymentRepository constructor.
-     *
-     * @param RegistryInterface $registry
      */
     public function __construct(RegistryInterface $registry)
     {
@@ -41,30 +40,28 @@ class PaymentRepository extends AbstractRepository
     /**
      * @return array<int, array<string, mixed>>
      */
-    public function findAllArray()
+    public function findAllArray(): array
     {
         $query = $this
             ->getEntityManager()
             ->createQuery('SELECT p FROM Eccube\Entity\Payment p INDEX BY p.id');
-        $result = $query
-            ->getResult(Query::HYDRATE_ARRAY);
 
-        return $result;
+        return $query
+            ->getResult(Query::HYDRATE_ARRAY);
     }
 
     /**
      * 支払方法を取得
      * 条件によってはDoctrineのキャッシュが返されるため、arrayで結果を返すパターンも用意
      *
-     * @param Delivery $delivery
      * @param bool $returnType true : Object、false: arrayが戻り値
      *
      * @return array<int, Payment>
      */
-    public function findPayments($delivery, $returnType = false)
+    public function findPayments(Delivery $delivery, bool $returnType = false): array
     {
         $query = $this->createQueryBuilder('p')
-            ->innerJoin(\Eccube\Entity\PaymentOption::class, 'po', 'WITH', 'po.payment_id = p.id')
+            ->innerJoin(PaymentOption::class, 'po', 'WITH', 'po.payment_id = p.id')
             ->where('po.Delivery = (:delivery) AND p.visible = true')
             ->orderBy('p.sort_no', 'DESC')
             ->setParameter('delivery', $delivery)
@@ -85,11 +82,10 @@ class PaymentRepository extends AbstractRepository
      * 共通の支払方法を取得
      *
      * @param array<int, Delivery> $deliveries
-     * @param bool $returnType
      *
      * @return array<int, Payment>
      */
-    public function findAllowedPayments($deliveries, $returnType = false)
+    public function findAllowedPayments(array $deliveries, bool $returnType = false): array
     {
         $payments = [];
         $saleTypes = [];

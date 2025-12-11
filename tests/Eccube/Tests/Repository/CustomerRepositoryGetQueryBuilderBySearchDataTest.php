@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -23,67 +25,39 @@ use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\Master\SexRepository;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * CustomerRepository test cases.
  *
  * @author Kentaro Ohkouchi
  */
-class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
+final class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 {
-    /**
-     * @var array
-     */
-    protected $Results;
+    protected ?array $Results = null;
 
-    /**
-     * @var array
-     */
-    protected $searchData;
+    protected ?array $searchData = null;
 
-    /**
-     * @var Customer
-     */
-    protected $Customer;
+    protected ?Customer $Customer = null;
 
-    /**
-     * @var Customer
-     */
-    protected $Customer1;
+    protected ?Customer $Customer1 = null;
 
-    /**
-     * @var Customer
-     */
-    protected $Customer2;
+    protected ?Customer $Customer2 = null;
 
-    /**
-     * @var Customer
-     */
-    protected $Customer3;
+    protected ?Customer $Customer3 = null;
 
-    /**
-     * @var CustomerRepository
-     */
-    protected $customerRepo;
+    protected ?CustomerRepository $customerRepo = null;
 
-    /**
-     * @var CustomerAddressRepository
-     */
-    protected $customerAddressRepo;
+    protected ?CustomerAddressRepository $customerAddressRepo = null;
 
-    /**
-     * @var PrefRepository
-     */
-    protected $masterPrefRepo;
+    protected ?PrefRepository $masterPrefRepo = null;
 
-    /**
-     * @var SexRepository
-     */
-    protected $masterSexRepo;
+    protected ?SexRepository $masterSexRepo = null;
 
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -139,7 +113,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertSame(1, count($this->Results));
+        $this->assertCount(1, $this->Results);
         $this->actual = $this->Results[0]->getId();
         $this->verify();
     }
@@ -165,7 +139,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertSame(1, count($this->Results));
+        $this->assertCount(1, $this->Results);
 
         $this->expected = 'customer@example.com';
         $this->actual = $this->Results[0]->getEmail();
@@ -196,7 +170,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertSame(1, count($this->Results));
+        $this->assertCount(1, $this->Results);
 
         $this->expected = '姓';
         $this->actual = $this->Results[0]->getName01();
@@ -215,7 +189,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertSame(1, count($this->Results));
+        $this->assertCount(1, $this->Results);
 
         $this->expected = '姓';
         $this->actual = $this->Results[0]->getName01();
@@ -237,7 +211,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertSame(1, count($this->Results));
+        $this->assertCount(1, $this->Results);
 
         $this->expected = '姓';
         $this->actual = $this->Results[0]->getName01();
@@ -259,7 +233,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertSame(1, count($this->Results));
+        $this->assertCount(1, $this->Results);
 
         $this->expected = 'メイ';
         $this->actual = $this->Results[0]->getKana02();
@@ -278,7 +252,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertSame(1, count($this->Results));
+        $this->assertCount(1, $this->Results);
 
         $this->expected = 'メイ';
         $this->actual = $this->Results[0]->getKana02();
@@ -297,7 +271,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertSame(1, count($this->Results));
+        $this->assertCount(1, $this->Results);
 
         $this->expected = 'セイ';
         $this->actual = $this->Results[0]->getKana01();
@@ -319,7 +293,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertSame(1, count($this->Results));
+        $this->assertCount(1, $this->Results);
 
         $this->expected = 'セイ';
         $this->actual = $this->Results[0]->getKana01();
@@ -346,7 +320,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertSame(1, count($this->Results));
+        $this->assertCount(1, $this->Results);
 
         $this->expected = $pref_id;
         $this->actual = $this->Results[0]->getPref()->getId();
@@ -498,7 +472,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
     public function testBuyTotalStart()
     {
-        $this->Customer->setBuyTotal(1);
+        $this->Customer->setBuyTotal('1');
         $this->entityManager->flush();
 
         $this->searchData = [
@@ -514,10 +488,10 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
     public function testBuyTotalStartWithZero()
     {
-        $this->Customer->setBuyTotal(0);
-        $this->Customer1->setBuyTotal(1);
-        $this->Customer2->setBuyTotal(1);
-        $this->Customer3->setBuyTotal(1);
+        $this->Customer->setBuyTotal('0');
+        $this->Customer1->setBuyTotal('1');
+        $this->Customer2->setBuyTotal('1');
+        $this->Customer3->setBuyTotal('1');
         $this->entityManager->flush();
 
         $this->searchData = [
@@ -534,7 +508,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
     public function testBuyTotalEnd()
     {
-        $this->Customer->setBuyTotal(1);
+        $this->Customer->setBuyTotal('1');
         $this->entityManager->flush();
 
         $this->searchData = [
@@ -550,7 +524,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
     public function testBuyTimesStart()
     {
-        $this->Customer->setBuyTimes(1);
+        $this->Customer->setBuyTimes('1');
         $this->entityManager->flush();
 
         $this->searchData = [
@@ -566,10 +540,10 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
     public function testBuyTimesStartWithZero()
     {
-        $this->Customer->setBuyTimes(0);
-        $this->Customer1->setBuyTimes(1);
-        $this->Customer2->setBuyTimes(1);
-        $this->Customer3->setBuyTimes(1);
+        $this->Customer->setBuyTimes('0');
+        $this->Customer1->setBuyTimes('1');
+        $this->Customer2->setBuyTimes('1');
+        $this->Customer3->setBuyTimes('1');
         $this->entityManager->flush();
 
         $this->searchData = [
@@ -586,7 +560,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
     public function testBuyTimesEnd()
     {
-        $this->Customer->setBuyTimes(1);
+        $this->Customer->setBuyTimes('1');
         $this->entityManager->flush();
 
         $this->searchData = [
@@ -600,13 +574,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
         $this->verify();
     }
 
-    /**
-     * @dataProvider dataFormDateProvider
-     *
-     * @param string $formName
-     * @param string $time
-     * @param int $expected
-     */
+    #[DataProvider(methodName: 'dataFormDateProvider')]
     public function testDate(string $formName, string $time, int $expected)
     {
         $this->Customer->setLastBuyDate(new \DateTime());
@@ -630,34 +598,24 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
      * - today: 今日の00:00:00
      * - tomorrow: 明日の00:00:00
      * - yesterday: 昨日の00:00:00
-     *
-     * @return array
      */
-    public function dataFormDateProvider()
+    public static function dataFormDateProvider(): \Iterator
     {
-        return [
-            ['create_date_start', 'today', 4],
-            ['create_date_start', 'tomorrow', 0],
-            ['update_date_start', 'today', 4],
-            ['update_date_start', 'tomorrow', 0],
-            ['last_buy_start', 'today', 1],
-            ['last_buy_start', 'tomorrow', 0],
-            ['create_date_end', 'today', 4],
-            ['create_date_end', 'yesterday', 0],
-            ['update_date_end', 'today', 4],
-            ['update_date_end', 'yesterday', 0],
-            ['last_buy_end', 'today', 1],
-            ['last_buy_end', 'yesterday', 0],
-        ];
+        yield ['create_date_start', 'today', 4];
+        yield ['create_date_start', 'tomorrow', 0];
+        yield ['update_date_start', 'today', 4];
+        yield ['update_date_start', 'tomorrow', 0];
+        yield ['last_buy_start', 'today', 1];
+        yield ['last_buy_start', 'tomorrow', 0];
+        yield ['create_date_end', 'today', 4];
+        yield ['create_date_end', 'yesterday', 0];
+        yield ['update_date_end', 'today', 4];
+        yield ['update_date_end', 'yesterday', 0];
+        yield ['last_buy_end', 'today', 1];
+        yield ['last_buy_end', 'yesterday', 0];
     }
 
-    /**
-     * @dataProvider dataFormDateTimeProvider
-     *
-     * @param string $formName
-     * @param string $time
-     * @param int $expected
-     */
+    #[DataProvider(methodName: 'dataFormDateTimeProvider')]
     public function testDateTime(string $formName, string $time, int $expected)
     {
         $this->Customer->setLastBuyDate(new \DateTime());
@@ -676,25 +634,21 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
     /**
      * Data provider datetime form test.
-     *
-     * @return array
      */
-    public function dataFormDateTimeProvider()
+    public static function dataFormDateTimeProvider(): \Iterator
     {
-        return [
-            ['create_datetime_start', '- 1 hour', 4],
-            ['create_datetime_start', '+ 1 hour', 0],
-            ['update_datetime_start', '- 1 hour', 4],
-            ['update_datetime_start', '+ 1 hour', 0],
-            ['last_buy_datetime_start', '- 1 hour', 1],
-            ['last_buy_datetime_start', '+ 1 hour', 0],
-            ['create_datetime_end', '+ 1 hour', 4],
-            ['create_datetime_end', '- 1 hour', 0],
-            ['update_datetime_end', '+ 1 hour', 4],
-            ['update_datetime_end', '- 1 hour', 0],
-            ['last_buy_datetime_end', '+ 1 hour', 1],
-            ['last_buy_datetime_end', '- 1 hour', 0],
-        ];
+        yield ['create_datetime_start', '- 1 hour', 4];
+        yield ['create_datetime_start', '+ 1 hour', 0];
+        yield ['update_datetime_start', '- 1 hour', 4];
+        yield ['update_datetime_start', '+ 1 hour', 0];
+        yield ['last_buy_datetime_start', '- 1 hour', 1];
+        yield ['last_buy_datetime_start', '+ 1 hour', 0];
+        yield ['create_datetime_end', '+ 1 hour', 4];
+        yield ['create_datetime_end', '- 1 hour', 0];
+        yield ['update_datetime_end', '+ 1 hour', 4];
+        yield ['update_datetime_end', '- 1 hour', 0];
+        yield ['last_buy_datetime_end', '+ 1 hour', 1];
+        yield ['last_buy_datetime_end', '- 1 hour', 0];
     }
 
     public function testStatus()

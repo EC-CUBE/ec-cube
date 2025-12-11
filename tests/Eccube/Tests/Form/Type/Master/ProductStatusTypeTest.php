@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -19,14 +21,13 @@ use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use Symfony\Component\Form\FormInterface;
 
-class ProductStatusTypeTest extends AbstractTypeTestCase
+final class ProductStatusTypeTest extends AbstractTypeTestCase
 {
-    /** @var FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
-    /** @var ProductStatusRepository */
-    protected $productStatusRepo;
+    protected ?ProductStatusRepository $productStatusRepo = null;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
