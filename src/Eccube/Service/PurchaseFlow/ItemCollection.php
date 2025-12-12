@@ -33,7 +33,7 @@ class ItemCollection extends ArrayCollection
      */
     public function __construct(array|Collection|null $Items = null, ?string $type = null)
     {
-        $this->type = is_null($type) ? Order::class : $type;
+        $this->type = $type ?? Order::class;
 
         if ($Items instanceof Collection) {
             $Items = $Items->toArray();
@@ -42,9 +42,12 @@ class ItemCollection extends ArrayCollection
     }
 
     /**
-     * @param mixed|null $initial
+     * @template TReturn
      *
-     * @return mixed|null
+     * @param \Closure(TReturn, ItemInterface): TReturn $func
+     * @param TReturn|null $initial
+     *
+     * @return TReturn|null
      */
     #[\Override]
     public function reduce(\Closure $func, mixed $initial = null): mixed
@@ -59,7 +62,8 @@ class ItemCollection extends ArrayCollection
     public function getProductClasses(): ItemCollection
     {
         return $this->filter(
-            fn (ItemInterface $OrderItem) => $OrderItem->isProduct());
+            fn (ItemInterface $OrderItem) => $OrderItem->isProduct()
+        );
     }
 
     /**
@@ -68,7 +72,8 @@ class ItemCollection extends ArrayCollection
     public function getDeliveryFees(): ItemCollection
     {
         return $this->filter(
-            fn (ItemInterface $OrderItem) => $OrderItem->isDeliveryFee());
+            fn (ItemInterface $OrderItem) => $OrderItem->isDeliveryFee()
+        );
     }
 
     /**
@@ -77,7 +82,8 @@ class ItemCollection extends ArrayCollection
     public function getCharges(): ItemCollection
     {
         return $this->filter(
-            fn (ItemInterface $OrderItem) => $OrderItem->isCharge());
+            fn (ItemInterface $OrderItem) => $OrderItem->isCharge()
+        );
     }
 
     /**
@@ -86,7 +92,8 @@ class ItemCollection extends ArrayCollection
     public function getDiscounts(): ItemCollection
     {
         return $this->filter(
-            fn (ItemInterface $OrderItem) => $OrderItem->isDiscount() || $OrderItem->isPoint());
+            fn (ItemInterface $OrderItem) => $OrderItem->isDiscount() || $OrderItem->isPoint()
+        );
     }
 
     /**
@@ -107,14 +114,13 @@ class ItemCollection extends ArrayCollection
 
     /**
      * 指定した受注明細区分の明細が存在するかどうか.
-     *
-     * @param OrderItemType $OrderItemType 受注区分
      */
     public function hasItemByOrderItemType(OrderItemType $OrderItemType): bool
     {
-        $filteredItems = $this->filter(fn (ItemInterface $OrderItem) =>
-            /* @var OrderItem $OrderItem */
-            $OrderItem->getOrderItemType() && $OrderItem->getOrderItemType()->getId() == $OrderItemType->getId());
+        $filteredItems = $this->filter(
+            fn (ItemInterface $OrderItem) => $OrderItem->getOrderItemType()
+                && $OrderItem->getOrderItemType()->getId() == $OrderItemType->getId()
+        );
 
         return !$filteredItems->isEmpty();
     }
