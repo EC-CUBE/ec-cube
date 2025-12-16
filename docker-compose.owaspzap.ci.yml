@@ -3,7 +3,7 @@ version: "3"
 services:
   zap:
     image: ghcr.io/ec-cube/zaproxy:0.1.0
-    command: sh -c "zap.sh -cmd -configfile /zap/wrk/options.properties -certpubdump /zap/wrk/owasp_zap_root_ca.cer && tail -f /dev/null"
+    command: ["sh", "-c", "tail -f /dev/null"]
     volumes:
       - ./zap/policies:/home/zap/.ZAP/policies/
       - ./zap:/zap/wrk/
@@ -14,7 +14,7 @@ services:
       - default
     tty: true
     healthcheck:
-      test: echo 'zap'
+      test: ["CMD-SHELL", "test -f /dev/null"]
       interval: 3s
       timeout: 3s
       retries: 3
