@@ -192,7 +192,7 @@ jobs:
         run: |
           docker compose ps
           docker compose logs zap --tail=200
-a
+
       - name: Set up plugins
         env:
             APP_ENV: prod
