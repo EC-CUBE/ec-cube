@@ -188,7 +188,7 @@ jobs:
           docker compose cp zap/delete_files.sh ec-cube:/
           docker compose exec -d ec-cube /delete_files.sh
 
-      - name: Debug: docker compose status
+      - name: Debug docker compose status
         run: |
           docker compose ps
           docker compose logs zap --tail=200
