@@ -188,11 +188,6 @@ jobs:
           docker compose cp zap/delete_files.sh ec-cube:/
           docker compose exec -d ec-cube /delete_files.sh
 
-      - name: Debug: docker compose status
-        run: |
-          docker compose ps
-          docker compose logs zap --tail=200
-
       - name: Set up plugins
         env:
             APP_ENV: prod
@@ -208,18 +203,11 @@ jobs:
         run: |
           docker compose exec -u www-data:www-data ec-cube sed -i -e "s/eccube_login_throttling_max_attempts: 5/eccube_login_throttling_max_attempts: 1024/" -e "s/eccube_login_throttling_interval: '30 minutes'/eccube_login_throttling_interval: '1 minutes'/" app/config/eccube/packages/eccube.yaml
           docker compose exec -u www-data:www-data ec-cube rm -f app/config/eccube/packages/prod/eccube_rate_limiter.yaml
-          docker compose exec -u www-data:www-data ec-cube sed -i -e 's/30 min/1 min/g' app/config/eccube/packages/eccube_rate_limiter.yaml
+          docker compose exec -u www-data:www- ec-cube sed -i -e 's/30 min/1 min/g' app/config/eccube/packages/eccube_rate_limiter.yaml
           docker compose exec -u www-data:www-data ec-cube bin/console cache:clear
           docker compose exec -u www-data:www-data ec-cube bin/console debug:container --parameter eccube_login_throttling_max_attempts
           docker compose exec -u www-data:www-data ec-cube bin/console debug:container --parameter eccube_login_throttling_interval
           docker compose exec -u www-data:www-data ec-cube bin/console debug:config eccube
-
-      - name: Debug: inspect zap container
-        run: |
-          docker compose exec zap whoami
-          docker compose exec zap pwd
-          docker compose exec zap ls -l /zap/wrk
-          docker compose exec zap ls -l /home/zap/.ZAP || true
 
       - name: Generate automation config
         env:
@@ -234,26 +222,8 @@ jobs:
             ${ZAP_THREAD_PER_HOST:+"-n ${ZAP_THREAD_PER_HOST}"}
           cat zap/automation/${{ matrix.target }}.yml
 
-      # - name: Autorun
-      #   run: docker compose exec -it zap ./zap.sh -cmd -configfile /zap/wrk/options.properties -autorun wrk/automation/${{ matrix.target }}.yml
-
       - name: Autorun
-        run: |
-          set -x
-          docker compose exec zap ./zap.sh \
-            -cmd \
-            -configfile /zap/wrk/options.properties \
-            -autorun wrk/automation/${{ matrix.target }}.yml
-
-      - name: Debug: zap logs after autorun
-        if: ${{ failure() }}
-        run: |
-          docker compose logs zap --tail=300
-
-      - name: Debug: check report files
-        if: ${{ always() }}
-        run: |
-          docker compose exec zap ls -l /tmp || true
+        run: docker compose exec -it zap ./zap.sh -cmd -configfile /zap/wrk/options.properties -autorun wrk/automation/${{ matrix.target }}.yml
 
       - name: Copy report
         if: ${{ always() }}
