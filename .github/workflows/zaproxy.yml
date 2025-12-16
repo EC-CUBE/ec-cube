@@ -227,8 +227,30 @@ jobs:
             ${ZAP_THREAD_PER_HOST:+"-n ${ZAP_THREAD_PER_HOST}"}
           cat zap/automation/${{ matrix.target }}.yml
 
+      - name: Debug inspect zap container
+        run: |
+          docker compose exec zap whoami
+          docker compose exec zap pwd
+          docker compose exec zap ls -l /zap/wrk
+          docker compose exec zap ls -l /home/zap/.ZAP || true
+
       - name: Autorun
-        run: docker compose exec -it zap ./zap.sh -cmd -configfile /zap/wrk/options.properties -autorun wrk/automation/${{ matrix.target }}.yml
+        run: |
+          set -x
+          docker compose exec zap ./zap.sh \
+            -cmd \
+            -configfile /zap/wrk/options.properties \
+            -autorun wrk/automation/${{ matrix.target }}.yml
+
+      - name: Debug zap logs after autorun
+        if: ${{ failure() }}
+        run: |
+          docker compose logs zap --tail=300
+
+      - name: Debug check report files
+        if: ${{ always() }}
+        run: |
+          docker compose exec zap ls -l /tmp || true
 
       - name: Copy report
         if: ${{ always() }}
