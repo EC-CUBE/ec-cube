@@ -17,7 +17,8 @@ services:
       - default
     tty: true
     healthcheck:
-      test: ["CMD-SHELL", "test -f /dev/null"]
-      interval: 3s
-      timeout: 3s
-      retries: 3
+      test: echo 'zap'
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 5s
