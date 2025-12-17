@@ -191,8 +191,8 @@ jobs:
       - name: Debug docker compose status (include exited)
         if: ${{ always() }}
         run: |
-          docker compose -f ps -a
-          docker compose -f logs --no-color --tail=300 zap || true
+          docker compose ps -a
+          docker compose logs --no-color --tail=300 zap || true
 
       - name: Set up plugins
         env:
@@ -246,7 +246,7 @@ jobs:
       - name: Debug zap logs after autorun
         if: ${{ failure() }}
         run: |
-          docker compose -f logs zap --tail=300
+          docker compose logs zap --tail=300
 
       - name: Debug check report files
         if: ${{ always() }}
