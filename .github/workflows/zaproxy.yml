@@ -238,10 +238,12 @@ jobs:
       - name: Autorun
         run: |
           set -x
-          docker compose exec zap ./zap.sh \
+          # デバッグ: 実行前にファイルが本当にコンテナ内の絶対パスにあるか確認
+          docker compose exec -T zap ls -la /zap/wrk/automation/${{ matrix.target }}.yml
+          docker compose exec -T zap ./zap.sh \
             -cmd \
             -configfile /zap/wrk/options.properties \
-            -autorun wrk/automation/${{ matrix.target }}.yml
+            -autorun /zap/wrk/automation/${{ matrix.target }}.yml
 
       - name: Debug zap logs after autorun
         if: ${{ failure() }}
