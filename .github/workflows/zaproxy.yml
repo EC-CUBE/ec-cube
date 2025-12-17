@@ -238,8 +238,14 @@ jobs:
       - name: Autorun
         run: |
           set -x
-          # デバッグ: 実行前にファイルが本当にコンテナ内の絶対パスにあるか確認
+          # デバッグ1: Automation Plan ファイルの確認
           docker compose exec -T zap ls -la /zap/wrk/automation/${{ matrix.target }}.yml
+
+          # デバッグ2: options.properties の確認 (★ここが怪しいです)
+          # ファイルがない場合、ここでエラーが出て止まるようにチェックします
+          docker compose exec -T zap ls -la /zap/wrk/options.properties
+
+          # ZAP実行
           docker compose exec -T zap ./zap.sh \
             -cmd \
             -configfile /zap/wrk/options.properties \
@@ -248,7 +254,12 @@ jobs:
       - name: Debug zap logs after autorun
         if: ${{ failure() }}
         run: |
-          docker compose logs zap --tail=300
+          echo "=== Docker Compose Logs ==="
+          docker compose -f docker-compose.yml -f docker-compose.pgsql.yml -f docker-compose.owaspzap.ci.yml logs zap --tail=300
+          
+          echo "=== Internal ZAP Log (zap.log) ==="
+          # 内部エラーログを表示
+          docker compose exec -T zap cat /home/zap/.ZAP/zap.log
 
       - name: Debug check report files
         if: ${{ always() }}
