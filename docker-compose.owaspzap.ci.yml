@@ -3,11 +3,18 @@ version: "3"
 services:
   zap:
     image: ghcr.io/ec-cube/zaproxy:0.1.0
-    user: root
+    user: zap
+    
+    # HOME を明示（entrypoint上書きの副作用対策）
+    environment:
+      HOME: /home/zap
+    
     # ENTRYPOINT を無効化
     entrypoint: ["sh", "-c"]
+    
     # コンテナを待機させる
     command: ["tail -f /dev/null"]
+    
     volumes:
       - ./zap/policies:/home/zap/.ZAP/policies/
       - ./zap:/zap/wrk/
