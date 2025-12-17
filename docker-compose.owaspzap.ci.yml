@@ -3,6 +3,7 @@ version: "3"
 services:
   zap:
     image: ghcr.io/ec-cube/zaproxy:0.1.0
+    user: root
     # ENTRYPOINT を無効化
     entrypoint: ["sh", "-c"]
     # コンテナを待機させる
