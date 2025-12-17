@@ -16,8 +16,8 @@ services:
     command: ["tail -f /dev/null"]
     
     volumes:
-      - ./zap/policies:/home/zap/.ZAP/policies/
       - ./zap:/zap/wrk/
+      - ./zap/policies:/zap/policies
     depends_on:
       - ec-cube
     networks:
