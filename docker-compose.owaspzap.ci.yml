@@ -2,22 +2,18 @@ version: "3"
 
 services:
   zap:
-    image: ghcr.io/ec-cube/zaproxy:0.1.0
-    user: zap
-    
-    # HOME を明示（entrypoint上書きの副作用対策）
-    environment:
-      HOME: /home/zap
-    
-    # ENTRYPOINT を無効化
-    entrypoint: ["sh", "-c"]
+    image: ghcr.io/ec-cube/zaproxy:0.1.1
     
     # コンテナを待機させる
-    command: ["tail -f /dev/null"]
+    command: ["sh", "-c", "tail -f /dev/null"]
     
+    environment:
+      # HOMEは公式が /home/zap を前提にしているため明示しておくと安全
+      HOME: /home/zap
+
     volumes:
       - ./zap:/zap/wrk/
-      - ./zap/policies:/zap/policies
+      - ./zap/policies:/zap/policies:ro
     depends_on:
       - ec-cube
     networks:
@@ -25,7 +21,7 @@ services:
       - default
     tty: true
     healthcheck:
-      test: echo 'zap'
+      test: ["CMD-SHELL", "test -x /zap/zap.sh && test -d /zap/wrk"]
       interval: 10s
       timeout: 10s
       retries: 5
