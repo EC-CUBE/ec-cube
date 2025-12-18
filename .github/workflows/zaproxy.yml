@@ -28,18 +28,36 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Container Build
+      # --- EC-CUBE 本体のビルド ---
+      - name: Container Build (EC-CUBE)
         uses: docker/build-push-action@v6
         with:
           context: .
           tags: ec-cube
           outputs: type=docker,dest=/tmp/ec-cube.tar
 
+      # --- ZAP イメージのビルド ---
+      - name: Container Build (ZAP)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile 
+          tags: zap-local
+          outputs: type=docker,dest=/tmp/zap.tar
+
+      # --- EC-CUBE イメージのアップロード ---
       - name: Upload image
         uses: actions/upload-artifact@v5
         with:
           name: ec-cube
           path: /tmp/ec-cube.tar
+
+      # --- ZAP イメージのアップロード ---
+      - name: Upload image (ZAP)
+        uses: actions/upload-artifact@v5
+        with:
+          name: zap
+          path: /tmp/zap.tar
 
   scan:
     name: Scan
