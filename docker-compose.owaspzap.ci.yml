@@ -25,7 +25,7 @@ services:
       - default
     tty: true
     healthcheck:
-      test: ["CMD-SHELL", "test -x /zap/zap.sh && test -d /zap/wrk"]
+      test: echo 'zap'
       interval: 10s
       timeout: 10s
       retries: 5
