@@ -184,10 +184,16 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Download image
+      - name: Download image (EC-CUBE)
         uses: actions/download-artifact@v6
         with:
           name: ec-cube
+          path: /tmp
+
+      - name: Download image (ZAP)
+        uses: actions/download-artifact@v6
+        with:
+          name: zap
           path: /tmp
 
       - name: Load image
