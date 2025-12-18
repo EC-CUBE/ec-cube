@@ -5,7 +5,8 @@ services:
     image: ghcr.io/ec-cube/zaproxy:0.1.1
     
     # コンテナを待機させる
-    command: ["sh", "-c", "tail -f /dev/null"]
+    entrypoint: ["sh", "-c"]
+    command: ["tail -f /dev/null"]
     
     environment:
       # HOMEは公式が /home/zap を前提にしているため明示しておくと安全
