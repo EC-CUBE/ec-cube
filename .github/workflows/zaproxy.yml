@@ -261,6 +261,13 @@ jobs:
           docker compose exec zap ls -l /zap/wrk
           docker compose exec zap ls -l /home/zap/.ZAP || true
 
+      - name: Debug find zap.sh
+        run: |
+          echo "=== Searching for zap.sh ==="
+          docker compose exec -T zap find / -name zap.sh 2>/dev/null || true
+          echo "=== List /zap directory ==="
+          docker compose exec -T zap ls -la /zap || true
+
       - name: Autorun
         run: |
           set -x
