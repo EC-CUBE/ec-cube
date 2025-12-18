@@ -272,7 +272,7 @@ jobs:
           docker compose exec -T zap ls -la /zap/wrk/options.properties
 
           # ZAP実行
-          docker compose exec -T zap ./zap.sh \
+          docker compose exec -T zap /zap/zap.sh \
             -cmd \
             -configfile /zap/wrk/options.properties \
             -autorun /zap/wrk/automation/${{ matrix.target }}.yml
