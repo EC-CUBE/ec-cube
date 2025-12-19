@@ -63,7 +63,7 @@ ${ZA_BEFORE_SCRIPT_CONFIG}
 
   - type: sequence-activeScan
     parameters:
-      name: target
+      sequence: target
       user: ${ZA_USER}
       context: ${ZA_CONTEXT}
 

@@ -18,20 +18,7 @@ if [[ -z "${ZA_CONTEXT}" ]]; then
     if [[ ${ZA_TARGET} =~ 'admin' ]]; then
         ZA_CONTEXT=admin
         ZA_USER=admin
-        ZA_FORCE_ADMIN_CONFIG="
-  - type: script
-    parameters:
-      action: add
-      type: standalone
-      name: forceuser
-      file: /zap/wrk/scripts/forceuser.groovy
-
-  - type: script
-    parameters:
-      action: run
-      type: standalone
-      name: forceuser
-"
+        ZA_FORCE_ADMIN_CONFIG=""
     else
         ZA_CONTEXT=default
     fi
