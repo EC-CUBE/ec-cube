@@ -247,6 +247,12 @@ jobs:
       - name: Install missing add-ons
         run: |
           docker compose exec -T zap /zap/zap.sh -cmd -addoninstall groovy
+          docker compose exec -T zap /zap/zap.sh -cmd -addoninstall sequence
+          docker compose exec -T zap /zap/zap.sh -cmd -addoninstall automation
+
+      - name: Debug generated YAML
+        run: |
+           docker compose exec -T zap cat /zap/wrk/automation/admin_content_block.yml
 
       - name: Autorun
         run: |
