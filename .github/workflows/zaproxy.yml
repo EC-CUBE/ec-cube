@@ -248,8 +248,8 @@ jobs:
         run: |
           docker compose exec -T zap /zap/zap.sh -cmd -addonupdate
           docker compose exec -T zap /zap/zap.sh -cmd -addonuninstall sequence
-          docker compose exec -T zap /zap/zap.sh -cmd -addoninstall automation
           docker compose exec -T zap /zap/zap.sh -cmd -addoninstall sequence
+          docker compose exec -T zap /zap/zap.sh -cmd -addoninstall automation
           docker compose exec -T zap /zap/zap.sh -cmd -addoninstall groovy
 
       - name: Autorun
