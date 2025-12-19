@@ -244,6 +244,10 @@ jobs:
           echo "=== List /zap directory ==="
           docker compose exec -T zap ls -la /zap || true
 
+      - name: Install missing add-ons
+        run: |
+          docker compose exec -T zap /zap/zap.sh -cmd -addoninstall groovy
+
       - name: Autorun
         run: |
           set -x
