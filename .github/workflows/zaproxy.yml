@@ -174,12 +174,6 @@ jobs:
           name: ec-cube
           path: /tmp
 
-      - name: Download image (ZAP)
-        uses: actions/download-artifact@v6
-        with:
-          name: zap
-          path: /tmp
-
       - name: Load image
         run: |
           docker load --input /tmp/ec-cube.tar
