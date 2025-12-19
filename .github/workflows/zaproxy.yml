@@ -244,11 +244,12 @@ jobs:
           echo "=== List /zap directory ==="
           docker compose exec -T zap ls -la /zap || true
 
-      - name: Install missing add-ons
+      - name: Update and Install Add-ons
         run: |
-          docker compose exec -T zap /zap/zap.sh -cmd -addoninstall groovy
-          docker compose exec -T zap /zap/zap.sh -cmd -addoninstall sequence
+          docker compose exec -T zap /zap/zap.sh -cmd -addonupdat
           docker compose exec -T zap /zap/zap.sh -cmd -addoninstall automation
+          docker compose exec -T zap /zap/zap.sh -cmd -addoninstall sequence
+          docker compose exec -T zap /zap/zap.sh -cmd -addoninstall groovy
 
       - name: Debug generated YAML
         run: |

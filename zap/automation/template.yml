@@ -66,7 +66,6 @@ ${ZA_BEFORE_SCRIPT_CONFIG}
       name: target
       user: ${ZA_USER}
       context: ${ZA_CONTEXT}
-      threadPerHost: ${ZA_THREAD_PER_HOST}
 
   - type: passiveScan-wait
 
