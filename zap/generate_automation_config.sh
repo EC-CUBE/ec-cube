@@ -54,12 +54,15 @@ if [[ -n ${ZA_BEFORE_SCRIPT} ]]; then
       action: add
       type: sequence
       name: before_script
-      file: /zap/wrk/scripts/${ZA_BEFORE_SCRIPT}
+      file: /zap/wrk/scripts/${ZA_BEFORE_SCRIPT}"
+    if [[ "${ZA_BEFORE_SCRIPT}" != *.zst ]]; then
+        ZA_BEFORE_SCRIPT_CONFIG="${ZA_BEFORE_SCRIPT_CONFIG}
   - type: script
     parameters:
       action: run
       type: sequence
       name: before_script"
+    fi
 fi
 
 TEMPLATE=$(sed 's/"/\\"/g' automation/template.yml)
