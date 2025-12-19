@@ -44,6 +44,7 @@ jobs:
           file: ./Dockerfile 
           tags: zap-local
           outputs: type=docker,dest=/tmp/zap.tar
+          no-cache: true
 
       # --- EC-CUBE イメージのアップロード ---
       - name: Upload image
@@ -201,7 +202,7 @@ jobs:
           docker load --input /tmp/ec-cube.tar
           docker tag ec-cube ghcr.io/ec-cube/ec-cube-php:8.1-apache
           docker load --input /tmp/zap.tar
-          docker tag zap-local ghcr.io/ec-cube/zaproxy:0.1.1
+          docker tag zap-local ghcr.io/ec-cube/zaproxy:0.1.2
 
       - name: Run containers
         env:
