@@ -1,9 +1,6 @@
 services:
   zap:
-    image: ghcr.io/ec-cube/zaproxy:0.1.3
-
-    # インターネットに取りに行かず、ローカルのイメージを使う
-    pull_policy: never
+    image: ghcr.io/ec-cube/zaproxy:0.1.2
     
     # コンテナを待機させる
     entrypoint: ["sh", "-c"]
