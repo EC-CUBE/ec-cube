@@ -61,12 +61,6 @@ ${ZA_BEFORE_SCRIPT_CONFIG}
       name: target
       file: /zap/wrk/scripts/${ZA_TARGET}.zst
 
-  - type: script
-    parameters:
-      action: run
-      type: sequence
-      name: target
-
   - type: sequence
     parameters:
       action: activeScan
