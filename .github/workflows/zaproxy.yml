@@ -246,14 +246,10 @@ jobs:
 
       - name: Update and Install Add-ons
         run: |
-          docker compose exec -T zap /zap/zap.sh -cmd -addonupdat
+          docker compose exec -T zap /zap/zap.sh -cmd -addonupdate
           docker compose exec -T zap /zap/zap.sh -cmd -addoninstall automation
           docker compose exec -T zap /zap/zap.sh -cmd -addoninstall sequence
           docker compose exec -T zap /zap/zap.sh -cmd -addoninstall groovy
-
-      - name: Debug generated YAML
-        run: |
-           docker compose exec -T zap cat /zap/wrk/automation/admin_content_block.yml
 
       - name: Autorun
         run: |
