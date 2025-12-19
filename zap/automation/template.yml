@@ -61,7 +61,7 @@ ${ZA_BEFORE_SCRIPT_CONFIG}
       name: target
       file: /zap/wrk/scripts/${ZA_TARGET}.zst
 
-  - type: sequence
+  - type: sequence-activeScan
     parameters:
       name: target
       user: ${ZA_USER}
