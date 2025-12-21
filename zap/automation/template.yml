@@ -14,12 +14,13 @@ env:
           loginPageUrl: https://ec-cube/admin/login
           loginRequestUrl: https://ec-cube/admin/login
           loginRequestBody: _csrf_token=xxx&login_id={%username%}&password={%password%}
+          loginRequestBody: _csrf_token={%antiCsrfToken%}&login_id={%username%}&password={%password%}
         verification:
           method: 'poll'
-          loggedOutRegex: '\Q<button type="submit" class="btn btn-primary btn-lg btn-block">ログイン</button>\E'
+          pollUrl: 'https://ec-cube/admin/'
           pollFrequency: 1000
           pollUnits: 'requests'
-          pollUrl: 'https://ec-cube/admin/login'
+          loggedInRegex: '\Qログアウト\E' 
       users:
       - name: admin
         credentials:
@@ -35,6 +36,8 @@ env:
     failOnError: true
     failOnWarning: false
     progressToStdout: true
+    antiCsrfTokens:
+      - _csrf_token
 
 jobs:
 
