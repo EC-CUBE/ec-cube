@@ -106,7 +106,8 @@
       "elementType": "ZestComment"
     },
     {
-      "url": "https://ec-cube/admin/customer/1/delivery/new",
+      "urlToken": "https://ec-cube/admin/customer/{{customer-id}}/delivery/new",
+      "url": "https://ec-cube/admin/customer/{{customer-id}}/delivery/new",
       "data": "",
       "method": "GET",
       "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
@@ -148,7 +149,8 @@
       "elementType": "ZestAssignFieldValue"
     },
     {
-      "url": "https://ec-cube/admin/customer/1/delivery/new",
+      "urlToken": "https://ec-cube/admin/customer/{{customer-id}}/delivery/new",
+      "url": "https://ec-cube/admin/customer/{{customer-id}}/delivery/new",
       "data": "customer_address%5B_token%5D={{csrf1}}&customer_address%5Bname%5D%5Bname01%5D=%E5%A7%93&customer_address%5Bname%5D%5Bname02%5D=%E5%90%8D&customer_address%5Bkana%5D%5Bkana01%5D=%E3%82%BB%E3%82%A4&customer_address%5Bkana%5D%5Bkana02%5D=%E3%83%A1%E3%82%A4&customer_address%5Bcompany_name%5D=%E4%BC%9A%E7%A4%BE%E5%90%8D&customer_address%5Bpostal_code%5D=5300001&customer_address%5Baddress%5D%5Bpref%5D=27&customer_address%5Baddress%5D%5Baddr01%5D=%E5%A4%A7%E9%98%AA%E5%B8%82%E5%8C%97%E5%8C%BA%E6%A2%85%E7%94%B0&customer_address%5Baddress%5D%5Baddr02%5D=1-2-3&customer_address%5Bphone_number%5D=08012345678",
       "method": "POST",
       "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 635\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
@@ -170,7 +172,7 @@
       "elementType": "ZestRequest"
     },
     {
-      "prefix": "Location: /admin/customer/1/delivery/",
+      "prefix": "Location: /admin/customer/{{customer-id}}/delivery/",
       "postfix": "/edit",
       "location": "HEAD",
       "variableName": "delivery-id",
@@ -179,7 +181,7 @@
       "elementType": "ZestAssignStringDelimiters"
     },
     {
-      "urlToken": "https://ec-cube/admin/customer/1/delivery/{{delivery-id}}/edit",
+      "urlToken": "https://ec-cube/admin/customer/{{customer-id}}/delivery/{{delivery-id}}/edit",
       "data": "",
       "method": "GET",
       "headers": "Proxy-Connection: keep-alive\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\n",
@@ -218,7 +220,7 @@
       "elementType": "ZestComment"
     },
     {
-      "urlToken": "https://ec-cube/admin/customer/1/delivery/{{delivery-id}}/edit",
+      "urlToken": "https://ec-cube/admin/customer/{{customer-id}}/delivery/{{delivery-id}}/edit",
       "data": "customer_address%5B_token%5D={{csrf2}}&customer_address%5Bname%5D%5Bname01%5D=%E5%A7%93&customer_address%5Bname%5D%5Bname02%5D=%E5%90%8D&customer_address%5Bkana%5D%5Bkana01%5D=%E3%82%BB%E3%82%A4&customer_address%5Bkana%5D%5Bkana02%5D=%E3%83%A1%E3%82%A4&customer_address%5Bcompany_name%5D=%E4%BC%9A%E7%A4%BE%E5%90%8D&customer_address%5Bpostal_code%5D=5300001&customer_address%5Baddress%5D%5Bpref%5D=27&customer_address%5Baddress%5D%5Baddr01%5D=%E5%A4%A7%E9%98%AA%E5%B8%82%E5%8C%97%E5%8C%BA%E6%A2%85%E7%94%B0&customer_address%5Baddress%5D%5Baddr02%5D=1-2-3&customer_address%5Bphone_number%5D=08012345678",
       "method": "POST",
       "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 635\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
