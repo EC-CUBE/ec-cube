@@ -292,6 +292,24 @@ jobs:
             -configfile /zap/wrk/options.properties \
             -autorun /zap/wrk/automation/${{ matrix.target }}.yml
 
+      - name: Debug login POST (curl)
+        if: ${{ always() }}
+        run: |
+          echo "=== GET login page and extract csrf ==="
+          docker compose exec -T zap sh -lc '
+            html=$(curl -sk https://ec-cube/admin/login);
+            echo "$html" | grep -oE "name=\"_csrf_token\"[^>]*value=\"[^\"]+\"" | head -n 1
+          '
+
+          echo "=== POST login (expect redirect to /admin/) ==="
+          docker compose exec -T zap sh -lc '
+            token=$(curl -sk https://ec-cube/admin/login | sed -n "s/.*name=\"_csrf_token\"[^>]*value=\"\\([^\"]\\+\\)\".*/\\1/p" | head -n 1);
+            echo "token=$token";
+            curl -skI -X POST https://ec-cube/admin/login \
+              -H "Content-Type: application/x-www-form-urlencoded" \
+              --data "_csrf_token=$token&login_id=admin&password=password" | sed -n "1,20p"
+          '
+
       - name: Debug auth endpoints
         if: ${{ always() }}
         run: |
