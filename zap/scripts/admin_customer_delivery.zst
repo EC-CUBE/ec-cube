@@ -14,8 +14,94 @@
   },
   "statements": [
     {
-      "comment": "お届け先追加",
+      "comment": "【CI対策】ここで管理画面ログインを確実に実施（cookie維持）",
+      "index": 0,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "url": "https://ec-cube/admin/login",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: none\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "cookies": [],
       "index": 1,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "fieldDefinition": {
+        "formIndex": 0,
+        "fieldName": "_csrf_token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "admin_login_csrf",
+      "index": 2,
+      "enabled": true,
+      "elementType": "ZestAssignFieldValue"
+    },
+    {
+      "url": "https://ec-cube/admin/login",
+      "data": "_csrf_token={{admin_login_csrf}}&login_id=admin&password=password",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Type: application/x-www-form-urlencoded\r\nOrigin: https://ec-cube\r\nUpgrade-Insecure-Requests: 1\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 302,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "cookies": [],
+      "index": 3,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "comment": "ログイン後に /admin/ が 200 であることを確認",
+      "index": 4,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "url": "https://ec-cube/admin/",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: none\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "cookies": [],
+      "index": 5,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "comment": "お届け先追加",
+      "index": 6,
       "enabled": true,
       "elementType": "ZestComment"
     },
