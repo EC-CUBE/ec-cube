@@ -190,6 +190,21 @@ jobs:
           docker compose cp zap/delete_files.sh ec-cube:/
           docker compose exec -d ec-cube /delete_files.sh
 
+      - name: Debug ZAP version and image
+        if: ${{ always() }}
+        run: |
+          echo "=== docker images (zap related) ==="
+          docker images | sed -n '1p;/zap\|zaproxy\|owasp/i p' || true
+
+          echo "=== docker compose images ==="
+          docker compose images || true
+
+          echo "=== ZAP version (zap.sh -version) ==="
+          docker compose exec -T zap /zap/zap.sh -version || true
+
+          echo "=== Java version in container ==="
+          docker compose exec -T zap java -version || true
+
       - name: Debug docker compose status (include exited)
         if: ${{ always() }}
         run: |
@@ -236,7 +251,7 @@ jobs:
           docker compose exec zap pwd
           docker compose exec zap ls -l /zap/wrk
           docker compose exec zap ls -l /home/zap/.ZAP || true
-
+          
       - name: Debug find zap.sh
         run: |
           echo "=== Searching for zap.sh ==="
@@ -251,6 +266,15 @@ jobs:
           docker compose exec -T zap /zap/zap.sh -cmd -addoninstall sequence
           docker compose exec -T zap /zap/zap.sh -cmd -addoninstall automation
           docker compose exec -T zap /zap/zap.sh -cmd -addoninstall groovy
+
+      - name: Debug ZAP add-ons status
+        if: ${{ always() }}
+        run: |
+          echo "=== Add-ons list (attempt) ==="
+          docker compose exec -T zap /zap/zap.sh -cmd -addonlist || true
+
+          echo "=== ZAP home add-ons directory ==="
+          docker compose exec -T zap ls -la /home/zap/.ZAP/plugin || true
 
       - name: Autorun
         run: |
