@@ -13,7 +13,7 @@ env:
         parameters:
           loginPageUrl: https://ec-cube/admin/login
           loginRequestUrl: https://ec-cube/admin/login
-          loginRequestBody: _csrf_token={%antiCsrfToken%}&login_id={%username%}&password={%password%}
+          loginRequestBody: _csrf_token=xxx&login_id={%username%}&password={%password%}
         verification:
           method: 'poll'
           pollUrl: 'https://ec-cube/admin/'
@@ -35,8 +35,6 @@ env:
     failOnError: true
     failOnWarning: false
     progressToStdout: true
-    antiCsrfTokens:
-      - _csrf_token
 
 jobs:
 
