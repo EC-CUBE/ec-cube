@@ -190,31 +190,39 @@ jobs:
           docker compose cp zap/delete_files.sh ec-cube:/
           docker compose exec -d ec-cube /delete_files.sh
 
-      - name: Debug login with cookie (curl)
+      - name: Debug login with cookie (curl) - verbose
         run: |
-          echo "=== Debug login with cookie (curl) ==="
-
           docker compose exec -T zap sh -lc '
             set -e
-            rm -f /tmp/cj.txt
+            rm -f /tmp/cj.txt /tmp/login.html
 
-            echo "--- GET /admin/login (save cookie) ---"
-            html=$(curl -sk -c /tmp/cj.txt https://ec-cube/admin/login)
+            echo "=== GET /admin/login (save cookie) ==="
+            curl -sk -c /tmp/cj.txt https://ec-cube/admin/login -o /tmp/login.html
 
-            echo "--- Extract CSRF token ---"
-            token=$(echo "$html" | sed -n "s/.*name=\"_csrf_token\"[^>]*value=\"\\([^\"]\\+\\)\".*/\\1/p" | head -n 1)
+            echo "--- cookies after GET ---"
+            cat /tmp/cj.txt || true
+
+            echo "=== Extract CSRF token ==="
+            token=$(sed -n "s/.*name=\"_csrf_token\"[^>]*value=\"\\([^\"]\\+\\)\".*/\\1/p" /tmp/login.html | head -n 1)
             echo "csrf_token=$token"
+            test -n "$token"
 
-            echo "--- POST /admin/login ---"
-            curl -skI \
-              -b /tmp/cj.txt \
-              -c /tmp/cj.txt \
+            echo "=== POST /admin/login (show headers) ==="
+            curl -sk -D - -o /tmp/post_body.html \
+              -b /tmp/cj.txt -c /tmp/cj.txt \
               -X POST https://ec-cube/admin/login \
               -H "Content-Type: application/x-www-form-urlencoded" \
-              --data "_csrf_token=$token&login_id=admin&password=password" | sed -n "1,20p"
+              --data "_csrf_token=$token&login_id=admin&password=password" \
+              | sed -n "1,40p"
 
-            echo "--- GET /admin/ after login ---"
-            curl -skI -b /tmp/cj.txt https://ec-cube/admin/ | sed -n "1,20p"
+            echo "=== cookies after POST ==="
+            cat /tmp/cj.txt || true
+
+            echo "=== GET /admin/ after login (show headers) ==="
+            curl -sk -D - -o /dev/null -b /tmp/cj.txt https://ec-cube/admin/ | sed -n "1,40p"
+
+            echo "=== if POST returned HTML, show first lines ==="
+            sed -n "1,25p" /tmp/post_body.html || true
           '
 
       - name: Debug ZAP version and image
