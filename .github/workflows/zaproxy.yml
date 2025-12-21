@@ -276,6 +276,17 @@ jobs:
           echo "=== ZAP home add-ons directory ==="
           docker compose exec -T zap ls -la /home/zap/.ZAP/plugin || true
 
+      - name: Debug redirect location (admin endpoint)
+        if: ${{ always() }}
+        run: |
+          echo "=== HEAD admin/customer/1/delivery/new ==="
+          docker compose exec -T zap sh -lc \
+            "curl -skI https://ec-cube/admin/customer/1/delivery/new | sed -n '1,30p'"
+
+          echo "=== HEAD admin/ ==="
+          docker compose exec -T zap sh -lc \
+            "curl -skI https://ec-cube/admin/ | sed -n '1,30p'"
+
       - name: Autorun
         run: |
           set -x
