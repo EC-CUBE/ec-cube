@@ -251,7 +251,7 @@ jobs:
           docker compose exec zap pwd
           docker compose exec zap ls -l /zap/wrk
           docker compose exec zap ls -l /home/zap/.ZAP || true
-          
+
       - name: Debug find zap.sh
         run: |
           echo "=== Searching for zap.sh ==="
@@ -291,6 +291,15 @@ jobs:
             -cmd \
             -configfile /zap/wrk/options.properties \
             -autorun /zap/wrk/automation/${{ matrix.target }}.yml
+
+      - name: Debug auth endpoints
+        if: ${{ always() }}
+        run: |
+          echo "=== HEAD /admin/login ==="
+          docker compose exec -T zap sh -lc "curl -skI https://ec-cube/admin/login | sed -n '1,20p'"
+
+          echo "=== HEAD /admin/ (no cookie) ==="
+          docker compose exec -T zap sh -lc "curl -skI https://ec-cube/admin/ | sed -n '1,20p'"
 
       - name: Debug zap logs after autorun
         if: ${{ failure() }}
