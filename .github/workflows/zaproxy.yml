@@ -186,7 +186,8 @@ jobs:
         run: |
           docker compose -f docker-compose.yml -f docker-compose.pgsql.yml -f docker-compose.owaspzap.ci.yml up -d --wait
           docker compose cp zap/delete_data.sh postgres:/
-          docker compose exec -d -e PGUSER=dbuser -e PGDATABASE=eccubedb postgres /delete_data.sh
+          docker compose exec -T -e PGUSER=dbuser -e PGDATABASE=eccubedb postgres bash /delete_data.sh
+          docker compose exec -T -e PGUSER=dbuser -e PGDATABASE=eccubedb postgres psql -t -c "select count(*) from dtb_customer;"
           docker compose cp zap/delete_files.sh ec-cube:/
           docker compose exec -d ec-cube /delete_files.sh
 
