@@ -336,6 +336,8 @@ jobs:
           # ZAP実行
           docker compose exec -T zap /zap/zap.sh \
             -cmd \
+            -config anticsrf.tokens.token.name=_csrf_token \
+            -config anticsrf.tokens.token.enabled=true \
             -configfile /zap/wrk/options.properties \
             -autorun /zap/wrk/automation/${{ matrix.target }}.yml
 
