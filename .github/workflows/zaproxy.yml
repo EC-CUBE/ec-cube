@@ -348,9 +348,6 @@ jobs:
         env:
           TARGET: ${{ matrix.target }}
 
-          echo "=== patched automation yml (head) ==="
-          sed -n '1,140p' "$f"
-
       - name: Debug inspect zap container
         run: |
           docker compose exec zap whoami
