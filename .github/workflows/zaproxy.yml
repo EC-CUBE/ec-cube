@@ -295,6 +295,60 @@ jobs:
           cat zap/automation/${{ matrix.target }}.yml
 
       - name: Patch automation config (run before_script)
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import os, re, pathlib
+
+          target = os.environ.get("TARGET")
+          if not target:
+            raise SystemExit("TARGET env is required")
+
+          p = pathlib.Path(f"zap/automation/{target}.yml")
+          y = p.read_text(encoding="utf-8")
+
+          # before_script の add ブロックが無いターゲットは何もしない
+          if "name: before_script" not in y:
+            print("No before_script in this target. Skip patch.")
+            raise SystemExit(0)
+
+          # すでに run が入っている場合も何もしない
+          if re.search(r"name:\s*before_script[\s\S]*?action:\s*run", y):
+            print("before_script run already exists. Skip patch.")
+            raise SystemExit(0)
+
+          # before_script の add ブロック直後に run を差し込む
+          # （template.ymlのインデントに合わせて jobs 配下は "  - type:" 形式）
+          m = re.search(
+            r"(\n  - type: script\n    parameters:\n"
+            r"(?:      .+\n)*"
+            r"      action: add\n"
+            r"      type: sequence\n"
+            r"      name: before_script\n"
+            r"(?:      .+\n)*"
+            r"      file: .+\n)",
+            y
+          )
+          if not m:
+            raise SystemExit("Could not find before_script add block to patch")
+
+          insert = (
+            "\n  - type: script\n"
+            "    parameters:\n"
+            "      action: run\n"
+            "      type: sequence\n"
+            "      name: before_script\n"
+          )
+
+          y2 = y[:m.end(1)] + insert + y[m.end(1):]
+          p.write_text(y2, encoding="utf-8")
+          print("Patched:", p)
+          PY
+        env:
+          TARGET: ${{ matrix.target }}
+
+      - name: Patch automation config (run before_script)
         run: |
           set -eu
           f="zap/automation/${{ matrix.target }}.yml"
