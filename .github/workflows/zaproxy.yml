@@ -303,6 +303,21 @@ jobs:
           docker compose exec -T zap /zap/zap.sh -cmd -addoninstall automation
           docker compose exec -T zap /zap/zap.sh -cmd -addoninstall groovy
 
+      - name: Preprocess Zest scripts (replace customer-id token)
+        run: |
+          # /zap/wrk/scripts にある .zst を一括置換（URL中の {{customer-id}} が残ると ZAP が落ちる）
+          docker compose exec -T zap sh -lc '
+            set -eu
+            echo "=== before replace (sample) ==="
+            grep -R --line-number "{{customer-id}}" /zap/wrk/scripts 2>/dev/null | head -n 20 || true
+
+            find /zap/wrk/scripts -name "*.zst" -print0 \
+              | xargs -0 sed -i "s/{{customer-id}}/1/g"
+
+            echo "=== after replace (sample) ==="
+            grep -R --line-number "{{customer-id}}" /zap/wrk/scripts 2>/dev/null | head -n 20 || true
+          '
+
       - name: Debug ZAP add-ons status
         if: ${{ always() }}
         run: |
@@ -329,8 +344,7 @@ jobs:
           # デバッグ1: Automation Plan ファイルの確認
           docker compose exec -T zap ls -la /zap/wrk/automation/${{ matrix.target }}.yml
 
-          # デバッグ2: options.properties の確認 (★ここが怪しいです)
-          # ファイルがない場合、ここでエラーが出て止まるようにチェックします
+          # デバッグ2: options.properties の確認
           docker compose exec -T zap ls -la /zap/wrk/options.properties
 
           # ZAP実行
