@@ -30,13 +30,13 @@ class AbstractMasterEntityTest extends EccubeTestCase
 
     public function testGetConstant()
     {
-        self::assertEquals(1, TestSexDecorator::TEST_MALE, 'constant access');
-        self::assertEquals(1, TestSexDecorator::TEST_MALE, 'enum like access');
+        self::assertSame(1, TestSexDecorator::TEST_MALE, 'constant access');
+        self::assertSame(1, TestSexDecorator::TEST_MALE, 'enum like access');
     }
 
     public function testGetConstantWithTrait()
     {
-        self::assertEquals(2, TestSexDecorator::$TEST_FEMALE, 'enum like access via trait');
+        self::assertSame(2, TestSexDecorator::$TEST_FEMALE, 'enum like access via trait');
     }
 
     public function testExplicitOverwriteConstant()

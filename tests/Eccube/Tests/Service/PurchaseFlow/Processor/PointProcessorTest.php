@@ -47,6 +47,9 @@ class PointProcessorTest extends EccubeTestCase
         $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
     }
 
+    /**
+     * @group decimal
+     */
     public function testUsePointA()
     {
         $Customer = new Customer();
@@ -66,7 +69,7 @@ class PointProcessorTest extends EccubeTestCase
         )->first();
 
         self::assertNotNull($OrderItem);
-        self::assertEquals(-100, $OrderItem->getPrice());
+        self::assertSame('-100', $OrderItem->getPrice());
     }
 
     /**
@@ -96,7 +99,7 @@ class PointProcessorTest extends EccubeTestCase
 
         if ($isError) {
             self::assertEquals($isError, $result->isWarning());
-            self::assertEquals('利用ポイントが所有ポイントを上回っています。', $result->getMessage());
+            self::assertSame('利用ポイントが所有ポイントを上回っています。', $result->getMessage());
         } else {
             self::assertNull($result);
         }
@@ -119,6 +122,8 @@ class PointProcessorTest extends EccubeTestCase
      *
      * @param $usePoint int 利用ポイント
      * @param $isError boolean エラーかどうか
+     *
+     * @group decimal
      */
     public function testUsePointOverPrice($usePoint, $isError)
     {
@@ -142,7 +147,7 @@ class PointProcessorTest extends EccubeTestCase
 
         if ($isError) {
             self::assertEquals($isError, $result->isError());
-            self::assertEquals('利用ポイントがお支払い金額を上回っています。', $result->getMessage());
+            self::assertSame('利用ポイントがお支払い金額を上回っています。', $result->getMessage());
             self::assertEquals($usePoint, $Order->getUsePoint());
         } else {
             self::assertNull($result);
@@ -155,6 +160,8 @@ class PointProcessorTest extends EccubeTestCase
      *
      * @param $usePoint int 利用ポイント
      * @param $isError boolean エラーかどうか
+     *
+     * @group decimal
      */
     public function testUsePointOverPriceShoppingFlow($usePoint, $isError)
     {
@@ -178,8 +185,8 @@ class PointProcessorTest extends EccubeTestCase
 
         if ($isError) {
             self::assertEquals($isError, $result->isWarning());
-            self::assertEquals('利用ポイントがお支払い金額を上回っています。', $result->getMessage());
-            self::assertEquals($price, $Order->getUsePoint());
+            self::assertSame('利用ポイントがお支払い金額を上回っています。', $result->getMessage());
+            self::assertSame($price, $Order->getUsePoint());
         } else {
             self::assertNull($result);
             self::assertEquals($usePoint, $Order->getUsePoint());
@@ -198,6 +205,8 @@ class PointProcessorTest extends EccubeTestCase
 
     /**
      * @throws PurchaseException
+     *
+     * @group decimal
      */
     public function testReduceCustomerPoint()
     {
@@ -218,7 +227,7 @@ class PointProcessorTest extends EccubeTestCase
         $purchaseFlow->prepare($Order, $context);
         $purchaseFlow->commit($Order, $context);
 
-        self::assertEquals(90, $Customer->getPoint());
+        self::assertSame(90, $Customer->getPoint());
     }
 
     /**
@@ -227,6 +236,8 @@ class PointProcessorTest extends EccubeTestCase
      * @param $price int 商品の値段
      * @param $usePoint int 利用ポイント
      * @param $addPoint int 期待する付与ポイント
+     *
+     * @group decimal
      */
     public function testAddPoint($price, $usePoint, $addPoint)
     {
@@ -268,6 +279,8 @@ class PointProcessorTest extends EccubeTestCase
      * @param $price int 商品の値段
      * @param $deliveryFee int
      * @param $addPoint int 期待する付与ポイント
+     *
+     * @group decimal
      */
     public function testAddPointExcludeShippingFee($price, $deliveryFee, $addPoint)
     {
@@ -323,6 +336,8 @@ class PointProcessorTest extends EccubeTestCase
      * @param $pointConversionRate int 商品の値段
      *
      * @throws PurchaseException
+     *
+     * @group decimal
      */
     public function testPointConversionRate($pointConversionRate)
     {
@@ -377,6 +392,8 @@ class PointProcessorTest extends EccubeTestCase
      * @dataProvider basicPointRateProvider
      *
      * @param $basicPointRate int 商品の値段
+     *
+     * @group decimal
      */
     public function testBasicPointRate($basicPointRate)
     {

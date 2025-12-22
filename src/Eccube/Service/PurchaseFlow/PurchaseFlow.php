@@ -266,10 +266,10 @@ class PurchaseFlow
     protected function calculateTotal(ItemHolderInterface $itemHolder)
     {
         $total = array_reduce($itemHolder->getItems()->toArray(), function ($sum, ItemInterface $item) {
-            $sum += $item->getPriceIncTax() * $item->getQuantity();
+            $sum = bcadd($sum, bcmul($item->getPriceIncTax(), $item->getQuantity(), 2), 2);
 
             return $sum;
-        }, 0);
+        }, '0');
         $itemHolder->setTotal($total);
         // TODO
         if ($itemHolder instanceof Order) {
@@ -283,10 +283,10 @@ class PurchaseFlow
         $total = $itemHolder->getItems()
             ->getProductClasses()
             ->reduce(function ($sum, ItemInterface $item) {
-                $sum += $item->getPriceIncTax() * $item->getQuantity();
+                $sum = bcadd($sum, bcmul($item->getPriceIncTax(), $item->getQuantity(), 2), 2);
 
                 return $sum;
-            }, 0);
+            }, '0');
         // TODO
         if ($itemHolder instanceof Order) {
             // Order の場合は SubTotal をセットする
@@ -302,10 +302,10 @@ class PurchaseFlow
         $total = $itemHolder->getItems()
             ->getDeliveryFees()
             ->reduce(function ($sum, ItemInterface $item) {
-                $sum += $item->getPriceIncTax() * $item->getQuantity();
+                $sum = bcadd($sum, bcmul($item->getPriceIncTax(), $item->getQuantity(), 2), 2);
 
                 return $sum;
-            }, 0);
+            }, '0');
         $itemHolder->setDeliveryFeeTotal($total);
     }
 
@@ -317,12 +317,12 @@ class PurchaseFlow
         $total = $itemHolder->getItems()
             ->getDiscounts()
             ->reduce(function ($sum, ItemInterface $item) {
-                $sum += $item->getPriceIncTax() * $item->getQuantity();
+                $sum = bcadd($sum, bcmul($item->getPriceIncTax(), $item->getQuantity(), 2), 2);
 
                 return $sum;
-            }, 0);
+            }, '0');
         // TODO 後方互換のため discount には正の整数を代入する
-        $itemHolder->setDiscount($total * -1);
+        $itemHolder->setDiscount(bcmul($total, '-1', 2));
     }
 
     /**
@@ -333,10 +333,10 @@ class PurchaseFlow
         $total = $itemHolder->getItems()
             ->getCharges()
             ->reduce(function ($sum, ItemInterface $item) {
-                $sum += $item->getPriceIncTax() * $item->getQuantity();
+                $sum = bcadd($sum, bcmul($item->getPriceIncTax(), $item->getQuantity(), 2), 2);
 
                 return $sum;
-            }, 0);
+            }, '0');
         $itemHolder->setCharge($total);
     }
 
@@ -347,15 +347,16 @@ class PurchaseFlow
     {
         if ($itemHolder instanceof Order) {
             $total = array_reduce($itemHolder->getTaxByTaxRate(), function ($sum, $tax) {
-                return $sum + $tax;
-            }, 0);
+                return bcadd($sum, $tax, 2);
+            }, '0');
         } else {
             $total = $itemHolder->getItems()
                 ->reduce(function ($sum, ItemInterface $item) {
-                    $sum += ($item->getPriceIncTax() - $item->getPrice()) * $item->getQuantity();
+                    $taxPerItem = bcsub($item->getPriceIncTax(), $item->getPrice(), 2);
+                    $sum = bcadd($sum, bcmul($taxPerItem, $item->getQuantity(), 2), 2);
 
                     return $sum;
-                }, 0);
+                }, '0');
         }
         $itemHolder->setTax($total);
     }

@@ -36,7 +36,7 @@ jobs:
           outputs: type=docker,dest=/tmp/ec-cube.tar
 
       - name: Upload image
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: ec-cube
           path: /tmp/ec-cube.tar
@@ -167,7 +167,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Download image
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v7
         with:
           name: ec-cube
           path: /tmp
@@ -193,7 +193,7 @@ jobs:
             APP_ENV: prod
             APP_DEBUG: 0
         run: |
-          for code in Api42 Coupon42 MailMagazine42 ProductReview42 Recommend42 RelatedProduct42 SalesReport42 Securitychecker42 SiteKit42
+          for code in Api42 Coupon42 MailMagazine42 ProductReview42 Recommend42 RelatedProduct42 SalesReport42 Securitychecker42
           do
               docker compose exec -u www-data:www-data ec-cube bin/console eccube:composer:require "ec-cube/${code,,}"
               docker compose exec -u www-data:www-data ec-cube bin/console eccube:plugin:enable --code ${code}
@@ -233,14 +233,14 @@ jobs:
 
       - name: Upload report
         if: ${{ always() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: zap-${{ matrix.target }}-report
           path: /tmp/report
 
       - name: Upload alerts
         if: ${{ always() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: zap-${{ matrix.target }}-report
           path: /tmp/alerts.json
@@ -252,7 +252,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Download all artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v7
         with:
           path: artifacts
       - name: Merge alerts
@@ -261,7 +261,7 @@ jobs:
           jq -s add **/alerts.json > all_alerts.json
         working-directory: artifacts
       - name: Upload alerts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: all_alerts
           path: artifacts/all_alerts.json

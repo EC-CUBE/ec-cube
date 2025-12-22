@@ -84,7 +84,7 @@ class CsvControllerTest extends AbstractAdminWebTestCase
         $redirectUrl = $this->generateUrl('admin_setting_shop_csv', ['id' => $csvType]);
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
-        $this->actual = [$CsvNotOut->isEnabled(), $CsvOut->isEnabled()];
+        $this->actual = [(int) $CsvNotOut->isEnabled(), (int) $CsvOut->isEnabled()];
         $this->expected = [Constant::ENABLED, Constant::DISABLED];
         $this->verify();
     }

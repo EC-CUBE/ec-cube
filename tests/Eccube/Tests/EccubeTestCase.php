@@ -103,7 +103,7 @@ abstract class EccubeTestCase extends WebTestCase
      */
     public function verify($message = '')
     {
-        $this->assertEquals($this->expected, $this->actual, $message);
+        $this->assertSame($this->expected, $this->actual, $message);
     }
 
     /**

@@ -139,7 +139,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertEquals(1, count($this->Results));
+        $this->assertSame(1, count($this->Results));
         $this->actual = $this->Results[0]->getId();
         $this->verify();
     }
@@ -165,7 +165,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertEquals(1, count($this->Results));
+        $this->assertSame(1, count($this->Results));
 
         $this->expected = 'customer@example.com';
         $this->actual = $this->Results[0]->getEmail();
@@ -196,7 +196,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertEquals(1, count($this->Results));
+        $this->assertSame(1, count($this->Results));
 
         $this->expected = '姓';
         $this->actual = $this->Results[0]->getName01();
@@ -215,7 +215,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertEquals(1, count($this->Results));
+        $this->assertSame(1, count($this->Results));
 
         $this->expected = '姓';
         $this->actual = $this->Results[0]->getName01();
@@ -237,7 +237,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertEquals(1, count($this->Results));
+        $this->assertSame(1, count($this->Results));
 
         $this->expected = '姓';
         $this->actual = $this->Results[0]->getName01();
@@ -259,7 +259,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertEquals(1, count($this->Results));
+        $this->assertSame(1, count($this->Results));
 
         $this->expected = 'メイ';
         $this->actual = $this->Results[0]->getKana02();
@@ -278,7 +278,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertEquals(1, count($this->Results));
+        $this->assertSame(1, count($this->Results));
 
         $this->expected = 'メイ';
         $this->actual = $this->Results[0]->getKana02();
@@ -297,7 +297,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertEquals(1, count($this->Results));
+        $this->assertSame(1, count($this->Results));
 
         $this->expected = 'セイ';
         $this->actual = $this->Results[0]->getKana01();
@@ -319,7 +319,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertEquals(1, count($this->Results));
+        $this->assertSame(1, count($this->Results));
 
         $this->expected = 'セイ';
         $this->actual = $this->Results[0]->getKana01();
@@ -346,7 +346,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
 
         $this->scenario();
 
-        $this->assertEquals(1, count($this->Results));
+        $this->assertSame(1, count($this->Results));
 
         $this->expected = $pref_id;
         $this->actual = $this->Results[0]->getPref()->getId();

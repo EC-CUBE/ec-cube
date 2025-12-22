@@ -48,15 +48,15 @@ if (!class_exists(OrderItem::class)) {
                 return $this->price;
             }
 
-            return $this->price + $this->tax;
+            return bcadd($this->price, $this->tax, 2);
         }
 
         /**
-         * @return int
+         * @return string
          */
         public function getTotalPrice()
         {
-            return $this->getPriceIncTax() * $this->getQuantity();
+            return bcmul($this->getPriceIncTax(), $this->getQuantity(), 2);
         }
 
         /**
@@ -189,35 +189,35 @@ if (!class_exists(OrderItem::class)) {
          *
          * @ORM\Column(name="price", type="decimal", precision=12, scale=2, options={"default":0})
          */
-        private $price = 0;
+        private $price = '0';
 
         /**
          * @var string
          *
          * @ORM\Column(name="quantity", type="decimal", precision=10, scale=0, options={"default":0})
          */
-        private $quantity = 0;
+        private $quantity = '0';
 
         /**
          * @var string
          *
          * @ORM\Column(name="tax", type="decimal", precision=10, scale=0, options={"default":0})
          */
-        private $tax = 0;
+        private $tax = '0';
 
         /**
          * @var string
          *
          * @ORM\Column(name="tax_rate", type="decimal", precision=10, scale=0, options={"unsigned":true,"default":0})
          */
-        private $tax_rate = 0;
+        private $tax_rate = '0';
 
         /**
          * @var string
          *
          * @ORM\Column(name="tax_adjust", type="decimal", precision=10, scale=0, options={"unsigned":true,"default":0})
          */
-        private $tax_adjust = 0;
+        private $tax_adjust = '0';
 
         /**
          * @var int|null

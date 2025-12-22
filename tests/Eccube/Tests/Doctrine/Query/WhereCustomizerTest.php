@@ -26,7 +26,7 @@ class WhereCustomizerTest extends EccubeTestCase
         $customizer = new WhereCustomizerTest_Customizer(function () { return []; });
         $customizer->customize($builder, null, '');
 
-        self::assertEquals('SELECT p FROM Product p', $builder->getDQL());
+        self::assertSame('SELECT p FROM Product p', $builder->getDQL());
     }
 
     public function testCustomizeAddWhereClause()
@@ -35,7 +35,7 @@ class WhereCustomizerTest extends EccubeTestCase
         $customizer = new WhereCustomizerTest_Customizer(function () { return [WhereClause::eq('name', ':Name', 'hoge')]; });
         $customizer->customize($builder, null, '');
 
-        self::assertEquals('SELECT p FROM Product p WHERE name = :Name', $builder->getDQL());
+        self::assertSame('SELECT p FROM Product p WHERE name = :Name', $builder->getDQL());
     }
 
     public function testCustomizeAddMultipleWhereClause()
@@ -49,7 +49,7 @@ class WhereCustomizerTest extends EccubeTestCase
         });
         $customizer->customize($builder, null, '');
 
-        self::assertEquals('SELECT p FROM Product p WHERE name = :Name AND delFlg = :DelFlg', $builder->getDQL());
+        self::assertSame('SELECT p FROM Product p WHERE name = :Name AND delFlg = :DelFlg', $builder->getDQL());
     }
 
     /**

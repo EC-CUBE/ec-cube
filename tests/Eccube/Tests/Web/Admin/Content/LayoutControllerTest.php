@@ -165,7 +165,7 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
             'POST',
             $this->generateUrl('admin_content_layout_delete', ['id' => $Layout->getId()])
         );
-        $this->assertEquals(405, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(405, $this->client->getResponse()->getStatusCode());
 
         $this->client->request(
             'DELETE',

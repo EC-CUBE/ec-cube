@@ -56,6 +56,8 @@ class IndexControllerTest extends AbstractAdminWebTestCase
      * @param int $hour
      *
      * @dataProvider indexWithSalesProvider
+     *
+     * @group decimal
      */
     public function testIndexWithSales($hour)
     {
@@ -69,21 +71,21 @@ class IndexControllerTest extends AbstractAdminWebTestCase
         $OrderCancel = $this->orderStatusRepository->find(OrderStatus::CANCEL);
         $OrderProcessing = $this->orderStatusRepository->find(OrderStatus::PROCESSING);
 
-        $todaysSales = 0;
+        $todaysSales = '0';
         for ($i = 0; $i < 3; $i++) {
             $Order = $this->createOrder($Customer);
             $Order->setOrderStatus($OrderNew);
             $Order->setOrderDate($Today);
             $this->entityManager->flush();
-            $todaysSales += $Order->getPaymentTotal();
+            $todaysSales = bcadd($todaysSales, $Order->getPaymentTotal(), 2);
         }
-        $yesterdaysSales = 0;
+        $yesterdaysSales = '0';
         for ($i = 0; $i < 3; $i++) {
             $Order = $this->createOrder($Customer);
             $Order->setOrderStatus($OrderNew);
             $Order->setOrderDate($Yesterday);
             $this->entityManager->flush();
-            $yesterdaysSales += $Order->getPaymentTotal();
+            $yesterdaysSales = bcadd($yesterdaysSales, $Order->getPaymentTotal(), 2);
         }
 
         // excludes
@@ -104,30 +106,30 @@ class IndexControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         preg_match('/^￥([0-9,]+) \/ ([0-9]+)/u', trim($crawler->filter('#chart-statistics > div.card-body > div.row:nth-child(1) > div:nth-child(2) > div')->text()), $match);
-        $this->expected = $todaysSales;
-        $this->actual = str_replace(',', '', $match[1]);
+        $this->expected = number_format($todaysSales);
+        $this->actual = $match[1];
         $this->verify('本日の売上');
 
-        $this->expected = 3;
-        $this->actual = str_replace(',', '', $match[2]);
+        $this->expected = '3';
+        $this->actual = $match[2];
         $this->verify('本日の売上件数');
 
         preg_match('/^￥([0-9,]+) \/ ([0-9]+)/u', trim($crawler->filter('#chart-statistics > div.card-body > div.row:nth-child(1) > div:nth-child(3) > div')->text()), $match);
-        $this->expected = $yesterdaysSales;
-        $this->actual = str_replace(',', '', $match[1]);
+        $this->expected = number_format($yesterdaysSales);
+        $this->actual = $match[1];
         $this->verify('昨日の売上');
 
-        $this->expected = 3;
-        $this->actual = str_replace(',', '', $match[2]);
+        $this->expected = '3';
+        $this->actual = $match[2];
         $this->verify('昨日の売上件数');
 
         preg_match('/^￥([0-9,]+) \/ ([0-9]+)/u', trim($crawler->filter('#chart-statistics > div.card-body > div.row:nth-child(1) > div:nth-child(1) > div')->text()), $match);
-        $this->expected = (new \DateTime('today'))->format('m') === (new \DateTime('yesterday'))->format('m') ? $todaysSales + $yesterdaysSales : $todaysSales;
-        $this->actual = str_replace(',', '', $match[1]);
+        $this->expected = number_format((new \DateTime('today'))->format('m') === (new \DateTime('yesterday'))->format('m') ? bcadd($todaysSales, $yesterdaysSales, 2) : $todaysSales);
+        $this->actual = $match[1];
         $this->verify('今月の売上');
 
-        $this->expected = (new \DateTime('today'))->format('m') === (new \DateTime('yesterday'))->format('m') ? 6 : 3;
-        $this->actual = str_replace(',', '', $match[2]);
+        $this->expected = (new \DateTime('today'))->format('m') === (new \DateTime('yesterday'))->format('m') ? '6' : '3';
+        $this->actual = $match[2];
         $this->verify('今月の売上件数');
     }
 

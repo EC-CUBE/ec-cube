@@ -64,9 +64,18 @@ interface ItemInterface
      */
     public function getProductClass();
 
+    /**
+     * @return string
+     */
     public function getPrice();
 
+    /**
+     * @return string
+     */
     public function getQuantity();
 
+    /**
+     * @param string $quantity
+     */
     public function setQuantity($quantity);
 }

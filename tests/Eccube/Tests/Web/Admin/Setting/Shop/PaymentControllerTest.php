@@ -258,6 +258,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
         $Payments = $this->paymentRepository->findBy([], ['sort_no' => 'DESC']);
         $this->actual = [];
         foreach ($Payments as $Payment) {
+            $this->entityManager->refresh($Payment); // Refresh しないとリクエストの値(string)が入ってしまう
             $this->actual[$Payment->getId()] = $Payment->getSortNo();
         }
         sort($this->expected);

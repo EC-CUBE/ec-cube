@@ -190,6 +190,6 @@ class KanaTypeTest extends AbstractTypeTestCase
         ];
 
         $this->form->submit($input);
-        $this->assertEquals($output, $this->form->getData());
+        $this->assertSame($output, $this->form->getData());
     }
 }

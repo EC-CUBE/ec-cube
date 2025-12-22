@@ -35,7 +35,7 @@ class TradeLawRepositoryTest extends EccubeTestCase
         $initialTradeLawRows = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
 
         // Check initial row count equals 15.
-        $this->assertEquals(15, count($initialTradeLawRows));
+        $this->assertSame(15, count($initialTradeLawRows));
 
         $notFoundNames = [
             1 => '販売業者', 2 => '代表責任者', 3 => '所在地', 4 => '電話番号', 5 => 'メールアドレス', 6 => 'URL', 7 => '商品代金以外の必要料金',
@@ -47,7 +47,7 @@ class TradeLawRepositoryTest extends EccubeTestCase
         foreach ($initialTradeLawRows as $initialTradeLawRow) {
             // Check that all fields are turned off initially.
             $this->assertEquals(false, $initialTradeLawRow->isDisplayOrderScreen());
-            $this->assertEquals($foundTimes, $initialTradeLawRow->getSortNo());
+            $this->assertSame($foundTimes, $initialTradeLawRow->getSortNo());
             if ($foundTimes < 10) {
                 $this->assertContains($initialTradeLawRow->getName(), $notFoundNames);
             }
@@ -55,6 +55,6 @@ class TradeLawRepositoryTest extends EccubeTestCase
             $foundTimes++;
         }
         // Check that initial key values are found.
-        $this->assertEquals(16, $foundTimes);
+        $this->assertSame(16, $foundTimes);
     }
 }

@@ -73,7 +73,7 @@ class PluginControllerTest extends AbstractAdminWebTestCase
             ]
         );
         //　ダウンロードできないことを確認
-        $this->assertEquals(500, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(500, $this->client->getResponse()->getStatusCode());
         //　ログを確認
         $this->assertContains($message, json_decode($this->client->getResponse()->getContent())->log);
     }
@@ -100,7 +100,7 @@ class PluginControllerTest extends AbstractAdminWebTestCase
             ]
         );
         //　ダウンロードできないことを確認
-        $this->assertEquals(500, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(500, $this->client->getResponse()->getStatusCode());
 
         //　ログを確認
         $this->assertStringContainsString($message, implode(',', json_decode($this->client->getResponse()->getContent())->log));

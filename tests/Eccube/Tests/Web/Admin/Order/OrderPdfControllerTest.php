@@ -395,7 +395,7 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $adminTest = $token->getUser();
         $this->assertEquals($adminTest->getId(), $OrderPdf->getMemberId(), '管理ユーザーのIDと一致するはず');
 
-        $this->assertEquals('title', $OrderPdf->getTitle());
+        $this->assertSame('title', $OrderPdf->getTitle());
         $this->assertNull($OrderPdf->getMessage1());
         $this->assertNull($OrderPdf->getMessage2());
         $this->assertNull($OrderPdf->getMessage3());
