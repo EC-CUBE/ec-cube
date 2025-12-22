@@ -305,17 +305,20 @@ jobs:
 
       - name: Preprocess Zest scripts (replace customer-id token)
         run: |
-          # /zap/wrk/scripts にある .zst を一括置換（URL中の {{customer-id}} が残ると ZAP が落ちる）
-          docker compose exec -T zap sh -lc '
+          docker compose exec -T -u 0:0 zap sh -lc '
             set -eu
             echo "=== before replace (sample) ==="
             grep -R --line-number "{{customer-id}}" /zap/wrk/scripts 2>/dev/null | head -n 20 || true
 
+            # 置換（rootで実行して権限問題を回避）
             find /zap/wrk/scripts -name "*.zst" -print0 \
               | xargs -0 sed -i "s/{{customer-id}}/1/g"
 
             echo "=== after replace (sample) ==="
             grep -R --line-number "{{customer-id}}" /zap/wrk/scripts 2>/dev/null | head -n 20 || true
+
+            echo "=== perms (dir) ==="
+            ls -ld /zap/wrk/scripts
           '
 
       - name: Debug ZAP add-ons status
