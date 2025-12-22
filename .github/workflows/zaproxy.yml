@@ -348,39 +348,6 @@ jobs:
         env:
           TARGET: ${{ matrix.target }}
 
-      - name: Patch automation config (run before_script)
-        run: |
-          set -eu
-          f="zap/automation/${{ matrix.target }}.yml"
-
-          # yq が無ければ入れる（ubuntu-24.04）
-          if ! command -v yq >/dev/null 2>&1; then
-            sudo apt-get update
-            sudo apt-get install -y yq
-          fi
-
-          # before_script が add されている target だけ、run を追加する（重複追加はしない）
-          if yq '.jobs[]? | select(.type=="script" and .parameters.name=="before_script" and .parameters.action=="add")' -e "$f" >/dev/null; then
-            if ! yq '.jobs[]? | select(.type=="script" and .parameters.name=="before_script" and .parameters.action=="run")' -e "$f" >/dev/null; then
-              # before_script の add の直後に run を挿入する
-              yq -i '
-                .jobs |= (
-                  reduce range(0; length) as $i (.;
-                    if .[$i].type=="script"
-                      and .[$i].parameters.name=="before_script"
-                      and .[$i].parameters.action=="add"
-                    then
-                      .[0:$i+1]
-                      + [{"type":"script","parameters":{"action":"run","type":"sequence","name":"before_script"}}]
-                      + .[$i+1:]
-                    else .
-                    end
-                  )
-                )
-              ' "$f"
-            fi
-          fi
-
           echo "=== patched automation yml (head) ==="
           sed -n '1,140p' "$f"
 
