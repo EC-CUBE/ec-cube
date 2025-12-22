@@ -187,6 +187,8 @@ jobs:
           docker compose -f docker-compose.yml -f docker-compose.pgsql.yml -f docker-compose.owaspzap.ci.yml up -d --wait
           docker compose cp zap/delete_data.sh postgres:/
           docker compose exec -T -e PGUSER=dbuser -e PGDATABASE=eccubedb postgres bash /delete_data.sh
+          docker compose cp zap/seed_zap.sql postgres:/
+          docker compose exec -T -e PGUSER=dbuser -e PGDATABASE=eccubedb postgres psql -f /seed_zap.sql
           docker compose exec -T -e PGUSER=dbuser -e PGDATABASE=eccubedb postgres psql -t -c "select count(*) from dtb_customer;"
           docker compose cp zap/delete_files.sh ec-cube:/
           docker compose exec -d ec-cube /delete_files.sh
@@ -274,11 +276,22 @@ jobs:
           ZAP_THREAD_PER_HOST: "${{ matrix.thread_per_host }}"
           ZAP_BEFORE_SCRIPT: "${{ matrix.before_script }}"
         run: |
+          set -eu
+
+          BEFORE=""
+          if [[ "${{ matrix.target }}" == admin_* ]]; then
+            BEFORE="admin_login.zst"
+          fi
+
+          # 既存の include で before_script が指定されている場合はそれを優先したいなら下の行を有効化
+          # if [[ -n "${ZAP_BEFORE_SCRIPT:-}" ]]; then BEFORE="${ZAP_BEFORE_SCRIPT}"; fi
+
           zap/generate_automation_config.sh \
             -t ${{ matrix.target }} \
-            ${ZAP_BEFORE_SCRIPT:+"-b ${ZAP_BEFORE_SCRIPT}"} \
+            ${BEFORE:+"-b ${BEFORE}"} \
             ${ZAP_CONTEXT:+"-c ${ZAP_CONTEXT}"} \
             ${ZAP_THREAD_PER_HOST:+"-n ${ZAP_THREAD_PER_HOST}"}
+
           cat zap/automation/${{ matrix.target }}.yml
 
       - name: Debug inspect zap container
