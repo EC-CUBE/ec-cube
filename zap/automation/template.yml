@@ -19,7 +19,7 @@ env:
           pollUrl: 'https://ec-cube/admin/'
           pollFrequency: 1000
           pollUnits: 'requests'
-          loggedInRegex: '\Qログアウト\E' 
+          loggedOutRegex: 'name="login_id"'
       users:
       - name: admin
         credentials:
