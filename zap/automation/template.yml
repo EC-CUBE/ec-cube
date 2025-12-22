@@ -16,7 +16,7 @@ env:
           loginRequestBody: _csrf_token=&login_id={%username%}&password={%password%}
         verification:
           method: 'poll'
-          pollUrl: 'https://ec-cube/admin/login
+          pollUrl: 'https://ec-cube/admin/'
           pollFrequency: 1000
           pollUnits: 'requests'
           loggedOutRegex: 'name="login_id"'
