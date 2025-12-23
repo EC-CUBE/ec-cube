@@ -193,6 +193,25 @@ jobs:
           docker compose cp zap/delete_files.sh ec-cube:/
           docker compose exec -d ec-cube /delete_files.sh
 
+      - name: Debug ec-cube healthcheck
+        if: ${{ always() }}
+        run: |
+          echo "=== docker compose ps -a ==="
+          docker compose ps -a
+
+          echo "=== ec-cube logs (tail) ==="
+          docker compose logs --no-color --tail=300 ec-cube || true
+
+          echo "=== postgres logs (tail) ==="
+          docker compose logs --no-color --tail=300 postgres || true
+
+          echo "=== ec-cube health status ==="
+          cid=$(docker compose ps -q ec-cube)
+          docker inspect "$cid" --format '{{json .State.Health}}' | jq . || true
+
+          echo "=== curl from zap -> ec-cube health endpoint ==="
+          docker compose exec -T zap sh -lc "curl -skI https://ec-cube/ | sed -n '1,30p'" || true
+
       - name: Debug login with cookie (curl) - verbose
         run: |
           docker compose exec -T zap sh -lc '
@@ -291,71 +310,25 @@ jobs:
 
           cat zap/automation/${{ matrix.target }}.yml
 
-      - name: Patch automation config (ensure before_script is run)
-        shell: bash
+      - name: Patch automation config (use combined admin zst)
         run: |
-          set -e  # ← -u を外す（ここが重要）
+          docker compose exec -T -u 0:0 zap sh -lc '
+            set -eu
+            tgt="${{ matrix.target }}"
+            f="/zap/wrk/automation/${tgt}.yml"
+            [ -f "$f" ] || exit 1
 
-          docker compose exec -T -u 0:0 \
-            -e ZA_TARGET="${{ matrix.target }}" \
-            zap sh -s <<'SH'
-          set -eu
+            case "$tgt" in
+              admin_*)
+                sed -i "s|/zap/wrk/scripts/${tgt}\.zst|/zap/wrk/scripts/__combined_${tgt}\.zst|g" "$f"
+                ;;
+              *)
+                ;;
+            esac
 
-          f="/zap/wrk/automation/${ZA_TARGET}.yml"
-          if [ ! -f "$f" ]; then
-            echo "automation yml not found: $f"
-            exit 1
-          fi
-
-          # before_script が無いターゲットは何もしない
-          if ! grep -q "name: before_script" "$f"; then
-            echo "No before_script in $f -> skip"
-            exit 0
-          fi
-
-          # 既に run があれば何もしない（before_script ブロック内に action: run があるか）
-          if awk '
-            $0 ~ /name: before_script/ {seen=1}
-            seen && $0 ~ /action: run/ {found=1}
-            END {exit(found?0:1)}
-          ' "$f"; then
-            echo "before_script run already exists -> skip"
-            exit 0
-          fi
-
-          python3 - <<'PY'
-          import re, os, pathlib
-          target = os.environ["ZA_TARGET"]
-          p = pathlib.Path(f"/zap/wrk/automation/{target}.yml")
-          y = p.read_text(encoding="utf-8")
-
-          # before_script(add) ブロックの直後に before_script(run) を差し込む
-          pat = re.compile(
-              r"(\n\s*-\s*type:\s*script\n\s*parameters:\n(?:\s{6}.+\n)*\s{6}action:\s*add\n(?:\s{6}.+\n)*\s{6}name:\s*before_script\n(?:\s{6}.+\n)*)"
-          )
-
-          m = pat.search(y)
-          if not m:
-              raise SystemExit("Could not locate before_script(add) block to patch")
-
-          insert = (
-              "\n  - type: script\n"
-              "    parameters:\n"
-              "      action: run\n"
-              "      type: sequence\n"
-              "      name: before_script\n"
-          )
-
-          y2 = y[:m.end(1)] + insert + y[m.end(1):]
-          p.write_text(y2, encoding="utf-8")
-          print("patched", p)
-          PY
-
-          echo "=== patched file (before_script area) ==="
-          nl -ba "$f" | sed -n '1,200p' | grep -n "before_script" -n || true
-          SH
-        env:
-          ZA_TARGET: "${{ matrix.target }}"
+            echo "=== target file line ==="
+            grep -n "file: /zap/wrk/scripts" "$f" || true
+          '
 
       - name: Debug inspect zap container
         run: |
@@ -396,6 +369,41 @@ jobs:
             echo "=== perms (dir) ==="
             ls -ld /zap/wrk/scripts
           '
+
+            - name: Build combined admin sequence (login + target)
+        run: |
+          docker compose exec -T -u 0:0 zap sh -lc '
+            set -eu
+            tgt="${{ matrix.target }}"
+            case "$tgt" in
+              admin_*)
+                base="/zap/wrk/scripts"
+                login="$base/admin_login.zst"
+                target="$base/${tgt}.zst"
+                out="$base/__combined_${tgt}.zst"
+
+                [ -f "$login" ] || { echo "missing $login"; exit 1; }
+                [ -f "$target" ] || { echo "missing $target"; exit 1; }
+
+                python3 - <<PY
+                import json, pathlib
+                login = json.loads(pathlib.Path("'"$login"'").read_text())
+                tgt   = json.loads(pathlib.Path("'"$target"'").read_text())
+
+                # statements を結合（login→target）
+                tgt["statements"] = login.get("statements", []) + tgt.get("statements", [])
+                tgt["title"] = "__combined_" + tgt.get("title","target")
+
+                pathlib.Path("'"$out"'").write_text(json.dumps(tgt, ensure_ascii=False, indent=2))
+                print("created", "'"$out"'")
+                PY
+                ;;
+              *)
+                echo "not admin target -> skip"
+                ;;
+            esac
+          '
+
 
       - name: Debug ZAP add-ons status
         if: ${{ always() }}
