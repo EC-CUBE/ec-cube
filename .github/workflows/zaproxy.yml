@@ -294,59 +294,61 @@ jobs:
 
           cat zap/automation/${{ matrix.target }}.yml
 
-      - name: Patch automation config (run before_script)
+      - name: Patch automation config (ensure before_script is run)
         shell: bash
         run: |
           set -euo pipefail
-          python3 - <<'PY'
-          import os, re, pathlib
+          docker compose exec -T zap sh -lc '
+            set -eu
 
-          target = os.environ.get("TARGET")
-          if not target:
-            raise SystemExit("TARGET env is required")
+            f="/zap/wrk/automation/${{ matrix.target }}.yml"
+            [ -f "$f" ] || { echo "automation yml not found: $f"; exit 1; }
 
-          p = pathlib.Path(f"zap/automation/{target}.yml")
-          y = p.read_text(encoding="utf-8")
+            # before_script が無いターゲットは何もしない
+            if ! grep -q "name: before_script" "$f"; then
+              echo "No before_script in $f -> skip"
+              exit 0
+            fi
 
-          # before_script の add ブロックが無いターゲットは何もしない
-          if "name: before_script" not in y:
-            print("No before_script in this target. Skip patch.")
-            raise SystemExit(0)
+            # 既に run があれば何もしない
+            if awk "
+              \$0 ~ /name: before_script/ {seen=1}
+              seen && \$0 ~ /action: run/ {found=1}
+              END {exit(found?0:1)}
+            " "$f"; then
+              echo "before_script run already exists -> skip"
+              exit 0
+            fi
 
-          # すでに run が入っている場合も何もしない
-          if re.search(r"name:\s*before_script[\s\S]*?action:\s*run", y):
-            print("before_script run already exists. Skip patch.")
-            raise SystemExit(0)
+            # before_script(add) ブロックの直後に before_script(run) を差し込む
+            python3 - <<PY
+            import re, pathlib
+            p = pathlib.Path("'"$f"'")
+            y = p.read_text(encoding="utf-8")
 
-          # before_script の add ブロック直後に run を差し込む
-          # （template.ymlのインデントに合わせて jobs 配下は "  - type:" 形式）
-          m = re.search(
-            r"(\n  - type: script\n    parameters:\n"
-            r"(?:      .+\n)*"
-            r"      action: add\n"
-            r"      type: sequence\n"
-            r"      name: before_script\n"
-            r"(?:      .+\n)*"
-            r"      file: .+\n)",
-            y
-          )
-          if not m:
-            raise SystemExit("Could not find before_script add block to patch")
+            # before_script add ブロック（jobs配下の - type: script ... name: before_script ... action: add ...）の直後に挿入
+            m = re.search(
+              r"(\\n\\s*-\\s*type:\\s*script\\n\\s*parameters:\\n(?:\\s{6}.+\\n)*\\s{6}action:\\s*add\\n(?:\\s{6}.+\\n)*\\s{6}name:\\s*before_script\\n(?:\\s{6}.+\\n)*?)"
+            , y)
+            if not m:
+              raise SystemExit("Could not locate before_script(add) block to patch")
 
-          insert = (
-            "\n  - type: script\n"
-            "    parameters:\n"
-            "      action: run\n"
-            "      type: sequence\n"
-            "      name: before_script\n"
-          )
+            insert = (
+              "\\n  - type: script\\n"
+              "    parameters:\\n"
+              "      action: run\\n"
+              "      type: sequence\\n"
+              "      name: before_script\\n"
+            )
 
-          y2 = y[:m.end(1)] + insert + y[m.end(1):]
-          p.write_text(y2, encoding="utf-8")
-          print("Patched:", p)
-          PY
-        env:
-          TARGET: ${{ matrix.target }}
+            y2 = y[:m.end(1)] + insert + y[m.end(1):]
+            p.write_text(y2, encoding="utf-8")
+            print("patched", p)
+            PY
+
+            echo "=== patched file (before_script area) ==="
+            grep -n "before_script" -n "$f" | head -n 20
+          '
 
       - name: Debug inspect zap container
         run: |
