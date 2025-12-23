@@ -310,26 +310,6 @@ jobs:
 
           cat zap/automation/${{ matrix.target }}.yml
 
-      - name: Patch automation config (use combined admin zst)
-        run: |
-          docker compose exec -T -u 0:0 zap sh -lc '
-            set -eu
-            tgt="${{ matrix.target }}"
-            f="/zap/wrk/automation/${tgt}.yml"
-            [ -f "$f" ] || exit 1
-
-            case "$tgt" in
-              admin_*)
-                sed -i "s|/zap/wrk/scripts/${tgt}\.zst|/zap/wrk/scripts/__combined_${tgt}\.zst|g" "$f"
-                ;;
-              *)
-                ;;
-            esac
-
-            echo "=== target file line ==="
-            grep -n "file: /zap/wrk/scripts" "$f" || true
-          '
-
       - name: Debug inspect zap container
         run: |
           docker compose exec zap whoami
@@ -378,46 +358,62 @@ jobs:
           docker compose exec -T -u 0:0 zap sh -lc '
             set -e
 
-            target="${{ matrix.target }}"
+            tgt="${{ matrix.target }}"
             base="/zap/wrk/scripts"
-            login="$base/admin_login.zst"
-            tgt="$base/${{ matrix.target }}.zst"
-            out="$base/__combined_admin_${{ matrix.target }}.zst"
 
-            echo "login=$login"
-            echo "target=$tgt"
-            echo "out=$out"
+            LOGIN_ZST="$base/admin_login.zst"
+            TARGET_ZST="$base/${tgt}.zst"
+            OUT_ZST="$base/__combined_admin_${tgt}.zst"
 
-            [ -f "$login" ] || { echo "missing: $login"; exit 1; }
-            [ -f "$tgt" ] || { echo "missing: $tgt"; exit 1; }
+            echo "LOGIN_ZST=$LOGIN_ZST"
+            echo "TARGET_ZST=$TARGET_ZST"
+            echo "OUT_ZST=$OUT_ZST"
 
-            python3 - <<PY
-            import json, pathlib
+            [ -f "$LOGIN_ZST" ] || { echo "missing: $LOGIN_ZST"; exit 1; }
+            [ -f "$TARGET_ZST" ] || { echo "missing: $TARGET_ZST"; exit 1; }
 
-            login_path = pathlib.Path("'"$login"'")
-            tgt_path   = pathlib.Path("'"$tgt"'")
-            out_path   = pathlib.Path("'"$out"'")
+            # 環境変数で Python に渡す（外側の $login 展開を完全排除）
+            LOGIN_ZST="$LOGIN_ZST" TARGET_ZST="$TARGET_ZST" OUT_ZST="$OUT_ZST" python3 - <<PY
+            import os, json, pathlib
+
+            login_path = pathlib.Path(os.environ["LOGIN_ZST"])
+            tgt_path   = pathlib.Path(os.environ["TARGET_ZST"])
+            out_path   = pathlib.Path(os.environ["OUT_ZST"])
 
             login = json.loads(login_path.read_text(encoding="utf-8"))
             tgt   = json.loads(tgt_path.read_text(encoding="utf-8"))
 
-            # statements を連結（login → target の順）
             login_st = login.get("statements", [])
             tgt_st   = tgt.get("statements", [])
 
-            combined = tgt  # target 側のメタ情報を基本として使う（title/desc など）
-            combined["title"] = f"__combined_admin_{tgt.get('title','target')}"
-            combined["description"] = f"combined: admin_login + {tgt.get('title','target')}"
+            combined = dict(tgt)  # shallow copy
+            combined["title"] = "__combined_admin_" + str(tgt.get("title","target"))
+            combined["description"] = "combined: admin_login + " + str(tgt.get("title","target"))
             combined["statements"] = login_st + tgt_st
 
             out_path.write_text(json.dumps(combined, ensure_ascii=False, indent=2), encoding="utf-8")
             print("Wrote:", out_path)
-            print("Statements:", len(login_st), "+", len(tgt_st), "=", len(combined['statements']))
+            print("Statements:", len(login_st), "+", len(tgt_st), "=", len(combined["statements"]))
             PY
 
-            # 軽く確認
-            ls -la "$out"
-            head -n 5 "$out"
+            ls -la "$OUT_ZST"
+          '
+      - name: Patch automation config (use combined admin zst)
+        run: |
+          docker compose exec -T -u 0:0 zap sh -lc '
+            set -e
+            tgt="${{ matrix.target }}"
+            f="/zap/wrk/automation/${tgt}.yml"
+            [ -f "$f" ] || exit 1
+
+            case "$tgt" in
+              admin_*)
+                sed -i "s|/zap/wrk/scripts/${tgt}\.zst|/zap/wrk/scripts/__combined_admin_${tgt}\.zst|g" "$f"
+                ;;
+            esac
+
+            echo "=== target file line ==="
+            grep -n "file: /zap/wrk/scripts" "$f" || true
           '
 
       - name: Debug ZAP add-ons status
