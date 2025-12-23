@@ -283,9 +283,6 @@ jobs:
             BEFORE="admin_login.zst"
           fi
 
-          # 既存の include で before_script が指定されている場合はそれを優先したいなら下の行を有効化
-          # if [[ -n "${ZAP_BEFORE_SCRIPT:-}" ]]; then BEFORE="${ZAP_BEFORE_SCRIPT}"; fi
-
           zap/generate_automation_config.sh \
             -t ${{ matrix.target }} \
             ${BEFORE:+"-b ${BEFORE}"} \
@@ -299,7 +296,9 @@ jobs:
         run: |
           set -e  # ← -u を外す（ここが重要）
 
-          docker compose exec -T -u 0:0 zap sh -s <<'SH'
+          docker compose exec -T -u 0:0 \
+            -e ZA_TARGET="${{ matrix.target }}" \
+            zap sh -s <<'SH'
           set -eu
 
           f="/zap/wrk/automation/${ZA_TARGET}.yml"
