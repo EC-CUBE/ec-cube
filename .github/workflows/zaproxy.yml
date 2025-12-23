@@ -371,39 +371,54 @@ jobs:
           '
 
       - name: Build combined admin sequence (login + target)
+        shell: bash
         run: |
+          set -euo pipefail
+
           docker compose exec -T -u 0:0 zap sh -lc '
-            set -eu
-            tgt="${{ matrix.target }}"
-            case "$tgt" in
-              admin_*)
-                base="/zap/wrk/scripts"
-                login="$base/admin_login.zst"
-                target="$base/${tgt}.zst"
-                out="$base/__combined_${tgt}.zst"
+            set -e
 
-                [ -f "$login" ] || { echo "missing $login"; exit 1; }
-                [ -f "$target" ] || { echo "missing $target"; exit 1; }
+            target="${{ matrix.target }}"
+            base="/zap/wrk/scripts"
+            login="$base/admin_login.zst"
+            tgt="$base/${{ matrix.target }}.zst"
+            out="$base/__combined_admin_${{ matrix.target }}.zst"
 
-                python3 - <<PY
-                import json, pathlib
-                login = json.loads(pathlib.Path("'"$login"'").read_text())
-                tgt   = json.loads(pathlib.Path("'"$target"'").read_text())
+            echo "login=$login"
+            echo "target=$tgt"
+            echo "out=$out"
 
-                # statements を結合（login→target）
-                tgt["statements"] = login.get("statements", []) + tgt.get("statements", [])
-                tgt["title"] = "__combined_" + tgt.get("title","target")
+            [ -f "$login" ] || { echo "missing: $login"; exit 1; }
+            [ -f "$tgt" ] || { echo "missing: $tgt"; exit 1; }
 
-                pathlib.Path("'"$out"'").write_text(json.dumps(tgt, ensure_ascii=False, indent=2))
-                print("created", "'"$out"'")
-                PY
-                ;;
-              *)
-                echo "not admin target -> skip"
-                ;;
-            esac
+            python3 - <<PY
+            import json, pathlib
+
+            login_path = pathlib.Path("'"$login"'")
+            tgt_path   = pathlib.Path("'"$tgt"'")
+            out_path   = pathlib.Path("'"$out"'")
+
+            login = json.loads(login_path.read_text(encoding="utf-8"))
+            tgt   = json.loads(tgt_path.read_text(encoding="utf-8"))
+
+            # statements を連結（login → target の順）
+            login_st = login.get("statements", [])
+            tgt_st   = tgt.get("statements", [])
+
+            combined = tgt  # target 側のメタ情報を基本として使う（title/desc など）
+            combined["title"] = f"__combined_admin_{tgt.get('title','target')}"
+            combined["description"] = f"combined: admin_login + {tgt.get('title','target')}"
+            combined["statements"] = login_st + tgt_st
+
+            out_path.write_text(json.dumps(combined, ensure_ascii=False, indent=2), encoding="utf-8")
+            print("Wrote:", out_path)
+            print("Statements:", len(login_st), "+", len(tgt_st), "=", len(combined['statements']))
+            PY
+
+            # 軽く確認
+            ls -la "$out"
+            head -n 5 "$out"
           '
-
 
       - name: Debug ZAP add-ons status
         if: ${{ always() }}
