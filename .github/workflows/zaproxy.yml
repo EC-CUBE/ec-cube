@@ -370,7 +370,7 @@ jobs:
             ls -ld /zap/wrk/scripts
           '
 
-            - name: Build combined admin sequence (login + target)
+      - name: Build combined admin sequence (login + target)
         run: |
           docker compose exec -T -u 0:0 zap sh -lc '
             set -eu
