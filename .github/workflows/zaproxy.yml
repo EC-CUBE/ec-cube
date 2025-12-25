@@ -411,19 +411,72 @@ jobs:
       - name: Autorun
         run: |
           set -x
-          # デバッグ1: Automation Plan ファイルの確認
           docker compose exec -T zap ls -la /zap/wrk/automation/${{ matrix.target }}.yml
-
-          # デバッグ2: options.properties の確認
           docker compose exec -T zap ls -la /zap/wrk/options.properties
 
           # ZAP実行
           docker compose exec -T zap /zap/zap.sh \
             -cmd \
+            -loglevel DEBUG \
+            -log /tmp/zap-${{ matrix.target }}.log \
             -config anticsrf.tokens.token.name=_csrf_token \
             -config anticsrf.tokens.token.enabled=true \
             -configfile /zap/wrk/options.properties \
             -autorun /zap/wrk/automation/${{ matrix.target }}.yml
+
+      - name: Debug Collect ZAP logs (always)
+        if: ${{ always() }}
+        run: |
+          echo "=== ZAP internal zap.log (tail) ==="
+          docker compose exec -T zap sh -lc 'ls -la /home/zap/.ZAP/zap.log || true'
+          docker compose exec -T zap sh -lc 'tail -n 500 /home/zap/.ZAP/zap.log || true'
+
+          echo "=== Autorun log file (tail) ==="
+          docker compose exec -T zap sh -lc 'ls -la /tmp/zap-${{ matrix.target }}.log || true'
+          docker compose exec -T zap sh -lc 'tail -n 500 /tmp/zap-${{ matrix.target }}.log || true'
+
+          # コンテナ外へコピーして artifact で上げられるようにする
+          mkdir -p /tmp/zap-logs
+          docker compose cp zap:/home/zap/.ZAP/zap.log /tmp/zap-logs/zap.log || true
+          docker compose cp zap:/tmp/zap-${{ matrix.target }}.log /tmp/zap-logs/zap-${{ matrix.target }}.log || true
+
+      - name: Upload ZAP logs
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v5
+        with:
+          name: zap-${{ matrix.target }}-internal-logs
+          path: /tmp/zap-logs
+
+      - name: Debug redirect chain for failing URL (save final HTML)
+        if: ${{ startsWith(matrix.target, 'admin_') && always() }}
+        run: |
+          docker compose exec -T zap sh -lc '
+            set -e
+            url="https://ec-cube/admin/content/block/new"
+            echo "=== HEAD (no follow) ==="
+            curl -skI "$url" | sed -n "1,40p"
+
+            echo "=== GET with -L (follow redirects), save final ==="
+            curl -skL -D /tmp/headers.txt "$url" -o /tmp/final.html
+            echo "--- headers (first 60 lines) ---"
+            sed -n "1,60p" /tmp/headers.txt
+            echo "--- final.html (first 40 lines) ---"
+            sed -n "1,40p" /tmp/final.html
+
+            echo "--- grep csrf meta if exists ---"
+            grep -n "eccube-csrf-token" -n /tmp/final.html || true
+          '
+
+          mkdir -p /tmp/zap-debug-pages
+          docker compose cp zap:/tmp/headers.txt /tmp/zap-debug-pages/headers-${{ matrix.target }}.txt || true
+          docker compose cp zap:/tmp/final.html   /tmp/zap-debug-pages/final-${{ matrix.target }}.html || true
+
+      - name: Upload debug pages
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v5
+        with:
+          name: zap-${{ matrix.target }}-debug-pages
+          path: /tmp/zap-debug-pages
 
       - name: Debug login POST (curl)
         if: ${{ always() }}
