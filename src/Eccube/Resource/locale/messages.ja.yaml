@@ -1758,7 +1758,7 @@ tooltip.setting.shop.calendar_setting: "定休日カレンダーに表示する�
 tooltip.setting.system.member.authority: 権限管理で設定した権限を選択できます。
 tooltip.setting.system.member.work: 一時的に非稼働にすることが可能です。必要ない場合はメンバー一覧より削除してください。
 tooltip.setting.system.member.two_factor_auth_enabled: 有効にすると2段階認証でのログインが必要になります。2段階認証のデバイス設定をしていない状態でログインした場合、設定後にログインできるようになります。
-tooltip.setting.system.member.two_factor_auth_reset: チェックを入れると、このメンバーの2段階認証をリセットします。リセットした場合、現在認証アプリに登録されているコードは使用できなくなります。
+tooltip.setting.system.member.two_factor_auth_reset: チェックを入れると、このメンバーの2段階認証をリセットします。リセットした場合、現在認証アプリに登録されているコードは使用できなくなります。デバイスの紛失などの理由で2段階認証認証アプリが使用できなくなった場合は、リセットして新しいデバイスで再登録を行ってください。
 tooltip.setting.system.two_factor_auth.qr_code: QRコードを2段階認証用スマートフォンアプリで読み込み、表示された6桁の数字を入力してください。
 tooltip.setting.system.security.admin_url: 管理画面にログインするためのURLを指定します。推測されにくいURLを指定して下さい。
 tooltip.setting.system.security.front_ip_limit: フロント画面にアクセスできる接続元のIPアドレスを制限します。
