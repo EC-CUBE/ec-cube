@@ -22,6 +22,7 @@ use Eccube\Form\Type\ToggleSwitchType;
 use Eccube\Repository\MemberRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
@@ -108,6 +109,10 @@ class MemberType extends AbstractType
                 ],
             ])
             ->add('two_factor_auth_enabled', ToggleSwitchType::class, [
+            ])
+            ->add('two_factor_auth_reset', CheckboxType::class, [
+                'mapped' => false,
+                'label' => 'admin.setting.system.member.two_factor_auth_reset',
             ]);
 
         // login idの入力は新規登録時のみとし、編集時はdisabledにする

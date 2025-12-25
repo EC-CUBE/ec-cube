@@ -166,6 +166,10 @@ class MemberController extends AbstractController
                 $Member->setPassword($password);
             }
 
+            if ($Member->isTwoFactorAuthEnabled() && $form->get('two_factor_auth_reset')->getData()) {
+                $Member->setTwoFactorAuthKey(null);
+            }
+
             $this->memberRepository->save($Member);
 
             $event = new EventArgs(
