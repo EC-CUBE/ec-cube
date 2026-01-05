@@ -67,7 +67,7 @@ class CartController extends AbstractController
         $quantity = [];
         $isDeliveryFree = [];
         $totalPrice = 0;
-        $totalQuantity = 0;
+        $totalQuantity = '0';
 
         foreach ($Carts as $Cart) {
             $quantity[$Cart->getCartKey()] = 0;
@@ -85,12 +85,12 @@ class CartController extends AbstractController
                 if (!$isDeliveryFree[$Cart->getCartKey()] && $this->baseInfo->getDeliveryFreeAmount() <= $Cart->getTotalPrice()) {
                     $isDeliveryFree[$Cart->getCartKey()] = true;
                 } else {
-                    $least[$Cart->getCartKey()] = $this->baseInfo->getDeliveryFreeAmount() - $Cart->getTotalPrice(); // @phpstan-ignore-line TODO bcmath-polyfill を使用する
+                    $least[$Cart->getCartKey()] = $this->baseInfo->getDeliveryFreeAmount() - $Cart->getTotalPrice();
                 }
             }
 
             $totalPrice += $Cart->getTotalPrice();
-            $totalQuantity += $Cart->getQuantity();
+            $totalQuantity = bcadd($totalQuantity, $Cart->getQuantity(), 0);
         }
 
         // カートが分割された時のセッション情報を削除
