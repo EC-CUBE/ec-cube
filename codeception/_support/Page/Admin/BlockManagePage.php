@@ -45,6 +45,7 @@ class BlockManagePage extends AbstractAdminPageStyleGuide
     {
         $rowNum++;
         $this->tester->click(".c-contentsArea .list-group > li:nth-child({$rowNum}) [data-bs-original-title=削除] a");
+
         return $this;
     }
 

@@ -53,7 +53,7 @@ class MemberController extends AbstractController
     public function __construct(
         UserPasswordHasherInterface $passwordHasher,
         MemberRepository $memberRepository,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
     ) {
         $this->passwordHasher = $passwordHasher;
         $this->memberRepository = $memberRepository;
@@ -62,6 +62,7 @@ class MemberController extends AbstractController
 
     /**
      * @Route("/%eccube_admin_route%/setting/system/member", name="admin_setting_system_member", methods={"GET", "PUT"})
+     *
      * @Template("@admin/Setting/System/member.twig")
      */
     public function index(Request $request)
@@ -89,6 +90,7 @@ class MemberController extends AbstractController
 
     /**
      * @Route("/%eccube_admin_route%/setting/system/member/new", name="admin_setting_system_member_new", methods={"GET", "POST"})
+     *
      * @Template("@admin/Setting/System/member_edit.twig")
      */
     public function create(Request $request)
@@ -135,6 +137,7 @@ class MemberController extends AbstractController
 
     /**
      * @Route("/%eccube_admin_route%/setting/system/member/{id}/edit", requirements={"id" = "\d+"}, name="admin_setting_system_member_edit", methods={"GET", "POST"})
+     *
      * @Template("@admin/Setting/System/member_edit.twig")
      */
     public function edit(Request $request, Member $Member)
@@ -158,7 +161,6 @@ class MemberController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($Member->getPlainPassword() !== $this->eccubeConfig['eccube_default_password']) {
-
                 $password = $Member->getPlainPassword();
                 $password = $this->passwordHasher->hashPassword($Member, $password);
                 $Member->setPassword($password);

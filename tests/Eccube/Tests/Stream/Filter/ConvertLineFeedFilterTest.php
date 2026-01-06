@@ -31,8 +31,8 @@ class ConvertLineFeedFilterTest extends TestCase
     public function testApplyFilter()
     {
         $data = "あいうえお\n"
-            . "かきくけこ\r"
-            . "さしすせそ\r\n";
+            ."かきくけこ\r"
+            ."さしすせそ\r\n";
 
         $fp = \tmpfile();
         \fwrite($fp, $data);
@@ -47,8 +47,8 @@ class ConvertLineFeedFilterTest extends TestCase
         }
 
         $expected = "あいうえお\n"
-            . "かきくけこ\n"
-            . "さしすせそ\n";
+            ."かきくけこ\n"
+            ."さしすせそ\n";
         self::assertSame($expected, $actual);
     }
 }

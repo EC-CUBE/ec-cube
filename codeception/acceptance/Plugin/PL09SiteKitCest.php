@@ -13,15 +13,13 @@
 
 namespace Plugin;
 
-use AcceptanceTester;
-
 /**
  * @group plugin
  * @group vaddy
  */
 class PL09SiteKitCest
 {
-    public function sitekit(AcceptanceTester $I)
+    public function sitekit(\AcceptanceTester $I)
     {
         $I->loginAsAdmin();
         $I->amOnPage('/admin/site_kit/config');

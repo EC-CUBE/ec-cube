@@ -15,10 +15,11 @@ namespace Eccube\Tests\Form\Type;
 
 use Eccube\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\FormInterface;
 
 class PhoneNumberTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Symfony\Component\Form\FormInterface */
+    /** @var FormInterface */
     protected $form;
 
     /** @var array デフォルト値（正常系）を設定 */
@@ -162,7 +163,7 @@ class PhoneNumberTypeTest extends AbstractTypeTestCase
         ];
 
         $this->form->submit($input);
-        $this->assertEquals($output, $this->form->getData());
+        $this->assertSame($output, $this->form->getData());
     }
 
     public function testRequiredAddNotBlank()

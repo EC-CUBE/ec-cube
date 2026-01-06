@@ -144,8 +144,8 @@ class EA07BasicinfoCest
         $I->wantTo('EA0701-UC01-T08_会員設定の設定、編集(マイページに注文状況を表示：無効)');
 
         $entityManager = Fixtures::get('entityManager');
-        $customer = $entityManager->getRepository('Eccube\Entity\Customer')->find(1);
-        $page = ShopSettingPage::go($I)
+        $customer = $entityManager->getRepository(Eccube\Entity\Customer::class)->find(1);
+        ShopSettingPage::go($I)
             ->入力_チェックボックス(ShopSettingPage::$チェックボックス_マイページに注文状況を表示, false)
             ->登録();
 
@@ -155,11 +155,12 @@ class EA07BasicinfoCest
 
         $I->wantTo('EA0701-UC01-T07_会員設定の設定、編集(マイページに注文状況を表示：有効)');
 
-        $page = ShopSettingPage::go($I)
+        ShopSettingPage::go($I)
             ->入力_チェックボックス(ShopSettingPage::$チェックボックス_マイページに注文状況を表示, true)
             ->登録();
 
         MyPage::go($I)->注文履歴();
+        $I->wait(1);
         $I->waitForText('ご注文状況', 10, '.ec-historyRole');
     }
 
@@ -167,7 +168,7 @@ class EA07BasicinfoCest
     {
         $I->wantTo('EA0701-UC01-T10_会員設定の設定、編集(お気に入り商品機能：無効)');
 
-        $page = ShopSettingPage::go($I)
+        ShopSettingPage::go($I)
             ->入力_チェックボックス(ShopSettingPage::$チェックボックス_お気に入り商品機能, false)
             ->登録();
 
@@ -179,7 +180,7 @@ class EA07BasicinfoCest
 
         $I->wantTo('EA0701-UC01-T09_会員設定の設定、編集(お気に入り商品機能：有効)');
 
-        $page = ShopSettingPage::go($I)
+        ShopSettingPage::go($I)
             ->入力_チェックボックス(ShopSettingPage::$チェックボックス_お気に入り商品機能, true)
             ->登録();
 
@@ -197,7 +198,7 @@ class EA07BasicinfoCest
 
         $I->wantTo('EA0701-UC01-T12_会員設定の設定、編集(自動ログイン機能：無効)');
 
-        $page = ShopSettingPage::go($I)
+        ShopSettingPage::go($I)
             ->入力_チェックボックス(ShopSettingPage::$チェックボックス_自動ログイン機能, false)
             ->登録();
 
@@ -207,7 +208,7 @@ class EA07BasicinfoCest
 
         $I->wantTo('EA0701-UC01-T011_会員設定の設定、編集(自動ログイン機能：有効)');
 
-        $page = ShopSettingPage::go($I)
+        ShopSettingPage::go($I)
             ->入力_チェックボックス(ShopSettingPage::$チェックボックス_自動ログイン機能, true)
             ->登録();
 
@@ -242,7 +243,7 @@ class EA07BasicinfoCest
         $I->wantTo('EA0701-UC01-T13 商品設定の設定、編集(在庫切れ商品の非表示：有効)');
 
         // 在庫切れ商品の非表示設定
-        $page = ShopSettingPage::go($I)
+        ShopSettingPage::go($I)
             ->設定_在庫切れ商品の非表示(true);
 
         // 表示確認
@@ -254,7 +255,7 @@ class EA07BasicinfoCest
         $I->wantTo('EA0701-UC01-T14 商品設定の設定、編集(在庫切れ商品の非表示：無効)');
 
         // 在庫切れ商品の表示設定
-        $page = ShopSettingPage::go($I)
+        ShopSettingPage::go($I)
             ->設定_在庫切れ商品の非表示(false);
 
         // 表示確認
@@ -352,7 +353,7 @@ class EA07BasicinfoCest
         OrderManagePage::go($I)
             ->検索($customer->getEmail())
             ->一覧_編集(1);
-        $I->see((string)$expected_point, OrderEditPage::$加算ポイント);
+        $I->see((string) $expected_point, OrderEditPage::$加算ポイント);
 
         $I->amGoingTo('発送済みにする (ポイントが付与される)');
         OrderEditPage::at($I)
@@ -364,7 +365,7 @@ class EA07BasicinfoCest
         CustomerManagePage::go($I)
             ->検索($customer->getEmail())
             ->一覧_編集(1);
-        $I->seeInField(CustomerManagePage::$ポイント, (string)$customerPoint);
+        $I->seeInField(CustomerManagePage::$ポイント, (string) $customerPoint);
 
         $I->expect('マイベージにて、ポイントが付与されていること');
         MyPage::go($I);
@@ -402,8 +403,8 @@ class EA07BasicinfoCest
             ->検索($customer->getEmail())
             ->一覧_編集(1);
         $I->see($expected_discount, OrderEditPage::$ポイント値引き額);
-        $I->seeInField(OrderEditPage::$利用ポイント, (string)$expected_point);
-        $I->see((string)($expected_point - round(($point_conversion_rate * $expected_point) * ($point_rate / 100))), OrderEditPage::$加算ポイント);
+        $I->seeInField(OrderEditPage::$利用ポイント, (string) $expected_point);
+        $I->see((string) ($expected_point - round(($point_conversion_rate * $expected_point) * ($point_rate / 100))), OrderEditPage::$加算ポイント);
 
         $I->expect('ポイント付与率を変更しても, 注文のポイントに影響無いことを確認します');
         // see https://github.com/EC-CUBE/ec-cube/pull/5571
@@ -417,14 +418,14 @@ class EA07BasicinfoCest
             ->受注情報登録();
 
         $I->see($expected_discount, OrderEditPage::$ポイント値引き額);
-        $I->seeInField(OrderEditPage::$利用ポイント, (string)$expected_point);
-        $I->see((string)($expected_point - round(($point_conversion_rate * $expected_point) * ($point_rate / 100))), OrderEditPage::$加算ポイント);
+        $I->seeInField(OrderEditPage::$利用ポイント, (string) $expected_point);
+        $I->see((string) ($expected_point - round(($point_conversion_rate * $expected_point) * ($point_rate / 100))), OrderEditPage::$加算ポイント);
 
         $I->expect('管理画面・会員管理にて、ポイントが減少していること');
         CustomerManagePage::go($I)
             ->検索($customer->getEmail())
             ->一覧_編集(1);
-        $I->seeInField(CustomerManagePage::$ポイント, (string)$customerPoint);
+        $I->seeInField(CustomerManagePage::$ポイント, (string) $customerPoint);
 
         $I->amGoingTo('マイベージ 注文詳細にて、利用ポイントが計算されていること');
         MyPage::go($I)->注文履歴詳細(0);
@@ -875,7 +876,7 @@ class EA07BasicinfoCest
         $text = 'text'.$id;
         $html = '<p>HTML</p>'.$id;
 
-        /** テンプレート作成 */
+        /* テンプレート作成 */
         MailSettingsPage::go($I)
             ->入力_新規テンプレート名($template_name)
             ->入力_ファイル名($file_name)
@@ -886,7 +887,7 @@ class EA07BasicinfoCest
 
         $I->waitForText('保存しました', 10, MailSettingsPage::$登録完了メッセージ);
 
-        /** 受注メールから送信して確認する */
+        /* 受注メールから送信して確認する */
         $I->resetEmails();
         OrderManagePage::go($I)->検索()
             ->一覧_編集(1)
@@ -900,12 +901,12 @@ class EA07BasicinfoCest
         $I->assertCount(2, $message->getRecipients(), 'Bcc で管理者にも送信するので宛先アドレスは2つ');
         $I->seeEmailCount(1);
 
-        $baseinfo = Fixtures::get('baseinfo');
+        Fixtures::get('baseinfo');
         $I->seeInLastEmailSubjectTo('admin@example.com', $title);
 
-        /** メールテンプレート削除 */
+        /* メールテンプレート削除 */
         MailSettingsPage::go($I)->入力_テンプレート($template_name)->削除_テンプレート();
-        $I->waitForText('削除しました',10,'#page_admin_setting_shop_mail > div.c-container > div.c-contentsArea > div.alert.alert-success.alert-dismissible.fade.show.m-3 > span');
+        $I->waitForText('削除しました', 10, '#page_admin_setting_shop_mail > div.c-container > div.c-contentsArea > div.alert.alert-success.alert-dismissible.fade.show.m-3 > span');
     }
 
     /**
@@ -1085,6 +1086,5 @@ class EA07BasicinfoCest
         // GAタグが設定されているか
         $I->amOnPage('/');
         $I->seeInPageSource('https://www.googletagmanager.com/gtag/js?id=UA-12345678-1');
-
     }
 }

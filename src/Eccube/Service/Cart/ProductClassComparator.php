@@ -24,7 +24,7 @@ class ProductClassComparator implements CartItemComparator
      * @param CartItem $Item1 明細1
      * @param CartItem $Item2 明細2
      *
-     * @return boolean 同じ明細になる場合はtrue
+     * @return bool 同じ明細になる場合はtrue
      */
     public function compare(CartItem $Item1, CartItem $Item2)
     {

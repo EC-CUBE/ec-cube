@@ -26,7 +26,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\RouterInterface;
 
 class SitemapController extends AbstractController
 {
@@ -63,7 +62,7 @@ class SitemapController extends AbstractController
         PageRepository $pageRepository,
         ProductListOrderByRepository $productListOrderByRepository,
         ProductRepository $productRepository,
-        BaseInfoRepository $baseInfoRepository
+        BaseInfoRepository $baseInfoRepository,
     ) {
         $this->categoryRepository = $categoryRepository;
         $this->pageRepository = $pageRepository;
@@ -148,7 +147,7 @@ class SitemapController extends AbstractController
         /** @var SlidingPagination $pagination */
         $pagination = $paginator->paginate(
             $productQueryBuilder,
-            $request->get('page') ? : 1,
+            $request->get('page') ?: 1,
             $this->eccubeConfig['eccube_sitemap_products_per_page']
         );
         $paginationData = $pagination->getPaginationData();

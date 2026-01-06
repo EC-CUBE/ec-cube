@@ -51,6 +51,7 @@ class TestQueryCustomizer extends WhereCustomizer
 {
     protected function createStatements($params, $queryKey)
     {
+        return [];
     }
 
     public function getQueryKey()

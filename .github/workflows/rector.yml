@@ -1,0 +1,25 @@
+name: Rector
+
+on:
+  workflow_call:
+
+jobs:
+  rector:
+    name: Rector
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v6
+
+      - name: Setup PHP
+        uses: nanasess/setup-php@master
+        with:
+          php-version: '8.1'
+
+      - name: Initialize Composer
+        uses: ./.github/actions/composer
+
+      - name: Rector (dry-run)
+        run: vendor/bin/rector process --dry-run --ansi --config=rector.php

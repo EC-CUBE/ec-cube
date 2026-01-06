@@ -25,7 +25,7 @@ class ProductStatusType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'class' => 'Eccube\Entity\Master\ProductStatus',
+            'class' => \Eccube\Entity\Master\ProductStatus::class,
             'expanded' => false,
         ]);
     }

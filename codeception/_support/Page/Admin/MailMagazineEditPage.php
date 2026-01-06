@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,30 +19,35 @@ class MailMagazineEditPage extends AbstractAdminPageStyleGuide
     {
         $page = new MailMagazineEditPage($I);
         $page->atPage('配信メルマガ管理');
+
         return $page;
     }
 
     public function 入力_件名($value)
     {
         $this->tester->fillField(['id' => 'mail_magazine_subject'], $value);
+
         return $this;
     }
 
     public function 入力_本文テキスト($value)
     {
         $this->tester->fillField(['id' => 'mail_magazine_body'], $value);
+
         return $this;
     }
 
     public function 入力_本文HTML($value)
     {
         $this->tester->fillField(['id' => 'mail_magazine_htmlBody'], $value);
+
         return $this;
     }
 
     public function 確認画面へ()
     {
         $this->tester->click(['css' => '#form1 > div.c-conversionArea > div > div > div:nth-child(2) > div > div > button']);
+
         return $this;
     }
 
@@ -54,6 +60,7 @@ class MailMagazineEditPage extends AbstractAdminPageStyleGuide
         $this->tester->acceptPopup();
         $this->tester->wait(3);
         $this->tester->acceptPopup();
+
         return $this;
     }
 
@@ -64,11 +71,11 @@ class MailMagazineEditPage extends AbstractAdminPageStyleGuide
         $this->tester->acceptPopup();
         $this->tester->waitForElementVisible(['css' => '#sendModal > div > div > div.modal-footer > button']);
         $this->tester->click(['css' => '#sendModal > div > div > div.modal-footer > button']);
+
         return $this;
     }
 
     public function 配信履歴()
     {
-
     }
 }

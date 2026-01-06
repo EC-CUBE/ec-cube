@@ -138,6 +138,7 @@ class EA05CustomerCest
 
         CustomerEditPage::go($I)->登録();
 
+        $I->wait(0.1); // XXX 画面遷移直後は selector の参照に失敗するため wait を入れる
         $I->seeElement(['css' => '#admin_customer_name_name01:invalid']); // 姓がエラー
         $I->dontSeeElement(CustomerEditPage::$登録完了メッセージ);
     }
@@ -191,6 +192,7 @@ class EA05CustomerCest
             ->入力_姓('')
             ->登録();
 
+        $I->wait(0.1); // XXX 画面遷移直後は selector の参照に失敗するため wait を入れる
         $I->seeElement(['css' => '#admin_customer_name_name01:invalid']);
         $I->dontSeeElement(CustomerEditPage::$登録完了メッセージ);
     }
@@ -258,6 +260,7 @@ class EA05CustomerCest
     /**
      * @env firefox
      * @env chrome
+     *
      * @group vaddy
      */
     public function customer_CSV出力(AcceptanceTester $I)

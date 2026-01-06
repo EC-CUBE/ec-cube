@@ -25,7 +25,7 @@ class JobType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'class' => 'Eccube\Entity\Master\Job',
+            'class' => \Eccube\Entity\Master\Job::class,
             'placeholder' => 'common.select',
         ]);
     }

@@ -45,7 +45,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
     /**
      * Number of the row that contains the column names
      *
-     * @var integer
+     * @var int
      */
     protected $headerRowNumber;
 
@@ -68,14 +68,14 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      *
      * In case of duplicate headers, this is always the number of unmerged headers.
      *
-     * @var integer
+     * @var int
      */
     protected $headersCount;
 
     /**
      * Total number of rows in the CSV file
      *
-     * @var integer
+     * @var int
      */
     protected $count;
 
@@ -89,7 +89,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
     /**
      * How to handle duplicate headers
      *
-     * @var integer
+     * @var int
      */
     protected $duplicateHeadersFlag;
 
@@ -101,8 +101,6 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      */
     public function __construct(\SplFileObject $file, $delimiter = ',', $enclosure = '"', $escape = '\\')
     {
-        ini_set('auto_detect_line_endings', true);
-
         // stream filter を適用して文字エンコーディングと改行コードの変換を行う
         // see https://github.com/EC-CUBE/ec-cube/issues/5252
         $filters = [
@@ -188,15 +186,15 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
     /**
      * Set header row number
      *
-     * @param integer $rowNumber Number of the row that contains column header names
-     * @param integer $duplicates How to handle duplicates (optional). One of:
+     * @param int $rowNumber Number of the row that contains column header names
+     * @param int $duplicates How to handle duplicates (optional). One of:
      *                        - CsvReader::DUPLICATE_HEADERS_INCREMENT;
      *                        increments duplicates (dup, dup1, dup2 etc.)
      *                        - CsvReader::DUPLICATE_HEADERS_MERGE; merges
      *                        values for duplicate headers into an array
      *                        (dup => [value1, value2, value3])
      *
-     * @return boolean
+     * @return bool
      */
     public function setHeaderRowNumber($rowNumber, $duplicates = null)
     {
@@ -294,7 +292,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
     /**
      * Get a row
      *
-     * @param integer $number Row number
+     * @param int $number Row number
      *
      * @return array
      */
@@ -324,7 +322,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
     /**
      * Does the reader contain any invalid rows?
      *
-     * @return boolean
+     * @return bool
      */
     public function hasErrors()
     {
@@ -364,7 +362,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
     /**
      * Read header row from CSV file
      *
-     * @param integer $rowNumber Row number
+     * @param int $rowNumber Row number
      *
      * @return array
      */

@@ -13,13 +13,16 @@
 
 namespace Eccube\Tests\Command;
 
+use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Column;
 use Eccube\Command\UpdateSchemaDoctrineCommand;
+use Eccube\Entity\Plugin;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\PluginService;
 use Eccube\Service\SchemaService;
 use Eccube\Tests\EccubeTestCase;
+use Faker\Generator;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Filesystem\Filesystem;
@@ -46,7 +49,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
      */
     private $pluginRepository;
 
-    const NAME = 'eccube:schema:update';
+    public const NAME = 'eccube:schema:update';
 
     protected function setUp(): void
     {
@@ -63,7 +66,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $f = new Filesystem();
         $f->remove($files);
 
-        $this->pluginRepository = $this->entityManager->getRepository(\Eccube\Entity\Plugin::class);
+        $this->pluginRepository = $this->entityManager->getRepository(Plugin::class);
         $this->pluginService = static::getContainer()->get(PluginService::class);
         $this->schemaService = static::getContainer()->get(SchemaService::class);
     }
@@ -399,13 +402,12 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
     private function createDummyPluginConfig()
     {
         $tmpname = 'dummy'.sha1(mt_rand());
-        $config = [
+
+        return [
             'name' => $tmpname.'_name',
             'code' => $tmpname,
             'version' => $tmpname,
         ];
-
-        return $config;
     }
 
     private function createDummyPluginWithEntityExtension()
@@ -449,9 +451,10 @@ EOT
      */
     private function createComposerJsonFile($config)
     {
-        /** @var \Faker\Generator $faker */
+        /** @var Generator $faker */
         $faker = $this->getFaker();
-        $jsonPHP = [
+
+        return [
             'name' => $config['name'],
             'description' => $faker->word,
             'version' => $config['version'],
@@ -465,8 +468,6 @@ EOT
                 'code' => $config['code'],
             ],
         ];
-
-        return $jsonPHP;
     }
 
     /**
@@ -481,8 +482,8 @@ EOT
      */
     private function executeExternalProcess($command)
     {
-        \DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver::commit();
-        \DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver::beginTransaction();
+        StaticDriver::commit();
+        StaticDriver::beginTransaction();
         try {
             $process = new Process(explode(' ', $command));
             $process->mustRun();

@@ -50,6 +50,7 @@ class EA04OrderCest
 
         $TargetOrder = array_values($TargetOrders)[0];
         OrderManagePage::go($I)->検索($TargetOrder->getName01());
+        $I->wait(0.1); // XXX 画面遷移直後は selector の参照に失敗するため wait を入れる
         $I->dontSee('検索結果：0件が該当しました', OrderManagePage::$検索結果_メッセージ);
 
         OrderManagePage::go($I)->検索('gege@gege.com');
@@ -434,7 +435,7 @@ class EA04OrderCest
         $ExistsNewOrders = array_filter($findOrders(), function ($Order) {
             return $Order->getOrderStatus()->getId() == OrderStatus::NEW;
         });
-        $CancelStatus = $entityManager->getRepository('Eccube\Entity\Master\OrderStatus')->find(OrderStatus::CANCEL);
+        $CancelStatus = $entityManager->getRepository(OrderStatus::class)->find(OrderStatus::CANCEL);
         foreach ($ExistsNewOrders as $ExistsNewOrder) {
             $ExistsNewOrder->setOrderStatus($CancelStatus);
         }
@@ -444,7 +445,7 @@ class EA04OrderCest
         $createCustomer = Fixtures::get('createCustomer');
         $createOrders = Fixtures::get('createOrders');
         $NewOrders = $createOrders($createCustomer(), 2, []);
-        $Status = $entityManager->getRepository('Eccube\Entity\Master\OrderStatus')->find(OrderStatus::NEW);
+        $Status = $entityManager->getRepository(OrderStatus::class)->find(OrderStatus::NEW);
         foreach ($NewOrders as $NewOrder) {
             $NewOrder->setOrderStatus($Status);
         }
@@ -492,7 +493,7 @@ class EA04OrderCest
         $ExistsNewOrders = array_filter($findOrders(), function ($Order) {
             return $Order->getOrderStatus()->getId() == OrderStatus::NEW;
         });
-        $CancelStatus = $entityManager->getRepository('Eccube\Entity\Master\OrderStatus')->find(OrderStatus::CANCEL);
+        $CancelStatus = $entityManager->getRepository(OrderStatus::class)->find(OrderStatus::CANCEL);
         foreach ($ExistsNewOrders as $ExistsNewOrder) {
             $ExistsNewOrder->setOrderStatus($CancelStatus);
         }
@@ -502,7 +503,7 @@ class EA04OrderCest
         $createCustomer = Fixtures::get('createCustomer');
         $createOrders = Fixtures::get('createOrders');
         $NewOrders = $createOrders($createCustomer(), 2, []);
-        $Status = $entityManager->getRepository('Eccube\Entity\Master\OrderStatus')->find(OrderStatus::NEW);
+        $Status = $entityManager->getRepository(OrderStatus::class)->find(OrderStatus::NEW);
         foreach ($NewOrders as $NewOrder) {
             $NewOrder->setOrderStatus($Status);
         }

@@ -53,7 +53,7 @@ class InstallerCommand extends Command
         $this->eccubeConfig = $eccubeConfig;
 
         /* env更新処理無名クラス */
-        $this->envFileUpdater = new class() {
+        $this->envFileUpdater = new class {
             public $appEnv;
             public $appDebug;
             public $databaseUrl;
@@ -71,18 +71,18 @@ class InstallerCommand extends Command
             private function getEnvParameters()
             {
                 return [
-                            'APP_ENV' => $this->appEnv,
-                            'APP_DEBUG' => $this->appDebug,
-                            'DATABASE_URL' => $this->databaseUrl,
-                            'DATABASE_SERVER_VERSION' => $this->serverVersion,
-                            'DATABASE_CHARSET' => $this->databaseCharset,
-                            'MAILER_DSN' => $this->mailerDsn,
-                            'ECCUBE_AUTH_MAGIC' => $this->authMagic,
-                            'ECCUBE_ADMIN_ROUTE' => $this->adminRoute,
-                            'ECCUBE_TEMPLATE_CODE' => $this->templateCode,
-                            'ECCUBE_LOCALE' => $this->locale,
-                            'TRUSTED_HOSTS' => $this->trustedHosts,
-                        ];
+                    'APP_ENV' => $this->appEnv,
+                    'APP_DEBUG' => $this->appDebug,
+                    'DATABASE_URL' => $this->databaseUrl,
+                    'DATABASE_SERVER_VERSION' => $this->serverVersion,
+                    'DATABASE_CHARSET' => $this->databaseCharset,
+                    'MAILER_DSN' => $this->mailerDsn,
+                    'ECCUBE_AUTH_MAGIC' => $this->authMagic,
+                    'ECCUBE_ADMIN_ROUTE' => $this->adminRoute,
+                    'ECCUBE_TEMPLATE_CODE' => $this->templateCode,
+                    'ECCUBE_LOCALE' => $this->locale,
+                    'TRUSTED_HOSTS' => $this->trustedHosts,
+                ];
             }
 
             /**
@@ -221,7 +221,7 @@ class InstallerCommand extends Command
         if ($input->isInteractive()) {
             $envDir = $this->eccubeConfig->get('kernel.project_dir');
             if (file_exists($envDir.'/.env')) {
-                (Dotenv::createUnsafeMutable($envDir))->load();
+                Dotenv::createUnsafeMutable($envDir)->load();
             }
         }
 

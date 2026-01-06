@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Service;
 
+use Eccube\Entity\Plugin;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\PluginService;
 use Symfony\Component\Yaml\Yaml;
@@ -44,7 +45,7 @@ class PluginServiceWithExceptionTest extends AbstractServiceTestCase
     {
         parent::setUp();
 
-        $this->pluginRepository = $this->entityManager->getRepository(\Eccube\Entity\Plugin::class);
+        $this->pluginRepository = $this->entityManager->getRepository(Plugin::class);
         $this->pluginService = static::getContainer()->get(PluginService::class);
     }
 

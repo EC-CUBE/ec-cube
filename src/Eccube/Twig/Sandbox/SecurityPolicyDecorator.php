@@ -16,9 +16,9 @@ namespace Eccube\Twig\Sandbox;
 use Twig\Sandbox\SecurityPolicy as BasePolicy;
 use Twig\Sandbox\SecurityPolicyInterface;
 
-class SecurityPolicyDecorator implements SecurityPolicyInterface {
-
-    /** @var BasePolicy  */
+class SecurityPolicyDecorator implements SecurityPolicyInterface
+{
+    /** @var BasePolicy */
     private $securityPolicy;
 
     public function __construct(BasePolicy $securityPolicy)

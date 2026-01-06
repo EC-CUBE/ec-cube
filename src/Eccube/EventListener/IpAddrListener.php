@@ -16,9 +16,9 @@ namespace Eccube\EventListener;
 use Eccube\Common\EccubeConfig;
 use Eccube\Request\Context;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\IpUtils;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\HttpFoundation\IpUtils;
 
 class IpAddrListener implements EventSubscriberInterface
 {
@@ -48,7 +48,6 @@ class IpAddrListener implements EventSubscriberInterface
         log_debug('Client IP: '.$clientIp);
 
         if (!$this->requestContext->isAdmin()) {
-
             // IPアドレス許可リスト範囲になければ拒否
             $allowFrontHosts = $this->eccubeConfig['eccube_front_allow_hosts'];
             if (!empty($allowFrontHosts) && !$this->isClientIpInList($allowFrontHosts, $clientIp)) {
@@ -56,7 +55,7 @@ class IpAddrListener implements EventSubscriberInterface
             }
 
             // IPアドレス拒否リスト範囲にあれば拒否
-            $denyFrontHosts =  $this->eccubeConfig['eccube_front_deny_hosts'];
+            $denyFrontHosts = $this->eccubeConfig['eccube_front_deny_hosts'];
             if (!empty($denyFrontHosts) && $this->isClientIpInList($denyFrontHosts, $clientIp)) {
                 throw new AccessDeniedHttpException();
             }
@@ -79,13 +78,15 @@ class IpAddrListener implements EventSubscriberInterface
 
     private function isClientIpInList($hostList, $clientIp)
     {
-        log_debug('Host List: '. implode(',', $hostList));
+        log_debug('Host List: '.implode(',', $hostList));
         if ($hostList) {
             $isInList = array_filter($hostList, function ($host) use ($clientIp) {
                 return IpUtils::checkIp($clientIp, $host);
             });
+
             return count($isInList) > 0;
         }
+
         return true;
     }
 

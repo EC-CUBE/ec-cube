@@ -114,7 +114,7 @@ class ItemCollection extends ArrayCollection
         $Items = $this->toArray();
         usort($Items, function (ItemInterface $a, ItemInterface $b) {
             if ($a->getOrderItemType() === $b->getOrderItemType()) {
-                return ($a->getId() < $b->getId()) ? -1 : 1;
+                return $a->getId() <=> $b->getId();
             } elseif ($a->isProduct()) {
                 return -1;
             } elseif ($a->isDeliveryFee()) {

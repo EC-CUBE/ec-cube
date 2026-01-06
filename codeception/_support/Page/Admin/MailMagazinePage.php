@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,6 +19,7 @@ class MailMagazinePage extends AbstractAdminPageStyleGuide
     {
         $page = new self($I);
         $page->goPage('/plugin/mail_magazine', '配信メルマガ管理');
+
         return $page;
     }
 
@@ -25,18 +27,21 @@ class MailMagazinePage extends AbstractAdminPageStyleGuide
     {
         $page = new MailMagazinePage($I);
         $page->atPage('配信メルマガ管理');
+
         return $page;
     }
 
     public function 検索()
     {
         $this->tester->click(['css' => '#search_form > div:nth-child(3) > button']);
+
         return $this;
     }
 
     public function 配信内容を作成する()
     {
         $this->tester->click(['css' => '#search_form > div.c-contentsArea__cols > div > div > div.card.rounded.border-0.mb-4 > div > div:nth-child(3) > div > button']);
+
         return $this;
     }
 }

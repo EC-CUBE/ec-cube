@@ -48,9 +48,8 @@ class DeliveryController extends AbstractController
     public function __construct(
         BaseInfoRepository $baseInfoRepository,
         CustomerAddressRepository $customerAddressRepository,
-        MailService $mailService
-    )
-    {
+        MailService $mailService,
+    ) {
         $this->BaseInfo = $baseInfoRepository->get();
         $this->customerAddressRepository = $customerAddressRepository;
         $this->mailService = $mailService;
@@ -60,6 +59,7 @@ class DeliveryController extends AbstractController
      * お届け先一覧画面.
      *
      * @Route("/mypage/delivery", name="mypage_delivery", methods={"GET"})
+     *
      * @Template("Mypage/delivery.twig")
      */
     public function index(Request $request)
@@ -76,6 +76,7 @@ class DeliveryController extends AbstractController
      *
      * @Route("/mypage/delivery/new", name="mypage_delivery_new", methods={"GET", "POST"})
      * @Route("/mypage/delivery/{id}/edit", name="mypage_delivery_edit", requirements={"id" = "\d+"}, methods={"GET", "POST"})
+     *
      * @Template("Mypage/delivery_edit.twig")
      */
     public function edit(Request $request, $id = null)
@@ -141,7 +142,7 @@ class DeliveryController extends AbstractController
             $this->entityManager->flush();
 
             // 会員情報変更時にメールを送信
-            if($this->BaseInfo->isOptionMailNotifier()) {
+            if ($this->BaseInfo->isOptionMailNotifier()) {
                 // 情報のセット
                 $userData['userAgent'] = $request->headers->get('User-Agent');
                 $userData['ipAddress'] = $request->getClientIp();
@@ -199,7 +200,7 @@ class DeliveryController extends AbstractController
         $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_MYPAGE_DELIVERY_DELETE_COMPLETE);
 
         // 会員情報変更時にメールを送信
-        if($this->BaseInfo->isOptionMailNotifier()) {
+        if ($this->BaseInfo->isOptionMailNotifier()) {
             // 情報のセット
             $userData['userAgent'] = $request->headers->get('User-Agent');
             $userData['ipAddress'] = $request->getClientIp();

@@ -24,7 +24,7 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
     public function createTaxRule()
     {
         $faker = $this->getFaker();
-        $TargetTaxRule = $this->entityManager->getRepository(\Eccube\Entity\TaxRule::class)->newTaxRule();
+        $TargetTaxRule = $this->entityManager->getRepository(TaxRule::class)->newTaxRule();
         $TargetTaxRule->setTaxRate($faker->randomNumber(2));
         $now = new \DateTime();
         $TargetTaxRule->setApplyDate($now);
@@ -65,8 +65,8 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
         $form = [
             '_token' => 'dummy',
             'tax_rate' => 10,
-            'rounding_type' => rand(1, 3),
-            'apply_date' => $now->format('Y').'-'.$now->format('m').'-'.$now->format('d').'T'.$now->format('H').':'.$now->format('i')
+            'rounding_type' => random_int(1, 3),
+            'apply_date' => $now->format('Y').'-'.$now->format('m').'-'.$now->format('d').'T'.$now->format('H').':'.$now->format('i'),
         ];
 
         $this->client->request(
@@ -100,7 +100,7 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
-        $this->assertNull($this->entityManager->getRepository(\Eccube\Entity\TaxRule::class)->find($taxRuleId));
+        $this->assertNull($this->entityManager->getRepository(TaxRule::class)->find($taxRuleId));
     }
 
     public function testTaxDeleteFail()
@@ -122,8 +122,8 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
         $form = [
             '_token' => 'dummy',
             'tax_rate' => 10,
-            'rounding_type' => rand(1, 3),
-            'apply_date' => $now->format('Y').'-'.$now->format('m').'-'.$now->format('d').'T23:01'
+            'rounding_type' => random_int(1, 3),
+            'apply_date' => $now->format('Y').'-'.$now->format('m').'-'.$now->format('d').'T23:01',
         ];
 
         $this->client->request(

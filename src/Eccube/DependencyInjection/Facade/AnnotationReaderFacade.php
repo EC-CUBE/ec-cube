@@ -18,7 +18,7 @@ use Doctrine\Common\Annotations\Reader;
 class AnnotationReaderFacade
 {
     /** @var self|null */
-    private static $instance = null;
+    private static $instance;
 
     /** @var Reader */
     private static $Reader;

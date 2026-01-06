@@ -73,7 +73,7 @@ class CustomerAddressType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Eccube\Entity\CustomerAddress',
+            'data_class' => \Eccube\Entity\CustomerAddress::class,
         ]);
     }
 

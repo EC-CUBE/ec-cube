@@ -36,7 +36,7 @@ class LoginHistoryRepository extends AbstractRepository
      */
     public function __construct(
         RegistryInterface $registry,
-        Queries $queries
+        Queries $queries,
     ) {
         parent::__construct($registry, LoginHistory::class);
         $this->queries = $queries;

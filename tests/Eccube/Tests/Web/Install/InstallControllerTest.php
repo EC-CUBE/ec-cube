@@ -15,7 +15,6 @@ namespace Eccube\Tests\Web\Install;
 
 use Eccube\Common\Constant;
 use Eccube\Controller\Install\InstallController;
-use Eccube\Security\Core\Encoder\PasswordEncoder;
 use Eccube\Tests\Web\AbstractWebTestCase;
 use Eccube\Util\CacheUtil;
 use Symfony\Component\Form\FormView;
@@ -140,10 +139,10 @@ class InstallControllerTest extends AbstractWebTestCase
     public function testComplete()
     {
         $this->session->set('eccube.session.install',
-                            [
-                                'authmagic' => 'secret',
-                                'admin_allow_hosts' => "127.0.0.1\r\n192.168.0.1",
-                            ]);
+            [
+                'authmagic' => 'secret',
+                'admin_allow_hosts' => "127.0.0.1\r\n192.168.0.1",
+            ]);
         $this->actual = $this->controller->complete($this->request);
         $this->assertArrayHasKey('admin_url', $this->actual);
     }
@@ -217,7 +216,7 @@ class InstallControllerTest extends AbstractWebTestCase
             'database' => 'pdo_mysql',
             'database_name' => 'cube4_dev',
             'database_host' => 'localhost',
-            'database_port' => '3306',
+            'database_port' => 3306,
             'database_user' => 'root',
             'database_password' => 'password',
         ];
@@ -344,6 +343,7 @@ class InstallControllerTest extends AbstractWebTestCase
             'auth_mode' => null,
             'smtp_username' => null,
         ];
+        ksort($this->expected, SORT_STRING);
         $this->verify();
 
         $url = 'smtp://localhost:587';
@@ -357,6 +357,7 @@ class InstallControllerTest extends AbstractWebTestCase
             'auth_mode' => null,
             'smtp_username' => null,
         ];
+        ksort($this->expected, SORT_STRING);
         $this->verify();
 
         $url = 'smtp://username:password@localhost:587';
@@ -370,6 +371,7 @@ class InstallControllerTest extends AbstractWebTestCase
             'encryption' => null,
             'auth_mode' => 'plain',
         ];
+        ksort($this->expected, SORT_STRING);
         $this->verify();
 
         $url = 'smtp://username:password@localhost:587?auth_mode=login';
@@ -383,6 +385,7 @@ class InstallControllerTest extends AbstractWebTestCase
             'encryption' => null,
             'auth_mode' => 'login',
         ];
+        ksort($this->expected, SORT_STRING);
         $this->verify();
 
         $url = 'smtp://username:password@localhost:587?auth_mode=plain&encryption=tls';
@@ -396,6 +399,7 @@ class InstallControllerTest extends AbstractWebTestCase
             'encryption' => 'tls',
             'auth_mode' => 'plain',
         ];
+        ksort($this->expected, SORT_STRING);
         $this->verify();
 
         $url = 'gmail://username@gmail.com:password@smtp.gmail.com:465?auth_mode=login&encryption=ssl';
@@ -409,6 +413,7 @@ class InstallControllerTest extends AbstractWebTestCase
             'encryption' => 'ssl',
             'auth_mode' => 'login',
         ];
+        ksort($this->expected, SORT_STRING);
         $this->verify();
     }
 
@@ -426,11 +431,11 @@ class InstallControllerTest extends AbstractWebTestCase
         ];
         $appData = $this->controller->createAppData($params, $this->entityManager);
 
-        $this->assertEquals('http://example.com', $appData['site_url']);
-        $this->assertEquals('example shop', $appData['shop_name']);
-        $this->assertEquals(Constant::VERSION, $appData['cube_ver']);
-        $this->assertEquals(phpversion(), $appData['php_ver']);
-        $this->assertEquals(php_uname(), $appData['os_type']);
+        $this->assertSame('http://example.com', $appData['site_url']);
+        $this->assertSame('example shop', $appData['shop_name']);
+        $this->assertSame(Constant::VERSION, $appData['cube_ver']);
+        $this->assertSame(phpversion(), $appData['php_ver']);
+        $this->assertSame(php_uname(), $appData['os_type']);
         $this->assertMatchesRegularExpression('/(sqlite|mysql|postgresql).[0-9.]+/', $appData['db_ver']);
     }
 

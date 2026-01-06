@@ -61,7 +61,7 @@ file that was distributed with this source code.
                                       .prop('checked', false);
                                content.find('.c-toggleSwitch__label > span').text('無効');
                            }
-                           if (is_sqlite && ['Api42', 'SiteKit42'].includes(plugin.code)) {
+                           if (is_sqlite && ['Api42'].includes(plugin.code)) {
                                content.find('.c-toggleSwitch').text('SQLite3 には対応していません');
                            }
                            content.appendTo('#plugins');

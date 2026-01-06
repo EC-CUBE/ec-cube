@@ -133,7 +133,7 @@ class PluginService
         ComposerServiceInterface $composerService,
         PluginApiService $pluginApiService,
         SystemService $systemService,
-        PluginContext $pluginContext
+        PluginContext $pluginContext,
     ) {
         $this->entityManager = $entityManager;
         $this->pluginRepository = $pluginRepository;
@@ -157,7 +157,7 @@ class PluginService
      * @param int    $source
      * @param bool   $notExists
      *
-     * @return boolean
+     * @return bool
      *
      * @throws PluginException
      * @throws \Exception
@@ -196,7 +196,6 @@ class PluginService
         } catch (PluginException $e) {
             $this->deleteDirs([$tmp, $pluginBaseDir]);
             if ($e->getMessage() === 'plugin already installed.' && $notExists) {
-
                 return true;
             }
 
@@ -248,7 +247,6 @@ class PluginService
             $this->postInstall($config, $config['source']);
         } catch (PluginException $e) {
             if ($e->getMessage() === 'plugin already installed.' && $notExists) {
-
                 return true;
             }
 
@@ -261,7 +259,7 @@ class PluginService
     {
         // キャッシュの削除
         // FIXME: Please fix clearCache function (because it's clear all cache and this file just upload)
-//        $this->cacheUtil->clearCache();
+        //        $this->cacheUtil->clearCache();
     }
 
     // インストール事後処理
@@ -394,7 +392,7 @@ class PluginService
     public function deleteDirs($arr)
     {
         foreach ($arr as $dir) {
-            if (file_exists($dir)) {
+            if (isset($dir) && file_exists($dir)) {
                 $fs = new Filesystem();
                 $fs->remove($dir);
             }
@@ -574,7 +572,7 @@ class PluginService
      */
     public function callPluginManagerMethod($meta, $method)
     {
-        $class = '\\Plugin'.'\\'.$meta['code'].'\\'.'PluginManager';
+        $class = '\\Plugin\\'.$meta['code'].'\\PluginManager';
         if (class_exists($class)) {
             $installer = new $class(); // マネージャクラスに所定のメソッドがある場合だけ実行する
             if (method_exists($installer, $method)) {
@@ -630,13 +628,9 @@ class PluginService
 
     public function unregisterPlugin(Plugin $p)
     {
-        try {
-            $em = $this->entityManager;
-            $em->remove($p);
-            $em->flush();
-        } catch (\Exception $e) {
-            throw $e;
-        }
+        $em = $this->entityManager;
+        $em->remove($p);
+        $em->flush();
     }
 
     public function disable(Plugin $plugin)
@@ -648,7 +642,7 @@ class PluginService
      * Proxyを再生成します.
      *
      * @param Plugin $plugin プラグイン
-     * @param boolean $temporary プラグインが無効状態でも一時的に生成するかどうか
+     * @param bool $temporary プラグインが無効状態でも一時的に生成するかどうか
      * @param string|null $outputDir 出力先
      * @param bool $uninstall プラグイン削除の場合はtrue
      *

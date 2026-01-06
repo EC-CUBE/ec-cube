@@ -228,6 +228,6 @@ class ShippingEditPage extends AbstractAdminPageStyleGuide
     {
         $this->tester->scrollTo(['id' => 'shipmentOverview_'.$num], 0, 50);
         $this->tester->see((new \DateTime())->format('Y/m/d'),
-                            '#shipmentOverview_'.$num.' > div > div:nth-child(4) > div:nth-child(2) > div:nth-child(3) > div > span');
+            '#shipmentOverview_'.$num.' > div > div:nth-child(4) > div:nth-child(2) > div:nth-child(3) > div > span');
     }
 }

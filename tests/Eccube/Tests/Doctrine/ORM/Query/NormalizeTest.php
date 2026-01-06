@@ -11,7 +11,7 @@
  * file that was distributed with this source code.
  */
 
- namespace Eccube\Tests\Doctrine\ORM\Query;
+namespace Eccube\Tests\Doctrine\ORM\Query;
 
 use Eccube\Tests\EccubeTestCase;
 
@@ -20,11 +20,10 @@ class NormalizeTest extends EccubeTestCase
     public function testGetSql()
     {
         $sql = $this->entityManager->createQueryBuilder()
-            ->select('p.id')->from('Eccube\Entity\Product', 'p')
+            ->select('p.id')->from(\Eccube\Entity\Product::class, 'p')
             ->where('NORMALIZE(p.name) LIKE :name')
             ->getQuery()->getSql();
-        switch ($this->entityManager->getConnection()->getDriver()->getDatabasePlatform()->getName())
-        {
+        switch ($this->entityManager->getConnection()->getDriver()->getDatabasePlatform()->getName()) {
             case 'postgresql':
                 $this->assertStringContainsString('LOWER(TRANSLATE(', $sql);
                 $this->assertStringContainsString('あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをんがぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽぁぃぅぇぉっゃゅょゎゐゑー', $sql);

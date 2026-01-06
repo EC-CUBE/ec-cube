@@ -61,7 +61,7 @@ class EF02ProductCest
                 $fPos = $key;
             }
         }
-        $I->assertTrue(($pPos < $fPos));
+        $I->assertTrue($pPos < $fPos);
 
         // ソート条件の選択リストを変更する
         ProductListPage::at($I)
@@ -80,7 +80,7 @@ class EF02ProductCest
                 $fPos = $key;
             }
         }
-        $I->assertTrue(($pPos > $fPos));
+        $I->assertTrue($pPos > $fPos);
     }
 
     public function product_商品一覧表示件数(AcceptanceTester $I)

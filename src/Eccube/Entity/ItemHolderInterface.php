@@ -13,66 +13,68 @@
 
 namespace Eccube\Entity;
 
+use Eccube\Service\PurchaseFlow\ItemCollection;
+
 interface ItemHolderInterface
 {
     /**
-     * @return ItemInterface[]
+     * @return ItemCollection
      */
     public function getItems();
 
     /**
      * 合計金額を返します。
      *
-     * @return int
+     * @return string
      */
     public function getTotal();
 
     /**
      * 合計金額を設定します。
      *
-     * @param $total|int
+     * @param string $total
      */
     public function setTotal($total);
 
     /**
      * 個数の合計を返します。
      *
-     * @return mixed
+     * @return string
      */
     public function getQuantity();
 
     /**
      * 送料合計を設定します。
      *
-     * @param $total|int
+     * @param string $total
      */
     public function setDeliveryFeeTotal($total);
 
     /**
      * 送料合計を返します。
      *
-     * @return int
+     * @return string
      */
     public function getDeliveryFeeTotal();
 
     /**
      * 値引き合計を設定します。
      *
-     * @param $total|int
+     * @param string $total
      */
     public function setDiscount($total);
 
     /**
      * 手数料合計を設定します。
      *
-     * @param $total|int
+     * @param string $total
      */
     public function setCharge($total);
 
     /**
      * 税額合計を設定します。
      *
-     * @param $total|int
+     * @param string $total
      *
      * @deprecated 明細ごとに集計した税額と差異が発生する場合があるため非推奨
      */
@@ -81,28 +83,28 @@ interface ItemHolderInterface
     /**
      * 加算ポイントを設定します。
      *
-     * @param $addPoint|int
+     * @param string $addPoint
      */
     public function setAddPoint($addPoint);
 
     /**
      * 加算ポイントを返します.
      *
-     * @return int
+     * @return string
      */
     public function getAddPoint();
 
     /**
      * 利用ポイントを設定します。
      *
-     * @param $usePoint|int
+     * @param string $usePoint
      */
     public function setUsePoint($usePoint);
 
     /**
      * 利用ポイントを返します.
      *
-     * @return int
+     * @return string
      */
     public function getUsePoint();
 

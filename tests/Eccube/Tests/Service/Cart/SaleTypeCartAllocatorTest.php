@@ -43,6 +43,6 @@ class SaleTypeCartAllocatorTest extends EccubeTestCase
 
         $expected = (string) $ProductClass->getSaleType()->getId();
         $actual = $this->allocator->allocate($CartItem);
-        self::assertEquals($expected, $actual);
+        self::assertSame($expected, $actual);
     }
 }

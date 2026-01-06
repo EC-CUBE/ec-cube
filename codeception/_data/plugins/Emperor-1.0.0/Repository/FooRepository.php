@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -12,10 +13,9 @@
 
 namespace Plugin\Emperor\Repository;
 
-
+use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Repository\AbstractRepository;
 use Plugin\Emperor\Entity\Foo;
-use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 
 class FooRepository extends AbstractRepository
 {

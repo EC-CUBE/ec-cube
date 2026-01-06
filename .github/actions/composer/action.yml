@@ -2,14 +2,10 @@ runs:
   using: "Composite"
   steps:
     - name: Get Composer Cache Directory
+      uses: actions/cache@v4
       id: composer-cache
-      run: |
-        echo "::set-output name=dir::$(composer config cache-files-dir)"
-      shell: bash
-
-    - uses: actions/cache@v3
       with:
-        path: ${{ steps.composer-cache.outputs.dir }}
+        path: ${{ github.workspace }}/vendor
         key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
         restore-keys: |
           ${{ runner.os }}-composer-

@@ -54,9 +54,9 @@ class TaxRuleEventSubscriber implements EventSubscriber
         $entity = $args->getObject();
 
         if ($entity instanceof ProductClass) {
-            $entity->setPrice01IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice01(),
+            $entity->setPrice01IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice01() === null ? '0' : $entity->getPrice01(),
                 $entity->getProduct(), $entity));
-            $entity->setPrice02IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice02(),
+            $entity->setPrice02IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice02() === null ? '0' : $entity->getPrice02(),
                 $entity->getProduct(), $entity));
         }
     }
@@ -66,9 +66,9 @@ class TaxRuleEventSubscriber implements EventSubscriber
         $entity = $args->getObject();
 
         if ($entity instanceof ProductClass) {
-            $entity->setPrice01IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice01(),
+            $entity->setPrice01IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice01() === null ? '0' : $entity->getPrice01(),
                 $entity->getProduct(), $entity));
-            $entity->setPrice02IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice02(),
+            $entity->setPrice02IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice02() === null ? '0' : $entity->getPrice02(),
                 $entity->getProduct(), $entity));
         }
     }
@@ -78,9 +78,9 @@ class TaxRuleEventSubscriber implements EventSubscriber
         $entity = $args->getObject();
 
         if ($entity instanceof ProductClass) {
-            $entity->setPrice01IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice01(),
+            $entity->setPrice01IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice01() === null ? '0' : $entity->getPrice01(),
                 $entity->getProduct(), $entity));
-            $entity->setPrice02IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice02(),
+            $entity->setPrice02IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice02() === null ? '0' : $entity->getPrice02(),
                 $entity->getProduct(), $entity));
         }
     }
@@ -90,9 +90,9 @@ class TaxRuleEventSubscriber implements EventSubscriber
         $entity = $args->getObject();
 
         if ($entity instanceof ProductClass) {
-            $entity->setPrice01IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice01(),
+            $entity->setPrice01IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice01() === null ? '0' : $entity->getPrice01(),
                 $entity->getProduct(), $entity));
-            $entity->setPrice02IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice02(),
+            $entity->setPrice02IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice02() === null ? '0' : $entity->getPrice02(),
                 $entity->getProduct(), $entity));
         }
     }

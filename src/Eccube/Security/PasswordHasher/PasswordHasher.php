@@ -30,7 +30,7 @@ class PasswordHasher implements LegacyPasswordHasherInterface
         $this->password_hash_algos = $password_hash_algos;
     }
 
-    public function hash(string $plainPassword, string $salt = null): string
+    public function hash(string $plainPassword, ?string $salt = null): string
     {
         $salt = $salt ?? '';
         if ($salt === '') {
@@ -45,7 +45,7 @@ class PasswordHasher implements LegacyPasswordHasherInterface
         return $res;
     }
 
-    public function verify(string $hashedPassword, string $plainPassword, string $salt = null): bool
+    public function verify(string $hashedPassword, string $plainPassword, ?string $salt = null): bool
     {
         if ($hashedPassword === '') {
             return false;

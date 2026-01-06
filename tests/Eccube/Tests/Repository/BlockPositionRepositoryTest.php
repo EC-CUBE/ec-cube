@@ -14,6 +14,7 @@
 namespace Eccube\Tests\Repository;
 
 use Eccube\Entity\Block;
+use Eccube\Entity\BlockPosition;
 use Eccube\Entity\Layout;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Repository\BlockPositionRepository;
@@ -30,11 +31,6 @@ class BlockPositionRepositoryTest extends EccubeTestCase
      * @var  DeviceType
      */
     protected $DeviceType;
-
-    /**
-     * @var  string
-     */
-    private $block_id;
 
     /**
      * @var  string
@@ -72,9 +68,9 @@ class BlockPositionRepositoryTest extends EccubeTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->blockRepository = $this->entityManager->getRepository(\Eccube\Entity\Block::class);
-        $this->blockPositionRepository = $this->entityManager->getRepository(\Eccube\Entity\BlockPosition::class);
-        $this->layoutRepository = $this->entityManager->getRepository(\Eccube\Entity\Layout::class);
+        $this->blockRepository = $this->entityManager->getRepository(Block::class);
+        $this->blockPositionRepository = $this->entityManager->getRepository(BlockPosition::class);
+        $this->layoutRepository = $this->entityManager->getRepository(Layout::class);
         $this->remove();
         $this->DeviceType = $this->entityManager->getRepository(DeviceType::class)
             ->find(DeviceType::DEVICE_TYPE_PC);
@@ -96,8 +92,7 @@ class BlockPositionRepositoryTest extends EccubeTestCase
                 ->setDeletable(false)
                 ->setDeviceType($this->DeviceType);
             $this->entityManager->persist($UsedBlocks);
-            $this->entityManager->flush($UsedBlocks); // ここで flush しないと, MySQL で ID が取得できない
-            $this->block_id = $UsedBlocks->getId();
+            $this->entityManager->flush($UsedBlocks);
             $this->UsedBlocks[] = $UsedBlocks;
         }
 
@@ -110,8 +105,7 @@ class BlockPositionRepositoryTest extends EccubeTestCase
                 ->setDeletable(false)
                 ->setDeviceType($this->DeviceType);
             $this->entityManager->persist($UnusedBlocks);
-            $this->entityManager->flush($UnusedBlocks); // ここで flush しないと, MySQL で ID が取得できない
-            $this->block_id = $UnusedBlocks->getId();
+            $this->entityManager->flush($UnusedBlocks);
             $this->UnusedBlocks[] = $UnusedBlocks;
         }
     }

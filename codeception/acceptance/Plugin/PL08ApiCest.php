@@ -13,7 +13,6 @@
 
 namespace Plugin;
 
-use AcceptanceTester;
 use Page\Admin\ApiOauthEditPage;
 use Page\Admin\ApiOauthPage;
 use Page\Admin\ApiWebHookEditPage;
@@ -25,12 +24,12 @@ use Page\Admin\ApiWebHookPage;
  */
 class PL08ApiCest
 {
-    public function _before(AcceptanceTester $I)
+    public function _before(\AcceptanceTester $I)
     {
         $I->loginAsAdmin();
     }
 
-    public function OAuth(AcceptanceTester $I)
+    public function OAuth(\AcceptanceTester $I)
     {
         ApiOauthPage::go($I)
             ->新規登録();
@@ -83,7 +82,7 @@ class PL08ApiCest
         ApiOauthPage::go($I)->削除(1);
     }
 
-    public function WebHook(AcceptanceTester $I)
+    public function WebHook(\AcceptanceTester $I)
     {
         ApiWebHookPage::go($I)
             ->新規登録();

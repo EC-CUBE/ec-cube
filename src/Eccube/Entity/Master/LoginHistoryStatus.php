@@ -20,13 +20,18 @@ if (!class_exists(LoginHistoryStatus::class, false)) {
      * LoginHistoryStatus
      *
      * @ORM\Table(name="mtb_login_history_status")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\Master\LoginHistoryStatusRepository")
+     *
      * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
      */
-    class LoginHistoryStatus extends \Eccube\Entity\Master\AbstractMasterEntity
+    class LoginHistoryStatus extends AbstractMasterEntity
     {
         /**
          * 失敗

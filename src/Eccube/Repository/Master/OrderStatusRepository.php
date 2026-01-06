@@ -44,14 +44,14 @@ class OrderStatusRepository extends AbstractRepository
      *
      * @param array $criteria
      * @param array $orderBy
-     * @param integer $limit
-     * @param integer $offset
+     * @param int $limit
+     * @param int $offset
      *
      * @return array
      *
      * @see EntityRepository::findBy()
      */
-    public function findNotContainsBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+    public function findNotContainsBy(array $criteria, ?array $orderBy = null, $limit = null, $offset = null)
     {
         $qb = $this->createQueryBuilder('o');
 

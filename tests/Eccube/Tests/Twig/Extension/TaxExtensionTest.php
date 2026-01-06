@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Twig\Extension;
 
+use Eccube\Entity\TaxRule;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Twig\Extension\TaxExtension;
@@ -33,7 +34,7 @@ class TaxExtensionTest extends EccubeTestCase
     {
         parent::setUp();
         $this->taxExtension = static::getContainer()->get(TaxExtension::class);
-        $this->taxRuleRepository = $this->entityManager->getRepository(\Eccube\Entity\TaxRule::class);
+        $this->taxRuleRepository = $this->entityManager->getRepository(TaxRule::class);
     }
 
     public function testIsReducedTaxRate()

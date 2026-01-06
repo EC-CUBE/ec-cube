@@ -91,7 +91,7 @@ class EccubeExtension extends AbstractExtension
     public function getTests()
     {
         return [
-            new TwigTest('integer', function ($value) { return  is_integer($value); }),
+            new TwigTest('integer', function ($value) { return is_integer($value); }),
         ];
     }
 
@@ -157,7 +157,7 @@ class EccubeExtension extends AbstractExtension
         $currency = $this->eccubeConfig['currency'];
         $formatter = new \NumberFormatter($locale, \NumberFormatter::CURRENCY);
 
-        return $formatter->formatCurrency($number, $currency);
+        return $formatter->formatCurrency($number ?? 0, $currency);
     }
 
     /**
@@ -250,7 +250,7 @@ class EccubeExtension extends AbstractExtension
             if (!$ProductClass->isVisible()) {
                 continue;
             }
-            /** @var \Eccube\Entity\ProductClass $ProductClass */
+            /** @var ProductClass $ProductClass */
             $ClassCategory1 = $ProductClass->getClassCategory1();
             $ClassCategory2 = $ProductClass->getClassCategory2();
             if ($ClassCategory2 && !$ClassCategory2->isVisible()) {

@@ -13,7 +13,6 @@
 
 namespace Customize\Bundle;
 
-use Customize\DependencyInjection\CustomizeExtension;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class CustomizeBundle extends Bundle

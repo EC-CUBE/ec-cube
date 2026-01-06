@@ -20,30 +20,35 @@ if (!class_exists(RoundingType::class, false)) {
      * RoundingType
      *
      * @ORM\Table(name="mtb_rounding_type")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\Master\RoundingTypeRepository")
+     *
      * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
      */
-    class RoundingType extends \Eccube\Entity\Master\AbstractMasterEntity
+    class RoundingType extends AbstractMasterEntity
     {
         /**
          * 四捨五入.
          *
-         * @var integer
+         * @var int
          */
         public const ROUND = 1;
         /**
          * 切り捨て.
          *
-         * @var integer
+         * @var int
          */
         public const FLOOR = 2;
         /**
          * 切り上げ.
          *
-         * @var integer
+         * @var int
          */
         public const CEIL = 3;
     }

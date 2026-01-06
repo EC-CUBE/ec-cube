@@ -67,7 +67,7 @@ class StockValidatorTest extends EccubeTestCase
     {
         $this->cartItem->setQuantity(1);
         $this->validator->execute($this->cartItem, new PurchaseContext());
-        self::assertEquals(1, $this->cartItem->getQuantity());
+        self::assertSame(1, $this->cartItem->getQuantity());
     }
 
     public function testValidStockFail()
@@ -90,6 +90,6 @@ class StockValidatorTest extends EccubeTestCase
         $this->ProductClass->setStock(100);
 
         $this->validator->execute($Order->getOrderItems()[0], new PurchaseContext());
-        self::assertEquals(1, $Order->getOrderItems()[0]->getQuantity());
+        self::assertSame(1, $Order->getOrderItems()[0]->getQuantity());
     }
 }

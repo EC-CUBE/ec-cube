@@ -57,7 +57,7 @@ class ComposerApiService implements ComposerServiceInterface
         EccubeConfig $eccubeConfig,
         BaseInfoRepository $baseInfoRepository,
         SchemaService $schemaService,
-        PluginContext $pluginContext
+        PluginContext $pluginContext,
     ) {
         $this->eccubeConfig = $eccubeConfig;
         $this->schemaService = $schemaService;
@@ -148,13 +148,13 @@ class ComposerApiService implements ComposerServiceInterface
 
         try {
             return $this->runCommand([
-            'command' => 'remove',
-            'packages' => $packageName,
-            '--ignore-platform-reqs' => true,
-            '--no-interaction' => true,
-            '--profile' => true,
-            '--no-scripts' => true,
-            '--update-no-dev' => env('APP_ENV') === 'prod',
+                'command' => 'remove',
+                'packages' => $packageName,
+                '--ignore-platform-reqs' => true,
+                '--no-interaction' => true,
+                '--profile' => true,
+                '--no-scripts' => true,
+                '--update-no-dev' => env('APP_ENV') === 'prod',
             ], $output, false);
         } finally {
             $this->execConfig('allow-plugins.symfony/flex', ['true']);
@@ -164,7 +164,7 @@ class ComposerApiService implements ComposerServiceInterface
     /**
      * Run update command
      *
-     * @param boolean $dryRun
+     * @param bool $dryRun
      * @param OutputInterface|null $output
      *
      * @throws PluginException
@@ -178,12 +178,12 @@ class ComposerApiService implements ComposerServiceInterface
 
         try {
             $this->runCommand([
-            'command' => 'update',
-            '--no-interaction' => true,
-            '--profile' => true,
-            '--no-scripts' => true,
-            '--dry-run' => (bool) $dryRun,
-            '--no-dev' => env('APP_ENV') === 'prod',
+                'command' => 'update',
+                '--no-interaction' => true,
+                '--profile' => true,
+                '--no-scripts' => true,
+                '--dry-run' => (bool) $dryRun,
+                '--no-dev' => env('APP_ENV') === 'prod',
             ], $output, false);
         } finally {
             $this->execConfig('allow-plugins.symfony/flex', ['true']);
@@ -193,7 +193,7 @@ class ComposerApiService implements ComposerServiceInterface
     /**
      * Run install command
      *
-     * @param boolean $dryRun
+     * @param bool $dryRun
      * @param OutputInterface|null $output
      *
      * @throws PluginException
@@ -207,12 +207,12 @@ class ComposerApiService implements ComposerServiceInterface
 
         try {
             $this->runCommand([
-            'command' => 'install',
-            '--no-interaction' => true,
-            '--profile' => true,
-            '--no-scripts' => true,
-            '--dry-run' => (bool) $dryRun,
-            '--no-dev' => env('APP_ENV') === 'prod',
+                'command' => 'install',
+                '--no-interaction' => true,
+                '--profile' => true,
+                '--no-scripts' => true,
+                '--dry-run' => (bool) $dryRun,
+                '--no-dev' => env('APP_ENV') === 'prod',
             ], $output, false);
         } finally {
             $this->execConfig('allow-plugins.symfony/flex', ['true']);
@@ -227,6 +227,7 @@ class ComposerApiService implements ComposerServiceInterface
      * @param string $callback
      * @param null $typeFilter
      * @param int $level
+     *
      * @return void
      *
      * @throws PluginException
@@ -440,7 +441,9 @@ class ComposerApiService implements ComposerServiceInterface
 
     /**
      * @param BaseInfo $BaseInfo
+     *
      * @return void
+     *
      * @throws PluginException
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException

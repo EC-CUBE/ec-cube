@@ -88,7 +88,7 @@ class OrderPdfService extends Fpdi
     protected $widthCell = [];
 
     /** 最後に処理した注文番号 @var string */
-    protected $lastOrderId = null;
+    protected $lastOrderId;
 
     // --------------------------------------
     // Font情報のバックアップデータ
@@ -105,7 +105,7 @@ class OrderPdfService extends Fpdi
     protected $baseOffsetY = -4;
 
     /** ダウンロードファイル名 @var string */
-    protected $downloadFileName = null;
+    protected $downloadFileName;
 
     /** 発行日 @var string */
     protected $issueDate = '';
@@ -301,9 +301,11 @@ class OrderPdfService extends Fpdi
         // ショップ名
         $this->lfText(125, 58, $this->baseInfoRepository->getShopName(), 8, 'B');
 
-        //郵便番号
-        $this->lfText(121, 63, "\u{3012}". ' ' . mb_substr($this->baseInfoRepository->getPostalCode(), 0, 3) . ' - ' . mb_substr($this->baseInfoRepository->getPostalCode(), 3, 4), 8);
-
+        // 郵便番号
+        $postalCode = $this->baseInfoRepository->getPostalCode();
+        if (!empty($postalCode)) {
+            $this->lfText(121, 63, "\u{3012}".' '.mb_substr($postalCode, 0, 3).' - '.mb_substr($postalCode, 3, 4), 8);
+        }
 
         // 都道府県+所在地
         $text = $this->baseInfoRepository->getPref().$this->baseInfoRepository->getAddr01();
@@ -421,8 +423,11 @@ class OrderPdfService extends Fpdi
         $Order = $Shipping->getOrder();
 
         // 購入者郵便番号(3012は郵便マークのUTFコード)
-        $text = "\u{3012}" . ' ' . mb_substr($Shipping->getPostalCode(), 0, 3) . ' - ' . mb_substr($Shipping->getPostalCode(), 3, 4);
-        $this->lfText(22, 43, $text, 10);
+        $postalCode = $Shipping->getPostalCode();
+        if (!empty($postalCode)) {
+            $text = "\u{3012}".' '.mb_substr($postalCode, 0, 3).' - '.mb_substr($postalCode, 3, 4);
+            $this->lfText(22, 43, $text, 10);
+        }
 
         // 購入者都道府県+住所1
         // $text = $Order->getPref().$Order->getAddr01();
@@ -690,7 +695,7 @@ class OrderPdfService extends Fpdi
         $this->SetFont('');
         // Data
         $fill = 0;
-        $writeRow = function($row, $cellHeight, $fill, $isBorder) use($w) {
+        $writeRow = function ($row, $cellHeight, $fill, $isBorder) use ($w) {
             $i = 0;
             $h = 0;
             foreach ($row as $col) {
@@ -720,6 +725,7 @@ class OrderPdfService extends Fpdi
                 $h = $this->getLastH();
                 $i++;
             }
+
             return $cellHeight;
         };
 

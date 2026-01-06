@@ -71,7 +71,7 @@ class CustomerRepository extends AbstractRepository
         Queries $queries,
         EntityManagerInterface $entityManager,
         OrderRepository $orderRepository,
-        EccubeConfig $eccubeConfig
+        EccubeConfig $eccubeConfig,
     ) {
         parent::__construct($registry, Customer::class);
 
@@ -86,7 +86,7 @@ class CustomerRepository extends AbstractRepository
         $CustomerStatus = $this->getEntityManager()
             ->find(CustomerStatus::class, CustomerStatus::PROVISIONAL);
 
-        $Customer = new \Eccube\Entity\Customer();
+        $Customer = new Customer();
         $Customer
             ->setStatus($CustomerStatus)
             ->setSecretKey($this->getUniqueSecretKey())
@@ -125,6 +125,7 @@ class CustomerRepository extends AbstractRepository
      *         sortkey?:string,
      *         sorttype?:string
      *     } $searchData
+     *
      * @return QueryBuilder
      */
     public function getQueryBuilderBySearchData($searchData)
@@ -312,15 +313,7 @@ class CustomerRepository extends AbstractRepository
         }
 
         // Order By
-        if (isset($searchData['sortkey']) && !empty($searchData['sortkey'])) {
-            $sortOrder = (isset($searchData['sorttype']) && $searchData['sorttype'] == 'a') ? 'ASC' : 'DESC';
-            $qb->orderBy(self::COLUMNS[$searchData['sortkey']], $sortOrder);
-            $qb->addOrderBy('c.update_date', 'DESC');
-            $qb->addOrderBy('c.id', 'DESC');
-        } else {
-            $qb->orderBy('c.update_date', 'DESC');
-            $qb->addOrderBy('c.id', 'DESC');
-        }
+        $this->setQueryBuilderAdminSearchDataOrderBy($qb, 'c', self::COLUMNS, $searchData);
 
         return $this->queries->customize(QueryKey::CUSTOMER_SEARCH, $qb, $searchData);
     }

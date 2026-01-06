@@ -31,6 +31,9 @@ class HTMLPurifierListener implements EventSubscriberInterface
 
     public function purifySubmittedData(FormEvent $event): void
     {
-        $event->setData(str_replace(['<', '>', '&'], ['＜', '＞', '＆'], $event->getData()));
+        $data = $event->getData();
+        if (is_string($data)) {
+            $event->setData(str_replace(['<', '>', '&'], ['＜', '＞', '＆'], $data));
+        }
     }
 }

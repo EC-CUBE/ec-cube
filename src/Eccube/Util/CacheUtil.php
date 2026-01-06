@@ -111,7 +111,7 @@ class CacheUtil implements EventSubscriberInterface
     /**
      * Doctrineのキャッシュを削除します.
      *
-     * @return string
+     * @return string|null
      *
      * @throws \Exception
      */
@@ -120,7 +120,7 @@ class CacheUtil implements EventSubscriberInterface
         /** @var Psr6CacheClearer $poolClearer */
         $poolClearer = $this->container->get('cache.global_clearer');
         if (!$poolClearer->hasPool(self::DOCTRINE_APP_CACHE_KEY)) {
-            return;
+            return null;
         }
 
         $console = new Application($this->kernel);
@@ -161,10 +161,10 @@ class CacheUtil implements EventSubscriberInterface
      * キャッシュは $app['config']['root_dir'].'/app/cache' に生成されます.
      *
      * @param Application $app
-     * @param boolean $isAll .gitkeep を残してすべてのファイル・ディレクトリを削除する場合 true, 各ディレクトリのみを削除する場合 false
-     * @param boolean $isTwig Twigキャッシュファイルのみ削除する場合 true
+     * @param bool $isAll .gitkeep を残してすべてのファイル・ディレクトリを削除する場合 true, 各ディレクトリのみを削除する場合 false
+     * @param bool $isTwig Twigキャッシュファイルのみ削除する場合 true
      *
-     * @return boolean 削除に成功した場合 true
+     * @return bool 削除に成功した場合 true
      *
      * @deprecated CacheUtil::clearCacheを利用すること
      */

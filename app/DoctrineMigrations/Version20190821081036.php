@@ -23,7 +23,7 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20190821081036 extends AbstractMigration
 {
-    const NAME = 'dtb_csv';
+    public const NAME = 'dtb_csv';
 
     public function up(Schema $schema): void
     {

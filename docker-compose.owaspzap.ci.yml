@@ -2,8 +2,8 @@ version: "3"
 
 services:
   zap:
-    image: kiy0taka/zap2docker-eccube
-    command: bash -c "zap.sh -cmd -configfile /zap/wrk/options.properties -certpubdump /zap/wrk/owasp_zap_root_ca.cer && sleep infinity"
+    image: ghcr.io/ec-cube/zaproxy:0.1.0
+    command: sh -c "zap.sh -cmd -configfile /zap/wrk/options.properties -certpubdump /zap/wrk/owasp_zap_root_ca.cer && tail -f /dev/null"
     volumes:
       - ./zap/policies:/home/zap/.ZAP/policies/
       - ./zap:/zap/wrk/

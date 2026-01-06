@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Util;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Entity\AbstractEntity;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Util\EntityUtil;
@@ -39,7 +40,7 @@ class EntityUtilTest extends EccubeTestCase
 
         $entity = new TestEntity($arrProps);
 
-        $arrProps['testField4'] = 'Doctrine\Common\Collections\ArrayCollection';
+        $arrProps['testField4'] = ArrayCollection::class;
         $this->expected = $arrProps;
         $this->actual = EntityUtil::dumpToArray($entity);
         $this->verify();
@@ -57,7 +58,7 @@ class TestEntity extends AbstractEntity
 
     public function __construct($arrProps = [])
     {
-        $this->testField4 = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->testField4 = new ArrayCollection();
         if (is_array($arrProps) && count($arrProps) > 0) {
             $this->setPropertiesFromArray($arrProps);
         }

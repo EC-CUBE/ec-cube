@@ -1,21 +1,12 @@
 name: E2E test(Throttoling) for EC-CUBE
+
 on:
-  push:
-    branches:
-      - '*'
-    tags:
-      - '*'
-    paths:
-      - '**'
-      - '!*.md'
-  pull_request:
-    paths:
-      - '**'
-      - '!*.md'
+  workflow_call:
+
 jobs:
   codeception:
     name: Codeception
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
@@ -147,13 +138,13 @@ jobs:
 
       - name: Upload evidence
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: codeception-${{ matrix.method }}-evidence
           path: codeception/_output/
       - name: Upload logs
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: codeception-${{ matrix.method }}-logs
           path: var/log/

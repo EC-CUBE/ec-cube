@@ -35,7 +35,7 @@ class NameType extends AbstractType
      * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
-        EccubeConfig $eccubeConfig
+        EccubeConfig $eccubeConfig,
     ) {
         $this->eccubeConfig = $eccubeConfig;
     }

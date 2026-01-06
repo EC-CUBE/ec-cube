@@ -103,6 +103,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
      *
      * @param bool $isSuccess
      * @param bool $expected
+     *
      * @dataProvider dataSubmitProvider
      */
     public function testNew($isSuccess, $expected)
@@ -140,6 +141,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
      *
      * @param bool $isSuccess
      * @param bool $expected
+     *
      * @dataProvider dataSubmitProvider
      */
     public function testEdit($isSuccess, $expected)
@@ -216,7 +218,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
             ]
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-
+        $this->entityManager->refresh($DeliveryOne); // Refresh しないとリクエストの値(string)が入ってしまう
         $this->expected = $newSortNo;
         $this->actual = $DeliveryOne->getSortNo();
         $this->verify();
@@ -237,13 +239,14 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
         }
 
         $i = 0;
-        $form = [
+
+        return [
             '_token' => 'dummy',
             'name' => $faker->word,
             'service_name' => $faker->word,
             'description' => $faker->word,
             'confirm_url' => $faker->url,
-            'sale_type' => rand(1, 2),
+            'sale_type' => random_int(1, 2),
             'payments' => ['1'],
             'visible' => 1,
             'delivery_times' => [
@@ -266,8 +269,6 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
             'free_all' => $faker->randomNumber(5),
             'delivery_fees' => $deliveryFree,
         ];
-
-        return $form;
     }
 
     public function dataSubmitProvider()

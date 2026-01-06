@@ -26,7 +26,7 @@ class PaymentDispatcher
     private $response;
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $forward;
 
@@ -48,7 +48,7 @@ class PaymentDispatcher
     /**
      * Forward を使用するかどうか.
      *
-     * @return boolean
+     * @return bool
      */
     public function isForward()
     {
@@ -60,7 +60,7 @@ class PaymentDispatcher
      *
      * Forward を使用する場合は true, Redirect を使用する場合は false を設定します.
      *
-     * @param boolean $forward
+     * @param bool $forward
      *
      * @return PaymentDispatcher
      */

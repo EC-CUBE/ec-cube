@@ -395,22 +395,13 @@ class OrderRepository extends AbstractRepository
         }
 
         // Order By
-        if (isset($searchData['sortkey']) && !empty($searchData['sortkey'])) {
-            $sortOrder = (isset($searchData['sorttype']) && $searchData['sorttype'] == 'a') ? 'ASC' : 'DESC';
-
-            $qb->orderBy(self::COLUMNS[$searchData['sortkey']], $sortOrder);
-            $qb->addOrderBy('o.update_date', 'DESC');
-            $qb->addOrderBy('o.id', 'DESC');
-        } else {
-            $qb->orderBy('o.update_date', 'DESC');
-            $qb->addorderBy('o.id', 'DESC');
-        }
+        $this->setQueryBuilderAdminSearchDataOrderBy($qb, 'o', self::COLUMNS, $searchData);
 
         return $this->queries->customize(QueryKey::ORDER_SEARCH_ADMIN, $qb, $searchData);
     }
 
     /**
-     * @param  \Eccube\Entity\Customer $Customer
+     * @param  Customer $Customer
      *
      * @return QueryBuilder
      */
@@ -429,11 +420,11 @@ class OrderRepository extends AbstractRepository
     /**
      * ステータスごとの受注件数を取得する.
      *
-     * @param integer $OrderStatusOrId
+     * @param int $OrderStatusOrId
      *
      * @return int
      *
-     * @throws \Doctrine\ORM\NoResultException
+     * @throws NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function countByOrderStatus($OrderStatusOrId)
@@ -476,9 +467,8 @@ class OrderRepository extends AbstractRepository
 
         $FirstOrder = $this->find(['id' => $result['first_order_id']]);
         $LastOrder = $this->find(['id' => $result['last_order_id']]);
-
         $Customer->setBuyTimes($result['buy_times']);
-        $Customer->setBuyTotal($result['buy_total']);
+        $Customer->setBuyTotal((string) $result['buy_total']); // buy_totalはdecimal(12,2)のためstring
         $Customer->setFirstBuyDate($FirstOrder->getOrderDate());
         $Customer->setLastBuyDate($LastOrder->getOrderDate());
     }

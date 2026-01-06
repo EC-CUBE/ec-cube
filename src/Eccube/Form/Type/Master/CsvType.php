@@ -25,7 +25,7 @@ class CsvType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'class' => 'Eccube\Entity\Master\CsvType',
+            'class' => \Eccube\Entity\Master\CsvType::class,
             // todo toStringがない？
             'choice_label' => 'name',
             'placeholder' => false,

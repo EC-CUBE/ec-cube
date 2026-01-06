@@ -76,7 +76,7 @@ class LayoutType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Eccube\Entity\Layout',
+            'data_class' => \Eccube\Entity\Layout::class,
             'layout_id' => null,
         ]);
     }

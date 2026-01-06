@@ -15,11 +15,12 @@ namespace Eccube\Tests\Form\Type\Install;
 
 use Eccube\Form\Type\Install\Step4Type;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use Symfony\Component\Form\FormInterface;
 
 class Step4TypeTest extends AbstractTypeTestCase
 {
     /**
-     * @var \Symfony\Component\Form\FormInterface
+     * @var FormInterface
      */
     protected $form;
 
@@ -52,6 +53,6 @@ class Step4TypeTest extends AbstractTypeTestCase
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
-        //var_dump($this->form->getErrorsAsString());die();
+        // var_dump($this->form->getErrorsAsString());die();
     }
 }

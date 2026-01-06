@@ -133,7 +133,7 @@ class ProductController extends AbstractController
         BaseInfoRepository $baseInfoRepository,
         PageMaxRepository $pageMaxRepository,
         ProductStatusRepository $productStatusRepository,
-        TagRepository $tagRepository
+        TagRepository $tagRepository,
     ) {
         $this->csvExportService = $csvExportService;
         $this->productClassRepository = $productClassRepository;
@@ -150,6 +150,7 @@ class ProductController extends AbstractController
     /**
      * @Route("/%eccube_admin_route%/product", name="admin_product", methods={"GET", "POST"})
      * @Route("/%eccube_admin_route%/product/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_product_page", methods={"GET", "POST"})
+     *
      * @Template("@admin/Product/index.twig")
      */
     public function index(Request $request, PaginatorInterface $paginator, $page_no = null)
@@ -246,32 +247,30 @@ class ProductController extends AbstractController
 
         $qb = $this->productRepository->getQueryBuilderBySearchDataForAdmin($searchData);
 
+        $sortKey = $searchData['sortkey'];
+        $paginate_options = ['wrap-queries' => true];
+        if (empty($this->productRepository::COLUMNS[$sortKey]) || $sortKey == 'code' || $sortKey == 'status') {
+            $paginate_options = [];
+        }
+
         $event = new EventArgs(
             [
                 'qb' => $qb,
                 'searchData' => $searchData,
+                'paginate_options' => $paginate_options,
             ],
             $request
         );
 
         $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_INDEX_SEARCH);
+        $paginate_options = $event->getArgument('paginate_options');
 
-        $sortKey = $searchData['sortkey'];
-
-        if (empty($this->productRepository::COLUMNS[$sortKey]) || $sortKey == 'code' || $sortKey == 'status') {
-            $pagination = $paginator->paginate(
-                $qb,
-                $page_no,
-                $page_count
-            );
-        } else {
-            $pagination = $paginator->paginate(
-                $qb,
-                $page_no,
-                $page_count,
-                ['wrap-queries' => true]
-            );
-        }
+        $pagination = $paginator->paginate(
+            $qb,
+            $page_no,
+            $page_count,
+            $paginate_options
+        );
 
         return [
             'searchForm' => $searchForm->createView(),
@@ -285,7 +284,9 @@ class ProductController extends AbstractController
 
     /**
      * @Route("/%eccube_admin_route%/product/classes/{id}/load", name="admin_product_classes_load", methods={"GET"}, requirements={"id" = "\d+"}, methods={"GET"})
+     *
      * @Template("@admin/Product/product_class_popup.twig")
+     *
      * @ParamConverter("Product", options={"repository_method":"findWithSortedClassCategories"})
      */
     public function loadProductClasses(Request $request, Product $Product)
@@ -316,6 +317,7 @@ class ProductController extends AbstractController
      * 画像アップロード時にリクエストされるメソッド.
      *
      * @see https://pqina.nl/filepond/docs/api/server/#process
+     *
      * @Route("/%eccube_admin_route%/product/product/image/process", name="admin_product_image_process", methods={"POST"})
      */
     public function imageProcess(Request $request)
@@ -326,7 +328,7 @@ class ProductController extends AbstractController
 
         $images = $request->files->get('admin_product');
 
-        $allowExtensions = ['gif', 'jpg', 'jpeg', 'png'];
+        $allowExtensions = ['gif', 'jpg', 'jpeg', 'png', 'webp'];
         $files = [];
         if (count($images) > 0) {
             foreach ($images as $img) {
@@ -367,6 +369,7 @@ class ProductController extends AbstractController
      * アップロード画像を取得する際にコールされるメソッド.
      *
      * @see https://pqina.nl/filepond/docs/api/server/#load
+     *
      * @Route("/%eccube_admin_route%/product/product/image/load", name="admin_product_image_load", methods={"GET"})
      */
     public function imageLoad(Request $request)
@@ -401,6 +404,7 @@ class ProductController extends AbstractController
      * アップロード画像をすぐ削除する際にコールされるメソッド.
      *
      * @see https://pqina.nl/filepond/docs/api/server/#revert
+     *
      * @Route("/%eccube_admin_route%/product/product/image/revert", name="admin_product_image_revert", methods={"DELETE"})
      */
     public function imageRevert(Request $request)
@@ -423,6 +427,7 @@ class ProductController extends AbstractController
     /**
      * @Route("/%eccube_admin_route%/product/product/new", name="admin_product_product_new", methods={"GET", "POST"})
      * @Route("/%eccube_admin_route%/product/product/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_product_edit", methods={"GET", "POST"})
+     *
      * @Template("@admin/Product/product.twig")
      */
     public function edit(Request $request, RouterInterface $router, CacheUtil $cacheUtil, $id = null)
@@ -504,7 +509,7 @@ class ProductController extends AbstractController
         $categories = [];
         $ProductCategories = $Product->getProductCategories();
         foreach ($ProductCategories as $ProductCategory) {
-            /** @var \Eccube\Entity\ProductCategory $ProductCategory*/
+            /* @var \Eccube\Entity\ProductCategory $ProductCategory */
             $categories[] = $ProductCategory->getCategory();
         }
         $form['Category']->setData($categories);
@@ -557,7 +562,7 @@ class ProductController extends AbstractController
 
                 // カテゴリの登録
                 // 一度クリア
-                /** @var \Eccube\Entity\Product $Product */
+                /** @var Product $Product */
                 foreach ($Product->getProductCategories() as $ProductCategory) {
                     $Product->removeProductCategory($ProductCategory);
                     $this->entityManager->remove($ProductCategory);
@@ -574,7 +579,7 @@ class ProductController extends AbstractController
                             $ProductCategory = $this->createProductCategory($Product, $ParentCategory, $count);
                             $this->entityManager->persist($ProductCategory);
                             $count++;
-                            /** @var \Eccube\Entity\Product $Product */
+                            /* @var \Eccube\Entity\Product $Product */
                             $Product->addProductCategory($ProductCategory);
                             $categoriesIdList[$ParentCategory->getId()] = true;
                         }
@@ -583,7 +588,7 @@ class ProductController extends AbstractController
                         $ProductCategory = $this->createProductCategory($Product, $Category, $count);
                         $this->entityManager->persist($ProductCategory);
                         $count++;
-                        /** @var \Eccube\Entity\Product $Product */
+                        /* @var \Eccube\Entity\Product $Product */
                         $Product->addProductCategory($ProductCategory);
                         $categoriesIdList[$Category->getId()] = true;
                     }
@@ -592,7 +597,7 @@ class ProductController extends AbstractController
                 // 画像の登録
                 $add_images = $form->get('add_images')->getData();
                 foreach ($add_images as $add_image) {
-                    $ProductImage = new \Eccube\Entity\ProductImage();
+                    $ProductImage = new ProductImage();
                     $ProductImage
                         ->setFileName($add_image)
                         ->setProduct($Product)
@@ -759,7 +764,7 @@ class ProductController extends AbstractController
         $success = false;
 
         if (!is_null($id)) {
-            /** @var \Eccube\Entity\Product $Product */
+            /** @var Product $Product */
             $Product = $this->productRepository->find($id);
             if (!$Product) {
                 if ($request->isXmlHttpRequest()) {
@@ -1002,10 +1007,10 @@ class ProductController extends AbstractController
             $this->csvExportService->exportData(function ($entity, CsvExportService $csvService) use ($request) {
                 $Csvs = $csvService->getCsvs();
 
-                /** @var \Eccube\Entity\Product $Product */
+                /** @var Product $Product */
                 $Product = $entity;
 
-                /** @var \Eccube\Entity\ProductClass[] $ProductClasses */
+                /** @var ProductClass[] $ProductClasses */
                 $ProductClasses = $Product->getProductClasses();
 
                 foreach ($ProductClasses as $ProductClass) {
@@ -1054,11 +1059,11 @@ class ProductController extends AbstractController
     /**
      * ProductCategory作成
      *
-     * @param \Eccube\Entity\Product $Product
+     * @param Product $Product
      * @param \Eccube\Entity\Category $Category
-     * @param integer $count
+     * @param int $count
      *
-     * @return \Eccube\Entity\ProductCategory
+     * @return ProductCategory
      */
     private function createProductCategory($Product, $Category, $count)
     {
