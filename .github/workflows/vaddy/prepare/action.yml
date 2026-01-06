@@ -117,7 +117,6 @@ runs:
         bin/console eccube:composer:require "ec-cube/securitychecker42"
         bin/console eccube:composer:require "ec-cube/productreview42"
         bin/console eccube:composer:require "ec-cube/api42"
-        bin/console eccube:composer:require "ec-cube/sitekit42"
         psql eccube_db -h 127.0.0.1 -U postgres -c "select id,name,code,0 as enabled,version,source,0 as initialized,'2021-08-13 00:00:00' as create_date,'2021-08-13 00:00:00' as update_date,discriminator_type from dtb_plugin;" -A -F, --pset footer > src/Eccube/Resource/doctrine/import_csv/ja/dtb_plugin.csv
 
     - name: "EC-CUBE: package"

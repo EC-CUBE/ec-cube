@@ -19,8 +19,10 @@
 {% elseif app.request.get('_route') == 'homepage' %}
     {% set meta_og_type = 'website' %}
     {% set meta_canonical = url('homepage') %}
-{% elseif Page is defined and Page.edit_type == 0 and Page.url is defined %}
-    {% set meta_canonical = url(eccube_config.eccube_user_data_route, {'route': Page.url}) %}
+{% elseif Page is defined and Page.edit_type == 0 and Page.url is defined and Page.url is not empty %}
+    {# 新規ページのコントローラー側のルートがuser_dataのためハードコーディングにする
+        see https://github.com/EC-CUBE/ec-cube/issues/6492 #}
+    {% set meta_canonical = url('user_data', {'route': Page.url}) %}
 {% endif %}
 
 <meta property="og:type" content="{{ meta_og_type|default('article') }}"/>

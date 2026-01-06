@@ -1,11 +1,12 @@
-name: PHP CS Fixer
+name: Rector
 
 on:
   workflow_call:
 
 jobs:
-  php-cs-fixer:
-    name: Run PHP CS Fixer
+  rector:
+    name: Rector
+
     runs-on: ubuntu-latest
 
     steps:
@@ -20,7 +21,5 @@ jobs:
       - name: Initialize Composer
         uses: ./.github/actions/composer
 
-      - name: Run php-cs-fixer (dry-run)
-        # ─── 差分があるとステップごと失敗させる ───
-        run: |
-          PHP_CS_FIXER_IGNORE_ENV=1 php vendor/bin/php-cs-fixer fix --diff --dry-run --allow-risky=yes
+      - name: Rector (dry-run)
+        run: vendor/bin/rector process --dry-run --ansi --config=rector.php

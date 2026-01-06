@@ -395,16 +395,7 @@ class OrderRepository extends AbstractRepository
         }
 
         // Order By
-        if (isset($searchData['sortkey']) && !empty($searchData['sortkey'])) {
-            $sortOrder = (isset($searchData['sorttype']) && $searchData['sorttype'] == 'a') ? 'ASC' : 'DESC';
-
-            $qb->orderBy(self::COLUMNS[$searchData['sortkey']], $sortOrder);
-            $qb->addOrderBy('o.update_date', 'DESC');
-            $qb->addOrderBy('o.id', 'DESC');
-        } else {
-            $qb->orderBy('o.update_date', 'DESC');
-            $qb->addorderBy('o.id', 'DESC');
-        }
+        $this->setQueryBuilderAdminSearchDataOrderBy($qb, 'o', self::COLUMNS, $searchData);
 
         return $this->queries->customize(QueryKey::ORDER_SEARCH_ADMIN, $qb, $searchData);
     }

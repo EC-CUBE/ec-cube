@@ -292,31 +292,30 @@ class OrderController extends AbstractController
 
         $qb = $this->orderRepository->getQueryBuilderBySearchDataForAdmin($searchData);
 
+        $sortKey = $searchData['sortkey'];
+        $paginate_options = ['wrap-queries' => true];
+        if (empty($this->orderRepository::COLUMNS[$sortKey]) || $sortKey == 'order_status') {
+            $paginate_options = [];
+        }
+
         $event = new EventArgs(
             [
                 'qb' => $qb,
                 'searchData' => $searchData,
+                'paginate_options' => $paginate_options,
             ],
             $request
         );
 
         $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_INDEX_SEARCH);
-        $sortKey = $searchData['sortkey'];
+        $paginate_options = $event->getArgument('paginate_options');
 
-        if (empty($this->orderRepository::COLUMNS[$sortKey]) || $sortKey == 'order_status') {
-            $pagination = $paginator->paginate(
-                $qb,
-                $page_no,
-                $page_count
-            );
-        } else {
-            $pagination = $paginator->paginate(
-                $qb,
-                $page_no,
-                $page_count,
-                ['wrap-queries' => true]
-            );
-        }
+        $pagination = $paginator->paginate(
+            $qb,
+            $page_no,
+            $page_count,
+            $paginate_options
+        );
 
         return [
             'searchForm' => $searchForm->createView(),

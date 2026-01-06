@@ -247,32 +247,30 @@ class ProductController extends AbstractController
 
         $qb = $this->productRepository->getQueryBuilderBySearchDataForAdmin($searchData);
 
+        $sortKey = $searchData['sortkey'];
+        $paginate_options = ['wrap-queries' => true];
+        if (empty($this->productRepository::COLUMNS[$sortKey]) || $sortKey == 'code' || $sortKey == 'status') {
+            $paginate_options = [];
+        }
+
         $event = new EventArgs(
             [
                 'qb' => $qb,
                 'searchData' => $searchData,
+                'paginate_options' => $paginate_options,
             ],
             $request
         );
 
         $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_INDEX_SEARCH);
+        $paginate_options = $event->getArgument('paginate_options');
 
-        $sortKey = $searchData['sortkey'];
-
-        if (empty($this->productRepository::COLUMNS[$sortKey]) || $sortKey == 'code' || $sortKey == 'status') {
-            $pagination = $paginator->paginate(
-                $qb,
-                $page_no,
-                $page_count
-            );
-        } else {
-            $pagination = $paginator->paginate(
-                $qb,
-                $page_no,
-                $page_count,
-                ['wrap-queries' => true]
-            );
-        }
+        $pagination = $paginator->paginate(
+            $qb,
+            $page_no,
+            $page_count,
+            $paginate_options
+        );
 
         return [
             'searchForm' => $searchForm->createView(),
@@ -330,7 +328,7 @@ class ProductController extends AbstractController
 
         $images = $request->files->get('admin_product');
 
-        $allowExtensions = ['gif', 'jpg', 'jpeg', 'png'];
+        $allowExtensions = ['gif', 'jpg', 'jpeg', 'png', 'webp'];
         $files = [];
         if (count($images) > 0) {
             foreach ($images as $img) {

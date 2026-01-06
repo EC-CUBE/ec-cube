@@ -46,7 +46,7 @@ runs:
         docker exec eccube bash -c "rm -rf /var/www/html/html; ln -s /tmp/html /var/www/html/html;"
         docker exec -u www-data eccube bin/console eccube:install -n
         docker exec -u www-data -e VADDY_VERIFICATION_CODE=${{ inputs.vaddy-verification-code }} eccube bash -c 'echo ${VADDY_VERIFICATION_CODE} > vaddy-${VADDY_VERIFICATION_CODE}.html'
-        docker exec -u www-data eccube bash -c 'for code in Api42 Coupon42 MailMagazine42 ProductReview42 Recommend42 RelatedProduct42 SalesReport42 Securitychecker42 SiteKit42; do bin/console eccube:plugin:enable --code $code; done'
+        docker exec -u www-data eccube bash -c 'for code in Api42 Coupon42 MailMagazine42 ProductReview42 Recommend42 RelatedProduct42 SalesReport42 Securitychecker42; do bin/console eccube:plugin:enable --code $code; done'
 
     - name: "VAddy: connect"
       shell: bash
