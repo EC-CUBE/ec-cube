@@ -408,18 +408,10 @@ class PluginService
     public function unpackPluginArchive($archive, $dir)
     {
         $extension = pathinfo($archive, PATHINFO_EXTENSION);
-        try {
-            if ($extension == 'zip') {
-                $zip = new \ZipArchive();
-                $zip->open($archive);
-                $zip->extractTo($dir);
-                $zip->close();
-            } else {
-                $phar = new \PharData($archive);
-                $phar->extractTo($dir, null, true);
-            }
-        } catch (\Exception $e) {
-            throw new PluginException(trans('pluginservice.text.error.upload_failure'));
+        if ($extension == 'zip') {
+            system("unzip {$archive} -d {$dir}");
+        } else {
+            system("tar -xzf {$archive} -C {$dir}");
         }
     }
 
@@ -466,11 +458,10 @@ class PluginService
      */
     public function readConfig($pluginDir)
     {
-        $composerJsonPath = $pluginDir.DIRECTORY_SEPARATOR.'composer.json';
+        $composerJsonPath = $pluginDir . DIRECTORY_SEPARATOR . 'composer.json';
         if (file_exists($composerJsonPath) === false) {
             throw new PluginException("{$composerJsonPath} not found.");
         }
-
         $json = json_decode(file_get_contents($composerJsonPath), true);
         if ($json === null) {
             throw new PluginException("Invalid json format. [{$composerJsonPath}]");
@@ -506,7 +497,7 @@ class PluginService
     public function deleteFile($path)
     {
         $f = new Filesystem();
-        $f->remove($path);
+        $f->remove($this->projectRoot . '/app/Plugin/' . $path);
     }
 
     public function checkSamePlugin($code)
