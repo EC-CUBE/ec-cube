@@ -76,7 +76,7 @@ class ShippingMultipleController extends AbstractShoppingController
             $itemId = $item->getProductClass()->getId();
             $quantity = $item->getQuantity();
             if (array_key_exists($itemId, $ItemQuantitiesByClassId)) {
-                $ItemQuantitiesByClassId[$itemId] += $quantity;
+                $ItemQuantitiesByClassId[$itemId] = bcadd($ItemQuantitiesByClassId[$itemId], $quantity, 0);
             } else {
                 $ItemQuantitiesByClassId[$itemId] = $quantity;
             }
@@ -134,7 +134,7 @@ class ShippingMultipleController extends AbstractShoppingController
                         $quantity = $item['quantity']->getData();
 
                         if (isset($arrOrderItemTemp[$customerAddressName]) && array_key_exists($itemId, $arrOrderItemTemp[$customerAddressName])) {
-                            $arrOrderItemTemp[$customerAddressName][$itemId] = $arrOrderItemTemp[$customerAddressName][$itemId] + $quantity;
+                            $arrOrderItemTemp[$customerAddressName][$itemId] = bcadd($arrOrderItemTemp[$customerAddressName][$itemId], $quantity, 0);
                         } else {
                             $arrOrderItemTemp[$customerAddressName][$itemId] = $quantity;
                         }
@@ -147,7 +147,7 @@ class ShippingMultipleController extends AbstractShoppingController
             foreach ($arrOrderItemTemp as $FormItemByAddress) {
                 foreach ($FormItemByAddress as $itemId => $quantity) {
                     if (array_key_exists($itemId, $itemQuantities)) {
-                        $itemQuantities[$itemId] = $itemQuantities[$itemId] + $quantity;
+                        $itemQuantities[$itemId] = bcadd($itemQuantities[$itemId], $quantity, 0);
                     } else {
                         $itemQuantities[$itemId] = $quantity;
                     }
@@ -285,7 +285,7 @@ class ShippingMultipleController extends AbstractShoppingController
             foreach ($Order->getProductOrderItems() as $Item) {
                 $id = $Item->getProductClass()->getId();
                 if (isset($quantityByProductClass[$id])) {
-                    $quantityByProductClass[$id] += $Item->getQuantity();
+                    $quantityByProductClass[$id] = bcadd($quantityByProductClass[$id], $Item->getQuantity(), 0);
                 } else {
                     $quantityByProductClass[$id] = $Item->getQuantity();
                 }

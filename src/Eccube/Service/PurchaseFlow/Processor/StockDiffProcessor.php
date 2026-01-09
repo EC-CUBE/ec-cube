@@ -126,7 +126,7 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
             if ($Item->isProduct()) {
                 $id = $Item->getProductClass()->getId();
                 if (isset($ItemsByProductClass[$id])) {
-                    $ItemsByProductClass[$id] += $Item->getQuantity();
+                    $ItemsByProductClass[$id] = bcadd($ItemsByProductClass[$id], $Item->getQuantity(), 0);
                 } else {
                     $ItemsByProductClass[$id] = $Item->getQuantity();
                 }

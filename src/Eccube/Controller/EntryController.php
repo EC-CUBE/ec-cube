@@ -253,9 +253,9 @@ class EntryController extends AbstractController
 
         // Assign session carts into customer carts
         $Carts = $this->cartService->getCarts();
-        $qtyInCart = 0;
+        $qtyInCart = '0';
         foreach ($Carts as $Cart) {
-            $qtyInCart += $Cart->getTotalQuantity();
+            $qtyInCart = bcadd($qtyInCart, $Cart->getTotalQuantity(), 0);
         }
 
         if ($qtyInCart) {
