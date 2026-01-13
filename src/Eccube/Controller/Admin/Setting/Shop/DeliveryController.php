@@ -387,7 +387,6 @@ class DeliveryController extends AbstractController
             }
         }
 
-        // @phpstan-ignore-next-line
         usort($mergeRules, function (array $a, array $b): int {
             if ($a['min'] == $b['min']) {
                 return 0;
