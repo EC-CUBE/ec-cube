@@ -225,7 +225,7 @@ class EntryController extends AbstractController
     /**
      * 会員登録処理を行う
      */
-    private function entryActivate(Request $request, string $secret_key): int
+    private function entryActivate(Request $request, string $secret_key): string
     {
         log_info('本会員登録開始');
         $Customer = $this->customerRepository->getProvisionalCustomerBySecretKey($secret_key);
