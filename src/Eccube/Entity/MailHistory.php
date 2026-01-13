@@ -40,11 +40,8 @@ if (!class_exists(MailHistory::class)) {
         /**  @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
         private ?int $id = null;
 
-        /**
-         * @var \DateTime|null
-         */
         #[ORM\Column(name: 'send_date', type: Types::DATETIMETZ_MUTABLE, nullable: true)]
-        private $send_date;
+        private ?\DateTime $send_date = null;
 
         #[ORM\Column(name: 'mail_subject', type: Types::STRING, length: 255, nullable: true)]
         private ?string $mail_subject = null;

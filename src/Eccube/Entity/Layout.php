@@ -251,30 +251,24 @@ if (!class_exists(Layout::class)) {
         #[ORM\Column(name: 'layout_name', type: Types::STRING, length: 255, nullable: true)]
         private ?string $name = null;
 
-        /**
-         * @var \DateTime
-         */
         #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
-        private $create_date;
+        private ?\DateTime $create_date = null;
 
-        /**
-         * @var \DateTime
-         */
         #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
-        private $update_date;
+        private ?\DateTime $update_date = null;
 
         /**
          * @var Collection<int, BlockPosition>
          */
         #[ORM\OneToMany(targetEntity: BlockPosition::class, mappedBy: 'Layout', cascade: ['persist', 'remove'])]
-        private $BlockPositions;
+        private Collection $BlockPositions;
 
         /**
          * @var Collection<int, PageLayout>
          */
         #[ORM\OneToMany(targetEntity: PageLayout::class, mappedBy: 'Layout', cascade: ['persist', 'remove'])]
         #[ORM\OrderBy(['sort_no' => 'ASC'])]
-        private $PageLayouts;
+        private Collection $PageLayouts;
 
         #[ORM\ManyToOne(targetEntity: DeviceType::class)]
         #[ORM\JoinColumn(name: 'device_type_id', referencedColumnName: 'id')]

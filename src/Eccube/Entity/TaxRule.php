@@ -76,23 +76,14 @@ if (!class_exists(TaxRule::class)) {
         #[ORM\Column(name: 'tax_adjust', type: Types::DECIMAL, precision: 10, scale: 0, options: ['unsigned' => true, 'default' => 0])]
         private string $tax_adjust = '0';
 
-        /**
-         * @var \DateTime
-         */
         #[ORM\Column(name: 'apply_date', type: Types::DATETIMETZ_MUTABLE)]
-        private $apply_date;
+        private ?\DateTime $apply_date = null;
 
-        /**
-         * @var \DateTime
-         */
         #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
-        private $create_date;
+        private ?\DateTime $create_date = null;
 
-        /**
-         * @var \DateTime
-         */
         #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
-        private $update_date;
+        private ?\DateTime $update_date = null;
 
         #[ORM\OneToOne(targetEntity: ProductClass::class, inversedBy: 'TaxRule')]
         #[ORM\JoinColumn(name: 'product_class_id', referencedColumnName: 'id')]

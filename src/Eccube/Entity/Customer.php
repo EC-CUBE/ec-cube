@@ -83,18 +83,12 @@ if (!class_exists(Customer::class)) {
         #[ORM\Column(name: 'phone_number', type: Types::STRING, length: 14, nullable: true)]
         private ?string $phone_number = null;
 
-        /**
-         * @var \DateTime|null
-         */
         #[ORM\Column(name: 'birth', type: Types::DATETIMETZ_MUTABLE, nullable: true)]
-        private $birth;
+        private ?\DateTime $birth = null;
 
-        /**
-         * @var string|null
-         */
         #[Assert\NotBlank]
         #[Assert\Length(max: 4096)]
-        private $plain_password;
+        private ?string $plain_password = null;
 
         #[ORM\Column(name: 'password', type: Types::STRING, length: 255)]
         private ?string $password = null;
@@ -105,17 +99,11 @@ if (!class_exists(Customer::class)) {
         #[ORM\Column(name: 'secret_key', type: Types::STRING, length: 255)]
         private ?string $secret_key = null;
 
-        /**
-         * @var \DateTime|null
-         */
         #[ORM\Column(name: 'first_buy_date', type: Types::DATETIMETZ_MUTABLE, nullable: true)]
-        private $first_buy_date;
+        private ?\DateTime $first_buy_date = null;
 
-        /**
-         * @var \DateTime|null
-         */
         #[ORM\Column(name: 'last_buy_date', type: Types::DATETIMETZ_MUTABLE, nullable: true)]
-        private $last_buy_date;
+        private ?\DateTime $last_buy_date = null;
 
         #[ORM\Column(name: 'buy_times', type: Types::DECIMAL, precision: 10, scale: 0, nullable: true, options: ['unsigned' => true, 'default' => 0])]
         private ?string $buy_times = '0';
@@ -129,45 +117,36 @@ if (!class_exists(Customer::class)) {
         #[ORM\Column(name: 'reset_key', type: Types::STRING, length: 255, nullable: true)]
         private ?string $reset_key = null;
 
-        /**
-         * @var \DateTime|null
-         */
         #[ORM\Column(name: 'reset_expire', type: Types::DATETIMETZ_MUTABLE, nullable: true)]
-        private $reset_expire;
+        private ?\DateTime $reset_expire = null;
 
         #[ORM\Column(name: 'point', type: Types::DECIMAL, precision: 12, scale: 0, options: ['unsigned' => false, 'default' => 0])]
         private ?string $point = '0';
 
-        /**
-         * @var \DateTime
-         */
         #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
-        private $create_date;
+        private ?\DateTime $create_date = null;
 
-        /**
-         * @var \DateTime
-         */
         #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
-        private $update_date;
+        private ?\DateTime $update_date = null;
 
         /**
          * @var Collection<int, CustomerFavoriteProduct>
          */
         #[ORM\OneToMany(mappedBy: 'Customer', targetEntity: CustomerFavoriteProduct::class, cascade: ['remove'])]
-        private $CustomerFavoriteProducts;
+        private Collection $CustomerFavoriteProducts;
 
         /**
          * @var Collection<int, CustomerAddress>
          */
         #[ORM\OneToMany(targetEntity: CustomerAddress::class, mappedBy: 'Customer', cascade: ['remove'])]
         #[ORM\OrderBy(['id' => 'ASC'])]
-        private $CustomerAddresses;
+        private Collection $CustomerAddresses;
 
         /**
          * @var Collection<int, Order>
          */
         #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'Customer')]
-        private $Orders;
+        private Collection $Orders;
 
         #[ORM\ManyToOne(targetEntity: CustomerStatus::class)]
         #[ORM\JoinColumn(name: 'customer_status_id', referencedColumnName: 'id')]

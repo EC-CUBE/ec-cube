@@ -94,19 +94,15 @@ if (!class_exists(Shipping::class)) {
 
         /**
          * お届け予定日/お届け希望日
-         *
-         * @var \DateTime|null
          */
         #[ORM\Column(name: 'delivery_date', type: Types::DATETIMETZ_MUTABLE, nullable: true)]
-        private $shipping_delivery_date;
+        private ?\DateTime $shipping_delivery_date = null;
 
         /**
          * 出荷日
-         *
-         * @var \DateTime|null
          */
         #[ORM\Column(name: 'shipping_date', type: Types::DATETIMETZ_MUTABLE, nullable: true)]
-        private $shipping_date;
+        private ?\DateTime $shipping_date = null;
 
         #[ORM\Column(name: 'tracking_number', type: Types::STRING, length: 255, nullable: true)]
         private ?string $tracking_number = null;
@@ -117,23 +113,14 @@ if (!class_exists(Shipping::class)) {
         #[ORM\Column(name: 'sort_no', type: Types::SMALLINT, nullable: true, options: ['unsigned' => true])]
         private ?int $sort_no = null;
 
-        /**
-         * @var \DateTime
-         */
         #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
-        private $create_date;
+        private ?\DateTime $create_date = null;
 
-        /**
-         * @var \DateTime
-         */
         #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
-        private $update_date;
+        private ?\DateTime $update_date = null;
 
-        /**
-         * @var \DateTime
-         */
         #[ORM\Column(name: 'mail_send_date', type: Types::DATETIMETZ_MUTABLE, nullable: true)]
-        private $mail_send_date;
+        private ?\DateTime $mail_send_date = null;
 
         #[ORM\ManyToOne(targetEntity: Order::class, cascade: ['persist'], inversedBy: 'Shippings')]
         #[ORM\JoinColumn(name: 'order_id', referencedColumnName: 'id')]
@@ -143,7 +130,7 @@ if (!class_exists(Shipping::class)) {
          * @var Collection<int, OrderItem>
          */
         #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'Shipping', cascade: ['persist'])]
-        private $OrderItems;
+        private Collection $OrderItems;
 
         #[ORM\ManyToOne(targetEntity: Country::class)]
         #[ORM\JoinColumn(name: 'country_id', referencedColumnName: 'id')]

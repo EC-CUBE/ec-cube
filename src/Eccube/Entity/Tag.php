@@ -52,7 +52,7 @@ if (!class_exists(Tag::class)) {
          * @var Collection<int, ProductTag>
          */
         #[ORM\OneToMany(targetEntity: ProductTag::class, mappedBy: 'Tag')]
-        protected $ProductTag;
+        protected Collection $ProductTag;
 
         /**
          * Constructor

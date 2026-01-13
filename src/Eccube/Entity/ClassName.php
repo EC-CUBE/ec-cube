@@ -51,24 +51,18 @@ if (!class_exists(ClassName::class)) {
         #[ORM\Column(name: 'sort_no', type: Types::INTEGER, options: ['unsigned' => true])]
         private ?int $sort_no = null;
 
-        /**
-         * @var \DateTime
-         */
         #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
-        private $create_date;
+        private ?\DateTime $create_date = null;
 
-        /**
-         * @var \DateTime
-         */
         #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
-        private $update_date;
+        private ?\DateTime $update_date = null;
 
         /**
          * @var Collection<int, ClassCategory>
          */
         #[ORM\OneToMany(targetEntity: ClassCategory::class, mappedBy: 'ClassName')]
         #[ORM\OrderBy(['sort_no' => 'DESC'])]
-        private $ClassCategories;
+        private Collection $ClassCategories;
 
         #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]

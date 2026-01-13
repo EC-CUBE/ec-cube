@@ -57,17 +57,11 @@ if (!class_exists(Template::class)) {
         #[ORM\Column(name: 'template_name', type: Types::STRING, length: 255)]
         private ?string $name = null;
 
-        /**
-         * @var \DateTime
-         */
         #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
-        private $create_date;
+        private ?\DateTime $create_date = null;
 
-        /**
-         * @var \DateTime
-         */
         #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
-        private $update_date;
+        private ?\DateTime $update_date = null;
 
         #[ORM\ManyToOne(targetEntity: DeviceType::class)]
         #[ORM\JoinColumn(name: 'device_type_id', referencedColumnName: 'id')]

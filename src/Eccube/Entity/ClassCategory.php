@@ -52,17 +52,11 @@ if (!class_exists(ClassCategory::class)) {
         #[ORM\Column(name: 'visible', type: Types::BOOLEAN, options: ['default' => true])]
         private ?bool $visible = null;
 
-        /**
-         * @var \DateTime
-         */
         #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
-        private $create_date;
+        private ?\DateTime $create_date = null;
 
-        /**
-         * @var \DateTime
-         */
         #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
-        private $update_date;
+        private ?\DateTime $update_date = null;
 
         #[ORM\ManyToOne(targetEntity: ClassName::class, inversedBy: 'ClassCategories')]
         #[ORM\JoinColumn(name: 'class_name_id', referencedColumnName: 'id')]

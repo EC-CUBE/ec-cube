@@ -53,17 +53,11 @@ if (!class_exists(Csv::class)) {
         #[ORM\Column(name: 'enabled', type: Types::BOOLEAN, options: ['default' => true])]
         private bool $enabled = true;
 
-        /**
-         * @var \DateTime
-         */
         #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
-        private $create_date;
+        private ?\DateTime $create_date = null;
 
-        /**
-         * @var \DateTime
-         */
         #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
-        private $update_date;
+        private ?\DateTime $update_date = null;
 
         #[ORM\ManyToOne(targetEntity: CsvType::class)]
         #[ORM\JoinColumn(name: 'csv_type_id', referencedColumnName: 'id')]
