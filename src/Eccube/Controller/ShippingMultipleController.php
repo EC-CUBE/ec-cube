@@ -134,7 +134,7 @@ class ShippingMultipleController extends AbstractShoppingController
                         $quantity = $item['quantity']->getData();
 
                         if (isset($arrOrderItemTemp[$customerAddressName]) && array_key_exists($itemId, $arrOrderItemTemp[$customerAddressName])) {
-                            $arrOrderItemTemp[$customerAddressName][$itemId] = bcadd($arrOrderItemTemp[$customerAddressName][$itemId], $quantity, 0);
+                            $arrOrderItemTemp[$customerAddressName][$itemId] = bcadd((string) $arrOrderItemTemp[$customerAddressName][$itemId], (string) $quantity, 0);
                         } else {
                             $arrOrderItemTemp[$customerAddressName][$itemId] = $quantity;
                         }
@@ -147,7 +147,7 @@ class ShippingMultipleController extends AbstractShoppingController
             foreach ($arrOrderItemTemp as $FormItemByAddress) {
                 foreach ($FormItemByAddress as $itemId => $quantity) {
                     if (array_key_exists($itemId, $itemQuantities)) {
-                        $itemQuantities[$itemId] = bcadd($itemQuantities[$itemId], $quantity, 0);
+                        $itemQuantities[$itemId] = bcadd((string) $itemQuantities[$itemId], (string) $quantity, 0);
                     } else {
                         $itemQuantities[$itemId] = $quantity;
                     }

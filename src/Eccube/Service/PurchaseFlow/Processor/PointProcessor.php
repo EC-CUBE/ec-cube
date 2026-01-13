@@ -72,8 +72,8 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
             // 購入フロー実行時
             if ($context->isShoppingFlow()) {
                 // 支払い金額 < 利用ポイントによる値引き額.
-                if (bccomp(bcadd((string) $itemHolder->getTotal(), $discount, 0), '0', 0) < 0) {
-                    $minus = bcadd((string) $itemHolder->getTotal(), $discount, 0);
+                if (bccomp(bcadd($itemHolder->getTotal(), $discount, 0), '0', 0) < 0) {
+                    $minus = bcadd($itemHolder->getTotal(), $discount, 0);
                     // 利用ポイントが支払い金額を上回っていた場合は支払い金額が0円以上となるようにポイントを調整
                     $overPoint = $this->pointHelper->priceToPoint($minus);
                     $usePoint = bcadd((string) $itemHolder->getUsePoint(), $overPoint);
@@ -92,7 +92,7 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
             // 受注登録・編集実行時
             } else {
                 // 支払い金額 < 利用ポイントによる値引き額.
-                if (bccomp((string) $itemHolder->getTotal(), '0', 0) >= 0 && bccomp(bcadd((string) $itemHolder->getTotal(), $discount, 0), '0', 0) < 0) {
+                if (bccomp($itemHolder->getTotal(), '0', 0) >= 0 && bccomp(bcadd($itemHolder->getTotal(), $discount, 0), '0', 0) < 0) {
                     $result = ProcessResult::error(trans('purchase_flow.over_payment_total'), self::class);
                 }
             }

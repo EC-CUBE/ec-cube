@@ -99,15 +99,15 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
             if (isset($FromItems[$id]) && isset($ToItems[$id])) {
                 // 2 -> 3 = +1
                 // 2 -> 1 = -1
-                $diff[$id] = (string) ($ToItems[$id] - $FromItems[$id]);
+                $diff[$id] = bcsub($ToItems[$id], $FromItems[$id], 0);
             } // 削除された明細
             elseif (isset($FromItems[$id]) && empty($ToItems[$id])) {
                 // 2 -> 0 = -2
-                $diff[$id] = (string) ($FromItems[$id] * -1);
+                $diff[$id] = bcmul($FromItems[$id], '-1', 0);
             } // 追加された明細
             elseif (!isset($FromItems[$id]) && isset($ToItems[$id])) {
                 // 0 -> 2 = +2
-                $diff[$id] = (string) $ToItems[$id];
+                $diff[$id] = $ToItems[$id];
             }
         }
 
@@ -117,7 +117,7 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
     /**
      * @param ItemHolderInterface $ItemHolder 受注 or カート
      *
-     * @return array<int, int> 商品クラスIDをキーとした商品の数量
+     * @return array<int, string> 商品クラスIDをキーとした商品の数量
      */
     protected function getQuantityByProductClass(ItemHolderInterface $ItemHolder): array
     {

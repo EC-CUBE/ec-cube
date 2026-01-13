@@ -516,7 +516,7 @@ class AdminController extends AbstractController
         }
 
         foreach ($result as $Order) {
-            $raw[$Order->getOrderDate()->format($format)]['price'] = bcadd($raw[$Order->getOrderDate()->format($format)]['price'], $Order->getPaymentTotal(), 0);
+            $raw[$Order->getOrderDate()->format($format)]['price'] = bcadd($raw[$Order->getOrderDate()->format($format)]['price'], (string) $Order->getPaymentTotal(), 0);
             ++$raw[$Order->getOrderDate()->format($format)]['count'];
         }
 
