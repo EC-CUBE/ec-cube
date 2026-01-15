@@ -40,7 +40,6 @@ if (!class_exists(Cart::class)) {
         #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-        /** @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
         private ?int $id = null;
 
         #[ORM\Column(name: 'cart_key', type: Types::STRING, nullable: true)]
@@ -86,7 +85,7 @@ if (!class_exists(Cart::class)) {
         /**
          * @var InvalidItemException[]
          */
-        /** @phpstan-ignore-next-line */
+        // @phpstan-ignore-next-line property.onlyWritten (__wakeup()でシリアライズ復元時の初期化に使用)
         private array $errors = [];
 
         public function __wakeup(): void

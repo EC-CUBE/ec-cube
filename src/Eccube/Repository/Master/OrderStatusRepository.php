@@ -47,7 +47,7 @@ class OrderStatusRepository extends AbstractRepository
      * @param int $limit
      * @param int $offset
      *
-     * @return array<int, array<string, mixed>>
+     * @return list<\Eccube\Entity\Master\OrderStatus>
      *
      * @see EntityRepository::findBy()
      */
