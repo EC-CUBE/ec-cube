@@ -35,6 +35,7 @@ doctrine:
         dql:
             string_functions:
                 NORMALIZE: Eccube\Doctrine\ORM\Query\Normalize
+                DATEFORMAT: Eccube\Doctrine\ORM\Query\DateFormat
             numeric_functions:
                 EXTRACT: Eccube\Doctrine\ORM\Query\Extract
         filters:
