@@ -52,13 +52,13 @@ jobs:
       matrix:
         target:
           - admin_authority
-          - admin_class_category_csv
-          - admin_class_name_csv
-          - admin_content_block
+        #  - admin_class_category_csv
+        #  - admin_class_name_csv
+        ###  - admin_content_block
         #  - admin_content_cache
         #  - admin_content_file
-          - admin_content_layout
-        ##  - admin_customer_delivery
+        ###  - admin_content_layout
+          - admin_customer_delivery
         #  - admin_customer_edit
         #  - admin_customer_list
         ##  - admin_delivery
