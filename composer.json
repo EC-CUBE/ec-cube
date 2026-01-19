@@ -21,7 +21,7 @@
         "ext-openssl": "*",
         "ext-zip": "*",
         "composer/ca-bundle": "^1.1",
-        "composer/composer": "^2.0",
+        "composer/composer": "^2.9",
         "doctrine/cache": "^2.0",
         "doctrine/collections": "^2.1",
         "doctrine/common": "^3.0",
