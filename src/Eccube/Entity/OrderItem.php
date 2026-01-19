@@ -44,7 +44,7 @@ if (!class_exists(OrderItem::class)) {
                 return $this->price;
             }
 
-            return bcadd((string) $this->price, $this->tax, 2);
+            return bcadd((string) $this->price, (string) $this->tax, 2);
         }
 
         public function getTotalPrice(): string
