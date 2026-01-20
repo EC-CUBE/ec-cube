@@ -1612,7 +1612,7 @@ class CsvImportController extends AbstractCsvImportController
             } else {
                 $stock = str_replace(',', '', $row[$headerByKey['stock']]);
                 if (preg_match('/^\d+$/', $stock) && $stock >= 0) {
-                    $ProductClass->setStock($row[$headerByKey['stock']]);
+                    $ProductClass->setStock($stock);
                 } else {
                     $message = trans('admin.common.csv_invalid_greater_than_zero', ['%line%' => $line, '%name%' => $headerByKey['stock']]);
                     $this->addErrors($message);
