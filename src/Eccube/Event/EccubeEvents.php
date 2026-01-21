@@ -214,6 +214,9 @@ final class EccubeEvents
     // delete
     public const ADMIN_PRODUCT_CLASS_CATEGORY_DELETE_COMPLETE = 'admin.product.class.category.delete.complete';
 
+    // visibility
+    public const ADMIN_PRODUCT_CLASS_CATEGORY_VISIBILITY_COMPLETE = 'admin.product.class.category.visibility.complete';
+
     // export
     public const ADMIN_PRODUCT_CLASS_CATEGORY_CSV_EXPORT = 'admin.product.class.category.csv.export';
 
