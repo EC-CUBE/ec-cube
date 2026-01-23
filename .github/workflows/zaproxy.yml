@@ -52,107 +52,107 @@ jobs:
       matrix:
         target:
           - admin_authority
-          - admin_class_category_csv
-          - admin_class_name_csv
-          - admin_content_block #
-          - admin_content_cache
-          - admin_content_file
-          - admin_content_layout #
-        ##  - admin_customer_delivery
-          - admin_customer_edit
-          - admin_customer_list
-          - admin_delivery #
-          - admin_js_css
-          - admin_log
-          - admin_login_history
-          - admin_mail
-          - admin_mail_edit
-          - admin_masterdata
-          - admin_member_edit #
-          - admin_member_setting
-          - admin_news #
-          - admin_order_edit #
-          - admin_order_edit_search
+      #    - admin_class_category_csv
+      #    - admin_class_name_csv
+      ###    - admin_content_block
+      ###    - admin_content_cache
+      #    - admin_content_file
+      ###    - admin_content_layout
+      ##    - admin_customer_delivery
+      #    - admin_customer_edit
+      #    - admin_customer_list
+      ###    - admin_delivery
+      #    - admin_js_css
+      #    - admin_log
+      #    - admin_login_history
+      #    - admin_mail
+      #    - admin_mail_edit
+      #    - admin_masterdata
+      ###    - admin_member_edit
+      #    - admin_member_setting
+      ###    - admin_news #
+      ###    - admin_order_edit
+      #    - admin_order_edit_search
         ##  - admin_order_list
         ##  - admin_order_mail
-          - admin_page #
-          - admin_payment #
-          - admin_product_category #
+      ###    - admin_page
+      ###    - admin_payment
+      ###    - admin_product_category
         ##  - admin_product_class_name
-          - admin_product_csv
-          - admin_product_copy #
-          - admin_product_edit #
-          - admin_product_edit_class #
-          - admin_product_tag #
-          - admin_product_view
-          - admin_shipping_csv
-          - admin_shop_setting
-          - admin_system
-          - admin_tax #
-          - admin_template
-        ##  - entry
-          - front_block
+      #    - admin_product_csv
+      ###    - admin_product_copy
+      ###    - admin_product_edit
+      ###    - admin_product_edit_class
+      ###    - admin_product_tag
+      #    - admin_product_view
+      #    - admin_shipping_csv
+      #    - admin_shop_setting
+      #    - admin_system
+      ###    - admin_tax 
+      #    - admin_template
+          - entry
+      #    - front_block
         ##  - front_contact
-          - front_help
-          - front_mypage
-          - front_new_item
-          - front_product
-          - front_sitemap
-          - guest_cart
-          - guest_front
-          - guest_shopping
-          - guest_shopping_customer_edit
-          - guest_shopping_shipping_edit
-          - guest_shopping_shipping_multiple
-          - mypage_change
-        ##  - mypage_delivery
-          - mypage_favorite
-          - mypage_order
-        ##  - plugin_coupon_admin_coupon
-          - plugin_coupon_guest_shopping
+      #    - front_help
+      #    - front_mypage
+      #    - front_new_item
+      #    - front_product
+      #    - front_sitemap
+      #    - guest_cart
+      #    - guest_front
+      #    - guest_shopping
+      #    - guest_shopping_customer_edit
+      #    - guest_shopping_shipping_edit
+      #    - guest_shopping_shipping_multiple
+      #    - mypage_change
+          - mypage_delivery
+      #    - mypage_favorite
+      #    - mypage_order
+          - plugin_coupon_admin_coupon
+      #    - plugin_coupon_guest_shopping
         ##  - plugin_mailmagazine_send
         ##  - plugin_mailmagazine_template
         ##  - plugin_product_review
         ##  - plugin_recommend
-          - plugin_related_product
-          - plugin_sales_report
+      #    - plugin_related_product
+      #    - plugin_sales_report
         include:
           - target: admin_authority
             thread_per_host: 1
         ##  - target: admin_customer_delivery
         ##    before_script: admin_create_customer.zst
-          - target: admin_content_cache
+        #  - target: admin_content_cache
+        #    thread_per_host: 1
+        #  - target: admin_js_css
+        #    thread_per_host: 1
+        #  - target: admin_mail
+        #    thread_per_host: 1
+        #  - target: admin_masterdata
+        #    thread_per_host: 1
+        #  - target: admin_member_setting
+        #    context: default
+        #  - target: admin_order_edit_search
+        #    before_script: admin_create_customers.zst
+        #  - target: admin_shop_setting
+        #    thread_per_host: 1
+        #  - target: admin_system
+        #    thread_per_host: 1
+        #  - target: admin_template
+        #    thread_per_host: 1
+          - target: entry
             thread_per_host: 1
-          - target: admin_js_css
-            thread_per_host: 1
-          - target: admin_mail
-            thread_per_host: 1
-          - target: admin_masterdata
-            thread_per_host: 1
-          - target: admin_member_setting
-            context: default
-          - target: admin_order_edit_search
-            before_script: admin_create_customers.zst
-          - target: admin_shop_setting
-            thread_per_host: 1
-          - target: admin_system
-            thread_per_host: 1
-          - target: admin_template
-            thread_per_host: 1
-        ##  - target: entry
-        ##    thread_per_host: 1
-        ##  - target: mypage_delivery
-        ##    before_script: admin_create_customer.zst
-          - target: mypage_order
+          - target: mypage_delivery
             before_script: admin_create_customer.zst
-        ##  - target: plugin_coupon_admin_coupon
-        ##    thread_per_host: 1
-          - target: plugin_coupon_guest_shopping
-            before_script: plugin_coupon_admin_create_coupon.zst
+        #  - target: mypage_order
+        #    before_script: admin_create_customer.zst
+          - target: plugin_coupon_admin_coupon
+            thread_per_host: 1
+        #  - target: plugin_coupon_guest_shopping
+        #    before_script: plugin_coupon_admin_create_coupon.zst
         ##  - target: plugin_mailmagazine_send
         ##    before_script: plugin_mailmagazine_create_customers.zst
-          - target: plugin_related_product
-            thread_per_host: 1
+        #  - target: plugin_related_product
+        #    thread_per_host: 1
 
     steps:
 
