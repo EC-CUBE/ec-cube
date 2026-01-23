@@ -70,7 +70,7 @@ jobs:
       #    - admin_masterdata
       ###    - admin_member_edit
       #    - admin_member_setting
-      ###    - admin_news #
+      ###    - admin_news
       ###    - admin_order_edit
       #    - admin_order_edit_search
         ##  - admin_order_list
@@ -90,7 +90,7 @@ jobs:
       #    - admin_system
       ###    - admin_tax 
       #    - admin_template
-          - entry
+      ###    - entry
       #    - front_block
         ##  - front_contact
       #    - front_help
@@ -108,7 +108,7 @@ jobs:
           - mypage_delivery
       #    - mypage_favorite
       #    - mypage_order
-          - plugin_coupon_admin_coupon
+      ###    - plugin_coupon_admin_coupon
       #    - plugin_coupon_guest_shopping
         ##  - plugin_mailmagazine_send
         ##  - plugin_mailmagazine_template
@@ -139,14 +139,14 @@ jobs:
         #    thread_per_host: 1
         #  - target: admin_template
         #    thread_per_host: 1
-          - target: entry
-            thread_per_host: 1
+        #  - target: entry
+        #    thread_per_host: 1
           - target: mypage_delivery
             before_script: admin_create_customer.zst
         #  - target: mypage_order
         #    before_script: admin_create_customer.zst
-          - target: plugin_coupon_admin_coupon
-            thread_per_host: 1
+        #  - target: plugin_coupon_admin_coupon
+        #    thread_per_host: 1
         #  - target: plugin_coupon_guest_shopping
         #    before_script: plugin_coupon_admin_create_coupon.zst
         ##  - target: plugin_mailmagazine_send

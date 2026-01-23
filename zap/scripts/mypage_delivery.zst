@@ -28,7 +28,7 @@
           "elementType": "ZestAssertion"
         }
       ],
-      "followRedirects": false,
+      "followRedirects": true ,
       "timestamp": 1655293158701,
       "cookies": [],
       "index": 1,
@@ -61,7 +61,7 @@
           "elementType": "ZestAssertion"
         }
       ],
-      "followRedirects": false,
+      "followRedirects": true,
       "timestamp": 1655293171926,
       "cookies": [],
       "index": 3,
@@ -117,7 +117,7 @@
           "elementType": "ZestAssertion"
         }
       ],
-      "followRedirects": false,
+      "followRedirects": true,
       "timestamp": 1655293218925,
       "cookies": [],
       "index": 6,
@@ -139,7 +139,7 @@
           "elementType": "ZestAssertion"
         }
       ],
-      "followRedirects": false,
+      "followRedirects": true,
       "timestamp": 1655293219011,
       "cookies": [],
       "index": 7,
@@ -179,7 +179,7 @@
           "elementType": "ZestAssertion"
         }
       ],
-      "followRedirects": false,
+      "followRedirects": true,
       "timestamp": 1655293226002,
       "cookies": [],
       "index": 10,
@@ -212,7 +212,7 @@
           "elementType": "ZestAssertion"
         }
       ],
-      "followRedirects": false,
+      "followRedirects": true,
       "timestamp": 1655293229747,
       "cookies": [],
       "index": 12,
@@ -234,7 +234,7 @@
           "elementType": "ZestAssertion"
         }
       ],
-      "followRedirects": false,
+      "followRedirects": true,
       "timestamp": 1655293229785,
       "cookies": [],
       "index": 13,
@@ -256,7 +256,7 @@
           "elementType": "ZestAssertion"
         }
       ],
-      "followRedirects": false,
+      "followRedirects": true,
       "timestamp": 1655293239616,
       "cookies": [],
       "index": 14,
