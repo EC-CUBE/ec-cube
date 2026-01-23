@@ -55,7 +55,7 @@ jobs:
       #    - admin_class_category_csv
       #    - admin_class_name_csv
       ###    - admin_content_block
-      ###    - admin_content_cache
+          - admin_content_cache
       #    - admin_content_file
       ###    - admin_content_layout
       ##    - admin_customer_delivery
@@ -105,7 +105,7 @@ jobs:
       #    - guest_shopping_shipping_edit
       #    - guest_shopping_shipping_multiple
       #    - mypage_change
-          - mypage_delivery
+      ##    - mypage_delivery
       #    - mypage_favorite
       #    - mypage_order
       ###    - plugin_coupon_admin_coupon
@@ -121,8 +121,8 @@ jobs:
             thread_per_host: 1
         ##  - target: admin_customer_delivery
         ##    before_script: admin_create_customer.zst
-        #  - target: admin_content_cache
-        #    thread_per_host: 1
+          - target: admin_content_cache
+            thread_per_host: 1
         #  - target: admin_js_css
         #    thread_per_host: 1
         #  - target: admin_mail
@@ -141,8 +141,8 @@ jobs:
         #    thread_per_host: 1
         #  - target: entry
         #    thread_per_host: 1
-          - target: mypage_delivery
-            before_script: admin_create_customer.zst
+        ##  - target: mypage_delivery
+        ##    before_script: admin_create_customer.zst
         #  - target: mypage_order
         #    before_script: admin_create_customer.zst
         #  - target: plugin_coupon_admin_coupon
