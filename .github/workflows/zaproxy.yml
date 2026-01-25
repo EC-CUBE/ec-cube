@@ -58,7 +58,7 @@ jobs:
       ###    - admin_content_cache
       #    - admin_content_file
       ###    - admin_content_layout
-          - admin_create_customer.zst
+          - admin_create_customer
           - admin_customer_delivery
       #    - admin_customer_edit
       #    - admin_customer_list
