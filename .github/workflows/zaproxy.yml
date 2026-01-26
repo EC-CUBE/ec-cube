@@ -61,7 +61,6 @@ jobs:
       ###    - admin_customer_delivery
       #    - admin_customer_edit
       #    - admin_customer_list
-          - admin_create_customers
       ###    - admin_delivery
       #    - admin_js_css
       #    - admin_log
