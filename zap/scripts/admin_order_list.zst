@@ -255,6 +255,7 @@
       "elementType": "ZestComment"
     },
     {
+      "url": "https://ec-cube/admin/shipping/{{order-id}}/order_status",
       "urlToken": "https://ec-cube/admin/shipping/{{order-id}}/order_status",
       "data": "order_status=1",
       "method": "PUT",
@@ -283,6 +284,7 @@
       "elementType": "ZestComment"
     },
     {
+      "url": "https://ec-cube/admin/shipping/{{order-id}}/tracking_number",
       "urlToken": "https://ec-cube/admin/shipping/{{order-id}}/tracking_number",
       "data": "tracking_number=test",
       "method": "PUT",
