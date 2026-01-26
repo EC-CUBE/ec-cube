@@ -58,8 +58,7 @@ jobs:
       ###    - admin_content_cache
       #    - admin_content_file
       ###    - admin_content_layout
-          - admin_create_customer
-          - admin_customer_delivery
+      ###    - admin_customer_delivery
       #    - admin_customer_edit
       #    - admin_customer_list
       ###    - admin_delivery
@@ -74,8 +73,8 @@ jobs:
       ###    - admin_news
       ###    - admin_order_edit
       #    - admin_order_edit_search
-      ##    - admin_order_list
-      ##    - admin_order_mail
+          - admin_order_list
+          - admin_order_mail
       ###    - admin_page
       ###    - admin_payment
       ###    - admin_product_category
