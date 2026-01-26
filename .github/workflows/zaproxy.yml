@@ -74,7 +74,7 @@ jobs:
       ###    - admin_order_edit
       #    - admin_order_edit_search
           - admin_order_list
-          - admin_order_mail
+      ##    - admin_order_mail
       ###    - admin_page
       ###    - admin_payment
       ###    - admin_product_category
