@@ -119,8 +119,8 @@ jobs:
         include:
           - target: admin_authority
             thread_per_host: 1
-          - target: admin_customer_delivery
-            before_script: admin_create_customer.zst
+        #  - target: admin_customer_delivery
+        #    before_script: admin_create_customer.zst
         #  - target: admin_content_cache
         #    thread_per_host: 1
         #  - target: admin_js_css
