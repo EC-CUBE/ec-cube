@@ -75,7 +75,7 @@ jobs:
       ###    - admin_order_edit
       #    - admin_order_edit_search
       ###    - admin_order_list
-      ##    - admin_order_mail
+          - admin_order_mail
       ###    - admin_page
       ###    - admin_payment
       ###    - admin_product_category
@@ -134,6 +134,8 @@ jobs:
         #    context: default
         #  - target: admin_order_edit_search
         #    before_script: admin_create_customers.zst
+          - target: admin_order_mail
+            before_script: admin_create_customers.zst
         #  - target: admin_shop_setting
         #    thread_per_host: 1
         #  - target: admin_system
