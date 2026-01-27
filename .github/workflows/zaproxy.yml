@@ -59,6 +59,7 @@ jobs:
       #    - admin_content_file
       ###    - admin_content_layout
       ###    - admin_customer_delivery
+          - admin_create_customers.zst
       #    - admin_customer_edit
       #    - admin_customer_list
       ###    - admin_delivery
@@ -78,7 +79,7 @@ jobs:
       ###    - admin_page
       ###    - admin_payment
       ###    - admin_product_category
-          - admin_product_class_name
+      ##    - admin_product_class_name
       #    - admin_product_csv
       ###    - admin_product_copy
       ###    - admin_product_edit
