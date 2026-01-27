@@ -150,7 +150,7 @@
       "urlToken": "https://ec-cube/admin/product/class_name",
       "data": "admin_class_name%5B_token%5D={{csrf1}}&admin_class_name%5Bname%5D=test&admin_class_name%5Bbackend_name%5D=test",
       "method": "POST",
-      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 144\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
       "assertions": [
         {
           "rootExpression": {
@@ -218,7 +218,7 @@
       "url": "https://ec-cube/admin/product/class_name/sort_no/move",
       "data": "1=1&2=3&{{class-id}}=2",
       "method": "POST",
-      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 11\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nECCUBE-CSRF-TOKEN: {{eccube-csrf-token}}\r\nContent-Type: application/x-www-form-urlencoded; charset=UTF-8\r\nX-Requested-With: XMLHttpRequest\r\nsec-ch-ua-platform: \"Linux\"\r\nOrigin: https://ec-cube\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: cors\r\nSec-Fetch-Dest: empty\r\n",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nECCUBE-CSRF-TOKEN: {{eccube-csrf-token}}\r\nContent-Type: application/x-www-form-urlencoded; charset=UTF-8\r\nX-Requested-With: XMLHttpRequest\r\nsec-ch-ua-platform: \"Linux\"\r\nOrigin: https://ec-cube\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: cors\r\nSec-Fetch-Dest: empty\r\n",
       "assertions": [
         {
           "rootExpression": {
@@ -246,7 +246,7 @@
       "url": "https://ec-cube/admin/product/class_name",
       "data": "class_name_{{class-id}}%5B_token%5D={{class-token}}&class_name_{{class-id}}%5Bname%5D=test&class_name_{{class-id}}%5Bbackend_name%5D=test",
       "method": "POST",
-      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 132\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
       "assertions": [
         {
           "rootExpression": {
@@ -313,7 +313,7 @@
       "urlToken": "https://ec-cube/admin/product/class_category/{{class-id}}",
       "data": "admin_class_category%5B_token%5D={{csrf12}}&admin_class_category%5Bname%5D=test&admin_class_category%5Bbackend_name%5D=test",
       "method": "POST",
-      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 156\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
       "assertions": [
         {
           "rootExpression": {
@@ -383,7 +383,7 @@
       "urlToken": "https://ec-cube/admin/product/class_category/{{class-id}}",
       "data": "admin_class_category%5B_token%5D={{csrf4}}&admin_class_category%5Bname%5D=test&admin_class_category%5Bbackend_name%5D=test",
       "method": "POST",
-      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 156\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
       "assertions": [
         {
           "rootExpression": {
@@ -451,7 +451,7 @@
       "url": "https://ec-cube/admin/product/class_category/sort_no/move",
       "data": "{{class-category-id-1}}=2&{{class-category-id-2}}=1",
       "method": "POST",
-      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 9\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nECCUBE-CSRF-TOKEN: {{eccube-csrf-token}}\r\nContent-Type: application/x-www-form-urlencoded; charset=UTF-8\r\nX-Requested-With: XMLHttpRequest\r\nsec-ch-ua-platform: \"Linux\"\r\nOrigin: https://ec-cube\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: cors\r\nSec-Fetch-Dest: empty\r\n",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nECCUBE-CSRF-TOKEN: {{eccube-csrf-token}}\r\nContent-Type: application/x-www-form-urlencoded; charset=UTF-8\r\nX-Requested-With: XMLHttpRequest\r\nsec-ch-ua-platform: \"Linux\"\r\nOrigin: https://ec-cube\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: cors\r\nSec-Fetch-Dest: empty\r\n",
       "assertions": [
         {
           "rootExpression": {
@@ -479,7 +479,7 @@
       "urlToken": "https://ec-cube/admin/product/class_category/{{class-id}}/{{class-category-id-2}}/edit",
       "data": "class_category_{{class-category-id-2}}%5B_token%5D={{class-category-token-2}}&class_category_{{class-category-id-2}}%5Bname%5D=test&class_category_{{class-category-id-2}}%5Bbackend_name%5D=test&class_category_{{class-category-id-2}}%5Bvisible%5D=1",
       "method": "POST",
-      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 180\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
       "assertions": [
         {
           "rootExpression": {
@@ -529,7 +529,7 @@
       "urlToken": "https://ec-cube/admin/product/class_category/{{class-id}}/{{class-category-id-2}}/visibility",
       "data": "_token={{eccube-csrf-token}}&_method=put",
       "method": "POST",
-      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 62\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
       "assertions": [
         {
           "rootExpression": {
@@ -557,7 +557,7 @@
       "urlToken": "https://ec-cube/admin/product/class_category/{{class-id}}/{{class-category-id-2}}/delete",
       "data": "_token={{eccube-csrf-token}}&_method=delete",
       "method": "POST",
-      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 65\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
       "assertions": [
         {
           "rootExpression": {
@@ -585,7 +585,7 @@
       "urlToken": "https://ec-cube/admin/product/class_category/{{class-id}}/{{class-category-id-1}}/delete",
       "data": "_token={{eccube-csrf-token}}&_method=delete",
       "method": "POST",
-      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 65\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
       "assertions": [
         {
           "rootExpression": {
@@ -613,7 +613,7 @@
       "urlToken": "https://ec-cube/admin/product/class_name/{{class-id}}/delete",
       "data": "_token={{eccube-csrf-token}}&_method=delete",
       "method": "POST",
-      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 65\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
       "assertions": [
         {
           "rootExpression": {
