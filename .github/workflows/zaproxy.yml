@@ -61,7 +61,6 @@ jobs:
       ###    - admin_customer_delivery
       #    - admin_customer_edit
       #    - admin_customer_list
-          - admin_create_customers
       ###    - admin_delivery
       #    - admin_js_css
       #    - admin_log
@@ -75,11 +74,11 @@ jobs:
       ###    - admin_order_edit
       #    - admin_order_edit_search
       ###    - admin_order_list
-          - admin_order_mail
+      ##    - admin_order_mail
       ###    - admin_page
       ###    - admin_payment
       ###    - admin_product_category
-      ##    - admin_product_class_name
+          - admin_product_class_name
       #    - admin_product_csv
       ###    - admin_product_copy
       ###    - admin_product_edit
@@ -134,8 +133,6 @@ jobs:
         #    context: default
         #  - target: admin_order_edit_search
         #    before_script: admin_create_customers.zst
-          - target: admin_order_mail
-            before_script: admin_create_customers.zst
         #  - target: admin_shop_setting
         #    thread_per_host: 1
         #  - target: admin_system
