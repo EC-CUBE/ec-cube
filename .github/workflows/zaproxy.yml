@@ -59,7 +59,7 @@ jobs:
       #    - admin_content_file
       ###    - admin_content_layout
       ###    - admin_customer_delivery
-          - admin_create_customers.zst
+          - admin_create_customers
       #    - admin_customer_edit
       #    - admin_customer_list
       ###    - admin_delivery
