@@ -49,6 +49,7 @@ jobs:
           DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
           DATABASE_SERVER_VERSION: 14
         run: |
+           PGPASSWORD=password psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='${{ secrets.X_ECCUBE_KEY }}';"
            bin/console eccube:composer:require "ec-cube/recommend42"
            bin/console eccube:composer:require "ec-cube/coupon42"
            bin/console eccube:composer:require "ec-cube/mailmagazine42"
@@ -58,6 +59,8 @@ jobs:
            bin/console eccube:composer:require "ec-cube/productreview42"
            bin/console eccube:composer:require "ec-cube/api42"
            bin/console eccube:composer:require "ec-cube/sitekit42"
+           bin/console eccube:composer:require "ec-cube/amazonpayv2_42_bundle"
+           bin/console eccube:composer:require "ec-cube/eccubepaymentlite42"
 
       - name: revert to config platform.php
         run: composer config platform.php 8.1.0
