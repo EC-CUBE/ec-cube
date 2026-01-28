@@ -70,7 +70,7 @@ jobs:
         id: composer-cache
         run: |
           echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - uses: actions/cache@v1
+      - uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -116,7 +116,7 @@ jobs:
       - name: Run chromedriver
         run: |
           export DISPLAY=:99
-          chromedriver --url-base=/wd/hub &
+          chromedriver --url-base=/wd/hub --port=9515 &
           echo ">>> Started chrome-driver"
           sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
           echo ">>> Started xvfb"
@@ -148,13 +148,13 @@ jobs:
         run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
       - name: Upload evidence
         if: failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v6
         with:
           name: plugin-install-${{ matrix.method }}-evidence
           path: codeception/_output/
       - name: Upload logs
         if: failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v6
         with:
           name: plugin-install-${{ matrix.method }}-logs
           path: var/log/
@@ -214,7 +214,7 @@ jobs:
         id: composer-cache
         run: |
           echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - uses: actions/cache@v1
+      - uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -260,7 +260,7 @@ jobs:
       - name: Run chromedriver
         run: |
           export DISPLAY=:99
-          chromedriver --url-base=/wd/hub &
+          chromedriver --url-base=/wd/hub --port=9515 &
           echo ">>> Started chrome-driver"
           sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
           echo ">>> Started xvfb"
@@ -292,13 +292,13 @@ jobs:
         run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
       - name: Upload evidence
         if: failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v6
         with:
           name: plugin-update-${{ matrix.method }}-evidence
           path: codeception/_output/
       - name: Upload logs
         if: failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v6
         with:
           name: plugin-update-${{ matrix.method }}-logs
           path: var/log/
@@ -358,7 +358,7 @@ jobs:
         id: composer-cache
         run: |
           echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - uses: actions/cache@v1
+      - uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -404,7 +404,7 @@ jobs:
       - name: Run chromedriver
         run: |
           export DISPLAY=:99
-          chromedriver --url-base=/wd/hub &
+          chromedriver --url-base=/wd/hub --port=9515 &
           echo ">>> Started chrome-driver"
           sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
           echo ">>> Started xvfb"
@@ -436,13 +436,13 @@ jobs:
         run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
       - name: Upload evidence
         if: failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v6
         with:
           name: plugin-extend-${{ matrix.method }}-evidence
           path: codeception/_output/
       - name: Upload logs
         if: failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v6
         with:
           name: plugin-extend-${{ matrix.method }}-logs
           path: var/log/
@@ -505,7 +505,7 @@ jobs:
         id: composer-cache
         run: |
           echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - uses: actions/cache@v1
+      - uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -551,7 +551,7 @@ jobs:
       - name: Run chromedriver
         run: |
           export DISPLAY=:99
-          chromedriver --url-base=/wd/hub &
+          chromedriver --url-base=/wd/hub --port=9515 &
           echo ">>> Started chrome-driver"
           sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
           echo ">>> Started xvfb"
@@ -583,13 +583,13 @@ jobs:
         run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
       - name: Upload evidence
         if: failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v6
         with:
           name: plugin-depend-${{ matrix.method }}-evidence
           path: codeception/_output/
       - name: Upload logs
         if: failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v6
         with:
           name: plugin-depend-${{ matrix.method }}-logs
           path: var/log/
