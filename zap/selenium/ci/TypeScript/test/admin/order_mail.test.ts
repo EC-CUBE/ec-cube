@@ -1,22 +1,19 @@
 import { test, expect, chromium, Page } from '@playwright/test';
+import PlaywrightConfig from '../../playwright.config';
 import { intervalRepeater } from '../../utils/Progress';
-import { ZapClient, Mode, ContextType, Risk, HttpMessage } from '../../utils/ZapClient';
-const zapClient = new ZapClient('http://127.0.0.1:8090');
+import { ZapClient, ContextType, Risk, HttpMessage } from '../../utils/ZapClient';
+import { ECCUBE_ADMIN_ROUTE } from '../../config/default.config';
 
-const baseURL = 'https://ec-cube/admin';
-const url = baseURL + '/order/4/mail';
+const zapClient = new ZapClient();
+
+const url = `${PlaywrightConfig.use.baseURL}/${ECCUBE_ADMIN_ROUTE}/order/4/mail`;
 
 test.describe.serial('受注管理>メール通知のテストをします', () => {
   let page: Page;
   test.beforeAll(async () => {
-    await zapClient.setMode(Mode.Protect);
-    await zapClient.newSession('/zap/wrk/sessions/admin_contact', true);
-    await zapClient.importContext(ContextType.Admin);
+    await zapClient.startSession(ContextType.Admin, 'admin_contact')
+      .then(async () => expect(await zapClient.isForcedUserModeEnabled()).toBeTruthy());
 
-    if (!await zapClient.isForcedUserModeEnabled()) {
-      await zapClient.setForcedUserModeEnabled();
-      expect(await zapClient.isForcedUserModeEnabled()).toBeTruthy();
-    }
     const browser = await chromium.launch();
     page = await browser.newPage();
     await page.goto(url);

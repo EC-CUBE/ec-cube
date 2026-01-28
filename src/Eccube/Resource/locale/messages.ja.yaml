@@ -744,11 +744,11 @@ admin.product.product_csv.stock_description: 在庫数無制限フラグが0の�
 admin.product.product_csv.stock_unlimited_col: 在庫数無制限フラグ
 admin.product.product_csv.stock_unlimited_description: '0:制限 1: 無制限を指定します。'
 admin.product.product_csv.sale_limit_col: 販売制限数
-admin.product.product_csv.sale_limit_description: 1以上の数値を設定
+admin.product.product_csv.sale_limit_description: 1以上の数値を設定します。未指定の場合、販売制限数なしとして扱います。
 admin.product.product_csv.normal_price_col: 通常価格
 admin.product.product_csv.normal_price_description: 0以上の数値を設定
 admin.product.product_csv.sale_price_col: 販売価格
-admin.product.product_csv.sale_price_description: 0以上の数値を設定
+admin.product.product_csv.sale_price_description: 0以上の数値を設定します。未指定の場合、非表示として扱います。
 admin.product.product_csv.delivery_fee_col: 送料
 admin.product.product_csv.delivery_fee_description: 商品ごとの送料設定が有効の場合、0以上の数値を設定
 admin.product.product_csv.tax_rate_col: 税率

@@ -185,8 +185,10 @@ class CategoryController extends AbstractController
         }
 
         $formViews = [];
+        $formErrors = [];
         foreach ($forms as $key => $value) {
             $formViews[$key] = $value->createView();
+            $formErrors[$key]['count'] = $value->getErrors(true)->count();
         }
 
         $Ids = [];
@@ -205,6 +207,7 @@ class CategoryController extends AbstractController
             'TopCategories' => $TopCategories,
             'TargetCategory' => $TargetCategory,
             'forms' => $formViews,
+            'error_forms' => $formErrors,
         ];
     }
 

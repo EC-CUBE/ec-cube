@@ -95,7 +95,7 @@ class EF01TopCest
         $I->wantTo('EF0101-UC01-T02 TOPページ 新着情報');
 
         $createNews = Fixtures::get('createNews');
-        $News = $createNews(new \DateTime(), 'タイトル1', 'コメント1', 'https://www.ec-cube.net');
+        $News = $createNews(new \DateTime(), 'タイトル1', 'コメント1', 'https://www.example.com');
 
         $this->clearDoctrineCache();
 

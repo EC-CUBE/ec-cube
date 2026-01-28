@@ -128,7 +128,7 @@ jobs:
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           MAILER_URL: 'smtp://127.0.0.1:1025'
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
-        run: php -S 127.0.0.1:8000 &
+        run: php -S 127.0.0.1:8000 codeception/router.php &
 
       ## ${PWD}/repos does not exist so service cannot be started
       - name: Run package-api
@@ -272,7 +272,7 @@ jobs:
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           MAILER_URL: 'smtp://127.0.0.1:1025'
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
-        run: php -S 127.0.0.1:8000 &
+        run: php -S 127.0.0.1:8000 codeception/router.php &
 
       ## ${PWD}/repos does not exist so service cannot be started
       - name: Run package-api
@@ -416,7 +416,7 @@ jobs:
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           MAILER_URL: 'smtp://127.0.0.1:1025'
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
-        run: php -S 127.0.0.1:8000 &
+        run: php -S 127.0.0.1:8000 codeception/router.php &
 
       ## ${PWD}/repos does not exist so service cannot be started
       - name: Run package-api
@@ -563,7 +563,7 @@ jobs:
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           MAILER_URL: 'smtp://127.0.0.1:1025'
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
-        run: php -S 127.0.0.1:8000 &
+        run: php -S 127.0.0.1:8000 codeception/router.php &
 
       ## ${PWD}/repos does not exist so service cannot be started
       - name: Run package-api

@@ -17,7 +17,6 @@ use Eccube\Common\EccubeConfig;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -55,8 +54,7 @@ class PostalType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $eccubeConfig = $this->eccubeConfig;
-        $constraints = function (Options $options) use ($eccubeConfig) {
+        $resolver->setNormalizer('constraints', function($options, $value) {
             $constraints = [];
             // requiredがtrueに指定されている場合, NotBlankを追加
             if (isset($options['required']) && true === $options['required']) {
@@ -64,7 +62,7 @@ class PostalType extends AbstractType
             }
 
             $constraints[] = new Assert\Length([
-                'max' => $eccubeConfig['eccube_postal_code'],
+                'max' => $this->eccubeConfig['eccube_postal_code'],
             ]);
 
             $constraints[] = new Assert\Type([
@@ -72,12 +70,11 @@ class PostalType extends AbstractType
                 'message' => 'form_error.numeric_only',
             ]);
 
-            return $constraints;
-        };
+            return array_merge($constraints, $value);
+        });
 
         $resolver->setDefaults([
             'options' => [],
-            'constraints' => $constraints,
             'attr' => [
                 'class' => 'p-postal-code',
                 'placeholder' => 'common.postal_code_sample',

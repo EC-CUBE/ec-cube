@@ -1,0 +1,39 @@
+From 99bc810aa3eeaefb75615a27984ecd8538bddc0c Mon Sep 17 00:00:00 2001
+From: carkn <carbuncle.panic@gmail.com>
+Date: Fri, 1 Apr 2022 16:44:33 +0900
+Subject: [PATCH] =?UTF-8?q?modified=20=E9=A1=A7=E5=AE=A2=E6=83=85=E5=A0=B1?=
+ =?UTF-8?q?=E8=BF=BD=E5=8A=A0=E3=82=92=E6=8A=91=E6=AD=A2?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../Controller/Admin/Customer/CustomerEditController.php     | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/src/Eccube/Controller/Admin/Customer/CustomerEditController.php b/src/Eccube/Controller/Admin/Customer/CustomerEditController.php
+index f8beac4f6d..4f67185c5f 100644
+--- a/src/Eccube/Controller/Admin/Customer/CustomerEditController.php
++++ b/src/Eccube/Controller/Admin/Customer/CustomerEditController.php
+@@ -114,7 +114,7 @@ class CustomerEditController extends AbstractController
+             }
+ 
+             $this->entityManager->persist($Customer);
+-            $this->entityManager->flush();
++//            $this->entityManager->flush();
+ 
+             log_info('会員登録完了', [$Customer->getId()]);
+ 
+@@ -130,7 +130,8 @@ class CustomerEditController extends AbstractController
+             $this->addSuccess('admin.common.save_complete', 'admin');
+ 
+             return $this->redirectToRoute('admin_customer_edit', [
+-                'id' => $Customer->getId(),
++//                'id' => $Customer->getId(),
++                  'id' => 0,
+             ]);
+         }
+ 
+-- 
+2.30.2
+
