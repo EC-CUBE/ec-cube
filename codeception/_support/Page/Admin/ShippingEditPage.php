@@ -230,4 +230,55 @@ class ShippingEditPage extends AbstractAdminPageStyleGuide
         $this->tester->see((new \DateTime())->format('Y/m/d'),
             '#shipmentOverview_'.$num.' > div > div:nth-child(4) > div:nth-child(2) > div:nth-child(3) > div > span');
     }
+
+    public function 注文者情報をコピー($num = 0)
+    {
+        $this->tester->scrollTo(['css' => '#shipmentOverview_'.$num], 0, -50);
+        $this->tester->click(['css' => '#shipmentOverview_'.$num.' .copy-customer']);
+
+        return $this;
+    }
+
+    public function お届け先から選択($num = 0)
+    {
+        $this->tester->scrollTo(['css' => '#shipmentOverview_'.$num], 0, -50);
+        $this->tester->click(['css' => '#shipmentOverview_'.$num.' .selectCustomerAddressButton']);
+        $this->tester->waitForElementVisible('#selectCustomerAddressModal_'.$num);
+
+        return $this;
+    }
+
+    public function お届け先選択モーダル_選択($rowNum, $shippingNum = 0)
+    {
+        $this->tester->waitForElementVisible('#selectCustomerAddressModal_'.$shippingNum.' #customerAddressList table');
+        $this->tester->click("#selectCustomerAddressModal_".$shippingNum." #customerAddressList > table > tbody > tr:nth-child({$rowNum}) > td:nth-child(4) > button");
+        $this->tester->waitForElementNotVisible('#selectCustomerAddressModal_'.$shippingNum);
+
+        return $this;
+    }
+
+    public function 配送先_姓を取得($num = 0)
+    {
+        return $this->tester->grabValueFrom(['id' => 'form_shippings_'.$num.'_name_name01']);
+    }
+
+    public function 配送先_名を取得($num = 0)
+    {
+        return $this->tester->grabValueFrom(['id' => 'form_shippings_'.$num.'_name_name02']);
+    }
+
+    public function 配送先_郵便番号を取得($num = 0)
+    {
+        return $this->tester->grabValueFrom(['id' => 'form_shippings_'.$num.'_postal_code']);
+    }
+
+    public function 配送先_住所1を取得($num = 0)
+    {
+        return $this->tester->grabValueFrom(['id' => 'form_shippings_'.$num.'_address_addr01']);
+    }
+
+    public function 配送先_電話番号を取得($num = 0)
+    {
+        return $this->tester->grabValueFrom(['id' => 'form_shippings_'.$num.'_phone_number']);
+    }
 }

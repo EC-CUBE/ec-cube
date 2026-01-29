@@ -211,4 +211,47 @@ class OrderEditPage extends AbstractAdminPageStyleGuide
 
         return $this;
     }
+
+    public function お届け先から選択()
+    {
+        $this->tester->scrollTo(['css' => '#shippingInfo'], 0, -50);
+        $this->tester->click('#selectCustomerAddressButton');
+        $this->tester->waitForElementVisible('#selectCustomerAddressModal');
+
+        return $this;
+    }
+
+    public function お届け先選択モーダル_選択($rowNum)
+    {
+        $this->tester->waitForElementVisible('#customerAddressList table');
+        $this->tester->click("#customerAddressList > table > tbody > tr:nth-child({$rowNum}) > td:nth-child(4) > button");
+        $this->tester->waitForElementNotVisible('#selectCustomerAddressModal');
+
+        return $this;
+    }
+
+    public function 配送先_姓を取得()
+    {
+        return $this->tester->grabValueFrom(['id' => 'order_Shipping_name_name01']);
+    }
+
+    public function 配送先_名を取得()
+    {
+        return $this->tester->grabValueFrom(['id' => 'order_Shipping_name_name02']);
+    }
+
+    public function 配送先_郵便番号を取得()
+    {
+        return $this->tester->grabValueFrom(['id' => 'order_Shipping_postal_code']);
+    }
+
+    public function 配送先_住所1を取得()
+    {
+        return $this->tester->grabValueFrom(['id' => 'order_Shipping_address_addr01']);
+    }
+
+    public function 配送先_電話番号を取得()
+    {
+        return $this->tester->grabValueFrom(['id' => 'order_Shipping_phone_number']);
+    }
 }

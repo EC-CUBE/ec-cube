@@ -29,6 +29,7 @@ use Eccube\Form\Type\Admin\OrderType;
 use Eccube\Form\Type\Admin\SearchCustomerType;
 use Eccube\Form\Type\Admin\SearchProductType;
 use Eccube\Repository\CategoryRepository;
+use Eccube\Repository\CustomerAddressRepository;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\Master\DeviceTypeRepository;
@@ -126,6 +127,11 @@ class EditController extends AbstractController
     private $orderHelper;
 
     /**
+     * @var CustomerAddressRepository
+     */
+    protected $customerAddressRepository;
+
+    /**
      * EditController constructor.
      *
      * @param TaxRuleService $taxRuleService
@@ -142,6 +148,7 @@ class EditController extends AbstractController
      * @param OrderStatusRepository $orderStatusRepository
      * @param OrderStateMachine $orderStateMachine
      * @param OrderHelper $orderHelper
+     * @param CustomerAddressRepository $customerAddressRepository
      */
     public function __construct(
         TaxRuleService $taxRuleService,
@@ -158,6 +165,7 @@ class EditController extends AbstractController
         OrderStatusRepository $orderStatusRepository,
         OrderStateMachine $orderStateMachine,
         OrderHelper $orderHelper,
+        CustomerAddressRepository $customerAddressRepository,
     ) {
         $this->taxRuleService = $taxRuleService;
         $this->deviceTypeRepository = $deviceTypeRepository;
@@ -173,6 +181,7 @@ class EditController extends AbstractController
         $this->orderStatusRepository = $orderStatusRepository;
         $this->orderStateMachine = $orderStateMachine;
         $this->orderHelper = $orderHelper;
+        $this->customerAddressRepository = $customerAddressRepository;
     }
 
     /**
@@ -696,6 +705,63 @@ class EditController extends AbstractController
             return [
                 'OrderItemTypes' => $OrderItemTypes,
             ];
+        }
+
+        throw new BadRequestHttpException();
+    }
+
+    /**
+     * 会員のお届け先を取得する.
+     *
+     * @Route("/%eccube_admin_route%/order/search/customer_address", name="admin_order_search_customer_address", methods={"POST"})
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function searchCustomerAddress(Request $request)
+    {
+        if ($request->isXmlHttpRequest() && $this->isTokenValid()) {
+            log_debug('search customer address start.');
+
+            $customerId = $request->get('customer_id');
+            if (!$customerId) {
+                log_debug('customer_id is required.');
+
+                return $this->json(['error' => 'customer_id is required'], 400);
+            }
+
+            /** @var \Eccube\Entity\Customer $Customer */
+            $Customer = $this->customerRepository->find($customerId);
+
+            if (is_null($Customer)) {
+                log_debug('customer not found.');
+
+                return $this->json([], 404);
+            }
+
+            $CustomerAddresses = $this->customerAddressRepository->findBy(['Customer' => $Customer], ['id' => 'ASC']);
+
+            $data = [];
+            foreach ($CustomerAddresses as $CustomerAddress) {
+                $data[] = [
+                    'id' => $CustomerAddress->getId(),
+                    'name01' => $CustomerAddress->getName01(),
+                    'name02' => $CustomerAddress->getName02(),
+                    'kana01' => $CustomerAddress->getKana01(),
+                    'kana02' => $CustomerAddress->getKana02(),
+                    'postal_code' => $CustomerAddress->getPostalCode(),
+                    'pref' => is_null($CustomerAddress->getPref()) ? null : $CustomerAddress->getPref()->getId(),
+                    'addr01' => $CustomerAddress->getAddr01(),
+                    'addr02' => $CustomerAddress->getAddr02(),
+                    'phone_number' => $CustomerAddress->getPhoneNumber(),
+                    'company_name' => $CustomerAddress->getCompanyName(),
+                ];
+            }
+
+            log_debug('search customer address complete.', ['count' => count($data)]);
+
+            return $this->json($data);
         }
 
         throw new BadRequestHttpException();

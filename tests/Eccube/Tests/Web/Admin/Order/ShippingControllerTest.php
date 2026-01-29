@@ -317,4 +317,73 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
         self::assertSame('100.00', $Order->getProductOrderItems()[0]->getTax());
         self::assertSame('200.00', $Order->getProductOrderItems()[1]->getTax());
     }
+
+    /**
+     * 会員のお届け先一覧を取得するAPIのテスト（出荷登録画面用）
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/6594
+     */
+    public function testSearchCustomerAddress()
+    {
+        $Customer = $this->createCustomer();
+        $CustomerAddress = $this->createCustomerAddress($Customer);
+
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_shipping_search_customer_address'),
+            ['customer_id' => $Customer->getId()],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            ]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $responseData = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertIsArray($responseData);
+        $this->assertGreaterThan(0, count($responseData));
+        $this->assertEquals($CustomerAddress->getName01(), $responseData[0]['name01']);
+        $this->assertEquals($CustomerAddress->getName02(), $responseData[0]['name02']);
+        $this->assertEquals($CustomerAddress->getPostalCode(), $responseData[0]['postal_code']);
+    }
+
+    /**
+     * お届け先取得API - 会員IDが未指定の場合のテスト
+     */
+    public function testSearchCustomerAddressWithoutCustomerId()
+    {
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_shipping_search_customer_address'),
+            [],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            ]
+        );
+
+        $this->assertEquals(400, $this->client->getResponse()->getStatusCode());
+    }
+
+    /**
+     * お届け先取得API - 存在しない会員IDの場合のテスト
+     */
+    public function testSearchCustomerAddressWithInvalidCustomerId()
+    {
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_shipping_search_customer_address'),
+            ['customer_id' => 99999],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            ]
+        );
+
+        $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
+    }
 }
