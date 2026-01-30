@@ -1,9 +1,9 @@
 {
   "about": "This is a Zest script. For more details about Zest visit https://developer.mozilla.org/en-US/docs/Zest",
   "zestVersion": "0.6",
-  "generatedBy": "Split from admin_product_class_name",
-  "title": "admin_product_class_name_only",
-  "description": "Login and CRUD for Product ClassName (create/edit/delete).",
+  "generatedBy": "Sequence Script Template",
+  "title": "admin_product_class_name_basic",
+  "description": "Tests creation, editing, and deletion of Product Class Names.",
   "prefix": "",
   "type": "Active",
   "parameters": {
@@ -20,19 +20,25 @@
       "headers": "Upgrade-Insecure-Requests: 1\r\n",
       "assertions": [
         {
-          "rootExpression": { "code": 200, "not": false, "elementType": "ZestExpressionStatusCode" },
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
           "elementType": "ZestAssertion"
         }
       ],
       "followRedirects": true,
-      "timestamp": 0,
-      "cookies": [],
       "index": 1,
       "enabled": true,
       "elementType": "ZestRequest"
     },
     {
-      "fieldDefinition": { "formIndex": 0, "fieldName": "_csrf_token", "elementType": "ZestFieldDefinition" },
+      "fieldDefinition": {
+        "formIndex": 0,
+        "fieldName": "_csrf_token",
+        "elementType": "ZestFieldDefinition"
+      },
       "variableName": "csrf_login",
       "index": 2,
       "enabled": true,
@@ -46,13 +52,15 @@
       "headers": "Content-Type: application/x-www-form-urlencoded\r\n",
       "assertions": [
         {
-          "rootExpression": { "code": 302, "not": false, "elementType": "ZestExpressionStatusCode" },
+          "rootExpression": {
+            "code": 302,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
           "elementType": "ZestAssertion"
         }
       ],
       "followRedirects": false,
-      "timestamp": 0,
-      "cookies": [],
       "index": 3,
       "enabled": true,
       "elementType": "ZestRequest"
@@ -64,20 +72,21 @@
       "headers": "Upgrade-Insecure-Requests: 1\r\n",
       "assertions": [
         {
-          "rootExpression": { "code": 200, "not": false, "elementType": "ZestExpressionStatusCode" },
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
           "elementType": "ZestAssertion"
         }
       ],
       "followRedirects": true,
-      "timestamp": 0,
-      "cookies": [],
       "index": 4,
       "enabled": true,
       "elementType": "ZestRequest"
     },
-
     {
-      "comment": "規格管理ページへ",
+      "comment": "規格管理ページへアクセス",
       "index": 5,
       "enabled": true,
       "elementType": "ZestComment"
@@ -89,13 +98,15 @@
       "headers": "Upgrade-Insecure-Requests: 1\r\n",
       "assertions": [
         {
-          "rootExpression": { "code": 200, "not": false, "elementType": "ZestExpressionStatusCode" },
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
           "elementType": "ZestAssertion"
         }
       ],
       "followRedirects": false,
-      "timestamp": 0,
-      "cookies": [],
       "index": 6,
       "enabled": true,
       "elementType": "ZestRequest"
@@ -110,15 +121,18 @@
       "elementType": "ZestAssignStringDelimiters"
     },
     {
-      "fieldDefinition": { "formIndex": 0, "fieldName": "admin_class_name__token", "elementType": "ZestFieldDefinition" },
-      "variableName": "csrf_class_name",
+      "fieldDefinition": {
+        "formIndex": 0,
+        "fieldName": "admin_class_name__token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "csrf1",
       "index": 8,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
-
     {
-      "comment": "規格登録（test）",
+      "comment": "規格登録",
       "index": 9,
       "enabled": true,
       "elementType": "ZestComment"
@@ -126,28 +140,23 @@
     {
       "url": "https://ec-cube/admin/product/class_name",
       "urlToken": "https://ec-cube/admin/product/class_name",
-      "data": "admin_class_name%5B_token%5D={{csrf_class_name}}&admin_class_name%5Bname%5D=test&admin_class_name%5Bbackend_name%5D=test",
+      "data": "admin_class_name%5B_token%5D={{csrf1}}&admin_class_name%5Bname%5D=test&admin_class_name%5Bbackend_name%5D=test",
       "method": "POST",
-      "headers": "Origin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\n",
+      "headers": "Content-Type: application/x-www-form-urlencoded\r\n",
       "assertions": [
         {
-          "rootExpression": { "code": 302, "not": false, "elementType": "ZestExpressionStatusCode" },
+          "rootExpression": {
+            "code": 302,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
           "elementType": "ZestAssertion"
         }
       ],
       "followRedirects": false,
-      "timestamp": 0,
-      "cookies": [],
       "index": 10,
       "enabled": true,
       "elementType": "ZestRequest"
-    },
-
-    {
-      "comment": "登録後一覧を取得して class-id / token を抽出",
-      "index": 11,
-      "enabled": true,
-      "elementType": "ZestComment"
     },
     {
       "url": "https://ec-cube/admin/product/class_name",
@@ -156,14 +165,16 @@
       "headers": "Upgrade-Insecure-Requests: 1\r\n",
       "assertions": [
         {
-          "rootExpression": { "code": 200, "not": false, "elementType": "ZestExpressionStatusCode" },
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
           "elementType": "ZestAssertion"
         }
       ],
       "followRedirects": false,
-      "timestamp": 0,
-      "cookies": [],
-      "index": 12,
+      "index": 11,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -172,7 +183,7 @@
       "postfix": "\">test",
       "location": "BODY",
       "variableName": "class-id",
-      "index": 13,
+      "index": 12,
       "enabled": true,
       "elementType": "ZestAssignStringDelimiters"
     },
@@ -181,39 +192,39 @@
       "postfix": "\" />",
       "location": "BODY",
       "variableName": "class-token",
-      "index": 14,
+      "index": 13,
       "enabled": true,
       "elementType": "ZestAssignRegexDelimiters"
     },
-
     {
-      "comment": "規格編集（test）",
-      "index": 15,
+      "comment": "規格編集",
+      "index": 14,
       "enabled": true,
       "elementType": "ZestComment"
     },
     {
       "url": "https://ec-cube/admin/product/class_name",
-      "data": "class_name_{{class-id}}%5B_token%5D={{class-token}}&class_name_{{class-id}}%5Bname%5D=test&class_name_{{class-id}}%5Bbackend_name%5D=test",
+      "data": "class_name_{{class-id}}%5B_token%5D={{class-token}}&class_name_{{class-id}}%5Bname%5D=test_edit&class_name_{{class-id}}%5Bbackend_name%5D=test_edit",
       "method": "POST",
-      "headers": "Origin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\n",
+      "headers": "Content-Type: application/x-www-form-urlencoded\r\n",
       "assertions": [
         {
-          "rootExpression": { "code": 302, "not": false, "elementType": "ZestExpressionStatusCode" },
+          "rootExpression": {
+            "code": 302,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
           "elementType": "ZestAssertion"
         }
       ],
       "followRedirects": false,
-      "timestamp": 0,
-      "cookies": [],
-      "index": 16,
+      "index": 15,
       "enabled": true,
       "elementType": "ZestRequest"
     },
-
     {
-      "comment": "規格削除（後始末）",
-      "index": 17,
+      "comment": "規格削除",
+      "index": 16,
       "enabled": true,
       "elementType": "ZestComment"
     },
@@ -221,17 +232,19 @@
       "urlToken": "https://ec-cube/admin/product/class_name/{{class-id}}/delete",
       "data": "_token={{eccube-csrf-token}}&_method=delete",
       "method": "POST",
-      "headers": "Origin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\n",
+      "headers": "Content-Type: application/x-www-form-urlencoded\r\n",
       "assertions": [
         {
-          "rootExpression": { "code": 302, "not": false, "elementType": "ZestExpressionStatusCode" },
+          "rootExpression": {
+            "code": 302,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
           "elementType": "ZestAssertion"
         }
       ],
       "followRedirects": false,
-      "timestamp": 0,
-      "cookies": [],
-      "index": 18,
+      "index": 17,
       "enabled": true,
       "elementType": "ZestRequest"
     }
