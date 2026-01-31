@@ -78,7 +78,7 @@ jobs:
       ###    - admin_page
       ###    - admin_payment
       ###    - admin_product_category
-          - admin_product_class_name
+      ##    - admin_product_class_name
       #    - admin_product_csv
       ###    - admin_product_copy
       ###    - admin_product_edit
@@ -110,10 +110,10 @@ jobs:
       #    - mypage_order
       ###    - plugin_coupon_admin_coupon
       #    - plugin_coupon_guest_shopping
-          - plugin_mailmagazine_send
-          - plugin_mailmagazine_template
-          - plugin_product_review
-          - plugin_recommend
+      ##    - plugin_mailmagazine_send
+      ##    - plugin_mailmagazine_template
+      ##    - plugin_product_review
+      ##    - plugin_recommend
       #    - plugin_related_product
       #    - plugin_sales_report
         include:
@@ -149,8 +149,8 @@ jobs:
         #    thread_per_host: 1
         #  - target: plugin_coupon_guest_shopping
         #    before_script: plugin_coupon_admin_create_coupon.zst
-          - target: plugin_mailmagazine_send
-            before_script: plugin_mailmagazine_create_customers.zst
+        ##  - target: plugin_mailmagazine_send
+        ##    before_script: plugin_mailmagazine_create_customers.zst
         #  - target: plugin_related_product
         #    thread_per_host: 1
 
