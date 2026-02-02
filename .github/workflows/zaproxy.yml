@@ -105,12 +105,12 @@ jobs:
       #    - guest_shopping_shipping_edit
       #    - guest_shopping_shipping_multiple
       #    - mypage_change
-          - mypage_delivery
+      ###    - mypage_delivery
       #    - mypage_favorite
       #    - mypage_order
       ###    - plugin_coupon_admin_coupon
       #    - plugin_coupon_guest_shopping
-      ##    - plugin_mailmagazine_send
+          - plugin_mailmagazine_send
       ##    - plugin_mailmagazine_template
       ##    - plugin_product_review
       ##    - plugin_recommend
