@@ -141,8 +141,8 @@ jobs:
         #    thread_per_host: 1
         #  - target: entry
         #    thread_per_host: 1
-          - target: mypage_delivery
-            before_script: admin_create_customer.zst
+        ##  - target: mypage_delivery
+        ##    before_script: admin_create_customer.zst
         #  - target: mypage_order
         #    before_script: admin_create_customer.zst
         #  - target: plugin_coupon_admin_coupon
