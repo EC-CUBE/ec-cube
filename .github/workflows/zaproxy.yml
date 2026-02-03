@@ -111,10 +111,9 @@ jobs:
       ###    - plugin_coupon_admin_coupon
       #    - plugin_coupon_guest_shopping
           - plugin_mailmagazine_send
-          - plugin_mailmagazine_create_customers
-      ##    - plugin_mailmagazine_template
-      ##    - plugin_product_review
-      ##    - plugin_recommend
+          - plugin_mailmagazine_template
+          - plugin_product_review
+          - plugin_recommend
       #    - plugin_related_product
       #    - plugin_sales_report
         include:
