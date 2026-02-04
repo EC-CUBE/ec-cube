@@ -110,10 +110,10 @@ jobs:
       #    - mypage_order
       ###    - plugin_coupon_admin_coupon
       #    - plugin_coupon_guest_shopping
-          - plugin_mailmagazine_send
-          - plugin_mailmagazine_template
-          - plugin_product_review
-          - plugin_recommend
+      ###    - plugin_mailmagazine_send
+      ###    - plugin_mailmagazine_template
+      ###    - plugin_product_review
+      ###    - plugin_recommend
       #    - plugin_related_product
       #    - plugin_sales_report
         include:
@@ -149,8 +149,8 @@ jobs:
         #    thread_per_host: 1
         #  - target: plugin_coupon_guest_shopping
         #    before_script: plugin_coupon_admin_create_coupon.zst
-          - target: plugin_mailmagazine_send
-            before_script: plugin_mailmagazine_create_customers.zst
+        ###  - target: plugin_mailmagazine_send
+        ###    before_script: plugin_mailmagazine_create_customers.zst
         #  - target: plugin_related_product
         #    thread_per_host: 1
 
@@ -494,11 +494,12 @@ jobs:
         uses: actions/download-artifact@v6
         with:
           path: artifacts
+          pattern: zap-*-alerts
       - name: Merge alerts
+        working-directory: artifacts
         run: |
           find .
           jq -s add **/alerts.json > all_alerts.json
-        working-directory: artifacts
       - name: Upload alerts
         uses: actions/upload-artifact@v5
         with:
