@@ -498,8 +498,16 @@ jobs:
       - name: Merge alerts
         working-directory: artifacts
         run: |
-          find .
-          jq -s add **/alerts.json > all_alerts.json
+          set -euo pipefail
+          mapfile -d '' files < <(find . -type f -name 'alerts.json' -print0)
+
+          if (( ${#files[@]} == 0 )); then
+            echo "No alerts.json found under artifacts/" >&2
+            find .
+            exit 1
+          fi
+
+          jq -s 'add' "${files[@]}" > all_alerts.json
       - name: Upload alerts
         uses: actions/upload-artifact@v5
         with:
