@@ -215,6 +215,7 @@
       "elementType": "ZestComment"
     },
     {
+      "url": "https://ec-cube/admin/product/class_category/{{class-id}}"
       "urlToken": "https://ec-cube/admin/product/class_category/{{class-id}}",
       "data": "",
       "method": "GET",
@@ -254,6 +255,7 @@
       "elementType": "ZestComment"
     },
     {
+      "url": "https://ec-cube/admin/product/class_category/{{class-id}}",
       "urlToken": "https://ec-cube/admin/product/class_category/{{class-id}}",
       "data": "admin_class_category%5B_token%5D={{csrf12}}&admin_class_category%5Bname%5D=test&admin_class_category%5Bbackend_name%5D=test",
       "method": "POST",
@@ -276,6 +278,7 @@
       "elementType": "ZestRequest"
     },
     {
+      "url": "https://ec-cube/admin/product/class_category/{{class-id}}",
       "urlToken": "https://ec-cube/admin/product/class_category/{{class-id}}",
       "data": "",
       "method": "GET",
@@ -324,6 +327,7 @@
       "elementType": "ZestComment"
     },
     {
+      url": "https://ec-cube/admin/product/class_category/{{class-id}}",
       "urlToken": "https://ec-cube/admin/product/class_category/{{class-id}}",
       "data": "admin_class_category%5B_token%5D={{csrf4}}&admin_class_category%5Bname%5D=test&admin_class_category%5Bbackend_name%5D=test",
       "method": "POST",
@@ -346,6 +350,7 @@
       "elementType": "ZestRequest"
     },
     {
+      url": "https://ec-cube/admin/product/class_category/{{class-id}}",
       "urlToken": "https://ec-cube/admin/product/class_category/{{class-id}}",
       "data": "",
       "method": "GET",
@@ -420,6 +425,7 @@
       "elementType": "ZestComment"
     },
     {
+      url": "https://ec-cube/admin/product/class_category/{{class-id}}/{{class-category-id-2}}/edit",
       "urlToken": "https://ec-cube/admin/product/class_category/{{class-id}}/{{class-category-id-2}}/edit",
       "data": "class_category_{{class-category-id-2}}%5B_token%5D={{class-category-token-2}}&class_category_{{class-category-id-2}}%5Bname%5D=test&class_category_{{class-category-id-2}}%5Bbackend_name%5D=test&class_category_{{class-category-id-2}}%5Bvisible%5D=1",
       "method": "POST",
@@ -442,6 +448,7 @@
       "elementType": "ZestRequest"
     },
     {
+      url": "https://ec-cube/admin/product/class_category/{{class-id}}",
       "urlToken": "https://ec-cube/admin/product/class_category/{{class-id}}",
       "data": "",
       "method": "GET",
@@ -470,6 +477,7 @@
       "elementType": "ZestComment"
     },
     {
+      url": "https://ec-cube/admin/product/class_category/{{class-id}}/{{class-category-id-2}}/visibility",
       "urlToken": "https://ec-cube/admin/product/class_category/{{class-id}}/{{class-category-id-2}}/visibility",
       "data": "_token={{eccube-csrf-token}}&_method=put",
       "method": "POST",
@@ -498,6 +506,7 @@
       "elementType": "ZestComment"
     },
     {
+      url": "https://ec-cube/admin/product/class_category/{{class-id}}/{{class-category-id-2}}/delete",
       "urlToken": "https://ec-cube/admin/product/class_category/{{class-id}}/{{class-category-id-2}}/delete",
       "data": "_token={{eccube-csrf-token}}&_method=delete",
       "method": "POST",
@@ -526,6 +535,7 @@
       "elementType": "ZestComment"
     },
     {
+      url": "https://ec-cube/admin/product/class_category/{{class-id}}/{{class-category-id-1}}/delete",
       "urlToken": "https://ec-cube/admin/product/class_category/{{class-id}}/{{class-category-id-1}}/delete",
       "data": "_token={{eccube-csrf-token}}&_method=delete",
       "method": "POST",
@@ -554,6 +564,7 @@
       "elementType": "ZestComment"
     },
     {
+      url": "https://ec-cube/admin/product/class_name/{{class-id}}/delete",
       "urlToken": "https://ec-cube/admin/product/class_name/{{class-id}}/delete",
       "data": "_token={{eccube-csrf-token}}&_method=delete",
       "method": "POST",
