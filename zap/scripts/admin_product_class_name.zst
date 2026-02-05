@@ -209,34 +209,6 @@
       "elementType": "ZestAssignRegexDelimiters"
     },
     {
-      "comment": "規格編集",
-      "index": 14,
-      "enabled": true,
-      "elementType": "ZestComment"
-    },
-    {
-      "url": "https://ec-cube/admin/product/class_name",
-      "data": "class_name_{{class-id}}%5B_token%5D={{class-token}}&class_name_{{class-id}}%5Bname%5D=test&class_name_{{class-id}}%5Bbackend_name%5D=test",
-      "method": "POST",
-      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 132\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
-      "assertions": [
-        {
-          "rootExpression": {
-            "code": 302,
-            "not": false,
-            "elementType": "ZestExpressionStatusCode"
-          },
-          "elementType": "ZestAssertion"
-        }
-      ],
-      "followRedirects": false,
-      "timestamp": 1655360264781,
-      "cookies": [],
-      "index": 15,
-      "enabled": true,
-      "elementType": "ZestRequest"
-    },
-    {
       "comment": "規格分類ページ",
       "index": 16,
       "enabled": true,
