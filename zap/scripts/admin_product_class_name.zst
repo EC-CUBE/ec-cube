@@ -189,7 +189,7 @@
       "index": 11,
       "enabled": true,
       "elementType": "ZestRequest"
-    },
+    }
   ],
   "authentication": [],
   "index": 0,
