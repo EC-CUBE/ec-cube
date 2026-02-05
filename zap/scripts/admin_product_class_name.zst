@@ -191,26 +191,8 @@
       "elementType": "ZestRequest"
     },
     {
-      "prefix": "<a href=\"https://ec-cube/admin/product/class_category/",
-      "postfix": "\">test",
-      "location": "BODY",
-      "variableName": "class-id",
-      "index": 12,
-      "enabled": true,
-      "elementType": "ZestAssignStringDelimiters"
-    },
-    {
-      "prefix": "name=\"class_name_\\d+\\[_token\\]\" value=\"",
-      "postfix": "\" />",
-      "location": "BODY",
-      "variableName": "class-token",
-      "index": 13,
-      "enabled": true,
-      "elementType": "ZestAssignRegexDelimiters"
-    },
-    {
       "comment": "規格削除",
-      "index": 14,
+      "index": 12,
       "enabled": true,
       "elementType": "ZestComment"
     },
@@ -233,7 +215,7 @@
       "followRedirects": false,
       "timestamp": 1655370645297,
       "cookies": [],
-      "index": 15,
+      "index": 13,
       "enabled": true,
       "elementType": "ZestRequest"
     }
