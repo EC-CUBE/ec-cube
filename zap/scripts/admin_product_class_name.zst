@@ -191,7 +191,7 @@
       "elementType": "ZestRequest"
     },
     {
-      "prefix": "<a href=\"https://ec-cube/admin/product/class_category/",
+      "prefix": "/admin/product/class_category/",
       "postfix": "\">test",
       "location": "BODY",
       "variableName": "class-id",
@@ -206,6 +206,7 @@
       "elementType": "ZestComment"
     },
     {
+      "url": "https://ec-cube/admin/product/class_name/{{class-id}}/delete",
       "urlToken": "https://ec-cube/admin/product/class_name/{{class-id}}/delete",
       "data": "_token={{eccube-csrf-token}}&_method=delete",
       "method": "POST",
