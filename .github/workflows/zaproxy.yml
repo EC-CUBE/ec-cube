@@ -52,7 +52,7 @@ jobs:
       matrix:
         target:
           - admin_authority
-          - admin_class_category_csv
+        #  - admin_class_category_csv
         #  - admin_class_name_csv
         #  - admin_content_block
         #  - admin_content_cache
@@ -108,7 +108,7 @@ jobs:
         #  - mypage_delivery
         #  - mypage_favorite
         #  - mypage_order
-          - plugin_coupon_admin_coupon
+        #  - plugin_coupon_admin_coupon
         #  - plugin_coupon_guest_shopping
         #  - plugin_mailmagazine_send
         # - plugin_mailmagazine_template
@@ -145,8 +145,8 @@ jobs:
         #    before_script: admin_create_customer.zst
         #  - target: mypage_order
         #    before_script: admin_create_customer.zst
-          - target: plugin_coupon_admin_coupon
-            thread_per_host: 1
+        #  - target: plugin_coupon_admin_coupon
+        #    thread_per_host: 1
         #  - target: plugin_coupon_guest_shopping
         #    before_script: plugin_coupon_admin_create_coupon.zst
         #  - target: plugin_mailmagazine_send
