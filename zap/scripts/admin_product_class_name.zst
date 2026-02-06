@@ -193,7 +193,7 @@
     {
       "regex": "class_category/([0-9]+)[^>]*>\\s*test",
       "location": "BODY",
-      "variableName": "class-id",
+      "variableName": "class_id",
       "index": 12,
       "enabled": true,
       "elementType": "ZestAssignStringDelimiters"
@@ -205,8 +205,8 @@
       "elementType": "ZestComment"
     },
     {
-      "url": "https://ec-cube/admin/product/class_name/{{class-id}}/delete",
-      "urlToken": "https://ec-cube/admin/product/class_name/{{class-id}}/delete",
+      "url": "https://ec-cube/admin/product/class_name/{{class_id}}/delete",
+      "urlToken": "https://ec-cube/admin/product/class_name/{{class_id}}/delete",
       "data": "_token={{eccube-csrf-token}}&_method=delete",
       "method": "POST",
       "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 65\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
