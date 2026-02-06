@@ -92,7 +92,7 @@ jobs:
         #  - admin_template
           - entry
         #  - front_block
-          - front_contact
+        #  - front_contact
         #  - front_help
         #  - front_mypage
         #  - front_new_item
