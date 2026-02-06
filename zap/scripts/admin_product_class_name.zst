@@ -191,7 +191,8 @@
       "elementType": "ZestRequest"
     },
     {
-      "regex": "class_category/([0-9]+)[^>]*>\\s*test",
+      "prefix": "/admin/product/class_category/",
+      "postfix": "\"",
       "location": "BODY",
       "variableName": "class_id",
       "index": 12,
