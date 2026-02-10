@@ -1,6 +1,6 @@
 services:
   zap:
-    image: ghcr.io/ec-cube/zaproxy:0.1.2
+    image: ghcr.io/ec-cube/zaproxy:latest
     
     # コンテナを待機させる
     entrypoint: ["sh", "-c"]
