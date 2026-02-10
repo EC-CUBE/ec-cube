@@ -357,17 +357,19 @@ jobs:
 
       - name: Upload report
         if: ${{ always() }}
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v4
         with:
           name: zap-${{ matrix.target }}-report
           path: /tmp/report
+          overwrite: true
 
       - name: Upload alerts
         if: ${{ always() }}
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v4
         with:
           name: zap-${{ matrix.target }}-alerts
           path: /tmp/alerts.json
+          overwrite: true
 
   merge:
     name: Merge alerts
