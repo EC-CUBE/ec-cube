@@ -38,7 +38,7 @@ jobs:
 
       # --- EC-CUBE イメージのアップロード ---
       - name: Upload image
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: ec-cube
           path: /tmp/ec-cube.tar
@@ -88,7 +88,7 @@ jobs:
           - admin_shipping_csv
           - admin_shop_setting
           - admin_system
-          - admin_tax 
+          - admin_tax
           - admin_template
           - entry
           - front_block
@@ -169,7 +169,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Download image (EC-CUBE)
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: ec-cube
           path: /tmp
@@ -192,62 +192,6 @@ jobs:
           docker compose exec -T -e PGUSER=dbuser -e PGDATABASE=eccubedb postgres psql -t -c "select count(*) from dtb_customer;"
           docker compose cp zap/delete_files.sh ec-cube:/
           docker compose exec -d ec-cube /delete_files.sh
-
-      - name: Debug login with cookie (curl) - verbose
-        run: |
-          docker compose exec -T zap sh -lc '
-            set -e
-            rm -f /tmp/cj.txt /tmp/login.html
-
-            echo "=== GET /admin/login (save cookie) ==="
-            curl -sk -c /tmp/cj.txt https://ec-cube/admin/login -o /tmp/login.html
-
-            echo "--- cookies after GET ---"
-            cat /tmp/cj.txt || true
-
-            echo "=== Extract CSRF token ==="
-            token=$(sed -n "s/.*name=\"_csrf_token\"[^>]*value=\"\\([^\"]\\+\\)\".*/\\1/p" /tmp/login.html | head -n 1)
-            echo "csrf_token=$token"
-            test -n "$token"
-
-            echo "=== POST /admin/login (show headers) ==="
-            curl -sk -D - -o /tmp/post_body.html \
-              -b /tmp/cj.txt -c /tmp/cj.txt \
-              -X POST https://ec-cube/admin/login \
-              -H "Content-Type: application/x-www-form-urlencoded" \
-              --data "_csrf_token=$token&login_id=admin&password=password" \
-              | sed -n "1,40p"
-
-            echo "=== cookies after POST ==="
-            cat /tmp/cj.txt || true
-
-            echo "=== GET /admin/ after login (show headers) ==="
-            curl -sk -D - -o /dev/null -b /tmp/cj.txt https://ec-cube/admin/ | sed -n "1,40p"
-
-            echo "=== if POST returned HTML, show first lines ==="
-            sed -n "1,25p" /tmp/post_body.html || true
-          '
-
-      - name: Debug ZAP version and image
-        if: ${{ always() }}
-        run: |
-          echo "=== docker images (zap related) ==="
-          docker images | sed -n '1p;/zap\|zaproxy\|owasp/i p' || true
-
-          echo "=== docker compose images ==="
-          docker compose images || true
-
-          echo "=== ZAP version (zap.sh -version) ==="
-          docker compose exec -T zap /zap/zap.sh -version || true
-
-          echo "=== Java version in container ==="
-          docker compose exec -T zap java -version || true
-
-      - name: Debug docker compose status (include exited)
-        if: ${{ always() }}
-        run: |
-          docker compose ps -a
-          docker compose logs --no-color --tail=300 zap || true
 
       - name: Set up plugins
         env:
@@ -355,13 +299,6 @@ jobs:
           docker compose exec zap ls -l /zap/wrk
           docker compose exec zap ls -l /home/zap/.ZAP || true
 
-      - name: Debug find zap.sh
-        run: |
-          echo "=== Searching for zap.sh ==="
-          docker compose exec -T zap find / -name zap.sh 2>/dev/null || true
-          echo "=== List /zap directory ==="
-          docker compose exec -T zap ls -la /zap || true
-
       - name: Update and Install Add-ons
         run: |
           docker compose exec -T zap /zap/zap.sh -cmd -addonupdate
@@ -388,26 +325,6 @@ jobs:
             ls -ld /zap/wrk/scripts
           '
 
-      - name: Debug ZAP add-ons status
-        if: ${{ always() }}
-        run: |
-          echo "=== Add-ons list (attempt) ==="
-          docker compose exec -T zap /zap/zap.sh -cmd -addonlist || true
-
-          echo "=== ZAP home add-ons directory ==="
-          docker compose exec -T zap ls -la /home/zap/.ZAP/plugin || true
-
-      - name: Debug redirect location (admin endpoint)
-        if: ${{ always() }}
-        run: |
-          echo "=== HEAD admin/customer/1/delivery/new ==="
-          docker compose exec -T zap sh -lc \
-            "curl -skI https://ec-cube/admin/customer/1/delivery/new | sed -n '1,30p'"
-
-          echo "=== HEAD admin/ ==="
-          docker compose exec -T zap sh -lc \
-            "curl -skI https://ec-cube/admin/ | sed -n '1,30p'"
-
       - name: Autorun
         run: |
           set -x
@@ -422,33 +339,6 @@ jobs:
             -configfile /zap/wrk/options.properties \
             -autorun /zap/wrk/automation/${{ matrix.target }}.yml
 
-      - name: Debug login POST (curl)
-        if: ${{ always() }}
-        run: |
-          echo "=== GET login page and extract csrf ==="
-          docker compose exec -T zap sh -lc '
-            html=$(curl -sk https://ec-cube/admin/login);
-            echo "$html" | grep -oE "name=\"_csrf_token\"[^>]*value=\"[^\"]+\"" | head -n 1
-          '
-
-          echo "=== POST login (expect redirect to /admin/) ==="
-          docker compose exec -T zap sh -lc '
-            token=$(curl -sk https://ec-cube/admin/login | sed -n "s/.*name=\"_csrf_token\"[^>]*value=\"\\([^\"]\\+\\)\".*/\\1/p" | head -n 1);
-            echo "token=$token";
-            curl -skI -X POST https://ec-cube/admin/login \
-              -H "Content-Type: application/x-www-form-urlencoded" \
-              --data "_csrf_token=$token&login_id=admin&password=password" | sed -n "1,20p"
-          '
-
-      - name: Debug auth endpoints
-        if: ${{ always() }}
-        run: |
-          echo "=== HEAD /admin/login ==="
-          docker compose exec -T zap sh -lc "curl -skI https://ec-cube/admin/login | sed -n '1,20p'"
-
-          echo "=== HEAD /admin/ (no cookie) ==="
-          docker compose exec -T zap sh -lc "curl -skI https://ec-cube/admin/ | sed -n '1,20p'"
-
       - name: Debug zap logs after autorun
         if: ${{ failure() }}
         run: |
@@ -459,11 +349,6 @@ jobs:
           # 内部エラーログを表示
           docker compose exec -T zap cat /home/zap/.ZAP/zap.log
 
-      - name: Debug check report files
-        if: ${{ always() }}
-        run: |
-          docker compose exec zap ls -l /tmp || true
-
       - name: Copy report
         if: ${{ always() }}
         run: |
@@ -472,14 +357,14 @@ jobs:
 
       - name: Upload report
         if: ${{ always() }}
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: zap-${{ matrix.target }}-report
           path: /tmp/report
 
       - name: Upload alerts
         if: ${{ always() }}
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: zap-${{ matrix.target }}-alerts
           path: /tmp/alerts.json
@@ -491,7 +376,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Download all artifacts
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           path: artifacts
           pattern: zap-*-alerts
