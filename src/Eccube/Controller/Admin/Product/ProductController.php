@@ -247,32 +247,30 @@ class ProductController extends AbstractController
 
         $qb = $this->productRepository->getQueryBuilderBySearchDataForAdmin($searchData);
 
+        $sortKey = $searchData['sortkey'];
+        $paginate_options = ['wrap-queries' => true];
+        if (empty($this->productRepository::COLUMNS[$sortKey]) || $sortKey == 'code' || $sortKey == 'status') {
+            $paginate_options = [];
+        }
+
         $event = new EventArgs(
             [
                 'qb' => $qb,
                 'searchData' => $searchData,
+                'paginate_options' => $paginate_options,
             ],
             $request
         );
 
         $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_INDEX_SEARCH);
+        $paginate_options = $event->getArgument('paginate_options');
 
-        $sortKey = $searchData['sortkey'];
-
-        if (empty($this->productRepository::COLUMNS[$sortKey]) || $sortKey == 'code' || $sortKey == 'status') {
-            $pagination = $paginator->paginate(
-                $qb,
-                $page_no,
-                $page_count
-            );
-        } else {
-            $pagination = $paginator->paginate(
-                $qb,
-                $page_no,
-                $page_count,
-                ['wrap-queries' => true]
-            );
-        }
+        $pagination = $paginator->paginate(
+            $qb,
+            $page_no,
+            $page_count,
+            $paginate_options
+        );
 
         return [
             'searchForm' => $searchForm->createView(),
@@ -293,7 +291,7 @@ class ProductController extends AbstractController
      */
     public function loadProductClasses(Request $request, Product $Product)
     {
-        if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
+        if (!$request->isXmlHttpRequest() || !$this->isTokenValid()) {
             throw new BadRequestHttpException();
         }
 
@@ -324,7 +322,7 @@ class ProductController extends AbstractController
      */
     public function imageProcess(Request $request)
     {
-        if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
+        if (!$request->isXmlHttpRequest() || !$this->isTokenValid()) {
             throw new BadRequestHttpException();
         }
 
@@ -411,7 +409,7 @@ class ProductController extends AbstractController
      */
     public function imageRevert(Request $request)
     {
-        if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
+        if (!$request->isXmlHttpRequest() || !$this->isTokenValid()) {
             throw new BadRequestHttpException();
         }
 

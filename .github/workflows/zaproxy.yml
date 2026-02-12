@@ -396,7 +396,7 @@ jobs:
 
           jq -s 'add' "${files[@]}" > all_alerts.json
       - name: Upload alerts
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: all_alerts
           path: artifacts/all_alerts.json

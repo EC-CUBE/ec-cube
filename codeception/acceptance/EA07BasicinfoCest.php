@@ -47,6 +47,7 @@ use Page\Front\TopPage;
 /**
  * @group admin
  * @group admin03
+ * @group admin03-a
  * @group basicinformation
  * @group ea7
  */
