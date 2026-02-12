@@ -232,7 +232,7 @@ jobs:
 
           zap/generate_automation_config.sh \
             -t ${{ matrix.target }} \
-            ${BEFORE:+"-b ${BEFORE}"} \
+            ${BEFORE:+-b "${BEFORE}"} \
             ${ZAP_CONTEXT:+"-c ${ZAP_CONTEXT}"} \
             ${ZAP_THREAD_PER_HOST:+"-n ${ZAP_THREAD_PER_HOST}"}
 
