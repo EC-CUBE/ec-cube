@@ -228,7 +228,7 @@ jobs:
           fi
 
           # 既存の include で before_script が指定されている場合はそれを優先したいなら下の行を有効化
-          # if [[ -n "${ZAP_BEFORE_SCRIPT:-}" ]]; then BEFORE="${ZAP_BEFORE_SCRIPT}"; fi
+          if [[ -n "${ZAP_BEFORE_SCRIPT:-}" ]]; then BEFORE="${ZAP_BEFORE_SCRIPT}"; fi
 
           zap/generate_automation_config.sh \
             -t ${{ matrix.target }} \
