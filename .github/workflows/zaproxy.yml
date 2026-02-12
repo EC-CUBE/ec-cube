@@ -233,8 +233,8 @@ jobs:
           zap/generate_automation_config.sh \
             -t ${{ matrix.target }} \
             ${BEFORE:+-b "${BEFORE}"} \
-            ${ZAP_CONTEXT:+"-c ${ZAP_CONTEXT}"} \
-            ${ZAP_THREAD_PER_HOST:+"-n ${ZAP_THREAD_PER_HOST}"}
+            ${ZAP_CONTEXT:+-c "${ZAP_CONTEXT}"} \
+            ${ZAP_THREAD_PER_HOST:+-n "${ZAP_THREAD_PER_HOST}"}
 
           cat zap/automation/${{ matrix.target }}.yml
 
@@ -294,10 +294,10 @@ jobs:
 
       - name: Debug inspect zap container
         run: |
-          docker compose exec zap whoami
-          docker compose exec zap pwd
-          docker compose exec zap ls -l /zap/wrk
-          docker compose exec zap ls -l /home/zap/.ZAP || true
+          docker compose exec -T zap whoami
+          docker compose exec -T zap pwd
+          docker compose exec -T zap ls -l /zap/wrk
+          docker compose exec -T zap ls -l /home/zap/.ZAP || true
 
       - name: Update and Install Add-ons
         run: |
@@ -347,7 +347,8 @@ jobs:
           
           echo "=== Internal ZAP Log (zap.log) ==="
           # 内部エラーログを表示
-          docker compose exec -T zap cat /home/zap/.ZAP/zap.log
+          docker compose exec -T zap cat /home/zap/.ZAP/zap.log || echo "zap.log not found"
+          
 
       - name: Copy report
         if: ${{ always() }}
@@ -357,7 +358,7 @@ jobs:
 
       - name: Upload report
         if: ${{ always() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: zap-${{ matrix.target }}-report
           path: /tmp/report
@@ -365,7 +366,7 @@ jobs:
 
       - name: Upload alerts
         if: ${{ always() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: zap-${{ matrix.target }}-alerts
           path: /tmp/alerts.json
@@ -394,7 +395,7 @@ jobs:
             exit 1
           fi
 
-          jq -s 'add' "${files[@]}" > all_alerts.json
+          jq -s 'add // []' "${files[@]}" > all_alerts.json
       - name: Upload alerts
         uses: actions/upload-artifact@v6
         with:
