@@ -7,20 +7,6 @@ TRUNCATE
   dtb_customer,
   dtb_customer_address,
   dtb_order,
-  dtb_order_item,
-  dtb_page_layout,
-  dtb_page,
-  dtb_delivery_fee,
-  dtb_payment_option,
-  dtb_delivery,
-  dtb_payment,
-  dtb_block_position,
-  dtb_block,
-  dtb_category,
-  dtb_class_category,
-  dtb_class_name,
-  dtb_template,
-  dtb_member,
-  dtb_tag
+  dtb_order_item
 RESTART IDENTITY CASCADE;
 SQL
