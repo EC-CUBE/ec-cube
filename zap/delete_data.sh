@@ -14,6 +14,10 @@ TRUNCATE
   dtb_payment_option,
   dtb_delivery,
   dtb_payment,
-  dtb_block_position
+  dtb_block_position,
+  dtb_block,
+  dtb_layout,
+  dtb_category,
+  dtb_class_category
 RESTART IDENTITY CASCADE;
 SQL
