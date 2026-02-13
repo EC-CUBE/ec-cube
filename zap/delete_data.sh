@@ -15,9 +15,9 @@ TRUNCATE
   dtb_delivery,
   dtb_payment,
   dtb_block_position,
-  dtb_block,
-  dtb_layout,
-  dtb_category,
-  dtb_class_category
+  dtb_class_name,
+  dtb_template,
+  dtb_member,
+  dtb_tag
 RESTART IDENTITY CASCADE;
 SQL
