@@ -15,7 +15,7 @@ namespace Page\Admin;
 
 class PluginManagePage extends AbstractAdminPageStyleGuide
 {
-    public const 完了メーッセージ = '#page_admin_store_plugin > div.c-container > div.c-contentsArea > div.alert.alert-dismissible.fade.show.m-3 > span';
+    public const 完了メッセージ = '#page_admin_store_plugin > div.c-container > div.c-contentsArea > div.alert.alert-dismissible.fade.show.m-3 > span';
 
     public function __construct(\AcceptanceTester $I)
     {
@@ -38,7 +38,7 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
     public function ストアプラグイン_有効化($pluginCode, $message = '有効にしました。')
     {
         $this->ストアプラグイン_ボタンクリック($pluginCode, '有効化');
-        $this->tester->see($message, self::完了メーッセージ);
+        $this->tester->see($message, self::完了メッセージ);
 
         return $this;
     }
@@ -52,7 +52,7 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
     public function ストアプラグイン_無効化($pluginCode, $message = '無効にしました。')
     {
         $this->ストアプラグイン_ボタンクリック($pluginCode, '無効化');
-        $this->tester->see($message, self::完了メーッセージ);
+        $this->tester->see($message, self::完了メッセージ);
 
         return $this;
     }
@@ -106,7 +106,7 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
     public function 独自プラグイン_有効化($pluginCode)
     {
         $this->独自プラグイン_ボタンクリック($pluginCode, '有効化');
-        $this->tester->see('有効にしました。', self::完了メーッセージ);
+        $this->tester->see('有効にしました。', self::完了メッセージ);
 
         return $this;
     }
@@ -114,7 +114,7 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
     public function 独自プラグイン_無効化($pluginCode)
     {
         $this->独自プラグイン_ボタンクリック($pluginCode, '無効化');
-        $this->tester->see('無効にしました。', self::完了メーッセージ);
+        $this->tester->see('無効にしました。', self::完了メッセージ);
 
         return $this;
     }
@@ -133,7 +133,7 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
         $this->tester->compressPlugin($pluginDirName, codecept_data_dir('plugins'));
         $this->tester->attachFile(['xpath' => $this->独自プラグイン_セレクタ($pluginCode).'/../td[5]//input[@type="file"]'], 'plugins/'.$pluginDirName.'.tgz');
         $this->tester->click(['xpath' => $this->独自プラグイン_セレクタ($pluginCode).'/../td[5]//button']);
-        $this->tester->see('アップデートしました。', self::完了メーッセージ);
+        $this->tester->see('アップデートしました。', self::完了メッセージ);
 
         return $this;
     }
