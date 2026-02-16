@@ -16,7 +16,7 @@ namespace Page\Admin;
 class PluginManagePage extends AbstractAdminPageStyleGuide
 {
     /** @var int 要素の表示待機時間（秒） */
-    public const WAIT_TIMEOUT = 30;
+    public const WAIT_TIMEOUT = 10;
 
     public const 完了メッセージ = '#page_admin_store_plugin > div.c-container > div.c-contentsArea > div.alert.alert-dismissible.fade.show.m-3 > span';
 
