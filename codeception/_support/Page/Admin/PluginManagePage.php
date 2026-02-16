@@ -94,6 +94,7 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
     {
         $xpath = ['xpath' => $this->ストアプラグイン_セレクタ($pluginCode).'/../../td[6]//i[@data-bs-original-title="'.$label.'"]/parent::node()'];
         $this->tester->click($xpath);
+        $this->tester->waitForJS('return document.readyState === "complete"', 60);
 
         return $this;
     }
@@ -133,6 +134,7 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
         $this->tester->compressPlugin($pluginDirName, codecept_data_dir('plugins'));
         $this->tester->attachFile(['xpath' => $this->独自プラグイン_セレクタ($pluginCode).'/../td[5]//input[@type="file"]'], 'plugins/'.$pluginDirName.'.tgz');
         $this->tester->click(['xpath' => $this->独自プラグイン_セレクタ($pluginCode).'/../td[5]//button']);
+        $this->tester->waitForJS('return document.readyState === "complete"', 60);
         $this->tester->see('アップデートしました。', self::完了メッセージ);
 
         return $this;
@@ -142,6 +144,7 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
     {
         $xpath = ['xpath' => $this->独自プラグイン_セレクタ($pluginCode).'/../td[6]//i[@data-bs-original-title="'.$label.'"]/parent::node()'];
         $this->tester->click($xpath);
+        $this->tester->waitForJS('return document.readyState === "complete"', 60);
 
         return $this;
     }
