@@ -24,8 +24,7 @@ abstract class AbstractAdminPageStyleGuide extends AbstractAdminPage
      */
     protected function atPage($pageTitle)
     {
-        $this->tester->waitForElementVisible('.c-pageTitle', PluginManagePage::WAIT_TIMEOUT);
-        $this->tester->see($pageTitle, '.c-pageTitle');
+        $this->tester->waitForText($pageTitle, PluginManagePage::WAIT_TIMEOUT, '.c-pageTitle');
 
         return $this;
     }
