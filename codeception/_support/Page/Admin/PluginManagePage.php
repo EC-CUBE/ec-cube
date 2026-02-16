@@ -105,6 +105,11 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
         return '//*[@id="page_admin_store_plugin"]//div/h5[contains(text(), "オーナーズストアのプラグイン")]/../..//table/tbody//td[3]/p[contains(text(), "'.$pluginCode.'")]';
     }
 
+    /**
+     * @param string $pluginCode
+     *
+     * @return PluginManagePage
+     */
     public function 独自プラグイン_有効化($pluginCode)
     {
         $this->独自プラグイン_ボタンクリック($pluginCode, '有効化');
@@ -114,6 +119,11 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    /**
+     * @param string $pluginCode
+     *
+     * @return PluginManagePage
+     */
     public function 独自プラグイン_無効化($pluginCode)
     {
         $this->独自プラグイン_ボタンクリック($pluginCode, '無効化');
@@ -123,6 +133,11 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    /**
+     * @param string $pluginCode
+     *
+     * @return PluginManagePage
+     */
     public function 独自プラグイン_削除($pluginCode)
     {
         $this->独自プラグイン_ボタンクリック($pluginCode, '削除');
@@ -132,6 +147,12 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
+    /**
+     * @param string $pluginCode
+     * @param string $pluginDirName
+     *
+     * @return PluginManagePage
+     */
     public function 独自プラグイン_アップデート($pluginCode, $pluginDirName)
     {
         $this->tester->compressPlugin($pluginDirName, codecept_data_dir('plugins'));
