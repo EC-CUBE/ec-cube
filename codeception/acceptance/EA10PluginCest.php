@@ -783,8 +783,7 @@ class Local_Plugin extends Abstract_Plugin
 
         $this->initialized = true;
 
-        $this->I->waitForElementVisible(PluginManagePage::完了メッセージ, PluginManagePage::WAIT_TIMEOUT);
-        $this->I->see('プラグインをインストールしました。', PluginManagePage::完了メッセージ);
+        $this->I->waitForText('プラグインをインストールしました。', PluginManagePage::WAIT_TIMEOUT, PluginManagePage::完了メッセージ);
 
         $this->検証();
 
@@ -832,8 +831,7 @@ class Local_Plugin extends Abstract_Plugin
         $this->initialized = false;
         $this->enabled = false;
 
-        $this->I->waitForElementVisible(PluginManagePage::完了メッセージ, PluginManagePage::WAIT_TIMEOUT);
-        $this->I->see('プラグインを削除しました。', PluginManagePage::完了メッセージ);
+        $this->I->waitForText('プラグインを削除しました。', PluginManagePage::WAIT_TIMEOUT, PluginManagePage::完了メッセージ);
 
         $this->検証();
 
