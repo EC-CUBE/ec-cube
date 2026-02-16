@@ -38,6 +38,7 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
     public function ストアプラグイン_有効化($pluginCode, $message = '有効にしました。')
     {
         $this->ストアプラグイン_ボタンクリック($pluginCode, '有効化');
+        $this->tester->waitForElementVisible(['css' => self::完了メーッセージ], 30);
         $this->tester->see($message, self::完了メーッセージ);
 
         return $this;
@@ -52,6 +53,7 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
     public function ストアプラグイン_無効化($pluginCode, $message = '無効にしました。')
     {
         $this->ストアプラグイン_ボタンクリック($pluginCode, '無効化');
+        $this->tester->waitForElementVisible(['css' => self::完了メーッセージ], 30);
         $this->tester->see($message, self::完了メーッセージ);
 
         return $this;
@@ -106,6 +108,7 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
     public function 独自プラグイン_有効化($pluginCode)
     {
         $this->独自プラグイン_ボタンクリック($pluginCode, '有効化');
+        $this->tester->waitForElementVisible(['css' => self::完了メーッセージ], 30);
         $this->tester->see('有効にしました。', self::完了メーッセージ);
 
         return $this;
@@ -114,6 +117,7 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
     public function 独自プラグイン_無効化($pluginCode)
     {
         $this->独自プラグイン_ボタンクリック($pluginCode, '無効化');
+        $this->tester->waitForElementVisible(['css' => self::完了メーッセージ], 30);
         $this->tester->see('無効にしました。', self::完了メーッセージ);
 
         return $this;
@@ -133,6 +137,7 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
         $this->tester->compressPlugin($pluginDirName, codecept_data_dir('plugins'));
         $this->tester->attachFile(['xpath' => $this->独自プラグイン_セレクタ($pluginCode).'/../td[5]//input[@type="file"]'], 'plugins/'.$pluginDirName.'.tgz');
         $this->tester->click(['xpath' => $this->独自プラグイン_セレクタ($pluginCode).'/../td[5]//button']);
+        $this->tester->waitForElementVisible(['css' => self::完了メーッセージ], 30);
         $this->tester->see('アップデートしました。', self::完了メーッセージ);
 
         return $this;
