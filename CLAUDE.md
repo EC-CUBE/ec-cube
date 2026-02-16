@@ -1,1 +1,0 @@
-/Users/kurozumi/eccube-dev/main/CLAUDE.md
