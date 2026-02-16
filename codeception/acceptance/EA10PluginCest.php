@@ -783,7 +783,7 @@ class Local_Plugin extends Abstract_Plugin
 
         $this->initialized = true;
 
-        $this->I->see('プラグインをインストールしました。', PluginManagePage::完了メーッセージ);
+        $this->I->see('プラグインをインストールしました。', PluginManagePage::完了メッセージ);
 
         $this->検証();
 
@@ -831,7 +831,7 @@ class Local_Plugin extends Abstract_Plugin
         $this->initialized = false;
         $this->enabled = false;
 
-        $this->I->see('プラグインを削除しました。', PluginManagePage::完了メーッセージ);
+        $this->I->see('プラグインを削除しました。', PluginManagePage::完了メッセージ);
 
         $this->検証();
 
