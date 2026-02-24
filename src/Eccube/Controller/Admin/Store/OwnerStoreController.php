@@ -187,7 +187,7 @@ class OwnerStoreController extends AbstractController
 
             return $this->render('@admin/Store/plugin_confirm.twig', [
                 'item' => $item,
-                'requires' => $requires,
+                'requires' => json_encode($requires, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT),
                 'is_update' => false,
             ]);
         } catch (PluginApiException $e) {
@@ -448,7 +448,7 @@ class OwnerStoreController extends AbstractController
 
             return [
                 'item' => $item,
-                'requires' => [],
+                'requires' => json_encode([], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT),
                 'is_update' => true,
                 'Plugin' => $Plugin,
             ];

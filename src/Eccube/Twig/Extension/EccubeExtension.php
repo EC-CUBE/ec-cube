@@ -67,6 +67,7 @@ class EccubeExtension extends AbstractExtension
             new TwigFilter('ellipsis', $this->getEllipsis(...)),
             new TwigFilter('time_ago', $this->getTimeAgo(...)),
             new TwigFilter('file_ext_icon', $this->getExtensionIcon(...), ['is_safe' => ['html']]),
+            new TwigFilter('json_encode_safe', $this->getJsonEncodeSafe(...), ['is_safe' => ['js']]),
         ];
     }
 
@@ -251,7 +252,7 @@ class EccubeExtension extends AbstractExtension
             ];
         }
 
-        return json_encode($class_categories);
+        return json_encode($class_categories, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
     }
 
     /**
@@ -321,5 +322,13 @@ class EccubeExtension extends AbstractExtension
         }
 
         return Currencies::getSymbol($currency);
+    }
+
+    /**
+     * Safely encode a value to JSON for use in HTML/JavaScript context.
+     */
+    public function getJsonEncodeSafe(mixed $value): string
+    {
+        return json_encode($value, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
     }
 }

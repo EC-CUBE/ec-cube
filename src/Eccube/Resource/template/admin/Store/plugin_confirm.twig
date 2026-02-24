@@ -116,7 +116,7 @@ $(function() {
             }
         };
 
-        var requires = {{ requires|json_encode|raw }};
+        var requires = {{ requires|raw }};
         requires = requires.map(function(req) {
             return {'pluginCode':req.name.replace(/^ec-cube\//, '') }
         });
