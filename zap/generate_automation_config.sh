@@ -24,7 +24,7 @@ if [[ -z "${ZA_CONTEXT}" ]]; then
       action: add
       type: standalone
       name: forceuser
-      file: /zap/wrk/scripts/forceuser.groovy
+      file: /zap/scripts/forceuser.groovy
 
   - type: script
     parameters:
