@@ -18,7 +18,20 @@ if [[ -z "${ZA_CONTEXT}" ]]; then
     if [[ ${ZA_TARGET} =~ 'admin' ]]; then
         ZA_CONTEXT=admin
         ZA_USER=admin
-        ZA_FORCE_ADMIN_CONFIG=""
+        ZA_FORCE_ADMIN_CONFIG="
+  - type: script
+    parameters:
+      action: add
+      type: standalone
+      name: forceuser
+      file: /zap/wrk/scripts/forceuser.groovy
+
+  - type: script
+    parameters:
+      action: run
+      type: standalone
+      name: forceuser
+"
     else
         ZA_CONTEXT=default
     fi
@@ -41,15 +54,12 @@ if [[ -n ${ZA_BEFORE_SCRIPT} ]]; then
       action: add
       type: sequence
       name: before_script
-      file: /zap/wrk/scripts/${ZA_BEFORE_SCRIPT}"
-    if [[ "${ZA_BEFORE_SCRIPT}" != *.zst ]]; then
-        ZA_BEFORE_SCRIPT_CONFIG="${ZA_BEFORE_SCRIPT_CONFIG}
+      file: /zap/wrk/scripts/${ZA_BEFORE_SCRIPT}
   - type: script
     parameters:
       action: run
       type: sequence
       name: before_script"
-    fi
 fi
 
 TEMPLATE=$(sed 's/"/\\"/g' automation/template.yml)
