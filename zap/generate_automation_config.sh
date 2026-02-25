@@ -24,7 +24,7 @@ if [[ -z "${ZA_CONTEXT}" ]]; then
       action: add
       type: standalone
       name: forceuser
-      file: /zap/scripts/forceuser.groovy
+      file: /zap/wrk/scripts/forceuser.groovy
 
   - type: script
     parameters:
@@ -52,13 +52,13 @@ if [[ -n ${ZA_BEFORE_SCRIPT} ]]; then
   - type: script
     parameters:
       action: add
-      type: sequence
+      type: standalone
       name: before_script
       file: /zap/wrk/scripts/${ZA_BEFORE_SCRIPT}
   - type: script
     parameters:
       action: run
-      type: sequence
+      type: standalone
       name: before_script"
 fi
 
