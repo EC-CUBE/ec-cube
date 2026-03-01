@@ -244,7 +244,7 @@ class ClassCategoryController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_CLASS_CATEGORY_DELETE_COMPLETE);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_CLASS_CATEGORY_VISIBILITY_COMPLETE);
 
         if ($TargetClassCategory->isVisible()) {
             $this->addSuccess(trans('admin.common.to_show_complete', ['%name%' => $TargetClassCategory->getName()]), 'admin');
