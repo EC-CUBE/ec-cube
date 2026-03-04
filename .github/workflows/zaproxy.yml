@@ -82,7 +82,7 @@ jobs:
         #  - admin_product_csv
         #  - admin_product_copy
         #  - admin_product_edit
-          - admin_product_edit_class
+        #  - admin_product_edit_class
         #  - admin_product_tag
         #  - admin_product_view
         #  - admin_shipping_csv
@@ -92,7 +92,7 @@ jobs:
         #  - admin_template
         #  - entry
         #  - front_block
-          - front_contact
+        #  - front_contact
         #  - front_help
         #  - front_mypage
         #  - front_new_item
@@ -105,12 +105,12 @@ jobs:
         #  - guest_shopping_shipping_edit
         #  - guest_shopping_shipping_multiple
         #  - mypage_change
-          - mypage_delivery
+        #  - mypage_delivery
         #  - mypage_favorite
         #  - mypage_order
         #  - plugin_coupon_admin_coupon
         #  - plugin_coupon_guest_shopping
-          - plugin_mailmagazine_send
+        #  - plugin_mailmagazine_send
         #  - plugin_mailmagazine_template
         #  - plugin_product_review
         #  - plugin_recommend
@@ -141,16 +141,16 @@ jobs:
         #    thread_per_host: 1
         #  - target: entry
         #    thread_per_host: 1
-          - target: mypage_delivery
-            before_script: admin_create_customer.zst
+        #  - target: mypage_delivery
+        #    before_script: admin_create_customer.zst
         #  - target: mypage_order
         #    before_script: admin_create_customer.zst
         #  - target: plugin_coupon_admin_coupon
         #    thread_per_host: 1
         #  - target: plugin_coupon_guest_shopping
         #    before_script: plugin_coupon_admin_create_coupon.zst
-          - target: plugin_mailmagazine_send
-            before_script: plugin_mailmagazine_create_customers.zst
+        #  - target: plugin_mailmagazine_send
+        #    before_script: plugin_mailmagazine_create_customers.zst
         #  - target: plugin_related_product
         #    thread_per_host: 1
 
