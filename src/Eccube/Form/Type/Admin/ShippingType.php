@@ -186,6 +186,10 @@ class ShippingType extends AbstractType
                     new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_mtext_len'],
                     ]),
+                    new Assert\Regex([
+                        'pattern' => "/^[0-9a-zA-Z-]+$/u",
+                        'message' => 'form_error.graph_and_hyphen_only',
+                    ]),
                 ],
             ])
             ->add('note', TextareaType::class, [

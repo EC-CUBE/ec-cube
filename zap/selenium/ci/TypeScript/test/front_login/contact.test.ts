@@ -1,22 +1,17 @@
 import { test, expect, chromium, Page } from '@playwright/test';
+import PlaywrightConfig from '../../playwright.config';
 import { intervalRepeater } from '../../utils/Progress';
-import { ZapClient, Mode, ContextType, Risk, HttpMessage } from '../../utils/ZapClient';
-const zapClient = new ZapClient('http://127.0.0.1:8090');
+import { ZapClient, ContextType, Risk, HttpMessage } from '../../utils/ZapClient';
+const zapClient = new ZapClient();
 
-const baseURL = 'https://ec-cube';
-const url = baseURL + '/contact';
+const url = `${PlaywrightConfig.use.baseURL}/contact`;
 
 test.describe.serial('お問い合わせフォームのテストをします', () => {
   let page: Page;
   test.beforeAll(async () => {
-    await zapClient.setMode(Mode.Protect);
-    await zapClient.newSession('/zap/wrk/sessions/front_login_contact', true);
-    await zapClient.importContext(ContextType.FrontLogin);
+    await zapClient.startSession(ContextType.FrontLogin, 'front_login_contact')
+      .then(async () => expect(await zapClient.isForcedUserModeEnabled()).toBeTruthy());
 
-    if (!await zapClient.isForcedUserModeEnabled()) {
-      await zapClient.setForcedUserModeEnabled();
-      expect(await zapClient.isForcedUserModeEnabled()).toBeTruthy();
-    }
     const browser = await chromium.launch();
     page = await browser.newPage();
     await page.goto(url);

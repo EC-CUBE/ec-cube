@@ -124,7 +124,7 @@ file that was distributed with this source code.
             </div>
 
             {# エンティティ拡張の自動出力 #}
-            {% for f in searchForm if f.vars.eccube_form_options.auto_render %}
+            {% for f in searchForm|filter(f => f.vars.eccube_form_options.auto_render) %}
                 <div class="row mb-2">
                     {% if f.vars.eccube_form_options.form_theme %}
                         {% form_theme f f.vars.eccube_form_options.form_theme %}

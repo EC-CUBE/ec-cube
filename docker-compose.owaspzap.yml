@@ -7,6 +7,7 @@ services:
     command: bash -c "zap.sh -cmd -addonupdate -addoninstall help_ja_JP -addoninstall wappalyzer -addoninstall sequence -addonuninstall hud -configfile /zap/wrk/options.properties -certpubdump /zap/wrk/owasp_zap_root_ca.cer && zap-webswing.sh"
     # 詳細スキャンしたい場合はこちらを使用する command: bash -c "zap.sh -cmd -addonupdate -addoninstall help_ja_JP -addoninstall wappalyzer -addoninstall ascanrulesAlpha -addoninstall ascanrulesBeta -addoninstall sqliplugin -addoninstall sequence -addonuninstall hud -configfile /zap/wrk/options.properties -certpubdump /zap/wrk/owasp_zap_root_ca.cer && zap-webswing.sh"
     volumes:
+      - ./zap/policies:/home/zap/.ZAP/policies/
       - ./zap:/zap/wrk/
     ports:
       - "8081:8080"

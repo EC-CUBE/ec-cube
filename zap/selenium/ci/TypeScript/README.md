@@ -42,10 +42,10 @@ docker-compose up -d ec-cube
 ## yarn でテストを実行します。
 cd zap/selenium/ci/TypeScript
 yarn install && yarn playwright install # (初回のみ)
-HTTP_PROXY=127.0.0.1:8090 HTTPS_PROXY=127.0.0.1:8090 yarn playwright test
+yarn playwright test
 
 ## (Optional) 個別にテストする場合は、テストのファイル名を指定してください。
-HTTP_PROXY=127.0.0.1:8090 HTTPS_PROXY=127.0.0.1:8090 yarn playwright test test/front_guest/contact.test.ts
+yarn playwright test test/front_guest/contact.test.ts
 ```
 
 ####  実行中に OWASP ZAP を操作したい場合
@@ -69,7 +69,7 @@ HTTP_PROXY=127.0.0.1:8090 HTTPS_PROXY=127.0.0.1:8090 yarn playwright test test/f
 以下のように playwright に `--headed` オプションを付与することで Chrome が実際に起動し、実行状況を確認できます。
 
 ``` shell
-HTTP_PROXY=127.0.0.1:8090 HTTPS_PROXY=127.0.0.1:8090 yarn playwright test test/front_guest/contact.test.ts --headed
+yarn playwright test test/front_guest/contact.test.ts --headed
 ```
 
 また、 [`page.pause()`](https://playwright.dev/docs/api/class-page#page-pause)をテストコードに埋め込めばステップ実行も可能です。
@@ -93,4 +93,5 @@ GitHub Actions のワークフローが完了すると、 OWASP ZAP のセッシ
 ## 参考
 
 - EC-CUBE開発者向けドキュメントの [EC-CUBE Penetration Testing with OWASP ZAP](https://doc4.ec-cube.net/penetration-testing) も併わせてお読みください
+- [脆弱性対応勉強会Expansion 第05回(OWASP ZAP&EC-CUBE)発表資料](https://zenn.dev/nanasess/articles/vulnstudy05-owasp-and-eccube)
 - [Driving OWASP ZAP with Selenium](https://owasp.org/www-chapter-london/assets/slides/OWASPLondon-OWASP-ZAP-Selenium-20180830-PDF.pdf)

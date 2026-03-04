@@ -99,7 +99,7 @@ class EF05MypageCest
      */
     public function mypage_お気に入り一覧(AcceptanceTester $I)
     {
-        $I->wantTo('EF0508-UC01-T01 Mypage お気に入り一覧');
+        $I->wantTo('EF0503-UC01-T02 Mypage お気に入り一覧');
         $createCustomer = Fixtures::get('createCustomer');
         $customer = $createCustomer();
         $I->loginAsMember($customer->getEmail(), 'password');
@@ -114,6 +114,7 @@ class EF05MypageCest
         // お気に入り登録
         ProductDetailPage::go($I, 2)->お気に入りに追加();
 
+        $I->wantTo('EF0503-UC01-T03 Mypage お気に入り一覧');
         MyPage::go($I)->お気に入り一覧();
         $I->see('チェリーアイスサンド', 'ul.ec-favoriteRole__itemList li:nth-child(1) p.ec-favoriteRole__itemTitle');
 

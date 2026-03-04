@@ -21,10 +21,6 @@ services:
   ec-cube:
     build:
       context: .
-      args:
-        # ビルド時のECCubeインストールスクリプトをスキップする場合にtrueを指定する。
-        # ビルド時点でDBサーバの起動や接続が出来ない、という場合等にエラーとなるため。
-        SKIP_INSTALL_SCRIPT_ON_DOCKER_BUILD: "true"
     ports:
       - 8080:80
       - 4430:443
