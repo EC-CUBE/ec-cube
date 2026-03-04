@@ -117,6 +117,13 @@ class TwoFactorAuthController extends AbstractController
         if (!$this->twoFactorAuthService->isEnabled() || $this->twoFactorAuthService->isAuth($Member)) {
             return $this->redirectToRoute('admin_homepage');
         }
+
+        // 既に2FAキーが設定されている場合は、認証画面にリダイレクト
+        // 2FA未認証状態での再設定を防ぐ（MFAバイパス対策）
+        if ($Member->getTwoFactorAuthKey()) {
+            return $this->redirectToRoute('admin_two_factor_auth');
+        }
+
         $res = $this->createResponse($request);
 
         return $res;
