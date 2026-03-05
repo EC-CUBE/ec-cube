@@ -49,10 +49,15 @@ class EF02ProductCest
         // TOPページ>商品一覧（ヘッダーのいずれかのカテゴリを選択）へ遷移
         $topPage->カテゴリ選択(['新入荷']);
 
+        $I->wait(10);
+
         // 各商品のサムネイルが表示される デフォルトは価格順
         $products = $I->grabMultiple(['xpath' => "//*[@class='ec-shelfGrid__item']/a/p[2]"]);
         $pPos = 0;
         $fPos = 0;
+
+        $I->wait(10);
+
         foreach ($products as $key => $product) {
             if ($product == 'チェリーアイスサンド') {
                 $pPos = $key;
@@ -68,10 +73,14 @@ class EF02ProductCest
             ->表示件数設定(40)
             ->表示順設定('価格が高い順');
 
+        $I->wait(10);
         // 変更されたソート条件に従い、商品がソートされる
         $products = $I->grabMultiple(['xpath' => "//*[@class='ec-shelfGrid__item']/a/p[2]"]);
         $pPos = 0;
         $fPos = 0;
+
+        $I->wait(10);
+        
         foreach ($products as $key => $product) {
             if ($product == 'チェリーアイスサンド') {
                 $pPos = $key;
@@ -100,6 +109,7 @@ class EF02ProductCest
 
         // 表示件数の選択リストを変更する
         $listPage->表示件数設定(40);
+        $I->wait(1);
 
         // 変更された表示件数分が1画面に表示される
         $expected = ($productNum >= 40) ? 40 : $productNum;

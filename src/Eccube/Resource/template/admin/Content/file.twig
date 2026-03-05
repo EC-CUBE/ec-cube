@@ -167,14 +167,14 @@ file that was distributed with this source code.
                                         {% endif %}
                                         {% for file in arrFileList %}
                                             <tr id="{{ loop.index }}">
-                                                <td class="align-middle text-center" onDblClick="eccube.fileManager.setTreeStatus('tree_status');eccube.fileManager.doubleClick(arrTree, '{{ file.file_path }}', {% if file.is_dir %}true{% else %}false{% endif %}, '{{ tpl_now_dir }}', false)">
+                                                <td class="align-middle text-center">
                                                     {% if file.is_dir %}
                                                         <i class="fa fa-folder-o fa-2x"></i>
                                                     {% else %}
                                                         {% if file.extension|file_ext_icon({}, true) == 'fa-file-image-o' %}
                                                             <div class="d-inline-block p-3 bg-light"
                                                                  style="background: no-repeat center center;
-                                                                    background-image: url('{{ asset('', 'user_data') }}{{ file.file_path|slice(1) }}');
+                                                                    background-image: url('{{ asset(file.file_path|slice(1)|escape('css'), 'user_data') }}');
                                                                     background-size: contain; width: 49px; height: 57px;">
                                                             </div>
                                                         {% else %}

@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ ubuntu-18.04 ]
+        operating-system: [ ubuntu-22.04 ]
         php: [ 7.4 ]
         db: [ pgsql ]
         group: [ admin01 ]
@@ -63,7 +63,9 @@ jobs:
           php-version: ${{ matrix.php }}
 
       - name: composer install
-        run: composer install --dev --no-interaction -o --apcu-autoloader
+        run: |
+          sudo composer self-update --2.2
+          composer install --dev --no-interaction -o --apcu-autoloader
       - name: Setup to EC-CUBE
         env:
           APP_ENV: ${{ matrix.app_env }}

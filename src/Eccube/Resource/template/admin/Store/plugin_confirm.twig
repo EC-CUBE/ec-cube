@@ -101,12 +101,12 @@ $(function() {
         relatedTarget = $(e.relatedTarget);
         mode = MODES[relatedTarget.data('mode')];
         $('.modal-title', modal).text(mode.name + '確認');
-        message.text('「{{ item.name }} ({{ item.version }})」を' + mode.name + 'しますか？');
+        message.text('「{{ item.name|escape('js') }} ({{ item.version }})」を' + mode.name + 'しますか？');
         $('#installBtn').text(mode.name);
     });
 
     $('#installBtn').on('click', function() {
-        message.text('「{{ item.name }} ({{ item.version }})」を' + mode.name + '中。この処理には数分かかる場合があります。画面をリロードせずにこのままお待ち下さい。');
+        message.text('「{{ item.name|escape('js') }} ({{ item.version }})」を' + mode.name + '中。この処理には数分かかる場合があります。画面をリロードせずにこのままお待ち下さい。');
         var footer = $('div.modal-footer', modal).hide();
         var progress = $('div.progress', modal).show();
         var statusBar = $('#installStatus').text('');

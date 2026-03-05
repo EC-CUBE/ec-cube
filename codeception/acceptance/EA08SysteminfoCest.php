@@ -320,15 +320,21 @@ class EA08SysteminfoCest
         $I->amOnUrl($httpBaseUrl);
         $I->assertRegExp('/^http:\/\//', $I->executeJS('return location.href'), 'httpsにリダイレクトされない');
 
+        $I->wait(10);
+
         $config = Fixtures::get('config');
         $httpsBaseUrl = str_replace('http://', 'https://', $httpBaseUrl);
         $I->amOnUrl($httpsBaseUrl.$config['eccube_admin_route'].'/setting/system/security');
         $I->checkOption(['id' => 'admin_security_force_ssl']);
         $I->click('#page_admin_setting_system_security form div.c-contentsArea__cols > div.c-conversionArea > div > div > div:nth-child(2) > div > div > button');
 
+        $I->wait(10);
+
         // httpでアクセスしたらhttpsにリダイレクトされる
         $I->amOnUrl($httpBaseUrl);
         $I->assertRegExp('/^https:\/\//', $I->executeJS('return location.href'), 'httpsにリダイレクトされる');
+
+        $I->wait(10);
 
         // 後続テストのために戻しておく
         $I->amOnUrl($httpsBaseUrl.$config['eccube_admin_route'].'/setting/system/security');

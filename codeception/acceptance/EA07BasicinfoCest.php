@@ -591,16 +591,22 @@ class EA07BasicinfoCest
         // 削除用の支払い方法の登録
         PaymentManagePage::go($I)
             ->新規入力();
+        
+        $I->wait(10);
+
         PaymentEditPage::at($I)
             ->入力_支払方法('dummy payment')
             ->登録();
 
+        $I->wait(10);
         // 削除
         $page = PaymentManagePage::go($I);
         $before = $page->一覧_件数取得();
         $page->一覧_削除(1);
         $I->see('削除しました', PaymentEditPage::$登録完了メッセージ);
 
+        $I->wait(10);
+        
         $after = PaymentManagePage::go($I)->一覧_件数取得();
         $I->assertEquals($before - 1, $after);
     }
