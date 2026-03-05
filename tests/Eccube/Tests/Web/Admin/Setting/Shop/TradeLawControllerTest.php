@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+ *
+ * http://www.ec-cube.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
@@ -27,14 +38,14 @@ class TradeLawControllerTest extends AbstractAdminWebTestCase
     {
         $response = $this->client->request('GET', $this->generateUrl('admin_setting_shop_tradelaw'));
         // Has success code response
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
         $inputFieldsName = $response->filter('input[id*="_name"]');
         $inputFieldsDescription = $response->filter('textarea[id*="_description"]');
 
         // Contains 15x2 initial input fields + toggle switch
-        $this->assertEquals(15, $inputFieldsName->count());
-        $this->assertEquals(15, $inputFieldsDescription->count());
-        $this->assertEquals(15, $response->filter('.c-toggleSwitch')->count());
+        $this->assertSame(15, $inputFieldsName->count());
+        $this->assertSame(15, $inputFieldsDescription->count());
+        $this->assertSame(15, $response->filter('.c-toggleSwitch')->count());
 
         // Check initial fields show and in order
         $notFoundNames = [
@@ -47,7 +58,7 @@ class TradeLawControllerTest extends AbstractAdminWebTestCase
             '商品代金以外の必要料金',
             '引き渡し時期',
             'お支払方法',
-            '返品・交換について'
+            '返品・交換について',
         ];
 
         $loopId = 0;
@@ -62,13 +73,14 @@ class TradeLawControllerTest extends AbstractAdminWebTestCase
 
         // Ensure initial value descriptions are empty
         $inputFieldsDescription->each(function ($inputFieldName) {
-            $this->assertEquals("", $inputFieldName->attr('value'));
+            $this->assertNull($inputFieldName->attr('value'));
         });
     }
 
     /**
      * 名称入力欄が255文字以上の場合、バリデーションエラーが発生されるかどうかのチェック
      * Validation check on setting name with characters over 255
+     *
      * @return void
      */
     public function testValidationNameMoreThan255Characters()
@@ -81,19 +93,20 @@ class TradeLawControllerTest extends AbstractAdminWebTestCase
             ['form' => $form]
         );
         // Validation errors return success response.
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
         $failedInput = $responseCrawler->filter('#form_TradeLaws_0_name.is-invalid');
         // Check that the correct cell is failing validation with red border
-        $this->assertEquals(1, $failedInput->count());
+        $this->assertSame(1, $failedInput->count());
 
         // Check Text
-        $this->assertEquals('<span class="form-error-message">値が長すぎます。255文字以内でなければなりません。</span>',
+        $this->assertSame('<span class="form-error-message">値が長すぎます。255文字以内でなければなりません。</span>',
             $failedInput->nextAll()->filter('.form-error-message')->outerHtml());
     }
 
     /**
      * 説明入力欄が4000文字以上の場合、バリデーションエラーが発生されるかどうかのチェック
      * Validation check on setting name with characters over 4000
+     *
      * @return void
      */
     public function testValidationDescriptionMoreThan4000Characters()
@@ -106,13 +119,13 @@ class TradeLawControllerTest extends AbstractAdminWebTestCase
             ['form' => $form]
         );
         // Validation errors return success response.
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
         $failedInput = $responseCrawler->filter('#form_TradeLaws_0_description.is-invalid');
         // Check that the correct cell is failing validation with red border
-        $this->assertEquals(1, $failedInput->count());
+        $this->assertSame(1, $failedInput->count());
 
         // Check Text
-        $this->assertEquals('<span class="form-error-message">値が長すぎます。4000文字以内でなければなりません。</span>',
+        $this->assertSame('<span class="form-error-message">値が長すぎます。4000文字以内でなければなりません。</span>',
             $failedInput->nextAll()->filter('.form-error-message')->outerHtml());
     }
 
@@ -135,7 +148,7 @@ class TradeLawControllerTest extends AbstractAdminWebTestCase
             ['form' => $form]
         );
         // Validation errors return success response with redirect 302 (error will respond 200).
-        $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(302, $this->client->getResponse()->getStatusCode());
         $responseCrawler = $this->client->followRedirect();
 
         $editedName = $responseCrawler->filter('#form_TradeLaws_10_name');
@@ -144,16 +157,16 @@ class TradeLawControllerTest extends AbstractAdminWebTestCase
 
         // Check that the correct cell is *not* failing validation with red border and contains registered value
         $this->assertStringNotContainsString('is-invalid', $editedName->attr('class'));
-        $this->assertEquals('UTテスト：名称', $editedName->attr('value'));
+        $this->assertSame('UTテスト：名称', $editedName->attr('value'));
 
         $this->assertStringNotContainsString('is-invalid', $editedDescription->attr('class'));
-        $this->assertEquals('UTテスト: 説明', $editedDescription->innerText());
+        $this->assertSame('UTテスト: 説明', $editedDescription->innerText());
 
-        $this->assertStringNotContainsString('is-invalid', $editedToggle->attr('class') ?: "");
-        $this->assertEquals('1', $editedToggle->attr('value'));
+        $this->assertStringNotContainsString('is-invalid', $editedToggle->attr('class') ?: '');
+        $this->assertSame('1', $editedToggle->attr('value'));
 
         // Check save success message exists
-        $this->assertEquals(1, $responseCrawler->filter('.alert.alert-success')->count());
+        $this->assertSame(1, $responseCrawler->filter('.alert.alert-success')->count());
     }
 
     protected function createBaseForm(): array
@@ -163,64 +176,64 @@ class TradeLawControllerTest extends AbstractAdminWebTestCase
             'TradeLaws' => [
                 0 => [
                     'name' => '販売業者',
-                    'description' => ''
+                    'description' => '',
                 ],
                 1 => [
                     'name' => '代表責任者',
-                    'description' => ''
+                    'description' => '',
                 ],
                 2 => [
                     'name' => '所在地',
-                    'description' => ''
+                    'description' => '',
                 ],
                 3 => [
                     'name' => '電話番号',
-                    'description' => ''
+                    'description' => '',
                 ],
                 4 => [
                     'name' => 'メールアドレス',
-                    'description' => ''
+                    'description' => '',
                 ],
                 5 => [
                     'name' => 'URL',
-                    'description' => ''
+                    'description' => '',
                 ],
                 6 => [
                     'name' => '商品代金以外の必要料金',
-                    'description' => ''
+                    'description' => '',
                 ],
                 7 => [
                     'name' => '引き渡し時期',
-                    'description' => ''
+                    'description' => '',
                 ], 8 => [
                     'name' => 'お支払方法',
-                    'description' => ''
+                    'description' => '',
                 ],
                 9 => [
                     'name' => '返品・交換について',
-                    'description' => ''
+                    'description' => '',
                 ],
                 10 => [
                     'name' => '',
-                    'description' => ''
+                    'description' => '',
                 ],
                 11 => [
                     'name' => '',
-                    'description' => ''
+                    'description' => '',
                 ],
                 12 => [
                     'name' => '',
-                    'description' => ''
+                    'description' => '',
                 ],
                 13 => [
                     'name' => '',
-                    'description' => ''
+                    'description' => '',
                 ],
                 14 => [
                     'name' => '',
-                    'description' => ''
-                ]
-            ]
+                    'description' => '',
+                ],
+            ],
         ];
     }
 }

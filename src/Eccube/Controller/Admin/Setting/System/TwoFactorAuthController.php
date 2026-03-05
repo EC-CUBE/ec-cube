@@ -49,7 +49,7 @@ class TwoFactorAuthController extends AbstractController
     public function __construct(
         MemberRepository $memberRepository,
         TokenStorageInterface $tokenStorage,
-        TwoFactorAuthService $twoFactorAuthService
+        TwoFactorAuthService $twoFactorAuthService,
     ) {
         $this->memberRepository = $memberRepository;
         $this->tokenStorage = $tokenStorage;
@@ -58,6 +58,7 @@ class TwoFactorAuthController extends AbstractController
 
     /**
      * @Route("/%eccube_admin_route%/two_factor_auth/auth", name="admin_two_factor_auth", methods={"GET", "POST"})
+     *
      * @Template("@admin/two_factor_auth.twig")
      */
     public function auth(Request $request)
@@ -101,6 +102,7 @@ class TwoFactorAuthController extends AbstractController
 
     /**
      * @Route("/%eccube_admin_route%/two_factor_auth/set", name="admin_two_factor_auth_set", methods={"GET", "POST"})
+     *
      * @Template("@admin/two_factor_auth_set.twig")
      */
     public function set(Request $request)
@@ -109,6 +111,13 @@ class TwoFactorAuthController extends AbstractController
         if (!$this->twoFactorAuthService->isEnabled() || $this->twoFactorAuthService->isAuth($Member)) {
             return $this->redirectToRoute('admin_homepage');
         }
+
+        // 既に2FAキーが設定されている場合は、認証画面にリダイレクト
+        // 2FA未認証状態での再設定を防ぐ（MFAバイパス脆弱性対策）
+        if ($Member->getTwoFactorAuthKey()) {
+            return $this->redirectToRoute('admin_two_factor_auth');
+        }
+
         $res = $this->createResponse($request);
 
         return $res;
@@ -116,6 +125,7 @@ class TwoFactorAuthController extends AbstractController
 
     /**
      * @Route("/%eccube_admin_route%/setting/system/two_factor_auth/edit", name="admin_setting_system_two_factor_auth_edit", methods={"GET", "POST"})
+     *
      * @Template("@admin/Setting/System/two_factor_auth_edit.twig")
      */
     public function edit(Request $request)

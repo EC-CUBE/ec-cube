@@ -33,18 +33,21 @@ class PageRepository extends AbstractRepository
 
     /**
      * @var string
+     *
      * @path %eccube_theme_user_data_dir% (app/template/user_data)
      */
     protected $userDataRealDir;
 
     /**
      * @var string
+     *
      * @path %eccube_theme_app_dir% (app/template)
      */
     protected $templateRealDir;
 
     /**
      * @var string
+     *
      * @path %eccube_theme_src_dir% (src/Eccube/Resource/template)
      */
     protected $templateDefaultRealDir;
@@ -116,7 +119,7 @@ class PageRepository extends AbstractRepository
      */
     public function newPage()
     {
-        $Page = new \Eccube\Entity\Page();
+        $Page = new Page();
         $Page->setEditType(Page::EDIT_TYPE_USER);
 
         return $Page;

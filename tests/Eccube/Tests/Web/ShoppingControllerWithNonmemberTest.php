@@ -111,7 +111,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
 
     public function testNonmemberWithCartUnlock()
     {
-        $crawler = $this->client->request('GET', $this->generateUrl('shopping_nonmember'));
+        $this->client->request('GET', $this->generateUrl('shopping_nonmember'));
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('cart')));
     }
@@ -123,7 +123,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->scenarioCartIn($Customer);
 
         $this->loginTo($Customer);
-        $crawler = $this->client->request('GET', $this->generateUrl('shopping_nonmember'));
+        $this->client->request('GET', $this->generateUrl('shopping_nonmember'));
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
     }
 
@@ -131,7 +131,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
     {
         $this->scenarioCartIn();
 
-        $crawler = $this->client->request('GET', $this->generateUrl('shopping_nonmember'));
+        $this->client->request('GET', $this->generateUrl('shopping_nonmember'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -274,7 +274,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $formData = $this->createNonmemberFormData();
         unset($formData['email']);
 
-        $crawler = $client->request(
+        $client->request(
             'POST',
             $shipping_edit_url,
             ['shopping_shipping' => $formData]
@@ -285,11 +285,11 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         // ご注文完了
         $this->scenarioComplete($client, $this->app->path('shopping_confirm'));
 
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
+        $this->app['eccube.repository.base_info']->get();
         $Messages = $this->getMailCatcherMessages();
-        $Message = $this->getMailCatcherMessage($Messages[0]->id);
+        $this->getMailCatcherMessage($Messages[0]->id);
 
-//        $this->assertMatchesRegularExpression('/111-111-111/', $this->parseMailCatcherSource($Message), '変更した FAX 番号が一致するか');
+        //        $this->assertMatchesRegularExpression('/111-111-111/', $this->parseMailCatcherSource($Message), '変更した FAX 番号が一致するか');
     }
 
     /**
@@ -311,7 +311,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         $faker = $this->getFaker();
-        $crawler = $this->client->request(
+        $this->client->request(
             'POST',
             '/shopping/customer',
             [
@@ -325,13 +325,13 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
                 'customer_pref' => '秋田県',
                 'customer_addr01' => $faker->city,
                 'customer_addr02' => $faker->streetAddress,
-                'customer_email' => $faker->safeEmail
+                'customer_email' => $faker->safeEmail,
             ],
             [],
             ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'],
         );
 
-        $this->assertEquals('OK', json_decode($this->client->getResponse()->getContent())->status);
+        $this->assertSame('OK', json_decode($this->client->getResponse()->getContent())->status);
     }
 
     /**
@@ -353,7 +353,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         $faker = $this->getFaker();
-        $crawler = $this->client->request(
+        $this->client->request(
             'POST',
             '/shopping/customer',
             [
@@ -367,13 +367,13 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
                 'customer_pref' => '秋田県',
                 'customer_addr01' => $faker->city,
                 'customer_addr02' => $faker->streetAddress,
-                'customer_email' => $faker->safeEmail
+                'customer_email' => $faker->safeEmail,
             ],
             [],
             ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'],
         );
 
-        $this->assertEquals('NG', json_decode($this->client->getResponse()->getContent())->status);
+        $this->assertSame('NG', json_decode($this->client->getResponse()->getContent())->status);
     }
 
     /**
@@ -395,7 +395,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         $faker = $this->getFaker();
-        $crawler = $this->client->request(
+        $this->client->request(
             'POST',
             '/shopping/customer',
             [
@@ -409,13 +409,13 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
                 'customer_pref' => '秋田県',
                 'customer_addr01' => $faker->city,
                 'customer_addr02' => $faker->streetAddress,
-                'customer_email' => $faker->safeEmail
+                'customer_email' => $faker->safeEmail,
             ],
             [],
             ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'],
         );
 
-        $this->assertEquals('NG', json_decode($this->client->getResponse()->getContent())->status);
+        $this->assertSame('NG', json_decode($this->client->getResponse()->getContent())->status);
     }
 
     public function createNonmemberFormData()

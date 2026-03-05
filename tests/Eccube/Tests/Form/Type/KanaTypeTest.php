@@ -15,10 +15,11 @@ namespace Eccube\Tests\Form\Type;
 
 use Eccube\Form\Type\KanaType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\FormInterface;
 
 class KanaTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Symfony\Component\Form\FormInterface */
+    /** @var FormInterface */
     protected $form;
 
     protected $maxLength = 25;
@@ -189,6 +190,6 @@ class KanaTypeTest extends AbstractTypeTestCase
         ];
 
         $this->form->submit($input);
-        $this->assertEquals($output, $this->form->getData());
+        $this->assertSame($output, $this->form->getData());
     }
 }

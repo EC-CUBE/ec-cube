@@ -39,7 +39,7 @@ class OrderRepositoryTest extends EccubeTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->orderRepository = $this->entityManager->getRepository(\Eccube\Entity\Order::class);
+        $this->orderRepository = $this->entityManager->getRepository(Order::class);
 
         $this->createProduct();
         $this->Customer = $this->createCustomer();
@@ -87,10 +87,13 @@ class OrderRepositoryTest extends EccubeTestCase
 
     public function testGetShippings()
     {
-        $this->assertInstanceOf('\Doctrine\Common\Collections\Collection', $this->Order->getShippings());
-        $this->assertEquals(1, $this->Order->getShippings()->count());
+        $this->assertInstanceOf(\Doctrine\Common\Collections\Collection::class, $this->Order->getShippings());
+        $this->assertSame(1, $this->Order->getShippings()->count());
     }
 
+    /**
+     * @group decimal
+     */
     public function testUpdateOrderSummary()
     {
         $Customer = $this->createCustomer();
@@ -106,20 +109,31 @@ class OrderRepositoryTest extends EccubeTestCase
         $this->entityManager->flush();
 
         $this->orderRepository->updateOrderSummary($Customer);
+        // decimal 型の値を正確に反映させるために、flush() 後に再取得する
+        $this->entityManager->flush();
+        $this->entityManager->refresh($Customer);
+        $this->entityManager->refresh($Order1);
         self::assertSame($Order1->getOrderDate(), $Customer->getFirstBuyDate());
         self::assertSame($Order1->getOrderDate(), $Customer->getLastBuyDate());
-        self::assertEquals(1, $Customer->getBuyTimes());
-        self::assertEquals($Order1->getTotal(), $Customer->getBuyTotal());
+        self::assertSame('1', $Customer->getBuyTimes());
+        self::assertSame($Order1->getTotal(), $Customer->getBuyTotal());
 
         $Order2 = $this->createOrder($Customer);
         $Order2->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
         $this->entityManager->flush();
 
         $this->orderRepository->updateOrderSummary($Customer);
+        // decimal 型の値を正確に反映させるために、flush() 後に再取得する
+        $this->entityManager->flush();
+        $this->entityManager->refresh($Customer);
+        $this->entityManager->refresh($Order1);
+        $this->entityManager->refresh($Order2);
         self::assertSame($Order1->getOrderDate(), $Customer->getFirstBuyDate());
         self::assertSame($Order2->getOrderDate(), $Customer->getLastBuyDate());
-        self::assertEquals(2, $Customer->getBuyTimes());
-        self::assertEquals($Order1->getTotal() + $Order2->getTotal(), $Customer->getBuyTotal());
+        self::assertSame('2', $Customer->getBuyTimes());
+
+        // XXX SQLite の場合、小数点以下の '.00' が省略されるため、bcadd() で正規化して比較する
+        self::assertSame(bcadd($Order1->getTotal(), $Order2->getTotal(), 2), bcadd($Customer->getBuyTotal(), '0', 2));
     }
 
     public function testGetQueryBuilderBySearchDataForAdminMulti2147483648()
@@ -212,7 +226,7 @@ class OrderRepositoryTest extends EccubeTestCase
      *
      * @dataProvider dataGetQueryBuilderBySearchDataForAdmin_testAndCondition
      */
-    public function testGetQueryBuilderBySearchDataForAdmin_testAndCondition(array $searchWord, int $expected)
+    public function testGetQueryBuilderBySearchDataForAdminTestAndCondition(array $searchWord, int $expected)
     {
         // 基本の検索条件に一致するデータを作成します
         $this->Order
@@ -244,7 +258,7 @@ class OrderRepositoryTest extends EccubeTestCase
             'multi' => '姓',
             'status' => [OrderStatus::NEW],
             'name' => '姓',
-            'kana' =>'セイ',
+            'kana' => 'セイ',
             'company_name' => '会社名',
             'email' => 'alice@example.com',
             'phone_number' => '00000000000',
@@ -300,14 +314,14 @@ class OrderRepositoryTest extends EccubeTestCase
             // 1 項目ずつ一致しない条件に置き換えると検索結果が返ってこないこと
             [['status' => [OrderStatus::CANCEL]], 0],
             [['multi' => '一致しないキーワード'], 0],
-            [['name' =>  '一致しないキーワード'], 0],
-            [['kana' =>  '一致しないキーワード'], 0],
-            [['company_name' =>  '一致しないキーワード'], 0],
-            [['email' =>  '一致しないキーワード'], 0],
-            [['phone_number' =>  '11111111111'], 0],
-            [['order_no' =>  '一致しないキーワード'], 0],
-            [['tracking_number' =>  '一致しないキーワード'], 0],
-            [['shipping_mail' =>  [Shipping::SHIPPING_MAIL_SENT]], 0],
+            [['name' => '一致しないキーワード'], 0],
+            [['kana' => '一致しないキーワード'], 0],
+            [['company_name' => '一致しないキーワード'], 0],
+            [['email' => '一致しないキーワード'], 0],
+            [['phone_number' => '11111111111'], 0],
+            [['order_no' => '一致しないキーワード'], 0],
+            [['tracking_number' => '一致しないキーワード'], 0],
+            [['shipping_mail' => [Shipping::SHIPPING_MAIL_SENT]], 0],
             [['payment' => [2]], 0],
             [['order_datetime_start' => new \DateTime('2022-01-01T10:00:01Z')], 0],
             [['order_datetime_end' => new \DateTime('2022-01-01T10:00:00Z')], 0],

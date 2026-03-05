@@ -82,7 +82,7 @@ class ShippingMultipleItemType extends AbstractType
         TokenStorageInterface $tokenStorage,
         PrefRepository $prefRepository,
         EntityManagerInterface $entityManager,
-        OrderHelper $orderHelper
+        OrderHelper $orderHelper,
     ) {
         $this->eccubeConfig = $eccubeConfig;
         $this->session = $session;

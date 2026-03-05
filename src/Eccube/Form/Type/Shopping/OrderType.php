@@ -78,7 +78,7 @@ class OrderType extends AbstractType
         DeliveryRepository $deliveryRepository,
         PaymentRepository $paymentRepository,
         BaseInfoRepository $baseInfoRepository,
-        Context $requestContext
+        Context $requestContext,
     ) {
         $this->orderRepository = $orderRepository;
         $this->deliveryRepository = $deliveryRepository;
@@ -183,7 +183,7 @@ class OrderType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => 'Eccube\Entity\Order',
+                'data_class' => Order::class,
                 'skip_add_form' => false,
             ]
         );
@@ -194,7 +194,7 @@ class OrderType extends AbstractType
         return '_shopping_order';
     }
 
-    private function addPaymentForm(FormInterface $form, array $choices, Payment $data = null)
+    private function addPaymentForm(FormInterface $form, array $choices, ?Payment $data = null)
     {
         $message = trans('front.shopping.payment_method_unselected');
 

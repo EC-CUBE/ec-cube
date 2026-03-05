@@ -13,7 +13,6 @@
 
 namespace Eccube\Tests\Service\PurchaseFlow\Processor;
 
-use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\OrderStatus;
@@ -24,6 +23,7 @@ use Eccube\Repository\Master\OrderItemTypeRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Service\PurchaseFlow\Processor\StockDiffProcessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
+use Eccube\Service\PurchaseFlow\PurchaseException;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Tests\EccubeTestCase;
 
@@ -38,16 +38,12 @@ class StockDiffProcessorTest extends EccubeTestCase
     /** @var OrderStatusRepository */
     private $OrderStatusRepository;
 
-    /** @var BaseInfo */
-    private $BaseInfo;
-
     protected function setUp(): void
     {
         parent::setUp();
         $this->processor = static::getContainer()->get(StockDiffProcessor::class);
-        $this->OrderStatusRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\OrderStatus::class);
-        $this->OrderItemTypeRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\OrderItemType::class);
-        $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
+        $this->OrderStatusRepository = $this->entityManager->getRepository(OrderStatus::class);
+        $this->OrderItemTypeRepository = $this->entityManager->getRepository(OrderItemType::class);
     }
 
     /**
@@ -159,7 +155,7 @@ class StockDiffProcessorTest extends EccubeTestCase
      * @param $beforeOrderStatus int 編集前の受注ステータス
      * @param $afterOrderStatus int 編集後の受注ステータス
      *
-     * @throws \Eccube\Service\PurchaseFlow\PurchaseException
+     * @throws PurchaseException
      */
     public function testPrepare($beforeStock, $afterStock, $beforeQuantity, $afterQuantity, $beforeOrderStatus, $afterOrderStatus)
     {

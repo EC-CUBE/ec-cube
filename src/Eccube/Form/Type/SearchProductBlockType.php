@@ -41,7 +41,7 @@ class SearchProductBlockType extends AbstractType
             ->getList(null, true);
 
         $builder->add('category_id', EntityType::class, [
-            'class' => 'Eccube\Entity\Category',
+            'class' => \Eccube\Entity\Category::class,
             'choice_label' => 'NameWithLevel',
             'choices' => $Categories,
             'placeholder' => 'common.select__all_products',

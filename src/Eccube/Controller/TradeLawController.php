@@ -26,13 +26,14 @@ class TradeLawController extends AbstractController
      * @param TradeLawRepository $tradeLawRepository
      */
     public function __construct(
-        TradeLawRepository $tradeLawRepository
+        TradeLawRepository $tradeLawRepository,
     ) {
         $this->tradeLawRepository = $tradeLawRepository;
     }
 
     /**
      * @Route("/help/tradelaw", name="help_tradelaw", methods={"GET"})
+     *
      * @Template("Help/tradelaw.twig")
      */
     public function index()

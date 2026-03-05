@@ -118,7 +118,7 @@ class DeliveryType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Eccube\Entity\Delivery',
+            'data_class' => \Eccube\Entity\Delivery::class,
         ]);
     }
 

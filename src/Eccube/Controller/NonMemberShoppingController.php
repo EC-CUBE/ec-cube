@@ -60,7 +60,7 @@ class NonMemberShoppingController extends AbstractShoppingController
         ValidatorInterface $validator,
         PrefRepository $prefRepository,
         OrderHelper $orderHelper,
-        CartService $cartService
+        CartService $cartService,
     ) {
         $this->validator = $validator;
         $this->prefRepository = $prefRepository;
@@ -72,6 +72,7 @@ class NonMemberShoppingController extends AbstractShoppingController
      * 非会員処理
      *
      * @Route("/shopping/nonmember", name="shopping_nonmember", methods={"GET", "POST"})
+     *
      * @Template("Shopping/nonmember.twig")
      */
     public function index(Request $request)
@@ -253,7 +254,11 @@ class NonMemberShoppingController extends AbstractShoppingController
             ]
         );
 
-        $data['customer_kana01'] = mb_convert_kana($data['customer_kana01'], 'CV', 'utf-8');
+        if (is_string($data['customer_kana01'])) {
+            $data['customer_kana01'] = mb_convert_kana($data['customer_kana01'], 'CV', 'utf-8');
+        } else {
+            $data['customer_kana01'] = '';
+        }
         $errors[] = $this->validator->validate(
             $data['customer_kana01'],
             [
@@ -262,7 +267,11 @@ class NonMemberShoppingController extends AbstractShoppingController
                 new Assert\Regex(['pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u']),
             ]
         );
-        $data['customer_kana02'] = mb_convert_kana($data['customer_kana02'], 'CV', 'utf-8');
+        if (is_string($data['customer_kana02'])) {
+            $data['customer_kana02'] = mb_convert_kana($data['customer_kana02'], 'CV', 'utf-8');
+        } else {
+            $data['customer_kana02'] = '';
+        }
         $errors[] = $this->validator->validate(
             $data['customer_kana02'],
             [

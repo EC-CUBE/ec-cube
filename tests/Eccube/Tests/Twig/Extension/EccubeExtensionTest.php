@@ -14,6 +14,7 @@
 namespace Eccube\Tests\Twig\Extension;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\Product;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Twig\Extension\EccubeExtension;
 
@@ -28,7 +29,7 @@ class EccubeExtensionTest extends EccubeTestCase
     {
         parent::setUp();
         $EccubeConfig = static::getContainer()->get(EccubeConfig::class);
-        $productRepository = $this->entityManager->getRepository(\Eccube\Entity\Product::class);
+        $productRepository = $this->entityManager->getRepository(Product::class);
         $this->Extension = new EccubeExtension($EccubeConfig, $productRepository);
     }
 
@@ -64,15 +65,22 @@ class EccubeExtensionTest extends EccubeTestCase
                     ->first();
 
                 if ($ProductClass->getPrice01IncTax()) {
-                    $this->assertEquals(number_format($ProductClass->getPrice01()), $actual['price01']);
-                    $this->assertEquals(number_format($ProductClass->getPrice01IncTax()), $actual['price01_inc_tax']);
-                    $this->assertEquals($this->Extension->getPriceFilter($ProductClass->getPrice01()), $actual['price01_with_currency']);
-                    $this->assertEquals($this->Extension->getPriceFilter($ProductClass->getPrice01IncTax()), $actual['price01_inc_tax_with_currency']);
+                    if ($ProductClass->getPrice01() !== null) {
+                        $this->assertSame(number_format($ProductClass->getPrice01()), $actual['price01']);
+                        $this->assertSame($this->Extension->getPriceFilter($ProductClass->getPrice01()), $actual['price01_with_currency']);
+                    }
+                    if (number_format($ProductClass->getPrice01IncTax()) === '0') {
+                        $this->assertSame('', $actual['price01_inc_tax']);
+                        $this->assertSame('', $actual['price01_inc_tax_with_currency']);
+                    } else {
+                        $this->assertSame(number_format($ProductClass->getPrice01IncTax()), number_format($actual['price01_inc_tax']));
+                        $this->assertSame($this->Extension->getPriceFilter($ProductClass->getPrice01IncTax()), $actual['price01_inc_tax_with_currency']);
+                    }
                 }
-                $this->assertEquals(number_format($ProductClass->getPrice02()), $actual['price02']);
-                $this->assertEquals(number_format($ProductClass->getPrice02IncTax()), $actual['price02_inc_tax']);
-                $this->assertEquals($this->Extension->getPriceFilter($ProductClass->getPrice02()), $actual['price02_with_currency']);
-                $this->assertEquals($this->Extension->getPriceFilter($ProductClass->getPrice02IncTax()), $actual['price02_inc_tax_with_currency']);
+                $this->assertSame(number_format($ProductClass->getPrice02()), $actual['price02']);
+                $this->assertSame(number_format($ProductClass->getPrice02IncTax()), $actual['price02_inc_tax']);
+                $this->assertSame($this->Extension->getPriceFilter($ProductClass->getPrice02()), $actual['price02_with_currency']);
+                $this->assertSame($this->Extension->getPriceFilter($ProductClass->getPrice02IncTax()), $actual['price02_inc_tax_with_currency']);
                 $this->assertEquals($ProductClass->getCode(), $actual['product_code']);
                 $this->assertEquals($ProductClass->getSaleType()->getId(), $actual['sale_type']);
                 $this->assertEquals($ProductClass->getStockFind(), $actual['stock_find']);

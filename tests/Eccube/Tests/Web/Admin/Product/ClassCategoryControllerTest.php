@@ -14,6 +14,8 @@
 namespace Eccube\Tests\Web\Admin\Product;
 
 use Eccube\Common\Constant;
+use Eccube\Entity\ClassCategory;
+use Eccube\Entity\ClassName;
 use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\ClassNameRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
@@ -35,8 +37,8 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
     {
         parent::setUp();
 
-        $this->classNameRepository = $this->entityManager->getRepository(\Eccube\Entity\ClassName::class);
-        $this->classCategoryRepository = $this->entityManager->getRepository(\Eccube\Entity\ClassCategory::class);
+        $this->classNameRepository = $this->entityManager->getRepository(ClassName::class);
+        $this->classCategoryRepository = $this->entityManager->getRepository(ClassCategory::class);
     }
 
     public function testRoutingAdminProductClassCategory()
@@ -158,7 +160,7 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
         $this->client->request('DELETE',
             $this->generateUrl('admin_product_class_category_delete',
                 ['class_name_id' => $test_class_name_id, 'id' => $test_class_category_id]
-                ),
+            ),
             ['_token' => 'dummy']
         );
 
@@ -201,20 +203,20 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
      */
     public function testClassCategorySortByRank()
     {
-        /** @var \Eccube\Entity\ClassCategory $ClassCategory */
-        //set チョコ rank
+        /** @var ClassCategory $ClassCategory */
+        // set チョコ rank
         $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => 'チョコ']);
         $testData[$ClassCategory->getId()] = 1;
         $ClassCategory->setSortNo(3);
         $this->entityManager->persist($ClassCategory);
         $this->entityManager->flush($ClassCategory);
-        //set 抹茶 rank
+        // set 抹茶 rank
         $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => '抹茶']);
         $testData[$ClassCategory->getId()] = 3;
         $ClassCategory->setSortNo(2);
         $this->entityManager->persist($ClassCategory);
         $this->entityManager->flush($ClassCategory);
-        //set バニラ rank
+        // set バニラ rank
         $ClassCategory = $this->classCategoryRepository->findOneBy(['name' => 'バニラ']);
         $testData[$ClassCategory->getId()] = 2;
         $ClassCategory->setSortNo(1);
@@ -231,7 +233,7 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
         /** @var Crawler $crawler */
         $crawler = $client->request('GET', $this->generateUrl('admin_product_class_category', ['class_name_id' => 1]));
 
-        //チョコ, 抹茶, バニラ sort by rank setup above.
+        // チョコ, 抹茶, バニラ sort by rank setup above.
         $this->expected = '抹茶';
         $this->actual = $crawler->filter('ul.sortable-container > li:nth-child(3)')->text();
         $this->assertStringContainsString($this->expected, $this->actual);
@@ -245,7 +247,7 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
 
     private function newTestClassName($TestCreator)
     {
-        $TestClassName = new \Eccube\Entity\ClassName();
+        $TestClassName = new ClassName();
         $TestClassName->setName('形状')
             ->setSortNo(100)
             ->setCreator($TestCreator);
@@ -255,7 +257,7 @@ class ClassCategoryControllerTest extends AbstractAdminWebTestCase
 
     private function newTestClassCategory($TestCreator, $TestClassName)
     {
-        $TestClassCategory = new \Eccube\Entity\ClassCategory();
+        $TestClassCategory = new ClassCategory();
         $TestClassCategory->setName('立方体')
             ->setSortNo(100)
             ->setClassName($TestClassName)

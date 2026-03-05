@@ -56,6 +56,9 @@ class QueriesTest_Customizer implements QueryCustomizer
 {
     public $customized = false;
 
+    /**
+     * @return void
+     */
     public function customize(QueryBuilder $builder, $params, $queryKey)
     {
         $this->customized = true;
@@ -74,12 +77,18 @@ class QueriesTest_Customizer implements QueryCustomizer
 
 class QueriesTest_CustomizerWithoutAnnotation implements QueryCustomizer
 {
+    /**
+     * @return void
+     */
     public function customize(QueryBuilder $builder, $params, $queryKey)
     {
     }
 
+    /**
+     * @return string
+     */
     public function getQueryKey()
     {
-        return;
+        return '';
     }
 }

@@ -17,7 +17,6 @@ use Doctrine\Bundle\DoctrineBundle\Command\DoctrineCommand;
 use Doctrine\Persistence\ManagerRegistry;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Member;
-use Eccube\Security\PasswordHasher\PasswordHasher;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -86,7 +85,7 @@ EOF
             'id' => $member_id,
             'login_id' => $login_id,
             'password' => $password,
-            //'salt' => 'n/a',
+            // 'salt' => 'n/a',
             'work_id' => 1,
             'authority_id' => 0,
             'creator_id' => 1,

@@ -184,7 +184,7 @@ class ShippingEditPage extends AbstractAdminPageStyleGuide
     public function 商品検索結果_選択($rowNum)
     {
         $rowNum = $rowNum * 2;
-        $this->tester->click("#searchProductModalList > table > tbody > tr:nth-child(${rowNum}) > td.align-middle.pe-3.text-end > button");
+        $this->tester->click("#searchProductModalList > table > tbody > tr:nth-child({$rowNum}) > td.align-middle.pe-3.text-end > button");
         $this->tester->waitForElementNotVisible('#searchProductModalList');
         $this->tester->wait(5);
 
@@ -228,6 +228,6 @@ class ShippingEditPage extends AbstractAdminPageStyleGuide
     {
         $this->tester->scrollTo(['id' => 'shipmentOverview_'.$num], 0, 50);
         $this->tester->see((new \DateTime())->format('Y/m/d'),
-                            '#shipmentOverview_'.$num.' > div > div:nth-child(4) > div:nth-child(2) > div:nth-child(3) > div > span');
+            '#shipmentOverview_'.$num.' > div > div:nth-child(4) > div:nth-child(2) > div:nth-child(3) > div > span');
     }
 }

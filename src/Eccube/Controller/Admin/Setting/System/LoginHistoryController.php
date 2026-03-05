@@ -43,7 +43,7 @@ class LoginHistoryController extends AbstractController
      */
     public function __construct(
         PageMaxRepository $pageMaxRepository,
-        LoginHistoryRepository $loginHistoryRepository
+        LoginHistoryRepository $loginHistoryRepository,
     ) {
         $this->pageMaxRepository = $pageMaxRepository;
         $this->loginHistoryRepository = $loginHistoryRepository;
@@ -55,9 +55,10 @@ class LoginHistoryController extends AbstractController
      *
      * @Route("/%eccube_admin_route%/setting/system/login_history", name="admin_setting_system_login_history", methods={"GET", "POST"})
      * @Route("/%eccube_admin_route%/setting/system/login_history/{page_no}", requirements={"page_no" = "\d+"}, name="admin_setting_system_login_history_page", methods={"GET", "POST"})
+     *
      * @Template("@admin/Setting/System/login_history.twig")
      *
-     * @param integer $page_no
+     * @param int $page_no
      *
      * @return \Symfony\Component\HttpFoundation\Response|array
      */

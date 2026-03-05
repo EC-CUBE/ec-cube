@@ -20,7 +20,6 @@ $rules = [
     'array_syntax' => ['syntax' => 'short'],
     'phpdoc_align' => false,
     'phpdoc_summary' => false,
-    'phpdoc_scalar' => false,
     'phpdoc_annotation_without_dot' => false,
     'no_superfluous_phpdoc_tags' => false,
     'increment_style' => false,

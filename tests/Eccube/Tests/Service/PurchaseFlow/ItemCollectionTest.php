@@ -61,9 +61,7 @@ class ItemCollectionTest extends EccubeTestCase
     public function testReduce()
     {
         $reducer = function ($sum, ItemInterface $item) {
-            $sum += $item->getPrice() * $item->getQuantity();
-
-            return $sum;
+            return $sum + $item->getPrice() * $item->getQuantity();
         };
 
         $this->expected = array_reduce($this->Items, $reducer, 0);

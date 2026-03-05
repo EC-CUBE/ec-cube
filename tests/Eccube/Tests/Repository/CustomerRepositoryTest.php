@@ -15,6 +15,7 @@ namespace Eccube\Tests\Repository;
 
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
+use Eccube\Entity\Master\OrderStatus;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Tests\EccubeTestCase;
@@ -57,8 +58,8 @@ class CustomerRepositoryTest extends EccubeTestCase
         $this->email = 'customer@example.com';
         $this->Customer = $this->createCustomer($this->email);
 
-        $this->customerRepo = $this->entityManager->getRepository(\Eccube\Entity\Customer::class);
-        $this->masterOrderStatusRepo = $this->entityManager->getRepository(\Eccube\Entity\Master\OrderStatus::class);
+        $this->customerRepo = $this->entityManager->getRepository(Customer::class);
+        $this->masterOrderStatusRepo = $this->entityManager->getRepository(OrderStatus::class);
     }
 
     public function testNewCustomer()
@@ -74,7 +75,7 @@ class CustomerRepositoryTest extends EccubeTestCase
     public function testGetProvisionalCustomerBySecretKey()
     {
         $this->expected = $this->Customer->getSecretKey();
-        $Status = $this->entityManager->getRepository('Eccube\Entity\Master\CustomerStatus')->find(CustomerStatus::NONACTIVE);
+        $Status = $this->entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::NONACTIVE);
         $this->Customer->setStatus($Status);
         $this->entityManager->flush();
 
@@ -162,7 +163,6 @@ class DummyCustomer implements UserInterface
 
     public function eraseCredentials()
     {
-        return;
     }
 
     public function getUserIdentifier(): string

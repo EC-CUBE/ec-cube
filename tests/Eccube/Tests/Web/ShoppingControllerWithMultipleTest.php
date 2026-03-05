@@ -13,14 +13,16 @@
 
 namespace Eccube\Tests\Web;
 
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Order;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\CartService;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * 複数配送指定のテストケース.
@@ -59,9 +61,9 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
     protected function setUp(): void
     {
         parent::setUp();
-        $this->baseInfoRepository = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class);
-        $this->orderRepository = $this->entityManager->getRepository(\Eccube\Entity\Order::class);
-        $this->orderStatusRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\OrderStatus::class);
+        $this->baseInfoRepository = $this->entityManager->getRepository(BaseInfo::class);
+        $this->orderRepository = $this->entityManager->getRepository(Order::class);
+        $this->orderStatusRepository = $this->entityManager->getRepository(OrderStatus::class);
     }
 
     /**
@@ -103,25 +105,25 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
             }
         );
 
-        $crawler = $this->client->request(
+        $this->client->request(
             'POST',
             $this->generateUrl('shopping_shipping_multiple'),
             ['form' => [
-                    'shipping_multiple' => [0 => [
-                                // 配送先1, 配送先2 の 情報を渡す
-                                'shipping' => $shippings,
-                            ],
-                        ],
-                    '_token' => 'dummy',
+                'shipping_multiple' => [0 => [
+                    // 配送先1, 配送先2 の 情報を渡す
+                    'shipping' => $shippings,
                 ],
+                ],
+                '_token' => 'dummy',
+            ],
             ]
         );
 
         // 確認画面
-        $crawler = $this->scenarioConfirm($Customer);
+        $this->scenarioConfirm($Customer);
 
         // 完了画面
-        $crawler = $this->scenarioCheckout($Customer);
+        $this->scenarioCheckout($Customer);
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_complete')));
 
@@ -197,7 +199,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->scenarioCartIn($Customer);
 
         // 確認画面
-        $crawler = $this->scenarioConfirm($Customer);
+        $this->scenarioConfirm($Customer);
         // お届け先指定画面
         $this->scenarioRedirectTo($Customer, [
             '_shopping_order' => [
@@ -255,7 +257,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->scenarioCartIn($Customer);
 
         // 確認画面
-        $crawler = $this->scenarioConfirm($Customer);
+        $this->scenarioConfirm($Customer);
 
         // お届け先指定画面
         $this->scenarioRedirectTo($Customer, [
@@ -335,7 +337,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->scenarioCartIn($Customer, $ProductClass2->getId());
 
         // 確認画面
-        $crawler = $this->scenarioConfirm($Customer);
+        $this->scenarioConfirm($Customer);
 
         // お届け先指定画面
         $this->scenarioRedirectTo($Customer, [
@@ -391,7 +393,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
 
         $Order = $this->orderRepository->findOneBy(['Customer' => $Customer]);
-        $Shipping = $Order->getShippings();
+        $Order->getShippings();
 
         // One shipping
         $this->assertCount(1, $Order->getShippings());
@@ -427,7 +429,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->scenarioCartIn($Customer, $ProductClass2->getId());
 
         // 確認画面
-        $crawler = $this->scenarioConfirm($Customer);
+        $this->scenarioConfirm($Customer);
 
         // お届け先指定画面
         $this->scenarioRedirectTo($Customer, [
@@ -517,7 +519,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->scenarioCartIn($Customer);
 
         // 確認画面
-        $crawler = $this->scenarioConfirm($Customer);
+        $this->scenarioConfirm($Customer);
 
         // お届け先指定画面
         $this->scenarioRedirectTo($Customer, [
@@ -617,7 +619,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->scenarioCartIn($Customer, $ProductClass3->getId());
 
         // 確認画面
-        $crawler = $this->scenarioConfirm($Customer);
+        $this->scenarioConfirm($Customer);
         // お届け先指定画面
         $this->scenarioRedirectTo($Customer, [
             '_shopping_order' => [
@@ -727,7 +729,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->scenarioCartIn($Customer);
 
         // 確認画面
-        $crawler = $this->scenarioConfirm($Customer);
+        $this->scenarioConfirm($Customer);
         // お届け先指定画面
         $this->scenarioRedirectTo($Customer, [
             '_shopping_order' => [
@@ -838,7 +840,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->scenarioCartIn($Customer);
 
         // 確認画面
-        $crawler = $this->scenarioConfirm($Customer);
+        $this->scenarioConfirm($Customer);
 
         // お届け先指定画面
         $this->scenarioRedirectTo($Customer, [
@@ -925,7 +927,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->scenarioCartIn($Customer);
 
         // 確認画面
-        $crawler = $this->scenarioConfirm($Customer);
+        $this->scenarioConfirm($Customer);
         // お届け先指定画面
         $this->scenarioRedirectTo($Customer, [
             '_shopping_order' => [
@@ -1035,7 +1037,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->scenarioCartIn($Customer, $ProductClass3->getId());
 
         // 確認画面
-        $crawler = $this->scenarioConfirm($Customer);
+        $this->scenarioConfirm($Customer);
         // お届け先指定画面
         $this->scenarioRedirectTo($Customer, [
             '_shopping_order' => [
@@ -1282,10 +1284,10 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
 
         // FIXME ユニットテストではステータスが変わらない
         /* @var OrderStatus $OrderNew */
-//        $OrderNew = $this->orderStatusRepository->find(OrderStatus::NEW);
-//        $this->expected = $OrderNew->getId();
-//        $this->actual = $Order->getOrderStatus()->getId();
-//        $this->verify();
+        //        $OrderNew = $this->orderStatusRepository->find(OrderStatus::NEW);
+        //        $this->expected = $OrderNew->getId();
+        //        $this->actual = $Order->getOrderStatus()->getId();
+        //        $this->verify();
 
         $this->expected = $Customer->getName01();
         $this->actual = $Order->getName01();

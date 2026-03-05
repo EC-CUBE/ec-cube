@@ -62,7 +62,7 @@ class CartController extends AbstractController
         ProductClassRepository $productClassRepository,
         CartService $cartService,
         PurchaseFlow $cartPurchaseFlow,
-        BaseInfoRepository $baseInfoRepository
+        BaseInfoRepository $baseInfoRepository,
     ) {
         $this->productClassRepository = $productClassRepository;
         $this->cartService = $cartService;
@@ -74,6 +74,7 @@ class CartController extends AbstractController
      * カート画面.
      *
      * @Route("/cart", name="cart", methods={"GET"})
+     *
      * @Template("Cart/index.twig")
      */
     public function index(Request $request)

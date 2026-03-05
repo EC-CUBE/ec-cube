@@ -26,6 +26,7 @@ class AnnotatedRoutingController
 {
     /**
      * @Route("/")
+     *
      * @Template("AnnotatedRouting/Resource/template/index.twig")
      */
     public function index(Application $app)
@@ -35,7 +36,9 @@ class AnnotatedRoutingController
 
     /**
      * @Route("/form")
+     *
      * @Method("GET")
+     *
      * @Template("AnnotatedRouting/Resource/template/form.twig")
      */
     public function form(Application $app)
@@ -45,6 +48,7 @@ class AnnotatedRoutingController
 
     /**
      * @Route("/form")
+     *
      * @Method("POST")
      */
     public function submit(Application $app, Request $request)

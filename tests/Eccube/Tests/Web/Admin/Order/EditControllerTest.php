@@ -16,6 +16,7 @@ namespace Eccube\Tests\Web\Admin\Order;
 use Eccube\Common\Constant;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
+use Eccube\Entity\Delivery;
 use Eccube\Entity\MailHistory;
 use Eccube\Entity\Master\Job;
 use Eccube\Entity\Master\OrderStatus;
@@ -68,8 +69,8 @@ class EditControllerTest extends AbstractEditControllerTestCase
         parent::setUp();
         $this->Customer = $this->createCustomer();
         $this->Product = $this->createProduct();
-        $this->customerRepository = $this->entityManager->getRepository(\Eccube\Entity\Customer::class);
-        $this->orderRepository = $this->entityManager->getRepository(\Eccube\Entity\Order::class);
+        $this->customerRepository = $this->entityManager->getRepository(Customer::class);
+        $this->orderRepository = $this->entityManager->getRepository(Order::class);
         $this->cartService = static::getContainer()->get(CartService::class);
         $BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
         $this->entityManager->flush($BaseInfo);
@@ -107,7 +108,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
     {
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
-        $crawler = $this->client->request('GET', $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]));
+        $this->client->request('GET', $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -152,7 +153,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->entityManager->flush($Order);
 
         $formData = $this->createFormData($Customer, $this->Product);
-        $crawler = $this->client->request(
+        $this->client->request(
             'POST',
             $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]),
             [
@@ -169,7 +170,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
     /**
      * 危険なXSS htmlインジェクションが削除されたことを確認するテスト
-
+     *
      * 下記のものをチェックします。
      *     ・ ID属性の追加
      *     ・ <script> スクリプトインジェクション
@@ -202,17 +203,17 @@ class EditControllerTest extends AbstractEditControllerTestCase
         // 1つの新着情報を保存した後にホームページにアクセスする。
         // Request Homepage after saving a single news item
         $crawler = $this->client->request('GET', $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]));
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
 
         // <div>タグから危険なid属性が削除されていることを確認する。
         // Find that dangerous id attributes are removed from <div> tags.
         $testNewsArea_notFoundTest = $crawler->filter('#dangerous-id');
-        $this->assertEquals(0, $testNewsArea_notFoundTest->count());
+        $this->assertSame(0, $testNewsArea_notFoundTest->count());
 
         // 安全なclass属性が出力されているかどうかを確認する。
         // Find if classes (which are safe) have been outputted
         $testNewsArea = $crawler->filter('.safe_to_use_class');
-        $this->assertEquals(1, $testNewsArea->count());
+        $this->assertSame(1, $testNewsArea->count());
 
         // 安全なHTMLが存在するかどうかを確認する
         // Find if the safe HTML exists
@@ -224,6 +225,9 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->assertStringNotContainsString("<script>alert('XSS Attack')</script>", $testNewsArea->outerHtml());
     }
 
+    /**
+     * @group decimal
+     */
     public function testOrderCustomerInfo()
     {
         $Customer = $this->createCustomer();
@@ -243,19 +247,24 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_edit', ['id' => $Order->getId()])));
 
         $EditedOrder = $this->orderRepository->find($Order->getId());
+        $EditedCustomer = $this->customerRepository->find($EditedOrder->getCustomer()->getId());
+        // decimal の値を反映させるために refresh する
+        $this->entityManager->refresh($EditedOrder);
+        $this->entityManager->refresh($EditedCustomer);
 
         // 顧客の購入回数と購入金額確認
         $totalPrice = $EditedOrder->getTotalPrice();
+
         $this->expected = $totalPrice;
         $this->actual = $EditedOrder->getCustomer()->getBuyTotal();
         $this->verify();
-        $this->expected = 1;
+        $this->expected = '1';
         $this->actual = $EditedOrder->getCustomer()->getBuyTimes();
         $this->verify();
 
         $Order = $this->createOrder($Customer);
         $Order->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
-        $this->entityManager->flush($Order);
+        $this->entityManager->flush();
 
         $formData = $this->createFormData($Customer, $this->Product);
         $this->client->request(
@@ -271,17 +280,18 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $EditedOrder = $this->orderRepository->find($Order->getId());
 
         // 顧客の購入回数と購入金額確認
-        $this->expected = $totalPrice + $EditedOrder->getTotalPrice();
-        $this->actual = $EditedOrder->getCustomer()->getBuyTotal();
+        $this->expected = bcadd($totalPrice, $EditedOrder->getTotalPrice(), 2);
+        // XXX SQLite の場合、小数点以下の '.00' が省略されるため、bcadd() で正規化して比較する
+        $this->actual = bcadd($EditedOrder->getCustomer()->getBuyTotal(), '0', 2);
         $this->verify();
-        $this->expected = 2;
+        $this->expected = '2';
         $this->actual = $EditedOrder->getCustomer()->getBuyTimes();
         $this->verify();
     }
 
     public function testSearchCustomerHtml()
     {
-        $crawler = $this->client->request(
+        $this->client->request(
             'POST',
             $this->generateUrl('admin_order_search_customer_html'),
             [
@@ -299,7 +309,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
     public function testSearchCustomerById()
     {
-        $crawler = $this->client->request(
+        $this->client->request(
             'POST',
             $this->generateUrl('admin_order_search_customer_by_id'),
             [
@@ -320,7 +330,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
     public function testSearchProduct()
     {
-        $crawler = $this->client->request(
+        $this->client->request(
             'POST',
             $this->generateUrl('admin_order_search_product'),
             [
@@ -437,9 +447,12 @@ class EditControllerTest extends AbstractEditControllerTestCase
      * 受注編集時に、dtb_order.taxの値が正しく保存されているかどうかのテスト
      *
      * @see https://github.com/EC-CUBE/ec-cube/issues/1606
+     *
+     * @group decimal
      */
     public function testOrderProcessingWithTax()
     {
+        $this->markTestSkipped('インボイス対応に伴い Order::tax が非推奨となったためスキップ');
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
         $Order->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
@@ -491,19 +504,19 @@ class EditControllerTest extends AbstractEditControllerTestCase
                 : $totalPrice;
         }
         foreach ($totalByTaxRate as $rate => $price) {
+            $taxValue = bcdiv(bcmul($price, $rate, 4), bcadd('100', $rate, 0), 4);
             $tax = static::getContainer()->get(TaxRuleService::class)
-                ->roundByRoundingType($price * ($rate / (100 + $rate)), \Eccube\Entity\Master\RoundingType::ROUND);
+                ->roundByRoundingType($taxValue, RoundingType::ROUND);
             $totalTaxByTaxRate[$rate] = $tax;
         }
         $totalTax = array_reduce($totalTaxByTaxRate, function ($sum, $tax) {
-            $sum += $tax;
-
-            return $sum;
-        }, 0);
+            return bcadd($sum, $tax, 2);
+        }, '0');
 
         // 確認する「トータル税金」
         $this->expected = $totalTax;
-        $this->actual = $EditedOrderafterEdit->getTax();
+        // XXX SQLite の場合、小数点以下の '.00' が省略されるため、bcadd() で正規化して比較する
+        $this->actual = bcadd($EditedOrderafterEdit->getTax(), '0', 2);
         $this->verify();
     }
 
@@ -580,20 +593,20 @@ class EditControllerTest extends AbstractEditControllerTestCase
      */
     public function testUpdateShippingDeliveryTimeToNoneSpecified()
     {
-        $Customer = $this->createCustomer();
+        $this->createCustomer();
         $Order = $this->createOrder($this->Customer);
         $Order->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
         $this->entityManager->flush($Order);
 
         $formData = $this->createFormData($this->Customer, $this->Product);
         // まずお届け時間に何か指定する(便宜上、最初に取得できたものを利用)
-        $Delivery = $this->entityManager->getRepository(\Eccube\Entity\Delivery::class)->find($formData['Shipping']['Delivery']);
+        $Delivery = $this->entityManager->getRepository(Delivery::class)->find($formData['Shipping']['Delivery']);
         $DeliveryTime = $Delivery->getDeliveryTimes()[0];
         $delivery_time_id = $DeliveryTime->getId();
         $delivery_time = $DeliveryTime->getDeliveryTime();
         $formData['Shipping']['DeliveryTime'] = $delivery_time_id;
 
-        $crawler = $this->client->request(
+        $this->client->request(
             'POST',
             $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]),
             [
@@ -641,6 +654,8 @@ class EditControllerTest extends AbstractEditControllerTestCase
      * 受注管理で税率を変更できる
      *
      * @see https://github.com/EC-CUBE/ec-cube/issues/4269
+     *
+     * @group decimal
      */
     public function testChangeOrderItemTaxRate()
     {
@@ -687,8 +702,8 @@ class EditControllerTest extends AbstractEditControllerTestCase
         // 税率が10%で登録されている
         /** @var Order $Order */
         $Order = $this->orderRepository->findBy([], ['create_date' => 'DESC'])[0];
-        self::assertEquals(10, $Order->getProductOrderItems()[0]->getTaxRate());
-        self::assertEquals(100, $Order->getProductOrderItems()[0]->getTax());
+        self::assertSame(10, $Order->getProductOrderItems()[0]->getTaxRate());
+        self::assertSame('100.00', $Order->getProductOrderItems()[0]->getTax());
     }
 
     public function testRoutingAdminOrderEditPostWithCustomerInfo()

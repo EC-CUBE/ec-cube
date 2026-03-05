@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
+use Eccube\Entity\BaseInfo;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 /**
@@ -34,7 +35,9 @@ class ShopControllerTest extends AbstractAdminWebTestCase
     /**
      * @param bool $isSuccess
      * @param bool $expected
+     *
      * @dataProvider dataSubmitProvider
+     *
      * @group cache-clear
      */
     public function testSubmit($isSuccess, $expected)
@@ -61,7 +64,7 @@ class ShopControllerTest extends AbstractAdminWebTestCase
             $delivery_free_amount = number_format($delivery_free_amount);
         }
 
-        $form = [
+        return [
             '_token' => 'dummy',
             'company_name' => '会社名',
             'company_kana' => 'カナ',
@@ -93,8 +96,6 @@ class ShopControllerTest extends AbstractAdminWebTestCase
             'option_point' => 1,
             'basic_point_rate' => 1,
         ];
-
-        return $form;
     }
 
     public function dataSubmitProvider()
@@ -122,7 +123,7 @@ class ShopControllerTest extends AbstractAdminWebTestCase
             $this->generateUrl('admin_setting_shop'),
             ['shop_master' => $formData]
         );
-        $BaseInfo = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class)->find(1);
+        $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->find(1);
 
         $this->expected = $BaseInfo->getEmail01();
         $this->actual = $formData['email01'];

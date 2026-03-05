@@ -19,7 +19,7 @@ use Page\Admin\OwnersPluginPage;
  */
 class EA09PluginUninstallerCest
 {
-    const ページタイトル = '#main .page-header';
+    public const ページタイトル = '#main .page-header';
 
     protected $plugins = [];
 
@@ -40,13 +40,13 @@ class EA09PluginUninstallerCest
     {
         $I->wantTo('プラグインアンインストール');
 
-        foreach ($this->plugins as $num => $plugin) {
+        foreach ($this->plugins as $plugin) {
             // プラグイン無効化
             OwnersPluginPage::go($I)->無効にする($plugin['code']);
             $I->see('プラグインを無効にしました。', OwnersPluginPage::$完了メッセージ);
         }
 
-        foreach ($this->plugins as $num => $plugin) {
+        foreach ($this->plugins as $plugin) {
             // プラグイン削除
             OwnersPluginPage::go($I)->削除($plugin['code']);
             $I->see(' プラグインを削除しました。', OwnersPluginPage::$完了メッセージ);

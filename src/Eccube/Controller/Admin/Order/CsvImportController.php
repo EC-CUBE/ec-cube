@@ -38,7 +38,7 @@ class CsvImportController extends AbstractCsvImportController
 
     public function __construct(
         ShippingRepository $shippingRepository,
-        OrderStateMachine $orderStateMachine
+        OrderStateMachine $orderStateMachine,
     ) {
         $this->shippingRepository = $shippingRepository;
         $this->orderStateMachine = $orderStateMachine;
@@ -48,6 +48,7 @@ class CsvImportController extends AbstractCsvImportController
      * 出荷CSVアップロード
      *
      * @Route("/%eccube_admin_route%/order/shipping_csv_upload", name="admin_shipping_csv_import", methods={"GET", "POST"})
+     *
      * @Template("@admin/Order/csv_shipping.twig")
      *
      * @throws \Doctrine\DBAL\ConnectionException

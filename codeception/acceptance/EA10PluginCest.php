@@ -13,6 +13,7 @@
 
 use Codeception\Util\FileSystem;
 use Codeception\Util\Fixtures;
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManager;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Plugin;
@@ -24,25 +25,12 @@ use Page\Admin\PluginSearchPage;
 
 class EA10PluginCest
 {
-    /** @var EntityManager */
-    private $em;
-
-    /** @var \Doctrine\DBAL\Connection */
-    private $conn;
-
-    /** @var PluginRepository */
-    private $pluginRepository;
-
     /** @var EccubeConfig */
     private $config;
 
     public function _before(AcceptanceTester $I)
     {
         $I->loginAsAdmin();
-
-        $this->em = Fixtures::get('entityManager');
-        $this->conn = $this->em->getConnection();
-        $this->pluginRepository = $this->em->getRepository(Plugin::class);
         $this->config = Fixtures::get('config');
         FileSystem::doEmptyDir('repos');
     }
@@ -432,7 +420,7 @@ class EA10PluginCest
 
         // テンプレートをapp/template/plugin/[Plugin Code]に設置
         $dir = $this->config->get('eccube_theme_app_dir').'/plugin/Template';
-        $fs = new \Symfony\Component\Filesystem\Filesystem();
+        $fs = new Symfony\Component\Filesystem\Filesystem();
         $fs->mkdir($dir);
         $fs->dumpFile($dir.'/index.twig', 'bye');
 
@@ -500,7 +488,7 @@ abstract class Abstract_Plugin
     /** @var EntityManager */
     protected $em;
 
-    /** @var \Doctrine\DBAL\Connection */
+    /** @var Connection */
     protected $conn;
 
     /** @var PluginRepository */
@@ -632,7 +620,7 @@ class Store_Plugin extends Abstract_Plugin
     /** @var Store_Plugin */
     protected $dependency;
 
-    public function __construct(AcceptanceTester $I, $code, Store_Plugin $dependency = null)
+    public function __construct(AcceptanceTester $I, $code, ?Store_Plugin $dependency = null)
     {
         parent::__construct($I);
         $this->code = $code;
@@ -767,7 +755,7 @@ class Store_Plugin extends Abstract_Plugin
     protected function publishPlugin($fileName)
     {
         $dirname = str_replace('.tgz', '', $fileName);
-        $this->I->assertTrue(!!$this->I->compressPlugin($dirname, codecept_root_dir().'repos'), "公開できた {$fileName}");
+        $this->I->assertTrue((bool) $this->I->compressPlugin($dirname, codecept_root_dir().'repos'), "公開できた {$fileName}");
     }
 }
 
@@ -793,9 +781,10 @@ class Local_Plugin extends Abstract_Plugin
         $this->ManagePage = PluginLocalInstallPage::go($this->I)
             ->アップロード($this->code.'-1.0.0');
 
-        $this->initialized = true;
+        // ページ遷移完了後にフラッシュメッセージを確認
+        $this->I->waitForText('プラグインをインストールしました。', 30, PluginManagePage::完了メッセージ);
 
-        $this->I->see('プラグインをインストールしました。', PluginManagePage::完了メーッセージ);
+        $this->initialized = true;
 
         $this->検証();
 
@@ -843,7 +832,7 @@ class Local_Plugin extends Abstract_Plugin
         $this->initialized = false;
         $this->enabled = false;
 
-        $this->I->see('プラグインを削除しました。', PluginManagePage::完了メーッセージ);
+        $this->I->waitForText('プラグインを削除しました。', 30, PluginManagePage::完了メッセージ);
 
         $this->検証();
 
@@ -876,7 +865,7 @@ class Horizon_Local extends Local_Plugin
         $this->tables[] = 'dtb_dash';
         $this->columns[] = 'dtb_cart.is_horizon';
         $this->columns[] = 'dtb_cart.dash_id';
-        $this->traits['\Plugin\Horizon\Entity\CartTrait'] = 'src/Eccube/Entity/Cart';
+        $this->traits[\Plugin\Horizon\Entity\CartTrait::class] = 'src/Eccube/Entity/Cart';
     }
 
     public function アップデート()
@@ -901,7 +890,7 @@ class Horizon_Store extends Store_Plugin
         $this->tables[] = 'dtb_dash';
         $this->columns[] = 'dtb_cart.is_horizon';
         $this->columns[] = 'dtb_cart.dash_id';
-        $this->traits['\Plugin\Horizon\Entity\CartTrait'] = 'src/Eccube/Entity/Cart';
+        $this->traits[\Plugin\Horizon\Entity\CartTrait::class] = 'src/Eccube/Entity/Cart';
     }
 
     public function アップデート()
@@ -914,9 +903,7 @@ class Horizon_Store extends Store_Plugin
 
     public static function start(AcceptanceTester $I)
     {
-        $result = new self($I);
-
-        return $result;
+        return new self($I);
     }
 
     public function 依存されているのが有効なのに無効化()
@@ -948,15 +935,15 @@ class Horizon_Store extends Store_Plugin
 
 class Emperor_Store extends Store_Plugin
 {
-    public function __construct(AcceptanceTester $I, Store_Plugin $dependency = null)
+    public function __construct(AcceptanceTester $I, ?Store_Plugin $dependency = null)
     {
         parent::__construct($I, 'Emperor', $dependency);
         $this->tables[] = 'dtb_foo';
         $this->columns[] = 'dtb_cart.foo_id';
-        $this->traits['\Plugin\Emperor\Entity\CartTrait'] = 'src/Eccube/Entity/Cart';
+        $this->traits[\Plugin\Emperor\Entity\CartTrait::class] = 'src/Eccube/Entity/Cart';
     }
 
-    public static function start(AcceptanceTester $I, Store_Plugin $dependency = null)
+    public static function start(AcceptanceTester $I, ?Store_Plugin $dependency = null)
     {
         return new self($I, $dependency);
     }
@@ -965,7 +952,7 @@ class Emperor_Store extends Store_Plugin
     {
         $this->tables = ['dtb_bar'];
         $this->columns = ['dtb_cart.bar_id'];
-        $this->traits['\Plugin\Emperor\Entity\Cart2Trait'] = 'src/Eccube/Entity/Cart';
+        $this->traits[\Plugin\Emperor\Entity\Cart2Trait::class] = 'src/Eccube/Entity/Cart';
 
         return parent::アップデート();
     }
@@ -992,7 +979,7 @@ class Boomerang_Store extends Store_Plugin
         $this->tables[] = 'dtb_bar';
         $this->columns[] = 'dtb_cart.is_boomerang';
         $this->columns[] = 'dtb_cart.bar_id';
-        $this->traits['\Plugin\Boomerang\Entity\CartTrait'] = 'src/Eccube/Entity/Cart';
+        $this->traits[\Plugin\Boomerang\Entity\CartTrait::class] = 'src/Eccube/Entity/Cart';
     }
 
     public static function start(AcceptanceTester $I)
@@ -1016,13 +1003,13 @@ class Boomerang_Store extends Store_Plugin
 
 class Boomerang10_Store extends Store_Plugin
 {
-    public function __construct(AcceptanceTester $I, Store_Plugin $dependency = null)
+    public function __construct(AcceptanceTester $I, ?Store_Plugin $dependency = null)
     {
         parent::__construct($I, 'Boomerang10', $dependency);
         $this->columns[] = 'dtb_bar.mail';
     }
 
-    public static function start(AcceptanceTester $I, Store_Plugin $dependency = null)
+    public static function start(AcceptanceTester $I, ?Store_Plugin $dependency = null)
     {
         return new self($I, $dependency = null);
     }
@@ -1035,7 +1022,7 @@ class Boomerang_Local extends Local_Plugin
         parent::__construct($I, 'Boomerang');
         $this->tables[] = 'dtb_bar';
         $this->columns[] = 'dtb_cart.is_boomerang';
-        $this->traits['\Plugin\Boomerang\Entity\CartTrait'] = 'src/Eccube/Entity/Cart';
+        $this->traits[\Plugin\Boomerang\Entity\CartTrait::class] = 'src/Eccube/Entity/Cart';
     }
 
     public static function start(AcceptanceTester $I)

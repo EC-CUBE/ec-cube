@@ -50,7 +50,7 @@ class CategoryController extends AbstractController
      */
     public function __construct(
         CsvExportService $csvExportService,
-        CategoryRepository $categoryRepository
+        CategoryRepository $categoryRepository,
     ) {
         $this->csvExportService = $csvExportService;
         $this->categoryRepository = $categoryRepository;
@@ -60,6 +60,7 @@ class CategoryController extends AbstractController
      * @Route("/%eccube_admin_route%/product/category", name="admin_product_category", methods={"GET", "POST"})
      * @Route("/%eccube_admin_route%/product/category/{parent_id}", requirements={"parent_id" = "\d+"}, name="admin_product_category_show", methods={"GET", "POST"})
      * @Route("/%eccube_admin_route%/product/category/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_category_edit", methods={"GET", "POST"})
+     *
      * @Template("@admin/Product/category.twig")
      */
     public function index(Request $request, CacheUtil $cacheUtil, $parent_id = null, $id = null)
@@ -80,7 +81,7 @@ class CategoryController extends AbstractController
             }
             $Parent = $TargetCategory->getParent();
         } else {
-            $TargetCategory = new \Eccube\Entity\Category();
+            $TargetCategory = new Category();
             $TargetCategory->setParent($Parent);
             if ($Parent) {
                 $TargetCategory->setHierarchy($Parent->getHierarchy() + 1);
@@ -270,7 +271,7 @@ class CategoryController extends AbstractController
         if ($this->isTokenValid()) {
             $sortNos = $request->request->all();
             foreach ($sortNos as $categoryId => $sortNo) {
-                /** @var \Eccube\Entity\Category $Category */
+                /** @var Category $Category */
                 $Category = $this->categoryRepository
                     ->find($categoryId);
                 $Category->setSortNo($sortNo);
@@ -319,7 +320,7 @@ class CategoryController extends AbstractController
             $this->csvExportService->exportData(function ($entity, $csvService) use ($request) {
                 $Csvs = $csvService->getCsvs();
 
-                /** @var \Eccube\Entity\Category $Category */
+                /** @var Category $Category */
                 $Category = $entity;
 
                 // CSV出力項目と合致するデータを取得.

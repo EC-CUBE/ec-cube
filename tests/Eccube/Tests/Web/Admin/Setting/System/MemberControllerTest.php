@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\System;
 
+use Eccube\Entity\Member;
 use Eccube\Repository\MemberRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
@@ -30,7 +31,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
     {
         parent::setUp();
 
-        $this->memberRepository = $this->entityManager->getRepository(\Eccube\Entity\Member::class);
+        $this->memberRepository = $this->entityManager->getRepository(Member::class);
     }
 
     public function testRoutingAdminSettingSystemMember()
@@ -231,7 +232,7 @@ class MemberControllerTest extends AbstractAdminWebTestCase
         $formData = $this->createFormData();
         $formData['plain_password'] = [
             'first' => '',
-            'second' => ''
+            'second' => '',
         ];
         $Member = $this->createMember();
         $Member->setPassword('**********');
@@ -367,7 +368,8 @@ class MemberControllerTest extends AbstractAdminWebTestCase
     protected function createFormData()
     {
         $faker = $this->getFaker();
-        $formData = [
+
+        return [
             '_token' => 'dummy',
             'name' => $faker->word,
             'department' => $faker->word,
@@ -376,10 +378,8 @@ class MemberControllerTest extends AbstractAdminWebTestCase
                 'first' => 'password1234',
                 'second' => 'password1234',
             ],
-            'Authority' => rand(0, 1),
-            'Work' => rand(0, 1),
+            'Authority' => random_int(0, 1),
+            'Work' => random_int(0, 1),
         ];
-
-        return $formData;
     }
 }

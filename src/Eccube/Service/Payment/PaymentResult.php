@@ -26,7 +26,7 @@ class PaymentResult
     private $errors = [];
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $success;
 
@@ -40,7 +40,7 @@ class PaymentResult
      *
      * 決済が成功した場合は true, 失敗した場合は false を設定します.
      *
-     * @param boolean $success
+     * @param bool $success
      *
      * @return PaymentResult
      */
@@ -56,7 +56,7 @@ class PaymentResult
      *
      * 決済が成功した場合 true
      *
-     * @return boolean
+     * @return bool
      */
     public function isSuccess()
     {

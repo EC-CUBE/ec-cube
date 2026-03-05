@@ -14,9 +14,8 @@
 namespace Eccube\Tests\Web;
 
 use Eccube\Entity\BaseInfo;
-use Eccube\Repository\BaseInfoRepository;
-use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Entity\Page;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\PageRepository;
 
 class TopControllerTest extends AbstractWebTestCase
@@ -31,10 +30,10 @@ class TopControllerTest extends AbstractWebTestCase
     {
         $crawler = $this->client->request('GET', $this->generateUrl('homepage'));
         $node = $crawler->filter('link[rel=icon]');
-        $this->assertEquals('/html/user_data/assets/img/common/favicon.ico', $node->attr('href'));
+        $this->assertSame('/html/user_data/assets/img/common/favicon.ico', $node->attr('href'));
     }
 
-    public function test_GAスクリプト表示確認()
+    public function testGAスクリプト表示確認()
     {
         // GAスクリプト表示がある時
         $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->get();
@@ -43,7 +42,7 @@ class TopControllerTest extends AbstractWebTestCase
 
         $crawler = $this->client->request('GET', $this->generateUrl('homepage'));
         $node = $crawler->filterXPath('//script[contains(@src, "googletagmanager")]');
-        $this->assertEquals('https://www.googletagmanager.com/gtag/js?id=UA-12345678-1', $node->attr('src'));
+        $this->assertSame('https://www.googletagmanager.com/gtag/js?id=UA-12345678-1', $node->attr('src'));
 
         // GAスクリプト表示がない時
         $BaseInfo->setGaId('');
@@ -75,8 +74,8 @@ class TopControllerTest extends AbstractWebTestCase
         $crawler = $this->client->request('GET', $this->generateUrl('homepage'));
 
         $this->assertEquals($shopName, $crawler->filter('meta[property="og:site_name"]')->attr('content'));
-        $this->assertEquals('website', $crawler->filter('meta[property="og:type"]')->attr('content'));
-        $this->assertEquals($expected_desc, $crawler->filter('meta[name="description"]')->attr('content'));
-        $this->assertEquals($expected_desc, $crawler->filter('meta[property="og:description"]')->attr('content'));
+        $this->assertSame('website', $crawler->filter('meta[property="og:type"]')->attr('content'));
+        $this->assertSame($expected_desc, $crawler->filter('meta[name="description"]')->attr('content'));
+        $this->assertSame($expected_desc, $crawler->filter('meta[property="og:description"]')->attr('content'));
     }
 }

@@ -13,8 +13,8 @@
 
 namespace Eccube\Controller\Admin\Setting\System;
 
-use Eccube\Common\EccubeConfig;
 use Eccube\Common\Constant;
+use Eccube\Common\EccubeConfig;
 use Eccube\Service\SystemService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,7 +27,7 @@ class SystemController
      * @var EccubeConfig
      */
     protected $eccubeConfig;
-    
+
     /**
      * @var SystemService
      */
@@ -41,14 +41,15 @@ class SystemController
      */
     public function __construct(
         EccubeConfig $eccubeConfig,
-        SystemService $systemService
-    ){
+        SystemService $systemService,
+    ) {
         $this->eccubeConfig = $eccubeConfig;
         $this->systemService = $systemService;
     }
 
     /**
      * @Route("/%eccube_admin_route%/setting/system/system", name="admin_setting_system_system", methods={"GET"})
+     *
      * @Template("@admin/Setting/System/system.twig")
      */
     public function index(Request $request)

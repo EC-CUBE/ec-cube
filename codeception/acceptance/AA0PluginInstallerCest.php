@@ -19,7 +19,7 @@ use Page\Admin\OwnersPluginPage;
  */
 class AA00PluginInstallerCest
 {
-    const ページタイトル = '#main .page-header';
+    public const ページタイトル = '#main .page-header';
 
     protected $plugins = [];
 
@@ -40,7 +40,7 @@ class AA00PluginInstallerCest
     {
         $I->wantTo('プラグインインストール');
 
-        foreach ($this->plugins as $num => $plugin) {
+        foreach ($this->plugins as $plugin) {
             $OwnersPluginPage = OwnersPluginPage::go($I)
                 ->goInstall($I);
             $datadir = __DIR__.'/../_data';

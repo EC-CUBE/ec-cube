@@ -31,7 +31,7 @@ class TradeLawController extends AbstractController
      * @param TradeLawRepository $tradeLawRepository
      */
     public function __construct(
-        TradeLawRepository $tradeLawRepository
+        TradeLawRepository $tradeLawRepository,
     ) {
         $this->tradeLawRepository = $tradeLawRepository;
     }
@@ -40,6 +40,7 @@ class TradeLawController extends AbstractController
      * 特定商取引法設定の初期表示・登録
      *
      * @Route("/%eccube_admin_route%/setting/shop/tradelaw", name="admin_setting_shop_tradelaw", methods={"GET", "POST"})
+     *
      * @Template("@admin/Setting/Shop/tradelaw.twig")
      *
      * @param Request $request

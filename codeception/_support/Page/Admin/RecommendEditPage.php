@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -29,17 +30,21 @@ class RecommendEditPage extends AbstractAdminPageStyleGuide
         $this->tester->click(['id' => 'searchProductModalButton']);
         $this->tester->waitForElementVisible(['css' => '#searchProductModalList > div > table > tbody > tr']);
         $this->tester->click(['css' => '#searchProductModalList > div > table > tbody > tr:nth-child(2) > td.text-end > button']);
+
         return $this;
     }
+
     public function 入力_説明文($value)
     {
         $this->tester->fillField(['id' => 'recommend_product_comment'], $value);
+
         return $this;
     }
 
     public function 登録()
     {
         $this->tester->click(['css' => '#form1 > div > div > div.c-conversionArea > div > div > div:nth-child(2) > div > div > button']);
+
         return $this;
     }
 }

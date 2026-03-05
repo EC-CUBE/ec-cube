@@ -81,9 +81,9 @@ class FormUtilTest extends EccubeTestCase
         $this->assertTrue($this->form->isSubmitted());
 
         // prefはPrefエンティティに変換されている.
-        $this->assertInstanceOf('\Eccube\Entity\Master\Pref', $data['pref']);
-        $this->assertEquals(28, $data['pref']->getId());
-        $this->assertEquals('兵庫県', $data['pref']->getName());
+        $this->assertInstanceOf(\Eccube\Entity\Master\Pref::class, $data['pref']);
+        $this->assertSame(28, $data['pref']->getId());
+        $this->assertSame('兵庫県', $data['pref']->getName());
 
         // dateはDateTimeに変換されている.
         $this->assertInstanceOf('\DateTime', $data['date']);
@@ -115,7 +115,7 @@ class FormUtilTest extends EccubeTestCase
 
         $form->submit($formData);
         $viewData = FormUtil::getViewData($form);
-        $this->assertEquals($formData, $viewData);
+        $this->assertSame($formData, $viewData);
     }
 
     /**
@@ -140,7 +140,7 @@ class FormUtilTest extends EccubeTestCase
 
         $form->submit($formData);
         $viewData = FormUtil::getViewData($form);
-        $this->assertEquals($formData, $viewData);
+        $this->assertSame($formData, $viewData);
     }
 
     /**
@@ -167,6 +167,6 @@ class FormUtilTest extends EccubeTestCase
 
         $form->submit($formData);
         $viewData = FormUtil::getViewData($form);
-        $this->assertEquals($formData, $viewData);
+        $this->assertSame($formData, $viewData);
     }
 }

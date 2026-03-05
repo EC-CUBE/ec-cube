@@ -108,7 +108,6 @@ class MailType extends AbstractType
                 }
             }
         });
-
     }
 
     /**

@@ -51,7 +51,7 @@ class ChangeController extends AbstractController
     protected $mailService;
 
     /**
-     * @var baseInfoRepository
+     * @var BaseInfoRepository
      */
     protected $baseInfoRepository;
 
@@ -62,7 +62,7 @@ class ChangeController extends AbstractController
         UserPasswordHasherInterface $passwordHasher,
         TokenStorageInterface $tokenStorage,
         BaseInfoRepository $baseInfoRepository,
-        MailService $mailService
+        MailService $mailService,
     ) {
         $this->customerRepository = $customerRepository;
         $this->passwordHasher = $passwordHasher;
@@ -75,6 +75,7 @@ class ChangeController extends AbstractController
      * 会員情報編集画面.
      *
      * @Route("/mypage/change", name="mypage_change", methods={"GET", "POST"})
+     *
      * @Template("Mypage/change.twig")
      */
     public function index(Request $request)

@@ -19,7 +19,6 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class CalendarControllerTest extends AbstractAdminWebTestCase
 {
-
     /**
      * @var CalendarRepository
      */
@@ -83,7 +82,7 @@ class CalendarControllerTest extends AbstractAdminWebTestCase
         $this->assertSame(true, $actual);
     }
 
-    public function testDeleteFail_NotFound()
+    public function testDeleteFailNotFound()
     {
         $id = 99999;
 

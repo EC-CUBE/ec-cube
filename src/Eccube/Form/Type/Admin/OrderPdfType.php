@@ -75,7 +75,7 @@ class OrderPdfType extends AbstractType
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -164,7 +164,7 @@ class OrderPdfType extends AbstractType
 
                 $qb = $this->entityManager->createQueryBuilder();
                 $qb->select('count(s.id)')
-                    ->from('Eccube\\Entity\\Shipping', 's')
+                    ->from(\Eccube\Entity\Shipping::class, 's')
                     ->where($qb->expr()->in('s.id', ':ids'))
                     ->setParameter('ids', $ids);
                 $actual = $qb->getQuery()->getSingleScalarResult();

@@ -57,7 +57,7 @@ class ProductType extends AbstractType
      */
     public function __construct(
         CategoryRepository $categoryRepository,
-        EccubeConfig $eccubeConfig
+        EccubeConfig $eccubeConfig,
     ) {
         $this->categoryRepository = $categoryRepository;
         $this->eccubeConfig = $eccubeConfig;
@@ -104,14 +104,14 @@ class ProductType extends AbstractType
                 'mapped' => false,
                 'expanded' => true,
                 'choices' => $this->categoryRepository->getList(null, true),
-                'choice_value' => function (Category $Category = null) {
+                'choice_value' => function (?Category $Category = null) {
                     return $Category ? $Category->getId() : null;
                 },
             ])
 
             // 詳細な説明
             ->add('Tag', EntityType::class, [
-                'class' => 'Eccube\Entity\Tag',
+                'class' => \Eccube\Entity\Tag::class,
                 'query_builder' => function ($er) {
                     return $er->createQueryBuilder('t')
                     ->orderBy('t.sort_no', 'DESC');

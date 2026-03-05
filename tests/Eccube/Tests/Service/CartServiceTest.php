@@ -15,6 +15,7 @@ namespace Eccube\Tests\Service;
 
 use Eccube\Entity\CartItem;
 use Eccube\Entity\Master\SaleType;
+use Eccube\Entity\Order;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\Master\SaleTypeRepository;
@@ -85,9 +86,9 @@ class CartServiceTest extends AbstractServiceTestCase
         $refClass = new \ReflectionClass(CartService::class);
         $refClass->getProperty('session')->setValue($this->cartService, new SessionMock());
 
-        $this->saleTypeRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\SaleType::class);
-        $this->orderRepository = $this->entityManager->getRepository(\Eccube\Entity\Order::class);
-        $this->productClassRepository = $this->entityManager->getRepository(\Eccube\Entity\ProductClass::class);
+        $this->saleTypeRepository = $this->entityManager->getRepository(SaleType::class);
+        $this->orderRepository = $this->entityManager->getRepository(Order::class);
+        $this->productClassRepository = $this->entityManager->getRepository(ProductClass::class);
         $this->purchaseFlow = static::getContainer()->get('eccube.purchase.flow.cart');
 
         $this->SaleType1 = $this->saleTypeRepository->find(1);
@@ -122,7 +123,7 @@ class CartServiceTest extends AbstractServiceTestCase
         /* @var \Eccube\Entity\CartItem[] $CartItems */
         $CartItems = $this->cartService->getCart()->getCartItems();
 
-        $this->assertEquals(1, $CartItems[0]->getProductClassId());
+        $this->assertSame(1, $CartItems[0]->getProductClassId());
     }
 
     public function testAddProductsQuantity()
@@ -130,11 +131,9 @@ class CartServiceTest extends AbstractServiceTestCase
         $this->cartService->addProduct(1);
 
         $quantity = $this->cartService->getCart()->getItems()->reduce(function ($q, $item) {
-            $q += $item->getQuantity();
-
-            return $q;
+            return $q + $item->getQuantity();
         });
-        $this->assertEquals(1, $quantity);
+        $this->assertSame(1, $quantity);
     }
 
     public function testAddProductsQuantityOverSaleLimit()
@@ -142,12 +141,10 @@ class CartServiceTest extends AbstractServiceTestCase
         $this->cartService->addProduct(10, 6);
 
         $quantity = $this->cartService->getCart()->getItems()->reduce(function ($q, $item) {
-            $q += $item->getQuantity();
-
-            return $q;
+            return $q + $item->getQuantity();
         });
         // 明細の丸め処理はpurchaseFlowで実行されるため、販売制限数を超えてもカートには入る
-        $this->assertEquals(6, $quantity);
+        $this->assertSame(6, $quantity);
     }
 
     public function testAddProductsQuantityMultiItems()
@@ -164,11 +161,9 @@ class CartServiceTest extends AbstractServiceTestCase
         $this->cartService->save();
 
         $quantity = $this->cartService->getCart()->getItems()->reduce(function ($q, $item) {
-            $q += $item->getQuantity();
-
-            return $q;
+            return $q + $item->getQuantity();
         });
-        $this->assertEquals(5, $quantity);
+        $this->assertSame(5, $quantity);
     }
 
     public function testAddProductsWithCartItemComparator()
@@ -188,9 +183,9 @@ class CartServiceTest extends AbstractServiceTestCase
 
         /* @var \Eccube\Entity\CartItem[] $CartItems */
         $CartItems = $this->cartService->getCart()->getCartItems();
-        self::assertEquals(1, count($CartItems));
-        self::assertEquals(2, $CartItems[0]->getProductClassId());
-        self::assertEquals(2, $CartItems[0]->getQuantity());
+        self::assertSame(1, count($CartItems));
+        self::assertSame(2, $CartItems[0]->getProductClassId());
+        self::assertSame(2, $CartItems[0]->getQuantity());
 
         $this->cartService->addProduct($ProductClass, 1);
         $this->purchaseFlow->validate($this->cartService->getCart(), new PurchaseContext());
@@ -198,11 +193,11 @@ class CartServiceTest extends AbstractServiceTestCase
 
         /* @var \Eccube\Entity\CartItem[] $CartItems */
         $CartItems = $this->cartService->getCart()->getCartItems();
-        self::assertEquals(2, count($CartItems));
-        self::assertEquals(2, $CartItems[0]->getProductClassId());
-        self::assertEquals(2, $CartItems[0]->getQuantity());
-        self::assertEquals(2, $CartItems[1]->getProductClassId());
-        self::assertEquals(1, $CartItems[1]->getQuantity());
+        self::assertSame(2, count($CartItems));
+        self::assertSame(2, $CartItems[0]->getProductClassId());
+        self::assertSame(2, $CartItems[0]->getQuantity());
+        self::assertSame(2, $CartItems[1]->getProductClassId());
+        self::assertSame(1, $CartItems[1]->getQuantity());
     }
 
     public function testUpProductQuantity()
@@ -218,11 +213,9 @@ class CartServiceTest extends AbstractServiceTestCase
         $this->cartService->save();
 
         $quantity = $this->cartService->getCart()->getItems()->reduce(function ($q, $item) {
-            $q += $item->getQuantity();
-
-            return $q;
+            return $q + $item->getQuantity();
         });
-        $this->assertEquals(2, $quantity);
+        $this->assertSame(2, $quantity);
     }
 
     public function testDownProductQuantity()
@@ -238,11 +231,9 @@ class CartServiceTest extends AbstractServiceTestCase
         $this->cartService->save();
 
         $quantity = $this->cartService->getCart()->getItems()->reduce(function ($q, $item) {
-            $q += $item->getQuantity();
-
-            return $q;
+            return $q + $item->getQuantity();
         });
-        $this->assertEquals(1, $quantity);
+        $this->assertSame(1, $quantity);
     }
 
     public function testRemoveProduct()
@@ -282,7 +273,7 @@ class CartServiceTest_CartItemComparator implements CartItemComparator
      * @param CartItem $item1 明細1
      * @param CartItem $item2 明細2
      *
-     * @return boolean 同じ明細になる場合はtrue
+     * @return bool 同じ明細になる場合はtrue
      */
     public function compare(CartItem $item1, CartItem $item2)
     {
@@ -291,7 +282,8 @@ class CartServiceTest_CartItemComparator implements CartItemComparator
     }
 }
 
-class SessionMock {
+class SessionMock
+{
     private array $bag = [];
 
     public function set($key, $value): void

@@ -146,9 +146,18 @@ class InstallPluginController extends InstallController
      *
      * @return RedirectResponse
      */
-    public function redirectAdmin()
+    public function redirectAdmin(Request $request)
     {
+        if (!$request->isXmlHttpRequest()) {
+            throw new BadRequestHttpException();
+        }
+
         $this->cacheUtil->clearCache();
+        // トランザクションチェックファイルの有効期限を確認する
+        $token = $request->headers->get('ECCUBE-CSRF-TOKEN');
+        if (!$this->isValidTransaction($token)) {
+            throw new NotFoundHttpException();
+        }
 
         // トランザクションファイルを削除する
         $projectDir = $this->getParameter('kernel.project_dir');
@@ -203,7 +212,6 @@ class InstallPluginController extends InstallController
 
         // WebApiプラグインがインストールされているが、sodium拡張がない場合は、プラグインをアンインストールする
         if ($Plugin && !extension_loaded('sodium')) {
-
             $this->clearCacheOnTerminate();
 
             try {

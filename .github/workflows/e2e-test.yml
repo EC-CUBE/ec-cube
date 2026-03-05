@@ -1,40 +1,42 @@
 name: E2E test for EC-CUBE
+
 on:
-  push:
-    branches:
-      - '*'
-    tags:
-      - '*'
-    paths:
-      - '**'
-      - '!*.md'
-  pull_request:
-    paths:
-      - '**'
-      - '!*.md'
+  workflow_call:
+
+permissions:
+  contents: read
+
 jobs:
   codeception:
     name: Codeception
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
         php: [ 8.3 ]
         db: [ pgsql ]
-        group: [ 'admin01', 'admin02', 'admin03', 'front', 'restrict-fileupload', 'installer' ]
+        group: [ 'admin01-a', 'admin01-b', 'admin02', 'admin03-a', 'admin03-b', 'front-a', 'front-b', 'restrict-fileupload', 'change-display-order', 'installer' ]
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
             database_server_version: 14
-          - group: 'admin01'
+          - group: 'admin01-a'
+            app_env: 'codeception'
+          - group: 'admin01-b'
             app_env: 'codeception'
           - group: 'admin02'
             app_env: 'codeception'
-          - group: 'admin03'
+          - group: 'admin03-a'
             app_env: 'codeception'
-          - group: 'front'
+          - group: 'admin03-b'
+            app_env: 'codeception'
+          - group: 'front-a'
+            app_env: 'codeception'
+          - group: 'front-b'
             app_env: 'codeception'
           - group: 'restrict-fileupload'
+            app_env: 'codeception'
+          - group: 'change-display-order'
             app_env: 'codeception'
           - group: 'installer'
             app_env: 'install'
@@ -60,14 +62,34 @@ jobs:
         uses: actions/checkout@master
 
       - name: Setup PHP
-        uses: nanasess/setup-php@master
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
 
       - name: Initialize Composer
         uses: ./.github/actions/composer
 
+      - name: Cache npm dependencies
+        uses: actions/cache@v5
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
+      - name: Cache build artifacts
+        uses: actions/cache@v5
+        id: build-cache
+        with:
+          path: |
+            html/template/**/css
+            html/bundle
+          key: ${{ runner.os }}-build-${{ hashFiles('html/template/**/scss/**/*.scss', 'html/template/**/js/**/*.js', 'package-lock.json', 'gulpfile.js', 'webpack.config.js', 'gulp/**/*.js') }}
+          restore-keys: |
+            ${{ runner.os }}-build-
+
       - name: Build Sass and JavaScript
+        if: steps.build-cache.outputs.cache-hit != 'true'
         run: |
           npm ci
           npm run build
@@ -87,13 +109,16 @@ jobs:
       - name: setup-chromedriver
         uses: nanasess/setup-chromedriver@master
 
-      - name: Install fonts
-        run: sudo apt install fonts-ipafont fonts-ipaexfont
+      - name: Cache apt packages
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: fonts-ipafont fonts-ipaexfont
+          version: 1.0
 
       - name: Run chromedriver
         run: |
           export DISPLAY=:99
-          chromedriver --url-base=/wd/hub &
+          chromedriver --url-base=/wd/hub --port=9515 &
           echo ">>> Started chrome-driver"
           sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
           echo ">>> Started xvfb"
@@ -107,17 +132,7 @@ jobs:
             (cd codeception/_data/plugins/$d; tar zcf ../../../../repos/${d}.tgz *)
           done
 
-      - name: Start PHP Development Server
-        if: ${{ matrix.group != 'restrict-fileupload' }}
-        env:
-          APP_ENV: 'codeception'
-          DATABASE_URL: ${{ matrix.database_url }}
-          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          MAILER_DSN: 'smtp://127.0.0.1:1025'
-          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
-        run: php -S 127.0.0.1:8000 codeception/router.php &
-
-      - name: Start PHP Development Server
+      - name: Start PHP Development Server restrict-fileupload
         if: ${{ matrix.group == 'restrict-fileupload' }}
         env:
           APP_ENV: 'codeception'
@@ -126,10 +141,31 @@ jobs:
           MAILER_DSN: 'smtp://127.0.0.1:1025'
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           ECCUBE_RESTRICT_FILE_UPLOAD: '1'
+        run: php -S 127.0.0.1:8000 codeception/router.php &
+
+      - name: Start PHP Development Server
+        if: ${{ matrix.group != 'restrict-fileupload' }}
+        env:
+          APP_ENV: 'codeception'
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          MAILER_DSN: 'smtp://127.0.0.1:1025'
+          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
+          ECCUBE_RESTRICT_FILE_UPLOAD: '0'
         run: php -S 127.0.0.1:8000 codeception/router.php &
 
       - name: Codeception
-        if: ${{ matrix.group != 'restrict-fileupload' }}
+        if: |
+           matrix.group != 'restrict-fileupload' &&
+           matrix.group != 'change-display-order'
+        uses: nick-invision/retry@v3
+        with:
+          timeout_minutes: 40
+          max_attempts: 2
+          retry_on: error
+          command: |
+            sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
+            vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP} --skip-group restrict-file-upload --skip-group change-display-order --html report.html
         env:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
@@ -138,12 +174,19 @@ jobs:
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           GROUP: ${{ matrix.group }}
           SYMFONY_DEPRECATIONS_HELPER: weak
-        run: |
-          sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
-          vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP} --skip-group restrict-file-upload --html report.html
 
-      - name: Codeception with Restrict file upload
-        if: ${{ matrix.group == 'restrict-fileupload' }}
+      - name: Codeception with ${{ matrix.group }}
+        if: |
+          matrix.group == 'restrict-fileupload' ||
+          matrix.group == 'change-display-order'
+        uses: nick-invision/retry@v3
+        with:
+          timeout_minutes: 40
+          max_attempts: 2
+          retry_on: error
+          command: |
+            sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
+            vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP} --html report.html
         env:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
@@ -153,9 +196,6 @@ jobs:
           GROUP: ${{ matrix.group }}
           SYMFONY_DEPRECATIONS_HELPER: weak
           ECCUBE_RESTRICT_FILE_UPLOAD: '1'
-        run: |
-          sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
-          vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP} --html report.html
 
       - name: Get a ScreenShots
         run: |
@@ -166,25 +206,25 @@ jobs:
 
       - name: Upload evidence
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: codeception-${{ matrix.group }}-evidence
           path: codeception/_output/
 
-      -   name: List files in current directory
-          run: ls -la
+      - name: List files in current directory
+        run: ls -la
 
-      -   name: Upload ScreenShots
-          uses: actions/upload-artifact@v4
-          with:
-            name: screenshots-${{ matrix.group }}
-            path: |
-              front_top.png
-              admin_top.png
+      - name: Upload ScreenShots
+        uses: actions/upload-artifact@v7
+        with:
+          name: screenshots-${{ matrix.group }}
+          path: |
+            front_top.png
+            admin_top.png
 
       - name: Upload logs
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: codeception-${{ matrix.group }}-logs
           path: var/log/

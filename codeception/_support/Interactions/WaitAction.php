@@ -23,7 +23,7 @@ class WaitAction implements WebDriverAction
     private $timeout_in_second;
 
     /**
-     * @param integer $timeout_in_second
+     * @param int $timeout_in_second
      */
     public function __construct($timeout_in_second)
     {

@@ -77,7 +77,7 @@ class TwoFactorAuthService
     public function __construct(
         EccubeConfig $eccubeConfig,
         PasswordHasherFactoryInterface $passwordHasherFactory,
-        RequestStack $requestStack
+        RequestStack $requestStack,
     ) {
         $this->eccubeConfig = $eccubeConfig;
         $this->passwordHasherFactory = $passwordHasherFactory;
@@ -98,11 +98,14 @@ class TwoFactorAuthService
     /**
      * @param Eccube\Entity\Member
      *
-     * @return boolean
+     * @return bool
      */
     public function isAuth($Member)
     {
-        if (($json = $this->request->cookies->get($this->cookieName))) {
+        // テスト環境ではコンストラクタ時点でリクエストが存在しない場合があるため、
+        // requestStackから現在のリクエストを再取得する
+        $request = $this->request ?? $this->requestStack->getCurrentRequest();
+        if ($request && $json = $request->cookies->get($this->cookieName)) {
             $configs = json_decode($json);
             $hasher = $this->passwordHasherFactory->getPasswordHasher($Member);
 
@@ -135,7 +138,7 @@ class TwoFactorAuthService
         $encodedString = $hasher->hash($Member->getId().$Member->getTwoFactorAuthKey());
 
         $configs = json_decode('{}');
-        if (($json = $this->request->cookies->get($this->cookieName))) {
+        if ($json = $this->request->cookies->get($this->cookieName)) {
             $configs = json_decode($json);
         }
         $configs->{$Member->getId()} = [
@@ -146,13 +149,13 @@ class TwoFactorAuthService
         $cookie = new Cookie(
             $this->cookieName, // name
             json_encode($configs), // value
-            ($this->expire == 0 ? 0 : time() + ($this->expire * 24 * 60 * 60)), // expire
+            $this->expire == 0 ? 0 : time() + ($this->expire * 24 * 60 * 60), // expire
             $this->request->getBasePath().'/'.$this->eccubeConfig->get('eccube_admin_route'), // path
             null, // domain
-            ($this->eccubeConfig->get('eccube_force_ssl') ? true : false), // secure
+            $this->eccubeConfig->get('eccube_force_ssl') ? true : false, // secure
             true, // httpOnly
             false, // raw
-            ($this->eccubeConfig->get('eccube_force_ssl') ? Cookie::SAMESITE_NONE : null) // sameSite
+            $this->eccubeConfig->get('eccube_force_ssl') ? Cookie::SAMESITE_NONE : null // sameSite
         );
 
         return $cookie;
@@ -162,7 +165,7 @@ class TwoFactorAuthService
      * @param Eccube\Entity\Member
      * @param string
      *
-     * @return boolean
+     * @return bool
      */
     public function verifyCode($authKey, $token)
     {

@@ -57,7 +57,7 @@ class PageController extends AbstractController
     public function __construct(
         PageRepository $pageRepository,
         PageLayoutRepository $pageLayoutRepository,
-        DeviceTypeRepository $deviceTypeRepository
+        DeviceTypeRepository $deviceTypeRepository,
     ) {
         $this->pageRepository = $pageRepository;
         $this->pageLayoutRepository = $pageLayoutRepository;
@@ -66,6 +66,7 @@ class PageController extends AbstractController
 
     /**
      * @Route("/%eccube_admin_route%/content/page", name="admin_content_page", methods={"GET"})
+     *
      * @Template("@admin/Content/page.twig")
      */
     public function index(Request $request, RouterInterface $router)
@@ -89,6 +90,7 @@ class PageController extends AbstractController
     /**
      * @Route("/%eccube_admin_route%/content/page/new", name="admin_content_page_new", methods={"GET", "POST"})
      * @Route("/%eccube_admin_route%/content/page/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_page_edit", methods={"GET", "POST"})
+     *
      * @Template("@admin/Content/page_edit.twig")
      */
     public function edit(Request $request, Environment $twig, RouterInterface $router, CacheUtil $cacheUtil, $id = null)

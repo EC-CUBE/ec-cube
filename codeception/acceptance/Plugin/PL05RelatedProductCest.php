@@ -13,7 +13,6 @@
 
 namespace Plugin;
 
-use AcceptanceTester;
 use Page\Admin\RelatedProductEditPage;
 
 /**
@@ -22,12 +21,12 @@ use Page\Admin\RelatedProductEditPage;
  */
 class PL05RelatedProductCest
 {
-    public function _before(AcceptanceTester $I)
+    public function _before(\AcceptanceTester $I)
     {
         $I->loginAsAdmin();
     }
 
-    public function 関連商品設定(AcceptanceTester $I)
+    public function 関連商品設定(\AcceptanceTester $I)
     {
         RelatedProductEditPage::goEdit($I, 1)
             ->選択_関連商品1()

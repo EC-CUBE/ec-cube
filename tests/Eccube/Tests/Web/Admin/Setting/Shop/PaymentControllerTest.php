@@ -17,7 +17,6 @@ use Eccube\Entity\Payment;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class PaymentControllerTest extends AbstractAdminWebTestCase
 {
@@ -38,7 +37,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
     {
         parent::setUp();
 
-        $this->paymentRepository = $this->entityManager->getRepository(\Eccube\Entity\Payment::class);
+        $this->paymentRepository = $this->entityManager->getRepository(Payment::class);
         $this->imageDir = sys_get_temp_dir().'/'.sha1(mt_rand());
         $fs = new Filesystem();
         $fs->mkdir($this->imageDir);
@@ -69,6 +68,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
     /**
      * @param $isSuccess
      * @param $expected
+     *
      * @dataProvider dataSubmitProvider
      */
     public function testNew($isSuccess, $expected)
@@ -78,7 +78,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
             $formData['method'] = '';
         }
 
-        $crawler = $this->client->request('POST',
+        $this->client->request('POST',
             $this->generateUrl('admin_setting_shop_payment_new'),
             [
                 'payment_register' => $formData,
@@ -100,6 +100,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
     /**
      * @param $isSuccess
      * @param $expected
+     *
      * @dataProvider dataSubmitProvider
      */
     public function testEdit($isSuccess, $expected)
@@ -178,7 +179,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
         $formData['payment_image'] = 'new_image.png';
         $Payment = $this->paymentRepository->find(1);
 
-        $crawler = $this->client->request('POST',
+        $this->client->request('POST',
             $this->generateUrl('admin_setting_shop_payment_edit', ['id' => $Payment->getId()]),
             [
                 'payment_register' => $formData,
@@ -215,7 +216,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
         $formData['payment_image'] = '../temp_image/new_image.png';
         $Payment = $this->paymentRepository->find(1);
 
-        $crawler = $this->client->request('POST',
+        $this->client->request('POST',
             $this->generateUrl('admin_setting_shop_payment_edit', ['id' => $Payment->getId()]),
             [
                 'payment_register' => $formData,
@@ -240,12 +241,8 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
         foreach ($Payments as $Payment) {
             $this->expected[$Payment->getId()] = $Payment->getSortNo();
         }
-
-        // swap sort_no
-        reset($this->expected);
-        $firstKey = key($this->expected);
-        end($this->expected);
-        $lastKey = key($this->expected);
+        $firstKey = array_key_first($this->expected);
+        $lastKey = array_key_last($this->expected);
 
         $tmp = $this->expected[$firstKey];
         $this->expected[$firstKey] = $this->expected[$lastKey];
@@ -261,6 +258,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
         $Payments = $this->paymentRepository->findBy([], ['sort_no' => 'DESC']);
         $this->actual = [];
         foreach ($Payments as $Payment) {
+            $this->entityManager->refresh($Payment); // Refresh しないとリクエストの値(string)が入ってしまう
             $this->actual[$Payment->getId()] = $Payment->getSortNo();
         }
         sort($this->expected);
@@ -281,7 +279,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
             $rule_max = number_format($rule_max);
         }
 
-        $form = [
+        return [
             '_token' => 'dummy',
             'method' => 'Test',
             'charge' => $charge,
@@ -292,8 +290,6 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
             'visible' => true,
             'fixed' => true,
         ];
-
-        return $form;
     }
 
     public function dataSubmitProvider()

@@ -38,7 +38,7 @@ class CacheControllerTest extends AbstractAdminWebTestCase
         $cacheDir = static::getContainer()->getParameter('kernel.cache_dir');
         file_put_contents($cacheDir.'/twig/sample', 'test');
 
-        $crawler = $client->request('POST', $url, [
+        $client->request('POST', $url, [
             'form' => [
                 '_token' => 'dummy',
             ],

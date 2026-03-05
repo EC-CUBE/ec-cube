@@ -52,6 +52,7 @@ class FileController extends AbstractController
 
     /**
      * @Route("/%eccube_admin_route%/content/file_manager", name="admin_content_file", methods={"GET", "POST"})
+     *
      * @Template("@admin/Content/file.twig")
      */
     public function index(Request $request)
@@ -188,6 +189,7 @@ class FileController extends AbstractController
             }
         } catch (IOException $e) {
             $this->errors[] = ['message' => $e->getMessage()];
+
             return;
         }
         try {

@@ -62,7 +62,7 @@ class SearchProductType extends AbstractType
     public function __construct(
         ProductStatusRepository $productStatusRepository,
         CategoryRepository $categoryRepository,
-        TagRepository $tagRepository
+        TagRepository $tagRepository,
     ) {
         $this->productStatusRepository = $productStatusRepository;
         $this->categoryRepository = $categoryRepository;
@@ -87,7 +87,7 @@ class SearchProductType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'choices' => $this->categoryRepository->getList(null, true),
-                'choice_value' => function (Category $Category = null) {
+                'choice_value' => function (?Category $Category = null) {
                     return $Category ? $Category->getId() : null;
                 },
             ])
@@ -131,7 +131,7 @@ class SearchProductType extends AbstractType
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'constraints' => [
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -148,7 +148,7 @@ class SearchProductType extends AbstractType
                 'widget' => 'single_text',
                 'constraints' => [
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -166,7 +166,7 @@ class SearchProductType extends AbstractType
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'constraints' => [
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -183,7 +183,7 @@ class SearchProductType extends AbstractType
                 'widget' => 'single_text',
                 'constraints' => [
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -201,7 +201,7 @@ class SearchProductType extends AbstractType
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'constraints' => [
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -218,7 +218,7 @@ class SearchProductType extends AbstractType
                 'widget' => 'single_text',
                 'constraints' => [
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -236,7 +236,7 @@ class SearchProductType extends AbstractType
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'constraints' => [
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -253,7 +253,7 @@ class SearchProductType extends AbstractType
                 'widget' => 'single_text',
                 'constraints' => [
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -275,7 +275,7 @@ class SearchProductType extends AbstractType
             ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
                 $form = $event->getForm();
 
-                # 登録日
+                // 登録日
                 $create_datetime_start = $form['create_datetime_start']->getData();
                 $create_datetime_end = $form['create_datetime_end']->getData();
 
@@ -285,7 +285,7 @@ class SearchProductType extends AbstractType
                     }
                 }
 
-                # 更新日
+                // 更新日
                 $update_datetime_start = $form['update_datetime_start']->getData();
                 $update_datetime_end = $form['update_datetime_end']->getData();
 

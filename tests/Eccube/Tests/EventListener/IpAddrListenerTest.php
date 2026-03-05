@@ -13,17 +13,16 @@
 
 namespace Eccube\Tests\EventListener;
 
+use Eccube\Common\EccubeConfig;
+use Eccube\EventListener\IpAddrListener;
+use Eccube\Request\Context;
 use Eccube\Tests\Web\AbstractWebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
-use Eccube\Common\EccubeConfig;
-use Eccube\Request\Context;
-use Eccube\EventListener\IpAddrListener;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class IpAddrListenerTest extends AbstractWebTestCase
 {
-
     protected $clientIp = '192.168.56.1';
 
     public function ipAddressParams()
@@ -53,14 +52,12 @@ class IpAddrListenerTest extends AbstractWebTestCase
             [[], ['192.168.56.2'], true], // IPアドレスのみ
             [[], ['192.168.56.2/32'], true], // IPアドレスとビットマスク最大値
             [[], ['127.0.0.1', '192.168.56.2/32'],  true], // 複数行に渡る記述
-
         ];
     }
 
-
     /**
      * @dataProvider ipAddressParams
-     */    
+     */
     public function testOnKernelRequest($allowHost, $denyHost, $expected)
     {
         $event = $this->createStub(RequestEvent::class);
@@ -98,10 +95,9 @@ class IpAddrListenerTest extends AbstractWebTestCase
         $this->assertSame($expected, $actual);
     }
 
-
-        /**
+    /**
      * @dataProvider ipAddressParams
-     */    
+     */
     public function testOnKernelRequesAdmin($allowHost, $denyHost, $expected)
     {
         $event = $this->createStub(RequestEvent::class);

@@ -52,7 +52,7 @@ class TradelawSettingPage extends AbstractAdminPage
         return $page;
     }
 
-    public function 入力(int $index, string $name, string$description): self
+    public function 入力(int $index, string $name, string $description): self
     {
         $this->tester->fillField(['id' => 'form_TradeLaws_'.$index.'_name'], $name);
         $this->tester->fillField(['id' => 'form_TradeLaws_'.$index.'_description'], $description);

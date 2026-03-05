@@ -16,6 +16,7 @@ namespace Eccube\Tests\Repository;
 use Eccube\Entity\ClassCategory;
 use Eccube\Entity\ClassName;
 use Eccube\Entity\Member;
+use Eccube\Entity\ProductClass;
 use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\ClassNameRepository;
 use Eccube\Repository\ProductClassRepository;
@@ -55,11 +56,11 @@ class ClassNameRepositoryTest extends EccubeTestCase
     {
         parent::setUp();
 
-        $this->productClassRepository = $this->entityManager->getRepository(\Eccube\Entity\ProductClass::class);
-        $this->classCategoryRepository = $this->entityManager->getRepository(\Eccube\Entity\ClassCategory::class);
-        $this->classNameRepository = $this->entityManager->getRepository(\Eccube\Entity\ClassName::class);
+        $this->productClassRepository = $this->entityManager->getRepository(ProductClass::class);
+        $this->classCategoryRepository = $this->entityManager->getRepository(ClassCategory::class);
+        $this->classNameRepository = $this->entityManager->getRepository(ClassName::class);
         $this->removeClass();
-        $this->Member = $this->entityManager->getRepository(\Eccube\Entity\Member::class)->find(2);
+        $this->Member = $this->entityManager->getRepository(Member::class)->find(2);
 
         for ($i = 0; $i < 3; $i++) {
             $ClassName = new ClassName();
@@ -68,7 +69,7 @@ class ClassNameRepositoryTest extends EccubeTestCase
                 ->setBackendName('class-'.$i)
                 ->setCreator($this->Member)
                 ->setSortNo($i)
-                ;
+            ;
             $this->entityManager->persist($ClassName);
         }
         $this->entityManager->flush();

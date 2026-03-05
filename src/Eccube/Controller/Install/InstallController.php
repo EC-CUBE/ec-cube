@@ -32,7 +32,6 @@ use Eccube\Form\Type\Install\Step1Type;
 use Eccube\Form\Type\Install\Step3Type;
 use Eccube\Form\Type\Install\Step4Type;
 use Eccube\Form\Type\Install\Step5Type;
-use Eccube\Security\Core\Encoder\PasswordEncoder;
 use Eccube\Session\Session;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
@@ -69,7 +68,7 @@ class InstallController extends AbstractController
         'cURL',
         'fileinfo',
         'intl',
-        'sodium'
+        'sodium',
     ];
 
     protected $recommendedModules = [
@@ -132,6 +131,7 @@ class InstallController extends AbstractController
      * ようこそ.
      *
      * @Route("/install/step1", name="install_step1", methods={"GET", "POST"})
+     *
      * @Template("step1.twig")
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
@@ -172,6 +172,7 @@ class InstallController extends AbstractController
      * ディレクトリとファイルの書き込み権限をチェック.
      *
      * @Route("/install/step2", name="install_step2", methods={"GET"})
+     *
      * @Template("step2.twig")
      *
      * @return array
@@ -248,6 +249,7 @@ class InstallController extends AbstractController
      * サイトの設定.
      *
      * @Route("/install/step3", name="install_step3", methods={"GET", "POST"})
+     *
      * @Template("step3.twig")
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
@@ -320,6 +322,7 @@ class InstallController extends AbstractController
      * データベースの設定.
      *
      * @Route("/install/step4", name="install_step4", methods={"GET", "POST"})
+     *
      * @Template("step4.twig")
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
@@ -369,6 +372,7 @@ class InstallController extends AbstractController
      * データベースの初期化.
      *
      * @Route("/install/step5", name="install_step5", methods={"GET", "POST"})
+     *
      * @Template("step5.twig")
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
@@ -451,6 +455,7 @@ class InstallController extends AbstractController
      * インストール完了
      *
      * @Route("/install/complete", name="install_complete", methods={"GET"})
+     *
      * @Template("complete.twig")
      */
     public function complete(Request $request)
@@ -462,7 +467,7 @@ class InstallController extends AbstractController
         $sessionData = $this->getSessionData($this->session);
         $databaseUrl = $this->createDatabaseUrl($sessionData);
         $mailerUrl = $this->createMailerUrl($sessionData);
-        $forceSSL = isset($sessionData['admin_force_ssl']) ? (bool) $sessionData['admin_force_ssl'] : false;
+        $forceSSL = isset($sessionData['admin_force_ssl']) && (bool) $sessionData['admin_force_ssl'];
         if ($forceSSL === false) {
             $forceSSL = '0';
         } elseif ($forceSSL === true) {

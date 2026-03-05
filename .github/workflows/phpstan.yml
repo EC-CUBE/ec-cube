@@ -1,17 +1,10 @@
 name: PHPStan
+
 on:
-  push:
-    branches:
-      - '*'
-    tags:
-      - '*'
-    paths:
-      - '**'
-      - '!*.md'
-  pull_request:
-    paths:
-      - '**'
-      - '!*.md'
+  workflow_call:
+
+permissions:
+  contents: read
 
 jobs:
   phpstan:
@@ -21,15 +14,30 @@ jobs:
 
     steps:
     - name: "Checkout"
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     - name: Setup PHP
-      uses: nanasess/setup-php@master
+      uses: shivammathur/setup-php@v2
       with:
         php-version: '8.1'
 
     - name: Initialize Composer
       uses: ./.github/actions/composer
 
+    - name: Restore PHPStan cache
+      uses: actions/cache/restore@v5
+      with:
+        path: /tmp/phpstan
+        key: ${{ runner.os }}-phpstan-${{ hashFiles('phpstan.neon.dist', 'composer.lock', 'src/**/*.php') }}
+        restore-keys: |
+          ${{ runner.os }}-phpstan-
+
     - name: PHPStan
       run: vendor/bin/phpstan analyze src/ --error-format=github
+
+    - name: Save PHPStan cache
+      if: always()
+      uses: actions/cache/save@v5
+      with:
+        path: /tmp/phpstan
+        key: ${{ runner.os }}-phpstan-${{ hashFiles('phpstan.neon.dist', 'composer.lock', 'src/**/*.php') }}

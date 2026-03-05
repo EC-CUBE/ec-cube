@@ -13,7 +13,6 @@
 
 namespace Plugin;
 
-use AcceptanceTester;
 use Codeception\Util\Fixtures;
 use Doctrine\ORM\EntityManager;
 use Eccube\Entity\Customer;
@@ -29,12 +28,12 @@ use Page\Admin\MailMagazineTemplatePage;
  */
 class PL03MailMagazineCest
 {
-    public function _before(AcceptanceTester $I)
+    public function _before(\AcceptanceTester $I)
     {
         $I->loginAsAdmin();
     }
 
-    public function 新規登録(AcceptanceTester $I)
+    public function 新規登録(\AcceptanceTester $I)
     {
         MailMagazineTemplatePage::go($I)
             ->新規作成();
@@ -48,7 +47,7 @@ class PL03MailMagazineCest
         MailMagazineTemplatePage::at($I);
     }
 
-    public function 編集(AcceptanceTester $I)
+    public function 編集(\AcceptanceTester $I)
     {
         MailMagazineTemplatePage::go($I)
             ->編集(1);
@@ -59,7 +58,7 @@ class PL03MailMagazineCest
         MailMagazineTemplatePage::at($I);
     }
 
-    public function プレビュー(AcceptanceTester $I)
+    public function プレビュー(\AcceptanceTester $I)
     {
         MailMagazineTemplatePage::go($I)
             ->プレビュー(1);
@@ -67,7 +66,7 @@ class PL03MailMagazineCest
         $I->wait(3);
     }
 
-    public function 削除(AcceptanceTester $I)
+    public function 削除(\AcceptanceTester $I)
     {
         MailMagazineTemplatePage::go($I)
             ->削除(1);
@@ -75,7 +74,7 @@ class PL03MailMagazineCest
         MailMagazineTemplatePage::at($I);
     }
 
-    public function 配信(AcceptanceTester $I)
+    public function 配信(\AcceptanceTester $I)
     {
         /** @var EntityManager $entityManager */
         $entityManager = Fixtures::get('entityManager');
@@ -98,7 +97,7 @@ class PL03MailMagazineCest
             ->配信();
     }
 
-    public function 配信履歴(AcceptanceTester $I)
+    public function 配信履歴(\AcceptanceTester $I)
     {
         MailMagazineHistoryPage::go($I)->プレビュー(1);
         MailMagazineHistoryPage::go($I)->配信条件(1);

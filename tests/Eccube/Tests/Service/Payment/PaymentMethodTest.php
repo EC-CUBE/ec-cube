@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Service\Payment;
 
+use Eccube\Service\Payment\Method\Cash;
 use Eccube\Tests\EccubeTestCase;
 
 class PaymentMethodTest extends EccubeTestCase
@@ -24,12 +25,12 @@ class PaymentMethodTest extends EccubeTestCase
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
 
-        $form = $this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')->getMock();
+        $form = $this->getMockBuilder(\Symfony\Component\Form\Test\FormInterface::class)->getMock();
         $paymentMethod = static::getContainer()->get($Order->getPayment()->getMethodClass());
         $paymentMethod->setFormType($form);
         $paymentMethod->setOrder($Order);
 
-        $this->assertInstanceOf(\Eccube\Service\Payment\Method\Cash::class, $paymentMethod);
+        $this->assertInstanceOf(Cash::class, $paymentMethod);
 
         $dispatcher = $paymentMethod->apply(); // 決済処理中.
         $this->assertFalse($dispatcher);

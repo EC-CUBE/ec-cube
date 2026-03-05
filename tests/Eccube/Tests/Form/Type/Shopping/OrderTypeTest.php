@@ -20,14 +20,11 @@ use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 
 class OrderTypeTest extends AbstractTypeTestCase
 {
-    private $paymentRepository;
-
     private $orderType;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->paymentRepository = $this->entityManager->getRepository(Payment::class);
         $this->orderType = static::getContainer()->get(OrderType::class);
     }
 

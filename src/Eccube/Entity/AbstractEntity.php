@@ -75,7 +75,7 @@ abstract class AbstractEntity implements \ArrayAccess
      * @param \ReflectionClass $parentClass 親のクラス. 本メソッドの内部的に使用します.
      * @param string[] $excludeAttribute 除外したいフィールド名の配列
      */
-    public function setPropertiesFromArray(array $arrProps, array $excludeAttribute = [], \ReflectionClass $parentClass = null)
+    public function setPropertiesFromArray(array $arrProps, array $excludeAttribute = [], ?\ReflectionClass $parentClass = null)
     {
         if (is_object($parentClass)) {
             $objReflect = $parentClass;
@@ -110,7 +110,7 @@ abstract class AbstractEntity implements \ArrayAccess
      *
      * @return array
      */
-    public function toArray(array $excludeAttribute = ['__initializer__', '__cloner__', '__isInitialized__'], \ReflectionClass $parentClass = null)
+    public function toArray(array $excludeAttribute = ['__initializer__', '__cloner__', '__isInitialized__'], ?\ReflectionClass $parentClass = null)
     {
         if (is_object($parentClass)) {
             $objReflect = $parentClass;

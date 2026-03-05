@@ -20,13 +20,18 @@ if (!class_exists(Country::class, false)) {
      * Country
      *
      * @ORM\Table(name="mtb_country")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Eccube\Repository\Master\CountryRepository")
+     *
      * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
      */
-    class Country extends \Eccube\Entity\Master\AbstractMasterEntity
+    class Country extends AbstractMasterEntity
     {
     }
 }
