@@ -240,7 +240,7 @@ class EA06ContentsManagementCest
         LayoutEditPage::at($I)
             ->レイアウト名('あたらしいレイアウト')
             ->登録();
-
+        $I->wait(1);
         $I->see('保存しました');
     }
 
