@@ -4,3 +4,6 @@ parameters:
     -
       message: "#^Function twig_localized_date_filter not found\\.$#"
       path: src/Eccube/Twig/Extension/IntlExtension.php
+    -
+      message: "#^Function twig_include not found\\.$#"
+      path: src/Eccube/Twig/Extension/IgnoreTwigSandboxErrorExtension.php

@@ -65,6 +65,8 @@ RUN curl -sS https://getcomposer.org/installer \
   | php \
   && mv composer.phar /usr/bin/composer
 
+# 全体コピー前にcomposer installを先行完了させる(docker cache利用によるリビルド速度向上)
+RUN composer self-update --2.2
 RUN composer config -g repos.packagist composer https://packagist.jp
 
 COPY . ${APACHE_DOCUMENT_ROOT}

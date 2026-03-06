@@ -5,7 +5,7 @@ on:
 jobs:
   deploy:
     name: Deploy
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     services:
       postgres:
         image: postgres:14
@@ -29,7 +29,7 @@ jobs:
         id: composer-cache
         run: |
           echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - uses: actions/cache@v1
+      - uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -37,7 +37,9 @@ jobs:
             ${{ runner.os }}-composer-
 
       - name: Install to Composer
-        run: composer install --no-scripts --no-dev --no-interaction --optimize-autoloader
+        run: |
+          sudo composer self-update --2.2 
+          composer install --no-scripts --no-dev --no-interaction --optimize-autoloader
 
       - name: Translate to templates
         run: php bin/template_jp.php
