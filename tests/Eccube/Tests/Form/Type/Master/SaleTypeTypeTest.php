@@ -13,13 +13,15 @@
 
 namespace Eccube\Tests\Form\Type\Master;
 
+use Eccube\Entity\Master\SaleType;
 use Eccube\Form\Type\Master\SaleTypeType;
 use Eccube\Repository\Master\SaleTypeRepository;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use Symfony\Component\Form\FormInterface;
 
 class SaleTypeTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Symfony\Component\Form\FormInterface */
+    /** @var FormInterface */
     protected $form;
 
     /** @var SaleTypeRepository */
@@ -28,7 +30,7 @@ class SaleTypeTypeTest extends AbstractTypeTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->saleTypeRepo = $this->entityManager->getRepository(\Eccube\Entity\Master\SaleType::class);
+        $this->saleTypeRepo = $this->entityManager->getRepository(SaleType::class);
 
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory

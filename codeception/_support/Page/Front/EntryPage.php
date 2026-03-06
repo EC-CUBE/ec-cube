@@ -15,7 +15,6 @@ namespace Page\Front;
 
 class EntryPage extends AbstractFrontPage
 {
-
     private $formData = [];
 
     public function __construct(\AcceptanceTester $I)
@@ -41,7 +40,7 @@ class EntryPage extends AbstractFrontPage
     {
         $this->tester->amOnPage('/entry');
         $email = uniqid().microtime(true).'@example.com';
-    
+
         $form += [
             'entry[name][name01]' => '姓',
             'entry[name][name02]' => '名',
@@ -59,19 +58,23 @@ class EntryPage extends AbstractFrontPage
             'entry[user_policy_check]' => '1',
         ];
         $this->formData = $form;
+
         return $this;
     }
-    
+
     public function 同意する()
     {
         $this->tester->submitForm(['css' => '.ec-layoutRole__main form'], $this->formData, ['css' => 'button.ec-blockBtn--action']);
+        $this->tester->wait(0.1); // XXX 画面遷移直後は ['id' => 'entry_email_first'] に失敗するため wait を入れる
         $this->tester->seeInField(['id' => 'entry_email_first'], $this->formData['entry[email][first]']);
+
         return $this;
     }
 
     public function 登録する()
     {
         $this->tester->click('.ec-registerRole form button.ec-blockBtn--action');
+
         return $this;
     }
 }

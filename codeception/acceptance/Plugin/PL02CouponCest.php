@@ -13,7 +13,6 @@
 
 namespace Plugin;
 
-use AcceptanceTester;
 use Page\Admin\CouponEditPage;
 use Page\Admin\CouponManagePage;
 
@@ -23,12 +22,12 @@ use Page\Admin\CouponManagePage;
  */
 class PL02CouponCest
 {
-    public function _before(AcceptanceTester $I)
+    public function _before(\AcceptanceTester $I)
     {
         $I->loginAsAdmin();
     }
 
-    public function 新規登録(AcceptanceTester $I)
+    public function 新規登録(\AcceptanceTester $I)
     {
         CouponManagePage::go($I)
             ->新規登録();
@@ -49,7 +48,7 @@ class PL02CouponCest
         CouponManagePage::at($I);
     }
 
-    public function 編集(AcceptanceTester $I)
+    public function 編集(\AcceptanceTester $I)
     {
         CouponManagePage::go($I)
             ->編集(1);
@@ -60,7 +59,7 @@ class PL02CouponCest
         CouponManagePage::at($I);
     }
 
-    public function 有効化(AcceptanceTester $I)
+    public function 有効化(\AcceptanceTester $I)
     {
         CouponManagePage::go($I)
             ->状態変更(1);
@@ -68,7 +67,7 @@ class PL02CouponCest
         CouponManagePage::at($I);
     }
 
-    public function 削除(AcceptanceTester $I)
+    public function 削除(\AcceptanceTester $I)
     {
         CouponManagePage::go($I)
             ->削除(1);

@@ -26,7 +26,7 @@ class PaymentValidatorTest extends EccubeTestCase
     private $validator;
 
     /**
-     * @var $Order
+     * @var
      */
     private $Order;
 

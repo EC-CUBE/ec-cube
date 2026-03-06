@@ -76,7 +76,7 @@ class EmptyItemsValidatorTest extends EccubeTestCase
 
     public function testNotEmptyItem()
     {
-        $result = $this->validator->execute($this->Order, new PurchaseContext());
+        $this->validator->execute($this->Order, new PurchaseContext());
 
         self::assertCount(1, $this->Order->getOrderItems());
     }
@@ -85,7 +85,7 @@ class EmptyItemsValidatorTest extends EccubeTestCase
     {
         $this->OrderItem->setQuantity(0);
 
-        $result = $this->validator->execute($this->Order, new PurchaseContext());
+        $this->validator->execute($this->Order, new PurchaseContext());
 
         self::assertCount(0, $this->Order->getOrderItems());
     }
@@ -94,7 +94,7 @@ class EmptyItemsValidatorTest extends EccubeTestCase
     {
         $this->OrderItem->setQuantity(-1);
 
-        $result = $this->validator->execute($this->Order, new PurchaseContext());
+        $this->validator->execute($this->Order, new PurchaseContext());
 
         self::assertCount(0, $this->Order->getOrderItems());
     }

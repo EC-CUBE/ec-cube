@@ -87,7 +87,7 @@ class OrderItemCollection extends \Doctrine\Common\Collections\ArrayCollection
      *
      * @param OrderItemType $OrderItemType 受注区分
      *
-     * @return boolean
+     * @return bool
      */
     public function hasItemByOrderItemType($OrderItemType)
     {

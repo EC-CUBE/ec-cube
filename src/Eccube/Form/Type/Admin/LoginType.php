@@ -36,7 +36,7 @@ class LoginType extends AbstractType
 
     public function __construct(
         EccubeConfig $eccubeConfig,
-        Session $session
+        Session $session,
     ) {
         $this->eccubeConfig = $eccubeConfig;
         $this->session = $session;

@@ -60,7 +60,7 @@ class MailController extends AbstractController
         MailService $mailService,
         MailHistoryRepository $mailHistoryRepository,
         OrderRepository $orderRepository,
-        Environment $twig
+        Environment $twig,
     ) {
         $this->mailService = $mailService;
         $this->mailHistoryRepository = $mailHistoryRepository;
@@ -70,6 +70,7 @@ class MailController extends AbstractController
 
     /**
      * @Route("/%eccube_admin_route%/order/{id}/mail", requirements={"id" = "\d+"}, name="admin_order_mail", methods={"GET", "POST"})
+     *
      * @Template("@admin/Order/mail.twig")
      */
     public function index(Request $request, Order $Order)
@@ -100,7 +101,6 @@ class MailController extends AbstractController
             switch ($mode) {
                 case 'change':
                     if ($form->get('template')->isValid()) {
-                        /** @var \Eccube\Entity\MailTemplate $data */
                         $MailTemplate = $form->get('template')->getData();
 
                         if ($MailTemplate) {

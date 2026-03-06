@@ -33,6 +33,8 @@ interface DiscountProcessor
      *
      * @param ItemHolderInterface $itemHolder
      * @param PurchaseContext $context
+     *
+     * @return void
      */
     public function removeDiscountItem(ItemHolderInterface $itemHolder, PurchaseContext $context);
 

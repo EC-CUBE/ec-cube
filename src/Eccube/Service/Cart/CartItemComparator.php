@@ -24,7 +24,7 @@ interface CartItemComparator
      * @param CartItem $item1 明細1
      * @param CartItem $item2 明細2
      *
-     * @return boolean 同じ明細になる場合はtrue
+     * @return bool 同じ明細になる場合はtrue
      */
     public function compare(CartItem $item1, CartItem $item2);
 }

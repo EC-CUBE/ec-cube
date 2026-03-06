@@ -76,7 +76,7 @@ class OrderStateMachine implements EventSubscriberInterface
      * @param Order $Order 受注
      * @param OrderStatus $OrderStatus 遷移先ステータス
      *
-     * @return boolean 指定ステータスに遷移できる場合はtrue
+     * @return bool 指定ステータスに遷移できる場合はtrue
      */
     public function can(Order $Order, OrderStatus $OrderStatus)
     {

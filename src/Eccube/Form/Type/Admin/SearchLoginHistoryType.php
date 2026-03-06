@@ -32,7 +32,7 @@ class SearchLoginHistoryType extends AbstractType
      * SearchContactType constructor.
      */
     public function __construct(
-        EccubeConfig $eccubeConfig
+        EccubeConfig $eccubeConfig,
     ) {
         $this->eccubeConfig = $eccubeConfig;
     }
@@ -78,7 +78,7 @@ class SearchLoginHistoryType extends AbstractType
                 'widget' => 'single_text',
                 'constraints' => [
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],
@@ -95,7 +95,7 @@ class SearchLoginHistoryType extends AbstractType
                 'widget' => 'single_text',
                 'constraints' => [
                     new Assert\Range([
-                        'min'=> '0003-01-01',
+                        'min' => '0003-01-01',
                         'minMessage' => 'form_error.out_of_range',
                     ]),
                 ],

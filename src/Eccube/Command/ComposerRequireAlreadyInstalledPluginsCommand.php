@@ -51,7 +51,7 @@ class ComposerRequireAlreadyInstalledPluginsCommand extends Command
     public function __construct(
         ComposerApiService $composerService,
         PluginRepository $pluginRepository,
-        PluginApiService $pluginApiService
+        PluginApiService $pluginApiService,
     ) {
         parent::__construct();
         $this->composerService = $composerService;
@@ -90,7 +90,7 @@ class ComposerRequireAlreadyInstalledPluginsCommand extends Command
             ]);
             $question = new ConfirmationQuestion($message);
             if (!$this->io->askQuestion($question)) {
-                return;
+                return 1;
             }
         }
 

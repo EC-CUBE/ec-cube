@@ -13,7 +13,6 @@
 
 namespace Eccube\Command;
 
-use Doctrine\Common\Annotations\AnnotationRegistry;
 use Eccube\Common\EccubeConfig;
 use Eccube\Service\EntityProxyService;
 use Symfony\Component\Console\Command\Command;

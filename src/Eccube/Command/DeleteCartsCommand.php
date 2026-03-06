@@ -143,8 +143,6 @@ class DeleteCartsCommand extends Command
             $this->io->error('Failed delete carts. Rollbacked.');
             $this->entityManager->rollback();
         }
-
-        return;
     }
 
     protected function createIntlFormatter()

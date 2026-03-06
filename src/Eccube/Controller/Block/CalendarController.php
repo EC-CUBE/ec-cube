@@ -37,6 +37,7 @@ class CalendarController extends AbstractController
 
     /**
      * @Route("/block/calendar", name="block_calendar", methods={"GET"})
+     *
      * @Template("Block/calendar.twig")
      */
     public function index(Request $request)

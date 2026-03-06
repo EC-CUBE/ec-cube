@@ -77,7 +77,7 @@ class OrderType extends AbstractType
         EntityManagerInterface $entityManager,
         EccubeConfig $eccubeConfig,
         OrderStateMachine $orderStateMachine,
-        OrderStatusRepository $orderStatusRepository
+        OrderStatusRepository $orderStatusRepository,
     ) {
         $this->entityManager = $entityManager;
         $this->eccubeConfig = $eccubeConfig;
@@ -191,7 +191,7 @@ class OrderType extends AbstractType
                     ]),
                     new Assert\Range([
                         'min' => 0,
-                        'max' => $this->eccubeConfig['eccube_price_max']
+                        'max' => $this->eccubeConfig['eccube_price_max'],
                     ]),
                 ],
             ])
@@ -238,7 +238,7 @@ class OrderType extends AbstractType
             ->add($builder->create('Customer', HiddenType::class)
                 ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
                     $this->entityManager,
-                    '\Eccube\Entity\Customer'
+                    \Eccube\Entity\Customer::class
                 )));
 
         $builder->addEventListener(FormEvents::POST_SET_DATA, [$this, 'sortOrderItems']);

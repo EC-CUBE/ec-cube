@@ -14,10 +14,11 @@
 namespace Eccube\Tests\Form\Type;
 
 use Eccube\Form\Type\Admin\ClassNameType;
+use Symfony\Component\Form\FormInterface;
 
 class ClassNameTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Symfony\Component\Form\FormInterface */
+    /** @var FormInterface */
     protected $form;
 
     /** @var array デフォルト値（正常系）を設定 */

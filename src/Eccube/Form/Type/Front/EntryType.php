@@ -103,13 +103,13 @@ class EntryType extends AbstractType
                 $form = $event->getForm();
 
                 $form->add('user_policy_check', CheckboxType::class, [
-                        'required' => true,
-                        'label' => null,
-                        'mapped' => false,
-                        'constraints' => [
-                            new Assert\NotBlank(),
-                        ],
-                    ]);
+                    'required' => true,
+                    'label' => null,
+                    'mapped' => false,
+                    'constraints' => [
+                        new Assert\NotBlank(),
+                    ],
+                ]);
             }
         }
         );
@@ -130,7 +130,7 @@ class EntryType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Eccube\Entity\Customer',
+            'data_class' => Customer::class,
         ]);
     }
 

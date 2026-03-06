@@ -51,7 +51,7 @@ class UpdateSchemaDoctrineCommand extends BaseUpdateSchemaDoctrineCommand
     public function __construct(
         PluginRepository $pluginRepository,
         PluginService $pluginService,
-        SchemaService $schemaService
+        SchemaService $schemaService,
     ) {
         parent::__construct();
         $this->pluginRepository = $pluginRepository;

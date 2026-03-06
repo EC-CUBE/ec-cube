@@ -59,12 +59,12 @@ class Session implements SessionInterface, FlashBagAwareSessionInterface
         $this->getSession()->setName($name);
     }
 
-    public function invalidate(int $lifetime = null): bool
+    public function invalidate(?int $lifetime = null): bool
     {
         return $this->getSession()->invalidate($lifetime);
     }
 
-    public function migrate(bool $destroy = false, int $lifetime = null): bool
+    public function migrate(bool $destroy = false, ?int $lifetime = null): bool
     {
         return $this->getSession()->migrate($destroy, $lifetime);
     }
@@ -86,7 +86,7 @@ class Session implements SessionInterface, FlashBagAwareSessionInterface
 
     public function set(string $name, mixed $value)
     {
-        return $this->getSession()->set($name, $value);
+        $this->getSession()->set($name, $value);
     }
 
     public function all(): array
@@ -96,7 +96,7 @@ class Session implements SessionInterface, FlashBagAwareSessionInterface
 
     public function replace(array $attributes)
     {
-        return $this->getSession()->replace($attributes);
+        $this->getSession()->replace($attributes);
     }
 
     public function remove(string $name): mixed

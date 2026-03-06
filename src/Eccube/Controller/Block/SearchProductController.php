@@ -29,7 +29,7 @@ class SearchProductController extends AbstractController
      */
     protected $requestStack;
 
-    public function __construct(RequestStack $requestStack
+    public function __construct(RequestStack $requestStack,
     ) {
         $this->requestStack = $requestStack;
     }
@@ -37,6 +37,7 @@ class SearchProductController extends AbstractController
     /**
      * @Route("/block/search_product", name="block_search_product", methods={"GET"})
      * @Route("/block/search_product_sp", name="block_search_product_sp", methods={"GET"})
+     *
      * @Template("Block/search_product.twig")
      */
     public function index(Request $request)

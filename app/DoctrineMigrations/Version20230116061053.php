@@ -2,6 +2,17 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+ *
+ * http://www.ec-cube.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace DoctrineMigrations;
 
 use Doctrine\DBAL\Schema\Schema;
@@ -12,7 +23,7 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20230116061053 extends AbstractMigration
 {
-    const NAME = 'dtb_csv';
+    public const NAME = 'dtb_csv';
 
     public function up(Schema $schema): void
     {
@@ -28,6 +39,5 @@ final class Version20230116061053 extends AbstractMigration
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-
     }
 }

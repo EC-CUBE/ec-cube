@@ -37,7 +37,7 @@ class CustomerAddressRepository extends AbstractRepository
     /**
      * お届け先を削除します.
      *
-     * @param \Eccube\Entity\CustomerAddress $CustomerAddress
+     * @param CustomerAddress $CustomerAddress
      */
     public function delete($CustomerAddress)
     {

@@ -20,6 +20,7 @@ use Page\Admin\ShopSettingPage;
 
 /**
  * @group front
+ * @group front-b
  * @group other
  * @group ef6
  */
@@ -371,13 +372,13 @@ class EF06OtherCest
         $I->amOnPage($productEditUrl);
         ProductEditPage::at($I)->入力_公開()->登録();
         // 在庫切れ商品の非表示設定
-        $page = ShopSettingPage::go($I)
+        ShopSettingPage::go($I)
             ->設定_在庫切れ商品の非表示(true);
         $I->amOnPage($sitemapUrl);
         $I->dontSee($productLoc);
 
         // 公開・在庫切れ商品は表示する
-        $page = ShopSettingPage::go($I)
+        ShopSettingPage::go($I)
             ->設定_在庫切れ商品の非表示(false);
         $I->amOnPage($sitemapUrl);
         $I->see($productLoc);

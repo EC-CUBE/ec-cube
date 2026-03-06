@@ -64,7 +64,7 @@ class ClassCategoryController extends AbstractController
         ProductClassRepository $productClassRepository,
         ClassCategoryRepository $classCategoryRepository,
         ClassNameRepository $classNameRepository,
-        CsvExportService $csvExportService
+        CsvExportService $csvExportService,
     ) {
         $this->productClassRepository = $productClassRepository;
         $this->classCategoryRepository = $classCategoryRepository;
@@ -75,6 +75,7 @@ class ClassCategoryController extends AbstractController
     /**
      * @Route("/%eccube_admin_route%/product/class_category/{class_name_id}", requirements={"class_name_id" = "\d+"}, name="admin_product_class_category", methods={"GET", "POST"})
      * @Route("/%eccube_admin_route%/product/class_category/{class_name_id}/{id}/edit", requirements={"class_name_id" = "\d+", "id" = "\d+"}, name="admin_product_class_category_edit", methods={"GET", "POST"})
+     *
      * @Template("@admin/Product/class_category.twig")
      */
     public function index(Request $request, $class_name_id, $id = null)
@@ -294,22 +295,22 @@ class ClassCategoryController extends AbstractController
         // sql loggerを無効にする.
         $em = $this->entityManager;
         $em->getConfiguration()->setSQLLogger(null);
-        
+
         $response = new StreamedResponse();
         $response->setCallback(function () use ($request, $class_name_id) {
             // CSV種別を元に初期化.
             $this->csvExportService->initCsvType(CsvType::CSV_TYPE_CLASS_CATEGORY);
             // ヘッダ行の出力.
             $this->csvExportService->exportHeader();
-            
+
             $qb = $this->classCategoryRepository
                 ->createQueryBuilder('cc')
                 ->where('cc.ClassName = :ClassName')
                 ->setParameter('ClassName', $class_name_id)
                 ->orderBy('cc.sort_no', 'DESC');
 
-        // データ行の出力.
-        $this->csvExportService->setExportQueryBuilder($qb);
+            // データ行の出力.
+            $this->csvExportService->setExportQueryBuilder($qb);
             $this->csvExportService->exportData(function ($entity, $csvService) use ($request) {
                 $Csvs = $csvService->getCsvs();
 
@@ -334,7 +335,7 @@ class ClassCategoryController extends AbstractController
 
                     $ExportCsvRow->pushData();
                 }
-                //$row[] = number_format(memory_get_usage(true));
+                // $row[] = number_format(memory_get_usage(true));
                 // 出力.
                 $csvService->fputcsv($ExportCsvRow->getRow());
             });

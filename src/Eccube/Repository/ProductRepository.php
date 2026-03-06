@@ -58,7 +58,7 @@ class ProductRepository extends AbstractRepository
     public function __construct(
         RegistryInterface $registry,
         Queries $queries,
-        EccubeConfig $eccubeConfig
+        EccubeConfig $eccubeConfig,
     ) {
         parent::__construct($registry, Product::class);
         $this->queries = $queries;
@@ -68,7 +68,7 @@ class ProductRepository extends AbstractRepository
     /**
      * Find the Product with sorted ClassCategories.
      *
-     * @param integer $productId
+     * @param int $productId
      *
      * @return Product
      */
@@ -399,16 +399,7 @@ class ProductRepository extends AbstractRepository
         }
 
         // Order By
-        if (isset($searchData['sortkey']) && !empty($searchData['sortkey'])) {
-            $sortOrder = (isset($searchData['sorttype']) && $searchData['sorttype'] == 'a') ? 'ASC' : 'DESC';
-
-            $qb->orderBy(self::COLUMNS[$searchData['sortkey']], $sortOrder);
-            $qb->addOrderBy('p.update_date', 'DESC');
-            $qb->addOrderBy('p.id', 'DESC');
-        } else {
-            $qb->orderBy('p.update_date', 'DESC');
-            $qb->addOrderBy('p.id', 'DESC');
-        }
+        $this->setQueryBuilderAdminSearchDataOrderBy($qb, 'p', self::COLUMNS, $searchData);
 
         return $this->queries->customize(QueryKey::PRODUCT_SEARCH_ADMIN, $qb, $searchData);
     }

@@ -66,7 +66,7 @@ class MasterdataDataType extends AbstractType
         ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
             $form = $event->getForm();
             $data = $form->getData();
-            if (strlen($data['id']) && strlen($data['name']) == 0) {
+            if (isset($data['id']) && strlen($data['name'] ?? '') == 0) {
                 $form['name']->addError(new FormError(trans('This value should not be blank.', [], 'validators')));
             }
         });

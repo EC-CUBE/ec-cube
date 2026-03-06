@@ -71,7 +71,7 @@ class ProductClassController extends AbstractController
         ProductClassRepository $productClassRepository,
         ClassCategoryRepository $classCategoryRepository,
         BaseInfoRepository $baseInfoRepository,
-        TaxRuleRepository $taxRuleRepository
+        TaxRuleRepository $taxRuleRepository,
     ) {
         $this->productRepository = $productRepository;
         $this->productClassRepository = $productClassRepository;
@@ -84,6 +84,7 @@ class ProductClassController extends AbstractController
      * 商品規格が登録されていなければ新規登録, 登録されていれば更新画面を表示する
      *
      * @Route("/%eccube_admin_route%/product/product/class/{id}", requirements={"id" = "\d+"}, name="admin_product_product_class", methods={"GET", "POST"})
+     *
      * @Template("@admin/Product/product_class.twig")
      */
     public function index(Request $request, $id, CacheUtil $cacheUtil)
@@ -252,7 +253,7 @@ class ProductClassController extends AbstractController
      *
      * @return array|ProductClass[]
      */
-    protected function createProductClasses(ClassName $ClassName1, ClassName $ClassName2 = null)
+    protected function createProductClasses(ClassName $ClassName1, ?ClassName $ClassName2 = null)
     {
         $ProductClasses = [];
         $ClassCategories1 = $this->classCategoryRepository->findBy(['ClassName' => $ClassName1], ['sort_no' => 'DESC']);
@@ -420,9 +421,9 @@ class ProductClassController extends AbstractController
      */
     protected function createMatrixForm(
         $ProductClasses = [],
-        ClassName $ClassName1 = null,
-        ClassName $ClassName2 = null,
-        array $options = []
+        ?ClassName $ClassName1 = null,
+        ?ClassName $ClassName2 = null,
+        array $options = [],
     ) {
         $options = array_merge(['csrf_protection' => false], $options);
         $builder = $this->formFactory->createBuilder(ProductClassMatrixType::class, [

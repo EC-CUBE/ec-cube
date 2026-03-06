@@ -22,36 +22,36 @@ class ConvertKanaListenerTest extends TestCase
     public function testConvertKanaString()
     {
         $data = '１２３４５';
-        $form = $this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')->getMock();
+        $form = $this->getMockBuilder(\Symfony\Component\Form\Test\FormInterface::class)->getMock();
         $event = new FormEvent($form, $data);
 
         $filter = new ConvertKanaListener();
         $filter->onPreSubmit($event);
 
-        $this->assertEquals('12345', $event->getData());
+        $this->assertSame('12345', $event->getData());
     }
 
     public function testConvertKanaArray()
     {
         $data = ['１２３４５'];
-        $form = $this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')->getMock();
+        $form = $this->getMockBuilder(\Symfony\Component\Form\Test\FormInterface::class)->getMock();
         $event = new FormEvent($form, $data);
 
         $filter = new ConvertKanaListener();
         $filter->onPreSubmit($event);
 
-        $this->assertEquals(['12345'], $event->getData());
+        $this->assertSame(['12345'], $event->getData());
     }
 
     public function testConvertKanaHiraganaToKana()
     {
         $data = 'あいうえお';
-        $form = $this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')->getMock();
+        $form = $this->getMockBuilder(\Symfony\Component\Form\Test\FormInterface::class)->getMock();
         $event = new FormEvent($form, $data);
 
         $filter = new ConvertKanaListener('CV');
         $filter->onPreSubmit($event);
 
-        $this->assertEquals('アイウエオ', $event->getData());
+        $this->assertSame('アイウエオ', $event->getData());
     }
 }

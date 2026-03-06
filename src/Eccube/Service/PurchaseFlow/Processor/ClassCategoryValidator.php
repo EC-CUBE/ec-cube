@@ -25,7 +25,9 @@ class ClassCategoryValidator extends ItemValidator
     /**
      * @param ItemInterface $item
      * @param PurchaseContext $context
+     *
      * @return void
+     *
      * @throws \Eccube\Service\PurchaseFlow\InvalidItemException
      */
     protected function validate(ItemInterface $item, PurchaseContext $context): void
@@ -50,6 +52,7 @@ class ClassCategoryValidator extends ItemValidator
     /**
      * @param ItemInterface $item
      * @param PurchaseContext $context
+     *
      * @return void
      */
     protected function handle(ItemInterface $item, PurchaseContext $context): void

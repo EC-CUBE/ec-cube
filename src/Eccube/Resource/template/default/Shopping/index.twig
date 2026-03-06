@@ -14,6 +14,12 @@ file that was distributed with this source code.
 
 {% block javascript %}
     <script>
+        // redirect_to初期化
+        $(window).on('pageshow',function(event) {
+            $('#shopping_order_redirect_to').val(null);
+            $('#shopping-form').attr('action','{{ url("shopping_confirm") }}');
+        });
+
         $(function() {
             var $redirectCallback = function() {
                 loadingOverlay();

@@ -15,11 +15,12 @@ namespace Eccube\Tests\Form\Type;
 
 use Eccube\Form\Type\PriceType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\FormInterface;
 
 class PriceTypeTest extends AbstractTypeTestCase
 {
     /**
-     * @var \Symfony\Component\Form\FormInterface
+     * @var FormInterface
      */
     protected $form;
 

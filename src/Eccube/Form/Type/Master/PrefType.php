@@ -28,7 +28,7 @@ class PrefType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'class' => 'Eccube\Entity\Master\Pref',
+            'class' => \Eccube\Entity\Master\Pref::class,
             'placeholder' => 'common.select__pref',
         ]);
     }

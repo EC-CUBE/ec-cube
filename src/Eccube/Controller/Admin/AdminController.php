@@ -112,7 +112,7 @@ class AdminController extends AbstractController
         OrderStatusRepository $orderStatusRepository,
         CustomerRepository $custmerRepository,
         ProductRepository $productRepository,
-        PluginApiService $pluginApiService
+        PluginApiService $pluginApiService,
     ) {
         $this->authorizationChecker = $authorizationChecker;
         $this->helper = $helper;
@@ -127,6 +127,7 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/%eccube_admin_route%/login", name="admin_login", methods={"GET", "POST"})
+     *
      * @Template("@admin/login.twig")
      */
     public function login(Request $request)
@@ -135,7 +136,6 @@ class AdminController extends AbstractController
             return $this->redirectToRoute('admin_homepage');
         }
 
-        /** @var \Symfony\Component\Form\FormInterface $form */
         $builder = $this->formFactory->createNamedBuilder('', LoginType::class);
 
         $event = new EventArgs(
@@ -165,6 +165,7 @@ class AdminController extends AbstractController
      * @throws \Doctrine\ORM\NonUniqueResultException
      *
      * @Route("/%eccube_admin_route%/", name="admin_homepage", methods={"GET"})
+     *
      * @Template("@admin/index.twig")
      */
     public function index(Request $request)
@@ -316,6 +317,7 @@ class AdminController extends AbstractController
      * パスワード変更画面
      *
      * @Route("/%eccube_admin_route%/change_password", name="admin_change_password", methods={"GET", "POST"})
+     *
      * @Template("@admin/change_password.twig")
      *
      * @param Request $request

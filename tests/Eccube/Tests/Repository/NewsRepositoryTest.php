@@ -32,7 +32,7 @@ class NewsRepositoryTest extends EccubeTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->newsRepo = $this->entityManager->getRepository(\Eccube\Entity\News::class);
+        $this->newsRepo = $this->entityManager->getRepository(News::class);
         $this->removeNews();
 
         $faker = $this->getFaker();

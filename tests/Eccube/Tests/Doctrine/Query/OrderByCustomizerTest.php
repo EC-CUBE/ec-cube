@@ -26,7 +26,7 @@ class OrderByCustomizerTest extends EccubeTestCase
         $customizer = new OrderByCustomizerTest_Customizer(function () { return []; });
         $customizer->customize($builder, null, '');
 
-        self::assertEquals('SELECT p FROM Product p', $builder->getDQL());
+        self::assertSame('SELECT p FROM Product p', $builder->getDQL());
     }
 
     public function testCustomizeNopShouldNotOverride()
@@ -36,7 +36,7 @@ class OrderByCustomizerTest extends EccubeTestCase
         $customizer = new OrderByCustomizerTest_Customizer(function () { return []; });
         $customizer->customize($builder, null, '');
 
-        self::assertEquals('SELECT p FROM Product p ORDER BY name desc', $builder->getDQL());
+        self::assertSame('SELECT p FROM Product p ORDER BY name desc', $builder->getDQL());
     }
 
     public function testCustomizeOverride()
@@ -45,12 +45,12 @@ class OrderByCustomizerTest extends EccubeTestCase
             ->orderBy('name', 'desc');
         $customizer = new OrderByCustomizerTest_Customizer(function () {
             return [
-            new OrderByClause('productId'),
-        ];
+                new OrderByClause('productId'),
+            ];
         });
         $customizer->customize($builder, null, '');
 
-        self::assertEquals('SELECT p FROM Product p ORDER BY productId asc', $builder->getDQL());
+        self::assertSame('SELECT p FROM Product p ORDER BY productId asc', $builder->getDQL());
     }
 
     public function testCustomizeOverrideWithMultiClause()
@@ -59,13 +59,13 @@ class OrderByCustomizerTest extends EccubeTestCase
             ->orderBy('name', 'desc');
         $customizer = new OrderByCustomizerTest_Customizer(function () {
             return [
-            new OrderByClause('productId'),
-            new OrderByClause('name', 'desc'),
-        ];
+                new OrderByClause('productId'),
+                new OrderByClause('name', 'desc'),
+            ];
         });
         $customizer->customize($builder, null, '');
 
-        self::assertEquals('SELECT p FROM Product p ORDER BY productId asc, name desc', $builder->getDQL());
+        self::assertSame('SELECT p FROM Product p ORDER BY productId asc, name desc', $builder->getDQL());
     }
 
     /**

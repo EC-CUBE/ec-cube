@@ -13,7 +13,6 @@
 
 namespace Plugin;
 
-use AcceptanceTester;
 use Page\Admin\ProductReviewManagePage;
 use Page\Front\ProductDetailPage;
 use Page\Front\ProductReviewPage;
@@ -24,7 +23,7 @@ use Page\Front\ProductReviewPage;
  */
 class PL07ProductReviewCest
 {
-    public function レビュー投稿(AcceptanceTester $I)
+    public function レビュー投稿(\AcceptanceTester $I)
     {
         ProductDetailPage::go($I, 1);
         $I->scrollTo(['css' => '#product_review_area > div > div:nth-child(3) > a'], 0, -100);
@@ -41,7 +40,7 @@ class PL07ProductReviewCest
             ->投稿する();
     }
 
-    public function レビュー管理(AcceptanceTester $I)
+    public function レビュー管理(\AcceptanceTester $I)
     {
         $I->loginAsAdmin();
         ProductReviewManagePage::go($I)

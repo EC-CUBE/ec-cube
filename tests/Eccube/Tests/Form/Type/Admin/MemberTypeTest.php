@@ -16,10 +16,11 @@ namespace Eccube\Tests\Form\Type\Admin;
 use Eccube\Entity\Member;
 use Eccube\Form\Type\Admin\MemberType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use Symfony\Component\Form\FormInterface;
 
 class MemberTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Symfony\Component\Form\FormInterface */
+    /** @var FormInterface */
     protected $form;
 
     /** @var array デフォルト値（正常系）を設定 */
@@ -155,7 +156,7 @@ class MemberTypeTest extends AbstractTypeTestCase
 
     public function testInvalidAuthorityInvalid()
     {
-        $Authority = $this->entityManager->getRepository('Eccube\Entity\Master\Authority')
+        $Authority = $this->entityManager->getRepository(\Eccube\Entity\Master\Authority::class)
             ->findOneBy([], ['id' => 'DESC']);
         $id = $Authority->getId() + 1;
 
@@ -175,7 +176,7 @@ class MemberTypeTest extends AbstractTypeTestCase
 
     public function testInvalidWorkInvalid()
     {
-        $Work = $this->entityManager->getRepository('Eccube\Entity\Master\Work')
+        $Work = $this->entityManager->getRepository(\Eccube\Entity\Master\Work::class)
             ->findOneBy([], ['id' => 'DESC']);
         $id = $Work->getId() + 1;
 

@@ -17,12 +17,13 @@ use Facebook\WebDriver\Interactions\Internal\WebDriverButtonReleaseAction;
 use Facebook\WebDriver\Interactions\Internal\WebDriverClickAndHoldAction;
 use Facebook\WebDriver\Interactions\Internal\WebDriverMoveToOffsetAction;
 use Facebook\WebDriver\Interactions\WebDriverActions;
+use Facebook\WebDriver\Remote\RemoteWebElement;
 use Facebook\WebDriver\WebDriver;
 
 class DragAndDropBy extends WebDriverActions
 {
     /**
-     * @param \Facebook\WebDriver\Remote\RemoteWebElement $source
+     * @param RemoteWebElement $source
      */
     public function __construct(WebDriver $driver, $source, $x_offset, $y_offset)
     {

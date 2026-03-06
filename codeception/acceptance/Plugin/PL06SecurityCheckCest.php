@@ -13,16 +13,13 @@
 
 namespace Plugin;
 
-use AcceptanceTester;
-
 /**
  * @group plugin
  * @group vaddy
  */
 class PL06SecurityCheckCest
 {
-
-    public function セキュリティチェック(AcceptanceTester $I)
+    public function セキュリティチェック(\AcceptanceTester $I)
     {
         $I->loginAsAdmin();
         $I->amOnPage('/admin/store/plugin/Securitychecker4/config');

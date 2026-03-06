@@ -73,7 +73,7 @@ class ShippingController extends AbstractController
     protected $serializer;
 
     /**
-     * @var \Eccube\Service\MailService
+     * @var MailService
      */
     protected $mailService;
 
@@ -109,7 +109,7 @@ class ShippingController extends AbstractController
         ShippingRepository $shippingRepository,
         SerializerInterface $serializer,
         OrderStateMachine $orderStateMachine,
-        PurchaseFlow $orderPurchaseFlow
+        PurchaseFlow $orderPurchaseFlow,
     ) {
         $this->mailService = $mailService;
         $this->orderItemRepository = $orderItemRepository;
@@ -126,6 +126,7 @@ class ShippingController extends AbstractController
      * 出荷登録/編集画面.
      *
      * @Route("/%eccube_admin_route%/shipping/{id}/edit", requirements={"id" = "\d+"}, name="admin_shipping_edit", methods={"GET", "POST"})
+     *
      * @Template("@admin/Order/shipping.twig")
      */
     public function index(Request $request, Order $Order)

@@ -22,7 +22,7 @@ class RoundingTypeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'class' => 'Eccube\Entity\Master\RoundingType',
+            'class' => \Eccube\Entity\Master\RoundingType::class,
             'expanded' => false,
         ]);
     }

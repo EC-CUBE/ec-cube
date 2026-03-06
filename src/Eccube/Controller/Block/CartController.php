@@ -27,7 +27,7 @@ class CartController extends AbstractController
     protected $cartService;
 
     public function __construct(
-        CartService $cartService
+        CartService $cartService,
     ) {
         $this->cartService = $cartService;
     }

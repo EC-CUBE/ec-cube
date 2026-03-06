@@ -32,7 +32,7 @@ class CustomerStatusType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'class' => 'Eccube\Entity\Master\CustomerStatus',
+            'class' => \Eccube\Entity\Master\CustomerStatus::class,
             'expanded' => false,
         ]);
     }

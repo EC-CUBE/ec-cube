@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of EC-CUBE
  *
@@ -12,17 +13,20 @@
 
 namespace Plugin\Emperor\Entity;
 
-
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists('Plugin\Emperor\Entity\Foo')) {
+if (!class_exists(Foo::class)) {
     /**
      * Plugin
      *
      * @ORM\Table(name="dtb_foo")
+     *
      * @ORM\InheritanceType("SINGLE_TABLE")
+     *
      * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
+     *
      * @ORM\HasLifecycleCallbacks()
+     *
      * @ORM\Entity(repositoryClass="Plugin\Emperor\Repository\FooRepository")
      */
     class Foo
@@ -31,7 +35,9 @@ if (!class_exists('Plugin\Emperor\Entity\Foo')) {
          * @var int
          *
          * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+         *
          * @ORM\Id
+         *
          * @ORM\GeneratedValue(strategy="IDENTITY")
          */
         public $id;

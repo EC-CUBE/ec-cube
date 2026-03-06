@@ -74,7 +74,7 @@ class LayoutController extends AbstractController
     protected $deviceTypeRepository;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $isPreview = false;
 
@@ -84,7 +84,7 @@ class LayoutController extends AbstractController
      * @param BlockRepository $blockRepository
      * @param LayoutRepository $layoutRepository
      * @param PageLayoutRepository $pageLayoutRepository
-     * @param pageRepository $pageRepository
+     * @param PageRepository $pageRepository
      * @param ProductRepository $productRepository
      * @param DeviceTypeRepository $deviceTypeRepository
      */
@@ -101,6 +101,7 @@ class LayoutController extends AbstractController
 
     /**
      * @Route("/%eccube_admin_route%/content/layout", name="admin_content_layout", methods={"GET"})
+     *
      * @Template("@admin/Content/layout_list.twig")
      */
     public function index()
@@ -150,6 +151,7 @@ class LayoutController extends AbstractController
     /**
      * @Route("/%eccube_admin_route%/content/layout/new", name="admin_content_layout_new", methods={"GET", "POST"})
      * @Route("/%eccube_admin_route%/content/layout/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_layout_edit", methods={"GET", "POST"})
+     *
      * @Template("@admin/Content/layout.twig")
      */
     public function edit(Request $request, CacheUtil $cacheUtil, $id = null, $previewPageId = null)

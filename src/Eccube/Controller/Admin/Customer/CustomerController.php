@@ -75,7 +75,7 @@ class CustomerController extends AbstractController
         SexRepository $sexRepository,
         PrefRepository $prefRepository,
         MailService $mailService,
-        CsvExportService $csvExportService
+        CsvExportService $csvExportService,
     ) {
         $this->pageMaxRepository = $pageMaxRepository;
         $this->customerRepository = $customerRepository;
@@ -88,6 +88,7 @@ class CustomerController extends AbstractController
     /**
      * @Route("/%eccube_admin_route%/customer", name="admin_customer", methods={"GET", "POST"})
      * @Route("/%eccube_admin_route%/customer/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_customer_page", methods={"GET", "POST"})
+     *
      * @Template("@admin/Customer/index.twig")
      */
     public function index(Request $request, PaginatorInterface $paginator, $page_no = null)
@@ -156,19 +157,23 @@ class CustomerController extends AbstractController
         /** @var QueryBuilder $qb */
         $qb = $this->customerRepository->getQueryBuilderBySearchData($searchData);
 
+        $paginate_options = [];
         $event = new EventArgs(
             [
                 'form' => $searchForm,
                 'qb' => $qb,
+                'paginate_options' => $paginate_options,
             ],
             $request
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_CUSTOMER_INDEX_SEARCH);
+        $paginate_options = $event->getArgument('paginate_options');
 
         $pagination = $paginator->paginate(
             $qb,
             $page_no,
-            $pageCount
+            $pageCount,
+            $paginate_options
         );
 
         return [
@@ -241,7 +246,7 @@ class CustomerController extends AbstractController
             $this->deleteMessage();
 
             return $this->redirect($this->generateUrl('admin_customer_page',
-                    ['page_no' => $page_no]).'?resume='.Constant::ENABLED);
+                ['page_no' => $page_no]).'?resume='.Constant::ENABLED);
         }
 
         try {
@@ -266,7 +271,7 @@ class CustomerController extends AbstractController
         $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_CUSTOMER_DELETE_COMPLETE);
 
         return $this->redirect($this->generateUrl('admin_customer_page',
-                ['page_no' => $page_no]).'?resume='.Constant::ENABLED);
+            ['page_no' => $page_no]).'?resume='.Constant::ENABLED);
     }
 
     /**

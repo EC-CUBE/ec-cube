@@ -118,6 +118,7 @@ class PluginGenerateCommand extends Command
         $this->createTwigBlock($pluginDir, $code);
         $this->createConfigController($pluginDir, $code);
         $this->createGithubActions($pluginDir);
+        $this->createGitattributes($pluginDir);
 
         $this->io->success(sprintf('Plugin was successfully created: %s %s %s', $name, $code, $version));
 
@@ -209,19 +210,13 @@ on:
 jobs:
   deploy:
     name: Build
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Packaging
-        working-directory: ../
         run: |
-          rm -rf $GITHUB_WORKSPACE/.github
-          find $GITHUB_WORKSPACE -name "dummy" -delete
-          find $GITHUB_WORKSPACE -name ".git*" -and ! -name ".gitkeep" -print0 | xargs -0 rm -rf
-          chmod -R o+w $GITHUB_WORKSPACE
-          cd $GITHUB_WORKSPACE
-          tar cvzf ../${{ github.event.repository.name }}-${{ github.event.release.tag_name }}.tar.gz ./*
+          git archive HEAD --format=tar.gz > ../${{ github.event.repository.name }}-${{ github.event.release.tag_name }}.tar.gz
       - name: Upload binaries to release of TGZ
         uses: svenstaro/upload-release-action@v1-release
         with:
@@ -233,6 +228,18 @@ jobs:
 ';
 
         $this->fs->dumpFile($pluginDir.'/.github/workflows/release.yml', $source);
+    }
+
+    protected function createGitattributes($pluginDir)
+    {
+        $source = <<<EOL
+/.gitattributes             export-ignore
+/.github                    export-ignore
+/.gitignore                 export-ignore
+/dummy                      export-ignore
+EOL;
+
+        $this->fs->dumpFile($pluginDir.'/.gitattributes', $source);
     }
 
     /**

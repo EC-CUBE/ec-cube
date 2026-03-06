@@ -245,7 +245,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->flush();
 
         // 削除
-        $crawler = $this->senarioDelete($id);
+        $this->senarioDelete($id);
 
         // 削除されず残っている
         $this->client->request(

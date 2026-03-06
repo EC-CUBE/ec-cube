@@ -28,7 +28,7 @@ class SaleTypeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'class' => 'Eccube\Entity\Master\SaleType',
+            'class' => \Eccube\Entity\Master\SaleType::class,
             'label' => 'salestype.label.sales_type',
         ]);
     }

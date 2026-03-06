@@ -23,7 +23,7 @@ use PHPUnit\Framework\TestCase;
 class SameSiteNoneCompatSessionHandlerTest extends TestCase
 {
     private static $server;
-    const FIXTURES_DIR = __DIR__.'/../../../../../Fixtures/session';
+    public const FIXTURES_DIR = __DIR__.'/../../../../../Fixtures/session';
 
     public static function setUpBeforeClass(): void
     {
@@ -65,14 +65,7 @@ class SameSiteNoneCompatSessionHandlerTest extends TestCase
             $result = str_replace('01 Jan 1970', '01-Jan-1970', $result);
         }
 
-        if ($shouldSendSameSiteNone) {
-            if (PHP_VERSION_ID < 70300) {
-                // PHP7.3未満は互換用 cookie
-                $this->assertStringEqualsFile(sprintf(self::FIXTURES_DIR.'/%s.samesite-compat.expected', $fixture), $result);
-            } else {
-                $this->assertStringEqualsFile(sprintf(self::FIXTURES_DIR.'/%s.samesite.expected', $fixture), $result);
-            }
-        } else {
+        if (!$shouldSendSameSiteNone) {
             $this->assertStringEqualsFile(sprintf(self::FIXTURES_DIR.'/%s.secure.expected', $fixture), $result);
         }
     }

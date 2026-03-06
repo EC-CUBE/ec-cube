@@ -13,7 +13,6 @@
 
 namespace Plugin;
 
-use AcceptanceTester;
 use Page\Admin\RecommendEditPage;
 use Page\Admin\RecommendManagePage;
 
@@ -23,12 +22,12 @@ use Page\Admin\RecommendManagePage;
  */
 class PL01RecommendCest
 {
-    public function _before(AcceptanceTester $I)
+    public function _before(\AcceptanceTester $I)
     {
         $I->loginAsAdmin();
     }
 
-    public function 新規作成(AcceptanceTester $I)
+    public function 新規作成(\AcceptanceTester $I)
     {
         RecommendManagePage::go($I)
             ->新規登録();
@@ -41,7 +40,7 @@ class PL01RecommendCest
         RecommendManagePage::at($I);
     }
 
-    public function 編集(AcceptanceTester $I)
+    public function 編集(\AcceptanceTester $I)
     {
         RecommendManagePage::go($I)
             ->編集(1);
@@ -50,7 +49,7 @@ class PL01RecommendCest
         RecommendManagePage::at($I);
     }
 
-    public function 削除(AcceptanceTester $I)
+    public function 削除(\AcceptanceTester $I)
     {
         RecommendManagePage::go($I)
             ->削除(1);

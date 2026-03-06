@@ -45,7 +45,7 @@ class JoinClause
     /**
      * JoinClause constructor.
      *
-     * @param boolean $leftJoin
+     * @param bool $leftJoin
      * @param $join
      * @param $alias
      * @param $conditionType

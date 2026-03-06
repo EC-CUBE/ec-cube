@@ -62,7 +62,7 @@ class AdminControllerProductNonStockTest extends AbstractAdminWebTestCase
         $this->assertStringContainsString('在庫切れ商品', $crawler->filter($this->target)->html());
 
         $section = trim($crawler->filter($this->target.' .card-body .d-block:nth-child(1) span.h4')->text());
-        $this->expected = $showNumber = preg_replace('/\D/', '', $section);
+        $this->expected = $showNumber = (int) preg_replace('/\D/', '', $section);
 
         $client->request('GET', $this->generateUrl('admin_homepage_nonstock'));
 

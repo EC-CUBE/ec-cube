@@ -1,17 +1,11 @@
 name: Plugin test for EC-CUBE
+
 on:
-  push:
-    branches:
-      - '*'
-    tags:
-      - '*'
-    paths:
-      - '**'
-      - '!*.md'
-  pull_request:
-    paths:
-      - '**'
-      - '!*.md'
+  workflow_call:
+
+permissions:
+  contents: read
+
 jobs:
   plugin-install:
     name: Plugin install
@@ -19,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ ubuntu-22.04 ]
+        operating-system: [ ubuntu-24.04 ]
         php: [ '8.1' ]
         db: [ pgsql, mysql ]
         method:
@@ -43,7 +37,7 @@ jobs:
 
     services:
       mysql:
-        image: mysql:5.7
+        image: mysql:8.4
         env:
           MYSQL_ROOT_PASSWORD: password
         ports:
@@ -69,7 +63,7 @@ jobs:
         uses: actions/checkout@master
 
       - name: Setup PHP
-        uses: nanasess/setup-php@master
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
 
@@ -88,13 +82,18 @@ jobs:
           bin/console doctrine:schema:create --env=dev
           bin/console eccube:fixtures:load --env=dev
 
+      - name: Cache apt packages
+        if: matrix.db == 'pgsql'
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: postgresql-client
+          version: 1.0
+
       - name: Update baseinfo with pgsql
         if: matrix.db == 'pgsql'
         env:
           PGPASSWORD: 'password'
-        run: |
-          sudo apt-fast install -y postgresql-client
-          psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
+        run: psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
 
       - name: Update baseinfo with mysql
         if: matrix.db == 'mysql'
@@ -106,7 +105,7 @@ jobs:
       - name: Run chromedriver
         run: |
           export DISPLAY=:99
-          chromedriver --url-base=/wd/hub &
+          chromedriver --url-base=/wd/hub --port=9515 &
           echo ">>> Started chrome-driver"
           sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
           echo ">>> Started xvfb"
@@ -128,6 +127,9 @@ jobs:
           docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
 
       - name: Codeception
+        run: |
+          sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
+          vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
         env:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
@@ -137,18 +139,15 @@ jobs:
           METHOD: ${{ matrix.method }}
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           NO_FIXTURES: 1
-        run: |
-          sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
-          vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
       - name: Upload evidence
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: plugin-install-${{ matrix.method }}-evidence
           path: codeception/_output/
       - name: Upload logs
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: plugin-install-${{ matrix.method }}-logs
           path: var/log/
@@ -159,7 +158,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ ubuntu-22.04 ]
+        operating-system: [ ubuntu-24.04 ]
         php: [ '8.1' ]
         db: [ pgsql, mysql ]
         method:
@@ -181,7 +180,7 @@ jobs:
 
     services:
       mysql:
-        image: mysql:5.7
+        image: mysql:8.4
         env:
           MYSQL_ROOT_PASSWORD: password
         ports:
@@ -207,18 +206,16 @@ jobs:
         uses: actions/checkout@master
 
       - name: Get Composer Cache Directory
+        uses: actions/cache@v5
         id: composer-cache
-        run: |
-          echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - uses: actions/cache@v4
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
+          path: ${{ github.workspace }}/vendor
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-composer-
 
       - name: Setup PHP
-        uses: nanasess/setup-php@master
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
 
@@ -237,13 +234,18 @@ jobs:
           bin/console doctrine:schema:create --env=dev
           bin/console eccube:fixtures:load --env=dev
 
+      - name: Cache apt packages
+        if: matrix.db == 'pgsql'
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: postgresql-client
+          version: 1.0
+
       - name: Update baseinfo with pgsql
         if: matrix.db == 'pgsql'
         env:
           PGPASSWORD: 'password'
-        run: |
-          sudo apt-fast install -y postgresql-client
-          psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
+        run: psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
 
       - name: Update baseinfo with mysql
         if: matrix.db == 'mysql'
@@ -255,7 +257,7 @@ jobs:
       - name: Run chromedriver
         run: |
           export DISPLAY=:99
-          chromedriver --url-base=/wd/hub &
+          chromedriver --url-base=/wd/hub --port=9515 &
           echo ">>> Started chrome-driver"
           sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
           echo ">>> Started xvfb"
@@ -276,7 +278,10 @@ jobs:
           if [[ ! -d ${PWD}/repos ]]; then mkdir -p ${PWD}/repos ; fi
           docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
 
-      - name: Run to Codeception
+      - name: Codeception
+        run: |
+          sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
+          vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
         env:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
@@ -286,18 +291,15 @@ jobs:
           METHOD: ${{ matrix.method }}
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           NO_FIXTURES: 1
-        run: |
-          sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
-          vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
       - name: Upload evidence
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: plugin-update-${{ matrix.method }}-evidence
           path: codeception/_output/
       - name: Upload logs
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: plugin-update-${{ matrix.method }}-logs
           path: var/log/
@@ -308,7 +310,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ ubuntu-22.04 ]
+        operating-system: [ ubuntu-24.04 ]
         php: [ '8.1' ]
         db: [ pgsql, mysql ]
         method:
@@ -330,7 +332,7 @@ jobs:
 
     services:
       mysql:
-        image: mysql:5.7
+        image: mysql:8.4
         env:
           MYSQL_ROOT_PASSWORD: password
         ports:
@@ -357,17 +359,15 @@ jobs:
 
       - name: Get Composer Cache Directory
         id: composer-cache
-        run: |
-          echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
+          path: ${{ github.workspace }}/vendor
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-composer-
 
       - name: Setup PHP
-        uses: nanasess/setup-php@master
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
 
@@ -386,13 +386,18 @@ jobs:
           bin/console doctrine:schema:create --env=dev
           bin/console eccube:fixtures:load --env=dev
 
+      - name: Cache apt packages
+        if: matrix.db == 'pgsql'
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: postgresql-client
+          version: 1.0
+
       - name: Update baseinfo with pgsql
         if: matrix.db == 'pgsql'
         env:
           PGPASSWORD: 'password'
-        run: |
-          sudo apt-fast install -y postgresql-client
-          psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
+        run: psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
 
       - name: Update baseinfo with mysql
         if: matrix.db == 'mysql'
@@ -404,7 +409,7 @@ jobs:
       - name: Run chromedriver
         run: |
           export DISPLAY=:99
-          chromedriver --url-base=/wd/hub &
+          chromedriver --url-base=/wd/hub --port=9515 &
           echo ">>> Started chrome-driver"
           sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
           echo ">>> Started xvfb"
@@ -425,7 +430,10 @@ jobs:
           if [[ ! -d ${PWD}/repos ]]; then mkdir -p ${PWD}/repos ; fi
           docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
 
-      - name: Run to Codeception
+      - name: Codeception
+        run: |
+          sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
+          vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
         env:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
@@ -435,18 +443,15 @@ jobs:
           METHOD: ${{ matrix.method }}
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           NO_FIXTURES: 1
-        run: |
-          sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
-          vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
       - name: Upload evidence
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: plugin-extend-${{ matrix.method }}-evidence
           path: codeception/_output/
       - name: Upload logs
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: plugin-extend-${{ matrix.method }}-logs
           path: var/log/
@@ -457,7 +462,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ ubuntu-22.04 ]
+        operating-system: [ ubuntu-24.04 ]
         php: [ '8.1' ]
         db: [ pgsql, mysql ]
         method:
@@ -482,7 +487,7 @@ jobs:
 
     services:
       mysql:
-        image: mysql:5.7
+        image: mysql:8.4
         env:
           MYSQL_ROOT_PASSWORD: password
         ports:
@@ -509,17 +514,15 @@ jobs:
 
       - name: Get Composer Cache Directory
         id: composer-cache
-        run: |
-          echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
+          path: ${{ github.workspace }}/vendor
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-composer-
 
       - name: Setup PHP
-        uses: nanasess/setup-php@master
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
 
@@ -538,13 +541,18 @@ jobs:
           bin/console doctrine:schema:create --env=dev
           bin/console eccube:fixtures:load --env=dev
 
+      - name: Cache apt packages
+        if: matrix.db == 'pgsql'
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: postgresql-client
+          version: 1.0
+
       - name: Update baseinfo with pgsql
         if: matrix.db == 'pgsql'
         env:
           PGPASSWORD: 'password'
-        run: |
-          sudo apt-fast install -y postgresql-client
-          psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
+        run: psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
 
       - name: Update baseinfo with mysql
         if: matrix.db == 'mysql'
@@ -556,7 +564,7 @@ jobs:
       - name: Run chromedriver
         run: |
           export DISPLAY=:99
-          chromedriver --url-base=/wd/hub &
+          chromedriver --url-base=/wd/hub --port=9515 &
           echo ">>> Started chrome-driver"
           sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
           echo ">>> Started xvfb"
@@ -577,7 +585,10 @@ jobs:
           if [[ ! -d ${PWD}/repos ]]; then mkdir -p ${PWD}/repos ; fi
           docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
 
-      - name: Run to Codeception
+      - name: Codeception
+        run: |
+          sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
+          vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
         env:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
@@ -587,18 +598,15 @@ jobs:
           METHOD: ${{ matrix.method }}
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           NO_FIXTURES: 1
-        run: |
-          sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
-          vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
       - name: Upload evidence
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: plugin-depend-${{ matrix.method }}-evidence
           path: codeception/_output/
       - name: Upload logs
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: plugin-depend-${{ matrix.method }}-logs
           path: var/log/

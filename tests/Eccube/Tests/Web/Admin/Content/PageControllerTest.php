@@ -74,10 +74,8 @@ class PageControllerTest extends AbstractAdminWebTestCase
     {
         $client = $this->client;
 
-        $editable = false;
-
         $templatePath = static::getContainer()->getParameter('eccube_theme_front_dir');
-        $Page = $this->entityManager->getRepository(\Eccube\Entity\Page::class)->find(1);
+        $Page = $this->entityManager->getRepository(Page::class)->find(1);
 
         $source = static::getContainer()->get('twig')
             ->getLoader()
@@ -140,7 +138,7 @@ class PageControllerTest extends AbstractAdminWebTestCase
 
         $this->assertTrue($client->getResponse()->isRedirection());
         preg_match('|content/page/([0-9]+)/edit|', $client->getResponse()->headers->get('Location'), $matches);
-        $Page = $this->entityManager->getRepository(\Eccube\Entity\Page::class)->find($matches[1]);
+        $Page = $this->entityManager->getRepository(Page::class)->find($matches[1]);
 
         $this->expected = $name;
         $this->actual = $Page->getName();
@@ -156,7 +154,7 @@ class PageControllerTest extends AbstractAdminWebTestCase
         $client = $this->client;
 
         $templatePath = static::getContainer()->getParameter('eccube_theme_front_dir');
-        $Page = $this->entityManager->getRepository(\Eccube\Entity\Page::class)->find(42); // Shoppin/index
+        $Page = $this->entityManager->getRepository(Page::class)->find(42); // Shoppin/index
 
         $source = static::getContainer()->get('twig')
             ->getLoader()
@@ -219,7 +217,7 @@ class PageControllerTest extends AbstractAdminWebTestCase
 
         $this->assertTrue($client->getResponse()->isRedirection());
         preg_match('|content/page/([0-9]+)/edit|', $client->getResponse()->headers->get('Location'), $matches);
-        $Page = $this->entityManager->getRepository(\Eccube\Entity\Page::class)->find($matches[1]);
+        $Page = $this->entityManager->getRepository(Page::class)->find($matches[1]);
 
         $this->expected = $name;
         $this->actual = $Page->getName();
