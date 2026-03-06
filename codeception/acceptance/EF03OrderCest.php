@@ -123,9 +123,13 @@ class EF03OrderCest
         ProductDetailPage::go($I, 2)
             ->カートに入れる(2)
             ->カートへ進む();
+        
+        $I->wait(1);
 
         $cartPage = CartPage::go($I)
             ->商品数量減らす(1);
+        
+        $I->wait(1);
 
         // 確認
         $I->assertEquals('1', $cartPage->商品数量(1));
