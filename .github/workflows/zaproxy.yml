@@ -337,7 +337,7 @@ jobs:
             -autorun /zap/wrk/automation/${{ matrix.target }}.yml
 
       - name: Debug app logs after autorun
-        if: ${{ failure() }}
+        if: ${{ failure() || cancelled() }}
         run: |
           echo "=== Docker Compose Logs (ec-cube) ==="
           docker compose -f docker-compose.yml -f docker-compose.pgsql.yml -f docker-compose.owaspzap.ci.yml logs ec-cube --tail=300 || true
@@ -352,7 +352,7 @@ jobs:
           docker compose exec -T ec-cube sh -lc 'tail -n 200 /var/log/php*/error.log 2>/dev/null || true'      
 
       - name: Debug zap logs after autorun
-        if: ${{ failure() }}
+        if: ${{ failure() || cancelled() }}
         run: |
           echo "=== Docker Compose Logs ==="
           docker compose -f docker-compose.yml -f docker-compose.pgsql.yml -f docker-compose.owaspzap.ci.yml logs zap --tail=300
