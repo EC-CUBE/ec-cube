@@ -113,8 +113,8 @@
       "elementType": "ZestRequest"
     },
     {
-      "prefix": "product/class_category/",
-      "postfix": "\">test",
+      "prefix": "data-class-name-id=\\"",
+      "postfix": "\\" data-sort-no",
       "location": "BODY",
       "variableName": "class-id",
       "index": 8,
