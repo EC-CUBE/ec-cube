@@ -113,13 +113,13 @@
       "elementType": "ZestRequest"
     },
     {
-      "prefix": "<a href=\"[^\"]*class_category/",
-      "postfix": "\">[ \\t\\n\\r]*test",
+      "prefix": "<a href=\"https://ec-cube/admin/product/class_category/",
+      "postfix": "\">test",
       "location": "BODY",
       "variableName": "class-id",
       "index": 8,
       "enabled": true,
-      "elementType": "ZestAssignRegexDelimiters"
+      "elementType": "ZestAssignStringDelimiters"
     },
     {
       "prefix": "name=\"class_name_\\d+\\[_token\\]\" value=\"",
