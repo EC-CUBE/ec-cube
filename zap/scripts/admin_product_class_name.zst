@@ -114,12 +114,12 @@
     },
     {
       "prefix": "<a href=\"[^\"]*class_category/",
-      "postfix": "\">\\s*test",
+      "postfix": "\">[ \\t\\n\\r]*test",
       "location": "BODY",
       "variableName": "class-id",
       "index": 8,
       "enabled": true,
-      "elementType": "ZestAssignStringDelimiters"
+      "elementType": "ZestAssignRegexDelimiters"
     },
     {
       "prefix": "name=\"class_name_\\d+\\[_token\\]\" value=\"",
