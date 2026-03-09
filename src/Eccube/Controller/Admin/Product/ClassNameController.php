@@ -188,7 +188,7 @@ class ClassNameController extends AbstractController
         foreach ($sortNos as $classNameId => $sortNo) {
             $ClassName = $this->classNameRepository
                 ->find($classNameId);
-            f ($ClassName === null) {
+            if ($ClassName === null) {
                 throw new BadRequestHttpException('Invalid class name id: '.$classNameId);
             }
             $ClassName->setSortNo($sortNo);
