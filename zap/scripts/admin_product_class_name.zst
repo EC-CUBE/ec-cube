@@ -113,13 +113,13 @@
       "elementType": "ZestRequest"
     },
     {
-      "prefix": "class_category/",
-      "postfix": "\">test",
+      "prefix": "data-class-name-id=\"",
+      "postfix": "\"",
       "location": "BODY",
       "variableName": "class-id",
       "index": 8,
       "enabled": true,
-      "elementType": "ZestAssignRegexDelimiters"
+      "elementType": "ZestAssignStringDelimiters"
     },
     {
       "prefix": "name=\"class_name_\\d+\\[_token\\]\" value=\"",
