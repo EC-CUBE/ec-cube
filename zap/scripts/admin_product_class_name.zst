@@ -113,8 +113,8 @@
       "elementType": "ZestRequest"
     },
     {
-      "prefix": "<a href=\"https://ec-cube/admin/product/class_category/",
-      "postfix": "\">test",
+      "prefix": "data-class-name-id=\"",
+      "postfix": "\"",
       "location": "BODY",
       "variableName": "class-id",
       "index": 8,
