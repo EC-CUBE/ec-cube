@@ -73,7 +73,7 @@ jobs:
         #  - admin_news
         #  - admin_order_edit
         #  - admin_order_edit_search
-          - admin_order_list
+        #  - admin_order_list
         #  - admin_order_mail
         #  - admin_page
         #  - admin_payment
@@ -337,32 +337,41 @@ jobs:
             -autorun /zap/wrk/automation/${{ matrix.target }}.yml
 
       - name: Debug app logs after autorun
-        if: ${{ failure() || cancelled() }}
+        if: ${{ always() }}
         run: |
           echo "=== Docker Compose Logs (ec-cube) ==="
           docker compose -f docker-compose.yml -f docker-compose.pgsql.yml -f docker-compose.owaspzap.ci.yml logs ec-cube --tail=300 || true
 
-          echo "=== Symfony prod log (if exists) ==="
-          docker compose exec -T ec-cube sh -lc 'ls -la var/log || true; tail -n 200 var/log/prod.log 2>/dev/null || true'
+          echo "=== Symfony prod log (directory and files) ==="
+          docker compose exec -T ec-cube sh -lc 'ls -la var/log var/log/prod 2>/dev/null || true'
+
+          echo "=== EC-CUBE site.log (last 300 lines) ==="
+          docker compose exec -T ec-cube sh -lc 'tail -n 300 var/log/prod/site.log 2>/dev/null || true'
+
+          echo "=== EC-CUBE admin.log (last 300 lines) ==="
+          docker compose exec -T ec-cube sh -lc 'tail -n 300 var/log/prod/admin.log 2>/dev/null || true'
 
           echo "=== Apache error log (if exists) ==="
           docker compose exec -T ec-cube sh -lc 'tail -n 200 /var/log/apache2/error.log 2>/dev/null || true'
 
-          echo "=== PHP-FPM log (if exists) ==="
-          docker compose exec -T ec-cube sh -lc 'tail -n 200 /var/log/php*/error.log 2>/dev/null || true'      
+          echo "=== PHP error log (if exists) ==="
+          docker compose exec -T ec-cube sh -lc 'tail -n 200 /var/log/php*/error.log 2>/dev/null || true'
 
       - name: Debug zap logs after autorun
-        if: ${{ failure() || cancelled() }}
+        if: ${{ always() }}
         run: |
           echo "=== Docker Compose Logs ==="
           docker compose -f docker-compose.yml -f docker-compose.pgsql.yml -f docker-compose.owaspzap.ci.yml logs zap --tail=300
           
-          echo "=== EC-CUBE App Logs ==="
-          docker compose exec -T ec-cube cat var/log/prod/site.log || true
-          
           echo "=== Internal ZAP Log (zap.log) ==="
           # 内部エラーログを表示
           docker compose exec -T zap cat /home/zap/.ZAP/zap.log || echo "zap.log not found"
+
+          echo "=== EC-CUBE App Logs (site.log last 500 lines) 
+          docker compose exec -T ec-cube sh -lc 'tail -n 500 var/log/prod/site.log 2>/dev/null || true'
+
+          echo "=== EC-CUBE App Logs (admin.log last 500 lines) ==="
+          docker compose exec -T ec-cube sh -lc 'tail -n 500 var/log/prod/admin.log 2>/dev/null || true'
           
       - name: Copy report
         if: ${{ always() }}
