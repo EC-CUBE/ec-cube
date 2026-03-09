@@ -119,7 +119,7 @@
       "variableName": "class-id",
       "index": 8,
       "enabled": true,
-      "elementType": "ZestAssignStringDelimiters"
+      "elementType": "ZestAssignRegexDelimiters"
     },
     {
       "prefix": "name=\"class_name_\\d+\\[_token\\]\" value=\"",
