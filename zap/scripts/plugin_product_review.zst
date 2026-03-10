@@ -278,7 +278,7 @@
     },
     {
       "prefix": "<div class=\"modal fade\" id=\"confirmModal-",
-      "postfix": "\" tabindex=\"-1\"",
+      "postfix": "\""
       "location": "BODY",
       "variableName": "product-review-id",
       "index": 17,
@@ -468,7 +468,7 @@
     },
     {
       "prefix": "<div class=\"modal fade\" id=\"confirmModal-",
-      "postfix": "\" tabindex=\"-1\"",
+      "postfix": "\""
       "location": "BODY",
       "variableName": "product-review-id",
       "index": 30,
