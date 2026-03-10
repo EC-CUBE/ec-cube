@@ -21,6 +21,7 @@ use Page\Admin\OrderManagePage;
 /**
  * @group admin
  * @group admin01
+ * @group admin01-b
  * @group order
  * @group ea4
  */

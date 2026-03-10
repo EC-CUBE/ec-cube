@@ -3,6 +3,9 @@ name: Plugin test for EC-CUBE
 on:
   workflow_call:
 
+permissions:
+  contents: read
+
 jobs:
   plugin-install:
     name: Plugin install
@@ -60,7 +63,7 @@ jobs:
         uses: actions/checkout@master
 
       - name: Setup PHP
-        uses: nanasess/setup-php@master
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
 
@@ -79,13 +82,18 @@ jobs:
           bin/console doctrine:schema:create --env=dev
           bin/console eccube:fixtures:load --env=dev
 
+      - name: Cache apt packages
+        if: matrix.db == 'pgsql'
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: postgresql-client
+          version: 1.0
+
       - name: Update baseinfo with pgsql
         if: matrix.db == 'pgsql'
         env:
           PGPASSWORD: 'password'
-        run: |
-          sudo apt-get install -y postgresql-client
-          psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
+        run: psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
 
       - name: Update baseinfo with mysql
         if: matrix.db == 'mysql'
@@ -119,6 +127,9 @@ jobs:
           docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
 
       - name: Codeception
+        run: |
+          sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
+          vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
         env:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
@@ -128,18 +139,15 @@ jobs:
           METHOD: ${{ matrix.method }}
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           NO_FIXTURES: 1
-        run: |
-          sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
-          vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
       - name: Upload evidence
         if: failure()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: plugin-install-${{ matrix.method }}-evidence
           path: codeception/_output/
       - name: Upload logs
         if: failure()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: plugin-install-${{ matrix.method }}-logs
           path: var/log/
@@ -207,7 +215,7 @@ jobs:
             ${{ runner.os }}-composer-
 
       - name: Setup PHP
-        uses: nanasess/setup-php@master
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
 
@@ -226,13 +234,18 @@ jobs:
           bin/console doctrine:schema:create --env=dev
           bin/console eccube:fixtures:load --env=dev
 
+      - name: Cache apt packages
+        if: matrix.db == 'pgsql'
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: postgresql-client
+          version: 1.0
+
       - name: Update baseinfo with pgsql
         if: matrix.db == 'pgsql'
         env:
           PGPASSWORD: 'password'
-        run: |
-          sudo apt-get install -y postgresql-client
-          psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
+        run: psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
 
       - name: Update baseinfo with mysql
         if: matrix.db == 'mysql'
@@ -265,7 +278,10 @@ jobs:
           if [[ ! -d ${PWD}/repos ]]; then mkdir -p ${PWD}/repos ; fi
           docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
 
-      - name: Run to Codeception
+      - name: Codeception
+        run: |
+          sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
+          vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
         env:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
@@ -275,18 +291,15 @@ jobs:
           METHOD: ${{ matrix.method }}
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           NO_FIXTURES: 1
-        run: |
-          sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
-          vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
       - name: Upload evidence
         if: failure()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: plugin-update-${{ matrix.method }}-evidence
           path: codeception/_output/
       - name: Upload logs
         if: failure()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: plugin-update-${{ matrix.method }}-logs
           path: var/log/
@@ -354,7 +367,7 @@ jobs:
             ${{ runner.os }}-composer-
 
       - name: Setup PHP
-        uses: nanasess/setup-php@master
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
 
@@ -373,13 +386,18 @@ jobs:
           bin/console doctrine:schema:create --env=dev
           bin/console eccube:fixtures:load --env=dev
 
+      - name: Cache apt packages
+        if: matrix.db == 'pgsql'
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: postgresql-client
+          version: 1.0
+
       - name: Update baseinfo with pgsql
         if: matrix.db == 'pgsql'
         env:
           PGPASSWORD: 'password'
-        run: |
-          sudo apt-get install -y postgresql-client
-          psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
+        run: psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
 
       - name: Update baseinfo with mysql
         if: matrix.db == 'mysql'
@@ -412,7 +430,10 @@ jobs:
           if [[ ! -d ${PWD}/repos ]]; then mkdir -p ${PWD}/repos ; fi
           docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
 
-      - name: Run to Codeception
+      - name: Codeception
+        run: |
+          sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
+          vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
         env:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
@@ -422,18 +443,15 @@ jobs:
           METHOD: ${{ matrix.method }}
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           NO_FIXTURES: 1
-        run: |
-          sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
-          vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
       - name: Upload evidence
         if: failure()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: plugin-extend-${{ matrix.method }}-evidence
           path: codeception/_output/
       - name: Upload logs
         if: failure()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: plugin-extend-${{ matrix.method }}-logs
           path: var/log/
@@ -504,7 +522,7 @@ jobs:
             ${{ runner.os }}-composer-
 
       - name: Setup PHP
-        uses: nanasess/setup-php@master
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
 
@@ -523,13 +541,18 @@ jobs:
           bin/console doctrine:schema:create --env=dev
           bin/console eccube:fixtures:load --env=dev
 
+      - name: Cache apt packages
+        if: matrix.db == 'pgsql'
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: postgresql-client
+          version: 1.0
+
       - name: Update baseinfo with pgsql
         if: matrix.db == 'pgsql'
         env:
           PGPASSWORD: 'password'
-        run: |
-          sudo apt-get install -y postgresql-client
-          psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
+        run: psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
 
       - name: Update baseinfo with mysql
         if: matrix.db == 'mysql'
@@ -562,7 +585,10 @@ jobs:
           if [[ ! -d ${PWD}/repos ]]; then mkdir -p ${PWD}/repos ; fi
           docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
 
-      - name: Run to Codeception
+      - name: Codeception
+        run: |
+          sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
+          vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
         env:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
@@ -572,18 +598,15 @@ jobs:
           METHOD: ${{ matrix.method }}
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           NO_FIXTURES: 1
-        run: |
-          sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
-          vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
       - name: Upload evidence
         if: failure()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: plugin-depend-${{ matrix.method }}-evidence
           path: codeception/_output/
       - name: Upload logs
         if: failure()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: plugin-depend-${{ matrix.method }}-logs
           path: var/log/

@@ -1,5 +1,7 @@
 name: VAddy-test
 on: push
+permissions:
+  contents: read
 jobs:
   vaddy:
     name: VAddy

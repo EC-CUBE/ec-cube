@@ -3,6 +3,9 @@ name: Unit test for EC-CUBE
 on:
   workflow_call:
 
+permissions:
+  contents: read
+
 jobs:
   phpunit:
     name: PHPUnit
@@ -54,8 +57,20 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           extensions: :xdebug
+
       - name: Initialize Composer
         uses: ./.github/actions/composer
+
+      - name: Cache Database Schema
+        uses: actions/cache@v5
+        id: schema-cache
+        with:
+          path: |
+            var/cache/test/schema.sql
+            var/cache/test/db_populated
+          key: ${{ runner.os }}-schema-${{ hashFiles('src/Eccube/Entity/**/*.php', 'app/Customize/Entity/**/*.php') }}
+          restore-keys: |
+            ${{ runner.os }}-schema-
 
       - name: Setup EC-CUBE
         env:
@@ -69,13 +84,18 @@ jobs:
           bin/console eccube:fixtures:load
 
       - name: PHPUnit
+        uses: nick-invision/retry@v3
+        with:
+          timeout_minutes: 10
+          max_attempts: 2
+          retry_on: error
+          command: vendor/bin/phpunit --exclude-group cache-clear,cache-clear-install,update-schema-doctrine,plugin-service
         env:
           APP_ENV: 'test'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
           MAILER_URL: 'smtp://127.0.0.11025'
-        run: vendor/bin/phpunit --exclude-group cache-clear,cache-clear-install,update-schema-doctrine,plugin-service
       - name: PHPUnit
         env:
           APP_ENV: 'test'

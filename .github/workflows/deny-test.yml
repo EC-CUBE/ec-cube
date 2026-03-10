@@ -3,6 +3,9 @@ name: Deny check for EC-CUBE
 on:
   workflow_call:
 
+permissions:
+  contents: read
+
 jobs:
   deploy:
     name: Deny check
@@ -22,7 +25,7 @@ jobs:
         uses: actions/checkout@master
 
       - name: Setup PHP
-        uses: nanasess/setup-php@master
+        uses: shivammathur/setup-php@v2
         with:
           php-version: '8.1'
 

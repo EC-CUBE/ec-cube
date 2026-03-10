@@ -13,23 +13,29 @@ on:
     paths:
       - '**'
       - '!*.md'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   rector:
     uses: ./.github/workflows/rector.yml
   phpstan:
-    needs: [ rector ]
     uses: ./.github/workflows/phpstan.yml
   php-cs-fixer:
-    needs: [ phpstan ]
     uses: ./.github/workflows/php-cs-fixer.yml
   unit-test:
-    needs: [ php-cs-fixer ]
+    needs: [ rector, phpstan, php-cs-fixer ]
     uses: ./.github/workflows/unit-test.yml
   e2e-test:
-    needs: [ unit-test ]
+    needs: [ rector, phpstan, php-cs-fixer ]
     uses: ./.github/workflows/e2e-test.yml
   plugin-test:
-    needs: [ e2e-test ]
+    needs: [ unit-test, e2e-test ]
     uses: ./.github/workflows/plugin-test.yml
   e2e-test-throttling:
     needs: [ plugin-test ]
@@ -44,6 +50,6 @@ jobs:
       - name: success
         run: echo "::notice::success!"
   coverage:
-    needs: [ e2e-test-throttling, deny-test ]
+    needs: [ unit-test ]  # PHPUnit coverage only, no need to wait for e2e-test
     if: ${{ github.event.pull_request.user.login != 'dependabot[bot]' }}
     uses: ./.github/workflows/coverage.yml

@@ -180,22 +180,20 @@ class ClassNameController extends AbstractController
      */
     public function moveSortNo(Request $request)
     {
-        if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
+        if (!$request->isXmlHttpRequest() || !$this->isTokenValid()) {
             throw new BadRequestHttpException();
         }
 
-        if ($this->isTokenValid()) {
-            $sortNos = $request->request->all();
-            foreach ($sortNos as $classNameId => $sortNo) {
-                $ClassName = $this->classNameRepository
-                    ->find($classNameId);
-                $ClassName->setSortNo($sortNo);
-                $this->entityManager->persist($ClassName);
-            }
-            $this->entityManager->flush();
-
-            return new Response();
+        $sortNos = $request->request->all();
+        foreach ($sortNos as $classNameId => $sortNo) {
+            $ClassName = $this->classNameRepository
+                ->find($classNameId);
+            $ClassName->setSortNo($sortNo);
+            $this->entityManager->persist($ClassName);
         }
+        $this->entityManager->flush();
+
+        return new Response();
     }
 
     /**

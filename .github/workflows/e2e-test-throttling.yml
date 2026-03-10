@@ -3,6 +3,9 @@ name: E2E test(Throttoling) for EC-CUBE
 on:
   workflow_call:
 
+permissions:
+  contents: read
+
 jobs:
   codeception:
     name: Codeception
@@ -81,12 +84,37 @@ jobs:
                       interval: '30 minutes'" > app/config/eccube/packages/prod/eccube_rate_limiter.yaml
 
       - name: Setup PHP
-        uses: nanasess/setup-php@master
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
 
       - name: Initialize Composer
         uses: ./.github/actions/composer
+
+      - name: Cache npm dependencies
+        uses: actions/cache@v5
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
+      - name: Cache build artifacts
+        uses: actions/cache@v5
+        id: build-cache
+        with:
+          path: |
+            html/template/**/css
+            html/bundle
+          key: ${{ runner.os }}-build-${{ hashFiles('html/template/**/scss/**/*.scss', 'html/template/**/js/**/*.js', 'package-lock.json', 'gulpfile.js', 'webpack.config.js', 'gulp/**/*.js') }}
+          restore-keys: |
+            ${{ runner.os }}-build-
+
+      - name: Build Sass and JavaScript
+        if: steps.build-cache.outputs.cache-hit != 'true'
+        run: |
+          npm ci
+          npm run build
 
       - name: Setup to EC-CUBE
         env:
@@ -100,11 +128,24 @@ jobs:
           bin/console doctrine:schema:create --env=dev
           bin/console eccube:fixtures:load --env=dev
 
+      - name: Cache chromedriver
+        uses: actions/cache@v5
+        id: chromedriver-cache
+        with:
+          path: /usr/local/bin/chromedriver
+          key: ${{ runner.os }}-chromedriver-${{ hashFiles('.github/workflows/e2e-test-throttling.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-chromedriver-
+
       - name: setup-chromedriver
+        if: steps.chromedriver-cache.outputs.cache-hit != 'true'
         uses: nanasess/setup-chromedriver@master
 
-      - name: Install fonts
-        run: sudo apt install fonts-ipafont fonts-ipaexfont
+      - name: Cache apt packages
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: fonts-ipafont fonts-ipaexfont
+          version: 1.0
 
       - name: Run chromedriver
         run: |
@@ -124,6 +165,14 @@ jobs:
         run: php -S 127.0.0.1:8000 codeception/router.php &
 
       - name: Codeception
+        uses: nick-invision/retry@v3
+        with:
+          timeout_minutes: 40
+          max_attempts: 2
+          retry_on: error
+          command: |
+            sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
+            vendor/bin/codecept -vvv run acceptance --env chrome,github_action EF09ThrottlingCest::${METHOD} --html report.html
         env:
           APP_ENV: 'prod'
           DATABASE_URL: ${{ matrix.database_url }}
@@ -132,19 +181,16 @@ jobs:
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           METHOD: ${{ matrix.method }}
           SYMFONY_DEPRECATIONS_HELPER: weak
-        run: |
-          sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
-          vendor/bin/codecept -vvv run acceptance --env chrome,github_action EF09ThrottlingCest::${METHOD} --html report.html
 
       - name: Upload evidence
         if: failure()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: codeception-${{ matrix.method }}-evidence
           path: codeception/_output/
       - name: Upload logs
         if: failure()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: codeception-${{ matrix.method }}-logs
           path: var/log/

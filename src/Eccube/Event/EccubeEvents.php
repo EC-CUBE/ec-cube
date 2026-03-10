@@ -512,6 +512,9 @@ final class EccubeEvents
     public const FRONT_PRODUCT_FAVORITE_ADD_INITIALIZE = 'front.product.favorite.add.initialize';
     public const FRONT_PRODUCT_FAVORITE_ADD_COMPLETE = 'front.product.favorite.add.complete';
 
+    public const FRONT_PRODUCT_FAVORITE_DELETE_INITIALIZE = 'front.product.favorite.delete.initialize';
+    public const FRONT_PRODUCT_FAVORITE_DELETE_COMPLETE = 'front.product.favorite.delete.complete';
+
     /**
      * ShoppingController
      */

@@ -2,8 +2,11 @@ name: Deploy for EC-CUBE
 on:
   release:
     types: [ published ]
+permissions: {}
 jobs:
   deploy:
+    permissions:
+      contents: write
     name: Deploy
     runs-on: ubuntu-24.04
     services:

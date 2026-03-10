@@ -244,7 +244,7 @@ file that was distributed with this source code.
                                     <div class="col-4 text-end">
                                         {% if form.shippings|length > 1 %}
                                             <!-- 出荷が2つ以上ある場合は, 出荷の削除ボタンを表示する -->
-                                            <a class="btn btn-ec-regular me-2" data-bs-toggle="modal" data-bs-target="#delete_shipping_{{ shippingForm.vars.id }}" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.delete'|trans }}">
+                                            <a class="btn btn-ec-regular me-2" data-bs-toggle="modal" data-bs-target="#delete_shipping_{{ shippingForm.vars.id }}" title="{{ 'admin.common.delete'|trans }}">
                                                 <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
                                                 {{ 'admin.order.delete_shipping'|trans }}
                                             </a>

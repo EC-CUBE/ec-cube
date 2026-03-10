@@ -18,6 +18,7 @@ use Page\Front\TopPage;
 
 /**
  * @group front
+ * @group front-a
  * @group product
  * @group ef2
  */

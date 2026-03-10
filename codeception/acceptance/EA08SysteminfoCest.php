@@ -22,6 +22,7 @@ use Page\Front\TopPage;
 /**
  * @group admin
  * @group admin03
+ * @group admin03-b
  * @group systeminformation
  * @group ea8
  */

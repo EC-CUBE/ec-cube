@@ -291,6 +291,8 @@ front.product.add_cart_complete: The item has been added to the cart.
 front.product.add_cart_error: You have failed to add the item to the cart.
 front.product.add_favorite: Add to Favorites
 front.product.add_favorite_alrady: The item is already in the Favorites.
+front.product.delete_favorite: Remove from Favorites
+front.product.delete_favorite_confirm: Are you sure you want to remove this from Favorites?
 front.product.out_of_stock: The item is out of stock.
 front.product.out_of_stock_label: (Out of stock)
 front.product.added_to_favorite: The item is already in the Favorites.
@@ -314,7 +316,8 @@ front.cart.nav__order: Checkout
 front.cart.nav__confirm: Review
 front.cart.nav__complete: Order Placed
 front.cart.total_price: "Total: <strong>%price%</strong>"
-front.cart.divide_cart: Some item(s) in the cart can not be purchased in this order.
+front.cart.divide_cart: We've separated items that cannot be purchased together. Please
+    complete each order separately.
 front.cart.delete: ""
 front.cart.delete__confirm: Are you sure to delete this item from the cart?
 front.cart.product: Items
@@ -1472,6 +1475,7 @@ admin.store.setting.api_key: API Authentication Key
 admin.store.setting.api_key_tooltip: This key is required for installing purchased plug-ins, etc.
 admin.store.setting.get_api_key: Obtain an API authentication key
 admin.store.setting.get_api_key_info: Issue a new authentication key
+admin.store.setting.get_api_key_modal_info: A new authentication key will be issued. If you already have an authentication key, please set the existing key without issuing a new one.
 admin.store.setting.captcha_message: Please enter the letters displayed.
 admin.store.setting.php_path_setting: Set PHP Path
 admin.store.setting.php_path: PHP Path

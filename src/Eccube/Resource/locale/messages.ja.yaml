@@ -291,6 +291,8 @@ front.product.add_cart_complete: カートに追加しました。
 front.product.add_cart_error: カートへの追加に失敗しました。
 front.product.add_favorite: お気に入りに追加
 front.product.add_favorite_alrady: お気に入りに追加済です。
+front.product.delete_favorite: お気に入りから削除
+front.product.delete_favorite_confirm: お気に入りから削除してもよろしいですか？
 front.product.out_of_stock: ただいま品切れ中です。
 front.product.out_of_stock_label: (品切れ中)
 front.product.added_to_favorite: お気に入りに追加済です。
@@ -314,7 +316,7 @@ front.cart.nav__order: ご注文手続き
 front.cart.nav__confirm: ご注文内容確認
 front.cart.nav__complete: 完了
 front.cart.total_price: "商品の合計金額は「<strong>%price%</strong>」です。"
-front.cart.divide_cart: 同時購入できない商品がカートに含まれています。
+front.cart.divide_cart: 同時購入できない商品のカートを分けました。お手数ですが別々で注文してください。
 front.cart.delete: 削除
 front.cart.delete__confirm: カートから商品を削除してよろしいですか？
 front.cart.product: 商品内容
@@ -1473,6 +1475,7 @@ admin.store.setting.api_key: 認証キー
 admin.store.setting.api_key_tooltip: 購入したプラグイン等のインストールに必要となるキーです。
 admin.store.setting.get_api_key: 認証キー新規発行
 admin.store.setting.get_api_key_info: 認証キーの新規発行と登録を行います。
+admin.store.setting.get_api_key_modal_info: 新しい認証キーを発行します。既に認証キーがある場合は、発行せずに既存のキーを設定してください。
 admin.store.setting.captcha_message: 画像に表示されている文字を入力してください。
 admin.store.setting.php_path_setting: PHPパスの設定
 admin.store.setting.php_path: PHPパス
