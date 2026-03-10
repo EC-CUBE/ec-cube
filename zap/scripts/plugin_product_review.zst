@@ -277,7 +277,7 @@
       "elementType": "ZestRequest"
     },
     {
-      "prefix": "href=\"/admin/product_review/",
+      "prefix": "href=\"https://ec-cube/admin/product_review/",
       "postfix": "/edit\"",
       "location": "BODY",
       "variableName": "product-review-id",
@@ -467,7 +467,7 @@
       "elementType": "ZestAssignRegexDelimiters"
     },
     {
-      "prefix": "href=\"/admin/product_review/",
+      "prefix": "href=\"https://ec-cube/admin/product_review/",
       "postfix": "/edit\"",
       "location": "BODY",
       "variableName": "product-review-id",
