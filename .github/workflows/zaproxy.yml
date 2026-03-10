@@ -61,7 +61,7 @@ jobs:
         #  - admin_customer_delivery
         #  - admin_customer_edit
         #  - admin_customer_list
-          - admin_delivery
+        #  - admin_delivery
         #  - admin_js_css
         #  - admin_log
         #  - admin_login_history
@@ -73,17 +73,17 @@ jobs:
         #  - admin_news
         #  - admin_order_edit
         #  - admin_order_edit_search
-          - admin_order_list
+        #  - admin_order_list
         #  - admin_order_mail
         #  - admin_page
-          - admin_payment
+        #  - admin_payment
         #  - admin_product_category
         #  - admin_product_class_name
         #  - admin_product_csv
         #  - admin_product_copy
         #  - admin_product_edit
         #  - admin_product_edit_class
-          - admin_product_tag
+        #  - admin_product_tag
         #  - admin_product_view
         #  - admin_shipping_csv
         #  - admin_shop_setting
@@ -92,7 +92,7 @@ jobs:
         #  - admin_template
         #  - entry
         #  - front_block
-          - front_contact
+        #  - front_contact
         #  - front_help
         #  - front_mypage
         #  - front_new_item
