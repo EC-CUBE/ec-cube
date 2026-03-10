@@ -43,7 +43,7 @@
     },
     {
       "fieldDefinition": {
-        "formIndex": 1,
+        "formIndex": 0,
         "fieldName": "product_review__token",
         "elementType": "ZestFieldDefinition"
       },
@@ -84,7 +84,7 @@
     },
     {
       "fieldDefinition": {
-        "formIndex": 1,
+        "formIndex": 0,
         "fieldName": "product_review__token",
         "elementType": "ZestFieldDefinition"
       },
