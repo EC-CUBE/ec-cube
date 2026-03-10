@@ -50,4 +50,85 @@ class PluginControllerTest extends AbstractAdminWebTestCase
         $this->actual = $this->container->get(BaseInfoRepository::class)->get()->getPhpPath();
         $this->verify();
     }
+
+    /**
+     * 異常系を確認。正常系のインストールはE2Eテストの方で実施
+     *
+     * @dataProvider OwnerStoreInstallParam
+     * 
+     */
+    public function testFailureInstall($param1, $param2, $message)
+    {
+        $form = [
+            'pluginCode' => $param1,
+            'version' => $param2,
+        ];
+
+        $crawler = $this->client->request('POST',
+            $this->generateUrl('admin_store_plugin_api_install', $form),
+            [],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            ]
+        );
+        //　ダウンロードできないことを確認
+        $this->assertEquals(500, $this->client->getResponse()->getStatusCode());
+        //　ログを確認
+        $this->assertContains($message, json_decode($this->client->getResponse()->getContent())->log);
+    }
+
+    /**
+     * 異常系を確認。正常系のアップデートはE2Eテストの方で実施
+     *
+     * @dataProvider OwnerStoreUpgradeParam
+     * 
+     */
+    public function testFailureUpgrade($param1, $param2, $message)
+    {
+        $form = [
+            'pluginCode' => $param1,
+            'version' => $param2,
+        ];
+
+        $crawler = $this->client->request('POST',
+            $this->generateUrl('admin_store_plugin_api_upgrade', $form),
+            [],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            ]
+        );
+        //　ダウンロードできないことを確認
+        $this->assertEquals(500, $this->client->getResponse()->getStatusCode());
+
+        //　ログを確認
+        $this->assertTrue(strpos(implode(',', json_decode($this->client->getResponse()->getContent())->log), $message) !== false);
+    }
+
+    /**
+     * 異常系のテストケース
+     */
+    public function OwnerStoreInstallParam()
+    {
+        return [
+            ['api+symfony/yaml:5.3', '2.1.3', '有効な値ではありません。'],
+            ['', '2.1.3','入力されていません。'],
+        ];
+    }
+
+    /**
+     * 異常系のテストケース
+     */
+    public function OwnerStoreUpgradeParam()
+    {
+        return [
+            ['api+symfony/yaml:5.3', '2.1.3', '有効な値ではありません。'],
+            ['api', '2.1.3+symfony/yaml:5.3', '有効な値ではありません。'],
+            ['', '2.1.3','入力されていません。'],
+            ['api', '','入力されていません。'],
+        ];
+    }
 }
