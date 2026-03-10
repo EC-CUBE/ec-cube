@@ -277,8 +277,8 @@
       "elementType": "ZestRequest"
     },
     {
-      "prefix": "href='/admin/product_review/",
-      "postfix": "/edit'",
+      "prefix": "<div class=\"modal fade\" id=\"confirmModal-",
+      "postfix": "\" tabindex=\"-1\"",
       "location": "BODY",
       "variableName": "product-review-id",
       "index": 17,
@@ -467,8 +467,8 @@
       "elementType": "ZestAssignRegexDelimiters"
     },
     {
-      "prefix": "href='/admin/product_review/",
-      "postfix": "/edit'",
+      "prefix": "<div class=\"modal fade\" id=\"confirmModal-",
+      "postfix": "\" tabindex=\"-1\"",
       "location": "BODY",
       "variableName": "product-review-id",
       "index": 30,
