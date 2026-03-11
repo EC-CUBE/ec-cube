@@ -51,7 +51,7 @@ jobs:
       fail-fast: false
       matrix:
         target:
-        #  - admin_authority
+          - admin_authority
         #  - admin_class_category_csv
         #  - admin_class_name_csv
         #  - admin_content_block
@@ -117,8 +117,8 @@ jobs:
         # - plugin_related_product
         # - plugin_sales_report
         include:
-        #  - target: admin_authority
-        #    thread_per_host: 1
+          - target: admin_authority
+            thread_per_host: 1
         #  - target: admin_customer_delivery
         #    before_script: admin_create_customer.zst
         #  - target: admin_content_cache
