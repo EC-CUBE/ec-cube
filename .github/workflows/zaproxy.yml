@@ -68,7 +68,7 @@ jobs:
         #  - admin_mail
         #  - admin_mail_edit
         #  - admin_masterdata
-          - admin_member_edit
+        #  - admin_member_edit
         #  - admin_member_setting
         #  - admin_news
         #  - admin_order_edit

@@ -192,7 +192,7 @@
       },
       "variableName": "csrf3",
       "index": 13,
-      "enabled": false,
+      "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
     {
@@ -359,7 +359,7 @@
       "timestamp": 1655450842342,
       "cookies": [],
       "index": 25,
-      "enabled": false,
+      "enabled": true,
       "elementType": "ZestRequest"
     },
     {
