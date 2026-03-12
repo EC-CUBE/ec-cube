@@ -889,10 +889,6 @@ include /assets/tmpl/components/directory.pug
 
 Styleguide 7.1
 */
-.c-directoryTree--register {
-  max-height: 300px;
-  overflow: scroll;
-}
 .c-directoryTree--register li {
   display: flex;
   flex-wrap: wrap;
@@ -926,6 +922,10 @@ Styleguide 7.1
 }
 .c-directoryTree--register ul > li > ul li:last-of-type > label::before {
   content: "└";
+}
+.c-directoryTree--register {
+  max-height: 300px;
+  overflow: scroll;
 }
 .c-directoryTree--register input {
   display: block;
@@ -1095,7 +1095,7 @@ Font Awesome v5.3.1 で利用可能なフォント群については、<a href="
 
 Styleguide 11.0
 */
-@media only screen and (min-width: 768px) and (max-width: 1279px) {
+@media only screen and (min-width: 768px) and (max-width: 1279px){
   .c-mainNavArea {
     width: 160px;
   }
@@ -1127,7 +1127,7 @@ Styleguide 11.0
     width: calc(100% - 160px);
   }
 }
-@media only screen and (max-width: 1280px) {
+@media only screen and (max-width: 1280px){
   .c-curtain.is-active {
     display: block;
     width: 100%;
@@ -1138,7 +1138,7 @@ Styleguide 11.0
     position: fixed;
   }
 }
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: 767px){
   .c-headerBar__logo {
     display: none;
   }

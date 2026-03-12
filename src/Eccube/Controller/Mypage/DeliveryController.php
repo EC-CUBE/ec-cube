@@ -24,7 +24,6 @@ use Eccube\Repository\CustomerAddressRepository;
 use Eccube\Service\MailService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -177,17 +176,24 @@ class DeliveryController extends AbstractController
      *
      * @Route("/mypage/delivery/{id}/delete", name="mypage_delivery_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, CustomerAddress $CustomerAddress)
+    public function delete(Request $request, $id)
     {
         $this->isTokenValid();
 
-        log_info('お届け先削除開始', [$CustomerAddress->getId()]);
-
         $Customer = $this->getUser();
 
-        if ($Customer->getId() != $CustomerAddress->getCustomer()->getId()) {
-            throw new BadRequestHttpException();
+        $CustomerAddress = $this->customerAddressRepository->findOneBy(
+            [
+                'id' => $id,
+                'Customer' => $Customer,
+            ]
+        );
+
+        if (!$CustomerAddress) {
+            throw new NotFoundHttpException();
         }
+
+        log_info('お届け先削除開始', [$CustomerAddress->getId()]);
 
         $this->customerAddressRepository->delete($CustomerAddress);
 

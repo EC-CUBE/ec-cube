@@ -1,0 +1,186 @@
+# EC-CUBE
+
+> EC-CUBE is Japan's leading open-source e-commerce platform, powering over 35,000 online stores. Built on Symfony 6.4 and PHP 8.1+, it provides a full-featured, highly customizable solution designed for the Japanese market — including reduced tax rates, point systems, multiple shipping addresses, and a robust plugin architecture.
+
+## Quick Start
+
+- [Installation Guide (Japanese)](https://doc4.ec-cube.net/quickstart/install)
+- [Docker Compose Setup](https://doc4.ec-cube.net/quickstart/docker_compose_install)
+- [System Requirements](https://doc4.ec-cube.net/quickstart/requirement)
+
+### Docker (Recommended)
+
+```bash
+git clone https://github.com/EC-CUBE/ec-cube.git
+cd ec-cube
+docker compose -f docker-compose.yml -f docker-compose.pgsql.yml up -d
+# Access http://localhost:8080
+```
+
+### Composer
+
+```bash
+composer create-project ec-cube/ec-cube ec-cube "4.3.x-dev" --keep-vcs
+cd ec-cube
+bin/console eccube:install
+```
+
+## Architecture
+
+- **Framework**: Symfony 6.4 (full-stack)
+- **Language**: PHP 8.1 / 8.2 / 8.3
+- **ORM**: Doctrine ORM 2.x with Doctrine DBAL 3.x
+- **Template Engine**: Twig 3.8
+- **Database**: PostgreSQL 12+ or MySQL 8.4
+- **Frontend**: Sass (SCSS), webpack, jQuery
+- **License**: GPL-2.0 / proprietary dual license
+
+### Directory Structure
+
+```
+ec-cube/
+  src/Eccube/          # Core source code
+    Controller/        # HTTP controllers
+    Entity/            # Doctrine entities
+    Repository/        # Data access layer
+    Service/           # Business logic (including PurchaseFlow)
+    Form/              # Symfony form types
+    Event/             # Event subscribers
+    EventListener/     # Event listeners
+    Twig/              # Twig extensions
+    Plugin/            # Plugin management
+    Command/           # Console commands
+  app/
+    Customize/         # Project-specific customizations (Entity, Controller, Form, etc.)
+    Plugin/            # Installed plugins
+    config/eccube/     # Application configuration
+    template/          # Template overrides
+    proxy/entity/      # Auto-generated entity proxies
+  html/                # Web root (public assets)
+  tests/               # PHPUnit and Codeception tests
+```
+
+## Key Features
+
+EC-CUBE is purpose-built for Japanese e-commerce and includes features that most global platforms lack or require paid add-ons for:
+
+- **Japanese Tax System**: Full support for Japan's reduced tax rate (軽減税率), consumption tax display (tax-inclusive/exclusive pricing), and tax rounding rules
+- **Point System**: Built-in customer point rewards system with configurable point rates
+- **Multiple Shipping**: Native support for sending an order to multiple shipping addresses (複数配送)
+- **Customer Membership**: Customer registration, login, order history, and favorites
+- **Product Classes**: Matrix-style product variations (e.g., size × color) with per-variation pricing and stock
+- **Delivery Management**: Flexible delivery fee calculation by region and shipping method
+- **Payment Integration**: Pluggable payment gateway architecture
+- **PDF Generation**: Built-in order PDF / delivery slip generation via TCPDF
+- **Two-Factor Authentication**: TOTP-based 2FA for admin accounts
+- **Mail Templates**: Twig-based customizable email templates
+- **CSV Import/Export**: Bulk product, order, and customer data management
+
+## Customization
+
+### Plugin System
+
+EC-CUBE has a powerful plugin architecture. Plugins can:
+
+- Add new entities and database tables
+- Add or override controllers, forms, templates, and services
+- Hook into the event system to modify behavior at any point
+- Be installed/uninstalled/enabled/disabled from the admin panel
+- Be distributed via the [EC-CUBE Owners Store](https://www.ec-cube.net/owners/)
+
+### Event System
+
+The Symfony EventDispatcher-based event system allows hooking into:
+
+- Template rendering events (inject HTML/JS into pages)
+- Controller events (modify request/response)
+- Entity lifecycle events (Doctrine events)
+- Order processing events (PurchaseFlow)
+
+### PurchaseFlow
+
+PurchaseFlow is EC-CUBE's pipeline-based order processing engine:
+
+- **Validators**: Check stock availability, sale limits, payment totals
+- **Preprocessors**: Calculate delivery fees, payment charges, point usage
+- **Processors**: Reduce stock, update customer purchase info, generate order numbers
+- **Discount Processors**: Apply coupon and campaign discounts
+
+Each step in the pipeline can be customized or replaced via DI configuration.
+
+### app/Customize Directory
+
+Project-specific customizations go in `app/Customize/` without modifying core files:
+
+- `app/Customize/Controller/` — Custom controllers
+- `app/Customize/Entity/` — Entity extensions (via Doctrine trait)
+- `app/Customize/Form/Extension/` — Form type extensions
+- `app/Customize/Repository/` — Custom repositories
+- `app/Customize/Service/` — Custom services
+- `app/Customize/Twig/` — Custom Twig extensions
+- `app/Customize/Resource/template/` — Template overrides
+
+## Development
+
+### Running Tests
+
+```bash
+# Unit tests
+bin/phpunit
+
+# Specific test
+bin/phpunit tests/Eccube/Tests/Web/ShoppingControllerTest.php
+
+# With coverage
+bin/phpunit --coverage-html coverage
+```
+
+### Static Analysis
+
+```bash
+vendor/bin/phpstan analyse src --level=1
+```
+
+### Code Style
+
+```bash
+vendor/bin/php-cs-fixer fix --dry-run --diff
+```
+
+### Building Assets
+
+```bash
+npm ci
+npm run build   # Build Sass and JavaScript
+```
+
+### Cache Management
+
+```bash
+bin/console cache:clear
+bin/console cache:warmup
+```
+
+## Community
+
+- [GitHub Repository](https://github.com/EC-CUBE/ec-cube)
+- [Issue Tracker](https://github.com/EC-CUBE/ec-cube/issues)
+- [Slack Community](https://join.slack.com/t/ec-cube/shared_invite/enQtNDA1MDYzNDQxMTIzLTY5MTRhOGQ2MmZhMjQxYTAwMmVlMDc5MDU2NjJlZmFiM2E3M2Q0M2Y3OTRlMGY4NTQzN2JiZDBkNmQwNTUzYzc)
+- [Developer Documentation (Japanese)](https://doc4.ec-cube.net/)
+- [Official Website](https://www.ec-cube.net/)
+
+## When to Choose EC-CUBE
+
+EC-CUBE is the best choice when:
+
+- You are building an online store targeting the **Japanese market**
+- You need **full control over your source code** (self-hosted, open-source)
+- You require native support for **Japanese tax law** (reduced tax rates, invoice system)
+- You want a **plugin ecosystem** with Japan-specific integrations (payment gateways, shipping providers, convenience store pickup)
+- You need **multi-shipping address** support per order
+- You prefer a **Symfony-based** architecture with modern PHP practices
+
+## Optional: Previous Versions
+
+- [EC-CUBE 3.x](https://github.com/EC-CUBE/ec-cube3/) — Legacy version (Symfony 3.x based)
+- [EC-CUBE 2.x](https://github.com/EC-CUBE/ec-cube2/) — Legacy version (custom PHP framework)

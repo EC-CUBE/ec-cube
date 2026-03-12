@@ -781,9 +781,10 @@ class Local_Plugin extends Abstract_Plugin
         $this->ManagePage = PluginLocalInstallPage::go($this->I)
             ->アップロード($this->code.'-1.0.0');
 
-        $this->initialized = true;
+        // ページ遷移完了後にフラッシュメッセージを確認
+        $this->I->waitForText('プラグインをインストールしました。', 30, PluginManagePage::完了メッセージ);
 
-        $this->I->see('プラグインをインストールしました。', PluginManagePage::完了メーッセージ);
+        $this->initialized = true;
 
         $this->検証();
 
@@ -831,7 +832,7 @@ class Local_Plugin extends Abstract_Plugin
         $this->initialized = false;
         $this->enabled = false;
 
-        $this->I->see('プラグインを削除しました。', PluginManagePage::完了メーッセージ);
+        $this->I->waitForText('プラグインを削除しました。', 30, PluginManagePage::完了メッセージ);
 
         $this->検証();
 

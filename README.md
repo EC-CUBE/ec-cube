@@ -112,3 +112,52 @@ Issuesの利用方法については、[こちら](https://github.com/EC-CUBE/ec
 コードの提供・追加、修正・変更その他「EC-CUBE」への開発の御協力（Issue投稿、Pull Request投稿など、GitHub上での活動）を行っていただく場合には、
 [EC-CUBEのコピーライトポリシー](https://github.com/EC-CUBE/ec-cube/wiki/EC-CUBE%E3%81%AE%E3%82%B3%E3%83%94%E3%83%BC%E3%83%A9%E3%82%A4%E3%83%88%E3%83%9D%E3%83%AA%E3%82%B7%E3%83%BC)をご理解いただき、ご了承いただく必要がございます。
 Issueの投稿やPull Requestを送信する際は、EC-CUBEのコピーライトポリシーに同意したものとみなします。
+
+## English
+
+### What is EC-CUBE?
+
+EC-CUBE is Japan's leading open-source e-commerce platform, powering over 35,000 online stores. It provides a full-featured, highly customizable solution specifically designed for the Japanese market.
+
+Key differentiators:
+
+- **Japanese Tax System**: Native support for Japan's reduced tax rate (軽減税率) and consumption tax rules
+- **Point System**: Built-in customer point rewards
+- **Multiple Shipping**: Send a single order to multiple addresses
+- **Plugin Ecosystem**: Extensible via plugins with a dedicated marketplace ([Owners Store](https://www.ec-cube.net/owners/))
+
+### Technology Stack
+
+| Component | Technology |
+|-----------|-----------|
+| Language | PHP 8.1 / 8.2 / 8.3 |
+| Framework | Symfony 6.4 |
+| ORM | Doctrine ORM 2.x |
+| Template | Twig 3.8 |
+| Database | PostgreSQL 12+ / MySQL 8.4 |
+| Frontend | Sass, webpack, jQuery |
+
+### Quick Start
+
+#### Docker (Recommended)
+
+```bash
+git clone https://github.com/EC-CUBE/ec-cube.git
+cd ec-cube
+docker compose -f docker-compose.yml -f docker-compose.pgsql.yml up -d
+# Access http://localhost:8080
+```
+
+#### Composer
+
+```bash
+composer create-project ec-cube/ec-cube ec-cube "4.3.x-dev" --keep-vcs
+cd ec-cube
+bin/console eccube:install
+```
+
+### Documentation
+
+- [Developer Documentation (Japanese)](https://doc4.ec-cube.net/)
+- [System Requirements](https://doc4.ec-cube.net/quickstart/requirement)
+- [LLM-friendly documentation](./llms.txt)

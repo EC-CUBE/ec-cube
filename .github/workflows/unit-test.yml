@@ -3,6 +3,9 @@ name: Unit test for EC-CUBE
 on:
   workflow_call:
 
+permissions:
+  contents: read
+
 jobs:
   phpunit:
     name: PHPUnit

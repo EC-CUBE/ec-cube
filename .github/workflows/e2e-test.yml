@@ -3,6 +3,9 @@ name: E2E test for EC-CUBE
 on:
   workflow_call:
 
+permissions:
+  contents: read
+
 jobs:
   codeception:
     name: Codeception
@@ -203,7 +206,7 @@ jobs:
 
       - name: Upload evidence
         if: failure()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: codeception-${{ matrix.group }}-evidence
           path: codeception/_output/
@@ -212,7 +215,7 @@ jobs:
         run: ls -la
 
       - name: Upload ScreenShots
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: screenshots-${{ matrix.group }}
           path: |
@@ -221,7 +224,7 @@ jobs:
 
       - name: Upload logs
         if: failure()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: codeception-${{ matrix.group }}-logs
           path: var/log/

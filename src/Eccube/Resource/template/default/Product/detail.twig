@@ -356,16 +356,28 @@ file that was distributed with this source code.
                     {% if Product.ProductCategories is not empty %}
                         <div class="ec-productRole__category">
                             <div>{{ 'front.product.related_category'|trans }}</div>
-                            {% for ProductCategory in Product.ProductCategories %}
-                                <ul>
-                                    <li>
-                                        {% for Category in ProductCategory.Category.path %}
-                                            <a href="{{ url('product_list') }}?category_id={{ Category.id }}">{{ Category.name }}</a> {%- if loop.last == false %}
-                                            <span>＞</span>{% endif -%}
-                                        {% endfor %}
-                                    </li>
-                                </ul>
-                            {% endfor %}
+                            <ul>
+                                {% for ProductCategory in Product.ProductCategories %}
+                                    {# このカテゴリの子孫が商品に紐づいているかをチェック（子孫があれば非表示） #}
+                                    {% set is_deepest = true %}
+                                    {% for OtherCategory in Product.ProductCategories %}
+                                        {% if OtherCategory.Category.hierarchy > ProductCategory.Category.hierarchy %}
+                                            {% for PathCategory in OtherCategory.Category.path %}
+                                                {% if PathCategory.id == ProductCategory.Category.id %}
+                                                    {% set is_deepest = false %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if is_deepest %}
+                                        <li>
+                                            {% for ParentCategory in ProductCategory.Category.path %}
+                                                <a href="{{ url('product_list') }}?category_id={{ ParentCategory.id }}">{{ ParentCategory.name }}</a>{% if not loop.last %} &gt; {% endif %}
+                                            {% endfor %}
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
                         </div>
                     {% endif %}
                     <form action="{{ url('product_add_cart', {id:Product.id}) }}" method="post" id="form1" name="form1">
@@ -418,19 +430,26 @@ file that was distributed with this source code.
                         </div>
                     </div>
                     {% if BaseInfo.option_favorite_product %}
-                        <form action="{{ url('product_add_favorite', {id:Product.id}) }}" method="post">
-                            <div class="ec-productRole__btn">
-                                {% if is_favorite == false %}
+                        {% if is_favorite == false %}
+                            <form action="{{ url('product_add_favorite', {id:Product.id}) }}" method="post">
+                                <div class="ec-productRole__btn">
                                     <button type="submit" id="favorite" class="ec-blockBtn--cancel">
                                         {{ 'front.product.add_favorite'|trans }}
                                     </button>
-                                {% else %}
-                                    <button type="submit" id="favorite" class="ec-blockBtn--cancel"
-                                            disabled="disabled">{{ 'front.product.add_favorite_alrady'|trans }}
-                                    </button>
-                                {% endif %}
+                                </div>
+                            </form>
+                        {% else %}
+                            <div class="ec-productRole__btn">
+                                <a href="{{ url('product_delete_favorite', {id:Product.id}) }}"
+                                   id="favorite"
+                                   class="ec-blockBtn--cancel"
+                                   {{ csrf_token_for_anchor() }}
+                                   data-method="delete"
+                                   data-message="{{ 'front.product.delete_favorite_confirm'|trans }}">
+                                    {{ 'front.product.delete_favorite'|trans }}
+                                </a>
                             </div>
-                        </form>
+                        {% endif %}
                     {% endif %}
                     <div class="ec-productRole__description">{{ Product.description_detail|raw|nl2br }}
                     </div>

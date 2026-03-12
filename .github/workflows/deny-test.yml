@@ -3,6 +3,9 @@ name: Deny check for EC-CUBE
 on:
   workflow_call:
 
+permissions:
+  contents: read
+
 jobs:
   deploy:
     name: Deny check

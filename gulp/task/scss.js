@@ -8,8 +8,7 @@ const sass = require('gulp-sass')(require('sass'))
 const postcss = require('gulp-postcss')
 const atImport = require('postcss-import');
 const autoprefixer = require('autoprefixer')
-const cssmqpacker = require('css-mqpacker')
-const sortCSSmq = require('sort-css-media-queries')
+const sortMediaQueries = require('postcss-sort-media-queries')
 
 module.exports = () => {
   return src([config.paths.source.template + config.paths.assets.scss], {
@@ -23,9 +22,7 @@ module.exports = () => {
     .pipe(postcss([
       atImport(),
       autoprefixer(),
-      cssmqpacker({
-        sort: sortCSSmq
-      }),
+      sortMediaQueries({ sort: 'mobile-first' }),
     ]))
     .pipe(rename((path) => {
       path.dirname = path.dirname.replace(/scss$/, 'css')

@@ -3,6 +3,9 @@ name: PHPStan
 on:
   workflow_call:
 
+permissions:
+  contents: read
+
 jobs:
   phpstan:
     name: PHPStan

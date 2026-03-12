@@ -545,6 +545,22 @@ class ShoppingController extends AbstractShoppingController
 
         $Order = $this->orderRepository->find($orderId);
 
+        if (!$Order) {
+            log_info('[注文完了] 受注が存在しないため, トップページへ遷移します.', [$orderId]);
+
+            return $this->redirectToRoute('homepage');
+        }
+
+        // 受注の所有者チェック
+        $Customer = $this->getUser();
+        if ($Customer instanceof Customer) {
+            if ($Order->getCustomer() && $Order->getCustomer()->getId() !== $Customer->getId()) {
+                log_info('[注文完了] 受注の所有者が一致しないため, トップページへ遷移します.', [$orderId]);
+
+                return $this->redirectToRoute('homepage');
+            }
+        }
+
         $event = new EventArgs(
             [
                 'Order' => $Order,

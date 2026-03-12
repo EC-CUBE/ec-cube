@@ -3,6 +3,9 @@ name: Rector
 on:
   workflow_call:
 
+permissions:
+  contents: read
+
 jobs:
   rector:
     name: Rector

@@ -683,6 +683,18 @@ class MailService
             $message->text($body);
         }
 
+        $event = new EventArgs(
+            [
+                'message' => $message,
+                'Shipping' => $Shipping,
+                'Order' => $Order,
+                'MailTemplate' => $MailTemplate,
+                'BaseInfo' => $this->BaseInfo,
+            ],
+            null
+        );
+        $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_SHIPPING_NOTIFY);
+
         try {
             $this->mailer->send($message);
         } catch (TransportExceptionInterface $e) {
@@ -805,6 +817,19 @@ class MailService
         } else {
             $message->text($body);
         }
+
+        $event = new EventArgs(
+            [
+                'message' => $message,
+                'Customer' => $Customer,
+                'BaseInfo' => $this->BaseInfo,
+                'MailTemplate' => $MailTemplate,
+                'userData' => $userData,
+                'eventName' => $eventName,
+            ],
+            null
+        );
+        $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_CUSTOMER_CHANGE_NOTIFY);
 
         try {
             $this->mailer->send($message);

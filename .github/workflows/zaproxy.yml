@@ -9,6 +9,9 @@ name: OWASP ZAP
 on:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   prune:
     name: Prune Docker images
@@ -26,11 +29,10 @@ jobs:
         uses: actions/checkout@master
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
-      # --- EC-CUBE 本体のビルド ---
-      - name: Container Build (EC-CUBE)
-        uses: docker/build-push-action@v6
+      - name: Container Build
+        uses: docker/build-push-action@v7
         with:
           context: .
           tags: ec-cube
@@ -38,7 +40,7 @@ jobs:
 
       # --- EC-CUBE イメージのアップロード ---
       - name: Upload image
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: ec-cube
           path: /tmp/ec-cube.tar
@@ -166,10 +168,10 @@ jobs:
         uses: actions/checkout@master
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
-      - name: Download image (EC-CUBE)
-        uses: actions/download-artifact@v7
+      - name: Download image
+        uses: actions/download-artifact@v8
         with:
           name: ec-cube
           path: /tmp
@@ -370,7 +372,7 @@ jobs:
 
       - name: Upload report
         if: ${{ always() }}
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: zap-${{ matrix.target }}-report
           path: /tmp/report
@@ -378,7 +380,7 @@ jobs:
 
       - name: Upload alerts
         if: ${{ always() }}
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: zap-${{ matrix.target }}-alerts
           path: /tmp/alerts.json
@@ -391,7 +393,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Download all artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           path: artifacts
           pattern: zap-*-alerts
@@ -409,7 +411,7 @@ jobs:
 
           jq -s 'add // []' "${files[@]}" > all_alerts.json
       - name: Upload alerts
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: all_alerts
           path: artifacts/all_alerts.json

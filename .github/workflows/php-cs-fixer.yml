@@ -3,6 +3,9 @@ name: PHP CS Fixer
 on:
   workflow_call:
 
+permissions:
+  contents: read
+
 jobs:
   php-cs-fixer:
     name: Run PHP CS Fixer
