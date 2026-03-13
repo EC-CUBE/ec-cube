@@ -448,7 +448,7 @@ class OwnerStoreController extends AbstractController
 
             return [
                 'item' => $item,
-                'requires' => json_encode([], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT),
+                'requires' => [],
                 'is_update' => true,
                 'Plugin' => $Plugin,
             ];
