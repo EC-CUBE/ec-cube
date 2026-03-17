@@ -13,10 +13,12 @@
 
 namespace Eccube\Controller;
 
+use Eccube\Entity\BaseInfo;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\NonMemberType;
 use Eccube\Form\Validator\Email;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\Master\PrefRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\OrderHelper;
@@ -32,11 +34,19 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class NonMemberShoppingController extends AbstractShoppingController
 {
+    protected BaseInfo $BaseInfo;
+
     /**
      * NonMemberShoppingController constructor.
      */
-    public function __construct(protected ValidatorInterface $validator, protected PrefRepository $prefRepository, protected OrderHelper $orderHelper, protected CartService $cartService)
-    {
+    public function __construct(
+        protected ValidatorInterface $validator,
+        protected PrefRepository $prefRepository,
+        protected OrderHelper $orderHelper,
+        protected CartService $cartService,
+        BaseInfoRepository $baseInfoRepository,
+    ) {
+        $this->BaseInfo = $baseInfoRepository->get();
     }
 
     /**
@@ -51,6 +61,11 @@ class NonMemberShoppingController extends AbstractShoppingController
         // ログイン済みの場合は, 購入画面へリダイレクト.
         if ($this->isGranted('ROLE_USER')) {
             return $this->redirectToRoute('shopping');
+        }
+
+        // ゲスト購入が無効の場合は, ログイン画面へリダイレクト.
+        if (!$this->BaseInfo->isOptionGuestPurchase()) {
+            return $this->redirectToRoute('shopping_login');
         }
 
         // カートチェック.

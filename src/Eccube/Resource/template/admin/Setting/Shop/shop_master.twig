@@ -269,6 +269,15 @@ file that was distributed with this source code.
                                     {{ form_errors(form.option_mail_notifier) }}
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.shop.shop.option_guest_purchase'|trans }}"><span>{{ 'admin.setting.shop.shop.option_guest_purchase'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i></div>
+                                </div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.option_guest_purchase) }}
+                                    {{ form_errors(form.option_guest_purchase) }}
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="card rounded border-0 mb-4">

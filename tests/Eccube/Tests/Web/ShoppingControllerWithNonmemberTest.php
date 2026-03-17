@@ -118,6 +118,20 @@ final class ShoppingControllerWithNonmemberTest extends AbstractShoppingControll
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('cart')));
     }
 
+    /**
+     * ゲスト購入が無効の場合、/shopping/nonmember へのアクセスはログイン画面へリダイレクトされる
+     */
+    public function testNonmemberRedirectToLoginWhenGuestPurchaseDisabled()
+    {
+        $this->BaseInfo->setOptionGuestPurchase(false);
+        $this->entityManager->flush();
+
+        $this->scenarioCartIn();
+        $this->client->request('GET', $this->generateUrl('shopping_nonmember'));
+
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_login')));
+    }
+
     public function testNonmemberWithCustomerLogin()
     {
         // ユーザーが会員ログイン済みの場合
