@@ -124,10 +124,15 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->BaseInfo->setOptionGuestPurchase(false);
         $this->entityManager->flush();
 
-        $this->scenarioCartIn();
-        $this->client->request('GET', $this->generateUrl('shopping_nonmember'));
+        try {
+            $this->scenarioCartIn();
+            $this->client->request('GET', $this->generateUrl('shopping_nonmember'));
 
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_login')));
+            $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_login')));
+        } finally {
+            $this->BaseInfo->setOptionGuestPurchase(true);
+            $this->entityManager->flush();
+        }
     }
 
     public function testNonmemberWithCustomerLogin()
