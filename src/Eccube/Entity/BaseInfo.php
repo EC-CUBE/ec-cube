@@ -229,6 +229,13 @@ if (!class_exists(BaseInfo::class)) {
         /**
          * @var bool
          *
+         * @ORM\Column(name="option_guest_purchase", type="boolean", options={"default":true})
+         */
+        private $option_guest_purchase = true;
+
+        /**
+         * @var bool
+         *
          * @ORM\Column(name="option_remember_me", type="boolean", options={"default":true})
          */
         private $option_remember_me = true;
@@ -944,6 +951,30 @@ if (!class_exists(BaseInfo::class)) {
         public function isOptionCustomerActivate()
         {
             return $this->option_customer_activate;
+        }
+
+        /**
+         * Set optionGuestPurchase.
+         *
+         * @param bool $optionGuestPurchase
+         *
+         * @return BaseInfo
+         */
+        public function setOptionGuestPurchase($optionGuestPurchase)
+        {
+            $this->option_guest_purchase = $optionGuestPurchase;
+
+            return $this;
+        }
+
+        /**
+         * Get optionGuestPurchase.
+         *
+         * @return bool
+         */
+        public function isOptionGuestPurchase()
+        {
+            return $this->option_guest_purchase;
         }
 
         /**

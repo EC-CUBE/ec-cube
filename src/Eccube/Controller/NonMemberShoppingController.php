@@ -13,10 +13,12 @@
 
 namespace Eccube\Controller;
 
+use Eccube\Entity\BaseInfo;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\NonMemberType;
 use Eccube\Form\Validator\Email;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\Master\PrefRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\OrderHelper;
@@ -49,23 +51,31 @@ class NonMemberShoppingController extends AbstractShoppingController
     protected $cartService;
 
     /**
+     * @var BaseInfo
+     */
+    protected $BaseInfo;
+
+    /**
      * NonMemberShoppingController constructor.
      *
      * @param ValidatorInterface $validator
      * @param PrefRepository $prefRepository
      * @param OrderHelper $orderHelper
      * @param CartService $cartService
+     * @param BaseInfoRepository $baseInfoRepository
      */
     public function __construct(
         ValidatorInterface $validator,
         PrefRepository $prefRepository,
         OrderHelper $orderHelper,
         CartService $cartService,
+        BaseInfoRepository $baseInfoRepository,
     ) {
         $this->validator = $validator;
         $this->prefRepository = $prefRepository;
         $this->orderHelper = $orderHelper;
         $this->cartService = $cartService;
+        $this->BaseInfo = $baseInfoRepository->get();
     }
 
     /**
@@ -80,6 +90,11 @@ class NonMemberShoppingController extends AbstractShoppingController
         // ログイン済みの場合は, 購入画面へリダイレクト.
         if ($this->isGranted('ROLE_USER')) {
             return $this->redirectToRoute('shopping');
+        }
+
+        // ゲスト購入が無効の場合は, ログイン画面へリダイレクト.
+        if (!$this->BaseInfo->isOptionGuestPurchase()) {
+            return $this->redirectToRoute('shopping_login');
         }
 
         // カートチェック.
