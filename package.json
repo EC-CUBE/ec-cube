@@ -1,6 +1,6 @@
 {
   "name": "eccube",
-  "version": "4.3.0",
+  "version": "4.3.1-p1",
   "description": "EC-CUBE EC open platform.",
   "main": "index.js",
   "directories": {
@@ -32,7 +32,7 @@
     "@babel/polyfill": "^7.12.1",
     "@popperjs/core": "^2.11.8",
     "ace-builds": "^1.32.3",
-    "bootstrap": "^5.3.3",
+    "bootstrap": "^5.3.8",
     "chart.js": "^3.9.1",
     "css-loader": "^7.1.2",
     "file-loader": "^6.2.0",
@@ -53,10 +53,10 @@
     "@babel/core": "^7.24.5",
     "@babel/preset-env": "^7.26.0",
     "autoprefixer": "^10.4.23",
-    "babel-loader": "^8.2.5",
+    "babel-loader": "^10.1.0",
     "browser-sync": "^3.0.4",
     "cross-env": "^7.0.2",
-    "css-mqpacker": "^7.0.0",
+    "postcss-sort-media-queries": "^5.2.0",
     "gulp": "^5.0.0",
     "gulp-clean-css": "^4.2.0",
     "gulp-notify": "^4.0.0",
@@ -70,8 +70,7 @@
     "postcss-import": "^16.1.1",
     "process": "^0.11.10",
     "sass": "^1.93.3",
-    "sort-css-media-queries": "^1.4.3",
-    "webpack": "^5.96.1",
+    "webpack": "^5.105.3",
     "webpack-cli": "^4.9.2",
     "webpack-stream": "^7.0.0"
   }

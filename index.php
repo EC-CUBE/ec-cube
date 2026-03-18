@@ -72,7 +72,7 @@ if (file_exists($maintenanceFile)) {
             $templateCode = env('ECCUBE_TEMPLATE_CODE');
             $baseUrl = \htmlspecialchars(\rawurldecode($request->getBaseUrl()), ENT_QUOTES);
 
-            header('HTTP/1.1 503 Service Temporarily Unavailable');
+            http_response_code(503);
             require __DIR__.'/maintenance.php';
             return;
         }

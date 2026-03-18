@@ -81,7 +81,7 @@ file that was distributed with this source code.
                         $('#customer-kana02').val(data.kana02);
                     }
                 }).fail(function() {
-                    alert('更新に失敗しました。入力内容を確認してください。');
+                    alert('{{ 'front.shopping.customer_update_failed'|trans }}');
                 }).always(function(data) {
                     // overlayを無効
                     loadingOverlay('hide');

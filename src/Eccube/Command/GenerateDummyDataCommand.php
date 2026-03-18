@@ -89,13 +89,19 @@ EOF
         $numberOfOrder = $input->getOption('orders');
         $numberOfCustomer = $input->getOption('customers');
 
+        // SQL Loggerを無効化してパフォーマンス向上
+        $this->entityManager->getConnection()->getConfiguration()->setSQLLogger(null);
+
+        // バッチサイズ（何件ごとにflushするか）
+        $batchSize = 100;
+
         $Customers = [];
         $Products = [];
 
         $faker = Faker::create($locale);
         for ($i = 0; $i < $numberOfCustomer; $i++) {
             $email = microtime(true).'.'.$faker->safeEmail;
-            $Customer = $this->generator->createCustomer($email);
+            $Customer = $this->generator->createCustomer($email, false);
             $Customer->setBirth($faker->dateTimeBetween('-110 years', '- 5 years'));
             switch ($output->getVerbosity()) {
                 case OutputInterface::VERBOSITY_QUIET:
@@ -109,16 +115,24 @@ EOF
                     $output->writeln('Customer: id='.$Customer->getId().' '.$Customer->getEmail());
                     break;
             }
-            if ($output->getVerbosity() >= OutputInterface::VERBOSITY_NORMAL && ($i % 100) === 0 && $i > 0) {
-                $output->writeln(' ...'.$i);
+            if ((($i + 1) % $batchSize) === 0) {
+                $this->entityManager->flush();
+                if ($output->getVerbosity() >= OutputInterface::VERBOSITY_NORMAL) {
+                    $output->writeln(' ...'.$i);
+                }
             }
             $Customers[] = $Customer;
         }
+        // Flush remaining entities
+        $this->entityManager->flush();
         for ($i = 0; $i < $numberOfProducts; $i++) {
             // @see https://github.com/fzaninotto/Faker/issues/1125#issuecomment-268676186
             gc_collect_cycles();
 
-            $Product = $this->generator->createProduct(null, 3, !$notImage);
+            // 商品規格数を1-3個にランダム化（平均2個で高速化）
+            $productClassNum = $faker->numberBetween(1, 3);
+            // simple_mode=true でProductCategoryとProductTagをスキップ（大幅高速化）
+            $Product = $this->generator->createProduct(null, $productClassNum, !$notImage, false, true);
             switch ($output->getVerbosity()) {
                 case OutputInterface::VERBOSITY_QUIET:
                     break;
@@ -131,11 +145,16 @@ EOF
                     $output->writeln('Product: id='.$Product->getId().' '.$Product->getName());
                     break;
             }
-            if ($output->getVerbosity() >= OutputInterface::VERBOSITY_NORMAL && ($i % 100) === 0 && $i > 0) {
-                $output->writeln(' ...'.$i);
+            if ((($i + 1) % $batchSize) === 0) {
+                $this->entityManager->flush();
+                if ($output->getVerbosity() >= OutputInterface::VERBOSITY_NORMAL) {
+                    $output->writeln(' ...'.$i);
+                }
             }
             $Products[] = $Product;
         }
+        // Flush remaining entities
+        $this->entityManager->flush();
         $Deliveries = $this->deliveryRepository->findAll();
         $j = 0;
         $randomOrderStatus = [
@@ -157,13 +176,13 @@ EOF
                 $orderByKey = $faker->numberBetween(0, 1);
                 $Product = $this->productRepository->findOneBy([], ['id' => $orderBy[$orderByKey]]);
             }
-            $charge = $faker->randomNumber(4);
-            $discount = $faker->randomNumber(4);
+            $charge = $faker->numberBetween(0, 1000);
+            $discount = $faker->numberBetween(0, 1000);
             for ($i = 0; $i < $numberOfOrder; $i++) {
                 // @see https://github.com/fzaninotto/Faker/issues/1125#issuecomment-268676186
                 gc_collect_cycles();
 
-                $Order = $this->generator->createOrder($Customer, $Product->getProductClasses()->toArray(), $Delivery, $charge, $discount);
+                $Order = $this->generator->createOrder($Customer, $Product->getProductClasses()->toArray(), $Delivery, $charge, $discount, null, false, true);
                 $Status = $this->entityManager->find(OrderStatus::class, $faker->randomElement($randomOrderStatus));
                 $Order->setOrderStatus($Status);
                 $Order->setOrderDate($faker->dateTimeThisYear());
@@ -179,13 +198,17 @@ EOF
                         $output->writeln('Order: id='.$Order->getId());
                         break;
                 }
-                $this->entityManager->flush();
                 $j++;
-                if ($output->getVerbosity() >= OutputInterface::VERBOSITY_NORMAL && ($j % 100) === 0 && $j > 0) {
-                    $output->writeln(' ...'.$j);
+                if (($j % $batchSize) === 0) {
+                    $this->entityManager->flush();
+                    if ($output->getVerbosity() >= OutputInterface::VERBOSITY_NORMAL) {
+                        $output->writeln(' ...'.$j);
+                    }
                 }
             }
         }
+        // Flush remaining entities
+        $this->entityManager->flush();
         $output->writeln('');
         $output->writeln(sprintf('%s <info>success</info>', 'eccube:fixtures:generate'));
 

@@ -102,7 +102,10 @@ class TwoFactorAuthService
      */
     public function isAuth($Member)
     {
-        if ($json = $this->request->cookies->get($this->cookieName)) {
+        // テスト環境ではコンストラクタ時点でリクエストが存在しない場合があるため、
+        // requestStackから現在のリクエストを再取得する
+        $request = $this->request ?? $this->requestStack->getCurrentRequest();
+        if ($request && $json = $request->cookies->get($this->cookieName)) {
             $configs = json_decode($json);
             $hasher = $this->passwordHasherFactory->getPasswordHasher($Member);
 

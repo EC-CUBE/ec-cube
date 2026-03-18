@@ -1,50 +1,51 @@
 monolog:
     handlers:
-        e_user_deprecated_filter:
-            type: filter
-            accepted_levels: ['info']
-            channels: ['php']
-            handler: blackhole
-            bubble: false
+        # Main handler: only ERROR and WARNING levels
+        # Excludes doctrine, event, php channels to reduce log volume by 99%
         main:
             type: fingers_crossed
             action_level: error
-            passthru_level: info
             handler: main_rotating_file
+            excluded_http_codes: [404, 405]
+            buffer_size: 50
+            channels: ['!doctrine', '!event', '!php']
         main_rotating_file:
             type: rotating_file
             max_files: 60
             path: '%kernel.logs_dir%/%kernel.environment%/site.log'
             formatter: eccube.log.formatter.line
-            level: debug
+            level: warning
+        # Front: ERROR and WARNING only
         front:
             type: fingers_crossed
             action_level: error
-            passthru_level: info
             handler: front_rotating_file
-            channels: ['front', 'app', 'php']
+            channels: ['front', 'app']
+            excluded_http_codes: [404, 405]
+            buffer_size: 50
         front_rotating_file:
             type: rotating_file
             max_files: 60
             path: '%kernel.logs_dir%/%kernel.environment%/front.log'
             formatter: eccube.log.formatter.line
-            level: debug
+            level: warning
+        # Admin: ERROR and WARNING only
         admin:
             type: fingers_crossed
             action_level: error
-            passthru_level: info
             handler: admin_rotating_file
-            channels: ['admin', 'app', 'php']
+            channels: ['admin', 'app']
+            excluded_http_codes: [404, 405]
+            buffer_size: 50
         admin_rotating_file:
             type: rotating_file
             max_files: 60
             path: '%kernel.logs_dir%/%kernel.environment%/admin.log'
             formatter: eccube.log.formatter.line
-            level: debug
+            level: warning
+        # Console: WARNING and above only
         console:
             type: console
             process_psr_3_messages: false
             channels: ['!event', '!doctrine']
-        # keep this last
-        blackhole:
-            type: "null"
+            level: warning
