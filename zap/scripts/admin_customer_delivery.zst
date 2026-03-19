@@ -313,7 +313,6 @@
     },
     {
       "url": "https://ec-cube/admin/customer/1/edit",
-      "urlToken": "https://ec-cube/admin/customer/{{customer-id}}/delivery/new",
       "data": "",
       "method": "GET",
       "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
@@ -352,7 +351,7 @@
       "elementType": "ZestComment"
     },
     {
-      "urlToken": "https://ec-cube/admin/customer/1/delivery/{{delivery-id}}/delete",
+      "urlToken": "https://ec-cube/admin/customer/{{customer-id}}/delivery/{{delivery-id}}/delete",
       "data": "_token={{eccube-csrf-token}}&_method=delete",
       "method": "POST",
       "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 65\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
@@ -374,8 +373,7 @@
       "elementType": "ZestRequest"
     },
     {
-      "url": "https://ec-cube/admin/customer/1/edit",
-      "urlToken": "https://ec-cube/admin/customer/{{customer-id}}/delivery/new",
+      "url": "https://ec-cube/admin/customer/{{customer-id}}/edit",
       "data": "",
       "method": "GET",
       "headers": "Proxy-Connection: keep-alive\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\n",
