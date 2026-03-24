@@ -167,6 +167,7 @@ jobs:
           MAILER_DSN: 'smtp://127.0.0.1:1025'
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           TRUSTED_HOSTS: '127.0.0.1,localhost'
+          ECCUBE_AUTH_MAGIC: 'testmagic'
         run: |
           echo "APP_ENV=${APP_ENV}" > .env
           echo "DATABASE_URL=${DATABASE_URL}" >> .env

@@ -113,8 +113,8 @@ class CsvFixture implements FixtureInterface
             $pk_name = $pkColumns[0];
             $sequence_name = sprintf('%s_%s_seq', $table_name, $pk_name);
 
-            // シーケンスの存在チェック
-            $sql = 'SELECT COUNT(*) FROM information_schema.sequences WHERE sequence_name = ?';
+            // シーケンスの存在チェック (pg_sequences includes identity column sequences)
+            $sql = 'SELECT COUNT(*) FROM pg_sequences WHERE sequencename = ?';
             $count = $Connection->fetchOne($sql, [$sequence_name]);
             if ($count < 1) {
                 return;

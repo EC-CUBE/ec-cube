@@ -82,6 +82,7 @@ jobs:
           ECCUBE_AUTH_MAGIC: 'testmagic'
           MAILER_DSN: 'null://null'
         run: |
+          mkdir -p var/log/test
           bin/console doctrine:database:create --if-not-exists || true
           bin/console doctrine:schema:create
           bin/console eccube:fixtures:load
