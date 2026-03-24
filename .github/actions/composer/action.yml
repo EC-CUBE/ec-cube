@@ -10,6 +10,10 @@ runs:
         restore-keys: |
           ${{ runner.os }}-composer-
 
+    - name: Clear stale cache
+      run: rm -rf var/cache
+      shell: bash
+
     - name: composer install
       run: composer install --dev --no-interaction -o --apcu-autoloader
       shell: bash
