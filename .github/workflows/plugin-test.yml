@@ -76,9 +76,12 @@ jobs:
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
+          ECCUBE_AUTH_MAGIC: 'testmagic'
+          MAILER_DSN: 'null://null'
         run: |
           echo "APP_ENV=${APP_ENV}" > .env
-          bin/console doctrine:database:create --env=dev
+          echo "ECCUBE_AUTH_MAGIC=testmagic" >> .env
+          bin/console doctrine:database:create --env=dev --if-not-exists || true
           bin/console doctrine:schema:create --env=dev
           bin/console eccube:fixtures:load --env=dev
 
@@ -228,9 +231,12 @@ jobs:
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
+          ECCUBE_AUTH_MAGIC: 'testmagic'
+          MAILER_DSN: 'null://null'
         run: |
           echo "APP_ENV=${APP_ENV}" > .env
-          bin/console doctrine:database:create --env=dev
+          echo "ECCUBE_AUTH_MAGIC=testmagic" >> .env
+          bin/console doctrine:database:create --env=dev --if-not-exists || true
           bin/console doctrine:schema:create --env=dev
           bin/console eccube:fixtures:load --env=dev
 
@@ -380,9 +386,12 @@ jobs:
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
+          ECCUBE_AUTH_MAGIC: 'testmagic'
+          MAILER_DSN: 'null://null'
         run: |
           echo "APP_ENV=${APP_ENV}" > .env
-          bin/console doctrine:database:create --env=dev
+          echo "ECCUBE_AUTH_MAGIC=testmagic" >> .env
+          bin/console doctrine:database:create --env=dev --if-not-exists || true
           bin/console doctrine:schema:create --env=dev
           bin/console eccube:fixtures:load --env=dev
 
@@ -535,9 +544,12 @@ jobs:
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
+          ECCUBE_AUTH_MAGIC: 'testmagic'
+          MAILER_DSN: 'null://null'
         run: |
           echo "APP_ENV=${APP_ENV}" > .env
-          bin/console doctrine:database:create --env=dev
+          echo "ECCUBE_AUTH_MAGIC=testmagic" >> .env
+          bin/console doctrine:database:create --env=dev --if-not-exists || true
           bin/console doctrine:schema:create --env=dev
           bin/console eccube:fixtures:load --env=dev
 

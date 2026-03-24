@@ -52,8 +52,10 @@ jobs:
           APP_ENV: 'test'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          ECCUBE_AUTH_MAGIC: 'testmagic'
+          MAILER_DSN: 'null://null'
         run: |
-          bin/console doctrine:database:create
+          bin/console doctrine:database:create --if-not-exists || true
           bin/console doctrine:schema:create
           bin/console eccube:fixtures:load
 
@@ -62,7 +64,8 @@ jobs:
           APP_ENV: 'test'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          MAILER_URL: 'smtp://127.0.0.1:1025'
+          ECCUBE_AUTH_MAGIC: 'testmagic'
+          MAILER_DSN: 'null://null'
         continue-on-error: true
         run: |
           echo "session.save_path=$PWD/var/sessions/test" > php.ini
@@ -171,7 +174,8 @@ jobs:
           echo "MAILER_DSN=${MAILER_DSN}" >> .env
           echo "ECCUBE_PACKAGE_API_URL=${ECCUBE_PACKAGE_API_URL}" >> .env
           echo "TRUSTED_HOSTS=${TRUSTED_HOSTS}" >> .env
-          bin/console doctrine:database:create --env=dev
+          echo "ECCUBE_AUTH_MAGIC=testmagic" >> .env
+          bin/console doctrine:database:create --env=dev --if-not-exists || true
           bin/console doctrine:schema:create --env=dev
           bin/console eccube:fixtures:load --env=dev
 

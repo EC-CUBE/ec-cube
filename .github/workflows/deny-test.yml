@@ -40,10 +40,12 @@ jobs:
           APP_ENV: 'prod'
           DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
           DATABASE_SERVER_VERSION: 14
+          ECCUBE_AUTH_MAGIC: 'testmagic'
         run: |
           rm -rf $GITHUB_WORKSPACE/app/Plugin/*
           echo "APP_ENV=${APP_ENV}" > .env
-          bin/console doctrine:database:create --env=dev
+          echo "ECCUBE_AUTH_MAGIC=testmagic" >> .env
+          bin/console doctrine:database:create --env=dev --if-not-exists || true
           bin/console doctrine:schema:create --env=dev
           bin/console eccube:fixtures:load --env=dev
 

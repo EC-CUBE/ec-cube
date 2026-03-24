@@ -121,10 +121,12 @@ jobs:
           APP_ENV: 'prod'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          ECCUBE_AUTH_MAGIC: 'testmagic'
         run: |
           echo "APP_ENV=${APP_ENV}" > .env
           echo "TRUSTED_HOSTS=127.0.0.1,localhost" >> .env
-          bin/console doctrine:database:create --env=dev
+          echo "ECCUBE_AUTH_MAGIC=testmagic" >> .env
+          bin/console doctrine:database:create --env=dev --if-not-exists || true
           bin/console doctrine:schema:create --env=dev
           bin/console eccube:fixtures:load --env=dev
 
