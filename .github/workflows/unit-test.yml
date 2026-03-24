@@ -88,6 +88,12 @@ jobs:
           bin/console eccube:fixtures:load
           bin/console assets:install --symlink --relative html
 
+      ## XXX MySQL で Syntax error or access violation: 1305 SAVEPOINT DOCTRINE2_SAVEPOINT_3 does not exist が
+      ## 発生するため \DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension を削除する
+      ## see https://github.com/dmaicher/doctrine-test-bundle/issues/58#issuecomment-391081408
+      - run: sed -e '/DoctrineTestBundle/d' phpunit.xml.dist > phpunit.xml
+        if: ${{ matrix.db == 'mysql' }}
+
       - name: PHPUnit
         uses: nick-invision/retry@ce71cc2ab81d554ebbe88c79ab5975992d79ba08  # v3
         with:
