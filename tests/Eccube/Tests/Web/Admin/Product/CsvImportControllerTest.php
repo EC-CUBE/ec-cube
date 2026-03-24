@@ -47,8 +47,8 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         parent::setUp();
         $this->productRepo = $this->entityManager->getRepository(Product::class);
         $this->categoryRepo = $this->entityManager->getRepository(Category::class);
-        $this->filepath = __DIR__ . '/products.csv';
-        copy(__DIR__ . '/../../../../../Fixtures/products.csv', $this->filepath); // 削除されてしまうのでコピーしておく
+        $this->filepath = __DIR__.'/products.csv';
+        copy(__DIR__.'/../../../../../Fixtures/products.csv', $this->filepath); // 削除されてしまうのでコピーしておく
 
         $fs = new Filesystem();
         $fs->mkdir($this->eccubeConfig['eccube_csv_temp_realdir']);
@@ -93,14 +93,14 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $csv = [
             '商品ID' => null,
             '公開ステータス(ID)' => 1,
-            '商品名' => '商品名' . $faker->word . '商品名',
-            'ショップ用メモ欄' => 'ショップ用メモ欄' . $faker->paragraph . 'ショップ用メモ欄',
-            '商品説明(一覧)' => '商品説明(一覧)' . $faker->paragraph . '商品説明(一覧)',
-            '商品説明(詳細)' => '商品説明(詳細)' . $faker->realText() . '商品説明(詳細)',
-            '検索ワード' => '検索ワード' . $faker->word . '検索ワード',
-            'フリーエリア' => 'フリーエリア' . $faker->paragraph . 'フリーエリア',
+            '商品名' => '商品名'.$faker->word.'商品名',
+            'ショップ用メモ欄' => 'ショップ用メモ欄'.$faker->paragraph.'ショップ用メモ欄',
+            '商品説明(一覧)' => '商品説明(一覧)'.$faker->paragraph.'商品説明(一覧)',
+            '商品説明(詳細)' => '商品説明(詳細)'.$faker->realText().'商品説明(詳細)',
+            '検索ワード' => '検索ワード'.$faker->word.'検索ワード',
+            'フリーエリア' => 'フリーエリア'.$faker->paragraph.'フリーエリア',
             '商品削除フラグ' => 0,
-            '商品画像' => $faker->word . '.jpg,' . $faker->word . '.jpg',
+            '商品画像' => $faker->word.'.jpg,'.$faker->word.'.jpg',
             '商品カテゴリ(ID)' => '5,6',
             'タグ(ID)' => '1,2',
             '販売種別(ID)' => 1,
@@ -131,7 +131,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
     public function createCsvFromArray(array $csv, $filename = 'products.csv')
     {
         $dir = sys_get_temp_dir();
-        $filepath = $dir . '/' . $filename;
+        $filepath = $dir.'/'.$filename;
         $fp = fopen($filepath, 'w');
         if ($fp !== false) {
             foreach ($csv as $row) {
@@ -275,7 +275,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
 
         $this->expected = 3;
         $this->actual = $newCount;
-        $this->verify('fork-0[0-9]-new に商品コードを変更したのは ' . $this->expected . '商品規格');
+        $this->verify('fork-0[0-9]-new に商品コードを変更したのは '.$this->expected.'商品規格');
 
         $this->assertMatchesRegularExpression(
             '/CSVファイルをアップロードしました/u',
@@ -380,7 +380,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $config['eccube_csv_export_encoding'] = 'UTF-8'; // SJIS だと比較できないので UTF-8 に変更しておく
         static::getContainer()->setParameter('eccube.constants', $config);
 
-        $this->expectOutputString('商品ID,公開ステータス(ID),商品名,ショップ用メモ欄,商品説明(一覧),商品説明(詳細),検索ワード,フリーエリア,商品削除フラグ,商品画像,商品カテゴリ(ID),タグ(ID),販売種別(ID),規格分類1(ID),規格分類2(ID),発送日目安(ID),商品コード,在庫数,在庫数無制限フラグ,販売制限数,通常価格,販売価格,送料,税率' . "\n");
+        $this->expectOutputString('商品ID,公開ステータス(ID),商品名,ショップ用メモ欄,商品説明(一覧),商品説明(詳細),検索ワード,フリーエリア,商品削除フラグ,商品画像,商品カテゴリ(ID),タグ(ID),販売種別(ID),規格分類1(ID),規格分類2(ID),発送日目安(ID),商品コード,在庫数,在庫数無制限フラグ,販売制限数,通常価格,販売価格,送料,税率'."\n");
 
         $this->client->request(
             'GET',
@@ -452,8 +452,8 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      */
     public function testCsvCategory()
     {
-        $this->filepath = __DIR__ . '/categories.csv';
-        copy(__DIR__ . '/../../../../../Fixtures/categories.csv', $this->filepath); // 削除されてしまうのでコピーしておく
+        $this->filepath = __DIR__.'/categories.csv';
+        copy(__DIR__.'/../../../../../Fixtures/categories.csv', $this->filepath); // 削除されてしまうのでコピーしておく
 
         $crawler = $this->scenario('admin_product_category_csv_import', 'categories.csv');
 
@@ -471,8 +471,8 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      */
     public function testCsvCategoryWithNew()
     {
-        $this->filepath = __DIR__ . '/categories.csv';
-        copy(__DIR__ . '/../../../../../Fixtures/categories.csv', $this->filepath);
+        $this->filepath = __DIR__.'/categories.csv';
+        copy(__DIR__.'/../../../../../Fixtures/categories.csv', $this->filepath);
         $csv = [
             ['カテゴリID', 'カテゴリ名', '親カテゴリID', 'カテゴリ削除フラグ'],
             ['', '新カテゴリ', '', ''],
@@ -495,8 +495,8 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      */
     public function testCsvCategoryWithOnlyCategoryName()
     {
-        $this->filepath = __DIR__ . '/categories.csv';
-        copy(__DIR__ . '/../../../../../Fixtures/categories.csv', $this->filepath); // 削除されてしまうのでコピーしておく
+        $this->filepath = __DIR__.'/categories.csv';
+        copy(__DIR__.'/../../../../../Fixtures/categories.csv', $this->filepath); // 削除されてしまうのでコピーしておく
 
         $csv = [
             ['カテゴリ名'],
@@ -520,8 +520,8 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      */
     public function testCsvCategoryWithCategoryNameIsNull()
     {
-        $this->filepath = __DIR__ . '/categories.csv';
-        copy(__DIR__ . '/../../../../../Fixtures/categories.csv', $this->filepath); // 削除されてしまうのでコピーしておく
+        $this->filepath = __DIR__.'/categories.csv';
+        copy(__DIR__.'/../../../../../Fixtures/categories.csv', $this->filepath); // 削除されてしまうのでコピーしておく
 
         $categories = $this->categoryRepo->findAll();
         $this->expected = count($categories);
@@ -546,8 +546,8 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      */
     public function testCsvCategoryWithoutCategoryNameColumn()
     {
-        $this->filepath = __DIR__ . '/categories.csv';
-        copy(__DIR__ . '/../../../../../Fixtures/categories.csv', $this->filepath); // 削除されてしまうのでコピーしておく
+        $this->filepath = __DIR__.'/categories.csv';
+        copy(__DIR__.'/../../../../../Fixtures/categories.csv', $this->filepath); // 削除されてしまうのでコピーしておく
 
         $categories = $this->categoryRepo->findAll();
         $this->expected = count($categories);
@@ -572,8 +572,8 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      */
     public function testCsvCategoryWithColumnSorted()
     {
-        $this->filepath = __DIR__ . '/categories.csv';
-        copy(__DIR__ . '/../../../../../Fixtures/categories.csv', $this->filepath); // 削除されてしまうのでコピーしておく
+        $this->filepath = __DIR__.'/categories.csv';
+        copy(__DIR__.'/../../../../../Fixtures/categories.csv', $this->filepath); // 削除されてしまうのでコピーしておく
         /* @var Generator $faker */
         $this->getFaker();
         $categoryName = 'CategoryNameTest';
@@ -605,7 +605,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $config['eccube_csv_export_encoding'] = 'UTF-8'; // SJIS だと比較できないので UTF-8 に変更しておく
         static::getContainer()->setParameter('eccube.constants', $config);
 
-        $this->expectOutputString('カテゴリID,カテゴリ名,親カテゴリID,カテゴリ削除フラグ' . "\n");
+        $this->expectOutputString('カテゴリID,カテゴリ名,親カテゴリID,カテゴリ削除フラグ'."\n");
 
         $this->client->request(
             'GET',
@@ -676,7 +676,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $faker = $this->getFaker();
         // 1 product case stock_unlimited = true
         $csv[] = ['公開ステータス(ID)', '商品名', '販売種別(ID)', '在庫数無制限フラグ', '販売価格'];
-        $csv[] = [1,  '商品名' . $faker->word . '商品名', 1, 1, $faker->randomNumber(5)];
+        $csv[] = [1,  '商品名'.$faker->word.'商品名', 1, 1, $faker->randomNumber(5)];
         $this->filepath = $this->createCsvFromArray($csv);
         $crawler = $this->scenario();
 
@@ -690,7 +690,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         // 1 product case stock_unlimited = true
         $csv = [];
         $csv[] = ['公開ステータス(ID)', '商品名', '販売種別(ID)', '在庫数', '販売価格'];
-        $csv[] = [1,  '商品名' . $faker->word . '商品名', 1, 1, $faker->randomNumber(5)];
+        $csv[] = [1,  '商品名'.$faker->word.'商品名', 1, 1, $faker->randomNumber(5)];
         $this->filepath = $this->createCsvFromArray($csv);
         $crawler = $this->scenario();
 
@@ -739,7 +739,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $faker = $this->getFaker();
         // 1 product
         $csv[] = ['公開ステータス(ID)', '商品名', '販売種別(ID)', '在庫数無制限フラグ', '販売価格'];
-        $csv[] = [$status, '商品名' . $faker->word . '商品名', 1, 1, $faker->randomNumber(5)];
+        $csv[] = [$status, '商品名'.$faker->word.'商品名', 1, 1, $faker->randomNumber(5)];
         $this->filepath = $this->createCsvFromArray($csv);
         $crawler = $this->scenario();
 
@@ -966,7 +966,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $csv[] = [
             $Product->getId(),
             1,
-            '商品名' . $faker->word . '商品名',
+            '商品名'.$faker->word.'商品名',
             1,
             1,
             $faker->randomNumber(5),
@@ -1004,7 +1004,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $csv[] = [
             $Product->getId(),
             1,
-            '商品名' . $faker->word . '商品名',
+            '商品名'.$faker->word.'商品名',
             1,
             1,
             $faker->randomNumber(5),
@@ -1057,9 +1057,9 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->filepath = $this->createCsvFromArray($csv);
         $this->scenario();
 
-        $dir = __DIR__ . '/../../../../../../html/upload/save_image/';
-        $this->assertTrue(file_exists($dir . $DuplicatedImage->getFileName()));
-        $this->assertFalse(file_exists($dir . $NotDuplicatedImage->getFileName()));
+        $dir = __DIR__.'/../../../../../../html/upload/save_image/';
+        $this->assertTrue(file_exists($dir.$DuplicatedImage->getFileName()));
+        $this->assertFalse(file_exists($dir.$NotDuplicatedImage->getFileName()));
     }
 
     /**
@@ -1111,7 +1111,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->assertEquals($expecedFileNo, $json['max_file_no']);
 
         $files = $this->getCsvTempFiles();
-        $this->assertEquals($expecedFileNo, count($files), $expecedFileNo . 'ファイル生成されているはず');
+        $this->assertEquals($expecedFileNo, count($files), $expecedFileNo.'ファイル生成されているはず');
     }
 
     public static function splitCsvDataProvider()
@@ -1134,7 +1134,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $fileNo = 1;
 
         $this->filepath = $this->createCsvFromArray($this->createCsvAsArray());
-        copy($this->filepath, $this->eccubeConfig['eccube_csv_temp_realdir'] . '/' . $fileName);
+        copy($this->filepath, $this->eccubeConfig['eccube_csv_temp_realdir'].'/'.$fileName);
 
         $this->client->request(
             'POST',
@@ -1158,7 +1158,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
     public function testCleanupCsv()
     {
         $fileName = 'product.csv';
-        touch($this->eccubeConfig['eccube_csv_temp_realdir'] . '/' . $fileName);
+        touch($this->eccubeConfig['eccube_csv_temp_realdir'].'/'.$fileName);
 
         $this->client->request(
             'POST',
@@ -1175,7 +1175,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
 
         $json = \json_decode($response->getContent(), true);
         $this->assertTrue($json['success']);
-        $this->assertFalse(file_exists($this->eccubeConfig['eccube_csv_temp_realdir'] . '/' . $fileName));
+        $this->assertFalse(file_exists($this->eccubeConfig['eccube_csv_temp_realdir'].'/'.$fileName));
     }
 
     private function getCsvTempFiles()

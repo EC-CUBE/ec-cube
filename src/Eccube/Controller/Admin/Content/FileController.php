@@ -51,7 +51,7 @@ class FileController extends AbstractController
     }
 
     #[Route('/%eccube_admin_route%/content/file_manager', name: 'admin_content_file', methods: ['GET', 'POST'])]
-    #[Template("@admin/Content/file.twig")]
+    #[Template('@admin/Content/file.twig')]
     public function index(Request $request)
     {
         $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');
@@ -241,12 +241,12 @@ class FileController extends AbstractController
                 $str = preg_replace($patterns, '', $pathParts['basename']);
                 if (strlen($str) === 0) {
                     return (new BinaryFileResponse($file))->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
-                } else {
-                    return new BinaryFileResponse($file, 200, [
-                        'Content-Type' => 'aplication/octet-stream;',
-                        'Content-Disposition' => "attachment; filename*=UTF-8\'\'".rawurlencode($this->convertStrFromServer($pathParts['basename'])),
-                    ]);
                 }
+
+                return new BinaryFileResponse($file, 200, [
+                    'Content-Type' => 'aplication/octet-stream;',
+                    'Content-Disposition' => "attachment; filename*=UTF-8\'\'".rawurlencode($this->convertStrFromServer($pathParts['basename'])),
+                ]);
             }
         }
         throw new NotFoundHttpException();

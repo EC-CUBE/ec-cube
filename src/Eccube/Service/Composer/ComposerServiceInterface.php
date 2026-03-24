@@ -24,7 +24,6 @@ interface ComposerServiceInterface
      * Run execute command
      *
      * @param string $packageName format foo/bar or foo/bar:1.0.0 or "foo/bar 1.0.0"
-     * @param null $output
      *
      * @return string
      */
@@ -34,7 +33,6 @@ interface ComposerServiceInterface
      * Run remove command
      *
      * @param string $packageName format foo/bar or foo/bar:1.0.0 or "foo/bar 1.0.0"
-     * @param null $output
      *
      * @return string
      */

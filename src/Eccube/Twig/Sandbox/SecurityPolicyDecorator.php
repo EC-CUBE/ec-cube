@@ -51,7 +51,7 @@ class SecurityPolicyDecorator implements SecurityPolicyInterface
         }
 
         // ゲッターメソッドが存在する場合はメソッドアクセスとしてチェックする
-        $getter = 'get' . ucfirst($property);
+        $getter = 'get'.ucfirst($property);
         if (method_exists($obj, $getter)) {
             $this->checkMethodAllowed($obj, $getter);
 

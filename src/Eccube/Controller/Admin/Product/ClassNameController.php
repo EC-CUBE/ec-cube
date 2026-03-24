@@ -57,7 +57,7 @@ class ClassNameController extends AbstractController
 
     #[Route('/%eccube_admin_route%/product/class_name', name: 'admin_product_class_name', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/product/class_name/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_product_class_name_edit', methods: ['GET', 'POST'])]
-    #[Template("@admin/Product/class_name.twig")]
+    #[Template('@admin/Product/class_name.twig')]
     public function index(Request $request, $id = null)
     {
         if ($id) {
@@ -192,7 +192,6 @@ class ClassNameController extends AbstractController
     /**
      * 規格CSVの出力.
      *
-     *
      * @param Request $request
      *
      * @return StreamedResponse
@@ -223,7 +222,7 @@ class ClassNameController extends AbstractController
             $this->csvExportService->exportData(function ($entity, $csvService) use ($request) {
                 $Csvs = $csvService->getCsvs();
 
-                /** @var $ClassName \Eccube\Entity\ClassName */
+                /** @var \Eccube\Entity\ClassName $ClassName */
                 $ClassName = $entity;
 
                 // CSV出力項目と合致するデータを取得.

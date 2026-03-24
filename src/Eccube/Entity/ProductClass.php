@@ -115,9 +115,9 @@ if (!class_exists(ProductClass::class)) {
         {
             if ($this->getStock() > 0 || $this->isStockUnlimited()) {
                 return true;
-            } else {
-                return false;
             }
+
+            return false;
         }
 
         /**
@@ -247,54 +247,54 @@ if (!class_exists(ProductClass::class)) {
         /**
          * @var ProductStock
          */
-        #[ORM\OneToOne(targetEntity: \Eccube\Entity\ProductStock::class, mappedBy: 'ProductClass', cascade: ['persist', 'remove'])]
+        #[ORM\OneToOne(targetEntity: ProductStock::class, mappedBy: 'ProductClass', cascade: ['persist', 'remove'])]
         private $ProductStock;
 
         /**
          * @var TaxRule
          */
-        #[ORM\OneToOne(targetEntity: \Eccube\Entity\TaxRule::class, mappedBy: 'ProductClass', cascade: ['persist', 'remove'])]
+        #[ORM\OneToOne(targetEntity: TaxRule::class, mappedBy: 'ProductClass', cascade: ['persist', 'remove'])]
         private $TaxRule;
 
         /**
          * @var Product
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Product::class, inversedBy: 'ProductClasses')]
+        #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'ProductClasses')]
         #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id')]
         private $Product;
 
         /**
          * @var Master\SaleType
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\SaleType::class)]
+        #[ORM\ManyToOne(targetEntity: Master\SaleType::class)]
         #[ORM\JoinColumn(name: 'sale_type_id', referencedColumnName: 'id')]
         private $SaleType;
 
         /**
          * @var ClassCategory
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\ClassCategory::class)]
+        #[ORM\ManyToOne(targetEntity: ClassCategory::class)]
         #[ORM\JoinColumn(name: 'class_category_id1', referencedColumnName: 'id', nullable: true)]
         private $ClassCategory1;
 
         /**
          * @var ClassCategory
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\ClassCategory::class)]
+        #[ORM\ManyToOne(targetEntity: ClassCategory::class)]
         #[ORM\JoinColumn(name: 'class_category_id2', referencedColumnName: 'id', nullable: true)]
         private $ClassCategory2;
 
         /**
          * @var DeliveryDuration
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\DeliveryDuration::class)]
+        #[ORM\ManyToOne(targetEntity: DeliveryDuration::class)]
         #[ORM\JoinColumn(name: 'delivery_duration_id', referencedColumnName: 'id')]
         private $DeliveryDuration;
 
         /**
          * @var Member
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Member::class)]
+        #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
         private $Creator;
 

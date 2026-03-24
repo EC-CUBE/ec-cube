@@ -238,7 +238,7 @@ if (!class_exists(BaseInfo::class)) {
         /**
          * @var Master\Country
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\Country::class)]
+        #[ORM\ManyToOne(targetEntity: Master\Country::class)]
         #[ORM\JoinColumn(name: 'country_id', referencedColumnName: 'id')]
         #[ORM\Cache(usage: 'NONSTRICT_READ_WRITE')]
         private $Country;
@@ -246,7 +246,7 @@ if (!class_exists(BaseInfo::class)) {
         /**
          * @var Master\Pref
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\Pref::class)]
+        #[ORM\ManyToOne(targetEntity: Master\Pref::class)]
         #[ORM\JoinColumn(name: 'pref_id', referencedColumnName: 'id')]
         #[ORM\Cache(usage: 'NONSTRICT_READ_WRITE')]
         private $Pref;

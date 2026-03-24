@@ -49,9 +49,9 @@ if (!class_exists(ExportCsvRow::class)) {
         {
             if (is_null($this->data)) {
                 return true;
-            } else {
-                return false;
             }
+
+            return false;
         }
 
         /**

@@ -126,7 +126,7 @@ class ShippingController extends AbstractController
      * 出荷登録/編集画面.
      */
     #[Route('/%eccube_admin_route%/shipping/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_shipping_edit', methods: ['GET', 'POST'])]
-    #[Template("@admin/Order/shipping.twig")]
+    #[Template('@admin/Order/shipping.twig')]
     public function index(Request $request, Order $Order)
     {
         $OriginOrder = clone $Order;
@@ -292,7 +292,6 @@ class ShippingController extends AbstractController
     }
 
     /**
-     *
      * @param Shipping $Shipping
      *
      * @return Response
@@ -306,7 +305,6 @@ class ShippingController extends AbstractController
     }
 
     /**
-     *
      * @param Shipping $Shipping
      *
      * @return JsonResponse

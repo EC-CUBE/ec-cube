@@ -183,7 +183,7 @@
     },
     "config": {
         "platform": {
-            "php": "8.2.0"
+            "php": "8.2.30"
         },
         "preferred-install": {
             "*": "dist"
@@ -201,6 +201,16 @@
         }
     },
     "repositories": [
+        {
+            "name": "eccube",
+            "type": "composer",
+            "url": "https://package-api-c2.ec-cube.net/v43",
+            "options": {
+                "http": {
+                    "header": ["X-ECCUBE-KEY: abcxyzABCXYZ123098"]
+                }
+            }
+        },
         {
             "type": "composer",
             "url": "https://repo.packagist.org",

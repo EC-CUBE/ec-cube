@@ -49,14 +49,14 @@ if (!class_exists(CustomerFavoriteProduct::class)) {
         /**
          * @var Customer
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Customer::class, inversedBy: 'CustomerFavoriteProducts')]
+        #[ORM\ManyToOne(targetEntity: Customer::class, inversedBy: 'CustomerFavoriteProducts')]
         #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'id')]
         private $Customer;
 
         /**
          * @var Product
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Product::class, inversedBy: 'CustomerFavoriteProducts')]
+        #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'CustomerFavoriteProducts')]
         #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id')]
         private $Product;
 

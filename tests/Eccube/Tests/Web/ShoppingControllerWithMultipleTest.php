@@ -134,7 +134,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         /** @var Email $Message */
         $Message = $this->getMailerMessage(0);
 
-        $this->expected = '[' . $BaseInfo->getShopName() . '] ご注文ありがとうございます';
+        $this->expected = '['.$BaseInfo->getShopName().'] ご注文ありがとうございます';
         $this->actual = $Message->getSubject();
         $this->verify();
 
@@ -185,7 +185,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
             }
         );
 
-        $address = $Customer->getName01() . ' ' . $Customer->getPref()->getName() . ' ' . $Customer->getAddr01() . ' ' . $Customer->getAddr02();
+        $address = $Customer->getName01().' '.$Customer->getPref()->getName().' '.$Customer->getAddr01().' '.$Customer->getAddr02();
         $this->expected = $address;
         $this->actual = $shippings[0]['customer_address'];
         $this->verify();
@@ -1277,7 +1277,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         /** @var Email $Message */
         $Message = $this->getMailerMessage(0);
 
-        $this->expected = '[' . $BaseInfo->getShopName() . '] ご注文ありがとうございます';
+        $this->expected = '['.$BaseInfo->getShopName().'] ご注文ありがとうございます';
         $this->actual = $Message->getSubject();
         $this->verify();
 

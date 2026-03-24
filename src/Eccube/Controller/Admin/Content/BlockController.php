@@ -51,7 +51,7 @@ class BlockController extends AbstractController
     }
 
     #[Route('/%eccube_admin_route%/content/block', name: 'admin_content_block', methods: ['GET'])]
-    #[Template("@admin/Content/block.twig")]
+    #[Template('@admin/Content/block.twig')]
     public function index(Request $request)
     {
         $DeviceType = $this->deviceTypeRepository
@@ -76,7 +76,7 @@ class BlockController extends AbstractController
 
     #[Route('/%eccube_admin_route%/content/block/new', name: 'admin_content_block_new', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/content/block/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_content_block_edit', methods: ['GET', 'POST'])]
-    #[Template("@admin/Content/block_edit.twig")]
+    #[Template('@admin/Content/block_edit.twig')]
     public function edit(Request $request, Environment $twig, Filesystem $fs, CacheUtil $cacheUtil, $id = null)
     {
         $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');

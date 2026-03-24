@@ -126,7 +126,7 @@ class AdminController extends AbstractController
     }
 
     #[Route('/%eccube_admin_route%/login', name: 'admin_login', methods: ['GET', 'POST'])]
-    #[Template("@admin/login.twig")]
+    #[Template('@admin/login.twig')]
     public function login(Request $request)
     {
         if ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
@@ -162,7 +162,7 @@ class AdminController extends AbstractController
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     #[Route('/%eccube_admin_route%/', name: 'admin_homepage', methods: ['GET'])]
-    #[Template("@admin/index.twig")]
+    #[Template('@admin/index.twig')]
     public function index(Request $request)
     {
         $adminRoute = $this->eccubeConfig['eccube_admin_route'];
@@ -271,7 +271,6 @@ class AdminController extends AbstractController
      *
      * @param Request $request
      *
-     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     #[Route('/%eccube_admin_route%/sale_chart', name: 'admin_homepage_sale', methods: ['GET'])]
@@ -311,13 +310,12 @@ class AdminController extends AbstractController
     /**
      * パスワード変更画面
      *
-     *
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|array
      */
     #[Route('/%eccube_admin_route%/change_password', name: 'admin_change_password', methods: ['GET', 'POST'])]
-    #[Template("@admin/change_password.twig")]
+    #[Template('@admin/change_password.twig')]
     public function changePassword(Request $request)
     {
         $builder = $this->formFactory
@@ -368,7 +366,6 @@ class AdminController extends AbstractController
     /**
      * 在庫なし商品の検索結果を表示する.
      *
-     *
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -389,7 +386,6 @@ class AdminController extends AbstractController
 
     /**
      * 本会員の検索結果を表示する.
-     *
      *
      * @param Request $request
      *

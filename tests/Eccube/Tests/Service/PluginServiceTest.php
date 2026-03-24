@@ -604,23 +604,15 @@ EOD;
 namespace Plugin\@@@@\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Blocknn
- *
- * @ORM\Table(name="plg_@@@@")
- * @ORM\Entity(repositoryClass="Plugin\@@@@\Repository\BlockRepository")
- */
 if (!class_exists('\Plugin\@@@@\Entity\Block')) {
+#[ORM\Table(name: "plg_@@@@")]
+#[ORM\Entity(repositoryClass: "Plugin\@@@@\Repository\BlockRepository")]
 class Block
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    #[ORM\Column(name: "id", type: "integer", options: ["unsigned" => true])]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
+    private ?int $id = null;
 
     /**
      * @return int
@@ -657,7 +649,7 @@ EOD;
         $Block = new $clazz();
         $Block->sample = true;
         $this->entityManager->persist($Block);
-        $this->entityManager->flush($Block);
+        $this->entityManager->flush();
         $this->assertTrue($this->entityManager->find($clazz, 1)->sample);
 
         ob_start();

@@ -58,7 +58,7 @@ if (!class_exists(Tag::class)) {
         /**
          * @var \Doctrine\Common\Collections\Collection
          */
-        #[ORM\OneToMany(targetEntity: \Eccube\Entity\ProductTag::class, mappedBy: 'Tag')]
+        #[ORM\OneToMany(targetEntity: ProductTag::class, mappedBy: 'Tag')]
         protected $ProductTag;
 
         /**

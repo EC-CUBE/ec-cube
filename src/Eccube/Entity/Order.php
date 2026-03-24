@@ -556,68 +556,68 @@ if (!class_exists(Order::class)) {
         /**
          * @var \Doctrine\Common\Collections\Collection|OrderItem[]
          */
-        #[ORM\OneToMany(targetEntity: \Eccube\Entity\OrderItem::class, mappedBy: 'Order', cascade: ['persist', 'remove'])]
+        #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'Order', cascade: ['persist', 'remove'])]
         private $OrderItems;
 
         /**
          * @var \Doctrine\Common\Collections\Collection|Shipping[]
          */
-        #[ORM\OneToMany(targetEntity: \Eccube\Entity\Shipping::class, mappedBy: 'Order', cascade: ['persist', 'remove'])]
+        #[ORM\OneToMany(targetEntity: Shipping::class, mappedBy: 'Order', cascade: ['persist', 'remove'])]
         private $Shippings;
 
         /**
          * @var \Doctrine\Common\Collections\Collection
          */
-        #[ORM\OneToMany(targetEntity: \Eccube\Entity\MailHistory::class, mappedBy: 'Order', cascade: ['remove'])]
+        #[ORM\OneToMany(targetEntity: MailHistory::class, mappedBy: 'Order', cascade: ['remove'])]
         #[ORM\OrderBy(['send_date' => 'DESC'])]
         private $MailHistories;
 
         /**
          * @var Customer
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Customer::class, inversedBy: 'Orders')]
+        #[ORM\ManyToOne(targetEntity: Customer::class, inversedBy: 'Orders')]
         #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'id')]
         private $Customer;
 
         /**
          * @var Master\Country
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\Country::class)]
+        #[ORM\ManyToOne(targetEntity: Master\Country::class)]
         #[ORM\JoinColumn(name: 'country_id', referencedColumnName: 'id')]
         private $Country;
 
         /**
          * @var Master\Pref
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\Pref::class)]
+        #[ORM\ManyToOne(targetEntity: Master\Pref::class)]
         #[ORM\JoinColumn(name: 'pref_id', referencedColumnName: 'id')]
         private $Pref;
 
         /**
          * @var Master\Sex
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\Sex::class)]
+        #[ORM\ManyToOne(targetEntity: Master\Sex::class)]
         #[ORM\JoinColumn(name: 'sex_id', referencedColumnName: 'id')]
         private $Sex;
 
         /**
          * @var Master\Job
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\Job::class)]
+        #[ORM\ManyToOne(targetEntity: Master\Job::class)]
         #[ORM\JoinColumn(name: 'job_id', referencedColumnName: 'id')]
         private $Job;
 
         /**
          * @var Payment
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Payment::class)]
+        #[ORM\ManyToOne(targetEntity: Payment::class)]
         #[ORM\JoinColumn(name: 'payment_id', referencedColumnName: 'id')]
         private $Payment;
 
         /**
          * @var Master\DeviceType
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\DeviceType::class)]
+        #[ORM\ManyToOne(targetEntity: Master\DeviceType::class)]
         #[ORM\JoinColumn(name: 'device_type_id', referencedColumnName: 'id')]
         private $DeviceType;
 
@@ -626,7 +626,7 @@ if (!class_exists(Order::class)) {
          *
          * @var Master\CustomerOrderStatus
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\CustomerOrderStatus::class)]
+        #[ORM\ManyToOne(targetEntity: Master\CustomerOrderStatus::class)]
         #[ORM\JoinColumn(name: 'order_status_id', referencedColumnName: 'id')]
         private $CustomerOrderStatus;
 
@@ -635,14 +635,14 @@ if (!class_exists(Order::class)) {
          *
          * @var Master\OrderStatusColor
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\OrderStatusColor::class)]
+        #[ORM\ManyToOne(targetEntity: Master\OrderStatusColor::class)]
         #[ORM\JoinColumn(name: 'order_status_id', referencedColumnName: 'id')]
         private $OrderStatusColor;
 
         /**
          * @var Master\OrderStatus
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\OrderStatus::class)]
+        #[ORM\ManyToOne(targetEntity: Master\OrderStatus::class)]
         #[ORM\JoinColumn(name: 'order_status_id', referencedColumnName: 'id')]
         private $OrderStatus;
 

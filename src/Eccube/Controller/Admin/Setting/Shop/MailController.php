@@ -50,7 +50,7 @@ class MailController extends AbstractController
 
     #[Route('/%eccube_admin_route%/setting/shop/mail', name: 'admin_setting_shop_mail', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/setting/shop/mail/{id}', requirements: ['id' => '\d+'], name: 'admin_setting_shop_mail_edit', methods: ['GET', 'POST'])]
-    #[Template("@admin/Setting/Shop/mail.twig")]
+    #[Template('@admin/Setting/Shop/mail.twig')]
     public function index(Request $request, Environment $twig, CacheUtil $cacheUtil, ?MailTemplate $Mail = null)
     {
         $Mail = $Mail ?? new MailTemplate();
@@ -151,7 +151,7 @@ class MailController extends AbstractController
     }
 
     #[Route('/%eccube_admin_route%/setting/shop/mail/preview', name: 'admin_setting_shop_mail_preview', methods: ['POST'])]
-    #[Template("@admin/Setting/Shop/mail_view.twig")]
+    #[Template('@admin/Setting/Shop/mail_view.twig')]
     public function preview(Request $request)
     {
         if (!$request->isXmlHttpRequest() || !$this->isTokenValid()) {

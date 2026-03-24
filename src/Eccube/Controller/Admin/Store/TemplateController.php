@@ -59,13 +59,12 @@ class TemplateController extends AbstractController
     /**
      * テンプレート一覧画面
      *
-     *
      * @param Request $request
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     #[Route('/%eccube_admin_route%/store/template', name: 'admin_store_template', methods: ['GET', 'POST'])]
-    #[Template("@admin/Store/template.twig")]
+    #[Template('@admin/Store/template.twig')]
     public function index(Request $request, CacheUtil $cacheUtil)
     {
         $DeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_PC);
@@ -104,7 +103,6 @@ class TemplateController extends AbstractController
 
     /**
      * テンプレート一覧からのダウンロード
-     *
      *
      * @param Request $request
      * @param \Eccube\Entity\Template $Template
@@ -208,13 +206,12 @@ class TemplateController extends AbstractController
     /**
      * テンプレートの追加画面.
      *
-     *
      * @param Request $request
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     #[Route('/%eccube_admin_route%/store/template/install', name: 'admin_store_template_install', methods: ['GET', 'POST'])]
-    #[Template("@admin/Store/template_add.twig")]
+    #[Template('@admin/Store/template_add.twig')]
     public function install(Request $request)
     {
         $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');

@@ -43,14 +43,14 @@ if (!class_exists(DeliveryFee::class)) {
         /**
          * @var Delivery
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Delivery::class, inversedBy: 'DeliveryFees')]
+        #[ORM\ManyToOne(targetEntity: Delivery::class, inversedBy: 'DeliveryFees')]
         #[ORM\JoinColumn(name: 'delivery_id', referencedColumnName: 'id')]
         private $Delivery;
 
         /**
          * @var Master\Pref
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\Pref::class)]
+        #[ORM\ManyToOne(targetEntity: Master\Pref::class)]
         #[ORM\JoinColumn(name: 'pref_id', referencedColumnName: 'id')]
         private $Pref;
 

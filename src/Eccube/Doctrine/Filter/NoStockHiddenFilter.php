@@ -22,8 +22,8 @@ class NoStockHiddenFilter extends SQLFilter
     {
         if ($targetEntity->reflClass->getName() === \Eccube\Entity\ProductClass::class) {
             return $targetTableAlias.'.stock >= 1 OR '.$targetTableAlias.'.stock_unlimited = true';
-        } else {
-            return '';
         }
+
+        return '';
     }
 }

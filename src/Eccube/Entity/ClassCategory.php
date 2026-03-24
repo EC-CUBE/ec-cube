@@ -81,14 +81,14 @@ if (!class_exists(ClassCategory::class)) {
         /**
          * @var ClassName
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\ClassName::class, inversedBy: 'ClassCategories')]
+        #[ORM\ManyToOne(targetEntity: ClassName::class, inversedBy: 'ClassCategories')]
         #[ORM\JoinColumn(name: 'class_name_id', referencedColumnName: 'id')]
         private $ClassName;
 
         /**
          * @var Member
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Member::class)]
+        #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
         private $Creator;
 

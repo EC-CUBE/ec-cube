@@ -53,14 +53,13 @@ class LoginHistoryController extends AbstractController
      * ログイン履歴検索画面を表示する.
      * 左ナビゲーションの選択はGETで遷移する.
      *
-     *
      * @param int $page_no
      *
      * @return \Symfony\Component\HttpFoundation\Response|array
      */
     #[Route('/%eccube_admin_route%/setting/system/login_history', name: 'admin_setting_system_login_history', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/setting/system/login_history/{page_no}', requirements: ['page_no' => '\d+'], name: 'admin_setting_system_login_history_page', methods: ['GET', 'POST'])]
-    #[Template("@admin/Setting/System/login_history.twig")]
+    #[Template('@admin/Setting/System/login_history.twig')]
     public function index(Request $request, PaginatorInterface $paginator, $page_no = null)
     {
         $session = $request->getSession();

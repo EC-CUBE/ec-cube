@@ -41,13 +41,12 @@ class AutoNewItemController extends AbstractController
     }
 
     /**
-     *
      * @param Request $request
      *
      * @return array
      */
     #[Route('/block/auto_new_item', name: 'block_auto_new_item', methods: ['GET'])]
-    #[Template("Block/auto_new_item.twig")]
+    #[Template('Block/auto_new_item.twig')]
     public function index(Request $request)
     {
         $qb = $this->productRepository->getQueryBuilderBySearchData([

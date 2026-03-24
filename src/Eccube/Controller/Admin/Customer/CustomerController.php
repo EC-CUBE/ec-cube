@@ -88,7 +88,7 @@ class CustomerController extends AbstractController
 
     #[Route('/%eccube_admin_route%/customer', name: 'admin_customer', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/customer/page/{page_no}', requirements: ['page_no' => '\d+'], name: 'admin_customer_page', methods: ['GET', 'POST'])]
-    #[Template("@admin/Customer/index.twig")]
+    #[Template('@admin/Customer/index.twig')]
     public function index(Request $request, PaginatorInterface $paginator, $page_no = null)
     {
         $session = $this->session;
@@ -288,7 +288,6 @@ class CustomerController extends AbstractController
 
     /**
      * 会員CSVの出力.
-     *
      *
      * @param Request $request
      *

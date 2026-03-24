@@ -87,14 +87,14 @@ if (!class_exists(ProductStock::class)) {
         /**
          * @var ProductClass
          */
-        #[ORM\OneToOne(targetEntity: \Eccube\Entity\ProductClass::class, inversedBy: 'ProductStock')]
+        #[ORM\OneToOne(targetEntity: ProductClass::class, inversedBy: 'ProductStock')]
         #[ORM\JoinColumn(name: 'product_class_id', referencedColumnName: 'id')]
         private $ProductClass;
 
         /**
          * @var Member
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Member::class)]
+        #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
         private $Creator;
 

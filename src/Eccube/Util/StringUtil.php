@@ -169,7 +169,7 @@ class StringUtil
         }
 
         $now = new \DateTime();
-        if (!($date instanceof \DateTime)) {
+        if (!$date instanceof \DateTime) {
             $date = new \DateTime($date);
         }
         $diff = $date->diff($now, true);
@@ -231,11 +231,10 @@ class StringUtil
                     @trigger_error($deprecated, E_USER_DEPRECATED);
 
                     return true;
-                } else {
-                    @trigger_error($deprecated, E_USER_DEPRECATED);
-
-                    return false;
                 }
+                @trigger_error($deprecated, E_USER_DEPRECATED);
+
+                return false;
             }
             @trigger_error($deprecated, E_USER_DEPRECATED);
 
@@ -260,11 +259,10 @@ class StringUtil
                 @trigger_error($deprecated, E_USER_DEPRECATED);
 
                 return $array_result;
-            } else {
-                @trigger_error($deprecated, E_USER_DEPRECATED);
-
-                return empty($value);
             }
+            @trigger_error($deprecated, E_USER_DEPRECATED);
+
+            return empty($value);
         }
 
         if ($greedy) {

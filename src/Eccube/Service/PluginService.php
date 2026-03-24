@@ -354,7 +354,7 @@ class PluginService
                     if (file_exists($entityDir)) {
                         $ormConfig = $this->entityManager->getConfiguration();
                         $chain = $ormConfig->getMetadataDriverImpl()->getDriver();
-                        $driver = $ormConfig->newDefaultAnnotationDriver([$entityDir], false);
+                        $driver = new \Eccube\Doctrine\ORM\Mapping\Driver\HybridMappingDriver([$entityDir]);
                         $namespace = 'Plugin\\'.$config['code'].'\\Entity';
                         $chain->addDriver($driver, $namespace);
                     }

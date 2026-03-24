@@ -78,13 +78,13 @@ if (!class_exists(Block::class)) {
         /**
          * @var \Doctrine\Common\Collections\Collection
          */
-        #[ORM\OneToMany(targetEntity: \Eccube\Entity\BlockPosition::class, mappedBy: 'Block', cascade: ['persist','remove'])]
+        #[ORM\OneToMany(targetEntity: BlockPosition::class, mappedBy: 'Block', cascade: ['persist', 'remove'])]
         private $BlockPositions;
 
         /**
          * @var Master\DeviceType
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\DeviceType::class)]
+        #[ORM\ManyToOne(targetEntity: Master\DeviceType::class)]
         #[ORM\JoinColumn(name: 'device_type_id', referencedColumnName: 'id')]
         private $DeviceType;
 

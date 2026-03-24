@@ -72,7 +72,7 @@ class HybridAnnotationClassLoader
                 continue;
             }
 
-            $fqcn = $namespace . '\\' . $className;
+            $fqcn = $namespace.'\\'.$className;
             if (!class_exists($fqcn)) {
                 continue;
             }
@@ -105,7 +105,7 @@ class HybridAnnotationClassLoader
                         $path = $annotation->getPath() ?? $annotation->getLocalizedPaths()[0] ?? '/';
                         $route = new Route(
                             $path,
-                            array_merge($annotation->getDefaults(), ['_controller' => $fqcn . '::' . $method->getName()]),
+                            array_merge($annotation->getDefaults(), ['_controller' => $fqcn.'::'.$method->getName()]),
                             $annotation->getRequirements(),
                             $annotation->getOptions(),
                             $annotation->getHost() ?? '',
@@ -114,7 +114,7 @@ class HybridAnnotationClassLoader
                             $annotation->getCondition() ?? ''
                         );
 
-                        $routeName = $annotation->getName() ?? strtolower(str_replace('\\', '_', $fqcn) . '_' . $method->getName());
+                        $routeName = $annotation->getName() ?? strtolower(str_replace('\\', '_', $fqcn).'_'.$method->getName());
                         $collection->add($routeName, $route);
                     }
                 }

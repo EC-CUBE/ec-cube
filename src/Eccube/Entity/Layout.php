@@ -240,20 +240,20 @@ if (!class_exists(Layout::class)) {
         /**
          * @var \Doctrine\Common\Collections\Collection
          */
-        #[ORM\OneToMany(targetEntity: \Eccube\Entity\BlockPosition::class, mappedBy: 'Layout', cascade: ['persist','remove'])]
+        #[ORM\OneToMany(targetEntity: BlockPosition::class, mappedBy: 'Layout', cascade: ['persist', 'remove'])]
         private $BlockPositions;
 
         /**
          * @var \Doctrine\Common\Collections\Collection
          */
-        #[ORM\OneToMany(targetEntity: \Eccube\Entity\PageLayout::class, mappedBy: 'Layout', cascade: ['persist','remove'])]
+        #[ORM\OneToMany(targetEntity: PageLayout::class, mappedBy: 'Layout', cascade: ['persist', 'remove'])]
         #[ORM\OrderBy(['sort_no' => 'ASC'])]
         private $PageLayouts;
 
         /**
          * @var Master\DeviceType
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\DeviceType::class)]
+        #[ORM\ManyToOne(targetEntity: Master\DeviceType::class)]
         #[ORM\JoinColumn(name: 'device_type_id', referencedColumnName: 'id')]
         private $DeviceType;
 

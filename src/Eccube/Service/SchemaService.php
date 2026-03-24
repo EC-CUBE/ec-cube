@@ -14,7 +14,6 @@
 namespace Eccube\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 use Doctrine\ORM\Tools\SchemaTool;
 use Eccube\Doctrine\ORM\Mapping\Driver\NopAnnotationDriver;
 use Eccube\Doctrine\ORM\Mapping\Driver\ReloadSafeAnnotationDriver;

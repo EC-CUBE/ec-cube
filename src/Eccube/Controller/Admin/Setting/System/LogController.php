@@ -25,11 +25,10 @@ use Symfony\Component\Routing\Attribute\Route;
 class LogController extends AbstractController
 {
     /**
-     *
      * @return array|Symfony\Component\HttpFoundation\StreamedResponse
      */
     #[Route('/%eccube_admin_route%/setting/system/log', name: 'admin_setting_system_log', methods: ['GET', 'POST'])]
-    #[Template("@admin/Setting/System/log.twig")]
+    #[Template('@admin/Setting/System/log.twig')]
     public function index(Request $request)
     {
         $formData = [];
@@ -85,12 +84,12 @@ class LogController extends AbstractController
             });
 
             return $response;
-        } else {
-            return [
-                'form' => $form->createView(),
-                'log' => $this->parseLogFile($logFile, $formData),
-            ];
         }
+
+        return [
+            'form' => $form->createView(),
+            'log' => $this->parseLogFile($logFile, $formData),
+        ];
     }
 
     /**

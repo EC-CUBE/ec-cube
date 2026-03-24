@@ -112,7 +112,7 @@ class ShippingMultipleController extends AbstractShoppingController
      * 複数配送処理
      */
     #[Route('/shopping/shipping_multiple', name: 'shopping_shipping_multiple', methods: ['GET', 'POST'])]
-    #[Template("Shopping/shipping_multiple.twig")]
+    #[Template('Shopping/shipping_multiple.twig')]
     public function index(Request $request)
     {
         // ログイン状態のチェック.
@@ -383,7 +383,7 @@ class ShippingMultipleController extends AbstractShoppingController
      * 非会員時はセッションに追加する
      */
     #[Route('/shopping/shipping_multiple_edit', name: 'shopping_shipping_multiple_edit', methods: ['GET', 'POST'])]
-    #[Template("Shopping/shipping_multiple_edit.twig")]
+    #[Template('Shopping/shipping_multiple_edit.twig')]
     public function shippingMultipleEdit(Request $request)
     {
         // ログイン状態のチェック.

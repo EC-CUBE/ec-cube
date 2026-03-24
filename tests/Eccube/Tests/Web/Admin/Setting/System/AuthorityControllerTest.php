@@ -201,8 +201,6 @@ class AuthorityControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
-     * @param null $AuthorityRole
-     *
      * @return array
      */
     protected function createFormData($AuthorityRole = null)

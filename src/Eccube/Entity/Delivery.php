@@ -93,33 +93,33 @@ if (!class_exists(Delivery::class)) {
         /**
          * @var \Doctrine\Common\Collections\Collection
          */
-        #[ORM\OneToMany(targetEntity: \Eccube\Entity\PaymentOption::class, mappedBy: 'Delivery', cascade: ['persist','remove'])]
+        #[ORM\OneToMany(targetEntity: PaymentOption::class, mappedBy: 'Delivery', cascade: ['persist', 'remove'])]
         private $PaymentOptions;
 
         /**
          * @var \Doctrine\Common\Collections\Collection
          */
-        #[ORM\OneToMany(targetEntity: \Eccube\Entity\DeliveryFee::class, mappedBy: 'Delivery', cascade: ['persist','remove'])]
+        #[ORM\OneToMany(targetEntity: DeliveryFee::class, mappedBy: 'Delivery', cascade: ['persist', 'remove'])]
         private $DeliveryFees;
 
         /**
          * @var \Doctrine\Common\Collections\Collection
          */
-        #[ORM\OneToMany(targetEntity: \Eccube\Entity\DeliveryTime::class, mappedBy: 'Delivery', cascade: ['persist', 'remove'])]
+        #[ORM\OneToMany(targetEntity: DeliveryTime::class, mappedBy: 'Delivery', cascade: ['persist', 'remove'])]
         #[ORM\OrderBy(['sort_no' => 'ASC'])]
         private $DeliveryTimes;
 
         /**
          * @var Member
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Member::class)]
+        #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
         private $Creator;
 
         /**
          * @var Master\SaleType
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\SaleType::class)]
+        #[ORM\ManyToOne(targetEntity: Master\SaleType::class)]
         #[ORM\JoinColumn(name: 'sale_type_id', referencedColumnName: 'id')]
         private $SaleType;
 

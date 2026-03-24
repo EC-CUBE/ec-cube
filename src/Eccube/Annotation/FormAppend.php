@@ -52,7 +52,7 @@ final class FormAppend
         ?string $form_theme = null,
         ?string $type = null,
         ?array $options = null,
-        ?string $style_class = null
+        ?string $style_class = null,
     ) {
         // Support both annotation array and attribute named arguments
         if (is_array($auto_render)) {

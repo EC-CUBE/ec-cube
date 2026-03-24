@@ -51,7 +51,7 @@ class PaymentController extends AbstractController
     }
 
     #[Route('/%eccube_admin_route%/setting/shop/payment', name: 'admin_setting_shop_payment', methods: ['GET'])]
-    #[Template("@admin/Setting/Shop/payment.twig")]
+    #[Template('@admin/Setting/Shop/payment.twig')]
     public function index(Request $request)
     {
         $Payments = $this->paymentRepository
@@ -75,7 +75,7 @@ class PaymentController extends AbstractController
 
     #[Route('/%eccube_admin_route%/setting/shop/payment/new', name: 'admin_setting_shop_payment_new', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/setting/shop/payment/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_setting_shop_payment_edit', methods: ['GET', 'POST'])]
-    #[Template("@admin/Setting/Shop/payment_edit.twig")]
+    #[Template('@admin/Setting/Shop/payment_edit.twig')]
     public function edit(Request $request, ?Payment $Payment = null)
     {
         if (is_null($Payment)) {
@@ -258,7 +258,6 @@ class PaymentController extends AbstractController
     }
 
     /**
-     *
      * @param Request $request
      * @param Payment $TargetPayment
      *
@@ -317,7 +316,6 @@ class PaymentController extends AbstractController
     }
 
     /**
-     *
      * @param Request $request
      *
      * @return Response

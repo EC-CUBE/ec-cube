@@ -59,7 +59,7 @@ class CategoryController extends AbstractController
     #[Route('/%eccube_admin_route%/product/category', name: 'admin_product_category', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/product/category/{parent_id}', requirements: ['parent_id' => '\d+'], name: 'admin_product_category_show', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/product/category/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_product_category_edit', methods: ['GET', 'POST'])]
-    #[Template("@admin/Product/category.twig")]
+    #[Template('@admin/Product/category.twig')]
     public function index(Request $request, CacheUtil $cacheUtil, $parent_id = null, $id = null)
     {
         if ($parent_id) {
@@ -144,9 +144,9 @@ class CategoryController extends AbstractController
 
                 if ($Parent) {
                     return $this->redirectToRoute('admin_product_category_show', ['parent_id' => $Parent->getId()]);
-                } else {
-                    return $this->redirectToRoute('admin_product_category');
                 }
+
+                return $this->redirectToRoute('admin_product_category');
             }
 
             foreach ($forms as $editForm) {
@@ -175,9 +175,9 @@ class CategoryController extends AbstractController
 
                     if ($Parent) {
                         return $this->redirectToRoute('admin_product_category_show', ['parent_id' => $Parent->getId()]);
-                    } else {
-                        return $this->redirectToRoute('admin_product_category');
                     }
+
+                    return $this->redirectToRoute('admin_product_category');
                 }
             }
         }
@@ -249,9 +249,9 @@ class CategoryController extends AbstractController
 
         if ($Parent) {
             return $this->redirectToRoute('admin_product_category_show', ['parent_id' => $Parent->getId()]);
-        } else {
-            return $this->redirectToRoute('admin_product_category');
         }
+
+        return $this->redirectToRoute('admin_product_category');
     }
 
     #[Route('/%eccube_admin_route%/product/category/sort_no/move', name: 'admin_product_category_sort_no_move', methods: ['POST'])]
@@ -280,7 +280,6 @@ class CategoryController extends AbstractController
 
     /**
      * カテゴリCSVの出力.
-     *
      *
      * @param Request $request
      *

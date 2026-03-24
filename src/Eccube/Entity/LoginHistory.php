@@ -62,14 +62,14 @@ if (!class_exists(LoginHistory::class)) {
         /**
          * @var LoginHistoryStatus
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\LoginHistoryStatus::class)]
+        #[ORM\ManyToOne(targetEntity: LoginHistoryStatus::class)]
         #[ORM\JoinColumn(name: 'login_history_status_id', referencedColumnName: 'id', nullable: false)]
         private $Status;
 
         /**
          * @var Member
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Member::class)]
+        #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'member_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
         private $LoginUser;
 

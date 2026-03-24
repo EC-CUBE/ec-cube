@@ -44,7 +44,7 @@ class CustomerDeliveryEditController extends AbstractController
      */
     #[Route('/%eccube_admin_route%/customer/{id}/delivery/new', name: 'admin_customer_delivery_new', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/customer/{id}/delivery/{did}/edit', name: 'admin_customer_delivery_edit', requirements: ['id' => '\d+', 'did' => '\d+'], methods: ['GET', 'POST'])]
-    #[Template("@admin/Customer/delivery_edit.twig")]
+    #[Template('@admin/Customer/delivery_edit.twig')]
     public function edit(Request $request, Customer $Customer, $did = null)
     {
         // 配送先住所最大値判定
@@ -129,12 +129,11 @@ class CustomerDeliveryEditController extends AbstractController
         $CustomerAddress = $this->customerAddressRepository->find($did);
         if (is_null($CustomerAddress)) {
             throw new NotFoundHttpException();
-        } else {
-            if ($CustomerAddress->getCustomer()->getId() != $Customer->getId()) {
-                $this->deleteMessage();
+        }
+        if ($CustomerAddress->getCustomer()->getId() != $Customer->getId()) {
+            $this->deleteMessage();
 
-                return $this->redirect($this->generateUrl('admin_customer_edit', ['id' => $Customer->getId()]));
-            }
+            return $this->redirect($this->generateUrl('admin_customer_edit', ['id' => $Customer->getId()]));
         }
 
         try {

@@ -129,7 +129,6 @@ class SitemapController extends AbstractController
      *
      * Output sitemap of products as status is 1
      *
-     *
      * @return Response
      */
     #[Route('/sitemap_product_{page}.xml', name: 'sitemap_product_xml', requirements: ['page' => '\d+'], methods: ['GET'])]

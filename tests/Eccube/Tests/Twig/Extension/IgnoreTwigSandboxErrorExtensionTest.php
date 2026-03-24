@@ -25,7 +25,7 @@ class IgnoreTwigSandboxErrorExtensionTest extends AbstractWebTestCase
     public function testFreeArea($snippet, $whitelisted)
     {
         $Product = $this->createProduct();
-        $Product->setFreeArea('__RENDERED__' . $snippet);
+        $Product->setFreeArea('__RENDERED__'.$snippet);
         $this->entityManager->flush();
 
         $crawler = $this->client->request('GET', $this->generateUrl('product_detail', ['id' => $Product->getId()]));
@@ -42,7 +42,7 @@ class IgnoreTwigSandboxErrorExtensionTest extends AbstractWebTestCase
     public function testMetatags($snippet, $whitelisted)
     {
         $Page = $this->entityManager->getRepository(Page::class)->find(1);
-        $Page->setMetaTags('__RENDERED__' . $snippet);
+        $Page->setMetaTags('__RENDERED__'.$snippet);
         $this->entityManager->flush();
 
         $crawler = $this->client->request('GET', $this->generateUrl($Page->getUrl()));

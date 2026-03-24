@@ -54,7 +54,7 @@ class ContactController extends AbstractController
      */
     #[Route('/contact', name: 'contact', methods: ['GET', 'POST'])]
     #[Route('/contact', name: 'contact_confirm', methods: ['GET', 'POST'])]
-    #[Template("Contact/index.twig")]
+    #[Template('Contact/index.twig')]
     public function index(Request $request)
     {
         $builder = $this->formFactory->createBuilder(ContactType::class);
@@ -128,7 +128,7 @@ class ContactController extends AbstractController
      * お問い合わせ完了画面.
      */
     #[Route('/contact/complete', name: 'contact_complete', methods: ['GET'])]
-    #[Template("Contact/complete.twig")]
+    #[Template('Contact/complete.twig')]
     public function complete()
     {
         return [];

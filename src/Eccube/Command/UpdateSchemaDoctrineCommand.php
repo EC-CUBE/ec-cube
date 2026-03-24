@@ -13,8 +13,8 @@
 
 namespace Eccube\Command;
 
-use Doctrine\Bundle\DoctrineBundle\Command\Proxy\DoctrineCommandHelper;
 use Doctrine\Bundle\DoctrineBundle\Command\Proxy\UpdateSchemaDoctrineCommand as BaseUpdateSchemaDoctrineCommand;
+use Doctrine\ORM\Tools\Console\EntityManagerProvider;
 use Doctrine\ORM\Tools\SchemaTool;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\PluginService;
@@ -49,11 +49,12 @@ class UpdateSchemaDoctrineCommand extends BaseUpdateSchemaDoctrineCommand
     protected $schemaService;
 
     public function __construct(
+        EntityManagerProvider $entityManagerProvider,
         PluginRepository $pluginRepository,
         PluginService $pluginService,
         SchemaService $schemaService,
     ) {
-        parent::__construct();
+        parent::__construct($entityManagerProvider);
         $this->pluginRepository = $pluginRepository;
         $this->pluginService = $pluginService;
         $this->schemaService = $schemaService;
@@ -77,7 +78,6 @@ class UpdateSchemaDoctrineCommand extends BaseUpdateSchemaDoctrineCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        DoctrineCommandHelper::setApplicationEntityManager($this->getApplication(), $input->getOption('em'));
         $noProxy = true === $input->getOption('no-proxy');
         $dumpSql = true === $input->getOption('dump-sql');
         $force = true === $input->getOption('force');

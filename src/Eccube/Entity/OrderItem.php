@@ -221,56 +221,56 @@ if (!class_exists(OrderItem::class)) {
         /**
          * @var Order
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Order::class, inversedBy: 'OrderItems')]
+        #[ORM\ManyToOne(targetEntity: Order::class, inversedBy: 'OrderItems')]
         #[ORM\JoinColumn(name: 'order_id', referencedColumnName: 'id')]
         private $Order;
 
         /**
          * @var Product
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Product::class)]
+        #[ORM\ManyToOne(targetEntity: Product::class)]
         #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id')]
         private $Product;
 
         /**
          * @var ProductClass
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\ProductClass::class)]
+        #[ORM\ManyToOne(targetEntity: ProductClass::class)]
         #[ORM\JoinColumn(name: 'product_class_id', referencedColumnName: 'id')]
         private $ProductClass;
 
         /**
          * @var Shipping
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Shipping::class, inversedBy: 'OrderItems')]
+        #[ORM\ManyToOne(targetEntity: Shipping::class, inversedBy: 'OrderItems')]
         #[ORM\JoinColumn(name: 'shipping_id', referencedColumnName: 'id')]
         private $Shipping;
 
         /**
          * @var RoundingType
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\RoundingType::class)]
+        #[ORM\ManyToOne(targetEntity: RoundingType::class)]
         #[ORM\JoinColumn(name: 'rounding_type_id', referencedColumnName: 'id')]
         private $RoundingType;
 
         /**
          * @var Master\TaxType
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\TaxType::class)]
+        #[ORM\ManyToOne(targetEntity: Master\TaxType::class)]
         #[ORM\JoinColumn(name: 'tax_type_id', referencedColumnName: 'id')]
         private $TaxType;
 
         /**
          * @var TaxDisplayType
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\TaxDisplayType::class)]
+        #[ORM\ManyToOne(targetEntity: TaxDisplayType::class)]
         #[ORM\JoinColumn(name: 'tax_display_type_id', referencedColumnName: 'id')]
         private $TaxDisplayType;
 
         /**
          * @var OrderItemType
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\OrderItemType::class)]
+        #[ORM\ManyToOne(targetEntity: OrderItemType::class)]
         #[ORM\JoinColumn(name: 'order_item_type_id', referencedColumnName: 'id')]
         private $OrderItemType;
 

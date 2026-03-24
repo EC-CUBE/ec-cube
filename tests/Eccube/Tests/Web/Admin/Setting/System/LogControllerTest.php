@@ -34,17 +34,17 @@ class LogControllerTest extends AbstractAdminWebTestCase
 
         $this->formData = [
             '_token' => 'dummy',
-            'files' => 'site_' . date('Y-m-d') . '.log',
+            'files' => 'site_'.date('Y-m-d').'.log',
             'line_max' => '50',
             'log_level' => '',
             'keyword' => '',
         ];
 
         $logDir = static::getContainer()->getParameter('kernel.logs_dir')
-            . DIRECTORY_SEPARATOR
-            . static::getContainer()->getParameter('kernel.environment');
+            .DIRECTORY_SEPARATOR
+            .static::getContainer()->getParameter('kernel.environment');
 
-        $this->logTest = $logDir . '/' . $this->formData['files'];
+        $this->logTest = $logDir.'/'.$this->formData['files'];
 
         // ログディレクトリが存在しない場合は作成
         if (!is_dir($logDir)) {

@@ -125,13 +125,13 @@ if (!class_exists(Page::class)) {
         /**
          * @var \Doctrine\Common\Collections\Collection
          */
-        #[ORM\OneToMany(targetEntity: \Eccube\Entity\PageLayout::class, mappedBy: 'Page', cascade: ['persist', 'remove'])]
+        #[ORM\OneToMany(targetEntity: PageLayout::class, mappedBy: 'Page', cascade: ['persist', 'remove'])]
         private $PageLayouts;
 
         /**
          * @var Page
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Page::class)]
+        #[ORM\ManyToOne(targetEntity: Page::class)]
         #[ORM\JoinColumn(name: 'master_page_id', referencedColumnName: 'id')]
         private $MasterPage;
 

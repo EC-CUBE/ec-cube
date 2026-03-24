@@ -69,14 +69,14 @@ if (!class_exists(MailHistory::class)) {
         /**
          * @var Order
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Order::class, inversedBy: 'MailHistories')]
+        #[ORM\ManyToOne(targetEntity: Order::class, inversedBy: 'MailHistories')]
         #[ORM\JoinColumn(name: 'order_id', referencedColumnName: 'id')]
         private $Order;
 
         /**
          * @var Member
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Member::class)]
+        #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id', nullable: true)]
         private $Creator;
 

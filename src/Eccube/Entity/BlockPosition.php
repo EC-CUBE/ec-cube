@@ -59,14 +59,14 @@ if (!class_exists(BlockPosition::class)) {
         /**
          * @var Block
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Block::class, inversedBy: 'BlockPositions')]
+        #[ORM\ManyToOne(targetEntity: Block::class, inversedBy: 'BlockPositions')]
         #[ORM\JoinColumn(name: 'block_id', referencedColumnName: 'id')]
         private $Block;
 
         /**
          * @var Layout
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Layout::class, inversedBy: 'BlockPositions')]
+        #[ORM\ManyToOne(targetEntity: Layout::class, inversedBy: 'BlockPositions')]
         #[ORM\JoinColumn(name: 'layout_id', referencedColumnName: 'id')]
         private $Layout;
 

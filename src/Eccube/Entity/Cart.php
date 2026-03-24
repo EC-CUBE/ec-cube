@@ -50,7 +50,7 @@ if (!class_exists(Cart::class)) {
         /**
          * @var Customer
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Customer::class)]
+        #[ORM\ManyToOne(targetEntity: Customer::class)]
         #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'id')]
         private $Customer;
 
@@ -62,7 +62,7 @@ if (!class_exists(Cart::class)) {
         /**
          * @var \Doctrine\Common\Collections\Collection|CartItem[]
          */
-        #[ORM\OneToMany(targetEntity: \Eccube\Entity\CartItem::class, mappedBy: 'Cart', cascade: ['persist'])]
+        #[ORM\OneToMany(targetEntity: CartItem::class, mappedBy: 'Cart', cascade: ['persist'])]
         #[ORM\OrderBy(['id' => 'ASC'])]
         private $CartItems;
 

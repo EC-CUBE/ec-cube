@@ -111,13 +111,13 @@ if (!class_exists(Payment::class)) {
         /**
          * @var \Doctrine\Common\Collections\Collection
          */
-        #[ORM\OneToMany(targetEntity: \Eccube\Entity\PaymentOption::class, mappedBy: 'Payment')]
+        #[ORM\OneToMany(targetEntity: PaymentOption::class, mappedBy: 'Payment')]
         private $PaymentOptions;
 
         /**
          * @var Member
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Member::class)]
+        #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
         private $Creator;
 

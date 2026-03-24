@@ -45,14 +45,14 @@ if (!class_exists(ProductCategory::class)) {
         /**
          * @var Product
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Product::class, inversedBy: 'ProductCategories')]
+        #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'ProductCategories')]
         #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id')]
         private $Product;
 
         /**
          * @var Category
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Category::class, inversedBy: 'ProductCategories')]
+        #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'ProductCategories')]
         #[ORM\JoinColumn(name: 'category_id', referencedColumnName: 'id')]
         private $Category;
 

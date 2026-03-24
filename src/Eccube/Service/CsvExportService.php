@@ -349,10 +349,10 @@ class CsvExportService
         } elseif (is_bool($data)) {
             // booleanの場合は文字列に変換する.
             return $data ? '1' : '0';
-        } else {
-            // スカラ値の場合はそのまま.
-            return $data;
         }
+
+        // スカラ値の場合はそのまま.
+        return $data;
     }
 
     /**

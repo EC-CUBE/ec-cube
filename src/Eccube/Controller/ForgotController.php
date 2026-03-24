@@ -74,7 +74,7 @@ class ForgotController extends AbstractController
      * パスワードリマインダ.
      */
     #[Route('/forgot', name: 'forgot', methods: ['GET', 'POST'])]
-    #[Template("Forgot/index.twig")]
+    #[Template('Forgot/index.twig')]
     public function index(Request $request)
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -145,7 +145,7 @@ class ForgotController extends AbstractController
      * 再設定URL送信完了画面.
      */
     #[Route('/forgot/complete', name: 'forgot_complete', methods: ['GET'])]
-    #[Template("Forgot/complete.twig")]
+    #[Template('Forgot/complete.twig')]
     public function complete(Request $request)
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -159,7 +159,7 @@ class ForgotController extends AbstractController
      * パスワード再発行実行画面.
      */
     #[Route('/forgot/reset/{reset_key}', name: 'forgot_reset', methods: ['GET', 'POST'])]
-    #[Template("Forgot/reset.twig")]
+    #[Template('Forgot/reset.twig')]
     public function reset(Request $request, $reset_key)
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -227,10 +227,9 @@ class ForgotController extends AbstractController
 
                 // ログインページへリダイレクト
                 return $this->redirectToRoute('mypage_login');
-            } else {
-                // リセットキー・メールアドレスから会員データが取得できない場合
-                $error = trans('front.forgot.reset_not_found');
             }
+            // リセットキー・メールアドレスから会員データが取得できない場合
+            $error = trans('front.forgot.reset_not_found');
         }
 
         return [

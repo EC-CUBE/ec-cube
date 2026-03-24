@@ -137,6 +137,7 @@ abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity
                 if (!$prop->isStatic()) {
                     $prop->setAccessible(true);
                     $prop->setValue($this, $value);
+
                     return;
                 }
             }

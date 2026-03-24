@@ -62,12 +62,12 @@ class CartController extends AbstractController
                 'totalPrice' => $totalPrice,
                 'Carts' => $Carts,
             ]);
-        } else {
-            return $this->render('Block/cart.twig', [
-                'totalQuantity' => $totalQuantity,
-                'totalPrice' => $totalPrice,
-                'Carts' => $Carts,
-            ]);
         }
+
+        return $this->render('Block/cart.twig', [
+            'totalQuantity' => $totalQuantity,
+            'totalPrice' => $totalPrice,
+            'Carts' => $Carts,
+        ]);
     }
 }

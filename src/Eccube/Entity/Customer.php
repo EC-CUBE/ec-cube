@@ -146,13 +146,13 @@ if (!class_exists(Customer::class)) {
         /**
          * @var string|null
          */
-        #[ORM\Column(name: 'buy_times', type: 'decimal', precision: 10, scale: 0, nullable: true, options: ['unsigned' => true,'default' => 0])]
+        #[ORM\Column(name: 'buy_times', type: 'decimal', precision: 10, scale: 0, nullable: true, options: ['unsigned' => true, 'default' => 0])]
         private $buy_times = '0';
 
         /**
          * @var string|null
          */
-        #[ORM\Column(name: 'buy_total', type: 'decimal', precision: 12, scale: 2, nullable: true, options: ['unsigned' => true,'default' => 0])]
+        #[ORM\Column(name: 'buy_total', type: 'decimal', precision: 12, scale: 2, nullable: true, options: ['unsigned' => true, 'default' => 0])]
         private $buy_total = '0';
 
         /**
@@ -176,7 +176,7 @@ if (!class_exists(Customer::class)) {
         /**
          * @var string
          */
-        #[ORM\Column(name: 'point', type: 'decimal', precision: 12, scale: 0, options: ['unsigned' => false,'default' => 0])]
+        #[ORM\Column(name: 'point', type: 'decimal', precision: 12, scale: 0, options: ['unsigned' => false, 'default' => 0])]
         private $point = '0';
 
         /**
@@ -194,54 +194,54 @@ if (!class_exists(Customer::class)) {
         /**
          * @var \Doctrine\Common\Collections\Collection
          */
-        #[ORM\OneToMany(targetEntity: \Eccube\Entity\CustomerFavoriteProduct::class, mappedBy: 'Customer', cascade: ['remove'])]
+        #[ORM\OneToMany(targetEntity: CustomerFavoriteProduct::class, mappedBy: 'Customer', cascade: ['remove'])]
         private $CustomerFavoriteProducts;
 
         /**
          * @var \Doctrine\Common\Collections\Collection
          */
-        #[ORM\OneToMany(targetEntity: \Eccube\Entity\CustomerAddress::class, mappedBy: 'Customer', cascade: ['remove'])]
+        #[ORM\OneToMany(targetEntity: CustomerAddress::class, mappedBy: 'Customer', cascade: ['remove'])]
         #[ORM\OrderBy(['id' => 'ASC'])]
         private $CustomerAddresses;
 
         /**
          * @var \Doctrine\Common\Collections\Collection
          */
-        #[ORM\OneToMany(targetEntity: \Eccube\Entity\Order::class, mappedBy: 'Customer')]
+        #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'Customer')]
         private $Orders;
 
         /**
          * @var Master\CustomerStatus
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\CustomerStatus::class)]
+        #[ORM\ManyToOne(targetEntity: Master\CustomerStatus::class)]
         #[ORM\JoinColumn(name: 'customer_status_id', referencedColumnName: 'id')]
         private $Status;
 
         /**
          * @var Master\Sex
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\Sex::class)]
+        #[ORM\ManyToOne(targetEntity: Master\Sex::class)]
         #[ORM\JoinColumn(name: 'sex_id', referencedColumnName: 'id')]
         private $Sex;
 
         /**
          * @var Master\Job
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\Job::class)]
+        #[ORM\ManyToOne(targetEntity: Master\Job::class)]
         #[ORM\JoinColumn(name: 'job_id', referencedColumnName: 'id')]
         private $Job;
 
         /**
          * @var Master\Country
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\Country::class)]
+        #[ORM\ManyToOne(targetEntity: Master\Country::class)]
         #[ORM\JoinColumn(name: 'country_id', referencedColumnName: 'id')]
         private $Country;
 
         /**
          * @var Master\Pref
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\Pref::class)]
+        #[ORM\ManyToOne(targetEntity: Master\Pref::class)]
         #[ORM\JoinColumn(name: 'pref_id', referencedColumnName: 'id')]
         private $Pref;
 

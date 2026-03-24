@@ -259,7 +259,7 @@ class AcceptanceTester extends Actor
     /**
      * AcceptanceTesterActions から移植
      *
-     * @see \Codeception\Module\WebDriver::see()
+     * @see Codeception\Module\WebDriver::see()
      */
     public function see($text, $selector = null): void
     {
@@ -270,7 +270,7 @@ class AcceptanceTester extends Actor
     /**
      * AcceptanceTesterActions から移植
      *
-     * @see \Codeception\Module\WebDriver::seeInField()
+     * @see Codeception\Module\WebDriver::seeInField()
      */
     public function seeInField($field, $value): void
     {
@@ -281,7 +281,7 @@ class AcceptanceTester extends Actor
     /**
      * AcceptanceTesterActions から移植
      *
-     * @see \Codeception\Module\WebDriver::waitForText()
+     * @see Codeception\Module\WebDriver::waitForText()
      */
     public function waitForText(string $text, int $timeout = 10, $selector = null): void
     {
@@ -292,7 +292,7 @@ class AcceptanceTester extends Actor
     /**
      * AcceptanceTesterActions から移植
      *
-     * @see \Codeception\Module\WebDriver::amOnPage()
+     * @see Codeception\Module\WebDriver::amOnPage()
      */
     public function amOnPage($page): void
     {
@@ -306,7 +306,7 @@ class AcceptanceTester extends Actor
      *
      * @param string|array $link
      *
-     * @see \Codeception\Module\WebDriver::click()
+     * @see Codeception\Module\WebDriver::click()
      */
     public function click($link, $context = null): void
     {

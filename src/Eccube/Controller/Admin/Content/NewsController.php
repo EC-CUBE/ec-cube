@@ -46,7 +46,6 @@ class NewsController extends AbstractController
     /**
      * 新着情報一覧を表示する。
      *
-     *
      * @param Request $request
      * @param int $page_no
      * @param PaginatorInterface $paginator
@@ -55,7 +54,7 @@ class NewsController extends AbstractController
      */
     #[Route('/%eccube_admin_route%/content/news', name: 'admin_content_news', methods: ['GET'])]
     #[Route('/%eccube_admin_route%/content/news/page/{page_no}', requirements: ['page_no' => '\d+'], name: 'admin_content_news_page', methods: ['GET'])]
-    #[Template("@admin/Content/news.twig")]
+    #[Template('@admin/Content/news.twig')]
     public function index(Request $request, PaginatorInterface $paginator, $page_no = 1)
     {
         $qb = $this->newsRepository->getQueryBuilderAll();
@@ -82,15 +81,13 @@ class NewsController extends AbstractController
     /**
      * 新着情報を登録・編集する。
      *
-     *
      * @param Request $request
-     * @param null $id
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     #[Route('/%eccube_admin_route%/content/news/new', name: 'admin_content_news_new', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/content/news/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_content_news_edit', methods: ['GET', 'POST'])]
-    #[Template("@admin/Content/news_edit.twig")]
+    #[Template('@admin/Content/news_edit.twig')]
     public function edit(Request $request, CacheUtil $cacheUtil, $id = null)
     {
         if ($id) {
@@ -149,7 +146,6 @@ class NewsController extends AbstractController
 
     /**
      * 指定した新着情報を削除する。
-     *
      *
      * @param Request $request
      * @param News $News

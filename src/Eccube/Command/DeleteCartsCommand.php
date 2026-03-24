@@ -128,7 +128,7 @@ class DeleteCartsCommand extends Command
     protected function deleteCarts(\DateTime $dateTime)
     {
         try {
-            $this->entityManager->beginTransaction();
+            $this->entityManager->getConnection()->beginTransaction();
 
             $qb = $this->cartRepository->createQueryBuilder('c')
                 ->delete()
@@ -138,12 +138,12 @@ class DeleteCartsCommand extends Command
             $deleteRows = $qb->getQuery()->getResult();
 
             $this->entityManager->flush();
-            $this->entityManager->commit();
+            $this->entityManager->getConnection()->commit();
 
             $this->io->comment("Deleted {$deleteRows} carts.");
         } catch (\Exception $e) {
             $this->io->error('Failed delete carts. Rollbacked.');
-            $this->entityManager->rollback();
+            $this->entityManager->getConnection()->rollBack();
         }
     }
 

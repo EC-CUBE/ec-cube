@@ -100,7 +100,7 @@ class LayoutController extends AbstractController
     }
 
     #[Route('/%eccube_admin_route%/content/layout', name: 'admin_content_layout', methods: ['GET'])]
-    #[Template("@admin/Content/layout_list.twig")]
+    #[Template('@admin/Content/layout_list.twig')]
     public function index()
     {
         $qb = $this->layoutRepository->createQueryBuilder('l');
@@ -117,7 +117,6 @@ class LayoutController extends AbstractController
     }
 
     /**
-     *
      * @param Layout $Layout
      *
      * @return RedirectResponse
@@ -147,7 +146,7 @@ class LayoutController extends AbstractController
 
     #[Route('/%eccube_admin_route%/content/layout/new', name: 'admin_content_layout_new', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/content/layout/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_content_layout_edit', methods: ['GET', 'POST'])]
-    #[Template("@admin/Content/layout.twig")]
+    #[Template('@admin/Content/layout.twig')]
     public function edit(Request $request, CacheUtil $cacheUtil, $id = null, $previewPageId = null)
     {
         if (is_null($id)) {
@@ -211,9 +210,9 @@ class LayoutController extends AbstractController
                         }
 
                         return $this->redirectToRoute($Page->getUrl(), ['preview' => 1, 'id' => $product->getId()]);
-                    } else {
-                        return $this->redirectToRoute($Page->getUrl(), ['preview' => 1]);
                     }
+
+                    return $this->redirectToRoute($Page->getUrl(), ['preview' => 1]);
                 }
 
                 return $this->redirectToRoute('user_data', ['route' => $Page->getUrl(), 'preview' => 1]);
@@ -232,7 +231,6 @@ class LayoutController extends AbstractController
     }
 
     /**
-     *
      * @param Request $request
      * @param Twig $twig
      *

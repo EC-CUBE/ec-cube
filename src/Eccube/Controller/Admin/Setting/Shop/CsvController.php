@@ -19,8 +19,8 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Repository\CsvRepository;
 use Eccube\Repository\Master\CsvTypeRepository;
-use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -53,7 +53,7 @@ class CsvController extends AbstractController
     }
 
     #[Route('/%eccube_admin_route%/setting/shop/csv/{id}', requirements: ['id' => '\d+'], defaults: ['id' => CsvType::CSV_TYPE_ORDER], name: 'admin_setting_shop_csv', methods: ['GET', 'POST'])]
-    #[Template("@admin/Setting/Shop/csv.twig")]
+    #[Template('@admin/Setting/Shop/csv.twig')]
     public function index(Request $request, CsvType $CsvType)
     {
         $builder = $this->createFormBuilder();

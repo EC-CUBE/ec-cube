@@ -91,7 +91,7 @@ class DeliveryController extends AbstractController
     }
 
     #[Route('/%eccube_admin_route%/setting/shop/delivery', name: 'admin_setting_shop_delivery', methods: ['GET'])]
-    #[Template("@admin/Setting/Shop/delivery.twig")]
+    #[Template('@admin/Setting/Shop/delivery.twig')]
     public function index(Request $request)
     {
         $Deliveries = $this->deliveryRepository
@@ -112,7 +112,7 @@ class DeliveryController extends AbstractController
 
     #[Route('/%eccube_admin_route%/setting/shop/delivery/new', name: 'admin_setting_shop_delivery_new', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/setting/shop/delivery/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_setting_shop_delivery_edit', methods: ['GET', 'POST'])]
-    #[Template("@admin/Setting/Shop/delivery_edit.twig")]
+    #[Template('@admin/Setting/Shop/delivery_edit.twig')]
     public function edit(Request $request, EccubeExtension $extension, $id = null)
     {
         if (is_null($id)) {

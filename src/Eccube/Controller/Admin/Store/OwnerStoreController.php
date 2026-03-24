@@ -115,7 +115,6 @@ class OwnerStoreController extends AbstractController
     /**
      * Owner's Store Plugin Installation Screen - Search function
      *
-     *
      * @param Request     $request
      * @param int $page_no
      * @param PaginatorInterface $paginator
@@ -124,7 +123,7 @@ class OwnerStoreController extends AbstractController
      */
     #[Route('/search', name: 'admin_store_plugin_owners_search', methods: ['GET', 'POST'])]
     #[Route('/search/page/{page_no}', name: 'admin_store_plugin_owners_search_page', requirements: ['page_no' => '\d+'], methods: ['GET', 'POST'])]
-    #[Template("@admin/Store/plugin_search.twig")]
+    #[Template('@admin/Store/plugin_search.twig')]
     public function search(Request $request, PaginatorInterface $paginator, $page_no = null)
     {
         if (empty($this->BaseInfo->getAuthenticationKey())) {
@@ -222,7 +221,6 @@ class OwnerStoreController extends AbstractController
     /**
      * Do confirm page
      *
-     *
      * @param Request $request
      *
      * @return array
@@ -230,7 +228,7 @@ class OwnerStoreController extends AbstractController
      * @throws \Eccube\Exception\PluginException
      */
     #[Route('/install/{id}/confirm', requirements: ['id' => '\d+'], name: 'admin_store_plugin_install_confirm', methods: ['GET'])]
-    #[Template("@admin/Store/plugin_confirm.twig")]
+    #[Template('@admin/Store/plugin_confirm.twig')]
     public function doConfirm(Request $request, $id)
     {
         try {
@@ -252,7 +250,6 @@ class OwnerStoreController extends AbstractController
 
     /**
      * Api Install plugin by composer connect with package repo
-     *
      *
      * @param Request $request
      *
@@ -304,7 +301,6 @@ class OwnerStoreController extends AbstractController
     /**
      * New ways to remove plugin: using composer command
      *
-     *
      * @param Plugin $Plugin
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
@@ -353,7 +349,6 @@ class OwnerStoreController extends AbstractController
 
     /**
      * オーナーズブラグインインストール、アップデート
-     *
      *
      * @param Request $request
      *
@@ -424,7 +419,6 @@ class OwnerStoreController extends AbstractController
     /**
      * オーナーズブラグインインストール、スキーマ更新
      *
-     *
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
@@ -475,7 +469,6 @@ class OwnerStoreController extends AbstractController
     /**
      * オーナーズブラグインインストール、更新処理
      *
-     *
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
@@ -515,13 +508,12 @@ class OwnerStoreController extends AbstractController
     /**
      * Do confirm update page
      *
-     *
      * @param Plugin $Plugin
      *
      * @return array
      */
     #[Route('/upgrade/{id}/confirm', requirements: ['id' => '\d+'], name: 'admin_store_plugin_update_confirm', methods: ['GET'])]
-    #[Template("@admin/Store/plugin_confirm.twig")]
+    #[Template('@admin/Store/plugin_confirm.twig')]
     public function doUpdateConfirm(Plugin $Plugin)
     {
         try {

@@ -96,7 +96,7 @@ class MypageController extends AbstractController
      * ログイン画面.
      */
     #[Route('/mypage/login', name: 'mypage_login', methods: ['GET', 'POST'])]
-    #[Template("Mypage/login.twig")]
+    #[Template('Mypage/login.twig')]
     public function login(Request $request, AuthenticationUtils $utils)
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -138,7 +138,7 @@ class MypageController extends AbstractController
      * マイページ.
      */
     #[Route('/mypage/', name: 'mypage', methods: ['GET'])]
-    #[Template("Mypage/index.twig")]
+    #[Template('Mypage/index.twig')]
     public function index(Request $request, PaginatorInterface $paginator)
     {
         $Customer = $this->getUser();
@@ -175,7 +175,7 @@ class MypageController extends AbstractController
      * 購入履歴詳細を表示する.
      */
     #[Route('/mypage/history/{order_no}', name: 'mypage_history', methods: ['GET'])]
-    #[Template("Mypage/history.twig")]
+    #[Template('Mypage/history.twig')]
     public function history(Request $request, $order_no)
     {
         $this->entityManager->getFilters()
@@ -308,7 +308,7 @@ class MypageController extends AbstractController
      * お気に入り商品を表示する.
      */
     #[Route('/mypage/favorite', name: 'mypage_favorite', methods: ['GET'])]
-    #[Template("Mypage/favorite.twig")]
+    #[Template('Mypage/favorite.twig')]
     public function favorite(Request $request, PaginatorInterface $paginator)
     {
         if (!$this->BaseInfo->isOptionFavoriteProduct()) {

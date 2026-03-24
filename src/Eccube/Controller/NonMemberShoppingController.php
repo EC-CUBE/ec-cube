@@ -72,7 +72,7 @@ class NonMemberShoppingController extends AbstractShoppingController
      * 非会員処理
      */
     #[Route('/shopping/nonmember', name: 'shopping_nonmember', methods: ['GET', 'POST'])]
-    #[Template("Shopping/nonmember.twig")]
+    #[Template('Shopping/nonmember.twig')]
     public function index(Request $request)
     {
         // ログイン済みの場合は, 購入画面へリダイレクト.

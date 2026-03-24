@@ -75,14 +75,14 @@ if (!class_exists(ClassName::class)) {
         /**
          * @var \Doctrine\Common\Collections\Collection
          */
-        #[ORM\OneToMany(targetEntity: \Eccube\Entity\ClassCategory::class, mappedBy: 'ClassName')]
+        #[ORM\OneToMany(targetEntity: ClassCategory::class, mappedBy: 'ClassName')]
         #[ORM\OrderBy(['sort_no' => 'DESC'])]
         private $ClassCategories;
 
         /**
          * @var Member
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Member::class)]
+        #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
         private $Creator;
 

@@ -51,7 +51,6 @@ class InstallPluginController extends InstallController
     /**
      * 有効化可能なプラグイン一覧を返します.
      *
-     *
      * @param Request $request
      * @param string $code
      *
@@ -77,7 +76,6 @@ class InstallPluginController extends InstallController
 
     /**
      * プラグインを有効にします。
-     *
      *
      * @param Request $request
      * @param SystemService $systemService
@@ -133,14 +131,13 @@ class InstallPluginController extends InstallController
             $this->clearCacheOnTerminate();
 
             return $this->json(['success' => true, 'log' => $log]);
-        } else {
-            return $this->json(['success' => false, 'log' => $log]);
         }
+
+        return $this->json(['success' => false, 'log' => $log]);
     }
 
     /**
      * トランザクションファイルを削除し, 管理画面に遷移します.
-     *
      *
      * @return RedirectResponse
      */

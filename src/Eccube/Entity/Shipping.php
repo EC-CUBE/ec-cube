@@ -179,34 +179,34 @@ if (!class_exists(Shipping::class)) {
         /**
          * @var Order
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Order::class, inversedBy: 'Shippings', cascade: ['persist'])]
+        #[ORM\ManyToOne(targetEntity: Order::class, inversedBy: 'Shippings', cascade: ['persist'])]
         #[ORM\JoinColumn(name: 'order_id', referencedColumnName: 'id')]
         private $Order;
 
         /**
          * @var \Doctrine\Common\Collections\Collection
          */
-        #[ORM\OneToMany(targetEntity: \Eccube\Entity\OrderItem::class, mappedBy: 'Shipping', cascade: ['persist'])]
+        #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'Shipping', cascade: ['persist'])]
         private $OrderItems;
 
         /**
          * @var Master\Country
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\Country::class)]
+        #[ORM\ManyToOne(targetEntity: Master\Country::class)]
         #[ORM\JoinColumn(name: 'country_id', referencedColumnName: 'id')]
         private $Country;
 
         /**
          * @var Master\Pref
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\Pref::class)]
+        #[ORM\ManyToOne(targetEntity: Master\Pref::class)]
         #[ORM\JoinColumn(name: 'pref_id', referencedColumnName: 'id')]
         private $Pref;
 
         /**
          * @var Delivery
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Delivery::class)]
+        #[ORM\ManyToOne(targetEntity: Delivery::class)]
         #[ORM\JoinColumn(name: 'delivery_id', referencedColumnName: 'id')]
         private $Delivery;
 
@@ -218,7 +218,7 @@ if (!class_exists(Shipping::class)) {
         /**
          * @var Member
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Member::class)]
+        #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
         private $Creator;
 

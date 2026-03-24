@@ -40,6 +40,9 @@ services:
     Eccube\Common\EccubeConfig:
         public: true
 
+    Doctrine\ORM\Tools\Console\EntityManagerProvider:
+        alias: doctrine.orm.command.entity_manager_provider
+
     Eccube\Doctrine\EventSubscriber\InitSubscriber:
         tags:
             - { name: doctrine.middleware }

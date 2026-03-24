@@ -36,7 +36,7 @@ class CalendarController extends AbstractController
     }
 
     #[Route('/block/calendar', name: 'block_calendar', methods: ['GET'])]
-    #[Template("Block/calendar.twig")]
+    #[Template('Block/calendar.twig')]
     public function index(Request $request)
     {
         $today = Carbon::now();

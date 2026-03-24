@@ -108,7 +108,7 @@ if (!class_exists(Product::class)) {
                                 $this->classCategories1[$ProductClass->getClassCategory1()->getId()] = $ProductClass->getClassCategory1()->getName();
                                 $this->classCategories2[$ProductClass->getClassCategory1()->getId()][$ProductClass->getClassCategory2()->getId()] = $ProductClass->getClassCategory2()->getName();
                             } else {
-                                $this->classCategories1[$ProductClass->getClassCategory1()->getId()] = $ProductClass->getClassCategory1()->getName() . ($ProductClass->getStockFind() ? '' : trans('front.product.out_of_stock_label'));
+                                $this->classCategories1[$ProductClass->getClassCategory1()->getId()] = $ProductClass->getClassCategory1()->getName().($ProductClass->getStockFind() ? '' : trans('front.product.out_of_stock_label'));
                             }
                         }
                     }
@@ -423,9 +423,9 @@ if (!class_exists(Product::class)) {
         {
             if (count($this->ProductImage) > 0) {
                 return $this->ProductImage[0];
-            } else {
-                return null;
             }
+
+            return null;
         }
 
         public function hasProductClass()
@@ -501,45 +501,45 @@ if (!class_exists(Product::class)) {
         /**
          * @var \Doctrine\Common\Collections\Collection
          */
-        #[ORM\OneToMany(targetEntity: \Eccube\Entity\ProductCategory::class, mappedBy: 'Product', cascade: ['persist', 'remove'])]
+        #[ORM\OneToMany(targetEntity: ProductCategory::class, mappedBy: 'Product', cascade: ['persist', 'remove'])]
         private $ProductCategories;
 
         /**
          * @var \Doctrine\Common\Collections\Collection
          */
-        #[ORM\OneToMany(targetEntity: \Eccube\Entity\ProductClass::class, mappedBy: 'Product', cascade: ['persist', 'remove'])]
+        #[ORM\OneToMany(targetEntity: ProductClass::class, mappedBy: 'Product', cascade: ['persist', 'remove'])]
         private $ProductClasses;
 
         /**
          * @var \Doctrine\Common\Collections\Collection
          */
-        #[ORM\OneToMany(targetEntity: \Eccube\Entity\ProductImage::class, mappedBy: 'Product', cascade: ['remove'])]
+        #[ORM\OneToMany(targetEntity: ProductImage::class, mappedBy: 'Product', cascade: ['remove'])]
         #[ORM\OrderBy(['sort_no' => 'ASC'])]
         private $ProductImage;
 
         /**
          * @var \Doctrine\Common\Collections\Collection
          */
-        #[ORM\OneToMany(targetEntity: \Eccube\Entity\ProductTag::class, mappedBy: 'Product', cascade: ['remove'])]
+        #[ORM\OneToMany(targetEntity: ProductTag::class, mappedBy: 'Product', cascade: ['remove'])]
         private $ProductTag;
 
         /**
          * @var \Doctrine\Common\Collections\Collection
          */
-        #[ORM\OneToMany(targetEntity: \Eccube\Entity\CustomerFavoriteProduct::class, mappedBy: 'Product')]
+        #[ORM\OneToMany(targetEntity: CustomerFavoriteProduct::class, mappedBy: 'Product')]
         private $CustomerFavoriteProducts;
 
         /**
          * @var Member
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Member::class)]
+        #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
         private $Creator;
 
         /**
          * @var Master\ProductStatus
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\ProductStatus::class)]
+        #[ORM\ManyToOne(targetEntity: Master\ProductStatus::class)]
         #[ORM\JoinColumn(name: 'product_status_id', referencedColumnName: 'id')]
         private $Status;
 

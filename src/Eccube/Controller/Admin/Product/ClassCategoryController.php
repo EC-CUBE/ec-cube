@@ -74,7 +74,7 @@ class ClassCategoryController extends AbstractController
 
     #[Route('/%eccube_admin_route%/product/class_category/{class_name_id}', requirements: ['class_name_id' => '\d+'], name: 'admin_product_class_category', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/product/class_category/{class_name_id}/{id}/edit', requirements: ['class_name_id' => '\d+', 'id' => '\d+'], name: 'admin_product_class_category_edit', methods: ['GET', 'POST'])]
-    #[Template("@admin/Product/class_category.twig")]
+    #[Template('@admin/Product/class_category.twig')]
     public function index(Request $request, $class_name_id, $id = null)
     {
         $ClassName = $this->classNameRepository->find($class_name_id);
@@ -272,7 +272,6 @@ class ClassCategoryController extends AbstractController
     /**
      * 規格分類CSVの出力.
      *
-     *
      * @param Request $request
      *
      * @return StreamedResponse
@@ -304,7 +303,7 @@ class ClassCategoryController extends AbstractController
             $this->csvExportService->exportData(function ($entity, $csvService) use ($request) {
                 $Csvs = $csvService->getCsvs();
 
-                /** @var $ClassCategory \Eccube\Entity\ClassCategory */
+                /** @var \Eccube\Entity\ClassCategory $ClassCategory */
                 $ClassCategory = $entity;
 
                 // CSV出力項目と合致するデータを取得.

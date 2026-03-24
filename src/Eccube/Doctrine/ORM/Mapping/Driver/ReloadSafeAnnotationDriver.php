@@ -58,7 +58,7 @@ class ReloadSafeAnnotationDriver extends HybridMappingDriver
         }
 
         if (!$this->paths) {
-            throw MappingException::pathRequired();
+            throw new MappingException('Path required for the mapping driver.');
         }
 
         foreach ($this->paths as $path) {
@@ -71,7 +71,7 @@ class ReloadSafeAnnotationDriver extends HybridMappingDriver
                     new \RecursiveDirectoryIterator($path, \FilesystemIterator::SKIP_DOTS),
                     \RecursiveIteratorIterator::LEAVES_ONLY
                 ),
-                '/^.+' . preg_quote($this->fileExtension) . '$/i',
+                '/^.+'.preg_quote($this->fileExtension).'$/i',
                 \RecursiveRegexIterator::GET_MATCH
             );
 
@@ -91,7 +91,7 @@ class ReloadSafeAnnotationDriver extends HybridMappingDriver
                     }
                 }
 
-                $projectDir = realpath(__DIR__ . '/../../../../../../');
+                $projectDir = realpath(__DIR__.'/../../../../../../');
                 if ('\\' === DIRECTORY_SEPARATOR) {
                     $path = str_replace('\\', '/', $path);
                     $this->trait_proxies_directory = str_replace('\\', '/', $this->trait_proxies_directory);
@@ -100,7 +100,7 @@ class ReloadSafeAnnotationDriver extends HybridMappingDriver
                 }
 
                 // Replace /path/to/ec-cube to proxies path
-                $proxyFile = str_replace($projectDir, $this->trait_proxies_directory, $path) . '/' . basename($sourceFile);
+                $proxyFile = str_replace($projectDir, $this->trait_proxies_directory, $path).'/'.basename($sourceFile);
                 if (file_exists($proxyFile)) {
                     $sourceFile = $proxyFile;
                 }
@@ -133,16 +133,16 @@ class ReloadSafeAnnotationDriver extends HybridMappingDriver
                     $namespaceEndIndex = $tokens->getNextTokenOfKind($namespaceIndex, [';']);
                     $namespace = $tokens->generatePartialCode($tokens->getNextMeaningfulToken($namespaceIndex), $tokens->getPrevMeaningfulToken($namespaceEndIndex));
                     $className = $tokens[$classNameTokenIndex]->getContent();
-                    $fqcn = $namespace . '\\' . $className;
+                    $fqcn = $namespace.'\\'.$className;
                     if (class_exists($fqcn) && !$this->isTransient($fqcn)) {
                         $sourceFile = realpath($sourceFile);
                         if (in_array($sourceFile, $this->newProxyFiles)) {
-                            $newClassName = $className . StringUtil::random(12);
+                            $newClassName = $className.StringUtil::random(12);
                             $tokens[$classNameTokenIndex] = new Token([T_STRING, $newClassName]);
-                            $newFilePath = $this->outputDir . "{$newClassName}.php";
+                            $newFilePath = $this->outputDir."{$newClassName}.php";
                             file_put_contents($newFilePath, $tokens->generateCode());
                             require_once $newFilePath;
-                            $results[] = $namespace . "\\{$newClassName}";
+                            $results[] = $namespace."\\{$newClassName}";
                         } else {
                             $results[] = $fqcn;
                         }

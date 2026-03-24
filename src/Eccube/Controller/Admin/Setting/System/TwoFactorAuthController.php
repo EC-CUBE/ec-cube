@@ -57,7 +57,7 @@ class TwoFactorAuthController extends AbstractController
     }
 
     #[Route('/%eccube_admin_route%/two_factor_auth/auth', name: 'admin_two_factor_auth', methods: ['GET', 'POST'])]
-    #[Template("@admin/two_factor_auth.twig")]
+    #[Template('@admin/two_factor_auth.twig')]
     public function auth(Request $request)
     {
         $Member = $this->getUser();
@@ -80,9 +80,8 @@ class TwoFactorAuthController extends AbstractController
                         $response->headers->setCookie($this->twoFactorAuthService->createAuthedCookie($Member));
 
                         return $response;
-                    } else {
-                        $error = trans('admin.setting.system.two_factor_auth.invalid_message__reinput');
                     }
+                    $error = trans('admin.setting.system.two_factor_auth.invalid_message__reinput');
                 } else {
                     return $this->redirectToRoute('admin_two_factor_auth_set');
                 }
@@ -98,7 +97,7 @@ class TwoFactorAuthController extends AbstractController
     }
 
     #[Route('/%eccube_admin_route%/two_factor_auth/set', name: 'admin_two_factor_auth_set', methods: ['GET', 'POST'])]
-    #[Template("@admin/two_factor_auth_set.twig")]
+    #[Template('@admin/two_factor_auth_set.twig')]
     public function set(Request $request)
     {
         $Member = $this->getUser();
@@ -118,7 +117,7 @@ class TwoFactorAuthController extends AbstractController
     }
 
     #[Route('/%eccube_admin_route%/setting/system/two_factor_auth/edit', name: 'admin_setting_system_two_factor_auth_edit', methods: ['GET', 'POST'])]
-    #[Template("@admin/Setting/System/two_factor_auth_edit.twig")]
+    #[Template('@admin/Setting/System/two_factor_auth_edit.twig')]
     public function edit(Request $request)
     {
         $Member = $this->getUser();
@@ -162,9 +161,8 @@ class TwoFactorAuthController extends AbstractController
                     $response->headers->setCookie($this->twoFactorAuthService->createAuthedCookie($Member));
 
                     return $response;
-                } else {
-                    $error = trans('admin.setting.system.two_factor_auth.invalid_message__reinput');
                 }
+                $error = trans('admin.setting.system.two_factor_auth.invalid_message__reinput');
             } else {
                 $error = trans('admin.setting.system.two_factor_auth.invalid_message__invalid');
             }

@@ -38,15 +38,14 @@ class CustomerFavoriteProductRepository extends AbstractRepository
     {
         if ($this->isFavorite($Customer, $Product)) {
             return;
-        } else {
-            $CustomerFavoriteProduct = new CustomerFavoriteProduct();
-            $CustomerFavoriteProduct->setCustomer($Customer);
-            $CustomerFavoriteProduct->setProduct($Product);
-
-            $em = $this->getEntityManager();
-            $em->persist($CustomerFavoriteProduct);
-            $em->flush();
         }
+        $CustomerFavoriteProduct = new CustomerFavoriteProduct();
+        $CustomerFavoriteProduct->setCustomer($Customer);
+        $CustomerFavoriteProduct->setProduct($Product);
+
+        $em = $this->getEntityManager();
+        $em->persist($CustomerFavoriteProduct);
+        $em->flush();
     }
 
     /**

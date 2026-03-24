@@ -51,14 +51,14 @@ if (!class_exists(PageLayout::class)) {
         /**
          * @var Page
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Page::class, inversedBy: 'PageLayouts')]
+        #[ORM\ManyToOne(targetEntity: Page::class, inversedBy: 'PageLayouts')]
         #[ORM\JoinColumn(name: 'page_id', referencedColumnName: 'id')]
         private $Page;
 
         /**
          * @var Layout
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Layout::class, inversedBy: 'PageLayouts')]
+        #[ORM\ManyToOne(targetEntity: Layout::class, inversedBy: 'PageLayouts')]
         #[ORM\JoinColumn(name: 'layout_id', referencedColumnName: 'id')]
         private $Layout;
 

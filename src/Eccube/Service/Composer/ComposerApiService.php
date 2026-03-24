@@ -225,7 +225,6 @@ class ComposerApiService implements ComposerServiceInterface
      * @param string $packageName
      * @param string|null $version
      * @param string $callback
-     * @param null $typeFilter
      * @param int $level
      *
      * @return void
@@ -259,7 +258,6 @@ class ComposerApiService implements ComposerServiceInterface
      * Run get config information
      *
      * @param string $key
-     * @param null $value
      *
      * @return array|mixed
      *

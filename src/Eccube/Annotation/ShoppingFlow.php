@@ -20,4 +20,6 @@ use Doctrine\Common\Annotations\Annotation\Target;
  * @Target("CLASS")
  */
 #[\Attribute(\Attribute::TARGET_CLASS)]
-final class ShoppingFlow {}
+final class ShoppingFlow
+{
+}

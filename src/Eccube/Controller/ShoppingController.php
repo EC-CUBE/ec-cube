@@ -137,7 +137,7 @@ class ShoppingController extends AbstractShoppingController
      * purchaseFlowの集計処理実行後, warningがある場合はカートど同期をとるため, カートのPurchaseFlowを実行する.
      */
     #[Route('/shopping', name: 'shopping', methods: ['GET'])]
-    #[Template("Shopping/index.twig")]
+    #[Template('Shopping/index.twig')]
     public function index(PurchaseFlow $cartPurchaseFlow)
     {
         // ログイン状態のチェック.
@@ -217,7 +217,7 @@ class ShoppingController extends AbstractShoppingController
      * data-pathは任意のパラメータです. 指定しない場合, 注文手続き画面へリダイレクトします.
      */
     #[Route('/shopping/redirect_to', name: 'shopping_redirect_to', methods: ['POST'])]
-    #[Template("Shopping/index.twig")]
+    #[Template('Shopping/index.twig')]
     public function redirectTo(Request $request, RouterInterface $router)
     {
         // ログイン状態のチェック.
@@ -257,7 +257,7 @@ class ShoppingController extends AbstractShoppingController
 
             try {
                 // リダイレクト先のチェック.
-                $pattern = '/^' . preg_quote($request->getBasePath(), '/') . '/';
+                $pattern = '/^'.preg_quote($request->getBasePath(), '/').'/';
                 $redirectTo = preg_replace($pattern, '', $redirectTo);
                 $result = $router->match($redirectTo);
                 // パラメータのみ抽出
@@ -296,7 +296,7 @@ class ShoppingController extends AbstractShoppingController
      * PaymentMethod::verifyでエラーが発生した場合は, 注文手続き画面へリダイレクトします.
      */
     #[Route('/shopping/confirm', name: 'shopping_confirm', methods: ['POST'])]
-    #[Template("Shopping/confirm.twig")]
+    #[Template('Shopping/confirm.twig')]
     public function confirm(Request $request)
     {
         // ログイン状態のチェック.
@@ -404,7 +404,7 @@ class ShoppingController extends AbstractShoppingController
      * 決済プラグインによる決済処理および注文の確定処理を行います.
      */
     #[Route('/shopping/checkout', name: 'shopping_checkout', methods: ['POST'])]
-    #[Template("Shopping/confirm.twig")]
+    #[Template('Shopping/confirm.twig')]
     public function checkout(Request $request)
     {
         // ログイン状態のチェック.
@@ -530,7 +530,7 @@ class ShoppingController extends AbstractShoppingController
      * 購入完了画面を表示する.
      */
     #[Route('/shopping/complete', name: 'shopping_complete', methods: ['GET'])]
-    #[Template("Shopping/complete.twig")]
+    #[Template('Shopping/complete.twig')]
     public function complete(Request $request)
     {
         log_info('[注文完了] 注文完了画面を表示します.');
@@ -594,7 +594,7 @@ class ShoppingController extends AbstractShoppingController
      * 非会員の場合はこの画面は使用しない。
      */
     #[Route('/shopping/shipping/{id}', name: 'shopping_shipping', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
-    #[Template("Shopping/shipping.twig")]
+    #[Template('Shopping/shipping.twig')]
     public function shipping(Request $request, Shipping $Shipping)
     {
         // ログイン状態のチェック.
@@ -667,7 +667,7 @@ class ShoppingController extends AbstractShoppingController
      * 非会員時は選択されたお届け先の編集を行う.
      */
     #[Route('/shopping/shipping_edit/{id}', name: 'shopping_shipping_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
-    #[Template("Shopping/shipping_edit.twig")]
+    #[Template('Shopping/shipping_edit.twig')]
     public function shippingEdit(Request $request, Shipping $Shipping)
     {
         // ログイン状態のチェック.
@@ -771,7 +771,7 @@ class ShoppingController extends AbstractShoppingController
      * ログイン画面.
      */
     #[Route('/shopping/login', name: 'shopping_login', methods: ['GET'])]
-    #[Template("Shopping/login.twig")]
+    #[Template('Shopping/login.twig')]
     public function login(Request $request, AuthenticationUtils $authenticationUtils)
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -807,7 +807,7 @@ class ShoppingController extends AbstractShoppingController
      * 購入エラー画面.
      */
     #[Route('/shopping/error', name: 'shopping_error', methods: ['GET'])]
-    #[Template("Shopping/shopping_error.twig")]
+    #[Template('Shopping/shopping_error.twig')]
     public function error(Request $request, PurchaseFlow $cartPurchaseFlow)
     {
         // 受注とカートのずれを合わせるため, カートのPurchaseFlowをコールする.
@@ -889,17 +889,16 @@ class ShoppingController extends AbstractShoppingController
                     $dispatcher->getPathParameters(),
                     $dispatcher->getQueryParameters()
                 );
-            } else {
-                log_info(
-                    '[注文処理] PaymentMethod::applyによりリダイレクトします.',
-                    [$dispatcher->getRoute(), $dispatcher->getPathParameters(), $dispatcher->getQueryParameters()]
-                );
-
-                return $this->redirectToRoute(
-                    $dispatcher->getRoute(),
-                    array_merge($dispatcher->getPathParameters(), $dispatcher->getQueryParameters())
-                );
             }
+            log_info(
+                '[注文処理] PaymentMethod::applyによりリダイレクトします.',
+                [$dispatcher->getRoute(), $dispatcher->getPathParameters(), $dispatcher->getQueryParameters()]
+            );
+
+            return $this->redirectToRoute(
+                $dispatcher->getRoute(),
+                array_merge($dispatcher->getPathParameters(), $dispatcher->getQueryParameters())
+            );
         }
     }
 

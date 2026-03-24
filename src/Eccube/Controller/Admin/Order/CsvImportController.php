@@ -47,11 +47,10 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * 出荷CSVアップロード
      *
-     *
      * @throws \Doctrine\DBAL\ConnectionException
      */
     #[Route('/%eccube_admin_route%/order/shipping_csv_upload', name: 'admin_shipping_csv_import', methods: ['GET', 'POST'])]
-    #[Template("@admin/Order/csv_shipping.twig")]
+    #[Template('@admin/Order/csv_shipping.twig')]
     public function csvShipping(Request $request)
     {
         $form = $this->formFactory->createBuilder(CsvImportType::class)->getForm();

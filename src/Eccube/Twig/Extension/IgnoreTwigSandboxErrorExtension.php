@@ -58,23 +58,22 @@ class IgnoreTwigSandboxErrorExtension extends AbstractExtension
     {
         try {
             return \twig_include($env, $context, $template, $variables, $withContext, $ignoreMissing, $sandboxed);
-        } catch (SecurityError | RuntimeError $e) {
+        } catch (SecurityError|RuntimeError $e) {
             // devではエラー画面が表示されるようにする
             $appEnv = env('APP_ENV');
             if ($appEnv === 'dev') {
                 throw $e;
-            } else {
-                // ログ出力
-                log_warning($e->getMessage(), ['exception' => $e]);
-
-                // 例外がスローされた場合、sandboxが効いた状態になってしまうため追加
-                $sandbox = $env->getExtension(SandboxExtension::class);
-                if (!$sandbox->isSandboxedGlobally()) {
-                    $sandbox->disableSandbox();
-                }
-
-                return null;
             }
+            // ログ出力
+            log_warning($e->getMessage(), ['exception' => $e]);
+
+            // 例外がスローされた場合、sandboxが効いた状態になってしまうため追加
+            $sandbox = $env->getExtension(SandboxExtension::class);
+            if (!$sandbox->isSandboxedGlobally()) {
+                $sandbox->disableSandbox();
+            }
+
+            return null;
         }
     }
 }

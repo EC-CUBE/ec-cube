@@ -155,21 +155,21 @@ if (!class_exists(Member::class)) {
         /**
          * @var Master\Work
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\Work::class)]
+        #[ORM\ManyToOne(targetEntity: Master\Work::class)]
         #[ORM\JoinColumn(name: 'work_id', referencedColumnName: 'id')]
         private $Work;
 
         /**
          * @var Master\Authority
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\Authority::class)]
+        #[ORM\ManyToOne(targetEntity: Master\Authority::class)]
         #[ORM\JoinColumn(name: 'authority_id', referencedColumnName: 'id')]
         private $Authority;
 
         /**
          * @var Member
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Member::class)]
+        #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
         private $Creator;
 

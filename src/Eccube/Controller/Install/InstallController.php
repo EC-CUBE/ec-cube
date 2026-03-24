@@ -108,12 +108,11 @@ class InstallController extends AbstractController
     /**
      * 最初からやり直す場合、SESSION情報をクリア.
      *
-     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     #[Route('/', name: 'homepage', methods: ['GET'])]
     #[Route('/install', name: 'install', methods: ['GET'])]
-    #[Template("index.twig")]
+    #[Template('index.twig')]
     public function index()
     {
         if (!$this->isInstallEnv()) {
@@ -128,11 +127,10 @@ class InstallController extends AbstractController
     /**
      * ようこそ.
      *
-     *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     #[Route('/install/step1', name: 'install_step1', methods: ['GET', 'POST'])]
-    #[Template("step1.twig")]
+    #[Template('step1.twig')]
     public function step1(Request $request)
     {
         if (!$this->isInstallEnv()) {
@@ -168,11 +166,10 @@ class InstallController extends AbstractController
     /**
      * ディレクトリとファイルの書き込み権限をチェック.
      *
-     *
      * @return array
      */
     #[Route('/install/step2', name: 'install_step2', methods: ['GET'])]
-    #[Template("step2.twig")]
+    #[Template('step2.twig')]
     public function step2()
     {
         if (!$this->isInstallEnv()) {
@@ -244,14 +241,13 @@ class InstallController extends AbstractController
     /**
      * サイトの設定.
      *
-     *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      *
      * @throws \Doctrine\DBAL\DBALException
      * @throws \Exception
      */
     #[Route('/install/step3', name: 'install_step3', methods: ['GET', 'POST'])]
-    #[Template("step3.twig")]
+    #[Template('step3.twig')]
     public function step3(Request $request, EntityManagerInterface $entityManager)
     {
         if (!$this->isInstallEnv()) {
@@ -316,13 +312,12 @@ class InstallController extends AbstractController
     /**
      * データベースの設定.
      *
-     *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      *
      * @throws \Exception
      */
     #[Route('/install/step4', name: 'install_step4', methods: ['GET', 'POST'])]
-    #[Template("step4.twig")]
+    #[Template('step4.twig')]
     public function step4(Request $request)
     {
         if (!$this->isInstallEnv()) {
@@ -365,13 +360,12 @@ class InstallController extends AbstractController
     /**
      * データベースの初期化.
      *
-     *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      *
      * @throws \Exception
      */
     #[Route('/install/step5', name: 'install_step5', methods: ['GET', 'POST'])]
-    #[Template("step5.twig")]
+    #[Template('step5.twig')]
     public function step5(Request $request)
     {
         if (!$this->isInstallEnv()) {
@@ -448,7 +442,7 @@ class InstallController extends AbstractController
      * インストール完了
      */
     #[Route('/install/complete', name: 'install_complete', methods: ['GET'])]
-    #[Template("complete.twig")]
+    #[Template('complete.twig')]
     public function complete(Request $request)
     {
         if (!$this->isInstallEnv()) {
@@ -585,18 +579,13 @@ class InstallController extends AbstractController
             $this->getParameter('kernel.project_dir').'/app/Customize/Entity',
         ];
 
-        if (class_exists(ORMSetup::class) && method_exists(ORMSetup::class, 'createAttributeMetadataConfiguration')) {
-            $config = ORMSetup::createAttributeMetadataConfiguration($paths, true);
-        } else {
-            // Fallback for older Doctrine ORM versions
-            $config = \Doctrine\ORM\Tools\Setup::createConfiguration(true);
-        }
+        $config = ORMSetup::createAttributeMetadataConfiguration($paths, true);
 
         $driver = new HybridMappingDriver($paths);
         $driver->setTraitProxiesDirectory($this->getParameter('kernel.project_dir').'/app/proxy/entity');
         $config->setMetadataDriverImpl($driver);
 
-        $em = EntityManager::create($conn, $config);
+        $em = new EntityManager($conn, $config);
 
         return $em;
     }

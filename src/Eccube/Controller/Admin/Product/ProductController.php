@@ -148,7 +148,7 @@ class ProductController extends AbstractController
 
     #[Route('/%eccube_admin_route%/product', name: 'admin_product', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/product/page/{page_no}', requirements: ['page_no' => '\d+'], name: 'admin_product_page', methods: ['GET', 'POST'])]
-    #[Template("@admin/Product/index.twig")]
+    #[Template('@admin/Product/index.twig')]
     public function index(Request $request, PaginatorInterface $paginator, $page_no = null)
     {
         $builder = $this->formFactory
@@ -300,7 +300,7 @@ class ProductController extends AbstractController
     }
 
     #[Route('/%eccube_admin_route%/product/classes/{id}/load', name: 'admin_product_classes_load', methods: ['GET'], requirements: ['id' => '\d+'])]
-    #[Template("@admin/Product/product_class_popup.twig")]
+    #[Template('@admin/Product/product_class_popup.twig')]
     public function loadProductClasses(Request $request, $id)
     {
         if (!$request->isXmlHttpRequest() || !$this->isTokenValid()) {
@@ -436,7 +436,7 @@ class ProductController extends AbstractController
 
     #[Route('/%eccube_admin_route%/product/product/new', name: 'admin_product_product_new', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/product/product/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_product_product_edit', methods: ['GET', 'POST'])]
-    #[Template("@admin/Product/product.twig")]
+    #[Template('@admin/Product/product.twig')]
     public function edit(Request $request, RouterInterface $router, CacheUtil $cacheUtil, $id = null)
     {
         $has_class = false;
@@ -776,12 +776,11 @@ class ProductController extends AbstractController
                     $message = trans('admin.common.delete_error_already_deleted');
 
                     return $this->json(['success' => $success, 'message' => $message]);
-                } else {
-                    $this->deleteMessage();
-                    $rUrl = $this->generateUrl('admin_product_page', ['page_no' => $page_no]).'?resume='.Constant::ENABLED;
-
-                    return $this->redirect($rUrl);
                 }
+                $this->deleteMessage();
+                $rUrl = $this->generateUrl('admin_product_page', ['page_no' => $page_no]).'?resume='.Constant::ENABLED;
+
+                return $this->redirect($rUrl);
             }
 
             if ($Product instanceof Product) {
@@ -840,17 +839,16 @@ class ProductController extends AbstractController
 
         if ($request->isXmlHttpRequest()) {
             return $this->json(['success' => $success, 'message' => $message]);
-        } else {
-            if ($success) {
-                $this->addSuccess($message, 'admin');
-            } else {
-                $this->addError($message, 'admin');
-            }
-
-            $rUrl = $this->generateUrl('admin_product_page', ['page_no' => $page_no]).'?resume='.Constant::ENABLED;
-
-            return $this->redirect($rUrl);
         }
+        if ($success) {
+            $this->addSuccess($message, 'admin');
+        } else {
+            $this->addError($message, 'admin');
+        }
+
+        $rUrl = $this->generateUrl('admin_product_page', ['page_no' => $page_no]).'?resume='.Constant::ENABLED;
+
+        return $this->redirect($rUrl);
     }
 
     #[Route('/%eccube_admin_route%/product/product/{id}/copy', requirements: ['id' => '\d+'], name: 'admin_product_product_copy', methods: ['POST'])]
@@ -940,9 +938,8 @@ class ProductController extends AbstractController
                 $this->addSuccess('admin.product.copy_complete', 'admin');
 
                 return $this->redirectToRoute('admin_product_product_edit', ['id' => $CopyProduct->getId()]);
-            } else {
-                $this->addError('admin.product.copy_error', 'admin');
             }
+            $this->addError('admin.product.copy_error', 'admin');
         } else {
             $msg = trans('admin.product.copy_error');
             $this->addError($msg, 'admin');
@@ -953,7 +950,6 @@ class ProductController extends AbstractController
 
     /**
      * 商品CSVの出力.
-     *
      *
      * @param Request $request
      *
@@ -1079,7 +1075,6 @@ class ProductController extends AbstractController
 
     /**
      * Bulk public action
-     *
      *
      * @param Request $request
      * @param ProductStatus $ProductStatus

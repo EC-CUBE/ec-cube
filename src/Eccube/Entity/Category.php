@@ -180,27 +180,27 @@ if (!class_exists(Category::class)) {
         /**
          * @var \Doctrine\Common\Collections\Collection
          */
-        #[ORM\OneToMany(targetEntity: \Eccube\Entity\ProductCategory::class, mappedBy: 'Category', fetch: 'EXTRA_LAZY')]
+        #[ORM\OneToMany(targetEntity: ProductCategory::class, mappedBy: 'Category', fetch: 'EXTRA_LAZY')]
         private $ProductCategories;
 
         /**
          * @var \Doctrine\Common\Collections\Collection
          */
-        #[ORM\OneToMany(targetEntity: \Eccube\Entity\Category::class, mappedBy: 'Parent')]
+        #[ORM\OneToMany(targetEntity: Category::class, mappedBy: 'Parent')]
         #[ORM\OrderBy(['sort_no' => 'DESC'])]
         private $Children;
 
         /**
          * @var Category
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Category::class, inversedBy: 'Children')]
+        #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'Children')]
         #[ORM\JoinColumn(name: 'parent_category_id', referencedColumnName: 'id')]
         private $Parent;
 
         /**
          * @var Member
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Member::class)]
+        #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
         private $Creator;
 

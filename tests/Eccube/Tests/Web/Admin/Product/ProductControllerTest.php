@@ -83,7 +83,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             $this->createProduct();
         }
 
-        $this->imageDir = sys_get_temp_dir() . '/' . sha1(mt_rand());
+        $this->imageDir = sys_get_temp_dir().'/'.sha1(mt_rand());
         $fs = new Filesystem();
         $fs->mkdir($this->imageDir);
     }
@@ -175,7 +175,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $crawler = $this->client->request('POST', $this->generateUrl('admin_product'), $post);
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->expected = '検索結果：' . $cnt . '件が該当しました';
+        $this->expected = '検索結果：'.$cnt.'件が該当しました';
         $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
         $this->verify('検索結果件数の確認テスト');
 
@@ -457,7 +457,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         $this->client->request('DELETE', $this->generateUrl('admin_product_product_delete', $params));
 
-        $rUrl = $this->generateUrl('admin_product_page', ['page_no' => 1]) . '?resume=1';
+        $rUrl = $this->generateUrl('admin_product_page', ['page_no' => 1]).'?resume=1';
 
         $this->assertTrue($this->client->getResponse()->isRedirect($rUrl));
 
@@ -692,7 +692,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
     {
         $expectedIds = [];
         for ($i = 1; $i <= 10; $i++) {
-            $productName = 'Product name ' . $i;
+            $productName = 'Product name '.$i;
             $Product = $this->createProduct($productName, 0);
             array_unshift($expectedIds, $Product->getId());
         }
@@ -963,16 +963,16 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      */
     public function testEditWithImage()
     {
-        $path = __DIR__ . '/../../../../../../html/upload';
+        $path = __DIR__.'/../../../../../../html/upload';
 
         $fs = new Filesystem();
         // アップロード画像が存在する場合は削除しておく
-        $fs->remove($path . '/temp_image/new_image.png');
-        $fs->remove($path . '/save_image/new_image.png');
+        $fs->remove($path.'/temp_image/new_image.png');
+        $fs->remove($path.'/save_image/new_image.png');
 
         $fs->copy(
-            $path . '/save_image/sand-1.png',
-            $path . '/temp_image/new_image.png'
+            $path.'/save_image/sand-1.png',
+            $path.'/temp_image/new_image.png'
         );
 
         $Product = $this->createProduct(null, 0);
@@ -988,9 +988,9 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         $rUrl = $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()]);
         $this->assertTrue($this->client->getResponse()->isRedirect($rUrl));
 
-        $this->assertFileExists($path . '/save_image/new_image.png', 'temp_image の画像が save_imageにコピーされている');
-        $fs->remove($path . '/temp_image/new_image.png');
-        $fs->remove($path . '/save_image/new_image.png');
+        $this->assertFileExists($path.'/save_image/new_image.png', 'temp_image の画像が save_imageにコピーされている');
+        $fs->remove($path.'/temp_image/new_image.png');
+        $fs->remove($path.'/save_image/new_image.png');
     }
 
     /**
@@ -998,16 +998,16 @@ class ProductControllerTest extends AbstractAdminWebTestCase
      */
     public function testEditWithImageFailure()
     {
-        $path = __DIR__ . '/../../../../../../html/upload';
+        $path = __DIR__.'/../../../../../../html/upload';
 
         $fs = new Filesystem();
         // アップロード画像が存在する場合は削除しておく
-        $fs->remove($path . '/temp_image/new_image.png');
-        $fs->remove($path . '/save_image/new_image.png');
+        $fs->remove($path.'/temp_image/new_image.png');
+        $fs->remove($path.'/save_image/new_image.png');
 
         $fs->copy(
-            $path . '/save_image/sand-1.png',
-            $path . '/temp_image/new_image.png'
+            $path.'/save_image/sand-1.png',
+            $path.'/temp_image/new_image.png'
         );
 
         $Product = $this->createProduct(null, 0);
@@ -1022,9 +1022,9 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         $this->assertStringContainsString('画像のパスが不正です。', $crawler->html());
 
-        $this->assertFileDoesNotExist($path . '/save_image/new_image.png', 'temp_image の画像が save_imageにコピーされない');
-        $fs->remove($path . '/temp_image/new_image.png');
-        $fs->remove($path . '/save_image/new_image.png');
+        $this->assertFileDoesNotExist($path.'/save_image/new_image.png', 'temp_image の画像が save_imageにコピーされない');
+        $fs->remove($path.'/temp_image/new_image.png');
+        $fs->remove($path.'/save_image/new_image.png');
     }
 
     public function testImageLoad()
@@ -1162,9 +1162,9 @@ class ProductControllerTest extends AbstractAdminWebTestCase
         );
         $this->assertTrue($this->client->getResponse()->isRedirect());
 
-        $dir = __DIR__ . '/../../../../../../html/upload/save_image/';
-        $this->assertTrue(file_exists($dir . $DuplicatedImage->getFileName()));
-        $this->assertFalse(file_exists($dir . $NotDuplicatedImage->getFileName()));
+        $dir = __DIR__.'/../../../../../../html/upload/save_image/';
+        $this->assertTrue(file_exists($dir.$DuplicatedImage->getFileName()));
+        $this->assertFalse(file_exists($dir.$NotDuplicatedImage->getFileName()));
     }
 
     public function testDeleteAndDeleteProductImage()
@@ -1197,13 +1197,13 @@ class ProductControllerTest extends AbstractAdminWebTestCase
 
         $this->client->request('DELETE', $this->generateUrl('admin_product_product_delete', $params));
 
-        $rUrl = $this->generateUrl('admin_product_page', ['page_no' => 1]) . '?resume=1';
+        $rUrl = $this->generateUrl('admin_product_page', ['page_no' => 1]).'?resume=1';
 
         $this->assertTrue($this->client->getResponse()->isRedirect($rUrl));
 
-        $dir = __DIR__ . '/../../../../../../html/upload/save_image/';
-        $this->assertTrue(file_exists($dir . $DuplicatedImage->getFileName()));
-        $this->assertFalse(file_exists($dir . $NotDuplicatedImage->getFileName()));
+        $dir = __DIR__.'/../../../../../../html/upload/save_image/';
+        $this->assertTrue(file_exists($dir.$DuplicatedImage->getFileName()));
+        $this->assertFalse(file_exists($dir.$NotDuplicatedImage->getFileName()));
     }
 
     public function test絵文字()

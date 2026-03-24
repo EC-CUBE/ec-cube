@@ -55,21 +55,21 @@ if (!class_exists(ProductTag::class)) {
         /**
          * @var Product
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Product::class, inversedBy: 'ProductTag')]
+        #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'ProductTag')]
         #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id')]
         private $Product;
 
         /**
          * @var Tag
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Tag::class, inversedBy: 'ProductTag')]
+        #[ORM\ManyToOne(targetEntity: Tag::class, inversedBy: 'ProductTag')]
         #[ORM\JoinColumn(name: 'tag_id', referencedColumnName: 'id')]
         private $Tag;
 
         /**
          * @var Member
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Member::class)]
+        #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
         private $Creator;
 

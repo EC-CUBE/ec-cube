@@ -48,7 +48,7 @@ if (!class_exists(DeliveryTime::class)) {
         /**
          * @var Delivery
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Delivery::class, inversedBy: 'DeliveryTimes')]
+        #[ORM\ManyToOne(targetEntity: Delivery::class, inversedBy: 'DeliveryTimes')]
         #[ORM\JoinColumn(name: 'delivery_id', referencedColumnName: 'id')]
         private $Delivery;
 

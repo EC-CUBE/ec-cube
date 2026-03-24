@@ -154,9 +154,9 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
             // Count the number of elements in both: they must be equal.
             if (count($this->columnHeaders) === count($line)) {
                 return array_combine(array_keys($this->columnHeaders), $line);
-            } else {
-                return $line;
             }
+
+            return $line;
         }
 
         return null;

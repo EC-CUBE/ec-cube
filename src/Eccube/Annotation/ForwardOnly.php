@@ -20,4 +20,6 @@ use Doctrine\Common\Annotations\Annotation\Target;
  * @Target("METHOD")
  */
 #[\Attribute(\Attribute::TARGET_METHOD)]
-final class ForwardOnly {}
+final class ForwardOnly
+{
+}

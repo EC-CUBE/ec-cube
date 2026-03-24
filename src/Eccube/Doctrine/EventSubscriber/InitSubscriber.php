@@ -15,8 +15,8 @@ namespace Eccube\Doctrine\EventSubscriber;
 
 use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Driver\Connection as DriverConnection;
-use Doctrine\DBAL\Driver\Middleware as MiddlewareInterface;
 use Doctrine\DBAL\Driver\Middleware\AbstractDriverMiddleware;
+use Doctrine\DBAL\Driver\Middleware as MiddlewareInterface;
 
 /**
  * DBAL 4 middleware that sets the timezone to UTC on connect.

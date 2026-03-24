@@ -120,7 +120,7 @@ class EntryController extends AbstractController
      */
     #[Route('/entry', name: 'entry', methods: ['GET', 'POST'])]
     #[Route('/entry', name: 'entry_confirm', methods: ['GET', 'POST'])]
-    #[Template("Entry/index.twig")]
+    #[Template('Entry/index.twig')]
     public function index(Request $request)
     {
         if ($this->isGranted('ROLE_USER')) {
@@ -198,16 +198,15 @@ class EntryController extends AbstractController
                         log_info('仮会員登録完了画面へリダイレクト');
 
                         return $this->redirectToRoute('entry_complete');
-                    } else {
-                        // 仮会員設定が無効な場合は、会員登録を完了させる.
-                        $qtyInCart = $this->entryActivate($request, $Customer->getSecretKey());
-
-                        // URLを変更するため完了画面にリダイレクト
-                        return $this->redirectToRoute('entry_activate', [
-                            'secret_key' => $Customer->getSecretKey(),
-                            'qtyInCart' => $qtyInCart,
-                        ]);
                     }
+                    // 仮会員設定が無効な場合は、会員登録を完了させる.
+                    $qtyInCart = $this->entryActivate($request, $Customer->getSecretKey());
+
+                    // URLを変更するため完了画面にリダイレクト
+                    return $this->redirectToRoute('entry_activate', [
+                        'secret_key' => $Customer->getSecretKey(),
+                        'qtyInCart' => $qtyInCart,
+                    ]);
             }
         }
 
@@ -220,7 +219,7 @@ class EntryController extends AbstractController
      * 会員登録完了画面.
      */
     #[Route('/entry/complete', name: 'entry_complete', methods: ['GET'])]
-    #[Template("Entry/complete.twig")]
+    #[Template('Entry/complete.twig')]
     public function complete()
     {
         return [];
@@ -230,7 +229,7 @@ class EntryController extends AbstractController
      * 会員のアクティベート（本会員化）を行う.
      */
     #[Route('/entry/activate/{secret_key}/{qtyInCart}', name: 'entry_activate', methods: ['GET'])]
-    #[Template("Entry/activate.twig")]
+    #[Template('Entry/activate.twig')]
     public function activate(Request $request, $secret_key, $qtyInCart = null)
     {
         $errors = $this->recursiveValidator->validate(

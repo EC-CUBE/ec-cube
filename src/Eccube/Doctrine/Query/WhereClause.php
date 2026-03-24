@@ -47,9 +47,9 @@ class WhereClause
     {
         if (is_array($y)) {
             return new WhereClause($expr, $y);
-        } else {
-            return new WhereClause($expr, [$x => $y]);
         }
+
+        return new WhereClause($expr, [$x => $y]);
     }
 
     /**

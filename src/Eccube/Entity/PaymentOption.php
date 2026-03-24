@@ -45,14 +45,14 @@ if (!class_exists(PaymentOption::class)) {
         /**
          * @var Delivery
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Delivery::class, inversedBy: 'PaymentOptions')]
+        #[ORM\ManyToOne(targetEntity: Delivery::class, inversedBy: 'PaymentOptions')]
         #[ORM\JoinColumn(name: 'delivery_id', referencedColumnName: 'id')]
         private $Delivery;
 
         /**
          * @var Payment
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Payment::class, inversedBy: 'PaymentOptions')]
+        #[ORM\ManyToOne(targetEntity: Payment::class, inversedBy: 'PaymentOptions')]
         #[ORM\JoinColumn(name: 'payment_id', referencedColumnName: 'id')]
         private $Payment;
 

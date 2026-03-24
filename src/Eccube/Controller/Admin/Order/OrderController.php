@@ -192,7 +192,7 @@ class OrderController extends AbstractController
      */
     #[Route('/%eccube_admin_route%/order', name: 'admin_order', methods: ['GET', 'POST'])]
     #[Route('/%eccube_admin_route%/order/page/{page_no}', requirements: ['page_no' => '\d+'], name: 'admin_order_page', methods: ['GET', 'POST'])]
-    #[Template("@admin/Order/index.twig")]
+    #[Template('@admin/Order/index.twig')]
     public function index(Request $request, PaginatorInterface $paginator, $page_no = null)
     {
         $builder = $this->formFactory
@@ -376,7 +376,6 @@ class OrderController extends AbstractController
     /**
      * 受注CSVの出力.
      *
-     *
      * @param Request $request
      *
      * @return StreamedResponse
@@ -393,7 +392,6 @@ class OrderController extends AbstractController
 
     /**
      * 配送CSVの出力.
-     *
      *
      * @param Request $request
      *
@@ -489,7 +487,6 @@ class OrderController extends AbstractController
 
     /**
      * Update to order status
-     *
      *
      * @param Request $request
      * @param Shipping $Shipping
@@ -589,7 +586,6 @@ class OrderController extends AbstractController
     /**
      * Update to Tracking number.
      *
-     *
      * @param Request $request
      * @param Shipping $shipping
      *
@@ -643,13 +639,12 @@ class OrderController extends AbstractController
     }
 
     /**
-     *
      * @param Request $request
      *
      * @return array|RedirectResponse
      */
     #[Route('/%eccube_admin_route%/order/export/pdf', name: 'admin_order_export_pdf', methods: ['GET', 'POST'])]
-    #[Template("@admin/Order/order_pdf.twig")]
+    #[Template('@admin/Order/order_pdf.twig')]
     public function exportPdf(Request $request)
     {
         // requestから出荷番号IDの一覧を取得する.
@@ -691,13 +686,12 @@ class OrderController extends AbstractController
     }
 
     /**
-     *
      * @param Request $request
      *
      * @return Response
      */
     #[Route('/%eccube_admin_route%/order/export/pdf/download', name: 'admin_order_pdf_download', methods: ['POST'])]
-    #[Template("@admin/Order/order_pdf.twig")]
+    #[Template('@admin/Order/order_pdf.twig')]
     public function exportPdfDownload(Request $request, OrderPdfService $orderPdfService)
     {
         /**

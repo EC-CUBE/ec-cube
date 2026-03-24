@@ -85,14 +85,14 @@ if (!class_exists(Csv::class)) {
         /**
          * @var Master\CsvType
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\CsvType::class)]
+        #[ORM\ManyToOne(targetEntity: Master\CsvType::class)]
         #[ORM\JoinColumn(name: 'csv_type_id', referencedColumnName: 'id')]
         private $CsvType;
 
         /**
          * @var Member
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Member::class)]
+        #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
         private $Creator;
 

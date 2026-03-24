@@ -111,42 +111,42 @@ if (!class_exists(TaxRule::class)) {
         /**
          * @var ProductClass
          */
-        #[ORM\OneToOne(targetEntity: \Eccube\Entity\ProductClass::class, inversedBy: 'TaxRule')]
+        #[ORM\OneToOne(targetEntity: ProductClass::class, inversedBy: 'TaxRule')]
         #[ORM\JoinColumn(name: 'product_class_id', referencedColumnName: 'id')]
         private $ProductClass;
 
         /**
          * @var Member
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Member::class)]
+        #[ORM\ManyToOne(targetEntity: Member::class)]
         #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
         private $Creator;
 
         /**
          * @var Master\Country
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\Country::class)]
+        #[ORM\ManyToOne(targetEntity: Master\Country::class)]
         #[ORM\JoinColumn(name: 'country_id', referencedColumnName: 'id')]
         private $Country;
 
         /**
          * @var Master\Pref
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\Pref::class)]
+        #[ORM\ManyToOne(targetEntity: Master\Pref::class)]
         #[ORM\JoinColumn(name: 'pref_id', referencedColumnName: 'id')]
         private $Pref;
 
         /**
          * @var Product
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Product::class)]
+        #[ORM\ManyToOne(targetEntity: Product::class)]
         #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id')]
         private $Product;
 
         /**
          * @var Master\RoundingType
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\RoundingType::class)]
+        #[ORM\ManyToOne(targetEntity: Master\RoundingType::class)]
         #[ORM\JoinColumn(name: 'rounding_type_id', referencedColumnName: 'id')]
         private $RoundingType;
 
@@ -452,24 +452,22 @@ if (!class_exists(TaxRule::class)) {
                 return -1;
             } elseif (!$this->isProductTaxRule() && $Target->isProductTaxRule()) {
                 return 1;
-            } else {
-                if ($this->getApplyDate()->format('YmdHis') == $Target->getApplyDate()->format('YmdHis')) {
-                    if ($this->getSortNo() == $Target->getSortNo()) {
-                        return 0;
-                    }
-                    if ($this->getSortNo() > $Target->getSortNo()) {
-                        return -1;
-                    } else {
-                        return 1;
-                    }
-                } else {
-                    if ($this->getApplyDate()->format('YmdHis') > $Target->getApplyDate()->format('YmdHis')) {
-                        return -1;
-                    } else {
-                        return 1;
-                    }
-                }
             }
+            if ($this->getApplyDate()->format('YmdHis') == $Target->getApplyDate()->format('YmdHis')) {
+                if ($this->getSortNo() == $Target->getSortNo()) {
+                    return 0;
+                }
+                if ($this->getSortNo() > $Target->getSortNo()) {
+                    return -1;
+                }
+
+                return 1;
+            }
+            if ($this->getApplyDate()->format('YmdHis') > $Target->getApplyDate()->format('YmdHis')) {
+                return -1;
+            }
+
+            return 1;
         }
 
         /**

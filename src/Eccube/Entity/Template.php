@@ -82,7 +82,7 @@ if (!class_exists(Template::class)) {
         /**
          * @var Master\DeviceType
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\DeviceType::class)]
+        #[ORM\ManyToOne(targetEntity: Master\DeviceType::class)]
         #[ORM\JoinColumn(name: 'device_type_id', referencedColumnName: 'id')]
         private $DeviceType;
 

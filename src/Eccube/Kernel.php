@@ -46,7 +46,6 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
@@ -124,7 +123,7 @@ class Kernel extends BaseKernel
     /**
      * {@inheritdoc}
      *
-     * @see \Symfony\Component\HttpKernel\Kernel::boot()
+     * @see BaseKernel::boot()
      */
     public function boot(): void
     {
@@ -214,7 +213,7 @@ class Kernel extends BaseKernel
                 $builder->schemes($scheme);
 
                 // Backward compatibility: also load @Route annotations for plugins
-                $legacyRoutes = \Eccube\Routing\HybridAnnotationClassLoader::loadAnnotationRoutes($dir);
+                $legacyRoutes = Routing\HybridAnnotationClassLoader::loadAnnotationRoutes($dir);
                 if ($legacyRoutes->count() > 0) {
                     $routes->addCollection($legacyRoutes);
                 }

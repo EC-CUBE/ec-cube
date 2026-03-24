@@ -49,7 +49,7 @@ class SystemController
     }
 
     #[Route('/%eccube_admin_route%/setting/system/system', name: 'admin_setting_system_system', methods: ['GET'])]
-    #[Template("@admin/Setting/System/system.twig")]
+    #[Template('@admin/Setting/System/system.twig')]
     public function index(Request $request)
     {
         $info = [];

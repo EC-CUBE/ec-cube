@@ -74,7 +74,7 @@ class CartController extends AbstractController
      * カート画面.
      */
     #[Route('/cart', name: 'cart', methods: ['GET'])]
-    #[Template("Cart/index.twig")]
+    #[Template('Cart/index.twig')]
     public function index(Request $request)
     {
         // カートを取得して明細の正規化を実行

@@ -51,14 +51,14 @@ if (!class_exists(CartItem::class)) {
         /**
          * @var ProductClass
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\ProductClass::class)]
+        #[ORM\ManyToOne(targetEntity: ProductClass::class)]
         #[ORM\JoinColumn(name: 'product_class_id', referencedColumnName: 'id')]
         private $ProductClass;
 
         /**
          * @var Cart
          */
-        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Cart::class, inversedBy: 'CartItems', cascade: ['persist'])]
+        #[ORM\ManyToOne(targetEntity: Cart::class, inversedBy: 'CartItems', cascade: ['persist'])]
         #[ORM\JoinColumn(name: 'cart_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
         private $Cart;
 

@@ -192,7 +192,7 @@ class MypageControllerTest extends AbstractWebTestCase
 
             // id とは 逆順に create_date を設定する.
             // 画面表示は create_date 降順なので, id 昇順にソートされるはず
-            $CustomerFavoriteProduct->setCreateDate(new \DateTime('-' . $i . ' days'));
+            $CustomerFavoriteProduct->setCreateDate(new \DateTime('-'.$i.' days'));
             $this->entityManager->flush();
         }
 
