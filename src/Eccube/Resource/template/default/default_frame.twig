@@ -60,42 +60,26 @@ file that was distributed with this source code.
     {{ include('block.twig', {'Blocks': Layout.BodyAfter}) }}
 {% endif %}
 
-
-{%  if (isMaintenance is defined and isMaintenance) and (isDebugMode is defined and isDebugMode) %}
-    <dev class="ec-twoModeAlert">
-        <div class="ec-maintenanceAlert">
-            <div>
-                <div class="ec-maintenanceAlert__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"/></div>
-                {{ 'front.under_maintenance'|trans }}
-            </div>
-        </div>
-        <div class="ec-debugModeAlert bg-danger">
-            <div>
-                <div class="ec-debugModeAlert__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"/></div>
-                {{ 'front.under_debug_mode'|trans }}
-            </div>
-        </div>
-    </dev>
-{%  else %}
-    {% if (isMaintenance is defined and isMaintenance) %}
-        <div class="ec-maintenanceAlert">
-            <div>
-                <div class="ec-maintenanceAlert__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"/></div>
-                {{ 'front.under_maintenance'|trans }}
-            </div>
-        </div>
-    {% endif %}
-    {% if (isDebugMode is defined and isDebugMode) %}
-        <div class="ec-debugModeAlert bg-danger">
-            <div>
-                <div class="ec-debugModeAlert__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"/></div>
-                {{ 'front.under_debug_mode'|trans }}
-            </div>
-        </div>
-    {% endif %}
+{# メンテ / デバッグ / 管理セッション: 本数に応じて .ec-layoutRole に --ec-mode-alert-strips を渡し padding-top で本文を下げる #}
+{% set show_maintenance = isMaintenance is defined and isMaintenance %}
+{% set show_debug = isDebugMode is defined and isDebugMode %}
+{% set show_admin_on_front = isAdminLoggedInOnFront is defined and isAdminLoggedInOnFront %}
+{% set mode_alert_count = (show_maintenance ? 1 : 0) + (show_debug ? 1 : 0) + (show_admin_on_front ? 1 : 0) %}
+{% if mode_alert_count > 0 %}
+    <div class="ec-modeAlertStack" aria-live="polite">
+        {% if show_maintenance %}
+            {{ include('_front_mode_alert_row.twig', { alert_class: 'ec-maintenanceAlert', message_key: 'front.under_maintenance' }) }}
+        {% endif %}
+        {% if show_debug %}
+            {{ include('_front_mode_alert_row.twig', { alert_class: 'ec-debugModeAlert', message_key: 'front.under_debug_mode' }) }}
+        {% endif %}
+        {% if show_admin_on_front %}
+            {{ include('_front_mode_alert_row.twig', { alert_class: 'ec-adminLoginAlert', message_key: 'front.admin_login_active' }) }}
+        {% endif %}
+    </div>
 {% endif %}
 
-<div class="ec-layoutRole">
+<div class="ec-layoutRole" style="--ec-mode-alert-strips: {{ mode_alert_count }}">
     {# Layout: HEADER #}
     {% if Layout.Header %}
         <header class="ec-layoutRole__header">

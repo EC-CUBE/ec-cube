@@ -75,6 +75,36 @@ class TwigInitializeListener implements EventSubscriberInterface
     }
 
     /**
+     * セッションストレージが読み込まれた後に、フロント表示用 Twig グローバルをセットする.
+     * （onKernelRequest priority 6 より後に実行するため -20 で登録）
+     */
+    public function setIsAdminLoggedInOnFrontGlobal(RequestEvent $event)
+    {
+        if (!$event->isMainRequest()) {
+            return;
+        }
+
+        if ($this->requestContext->isAdmin()) {
+            return;
+        }
+
+        $request = $event->getRequest();
+        if (!$request->hasSession()) {
+            $this->twig->addGlobal('isAdminLoggedInOnFront', false);
+
+            return;
+        }
+
+        $session = $request->getSession();
+        // セッション Cookie があるのに未開始のとき、ストレージから属性を読み込む
+        if (!$session->isStarted() && $request->cookies->has($session->getName())) {
+            $session->start();
+        }
+
+        $this->twig->addGlobal('isAdminLoggedInOnFront', $session->has('_security_admin'));
+    }
+
+    /**
      * @throws NonUniqueResultException
      */
     public function setFrontVariables(RequestEvent $event): void
@@ -222,6 +252,8 @@ class TwigInitializeListener implements EventSubscriberInterface
             KernelEvents::REQUEST => [
                 // SecurityServiceProviderで、認証処理が完了した後に実行.
                 ['onKernelRequest', 6],
+                // Security / Session より後（高い priority が先に実行される）
+                ['setIsAdminLoggedInOnFrontGlobal', -20],
             ],
         ];
     }

@@ -30,6 +30,8 @@ Styleguide 11.2
   min-height: 100dvh;
   transition: transform 0.3s;
   background: #fff;
+  /* default_frame が --ec-mode-alert-strips（0〜3）をセット。帯1本あたり 50px */
+  padding-top: calc(var(--ec-mode-alert-strips, 0) * 50px);
   & &__contentTop {
     padding: 0;
   }
@@ -831,14 +833,23 @@ Styleguide 11.2.7
   display: none;
 }
 
-.ec-maintenanceAlert {
-  background: steelblue;
-  height: 50px;
+/* メンテ／デバッグ／管理セッション帯: 1 か所に固定し縦積み（本文は .ec-layoutRole の padding-top で確保） */
+.ec-modeAlertStack {
   position: fixed;
   top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+}
+
+.ec-maintenanceAlert {
+  background: steelblue;
+  flex-shrink: 0;
+  height: 50px;
   width: 100%;
   color: white;
-  z-index: 9999;
   display: flex;
   font-weight: bold;
   & > * {
@@ -853,39 +864,49 @@ Styleguide 11.2.7
     fill: #fff;
     vertical-align: top;
   }
-  & +* {
-    margin-top: 50px;
-  }
 }
 
-/* devモードの追加 */
 .ec-debugModeAlert {
   background: red;
+  flex-shrink: 0;
   height: 50px;
-  position: fixed;
-  top: 0;
   width: 100%;
   color: white;
-  z-index: 9999;
   display: flex;
   font-weight: bold;
   & > * {
-  margin: auto;
+    margin: auto;
   }
   & &__icon {
-  display: inline-block;
-  margin-right: 1rem;
-  width: 20px;
-  height: 20px;
-  color: #fff;
-  fill: #fff;
-  vertical-align: top;
-  }
-  & +* {
-    margin-top: 50px;
+    display: inline-block;
+    margin-right: 1rem;
+    width: 20px;
+    height: 20px;
+    color: #fff;
+    fill: #fff;
+    vertical-align: top;
   }
 }
 
-.ec-twoModeAlert + * {
-  margin-top: 100px;
+/* フロントで管理セッションが残っている場合（色は mixins/_variables.scss の $orange） */
+.ec-adminLoginAlert {
+  background: $orange;
+  flex-shrink: 0;
+  height: 50px;
+  width: 100%;
+  color: white;
+  display: flex;
+  font-weight: bold;
+  & > * {
+    margin: auto;
+  }
+  & &__icon {
+    display: inline-block;
+    margin-right: 1rem;
+    width: 20px;
+    height: 20px;
+    color: #fff;
+    fill: #fff;
+    vertical-align: top;
+  }
 }
