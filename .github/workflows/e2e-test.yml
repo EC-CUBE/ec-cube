@@ -52,7 +52,7 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
       mailcatcher:
-        image: schickling/mailcatcher
+        image: sj26/mailcatcher
         ports:
           - 1080:1080
           - 1025:1025
@@ -100,7 +100,7 @@ jobs:
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           ECCUBE_AUTH_MAGIC: 'testmagic'
-          MAILER_DSN: 'null://null'
+          MAILER_DSN: 'smtp://127.0.0.1:1025'
         run: |
           echo "APP_ENV=${APP_ENV}" > .env
           echo "TRUSTED_HOSTS=127.0.0.1,localhost" >> .env
