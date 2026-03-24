@@ -18,17 +18,12 @@ use Doctrine\ORM\Mapping as ORM;
 if (!class_exists(MailTemplate::class)) {
     /**
      * MailTemplate
-     *
-     * @ORM\Table(name="dtb_mail_template")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\MailTemplateRepository")
      */
+    #[ORM\Table(name: 'dtb_mail_template')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: \Eccube\Repository\MailTemplateRepository::class)]
     class MailTemplate extends AbstractEntity
     {
         /**
@@ -41,69 +36,55 @@ if (!class_exists(MailTemplate::class)) {
 
         /**
          * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
          */
+        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         private $id;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="name", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
         private $name;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="file_name", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'file_name', type: 'string', length: 255, nullable: true)]
         private $file_name;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="mail_subject", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'mail_subject', type: 'string', length: 255, nullable: true)]
         private $mail_subject;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
         private $create_date;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
         private $update_date;
 
         /**
          * @var Member
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Member::class)]
+        #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
         private $Creator;
 
         /**
          * テンプレートの削除可否。
          *
          * @var bool
-         *
-         * @ORM\Column(name="deletable", type="boolean", options={"default":false}))
          */
+        #[ORM\Column(name: 'deletable', type: 'boolean', options: ['default' => false])]
         private bool $deletable = false;
 
         /**

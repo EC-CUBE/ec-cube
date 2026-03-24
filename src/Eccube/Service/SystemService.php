@@ -72,22 +72,16 @@ class SystemService implements EventSubscriberInterface
         $rsm = new \Doctrine\ORM\Query\ResultSetMapping();
         $rsm->addScalarResult('v', 'v');
 
-        $platform = $this->entityManager->getConnection()->getDatabasePlatform()->getName();
-        switch ($platform) {
-            case 'sqlite':
-                $prefix = 'SQLite version ';
-                $func = 'sqlite_version()';
-                break;
-
-            case 'mysql':
-                $prefix = 'MySQL ';
-                $func = 'version()';
-                break;
-
-            case 'pgsql':
-            default:
-                $prefix = '';
-                $func = 'version()';
+        $platform = $this->entityManager->getConnection()->getDatabasePlatform();
+        if ($platform instanceof \Doctrine\DBAL\Platforms\SQLitePlatform) {
+            $prefix = 'SQLite version ';
+            $func = 'sqlite_version()';
+        } elseif ($platform instanceof \Doctrine\DBAL\Platforms\AbstractMySQLPlatform) {
+            $prefix = 'MySQL ';
+            $func = 'version()';
+        } else {
+            $prefix = '';
+            $func = 'version()';
         }
 
         $version = $this->entityManager
@@ -222,7 +216,7 @@ class SystemService implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [KernelEvents::TERMINATE => 'disableMaintenanceEvent'];
     }

@@ -52,7 +52,7 @@ class DoctrineOrmExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
@@ -74,7 +74,17 @@ class DoctrineOrmExtension extends AbstractTypeExtension
                 /** @var \ReflectionProperty[] $props */
                 $props = $meta->getReflectionProperties();
                 foreach ($props as $prop) {
-                    $anno = $this->reader->getPropertyAnnotation($prop, FormAppend::class);
+                    // PHP 8 Attributes を優先チェック
+                    $attrs = $prop->getAttributes(FormAppend::class);
+                    if (!empty($attrs)) {
+                        $anno = $attrs[0]->newInstance();
+                    } else {
+                        // フォールバック: doctrine/annotations
+                        $anno = $this->reader->getPropertyAnnotation($prop, FormAppend::class);
+                        if ($anno) {
+                            trigger_deprecation('ec-cube/ec-cube', '4.3', 'Using @FormAppend annotation is deprecated, use #[FormAppend] attribute instead.');
+                        }
+                    }
                     if ($anno) {
                         $options = is_null($anno->options) ? [] : $anno->options;
                         $options['eccube_form_options'] = [
@@ -91,7 +101,7 @@ class DoctrineOrmExtension extends AbstractTypeExtension
         );
     }
 
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $options = $form->getConfig()->getOption('eccube_form_options');
 
@@ -110,7 +120,7 @@ class DoctrineOrmExtension extends AbstractTypeExtension
         $view->vars['eccube_form_options'] = $options;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefault(
             'eccube_form_options',

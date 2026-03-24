@@ -108,14 +108,16 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         $this->client->request(
             'POST',
             $this->generateUrl('shopping_shipping_multiple'),
-            ['form' => [
-                'shipping_multiple' => [0 => [
-                    // 配送先1, 配送先2 の 情報を渡す
-                    'shipping' => $shippings,
+            [
+                'form' => [
+                    'shipping_multiple' => [
+                        0 => [
+                            // 配送先1, 配送先2 の 情報を渡す
+                            'shipping' => $shippings,
+                        ],
+                    ],
+                    '_token' => 'dummy',
                 ],
-                ],
-                '_token' => 'dummy',
-            ],
             ]
         );
 
@@ -132,7 +134,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         /** @var Email $Message */
         $Message = $this->getMailerMessage(0);
 
-        $this->expected = '['.$BaseInfo->getShopName().'] ご注文ありがとうございます';
+        $this->expected = '[' . $BaseInfo->getShopName() . '] ご注文ありがとうございます';
         $this->actual = $Message->getSubject();
         $this->verify();
 
@@ -183,7 +185,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
             }
         );
 
-        $address = $Customer->getName01().' '.$Customer->getPref()->getName().' '.$Customer->getAddr01().' '.$Customer->getAddr02();
+        $address = $Customer->getName01() . ' ' . $Customer->getPref()->getName() . ' ' . $Customer->getAddr01() . ' ' . $Customer->getAddr02();
         $this->expected = $address;
         $this->actual = $shippings[0]['customer_address'];
         $this->verify();
@@ -351,7 +353,8 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                 'Payment' => 1,
                 'use_pont' => 0,
                 'message' => $this->getFaker()->realText(),
-                'redirect_to' => $this->generateUrl('shopping_shipping_multiple', [], UrlGeneratorInterface::ABSOLUTE_PATH),            ],
+                'redirect_to' => $this->generateUrl('shopping_shipping_multiple', [], UrlGeneratorInterface::ABSOLUTE_PATH),
+            ],
         ]);
 
         $multiForm = [
@@ -443,7 +446,8 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                 'Payment' => 1,
                 'use_pont' => 0,
                 'message' => $this->getFaker()->realText(),
-                'redirect_to' => $this->generateUrl('shopping_shipping_multiple', [], UrlGeneratorInterface::ABSOLUTE_PATH),            ],
+                'redirect_to' => $this->generateUrl('shopping_shipping_multiple', [], UrlGeneratorInterface::ABSOLUTE_PATH),
+            ],
         ]);
 
         $multiForm = [
@@ -533,7 +537,8 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                 'Payment' => 1,
                 'use_pont' => 0,
                 'message' => $this->getFaker()->realText(),
-                'redirect_to' => $this->generateUrl('shopping_shipping_multiple', [], UrlGeneratorInterface::ABSOLUTE_PATH),            ],
+                'redirect_to' => $this->generateUrl('shopping_shipping_multiple', [], UrlGeneratorInterface::ABSOLUTE_PATH),
+            ],
         ]);
 
         $multiForm = [
@@ -632,7 +637,8 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                 'Payment' => 1,
                 'use_pont' => 0,
                 'message' => $this->getFaker()->realText(),
-                'redirect_to' => $this->generateUrl('shopping_shipping_multiple', [], UrlGeneratorInterface::ABSOLUTE_PATH),            ],
+                'redirect_to' => $this->generateUrl('shopping_shipping_multiple', [], UrlGeneratorInterface::ABSOLUTE_PATH),
+            ],
         ]);
 
         $multiForm = [
@@ -742,7 +748,8 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                 'Payment' => 1,
                 'use_pont' => 0,
                 'message' => $this->getFaker()->realText(),
-                'redirect_to' => $this->generateUrl('shopping_shipping_multiple', [], UrlGeneratorInterface::ABSOLUTE_PATH),            ],
+                'redirect_to' => $this->generateUrl('shopping_shipping_multiple', [], UrlGeneratorInterface::ABSOLUTE_PATH),
+            ],
         ]);
 
         $multiForm = [
@@ -854,7 +861,8 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                 'Payment' => 1,
                 'use_pont' => 0,
                 'message' => $this->getFaker()->realText(),
-                'redirect_to' => $this->generateUrl('shopping_shipping_multiple', [], UrlGeneratorInterface::ABSOLUTE_PATH),            ],
+                'redirect_to' => $this->generateUrl('shopping_shipping_multiple', [], UrlGeneratorInterface::ABSOLUTE_PATH),
+            ],
         ]);
 
         $multiForm = [
@@ -940,7 +948,8 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                 'Payment' => 1,
                 'use_pont' => 0,
                 'message' => $this->getFaker()->realText(),
-                'redirect_to' => $this->generateUrl('shopping_shipping_multiple', [], UrlGeneratorInterface::ABSOLUTE_PATH),            ],
+                'redirect_to' => $this->generateUrl('shopping_shipping_multiple', [], UrlGeneratorInterface::ABSOLUTE_PATH),
+            ],
         ]);
 
         $arrCustomerAddress = $Customer->getCustomerAddresses();
@@ -1050,7 +1059,8 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
                 'Payment' => 1,
                 'use_pont' => 0,
                 'message' => $this->getFaker()->realText(),
-                'redirect_to' => $this->generateUrl('shopping_shipping_multiple', [], UrlGeneratorInterface::ABSOLUTE_PATH),            ],
+                'redirect_to' => $this->generateUrl('shopping_shipping_multiple', [], UrlGeneratorInterface::ABSOLUTE_PATH),
+            ],
         ]);
 
         // Before multi shipping
@@ -1267,7 +1277,7 @@ class ShoppingControllerWithMultipleTest extends AbstractShoppingControllerTestC
         /** @var Email $Message */
         $Message = $this->getMailerMessage(0);
 
-        $this->expected = '['.$BaseInfo->getShopName().'] ご注文ありがとうございます';
+        $this->expected = '[' . $BaseInfo->getShopName() . '] ご注文ありがとうございます';
         $this->actual = $Message->getSubject();
         $this->verify();
 

@@ -34,7 +34,7 @@ class TransactionListenerTest extends WebTestCase
 {
     protected function isSqlite()
     {
-        return $this->app['db']->getDatabasePlatform()->getName() === 'sqlite';
+        return $this->app['db']->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\SqlitePlatform;
     }
 
     protected function setUp(): void

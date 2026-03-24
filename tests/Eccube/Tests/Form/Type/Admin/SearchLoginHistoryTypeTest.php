@@ -57,7 +57,7 @@ class SearchLoginHistoryTypeTest extends AbstractTypeTestCase
      *
      * @return array
      */
-    public function dataFormDateTimeProvider()
+    public static function dataFormDateTimeProvider()
     {
         return [
             ['create_datetime_start'],

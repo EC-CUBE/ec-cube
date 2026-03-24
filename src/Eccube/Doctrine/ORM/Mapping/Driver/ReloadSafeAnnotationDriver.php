@@ -19,12 +19,12 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * 同じプロセス内で新しく生成されたProxyクラスからマッピングメタデータを抽出するためのAnnotationDriver.
+ * 同じプロセス内で新しく生成されたProxyクラスからマッピングメタデータを抽出するためのDriver.
  *
  * 同じプロセス内で、Proxy元のEntityがロードされた後に同じFQCNを持つProxyをロードしようとすると、Fatalエラーが発生する.
  * このエラーを回避するために、新しく生成されたProxyクラスは一時的にクラス名を変更してからロードして、マッピングメタデータを抽出する.
  */
-class ReloadSafeAnnotationDriver extends AnnotationDriver
+class ReloadSafeAnnotationDriver extends HybridMappingDriver
 {
     /**
      * @var array 新しく生成されたProxyファイルのリスト
@@ -51,7 +51,7 @@ class ReloadSafeAnnotationDriver extends AnnotationDriver
     /**
      * {@inheritdoc}
      */
-    public function getAllClassNames()
+    public function getAllClassNames(): array
     {
         if ($this->classNames !== null) {
             return $this->classNames;
@@ -71,7 +71,7 @@ class ReloadSafeAnnotationDriver extends AnnotationDriver
                     new \RecursiveDirectoryIterator($path, \FilesystemIterator::SKIP_DOTS),
                     \RecursiveIteratorIterator::LEAVES_ONLY
                 ),
-                '/^.+'.preg_quote($this->fileExtension).'$/i',
+                '/^.+' . preg_quote($this->fileExtension) . '$/i',
                 \RecursiveRegexIterator::GET_MATCH
             );
 
@@ -91,7 +91,7 @@ class ReloadSafeAnnotationDriver extends AnnotationDriver
                     }
                 }
 
-                $projectDir = realpath(__DIR__.'/../../../../../../');
+                $projectDir = realpath(__DIR__ . '/../../../../../../');
                 if ('\\' === DIRECTORY_SEPARATOR) {
                     $path = str_replace('\\', '/', $path);
                     $this->trait_proxies_directory = str_replace('\\', '/', $this->trait_proxies_directory);
@@ -100,7 +100,7 @@ class ReloadSafeAnnotationDriver extends AnnotationDriver
                 }
 
                 // Replace /path/to/ec-cube to proxies path
-                $proxyFile = str_replace($projectDir, $this->trait_proxies_directory, $path).'/'.basename($sourceFile);
+                $proxyFile = str_replace($projectDir, $this->trait_proxies_directory, $path) . '/' . basename($sourceFile);
                 if (file_exists($proxyFile)) {
                     $sourceFile = $proxyFile;
                 }
@@ -133,16 +133,16 @@ class ReloadSafeAnnotationDriver extends AnnotationDriver
                     $namespaceEndIndex = $tokens->getNextTokenOfKind($namespaceIndex, [';']);
                     $namespace = $tokens->generatePartialCode($tokens->getNextMeaningfulToken($namespaceIndex), $tokens->getPrevMeaningfulToken($namespaceEndIndex));
                     $className = $tokens[$classNameTokenIndex]->getContent();
-                    $fqcn = $namespace.'\\'.$className;
+                    $fqcn = $namespace . '\\' . $className;
                     if (class_exists($fqcn) && !$this->isTransient($fqcn)) {
                         $sourceFile = realpath($sourceFile);
                         if (in_array($sourceFile, $this->newProxyFiles)) {
-                            $newClassName = $className.StringUtil::random(12);
+                            $newClassName = $className . StringUtil::random(12);
                             $tokens[$classNameTokenIndex] = new Token([T_STRING, $newClassName]);
-                            $newFilePath = $this->outputDir."{$newClassName}.php";
+                            $newFilePath = $this->outputDir . "{$newClassName}.php";
                             file_put_contents($newFilePath, $tokens->generateCode());
                             require_once $newFilePath;
-                            $results[] = $namespace."\\{$newClassName}";
+                            $results[] = $namespace . "\\{$newClassName}";
                         } else {
                             $results[] = $fqcn;
                         }

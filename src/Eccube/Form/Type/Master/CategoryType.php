@@ -23,7 +23,7 @@ class CategoryType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'class' => \Eccube\Entity\Category::class,
@@ -36,12 +36,12 @@ class CategoryType extends AbstractType
         ]);
     }
 
-    public function getParent()
+    public function getParent(): string
     {
         return MasterType::class;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'category';
     }

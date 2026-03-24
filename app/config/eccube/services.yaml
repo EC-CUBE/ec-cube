@@ -40,6 +40,22 @@ services:
     Eccube\Common\EccubeConfig:
         public: true
 
+    Eccube\Doctrine\EventSubscriber\InitSubscriber:
+        tags:
+            - { name: doctrine.middleware }
+
+    Eccube\Doctrine\EventSubscriber\SaveEventSubscriber:
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: preUpdate }
+
+    Eccube\Doctrine\EventSubscriber\TaxRuleEventSubscriber:
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: postLoad }
+            - { name: doctrine.event_listener, event: postPersist }
+            - { name: doctrine.event_listener, event: postUpdate }
+
     Eccube\Service\TaxRuleService:
         lazy: true
         public: true
@@ -75,7 +91,6 @@ services:
         arguments:
             $container: !service_locator
                 doctrine: '@doctrine'
-                Doctrine\Common\Persistence\ManagerRegistry: '@doctrine'
                 Doctrine\Persistence\ManagerRegistry: '@doctrine'
                 doctrine.orm.default_entity_manager: '@doctrine.orm.default_entity_manager'
                 doctrine.orm.entity_manager: '@doctrine.orm.default_entity_manager'
@@ -97,7 +112,7 @@ services:
 
     Plugin\:
         resource: '../../../app/Plugin/*'
-        exclude: '../../../app/Plugin/*/{Entity,Resource,ServiceProvider,Tests,Codeception,DoctrineMigrations}'
+        exclude: '../../../app/Plugin/*/{Entity,Resource,ServiceProvider,Tests,Codeception,DoctrineMigrations,vendor}'
 
     Customize\:
         resource: '../../../app/Customize/*'
@@ -208,6 +223,9 @@ services:
     Eccube\Session\Storage\Handler\SameSiteNoneCompatSessionHandler:
         arguments:
             - '@native_file_session_handler'
+
+    Doctrine\Common\Annotations\Reader:
+        class: Doctrine\Common\Annotations\AnnotationReader
 
     Eccube\DependencyInjection\Facade\AnnotationReaderFacade:
         public: true

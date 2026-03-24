@@ -42,7 +42,7 @@ class NewItemTest extends AbstractWebTestCase
                 'blockposition'
             );";
 
-        $this->entityManager->getConnection()->exec($sql);
+        $this->entityManager->getConnection()->executeStatement($sql);
     }
 
     public function testNewItemBlock()

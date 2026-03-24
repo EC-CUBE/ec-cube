@@ -13,14 +13,13 @@
 
 namespace Eccube\Doctrine\EventSubscriber;
 
-use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Event\LifecycleEventArgs;
-use Doctrine\ORM\Events;
+use Doctrine\ORM\Event\PrePersistEventArgs;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Member;
 use Eccube\Request\Context;
 
-class SaveEventSubscriber implements EventSubscriber
+class SaveEventSubscriber
 {
     /**
      * @var Context
@@ -42,20 +41,9 @@ class SaveEventSubscriber implements EventSubscriber
     }
 
     /**
-     * @return array
-     */
-    public function getSubscribedEvents()
-    {
-        return [
-            Events::prePersist,
-            Events::preUpdate,
-        ];
-    }
-
-    /**
      * @param LifecycleEventArgs $args
      */
-    public function prePersist(LifecycleEventArgs $args)
+    public function prePersist(PrePersistEventArgs $args)
     {
         $entity = $args->getObject();
 
@@ -80,7 +68,7 @@ class SaveEventSubscriber implements EventSubscriber
     /**
      * @param LifecycleEventArgs $args
      */
-    public function preUpdate(LifecycleEventArgs $args)
+    public function preUpdate(PreUpdateEventArgs $args)
     {
         $entity = $args->getObject();
 

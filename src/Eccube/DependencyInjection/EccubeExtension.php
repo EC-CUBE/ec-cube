@@ -69,10 +69,10 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
 
         // SSL強制時は, httpsのみにアクセス制限する
         $accessControl = [
-            ['path' => '^/%eccube_admin_route%/login', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
+            ['path' => '^/%eccube_admin_route%/login', 'roles' => 'PUBLIC_ACCESS'],
             ['path' => '^/%eccube_admin_route%/', 'roles' => 'ROLE_ADMIN'],
-            ['path' => '^/mypage/login', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
-            ['path' => '^/mypage/withdraw_complete', 'roles' => 'IS_AUTHENTICATED_ANONYMOUSLY'],
+            ['path' => '^/mypage/login', 'roles' => 'PUBLIC_ACCESS'],
+            ['path' => '^/mypage/withdraw_complete', 'roles' => 'PUBLIC_ACCESS'],
             ['path' => '^/mypage/change', 'roles' => 'IS_AUTHENTICATED_FULLY'],
             ['path' => '^/mypage/', 'roles' => 'ROLE_USER'],
         ];
@@ -152,8 +152,8 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
             return;
         }
 
-        $stmt = $conn->query('select * from dtb_plugin');
-        $plugins = $stmt->fetchAll();
+        $stmt = $conn->executeQuery('select * from dtb_plugin');
+        $plugins = $stmt->fetchAllAssociative();
 
         $enabled = [];
         foreach ($plugins as $plugin) {
@@ -239,7 +239,7 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
             return false;
         }
 
-        $tableNames = $conn->getSchemaManager()->listTableNames();
+        $tableNames = $conn->createSchemaManager()->listTableNames();
 
         return in_array('dtb_plugin', $tableNames);
     }

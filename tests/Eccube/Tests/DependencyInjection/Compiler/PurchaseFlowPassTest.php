@@ -69,7 +69,7 @@ class PurchaseFlowPassTest extends EccubeTestCase
         self::assertTrue(PurchaseFlowPassTest::$called);
     }
 
-    public function dataProcessorProvider()
+    public static function dataProcessorProvider()
     {
         return [
             [PurchaseFlowPassTest_CartFlow::class, 'eccube.purchase.flow.cart', PurchaseFlowPass::ITEM_HOLDER_VALIDATOR_TAG],

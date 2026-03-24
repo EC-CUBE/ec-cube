@@ -99,8 +99,10 @@ class TradeLawControllerTest extends AbstractAdminWebTestCase
         $this->assertSame(1, $failedInput->count());
 
         // Check Text
-        $this->assertSame('<span class="form-error-message">値が長すぎます。255文字以内でなければなりません。</span>',
-            $failedInput->nextAll()->filter('.form-error-message')->outerHtml());
+        $this->assertSame(
+            '<span class="form-error-message">長すぎます。この値は255文字以下で入力してください。</span>',
+            $failedInput->nextAll()->filter('.form-error-message')->outerHtml()
+        );
     }
 
     /**
@@ -125,8 +127,10 @@ class TradeLawControllerTest extends AbstractAdminWebTestCase
         $this->assertSame(1, $failedInput->count());
 
         // Check Text
-        $this->assertSame('<span class="form-error-message">値が長すぎます。4000文字以内でなければなりません。</span>',
-            $failedInput->nextAll()->filter('.form-error-message')->outerHtml());
+        $this->assertSame(
+            '<span class="form-error-message">長すぎます。この値は4000文字以下で入力してください。</span>',
+            $failedInput->nextAll()->filter('.form-error-message')->outerHtml()
+        );
     }
 
     /**
@@ -205,7 +209,8 @@ class TradeLawControllerTest extends AbstractAdminWebTestCase
                 7 => [
                     'name' => '引き渡し時期',
                     'description' => '',
-                ], 8 => [
+                ],
+                8 => [
                     'name' => 'お支払方法',
                     'description' => '',
                 ],

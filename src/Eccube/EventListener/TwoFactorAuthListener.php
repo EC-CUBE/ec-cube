@@ -127,7 +127,7 @@ class TwoFactorAuthListener implements EventSubscriberInterface
     /**
      * @return array
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::CONTROLLER_ARGUMENTS => ['onKernelController', 7],

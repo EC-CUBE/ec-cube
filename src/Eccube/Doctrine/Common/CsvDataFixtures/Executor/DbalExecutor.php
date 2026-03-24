@@ -42,7 +42,7 @@ class DbalExecutor extends AbstractExecutor
     /**
      * {@inheritdoc}
      */
-    public function execute(array $fixtures, $append = false)
+    public function execute(array $fixtures, bool $append = false): void
     {
         if ($append) {
             trigger_error('$append parameter is not supported.', E_USER_WARNING);

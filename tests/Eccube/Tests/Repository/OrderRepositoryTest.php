@@ -172,7 +172,7 @@ class OrderRepositoryTest extends EccubeTestCase
         self::assertCount($expected, $actual);
     }
 
-    public function dataGetQueryBuilderBySearchDataForAdmin_nameProvider()
+    public static function dataGetQueryBuilderBySearchDataForAdmin_nameProvider()
     {
         return [
             ['multi', '姓', 1],
@@ -305,7 +305,7 @@ class OrderRepositoryTest extends EccubeTestCase
         self::assertCount($expected, $actual);
     }
 
-    public function dataGetQueryBuilderBySearchDataForAdmin_testAndCondition()
+    public static function dataGetQueryBuilderBySearchDataForAdmin_testAndCondition()
     {
         return [
             // 基本の検索条件で検索結果が返ってくること

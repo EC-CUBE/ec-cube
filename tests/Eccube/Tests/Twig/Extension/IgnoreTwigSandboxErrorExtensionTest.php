@@ -25,7 +25,7 @@ class IgnoreTwigSandboxErrorExtensionTest extends AbstractWebTestCase
     public function testFreeArea($snippet, $whitelisted)
     {
         $Product = $this->createProduct();
-        $Product->setFreeArea('__RENDERED__'.$snippet);
+        $Product->setFreeArea('__RENDERED__' . $snippet);
         $this->entityManager->flush();
 
         $crawler = $this->client->request('GET', $this->generateUrl('product_detail', ['id' => $Product->getId()]));
@@ -42,7 +42,7 @@ class IgnoreTwigSandboxErrorExtensionTest extends AbstractWebTestCase
     public function testMetatags($snippet, $whitelisted)
     {
         $Page = $this->entityManager->getRepository(Page::class)->find(1);
-        $Page->setMetaTags('__RENDERED__'.$snippet);
+        $Page->setMetaTags('__RENDERED__' . $snippet);
         $this->entityManager->flush();
 
         $crawler = $this->client->request('GET', $this->generateUrl($Page->getUrl()));
@@ -58,7 +58,7 @@ class IgnoreTwigSandboxErrorExtensionTest extends AbstractWebTestCase
         self::assertStringNotContainsString('システムエラーが発生しました', $text);
     }
 
-    public function twigSnippetsProvider()
+    public static function twigSnippetsProvider()
     {
         // 0: twigスニペット, 1: ホワイトリスト対象かどうか
         return [
@@ -79,22 +79,22 @@ class IgnoreTwigSandboxErrorExtensionTest extends AbstractWebTestCase
             ['{{ dump(9) }}', false],
             ['{{ constant("RSS", date) }}', false],
             ['{{ include(template_from_string("Hello")) }}', false],
-            ['{{ Product.main_list_image|no_image_product }}', true],
         ];
     }
 
-    public function twigVarFreeAreaProvider()
+    public static function twigVarFreeAreaProvider()
     {
         // 0: twigスニペット, 1: ホワイトリスト対象かどうか
         return [
             ['{{ app.user }}', false],
             ['{{ Product.name }}', true],
+            ['{{ Product.main_list_image|no_image_product }}', true],
             ['{{ app.request.uri }}', true],
             ['{{ app.request.getUri }}', true],
         ];
     }
 
-    public function twigVarMetaTagsProvider()
+    public static function twigVarMetaTagsProvider()
     {
         // 0: twigスニペット, 1: ホワイトリスト対象かどうか
         return [

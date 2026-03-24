@@ -121,7 +121,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         self::assertEquals($errors[0], $errorMessage);
     }
 
-    public function loadCsvInvalidFormatProvider()
+    public static function loadCsvInvalidFormatProvider()
     {
         return [
             [

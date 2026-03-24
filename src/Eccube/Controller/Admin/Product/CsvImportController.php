@@ -43,7 +43,7 @@ use Eccube\Stream\Filter\ConvertLineFeedFilter;
 use Eccube\Stream\Filter\SjisToUtf8EncodingFilter;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\FormInterface;
@@ -52,7 +52,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -181,15 +181,14 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * 商品登録CSVアップロード
      *
-     * @Route("/%eccube_admin_route%/product/product_csv_upload", name="admin_product_csv_import", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Product/csv_product.twig")
      *
      * @return array
      *
      * @throws \Doctrine\DBAL\ConnectionException
      * @throws \Doctrine\ORM\NoResultException
      */
+    #[Route('/%eccube_admin_route%/product/product_csv_upload', name: 'admin_product_csv_import', methods: ['GET', 'POST'])]
+    #[Template("@admin/Product/csv_product.twig")]
     public function csvProduct(Request $request, CacheUtil $cacheUtil)
     {
         $form = $this->formFactory->createBuilder(CsvImportType::class)->getForm();
@@ -236,7 +235,6 @@ class CsvImportController extends AbstractCsvImportController
                     $headerByKey = array_flip(array_map($getId, $headers));
                     $deleteImages = [];
 
-                    $this->entityManager->getConfiguration()->setSQLLogger(null);
                     $this->entityManager->getConnection()->beginTransaction();
                     // CSVファイルの登録処理
                     foreach ($data as $row) {
@@ -702,11 +700,9 @@ class CsvImportController extends AbstractCsvImportController
 
     /**
      * カテゴリ登録CSVアップロード
-     *
-     * @Route("/%eccube_admin_route%/product/category_csv_upload", name="admin_product_category_csv_import", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Product/csv_category.twig")
      */
+    #[Route('/%eccube_admin_route%/product/category_csv_upload', name: 'admin_product_category_csv_import', methods: ['GET', 'POST'])]
+    #[Template("@admin/Product/csv_category.twig")]
     public function csvCategory(Request $request, CacheUtil $cacheUtil)
     {
         $form = $this->formFactory->createBuilder(CsvImportType::class)->getForm();
@@ -747,7 +743,6 @@ class CsvImportController extends AbstractCsvImportController
 
                         return $this->renderWithError($form, $headers, false);
                     }
-                    $this->entityManager->getConfiguration()->setSQLLogger(null);
                     $this->entityManager->getConnection()->beginTransaction();
                     // CSVファイルの登録処理
                     foreach ($data as $row) {
@@ -807,7 +802,6 @@ class CsvImportController extends AbstractCsvImportController
 
                                 return $this->renderWithError($form, $headers);
                             }
-
                             /** @var Category $ParentCategory */
                             $ParentCategory = $this->categoryRepository->find($row[$headerByKey['parent_category_id']]);
                             if (!$ParentCategory) {
@@ -863,11 +857,9 @@ class CsvImportController extends AbstractCsvImportController
 
     /**
      * 規格登録CSVアップロード
-     *
-     * @Route("/%eccube_admin_route%/product/class_name_csv_upload", name="admin_product_class_name_csv_import", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Product/csv_class_name.twig")
      */
+    #[Route('/%eccube_admin_route%/product/class_name_csv_upload', name: 'admin_product_class_name_csv_import', methods: ['GET', 'POST'])]
+    #[Template("@admin/Product/csv_class_name.twig")]
     public function csvClassName(Request $request, CacheUtil $cacheUtil)
     {
         $form = $this->formFactory->createBuilder(CsvImportType::class)->getForm();
@@ -908,7 +900,6 @@ class CsvImportController extends AbstractCsvImportController
 
                         return $this->renderWithError($form, $headers, false);
                     }
-                    $this->entityManager->getConfiguration()->setSQLLogger(null);
                     $this->entityManager->getConnection()->beginTransaction();
                     // CSVファイルの登録処理
                     foreach ($data as $row) {
@@ -983,11 +974,9 @@ class CsvImportController extends AbstractCsvImportController
 
     /**
      * 規格分類CSV登録CSVアップロード
-     *
-     * @Route("/%eccube_admin_route%/product/class_category_csv_upload", name="admin_product_class_category_csv_import", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Product/csv_class_category.twig")
      */
+    #[Route('/%eccube_admin_route%/product/class_category_csv_upload', name: 'admin_product_class_category_csv_import', methods: ['GET', 'POST'])]
+    #[Template("@admin/Product/csv_class_category.twig")]
     public function csvClassCategory(Request $request, CacheUtil $cacheUtil)
     {
         $form = $this->formFactory->createBuilder(CsvImportType::class)->getForm();
@@ -1028,7 +1017,6 @@ class CsvImportController extends AbstractCsvImportController
 
                         return $this->renderWithError($form, $headers, false);
                     }
-                    $this->entityManager->getConfiguration()->setSQLLogger(null);
                     $this->entityManager->getConnection()->beginTransaction();
                     // CSVファイルの登録処理
                     foreach ($data as $row) {
@@ -1120,12 +1108,12 @@ class CsvImportController extends AbstractCsvImportController
     /**
      * アップロード用CSV雛形ファイルダウンロード
      *
-     * @Route("/%eccube_admin_route%/product/csv_template/{type}", requirements={"type" = "\w+"}, name="admin_product_csv_template", methods={"GET"})
      *
      * @param $type
      *
      * @return StreamedResponse
      */
+    #[Route('/%eccube_admin_route%/product/csv_template/{type}', requirements: ['type' => '\w+'], name: 'admin_product_csv_template', methods: ['GET'])]
     public function csvTemplate(Request $request, $type)
     {
         if ($type == 'product') {
@@ -1966,12 +1954,12 @@ class CsvImportController extends AbstractCsvImportController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/product/csv_split", name="admin_product_csv_split", methods={"POST"})
      *
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
+    #[Route('/%eccube_admin_route%/product/csv_split', name: 'admin_product_csv_split', methods: ['POST'])]
     public function splitCsv(Request $request)
     {
         $this->isTokenValid();
@@ -2033,12 +2021,12 @@ class CsvImportController extends AbstractCsvImportController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/product/csv_split_import", name="admin_product_csv_split_import", methods={"POST"})
      *
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
+    #[Route('/%eccube_admin_route%/product/csv_split_import', name: 'admin_product_csv_split_import', methods: ['POST'])]
     public function importCsv(Request $request, CsrfTokenManagerInterface $tokenManager)
     {
         $this->isTokenValid();
@@ -2074,12 +2062,12 @@ class CsvImportController extends AbstractCsvImportController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/product/csv_split_cleanup", name="admin_product_csv_split_cleanup", methods={"POST"})
      *
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
+    #[Route('/%eccube_admin_route%/product/csv_split_cleanup', name: 'admin_product_csv_split_cleanup', methods: ['POST'])]
     public function cleanupSplitCsv(Request $request)
     {
         $this->isTokenValid();

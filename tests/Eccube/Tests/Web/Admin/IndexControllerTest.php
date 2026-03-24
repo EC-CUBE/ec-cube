@@ -133,7 +133,7 @@ class IndexControllerTest extends AbstractAdminWebTestCase
         $this->verify('今月の売上件数');
     }
 
-    public function indexWithSalesProvider()
+    public static function indexWithSalesProvider()
     {
         return [
             [8],

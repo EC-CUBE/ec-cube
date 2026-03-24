@@ -55,7 +55,7 @@ class EccubeExtension extends AbstractExtension
      *
      * @return TwigFunction[] An array of functions
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('has_errors', [$this, 'hasErrors']),
@@ -71,7 +71,7 @@ class EccubeExtension extends AbstractExtension
      *
      * @return TwigFilter[]
      */
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
             new TwigFilter('no_image_product', [$this, 'getNoImageProduct']),
@@ -88,7 +88,7 @@ class EccubeExtension extends AbstractExtension
      *
      * @return TwigTest[]
      */
-    public function getTests()
+    public function getTests(): array
     {
         return [
             new TwigTest('integer', function ($value) { return is_integer($value); }),

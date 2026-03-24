@@ -13,8 +13,8 @@
 
 namespace Eccube\Service;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 use Doctrine\ORM\Tools\SchemaTool;
 use Eccube\Doctrine\ORM\Mapping\Driver\NopAnnotationDriver;
 use Eccube\Doctrine\ORM\Mapping\Driver\ReloadSafeAnnotationDriver;
@@ -71,13 +71,9 @@ class SchemaService
             $drivers = $chain->getDrivers();
             foreach ($drivers as $namespace => $oldDriver) {
                 if ('Eccube\Entity' === $namespace || preg_match('/^Plugin\\\\.*\\\\Entity$/', $namespace)) {
-                    // Setup to AnnotationDriver
-                    $newDriver = new ReloadSafeAnnotationDriver(
-                        new AnnotationReader(),
-                        $oldDriver->getPaths()
-                    );
-                    $newDriver->setFileExtension($oldDriver->getFileExtension());
-                    $newDriver->addExcludePaths($oldDriver->getExcludePaths());
+                    // Setup to HybridMappingDriver
+                    $paths = method_exists($oldDriver, 'getPaths') ? $oldDriver->getPaths() : [];
+                    $newDriver = new ReloadSafeAnnotationDriver($paths);
                     $newDriver->setTraitProxiesDirectory($proxiesDirectory);
                     $newDriver->setNewProxyFiles($generatedFiles);
                     $newDriver->setOutputDir($outputDir);
@@ -87,7 +83,7 @@ class SchemaService
                 if ($this->pluginContext->isUninstall()) {
                     foreach ($this->pluginContext->getExtraEntityNamespaces() as $extraEntityNamespace) {
                         if ($extraEntityNamespace === $namespace) {
-                            $chain->addDriver(new NopAnnotationDriver(new AnnotationReader()), $namespace);
+                            $chain->addDriver(new NopAnnotationDriver([]), $namespace);
                         }
                     }
                 }

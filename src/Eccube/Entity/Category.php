@@ -19,17 +19,12 @@ use Doctrine\ORM\Mapping as ORM;
 if (!class_exists(Category::class)) {
     /**
      * Category
-     *
-     * @ORM\Table(name="dtb_category")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\CategoryRepository")
      */
+    #[ORM\Table(name: 'dtb_category')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: \Eccube\Repository\CategoryRepository::class)]
     class Category extends AbstractEntity
     {
         /**
@@ -146,90 +141,67 @@ if (!class_exists(Category::class)) {
 
         /**
          * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
          */
+        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         private $id;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="category_name", type="string", length=255)
          */
+        #[ORM\Column(name: 'category_name', type: 'string', length: 255)]
         private $name;
 
         /**
          * @var int
-         *
-         * @ORM\Column(name="hierarchy", type="integer", options={"unsigned":true})
          */
+        #[ORM\Column(name: 'hierarchy', type: 'integer', options: ['unsigned' => true])]
         private $hierarchy;
 
         /**
          * @var int
-         *
-         * @ORM\Column(name="sort_no", type="integer")
          */
+        #[ORM\Column(name: 'sort_no', type: 'integer')]
         private $sort_no;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
         private $create_date;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
         private $update_date;
 
         /**
          * @var \Doctrine\Common\Collections\Collection
-         *
-         * @ORM\OneToMany(targetEntity="Eccube\Entity\ProductCategory", mappedBy="Category", fetch="EXTRA_LAZY")
          */
+        #[ORM\OneToMany(targetEntity: \Eccube\Entity\ProductCategory::class, mappedBy: 'Category', fetch: 'EXTRA_LAZY')]
         private $ProductCategories;
 
         /**
          * @var \Doctrine\Common\Collections\Collection
-         *
-         * @ORM\OneToMany(targetEntity="Eccube\Entity\Category", mappedBy="Parent")
-         *
-         * @ORM\OrderBy({
-         *     "sort_no"="DESC"
-         * })
          */
+        #[ORM\OneToMany(targetEntity: \Eccube\Entity\Category::class, mappedBy: 'Parent')]
+        #[ORM\OrderBy(['sort_no' => 'DESC'])]
         private $Children;
 
         /**
          * @var Category
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Category", inversedBy="Children")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="parent_category_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Category::class, inversedBy: 'Children')]
+        #[ORM\JoinColumn(name: 'parent_category_id', referencedColumnName: 'id')]
         private $Parent;
 
         /**
          * @var Member
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Member::class)]
+        #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
         private $Creator;
 
         /**

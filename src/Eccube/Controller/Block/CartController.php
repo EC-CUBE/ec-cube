@@ -17,7 +17,7 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\Cart;
 use Eccube\Service\CartService;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class CartController extends AbstractController
 {
@@ -32,10 +32,8 @@ class CartController extends AbstractController
         $this->cartService = $cartService;
     }
 
-    /**
-     * @Route("/block/cart", name="block_cart", methods={"GET"})
-     * @Route("/block/cart_sp", name="block_cart_sp", methods={"GET"})
-     */
+    #[Route('/block/cart', name: 'block_cart', methods: ['GET'])]
+    #[Route('/block/cart_sp', name: 'block_cart_sp', methods: ['GET'])]
     public function index(Request $request)
     {
         $Carts = $this->cartService->getCarts();

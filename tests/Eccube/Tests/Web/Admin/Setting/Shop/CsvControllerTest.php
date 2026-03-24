@@ -20,6 +20,21 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 
 class CsvControllerTest extends AbstractAdminWebTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // PostgreSQLのシーケンスをリセット
+        $conn = $this->entityManager->getConnection();
+        $platform = $conn->getDatabasePlatform();
+        if ($platform instanceof \Doctrine\DBAL\Platforms\PostgreSQLPlatform) {
+            $max = $conn->fetchOne('SELECT MAX(id) FROM dtb_csv');
+            if ($max) {
+                $conn->executeStatement(sprintf("SELECT SETVAL('dtb_csv_id_seq', %d)", $max));
+            }
+        }
+    }
+
     public function testRoutingCsv()
     {
         $this->client->request('GET', $this->generateUrl('admin_setting_shop_csv', ['id' => 1]));

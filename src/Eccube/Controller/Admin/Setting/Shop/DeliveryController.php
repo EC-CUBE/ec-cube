@@ -31,11 +31,11 @@ use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\Master\SaleTypeRepository;
 use Eccube\Repository\PaymentOptionRepository;
 use Eccube\Twig\Extension\EccubeExtension;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 /**
  * Class DeliveryController
@@ -90,11 +90,8 @@ class DeliveryController extends AbstractController
         $this->saleTypeRepository = $saleTypeRepository;
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/setting/shop/delivery", name="admin_setting_shop_delivery", methods={"GET"})
-     *
-     * @Template("@admin/Setting/Shop/delivery.twig")
-     */
+    #[Route('/%eccube_admin_route%/setting/shop/delivery', name: 'admin_setting_shop_delivery', methods: ['GET'])]
+    #[Template("@admin/Setting/Shop/delivery.twig")]
     public function index(Request $request)
     {
         $Deliveries = $this->deliveryRepository
@@ -113,12 +110,9 @@ class DeliveryController extends AbstractController
         ];
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/setting/shop/delivery/new", name="admin_setting_shop_delivery_new", methods={"GET", "POST"})
-     * @Route("/%eccube_admin_route%/setting/shop/delivery/{id}/edit", requirements={"id" = "\d+"}, name="admin_setting_shop_delivery_edit", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Setting/Shop/delivery_edit.twig")
-     */
+    #[Route('/%eccube_admin_route%/setting/shop/delivery/new', name: 'admin_setting_shop_delivery_new', methods: ['GET', 'POST'])]
+    #[Route('/%eccube_admin_route%/setting/shop/delivery/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_setting_shop_delivery_edit', methods: ['GET', 'POST'])]
+    #[Template("@admin/Setting/Shop/delivery_edit.twig")]
     public function edit(Request $request, EccubeExtension $extension, $id = null)
     {
         if (is_null($id)) {
@@ -291,9 +285,7 @@ class DeliveryController extends AbstractController
         ];
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/setting/shop/delivery/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_shop_delivery_delete", methods={"DELETE"})
-     */
+    #[Route('/%eccube_admin_route%/setting/shop/delivery/{id}/delete', requirements: ['id' => '\d+'], name: 'admin_setting_shop_delivery_delete', methods: ['DELETE'])]
     public function delete(Request $request, Delivery $Delivery)
     {
         $this->isTokenValid();
@@ -334,9 +326,7 @@ class DeliveryController extends AbstractController
         return $this->redirectToRoute('admin_setting_shop_delivery');
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/setting/shop/delivery/{id}/visibility", requirements={"id" = "\d+"}, name="admin_setting_shop_delivery_visibility", methods={"PUT"})
-     */
+    #[Route('/%eccube_admin_route%/setting/shop/delivery/{id}/visibility', requirements: ['id' => '\d+'], name: 'admin_setting_shop_delivery_visibility', methods: ['PUT'])]
     public function visibility(Request $request, Delivery $Delivery)
     {
         $this->isTokenValid();
@@ -366,9 +356,7 @@ class DeliveryController extends AbstractController
         return $this->redirectToRoute('admin_setting_shop_delivery');
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/setting/shop/delivery/sort_no/move", name="admin_setting_shop_delivery_sort_no_move", methods={"POST"})
-     */
+    #[Route('/%eccube_admin_route%/setting/shop/delivery/sort_no/move', name: 'admin_setting_shop_delivery_sort_no_move', methods: ['POST'])]
     public function moveSortNo(Request $request)
     {
         if (!$request->isXmlHttpRequest()) {

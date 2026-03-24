@@ -633,7 +633,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
      *
      * @return array
      */
-    public function dataFormDateProvider()
+    public static function dataFormDateProvider()
     {
         return [
             ['create_date_start', 'today', 4],
@@ -679,7 +679,7 @@ class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTestCase
      *
      * @return array
      */
-    public function dataFormDateTimeProvider()
+    public static function dataFormDateTimeProvider()
     {
         return [
             ['create_datetime_start', '- 1 hour', 4],

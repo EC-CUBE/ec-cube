@@ -43,7 +43,7 @@ class ForgotType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('login_email', EmailType::class, [
             'attr' => [
@@ -59,7 +59,7 @@ class ForgotType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'forgot';
     }

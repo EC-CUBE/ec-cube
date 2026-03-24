@@ -56,9 +56,9 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         parent::setUp();
         $conn = $this->entityManager->getConnection();
         // https://github.com/dmaicher/doctrine-test-bundle#troubleshooting
-        $platform = $conn->getDatabasePlatform()->getName();
-        if ('postgresql' !== $platform) {
-            $this->markTestSkipped('does not support of '.$platform);
+        $platform = $conn->getDatabasePlatform();
+        if (!$platform instanceof \Doctrine\DBAL\Platforms\PostgreSQLPlatform) {
+            $this->markTestSkipped('does not support of '.get_class($platform));
         }
         $files = Finder::create()
             ->in(static::getContainer()->getParameter('kernel.project_dir').'/app/proxy/entity')

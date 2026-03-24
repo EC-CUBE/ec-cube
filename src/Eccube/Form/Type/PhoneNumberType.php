@@ -43,7 +43,7 @@ class PhoneNumberType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         // 全角英数を事前に半角にする
         $builder->addEventSubscriber(new \Eccube\Form\EventListener\ConvertKanaListener());
@@ -53,7 +53,7 @@ class PhoneNumberType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setNormalizer('constraints', function ($options, $value) {
             $constraints = [];
@@ -85,7 +85,7 @@ class PhoneNumberType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): string
     {
         return TelType::class;
     }
@@ -93,7 +93,7 @@ class PhoneNumberType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'phone_number';
     }

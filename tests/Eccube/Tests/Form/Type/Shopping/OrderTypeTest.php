@@ -46,7 +46,7 @@ class OrderTypeTest extends AbstractTypeTestCase
         self::assertCount($result, $FilterResults);
     }
 
-    public function filterPaymentsProvider()
+    public static function filterPaymentsProvider()
     {
         return [
             // charge, total, min, max, result

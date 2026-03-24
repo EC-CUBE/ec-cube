@@ -1,0 +1,2 @@
+dama_doctrine_test:
+    enable_static_connection: true

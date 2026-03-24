@@ -157,7 +157,7 @@ class MemberRepositoryTest extends EccubeTestCase
 
     public function testDeleteWithException()
     {
-        if ($this->entityManager->getConnection()->getDatabasePlatform()->getName() == 'sqlite') {
+        if ($this->entityManager->getConnection()->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\SqlitePlatform) {
             $this->markTestSkipped('Can not support for sqlite3');
         }
 

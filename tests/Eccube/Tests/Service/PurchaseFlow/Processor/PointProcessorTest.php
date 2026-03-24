@@ -105,7 +105,7 @@ class PointProcessorTest extends EccubeTestCase
         }
     }
 
-    public function usePointOverCustomerPointProvider()
+    public static function usePointOverCustomerPointProvider()
     {
         return [
             [0, 0, false],
@@ -193,7 +193,7 @@ class PointProcessorTest extends EccubeTestCase
         }
     }
 
-    public function usePointOverPriceProvider()
+    public static function usePointOverPriceProvider()
     {
         return [
             [0, false],
@@ -261,7 +261,7 @@ class PointProcessorTest extends EccubeTestCase
         self::assertEquals($addPoint, $Order->getAddPoint());
     }
 
-    public function useAddPointProvider()
+    public static function useAddPointProvider()
     {
         return [
             [200, 0, 2],
@@ -319,7 +319,7 @@ class PointProcessorTest extends EccubeTestCase
         self::assertEquals($addPoint, $Order->getAddPoint());
     }
 
-    public function useAddPointExcludeShippingFeeProvider()
+    public static function useAddPointExcludeShippingFeeProvider()
     {
         return [
             [200, 200, 2],
@@ -377,7 +377,7 @@ class PointProcessorTest extends EccubeTestCase
         self::assertEquals($productPrice + $discountPrice, $Order->getTotal());
     }
 
-    public function pointConversionRateProvider()
+    public static function pointConversionRateProvider()
     {
         return [
             [1],
@@ -418,7 +418,7 @@ class PointProcessorTest extends EccubeTestCase
         self::assertEquals($ProductPrice * $basicPointRate / 100, $Order->getAddPoint());
     }
 
-    public function basicPointRateProvider()
+    public static function basicPointRateProvider()
     {
         return [
             [1],

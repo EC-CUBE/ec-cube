@@ -30,11 +30,11 @@ use Eccube\Service\MailService;
 use Eccube\Util\FormUtil;
 use Eccube\Util\StringUtil;
 use Knp\Component\Pager\PaginatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -86,12 +86,9 @@ class CustomerController extends AbstractController
         $this->csvExportService = $csvExportService;
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/customer", name="admin_customer", methods={"GET", "POST"})
-     * @Route("/%eccube_admin_route%/customer/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_customer_page", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Customer/index.twig")
-     */
+    #[Route('/%eccube_admin_route%/customer', name: 'admin_customer', methods: ['GET', 'POST'])]
+    #[Route('/%eccube_admin_route%/customer/page/{page_no}', requirements: ['page_no' => '\d+'], name: 'admin_customer_page', methods: ['GET', 'POST'])]
+    #[Template("@admin/Customer/index.twig")]
     public function index(Request $request, PaginatorInterface $paginator, $page_no = null)
     {
         $session = $this->session;
@@ -205,9 +202,7 @@ class CustomerController extends AbstractController
         ];
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/customer/{id}/resend", requirements={"id" = "\d+"}, name="admin_customer_resend", methods={"GET"})
-     */
+    #[Route('/%eccube_admin_route%/customer/{id}/resend', requirements: ['id' => '\d+'], name: 'admin_customer_resend', methods: ['GET'])]
     public function resend(Request $request, $id)
     {
         $this->isTokenValid();
@@ -246,9 +241,7 @@ class CustomerController extends AbstractController
         return $this->redirectToRoute('admin_customer');
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/customer/{id}/delete", requirements={"id" = "\d+"}, name="admin_customer_delete", methods={"DELETE"})
-     */
+    #[Route('/%eccube_admin_route%/customer/{id}/delete', requirements: ['id' => '\d+'], name: 'admin_customer_delete', methods: ['DELETE'])]
     public function delete(Request $request, $id, TranslatorInterface $translator)
     {
         $this->isTokenValid();
@@ -296,12 +289,12 @@ class CustomerController extends AbstractController
     /**
      * 会員CSVの出力.
      *
-     * @Route("/%eccube_admin_route%/customer/export", name="admin_customer_export", methods={"GET"})
      *
      * @param Request $request
      *
      * @return StreamedResponse
      */
+    #[Route('/%eccube_admin_route%/customer/export', name: 'admin_customer_export', methods: ['GET'])]
     public function export(Request $request)
     {
         // タイムアウトを無効にする.
@@ -309,7 +302,6 @@ class CustomerController extends AbstractController
 
         // sql loggerを無効にする.
         $em = $this->entityManager;
-        $em->getConfiguration()->setSQLLogger(null);
 
         $response = new StreamedResponse();
         $response->setCallback(function () use ($request) {

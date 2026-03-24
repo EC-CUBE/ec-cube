@@ -26,7 +26,7 @@ class DeliveryDurationType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'class' => \Eccube\Entity\DeliveryDuration::class,
@@ -44,7 +44,7 @@ class DeliveryDurationType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'delivery_duration';
     }
@@ -52,7 +52,7 @@ class DeliveryDurationType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): string
     {
         return EntityType::class;
     }

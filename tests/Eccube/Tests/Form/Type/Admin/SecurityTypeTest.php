@@ -114,7 +114,7 @@ class SecurityTypeTest extends AbstractTypeTestCase
         $this->assertEquals($valid, $this->form->isValid());
     }
 
-    public function adminRouteDirParams()
+    public static function adminRouteDirParams()
     {
         return [
             ['admin', true],
@@ -305,7 +305,7 @@ class SecurityTypeTest extends AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function ipAddressParams()
+    public static function ipAddressParams()
     {
         return [
             // 正常系（適切なIPアドレス表記として認める）

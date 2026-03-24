@@ -45,7 +45,7 @@ class Step4Type extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $database = [];
         if (extension_loaded('pdo_pgsql')) {
@@ -126,7 +126,7 @@ class Step4Type extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'install_step4';
     }

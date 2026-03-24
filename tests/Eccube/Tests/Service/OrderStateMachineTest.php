@@ -51,7 +51,7 @@ class OrderStateMachineTest extends EccubeTestCase
         self::assertEquals($expected, $this->stateMachine->can($Order, $toStatus));
     }
 
-    public function canProvider()
+    public static function canProvider()
     {
         return [
             [OrderStatus::NEW,          OrderStatus::NEW,           false],

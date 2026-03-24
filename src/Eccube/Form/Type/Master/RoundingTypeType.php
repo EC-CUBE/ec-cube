@@ -19,7 +19,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RoundingTypeType extends AbstractType
 {
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'class' => \Eccube\Entity\Master\RoundingType::class,
@@ -27,12 +27,12 @@ class RoundingTypeType extends AbstractType
         ]);
     }
 
-    public function getParent()
+    public function getParent(): string
     {
         return MasterType::class;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'rounding_type';
     }

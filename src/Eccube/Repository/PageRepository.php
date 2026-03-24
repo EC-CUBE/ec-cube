@@ -84,7 +84,7 @@ class PageRepository extends AbstractRepository
                 ->where('p.url = :url')
                 ->setParameter('url', $route)
                 ->getQuery()
-                ->useResultCache(true, $this->getCacheLifetime())
+                ->enableResultCache($this->getCacheLifetime())
                 ->getSingleResult();
         } catch (\Exception $e) {
             return $this->newPage();
@@ -108,7 +108,7 @@ class PageRepository extends AbstractRepository
             ->where('p.url = :route')
             ->setParameter('route', $url)
             ->getQuery()
-            ->useResultCache(true, $this->getCacheLifetime())
+            ->enableResultCache($this->getCacheLifetime())
             ->getSingleResult();
 
         return $Page;

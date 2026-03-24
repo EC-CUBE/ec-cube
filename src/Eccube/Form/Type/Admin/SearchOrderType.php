@@ -46,7 +46,7 @@ class SearchOrderType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             // 受注ID・注文者名・注文者（フリガナ）・注文者会社名
@@ -465,7 +465,7 @@ class SearchOrderType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'admin_search_order';
     }

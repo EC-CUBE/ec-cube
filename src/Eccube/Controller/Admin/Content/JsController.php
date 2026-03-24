@@ -14,21 +14,18 @@
 namespace Eccube\Controller\Admin\Content;
 
 use Eccube\Controller\AbstractController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class JsController extends AbstractController
 {
-    /**
-     * @Route("/%eccube_admin_route%/content/js", name="admin_content_js", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Content/js.twig")
-     */
+    #[Route('/%eccube_admin_route%/content/js', name: 'admin_content_js', methods: ['GET', 'POST'])]
+    #[Template("@admin/Content/js.twig")]
     public function index(Request $request)
     {
         $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');

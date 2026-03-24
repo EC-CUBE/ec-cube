@@ -31,7 +31,7 @@ use Eccube\DependencyInjection\Facade\LoggerFacade;
 use Eccube\DependencyInjection\Facade\TranslatorFacade;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeType;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeTzType;
-use Eccube\Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+use Eccube\Doctrine\ORM\Mapping\Driver\HybridMappingDriver;
 use Eccube\Doctrine\Query\QueryCustomizer;
 use Eccube\Service\Payment\PaymentMethodInterface;
 use Eccube\Service\PurchaseFlow\DiscountProcessor;
@@ -126,7 +126,7 @@ class Kernel extends BaseKernel
      *
      * @see \Symfony\Component\HttpKernel\Kernel::boot()
      */
-    public function boot()
+    public function boot(): void
     {
         // Symfonyがsrc/Eccube/Entity以下を読み込む前にapp/proxy/entity以下をロードする
         // $this->loadEntityProxies();
@@ -159,7 +159,7 @@ class Kernel extends BaseKernel
         }
     }
 
-    protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader)
+    protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
     {
         $confDir = $this->getProjectDir().'/app/config/eccube';
         $loader->load($confDir.'/services'.self::CONFIG_EXTS, 'glob');
@@ -180,7 +180,7 @@ class Kernel extends BaseKernel
         $loader->load($dir.'/services_'.$this->environment.self::CONFIG_EXTS, 'glob');
     }
 
-    protected function configureRoutes(RoutingConfigurator $routes)
+    protected function configureRoutes(RoutingConfigurator $routes): void
     {
         $container = $this->getContainer();
 
@@ -210,8 +210,14 @@ class Kernel extends BaseKernel
         foreach ($plugins as $plugin) {
             $dir = $pluginDir.'/'.$plugin.'/Controller';
             if (file_exists($dir)) {
-                $builder = $routes->import($dir, 'annotation');
+                $builder = $routes->import($dir, 'attribute');
                 $builder->schemes($scheme);
+
+                // Backward compatibility: also load @Route annotations for plugins
+                $legacyRoutes = \Eccube\Routing\HybridAnnotationClassLoader::loadAnnotationRoutes($dir);
+                if ($legacyRoutes->count() > 0) {
+                    $routes->addCollection($legacyRoutes);
+                }
             }
             if (file_exists($pluginDir.'/'.$plugin.'/Resource/config')) {
                 $builder = $routes->import($pluginDir.'/'.$plugin.'/Resource/config/routes'.self::CONFIG_EXTS);
@@ -220,7 +226,7 @@ class Kernel extends BaseKernel
         }
     }
 
-    protected function build(ContainerBuilder $container)
+    protected function build(ContainerBuilder $container): void
     {
         $this->addEntityExtensionPass($container);
 
@@ -285,16 +291,14 @@ class Kernel extends BaseKernel
         // Eccube
         $paths = ['%kernel.project_dir%/src/Eccube/Entity'];
         $namespaces = ['Eccube\\Entity'];
-        $reader = new Reference('annotation_reader');
-        $driver = new Definition(AnnotationDriver::class, [$reader, $paths]);
+        $driver = new Definition(HybridMappingDriver::class, [$paths]);
         $driver->addMethodCall('setTraitProxiesDirectory', [$projectDir.'/app/proxy/entity']);
         $container->addCompilerPass(new DoctrineOrmMappingsPass($driver, $namespaces, []));
 
         // Customize
-        $container->addCompilerPass(DoctrineOrmMappingsPass::createAnnotationMappingDriver(
-            ['Customize\\Entity'],
-            ['%kernel.project_dir%/app/Customize/Entity']
-        ));
+        $customizePaths = ['%kernel.project_dir%/app/Customize/Entity'];
+        $customizeDriver = new Definition(HybridMappingDriver::class, [$customizePaths]);
+        $container->addCompilerPass(new DoctrineOrmMappingsPass($customizeDriver, ['Customize\\Entity'], []));
 
         // Plugin
         $pluginDir = $projectDir.'/app/Plugin';
@@ -311,8 +315,7 @@ class Kernel extends BaseKernel
             if (file_exists($pluginDir.'/'.$code.'/Entity')) {
                 $paths = ['%kernel.project_dir%/app/Plugin/'.$code.'/Entity'];
                 $namespaces = ['Plugin\\'.$code.'\\Entity'];
-                $reader = new Reference('annotation_reader');
-                $driver = new Definition(AnnotationDriver::class, [$reader, $paths]);
+                $driver = new Definition(HybridMappingDriver::class, [$paths]);
                 $driver->addMethodCall('setTraitProxiesDirectory', [$projectDir.'/app/proxy/entity']);
                 $container->addCompilerPass(new DoctrineOrmMappingsPass($driver, $namespaces, []));
             }

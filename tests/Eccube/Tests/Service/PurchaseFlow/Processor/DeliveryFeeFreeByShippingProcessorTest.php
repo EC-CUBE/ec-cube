@@ -90,7 +90,7 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
         self::assertSame($expectedFee, $DeliveryFee->getTotalPrice());
     }
 
-    public function deliveryFreeAmountProvider()
+    public static function deliveryFreeAmountProvider()
     {
         return [
             ['1', '1000.00'],
@@ -128,7 +128,7 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
         self::assertSame($expectedFee, $DeliveryFee->getTotalPrice());
     }
 
-    public function deliveryFreeQuantityProvider()
+    public static function deliveryFreeQuantityProvider()
     {
         return [
             ['1', '1000.00'],

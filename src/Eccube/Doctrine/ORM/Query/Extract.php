@@ -14,9 +14,9 @@
 namespace Eccube\Doctrine\ORM\Query;
 
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
-use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\SqlWalker;
+use Doctrine\ORM\Query\TokenType;
 
 /**
  * EXTRACT (field FROM [type] source)
@@ -61,63 +61,60 @@ class Extract extends FunctionNode
         'TIME',
     ];
 
-    public function parse(Parser $parser)
+    public function parse(Parser $parser): void
     {
         $lexer = $parser->getLexer();
-        $parser->match(Lexer::T_IDENTIFIER);
-        $parser->match(Lexer::T_OPEN_PARENTHESIS);
+        $parser->match(TokenType::T_IDENTIFIER);
+        $parser->match(TokenType::T_OPEN_PARENTHESIS);
 
-        $upperField = strtoupper($lexer->lookahead['value']);
-        if ($lexer->lookahead['type'] !== Lexer::T_IDENTIFIER || !isset($this->formats[$upperField])) {
+        $upperField = strtoupper($lexer->lookahead->value);
+        if ($lexer->lookahead->type !== TokenType::T_IDENTIFIER || !isset($this->formats[$upperField])) {
             $parser->syntaxError(implode('/', array_keys($this->formats)));
         }
 
-        $parser->match(Lexer::T_IDENTIFIER);
+        $parser->match(TokenType::T_IDENTIFIER);
         $this->field = $upperField;
-        $parser->match(Lexer::T_FROM);
+        $parser->match(TokenType::T_FROM);
 
         $next = $lexer->glimpse();
-        if (isset($next['type']) && $next['type'] === Lexer::T_STRING) {
-            $upperType = strtoupper($lexer->lookahead['value']);
-            if ($lexer->lookahead['type'] !== Lexer::T_IDENTIFIER || !in_array($upperType, $this->dateTimeTypes, true)) {
+        if ($next !== null && $next->type === TokenType::T_STRING) {
+            $upperType = strtoupper($lexer->lookahead->value);
+            if ($lexer->lookahead->type !== TokenType::T_IDENTIFIER || !in_array($upperType, $this->dateTimeTypes, true)) {
                 $parser->syntaxError(implode('/', $this->dateTimeTypes));
             }
-            $parser->match(Lexer::T_IDENTIFIER);
+            $parser->match(TokenType::T_IDENTIFIER);
             $this->type = $upperType;
         }
 
         $this->source = $parser->ArithmeticPrimary();
-        $parser->match(Lexer::T_CLOSE_PARENTHESIS);
+        $parser->match(TokenType::T_CLOSE_PARENTHESIS);
     }
 
-    public function getSql(SqlWalker $sqlWalker)
+    public function getSql(SqlWalker $sqlWalker): string
     {
-        $driver = $sqlWalker->getConnection()->getDriver()->getDatabasePlatform()->getName();
+        $platform = $sqlWalker->getConnection()->getDatabasePlatform();
         // UTCとの時差(秒数)
         $diff = intval(date('Z'));
         $second = abs($diff);
         $op = ($diff === $second) ? '+' : '-';
 
-        switch ($driver) {
-            case 'sqlite':
-                $sql = sprintf(
-                    "CAST(STRFTIME('%s', DATETIME(%s, '{$op}{$second} SECONDS')) AS INTEGER)",
-                    $this->formats[$this->field],
-                    $this->source->dispatch($sqlWalker));
-                break;
-            case 'postgresql':
-                $sql = sprintf(
-                    "EXTRACT(%s FROM %s %s $op INTERVAL '$second SECONDS')",
-                    $this->field,
-                    (string) $this->type,
-                    $this->source->dispatch($sqlWalker));
-                break;
-            default:
-                $sql = sprintf(
-                    "EXTRACT(%s FROM %s %s $op INTERVAL $second SECOND)",
-                    $this->field,
-                    (string) $this->type,
-                    $this->source->dispatch($sqlWalker));
+        if ($platform instanceof \Doctrine\DBAL\Platforms\SQLitePlatform) {
+            $sql = sprintf(
+                "CAST(STRFTIME('%s', DATETIME(%s, '{$op}{$second} SECONDS')) AS INTEGER)",
+                $this->formats[$this->field],
+                $this->source->dispatch($sqlWalker));
+        } elseif ($platform instanceof \Doctrine\DBAL\Platforms\PostgreSQLPlatform) {
+            $sql = sprintf(
+                "EXTRACT(%s FROM %s %s $op INTERVAL '$second SECONDS')",
+                $this->field,
+                (string) $this->type,
+                $this->source->dispatch($sqlWalker));
+        } else {
+            $sql = sprintf(
+                "EXTRACT(%s FROM %s %s $op INTERVAL $second SECOND)",
+                $this->field,
+                (string) $this->type,
+                $this->source->dispatch($sqlWalker));
         }
 
         return $sql;

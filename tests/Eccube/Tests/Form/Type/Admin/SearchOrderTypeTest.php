@@ -76,7 +76,7 @@ class SearchOrderTypeTest extends AbstractTypeTestCase
      *
      * @return array
      */
-    public function dataFormDateProvider()
+    public static function dataFormDateProvider()
     {
         return [
             ['order_date_start'],
@@ -112,7 +112,7 @@ class SearchOrderTypeTest extends AbstractTypeTestCase
      *
      * @return array
      */
-    public function dataFormDateTimeProvider()
+    public static function dataFormDateTimeProvider()
     {
         return [
             ['order_datetime_start'],

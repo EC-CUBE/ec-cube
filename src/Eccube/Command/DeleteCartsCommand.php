@@ -16,12 +16,14 @@ namespace Eccube\Command;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Repository\CartRepository;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(name: 'eccube:delete-carts')]
 class DeleteCartsCommand extends Command
 {
     protected static $defaultName = 'eccube:delete-carts';
@@ -69,14 +71,14 @@ class DeleteCartsCommand extends Command
         $this->cartRepository = $cartRepository;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Delete Carts from the database')
             ->addArgument('date', InputArgument::REQUIRED, 'Deletes carts before the specified date');
     }
 
-    protected function interact(InputInterface $input, OutputInterface $output)
+    protected function interact(InputInterface $input, OutputInterface $output): void
     {
         if (null !== $input->getArgument('date')) {
             return;
@@ -102,7 +104,7 @@ class DeleteCartsCommand extends Command
         $input->setArgument('date', $dateStr);
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
         $this->locale = $this->eccubeConfig->get('locale');
@@ -110,7 +112,7 @@ class DeleteCartsCommand extends Command
         $this->formatter = $this->createIntlFormatter();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $dateStr = $input->getArgument('date');
         $timestamp = $this->formatter->parse($dateStr);

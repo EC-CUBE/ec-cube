@@ -21,9 +21,9 @@ use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\TaxRuleType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\TaxRuleRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 /**
  * Class TaxRuleController
@@ -54,12 +54,10 @@ class TaxRuleController extends AbstractController
 
     /**
      * 税率設定の初期表示・登録
-     *
-     * @Route("/%eccube_admin_route%/setting/shop/tax", name="admin_setting_shop_tax", methods={"GET", "POST"})
-     * @Route("/%eccube_admin_route%/setting/shop/tax/new", name="admin_setting_shop_tax_new", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Setting/Shop/tax_rule.twig")
      */
+    #[Route('/%eccube_admin_route%/setting/shop/tax', name: 'admin_setting_shop_tax', methods: ['GET', 'POST'])]
+    #[Route('/%eccube_admin_route%/setting/shop/tax/new', name: 'admin_setting_shop_tax_new', methods: ['GET', 'POST'])]
+    #[Template("@admin/Setting/Shop/tax_rule.twig")]
     public function index(Request $request)
     {
         $TargetTaxRule = $this->taxRuleRepository->newTaxRule();
@@ -150,9 +148,8 @@ class TaxRuleController extends AbstractController
 
     /**
      * 税率設定の削除
-     *
-     * @Route("/%eccube_admin_route%/setting/shop/tax/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_shop_tax_delete", methods={"DELETE"})
      */
+    #[Route('/%eccube_admin_route%/setting/shop/tax/{id}/delete', requirements: ['id' => '\d+'], name: 'admin_setting_shop_tax_delete', methods: ['DELETE'])]
     public function delete(Request $request, TaxRule $TaxRule)
     {
         $this->isTokenValid();

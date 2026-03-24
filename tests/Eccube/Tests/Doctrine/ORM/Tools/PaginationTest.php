@@ -14,10 +14,10 @@
 namespace Eccube\Tests\Doctrine\ORM\Tools;
 
 use Doctrine\DBAL\ConnectionException;
-use Doctrine\DBAL\Driver\Connection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Eccube\Entity\Member;
@@ -78,22 +78,23 @@ class PaginationTest extends EccubeTestCase
         /** @var EntityManager $em */
         $em = $this->entityManager;
         $conn = $em->getConnection();
-        if (!$conn->isConnected()) {
-            $conn->connect();
-        }
         if ($conn->isTransactionActive()) {
-            $conn->rollback();
+            $conn->rollBack();
         }
 
-        $this->dropTable($conn->getWrappedConnection());
-        $this->createTable($conn->getWrappedConnection());
+        $this->dropTable($conn);
+        $this->createTable($conn);
         $conn->beginTransaction();
 
         // テスト用のエンティティを用意
         $config = $em->getConfiguration();
-        $driver = $config->newDefaultAnnotationDriver(__DIR__, false);
-        $chain = $config->getMetadataDriverImpl()->getDriver();
-        $chain->addDriver($driver, __NAMESPACE__);
+        $driver = new AttributeDriver([__DIR__]);
+        $metadataDriver = $config->getMetadataDriverImpl();
+        // DoctrineBundle's MappingDriver wraps the real driver chain
+        if (method_exists($metadataDriver, 'getDriver')) {
+            $metadataDriver = $metadataDriver->getDriver();
+        }
+        $metadataDriver->addDriver($driver, __NAMESPACE__);
 
         // 初期データより大きい値を指定
         $price02 = $this->getFaker()->randomNumber(9);
@@ -116,26 +117,22 @@ class PaginationTest extends EccubeTestCase
         $em = $this->entityManager;
         if ($em) {
             $conn = $em->getConnection();
-            $conn->rollback();
-            $this->dropTable($conn->getWrappedConnection());
+            $conn->rollBack();
+            $this->dropTable($conn);
             $conn->beginTransaction();
         }
 
         parent::tearDown();
     }
 
-    protected function createTable(Connection $conn)
+    protected function createTable(\Doctrine\DBAL\Connection $conn)
     {
-        $sql = 'CREATE TABLE test_entity(id INT, col INT, PRIMARY KEY(id));';
-        $stmt = $conn->prepare($sql);
-        $stmt->execute();
+        $conn->executeStatement('CREATE TABLE test_entity(id INT, col INT, PRIMARY KEY(id));');
     }
 
-    protected function dropTable(Connection $conn)
+    protected function dropTable(\Doctrine\DBAL\Connection $conn)
     {
-        $sql = 'DROP TABLE IF EXISTS test_entity;';
-        $stmt = $conn->prepare($sql);
-        $stmt->execute();
+        $conn->executeStatement('DROP TABLE IF EXISTS test_entity;');
     }
 
     /**
@@ -166,7 +163,7 @@ class PaginationTest extends EccubeTestCase
         $this->expected = array_slice($this->expectedIds, 0, $pageMax);
         $this->actual = $actualIds;
         $this->verify('product_class.price02 降順なので, id 昇順にソートされるはず');
-        $this->assertSame($pageMax, count($this->actual), 'paginatorの結果は'.$pageMax.'件');
+        $this->assertSame($pageMax, count($this->actual), 'paginatorの結果は' . $pageMax . '件');
     }
 
     /**
@@ -228,7 +225,7 @@ class PaginationTest extends EccubeTestCase
         $this->expected = array_slice($this->expectedIds, 0, $pageMax);
         $this->actual = $actualIds;
         $this->verify('test_entity.col 降順なので, id 昇順にソートされるはず');
-        $this->assertSame($pageMax, count($this->actual), 'paginatorの結果は'.$pageMax.'件');
+        $this->assertSame($pageMax, count($this->actual), 'paginatorの結果は' . $pageMax . '件');
     }
 
     /**
@@ -344,28 +341,18 @@ class PaginationTest extends EccubeTestCase
 
 /**
  * テスト用のエンティティ
- *
- * @ORM\Entity(repositoryClass="Eccube\Tests\Doctrine\ORM\Tools\TestRepository")
- *
- * @ORM\Table(name="test_entity")
  */
+#[ORM\Entity(repositoryClass: TestRepository::class)]
+#[ORM\Table(name: 'test_entity')]
 class TestEntity
 {
-    /**
-     * @ORM\Id
-     *
-     * @ORM\Column(type="integer")
-     *
-     * @ORM\GeneratedValue(strategy="NONE")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'NONE')]
     public $id;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     public $col;
 }
 
-class TestRepository extends EntityRepository
-{
-}
+class TestRepository extends EntityRepository {}

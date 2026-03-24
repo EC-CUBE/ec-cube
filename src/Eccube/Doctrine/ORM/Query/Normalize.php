@@ -14,9 +14,9 @@
 namespace Eccube\Doctrine\ORM\Query;
 
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
-use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\SqlWalker;
+use Doctrine\ORM\Query\TokenType;
 
 class Normalize extends FunctionNode
 {
@@ -24,26 +24,23 @@ class Normalize extends FunctionNode
     public const FROM = 'あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをんがぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽぁぃぅぇぉっゃゅょゎゐゑー';
     public const TO = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポァィゥェォッャュョヮヰヱー';
 
-    public function parse(Parser $parser)
+    public function parse(Parser $parser): void
     {
-        $parser->match(Lexer::T_IDENTIFIER);
-        $parser->match(Lexer::T_OPEN_PARENTHESIS);
+        $parser->match(TokenType::T_IDENTIFIER);
+        $parser->match(TokenType::T_OPEN_PARENTHESIS);
         $this->string = $parser->ArithmeticPrimary();
-        $parser->match(Lexer::T_CLOSE_PARENTHESIS);
+        $parser->match(TokenType::T_CLOSE_PARENTHESIS);
     }
 
-    public function getSql(SqlWalker $sqlWalker)
+    public function getSql(SqlWalker $sqlWalker): string
     {
-        switch ($sqlWalker->getConnection()->getDriver()->getDatabasePlatform()->getName()) {
-            case 'postgresql':
-                $sql = sprintf("LOWER(TRANSLATE(%s, '%s', '%s'))", $this->string->dispatch($sqlWalker), self::FROM, self::TO);
-                break;
-            case 'mysql':
-                $sql = sprintf('CONVERT(%s USING utf8) COLLATE utf8_unicode_ci', $this->string->dispatch($sqlWalker));
-                break;
-            default:
-                $sql = sprintf('LOWER(%s)', $this->string->dispatch($sqlWalker));
-                break;
+        $platform = $sqlWalker->getConnection()->getDatabasePlatform();
+        if ($platform instanceof \Doctrine\DBAL\Platforms\PostgreSQLPlatform) {
+            $sql = sprintf("LOWER(TRANSLATE(%s, '%s', '%s'))", $this->string->dispatch($sqlWalker), self::FROM, self::TO);
+        } elseif ($platform instanceof \Doctrine\DBAL\Platforms\AbstractMySQLPlatform) {
+            $sql = sprintf('CONVERT(%s USING utf8) COLLATE utf8_unicode_ci', $this->string->dispatch($sqlWalker));
+        } else {
+            $sql = sprintf('LOWER(%s)', $this->string->dispatch($sqlWalker));
         }
 
         return $sql;

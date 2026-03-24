@@ -15,11 +15,11 @@ namespace Eccube\Controller\Admin\Content;
 
 use Eccube\Controller\AbstractController;
 use Eccube\Service\SystemService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class MaintenanceController extends AbstractController
 {
@@ -35,11 +35,9 @@ class MaintenanceController extends AbstractController
 
     /**
      * メンテナンス管理ページを表示
-     *
-     * @Route("/%eccube_admin_route%/content/maintenance", name="admin_content_maintenance", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Content/maintenance.twig")
      */
+    #[Route('/%eccube_admin_route%/content/maintenance', name: 'admin_content_maintenance', methods: ['GET', 'POST'])]
+    #[Template("@admin/Content/maintenance.twig")]
     public function index(Request $request)
     {
         $isMaintenance = $this->systemService->isMaintenanceMode();
@@ -78,9 +76,8 @@ class MaintenanceController extends AbstractController
      *
      * キャッシュ管理やプラグインのインストール等の操作時にajax経由で解除する
      * 権限管理設定でアクセス不可になるのを避けるため、ルーティングは/admin/disable_maintenanceで設定しています
-     *
-     * @Route("/%eccube_admin_route%/disable_maintenance/{mode}", requirements={"mode": "manual|auto_maintenance|auto_maintenance_update"}, name="admin_disable_maintenance", methods={"POST"})
      */
+    #[Route('/%eccube_admin_route%/disable_maintenance/{mode}', requirements: ['mode' => 'manual|auto_maintenance|auto_maintenance_update'], name: 'admin_disable_maintenance', methods: ['POST'])]
     public function disableMaintenance(Request $request, $mode, SystemService $systemService)
     {
         $this->isTokenValid();

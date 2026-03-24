@@ -93,7 +93,7 @@ class RateLimiterListenerTest extends EccubeTestCase
         self::assertSame(2, $i);
     }
 
-    public function onControllerProvider()
+    public static function onControllerProvider()
     {
         return [
             ['test_ip', 'ip', []],

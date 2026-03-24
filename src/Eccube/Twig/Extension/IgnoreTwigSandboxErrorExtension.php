@@ -15,6 +15,7 @@ namespace Eccube\Twig\Extension;
 
 use Twig\Environment;
 use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
 use Twig\Extension\AbstractExtension;
 use Twig\Extension\SandboxExtension;
 use Twig\Sandbox\SecurityError;
@@ -57,7 +58,7 @@ class IgnoreTwigSandboxErrorExtension extends AbstractExtension
     {
         try {
             return \twig_include($env, $context, $template, $variables, $withContext, $ignoreMissing, $sandboxed);
-        } catch (SecurityError $e) {
+        } catch (SecurityError | RuntimeError $e) {
             // devではエラー画面が表示されるようにする
             $appEnv = env('APP_ENV');
             if ($appEnv === 'dev') {

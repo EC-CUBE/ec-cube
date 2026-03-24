@@ -103,7 +103,7 @@ class StockDiffProcessorTest extends EccubeTestCase
         }
     }
 
-    public function validateProvider()
+    public static function validateProvider()
     {
         return [
             [10, 2, 12, false, OrderStatus::NEW, OrderStatus::NEW],
@@ -201,7 +201,7 @@ class StockDiffProcessorTest extends EccubeTestCase
         $this->verify('dtb_product_stock の在庫数(stock)が正しくセットされていない。');
     }
 
-    public function prepareProvider()
+    public static function prepareProvider()
     {
         return [
             [10, 0, 2, 12, OrderStatus::NEW, OrderStatus::NEW],

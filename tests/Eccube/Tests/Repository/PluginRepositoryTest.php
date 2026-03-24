@@ -63,7 +63,7 @@ class PluginRepositoryTest extends EccubeTestCase
         }
     }
 
-    public function dataFormCodeProvider()
+    public static function dataFormCodeProvider()
     {
         return [
             ['Enable1', 'Enable1', true],

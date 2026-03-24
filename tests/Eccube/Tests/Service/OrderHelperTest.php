@@ -84,7 +84,7 @@ class OrderHelperTest extends EccubeTestCase
         self::assertSame($this->helper->getTaxDisplayType($OrderItemType), $TaxDisplayType);
     }
 
-    public function taxDisplayTypeProvider()
+    public static function taxDisplayTypeProvider()
     {
         // - 商品: 税抜
         // - 送料: 税込

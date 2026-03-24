@@ -163,23 +163,22 @@ class TaxRuleRepository extends AbstractRepository
             return $this->rules[$cacheKey];
         }
 
-        $parameters = [];
         $qb = $this->createQueryBuilder('t')
-            ->where('t.apply_date < :apply_date');
-        $parameters[':apply_date'] = new \DateTime();
+            ->where('t.apply_date < :apply_date')
+            ->setParameter('apply_date', new \DateTime());
 
         // Pref
         if ($Pref) {
-            $qb->andWhere('t.Pref IS NULL OR t.Pref = :Pref');
-            $parameters['Pref'] = $Pref;
+            $qb->andWhere('t.Pref IS NULL OR t.Pref = :Pref')
+                ->setParameter('Pref', $Pref);
         } else {
             $qb->andWhere('t.Pref IS NULL');
         }
 
         // Country
         if ($Country) {
-            $qb->andWhere('t.Country IS NULL OR t.Country = :Country');
-            $parameters['Country'] = $Country;
+            $qb->andWhere('t.Country IS NULL OR t.Country = :Country')
+                ->setParameter('Country', $Country);
         } else {
             $qb->andWhere('t.Country IS NULL');
         }
@@ -192,22 +191,21 @@ class TaxRuleRepository extends AbstractRepository
 
         // Product
         if ($Product && $productId > 0) {
-            $qb->andWhere('t.Product IS NULL OR t.Product = :Product');
-            $parameters['Product'] = $Product;
+            $qb->andWhere('t.Product IS NULL OR t.Product = :Product')
+                ->setParameter('Product', $Product);
         } else {
             $qb->andWhere('t.Product IS NULL');
         }
 
         // ProductClass
         if ($ProductClass && '0' !== $productClassId) {
-            $qb->andWhere('t.ProductClass IS NULL OR t.ProductClass = :ProductClass');
-            $parameters['ProductClass'] = $ProductClass;
+            $qb->andWhere('t.ProductClass IS NULL OR t.ProductClass = :ProductClass')
+                ->setParameter('ProductClass', $ProductClass);
         } else {
             $qb->andWhere('t.ProductClass IS NULL');
         }
 
         $TaxRules = $qb
-            ->setParameters($parameters)
             ->orderBy('t.apply_date', 'DESC') // 実際は usort() でソートする
             ->getQuery()
             ->getResult();

@@ -14,6 +14,7 @@
 namespace Eccube\Command;
 
 use Eccube\Common\EccubeConfig;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputInterface;
@@ -23,6 +24,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Filesystem\Filesystem;
 
+#[AsCommand(name: 'eccube:plugin:generate')]
 class PluginGenerateCommand extends Command
 {
     protected static $defaultName = 'eccube:plugin:generate';
@@ -48,7 +50,7 @@ class PluginGenerateCommand extends Command
         $this->eccubeConfig = $eccubeConfig;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addArgument('name', InputOption::VALUE_REQUIRED, 'plugin name')
@@ -57,13 +59,13 @@ class PluginGenerateCommand extends Command
             ->setDescription('Generate plugin skeleton.');
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
         $this->fs = new Filesystem();
     }
 
-    protected function interact(InputInterface $input, OutputInterface $output)
+    protected function interact(InputInterface $input, OutputInterface $output): void
     {
         if (null !== $input->getArgument('name') && null !== $input->getArgument('code') && null !== $input->getArgument('ver')) {
             return;
@@ -99,7 +101,7 @@ class PluginGenerateCommand extends Command
         }
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $name = $input->getArgument('name');
         $code = $input->getArgument('code');
@@ -322,7 +324,7 @@ class Event implements EventSubscriberInterface
     /**
      * @return array
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [];
     }
@@ -347,9 +349,9 @@ namespace Plugin\\{$code}\\Controller\\Admin;
 use Eccube\\Controller\\AbstractController;
 use Plugin\\{$code}\\Form\\Type\\Admin\\ConfigType;
 use Plugin\\{$code}\\Repository\\ConfigRepository;
-use Sensio\\Bundle\\FrameworkExtraBundle\\Configuration\\Template;
+use Symfony\\Bridge\\Twig\\Attribute\\Template;
 use Symfony\\Component\\HttpFoundation\\Request;
-use Symfony\\Component\\Routing\\Annotation\\Route;
+use Symfony\\Component\\Routing\\Attribute\\Route;
 
 class ConfigController extends AbstractController
 {
@@ -370,8 +372,8 @@ class ConfigController extends AbstractController
 
     /**
      * @Route("/%eccube_admin_route%/{$snakecased}/config", name="{$snakecased}_admin_config")
-     * @Template("@{$code}/admin/config.twig")
      */
+    #[Template("@{$code}/admin/config.twig")]
     public function index(Request \$request)
     {
         \$Config = \$this->configRepository->get();
@@ -407,26 +409,23 @@ use Doctrine\\ORM\\Mapping as ORM;
 if (!class_exists('\\Plugin\\{$code}\\Entity\\Config', false)) {
     /**
      * Config
-     *
-     * @ORM\Table(name="plg_{$snakecased}_config")
-     * @ORM\Entity(repositoryClass="Plugin\\{$code}\\Repository\\ConfigRepository")
      */
+    #[ORM\Table(name: 'plg_{$snakecased}_config')]
+    #[ORM\Entity(repositoryClass: \\Plugin\\{$code}\\Repository\\ConfigRepository::class)]
     class Config
     {
         /**
          * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         * @ORM\Id
-         * @ORM\GeneratedValue(strategy="IDENTITY")
          */
+        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         private \$id;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="name", type="string", length=255)
          */
+        #[ORM\Column(name: 'name', type: 'string', length: 255)]
         private \$name;
 
         /**
@@ -531,7 +530,7 @@ class ConfigType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface \$builder, array \$options)
+    public function buildForm(FormBuilderInterface \$builder, array \$options): void
     {
         \$builder->add('name', TextType::class, [
             'constraints' => [
@@ -544,7 +543,7 @@ class ConfigType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver \$resolver)
+    public function configureOptions(OptionsResolver \$resolver): void
     {
         \$resolver->setDefaults([
             'data_class' => Config::class,

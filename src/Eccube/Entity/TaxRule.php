@@ -18,17 +18,12 @@ use Doctrine\ORM\Mapping as ORM;
 if (!class_exists(TaxRule::class)) {
     /**
      * TaxRule
-     *
-     * @ORM\Table(name="dtb_tax_rule")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\TaxRuleRepository")
      */
+    #[ORM\Table(name: 'dtb_tax_rule')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: \Eccube\Repository\TaxRuleRepository::class)]
     class TaxRule extends AbstractEntity
     {
         /**
@@ -77,121 +72,88 @@ if (!class_exists(TaxRule::class)) {
 
         /**
          * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
          */
+        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         private $id;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="tax_rate", type="decimal", precision=10, scale=0, options={"unsigned":true,"default":0})
          */
+        #[ORM\Column(name: 'tax_rate', type: 'decimal', precision: 10, scale: 0, options: ['unsigned' => true, 'default' => 0])]
         private $tax_rate = '0';
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="tax_adjust", type="decimal", precision=10, scale=0, options={"unsigned":true,"default":0})
          */
+        #[ORM\Column(name: 'tax_adjust', type: 'decimal', precision: 10, scale: 0, options: ['unsigned' => true, 'default' => 0])]
         private $tax_adjust = '0';
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="apply_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'apply_date', type: 'datetimetz')]
         private $apply_date;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
         private $create_date;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
         private $update_date;
 
         /**
          * @var ProductClass
-         *
-         * @ORM\OneToOne(targetEntity="Eccube\Entity\ProductClass", inversedBy="TaxRule")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="product_class_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\OneToOne(targetEntity: \Eccube\Entity\ProductClass::class, inversedBy: 'TaxRule')]
+        #[ORM\JoinColumn(name: 'product_class_id', referencedColumnName: 'id')]
         private $ProductClass;
 
         /**
          * @var Member
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Member::class)]
+        #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
         private $Creator;
 
         /**
          * @var Master\Country
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Country")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="country_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\Country::class)]
+        #[ORM\JoinColumn(name: 'country_id', referencedColumnName: 'id')]
         private $Country;
 
         /**
          * @var Master\Pref
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Pref")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="pref_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\Pref::class)]
+        #[ORM\JoinColumn(name: 'pref_id', referencedColumnName: 'id')]
         private $Pref;
 
         /**
          * @var Product
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Product")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="product_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Product::class)]
+        #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id')]
         private $Product;
 
         /**
          * @var Master\RoundingType
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\RoundingType")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="rounding_type_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\RoundingType::class)]
+        #[ORM\JoinColumn(name: 'rounding_type_id', referencedColumnName: 'id')]
         private $RoundingType;
+
+        public function __clone()
+        {
+            $this->id = null;
+        }
 
         /**
          * Get id.

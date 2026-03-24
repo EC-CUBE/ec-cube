@@ -63,7 +63,7 @@ class NavCompilerPassTest extends EccubeTestCase
         self::assertSame($expected, $eccubeNav);
     }
 
-    public function addNavProvider()
+    public static function addNavProvider()
     {
         return [
             [AddNav1::class, AddNav1::getExpect()],

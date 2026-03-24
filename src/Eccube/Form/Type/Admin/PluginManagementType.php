@@ -29,7 +29,7 @@ class PluginManagementType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $plugin_id = $options['plugin_id'];
 
@@ -57,7 +57,7 @@ class PluginManagementType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'plugin_management';
     }
@@ -65,7 +65,7 @@ class PluginManagementType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired(['plugin_id']);
     }

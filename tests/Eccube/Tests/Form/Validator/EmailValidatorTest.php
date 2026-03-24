@@ -55,7 +55,7 @@ class EmailValidatorTest extends AbstractTypeTestCase
     /**
      * @return array[email, rfc result, no rfc result]
      */
-    public function EmailProvider()
+    public static function EmailProvider()
     {
         return [
             ['test@example.com', true, true],

@@ -3,4 +3,4 @@ framework:
     cache:
         pools:
             rate_limiter.cache:
-                adapter: cache.adapter.filesystem
+                adapter: cache.adapter.array

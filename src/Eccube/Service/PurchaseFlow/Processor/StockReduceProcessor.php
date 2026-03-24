@@ -78,26 +78,48 @@ class StockReduceProcessor extends AbstractPurchaseProcessor
             return;
         }
 
-        foreach ($itemHolder->getProductOrderItems() as $item) {
-            // 在庫が無制限かチェックし、制限ありなら在庫数をチェック
-            if (!$item->getProductClass()->isStockUnlimited()) {
-                // 在庫チェックあり
-                /* @var ProductStock $productStock */
-                $productStock = $item->getProductClass()->getProductStock();
-                if ($productStock->getProductClassId() === null) {
-                    // 在庫に対してロックを実行
-                    $this->entityManager->lock($productStock, LockMode::PESSIMISTIC_WRITE);
-                    $this->entityManager->refresh($productStock);
-                    $productStock->setProductClassId($item->getProductClass()->getId());
+        $connection = $this->entityManager->getConnection();
+        $ownTransaction = !$connection->isTransactionActive();
+        if ($ownTransaction) {
+            $connection->beginTransaction();
+        }
+
+        try {
+            foreach ($itemHolder->getProductOrderItems() as $item) {
+                // 在庫が無制限かチェックし、制限ありなら在庫数をチェック
+                if (!$item->getProductClass()->isStockUnlimited()) {
+                    // 在庫チェックあり
+                    /* @var ProductStock $productStock */
+                    $productStock = $item->getProductClass()->getProductStock();
+                    if ($productStock->getProductClassId() === null) {
+                        // 在庫に対してロックを実行
+                        $this->entityManager->lock($productStock, LockMode::PESSIMISTIC_WRITE);
+                        $this->entityManager->refresh($productStock);
+                        $productStock->setProductClassId($item->getProductClass()->getId());
+                    }
+                    $ProductClass = $item->getProductClass();
+                    $stock = $callback($productStock->getStock(), $item->getQuantity());
+                    if ($stock < 0) {
+                        if ($ownTransaction) {
+                            $connection->rollBack();
+                        }
+                        throw new ShoppingException(trans('purchase_flow.over_stock', ['%name%' => $ProductClass->formattedProductName()]));
+                    }
+                    $productStock->setStock($stock);
+                    $ProductClass->setStock($stock);
                 }
-                $ProductClass = $item->getProductClass();
-                $stock = $callback($productStock->getStock(), $item->getQuantity());
-                if ($stock < 0) {
-                    throw new ShoppingException(trans('purchase_flow.over_stock', ['%name%' => $ProductClass->formattedProductName()]));
-                }
-                $productStock->setStock($stock);
-                $ProductClass->setStock($stock);
             }
+
+            if ($ownTransaction) {
+                $connection->commit();
+            }
+        } catch (ShoppingException $e) {
+            throw $e;
+        } catch (\Exception $e) {
+            if ($ownTransaction && $connection->isTransactionActive()) {
+                $connection->rollBack();
+            }
+            throw $e;
         }
     }
 }

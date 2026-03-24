@@ -41,7 +41,7 @@ class LayoutRepository extends AbstractRepository
                 ->orderBy('bp.block_row', 'ASC')
                 ->setParameter('id', $id)
                 ->getQuery()
-                ->useResultCache(true, $this->getCacheLifetime())
+                ->enableResultCache($this->getCacheLifetime())
                 ->getSingleResult();
         } catch (NoResultException $e) {
             return null;

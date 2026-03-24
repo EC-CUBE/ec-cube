@@ -55,7 +55,8 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
     {
         $Order = $this->createOrderForSearch();
 
-        $this->client->request('POST',
+        $this->client->request(
+            'POST',
             $this->generateUrl('admin_order_export_pdf'),
             [
                 '_token' => 'dummy',
@@ -101,7 +102,8 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         /**
          * @var Crawler
          */
-        $crawler = $this->client->request('POST',
+        $crawler = $this->client->request(
+            'POST',
             $this->generateUrl('admin_order_export_pdf'),
             [
                 '_token' => 'dummy',
@@ -128,12 +130,14 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         /**
          * @var Crawler
          */
-        $crawler = $this->client->request('POST',
+        $crawler = $this->client->request(
+            'POST',
             $this->generateUrl('admin_order_export_pdf'),
             [
                 '_token' => 'dummy',
                 'ids' => [$shippingId],
-            ]);
+            ]
+        );
 
         $form = $this->getForm($crawler);
 
@@ -154,11 +158,14 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $this->expected = 'application/pdf';
         $this->verify();
 
-        $crawler = $this->client->request('GET', $this->generateUrl('admin_order_export_pdf'),
+        $crawler = $this->client->request(
+            'GET',
+            $this->generateUrl('admin_order_export_pdf'),
             [
                 '_token' => 'dummy',
                 'ids' => [$shippingId],
-            ]);
+            ]
+        );
         $html = $crawler->filter('#order_pdf_form')->html();
 
         $this->assertStringContainsString((string) $shippingId, $html);
@@ -209,7 +216,9 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         /**
          * @var Crawler
          */
-        $crawler = $client->request('POST', $this->generateUrl('admin_order_export_pdf'),
+        $crawler = $client->request(
+            'POST',
+            $this->generateUrl('admin_order_export_pdf'),
             [
                 '_token' => 'dummy',
                 'ids' => [$shippingId],
@@ -240,16 +249,16 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
      *
      * @return array
      */
-    public function dataDownloadMaxLengthProvider()
+    public static function dataDownloadMaxLengthProvider()
     {
         return [
-            ['order_pdf[title]', '値が長すぎます。255文字以内でなければなりません。'],
-            ['order_pdf[message1]', '値が長すぎます。30文字以内でなければなりません。'],
-            ['order_pdf[message2]', '値が長すぎます。30文字以内でなければなりません。'],
-            ['order_pdf[message3]', '値が長すぎます。30文字以内でなければなりません。'],
-            ['order_pdf[note1]', '値が長すぎます。255文字以内でなければなりません。'],
-            ['order_pdf[note2]', '値が長すぎます。255文字以内でなければなりません。'],
-            ['order_pdf[note3]', '値が長すぎます。255文字以内でなければなりません。'],
+            ['order_pdf[title]', '255文字以下'],
+            ['order_pdf[message1]', '30文字以下'],
+            ['order_pdf[message2]', '30文字以下'],
+            ['order_pdf[message3]', '30文字以下'],
+            ['order_pdf[note1]', '255文字以下'],
+            ['order_pdf[note2]', '255文字以下'],
+            ['order_pdf[note3]', '255文字以下'],
         ];
     }
 
@@ -270,11 +279,14 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         /**
          * @var Crawler
          */
-        $crawler = $client->request('POST', $this->generateUrl('admin_order_export_pdf'),
+        $crawler = $client->request(
+            'POST',
+            $this->generateUrl('admin_order_export_pdf'),
             [
                 '_token' => 'dummy',
                 'ids' => [$shippingId],
-            ]);
+            ]
+        );
         $html = $crawler->filter('#order_pdf_form')->html();
         $this->assertStringContainsString((string) $shippingId, $html);
         $this->assertStringContainsString('お買上げ明細書(納品書)', $html);
@@ -324,7 +336,9 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->persist($OrderPdf);
         $this->entityManager->flush($OrderPdf);
 
-        $crawler = $client->request('POST', $this->generateUrl('admin_order_export_pdf'),
+        $crawler = $client->request(
+            'POST',
+            $this->generateUrl('admin_order_export_pdf'),
             [
                 '_token' => 'dummy',
                 'ids' => [$shippingId],
@@ -358,7 +372,9 @@ class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $Shippings = $Order->getShippings();
         $shippingId = $Shippings[0]->getId();
 
-        $crawler = $this->client->request('POST', $this->generateUrl('admin_order_export_pdf'),
+        $crawler = $this->client->request(
+            'POST',
+            $this->generateUrl('admin_order_export_pdf'),
             [
                 '_token' => 'dummy',
                 'ids' => [$shippingId],

@@ -41,13 +41,13 @@ use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Util\FormUtil;
 use Eccube\Util\StringUtil;
 use Knp\Component\Pager\PaginatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -189,12 +189,10 @@ class OrderController extends AbstractController
      *      - URLパラメータpage_noをセッションに保存します.
      *   - 初期表示
      *      - 検索条件は空配列, ページ番号は1で初期化し, セッションに保存します.
-     *
-     * @Route("/%eccube_admin_route%/order", name="admin_order", methods={"GET", "POST"})
-     * @Route("/%eccube_admin_route%/order/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_order_page", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Order/index.twig")
      */
+    #[Route('/%eccube_admin_route%/order', name: 'admin_order', methods: ['GET', 'POST'])]
+    #[Route('/%eccube_admin_route%/order/page/{page_no}', requirements: ['page_no' => '\d+'], name: 'admin_order_page', methods: ['GET', 'POST'])]
+    #[Template("@admin/Order/index.twig")]
     public function index(Request $request, PaginatorInterface $paginator, $page_no = null)
     {
         $builder = $this->formFactory
@@ -354,9 +352,7 @@ class OrderController extends AbstractController
         ];
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/order/bulk_delete", name="admin_order_bulk_delete", methods={"POST"})
-     */
+    #[Route('/%eccube_admin_route%/order/bulk_delete', name: 'admin_order_bulk_delete', methods: ['POST'])]
     public function bulkDelete(Request $request)
     {
         $this->isTokenValid();
@@ -380,12 +376,12 @@ class OrderController extends AbstractController
     /**
      * 受注CSVの出力.
      *
-     * @Route("/%eccube_admin_route%/order/export/order", name="admin_order_export_order", methods={"GET"})
      *
      * @param Request $request
      *
      * @return StreamedResponse
      */
+    #[Route('/%eccube_admin_route%/order/export/order', name: 'admin_order_export_order', methods: ['GET'])]
     public function exportOrder(Request $request)
     {
         $filename = 'order_'.(new \DateTime())->format('YmdHis').'.csv';
@@ -398,12 +394,12 @@ class OrderController extends AbstractController
     /**
      * 配送CSVの出力.
      *
-     * @Route("/%eccube_admin_route%/order/export/shipping", name="admin_order_export_shipping", methods={"GET"})
      *
      * @param Request $request
      *
      * @return StreamedResponse
      */
+    #[Route('/%eccube_admin_route%/order/export/shipping', name: 'admin_order_export_shipping', methods: ['GET'])]
     public function exportShipping(Request $request)
     {
         $filename = 'shipping_'.(new \DateTime())->format('YmdHis').'.csv';
@@ -427,7 +423,6 @@ class OrderController extends AbstractController
 
         // sql loggerを無効にする.
         $em = $this->entityManager;
-        $em->getConfiguration()->setSQLLogger(null);
 
         $response = new StreamedResponse();
         $response->setCallback(function () use ($request, $csvTypeId) {
@@ -495,13 +490,13 @@ class OrderController extends AbstractController
     /**
      * Update to order status
      *
-     * @Route("/%eccube_admin_route%/shipping/{id}/order_status", requirements={"id" = "\d+"}, name="admin_shipping_update_order_status", methods={"PUT"})
      *
      * @param Request $request
      * @param Shipping $Shipping
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
+    #[Route('/%eccube_admin_route%/shipping/{id}/order_status', requirements: ['id' => '\d+'], name: 'admin_shipping_update_order_status', methods: ['PUT'])]
     public function updateOrderStatus(Request $request, Shipping $Shipping)
     {
         if (!($request->isXmlHttpRequest() && $this->isTokenValid())) {
@@ -594,13 +589,13 @@ class OrderController extends AbstractController
     /**
      * Update to Tracking number.
      *
-     * @Route("/%eccube_admin_route%/shipping/{id}/tracking_number", requirements={"id" = "\d+"}, name="admin_shipping_update_tracking_number", methods={"PUT"})
      *
      * @param Request $request
      * @param Shipping $shipping
      *
      * @return Response
      */
+    #[Route('/%eccube_admin_route%/shipping/{id}/tracking_number', requirements: ['id' => '\d+'], name: 'admin_shipping_update_tracking_number', methods: ['PUT'])]
     public function updateTrackingNumber(Request $request, Shipping $shipping)
     {
         if (!($request->isXmlHttpRequest() && $this->isTokenValid())) {
@@ -648,14 +643,13 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/order/export/pdf", name="admin_order_export_pdf", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Order/order_pdf.twig")
      *
      * @param Request $request
      *
      * @return array|RedirectResponse
      */
+    #[Route('/%eccube_admin_route%/order/export/pdf', name: 'admin_order_export_pdf', methods: ['GET', 'POST'])]
+    #[Template("@admin/Order/order_pdf.twig")]
     public function exportPdf(Request $request)
     {
         // requestから出荷番号IDの一覧を取得する.
@@ -697,14 +691,13 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/order/export/pdf/download", name="admin_order_pdf_download", methods={"POST"})
-     *
-     * @Template("@admin/Order/order_pdf.twig")
      *
      * @param Request $request
      *
      * @return Response
      */
+    #[Route('/%eccube_admin_route%/order/export/pdf/download', name: 'admin_order_pdf_download', methods: ['POST'])]
+    #[Template("@admin/Order/order_pdf.twig")]
     public function exportPdfDownload(Request $request, OrderPdfService $orderPdfService)
     {
         /**

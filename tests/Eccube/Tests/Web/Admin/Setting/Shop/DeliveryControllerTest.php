@@ -271,7 +271,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
         ];
     }
 
-    public function dataSubmitProvider()
+    public static function dataSubmitProvider()
     {
         return [
             [false, false],
@@ -304,7 +304,7 @@ class DeliveryControllerTest extends AbstractAdminWebTestCase
         $this->assertCount($expected, $result);
     }
 
-    public function getMergeRulesProvider()
+    public static function getMergeRulesProvider()
     {
         return [
             // 利用不可の金額帯なし

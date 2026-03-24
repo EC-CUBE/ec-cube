@@ -44,7 +44,7 @@ class Session implements SessionInterface, FlashBagAwareSessionInterface
         return $this->getSession()->getId();
     }
 
-    public function setId(string $id)
+    public function setId(string $id): void
     {
         $this->getSession()->setId($id);
     }
@@ -54,7 +54,7 @@ class Session implements SessionInterface, FlashBagAwareSessionInterface
         return $this->getSession()->getName();
     }
 
-    public function setName(string $name)
+    public function setName(string $name): void
     {
         $this->getSession()->setName($name);
     }
@@ -69,7 +69,7 @@ class Session implements SessionInterface, FlashBagAwareSessionInterface
         return $this->getSession()->migrate($destroy, $lifetime);
     }
 
-    public function save()
+    public function save(): void
     {
         $this->getSession()->save();
     }
@@ -84,7 +84,7 @@ class Session implements SessionInterface, FlashBagAwareSessionInterface
         return $this->getSession()->get($name, $default);
     }
 
-    public function set(string $name, mixed $value)
+    public function set(string $name, mixed $value): void
     {
         $this->getSession()->set($name, $value);
     }
@@ -94,7 +94,7 @@ class Session implements SessionInterface, FlashBagAwareSessionInterface
         return $this->getSession()->all();
     }
 
-    public function replace(array $attributes)
+    public function replace(array $attributes): void
     {
         $this->getSession()->replace($attributes);
     }
@@ -104,7 +104,7 @@ class Session implements SessionInterface, FlashBagAwareSessionInterface
         return $this->getSession()->remove($name);
     }
 
-    public function clear()
+    public function clear(): void
     {
         $this->getSession()->clear();
     }
@@ -114,14 +114,14 @@ class Session implements SessionInterface, FlashBagAwareSessionInterface
         return $this->getSession()->isStarted();
     }
 
-    public function registerBag(SessionBagInterface $bag)
+    public function registerBag(SessionBagInterface $bag): void
     {
         $this->getSession()->registerBag($bag);
     }
 
     public function getBag(string $name): SessionBagInterface
     {
-        return $this->getSession()->getBag();
+        return $this->getSession()->getBag($name);
     }
 
     public function getMetadataBag(): MetadataBag

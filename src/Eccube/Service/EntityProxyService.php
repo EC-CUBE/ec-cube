@@ -183,13 +183,27 @@ class EntityProxyService
             }
         }
 
-        // TraitをEntityごとにまとめる
+        // TraitをEntityごとにまとめる (PHP 8 Attributes優先、doctrine/annotationsフォールバック)
         $reader = new AnnotationReader();
         $proxySets = [];
         foreach ($traitSets as $traits) {
             $proxies = [];
             foreach ($traits as $trait) {
-                $anno = $reader->getClassAnnotation(new \ReflectionClass($trait), EntityExtension::class);
+                $rc = new \ReflectionClass($trait);
+                $anno = null;
+
+                // PHP 8 Attributes を優先チェック
+                $attrs = $rc->getAttributes(EntityExtension::class);
+                if (!empty($attrs)) {
+                    $anno = $attrs[0]->newInstance();
+                } else {
+                    // フォールバック: doctrine/annotations
+                    $anno = $reader->getClassAnnotation($rc, EntityExtension::class);
+                    if ($anno) {
+                        trigger_deprecation('ec-cube/ec-cube', '4.3', 'Using @EntityExtension annotation is deprecated, use #[EntityExtension] attribute instead.');
+                    }
+                }
+
                 if ($anno) {
                     $class = str_replace('\\\\', '\\', $anno->value);
                     $class = ltrim($class, '\\');

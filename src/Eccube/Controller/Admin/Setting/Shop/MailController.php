@@ -21,11 +21,11 @@ use Eccube\Form\Type\Admin\MailType;
 use Eccube\Repository\MailTemplateRepository;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
 
 /**
@@ -48,12 +48,9 @@ class MailController extends AbstractController
         $this->mailTemplateRepository = $mailTemplateRepository;
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/setting/shop/mail", name="admin_setting_shop_mail", methods={"GET", "POST"})
-     * @Route("/%eccube_admin_route%/setting/shop/mail/{id}", requirements={"id" = "\d+"}, name="admin_setting_shop_mail_edit", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Setting/Shop/mail.twig")
-     */
+    #[Route('/%eccube_admin_route%/setting/shop/mail', name: 'admin_setting_shop_mail', methods: ['GET', 'POST'])]
+    #[Route('/%eccube_admin_route%/setting/shop/mail/{id}', requirements: ['id' => '\d+'], name: 'admin_setting_shop_mail_edit', methods: ['GET', 'POST'])]
+    #[Template("@admin/Setting/Shop/mail.twig")]
     public function index(Request $request, Environment $twig, CacheUtil $cacheUtil, ?MailTemplate $Mail = null)
     {
         $Mail = $Mail ?? new MailTemplate();
@@ -153,11 +150,8 @@ class MailController extends AbstractController
         ];
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/setting/shop/mail/preview", name="admin_setting_shop_mail_preview", methods={"POST"})
-     *
-     * @Template("@admin/Setting/Shop/mail_view.twig")
-     */
+    #[Route('/%eccube_admin_route%/setting/shop/mail/preview', name: 'admin_setting_shop_mail_preview', methods: ['POST'])]
+    #[Template("@admin/Setting/Shop/mail_view.twig")]
     public function preview(Request $request)
     {
         if (!$request->isXmlHttpRequest() || !$this->isTokenValid()) {
@@ -179,9 +173,7 @@ class MailController extends AbstractController
         ];
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/setting/shop/mail/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_shop_mail_delete", methods={"DELETE"})
-     */
+    #[Route('/%eccube_admin_route%/setting/shop/mail/{id}/delete', requirements: ['id' => '\d+'], name: 'admin_setting_shop_mail_delete', methods: ['DELETE'])]
     public function delete(Request $request, MailTemplate $Mail)
     {
         $this->isTokenValid();

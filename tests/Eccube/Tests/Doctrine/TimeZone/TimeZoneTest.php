@@ -52,7 +52,7 @@ class TimeZoneTest extends EccubeTestCase
                 '1999-12-31 15:00:00',
                 'product');";
 
-        $this->entityManager->getConnection()->exec($sql);
+        $this->entityManager->getConnection()->executeStatement($sql);
     }
 
     public function testOrmFind()
@@ -101,7 +101,7 @@ class TimeZoneTest extends EccubeTestCase
 
         $sql = 'select id, create_date from dtb_product where id = ?';
         $stmt = $this->entityManager->getConnection()->executeQuery($sql, [$id]);
-        $product = $stmt->fetch();
+        $product = $stmt->fetchAssociative();
 
         // utcで登録されているはず
         $expected = '1999-12-31 15:00:00';
@@ -114,7 +114,7 @@ class TimeZoneTest extends EccubeTestCase
     {
         $sql = 'select create_date from dtb_product where id = 999';
         $stmt = $this->entityManager->getConnection()->executeQuery($sql);
-        $product = $stmt->fetch();
+        $product = $stmt->fetchAssociative();
 
         // dbalでselectした場合, utc時刻をそのまま取得
         $expected = '1999-12-31 15:00:00';
@@ -150,7 +150,7 @@ class TimeZoneTest extends EccubeTestCase
 
         $sql = 'select id, create_date from dtb_product where id = 9999';
         $stmt = $this->entityManager->getConnection()->executeQuery($sql);
-        $product = $stmt->fetch();
+        $product = $stmt->fetchAssociative();
 
         // utcに変換されて登録されている
         $expected = '1999-12-31 15:00:00';

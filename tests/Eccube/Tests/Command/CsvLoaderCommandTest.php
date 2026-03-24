@@ -23,12 +23,12 @@ class CsvLoaderCommandTest extends AbstractCommandTest
 
     public static function setUpBeforeClass(): void
     {
-        self::markTestIncomplete();
+        self::markTestSkipped('CsvLoaderCommandTest は未実装です');
     }
 
     protected function setUp(): void
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
+        $this->markTestIncomplete(get_class($this) . ' は未実装です');
         parent::setUp();
         if ($this->app['config']['database']['driver'] == 'pdo_sqlite') {
             $this->markTestSkipped('Can not support for sqlite3');
@@ -42,7 +42,7 @@ class CsvLoaderCommandTest extends AbstractCommandTest
         }
         $this->app['orm.em']->flush();
 
-        $this->file = new \SplFileObject(__DIR__.'/../../../Fixtures/import_csv/mtb_job.csv');
+        $this->file = new \SplFileObject(__DIR__ . '/../../../Fixtures/import_csv/mtb_job.csv');
     }
 
     public function testExecute()
@@ -81,9 +81,9 @@ class CsvLoaderCommandTest extends AbstractCommandTest
         $this->actual = count($Jobs);
         $this->verify('行数は一致するか？');
         foreach ($Jobs as $key => $Job) {
-            $this->expected = $rows[$key][0].', '.$rows[$key][1].', '.$rows[$key][2];
-            $this->actual = $Job->getId().', '.$Job->getName().', '.$Job->getRank();
-            $this->verify($key.'行目のデータは一致するか？');
+            $this->expected = $rows[$key][0] . ', ' . $rows[$key][1] . ', ' . $rows[$key][2];
+            $this->actual = $Job->getId() . ', ' . $Job->getName() . ', ' . $Job->getRank();
+            $this->verify($key . '行目のデータは一致するか？');
         }
     }
 }

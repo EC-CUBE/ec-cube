@@ -20,8 +20,10 @@ use Eccube\Entity\Member;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
+#[AsCommand(name: 'eccube:fixtures:load', description: 'Load data fixtures for EC-CUBE')]
 class LoadDataFixturesEccubeCommand extends DoctrineCommand
 {
     protected static $defaultName = 'eccube:fixtures:load';
@@ -43,7 +45,7 @@ class LoadDataFixturesEccubeCommand extends DoctrineCommand
         $this->passwordHasher = $passwordHasher;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Load data fixtures to your database.')
@@ -55,7 +57,7 @@ EOF
             );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $em = $this->getEntityManager(null);
 
@@ -77,7 +79,7 @@ EOF
         $password = $this->passwordHasher->hashPassword(new Member(), $login_password);
 
         $conn = $em->getConnection();
-        $member_id = ('postgresql' === $conn->getDatabasePlatform()->getName())
+        $member_id = ($conn->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\PostgreSQLPlatform)
             ? $conn->fetchOne("select nextval('dtb_member_id_seq')")
             : null;
 
@@ -103,7 +105,7 @@ EOF
         $shop_name = env('ECCUBE_SHOP_NAME', 'EC-CUBE SHOP');
         $admin_mail = env('ECCUBE_ADMIN_MAIL', 'admin@example.com');
 
-        $id = ('postgresql' === $conn->getDatabasePlatform()->getName())
+        $id = ($conn->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\PostgreSQLPlatform)
             ? $conn->fetchOne("select nextval('dtb_base_info_id_seq')")
             : null;
 

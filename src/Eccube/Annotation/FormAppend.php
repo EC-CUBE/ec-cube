@@ -14,13 +14,13 @@
 namespace Eccube\Annotation;
 
 use Doctrine\Common\Annotations\Annotation\Target;
-use Doctrine\ORM\Mapping\Annotation;
 
 /**
  * @Annotation
  * @Target("PROPERTY")
  */
-final class FormAppend implements Annotation
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
+final class FormAppend
 {
     /**
      * @var bool
@@ -46,4 +46,30 @@ final class FormAppend implements Annotation
      * @var string
      */
     public $style_class;
+
+    public function __construct(
+        $auto_render = null,
+        ?string $form_theme = null,
+        ?string $type = null,
+        ?array $options = null,
+        ?string $style_class = null
+    ) {
+        // Support both annotation array and attribute named arguments
+        if (is_array($auto_render)) {
+            // Called from annotation reader with array of values
+            $values = $auto_render;
+            $this->auto_render = $values['auto_render'] ?? null;
+            $this->form_theme = $values['form_theme'] ?? null;
+            $this->type = $values['type'] ?? null;
+            $this->options = $values['options'] ?? null;
+            $this->style_class = $values['style_class'] ?? null;
+        } else {
+            // Called from PHP attribute with named arguments
+            $this->auto_render = $auto_render;
+            $this->form_theme = $form_theme;
+            $this->type = $type;
+            $this->options = $options;
+            $this->style_class = $style_class;
+        }
+    }
 }

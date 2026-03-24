@@ -17,9 +17,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * AbstractMasterentity
- *
- * @ORM\MappedSuperclass
  */
+#[ORM\MappedSuperclass]
 abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity
 {
     /**
@@ -32,27 +31,22 @@ abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity
 
     /**
      * @var int
-     *
-     * @ORM\Column(name="id", type="smallint", options={"unsigned":true})
-     *
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="NONE")
      */
+    #[ORM\Column(name: 'id', type: 'smallint', options: ['unsigned' => true])]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'NONE')]
     protected $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255)
      */
+    #[ORM\Column(name: 'name', type: 'string', length: 255)]
     protected $name;
 
     /**
      * @var int
-     *
-     * @ORM\Column(name="sort_no", type="smallint", options={"unsigned":true})
      */
+    #[ORM\Column(name: 'sort_no', type: 'smallint', options: ['unsigned' => true])]
     protected $sort_no;
 
     /**
@@ -134,6 +128,21 @@ abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity
 
     public function __set($name, $value)
     {
+        // Doctrine ORM 3.x の LazyGhostTrait がプロパティの設定に __set を使用するため、
+        // 実際のインスタンスプロパティへの設定は許可する（静的プロパティや定数は除外）
+        $ref = new \ReflectionClass($this);
+        while ($ref) {
+            if ($ref->hasProperty($name)) {
+                $prop = $ref->getProperty($name);
+                if (!$prop->isStatic()) {
+                    $prop->setAccessible(true);
+                    $prop->setValue($this, $value);
+                    return;
+                }
+            }
+            $ref = $ref->getParentClass();
+        }
+
         throw new \InvalidArgumentException();
     }
 

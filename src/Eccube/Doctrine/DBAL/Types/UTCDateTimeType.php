@@ -14,8 +14,8 @@
 namespace Eccube\Doctrine\DBAL\Types;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\DateTimeType;
+use Doctrine\DBAL\Types\Exception\InvalidFormat;
 
 class UTCDateTimeType extends DateTimeType
 {
@@ -36,7 +36,7 @@ class UTCDateTimeType extends DateTimeType
     /**
      * {@inheritdoc}
      */
-    public function convertToDatabaseValue($value, AbstractPlatform $platform)
+    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
     {
         if ($value instanceof \DateTime) {
             $value->setTimezone(self::getUtcTimeZone());
@@ -48,7 +48,7 @@ class UTCDateTimeType extends DateTimeType
     /**
      * {@inheritdoc}
      */
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?\DateTime
     {
         if ($value === null || $value instanceof \DateTime) {
             return $value;
@@ -61,7 +61,7 @@ class UTCDateTimeType extends DateTimeType
         );
 
         if (!$converted) {
-            throw ConversionException::conversionFailedFormat($value, $this->getName(), $platform->getDateTimeFormatString());
+            throw InvalidFormat::new($value, static::class, $platform->getDateTimeFormatString());
         }
 
         $converted->setTimezone(self::getTimezone());
@@ -99,10 +99,5 @@ class UTCDateTimeType extends DateTimeType
     public static function setTimeZone($timezone = 'Asia/Tokyo')
     {
         self::$timezone = new \DateTimeZone($timezone);
-    }
-
-    public function requiresSQLCommentHint(AbstractPlatform $platform)
-    {
-        return true;
     }
 }

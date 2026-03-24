@@ -25,7 +25,7 @@ class IpAddrListenerTest extends AbstractWebTestCase
 {
     protected $clientIp = '192.168.56.1';
 
-    public function ipAddressParams()
+    public static function ipAddressParams()
     {
         // 第1要素：許可IPリスト
         // 第2要素：拒否IPリスト

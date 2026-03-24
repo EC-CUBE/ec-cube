@@ -71,7 +71,7 @@ class AuthorityVoterTest extends EccubeTestCase
         self::assertEquals($expected, $voter->vote($token, null, []));
     }
 
-    public function voteProvider()
+    public static function voteProvider()
     {
         return [
             [[], '/admin/content', VoterInterface::ACCESS_GRANTED],

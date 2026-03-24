@@ -21,13 +21,13 @@ use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\ClassNameType;
 use Eccube\Repository\ClassNameRepository;
 use Eccube\Service\CsvExportService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class ClassNameController extends AbstractController
 {
@@ -55,12 +55,9 @@ class ClassNameController extends AbstractController
         $this->csvExportService = $csvExportService;
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/product/class_name", name="admin_product_class_name", methods={"GET", "POST"})
-     * @Route("/%eccube_admin_route%/product/class_name/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_class_name_edit", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Product/class_name.twig")
-     */
+    #[Route('/%eccube_admin_route%/product/class_name', name: 'admin_product_class_name', methods: ['GET', 'POST'])]
+    #[Route('/%eccube_admin_route%/product/class_name/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_product_class_name_edit', methods: ['GET', 'POST'])]
+    #[Template("@admin/Product/class_name.twig")]
     public function index(Request $request, $id = null)
     {
         if ($id) {
@@ -147,9 +144,7 @@ class ClassNameController extends AbstractController
         ];
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/product/class_name/{id}/delete", requirements={"id" = "\d+"}, name="admin_product_class_name_delete", methods={"DELETE"})
-     */
+    #[Route('/%eccube_admin_route%/product/class_name/{id}/delete', requirements: ['id' => '\d+'], name: 'admin_product_class_name_delete', methods: ['DELETE'])]
     public function delete(Request $request, ClassName $ClassName)
     {
         $this->isTokenValid();
@@ -175,9 +170,7 @@ class ClassNameController extends AbstractController
         return $this->redirectToRoute('admin_product_class_name');
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/product/class_name/sort_no/move", name="admin_product_class_name_sort_no_move", methods={"POST"})
-     */
+    #[Route('/%eccube_admin_route%/product/class_name/sort_no/move', name: 'admin_product_class_name_sort_no_move', methods: ['POST'])]
     public function moveSortNo(Request $request)
     {
         if (!$request->isXmlHttpRequest() || !$this->isTokenValid()) {
@@ -199,12 +192,12 @@ class ClassNameController extends AbstractController
     /**
      * 規格CSVの出力.
      *
-     * @Route("/%eccube_admin_route%/product/class_name/export", name="admin_product_class_name_export", methods={"GET"})
      *
      * @param Request $request
      *
      * @return StreamedResponse
      */
+    #[Route('/%eccube_admin_route%/product/class_name/export', name: 'admin_product_class_name_export', methods: ['GET'])]
     public function export(Request $request)
     {
         // タイムアウトを無効にする.
@@ -212,7 +205,6 @@ class ClassNameController extends AbstractController
 
         // sql loggerを無効にする.
         $em = $this->entityManager;
-        $em->getConfiguration()->setSQLLogger(null);
 
         $response = new StreamedResponse();
         $response->setCallback(function () use ($request) {

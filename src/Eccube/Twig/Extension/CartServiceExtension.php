@@ -30,7 +30,7 @@ class CartServiceExtension extends AbstractExtension
         $this->cartService = $cartService;
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('get_cart', [$this, 'get_cart'], ['is_safe' => ['all']]),

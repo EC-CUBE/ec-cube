@@ -149,7 +149,7 @@ class LoginHistoryControllerTest extends AbstractAdminWebTestCase
     /**
      * @return array[]
      */
-    public function dataStatusProvider()
+    public static function dataStatusProvider()
     {
         return [
             [[LoginHistoryStatus::SUCCESS], 5],

@@ -246,19 +246,19 @@ abstract class EccubeTestCase extends WebTestCase
         /** @var Connection $conn */
         $conn = $this->entityManager->getConnection();
 
+        $platform = $conn->getDatabasePlatform();
+
         // MySQLの場合は参照制約を無効にする.
-        if ('mysql' === $conn->getDatabasePlatform()->getName()) {
-            $conn->query('SET FOREIGN_KEY_CHECKS = 0');
+        if ($platform instanceof \Doctrine\DBAL\Platforms\AbstractMySQLPlatform) {
+            $conn->executeStatement('SET FOREIGN_KEY_CHECKS = 0');
         }
 
         foreach ($tables as $table) {
-            $sql = 'DELETE FROM '.$table;
-            $stmt = $conn->prepare($sql);
-            $stmt->execute();
+            $conn->executeStatement('DELETE FROM '.$table);
         }
 
-        if ('mysql' === $conn->getDatabasePlatform()->getName()) {
-            $conn->query('SET FOREIGN_KEY_CHECKS = 1');
+        if ($platform instanceof \Doctrine\DBAL\Platforms\AbstractMySQLPlatform) {
+            $conn->executeStatement('SET FOREIGN_KEY_CHECKS = 1');
         }
     }
 

@@ -14,7 +14,6 @@
 namespace Eccube\DependencyInjection\Compiler;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\AnnotationRegistry;
 use Eccube\Annotation\CartFlow;
 use Eccube\Annotation\OrderFlow;
 use Eccube\Annotation\ShoppingFlow;
@@ -86,12 +85,10 @@ class PurchaseFlowPass implements CompilerPassInterface
             OrderFlow::class => $container->findDefinition('eccube.purchase.flow.order'),
         ];
 
-        // TODO doctrine/anntationsをv2へアップデート。影響がある場合は要調査。
-        // AnnotationRegistry::registerAutoloadNamespace('Eccube\Annotation', __DIR__ . '/../../../../src');
         $reader = new AnnotationReader();
 
         /*
-         * アノテーションで追加対象のフローを指定した場合の処理
+         * アノテーションまたはAttributeで追加対象のフローを指定した場合の処理
          */
         foreach ($this->getProcessorTags() as $tag => $methodName) {
             /** @var Reference $id */
@@ -102,8 +99,18 @@ class PurchaseFlowPass implements CompilerPassInterface
                  * @var Definition $purchaseFlowDef
                  */
                 foreach ($flowDefs as $annotationName => $purchaseFlowDef) {
-                    $anno = $reader->getClassAnnotation(new \ReflectionClass($def->getClass()), $annotationName);
+                    $rc = new \ReflectionClass($def->getClass());
+                    // PHP 8 Attributes を優先チェック
+                    $attrs = $rc->getAttributes($annotationName);
+                    if (!empty($attrs)) {
+                        $purchaseFlowDef->addMethodCall($methodName, [$id]);
+                        $purchaseFlowDef->setPublic(true);
+                        continue;
+                    }
+                    // フォールバック: doctrine/annotations
+                    $anno = $reader->getClassAnnotation($rc, $annotationName);
                     if ($anno) {
+                        trigger_deprecation('ec-cube/ec-cube', '4.3', 'Using @%s annotation is deprecated, use #[%s] attribute instead.', $annotationName, $annotationName);
                         $purchaseFlowDef->addMethodCall($methodName, [$id]);
                         $purchaseFlowDef->setPublic(true);
                     }

@@ -29,12 +29,11 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
 use Knp\Component\Pager\PaginatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -108,11 +107,9 @@ class ProductController extends AbstractController
 
     /**
      * 商品一覧画面.
-     *
-     * @Route("/products/list", name="product_list", methods={"GET"})
-     *
-     * @Template("Product/list.twig")
      */
+    #[Route('/products/list', name: 'product_list', methods: ['GET'])]
+    #[Template("Product/list.twig")]
     public function index(Request $request, PaginatorInterface $paginator)
     {
         // Doctrine SQLFilter
@@ -140,7 +137,6 @@ class ProductController extends AbstractController
             $request
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_PRODUCT_INDEX_INITIALIZE);
-
         /** @var \Symfony\Component\Form\FormInterface $searchForm */
         $searchForm = $builder->getForm();
 
@@ -161,7 +157,7 @@ class ProductController extends AbstractController
         $searchData = $event->getArgument('searchData');
 
         $query = $qb->getQuery()
-            ->useResultCache(true, $this->eccubeConfig['eccube_result_cache_lifetime_short']);
+            ->enableResultCache($this->eccubeConfig['eccube_result_cache_lifetime_short']);
 
         /** @var SlidingPagination $pagination */
         $pagination = $paginator->paginate(
@@ -208,19 +204,21 @@ class ProductController extends AbstractController
     /**
      * 商品詳細画面.
      *
-     * @Route("/products/detail/{id}", name="product_detail", methods={"GET"}, requirements={"id" = "\d+"})
-     *
-     * @Template("Product/detail.twig")
-     *
-     * @ParamConverter("Product", options={"repository_method" = "findWithSortedClassCategories"})
      *
      * @param Request $request
-     * @param Product $Product
+     * @param int $id
      *
      * @return array
      */
-    public function detail(Request $request, Product $Product)
+    #[Route('/products/detail/{id}', name: 'product_detail', methods: ['GET'], requirements: ['id' => '\d+'])]
+    #[Template("Product/detail.twig")]
+    public function detail(Request $request, $id)
     {
+        $Product = $this->productRepository->findWithSortedClassCategories($id);
+        if (!$Product) {
+            throw $this->createNotFoundException();
+        }
+
         if (!$this->checkVisibility($Product)) {
             throw new NotFoundHttpException();
         }
@@ -261,9 +259,8 @@ class ProductController extends AbstractController
 
     /**
      * お気に入り追加.
-     *
-     * @Route("/products/add_favorite/{id}", name="product_add_favorite", requirements={"id" = "\d+"}, methods={"GET", "POST"})
      */
+    #[Route('/products/add_favorite/{id}', name: 'product_add_favorite', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function addFavorite(Request $request, Product $Product)
     {
         $this->checkVisibility($Product);
@@ -310,9 +307,8 @@ class ProductController extends AbstractController
 
     /**
      * お気に入り削除.
-     *
-     * @Route("/products/delete_favorite/{id}", name="product_delete_favorite", requirements={"id" = "\d+"}, methods={"DELETE"})
      */
+    #[Route('/products/delete_favorite/{id}', name: 'product_delete_favorite', requirements: ['id' => '\d+'], methods: ['DELETE'])]
     public function deleteFavorite(Request $request, Product $Product)
     {
         $event = new EventArgs(
@@ -356,9 +352,8 @@ class ProductController extends AbstractController
 
     /**
      * カートに追加.
-     *
-     * @Route("/products/add_cart/{id}", name="product_add_cart", methods={"POST"}, requirements={"id" = "\d+"})
      */
+    #[Route('/products/add_cart/{id}', name: 'product_add_cart', methods: ['POST'], requirements: ['id' => '\d+'])]
     public function addCart(Request $request, Product $Product)
     {
         // エラーメッセージの配列

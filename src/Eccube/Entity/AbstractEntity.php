@@ -41,9 +41,7 @@ abstract class AbstractEntity implements \ArrayAccess
     }
 
     #[\ReturnTypeWillChange]
-    public function offsetSet($offset, $value)
-    {
-    }
+    public function offsetSet($offset, $value) {}
 
     #[\ReturnTypeWillChange]
     public function offsetGet($offset)
@@ -63,9 +61,7 @@ abstract class AbstractEntity implements \ArrayAccess
     }
 
     #[\ReturnTypeWillChange]
-    public function offsetUnset($offset)
-    {
-    }
+    public function offsetUnset($offset) {}
 
     /**
      * 引数の連想配列を元にプロパティを設定します.
@@ -245,9 +241,15 @@ abstract class AbstractEntity implements \ArrayAccess
         $Properties = $PropReflect->getProperties();
 
         foreach ($Properties as $Property) {
-            $AnnotationReader = AnnotationReaderFacade::create();
-            $anno = $AnnotationReader->getPropertyAnnotation($Property, Id::class);
-            if ($anno) {
+            // PHP 8 attributes を優先的にチェック (Doctrine ORM 3.x 対応)
+            $hasId = !empty($Property->getAttributes(Id::class));
+            if (!$hasId) {
+                // フォールバック: アノテーションリーダーでチェック
+                $AnnotationReader = AnnotationReaderFacade::create();
+                $anno = $AnnotationReader->getPropertyAnnotation($Property, Id::class);
+                $hasId = (bool) $anno;
+            }
+            if ($hasId) {
                 $Property->setAccessible(true);
                 $Result[$Property->getName()] = $Property->getValue($Entity);
             }

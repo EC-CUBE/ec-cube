@@ -88,7 +88,7 @@ class PointDiffProcessorTest extends EccubeTestCase
         }
     }
 
-    public function usePointOverCustomerPointProvider()
+    public static function usePointOverCustomerPointProvider()
     {
         return [
             [0, 0, 0, false],
@@ -163,7 +163,7 @@ class PointDiffProcessorTest extends EccubeTestCase
         }
     }
 
-    public function usePointOverPriceProvider()
+    public static function usePointOverPriceProvider()
     {
         return [
             [0, 0, false],
@@ -220,7 +220,7 @@ class PointDiffProcessorTest extends EccubeTestCase
         self::assertEquals($userUsePoint, $Customer->getPoint());
     }
 
-    public function useReduceCustomerPointProvider()
+    public static function useReduceCustomerPointProvider()
     {
         return [
             [0, 0, 100],
@@ -279,7 +279,7 @@ class PointDiffProcessorTest extends EccubeTestCase
         }
     }
 
-    public function usePointEachOrderStatusProvider()
+    public static function usePointEachOrderStatusProvider()
     {
         return [
             [OrderStatus::NEW, true],

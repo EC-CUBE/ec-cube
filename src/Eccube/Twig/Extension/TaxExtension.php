@@ -40,7 +40,7 @@ class TaxExtension extends AbstractExtension
      *
      * @return TwigFunction[] An array of functions
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('is_reduced_tax_rate', [$this, 'isReducedTaxRate']),

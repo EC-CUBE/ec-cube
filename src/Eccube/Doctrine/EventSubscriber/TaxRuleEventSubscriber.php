@@ -13,13 +13,14 @@
 
 namespace Eccube\Doctrine\EventSubscriber;
 
-use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Event\LifecycleEventArgs;
-use Doctrine\ORM\Events;
+use Doctrine\ORM\Event\PostLoadEventArgs;
+use Doctrine\ORM\Event\PostPersistEventArgs;
+use Doctrine\ORM\Event\PostUpdateEventArgs;
+use Doctrine\ORM\Event\PrePersistEventArgs;
 use Eccube\Entity\ProductClass;
 use Eccube\Service\TaxRuleService;
 
-class TaxRuleEventSubscriber implements EventSubscriber
+class TaxRuleEventSubscriber
 {
     /**
      * @var TaxRuleService
@@ -39,17 +40,7 @@ class TaxRuleEventSubscriber implements EventSubscriber
         return $this->taxRuleService;
     }
 
-    public function getSubscribedEvents()
-    {
-        return [
-            Events::prePersist,
-            Events::postLoad,
-            Events::postPersist,
-            Events::postUpdate,
-        ];
-    }
-
-    public function prePersist(LifecycleEventArgs $args)
+    public function prePersist(PrePersistEventArgs $args)
     {
         $entity = $args->getObject();
 
@@ -61,7 +52,7 @@ class TaxRuleEventSubscriber implements EventSubscriber
         }
     }
 
-    public function postLoad(LifecycleEventArgs $args)
+    public function postLoad(PostLoadEventArgs $args)
     {
         $entity = $args->getObject();
 
@@ -73,7 +64,7 @@ class TaxRuleEventSubscriber implements EventSubscriber
         }
     }
 
-    public function postPersist(LifecycleEventArgs $args)
+    public function postPersist(PostPersistEventArgs $args)
     {
         $entity = $args->getObject();
 
@@ -85,7 +76,7 @@ class TaxRuleEventSubscriber implements EventSubscriber
         }
     }
 
-    public function postUpdate(LifecycleEventArgs $args)
+    public function postUpdate(PostUpdateEventArgs $args)
     {
         $entity = $args->getObject();
 

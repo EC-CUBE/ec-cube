@@ -14,10 +14,12 @@
 namespace Eccube\Command;
 
 use Eccube\Service\Composer\ComposerApiService;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'eccube:composer:install')]
 class ComposerInstallCommand extends Command
 {
     protected static $defaultName = 'eccube:composer:install';
@@ -33,12 +35,12 @@ class ComposerInstallCommand extends Command
         $this->composerService = $composerService;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->addOption('dry-run');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->composerService->execInstall($input->getOption('dry-run'), $output);
 

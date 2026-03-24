@@ -13,20 +13,19 @@
 
 namespace Eccube\Controller\Install;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\ORMSetup;
 use Doctrine\ORM\Tools\SchemaTool;
-use Doctrine\ORM\Tools\Setup;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeType;
 use Eccube\Doctrine\DBAL\Types\UTCDateTimeTzType;
-use Eccube\Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+use Eccube\Doctrine\ORM\Mapping\Driver\HybridMappingDriver;
 use Eccube\Entity\Customer;
 use Eccube\Form\Type\Install\Step1Type;
 use Eccube\Form\Type\Install\Step3Type;
@@ -35,13 +34,13 @@ use Eccube\Form\Type\Install\Step5Type;
 use Eccube\Session\Session;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class InstallController extends AbstractController
 {
@@ -109,13 +108,12 @@ class InstallController extends AbstractController
     /**
      * 最初からやり直す場合、SESSION情報をクリア.
      *
-     * @Route("/", name="homepage", methods={"GET"})
-     * @Route("/install", name="install", methods={"GET"})
-     *
-     * @Template("index.twig")
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
+    #[Route('/', name: 'homepage', methods: ['GET'])]
+    #[Route('/install', name: 'install', methods: ['GET'])]
+    #[Template("index.twig")]
     public function index()
     {
         if (!$this->isInstallEnv()) {
@@ -130,12 +128,11 @@ class InstallController extends AbstractController
     /**
      * ようこそ.
      *
-     * @Route("/install/step1", name="install_step1", methods={"GET", "POST"})
-     *
-     * @Template("step1.twig")
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
+    #[Route('/install/step1', name: 'install_step1', methods: ['GET', 'POST'])]
+    #[Template("step1.twig")]
     public function step1(Request $request)
     {
         if (!$this->isInstallEnv()) {
@@ -171,12 +168,11 @@ class InstallController extends AbstractController
     /**
      * ディレクトリとファイルの書き込み権限をチェック.
      *
-     * @Route("/install/step2", name="install_step2", methods={"GET"})
-     *
-     * @Template("step2.twig")
      *
      * @return array
      */
+    #[Route('/install/step2', name: 'install_step2', methods: ['GET'])]
+    #[Template("step2.twig")]
     public function step2()
     {
         if (!$this->isInstallEnv()) {
@@ -248,15 +244,14 @@ class InstallController extends AbstractController
     /**
      * サイトの設定.
      *
-     * @Route("/install/step3", name="install_step3", methods={"GET", "POST"})
-     *
-     * @Template("step3.twig")
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      *
      * @throws \Doctrine\DBAL\DBALException
      * @throws \Exception
      */
+    #[Route('/install/step3', name: 'install_step3', methods: ['GET', 'POST'])]
+    #[Template("step3.twig")]
     public function step3(Request $request, EntityManagerInterface $entityManager)
     {
         if (!$this->isInstallEnv()) {
@@ -269,8 +264,8 @@ class InstallController extends AbstractController
         if ($this->isInstalled()) {
             // ショップ名/メールアドレス
             $conn = $entityManager->getConnection();
-            $stmt = $conn->query('SELECT shop_name, email01 FROM dtb_base_info WHERE id = 1;');
-            $row = $stmt->fetch();
+            $stmt = $conn->executeQuery('SELECT shop_name, email01 FROM dtb_base_info WHERE id = 1;');
+            $row = $stmt->fetchAssociative();
             $sessionData['shop_name'] = $row['shop_name'];
             $sessionData['email'] = $row['email01'];
 
@@ -321,14 +316,13 @@ class InstallController extends AbstractController
     /**
      * データベースの設定.
      *
-     * @Route("/install/step4", name="install_step4", methods={"GET", "POST"})
-     *
-     * @Template("step4.twig")
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      *
      * @throws \Exception
      */
+    #[Route('/install/step4', name: 'install_step4', methods: ['GET', 'POST'])]
+    #[Template("step4.twig")]
     public function step4(Request $request)
     {
         if (!$this->isInstallEnv()) {
@@ -371,14 +365,13 @@ class InstallController extends AbstractController
     /**
      * データベースの初期化.
      *
-     * @Route("/install/step5", name="install_step5", methods={"GET", "POST"})
-     *
-     * @Template("step5.twig")
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      *
      * @throws \Exception
      */
+    #[Route('/install/step5', name: 'install_step5', methods: ['GET', 'POST'])]
+    #[Template("step5.twig")]
     public function step5(Request $request)
     {
         if (!$this->isInstallEnv()) {
@@ -453,11 +446,9 @@ class InstallController extends AbstractController
 
     /**
      * インストール完了
-     *
-     * @Route("/install/complete", name="install_complete", methods={"GET"})
-     *
-     * @Template("complete.twig")
      */
+    #[Route('/install/complete', name: 'install_complete', methods: ['GET'])]
+    #[Template("complete.twig")]
     public function complete(Request $request)
     {
         if (!$this->isInstallEnv()) {
@@ -584,10 +575,6 @@ class InstallController extends AbstractController
         $conn = DriverManager::getConnection($params);
         $conn->executeQuery('select 1');
 
-        $platform = $conn->getDatabasePlatform();
-        $platform->markDoctrineTypeCommented('datetime');
-        $platform->markDoctrineTypeCommented('datetimetz');
-
         return $conn;
     }
 
@@ -597,8 +584,15 @@ class InstallController extends AbstractController
             $this->getParameter('kernel.project_dir').'/src/Eccube/Entity',
             $this->getParameter('kernel.project_dir').'/app/Customize/Entity',
         ];
-        $config = Setup::createConfiguration(true);
-        $driver = new AnnotationDriver(new AnnotationReader(), $paths);
+
+        if (class_exists(ORMSetup::class) && method_exists(ORMSetup::class, 'createAttributeMetadataConfiguration')) {
+            $config = ORMSetup::createAttributeMetadataConfiguration($paths, true);
+        } else {
+            // Fallback for older Doctrine ORM versions
+            $config = \Doctrine\ORM\Tools\Setup::createConfiguration(true);
+        }
+
+        $driver = new HybridMappingDriver($paths);
         $driver->setTraitProxiesDirectory($this->getParameter('kernel.project_dir').'/app/proxy/entity');
         $config->setMetadataDriverImpl($driver);
 
@@ -833,7 +827,7 @@ class InstallController extends AbstractController
         try {
             $password = $this->passwordHasher->hashPassword(new Customer(), $data['login_pass']);
 
-            $id = ('postgresql' === $conn->getDatabasePlatform()->getName())
+            $id = ($conn->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\PostgreSQLPlatform)
                 ? $conn->fetchOne("select nextval('dtb_base_info_id_seq')")
                 : null;
 
@@ -851,7 +845,7 @@ class InstallController extends AbstractController
                 'update_date' => Types::DATETIMETZ_MUTABLE,
             ]);
 
-            $member_id = ('postgresql' === $conn->getDatabasePlatform()->getName())
+            $member_id = ($conn->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\PostgreSQLPlatform)
                 ? $conn->fetchOne("select nextval('dtb_member_id_seq')")
                 : null;
 
@@ -929,14 +923,23 @@ class InstallController extends AbstractController
      */
     public function createAppData($params, EntityManager $em)
     {
-        $platform = $em->getConnection()->getDatabasePlatform()->getName();
+        $platform = $em->getConnection()->getDatabasePlatform();
         $version = $this->getDatabaseVersion($em);
+        if ($platform instanceof \Doctrine\DBAL\Platforms\PostgreSQLPlatform) {
+            $platformName = 'postgresql';
+        } elseif ($platform instanceof \Doctrine\DBAL\Platforms\AbstractMySQLPlatform) {
+            $platformName = 'mysql';
+        } elseif ($platform instanceof \Doctrine\DBAL\Platforms\SQLitePlatform) {
+            $platformName = 'sqlite';
+        } else {
+            $platformName = get_class($platform);
+        }
         $data = [
             'site_url' => $params['http_url'],
             'shop_name' => $params['shop_name'],
             'cube_ver' => Constant::VERSION,
             'php_ver' => phpversion(),
-            'db_ver' => $platform.' '.$version,
+            'db_ver' => $platformName.' '.$version,
             'os_type' => php_uname(),
         ];
 
@@ -980,26 +983,20 @@ class InstallController extends AbstractController
         $rsm = new \Doctrine\ORM\Query\ResultSetMapping();
         $rsm->addScalarResult('server_version', 'server_version');
 
-        $platform = $em->getConnection()->getDatabasePlatform()->getName();
-        switch ($platform) {
-            case 'sqlite':
-                $sql = 'SELECT sqlite_version() AS server_version';
-                break;
-
-            case 'mysql':
-                $sql = 'SELECT version() AS server_version';
-                break;
-
-            case 'postgresql':
-            default:
-                $sql = 'SHOW server_version';
+        $platform = $em->getConnection()->getDatabasePlatform();
+        if ($platform instanceof \Doctrine\DBAL\Platforms\SQLitePlatform) {
+            $sql = 'SELECT sqlite_version() AS server_version';
+        } elseif ($platform instanceof \Doctrine\DBAL\Platforms\AbstractMySQLPlatform) {
+            $sql = 'SELECT version() AS server_version';
+        } else {
+            $sql = 'SHOW server_version';
         }
 
         $version = $em->createNativeQuery($sql, $rsm)
             ->getSingleScalarResult();
 
         // postgresqlのバージョンが10.x以降の場合に、getSingleScalarResult()で取得される不要な文字列を除く処理
-        if ($platform === 'postgresql') {
+        if ($platform instanceof \Doctrine\DBAL\Platforms\PostgreSQLPlatform) {
             preg_match('/\A([\d+\.]+)/', $version, $matches);
             $version = $matches[1];
         }

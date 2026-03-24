@@ -52,8 +52,9 @@ class MypageControllerTest extends AbstractWebTestCase
 
         // main
         $redirectUrl = $this->generateUrl('mypage_favorite');
-        $this->client->request('DELETE',
-            $this->generateUrl('mypage_favorite_delete', ['id' => $TestFavorite->getId()])
+        $this->client->request(
+            'DELETE',
+            $this->generateUrl('mypage_favorite_delete', ['id' => $TestFavorite->getProduct()->getId()])
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
@@ -69,7 +70,8 @@ class MypageControllerTest extends AbstractWebTestCase
 
         $Order = $this->createOrder($this->Customer);
 
-        $client->request('PUT',
+        $client->request(
+            'PUT',
             $this->generateUrl('mypage_order', ['order_no' => $Order->getOrderNo()])
         );
 
@@ -112,8 +114,14 @@ class MypageControllerTest extends AbstractWebTestCase
         $Product = $this->createProduct();
         $ProductClasses = $Product->getProductClasses();
         // 後方互換のため最初の1つのみ渡す
-        $Order = static::getContainer()->get(Generator::class)->createOrder($this->Customer, [$ProductClasses[0]], null,
-            0, 0, OrderStatus::NEW);
+        $Order = static::getContainer()->get(Generator::class)->createOrder(
+            $this->Customer,
+            [$ProductClasses[0]],
+            null,
+            0,
+            0,
+            OrderStatus::NEW
+        );
         $this->loginTo($this->Customer);
         $client = $this->client;
 
@@ -129,8 +137,14 @@ class MypageControllerTest extends AbstractWebTestCase
         $Product = $this->createProduct();
         $ProductClasses = $Product->getProductClasses();
         // 後方互換のため最初の1つのみ渡す
-        $Order = static::getContainer()->get(Generator::class)->createOrder($this->Customer, [$ProductClasses[0]], null,
-            0, 0, OrderStatus::PROCESSING);
+        $Order = static::getContainer()->get(Generator::class)->createOrder(
+            $this->Customer,
+            [$ProductClasses[0]],
+            null,
+            0,
+            0,
+            OrderStatus::PROCESSING
+        );
         $this->loginTo($this->Customer);
 
         $this->client->request(
@@ -178,7 +192,7 @@ class MypageControllerTest extends AbstractWebTestCase
 
             // id とは 逆順に create_date を設定する.
             // 画面表示は create_date 降順なので, id 昇順にソートされるはず
-            $CustomerFavoriteProduct->setCreateDate(new \DateTime('-'.$i.' days'));
+            $CustomerFavoriteProduct->setCreateDate(new \DateTime('-' . $i . ' days'));
             $this->entityManager->flush();
         }
 

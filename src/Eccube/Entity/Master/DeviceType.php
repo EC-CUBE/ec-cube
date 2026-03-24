@@ -18,19 +18,13 @@ use Doctrine\ORM\Mapping as ORM;
 if (!class_exists(DeviceType::class, false)) {
     /**
      * DeviceType
-     *
-     * @ORM\Table(name="mtb_device_type")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\Master\DeviceTypeRepository")
-     *
-     * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
      */
+    #[ORM\Table(name: 'mtb_device_type')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: \Eccube\Repository\Master\DeviceTypeRepository::class)]
+    #[ORM\Cache(usage: 'NONSTRICT_READ_WRITE')]
     class DeviceType extends AbstractMasterEntity
     {
         public const DEVICE_TYPE_MB = 2;

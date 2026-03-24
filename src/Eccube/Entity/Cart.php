@@ -21,56 +21,37 @@ use Eccube\Service\PurchaseFlow\ItemCollection;
 if (!class_exists(Cart::class)) {
     /**
      * Cart
-     *
-     * @ORM\Table(name="dtb_cart", indexes={
-     *
-     *     @ORM\Index(name="dtb_cart_update_date_idx", columns={"update_date"})
-     *  },
-     *  uniqueConstraints={
-     *
-     *     @ORM\UniqueConstraint(name="dtb_cart_pre_order_id_idx", columns={"pre_order_id"})
-     *  }))
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\CartRepository")
      */
+    #[ORM\Table(name: 'dtb_cart')]
+    #[ORM\Index(name: 'dtb_cart_update_date_idx', columns: ['update_date'])]
+    #[ORM\UniqueConstraint(name: 'dtb_cart_pre_order_id_idx', columns: ['pre_order_id'])]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: \Eccube\Repository\CartRepository::class)]
     class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterface
     {
         use PointTrait;
 
         /**
          * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
          */
+        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         private $id;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="cart_key", type="string", nullable=true)
          */
+        #[ORM\Column(name: 'cart_key', type: 'string', nullable: true)]
         private $cart_key;
 
         /**
          * @var Customer
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Customer")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Customer::class)]
+        #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'id')]
         private $Customer;
 
         /**
@@ -80,53 +61,45 @@ if (!class_exists(Cart::class)) {
 
         /**
          * @var \Doctrine\Common\Collections\Collection|CartItem[]
-         *
-         * @ORM\OneToMany(targetEntity="Eccube\Entity\CartItem", mappedBy="Cart", cascade={"persist"})
-         *
-         * @ORM\OrderBy({"id" = "ASC"})
          */
+        #[ORM\OneToMany(targetEntity: \Eccube\Entity\CartItem::class, mappedBy: 'Cart', cascade: ['persist'])]
+        #[ORM\OrderBy(['id' => 'ASC'])]
         private $CartItems;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="pre_order_id", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'pre_order_id', type: 'string', length: 255, nullable: true)]
         private $pre_order_id;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="total_price", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
          */
+        #[ORM\Column(name: 'total_price', type: 'decimal', precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
         private $total_price;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="delivery_fee_total", type="decimal", precision=12, scale=2, options={"unsigned":true,"default":0})
          */
+        #[ORM\Column(name: 'delivery_fee_total', type: 'decimal', precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
         private $delivery_fee_total;
 
         /**
          * @var int|null
-         *
-         * @ORM\Column(name="sort_no", type="smallint", nullable=true, options={"unsigned":true})
          */
+        #[ORM\Column(name: 'sort_no', type: 'smallint', nullable: true, options: ['unsigned' => true])]
         private $sort_no;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
         private $create_date;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
         private $update_date;
 
         /**

@@ -1,12 +1,11 @@
 #!/usr/bin/env php
 <?php
 
-if (!file_exists(dirname(__DIR__).'/vendor/symfony/phpunit-bridge/bin/simple-phpunit')) {
-    echo "Unable to find the `simple-phpunit` script in `vendor/symfony/phpunit-bridge/bin/`.\n";
+if (!file_exists(dirname(__DIR__).'/vendor/autoload.php')) {
+    echo "Unable to find the `vendor/autoload.php` file. Did you run `composer install`?\n";
     exit(1);
 }
-if (false === getenv('SYMFONY_PHPUNIT_DIR')) {
-    putenv('SYMFONY_PHPUNIT_DIR='.__DIR__.'/.phpunit');
-}
 
-require dirname(__DIR__).'/vendor/symfony/phpunit-bridge/bin/simple-phpunit';
+$_SERVER['argv'][0] = realpath(dirname(__DIR__).'/vendor/bin/phpunit');
+
+require dirname(__DIR__).'/vendor/bin/phpunit';

@@ -109,7 +109,7 @@ class PluginControllerTest extends AbstractAdminWebTestCase
     /**
      * 異常系のテストケース
      */
-    public function OwnerStoreInstallParam()
+    public static function OwnerStoreInstallParam()
     {
         return [
             ['api42+symfony/yaml:5.3', '4.3.0', '有効な値ではありません。'],
@@ -120,7 +120,7 @@ class PluginControllerTest extends AbstractAdminWebTestCase
     /**
      * 異常系のテストケース
      */
-    public function OwnerStoreUpgradeParam()
+    public static function OwnerStoreUpgradeParam()
     {
         return [
             ['api42+symfony/yaml:5.3', '4.3.0', '有効な値ではありません。'],

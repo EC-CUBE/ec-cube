@@ -515,7 +515,7 @@ class StringUtilTest extends TestCase
         self::assertEquals($expected, StringUtil::replaceOrAddEnv($env, $replacement));
     }
 
-    public function replaceOrAddEnvProvider()
+    public static function replaceOrAddEnvProvider()
     {
         return [
             ['HOGE=HOGE', ['HOGE' => 'BAR'], 'HOGE=BAR'],

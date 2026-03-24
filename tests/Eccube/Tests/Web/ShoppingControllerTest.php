@@ -173,7 +173,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         /** @var Email $Message */
         $Message = $this->getMailerMessage(0);
 
-        $this->expected = '['.$BaseInfo->getShopName().'] ご注文ありがとうございます';
+        $this->expected = '[' . $BaseInfo->getShopName() . '] ご注文ありがとうございます';
         $this->actual = $Message->getSubject();
         $this->verify();
 
@@ -429,7 +429,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $BaseInfo = $this->baseInfoRepository->get();
         $email02 = $BaseInfo->getEmail02();
         $this->assertTrue($client->getResponse()->isSuccessful());
-        $this->expected = '合計金額に対して可能な支払い方法がありません。'.$email02.'にお問い合わせ下さい。';
+        $this->expected = '合計金額に対して可能な支払い方法がありません。' . $email02 . 'にお問い合わせ下さい。';
         $this->actual = $crawler->filter('p.errormsg')->text();
         $this->verify();
     }
@@ -617,7 +617,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         /** @var Email $Message */
         $Message = $this->getMailerMessage(0);
 
-        $this->expected = '['.$BaseInfo->getShopName().'] ご注文ありがとうございます';
+        $this->expected = '[' . $BaseInfo->getShopName() . '] ご注文ありがとうございます';
         $this->actual = $Message->getSubject();
         $this->verify();
 
@@ -693,7 +693,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         /** @var Email $Message */
         $Message = $this->getMailerMessage(0);
 
-        $this->expected = '['.$BaseInfo->getShopName().'] ご注文ありがとうございます';
+        $this->expected = '[' . $BaseInfo->getShopName() . '] ご注文ありがとうございます';
         $this->actual = $Message->getSubject();
         $this->verify();
 

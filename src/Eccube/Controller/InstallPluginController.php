@@ -29,13 +29,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class InstallPluginController extends InstallController
 {
     /** @var CacheUtil */
     protected $cacheUtil;
-
     /** @var PluginRepository */
     protected $pluginReposigoty;
 
@@ -52,13 +51,13 @@ class InstallPluginController extends InstallController
     /**
      * 有効化可能なプラグイン一覧を返します.
      *
-     * @Route("/install/plugins", name="install_plugins",  methods={"GET"})
      *
      * @param Request $request
      * @param string $code
      *
      * @return JsonResponse
      */
+    #[Route('/install/plugins', name: 'install_plugins', methods: ['GET'])]
     public function plugins(Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
@@ -79,7 +78,6 @@ class InstallPluginController extends InstallController
     /**
      * プラグインを有効にします。
      *
-     * @Route("/install/plugin/{code}/enable", requirements={"code" = "\w+"}, name="install_plugin_enable",  methods={"PUT"})
      *
      * @param Request $request
      * @param SystemService $systemService
@@ -93,6 +91,7 @@ class InstallPluginController extends InstallController
      * @throws NotFoundHttpException
      * @throws PluginException
      */
+    #[Route('/install/plugin/{code}/enable', requirements: ['code' => '\w+'], name: 'install_plugin_enable', methods: ['PUT'])]
     public function pluginEnable(Request $request, SystemService $systemService, PluginService $pluginService, $code, EventDispatcherInterface $dispatcher)
     {
         if (!$request->isXmlHttpRequest()) {
@@ -142,10 +141,10 @@ class InstallPluginController extends InstallController
     /**
      * トランザクションファイルを削除し, 管理画面に遷移します.
      *
-     * @Route("/install/plugin/redirect", name="install_plugin_redirect", methods={"GET"})
      *
      * @return RedirectResponse
      */
+    #[Route('/install/plugin/redirect', name: 'install_plugin_redirect', methods: ['GET'])]
     public function redirectAdmin(Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
@@ -193,9 +192,8 @@ class InstallPluginController extends InstallController
     /**
      * WebApiプラグインのシステム要件をチェックする
      * sodium拡張がインストールされていない場合、WebApiプラグインをアンインストールする
-     *
-     * @Route("/install/plugin/check_api", name="install_plugin_check_api", methods={"PUT"})
      */
+    #[Route('/install/plugin/check_api', name: 'install_plugin_check_api', methods: ['PUT'])]
     public function checkWebApiRequirements(Request $request, ComposerApiService $composerApiService, EventDispatcherInterface $dispatcher)
     {
         if (!$request->isXmlHttpRequest()) {

@@ -40,8 +40,24 @@ class SecurityPolicyDecorator implements SecurityPolicyInterface
         $this->securityPolicy->checkMethodAllowed($obj, $method);
     }
 
-    public function checkPropertyAllowed($obj, $method): void
+    public function checkPropertyAllowed($obj, $property): void
     {
-        $this->securityPolicy->checkPropertyAllowed($obj, $method);
+        // Doctrine ORM 3.x の LazyGhostTrait が __isset() を実装しているため、
+        // Twig 3.x がプロパティアクセスパスを経由するようになった。
+        // ArrayAccess を実装しているオブジェクト（EC-CUBEエンティティ）の場合、
+        // プロパティアクセスはゲッター経由の安全なアクセスと同等なので許可する。
+        if ($obj instanceof \ArrayAccess) {
+            return;
+        }
+
+        // ゲッターメソッドが存在する場合はメソッドアクセスとしてチェックする
+        $getter = 'get' . ucfirst($property);
+        if (method_exists($obj, $getter)) {
+            $this->checkMethodAllowed($obj, $getter);
+
+            return;
+        }
+
+        $this->securityPolicy->checkPropertyAllowed($obj, $property);
     }
 }

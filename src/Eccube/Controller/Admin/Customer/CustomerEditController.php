@@ -24,11 +24,11 @@ use Eccube\Repository\Master\PageMaxRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Util\StringUtil;
 use Knp\Component\Pager\PaginatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class CustomerEditController extends AbstractController
 {
@@ -64,12 +64,9 @@ class CustomerEditController extends AbstractController
         $this->pageMaxRepository = $pageMaxRepository;
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/customer/new", name="admin_customer_new", methods={"GET", "POST"})
-     * @Route("/%eccube_admin_route%/customer/{id}/edit", requirements={"id" = "\d+"}, name="admin_customer_edit", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Customer/edit.twig")
-     */
+    #[Route('/%eccube_admin_route%/customer/new', name: 'admin_customer_new', methods: ['GET', 'POST'])]
+    #[Route('/%eccube_admin_route%/customer/{id}/edit', requirements: ['id' => '\d+'], name: 'admin_customer_edit', methods: ['GET', 'POST'])]
+    #[Template("@admin/Customer/edit.twig")]
     public function index(Request $request, PaginatorInterface $paginator, $id = null)
     {
         $this->entityManager->getFilters()->enable('incomplete_order_status_hidden');

@@ -22,10 +22,10 @@ use Eccube\Form\Type\Front\CustomerAddressType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerAddressRepository;
 use Eccube\Service\MailService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class DeliveryController extends AbstractController
 {
@@ -56,11 +56,9 @@ class DeliveryController extends AbstractController
 
     /**
      * お届け先一覧画面.
-     *
-     * @Route("/mypage/delivery", name="mypage_delivery", methods={"GET"})
-     *
-     * @Template("Mypage/delivery.twig")
      */
+    #[Route('/mypage/delivery', name: 'mypage_delivery', methods: ['GET'])]
+    #[Template("Mypage/delivery.twig")]
     public function index(Request $request)
     {
         $Customer = $this->getUser();
@@ -72,12 +70,10 @@ class DeliveryController extends AbstractController
 
     /**
      * お届け先編集画面.
-     *
-     * @Route("/mypage/delivery/new", name="mypage_delivery_new", methods={"GET", "POST"})
-     * @Route("/mypage/delivery/{id}/edit", name="mypage_delivery_edit", requirements={"id" = "\d+"}, methods={"GET", "POST"})
-     *
-     * @Template("Mypage/delivery_edit.twig")
      */
+    #[Route('/mypage/delivery/new', name: 'mypage_delivery_new', methods: ['GET', 'POST'])]
+    #[Route('/mypage/delivery/{id}/edit', name: 'mypage_delivery_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template("Mypage/delivery_edit.twig")]
     public function edit(Request $request, $id = null)
     {
         $Customer = $this->getUser();
@@ -173,9 +169,8 @@ class DeliveryController extends AbstractController
 
     /**
      * お届け先を削除する.
-     *
-     * @Route("/mypage/delivery/{id}/delete", name="mypage_delivery_delete", methods={"DELETE"})
      */
+    #[Route('/mypage/delivery/{id}/delete', name: 'mypage_delivery_delete', methods: ['DELETE'])]
     public function delete(Request $request, $id)
     {
         $this->isTokenValid();

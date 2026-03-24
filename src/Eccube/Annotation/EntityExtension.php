@@ -14,16 +14,25 @@
 namespace Eccube\Annotation;
 
 use Doctrine\Common\Annotations\Annotation\Target;
-use Doctrine\ORM\Mapping\Annotation;
 
 /**
  * @Annotation
  * @Target("CLASS")
  */
-final class EntityExtension implements Annotation
+#[\Attribute(\Attribute::TARGET_CLASS)]
+final class EntityExtension
 {
     /**
      * @var string
      */
     public $value;
+
+    public function __construct($value = null)
+    {
+        if (is_string($value)) {
+            $this->value = $value;
+        } elseif (is_array($value) && isset($value['value'])) {
+            $this->value = $value['value'];
+        }
+    }
 }

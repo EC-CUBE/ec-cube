@@ -56,11 +56,10 @@ class ProductRepositoryTest extends AbstractProductRepositoryTestCase
         // Create a product with 100 product classes to simulate N+1 problem scenario
         $Product = $this->createProduct('商品-多規格', 100);
 
-        // Enable Doctrine query logger to count queries
-        $logger = new \Doctrine\DBAL\Logging\DebugStack();
-        $this->entityManager->getConnection()->getConfiguration()->setSQLLogger($logger);
-
         $this->entityManager->clear();
+
+        // Enable query counting via Symfony's debug middleware
+        $connection = $this->entityManager->getConnection();
 
         // Fetch the product with all relations
         $Result = $this->productRepository->findWithSortedClassCategories($Product->getId());
@@ -69,8 +68,10 @@ class ProductRepositoryTest extends AbstractProductRepositoryTestCase
         self::assertNotNull($Result);
         self::assertSame('商品-多規格', $Result->getName());
 
-        // Clear the query log for the next test
-        $queriesBeforeCalc = count($logger->queries);
+        // Count queries before and after _calc() using connection query count
+        $debugDataHolder = static::getContainer()->get('doctrine.debug_data_holder');
+        $data = $debugDataHolder->getData()['default'] ?? [];
+        $queriesBeforeCalc = is_array($data) ? count($data) : count($data->getQueries());
 
         // Trigger _calc() which accesses ProductStock and TaxRule
         $Result->getStockMin();
@@ -78,7 +79,8 @@ class ProductRepositoryTest extends AbstractProductRepositoryTestCase
         $Result->getPrice02Min();
         $Result->getPrice02Max();
 
-        $queriesAfterCalc = count($logger->queries);
+        $data = $debugDataHolder->getData()['default'] ?? [];
+        $queriesAfterCalc = is_array($data) ? count($data) : count($data->getQueries());
 
         // Assert that no additional queries were executed (N+1 problem is solved)
         // If ProductStock and TaxRule are not eagerly loaded, this would cause 200+ additional queries
@@ -87,8 +89,5 @@ class ProductRepositoryTest extends AbstractProductRepositoryTestCase
             $queriesAfterCalc,
             'N+1 problem detected: Additional queries were executed during _calc(). ProductStock and TaxRule should be eagerly loaded.'
         );
-
-        // Disable logger
-        $this->entityManager->getConnection()->getConfiguration()->setSQLLogger(null);
     }
 }

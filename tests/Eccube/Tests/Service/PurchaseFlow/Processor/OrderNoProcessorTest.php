@@ -49,7 +49,7 @@ class OrderNoProcessorTest extends EccubeTestCase
         self::assertMatchesRegularExpression($expected, (string) $Order->getOrderNo());
     }
 
-    public function processDataProvider()
+    public static function processDataProvider()
     {
         return [
             ['', '/^123$/'],

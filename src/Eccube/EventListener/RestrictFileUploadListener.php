@@ -54,7 +54,7 @@ class RestrictFileUploadListener implements EventSubscriberInterface
         }
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             'kernel.request' => ['onKernelRequest', 7], // RouterListener より必ず後で実行する

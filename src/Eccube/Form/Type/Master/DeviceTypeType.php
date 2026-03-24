@@ -23,7 +23,7 @@ class DeviceTypeType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'class' => DeviceType::class,
@@ -35,7 +35,7 @@ class DeviceTypeType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): string
     {
         return MasterType::class;
     }
@@ -43,7 +43,7 @@ class DeviceTypeType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'device_type';
     }

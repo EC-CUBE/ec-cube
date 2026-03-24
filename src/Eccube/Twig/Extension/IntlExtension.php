@@ -22,7 +22,7 @@ class IntlExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
             new TwigFilter('date_day', [$this, 'date_day'], ['needs_environment' => true]),

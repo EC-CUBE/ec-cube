@@ -23,19 +23,16 @@ class NormalizeTest extends EccubeTestCase
             ->select('p.id')->from(\Eccube\Entity\Product::class, 'p')
             ->where('NORMALIZE(p.name) LIKE :name')
             ->getQuery()->getSql();
-        switch ($this->entityManager->getConnection()->getDriver()->getDatabasePlatform()->getName()) {
-            case 'postgresql':
-                $this->assertStringContainsString('LOWER(TRANSLATE(', $sql);
-                $this->assertStringContainsString('あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをんがぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽぁぃぅぇぉっゃゅょゎゐゑー', $sql);
-                $this->assertStringContainsString('アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポァィゥェォッャュョヮヰヱー', $sql);
-                break;
-            case 'mysql':
-                $this->assertStringContainsString('CONVERT(', $sql);
-                $this->assertStringContainsString('USING utf8) COLLATE utf8_unicode_ci', $sql);
-                break;
-            case 'sqlite':
-                $this->assertStringContainsString('LOWER(', $sql);
-                break;
+        $platform = $this->entityManager->getConnection()->getDatabasePlatform();
+        if ($platform instanceof \Doctrine\DBAL\Platforms\PostgreSQLPlatform) {
+            $this->assertStringContainsString('LOWER(TRANSLATE(', $sql);
+            $this->assertStringContainsString('あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをんがぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽぁぃぅぇぉっゃゅょゎゐゑー', $sql);
+            $this->assertStringContainsString('アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポァィゥェォッャュョヮヰヱー', $sql);
+        } elseif ($platform instanceof \Doctrine\DBAL\Platforms\AbstractMySQLPlatform) {
+            $this->assertStringContainsString('CONVERT(', $sql);
+            $this->assertStringContainsString('USING utf8) COLLATE utf8_unicode_ci', $sql);
+        } elseif ($platform instanceof \Doctrine\DBAL\Platforms\SqlitePlatform) {
+            $this->assertStringContainsString('LOWER(', $sql);
         }
     }
 }

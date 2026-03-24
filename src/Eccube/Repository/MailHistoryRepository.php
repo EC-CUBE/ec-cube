@@ -46,14 +46,12 @@ class MailHistoryRepository extends AbstractRepository
     {
         $qb = $this->createQueryBuilder('mh')
             ->leftJoin('mh.Order', 'o')
-            ->where('mh.id = :id AND o.Customer = :Customer');
+            ->where('mh.id = :id AND o.Customer = :Customer')
+            ->setParameter('id', $id)
+            ->setParameter('Customer', $Customer);
 
         return $qb
             ->getQuery()
-            ->setParameters([
-                'id' => $id,
-                'Customer' => $Customer,
-            ])
             ->getSingleResult();
     }
 }

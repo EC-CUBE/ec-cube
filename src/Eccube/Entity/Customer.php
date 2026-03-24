@@ -24,105 +24,86 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 if (!class_exists(Customer::class)) {
     /**
      * Customer
-     *
-     * @ORM\Table(name="dtb_customer", uniqueConstraints={@ORM\UniqueConstraint(name="secret_key", columns={"secret_key"})}, indexes={@ORM\Index(name="dtb_customer_buy_times_idx", columns={"buy_times"}), @ORM\Index(name="dtb_customer_buy_total_idx", columns={"buy_total"}), @ORM\Index(name="dtb_customer_create_date_idx", columns={"create_date"}), @ORM\Index(name="dtb_customer_update_date_idx", columns={"update_date"}), @ORM\Index(name="dtb_customer_last_buy_date_idx", columns={"last_buy_date"}), @ORM\Index(name="dtb_customer_email_idx", columns={"email"})})
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\CustomerRepository")
      */
+    #[ORM\Table(name: 'dtb_customer', uniqueConstraints: [new ORM\UniqueConstraint(name: 'secret_key', columns: ['secret_key'])], indexes: [new ORM\Index(name: 'dtb_customer_buy_times_idx', columns: ['buy_times']), new ORM\Index(name: 'dtb_customer_buy_total_idx', columns: ['buy_total']), new ORM\Index(name: 'dtb_customer_create_date_idx', columns: ['create_date']), new ORM\Index(name: 'dtb_customer_update_date_idx', columns: ['update_date']), new ORM\Index(name: 'dtb_customer_last_buy_date_idx', columns: ['last_buy_date']), new ORM\Index(name: 'dtb_customer_email_idx', columns: ['email'])])]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: \Eccube\Repository\CustomerRepository::class)]
     class Customer extends AbstractEntity implements UserInterface, PasswordAuthenticatedUserInterface, LegacyPasswordAuthenticatedUserInterface, \Serializable
     {
         /**
          * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
          */
+        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         private $id;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="name01", type="string", length=255)
          */
+        #[ORM\Column(name: 'name01', type: 'string', length: 255)]
         private $name01;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="name02", type="string", length=255)
          */
+        #[ORM\Column(name: 'name02', type: 'string', length: 255)]
         private $name02;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="kana01", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'kana01', type: 'string', length: 255, nullable: true)]
         private $kana01;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="kana02", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'kana02', type: 'string', length: 255, nullable: true)]
         private $kana02;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="company_name", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'company_name', type: 'string', length: 255, nullable: true)]
         private $company_name;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="postal_code", type="string", length=8, nullable=true)
          */
+        #[ORM\Column(name: 'postal_code', type: 'string', length: 8, nullable: true)]
         private $postal_code;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="addr01", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'addr01', type: 'string', length: 255, nullable: true)]
         private $addr01;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="addr02", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'addr02', type: 'string', length: 255, nullable: true)]
         private $addr02;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="email", type="string", length=255)
          */
+        #[ORM\Column(name: 'email', type: 'string', length: 255)]
         private $email;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="phone_number", type="string", length=14, nullable=true)
          */
+        #[ORM\Column(name: 'phone_number', type: 'string', length: 14, nullable: true)]
         private $phone_number;
 
         /**
          * @var \DateTime|null
-         *
-         * @ORM\Column(name="birth", type="datetimetz", nullable=true)
          */
+        #[ORM\Column(name: 'birth', type: 'datetimetz', nullable: true)]
         private $birth;
 
         /**
@@ -134,178 +115,134 @@ if (!class_exists(Customer::class)) {
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="password", type="string", length=255)
          */
+        #[ORM\Column(name: 'password', type: 'string', length: 255)]
         private $password;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="salt", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'salt', type: 'string', length: 255, nullable: true)]
         private $salt;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="secret_key", type="string", length=255)
          */
+        #[ORM\Column(name: 'secret_key', type: 'string', length: 255)]
         private $secret_key;
 
         /**
          * @var \DateTime|null
-         *
-         * @ORM\Column(name="first_buy_date", type="datetimetz", nullable=true)
          */
+        #[ORM\Column(name: 'first_buy_date', type: 'datetimetz', nullable: true)]
         private $first_buy_date;
 
         /**
          * @var \DateTime|null
-         *
-         * @ORM\Column(name="last_buy_date", type="datetimetz", nullable=true)
          */
+        #[ORM\Column(name: 'last_buy_date', type: 'datetimetz', nullable: true)]
         private $last_buy_date;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="buy_times", type="decimal", precision=10, scale=0, nullable=true, options={"unsigned":true,"default":0})
          */
+        #[ORM\Column(name: 'buy_times', type: 'decimal', precision: 10, scale: 0, nullable: true, options: ['unsigned' => true,'default' => 0])]
         private $buy_times = '0';
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="buy_total", type="decimal", precision=12, scale=2, nullable=true, options={"unsigned":true,"default":0})
          */
+        #[ORM\Column(name: 'buy_total', type: 'decimal', precision: 12, scale: 2, nullable: true, options: ['unsigned' => true,'default' => 0])]
         private $buy_total = '0';
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="note", type="string", length=4000, nullable=true)
          */
+        #[ORM\Column(name: 'note', type: 'string', length: 4000, nullable: true)]
         private $note;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="reset_key", type="string", length=255, nullable=true)
          */
+        #[ORM\Column(name: 'reset_key', type: 'string', length: 255, nullable: true)]
         private $reset_key;
 
         /**
          * @var \DateTime|null
-         *
-         * @ORM\Column(name="reset_expire", type="datetimetz", nullable=true)
          */
+        #[ORM\Column(name: 'reset_expire', type: 'datetimetz', nullable: true)]
         private $reset_expire;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="point", type="decimal", precision=12, scale=0, options={"unsigned":false,"default":0})
          */
+        #[ORM\Column(name: 'point', type: 'decimal', precision: 12, scale: 0, options: ['unsigned' => false,'default' => 0])]
         private $point = '0';
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
         private $create_date;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
         private $update_date;
 
         /**
          * @var \Doctrine\Common\Collections\Collection
-         *
-         * @ORM\OneToMany(targetEntity="Eccube\Entity\CustomerFavoriteProduct", mappedBy="Customer", cascade={"remove"})
          */
+        #[ORM\OneToMany(targetEntity: \Eccube\Entity\CustomerFavoriteProduct::class, mappedBy: 'Customer', cascade: ['remove'])]
         private $CustomerFavoriteProducts;
 
         /**
          * @var \Doctrine\Common\Collections\Collection
-         *
-         * @ORM\OneToMany(targetEntity="Eccube\Entity\CustomerAddress", mappedBy="Customer", cascade={"remove"})
-         *
-         * @ORM\OrderBy({
-         *     "id"="ASC"
-         * })
          */
+        #[ORM\OneToMany(targetEntity: \Eccube\Entity\CustomerAddress::class, mappedBy: 'Customer', cascade: ['remove'])]
+        #[ORM\OrderBy(['id' => 'ASC'])]
         private $CustomerAddresses;
 
         /**
          * @var \Doctrine\Common\Collections\Collection
-         *
-         * @ORM\OneToMany(targetEntity="Eccube\Entity\Order", mappedBy="Customer")
          */
+        #[ORM\OneToMany(targetEntity: \Eccube\Entity\Order::class, mappedBy: 'Customer')]
         private $Orders;
 
         /**
          * @var Master\CustomerStatus
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\CustomerStatus")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="customer_status_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\CustomerStatus::class)]
+        #[ORM\JoinColumn(name: 'customer_status_id', referencedColumnName: 'id')]
         private $Status;
 
         /**
          * @var Master\Sex
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Sex")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="sex_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\Sex::class)]
+        #[ORM\JoinColumn(name: 'sex_id', referencedColumnName: 'id')]
         private $Sex;
 
         /**
          * @var Master\Job
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Job")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="job_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\Job::class)]
+        #[ORM\JoinColumn(name: 'job_id', referencedColumnName: 'id')]
         private $Job;
 
         /**
          * @var Master\Country
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Country")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="country_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\Country::class)]
+        #[ORM\JoinColumn(name: 'country_id', referencedColumnName: 'id')]
         private $Country;
 
         /**
          * @var Master\Pref
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Pref")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="pref_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\Pref::class)]
+        #[ORM\JoinColumn(name: 'pref_id', referencedColumnName: 'id')]
         private $Pref;
 
         /**
@@ -348,7 +285,7 @@ if (!class_exists(Customer::class)) {
         /**
          * {@inheritdoc}
          */
-        public function eraseCredentials()
+        public function eraseCredentials(): void
         {
         }
 

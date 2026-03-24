@@ -34,17 +34,17 @@ class LogControllerTest extends AbstractAdminWebTestCase
 
         $this->formData = [
             '_token' => 'dummy',
-            'files' => 'site_'.date('Y-m-d').'.log',
+            'files' => 'site_' . date('Y-m-d') . '.log',
             'line_max' => '50',
             'log_level' => '',
             'keyword' => '',
         ];
 
         $logDir = static::getContainer()->getParameter('kernel.logs_dir')
-            .DIRECTORY_SEPARATOR
-            .static::getContainer()->getParameter('kernel.environment');
+            . DIRECTORY_SEPARATOR
+            . static::getContainer()->getParameter('kernel.environment');
 
-        $this->logTest = $logDir.'/'.$this->formData['files'];
+        $this->logTest = $logDir . '/' . $this->formData['files'];
 
         // ログディレクトリが存在しない場合は作成
         if (!is_dir($logDir)) {
@@ -128,13 +128,13 @@ class LogControllerTest extends AbstractAdminWebTestCase
     /**
      * @return array
      */
-    public function dataProvider()
+    public static function dataProvider()
     {
         return [
             // FIXME 以下のメッセージが翻訳されない
             // https://github.com/symfony/validator/blob/4.4/Resources/translations/validators.ja.xlf#L270
             ['', '', '入力されていません。'],
-            ['a', '', '有効な数字ではありません。'],
+            ['a', '', 'この値は有効な数値でなければなりません。'],
             // [0, '', '1以上でなければなりません。'],
             [0, '', ''],
             [50000, '', ''],

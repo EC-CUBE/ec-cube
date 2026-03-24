@@ -17,6 +17,7 @@ use Doctrine\DBAL\DriverManager;
 use Dotenv\Dotenv;
 use Eccube\Common\EccubeConfig;
 use Eccube\Util\StringUtil;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -25,6 +26,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
+#[AsCommand(name: 'eccube:install')]
 class InstallerCommand extends Command
 {
     protected static $defaultName = 'eccube:install';
@@ -105,13 +107,13 @@ class InstallerCommand extends Command
         };
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Install EC-CUBE');
     }
 
-    protected function interact(InputInterface $input, OutputInterface $output)
+    protected function interact(InputInterface $input, OutputInterface $output): void
     {
         $this->io->title('EC-CUBE Installer Interactive Wizard');
         $this->io->text([
@@ -209,12 +211,12 @@ class InstallerCommand extends Command
         $this->envFileUpdater->updateEnvFile();
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         // Process実行時に, APP_ENV/APP_DEBUGが子プロセスに引き継がれてしまうため,
         // 生成された.envをロードして上書きする.
@@ -287,22 +289,18 @@ class InstallerCommand extends Command
         } catch (\Exception $e) {
             throw new \LogicException(sprintf('Database Url %s is invalid.', $databaseUrl));
         }
-        $platform = $conn->getDatabasePlatform()->getName();
-        switch ($platform) {
-            case 'sqlite':
-                $sql = 'SELECT sqlite_version() AS server_version';
-                break;
-            case 'mysql':
-                $sql = 'SELECT version() AS server_version';
-                break;
-            case 'postgresql':
-            default:
-                $sql = 'SHOW server_version';
+        $platform = $conn->getDatabasePlatform();
+        if ($platform instanceof \Doctrine\DBAL\Platforms\SQLitePlatform) {
+            $sql = 'SELECT sqlite_version() AS server_version';
+        } elseif ($platform instanceof \Doctrine\DBAL\Platforms\AbstractMySQLPlatform) {
+            $sql = 'SELECT version() AS server_version';
+        } else {
+            $sql = 'SHOW server_version';
         }
         $stmt = $conn->executeQuery($sql);
         $version = $stmt->fetchOne();
 
-        if ($platform === 'postgresql') {
+        if ($platform instanceof \Doctrine\DBAL\Platforms\PostgreSQLPlatform) {
             preg_match('/\A([\d+\.]+)/', $version, $matches);
             $version = $matches[1];
         }

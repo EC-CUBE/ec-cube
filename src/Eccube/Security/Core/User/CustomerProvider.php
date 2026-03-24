@@ -43,18 +43,6 @@ class CustomerProvider implements UserProviderInterface, PasswordUpgraderInterfa
     }
 
     /**
-     * @return UserInterface
-     *
-     * @throws UserNotFoundException
-     *
-     * @deprecated since Symfony 5.3, use loadUserByIdentifier() instead
-     */
-    public function loadUserByUsername($username): Customer
-    {
-        return $this->loadUserByIdentifier($username);
-    }
-
-    /**
      * Refreshes the user.
      *
      * It is up to the implementation to decide if the user data should be
@@ -66,13 +54,13 @@ class CustomerProvider implements UserProviderInterface, PasswordUpgraderInterfa
      *
      * @throws UnsupportedUserException if the user is not supported
      */
-    public function refreshUser(UserInterface $user)
+    public function refreshUser(UserInterface $user): UserInterface
     {
         if (!$user instanceof Customer) {
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_class($user)));
         }
 
-        return $this->loadUserByUsername($user->getUsername());
+        return $this->loadUserByIdentifier($user->getUserIdentifier());
     }
 
     /**
@@ -82,7 +70,7 @@ class CustomerProvider implements UserProviderInterface, PasswordUpgraderInterfa
      *
      * @return bool
      */
-    public function supportsClass($class)
+    public function supportsClass(string $class): bool
     {
         return Customer::class === $class || is_subclass_of($class, Customer::class);
     }

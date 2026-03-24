@@ -141,7 +141,7 @@ class PurchaseFlowTest extends EccubeTestCase
         self::assertEquals($expected, $this->flow->validate($itemHolder, new PurchaseContext()));
     }
 
-    public function flowTypeProvider()
+    public static function flowTypeProvider()
     {
         return [
             ['cart', 'Cart Flow'],

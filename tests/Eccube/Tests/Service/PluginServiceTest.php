@@ -539,9 +539,9 @@ EOD;
     public function testCreateEntityAndTrait()
     {
         $conn = $this->entityManager->getConnection();
-        $platform = $conn->getDatabasePlatform()->getName();
-        if ('postgresql' !== $platform) {
-            $this->markTestSkipped('does not support of '.$platform);
+        $platform = $conn->getDatabasePlatform();
+        if (!$platform instanceof \Doctrine\DBAL\Platforms\PostgreSQLPlatform) {
+            $this->markTestSkipped('does not support of '.get_class($platform));
         }
 
         $faker = $this->getFaker();

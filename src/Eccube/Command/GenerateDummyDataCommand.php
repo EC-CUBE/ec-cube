@@ -19,11 +19,13 @@ use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Tests\Fixture\Generator;
 use Faker\Factory as Faker;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'eccube:fixtures:generate')]
 class GenerateDummyDataCommand extends Command
 {
     protected static $defaultName = 'eccube:fixtures:generate';
@@ -57,7 +59,7 @@ class GenerateDummyDataCommand extends Command
         $this->productRepository = $productRepository;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Dummy data generator')
@@ -81,7 +83,7 @@ EOF
             );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $locale = $input->getOption('with-locale');
         $notImage = $input->getOption('without-image');
@@ -90,7 +92,6 @@ EOF
         $numberOfCustomer = $input->getOption('customers');
 
         // SQL Loggerを無効化してパフォーマンス向上
-        $this->entityManager->getConnection()->getConfiguration()->setSQLLogger(null);
 
         // バッチサイズ（何件ごとにflushするか）
         $batchSize = 100;

@@ -42,7 +42,7 @@ class RepeatedEmailType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'entry_type' => EmailType::class,
@@ -78,7 +78,7 @@ class RepeatedEmailType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): string
     {
         return RepeatedType::class;
     }
@@ -86,7 +86,7 @@ class RepeatedEmailType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'repeated_email';
     }

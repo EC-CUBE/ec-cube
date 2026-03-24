@@ -19,17 +19,12 @@ use Doctrine\ORM\Mapping as ORM;
 if (!class_exists(Product::class)) {
     /**
      * Product
-     *
-     * @ORM\Table(name="dtb_product")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\ProductRepository")
      */
+    #[ORM\Table(name: 'dtb_product')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: \Eccube\Repository\ProductRepository::class)]
     class Product extends AbstractEntity
     {
         private $_calc = false;
@@ -113,7 +108,7 @@ if (!class_exists(Product::class)) {
                                 $this->classCategories1[$ProductClass->getClassCategory1()->getId()] = $ProductClass->getClassCategory1()->getName();
                                 $this->classCategories2[$ProductClass->getClassCategory1()->getId()][$ProductClass->getClassCategory2()->getId()] = $ProductClass->getClassCategory2()->getName();
                             } else {
-                                $this->classCategories1[$ProductClass->getClassCategory1()->getId()] = $ProductClass->getClassCategory1()->getName().($ProductClass->getStockFind() ? '' : trans('front.product.out_of_stock_label'));
+                                $this->classCategories1[$ProductClass->getClassCategory1()->getId()] = $ProductClass->getClassCategory1()->getName() . ($ProductClass->getStockFind() ? '' : trans('front.product.out_of_stock_label'));
                             }
                         }
                     }
@@ -449,132 +444,103 @@ if (!class_exists(Product::class)) {
 
         /**
          * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
          */
+        #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
         private $id;
 
         /**
          * @var string
-         *
-         * @ORM\Column(name="name", type="string", length=255)
          */
+        #[ORM\Column(name: 'name', type: 'string', length: 255)]
         private $name;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="note", type="text", nullable=true)
          */
+        #[ORM\Column(name: 'note', type: 'text', nullable: true)]
         private $note;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="description_list", type="text", nullable=true)
          */
+        #[ORM\Column(name: 'description_list', type: 'text', nullable: true)]
         private $description_list;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="description_detail", type="text", nullable=true)
          */
+        #[ORM\Column(name: 'description_detail', type: 'text', nullable: true)]
         private $description_detail;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="search_word", type="text", nullable=true)
          */
+        #[ORM\Column(name: 'search_word', type: 'text', nullable: true)]
         private $search_word;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="free_area", type="text", nullable=true)
          */
+        #[ORM\Column(name: 'free_area', type: 'text', nullable: true)]
         private $free_area;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'create_date', type: 'datetimetz')]
         private $create_date;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'update_date', type: 'datetimetz')]
         private $update_date;
 
         /**
          * @var \Doctrine\Common\Collections\Collection
-         *
-         * @ORM\OneToMany(targetEntity="Eccube\Entity\ProductCategory", mappedBy="Product", cascade={"persist","remove"})
          */
+        #[ORM\OneToMany(targetEntity: \Eccube\Entity\ProductCategory::class, mappedBy: 'Product', cascade: ['persist', 'remove'])]
         private $ProductCategories;
 
         /**
          * @var \Doctrine\Common\Collections\Collection
-         *
-         * @ORM\OneToMany(targetEntity="Eccube\Entity\ProductClass", mappedBy="Product", cascade={"persist","remove"})
          */
+        #[ORM\OneToMany(targetEntity: \Eccube\Entity\ProductClass::class, mappedBy: 'Product', cascade: ['persist', 'remove'])]
         private $ProductClasses;
 
         /**
          * @var \Doctrine\Common\Collections\Collection
-         *
-         * @ORM\OneToMany(targetEntity="Eccube\Entity\ProductImage", mappedBy="Product", cascade={"remove"})
-         *
-         * @ORM\OrderBy({
-         *     "sort_no"="ASC"
-         * })
          */
+        #[ORM\OneToMany(targetEntity: \Eccube\Entity\ProductImage::class, mappedBy: 'Product', cascade: ['remove'])]
+        #[ORM\OrderBy(['sort_no' => 'ASC'])]
         private $ProductImage;
 
         /**
          * @var \Doctrine\Common\Collections\Collection
-         *
-         * @ORM\OneToMany(targetEntity="Eccube\Entity\ProductTag", mappedBy="Product", cascade={"remove"})
          */
+        #[ORM\OneToMany(targetEntity: \Eccube\Entity\ProductTag::class, mappedBy: 'Product', cascade: ['remove'])]
         private $ProductTag;
 
         /**
          * @var \Doctrine\Common\Collections\Collection
-         *
-         * @ORM\OneToMany(targetEntity="Eccube\Entity\CustomerFavoriteProduct", mappedBy="Product")
          */
+        #[ORM\OneToMany(targetEntity: \Eccube\Entity\CustomerFavoriteProduct::class, mappedBy: 'Product')]
         private $CustomerFavoriteProducts;
 
         /**
          * @var Member
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Member::class)]
+        #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
         private $Creator;
 
         /**
          * @var Master\ProductStatus
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\ProductStatus")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="product_status_id", referencedColumnName="id")
-         * })
          */
+        #[ORM\ManyToOne(targetEntity: \Eccube\Entity\Master\ProductStatus::class)]
+        #[ORM\JoinColumn(name: 'product_status_id', referencedColumnName: 'id')]
         private $Status;
 
         /**
@@ -602,9 +568,12 @@ if (!class_exists(Product::class)) {
             $Categories = $this->getProductCategories();
             $this->ProductCategories = new ArrayCollection();
             foreach ($Categories as $Category) {
-                $CopyCategory = clone $Category;
-                $this->addProductCategory($CopyCategory);
+                $CopyCategory = new ProductCategory();
                 $CopyCategory->setProduct($this);
+                $CopyCategory->setProductId(0);
+                $CopyCategory->setCategory($Category->getCategory());
+                $CopyCategory->setCategoryId($Category->getCategoryId());
+                $this->addProductCategory($CopyCategory);
             }
 
             $Classes = $this->getProductClasses();

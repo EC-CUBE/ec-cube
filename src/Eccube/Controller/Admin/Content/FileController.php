@@ -15,7 +15,7 @@ namespace Eccube\Controller\Admin\Content;
 
 use Eccube\Controller\AbstractController;
 use Eccube\Util\FilesystemUtil;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -29,7 +29,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class FileController extends AbstractController
@@ -50,11 +50,8 @@ class FileController extends AbstractController
         }
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/content/file_manager", name="admin_content_file", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Content/file.twig")
-     */
+    #[Route('/%eccube_admin_route%/content/file_manager', name: 'admin_content_file', methods: ['GET', 'POST'])]
+    #[Template("@admin/Content/file.twig")]
     public function index(Request $request)
     {
         $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');
@@ -119,9 +116,7 @@ class FileController extends AbstractController
         ];
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/content/file_view", name="admin_content_file_view", methods={"GET"})
-     */
+    #[Route('/%eccube_admin_route%/content/file_view', name: 'admin_content_file_view', methods: ['GET'])]
     public function view(Request $request)
     {
         $file = $this->convertStrToServer($this->getUserDataDir($request->get('file')));
@@ -203,9 +198,7 @@ class FileController extends AbstractController
         }
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/content/file_delete", name="admin_content_file_delete", methods={"DELETE"})
-     */
+    #[Route('/%eccube_admin_route%/content/file_delete', name: 'admin_content_file_delete', methods: ['DELETE'])]
     public function delete(Request $request)
     {
         $this->isTokenValid();
@@ -229,9 +222,7 @@ class FileController extends AbstractController
         return $this->redirectToRoute('admin_content_file', ['tree_select_file' => dirname($selectFile)]);
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/content/file_download", name="admin_content_file_download", methods={"GET"})
-     */
+    #[Route('/%eccube_admin_route%/content/file_download', name: 'admin_content_file_download', methods: ['GET'])]
     public function download(Request $request)
     {
         $topDir = $this->getUserDataDir();

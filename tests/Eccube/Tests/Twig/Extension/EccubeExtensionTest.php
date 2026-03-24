@@ -97,7 +97,7 @@ class EccubeExtensionTest extends EccubeTestCase
         $this->assertEquals($expected, $actual);
     }
 
-    public function extensionProvider()
+    public static function extensionProvider()
     {
         return [
             ['jpg', false, '<i class="fa fa-file-image-o" ></i>'],
