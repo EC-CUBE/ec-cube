@@ -145,6 +145,7 @@ jobs:
           MAILER_DSN: 'smtp://127.0.0.1:1025'
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           ECCUBE_RESTRICT_FILE_UPLOAD: '1'
+          ECCUBE_AUTH_MAGIC: 'testmagic'
         run: php -S 127.0.0.1:8000 codeception/router.php &
 
       - name: Start PHP Development Server
@@ -156,6 +157,7 @@ jobs:
           MAILER_DSN: 'smtp://127.0.0.1:1025'
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           ECCUBE_RESTRICT_FILE_UPLOAD: '0'
+          ECCUBE_AUTH_MAGIC: 'testmagic'
         run: php -S 127.0.0.1:8000 codeception/router.php &
 
       - name: Codeception

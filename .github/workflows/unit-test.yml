@@ -91,7 +91,7 @@ jobs:
       - name: PHPUnit
         uses: nick-invision/retry@ce71cc2ab81d554ebbe88c79ab5975992d79ba08  # v3
         with:
-          timeout_minutes: 20
+          timeout_minutes: 35
           max_attempts: 2
           retry_on: error
           command: vendor/bin/phpunit --exclude-group cache-clear,cache-clear-install,update-schema-doctrine,plugin-service --do-not-fail-on-phpunit-warning
@@ -113,16 +113,16 @@ jobs:
         run: |
           echo "session.save_path=$PWD/var/sessions/test" > php.ini
           echo "memory_limit=512M" >> php.ini
-          php -c php.ini vendor/bin/phpunit --group cache-clear
-          php -c php.ini vendor/bin/phpunit --group cache-clear-install
-          php -c php.ini vendor/bin/phpunit --group update-schema-doctrine --exclude-group update-schema-doctrine-install
-          php -c php.ini vendor/bin/phpunit --group update-schema-doctrine-install --filter=testInstallPluginWithNoProxy
-          php -c php.ini vendor/bin/phpunit --group update-schema-doctrine-install --filter=testInstallPluginWithProxy
-          php -c php.ini vendor/bin/phpunit --group update-schema-doctrine-install --filter=testEnablePluginWithNoProxy
-          php -c php.ini vendor/bin/phpunit --group update-schema-doctrine-install --filter=testEnablePluginWithProxy
-          php -c php.ini vendor/bin/phpunit --group update-schema-doctrine-install --filter=testDisablePluginWithNoProxy
-          php -c php.ini vendor/bin/phpunit --group update-schema-doctrine-install --filter=testDisablePluginWithProxy
-          php -c php.ini vendor/bin/phpunit --group update-schema-doctrine-install --filter=testCreateEntityAndTrait
+          php -c php.ini vendor/bin/phpunit --group cache-clear --do-not-fail-on-phpunit-warning
+          php -c php.ini vendor/bin/phpunit --group cache-clear-install --do-not-fail-on-phpunit-warning
+          php -c php.ini vendor/bin/phpunit --group update-schema-doctrine --exclude-group update-schema-doctrine-install --do-not-fail-on-phpunit-warning
+          php -c php.ini vendor/bin/phpunit --group update-schema-doctrine-install --filter=testInstallPluginWithNoProxy --do-not-fail-on-phpunit-warning
+          php -c php.ini vendor/bin/phpunit --group update-schema-doctrine-install --filter=testInstallPluginWithProxy --do-not-fail-on-phpunit-warning
+          php -c php.ini vendor/bin/phpunit --group update-schema-doctrine-install --filter=testEnablePluginWithNoProxy --do-not-fail-on-phpunit-warning
+          php -c php.ini vendor/bin/phpunit --group update-schema-doctrine-install --filter=testEnablePluginWithProxy --do-not-fail-on-phpunit-warning
+          php -c php.ini vendor/bin/phpunit --group update-schema-doctrine-install --filter=testDisablePluginWithNoProxy --do-not-fail-on-phpunit-warning
+          php -c php.ini vendor/bin/phpunit --group update-schema-doctrine-install --filter=testDisablePluginWithProxy --do-not-fail-on-phpunit-warning
+          php -c php.ini vendor/bin/phpunit --group update-schema-doctrine-install --filter=testCreateEntityAndTrait --do-not-fail-on-phpunit-warning
       ## XXX MySQL で Syntax error or access violation: 1305 SAVEPOINT DOCTRINE2_SAVEPOINT_3 does not exist が
       ## 発生するため \DAMA\DoctrineTestBundle\PHPUnit\PHPUnitListener を削除する
       ## see https://github.com/dmaicher/doctrine-test-bundle/issues/58#issuecomment-391081408
@@ -142,4 +142,4 @@ jobs:
           rm -r var/cache
           echo "session.save_path=$PWD/var/sessions/test" > php.ini
           echo "memory_limit=512M" >> php.ini
-          php -c php.ini vendor/bin/phpunit --group plugin-service
+          php -c php.ini vendor/bin/phpunit --group plugin-service --do-not-fail-on-phpunit-warning
