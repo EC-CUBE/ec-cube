@@ -222,7 +222,7 @@ class ClassNameController extends AbstractController
             $this->csvExportService->exportData(function ($entity, $csvService) use ($request) {
                 $Csvs = $csvService->getCsvs();
 
-                /** @var \Eccube\Entity\ClassName $ClassName */
+                /** @var ClassName $ClassName */
                 $ClassName = $entity;
 
                 // CSV出力項目と合致するデータを取得.
