@@ -89,7 +89,7 @@ class ClassNameController extends AbstractController
         $forms = [];
         foreach ($ClassNames as $ClassName) {
             $id = $ClassName->getId();
-            $forms[$id] = $this->formFactory->createNamed('class_name_' . $id, ClassNameType::class, $ClassName);
+            $forms[$id] = $this->formFactory->createNamed('class_name_'.$id, ClassNameType::class, $ClassName);
         }
 
         $form = $builder->getForm();
@@ -250,9 +250,9 @@ class ClassNameController extends AbstractController
         });
 
         $now = new \DateTime();
-        $filename = 'class_name_' . $now->format('YmdHis') . '.csv';
+        $filename = 'class_name_'.$now->format('YmdHis').'.csv';
         $response->headers->set('Content-Type', 'application/octet-stream');
-        $response->headers->set('Content-Disposition', 'attachment; filename=' . $filename);
+        $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
 
         log_info('規格CSV出力ファイル名', [$filename]);
 

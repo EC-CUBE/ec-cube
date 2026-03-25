@@ -90,7 +90,7 @@ class DeleteCartsCommand extends Command
             'If you prefer to not use this interactive wizard, provide the',
             'arguments required by this command as follows:',
             '',
-            ' $ php bin/console eccube:delete-cart <' . $pattern . '>',
+            ' $ php bin/console eccube:delete-cart <'.$pattern.'>',
             '',
             'Now we\'ll ask you for the value of all the missing command arguments.',
             '',

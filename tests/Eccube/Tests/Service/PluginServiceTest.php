@@ -56,7 +56,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         $dirs = [];
         $finder = new Finder();
         $iterator = $finder
-            ->in(static::getContainer()->getParameter('kernel.project_dir') . '/app/Plugin')
+            ->in(static::getContainer()->getParameter('kernel.project_dir').'/app/Plugin')
             ->name('dummy*')
             ->directories();
         foreach ($iterator as $dir) {
@@ -68,7 +68,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         }
 
         $files = Finder::create()
-            ->in(static::getContainer()->getParameter('kernel.project_dir') . '/app/proxy/entity')
+            ->in(static::getContainer()->getParameter('kernel.project_dir').'/app/proxy/entity')
             ->files();
         $f = new Filesystem();
         $f->remove($files);
@@ -90,9 +90,9 @@ class PluginServiceTest extends AbstractServiceTestCase
     // テスト用のダミープラグインを配置する
     private function createTempDir()
     {
-        $t = sys_get_temp_dir() . '/plugintest.' . sha1(mt_rand());
+        $t = sys_get_temp_dir().'/plugintest.'.sha1(mt_rand());
         if (!mkdir($t)) {
-            throw new \Exception("$t " . $php_errormsg);
+            throw new \Exception("$t ".$php_errormsg);
         }
 
         return $t;
@@ -109,17 +109,17 @@ class PluginServiceTest extends AbstractServiceTestCase
     public function testInstallPluginMinimum()
     {
         // インストールするプラグインを作成する
-        $tmpname = 'dummy' . sha1(mt_rand());
+        $tmpname = 'dummy'.sha1(mt_rand());
         $config = [
-            'version' => $tmpname . '_version',
-            'description' => $tmpname . '_name',
+            'version' => $tmpname.'_version',
+            'description' => $tmpname.'_name',
             'extra' => [
                 'code' => $tmpname,
             ],
         ];
 
         $tmpdir = $this->createTempDir();
-        $tmpfile = $tmpdir . '/plugin.tar';
+        $tmpfile = $tmpdir.'/plugin.tar';
 
         $tar = new \PharData($tmpfile);
         $tar->addFromString('composer.json', json_encode($config));
@@ -132,7 +132,7 @@ class PluginServiceTest extends AbstractServiceTestCase
             $this->fail('checkSamePlugin dont throw exception.');
         } catch (PluginException $e) {
         } catch (\Exception $e) {
-            $this->fail('checkSamePlugin throw unexpected exception.' . $e->toString());
+            $this->fail('checkSamePlugin throw unexpected exception.'.$e->toString());
         }
         // 同じプラグインの二重インストールが蹴られるか
 
@@ -140,7 +140,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         try {
             $this->service->install($tmpfile, 0, true);
         } catch (PluginException $e) {
-            $this->fail('--if-not-exists オプションを指定した場合は例外が発生しない: ' . $e->getMessage());
+            $this->fail('--if-not-exists オプションを指定した場合は例外が発生しない: '.$e->getMessage());
         }
 
         // アンインストールできるか
@@ -158,7 +158,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         // インストールするプラグインを作成する
         sha1(mt_rand());
         $tmpdir = $this->createTempDir();
-        $tmpfile = $tmpdir . '/plugin.tar';
+        $tmpfile = $tmpdir.'/plugin.tar';
 
         $tar = new \PharData($tmpfile);
         $tar->addFromString('dummy', 'dummy');
@@ -169,8 +169,8 @@ class PluginServiceTest extends AbstractServiceTestCase
     // composer.jsonのフォーマット確認
     public function testConfigYmlFormat()
     {
-        $tmpname = 'dummy' . mt_rand();
-        $tmpfile = sys_get_temp_dir() . '/dummy' . mt_rand();
+        $tmpname = 'dummy'.mt_rand();
+        $tmpfile = sys_get_temp_dir().'/dummy'.mt_rand();
 
         // 必須項目のチェック
         $config = [];
@@ -208,7 +208,7 @@ class PluginServiceTest extends AbstractServiceTestCase
 
         // 禁止文字のチェック
 
-        $config['name'] = $tmpname . '@';
+        $config['name'] = $tmpname.'@';
         $config['code'] = $tmpname;
         $config['version'] = $tmpname;
         try {
@@ -220,7 +220,7 @@ class PluginServiceTest extends AbstractServiceTestCase
 
         $config = [];
         $config['name'] = $tmpname;
-        $config['code'] = $tmpname . '#';
+        $config['code'] = $tmpname.'#';
         $config['version'] = $tmpname;
         try {
             file_put_contents($tmpfile, Yaml::dump($config));
@@ -246,7 +246,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         $config['name'] = $tmpname;
         $config['code'] = $tmpname;
         $config['version'] = $tmpname;
-        $config['event'] = '&' . $tmpname;
+        $config['event'] = '&'.$tmpname;
         file_put_contents($tmpfile, Yaml::dump($config));
         $this->service->checkPluginArchiveContent($tmpfile);
     }
@@ -258,11 +258,11 @@ class PluginServiceTest extends AbstractServiceTestCase
     {
         $this->expectException(PluginException::class);
         $tmpdir = $this->createTempDir();
-        $tmpfile = $tmpdir . '/plugin.tar';
+        $tmpfile = $tmpdir.'/plugin.tar';
         $tar = new \PharData($tmpfile);
 
         // インストールするプラグインを作成する
-        $tmpname = 'dummy' . sha1(mt_rand());
+        $tmpname = 'dummy'.sha1(mt_rand());
         $config = [];
         $config['code'] = $tmpname;
         $config['version'] = $tmpname;
@@ -276,7 +276,7 @@ class PluginServiceTest extends AbstractServiceTestCase
     public function testInstallPluginWithBrokenManagerAfterInstall()
     {
         // インストールするプラグインを作成する
-        $tmpname = 'dummy' . sha1(mt_rand());
+        $tmpname = 'dummy'.sha1(mt_rand());
         $config = [
             'version' => $tmpname,
             'description' => $tmpname,
@@ -286,7 +286,7 @@ class PluginServiceTest extends AbstractServiceTestCase
         ];
 
         $tmpdir = $this->createTempDir();
-        $tmpfile = $tmpdir . '/plugin.tar';
+        $tmpfile = $tmpdir.'/plugin.tar';
 
         $tar = new \PharData($tmpfile);
         $tar->addFromString('composer.json', json_encode($config));
@@ -343,7 +343,7 @@ EOD;
     public function testInstallPluginWithManager()
     {
         // インストールするプラグインを作成する
-        $tmpname = 'dummy' . sha1(mt_rand());
+        $tmpname = 'dummy'.sha1(mt_rand());
         $config = [
             'version' => $tmpname,
             'description' => $tmpname,
@@ -353,7 +353,7 @@ EOD;
         ];
 
         $tmpdir = $this->createTempDir();
-        $tmpfile = $tmpdir . '/plugin.tar';
+        $tmpfile = $tmpdir.'/plugin.tar';
 
         $tar = new \PharData($tmpfile);
         $tar->addFromString('composer.json', json_encode($config));
@@ -401,7 +401,7 @@ EOD;
         $this->assertTrue($this->service->install($tmpfile));
         $this->assertMatchesRegularExpression('/Installed/', ob_get_contents());
         ob_end_clean();
-        $this->assertFileExists(__DIR__ . "/../../../../app/Plugin/$tmpname/PluginManager.php");
+        $this->assertFileExists(__DIR__."/../../../../app/Plugin/$tmpname/PluginManager.php");
 
         $this->assertTrue((bool) $plugin = $this->pluginRepository->findOneBy(['name' => $tmpname]));
 
@@ -427,14 +427,14 @@ EOD;
      */
     public function testGetDependentByCodeEccubePlugin()
     {
-        $tmpname = 'dummy' . sha1(mt_rand());
+        $tmpname = 'dummy'.sha1(mt_rand());
         $config = [];
-        $config['name'] = $tmpname . '_name';
+        $config['name'] = $tmpname.'_name';
         $config['code'] = $tmpname;
-        $config['version'] = $tmpname . '_version';
+        $config['version'] = $tmpname.'_version';
 
         $tmpdir = $this->createTempDir();
-        $tmpfile = $tmpdir . '/plugin.tar';
+        $tmpfile = $tmpdir.'/plugin.tar';
 
         $tar = new \PharData($tmpfile);
         $tar->addFromString('composer.json', Yaml::dump($config));
@@ -463,14 +463,14 @@ EOD;
      */
     public function testGetDependentByCodeOtherPlugin()
     {
-        $tmpname = 'dummy' . sha1(mt_rand());
+        $tmpname = 'dummy'.sha1(mt_rand());
         $config = [];
-        $config['name'] = $tmpname . '_name';
+        $config['name'] = $tmpname.'_name';
         $config['code'] = $tmpname;
-        $config['version'] = $tmpname . '_version';
+        $config['version'] = $tmpname.'_version';
 
         $tmpdir = $this->createTempDir();
-        $tmpfile = $tmpdir . '/plugin.tar';
+        $tmpfile = $tmpdir.'/plugin.tar';
 
         $tar = new \PharData($tmpfile);
         $tar->addFromString('composer.json', Yaml::dump($config));
@@ -498,14 +498,14 @@ EOD;
      */
     public function testGetDependentByCodeAllPlugin()
     {
-        $tmpname = 'dummy' . sha1(mt_rand());
+        $tmpname = 'dummy'.sha1(mt_rand());
         $config = [];
-        $config['name'] = $tmpname . '_name';
+        $config['name'] = $tmpname.'_name';
         $config['code'] = $tmpname;
-        $config['version'] = $tmpname . '_version';
+        $config['version'] = $tmpname.'_version';
 
         $tmpdir = $this->createTempDir();
-        $tmpfile = $tmpdir . '/plugin.tar';
+        $tmpfile = $tmpdir.'/plugin.tar';
 
         $tar = new \PharData($tmpfile);
         $tar->addFromString('composer.json', Yaml::dump($config));
@@ -525,7 +525,7 @@ EOD;
         $actual2 = $this->service->parseToComposerCommand($actual);
         $expected2 = '';
         foreach ($expected as $packages => $version) {
-            $expected2 .= $packages . ':' . $version . ' ';
+            $expected2 .= $packages.':'.$version.' ';
         }
         $this->assertSame(trim($expected2), $actual2);
     }
@@ -541,12 +541,12 @@ EOD;
         $conn = $this->entityManager->getConnection();
         $platform = $conn->getDatabasePlatform();
         if (!$platform instanceof \Doctrine\DBAL\Platforms\PostgreSQLPlatform) {
-            $this->markTestSkipped('does not support of ' . get_class($platform));
+            $this->markTestSkipped('does not support of '.get_class($platform));
         }
 
         $faker = $this->getFaker();
         // インストールするプラグインを作成する
-        $tmpname = 'dummy' . $faker->word;
+        $tmpname = 'dummy'.$faker->word;
         $config = [
             'version' => $tmpname,
             'description' => $tmpname,
@@ -556,7 +556,7 @@ EOD;
         ];
 
         $tmpdir = $this->createTempDir();
-        $tmpfile = $tmpdir . '/plugin.tar';
+        $tmpfile = $tmpdir.'/plugin.tar';
 
         $tar = new \PharData($tmpfile);
         $tar->addFromString('composer.json', json_encode($config));
@@ -634,8 +634,8 @@ EOD;
 
         $this->assertMatchesRegularExpression('/Installed/', ob_get_contents());
         ob_end_clean();
-        $this->assertFileExists(__DIR__ . "/../../../../app/Plugin/$tmpname/Entity/Block.php");
-        $this->assertFileExists(__DIR__ . "/../../../../app/Plugin/$tmpname/Entity/BlockTrait.php");
+        $this->assertFileExists(__DIR__."/../../../../app/Plugin/$tmpname/Entity/Block.php");
+        $this->assertFileExists(__DIR__."/../../../../app/Plugin/$tmpname/Entity/BlockTrait.php");
 
         $this->assertTrue((bool) $plugin = $this->pluginRepository->findOneBy(['name' => $tmpname]));
 
@@ -645,7 +645,7 @@ EOD;
         ob_end_clean();
 
         // check to Entity and Trait
-        $clazz = '\\Plugin\\' . $tmpname . '\\Entity\\Block';
+        $clazz = '\\Plugin\\'.$tmpname.'\\Entity\\Block';
         $Block = new $clazz();
         $Block->sample = true;
         $this->entityManager->persist($Block);
@@ -668,7 +668,7 @@ EOD;
     public function testRemoveAssets()
     {
         $code = 'remove_assets_dir';
-        $dir = $this->eccubeConfig['plugin_html_realdir'] . $code;
+        $dir = $this->eccubeConfig['plugin_html_realdir'].$code;
         mkdir($dir, 0777, true);
 
         $this->assertFileExists($dir);
@@ -688,7 +688,7 @@ EOD;
                 'code' => 'ReadConfig',
             ],
         ]);
-        file_put_contents($pluginDir . '/composer.json', $composerFile);
+        file_put_contents($pluginDir.'/composer.json', $composerFile);
 
         $config = $this->service->readConfig($pluginDir);
 

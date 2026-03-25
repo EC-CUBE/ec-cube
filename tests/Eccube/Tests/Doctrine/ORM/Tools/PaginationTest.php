@@ -215,7 +215,7 @@ class PaginationTest extends EccubeTestCase
         $this->expected = array_slice($this->expectedIds, 0, $pageMax);
         $this->actual = $actualIds;
         $this->verify('product_class.price02 降順なので, id 昇順にソートされるはず');
-        $this->assertSame($pageMax, count($this->actual), 'paginatorの結果は' . $pageMax . '件');
+        $this->assertSame($pageMax, count($this->actual), 'paginatorの結果は'.$pageMax.'件');
     }
 
     /**
@@ -277,7 +277,7 @@ class PaginationTest extends EccubeTestCase
         $this->expected = array_slice($this->expectedIds, 0, $pageMax);
         $this->actual = $actualIds;
         $this->verify('test_entity.col 降順なので, id 昇順にソートされるはず');
-        $this->assertSame($pageMax, count($this->actual), 'paginatorの結果は' . $pageMax . '件');
+        $this->assertSame($pageMax, count($this->actual), 'paginatorの結果は'.$pageMax.'件');
     }
 
     /**
@@ -407,4 +407,6 @@ class TestEntity
     public $col;
 }
 
-class TestRepository extends EntityRepository {}
+class TestRepository extends EntityRepository
+{
+}

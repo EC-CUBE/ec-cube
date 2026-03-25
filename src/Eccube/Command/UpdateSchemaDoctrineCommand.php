@@ -86,8 +86,8 @@ class UpdateSchemaDoctrineCommand extends BaseUpdateSchemaDoctrineCommand
             return parent::execute($input, $output);
         }
 
-        $tmpProxyOutputDir = sys_get_temp_dir() . '/proxy_' . StringUtil::random(12);
-        $tmpMetaDataOutputDir = sys_get_temp_dir() . '/metadata_' . StringUtil::random(12);
+        $tmpProxyOutputDir = sys_get_temp_dir().'/proxy_'.StringUtil::random(12);
+        $tmpMetaDataOutputDir = sys_get_temp_dir().'/metadata_'.StringUtil::random(12);
 
         $generateAllFiles = [];
         try {

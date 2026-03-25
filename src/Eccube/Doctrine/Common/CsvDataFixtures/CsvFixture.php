@@ -58,7 +58,7 @@ class CsvFixture implements FixtureInterface
         $this->file->next();
 
         // ファイル名からテーブル名を取得
-        $table_name = str_replace('.' . $this->file->getExtension(), '', $this->file->getFilename());
+        $table_name = str_replace('.'.$this->file->getExtension(), '', $this->file->getFilename());
         $sql = $this->getSql($table_name, $headers);
         /** @var Connection $Connection */
         $Connection = $manager->getConnection();
@@ -144,7 +144,7 @@ class CsvFixture implements FixtureInterface
      */
     public function getSql($table_name, array $headers)
     {
-        return 'INSERT INTO ' . $table_name . ' (' . implode(', ', $headers) . ') VALUES (' . implode(', ', array_fill(0, count($headers), '?')) . ')';
+        return 'INSERT INTO '.$table_name.' ('.implode(', ', $headers).') VALUES ('.implode(', ', array_fill(0, count($headers), '?')).')';
     }
 
     /**

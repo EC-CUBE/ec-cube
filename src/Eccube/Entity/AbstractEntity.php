@@ -41,7 +41,9 @@ abstract class AbstractEntity implements \ArrayAccess
     }
 
     #[\ReturnTypeWillChange]
-    public function offsetSet($offset, $value) {}
+    public function offsetSet($offset, $value)
+    {
+    }
 
     #[\ReturnTypeWillChange]
     public function offsetGet($offset)
@@ -61,7 +63,9 @@ abstract class AbstractEntity implements \ArrayAccess
     }
 
     #[\ReturnTypeWillChange]
-    public function offsetUnset($offset) {}
+    public function offsetUnset($offset)
+    {
+    }
 
     /**
      * 引数の連想配列を元にプロパティを設定します.
