@@ -1501,6 +1501,7 @@ admin.store.package.api.500.error: Failed to communicate with Owners' Store. Ple
 admin.plugin.uninstall.error.not_disable: Please disable the plugin.
 admin.plugin.uninstall.depend: "Unable to delete %depend_name% because it depends on %name%."
 admin.plugin.disable.depend: "Please disable %depend_name% before disabling %name%."
+pluginservice.text.error.upload_failure: Failed to upload plugin.
 
 # TODO: Verify Message
 admin.store.plugin.popup.delete.confirm.title: Confirm the deletion of the plugin

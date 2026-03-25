@@ -39,7 +39,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
 
       # ShoppingController::checkoutをテストするため、confirmの上限値を変更する
       - name: Fix limiter limit
@@ -84,7 +84,7 @@ jobs:
                       interval: '30 minutes'" > app/config/eccube/packages/prod/eccube_rate_limiter.yaml
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1  # v2
         with:
           php-version: ${{ matrix.php }}
 
@@ -92,7 +92,7 @@ jobs:
         uses: ./.github/actions/composer
 
       - name: Cache npm dependencies
-        uses: actions/cache@v5
+        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306  # v5
         with:
           path: ~/.npm
           key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
@@ -100,7 +100,7 @@ jobs:
             ${{ runner.os }}-npm-
 
       - name: Cache build artifacts
-        uses: actions/cache@v5
+        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306  # v5
         id: build-cache
         with:
           path: |
@@ -129,7 +129,7 @@ jobs:
           bin/console eccube:fixtures:load --env=dev
 
       - name: Cache chromedriver
-        uses: actions/cache@v5
+        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306  # v5
         id: chromedriver-cache
         with:
           path: /usr/local/bin/chromedriver
@@ -139,10 +139,10 @@ jobs:
 
       - name: setup-chromedriver
         if: steps.chromedriver-cache.outputs.cache-hit != 'true'
-        uses: nanasess/setup-chromedriver@master
+        uses: nanasess/setup-chromedriver@fc3dc5897c11410827ed268ab625038ee63dc6fe  # master
 
       - name: Cache apt packages
-        uses: awalsh128/cache-apt-pkgs-action@latest
+        uses: awalsh128/cache-apt-pkgs-action@2c09a5e66da6c8016428a2172bd76e5e4f14bb17  # latest
         with:
           packages: fonts-ipafont fonts-ipaexfont
           version: 1.0
@@ -165,7 +165,7 @@ jobs:
         run: php -S 127.0.0.1:8000 codeception/router.php &
 
       - name: Codeception
-        uses: nick-invision/retry@v3
+        uses: nick-invision/retry@ce71cc2ab81d554ebbe88c79ab5975992d79ba08  # v3
         with:
           timeout_minutes: 40
           max_attempts: 2
@@ -184,13 +184,13 @@ jobs:
 
       - name: Upload evidence
         if: failure()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
         with:
           name: codeception-${{ matrix.method }}-evidence
           path: codeception/_output/
       - name: Upload logs
         if: failure()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
         with:
           name: codeception-${{ matrix.method }}-logs
           path: var/log/

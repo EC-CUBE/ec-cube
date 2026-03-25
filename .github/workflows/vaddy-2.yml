@@ -40,15 +40,15 @@ jobs:
           - 1025:1025
     steps:
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
 
       - name: Setup PHP
-        uses: nanasess/setup-php@master
+        uses: nanasess/setup-php@bc11abbf4dd060b7bfd20d03edeeb43417ebe245  # master
         with:
           php-version: '8.1'
 
       - name: setup-chromedriver
-        uses: nanasess/setup-chromedriver@master
+        uses: nanasess/setup-chromedriver@fc3dc5897c11410827ed268ab625038ee63dc6fe  # master
 
       - name: "VAddy: install"
         working-directory: /tmp
@@ -198,9 +198,9 @@ jobs:
           vendor/bin/codecept -vvv run acceptance --env chrome,local,vaddy VaddyCest:commit
 
       - name: Upload report
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
         with:
-          name: crawl-reports
+          name: crawl-reports-${{ matrix.vaddy_project }}-command1
           path: codeception/_output/**/*
 
       - name: "VAddy: disconnect"
@@ -266,9 +266,9 @@ jobs:
 
       - name: Upload report
         if: ${{ matrix.command2 != '' && success() }}
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
         with:
-          name: crawl-reports
+          name: crawl-reports-${{ matrix.vaddy_project }}-command2
           path: codeception/_output/**/*
 
       - name: "VAddy: disconnect"
@@ -335,9 +335,9 @@ jobs:
 
       - name: Upload report
         if: ${{ matrix.command3 != '' && success() }}
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
         with:
-          name: crawl-reports
+          name: crawl-reports-${{ matrix.vaddy_project }}-command3
           path: codeception/_output/**/*
 
       - name: "VAddy: disconnect"
@@ -404,9 +404,9 @@ jobs:
 
       - name: Upload report
         if: ${{ matrix.command4 != '' && success() }}
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
         with:
-          name: crawl-reports
+          name: crawl-reports-${{ matrix.vaddy_project }}-command4
           path: codeception/_output/**/*
 
       - name: "VAddy: disconnect"
@@ -473,9 +473,9 @@ jobs:
 
       - name: Upload report
         if: ${{ matrix.command5 != '' && success() }}
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
         with:
-          name: crawl-reports
+          name: crawl-reports-${{ matrix.vaddy_project }}-command5
           path: codeception/_output/**/*
 
       - name: "VAddy: disconnect"

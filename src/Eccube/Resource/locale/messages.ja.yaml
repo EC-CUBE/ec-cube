@@ -1501,6 +1501,7 @@ admin.store.package.api.500.error: オーナーズストアとの通信に失敗
 admin.plugin.uninstall.error.not_disable: プラグインを無効にしてください。
 admin.plugin.uninstall.depend: "「%depend_name%」が「%name%」に依存しているため削除できません。"
 admin.plugin.disable.depend: "「%name%」を無効にする前に、「%depend_name%」を無効にしてください。 "
+pluginservice.text.error.upload_failure: プラグインのアップロードに失敗しました。
 
 # TODO: メッセージ精査
 admin.store.plugin.popup.delete.confirm.title: プラグインの削除を確認する

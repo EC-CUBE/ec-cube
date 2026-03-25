@@ -413,4 +413,109 @@ class ProductRepository extends AbstractRepository
 
         return $this->queries->customize(QueryKey::PRODUCT_SEARCH_ADMIN, $qb, $searchData);
     }
+
+    /**
+     * 管理画面用検索条件でのカウント（JOIN不要の高速版）
+     *
+     * このメソッドはJOINを含まないシンプルなCOUNTクエリを実行することで、
+     * KnpPaginatorのデフォルトCOUNT(DISTINCT)による性能問題を回避します。
+     *
+     * @param array $searchData
+     *
+     * @return int
+     */
+    public function countBySearchDataForAdmin($searchData)
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->select('COUNT(p.id)')
+            ->andWhere('EXISTS (SELECT pcv.id FROM \Eccube\Entity\ProductClass pcv WHERE pcv.Product = p AND pcv.visible = true)');
+
+        // id
+        if (isset($searchData['id']) && StringUtil::isNotBlank($searchData['id'])) {
+            $id = preg_match('/^\d{0,10}$/', $searchData['id']) ? $searchData['id'] : null;
+            if ($id && $id > '2147483647' && $this->isPostgreSQL()) {
+                $id = null;
+            }
+            $qb
+                ->andWhere('p.id = :id OR p.name LIKE :likeid OR EXISTS (SELECT pcc.id FROM \Eccube\Entity\ProductClass pcc WHERE pcc.Product = p AND pcc.code LIKE :likeid)')
+                ->setParameter('id', $id)
+                ->setParameter('likeid', '%'.str_replace(['%', '_'], ['\\%', '\\_'], $searchData['id']).'%');
+        }
+
+        // status
+        if (!empty($searchData['status']) && $searchData['status']) {
+            $qb
+                ->andWhere($qb->expr()->in('p.Status', ':Status'))
+                ->setParameter('Status', $searchData['status']);
+        }
+
+        // link_status
+        if (isset($searchData['link_status']) && !empty($searchData['link_status'])) {
+            $qb
+                ->andWhere($qb->expr()->in('p.Status', ':Status'))
+                ->setParameter('Status', $searchData['link_status']);
+        }
+
+        // category (注: ProductCategoriesとのJOINが必要なのでカウントには含めない)
+        // stock_status, stock (注: ProductClassesとのJOINが必要なのでカウントには含めない)
+        // tag (注: ProductTagとのJOINが必要なのでカウントには含めない)
+
+        // create_date
+        if (!empty($searchData['create_datetime_start']) && $searchData['create_datetime_start']) {
+            $date = $searchData['create_datetime_start'];
+            $qb
+                ->andWhere('p.create_date >= :create_date_start')
+                ->setParameter('create_date_start', $date);
+        } elseif (!empty($searchData['create_date_start']) && $searchData['create_date_start']) {
+            $date = $searchData['create_date_start'];
+            $qb
+                ->andWhere('p.create_date >= :create_date_start')
+                ->setParameter('create_date_start', $date);
+        }
+
+        if (!empty($searchData['create_datetime_end']) && $searchData['create_datetime_end']) {
+            $date = $searchData['create_datetime_end'];
+            $qb
+                ->andWhere('p.create_date < :create_date_end')
+                ->setParameter('create_date_end', $date);
+        } elseif (!empty($searchData['create_date_end']) && $searchData['create_date_end']) {
+            $date = clone $searchData['create_date_end'];
+            $date = $date
+                ->modify('+1 days');
+            $qb
+                ->andWhere('p.create_date < :create_date_end')
+                ->setParameter('create_date_end', $date);
+        }
+
+        // update_date
+        if (!empty($searchData['update_datetime_start']) && $searchData['update_datetime_start']) {
+            $date = $searchData['update_datetime_start'];
+            $qb
+                ->andWhere('p.update_date >= :update_date_start')
+                ->setParameter('update_date_start', $date);
+        } elseif (!empty($searchData['update_date_start']) && $searchData['update_date_start']) {
+            $date = $searchData['update_date_start'];
+            $qb
+                ->andWhere('p.update_date >= :update_date_start')
+                ->setParameter('update_date_start', $date);
+        }
+
+        if (!empty($searchData['update_datetime_end']) && $searchData['update_datetime_end']) {
+            $date = $searchData['update_datetime_end'];
+            $qb
+                ->andWhere('p.update_date < :update_date_end')
+                ->setParameter('update_date_end', $date);
+        } elseif (!empty($searchData['update_date_end']) && $searchData['update_date_end']) {
+            $date = clone $searchData['update_date_end'];
+            $date = $date
+                ->modify('+1 days');
+            $qb
+                ->andWhere('p.update_date < :update_date_end')
+                ->setParameter('update_date_end', $date);
+        }
+
+        $qb = $this->queries->customize(QueryKey::PRODUCT_SEARCH_ADMIN, $qb, $searchData);
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
 }

@@ -32,7 +32,7 @@
     "@babel/polyfill": "^7.12.1",
     "@popperjs/core": "^2.11.8",
     "ace-builds": "^1.32.3",
-    "bootstrap": "^5.3.3",
+    "bootstrap": "^5.3.8",
     "chart.js": "^3.9.1",
     "css-loader": "^7.1.2",
     "file-loader": "^6.2.0",

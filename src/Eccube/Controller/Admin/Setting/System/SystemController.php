@@ -19,6 +19,7 @@ use Eccube\Service\SystemService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class SystemController
@@ -75,6 +76,10 @@ class SystemController
      */
     public function phpinfo(Request $request)
     {
+        if (!$this->eccubeConfig->get('eccube_phpinfo_enabled')) {
+            throw new AccessDeniedHttpException();
+        }
+
         ob_start();
         phpinfo();
         $phpinfo = ob_get_contents();
