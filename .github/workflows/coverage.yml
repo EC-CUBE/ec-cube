@@ -13,8 +13,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ 8.3 ]
-        db: [ pgsql ]
+        php: [8.3]
+        db: [pgsql]
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
@@ -32,10 +32,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1  # v2
+        uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1 # v2
         with:
           php-version: ${{ matrix.php }}
 
@@ -49,11 +49,11 @@ jobs:
 
       - name: Setup EC-CUBE
         env:
-          APP_ENV: 'test'
+          APP_ENV: "test"
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          ECCUBE_AUTH_MAGIC: 'testmagic'
-          MAILER_DSN: 'null://null'
+          ECCUBE_AUTH_MAGIC: "testmagic"
+          MAILER_DSN: "null://null"
         run: |
           bin/console doctrine:database:create --if-not-exists || true
           bin/console doctrine:schema:create
@@ -61,11 +61,11 @@ jobs:
 
       - name: PHPUnit
         env:
-          APP_ENV: 'test'
+          APP_ENV: "test"
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          ECCUBE_AUTH_MAGIC: 'testmagic'
-          MAILER_DSN: 'null://null'
+          ECCUBE_AUTH_MAGIC: "testmagic"
+          MAILER_DSN: "null://null"
         continue-on-error: true
         run: |
           echo "session.save_path=$PWD/var/sessions/test" > php.ini
@@ -73,7 +73,7 @@ jobs:
           php -c php.ini -dpcov.enabled=1 vendor/bin/phpunit --exclude-group cache-clear,cache-clear-install,update-schema-doctrine --coverage-clover=coverage1.xml
       - name: Upload report
         if: success()
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
         with:
           name: phpunit-reports
           path: coverage1.xml
@@ -82,29 +82,29 @@ jobs:
   # PHPサーバー側で pcov が有効になっていないため、リモートカバレッジ収集が動作しない。
   # 修正するには php -dpcov.enabled=1 -S 127.0.0.1:8000 が必要だが、追加の検証が必要。
   codeception:
-    if: false  # Disabled until remote coverage collection is fixed
+    if: false # Disabled until remote coverage collection is fixed
     name: Codeception
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
-        php: [ 8.3 ]
-        db: [ pgsql ]
-        group: [ admin01, admin02, admin03, front, installer ]
+        php: [8.3]
+        db: [pgsql]
+        group: [admin01, admin02, admin03, front, installer]
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
             database_server_version: 14
           - group: admin01
-            app_env: 'codeception'
+            app_env: "codeception"
           - group: admin02
-            app_env: 'codeception'
+            app_env: "codeception"
           - group: admin03
-            app_env: 'codeception'
+            app_env: "codeception"
           - group: front
-            app_env: 'codeception'
+            app_env: "codeception"
           - group: installer
-            app_env: 'install'
+            app_env: "install"
     services:
       postgres:
         image: postgres:14
@@ -124,10 +124,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1  # v2
+        uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1 # v2
         with:
           php-version: ${{ matrix.php }}
 
@@ -135,7 +135,7 @@ jobs:
         uses: ./.github/actions/composer
 
       - name: Cache npm dependencies
-        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306  # v5
+        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5
         with:
           path: ~/.npm
           key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
@@ -143,7 +143,7 @@ jobs:
             ${{ runner.os }}-npm-
 
       - name: Cache build artifacts
-        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306  # v5
+        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5
         id: build-cache
         with:
           path: |
@@ -164,10 +164,10 @@ jobs:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          MAILER_DSN: 'smtp://127.0.0.1:1025'
-          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
-          TRUSTED_HOSTS: '127.0.0.1,localhost'
-          ECCUBE_AUTH_MAGIC: 'testmagic'
+          MAILER_DSN: "smtp://127.0.0.1:1025"
+          ECCUBE_PACKAGE_API_URL: "http://127.0.0.1:8080"
+          TRUSTED_HOSTS: "127.0.0.1,localhost"
+          ECCUBE_AUTH_MAGIC: "testmagic"
         run: |
           echo "APP_ENV=${APP_ENV}" > .env
           echo "DATABASE_URL=${DATABASE_URL}" >> .env
@@ -181,13 +181,13 @@ jobs:
           bin/console eccube:fixtures:load --env=dev
 
       - name: Cache apt packages
-        uses: awalsh128/cache-apt-pkgs-action@2c09a5e66da6c8016428a2172bd76e5e4f14bb17  # latest
+        uses: awalsh128/cache-apt-pkgs-action@2c09a5e66da6c8016428a2172bd76e5e4f14bb17 # latest
         with:
           packages: fonts-ipafont fonts-ipaexfont
           version: 1.0
 
       - name: setup-chromedriver
-        uses: nanasess/setup-chromedriver@fc3dc5897c11410827ed268ab625038ee63dc6fe  # master
+        uses: nanasess/setup-chromedriver@fc3dc5897c11410827ed268ab625038ee63dc6fe # master
 
       - name: Run chromedriver
         run: |
@@ -229,19 +229,19 @@ jobs:
           sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
           php -dpcov.enabled=1 vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP} --skip-group excludeCoverage --coverage --coverage-xml
       - name: Upload outputs
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
         with:
           name: codeception-${{ matrix.group }}-evidence
           path: codeception/_output/
       - name: Upload report
         if: success()
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
         with:
           name: codeception-${{ matrix.group }}-reports
           path: codeception/_output/**/*.xml
       - name: Upload logs
         if: failure()
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
         with:
           name: codeception-${{ matrix.group }}-logs
           path: var/log/
@@ -249,11 +249,11 @@ jobs:
   upload:
     name: Upload coverage reports
     runs-on: ubuntu-latest
-    needs: [ phpunit ]  # codeception is disabled
+    needs: [phpunit] # codeception is disabled
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
-      - uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3  # v8
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8
         with:
           path: reports
       # Codeception coverage artifacts are not available while codeception job is disabled
@@ -264,13 +264,13 @@ jobs:
       #     mv reports/codeception-front-reports/acceptance\ \(chrome,\ github_action\).remote.coverage.xml reports/acceptance.front.coverage.xml
       #     mv reports/codeception-installer-reports/acceptance\ \(chrome,\ github_action\).remote.coverage.xml reports/acceptance.installer.coverage.xml
       - name: Upload unit test coverage
-        uses: codecov/codecov-action@ad3126e916f78f00edff4ed0317cf185271ccc2d  # v5
+        uses: codecov/codecov-action@ad3126e916f78f00edff4ed0317cf185271ccc2d # v5
         with:
           files: ./reports/phpunit-reports/coverage1.xml
           flags: Unit
           fail_ci_if_error: true
         env:
-            CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       # E2E coverage is disabled while codeception job is disabled
       # - name: Upload E2E coverage
       #   uses: codecov/codecov-action@ad3126e916f78f00edff4ed0317cf185271ccc2d  # v5

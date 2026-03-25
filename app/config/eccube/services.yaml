@@ -5,12 +5,12 @@ parameters:
     container.dumper.inline_class_loader: true
 
     # ec-cube parameters
-    env(ECCUBE_LOCALE): 'ja'
-    env(ECCUBE_TIMEZONE): 'Asia/Tokyo'
-    env(ECCUBE_CURRENCY): 'JPY'
-    locale: '%env(ECCUBE_LOCALE)%'
-    timezone: '%env(ECCUBE_TIMEZONE)%'
-    currency: '%env(ECCUBE_CURRENCY)%'
+    env(ECCUBE_LOCALE): "ja"
+    env(ECCUBE_TIMEZONE): "Asia/Tokyo"
+    env(ECCUBE_CURRENCY): "JPY"
+    locale: "%env(ECCUBE_LOCALE)%"
+    timezone: "%env(ECCUBE_TIMEZONE)%"
+    currency: "%env(ECCUBE_CURRENCY)%"
 
 services:
     # default configuration for services in *this* file
@@ -24,18 +24,18 @@ services:
         public: false
 
         bind:
-          $cartPurchaseFlow: '@eccube.purchase.flow.cart'
-          $shoppingPurchaseFlow: '@eccube.purchase.flow.shopping'
-          $orderPurchaseFlow: '@eccube.purchase.flow.order'
-          $_orderStateMachine: '@state_machine.order'
+            $cartPurchaseFlow: "@eccube.purchase.flow.cart"
+            $shoppingPurchaseFlow: "@eccube.purchase.flow.shopping"
+            $orderPurchaseFlow: "@eccube.purchase.flow.order"
+            $_orderStateMachine: "@state_machine.order"
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     Eccube\:
-        resource: '../../../src/Eccube/*'
+        resource: "../../../src/Eccube/*"
         # you can exclude directories or files
         # but if a service is unused, it's removed anyway
-        exclude: '../../../src/Eccube/{Annotation,Common,Entity,Exception,Log,Plugin,ServiceProvider,Resource,Doctrine/ORM/tools/}'
+        exclude: "../../../src/Eccube/{Annotation,Common,Entity,Exception,Log,Plugin,ServiceProvider,Resource,Doctrine/ORM/tools/}"
 
     Eccube\Common\EccubeConfig:
         public: true
@@ -77,7 +77,8 @@ services:
         lazy: true
 
     Eccube\Service\Composer\ComposerServiceInterface:
-        factory: ['Eccube\Service\Composer\ComposerServiceFactory', createService]
+        factory:
+            ['Eccube\Service\Composer\ComposerServiceFactory', createService]
         arguments:
             $container: !service_locator
                 Eccube\Service\Composer\ComposerApiService: '@Eccube\Service\Composer\ComposerApiService'
@@ -93,11 +94,11 @@ services:
     Eccube\Service\PluginService:
         arguments:
             $container: !service_locator
-                doctrine: '@doctrine'
-                Doctrine\Persistence\ManagerRegistry: '@doctrine'
-                doctrine.orm.default_entity_manager: '@doctrine.orm.default_entity_manager'
-                doctrine.orm.entity_manager: '@doctrine.orm.default_entity_manager'
-                Doctrine\ORM\EntityManagerInterface: '@doctrine.orm.default_entity_manager'
+                doctrine: "@doctrine"
+                Doctrine\Persistence\ManagerRegistry: "@doctrine"
+                doctrine.orm.default_entity_manager: "@doctrine.orm.default_entity_manager"
+                doctrine.orm.entity_manager: "@doctrine.orm.default_entity_manager"
+                Doctrine\ORM\EntityManagerInterface: "@doctrine.orm.default_entity_manager"
                 Eccube\Common\EccubeConfig: '@Eccube\Common\EccubeConfig'
         lazy: true
         public: true
@@ -105,34 +106,39 @@ services:
     # controllers are imported separately to make sure they're public
     # and have a tag that allows actions to type-hint services
     Eccube\Controller\:
-        resource: '../../../src/Eccube/Controller'
-        tags: ['controller.service_arguments']
+        resource: "../../../src/Eccube/Controller"
+        tags: ["controller.service_arguments"]
 
     Eccube\Twig\Extension\EccubeBlockExtension:
-        tags: ['twig.extension']
+        tags: ["twig.extension"]
         bind:
-          $blockTemplates: '%eccube_twig_block_templates%'
+            $blockTemplates: "%eccube_twig_block_templates%"
 
     Plugin\:
-        resource: '../../../app/Plugin/*'
-        exclude: '../../../app/Plugin/*/{Entity,Resource,ServiceProvider,Tests,Codeception,DoctrineMigrations,vendor}'
+        resource: "../../../app/Plugin/*"
+        exclude: "../../../app/Plugin/*/{Entity,Resource,ServiceProvider,Tests,Codeception,DoctrineMigrations,vendor}"
 
     Customize\:
-        resource: '../../../app/Customize/*'
-        exclude: '../../../app/Customize/{Entity,Resource,Tests}'
+        resource: "../../../app/Customize/*"
+        exclude: "../../../app/Customize/{Entity,Resource,Tests}"
 
     Customize\Controller\:
-        resource: '../../../app/Customize/Controller'
-        tags: ['controller.service_arguments']
+        resource: "../../../app/Customize/Controller"
+        tags: ["controller.service_arguments"]
 
     twig.extension.stringloader:
         class: Twig\Extension\StringLoaderExtension
-        tags: ['twig.extension']
+        tags: ["twig.extension"]
 
     eccube.collector.core:
         class: Eccube\DataCollector\EccubeDataCollector
         tags:
-          - { name: 'data_collector', template: '@toolbar/eccube.html.twig', id: 'eccube_core', priority: -512 }
+            - {
+                  name: "data_collector",
+                  template: "@toolbar/eccube.html.twig",
+                  id: "eccube_core",
+                  priority: -512,
+              }
 
     eccube.security.success_handler:
         class: Eccube\Security\Http\Authentication\EccubeAuthenticationSuccessHandler
@@ -143,7 +149,7 @@ services:
     eccube.security.logout.success_handler:
         class: Eccube\Security\Http\Authentication\EccubeLogoutSuccessHandler
         arguments:
-          - '@Eccube\Request\Context'
+            - '@Eccube\Request\Context'
 
     # Autowiring can't guess the constructor arguments that are not type-hinted with
     # classes (e.g. container parameters) so you must define those arguments explicitly
@@ -167,10 +173,10 @@ services:
     eccube.logger:
         class: Eccube\Log\Logger
         arguments:
-          - '@Eccube\Request\Context'
-          - '@monolog.logger'
-          - '@monolog.logger.front'
-          - '@monolog.logger.admin'
+            - '@Eccube\Request\Context'
+            - "@monolog.logger"
+            - "@monolog.logger.front"
+            - "@monolog.logger.admin"
         lazy: true
         public: true
 
@@ -193,23 +199,27 @@ services:
 
     Monolog\Processor\IntrospectionProcessor:
         arguments:
-            - 100               # Logger::DEBUG = 100
+            - 100 # Logger::DEBUG = 100
             - ['Eccube\\Log', 'Psr\\Log']
         tags:
             - { name: monolog.processor }
 
     Symfony\Bridge\Monolog\Processor\WebProcessor:
         arguments:
-          - url: REQUEST_URI
-            ip: REMOTE_ADDR
-            http_method: REQUEST_METHOD
-            server: SERVER_NAME
-            referrer: HTTP_REFERER
-            # add user aegnt
-            user_agent: HTTP_USER_AGENT
+            - url: REQUEST_URI
+              ip: REMOTE_ADDR
+              http_method: REQUEST_METHOD
+              server: SERVER_NAME
+              referrer: HTTP_REFERER
+              # add user aegnt
+              user_agent: HTTP_USER_AGENT
         tags:
             - { name: monolog.processor }
-            - { name: kernel.event_listener, event: kernel.request, priority: 1024 }
+            - {
+                  name: kernel.event_listener,
+                  event: kernel.request,
+                  priority: 1024,
+              }
 
     Symfony\Component\HttpFoundation\ParameterBag:
 
@@ -221,11 +231,11 @@ services:
     native_file_session_handler:
         class: Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler
         arguments:
-            - '%session.save_path%'
+            - "%session.save_path%"
 
     Eccube\Session\Storage\Handler\SameSiteNoneCompatSessionHandler:
         arguments:
-            - '@native_file_session_handler'
+            - "@native_file_session_handler"
 
     Doctrine\Common\Annotations\Reader:
         class: Doctrine\Common\Annotations\AnnotationReader
@@ -235,37 +245,41 @@ services:
 
     Detection\MobileDetect:
         tags:
-          - { name: mobile_detect.mobile_detector.default }
-          - { name: mobile_detect.mobile_detector }
+            - { name: mobile_detect.mobile_detector.default }
+            - { name: mobile_detect.mobile_detector }
         public: true
 
     Eccube\Form\Extension\HTMLPurifierTextTypeExtension:
         arguments:
             - '@Eccube\Request\Context'
         tags:
-            - { name: form.type_extension, priority: -99, extended_type: Symfony\Component\Form\Extension\Core\Type\TextType }
+            - {
+                  name: form.type_extension,
+                  priority: -99,
+                  extended_type: Symfony\Component\Form\Extension\Core\Type\TextType,
+              }
 
     Eccube\EventListener\RateLimiterListener:
-        arguments: [ !tagged_locator { tag: 'eccube_rate_limiter' } ]
+        arguments: [!tagged_locator { tag: "eccube_rate_limiter" }]
 
     Eccube\Security\PasswordHasher\PasswordHasher:
         arguments:
-            - '%eccube_auth_magic%'
-            - '%eccube_auth_type%'
-            - '%eccube_password_hash_algos%'
+            - "%eccube_auth_magic%"
+            - "%eccube_auth_type%"
+            - "%eccube_password_hash_algos%"
 
     Eccube\Controller\ShoppingController:
         arguments:
-            $serviceContainer: !tagged_locator { tag: 'eccube_payment_method' }
-        tags: [ 'controller.service_arguments' ]
+            $serviceContainer: !tagged_locator { tag: "eccube_payment_method" }
+        tags: ["controller.service_arguments"]
 
     Eccube\Util\CacheUtil:
         arguments:
-            $container: !tagged_locator { tag: 'cache.pool.clearer' }
+            $container: !tagged_locator { tag: "cache.pool.clearer" }
 
     Eccube\Asset\FilemtimeVersionStrategy:
         arguments:
-            - '%eccube_html_dir%/user_data'
+            - "%eccube_html_dir%/user_data"
 
     eccube.asset.user_data_version_strategy:
         alias: Eccube\Asset\FilemtimeVersionStrategy

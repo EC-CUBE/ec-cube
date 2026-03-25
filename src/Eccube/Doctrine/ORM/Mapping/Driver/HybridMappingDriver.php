@@ -108,7 +108,7 @@ class HybridMappingDriver implements MappingDriver
                     new \RecursiveDirectoryIterator($path, \FilesystemIterator::SKIP_DOTS),
                     \RecursiveIteratorIterator::LEAVES_ONLY
                 ),
-                '/^.+'.preg_quote($this->fileExtension).'$/i',
+                '/^.+' . preg_quote($this->fileExtension) . '$/i',
                 \RecursiveRegexIterator::GET_MATCH
             );
 
@@ -128,7 +128,7 @@ class HybridMappingDriver implements MappingDriver
                     }
                 }
 
-                $projectDir = realpath(__DIR__.'/../../../../../../');
+                $projectDir = realpath(__DIR__ . '/../../../../../../');
                 if ('\\' === DIRECTORY_SEPARATOR) {
                     $path = str_replace('\\', '/', $path);
                     $this->trait_proxies_directory = str_replace('\\', '/', $this->trait_proxies_directory);
@@ -138,7 +138,7 @@ class HybridMappingDriver implements MappingDriver
 
                 // Replace /path/to/ec-cube to proxies path
                 if ($this->trait_proxies_directory) {
-                    $proxyFile = str_replace($projectDir, $this->trait_proxies_directory, $path).'/'.basename($sourceFile);
+                    $proxyFile = str_replace($projectDir, $this->trait_proxies_directory, $path) . '/' . basename($sourceFile);
                     if (file_exists($proxyFile)) {
                         require_once $proxyFile;
                         $sourceFile = $proxyFile;

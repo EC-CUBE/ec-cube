@@ -181,11 +181,11 @@ class InstallController extends AbstractController
         $projectDir = $this->getParameter('kernel.project_dir');
 
         $eccubeDirs = array_map(function ($dir) use ($projectDir) {
-            return $projectDir.'/'.$dir;
+            return $projectDir . '/' . $dir;
         }, $this->eccubeDirs);
 
         $eccubeFiles = array_map(function ($file) use ($projectDir) {
-            return $projectDir.'/'.$file;
+            return $projectDir . '/' . $file;
         }, $this->eccubeFiles);
 
         // ルートディレクトリの書き込み権限をチェック
@@ -216,20 +216,20 @@ class InstallController extends AbstractController
         }
 
         $faviconPath = '/assets/img/common/favicon.ico';
-        if (!file_exists($this->getParameter('eccube_html_dir').'/user_data'.$faviconPath)) {
+        if (!file_exists($this->getParameter('eccube_html_dir') . '/user_data' . $faviconPath)) {
             $file = new Filesystem();
             $file->copy(
-                $this->getParameter('eccube_html_front_dir').$faviconPath,
-                $this->getParameter('eccube_html_dir').'/user_data'.$faviconPath
+                $this->getParameter('eccube_html_front_dir') . $faviconPath,
+                $this->getParameter('eccube_html_dir') . '/user_data' . $faviconPath
             );
         }
 
         $logoPath = '/assets/pdf/logo.png';
-        if (!file_exists($this->getParameter('eccube_html_dir').'/user_data'.$logoPath)) {
+        if (!file_exists($this->getParameter('eccube_html_dir') . '/user_data' . $logoPath)) {
             $file = new Filesystem();
             $file->copy(
-                $this->getParameter('eccube_html_admin_dir').$logoPath,
-                $this->getParameter('eccube_html_dir').'/user_data'.$logoPath
+                $this->getParameter('eccube_html_admin_dir') . $logoPath,
+                $this->getParameter('eccube_html_dir') . '/user_data' . $logoPath
             );
         }
 
@@ -422,7 +422,7 @@ class InstallController extends AbstractController
                 $host = $request->getSchemeAndHttpHost();
                 $basePath = $request->getBasePath();
                 $params = [
-                    'http_url' => $host.$basePath,
+                    'http_url' => $host . $basePath,
                     'shop_name' => $sessionData['shop_name'],
                 ];
                 $this->sendAppData($params, $em);
@@ -458,7 +458,7 @@ class InstallController extends AbstractController
         } elseif ($forceSSL === true) {
             $forceSSL = '1';
         }
-        $env = file_get_contents(__DIR__.'/../../../../.env.dist');
+        $env = file_get_contents(__DIR__ . '/../../../../.env.dist');
         $replacement = [
             'APP_ENV' => 'prod',
             'APP_DEBUG' => '0',
@@ -472,24 +472,24 @@ class InstallController extends AbstractController
             'ECCUBE_COOKIE_PATH' => $request->getBasePath() ? $request->getBasePath() : '/',
             'ECCUBE_TEMPLATE_CODE' => 'default',
             'ECCUBE_LOCALE' => 'ja',
-            'TRUSTED_HOSTS' => '^'.str_replace('.', '\\.', $request->getHost()).'$',
+            'TRUSTED_HOSTS' => '^' . str_replace('.', '\\.', $request->getHost()) . '$',
             'DATABASE_CHARSET' => \str_starts_with($databaseUrl, 'mysql') ? 'utf8mb4' : 'utf8',
         ];
 
         $env = StringUtil::replaceOrAddEnv($env, $replacement);
 
         if ($this->getParameter('kernel.environment') === 'install') {
-            file_put_contents(__DIR__.'/../../../../.env', $env);
+            file_put_contents(__DIR__ . '/../../../../.env', $env);
         }
         $host = $request->getSchemeAndHttpHost();
         $basePath = $request->getBasePath();
-        $adminUrl = $host.$basePath.'/'.$replacement['ECCUBE_ADMIN_ROUTE'];
+        $adminUrl = $host . $basePath . '/' . $replacement['ECCUBE_ADMIN_ROUTE'];
 
         $this->removeSessionData($this->session);
 
         // 有効化URLのトランザクションチェックファイルを生成する
         $token = StringUtil::random(32);
-        file_put_contents($this->getParameter('kernel.project_dir').self::TRANSACTION_CHECK_FILE, time() + (60 * 10).':'.$token);
+        file_put_contents($this->getParameter('kernel.project_dir') . self::TRANSACTION_CHECK_FILE, time() + (60 * 10) . ':' . $token);
 
         $this->cacheUtil->clearCache('prod');
 
@@ -575,14 +575,14 @@ class InstallController extends AbstractController
     protected function createEntityManager(Connection $conn)
     {
         $paths = [
-            $this->getParameter('kernel.project_dir').'/src/Eccube/Entity',
-            $this->getParameter('kernel.project_dir').'/app/Customize/Entity',
+            $this->getParameter('kernel.project_dir') . '/src/Eccube/Entity',
+            $this->getParameter('kernel.project_dir') . '/app/Customize/Entity',
         ];
 
         $config = ORMSetup::createAttributeMetadataConfiguration($paths, true);
 
         $driver = new HybridMappingDriver($paths);
-        $driver->setTraitProxiesDirectory($this->getParameter('kernel.project_dir').'/app/proxy/entity');
+        $driver->setTraitProxiesDirectory($this->getParameter('kernel.project_dir') . '/app/proxy/entity');
         $config->setMetadataDriverImpl($driver);
 
         $em = new EntityManager($conn, $config);
@@ -602,7 +602,7 @@ class InstallController extends AbstractController
         $url = '';
         switch ($params['database']) {
             case 'pdo_sqlite':
-                $url = 'sqlite://'.$params['database_name'];
+                $url = 'sqlite://' . $params['database_name'];
                 break;
 
             case 'pdo_mysql':
@@ -612,14 +612,14 @@ class InstallController extends AbstractController
                 if (isset($params['database_user'])) {
                     $url .= $params['database_user'];
                     if (isset($params['database_password'])) {
-                        $url .= ':'.\rawurlencode($params['database_password']);
+                        $url .= ':' . \rawurlencode($params['database_password']);
                     }
                     $url .= '@';
                 }
                 if (isset($params['database_host'])) {
                     $url .= $params['database_host'];
                     if (isset($params['database_port'])) {
-                        $url .= ':'.$params['database_port'];
+                        $url .= ':' . $params['database_port'];
                     }
                     $url .= '/';
                 }
@@ -651,7 +651,7 @@ class InstallController extends AbstractController
         }
 
         return [
-            'database' => 'pdo_'.$parsed['scheme'],
+            'database' => 'pdo_' . $parsed['scheme'],
             'database_name' => ltrim($parsed['path'], '/'),
             'database_host' => $parsed['host'],
             'database_port' => isset($parsed['port']) ? $parsed['port'] : null,
@@ -668,14 +668,14 @@ class InstallController extends AbstractController
     public function createMailerUrl(array $params)
     {
         if (isset($params['transport'])) {
-            $url = $params['transport'].'://';
+            $url = $params['transport'] . '://';
         } else {
             $url = 'smtp://';
         }
         if (isset($params['smtp_username'])) {
             $url .= $params['smtp_username'];
             if (isset($params['smtp_password'])) {
-                $url .= ':'.$params['smtp_password'];
+                $url .= ':' . $params['smtp_password'];
             }
             $url .= '@';
         }
@@ -699,7 +699,7 @@ class InstallController extends AbstractController
         if (isset($params['smtp_host'])) {
             $url .= $params['smtp_host'];
             if (isset($params['smtp_port'])) {
-                $url .= ':'.$params['smtp_port'];
+                $url .= ':' . $params['smtp_port'];
             }
         }
 
@@ -707,7 +707,7 @@ class InstallController extends AbstractController
             $url .= '?';
             $i = count($queryStrings);
             foreach ($queryStrings as $key => $value) {
-                $url .= $key.'='.$value;
+                $url .= $key . '=' . $value;
                 if ($i > 1) {
                     $url .= '&';
                 }
@@ -804,7 +804,7 @@ class InstallController extends AbstractController
         $localeDir = is_null($locales) ? 'ja' : $locales['language'];
 
         $loader = new \Eccube\Doctrine\Common\CsvDataFixtures\Loader();
-        $loader->loadFromDirectory($this->getParameter('kernel.project_dir').'/src/Eccube/Resource/doctrine/import_csv/'.$localeDir);
+        $loader->loadFromDirectory($this->getParameter('kernel.project_dir') . '/src/Eccube/Resource/doctrine/import_csv/' . $localeDir);
         $executer = new \Eccube\Doctrine\Common\CsvDataFixtures\Executor\DbalExecutor($em);
         $fixtures = $loader->getFixtures();
         $executer->execute($fixtures);
@@ -928,7 +928,7 @@ class InstallController extends AbstractController
             'shop_name' => $params['shop_name'],
             'cube_ver' => Constant::VERSION,
             'php_ver' => phpversion(),
-            'db_ver' => $platformName.' '.$version,
+            'db_ver' => $platformName . ' ' . $version,
             'os_type' => php_uname(),
         ];
 
@@ -944,7 +944,7 @@ class InstallController extends AbstractController
             $query = http_build_query($this->createAppData($params, $em));
             $header = [
                 'Content-Type: application/x-www-form-urlencoded',
-                'Content-Length: '.strlen($query),
+                'Content-Length: ' . strlen($query),
             ];
             $context = stream_context_create(
                 [
