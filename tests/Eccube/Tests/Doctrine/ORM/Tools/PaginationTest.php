@@ -58,6 +58,11 @@ class PaginationTest extends EccubeTestCase
     protected $memberRepository;
 
     /**
+     * @var bool setUp内でDDLを実行したかどうか (tearDownでの後始末に使用)
+     */
+    private bool $ddlExecuted = false;
+
+    /**
      * {@inheritdoc}
      *
      * @throws ConnectionException
@@ -88,6 +93,7 @@ class PaginationTest extends EccubeTestCase
         $this->dropTable($conn);
         $this->createTable($conn);
         $conn->beginTransaction();
+        $this->ddlExecuted = true;
 
         // テスト用のエンティティを用意
         $config = $em->getConfiguration();
@@ -116,13 +122,15 @@ class PaginationTest extends EccubeTestCase
 
     protected function tearDown(): void
     {
-        /** @var EntityManager $em */
-        $em = $this->entityManager;
-        if ($em) {
-            $conn = $em->getConnection();
-            $conn->rollBack();
-            $this->dropTable($conn);
-            $conn->beginTransaction();
+        if ($this->ddlExecuted) {
+            /** @var EntityManager $em */
+            $em = $this->entityManager;
+            if ($em) {
+                $conn = $em->getConnection();
+                $conn->rollBack();
+                $this->dropTable($conn);
+                $conn->beginTransaction();
+            }
         }
 
         parent::tearDown();
