@@ -21,9 +21,14 @@ file that was distributed with this source code.
     </div>
 
     <div class="ec-role">
+        {% set show_guest = is_granted('IS_AUTHENTICATED_REMEMBERED') == false and BaseInfo.option_guest_purchase %}
+        {% if show_guest %}
         <div class="ec-grid3">
-
             <div class="ec-grid3__cell2">
+        {% else %}
+        <div class="ec-off2Grid">
+            <div class="ec-off2Grid__cell">
+        {% endif %}
                 <form name="shopping_login" id="shopping_login" method="post" action="{{ url('mypage_login') }}">
                     <input type="hidden" name="_target_path" value="{{ url('shopping') }}" />
                     <input type="hidden" name="_failure_path" value="{{ url('shopping_login') }}" />
@@ -69,7 +74,7 @@ file that was distributed with this source code.
                 </form>
             </div>
 
-            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') == false %}
+            {% if show_guest %}
                 <div class="ec-grid3__cell">
                     <div class="ec-guest">
                         <div class="ec-guest__inner">

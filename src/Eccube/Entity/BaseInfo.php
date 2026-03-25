@@ -124,6 +124,9 @@ if (!class_exists(BaseInfo::class)) {
         #[ORM\Column(name: 'authentication_key', type: Types::STRING, length: 255, nullable: true)]
         private ?string $authentication_key = null;
 
+        #[ORM\Column(name: 'option_guest_purchase', type: Types::BOOLEAN, options: ['default' => true])]
+        private bool $option_guest_purchase = true;
+
         /**
          * @deprecated 使用していないため、削除予定
          */
@@ -628,6 +631,24 @@ if (!class_exists(BaseInfo::class)) {
         public function isOptionCustomerActivate(): bool
         {
             return $this->option_customer_activate;
+        }
+
+        /**
+         * Set optionGuestPurchase.
+         */
+        public function setOptionGuestPurchase(bool $optionGuestPurchase): BaseInfo
+        {
+            $this->option_guest_purchase = $optionGuestPurchase;
+
+            return $this;
+        }
+
+        /**
+         * Get optionGuestPurchase.
+         */
+        public function isOptionGuestPurchase(): bool
+        {
+            return $this->option_guest_purchase;
         }
 
         /**
