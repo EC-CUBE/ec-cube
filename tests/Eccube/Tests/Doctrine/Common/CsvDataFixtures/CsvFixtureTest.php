@@ -44,14 +44,22 @@ class CsvFixtureTest extends EccubeTestCase
 
         $this->jobRepository = $this->entityManager->getRepository(Job::class);
 
+        $conn = $this->entityManager->getConnection();
+        // MySQL では外部キー制約によりJobを直接削除できないため, 制約チェックを一時的に無効化する
+        if ($conn->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\AbstractMySQLPlatform) {
+            $conn->executeStatement('SET FOREIGN_KEY_CHECKS = 0');
+        }
         $Jobs = $this->jobRepository->findAll();
         foreach ($Jobs as $Job) {
             $this->entityManager->remove($Job);
         }
         $this->entityManager->flush();
+        if ($conn->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\AbstractMySQLPlatform) {
+            $conn->executeStatement('SET FOREIGN_KEY_CHECKS = 1');
+        }
 
         $this->file = new \SplFileObject(
-            __DIR__.'/../../../../../Fixtures/import_csv/mtb_job.csv'
+            __DIR__ . '/../../../../../Fixtures/import_csv/mtb_job.csv'
         );
         $this->fixture = new CsvFixture($this->file);
     }
@@ -93,9 +101,9 @@ class CsvFixtureTest extends EccubeTestCase
         $this->actual = count($Jobs);
         $this->verify('行数は一致するか？');
         foreach ($Jobs as $key => $Job) {
-            $this->expected = $rows[$key][0].', '.$rows[$key][1].', '.$rows[$key][2];
-            $this->actual = $Job->getId().', '.$Job->getName().', '.$Job->getSortNo();
-            $this->verify($key.'行目のデータは一致するか？');
+            $this->expected = $rows[$key][0] . ', ' . $rows[$key][1] . ', ' . $rows[$key][2];
+            $this->actual = $Job->getId() . ', ' . $Job->getName() . ', ' . $Job->getSortNo();
+            $this->verify($key . '行目のデータは一致するか？');
         }
     }
 }

@@ -23,7 +23,7 @@ use PHPUnit\Framework\TestCase;
 class SameSiteNoneCompatSessionHandlerTest extends TestCase
 {
     private static $server;
-    public const FIXTURES_DIR = __DIR__.'/../../../../../Fixtures/session';
+    public const FIXTURES_DIR = __DIR__ . '/../../../../../Fixtures/session';
 
     public static function setUpBeforeClass(): void
     {
@@ -66,7 +66,16 @@ class SameSiteNoneCompatSessionHandlerTest extends TestCase
         }
 
         if (!$shouldSendSameSiteNone) {
-            $this->assertStringEqualsFile(sprintf(self::FIXTURES_DIR.'/%s.secure.expected', $fixture), $result);
+            $this->assertStringEqualsFile(sprintf(self::FIXTURES_DIR . '/%s.secure.expected', $fixture), $result);
+        } else {
+            // SameSite=None を送信すべきケースでは secure.samesite.expected を検証する.
+            // 期待値ファイルが未整備の場合は結果が文字列であることだけ確認する.
+            $expectedFile = sprintf(self::FIXTURES_DIR . '/%s.secure.samesite.expected', $fixture);
+            if (file_exists($expectedFile)) {
+                $this->assertStringEqualsFile($expectedFile, $result);
+            } else {
+                $this->assertIsString($result);
+            }
         }
     }
 
@@ -92,7 +101,7 @@ class SameSiteNoneCompatSessionHandlerTest extends TestCase
             $result = str_replace('01 Jan 1970', '01-Jan-1970', $result);
         }
 
-        $this->assertStringEqualsFile(sprintf(self::FIXTURES_DIR.'/%s.expected', $fixture), $result);
+        $this->assertStringEqualsFile(sprintf(self::FIXTURES_DIR . '/%s.expected', $fixture), $result);
     }
 
     /**
@@ -112,7 +121,7 @@ class SameSiteNoneCompatSessionHandlerTest extends TestCase
             'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_3) AppleWebKit/534.31 (KHTML, like Gecko) Chrome/17.0.558.0 Safari/534.31 UCBrowser/3.0.0.357' => false,
         ];
 
-        foreach (glob(self::FIXTURES_DIR.'/*.php') as $file) {
+        foreach (glob(self::FIXTURES_DIR . '/*.php') as $file) {
             $name = pathinfo($file, PATHINFO_FILENAME);
             if ($name == 'common') {
                 continue;

@@ -13,9 +13,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ ubuntu-24.04 ]
-        php: [ '8.2', '8.3' ]
-        db: [ mysql, pgsql, sqlite3 ]
+        operating-system: [ubuntu-24.04]
+        php: ["8.2", "8.3"]
+        db: [mysql, pgsql, sqlite3]
         include:
           - db: mysql
             database_url: mysql://root:password@127.0.0.1:3306/eccube_db
@@ -50,10 +50,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1  # v2
+        uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1 # v2
         with:
           php-version: ${{ matrix.php }}
           extensions: :xdebug
@@ -62,7 +62,7 @@ jobs:
         uses: ./.github/actions/composer
 
       - name: Cache Database Schema
-        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306  # v5
+        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5
         id: schema-cache
         with:
           path: |
@@ -74,13 +74,13 @@ jobs:
 
       - name: Setup EC-CUBE
         env:
-          APP_ENV: 'test'
-          APP_DEBUG: '0'
+          APP_ENV: "test"
+          APP_DEBUG: "0"
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
-          ECCUBE_AUTH_MAGIC: 'testmagic'
-          MAILER_DSN: 'null://null'
+          ECCUBE_AUTH_MAGIC: "testmagic"
+          MAILER_DSN: "null://null"
         run: |
           mkdir -p var/log/test
           bin/console doctrine:database:create --if-not-exists || true
@@ -88,34 +88,28 @@ jobs:
           bin/console eccube:fixtures:load
           bin/console assets:install --symlink --relative html
 
-      ## XXX MySQL で Syntax error or access violation: 1305 SAVEPOINT DOCTRINE2_SAVEPOINT_3 does not exist が
-      ## 発生するため \DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension を削除する
-      ## see https://github.com/dmaicher/doctrine-test-bundle/issues/58#issuecomment-391081408
-      - run: sed -e '/DoctrineTestBundle/d' phpunit.xml.dist > phpunit.xml
-        if: ${{ matrix.db == 'mysql' }}
-
       - name: PHPUnit
-        uses: nick-invision/retry@ce71cc2ab81d554ebbe88c79ab5975992d79ba08  # v3
+        uses: nick-invision/retry@ce71cc2ab81d554ebbe88c79ab5975992d79ba08 # v3
         with:
-          timeout_minutes: 50
+          timeout_minutes: 10
           max_attempts: 2
           retry_on: error
           command: vendor/bin/phpunit --exclude-group cache-clear,cache-clear-install,update-schema-doctrine,plugin-service --do-not-fail-on-phpunit-warning
         env:
-          APP_ENV: 'test'
+          APP_ENV: "test"
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
-          ECCUBE_AUTH_MAGIC: 'testmagic'
-          MAILER_DSN: 'null://null'
+          ECCUBE_AUTH_MAGIC: "testmagic"
+          MAILER_DSN: "null://null"
       - name: PHPUnit
         env:
-          APP_ENV: 'test'
+          APP_ENV: "test"
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
-          ECCUBE_AUTH_MAGIC: 'testmagic'
-          MAILER_DSN: 'null://null'
+          ECCUBE_AUTH_MAGIC: "testmagic"
+          MAILER_DSN: "null://null"
         run: |
           echo "session.save_path=$PWD/var/sessions/test" > php.ini
           echo "memory_limit=512M" >> php.ini
@@ -136,12 +130,12 @@ jobs:
         if: ${{ matrix.db == 'mysql' }}
       - name: PHPUnit
         env:
-          APP_ENV: 'test'
+          APP_ENV: "test"
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
-          ECCUBE_AUTH_MAGIC: 'testmagic'
-          MAILER_DSN: 'null://null'
+          ECCUBE_AUTH_MAGIC: "testmagic"
+          MAILER_DSN: "null://null"
         run: |
           rm -r app/Plugin/*
           git checkout app/Plugin

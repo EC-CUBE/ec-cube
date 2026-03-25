@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Doctrine\ORM\Tools;
 
+use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
 use Doctrine\DBAL\ConnectionException;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
@@ -36,6 +37,44 @@ class PaginationTest extends EccubeTestCase
      * @var array
      */
     protected $expectedIds = [];
+
+    /**
+     * MySQL用: テーブルをDAMAのSAVEPOINT外で事前作成するためのフラグ
+     */
+    private static bool $mysqlTableCreated = false;
+
+    public static function setUpBeforeClass(): void
+    {
+        parent::setUpBeforeClass();
+
+        // MySQL: DDLは暗黙的COMMITを引き起こすため、DAMA SAVEPOINT外でテーブルを作成する
+        // StaticDriverを一時的に無効にしてKernelを起動し、DDLを実行する
+        StaticDriver::setKeepStaticConnections(false);
+        $kernel = static::bootKernel();
+        $conn = $kernel->getContainer()->get('doctrine')->getConnection();
+        if ($conn->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\AbstractMySQLPlatform) {
+            $conn->executeStatement('DROP TABLE IF EXISTS test_entity');
+            $conn->executeStatement('CREATE TABLE test_entity(id INT, col INT, PRIMARY KEY(id))');
+            self::$mysqlTableCreated = true;
+        }
+        static::ensureKernelShutdown();
+        StaticDriver::setKeepStaticConnections(true);
+    }
+
+    public static function tearDownAfterClass(): void
+    {
+        if (self::$mysqlTableCreated) {
+            StaticDriver::setKeepStaticConnections(false);
+            $kernel = static::bootKernel();
+            $conn = $kernel->getContainer()->get('doctrine')->getConnection();
+            $conn->executeStatement('DROP TABLE IF EXISTS test_entity');
+            self::$mysqlTableCreated = false;
+            static::ensureKernelShutdown();
+            StaticDriver::setKeepStaticConnections(true);
+        }
+
+        parent::tearDownAfterClass();
+    }
 
     /**
      * @var ProductRepository
@@ -73,18 +112,24 @@ class PaginationTest extends EccubeTestCase
         $this->tagRepository = $this->entityManager->getRepository(Tag::class);
         $this->memberRepository = $this->entityManager->getRepository(Member::class);
 
-        // mysqlの場合, トランザクション中にcreate tableを行うと暗黙的にcommitされてしまい, テストデータをロールバックできない
-        // そのため, create tableを行った後に, 再度トランザクションを開始するようにしている
+        // mysqlの場合, トランザクション中にcreate tableを行うと暗黙的にcommitされてしまい,
+        // DAMA DoctrineTestBundleのSAVEPOINTも破壊されてしまう.
+        // そのため, テーブル作成はsetUpBeforeClass()で一度だけ行い,
+        // テストデータはDAMAの通常のロールバックで巻き戻す.
         /** @var EntityManager $em */
         $em = $this->entityManager;
         $conn = $em->getConnection();
-        if ($conn->isTransactionActive()) {
-            $conn->rollBack();
-        }
+        $isMysql = $conn->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 
-        $this->dropTable($conn);
-        $this->createTable($conn);
-        $conn->beginTransaction();
+        if (!$isMysql) {
+            // PostgreSQL/SQLite: トランザクション中のDDLがサポートされる
+            if ($conn->isTransactionActive()) {
+                $conn->rollBack();
+            }
+            $this->dropTable($conn);
+            $this->createTable($conn);
+            $conn->beginTransaction();
+        }
 
         // テスト用のエンティティを用意
         $config = $em->getConfiguration();
@@ -117,9 +162,16 @@ class PaginationTest extends EccubeTestCase
         $em = $this->entityManager;
         if ($em) {
             $conn = $em->getConnection();
-            $conn->rollBack();
-            $this->dropTable($conn);
-            $conn->beginTransaction();
+            $isMysql = $conn->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
+
+            if ($isMysql) {
+                // MySQL: test_entityのデータだけ削除する（テーブル自体はtearDownAfterClassで削除）
+                $conn->executeStatement('DELETE FROM test_entity');
+            } else {
+                $conn->rollBack();
+                $this->dropTable($conn);
+                $conn->beginTransaction();
+            }
         }
 
         parent::tearDown();
@@ -163,7 +215,7 @@ class PaginationTest extends EccubeTestCase
         $this->expected = array_slice($this->expectedIds, 0, $pageMax);
         $this->actual = $actualIds;
         $this->verify('product_class.price02 降順なので, id 昇順にソートされるはず');
-        $this->assertSame($pageMax, count($this->actual), 'paginatorの結果は'.$pageMax.'件');
+        $this->assertSame($pageMax, count($this->actual), 'paginatorの結果は' . $pageMax . '件');
     }
 
     /**
@@ -225,7 +277,7 @@ class PaginationTest extends EccubeTestCase
         $this->expected = array_slice($this->expectedIds, 0, $pageMax);
         $this->actual = $actualIds;
         $this->verify('test_entity.col 降順なので, id 昇順にソートされるはず');
-        $this->assertSame($pageMax, count($this->actual), 'paginatorの結果は'.$pageMax.'件');
+        $this->assertSame($pageMax, count($this->actual), 'paginatorの結果は' . $pageMax . '件');
     }
 
     /**
@@ -355,6 +407,4 @@ class TestEntity
     public $col;
 }
 
-class TestRepository extends EntityRepository
-{
-}
+class TestRepository extends EntityRepository {}
