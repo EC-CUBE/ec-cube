@@ -521,7 +521,7 @@ abstract class Abstract_Plugin
     public function tableExists()
     {
         foreach ($this->tables as $table) {
-            $exists = $this->conn->executeQuery("SELECT count(*) AS count FROM information_schema.columns WHERE table_name = '".$table."';")->fetch()['count'] > 0;
+            $exists = $this->conn->executeQuery("SELECT count(*) AS count FROM information_schema.columns WHERE table_name = '".$table."';")->fetchAssociative()['count'] > 0;
             $this->I->assertTrue($exists, 'テーブルがあるはず '.$table);
         }
     }
@@ -529,7 +529,7 @@ abstract class Abstract_Plugin
     public function tableNotExists()
     {
         foreach ($this->tables as $table) {
-            $exists = $this->conn->executeQuery("SELECT count(*) AS count FROM information_schema.columns WHERE table_name = '".$table."';")->fetch()['count'] > 0;
+            $exists = $this->conn->executeQuery("SELECT count(*) AS count FROM information_schema.columns WHERE table_name = '".$table."';")->fetchAssociative()['count'] > 0;
             $this->I->assertFalse($exists, 'テーブルがないはず '.$table);
         }
     }
@@ -538,7 +538,7 @@ abstract class Abstract_Plugin
     {
         foreach ($this->columns as $column) {
             list($tableName, $columnName) = explode('.', $column);
-            $exists = $this->conn->executeQuery("SELECT count(*) AS count FROM information_schema.columns WHERE table_name = '{$tableName}' AND column_name = '{$columnName}';")->fetch()['count'] == 1;
+            $exists = $this->conn->executeQuery("SELECT count(*) AS count FROM information_schema.columns WHERE table_name = '{$tableName}' AND column_name = '{$columnName}';")->fetchAssociative()['count'] == 1;
             $this->I->assertTrue($exists, 'カラムがあるはず '.$column);
         }
     }
@@ -547,7 +547,7 @@ abstract class Abstract_Plugin
     {
         foreach ($this->columns as $column) {
             list($tableName, $columnName) = explode('.', $column);
-            $exists = $this->conn->executeQuery("SELECT count(*) AS count FROM information_schema.columns WHERE table_name = '{$tableName}' AND column_name = '{$columnName}';")->fetch()['count'] == 1;
+            $exists = $this->conn->executeQuery("SELECT count(*) AS count FROM information_schema.columns WHERE table_name = '{$tableName}' AND column_name = '{$columnName}';")->fetchAssociative()['count'] == 1;
             $this->I->assertFalse($exists, 'カラムがないはず '.$column);
         }
     }
