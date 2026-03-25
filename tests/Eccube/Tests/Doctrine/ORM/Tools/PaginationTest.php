@@ -60,7 +60,7 @@ class PaginationTest extends EccubeTestCase
     /**
      * @var bool setUp内でDDLを実行したかどうか (tearDownでの後始末に使用)
      */
-    private bool $ddlExecuted = false;
+    private ?bool $ddlExecuted = false;
 
     /**
      * {@inheritdoc}
