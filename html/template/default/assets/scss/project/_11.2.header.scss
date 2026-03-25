@@ -30,7 +30,7 @@ Styleguide 11.2
   min-height: 100dvh;
   transition: transform 0.3s;
   background: #fff;
-  /* default_frame が --ec-mode-alert-strips（0〜3）をセット。帯1本あたり 50px */
+  /* body が --ec-mode-alert-strips（0〜3）をセット。帯1本あたり 50px */
   padding-top: calc(var(--ec-mode-alert-strips, 0) * 50px);
   & &__contentTop {
     padding: 0;
@@ -164,6 +164,12 @@ Styleguide 11.2
   }
 }
 
+/* SP 固定ナビ: モード帯の高さ分だけ viewport 上端から下げる（--ec-mode-alert-strips は body） */
+.ec-headerNavSP,
+.ec-drawerRoleClose {
+  top: calc(var(--ec-mode-alert-strips, 0) * 50px + 10px);
+}
+
 .ec-headerNavSP {
   display: block;
   cursor: pointer;
@@ -178,9 +184,8 @@ Styleguide 11.2
   color: black;
   background: white;
   position: fixed;
-  top: 10px;
   left: 10px;
-  z-index: 1000;
+  z-index: 10001;
 
   .fas {
     vertical-align: top;
@@ -746,9 +751,8 @@ Styleguide 11.2.6
   color: black;
   background: white;
   position: fixed;
-  top: 10px;
   left: 270px;
-  z-index: 1000;
+  z-index: 10001;
 
   .fas {
     position: absolute;

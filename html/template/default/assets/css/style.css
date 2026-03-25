@@ -10758,6 +10758,10 @@ Styleguide 11.2
 .ec-headerNaviRole .ec-headerNaviRole__cart a:hover {
   text-decoration: none;
 }
+.ec-headerNavSP,
+.ec-drawerRoleClose {
+  top: calc(var(--ec-mode-alert-strips, 0) * 50px + 10px);
+}
 .ec-headerNavSP {
   display: block;
   cursor: pointer;
@@ -10771,9 +10775,8 @@ Styleguide 11.2
   color: black;
   background: white;
   position: fixed;
-  top: 10px;
   left: 10px;
-  z-index: 1000;
+  z-index: 10001;
 }
 .ec-headerNavSP .fas {
   vertical-align: top;
@@ -11254,9 +11257,8 @@ Styleguide 11.2.6
   color: black;
   background: white;
   position: fixed;
-  top: 10px;
   left: 270px;
-  z-index: 1000;
+  z-index: 10001;
 }
 .ec-drawerRoleClose .fas {
   position: absolute;

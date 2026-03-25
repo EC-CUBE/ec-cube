@@ -78,7 +78,7 @@ class TwigInitializeListener implements EventSubscriberInterface
      * セッションストレージが読み込まれた後に、フロント表示用 Twig グローバルをセットする.
      * （onKernelRequest priority 6 より後に実行するため -20 で登録）
      */
-    public function setIsAdminLoggedInOnFrontGlobal(RequestEvent $event)
+    public function setIsAdminLoggedInOnFrontGlobal(RequestEvent $event): void
     {
         if (!$event->isMainRequest()) {
             return;
@@ -89,15 +89,15 @@ class TwigInitializeListener implements EventSubscriberInterface
         }
 
         $request = $event->getRequest();
-        if (!$request->hasSession()) {
+        // セッション Cookie が無いリクエストでは触れない（Session::has() がセッション開始を引き起こすのを避ける）
+        if (!$request->hasPreviousSession()) {
             $this->twig->addGlobal('isAdminLoggedInOnFront', false);
 
             return;
         }
 
         $session = $request->getSession();
-        // セッション Cookie があるのに未開始のとき、ストレージから属性を読み込む
-        if (!$session->isStarted() && $request->cookies->has($session->getName())) {
+        if (!$session->isStarted()) {
             $session->start();
         }
 

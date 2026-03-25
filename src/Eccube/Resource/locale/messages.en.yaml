@@ -397,7 +397,7 @@ front.shopping.not_available_payment_method: The payment method you have selecte
 front.shopping.payment_method_not_fount: Sorry, you have no payment options. If you have selected multiple delivery methods, you can only select the same payment option for them all.
 front.under_maintenance: The site is currently under maintenance.
 front.under_debug_mode: The site is currently under debug mode.
-front.admin_login_active: You are logged in to the administration panel.
+front.admin_login_active: You are logged in to the Admin Console.
 
 #====================================================================================
 # Admin Console

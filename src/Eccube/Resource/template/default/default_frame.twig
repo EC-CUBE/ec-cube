@@ -54,17 +54,17 @@ file that was distributed with this source code.
     {% if plugin_assets is defined %}{{ include('@admin/snippet.twig', { snippets: plugin_assets }) }}{% endif %}
     <link rel="stylesheet" href="{{ asset('assets/css/customize.css', 'user_data') }}">
 </head>
-<body id="page_{{ app.request.get('_route') }}" class="{{ body_class|default('other_page') }}">
+{# メンテ / デバッグ / 管理セッション: body に --ec-mode-alert-strips（0〜3）を渡し、本文 padding と SP 固定ナビの top で帯分を確保 #}
+{% set show_maintenance = isMaintenance is defined and isMaintenance %}
+{% set show_debug = isDebugMode is defined and isDebugMode %}
+{% set show_admin_on_front = isAdminLoggedInOnFront is defined and isAdminLoggedInOnFront %}
+{% set mode_alert_count = (show_maintenance ? 1 : 0) + (show_debug ? 1 : 0) + (show_admin_on_front ? 1 : 0) %}
+<body id="page_{{ app.request.get('_route') }}" class="{{ body_class|default('other_page') }}" style="--ec-mode-alert-strips: {{ mode_alert_count }}">
 {# Layout: BODY_AFTER #}
 {% if Layout.BodyAfter %}
     {{ include('block.twig', {'Blocks': Layout.BodyAfter}) }}
 {% endif %}
 
-{# メンテ / デバッグ / 管理セッション: 本数に応じて .ec-layoutRole に --ec-mode-alert-strips を渡し padding-top で本文を下げる #}
-{% set show_maintenance = isMaintenance is defined and isMaintenance %}
-{% set show_debug = isDebugMode is defined and isDebugMode %}
-{% set show_admin_on_front = isAdminLoggedInOnFront is defined and isAdminLoggedInOnFront %}
-{% set mode_alert_count = (show_maintenance ? 1 : 0) + (show_debug ? 1 : 0) + (show_admin_on_front ? 1 : 0) %}
 {% if mode_alert_count > 0 %}
     <div class="ec-modeAlertStack" aria-live="polite">
         {% if show_maintenance %}
@@ -79,7 +79,7 @@ file that was distributed with this source code.
     </div>
 {% endif %}
 
-<div class="ec-layoutRole" style="--ec-mode-alert-strips: {{ mode_alert_count }}">
+<div class="ec-layoutRole">
     {# Layout: HEADER #}
     {% if Layout.Header %}
         <header class="ec-layoutRole__header">
