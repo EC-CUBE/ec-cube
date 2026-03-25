@@ -267,8 +267,11 @@ class PluginService
     // インストール事後処理
     public function postInstall($config, $source)
     {
+        $conn = $this->entityManager->getConnection();
+        $isMySql = $conn->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
+
         // dbにプラグイン登録
-        $this->entityManager->getConnection()->beginTransaction();
+        $conn->beginTransaction();
         try {
             $Plugin = $this->pluginRepository->findByCode($config['code']);
 
@@ -284,7 +287,17 @@ class PluginService
                 $this->entityManager->flush();
             }
 
+            // MySQL の DDL は暗黙的に COMMIT するため, DBAL 4.x のネストトランザクション(SAVEPOINT)が破壊される.
+            // DDL 実行前にトランザクションを閉じ, 実行後に再開する.
+            if ($isMySql) {
+                $conn->commit();
+            }
+
             $this->generateProxyAndUpdateSchema($Plugin, $config);
+
+            if ($isMySql) {
+                $conn->beginTransaction();
+            }
 
             $this->callPluginManagerMethod($config, 'install');
 
@@ -292,13 +305,13 @@ class PluginService
             $this->entityManager->persist($Plugin);
             $this->entityManager->flush();
 
-            if ($this->entityManager->getConnection()->getNativeConnection()->inTransaction()) {
-                $this->entityManager->getConnection()->commit();
+            if ($conn->getNativeConnection()->inTransaction()) {
+                $conn->commit();
             }
         } catch (\Exception $e) {
-            if ($this->entityManager->getConnection()->getNativeConnection()->inTransaction()) {
-                if ($this->entityManager->getConnection()->isRollbackOnly()) {
-                    $this->entityManager->getConnection()->rollback();
+            if ($conn->getNativeConnection()->inTransaction()) {
+                if ($conn->isRollbackOnly()) {
+                    $conn->rollback();
                 }
             }
 
@@ -794,27 +807,41 @@ class PluginService
     public function updatePlugin(Plugin $plugin, $meta)
     {
         $em = $this->entityManager;
+        $conn = $em->getConnection();
+        $isMySql = $conn->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
+
         try {
-            $em->getConnection()->beginTransaction();
+            $conn->beginTransaction();
             $plugin->setVersion($meta['version'])
                 ->setName($meta['name']);
 
             $em->persist($plugin);
 
+            // MySQL の DDL は暗黙的に COMMIT するため, DBAL 4.x のネストトランザクション(SAVEPOINT)が破壊される.
+            // DDL 実行前にトランザクションを閉じ, 実行後に再開する.
+            if ($isMySql) {
+                $em->flush();
+                $conn->commit();
+            }
+
             $this->generateProxyAndUpdateSchema($plugin, $meta);
+
+            if ($isMySql) {
+                $conn->beginTransaction();
+            }
 
             if ($plugin->isInitialized()) {
                 $this->callPluginManagerMethod($meta, 'update');
             }
             $this->copyAssets($plugin->getCode());
             $em->flush();
-            if ($em->getConnection()->getNativeConnection()->inTransaction()) {
-                $em->getConnection()->commit();
+            if ($conn->getNativeConnection()->inTransaction()) {
+                $conn->commit();
             }
         } catch (\Exception $e) {
-            if ($em->getConnection()->getNativeConnection()->inTransaction()) {
-                if ($em->getConnection()->isRollbackOnly()) {
-                    $em->getConnection()->rollback();
+            if ($conn->getNativeConnection()->inTransaction()) {
+                if ($conn->isRollbackOnly()) {
+                    $conn->rollback();
                 }
             }
             throw $e;
