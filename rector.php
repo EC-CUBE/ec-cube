@@ -32,7 +32,7 @@ use Rector\Symfony\Symfony61\Rector\Class_\CommandConfigureToAttributeRector;
 use Rector\Symfony\Symfony61\Rector\Class_\CommandPropertyToAttributeRector;
 use Rector\ValueObject\PhpVersion;
 
-return RectorConfig::configure()
+$rectorConfig = RectorConfig::configure()
            // EC-CUBEのPHPバージョンに合わせて設定
            ->withPhpVersion(PhpVersion::PHP_83)
 
@@ -51,9 +51,11 @@ return RectorConfig::configure()
                __DIR__ . '/src/Eccube/Rector',
                // 特定のルールを除外する場合
                // 親の $entityManager 再宣言と step5 の接続専用 EM の取り違えを防ぐため
-               InstallControllerEMReinjectionRector::class => [
-                __DIR__.'/src/Eccube/Controller/Install/InstallController.php',
-            ],
+               // （PR #6690: InstallController に ControllerMethodInjectionToConstructorRector を当てない。
+               //  upstream の InstallControllerEMReinjectionRector は未定義のため、同ルールをパス指定でスキップする）
+               ControllerMethodInjectionToConstructorRector::class => [
+                   __DIR__.'/src/Eccube/Controller/Install/InstallController.php',
+               ],
                // 8.3以上で対応可能
                AddTypeToConstRector::class, // [BC]定数に型を追加する PHP 8.3 以降で有効
                RenameMethodRector::class, //addがaddCommandに変換されてしまうため一旦スキップ
@@ -81,8 +83,6 @@ return RectorConfig::configure()
                PHPUnitSetList::PHPUNIT_CODE_QUALITY,
                PHPUnitSetList::PHPUNIT_110, // PHPUnitのバージョンに合わせる
            ])
-           // Symfony のコンテナ XML（EC-CUBE の構成に合わせて調整が必要な場合があります）
-           ->withSymfonyContainerXml(__DIR__.'/var/cache/dev/Eccube_KernelDevDebugContainer.xml')
            // オプション: キャッシュ設定 (パフォーマンス向上のために推奨)
            ->withCache(
                cacheClass: FileCacheStorage::class,
@@ -98,3 +98,12 @@ return RectorConfig::configure()
            ->withAttributesSets()
            // オプション: Rectorの実行をパラレルで行う (パフォーマンス向上)
            ->withParallel();
+
+// Symfony のコンテナ XML: bin/console cache:warmup 実行後に生成される
+// CI などキャッシュが無い環境ではスキップ（コンテナ XML 必須エラーを避ける）
+$containerXml = __DIR__.'/var/cache/dev/Eccube_KernelDevDebugContainer.xml';
+if (is_file($containerXml)) {
+    $rectorConfig->withSymfonyContainerXml($containerXml);
+}
+
+return $rectorConfig;
