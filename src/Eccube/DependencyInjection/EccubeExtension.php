@@ -143,9 +143,23 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
         // prependのタイミングではコンテナのインスタンスは利用できない.
         // 直接dbalのconnectionを生成し, dbアクセスを行う.
         $params = $config['dbal']['connections'][$config['dbal']['default_connection']];
-        // ContainerInterface::resolveEnvPlaceholders() で取得した DATABASE_URL は
-        // % がエスケープされているため、環境変数から取得し直す
-        $params['url'] = env('DATABASE_URL');
+        // DBAL 4.x では url パラメータの自動パースが廃止されたため,
+        // 環境変数から取得した URL を DsnParser で個別パラメータに変換する.
+        $dbUrl = env('DATABASE_URL');
+        if ($dbUrl) {
+            $parser = new \Doctrine\DBAL\Tools\DsnParser([
+                'sqlite' => 'pdo_sqlite',
+                'sqlite3' => 'pdo_sqlite',
+                'mysql' => 'pdo_mysql',
+                'mysql2' => 'pdo_mysql',
+                'postgres' => 'pdo_pgsql',
+                'pgsql' => 'pdo_pgsql',
+                'postgresql' => 'pdo_pgsql',
+            ]);
+            $parsedParams = $parser->parse($dbUrl);
+            $params = array_merge($params, $parsedParams);
+        }
+        unset($params['url']);
         $conn = DriverManager::getConnection($params);
 
         if (!$this->isConnected($conn)) {
