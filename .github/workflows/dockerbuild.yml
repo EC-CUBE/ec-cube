@@ -41,7 +41,7 @@ jobs:
         run: |
           echo "IMAGE_NAME=${GITHUB_REPOSITORY,,}-php" >> ${GITHUB_ENV}
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
       ## Used when creating multi-platform images
       # - name: Set up QEMU
       #   uses: docker/setup-qemu-action@v2
@@ -49,7 +49,7 @@ jobs:
       #   uses: docker/setup-buildx-action@v2
 
       - name: Setup PHP
-        uses: nanasess/setup-php@master
+        uses: nanasess/setup-php@bc11abbf4dd060b7bfd20d03edeeb43417ebe245  # master
         with:
           php-version: ${{ matrix.php }}
 
@@ -57,7 +57,7 @@ jobs:
         uses: ./.github/actions/composer
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@b45d80f862d83dbcd57f89517bcf500b2ab88fb2  # v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -65,7 +65,7 @@ jobs:
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@030e881283bb7a6894de51c315a6bfe6a94e05cf  # v6
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
@@ -76,7 +76,7 @@ jobs:
             type=ref,event=pr,prefix=${{ matrix.php }}-apache-pr-
 
       - name: Build and export to Docker
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294  # v7
         with:
           context: .
           load: true
@@ -99,7 +99,7 @@ jobs:
           docker compose -f docker-compose.yml -f docker-compose.pgsql.yml up -d --wait
 
       - name: setup-chromedriver
-        uses: nanasess/setup-chromedriver@master
+        uses: nanasess/setup-chromedriver@fc3dc5897c11410827ed268ab625038ee63dc6fe  # master
 
       - name: Run chromedriver
         run: |
@@ -120,11 +120,11 @@ jobs:
         run: |
           echo "APP_ENV=${APP_ENV}" > .env
           sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action_docker.yml
-          vendor/bin/codecept -vvv run acceptance --env chrome,github_action_docker -g ${GROUP} --skip-group restrict-file-upload --skip-group change-display-order --html report.html
+          php -d opcache.jit=off vendor/bin/codecept -vvv run acceptance --env chrome,github_action_docker -g ${GROUP} --skip-group restrict-file-upload --skip-group change-display-order --html report.html
       ## see https://docs.github.com/ja/packages/managing-github-packages-using-github-actions-workflows/publishing-and-installing-a-package-with-github-actions#publishing-a-package-using-an-action
 
       - name: Push Docker image
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294  # v7
         if: success()
         with:
           context: .
@@ -136,13 +136,13 @@ jobs:
 
       - name: Upload evidence
         if: failure()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
         with:
           name: codeception-${{ matrix.group }}-evidence
           path: codeception/_output/
       - name: Upload logs
         if: failure()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
         with:
           name: codeception-${{ matrix.group }}-logs
           path: var/log/

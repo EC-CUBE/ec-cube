@@ -130,7 +130,7 @@ class ShippingMultipleItemType extends AbstractType
                         $CustomerAddress->setFromCustomer($NonMember);
 
                         if ($CustomerAddresses = $this->session->get('eccube.front.shopping.nonmember.customeraddress')) {
-                            $CustomerAddresses = unserialize($CustomerAddresses);
+                            $CustomerAddresses = unserialize($CustomerAddresses, ['allowed_classes' => [CustomerAddress::class, Customer::class, \Eccube\Entity\Master\Pref::class, \Eccube\Entity\Master\Country::class]]);
                             $CustomerAddresses = array_merge([$CustomerAddress], $CustomerAddresses);
                             foreach ($CustomerAddresses as $Address) {
                                 $Pref = $this->prefRepository->find($Address->getPref()->getId());

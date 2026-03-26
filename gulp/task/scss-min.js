@@ -6,8 +6,7 @@ const rename = require('gulp-rename')
 const sass = require('gulp-sass')(require('sass'))
 const postcss = require('gulp-postcss')
 const autoprefixer = require('autoprefixer')
-const cssmqpacker = require('css-mqpacker')
-const sortCSSmq = require('sort-css-media-queries')
+const sortMediaQueries = require('postcss-sort-media-queries')
 const cleanCSS = require('gulp-clean-css')
 
 module.exports = () => {
@@ -21,9 +20,7 @@ module.exports = () => {
     .pipe(sass())
     .pipe(postcss([
       autoprefixer(),
-      cssmqpacker({
-        sort: sortCSSmq
-      }),
+      sortMediaQueries({ sort: 'mobile-first' }),
     ]))
     .pipe(cleanCSS())
     .pipe(rename((path) => {

@@ -13,13 +13,13 @@ env:
         parameters:
           loginPageUrl: https://ec-cube/admin/login
           loginRequestUrl: https://ec-cube/admin/login
-          loginRequestBody: _csrf_token=xxx&login_id={%username%}&password={%password%}
+          loginRequestBody: _csrf_token=&login_id={%username%}&password={%password%}
         verification:
           method: 'poll'
-          loggedOutRegex: '\Q<button type="submit" class="btn btn-primary btn-lg btn-block">ログイン</button>\E'
+          pollUrl: 'https://ec-cube/admin/'
           pollFrequency: 1000
           pollUnits: 'requests'
-          pollUrl: 'https://ec-cube/admin/login'
+          loggedOutRegex: 'name="login_id"'
       users:
       - name: admin
         credentials:
@@ -61,19 +61,11 @@ ${ZA_BEFORE_SCRIPT_CONFIG}
       name: target
       file: /zap/wrk/scripts/${ZA_TARGET}.zst
 
-  - type: script
+  - type: sequence-activeScan
     parameters:
-      action: run
-      type: sequence
-      name: target
-
-  - type: sequence
-    parameters:
-      action: activeScan
-      name: target
+      sequence: target
       user: ${ZA_USER}
       context: ${ZA_CONTEXT}
-      threadPerHost: ${ZA_THREAD_PER_HOST}
 
   - type: passiveScan-wait
 

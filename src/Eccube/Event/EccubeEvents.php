@@ -512,6 +512,9 @@ final class EccubeEvents
     public const FRONT_PRODUCT_FAVORITE_ADD_INITIALIZE = 'front.product.favorite.add.initialize';
     public const FRONT_PRODUCT_FAVORITE_ADD_COMPLETE = 'front.product.favorite.add.complete';
 
+    public const FRONT_PRODUCT_FAVORITE_DELETE_INITIALIZE = 'front.product.favorite.delete.initialize';
+    public const FRONT_PRODUCT_FAVORITE_DELETE_COMPLETE = 'front.product.favorite.delete.complete';
+
     /**
      * ShoppingController
      */
@@ -589,4 +592,6 @@ final class EccubeEvents
     public const MAIL_ADMIN_ORDER = 'mail.admin.order';
     public const MAIL_PASSWORD_RESET = 'mail.password.reset';
     public const MAIL_PASSWORD_RESET_COMPLETE = 'mail.password.reset.complete';
+    public const MAIL_SHIPPING_NOTIFY = 'mail.shipping.notify';
+    public const MAIL_CUSTOMER_CHANGE_NOTIFY = 'mail.customer.change.notify';
 }

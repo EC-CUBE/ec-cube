@@ -3,6 +3,9 @@ name: Deny check for EC-CUBE
 on:
   workflow_call:
 
+permissions:
+  contents: read
+
 jobs:
   deploy:
     name: Deny check
@@ -19,10 +22,10 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1  # v2
         with:
           php-version: '8.1'
 
@@ -86,7 +89,7 @@ jobs:
           # docker exec -u www-data eccube bash -c 'for code in Api42 Coupon42 MailMagazine42 ProductReview42 Recommend42 RelatedProduct42 SalesReport42 Securitychecker42; do bin/console eccube:plugin:enable --code $code; done'
 
       - name: setup-chromedriver
-        uses: nanasess/setup-chromedriver@master
+        uses: nanasess/setup-chromedriver@fc3dc5897c11410827ed268ab625038ee63dc6fe  # master
 
       - name: Prepare test
         run: |

@@ -25,6 +25,7 @@ use Eccube\Form\Type\Front\ShoppingShippingType;
 use Eccube\Form\Type\Shopping\CustomerAddressType;
 use Eccube\Form\Type\Shopping\OrderType;
 use Eccube\Repository\BaseInfoRepository;
+use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\TradeLawRepository;
 use Eccube\Service\CartService;
@@ -83,6 +84,11 @@ class ShoppingController extends AbstractShoppingController
      */
     protected TradeLawRepository $tradeLawRepository;
 
+    /**
+     * @var PrefRepository
+     */
+    protected PrefRepository $prefRepository;
+
     protected RateLimiterFactory $shoppingConfirmIpLimiter;
 
     protected RateLimiterFactory $shoppingConfirmCustomerLimiter;
@@ -103,6 +109,7 @@ class ShoppingController extends AbstractShoppingController
         RateLimiterFactory $shoppingCheckoutIpLimiter,
         RateLimiterFactory $shoppingCheckoutCustomerLimiter,
         BaseInfoRepository $baseInfoRepository,
+        PrefRepository $prefRepository,
     ) {
         $this->cartService = $cartService;
         $this->mailService = $mailService;
@@ -115,6 +122,7 @@ class ShoppingController extends AbstractShoppingController
         $this->shoppingCheckoutIpLimiter = $shoppingCheckoutIpLimiter;
         $this->shoppingCheckoutCustomerLimiter = $shoppingCheckoutCustomerLimiter;
         $this->baseInfoRepository = $baseInfoRepository;
+        $this->prefRepository = $prefRepository;
     }
 
     /**
@@ -190,6 +198,7 @@ class ShoppingController extends AbstractShoppingController
             'form' => $form->createView(),
             'Order' => $Order,
             'activeTradeLaws' => $activeTradeLaws,
+            'Prefs' => $this->prefRepository->findAll(),
         ];
     }
 
@@ -279,6 +288,7 @@ class ShoppingController extends AbstractShoppingController
             'form' => $form->createView(),
             'Order' => $Order,
             'activeTradeLaws' => $activeTradeLaws,
+            'Prefs' => $this->prefRepository->findAll(),
         ];
     }
 
@@ -390,6 +400,7 @@ class ShoppingController extends AbstractShoppingController
             'form' => $form->createView(),
             'Order' => $Order,
             'activeTradeLaws' => $activeTradeLaws,
+            'Prefs' => $this->prefRepository->findAll(),
         ];
     }
 
@@ -544,6 +555,22 @@ class ShoppingController extends AbstractShoppingController
         }
 
         $Order = $this->orderRepository->find($orderId);
+
+        if (!$Order) {
+            log_info('[注文完了] 受注が存在しないため, トップページへ遷移します.', [$orderId]);
+
+            return $this->redirectToRoute('homepage');
+        }
+
+        // 受注の所有者チェック
+        $Customer = $this->getUser();
+        if ($Customer instanceof Customer) {
+            if ($Order->getCustomer() && $Order->getCustomer()->getId() !== $Customer->getId()) {
+                log_info('[注文完了] 受注の所有者が一致しないため, トップページへ遷移します.', [$orderId]);
+
+                return $this->redirectToRoute('homepage');
+            }
+        }
 
         $event = new EventArgs(
             [

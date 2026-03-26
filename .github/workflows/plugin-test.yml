@@ -3,6 +3,9 @@ name: Plugin test for EC-CUBE
 on:
   workflow_call:
 
+permissions:
+  contents: read
+
 jobs:
   plugin-install:
     name: Plugin install
@@ -57,10 +60,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1  # v2
         with:
           php-version: ${{ matrix.php }}
 
@@ -81,7 +84,7 @@ jobs:
 
       - name: Cache apt packages
         if: matrix.db == 'pgsql'
-        uses: awalsh128/cache-apt-pkgs-action@latest
+        uses: awalsh128/cache-apt-pkgs-action@acb598e5ddbc6f68a970c5da0688d2f3a9f04d05  # latest
         with:
           packages: postgresql-client
           version: 1.0
@@ -97,7 +100,7 @@ jobs:
         run: mysql -h 127.0.0.1 -u root -ppassword eccube_db -e "update dtb_base_info set authentication_key='test';"
 
       - name: setup-chromedriver
-        uses: nanasess/setup-chromedriver@master
+        uses: nanasess/setup-chromedriver@fc3dc5897c11410827ed268ab625038ee63dc6fe  # master
 
       - name: Run chromedriver
         run: |
@@ -124,14 +127,9 @@ jobs:
           docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
 
       - name: Codeception
-        uses: nick-invision/retry@v3
-        with:
-          timeout_minutes: 30
-          max_attempts: 2
-          retry_on: error
-          command: |
-            sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
-            vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
+        run: |
+          sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
+          vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
         env:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
@@ -143,13 +141,13 @@ jobs:
           NO_FIXTURES: 1
       - name: Upload evidence
         if: failure()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
         with:
           name: plugin-install-${{ matrix.method }}-evidence
           path: codeception/_output/
       - name: Upload logs
         if: failure()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
         with:
           name: plugin-install-${{ matrix.method }}-logs
           path: var/log/
@@ -205,10 +203,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
 
       - name: Get Composer Cache Directory
-        uses: actions/cache@v5
+        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7  # v5
         id: composer-cache
         with:
           path: ${{ github.workspace }}/vendor
@@ -217,7 +215,7 @@ jobs:
             ${{ runner.os }}-composer-
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1  # v2
         with:
           php-version: ${{ matrix.php }}
 
@@ -238,7 +236,7 @@ jobs:
 
       - name: Cache apt packages
         if: matrix.db == 'pgsql'
-        uses: awalsh128/cache-apt-pkgs-action@latest
+        uses: awalsh128/cache-apt-pkgs-action@acb598e5ddbc6f68a970c5da0688d2f3a9f04d05  # latest
         with:
           packages: postgresql-client
           version: 1.0
@@ -254,7 +252,7 @@ jobs:
         run: mysql -h 127.0.0.1 -u root -ppassword eccube_db -e "update dtb_base_info set authentication_key='test';"
 
       - name: setup-chromedriver
-        uses: nanasess/setup-chromedriver@master
+        uses: nanasess/setup-chromedriver@fc3dc5897c11410827ed268ab625038ee63dc6fe  # master
 
       - name: Run chromedriver
         run: |
@@ -281,14 +279,9 @@ jobs:
           docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
 
       - name: Codeception
-        uses: nick-invision/retry@v3
-        with:
-          timeout_minutes: 30
-          max_attempts: 2
-          retry_on: error
-          command: |
-            sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
-            vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
+        run: |
+          sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
+          vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
         env:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
@@ -300,13 +293,13 @@ jobs:
           NO_FIXTURES: 1
       - name: Upload evidence
         if: failure()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
         with:
           name: plugin-update-${{ matrix.method }}-evidence
           path: codeception/_output/
       - name: Upload logs
         if: failure()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
         with:
           name: plugin-update-${{ matrix.method }}-logs
           path: var/log/
@@ -362,11 +355,11 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
 
       - name: Get Composer Cache Directory
         id: composer-cache
-        uses: actions/cache@v5
+        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7  # v5
         with:
           path: ${{ github.workspace }}/vendor
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -374,7 +367,7 @@ jobs:
             ${{ runner.os }}-composer-
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1  # v2
         with:
           php-version: ${{ matrix.php }}
 
@@ -395,7 +388,7 @@ jobs:
 
       - name: Cache apt packages
         if: matrix.db == 'pgsql'
-        uses: awalsh128/cache-apt-pkgs-action@latest
+        uses: awalsh128/cache-apt-pkgs-action@acb598e5ddbc6f68a970c5da0688d2f3a9f04d05  # latest
         with:
           packages: postgresql-client
           version: 1.0
@@ -411,7 +404,7 @@ jobs:
         run: mysql -h 127.0.0.1 -u root -ppassword eccube_db -e "update dtb_base_info set authentication_key='test';"
 
       - name: setup-chromedriver
-        uses: nanasess/setup-chromedriver@master
+        uses: nanasess/setup-chromedriver@fc3dc5897c11410827ed268ab625038ee63dc6fe  # master
 
       - name: Run chromedriver
         run: |
@@ -438,14 +431,9 @@ jobs:
           docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
 
       - name: Codeception
-        uses: nick-invision/retry@v3
-        with:
-          timeout_minutes: 30
-          max_attempts: 2
-          retry_on: error
-          command: |
-            sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
-            vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
+        run: |
+          sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
+          vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
         env:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
@@ -457,13 +445,13 @@ jobs:
           NO_FIXTURES: 1
       - name: Upload evidence
         if: failure()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
         with:
           name: plugin-extend-${{ matrix.method }}-evidence
           path: codeception/_output/
       - name: Upload logs
         if: failure()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
         with:
           name: plugin-extend-${{ matrix.method }}-logs
           path: var/log/
@@ -522,11 +510,11 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
 
       - name: Get Composer Cache Directory
         id: composer-cache
-        uses: actions/cache@v5
+        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7  # v5
         with:
           path: ${{ github.workspace }}/vendor
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -534,7 +522,7 @@ jobs:
             ${{ runner.os }}-composer-
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1  # v2
         with:
           php-version: ${{ matrix.php }}
 
@@ -555,7 +543,7 @@ jobs:
 
       - name: Cache apt packages
         if: matrix.db == 'pgsql'
-        uses: awalsh128/cache-apt-pkgs-action@latest
+        uses: awalsh128/cache-apt-pkgs-action@acb598e5ddbc6f68a970c5da0688d2f3a9f04d05  # latest
         with:
           packages: postgresql-client
           version: 1.0
@@ -571,7 +559,7 @@ jobs:
         run: mysql -h 127.0.0.1 -u root -ppassword eccube_db -e "update dtb_base_info set authentication_key='test';"
 
       - name: setup-chromedriver
-        uses: nanasess/setup-chromedriver@master
+        uses: nanasess/setup-chromedriver@fc3dc5897c11410827ed268ab625038ee63dc6fe  # master
 
       - name: Run chromedriver
         run: |
@@ -598,14 +586,9 @@ jobs:
           docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
 
       - name: Codeception
-        uses: nick-invision/retry@v3
-        with:
-          timeout_minutes: 30
-          max_attempts: 2
-          retry_on: error
-          command: |
-            sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
-            vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
+        run: |
+          sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
+          vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
         env:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
@@ -617,13 +600,13 @@ jobs:
           NO_FIXTURES: 1
       - name: Upload evidence
         if: failure()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
         with:
           name: plugin-depend-${{ matrix.method }}-evidence
           path: codeception/_output/
       - name: Upload logs
         if: failure()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
         with:
           name: plugin-depend-${{ matrix.method }}-logs
           path: var/log/

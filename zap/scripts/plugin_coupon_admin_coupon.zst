@@ -14,8 +14,86 @@
   },
   "statements": [
     {
-      "comment": "クーポン新規作成",
+      "url": "https://ec-cube/admin/login",
+      "data": "",
+      "method": "GET",
+      "headers": "Upgrade-Insecure-Requests: 1\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": true,
+      "timestamp": 0,
+      "cookies": [],
       "index": 1,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "fieldDefinition": {
+        "formIndex": 0,
+        "fieldName": "_csrf_token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "csrf_login",
+      "index": 2,
+      "enabled": true,
+      "elementType": "ZestAssignFieldValue"
+    },
+    {
+      "url": "https://ec-cube/admin/login",
+      "urlToken": "https://ec-cube/admin/login",
+      "data": "_csrf_token={{csrf_login}}&login_id=admin&password=password",
+      "method": "POST",
+      "headers": "Content-Type: application/x-www-form-urlencoded\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 302,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 3,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "https://ec-cube/admin/",
+      "data": "",
+      "method": "GET",
+      "headers": "Upgrade-Insecure-Requests: 1\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": true,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 4,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "comment": "クーポン新規作成",
+      "index": 5,
       "enabled": true,
       "elementType": "ZestComment"
     },
@@ -23,7 +101,7 @@
       "minInt": 0,
       "maxInt": 2147483647,
       "variableName": "coupon-code-id",
-      "index": 2,
+      "index": 6,
       "enabled": true,
       "elementType": "ZestAssignRandomInteger"
     },
@@ -45,7 +123,7 @@
       "followRedirects": false,
       "timestamp": 1675429893571,
       "cookies": [],
-      "index": 3,
+      "index": 7,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -54,7 +132,7 @@
       "postfix": "\">",
       "location": "BODY",
       "variableName": "eccube-csrf-token",
-      "index": 4,
+      "index": 8,
       "enabled": true,
       "elementType": "ZestAssignStringDelimiters"
     },
@@ -65,7 +143,7 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf1",
-      "index": 5,
+      "index": 9,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
@@ -87,7 +165,7 @@
       "followRedirects": false,
       "timestamp": 1675434466545,
       "cookies": [],
-      "index": 6,
+      "index": 10,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -109,7 +187,7 @@
       "followRedirects": false,
       "timestamp": 1675434493015,
       "cookies": [],
-      "index": 7,
+      "index": 11,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -131,7 +209,7 @@
       "followRedirects": false,
       "timestamp": 1675524443596,
       "cookies": [],
-      "index": 8,
+      "index": 12,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -153,13 +231,13 @@
       "followRedirects": false,
       "timestamp": 1675429963841,
       "cookies": [],
-      "index": 9,
+      "index": 13,
       "enabled": true,
       "elementType": "ZestRequest"
     },
     {
       "comment": "編集",
-      "index": 10,
+      "index": 14,
       "enabled": true,
       "elementType": "ZestComment"
     },
@@ -181,7 +259,7 @@
       "followRedirects": false,
       "timestamp": 1675429963945,
       "cookies": [],
-      "index": 11,
+      "index": 15,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -190,7 +268,7 @@
       "postfix": "</td>",
       "location": "BODY",
       "variableName": "coupon-id",
-      "index": 12,
+      "index": 16,
       "enabled": true,
       "elementType": "ZestAssignStringDelimiters"
     },
@@ -212,7 +290,7 @@
       "followRedirects": false,
       "timestamp": 1675435035437,
       "cookies": [],
-      "index": 13,
+      "index": 17,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -223,7 +301,7 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf2",
-      "index": 14,
+      "index": 18,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
@@ -245,13 +323,13 @@
       "followRedirects": false,
       "timestamp": 1675435038149,
       "cookies": [],
-      "index": 15,
+      "index": 19,
       "enabled": true,
       "elementType": "ZestRequest"
     },
     {
       "comment": "無効にする",
-      "index": 16,
+      "index": 20,
       "enabled": true,
       "elementType": "ZestComment"
     },
@@ -273,7 +351,7 @@
       "followRedirects": false,
       "timestamp": 1675435038249,
       "cookies": [],
-      "index": 17,
+      "index": 21,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -282,72 +360,13 @@
       "postfix": "' data-confirm",
       "location": "BODY",
       "variableName": "token",
-      "index": 18,
+      "index": 22,
       "enabled": true,
       "elementType": "ZestAssignStringDelimiters"
     },
     {
       "urlToken": "https://ec-cube/admin/plugin/coupon/{{coupon-id}}/enable",
       "data": "_token={{token}}&_method=put",
-      "method": "POST",
-      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 148\r\nsec-ch-ua: \"Not_A Brand\";v=\"99\", \"Google Chrome\";v=\"109\", \"Chromium\";v=\"109\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"macOS\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
-      "assertions": [
-        {
-          "rootExpression": {
-            "code": 302,
-            "not": false,
-            "elementType": "ZestExpressionStatusCode"
-          },
-          "elementType": "ZestAssertion"
-        }
-      ],
-      "followRedirects": false,
-      "timestamp": 1675429974156,
-      "cookies": [],
-      "index": 19,
-      "enabled": true,
-      "elementType": "ZestRequest"
-    },
-    {
-      "url": "https://ec-cube/admin/plugin/coupon",
-      "data": "",
-      "method": "GET",
-      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \"Not_A Brand\";v=\"99\", \"Google Chrome\";v=\"109\", \"Chromium\";v=\"109\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"macOS\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
-      "assertions": [
-        {
-          "rootExpression": {
-            "code": 200,
-            "not": false,
-            "elementType": "ZestExpressionStatusCode"
-          },
-          "elementType": "ZestAssertion"
-        }
-      ],
-      "followRedirects": false,
-      "timestamp": 1675429891436,
-      "cookies": [],
-      "index": 20,
-      "enabled": true,
-      "elementType": "ZestRequest"
-    },
-    {
-      "prefix": "token-for-anchor='",
-      "postfix": "' data-confirm",
-      "location": "BODY",
-      "variableName": "token2",
-      "index": 21,
-      "enabled": true,
-      "elementType": "ZestAssignStringDelimiters"
-    },
-    {
-      "comment": "有効にする",
-      "index": 22,
-      "enabled": true,
-      "elementType": "ZestComment"
-    },
-    {
-      "urlToken": "https://ec-cube/admin/plugin/coupon/{{coupon-id}}/enable",
-      "data": "_token={{token2}}&_method=put",
       "method": "POST",
       "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 148\r\nsec-ch-ua: \"Not_A Brand\";v=\"99\", \"Google Chrome\";v=\"109\", \"Chromium\";v=\"109\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"macOS\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
       "assertions": [
@@ -390,8 +409,67 @@
       "elementType": "ZestRequest"
     },
     {
-      "comment": "削除",
+      "prefix": "token-for-anchor='",
+      "postfix": "' data-confirm",
+      "location": "BODY",
+      "variableName": "token2",
       "index": 25,
+      "enabled": true,
+      "elementType": "ZestAssignStringDelimiters"
+    },
+    {
+      "comment": "有効にする",
+      "index": 26,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "urlToken": "https://ec-cube/admin/plugin/coupon/{{coupon-id}}/enable",
+      "data": "_token={{token2}}&_method=put",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 148\r\nsec-ch-ua: \"Not_A Brand\";v=\"99\", \"Google Chrome\";v=\"109\", \"Chromium\";v=\"109\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"macOS\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 302,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1675429974156,
+      "cookies": [],
+      "index": 27,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "https://ec-cube/admin/plugin/coupon",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \"Not_A Brand\";v=\"99\", \"Google Chrome\";v=\"109\", \"Chromium\";v=\"109\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"macOS\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1675429891436,
+      "cookies": [],
+      "index": 28,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "comment": "削除",
+      "index": 29,
       "enabled": true,
       "elementType": "ZestComment"
     },
@@ -413,7 +491,7 @@
       "followRedirects": false,
       "timestamp": 1675429974232,
       "cookies": [],
-      "index": 26,
+      "index": 30,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -422,7 +500,7 @@
       "postfix": "</td>",
       "location": "BODY",
       "variableName": "coupon-id",
-      "index": 27,
+      "index": 31,
       "enabled": true,
       "elementType": "ZestAssignStringDelimiters"
     },
@@ -431,7 +509,7 @@
       "postfix": "' data-method=\"delete\"",
       "location": "BODY",
       "variableName": "token2",
-      "index": 28,
+      "index": 32,
       "enabled": true,
       "elementType": "ZestAssignStringDelimiters"
     },
@@ -453,7 +531,7 @@
       "followRedirects": false,
       "timestamp": 1675429993520,
       "cookies": [],
-      "index": 29,
+      "index": 33,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -475,7 +553,7 @@
       "followRedirects": false,
       "timestamp": 1675429993610,
       "cookies": [],
-      "index": 30,
+      "index": 34,
       "enabled": true,
       "elementType": "ZestRequest"
     }

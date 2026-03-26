@@ -291,6 +291,8 @@ front.product.add_cart_complete: The item has been added to the cart.
 front.product.add_cart_error: You have failed to add the item to the cart.
 front.product.add_favorite: Add to Favorites
 front.product.add_favorite_alrady: The item is already in the Favorites.
+front.product.delete_favorite: Remove from Favorites
+front.product.delete_favorite_confirm: Are you sure you want to remove this from Favorites?
 front.product.out_of_stock: The item is out of stock.
 front.product.out_of_stock_label: (Out of stock)
 front.product.added_to_favorite: The item is already in the Favorites.
@@ -314,7 +316,8 @@ front.cart.nav__order: Checkout
 front.cart.nav__confirm: Review
 front.cart.nav__complete: Order Placed
 front.cart.total_price: "Total: <strong>%price%</strong>"
-front.cart.divide_cart: Some item(s) in the cart can not be purchased in this order.
+front.cart.divide_cart: We've separated items that cannot be purchased together. Please
+    complete each order separately.
 front.cart.delete: ""
 front.cart.delete__confirm: Are you sure to delete this item from the cart?
 front.cart.product: Items
@@ -359,6 +362,7 @@ front.shopping.shipping_send_selected_shipping: Deliver to the selected address
 front.shopping.shipping_multiple_title: Deliver to Multiple Addresses
 front.shopping.shipping_multiple_message: Please select a delivery address for each item.
 front.shppping.shipping_multiple_add_shipping: Please select a delivery address for each item.
+front.shopping.customer_update_failed: Update failed. Please check your input.
 front.shopping.confirm_title: Review Your Order
 front.shopping.checkout: Place an Order
 front.shopping.back_to_order: Go back to Checkout
@@ -1399,6 +1403,19 @@ admin.setting.system.login_history.status: Status
 
 admin.setting.system.log.line_number: Line
 admin.setting.system.log.read: Read
+admin.setting.system.log.log_level: Log Level
+admin.setting.system.log.keyword: Keyword Search
+admin.setting.system.log.keyword_placeholder: Class name, error message, etc.
+admin.setting.system.log.no_logs: No logs found
+admin.setting.system.log.level.all: All
+admin.setting.system.log.level.debug: DEBUG
+admin.setting.system.log.level.info: INFO
+admin.setting.system.log.level.notice: NOTICE
+admin.setting.system.log.level.warning: WARNING
+admin.setting.system.log.level.error: ERROR
+admin.setting.system.log.level.critical: CRITICAL
+admin.setting.system.log.level.alert: ALERT
+admin.setting.system.log.level.emergency: EMERGENCY
 
 #------------------------------------------------------------------------------------
 # Settings : System : Master Data
@@ -1472,6 +1489,7 @@ admin.store.setting.api_key: API Authentication Key
 admin.store.setting.api_key_tooltip: This key is required for installing purchased plug-ins, etc.
 admin.store.setting.get_api_key: Obtain an API authentication key
 admin.store.setting.get_api_key_info: Issue a new authentication key
+admin.store.setting.get_api_key_modal_info: A new authentication key will be issued. If you already have an authentication key, please set the existing key without issuing a new one.
 admin.store.setting.captcha_message: Please enter the letters displayed.
 admin.store.setting.php_path_setting: Set PHP Path
 admin.store.setting.php_path: PHP Path
@@ -1483,6 +1501,7 @@ admin.store.package.api.500.error: Failed to communicate with Owners' Store. Ple
 admin.plugin.uninstall.error.not_disable: Please disable the plugin.
 admin.plugin.uninstall.depend: "Unable to delete %depend_name% because it depends on %name%."
 admin.plugin.disable.depend: "Please disable %depend_name% before disabling %name%."
+pluginservice.text.error.upload_failure: Failed to upload plugin.
 
 # TODO: Verify Message
 admin.store.plugin.popup.delete.confirm.title: Confirm the deletion of the plugin
