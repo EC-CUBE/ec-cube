@@ -232,7 +232,9 @@ class Kernel extends BaseKernel
             }
         } catch (\Exception $e) {
             // DB接続失敗時はコンテナパラメータのみ使用
+            @file_put_contents($this->getProjectDir().'/var/log/route_debug.log', date('c').' FAIL: '.$e->getMessage()."\n", FILE_APPEND);
         }
+        @file_put_contents($this->getProjectDir().'/var/log/route_debug.log', date('c').' plugins=['.implode(',', $plugins)."]\n", FILE_APPEND);
 
         foreach ($plugins as $plugin) {
             $dir = $pluginDir.'/'.$plugin.'/Controller';
