@@ -136,7 +136,13 @@ class ReloadSafeAnnotationDriver extends HybridMappingDriver
                     $fqcn = $namespace.'\\'.$className;
                     if (class_exists($fqcn) && !$this->isTransient($fqcn)) {
                         $sourceFile = realpath($sourceFile);
-                        if (in_array($sourceFile, $this->newProxyFiles)) {
+                        // プロキシファイルは常にリロードする.
+                        // プラグインEntityもプラグインアップデート時にディスク上のファイルが
+                        // 更新されている可能性がある. PHPは同一プロセス内でクラスを再定義
+                        // できないため, 一時クラス名でリロードして新しいメタデータを読む.
+                        $needsReload = in_array($sourceFile, $this->newProxyFiles)
+                            || str_starts_with($namespace, 'Plugin\\');
+                        if ($needsReload) {
                             $newClassName = $className.StringUtil::random(12);
                             $tokens[$classNameTokenIndex] = new Token([T_STRING, $newClassName]);
                             $newFilePath = $this->outputDir."{$newClassName}.php";
