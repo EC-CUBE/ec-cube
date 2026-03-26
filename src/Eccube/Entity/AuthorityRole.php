@@ -32,7 +32,6 @@ if (!class_exists(AuthorityRole::class)) {
         #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-        /** @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
         private ?int $id = null;
 
         #[ORM\Column(name: 'deny_url', type: Types::STRING, length: 4000)]
