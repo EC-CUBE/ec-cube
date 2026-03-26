@@ -245,8 +245,13 @@ class Kernel extends BaseKernel
         foreach ($plugins as $plugin) {
             $dir = $pluginDir.'/'.$plugin.'/Controller';
             if (is_dir($dir)) {
-                $builder = $routes->import($dir, 'attribute');
-                $builder->schemes($scheme);
+                try {
+                    $builder = $routes->import($dir, 'attribute');
+                    $builder->schemes($scheme);
+                    @file_put_contents($this->getProjectDir().'/var/log/route_debug.log', date('c')." IMPORTED routes from $dir\n", FILE_APPEND);
+                } catch (\Exception $e) {
+                    @file_put_contents($this->getProjectDir().'/var/log/route_debug.log', date('c')." IMPORT FAIL $dir: ".$e->getMessage()."\n", FILE_APPEND);
+                }
             }
             if (file_exists($pluginDir.'/'.$plugin.'/Resource/config')) {
                 $builder = $routes->import($pluginDir.'/'.$plugin.'/Resource/config/routes'.self::CONFIG_EXTS);
