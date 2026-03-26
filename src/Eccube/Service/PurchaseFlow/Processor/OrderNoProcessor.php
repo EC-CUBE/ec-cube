@@ -55,7 +55,6 @@ class OrderNoProcessor implements ItemHolderPreprocessor
             } else {
                 do {
                     $orderNo = preg_replace_callback('/\{(.*)}/U', function ($matches) use ($Order) {
-                        /** @phpstan-ignore-next-line */
                         if (count($matches) === 2) {
                             $dateTime = new \DateTime('now', new \DateTimeZone($this->eccubeConfig->get('timezone')));
                             switch ($matches[1]) {

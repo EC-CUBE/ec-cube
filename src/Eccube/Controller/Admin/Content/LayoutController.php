@@ -229,6 +229,6 @@ class LayoutController extends AbstractController
         $form = $request->get('admin_layout');
         $this->isPreview = true;
 
-        return $this->edit($request, $this->cacheUtil, $id, $form['Page']);
+        return $this->edit($request, $id, $form['Page']);
     }
 }

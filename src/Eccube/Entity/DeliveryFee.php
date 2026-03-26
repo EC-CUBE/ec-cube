@@ -39,7 +39,6 @@ if (!class_exists(DeliveryFee::class)) {
 
         #[ORM\ManyToOne(targetEntity: Delivery::class, inversedBy: 'DeliveryFees')]
         #[ORM\JoinColumn(name: 'delivery_id', referencedColumnName: 'id', nullable: false)]
-        // @phpstan-ignore-next-line doctrine.associationType (Formでの初期化時にnullが必要なためnullableとしている)
         private ?Delivery $Delivery = null;
 
         #[ORM\ManyToOne(targetEntity: Pref::class)]

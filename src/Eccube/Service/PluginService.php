@@ -892,7 +892,7 @@ class PluginService
         }
         // Find plugin in array
         $index = array_search($pluginCode, array_column($plugins, 'product_code')); // 前方互換用
-        if ($index === false) { /** @phpstan-ignore-line */
+        if ($index === false) {
             $index = array_search(strtolower($pluginCode), array_column($plugins, 'product_code'));
         }
 

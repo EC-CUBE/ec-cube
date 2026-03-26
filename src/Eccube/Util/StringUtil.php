@@ -49,7 +49,6 @@ class StringUtil
         if (function_exists('openssl_random_pseudo_bytes')) {
             $bytes = openssl_random_pseudo_bytes($length * 2);
 
-            /** @phpstan-ignore-next-line */
             if ($bytes === false) {
                 throw new \RuntimeException('Unable to generate random string.');
             }

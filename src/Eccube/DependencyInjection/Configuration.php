@@ -20,9 +20,6 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class Configuration implements ConfigurationInterface
 {
-    /**
-     * @phpstan-ignore-next-line return.phpDocType, return.type
-     */
     #[\Override]
     public function getConfigTreeBuilder(): TreeBuilder
     {
@@ -34,12 +31,8 @@ class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    /**
-     * @phpstan-ignore-next-line parameter.generic
-     */
     public function addRateLimiterSection(ArrayNodeDefinition|NodeDefinition $rootNode): void
     {
-        // @phpstan-ignore-next-line XXX ArrayNodeDefinition の筈だが、何故か NodeDefinition と判定されてしまう
         $rootNode
             ->children()
                 ->arrayNode('rate_limiter')
