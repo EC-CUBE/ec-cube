@@ -90,7 +90,12 @@ class CacheUtil implements EventSubscriberInterface
             true
         );
 
-        $console->run($input, $output);
+        try {
+            $console->run($input, $output);
+        } catch (\Throwable $e) {
+            // cache:clear 失敗時はプロセスを殺さない (kernel.terminate で実行されるため)
+            log_error($e);
+        }
 
         if (function_exists('opcache_reset')) {
             opcache_reset();
