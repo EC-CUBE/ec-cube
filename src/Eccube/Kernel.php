@@ -232,7 +232,10 @@ class Kernel extends BaseKernel
             }
         } catch (\Exception $e) {
             // DB接続失敗時はコンテナパラメータのみ使用
+            error_log('[configureRoutes] DB lookup failed: '.$e->getMessage());
         }
+
+        error_log('[configureRoutes] plugins='.implode(',', $plugins));
 
         foreach ($plugins as $plugin) {
             $dir = $pluginDir.'/'.$plugin.'/Controller';
