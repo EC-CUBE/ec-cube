@@ -50,11 +50,11 @@ class DeliveryFeeFreeByShippingPreprocessor implements ItemHolderPreprocessor
             $Order = $itemHolder;
             foreach ($Order->getShippings() as $Shipping) {
                 $isFree = false;
-                $total = 0;
-                $quantity = 0;
+                $total = '0';
+                $quantity = '0';
                 foreach ($Shipping->getProductOrderItems() as $Item) {
-                    $total += $Item->getPriceIncTax() * $Item->getQuantity(); // @phpstan-ignore-line TODO bcmath-polyfill を使用する
-                    $quantity += $Item->getQuantity();
+                    $total = bcadd($total, bcmul($Item->getPriceIncTax(), $Item->getQuantity(), 0), 0);
+                    $quantity = bcadd($quantity, $Item->getQuantity(), 0);
                 }
                 // 送料無料（金額）を超えている
                 if ($this->BaseInfo->getDeliveryFreeAmount()) {
