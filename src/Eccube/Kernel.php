@@ -238,6 +238,12 @@ class Kernel extends BaseKernel
 
         foreach ($plugins as $plugin) {
             $dir = $pluginDir.'/'.$plugin.'/Controller';
+            $exists = is_dir($dir) ? 'YES' : 'NO';
+            @file_put_contents($this->getProjectDir().'/var/log/route_debug.log', date('c')." plugin=$plugin dir=$dir exists=$exists\n", FILE_APPEND);
+        }
+
+        foreach ($plugins as $plugin) {
+            $dir = $pluginDir.'/'.$plugin.'/Controller';
             if (is_dir($dir)) {
                 $builder = $routes->import($dir, 'attribute');
                 $builder->schemes($scheme);
