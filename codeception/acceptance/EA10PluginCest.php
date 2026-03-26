@@ -88,7 +88,7 @@ class EA10PluginCest
             $I->getScenario()->skip('ECCUBE_RESTRICT_FILE_UPLOAD=0 のためスキップします');
         }
 
-        $I->amOnPage('/' . $config['eccube_admin_route'] . '/store/plugin/install');
+        $I->amOnPage('/'.$config['eccube_admin_route'].'/store/plugin/install');
         $I->see('この機能は管理者によって制限されています。');
     }
 
@@ -208,8 +208,8 @@ class EA10PluginCest
 
     public function test_install_assets_local(AcceptanceTester $I)
     {
-        $assetsPath = $this->config['plugin_html_realdir'] . '/Assets/assets/assets.js';
-        $updatedPath = $this->config['plugin_html_realdir'] . '/Assets/assets/updated.js';
+        $assetsPath = $this->config['plugin_html_realdir'].'/Assets/assets/assets.js';
+        $updatedPath = $this->config['plugin_html_realdir'].'/Assets/assets/updated.js';
 
         $I->assertFileNotExists($assetsPath);
         $I->assertFileNotExists($updatedPath);
@@ -240,8 +240,8 @@ class EA10PluginCest
         // 最初のバージョンを作成
         $I->compressPlugin('Assets-1.0.0', codecept_root_dir('repos'));
 
-        $assetsPath = $this->config['plugin_html_realdir'] . '/Assets/assets/assets.js';
-        $updatedPath = $this->config['plugin_html_realdir'] . '/Assets/assets/updated.js';
+        $assetsPath = $this->config['plugin_html_realdir'].'/Assets/assets/assets.js';
+        $updatedPath = $this->config['plugin_html_realdir'].'/Assets/assets/updated.js';
         $I->assertFileNotExists($assetsPath);
         $I->assertFileNotExists($updatedPath);
 
@@ -419,10 +419,10 @@ class EA10PluginCest
         $I->see('hello');
 
         // テンプレートをapp/template/plugin/[Plugin Code]に設置
-        $dir = $this->config->get('eccube_theme_app_dir') . '/plugin/Template';
+        $dir = $this->config->get('eccube_theme_app_dir').'/plugin/Template';
         $fs = new Symfony\Component\Filesystem\Filesystem();
         $fs->mkdir($dir);
-        $fs->dumpFile($dir . '/index.twig', 'bye');
+        $fs->dumpFile($dir.'/index.twig', 'bye');
 
         // キャッシュ削除すると反映される
         $page = CacheManagePage::go($I);
@@ -432,7 +432,7 @@ class EA10PluginCest
         $I->amOnPage('/template');
         $I->see('bye');
 
-        $I->amOnPage('/' . $this->config->get('eccube_admin_route') . '/store/plugin');
+        $I->amOnPage('/'.$this->config->get('eccube_admin_route').'/store/plugin');
         $plugin->無効化();
         $plugin->削除();
 
@@ -521,16 +521,16 @@ abstract class Abstract_Plugin
     public function tableExists()
     {
         foreach ($this->tables as $table) {
-            $exists = $this->conn->executeQuery("SELECT count(*) AS count FROM information_schema.columns WHERE table_name = '" . $table . "';")->fetchAssociative()['count'] > 0;
-            $this->I->assertTrue($exists, 'テーブルがあるはず ' . $table);
+            $exists = $this->conn->executeQuery("SELECT count(*) AS count FROM information_schema.columns WHERE table_name = '".$table."';")->fetchAssociative()['count'] > 0;
+            $this->I->assertTrue($exists, 'テーブルがあるはず '.$table);
         }
     }
 
     public function tableNotExists()
     {
         foreach ($this->tables as $table) {
-            $exists = $this->conn->executeQuery("SELECT count(*) AS count FROM information_schema.columns WHERE table_name = '" . $table . "';")->fetchAssociative()['count'] > 0;
-            $this->I->assertFalse($exists, 'テーブルがないはず ' . $table);
+            $exists = $this->conn->executeQuery("SELECT count(*) AS count FROM information_schema.columns WHERE table_name = '".$table."';")->fetchAssociative()['count'] > 0;
+            $this->I->assertFalse($exists, 'テーブルがないはず '.$table);
         }
     }
 
@@ -539,7 +539,7 @@ abstract class Abstract_Plugin
         foreach ($this->columns as $column) {
             list($tableName, $columnName) = explode('.', $column);
             $exists = $this->conn->executeQuery("SELECT count(*) AS count FROM information_schema.columns WHERE table_name = '{$tableName}' AND column_name = '{$columnName}';")->fetchAssociative()['count'] == 1;
-            $this->I->assertTrue($exists, 'カラムがあるはず ' . $column);
+            $this->I->assertTrue($exists, 'カラムがあるはず '.$column);
         }
     }
 
@@ -548,23 +548,23 @@ abstract class Abstract_Plugin
         foreach ($this->columns as $column) {
             list($tableName, $columnName) = explode('.', $column);
             $exists = $this->conn->executeQuery("SELECT count(*) AS count FROM information_schema.columns WHERE table_name = '{$tableName}' AND column_name = '{$columnName}';")->fetchAssociative()['count'] == 1;
-            $this->I->assertFalse($exists, 'カラムがないはず ' . $column);
+            $this->I->assertFalse($exists, 'カラムがないはず '.$column);
         }
     }
 
     public function traitExists()
     {
         foreach ($this->traits as $trait => $target) {
-            $this->I->assertStringContainsString($trait, file_get_contents($this->config['kernel.project_dir'] . '/app/proxy/entity/' . $target . '.php'), 'Traitがあるはず ' . $trait);
+            $this->I->assertStringContainsString($trait, file_get_contents($this->config['kernel.project_dir'].'/app/proxy/entity/'.$target.'.php'), 'Traitがあるはず '.$trait);
         }
     }
 
     public function traitNotExists()
     {
         foreach ($this->traits as $trait => $target) {
-            $file = $this->config['kernel.project_dir'] . '/app/proxy/entity/' . $target . '.php';
+            $file = $this->config['kernel.project_dir'].'/app/proxy/entity/'.$target.'.php';
             if (file_exists($file)) {
-                $this->I->assertStringNotContainsString($trait, file_get_contents($file), 'Traitがないはず ' . $trait);
+                $this->I->assertStringNotContainsString($trait, file_get_contents($file), 'Traitがないはず '.$trait);
             } else {
                 $this->I->assertTrue(true, 'Traitがないはず');
             }
@@ -624,7 +624,7 @@ class Store_Plugin extends Abstract_Plugin
     {
         parent::__construct($I);
         $this->code = $code;
-        $this->publishPlugin($this->code . '-1.0.0.tgz');
+        $this->publishPlugin($this->code.'-1.0.0.tgz');
         if ($dependency) {
             $this->dependency = $dependency;
             $this->ManagePage = $dependency->ManagePage;
@@ -735,7 +735,7 @@ class Store_Plugin extends Abstract_Plugin
 
     public function アップデート()
     {
-        $this->publishPlugin($this->code . '-1.0.1.tgz');
+        $this->publishPlugin($this->code.'-1.0.1.tgz');
 
         $this->I->reloadPage();
         $this->ManagePage->ストアプラグイン_アップデート($this->code)->アップデート();
@@ -755,7 +755,7 @@ class Store_Plugin extends Abstract_Plugin
     protected function publishPlugin($fileName)
     {
         $dirname = str_replace('.tgz', '', $fileName);
-        $this->I->assertTrue((bool) $this->I->compressPlugin($dirname, codecept_root_dir() . 'repos'), "公開できた {$fileName}");
+        $this->I->assertTrue((bool) $this->I->compressPlugin($dirname, codecept_root_dir().'repos'), "公開できた {$fileName}");
     }
 }
 
@@ -779,7 +779,7 @@ class Local_Plugin extends Abstract_Plugin
     public function インストール()
     {
         $this->ManagePage = PluginLocalInstallPage::go($this->I)
-            ->アップロード($this->code . '-1.0.0');
+            ->アップロード($this->code.'-1.0.0');
 
         // ページ遷移完了後にフラッシュメッセージを確認
         $this->I->waitForText('プラグインをインストールしました。', 30, PluginManagePage::完了メッセージ);
@@ -845,7 +845,7 @@ class Local_Plugin extends Abstract_Plugin
 
     public function アップデート()
     {
-        $this->ManagePage->独自プラグイン_アップデート($this->code, $this->code . '-1.0.1');
+        $this->ManagePage->独自プラグイン_アップデート($this->code, $this->code.'-1.0.1');
 
         $this->検証();
 
