@@ -2,6 +2,21 @@ name: Plugin test for EC-CUBE
 
 on:
   workflow_call:
+  workflow_dispatch:
+    inputs:
+      method:
+        description: 'Test method to run (empty = all)'
+        required: false
+        type: string
+      db:
+        description: 'Database (both = all)'
+        required: false
+        default: 'both'
+        type: choice
+        options:
+          - both
+          - pgsql
+          - mysql
 
 permissions:
   contents: read
@@ -9,6 +24,10 @@ permissions:
 jobs:
   plugin-install:
     name: Plugin install
+    if: >-
+      github.event_name != 'workflow_dispatch'
+      || ((inputs.method == '' || matrix.method == inputs.method)
+      && (inputs.db == 'both' || matrix.db == inputs.db))
     runs-on: ${{ matrix.operating-system }}
     strategy:
       fail-fast: false
@@ -157,6 +176,10 @@ jobs:
 
   plugin-update:
     name: Plugin Update
+    if: >-
+      github.event_name != 'workflow_dispatch'
+      || ((inputs.method == '' || matrix.method == inputs.method)
+      && (inputs.db == 'both' || matrix.db == inputs.db))
     runs-on: ${{ matrix.operating-system }}
     strategy:
       fail-fast: false
@@ -312,6 +335,10 @@ jobs:
 
   plugin-extend:
     name: Plugin extend
+    if: >-
+      github.event_name != 'workflow_dispatch'
+      || ((inputs.method == '' || matrix.method == inputs.method)
+      && (inputs.db == 'both' || matrix.db == inputs.db))
     runs-on: ${{ matrix.operating-system }}
     strategy:
       fail-fast: false
@@ -467,6 +494,10 @@ jobs:
 
   plugin-depend:
     name: Plugin depend
+    if: >-
+      github.event_name != 'workflow_dispatch'
+      || ((inputs.method == '' || matrix.method == inputs.method)
+      && (inputs.db == 'both' || matrix.db == inputs.db))
     runs-on: ${{ matrix.operating-system }}
     strategy:
       fail-fast: false
