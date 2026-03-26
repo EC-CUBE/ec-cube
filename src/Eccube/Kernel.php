@@ -204,12 +204,26 @@ class Kernel extends BaseKernel
         $builder->schemes($scheme);
 
         // 有効なプラグインのルーティングをインポートする.
+        // コンテナパラメータに加え, ファイルシステムからもプラグインを検出する.
+        // configureRoutes() がルーティングキャッシュ再生成時に呼ばれる場合,
+        // コンテナのパラメータが古い可能性があるため, 両方を合わせて使用する.
         $plugins = $container->getParameter('eccube.plugins.enabled');
         $pluginDir = $this->getProjectDir().'/app/Plugin';
-        // デバッグ: プラグインルーティングのロードを記録
-        if (!empty($plugins)) {
-            error_log('[EC-CUBE Route] Loading routes for plugins: '.implode(', ', $plugins));
+
+        // ファイルシステムから有効なプラグインを補完する (DB直接参照)
+        try {
+            $dbUrl = env('DATABASE_URL');
+            if ($dbUrl && class_exists(\Doctrine\DBAL\DriverManager::class)) {
+                $conn = \Doctrine\DBAL\DriverManager::getConnection(['url' => $dbUrl]);
+                $stmt = $conn->executeQuery('SELECT code FROM dtb_plugin WHERE enabled = 1');
+                $dbPlugins = $stmt->fetchFirstColumn();
+                $conn->close();
+                $plugins = array_unique(array_merge($plugins, $dbPlugins));
+            }
+        } catch (\Exception $e) {
+            // DB接続失敗時はコンテナパラメータのみ使用
         }
+
         foreach ($plugins as $plugin) {
             $dir = $pluginDir.'/'.$plugin.'/Controller';
             if (is_dir($dir)) {
@@ -220,7 +234,6 @@ class Kernel extends BaseKernel
                 );
                 foreach ($iterator as $file) {
                     if ($file->isFile() && $file->getExtension() === 'php') {
-                        error_log('[EC-CUBE Route] Importing: '.$file->getRealPath());
                         $builder = $routes->import($file->getRealPath(), 'attribute');
                         $builder->schemes($scheme);
                     }
