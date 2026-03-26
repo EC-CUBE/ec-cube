@@ -249,7 +249,7 @@ class Kernel extends BaseKernel
         foreach ($plugins as $plugin) {
             $dir = $pluginDir.'/'.$plugin.'/Controller';
             if (is_dir($dir)) {
-                $builder = $routes->import($dir, 'attribute');
+                $builder = $routes->import($dir, 'annotation');
                 $builder->schemes($scheme);
             }
             if (file_exists($pluginDir.'/'.$plugin.'/Resource/config')) {
