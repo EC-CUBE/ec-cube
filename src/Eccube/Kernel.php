@@ -227,17 +227,8 @@ class Kernel extends BaseKernel
         foreach ($plugins as $plugin) {
             $dir = $pluginDir.'/'.$plugin.'/Controller';
             if (is_dir($dir)) {
-                // Import each controller file individually for reliable route loading
-                $iterator = new \RecursiveIteratorIterator(
-                    new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS),
-                    \RecursiveIteratorIterator::LEAVES_ONLY
-                );
-                foreach ($iterator as $file) {
-                    if ($file->isFile() && $file->getExtension() === 'php') {
-                        $builder = $routes->import($file->getRealPath(), 'attribute');
-                        $builder->schemes($scheme);
-                    }
-                }
+                $builder = $routes->import($dir, 'attribute');
+                $builder->schemes($scheme);
             }
             if (file_exists($pluginDir.'/'.$plugin.'/Resource/config')) {
                 $builder = $routes->import($pluginDir.'/'.$plugin.'/Resource/config/routes'.self::CONFIG_EXTS);
