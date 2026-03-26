@@ -5,10 +5,10 @@
   "type": "eccube-plugin",
   "require": {
     "ec-cube/plugin-installer": "^2.0",
-    "league/oauth2-server-bundle": "^0.5",
-    "nyholm/psr7": "^1.2",
-    "php-http/message-factory": "*",
-    "webonyx/graphql-php": "^14.0"
+    "league/oauth2-server-bundle": "^0.11||^1.0",
+    "nyholm/psr7": "^1.4",
+    "psr/http-factory": "^1.0",
+    "webonyx/graphql-php": "^14.0||^15.0"
   },
   "extra": {
     "code": "Bundle",
