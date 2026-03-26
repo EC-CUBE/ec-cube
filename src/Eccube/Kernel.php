@@ -214,7 +214,17 @@ class Kernel extends BaseKernel
         try {
             $dbUrl = env('DATABASE_URL');
             if ($dbUrl && class_exists(\Doctrine\DBAL\DriverManager::class)) {
-                $conn = \Doctrine\DBAL\DriverManager::getConnection(['url' => $dbUrl]);
+                $parser = new \Doctrine\DBAL\Tools\DsnParser([
+                    'sqlite' => 'pdo_sqlite',
+                    'sqlite3' => 'pdo_sqlite',
+                    'mysql' => 'pdo_mysql',
+                    'mysql2' => 'pdo_mysql',
+                    'postgres' => 'pdo_pgsql',
+                    'pgsql' => 'pdo_pgsql',
+                    'postgresql' => 'pdo_pgsql',
+                ]);
+                $params = $parser->parse($dbUrl);
+                $conn = \Doctrine\DBAL\DriverManager::getConnection($params);
                 $stmt = $conn->executeQuery('SELECT code FROM dtb_plugin WHERE enabled = 1');
                 $dbPlugins = $stmt->fetchFirstColumn();
                 $conn->close();
