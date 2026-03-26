@@ -134,14 +134,23 @@ class ReloadSafeAnnotationDriver extends HybridMappingDriver
                     $namespace = $tokens->generatePartialCode($tokens->getNextMeaningfulToken($namespaceIndex), $tokens->getPrevMeaningfulToken($namespaceEndIndex));
                     $className = $tokens[$classNameTokenIndex]->getContent();
                     $fqcn = $namespace.'\\'.$className;
+                    // class_exists() を呼ぶ前に、クラスが既にメモリにロード済みか記録する.
+                    // (class_exists()はオートローダーを通じてクラスをロードするため、
+                    //  呼び出し後は常にロード済みになる)
+                    $wasAlreadyLoaded = class_exists($fqcn, false);
                     if (class_exists($fqcn) && !$this->isTransient($fqcn)) {
                         $sourceFile = realpath($sourceFile);
                         // プロキシファイルは常にリロードする.
-                        // プラグインEntityもプラグインアップデート時にディスク上のファイルが
+                        // プラグインEntityはプラグインアップデート時にディスク上のファイルが
                         // 更新されている可能性がある. PHPは同一プロセス内でクラスを再定義
-                        // できないため, 一時クラス名でリロードして新しいメタデータを読む.
-                        $needsReload = in_array($sourceFile, $this->newProxyFiles)
-                            || str_starts_with($namespace, 'Plugin\\');
+                        // できないため, ファイル内容が変わった場合は一時クラス名でリロードする.
+                        $needsReload = in_array($sourceFile, $this->newProxyFiles);
+                        if (!$needsReload && $wasAlreadyLoaded && str_starts_with($namespace, 'Plugin\\')) {
+                            // クラスがこの関数呼び出し前に既にロードされていた場合、
+                            // プラグインアップデート等でファイルが上書きされた可能性がある.
+                            // 一時クラス名でリロードして最新のメタデータを再取得する.
+                            $needsReload = true;
+                        }
                         if ($needsReload) {
                             $newClassName = $className.StringUtil::random(12);
                             $tokens[$classNameTokenIndex] = new Token([T_STRING, $newClassName]);
