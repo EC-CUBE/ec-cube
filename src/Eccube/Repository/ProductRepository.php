@@ -107,7 +107,7 @@ class ProductRepository extends AbstractRepository
 
         return $qb
             ->getQuery()
-            ->setResultCacheLifetime($this->eccubeConfig['eccube_result_cache_lifetime_short'])
+            ->enableResultCache($this->eccubeConfig['eccube_result_cache_lifetime_short'])
             ->getResult();
     }
 

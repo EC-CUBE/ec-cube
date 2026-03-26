@@ -121,7 +121,7 @@ class ProductController extends AbstractController
         $searchData = $event->getArgument('searchData');
 
         $query = $qb->getQuery()
-            ->setResultCacheLifetime($this->eccubeConfig['eccube_result_cache_lifetime_short']);
+            ->enableResultCache($this->eccubeConfig['eccube_result_cache_lifetime_short']);
 
         /** @var SlidingPagination<int, Product> $pagination */
         $pagination = $this->paginator->paginate(

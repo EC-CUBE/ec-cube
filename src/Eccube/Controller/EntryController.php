@@ -225,7 +225,7 @@ class EntryController extends AbstractController
     /**
      * 会員登録処理を行う
      */
-    private function entryActivate(Request $request, string $secret_key): int
+    private function entryActivate(Request $request, string $secret_key): string
     {
         log_info('本会員登録開始');
         $Customer = $this->customerRepository->getProvisionalCustomerBySecretKey($secret_key);
@@ -253,9 +253,9 @@ class EntryController extends AbstractController
 
         // Assign session carts into customer carts
         $Carts = $this->cartService->getCarts();
-        $qtyInCart = 0;
+        $qtyInCart = '0';
         foreach ($Carts as $Cart) {
-            $qtyInCart += $Cart->getTotalQuantity();
+            $qtyInCart = bcadd($qtyInCart, $Cart->getTotalQuantity(), 0);
         }
 
         if ($qtyInCart) {
