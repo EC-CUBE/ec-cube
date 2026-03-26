@@ -80,6 +80,10 @@ class AutoConfigurationTagPass implements CompilerPassInterface
      */
     protected function configureControllerTag(Definition $definition)
     {
+        if ($definition->isAbstract()) {
+            return;
+        }
+
         $class = $definition->getClass();
         if (!is_subclass_of($class, AbstractController::class)) {
             return;
