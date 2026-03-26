@@ -3,6 +3,9 @@ name: Coverage
 on:
   workflow_call:
 
+permissions:
+  contents: read
+
 jobs:
   phpunit:
     name: PHPUnit
@@ -29,23 +32,17 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
 
       - name: Setup PHP
-        uses: nanasess/setup-php@master
+        uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1  # v2
         with:
           php-version: ${{ matrix.php }}
-
-      - name: Install ext-redis 6.1+
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y php${{ matrix.php }}-redis
-          sudo phpenmod -s cli redis
-          php -m | grep -i redis
+          extensions: redis
 
       - name: Setup pcov
         run: |
-          sudo apt-get install -y php8.4-pcov
+          sudo apt-get install -y php${{ matrix.php }}-pcov
           sudo phpenmod -s cli pcov
 
       - name: Initialize Composer
@@ -71,6 +68,7 @@ jobs:
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           MAILER_URL: 'smtp://127.0.0.1:1025'
+          ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
         continue-on-error: true
         run: |
           echo "session.save_path=$PWD/var/sessions/test" > php.ini
@@ -78,7 +76,7 @@ jobs:
           php -c php.ini -dpcov.enabled=1 vendor/bin/phpunit --exclude-group cache-clear --exclude-group cache-clear-install --exclude-group update-schema-doctrine --coverage-clover=coverage1.xml --testdox
       - name: Upload report
         if: success()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
         with:
           name: phpunit-reports
           path: coverage1.xml
@@ -124,12 +122,13 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
 
       - name: Setup PHP
-        uses: nanasess/setup-php@master
+        uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1  # v2
         with:
           php-version: ${{ matrix.php }}
+          extensions: redis
 
       - name: Initialize Composer
         uses: ./.github/actions/composer
@@ -158,11 +157,14 @@ jobs:
           bin/console doctrine:schema:create --env=dev
           bin/console eccube:fixtures:load --env=dev
 
-      - name: Install fonts
-        run: sudo apt install fonts-ipafont fonts-ipaexfont
+      - name: Cache apt packages
+        uses: awalsh128/cache-apt-pkgs-action@acb598e5ddbc6f68a970c5da0688d2f3a9f04d05  # latest
+        with:
+          packages: fonts-ipafont fonts-ipaexfont
+          version: 1.0
 
       - name: setup-chromedriver
-        uses: nanasess/setup-chromedriver@master
+        uses: nanasess/setup-chromedriver@fc3dc5897c11410827ed268ab625038ee63dc6fe  # master
 
       - name: Run chromedriver
         run: |
@@ -183,7 +185,7 @@ jobs:
 
       - name: Setup pcov
         run: |
-          sudo apt-get install -y php8.4-pcov
+          sudo apt-get install -y php${{ matrix.php }}-pcov
           sudo phpenmod -s cli pcov
 
       - name: Setup codeception
@@ -204,19 +206,19 @@ jobs:
           sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
           php -dpcov.enabled=1 vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP} --skip-group excludeCoverage --coverage --coverage-xml
       - name: Upload outputs
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
         with:
           name: codeception-${{ matrix.group }}-evidence
           path: codeception/_output/
       - name: Upload report
         if: success()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
         with:
           name: codeception-${{ matrix.group }}-reports
           path: codeception/_output/**/*.xml
       - name: Upload logs
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
         with:
           name: codeception-${{ matrix.group }}-logs
           path: var/log/
@@ -227,7 +229,7 @@ jobs:
     needs: [ phpunit, codeception ]
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
       - uses: actions/download-artifact@v5
         with:
           path: reports

@@ -3,6 +3,9 @@ name: E2E test(Throttoling) for EC-CUBE
 on:
   workflow_call:
 
+permissions:
+  contents: read
+
 jobs:
   codeception:
     name: Codeception
@@ -36,7 +39,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
 
       # codeception環境ではprodの設定が読み込まれないため、ベース設定を作成
       - name: Prepare rate limiter config
@@ -86,16 +89,10 @@ jobs:
                       interval: '30 minutes'" > app/config/eccube/packages/codeception/eccube_rate_limiter.yaml
 
       - name: Setup PHP
-        uses: nanasess/setup-php@master
+        uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1  # v2
         with:
           php-version: ${{ matrix.php }}
-
-      - name: Install ext-redis 6.1+
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y php${{ matrix.php }}-redis
-          sudo phpenmod -s cli redis
-          php -m | grep -i redis
+          extensions: redis
 
       - name: Enable register_argc_argv for Codeception
         if: matrix.php == '8.5'
@@ -131,7 +128,7 @@ jobs:
           bin/console eccube:fixtures:load --env=dev
 
       - name: setup-chromedriver
-        uses: nanasess/setup-chromedriver@master
+        uses: nanasess/setup-chromedriver@fc3dc5897c11410827ed268ab625038ee63dc6fe  # master
 
       - name: Prepare Throttling Test
         run: |
@@ -141,8 +138,11 @@ jobs:
                       rate_limiter.cache:
                           adapter: cache.adapter.filesystem" > app/config/eccube/packages/codeception/rate_limiter.yml
 
-      - name: Install fonts
-        run: sudo apt install fonts-ipafont fonts-ipaexfont
+      - name: Cache apt packages
+        uses: awalsh128/cache-apt-pkgs-action@acb598e5ddbc6f68a970c5da0688d2f3a9f04d05  # latest
+        with:
+          packages: fonts-ipafont fonts-ipaexfont
+          version: 1.0
 
       - name: Run chromedriver
         run: |
@@ -171,19 +171,20 @@ jobs:
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           METHOD: ${{ matrix.method }}
           SYMFONY_DEPRECATIONS_HELPER: weak
+          ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
         run: |
           sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
           vendor/bin/codecept -vvv run acceptance --env chrome,github_action EF09ThrottlingCest::${METHOD} --html report.html
 
       - name: Upload evidence
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
         with:
           name: codeception-${{ matrix.php }}-${{ matrix.method }}-evidence
           path: codeception/_output/
       - name: Upload logs
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
         with:
           name: codeception-${{ matrix.php }}-${{ matrix.method }}-logs
           path: var/log/
