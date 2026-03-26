@@ -18,7 +18,7 @@ use Eccube\Entity\Cart;
 use Eccube\Repository\CartRepository;
 use Plugin\Boomerang\Entity\Bar;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class BoomerangController extends AbstractController
 {
@@ -33,10 +33,9 @@ class BoomerangController extends AbstractController
     }
 
     /**
-     * @Route("/boomerang", name="boomerang")
-     *
      * @return JsonResponse
      */
+    #[Route('/boomerang', name: 'boomerang')]
     public function index()
     {
         /** @var Cart[] $list */
@@ -46,9 +45,7 @@ class BoomerangController extends AbstractController
         return $this->json($ids);
     }
 
-    /**
-     * @Route("/boomerang/new")
-     */
+    #[Route('/boomerang/new')]
     public function new()
     {
         $Bar = new Bar();

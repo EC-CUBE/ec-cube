@@ -113,7 +113,45 @@ class SchemaService
     public function updateSchema($generatedFiles, $proxiesDirectory, $saveMode = false)
     {
         $this->executeCallback(function (SchemaTool $tool, array $metaData) {
-            $tool->updateSchema($metaData);
+            // Doctrine の updateSchema() は DROP TABLE を ALTER TABLE(FK削除) より先に実行するため、
+            // PostgreSQL で外部キー制約による DROP TABLE 失敗が発生する。
+            // SQL文を取得して FK DROP / ALTER 文を先に実行し、その後 DROP TABLE を実行する。
+            $sqls = $tool->getUpdateSchemaSql($metaData);
+
+            $conn = $this->entityManager->getConnection();
+
+            // FK制約の削除・変更を先に実行
+            $dropFkSqls = [];
+            $dropTableSqls = [];
+            $otherSqls = [];
+
+            foreach ($sqls as $sql) {
+                $normalized = strtoupper(trim($sql));
+                if (str_starts_with($normalized, 'DROP TABLE ')) {
+                    $dropTableSqls[] = $sql;
+                } elseif (
+                    str_starts_with($normalized, 'ALTER TABLE ')
+                    && (str_contains($normalized, 'DROP FOREIGN KEY ')
+                        || str_contains($normalized, 'DROP CONSTRAINT '))
+                ) {
+                    $dropFkSqls[] = $sql;
+                } else {
+                    $otherSqls[] = $sql;
+                }
+            }
+
+            // 1. FK制約を先に削除
+            foreach ($dropFkSqls as $sql) {
+                $conn->executeStatement($sql);
+            }
+            // 2. テーブルを削除
+            foreach ($dropTableSqls as $sql) {
+                $conn->executeStatement($sql);
+            }
+            // 3. その他のSQL（テーブル作成、カラム変更など）
+            foreach ($otherSqls as $sql) {
+                $conn->executeStatement($sql);
+            }
         }, $generatedFiles, $proxiesDirectory);
     }
 
