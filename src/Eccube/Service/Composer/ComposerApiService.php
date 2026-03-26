@@ -116,7 +116,7 @@ class ComposerApiService implements ComposerServiceInterface
                 '--no-interaction' => true,
                 '--profile' => true,
                 '--prefer-dist' => true,
-                '--update-with-dependencies' => true,
+                '--with-all-dependencies' => true,
                 '--no-scripts' => true,
                 '--update-no-dev' => env('APP_ENV') === 'prod',
             ], $output, false);
@@ -383,7 +383,7 @@ class ComposerApiService implements ComposerServiceInterface
         ini_set('memory_limit', $composerMemory);
 
         // Config for some environment
-        putenv('COMPOSER_HOME='.$this->eccubeConfig['plugin_realdir'].'/.composer');
+        putenv('COMPOSER_HOME=' . $this->eccubeConfig['plugin_realdir'] . '/.composer');
         $this->initConsole();
         $this->workingDir = $this->workingDir ? $this->workingDir : $this->eccubeConfig['kernel.project_dir'];
         $url = $this->eccubeConfig['eccube_package_api_url'];
@@ -393,13 +393,15 @@ class ComposerApiService implements ComposerServiceInterface
             'url' => $url,
             'options' => [
                 'http' => [
-                    'header' => ['X-ECCUBE-KEY: '.$BaseInfo->getAuthenticationKey()],
+                    'header' => ['X-ECCUBE-KEY: ' . $BaseInfo->getAuthenticationKey()],
                 ],
             ],
         ];
         $exclude = [];
-        if (array_key_exists('eccube', $config['repositories'])
-            && array_key_exists('exclude', $config['repositories']['eccube'])) {
+        if (
+            array_key_exists('eccube', $config['repositories'])
+            && array_key_exists('exclude', $config['repositories']['eccube'])
+        ) {
             $exclude = array_map(
                 function ($package) {
                     return trim($package);
@@ -410,7 +412,7 @@ class ComposerApiService implements ComposerServiceInterface
 
         if ($from !== null) {
             $exclude = array_unique(array_merge($exclude, [trim(current($packageName))]));
-            $this->execConfig('repositories.'.str_replace(['.', '/'], '', strtolower($from)), [json_encode([
+            $this->execConfig('repositories.' . str_replace(['.', '/'], '', strtolower($from)), [json_encode([
                 'type' => 'path',
                 'url' => $from,
             ])]);
@@ -420,7 +422,7 @@ class ComposerApiService implements ComposerServiceInterface
             $eccube_repository['exclude'] = $exclude;
         }
 
-        $this->execConfig('platform.php', [PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION.'.'.PHP_RELEASE_VERSION]);
+        $this->execConfig('platform.php', [PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION . '.' . PHP_RELEASE_VERSION]);
         $this->execConfig('repositories.eccube', [json_encode($eccube_repository)]);
 
         if (strpos($url, 'http://') === 0) {
@@ -458,14 +460,14 @@ class ComposerApiService implements ComposerServiceInterface
         foreach (explode(' ', trim($packageNames)) as $packageName) {
             $pluginCode = null;
             // 大文字小文字を区別するファイルシステムを考慮して, ディレクトリ名からプラグインコードを取得する
-            foreach (glob($projectRoot.'/app/Plugin/*', GLOB_ONLYDIR) as $dir) {
+            foreach (glob($projectRoot . '/app/Plugin/*', GLOB_ONLYDIR) as $dir) {
                 if (strtolower(basename($dir)) === strtolower(basename($packageName))) {
                     $pluginCode = basename($dir);
                     break;
                 }
             }
             if ($pluginCode === null) {
-                throw new PluginException($packageName.' not found');
+                throw new PluginException($packageName . ' not found');
             }
 
             $this->pluginContext->setCode($pluginCode);

@@ -206,6 +206,10 @@ class Kernel extends BaseKernel
         // 有効なプラグインのルーティングをインポートする.
         $plugins = $container->getParameter('eccube.plugins.enabled');
         $pluginDir = $this->getProjectDir().'/app/Plugin';
+        // デバッグ: プラグインルーティングのロードを記録
+        if (!empty($plugins)) {
+            error_log('[EC-CUBE Route] Loading routes for plugins: '.implode(', ', $plugins));
+        }
         foreach ($plugins as $plugin) {
             $dir = $pluginDir.'/'.$plugin.'/Controller';
             if (is_dir($dir)) {
@@ -216,6 +220,7 @@ class Kernel extends BaseKernel
                 );
                 foreach ($iterator as $file) {
                     if ($file->isFile() && $file->getExtension() === 'php') {
+                        error_log('[EC-CUBE Route] Importing: '.$file->getRealPath());
                         $builder = $routes->import($file->getRealPath(), 'attribute');
                         $builder->schemes($scheme);
                     }
