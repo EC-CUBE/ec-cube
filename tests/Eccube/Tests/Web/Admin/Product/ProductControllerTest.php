@@ -951,6 +951,7 @@ class ProductControllerTest extends AbstractAdminWebTestCase
             [],
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'HTTP_ECCUBE_CSRF_TOKEN' => 'dummy',
             ]
         );
 

@@ -265,12 +265,33 @@ class ProductController extends AbstractController
         $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_INDEX_SEARCH);
         $paginate_options = $event->getArgument('paginate_options');
 
-        $pagination = $paginator->paginate(
-            $qb,
-            $page_no,
-            $page_count,
-            $paginate_options
-        );
+        // JOIN必要な検索条件がない場合はカスタムカウントを使用
+        $useCustomCount = empty($searchData['category_id'])
+            && empty($searchData['stock_status'])
+            && empty($searchData['stock'])
+            && empty($searchData['tag_id']);
+
+        if ($useCustomCount) {
+            // カスタムカウントを使用して高速化
+            $count = $this->productRepository->countBySearchDataForAdmin($searchData);
+            $query = $qb->getQuery();
+            $query->setHint('knp_paginator.count', $count);
+
+            $pagination = $paginator->paginate(
+                $query,
+                $page_no,
+                $page_count,
+                $paginate_options
+            );
+        } else {
+            // JOIN必要な検索条件がある場合は従来通り
+            $pagination = $paginator->paginate(
+                $qb,
+                $page_no,
+                $page_count,
+                $paginate_options
+            );
+        }
 
         return [
             'searchForm' => $searchForm->createView(),
@@ -291,7 +312,7 @@ class ProductController extends AbstractController
      */
     public function loadProductClasses(Request $request, Product $Product)
     {
-        if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
+        if (!$request->isXmlHttpRequest() || !$this->isTokenValid()) {
             throw new BadRequestHttpException();
         }
 
@@ -322,7 +343,7 @@ class ProductController extends AbstractController
      */
     public function imageProcess(Request $request)
     {
-        if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
+        if (!$request->isXmlHttpRequest() || !$this->isTokenValid()) {
             throw new BadRequestHttpException();
         }
 
@@ -409,7 +430,7 @@ class ProductController extends AbstractController
      */
     public function imageRevert(Request $request)
     {
-        if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
+        if (!$request->isXmlHttpRequest() || !$this->isTokenValid()) {
             throw new BadRequestHttpException();
         }
 
