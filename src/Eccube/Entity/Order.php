@@ -352,7 +352,6 @@ if (!class_exists(Order::class)) {
         #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-        /**  @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
         private ?int $id = null;
 
         #[ORM\Column(name: 'pre_order_id', type: Types::STRING, length: 255, nullable: true)]
@@ -398,31 +397,28 @@ if (!class_exists(Order::class)) {
         private ?\DateTime $birth = null;
 
         #[ORM\Column(name: 'subtotal', type: Types::DECIMAL, precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
-        private string $subtotal = '0';
+        private ?string $subtotal = '0';
 
         #[ORM\Column(name: 'discount', type: Types::DECIMAL, precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
-        /** @phpstan-ignore-next-line property.unusedType (フォームバリデーションでnullが設定される可能性があるため) */
         private ?string $discount = '0';
 
         #[ORM\Column(name: 'delivery_fee_total', type: Types::DECIMAL, precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
-        /** @phpstan-ignore-next-line property.unusedType (フォームバリデーションでnullが設定される可能性があるため) */
         private ?string $delivery_fee_total = '0';
 
         #[ORM\Column(name: 'charge', type: Types::DECIMAL, precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
-        /** @phpstan-ignore-next-line property.unusedType (フォームバリデーションでnullが設定される可能性があるため) */
         private ?string $charge = '0';
 
         /**
          * @deprecated 明細ごとに集計した税額と差異が発生する場合があるため非推奨
          */
         #[ORM\Column(name: 'tax', type: Types::DECIMAL, precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
-        private string $tax = '0';
+        private ?string $tax = '0';
 
         #[ORM\Column(name: 'total', type: Types::DECIMAL, precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
-        private string $total = '0';
+        private ?string $total = '0';
 
         #[ORM\Column(name: 'payment_total', type: Types::DECIMAL, precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
-        private string $payment_total = '0';
+        private ?string $payment_total = '0';
 
         #[ORM\Column(name: 'payment_method', type: Types::STRING, length: 255, nullable: true)]
         private ?string $payment_method = null;
