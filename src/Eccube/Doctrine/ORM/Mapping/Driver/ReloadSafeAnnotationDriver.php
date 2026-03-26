@@ -61,6 +61,11 @@ class ReloadSafeAnnotationDriver extends HybridMappingDriver
             throw new MappingException('Path required for the mapping driver.');
         }
 
+        // この呼び出し開始時点で既にロード済みのクラスリストを記録する.
+        // getAllClassNames() 内で class_exists() により新たにロードされたクラスは
+        // 「以前からロード済み」とは見なさない.
+        $preLoadedClasses = array_flip(get_declared_classes());
+
         foreach ($this->paths as $path) {
             if (!is_dir($path)) {
                 throw MappingException::fileMappingDriversRequireConfiguredDirectoryPath($path);
@@ -105,7 +110,7 @@ class ReloadSafeAnnotationDriver extends HybridMappingDriver
                     $sourceFile = $proxyFile;
                 }
 
-                $this->classNames = array_merge($this->classNames ?: [], $this->getClassNamesFromTokens($sourceFile));
+                $this->classNames = array_merge($this->classNames ?: [], $this->getClassNamesFromTokens($sourceFile, $preLoadedClasses));
             }
         }
 
@@ -117,10 +122,11 @@ class ReloadSafeAnnotationDriver extends HybridMappingDriver
      * 新しく生成されたProxyクラスの場合は、一時的にクラス名を変更したクラスを生成してロードします.
      *
      * @param $sourceFile string ソースファイル
+     * @param $preLoadedClasses array getAllClassNames() 呼び出し開始時点でロード済みのクラス名マップ
      *
      * @return array ソースファイルに含まれるクラス名のリスト
      */
-    private function getClassNamesFromTokens($sourceFile)
+    private function getClassNamesFromTokens($sourceFile, array $preLoadedClasses = [])
     {
         $tokens = Tokens::fromCode(file_get_contents($sourceFile));
         $results = [];
@@ -134,10 +140,11 @@ class ReloadSafeAnnotationDriver extends HybridMappingDriver
                     $namespace = $tokens->generatePartialCode($tokens->getNextMeaningfulToken($namespaceIndex), $tokens->getPrevMeaningfulToken($namespaceEndIndex));
                     $className = $tokens[$classNameTokenIndex]->getContent();
                     $fqcn = $namespace.'\\'.$className;
-                    // class_exists() を呼ぶ前に、クラスが既にメモリにロード済みか記録する.
-                    // (class_exists()はオートローダーを通じてクラスをロードするため、
-                    //  呼び出し後は常にロード済みになる)
-                    $wasAlreadyLoaded = class_exists($fqcn, false);
+                    // getAllClassNames() 開始前に既にメモリにロードされていたクラスかどうかを判定する.
+                    // class_exists($fqcn, false) ではなくスナップショットを使用することで,
+                    // 同一 getAllClassNames() 呼び出し中に別ファイルから同名クラスが
+                    // ロードされた場合の誤判定を防ぐ.
+                    $wasAlreadyLoaded = isset($preLoadedClasses[$fqcn]);
                     if (class_exists($fqcn) && !$this->isTransient($fqcn)) {
                         $sourceFile = realpath($sourceFile);
                         // プロキシファイルは常にリロードする.
