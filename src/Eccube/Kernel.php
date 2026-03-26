@@ -208,14 +208,17 @@ class Kernel extends BaseKernel
         $pluginDir = $this->getProjectDir().'/app/Plugin';
         foreach ($plugins as $plugin) {
             $dir = $pluginDir.'/'.$plugin.'/Controller';
-            if (file_exists($dir)) {
-                $builder = $routes->import($dir, 'attribute');
-                $builder->schemes($scheme);
-
-                // Backward compatibility: also load @Route annotations for plugins
-                $legacyRoutes = Routing\HybridAnnotationClassLoader::loadAnnotationRoutes($dir);
-                if ($legacyRoutes->count() > 0) {
-                    $routes->addCollection($legacyRoutes);
+            if (is_dir($dir)) {
+                // Import each controller file individually for reliable route loading
+                $iterator = new \RecursiveIteratorIterator(
+                    new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS),
+                    \RecursiveIteratorIterator::LEAVES_ONLY
+                );
+                foreach ($iterator as $file) {
+                    if ($file->isFile() && $file->getExtension() === 'php') {
+                        $builder = $routes->import($file->getRealPath(), 'attribute');
+                        $builder->schemes($scheme);
+                    }
                 }
             }
             if (file_exists($pluginDir.'/'.$plugin.'/Resource/config')) {

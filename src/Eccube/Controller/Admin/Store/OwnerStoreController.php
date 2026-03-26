@@ -445,7 +445,25 @@ class OwnerStoreController extends AbstractController
             $this->pluginService->generateProxyAndUpdateSchema($Plugin, $config);
 
             // 初期化されていなければインストール処理を実行する
+            // MySQL の DDL (generateProxyAndUpdateSchema) は暗黙的に COMMIT するため,
+            // DBAL 4.x のネストトランザクション(SAVEPOINT)が破壊される.
+            // flush() 前にトランザクション状態をリセットする.
             if (!$Plugin->isInitialized()) {
+                $conn = $this->entityManager->getConnection();
+                if ($conn->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\AbstractMySQLPlatform) {
+                    // MySQL: DDL後にSAVEPOINTが破壊されているため、トランザクションをリセット
+                    while ($conn->getTransactionNestingLevel() > 0) {
+                        try {
+                            $conn->commit();
+                        } catch (\Exception $e) {
+                            // SAVEPOINTが存在しない場合は無視
+                            break;
+                        }
+                    }
+                    if (!$conn->getNativeConnection()->inTransaction()) {
+                        $conn->beginTransaction();
+                    }
+                }
                 $this->pluginService->callPluginManagerMethod($config, 'install');
                 $Plugin->setInitialized(true);
                 $this->entityManager->persist($Plugin);
