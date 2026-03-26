@@ -103,7 +103,9 @@ class Kernel extends BaseKernel
                 $contents = require $pluginBundles;
                 foreach ($contents as $class => $envs) {
                     if (isset($envs['all']) || isset($envs[$this->environment])) {
-                        yield new $class();
+                        if (class_exists($class)) {
+                            yield new $class();
+                        }
                     }
                 }
             }

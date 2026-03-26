@@ -15,6 +15,7 @@ namespace Eccube\DependencyInjection\Compiler;
 
 use Doctrine\Common\EventSubscriber;
 use Eccube\Service\Payment\PaymentMethodInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -37,6 +38,7 @@ class AutoConfigurationTagPass implements CompilerPassInterface
             $this->configureDoctrineEventSubscriberTag($definition);
             $this->configureRateLimiterTag($id, $definition);
             $this->configurePaymentMethodTag($id, $definition);
+            $this->configureControllerTag($definition);
         }
     }
 
@@ -70,5 +72,23 @@ class AutoConfigurationTagPass implements CompilerPassInterface
         if (is_subclass_of($class, PaymentMethodInterface::class) && !$definition->isAbstract()) {
             $definition->addTag('eccube_payment_method');
         }
+    }
+
+    /**
+     * Symfony 7 ではコントローラは明示的に controller.service_arguments タグが必要.
+     * プラグインのコントローラに対してタグを自動付与する.
+     */
+    protected function configureControllerTag(Definition $definition)
+    {
+        $class = $definition->getClass();
+        if (!is_subclass_of($class, AbstractController::class)) {
+            return;
+        }
+
+        if ($definition->hasTag('controller.service_arguments')) {
+            return;
+        }
+
+        $definition->addTag('controller.service_arguments');
     }
 }
