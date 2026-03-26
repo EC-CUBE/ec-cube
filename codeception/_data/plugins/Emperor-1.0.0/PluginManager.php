@@ -31,7 +31,7 @@ class PluginManager extends AbstractPluginManager
         $foo->id = 1;
         $foo->name = 'Emperor 1.0.0';
         $entityManager->persist($foo);
-        $entityManager->flush($foo);
+        $entityManager->flush();
     }
 
     public function enable(array $config, ContainerInterface $container)

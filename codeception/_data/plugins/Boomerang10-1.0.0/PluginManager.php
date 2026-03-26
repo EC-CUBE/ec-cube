@@ -32,7 +32,7 @@ class PluginManager extends AbstractPluginManager
         $bar->name = 'Boomerang10 1.0.0';
         $bar->mail = 'bar@example.com';
         $entityManager->persist($bar);
-        $entityManager->flush($bar);
+        $entityManager->flush();
     }
 
     public function enable(array $config, ContainerInterface $container)

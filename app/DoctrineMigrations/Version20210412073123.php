@@ -38,7 +38,7 @@ final class Version20210412073123 extends AbstractMigration
 
             $denyHosts = \json_encode($denyHosts);
 
-            $envFile = __DIR__.'/../../.env';
+            $envFile = __DIR__ . '/../../.env';
             $env = file_get_contents($envFile);
 
             $env = StringUtil::replaceOrAddEnv($env, [
