@@ -204,11 +204,11 @@ class Kernel extends BaseKernel
         $builder->schemes($scheme);
 
         // 有効なプラグインのルーティングをインポートする.
-        // コンテナパラメータに加え, DBとファイルシステムからもプラグインを検出する.
+        // コンテナパラメータに加え, DBからも有効プラグインを検出する.
         $plugins = $container->getParameter('eccube.plugins.enabled');
         $pluginDir = $this->getProjectDir().'/app/Plugin';
 
-        // DB直接参照で有効プラグインを補完する
+        // DB直接参照で有効プラグインを補完する (キャッシュ再構築時にコンテナパラメータが古い場合の対策)
         try {
             $dbUrl = env('DATABASE_URL');
             if ($dbUrl && class_exists(\Doctrine\DBAL\DriverManager::class)) {
@@ -228,28 +228,14 @@ class Kernel extends BaseKernel
                 $conn->close();
                 $plugins = array_unique(array_merge($plugins, $dbPlugins));
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             // DB接続失敗時はコンテナパラメータのみ使用
-        }
-
-        // ファイルシステムからも補完: Controller ディレクトリがあるプラグインは全て候補にする
-        // (ルートが不要なプラグインでも import しても害はない)
-        if (is_dir($pluginDir)) {
-            foreach (scandir($pluginDir) as $entry) {
-                if ($entry === '.' || $entry === '..') {
-                    continue;
-                }
-                if (is_dir($pluginDir.'/'.$entry.'/Controller')) {
-                    $plugins[] = $entry;
-                }
-            }
-            $plugins = array_unique($plugins);
         }
 
         foreach ($plugins as $plugin) {
             $dir = $pluginDir.'/'.$plugin.'/Controller';
             if (is_dir($dir)) {
-                $builder = $routes->import($dir, 'annotation');
+                $builder = $routes->import($dir, 'attribute');
                 $builder->schemes($scheme);
             }
             if (file_exists($pluginDir.'/'.$plugin.'/Resource/config')) {

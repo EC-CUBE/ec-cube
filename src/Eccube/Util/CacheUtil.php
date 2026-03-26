@@ -75,7 +75,6 @@ class CacheUtil implements EventSubscriberInterface
 
         $command = [
             'command' => 'cache:clear',
-            '--no-warmup' => true,
             '--no-ansi' => true,
         ];
 
