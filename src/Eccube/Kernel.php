@@ -204,13 +204,11 @@ class Kernel extends BaseKernel
         $builder->schemes($scheme);
 
         // 有効なプラグインのルーティングをインポートする.
-        // コンテナパラメータに加え, ファイルシステムからもプラグインを検出する.
-        // configureRoutes() がルーティングキャッシュ再生成時に呼ばれる場合,
-        // コンテナのパラメータが古い可能性があるため, 両方を合わせて使用する.
+        // コンテナパラメータに加え, DBとファイルシステムからもプラグインを検出する.
         $plugins = $container->getParameter('eccube.plugins.enabled');
         $pluginDir = $this->getProjectDir().'/app/Plugin';
 
-        // ファイルシステムから有効なプラグインを補完する (DB直接参照)
+        // DB直接参照で有効プラグインを補完する
         try {
             $dbUrl = env('DATABASE_URL');
             if ($dbUrl && class_exists(\Doctrine\DBAL\DriverManager::class)) {
@@ -232,26 +230,27 @@ class Kernel extends BaseKernel
             }
         } catch (\Exception $e) {
             // DB接続失敗時はコンテナパラメータのみ使用
-            @file_put_contents($this->getProjectDir().'/var/log/route_debug.log', date('c').' FAIL: '.$e->getMessage()."\n", FILE_APPEND);
         }
-        @file_put_contents($this->getProjectDir().'/var/log/route_debug.log', date('c').' plugins=['.implode(',', $plugins)."]\n", FILE_APPEND);
 
-        foreach ($plugins as $plugin) {
-            $dir = $pluginDir.'/'.$plugin.'/Controller';
-            $exists = is_dir($dir) ? 'YES' : 'NO';
-            @file_put_contents($this->getProjectDir().'/var/log/route_debug.log', date('c')." plugin=$plugin dir=$dir exists=$exists\n", FILE_APPEND);
+        // ファイルシステムからも補完: Controller ディレクトリがあるプラグインは全て候補にする
+        // (ルートが不要なプラグインでも import しても害はない)
+        if (is_dir($pluginDir)) {
+            foreach (scandir($pluginDir) as $entry) {
+                if ($entry === '.' || $entry === '..') {
+                    continue;
+                }
+                if (is_dir($pluginDir.'/'.$entry.'/Controller')) {
+                    $plugins[] = $entry;
+                }
+            }
+            $plugins = array_unique($plugins);
         }
 
         foreach ($plugins as $plugin) {
             $dir = $pluginDir.'/'.$plugin.'/Controller';
             if (is_dir($dir)) {
-                try {
-                    $builder = $routes->import($dir, 'attribute');
-                    $builder->schemes($scheme);
-                    @file_put_contents($this->getProjectDir().'/var/log/route_debug.log', date('c')." IMPORTED routes from $dir\n", FILE_APPEND);
-                } catch (\Exception $e) {
-                    @file_put_contents($this->getProjectDir().'/var/log/route_debug.log', date('c')." IMPORT FAIL $dir: ".$e->getMessage()."\n", FILE_APPEND);
-                }
+                $builder = $routes->import($dir, 'attribute');
+                $builder->schemes($scheme);
             }
             if (file_exists($pluginDir.'/'.$plugin.'/Resource/config')) {
                 $builder = $routes->import($pluginDir.'/'.$plugin.'/Resource/config/routes'.self::CONFIG_EXTS);
