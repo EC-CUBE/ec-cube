@@ -100,7 +100,7 @@ class ReloadSafeAnnotationDriver extends AnnotationDriver
                 }
 
                 // Replace /path/to/ec-cube to proxies path
-                $entityPath = $projectDir . '/src/Eccube/Entity/';
+                $entityPath = $projectDir.'/src/Eccube/Entity/';
                 $proxyFile = null;
                 if (strpos($sourceFile, $entityPath) === 0) {
                     // Entity class
