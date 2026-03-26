@@ -47,12 +47,11 @@ use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class ShoppingController extends AbstractShoppingController
 {
-    public function __construct(protected CartService $cartService, protected MailService $mailService, protected OrderRepository $orderRepository, protected OrderHelper $orderHelper, protected ContainerInterface $serviceContainer, protected TradeLawRepository $tradeLawRepository, protected RateLimiterFactoryInterface $shoppingConfirmIpLimiter, protected RateLimiterFactoryInterface $shoppingConfirmCustomerLimiter, protected RateLimiterFactoryInterface $shoppingCheckoutIpLimiter, protected RateLimiterFactoryInterface $shoppingCheckoutCustomerLimiter, protected BaseInfoRepository $baseInfoRepository)
+    public function __construct(protected CartService $cartService, protected MailService $mailService, protected OrderRepository $orderRepository, protected OrderHelper $orderHelper, protected ContainerInterface $serviceContainer, protected TradeLawRepository $tradeLawRepository, protected RateLimiterFactoryInterface $shoppingConfirmIpLimiter, protected RateLimiterFactoryInterface $shoppingConfirmCustomerLimiter, protected RateLimiterFactoryInterface $shoppingCheckoutIpLimiter, protected RateLimiterFactoryInterface $shoppingCheckoutCustomerLimiter, protected BaseInfoRepository $baseInfoRepository, private readonly PurchaseFlow $cartPurchaseFlow, private readonly AuthenticationUtils $authenticationUtils)
     {
     }
 
@@ -75,7 +74,7 @@ class ShoppingController extends AbstractShoppingController
      */
     #[Route(path: '/shopping', name: 'shopping', methods: ['GET'])]
     #[Template(template: 'Shopping/index.twig')]
-    public function index(PurchaseFlow $cartPurchaseFlow): RedirectResponse|array
+    public function index(): RedirectResponse|array
     {
         // ログイン状態のチェック.
         if ($this->orderHelper->isLoginRequired()) {
@@ -83,7 +82,6 @@ class ShoppingController extends AbstractShoppingController
 
             return $this->redirectToRoute('shopping_login');
         }
-
         // カートチェック.
         $Cart = $this->cartService->getCart();
         if (!($Cart && $this->orderHelper->verifyCart($Cart))) {
@@ -91,43 +89,36 @@ class ShoppingController extends AbstractShoppingController
 
             return $this->redirectToRoute('cart');
         }
-
         // 受注の初期化.
         log_info('[注文手続] 受注の初期化処理を開始します.');
         /** @var Customer $Customer */
         $Customer = $this->getUser() ?: $this->orderHelper->getNonMember();
         $Order = $this->orderHelper->initializeOrder($Cart, $Customer);
-
         // 集計処理.
         log_info('[注文手続] 集計処理を開始します.', [$Order->getId()]);
         $flowResult = $this->executePurchaseFlow($Order, false);
         $this->entityManager->flush();
-
         if ($flowResult->hasError()) {
             log_info('[注文手続] Errorが発生したため購入エラー画面へ遷移します.', [$flowResult->getErrors()]);
 
             return $this->redirectToRoute('shopping_error');
         }
-
         if ($flowResult->hasWarning()) {
             log_info('[注文手続] Warningが発生しました.', [$flowResult->getWarning()]);
 
             // 受注明細と同期をとるため, CartPurchaseFlowを実行する
-            $cartPurchaseFlow->validate($Cart, new PurchaseContext($Cart, $this->getUser()));
+            $this->cartPurchaseFlow->validate($Cart, new PurchaseContext($Cart, $this->getUser()));
 
             // 注文フローで取得されるカートの入れ替わりを防止する
             // @see https://github.com/EC-CUBE/ec-cube/issues/4293
             $this->cartService->setPrimary($Cart->getCartKey());
         }
-
         // マイページで会員情報が更新されていれば, Orderの注文者情報も更新する.
         if ($Customer->getId()) {
             $this->orderHelper->updateCustomerInfo($Order, $Customer);
             $this->entityManager->flush();
         }
-
         $activeTradeLaws = $this->tradeLawRepository->findBy(['displayOrderScreen' => true], ['sortNo' => 'ASC']);
-
         $form = $this->createForm(OrderType::class, $Order);
 
         return [
@@ -157,7 +148,7 @@ class ShoppingController extends AbstractShoppingController
      */
     #[Route(path: '/shopping/redirect_to', name: 'shopping_redirect_to', methods: ['POST'])]
     #[Template(template: 'Shopping/index.twig')]
-    public function redirectTo(Request $request, RouterInterface $router): RedirectResponse|array
+    public function redirectTo(Request $request): RedirectResponse|array
     {
         // ログイン状態のチェック.
         if ($this->orderHelper->isLoginRequired()) {
@@ -198,7 +189,7 @@ class ShoppingController extends AbstractShoppingController
                 // リダイレクト先のチェック.
                 $pattern = '/^'.preg_quote($request->getBasePath(), '/').'/';
                 $redirectTo = preg_replace($pattern, '', (string) $redirectTo);
-                $result = $router->match($redirectTo);
+                $result = $this->router->match($redirectTo);
                 // パラメータのみ抽出
                 $params = array_filter($result, fn ($key) => !str_starts_with((string) $key, '_'), ARRAY_FILTER_USE_KEY);
 
@@ -740,7 +731,7 @@ class ShoppingController extends AbstractShoppingController
      */
     #[Route(path: '/shopping/login', name: 'shopping_login', methods: ['GET'])]
     #[Template(template: 'Shopping/login.twig')]
-    public function login(Request $request, AuthenticationUtils $authenticationUtils): RedirectResponse|array
+    public function login(Request $request): RedirectResponse|array
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $this->redirectToRoute('shopping');
@@ -768,7 +759,7 @@ class ShoppingController extends AbstractShoppingController
         $form = $builder->getForm();
 
         return [
-            'error' => $authenticationUtils->getLastAuthenticationError(),
+            'error' => $this->authenticationUtils->getLastAuthenticationError(),
             'form' => $form->createView(),
         ];
     }
@@ -780,12 +771,12 @@ class ShoppingController extends AbstractShoppingController
      */
     #[Route(path: '/shopping/error', name: 'shopping_error', methods: ['GET'])]
     #[Template(template: 'Shopping/shopping_error.twig')]
-    public function error(Request $request, PurchaseFlow $cartPurchaseFlow): Response|array
+    public function error(Request $request): Response|array
     {
         // 受注とカートのずれを合わせるため, カートのPurchaseFlowをコールする.
         $Cart = $this->cartService->getCart();
         if (null !== $Cart) {
-            $cartPurchaseFlow->validate($Cart, new PurchaseContext($Cart, $this->getUser()));
+            $this->cartPurchaseFlow->validate($Cart, new PurchaseContext($Cart, $this->getUser()));
             $this->cartService->setPreOrderId(null);
             $this->cartService->save();
         }

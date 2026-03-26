@@ -61,6 +61,7 @@ class PluginController extends AbstractController
         protected PluginApiService $pluginApiService,
         private readonly ComposerServiceInterface $composerService,
         private readonly SystemService $systemService,
+        private readonly CacheUtil $cacheUtil,
     ) {
         $this->BaseInfo = $baseInfoRepository->get();
     }
@@ -158,7 +159,7 @@ class PluginController extends AbstractController
      * インストール済プラグインからのアップデート
      */
     #[Route(path: '/%eccube_admin_route%/store/plugin/{id}/update', name: 'admin_store_plugin_update', requirements: ['id' => '\d+'], methods: ['POST'])]
-    public function update(Request $request, Plugin $Plugin, CacheUtil $cacheUtil): RedirectResponse
+    public function update(Request $request, Plugin $Plugin): RedirectResponse
     {
         $form = $this->formFactory
             ->createNamedBuilder(
@@ -176,7 +177,7 @@ class PluginController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $tmpDir = null;
             try {
-                $cacheUtil->clearCache();
+                $this->cacheUtil->clearCache();
                 $formFile = $form['plugin_archive']->getData();
                 $tmpDir = $this->pluginService->createTempDir();
                 $tmpFile = sha1(StringUtil::random(32)).'.'.$formFile->getClientOriginalExtension();
@@ -220,7 +221,7 @@ class PluginController extends AbstractController
      * @throws PluginException
      */
     #[Route(path: '/%eccube_admin_route%/store/plugin/{id}/enable', name: 'admin_store_plugin_enable', requirements: ['id' => '\d+'], methods: ['POST'])]
-    public function enable(Plugin $Plugin, CacheUtil $cacheUtil, Request $request): RedirectResponse|JsonResponse
+    public function enable(Plugin $Plugin, Request $request): RedirectResponse|JsonResponse
     {
         $this->isTokenValid();
         // QueryString maintenance_modeがない場合
@@ -229,7 +230,7 @@ class PluginController extends AbstractController
             $this->systemService->switchMaintenance(true); // auto_maintenanceと設定されたファイルを生成
         }
 
-        $cacheUtil->clearCache();
+        $this->cacheUtil->clearCache();
 
         if ($Plugin->isEnabled()) {
             if ($request->isXmlHttpRequest()) {
@@ -297,7 +298,7 @@ class PluginController extends AbstractController
      * 対象のプラグインを無効にします。
      */
     #[Route(path: '/%eccube_admin_route%/store/plugin/{id}/disable', name: 'admin_store_plugin_disable', requirements: ['id' => '\d+'], methods: ['POST'])]
-    public function disable(Request $request, Plugin $Plugin, CacheUtil $cacheUtil): JsonResponse|RedirectResponse
+    public function disable(Request $request, Plugin $Plugin): JsonResponse|RedirectResponse
     {
         $this->isTokenValid();
 
@@ -312,7 +313,7 @@ class PluginController extends AbstractController
             $this->systemService->switchMaintenance(true); // auto_maintenanceと設定されたファイルを生成
         }
 
-        $cacheUtil->clearCache();
+        $this->cacheUtil->clearCache();
 
         $log = null;
         if ($Plugin->isEnabled()) {
@@ -372,7 +373,7 @@ class PluginController extends AbstractController
      * @throws \Exception
      */
     #[Route(path: '/%eccube_admin_route%/store/plugin/{id}/uninstall', name: 'admin_store_plugin_uninstall', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function uninstall(Plugin $Plugin, CacheUtil $cacheUtil): RedirectResponse
+    public function uninstall(Plugin $Plugin): RedirectResponse
     {
         $this->isTokenValid();
 
@@ -397,7 +398,7 @@ class PluginController extends AbstractController
             return $this->redirectToRoute('admin_store_plugin');
         }
 
-        $cacheUtil->clearCache();
+        $this->cacheUtil->clearCache();
 
         $this->pluginService->uninstall($Plugin);
         $this->addSuccess('admin.store.plugin.uninstall.complete', 'admin');
@@ -412,7 +413,7 @@ class PluginController extends AbstractController
      */
     #[Route(path: '/%eccube_admin_route%/store/plugin/install', name: 'admin_store_plugin_install', methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Store/plugin_install.twig')]
-    public function install(Request $request, CacheUtil $cacheUtil): array|RedirectResponse
+    public function install(Request $request): array|RedirectResponse
     {
         $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');
 
@@ -424,7 +425,7 @@ class PluginController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $tmpDir = null;
             try {
-                $cacheUtil->clearCache();
+                $this->cacheUtil->clearCache();
 
                 /** @var UploadedFile $formFile */
                 $formFile = $form['plugin_archive']->getData();
@@ -475,7 +476,7 @@ class PluginController extends AbstractController
      */
     #[Route(path: '/%eccube_admin_route%/store/plugin/authentication_setting', name: 'admin_store_authentication_setting', methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Store/authentication_setting.twig')]
-    public function authenticationSetting(Request $request, CacheUtil $cacheUtil): array|RedirectResponse
+    public function authenticationSetting(Request $request): array|RedirectResponse
     {
         $builder = $this->formFactory
             ->createBuilder(AuthenticationType::class, $this->BaseInfo);
@@ -492,7 +493,7 @@ class PluginController extends AbstractController
             // composerの認証を更新
             $this->composerService->configureRepository($this->BaseInfo);
             $this->addSuccess('admin.common.save_complete', 'admin');
-            $cacheUtil->clearCache();
+            $this->cacheUtil->clearCache();
 
             return $this->redirectToRoute('admin_store_authentication_setting');
         }

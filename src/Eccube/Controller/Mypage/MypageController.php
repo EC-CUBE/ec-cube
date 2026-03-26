@@ -54,6 +54,8 @@ class MypageController extends AbstractController
         protected CartService $cartService,
         BaseInfoRepository $baseInfoRepository,
         protected PurchaseFlow $purchaseFlow,
+        private readonly AuthenticationUtils $utils,
+        private readonly PaginatorInterface $paginator,
     ) {
         $this->BaseInfo = $baseInfoRepository->get();
     }
@@ -65,7 +67,7 @@ class MypageController extends AbstractController
      */
     #[Route(path: '/mypage/login', name: 'mypage_login', methods: ['GET', 'POST'])]
     #[Template(template: 'Mypage/login.twig')]
-    public function login(Request $request, AuthenticationUtils $utils): RedirectResponse|array
+    public function login(Request $request): RedirectResponse|array
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             log_info('認証済のためログイン処理をスキップ');
@@ -97,7 +99,7 @@ class MypageController extends AbstractController
         $form = $builder->getForm();
 
         return [
-            'error' => $utils->getLastAuthenticationError(),
+            'error' => $this->utils->getLastAuthenticationError(),
             'form' => $form->createView(),
         ];
     }
@@ -109,7 +111,7 @@ class MypageController extends AbstractController
      */
     #[Route(path: '/mypage/', name: 'mypage', methods: ['GET'])]
     #[Template(template: 'Mypage/index.twig')]
-    public function index(Request $request, PaginatorInterface $paginator): array
+    public function index(Request $request): array
     {
         /** @var Customer $Customer */
         $Customer = $this->getUser();
@@ -131,7 +133,7 @@ class MypageController extends AbstractController
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_MYPAGE_MYPAGE_INDEX_SEARCH);
 
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $qb,
             $request->get('pageno', 1),
             $this->eccubeConfig['eccube_search_pmax']
@@ -292,7 +294,7 @@ class MypageController extends AbstractController
      */
     #[Route(path: '/mypage/favorite', name: 'mypage_favorite', methods: ['GET'])]
     #[Template(template: 'Mypage/favorite.twig')]
-    public function favorite(Request $request, PaginatorInterface $paginator): array
+    public function favorite(Request $request): array
     {
         if (!$this->BaseInfo->isOptionFavoriteProduct()) {
             throw new NotFoundHttpException();
@@ -312,7 +314,7 @@ class MypageController extends AbstractController
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_MYPAGE_MYPAGE_FAVORITE_SEARCH);
 
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $qb,
             $request->get('pageno', 1),
             $this->eccubeConfig['eccube_search_pmax'],

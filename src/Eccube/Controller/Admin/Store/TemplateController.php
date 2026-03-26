@@ -36,7 +36,7 @@ class TemplateController extends AbstractController
     /**
      * TemplateController constructor.
      */
-    public function __construct(protected TemplateRepository $templateRepository, protected DeviceTypeRepository $deviceTypeRepository)
+    public function __construct(protected TemplateRepository $templateRepository, protected DeviceTypeRepository $deviceTypeRepository, private readonly CacheUtil $cacheUtil)
     {
     }
 
@@ -47,7 +47,7 @@ class TemplateController extends AbstractController
      */
     #[Route(path: '/%eccube_admin_route%/store/template', name: 'admin_store_template', methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Store/template.twig')]
-    public function index(Request $request, CacheUtil $cacheUtil): array|RedirectResponse
+    public function index(Request $request): array|RedirectResponse
     {
         $DeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_PC);
 
@@ -72,7 +72,7 @@ class TemplateController extends AbstractController
 
             $this->addSuccess('admin.common.save_complete', 'admin');
 
-            $cacheUtil->clearCache();
+            $this->cacheUtil->clearCache();
 
             return $this->redirectToRoute('admin_store_template');
         }

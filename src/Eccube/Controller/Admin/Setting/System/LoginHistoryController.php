@@ -32,7 +32,7 @@ class LoginHistoryController extends AbstractController
     /**
      * LoginHistoryController constructor.
      */
-    public function __construct(protected PageMaxRepository $pageMaxRepository, protected LoginHistoryRepository $loginHistoryRepository)
+    public function __construct(protected PageMaxRepository $pageMaxRepository, protected LoginHistoryRepository $loginHistoryRepository, private readonly PaginatorInterface $paginator)
     {
     }
 
@@ -47,7 +47,7 @@ class LoginHistoryController extends AbstractController
     #[Route(path: '/%eccube_admin_route%/setting/system/login_history', name: 'admin_setting_system_login_history', methods: ['GET', 'POST'])]
     #[Route(path: '/%eccube_admin_route%/setting/system/login_history/{page_no}', name: 'admin_setting_system_login_history_page', requirements: ['page_no' => '\d+'], methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Setting/System/login_history.twig')]
-    public function index(Request $request, PaginatorInterface $paginator, $page_no = null): Response|array
+    public function index(Request $request, $page_no = null): Response|array
     {
         $session = $request->getSession();
         $pageNo = $page_no;
@@ -103,7 +103,7 @@ class LoginHistoryController extends AbstractController
         }
 
         $qb = $this->loginHistoryRepository->getQueryBuilderBySearchDataForAdmin($searchData);
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $qb,
             $pageNo,
             $pageCount

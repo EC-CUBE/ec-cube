@@ -56,14 +56,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class OrderController extends AbstractController
 {
-    protected OrderPdfService $orderPdfService;
-
     /**
      * OrderController constructor.
      *
      * @param OrderStateMachine $orderStateMachine ;
      */
-    public function __construct(protected PurchaseFlow $purchaseFlow, protected CsvExportService $csvExportService, protected CustomerRepository $customerRepository, protected PaymentRepository $paymentRepository, protected SexRepository $sexRepository, protected OrderStatusRepository $orderStatusRepository, protected PageMaxRepository $pageMaxRepository, protected ProductStatusRepository $productStatusRepository, protected ProductStockRepository $productStockRepository, protected OrderRepository $orderRepository, protected OrderPdfRepository $orderPdfRepository, protected ValidatorInterface $validator, protected OrderStateMachine $orderStateMachine, protected MailService $mailService)
+    public function __construct(protected PurchaseFlow $purchaseFlow, protected CsvExportService $csvExportService, protected CustomerRepository $customerRepository, protected PaymentRepository $paymentRepository, protected SexRepository $sexRepository, protected OrderStatusRepository $orderStatusRepository, protected PageMaxRepository $pageMaxRepository, protected ProductStatusRepository $productStatusRepository, protected ProductStockRepository $productStockRepository, protected OrderRepository $orderRepository, protected OrderPdfRepository $orderPdfRepository, protected ValidatorInterface $validator, protected OrderStateMachine $orderStateMachine, protected MailService $mailService, private readonly PaginatorInterface $paginator, protected OrderPdfService $orderPdfService)
     {
     }
 
@@ -89,7 +87,7 @@ class OrderController extends AbstractController
     #[Route(path: '/%eccube_admin_route%/order', name: 'admin_order', methods: ['GET', 'POST'])]
     #[Route(path: '/%eccube_admin_route%/order/page/{page_no}', name: 'admin_order_page', requirements: ['page_no' => '\d+'], methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Order/index.twig')]
-    public function index(Request $request, PaginatorInterface $paginator, ?int $page_no = null): array
+    public function index(Request $request, ?int $page_no = null): array
     {
         $builder = $this->formFactory
             ->createBuilder(SearchOrderType::class);
@@ -199,13 +197,13 @@ class OrderController extends AbstractController
         $sortKey = $searchData['sortkey'];
 
         if (empty($this->orderRepository::COLUMNS[$sortKey]) || $sortKey == 'order_status') {
-            $pagination = $paginator->paginate(
+            $pagination = $this->paginator->paginate(
                 $qb,
                 $page_no,
                 $page_count
             );
         } else {
-            $pagination = $paginator->paginate(
+            $pagination = $this->paginator->paginate(
                 $qb,
                 $page_no,
                 $page_count,
@@ -534,7 +532,7 @@ class OrderController extends AbstractController
 
     #[Route(path: '/%eccube_admin_route%/order/export/pdf/download', name: 'admin_order_pdf_download', methods: ['POST'])]
     #[Template(template: '@admin/Order/order_pdf.twig')]
-    public function exportPdfDownload(Request $request, OrderPdfService $orderPdfService): Response
+    public function exportPdfDownload(Request $request): Response
     {
         /**
          * @var FormBuilder
@@ -557,7 +555,7 @@ class OrderController extends AbstractController
         $arrData = $form->getData();
 
         // 購入情報からPDFを作成する
-        $status = $orderPdfService->makePdf($arrData);
+        $status = $this->orderPdfService->makePdf($arrData);
 
         // 異常終了した場合の処理
         if (!$status) {
@@ -570,11 +568,11 @@ class OrderController extends AbstractController
         }
 
         // TCPDF::Outputを実行するとプロパティが初期化されるため、ファイル名を事前に取得しておく
-        $pdfFileName = $orderPdfService->getPdfFileName();
+        $pdfFileName = $this->orderPdfService->getPdfFileName();
 
         // ダウンロードする
         $response = new Response(
-            $orderPdfService->outputPdf(),
+            $this->orderPdfService->outputPdf(),
             Response::HTTP_OK,
             ['content-type' => 'application/pdf']
         );

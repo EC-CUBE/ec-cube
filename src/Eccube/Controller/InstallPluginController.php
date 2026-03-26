@@ -33,7 +33,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class InstallPluginController extends InstallController
 {
-    public function __construct(protected CacheUtil $cacheUtil, protected PluginRepository $pluginReposigoty, protected EventDispatcherInterface $eventDispatcher)
+    public function __construct(protected CacheUtil $cacheUtil, protected PluginRepository $pluginReposigoty, protected EventDispatcherInterface $eventDispatcher, private readonly SystemService $systemService, private readonly PluginService $pluginService, private readonly ComposerApiService $composerApiService)
     {
     }
 
@@ -68,7 +68,7 @@ class InstallPluginController extends InstallController
      * @throws PluginException
      */
     #[Route(path: '/install/plugin/{code}/enable', name: 'install_plugin_enable', requirements: ['code' => '\w+'], methods: ['PUT'])]
-    public function pluginEnable(Request $request, SystemService $systemService, PluginService $pluginService, $code, EventDispatcherInterface $dispatcher): JsonResponse
+    public function pluginEnable(Request $request, $code): JsonResponse
     {
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();
@@ -85,19 +85,19 @@ class InstallPluginController extends InstallController
         $log = null;
         // プラグインが存在しない場合は無視する
         if ($Plugin !== null) {
-            $systemService->switchMaintenance(true); // auto_maintenanceと設定されたファイルを生成
-            $systemService->disableMaintenance(SystemService::AUTO_MAINTENANCE);
+            $this->systemService->switchMaintenance(true); // auto_maintenanceと設定されたファイルを生成
+            $this->systemService->disableMaintenance(SystemService::AUTO_MAINTENANCE);
 
             try {
                 ob_start();
 
                 if ($Plugin->isEnabled()) {
-                    $pluginService->disable($Plugin);
+                    $this->pluginService->disable($Plugin);
                 } else {
                     if (!$Plugin->isInitialized()) {
-                        $pluginService->installWithCode($Plugin->getCode());
+                        $this->pluginService->installWithCode($Plugin->getCode());
                     }
-                    $pluginService->enable($Plugin);
+                    $this->pluginService->enable($Plugin);
                 }
             } finally {
                 $log = ob_get_clean();
@@ -167,7 +167,7 @@ class InstallPluginController extends InstallController
      * @throws BadRequestHttpException|NotFoundHttpException
      */
     #[Route(path: '/install/plugin/check_api', name: 'install_plugin_check_api', methods: ['PUT'])]
-    public function checkWebApiRequirements(Request $request, ComposerApiService $composerApiService, EventDispatcherInterface $dispatcher): JsonResponse
+    public function checkWebApiRequirements(Request $request): JsonResponse
     {
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();
@@ -187,7 +187,7 @@ class InstallPluginController extends InstallController
             $this->clearCacheOnTerminate();
 
             try {
-                $composerApiService->execRemove('ec-cube/api42');
+                $this->composerApiService->execRemove('ec-cube/api42');
             } catch (\Exception $e) {
                 log_error($e);
 

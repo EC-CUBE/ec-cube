@@ -96,6 +96,8 @@ class CsvImportController extends AbstractCsvImportController
         BaseInfoRepository $baseInfoRepository,
         protected ValidatorInterface $validator,
         private readonly \HTMLPurifier $purifier,
+        private readonly CacheUtil $cacheUtil,
+        private readonly CsrfTokenManagerInterface $tokenManager,
     ) {
         $this->BaseInfo = $baseInfoRepository->get();
     }
@@ -113,7 +115,7 @@ class CsvImportController extends AbstractCsvImportController
         methods: ['GET', 'POST'])
     ]
     #[Template(template: '@admin/Product/csv_product.twig')]
-    public function csvProduct(Request $request, CacheUtil $cacheUtil): array|JsonResponse
+    public function csvProduct(Request $request): array|JsonResponse
     {
         $form = $this->formFactory->createBuilder(CsvImportType::class)->getForm();
         $headers = $this->getProductCsvHeader();
@@ -624,7 +626,7 @@ class CsvImportController extends AbstractCsvImportController
                         $session->getFlashBag()->add('eccube.admin.success', $message);
                     }
 
-                    $cacheUtil->clearDoctrineCache();
+                    $this->cacheUtil->clearDoctrineCache();
                 }
             }
         }
@@ -641,7 +643,7 @@ class CsvImportController extends AbstractCsvImportController
      */
     #[Route(path: '/%eccube_admin_route%/product/category_csv_upload', name: 'admin_product_category_csv_import', methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Product/csv_category.twig')]
-    public function csvCategory(Request $request, CacheUtil $cacheUtil): array|JsonResponse
+    public function csvCategory(Request $request): array|JsonResponse
     {
         $form = $this->formFactory->createBuilder(CsvImportType::class)->getForm();
 
@@ -785,7 +787,7 @@ class CsvImportController extends AbstractCsvImportController
                     $session = $this->session;
                     $session->getFlashBag()->add('eccube.admin.success', $message);
 
-                    $cacheUtil->clearDoctrineCache();
+                    $this->cacheUtil->clearDoctrineCache();
                 }
             }
         }
@@ -800,7 +802,7 @@ class CsvImportController extends AbstractCsvImportController
      */
     #[Route(path: '/%eccube_admin_route%/product/class_name_csv_upload', name: 'admin_product_class_name_csv_import', methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Product/csv_class_name.twig')]
-    public function csvClassName(Request $request, CacheUtil $cacheUtil): array|JsonResponse
+    public function csvClassName(Request $request): array|JsonResponse
     {
         $form = $this->formFactory->createBuilder(CsvImportType::class)->getForm();
 
@@ -901,7 +903,7 @@ class CsvImportController extends AbstractCsvImportController
                     $message = 'admin.common.csv_upload_complete';
                     $this->session->getFlashBag()->add('eccube.admin.success', $message);
 
-                    $cacheUtil->clearDoctrineCache();
+                    $this->cacheUtil->clearDoctrineCache();
                 }
             }
         }
@@ -916,7 +918,7 @@ class CsvImportController extends AbstractCsvImportController
      */
     #[Route(path: '/%eccube_admin_route%/product/class_category_csv_upload', name: 'admin_product_class_category_csv_import', methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Product/csv_class_category.twig')]
-    public function csvClassCategory(Request $request, CacheUtil $cacheUtil): array|JsonResponse
+    public function csvClassCategory(Request $request): array|JsonResponse
     {
         $form = $this->formFactory->createBuilder(CsvImportType::class)->getForm();
 
@@ -1033,7 +1035,7 @@ class CsvImportController extends AbstractCsvImportController
                     $message = 'admin.common.csv_upload_complete';
                     $this->session->getFlashBag()->add('eccube.admin.success', $message);
 
-                    $cacheUtil->clearDoctrineCache();
+                    $this->cacheUtil->clearDoctrineCache();
                 }
             }
         }
@@ -1938,7 +1940,7 @@ class CsvImportController extends AbstractCsvImportController
     }
 
     #[Route(path: '/%eccube_admin_route%/product/csv_split_import', name: 'admin_product_csv_split_import', methods: ['POST'])]
-    public function importCsv(Request $request, CsrfTokenManagerInterface $tokenManager): Response
+    public function importCsv(Request $request): Response
     {
         $this->isTokenValid();
 
@@ -1964,7 +1966,7 @@ class CsvImportController extends AbstractCsvImportController
 
         $request->setMethod('POST');
         $request->request->set('admin_csv_import', [
-            Constant::TOKEN_NAME => $tokenManager->getToken('admin_csv_import')->getValue(),
+            Constant::TOKEN_NAME => $this->tokenManager->getToken('admin_csv_import')->getValue(),
             'is_split_csv' => true,
             'csv_file_no' => $request->get('file_no'),
         ]);

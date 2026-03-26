@@ -38,11 +38,10 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CustomerController extends AbstractController
 {
-    public function __construct(protected PageMaxRepository $pageMaxRepository, protected CustomerRepository $customerRepository, protected SexRepository $sexRepository, protected PrefRepository $prefRepository, protected MailService $mailService, protected CsvExportService $csvExportService)
+    public function __construct(protected PageMaxRepository $pageMaxRepository, protected CustomerRepository $customerRepository, protected SexRepository $sexRepository, protected PrefRepository $prefRepository, protected MailService $mailService, protected CsvExportService $csvExportService, private readonly PaginatorInterface $paginator)
     {
     }
 
@@ -54,7 +53,7 @@ class CustomerController extends AbstractController
     #[Route(path: '/%eccube_admin_route%/customer', name: 'admin_customer', methods: ['GET', 'POST'])]
     #[Route(path: '/%eccube_admin_route%/customer/page/{page_no}', name: 'admin_customer_page', requirements: ['page_no' => '\d+'], methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Customer/index.twig')]
-    public function index(Request $request, PaginatorInterface $paginator, $page_no = null): array
+    public function index(Request $request, $page_no = null): array
     {
         $session = $this->session;
         $builder = $this->formFactory->createBuilder(SearchCustomerType::class);
@@ -129,7 +128,7 @@ class CustomerController extends AbstractController
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_CUSTOMER_INDEX_SEARCH);
 
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $qb,
             $page_no,
             $pageCount
@@ -193,7 +192,7 @@ class CustomerController extends AbstractController
      * @param string $id
      */
     #[Route(path: '/%eccube_admin_route%/customer/{id}/delete', name: 'admin_customer_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, $id, TranslatorInterface $translator): RedirectResponse
+    public function delete(Request $request, $id): RedirectResponse
     {
         $this->isTokenValid();
 

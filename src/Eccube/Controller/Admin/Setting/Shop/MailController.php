@@ -38,7 +38,7 @@ class MailController extends AbstractController
     /**
      * MailController constructor.
      */
-    public function __construct(protected MailTemplateRepository $mailTemplateRepository)
+    public function __construct(protected MailTemplateRepository $mailTemplateRepository, private readonly Environment $twig, private readonly CacheUtil $cacheUtil)
     {
     }
 
@@ -50,7 +50,7 @@ class MailController extends AbstractController
     #[Route(path: '/%eccube_admin_route%/setting/shop/mail', name: 'admin_setting_shop_mail', methods: ['GET', 'POST'])]
     #[Route(path: '/%eccube_admin_route%/setting/shop/mail/{id}', name: 'admin_setting_shop_mail_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Setting/Shop/mail.twig')]
-    public function index(Request $request, Environment $twig, CacheUtil $cacheUtil, ?MailTemplate $Mail = null): RedirectResponse|array
+    public function index(Request $request, ?MailTemplate $Mail = null): RedirectResponse|array
     {
         $Mail ??= new MailTemplate();
         $builder = $this->formFactory
@@ -72,7 +72,7 @@ class MailController extends AbstractController
             $form['template']->setData($Mail);
 
             // テンプレートファイルの取得
-            $source = $twig->getLoader()
+            $source = $this->twig->getLoader()
                 ->getSourceContext($Mail->getFileName())
                 ->getCode();
 
@@ -80,8 +80,8 @@ class MailController extends AbstractController
 
             $htmlFileName = $this->getHtmlFileName($Mail->getFileName());
 
-            if ($twig->getLoader()->exists($htmlFileName)) {
-                $source = $twig->getLoader()
+            if ($this->twig->getLoader()->exists($htmlFileName)) {
+                $source = $this->twig->getLoader()
                     ->getSourceContext($htmlFileName)
                     ->getCode();
 
@@ -136,7 +136,7 @@ class MailController extends AbstractController
                 $this->addSuccess('admin.common.save_complete', 'admin');
 
                 // キャッシュの削除
-                $cacheUtil->clearTwigCache();
+                $this->cacheUtil->clearTwigCache();
 
                 return $this->redirectToRoute('admin_setting_shop_mail_edit', ['id' => $Mail->getId()]);
             }

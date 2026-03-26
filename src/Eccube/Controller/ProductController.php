@@ -60,6 +60,7 @@ class ProductController extends AbstractController
         BaseInfoRepository $baseInfoRepository,
         protected AuthenticationUtils $helper,
         protected ProductListMaxRepository $productListMaxRepository,
+        private readonly PaginatorInterface $paginator,
     ) {
         $this->purchaseFlow = $cartPurchaseFlow;
         $this->BaseInfo = $baseInfoRepository->get();
@@ -72,7 +73,7 @@ class ProductController extends AbstractController
      */
     #[Route(path: '/products/list', name: 'product_list', methods: ['GET'])]
     #[Template(template: 'Product/list.twig')]
-    public function index(Request $request, PaginatorInterface $paginator): array
+    public function index(Request $request): array
     {
         // Doctrine SQLFilter
         if ($this->BaseInfo->isOptionNostockHidden()) {
@@ -123,7 +124,7 @@ class ProductController extends AbstractController
             ->setResultCacheLifetime($this->eccubeConfig['eccube_result_cache_lifetime_short']);
 
         /** @var SlidingPagination<int, Product> $pagination */
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $query,
             !empty($searchData['pageno']) && preg_match('/^\d+$/', (string) $searchData['pageno']) ? $searchData['pageno'] : 1,
             !empty($searchData['disp_number']) ? $searchData['disp_number']->getId() : $this->productListMaxRepository->findOneBy([], ['sort_no' => 'ASC'])->getId()
