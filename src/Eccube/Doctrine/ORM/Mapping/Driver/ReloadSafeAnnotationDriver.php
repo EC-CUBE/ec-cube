@@ -141,6 +141,11 @@ class ReloadSafeAnnotationDriver extends HybridMappingDriver
                         if ($needsReload) {
                             $newClassName = $className.StringUtil::random(12);
                             $tokens[$classNameTokenIndex] = new Token([T_STRING, $newClassName]);
+                            // class_exists ガードを除去する.
+                            // Entity ファイルには `if (!class_exists(...)) { class Foo { ... } }` の
+                            // ガードが含まれることがあり, 元のクラスが既にロード済みの場合に
+                            // 一時クラスが定義されない問題を防ぐ.
+                            $this->removeClassExistsBlock($tokens);
                             $newFilePath = $this->outputDir."{$newClassName}.php";
                             file_put_contents($newFilePath, $tokens->generateCode());
                             require_once $newFilePath;
@@ -155,5 +160,25 @@ class ReloadSafeAnnotationDriver extends HybridMappingDriver
         }
 
         return $results;
+    }
+
+    /**
+     * class_exists ガードブロックを除去する.
+     *
+     * Entity ファイルでは `if (!class_exists(...)) { class Foo { ... } }` のパターンで
+     * クラス定義がラップされていることがある. 一時クラス名でリロードする際に
+     * このガードが原因で新しいクラスが定義されないため, 除去する.
+     */
+    private function removeClassExistsBlock(Tokens $tokens)
+    {
+        $startIndex = $tokens->getNextTokenOfKind(0, [[T_IF]]);
+        $classIndex = $tokens->getNextTokenOfKind(0, [[T_CLASS]]);
+        if ($startIndex > 0 && $startIndex < $classIndex) {
+            $blockStartIndex = $tokens->getNextTokenOfKind($startIndex, ['{']);
+            $blockEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $blockStartIndex);
+
+            $tokens->clearRange($startIndex, $blockStartIndex);
+            $tokens->clearRange($blockEndIndex, $blockEndIndex + 1);
+        }
     }
 }

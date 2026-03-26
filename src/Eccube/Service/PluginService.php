@@ -366,10 +366,10 @@ class PluginService
      * @param bool $uninstall アンインストールする場合は true
      * @param bool $saveMode SQL を即時実行する場合は true
      */
-    public function generateProxyAndUpdateSchema(Plugin $plugin, $config, $uninstall = false, $saveMode = true)
+    public function generateProxyAndUpdateSchema(Plugin $plugin, $config, $uninstall = false, $saveMode = true, array $additionalReloadFiles = [])
     {
-        $this->generateProxyAndCallback(function ($generatedFiles, $proxiesDirectory) use ($saveMode) {
-            $this->schemaService->updateSchema($generatedFiles, $proxiesDirectory, $saveMode);
+        $this->generateProxyAndCallback(function ($generatedFiles, $proxiesDirectory) use ($saveMode, $additionalReloadFiles) {
+            $this->schemaService->updateSchema(array_merge($generatedFiles, $additionalReloadFiles), $proxiesDirectory, $saveMode);
         }, $plugin, $config, $uninstall);
     }
 
@@ -862,7 +862,18 @@ class PluginService
             // MySQL の DDL は暗黙的に COMMIT するため, DBAL 4.x のネストトランザクション(SAVEPOINT)が破壊される.
             // DDL 実行前に全トランザクションレベルを閉じ, 実行後に復元する.
             $this->executeDdlWithMySqlWorkaround($conn, function () use ($plugin, $meta) {
-                $this->generateProxyAndUpdateSchema($plugin, $meta);
+                // プラグインアップデート時はEntity定義が変更されている可能性がある.
+                // カーネルブート時にロードされたメタデータキャッシュをバイパスするため,
+                // Entityファイルをリロード対象に追加して一時クラス名で再読み込みする.
+                $entityDir = $this->eccubeConfig['plugin_realdir'].'/'.$plugin->getCode().'/Entity';
+                $additionalReloadFiles = [];
+                if (is_dir($entityDir)) {
+                    $finder = Finder::create()->in($entityDir)->name('*.php')->files();
+                    foreach ($finder as $file) {
+                        $additionalReloadFiles[] = $file->getRealPath();
+                    }
+                }
+                $this->generateProxyAndUpdateSchema($plugin, $meta, false, true, $additionalReloadFiles);
             });
 
             if ($plugin->isInitialized()) {
