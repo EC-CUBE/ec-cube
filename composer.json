@@ -112,7 +112,9 @@
         "dama/doctrine-test-bundle": "^8.0",
         "fakerphp/faker": "^1.16",
         "mikey179/vfsstream": "^1.6",
+        "phpstan/extension-installer": "^1.4",
         "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-doctrine": "^2.0",
         "phpunit/phpunit": "^11.0",
         "rector/rector": "^2.1",
         "symfony/browser-kit": "^7.4",
@@ -193,6 +195,7 @@
             "composer/*": true,
             "kylekatarnls/update-helper": true,
             "ec-cube/plugin-installer": true,
+            "phpstan/extension-installer": true,
             "symfony/flex": true
         }
     },

@@ -44,7 +44,7 @@ if (!class_exists(OrderItem::class)) {
                 return $this->price;
             }
 
-            return bcadd((string) $this->price, $this->tax, 2);
+            return bcadd((string) $this->price, (string) $this->tax, 2);
         }
 
         public function getTotalPrice(): string
@@ -130,7 +130,6 @@ if (!class_exists(OrderItem::class)) {
         #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-        /** @phpstan-ignore-next-line property.unusedType, property.onlyRead */
         private ?int $id = null;
 
         #[ORM\Column(name: 'product_name', type: Types::STRING, length: 255)]
@@ -155,17 +154,16 @@ if (!class_exists(OrderItem::class)) {
         private ?string $price = '0';
 
         #[ORM\Column(name: 'quantity', type: Types::DECIMAL, precision: 10, scale: 0, options: ['default' => 0])]
-        /** @phpstan-ignore-next-line property.unusedType, property.onlyRead */
         private ?string $quantity = '0';
 
         #[ORM\Column(name: 'tax', type: Types::DECIMAL, precision: 10, scale: 0, options: ['default' => 0])]
-        private string $tax = '0';
+        private ?string $tax = '0';
 
         #[ORM\Column(name: 'tax_rate', type: Types::DECIMAL, precision: 10, scale: 0, options: ['unsigned' => true, 'default' => 0])]
-        private string $tax_rate = '0';
+        private ?string $tax_rate = '0';
 
         #[ORM\Column(name: 'tax_adjust', type: Types::DECIMAL, precision: 10, scale: 0, options: ['unsigned' => true, 'default' => 0])]
-        private string $tax_adjust = '0';
+        private ?string $tax_adjust = '0';
 
         #[ORM\Column(name: 'tax_rule_id', type: Types::SMALLINT, nullable: true, options: ['unsigned' => true])]
         private ?int $tax_rule_id = null;

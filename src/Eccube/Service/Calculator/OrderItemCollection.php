@@ -37,9 +37,13 @@ class OrderItemCollection extends ArrayCollection
     }
 
     /**
-     * @param mixed|null $initial
+     * @template TReturn
+     * @template TInitial
      *
-     * @return mixed|null
+     * @param \Closure(TReturn|TInitial, OrderItem): TReturn $func
+     * @param TInitial $initial
+     *
+     * @return TReturn|TInitial
      */
     #[\Override]
     public function reduce(\Closure $func, mixed $initial = null): mixed

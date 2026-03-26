@@ -66,15 +66,14 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
         $discount = $this->pointHelper->pointToDiscount($usePoint);
 
         // 利用ポイントがある場合は割引明細を追加
-        if ($usePoint > 0) {
+        if (bccomp((string) $usePoint, '0', 0) > 0) {
             $result = null;
 
             // 購入フロー実行時
             if ($context->isShoppingFlow()) {
                 // 支払い金額 < 利用ポイントによる値引き額.
-                if ($itemHolder->getTotal() + $discount < 0) { // @phpstan-ignore-line TODO bcmath-polyfill を使用する
-                    /** @phpstan-ignore-next-line bcmathの実装次第、削除する */
-                    $minus = $itemHolder->getTotal() + $discount;
+                if (bccomp(bcadd($itemHolder->getTotal(), $discount, 0), '0', 0) < 0) {
+                    $minus = bcadd($itemHolder->getTotal(), $discount, 0);
                     // 利用ポイントが支払い金額を上回っていた場合は支払い金額が0円以上となるようにポイントを調整
                     $overPoint = $this->pointHelper->priceToPoint($minus);
                     $usePoint = bcadd((string) $itemHolder->getUsePoint(), $overPoint);
@@ -84,7 +83,7 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
 
                 // 所有ポイント < 利用ポイント
                 $Customer = $itemHolder->getCustomer();
-                if ($Customer->getPoint() < $usePoint) {
+                if (bccomp((string) $Customer->getPoint(), (string) $usePoint, 0) < 0) {
                     // 利用ポイントが所有ポイントを上回っていた場合は所有ポイントで上書き
                     $usePoint = $Customer->getPoint();
                     $discount = $this->pointHelper->pointToDiscount($usePoint);
@@ -93,7 +92,7 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
             // 受注登録・編集実行時
             } else {
                 // 支払い金額 < 利用ポイントによる値引き額.
-                if ($itemHolder->getTotal() >= 0 && $itemHolder->getTotal() + $discount < 0) { // @phpstan-ignore-line TODO bcmath-polyfill を使用する
+                if (bccomp($itemHolder->getTotal(), '0', 0) >= 0 && bccomp(bcadd($itemHolder->getTotal(), $discount, 0), '0', 0) < 0) {
                     $result = ProcessResult::error(trans('purchase_flow.over_payment_total'), self::class);
                 }
             }
