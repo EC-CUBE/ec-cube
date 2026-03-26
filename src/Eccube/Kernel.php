@@ -225,17 +225,14 @@ class Kernel extends BaseKernel
                 ]);
                 $params = $parser->parse($dbUrl);
                 $conn = \Doctrine\DBAL\DriverManager::getConnection($params);
-                $stmt = $conn->executeQuery('SELECT code FROM dtb_plugin WHERE enabled = 1');
+                $stmt = $conn->executeQuery('SELECT code FROM dtb_plugin WHERE enabled = true');
                 $dbPlugins = $stmt->fetchFirstColumn();
                 $conn->close();
                 $plugins = array_unique(array_merge($plugins, $dbPlugins));
             }
         } catch (\Exception $e) {
             // DB接続失敗時はコンテナパラメータのみ使用
-            file_put_contents($this->getProjectDir().'/var/log/route_debug.log', date('c').' DB lookup failed: '.$e->getMessage()."\n", FILE_APPEND);
         }
-
-        file_put_contents($this->getProjectDir().'/var/log/route_debug.log', date('c').' plugins='.implode(',', $plugins)."\n", FILE_APPEND);
 
         foreach ($plugins as $plugin) {
             $dir = $pluginDir.'/'.$plugin.'/Controller';
