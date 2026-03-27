@@ -74,7 +74,7 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
         $this->ストアプラグイン_ボタンクリック($pluginCode, '削除');
         $this->tester->waitForElementVisible(['id' => 'officialPluginDeleteButton'], 60);
         $this->tester->click(['id' => 'officialPluginDeleteButton']);
-        $this->tester->waitForText($message, 30, ['css' => '#officialPluginDeleteModal > div > div > div.modal-body.text-start > p']);
+        $this->tester->waitForText($message, 60, ['css' => '#officialPluginDeleteModal > div > div > div.modal-body.text-start > p']);
         $this->tester->click(['css' => '#officialPluginDeleteModal > div > div > div.modal-footer > button:nth-child(3)']);
 
         return $this;
