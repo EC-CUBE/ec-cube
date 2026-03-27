@@ -146,23 +146,32 @@ class ComposerApiService implements ComposerServiceInterface
 
         $packageName = explode(' ', trim($packageName));
 
-        // remove はパッケージ追加ではないため, リポジトリ設定 (init) は不要.
-        // init() は複数の execConfig を実行するため, 省略することで大幅に高速化できる.
+        // remove はパッケージ追加ではないため, リポジトリ設定は不要.
+        // init() の getConfig/execConfig(repositories) を省略し高速化する.
+        set_time_limit(0);
+        $composerMemory = $this->eccubeConfig['eccube_composer_memory_limit'];
+        ini_set('memory_limit', $composerMemory);
+        putenv('COMPOSER_HOME='.$this->eccubeConfig['plugin_realdir'].'/.composer');
         $this->initConsole();
         $this->workingDir = $this->workingDir ?: $this->eccubeConfig['kernel.project_dir'];
+        $this->execConfig('allow-plugins.symfony/flex', ['false']);
 
-        $commands = [
-            'command' => 'remove',
-            'packages' => $packageName,
-            '--ignore-platform-reqs' => true,
-            '--no-interaction' => true,
-            '--profile' => true,
-            '--no-scripts' => true,
-        ];
-        if (env('APP_ENV') === 'prod') {
-            $commands['--no-dev'] = true;
+        try {
+            $commands = [
+                'command' => 'remove',
+                'packages' => $packageName,
+                '--ignore-platform-reqs' => true,
+                '--no-interaction' => true,
+                '--profile' => true,
+                '--no-scripts' => true,
+            ];
+            if (env('APP_ENV') === 'prod') {
+                $commands['--no-dev'] = true;
+            }
+            return $this->runCommand($commands, $output, false);
+        } finally {
+            $this->execConfig('allow-plugins.symfony/flex', ['true']);
         }
-        return $this->runCommand($commands, $output, false);
     }
 
     /**
