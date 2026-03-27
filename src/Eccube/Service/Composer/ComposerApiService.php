@@ -158,6 +158,8 @@ class ComposerApiService implements ComposerServiceInterface
 
         // Symfony Flex を無効にして remove 時の recipe unconfigure を抑制し高速化する
         $this->execConfig('allow-plugins.symfony/flex', ['false']);
+        // config 変更後に Composer インスタンスをリセットして新しい設定を反映する
+        $this->initConsole();
 
         try {
             $commands = [
