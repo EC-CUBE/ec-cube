@@ -482,14 +482,16 @@ class ComposerApiService implements ComposerServiceInterface
             $namespaces = $this->pluginContext->getExtraEntityNamespaces();
             if (!empty($namespaces)) {
                 // MySQL の DDL は暗黙的に COMMIT するため, DBAL 4.x の SAVEPOINT が壊れる.
-                // DDL 実行前にトランザクションを閉じておく.
+                // DDL 実行前に全トランザクションを閉じ, DDL 後にトランザクション状態をリセットする.
                 $conn = $this->schemaService->getEntityManager()->getConnection();
                 $isMySql = $conn->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
-                $nestingLevel = 0;
                 if ($isMySql) {
-                    $nestingLevel = $conn->getTransactionNestingLevel();
-                    for ($i = 0; $i < $nestingLevel; $i++) {
-                        $conn->commit();
+                    while ($conn->getTransactionNestingLevel() > 0) {
+                        try {
+                            $conn->commit();
+                        } catch (\Exception $e) {
+                            break;
+                        }
                     }
                 }
 
@@ -497,9 +499,10 @@ class ComposerApiService implements ComposerServiceInterface
                     $this->schemaService->dropTable($namespace);
                 }
 
-                // トランザクションを復元する
+                // DDL 後は MySQL のトランザクションが破壊されている.
+                // DBAL のネストレベルをリセットし, 新しいトランザクションを開始する.
                 if ($isMySql) {
-                    for ($i = 0; $i < $nestingLevel; $i++) {
+                    if (!$conn->getNativeConnection()->inTransaction()) {
                         $conn->beginTransaction();
                     }
                 }
