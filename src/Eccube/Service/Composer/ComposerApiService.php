@@ -552,12 +552,15 @@ class ComposerApiService implements ComposerServiceInterface
                 // MySQL で ~5-7 秒の高速化が見込める.
                 // バンドル型プラグインはコア Entity に trait を追加しないため,
                 // Proxy ファイルの再生成が不要でこの最適化は安全.
-                $pluginRepo = $em->getRepository(\Eccube\Entity\Plugin::class);
-                $plugin = $pluginRepo->findOneBy(['code' => $pluginCode]);
-                if ($plugin) {
-                    $em->remove($plugin);
-                    $em->flush();
-                }
+                //
+                // 注意: DDL (DROP TABLE) が暗黙的に COMMIT して SAVEPOINT を破壊するため,
+                // $em->flush() は SAVEPOINT エラーを起こす. EntityManager を経由せず
+                // DBAL コネクションで直接 DELETE する.
+                $conn->executeStatement(
+                    'DELETE FROM dtb_plugin WHERE code = ?',
+                    [$pluginCode],
+                    [\Doctrine\DBAL\ParameterType::STRING]
+                );
             }
         }
     }
