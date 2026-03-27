@@ -509,6 +509,21 @@ class ComposerApiService implements ComposerServiceInterface
                 if ($isMySql && !$conn->getNativeConnection()->inTransaction()) {
                     $conn->beginTransaction();
                 }
+
+                // バンドル型プラグインの Plugin エンティティを事前に削除する.
+                // PluginInstaller::uninstall() が Plugin エンティティを見つけられなくなるため,
+                // pluginService->uninstall() の呼び出しを完全にスキップできる.
+                // これにより DDL ワークアラウンド (~1-2s) + API 通知タイムアウト (~5s) を回避し,
+                // MySQL で ~5-7 秒の高速化が見込める.
+                // バンドル型プラグインはコア Entity に trait を追加しないため,
+                // Proxy ファイルの再生成が不要でこの最適化は安全.
+                $em = $this->schemaService->getEntityManager();
+                $pluginRepo = $em->getRepository(\Eccube\Entity\Plugin::class);
+                $plugin = $pluginRepo->findOneBy(['code' => $pluginCode]);
+                if ($plugin) {
+                    $em->remove($plugin);
+                    $em->flush();
+                }
             }
         }
     }

@@ -679,24 +679,26 @@ class PluginService
         }
         $this->unregisterPlugin($plugin);
 
-        try {
-            // スキーマを更新する (DDL を含むので MySQL ワークアラウンドを適用)
-            $conn = $this->entityManager->getConnection();
-            $this->executeDdlWithMySqlWorkaround($conn, function () use ($plugin, $config) {
-                if ($this->pluginContext->shouldSkipSchemaUpdate()) {
-                    // Web UI からのバンドル型プラグイン削除時:
-                    // - extra entity テーブルは dropTableToExtra() で処理済み
-                    // - バンドル型プラグインはコアEntityにtraitを追加しないためProxy再生成不要
-                    // - updateSchema もスキップ (スキーマ差分は次回のスキーマ更新で解消)
-                    // これにより MySQL で 15-20 秒の高速化が見込める.
-                } else {
-                    $this->generateProxyAndUpdateSchema($plugin, $config, true);
-                }
+        $skipSchema = $this->pluginContext->shouldSkipSchemaUpdate();
 
-                // プラグインのネームスペースに含まれるEntityのテーブルを削除する
-                $namespace = 'Plugin\\' . $plugin->getCode() . '\\Entity';
-                $this->schemaService->dropTable($namespace);
-            });
+        try {
+            if ($skipSchema) {
+                // Web UI からのバンドル型プラグイン削除時:
+                // - extra entity テーブルは dropTableToExtra() で処理済み
+                // - バンドル型プラグインはコアEntityにtraitを追加しないためProxy再生成不要
+                // - Plugin\{Code}\Entity にエンティティがないため dropTable も不要
+                // - executeDdlWithMySqlWorkaround のトランザクション操作もスキップ
+            } else {
+                // スキーマを更新する (DDL を含むので MySQL ワークアラウンドを適用)
+                $conn = $this->entityManager->getConnection();
+                $this->executeDdlWithMySqlWorkaround($conn, function () use ($plugin, $config) {
+                    $this->generateProxyAndUpdateSchema($plugin, $config, true);
+
+                    // プラグインのネームスペースに含まれるEntityのテーブルを削除する
+                    $namespace = 'Plugin\\' . $plugin->getCode() . '\\Entity';
+                    $this->schemaService->dropTable($namespace);
+                });
+            }
         } catch (PersistenceMappingException $e) {
         } catch (ORMMappingException $e) {
             // XXX 削除された Bundle が MappingException をスローする場合があるが実害は無いので無視して進める
@@ -706,7 +708,11 @@ class PluginService
             $this->deleteFile($pluginDir);
             $this->removeAssets($plugin->getCode());
         }
-        $this->pluginApiService->pluginUninstalled($plugin);
+
+        // バンドル型プラグイン削除時は API 通知をスキップ (curl タイムアウト ~5s 回避)
+        if (!$skipSchema) {
+            $this->pluginApiService->pluginUninstalled($plugin);
+        }
 
         return true;
     }
