@@ -146,28 +146,29 @@ class ComposerApiService implements ComposerServiceInterface
 
         $packageName = explode(' ', trim($packageName));
 
-        // EC-CUBE の PluginInstaller は $GLOBALS['kernel'] を参照するため,
-        // サブプロセスではなくインプロセスで実行する必要がある.
-        // init() のリポジトリ設定は remove には不要なので省略し高速化する.
-        set_time_limit(0);
-        $composerMemory = $this->eccubeConfig['eccube_composer_memory_limit'];
-        ini_set('memory_limit', $composerMemory);
-        putenv('COMPOSER_HOME='.$this->eccubeConfig['plugin_realdir'].'/.composer');
-        $this->initConsole();
-        $this->workingDir = $this->workingDir ?: $this->eccubeConfig['kernel.project_dir'];
+        // 元の 4.3 と同じく init() + Flex 無効化パターンを使用する.
+        // init() は Composer の初期化とリポジトリ設定を行う.
+        // Flex を無効化しないと composer remove 中に Flex が追加処理を行い,
+        // PHP ビルトインサーバで 30 秒を超えてしまう.
+        $this->init();
+        $this->execConfig('allow-plugins.symfony/flex', ['false']);
 
-        $commands = [
-            'command' => 'remove',
-            'packages' => $packageName,
-            '--ignore-platform-reqs' => true,
-            '--no-interaction' => true,
-            '--profile' => true,
-            '--no-scripts' => true,
-        ];
-        if (env('APP_ENV') === 'prod') {
-            $commands['--no-dev'] = true;
+        try {
+            $commands = [
+                'command' => 'remove',
+                'packages' => $packageName,
+                '--ignore-platform-reqs' => true,
+                '--no-interaction' => true,
+                '--profile' => true,
+                '--no-scripts' => true,
+            ];
+            if (env('APP_ENV') === 'prod') {
+                $commands['--update-no-dev'] = true;
+            }
+            return $this->runCommand($commands, $output, false);
+        } finally {
+            $this->execConfig('allow-plugins.symfony/flex', ['true']);
         }
-        return $this->runCommand($commands, $output, false);
     }
 
     /**
