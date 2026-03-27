@@ -70,31 +70,22 @@ class CacheUtil implements EventSubscriberInterface
             return;
         }
 
-        try {
-            $console = new Application($this->kernel);
-            $console->setAutoExit(false);
-
-            $command = [
-                'command' => 'cache:clear',
-                '--no-warmup' => true,
-                '--no-ansi' => true,
-            ];
-
-            if ($this->clearCacheAfterResponse !== null) {
-                $command['--env'] = $this->clearCacheAfterResponse;
-            }
-
-            $input = new ArrayInput($command);
-
-            $output = new BufferedOutput(
-                OutputInterface::VERBOSITY_DEBUG,
-                true
-            );
-
-            $console->run($input, $output);
-        } catch (\Throwable $e) {
-            // cache:clear 失敗時はプロセスを殺さない (kernel.terminate で実行されるため)
-            log_error($e);
+        // Symfony 7 の cache:clear --no-warmup はカーネルを再起動するため,
+        // プラグインインストール直後などオートローダーが古い状態で実行すると
+        // PHP Fatal Error でプロセスが死ぬ場合がある.
+        // サブプロセスで実行することで, メインプロセスの生存を保証する.
+        $projectDir = $this->kernel->getProjectDir();
+        $env = $this->clearCacheAfterResponse ?: $this->kernel->getEnvironment();
+        $php = PHP_BINARY;
+        $cmd = sprintf(
+            '%s %s/bin/console cache:clear --no-warmup --no-ansi --env=%s 2>&1',
+            escapeshellarg($php),
+            escapeshellarg($projectDir),
+            escapeshellarg($env)
+        );
+        exec($cmd, $outputLines, $exitCode);
+        if ($exitCode !== 0) {
+            log_error('cache:clear failed (exit='.$exitCode.'): '.implode("\n", array_slice($outputLines, -5)));
         }
 
         if (function_exists('opcache_reset')) {
