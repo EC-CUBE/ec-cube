@@ -22,13 +22,12 @@ $(function() {
         var progress = $('div.progress', modal).show();
         $.ajax({url: currentPlugin['deleteUrl'], type: 'delete'}).then(
             function(data) {
-                $.post("{{ url('admin_disable_maintenance', { 'mode': 'auto_maintenance' }) }}").then(function() {
-                    message.text('削除が完了しました。');
-                    $('#deleteLog').text(data.log);
-                    $('#deleteLogPane').show();
-                    progress.hide();
-                    footer.show().find('button').toggle();
-                });
+                message.text('削除が完了しました。');
+                $('#deleteLog').text(data.log);
+                $('#deleteLogPane').show();
+                progress.hide();
+                footer.show().find('button').toggle();
+                $.post("{{ url('admin_disable_maintenance', { 'mode': 'auto_maintenance' }) }}");
             },
             function(res) {
                 if (res.responseJSON.message) {
