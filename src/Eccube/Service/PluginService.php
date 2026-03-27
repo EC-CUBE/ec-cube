@@ -684,12 +684,11 @@ class PluginService
             $conn = $this->entityManager->getConnection();
             $this->executeDdlWithMySqlWorkaround($conn, function () use ($plugin, $config) {
                 if ($this->pluginContext->shouldSkipSchemaUpdate()) {
-                    // Web UI からの削除時: Proxy 再生成のみ行い, 重い updateSchema はスキップ.
-                    // extra entity テーブルは dropTableToExtra() で処理済み.
-                    // スキーマ差分は次回の cache warmup やスキーマ更新で解消される.
-                    $this->generateProxyAndCallback(function ($generatedFiles, $proxiesDirectory) {
-                        // updateSchema をスキップ
-                    }, $plugin, $config, true);
+                    // Web UI からのバンドル型プラグイン削除時:
+                    // - extra entity テーブルは dropTableToExtra() で処理済み
+                    // - バンドル型プラグインはコアEntityにtraitを追加しないためProxy再生成不要
+                    // - updateSchema もスキップ (スキーマ差分は次回のスキーマ更新で解消)
+                    // これにより MySQL で 15-20 秒の高速化が見込める.
                 } else {
                     $this->generateProxyAndUpdateSchema($plugin, $config, true);
                 }
