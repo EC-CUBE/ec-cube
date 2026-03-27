@@ -256,7 +256,7 @@ class AcceptanceTester extends Actor
     /**
      * AcceptanceTesterActions から移植
      *
-     * @see \Codeception\Module\WebDriver::see()
+     * @see Codeception\Module\WebDriver::see()
      *
      * @param mixed|null $selector
      */
@@ -269,7 +269,7 @@ class AcceptanceTester extends Actor
     /**
      * AcceptanceTesterActions から移植
      *
-     * @see \Codeception\Module\WebDriver::seeInField()
+     * @see Codeception\Module\WebDriver::seeInField()
      */
     public function seeInField(mixed $field, mixed $value): void
     {
@@ -280,7 +280,7 @@ class AcceptanceTester extends Actor
     /**
      * AcceptanceTesterActions から移植
      *
-     * @see \Codeception\Module\WebDriver::waitForText()
+     * @see Codeception\Module\WebDriver::waitForText()
      *
      * @param mixed|null $selector
      */
@@ -293,7 +293,7 @@ class AcceptanceTester extends Actor
     /**
      * AcceptanceTesterActions から移植
      *
-     * @see \Codeception\Module\WebDriver::amOnPage()
+     * @see Codeception\Module\WebDriver::amOnPage()
      */
     public function amOnPage(mixed $page): void
     {
@@ -307,7 +307,7 @@ class AcceptanceTester extends Actor
      *
      * @param mixed|null $context
      *
-     * @see \Codeception\Module\WebDriver::click()
+     * @see Codeception\Module\WebDriver::click()
      */
     public function click(string|array $link, mixed $context = null): void
     {

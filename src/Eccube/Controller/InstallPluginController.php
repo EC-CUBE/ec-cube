@@ -109,9 +109,9 @@ class InstallPluginController extends InstallController
             $this->clearCacheOnTerminate();
 
             return $this->json(['success' => true, 'log' => $log]);
-        } else {
-            return $this->json(['success' => false, 'log' => $log]);
         }
+
+        return $this->json(['success' => false, 'log' => $log]);
     }
 
     /**

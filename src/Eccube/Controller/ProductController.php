@@ -245,21 +245,20 @@ class ProductController extends AbstractController
             $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_PRODUCT_FAVORITE_ADD_COMPLETE);
 
             return $this->redirectToRoute('product_detail', ['id' => $Product->getId()]);
-        } else {
-            // 非会員の場合、ログイン画面を表示
-            //  ログイン後の画面遷移先を設定
-            $this->setLoginTargetPath($this->generateUrl('product_add_favorite', ['id' => $Product->getId()], UrlGeneratorInterface::ABSOLUTE_URL));
-
-            $event = new EventArgs(
-                [
-                    'Product' => $Product,
-                ],
-                $request
-            );
-            $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_PRODUCT_FAVORITE_ADD_COMPLETE);
-
-            return $this->redirectToRoute('mypage_login');
         }
+        // 非会員の場合、ログイン画面を表示
+        //  ログイン後の画面遷移先を設定
+        $this->setLoginTargetPath($this->generateUrl('product_add_favorite', ['id' => $Product->getId()], UrlGeneratorInterface::ABSOLUTE_URL));
+
+        $event = new EventArgs(
+            [
+                'Product' => $Product,
+            ],
+            $request
+        );
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_PRODUCT_FAVORITE_ADD_COMPLETE);
+
+        return $this->redirectToRoute('mypage_login');
     }
 
     /**
@@ -374,14 +373,13 @@ class ProductController extends AbstractController
             }
 
             return $this->json(['done' => $done, 'messages' => $messages]);
-        } else {
-            // ajax以外でのリクエストの場合はカート画面へリダイレクト
-            foreach ($errorMessages as $errorMessage) {
-                $this->addRequestError($errorMessage);
-            }
-
-            return $this->redirectToRoute('cart');
         }
+        // ajax以外でのリクエストの場合はカート画面へリダイレクト
+        foreach ($errorMessages as $errorMessage) {
+            $this->addRequestError($errorMessage);
+        }
+
+        return $this->redirectToRoute('cart');
     }
 
     /**
@@ -395,9 +393,9 @@ class ProductController extends AbstractController
             return trans('front.product.search_result');
         } elseif (isset($searchData['category_id']) && $searchData['category_id']) {
             return $searchData['category_id']->getName();
-        } else {
-            return trans('front.product.all_products');
         }
+
+        return trans('front.product.all_products');
     }
 
     /**

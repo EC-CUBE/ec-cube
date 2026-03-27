@@ -88,12 +88,12 @@ class LogController extends AbstractController
             });
 
             return $response;
-        } else {
-            return [
-                'form' => $form->createView(),
-                'log' => $this->parseLogFile($logFile, $formData),
-            ];
         }
+
+        return [
+            'form' => $form->createView(),
+            'log' => $this->parseLogFile($logFile, $formData),
+        ];
     }
 
     /**

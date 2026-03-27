@@ -726,12 +726,11 @@ class ProductController extends AbstractController
                     $message = trans('admin.common.delete_error_already_deleted');
 
                     return $this->json(['success' => $success, 'message' => $message]);
-                } else {
-                    $this->deleteMessage();
-                    $rUrl = $this->generateUrl('admin_product_page', ['page_no' => $page_no]).'?resume='.Constant::ENABLED;
-
-                    return $this->redirect($rUrl);
                 }
+                $this->deleteMessage();
+                $rUrl = $this->generateUrl('admin_product_page', ['page_no' => $page_no]).'?resume='.Constant::ENABLED;
+
+                return $this->redirect($rUrl);
             }
 
             log_info('商品削除開始', [$id]);
@@ -785,17 +784,16 @@ class ProductController extends AbstractController
 
         if ($request->isXmlHttpRequest()) {
             return $this->json(['success' => $success, 'message' => $message]);
-        } else {
-            if ($success) {
-                $this->addSuccess($message, 'admin');
-            } else {
-                $this->addError($message, 'admin');
-            }
-
-            $rUrl = $this->generateUrl('admin_product_page', ['page_no' => $page_no]).'?resume='.Constant::ENABLED;
-
-            return $this->redirect($rUrl);
         }
+        if ($success) {
+            $this->addSuccess($message, 'admin');
+        } else {
+            $this->addError($message, 'admin');
+        }
+
+        $rUrl = $this->generateUrl('admin_product_page', ['page_no' => $page_no]).'?resume='.Constant::ENABLED;
+
+        return $this->redirect($rUrl);
     }
 
     /**
@@ -898,9 +896,8 @@ class ProductController extends AbstractController
                 $this->addSuccess('admin.product.copy_complete', 'admin');
 
                 return $this->redirectToRoute('admin_product_product_edit', ['id' => $CopyProduct->getId()]);
-            } else {
-                $this->addError('admin.product.copy_error', 'admin');
             }
+            $this->addError('admin.product.copy_error', 'admin');
         } else {
             $msg = trans('admin.product.copy_error');
             $this->addError($msg, 'admin');

@@ -61,9 +61,8 @@ class TwoFactorAuthController extends AbstractController
                         $response->headers->setCookie($this->twoFactorAuthService->createAuthedCookie($Member));
 
                         return $response;
-                    } else {
-                        $error = trans('admin.setting.system.two_factor_auth.invalid_message__reinput');
                     }
+                    $error = trans('admin.setting.system.two_factor_auth.invalid_message__reinput');
                 } else {
                     return $this->redirectToRoute('admin_two_factor_auth_set');
                 }
@@ -147,9 +146,8 @@ class TwoFactorAuthController extends AbstractController
                     $response->headers->setCookie($this->twoFactorAuthService->createAuthedCookie($Member));
 
                     return $response;
-                } else {
-                    $error = trans('admin.setting.system.two_factor_auth.invalid_message__reinput');
                 }
+                $error = trans('admin.setting.system.two_factor_auth.invalid_message__reinput');
             } else {
                 $error = trans('admin.setting.system.two_factor_auth.invalid_message__invalid');
             }

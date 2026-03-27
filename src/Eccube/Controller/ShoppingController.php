@@ -840,13 +840,12 @@ class ShoppingController extends AbstractShoppingController
 
                 return $this->forwardToRoute($dispatcher->getRoute(), $dispatcher->getPathParameters(),
                     $dispatcher->getQueryParameters());
-            } else {
-                log_info('[注文処理] PaymentMethod::applyによりリダイレクトします.',
-                    [$dispatcher->getRoute(), $dispatcher->getPathParameters(), $dispatcher->getQueryParameters()]);
-
-                return $this->redirectToRoute($dispatcher->getRoute(),
-                    array_merge($dispatcher->getPathParameters(), $dispatcher->getQueryParameters()));
             }
+            log_info('[注文処理] PaymentMethod::applyによりリダイレクトします.',
+                [$dispatcher->getRoute(), $dispatcher->getPathParameters(), $dispatcher->getQueryParameters()]);
+
+            return $this->redirectToRoute($dispatcher->getRoute(),
+                array_merge($dispatcher->getPathParameters(), $dispatcher->getQueryParameters()));
         }
 
         return null;

@@ -207,10 +207,9 @@ class ForgotController extends AbstractController
 
                 // ログインページへリダイレクト
                 return $this->redirectToRoute('mypage_login');
-            } else {
-                // リセットキー・メールアドレスから会員データが取得できない場合
-                $error = trans('front.forgot.reset_not_found');
             }
+            // リセットキー・メールアドレスから会員データが取得できない場合
+            $error = trans('front.forgot.reset_not_found');
         }
 
         return [

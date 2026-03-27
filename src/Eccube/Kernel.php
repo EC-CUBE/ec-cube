@@ -126,7 +126,7 @@ class Kernel extends BaseKernel
     /**
      * {@inheritdoc}
      *
-     * @see \Symfony\Component\HttpKernel\Kernel::boot()
+     * @see BaseKernel::boot()
      */
     #[\Override]
     public function boot(): void

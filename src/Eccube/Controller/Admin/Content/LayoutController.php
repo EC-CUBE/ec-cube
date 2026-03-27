@@ -169,9 +169,9 @@ class LayoutController extends AbstractController
                         }
 
                         return $this->redirectToRoute($Page->getUrl(), ['preview' => 1, 'id' => $product->getId()]);
-                    } else {
-                        return $this->redirectToRoute($Page->getUrl(), ['preview' => 1]);
                     }
+
+                    return $this->redirectToRoute($Page->getUrl(), ['preview' => 1]);
                 }
 
                 return $this->redirectToRoute('user_data', ['route' => $Page->getUrl(), 'preview' => 1]);

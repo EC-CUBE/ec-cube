@@ -48,7 +48,9 @@ final class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->productRepo = $this->entityManager->getRepository(Product::class);
         $this->categoryRepo = $this->entityManager->getRepository(Category::class);
         $this->filepath = __DIR__.'/products.csv';
-        copy(__DIR__.'/../../../../../Fixtures/products.csv', $this->filepath); // 削除されてしまうのでコピーしておく
+
+        // 削除されてしまうのでコピーしておく
+        copy(__DIR__.'/../../../../../Fixtures/products.csv', $this->filepath);
 
         $fs = new Filesystem();
         $fs->mkdir($this->eccubeConfig['eccube_csv_temp_realdir']);

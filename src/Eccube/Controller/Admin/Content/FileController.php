@@ -256,12 +256,12 @@ class FileController extends AbstractController
                 $str = preg_replace($patterns, '', $pathParts['basename']);
                 if (strlen((string) $str) === 0) {
                     return (new BinaryFileResponse($file))->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
-                } else {
-                    return new BinaryFileResponse($file, Response::HTTP_OK, [
-                        'Content-Type' => 'aplication/octet-stream;',
-                        'Content-Disposition' => "attachment; filename*=UTF-8\'\'".rawurlencode($this->convertStrFromServer($pathParts['basename'])),
-                    ]);
                 }
+
+                return new BinaryFileResponse($file, Response::HTTP_OK, [
+                    'Content-Type' => 'aplication/octet-stream;',
+                    'Content-Disposition' => "attachment; filename*=UTF-8\'\'".rawurlencode($this->convertStrFromServer($pathParts['basename'])),
+                ]);
             }
         }
         throw new NotFoundHttpException();

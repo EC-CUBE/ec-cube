@@ -235,63 +235,59 @@ class PluginController extends AbstractController
         if ($Plugin->isEnabled()) {
             if ($request->isXmlHttpRequest()) {
                 return $this->json(['success' => true]);
-            } else {
-                $this->addError(trans('admin.store.plugin.already.enabled', ['%plugin_name%' => $Plugin->getName()]), 'admin');
+            }
+            $this->addError(trans('admin.store.plugin.already.enabled', ['%plugin_name%' => $Plugin->getName()]), 'admin');
+
+            return $this->redirectToRoute('admin_store_plugin');
+        }
+        // ストアからインストールしたプラグインは依存プラグインが有効化されているかを確認
+        if ($Plugin->getSource()) {
+            $requires = $this->pluginService->getPluginRequired($Plugin);
+            $requires = array_filter($requires, function ($req) {
+                $code = preg_replace('/^ec-cube\//i', '', (string) $req['name']);
+                /** @var Plugin $DependPlugin */
+                $DependPlugin = $this->pluginRepository->findByCode($code);
+
+                return $DependPlugin->isEnabled() == false;
+            });
+            if (!empty($requires)) {
+                $names = array_map(fn ($req) => "「{$req['description']}」", $requires);
+                $message = trans('%depend_name%を先に有効化してください。', ['%name%' => $Plugin->getName(), '%depend_name%' => implode(', ', $names)]);
+
+                if ($request->isXmlHttpRequest()) {
+                    return $this->json(['success' => false, 'message' => $message], 400);
+                }
+                $this->addError($message, 'admin');
+
+                $this->addFlash('eccube.admin.disable_maintenance', '');
 
                 return $this->redirectToRoute('admin_store_plugin');
             }
-        } else {
-            // ストアからインストールしたプラグインは依存プラグインが有効化されているかを確認
-            if ($Plugin->getSource()) {
-                $requires = $this->pluginService->getPluginRequired($Plugin);
-                $requires = array_filter($requires, function ($req) {
-                    $code = preg_replace('/^ec-cube\//i', '', (string) $req['name']);
-                    /** @var Plugin $DependPlugin */
-                    $DependPlugin = $this->pluginRepository->findByCode($code);
+        }
 
-                    return $DependPlugin->isEnabled() == false;
-                });
-                if (!empty($requires)) {
-                    $names = array_map(fn ($req) => "「{$req['description']}」", $requires);
-                    $message = trans('%depend_name%を先に有効化してください。', ['%name%' => $Plugin->getName(), '%depend_name%' => implode(', ', $names)]);
+        try {
+            ob_start();
 
-                    if ($request->isXmlHttpRequest()) {
-                        return $this->json(['success' => false, 'message' => $message], 400);
-                    } else {
-                        $this->addError($message, 'admin');
-
-                        $this->addFlash('eccube.admin.disable_maintenance', '');
-
-                        return $this->redirectToRoute('admin_store_plugin');
-                    }
-                }
+            if (!$Plugin->isInitialized()) {
+                $this->pluginService->installWithCode($Plugin->getCode());
             }
 
-            try {
-                ob_start();
-
-                if (!$Plugin->isInitialized()) {
-                    $this->pluginService->installWithCode($Plugin->getCode());
-                }
-
-                $this->pluginService->enable($Plugin);
-            } finally {
-                $log = ob_get_clean();
-                while (ob_get_level() > 0) {
-                    ob_end_flush();
-                }
+            $this->pluginService->enable($Plugin);
+        } finally {
+            $log = ob_get_clean();
+            while (ob_get_level() > 0) {
+                ob_end_flush();
             }
         }
 
         if ($request->isXmlHttpRequest()) {
             return $this->json(['success' => true, 'log' => $log]);
-        } else {
-            $this->addSuccess(trans('admin.store.plugin.enable.complete', ['%plugin_name%' => $Plugin->getName()]), 'admin');
-
-            $this->addFlash('eccube.admin.disable_maintenance', '');
-
-            return $this->redirectToRoute('admin_store_plugin');
         }
+        $this->addSuccess(trans('admin.store.plugin.enable.complete', ['%plugin_name%' => $Plugin->getName()]), 'admin');
+
+        $this->addFlash('eccube.admin.disable_maintenance', '');
+
+        return $this->redirectToRoute('admin_store_plugin');
     }
 
     /**
@@ -328,13 +324,12 @@ class PluginController extends AbstractController
 
                 if ($request->isXmlHttpRequest()) {
                     return $this->json(['message' => $message], 400);
-                } else {
-                    $this->addError($message, 'admin');
-
-                    $this->addFlash('eccube.admin.disable_maintenance', '');
-
-                    return $this->redirectToRoute('admin_store_plugin');
                 }
+                $this->addError($message, 'admin');
+
+                $this->addFlash('eccube.admin.disable_maintenance', '');
+
+                return $this->redirectToRoute('admin_store_plugin');
             }
 
             try {
@@ -349,22 +344,20 @@ class PluginController extends AbstractController
         } else {
             if ($request->isXmlHttpRequest()) {
                 return $this->json(['success' => true, 'log' => $log]);
-            } else {
-                $this->addError(trans('admin.store.plugin.already.disabled', ['%plugin_name%' => $Plugin->getName()]), 'admin');
-
-                return $this->redirectToRoute('admin_store_plugin');
             }
+            $this->addError(trans('admin.store.plugin.already.disabled', ['%plugin_name%' => $Plugin->getName()]), 'admin');
+
+            return $this->redirectToRoute('admin_store_plugin');
         }
 
         if ($request->isXmlHttpRequest()) {
             return $this->json(['success' => true, 'log' => $log]);
-        } else {
-            $this->addSuccess(trans('admin.store.plugin.disable.complete', ['%plugin_name%' => $Plugin->getName()]), 'admin');
-
-            $this->addFlash('eccube.admin.disable_maintenance', '');
-
-            return $this->redirectToRoute('admin_store_plugin');
         }
+        $this->addSuccess(trans('admin.store.plugin.disable.complete', ['%plugin_name%' => $Plugin->getName()]), 'admin');
+
+        $this->addFlash('eccube.admin.disable_maintenance', '');
+
+        return $this->redirectToRoute('admin_store_plugin');
     }
 
     /**

@@ -137,9 +137,9 @@ class CategoryController extends AbstractController
 
                 if ($Parent) {
                     return $this->redirectToRoute('admin_product_category_show', ['parent_id' => $Parent->getId()]);
-                } else {
-                    return $this->redirectToRoute('admin_product_category');
                 }
+
+                return $this->redirectToRoute('admin_product_category');
             }
 
             foreach ($forms as $editForm) {
@@ -168,9 +168,9 @@ class CategoryController extends AbstractController
 
                     if ($Parent) {
                         return $this->redirectToRoute('admin_product_category_show', ['parent_id' => $Parent->getId()]);
-                    } else {
-                        return $this->redirectToRoute('admin_product_category');
                     }
+
+                    return $this->redirectToRoute('admin_product_category');
                 }
             }
         }
@@ -247,9 +247,9 @@ class CategoryController extends AbstractController
 
         if ($Parent) {
             return $this->redirectToRoute('admin_product_category_show', ['parent_id' => $Parent->getId()]);
-        } else {
-            return $this->redirectToRoute('admin_product_category');
         }
+
+        return $this->redirectToRoute('admin_product_category');
     }
 
     /**
