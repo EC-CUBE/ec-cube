@@ -110,7 +110,7 @@ class ComposerApiService implements ComposerServiceInterface
         $this->execConfig('allow-plugins.symfony/flex', ['false']);
 
         try {
-            return $this->runCommand([
+            $commands = [
                 'command' => 'require',
                 'packages' => $packageName,
                 '--no-interaction' => true,
@@ -118,8 +118,11 @@ class ComposerApiService implements ComposerServiceInterface
                 '--prefer-dist' => true,
                 '--with-all-dependencies' => true,
                 '--no-scripts' => true,
-                '--update-no-dev' => env('APP_ENV') === 'prod',
-            ], $output, false);
+            ];
+            if (env('APP_ENV') === 'prod') {
+                $commands['--update-no-dev'] = true;
+            }
+            return $this->runCommand($commands, $output, false);
         } finally {
             $this->execConfig('allow-plugins.symfony/flex', ['true']);
         }
@@ -147,15 +150,18 @@ class ComposerApiService implements ComposerServiceInterface
         $this->execConfig('allow-plugins.symfony/flex', ['false']);
 
         try {
-            return $this->runCommand([
+            $commands = [
                 'command' => 'remove',
                 'packages' => $packageName,
                 '--ignore-platform-reqs' => true,
                 '--no-interaction' => true,
                 '--profile' => true,
                 '--no-scripts' => true,
-                '--update-no-dev' => env('APP_ENV') === 'prod',
-            ], $output, false);
+            ];
+            if (env('APP_ENV') === 'prod') {
+                $commands['--no-dev'] = true;
+            }
+            return $this->runCommand($commands, $output, false);
         } finally {
             $this->execConfig('allow-plugins.symfony/flex', ['true']);
         }
