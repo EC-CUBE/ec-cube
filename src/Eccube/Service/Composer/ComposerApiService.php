@@ -146,25 +146,23 @@ class ComposerApiService implements ComposerServiceInterface
 
         $packageName = explode(' ', trim($packageName));
 
-        $this->init();
-        $this->execConfig('allow-plugins.symfony/flex', ['false']);
+        // remove はパッケージ追加ではないため, リポジトリ設定 (init) は不要.
+        // init() は複数の execConfig を実行するため, 省略することで大幅に高速化できる.
+        $this->initConsole();
+        $this->workingDir = $this->workingDir ?: $this->eccubeConfig['kernel.project_dir'];
 
-        try {
-            $commands = [
-                'command' => 'remove',
-                'packages' => $packageName,
-                '--ignore-platform-reqs' => true,
-                '--no-interaction' => true,
-                '--profile' => true,
-                '--no-scripts' => true,
-            ];
-            if (env('APP_ENV') === 'prod') {
-                $commands['--no-dev'] = true;
-            }
-            return $this->runCommand($commands, $output, false);
-        } finally {
-            $this->execConfig('allow-plugins.symfony/flex', ['true']);
+        $commands = [
+            'command' => 'remove',
+            'packages' => $packageName,
+            '--ignore-platform-reqs' => true,
+            '--no-interaction' => true,
+            '--profile' => true,
+            '--no-scripts' => true,
+        ];
+        if (env('APP_ENV') === 'prod') {
+            $commands['--no-dev'] = true;
         }
+        return $this->runCommand($commands, $output, false);
     }
 
     /**
