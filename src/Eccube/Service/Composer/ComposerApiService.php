@@ -501,8 +501,37 @@ class ComposerApiService implements ComposerServiceInterface
                     }
                 }
 
+                // SchemaTool::dropSchema() は introspectSchema() でDB全テーブルの
+                // SHOW CREATE TABLE を実行するため非常に遅い.
+                // 代わりにメタデータからテーブル名を取得し raw SQL で直接 DROP する.
+                $em = $this->schemaService->getEntityManager();
+                $chain = $em->getConfiguration()->getMetadataDriverImpl()->getDriver();
+                $drivers = $chain->getDrivers();
+                $tableNames = [];
                 foreach ($namespaces as $namespace) {
-                    $this->schemaService->dropTable($namespace);
+                    foreach ($drivers as $ns => $driver) {
+                        if ($namespace === $ns) {
+                            foreach ($driver->getAllClassNames() as $className) {
+                                $meta = $em->getMetadataFactory()->getMetadataFor($className);
+                                $tableNames[] = $meta->getTableName();
+                            }
+                        }
+                    }
+                }
+                if ($isMySql) {
+                    $conn->executeStatement('SET FOREIGN_KEY_CHECKS = 0');
+                }
+                $platform = $conn->getDatabasePlatform();
+                foreach ($tableNames as $table) {
+                    $quotedTable = $platform->quoteSingleIdentifier($table);
+                    if ($isMySql) {
+                        $conn->executeStatement('DROP TABLE IF EXISTS ' . $quotedTable);
+                    } else {
+                        $conn->executeStatement('DROP TABLE IF EXISTS ' . $quotedTable . ' CASCADE');
+                    }
+                }
+                if ($isMySql) {
+                    $conn->executeStatement('SET FOREIGN_KEY_CHECKS = 1');
                 }
 
                 // DDL 後にトランザクション状態を安定させる
@@ -517,7 +546,6 @@ class ComposerApiService implements ComposerServiceInterface
                 // MySQL で ~5-7 秒の高速化が見込める.
                 // バンドル型プラグインはコア Entity に trait を追加しないため,
                 // Proxy ファイルの再生成が不要でこの最適化は安全.
-                $em = $this->schemaService->getEntityManager();
                 $pluginRepo = $em->getRepository(\Eccube\Entity\Plugin::class);
                 $plugin = $pluginRepo->findOneBy(['code' => $pluginCode]);
                 if ($plugin) {
