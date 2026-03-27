@@ -70,25 +70,13 @@ class CacheUtil implements EventSubscriberInterface
             return;
         }
 
-        // Symfony 7 の cache:clear --no-warmup はカーネルを再起動するため,
-        // プラグインインストール直後などオートローダーが古い状態で実行すると
-        // PHP Fatal Error でプロセスが死ぬ場合がある.
-        // サブプロセスで実行することで, メインプロセスの生存を保証する.
-        $projectDir = $this->kernel->getProjectDir();
-        $env = $this->clearCacheAfterResponse ?: $this->kernel->getEnvironment();
-        $php = PHP_BINARY;
-        // バックグラウンドで実行し, PHP ビルトインサーバをブロックしない.
-        // PHP ビルトインサーバはシングルスレッドのため, exec() でブロックすると
-        // 次のリクエスト (ページ遷移) を処理できずテストがタイムアウトする.
-        $logFile = $projectDir.'/var/log/cache_clear.log';
-        $cmd = sprintf(
-            '%s %s/bin/console cache:clear --no-warmup --no-ansi --env=%s > %s 2>&1 &',
-            escapeshellarg($php),
-            escapeshellarg($projectDir),
-            escapeshellarg($env),
-            escapeshellarg($logFile)
-        );
-        exec($cmd);
+        // Symfony 7 の cache:clear --no-warmup はカーネルをリブートするため,
+        // プラグインインストール直後などオートローダーが古い状態で Fatal Error が発生する.
+        // cache:clear コマンドの代わりにキャッシュディレクトリを直接削除する.
+        // 次のリクエストでコンテナが自動的に再コンパイルされる.
+        $cacheDir = $this->kernel->getCacheDir();
+        $fs = new Filesystem();
+        $fs->remove($cacheDir);
 
         if (function_exists('opcache_reset')) {
             opcache_reset();
