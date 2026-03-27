@@ -70,27 +70,27 @@ class CacheUtil implements EventSubscriberInterface
             return;
         }
 
-        $console = new Application($this->kernel);
-        $console->setAutoExit(false);
-
-        $command = [
-            'command' => 'cache:clear',
-            '--no-warmup' => true,
-            '--no-ansi' => true,
-        ];
-
-        if ($this->clearCacheAfterResponse !== null) {
-            $command['--env'] = $this->clearCacheAfterResponse;
-        }
-
-        $input = new ArrayInput($command);
-
-        $output = new BufferedOutput(
-            OutputInterface::VERBOSITY_DEBUG,
-            true
-        );
-
         try {
+            $console = new Application($this->kernel);
+            $console->setAutoExit(false);
+
+            $command = [
+                'command' => 'cache:clear',
+                '--no-warmup' => true,
+                '--no-ansi' => true,
+            ];
+
+            if ($this->clearCacheAfterResponse !== null) {
+                $command['--env'] = $this->clearCacheAfterResponse;
+            }
+
+            $input = new ArrayInput($command);
+
+            $output = new BufferedOutput(
+                OutputInterface::VERBOSITY_DEBUG,
+                true
+            );
+
             $console->run($input, $output);
         } catch (\Throwable $e) {
             // cache:clear 失敗時はプロセスを殺さない (kernel.terminate で実行されるため)
