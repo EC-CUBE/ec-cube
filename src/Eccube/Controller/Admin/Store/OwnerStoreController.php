@@ -337,6 +337,11 @@ class OwnerStoreController extends AbstractController
         $packageName = self::$vendorName.'/'.$pluginCode;
 
         try {
+            // Plugin entity を DB から事前に削除し, PluginInstaller::uninstall() が
+            // 重い pluginService->uninstall() (schema 比較 + updateSchema) をスキップするようにする.
+            // extra entity テーブルは execRemove() 内の dropTableToExtra() で処理される.
+            $this->pluginService->unregisterPlugin($Plugin);
+
             $log = $this->composerService->execRemove($packageName);
 
             return $this->json(['success' => false, 'log' => $log]);
@@ -452,13 +457,11 @@ class OwnerStoreController extends AbstractController
                 $conn = $this->entityManager->getConnection();
                 if ($conn->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\AbstractMySQLPlatform) {
                     // MySQL: DDL後にSAVEPOINTが破壊されているため、トランザクションをリセット
-                    while ($conn->getTransactionNestingLevel() > 0) {
-                        try {
-                            $conn->commit();
-                        } catch (\Exception $e) {
-                            // SAVEPOINTが存在しない場合は無視
-                            break;
-                        }
+                    // DBAL 4.x autoCommit=false では commit() 後に自動 beginTransaction() が呼ばれるため
+                    // while ループは無限ループになる. 固定回数で commit する.
+                    $nestingLevel = $conn->getTransactionNestingLevel();
+                    for ($i = 0; $i < $nestingLevel; $i++) {
+                        $conn->commit();
                     }
                     if (!$conn->getNativeConnection()->inTransaction()) {
                         $conn->beginTransaction();
