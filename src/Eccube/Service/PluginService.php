@@ -881,7 +881,7 @@ class PluginService
     /**
      * Plugin is exist check
      *
-     * @param array<string, string|int>  $plugins    get from api
+     * @param array<int, array<string, mixed>> $plugins get from api（各行に product_code を含む）
      *
      * @return false|int|string
      */
@@ -890,12 +890,19 @@ class PluginService
         if (str_contains($pluginCode, self::VENDOR_NAME.'/')) {
             $pluginCode = str_replace(self::VENDOR_NAME.'/', '', $pluginCode);
         }
-        // Find plugin in array
-        $index = array_search($pluginCode, array_column($plugins, 'product_code')); // 前方互換用
-        if ($index === false) {
-            $index = array_search(strtolower($pluginCode), array_column($plugins, 'product_code'));
+        $productCodes = array_column($plugins, 'product_code');
+        foreach ($productCodes as $index => $code) {
+            if ($code === $pluginCode) {
+                return $index;
+            }
+        }
+        $lowerPluginCode = strtolower($pluginCode);
+        foreach ($productCodes as $index => $code) {
+            if ($code === $lowerPluginCode) {
+                return $index;
+            }
         }
 
-        return $index;
+        return false;
     }
 }

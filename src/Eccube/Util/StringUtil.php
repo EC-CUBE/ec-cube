@@ -46,17 +46,13 @@ class StringUtil
      */
     public static function random(int $length = 16): string
     {
-        if (function_exists('openssl_random_pseudo_bytes')) {
-            $bytes = openssl_random_pseudo_bytes($length * 2);
-
-            if ($bytes === false) {
-                throw new \RuntimeException('Unable to generate random string.');
-            }
-
-            return substr(str_replace(['/', '+', '='], '', base64_encode($bytes)), 0, $length);
+        try {
+            $bytes = random_bytes($length * 2);
+        } catch (\Random\RandomException) {
+            return static::quickRandom($length);
         }
 
-        return static::quickRandom($length);
+        return substr(str_replace(['/', '+', '='], '', base64_encode($bytes)), 0, $length);
     }
 
     /**

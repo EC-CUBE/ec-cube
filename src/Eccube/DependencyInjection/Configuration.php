@@ -14,16 +14,18 @@
 namespace Eccube\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
-use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class Configuration implements ConfigurationInterface
 {
+    /**
+     * @return TreeBuilder<'array'>
+     */
     #[\Override]
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder('eccube');
+        $treeBuilder = new TreeBuilder('eccube', 'array');
         $rootNode = $treeBuilder->getRootNode();
 
         $this->addRateLimiterSection($rootNode);
@@ -31,7 +33,10 @@ class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    public function addRateLimiterSection(ArrayNodeDefinition|NodeDefinition $rootNode): void
+    /**
+     * @param ArrayNodeDefinition<TreeBuilder<'array'>> $rootNode
+     */
+    public function addRateLimiterSection(ArrayNodeDefinition $rootNode): void
     {
         $rootNode
             ->children()

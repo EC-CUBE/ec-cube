@@ -98,6 +98,14 @@ if (!class_exists(Cart::class)) {
         }
 
         /**
+         * @return InvalidItemException[]
+         */
+        public function getErrors(): array
+        {
+            return $this->errors;
+        }
+
+        /**
          * @return int
          */
         public function getId(): ?int

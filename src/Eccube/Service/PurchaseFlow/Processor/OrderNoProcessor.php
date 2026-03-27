@@ -55,35 +55,33 @@ class OrderNoProcessor implements ItemHolderPreprocessor
             } else {
                 do {
                     $orderNo = preg_replace_callback('/\{(.*)}/U', function ($matches) use ($Order) {
-                        if (count($matches) === 2) {
-                            $dateTime = new \DateTime('now', new \DateTimeZone($this->eccubeConfig->get('timezone')));
-                            switch ($matches[1]) {
-                                case 'yyyy':
-                                    return $dateTime->format('Y');
-                                case 'yy':
-                                    return $dateTime->format('y');
-                                case 'mm':
-                                    return $dateTime->format('m');
-                                case 'dd':
-                                    return $dateTime->format('d');
-                                default:
-                                    $res = explode(',', str_replace(' ', '', $matches[1]));
-                                    if (count($res) === 2 && is_numeric($res[1])) {
-                                        if ($res[0] === 'id') {
-                                            return sprintf("%0{$res[1]}d", $Order->getId());
-                                        } elseif ($res[0] === 'random') {
-                                            $random = random_int(1, (int) str_repeat('9', (int) $res[1]));
+                        $dateTime = new \DateTime('now', new \DateTimeZone($this->eccubeConfig->get('timezone')));
+                        switch ($matches[1]) {
+                            case 'yyyy':
+                                return $dateTime->format('Y');
+                            case 'yy':
+                                return $dateTime->format('y');
+                            case 'mm':
+                                return $dateTime->format('m');
+                            case 'dd':
+                                return $dateTime->format('d');
+                            default:
+                                $res = explode(',', str_replace(' ', '', $matches[1]));
+                                if (count($res) === 2 && is_numeric($res[1])) {
+                                    if ($res[0] === 'id') {
+                                        return sprintf("%0{$res[1]}d", $Order->getId());
+                                    } elseif ($res[0] === 'random') {
+                                        $random = random_int(1, (int) str_repeat('9', (int) $res[1]));
 
-                                            return sprintf("%0{$res[1]}d", $random);
-                                        } elseif ($res[0] === 'random_alnum') {
-                                            return strtoupper(StringUtil::random((int) $res[1]));
-                                        } elseif ($res[0] === 'random_alpha') {
-                                            return strtoupper(ByteString::fromRandom((int) $res[1], implode('', range('A', 'Z')))->toString());
-                                        }
+                                        return sprintf("%0{$res[1]}d", $random);
+                                    } elseif ($res[0] === 'random_alnum') {
+                                        return strtoupper(StringUtil::random((int) $res[1]));
+                                    } elseif ($res[0] === 'random_alpha') {
+                                        return strtoupper(ByteString::fromRandom((int) $res[1], implode('', range('A', 'Z')))->toString());
                                     }
+                                }
 
-                                    return $Order->getId();
-                            }
+                                return $Order->getId();
                         }
                     }, (string) $format);
 
