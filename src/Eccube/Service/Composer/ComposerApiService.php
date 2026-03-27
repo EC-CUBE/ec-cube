@@ -146,32 +146,44 @@ class ComposerApiService implements ComposerServiceInterface
 
         $packageName = explode(' ', trim($packageName));
 
-        // remove はパッケージ追加ではないため, リポジトリ設定は不要.
-        // init() の getConfig/execConfig(repositories) を省略し高速化する.
-        set_time_limit(0);
-        $composerMemory = $this->eccubeConfig['eccube_composer_memory_limit'];
-        ini_set('memory_limit', $composerMemory);
-        putenv('COMPOSER_HOME='.$this->eccubeConfig['plugin_realdir'].'/.composer');
-        $this->initConsole();
-        $this->workingDir = $this->workingDir ?: $this->eccubeConfig['kernel.project_dir'];
-        $this->execConfig('allow-plugins.symfony/flex', ['false']);
+        // Composer をインプロセスで実行すると Xdebug や Symfony event system の
+        // 干渉で 30秒以上かかる場合がある. サブプロセスで実行して高速化する.
+        $workingDir = $this->workingDir ?: $this->eccubeConfig['kernel.project_dir'];
+        $composerHome = $this->eccubeConfig['plugin_realdir'].'/.composer';
+        $packages = implode(' ', $packageName);
 
-        try {
-            $commands = [
-                'command' => 'remove',
-                'packages' => $packageName,
-                '--ignore-platform-reqs' => true,
-                '--no-interaction' => true,
-                '--profile' => true,
-                '--no-scripts' => true,
-            ];
-            if (env('APP_ENV') === 'prod') {
-                $commands['--no-dev'] = true;
-            }
-            return $this->runCommand($commands, $output, false);
-        } finally {
-            $this->execConfig('allow-plugins.symfony/flex', ['true']);
+        $cmd = sprintf(
+            'COMPOSER_HOME=%s %s %s/bin/console composer:remove %s 2>&1',
+            escapeshellarg($composerHome),
+            escapeshellarg(PHP_BINARY),
+            escapeshellarg($workingDir),
+            $packages
+        );
+
+        // Symfony の composer:remove コマンドは存在しないため, composer コマンドを直接実行する
+        $composerCmd = sprintf(
+            'COMPOSER_HOME=%s XDEBUG_MODE=off %s -d xdebug.mode=off %s/vendor/bin/composer remove %s --ignore-platform-reqs --no-interaction --profile --no-scripts --working-dir=%s --no-ansi 2>&1',
+            escapeshellarg($composerHome),
+            escapeshellarg(PHP_BINARY),
+            escapeshellarg($workingDir),
+            $packages,
+            escapeshellarg($workingDir)
+        );
+        if (env('APP_ENV') === 'prod') {
+            $composerCmd .= ' --no-dev';
         }
+
+        exec($composerCmd, $outputLines, $exitCode);
+        $log = implode("\n", $outputLines);
+
+        if ($exitCode !== 0) {
+            log_error($log);
+            throw new PluginException($log);
+        }
+
+        log_info($log);
+
+        return $log;
     }
 
     /**
