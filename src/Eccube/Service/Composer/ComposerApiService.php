@@ -479,8 +479,30 @@ class ComposerApiService implements ComposerServiceInterface
             $this->pluginContext->setCode($pluginCode);
             $this->pluginContext->setUninstall();
 
-            foreach ($this->pluginContext->getExtraEntityNamespaces() as $namespace) {
-                $this->schemaService->dropTable($namespace);
+            $namespaces = $this->pluginContext->getExtraEntityNamespaces();
+            if (!empty($namespaces)) {
+                // MySQL の DDL は暗黙的に COMMIT するため, DBAL 4.x の SAVEPOINT が壊れる.
+                // DDL 実行前にトランザクションを閉じておく.
+                $conn = $this->schemaService->getEntityManager()->getConnection();
+                $isMySql = $conn->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
+                $nestingLevel = 0;
+                if ($isMySql) {
+                    $nestingLevel = $conn->getTransactionNestingLevel();
+                    for ($i = 0; $i < $nestingLevel; $i++) {
+                        $conn->commit();
+                    }
+                }
+
+                foreach ($namespaces as $namespace) {
+                    $this->schemaService->dropTable($namespace);
+                }
+
+                // トランザクションを復元する
+                if ($isMySql) {
+                    for ($i = 0; $i < $nestingLevel; $i++) {
+                        $conn->beginTransaction();
+                    }
+                }
             }
         }
     }

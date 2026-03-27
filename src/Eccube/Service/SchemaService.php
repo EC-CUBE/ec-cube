@@ -56,11 +56,16 @@ class SchemaService
      * @param bool $saveMode UpdateSchema を即時実行する場合 true
      * @param string $outputDir Metadata の出力先ディレクトリ
      */
+    public function getEntityManager(): EntityManagerInterface
+    {
+        return $this->entityManager;
+    }
+
     public function executeCallback(callable $callback, $generatedFiles, $proxiesDirectory, $outputDir = null)
     {
         $createOutputDir = false;
         if (is_null($outputDir)) {
-            $outputDir = sys_get_temp_dir().'/metadata_'.StringUtil::random(12);
+            $outputDir = sys_get_temp_dir() . '/metadata_' . StringUtil::random(12);
             mkdir($outputDir);
             $createOutputDir = true;
         }
