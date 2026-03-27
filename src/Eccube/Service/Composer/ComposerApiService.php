@@ -146,42 +146,28 @@ class ComposerApiService implements ComposerServiceInterface
 
         $packageName = explode(' ', trim($packageName));
 
-        // Composer をインプロセスで実行すると Xdebug や Symfony event system の
-        // 干渉で 30秒以上かかる場合がある. サブプロセスで実行して高速化する.
-        // PHP_BINARY に -n (no php.ini extensions) は使えない (PDO 等が必要なため),
-        // XDEBUG_MODE=off を環境変数で渡す.
-        $workingDir = $this->workingDir ?: $this->eccubeConfig['kernel.project_dir'];
-        $composerHome = $this->eccubeConfig['plugin_realdir'].'/.composer';
-        $packages = implode(' ', $packageName);
+        // EC-CUBE の PluginInstaller は $GLOBALS['kernel'] を参照するため,
+        // サブプロセスではなくインプロセスで実行する必要がある.
+        // init() のリポジトリ設定は remove には不要なので省略し高速化する.
+        set_time_limit(0);
+        $composerMemory = $this->eccubeConfig['eccube_composer_memory_limit'];
+        ini_set('memory_limit', $composerMemory);
+        putenv('COMPOSER_HOME='.$this->eccubeConfig['plugin_realdir'].'/.composer');
+        $this->initConsole();
+        $this->workingDir = $this->workingDir ?: $this->eccubeConfig['kernel.project_dir'];
 
-        // composer バイナリの検出: composer (PATH) → vendor/bin/composer
-        $composerBin = trim(shell_exec('which composer 2>/dev/null') ?: '');
-        if (!$composerBin || !is_executable($composerBin)) {
-            $composerBin = $workingDir.'/vendor/bin/composer';
-        }
-
-        $composerCmd = sprintf(
-            'COMPOSER_HOME=%s XDEBUG_MODE=off %s remove %s --ignore-platform-reqs --no-interaction --no-scripts --working-dir=%s --no-ansi 2>&1',
-            escapeshellarg($composerHome),
-            escapeshellarg($composerBin),
-            $packages,
-            escapeshellarg($workingDir)
-        );
+        $commands = [
+            'command' => 'remove',
+            'packages' => $packageName,
+            '--ignore-platform-reqs' => true,
+            '--no-interaction' => true,
+            '--profile' => true,
+            '--no-scripts' => true,
+        ];
         if (env('APP_ENV') === 'prod') {
-            $composerCmd .= ' --no-dev';
+            $commands['--no-dev'] = true;
         }
-
-        exec($composerCmd, $outputLines, $exitCode);
-        $log = implode("\n", $outputLines);
-
-        if ($exitCode !== 0) {
-            log_error($log);
-            throw new PluginException($log);
-        }
-
-        log_info($log);
-
-        return $log;
+        return $this->runCommand($commands, $output, false);
     }
 
     /**
