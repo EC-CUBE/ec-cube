@@ -167,6 +167,7 @@ final class TaxRuleRepositoryTest extends EccubeTestCase
         $oneDayBefore = new \DateTime('-1 days');
 
         $this->TaxRule2->setApplyDate($oneDayBefore);
+        $this->assertInstanceOf(Pref::class, $Pref);
         $this->TaxRule3
             ->setApplyDate($oneDayBefore)
             ->setPref($Pref);
@@ -184,6 +185,7 @@ final class TaxRuleRepositoryTest extends EccubeTestCase
     {
         $Country = $this->countryRepository->find(300);
         $oneDayBefore = new \DateTime('-1 days');
+        $this->assertInstanceOf(Country::class, $Country);
 
         $this->TaxRule2->setApplyDate($oneDayBefore)->setCountry($Country);
         $this->TaxRule3->setApplyDate($oneDayBefore);
@@ -245,6 +247,7 @@ final class TaxRuleRepositoryTest extends EccubeTestCase
         $oneDayBefore = new \DateTime('-1 days');
 
         $Country = $this->countryRepository->find(300);
+        $this->assertInstanceOf(Country::class, $Country);
 
         // 国別設定
         $this->TaxRule2->setApplyDate($oneDayBefore)->setCountry($Country);

@@ -166,6 +166,7 @@ final class StockDiffProcessorTest extends EccubeTestCase
         // 編集前の受注
         $BeforeOrder = new Order();
         $BeforeOrderStatus = $this->OrderStatusRepository->find($beforeOrderStatus);
+        $this->assertInstanceOf(OrderStatus::class, $BeforeOrderStatus);
         $BeforeOrder->setOrderStatus($BeforeOrderStatus);
         $BeforeOrder->setCustomer($Customer);
         $ProductClass->setStock((string) $beforeStock);
@@ -176,6 +177,7 @@ final class StockDiffProcessorTest extends EccubeTestCase
         // 編集後の受注
         $AfterOrder = new Order();
         $AfterOrderStatus = $this->OrderStatusRepository->find($afterOrderStatus);
+        $this->assertInstanceOf(OrderStatus::class, $AfterOrderStatus);
         $AfterOrder->setOrderStatus($AfterOrderStatus);
         $AfterOrder->setCustomer($Customer);
         $ProductClass->setStock((string) $beforeStock);

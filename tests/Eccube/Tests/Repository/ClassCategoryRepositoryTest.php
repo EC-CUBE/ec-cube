@@ -129,6 +129,7 @@ final class ClassCategoryRepositoryTest extends EccubeTestCase
         );
 
         $ClassCategory = new ClassCategory();
+        $this->assertInstanceOf(ClassName::class, $ClassName);
         $ClassCategory
             ->setName($faker->name)
             ->setClassName($ClassName);

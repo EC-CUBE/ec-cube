@@ -36,7 +36,13 @@ use Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRecto
 use Rector\PHPUnit\AnnotationsToAttributes\Rector\Class_\AnnotationWithValueToAttributeRector;
 use Rector\PHPUnit\AnnotationsToAttributes\Rector\Class_\RequiresAnnotationWithValueToAttributeRector;
 use Rector\PHPUnit\CodeQuality\Rector\MethodCall\AssertEqualsToSameRector;
+use Rector\PHPUnit\CodeQuality\Rector\ClassMethod\AddInstanceofAssertForNullableArgumentRector;
+use Rector\PHPUnit\CodeQuality\Rector\Class_\InlineStubPropertyToCreateStubMethodCallRector;
+use Rector\Symfony\CodeQuality\Rector\Class_\ControllerMethodInjectionToConstructorRector;
 use Rector\PHPUnit\PHPUnit100\Rector\Class_\StaticDataProviderClassMethodRector;
+use Rector\PHPUnit\PHPUnit120\Rector\Class_\PropertyCreateMockToCreateStubRector;
+use Rector\PHPUnit\PHPUnit120\Rector\CallLike\CreateStubOverCreateMockArgRector;
+
 use Rector\PHPUnit\Set\PHPUnitSetList;
 use Rector\Renaming\Rector\MethodCall\RenameMethodRector;
 use Rector\Set\ValueObject\LevelSetList;
@@ -66,10 +72,12 @@ return RectorConfig::configure()
                // 特定のファイルやディレクトリを除外する場合
                __DIR__ . '/src/Eccube/Rector',
                // 特定のルールを除外する場合
-               // Rector\CodeQuality\Rector\Class_\InlineConstructorDefaultToPropertyRector::class,
+               // AbstractController::$entityManager と再宣言衝突するため（InstallController 等）
+               ControllerMethodInjectionToConstructorRector::class,
                // 8.3以上で対応可能
                AddTypeToConstRector::class, // [BC]定数に型を追加する PHP 8.3 以降で有効
                RenameMethodRector::class, //addがaddCommandに変換されてしまうため一旦スキップ
+               
            ])
            // 個別にルールを追加する場合はここに記述
            ->withRules([

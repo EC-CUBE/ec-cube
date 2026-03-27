@@ -36,8 +36,6 @@ final class InstallControllerTest extends AbstractWebTestCase
 {
     protected ?InstallController $controller = null;
 
-    protected ?Request $request = null;
-
     protected ?string $envFile = null;
 
     protected ?string $envFileBackup = null;
@@ -70,7 +68,6 @@ final class InstallControllerTest extends AbstractWebTestCase
         $reflectionClass = new \ReflectionClass($this->controller);
         $propContainer = $reflectionClass->getProperty('container');
         $propContainer->setValue($this->controller, self::getContainer());
-        $this->request = $this->createMock(Request::class);
     }
 
     protected function tearDown(): void
@@ -88,7 +85,7 @@ final class InstallControllerTest extends AbstractWebTestCase
 
     public function testStep1()
     {
-        $this->actual = $this->controller->step1($this->request);
+        $this->actual = $this->controller->step1($this->createStub(Request::class));
         $this->assertTrue(is_array($this->actual));
         $this->assertInstanceOf(FormView::class, $this->actual['form']);
     }
@@ -105,7 +102,7 @@ final class InstallControllerTest extends AbstractWebTestCase
     public function testStep3()
     {
         $entityManager = static::getContainer()->get(EntityManagerInterface::class);
-        $this->actual = $this->controller->step3($this->request, $entityManager);
+        $this->actual = $this->controller->step3($this->createStub(Request::class), $entityManager);
         $this->assertTrue(is_array($this->actual));
         $this->assertInstanceOf(FormView::class, $this->actual['form']);
         $this->assertInstanceOf(Request::class, $this->actual['request']);
@@ -113,7 +110,7 @@ final class InstallControllerTest extends AbstractWebTestCase
 
     public function testStep4()
     {
-        $this->actual = $this->controller->step4($this->request);
+        $this->actual = $this->controller->step4($this->createStub(Request::class));
         $this->assertTrue(is_array($this->actual));
         $this->assertInstanceOf(FormView::class, $this->actual['form']);
     }
@@ -125,7 +122,7 @@ final class InstallControllerTest extends AbstractWebTestCase
                 'authmagic' => 'secret',
                 'admin_allow_hosts' => "127.0.0.1\r\n192.168.0.1",
             ]);
-        $this->actual = $this->controller->complete($this->request);
+        $this->actual = $this->controller->complete($this->createStub(Request::class));
         $this->assertArrayHasKey('admin_url', $this->actual);
     }
 

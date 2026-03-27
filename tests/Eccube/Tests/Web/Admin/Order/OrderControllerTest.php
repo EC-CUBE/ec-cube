@@ -263,6 +263,7 @@ final class OrderControllerTest extends AbstractAdminWebTestCase
         // 受注件数を11件にしておく
         $Order = $this->createOrder($this->createCustomer('dummy-user@example.com'));
         $OrderStatus = $this->orderStatusRepository->find(OrderStatus::NEW);
+        $this->assertInstanceOf(OrderStatus::class, $OrderStatus);
         $Order->setOrderStatus($OrderStatus);
         $this->entityManager->flush();
 
@@ -541,6 +542,7 @@ final class OrderControllerTest extends AbstractAdminWebTestCase
         // 対応中の受注を追加しておく
         $Order = $this->createOrder($this->createCustomer('dummy-user@example.com'));
         $OrderStatus = $this->orderStatusRepository->find(OrderStatus::IN_PROGRESS);
+        $this->assertInstanceOf(OrderStatus::class, $OrderStatus);
         $Order->setOrderStatus($OrderStatus);
         $this->entityManager->flush();
 

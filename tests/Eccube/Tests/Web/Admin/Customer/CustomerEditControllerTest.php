@@ -157,6 +157,7 @@ final class CustomerEditControllerTest extends AbstractAdminWebTestCase
         // add Order pendding status for this customer
         $Order = $this->createOrder($this->Customer);
         $OrderStatus = $this->entityManager->getRepository(OrderStatus::class)->find(OrderStatus::PAID);
+        $this->assertInstanceOf(OrderStatus::class, $OrderStatus);
         $Order->setOrderStatus($OrderStatus);
         $this->Customer->addOrder($Order);
         $this->entityManager->persist($this->Customer);
@@ -206,6 +207,7 @@ final class CustomerEditControllerTest extends AbstractAdminWebTestCase
         // add Order paid status for this customer
         $Order = $this->createOrder($this->Customer);
         $OrderStatus = $this->entityManager->getRepository(OrderStatus::class)->find(OrderStatus::PAID);
+        $this->assertInstanceOf(OrderStatus::class, $OrderStatus);
         $Order->setOrderStatus($OrderStatus);
         $this->Customer->addOrder($Order);
         $this->entityManager->persist($this->Customer);

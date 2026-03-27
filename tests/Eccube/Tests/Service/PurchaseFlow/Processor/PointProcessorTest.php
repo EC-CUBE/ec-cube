@@ -284,6 +284,8 @@ final class PointProcessorTest extends EccubeTestCase
             ->find(TaxType::class, TaxType::TAXATION);
         $OrderItem = new OrderItem();
         $this->assertInstanceOf(OrderItemType::class, $DeliveryFeeType);
+        $this->assertInstanceOf(TaxDisplayType::class, $TaxInclude);
+        $this->assertInstanceOf(TaxType::class, $Taxation);
         $OrderItem->setProductName($DeliveryFeeType->getName())
             ->setPrice((string) $deliveryFee)
             ->setQuantity(1)

@@ -1094,6 +1094,7 @@ final class CartValidationTest extends AbstractWebTestCase
         $SaleType = $this->entityManager->getRepository(SaleType::class)->find(2);
         $ProductClass = $this->entityManager->find(ProductClass::class, $ProductClass->getId());
         $this->assertInstanceOf(ProductClass::class, $ProductClass);
+        $this->assertInstanceOf(SaleType::class, $SaleType);
         $ProductClass->setSaleType($SaleType);
         $this->entityManager->persist($ProductClass);
         $this->entityManager->flush();

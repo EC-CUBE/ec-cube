@@ -64,6 +64,7 @@ final class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTe
         $this->Order2 = $this->createOrder($this->createCustomer('test@example.com'));
         // 新規受付にしておく
         $NewStatus = $this->orderStatusRepo->find(OrderStatus::NEW);
+        $this->assertInstanceOf(OrderStatus::class, $NewStatus);
         $this->Order1
             ->setOrderStatus($NewStatus)
             ->setOrderDate(new \DateTime());

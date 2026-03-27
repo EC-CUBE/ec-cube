@@ -124,6 +124,7 @@ final class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends Abstra
         $Product = $this->productRepository->findOneBy(['name' => '商品-1']);
         $ProductStatus = $this->productStatusRepository->find(ProductStatus::DISPLAY_HIDE);
         $this->assertInstanceOf(Product::class, $Product);
+        $this->assertInstanceOf(ProductStatus::class, $ProductStatus);
         $Product->setStatus($ProductStatus);
         $this->entityManager->flush();
 
@@ -143,6 +144,7 @@ final class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends Abstra
         $Product = $this->productRepository->findOneBy(['name' => '商品-1']);
         $ProductStatus = $this->productStatusRepository->find(ProductStatus::DISPLAY_HIDE);
         $this->assertInstanceOf(Product::class, $Product);
+        $this->assertInstanceOf(ProductStatus::class, $ProductStatus);
         $Product->setStatus($ProductStatus);
         $this->entityManager->flush();
 

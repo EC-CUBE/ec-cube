@@ -131,6 +131,7 @@ final class LayoutControllerTest extends AbstractAdminWebTestCase
 
         $Layout = new Layout();
         $Layout->setName('Layout for unit test');
+        $this->assertInstanceOf(DeviceType::class, $PcDeviceType);
         $Layout->setDeviceType($PcDeviceType);
         $this->layoutRepository->save($Layout);
 
@@ -149,6 +150,7 @@ final class LayoutControllerTest extends AbstractAdminWebTestCase
         $PcDeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_PC);
         $Layout = new Layout();
         $Layout->setName('Layout for unit test');
+        $this->assertInstanceOf(DeviceType::class, $PcDeviceType);
         $Layout->setDeviceType($PcDeviceType);
         $this->layoutRepository->save($Layout);
         $this->entityManager->flush();
@@ -172,6 +174,7 @@ final class LayoutControllerTest extends AbstractAdminWebTestCase
 
         $Layout = new Layout();
         $Layout->setName('Layout for unit test');
+        $this->assertInstanceOf(DeviceType::class, $PcDeviceType);
         $Layout->setDeviceType($PcDeviceType);
         $this->layoutRepository->save($Layout);
         $this->entityManager->flush();

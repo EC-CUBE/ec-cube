@@ -213,6 +213,7 @@ final class EntryControllerTest extends AbstractWebTestCase
         $Customer = $this->createCustomer();
         $secret_key = $Customer->getSecretKey();
         $Status = $this->entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::NONACTIVE);
+        $this->assertInstanceOf(CustomerStatus::class, $Status);
         $Customer->setStatus($Status);
         $this->entityManager->flush();
 
@@ -235,6 +236,7 @@ final class EntryControllerTest extends AbstractWebTestCase
         $Customer->setName01('<Sanitize&>');
         $secret_key = $Customer->getSecretKey();
         $Status = $this->entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::NONACTIVE);
+        $this->assertInstanceOf(CustomerStatus::class, $Status);
         $Customer->setStatus($Status);
         $this->entityManager->flush();
 

@@ -555,6 +555,7 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
         $testProduct = $this->createProduct('Product with status 01', 0);
         $this->createProduct('Product with status 02', 1);
         $display = $this->productStatusRepository->find(ProductStatus::DISPLAY_HIDE);
+        $this->assertInstanceOf(ProductStatus::class, $display);
         $testProduct->setStatus($display);
         $this->entityManager->flush();
 
@@ -596,6 +597,7 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
         $this->createProduct('Product with status 01', 0);
         $testProduct02 = $this->createProduct('Product with status 02', 1);
         $display = $this->productStatusRepository->find(ProductStatus::DISPLAY_HIDE);
+        $this->assertInstanceOf(ProductStatus::class, $display);
         $testProduct02->setStatus($display);
         $this->entityManager->flush();
 
@@ -639,6 +641,7 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
         $this->createProduct('Product with status 01', 0);
         $testProduct02 = $this->createProduct('Product with status 02', 1);
         $display = $this->productStatusRepository->find(ProductStatus::DISPLAY_HIDE);
+        $this->assertInstanceOf(ProductStatus::class, $display);
         $testProduct02->setStatus($display);
         $this->entityManager->flush();
 
