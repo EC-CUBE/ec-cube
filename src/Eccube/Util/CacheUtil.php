@@ -77,30 +77,18 @@ class CacheUtil implements EventSubscriberInterface
         $projectDir = $this->kernel->getProjectDir();
         $env = $this->clearCacheAfterResponse ?: $this->kernel->getEnvironment();
         $php = PHP_BINARY;
+        // バックグラウンドで実行し, PHP ビルトインサーバをブロックしない.
+        // PHP ビルトインサーバはシングルスレッドのため, exec() でブロックすると
+        // 次のリクエスト (ページ遷移) を処理できずテストがタイムアウトする.
+        $logFile = $projectDir.'/var/log/cache_clear.log';
         $cmd = sprintf(
-            '%s %s/bin/console cache:clear --no-warmup --no-ansi --env=%s 2>&1',
+            '%s %s/bin/console cache:clear --no-warmup --no-ansi --env=%s > %s 2>&1 &',
             escapeshellarg($php),
             escapeshellarg($projectDir),
-            escapeshellarg($env)
+            escapeshellarg($env),
+            escapeshellarg($logFile)
         );
-        exec($cmd, $outputLines, $exitCode);
-        if ($exitCode !== 0) {
-            log_error('cache:clear failed (exit='.$exitCode.'): '.implode("\n", array_slice($outputLines, -5)));
-        }
-
-        // composer require でパッケージが追加された場合, メインプロセスのオートローダーが
-        // 古いままなので, 新しいクラスマップと PSR-4 マッピングを読み込み直す.
-        $autoloadClassmap = $projectDir.'/vendor/composer/autoload_classmap.php';
-        $autoloadPsr4 = $projectDir.'/vendor/composer/autoload_psr4.php';
-        if (file_exists($autoloadClassmap) && file_exists($autoloadPsr4)) {
-            $classLoader = require $projectDir.'/vendor/autoload.php';
-            if ($classLoader instanceof \Composer\Autoload\ClassLoader) {
-                $classLoader->addClassMap(require $autoloadClassmap);
-                foreach (require $autoloadPsr4 as $prefix => $paths) {
-                    $classLoader->setPsr4($prefix, $paths);
-                }
-            }
-        }
+        exec($cmd);
 
         if (function_exists('opcache_reset')) {
             opcache_reset();
@@ -115,7 +103,7 @@ class CacheUtil implements EventSubscriberInterface
             wincache_ucache_clear();
         }
 
-        return implode("\n", $outputLines);
+        return null;
     }
 
     /**
