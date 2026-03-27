@@ -503,12 +503,12 @@ class ComposerApiService implements ComposerServiceInterface
                 $conn = $this->schemaService->getEntityManager()->getConnection();
                 $isMySql = $conn->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
                 if ($isMySql) {
-                    while ($conn->getTransactionNestingLevel() > 0) {
-                        try {
-                            $conn->commit();
-                        } catch (\Exception $e) {
-                            break;
-                        }
+                    // DBAL 4.x の autoCommit=false では commit() 後に自動で beginTransaction() が
+                    // 呼ばれるため, while (nestingLevel > 0) は無限ループになる.
+                    // 固定回数で commit する (PluginService::executeDdlWithMySqlWorkaround と同じ方式).
+                    $nestingLevel = $conn->getTransactionNestingLevel();
+                    for ($i = 0; $i < $nestingLevel; $i++) {
+                        $conn->commit();
                     }
                 }
 
@@ -516,12 +516,9 @@ class ComposerApiService implements ComposerServiceInterface
                     $this->schemaService->dropTable($namespace);
                 }
 
-                // DDL 後は MySQL のトランザクションが破壊されている.
-                // DBAL のネストレベルをリセットし, 新しいトランザクションを開始する.
-                if ($isMySql) {
-                    if (!$conn->getNativeConnection()->inTransaction()) {
-                        $conn->beginTransaction();
-                    }
+                // DDL 後にトランザクション状態を安定させる
+                if ($isMySql && !$conn->getNativeConnection()->inTransaction()) {
+                    $conn->beginTransaction();
                 }
             }
         }
