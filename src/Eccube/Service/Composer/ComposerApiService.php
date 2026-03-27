@@ -148,24 +148,22 @@ class ComposerApiService implements ComposerServiceInterface
 
         // Composer をインプロセスで実行すると Xdebug や Symfony event system の
         // 干渉で 30秒以上かかる場合がある. サブプロセスで実行して高速化する.
+        // PHP_BINARY に -n (no php.ini extensions) は使えない (PDO 等が必要なため),
+        // XDEBUG_MODE=off を環境変数で渡す.
         $workingDir = $this->workingDir ?: $this->eccubeConfig['kernel.project_dir'];
         $composerHome = $this->eccubeConfig['plugin_realdir'].'/.composer';
         $packages = implode(' ', $packageName);
 
-        $cmd = sprintf(
-            'COMPOSER_HOME=%s %s %s/bin/console composer:remove %s 2>&1',
-            escapeshellarg($composerHome),
-            escapeshellarg(PHP_BINARY),
-            escapeshellarg($workingDir),
-            $packages
-        );
+        // composer バイナリの検出: composer (PATH) → vendor/bin/composer
+        $composerBin = trim(shell_exec('which composer 2>/dev/null') ?: '');
+        if (!$composerBin || !is_executable($composerBin)) {
+            $composerBin = $workingDir.'/vendor/bin/composer';
+        }
 
-        // Symfony の composer:remove コマンドは存在しないため, composer コマンドを直接実行する
         $composerCmd = sprintf(
-            'COMPOSER_HOME=%s XDEBUG_MODE=off %s -d xdebug.mode=off %s/vendor/bin/composer remove %s --ignore-platform-reqs --no-interaction --profile --no-scripts --working-dir=%s --no-ansi 2>&1',
+            'COMPOSER_HOME=%s XDEBUG_MODE=off %s remove %s --ignore-platform-reqs --no-interaction --no-scripts --working-dir=%s --no-ansi 2>&1',
             escapeshellarg($composerHome),
-            escapeshellarg(PHP_BINARY),
-            escapeshellarg($workingDir),
+            escapeshellarg($composerBin),
             $packages,
             escapeshellarg($workingDir)
         );
