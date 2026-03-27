@@ -680,25 +680,24 @@ class PluginService
         $this->unregisterPlugin($plugin);
 
         try {
-            if ($this->pluginContext->shouldSkipSchemaUpdate()) {
-                // dropTableToExtra() で extra entity テーブルは処理済み.
-                // 重い generateProxyAndUpdateSchema をスキップし, Plugin entity テーブルのみ削除する.
-                $conn = $this->entityManager->getConnection();
-                $this->executeDdlWithMySqlWorkaround($conn, function () use ($plugin) {
-                    $namespace = 'Plugin\\' . $plugin->getCode() . '\\Entity';
-                    $this->schemaService->dropTable($namespace);
-                });
-            } else {
-                // スキーマを更新する (DDL を含むので MySQL ワークアラウンドを適用)
-                $conn = $this->entityManager->getConnection();
-                $this->executeDdlWithMySqlWorkaround($conn, function () use ($plugin, $config) {
+            // スキーマを更新する (DDL を含むので MySQL ワークアラウンドを適用)
+            $conn = $this->entityManager->getConnection();
+            $this->executeDdlWithMySqlWorkaround($conn, function () use ($plugin, $config) {
+                if ($this->pluginContext->shouldSkipSchemaUpdate()) {
+                    // Web UI からの削除時: Proxy 再生成のみ行い, 重い updateSchema はスキップ.
+                    // extra entity テーブルは dropTableToExtra() で処理済み.
+                    // スキーマ差分は次回の cache warmup やスキーマ更新で解消される.
+                    $this->generateProxyAndCallback(function ($generatedFiles, $proxiesDirectory) {
+                        // updateSchema をスキップ
+                    }, $plugin, $config, true);
+                } else {
                     $this->generateProxyAndUpdateSchema($plugin, $config, true);
+                }
 
-                    // プラグインのネームスペースに含まれるEntityのテーブルを削除する
-                    $namespace = 'Plugin\\' . $plugin->getCode() . '\\Entity';
-                    $this->schemaService->dropTable($namespace);
-                });
-            }
+                // プラグインのネームスペースに含まれるEntityのテーブルを削除する
+                $namespace = 'Plugin\\' . $plugin->getCode() . '\\Entity';
+                $this->schemaService->dropTable($namespace);
+            });
         } catch (PersistenceMappingException $e) {
         } catch (ORMMappingException $e) {
             // XXX 削除された Bundle が MappingException をスローする場合があるが実害は無いので無視して進める
