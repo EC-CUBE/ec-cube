@@ -481,12 +481,12 @@ class ComposerApiService implements ComposerServiceInterface
 
             $this->pluginContext->setCode($pluginCode);
             $this->pluginContext->setUninstall();
-            // PluginInstaller 経由の pluginService->uninstall() で重い updateSchema をスキップさせる.
-            // extra entity テーブルはここで処理し, Plugin\{Code}\Entity テーブルは dropTable で処理される.
-            $this->pluginContext->setSkipSchemaUpdate(true);
 
             $namespaces = $this->pluginContext->getExtraEntityNamespaces();
             if (!empty($namespaces)) {
+                // extra entity テーブルをここで処理するため, PluginInstaller 経由の
+                // pluginService->uninstall() では重い updateSchema をスキップさせる.
+                $this->pluginContext->setSkipSchemaUpdate(true);
                 // MySQL の DDL は暗黙的に COMMIT するため, DBAL 4.x の SAVEPOINT が壊れる.
                 // DDL 実行前に全トランザクションを閉じ, DDL 後にトランザクション状態をリセットする.
                 $conn = $this->schemaService->getEntityManager()->getConnection();
