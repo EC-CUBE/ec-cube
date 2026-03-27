@@ -127,7 +127,7 @@ final class ShoppingControllerWithNonmemberTest extends AbstractShoppingControll
 
         try {
             $this->scenarioCartIn();
-            $this->client->request('GET', $this->generateUrl('shopping_nonmember'));
+            $this->client->request(Request::METHOD_GET, $this->generateUrl('shopping_nonmember'));
 
             $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_login')));
         } finally {

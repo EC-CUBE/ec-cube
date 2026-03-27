@@ -14,6 +14,7 @@
 namespace Eccube\Util;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Random\RandomException;
 
 class StringUtil
 {
@@ -48,7 +49,7 @@ class StringUtil
     {
         try {
             $bytes = random_bytes($length * 2);
-        } catch (\Random\RandomException) {
+        } catch (RandomException) {
             return static::quickRandom($length);
         }
 

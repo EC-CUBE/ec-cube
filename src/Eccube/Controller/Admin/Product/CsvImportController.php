@@ -1126,7 +1126,7 @@ class CsvImportController extends AbstractCsvImportController
             }
 
             // 画像の登録
-            $images = explode(',', (string) $row[$headerByKey['product_image']]);
+            $images = explode(',', $row[$headerByKey['product_image']]);
 
             $sortNo = 1;
 
@@ -1177,7 +1177,7 @@ class CsvImportController extends AbstractCsvImportController
 
         if (StringUtil::isNotBlank($row[$headerByKey['product_category']])) {
             // カテゴリの登録
-            $categories = explode(',', (string) $row[$headerByKey['product_category']]);
+            $categories = explode(',', $row[$headerByKey['product_category']]);
             $sortNo = 1;
             $categoriesIdList = [];
             foreach ($categories as $category) {
@@ -1243,7 +1243,7 @@ class CsvImportController extends AbstractCsvImportController
 
         if (StringUtil::isNotBlank($row[$headerByKey['product_tag']])) {
             // タグの登録
-            $tags = explode(',', (string) $row[$headerByKey['product_tag']]);
+            $tags = explode(',', $row[$headerByKey['product_tag']]);
             foreach ($tags as $tag_id) {
                 $Tag = null;
                 if (preg_match('/^\d+$/', $tag_id)) {

@@ -17,14 +17,6 @@ class ProductCsvUploadPage extends AbstractAdminPageStyleGuide
 {
     public static $完了メッセージ = '#importCsvModal > div > div > div.modal-body.text-start > p';
 
-    /**
-     * ProductCsvUploadPage constructor.
-     */
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     public static function go($I)
     {
         $page = new ProductCsvUploadPage($I);

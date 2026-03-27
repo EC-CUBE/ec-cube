@@ -183,7 +183,7 @@ class AcceptanceTester extends Actor
         $downloadDir = __DIR__.'/_downloads/';
         $files = scandir($downloadDir);
         $files = array_map(fn ($fileName) => $downloadDir.$fileName, $files);
-        $files = array_filter($files, fn ($f) => is_file($f) && preg_match($fileNameRegex, basename($f)));
+        $files = array_filter($files, fn ($f) => is_file($f) && preg_match($fileNameRegex, basename((string) $f)));
         usort($files, fn ($l, $r) => filemtime($l) - filemtime($r));
 
         if (empty($files)) {
