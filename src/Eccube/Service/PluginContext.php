@@ -28,6 +28,12 @@ class PluginContext
     private $composerJson;
 
     /**
+     * updateSchema をスキップするフラグ.
+     * dropTableToExtra() で既に extra entity テーブルを処理済みの場合に true.
+     */
+    private $skipSchemaUpdate = false;
+
+    /**
      * @var EccubeConfig
      */
     private $eccubeConfig;
@@ -91,5 +97,15 @@ class PluginContext
         }
 
         return [];
+    }
+
+    public function setSkipSchemaUpdate(bool $skip): void
+    {
+        $this->skipSchemaUpdate = $skip;
+    }
+
+    public function shouldSkipSchemaUpdate(): bool
+    {
+        return $this->skipSchemaUpdate;
     }
 }

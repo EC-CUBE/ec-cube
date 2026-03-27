@@ -241,7 +241,7 @@ class PluginService
                 $names = array_map(function ($p) {
                     return $p['name'];
                 }, $notInstalledOrDisabled);
-                throw new PluginException(implode(', ', $names).'を有効化してください。');
+                throw new PluginException(implode(', ', $names) . 'を有効化してください。');
             }
         }
 
@@ -388,15 +388,15 @@ class PluginService
     public function generateProxyAndCallback(callable $callback, Plugin $plugin, $config, $uninstall = false, $tmpProxyOutputDir = null)
     {
         if ($plugin->isEnabled()) {
-            $generatedFiles = $this->regenerateProxy($plugin, false, $tmpProxyOutputDir ? $tmpProxyOutputDir : $this->projectRoot.'/app/proxy/entity');
+            $generatedFiles = $this->regenerateProxy($plugin, false, $tmpProxyOutputDir ? $tmpProxyOutputDir : $this->projectRoot . '/app/proxy/entity');
 
-            call_user_func($callback, $generatedFiles, $tmpProxyOutputDir ? $tmpProxyOutputDir : $this->projectRoot.'/app/proxy/entity');
+            call_user_func($callback, $generatedFiles, $tmpProxyOutputDir ? $tmpProxyOutputDir : $this->projectRoot . '/app/proxy/entity');
         } else {
             // Proxyのクラスをロードせずにスキーマを更新するために、
             // インストール時には一時的なディレクトリにProxyを生成する
             $createOutputDir = false;
             if (is_null($tmpProxyOutputDir)) {
-                $tmpProxyOutputDir = sys_get_temp_dir().'/proxy_'.StringUtil::random(12);
+                $tmpProxyOutputDir = sys_get_temp_dir() . '/proxy_' . StringUtil::random(12);
                 @mkdir($tmpProxyOutputDir);
                 $createOutputDir = true;
             }
@@ -404,12 +404,12 @@ class PluginService
             try {
                 if (!$uninstall) {
                     // プラグインmetadata定義を追加
-                    $entityDir = $this->eccubeConfig['plugin_realdir'].'/'.$plugin->getCode().'/Entity';
+                    $entityDir = $this->eccubeConfig['plugin_realdir'] . '/' . $plugin->getCode() . '/Entity';
                     if (file_exists($entityDir)) {
                         $ormConfig = $this->entityManager->getConfiguration();
                         $chain = $ormConfig->getMetadataDriverImpl()->getDriver();
                         $driver = new \Eccube\Doctrine\ORM\Mapping\Driver\HybridMappingDriver([$entityDir]);
-                        $namespace = 'Plugin\\'.$config['code'].'\\Entity';
+                        $namespace = 'Plugin\\' . $config['code'] . '\\Entity';
                         $chain->addDriver($driver, $namespace);
                     }
                 }
@@ -432,9 +432,9 @@ class PluginService
 
     public function createTempDir()
     {
-        $tempDir = $this->projectRoot.'/var/cache/'.$this->environment.'/Plugin';
+        $tempDir = $this->projectRoot . '/var/cache/' . $this->environment . '/Plugin';
         @mkdir($tempDir);
-        $d = ($tempDir.'/'.sha1(StringUtil::random(16)));
+        $d = ($tempDir . '/' . sha1(StringUtil::random(16)));
 
         if (!mkdir($d, 0777)) {
             throw new PluginException(trans('admin.store.plugin.mkdir.error', ['%dir_name%' => $d]));
@@ -540,7 +540,7 @@ class PluginService
      */
     public function readConfig($pluginDir)
     {
-        $composerJsonPath = $pluginDir.DIRECTORY_SEPARATOR.'composer.json';
+        $composerJsonPath = $pluginDir . DIRECTORY_SEPARATOR . 'composer.json';
         if (file_exists($composerJsonPath) === false) {
             throw new PluginException("{$composerJsonPath} not found.");
         }
@@ -594,7 +594,7 @@ class PluginService
 
     public function calcPluginDir($code)
     {
-        return $this->projectRoot.'/app/Plugin/'.$code;
+        return $this->projectRoot . '/app/Plugin/' . $code;
     }
 
     /**
@@ -646,7 +646,7 @@ class PluginService
      */
     public function callPluginManagerMethod($meta, $method)
     {
-        $class = '\\Plugin\\'.$meta['code'].'\\PluginManager';
+        $class = '\\Plugin\\' . $meta['code'] . '\\PluginManager';
         if (class_exists($class)) {
             $installer = new $class(); // マネージャクラスに所定のメソッドがある場合だけ実行する
             if (method_exists($installer, $method)) {
@@ -680,15 +680,25 @@ class PluginService
         $this->unregisterPlugin($plugin);
 
         try {
-            // スキーマを更新する (DDL を含むので MySQL ワークアラウンドを適用)
-            $conn = $this->entityManager->getConnection();
-            $this->executeDdlWithMySqlWorkaround($conn, function () use ($plugin, $config) {
-                $this->generateProxyAndUpdateSchema($plugin, $config, true);
+            if ($this->pluginContext->shouldSkipSchemaUpdate()) {
+                // dropTableToExtra() で extra entity テーブルは処理済み.
+                // 重い generateProxyAndUpdateSchema をスキップし, Plugin entity テーブルのみ削除する.
+                $conn = $this->entityManager->getConnection();
+                $this->executeDdlWithMySqlWorkaround($conn, function () use ($plugin) {
+                    $namespace = 'Plugin\\' . $plugin->getCode() . '\\Entity';
+                    $this->schemaService->dropTable($namespace);
+                });
+            } else {
+                // スキーマを更新する (DDL を含むので MySQL ワークアラウンドを適用)
+                $conn = $this->entityManager->getConnection();
+                $this->executeDdlWithMySqlWorkaround($conn, function () use ($plugin, $config) {
+                    $this->generateProxyAndUpdateSchema($plugin, $config, true);
 
-                // プラグインのネームスペースに含まれるEntityのテーブルを削除する
-                $namespace = 'Plugin\\'.$plugin->getCode().'\\Entity';
-                $this->schemaService->dropTable($namespace);
-            });
+                    // プラグインのネームスペースに含まれるEntityのテーブルを削除する
+                    $namespace = 'Plugin\\' . $plugin->getCode() . '\\Entity';
+                    $this->schemaService->dropTable($namespace);
+                });
+            }
         } catch (PersistenceMappingException $e) {
         } catch (ORMMappingException $e) {
             // XXX 削除された Bundle が MappingException をスローする場合があるが実害は無いので無視して進める
@@ -728,7 +738,7 @@ class PluginService
     private function regenerateProxy(Plugin $plugin, $temporary, $outputDir = null, $uninstall = false)
     {
         if (is_null($outputDir)) {
-            $outputDir = $this->projectRoot.'/app/proxy/entity';
+            $outputDir = $this->projectRoot . '/app/proxy/entity';
         }
         @mkdir($outputDir);
 
@@ -746,16 +756,16 @@ class PluginService
             $index = array_search($plugin->getCode(), $enabledPluginCodes);
             if ($index !== false && $index >= 0) {
                 array_splice($enabledPluginCodes, $index, 1);
-                $excludes = [$this->projectRoot.'/app/Plugin/'.$plugin->getCode().'/Entity'];
+                $excludes = [$this->projectRoot . '/app/Plugin/' . $plugin->getCode() . '/Entity'];
             }
         }
 
         $enabledPluginEntityDirs = array_map(function ($code) {
-            return $this->projectRoot."/app/Plugin/{$code}/Entity";
+            return $this->projectRoot . "/app/Plugin/{$code}/Entity";
         }, $enabledPluginCodes);
 
         return $this->entityProxyService->generate(
-            array_merge([$this->projectRoot.'/app/Customize/Entity'], $enabledPluginEntityDirs),
+            array_merge([$this->projectRoot . '/app/Customize/Entity'], $enabledPluginEntityDirs),
             $excludes,
             $outputDir
         );
@@ -865,7 +875,7 @@ class PluginService
                 // プラグインアップデート時はEntity定義が変更されている可能性がある.
                 // カーネルブート時にロードされたメタデータキャッシュをバイパスするため,
                 // Entityファイルをリロード対象に追加して一時クラス名で再読み込みする.
-                $entityDir = $this->eccubeConfig['plugin_realdir'].'/'.$plugin->getCode().'/Entity';
+                $entityDir = $this->eccubeConfig['plugin_realdir'] . '/' . $plugin->getCode() . '/Entity';
                 $additionalReloadFiles = [];
                 if (is_dir($entityDir)) {
                     $finder = Finder::create()->in($entityDir)->name('*.php')->files();
@@ -911,7 +921,7 @@ class PluginService
 
         $results = [];
 
-        $this->composerService->foreachRequires('ec-cube/'.strtolower($pluginCode), $pluginVersion, function ($package) use (&$results) {
+        $this->composerService->foreachRequires('ec-cube/' . strtolower($pluginCode), $pluginVersion, function ($package) use (&$results) {
             $results[] = $package;
         }, 'eccube-plugin');
 
@@ -952,8 +962,8 @@ class PluginService
         $plugins = $this->pluginRepository->matching($criteria);
         $dependents = [];
         foreach ($plugins as $plugin) {
-            $dir = $this->eccubeConfig['plugin_realdir'].'/'.$plugin->getCode();
-            $fileName = $dir.'/composer.json';
+            $dir = $this->eccubeConfig['plugin_realdir'] . '/' . $plugin->getCode();
+            $fileName = $dir . '/composer.json';
             if (!file_exists($fileName)) {
                 continue;
             }
@@ -964,8 +974,8 @@ class PluginService
                     continue;
                 }
                 if (
-                    array_key_exists(self::VENDOR_NAME.'/'.$pluginCode, $json['require']) // 前方互換用
-                    || array_key_exists(self::VENDOR_NAME.'/'.strtolower($pluginCode), $json['require'])
+                    array_key_exists(self::VENDOR_NAME . '/' . $pluginCode, $json['require']) // 前方互換用
+                    || array_key_exists(self::VENDOR_NAME . '/' . strtolower($pluginCode), $json['require'])
                 ) {
                     $dependents[] = $plugin->getCode();
                 }
@@ -991,7 +1001,7 @@ class PluginService
     public function getDependentByCode($pluginCode, $libraryType = null)
     {
         $pluginDir = $this->calcPluginDir($pluginCode);
-        $jsonFile = $pluginDir.'/composer.json';
+        $jsonFile = $pluginDir . '/composer.json';
         if (!file_exists($jsonFile)) {
             return [];
         }
@@ -1002,11 +1012,11 @@ class PluginService
             $require = $json['require'];
             switch ($libraryType) {
                 case self::ECCUBE_LIBRARY:
-                    $dependents = array_intersect_key($require, array_flip(preg_grep('/^'.self::VENDOR_NAME.'\//i', array_keys($require))));
+                    $dependents = array_intersect_key($require, array_flip(preg_grep('/^' . self::VENDOR_NAME . '\//i', array_keys($require))));
                     break;
 
                 case self::OTHER_LIBRARY:
-                    $dependents = array_intersect_key($require, array_flip(preg_grep('/^'.self::VENDOR_NAME.'\//i', array_keys($require), PREG_GREP_INVERT)));
+                    $dependents = array_intersect_key($require, array_flip(preg_grep('/^' . self::VENDOR_NAME . '\//i', array_keys($require), PREG_GREP_INVERT)));
                     break;
 
                 default:
@@ -1032,7 +1042,7 @@ class PluginService
         $result = array_keys($packages);
         if ($getVersion) {
             $result = array_map(function ($package, $version) {
-                return $package.':'.$version;
+                return $package . ':' . $version;
             }, array_keys($packages), array_values($packages));
         }
 
@@ -1049,12 +1059,12 @@ class PluginService
      */
     public function copyAssets($pluginCode)
     {
-        $assetsDir = $this->calcPluginDir($pluginCode).'/Resource/assets';
+        $assetsDir = $this->calcPluginDir($pluginCode) . '/Resource/assets';
 
         // プラグインにリソースファイルがあれば所定の位置へコピー
         if (file_exists($assetsDir)) {
             $file = new Filesystem();
-            $file->mirror($assetsDir, $this->eccubeConfig['plugin_html_realdir'].$pluginCode.'/assets');
+            $file->mirror($assetsDir, $this->eccubeConfig['plugin_html_realdir'] . $pluginCode . '/assets');
         }
     }
 
@@ -1065,7 +1075,7 @@ class PluginService
      */
     public function removeAssets($pluginCode)
     {
-        $assetsDir = $this->eccubeConfig['plugin_html_realdir'].$pluginCode;
+        $assetsDir = $this->eccubeConfig['plugin_html_realdir'] . $pluginCode;
 
         // コピーされているリソースファイルがあれば削除
         if (file_exists($assetsDir)) {
@@ -1084,8 +1094,8 @@ class PluginService
      */
     public function checkPluginExist($plugins, $pluginCode)
     {
-        if (strpos($pluginCode, self::VENDOR_NAME.'/') !== false) {
-            $pluginCode = str_replace(self::VENDOR_NAME.'/', '', $pluginCode);
+        if (strpos($pluginCode, self::VENDOR_NAME . '/') !== false) {
+            $pluginCode = str_replace(self::VENDOR_NAME . '/', '', $pluginCode);
         }
         // Find plugin in array
         $index = array_search($pluginCode, array_column($plugins, 'product_code')); // 前方互換用

@@ -156,27 +156,18 @@ class ComposerApiService implements ComposerServiceInterface
         $this->initConsole();
         $this->workingDir = $this->workingDir ?: $this->eccubeConfig['kernel.project_dir'];
 
-        // Symfony Flex を無効にして remove 時の recipe unconfigure を抑制し高速化する
-        $this->execConfig('allow-plugins.symfony/flex', ['false']);
-        // config 変更後に Composer インスタンスをリセットして新しい設定を反映する
-        $this->initConsole();
-
-        try {
-            $commands = [
-                'command' => 'remove',
-                'packages' => $packageName,
-                '--ignore-platform-reqs' => true,
-                '--no-interaction' => true,
-                '--profile' => true,
-                '--no-scripts' => true,
-            ];
-            if (env('APP_ENV') === 'prod') {
-                $commands['--no-dev'] = true;
-            }
-            return $this->runCommand($commands, $output, false);
-        } finally {
-            $this->execConfig('allow-plugins.symfony/flex', ['true']);
+        $commands = [
+            'command' => 'remove',
+            'packages' => $packageName,
+            '--ignore-platform-reqs' => true,
+            '--no-interaction' => true,
+            '--profile' => true,
+            '--no-scripts' => true,
+        ];
+        if (env('APP_ENV') === 'prod') {
+            $commands['--no-dev'] = true;
         }
+        return $this->runCommand($commands, $output, false);
     }
 
     /**
@@ -490,6 +481,9 @@ class ComposerApiService implements ComposerServiceInterface
 
             $this->pluginContext->setCode($pluginCode);
             $this->pluginContext->setUninstall();
+            // PluginInstaller 経由の pluginService->uninstall() で重い updateSchema をスキップさせる.
+            // extra entity テーブルはここで処理し, Plugin\{Code}\Entity テーブルは dropTable で処理される.
+            $this->pluginContext->setSkipSchemaUpdate(true);
 
             $namespaces = $this->pluginContext->getExtraEntityNamespaces();
             if (!empty($namespaces)) {
