@@ -54,22 +54,18 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->productRepository = $this->entityManager->getRepository(Product::class);
         $this->baseInfo = $this->entityManager->find(BaseInfo::class, 1);
         $this->taxRuleRepository = $this->entityManager->getRepository(TaxRule::class);
         $this->productStatusRepository = $this->entityManager->getRepository(ProductStatus::class);
         $this->productTagRepository = $this->entityManager->getRepository(ProductTag::class);
-
         // 検索時, IDの重複を防ぐため事前に10個生成しておく
         for ($i = 0; $i < 10; $i++) {
             $this->createProduct();
         }
-
         $this->imageDir = sys_get_temp_dir().'/'.sha1((string) mt_rand());
         $fs = new Filesystem();
         $fs->mkdir($this->imageDir);
@@ -78,7 +74,6 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function tearDown(): void
     {
         $fs = new Filesystem();

@@ -48,12 +48,10 @@ final class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTe
     protected ?SexRepository $sexRepo = null;
     protected ?PaymentRepository $paymentRepo = null;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
         $this->createProduct();
-
         $this->orderStatusRepo = $this->entityManager->getRepository(OrderStatus::class);
         $this->paymentRepo = $this->entityManager->getRepository(Payment::class);
         $this->orderRepo = $this->entityManager->getRepository(Order::class);
@@ -61,7 +59,6 @@ final class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTe
         $this->Customer = $this->createCustomer();
         $this->entityManager->persist($this->Customer);
         $this->entityManager->flush();
-
         $this->Order = $this->createOrder($this->Customer);
         $this->Order1 = $this->createOrder($this->Customer);
         $this->Order2 = $this->createOrder($this->createCustomer('test@example.com'));

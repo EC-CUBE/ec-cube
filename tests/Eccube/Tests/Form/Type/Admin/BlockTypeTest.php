@@ -35,11 +35,9 @@ final class BlockTypeTest extends AbstractTypeTestCase
         'id' => 1,
     ];
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         // CSRF tokenを無効にしてFormを作成
         // ブロック登録・編集
         $this->form = $this->formFactory

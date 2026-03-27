@@ -41,7 +41,6 @@ final class PointProcessorTest extends EccubeTestCase
 
     private ?BaseInfo $BaseInfo = null;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

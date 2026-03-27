@@ -22,13 +22,11 @@ use Symfony\Component\String\ByteString;
 
 final class TradeLawControllerTest extends AbstractAdminWebTestCase
 {
-    #[\Override]
     public function setUp(): void
     {
         parent::setUp();
     }
 
-    #[\Override]
     public function tearDown(): void
     {
         parent::tearDown();

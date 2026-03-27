@@ -19,7 +19,6 @@ use Eccube\Tests\Web\AbstractWebTestCase;
 
 abstract class AbstractAdminWebTestCase extends AbstractWebTestCase
 {
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

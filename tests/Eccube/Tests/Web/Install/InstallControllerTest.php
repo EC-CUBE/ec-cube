@@ -44,26 +44,21 @@ final class InstallControllerTest extends AbstractWebTestCase
 
     protected ?EccubeSession $session = null;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->envFile = static::getContainer()->getParameter('kernel.project_dir').'/.env';
         $this->envFileBackup = $this->envFile.'.'.date('YmdHis');
         if (file_exists($this->envFile)) {
             rename($this->envFile, $this->envFileBackup);
         }
-
         $favicon = static::getContainer()->getParameter('eccube_html_dir').'/user_data/assets/img/common/favicon.ico';
         if (file_exists($favicon)) {
             unlink($favicon);
         }
-
         $formFactory = static::getContainer()->get(FormFactoryInterface::class);
         $passwordHasher = static::getContainer()->get(UserPasswordHasherInterface::class);
         $cacheUtil = static::getContainer()->get(CacheUtil::class);
-
         $request = new Request();
         $request->setSession(new Session(new MockArraySessionStorage()));
         $requestStack = new RequestStack();
@@ -72,15 +67,12 @@ final class InstallControllerTest extends AbstractWebTestCase
         $this->controller = new InstallController($passwordHasher, $cacheUtil);
         $this->controller->setFormFactory($formFactory);
         $this->controller->setSession($this->session);
-
         $reflectionClass = new \ReflectionClass($this->controller);
         $propContainer = $reflectionClass->getProperty('container');
         $propContainer->setValue($this->controller, self::getContainer());
-
         $this->request = $this->createMock(Request::class);
     }
 
-    #[\Override]
     protected function tearDown(): void
     {
         if (file_exists($this->envFileBackup)) {

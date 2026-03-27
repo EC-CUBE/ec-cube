@@ -28,14 +28,11 @@ final class LogTypeTest extends AbstractTypeTestCase
 
     protected $logTest;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $fileName = '_test_site_'.date('YmdHis').'.log';
         $this->logTest = static::getContainer()->getParameter('kernel.logs_dir').'/test/'.$fileName;
-
         // Check and create the file to test if it does not exist
         if (!file_exists($this->logTest)) {
             $dir = dirname($this->logTest);
@@ -47,12 +44,10 @@ final class LogTypeTest extends AbstractTypeTestCase
             clearstatcache(true, $this->logTest);
             clearstatcache(true, $dir);
         }
-
         $this->formData = [
             'files' => $fileName,
             'line_max' => '50',
         ];
-
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
             ->createBuilder(LogType::class, null, [
@@ -61,12 +56,10 @@ final class LogTypeTest extends AbstractTypeTestCase
             ->getForm();
     }
 
-    #[\Override]
     protected function tearDown(): void
     {
         // Delete the previously created file
         @unlink($this->logTest);
-
         parent::tearDown();
     }
 

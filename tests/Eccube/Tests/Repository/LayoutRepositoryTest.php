@@ -32,14 +32,12 @@ final class LayoutRepositoryTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
         $this->layoutRepository = $this->entityManager->getRepository(Layout::class);
         $this->DeviceType = $this->entityManager->getRepository(DeviceType::class)
             ->find(DeviceType::DEVICE_TYPE_PC);
-
         $Layout = new Layout();
         $Layout
             ->setName('テスト用レイアウト')

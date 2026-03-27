@@ -50,7 +50,6 @@ final class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
      *
      * @throws \Doctrine\DBAL\Exception
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -65,7 +64,6 @@ final class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
             ->files();
         $f = new Filesystem();
         $f->remove($files);
-
         $this->pluginRepository = $this->entityManager->getRepository(Plugin::class);
         $this->pluginService = static::getContainer()->get(PluginService::class);
         $this->schemaService = static::getContainer()->get(SchemaService::class);

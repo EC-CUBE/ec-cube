@@ -38,11 +38,9 @@ final class AuthorityControllerTest extends AbstractAdminWebTestCase
 
     protected ?AuthorityRoleRepository $authorityRoleRepository = null;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->memberRepository = $this->entityManager->getRepository(Member::class);
         $this->authorityMasterRepository = $this->entityManager->getRepository(Authority::class);
         $this->authorityRoleRepository = $this->entityManager->getRepository(AuthorityRole::class);

@@ -42,14 +42,11 @@ final class TaxProcessorTest extends EccubeTestCase
 
     private ?TaxRuleRepository $taxRuleRepository = null;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->processor = static::getContainer()->get(TaxProcessor::class);
         $this->taxRuleRepository = $this->entityManager->getRepository(TaxRule::class);
-
         /** @var RoundingType $RoundingType */
         $RoundingType = $this->entityManager->find(RoundingType::class, RoundingType::ROUND);
         $this->TaxRule = new TaxRule();
@@ -57,17 +54,13 @@ final class TaxProcessorTest extends EccubeTestCase
             ->setApplyDate(new \DateTime('yesterday'))
             ->setRoundingType($RoundingType);
         $this->entityManager->persist($this->TaxRule);
-
         $Customer = $this->createCustomer();
         $this->Product = $this->createProduct('test', 1);
-
         $this->ProductClass = $this->Product->getProductClasses()[0];
         $this->ProductClass->setPrice02('1000');
         $this->entityManager->persist($this->ProductClass);
-
         $this->Order = $this->createOrderWithProductClasses($Customer, $this->Product->getProductClasses()->toArray());
         $this->Order->getProductOrderItems()[0]->setQuantity(1);
-
         $this->entityManager->flush();
     }
 

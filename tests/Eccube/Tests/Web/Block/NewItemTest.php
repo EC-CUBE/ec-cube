@@ -25,11 +25,9 @@ final class NewItemTest extends AbstractWebTestCase
      *
      * @throws \Doctrine\DBAL\DBALException
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         // レイアウト管理に自動取得の新着商品を追加
         $sql = "
             insert into dtb_block_position (
@@ -45,7 +43,6 @@ final class NewItemTest extends AbstractWebTestCase
                 3,
                 'blockposition'
             );";
-
         $this->entityManager->getConnection()->exec($sql);
     }
 

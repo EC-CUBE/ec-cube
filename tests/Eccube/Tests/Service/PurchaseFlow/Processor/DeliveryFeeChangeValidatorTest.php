@@ -30,13 +30,10 @@ final class DeliveryFeeChangeValidatorTest extends EccubeTestCase
 
     private ?Order $Order = null;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->validator = new DeliveryFeeChangeValidator();
-
         $this->Customer = $this->createCustomer();
         $this->Order = $this->createOrder($this->Customer);
     }

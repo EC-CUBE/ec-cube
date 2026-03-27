@@ -28,14 +28,12 @@ final class WithdrawControllerTest extends AbstractWebTestCase
 
     protected ?Customer $Customer = null;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
         $this->Customer = $this->createCustomer();
     }
 
-    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();

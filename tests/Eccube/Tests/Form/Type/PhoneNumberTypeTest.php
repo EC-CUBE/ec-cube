@@ -97,11 +97,9 @@ final class PhoneNumberTypeTest extends AbstractTypeTestCase
         ];
     }
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->form = $this->formFactory->createBuilder(FormType::class, null, ['csrf_protection' => false])
             ->add('phone_number', PhoneNumberType::class, [
                 'required' => false,

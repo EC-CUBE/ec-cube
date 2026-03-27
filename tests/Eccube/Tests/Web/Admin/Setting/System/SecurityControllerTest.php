@@ -26,24 +26,20 @@ final class SecurityControllerTest extends AbstractAdminWebTestCase
 
     protected $env;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->envFile = static::getContainer()->getParameter('kernel.project_dir').'/.env';
         if (file_exists($this->envFile)) {
             $this->env = file_get_contents($this->envFile);
         }
     }
 
-    #[\Override]
     protected function tearDown(): void
     {
         if ($this->env) {
             file_put_contents($this->envFile, $this->env);
         }
-
         parent::tearDown();
     }
 

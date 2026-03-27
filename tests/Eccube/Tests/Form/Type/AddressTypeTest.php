@@ -32,11 +32,9 @@ final class AddressTypeTest extends AbstractTypeTestCase
         ],
     ];
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->form = $this->formFactory
             ->createBuilder(FormType::class, null, ['csrf_protection' => false])
             ->add('address', AddressType::class)

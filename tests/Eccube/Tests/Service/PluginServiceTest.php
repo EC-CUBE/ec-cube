@@ -40,16 +40,13 @@ final class PluginServiceTest extends AbstractServiceTestCase
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->service = static::getContainer()->get(PluginService::class);
         $this->pluginRepository = $this->entityManager->getRepository(Plugin::class);
     }
 
-    #[\Override]
     protected function tearDown(): void
     {
         $dirs = [];
@@ -61,19 +58,15 @@ final class PluginServiceTest extends AbstractServiceTestCase
         foreach ($iterator as $dir) {
             $dirs[] = $dir->getPathName();
         }
-
         foreach ($dirs as $dir) {
             $this->deleteFile($dir);
         }
-
         $files = Finder::create()
             ->in(static::getContainer()->getParameter('kernel.project_dir').'/app/proxy/entity')
             ->files();
         $f = new Filesystem();
         $f->remove($files);
-
         $this->deleteAllRows(['dtb_plugin']);
-
         parent::tearDown();
     }
 

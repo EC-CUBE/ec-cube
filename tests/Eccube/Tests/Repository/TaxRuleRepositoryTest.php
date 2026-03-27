@@ -58,19 +58,15 @@ final class TaxRuleRepositoryTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         $this->DateTimeNow = new \DateTime('+1 minutes');
-
         parent::setUp();
-
         $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
         $this->taxRuleRepository = $this->entityManager->getRepository(TaxRule::class);
         $this->memberRepository = $this->entityManager->getRepository(Member::class);
         $this->prefRepository = $this->entityManager->getRepository(Pref::class);
         $this->countryRepository = $this->entityManager->getRepository(Country::class);
-
         $this->BaseInfo->setOptionProductTaxRule(false);
         $this->Product = $this->createProduct('生活必需品');
         // 2017-04-01とか指定すると, 2017年以降で結果が変わってしまうので1年後の日付を指定する

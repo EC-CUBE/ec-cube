@@ -37,7 +37,6 @@ final class CartValidationTest extends AbstractWebTestCase
     /**
      * setup mail
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -48,7 +47,6 @@ final class CartValidationTest extends AbstractWebTestCase
     /**
      * tear down
      */
-    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();

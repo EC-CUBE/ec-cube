@@ -31,19 +31,15 @@ final class CsvFixtureTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->jobRepository = $this->entityManager->getRepository(Job::class);
-
         $Jobs = $this->jobRepository->findAll();
         foreach ($Jobs as $Job) {
             $this->entityManager->remove($Job);
         }
         $this->entityManager->flush();
-
         $this->file = new \SplFileObject(
             __DIR__.'/../../../../../Fixtures/import_csv/mtb_job.csv'
         );

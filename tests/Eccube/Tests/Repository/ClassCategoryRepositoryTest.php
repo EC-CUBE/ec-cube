@@ -39,7 +39,6 @@ final class ClassCategoryRepositoryTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -47,7 +46,6 @@ final class ClassCategoryRepositoryTest extends EccubeTestCase
         $this->classCategoryRepository = $this->entityManager->getRepository(ClassCategory::class);
         $this->classNameRepository = $this->entityManager->getRepository(ClassName::class);
         $this->removeClass();
-
         for ($i = 0; $i < 3; $i++) {
             $ClassName = new ClassName();
             $ClassName

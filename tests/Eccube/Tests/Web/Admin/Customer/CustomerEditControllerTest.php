@@ -30,7 +30,6 @@ final class CustomerEditControllerTest extends AbstractAdminWebTestCase
     /**
      * setUp
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

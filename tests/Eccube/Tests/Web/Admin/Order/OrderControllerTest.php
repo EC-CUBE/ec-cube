@@ -52,23 +52,19 @@ final class OrderControllerTest extends AbstractAdminWebTestCase
 
     protected ?CustomerRepository $customerRepository = null;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->orderStatusRepository = $this->entityManager->getRepository(OrderStatus::class);
         $this->paymentRepository = $this->entityManager->getRepository(Payment::class);
         $this->sexRepository = $this->entityManager->getRepository(Sex::class);
         $this->csvTypeRepository = $this->entityManager->getRepository(CsvType::class);
         $this->orderRepository = $this->entityManager->getRepository(Order::class);
         $this->customerRepository = $this->entityManager->getRepository(Customer::class);
-
         // FIXME: Should remove exist data before generate data for test
         $this->deleteAllRows(['dtb_order_item']);
         $this->deleteAllRows(['dtb_shipping']);
         $this->deleteAllRows(['dtb_order']);
-
         $Sex = $this->sexRepository->find(1);
         $Payment = $this->paymentRepository->find(1);
         $OrderStatus = $this->orderStatusRepository->find(OrderStatus::NEW);
@@ -81,7 +77,6 @@ final class OrderControllerTest extends AbstractAdminWebTestCase
             $Order->setPayment($Payment);
             $this->entityManager->flush();
         }
-
         // sqlite では CsvType が生成されないので、ここで作る
         $OrderCsvType = $this->csvTypeRepository->find(3);
         if (!is_object($OrderCsvType)) {

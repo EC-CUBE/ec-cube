@@ -35,11 +35,9 @@ final class PaymentRepositoryTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->deliveryRepository = $this->entityManager->getRepository(Delivery::class);
         $this->paymentRepository = $this->entityManager->getRepository(Payment::class);
         $this->paymentOptionRepository = $this->entityManager->getRepository(PaymentOption::class);

@@ -39,19 +39,15 @@ final class PluginInstallTest extends AbstractServiceTestCase
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->service = static::getContainer()->get(PluginService::class);
         $this->pluginRepository = $this->entityManager->getRepository(Plugin::class);
-
         // MockサーバのURLを設定（環境変数から取得、デフォルトはlocalhost:8080）
         $this->mockServerUrl = $_ENV['ECCUBE_PACKAGE_API_URL'] ?? 'http://127.0.0.1:8080';
     }
 
-    #[\Override]
     protected function tearDown(): void
     {
         $this->cleanupTestPlugins();

@@ -39,13 +39,11 @@ final class BaseInfoRepositoryTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
         // ダミーデータを生成する Faker
         $faker = $this->getFaker();
-
         // テスト用のデータを生成する.
         $BaseInfo = new BaseInfo();
         $BaseInfo
@@ -55,7 +53,6 @@ final class BaseInfoRepositoryTest extends EccubeTestCase
             ->setAddr02($faker->secondaryAddress)
             ->setEmail01($faker->email)
             ->setUpdateDate($faker->dateTime('now'));
-
         /*
          * ここでは Doctrine ORM を使用しているが、オブジェクトキャッシュ等により、
          * 期待した結果が得られない場合がある.

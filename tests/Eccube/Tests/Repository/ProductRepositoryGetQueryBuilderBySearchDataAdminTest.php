@@ -42,11 +42,9 @@ final class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends Abstra
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->productStatusRepository = $this->entityManager->getRepository(ProductStatus::class);
         $this->categoryRepository = $this->entityManager->getRepository(Category::class);
     }

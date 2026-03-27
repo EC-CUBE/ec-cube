@@ -28,11 +28,9 @@ final class NewsControllerTest extends AbstractAdminWebTestCase
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->newsRepository = $this->entityManager->getRepository(News::class);
     }
 

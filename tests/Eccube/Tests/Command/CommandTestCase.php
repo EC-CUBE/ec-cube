@@ -54,7 +54,6 @@ abstract class CommandTestCase extends EccubeTestCase
      */
     protected ?int $loopCheckSum = 0;
 
-    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();

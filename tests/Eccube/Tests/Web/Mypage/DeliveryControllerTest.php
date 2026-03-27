@@ -24,7 +24,6 @@ final class DeliveryControllerTest extends AbstractWebTestCase
 {
     protected ?Customer $Customer = null;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

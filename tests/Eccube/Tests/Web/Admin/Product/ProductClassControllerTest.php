@@ -46,11 +46,9 @@ final class ProductClassControllerTest extends AbstractProductCommonTestCase
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
         $this->productRepository = $this->entityManager->getRepository(Product::class);
         $this->taxRuleRepository = $this->entityManager->getRepository(TaxRule::class);
