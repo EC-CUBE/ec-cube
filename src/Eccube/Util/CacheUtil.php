@@ -88,6 +88,20 @@ class CacheUtil implements EventSubscriberInterface
             log_error('cache:clear failed (exit='.$exitCode.'): '.implode("\n", array_slice($outputLines, -5)));
         }
 
+        // composer require でパッケージが追加された場合, メインプロセスのオートローダーが
+        // 古いままなので, 新しいクラスマップと PSR-4 マッピングを読み込み直す.
+        $autoloadClassmap = $projectDir.'/vendor/composer/autoload_classmap.php';
+        $autoloadPsr4 = $projectDir.'/vendor/composer/autoload_psr4.php';
+        if (file_exists($autoloadClassmap) && file_exists($autoloadPsr4)) {
+            $classLoader = require $projectDir.'/vendor/autoload.php';
+            if ($classLoader instanceof \Composer\Autoload\ClassLoader) {
+                $classLoader->addClassMap(require $autoloadClassmap);
+                foreach (require $autoloadPsr4 as $prefix => $paths) {
+                    $classLoader->setPsr4($prefix, $paths);
+                }
+            }
+        }
+
         if (function_exists('opcache_reset')) {
             opcache_reset();
         }
