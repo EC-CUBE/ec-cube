@@ -146,11 +146,16 @@ class ComposerApiService implements ComposerServiceInterface
 
         $packageName = explode(' ', trim($packageName));
 
-        // 元の 4.3 と同じく init() + Flex 無効化パターンを使用する.
-        // init() は Composer の初期化とリポジトリ設定を行う.
-        // Flex を無効化しないと composer remove 中に Flex が追加処理を行い,
-        // PHP ビルトインサーバで 30 秒を超えてしまう.
-        $this->init();
+        // remove にはリポジトリ設定やプラットフォーム設定は不要なため,
+        // init() の代わりに最小限の初期化のみ行い ~2-3s のオーバーヘッドを回避する.
+        // Flex を無効化しないと composer remove 中にレシピ同期等の追加処理が走り,
+        // PHP ビルトインサーバで 30 秒タイムアウトを超過する.
+        set_time_limit(0);
+        $composerMemory = $this->eccubeConfig['eccube_composer_memory_limit'];
+        ini_set('memory_limit', $composerMemory);
+        putenv('COMPOSER_HOME='.$this->eccubeConfig['plugin_realdir'].'/.composer');
+        $this->initConsole();
+        $this->workingDir = $this->workingDir ?: $this->eccubeConfig['kernel.project_dir'];
         $this->execConfig('allow-plugins.symfony/flex', ['false']);
 
         try {
