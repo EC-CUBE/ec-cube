@@ -156,18 +156,25 @@ class ComposerApiService implements ComposerServiceInterface
         $this->initConsole();
         $this->workingDir = $this->workingDir ?: $this->eccubeConfig['kernel.project_dir'];
 
-        $commands = [
-            'command' => 'remove',
-            'packages' => $packageName,
-            '--ignore-platform-reqs' => true,
-            '--no-interaction' => true,
-            '--profile' => true,
-            '--no-scripts' => true,
-        ];
-        if (env('APP_ENV') === 'prod') {
-            $commands['--no-dev'] = true;
+        // Symfony Flex を無効にして remove 時の recipe unconfigure を抑制し高速化する
+        $this->execConfig('allow-plugins.symfony/flex', ['false']);
+
+        try {
+            $commands = [
+                'command' => 'remove',
+                'packages' => $packageName,
+                '--ignore-platform-reqs' => true,
+                '--no-interaction' => true,
+                '--profile' => true,
+                '--no-scripts' => true,
+            ];
+            if (env('APP_ENV') === 'prod') {
+                $commands['--no-dev'] = true;
+            }
+            return $this->runCommand($commands, $output, false);
+        } finally {
+            $this->execConfig('allow-plugins.symfony/flex', ['true']);
         }
-        return $this->runCommand($commands, $output, false);
     }
 
     /**

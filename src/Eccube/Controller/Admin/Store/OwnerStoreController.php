@@ -337,11 +337,6 @@ class OwnerStoreController extends AbstractController
         $packageName = self::$vendorName.'/'.$pluginCode;
 
         try {
-            // Plugin entity を DB から事前に削除し, PluginInstaller::uninstall() が
-            // 重い pluginService->uninstall() (schema 比較 + updateSchema) をスキップするようにする.
-            // extra entity テーブルは execRemove() 内の dropTableToExtra() で処理される.
-            $this->pluginService->unregisterPlugin($Plugin);
-
             $log = $this->composerService->execRemove($packageName);
 
             return $this->json(['success' => false, 'log' => $log]);

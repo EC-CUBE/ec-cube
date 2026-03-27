@@ -30,13 +30,14 @@ $(function() {
                 $.post("{{ url('admin_disable_maintenance', { 'mode': 'auto_maintenance' }) }}");
             },
             function(res) {
-                if (res.responseJSON.message) {
-                    message.text(res.responseJSON.message);
+                var json = (res && res.responseJSON) || {};
+                if (json.message) {
+                    message.text(json.message);
                 } else {
                     message.text('削除に失敗しました。');
                 }
-                if (res.responseJSON.log) {
-                    $('#deleteLog').text(res.responseJSON.log);
+                if (json.log) {
+                    $('#deleteLog').text(json.log);
                 }
                 $('#deleteLogPane').show();
                 progress.hide();
