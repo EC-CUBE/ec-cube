@@ -101,7 +101,7 @@ class CacheUtil implements EventSubscriberInterface
             wincache_ucache_clear();
         }
 
-        return $output->fetch();
+        return implode("\n", $outputLines);
     }
 
     /**
