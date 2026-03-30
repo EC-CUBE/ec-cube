@@ -14,34 +14,31 @@
 namespace Eccube\ClassLoader;
 
 /**
- * Symfony 7 で追加された戻り値型宣言にプラグインを自動対応させるオートローダー.
+ * Symfony 7 / EC-CUBE コアで追加された戻り値型宣言にプラグインを自動対応させるオートローダー.
  *
- * Symfony 7 では AbstractTypeExtension や DataTransformerInterface のメソッドに
- * 戻り値型 (: void, : mixed) が追加された. 既存プラグインがこれらのメソッドを
- * 戻り値型なしでオーバーライドすると PHP Fatal Error が発生する.
+ * PHP では親クラスのメソッドに戻り値型がある場合, 子クラスでも同じ型を宣言しなければ
+ * Fatal Error になる. このローダーは Plugin 名前空間のクラスファイルを読み込む際に,
+ * 戻り値型が欠けている public/protected メソッドに対して一律 `: void` を補完する.
  *
- * このローダーは Composer のオートローダーの前に登録され, Plugin 名前空間の
- * クラスファイルを読み込む際に不足している戻り値型を自動補完する.
+ * `: void` の補完が安全な理由:
+ * - 親に戻り値型がない場合: 子に `: void` を追加するのは合法 (型の狭小化)
+ * - 親に `: void` がある場合: 子にも必要なので正しい補完
+ * - 戻り値を返すメソッドには既に戻り値型宣言があるはずなのでマッチしない
+ *
+ * `: mixed` / `: string` 等が必要なメソッドは $specialReturnTypes で個別対応する.
  */
 class PluginReturnTypeCompatLoader
 {
     /**
-     * パッチ対象のメソッドと追加すべき戻り値型のマッピング.
-     *
-     * EC-CUBE コアの Form Type にも `: void` が付与されているため,
-     * コア型を extends するプラグインも対象になる.
-     * PHP では親クラスにない戻り値型を子クラスに追加するのは合法 (型の狭小化) なので,
-     * 親クラスを問わず対象メソッドを一律パッチしても安全.
+     * void 以外の戻り値型が必要なメソッド名のマッピング.
      */
-    private static array $patches = [
-        // FormTypeExtensionInterface / AbstractTypeExtension / EC-CUBE core Form Types
-        'buildForm' => 'void',
-        'buildView' => 'void',
-        'finishView' => 'void',
-        'configureOptions' => 'void',
-        // DataTransformerInterface
+    private static array $specialReturnTypes = [
         'transform' => 'mixed',
         'reverseTransform' => 'mixed',
+        'getBlockPrefix' => 'string',
+        'getParent' => '?string',
+        'getExtendedTypes' => 'iterable',
+        'getSubscribedEvents' => 'array',
     ];
 
     private string $projectRoot;
@@ -69,14 +66,14 @@ class PluginReturnTypeCompatLoader
         }
 
         $file = $this->resolveFile($class);
-        if ($file === null || !is_file($file)) {
+        if ($file === null) {
             return;
         }
 
         $source = file_get_contents($file);
 
-        // パッチが必要なクラスかどうか簡易判定
-        if (!$this->mayNeedPatching($source)) {
+        // クラス定義がなければスキップ (インターフェース/トレイト/定数ファイル等)
+        if (!preg_match('/\bclass\s+\w+/s', $source)) {
             return;
         }
 
@@ -86,7 +83,6 @@ class PluginReturnTypeCompatLoader
         }
 
         // パッチ済みソースを eval で読み込む
-        // (元ファイルはそのまま残り, Composer のオートローダーはスキップされる)
         eval('?>'.$patched);
     }
 
@@ -95,7 +91,6 @@ class PluginReturnTypeCompatLoader
      */
     private function resolveFile(string $class): ?string
     {
-        // Plugin\Code\Path\Class -> app/Plugin/Code/Path/Class.php
         $relativePath = str_replace('\\', '/', $class).'.php';
         $relativePath = preg_replace('#^Plugin/#', 'app/Plugin/', $relativePath);
         $file = $this->projectRoot.'/'.$relativePath;
@@ -104,35 +99,23 @@ class PluginReturnTypeCompatLoader
     }
 
     /**
-     * ソースコードがパッチ対象のメソッドを含むか簡易判定する.
-     */
-    private function mayNeedPatching(string $source): bool
-    {
-        foreach (self::$patches as $method => $returnType) {
-            if (str_contains($source, 'function '.$method)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * メソッドの戻り値型が不足している場合に補完する.
+     * 戻り値型宣言が欠けている public/protected メソッドに型を補完する.
      *
-     * 対象: function methodName(...) { のうち, 戻り値型宣言がないもの.
-     * 戻り値型が既にある場合 (例: ): void {) はマッチしないためスキップされる.
+     * パターン: `function methodName(...) {` (戻り値型なし)
+     * 戻り値型がある場合は `)` と `{` の間に `:` が入るためマッチしない.
      */
     private function patchReturnTypes(string $source): string
     {
-        foreach (self::$patches as $method => $returnType) {
-            // function methodName(任意のパラメータ) { にマッチ
-            // 戻り値型がある場合は ) と { の間に : が入るためマッチしない
-            $pattern = '/(function\s+'.preg_quote($method, '/').'\s*\([^)]*\))\s*\{/';
-            $replacement = '$1: '.$returnType.' {';
-            $source = preg_replace($pattern, $replacement, $source);
-        }
+        // public/protected function name(...) { で戻り値型がないものにマッチ
+        return preg_replace_callback(
+            '/((public|protected)\s+function\s+(\w+)\s*\([^)]*\))\s*\{/',
+            function ($matches) {
+                $methodName = $matches[3];
+                $returnType = self::$specialReturnTypes[$methodName] ?? 'void';
 
-        return $source;
+                return $matches[1].': '.$returnType.' {';
+            },
+            $source
+        );
     }
 }
