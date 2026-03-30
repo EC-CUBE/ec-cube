@@ -63,7 +63,7 @@ jobs:
           bin/console eccube:composer:require "ec-cube/relatedproduct42"
           bin/console eccube:composer:require "ec-cube/securitychecker42"
           bin/console eccube:composer:require "ec-cube/productreview42"
-          bin/console eccube:composer:require "ec-cube/api42"
+          bin/console eccube:composer:require "ec-cube/api42" || true  # パッケージAPI 404 の場合はスキップ
 
       - name: Pre Install Plugins
         env:
