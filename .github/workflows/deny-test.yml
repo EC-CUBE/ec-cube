@@ -57,7 +57,8 @@ jobs:
         run: |
           bin/console eccube:composer:require "ec-cube/recommend42"
           bin/console eccube:composer:require "ec-cube/coupon42"
-          bin/console eccube:composer:require "ec-cube/mailmagazine42"
+          # mailmagazine42 は Symfony 7 未対応 (buildForm(): void 型宣言) のためスキップ
+          # bin/console eccube:composer:require "ec-cube/mailmagazine42"
           bin/console eccube:composer:require "ec-cube/salesreport42"
           bin/console eccube:composer:require "ec-cube/relatedproduct42"
           bin/console eccube:composer:require "ec-cube/securitychecker42"
