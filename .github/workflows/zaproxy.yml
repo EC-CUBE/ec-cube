@@ -38,6 +38,7 @@ jobs:
           tags: ec-cube
           outputs: type=docker,dest=/tmp/ec-cube.tar
 
+      # --- EC-CUBE イメージのアップロード ---
       - name: Upload image
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
         with:
@@ -191,6 +192,11 @@ jobs:
           docker compose cp zap/delete_files.sh ec-cube:/
           docker compose exec -d ec-cube /delete_files.sh
 
+      - name: Show ec-cube logs on failure
+        if: failure()
+        run: |
+            docker compose -f docker-compose.yml -f docker-compose.pgsql.yml -f docker-compose.owaspzap.ci.yml logs ec-cube --tail=200
+  
       - name: Set up plugins
         env:
             APP_ENV: prod
@@ -218,16 +224,146 @@ jobs:
           ZAP_THREAD_PER_HOST: "${{ matrix.thread_per_host }}"
           ZAP_BEFORE_SCRIPT: "${{ matrix.before_script }}"
         run: |
+          set -eu
+
+          BEFORE=""
+          if [[ "${{ matrix.target }}" == admin_* ]]; then
+            BEFORE="admin_login.zst"
+          fi
+
+          # 既存の include で before_script が指定されている場合はそれを優先したいなら下の行を有効化
+          if [[ -n "${ZAP_BEFORE_SCRIPT:-}" ]]; then BEFORE="${ZAP_BEFORE_SCRIPT}"; fi
+
           zap/generate_automation_config.sh \
             -t ${{ matrix.target }} \
-            ${ZAP_BEFORE_SCRIPT:+"-b ${ZAP_BEFORE_SCRIPT}"} \
-            ${ZAP_CONTEXT:+"-c ${ZAP_CONTEXT}"} \
-            ${ZAP_THREAD_PER_HOST:+"-n ${ZAP_THREAD_PER_HOST}"}
+            ${BEFORE:+-b "${BEFORE}"} \
+            ${ZAP_CONTEXT:+-c "${ZAP_CONTEXT}"} \
+            ${ZAP_THREAD_PER_HOST:+-n "${ZAP_THREAD_PER_HOST}"}
+
           cat zap/automation/${{ matrix.target }}.yml
 
-      - name: Autorun
-        run: docker compose exec -it zap ./zap.sh -cmd -configfile /zap/wrk/options.properties -autorun wrk/automation/${{ matrix.target }}.yml
+      - name: Patch automation config (run before_script)
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import os, re, pathlib
 
+          target = os.environ.get("TARGET")
+          if not target:
+            raise SystemExit("TARGET env is required")
+
+          p = pathlib.Path(f"zap/automation/{target}.yml")
+          y = p.read_text(encoding="utf-8")
+
+          # before_script の add ブロックが無いターゲットは何もしない
+          if "name: before_script" not in y:
+            print("No before_script in this target. Skip patch.")
+            raise SystemExit(0)
+
+          # すでに run が入っている場合も何もしない
+          if re.search(r"name:\s*before_script[\s\S]*?action:\s*run", y):
+            print("before_script run already exists. Skip patch.")
+            raise SystemExit(0)
+
+          # before_script の add ブロック直後に run を差し込む
+          # （template.ymlのインデントに合わせて jobs 配下は "  - type:" 形式）
+          m = re.search(
+            r"(\n  - type: script\n    parameters:\n"
+            r"(?:      .+\n)*"
+            r"      action: add\n"
+            r"      type: sequence\n"
+            r"      name: before_script\n"
+            r"(?:      .+\n)*"
+            r"      file: .+\n)",
+            y
+          )
+          if not m:
+            raise SystemExit("Could not find before_script add block to patch")
+
+          insert = (
+            "\n  - type: script\n"
+            "    parameters:\n"
+            "      action: run\n"
+            "      type: sequence\n"
+            "      name: before_script\n"
+          )
+
+          y2 = y[:m.end(1)] + insert + y[m.end(1):]
+          p.write_text(y2, encoding="utf-8")
+          print("Patched:", p)
+          PY
+        env:
+          TARGET: ${{ matrix.target }}
+
+      - name: Debug inspect zap container
+        run: |
+          docker compose exec -T zap whoami
+          docker compose exec -T zap pwd
+          docker compose exec -T zap ls -l /zap/wrk
+          docker compose exec -T zap ls -l /home/zap/.ZAP || true
+
+      - name: Update and Install Add-ons
+        run: |
+          docker compose exec -T zap /zap/zap.sh -cmd -addonupdate
+          docker compose exec -T zap /zap/zap.sh -cmd -addonuninstall sequence
+          docker compose exec -T zap /zap/zap.sh -cmd -addoninstall sequence
+          docker compose exec -T zap /zap/zap.sh -cmd -addoninstall automation
+          docker compose exec -T zap /zap/zap.sh -cmd -addoninstall groovy
+
+      - name: Preprocess Zest scripts (replace customer-id token)
+        run: |
+          docker compose exec -T -u 0:0 zap sh -lc '
+            set -eu
+            echo "=== before replace (sample) ==="
+            grep -R --line-number "{{customer-id}}" /zap/wrk/scripts 2>/dev/null | head -n 20 || true
+
+            # 置換（rootで実行して権限問題を回避）
+            find /zap/wrk/scripts -name "*.zst" -print0 \
+              | xargs -0 sed -i "s/{{customer-id}}/1/g"
+
+            echo "=== after replace (sample) ==="
+            grep -R --line-number "{{customer-id}}" /zap/wrk/scripts 2>/dev/null | head -n 20 || true
+
+            echo "=== perms (dir) ==="
+            ls -ld /zap/wrk/scripts
+          '
+
+      - name: Autorun
+        run: |
+          set -x
+          docker compose exec -T zap ls -la /zap/wrk/automation/${{ matrix.target }}.yml
+          docker compose exec -T zap ls -la /zap/wrk/options.properties
+
+          # ZAP実行
+          docker compose exec -T zap /zap/zap.sh \
+            -cmd \
+            -config anticsrf.tokens.token.name=_csrf_token \
+            -config anticsrf.tokens.token.enabled=true \
+            -configfile /zap/wrk/options.properties \
+            -autorun /zap/wrk/automation/${{ matrix.target }}.yml
+
+      - name: Debug app logs after autorun
+        if: ${{ always() }}
+        run: |
+          echo "=== Docker Compose Logs (ec-cube) ==="
+          docker compose -f docker-compose.yml -f docker-compose.pgsql.yml -f docker-compose.owaspzap.ci.yml logs ec-cube --tail=300 || true
+
+          echo "=== Symfony prod log (directory and files) ==="
+          docker compose exec -T ec-cube sh -lc 'ls -la var/log var/log/prod 2>/dev/null || true'
+
+          echo "=== EC-CUBE site.log (last 300 lines) ==="
+          docker compose exec -T ec-cube sh -lc 'tail -n 300 var/log/prod/site.log 2>/dev/null || true'
+
+          echo "=== EC-CUBE admin.log (last 300 lines) ==="
+          docker compose exec -T ec-cube sh -lc 'tail -n 300 var/log/prod/admin.log 2>/dev/null || true'
+
+          echo "=== Apache error log (if exists) ==="
+          docker compose exec -T ec-cube sh -lc 'tail -n 200 /var/log/apache2/error.log 2>/dev/null || true'
+
+          echo "=== PHP error log (if exists) ==="
+          docker compose exec -T ec-cube sh -lc 'tail -n 200 /var/log/php*/error.log 2>/dev/null || true'
+          
       - name: Copy report
         if: ${{ always() }}
         run: |
@@ -240,13 +376,15 @@ jobs:
         with:
           name: zap-${{ matrix.target }}-report
           path: /tmp/report
+          overwrite: true
 
       - name: Upload alerts
         if: ${{ always() }}
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
         with:
-          name: zap-${{ matrix.target }}-report
+          name: zap-${{ matrix.target }}-alerts
           path: /tmp/alerts.json
+          overwrite: true
 
   merge:
     name: Merge alerts
@@ -258,11 +396,20 @@ jobs:
         uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3  # v8
         with:
           path: artifacts
+          pattern: zap-*-alerts
       - name: Merge alerts
-        run: |
-          find .
-          jq -s add **/alerts.json > all_alerts.json
         working-directory: artifacts
+        run: |
+          set -euo pipefail
+          mapfile -d '' files < <(find . -type f -name 'alerts.json' -print0)
+
+          if (( ${#files[@]} == 0 )); then
+            echo "No alerts.json found under artifacts/" >&2
+            find .
+            exit 1
+          fi
+
+          jq -s 'add // []' "${files[@]}" > all_alerts.json
       - name: Upload alerts
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
         with:

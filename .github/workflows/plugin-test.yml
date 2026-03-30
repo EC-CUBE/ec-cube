@@ -106,7 +106,7 @@ jobs:
 
       - name: Cache apt packages
         if: matrix.db == 'pgsql'
-        uses: awalsh128/cache-apt-pkgs-action@2c09a5e66da6c8016428a2172bd76e5e4f14bb17  # latest
+        uses: awalsh128/cache-apt-pkgs-action@acb598e5ddbc6f68a970c5da0688d2f3a9f04d05  # latest
         with:
           packages: postgresql-client
           version: 1.0
@@ -236,7 +236,7 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
 
       - name: Get Composer Cache Directory
-        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306  # v5
+        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7  # v5
         id: composer-cache
         with:
           path: ${{ github.workspace }}/vendor
@@ -269,7 +269,7 @@ jobs:
 
       - name: Cache apt packages
         if: matrix.db == 'pgsql'
-        uses: awalsh128/cache-apt-pkgs-action@2c09a5e66da6c8016428a2172bd76e5e4f14bb17  # latest
+        uses: awalsh128/cache-apt-pkgs-action@acb598e5ddbc6f68a970c5da0688d2f3a9f04d05  # latest
         with:
           packages: postgresql-client
           version: 1.0
@@ -400,7 +400,7 @@ jobs:
 
       - name: Get Composer Cache Directory
         id: composer-cache
-        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306  # v5
+        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7  # v5
         with:
           path: ${{ github.workspace }}/vendor
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -432,7 +432,7 @@ jobs:
 
       - name: Cache apt packages
         if: matrix.db == 'pgsql'
-        uses: awalsh128/cache-apt-pkgs-action@2c09a5e66da6c8016428a2172bd76e5e4f14bb17  # latest
+        uses: awalsh128/cache-apt-pkgs-action@acb598e5ddbc6f68a970c5da0688d2f3a9f04d05  # latest
         with:
           packages: postgresql-client
           version: 1.0
@@ -566,7 +566,7 @@ jobs:
 
       - name: Get Composer Cache Directory
         id: composer-cache
-        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306  # v5
+        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7  # v5
         with:
           path: ${{ github.workspace }}/vendor
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -598,7 +598,7 @@ jobs:
 
       - name: Cache apt packages
         if: matrix.db == 'pgsql'
-        uses: awalsh128/cache-apt-pkgs-action@2c09a5e66da6c8016428a2172bd76e5e4f14bb17  # latest
+        uses: awalsh128/cache-apt-pkgs-action@acb598e5ddbc6f68a970c5da0688d2f3a9f04d05  # latest
         with:
           packages: postgresql-client
           version: 1.0
