@@ -60,6 +60,10 @@ class Kernel extends BaseKernel
     {
         parent::__construct($environment, $debug);
 
+        // Symfony 7 で追加された戻り値型にプラグインを自動対応させる
+        $loader = new ClassLoader\PluginReturnTypeCompatLoader($this->getProjectDir());
+        $loader->register();
+
         $this->loadEntityProxies();
     }
 
