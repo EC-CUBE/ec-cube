@@ -2,6 +2,7 @@ name: Deny check for EC-CUBE
 
 on:
   workflow_call:
+  workflow_dispatch:
 
 permissions:
   contents: read
