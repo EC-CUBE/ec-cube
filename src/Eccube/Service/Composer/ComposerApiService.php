@@ -122,6 +122,7 @@ class ComposerApiService implements ComposerServiceInterface
             if (env('APP_ENV') === 'prod') {
                 $commands['--update-no-dev'] = true;
             }
+
             return $this->runCommand($commands, $output, false);
         } finally {
             $this->execConfig('allow-plugins.symfony/flex', ['true']);
@@ -170,6 +171,7 @@ class ComposerApiService implements ComposerServiceInterface
             if (env('APP_ENV') === 'prod') {
                 $commands['--update-no-dev'] = true;
             }
+
             return $this->runCommand($commands, $output, false);
         } finally {
             $this->execConfig('allow-plugins.symfony/flex', ['true']);
@@ -408,7 +410,7 @@ class ComposerApiService implements ComposerServiceInterface
             'url' => $url,
             'options' => [
                 'http' => [
-                    'header' => ['X-ECCUBE-KEY: ' . $BaseInfo->getAuthenticationKey()],
+                    'header' => ['X-ECCUBE-KEY: '.$BaseInfo->getAuthenticationKey()],
                 ],
             ],
         ];
@@ -427,7 +429,7 @@ class ComposerApiService implements ComposerServiceInterface
 
         if ($from !== null) {
             $exclude = array_unique(array_merge($exclude, [trim(current($packageName))]));
-            $this->execConfig('repositories.' . str_replace(['.', '/'], '', strtolower($from)), [json_encode([
+            $this->execConfig('repositories.'.str_replace(['.', '/'], '', strtolower($from)), [json_encode([
                 'type' => 'path',
                 'url' => $from,
             ])]);
@@ -437,7 +439,7 @@ class ComposerApiService implements ComposerServiceInterface
             $eccube_repository['exclude'] = $exclude;
         }
 
-        $this->execConfig('platform.php', [PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION . '.' . PHP_RELEASE_VERSION]);
+        $this->execConfig('platform.php', [PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION.'.'.PHP_RELEASE_VERSION]);
         $this->execConfig('repositories.eccube', [json_encode($eccube_repository)]);
 
         if (strpos($url, 'http://') === 0) {
@@ -475,14 +477,14 @@ class ComposerApiService implements ComposerServiceInterface
         foreach (explode(' ', trim($packageNames)) as $packageName) {
             $pluginCode = null;
             // 大文字小文字を区別するファイルシステムを考慮して, ディレクトリ名からプラグインコードを取得する
-            foreach (glob($projectRoot . '/app/Plugin/*', GLOB_ONLYDIR) as $dir) {
+            foreach (glob($projectRoot.'/app/Plugin/*', GLOB_ONLYDIR) as $dir) {
                 if (strtolower(basename($dir)) === strtolower(basename($packageName))) {
                     $pluginCode = basename($dir);
                     break;
                 }
             }
             if ($pluginCode === null) {
-                throw new PluginException($packageName . ' not found');
+                throw new PluginException($packageName.' not found');
             }
 
             $this->pluginContext->setCode($pluginCode);
@@ -531,9 +533,9 @@ class ComposerApiService implements ComposerServiceInterface
                 foreach ($tableNames as $table) {
                     $quotedTable = $platform->quoteSingleIdentifier($table);
                     if ($isMySql) {
-                        $conn->executeStatement('DROP TABLE IF EXISTS ' . $quotedTable);
+                        $conn->executeStatement('DROP TABLE IF EXISTS '.$quotedTable);
                     } else {
-                        $conn->executeStatement('DROP TABLE IF EXISTS ' . $quotedTable . ' CASCADE');
+                        $conn->executeStatement('DROP TABLE IF EXISTS '.$quotedTable.' CASCADE');
                     }
                 }
                 if ($isMySql) {
