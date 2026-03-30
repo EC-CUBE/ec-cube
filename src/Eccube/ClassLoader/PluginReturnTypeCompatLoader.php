@@ -28,18 +28,20 @@ class PluginReturnTypeCompatLoader
     /**
      * パッチ対象のメソッドと追加すべき戻り値型のマッピング.
      *
-     * キー: メソッド名
-     * 値: [戻り値型, ソース中に存在すべきキーワード (extends/implements)]
+     * EC-CUBE コアの Form Type にも `: void` が付与されているため,
+     * コア型を extends するプラグインも対象になる.
+     * PHP では親クラスにない戻り値型を子クラスに追加するのは合法 (型の狭小化) なので,
+     * 親クラスを問わず対象メソッドを一律パッチしても安全.
      */
     private static array $patches = [
-        // FormTypeExtensionInterface / AbstractTypeExtension
-        'buildForm' => ['void', 'AbstractTypeExtension'],
-        'buildView' => ['void', 'AbstractTypeExtension'],
-        'finishView' => ['void', 'AbstractTypeExtension'],
-        'configureOptions' => ['void', 'AbstractTypeExtension'],
+        // FormTypeExtensionInterface / AbstractTypeExtension / EC-CUBE core Form Types
+        'buildForm' => 'void',
+        'buildView' => 'void',
+        'finishView' => 'void',
+        'configureOptions' => 'void',
         // DataTransformerInterface
-        'transform' => ['mixed', 'DataTransformerInterface'],
-        'reverseTransform' => ['mixed', 'DataTransformerInterface'],
+        'transform' => 'mixed',
+        'reverseTransform' => 'mixed',
     ];
 
     private string $projectRoot;
@@ -102,12 +104,12 @@ class PluginReturnTypeCompatLoader
     }
 
     /**
-     * ソースコードがパッチ対象のクラスを含むか簡易判定する.
+     * ソースコードがパッチ対象のメソッドを含むか簡易判定する.
      */
     private function mayNeedPatching(string $source): bool
     {
-        foreach (self::$patches as [$returnType, $keyword]) {
-            if (str_contains($source, $keyword)) {
+        foreach (self::$patches as $method => $returnType) {
+            if (str_contains($source, 'function '.$method)) {
                 return true;
             }
         }
@@ -123,11 +125,7 @@ class PluginReturnTypeCompatLoader
      */
     private function patchReturnTypes(string $source): string
     {
-        foreach (self::$patches as $method => [$returnType, $keyword]) {
-            if (!str_contains($source, $keyword)) {
-                continue;
-            }
-
+        foreach (self::$patches as $method => $returnType) {
             // function methodName(任意のパラメータ) { にマッチ
             // 戻り値型がある場合は ) と { の間に : が入るためマッチしない
             $pattern = '/(function\s+'.preg_quote($method, '/').'\s*\([^)]*\))\s*\{/';
