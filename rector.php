@@ -13,46 +13,24 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+use Eccube\Rector\CodingStyle\AttributeArgumentsOrderRector;
+use Eccube\Rector\CodingStyle\NormalizePhpDocArrayGenericSpacingRector;
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
-use Rector\CodeQuality\Rector\FunctionLike\SimplifyUselessVariableRector;
 use Rector\Config\RectorConfig;
-use Rector\DeadCode\Rector\Cast\RecastingRemovalRector;
-use Rector\DeadCode\Rector\ClassMethod\RemoveUnusedConstructorParamRector;
-use Rector\DeadCode\Rector\ClassMethod\RemoveUnusedPrivateMethodParameterRector;
-use Rector\DeadCode\Rector\ClassMethod\RemoveUselessParamTagRector;
-use Rector\DeadCode\Rector\ClassMethod\RemoveUselessReturnTagRector;
-use Rector\DeadCode\Rector\If_\RemoveAlwaysTrueIfConditionRector;
-use Rector\DeadCode\Rector\Property\RemoveUnusedPrivatePropertyRector;
-use Rector\DeadCode\Rector\Property\RemoveUselessVarTagRector;
-use Rector\DeadCode\Rector\Switch_\RemoveDuplicatedCaseInSwitchRector;
 use Rector\Doctrine\Bundle210\Rector\Class_\EventSubscriberInterfaceToAttributeRector;
 use Rector\Doctrine\Set\DoctrineSetList;
-use Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector;
-use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
-use Rector\Php80\Rector\Property\NestedAnnotationToAttributeRector;
-use Rector\Php81\Rector\MethodCall\RemoveReflectionSetAccessibleCallsRector;
 use Rector\Php83\Rector\ClassConst\AddTypeToConstRector;
-use Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRector;
-use Rector\PHPUnit\AnnotationsToAttributes\Rector\Class_\AnnotationWithValueToAttributeRector;
-use Rector\PHPUnit\AnnotationsToAttributes\Rector\Class_\RequiresAnnotationWithValueToAttributeRector;
 use Rector\PHPUnit\CodeQuality\Rector\MethodCall\AssertEqualsToSameRector;
-use Rector\PHPUnit\CodeQuality\Rector\ClassMethod\AddInstanceofAssertForNullableArgumentRector;
-use Rector\PHPUnit\CodeQuality\Rector\Class_\InlineStubPropertyToCreateStubMethodCallRector;
-use Rector\Symfony\CodeQuality\Rector\Class_\ControllerMethodInjectionToConstructorRector;
 use Rector\PHPUnit\PHPUnit100\Rector\Class_\StaticDataProviderClassMethodRector;
-use Rector\PHPUnit\PHPUnit120\Rector\Class_\PropertyCreateMockToCreateStubRector;
-use Rector\PHPUnit\PHPUnit120\Rector\CallLike\CreateStubOverCreateMockArgRector;
-
 use Rector\PHPUnit\Set\PHPUnitSetList;
 use Rector\Renaming\Rector\MethodCall\RenameMethodRector;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
+use Rector\Symfony\CodeQuality\Rector\Class_\ControllerMethodInjectionToConstructorRector;
 use Rector\Symfony\Set\SymfonySetList;
 use Rector\Symfony\Symfony61\Rector\Class_\CommandConfigureToAttributeRector;
 use Rector\Symfony\Symfony61\Rector\Class_\CommandPropertyToAttributeRector;
 use Rector\ValueObject\PhpVersion;
-use Eccube\Rector\CodingStyle\AttributeArgumentsOrderRector;
-use Eccube\Rector\CodingStyle\NormalizePhpDocArrayGenericSpacingRector;
 
 return RectorConfig::configure()
            // EC-CUBEのPHPバージョンに合わせて設定
@@ -77,7 +55,6 @@ return RectorConfig::configure()
                // 8.3以上で対応可能
                AddTypeToConstRector::class, // [BC]定数に型を追加する PHP 8.3 以降で有効
                RenameMethodRector::class, //addがaddCommandに変換されてしまうため一旦スキップ
-               
            ])
            // 個別にルールを追加する場合はここに記述
            ->withRules([
@@ -102,8 +79,7 @@ return RectorConfig::configure()
                PHPUnitSetList::PHPUNIT_CODE_QUALITY,
                PHPUnitSetList::PHPUNIT_110, // PHPUnitのバージョンに合わせる
            ])
-           // オプション: SymfonyのコンテナXMLパス (EC-CUBEの構成に合わせて調整が必要な場合があります)
-           // $rectorConfig->symfonyContainerXml(__DIR__ . '/var/cache/dev/Eccube_KernelDevDebugContainer.xml');
+           // Symfony のコンテナ XML（EC-CUBE の構成に合わせて調整が必要な場合があります）
            ->withSymfonyContainerXml(__DIR__.'/var/cache/dev/Eccube_KernelDevDebugContainer.xml')
            // オプション: キャッシュ設定 (パフォーマンス向上のために推奨)
            ->withCache(
