@@ -16,31 +16,15 @@ namespace Eccube\ClassLoader;
 /**
  * Symfony 7 / EC-CUBE コアで追加された戻り値型宣言にプラグインを自動対応させるオートローダー.
  *
- * PHP では親クラスのメソッドに戻り値型がある場合, 子クラスでも同じ型を宣言しなければ
- * Fatal Error になる. このローダーは Plugin 名前空間のクラスファイルを読み込む際に,
- * 戻り値型が欠けている public/protected メソッドに対して一律 `: void` を補完する.
+ * PHP では親クラス/インターフェースのメソッドに戻り値型がある場合,
+ * 子クラスでも同じ型を宣言しなければ Fatal Error になる.
  *
- * `: void` の補完が安全な理由:
- * - 親に戻り値型がない場合: 子に `: void` を追加するのは合法 (型の狭小化)
- * - 親に `: void` がある場合: 子にも必要なので正しい補完
- * - 戻り値を返すメソッドには既に戻り値型宣言があるはずなのでマッチしない
- *
- * `: mixed` / `: string` 等が必要なメソッドは $specialReturnTypes で個別対応する.
+ * このローダーは Plugin 名前空間のクラスファイルを読み込む際に,
+ * 親クラス/インターフェースからリフレクションで戻り値型を取得し,
+ * 子クラスに不足している戻り値型を自動補完する.
  */
 class PluginReturnTypeCompatLoader
 {
-    /**
-     * void 以外の戻り値型が必要なメソッド名のマッピング.
-     */
-    private static array $specialReturnTypes = [
-        'transform' => 'mixed',
-        'reverseTransform' => 'mixed',
-        'getBlockPrefix' => 'string',
-        'getParent' => '?string',
-        'getExtendedTypes' => 'iterable',
-        'getSubscribedEvents' => 'array',
-    ];
-
     private string $projectRoot;
 
     public function __construct(string $projectRoot)
@@ -48,17 +32,11 @@ class PluginReturnTypeCompatLoader
         $this->projectRoot = $projectRoot;
     }
 
-    /**
-     * Composer のオートローダーの前に登録する.
-     */
     public function register(): void
     {
         spl_autoload_register([$this, 'loadClass'], true, true);
     }
 
-    /**
-     * Plugin 名前空間のクラスを読み込み, 必要に応じて戻り値型を補完する.
-     */
     public function loadClass(string $class): void
     {
         if (!str_starts_with($class, 'Plugin\\')) {
@@ -72,23 +50,23 @@ class PluginReturnTypeCompatLoader
 
         $source = file_get_contents($file);
 
-        // クラス定義がなければスキップ (インターフェース/トレイト/定数ファイル等)
-        if (!preg_match('/\bclass\s+\w+/s', $source)) {
+        if (!preg_match('/\bclass\s+\w+\s+(extends|implements)\b/s', $source)) {
             return;
         }
 
-        $patched = $this->patchReturnTypes($source);
-        if ($patched === $source) {
-            return; // 変更なし: Composer に任せる
+        $typedMethods = $this->collectParentTypedMethods($source);
+        if (empty($typedMethods)) {
+            return;
         }
 
-        // パッチ済みソースを eval で読み込む
+        $patched = $this->patchReturnTypes($source, $typedMethods);
+        if ($patched === $source) {
+            return;
+        }
+
         eval('?>'.$patched);
     }
 
-    /**
-     * PSR-4 規約に基づいてクラス名からファイルパスを解決する.
-     */
     private function resolveFile(string $class): ?string
     {
         $relativePath = str_replace('\\', '/', $class).'.php';
@@ -99,23 +77,111 @@ class PluginReturnTypeCompatLoader
     }
 
     /**
-     * 戻り値型宣言が欠けている public/protected メソッドに型を補完する.
+     * 親クラスとインターフェースから戻り値型が宣言されているメソッドを収集する.
      *
-     * パターン: `function methodName(...) {` (戻り値型なし)
-     * 戻り値型がある場合は `)` と `{` の間に `:` が入るためマッチしない.
+     * @return array<string, string> メソッド名 => 戻り値型文字列
      */
-    private function patchReturnTypes(string $source): string
+    private function collectParentTypedMethods(string $source): array
     {
-        // public/protected function name(...) { で戻り値型がないものにマッチ
-        return preg_replace_callback(
-            '/((public|protected)\s+function\s+(\w+)\s*\([^)]*\))\s*\{/',
-            function ($matches) {
-                $methodName = $matches[3];
-                $returnType = self::$specialReturnTypes[$methodName] ?? 'void';
+        $fqcns = [];
 
-                return $matches[1].': '.$returnType.' {';
-            },
-            $source
-        );
+        // extends
+        if (preg_match('/class\s+\w+\s+extends\s+([\w\\\\]+)/', $source, $m)) {
+            $fqcn = $this->resolveFqcn($m[1], $source);
+            if ($fqcn !== null) {
+                $fqcns[] = $fqcn;
+            }
+        }
+
+        // implements (カンマ区切りで複数)
+        if (preg_match('/class\s+\w+(?:\s+extends\s+[\w\\\\]+)?\s+implements\s+([\w\\\\,\s]+?)(?:\{|$)/s', $source, $m)) {
+            foreach (preg_split('/\s*,\s*/', trim($m[1])) as $iface) {
+                $fqcn = $this->resolveFqcn(trim($iface), $source);
+                if ($fqcn !== null) {
+                    $fqcns[] = $fqcn;
+                }
+            }
+        }
+
+        $typedMethods = [];
+        foreach ($fqcns as $fqcn) {
+            if (!class_exists($fqcn) && !interface_exists($fqcn)) {
+                continue;
+            }
+
+            try {
+                $ref = new \ReflectionClass($fqcn);
+            } catch (\ReflectionException $e) {
+                continue;
+            }
+
+            foreach ($ref->getMethods(\ReflectionMethod::IS_PUBLIC | \ReflectionMethod::IS_PROTECTED) as $method) {
+                $name = $method->getName();
+                if (!$method->hasReturnType() || isset($typedMethods[$name])) {
+                    continue;
+                }
+                $typedMethods[$name] = $this->returnTypeToString($method->getReturnType());
+            }
+        }
+
+        return $typedMethods;
+    }
+
+    /**
+     * ReflectionType を文字列に変換する.
+     */
+    private function returnTypeToString(\ReflectionType $type): string
+    {
+        if ($type instanceof \ReflectionNamedType) {
+            $name = $type->getName();
+            if ($type->allowsNull() && $name !== 'mixed' && $name !== 'void' && $name !== 'null') {
+                return '?'.$name;
+            }
+
+            return $name;
+        }
+
+        // union / intersection types
+        return (string) $type;
+    }
+
+    /**
+     * ソース中のメソッドに不足している戻り値型を補完する.
+     *
+     * @param array<string, string> $typedMethods メソッド名 => 戻り値型
+     */
+    private function patchReturnTypes(string $source, array $typedMethods): string
+    {
+        foreach ($typedMethods as $methodName => $returnType) {
+            // function methodName(...) { にマッチ (戻り値型がないもののみ)
+            // 戻り値型がある場合は ) と { の間に : が入るためマッチしない
+            $pattern = '/(function\s+'.preg_quote($methodName, '/').'\s*\([^)]*\))\s*\{/';
+            $replacement = '$1: '.$returnType.' {';
+            $source = preg_replace($pattern, $replacement, $source);
+        }
+
+        return $source;
+    }
+
+    /**
+     * ソース中の use 文と namespace からクラスの FQCN を解決する.
+     */
+    private function resolveFqcn(string $shortName, string $source): ?string
+    {
+        if (str_contains($shortName, '\\')) {
+            return ltrim($shortName, '\\');
+        }
+
+        // use 文から探す
+        if (preg_match('/use\s+([\w\\\\]*\\\\'.preg_quote($shortName, '/').')\s*;/', $source, $m)) {
+            return $m[1];
+        }
+
+        // 同一 namespace 内として解決
+        if (preg_match('/namespace\s+([\w\\\\]+)\s*;/', $source, $m)) {
+            return $m[1].'\\'.$shortName;
+        }
+
+        return null;
     }
 }
