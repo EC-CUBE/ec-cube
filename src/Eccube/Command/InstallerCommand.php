@@ -244,7 +244,7 @@ class InstallerCommand extends Command
             ['doctrine:schema:create'],
             ['eccube:fixtures:load'],
             ['cache:clear', '--no-warmup'],
-        ];
+        ]);
 
         // コンテナを再ロードするため別プロセスで実行する.
         foreach ($commands as $command) {
