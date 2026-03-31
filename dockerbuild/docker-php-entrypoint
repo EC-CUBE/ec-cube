@@ -19,7 +19,7 @@ if [ ! -d /var/www/html/vendor/bin ]; then
 fi
 
 bin/console doctrine:query:sql 'select * from dtb_base_info' > /dev/null 2>&1 || (
-    if [ -z ${DATABASE_URL} ]; then
+    if [ ! -f .env ]; then
         cp .env.dist .env
     fi
     # DBAL 4.x では SQLite の doctrine:database:create が非対応のため個別実行
