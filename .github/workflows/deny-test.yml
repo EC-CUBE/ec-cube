@@ -81,7 +81,7 @@ jobs:
 
       - name: Container Run
         run: |
-          docker run -e APP_ENV=prod -e APP_DEBUG=0 -e DATABASE_URL="sqlite:///var/eccube.db" --log-driver=json-file --log-opt max-size=10m -d -p 8080:80 --name eccube ec-cube
+          docker run -e APP_ENV=prod -e APP_DEBUG=0 -e DATABASE_URL="sqlite:///var/eccube.db" -e ECCUBE_AUTH_MAGIC=testmagic --log-driver=json-file --log-opt max-size=10m -d -p 8080:80 --name eccube ec-cube
           for i in $(seq 1 60); do
             status=$(docker inspect -f '{{.State.Health.Status}}' eccube 2>/dev/null || echo "dead")
             running=$(docker inspect -f '{{.State.Running}}' eccube 2>/dev/null || echo "false")
