@@ -232,14 +232,14 @@ class InstallerCommand extends Command
         $databaseUrl = getenv('DATABASE_URL');
         $databaseName = $this->getDatabaseName($databaseUrl);
 
-        $databaseCreate = ['doctrine:database:create'];
-        if ($databaseName !== 'sqlite') {
-            $databaseCreate[] = '--if-not-exists';
-        }
-
         // データベース作成, スキーマ作成, 初期データの投入を行う.
-        $commands = [
-            $databaseCreate,
+        // DBAL 4.x では SQLite の doctrine:database:create が非対応
+        // (SQLite はファイルが自動作成されるため不要)
+        $commands = [];
+        if ($databaseName !== 'sqlite') {
+            $commands[] = ['doctrine:database:create', '--if-not-exists'];
+        }
+        $commands = array_merge($commands, [
             ['doctrine:schema:drop', '--force'],
             ['doctrine:schema:create'],
             ['eccube:fixtures:load'],
