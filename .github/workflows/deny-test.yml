@@ -63,7 +63,9 @@ jobs:
           bin/console eccube:composer:require "ec-cube/relatedproduct42"
           bin/console eccube:composer:require "ec-cube/securitychecker42"
           bin/console eccube:composer:require "ec-cube/productreview42"
-          bin/console eccube:composer:require "ec-cube/api42" || true  # パッケージAPI 404 の場合はスキップ
+          # api42 はパッケージAPI (package-api-c2.ec-cube.net) で 404 のためスキップ.
+          # || true ではダメ: composer.lock に壊れたエントリが残り Docker 内の composer install が失敗する.
+          # bin/console eccube:composer:require "ec-cube/api42"
 
       - name: Pre Install Plugins
         env:
