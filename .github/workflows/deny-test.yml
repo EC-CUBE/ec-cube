@@ -80,12 +80,13 @@ jobs:
       - name: Container Run
         run: |
           docker run -e APP_ENV=prod -e APP_DEBUG=0 -e DATABASE_URL="sqlite:///var/eccube.db" -e DATABASE_SERVER_VERSION=3 -d -p 8080:80 --name eccube ec-cube
-          for i in $(seq 1 30); do
+          for i in $(seq 1 60); do
             status=$(docker inspect -f '{{.State.Health.Status}}' eccube 2>/dev/null || echo "dead")
-            echo "[$i] status=$status"
+            running=$(docker inspect -f '{{.State.Running}}' eccube 2>/dev/null || echo "false")
+            echo "[$i] health=$status running=$running"
             if [ "$status" = "healthy" ]; then break; fi
-            if [ "$status" = "dead" ] || [ "$status" = "unhealthy" ]; then
-              echo "Container failed to start. Logs:"
+            if [ "$running" = "false" ]; then
+              echo "Container exited. Logs:"
               docker logs eccube 2>&1 || true
               exit 1
             fi
