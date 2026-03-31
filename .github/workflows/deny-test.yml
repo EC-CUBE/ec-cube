@@ -86,8 +86,11 @@ jobs:
             echo "[$i] health=$status running=$running"
             if [ "$status" = "healthy" ]; then break; fi
             if [ "$running" = "false" ]; then
-              echo "Container exited. Logs:"
+              echo "=== Container exited. Full logs: ==="
               docker logs eccube 2>&1 || true
+              echo "=== End of container logs ==="
+              echo "=== Exit code: ==="
+              docker inspect -f '{{.State.ExitCode}}' eccube 2>/dev/null || true
               exit 1
             fi
             sleep 10

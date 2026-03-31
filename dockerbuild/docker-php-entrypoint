@@ -1,5 +1,5 @@
 #!/bin/sh
-set -e
+set -ex
 
 if [ -n "${USER_ID}" ]; then
     usermod -u ${USER_ID} -o www-data
