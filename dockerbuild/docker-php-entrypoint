@@ -22,7 +22,16 @@ bin/console doctrine:query:sql 'select * from dtb_base_info' > /dev/null 2>&1 ||
     if [ -z ${DATABASE_URL} ]; then
         cp .env.dist .env
     fi
-    composer run-script installer-scripts
+    # DBAL 4.x では SQLite の doctrine:database:create が非対応のため個別実行
+    case "${DATABASE_URL}" in
+        sqlite*)
+            bin/console doctrine:schema:create
+            bin/console eccube:fixtures:load
+            ;;
+        *)
+            composer run-script installer-scripts
+            ;;
+    esac
     composer run-script auto-scripts
     find ${APACHE_DOCUMENT_ROOT} \( -path ${APACHE_DOCUMENT_ROOT}/vendor -prune \) -or -print0 \
         | xargs -0 chown www-data:www-data
