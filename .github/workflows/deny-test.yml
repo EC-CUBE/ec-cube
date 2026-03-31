@@ -79,15 +79,15 @@ jobs:
 
       - name: Container Run
         run: |
-          docker run -e APP_ENV=prod -e APP_DEBUG=0 -e DATABASE_URL="sqlite:///var/eccube.db" -e DATABASE_SERVER_VERSION=3 -d -p 8080:80 --name eccube ec-cube
+          docker run -e APP_ENV=prod -e APP_DEBUG=0 -e DATABASE_URL="sqlite:///var/eccube.db" -e DATABASE_SERVER_VERSION=3 --log-driver=json-file --log-opt max-size=10m -d -p 8080:80 --name eccube ec-cube
           for i in $(seq 1 60); do
             status=$(docker inspect -f '{{.State.Health.Status}}' eccube 2>/dev/null || echo "dead")
             running=$(docker inspect -f '{{.State.Running}}' eccube 2>/dev/null || echo "false")
             echo "[$i] health=$status running=$running"
             if [ "$status" = "healthy" ]; then break; fi
             if [ "$running" = "false" ]; then
-              echo "=== Container exited. Full logs: ==="
-              docker logs eccube 2>&1 || true
+              echo "=== Container exited. Last 200 lines: ==="
+              docker logs --tail 200 eccube 2>&1 || true
               echo "=== End of container logs ==="
               echo "=== Exit code: ==="
               docker inspect -f '{{.State.ExitCode}}' eccube 2>/dev/null || true
