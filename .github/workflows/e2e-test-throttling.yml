@@ -84,7 +84,7 @@ jobs:
                       interval: '30 minutes'" > app/config/eccube/packages/prod/eccube_rate_limiter.yaml
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1  # v2
+        uses: shivammathur/setup-php@accd6127cb78bee3e8082180cb391013d204ef9f  # v2
         with:
           php-version: ${{ matrix.php }}
 
@@ -139,7 +139,7 @@ jobs:
 
       - name: setup-chromedriver
         if: steps.chromedriver-cache.outputs.cache-hit != 'true'
-        uses: nanasess/setup-chromedriver@fc3dc5897c11410827ed268ab625038ee63dc6fe  # master
+        uses: nanasess/setup-chromedriver@5c1220e385aca82610aa6fc7cdf1429306d50f9d  # master
 
       - name: Cache apt packages
         uses: awalsh128/cache-apt-pkgs-action@acb598e5ddbc6f68a970c5da0688d2f3a9f04d05  # latest

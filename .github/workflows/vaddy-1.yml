@@ -47,7 +47,7 @@ jobs:
           php-version: '8.1'
 
       - name: setup-chromedriver
-        uses: nanasess/setup-chromedriver@fc3dc5897c11410827ed268ab625038ee63dc6fe  # master
+        uses: nanasess/setup-chromedriver@5c1220e385aca82610aa6fc7cdf1429306d50f9d  # master
 
       - name: "VAddy: install"
         working-directory: /tmp
