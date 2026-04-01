@@ -411,13 +411,32 @@ class PluginService
         try {
             if ($extension == 'zip') {
                 $zip = new \ZipArchive();
-                $zip->open($archive);
+                $result = $zip->open($archive);
+                if ($result !== true) {
+                    throw new PluginException(trans('pluginservice.text.error.upload_failure'));
+                }
+
+                // ZIP Slip 対策: 展開先パスの検証
+                for ($i = 0; $i < $zip->numFiles; $i++) {
+                    $entryName = $zip->getNameIndex($i);
+                    if (strpos($entryName, '..') !== false
+                        || strpos($entryName, ':') !== false
+                        || strpos($entryName, '/') === 0
+                        || strpos($entryName, '\\') === 0
+                    ) {
+                        $zip->close();
+                        throw new PluginException(trans('pluginservice.text.error.upload_failure'));
+                    }
+                }
+
                 $zip->extractTo($dir);
                 $zip->close();
             } else {
                 $phar = new \PharData($archive);
                 $phar->extractTo($dir, null, true);
             }
+        } catch (PluginException $e) {
+            throw $e;
         } catch (\Exception $e) {
             throw new PluginException(trans('pluginservice.text.error.upload_failure'));
         }

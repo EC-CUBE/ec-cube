@@ -25,12 +25,12 @@ runs:
   steps:
 
     - name: Setup PHP
-      uses: nanasess/setup-php@master
+      uses: nanasess/setup-php@bc11abbf4dd060b7bfd20d03edeeb43417ebe245  # master
       with:
         php-version: '7.4'
 
     - name: setup-chromedriver
-      uses: nanasess/setup-chromedriver@master
+      uses: nanasess/setup-chromedriver@fc3dc5897c11410827ed268ab625038ee63dc6fe  # master
 
     - name: Install fonts
       shell: bash
@@ -54,7 +54,7 @@ runs:
             StrictHostKeyChecking no' >> ${HOME}/.ssh/config
 
     - name: Get Composer Cache Directory
-      uses: actions/cache@v4
+      uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306  # v5
       id: composer-cache
       with:
         path: ${{ github.workspace }}/vendor

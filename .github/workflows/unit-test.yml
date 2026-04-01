@@ -50,10 +50,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@accd6127cb78bee3e8082180cb391013d204ef9f  # v2
         with:
           php-version: ${{ matrix.php }}
           extensions: :xdebug
@@ -62,7 +62,7 @@ jobs:
         uses: ./.github/actions/composer
 
       - name: Cache Database Schema
-        uses: actions/cache@v5
+        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7  # v5
         id: schema-cache
         with:
           path: |
@@ -84,7 +84,7 @@ jobs:
           bin/console eccube:fixtures:load
 
       - name: PHPUnit
-        uses: nick-invision/retry@v3
+        uses: nick-invision/retry@ad984534de44a9489a53aefd81eb77f87c70dc60  # v4.0.0
         with:
           timeout_minutes: 10
           max_attempts: 2

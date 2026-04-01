@@ -592,4 +592,6 @@ final class EccubeEvents
     public const MAIL_ADMIN_ORDER = 'mail.admin.order';
     public const MAIL_PASSWORD_RESET = 'mail.password.reset';
     public const MAIL_PASSWORD_RESET_COMPLETE = 'mail.password.reset.complete';
+    public const MAIL_SHIPPING_NOTIFY = 'mail.shipping.notify';
+    public const MAIL_CUSTOMER_CHANGE_NOTIFY = 'mail.customer.change.notify';
 }

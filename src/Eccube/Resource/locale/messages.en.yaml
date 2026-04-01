@@ -362,6 +362,7 @@ front.shopping.shipping_send_selected_shipping: Deliver to the selected address
 front.shopping.shipping_multiple_title: Deliver to Multiple Addresses
 front.shopping.shipping_multiple_message: Please select a delivery address for each item.
 front.shppping.shipping_multiple_add_shipping: Please select a delivery address for each item.
+front.shopping.customer_update_failed: Update failed. Please check your input.
 front.shopping.confirm_title: Review Your Order
 front.shopping.checkout: Place an Order
 front.shopping.back_to_order: Go back to Checkout
@@ -1402,6 +1403,19 @@ admin.setting.system.login_history.status: Status
 
 admin.setting.system.log.line_number: Line
 admin.setting.system.log.read: Read
+admin.setting.system.log.log_level: Log Level
+admin.setting.system.log.keyword: Keyword Search
+admin.setting.system.log.keyword_placeholder: Class name, error message, etc.
+admin.setting.system.log.no_logs: No logs found
+admin.setting.system.log.level.all: All
+admin.setting.system.log.level.debug: DEBUG
+admin.setting.system.log.level.info: INFO
+admin.setting.system.log.level.notice: NOTICE
+admin.setting.system.log.level.warning: WARNING
+admin.setting.system.log.level.error: ERROR
+admin.setting.system.log.level.critical: CRITICAL
+admin.setting.system.log.level.alert: ALERT
+admin.setting.system.log.level.emergency: EMERGENCY
 
 #------------------------------------------------------------------------------------
 # Settings : System : Master Data
@@ -1487,6 +1501,7 @@ admin.store.package.api.500.error: Failed to communicate with Owners' Store. Ple
 admin.plugin.uninstall.error.not_disable: Please disable the plugin.
 admin.plugin.uninstall.depend: "Unable to delete %depend_name% because it depends on %name%."
 admin.plugin.disable.depend: "Please disable %depend_name% before disabling %name%."
+pluginservice.text.error.upload_failure: Failed to upload plugin.
 
 # TODO: Verify Message
 admin.store.plugin.popup.delete.confirm.title: Confirm the deletion of the plugin

@@ -49,6 +49,10 @@ class EF02ProductCest
 
         // TOPページ>商品一覧（ヘッダーのいずれかのカテゴリを選択）へ遷移
         $topPage->カテゴリ選択(['新入荷']);
+        $I->waitForElement(['css' => '.ec-shelfGrid__item']);
+
+        // 全商品を1ページに表示（フィクスチャ商品数によりページングされるため）
+        $listPage = ProductListPage::at($I)->表示件数設定(40);
 
         // 各商品のサムネイルが表示される デフォルトは価格順
         $products = $I->grabMultiple(['xpath' => "//*[@class='ec-shelfGrid__item']/a/p[2]"]);
@@ -65,9 +69,7 @@ class EF02ProductCest
         $I->assertTrue($pPos < $fPos);
 
         // ソート条件の選択リストを変更する
-        ProductListPage::at($I)
-            ->表示件数設定(40)
-            ->表示順設定('価格が高い順');
+        $listPage->表示順設定('価格が高い順');
 
         // 変更されたソート条件に従い、商品がソートされる
         $products = $I->grabMultiple(['xpath' => "//*[@class='ec-shelfGrid__item']/a/p[2]"]);
@@ -91,7 +93,7 @@ class EF02ProductCest
 
         // TOPページ>商品一覧（ヘッダーのいずれかのカテゴリを選択）へ遷移
         $topPage->カテゴリ選択(['新入荷']);
-        $listPage = new ProductListPage($I);
+        $listPage = ProductListPage::at($I);
 
         // 各商品のサムネイルが表示される
         $config = Fixtures::get('test_config');
@@ -114,6 +116,7 @@ class EF02ProductCest
 
         // TOPページ>商品一覧（ヘッダーのいずれかのカテゴリを選択）へ遷移
         $topPage->カテゴリ選択(['新入荷']);
+        $I->waitForElement(['css' => '.ec-shelfGrid__item']);
 
         // 絞込検索条件では、検索数が多い場合、「次へ」「前へ」「ページ番号」が表示される
         $I->scrollTo(['css' => 'li.ec-pager__item--active']);

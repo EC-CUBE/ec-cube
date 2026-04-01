@@ -59,10 +59,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@accd6127cb78bee3e8082180cb391013d204ef9f  # v2
         with:
           php-version: ${{ matrix.php }}
 
@@ -70,7 +70,7 @@ jobs:
         uses: ./.github/actions/composer
 
       - name: Cache npm dependencies
-        uses: actions/cache@v5
+        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7  # v5
         with:
           path: ~/.npm
           key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
@@ -78,7 +78,7 @@ jobs:
             ${{ runner.os }}-npm-
 
       - name: Cache build artifacts
-        uses: actions/cache@v5
+        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7  # v5
         id: build-cache
         with:
           path: |
@@ -107,10 +107,10 @@ jobs:
           bin/console eccube:fixtures:load --env=dev
 
       - name: setup-chromedriver
-        uses: nanasess/setup-chromedriver@master
+        uses: nanasess/setup-chromedriver@5c1220e385aca82610aa6fc7cdf1429306d50f9d  # master
 
       - name: Cache apt packages
-        uses: awalsh128/cache-apt-pkgs-action@latest
+        uses: awalsh128/cache-apt-pkgs-action@acb598e5ddbc6f68a970c5da0688d2f3a9f04d05  # latest
         with:
           packages: fonts-ipafont fonts-ipaexfont
           version: 1.0
@@ -158,14 +158,21 @@ jobs:
         if: |
            matrix.group != 'restrict-fileupload' &&
            matrix.group != 'change-display-order'
-        uses: nick-invision/retry@v3
+        uses: nick-invision/retry@ad984534de44a9489a53aefd81eb77f87c70dc60  # v4.0.0
         with:
           timeout_minutes: 40
           max_attempts: 2
           retry_on: error
           command: |
+            # DBはdoctrineがdev環境のカーネルで操作するため--env=devで統一
+            # (接続先DBはDATABASE_URL環境変数で決まるため環境に依存しない)
+            bin/console doctrine:schema:drop --force --env=dev
+            bin/console doctrine:schema:create --env=dev
+            bin/console eccube:fixtures:load --env=dev
+            # キャッシュはAPP_ENV=codeceptionで動作するHTTPサーバ側のものをクリアする必要があるため${APP_ENV}を使用
+            bin/console cache:clear --no-warmup --env=${APP_ENV}
             sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
-            vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP} --skip-group restrict-file-upload --skip-group change-display-order --html report.html
+            vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP} --skip-group restrict-fileupload --skip-group change-display-order --html report.html
         env:
           APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
@@ -179,12 +186,19 @@ jobs:
         if: |
           matrix.group == 'restrict-fileupload' ||
           matrix.group == 'change-display-order'
-        uses: nick-invision/retry@v3
+        uses: nick-invision/retry@ad984534de44a9489a53aefd81eb77f87c70dc60  # v4.0.0
         with:
           timeout_minutes: 40
           max_attempts: 2
           retry_on: error
           command: |
+            # DBはdoctrineがdev環境のカーネルで操作するため--env=devで統一
+            # (接続先DBはDATABASE_URL環境変数で決まるため環境に依存しない)
+            bin/console doctrine:schema:drop --force --env=dev
+            bin/console doctrine:schema:create --env=dev
+            bin/console eccube:fixtures:load --env=dev
+            # キャッシュはAPP_ENV=codeceptionで動作するHTTPサーバ側のものをクリアする必要があるため${APP_ENV}を使用
+            bin/console cache:clear --no-warmup --env=${APP_ENV}
             sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
             vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP} --html report.html
         env:
@@ -206,7 +220,7 @@ jobs:
 
       - name: Upload evidence
         if: failure()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
         with:
           name: codeception-${{ matrix.group }}-evidence
           path: codeception/_output/
@@ -215,7 +229,7 @@ jobs:
         run: ls -la
 
       - name: Upload ScreenShots
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
         with:
           name: screenshots-${{ matrix.group }}
           path: |
@@ -224,7 +238,7 @@ jobs:
 
       - name: Upload logs
         if: failure()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
         with:
           name: codeception-${{ matrix.group }}-logs
           path: var/log/
