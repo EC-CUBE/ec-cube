@@ -50,8 +50,10 @@ return RectorConfig::configure()
                // 特定のファイルやディレクトリを除外する場合
                __DIR__ . '/src/Eccube/Rector',
                // 特定のルールを除外する場合
-               // AbstractController::$entityManager と再宣言衝突するため（InstallController 等）
-               ControllerMethodInjectionToConstructorRector::class,
+               // 親の $entityManager 再宣言と step5 の接続専用 EM の取り違えを防ぐため
+               InstallControllerEMReinjectionRector::class => [
+                __DIR__.'/src/Eccube/Controller/Install/InstallController.php',
+            ],
                // 8.3以上で対応可能
                AddTypeToConstRector::class, // [BC]定数に型を追加する PHP 8.3 以降で有効
                RenameMethodRector::class, //addがaddCommandに変換されてしまうため一旦スキップ
