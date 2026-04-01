@@ -144,7 +144,7 @@ file that was distributed with this source code.
                                 {% set Product = ProductClass.Product %}
                                 <ul class="ec-cartRow">
                                     <li class="ec-cartRow__delColumn">
-                                        <a href="{{ url('cart_handle_item', {'operation': 'remove', 'productClassId': ProductClass.id }) }}" {{ csrf_token_for_anchor() }} class="ec-icon" data-method="put" data-message="カートから商品を削除してもよろしいですか?">
+                                        <a href="{{ url('cart_handle_item', {'operation': 'remove', 'productClassId': ProductClass.id }) }}" {{ csrf_token_for_anchor() }} class="ec-icon" data-method="put" data-message="{{ 'front.cart.delete__confirm'|trans }}">
                                             <img src="{{ asset('assets/icon/cross.svg') }}" alt="delete">
                                         </a>
                                     </li>

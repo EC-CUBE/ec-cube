@@ -241,3 +241,11 @@ services:
     Eccube\Util\CacheUtil:
         arguments:
             $container: !tagged_locator { tag: 'cache.pool.clearer' }
+
+    Eccube\Asset\FilemtimeVersionStrategy:
+        arguments:
+            - '%eccube_html_dir%/user_data'
+
+    eccube.asset.user_data_version_strategy:
+        alias: Eccube\Asset\FilemtimeVersionStrategy
+        public: true

@@ -37,6 +37,7 @@ framework:
           base_path: '/html/upload/temp_image'
         user_data:
           base_path: '/html/user_data'
+          version_strategy: 'eccube.asset.user_data_version_strategy'
         bundle:
           base_path: '/html/bundle'
         # json_manifest_path: '%kernel.project_dir%/public/build/manifest.json'

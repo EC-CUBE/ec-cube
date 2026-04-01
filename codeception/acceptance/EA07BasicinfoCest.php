@@ -47,6 +47,7 @@ use Page\Front\TopPage;
 /**
  * @group admin
  * @group admin03
+ * @group admin03-a
  * @group basicinformation
  * @group ea7
  */
@@ -160,7 +161,6 @@ class EA07BasicinfoCest
             ->登録();
 
         MyPage::go($I)->注文履歴();
-        $I->wait(1);
         $I->waitForText('ご注文状況', 10, '.ec-historyRole');
     }
 

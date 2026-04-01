@@ -472,4 +472,225 @@ class OrderRepository extends AbstractRepository
         $Customer->setFirstBuyDate($FirstOrder->getOrderDate());
         $Customer->setLastBuyDate($LastOrder->getOrderDate());
     }
+
+    /**
+     * 管理画面用検索条件でのカウント（JOIN不要の高速版）
+     *
+     * このメソッドはJOINを含まないシンプルなCOUNTクエリを実行することで、
+     * KnpPaginatorのデフォルトCOUNT(DISTINCT)による性能問題を回避します。
+     *
+     * @param array $searchData
+     *
+     * @return int
+     */
+    public function countBySearchDataForAdmin($searchData)
+    {
+        $qb = $this->createQueryBuilder('o')
+            ->select('COUNT(o.id)');
+
+        // order_id
+        if (isset($searchData['order_id']) && StringUtil::isNotBlank($searchData['order_id'])) {
+            $qb
+                ->andWhere('o.id = :order_id')
+                ->setParameter('order_id', $searchData['order_id']);
+        }
+
+        // order_no
+        if (isset($searchData['order_no']) && StringUtil::isNotBlank($searchData['order_no'])) {
+            $qb
+                ->andWhere('o.order_no = :order_no')
+                ->setParameter('order_no', $searchData['order_no']);
+        }
+
+        // order_id_start
+        if (isset($searchData['order_id_start']) && StringUtil::isNotBlank($searchData['order_id_start'])) {
+            $qb
+                ->andWhere('o.id >= :order_id_start')
+                ->setParameter('order_id_start', $searchData['order_id_start']);
+        }
+
+        // multi
+        if (isset($searchData['multi']) && StringUtil::isNotBlank($searchData['multi'])) {
+            $clean_key_multi = preg_replace('/\s+|[　]+/u', '', $searchData['multi']);
+            $multi = preg_match('/^\d{0,10}$/', $clean_key_multi) ? $clean_key_multi : null;
+            if ($multi && $multi > '2147483647' && $this->isPostgreSQL()) {
+                $multi = null;
+            }
+            $qb
+                ->andWhere('o.id = :multi OR CONCAT(o.name01, o.name02) LIKE :likemulti OR '.
+                    "CONCAT(COALESCE(o.kana01, ''), COALESCE(o.kana02, '')) LIKE :likemulti OR o.company_name LIKE :multi_company_name OR ".
+                    'o.order_no LIKE :likemulti OR o.email LIKE :likemulti OR o.phone_number LIKE :likemulti')
+                ->setParameter('multi', $multi)
+                ->setParameter('likemulti', '%'.$clean_key_multi.'%')
+                ->setParameter('multi_company_name', '%'.$searchData['multi'].'%');
+        }
+
+        // order_id_end
+        if (isset($searchData['order_id_end']) && StringUtil::isNotBlank($searchData['order_id_end'])) {
+            $qb
+                ->andWhere('o.id <= :order_id_end')
+                ->setParameter('order_id_end', $searchData['order_id_end']);
+        }
+
+        // status
+        $filterStatus = false;
+        if (!empty($searchData['status']) && count($searchData['status'])) {
+            $qb
+                ->andWhere($qb->expr()->in('o.OrderStatus', ':status'))
+                ->setParameter('status', $searchData['status']);
+            $filterStatus = true;
+        }
+
+        if (!$filterStatus) {
+            // 購入処理中, 決済処理中は検索対象から除外
+            $qb->andWhere($qb->expr()->notIn('o.OrderStatus', ':status'))
+                ->setParameter('status', [OrderStatus::PROCESSING, OrderStatus::PENDING]);
+        }
+
+        // company_name
+        if (isset($searchData['company_name']) && StringUtil::isNotBlank($searchData['company_name'])) {
+            $qb
+                ->andWhere('o.company_name LIKE :company_name')
+                ->setParameter('company_name', '%'.$searchData['company_name'].'%');
+        }
+
+        // name
+        if (isset($searchData['name']) && StringUtil::isNotBlank($searchData['name'])) {
+            $clean_name = preg_replace('/\s+|[　]+/u', '', $searchData['name']);
+            $qb
+                ->andWhere('CONCAT(o.name01, o.name02) LIKE :name')
+                ->setParameter('name', '%'.$clean_name.'%');
+        }
+
+        // kana
+        if (isset($searchData['kana']) && StringUtil::isNotBlank($searchData['kana'])) {
+            $clean_kana = preg_replace('/\s+|[　]+/u', '', $searchData['kana']);
+            $qb
+                ->andWhere("CONCAT(COALESCE(o.kana01, ''), COALESCE(o.kana02, '')) LIKE :kana")
+                ->setParameter('kana', '%'.$clean_kana.'%');
+        }
+
+        // email
+        if (isset($searchData['email']) && StringUtil::isNotBlank($searchData['email'])) {
+            $qb
+                ->andWhere('o.email like :email')
+                ->setParameter('email', '%'.$searchData['email'].'%');
+        }
+
+        // tel
+        if (isset($searchData['phone_number']) && StringUtil::isNotBlank($searchData['phone_number'])) {
+            $tel = preg_replace('/[^0-9]/', '', $searchData['phone_number']);
+            $qb
+                ->andWhere('o.phone_number LIKE :phone_number')
+                ->setParameter('phone_number', '%'.$tel.'%');
+        }
+
+        // sex
+        if (!empty($searchData['sex']) && count($searchData['sex']) > 0) {
+            $qb
+                ->andWhere($qb->expr()->in('o.Sex', ':sex'))
+                ->setParameter('sex', $searchData['sex']->toArray());
+        }
+
+        // payment (注: LEFT JOINが必要なのでカウントには含めない)
+        // buy_product_name (注: OrderItemsとのJOINが必要なのでカウントには含めない)
+        // shipping関連 (注: Shippingsとの INNER JOINが必要なのでカウントには含めない)
+
+        // order_date
+        if (!empty($searchData['order_datetime_start']) && $searchData['order_datetime_start']) {
+            $date = $searchData['order_datetime_start'];
+            $qb
+                ->andWhere('o.order_date >= :order_date_start')
+                ->setParameter('order_date_start', $date);
+        } elseif (!empty($searchData['order_date_start']) && $searchData['order_date_start']) {
+            $date = $searchData['order_date_start'];
+            $qb
+                ->andWhere('o.order_date >= :order_date_start')
+                ->setParameter('order_date_start', $date);
+        }
+
+        if (!empty($searchData['order_datetime_end']) && $searchData['order_datetime_end']) {
+            $date = $searchData['order_datetime_end'];
+            $qb
+                ->andWhere('o.order_date < :order_date_end')
+                ->setParameter('order_date_end', $date);
+        } elseif (!empty($searchData['order_date_end']) && $searchData['order_date_end']) {
+            $date = clone $searchData['order_date_end'];
+            $date = $date
+                ->modify('+1 days');
+            $qb
+                ->andWhere('o.order_date < :order_date_end')
+                ->setParameter('order_date_end', $date);
+        }
+
+        // payment_date
+        if (!empty($searchData['payment_datetime_start']) && $searchData['payment_datetime_start']) {
+            $date = $searchData['payment_datetime_start'];
+            $qb
+                ->andWhere('o.payment_date >= :payment_date_start')
+                ->setParameter('payment_date_start', $date);
+        } elseif (!empty($searchData['payment_date_start']) && $searchData['payment_date_start']) {
+            $date = $searchData['payment_date_start'];
+            $qb
+                ->andWhere('o.payment_date >= :payment_date_start')
+                ->setParameter('payment_date_start', $date);
+        }
+
+        if (!empty($searchData['payment_datetime_end']) && $searchData['payment_datetime_end']) {
+            $date = $searchData['payment_datetime_end'];
+            $qb
+                ->andWhere('o.payment_date < :payment_date_end')
+                ->setParameter('payment_date_end', $date);
+        } elseif (!empty($searchData['payment_date_end']) && $searchData['payment_date_end']) {
+            $date = clone $searchData['payment_date_end'];
+            $date = $date
+                ->modify('+1 days');
+            $qb
+                ->andWhere('o.payment_date < :payment_date_end')
+                ->setParameter('payment_date_end', $date);
+        }
+
+        // update_date
+        if (!empty($searchData['update_datetime_start']) && $searchData['update_datetime_start']) {
+            $date = $searchData['update_datetime_start'];
+            $qb
+                ->andWhere('o.update_date >= :update_date_start')
+                ->setParameter('update_date_start', $date);
+        } elseif (!empty($searchData['update_date_start']) && $searchData['update_date_start']) {
+            $date = $searchData['update_date_start'];
+            $qb
+                ->andWhere('o.update_date >= :update_date_start')
+                ->setParameter('update_date_start', $date);
+        }
+
+        if (!empty($searchData['update_datetime_end']) && $searchData['update_datetime_end']) {
+            $date = $searchData['update_datetime_end'];
+            $qb
+                ->andWhere('o.update_date < :update_date_end')
+                ->setParameter('update_date_end', $date);
+        } elseif (!empty($searchData['update_date_end']) && $searchData['update_date_end']) {
+            $date = clone $searchData['update_date_end'];
+            $date = $date
+                ->modify('+1 days');
+            $qb
+                ->andWhere('o.update_date < :update_date_end')
+                ->setParameter('update_date_end', $date);
+        }
+
+        // payment_total
+        if (isset($searchData['payment_total_start']) && StringUtil::isNotBlank($searchData['payment_total_start'])) {
+            $qb
+                ->andWhere('o.payment_total >= :payment_total_start')
+                ->setParameter('payment_total_start', $searchData['payment_total_start']);
+        }
+        if (isset($searchData['payment_total_end']) && StringUtil::isNotBlank($searchData['payment_total_end'])) {
+            $qb
+                ->andWhere('o.payment_total <= :payment_total_end')
+                ->setParameter('payment_total_end', $searchData['payment_total_end']);
+        }
+
+        $qb = $this->queries->customize(QueryKey::ORDER_SEARCH_ADMIN, $qb, $searchData);
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
 }
