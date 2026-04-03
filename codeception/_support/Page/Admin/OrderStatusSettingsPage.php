@@ -19,14 +19,6 @@ class OrderStatusSettingsPage extends AbstractAdminPageStyleGuide
     public static $名称_マイページ = '#form_OrderStatuses_0_customer_order_status_name';
     public static $名称_管理 = '#form_OrderStatuses_0_name';
 
-    /**
-     * CsvSettingsPage constructor.
-     */
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     public static function go($I)
     {
         $page = new self($I);

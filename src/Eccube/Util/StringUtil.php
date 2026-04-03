@@ -14,6 +14,7 @@
 namespace Eccube\Util;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Random\RandomException;
 
 class StringUtil
 {
@@ -46,18 +47,13 @@ class StringUtil
      */
     public static function random(int $length = 16): string
     {
-        if (function_exists('openssl_random_pseudo_bytes')) {
-            $bytes = openssl_random_pseudo_bytes($length * 2);
-
-            /** @phpstan-ignore-next-line */
-            if ($bytes === false) {
-                throw new \RuntimeException('Unable to generate random string.');
-            }
-
-            return substr(str_replace(['/', '+', '='], '', base64_encode($bytes)), 0, $length);
+        try {
+            $bytes = random_bytes($length * 2);
+        } catch (RandomException) {
+            return static::quickRandom($length);
         }
 
-        return static::quickRandom($length);
+        return substr(str_replace(['/', '+', '='], '', base64_encode($bytes)), 0, $length);
     }
 
     /**
@@ -145,7 +141,7 @@ class StringUtil
         }
 
         $now = new \DateTime();
-        if (!($date instanceof \DateTime)) {
+        if (!$date instanceof \DateTime) {
             $date = new \DateTime($date);
         }
         $diff = $date->diff($now, true);
@@ -207,11 +203,10 @@ class StringUtil
                     @trigger_error($deprecated, E_USER_DEPRECATED);
 
                     return true;
-                } else {
-                    @trigger_error($deprecated, E_USER_DEPRECATED);
-
-                    return false;
                 }
+                @trigger_error($deprecated, E_USER_DEPRECATED);
+
+                return false;
             }
             @trigger_error($deprecated, E_USER_DEPRECATED);
 
@@ -236,11 +231,10 @@ class StringUtil
                 @trigger_error($deprecated, E_USER_DEPRECATED);
 
                 return $array_result;
-            } else {
-                @trigger_error($deprecated, E_USER_DEPRECATED);
-
-                return empty($value);
             }
+            @trigger_error($deprecated, E_USER_DEPRECATED);
+
+            return empty($value);
         }
 
         if ($greedy) {

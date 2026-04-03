@@ -58,7 +58,6 @@ final class ShoppingControllerWithMultipleTest extends AbstractShoppingControlle
 
     private ?OrderStatusRepository $orderStatusRepository = null;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -70,7 +69,6 @@ final class ShoppingControllerWithMultipleTest extends AbstractShoppingControlle
     /**
      * tearDown: rollback and clear mail
      */
-    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();

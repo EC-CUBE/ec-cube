@@ -37,7 +37,7 @@ class CategoryController extends AbstractController
     /**
      * CategoryController constructor.
      */
-    public function __construct(protected CsvExportService $csvExportService, protected CategoryRepository $categoryRepository)
+    public function __construct(protected CsvExportService $csvExportService, protected CategoryRepository $categoryRepository, private readonly CacheUtil $cacheUtil)
     {
     }
 
@@ -53,7 +53,7 @@ class CategoryController extends AbstractController
     #[Route(path: '/%eccube_admin_route%/product/category/{parent_id}', name: 'admin_product_category_show', requirements: ['parent_id' => "\d+"], methods: ['GET', 'POST'])]
     #[Route(path: '/%eccube_admin_route%/product/category/{id}/edit', name: 'admin_product_category_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Product/category.twig')]
-    public function index(Request $request, CacheUtil $cacheUtil, $parent_id = null, $id = null): RedirectResponse|array
+    public function index(Request $request, $parent_id = null, $id = null): RedirectResponse|array
     {
         if ($parent_id) {
             /** @var Category|null $Parent */
@@ -133,13 +133,13 @@ class CategoryController extends AbstractController
 
                 $this->addSuccess('admin.common.save_complete', 'admin');
 
-                $cacheUtil->clearDoctrineCache();
+                $this->cacheUtil->clearDoctrineCache();
 
                 if ($Parent) {
                     return $this->redirectToRoute('admin_product_category_show', ['parent_id' => $Parent->getId()]);
-                } else {
-                    return $this->redirectToRoute('admin_product_category');
                 }
+
+                return $this->redirectToRoute('admin_product_category');
             }
 
             foreach ($forms as $editForm) {
@@ -164,13 +164,13 @@ class CategoryController extends AbstractController
 
                     $this->addSuccess('admin.common.save_complete', 'admin');
 
-                    $cacheUtil->clearDoctrineCache();
+                    $this->cacheUtil->clearDoctrineCache();
 
                     if ($Parent) {
                         return $this->redirectToRoute('admin_product_category_show', ['parent_id' => $Parent->getId()]);
-                    } else {
-                        return $this->redirectToRoute('admin_product_category');
                     }
+
+                    return $this->redirectToRoute('admin_product_category');
                 }
             }
         }
@@ -208,7 +208,7 @@ class CategoryController extends AbstractController
      * @throws \Exception
      */
     #[Route(path: '/%eccube_admin_route%/product/category/{id}/delete', name: 'admin_product_category_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, $id, CacheUtil $cacheUtil): RedirectResponse
+    public function delete(Request $request, $id): RedirectResponse
     {
         $this->isTokenValid();
 
@@ -237,7 +237,7 @@ class CategoryController extends AbstractController
 
             log_info('カテゴリ削除完了', [$id]);
 
-            $cacheUtil->clearDoctrineCache();
+            $this->cacheUtil->clearDoctrineCache();
         } catch (\Exception $e) {
             log_info('カテゴリ削除エラー', [$id, $e]);
 
@@ -247,16 +247,16 @@ class CategoryController extends AbstractController
 
         if ($Parent) {
             return $this->redirectToRoute('admin_product_category_show', ['parent_id' => $Parent->getId()]);
-        } else {
-            return $this->redirectToRoute('admin_product_category');
         }
+
+        return $this->redirectToRoute('admin_product_category');
     }
 
     /**
      * @throws BadRequestHttpException|\Exception
      */
     #[Route(path: '/%eccube_admin_route%/product/category/sort_no/move', name: 'admin_product_category_sort_no_move', methods: ['POST'])]
-    public function moveSortNo(Request $request, CacheUtil $cacheUtil): Response
+    public function moveSortNo(Request $request): Response
     {
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();
@@ -273,7 +273,7 @@ class CategoryController extends AbstractController
             }
             $this->entityManager->flush();
 
-            $cacheUtil->clearDoctrineCache();
+            $this->cacheUtil->clearDoctrineCache();
 
             return new Response('Successful');
         }

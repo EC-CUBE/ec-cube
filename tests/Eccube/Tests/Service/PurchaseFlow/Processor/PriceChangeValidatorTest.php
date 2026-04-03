@@ -35,11 +35,9 @@ final class PriceChangeValidatorTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->Product = $this->createProduct('テスト商品', 1);
         $this->ProductClass = $this->Product->getProductClasses()[0];
         $this->validator = static::getContainer()->get(PriceChangeValidator::class);

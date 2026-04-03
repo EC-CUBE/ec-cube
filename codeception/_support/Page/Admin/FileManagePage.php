@@ -15,14 +15,6 @@ namespace Page\Admin;
 
 class FileManagePage extends AbstractAdminPageStyleGuide
 {
-    /**
-     * FileManagePage constructor.
-     */
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     public static function go($I)
     {
         $page = new self($I);

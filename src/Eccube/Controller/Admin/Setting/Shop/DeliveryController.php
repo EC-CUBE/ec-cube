@@ -47,7 +47,7 @@ class DeliveryController extends AbstractController
     /**
      * DeliveryController constructor.
      */
-    public function __construct(protected PaymentOptionRepository $paymentOptionRepository, protected DeliveryFeeRepository $deliveryFeeRepository, protected PrefRepository $prefRepository, protected DeliveryRepository $deliveryRepository, protected DeliveryTimeRepository $deliveryTimeRepository, protected SaleTypeRepository $saleTypeRepository)
+    public function __construct(protected PaymentOptionRepository $paymentOptionRepository, protected DeliveryFeeRepository $deliveryFeeRepository, protected PrefRepository $prefRepository, protected DeliveryRepository $deliveryRepository, protected DeliveryTimeRepository $deliveryTimeRepository, protected SaleTypeRepository $saleTypeRepository, private readonly EccubeExtension $extension)
     {
     }
 
@@ -84,7 +84,7 @@ class DeliveryController extends AbstractController
     #[Route(path: '/%eccube_admin_route%/setting/shop/delivery/new', name: 'admin_setting_shop_delivery_new', methods: ['GET', 'POST'])]
     #[Route(path: '/%eccube_admin_route%/setting/shop/delivery/{id}/edit', name: 'admin_setting_shop_delivery_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Setting/Shop/delivery_edit.twig')]
-    public function edit(Request $request, EccubeExtension $extension, $id = null): RedirectResponse|array
+    public function edit(Request $request, $id = null): RedirectResponse|array
     {
         if (is_null($id)) {
             $SaleType = $this->saleTypeRepository->findOneBy([], ['sort_no' => 'ASC']);
@@ -238,8 +238,8 @@ class DeliveryController extends AbstractController
                     if (count($mergedRules) > 1) {
                         for ($i = 1; $i < count($mergedRules); $i++) {
                             $message = trans('admin.setting.shop.delivery.payment_warning', [
-                                '%min%' => $extension->getPriceFilter($mergedRules[$i - 1]['max']),
-                                '%max%' => $extension->getPriceFilter($mergedRules[$i]['min'] - 1),
+                                '%min%' => $this->extension->getPriceFilter($mergedRules[$i - 1]['max']),
+                                '%max%' => $this->extension->getPriceFilter($mergedRules[$i]['min'] - 1),
                             ]);
                             $this->addWarning($message, 'admin');
                         }
@@ -361,8 +361,8 @@ class DeliveryController extends AbstractController
     {
         // 手数料抜きの利用条件の一覧を作成
         $rules = array_map(fn (Payment $Payment) => [
-            'min' => $Payment->getRuleMin() ? $Payment->getRuleMin() - $Payment->getCharge() : 0, // @phpstan-ignore-line TODO bcmath-polyfill を使用する
-            'max' => $Payment->getRuleMax() ? $Payment->getRuleMax() - $Payment->getCharge() + 1 : PHP_INT_MAX, // @phpstan-ignore-line TODO bcmath-polyfill を使用する
+            'min' => $Payment->getRuleMin() ? bcsub($Payment->getRuleMin(), $Payment->getCharge() ?? '0') : '0',
+            'max' => $Payment->getRuleMax() ? bcadd(bcsub($Payment->getRuleMax(), $Payment->getCharge() ?? '0'), '1') : (string) PHP_INT_MAX,
         ], $PaymentsData);
 
         /** @var array<int, array{min: int, max: int}> $mergeRules */
@@ -387,7 +387,6 @@ class DeliveryController extends AbstractController
             }
         }
 
-        // @phpstan-ignore-next-line
         usort($mergeRules, function (array $a, array $b): int {
             if ($a['min'] == $b['min']) {
                 return 0;

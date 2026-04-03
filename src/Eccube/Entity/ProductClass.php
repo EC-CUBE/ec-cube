@@ -104,9 +104,9 @@ if (!class_exists(ProductClass::class)) {
         {
             if ($this->getStock() > 0 || $this->isStockUnlimited()) {
                 return true;
-            } else {
-                return false;
             }
+
+            return false;
         }
 
         /**
@@ -146,7 +146,6 @@ if (!class_exists(ProductClass::class)) {
         #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-        /** @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
         private ?int $id = null;
 
         #[ORM\Column(name: 'product_code', type: Types::STRING, length: 255, nullable: true)]

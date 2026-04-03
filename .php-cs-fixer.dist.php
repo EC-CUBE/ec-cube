@@ -53,4 +53,5 @@ return $config
     ->setRules($rules)
     ->setFinder($finder)
     ->setRiskyAllowed(true)
+    ->setUnsupportedPhpVersionAllowed(true)
     ;

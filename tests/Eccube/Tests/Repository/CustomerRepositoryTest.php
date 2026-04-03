@@ -41,14 +41,11 @@ final class CustomerRepositoryTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->email = 'customer@example.com';
         $this->Customer = $this->createCustomer($this->email);
-
         $this->customerRepo = $this->entityManager->getRepository(Customer::class);
         $this->masterOrderStatusRepo = $this->entityManager->getRepository(OrderStatus::class);
     }

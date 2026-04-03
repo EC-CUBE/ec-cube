@@ -17,11 +17,6 @@ class MailSettingsPage extends AbstractAdminPageStyleGuide
 {
     public static $登録完了メッセージ = '#page_admin_setting_shop_mail_edit > div.c-container > div.c-contentsArea > div.alert.alert-success.alert-dismissible.fade.show.m-3 > span';
 
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     public static function go($I)
     {
         $page = new self($I);

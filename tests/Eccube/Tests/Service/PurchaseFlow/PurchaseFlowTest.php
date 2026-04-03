@@ -36,11 +36,9 @@ final class PurchaseFlowTest extends EccubeTestCase
 {
     protected ?PurchaseFlow $flow = null;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->flow = new PurchaseFlow();
     }
 

@@ -32,11 +32,9 @@ final class PaymentControllerTest extends AbstractAdminWebTestCase
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->paymentRepository = $this->entityManager->getRepository(Payment::class);
         $this->imageDir = sys_get_temp_dir().'/'.sha1((string) mt_rand());
         $fs = new Filesystem();
@@ -46,7 +44,6 @@ final class PaymentControllerTest extends AbstractAdminWebTestCase
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function tearDown(): void
     {
         $fs = new Filesystem();

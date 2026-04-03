@@ -40,9 +40,9 @@ class WhereClause
             return new WhereClause($expr, $y);
         } elseif ($y === null) {
             return new WhereClause($expr, [$x => null]);
-        } else {
-            return new WhereClause($expr, [$x => $y]);
         }
+
+        return new WhereClause($expr, [$x => $y]);
     }
 
     /**

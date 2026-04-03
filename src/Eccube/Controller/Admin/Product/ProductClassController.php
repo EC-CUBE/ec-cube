@@ -43,7 +43,7 @@ class ProductClassController extends AbstractController
     /**
      * ProductClassController constructor.
      */
-    public function __construct(protected ProductRepository $productRepository, protected ProductClassRepository $productClassRepository, protected ClassCategoryRepository $classCategoryRepository, protected BaseInfoRepository $baseInfoRepository, protected TaxRuleRepository $taxRuleRepository)
+    public function __construct(protected ProductRepository $productRepository, protected ProductClassRepository $productClassRepository, protected ClassCategoryRepository $classCategoryRepository, protected BaseInfoRepository $baseInfoRepository, protected TaxRuleRepository $taxRuleRepository, private readonly CacheUtil $cacheUtil)
     {
     }
 
@@ -58,7 +58,7 @@ class ProductClassController extends AbstractController
      */
     #[Route(path: '/%eccube_admin_route%/product/product/class/{id}', name: 'admin_product_product_class', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Product/product_class.twig')]
-    public function index(Request $request, $id, CacheUtil $cacheUtil): RedirectResponse|array
+    public function index(Request $request, $id): RedirectResponse|array
     {
         $Product = $this->findProduct($id);
         if (!$Product) {
@@ -97,7 +97,7 @@ class ProductClassController extends AbstractController
 
                 $this->addSuccess('admin.common.save_complete', 'admin');
 
-                $cacheUtil->clearDoctrineCache();
+                $this->cacheUtil->clearDoctrineCache();
 
                 if ($request->get('return_product_list')) {
                     return $this->redirectToRoute('admin_product_product_class', ['id' => $Product->getId(), 'return_product_list' => true]);
@@ -138,7 +138,7 @@ class ProductClassController extends AbstractController
 
                         $this->addSuccess('admin.common.save_complete', 'admin');
 
-                        $cacheUtil->clearDoctrineCache();
+                        $this->cacheUtil->clearDoctrineCache();
 
                         if ($request->get('return_product_list')) {
                             return $this->redirectToRoute('admin_product_product_class', ['id' => $Product->getId(), 'return_product_list' => true]);
@@ -166,7 +166,7 @@ class ProductClassController extends AbstractController
      * @throws ForeignKeyConstraintViolationException|\Exception
      */
     #[Route(path: '/%eccube_admin_route%/product/product/class/{id}/clear', name: 'admin_product_product_class_clear', requirements: ['id' => '\d+'], methods: ['POST'])]
-    public function clearProductClasses(Request $request, Product $Product, CacheUtil $cacheUtil): RedirectResponse
+    public function clearProductClasses(Request $request, Product $Product): RedirectResponse
     {
         if (!$Product->hasProductClass()) {
             return $this->redirectToRoute('admin_product_product_class', ['id' => $Product->getId()]);
@@ -201,7 +201,7 @@ class ProductClassController extends AbstractController
 
                 $this->addSuccess('admin.product.reset_complete', 'admin');
 
-                $cacheUtil->clearDoctrineCache();
+                $this->cacheUtil->clearDoctrineCache();
             } catch (ForeignKeyConstraintViolationException $e) {
                 log_error('商品規格の初期化失敗', [$e]);
 

@@ -19,14 +19,6 @@ class MasterDataManagePage extends AbstractAdminPageStyleGuide
 
     protected \AcceptanceTester $tester;
 
-    /**
-     * ProductListPage constructor.
-     */
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     public static function go(\AcceptanceTester $I)
     {
         $page = new MasterDataManagePage($I);

@@ -37,24 +37,19 @@ final class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
      *
      * @throws \ReflectionException
      */
-    #[\Override]
     protected function setUp(): void
     {
         // Fixme: because the proxy entity still not working, it's can not help to run this test case
         $this->markTestIncomplete('Fatal error: Cannot declare class Eccube\Entity\BaseInfo, because the name is already in use in app\proxy\entity\BaseInfo.php on line 28');
-
         parent::setUp();
-
         $this->mockSchemaService = $this->createMock(SchemaService::class);
         $this->service = static::getContainer()->get(PluginService::class);
         $rc = new \ReflectionClass($this->service);
         $prop = $rc->getProperty('schemaService');
         $prop->setValue($this->service, $this->mockSchemaService);
-
         $this->pluginRepository = $this->entityManager->getRepository(Plugin::class);
     }
 
-    #[\Override]
     protected function tearDown(): void
     {
         $finder = new Finder();
@@ -62,22 +57,18 @@ final class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
             ->in(static::getContainer()->getParameter('kernel.project_dir').'/app/Plugin')
             ->name('dummy*')
             ->directories();
-
         $dirs = [];
         foreach ($iterator as $dir) {
             $dirs[] = $dir->getPathName();
         }
-
         foreach ($dirs as $dir) {
             $this->deleteFile($dir);
         }
-
         $files = Finder::create()
             ->in(static::getContainer()->getParameter('kernel.project_dir').'/app/proxy/entity')
             ->files();
         $f = new Filesystem();
         $f->remove($files);
-
         parent::tearDown();
     }
 

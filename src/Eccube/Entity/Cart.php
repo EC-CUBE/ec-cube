@@ -40,7 +40,6 @@ if (!class_exists(Cart::class)) {
         #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-        /** @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
         private ?int $id = null;
 
         #[ORM\Column(name: 'cart_key', type: Types::STRING, nullable: true)]
@@ -86,7 +85,6 @@ if (!class_exists(Cart::class)) {
         /**
          * @var InvalidItemException[]
          */
-        /** @phpstan-ignore-next-line */
         private array $errors = [];
 
         public function __wakeup(): void
@@ -97,6 +95,14 @@ if (!class_exists(Cart::class)) {
         public function __construct()
         {
             $this->CartItems = new ArrayCollection();
+        }
+
+        /**
+         * @return InvalidItemException[]
+         */
+        public function getErrors(): array
+        {
+            return $this->errors;
         }
 
         /**

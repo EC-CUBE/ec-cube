@@ -24,11 +24,9 @@ final class CategoryControllerTest extends AbstractAdminWebTestCase
 {
     protected ?CategoryRepository $categoryRepository = null;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->remove();
         $this->createCategories();
         $this->client->disableReboot();

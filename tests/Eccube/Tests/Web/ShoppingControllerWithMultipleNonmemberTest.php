@@ -36,7 +36,6 @@ final class ShoppingControllerWithMultipleNonmemberTest extends AbstractShopping
 
     private ?OrderRepository $orderRepository = null;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -44,7 +43,6 @@ final class ShoppingControllerWithMultipleNonmemberTest extends AbstractShopping
         $this->orderRepository = $this->entityManager->getRepository(Order::class);
     }
 
-    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();

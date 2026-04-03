@@ -14,19 +14,18 @@
 namespace Eccube\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
-use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class Configuration implements ConfigurationInterface
 {
     /**
-     * @phpstan-ignore-next-line return.phpDocType, return.type
+     * @return TreeBuilder<'array'>
      */
     #[\Override]
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder('eccube');
+        $treeBuilder = new TreeBuilder('eccube', 'array');
         $rootNode = $treeBuilder->getRootNode();
 
         $this->addRateLimiterSection($rootNode);
@@ -35,11 +34,10 @@ class Configuration implements ConfigurationInterface
     }
 
     /**
-     * @phpstan-ignore-next-line parameter.generic
+     * @param ArrayNodeDefinition<TreeBuilder<'array'>> $rootNode
      */
-    public function addRateLimiterSection(ArrayNodeDefinition|NodeDefinition $rootNode): void
+    public function addRateLimiterSection(ArrayNodeDefinition $rootNode): void
     {
-        // @phpstan-ignore-next-line XXX ArrayNodeDefinition の筈だが、何故か NodeDefinition と判定されてしまう
         $rootNode
             ->children()
                 ->arrayNode('rate_limiter')

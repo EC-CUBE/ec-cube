@@ -22,14 +22,6 @@ class OrderEditPage extends AbstractAdminPageStyleGuide
     public static $加算ポイント = '//span[contains(text(), "加算ポイント")]/parent::div/following-sibling::div/span';
     public static $メール送信完了メッセージ = '#page_admin_order_edit > div.c-container > div.c-contentsArea > div.alert.alert-success.alert-dismissible.fade.show.m-3';
 
-    /**
-     * OrderRegisterPage constructor.
-     */
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     public static function go($I)
     {
         $page = new self($I);

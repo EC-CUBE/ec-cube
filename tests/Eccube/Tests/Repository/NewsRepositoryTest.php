@@ -28,13 +28,11 @@ final class NewsRepositoryTest extends EccubeTestCase
 {
     protected ?NewsRepository $newsRepo = null;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
         $this->newsRepo = $this->entityManager->getRepository(News::class);
         $this->removeNews();
-
         $faker = $this->getFaker();
         for ($i = 0; $i < 3; $i++) {
             $News = new News();

@@ -35,11 +35,9 @@ final class LoginHistoryRepositoryGetQueryBuilderBySearchDataAdminTest extends E
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->loginHistoryRepository = $this->entityManager->getRepository(LoginHistory::class);
         $this->Member1 = $this->createMember('member1');
         $this->LoginHistory1 = $this->createLoginHistory('member1', '127.0.0.1', LoginHistoryStatus::SUCCESS, $this->Member1);

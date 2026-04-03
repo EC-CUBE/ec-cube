@@ -38,7 +38,6 @@ final class FormUtilTest extends EccubeTestCase
         'date' => '2017-02-01',
     ];
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

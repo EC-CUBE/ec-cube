@@ -36,14 +36,12 @@ final class MainEditTypeTest extends AbstractTypeTestCase
         'meta_tags' => '',
     ];
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
         $options = [
             'csrf_protection' => false,
         ];
-
         $this->form = $this->formFactory
             ->createBuilder(MainEditType::class, $this->createPage(), $options)
             ->getForm();

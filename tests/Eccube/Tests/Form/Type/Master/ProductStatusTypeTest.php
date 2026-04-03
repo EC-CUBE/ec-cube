@@ -27,12 +27,10 @@ final class ProductStatusTypeTest extends AbstractTypeTestCase
 
     protected ?ProductStatusRepository $productStatusRepo = null;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
         $this->productStatusRepo = $this->entityManager->getRepository(ProductStatus::class);
-
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
             ->createBuilder(ProductStatusType::class, null, [

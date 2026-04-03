@@ -429,9 +429,9 @@ if (!class_exists(Product::class)) {
         {
             if (count($this->ProductImage) > 0) {
                 return $this->ProductImage[0];
-            } else {
-                return null;
             }
+
+            return null;
         }
 
         public function hasProductClass(): bool
@@ -451,7 +451,6 @@ if (!class_exists(Product::class)) {
         #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-        /**  @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
         private ?int $id = null;
 
         #[ORM\Column(name: 'name', type: Types::STRING, length: 255)]

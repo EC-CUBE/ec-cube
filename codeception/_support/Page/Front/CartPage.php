@@ -17,11 +17,6 @@ class CartPage extends AbstractFrontPage
 {
     public static $加算ポイント = '//span[contains(text(), "加算ポイント")]/../../dd/span';
 
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     public static function go($I)
     {
         $page = new self($I);

@@ -75,9 +75,9 @@ class Loader
                         return -1;
                     } elseif ($a_sortNo > $b_sortNo) {
                         return 1;
-                    } else {
-                        return 0;
                     }
+
+                    return 0;
                 }
             )
             ->files();

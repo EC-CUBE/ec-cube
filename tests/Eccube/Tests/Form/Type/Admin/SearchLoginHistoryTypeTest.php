@@ -27,11 +27,9 @@ final class SearchLoginHistoryTypeTest extends AbstractTypeTestCase
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
             ->createBuilder(SearchLoginHistoryType::class, null, ['csrf_protection' => false])

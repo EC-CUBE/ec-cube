@@ -32,11 +32,6 @@ class TradelawSettingPage extends AbstractAdminPage
     public static $その他05 = 13;
     public static $その他06 = 14;
 
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     public static function go($I): self
     {
         $page = new self($I);

@@ -37,7 +37,6 @@ final class CustomerControllerTest extends AbstractAdminWebTestCase
     /**
      * Setup
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -59,7 +58,6 @@ final class CustomerControllerTest extends AbstractAdminWebTestCase
     /**
      * tearDown
      */
-    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();
@@ -167,6 +165,7 @@ final class CustomerControllerTest extends AbstractAdminWebTestCase
     public function testIndexWithPostSearchByProductName(int $orderStatusId, string $expected)
     {
         $Customer = $this->entityManager->getRepository(Customer::class)->findOneBy([], ['id' => 'DESC']);
+        $this->assertInstanceOf(Customer::class, $Customer);
         $Order = $this->createOrder($Customer);
 
         /** @var OrderStatus $OrderStatus */

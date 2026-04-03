@@ -280,7 +280,7 @@ class PurchaseFlow implements \Stringable
     {
         $total = $itemHolder->getItems()
             ->getProductClasses()
-            ->reduce(fn ($sum, ItemInterface $item) => bcadd((string) $sum, bcmul($item->getPriceIncTax(), $item->getQuantity(), 2), 2), '0');
+            ->reduce(fn ($sum, ItemInterface $item) => bcadd($sum, bcmul($item->getPriceIncTax(), $item->getQuantity(), 2), 2), '0');
         // TODO
         if ($itemHolder instanceof Order) {
             // Order の場合は SubTotal をセットする
@@ -292,7 +292,7 @@ class PurchaseFlow implements \Stringable
     {
         $total = $itemHolder->getItems()
             ->getDeliveryFees()
-            ->reduce(fn ($sum, ItemInterface $item) => bcadd((string) $sum, bcmul($item->getPriceIncTax(), $item->getQuantity(), 2), 2), '0');
+            ->reduce(fn ($sum, ItemInterface $item) => bcadd($sum, bcmul($item->getPriceIncTax(), $item->getQuantity(), 2), 2), '0');
         $itemHolder->setDeliveryFeeTotal($total);
     }
 
@@ -300,7 +300,7 @@ class PurchaseFlow implements \Stringable
     {
         $total = $itemHolder->getItems()
             ->getDiscounts()
-            ->reduce(fn ($sum, ItemInterface $item) => bcadd((string) $sum, bcmul($item->getPriceIncTax(), $item->getQuantity(), 2), 2), '0');
+            ->reduce(fn ($sum, ItemInterface $item) => bcadd($sum, bcmul($item->getPriceIncTax(), $item->getQuantity(), 2), 2), '0');
         // TODO 後方互換のため discount には正の整数を代入する
         $itemHolder->setDiscount(bcmul((string) $total, '-1', 2));
     }
@@ -309,7 +309,7 @@ class PurchaseFlow implements \Stringable
     {
         $total = $itemHolder->getItems()
             ->getCharges()
-            ->reduce(fn ($sum, ItemInterface $item) => bcadd((string) $sum, bcmul($item->getPriceIncTax(), $item->getQuantity(), 2), 2), '0');
+            ->reduce(fn ($sum, ItemInterface $item) => bcadd($sum, bcmul($item->getPriceIncTax(), $item->getQuantity(), 2), 2), '0');
         $itemHolder->setCharge($total);
     }
 

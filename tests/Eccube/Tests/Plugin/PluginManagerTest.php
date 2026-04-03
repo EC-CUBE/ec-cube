@@ -24,7 +24,6 @@ use Plugin\MigrationSample\PluginManager;
 #[Group('plugin-service')]
 final class PluginManagerTest extends EccubeTestCase
 {
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

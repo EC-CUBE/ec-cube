@@ -36,7 +36,6 @@ final class ProductControllerTest extends AbstractWebTestCase
 
     private ?ClassCategoryRepository $classCategoryRepository = null;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

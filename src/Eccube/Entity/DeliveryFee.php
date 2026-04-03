@@ -32,7 +32,6 @@ if (!class_exists(DeliveryFee::class)) {
         #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-        /**  @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
         private ?int $id = null;
 
         #[ORM\Column(name: 'fee', type: Types::DECIMAL, precision: 12, scale: 2, options: ['unsigned' => true])]
@@ -40,6 +39,7 @@ if (!class_exists(DeliveryFee::class)) {
 
         #[ORM\ManyToOne(targetEntity: Delivery::class, inversedBy: 'DeliveryFees')]
         #[ORM\JoinColumn(name: 'delivery_id', referencedColumnName: 'id', nullable: false)]
+        // @phpstan-ignore doctrine.associationType (Formでの初期化時にnullが必要なためnullableとしている)
         private ?Delivery $Delivery = null;
 
         #[ORM\ManyToOne(targetEntity: Pref::class)]

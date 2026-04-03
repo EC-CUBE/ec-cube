@@ -17,11 +17,6 @@ class EntryPage extends AbstractFrontPage
 {
     private $formData = [];
 
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     /**
      * @param $I
      * @param $id

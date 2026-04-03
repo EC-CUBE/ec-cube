@@ -32,7 +32,6 @@ if (!class_exists(LoginHistory::class)) {
         #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-        /**  @phpstan-ignore-next-line Doctrine ORMによって自動生成されるため、setterは不要 */
         private ?int $id = null;
 
         #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -55,6 +54,7 @@ if (!class_exists(LoginHistory::class)) {
 
         #[ORM\ManyToOne(targetEntity: LoginHistoryStatus::class)]
         #[ORM\JoinColumn(name: 'login_history_status_id', referencedColumnName: 'id', nullable: false)]
+        // @phpstan-ignore doctrine.associationType (Formでの初期化時にnullが必要なためnullableとしている)
         private ?LoginHistoryStatus $Status = null;
 
         #[ORM\ManyToOne(targetEntity: Member::class)]

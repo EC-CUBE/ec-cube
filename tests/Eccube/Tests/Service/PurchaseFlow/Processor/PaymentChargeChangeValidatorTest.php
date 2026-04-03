@@ -30,13 +30,10 @@ final class PaymentChargeChangeValidatorTest extends EccubeTestCase
 
     private ?Order $Order = null;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->validator = new PaymentChargeChangeValidator();
-
         $this->Customer = $this->createCustomer();
         $this->Order = $this->createOrder($this->Customer);
     }
