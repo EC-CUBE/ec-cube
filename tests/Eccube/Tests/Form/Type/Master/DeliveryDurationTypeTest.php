@@ -27,12 +27,10 @@ final class DeliveryDurationTypeTest extends AbstractTypeTestCase
 
     protected ?DeliveryDurationRepository $deliveryDurationRepo = null;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
         $this->deliveryDurationRepo = $this->entityManager->getRepository(DeliveryDuration::class);
-
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
             ->createBuilder(DeliveryDurationType::class, null, [

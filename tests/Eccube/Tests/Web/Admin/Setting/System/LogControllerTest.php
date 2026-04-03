@@ -32,21 +32,16 @@ final class LogControllerTest extends AbstractAdminWebTestCase
     /** form Data   */
     protected $formData;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->formData = [
             '_token' => 'dummy',
             'files' => 'site_'.date('Y-m-d').'.log',
             'line_max' => '50',
         ];
-
         $logDir = static::getContainer()->getParameter('kernel.logs_dir');
-
         $this->logTest = $logDir.'/'.$this->formData['files'];
-
         if (!file_exists($this->logTest)) {
             file_put_contents($this->logTest, 'test');
         }
@@ -55,7 +50,6 @@ final class LogControllerTest extends AbstractAdminWebTestCase
     /**
      * rollback
      */
-    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();

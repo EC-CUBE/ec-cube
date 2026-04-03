@@ -36,7 +36,6 @@ final class ShippingControllerTest extends AbstractEditControllerTestCase
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

@@ -183,7 +183,7 @@ class AcceptanceTester extends Actor
         $downloadDir = __DIR__.'/_downloads/';
         $files = scandir($downloadDir);
         $files = array_map(fn ($fileName) => $downloadDir.$fileName, $files);
-        $files = array_filter($files, fn ($f) => is_file($f) && preg_match($fileNameRegex, basename($f)));
+        $files = array_filter($files, fn ($f) => is_file($f) && preg_match($fileNameRegex, basename((string) $f)));
         usort($files, fn ($l, $r) => filemtime($l) - filemtime($r));
 
         if (empty($files)) {
@@ -256,7 +256,7 @@ class AcceptanceTester extends Actor
     /**
      * AcceptanceTesterActions から移植
      *
-     * @see \Codeception\Module\WebDriver::see()
+     * @see Codeception\Module\WebDriver::see()
      *
      * @param mixed|null $selector
      */
@@ -269,7 +269,7 @@ class AcceptanceTester extends Actor
     /**
      * AcceptanceTesterActions から移植
      *
-     * @see \Codeception\Module\WebDriver::seeInField()
+     * @see Codeception\Module\WebDriver::seeInField()
      */
     public function seeInField(mixed $field, mixed $value): void
     {
@@ -280,7 +280,7 @@ class AcceptanceTester extends Actor
     /**
      * AcceptanceTesterActions から移植
      *
-     * @see \Codeception\Module\WebDriver::waitForText()
+     * @see Codeception\Module\WebDriver::waitForText()
      *
      * @param mixed|null $selector
      */
@@ -293,7 +293,7 @@ class AcceptanceTester extends Actor
     /**
      * AcceptanceTesterActions から移植
      *
-     * @see \Codeception\Module\WebDriver::amOnPage()
+     * @see Codeception\Module\WebDriver::amOnPage()
      */
     public function amOnPage(mixed $page): void
     {
@@ -307,7 +307,7 @@ class AcceptanceTester extends Actor
      *
      * @param mixed|null $context
      *
-     * @see \Codeception\Module\WebDriver::click()
+     * @see Codeception\Module\WebDriver::click()
      */
     public function click(string|array $link, mixed $context = null): void
     {

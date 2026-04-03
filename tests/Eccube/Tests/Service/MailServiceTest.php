@@ -46,7 +46,6 @@ final class MailServiceTest extends AbstractServiceTestCase
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -54,7 +53,6 @@ final class MailServiceTest extends AbstractServiceTestCase
         $this->Order = $this->createOrder($this->Customer);
         $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
         $this->mailService = static::getContainer()->get(MailService::class);
-
         $request = Request::createFromGlobals();
         static::getContainer()->get(RequestStack::class)->push($request);
         $twig = static::getContainer()->get(Environment::class);

@@ -25,7 +25,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 final class MasterdataControllerTest extends AbstractAdminWebTestCase
 {
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

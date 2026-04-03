@@ -37,11 +37,9 @@ final class PluginServiceWithExceptionTest extends AbstractServiceTestCase
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->pluginRepository = $this->entityManager->getRepository(Plugin::class);
         $this->pluginService = static::getContainer()->get(PluginService::class);
     }

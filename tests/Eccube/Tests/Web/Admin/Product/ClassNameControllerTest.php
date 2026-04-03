@@ -36,7 +36,6 @@ final class ClassNameControllerTest extends AbstractAdminWebTestCase
 
     private ?ClassNameRepository $classNameRepo = null;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -45,7 +44,6 @@ final class ClassNameControllerTest extends AbstractAdminWebTestCase
         $this->classNameRepo = $this->entityManager->getRepository(ClassName::class);
         $this->Member = $this->entityManager->getRepository(Member::class)->find(1);
         $this->removeClass();
-
         for ($i = 0; $i < 3; $i++) {
             $ClassName = new ClassName();
             $ClassName

@@ -60,6 +60,7 @@ class ProductController extends AbstractController
         BaseInfoRepository $baseInfoRepository,
         protected AuthenticationUtils $helper,
         protected ProductListMaxRepository $productListMaxRepository,
+        private readonly PaginatorInterface $paginator,
     ) {
         $this->purchaseFlow = $cartPurchaseFlow;
         $this->BaseInfo = $baseInfoRepository->get();
@@ -72,7 +73,7 @@ class ProductController extends AbstractController
      */
     #[Route(path: '/products/list', name: 'product_list', methods: ['GET'])]
     #[Template(template: 'Product/list.twig')]
-    public function index(Request $request, PaginatorInterface $paginator): array
+    public function index(Request $request): array
     {
         // Doctrine SQLFilter
         if ($this->BaseInfo->isOptionNostockHidden()) {
@@ -123,7 +124,7 @@ class ProductController extends AbstractController
             ->enableResultCache($this->eccubeConfig['eccube_result_cache_lifetime_short']);
 
         /** @var SlidingPagination<int, Product> $pagination */
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $query,
             !empty($searchData['pageno']) && preg_match('/^\d+$/', (string) $searchData['pageno']) ? $searchData['pageno'] : 1,
             !empty($searchData['disp_number']) ? $searchData['disp_number']->getId() : $this->productListMaxRepository->findOneBy([], ['sort_no' => 'ASC'])->getId()
@@ -244,21 +245,20 @@ class ProductController extends AbstractController
             $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_PRODUCT_FAVORITE_ADD_COMPLETE);
 
             return $this->redirectToRoute('product_detail', ['id' => $Product->getId()]);
-        } else {
-            // 非会員の場合、ログイン画面を表示
-            //  ログイン後の画面遷移先を設定
-            $this->setLoginTargetPath($this->generateUrl('product_add_favorite', ['id' => $Product->getId()], UrlGeneratorInterface::ABSOLUTE_URL));
-
-            $event = new EventArgs(
-                [
-                    'Product' => $Product,
-                ],
-                $request
-            );
-            $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_PRODUCT_FAVORITE_ADD_COMPLETE);
-
-            return $this->redirectToRoute('mypage_login');
         }
+        // 非会員の場合、ログイン画面を表示
+        //  ログイン後の画面遷移先を設定
+        $this->setLoginTargetPath($this->generateUrl('product_add_favorite', ['id' => $Product->getId()], UrlGeneratorInterface::ABSOLUTE_URL));
+
+        $event = new EventArgs(
+            [
+                'Product' => $Product,
+            ],
+            $request
+        );
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_PRODUCT_FAVORITE_ADD_COMPLETE);
+
+        return $this->redirectToRoute('mypage_login');
     }
 
     /**
@@ -373,14 +373,13 @@ class ProductController extends AbstractController
             }
 
             return $this->json(['done' => $done, 'messages' => $messages]);
-        } else {
-            // ajax以外でのリクエストの場合はカート画面へリダイレクト
-            foreach ($errorMessages as $errorMessage) {
-                $this->addRequestError($errorMessage);
-            }
-
-            return $this->redirectToRoute('cart');
         }
+        // ajax以外でのリクエストの場合はカート画面へリダイレクト
+        foreach ($errorMessages as $errorMessage) {
+            $this->addRequestError($errorMessage);
+        }
+
+        return $this->redirectToRoute('cart');
     }
 
     /**
@@ -394,9 +393,9 @@ class ProductController extends AbstractController
             return trans('front.product.search_result');
         } elseif (isset($searchData['category_id']) && $searchData['category_id']) {
             return $searchData['category_id']->getName();
-        } else {
-            return trans('front.product.all_products');
         }
+
+        return trans('front.product.all_products');
     }
 
     /**

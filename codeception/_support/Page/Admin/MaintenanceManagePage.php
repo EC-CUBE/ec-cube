@@ -17,14 +17,6 @@ class MaintenanceManagePage extends AbstractAdminPageStyleGuide
 {
     public static $完了メッセージ = '#page_admin_content_maintenance > div.c-container > div.c-contentsArea > div.alert.alert-success.alert-dismissible.fade.show.m-3 > span';
 
-    /**
-     * MaintenanceManagePage constructor.
-     */
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     public static function go($I)
     {
         $page = new self($I);

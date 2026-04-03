@@ -36,11 +36,9 @@ final class SecurityTypeTest extends AbstractTypeTestCase
         'trusted_hosts' => 'localhost',
     ];
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
             ->createBuilder(SecurityType::class, null, ['csrf_protection' => false])

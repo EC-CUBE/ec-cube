@@ -30,4 +30,4 @@ jobs:
       - name: Run php-cs-fixer (dry-run)
         # ─── 差分があるとステップごと失敗させる ───
         run: |
-          PHP_CS_FIXER_IGNORE_ENV=1 php vendor/bin/php-cs-fixer fix --diff --dry-run --allow-risky=yes
+          php vendor/bin/php-cs-fixer fix --diff --dry-run --allow-risky=yes --using-cache=no

@@ -29,7 +29,6 @@ final class OrderStateMachineTest extends EccubeTestCase
 {
     private ?OrderStateMachine $stateMachine = null;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

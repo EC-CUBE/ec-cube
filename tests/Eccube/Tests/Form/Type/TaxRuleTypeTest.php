@@ -32,11 +32,9 @@ final class TaxRuleTypeTest extends AbstractTypeTestCase
 
     protected ?FormInterface $form = null;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
             ->createBuilder(TaxRuleType::class, null, [

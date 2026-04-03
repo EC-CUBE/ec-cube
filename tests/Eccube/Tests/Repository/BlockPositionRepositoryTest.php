@@ -52,7 +52,6 @@ final class BlockPositionRepositoryTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -62,15 +61,14 @@ final class BlockPositionRepositoryTest extends EccubeTestCase
         $this->remove();
         $this->DeviceType = $this->entityManager->getRepository(DeviceType::class)
             ->find(DeviceType::DEVICE_TYPE_PC);
-
         $Layout = new Layout();
         $Layout
             ->setName('テスト用レイアウト')
             ->setDeviceType($this->DeviceType);
         $this->entityManager->persist($Layout);
-        $this->entityManager->flush($Layout); // ここで flush しないと, MySQL で ID が取得できない
+        $this->entityManager->flush($Layout);
+        // ここで flush しないと, MySQL で ID が取得できない
         $this->layout_id = $Layout->getId();
-
         for ($i = 0; $i < 3; $i++) {
             $UsedBlocks = new Block();
             $UsedBlocks
@@ -83,7 +81,6 @@ final class BlockPositionRepositoryTest extends EccubeTestCase
             $this->entityManager->flush($UsedBlocks);
             $this->UsedBlocks[] = $UsedBlocks;
         }
-
         for ($i = 3; $i < 10; $i++) {
             $UnusedBlocks = new Block();
             $UnusedBlocks

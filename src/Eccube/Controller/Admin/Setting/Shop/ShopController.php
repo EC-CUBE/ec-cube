@@ -33,7 +33,7 @@ class ShopController extends AbstractController
     /**
      * ShopController constructor.
      */
-    public function __construct(protected Environment $twig, protected BaseInfoRepository $baseInfoRepository)
+    public function __construct(protected Environment $twig, protected BaseInfoRepository $baseInfoRepository, private readonly CacheUtil $cacheUtil)
     {
     }
 
@@ -44,7 +44,7 @@ class ShopController extends AbstractController
      */
     #[Route(path: '/%eccube_admin_route%/setting/shop', name: 'admin_setting_shop', methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Setting/Shop/shop_master.twig')]
-    public function index(Request $request, CacheUtil $cacheUtil): array|RedirectResponse
+    public function index(Request $request): array|RedirectResponse
     {
         $BaseInfo = $this->baseInfoRepository->get();
         $builder = $this->formFactory
@@ -82,7 +82,7 @@ class ShopController extends AbstractController
             );
 
             // キャッシュの削除
-            $cacheUtil->clearDoctrineCache();
+            $this->cacheUtil->clearDoctrineCache();
 
             $this->addSuccess('admin.common.save_complete', 'admin');
 

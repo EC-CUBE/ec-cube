@@ -42,11 +42,9 @@ final class SaleLimitMultipleValidatorTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->validator = static::getContainer()->get(SaleLimitMultipleValidator::class);
         $this->Product = $this->createProduct('テスト商品', 1);
         $this->ProductClass = $this->Product->getProductClasses()[0];

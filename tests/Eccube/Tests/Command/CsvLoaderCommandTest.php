@@ -23,7 +23,6 @@ final class CsvLoaderCommandTest extends CommandTestCase
 {
     protected \SplFileObject $file;
 
-    #[\Override]
     protected function setUp(): void
     {
         $this->markTestIncomplete(self::class.' は未実装です');
@@ -31,15 +30,12 @@ final class CsvLoaderCommandTest extends CommandTestCase
         if ($this->app['config']['database']['driver'] == 'pdo_sqlite') {
             $this->markTestSkipped('Can not support for sqlite3');
         }
-
         $this->initCommand(new CsvLoaderCommand());
-
         $Jobs = $this->app['orm.em']->getRepository(Job::class)->findAll();
         foreach ($Jobs as $Job) {
             $this->app['orm.em']->remove($Job);
         }
         $this->app['orm.em']->flush();
-
         $this->file = new \SplFileObject(__DIR__.'/../../../Fixtures/import_csv/mtb_job.csv');
     }
 

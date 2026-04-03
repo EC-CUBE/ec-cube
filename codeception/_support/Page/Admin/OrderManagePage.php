@@ -21,14 +21,6 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
     public static $詳細検索ボタン = '//*[@id="search_form"]/div[1]/div/div/div[3]/a/i';
     public static $タイトル要素 = '.c-container .c-contentsArea .c-pageTitle .c-pageTitle__titles';
 
-    /**
-     * OrderListPage constructor.
-     */
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     public static function go(\AcceptanceTester $I)
     {
         $page = new self($I);

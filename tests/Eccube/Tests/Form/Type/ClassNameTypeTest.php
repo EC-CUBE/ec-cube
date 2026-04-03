@@ -27,11 +27,9 @@ final class ClassNameTypeTest extends AbstractTypeTestCase
         'name' => '形状',
     ];
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
             ->createBuilder(ClassNameType::class, null, [

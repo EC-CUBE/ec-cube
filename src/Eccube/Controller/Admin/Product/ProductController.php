@@ -58,7 +58,6 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Routing\RouterInterface;
 
 class ProductController extends AbstractController
 {
@@ -78,6 +77,8 @@ class ProductController extends AbstractController
         protected PageMaxRepository $pageMaxRepository,
         protected ProductStatusRepository $productStatusRepository,
         protected TagRepository $tagRepository,
+        private readonly PaginatorInterface $paginator,
+        private readonly CacheUtil $cacheUtil,
     ) {
         $this->BaseInfo = $baseInfoRepository->get();
     }
@@ -90,7 +91,7 @@ class ProductController extends AbstractController
     #[Route(path: '/%eccube_admin_route%/product', name: 'admin_product', methods: ['POST', 'GET'])]
     #[Route(path: '/%eccube_admin_route%/product/page/{page_no}', name: 'admin_product_page', requirements: ['page_no' => '\d+'], methods: ['POST', 'GET'])]
     #[Template(template: '@admin/Product/index.twig')]
-    public function index(Request $request, PaginatorInterface $paginator, $page_no = null): array
+    public function index(Request $request, $page_no = null): array
     {
         $builder = $this->formFactory
             ->createBuilder(SearchProductType::class);
@@ -197,13 +198,13 @@ class ProductController extends AbstractController
         $sortKey = $searchData['sortkey'];
 
         if (empty($this->productRepository::COLUMNS[$sortKey]) || $sortKey == 'code' || $sortKey == 'status') {
-            $pagination = $paginator->paginate(
+            $pagination = $this->paginator->paginate(
                 $qb,
                 $page_no,
                 $page_count
             );
         } else {
-            $pagination = $paginator->paginate(
+            $pagination = $this->paginator->paginate(
                 $qb,
                 $page_no,
                 $page_count,
@@ -378,7 +379,7 @@ class ProductController extends AbstractController
     #[Route(path: '/%eccube_admin_route%/product/product/new', name: 'admin_product_product_new', methods: ['GET', 'POST'])]
     #[Route(path: '/%eccube_admin_route%/product/product/{id}/edit', name: 'admin_product_product_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Product/product.twig')]
-    public function edit(Request $request, RouterInterface $router, CacheUtil $cacheUtil, $id = null): RedirectResponse|array
+    public function edit(Request $request, $id = null): RedirectResponse|array
     {
         $has_class = false;
         if (is_null($id)) {
@@ -646,7 +647,7 @@ class ProductController extends AbstractController
                         // $returnLinkはpathの形式で渡される. pathが存在するかをルータでチェックする.
                         $pattern = '/^'.preg_quote($request->getBasePath(), '/').'/';
                         $returnLink = preg_replace($pattern, '', (string) $returnLink);
-                        $result = $router->match($returnLink);
+                        $result = $this->router->match($returnLink);
                         // パラメータのみ抽出
                         $params = array_filter($result, fn ($key) => !str_starts_with((string) $key, '_'), ARRAY_FILTER_USE_KEY);
 
@@ -658,7 +659,7 @@ class ProductController extends AbstractController
                     }
                 }
 
-                $cacheUtil->clearDoctrineCache();
+                $this->cacheUtil->clearDoctrineCache();
 
                 return $this->redirectToRoute('admin_product_product_edit', ['id' => $Product->getId()]);
             }
@@ -709,7 +710,7 @@ class ProductController extends AbstractController
      * @throws \Exception
      */
     #[Route(path: '/%eccube_admin_route%/product/product/{id}/delete', name: 'admin_product_product_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, CacheUtil $cacheUtil, $id = null): RedirectResponse|JsonResponse
+    public function delete(Request $request, $id = null): RedirectResponse|JsonResponse
     {
         $this->isTokenValid();
         $session = $request->getSession();
@@ -725,12 +726,11 @@ class ProductController extends AbstractController
                     $message = trans('admin.common.delete_error_already_deleted');
 
                     return $this->json(['success' => $success, 'message' => $message]);
-                } else {
-                    $this->deleteMessage();
-                    $rUrl = $this->generateUrl('admin_product_page', ['page_no' => $page_no]).'?resume='.Constant::ENABLED;
-
-                    return $this->redirect($rUrl);
                 }
+                $this->deleteMessage();
+                $rUrl = $this->generateUrl('admin_product_page', ['page_no' => $page_no]).'?resume='.Constant::ENABLED;
+
+                return $this->redirect($rUrl);
             }
 
             log_info('商品削除開始', [$id]);
@@ -772,7 +772,7 @@ class ProductController extends AbstractController
                 $success = true;
                 $message = trans('admin.common.delete_complete');
 
-                $cacheUtil->clearDoctrineCache();
+                $this->cacheUtil->clearDoctrineCache();
             } catch (ForeignKeyConstraintViolationException) {
                 log_info('商品削除エラー', [$id]);
                 $message = trans('admin.common.delete_error_foreign_key', ['%name%' => $Product->getName()]);
@@ -784,17 +784,16 @@ class ProductController extends AbstractController
 
         if ($request->isXmlHttpRequest()) {
             return $this->json(['success' => $success, 'message' => $message]);
-        } else {
-            if ($success) {
-                $this->addSuccess($message, 'admin');
-            } else {
-                $this->addError($message, 'admin');
-            }
-
-            $rUrl = $this->generateUrl('admin_product_page', ['page_no' => $page_no]).'?resume='.Constant::ENABLED;
-
-            return $this->redirect($rUrl);
         }
+        if ($success) {
+            $this->addSuccess($message, 'admin');
+        } else {
+            $this->addError($message, 'admin');
+        }
+
+        $rUrl = $this->generateUrl('admin_product_page', ['page_no' => $page_no]).'?resume='.Constant::ENABLED;
+
+        return $this->redirect($rUrl);
     }
 
     /**
@@ -897,9 +896,8 @@ class ProductController extends AbstractController
                 $this->addSuccess('admin.product.copy_complete', 'admin');
 
                 return $this->redirectToRoute('admin_product_product_edit', ['id' => $CopyProduct->getId()]);
-            } else {
-                $this->addError('admin.product.copy_error', 'admin');
             }
+            $this->addError('admin.product.copy_error', 'admin');
         } else {
             $msg = trans('admin.product.copy_error');
             $this->addError($msg, 'admin');
@@ -1029,7 +1027,7 @@ class ProductController extends AbstractController
      * Bulk public action
      */
     #[Route(path: '/%eccube_admin_route%/product/bulk/product-status/{id}', name: 'admin_product_bulk_product_status', requirements: ['id' => '\d+'], methods: ['POST'])]
-    public function bulkProductStatus(Request $request, ProductStatus $ProductStatus, CacheUtil $cacheUtil): RedirectResponse
+    public function bulkProductStatus(Request $request, ProductStatus $ProductStatus): RedirectResponse
     {
         $this->isTokenValid();
 
@@ -1053,7 +1051,7 @@ class ProductController extends AbstractController
                     '%status%' => $ProductStatus->getName(),
                 ]);
                 $this->addSuccess($msg, 'admin');
-                $cacheUtil->clearDoctrineCache();
+                $this->cacheUtil->clearDoctrineCache();
             }
         } catch (\Exception $e) {
             $this->addError($e->getMessage(), 'admin');

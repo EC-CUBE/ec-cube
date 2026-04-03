@@ -22,8 +22,6 @@ class PluginApiException extends \Exception
      * PluginApiException constructor.
      *
      * @param array<string, mixed>|null $curlInfo
-     *
-     * @return void
      */
     public function __construct(?array $curlInfo)
     {

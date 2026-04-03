@@ -27,13 +27,10 @@ final class TaxRateChangeValidatorTest extends EccubeTestCase
 
     protected ?Order $Order = null;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->validator = new TaxRateChangeValidator();
-
         $Customer = $this->createCustomer();
         $this->Order = $this->createOrder($Customer);
     }

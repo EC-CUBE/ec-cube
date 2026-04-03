@@ -39,11 +39,9 @@ final class MemberTypeTest extends AbstractTypeTestCase
         'Work' => 1,
     ];
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
             ->createBuilder(MemberType::class, new Member(), [

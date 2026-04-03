@@ -85,7 +85,6 @@ if (!class_exists(Cart::class)) {
         /**
          * @var InvalidItemException[]
          */
-        // @phpstan-ignore-next-line property.onlyWritten (__wakeup()でシリアライズ復元時の初期化に使用)
         private array $errors = [];
 
         public function __wakeup(): void
@@ -96,6 +95,14 @@ if (!class_exists(Cart::class)) {
         public function __construct()
         {
             $this->CartItems = new ArrayCollection();
+        }
+
+        /**
+         * @return InvalidItemException[]
+         */
+        public function getErrors(): array
+        {
+            return $this->errors;
         }
 
         /**

@@ -799,9 +799,9 @@ class MailService
         // HTMLメール用テンプレートの存在チェック
         if ($this->twig->getLoader()->exists($htmlFileName)) {
             return $htmlFileName;
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     /**

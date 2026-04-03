@@ -35,11 +35,9 @@ final class Step4TypeTest extends AbstractTypeTestCase
         'database_password' => '',
     ];
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->form = $this->formFactory
             ->createBuilder(Step4Type::class, null, ['csrf_protection' => false])
             ->getForm();

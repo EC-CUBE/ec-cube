@@ -25,13 +25,10 @@ final class LoginHistoryControllerTest extends AbstractAdminWebTestCase
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $loginHistoryStatusRepository = $this->entityManager->getRepository(LoginHistoryStatus::class);
-
         // 履歴を10個生成しておく
         for ($i = 0; $i < 10; $i++) {
             $userName = 'member'.$i;

@@ -33,11 +33,9 @@ final class ProductStatusValidatorTest extends EccubeTestCase
 
     protected ?ProductClass $ProductClass = null;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->Product = $this->createProduct('テスト商品', 1);
         $this->ProductClass = $this->Product->getProductClasses()[0];
         $this->validator = static::getContainer()->get(ProductStatusValidator::class);

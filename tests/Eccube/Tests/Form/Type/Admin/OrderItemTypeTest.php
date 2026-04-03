@@ -33,18 +33,15 @@ final class OrderItemTypeTest extends AbstractTypeTestCase
         'tax_rate' => '8',
     ];
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
             ->createBuilder(OrderItemType::class, null, [
                 'csrf_protection' => false,
             ])
             ->getForm();
-
         $Product = $this->createProduct();
         $ProductClass = $Product->getProductClasses()->first();
         $this->formData['ProductClass'] = $ProductClass->getId();

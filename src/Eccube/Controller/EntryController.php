@@ -146,16 +146,15 @@ class EntryController extends AbstractController
                         log_info('仮会員登録完了画面へリダイレクト');
 
                         return $this->redirectToRoute('entry_complete');
-                    } else {
-                        // 仮会員設定が無効な場合は、会員登録を完了させる.
-                        $qtyInCart = $this->entryActivate($request, $Customer->getSecretKey());
-
-                        // URLを変更するため完了画面にリダイレクト
-                        return $this->redirectToRoute('entry_activate', [
-                            'secret_key' => $Customer->getSecretKey(),
-                            'qtyInCart' => $qtyInCart,
-                        ]);
                     }
+                    // 仮会員設定が無効な場合は、会員登録を完了させる.
+                    $qtyInCart = $this->entryActivate($request, $Customer->getSecretKey());
+
+                    // URLを変更するため完了画面にリダイレクト
+                    return $this->redirectToRoute('entry_activate', [
+                        'secret_key' => $Customer->getSecretKey(),
+                        'qtyInCart' => $qtyInCart,
+                    ]);
             }
         }
 

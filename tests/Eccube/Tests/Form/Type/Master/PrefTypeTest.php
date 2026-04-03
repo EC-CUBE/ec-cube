@@ -27,12 +27,10 @@ final class PrefTypeTest extends AbstractTypeTestCase
 
     protected ?PrefRepository $prefRepo = null;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
         $this->prefRepo = $this->entityManager->getRepository(Pref::class);
-
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
             ->createBuilder(PrefType::class, null)
