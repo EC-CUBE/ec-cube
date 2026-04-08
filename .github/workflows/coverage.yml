@@ -38,12 +38,8 @@ jobs:
         uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1  # v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: redis
-
-      - name: Setup pcov
-        run: |
-          sudo apt-get install -y php${{ matrix.php }}-pcov
-          sudo phpenmod -s cli pcov
+          # pcov は apt の sury/PPA と setup-php の PHP が食い違うと 404 になるため、同アクションで入れる
+          extensions: redis, pcov
 
       - name: Initialize Composer
         uses: ./.github/actions/composer
@@ -128,7 +124,7 @@ jobs:
         uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1  # v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: redis
+          extensions: redis, pcov
 
       - name: Initialize Composer
         uses: ./.github/actions/composer
@@ -182,11 +178,6 @@ jobs:
           do
             (cd codeception/_data/plugins/$d; tar zcf ../../../../repos/${d}.tgz *)
           done
-
-      - name: Setup pcov
-        run: |
-          sudo apt-get install -y php${{ matrix.php }}-pcov
-          sudo phpenmod -s cli pcov
 
       - name: Setup codeception
         run: |
