@@ -40,7 +40,7 @@
     "filepond-plugin-file-validate-size": "^2.2.8",
     "filepond-plugin-file-validate-type": "^1.2.8",
     "filepond-plugin-image-preview": "^4.6.12",
-    "jquery": "^3.7.1",
+    "jquery": "^4.0.0",
     "jquery-ui": "^1.13.3",
     "jquery.qrcode": "^1.0.3",
     "ladda": "^2.0.3",
