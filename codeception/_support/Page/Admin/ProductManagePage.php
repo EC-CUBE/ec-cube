@@ -278,7 +278,8 @@ class ProductManagePage extends AbstractAdminPageStyleGuide
 
     public function CSVヘッダ取得()
     {
-        $this->tester->wait(5);
+        // CI では CSV 生成・ダウンロード完了まで 5s + getLastDownloadFile リトライでは足りないことがある（EA04 受注CSVと同様に 10s）
+        $this->tester->wait(10);
         $csv = $this->tester->getLastDownloadFile('/^product_\d{14}\.csv$/');
 
         return mb_convert_encoding(file($csv)[0], 'UTF-8', 'SJIS-win');

@@ -269,7 +269,9 @@ class EA05CustomerCest
             ->検索()
             ->CSVダウンロード();
 
-        $CustomerCSV = $I->getLastDownloadFile('/^customer_\d{14}\.csv$/');
+        // CI では CSV 生成・ダウンロード完了まで待ちが必要（ProductManagePage::CSVヘッダ取得 と同様）
+        $I->wait(10);
+        $CustomerCSV = $I->getLastDownloadFile('/^customer_\d{14}\.csv$/', 12, 10);
         $I->assertEquals(count($findCustomers()) + 1, count(file($CustomerCSV)));
     }
 

@@ -879,7 +879,7 @@ class EA07BasicinfoCest
 
         // CSVダウンロード
         OrderManagePage::go($I)->受注CSVダウンロード実行();
-        $I->wait(10);
+        $I->wait(15);
         $csv = $I->getLastDownloadFile('/^order_\d{14}\.csv$/');
         $csvHeader = mb_convert_encoding(file($csv)[0], 'UTF-8', 'SJIS-win');
         $I->assertStringContainsString('注文ID', $csvHeader);
@@ -1007,7 +1007,7 @@ class EA07BasicinfoCest
         $I->waitForText('納品書出力受注管理', 10, OrderManagePage::$タイトル要素);
 
         $I->click('.btn-ec-conversion');
-        $I->wait(2);
+        $I->wait(10);
         $filename = $I->getLastDownloadFile('/^nouhinsyo.pdf$/');
         $I->assertTrue(file_exists($filename));
 

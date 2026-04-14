@@ -111,7 +111,9 @@ class EA06ContentsManagementCest
             $I->waitForText('upload.txt', 10, $FileManagePage->ファイル名(1));
 
             $FileManagePage->一覧_ダウンロード(1);
-            $UploadedFile = $I->getLastDownloadFile('/^upload\.txt$/');
+            // CI ではダウンロード完了まで待ちが必要（会員 CSV 等と同様）
+            $I->wait(10);
+            $UploadedFile = $I->getLastDownloadFile('/^upload\.txt$/', 12, 10);
             $I->assertEquals('This is uploaded file.', file_get_contents($UploadedFile));
 
             $FileManagePage->一覧_パスをコピー(1);

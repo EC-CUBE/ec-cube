@@ -76,7 +76,7 @@ class EA04OrderCest
 
         $OrderListPage->受注CSVダウンロード実行();
         // make sure wait to download file completely
-        $I->wait(10);
+        $I->wait(15);
         $OrderCSV = $I->getLastDownloadFile('/^order_\d{14}\.csv$/');
         $I->assertGreaterOrEquals(count($TargetOrders), count(file($OrderCSV)), '検索結果以上の行数があるはず');
     }
@@ -116,7 +116,7 @@ class EA04OrderCest
 
         $OrderListPage->配送CSVダウンロード実行();
         // make sure wait to download file completely
-        $I->wait(10);
+        $I->wait(15);
         $OrderCSV = $I->getLastDownloadFile('/^shipping_\d{14}\.csv$/');
         $I->assertGreaterOrEquals(count($TargetOrders), count(file($OrderCSV)), '検索結果以上の行数があるはず');
     }
@@ -377,7 +377,7 @@ class EA04OrderCest
         $I->see('納品書出力受注管理', OrderManagePage::$タイトル要素);
 
         $I->click('.btn-ec-conversion');
-        $I->wait(2);
+        $I->wait(10);
         $filename = $I->getLastDownloadFile('/^nouhinsyo.pdf$/');
         $I->assertTrue(file_exists($filename));
 
@@ -417,7 +417,7 @@ class EA04OrderCest
         $OrderListPage->要素をクリック('#order_pdf_default');
         $OrderListPage->要素をクリック('#order_pdf_form .c-conversionArea .justify-content-end button.btn-ec-conversion');
         // make sure wait to download file completely
-        $I->wait(5);
+        $I->wait(10);
         $filename = $I->getLastDownloadFile('/^nouhinsyo\.pdf$/');
         $I->assertTrue(file_exists($filename));
 
