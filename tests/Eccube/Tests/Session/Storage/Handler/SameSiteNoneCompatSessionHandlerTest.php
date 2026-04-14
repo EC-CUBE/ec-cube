@@ -62,12 +62,12 @@ class SameSiteNoneCompatSessionHandlerTest extends TestCase
         if ($shouldSendSameSiteNone) {
             if (PHP_VERSION_ID < 70300) {
                 // PHP7.3未満は互換用 cookie
-                $this->assertStringEqualsFile(sprintf(self::FIXTURES_DIR.'/%s.samesite-compat.expected', $fixture), $result);
+                $this->assertSessionOutputEqualsExpected(sprintf(self::FIXTURES_DIR.'/%s.samesite-compat.expected', $fixture), $result);
             } else {
-                $this->assertStringEqualsFile(sprintf(self::FIXTURES_DIR.'/%s.samesite.expected', $fixture), $result);
+                $this->assertSessionOutputEqualsExpected(sprintf(self::FIXTURES_DIR.'/%s.samesite.expected', $fixture), $result);
             }
         } else {
-            $this->assertStringEqualsFile(sprintf(self::FIXTURES_DIR.'/%s.secure.expected', $fixture), $result);
+            $this->assertSessionOutputEqualsExpected(sprintf(self::FIXTURES_DIR.'/%s.secure.expected', $fixture), $result);
         }
     }
 
@@ -87,7 +87,26 @@ class SameSiteNoneCompatSessionHandlerTest extends TestCase
         $context = stream_context_create($context);
         $result = file_get_contents(sprintf('http://localhost:8053/%s.php', $fixture), false, $context);
 
-        $this->assertStringEqualsFile(sprintf(self::FIXTURES_DIR.'/%s.expected', $fixture), $result);
+        $this->assertSessionOutputEqualsExpected(sprintf(self::FIXTURES_DIR.'/%s.expected', $fixture), $result);
+    }
+
+    /**
+     * Set-Cookie の expires が PHP バージョンにより "01-Jan-1970" と "01 Jan 1970" のように異なるため、比較前に揃える。
+     */
+    private function normalizeSessionTestOutput(string $output): string
+    {
+        return preg_replace('/(\d{2})-([A-Za-z]{3})-(\d{4})/', '$1 $2 $3', $output);
+    }
+
+    private function assertSessionOutputEqualsExpected(string $expectedFile, string $actual): void
+    {
+        $this->assertFileExists($expectedFile);
+        $expected = file_get_contents($expectedFile);
+        $this->assertSame(
+            $this->normalizeSessionTestOutput($expected),
+            $this->normalizeSessionTestOutput($actual),
+            'Session fixture output mismatch: '.$expectedFile
+        );
     }
 
     /**
