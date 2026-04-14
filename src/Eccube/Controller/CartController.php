@@ -163,7 +163,7 @@ class CartController extends AbstractController
             foreach ($result->getWarning() as $warning) {
                 if ($Carts[$index]->getItems()->count() > 0) {
                     $cart_key = $Carts[$index]->getCartKey();
-                    $this->addRequestError($warning->getMessage(), "front.cart.${cart_key}");
+                    $this->addRequestError($warning->getMessage(), "front.cart.{$cart_key}");
                 } else {
                     // キーが存在しない場合はグローバルにエラーを表示する
                     $this->addRequestError($warning->getMessage());

@@ -242,7 +242,7 @@ class StringUtil
         }
         if (is_array($value)) {
             if ($greedy) {
-                if (empty($value)) {
+                if (count($value) === 0) {
                     @trigger_error($deprecated, E_USER_DEPRECATED);
 
                     return true;
@@ -262,7 +262,7 @@ class StringUtil
             } else {
                 @trigger_error($deprecated, E_USER_DEPRECATED);
 
-                return empty($value);
+                return count($value) === 0;
             }
         }
 
@@ -329,7 +329,7 @@ class StringUtil
                     $env = self::convertLineFeed($env, "\r\n");
                 }
             } else {
-                $env .= PHP_EOL."${key}=${value}";
+                $env .= PHP_EOL."{$key}={$value}";
             }
         }
 
