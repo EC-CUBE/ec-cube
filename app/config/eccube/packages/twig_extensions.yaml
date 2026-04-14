@@ -170,4 +170,9 @@ parameters:
     eccube.twig_sandbox.allowed_methods:
         'Symfony\Bridge\Twig\AppVariable': [ 'getrequest' ]
         'Symfony\Component\HttpFoundation\Request': [ 'geturi' ]
-    eccube.twig_sandbox.allowed_properties: []
+    # AbstractEntity は ArrayAccess のため、Twig 3 サンドボックスはプロパティ名で checkPropertyAllowed される。
+    # メソッド許可だけでは main_list_image → getMainListImage 解決前に Property エラーとなり、
+    # IgnoreTwigSandboxErrorExtension が空出力にしてしまう。
+    eccube.twig_sandbox.allowed_properties:
+        'Eccube\Entity\BaseInfo': [ 'shop_name' ]
+        'Eccube\Entity\Product': [ 'name', 'main_list_image' ]

@@ -19,6 +19,8 @@ twig:
     #     - 'default_frame.twig'
     #     - 'Form/form_div_layout.twig'
     date:
-      timezone: '%timezone%'
+        timezone: '%timezone%'
+    # Twig 3.8 以降、生成クラスは常に Twig\Template を継承するため、この設定はコンパイル結果に効かない。
+    # 実際の継承先は Eccube\Twig\Environment::compileSource で Eccube\Twig\Template に差し替えている。
     base_template_class: 'Eccube\Twig\Template'
     exception_controller: null

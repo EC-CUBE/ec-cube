@@ -13,6 +13,7 @@
 
 namespace Eccube\DependencyInjection\Compiler;
 
+use Eccube\Twig\Environment as EccubeTwigEnvironment;
 use Eccube\Twig\Extension\IgnoreRoutingNotFoundExtension;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -22,6 +23,10 @@ class TwigExtensionPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
+        if ($container->hasDefinition('twig')) {
+            $container->getDefinition('twig')->setClass(EccubeTwigEnvironment::class);
+        }
+
         // 本番時はtwigのurl(), path()を差し替える.
         if (!$container->getParameter('kernel.debug')) {
             $definition = $container->getDefinition('twig');
