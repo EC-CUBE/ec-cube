@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ ubuntu-22.04 ]
+        operating-system: [ ubuntu-24.04 ]
         group:
           - 'test/front_login/contact.test.ts'
           - 'test/front_guest/about.test.ts'
@@ -31,7 +31,7 @@ jobs:
           - 'test/admin/change_password.test.ts'
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Setup to EC-CUBE
         run: |
@@ -81,7 +81,7 @@ jobs:
         run: echo "ARTIFACT_NAME=$(echo ${GROUP} | sed 's,/,-,g')" >> $GITHUB_ENV
       - name: Upload evidence
         if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: zap-${{ env.ARTIFACT_NAME }}-session
           path: zap/sessions
