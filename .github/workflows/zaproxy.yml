@@ -32,7 +32,7 @@ jobs:
         uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd  # v4
 
       - name: Container Build
-        uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294  # v7
+        uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f  # v7
         with:
           context: .
           tags: ec-cube
@@ -40,7 +40,7 @@ jobs:
 
       # --- EC-CUBE イメージのアップロード ---
       - name: Upload image
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
         with:
           name: ec-cube
           path: /tmp/ec-cube.tar
@@ -372,7 +372,7 @@ jobs:
 
       - name: Upload report
         if: ${{ always() }}
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
         with:
           name: zap-${{ matrix.target }}-report
           path: /tmp/report
@@ -380,7 +380,7 @@ jobs:
 
       - name: Upload alerts
         if: ${{ always() }}
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
         with:
           name: zap-${{ matrix.target }}-alerts
           path: /tmp/alerts.json
@@ -411,7 +411,7 @@ jobs:
 
           jq -s 'add // []' "${files[@]}" > all_alerts.json
       - name: Upload alerts
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
         with:
           name: all_alerts
           path: artifacts/all_alerts.json

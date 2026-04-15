@@ -198,7 +198,7 @@ jobs:
           vendor/bin/codecept -vvv run acceptance --env chrome,local,vaddy VaddyCest:commit
 
       - name: Upload report
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
         with:
           name: crawl-reports-${{ matrix.vaddy_project }}-command1
           path: codeception/_output/**/*
@@ -266,7 +266,7 @@ jobs:
 
       - name: Upload report
         if: ${{ matrix.command2 != '' && success() }}
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
         with:
           name: crawl-reports-${{ matrix.vaddy_project }}-command2
           path: codeception/_output/**/*
@@ -335,7 +335,7 @@ jobs:
 
       - name: Upload report
         if: ${{ matrix.command3 != '' && success() }}
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
         with:
           name: crawl-reports-${{ matrix.vaddy_project }}-command3
           path: codeception/_output/**/*
@@ -404,7 +404,7 @@ jobs:
 
       - name: Upload report
         if: ${{ matrix.command4 != '' && success() }}
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
         with:
           name: crawl-reports-${{ matrix.vaddy_project }}-command4
           path: codeception/_output/**/*
@@ -473,7 +473,7 @@ jobs:
 
       - name: Upload report
         if: ${{ matrix.command5 != '' && success() }}
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
         with:
           name: crawl-reports-${{ matrix.vaddy_project }}-command5
           path: codeception/_output/**/*
