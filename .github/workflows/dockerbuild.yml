@@ -99,7 +99,7 @@ jobs:
           docker compose -f docker-compose.yml -f docker-compose.pgsql.yml up -d --wait
 
       - name: setup-chromedriver
-        uses: nanasess/setup-chromedriver@5c1220e385aca82610aa6fc7cdf1429306d50f9d  # master
+        uses: nanasess/setup-chromedriver@b08aea51a52355c1bdeeca6dae4726a3a131c75d  # master
 
       - name: Run chromedriver
         run: |
