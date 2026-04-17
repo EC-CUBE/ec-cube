@@ -31,7 +31,7 @@ class TwoFactorAuthListener implements EventSubscriberInterface
     public const ROUTE_EXCLUDE = ['admin_two_factor_auth'];
 
     /**
-     * @var array 2段階認証キー未設定時のみ除外するroute
+     * @var array<string> 2段階認証キー未設定時のみ除外するroute
      */
     public const ROUTE_EXCLUDE_WHEN_NOT_CONFIGURED = ['admin_two_factor_auth_set'];
 

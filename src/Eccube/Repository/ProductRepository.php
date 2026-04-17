@@ -14,6 +14,7 @@
 namespace Eccube\Repository;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Doctrine\Query\Queries;
@@ -53,24 +54,14 @@ class ProductRepository extends AbstractRepository
 
     /**
      * Find the Product with sorted ClassCategories.
-     *
-     * @param int $productId
-     *
-     * @return Product
      */
-    public function findWithSortedClassCategories(int $productId): Product
+    public function findWithSortedClassCategories(int $productId): ?Product
     {
         $qb = $this->createQueryBuilder('p');
-        $qb->addSelect(['pc', 'cc1', 'cc2', 'cn1', 'cn2', 'pi', 'pt', 'ps', 'tr'])
+        $qb->addSelect(['pc', 'cc1', 'cc2', 'pi', 'pt'])
             ->innerJoin('p.ProductClasses', 'pc')
-            // Joined 'ProductStock' and 'TaxRule' to prevent lazy loading
-            ->leftJoin('pc.ProductStock', 'ps')
-            ->leftJoin('pc.TaxRule', 'tr')
             ->leftJoin('pc.ClassCategory1', 'cc1')
             ->leftJoin('pc.ClassCategory2', 'cc2')
-            // Joined 'ClassName' to prevent lazy loading in Product::_calc()
-            ->leftJoin('cc1.ClassName', 'cn1')
-            ->leftJoin('cc2.ClassName', 'cn2')
             ->leftJoin('p.ProductImage', 'pi')
             ->leftJoin('p.ProductTag', 'pt')
             ->where('p.id = :id')
@@ -80,38 +71,32 @@ class ProductRepository extends AbstractRepository
             ->orderBy('cc1.sort_no', 'DESC')
             ->addOrderBy('cc2.sort_no', 'DESC');
 
-        $product = $qb
+        return $qb
             ->getQuery()
-            ->enableResultCache($this->eccubeConfig['eccube_result_cache_lifetime_short'])
             ->getSingleResult();
-
-        return $product;
     }
 
     /**
      * Find the Products with sorted ClassCategories.
      *
-     * @param array $ids Product in ids
+     * @param array<int, int|string> $ids Product in ids
      * @param string $indexBy The index for the from.
      *
-     * @return ArrayCollection|array
+     * @return ArrayCollection<int, mixed>|array<int, mixed>|null
      */
-    public function findProductsWithSortedClassCategories(array $ids, ?string $indexBy = null): ArrayCollection|array
+    public function findProductsWithSortedClassCategories(array $ids, ?string $indexBy = null): ArrayCollection|array|null
     {
         if (count($ids) < 1) {
             return [];
         }
         $qb = $this->createQueryBuilder('p', $indexBy);
-        $qb->addSelect(['pc', 'cc1', 'cc2', 'cn1', 'cn2', 'pi', 'pt', 'tr', 'ps'])
+        $qb->addSelect(['pc', 'cc1', 'cc2', 'pi', 'pt', 'tr', 'ps'])
             ->innerJoin('p.ProductClasses', 'pc')
             // XXX Joined 'TaxRule' and 'ProductStock' to prevent lazy loading
             ->leftJoin('pc.TaxRule', 'tr')
             ->innerJoin('pc.ProductStock', 'ps')
             ->leftJoin('pc.ClassCategory1', 'cc1')
             ->leftJoin('pc.ClassCategory2', 'cc2')
-            // Joined 'ClassName' to prevent lazy loading in Product::_calc()
-            ->leftJoin('cc1.ClassName', 'cn1')
-            ->leftJoin('cc2.ClassName', 'cn2')
             ->leftJoin('p.ProductImage', 'pi')
             ->leftJoin('p.ProductTag', 'pt')
             ->where($qb->expr()->in('p.id', $ids))
@@ -120,12 +105,10 @@ class ProductRepository extends AbstractRepository
             ->orderBy('cc1.sort_no', 'DESC')
             ->addOrderBy('cc2.sort_no', 'DESC');
 
-        $products = $qb
+        return $qb
             ->getQuery()
             ->enableResultCache($this->eccubeConfig['eccube_result_cache_lifetime_short'])
             ->getResult();
-
-        return $products;
     }
 
     /**
@@ -138,17 +121,15 @@ class ProductRepository extends AbstractRepository
      *         disp_number?:ProductListMax,
      *         orderby?:ProductListOrderBy
      *     } $searchData
-     *
-     * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getQueryBuilderBySearchData(array $searchData): \Doctrine\ORM\QueryBuilder
+    public function getQueryBuilderBySearchData(array $searchData): QueryBuilder
     {
         $qb = $this->createQueryBuilder('p')
             ->andWhere('p.Status = 1');
 
         // category
         $categoryJoin = false;
-        if (!empty($searchData['category_id']) && $searchData['category_id']) {
+        if (!empty($searchData['category_id'])) {
             $Categories = $searchData['category_id']->getSelfAndDescendants();
             if ($Categories) {
                 $qb
@@ -239,10 +220,8 @@ class ProductRepository extends AbstractRepository
      *         sortkey?:string,
      *         sorttype?:string
      *     } $searchData
-     *
-     * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getQueryBuilderBySearchDataForAdmin(array $searchData): \Doctrine\ORM\QueryBuilder
+    public function getQueryBuilderBySearchDataForAdmin(array $searchData): QueryBuilder
     {
         $qb = $this->createQueryBuilder('p')
             ->addSelect('pc', 'pi', 'tr', 'ps')
@@ -255,7 +234,7 @@ class ProductRepository extends AbstractRepository
 
         // id
         if (isset($searchData['id']) && StringUtil::isNotBlank($searchData['id'])) {
-            $id = preg_match('/^\d{0,10}$/', $searchData['id']) ? $searchData['id'] : null;
+            $id = preg_match('/^\d{0,10}$/', (string) $searchData['id']) ? $searchData['id'] : null;
             if ($id && $id > '2147483647' && $this->isPostgreSQL()) {
                 $id = null;
             }
@@ -286,7 +265,7 @@ class ProductRepository extends AbstractRepository
        */
 
         // category
-        if (!empty($searchData['category_id']) && $searchData['category_id']) {
+        if (!empty($searchData['category_id'])) {
             $Categories = $searchData['category_id']->getSelfAndDescendants();
             if ($Categories) {
                 $qb
@@ -298,14 +277,14 @@ class ProductRepository extends AbstractRepository
         }
 
         // status
-        if (!empty($searchData['status']) && $searchData['status']) {
+        if (!empty($searchData['status'])) {
             $qb
                 ->andWhere($qb->expr()->in('p.Status', ':Status'))
                 ->setParameter('Status', $searchData['status']);
         }
 
         // link_status
-        if (isset($searchData['link_status']) && !empty($searchData['link_status'])) {
+        if (isset($searchData['link_status'])) {
             $qb
                 ->andWhere($qb->expr()->in('p.Status', ':Status'))
                 ->setParameter('Status', $searchData['link_status']);
@@ -319,7 +298,7 @@ class ProductRepository extends AbstractRepository
         }
 
         // stock status
-        if (isset($searchData['stock']) && !empty($searchData['stock'])) {
+        if (isset($searchData['stock'])) {
             switch ($searchData['stock']) {
                 case [ProductStock::IN_STOCK]:
                     $qb->andWhere('pc.stock_unlimited = true OR pc.stock > 0');
@@ -333,7 +312,7 @@ class ProductRepository extends AbstractRepository
         }
 
         // tag
-        if (!empty($searchData['tag_id']) && $searchData['tag_id']) {
+        if (!empty($searchData['tag_id'])) {
             $qb
                 ->innerJoin('p.ProductTag', 'pt')
                 ->andWhere('pt.Tag = :tag_id')
@@ -341,24 +320,24 @@ class ProductRepository extends AbstractRepository
         }
 
         // crate_date
-        if (!empty($searchData['create_datetime_start']) && $searchData['create_datetime_start']) {
+        if (!empty($searchData['create_datetime_start'])) {
             $date = $searchData['create_datetime_start'];
             $qb
                 ->andWhere('p.create_date >= :create_date_start')
                 ->setParameter('create_date_start', $date);
-        } elseif (!empty($searchData['create_date_start']) && $searchData['create_date_start']) {
+        } elseif (!empty($searchData['create_date_start'])) {
             $date = $searchData['create_date_start'];
             $qb
                 ->andWhere('p.create_date >= :create_date_start')
                 ->setParameter('create_date_start', $date);
         }
 
-        if (!empty($searchData['create_datetime_end']) && $searchData['create_datetime_end']) {
+        if (!empty($searchData['create_datetime_end'])) {
             $date = $searchData['create_datetime_end'];
             $qb
                 ->andWhere('p.create_date < :create_date_end')
                 ->setParameter('create_date_end', $date);
-        } elseif (!empty($searchData['create_date_end']) && $searchData['create_date_end']) {
+        } elseif (!empty($searchData['create_date_end'])) {
             $date = clone $searchData['create_date_end'];
             $date = $date
                 ->modify('+1 days');
@@ -368,24 +347,24 @@ class ProductRepository extends AbstractRepository
         }
 
         // update_date
-        if (!empty($searchData['update_datetime_start']) && $searchData['update_datetime_start']) {
+        if (!empty($searchData['update_datetime_start'])) {
             $date = $searchData['update_datetime_start'];
             $qb
                 ->andWhere('p.update_date >= :update_date_start')
                 ->setParameter('update_date_start', $date);
-        } elseif (!empty($searchData['update_date_start']) && $searchData['update_date_start']) {
+        } elseif (!empty($searchData['update_date_start'])) {
             $date = $searchData['update_date_start'];
             $qb
                 ->andWhere('p.update_date >= :update_date_start')
                 ->setParameter('update_date_start', $date);
         }
 
-        if (!empty($searchData['update_datetime_end']) && $searchData['update_datetime_end']) {
+        if (!empty($searchData['update_datetime_end'])) {
             $date = $searchData['update_datetime_end'];
             $qb
                 ->andWhere('p.update_date < :update_date_end')
                 ->setParameter('update_date_end', $date);
-        } elseif (!empty($searchData['update_date_end']) && $searchData['update_date_end']) {
+        } elseif (!empty($searchData['update_date_end'])) {
             $date = clone $searchData['update_date_end'];
             $date = $date
                 ->modify('+1 days');
@@ -395,7 +374,16 @@ class ProductRepository extends AbstractRepository
         }
 
         // Order By
-        $this->setQueryBuilderAdminSearchDataOrderBy($qb, 'p', self::COLUMNS, $searchData);
+        if (isset($searchData['sortkey']) && !empty($searchData['sortkey'])) {
+            $sortOrder = (isset($searchData['sorttype']) && $searchData['sorttype'] == 'a') ? 'ASC' : 'DESC';
+
+            $qb->orderBy(self::COLUMNS[$searchData['sortkey']], $sortOrder);
+            $qb->addOrderBy('p.update_date', 'DESC');
+            $qb->addOrderBy('p.id', 'DESC');
+        } else {
+            $qb->orderBy('p.update_date', 'DESC');
+            $qb->addOrderBy('p.id', 'DESC');
+        }
 
         return $this->queries->customize(QueryKey::PRODUCT_SEARCH_ADMIN, $qb, $searchData);
     }
@@ -406,9 +394,7 @@ class ProductRepository extends AbstractRepository
      * このメソッドはJOINを含まないシンプルなCOUNTクエリを実行することで、
      * KnpPaginatorのデフォルトCOUNT(DISTINCT)による性能問題を回避します。
      *
-     * @param array $searchData
-     *
-     * @return int
+     * @param array<string, mixed> $searchData
      */
     public function countBySearchDataForAdmin(array $searchData): int
     {
@@ -418,7 +404,7 @@ class ProductRepository extends AbstractRepository
 
         // id
         if (isset($searchData['id']) && StringUtil::isNotBlank($searchData['id'])) {
-            $id = preg_match('/^\d{0,10}$/', $searchData['id']) ? $searchData['id'] : null;
+            $id = preg_match('/^\d{0,10}$/', (string) $searchData['id']) ? $searchData['id'] : null;
             if ($id && $id > '2147483647' && $this->isPostgreSQL()) {
                 $id = null;
             }
@@ -429,14 +415,14 @@ class ProductRepository extends AbstractRepository
         }
 
         // status
-        if (!empty($searchData['status']) && $searchData['status']) {
+        if (!empty($searchData['status'])) {
             $qb
                 ->andWhere($qb->expr()->in('p.Status', ':Status'))
                 ->setParameter('Status', $searchData['status']);
         }
 
         // link_status
-        if (isset($searchData['link_status']) && !empty($searchData['link_status'])) {
+        if (isset($searchData['link_status'])) {
             $qb
                 ->andWhere($qb->expr()->in('p.Status', ':Status'))
                 ->setParameter('Status', $searchData['link_status']);
@@ -447,24 +433,24 @@ class ProductRepository extends AbstractRepository
         // tag (注: ProductTagとのJOINが必要なのでカウントには含めない)
 
         // create_date
-        if (!empty($searchData['create_datetime_start']) && $searchData['create_datetime_start']) {
+        if (!empty($searchData['create_datetime_start'])) {
             $date = $searchData['create_datetime_start'];
             $qb
                 ->andWhere('p.create_date >= :create_date_start')
                 ->setParameter('create_date_start', $date);
-        } elseif (!empty($searchData['create_date_start']) && $searchData['create_date_start']) {
+        } elseif (!empty($searchData['create_date_start'])) {
             $date = $searchData['create_date_start'];
             $qb
                 ->andWhere('p.create_date >= :create_date_start')
                 ->setParameter('create_date_start', $date);
         }
 
-        if (!empty($searchData['create_datetime_end']) && $searchData['create_datetime_end']) {
+        if (!empty($searchData['create_datetime_end'])) {
             $date = $searchData['create_datetime_end'];
             $qb
                 ->andWhere('p.create_date < :create_date_end')
                 ->setParameter('create_date_end', $date);
-        } elseif (!empty($searchData['create_date_end']) && $searchData['create_date_end']) {
+        } elseif (!empty($searchData['create_date_end'])) {
             $date = clone $searchData['create_date_end'];
             $date = $date
                 ->modify('+1 days');
@@ -474,24 +460,24 @@ class ProductRepository extends AbstractRepository
         }
 
         // update_date
-        if (!empty($searchData['update_datetime_start']) && $searchData['update_datetime_start']) {
+        if (!empty($searchData['update_datetime_start'])) {
             $date = $searchData['update_datetime_start'];
             $qb
                 ->andWhere('p.update_date >= :update_date_start')
                 ->setParameter('update_date_start', $date);
-        } elseif (!empty($searchData['update_date_start']) && $searchData['update_date_start']) {
+        } elseif (!empty($searchData['update_date_start'])) {
             $date = $searchData['update_date_start'];
             $qb
                 ->andWhere('p.update_date >= :update_date_start')
                 ->setParameter('update_date_start', $date);
         }
 
-        if (!empty($searchData['update_datetime_end']) && $searchData['update_datetime_end']) {
+        if (!empty($searchData['update_datetime_end'])) {
             $date = $searchData['update_datetime_end'];
             $qb
                 ->andWhere('p.update_date < :update_date_end')
                 ->setParameter('update_date_end', $date);
-        } elseif (!empty($searchData['update_date_end']) && $searchData['update_date_end']) {
+        } elseif (!empty($searchData['update_date_end'])) {
             $date = clone $searchData['update_date_end'];
             $date = $date
                 ->modify('+1 days');

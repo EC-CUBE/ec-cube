@@ -80,8 +80,8 @@ abstract class AbstractRepository extends ServiceEntityRepository
      *
      * @param \Doctrine\ORM\QueryBuilder $qb
      * @param string $alias
-     * @param array $sortColumns
-     * @param array $searchData
+     * @param array<string, string> $sortColumns
+     * @param array<string, mixed> $searchData
      *
      * @return void
      */
