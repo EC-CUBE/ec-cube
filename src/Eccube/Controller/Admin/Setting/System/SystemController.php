@@ -19,6 +19,7 @@ use Eccube\Service\SystemService;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 
 class SystemController
@@ -56,6 +57,10 @@ class SystemController
     #[Route(path: '/%eccube_admin_route%/setting/system/system/phpinfo', name: 'admin_setting_system_system_phpinfo', methods: ['GET'])]
     public function phpinfo(Request $request): Response
     {
+        if (!$this->eccubeConfig->get('eccube_phpinfo_enabled')) {
+            throw new AccessDeniedHttpException();
+        }
+
         ob_start();
         phpinfo();
         $phpinfo = ob_get_contents();

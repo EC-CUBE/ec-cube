@@ -148,7 +148,7 @@ class Generator
      *
      * @param string $email メールアドレス. null の場合は, ランダムなメールアドレスが生成される.
      */
-    public function createCustomer(?string $email = null): Customer
+    public function createCustomer(?string $email = null, bool $flush = true): Customer
     {
         /** @var Generator_Faker $faker */
         $faker = $this->getFaker();
@@ -187,7 +187,9 @@ class Generator
             ->setUpdateDate(new \DateTime())
             ->setPoint($faker->randomNumber(5));
         $this->entityManager->persist($Customer);
-        $this->entityManager->flush();
+        if ($flush) {
+            $this->entityManager->flush();
+        }
 
         return $Customer;
     }
@@ -220,7 +222,7 @@ class Generator
             $Customer->addCustomerAddress($CustomerAddress);
             // TODO 外部でやった方がいい？
             $sessionCustomerAddressKey = 'eccube.front.shopping.nonmember.customeraddress';
-            $customerAddresses = unserialize($this->requestStack->getSession()->get($sessionCustomerAddressKey));
+            $customerAddresses = unserialize($this->requestStack->getSession()->get($sessionCustomerAddressKey), ['allowed_classes' => [CustomerAddress::class, Customer::class, Pref::class, \Eccube\Entity\Master\Country::class]]);
             if (!is_array($customerAddresses)) {
                 $customerAddresses = [];
             }
@@ -285,7 +287,7 @@ class Generator
      * @param int $product_class_num 商品規格の生成数
      * @param bool $with_image 画像を生成する場合 true, 生成しない場合 false
      */
-    public function createProduct(?string $product_name = null, int $product_class_num = 3, bool $with_image = false): Product
+    public function createProduct(?string $product_name = null, int $product_class_num = 3, bool $with_image = false, bool $flush = true, bool $simple_mode = false): Product
     {
         $faker = $this->getFaker();
         $Member = $this->entityManager->find(Member::class, 2);
@@ -308,7 +310,9 @@ class Generator
             ->setDescriptionDetail($faker->realText());
 
         $this->entityManager->persist($Product);
-        $this->entityManager->flush();
+        if ($flush) {
+            $this->entityManager->flush();
+        }
 
         Factory::create($this->locale);
 
@@ -330,7 +334,9 @@ class Generator
                 ->setCreateDate(new \DateTime()) // FIXME
                 ->setProduct($Product);
             $this->entityManager->persist($ProductImage);
-            $this->entityManager->flush();
+            if ($flush) {
+                $this->entityManager->flush();
+            }
             $Product->addProductImage($ProductImage);
         }
 
@@ -355,7 +361,9 @@ class Generator
                 ->setCreator($Member)
                 ->setStock($faker->numberBetween(100, 999));
             $this->entityManager->persist($ProductStock);
-            $this->entityManager->flush();
+            if ($flush) {
+                $this->entityManager->flush();
+            }
             $ProductClass = new ProductClass();
             do {
                 $ProductCode = $faker->word();
@@ -369,7 +377,7 @@ class Generator
                 ->setProduct($Product)
                 ->setSaleType($SaleType)
                 ->setStockUnlimited(false)
-                ->setPrice02((string) $faker->randomNumber(5))
+                ->setPrice02((string) $faker->numberBetween(100, 10000))
                 ->setDeliveryDuration($DeliveryDurations[$faker->numberBetween(0, 8)])
                 ->setCreateDate(new \DateTime()) // FIXME
                 ->setUpdateDate(new \DateTime())
@@ -383,11 +391,15 @@ class Generator
             }
 
             $this->entityManager->persist($ProductClass);
-            $this->entityManager->flush();
+            if ($flush) {
+                $this->entityManager->flush();
+            }
 
             $ProductStock->setProductClass($ProductClass);
             $ProductStock->setProductClassId($ProductClass->getId());
-            $this->entityManager->flush();
+            if ($flush) {
+                $this->entityManager->flush();
+            }
             $Product->addProductClass($ProductClass);
         }
 
@@ -399,7 +411,9 @@ class Generator
             ->setCreator($Member)
             ->setStock($faker->randomNumber(3));
         $this->entityManager->persist($ProductStock);
-        $this->entityManager->flush();
+        if ($flush) {
+            $this->entityManager->flush();
+        }
         $ProductClass = new ProductClass();
         if ($product_class_num > 0) {
             $ProductClass->setVisible(false);
@@ -417,48 +431,66 @@ class Generator
             ->setProductStock($ProductStock)
             ->setProduct($Product)
             ->setSaleType($SaleType)
-            ->setPrice02((string) $faker->randomNumber(5))
+            ->setPrice02((string) $faker->numberBetween(100, 10000))
             ->setDeliveryDuration($DeliveryDurations[$faker->numberBetween(0, 8)])
             ->setStockUnlimited(false)
             ->setCreateDate(new \DateTime()) // FIXME
             ->setUpdateDate(new \DateTime())
             ->setProduct($Product);
         $this->entityManager->persist($ProductClass);
-        $this->entityManager->flush();
+        if ($flush) {
+            $this->entityManager->flush();
+        }
 
         $ProductStock->setProductClass($ProductClass);
         $ProductStock->setProductClassId($ProductClass->getId());
-        $this->entityManager->flush();
+        if ($flush) {
+            $this->entityManager->flush();
+        }
 
         $Product->addProductClass($ProductClass);
 
-        $Categories = $this->categoryRepository->findAll();
-        foreach ($Categories as $Category) {
-            $ProductCategory = new ProductCategory();
-            $ProductCategory
-                ->setCategory($Category)
-                ->setProduct($Product)
-                ->setCategoryId($Category->getId())
-                ->setProductId($Product->getId());
-            $this->entityManager->persist($ProductCategory);
-            $this->entityManager->flush();
-            $Product->addProductCategory($ProductCategory);
+        // simple_modeの場合はProductCategoryとProductTagをスキップ（高速化）
+        if (!$simple_mode) {
+            // ProductCategoryとProductTagにはProduct IDが必要なので、ここでflush
+            if (!$flush) {
+                $this->entityManager->flush();
+            }
+
+            $Categories = $this->categoryRepository->findAll();
+            foreach ($Categories as $Category) {
+                $ProductCategory = new ProductCategory();
+                $ProductCategory
+                    ->setCategory($Category)
+                    ->setProduct($Product)
+                    ->setCategoryId($Category->getId())
+                    ->setProductId($Product->getId());
+                $this->entityManager->persist($ProductCategory);
+                if ($flush) {
+                    $this->entityManager->flush();
+                }
+                $Product->addProductCategory($ProductCategory);
+            }
+
+            $Tags = $this->tagRepository->findAll();
+            foreach ($Tags as $Tag) {
+                $ProductTag = new ProductTag();
+                $ProductTag
+                    ->setProduct($Product)
+                    ->setTag($Tag)
+                    ->setCreateDate(new \DateTime()) // FIXME
+                    ->setCreator($Member);
+                $this->entityManager->persist($ProductTag);
+                if ($flush) {
+                    $this->entityManager->flush();
+                }
+                $Product->addProductTag($ProductTag);
+            }
         }
 
-        $Tags = $this->tagRepository->findAll();
-        foreach ($Tags as $Tag) {
-            $ProductTag = new ProductTag();
-            $ProductTag
-                ->setProduct($Product)
-                ->setTag($Tag)
-                ->setCreateDate(new \DateTime()) // FIXME
-                ->setCreator($Member);
-            $this->entityManager->persist($ProductTag);
+        if ($flush) {
             $this->entityManager->flush();
-            $Product->addProductTag($ProductTag);
         }
-
-        $this->entityManager->flush();
 
         return $Product;
     }
@@ -473,10 +505,10 @@ class Generator
      * @param int $add_discount Order に加算される値引き額
      * @param int $statusTypeId OrderStatus:id
      */
-    public function createOrder(Customer $Customer, array $ProductClasses = [], ?Delivery $Delivery = null, int $add_charge = 0, int $add_discount = 0, ?int $statusTypeId = null): Order
+    public function createOrder(Customer $Customer, array $ProductClasses = [], ?Delivery $Delivery = null, int $add_charge = 0, int $add_discount = 0, ?int $statusTypeId = null, bool $flush = true, bool $randomizeOrderItems = false): Order
     {
         $faker = $this->getFaker();
-        $quantity = $faker->randomNumber(2);
+        $quantity = $faker->numberBetween(1, 10);
         $Pref = $this->entityManager->find(Pref::class, $faker->numberBetween(1, 47));
         $Payments = $this->paymentRepository->findAll();
         if ($statusTypeId === null) {
@@ -499,7 +531,9 @@ class Generator
         ;
 
         $this->entityManager->persist($Order);
-        $this->entityManager->flush();
+        if ($flush) {
+            $this->entityManager->flush();
+        }
         if (!is_object($Delivery)) {
             $Delivery = $this->createDelivery();
             foreach ($Payments as $Payment) {
@@ -511,9 +545,13 @@ class Generator
                     ->setPayment($Payment);
                 $Payment->addPaymentOption($PaymentOption);
                 $this->entityManager->persist($PaymentOption);
+                if ($flush) {
+                    $this->entityManager->flush();
+                }
+            }
+            if ($flush) {
                 $this->entityManager->flush();
             }
-            $this->entityManager->flush();
         }
         $DeliveryFee = $this->deliveryFeeRepository->findOneBy(
             [
@@ -537,11 +575,14 @@ class Generator
         $Order->addShipping($Shipping);
 
         $this->entityManager->persist($Shipping);
-        $this->entityManager->flush();
+        if ($flush) {
+            $this->entityManager->flush();
+        }
 
         if (empty($ProductClasses)) {
-            $Product = $this->createProduct();
-            $ProductClasses = $Product->getProductClasses();
+            // 注文生成時は高速化のためsimple_mode=trueを使用
+            $Product = $this->createProduct(null, 3, false, $flush, true);
+            $ProductClasses = $Product->getProductClasses()->toArray();
         }
         $Taxation = $this->entityManager->find(TaxType::class, TaxType::TAXATION);
         $NonTaxable = $this->entityManager->find(TaxType::class, TaxType::NON_TAXABLE);
@@ -554,11 +595,20 @@ class Generator
         $ItemPoint = $this->entityManager->find(OrderItemType::class, OrderItemType::POINT);
         $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->get();
 
+        // OrderItemを1-2個にランダム化（高速化のため、GenerateDummyDataCommandからのみ使用）
+        if ($randomizeOrderItems) {
+            $visibleProductClasses = array_filter($ProductClasses, function ($pc) { return $pc->isVisible(); });
+            $numOrderItems = min($faker->numberBetween(1, 2), count($visibleProductClasses));
+            $selectedProductClasses = $faker->randomElements($visibleProductClasses, $numOrderItems);
+        } else {
+            // visible=trueのProductClassのみ使用（デフォルト規格を除外）
+            $selectedProductClasses = array_filter($ProductClasses, function ($pc) {
+                return $pc->isVisible();
+            });
+        }
+
         /** @var ProductClass $ProductClass */
-        foreach ($ProductClasses as $ProductClass) {
-            if (!$ProductClass->isVisible()) {
-                continue;
-            }
+        foreach ($selectedProductClasses as $ProductClass) {
             $Product = $ProductClass->getProduct();
 
             $OrderItem = new OrderItem();
@@ -646,7 +696,9 @@ class Generator
 
         $this->orderPurchaseFlow->validate($Order, new PurchaseContext($Order));
 
-        $this->entityManager->flush();
+        if ($flush) {
+            $this->entityManager->flush();
+        }
 
         return $Order;
     }

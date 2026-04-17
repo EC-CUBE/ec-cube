@@ -16,6 +16,25 @@ file that was distributed with this source code.
 {% block title %}{{ 'admin.setting.system.log_display'|trans }}{% endblock %}
 {% block sub_title %}{{ 'admin.setting.system'|trans }}{% endblock %}
 
+{% macro log_level_style(level) %}
+    {%- if level == 'EMERGENCY' or level == 'ALERT' -%}
+        color: #fff; background-color: #dc3545; padding: 2px 4px; border-left: 4px solid #721c24;
+    {%- elseif level == 'CRITICAL' -%}
+        color: #721c24; background-color: #f8d7da; padding: 2px 4px; border-left: 4px solid #dc3545;
+    {%- elseif level == 'ERROR' -%}
+        color: #dc3545; padding: 2px 4px; border-left: 4px solid #dc3545;
+    {%- elseif level == 'WARNING' -%}
+        color: #856404; background-color: #fff3cd; padding: 2px 4px; border-left: 4px solid #ffc107;
+    {%- elseif level == 'NOTICE' -%}
+        color: #004085; background-color: #cce5ff; padding: 2px 4px; border-left: 4px solid #0c5460;
+    {%- elseif level == 'INFO' -%}
+        color: #0c5460; padding: 2px 4px; border-left: 4px solid #17a2b8;
+    {%- elseif level == 'DEBUG' -%}
+        color: #6c757d; padding: 2px 4px; border-left: 4px solid #6c757d;
+    {%- endif -%}
+{% endmacro %}
+{% import _self as helper %}
+
 {% form_theme form '@admin/Form/bootstrap_4_layout.html.twig' %}
 
 {% block main %}
@@ -34,6 +53,17 @@ file that was distributed with this source code.
                             <div class="mb-3 pe-3 col-2">
                                 {{ form_widget(form.files, { 'attr': { 'class': 'form-select' }}) }}
                             </div>
+                            <div class="mb-3 pe-3 col-2">
+                                {{ form_widget(form.log_level, { 'attr': { 'class': 'form-select' }}) }}
+                            </div>
+                            <div class="mb-3 pe-3 col-3">
+                                {{ form_widget(form.keyword, {
+                                    'attr': {
+                                        'class': 'form-control',
+                                        'placeholder': 'admin.setting.system.log.keyword_placeholder'|trans
+                                    }
+                                }) }}
+                            </div>
                             <div class="row mb-3 pe-3 col-auto align-items-center">
                                 <span class="col-auto">{{ form_widget(form.line_max) }}</span>
                                 <span class="col-auto ps-0">{{ 'admin.setting.system.log.line_number'|trans }}</span>
@@ -48,12 +78,16 @@ file that was distributed with this source code.
                             <span class="col-auto">{{ form_errors(form.line_max) }}</span>
                         </div>
                     </form>
-                    <div>
-<textarea class="form-control" rows="20" wrap="off" readonly>
-{% for line in log %}
-    {{ line }}
-{% endfor %}
-</textarea>
+                    <div class="log-viewer" style="background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 0.25rem; padding: 1rem; max-height: 600px; overflow-y: auto; font-family: 'Courier New', monospace; font-size: 0.875rem; line-height: 1.5;">
+                        {% if log is empty %}
+                            <div class="text-muted">{{ 'admin.setting.system.log.no_logs'|trans }}</div>
+                        {% else %}
+                            {% for entry in log %}
+                                <div class="log-entry mb-1" style="{{ helper.log_level_style(entry.level) }}">
+                                    {{ entry.raw }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
                     </div>
                 </div>
             </div>

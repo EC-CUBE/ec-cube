@@ -17,6 +17,7 @@ use Page\Front\ProductDetailPage;
 
 /**
  * @group front
+ * @group front-b
  * @group customer
  * @group ef4
  */

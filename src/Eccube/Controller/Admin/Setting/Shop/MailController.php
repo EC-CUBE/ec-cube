@@ -156,7 +156,7 @@ class MailController extends AbstractController
     #[Template(template: '@admin/Setting/Shop/mail_view.twig')]
     public function preview(Request $request): array
     {
-        if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
+        if (!$request->isXmlHttpRequest() || !$this->isTokenValid()) {
             throw new BadRequestHttpException();
         }
 

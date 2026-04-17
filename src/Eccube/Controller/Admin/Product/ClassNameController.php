@@ -171,24 +171,20 @@ class ClassNameController extends AbstractController
     #[Route(path: '/%eccube_admin_route%/product/class_name/sort_no/move', name: 'admin_product_class_name_sort_no_move', methods: ['POST'])]
     public function moveSortNo(Request $request): Response
     {
-        if (!$request->isXmlHttpRequest()) {
+        if (!$request->isXmlHttpRequest() || !$this->isTokenValid()) {
             throw new BadRequestHttpException();
         }
 
-        if ($this->isTokenValid()) {
-            $sortNos = $request->request->all();
-            foreach ($sortNos as $classNameId => $sortNo) {
-                $ClassName = $this->classNameRepository
-                    ->find($classNameId);
-                $ClassName->setSortNo($sortNo);
-                $this->entityManager->persist($ClassName);
-            }
-            $this->entityManager->flush();
-
-            return new Response();
+        $sortNos = $request->request->all();
+        foreach ($sortNos as $classNameId => $sortNo) {
+            $ClassName = $this->classNameRepository
+                ->find($classNameId);
+            $ClassName->setSortNo($sortNo);
+            $this->entityManager->persist($ClassName);
         }
+        $this->entityManager->flush();
 
-        throw new BadRequestHttpException();
+        return new Response();
     }
 
     /**

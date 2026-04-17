@@ -2,6 +2,10 @@ name: Plugin test for EC-CUBE
 
 on:
   workflow_call:
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   plugin-install:
@@ -11,7 +15,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-24.04 ]
-        php: [ '8.3', '8.4', '8.5' ]
+        php: [ '8.2', '8.3', '8.4' ]
         db: [ pgsql, mysql ]
         method:
           - test_install_enable_disable_remove_store
@@ -34,7 +38,7 @@ jobs:
 
     services:
       mysql:
-        image: mysql:5.7
+        image: mysql:8.4
         env:
           MYSQL_ROOT_PASSWORD: password
         ports:
@@ -47,7 +51,6 @@ jobs:
           POSTGRES_PASSWORD: password
         ports:
           - 5432:5432
-        # needed because the postgres container does not provide a healthcheck
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
       mailcatcher:
         image: schickling/mailcatcher
@@ -57,10 +60,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
 
       - name: Setup PHP
-        uses: nanasess/setup-php@master
+        uses: shivammathur/setup-php@accd6127cb78bee3e8082180cb391013d204ef9f  # v2
         with:
           php-version: ${{ matrix.php }}
 
@@ -91,28 +94,35 @@ jobs:
           bin/console doctrine:schema:create --env=dev
           bin/console eccube:fixtures:load --env=dev
 
+      - name: Cache apt packages
+        if: matrix.db == 'pgsql'
+        uses: awalsh128/cache-apt-pkgs-action@acb598e5ddbc6f68a970c5da0688d2f3a9f04d05  # latest
+        with:
+          packages: postgresql-client
+          version: 1.0
+
       - name: Update baseinfo with pgsql
         if: matrix.db == 'pgsql'
         env:
           PGPASSWORD: 'password'
-        run: |
-          sudo apt-get install -y postgresql-client
-          psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
+        run: psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
 
       - name: Update baseinfo with mysql
         if: matrix.db == 'mysql'
         run: mysql -h 127.0.0.1 -u root -ppassword eccube_db -e "update dtb_base_info set authentication_key='test';"
 
-      - name: setup-chromedriver
-        uses: nanasess/setup-chromedriver@master
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020  # v4
+        with:
+          node-version: 20
 
-      - name: Run chromedriver
-        run: |
-          export DISPLAY=:99
-          chromedriver --url-base=/wd/hub --port=9515 &
-          echo ">>> Started chrome-driver"
-          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
-          echo ">>> Started xvfb"
+      - name: Install Playwright dependencies
+        working-directory: e2e
+        run: npm ci
+
+      - name: Install Playwright browsers
+        working-directory: e2e
+        run: npx playwright install chromium --with-deps
 
       - name: Start PHP Development Server
         env:
@@ -131,36 +141,30 @@ jobs:
           if [[ ! -d ${PWD}/repos ]]; then mkdir -p ${PWD}/repos ; fi
           docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
 
-      - name: Configure PHP for Codeception
-        run: |
-          PHP_INI=$(php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||" | tr -d '"')
-          echo "Using php.ini: $PHP_INI"
-          echo "register_argc_argv=On" | sudo tee -a "$PHP_INI"
-
-      - name: Run to Codeception
+      - name: Playwright
+        working-directory: e2e
+        run: npx playwright test plugin-install --grep "${METHOD}"
         env:
-          APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
-          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          DATABASE_CHARSET: ${{ matrix.database_charset }}
-          MAILER_URL: 'smtp://127.0.0.1:1025'
-          METHOD: ${{ matrix.method }}
+          BASE_URL: 'http://127.0.0.1:8000'
+          ECCUBE_PROJECT_DIR: ${{ github.workspace }}
+          ECCUBE_ADMIN_ROUTE: admin
+          REPOS_DIR: ${{ github.workspace }}/repos
+          PLUGIN_DATA_DIR: ${{ github.workspace }}/codeception/_data/plugins
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
-          NO_FIXTURES: 1
-        run: |
-          sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
-          vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
-      - name: Upload evidence
+          METHOD: ${{ matrix.method }}
+
+      - name: Upload traces
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
         with:
-          name: plugin-install-${{ matrix.php }}-${{ matrix.db }}-${{ matrix.method }}-evidence
-          path: codeception/_output/
+          name: plugin-install-${{ matrix.method }}-${{ matrix.db }}-traces
+          path: e2e/test-results/
       - name: Upload logs
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
         with:
-          name: plugin-install-${{ matrix.php }}-${{ matrix.db }}-${{ matrix.method }}-logs
+          name: plugin-install-${{ matrix.method }}-${{ matrix.db }}-logs
           path: var/log/
 
   plugin-update:
@@ -170,7 +174,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-24.04 ]
-        php: [ '8.3', '8.4', '8.5' ]
+        php: [ '8.2', '8.3', '8.4' ]
         db: [ pgsql, mysql ]
         method:
           - test_install_update_remove_store
@@ -191,7 +195,7 @@ jobs:
 
     services:
       mysql:
-        image: mysql:5.7
+        image: mysql:8.4
         env:
           MYSQL_ROOT_PASSWORD: password
         ports:
@@ -204,7 +208,6 @@ jobs:
           POSTGRES_PASSWORD: password
         ports:
           - 5432:5432
-        # needed because the postgres container does not provide a healthcheck
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
       mailcatcher:
         image: schickling/mailcatcher
@@ -214,19 +217,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@master
-
-      - name: Get Composer Cache Directory
-        uses: actions/cache@v4
-        id: composer-cache
-        with:
-          path: ${{ github.workspace }}/vendor
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
 
       - name: Setup PHP
-        uses: nanasess/setup-php@master
+        uses: shivammathur/setup-php@accd6127cb78bee3e8082180cb391013d204ef9f  # v2
         with:
           php-version: ${{ matrix.php }}
 
@@ -237,8 +231,8 @@ jobs:
           sudo phpenmod -s cli redis
           php -m | grep -i redis
 
-      - name: Install to Composer
-        run: composer install --dev --no-interaction -o --apcu-autoloader
+      - name: Initialize Composer
+        uses: ./.github/actions/composer
 
       - name: Generate ECCUBE_AUTH_MAGIC
         run: echo "ECCUBE_AUTH_MAGIC=$(openssl rand -hex 32)" >> $GITHUB_ENV
@@ -257,28 +251,35 @@ jobs:
           bin/console doctrine:schema:create --env=dev
           bin/console eccube:fixtures:load --env=dev
 
+      - name: Cache apt packages
+        if: matrix.db == 'pgsql'
+        uses: awalsh128/cache-apt-pkgs-action@acb598e5ddbc6f68a970c5da0688d2f3a9f04d05  # latest
+        with:
+          packages: postgresql-client
+          version: 1.0
+
       - name: Update baseinfo with pgsql
         if: matrix.db == 'pgsql'
         env:
           PGPASSWORD: 'password'
-        run: |
-          sudo apt-get install -y postgresql-client
-          psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
+        run: psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
 
       - name: Update baseinfo with mysql
         if: matrix.db == 'mysql'
         run: mysql -h 127.0.0.1 -u root -ppassword eccube_db -e "update dtb_base_info set authentication_key='test';"
 
-      - name: setup-chromedriver
-        uses: nanasess/setup-chromedriver@master
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020  # v4
+        with:
+          node-version: 20
 
-      - name: Run chromedriver
-        run: |
-          export DISPLAY=:99
-          chromedriver --url-base=/wd/hub --port=9515 &
-          echo ">>> Started chrome-driver"
-          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
-          echo ">>> Started xvfb"
+      - name: Install Playwright dependencies
+        working-directory: e2e
+        run: npm ci
+
+      - name: Install Playwright browsers
+        working-directory: e2e
+        run: npx playwright install chromium --with-deps
 
       - name: Start PHP Development Server
         env:
@@ -291,42 +292,35 @@ jobs:
           ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
         run: php -S 127.0.0.1:8000 codeception/router.php &
 
-      ## ${PWD}/repos does not exist so service cannot be started
       - name: Run package-api
         run: |
           if [[ ! -d ${PWD}/repos ]]; then mkdir -p ${PWD}/repos ; fi
           docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
 
-      - name: Configure PHP for Codeception
-        run: |
-          PHP_INI=$(php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||" | tr -d '"')
-          echo "Using php.ini: $PHP_INI"
-          echo "register_argc_argv=On" | sudo tee -a "$PHP_INI"
-
-      - name: Run to Codeception
+      - name: Playwright
+        working-directory: e2e
+        run: npx playwright test plugin-update --grep "${METHOD}"
         env:
-          APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
-          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          DATABASE_CHARSET: ${{ matrix.database_charset }}
-          MAILER_URL: 'smtp://127.0.0.1:1025'
-          METHOD: ${{ matrix.method }}
+          BASE_URL: 'http://127.0.0.1:8000'
+          ECCUBE_PROJECT_DIR: ${{ github.workspace }}
+          ECCUBE_ADMIN_ROUTE: admin
+          REPOS_DIR: ${{ github.workspace }}/repos
+          PLUGIN_DATA_DIR: ${{ github.workspace }}/codeception/_data/plugins
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
-          NO_FIXTURES: 1
-        run: |
-          sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
-          vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
-      - name: Upload evidence
+          METHOD: ${{ matrix.method }}
+
+      - name: Upload traces
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
         with:
-          name: plugin-update-${{ matrix.php }}-${{ matrix.db }}-${{ matrix.method }}-evidence
-          path: codeception/_output/
+          name: plugin-update-${{ matrix.method }}-${{ matrix.db }}-traces
+          path: e2e/test-results/
       - name: Upload logs
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
         with:
-          name: plugin-update-${{ matrix.php }}-${{ matrix.db }}-${{ matrix.method }}-logs
+          name: plugin-update-${{ matrix.method }}-${{ matrix.db }}-logs
           path: var/log/
 
   plugin-extend:
@@ -336,7 +330,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-24.04 ]
-        php: [ '8.3', '8.4', '8.5' ]
+        php: [ '8.2', '8.3', '8.4' ]
         db: [ pgsql, mysql ]
         method:
           - test_extend_same_table_store
@@ -357,7 +351,7 @@ jobs:
 
     services:
       mysql:
-        image: mysql:5.7
+        image: mysql:8.4
         env:
           MYSQL_ROOT_PASSWORD: password
         ports:
@@ -370,7 +364,6 @@ jobs:
           POSTGRES_PASSWORD: password
         ports:
           - 5432:5432
-        # needed because the postgres container does not provide a healthcheck
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
       mailcatcher:
         image: schickling/mailcatcher
@@ -380,19 +373,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@master
-
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ github.workspace }}/vendor
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
 
       - name: Setup PHP
-        uses: nanasess/setup-php@master
+        uses: shivammathur/setup-php@accd6127cb78bee3e8082180cb391013d204ef9f  # v2
         with:
           php-version: ${{ matrix.php }}
 
@@ -403,8 +387,8 @@ jobs:
           sudo phpenmod -s cli redis
           php -m | grep -i redis
 
-      - name: Install to Composer
-        run: composer install --dev --no-interaction -o --apcu-autoloader
+      - name: Initialize Composer
+        uses: ./.github/actions/composer
 
       - name: Generate ECCUBE_AUTH_MAGIC
         run: echo "ECCUBE_AUTH_MAGIC=$(openssl rand -hex 32)" >> $GITHUB_ENV
@@ -423,28 +407,35 @@ jobs:
           bin/console doctrine:schema:create --env=dev
           bin/console eccube:fixtures:load --env=dev
 
+      - name: Cache apt packages
+        if: matrix.db == 'pgsql'
+        uses: awalsh128/cache-apt-pkgs-action@acb598e5ddbc6f68a970c5da0688d2f3a9f04d05  # latest
+        with:
+          packages: postgresql-client
+          version: 1.0
+
       - name: Update baseinfo with pgsql
         if: matrix.db == 'pgsql'
         env:
           PGPASSWORD: 'password'
-        run: |
-          sudo apt-get install -y postgresql-client
-          psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
+        run: psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
 
       - name: Update baseinfo with mysql
         if: matrix.db == 'mysql'
         run: mysql -h 127.0.0.1 -u root -ppassword eccube_db -e "update dtb_base_info set authentication_key='test';"
 
-      - name: setup-chromedriver
-        uses: nanasess/setup-chromedriver@master
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020  # v4
+        with:
+          node-version: 20
 
-      - name: Run chromedriver
-        run: |
-          export DISPLAY=:99
-          chromedriver --url-base=/wd/hub --port=9515 &
-          echo ">>> Started chrome-driver"
-          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
-          echo ">>> Started xvfb"
+      - name: Install Playwright dependencies
+        working-directory: e2e
+        run: npm ci
+
+      - name: Install Playwright browsers
+        working-directory: e2e
+        run: npx playwright install chromium --with-deps
 
       - name: Start PHP Development Server
         env:
@@ -457,42 +448,35 @@ jobs:
           ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
         run: php -S 127.0.0.1:8000 codeception/router.php &
 
-      ## ${PWD}/repos does not exist so service cannot be started
       - name: Run package-api
         run: |
           if [[ ! -d ${PWD}/repos ]]; then mkdir -p ${PWD}/repos ; fi
           docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
 
-      - name: Configure PHP for Codeception
-        run: |
-          PHP_INI=$(php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||" | tr -d '"')
-          echo "Using php.ini: $PHP_INI"
-          echo "register_argc_argv=On" | sudo tee -a "$PHP_INI"
-
-      - name: Run to Codeception
+      - name: Playwright
+        working-directory: e2e
+        run: npx playwright test plugin-extend --grep "${METHOD}"
         env:
-          APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
-          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          DATABASE_CHARSET: ${{ matrix.database_charset }}
-          MAILER_URL: 'smtp://127.0.0.1:1025'
-          METHOD: ${{ matrix.method }}
+          BASE_URL: 'http://127.0.0.1:8000'
+          ECCUBE_PROJECT_DIR: ${{ github.workspace }}
+          ECCUBE_ADMIN_ROUTE: admin
+          REPOS_DIR: ${{ github.workspace }}/repos
+          PLUGIN_DATA_DIR: ${{ github.workspace }}/codeception/_data/plugins
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
-          NO_FIXTURES: 1
-        run: |
-          sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
-          vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
-      - name: Upload evidence
+          METHOD: ${{ matrix.method }}
+
+      - name: Upload traces
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
         with:
-          name: plugin-extend-${{ matrix.php }}-${{ matrix.db }}-${{ matrix.method }}-evidence
-          path: codeception/_output/
+          name: plugin-extend-${{ matrix.method }}-${{ matrix.db }}-traces
+          path: e2e/test-results/
       - name: Upload logs
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
         with:
-          name: plugin-extend-${{ matrix.php }}-${{ matrix.db }}-${{ matrix.method }}-logs
+          name: plugin-extend-${{ matrix.method }}-${{ matrix.db }}-logs
           path: var/log/
 
   plugin-depend:
@@ -502,7 +486,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-24.04 ]
-        php: [ '8.3', '8.4', '8.5' ]
+        php: [ '8.2', '8.3', '8.4' ]
         db: [ pgsql, mysql ]
         method:
           - test_dependency_each_install_plugin
@@ -526,7 +510,7 @@ jobs:
 
     services:
       mysql:
-        image: mysql:5.7
+        image: mysql:8.4
         env:
           MYSQL_ROOT_PASSWORD: password
         ports:
@@ -539,7 +523,6 @@ jobs:
           POSTGRES_PASSWORD: password
         ports:
           - 5432:5432
-        # needed because the postgres container does not provide a healthcheck
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
       mailcatcher:
         image: schickling/mailcatcher
@@ -549,19 +532,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@master
-
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ github.workspace }}/vendor
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
 
       - name: Setup PHP
-        uses: nanasess/setup-php@master
+        uses: shivammathur/setup-php@accd6127cb78bee3e8082180cb391013d204ef9f  # v2
         with:
           php-version: ${{ matrix.php }}
 
@@ -572,8 +546,8 @@ jobs:
           sudo phpenmod -s cli redis
           php -m | grep -i redis
 
-      - name: Install to Composer
-        run: composer install --dev --no-interaction -o --apcu-autoloader
+      - name: Initialize Composer
+        uses: ./.github/actions/composer
 
       - name: Generate ECCUBE_AUTH_MAGIC
         run: echo "ECCUBE_AUTH_MAGIC=$(openssl rand -hex 32)" >> $GITHUB_ENV
@@ -592,28 +566,35 @@ jobs:
           bin/console doctrine:schema:create --env=dev
           bin/console eccube:fixtures:load --env=dev
 
+      - name: Cache apt packages
+        if: matrix.db == 'pgsql'
+        uses: awalsh128/cache-apt-pkgs-action@acb598e5ddbc6f68a970c5da0688d2f3a9f04d05  # latest
+        with:
+          packages: postgresql-client
+          version: 1.0
+
       - name: Update baseinfo with pgsql
         if: matrix.db == 'pgsql'
         env:
           PGPASSWORD: 'password'
-        run: |
-          sudo apt-get install -y postgresql-client
-          psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
+        run: psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
 
       - name: Update baseinfo with mysql
         if: matrix.db == 'mysql'
         run: mysql -h 127.0.0.1 -u root -ppassword eccube_db -e "update dtb_base_info set authentication_key='test';"
 
-      - name: setup-chromedriver
-        uses: nanasess/setup-chromedriver@master
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020  # v4
+        with:
+          node-version: 20
 
-      - name: Run chromedriver
-        run: |
-          export DISPLAY=:99
-          chromedriver --url-base=/wd/hub --port=9515 &
-          echo ">>> Started chrome-driver"
-          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
-          echo ">>> Started xvfb"
+      - name: Install Playwright dependencies
+        working-directory: e2e
+        run: npm ci
+
+      - name: Install Playwright browsers
+        working-directory: e2e
+        run: npx playwright install chromium --with-deps
 
       - name: Start PHP Development Server
         env:
@@ -626,40 +607,303 @@ jobs:
           ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
         run: php -S 127.0.0.1:8000 codeception/router.php &
 
-      ## ${PWD}/repos does not exist so service cannot be started
       - name: Run package-api
         run: |
           if [[ ! -d ${PWD}/repos ]]; then mkdir -p ${PWD}/repos ; fi
           docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
 
-      - name: Configure PHP for Codeception
-        run: |
-          PHP_INI=$(php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||" | tr -d '"')
-          echo "Using php.ini: $PHP_INI"
-          echo "register_argc_argv=On" | sudo tee -a "$PHP_INI"
-
-      - name: Run to Codeception
+      - name: Playwright
+        working-directory: e2e
+        run: npx playwright test plugin-depend --grep "${METHOD}"
         env:
-          APP_ENV: ${{ matrix.app_env }}
+          DATABASE_URL: ${{ matrix.database_url }}
+          BASE_URL: 'http://127.0.0.1:8000'
+          ECCUBE_PROJECT_DIR: ${{ github.workspace }}
+          ECCUBE_ADMIN_ROUTE: admin
+          REPOS_DIR: ${{ github.workspace }}/repos
+          PLUGIN_DATA_DIR: ${{ github.workspace }}/codeception/_data/plugins
+          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
+          METHOD: ${{ matrix.method }}
+
+      - name: Upload traces
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
+        with:
+          name: plugin-depend-${{ matrix.method }}-${{ matrix.db }}-traces
+          path: e2e/test-results/
+      - name: Upload logs
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
+        with:
+          name: plugin-depend-${{ matrix.method }}-${{ matrix.db }}-logs
+          path: var/log/
+
+  plugin-assets:
+    name: Plugin assets
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: [ ubuntu-24.04 ]
+        php: [ '8.2' ]
+        db: [ pgsql, mysql ]
+        include:
+          - db: pgsql
+            database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
+            database_server_version: 14
+            database_charset: utf8
+          - db: mysql
+            database_url: mysql://root:password@127.0.0.1:3306/eccube_db
+            database_server_version: 5
+            database_charset: utf8mb4
+
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_ROOT_PASSWORD: password
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+      mailcatcher:
+        image: schickling/mailcatcher
+        ports:
+          - 1080:1080
+          - 1025:1025
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@accd6127cb78bee3e8082180cb391013d204ef9f  # v2
+        with:
+          php-version: ${{ matrix.php }}
+
+      - name: Initialize Composer
+        uses: ./.github/actions/composer
+
+      - name: Setup to EC-CUBE
+        env:
+          APP_ENV: 'codeception'
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_CHARSET: ${{ matrix.database_charset }}
+        run: |
+          echo "APP_ENV=${APP_ENV}" > .env
+          bin/console doctrine:database:create --env=dev
+          bin/console doctrine:schema:create --env=dev
+          bin/console eccube:fixtures:load --env=dev
+
+      - name: Cache apt packages
+        if: matrix.db == 'pgsql'
+        uses: awalsh128/cache-apt-pkgs-action@acb598e5ddbc6f68a970c5da0688d2f3a9f04d05  # latest
+        with:
+          packages: postgresql-client
+          version: 1.0
+
+      - name: Update baseinfo with pgsql
+        if: matrix.db == 'pgsql'
+        env:
+          PGPASSWORD: 'password'
+        run: psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
+
+      - name: Update baseinfo with mysql
+        if: matrix.db == 'mysql'
+        run: mysql -h 127.0.0.1 -u root -ppassword eccube_db -e "update dtb_base_info set authentication_key='test';"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020  # v4
+        with:
+          node-version: 20
+
+      - name: Install Playwright dependencies
+        working-directory: e2e
+        run: npm ci
+
+      - name: Install Playwright browsers
+        working-directory: e2e
+        run: npx playwright install chromium --with-deps
+
+      - name: Start PHP Development Server
+        env:
+          APP_ENV: 'codeception'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
           MAILER_URL: 'smtp://127.0.0.1:1025'
-          METHOD: ${{ matrix.method }}
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
-          NO_FIXTURES: 1
+        run: php -S 127.0.0.1:8000 codeception/router.php &
+
+      - name: Run package-api
         run: |
-          sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
-          vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
-      - name: Upload evidence
+          if [[ ! -d ${PWD}/repos ]]; then mkdir -p ${PWD}/repos ; fi
+          docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
+
+      - name: Playwright
+        working-directory: e2e
+        run: npx playwright test plugin-assets
+        env:
+          DATABASE_URL: ${{ matrix.database_url }}
+          BASE_URL: 'http://127.0.0.1:8000'
+          ECCUBE_PROJECT_DIR: ${{ github.workspace }}
+          ECCUBE_ADMIN_ROUTE: admin
+          REPOS_DIR: ${{ github.workspace }}/repos
+          PLUGIN_DATA_DIR: ${{ github.workspace }}/codeception/_data/plugins
+          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
+
+      - name: Upload traces
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
         with:
-          name: plugin-depend-${{ matrix.php }}-${{ matrix.db }}-${{ matrix.method }}-evidence
-          path: codeception/_output/
+          name: plugin-assets-${{ matrix.db }}-traces
+          path: e2e/test-results/
       - name: Upload logs
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
         with:
-          name: plugin-depend-${{ matrix.php }}-${{ matrix.db }}-${{ matrix.method }}-logs
+          name: plugin-assets-${{ matrix.db }}-logs
+          path: var/log/
+
+  plugin-misc:
+    name: Plugin misc
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: [ ubuntu-24.04 ]
+        php: [ '8.2' ]
+        db: [ pgsql, mysql ]
+        include:
+          - db: pgsql
+            database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
+            database_server_version: 14
+            database_charset: utf8
+          - db: mysql
+            database_url: mysql://root:password@127.0.0.1:3306/eccube_db
+            database_server_version: 5
+            database_charset: utf8mb4
+
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_ROOT_PASSWORD: password
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+      mailcatcher:
+        image: schickling/mailcatcher
+        ports:
+          - 1080:1080
+          - 1025:1025
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@accd6127cb78bee3e8082180cb391013d204ef9f  # v2
+        with:
+          php-version: ${{ matrix.php }}
+
+      - name: Initialize Composer
+        uses: ./.github/actions/composer
+
+      - name: Setup to EC-CUBE
+        env:
+          APP_ENV: 'codeception'
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_CHARSET: ${{ matrix.database_charset }}
+        run: |
+          echo "APP_ENV=${APP_ENV}" > .env
+          bin/console doctrine:database:create --env=dev
+          bin/console doctrine:schema:create --env=dev
+          bin/console eccube:fixtures:load --env=dev
+
+      - name: Cache apt packages
+        if: matrix.db == 'pgsql'
+        uses: awalsh128/cache-apt-pkgs-action@acb598e5ddbc6f68a970c5da0688d2f3a9f04d05  # latest
+        with:
+          packages: postgresql-client
+          version: 1.0
+
+      - name: Update baseinfo with pgsql
+        if: matrix.db == 'pgsql'
+        env:
+          PGPASSWORD: 'password'
+        run: psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
+
+      - name: Update baseinfo with mysql
+        if: matrix.db == 'mysql'
+        run: mysql -h 127.0.0.1 -u root -ppassword eccube_db -e "update dtb_base_info set authentication_key='test';"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020  # v4
+        with:
+          node-version: 20
+
+      - name: Install Playwright dependencies
+        working-directory: e2e
+        run: npm ci
+
+      - name: Install Playwright browsers
+        working-directory: e2e
+        run: npx playwright install chromium --with-deps
+
+      - name: Start PHP Development Server
+        env:
+          APP_ENV: 'codeception'
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_CHARSET: ${{ matrix.database_charset }}
+          MAILER_URL: 'smtp://127.0.0.1:1025'
+          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
+        run: php -S 127.0.0.1:8000 codeception/router.php &
+
+      - name: Run package-api
+        run: |
+          if [[ ! -d ${PWD}/repos ]]; then mkdir -p ${PWD}/repos ; fi
+          docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
+
+      - name: Playwright
+        working-directory: e2e
+        run: npx playwright test plugin-misc
+        env:
+          DATABASE_URL: ${{ matrix.database_url }}
+          BASE_URL: 'http://127.0.0.1:8000'
+          ECCUBE_PROJECT_DIR: ${{ github.workspace }}
+          ECCUBE_ADMIN_ROUTE: admin
+          REPOS_DIR: ${{ github.workspace }}/repos
+          PLUGIN_DATA_DIR: ${{ github.workspace }}/codeception/_data/plugins
+          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
+
+      - name: Upload traces
+        if: failure()
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
+        with:
+          name: plugin-misc-${{ matrix.db }}-traces
+          path: e2e/test-results/
+      - name: Upload logs
+        if: failure()
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
+        with:
+          name: plugin-misc-${{ matrix.db }}-logs
           path: var/log/

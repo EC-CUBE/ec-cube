@@ -14,6 +14,84 @@
   },
   "statements": [
     {
+      "url": "https://ec-cube/admin/login",
+      "data": "",
+      "method": "GET",
+      "headers": "Upgrade-Insecure-Requests: 1\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": true,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 1,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "fieldDefinition": {
+        "formIndex": 0,
+        "fieldName": "_csrf_token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "csrf_login",
+      "index": 2,
+      "enabled": true,
+      "elementType": "ZestAssignFieldValue"
+    },
+    {
+      "url": "https://ec-cube/admin/login",
+      "urlToken": "https://ec-cube/admin/login",
+      "data": "_csrf_token={{csrf_login}}&login_id=admin&password=password",
+      "method": "POST",
+      "headers": "Content-Type: application/x-www-form-urlencoded\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 302,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 3,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "https://ec-cube/admin/",
+      "data": "",
+      "method": "GET",
+      "headers": "Upgrade-Insecure-Requests: 1\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": true,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 4,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
       "set": {
         "start": 0,
         "end": 100,
@@ -45,7 +123,7 @@
           "followRedirects": false,
           "timestamp": 1655292294336,
           "cookies": [],
-          "index": 1,
+          "index": 5,
           "enabled": true,
           "elementType": "ZestRequest"
         },
@@ -56,7 +134,7 @@
             "elementType": "ZestFieldDefinition"
           },
           "variableName": "csrf2",
-          "index": 2,
+          "index": 6,
           "enabled": true,
           "elementType": "ZestAssignFieldValue"
         },
@@ -86,13 +164,13 @@
           "followRedirects": false,
           "timestamp": 1655292348003,
           "cookies": [],
-          "index": 3,
+          "index": 7,
           "enabled": true,
           "elementType": "ZestRequest"
         }
       ],
       "variableName": "customer-id",
-      "index": 1,
+      "index": 8,
       "enabled": true,
       "elementType": "ZestLoopInteger"
     }

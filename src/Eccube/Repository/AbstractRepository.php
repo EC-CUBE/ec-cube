@@ -73,4 +73,30 @@ abstract class AbstractRepository extends ServiceEntityRepository
     {
         return 'mysql' == $this->getEntityManager()->getConnection()->getDatabasePlatform()->getName();
     }
+
+    /**
+     * 管理画面の検索時のソートの設定の際にソートキーが存在しない場合にWarningになるのでその対処
+     * プラグインやカスタマイズでソートキーを追加し、QueryCustomizerで制御できるようにするための措置
+     *
+     * @param \Doctrine\ORM\QueryBuilder $qb
+     * @param string $alias
+     * @param array $sortColumns
+     * @param array $searchData
+     *
+     * @return void
+     */
+    protected function setQueryBuilderAdminSearchDataOrderBy(\Doctrine\ORM\QueryBuilder $qb, string $alias = 'p', array $sortColumns = [], array $searchData = []): void
+    {
+        if (isset($searchData['sortkey']) && !empty($searchData['sortkey'])) {
+            $sortOrder = (isset($searchData['sorttype']) && $searchData['sorttype'] == 'a') ? 'ASC' : 'DESC';
+
+            $addOrderBy = $sortColumns[$searchData['sortkey']] ?? "{$alias}.update_date";
+            $qb->orderBy($addOrderBy, $sortOrder);
+            $qb->addOrderBy("{$alias}.update_date", 'DESC');
+            $qb->addOrderBy("{$alias}.id", 'DESC');
+        } else {
+            $qb->orderBy("{$alias}.update_date", 'DESC');
+            $qb->addOrderBy("{$alias}.id", 'DESC');
+        }
+    }
 }
