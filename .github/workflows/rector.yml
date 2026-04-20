@@ -24,6 +24,11 @@ jobs:
       - name: Initialize Composer
         uses: ./.github/actions/composer
 
+      - name: Warmup cache (dev)
+        run: bin/console cache:warmup --env=dev
+        env:
+          APP_ENV: dev
+
       - name: Restore Rector cache
         uses: actions/cache/restore@668228422ae6a00e4ad889ee87cd7109ec5666a7  # v5
         with:
