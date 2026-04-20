@@ -92,19 +92,13 @@ jobs:
           timeout_minutes: 10
           max_attempts: 2
           retry_on: error
-          command: vendor/bin/phpunit --exclude-group cache-clear,cache-clear-install,update-schema-doctrine,plugin-service
+          command: vendor/bin/phpunit --exclude-group cache-clear --exclude-group cache-clear-install --exclude-group update-schema-doctrine --exclude-group plugin-service
         env:
           APP_ENV: 'test'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
           MAILER_URL: 'smtp://127.0.0.11025'
-        uses: nick-invision/retry@ad984534de44a9489a53aefd81eb77f87c70dc60  # v4.0.0
-        with:
-          timeout_minutes: 10
-          max_attempts: 2
-          retry_on: error
-          command: vendor/bin/phpunit --exclude-group cache-clear --exclude-group cache-clear-install --exclude-group update-schema-doctrine --exclude-group plugin-service
       - name: PHPUnit (cache-clear)
         env:
           APP_ENV: 'test'
