@@ -418,8 +418,8 @@ class CustomerRepository extends AbstractRepository
 
         if (isset($searchData['multi']) && StringUtil::isNotBlank($searchData['multi'])) {
             // スペース除去
-            $clean_key_multi = preg_replace('/\s+|[　]+/u', '', $searchData['multi']);
-            $id = preg_match('/^\d{0,10}$/', $clean_key_multi) ? $clean_key_multi : null;
+            $clean_key_multi = preg_replace('/\s+|[　]+/u', '', (string) $searchData['multi']);
+            $id = preg_match('/^\d{0,10}$/', (string) $clean_key_multi) ? $clean_key_multi : null;
             if ($id && $id > '2147483647' && $this->isPostgreSQL()) {
                 $id = null;
             }
@@ -472,7 +472,7 @@ class CustomerRepository extends AbstractRepository
 
         // tel
         if (isset($searchData['phone_number']) && StringUtil::isNotBlank($searchData['phone_number'])) {
-            $tel = preg_replace('/[^0-9]/', '', $searchData['phone_number']);
+            $tel = preg_replace('/[^0-9]/', '', (string) $searchData['phone_number']);
             $qb
                 ->andWhere('c.phone_number LIKE :phone_number')
                 ->setParameter('phone_number', '%'.$tel.'%');

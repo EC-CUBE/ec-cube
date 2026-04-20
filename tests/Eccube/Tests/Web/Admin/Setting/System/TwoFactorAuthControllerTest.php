@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,22 +20,14 @@ use Eccube\Repository\MemberRepository;
 use Eccube\Service\TwoFactorAuthService;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use RobThree\Auth\TwoFactorAuth;
+use Symfony\Component\HttpFoundation\Request;
 
-class TwoFactorAuthControllerTest extends AbstractAdminWebTestCase
+final class TwoFactorAuthControllerTest extends AbstractAdminWebTestCase
 {
-    /**
-     * @var MemberRepository
-     */
     protected MemberRepository $memberRepository;
 
-    /**
-     * @var TwoFactorAuthService
-     */
     protected TwoFactorAuthService $twoFactorAuthService;
 
-    /**
-     * @var TwoFactorAuth
-     */
     protected TwoFactorAuth $tfa;
 
     protected function setUp(): void
@@ -66,7 +60,7 @@ class TwoFactorAuthControllerTest extends AbstractAdminWebTestCase
         $this->loginTo($Member);
 
         // 2FA認証画面にアクセス（CSRFトークン取得のため）
-        $crawler = $this->client->request('GET', $this->generateUrl('admin_two_factor_auth'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_two_factor_auth'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         // CSRFトークンを取得
@@ -74,7 +68,7 @@ class TwoFactorAuthControllerTest extends AbstractAdminWebTestCase
 
         // 正しいTOTPコードを生成して送信
         $validCode = $this->tfa->getCode($authKey);
-        $this->client->request('POST', $this->generateUrl('admin_two_factor_auth'), [
+        $this->client->request(Request::METHOD_POST, $this->generateUrl('admin_two_factor_auth'), [
             'admin_two_factor_auth' => [
                 'device_token' => $validCode,
                 '_token' => $token,
@@ -109,7 +103,7 @@ class TwoFactorAuthControllerTest extends AbstractAdminWebTestCase
         $this->loginTo($Member);
 
         // 2FAセットアップ画面にアクセス
-        $crawler = $this->client->request('GET', $this->generateUrl('admin_two_factor_auth_set'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_two_factor_auth_set'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         // フォームから秘密鍵とCSRFトークンを取得
@@ -118,7 +112,7 @@ class TwoFactorAuthControllerTest extends AbstractAdminWebTestCase
 
         // 正しいTOTPコードを生成して送信
         $validCode = $this->tfa->getCode($authKey);
-        $this->client->request('POST', $this->generateUrl('admin_two_factor_auth_set'), [
+        $this->client->request(Request::METHOD_POST, $this->generateUrl('admin_two_factor_auth_set'), [
             'admin_two_factor_auth' => [
                 'device_token' => $validCode,
                 'auth_key' => $authKey,
@@ -159,14 +153,14 @@ class TwoFactorAuthControllerTest extends AbstractAdminWebTestCase
         $this->loginTo($Member);
 
         // 2FA認証画面にアクセス
-        $crawler = $this->client->request('GET', $this->generateUrl('admin_two_factor_auth'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_two_factor_auth'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         // CSRFトークンを取得
         $token = $crawler->filter('input[name="admin_two_factor_auth[_token]"]')->attr('value');
 
         // 間違ったコードを送信
-        $crawler = $this->client->request('POST', $this->generateUrl('admin_two_factor_auth'), [
+        $crawler = $this->client->request(Request::METHOD_POST, $this->generateUrl('admin_two_factor_auth'), [
             'admin_two_factor_auth' => [
                 'device_token' => '000000', // 無効なコード
                 '_token' => $token,
@@ -207,7 +201,7 @@ class TwoFactorAuthControllerTest extends AbstractAdminWebTestCase
         $this->loginTo($Member);
 
         // 2FA未認証状態で設定画面にアクセス
-        $this->client->request('GET', $this->generateUrl('admin_two_factor_auth_set'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_two_factor_auth_set'));
 
         $response = $this->client->getResponse();
 

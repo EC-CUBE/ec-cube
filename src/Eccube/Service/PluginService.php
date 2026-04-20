@@ -355,10 +355,10 @@ class PluginService
                 // ZIP Slip 対策: 展開先パスの検証
                 for ($i = 0; $i < $zip->numFiles; $i++) {
                     $entryName = $zip->getNameIndex($i);
-                    if (strpos($entryName, '..') !== false
-                        || strpos($entryName, ':') !== false
-                        || strpos($entryName, '/') === 0
-                        || strpos($entryName, '\\') === 0
+                    if (str_contains($entryName, '..')
+                        || str_contains($entryName, ':')
+                        || str_starts_with($entryName, '/')
+                        || str_starts_with($entryName, '\\')
                     ) {
                         $zip->close();
                         throw new PluginException(trans('pluginservice.text.error.upload_failure'));

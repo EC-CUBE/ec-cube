@@ -22,6 +22,7 @@ use Eccube\Entity\DeliveryFee;
 use Eccube\Entity\DeliveryTime;
 use Eccube\Entity\LoginHistory;
 use Eccube\Entity\Master\Authority;
+use Eccube\Entity\Master\Country;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\Job;
 use Eccube\Entity\Master\LoginHistoryStatus;
@@ -222,7 +223,7 @@ class Generator
             $Customer->addCustomerAddress($CustomerAddress);
             // TODO 外部でやった方がいい？
             $sessionCustomerAddressKey = 'eccube.front.shopping.nonmember.customeraddress';
-            $customerAddresses = unserialize($this->requestStack->getSession()->get($sessionCustomerAddressKey), ['allowed_classes' => [CustomerAddress::class, Customer::class, Pref::class, \Eccube\Entity\Master\Country::class]]);
+            $customerAddresses = unserialize($this->requestStack->getSession()->get($sessionCustomerAddressKey), ['allowed_classes' => [CustomerAddress::class, Customer::class, Pref::class, Country::class]]);
             if (!is_array($customerAddresses)) {
                 $customerAddresses = [];
             }
@@ -597,14 +598,12 @@ class Generator
 
         // OrderItemを1-2個にランダム化（高速化のため、GenerateDummyDataCommandからのみ使用）
         if ($randomizeOrderItems) {
-            $visibleProductClasses = array_filter($ProductClasses, function ($pc) { return $pc->isVisible(); });
+            $visibleProductClasses = array_filter($ProductClasses, fn ($pc) => $pc->isVisible());
             $numOrderItems = min($faker->numberBetween(1, 2), count($visibleProductClasses));
             $selectedProductClasses = $faker->randomElements($visibleProductClasses, $numOrderItems);
         } else {
             // visible=trueのProductClassのみ使用（デフォルト規格を除外）
-            $selectedProductClasses = array_filter($ProductClasses, function ($pc) {
-                return $pc->isVisible();
-            });
+            $selectedProductClasses = array_filter($ProductClasses, fn ($pc) => $pc->isVisible());
         }
 
         /** @var ProductClass $ProductClass */

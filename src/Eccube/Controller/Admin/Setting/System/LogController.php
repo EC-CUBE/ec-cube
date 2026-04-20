@@ -148,14 +148,14 @@ class LogController extends AbstractController
 
             // 最小レベルフィルタを適用
             if ($minLevelThreshold !== null) {
-                $lineLevel = isset($levelHierarchy[$level]) ? $levelHierarchy[$level] : 0;
+                $lineLevel = $levelHierarchy[$level] ?? 0;
                 if ($lineLevel < $minLevelThreshold) {
                     continue;
                 }
             }
 
             // キーワードフィルタを適用
-            if ($keyword !== null && mb_strpos(mb_strtolower($line), $keyword) === false) {
+            if ($keyword !== null && mb_strpos(mb_strtolower((string) $line), $keyword) === false) {
                 continue;
             }
 
@@ -171,8 +171,6 @@ class LogController extends AbstractController
 
     /**
      * ログ行からログレベルを抽出
-     *
-     * @param string $line
      *
      * @return string ログレベル（DEBUG, INFO等）、見つからない場合は空文字列
      */

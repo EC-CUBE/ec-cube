@@ -67,7 +67,7 @@ EOF
         $numberOfCustomer = $input->getOption('customers');
 
         // SQL Loggerを無効化してパフォーマンス向上
-        $this->entityManager->getConnection()->getConfiguration()->setSQLLogger(null);
+        $this->entityManager->getConnection()->getConfiguration()->setSQLLogger();
 
         // バッチサイズ（何件ごとにflushするか）
         $batchSize = 100;

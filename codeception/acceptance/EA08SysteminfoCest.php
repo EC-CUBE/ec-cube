@@ -58,9 +58,6 @@ class EA08SysteminfoCest
         $I->see('User Agent', '#server_info_box__body_inner > div:nth-child(6) > div:first-child');
         if ($config['eccube_phpinfo_enabled'] == 1) {
             $I->see('PHP情報', '#php_info_box__header > div > span');
-        }
-
-        if ($config['eccube_phpinfo_enabled'] == 1) {
             $I->expect('session.save_path をチェックします');
             $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/system/phpinfo');
             $I->scrollTo('a[name=module_session]');

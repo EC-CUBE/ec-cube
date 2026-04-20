@@ -657,8 +657,7 @@ class MailService
                 'Order' => $Order,
                 'MailTemplate' => $MailTemplate,
                 'BaseInfo' => $this->BaseInfo,
-            ],
-            null
+            ]
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_SHIPPING_NOTIFY);
 
@@ -781,8 +780,7 @@ class MailService
                 'MailTemplate' => $MailTemplate,
                 'userData' => $userData,
                 'eventName' => $eventName,
-            ],
-            null
+            ]
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_CUSTOMER_CHANGE_NOTIFY);
 

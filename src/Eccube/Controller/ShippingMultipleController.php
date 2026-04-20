@@ -15,7 +15,9 @@ namespace Eccube\Controller;
 
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
+use Eccube\Entity\Master\Country;
 use Eccube\Entity\Master\OrderItemType;
+use Eccube\Entity\Master\Pref;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
@@ -390,7 +392,7 @@ class ShippingMultipleController extends AbstractShoppingController
             } else {
                 // 非会員用のセッションに追加
                 $CustomerAddresses = $this->session->get(OrderHelper::SESSION_NON_MEMBER_ADDRESSES);
-                $CustomerAddresses = unserialize($CustomerAddresses, ['allowed_classes' => [CustomerAddress::class, Customer::class, \Eccube\Entity\Master\Pref::class, \Eccube\Entity\Master\Country::class]]);
+                $CustomerAddresses = unserialize($CustomerAddresses, ['allowed_classes' => [CustomerAddress::class, Customer::class, Pref::class, Country::class]]);
                 $CustomerAddresses[] = $CustomerAddress;
                 $this->session->set(OrderHelper::SESSION_NON_MEMBER_ADDRESSES, serialize($CustomerAddresses));
             }

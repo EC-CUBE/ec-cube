@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Web;
 
+use Eccube\Common\Constant;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\ClassCategory;
 use Eccube\Entity\CustomerFavoriteProduct;
@@ -29,6 +30,7 @@ use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Client;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Csrf\CsrfTokenManager;
 
 final class ProductControllerTest extends AbstractWebTestCase
 {
@@ -38,9 +40,6 @@ final class ProductControllerTest extends AbstractWebTestCase
 
     private ?ClassCategoryRepository $classCategoryRepository = null;
 
-    /**
-     * @var CustomerFavoriteProductRepository
-     */
     private CustomerFavoriteProductRepository $customerFavoriteProductRepository;
 
     protected function setUp(): void
@@ -404,7 +403,7 @@ final class ProductControllerTest extends AbstractWebTestCase
         $this->entityManager->flush();
 
         // 商品詳細ページを取得してCSRFトークンを抽出
-        $crawler = $this->client->request('GET', $this->generateUrl('product_detail', ['id' => $Product->getId()]));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('product_detail', ['id' => $Product->getId()]));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         // 削除リンクからCSRFトークンを取得
@@ -414,7 +413,7 @@ final class ProductControllerTest extends AbstractWebTestCase
 
         // JavaScriptと同様にPOSTリクエストで送信（_method: deleteを含む）
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('product_delete_favorite', ['id' => $Product->getId()]),
             [
                 '_token' => $token,
@@ -433,7 +432,7 @@ final class ProductControllerTest extends AbstractWebTestCase
             'Customer' => $Customer,
             'Product' => $Product,
         ]);
-        $this->assertNull($CustomerFavoriteProduct);
+        $this->assertNotInstanceOf(CustomerFavoriteProduct::class, $CustomerFavoriteProduct);
     }
 
     /**
@@ -450,16 +449,16 @@ final class ProductControllerTest extends AbstractWebTestCase
         $this->loginTo($Customer);
 
         // 商品詳細ページを取得（お気に入り未登録なので削除リンクはない）
-        $this->client->request('GET', $this->generateUrl('product_detail', ['id' => $Product->getId()]));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('product_detail', ['id' => $Product->getId()]));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         // Symfonyのテスト用CSRFトークンを使用
-        $csrfToken = $this->client->getContainer()->get('security.csrf.token_manager')
-            ->getToken(\Eccube\Common\Constant::TOKEN_NAME)->getValue();
+        $csrfToken = $this->client->getContainer()->get(CsrfTokenManager::class)
+            ->getToken(Constant::TOKEN_NAME)->getValue();
 
         // お気に入りに追加していない状態で削除を実行
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('product_delete_favorite', ['id' => $Product->getId()]),
             [
                 '_token' => $csrfToken,
@@ -489,7 +488,7 @@ final class ProductControllerTest extends AbstractWebTestCase
 
         // 未ログイン状態でお気に入り削除を実行
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('product_delete_favorite', ['id' => $Product->getId()]),
             [
                 '_method' => 'delete',

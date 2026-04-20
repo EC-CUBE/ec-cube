@@ -181,7 +181,7 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
         for ($attempt = 1; $attempt <= $maxRetries; $attempt++) {
             try {
                 $this->tester->executeJS('window.__eccubeNavMarker = true');
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 // マーカー設定失敗 = 前回のクリックでページ遷移中
                 break;
             }
@@ -189,9 +189,7 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
             // function.js の click ハンドラが DOMContentLoaded 後にバインドされるため、
             // ページの全リソース読み込み完了を待ってからクリックする
             $this->tester->executeInSelenium(function ($webDriver) {
-                $webDriver->wait(10)->until(function ($driver) {
-                    return $driver->executeScript('return document.readyState') === 'complete';
-                });
+                $webDriver->wait(10)->until(fn ($driver) => $driver->executeScript('return document.readyState') === 'complete');
             });
 
             $clickAction();
@@ -204,7 +202,7 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
                 $formSubmitted = (bool) $this->tester->executeJS(
                     "return document.querySelector('a[token-for-anchor][style*=\"pointer-events\"]') !== null"
                 );
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 // JS 実行失敗 = ページ遷移中
                 break;
             }
@@ -222,7 +220,7 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
                             $navigated = true;
                             break;
                         }
-                    } catch (\Exception $e) {
+                    } catch (\Exception) {
                         $navigated = true; // JS 実行エラー = ページ遷移中
                         break;
                     }

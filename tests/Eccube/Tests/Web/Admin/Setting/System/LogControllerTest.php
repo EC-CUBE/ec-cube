@@ -175,7 +175,7 @@ final class LogControllerTest extends AbstractAdminWebTestCase
 
         $this->formData['log_level'] = 'ERROR';
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_system_log'),
             ['admin_system_log' => $this->formData]
         );
@@ -202,7 +202,7 @@ final class LogControllerTest extends AbstractAdminWebTestCase
 
         $this->formData['keyword'] = 'Payment';
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_system_log'),
             ['admin_system_log' => $this->formData]
         );
@@ -230,7 +230,7 @@ final class LogControllerTest extends AbstractAdminWebTestCase
         $this->formData['keyword'] = 'Payment';
 
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_system_log'),
             ['admin_system_log' => $this->formData]
         );

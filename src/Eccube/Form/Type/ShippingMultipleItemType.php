@@ -17,6 +17,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
+use Eccube\Entity\Master\Country;
+use Eccube\Entity\Master\Pref;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\Master\PrefRepository;
 use Eccube\Service\OrderHelper;
@@ -81,7 +83,7 @@ class ShippingMultipleItemType extends AbstractType
                         $CustomerAddress->setFromCustomer($NonMember);
 
                         if ($CustomerAddresses = $this->session->get('eccube.front.shopping.nonmember.customeraddress')) {
-                            $CustomerAddresses = unserialize($CustomerAddresses, ['allowed_classes' => [CustomerAddress::class, Customer::class, \Eccube\Entity\Master\Pref::class, \Eccube\Entity\Master\Country::class]]);
+                            $CustomerAddresses = unserialize($CustomerAddresses, ['allowed_classes' => [CustomerAddress::class, Customer::class, Pref::class, Country::class]]);
                             $CustomerAddresses = array_merge([$CustomerAddress], $CustomerAddresses);
                             foreach ($CustomerAddresses as $Address) {
                                 $Pref = $this->prefRepository->find($Address->getPref()->getId());

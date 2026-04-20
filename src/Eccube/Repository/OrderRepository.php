@@ -463,8 +463,8 @@ class OrderRepository extends AbstractRepository
 
         // multi
         if (isset($searchData['multi']) && StringUtil::isNotBlank($searchData['multi'])) {
-            $clean_key_multi = preg_replace('/\s+|[　]+/u', '', $searchData['multi']);
-            $multi = preg_match('/^\d{0,10}$/', $clean_key_multi) ? $clean_key_multi : null;
+            $clean_key_multi = preg_replace('/\s+|[　]+/u', '', (string) $searchData['multi']);
+            $multi = preg_match('/^\d{0,10}$/', (string) $clean_key_multi) ? $clean_key_multi : null;
             if ($multi && $multi > '2147483647' && $this->isPostgreSQL()) {
                 $multi = null;
             }
@@ -508,7 +508,7 @@ class OrderRepository extends AbstractRepository
 
         // name
         if (isset($searchData['name']) && StringUtil::isNotBlank($searchData['name'])) {
-            $clean_name = preg_replace('/\s+|[　]+/u', '', $searchData['name']);
+            $clean_name = preg_replace('/\s+|[　]+/u', '', (string) $searchData['name']);
             $qb
                 ->andWhere('CONCAT(o.name01, o.name02) LIKE :name')
                 ->setParameter('name', '%'.$clean_name.'%');
@@ -516,7 +516,7 @@ class OrderRepository extends AbstractRepository
 
         // kana
         if (isset($searchData['kana']) && StringUtil::isNotBlank($searchData['kana'])) {
-            $clean_kana = preg_replace('/\s+|[　]+/u', '', $searchData['kana']);
+            $clean_kana = preg_replace('/\s+|[　]+/u', '', (string) $searchData['kana']);
             $qb
                 ->andWhere("CONCAT(COALESCE(o.kana01, ''), COALESCE(o.kana02, '')) LIKE :kana")
                 ->setParameter('kana', '%'.$clean_kana.'%');
@@ -531,7 +531,7 @@ class OrderRepository extends AbstractRepository
 
         // tel
         if (isset($searchData['phone_number']) && StringUtil::isNotBlank($searchData['phone_number'])) {
-            $tel = preg_replace('/[^0-9]/', '', $searchData['phone_number']);
+            $tel = preg_replace('/[^0-9]/', '', (string) $searchData['phone_number']);
             $qb
                 ->andWhere('o.phone_number LIKE :phone_number')
                 ->setParameter('phone_number', '%'.$tel.'%');

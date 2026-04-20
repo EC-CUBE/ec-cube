@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Repository;
 
+use Doctrine\DBAL\Logging\DebugStack;
 use Eccube\Entity\Product;
 
 final class ProductRepositoryTest extends AbstractProductRepositoryTestCase
@@ -63,7 +64,7 @@ final class ProductRepositoryTest extends AbstractProductRepositoryTestCase
         $Product = $this->createProduct('商品-多規格', 100);
 
         // Enable Doctrine query logger to count queries
-        $logger = new \Doctrine\DBAL\Logging\DebugStack();
+        $logger = new DebugStack();
         $this->entityManager->getConnection()->getConfiguration()->setSQLLogger($logger);
 
         $this->entityManager->clear();
@@ -72,8 +73,8 @@ final class ProductRepositoryTest extends AbstractProductRepositoryTestCase
         $Result = $this->productRepository->findWithSortedClassCategories($Product->getId());
 
         // Verify product is loaded
-        self::assertNotNull($Result);
-        self::assertSame('商品-多規格', $Result->getName());
+        $this->assertInstanceOf(Product::class, $Result);
+        $this->assertSame('商品-多規格', $Result->getName());
 
         // Clear the query log for the next test
         $queriesBeforeCalc = count($logger->queries);
@@ -88,13 +89,9 @@ final class ProductRepositoryTest extends AbstractProductRepositoryTestCase
 
         // Assert that no additional queries were executed (N+1 problem is solved)
         // If ProductStock and TaxRule are not eagerly loaded, this would cause 200+ additional queries
-        self::assertSame(
-            $queriesBeforeCalc,
-            $queriesAfterCalc,
-            'N+1 problem detected: Additional queries were executed during _calc(). ProductStock and TaxRule should be eagerly loaded.'
-        );
+        $this->assertSame($queriesBeforeCalc, $queriesAfterCalc, 'N+1 problem detected: Additional queries were executed during _calc(). ProductStock and TaxRule should be eagerly loaded.');
 
         // Disable logger
-        $this->entityManager->getConnection()->getConfiguration()->setSQLLogger(null);
+        $this->entityManager->getConnection()->getConfiguration()->setSQLLogger();
     }
 }
