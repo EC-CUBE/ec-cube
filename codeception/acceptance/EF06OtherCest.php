@@ -99,7 +99,7 @@ class EF06OtherCest
         $I->seeInLastEmailSubjectTo($customer->getEmail(), 'パスワード変更のご確認');
 
         $messageBody = $I->lastMessage()->getSourceQuotedPrintableDecoded();
-        preg_match('@/forgot/reset(.*)@', $messageBody, $matches);
+        preg_match('@/forgot/reset(.*)@', (string) $messageBody, $matches);
         $url = $matches[0];
 
         $I->resetEmails();

@@ -17,6 +17,7 @@ use Eccube\Rector\CodingStyle\AttributeArgumentsOrderRector;
 use Eccube\Rector\CodingStyle\NormalizePhpDocArrayGenericSpacingRector;
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
 use Rector\Config\RectorConfig;
+use Rector\DeadCode\Rector\Cast\RecastingRemovalRector;
 use Rector\Doctrine\Bundle210\Rector\Class_\EventSubscriberInterfaceToAttributeRector;
 use Rector\Doctrine\Set\DoctrineSetList;
 use Rector\Php83\Rector\ClassConst\AddTypeToConstRector;
@@ -53,6 +54,15 @@ return RectorConfig::configure()
                // 親の $entityManager 再宣言と step5 の接続専用 EM の取り違えを防ぐため
                ControllerMethodInjectionToConstructorRector::class => [
                    __DIR__.'/src/Eccube/Controller/Install/InstallController.php',
+               ],
+               // Codeception の grabMultiple() 等は戻り値の要素が null になり得るため、
+               // NullToStrictStringFuncCallArgRector が追加する (string) キャストを
+               // RecastingRemovalRector が除去しないようにスキップする
+               // (ローカル/CI 間でのルール適用揺らぎ対策)
+               RecastingRemovalRector::class => [
+                   __DIR__.'/codeception/_support/Page/Admin/CustomerManagePage.php',
+                   __DIR__.'/codeception/_support/Page/Admin/OrderManagePage.php',
+                   __DIR__.'/codeception/acceptance/EF06OtherCest.php',
                ],
                // 8.3以上で対応可能
                AddTypeToConstRector::class, // [BC]定数に型を追加する PHP 8.3 以降で有効
