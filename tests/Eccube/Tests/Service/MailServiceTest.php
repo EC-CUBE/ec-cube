@@ -24,7 +24,6 @@ use Eccube\Service\MailService;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpKernel\Debug\TraceableEventDispatcher;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Twig\Environment;
@@ -479,7 +478,10 @@ final class MailServiceTest extends AbstractServiceTestCase
         $Shipping = $Order->getShippings()->first();
 
         $hookEmail = 'hook-test@example.com';
-        $eventDispatcher = static::getContainer()->get(TraceableEventDispatcher::class);
+        // SymfonyのFrameworkBundleが内部で登録するサービスだが、
+        // クラス名のエイリアスが標準では存在しないため、文字列サービスIDのまま使用
+        $serviceId = 'event_dispatcher';
+        $eventDispatcher = static::getContainer()->get($serviceId);
         $eventDispatcher->addListener(EccubeEvents::MAIL_SHIPPING_NOTIFY, function ($event) use ($hookEmail) {
             /** @var Email $message */
             $message = $event->getArgument('message');
@@ -506,7 +508,10 @@ final class MailServiceTest extends AbstractServiceTestCase
         $eventName = 'テスト';
 
         $hookEmail = 'hook-test@example.com';
-        $eventDispatcher = static::getContainer()->get(TraceableEventDispatcher::class);
+        // SymfonyのFrameworkBundleが内部で登録するサービスだが、
+        // クラス名のエイリアスが標準では存在しないため、文字列サービスIDのまま使用
+        $serviceId = 'event_dispatcher';
+        $eventDispatcher = static::getContainer()->get($serviceId);
         $eventDispatcher->addListener(EccubeEvents::MAIL_CUSTOMER_CHANGE_NOTIFY, function ($event) use ($hookEmail) {
             /** @var Email $message */
             $message = $event->getArgument('message');
