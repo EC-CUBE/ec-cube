@@ -58,10 +58,16 @@ class ProductRepository extends AbstractRepository
     public function findWithSortedClassCategories(int $productId): ?Product
     {
         $qb = $this->createQueryBuilder('p');
-        $qb->addSelect(['pc', 'cc1', 'cc2', 'pi', 'pt'])
+        $qb->addSelect(['pc', 'cc1', 'cc2', 'cn1', 'cn2', 'pi', 'pt', 'ps', 'tr'])
             ->innerJoin('p.ProductClasses', 'pc')
+            // Joined 'ProductStock' and 'TaxRule' to prevent lazy loading
+            ->leftJoin('pc.ProductStock', 'ps')
+            ->leftJoin('pc.TaxRule', 'tr')
             ->leftJoin('pc.ClassCategory1', 'cc1')
             ->leftJoin('pc.ClassCategory2', 'cc2')
+            // Joined 'ClassName' to prevent lazy loading in Product::_calc()
+            ->leftJoin('cc1.ClassName', 'cn1')
+            ->leftJoin('cc2.ClassName', 'cn2')
             ->leftJoin('p.ProductImage', 'pi')
             ->leftJoin('p.ProductTag', 'pt')
             ->where('p.id = :id')
@@ -73,6 +79,7 @@ class ProductRepository extends AbstractRepository
 
         return $qb
             ->getQuery()
+            ->enableResultCache($this->eccubeConfig['eccube_result_cache_lifetime_short'])
             ->getSingleResult();
     }
 
@@ -90,13 +97,16 @@ class ProductRepository extends AbstractRepository
             return [];
         }
         $qb = $this->createQueryBuilder('p', $indexBy);
-        $qb->addSelect(['pc', 'cc1', 'cc2', 'pi', 'pt', 'tr', 'ps'])
+        $qb->addSelect(['pc', 'cc1', 'cc2', 'cn1', 'cn2', 'pi', 'pt', 'tr', 'ps'])
             ->innerJoin('p.ProductClasses', 'pc')
             // XXX Joined 'TaxRule' and 'ProductStock' to prevent lazy loading
             ->leftJoin('pc.TaxRule', 'tr')
             ->innerJoin('pc.ProductStock', 'ps')
             ->leftJoin('pc.ClassCategory1', 'cc1')
             ->leftJoin('pc.ClassCategory2', 'cc2')
+            // Joined 'ClassName' to prevent lazy loading in Product::_calc()
+            ->leftJoin('cc1.ClassName', 'cn1')
+            ->leftJoin('cc2.ClassName', 'cn2')
             ->leftJoin('p.ProductImage', 'pi')
             ->leftJoin('p.ProductTag', 'pt')
             ->where($qb->expr()->in('p.id', $ids))
