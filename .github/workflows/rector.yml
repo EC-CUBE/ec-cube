@@ -34,8 +34,6 @@ jobs:
         with:
           path: var/rector_cache
           key: ${{ runner.os }}-rector-${{ hashFiles('rector.php', 'composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-rector-
 
       - name: Rector (dry-run)
         run: vendor/bin/rector process --dry-run --ansi --config=rector.php
