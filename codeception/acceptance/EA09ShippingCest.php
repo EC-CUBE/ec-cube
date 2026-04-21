@@ -316,6 +316,7 @@ class EA09ShippingCest
         $I->wantTo('EA0903-UC04-T03 出荷CSV雛形ファイルのダウンロード');
 
         ShippingCsvUploadPage::go($I)->雛形ダウンロード();
+        $I->wait(10);
         $csv = $I->getLastDownloadFile('/^shipping\.csv$/');
         $I->assertEquals(mb_convert_encoding(file_get_contents($csv), 'UTF-8', 'Shift_JIS'), '出荷ID,お問い合わせ番号,出荷日'.PHP_EOL);
     }

@@ -16,6 +16,7 @@ namespace Eccube\Tests\Command;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Column;
 use Eccube\Command\UpdateSchemaDoctrineCommand;
+use Eccube\Common\EccubeConfig;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\PluginService;
 use Eccube\Service\SchemaService;
@@ -27,6 +28,13 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\Process;
 
 /**
+ * bin/console をサブプロセスで実行すると app/proxy/entity が更新されるが、PHPUnit 親プロセスでは Entity が既にロード済みのままとなる。
+ *
+ * メソッド間で PHP プロセスを分け、テスト同士のクラスロード状態を切り離す。
+ * 同一メソッド内でサブプロセス後に createClient() するときは、Kernel::loadEntityProxies() の class_exists チェックにより
+ * プロキシ二重 require の Fatal を避ける。
+ *
+ * @runTestsInSeparateProcesses
  * @group update-schema-doctrine
  */
 class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
@@ -421,7 +429,7 @@ class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $tar->addFromString('Entity/HogeTrait.php', <<< EOT
 <?php
 
-namespace Plugin\\${tmpname}\\Entity;
+namespace Plugin\\{$tmpname}\\Entity;
 
 use Eccube\Annotation\EntityExtension;
 use Doctrine\ORM\Mapping as ORM;
@@ -483,14 +491,34 @@ EOT
     {
         \DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver::commit();
         \DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver::beginTransaction();
+        $container = static::getContainer();
+        $projectDir = $container->getParameter('kernel.project_dir');
+        $cacheDir = $container->getParameter('kernel.cache_dir');
         try {
-            $process = new Process(explode(' ', $command));
+            $process = new Process(explode(' ', $command), $projectDir);
             $process->mustRun();
 
             return $process->getOutput();
         } catch (\Exception $e) {
             // ignore Fatal error: Cannot declare class
             // $this->fail($e->getMessage());
+        } finally {
+            // サブプロセスの console が var/cache/test を再生成すると、PHPUnit 側のカーネルと
+            // ダンプ済みコンテナの参照がずれる。ensureKernelShutdown() は services_resetter の取得で
+            // 欠落したダンプファイルを require しうるため、先に shutdown のみ行いキャッシュを消してから再起動する。
+            if (null !== static::$kernel) {
+                static::$kernel->shutdown();
+            }
+            static::$booted = false;
+            static::$container = null;
+            static::$kernel = null;
+            (new Filesystem())->remove($cacheDir);
+            $this->client = static::createClient();
+            $this->entityManager = static::getContainer()->get('doctrine')->getManager();
+            $this->eccubeConfig = static::getContainer()->get(EccubeConfig::class);
+            $this->pluginRepository = $this->entityManager->getRepository(\Eccube\Entity\Plugin::class);
+            $this->pluginService = static::getContainer()->get(PluginService::class);
+            $this->schemaService = static::getContainer()->get(SchemaService::class);
         }
     }
 

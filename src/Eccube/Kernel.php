@@ -318,7 +318,38 @@ class Kernel extends BaseKernel
             ->name('*.php')
             ->files();
         foreach ($files as $file) {
+            // 同一プロセス内で src 側のクラスが先にロードされている場合、
+            // プロキシを require すると同名クラスの二重定義で Fatal error になる。
+            // テストでカーネルを再起動するケースなどで発生しうるため、
+            // クラスが既にロード済みなら require をスキップする。
+            $fqcn = $this->resolveEntityFqcnFromProxyFile($file->getRealPath());
+            if ($fqcn !== null && class_exists($fqcn, false)) {
+                continue;
+            }
             require_once $file->getRealPath();
         }
+    }
+
+    /**
+     * プロキシファイルパスからエンティティの FQCN を推定する.
+     */
+    private function resolveEntityFqcnFromProxyFile(string $filePath): ?string
+    {
+        $normalized = str_replace('\\', '/', $filePath);
+
+        // app/proxy/entity/src/Eccube/Entity/Foo.php → Eccube\Entity\Foo
+        if (preg_match('#/app/proxy/entity/src/Eccube/Entity/(.+)\.php$#', $normalized, $m)) {
+            return 'Eccube\\Entity\\'.str_replace('/', '\\', $m[1]);
+        }
+        // app/proxy/entity/app/Customize/Entity/Foo.php → Customize\Entity\Foo
+        if (preg_match('#/app/proxy/entity/app/Customize/Entity/(.+)\.php$#', $normalized, $m)) {
+            return 'Customize\\Entity\\'.str_replace('/', '\\', $m[1]);
+        }
+        // app/proxy/entity/app/Plugin/Code/Entity/Foo.php → Plugin\Code\Entity\Foo
+        if (preg_match('#/app/proxy/entity/app/Plugin/([^/]+)/Entity/(.+)\.php$#', $normalized, $m)) {
+            return 'Plugin\\'.$m[1].'\\Entity\\'.str_replace('/', '\\', $m[2]);
+        }
+
+        return null;
     }
 }

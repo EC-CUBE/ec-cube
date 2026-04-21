@@ -16,6 +16,9 @@ namespace Eccube\Tests\Twig\Extension;
 use Eccube\Entity\Page;
 use Eccube\Tests\Web\AbstractWebTestCase;
 
+/**
+ * @group twig-sandbox-extension 
+ */
 class IgnoreTwigSandboxErrorExtensionTest extends AbstractWebTestCase
 {
     /**
@@ -36,7 +39,7 @@ class IgnoreTwigSandboxErrorExtensionTest extends AbstractWebTestCase
     }
 
     /**
-     * @dataProvider twigSnippetsProvider
+     * @dataProvider twigMetaSnippetsProvider
      * @dataProvider twigVarMetaTagsProvider
      */
     public function testMetatags($snippet, $whitelisted)
@@ -59,12 +62,22 @@ class IgnoreTwigSandboxErrorExtensionTest extends AbstractWebTestCase
 
     }
 
+    /**
+     * メタタグはトップ等 Product が無いページでも評価されるため、Product 依存スニペットは除外する.
+     */
+    public function twigMetaSnippetsProvider()
+    {
+        return array_values(array_filter($this->twigSnippetsProvider(), function (array $row) {
+            return strpos($row[0], 'Product.main_list_image') === false;
+        }));
+    }
+
     public function twigSnippetsProvider()
     {
         // 0: twigスニペット, 1: ホワイトリスト対象かどうか
         return [
             ['{% set foo = "bar" %}', true],
-            ['{% spaceless %}<div> <strong>test</strong> </div>{% endspaceless %}', true],
+            ['{% apply spaceless %}<div> <strong>test</strong> </div>{% endapply %}', true],
             ['{% flush %}', true],
             ['{% apply lower|escape("html") %}<strong>SOME TEXT</strong>{% endapply %}', true],
             ['{% macro input(name, value, type = "text", size = 20) %}<input type="{{ type }}" name="{{ name }}" value="{{ value|e }}" size="{{ size }}"/>{% endmacro %}', false],

@@ -1,4 +1,4 @@
-ARG TAG=7.4-apache-bullseye
+ARG TAG=8.1-apache-bullseye
 FROM php:${TAG}
 
 ENV APACHE_DOCUMENT_ROOT /var/www/html
@@ -40,10 +40,11 @@ RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
 
 RUN pecl install apcu && echo "extension=apcu.so" > /usr/local/etc/php/conf.d/apc.ini
 
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - \
+RUN curl -fsSL https://deb.nodesource.com/setup_24.x | bash - \
   && apt update \
-  && apt install -y nodejs \
+  && apt install --no-install-recommends -y nodejs \
   && apt clean \
+  && rm -rf /var/lib/apt/lists/* \
   ;
 
 RUN mkdir -p ${APACHE_DOCUMENT_ROOT} \

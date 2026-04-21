@@ -79,9 +79,16 @@ class AnnotationDriver extends \Doctrine\ORM\Mapping\Driver\AnnotationDriver
                 // Replace /path/to/ec-cube to proxies path
                 $proxyFile = str_replace($projectDir, $this->trait_proxies_directory, $path).'/'.basename($sourceFile);
                 if (file_exists($proxyFile)) {
-                    require_once $proxyFile;
-
-                    $sourceFile = $proxyFile;
+                    // Kernel::loadEntityProxies() や Composer classmap 等で
+                    // 同名クラスが既にロード済みの場合、プロキシを require すると
+                    // 二重定義で Fatal error になる。ロード済みなら require をスキップする。
+                    $fqcn = $this->resolveFqcnFromSourceFile($sourceFile);
+                    if ($fqcn !== null && class_exists($fqcn, false)) {
+                        $sourceFile = (new \ReflectionClass($fqcn))->getFileName();
+                    } else {
+                        require_once $proxyFile;
+                        $sourceFile = $proxyFile;
+                    }
                 } else {
                     require_once $sourceFile;
                 }
@@ -103,5 +110,25 @@ class AnnotationDriver extends \Doctrine\ORM\Mapping\Driver\AnnotationDriver
         $this->classNames = $classes;
 
         return $classes;
+    }
+
+    /**
+     * エンティティソースファイルパスから FQCN を推定する.
+     */
+    private function resolveFqcnFromSourceFile(string $sourceFile): ?string
+    {
+        $normalized = str_replace('\\', '/', $sourceFile);
+
+        if (preg_match('#/src/Eccube/Entity/(.+)\.php$#', $normalized, $m)) {
+            return 'Eccube\\Entity\\'.str_replace('/', '\\', $m[1]);
+        }
+        if (preg_match('#/app/Customize/Entity/(.+)\.php$#', $normalized, $m)) {
+            return 'Customize\\Entity\\'.str_replace('/', '\\', $m[1]);
+        }
+        if (preg_match('#/app/Plugin/([^/]+)/Entity/(.+)\.php$#', $normalized, $m)) {
+            return 'Plugin\\'.$m[1].'\\Entity\\'.str_replace('/', '\\', $m[2]);
+        }
+
+        return null;
     }
 }

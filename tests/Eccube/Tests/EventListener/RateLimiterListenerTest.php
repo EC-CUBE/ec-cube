@@ -25,6 +25,9 @@ use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
+/**
+ * @group rate-limiter-listener
+ */
 class RateLimiterListenerTest extends EccubeTestCase
 {
     /**

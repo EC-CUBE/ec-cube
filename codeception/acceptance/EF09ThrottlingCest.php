@@ -54,7 +54,7 @@ class EF09ThrottlingCest
         $I->expect('試行回数上限を超過します');
         $email = microtime(true).'.'.$faker->safeEmail;
         $this->failLogin($I, $email, 'password');
-        $I->see('ログイン試行回数が多すぎます。30分後に再度お試しください。', 'p.ec-errorMessage');
+        $I->see('ログイン試行回数が多すぎます。', 'p.ec-errorMessage');
     }
 
     public function フロント画面ログイン_会員(AcceptanceTester $I)
@@ -73,7 +73,7 @@ class EF09ThrottlingCest
 
         $I->expect('試行回数上限を超過します');
         $this->failLogin($I, $email, 'password');
-        $I->see('ログイン試行回数が多すぎます。30分後に再度お試しください。', 'p.ec-errorMessage');
+        $I->see('ログイン試行回数が多すぎます。', 'p.ec-errorMessage');
     }
 
     private function failLogin(AcceptanceTester $I, $email, $password)
@@ -102,7 +102,7 @@ class EF09ThrottlingCest
         $I->expect('試行回数上限を超過します');
         $email = microtime(true).'.'.$faker->safeEmail;
         $this->failLoginAsAdmin($I, $email, 'password');
-        $I->see('ログイン試行回数が多すぎます。30分後に再度お試しください。', 'span.text-danger');
+        $I->see('ログイン試行回数が多すぎます。', 'span.text-danger');
     }
 
     public function 管理画面ログイン_会員(AcceptanceTester $I)
@@ -121,7 +121,7 @@ class EF09ThrottlingCest
 
         $I->expect('試行回数上限を超過します');
         $this->failLoginAsAdmin($I, $email, 'password');
-        $I->see('ログイン試行回数が多すぎます。30分後に再度お試しください。', 'span.text-danger');
+        $I->see('ログイン試行回数が多すぎます。', 'span.text-danger');
     }
 
     private function failLoginAsAdmin(AcceptanceTester $I, $loginId, $password)

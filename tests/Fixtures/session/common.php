@@ -98,6 +98,9 @@ class TestSessionHandler extends SameSiteNoneCompatSessionHandler
     private $handler;
     private $data;
 
+    /** @var string|null */
+    private $sessionId;
+
     public function __construct(SessionHandlerInterface $handler)
     {
         parent::__construct($handler);

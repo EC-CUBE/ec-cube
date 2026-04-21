@@ -142,7 +142,14 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
 
         // prependのタイミングではコンテナのインスタンスは利用できない.
         // 直接dbalのconnectionを生成し, dbアクセスを行う.
-        $params = $config['dbal']['connections'][$config['dbal']['default_connection']];
+        // DoctrineBundle の Configuration だけでは default_connection が未設定のままになることがある
+        // （DoctrineExtension::load 内で補完されるキー）。ここでは接続名を自前で解決する。
+        $dbal = $config['dbal'];
+        if (empty($dbal['connections'])) {
+            return;
+        }
+        $defaultConnectionName = $dbal['default_connection'] ?? array_key_first($dbal['connections']);
+        $params = $dbal['connections'][$defaultConnectionName];
         // ContainerInterface::resolveEnvPlaceholders() で取得した DATABASE_URL は
         // % がエスケープされているため、環境変数から取得し直す
         $params['url'] = env('DATABASE_URL');

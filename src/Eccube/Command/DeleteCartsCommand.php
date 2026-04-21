@@ -138,7 +138,7 @@ class DeleteCartsCommand extends Command
             $this->entityManager->flush();
             $this->entityManager->commit();
 
-            $this->io->comment("Deleted ${deleteRows} carts.");
+            $this->io->comment("Deleted {$deleteRows} carts.");
         } catch (\Exception $e) {
             $this->io->error('Failed delete carts. Rollbacked.');
             $this->entityManager->rollback();

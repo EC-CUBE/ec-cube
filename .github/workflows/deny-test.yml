@@ -1,24 +1,22 @@
 name: Deny check for EC-CUBE
+
 on:
-  push:
-    branches:
-      - '*'
-    tags:
-      - '*'
-    paths:
-      - '**'
-      - '!*.md'
-  pull_request:
-    paths:
-      - '**'
-      - '!*.md'
+  workflow_call:
+
+permissions:
+  contents: read
+
 jobs:
   deploy:
-    name: Deny check
-    runs-on: ubuntu-22.04
+    name: Deny check (${{ matrix.php }})
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ '8.1', '8.3' ]
     services:
       postgres:
-        image: postgres:14
+        image: postgres:16
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
@@ -28,12 +26,12 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: nanasess/setup-php@master
         with:
-          php-version: '7.4'
+          php-version: ${{ matrix.php }}
 
       - name: Initialize Composer
         uses: ./.github/actions/composer
@@ -45,7 +43,7 @@ jobs:
         env:
           APP_ENV: 'prod'
           DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
-          DATABASE_SERVER_VERSION: 14
+          DATABASE_SERVER_VERSION: '16'
         run: |
           rm -rf $GITHUB_WORKSPACE/app/Plugin/*
           echo "APP_ENV=${APP_ENV}" > .env
@@ -57,7 +55,7 @@ jobs:
         env:
           APP_ENV: 'prod'
           DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
-          DATABASE_SERVER_VERSION: 14
+          DATABASE_SERVER_VERSION: '16'
         run: |
           bin/console eccube:composer:require "ec-cube/recommend42"
           bin/console eccube:composer:require "ec-cube/coupon42"
@@ -101,7 +99,7 @@ jobs:
       - name: Prepare test
         run: |
           export DISPLAY=:99
-          chromedriver --url-base=/wd/hub &
+          chromedriver --url-base=/wd/hub --port=9515 &
           echo ">>> Started chrome-driver"
           sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
           echo ">>> Started xvfb"
@@ -121,6 +119,6 @@ jobs:
         env:
           APP_ENV: 'codeception'
           DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
-          DATABASE_SERVER_VERSION: 14
+          DATABASE_SERVER_VERSION: '16'
         run: |
           vendor/bin/codecept -vvv run acceptance --env chrome,local CL01DenyCest

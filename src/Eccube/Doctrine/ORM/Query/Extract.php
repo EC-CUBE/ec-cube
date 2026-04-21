@@ -101,7 +101,7 @@ class Extract extends FunctionNode
         switch ($driver) {
             case 'sqlite':
                 $sql = sprintf(
-                    "CAST(STRFTIME('%s', DATETIME(%s, '${op}{$second} SECONDS')) AS INTEGER)",
+                    "CAST(STRFTIME('%s', DATETIME(%s, '{$op}{$second} SECONDS')) AS INTEGER)",
                     $this->formats[$this->field],
                     $this->source->dispatch($sqlWalker));
                 break;

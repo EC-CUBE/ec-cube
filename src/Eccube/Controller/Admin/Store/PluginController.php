@@ -302,7 +302,7 @@ class PluginController extends AbstractController
                 });
                 if (!empty($requires)) {
                     $names = array_map(function ($req) {
-                        return "「${req['description']}」";
+                        return "「{$req['description']}」";
                     }, $requires);
                     $message = trans('%depend_name%を先に有効化してください。', ['%name%' => $Plugin->getName(), '%depend_name%' => implode(', ', $names)]);
 

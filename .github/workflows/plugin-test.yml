@@ -1,17 +1,11 @@
 name: Plugin test for EC-CUBE
+
 on:
-  push:
-    branches:
-      - '*'
-    tags:
-      - '*'
-    paths:
-      - '**'
-      - '!*.md'
-  pull_request:
-    paths:
-      - '**'
-      - '!*.md'
+  workflow_call:
+
+permissions:
+  contents: read
+
 jobs:
   plugin-install:
     name: Plugin install
@@ -19,9 +13,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ ubuntu-22.04 ]
-        php: [ '7.4', '8.0', '8.1' ]
-        db: [ pgsql, mysql ]
+        operating-system: [ ubuntu-24.04 ]
+        php: [ '8.1', '8.3' ]
+        db: [ pgsql, mysql57, mysql80 ]
         method:
           - test_install_enable_disable_remove_store
           - test_install_enable_disable_remove_local
@@ -33,24 +27,32 @@ jobs:
           - test_bundle_install_update_enable_disable_remove_store
         include:
           - db: pgsql
+            mysql_image: mysql:8.0
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
-            database_server_version: 14
+            database_server_version: '16'
             database_charset: utf8
-          - db: mysql
+          - db: mysql57
+            mysql_image: mysql:5.7
             database_url: mysql://root:password@127.0.0.1:3306/eccube_db
-            database_server_version: 5
+            database_server_version: '5'
+            database_charset: utf8mb4
+          - db: mysql80
+            mysql_image: mysql:8.0
+            database_url: mysql://root:password@127.0.0.1:3306/eccube_db
+            database_server_version: '8'
             database_charset: utf8mb4
 
     services:
       mysql:
-        image: mysql:5.7
+        image: ${{ matrix.mysql_image }}
         env:
           MYSQL_ROOT_PASSWORD: password
+          MYSQL_ROOT_HOST: '%'
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
       postgres:
-        image: postgres:14
+        image: postgres:16
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
@@ -66,7 +68,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: nanasess/setup-php@master
@@ -93,11 +95,12 @@ jobs:
         env:
           PGPASSWORD: 'password'
         run: |
-          sudo apt-fast install -y postgresql-client
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
           psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
 
       - name: Update baseinfo with mysql
-        if: matrix.db == 'mysql'
+        if: matrix.db == 'mysql57' || matrix.db == 'mysql80'
         run: mysql -h 127.0.0.1 -u root -ppassword eccube_db -e "update dtb_base_info set authentication_key='test';"
 
       - name: setup-chromedriver
@@ -106,7 +109,7 @@ jobs:
       - name: Run chromedriver
         run: |
           export DISPLAY=:99
-          chromedriver --url-base=/wd/hub &
+          chromedriver --url-base=/wd/hub --port=9515 &
           echo ">>> Started chrome-driver"
           sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
           echo ">>> Started xvfb"
@@ -140,15 +143,15 @@ jobs:
         run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
       - name: Upload evidence
         if: failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
-          name: plugin-install-${{ matrix.method }}-evidence
+          name: plugin-install-${{ matrix.php }}-${{ matrix.db }}-${{ matrix.method }}-evidence
           path: codeception/_output/
       - name: Upload logs
         if: failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
-          name: plugin-install-${{ matrix.method }}-logs
+          name: plugin-install-${{ matrix.php }}-${{ matrix.db }}-${{ matrix.method }}-logs
           path: var/log/
 
   plugin-update:
@@ -157,9 +160,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ ubuntu-22.04 ]
-        php: [ '7.4', '8.0', '8.1' ]
-        db: [ pgsql, mysql ]
+        operating-system: [ ubuntu-24.04 ]
+        php: [ '8.1', '8.3' ]
+        db: [ pgsql, mysql57, mysql80 ]
         method:
           - test_install_update_remove_store
           - test_install_update_remove_local
@@ -169,24 +172,32 @@ jobs:
           - test_install_enable_update_disable_remove_local
         include:
           - db: pgsql
+            mysql_image: mysql:8.0
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
-            database_server_version: 14
+            database_server_version: '16'
             database_charset: utf8
-          - db: mysql
+          - db: mysql57
+            mysql_image: mysql:5.7
             database_url: mysql://root:password@127.0.0.1:3306/eccube_db
-            database_server_version: 5
+            database_server_version: '5'
+            database_charset: utf8mb4
+          - db: mysql80
+            mysql_image: mysql:8.0
+            database_url: mysql://root:password@127.0.0.1:3306/eccube_db
+            database_server_version: '8'
             database_charset: utf8mb4
 
     services:
       mysql:
-        image: mysql:5.7
+        image: ${{ matrix.mysql_image }}
         env:
           MYSQL_ROOT_PASSWORD: password
+          MYSQL_ROOT_HOST: '%'
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
       postgres:
-        image: postgres:14
+        image: postgres:16
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
@@ -202,13 +213,13 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@v4
 
       - name: Get Composer Cache Directory
         id: composer-cache
         run: |
           echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - uses: actions/cache@v1
+      - uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -240,11 +251,12 @@ jobs:
         env:
           PGPASSWORD: 'password'
         run: |
-          sudo apt-fast install -y postgresql-client
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
           psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
 
       - name: Update baseinfo with mysql
-        if: matrix.db == 'mysql'
+        if: matrix.db == 'mysql57' || matrix.db == 'mysql80'
         run: mysql -h 127.0.0.1 -u root -ppassword eccube_db -e "update dtb_base_info set authentication_key='test';"
 
       - name: setup-chromedriver
@@ -253,7 +265,7 @@ jobs:
       - name: Run chromedriver
         run: |
           export DISPLAY=:99
-          chromedriver --url-base=/wd/hub &
+          chromedriver --url-base=/wd/hub --port=9515 &
           echo ">>> Started chrome-driver"
           sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
           echo ">>> Started xvfb"
@@ -287,15 +299,15 @@ jobs:
         run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
       - name: Upload evidence
         if: failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
-          name: plugin-update-${{ matrix.method }}-evidence
+          name: plugin-update-${{ matrix.php }}-${{ matrix.db }}-${{ matrix.method }}-evidence
           path: codeception/_output/
       - name: Upload logs
         if: failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
-          name: plugin-update-${{ matrix.method }}-logs
+          name: plugin-update-${{ matrix.php }}-${{ matrix.db }}-${{ matrix.method }}-logs
           path: var/log/
 
   plugin-extend:
@@ -304,9 +316,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ ubuntu-22.04 ]
-        php: [ '7.4', '8.0', '8.1' ]
-        db: [ pgsql, mysql ]
+        operating-system: [ ubuntu-24.04 ]
+        php: [ '8.1', '8.3' ]
+        db: [ pgsql, mysql57, mysql80 ]
         method:
           - test_extend_same_table_store
           - test_extend_same_table_disabled_remove_store
@@ -316,24 +328,32 @@ jobs:
           - test_extend_same_table_crossed_local
         include:
           - db: pgsql
+            mysql_image: mysql:8.0
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
-            database_server_version: 14
+            database_server_version: '16'
             database_charset: utf8
-          - db: mysql
+          - db: mysql57
+            mysql_image: mysql:5.7
             database_url: mysql://root:password@127.0.0.1:3306/eccube_db
-            database_server_version: 5
+            database_server_version: '5'
+            database_charset: utf8mb4
+          - db: mysql80
+            mysql_image: mysql:8.0
+            database_url: mysql://root:password@127.0.0.1:3306/eccube_db
+            database_server_version: '8'
             database_charset: utf8mb4
 
     services:
       mysql:
-        image: mysql:5.7
+        image: ${{ matrix.mysql_image }}
         env:
           MYSQL_ROOT_PASSWORD: password
+          MYSQL_ROOT_HOST: '%'
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
       postgres:
-        image: postgres:14
+        image: postgres:16
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
@@ -349,13 +369,13 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@v4
 
       - name: Get Composer Cache Directory
         id: composer-cache
         run: |
           echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - uses: actions/cache@v1
+      - uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -387,11 +407,12 @@ jobs:
         env:
           PGPASSWORD: 'password'
         run: |
-          sudo apt-fast install -y postgresql-client
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
           psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
 
       - name: Update baseinfo with mysql
-        if: matrix.db == 'mysql'
+        if: matrix.db == 'mysql57' || matrix.db == 'mysql80'
         run: mysql -h 127.0.0.1 -u root -ppassword eccube_db -e "update dtb_base_info set authentication_key='test';"
 
       - name: setup-chromedriver
@@ -400,7 +421,7 @@ jobs:
       - name: Run chromedriver
         run: |
           export DISPLAY=:99
-          chromedriver --url-base=/wd/hub &
+          chromedriver --url-base=/wd/hub --port=9515 &
           echo ">>> Started chrome-driver"
           sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
           echo ">>> Started xvfb"
@@ -434,15 +455,15 @@ jobs:
         run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
       - name: Upload evidence
         if: failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
-          name: plugin-extend-${{ matrix.method }}-evidence
+          name: plugin-extend-${{ matrix.php }}-${{ matrix.db }}-${{ matrix.method }}-evidence
           path: codeception/_output/
       - name: Upload logs
         if: failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
-          name: plugin-extend-${{ matrix.method }}-logs
+          name: plugin-extend-${{ matrix.php }}-${{ matrix.db }}-${{ matrix.method }}-logs
           path: var/log/
 
   plugin-depend:
@@ -451,9 +472,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ ubuntu-22.04 ]
-        php: [ '7.4', '8.0', '8.1' ]
-        db: [ pgsql, mysql ]
+        operating-system: [ ubuntu-24.04 ]
+        php: [ '8.1', '8.3' ]
+        db: [ pgsql, mysql57, mysql80 ]
         method:
           - test_dependency_each_install_plugin
           - test_dependency_plugin_install
@@ -463,27 +484,37 @@ jobs:
           - test_enhance_plugin_entity
         include:
           - db: pgsql
+            mysql_image: mysql:8.0
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
-            database_server_version: 14
+            database_server_version: '16'
             database_charset: utf8
-          - db: mysql
+          - db: mysql57
+            mysql_image: mysql:5.7
             database_url: mysql://root:password@127.0.0.1:3306/eccube_db
-            database_server_version: 5
+            database_server_version: '5'
+            database_charset: utf8mb4
+          - db: mysql80
+            mysql_image: mysql:8.0
+            database_url: mysql://root:password@127.0.0.1:3306/eccube_db
+            database_server_version: '8'
             database_charset: utf8mb4
         exclude:
-          - db: mysql
+          - db: mysql57
+            method: test_dependency_plugin_update
+          - db: mysql80
             method: test_dependency_plugin_update
 
     services:
       mysql:
-        image: mysql:5.7
+        image: ${{ matrix.mysql_image }}
         env:
           MYSQL_ROOT_PASSWORD: password
+          MYSQL_ROOT_HOST: '%'
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
       postgres:
-        image: postgres:14
+        image: postgres:16
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
@@ -499,13 +530,13 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@v4
 
       - name: Get Composer Cache Directory
         id: composer-cache
         run: |
           echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - uses: actions/cache@v1
+      - uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -537,11 +568,12 @@ jobs:
         env:
           PGPASSWORD: 'password'
         run: |
-          sudo apt-fast install -y postgresql-client
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
           psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
 
       - name: Update baseinfo with mysql
-        if: matrix.db == 'mysql'
+        if: matrix.db == 'mysql57' || matrix.db == 'mysql80'
         run: mysql -h 127.0.0.1 -u root -ppassword eccube_db -e "update dtb_base_info set authentication_key='test';"
 
       - name: setup-chromedriver
@@ -550,7 +582,7 @@ jobs:
       - name: Run chromedriver
         run: |
           export DISPLAY=:99
-          chromedriver --url-base=/wd/hub &
+          chromedriver --url-base=/wd/hub --port=9515 &
           echo ">>> Started chrome-driver"
           sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
           echo ">>> Started xvfb"
@@ -584,13 +616,13 @@ jobs:
         run: vendor/bin/codecept -vvv run acceptance --env chrome,github_action EA10PluginCest:${METHOD}
       - name: Upload evidence
         if: failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
-          name: plugin-depend-${{ matrix.method }}-evidence
+          name: plugin-depend-${{ matrix.php }}-${{ matrix.db }}-${{ matrix.method }}-evidence
           path: codeception/_output/
       - name: Upload logs
         if: failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
-          name: plugin-depend-${{ matrix.method }}-logs
+          name: plugin-depend-${{ matrix.php }}-${{ matrix.db }}-${{ matrix.method }}-logs
           path: var/log/

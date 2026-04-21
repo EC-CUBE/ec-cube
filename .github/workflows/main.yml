@@ -1,0 +1,58 @@
+name: CI/CD for EC-CUBE
+
+on:
+  push:
+    branches:
+      - '*'
+    tags:
+      - '*'
+    paths:
+      - '**'
+      - '!*.md'
+  pull_request:
+    paths:
+      - '**'
+      - '!*.md'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  phpstan:
+    uses: ./.github/workflows/phpstan.yml
+    secrets: inherit
+  unit-test:
+    needs: [phpstan]
+    uses: ./.github/workflows/unit-test.yml
+    secrets: inherit
+  e2e-test:
+    needs: [phpstan]
+    uses: ./.github/workflows/e2e-test.yml
+    secrets: inherit
+  plugin-test:
+    needs: [unit-test, e2e-test]
+    uses: ./.github/workflows/plugin-test.yml
+    secrets: inherit
+  e2e-test-throttling:
+    needs: [plugin-test]
+    uses: ./.github/workflows/e2e-test-throttling.yml
+    secrets: inherit
+  deny-test:
+    needs: [plugin-test]
+    uses: ./.github/workflows/deny-test.yml
+    secrets: inherit
+  success:
+    needs: [e2e-test-throttling, deny-test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: success
+        run: echo "::notice::success!"
+  coverage:
+    needs: [unit-test]
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.user.login != 'dependabot[bot]' }}
+    uses: ./.github/workflows/coverage.yml
+    secrets: inherit

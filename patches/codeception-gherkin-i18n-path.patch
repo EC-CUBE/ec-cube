@@ -1,0 +1,22 @@
+--- a/src/Codeception/Test/Loader/Gherkin.php
++++ b/src/Codeception/Test/Loader/Gherkin.php
+@@ -48,7 +48,18 @@ class Gherkin implements LoaderInterface
+         }
+         $gherkin = new \ReflectionClass('Behat\Gherkin\Gherkin');
+         $gherkinClassPath = dirname($gherkin->getFileName());
+-        $i18n = require $gherkinClassPath . '/../../../i18n.php';
++        // behat/gherkin が PSR-4 で src/Gherkin.php 直下になった場合、従来の ../../../i18n.php はパッケージ外を指して失敗する。
++        // パッケージルートの i18n.php をフォールバックで読む（Codeception 4 は upstream 未対応のため composer-patches で補正）。
++        $i18nPath = $gherkinClassPath . '/../../../i18n.php';
++        if (!is_file($i18nPath)) {
++            $i18nPath = dirname($gherkinClassPath) . '/i18n.php';
++        }
++        if (!is_file($i18nPath)) {
++            throw new TestParseException(
++                'Could not locate behat/gherkin i18n.php (tried legacy and PSR-4 package layouts).'
++            );
++        }
++        $i18n = require $i18nPath;
+         $keywords = new GherkinKeywords($i18n);
+         $lexer = new GherkinLexer($keywords);
+         $this->parser = new GherkinParser($lexer);

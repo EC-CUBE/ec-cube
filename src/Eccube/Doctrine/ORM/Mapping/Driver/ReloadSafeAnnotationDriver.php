@@ -139,10 +139,10 @@ class ReloadSafeAnnotationDriver extends AnnotationDriver
                         if (in_array($sourceFile, $this->newProxyFiles)) {
                             $newClassName = $className.StringUtil::random(12);
                             $tokens[$classNameTokenIndex] = new Token([T_STRING, $newClassName]);
-                            $newFilePath = $this->outputDir."${newClassName}.php";
+                            $newFilePath = $this->outputDir."{$newClassName}.php";
                             file_put_contents($newFilePath, $tokens->generateCode());
                             require_once $newFilePath;
-                            $results[] = $namespace."\\${newClassName}";
+                            $results[] = $namespace."\\{$newClassName}";
                         } else {
                             $results[] = $fqcn;
                         }

@@ -5,10 +5,10 @@ on:
 jobs:
   deploy:
     name: Deploy
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     services:
       postgres:
-        image: postgres:14
+        image: postgres:16
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
@@ -18,12 +18,12 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: nanasess/setup-php@master
         with:
-          php-version: '7.4'
+          php-version: '8.1'
 
       - name: Install to Composer
         run: composer install --no-scripts --no-dev --no-interaction --optimize-autoloader
@@ -35,7 +35,7 @@ jobs:
         env:
           APP_ENV: 'prod'
           DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
-          DATABASE_SERVER_VERSION: 14
+          DATABASE_SERVER_VERSION: '16'
         run: |
           rm -rf $GITHUB_WORKSPACE/app/Plugin/*
           echo "APP_ENV=${APP_ENV}" > .env
@@ -47,7 +47,7 @@ jobs:
         env:
           APP_ENV: 'prod'
           DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
-          DATABASE_SERVER_VERSION: 14
+          DATABASE_SERVER_VERSION: '16'
         run: |
           bin/console eccube:composer:require "ec-cube/recommend42"
           bin/console eccube:composer:require "ec-cube/coupon42"
@@ -60,7 +60,7 @@ jobs:
           bin/console eccube:composer:require "ec-cube/sitekit42"
 
       - name: revert to config platform.php
-        run: composer config platform.php 7.4.0
+        run: composer config platform.php 8.1.0
 
       - name: Pre Install Plugins
         env:

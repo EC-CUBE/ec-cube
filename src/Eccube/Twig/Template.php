@@ -20,32 +20,35 @@ use Twig\Source;
 class Template extends \Twig\Template
 {
     /**
-     * {@inheritdoc}
+     * Twig 3.2+ の yield ベース描画では render() が display() を経由しないため、
+     * TemplateEvent はここで発火させる（従来は display() を上書きしていた）。
      *
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\SyntaxError
      */
-    public function display(array $context, array $blocks = [])
+    public function yield(array $context, array $blocks = []): iterable
     {
         $globals = $this->env->getGlobals();
         if (isset($globals['event_dispatcher']) && strpos($this->getTemplateName(), '__string_template__') !== 0) {
             /** @var EventDispatcherInterface $eventDispatcher */
             $eventDispatcher = $globals['event_dispatcher'];
-            $originCode = $this->env->getLoader()->getSourceContext($this->getTemplateName())->getCode();
-            $event = new TemplateEvent($this->getTemplateName(), $originCode, $context);
-            $eventDispatcher->dispatch($event, $this->getTemplateName());
+            $templateName = $this->getTemplateName();
+            $originCode = $this->env->getLoader()->getSourceContext($templateName)->getCode();
+            $event = new TemplateEvent($templateName, $originCode, $context);
+            $eventDispatcher->dispatch($event, $templateName);
             if ($event->getSource() !== $originCode) {
                 $newTemplate = $this->env->createTemplate($event->getSource());
-                $newTemplate->display($event->getParameters(), $blocks);
-            } else {
-                parent::display($event->getParameters(), $blocks);
+
+                return yield from $newTemplate->unwrap()->yield($event->getParameters(), $blocks);
             }
-        } else {
-            parent::display($context, $blocks);
+
+            return yield from parent::yield($event->getParameters(), $blocks);
         }
+
+        return yield from parent::yield($context, $blocks);
     }
 
-    public function getTemplateName()
+    public function getTemplateName(): string
     {
         // Templateのキャッシュ作成時に動的に作成されるメソッド
         // デバッグツールバーでエラーが発生するため空文字を返しておく。
@@ -53,18 +56,19 @@ class Template extends \Twig\Template
         return '';
     }
 
-    public function getDebugInfo()
+    public function getDebugInfo(): array
     {
         // Templateのキャッシュ作成時に動的に作成されるメソッド
         return [];
     }
 
-    protected function doDisplay(array $context, array $blocks = [])
+    protected function doDisplay(array $context, array $blocks = []): iterable
     {
         // Templateのキャッシュ作成時に動的に作成されるメソッド
+        return [];
     }
 
-    public function getSourceContext()
+    public function getSourceContext(): Source
     {
         // FIXME Twig\Loader\FilesystemLoader の実装を持ってきたが,これで問題ないか要確認
         return new Source('', $this->getTemplateName(), '');
