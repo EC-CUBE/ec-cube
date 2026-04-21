@@ -24,11 +24,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class TwoFactorAuthControllerTest extends AbstractAdminWebTestCase
 {
-    protected MemberRepository $memberRepository;
+    protected ?MemberRepository $memberRepository = null;
 
-    protected TwoFactorAuthService $twoFactorAuthService;
+    protected ?TwoFactorAuthService $twoFactorAuthService = null;
 
-    protected TwoFactorAuth $tfa;
+    protected ?TwoFactorAuth $tfa = null;
 
     protected function setUp(): void
     {

@@ -40,7 +40,7 @@ final class ProductControllerTest extends AbstractWebTestCase
 
     private ?ClassCategoryRepository $classCategoryRepository = null;
 
-    private CustomerFavoriteProductRepository $customerFavoriteProductRepository;
+    private ?CustomerFavoriteProductRepository $customerFavoriteProductRepository = null;
 
     protected function setUp(): void
     {
