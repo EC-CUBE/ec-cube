@@ -30,7 +30,6 @@ use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Client;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Csrf\CsrfTokenManager;
 
 final class ProductControllerTest extends AbstractWebTestCase
 {
@@ -453,7 +452,9 @@ final class ProductControllerTest extends AbstractWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         // Symfonyのテスト用CSRFトークンを使用
-        $csrfToken = $this->client->getContainer()->get(CsrfTokenManager::class)
+        // クラス名のエイリアスが標準では存在しないため、文字列サービスIDのまま使用
+        $serviceId = 'security.csrf.token_manager';
+        $csrfToken = $this->client->getContainer()->get($serviceId)
             ->getToken(Constant::TOKEN_NAME)->getValue();
 
         // お気に入りに追加していない状態で削除を実行
