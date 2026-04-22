@@ -33,6 +33,11 @@ if (!isset($_SERVER['APP_ENV'])) {
     } else {
         (Dotenv::createUnsafeMutable(__DIR__, '.env.install'))->load();
     }
+} elseif (class_exists(Dotenv::class) && file_exists(__DIR__.'/.env')) {
+    // APP_ENV が環境変数として設定されている場合（Docker など）でも .env を読み込む。
+    // ただし既存の環境変数（Docker で設定済みのもの）は上書きしない。
+    // これにより管理画面からのテンプレート切り替えが .env への書き込みで反映される。
+    (Dotenv::createImmutable(__DIR__))->safeLoad();
 }
 error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
 

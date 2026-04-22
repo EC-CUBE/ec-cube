@@ -95,10 +95,15 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
 
     private function ストアプラグイン_ボタンクリック($pluginCode, $label)
     {
-        $xpath = ['xpath' => $this->ストアプラグイン_セレクタ($pluginCode).'/../../td[6]//i[@data-bs-original-title="'.$label.'"]/parent::node()'];
-        $this->tester->scrollTo($xpath);
-        $this->tester->executeJS("document.querySelectorAll('.tooltip').forEach(e => e.remove())");
-        $this->tester->click($xpath);
+        $xpathStr = $this->ストアプラグイン_セレクタ($pluginCode).'/../../td[6]//i[@data-bs-original-title="'.$label.'"]/parent::node()';
+        $this->tester->scrollTo(['xpath' => $xpathStr]);
+        // tooltip やアラートを除去した上で JS クリックすることで、
+        // WebDriver のマウス移動による tooltip 再出現を回避する
+        $this->tester->executeJS(
+            "document.querySelectorAll('.tooltip, .alert-dismissible').forEach(e => e.remove());"
+            .'document.evaluate(arguments[0], document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click()',
+            [$xpathStr]
+        );
 
         return $this;
     }
@@ -153,10 +158,13 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
 
     private function 独自プラグイン_ボタンクリック($pluginCode, $label)
     {
-        $xpath = ['xpath' => $this->独自プラグイン_セレクタ($pluginCode).'/../td[6]//i[@data-bs-original-title="'.$label.'"]/parent::node()'];
-        $this->tester->scrollTo($xpath);
-        $this->tester->executeJS("document.querySelectorAll('.tooltip').forEach(e => e.remove())");
-        $this->tester->click($xpath);
+        $xpathStr = $this->独自プラグイン_セレクタ($pluginCode).'/../td[6]//i[@data-bs-original-title="'.$label.'"]/parent::node()';
+        $this->tester->scrollTo(['xpath' => $xpathStr]);
+        $this->tester->executeJS(
+            "document.querySelectorAll('.tooltip, .alert-dismissible').forEach(e => e.remove());"
+            .'document.evaluate(arguments[0], document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click()',
+            [$xpathStr]
+        );
 
         return $this;
     }

@@ -140,6 +140,46 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
+     * テンプレートの変更（ECCUBE_TEMPLATE_CODEがプロセス環境変数として設定されている場合）
+     *
+     * Docker などでプロセス環境変数として ECCUBE_TEMPLATE_CODE が設定されている場合、
+     * .env への書き込みは反映されないため警告が表示されることを確認する。
+     *
+     * @group cache-clear
+     */
+    public function testChangeTemplateWithEnvOverride()
+    {
+        // テンプレートをアップロード
+        $this->scenarioUpload();
+        $this->verifyUpload();
+
+        $Template = $this->templateRepository->findOneBy(['code' => $this->code]);
+
+        // プロセス環境変数として ECCUBE_TEMPLATE_CODE を設定
+        putenv('ECCUBE_TEMPLATE_CODE=default');
+
+        try {
+            $session = $this->createSession($this->client);
+
+            // テンプレートを選択
+            $this->client->request('POST', $this->generateUrl('admin_store_template'), [
+                'form' => [
+                    '_token' => 'dummy',
+                    'selected' => $Template->getId(),
+                ],
+            ]);
+            $this->assertTrue($this->client->getResponse()->isRedirection());
+
+            // 警告メッセージが表示されている
+            $warnings = $session->getFlashBag()->get('eccube.admin.warning');
+            self::assertContains('admin.store.template.env_override_warning', $warnings);
+        } finally {
+            // プロセス環境変数を元に戻す
+            putenv('ECCUBE_TEMPLATE_CODE');
+        }
+    }
+
+    /**
      * アップロード画面表示
      */
     public function testDiaplayUpload()

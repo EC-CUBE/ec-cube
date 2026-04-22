@@ -92,6 +92,12 @@ class TemplateController extends AbstractController
 
             $this->addSuccess('admin.common.save_complete', 'admin');
 
+            // ECCUBE_TEMPLATE_CODE がプロセス環境変数として設定されている場合（Docker などで明示的に設定した場合）、
+            // createImmutable では上書きされないため .env への書き込みが反映されない。
+            if (false !== getenv('ECCUBE_TEMPLATE_CODE')) {
+                $this->addWarning('admin.store.template.env_override_warning', 'admin');
+            }
+
             $cacheUtil->clearCache();
 
             return $this->redirectToRoute('admin_store_template');

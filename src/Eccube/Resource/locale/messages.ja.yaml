@@ -1465,6 +1465,7 @@ admin.store.template.delete_error__current_template: 設定中のテンプレー
 admin.store.template.template_code_already_exists: テンプレートコードは既に利用されています
 admin.store.template.upload_failed: アップロードに失敗しました
 admin.store.template.invalid_upload_file: ファイルの拡張子に誤りがあります
+admin.store.template.env_override_warning: "ECCUBE_TEMPLATE_CODE が環境変数として設定されているため、.env への変更は反映されません。テンプレートを切り替えるには環境変数の ECCUBE_TEMPLATE_CODE を変更してください。"
 admin.store.plugin: プラグイン
 admin.store.plugin.plugin_owners_install: プラグインを探す
 admin.store.plugin.plugin_list: プラグイン一覧
@@ -1501,6 +1502,7 @@ admin.store.package.api.500.error: オーナーズストアとの通信に失敗
 admin.plugin.uninstall.error.not_disable: プラグインを無効にしてください。
 admin.plugin.uninstall.depend: "「%depend_name%」が「%name%」に依存しているため削除できません。"
 admin.plugin.disable.depend: "「%name%」を無効にする前に、「%depend_name%」を無効にしてください。 "
+pluginservice.text.error.upload_failure: プラグインのアップロードに失敗しました。
 
 # TODO: メッセージ精査
 admin.store.plugin.popup.delete.confirm.title: プラグインの削除を確認する

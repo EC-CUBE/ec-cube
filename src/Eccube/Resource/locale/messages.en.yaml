@@ -1465,6 +1465,7 @@ admin.store.template.delete_error__current_template: You are not allowed to dele
 admin.store.template.template_code_already_exists: This template code is already used.
 admin.store.template.upload_failed: Failed to upload
 admin.store.template.invalid_upload_file: Wrong extension of the file
+admin.store.template.env_override_warning: "ECCUBE_TEMPLATE_CODE is set as an environment variable, so changes to .env will not take effect. To switch templates, update the ECCUBE_TEMPLATE_CODE environment variable."
 admin.store.plugin: Plugins
 admin.store.plugin.plugin_owners_install: Search Plugins
 admin.store.plugin.plugin_list: All Plugins
@@ -1501,6 +1502,7 @@ admin.store.package.api.500.error: Failed to communicate with Owners' Store. Ple
 admin.plugin.uninstall.error.not_disable: Please disable the plugin.
 admin.plugin.uninstall.depend: "Unable to delete %depend_name% because it depends on %name%."
 admin.plugin.disable.depend: "Please disable %depend_name% before disabling %name%."
+pluginservice.text.error.upload_failure: Failed to upload plugin.
 
 # TODO: Verify Message
 admin.store.plugin.popup.delete.confirm.title: Confirm the deletion of the plugin

@@ -39,6 +39,7 @@ use Eccube\Service\OrderPdfService;
 use Eccube\Service\OrderStateMachine;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Util\FormUtil;
+use Eccube\Util\StringUtil;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormBuilder;
@@ -310,12 +311,37 @@ class OrderController extends AbstractController
         $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_INDEX_SEARCH);
         $paginate_options = $event->getArgument('paginate_options');
 
-        $pagination = $paginator->paginate(
-            $qb,
-            $page_no,
-            $page_count,
-            $paginate_options
-        );
+        // JOIN必要な検索条件がない場合はカスタムカウントを使用
+        $useCustomCount = !(isset($searchData['buy_product_name']) && StringUtil::isNotBlank($searchData['buy_product_name']))
+            && empty($searchData['payment'])
+            && !(isset($searchData['shipping_mail']) && StringUtil::isNotBlank($searchData['shipping_mail']))
+            && !(isset($searchData['tracking_number']) && StringUtil::isNotBlank($searchData['tracking_number']))
+            && empty($searchData['shipping_delivery_datetime_start'])
+            && empty($searchData['shipping_delivery_datetime_end'])
+            && empty($searchData['shipping_delivery_date_start'])
+            && empty($searchData['shipping_delivery_date_end']);
+
+        if ($useCustomCount) {
+            // カスタムカウントを使用して高速化
+            $count = $this->orderRepository->countBySearchDataForAdmin($searchData);
+            $query = $qb->getQuery();
+            $query->setHint('knp_paginator.count', $count);
+
+            $pagination = $paginator->paginate(
+                $query,
+                $page_no,
+                $page_count,
+                $paginate_options
+            );
+        } else {
+            // JOIN必要な検索条件がある場合は従来通り
+            $pagination = $paginator->paginate(
+                $qb,
+                $page_no,
+                $page_count,
+                $paginate_options
+            );
+        }
 
         return [
             'searchForm' => $searchForm->createView(),
