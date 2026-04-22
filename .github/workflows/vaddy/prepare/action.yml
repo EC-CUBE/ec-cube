@@ -30,7 +30,7 @@ runs:
         php-version: '7.4'
 
     - name: setup-chromedriver
-      uses: nanasess/setup-chromedriver@fc3dc5897c11410827ed268ab625038ee63dc6fe  # master
+      uses: nanasess/setup-chromedriver@c75c3d53d445b96d41dbf2355797b470953c6c30  # v2.4.0
 
     - name: Install fonts
       shell: bash

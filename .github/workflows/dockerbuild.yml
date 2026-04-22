@@ -57,7 +57,7 @@ jobs:
         uses: ./.github/actions/composer
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@b45d80f862d83dbcd57f89517bcf500b2ab88fb2  # v4
+        uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121  # v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -76,7 +76,7 @@ jobs:
             type=ref,event=pr,prefix=${{ matrix.php }}-apache-pr-
 
       - name: Build and export to Docker
-        uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294  # v7
+        uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f  # v7
         with:
           context: .
           load: true
@@ -99,7 +99,7 @@ jobs:
           docker compose -f docker-compose.yml -f docker-compose.pgsql.yml up -d --wait
 
       - name: setup-chromedriver
-        uses: nanasess/setup-chromedriver@5c1220e385aca82610aa6fc7cdf1429306d50f9d  # master
+        uses: nanasess/setup-chromedriver@c75c3d53d445b96d41dbf2355797b470953c6c30  # v2.4.0
 
       - name: Run chromedriver
         run: |
@@ -124,7 +124,7 @@ jobs:
       ## see https://docs.github.com/ja/packages/managing-github-packages-using-github-actions-workflows/publishing-and-installing-a-package-with-github-actions#publishing-a-package-using-an-action
 
       - name: Push Docker image
-        uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294  # v7
+        uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f  # v7
         if: success()
         with:
           context: .
@@ -136,13 +136,13 @@ jobs:
 
       - name: Upload evidence
         if: failure()
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
         with:
           name: codeception-${{ matrix.group }}-evidence
           path: codeception/_output/
       - name: Upload logs
         if: failure()
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
         with:
           name: codeception-${{ matrix.group }}-logs
           path: var/log/

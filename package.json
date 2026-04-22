@@ -33,7 +33,7 @@
     "@popperjs/core": "^2.11.8",
     "ace-builds": "^1.32.3",
     "bootstrap": "^5.3.8",
-    "chart.js": "^3.9.1",
+    "chart.js": "^4.5.1",
     "css-loader": "^7.1.2",
     "file-loader": "^6.2.0",
     "filepond": "^4.30.6",
