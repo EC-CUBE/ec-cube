@@ -23,6 +23,7 @@ use Page\Front\TopPage;
 
 /**
  * @group front
+ * @group front-b
  * @group invoice
  * @group ef8
  */

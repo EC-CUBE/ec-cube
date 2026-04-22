@@ -269,7 +269,7 @@ if (!class_exists(Member::class)) {
         /**
          * Set twoFactorAuthKey.
          */
-        public function setTwoFactorAuthKey(string $two_factor_auth_key): Member
+        public function setTwoFactorAuthKey(?string $two_factor_auth_key): Member
         {
             $this->two_factor_auth_key = $two_factor_auth_key;
 

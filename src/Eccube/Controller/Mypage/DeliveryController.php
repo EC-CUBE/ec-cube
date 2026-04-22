@@ -26,7 +26,6 @@ use Eccube\Service\MailService;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -170,17 +169,25 @@ class DeliveryController extends AbstractController
      * @throws \Exception
      */
     #[Route(path: '/mypage/delivery/{id}/delete', name: 'mypage_delivery_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, CustomerAddress $CustomerAddress): RedirectResponse
+    public function delete(Request $request, int $id): RedirectResponse
     {
         $this->isTokenValid();
 
-        log_info('お届け先削除開始', [$CustomerAddress->getId()]);
         /** @var Customer $Customer */
         $Customer = $this->getUser();
 
-        if ($Customer->getId() != $CustomerAddress->getCustomer()->getId()) {
-            throw new BadRequestHttpException();
+        $CustomerAddress = $this->customerAddressRepository->findOneBy(
+            [
+                'id' => $id,
+                'Customer' => $Customer,
+            ]
+        );
+
+        if (!$CustomerAddress) {
+            throw new NotFoundHttpException();
         }
+
+        log_info('お届け先削除開始', [$CustomerAddress->getId()]);
 
         $this->customerAddressRepository->delete($CustomerAddress);
 

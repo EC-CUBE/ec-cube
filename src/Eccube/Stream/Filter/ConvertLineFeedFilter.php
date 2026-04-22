@@ -28,7 +28,7 @@ class ConvertLineFeedFilter extends \php_user_filter
     {
         while ($bucket = \stream_bucket_make_writeable($in)) {
             $bucket->data = StringUtil::convertLineFeed($bucket->data);
-            $consumed += (int) $bucket->datalen;
+            $consumed += $bucket->datalen;
             \stream_bucket_append($out, $bucket);
         }
 

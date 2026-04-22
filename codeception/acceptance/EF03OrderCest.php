@@ -28,6 +28,7 @@ use Page\Front\TopPage;
 
 /**
  * @group front
+ * @group front-a
  * @group order
  * @group ef3
  */
@@ -608,7 +609,7 @@ class EF03OrderCest
         // ログイン
         ShoppingLoginPage::at($I)->ログイン($customer->getEmail());
 
-        $I->see('同時購入できない商品がカートに含まれています', '.ec-alert-warning__text');
+        $I->see('同時購入できない商品のカートを分けました。お手数ですが別々で注文してください。', '.ec-alert-warning__text');
     }
 
     /**

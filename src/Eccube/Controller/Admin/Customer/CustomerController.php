@@ -30,6 +30,7 @@ use Eccube\Repository\Master\SexRepository;
 use Eccube\Service\CsvExportService;
 use Eccube\Service\MailService;
 use Eccube\Util\FormUtil;
+use Eccube\Util\StringUtil;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -119,20 +120,42 @@ class CustomerController extends AbstractController
         /** @var QueryBuilder $qb */
         $qb = $this->customerRepository->getQueryBuilderBySearchData($searchData);
 
+        $paginate_options = [];
         $event = new EventArgs(
             [
                 'form' => $searchForm,
                 'qb' => $qb,
+                'paginate_options' => $paginate_options,
             ],
             $request
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_CUSTOMER_INDEX_SEARCH);
+        $paginate_options = $event->getArgument('paginate_options');
 
-        $pagination = $this->paginator->paginate(
-            $qb,
-            $page_no,
-            $pageCount
-        );
+        // JOIN必要な検索条件がない場合はカスタムカウントを使用
+        $useCustomCount = !(isset($searchData['buy_product_name']) && StringUtil::isNotBlank($searchData['buy_product_name']));
+
+        if ($useCustomCount) {
+            // カスタムカウントを使用して高速化
+            $count = $this->customerRepository->countBySearchData($searchData);
+            $query = $qb->getQuery();
+            $query->setHint('knp_paginator.count', $count);
+
+            $pagination = $this->paginator->paginate(
+                $query,
+                $page_no,
+                $pageCount,
+                $paginate_options
+            );
+        } else {
+            // JOIN必要な検索条件がある場合は従来通り
+            $pagination = $this->paginator->paginate(
+                $qb,
+                $page_no,
+                $pageCount,
+                $paginate_options
+            );
+        }
 
         return [
             'searchForm' => $searchForm->createView(),

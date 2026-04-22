@@ -25,6 +25,7 @@ use Eccube\Form\Type\Front\ShoppingShippingType;
 use Eccube\Form\Type\Shopping\CustomerAddressType;
 use Eccube\Form\Type\Shopping\OrderType;
 use Eccube\Repository\BaseInfoRepository;
+use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\TradeLawRepository;
 use Eccube\Service\CartService;
@@ -44,20 +45,15 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
-use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class ShoppingController extends AbstractShoppingController
 {
-    public function __construct(protected CartService $cartService, protected MailService $mailService, protected OrderRepository $orderRepository, protected OrderHelper $orderHelper, protected ContainerInterface $serviceContainer, protected TradeLawRepository $tradeLawRepository, protected RateLimiterFactoryInterface $shoppingConfirmIpLimiter, protected RateLimiterFactoryInterface $shoppingConfirmCustomerLimiter, protected RateLimiterFactoryInterface $shoppingCheckoutIpLimiter, protected RateLimiterFactoryInterface $shoppingCheckoutCustomerLimiter, protected BaseInfoRepository $baseInfoRepository, private readonly PurchaseFlow $cartPurchaseFlow, private readonly AuthenticationUtils $authenticationUtils)
+    public function __construct(protected CartService $cartService, protected MailService $mailService, protected OrderRepository $orderRepository, protected OrderHelper $orderHelper, protected ContainerInterface $serviceContainer, protected TradeLawRepository $tradeLawRepository, protected RateLimiterFactoryInterface $shoppingConfirmIpLimiter, protected RateLimiterFactoryInterface $shoppingConfirmCustomerLimiter, protected RateLimiterFactoryInterface $shoppingCheckoutIpLimiter, protected RateLimiterFactoryInterface $shoppingCheckoutCustomerLimiter, protected BaseInfoRepository $baseInfoRepository, protected PrefRepository $prefRepository, private readonly PurchaseFlow $cartPurchaseFlow, private readonly AuthenticationUtils $authenticationUtils)
     {
     }
-
-    //    public function __construct(protected CartService $cartService, protected MailService $mailService, protected OrderRepository $orderRepository, protected OrderHelper $orderHelper, protected ContainerInterface $serviceContainer, protected TradeLawRepository $tradeLawRepository, protected RateLimiterFactory $shoppingConfirmIpLimiter, protected RateLimiterFactory $shoppingConfirmCustomerLimiter, protected RateLimiterFactory $shoppingCheckoutIpLimiter, protected RateLimiterFactory $shoppingCheckoutCustomerLimiter, protected BaseInfoRepository $baseInfoRepository)
-    //    {
-    //    }
 
     /**
      * 注文手続き画面を表示する
@@ -125,6 +121,7 @@ class ShoppingController extends AbstractShoppingController
             'form' => $form->createView(),
             'Order' => $Order,
             'activeTradeLaws' => $activeTradeLaws,
+            'Prefs' => $this->prefRepository->findAll(),
         ];
     }
 
@@ -212,6 +209,7 @@ class ShoppingController extends AbstractShoppingController
             'form' => $form->createView(),
             'Order' => $Order,
             'activeTradeLaws' => $activeTradeLaws,
+            'Prefs' => $this->prefRepository->findAll(),
         ];
     }
 
@@ -326,6 +324,7 @@ class ShoppingController extends AbstractShoppingController
             'form' => $form->createView(),
             'Order' => $Order,
             'activeTradeLaws' => $activeTradeLaws,
+            'Prefs' => $this->prefRepository->findAll(),
         ];
     }
 
@@ -510,6 +509,22 @@ class ShoppingController extends AbstractShoppingController
         }
 
         $Order = $this->orderRepository->find($orderId);
+
+        if (!$Order) {
+            log_info('[注文完了] 受注が存在しないため, トップページへ遷移します.', [$orderId]);
+
+            return $this->redirectToRoute('homepage');
+        }
+
+        // 受注の所有者チェック
+        $Customer = $this->getUser();
+        if ($Customer instanceof Customer) {
+            if ($Order->getCustomer() && $Order->getCustomer()->getId() !== $Customer->getId()) {
+                log_info('[注文完了] 受注の所有者が一致しないため, トップページへ遷移します.', [$orderId]);
+
+                return $this->redirectToRoute('homepage');
+            }
+        }
 
         $event = new EventArgs(
             [

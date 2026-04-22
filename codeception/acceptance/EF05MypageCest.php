@@ -26,6 +26,7 @@ use Page\Front\ShoppingPage;
 
 /**
  * @group front
+ * @group front-b
  * @group mypage
  * @group ef5
  */

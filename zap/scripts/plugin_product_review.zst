@@ -43,7 +43,7 @@
     },
     {
       "fieldDefinition": {
-        "formIndex": 1,
+        "formIndex": 0,
         "fieldName": "product_review__token",
         "elementType": "ZestFieldDefinition"
       },
@@ -84,7 +84,7 @@
     },
     {
       "fieldDefinition": {
-        "formIndex": 1,
+        "formIndex": 0,
         "fieldName": "product_review__token",
         "elementType": "ZestFieldDefinition"
       },
@@ -138,8 +138,86 @@
       "elementType": "ZestRequest"
     },
     {
-      "comment": "管理画面処理 追加したレビューの検索\n",
+      "url": "https://ec-cube/admin/login",
+      "data": "",
+      "method": "GET",
+      "headers": "Upgrade-Insecure-Requests: 1\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": true,
+      "timestamp": 0,
+      "cookies": [],
       "index": 9,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "fieldDefinition": {
+        "formIndex": 0,
+        "fieldName": "_csrf_token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "csrf_login",
+      "index": 10,
+      "enabled": true,
+      "elementType": "ZestAssignFieldValue"
+    },
+    {
+      "url": "https://ec-cube/admin/login",
+      "urlToken": "https://ec-cube/admin/login",
+      "data": "_csrf_token={{csrf_login}}&login_id=admin&password=password",
+      "method": "POST",
+      "headers": "Content-Type: application/x-www-form-urlencoded\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 302,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 11,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "https://ec-cube/admin/",
+      "data": "",
+      "method": "GET",
+      "headers": "Upgrade-Insecure-Requests: 1\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": true,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 12,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "comment": "管理画面処理 追加したレビューの検索\n",
+      "index": 13,
       "enabled": true,
       "elementType": "ZestComment"
     },
@@ -161,7 +239,7 @@
       "followRedirects": false,
       "timestamp": 1674802742545,
       "cookies": [],
-      "index": 10,
+      "index": 14,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -172,7 +250,7 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf3",
-      "index": 11,
+      "index": 15,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
@@ -194,7 +272,7 @@
       "followRedirects": false,
       "timestamp": 1674807235824,
       "cookies": [],
-      "index": 12,
+      "index": 16,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -203,19 +281,19 @@
       "postfix": "\" tabindex=\"-1\"",
       "location": "BODY",
       "variableName": "product-review-id",
-      "index": 13,
+      "index": 17,
       "enabled": true,
       "elementType": "ZestAssignRegexDelimiters"
     },
     {
       "message": "product-review-id: {{product-review-id}}",
-      "index": 14,
+      "index": 18,
       "enabled": false,
       "elementType": "ZestActionPrint"
     },
     {
       "comment": "検索したレビュー内容の更新",
-      "index": 15,
+      "index": 19,
       "enabled": true,
       "elementType": "ZestComment"
     },
@@ -237,7 +315,7 @@
       "followRedirects": false,
       "timestamp": 1674802748850,
       "cookies": [],
-      "index": 16,
+      "index": 20,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -248,7 +326,7 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf4",
-      "index": 17,
+      "index": 21,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
@@ -270,7 +348,7 @@
       "followRedirects": false,
       "timestamp": 1674802753350,
       "cookies": [],
-      "index": 18,
+      "index": 22,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -292,7 +370,7 @@
       "followRedirects": false,
       "timestamp": 1674802753409,
       "cookies": [],
-      "index": 19,
+      "index": 23,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -314,13 +392,13 @@
       "followRedirects": false,
       "timestamp": 1674802758801,
       "cookies": [],
-      "index": 20,
+      "index": 24,
       "enabled": true,
       "elementType": "ZestRequest"
     },
     {
       "comment": "管理画面処理 編集したレビューの検索\n",
-      "index": 21,
+      "index": 25,
       "enabled": true,
       "elementType": "ZestComment"
     },
@@ -342,7 +420,7 @@
       "followRedirects": false,
       "timestamp": 1674802742545,
       "cookies": [],
-      "index": 22,
+      "index": 26,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -353,7 +431,7 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf3",
-      "index": 23,
+      "index": 27,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
@@ -375,7 +453,7 @@
       "followRedirects": false,
       "timestamp": 1674807235824,
       "cookies": [],
-      "index": 24,
+      "index": 28,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -384,7 +462,7 @@
       "postfix": "'\\s+data-method=\"delete\">",
       "location": "BODY",
       "variableName": "delete-token",
-      "index": 25,
+      "index": 29,
       "enabled": true,
       "elementType": "ZestAssignRegexDelimiters"
     },
@@ -393,19 +471,19 @@
       "postfix": "\" tabindex=\"-1\"",
       "location": "BODY",
       "variableName": "product-review-id",
-      "index": 26,
+      "index": 30,
       "enabled": true,
       "elementType": "ZestAssignRegexDelimiters"
     },
     {
       "message": "product-review-id: {{delete-token}}",
-      "index": 27,
+      "index": 31,
       "enabled": false,
       "elementType": "ZestActionPrint"
     },
     {
       "comment": "検索したレビューを削除",
-      "index": 28,
+      "index": 32,
       "enabled": true,
       "elementType": "ZestComment"
     },
@@ -427,7 +505,7 @@
       "followRedirects": false,
       "timestamp": 1674814344928,
       "cookies": [],
-      "index": 29,
+      "index": 33,
       "enabled": true,
       "elementType": "ZestRequest"
     }

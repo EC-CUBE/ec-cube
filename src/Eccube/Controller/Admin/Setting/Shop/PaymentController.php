@@ -165,13 +165,13 @@ class PaymentController extends AbstractController
     #[Route(path: '/%eccube_admin_route%/setting/shop/payment/image/process', name: 'admin_payment_image_process', methods: ['POST'])]
     public function imageProcess(Request $request): Response
     {
-        if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
+        if (!$request->isXmlHttpRequest() || !$this->isTokenValid()) {
             throw new BadRequestHttpException();
         }
 
         $images = $request->files->get('payment_register');
 
-        $allowExtensions = ['gif', 'jpg', 'jpeg', 'png'];
+        $allowExtensions = ['gif', 'jpg', 'jpeg', 'png', 'webp'];
 
         $filename = null;
         if (isset($images['payment_image_file'])) {
@@ -248,7 +248,7 @@ class PaymentController extends AbstractController
     #[Route(path: '/%eccube_admin_route%/setting/shop/payment/image/revert', name: 'admin_payment_image_revert', methods: ['DELETE'])]
     public function imageRevert(Request $request): Response
     {
-        if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
+        if (!$request->isXmlHttpRequest() || !$this->isTokenValid()) {
             throw new BadRequestHttpException();
         }
 
