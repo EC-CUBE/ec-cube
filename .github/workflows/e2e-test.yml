@@ -2,44 +2,38 @@ name: E2E test for EC-CUBE
 
 on:
   workflow_call:
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  codeception:
-    name: Codeception
+  playwright:
+    name: Playwright (${{ matrix.suite }})
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
         php: [ 8.3 ]
         db: [ pgsql ]
-        group: [ 'admin01-a', 'admin01-b', 'admin02', 'admin03-a', 'admin03-b', 'front-a', 'front-b', 'restrict-fileupload', 'change-display-order', 'installer' ]
+        suite:
+          - admin-top
+          - admin-auth
+          - admin-product
+          - admin-order
+          - admin-shipping
+          - admin-customer
+          - admin-contents
+          - admin-basicinfo
+          - admin-system
+          - front-top
+          - front-product
+          - front-customer
+          - front-other
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
             database_server_version: 14
-          - group: 'admin01-a'
-            app_env: 'codeception'
-          - group: 'admin01-b'
-            app_env: 'codeception'
-          - group: 'admin02'
-            app_env: 'codeception'
-          - group: 'admin03-a'
-            app_env: 'codeception'
-          - group: 'admin03-b'
-            app_env: 'codeception'
-          - group: 'front-a'
-            app_env: 'codeception'
-          - group: 'front-b'
-            app_env: 'codeception'
-          - group: 'restrict-fileupload'
-            app_env: 'codeception'
-          - group: 'change-display-order'
-            app_env: 'codeception'
-          - group: 'installer'
-            app_env: 'install'
     services:
       postgres:
         image: postgres:14
@@ -48,7 +42,6 @@ jobs:
           POSTGRES_PASSWORD: password
         ports:
           - 5432:5432
-        # needed because the postgres container does not provide a healthcheck
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
       mailcatcher:
@@ -65,6 +58,11 @@ jobs:
         uses: shivammathur/setup-php@accd6127cb78bee3e8082180cb391013d204ef9f  # v2
         with:
           php-version: ${{ matrix.php }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020  # v4
+        with:
+          node-version: 20
 
       - name: Initialize Composer
         uses: ./.github/actions/composer
@@ -96,7 +94,7 @@ jobs:
 
       - name: Setup to EC-CUBE
         env:
-          APP_ENV: ${{ matrix.app_env }}
+          APP_ENV: 'codeception'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
         run: |
@@ -106,8 +104,26 @@ jobs:
           bin/console doctrine:schema:create --env=dev
           bin/console eccube:fixtures:load --env=dev
 
-      - name: setup-chromedriver
-        uses: nanasess/setup-chromedriver@5c1220e385aca82610aa6fc7cdf1429306d50f9d  # master
+      - name: Install Playwright dependencies
+        working-directory: e2e
+        run: npm ci
+
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7  # v5
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('e2e/package-lock.json') }}
+
+      - name: Install Playwright browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        working-directory: e2e
+        run: npx playwright install --with-deps chromium
+
+      - name: Install Playwright system deps
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        working-directory: e2e
+        run: npx playwright install-deps chromium
 
       - name: Cache apt packages
         uses: awalsh128/cache-apt-pkgs-action@acb598e5ddbc6f68a970c5da0688d2f3a9f04d05  # latest
@@ -115,130 +131,54 @@ jobs:
           packages: fonts-ipafont fonts-ipaexfont
           version: 1.0
 
-      - name: Run chromedriver
-        run: |
-          export DISPLAY=:99
-          chromedriver --url-base=/wd/hub --port=9515 &
-          echo ">>> Started chrome-driver"
-          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
-          echo ">>> Started xvfb"
-
-      - name: Run package-api
-        run: |
-          if [[ ! -d ${PWD}/repos ]]; then mkdir -p ${PWD}/repos ; fi
-          docker run -d --rm -v ${PWD}/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
-          for d in $(ls codeception/_data/plugins | grep 1.0.0)
-          do
-            (cd codeception/_data/plugins/$d; tar zcf ../../../../repos/${d}.tgz *)
-          done
-
-      - name: Start PHP Development Server restrict-fileupload
-        if: ${{ matrix.group == 'restrict-fileupload' }}
-        env:
-          APP_ENV: 'codeception'
-          DATABASE_URL: ${{ matrix.database_url }}
-          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          MAILER_DSN: 'smtp://127.0.0.1:1025'
-          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
-          ECCUBE_RESTRICT_FILE_UPLOAD: '1'
-        run: php -S 127.0.0.1:8000 codeception/router.php &
-
       - name: Start PHP Development Server
-        if: ${{ matrix.group != 'restrict-fileupload' }}
         env:
           APP_ENV: 'codeception'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           MAILER_DSN: 'smtp://127.0.0.1:1025'
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
-          ECCUBE_RESTRICT_FILE_UPLOAD: '0'
         run: php -S 127.0.0.1:8000 codeception/router.php &
 
-      - name: Codeception
-        if: |
-           matrix.group != 'restrict-fileupload' &&
-           matrix.group != 'change-display-order'
-        uses: nick-invision/retry@ad984534de44a9489a53aefd81eb77f87c70dc60  # v4.0.0
-        with:
-          timeout_minutes: 40
-          max_attempts: 2
-          retry_on: error
-          command: |
-            # DBはdoctrineがdev環境のカーネルで操作するため--env=devで統一
-            # (接続先DBはDATABASE_URL環境変数で決まるため環境に依存しない)
-            bin/console doctrine:schema:drop --force --env=dev
-            bin/console doctrine:schema:create --env=dev
-            bin/console eccube:fixtures:load --env=dev
-            # キャッシュはAPP_ENV=codeceptionで動作するHTTPサーバ側のものをクリアする必要があるため${APP_ENV}を使用
-            bin/console cache:clear --no-warmup --env=${APP_ENV}
-            sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
-            vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP} --skip-group restrict-fileupload --skip-group change-display-order --html report.html
-        env:
-          APP_ENV: ${{ matrix.app_env }}
-          DATABASE_URL: ${{ matrix.database_url }}
-          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          MAILER_DSN: 'smtp://127.0.0.1:1025'
-          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
-          GROUP: ${{ matrix.group }}
-          SYMFONY_DEPRECATIONS_HELPER: weak
-
-      - name: Codeception with ${{ matrix.group }}
-        if: |
-          matrix.group == 'restrict-fileupload' ||
-          matrix.group == 'change-display-order'
-        uses: nick-invision/retry@ad984534de44a9489a53aefd81eb77f87c70dc60  # v4.0.0
-        with:
-          timeout_minutes: 40
-          max_attempts: 2
-          retry_on: error
-          command: |
-            # DBはdoctrineがdev環境のカーネルで操作するため--env=devで統一
-            # (接続先DBはDATABASE_URL環境変数で決まるため環境に依存しない)
-            bin/console doctrine:schema:drop --force --env=dev
-            bin/console doctrine:schema:create --env=dev
-            bin/console eccube:fixtures:load --env=dev
-            # キャッシュはAPP_ENV=codeceptionで動作するHTTPサーバ側のものをクリアする必要があるため${APP_ENV}を使用
-            bin/console cache:clear --no-warmup --env=${APP_ENV}
-            sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
-            vendor/bin/codecept -vvv run acceptance --env chrome,github_action -g ${GROUP} --html report.html
-        env:
-          APP_ENV: ${{ matrix.app_env }}
-          DATABASE_URL: ${{ matrix.database_url }}
-          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          MAILER_DSN: 'smtp://127.0.0.1:1025'
-          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
-          GROUP: ${{ matrix.group }}
-          SYMFONY_DEPRECATIONS_HELPER: weak
-          ECCUBE_RESTRICT_FILE_UPLOAD: '1'
-
-      - name: Get a ScreenShots
+      - name: Determine Playwright project
+        id: project
         run: |
-          php -S 127.0.0.1:8000 &
-          echo 'google-chrome --headless --no-sandbox --disable-gpu --screenshot=$1 --virtual-time-budget=10000 $2' > take_screenshot.sh
-          sudo sh take_screenshot.sh front_top.png http://127.0.0.1:8000
-          sudo sh take_screenshot.sh admin_top.png http://127.0.0.1:8000/admin
+          SUITE="${{ matrix.suite }}"
+          if [[ "$SUITE" == admin-* ]]; then
+            echo "project=admin-tests" >> $GITHUB_OUTPUT
+          elif [[ "$SUITE" == front-* ]]; then
+            echo "project=front-tests" >> $GITHUB_OUTPUT
+          fi
 
-      - name: Upload evidence
+      - name: Run Playwright tests
+        working-directory: e2e
+        env:
+          BASE_URL: 'http://127.0.0.1:8000'
+          DATABASE_URL: ${{ matrix.database_url }}
+          ECCUBE_ADMIN_ROUTE: 'admin'
+          ADMIN_USER: 'admin'
+          ADMIN_PASSWORD: 'password'
+          APP_ENV: 'codeception'
+          CI: 'true'
+        run: |
+          npx playwright test --project=setup --project=${{ steps.project.outputs.project }} ${{ matrix.suite }}.spec.ts
+
+      - name: Upload Playwright report
         if: failure()
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
         with:
-          name: codeception-${{ matrix.group }}-evidence
-          path: codeception/_output/
-
-      - name: List files in current directory
-        run: ls -la
+          name: playwright-${{ matrix.suite }}-report
+          path: e2e/playwright-report/
 
       - name: Upload ScreenShots
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
         with:
-          name: screenshots-${{ matrix.group }}
-          path: |
-            front_top.png
-            admin_top.png
+          name: playwright-${{ matrix.suite }}-results
+          path: e2e/test-results/
 
       - name: Upload logs
         if: failure()
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
         with:
-          name: codeception-${{ matrix.group }}-logs
+          name: playwright-${{ matrix.suite }}-logs
           path: var/log/
