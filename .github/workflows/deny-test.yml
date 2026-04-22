@@ -88,32 +88,36 @@ jobs:
           docker exec -u www-data eccube bin/console eccube:install -n
           # docker exec -u www-data eccube bash -c 'for code in Api42 Coupon42 MailMagazine42 ProductReview42 Recommend42 RelatedProduct42 SalesReport42 Securitychecker42; do bin/console eccube:plugin:enable --code $code; done'
 
-      - name: setup-chromedriver
-        uses: nanasess/setup-chromedriver@5c1220e385aca82610aa6fc7cdf1429306d50f9d  # master
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020  # v4
+        with:
+          node-version: 20
 
-      - name: Prepare test
-        run: |
-          export DISPLAY=:99
-          chromedriver --url-base=/wd/hub --port=9515 &
-          echo ">>> Started chrome-driver"
-          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
-          echo ">>> Started xvfb"
-          composer install --no-scripts --no-interaction --optimize-autoloader
-          echo "modules:
-              enabled:
-              - REST:
-                  depends: PhpBrowser
-                  url: 'http://127.0.0.1:8080'
-              config:
-                  WebDriver:
-                      host: '127.0.0.1'
-                      port: 9515
-                      url: 'http://127.0.0.1:8080'" > codeception/_envs/local.yml
+      - name: Install Playwright dependencies
+        working-directory: e2e
+        run: npm ci
 
-      - name: Run tests
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7  # v5
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('e2e/package-lock.json') }}
+
+      - name: Install Playwright browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        working-directory: e2e
+        run: npx playwright install --with-deps chromium
+
+      - name: Install Playwright system deps
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        working-directory: e2e
+        run: npx playwright install-deps chromium
+
+      - name: Run deny tests
+        working-directory: e2e
         env:
-          APP_ENV: 'codeception'
-          DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
-          DATABASE_SERVER_VERSION: 14
+          BASE_URL: 'http://127.0.0.1:8080'
+          CI: 'true'
         run: |
-          vendor/bin/codecept -vvv run acceptance --env chrome,local CL01DenyCest
+          npx playwright test --project=front-tests deny.spec.ts
