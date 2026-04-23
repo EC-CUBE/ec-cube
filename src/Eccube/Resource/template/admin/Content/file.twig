@@ -30,61 +30,96 @@ file that was distributed with this source code.
     <script>
         arrTree = {{ tpl_javascript|raw }};
         var paths = {{ paths|raw }}; // TODO 仮実装
-        $(function() {
+        document.addEventListener('DOMContentLoaded', function() {
             var bread_crumbs = {{ now_dir_list|raw }};
             var file_path = '';
-            var $delimiter = '<span>&nbsp;/&nbsp;</span>';
-            var $node = $('#bread');
+            var node = document.getElementById('bread');
             var total = bread_crumbs.length;
-            for (var i in bread_crumbs) {
+            for (var i = 0; i < total; i++) {
                 file_path += '/' + bread_crumbs[i];
+                var li;
                 if (i == total - 1) {
-                    $li = $('<li class="breadcrumb-item active" />').text(bread_crumbs[i]);
+                    li = document.createElement('li');
+                    li.className = 'breadcrumb-item active';
+                    li.textContent = bread_crumbs[i];
                 } else {
-                    $a = $('<a href="javascript:;" onclick="eccube.fileManager.openFolder(\'' + file_path.replace(/user_data/, '') + '\'); return false;" />')
-                        .text(bread_crumbs[i]);
-                    $li = $('<li class="breadcrumb-item" />').append($a);
+                    var a = document.createElement('a');
+                    a.setAttribute('href', 'javascript:;');
+                    a.setAttribute('onclick', "eccube.fileManager.openFolder('" + file_path.replace(/user_data/, '') + "'); return false;");
+                    a.textContent = bread_crumbs[i];
+                    li = document.createElement('li');
+                    li.className = 'breadcrumb-item';
+                    li.appendChild(a);
                 }
-                $li.appendTo($node);
-                if (i < total - 1) $node.append($delimiter);
+                if (node) node.appendChild(li);
+                if (i < total - 1 && node) {
+                    var delimiter = document.createElement('span');
+                    delimiter.innerHTML = '&nbsp;/&nbsp;';
+                    node.appendChild(delimiter);
+                }
             }
 
+            // BS5 Tooltip 用のタイトル更新ユーティリティ
+            function setTooltipTitle(el, newTitle) {
+                el.setAttribute('data-bs-original-title', newTitle);
+                el.setAttribute('title', newTitle);
+                if (window.bootstrap && bootstrap.Tooltip) {
+                    var instance = bootstrap.Tooltip.getInstance(el);
+                    if (instance && typeof instance.setContent === 'function') {
+                        instance.setContent({ '.tooltip-inner': newTitle });
+                    }
+                }
+            }
 
-            $('.action-copy').on('click',function(){
-            	var updated = $(this).parents('tr').find('.updated');
-            	var copy_file_path = $(this).parents('tr').find('.copy-file-path');
-            	if ($(updated).is(':visible')) {
-            	    $('.updated').each(function() {
-            	        $(this).show();
-            	    });
-            	    $('.copy-file-path').each(function() {
-            	        $(this).hide();
-            	    });
-            	    $('.action-copy').each(function() {
-            	        $(this).attr('title', '{{ 'admin.common.copy_path'|trans }}');
-            	        $(this).tooltip('_fixTitle');
-            	    });
+            document.querySelectorAll('.action-copy').forEach(function(copyBtn) {
+                copyBtn.addEventListener('click', function() {
+                    var tr = copyBtn.closest('tr');
+                    if (!tr) return;
+                    var updated = tr.querySelector('.updated');
+                    var copyFilePath = tr.querySelector('.copy-file-path');
+                    var isVisible = updated && updated.offsetParent !== null;
 
-               	    $(updated).hide();
-            	    $(copy_file_path).show();
-            	    $(copy_file_path).find('input:first').focus();
-            	} else {
-            	    $(updated).show();
-            	    $(copy_file_path).hide();
-            	}
+                    if (isVisible) {
+                        document.querySelectorAll('.updated').forEach(function(el) {
+                            el.style.display = '';
+                        });
+                        document.querySelectorAll('.copy-file-path').forEach(function(el) {
+                            el.style.display = 'none';
+                        });
+                        document.querySelectorAll('.action-copy').forEach(function(btn) {
+                            setTooltipTitle(btn, '{{ 'admin.common.copy_path'|trans }}');
+                        });
 
+                        if (updated) updated.style.display = 'none';
+                        if (copyFilePath) {
+                            copyFilePath.style.display = '';
+                            var input = copyFilePath.querySelector('input');
+                            if (input) input.focus();
+                        }
+                    } else {
+                        if (updated) updated.style.display = '';
+                        if (copyFilePath) copyFilePath.style.display = 'none';
+                    }
+                });
             });
 
-            $('.copy-file-path input').focus(function(){
-                $(this).select();
-                if (document.execCommand('copy')) {
-                    var action_copy = $(this).parents('tr').find('.action-copy');
-                    setTimeout(function() {
-                        action_copy.attr('title', '{{ 'admin.common.copy_path_complete'|trans }}');
-                        action_copy.tooltip('_fixTitle');
-                        action_copy.tooltip('show');
-                     }, 100);
-                }
+            document.querySelectorAll('.copy-file-path input').forEach(function(input) {
+                input.addEventListener('focus', function() {
+                    input.select();
+                    if (document.execCommand('copy')) {
+                        var tr = input.closest('tr');
+                        if (!tr) return;
+                        var actionCopy = tr.querySelector('.action-copy');
+                        if (!actionCopy) return;
+                        setTimeout(function() {
+                            setTooltipTitle(actionCopy, '{{ 'admin.common.copy_path_complete'|trans }}');
+                            if (window.bootstrap && bootstrap.Tooltip) {
+                                var tooltip = bootstrap.Tooltip.getOrCreateInstance(actionCopy);
+                                tooltip.show();
+                            }
+                        }, 100);
+                    }
+                });
             });
         });
 

@@ -18,10 +18,18 @@ file that was distributed with this source code.
 {% block javascript %}
 {% if app.flashes('eccube.admin.disable_maintenance') %}
 <script>
-$(function() {
+document.addEventListener('DOMContentLoaded', function() {
     // メンテナンスモード解除
-    $.post("{{ url('admin_disable_maintenance', { 'mode': 'auto_maintenance' }) }}");
-})
+    var csrfMeta = document.querySelector('meta[name="eccube-csrf-token"]');
+    var csrfToken = csrfMeta ? csrfMeta.content : '';
+    fetch("{{ url('admin_disable_maintenance', { 'mode': 'auto_maintenance' }) }}", {
+        method: 'POST',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'ECCUBE-CSRF-TOKEN': csrfToken
+        }
+    });
+});
 </script>
 {% endif %}
 {% endblock %}

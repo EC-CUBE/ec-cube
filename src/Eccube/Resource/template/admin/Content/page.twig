@@ -17,9 +17,13 @@ file that was distributed with this source code.
 
 {% block javascript %}
     <script>
-        // searchWordの実行
-        $('#search-page').on('input', function() {
-            searchWord($(this).val(), $('table.table tbody tr'));
+        document.addEventListener('DOMContentLoaded', function() {
+            var searchPage = document.getElementById('search-page');
+            if (searchPage) {
+                searchPage.addEventListener('input', function() {
+                    searchWord(searchPage.value, document.querySelectorAll('table.table tbody tr'));
+                });
+            }
         });
     </script>
 {% endblock javascript %}

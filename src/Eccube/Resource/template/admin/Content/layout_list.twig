@@ -17,15 +17,21 @@ file that was distributed with this source code.
 
 {% block javascript %}
     <script>
-        $(function() {
-            // 削除モーダルのhrefとmessageの変更
-            $('#DeleteModal').on('shown.bs.modal', function(event) {
-                var target = $(event.relatedTarget);
-                // hrefの変更
-                $(this).find('[data-method="delete"]').attr('href', target.data('url'));
-
-                // messageの変更
-                $(this).find('p.modal-message').text(target.data('message'));
+        document.addEventListener('DOMContentLoaded', function() {
+            // 削除モーダルのhrefとmessageの変更（Bootstrap5 ネイティブイベント）
+            var deleteModal = document.getElementById('DeleteModal');
+            if (!deleteModal) return;
+            deleteModal.addEventListener('shown.bs.modal', function(event) {
+                var target = event.relatedTarget;
+                if (!target) return;
+                var deleteLink = deleteModal.querySelector('[data-method="delete"]');
+                if (deleteLink) {
+                    deleteLink.setAttribute('href', target.dataset.url || '');
+                }
+                var message = deleteModal.querySelector('p.modal-message');
+                if (message) {
+                    message.textContent = target.dataset.message || '';
+                }
             });
         });
     </script>
