@@ -8,258 +8,244 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
 */
-//mainNavArea　toggle
-var mainNavArea = function() {
-    $(function() {
-        $('.c-headerBar__toggleBtn').on('click', function() {
-            $('.c-mainNavArea').toggleClass('is-active');
-            $('.c-curtain').toggleClass('is-active');
+
+document.addEventListener('DOMContentLoaded', function() {
+
+    // mainNavArea toggle
+    var toggleBtn = document.querySelector('.c-headerBar__toggleBtn');
+    var mainNavArea = document.querySelector('.c-mainNavArea');
+    var curtain = document.querySelector('.c-curtain');
+    if (toggleBtn && mainNavArea && curtain) {
+        toggleBtn.addEventListener('click', function() {
+            mainNavArea.classList.toggle('is-active');
+            curtain.classList.toggle('is-active');
         });
-
-        $('.c-curtain').on('click', function() {
-            $('.c-mainNavArea').toggleClass('is-active');
-            $('.c-curtain').toggleClass('is-active');
+        curtain.addEventListener('click', function() {
+            mainNavArea.classList.toggle('is-active');
+            curtain.classList.toggle('is-active');
         });
-    })
-};
-mainNavArea();
+    }
 
-//Bootstrap ツールチップ
-var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-  return new bootstrap.Tooltip(tooltipTriggerEl)
-});
-
-/** @deprecated プラグイン等の後方互換用 */
-var toolTip = function() {
-    $(function() {
-        $('[data-tooltip="true"]').tooltip();
-    })
-};
-toolTip();
-
-// popover ポップオーバー
-var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
-var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-  return new bootstrap.Popover(popoverTriggerEl)
-});
-
-/** @deprecated プラグイン等の後方互換用 */
-var popoverAll = function() {
-    $(function() {
-        $('[data-toggle="popover"]').popover();
-    })
-};
-popoverAll();
-
-//collapseIconChange　collapseと連動するアイコン変化
-var collapseIconMinus = function() {
-    $(function() {
-        $('.ec-collapse').on('shown.bs.collapse', function() {
-            var id = $(this).attr('id');
-            var icon = $('[href="#' + id + '"]').find('i');
-            icon.removeClass('fa-plus-square-o');
-            icon.addClass('fa-minus-square-o');
-        })
-    })
-};
-collapseIconMinus();
-
-var collapseIconPlus = function() {
-    $(function() {
-        $('.ec-collapse').on('hidden.bs.collapse', function() {
-            var id = $(this).attr('id');
-            var icon = $('[href="#' + id + '"]').find('i');
-            icon.removeClass('fa-minus-square-o');
-            icon.addClass('fa-plus-square-o');
-        })
-    })
-};
-collapseIconPlus();
-
-
-//cardCollapseIconChange　カードコンポーネントのcollapseと連動するアイコン変化
-var cardCollapseIconDown = function() {
-    $(function() {
-        $('.ec-cardCollapse').on('hidden.bs.collapse', function() {
-            var id = $(this).attr('id');
-            var icon = $('[href="#' + id + '"]').find('i');
-            icon.removeClass('fa-angle-up');
-            icon.addClass('fa-angle-down');
-        })
-    })
-};
-cardCollapseIconDown();
-
-var cardCollapseIconUp = function() {
-    $(function() {
-        $('.ec-cardCollapse').on('shown.bs.collapse', function() {
-            var id = $(this).attr('id');
-            var icon = $('[href="#' + id + '"]').find('i');
-            icon.addClass('fa-angle-up');
-        })
-    })
-};
-cardCollapseIconUp();
-
-// toggle bulk button
-var toggleBtnBulk = function(checkboxSelector, btnSelector) {
-    $(function() {
-        if ($(checkboxSelector + ':checked').length) {
-            $(btnSelector).fadeIn('fast').addClass('d-block').removeClass('d-none');
-        } else {
-            $(btnSelector).fadeOut('fast', function() {
-                $(this).addClass('d-none').removeClass('d-block');
-            })
-        }
+    // Bootstrap tooltip
+    document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function(el) {
+        new bootstrap.Tooltip(el);
     });
-};
 
-/////////// 2重submit制御.
+    /** @deprecated プラグイン等の後方互換用 */
+    document.querySelectorAll('[data-tooltip="true"]').forEach(function(el) {
+        new bootstrap.Tooltip(el);
+    });
 
-if (typeof Ladda !== 'undefined') {
+    // Bootstrap popover
+    document.querySelectorAll('[data-bs-toggle="popover"]').forEach(function(el) {
+        new bootstrap.Popover(el);
+    });
+
+    /** @deprecated プラグイン等の後方互換用 */
+    document.querySelectorAll('[data-toggle="popover"]').forEach(function(el) {
+        new bootstrap.Popover(el);
+    });
+
+    // collapseIconChange: collapseと連動するアイコン変化
+    document.querySelectorAll('.ec-collapse').forEach(function(el) {
+        el.addEventListener('shown.bs.collapse', function() {
+            var icon = document.querySelector('[href="#' + this.id + '"] i');
+            if (icon) {
+                icon.classList.remove('fa-plus-square-o');
+                icon.classList.add('fa-minus-square-o');
+            }
+        });
+        el.addEventListener('hidden.bs.collapse', function() {
+            var icon = document.querySelector('[href="#' + this.id + '"] i');
+            if (icon) {
+                icon.classList.remove('fa-minus-square-o');
+                icon.classList.add('fa-plus-square-o');
+            }
+        });
+    });
+
+    // cardCollapseIconChange: カードコンポーネントのcollapseと連動するアイコン変化
+    document.querySelectorAll('.ec-cardCollapse').forEach(function(el) {
+        el.addEventListener('hidden.bs.collapse', function() {
+            var icon = document.querySelector('[href="#' + this.id + '"] i');
+            if (icon) {
+                icon.classList.remove('fa-angle-up');
+                icon.classList.add('fa-angle-down');
+            }
+        });
+        el.addEventListener('shown.bs.collapse', function() {
+            var icon = document.querySelector('[href="#' + this.id + '"] i');
+            if (icon) {
+                icon.classList.add('fa-angle-up');
+            }
+        });
+    });
+
+    /////////// 2重submit制御.
+
     // a[token-for-anchor] を押下されるとJavaScriptで formを作成してPOSTする仕様になっていて、
     // aタグにdisable属性を付与しても駄目（form生成&postしてしまう）だったので、cssでpointer-event:none;しています。
     // https://github.com/EC-CUBE/ec-cube/pull/5971
-    Ladda.bind('button[type=submit],a[token-for-anchor]', {timeout: 2000});
-    $('button[type=submit].btn-ec-regular').attr('data-spinner-color', '#595959');
-}
+    if (typeof Ladda !== 'undefined') {
+        Ladda.bind('button[type=submit],a[token-for-anchor]', {timeout: 2000});
+        document.querySelectorAll('button[type=submit].btn-ec-regular').forEach(function(btn) {
+            btn.setAttribute('data-spinner-color', '#595959');
+        });
+    }
 
-// anchorをクリックした時にformを裏で作って指定のメソッドでリクエストを飛ばす
-// Twigには以下のように埋め込む
-// <a href="PATH" {{ csrf_token_for_anchor() }} data-method="(put/delete/postのうちいずれか)" data-confirm="xxxx" data-message="xxxx">
-//
-// オプション要素
-// data-confirm : falseを定義すると確認ダイアログを出さない。デフォルトはダイアログを出す
-// data-message : 確認ダイアログを出す際のメッセージをデフォルトから変更する
-//
-$(function() {
-    var createForm = function(action, data) {
-        var $form = $('<form action="' + action + '" method="post"></form>');
-        for (input in data) {
-            if (data.hasOwnProperty(input)) {
-                $form.append('<input name="' + input + '" value="' + data[input] + '">');
+    // anchorをクリックした時にformを裏で作って指定のメソッドでリクエストを飛ばす
+    // Twigには以下のように埋め込む
+    // <a href="PATH" {{ csrf_token_for_anchor() }} data-method="(put/delete/postのうちいずれか)" data-confirm="xxxx" data-message="xxxx">
+    //
+    // オプション要素
+    // data-confirm : falseを定義すると確認ダイアログを出さない。デフォルトはダイアログを出す
+    // data-message : 確認ダイアログを出す際のメッセージをデフォルトから変更する
+    //
+    document.querySelectorAll('a[token-for-anchor]').forEach(function(anchor) {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            this.style.pointerEvents = 'none';
+            var dataset = this.dataset;
+            if (dataset.confirm !== 'false') {
+                if (!confirm(dataset.message || '削除してもよろしいですか?')) {
+                    this.style.pointerEvents = '';
+                    return;
+                }
             }
-        }
-        return $form;
-    };
-
-    $('a[token-for-anchor]').click(function(e) {
-        e.preventDefault();
-        var $this = $(this);
-        $this.css('pointer-events','none');
-        var data = $this.data();
-        if (data.confirm != false) {
-            if (!confirm(data.message ? data.message : '削除してもよろしいですか?')) {
-                return false;
+            var form = document.createElement('form');
+            form.action = this.getAttribute('href');
+            form.method = 'post';
+            form.style.display = 'none';
+            var inputs = {
+                _token: this.getAttribute('token-for-anchor'),
+                _method: dataset.method
+            };
+            for (var name in inputs) {
+                if (inputs.hasOwnProperty(name)) {
+                    var input = document.createElement('input');
+                    input.name = name;
+                    input.value = inputs[name];
+                    form.appendChild(input);
+                }
             }
-        }
-
-        var $form = createForm($this.attr('href'), {
-            _token: $this.attr('token-for-anchor'),
-            _method: data.method
-        }).hide();
-
-        $('body').append($form); // Firefox requires form to be on the page to allow submission
-        $form.submit();
+            document.body.appendChild(form);
+            form.submit();
+        });
     });
+
+    // 一覧ページのソート機能
+    if (document.querySelector('.js-listSort')) {
+        var sortKeyInput = document.querySelector('.js-listSort-key');
+        var sortTypeInput = document.querySelector('.js-listSort-type');
+        var currentSortkey = sortKeyInput.value;
+        var sortTarget = document.querySelector('.js-listSort[data-sortkey="' + currentSortkey + '"]');
+        if (sortTarget) {
+            sortTarget.classList.add('listSort-current');
+            if (sortTypeInput.value === 'd') {
+                var sortIcon = sortTarget.querySelector('.fa');
+                if (sortIcon) {
+                    sortIcon.classList.add('fa-arrow-down');
+                    sortIcon.classList.remove('fa-arrow-up');
+                }
+            }
+        }
+        document.querySelectorAll('.js-listSort').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                var sortkey = this.dataset.sortkey;
+                var sorttype = (sortKeyInput.value === sortkey && sortTypeInput.value !== 'd') ? 'd' : 'a';
+                sortKeyInput.value = sortkey;
+                sortTypeInput.value = sorttype;
+                document.getElementById('search_form').submit();
+            });
+        });
+    }
+
+    // input[type="datetime-local"]、初期クリック時に当日の0時0分を設定
+    document.querySelectorAll('[type="datetime-local"]').forEach(function(input) {
+        input.addEventListener('click', function() {
+            if (this.value === '' && !this.classList.contains('is_adjusted')) {
+                this.classList.add('is_adjusted');
+                var date = new Date();
+                var adjusted_date = [
+                    date.getFullYear(),
+                    String(date.getMonth() + 1).padStart(2, '0'),
+                    String(date.getDate()).padStart(2, '0')
+                ].join('-');
+                this.value = adjusted_date + 'T00:00';
+            }
+        });
+    });
+
 });
 
 // 入力チェックエラー発生時にエラー発生箇所までスクロールさせる
-$(window).on('load', function() {
-    var el = $('.form-error-message');
-    if (el.length) {
-        // Open panel when has error
-        openPanel(el);
-        var errorOffset = 0;
-        el.each(function() {
-            if ($(this).is(":visible")) {
-                errorOffset = $(this).offset().top;
-                return false;
-            }
-        });
-        var screenHeight = $(window).height();
-        var errorMargin = parseInt(screenHeight / 10) + $('header').outerHeight();
-
-        $('html, body').animate({
-            scrollTop: (errorOffset - errorMargin)
-        }, 500);
-    }
-
-    function openPanel(el) {
-        var $collapse = el.parents('.ec-cardCollapse');
-        $collapse.addClass('show');
-        var id = $collapse.attr('id');
-        var icon = $('[href="#' + id + '"]').find('i');
-        icon.removeClass('fa-angle-down');
-        icon.addClass('fa-angle-up');
-    }
-});
-
-var searchWord = function (searchText, el) {
-    var targetText;
-
-    // 検索ボックスに値が入っていない場合
-    if (searchText == '') {
-        // 全て表示する
-        el.show();
+window.addEventListener('load', function() {
+    var errors = document.querySelectorAll('.form-error-message');
+    if (!errors.length) {
         return;
     }
 
-    // 検索ボックスに値が入ってる場合
-    // 表示を全て空にする
-    el.hide();
+    function openPanel(errors) {
+        errors.forEach(function(el) {
+            var collapse = el.closest('.ec-cardCollapse');
+            if (collapse) {
+                collapse.classList.add('show');
+                var icon = document.querySelector('[href="#' + collapse.id + '"] i');
+                if (icon) {
+                    icon.classList.remove('fa-angle-down');
+                    icon.classList.add('fa-angle-up');
+                }
+            }
+        });
+    }
 
-    // 検索ワードが（子を含めて）含まれる要素のみ表示
-    el.each(function () {
-        targetText = $(this).text();
-        // 検索対象となるリストに入力された文字列が存在するかどうかを判断
-        if (targetText.toLowerCase().indexOf(searchText.toLowerCase()) != -1) {
-            // 存在する場合はそのリストのテキストを用意した配列に格納
-            $(this).show();
+    openPanel(errors);
+
+    var errorOffset = 0;
+    var found = false;
+    errors.forEach(function(el) {
+        if (!found && el.offsetParent !== null) {
+            errorOffset = el.getBoundingClientRect().top + window.scrollY;
+            found = true;
+        }
+    });
+
+    var header = document.querySelector('header');
+    var errorMargin = Math.floor(window.innerHeight / 10) + (header ? header.offsetHeight : 0);
+    window.scrollTo({ top: errorOffset - errorMargin, behavior: 'smooth' });
+});
+
+// toggle bulk button
+// checkboxSelector のチェック状態に応じて btnSelector の表示を切り替える
+var toggleBtnBulk = function(checkboxSelector, btnSelector) {
+    var run = function() {
+        var btns = document.querySelectorAll(btnSelector);
+        var hasChecked = document.querySelectorAll(checkboxSelector + ':checked').length > 0;
+        btns.forEach(function(btn) {
+            btn.classList.toggle('d-block', hasChecked);
+            btn.classList.toggle('d-none', !hasChecked);
+        });
+    };
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', run);
+    } else {
+        run();
+    }
+};
+
+// 検索ワードによるリストフィルタリング
+// el には jQuery オブジェクトまたは NodeList/配列 を渡す
+var searchWord = function(searchText, el) {
+    var elements = Array.from(el);
+    if (searchText === '') {
+        elements.forEach(function(item) { item.style.display = ''; });
+        return;
+    }
+    elements.forEach(function(item) { item.style.display = 'none'; });
+    elements.forEach(function(item) {
+        if (item.textContent.toLowerCase().indexOf(searchText.toLowerCase()) !== -1) {
+            item.style.display = '';
         }
     });
 };
-
-// 一覧ページのソート機能
-$(function() {
-    if ($('.js-listSort').length < 1) {
-        return;
-    }
-
-    // 現在のソート状況をボタン表示に反映
-    const sortkey = $('.js-listSort-key').val();
-    const target = $('.js-listSort').filter('[data-sortkey="' + sortkey + '"]');
-    if (target.length === 1) {
-        target.addClass('listSort-current');
-        if ($('.js-listSort-type').val() === 'd') {
-            target.find('.fa').addClass('fa-arrow-down').removeClass('fa-arrow-up');
-        }
-    }
-
-    // ソート実施
-    $('.js-listSort').on({
-        click: function (e) {
-            const sortkey = $(e.currentTarget).data('sortkey');
-            const sorttype = ($('.js-listSort-key').val() === sortkey && $('.js-listSort-type').val() !== 'd') ? 'd' : 'a';
-            $('.js-listSort-key').val(sortkey);
-            $('.js-listSort-type').val(sorttype);
-            $('#search_form').submit();
-            e.preventDefault();
-        }
-    });
-});
-
-// input[type="datetime-local"]、初期クリック時に当日の0時0分を設定
-$(function() {
-    if( $('[type="datetime-local"]').length ){
-        $('[type="datetime-local"]').on('click',function(){
-            if( $(this).val() === '' && !$(this).hasClass('is_adjusted') ){
-                $(this).addClass('is_adjusted');
-                let date = new Date();
-                let adjusted_date = date.toLocaleDateString().split('/').map((e)=>{ return ( String(e).length < 2 )? "0"+e : e ; }).join('-');
-                $(this).val( adjusted_date + 'T00:00');
-            }
-        });
-    }
-});

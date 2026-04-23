@@ -8,57 +8,77 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
 */
-;(function($, window, document, undefined) {
-    var updateUpDown = function(sortable) {
-        if (sortable instanceof $) {
-            sortable = sortable.get(0);
-        }
-        $('div:not(.ui-sortable-helper)', sortable)
-            .removeClass('first')
-            .filter(':first').addClass('first').end()
-            .children('input.target-id').val(sortable.id.replace('position_', ''));
-        $(sortable)
-            .find('input.block-row').each(function(i) {
-            $(this).val(i);
-        });
-    };
 
-    var sortableUpdate = function(e, ui) {
-        updateUpDown(this);
-        if (ui.sender)
-            updateUpDown(ui.sender[0]);
-    };
-    window.updateUpDown = updateUpDown;
+/**
+ * position_* コンテナ内のブロック並び順メタデータを更新する.
+ * layout.twig から window.updateUpDown として参照される.
+ */
+var updateUpDown = function(sortable) {
+    var blocks = Array.from(sortable.children).filter(function(el) {
+        return el.tagName === 'DIV' && !el.classList.contains('sortable-chosen');
+    });
 
-    $(document).ready(function() {
-        // `window.els` is defined in layout.twig
-        var $els = $(window.els.toString());
+    blocks.forEach(function(block) {
+        block.classList.remove('first');
+        var targetId = block.querySelector('input.target-id');
+        if (targetId) targetId.value = sortable.id.replace('position_', '');
+    });
 
-        $els.each(function() {
-            updateUpDown(this);
-        });
+    if (blocks.length > 0) {
+        blocks[0].classList.add('first');
+    }
 
-        $els.sortable({
-            items: '> div.block',
-            cursor: 'move',
-            appendTo: 'body',
-            placeholder: 'placeholder',
-            connectWith: window.els,
-            start: function(e, ui) {
-                ui.helper.css("width", ui.item.width());
-            },
-            stop: function(e, ui) {
-                // sortable が子要素を強制的に表示するため show(), hide() が使えない
-                if ($(this).children('.block').length <= 0) {
-                    // show placeholder
-                    $(this).append($('#target-placeholder').html());
+    sortable.querySelectorAll('input.block-row').forEach(function(input, i) {
+        input.value = i;
+    });
+};
+window.updateUpDown = updateUpDown;
+
+document.addEventListener('DOMContentLoaded', function() {
+    // `window.els` is defined in layout.twig (array of CSS selectors like ['#position_1', ...])
+    if (!window.els || !window.els.length) return;
+
+    var containers = Array.from(document.querySelectorAll(window.els.join(',')));
+
+    containers.forEach(function(el) {
+        updateUpDown(el);
+    });
+
+    containers.forEach(function(container) {
+        Sortable.create(container, {
+            group: 'layout-blocks',
+            draggable: '.block',
+            ghostClass: 'placeholder',
+            animation: 150,
+            onEnd: function(evt) {
+                var to   = evt.to;
+                var from = evt.from;
+
+                // 移動先のプレースホルダーを管理
+                if (to.querySelectorAll(':scope > .block').length > 0) {
+                    to.querySelectorAll(':scope > .target-placeholder').forEach(function(ph) {
+                        ph.remove();
+                    });
+                } else {
+                    var tpl = document.getElementById('target-placeholder');
+                    if (tpl) to.insertAdjacentHTML('beforeend', tpl.innerHTML);
                 }
-                if (ui.item.parent().children('.block').length > 0) {
-                    // hide placeholder
-                    ui.item.parent().children('.target-placeholder').remove();
+
+                // 移動元のプレースホルダーを管理 (別コンテナへ移動した場合)
+                if (from !== to) {
+                    if (from.querySelectorAll(':scope > .block').length > 0) {
+                        from.querySelectorAll(':scope > .target-placeholder').forEach(function(ph) {
+                            ph.remove();
+                        });
+                    } else {
+                        var tpl = document.getElementById('target-placeholder');
+                        if (tpl) from.insertAdjacentHTML('beforeend', tpl.innerHTML);
+                    }
+                    updateUpDown(from);
                 }
-            },
-            update: sortableUpdate
+
+                updateUpDown(to);
+            }
         });
     });
-})(jQuery, window, document);
+});
