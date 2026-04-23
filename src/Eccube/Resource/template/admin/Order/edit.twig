@@ -166,7 +166,7 @@ file that was distributed with this source code.
                 });
                 target.on('click', function() {
                     modal.find('.modal-body .screen-name').text($(this).attr('title'));
-                    modal.modal('show');
+                    bootstrap.Modal.getOrCreateInstance(modal[0]).show();
                     saveBtn.data('return-link', $(this).attr('href'));
                     cancelBtn.attr('href', $(this).attr('href'));
                     return false;

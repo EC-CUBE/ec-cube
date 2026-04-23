@@ -31,7 +31,7 @@ file that was distributed with this source code.
         $($lastRow).find(formIdPrefix + index + '_point_rate').val(point_rate);
 
         // モーダル閉じる.
-        $('#addOrderItemType').modal('hide');
+        bootstrap.Modal.getInstance(document.getElementById('addOrderItemType'))?.hide();
 
         // 再計算のためsubmit.
         $('#form1').submit();

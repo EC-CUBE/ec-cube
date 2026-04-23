@@ -31,7 +31,7 @@ file that was distributed with this source code.
             $('#order_phone_number').val(data['phone_number']);
             $('#order_company_name').val(data['company_name']);
             // モーダルを閉じる.
-            $('#searchCustomerModal').modal('hide');
+            bootstrap.Modal.getInstance(document.getElementById('searchCustomerModal'))?.hide();
         }).fail(function(data) {
             alert('search customer(by id) failed.');
         });
