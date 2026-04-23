@@ -15,115 +15,177 @@ file that was distributed with this source code.
 {% block javascript %}
     <script>
         // redirect_to初期化
-        $(window).on('pageshow',function(event) {
-            $('#shopping_order_redirect_to').val(null);
-            $('#shopping-form').attr('action','{{ url("shopping_confirm") }}');
+        window.addEventListener('pageshow', function() {
+            var redirectToInput = document.getElementById('shopping_order_redirect_to');
+            if (redirectToInput) {
+                redirectToInput.value = '';
+            }
+            var shoppingForm = document.getElementById('shopping-form');
+            if (shoppingForm) {
+                shoppingForm.setAttribute('action', '{{ url("shopping_confirm") }}');
+            }
         });
 
-        $(function() {
-            var $redirectCallback = function() {
+        document.addEventListener('DOMContentLoaded', function() {
+            function redirectCallback(event) {
+                var target = event.currentTarget;
                 loadingOverlay();
-                $('#shopping_order_redirect_to').val($(this).attr('data-path'));
-                $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
-                setTimeout(function () {
-                    loadingOverlay("hide");
+                var redirectToInput = document.getElementById('shopping_order_redirect_to');
+                if (redirectToInput) {
+                    redirectToInput.value = target.getAttribute('data-path');
+                }
+                var shoppingForm = document.getElementById('shopping-form');
+                if (shoppingForm) {
+                    shoppingForm.setAttribute('action', '{{ url("shopping_redirect_to") }}');
+                    shoppingForm.submit();
+                }
+                setTimeout(function() {
+                    loadingOverlay('hide');
                 }, 2000);
-            };
-            $('[data-trigger]').each(function() {
-                $(this).on($(this).attr('data-trigger'), $redirectCallback);
+            }
+            document.querySelectorAll('[data-trigger]').forEach(function(el) {
+                el.addEventListener(el.getAttribute('data-trigger'), redirectCallback);
             });
 
             {% if is_granted('ROLE_USER') == false %}
-            var edit = $('.customer-edit');
-            var hidden = $('.customer-in');
-            var form = $('.customer-form');
+            var editList = document.querySelectorAll('.customer-edit');
+            var hiddenList = document.querySelectorAll('.customer-in');
+            var formList = document.querySelectorAll('.customer-form');
             var originalPrefValue = null;
 
-            $('#customer').click(function() {
-                $(edit).each(function(index) {
-                    var name = $(this).text();
-                    var $select = $(form[index]).children('select');
-                    if ($select.length) {
-                        // 都道府県フィールド: 元の値を保存してselectを表示
-                        originalPrefValue = $select.val();
-                        $select.show();
-                    } else {
-                        var input = $('<input id="edit' + index + '" type="text" />').val(name);
-                        $(form[index]).empty().append(input);
+            function toggleDisplay(selector, show) {
+                document.querySelectorAll(selector).forEach(function(el) {
+                    el.style.display = show ? '' : 'none';
+                });
+            }
+
+            var customerBtn = document.getElementById('customer');
+            if (customerBtn) {
+                customerBtn.addEventListener('click', function() {
+                    editList.forEach(function(editEl, index) {
+                        var name = editEl.textContent;
+                        var formEl = formList[index];
+                        if (!formEl) {
+                            return;
+                        }
+                        var select = formEl.querySelector(':scope > select');
+                        if (select) {
+                            // 都道府県フィールド: 元の値を保存してselectを表示
+                            originalPrefValue = select.value;
+                            select.style.display = '';
+                        } else {
+                            var input = document.createElement('input');
+                            input.id = 'edit' + index;
+                            input.type = 'text';
+                            input.value = name;
+                            formEl.innerHTML = '';
+                            formEl.appendChild(input);
+                        }
+                    });
+
+                    toggleDisplay('.non-customer-display', false);
+                    toggleDisplay('.non-customer-edit', true);
+                    toggleDisplay('.mod-button', true);
+                });
+            }
+
+            var customerOkBtn = document.getElementById('customer-ok');
+            if (customerOkBtn) {
+                customerOkBtn.addEventListener('click', function() {
+                    formList.forEach(function(formEl, index) {
+                        var select = formEl.querySelector(':scope > select');
+                        var hiddenEl = hiddenList[index];
+                        if (!hiddenEl) {
+                            return;
+                        }
+                        if (select) {
+                            hiddenEl.value = select.value;
+                        } else {
+                            var input = formEl.querySelector(':scope > input');
+                            hiddenEl.value = input ? input.value : '';
+                        }
+                    });
+
+                    var postParams = new URLSearchParams();
+                    hiddenList.forEach(function(hiddenEl) {
+                        postParams.append(hiddenEl.getAttribute('name'), hiddenEl.value);
+                    });
+
+                    loadingOverlay();
+
+                    var csrfMeta = document.querySelector('meta[name="eccube-csrf-token"]');
+                    var csrfToken = csrfMeta ? csrfMeta.content : '';
+
+                    fetch('{{ url('shopping_customer') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'ECCUBE-CSRF-TOKEN': csrfToken
+                        },
+                        body: postParams.toString()
+                    }).then(function(response) {
+                        if (!response.ok) {
+                            throw new Error('http error');
+                        }
+                        return response.json();
+                    }).then(function(data) {
+                        if (data.status == 'OK') {
+                            formList.forEach(function(formEl, index) {
+                                var select = formEl.querySelector(':scope > select');
+                                var editEl = editList[index];
+                                if (!editEl) {
+                                    return;
+                                }
+                                if (select) {
+                                    editEl.textContent = select.value;
+                                    select.style.display = 'none';
+                                } else {
+                                    var input = formEl.querySelector(':scope > input');
+                                    editEl.textContent = input ? input.value : '';
+                                    formEl.innerHTML = '';
+                                }
+                            });
+
+                            // kana field
+                            if (editList[2]) editList[2].textContent = data.kana01;
+                            if (editList[3]) editList[3].textContent = data.kana02;
+                            var kana01 = document.getElementById('customer-kana01');
+                            var kana02 = document.getElementById('customer-kana02');
+                            if (kana01) kana01.value = data.kana01;
+                            if (kana02) kana02.value = data.kana02;
+                        }
+                    }).catch(function() {
+                        alert('{{ 'front.shopping.customer_update_failed'|trans }}');
+                    }).finally(function() {
+                        // overlayを無効
+                        loadingOverlay('hide');
+                    });
+
+                    toggleDisplay('.non-customer-display', true);
+                    toggleDisplay('.non-customer-edit', false);
+                    toggleDisplay('.mod-button', false);
+                });
+            }
+
+            var customerCancelBtn = document.getElementById('customer-cancel');
+            if (customerCancelBtn) {
+                customerCancelBtn.addEventListener('click', function() {
+                    // 都道府県のselectを元の値に戻して非表示にする
+                    var prefWrap = document.querySelector('.customer-address_pref');
+                    var prefSelect = prefWrap ? prefWrap.querySelector(':scope > select') : null;
+                    if (prefSelect) {
+                        if (originalPrefValue !== null) {
+                            prefSelect.value = originalPrefValue;
+                        }
+                        prefSelect.style.display = 'none';
                     }
+                    toggleDisplay('.non-customer-display', true);
+                    toggleDisplay('.non-customer-edit', false);
+                    toggleDisplay('.mod-button', false);
                 });
-
-                $('.non-customer-display').hide();
-                $('.non-customer-edit').show();
-                $('.mod-button').show();
-            });
-
-            $('#customer-ok').click(function() {
-                $(form).each(function(index) {
-                    var $select = $(form[index]).children('select');
-                    if ($select.length) {
-                        // 都道府県フィールド: selectから値を取得
-                        $(hidden[index]).val($select.val());
-                    } else {
-                        $(hidden[index]).val($(form[index]).children('input').val());
-                    }
-                });
-
-                var postData = {};
-                $(hidden).each(function() {
-                    postData[$(this).attr('name')] = $(this).val();
-                });
-
-                loadingOverlay();
-
-                $.ajax({
-                    url: "{{ url('shopping_customer') }}",
-                    type: 'POST',
-                    data: postData,
-                    dataType: 'json'
-                }).done(function(data) {
-                    if (data.status == 'OK') {
-                        $(form).each(function(index) {
-                            var $select = $(form[index]).children('select');
-                            if ($select.length) {
-                                // 都道府県フィールド: selectから値を取得して表示を更新
-                                $(edit[index]).empty().text($select.val());
-                                $select.hide();
-                            } else {
-                                $(edit[index]).empty().text($(form[index]).children('input').val());
-                                $(form[index]).empty();
-                            }
-                        });
-
-                        // kana field
-                        $(edit[2]).empty().text(data.kana01);
-                        $(edit[3]).empty().text(data.kana02);
-                        $('#customer-kana01').val(data.kana01);
-                        $('#customer-kana02').val(data.kana02);
-                    }
-                }).fail(function() {
-                    alert('{{ 'front.shopping.customer_update_failed'|trans }}');
-                }).always(function(data) {
-                    // overlayを無効
-                    loadingOverlay('hide');
-                });
-
-                $('.non-customer-display').show();
-                $('.non-customer-edit').hide();
-                $('.mod-button').hide();
-            });
-
-            $('#customer-cancel').click(function() {
-                // 都道府県のselectを元の値に戻して非表示にする
-                var $prefSelect = $('.customer-address_pref').children('select');
-                if (originalPrefValue !== null) {
-                    $prefSelect.val(originalPrefValue);
-                }
-                $prefSelect.hide();
-                $('.non-customer-display').show();
-                $('.non-customer-edit').hide();
-                $('.mod-button').hide();
-            });
+            }
             {% endif %}
         });
     </script>

@@ -12,53 +12,70 @@ file that was distributed with this source code.
 
 {% block javascript %}
 <script>
-$(function() {
-    $('.add').click(function() {
-        var data = $(this).data();
-        var idx = data.idx;
-        var itemIdx = 0;
-        var item = $('#item' + idx);
-        var row = $('#item' + idx + '-0');
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.add').forEach(function(addBtn) {
+        addBtn.addEventListener('click', function() {
+            var idx = addBtn.dataset.idx;
+            var item = document.getElementById('item' + idx);
+            var row = document.getElementById('item' + idx + '-0');
+            if (!item || !row) {
+                return;
+            }
 
-        // 既存のお届け先のrowをコピーして雛形とする
-        var addrow = $(row).clone();
+            // 既存のお届け先のrowをコピーして雛形とする
+            var addrow = row.cloneNode(true);
 
-        // 追加する要素のIndexを決定
-        item.find('.shipping_item').each(function() {
-            itemIdx = $(this).attr('data-itemidx');
+            // 追加する要素のIndexを決定
+            var itemIdx = 0;
+            item.querySelectorAll('.shipping_item').forEach(function(el) {
+                itemIdx = el.getAttribute('data-itemidx');
+            });
+            itemIdx = 1 + parseInt(itemIdx, 10);
+
+            // 行のID設定
+            addrow.setAttribute('id', 'item' + idx + '-' + itemIdx);
+            addrow.setAttribute('data-itemidx', itemIdx);
+
+            // お届け先セレクトボックスのIDとNAME設定
+            addrow.querySelectorAll('select').forEach(function(sel) {
+                sel.setAttribute('name', 'form[shipping_multiple][' + idx + '][shipping][' + itemIdx + '][customer_address]');
+                sel.setAttribute('id', 'form_shipping_multiple_' + idx + '_shipping_' + itemIdx + '_customer_address');
+            });
+
+            // 数量のINPUTのIDとNAME設定
+            addrow.querySelectorAll('input').forEach(function(input) {
+                input.setAttribute('name', 'form[shipping_multiple][' + idx + '][shipping][' + itemIdx + '][quantity]');
+                input.setAttribute('id', 'form_shipping_multiple_' + idx + '_shipping_' + itemIdx + '_quantity');
+            });
+
+            // その他、divやbuttonのID設定
+            addrow.querySelectorAll('[id*="multiple_list__shipping_address"]').forEach(function(el) {
+                el.setAttribute('id', 'multiple_list__shipping_address--' + idx + '_' + itemIdx);
+            });
+            addrow.querySelectorAll('[id*="multiple_list__shipping_quantity"]').forEach(function(el) {
+                el.setAttribute('id', 'multiple_list__shipping_quantity--' + idx + '_' + itemIdx);
+            });
+            addrow.querySelectorAll('button').forEach(function(btn) {
+                btn.setAttribute('id', 'button__delete--' + idx + '_' + itemIdx);
+                btn.setAttribute('data-itemidx', idx + '-' + itemIdx);
+                btn.removeAttribute('style');
+            });
+
+            item.appendChild(addrow);
         });
-        itemIdx = 1 + parseInt(itemIdx);
-
-        // 行のID設定
-        addrow.attr('id', 'item' + idx + '-' + itemIdx);
-        addrow.attr('data-itemidx', itemIdx);
-
-        // お届け先セレクトボックスのIDとNAME設定
-        addrow.find('select').attr('name', 'form[shipping_multiple][' + idx + '][shipping][' + itemIdx + '][customer_address]');
-        addrow.find('select').attr('id', 'form_shipping_multiple_' + idx + '_shipping_' + itemIdx + '_customer_address');
-
-        // 数量のINPUTのIDとNAME設定
-        addrow.find('input').attr('name', 'form[shipping_multiple][' + idx + '][shipping][' + itemIdx + '][quantity]');
-        addrow.find('input').attr('id', 'form_shipping_multiple_' + idx + '_shipping_' + itemIdx + '_quantity');
-
-        // その他、divやbuttonのID設定
-        addrow.find('[id*="multiple_list__shipping_address"]').attr('id', 'multiple_list__shipping_address--' + idx + '_' + itemIdx + '');
-        addrow.find('[id*="multiple_list__shipping_quantity"]').attr('id', 'multiple_list__shipping_quantity--' + idx + '_' + itemIdx + '');
-        addrow.find('button').each(function() {
-            $(this).attr('id', 'button__delete--' + idx + '_' + itemIdx + '');
-            $(this).attr('data-itemidx', idx + '-' + itemIdx);
-            $(this).data('itemidx', idx + '-' + itemIdx);
-            $(this).removeAttr('style');
-        });
-
-        $(item).append($(addrow));
     });
 
-    $(document).on('click', '.delete', function() {
-        var data = $(this).data();
-        $('#item' + data.itemidx).remove();
+    document.addEventListener('click', function(event) {
+        var target = event.target.closest('.delete');
+        if (!target) {
+            return;
+        }
+        var itemIdx = target.dataset.itemidx;
+        var el = document.getElementById('item' + itemIdx);
+        if (el) {
+            el.remove();
+        }
     });
-
 });
 </script>
 {% endblock javascript %}

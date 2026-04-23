@@ -12,37 +12,90 @@ file that was distributed with this source code.
 
 {% block javascript %}
     <script>
-        $(function() {
-            $('.ec-newsRole__news').each(function() {
-                var listLength = $(this).find('.ec-newsRole__newsItem').length;
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.ec-newsRole__news').forEach(function(newsRoot) {
+                var items = newsRoot.querySelectorAll('.ec-newsRole__newsItem');
+                var listLength = items.length;
                 if (listLength > 5) {
-                    $(this).find('.ec-newsRole__newsItem:gt(4)').each(function() {
-                        $(this).hide();
-                    });
-                    $(this).append('<a id="news_readmore" class="ec-inlineBtn--top">{{ 'front.block.news.read_more'|trans }}</a>');
+                    for (var i = 5; i < listLength; i++) {
+                        items[i].style.display = 'none';
+                    }
+                    var readMore = document.createElement('a');
+                    readMore.id = 'news_readmore';
+                    readMore.className = 'ec-inlineBtn--top';
+                    readMore.textContent = '{{ 'front.block.news.read_more'|trans }}';
+                    newsRoot.appendChild(readMore);
+
                     var dispNum = 5;
-                    $(this).find('#news_readmore').click(function() {
+                    readMore.addEventListener('click', function() {
                         dispNum += 5;
-                        $(this).parent().find('.ec-newsRole__newsItem:lt(' + dispNum + ')').show();
-                        if (dispNum >= listLength) {
-                            $(this).hide();
+                        for (var j = 0; j < Math.min(dispNum, listLength); j++) {
+                            items[j].style.display = '';
                         }
-                    })
+                        if (dispNum >= listLength) {
+                            readMore.style.display = 'none';
+                        }
+                    });
                 }
             });
 
-            $('.ec-newsRole__newsHeading').on('click', function() {
-                $newsItem = $(this).parent('.ec-newsRole__newsItem');
-                $newsDescription = $newsItem.children('.ec-newsRole__newsDescription');
-                if ($newsDescription.css('display') == 'none') {
-                    $newsItem.addClass('is_active');
-                    $newsDescription.slideDown(300);
-                } else {
-                    $newsItem.removeClass('is_active');
-                    $newsDescription.slideUp(300);
-                }
-                return false;
+            document.querySelectorAll('.ec-newsRole__newsHeading').forEach(function(heading) {
+                heading.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    var newsItem = heading.closest('.ec-newsRole__newsItem');
+                    if (!newsItem) {
+                        return;
+                    }
+                    var newsDescription = newsItem.querySelector(':scope > .ec-newsRole__newsDescription');
+                    if (!newsDescription) {
+                        return;
+                    }
+                    var isHidden = window.getComputedStyle(newsDescription).display === 'none';
+                    if (isHidden) {
+                        newsItem.classList.add('is_active');
+                        slideDown(newsDescription, 300);
+                    } else {
+                        newsItem.classList.remove('is_active');
+                        slideUp(newsDescription, 300);
+                    }
+                });
             });
+
+            function slideDown(el, duration) {
+                // CSS で display: none が効いているため、block に上書きして高さを測る
+                el.style.display = 'block';
+                el.style.overflow = 'hidden';
+                var targetHeight = el.scrollHeight;
+                el.style.height = '0px';
+                // レイアウトを確定させてから transition を付与し、次フレームで高さを設定
+                void el.offsetHeight;
+                el.style.transition = 'height ' + duration + 'ms ease';
+                requestAnimationFrame(function() {
+                    el.style.height = targetHeight + 'px';
+                });
+                window.setTimeout(function() {
+                    el.style.height = '';
+                    el.style.overflow = '';
+                    el.style.transition = '';
+                    // display: block は残す（jQuery の slideDown と同じ挙動）
+                }, duration);
+            }
+
+            function slideUp(el, duration) {
+                el.style.overflow = 'hidden';
+                el.style.height = el.scrollHeight + 'px';
+                void el.offsetHeight;
+                el.style.transition = 'height ' + duration + 'ms ease';
+                requestAnimationFrame(function() {
+                    el.style.height = '0px';
+                });
+                window.setTimeout(function() {
+                    el.style.display = 'none';
+                    el.style.height = '';
+                    el.style.overflow = '';
+                    el.style.transition = '';
+                }, duration);
+            }
         });
     </script>
 {% endblock %}
