@@ -14,108 +14,158 @@ file that was distributed with this source code.
 
 {% block script %}
     <script>
-     $(function() {
-         var is_sqlite = {% if is_sqlite %}true{% else %}false{% endif %};
-         var plugin_content = $('#plugins').children().remove();
+    document.addEventListener('DOMContentLoaded', function() {
+        var is_sqlite = {% if is_sqlite %}true{% else %}false{% endif %};
+        var csrfToken = '{{ token }}';
 
-         var modal = $('#PluginProgressModal');
-         var bootstrapModal = new bootstrap.Modal(modal.get(0));
-         bootstrapModal.show();
-         var progress = $('div.progress', modal).show();
-         var progress_message = $('#progress_message');
-         modal.find('.modal-footer').hide();
-         progress_message.text('システム要件をチェックしています。しばらくお待ちください...');
+        // #plugins の中身（<tr> テンプレート行）をテンプレートとして取得・退避
+        var pluginsTable = document.getElementById('plugins');
+        var templateRow = pluginsTable ? pluginsTable.firstElementChild : null;
+        if (templateRow) {
+            templateRow.remove();
+        }
 
-         $.ajaxSetup({
-             'headers': {
-                 'ECCUBE-CSRF-TOKEN': '{{ token }}'
-             }
-         });
+        var modal = document.getElementById('PluginProgressModal');
+        var bootstrapModal = new bootstrap.Modal(modal);
+        bootstrapModal.show();
+        var progress = modal.querySelector('div.progress');
+        if (progress) progress.style.display = '';
+        var progressMessage = document.getElementById('progress_message');
+        var modalFooter = modal.querySelector('.modal-footer');
+        if (modalFooter) modalFooter.style.display = 'none';
+        if (progressMessage) progressMessage.textContent = 'システム要件をチェックしています。しばらくお待ちください...';
 
-         $.ajax({
-             url: '{{ url("install_plugin_check_api") }}',
-             type: 'put'
-         }).always(function () {
-             progress_message.text('プラグインを読み込んでいます。しばらくお待ちください...');
-             $.get({ url: '{{ url('install_plugins') }}' },
-                   function (data) {
-                       $('#plugins').children().remove();
-                       if (data.length === 0) {
-                           $('#plugins_switch').hide();
-                           return;
-                       }
-                       data.forEach(function (plugin) {
-                           var pluginCode = encodeURIComponent(plugin.code);
-                           var content = $(plugin_content).clone();
-                           var url = '{{ url('install_plugin_enable', { 'code': '__code__' }) }}';
-                           content.find('.c-toggleSwitch').data('url', url.replace(/__code__/, pluginCode));
-                           content.find('.plugin_name').text(plugin.name);
-                           content.find('input[type=checkbox]').attr('id', pluginCode);
-                           content.find('label').attr('for', pluginCode);
-                           if (plugin.enabled) {
-                               content.find('input[type=checkbox]')
-                                      .prop('checked', true);
-                               content.find('.c-toggleSwitch__label > span').text('有効');
-                           } else {
-                               content.find('input[type=checkbox]')
-                                      .prop('checked', false);
-                               content.find('.c-toggleSwitch__label > span').text('無効');
-                           }
-                           if (is_sqlite && ['Api42'].includes(plugin.code)) {
-                               content.find('.c-toggleSwitch').text('SQLite3 には対応していません');
-                           }
-                           content.appendTo('#plugins');
-                       });
-                   }
-             ).then(function () {
-                 $('#plugins_switch').find('.c-toggleSwitch').each(function () {
-                     var $toggleSwitch = $(this);
-                     $toggleSwitch.find('input[type=checkbox]').on('change', function () {
-                         var $checkbox = $(this);
-                         var status = $checkbox.prop('checked');
-                         $toggleSwitch.find('.c-toggleSwitch__label > span').text(status ? '有効' : '無効');
-                         var statusText = $toggleSwitch.find('.c-toggleSwitch__label > span').text();
-                         bootstrapModal.show();
-                         progress.show();
-                         modal.find('.modal-footer').hide();
-                         progress_message.text('プラグインを' + statusText + '化しています...');
-                         $.ajax(
-                             {
-                                 url: $toggleSwitch.data('url'),
-                                 type: 'put'
-                             }
-                         ).done(function(data, textStatus, jqXHR) {
-                             progress.hide();
-                             bootstrapModal.hide();
-                         }).fail(function(jqXHR, textStatus, errorThrown) {
-                             modal.find('.modal-footer').show();
-                             $checkbox.prop('checked', !status);
-                             $toggleSwitch.find('.c-toggleSwitch__label > span').text(!status ? '有効' : '無効');
-                             bootstrapModal.hide();
-                             console.log(jqXHR);
-                             console.log(textStatus);
-                             console.log(errorThrown);
-                             if (jqXHR.status == 404) {
-                                 progress_message.text('一定時間経過したため' + statusText + '化ができません。管理画面にログインし、オーナーズストア→プラグイン→プラグイン一覧から再度お試しください。');
-                             } else {
-                                 progress_message.text(statusText + '化に失敗しました。');
-                             }
-                         });
-                     });
-                 });
-             }).always(function () {
-                 // モーダルをクローズ
-                 progress.hide();
-                 bootstrapModal.hide();
+        function apiFetch(url, options) {
+            options = options || {};
+            options.headers = Object.assign({
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'ECCUBE-CSRF-TOKEN': csrfToken
+            }, options.headers || {});
+            return fetch(url, options);
+        }
 
-                 // 管理画面へのボタンを有効化
-                 $('#go_to_admin_page')
-                     .removeClass('disabled')
-                     .removeAttr('tabindex')
-                     .attr('href', "{{ url('install_plugin_redirect') }}")
-             });
-         });
-     });
+        // 1. プラグイン一覧取得前に API チェック
+        apiFetch('{{ url("install_plugin_check_api") }}', { method: 'PUT' })
+            .catch(function() { /* always と同じ扱い */ })
+            .finally(function() {
+                if (progressMessage) {
+                    progressMessage.textContent = 'プラグインを読み込んでいます。しばらくお待ちください...';
+                }
+
+                // 2. プラグイン一覧取得
+                apiFetch('{{ url('install_plugins') }}', { method: 'GET' })
+                    .then(function(response) {
+                        if (!response.ok) {
+                            throw new Error('http error');
+                        }
+                        return response.json();
+                    })
+                    .then(function(data) {
+                        // 既存の children をクリア
+                        while (pluginsTable.firstChild) {
+                            pluginsTable.removeChild(pluginsTable.firstChild);
+                        }
+                        if (!data || data.length === 0) {
+                            var pluginsSwitch = document.getElementById('plugins_switch');
+                            if (pluginsSwitch) pluginsSwitch.style.display = 'none';
+                            return;
+                        }
+
+                        data.forEach(function(plugin) {
+                            var pluginCode = encodeURIComponent(plugin.code);
+                            var content = templateRow.cloneNode(true);
+                            var enableUrlTemplate = '{{ url('install_plugin_enable', { 'code': '__code__' }) }}';
+
+                            var toggleSwitch = content.querySelector('.c-toggleSwitch');
+                            if (toggleSwitch) {
+                                toggleSwitch.dataset.url = enableUrlTemplate.replace(/__code__/, pluginCode);
+                            }
+                            var nameEl = content.querySelector('.plugin_name');
+                            if (nameEl) nameEl.textContent = plugin.name;
+                            var checkbox = content.querySelector('input[type=checkbox]');
+                            if (checkbox) checkbox.setAttribute('id', pluginCode);
+                            var label = content.querySelector('label');
+                            if (label) label.setAttribute('for', pluginCode);
+
+                            var statusLabel = content.querySelector('.c-toggleSwitch__label > span');
+                            if (plugin.enabled) {
+                                if (checkbox) checkbox.checked = true;
+                                if (statusLabel) statusLabel.textContent = '有効';
+                            } else {
+                                if (checkbox) checkbox.checked = false;
+                                if (statusLabel) statusLabel.textContent = '無効';
+                            }
+                            if (is_sqlite && ['Api42'].includes(plugin.code) && toggleSwitch) {
+                                toggleSwitch.textContent = 'SQLite3 には対応していません';
+                            }
+                            pluginsTable.appendChild(content);
+                        });
+                    })
+                    .then(function() {
+                        // 3. 各トグルスイッチに change ハンドラを付与
+                        var pluginsSwitch = document.getElementById('plugins_switch');
+                        if (!pluginsSwitch) return;
+                        pluginsSwitch.querySelectorAll('.c-toggleSwitch').forEach(function(toggleSwitch) {
+                            var checkbox = toggleSwitch.querySelector('input[type=checkbox]');
+                            if (!checkbox) return;
+                            checkbox.addEventListener('change', function() {
+                                var status = checkbox.checked;
+                                var statusSpan = toggleSwitch.querySelector('.c-toggleSwitch__label > span');
+                                if (statusSpan) statusSpan.textContent = status ? '有効' : '無効';
+                                var statusText = statusSpan ? statusSpan.textContent : '';
+
+                                bootstrapModal.show();
+                                if (progress) progress.style.display = '';
+                                if (modalFooter) modalFooter.style.display = 'none';
+                                if (progressMessage) progressMessage.textContent = 'プラグインを' + statusText + '化しています...';
+
+                                apiFetch(toggleSwitch.dataset.url, { method: 'PUT' })
+                                    .then(function(response) {
+                                        if (!response.ok) {
+                                            // 非 2xx は fail 扱い. response をエラーとして throw
+                                            var err = new Error('http error');
+                                            err.status = response.status;
+                                            throw err;
+                                        }
+                                        if (progress) progress.style.display = 'none';
+                                        bootstrapModal.hide();
+                                    })
+                                    .catch(function(err) {
+                                        if (modalFooter) modalFooter.style.display = '';
+                                        checkbox.checked = !status;
+                                        if (statusSpan) statusSpan.textContent = !status ? '有効' : '無効';
+                                        bootstrapModal.hide();
+                                        console.log(err);
+                                        if (progressMessage) {
+                                            if (err && err.status == 404) {
+                                                progressMessage.textContent = '一定時間経過したため' + statusText + '化ができません。管理画面にログインし、オーナーズストア→プラグイン→プラグイン一覧から再度お試しください。';
+                                            } else {
+                                                progressMessage.textContent = statusText + '化に失敗しました。';
+                                            }
+                                        }
+                                    });
+                            });
+                        });
+                    })
+                    .catch(function(err) {
+                        console.log(err);
+                    })
+                    .finally(function() {
+                        // モーダルをクローズ
+                        if (progress) progress.style.display = 'none';
+                        bootstrapModal.hide();
+
+                        // 管理画面へのボタンを有効化
+                        var goToAdmin = document.getElementById('go_to_admin_page');
+                        if (goToAdmin) {
+                            goToAdmin.classList.remove('disabled');
+                            goToAdmin.removeAttribute('tabindex');
+                            goToAdmin.setAttribute('href', "{{ url('install_plugin_redirect') }}");
+                        }
+                    });
+            });
+    });
     </script>
 {% endblock %}
 
