@@ -18,11 +18,16 @@ use Eccube\Entity\Master\OrderStatus;
 use Eccube\Kernel;
 use Faker\Factory as Faker;
 
+// 先にコマンドライン環境変数から APP_ENV を確定させる.
+// createUnsafeMutable は .env の値で環境変数を上書きしてしまうため,
+// Dotenv ロード前に CLI 引数・環境変数の APP_ENV をキャプチャしておく.
+$appEnv = getenv('APP_ENV') ?: 'dev';
+
 if (file_exists(__DIR__.'/../.env')) {
-    Dotenv::createUnsafeMutable(__DIR__.'/../')->load();
+    // createImmutable: 既存の環境変数（APP_ENV など）を上書きしない
+    Dotenv::createImmutable(__DIR__.'/../')->load();
 }
 
-$appEnv = getenv('APP_ENV') ?: 'codeception';
 $kernel = new Kernel($appEnv, false);
 $kernel->boot();
 

@@ -43,6 +43,12 @@ file that was distributed with this source code.
                 });
             });
 
+            // innerHTML ではなく createContextualFragment で <script> を実行しながら挿入するヘルパー
+            function setHtmlWithScripts(container, html) {
+                container.innerHTML = '';
+                container.appendChild(document.createRange().createContextualFragment(html));
+            }
+
             // 商品検索
             document.getElementById('searchProductModalButton').addEventListener('click', function() {
                 document.getElementById('searchProductModalList').innerHTML = '';
@@ -54,7 +60,7 @@ file that was distributed with this source code.
                     })
                 }).then(function(response) { return response.text(); })
                 .then(function(data) {
-                    document.getElementById('searchProductModalList').innerHTML = data;
+                    setHtmlWithScripts(document.getElementById('searchProductModalList'), data);
                 }).catch(function() {
                     alert('search product failed.');
                 });
@@ -69,7 +75,7 @@ file that was distributed with this source code.
                         method: 'POST'
                     }).then(function(response) { return response.text(); })
                     .then(function(data) {
-                        document.getElementById('searchOrderItemTypeList').innerHTML = data;
+                        setHtmlWithScripts(document.getElementById('searchOrderItemTypeList'), data);
                     }).catch(function() {
                         alert('search order item type failed.');
                     });

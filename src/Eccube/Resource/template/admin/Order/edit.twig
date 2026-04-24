@@ -34,6 +34,12 @@ file that was distributed with this source code.
                 });
             });
 
+            // innerHTML ではなく createContextualFragment で <script> を実行しながら挿入するヘルパー
+            function setHtmlWithScripts(container, html) {
+                container.innerHTML = '';
+                container.appendChild(document.createRange().createContextualFragment(html));
+            }
+
             // 会員検索
             document.getElementById('searchCustomerModalButton').addEventListener('click', function() {
                 document.getElementById('searchCustomerModalList').innerHTML = '';
@@ -42,7 +48,7 @@ file that was distributed with this source code.
                     body: new URLSearchParams({'search_word': document.getElementById('admin_search_customer_multi').value})
                 }).then(function(response) { return response.text(); })
                 .then(function(data) {
-                    document.getElementById('searchCustomerModalList').innerHTML = data;
+                    setHtmlWithScripts(document.getElementById('searchCustomerModalList'), data);
                 }).catch(function() {
                     alert('search customer failed.');
                 });
@@ -59,7 +65,7 @@ file that was distributed with this source code.
                     })
                 }).then(function(response) { return response.text(); })
                 .then(function(data) {
-                    document.getElementById('searchProductModalList').innerHTML = data;
+                    setHtmlWithScripts(document.getElementById('searchProductModalList'), data);
                 }).catch(function() {
                     alert('search product failed.');
                 });
@@ -74,7 +80,7 @@ file that was distributed with this source code.
                         method: 'POST'
                     }).then(function(response) { return response.text(); })
                     .then(function(data) {
-                        document.getElementById('searchOrderItemTypeList').innerHTML = data;
+                        setHtmlWithScripts(document.getElementById('searchOrderItemTypeList'), data);
                     }).catch(function() {
                         alert('search order item type failed.');
                     });
@@ -90,7 +96,7 @@ file that was distributed with this source code.
                 fetch(target.getAttribute('href'))
                     .then(function(response) { return response.text(); })
                     .then(function(data) {
-                        document.getElementById('searchProductModalList').innerHTML = data;
+                        setHtmlWithScripts(document.getElementById('searchProductModalList'), data);
                     }).catch(function() {
                         alert('search product failed.');
                     });
@@ -136,7 +142,11 @@ file that was distributed with this source code.
                         'postal_code', 'address_pref', 'address_addr01', 'address_addr02',
                         'email', 'phone_number', 'company_name'];
                     fields.forEach(function(f) {
-                        document.getElementById('order_Shipping_' + f).value = document.getElementById('order_' + f).value;
+                        var src = document.getElementById('order_' + f);
+                        var dst = document.getElementById('order_Shipping_' + f);
+                        if (src && dst) {
+                            dst.value = src.value;
+                        }
                     });
                 });
             });

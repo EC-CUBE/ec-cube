@@ -28,7 +28,7 @@ file that was distributed with this source code.
             $.ajaxSetup({ headers: { 'ECCUBE-CSRF-TOKEN': csrfToken } });
             window.eccubeFetch = function(url, options) {
                 options = options || {};
-                options.headers = Object.assign({ 'ECCUBE-CSRF-TOKEN': csrfToken }, options.headers || {});
+                options.headers = Object.assign({ 'ECCUBE-CSRF-TOKEN': csrfToken, 'X-Requested-With': 'XMLHttpRequest' }, options.headers || {});
                 return fetch(url, options);
             };
         });

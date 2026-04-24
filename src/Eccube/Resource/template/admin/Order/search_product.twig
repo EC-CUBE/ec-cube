@@ -93,7 +93,7 @@ file that was distributed with this source code.
         lastRow.querySelector(formIdPrefix + index + '_product_name').value = product_name;
         lastRow.querySelector(formIdPrefix + index + '_point_rate').value = point_rate;
 
-        bootstrap.Modal.getInstance(document.getElementById('searchProductModal'))?.hide();
+        bootstrap.Modal.getInstance(document.getElementById('addProduct'))?.hide();
         document.getElementById('form1').submit();
 
         return false;
