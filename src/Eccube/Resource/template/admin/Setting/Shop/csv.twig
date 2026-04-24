@@ -19,58 +19,102 @@ file that was distributed with this source code.
 
 {% block javascript %}
     <script>
-        $(function() {
+        document.addEventListener('DOMContentLoaded', function() {
 
-            $(window).on('pageshow', function() {
-                var tmp_select =  $('#csv-type[name="form[csv_type]"] option[selected]').val();
-                $('#csv-type[name="form[csv_type]"]').val(tmp_select);
+            window.addEventListener('pageshow', function() {
+                var sel = document.querySelector('#csv-type[name="form[csv_type]"]');
+                if (!sel) return;
+                var selected = sel.querySelector('option[selected]');
+                if (selected) sel.value = selected.value;
             });
 
-            function add(event) {
-                $('#' + event.data.from + ' option:selected')
-                    .appendTo($('#' + event.data.to))
-                    .prop('selected', false);
-            }
-
-            function addAll(event) {
-                $('#' + event.data.from + ' option').each(function() {
-                    $(this).appendTo($('#' + event.data.to));
-                    $(this).prop('selected', false);// 選択状態の解除
+            function moveSelected(fromId, toId) {
+                var fromEl = document.getElementById(fromId);
+                var toEl = document.getElementById(toId);
+                if (!fromEl || !toEl) return;
+                Array.from(fromEl.querySelectorAll('option')).filter(function(o) { return o.selected; }).forEach(function(opt) {
+                    toEl.appendChild(opt);
+                    opt.selected = false;
                 });
             }
 
-            $('#add').on('click', {from: 'csv-not-output', to: 'csv-output'}, add);
-            $('#add-all').on('click', {from: 'csv-not-output', to: 'csv-output'}, addAll);
-            $('#remove').on('click', {from: 'csv-output', to: 'csv-not-output'}, add);
-            $('#remove-all').on('click', {from: 'csv-output', to: 'csv-not-output'}, addAll);
+            function moveAll(fromId, toId) {
+                var fromEl = document.getElementById(fromId);
+                var toEl = document.getElementById(toId);
+                if (!fromEl || !toEl) return;
+                Array.from(fromEl.querySelectorAll('option')).forEach(function(opt) {
+                    toEl.appendChild(opt);
+                    opt.selected = false;
+                });
+            }
 
-            $('.move').click(function() {
-                var $op = $('#csv-output option:selected');
-                var val = $(this).data('value');
-                if ($op.length) {
-                    val == 'up' ? $op.first().prev().before($op) : $op.last().next().after($op);
-                }
+            var addBtn = document.getElementById('add');
+            if (addBtn) addBtn.addEventListener('click', function() { moveSelected('csv-not-output', 'csv-output'); });
+            var addAllBtn = document.getElementById('add-all');
+            if (addAllBtn) addAllBtn.addEventListener('click', function() { moveAll('csv-not-output', 'csv-output'); });
+            var removeBtn = document.getElementById('remove');
+            if (removeBtn) removeBtn.addEventListener('click', function() { moveSelected('csv-output', 'csv-not-output'); });
+            var removeAllBtn = document.getElementById('remove-all');
+            if (removeAllBtn) removeAllBtn.addEventListener('click', function() { moveAll('csv-output', 'csv-not-output'); });
+
+            document.querySelectorAll('.move').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var output = document.getElementById('csv-output');
+                    if (!output) return;
+                    var ops = Array.from(output.querySelectorAll('option')).filter(function(o) { return o.selected; });
+                    if (!ops.length) return;
+                    var val = this.dataset.value;
+                    if (val === 'up') {
+                        var first = ops[0];
+                        var anchor = first.previousElementSibling ? first.previousElementSibling.previousElementSibling : null;
+                        ops.forEach(function(opt) {
+                            output.insertBefore(opt, anchor ? anchor.nextElementSibling : output.firstChild);
+                            anchor = opt;
+                        });
+                    } else {
+                        var last = ops[ops.length - 1];
+                        var nextAnchor = last.nextElementSibling ? last.nextElementSibling.nextElementSibling : null;
+                        ops.forEach(function(opt) {
+                            output.insertBefore(opt, nextAnchor);
+                        });
+                    }
+                });
             });
 
-            $('.move-most').click(function() {
-                var $op = $('#csv-output option:selected');
-                var val = $(this).data('value');
-                if ($op.length) {
-                    val == 'top' ? $op.prependTo('#csv-output') : $op.appendTo('#csv-output');
-                }
+            document.querySelectorAll('.move-most').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var output = document.getElementById('csv-output');
+                    if (!output) return;
+                    var ops = Array.from(output.querySelectorAll('option')).filter(function(o) { return o.selected; });
+                    if (!ops.length) return;
+                    var val = this.dataset.value;
+                    if (val === 'top') {
+                        for (var i = ops.length - 1; i >= 0; i--) {
+                            output.insertBefore(ops[i], output.firstChild);
+                        }
+                    } else {
+                        ops.forEach(function(opt) { output.appendChild(opt); });
+                    }
+                });
             });
 
-            $('#csv-type').on('change', function() {
-                var id = $(this).val();
-                var href = '{{ url('admin_setting_shop_csv') }}' + '/' + id;
-                location.href = href;
-                return false;
-            });
+            var csvType = document.getElementById('csv-type');
+            if (csvType) {
+                csvType.addEventListener('change', function() {
+                    location.href = '{{ url('admin_setting_shop_csv') }}' + '/' + this.value;
+                    return false;
+                });
+            }
 
-            $('#csv-form').submit(function() {
-                $('#csv-not-output').children().prop('selected', true);
-                $('#csv-output').children().prop('selected', true);
-            })
+            var csvForm = document.getElementById('csv-form');
+            if (csvForm) {
+                csvForm.addEventListener('submit', function() {
+                    var notOutput = document.getElementById('csv-not-output');
+                    var output = document.getElementById('csv-output');
+                    if (notOutput) Array.from(notOutput.children).forEach(function(c) { c.selected = true; });
+                    if (output) Array.from(output.children).forEach(function(c) { c.selected = true; });
+                });
+            }
         });
     </script>
 {% endblock javascript %}

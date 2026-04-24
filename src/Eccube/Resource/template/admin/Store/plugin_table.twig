@@ -9,10 +9,14 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
 <script>
-$(function() {
-    $('#localPluginDeleteModal').on('show.bs.modal', function(e) {
-        var deleteUrl = $(e.relatedTarget).data('delete-url');
-        $('div.modal-footer a', this).attr('href', deleteUrl);
+document.addEventListener('DOMContentLoaded', function() {
+    var modal = document.getElementById('localPluginDeleteModal');
+    if (!modal) return;
+    modal.addEventListener('show.bs.modal', function(e) {
+        var deleteUrl = e.relatedTarget ? e.relatedTarget.dataset.deleteUrl : '';
+        modal.querySelectorAll('div.modal-footer a').forEach(function(a) {
+            a.setAttribute('href', deleteUrl);
+        });
     });
 });
 </script>

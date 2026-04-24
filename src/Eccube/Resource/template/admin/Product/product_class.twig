@@ -20,107 +20,85 @@ file that was distributed with this source code.
 
 {% block javascript %}
     <script>
-        $(function() {
+        document.addEventListener('DOMContentLoaded', function() {
 
-            // 無制限チェックボックス初期表示
-            $('input[id$=_stock_unlimited]').each(function() {
-                var check = $(this).prop('checked');
-                var index = $(this).attr('id').match(/\d+/);
+            var syncStockDisabled = function(unlimitedEl) {
+                var match = unlimitedEl.id.match(/\d+/);
+                if (!match) return;
+                var stockEl = document.getElementById('product_class_matrix_product_classes_' + match[0] + '_stock');
+                if (!stockEl) return;
+                stockEl.disabled = !!unlimitedEl.checked;
+            };
 
-                if (check) {
-                    $('#product_class_matrix_product_classes_' + index + '_stock').prop('disabled', true);
-                } else {
-                    $('#product_class_matrix_product_classes_' + index + '_stock').prop('disabled', false);
-                }
-            });
-
-
-            // 無制限チェックボックス
-            $('input[id$=_stock_unlimited]').on('click', function() {
-                var check = $(this).prop('checked');
-                var index = $(this).attr('id').match(/\d+/);
-
-                if (check) {
-                    $('#product_class_matrix_product_classes_' + index + '_stock').prop('disabled', true);
-                } else {
-                    $('#product_class_matrix_product_classes_' + index + '_stock').prop('disabled', false);
-                }
+            // 無制限チェックボックス初期表示 + クリック時更新
+            document.querySelectorAll('input[id$=_stock_unlimited]').forEach(function(input) {
+                syncStockDisabled(input);
+                input.addEventListener('click', function() { syncStockDisabled(this); });
             });
 
             // 登録チェックボックス
-            $('#check-all').click(function() {
-                var checked = $('#check-all').prop('checked');
-                if (checked) {
-                    $('input[id$=_checked]').prop('checked', true);
-                } else {
-                    $('input[id$=_checked]').prop('checked', false);
-                }
-            });
+            var checkAll = document.getElementById('check-all');
+            if (checkAll) {
+                checkAll.addEventListener('click', function() {
+                    var checked = this.checked;
+                    document.querySelectorAll('input[id$=_checked]').forEach(function(c) { c.checked = checked; });
+                });
+            }
 
             // フォーム送信前にチェックOFFの行の不要フィールドをdisabled化してPOSTサイズを削減する.
             // チェックOFFの行はサーバ側(saveProductClasses)でPOSTデータを破棄しDBから再取得するため,
             // 価格・在庫等のフィールドを送信する必要がない.
             // 規格の組み合わせが多い場合にmax_input_varsやWAFの制限に抵触することを防ぐ.
-            $('#ex-product_class').closest('form').on('submit', function() {
-                $(this).find('#ex-product_class table tr[id]').each(function() {
-                    var $row = $(this);
-                    var $checkbox = $row.find('input[id$="_checked"]');
-                    if ($checkbox.length && !$checkbox.prop('checked')) {
-                        $row.find('input, select, textarea').not(
-                            '[id$="_checked"], [id$="_ClassCategory1"], [id$="_ClassCategory2"]'
-                        ).prop('disabled', true);
-                    }
+            var classBody = document.getElementById('ex-product_class');
+            var classForm = classBody ? classBody.closest('form') : null;
+            if (classForm) {
+                classForm.addEventListener('submit', function() {
+                    classBody.querySelectorAll('table tr[id]').forEach(function(row) {
+                        var checkbox = row.querySelector('input[id$="_checked"]');
+                        if (checkbox && !checkbox.checked) {
+                            row.querySelectorAll('input, select, textarea').forEach(function(field) {
+                                if (!field.id) { field.disabled = true; return; }
+                                if (/_checked$|_ClassCategory1$|_ClassCategory2$/.test(field.id)) return;
+                                field.disabled = true;
+                            });
+                        }
+                    });
                 });
-            });
+            }
 
             // 1行目をコピーボタン
-            $('#copy').on('click', function(event) {
-                event.preventDefault();
+            var copyBtn = document.getElementById('copy');
+            if (copyBtn) {
+                copyBtn.addEventListener('click', function(event) {
+                    event.preventDefault();
 
-                var check = $('#product_class_matrix_product_classes_0_add').prop('checked');
-                $('input[id$=_add]').prop('checked', check);
+                    var copyValue = function(srcId, selector, prop) {
+                        var src = document.getElementById(srcId);
+                        if (!src) return;
+                        var value = src[prop];
+                        document.querySelectorAll(selector).forEach(function(el) { el[prop] = value; });
+                    };
 
-                var product_code = $('#product_class_matrix_product_classes_0_code').val();
-                $('input[id$=_code]').val(product_code);
+                    copyValue('product_class_matrix_product_classes_0_add', 'input[id$=_add]', 'checked');
+                    copyValue('product_class_matrix_product_classes_0_code', 'input[id$=_code]', 'value');
+                    copyValue('product_class_matrix_product_classes_0_stock', 'input[id$=_stock]', 'value');
 
-                var stock = $('#product_class_matrix_product_classes_0_stock').val();
-                $('input[id$=_stock]').val(stock);
+                    var stockUnlimitedSrc = document.getElementById('product_class_matrix_product_classes_0_stock_unlimited');
+                    var stockUnlimited = stockUnlimitedSrc ? stockUnlimitedSrc.checked : false;
+                    document.querySelectorAll('input[id$=_stock_unlimited]').forEach(function(input) {
+                        input.checked = stockUnlimited;
+                        syncStockDisabled(input);
+                    });
 
-                var stock_unlimited = $('#product_class_matrix_product_classes_0_stock_unlimited').prop('checked');
-                // 無制限チェックボックス
-                $('input[id$=_stock_unlimited]').each(function() {
-                    var index = $(this).attr('id').match(/\d+/);
-
-                    if (stock_unlimited) {
-                        $(this).prop('checked', true);
-                        $('#product_class_matrix_product_classes_' + index + '_stock').prop('disabled', true);
-                    } else {
-                        $(this).prop('checked', false);
-                        $('#product_class_matrix_product_classes_' + index + '_stock').prop('disabled', false);
-                    }
+                    copyValue('product_class_matrix_product_classes_0_sale_limit', 'input[id$=_sale_limit]', 'value');
+                    copyValue('product_class_matrix_product_classes_0_price01', 'input[id$=_price01]', 'value');
+                    copyValue('product_class_matrix_product_classes_0_price02', 'input[id$=_price02]', 'value');
+                    copyValue('product_class_matrix_product_classes_0_delivery_fee', 'input[id$=_delivery_fee]', 'value');
+                    copyValue('product_class_matrix_product_classes_0_delivery_duration', 'select[id$=_delivery_duration]', 'value');
+                    copyValue('product_class_matrix_product_classes_0_tax_rate', 'input[id$=_tax_rate]', 'value');
+                    copyValue('product_class_matrix_product_classes_0_sale_type', 'select[id$=_sale_type]', 'value');
                 });
-
-                var sale_limit = $('#product_class_matrix_product_classes_0_sale_limit').val();
-                $('input[id$=_sale_limit]').val(sale_limit);
-
-                var price01 = $('#product_class_matrix_product_classes_0_price01').val();
-                $('input[id$=_price01]').val(price01);
-
-                var price02 = $('#product_class_matrix_product_classes_0_price02').val();
-                $('input[id$=_price02]').val(price02);
-
-                var delivery_fee = $('#product_class_matrix_product_classes_0_delivery_fee').val();
-                $('input[id$=_delivery_fee]').val(delivery_fee);
-
-                var delivery_duration = $('#product_class_matrix_product_classes_0_delivery_duration').val();
-                $('select[id$=_delivery_duration]').val(delivery_duration);
-
-                var tax_rate = $('#product_class_matrix_product_classes_0_tax_rate').val();
-                $('input[id$=_tax_rate]').val(tax_rate);
-
-                var sale_type = $('#product_class_matrix_product_classes_0_sale_type').val();
-                $('select[id$=_sale_type]').val(sale_type);
-            });
+            }
         });
     </script>
 {% endblock javascript %}

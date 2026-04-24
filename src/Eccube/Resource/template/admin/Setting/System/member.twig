@@ -19,27 +19,44 @@ file that was distributed with this source code.
 
 {% block javascript %}
     <script>
-        $('.action-down, .action-up').on('click', function(e) {
-            var self = $(this),
-                current = $(this).parents('tr');
-            $('body').append($('<div class="modal-backdrop show"></div>'));
-            $.ajax({
-                url: self.attr('href'),
-                method: self.data('method'),
-            }).done(function() {
-                if (self.hasClass('action-down')) {
-                    current.next().after(current);
-                } else {
-                    current.prev().before(current);
-                }
-            }).always(function() {
-                $('.modal-backdrop').remove();
-                $('.action-up, .action-down').removeClass('disabled');
-                $('.action-up').first().addClass('disabled');
-                $('.action-down').last().addClass('disabled');
-            });
+        document.querySelectorAll('.action-down, .action-up').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                var self = this;
+                var current = this.closest('tr');
+                var backdrop = document.createElement('div');
+                backdrop.className = 'modal-backdrop show';
+                document.body.appendChild(backdrop);
 
-            return false;
+                var finalize = function() {
+                    document.querySelectorAll('.modal-backdrop').forEach(function(el) { el.remove(); });
+                    document.querySelectorAll('.action-up, .action-down').forEach(function(el) { el.classList.remove('disabled'); });
+                    var ups = document.querySelectorAll('.action-up');
+                    var downs = document.querySelectorAll('.action-down');
+                    if (ups.length) ups[0].classList.add('disabled');
+                    if (downs.length) downs[downs.length - 1].classList.add('disabled');
+                };
+
+                window.eccubeFetch(self.getAttribute('href'), { method: (self.dataset.method || 'put').toUpperCase() })
+                    .then(function(res) {
+                        if (!res.ok) throw new Error('request failed');
+                        if (self.classList.contains('action-down')) {
+                            var next = current.nextElementSibling;
+                            if (next && next.parentNode) {
+                                next.parentNode.insertBefore(current, next.nextElementSibling);
+                            }
+                        } else {
+                            var prev = current.previousElementSibling;
+                            if (prev && prev.parentNode) {
+                                prev.parentNode.insertBefore(current, prev);
+                            }
+                        }
+                    })
+                    .catch(function() {})
+                    .finally(finalize);
+
+                return false;
+            });
         });
     </script>
 {% endblock %}

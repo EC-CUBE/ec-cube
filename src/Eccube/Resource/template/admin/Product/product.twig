@@ -19,25 +19,32 @@ file that was distributed with this source code.
 
 {% block javascript %}
     <script>
-        $(document).on('drop dragover', function(e) {
-            e.preventDefault();
-        });
+        document.addEventListener('drop', function(e) { e.preventDefault(); });
+        document.addEventListener('dragover', function(e) { e.preventDefault(); });
 
-        $(function() {
+        document.addEventListener('DOMContentLoaded', function() {
             {% if has_class == false %}
-            if ($("#{{ form.class.stock_unlimited.vars.id }}").prop("checked")) {
-                $("#{{ form.class.stock.vars.id }}").attr("disabled", "disabled").val('');
-            } else {
-                $("#{{ form.class.stock.vars.id }}").removeAttr("disabled");
-            }
-            $("#{{ form.class.stock_unlimited.vars.id }}").on("click change", function() {
-                if ($(this).prop("checked")) {
-                    $("#{{ form.class.stock.vars.id }}").attr("disabled", "disabled").val('');
-                } else {
-                    $("#{{ form.class.stock.vars.id }}").removeAttr("disabled");
+            (function() {
+                var stockUnlimited = document.getElementById('{{ form.class.stock_unlimited.vars.id }}');
+                var stock = document.getElementById('{{ form.class.stock.vars.id }}');
+                if (stockUnlimited && stock) {
+                    var sync = function() {
+                        if (stockUnlimited.checked) {
+                            stock.setAttribute('disabled', 'disabled');
+                            stock.value = '';
+                        } else {
+                            stock.removeAttribute('disabled');
+                        }
+                    };
+                    sync();
+                    stockUnlimited.addEventListener('click', sync);
+                    stockUnlimited.addEventListener('change', sync);
                 }
-            });
+            })();
             {% endif %}
+
+            var csrfMeta = document.querySelector('meta[name="eccube-csrf-token"]');
+            var csrfToken = csrfMeta ? csrfMeta.getAttribute('content') : '';
 
             // ファイルアップロード
             // see https://pqina.nl/filepond/
@@ -50,7 +57,7 @@ file that was distributed with this source code.
                     process: {
                         url: '{{ path('admin_product_image_process') }}',
                         headers: {
-                            'ECCUBE-CSRF-TOKEN': $('meta[name="eccube-csrf-token"]').attr('content'),
+                            'ECCUBE-CSRF-TOKEN': csrfToken,
                             'X-Requested-With': 'XMLHttpRequest'
                         }
                     },
@@ -63,7 +70,7 @@ file that was distributed with this source code.
                     revert: {
                         url: '{{ path('admin_product_image_revert') }}',
                         headers: {
-                            'ECCUBE-CSRF-TOKEN': $('meta[name="eccube-csrf-token"]').attr('content'),
+                            'ECCUBE-CSRF-TOKEN': csrfToken,
                             'X-Requested-With': 'XMLHttpRequest'
                         }
                     }
@@ -106,17 +113,28 @@ file that was distributed with this source code.
                     {% endfor %}
                 ]
             });
+
+            var uploadZone = document.getElementById('upload-zone');
+
+            var appendHidden = function(html, value, className) {
+                if (!uploadZone) return null;
+                var tmp = document.createElement('div');
+                tmp.innerHTML = html.trim();
+                var el = tmp.firstChild;
+                if (!el) return null;
+                if (value !== undefined && value !== null) el.value = value;
+                if (className) el.classList.add(className);
+                uploadZone.appendChild(el);
+                return el;
+            };
+
             // 画像が追加されたら add_images にファイル名を追加する
             var proto_add = '{{ form_widget(form.add_images.vars.prototype) }}';
             pond.on('processfile', function(error, file) {
                 if (error) {
                     console.log(error);
                 } else {
-                    $('#upload-zone').append(
-                        $(proto_add.replace(/__name__/g, file.id))
-                            .val(file.serverId)
-                            .addClass('add_images')
-                    );
+                    appendHidden(proto_add.replace(/__name__/g, file.id), file.serverId, 'add_images');
                 }
             });
             // 画像が削除されたら delete_images にファイル名を追加する
@@ -127,103 +145,123 @@ file that was distributed with this source code.
                 } else {
                     // file.serverId にはアップロードしたファイル名が格納される.
                     if (file.serverId) {
-                        $('#upload-zone').append(
-                            $(proto_del.replace(/__name__/g, file.id))
-                                .val(file.serverId)
-                                .addClass('del_images')
-                        );
+                        appendHidden(proto_del.replace(/__name__/g, file.id), file.serverId, 'del_images');
                     }
-                    // 追加してすぐ削除した画像があれば削除する
-                    $('#upload-zone').find('#admin_product_add_images_' + file.id).remove(); // 追加してすぐ削除した画像
-                    $('#upload-zone').find('.add_images[value="' + file.filename + '"]').remove(); // 追加後, バリデーションエラーが発生した後に削除した画像
+                    if (uploadZone) {
+                        // 追加してすぐ削除した画像があれば削除する
+                        var added = uploadZone.querySelector('#admin_product_add_images_' + file.id);
+                        if (added) added.remove();
+                        // 追加後, バリデーションエラーが発生した後に削除した画像
+                        uploadZone.querySelectorAll('.add_images[value="' + file.filename + '"]').forEach(function(el) { el.remove(); });
+                    }
                 }
             });
             pond.on('initfile', function() {
-                $('#product_image_error').hide();
+                var el = document.getElementById('product_image_error');
+                if (el) el.style.display = 'none';
             });
             pond.on('error', function(error, file) {
                 var message = '{{ 'admin.common.upload_error'|trans }}';
                 if (error.main !== undefined) {
                     message = `${error.main}: ${error.sub}`;
                 }
-                $('#product_image_error')
-                    .show()
-                    .find('.form-error-message').text(message);
+                var errEl = document.getElementById('product_image_error');
+                if (errEl) {
+                    errEl.style.display = '';
+                    var msg = errEl.querySelector('.form-error-message');
+                    if (msg) msg.textContent = message;
+                }
 
                 // エラーメッセージが表示されてからプレビューエリアのエラーメッセージを非表示にする
                 setTimeout(function() {
-                    $('.filepond--file-status').hide();
+                    document.querySelectorAll('.filepond--file-status').forEach(function(el) { el.style.display = 'none'; });
                 }, 300);
             });
 
             // バリデーションエラーが出た場合に画像を保持するための hidden を追加しておく
             var proto_image = '{{ form_widget(form.images.vars.prototype) }}';
             {% for image in form.images %}
-                $('#upload-zone').append(
-                    $(proto_image.replace(/__name__/g, '{{ loop.index0 }}'))
-                        .val('{{ image.vars.value }}')
-                        .addClass('images')
-                );
+                appendHidden(proto_image.replace(/__name__/g, '{{ loop.index0 }}'), '{{ image.vars.value }}', 'images');
             {% endfor %}
             {% for add_image in form.add_images %}
-                $('#upload-zone').append(
-                    $('{{ form_widget(add_image) }}')
-                        .val('{{ add_image.vars.value }}')
-                        .addClass('add_images')
-                );
+                appendHidden('{{ form_widget(add_image) }}', '{{ add_image.vars.value }}', 'add_images');
             {% endfor %}
             {% for delete_image in form.delete_images %}
-                $('#upload-zone').append(
-                    $('{{ form_widget(delete_image) }}').addClass('del_images')
-                );
+                appendHidden('{{ form_widget(delete_image) }}', null, 'del_images');
             {% endfor %}
 
             // タグ管理
-            var mainTags = $('#allTags');
-            var adminProductTag = $('#admin_product_Tag');
-            $('input', adminProductTag).each(function() {
-                if ($(this).is(':checked')) {
-                    $('button[data-tag-id="' + $(this).val() + '"]').removeClass('btn-outline-secondary').addClass('btn-outline-primary');
-                }
-            });
-            mainTags.on('click', 'button.btn', function() {
-                var btnTag = $(this);
-                var tagId = btnTag.data('tag-id');
-                if (btnTag.hasClass('btn-outline-primary')) {
-                    btnTag.removeClass('btn-outline-primary').addClass('btn-outline-secondary');
-                    $('input[value="' + tagId + '"]', mainTags).prop('checked', false);
-                } else {
-                    btnTag.removeClass('btn-outline-secondary').addClass('btn-outline-primary');
-                    $('input[value="' + tagId + '"]', mainTags).prop('checked', true);
-                }
-            });
+            var mainTags = document.getElementById('allTags');
+            var adminProductTag = document.getElementById('admin_product_Tag');
+            if (adminProductTag) {
+                adminProductTag.querySelectorAll('input').forEach(function(input) {
+                    if (input.checked) {
+                        var btn = document.querySelector('button[data-tag-id="' + input.value + '"]');
+                        if (btn) {
+                            btn.classList.remove('btn-outline-secondary');
+                            btn.classList.add('btn-outline-primary');
+                        }
+                    }
+                });
+            }
+            if (mainTags) {
+                mainTags.addEventListener('click', function(e) {
+                    var btnTag = e.target.closest('button.btn');
+                    if (!btnTag || !mainTags.contains(btnTag)) return;
+                    var tagId = btnTag.dataset.tagId;
+                    var input = mainTags.querySelector('input[value="' + tagId + '"]');
+                    if (btnTag.classList.contains('btn-outline-primary')) {
+                        btnTag.classList.remove('btn-outline-primary');
+                        btnTag.classList.add('btn-outline-secondary');
+                        if (input) input.checked = false;
+                    } else {
+                        btnTag.classList.remove('btn-outline-secondary');
+                        btnTag.classList.add('btn-outline-primary');
+                        if (input) input.checked = true;
+                    }
+                });
+            }
 
-            var confirmFormChange = function(form, target, modal) {
-                var returnLink = form.find('input[type="hidden"][name*="return_link"]'),
-                    saveBtn = modal.find('a[data-action="save"]'),
-                    cancelBtn = modal.find('a[data-action="cancel"]');
-                modal.on('hidden.bs.modal', function() {
-                    returnLink.val('');
+            var confirmFormChange = function(form, targets, modal) {
+                if (!form || !modal) return;
+                var returnLink = form.querySelector('input[type="hidden"][name*="return_link"]');
+                var saveBtn = modal.querySelector('a[data-action="save"]');
+                var cancelBtn = modal.querySelector('a[data-action="cancel"]');
+                modal.addEventListener('hidden.bs.modal', function() {
+                    if (returnLink) returnLink.value = '';
                 });
-                saveBtn.on('click', function() {
-                    returnLink.val($(this).data('return-link'));
-                    $(this).addClass('disabled');
-                    form.submit();
-                });
-                target.on('click', function() {
-                    modal.find('.modal-body .screen-name').text($(this).attr('title'));
-                    bootstrap.Modal.getOrCreateInstance(modal[0]).show();
-                    saveBtn.data('return-link', $(this).attr('href'));
-                    cancelBtn.attr('href', $(this).attr('href'));
-                    return false;
+                if (saveBtn) {
+                    saveBtn.addEventListener('click', function() {
+                        if (returnLink) returnLink.value = this.dataset.returnLink || '';
+                        this.classList.add('disabled');
+                        form.submit();
+                    });
+                }
+                targets.forEach(function(target) {
+                    target.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        var nameEl = modal.querySelector('.modal-body .screen-name');
+                        if (nameEl) nameEl.textContent = this.getAttribute('title') || '';
+                        bootstrap.Modal.getOrCreateInstance(modal).show();
+                        if (saveBtn) saveBtn.dataset.returnLink = this.getAttribute('href') || '';
+                        if (cancelBtn) cancelBtn.setAttribute('href', this.getAttribute('href') || '');
+                        return false;
+                    });
                 });
             };
-            confirmFormChange($('#form1'), $('a[data-action="confirm"]'), $('#confirmFormChangeModal'))
-        });
+            confirmFormChange(
+                document.getElementById('form1'),
+                document.querySelectorAll('a[data-action="confirm"]'),
+                document.getElementById('confirmFormChangeModal')
+            );
 
-        // searchWordの実行
-        $('#search-category').on('input', function () {
-            searchWord($(this).val(), $('.category-li'));
+            // searchWordの実行
+            var searchCategory = document.getElementById('search-category');
+            if (searchCategory) {
+                searchCategory.addEventListener('input', function() {
+                    searchWord(this.value, document.querySelectorAll('.category-li'));
+                });
+            }
         });
     </script>
 {% endblock javascript %}

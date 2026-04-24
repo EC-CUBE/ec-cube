@@ -9,46 +9,66 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
 <script>
-$(function() {
+document.addEventListener('DOMContentLoaded', function() {
     var currentPlugin = null;
-    var modal = $('#officialPluginDeleteModal');
-    modal.on('show.bs.modal', function(e) {
-        currentPlugin = $(e.relatedTarget).data();
-    });
-    $('#officialPluginDeleteButton').on('click', function() {
+    var modal = document.getElementById('officialPluginDeleteModal');
+    if (modal) {
+        modal.addEventListener('show.bs.modal', function(e) {
+            currentPlugin = e.relatedTarget ? Object.assign({}, e.relatedTarget.dataset) : {};
+        });
+    }
+    var deleteBtn = document.getElementById('officialPluginDeleteButton');
+    if (deleteBtn) {
+        deleteBtn.addEventListener('click', function() {
+            var footer = modal.querySelector('div.modal-footer');
+            var message = modal.querySelector('div.modal-body p');
+            var progress = modal.querySelector('div.progress');
+            if (footer) footer.style.display = 'none';
+            if (message) message.textContent = '「' + currentPlugin.name + ' (' + currentPlugin.version + ')」を削除中。この処理には数分かかる場合があります。画面をリロードせずにこのままお待ち下さい。';
+            if (progress) progress.style.display = '';
 
-        var footer = $('div.modal-footer', modal).hide();
-        var message = $('div.modal-body p', modal).text('「' + currentPlugin.name + ' (' + currentPlugin.version + ')」を削除中。この処理には数分かかる場合があります。画面をリロードせずにこのままお待ち下さい。')
-        var progress = $('div.progress', modal).show();
-        $.ajax({url: currentPlugin['deleteUrl'], type: 'delete'}).then(
-            function(data) {
-                $.post("{{ url('admin_disable_maintenance', { 'mode': 'auto_maintenance' }) }}").then(function() {
-                    message.text('削除が完了しました。');
-                    $('#deleteLog').text(data.log);
-                    $('#deleteLogPane').show();
-                    progress.hide();
-                    footer.show().find('button').toggle();
+            var showFinal = function() {
+                var deletePane = document.getElementById('deleteLogPane');
+                if (deletePane) deletePane.style.display = '';
+                if (progress) progress.style.display = 'none';
+                if (footer) {
+                    footer.style.display = '';
+                    footer.querySelectorAll('button').forEach(function(b) {
+                        b.style.display = (b.style.display === 'none' ? '' : 'none');
+                    });
+                }
+            };
+
+            window.eccubeFetch(currentPlugin.deleteUrl, { method: 'DELETE' })
+                .then(function(res) {
+                    return res.json().then(function(data) { return { ok: res.ok, status: res.status, data: data }; });
+                })
+                .then(function(result) {
+                    if (result.ok) {
+                        return window.eccubeFetch("{{ url('admin_disable_maintenance', { 'mode': 'auto_maintenance' }) }}", { method: 'POST' })
+                            .then(function() {
+                                if (message) message.textContent = '削除が完了しました。';
+                                var log = document.getElementById('deleteLog');
+                                if (log) log.textContent = result.data.log;
+                                showFinal();
+                            });
+                    } else {
+                        if (message) message.textContent = result.data.message || '削除に失敗しました。';
+                        var log = document.getElementById('deleteLog');
+                        if (log && result.data.log) log.textContent = result.data.log;
+                        showFinal();
+                    }
+                })
+                .catch(function() {
+                    if (message) message.textContent = '削除に失敗しました。';
+                    showFinal();
                 });
-            },
-            function(res) {
-                if (res.responseJSON.message) {
-                    message.text(res.responseJSON.message);
-                } else {
-                    message.text('削除に失敗しました。');
-                }
-                if (res.responseJSON.log) {
-                    $('#deleteLog').text(res.responseJSON.log);
-                }
-                $('#deleteLogPane').show();
-                progress.hide();
-                footer.show().find('button').toggle();
-            }
-        );
-    });
+        });
+    }
 
     {% if app.flashes('eccube.admin.disable_maintenance') %}
         // メンテナンスモード解除
-        $.post("{{ url('admin_disable_maintenance', { 'mode': 'auto_maintenance' }) }}");
+        window.eccubeFetch("{{ url('admin_disable_maintenance', { 'mode': 'auto_maintenance' }) }}", { method: 'POST' });
     {% endif %}
 });
 </script>
