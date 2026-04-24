@@ -19,100 +19,138 @@ file that was distributed with this source code.
 
 {% block javascript %}
     <script>
-        $(function() {
-            // 初期表示時のsort noを保持.
+        document.addEventListener('DOMContentLoaded', function() {
+            function getItems() {
+                return Array.prototype.slice.call(document.querySelectorAll('.sortable-item'));
+            }
+
             var oldSortNos = [];
-            $('.sortable-item').each(function() {
-                oldSortNos.push(this.dataset.sortNo);
+            getItems().forEach(function(el) {
+                oldSortNos.push(el.dataset.sortNo);
             });
             oldSortNos.sort(function(a, b) {
                 return a - b;
             }).reverse();
-            // 並び替え後にsort noを更新
-            var updateSortNo = function() {
-                var newSortNos = {};
-                var i = 0;
-                $('.sortable-item').each(function() {
-                    newSortNos[this.dataset.id] = oldSortNos[i];
-                    i++;
+
+            function updateSortNo() {
+                var items = getItems();
+                var body = new URLSearchParams();
+                items.forEach(function(el, i) {
+                    body.append(el.dataset.id, oldSortNos[i]);
                 });
-                $.ajax({
-                    url: '{{ url('admin_product_category_sort_no_move') }}',
-                    type: 'POST',
-                    data: newSortNos
-                }).always(function() {
-                    $(".modal-backdrop").remove();
+                window.eccubeFetch('{{ url('admin_product_category_sort_no_move') }}', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+                    body: body
+                }).finally(function() {
+                    document.querySelectorAll('.modal-backdrop').forEach(function(el) {
+                        el.remove();
+                    });
                 });
-            };
-            // 最初と最後の↑↓を再描画
-            var redrawDisableAllows = function() {
-                var items = $('.sortable-item');
-                items.find('a.action-up').removeClass('disabled');
-                items.find('a.action-down').removeClass('disabled');
-                items.first().find('a.action-up').addClass('disabled');
-                items.last().find('a.action-down').addClass('disabled');
-            };
-            // オーバレイ後, 表示順の更新を行う
-            var moveSortNo = function() {
-                $('body').append($('<div class="modal-backdrop show"></div>'));
+            }
+
+            function redrawDisableAllows() {
+                var items = getItems();
+                items.forEach(function(item) {
+                    var u = item.querySelector('a.action-up');
+                    if (u) u.classList.remove('disabled');
+                    var d = item.querySelector('a.action-down');
+                    if (d) d.classList.remove('disabled');
+                });
+                if (items.length > 0) {
+                    var firstUp = items[0].querySelector('a.action-up');
+                    if (firstUp) firstUp.classList.add('disabled');
+                    var lastDown = items[items.length - 1].querySelector('a.action-down');
+                    if (lastDown) lastDown.classList.add('disabled');
+                }
+            }
+
+            function moveSortNo() {
+                document.body.insertAdjacentHTML('beforeend', '<div class="modal-backdrop show"></div>');
                 updateSortNo();
                 redrawDisableAllows();
-            };
-            // Drag and Drop
-            $('.sortable-container').sortable({
-                items: '> .sortable-item',
-                cursor: 'move',
-                update: function(e, ui) {
-                    moveSortNo();
-                }
-            });
-            // Up
-            $('.sortable-item').on('click', 'a.action-up', function(e) {
-                e.preventDefault();
-                var current = $(this).parents("li");
-                if (current.prev().hasClass('sortable-item')) {
-                    current.prev().before(current);
-                    moveSortNo();
-                }
-            });
-            // Down
-            $('.sortable-item').on('click', 'a.action-down', function(e) {
-                e.preventDefault();
-                var current = $(this).parents("li");
-                if (current.next().hasClass('sortable-item')) {
-                    current.next().after(current);
-                    moveSortNo();
-                }
+            }
+
+            var container = document.querySelector('.sortable-container');
+            if (container && typeof Sortable !== 'undefined') {
+                Sortable.create(container, {
+                    draggable: '.sortable-item',
+                    handle: '.fa-bars',
+                    animation: 150,
+                    onUpdate: function() {
+                        moveSortNo();
+                    }
+                });
+            }
+
+            if (container) {
+                container.addEventListener('click', function(e) {
+                    var current = e.target.closest('li');
+                    if (!current) return;
+
+                    var up = e.target.closest('a.action-up');
+                    if (up && current.contains(up) && current.classList.contains('sortable-item')) {
+                        e.preventDefault();
+                        var prev = current.previousElementSibling;
+                        if (prev && prev.classList.contains('sortable-item')) {
+                            prev.parentNode.insertBefore(current, prev);
+                            moveSortNo();
+                        }
+                        return;
+                    }
+
+                    var down = e.target.closest('a.action-down');
+                    if (down && current.contains(down) && current.classList.contains('sortable-item')) {
+                        e.preventDefault();
+                        var next = current.nextElementSibling;
+                        if (next && next.classList.contains('sortable-item')) {
+                            next.parentNode.insertBefore(current, next.nextSibling);
+                            moveSortNo();
+                        }
+                        return;
+                    }
+
+                    var edit = e.target.closest('a.action-edit');
+                    if (edit && current.contains(edit)) {
+                        e.preventDefault();
+                        current.querySelectorAll('.mode-view').forEach(function(el) {
+                            el.classList.add('d-none');
+                        });
+                        current.querySelectorAll('.mode-edit').forEach(function(el) {
+                            el.classList.remove('d-none');
+                        });
+                        return;
+                    }
+
+                    var cancel = e.target.closest('button.action-edit-cancel');
+                    if (cancel && current.contains(cancel)) {
+                        location.href = "{% if TargetCategory.id %}{{ url('admin_product_category_edit', {id: TargetCategory.id}) }}{% elseif Parent %}{{ url('admin_product_category_show', {'parent_id': Parent.id}) }}{% else %}{{ url('admin_product_category') }}{% endif %}";
+                    }
+                });
+            }
+
+            document.querySelectorAll('.list-group-item .is-invalid').forEach(function(el) {
+                var current = el.closest('li');
+                if (!current) return;
+                current.querySelectorAll('.mode-view').forEach(function(e) {
+                    e.classList.add('d-none');
+                });
+                current.querySelectorAll('.mode-edit').forEach(function(e) {
+                    e.classList.remove('d-none');
+                });
             });
 
-            var groupItem = $('.list-group-item');
-            groupItem.on('click', 'a.action-edit', function(e) {
-                e.preventDefault();
-                var current = $(this).parents('li');
-                current.find('.mode-view').addClass('d-none');
-                current.find('.mode-edit').removeClass('d-none');
-            });
-
-            groupItem.on('click', 'button.action-edit-cancel', function(e) {
-                location.href = "{% if TargetCategory.id %}{{ url('admin_product_category_edit', {id: TargetCategory.id}) }}{% elseif Parent %}{{ url('admin_product_category_show', {'parent_id': Parent.id}) }}{% else %}{{ url('admin_product_category') }}{% endif %}";
-            });
-
-            groupItem.find('.is-invalid').each(function(e) {
-                e.preventDefault();
-                var current = $(this).parents("li");
-                current.find('.mode-view').addClass('d-none');
-                current.find('.mode-edit').removeClass('d-none');
-            });
-
-            // 削除モーダルのhrefとmessageの変更
-            $('#DeleteModal').on('shown.bs.modal', function(event) {
-                var target = $(event.relatedTarget);
-                // hrefの変更
-                $(this).find('[data-method="delete"]').attr('href', target.data('url'));
-
-                // messageの変更
-                $(this).find('p.modal-message').text(target.data('message'));
-            });
+            var deleteModal = document.getElementById('DeleteModal');
+            if (deleteModal) {
+                deleteModal.addEventListener('shown.bs.modal', function(event) {
+                    var target = event.relatedTarget;
+                    if (!target) return;
+                    var link = deleteModal.querySelector('[data-method="delete"]');
+                    if (link) link.setAttribute('href', target.dataset.url || '');
+                    var msg = deleteModal.querySelector('p.modal-message');
+                    if (msg) msg.textContent = target.dataset.message || '';
+                });
+            }
         });
     </script>
 {% endblock %}

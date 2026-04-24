@@ -19,8 +19,8 @@ require('jquery-ui/ui/widgets/resizable');
 require('jquery-ui/ui/widgets/sortable');
 require('jquery-ui/ui/widgets/tooltip');
 
-const Sortable = require('sortablejs');
-global.Sortable = Sortable;
+const SortableModule = require('sortablejs');
+global.Sortable = SortableModule.Sortable || SortableModule.default || SortableModule;
 
 const {
     Chart,

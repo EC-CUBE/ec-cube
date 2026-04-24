@@ -135,7 +135,7 @@ file that was distributed with this source code.
                 $('div.modal-body', modalClass).html(data);
                 $('h5.modal-title', modalClass).text(btnClass.data('message'));
                 $('a.btn-ec-conversion', modalClass).attr('href', btnClass.data('class-url'));
-                modalClass.modal('show');
+                bootstrap.Modal.getOrCreateInstance(modalClass[0]).show();
                 btnClass.attr('disabled', false);
             }
         });
