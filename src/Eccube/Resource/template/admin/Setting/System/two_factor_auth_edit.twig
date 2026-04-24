@@ -19,29 +19,22 @@ file that was distributed with this source code.
 
 {% block javascript %}
 <script>
-$(function () {
-    $("#qrcode").qrcode({
-        size: 200,
-        fill: '#000',
-        text: 'otpauth://totp/{{ 'EC-CUBE:'|url_encode }}{{ BaseInfo.shop_name|url_encode }}{{ ' - '|url_encode }}{{ Member.name|url_encode }}?secret={{ auth_key }}&issuer={{ 'EC-CUBE'|url_encode }}',
-        radius: 0,
-        quiet: 0,
-        mode: 0, // 0: normal , 1: label strip , 2: label box , 3: image strip , 4: image box
-        mSize: 0.1,
-        mPosX: 0.5,
-        mPosY: 0.5,
-        label: 'no label',
-        fontname: 'sans',
-        fontcolor: '#000',
-        image: null
-    });
+document.addEventListener('DOMContentLoaded', function () {
+    var target = document.getElementById('qrcode');
+    if (!target || typeof qrcode === 'undefined') {
+        return;
+    }
+    var qr = qrcode(0, 'M');
+    qr.addData('otpauth://totp/{{ 'EC-CUBE:'|url_encode }}{{ BaseInfo.shop_name|url_encode }}{{ ' - '|url_encode }}{{ Member.name|url_encode }}?secret={{ auth_key }}&issuer={{ 'EC-CUBE'|url_encode }}');
+    qr.make();
+    target.innerHTML = qr.createSvgTag({ cellSize: 5, margin: 0, scalable: true });
 });
 </script>
 {% endblock %}
 
 {% block stylesheet %}
 <style>
-#qrcode canvas { width: 150px; }
+#qrcode svg { width: 150px; height: 150px; }
 </style>
 {% endblock %}
 

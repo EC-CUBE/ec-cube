@@ -25,26 +25,54 @@ file that was distributed with this source code.
 
 {% block javascript %}
 <script>
-$(function() {
+document.addEventListener('DOMContentLoaded', function() {
+
+    function postForm(url, data) {
+        var body = new URLSearchParams();
+        Object.keys(data || {}).forEach(function(key) {
+            if (data[key] !== undefined && data[key] !== null) {
+                body.append(key, data[key]);
+            }
+        });
+        return window.eccubeFetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+                'Accept': 'application/json'
+            },
+            body: body
+        }).then(function(res) {
+            return res.text().then(function(text) {
+                var json = null;
+                try { json = text ? JSON.parse(text) : null; } catch (e) { json = null; }
+                if (!res.ok) {
+                    var err = new Error('HTTP ' + res.status);
+                    err.responseJSON = json;
+                    err.responseText = text;
+                    throw err;
+                }
+                return json !== null ? json : {};
+            });
+        });
+    }
 
     var MODES = {
         'install': {
             'name': 'インストール',
             'init': function(ctx) {
-                ctx.progressBar.css('width', (0.5/ctx.totalCount*100) + '%');
+                ctx.progressBar.style.width = (0.5 / ctx.totalCount * 100) + '%';
             },
             'execute': function(ctx) {
                 return ctx.deferred.then(function() {
-                    ctx.statusBar.text('「' + ctx.plugin.pluginCode + '」をインストール中');
+                    ctx.statusBar.textContent = '「' + ctx.plugin.pluginCode + '」をインストール中';
                     ctx.log('**************** ' + ctx.plugin.pluginCode + ' ****************');
-                    return $.post("{{ url('admin_store_plugin_api_install') }}", ctx.plugin).then(function(data) {
+                    return postForm("{{ url('admin_store_plugin_api_install') }}", ctx.plugin).then(function(data) {
                         ctx.currentCount += 1;
-                        ctx.progressBar.css('width', ((ctx.currentCount/ctx.totalCount + 0.5/ctx.totalCount)*100) + '%');
-                        ctx.log(data.log);
-                    })
+                        ctx.progressBar.style.width = ((ctx.currentCount / ctx.totalCount + 0.5 / ctx.totalCount) * 100) + '%';
+                        ctx.log(data && data.log);
+                    });
                 }).then(function() {
-                    // メンテナンスモード解除
-                    return $.post("{{ url('admin_disable_maintenance', { 'mode': 'auto_maintenance' }) }}", ctx.plugin);
+                    return postForm("{{ url('admin_disable_maintenance', { 'mode': 'auto_maintenance' }) }}", ctx.plugin);
                 });
             }
         },
@@ -53,40 +81,39 @@ $(function() {
             'init': function(ctx) {},
             'execute': function(ctx) {
                 return ctx.deferred.then(function() {
-                    ctx.statusBar.text('「' + ctx.plugin.pluginCode + '」を無効化中');
+                    ctx.statusBar.textContent = '「' + ctx.plugin.pluginCode + '」を無効化中';
                     ctx.log('**************** Disable ****************');
-                    return $.post(ctx.relatedTarget.data('disable-url'), ctx.plugin).then(function(data) {
+                    return postForm(ctx.relatedTarget.dataset.disableUrl, ctx.plugin).then(function(data) {
                         ctx.currentCount += 1;
-                        ctx.progressBar.css('width', '10%');
-                        ctx.log(data.log);
-                    })
+                        ctx.progressBar.style.width = '10%';
+                        ctx.log(data && data.log);
+                    });
                 }).then(function() {
-                    ctx.statusBar.text('「' + ctx.plugin.pluginCode + '」をアップデート中');
+                    ctx.statusBar.textContent = '「' + ctx.plugin.pluginCode + '」をアップデート中';
                     ctx.log('**************** Upgrade ****************');
-                    return $.post("{{ url('admin_store_plugin_api_upgrade') }}", ctx.plugin).then(function(data) {
+                    return postForm("{{ url('admin_store_plugin_api_upgrade') }}", ctx.plugin).then(function(data) {
                         ctx.currentCount += 1;
-                        ctx.progressBar.css('width', '40%');
-                        ctx.log(data.log);
-                    })
+                        ctx.progressBar.style.width = '40%';
+                        ctx.log(data && data.log);
+                    });
                 }).then(function() {
-                    ctx.statusBar.text('「' + ctx.plugin.pluginCode + '」のスキーマ更新中');
+                    ctx.statusBar.textContent = '「' + ctx.plugin.pluginCode + '」のスキーマ更新中';
                     ctx.log('**************** Schema Update ****************');
-                    return $.post("{{ url('admin_store_plugin_api_schema_update') }}", ctx.plugin).then(function(data) {
+                    return postForm("{{ url('admin_store_plugin_api_schema_update') }}", ctx.plugin).then(function(data) {
                         ctx.currentCount += 1;
-                        ctx.progressBar.css('width', '60%');
-                        ctx.log(data.log);
-                    })
+                        ctx.progressBar.style.width = '60%';
+                        ctx.log(data && data.log);
+                    });
                 }).then(function() {
-                    ctx.statusBar.text('「' + ctx.plugin.pluginCode + '」の更新処理中');
+                    ctx.statusBar.textContent = '「' + ctx.plugin.pluginCode + '」の更新処理中';
                     ctx.log('**************** Update ****************');
-                    return $.post("{{ url('admin_store_plugin_api_update') }}", ctx.plugin).then(function(data) {
+                    return postForm("{{ url('admin_store_plugin_api_update') }}", ctx.plugin).then(function(data) {
                         ctx.currentCount += 1;
-                        ctx.progressBar.css('width', '80%');
-                        ctx.log(data.log);
-                    })
+                        ctx.progressBar.style.width = '80%';
+                        ctx.log(data && data.log);
+                    });
                 }).then(function() {
-                    // メンテナンスモード解除
-                    return $.post("{{ url('admin_disable_maintenance', { 'mode': 'auto_maintenance_update' }) }}", ctx.plugin);
+                    return postForm("{{ url('admin_disable_maintenance', { 'mode': 'auto_maintenance_update' }) }}", ctx.plugin);
                 });
             }
         }
@@ -94,83 +121,102 @@ $(function() {
 
     var mode;
     var relatedTarget;
-    var modal = $('#installModal');
-    var message = $('div.modal-body > p', modal);
+    var modal = document.getElementById('installModal');
+    var message = modal ? modal.querySelector('div.modal-body > p') : null;
 
-    $('#installModal').on('show.bs.modal', function(e) {
-        relatedTarget = $(e.relatedTarget);
-        mode = MODES[relatedTarget.data('mode')];
-        $('.modal-title', modal).text(mode.name + '確認');
-        message.text('「{{ item.name|escape('js') }} ({{ item.version }})」を' + mode.name + 'しますか？');
-        $('#installBtn').text(mode.name);
-    });
-
-    $('#installBtn').on('click', function() {
-        message.text('「{{ item.name|escape('js') }} ({{ item.version }})」を' + mode.name + '中。この処理には数分かかる場合があります。画面をリロードせずにこのままお待ち下さい。');
-        var footer = $('div.modal-footer', modal).hide();
-        var progress = $('div.progress', modal).show();
-        var statusBar = $('#installStatus').text('');
-        var log = function(text) {
-            if (text) {
-                $('#installLog').text($('#installLog').text() ? ($('#installLog').text() + '\n' + text) : text);
-            }
-        };
-
-        var requires = {{ requires|json_encode|raw }};
-        requires = requires.map(function(req) {
-            return {'pluginCode':req.name.replace(/^ec-cube\//, '') }
+    if (modal) {
+        modal.addEventListener('show.bs.modal', function(e) {
+            relatedTarget = e.relatedTarget;
+            mode = MODES[relatedTarget && relatedTarget.dataset ? relatedTarget.dataset.mode : null];
+            if (!mode) return;
+            var title = modal.querySelector('.modal-title');
+            if (title) title.textContent = mode.name + '確認';
+            if (message) message.textContent = '「{{ item.name|escape('js') }} ({{ item.version }})」を' + mode.name + 'しますか？';
+            var btn = document.getElementById('installBtn');
+            if (btn) btn.textContent = mode.name;
         });
-        requires.push({'pluginCode': '{{ item.code }}', 'version': '{{ item.version }}'});
+    }
 
-        var progressBar = $('div.progress-bar', progress);
-
-        var d = $.Deferred().resolve();
-
-        var ctx = {
-            'statusBar': statusBar,
-            'progressBar': progressBar,
-            'log': log,
-            'currentCount': 0,
-            'totalCount': requires.length,
-            'deferred': d,
-            'relatedTarget': relatedTarget
-        };
-
-        mode.init(ctx);
-
-        requires.forEach(function(req) {
-            d = mode.execute($.extend({}, ctx, {
-                'plugin': req,
-                'deferred': d
-            }));
-        });
-
-        d.done(function() {
-            $('div.progress-bar', progress).css('width', '100%');
-
-            var message_text = 'インストールが完了しました。';
-            {% if is_update and Plugin.enabled %}
-                message_text += 'プラグイン一覧より有効化を行って下さい。';
-            {% endif %}
-            message.text(message_text);
-
-        }).fail(function(res) {
-            message.text('システムエラーが発生しました。');
-            if (res.responseJSON) {
-                log(res.responseJSON.log);
+    var installBtn = document.getElementById('installBtn');
+    if (installBtn) {
+        installBtn.addEventListener('click', function() {
+            if (!mode || !modal) return;
+            if (message) {
+                message.textContent = '「{{ item.name|escape('js') }} ({{ item.version }})」を' + mode.name + '中。この処理には数分かかる場合があります。画面をリロードせずにこのままお待ち下さい。';
             }
-            if (res.responseText) {
-                log(res.responseText);
-            }
-        }).always(function() {
-            statusBar.hide();
-            $('#installLogPane').show();
-            $('button', footer).hide();
-            $('a', footer).show();
-            footer.show();
-            progress.hide();
+            var footer = modal.querySelector('div.modal-footer');
+            if (footer) footer.style.display = 'none';
+            var progress = modal.querySelector('div.progress');
+            if (progress) progress.style.display = '';
+            var statusBar = document.getElementById('installStatus');
+            if (statusBar) statusBar.textContent = '';
+            var logEl = document.getElementById('installLog');
+            var log = function(text) {
+                if (text && logEl) {
+                    logEl.textContent = logEl.textContent ? (logEl.textContent + '\n' + text) : text;
+                }
+            };
+
+            var requires = {{ requires|json_encode|raw }};
+            requires = requires.map(function(req) {
+                return { 'pluginCode': req.name.replace(/^ec-cube\//, '') };
+            });
+            requires.push({ 'pluginCode': '{{ item.code }}', 'version': '{{ item.version }}' });
+
+            var progressBar = progress ? progress.querySelector('div.progress-bar') : null;
+
+            var d = Promise.resolve();
+            var baseCtx = {
+                'statusBar': statusBar,
+                'progressBar': progressBar,
+                'log': log,
+                'currentCount': 0,
+                'totalCount': requires.length,
+                'deferred': d,
+                'relatedTarget': relatedTarget
+            };
+
+            mode.init(baseCtx);
+
+            requires.forEach(function(req) {
+                var ctx = Object.assign({}, baseCtx, {
+                    'plugin': req,
+                    'deferred': d
+                });
+                d = mode.execute(ctx);
+                // 後続が currentCount を参照できるよう同期で共有
+                ctx.deferred = d;
+                baseCtx = ctx;
+            });
+
+            d.then(function() {
+                if (progressBar) progressBar.style.width = '100%';
+                var message_text = 'インストールが完了しました。';
+                {% if is_update and Plugin.enabled %}
+                    message_text += 'プラグイン一覧より有効化を行って下さい。';
+                {% endif %}
+                if (message) message.textContent = message_text;
+            }).catch(function(res) {
+                if (message) message.textContent = 'システムエラーが発生しました。';
+                if (res && res.responseJSON) {
+                    log(res.responseJSON.log);
+                }
+                if (res && res.responseText) {
+                    log(res.responseText);
+                }
+            }).finally(function() {
+                if (statusBar) statusBar.style.display = 'none';
+                var logPane = document.getElementById('installLogPane');
+                if (logPane) logPane.style.display = '';
+                if (footer) {
+                    footer.querySelectorAll('button').forEach(function(el) { el.style.display = 'none'; });
+                    footer.querySelectorAll('a').forEach(function(el) { el.style.display = ''; });
+                    footer.style.display = '';
+                }
+                if (progress) progress.style.display = 'none';
+            });
         });
-    });
+    }
 });
 
 </script>

@@ -20,44 +20,51 @@ file that was distributed with this source code.
 
 {% block javascript %}
     <script>
-        $(function() {
-            $('#set_fee_all').on('click', function() {
-                var fee = $('#{{ form.free_all.vars.id }}').val();
-                if ($.isNumeric(fee)) {
-                    $('input[name$="[fee]"]').val(fee);
-                    return;
-                }
-                alert("{{ 'admin.setting.shop.delivery.fee.invalid'|trans }}");
-            });
+        document.addEventListener('DOMContentLoaded', function() {
+            var setFeeAll = document.getElementById('set_fee_all');
+            if (setFeeAll) {
+                setFeeAll.addEventListener('click', function() {
+                    var feeInput = document.getElementById('{{ form.free_all.vars.id }}');
+                    var fee = feeInput ? feeInput.value : '';
+                    if (fee !== '' && !isNaN(fee) && isFinite(fee)) {
+                        document.querySelectorAll('input[name$="[fee]"]').forEach(function(el) {
+                            el.value = fee;
+                        });
+                        return;
+                    }
+                    alert("{{ 'admin.setting.shop.delivery.fee.invalid'|trans }}");
+                });
+            }
         });
     </script>
     <script>
-        // 降順にソートする
-        $(function() {
-            var $items_wrapper = $('.sortable-container');
-            var $items = $('.sortable-item');
-            $items.sort(function(a, b) {
-                return parseInt($(a).find('.sort-no').val()) > parseInt($(b).find('.sort-no').val());
-            });
-            $items.each(function() {
-                $items_wrapper.append($(this).remove());
-            })
-        });
+        function getDeliveryTimeItems() {
+            return Array.prototype.slice.call(document.querySelectorAll('.sortable-container .sortable-item'));
+        }
 
         // 並び替え後にsort noを更新
         function updateSortNo() {
-            var $items = $('.sortable-container').find('.sortable-item');
-            $items.each(function() {
-                $(this).find('.sort-no').val($items.index(this) + 1);
+            var items = getDeliveryTimeItems();
+            items.forEach(function(el, i) {
+                var sortNo = el.querySelector('.sort-no');
+                if (sortNo) sortNo.value = i + 1;
             });
         }
 
         // 最初と最後の↑↓を再描画
         function redrawDisableAllows() {
-            var items = $('.sortable-item');
-            items.find('a').removeClass('disabled');
-            items.first().find('a.action-up').addClass('disabled');
-            items.last().find('a.action-down').addClass('disabled');
+            var items = getDeliveryTimeItems();
+            items.forEach(function(item) {
+                item.querySelectorAll('a').forEach(function(a) {
+                    a.classList.remove('disabled');
+                });
+            });
+            if (items.length > 0) {
+                var firstUp = items[0].querySelector('a.action-up');
+                if (firstUp) firstUp.classList.add('disabled');
+                var lastDown = items[items.length - 1].querySelector('a.action-down');
+                if (lastDown) lastDown.classList.add('disabled');
+            }
         }
 
         // 表示順の更新を行う
@@ -66,148 +73,196 @@ file that was distributed with this source code.
             redrawDisableAllows();
         }
 
-        $(function() {
+        document.addEventListener('DOMContentLoaded', function() {
+            // 降順にソートする
+            var itemsWrapper = document.querySelector('.sortable-container');
+            if (itemsWrapper) {
+                var items = Array.prototype.slice.call(itemsWrapper.querySelectorAll('.sortable-item'));
+                items.sort(function(a, b) {
+                    var av = parseInt(a.querySelector('.sort-no') ? a.querySelector('.sort-no').value : '0');
+                    var bv = parseInt(b.querySelector('.sort-no') ? b.querySelector('.sort-no').value : '0');
+                    return av - bv;
+                });
+                items.forEach(function(el) {
+                    itemsWrapper.appendChild(el);
+                });
+            }
 
-            var $collectionHolder = $('#delivery-time-group');
-            var index = $collectionHolder.find('.delivery-time-item').length;
+            var collectionHolder = document.getElementById('delivery-time-group');
+            if (!collectionHolder) return;
+            var index = collectionHolder.querySelectorAll('.delivery-time-item').length;
 
             redrawDisableAllows();
 
             // お届け時間設定の新規作成ボタンでお届け時間項目を追加する
-            $('#add-delivery-time-button').on('click', function(event) {
+            var addBtn = document.getElementById('add-delivery-time-button');
+            if (addBtn) {
+                addBtn.addEventListener('click', function() {
+                    var addInput = document.getElementById('add-delivery-time-value');
+                    var deliveryTimeName = addInput ? addInput.value : '';
+                    if (deliveryTimeName == '') {
+                        return;
+                    }
 
-                // 追加するお届け時間名を取得
-                var deliveryTimeName = $('#add-delivery-time-value').val();
+                    var prototype = collectionHolder.dataset.prototype || '';
+                    var html = prototype.replace(/__name__/g, index);
+                    var template = document.createElement('template');
+                    template.innerHTML = html.trim();
+                    var newForm = template.content.firstElementChild;
+                    if (!newForm) return;
 
-                if (deliveryTimeName == '') {
+                    var label = newForm.querySelector('.display-label');
+                    if (label) label.textContent = deliveryTimeName;
+
+                    // 要素を追加（最終要素の後ろへ）
+                    var children = collectionHolder.children;
+                    var lastRow = children.length > 0 ? children[children.length - 1] : null;
+                    if (lastRow && lastRow.parentNode) {
+                        lastRow.parentNode.insertBefore(newForm, lastRow.nextSibling);
+                    } else {
+                        collectionHolder.appendChild(newForm);
+                    }
+
+                    // お届け時間名を入れる
+                    var inputId = 'delivery_delivery_times_' + index + '_delivery_time';
+                    var input = document.getElementById(inputId);
+                    if (input) {
+                        input.value = deliveryTimeName;
+                        input.setAttribute('data-origin-value', deliveryTimeName);
+                    }
+
+                    if (addInput) addInput.value = '';
+                    index++;
+
+                    moveSortNo();
+                });
+            }
+
+            collectionHolder.addEventListener('click', function(e) {
+                var current = e.target.closest('li');
+                if (!current) return;
+
+                // 明細行の削除
+                var remove = e.target.closest('.remove-delivery-time-item');
+                if (remove) {
+                    e.preventDefault();
+                    var tip = bootstrap.Tooltip.getInstance(remove);
+                    if (tip) tip.hide();
+                    current.remove();
+                    moveSortNo();
                     return;
                 }
 
-                var prototype = $collectionHolder.data('prototype');
+                // Up
+                var up = e.target.closest('a.action-up');
+                if (up) {
+                    e.preventDefault();
+                    var prev = current.previousElementSibling;
+                    if (prev && prev.classList.contains('sortable-item')) {
+                        prev.parentNode.insertBefore(current, prev);
+                        moveSortNo();
+                    }
+                    return;
+                }
 
-                var newForm = $(prototype.replace(/__name__/g, index));
-                newForm.find('.display-label').text(deliveryTimeName)
+                // Down
+                var down = e.target.closest('a.action-down');
+                if (down) {
+                    e.preventDefault();
+                    var next = current.nextElementSibling;
+                    if (next && next.classList.contains('sortable-item')) {
+                        next.parentNode.insertBefore(current, next.nextSibling);
+                        moveSortNo();
+                    }
+                    return;
+                }
 
-                // 要素を追加
-                var $lastRow = $('#delivery-time-group > li:last');
-                $lastRow.after(newForm);
+                // 編集
+                var edit = e.target.closest('a.action-edit');
+                if (edit) {
+                    e.preventDefault();
+                    current.querySelectorAll('.mode-view').forEach(function(el) { el.classList.add('d-none'); });
+                    current.querySelectorAll('.mode-edit').forEach(function(el) { el.classList.remove('d-none'); });
+                    current.querySelectorAll('.action-edit-submit, .action-edit-cancel').forEach(function(el) { el.disabled = false; });
+                    return;
+                }
 
-                // お届け時間名を入れる
-                var inputId = '#delivery_delivery_times_' + index + '_delivery_time';
-                $(inputId).val(deliveryTimeName);
-                $(inputId).attr('data-origin-value', deliveryTimeName);
+                // 編集決定
+                var submit = e.target.closest('button.action-edit-submit');
+                if (submit) {
+                    e.preventDefault();
+                    var input1 = current.querySelector('.form-control');
+                    var value1 = input1 ? input1.value : '';
+                    var label1 = current.querySelector('.display-label');
+                    if (label1) label1.textContent = value1;
+                    current.querySelectorAll('.mode-view').forEach(function(el) { el.classList.remove('d-none'); });
+                    current.querySelectorAll('.mode-edit').forEach(function(el) { el.classList.add('d-none'); });
+                    current.querySelectorAll('[data-origin-value]').forEach(function(el) {
+                        el.setAttribute('data-origin-value', value1);
+                    });
+                    return;
+                }
 
-                // 入力欄を初期化
-                $('#add-delivery-time-value').val('');
+                // 編集キャンセル
+                var cancel = e.target.closest('button.action-edit-cancel');
+                if (cancel) {
+                    e.preventDefault();
+                    current.querySelectorAll('[data-origin-value]').forEach(function(el) {
+                        el.value = el.getAttribute('data-origin-value') || '';
+                    });
+                    var input2 = current.querySelector('.form-control');
+                    var value2 = input2 ? input2.value : '';
+                    var label2 = current.querySelector('.display-label');
+                    if (label2) label2.textContent = value2;
+                    current.querySelectorAll('.mode-view').forEach(function(el) { el.classList.remove('d-none'); });
+                    current.querySelectorAll('.mode-edit').forEach(function(el) { el.classList.add('d-none'); });
+                    return;
+                }
 
-                // 要素数をインクリメント
-                index++;
-
-                moveSortNo();
-            });
-
-            // 明細行の削除
-            $('#delivery-time-group').on('click', '.remove-delivery-time-item', function(event) {
-                event.preventDefault();
-
-                $(this).tooltip('hide');
-
-                // 自身の行を削除.
-                $(event.target).parents('li').remove();
-
-                moveSortNo();
+                // 表示・非表示の切り替え
+                var visible = e.target.closest('a.action-visible');
+                if (visible) {
+                    e.preventDefault();
+                    var icon = visible.querySelector('i');
+                    var visibleInput = current.querySelector('.visible');
+                    if (icon && icon.classList.contains('fa-toggle-on')) {
+                        icon.classList.add('fa-toggle-off');
+                        icon.classList.remove('fa-toggle-on');
+                        visible.setAttribute('title', '{{ 'admin.common.to_show'|trans }}');
+                        visible.setAttribute('data-bs-original-title', '{{ 'admin.common.to_show'|trans }}');
+                        if (visibleInput) visibleInput.value = '0';
+                    } else if (icon) {
+                        icon.classList.add('fa-toggle-on');
+                        icon.classList.remove('fa-toggle-off');
+                        visible.setAttribute('title', '{{ 'admin.common.to_hide'|trans }}');
+                        visible.setAttribute('data-bs-original-title', '{{ 'admin.common.to_hide'|trans }}');
+                        if (visibleInput) visibleInput.value = '1';
+                    }
+                    var tooltip = bootstrap.Tooltip.getInstance(visible);
+                    if (tooltip) tooltip.show();
+                    return;
+                }
             });
 
             // Drag and Drop
-            $('.sortable-container').sortable({
-                items: '> .sortable-item',
-                cursor: 'move',
-                update: function(e, ui) {
-                    moveSortNo();
-                }
-            });
-            // Up
-            $('#delivery-time-group').on('click', 'a.action-up', function(e) {
-                e.preventDefault();
-                var current = $(this).parents('li');
-                if (current.prev().hasClass('sortable-item')) {
-                    current.prev().before(current);
-                    moveSortNo();
-                }
-            });
-            // Down
-            $('#delivery-time-group').on('click', 'a.action-down', function(e) {
-                e.preventDefault();
-                var current = $(this).parents('li');
-                if (current.next().hasClass('sortable-item')) {
-                    current.next().after(current);
-                    moveSortNo();
-                }
-            });
-
-            // 編集
-            $('#delivery-time-group').on('click', 'a.action-edit', function(e) {
-                e.preventDefault();
-                var current = $(this).parents('li');
-                current.find('.mode-view').addClass('d-none');
-                current.find('.mode-edit').removeClass('d-none');
-                current.find('.action-edit-submit').attr('disabled', false);
-                current.find('.action-edit-cancel').attr('disabled', false);
-            });
-
-            // 編集決定
-            $('#delivery-time-group').on('click', 'button.action-edit-submit', function(e) {
-                e.preventDefault();
-                var current = $(this).parents('li');
-                var value = current.find('.form-control').val();
-                current.find('.display-label').text(value);
-                current.find('.mode-view').removeClass('d-none');
-                current.find('.mode-edit').addClass('d-none');
-                current.find('[data-origin-value]').each(function(e) {
-                    $(this).attr('data-origin-value', value);
+            var sortContainer = document.querySelector('.sortable-container');
+            if (sortContainer && typeof Sortable !== 'undefined') {
+                Sortable.create(sortContainer, {
+                    draggable: '.sortable-item',
+                    handle: '.fa-bars',
+                    animation: 150,
+                    onUpdate: function() {
+                        moveSortNo();
+                    }
                 });
-            });
-            // 編集キャンセル
-            $('#delivery-time-group').on('click', 'button.action-edit-cancel', function(e) {
-                e.preventDefault();
-                var current = $(this).parents('li');
-                current.find('[data-origin-value]').each(function(e) {
-                    $(this).val($(this).attr('data-origin-value'));
-                });
-                var value = current.find('.form-control').val();
-                current.find('.display-label').text(value);
-                current.find('.mode-view').removeClass('d-none');
-                current.find('.mode-edit').addClass('d-none');
-            });
+            }
+
             // 編集時, エラーがあれば入力欄を表示.
-            $('#delivery-time-group').find('.is-invalid').each(function(e) {
-                var current = $(this).parents('li');
-                current.find('.mode-view').addClass('d-none');
-                current.find('.mode-edit').removeClass('d-none');
-            });
-            // 表示・非表示の切り替え
-            $('#delivery-time-group').on('click', 'a.action-visible', function(e) {
-                e.preventDefault();
-
-                var $this = $(this);
-                var $i = $this.find('i');
-
-                if ($i.hasClass('fa-toggle-on')) {
-                    $i.addClass('fa-toggle-off');
-                    $i.removeClass('fa-toggle-on');
-                    $this.attr('title', '{{ 'admin.common.to_show'|trans }}');
-                    $this.attr('data-bs-original-title', '{{ 'admin.common.to_show'|trans }}');
-                    $this.parents('li').find('.visible').val('0');
-                } else {
-                    $i.addClass('fa-toggle-on');
-                    $i.removeClass('fa-toggle-off');
-                    $this.attr('title', '{{ 'admin.common.to_hide'|trans }}');
-                    $this.attr('data-bs-original-title', '{{ 'admin.common.to_hide'|trans }}');
-                    $this.parents('li').find('.visible').val('1');
-                }
-                // ツールチップの表示を更新
-                tooltip = bootstrap.Tooltip.getInstance($(this).get(0));
-                tooltip.show();
+            collectionHolder.querySelectorAll('.is-invalid').forEach(function(el) {
+                var current = el.closest('li');
+                if (!current) return;
+                current.querySelectorAll('.mode-view').forEach(function(e) { e.classList.add('d-none'); });
+                current.querySelectorAll('.mode-edit').forEach(function(e) { e.classList.remove('d-none'); });
             });
         });
     </script>

@@ -8,7 +8,8 @@ require('ace-builds/src-min-noconflict/ace');
 require('ace-builds/src-min-noconflict/ext-language_tools');
 require('ace-builds/webpack-resolver');
 
-require('jquery.qrcode');
+const qrcode = require('qrcode-generator');
+global.qrcode = qrcode;
 
 require('jquery-ui/themes/base/all.css');
 require('jquery-ui/ui/core');
