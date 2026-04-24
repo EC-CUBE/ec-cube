@@ -9,51 +9,49 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
 <script>
-    $('.set-customer').on('click', function() {
-        $.ajax({
-            url: '{{ url('admin_order_search_customer_by_id') }}',
-            type: 'POST',
-            dataType: 'json',
-            data: {'id': this.dataset.customer}
-        }).done(function(data) {
-            // 顧客情報をフォームにセットする.
-            $('#order_CustomerId').html(data['id']);
-            $('#order_Customer').val(data['id']);
-            $('#order_name_name01').val(data['name01']);
-            $('#order_name_name02').val(data['name02']);
-            $('#order_kana_kana01').val(data['kana01']);
-            $('#order_kana_kana02').val(data['kana02']);
-            $('#order_postal_code').val(data['postal_code']);
-            $('#order_address_pref').val(data['pref']);
-            $('#order_address_addr01').val(data['addr01']);
-            $('#order_address_addr02').val(data['addr02']);
-            $('#order_email').val(data['email']);
-            $('#order_phone_number').val(data['phone_number']);
-            $('#order_company_name').val(data['company_name']);
-            // モーダルを閉じる.
-            bootstrap.Modal.getInstance(document.getElementById('searchCustomerModal'))?.hide();
-        }).fail(function(data) {
-            alert('search customer(by id) failed.');
+    document.querySelectorAll('.set-customer').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            window.eccubeFetch('{{ url('admin_order_search_customer_by_id') }}', {
+                method: 'POST',
+                body: new URLSearchParams({'id': this.dataset.customer})
+            }).then(function(response) { return response.json(); })
+            .then(function(data) {
+                document.getElementById('order_CustomerId').textContent = data['id'];
+                document.getElementById('order_Customer').value = data['id'];
+                document.getElementById('order_name_name01').value = data['name01'];
+                document.getElementById('order_name_name02').value = data['name02'];
+                document.getElementById('order_kana_kana01').value = data['kana01'];
+                document.getElementById('order_kana_kana02').value = data['kana02'];
+                document.getElementById('order_postal_code').value = data['postal_code'];
+                document.getElementById('order_address_pref').value = data['pref'];
+                document.getElementById('order_address_addr01').value = data['addr01'];
+                document.getElementById('order_address_addr02').value = data['addr02'];
+                document.getElementById('order_email').value = data['email'];
+                document.getElementById('order_phone_number').value = data['phone_number'];
+                document.getElementById('order_company_name').value = data['company_name'];
+                bootstrap.Modal.getInstance(document.getElementById('searchCustomerModal'))?.hide();
+            }).catch(function() {
+                alert('search customer(by id) failed.');
+            });
         });
     });
 
     // 会員検索
-    $('#customer_pagination a').on('click', function(event) {
-        if (!$(this).parent().is('.active')) {
-            var list = $('#searchCustomerModalList');
-            list.children().remove();
-
-            $.ajax({
-                url: $(this).attr('href'),
-                type: 'GET',
-                dataType: 'html'
-            }).done(function(data) {
-                $('#searchCustomerModalList').html(data);
-            }).fail(function(data) {
-                alert('search customer failed.');
-            });
-        }
-        event.preventDefault();
+    document.querySelectorAll('#customer_pagination a').forEach(function(a) {
+        a.addEventListener('click', function(event) {
+            event.preventDefault();
+            if (!this.parentElement.classList.contains('active')) {
+                var list = document.getElementById('searchCustomerModalList');
+                list.innerHTML = '';
+                fetch(this.getAttribute('href'))
+                    .then(function(response) { return response.text(); })
+                    .then(function(data) {
+                        document.getElementById('searchCustomerModalList').innerHTML = data;
+                    }).catch(function() {
+                        alert('search customer failed.');
+                    });
+            }
+        });
     });
 </script>
 

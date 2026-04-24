@@ -22,198 +22,205 @@ file that was distributed with this source code.
 {% block javascript %}
     <script src="https://yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
     <script>
-        $(function() {
+        document.addEventListener('DOMContentLoaded', function() {
             // 項目数が多く、入力している項目によってEnter押下時に期待する動作が変わるので、いったん禁止
-            $('input').on('keydown', function(e) {
-                if ((e.which && e.which === 13) || (e.keyCode && e.keyCode === 13)) {
-                    return false;
-                } else {
-                    return true;
-                }
+            document.querySelectorAll('input').forEach(function(input) {
+                input.addEventListener('keydown', function(e) {
+                    var code = e.which || e.keyCode;
+                    if (code === 13) {
+                        e.preventDefault();
+                        return false;
+                    }
+                });
             });
 
             // 会員検索
-            $('#searchCustomerModalButton').on('click', function() {
-                var list = $('#searchCustomerModalList');
-                list.children().remove();
-
-                $.ajax({
-                    url: '{{ url('admin_order_search_customer_html') }}',
-                    type: 'POST',
-                    dataType: 'html',
-                    data: {'search_word': $('#admin_search_customer_multi').val()}
-                }).done(function(data) {
-                    $('#searchCustomerModalList').html(data);
-                }).fail(function(data) {
+            document.getElementById('searchCustomerModalButton').addEventListener('click', function() {
+                document.getElementById('searchCustomerModalList').innerHTML = '';
+                window.eccubeFetch('{{ url('admin_order_search_customer_html') }}', {
+                    method: 'POST',
+                    body: new URLSearchParams({'search_word': document.getElementById('admin_search_customer_multi').value})
+                }).then(function(response) { return response.text(); })
+                .then(function(data) {
+                    document.getElementById('searchCustomerModalList').innerHTML = data;
+                }).catch(function() {
                     alert('search customer failed.');
                 });
             });
 
             // 商品検索
-            $('#searchProductModalButton').on('click', function() {
-                var list = $('#searchProductModalList');
-                list.children().remove();
-
-                $.ajax({
-                    url: '{{ url('admin_order_search_product') }}',
-                    type: 'POST',
-                    dataType: 'html',
-                    data: {
-                        'id': $('#admin_search_product_id').val(),
-                        'category_id': $('#admin_search_product_category_id').val()
-                    }
-                }).done(function(data) {
-                    $('#searchProductModalList').html(data);
-                }).fail(function(data) {
+            document.getElementById('searchProductModalButton').addEventListener('click', function() {
+                document.getElementById('searchProductModalList').innerHTML = '';
+                window.eccubeFetch('{{ url('admin_order_search_product') }}', {
+                    method: 'POST',
+                    body: new URLSearchParams({
+                        'id': document.getElementById('admin_search_product_id').value,
+                        'category_id': document.getElementById('admin_search_product_category_id').value
+                    })
+                }).then(function(response) { return response.text(); })
+                .then(function(data) {
+                    document.getElementById('searchProductModalList').innerHTML = data;
+                }).catch(function() {
                     alert('search product failed.');
                 });
             });
 
             // その他明細
-            $('#addOrderItemType').on('show.bs.modal', function(e) {
-                var list = $('#searchOrderItemTypeList');
-                list.children().remove();
-
-                $.ajax({
-                    url: '{{ url('admin_order_search_order_item_type') }}',
-                    type: 'POST',
-                    dataType: 'html'
-                }).done(function(data) {
-                    $('#searchOrderItemTypeList').html(data);
-                }).fail(function(data) {
-                    alert('search order item type failed.');
+            var addOrderItemTypeModal = document.getElementById('addOrderItemType');
+            if (addOrderItemTypeModal) {
+                addOrderItemTypeModal.addEventListener('show.bs.modal', function() {
+                    document.getElementById('searchOrderItemTypeList').innerHTML = '';
+                    window.eccubeFetch('{{ url('admin_order_search_order_item_type') }}', {
+                        method: 'POST'
+                    }).then(function(response) { return response.text(); })
+                    .then(function(data) {
+                        document.getElementById('searchOrderItemTypeList').innerHTML = data;
+                    }).catch(function() {
+                        alert('search order item type failed.');
+                    });
                 });
-            });
+            }
 
-            // ページング処理
-            $(document).on('click', '#searchProductModalList ul.pagination li.page-item a.page-link', function(e) {
+            // ページング処理 (動的に追加される要素のため delegate)
+            document.addEventListener('click', function(e) {
+                var target = e.target.closest('#searchProductModalList ul.pagination li.page-item a.page-link');
+                if (!target) return;
                 e.preventDefault();
-                var list = $('#searchProductModalList');
-                list.children().remove();
-                var url = $(this).attr('href');
-                $.ajax({
-                    url: url,
-                    type: 'GET',
-                    dataType: 'html'
-                }).done(function(data) {
-                    $('#searchProductModalList').html(data);
-                }).fail(function(data) {
-                    alert('search product failed.');
-                });
+                document.getElementById('searchProductModalList').innerHTML = '';
+                fetch(target.getAttribute('href'))
+                    .then(function(response) { return response.text(); })
+                    .then(function(data) {
+                        document.getElementById('searchProductModalList').innerHTML = data;
+                    }).catch(function() {
+                        alert('search product failed.');
+                    });
             });
 
             // 商品追加
-            $collectionHolder = $('#table-form-field');
-            index = $collectionHolder.find('tbody > tr').length;
+            $collectionHolder = document.getElementById('table-form-field');
+            index = $collectionHolder.querySelectorAll('tbody > tr').length;
             formIdPrefix = '#order_OrderItems_';
             if (index > 0) {
-                let row = '#' + $collectionHolder.find('tbody > tr').last().data("row");
+                var trs = $collectionHolder.querySelectorAll('tbody > tr');
+                var row = '#' + trs[trs.length - 1].dataset.row;
                 index = row.replace(formIdPrefix, '');
             }
 
-            $(document).on('click', '.delete', function(e) {
-                // 商品削除
-                $(this).parents('tr').remove();
+            // 商品削除 (動的に追加される .delete のため delegate)
+            document.addEventListener('click', function(e) {
+                var target = e.target.closest('.delete');
+                if (!target) return;
+                var tr = target.closest('tr');
+                if (tr) tr.remove();
                 index--;
-                $("#calculate").trigger('click');
+                var calc = document.getElementById('calculate');
+                if (calc) calc.click();
             });
 
             // 計算結果の更新が押されたらページ内リンクさせる
-            $('.btn').click(function() {
-                var data = $(this).data();
-                if (data.link) {
-                    $('#form1').attr('action', '#' + data.link).submit();
-                    return false;
-                }
+            document.querySelectorAll('.btn').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    if (this.dataset.link) {
+                        var form = document.getElementById('form1');
+                        form.action = '#' + this.dataset.link;
+                        form.submit();
+                        return false;
+                    }
+                });
             });
 
             // 注文者情報をコピー
-            $('.copy-customer').on('click', function() {
-                $('#order_Shipping_name_name01').val($('#order_name_name01').val());
-                $('#order_Shipping_name_name02').val($('#order_name_name02').val());
-                $('#order_Shipping_kana_kana01').val($('#order_kana_kana01').val());
-                $('#order_Shipping_kana_kana02').val($('#order_kana_kana02').val());
-                $('#order_Shipping_postal_code').val($('#order_postal_code').val());
-                $('#order_Shipping_address_pref').val($('#order_address_pref').val());
-                $('#order_Shipping_address_addr01').val($('#order_address_addr01').val());
-                $('#order_Shipping_address_addr02').val($('#order_address_addr02').val());
-                $('#order_Shipping_email').val($('#order_email').val());
-                $('#order_Shipping_phone_number').val($('#order_phone_number').val());
-                $('#order_Shipping_company_name').val($('#order_company_name').val());
+            document.querySelectorAll('.copy-customer').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var fields = ['name_name01', 'name_name02', 'kana_kana01', 'kana_kana02',
+                        'postal_code', 'address_pref', 'address_addr01', 'address_addr02',
+                        'email', 'phone_number', 'company_name'];
+                    fields.forEach(function(f) {
+                        document.getElementById('order_Shipping_' + f).value = document.getElementById('order_' + f).value;
+                    });
+                });
             });
 
             // PDF出力(単一)
-            $('.pdf-print').click(function() {
-                window.open(this.href, 'newwin', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=700, height=700');
-                return false;
-            });
-
-            // お届け時間の初期表示
-            $('#order_Shipping_Delivery').change();
-
-            var confirmFormChange = function(form, target, modal) {
-                var returnLink = form.find('input[type="hidden"][name*="return_link"]'),
-                    saveBtn = modal.find('a[data-action="save"]'),
-                    cancelBtn = modal.find('a[data-action="cancel"]');
-                modal.on('hidden.bs.modal', function() {
-                    returnLink.val('');
-                });
-                saveBtn.on('click', function() {
-                    returnLink.val($(this).data('return-link'));
-                    $(this).addClass('disabled');
-                    $('#form1').append('<input type="hidden" name="mode" value="register">');
-                    form.submit();
-                });
-                target.on('click', function() {
-                    modal.find('.modal-body .screen-name').text($(this).attr('title'));
-                    bootstrap.Modal.getOrCreateInstance(modal[0]).show();
-                    saveBtn.data('return-link', $(this).attr('href'));
-                    cancelBtn.attr('href', $(this).attr('href'));
+            document.querySelectorAll('.pdf-print').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    window.open(this.href, 'newwin', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=700, height=700');
                     return false;
                 });
-            };
-            confirmFormChange($('#form1'), $('a[data-action="confirm"]'), $('#confirmFormChangeModal'))
+            });
 
             // 配送業者選択時にお届け時間を設定
             var times = {{ shippingDeliveryTimes|raw }};
-            $('#order_Shipping_Delivery').change(function() {
-                var deliveryId = $(this).val();
-                var $shippingDeliveryTime = $('#order_Shipping_DeliveryTime');
-                $shippingDeliveryTime.find('option').remove();
-                $shippingDeliveryTime.append($('<option></option>').val('').text('{{ 'admin.common.select__unspecified'|trans }}'));
+            var deliverySelect = document.getElementById('order_Shipping_Delivery');
+            var deliveryTimeChange = function() {
+                var deliveryId = deliverySelect.value;
+                var shippingDeliveryTime = document.getElementById('order_Shipping_DeliveryTime');
+                shippingDeliveryTime.innerHTML = '';
+                var defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.textContent = '{{ 'admin.common.select__unspecified'|trans }}';
+                shippingDeliveryTime.appendChild(defaultOption);
                 if (typeof(times[deliveryId]) !== 'undefined') {
                     for (var timeId in times[deliveryId]) {
-                        timeValue = times[deliveryId][timeId];
-                        $shippingDeliveryTime.append($('<option></option>')
-                            .val(timeId)
-                            .text(timeValue));
+                        var option = document.createElement('option');
+                        option.value = timeId;
+                        option.textContent = times[deliveryId][timeId];
+                        shippingDeliveryTime.appendChild(option);
                     }
                 }
-            });
+            };
+            if (deliverySelect) {
+                deliverySelect.addEventListener('change', deliveryTimeChange);
+                // お届け時間の初期表示
+                deliveryTimeChange();
+            }
+
+            var confirmFormChange = function(form, targets, modal) {
+                var returnLink = form.querySelector('input[type="hidden"][name*="return_link"]');
+                var saveBtn = modal.querySelector('a[data-action="save"]');
+                var cancelBtn = modal.querySelector('a[data-action="cancel"]');
+                modal.addEventListener('hidden.bs.modal', function() {
+                    if (returnLink) returnLink.value = '';
+                });
+                saveBtn.addEventListener('click', function() {
+                    if (returnLink) returnLink.value = this.dataset.returnLink || '';
+                    this.classList.add('disabled');
+                    var hidden = document.createElement('input');
+                    hidden.type = 'hidden';
+                    hidden.name = 'mode';
+                    hidden.value = 'register';
+                    form.appendChild(hidden);
+                    form.submit();
+                });
+                targets.forEach(function(target) {
+                    target.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        modal.querySelector('.modal-body .screen-name').textContent = this.getAttribute('title') || '';
+                        bootstrap.Modal.getOrCreateInstance(modal).show();
+                        saveBtn.dataset.returnLink = this.getAttribute('href');
+                        cancelBtn.setAttribute('href', this.getAttribute('href'));
+                        return false;
+                    });
+                });
+            };
+            confirmFormChange(
+                document.getElementById('form1'),
+                document.querySelectorAll('a[data-action="confirm"]'),
+                document.getElementById('confirmFormChangeModal')
+            );
         });
 
         {# ポイント機能が有効かつ会員の場合のみポイントの割引金額を変更する #}
         {% if BaseInfo.isOptionPoint and Order.Customer is not null %}
             // 再計算時のポイントの割引金額の更新
             function updatePointItem() {
-                // ポイント換算レート
                 var pointConversionRate = {{ BaseInfo.point_conversion_rate }};
-                // 利用ポイント
-                var usePoint = $('#order_use_point').val();
-
-                // 利用ポイントが数値以外の時は割引金額を更新しない
+                var usePoint = document.getElementById('order_use_point').value;
                 if (isNaN(usePoint)) return;
-
-                // 割引金額を計算
                 var discountPrice = (-1) * pointConversionRate * usePoint;
-
-                // ポイント明細の金額の要素を取得
-                var $pointPrice = $('.pointPrice');
-
-                // ポイント明細の金額の要素がある場合はポイントの更新
-                if ($pointPrice.length) {
-                    $pointPrice.val(discountPrice);
-                }
+                document.querySelectorAll('.pointPrice').forEach(function(el) {
+                    el.value = discountPrice;
+                });
             }
         {% endif %}
     </script>
