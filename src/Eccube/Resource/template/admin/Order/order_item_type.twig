@@ -12,29 +12,30 @@ file that was distributed with this source code.
     // 受注明細行を追加する.
     function fnAddOrderItem($row, product_id, type, product_name, tax_type) {
         // 既存の受注明細のポイント付与率を取得する. 取得できない場合は店舗基本情報の付与率を設定する.
-        var point_rate = $('input[type=hidden][id$=point_rate]').first().val();
+        var pointRateInput = document.querySelector('input[type=hidden][id$=point_rate]');
+        var point_rate = pointRateInput ? pointRateInput.value : undefined;
         if (point_rate === undefined) {
             point_rate = '{{ BaseInfo.basic_point_rate }}';
         }
 
-        var prototype = $collectionHolder.data('prototype');
+        var prototype = $collectionHolder.dataset.prototype;
         index++;
         var newForm = prototype.replace(/__name__/g, index);
-        $collectionHolder.children('tbody').append(newForm);
-        var $lastRow = $collectionHolder.children('tbody').children('tr').last;
+        $collectionHolder.querySelector('tbody').insertAdjacentHTML('beforeend', newForm);
+        var lastRow = $collectionHolder.querySelector('tbody tr:last-child');
 
-        $($lastRow).find(formIdPrefix + index + '_price').val(0);
-        $($lastRow).find(formIdPrefix + index + '_quantity').val(1);
-        $($lastRow).find(formIdPrefix + index + '_order_item_type').val(type);
-        $($lastRow).find(formIdPrefix + index + '_product_name').val(product_name);
-        $($lastRow).find(formIdPrefix + index + '_tax_type').val(tax_type);
-        $($lastRow).find(formIdPrefix + index + '_point_rate').val(point_rate);
+        lastRow.querySelector(formIdPrefix + index + '_price').value = 0;
+        lastRow.querySelector(formIdPrefix + index + '_quantity').value = 1;
+        lastRow.querySelector(formIdPrefix + index + '_order_item_type').value = type;
+        lastRow.querySelector(formIdPrefix + index + '_product_name').value = product_name;
+        lastRow.querySelector(formIdPrefix + index + '_tax_type').value = tax_type;
+        lastRow.querySelector(formIdPrefix + index + '_point_rate').value = point_rate;
 
         // モーダル閉じる.
         bootstrap.Modal.getInstance(document.getElementById('addOrderItemType'))?.hide();
 
         // 再計算のためsubmit.
-        $('#form1').submit();
+        document.getElementById('form1').submit();
 
         return false;
     }
@@ -57,7 +58,7 @@ file that was distributed with this source code.
                 <td class="align-middle ps-3">{{ OrderItemType.OrderItemType.name }}</td>
                 <td class="align-middle ps-3">{{ OrderItemType.TaxType.name }}</td>
                 <td class="align-middle pe-3 text-end">
-                    <button type="button" class="btn btn-ec-actionIcon" onclick="fnAddOrderItem($(this).parent().parent(), null, {{ OrderItemType.OrderItemType.id }}, '{{ OrderItemType.OrderItemType.name }}', '{{ OrderItemType.TaxType.id }}')" name="mode" value="modal">
+                    <button type="button" class="btn btn-ec-actionIcon" onclick="fnAddOrderItem(this.closest('tr'), null, {{ OrderItemType.OrderItemType.id }}, '{{ OrderItemType.OrderItemType.name }}', '{{ OrderItemType.TaxType.id }}')" name="mode" value="modal">
                         <i class="fa fa-plus fa-lg fw-bold text-secondary"></i>
                     </button>
                 </td>

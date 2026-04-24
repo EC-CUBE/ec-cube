@@ -19,17 +19,17 @@ file that was distributed with this source code.
 
 {% block javascript %}
 <script>
-$(function() {
-    $('#template-change').on('change', function() {
-        $('#mode').val('change');
-        $('#order-mail-form').submit();
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('template-change').addEventListener('change', function() {
+        document.getElementById('mode').value = 'change';
+        document.getElementById('order-mail-form').submit();
         return false;
     });
 
-    $('#back').on('click', function(e) {
+    document.getElementById('back').addEventListener('click', function(e) {
         e.preventDefault();
-        $('#mode').val('back');
-        $('#order-mail-form').submit();
+        document.getElementById('mode').value = 'back';
+        document.getElementById('order-mail-form').submit();
         return false;
     });
 });

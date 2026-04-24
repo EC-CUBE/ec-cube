@@ -19,10 +19,10 @@ file that was distributed with this source code.
 
 {% block javascript %}
 <script>
-$(function() {
-    $('#template-change').on('change', function() {
-        $('#mode').val('change');
-        $('#order-mail-form').submit();
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('template-change').addEventListener('change', function() {
+        document.getElementById('mode').value = 'change';
+        document.getElementById('order-mail-form').submit();
         return false;
     });
 
@@ -38,8 +38,8 @@ $(function() {
         showInvisibles: true
     });
 
-    $('#order-mail-form').on('submit', function() {
-        $('#admin_order_mail_tpl_data').val(editor.getValue());
+    document.getElementById('order-mail-form').addEventListener('submit', function() {
+        document.getElementById('admin_order_mail_tpl_data').value = editor.getValue();
     });
 });
 </script>
