@@ -82,7 +82,7 @@ jobs:
           path: |
             html/template/**/css
             html/bundle
-          key: ${{ runner.os }}-build-${{ hashFiles('html/template/**/scss/**/*.scss', 'html/template/**/js/**/*.js', 'package-lock.json', 'gulpfile.js', 'webpack.config.js', 'gulp/**/*.js') }}
+          key: ${{ runner.os }}-build-${{ hashFiles('html/template/**/scss/**/*.scss', 'html/template/**/js/**/*.js', 'package-lock.json', 'gulpfile.js', 'rspack.config.js', 'gulp/**/*.js') }}
           restore-keys: |
             ${{ runner.os }}-build-
 

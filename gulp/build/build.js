@@ -1,7 +1,5 @@
-const { series } = require('gulp')
-const config = require('../config')
-const scss = require('../task/scss')
-const scssMin = require('../task/scss-min')
-const webpack = require('../task/webpack')
+const { parallel } = require('gulp')
+const scssAll = require('../task/scss-all')
+const rspack = require('../task/rspack')
 
-module.exports = series(scss, scssMin, webpack)
+module.exports = parallel(scssAll, rspack)

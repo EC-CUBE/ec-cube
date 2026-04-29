@@ -35,7 +35,6 @@
     "bootstrap": "^5.3.8",
     "chart.js": "^4.5.1",
     "css-loader": "^7.1.2",
-    "file-loader": "^6.2.0",
     "filepond": "^4.30.6",
     "filepond-plugin-file-validate-size": "^2.2.8",
     "filepond-plugin-file-validate-type": "^1.2.8",
@@ -46,16 +45,15 @@
     "ladda": "^2.0.3",
     "slick-carousel": "^1.8.1",
     "spin.js": "^4.1.1",
-    "style-loader": "^4.0.0",
-    "url-loader": "^4.1.1"
+    "style-loader": "^4.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.5",
-    "@babel/preset-env": "^7.26.0",
+    "@rspack/cli": "^1.7.11",
+    "@rspack/core": "^1.7.11",
     "autoprefixer": "^10.4.23",
-    "babel-loader": "^10.1.0",
     "browser-sync": "^3.0.4",
     "cross-env": "^7.0.2",
+    "file-loader": "^6.2.0",
     "gulp": "^5.0.0",
     "gulp-clean-css": "^4.2.0",
     "gulp-notify": "^4.0.0",
@@ -70,8 +68,6 @@
     "postcss-sort-media-queries": "^5.2.0",
     "process": "^0.11.10",
     "sass": "^1.93.3",
-    "webpack": "^5.105.3",
-    "webpack-cli": "^5.1.4",
-    "webpack-stream": "^7.0.0"
+    "sass-embedded": "^1.99.0"
   }
 }

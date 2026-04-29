@@ -1,11 +1,10 @@
 const { series, parallel, watch } = require('gulp')
 const config = require('../config')
 const server = require('../task/server')
-const scss = require('../task/scss')
-const scssMin = require('../task/scss-min')
-const webpack = require('../task/webpack')
+const scssAll = require('../task/scss-all')
+const rspack = require('../task/rspack')
 
-module.exports = series(series(server, parallel(scss, scssMin, webpack)), () => {
-  watch(config.paths.source.template + config.paths.assets.scss, parallel(scss, scssMin))
-  watch(config.paths.source.template + config.paths.assets.js, webpack)
+module.exports = series(series(server, parallel(scssAll, rspack)), () => {
+  watch(config.paths.source.template + config.paths.assets.scss, scssAll)
+  watch(config.paths.source.template + config.paths.assets.js, rspack)
 })
