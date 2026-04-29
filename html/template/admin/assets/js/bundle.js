@@ -11,7 +11,14 @@ require('ace-builds/webpack-resolver');
 require('jquery.qrcode');
 
 require('jquery-ui/themes/base/all.css');
-require('jquery-ui/ui/core');
+require('jquery-ui/ui/version');
+require('jquery-ui/ui/ie');
+require('jquery-ui/ui/data');
+require('jquery-ui/ui/disable-selection');
+require('jquery-ui/ui/keycode');
+require('jquery-ui/ui/plugin');
+require('jquery-ui/ui/scroll-parent');
+require('jquery-ui/ui/unique-id');
 require('jquery-ui/ui/position');
 require('jquery-ui/ui/widget');
 require('jquery-ui/ui/widgets/mouse');
