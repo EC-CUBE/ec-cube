@@ -137,19 +137,55 @@ file that was distributed with this source code.
             var visual = document.querySelector('.item_visual');
             if (visual) {
                 var slides = visual.querySelectorAll('.slide-item');
+                var thumbs = document.querySelectorAll('.slideThumb');
                 if (slides.length > 0) {
                     slides[0].classList.add('is-active');
                 }
 
-                document.querySelectorAll('.slideThumb').forEach(function(thumb) {
+                function selectSlide(index) {
+                    if (index < 0 || index >= slides.length) return;
+                    slides.forEach(function(slide, i) {
+                        slide.classList.toggle('is-active', i === index);
+                    });
+                    thumbs.forEach(function(thumb, i) {
+                        if (i === index) {
+                            thumb.setAttribute('aria-current', 'true');
+                        } else {
+                            thumb.removeAttribute('aria-current');
+                        }
+                    });
+                }
+
+                thumbs.forEach(function(thumb, idx) {
+                    // Slick が提供していたキーボード操作を vanilla 実装でも担保する.
+                    thumb.setAttribute('role', 'button');
+                    thumb.setAttribute('tabindex', '0');
+                    if (idx === 0) {
+                        thumb.setAttribute('aria-current', 'true');
+                    }
                     thumb.addEventListener('click', function() {
                         var index = parseInt(thumb.getAttribute('data-index'), 10);
-                        if (Number.isNaN(index)) {
-                            return;
+                        if (Number.isNaN(index)) return;
+                        selectSlide(index);
+                    });
+                    thumb.addEventListener('keydown', function(e) {
+                        var key = e.key;
+                        var index = parseInt(thumb.getAttribute('data-index'), 10);
+                        if (Number.isNaN(index)) return;
+                        if (key === 'Enter' || key === ' ' || key === 'Spacebar') {
+                            e.preventDefault();
+                            selectSlide(index);
+                        } else if (key === 'ArrowRight' || key === 'ArrowDown') {
+                            e.preventDefault();
+                            var next = (index + 1) % slides.length;
+                            selectSlide(next);
+                            if (thumbs[next]) thumbs[next].focus();
+                        } else if (key === 'ArrowLeft' || key === 'ArrowUp') {
+                            e.preventDefault();
+                            var prev = (index - 1 + slides.length) % slides.length;
+                            selectSlide(prev);
+                            if (thumbs[prev]) thumbs[prev].focus();
                         }
-                        slides.forEach(function(slide, i) {
-                            slide.classList.toggle('is-active', i === index);
-                        });
                     });
                 });
             }
