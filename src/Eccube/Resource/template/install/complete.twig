@@ -47,7 +47,7 @@ file that was distributed with this source code.
 
         // 1. プラグイン一覧取得前に API チェック
         apiFetch('{{ url("install_plugin_check_api") }}', { method: 'PUT' })
-            .catch(function() { /* always と同じ扱い */ })
+            .catch(function(err) { console.warn('install_plugin_check_api failed:', err); })
             .finally(function() {
                 if (progressMessage) {
                     progressMessage.textContent = 'プラグインを読み込んでいます。しばらくお待ちください...';
@@ -132,10 +132,12 @@ file that was distributed with this source code.
                                         bootstrapModal.hide();
                                     })
                                     .catch(function(err) {
+                                        // 失敗時はモーダルを開いたままエラー文言を表示し,
+                                        // ユーザがフッターの閉じるボタンで手動で閉じる導線にする.
+                                        if (progress) progress.style.display = 'none';
                                         if (modalFooter) modalFooter.style.display = '';
                                         checkbox.checked = !status;
                                         if (statusSpan) statusSpan.textContent = !status ? '有効' : '無効';
-                                        bootstrapModal.hide();
                                         console.log(err);
                                         if (progressMessage) {
                                             if (err && err.status == 404) {
