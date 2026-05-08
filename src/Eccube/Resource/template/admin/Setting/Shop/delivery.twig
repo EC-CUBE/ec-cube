@@ -72,7 +72,8 @@ file that was distributed with this source code.
             if (container && typeof Sortable !== 'undefined') {
                 Sortable.create(container, {
                     draggable: '.sortable-item',
-                    handle: '.fa-bars',
+                    filter: 'input, textarea, select, button, a',
+                    preventOnFilter: false,
                     animation: 150,
                     onUpdate: function() {
                         moveSortNo();
