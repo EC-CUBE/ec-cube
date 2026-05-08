@@ -140,9 +140,29 @@ file that was distributed with this source code.
                 dots.children[current].classList.add('slick-active');
             }
 
-            setInterval(function() {
-                go((current + 1) % slides.length);
-            }, 3000);
+            var SLIDE_INTERVAL = 3000;
+            var timer = null;
+            function startTimer() {
+                if (timer) return;
+                timer = setInterval(function() {
+                    go((current + 1) % slides.length);
+                }, SLIDE_INTERVAL);
+            }
+            function stopTimer() {
+                if (!timer) return;
+                clearInterval(timer);
+                timer = null;
+            }
+            startTimer();
+
+            // タブが非表示のときはスライダを停止して無駄な処理を抑える.
+            document.addEventListener('visibilitychange', function() {
+                if (document.hidden) {
+                    stopTimer();
+                } else {
+                    startTimer();
+                }
+            });
         });
     </script>
 {% endblock javascript %}
