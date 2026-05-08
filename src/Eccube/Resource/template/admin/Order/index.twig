@@ -66,8 +66,12 @@ file that was distributed with this source code.
                 window.eccubeFetch(url, {
                     method: 'PUT',
                     body: new URLSearchParams({'tracking_number': tracking_number})
-                }).then(function(response) { return response.json(); })
-                .then(function(data) {
+                }).then(function(response) {
+                    if (!response.ok) {
+                        return response.json().then(function(body) { return Promise.reject(body); });
+                    }
+                    return response.json();
+                }).then(function(data) {
                     if (data['status'] == 'OK') {
                         document.getElementById('tracking_number_' + id).value = data['tracking_number'];
                         if (typeof callback == 'function') {
@@ -76,14 +80,14 @@ file that was distributed with this source code.
                     } else {
                         alert('Update failed.');
                     }
-                }).catch(function(err) {
-                    err.response.json().then(function(response) {
-                        var messages = '';
-                        for (var i = 0; i < response.messages.length; i++) {
-                            messages += response.messages[i] + "\n";
+                }).catch(function(body) {
+                    var messages = '';
+                    if (body && Array.isArray(body.messages)) {
+                        for (var i = 0; i < body.messages.length; i++) {
+                            messages += body.messages[i] + "\n";
                         }
-                        alert(messages);
-                    });
+                    }
+                    alert(messages || 'Update failed.');
                 });
             };
 
