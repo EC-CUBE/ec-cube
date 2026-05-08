@@ -21,7 +21,7 @@ use Faker\Factory as Faker;
 // 先にコマンドライン環境変数から APP_ENV を確定させる.
 // createUnsafeMutable は .env の値で環境変数を上書きしてしまうため,
 // Dotenv ロード前に CLI 引数・環境変数の APP_ENV をキャプチャしておく.
-$appEnv = getenv('APP_ENV') ?: 'dev';
+$appEnv = getenv('APP_ENV') ?: 'codeception';
 
 if (file_exists(__DIR__.'/../.env')) {
     // createImmutable: 既存の環境変数（APP_ENV など）を上書きしない
