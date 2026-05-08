@@ -139,9 +139,9 @@ file that was distributed with this source code.
 
             // PDF出力(単一)
             document.querySelectorAll('.pdf-print').forEach(function(el) {
-                el.addEventListener('click', function() {
+                el.addEventListener('click', function(e) {
+                    e.preventDefault();
                     window.open(this.href, 'newwin', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=700, height=700');
-                    return false;
                 });
             });
 

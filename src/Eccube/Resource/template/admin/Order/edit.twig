@@ -125,12 +125,13 @@ file that was distributed with this source code.
 
             // 計算結果の更新が押されたらページ内リンクさせる
             document.querySelectorAll('.btn').forEach(function(btn) {
-                btn.addEventListener('click', function() {
+                btn.addEventListener('click', function(e) {
                     if (this.dataset.link) {
+                        // type="submit" なボタン (#calculate 等) のネイティブ submit を抑止
+                        e.preventDefault();
                         var form = document.getElementById('form1');
                         form.action = '#' + this.dataset.link;
                         form.submit();
-                        return false;
                     }
                 });
             });
@@ -153,9 +154,9 @@ file that was distributed with this source code.
 
             // PDF出力(単一)
             document.querySelectorAll('.pdf-print').forEach(function(el) {
-                el.addEventListener('click', function() {
+                el.addEventListener('click', function(e) {
+                    e.preventDefault();
                     window.open(this.href, 'newwin', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=700, height=700');
-                    return false;
                 });
             });
 
