@@ -177,6 +177,7 @@
                     body.append(key, data[key]);
                 }
             }
+            var self = this;
             return window.eccubeFetch(url, { method: 'PUT', body: body })
                 .then(function (response) {
                     return response.text().then(function (text) {
@@ -192,8 +193,9 @@
                     progress.notifyWith(data);
                     return data;
                 }).catch(function (err) {
-                    progress.reject();
-                    ConfirmationModal.prototype.fail.call(this);
+                    // 失敗しても進捗カウンタは進める. でないと resolve に到達せずモーダルがハングする.
+                    progress.notifyWith(null);
+                    ConfirmationModal.prototype.fail.call(self, err);
                 });
         }
     };
