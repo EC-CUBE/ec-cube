@@ -64,10 +64,12 @@ file that was distributed with this source code.
             }
 
             function bindContextMenuHandlers(popoverTarget, block) {
-                // context-menu は Popover の content として同じ HTML を複数個所に展開するため
-                // 開いているメニュー（body 直下）のみを対象にする
-                var menus = document.querySelectorAll('.popover .list-group');
-                var openMenu = menus[menus.length - 1];
+                // BS5 が popover 表示時にトリガへ付与する aria-describedby から対象 popover を特定する.
+                // `.popover .list-group` の最後を拾う方法は他 popover の閉鎖アニメ中に
+                // 別 popover の DOM が混入し誤った要素にハンドラを付ける恐れがあるため避ける.
+                var popoverId = popoverTarget.getAttribute('aria-describedby');
+                var popoverEl = popoverId ? document.getElementById(popoverId) : null;
+                var openMenu = popoverEl ? popoverEl.querySelector('.list-group') : null;
                 if (!openMenu) return;
 
                 var moveupBtn = openMenu.querySelector('.context-moveup');
