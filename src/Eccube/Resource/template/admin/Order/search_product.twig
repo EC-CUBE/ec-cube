@@ -106,7 +106,7 @@ file that was distributed with this source code.
             if (!this.parentElement.classList.contains('active')) {
                 var list = document.getElementById('searchProductModalList');
                 list.innerHTML = '';
-                fetch(this.getAttribute('href'))
+                window.eccubeFetch(this.getAttribute('href'))
                     .then(function(response) { return response.text(); })
                     .then(function(data) {
                         document.getElementById('searchProductModalList').innerHTML = data;

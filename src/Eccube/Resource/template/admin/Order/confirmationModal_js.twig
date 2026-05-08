@@ -31,7 +31,7 @@
                 }
                 var previewUrl = updater.getPreviewUrl();
                 if (previewUrl) {
-                    fetch(previewUrl).then(function(r) { return r.text(); }).then(function(res) {
+                    window.eccubeFetch(previewUrl).then(function(r) { return r.text(); }).then(function(res) {
                         document.getElementById('viewEmail').innerHTML = res;
                     });
                 }

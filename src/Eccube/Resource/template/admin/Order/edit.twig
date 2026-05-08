@@ -93,7 +93,7 @@ file that was distributed with this source code.
                 if (!target) return;
                 e.preventDefault();
                 document.getElementById('searchProductModalList').innerHTML = '';
-                fetch(target.getAttribute('href'))
+                window.eccubeFetch(target.getAttribute('href'))
                     .then(function(response) { return response.text(); })
                     .then(function(data) {
                         setHtmlWithScripts(document.getElementById('searchProductModalList'), data);
