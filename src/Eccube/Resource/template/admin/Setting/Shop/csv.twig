@@ -66,14 +66,18 @@ file that was distributed with this source code.
                     var val = this.dataset.value;
                     if (val === 'up') {
                         var first = ops[0];
-                        var anchor = first.previousElementSibling ? first.previousElementSibling.previousElementSibling : null;
+                        // 先頭が既に一番上にあるときは何もしない (旧 jQuery の .first().prev().before() と等価)
+                        if (!first.previousElementSibling) return;
+                        var anchor = first.previousElementSibling.previousElementSibling;
                         ops.forEach(function(opt) {
                             output.insertBefore(opt, anchor ? anchor.nextElementSibling : output.firstChild);
                             anchor = opt;
                         });
                     } else {
                         var last = ops[ops.length - 1];
-                        var nextAnchor = last.nextElementSibling ? last.nextElementSibling.nextElementSibling : null;
+                        // 末尾が既に一番下にあるときは何もしない (旧 jQuery の .last().next().after() と等価)
+                        if (!last.nextElementSibling) return;
+                        var nextAnchor = last.nextElementSibling.nextElementSibling;
                         ops.forEach(function(opt) {
                             output.insertBefore(opt, nextAnchor);
                         });
