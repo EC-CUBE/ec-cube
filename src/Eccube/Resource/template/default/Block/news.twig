@@ -50,6 +50,10 @@ file that was distributed with this source code.
                     if (!newsDescription) {
                         return;
                     }
+                    // アニメーション中の連打を無視. 高さ計算が壊れて視覚崩れになるため.
+                    if (newsDescription.dataset.animating === '1') {
+                        return;
+                    }
                     var isHidden = window.getComputedStyle(newsDescription).display === 'none';
                     if (isHidden) {
                         newsItem.classList.add('is_active');
@@ -62,6 +66,7 @@ file that was distributed with this source code.
             });
 
             function slideDown(el, duration) {
+                el.dataset.animating = '1';
                 // CSS で display: none が効いているため、block に上書きして高さを測る
                 el.style.display = 'block';
                 el.style.overflow = 'hidden';
@@ -77,11 +82,13 @@ file that was distributed with this source code.
                     el.style.height = '';
                     el.style.overflow = '';
                     el.style.transition = '';
+                    delete el.dataset.animating;
                     // display: block は残す（jQuery の slideDown と同じ挙動）
                 }, duration);
             }
 
             function slideUp(el, duration) {
+                el.dataset.animating = '1';
                 el.style.overflow = 'hidden';
                 el.style.height = el.scrollHeight + 'px';
                 void el.offsetHeight;
@@ -94,6 +101,7 @@ file that was distributed with this source code.
                     el.style.height = '';
                     el.style.overflow = '';
                     el.style.transition = '';
+                    delete el.dataset.animating;
                 }, duration);
             }
         });
