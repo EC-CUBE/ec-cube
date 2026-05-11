@@ -4,6 +4,8 @@ use Eccube\Kernel;
 use Eccube\Service\SystemService;
 use Symfony\Component\ErrorHandler\Debug;
 use Dotenv\Dotenv;
+use Dotenv\Repository\Adapter\PutenvAdapter;
+use Dotenv\Repository\RepositoryBuilder;
 use Symfony\Component\HttpFoundation\Request;
 
 // システム要件チェック
@@ -37,7 +39,17 @@ if (!isset($_SERVER['APP_ENV'])) {
     // APP_ENV が環境変数として設定されている場合（Docker など）でも .env を読み込む。
     // ただし既存の環境変数（Docker で設定済みのもの）は上書きしない。
     // これにより管理画面からのテンプレート切り替えが .env への書き込みで反映される。
-    (Dotenv::createImmutable(__DIR__))->safeLoad();
+    //
+    // 既定の createImmutable は $_ENV / $_SERVER / Apache CGI でのみ既存値を判定し、
+    // putenv 経由の値は見ない。Apache の PassEnv で渡されない変数 (DATABASE_URL 等) や
+    // PHP の variables_order に E が含まれない構成では、本来 Docker から渡された env が
+    // 「未設定」と誤判定され、.env の値で $_SERVER 等を上書きしてしまう。
+    // PutenvAdapter を明示的に追加することで getenv 側の既存値も尊重する。
+    $repository = RepositoryBuilder::createWithDefaultAdapters()
+        ->addAdapter(PutenvAdapter::class)
+        ->immutable()
+        ->make();
+    Dotenv::create($repository, __DIR__)->safeLoad();
 }
 error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
 
