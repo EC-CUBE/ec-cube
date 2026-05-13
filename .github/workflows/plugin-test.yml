@@ -663,6 +663,7 @@ jobs:
         uses: shivammathur/setup-php@accd6127cb78bee3e8082180cb391013d204ef9f  # v2
         with:
           php-version: ${{ matrix.php }}
+          github-token: ''
 
       - name: Initialize Composer
         uses: ./.github/actions/composer
@@ -803,6 +804,7 @@ jobs:
         uses: shivammathur/setup-php@accd6127cb78bee3e8082180cb391013d204ef9f  # v2
         with:
           php-version: ${{ matrix.php }}
+          github-token: ''
 
       - name: Initialize Composer
         uses: ./.github/actions/composer
