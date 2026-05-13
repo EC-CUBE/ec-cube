@@ -66,13 +66,7 @@ jobs:
         uses: shivammathur/setup-php@accd6127cb78bee3e8082180cb391013d204ef9f  # v2
         with:
           php-version: ${{ matrix.php }}
-
-      - name: Install ext-redis 6.1+
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y php${{ matrix.php }}-redis
-          sudo phpenmod -s cli redis
-          php -m | grep -i redis
+          extensions: redis
 
       - name: Initialize Composer
         uses: ./.github/actions/composer
@@ -223,13 +217,7 @@ jobs:
         uses: shivammathur/setup-php@accd6127cb78bee3e8082180cb391013d204ef9f  # v2
         with:
           php-version: ${{ matrix.php }}
-
-      - name: Install ext-redis 6.1+
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y php${{ matrix.php }}-redis
-          sudo phpenmod -s cli redis
-          php -m | grep -i redis
+          extensions: redis
 
       - name: Initialize Composer
         uses: ./.github/actions/composer
@@ -379,13 +367,7 @@ jobs:
         uses: shivammathur/setup-php@accd6127cb78bee3e8082180cb391013d204ef9f  # v2
         with:
           php-version: ${{ matrix.php }}
-
-      - name: Install ext-redis 6.1+
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y php${{ matrix.php }}-redis
-          sudo phpenmod -s cli redis
-          php -m | grep -i redis
+          extensions: redis
 
       - name: Initialize Composer
         uses: ./.github/actions/composer
@@ -538,13 +520,7 @@ jobs:
         uses: shivammathur/setup-php@accd6127cb78bee3e8082180cb391013d204ef9f  # v2
         with:
           php-version: ${{ matrix.php }}
-
-      - name: Install ext-redis 6.1+
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y php${{ matrix.php }}-redis
-          sudo phpenmod -s cli redis
-          php -m | grep -i redis
+          extensions: redis
 
       - name: Initialize Composer
         uses: ./.github/actions/composer
