@@ -21,4 +21,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_FILES)) {
     return require 'index.php';
 }
 
+// multipart POST (ファイルアップロード) は PHP built-in server の
+// fallback 経由だと $_FILES が空になる場合があるため、明示的に index.php へ転送する
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_FILES)) {
+    return require 'index.php';
+}
+
 return false;
