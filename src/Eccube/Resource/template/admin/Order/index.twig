@@ -371,7 +371,7 @@ file that was distributed with this source code.
                         <div class="col-12">
                             <button class="btn btn-ec-conversion px-5" type="submit" id="search_submit">{{ 'admin.common.search'|trans }}</button>
                             {% if pagination %}
-                                <span class="fw-bold ms-2" id="search_total_count">{{ 'admin.common.search_result'|trans({"%count%":pagination.totalItemCount})|raw }}</span>
+                                <span class="fw-bold ms-2" id="search_total_count">{{ 'admin.common.search_result'|trans({"%count%":pagination.totalItemCount|number_format})|raw }}</span>
                             {% endif %}
                         </div>
                     </div>

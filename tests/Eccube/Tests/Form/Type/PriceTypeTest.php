@@ -37,7 +37,6 @@ final class PriceTypeTest extends AbstractTypeTestCase
         yield ['1'];
     }
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

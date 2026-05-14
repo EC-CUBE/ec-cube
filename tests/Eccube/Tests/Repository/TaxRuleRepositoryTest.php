@@ -58,19 +58,15 @@ final class TaxRuleRepositoryTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         $this->DateTimeNow = new \DateTime('+1 minutes');
-
         parent::setUp();
-
         $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
         $this->taxRuleRepository = $this->entityManager->getRepository(TaxRule::class);
         $this->memberRepository = $this->entityManager->getRepository(Member::class);
         $this->prefRepository = $this->entityManager->getRepository(Pref::class);
         $this->countryRepository = $this->entityManager->getRepository(Country::class);
-
         $this->BaseInfo->setOptionProductTaxRule(false);
         $this->Product = $this->createProduct('生活必需品');
         // 2017-04-01とか指定すると, 2017年以降で結果が変わってしまうので1年後の日付を指定する
@@ -171,6 +167,7 @@ final class TaxRuleRepositoryTest extends EccubeTestCase
         $oneDayBefore = new \DateTime('-1 days');
 
         $this->TaxRule2->setApplyDate($oneDayBefore);
+        $this->assertInstanceOf(Pref::class, $Pref);
         $this->TaxRule3
             ->setApplyDate($oneDayBefore)
             ->setPref($Pref);
@@ -188,6 +185,7 @@ final class TaxRuleRepositoryTest extends EccubeTestCase
     {
         $Country = $this->countryRepository->find(300);
         $oneDayBefore = new \DateTime('-1 days');
+        $this->assertInstanceOf(Country::class, $Country);
 
         $this->TaxRule2->setApplyDate($oneDayBefore)->setCountry($Country);
         $this->TaxRule3->setApplyDate($oneDayBefore);
@@ -249,6 +247,7 @@ final class TaxRuleRepositoryTest extends EccubeTestCase
         $oneDayBefore = new \DateTime('-1 days');
 
         $Country = $this->countryRepository->find(300);
+        $this->assertInstanceOf(Country::class, $Country);
 
         // 国別設定
         $this->TaxRule2->setApplyDate($oneDayBefore)->setCountry($Country);

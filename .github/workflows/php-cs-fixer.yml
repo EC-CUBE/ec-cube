@@ -3,6 +3,9 @@ name: PHP CS Fixer
 on:
   workflow_call:
 
+permissions:
+  contents: read
+
 jobs:
   php-cs-fixer:
     name: Run PHP CS Fixer
@@ -10,24 +13,33 @@ jobs:
 
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v5
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
 
       - name: Setup PHP
-        uses: nanasess/setup-php@master
+        uses: shivammathur/setup-php@accd6127cb78bee3e8082180cb391013d204ef9f  # v2
         with:
           php-version: '8.3'
-
-      - name: Install ext-redis 6.1+
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y php8.3-redis
-          sudo phpenmod -s cli redis
-          php -m | grep -i redis
+          extensions: redis
 
       - name: Initialize Composer
         uses: ./.github/actions/composer
 
+      - name: Restore PHP CS Fixer cache
+        uses: actions/cache/restore@668228422ae6a00e4ad889ee87cd7109ec5666a7  # v5
+        with:
+          path: .php-cs-fixer.cache
+          key: ${{ runner.os }}-php-cs-fixer-${{ hashFiles('.php-cs-fixer.dist.php', 'composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-cs-fixer-
+
       - name: Run php-cs-fixer (dry-run)
         # ─── 差分があるとステップごと失敗させる ───
         run: |
-          PHP_CS_FIXER_IGNORE_ENV=1 php vendor/bin/php-cs-fixer fix --diff --dry-run --allow-risky=yes
+          php vendor/bin/php-cs-fixer fix --diff --dry-run --allow-risky=yes
+
+      - name: Save PHP CS Fixer cache
+        if: always()
+        uses: actions/cache/save@668228422ae6a00e4ad889ee87cd7109ec5666a7  # v5
+        with:
+          path: .php-cs-fixer.cache
+          key: ${{ runner.os }}-php-cs-fixer-${{ hashFiles('.php-cs-fixer.dist.php', 'composer.lock') }}

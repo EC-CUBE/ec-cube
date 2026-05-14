@@ -29,14 +29,12 @@ final class EditControllerWithMultipleTest extends AbstractEditControllerTestCas
     protected $Customer;
     protected $Product;
 
-    #[\Override]
     protected function setUp(): void
     {
         $this->markTestIncomplete(self::class.' は未実装です');
         parent::setUp();
         $this->Customer = $this->createCustomer();
         $this->Product = $this->createProduct();
-
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
         $this->app['orm.em']->flush($BaseInfo);
     }

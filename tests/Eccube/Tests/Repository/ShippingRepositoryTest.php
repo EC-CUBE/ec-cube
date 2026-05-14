@@ -67,15 +67,12 @@ final class ShippingRepositoryTest extends EccubeTestCase
      *
      * @throws NoResultException
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->memberRepository = $this->entityManager->getRepository(Member::class);
         $this->taxRuleRepository = $this->entityManager->getRepository(TaxRule::class);
         $this->shippingRepository = $this->entityManager->getRepository(Shipping::class);
-
         $faker = $this->getFaker();
         $this->Member = $this->memberRepository->find(2);
         $this->Customer = $this->createCustomer();
@@ -85,11 +82,9 @@ final class ShippingRepositoryTest extends EccubeTestCase
         $ProductClasses = $this->Product->getProductClasses();
         $this->ProductClass = $ProductClasses[0];
         $quantity = 3;
-
         $TaxDisplayType = $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::EXCLUDED);
         $TaxType = $this->entityManager->find(TaxType::class, TaxType::TAXATION);
         $ProductOrderItemType = $this->entityManager->find(OrderItemType::class, OrderItemType::PRODUCT);
-
         // 1個ずつ別のお届け先に届ける
         for ($i = 0; $i < $quantity; $i++) {
             $Shipping = new Shipping();
@@ -120,7 +115,6 @@ final class ShippingRepositoryTest extends EccubeTestCase
             $this->entityManager->persist($OrderItem);
             $this->Shippings[$i] = $Shipping;
         }
-
         $purchaseFlow = static::getContainer()->get(PurchaseFlow::class);
         $purchaseFlow->validate($this->Order, new PurchaseContext($this->Order));
         $this->entityManager->flush();

@@ -33,7 +33,6 @@ final class MailControllerTest extends AbstractAdminWebTestCase
 
     protected ?Order $Order = null;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -41,7 +40,6 @@ final class MailControllerTest extends AbstractAdminWebTestCase
         $this->Member = $this->createMember();
         $this->Customer = $this->createCustomer();
         $this->Order = $this->createOrder($this->Customer);
-
         $MailTemplate = new MailTemplate();
         $MailTemplate
             ->setName($faker->word())

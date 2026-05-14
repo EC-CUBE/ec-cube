@@ -38,12 +38,10 @@ final class OrderRepositoryTest extends EccubeTestCase
 
     protected ?OrderRepository $orderRepository = null;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
         $this->orderRepository = $this->entityManager->getRepository(Order::class);
-
         $this->createProduct();
         $this->Customer = $this->createCustomer();
         $this->entityManager->persist($this->Customer);

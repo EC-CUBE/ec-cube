@@ -171,7 +171,13 @@ $(window).on('load', function() {
     if (el.length) {
         // Open panel when has error
         openPanel(el);
-        var errorOffset = el.first().offset().top;
+        var errorOffset = 0;
+        el.each(function() {
+            if ($(this).is(":visible")) {
+                errorOffset = $(this).offset().top;
+                return false;
+            }
+        });
         var screenHeight = $(window).height();
         var errorMargin = parseInt(screenHeight / 10) + $('header').outerHeight();
 

@@ -27,12 +27,10 @@ final class SaleTypeTypeTest extends AbstractTypeTestCase
 
     protected ?SaleTypeRepository $saleTypeRepo = null;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
         $this->saleTypeRepo = $this->entityManager->getRepository(SaleType::class);
-
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
             ->createBuilder(SaleTypeType::class, null, [

@@ -33,7 +33,6 @@ final class IndexControllerTest extends AbstractAdminWebTestCase
 
     protected ?OrderRepository $orderRepository = null;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

@@ -53,12 +53,10 @@ final class Step1TypeTest extends AbstractTypeTestCase
         ];
     }
 
-    #[\Override]
     protected function setUp(): void
     {
         $this->markTestIncomplete(self::class.' は未実装です');
         parent::setUp();
-
         $this->form = $this->formFactory
             ->createBuilder(Step1Type::class, null, ['csrf_protection' => false])
             ->getForm();

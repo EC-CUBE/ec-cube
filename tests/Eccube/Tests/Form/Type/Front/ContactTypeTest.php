@@ -44,11 +44,9 @@ final class ContactTypeTest extends AbstractTypeTestCase
         'contents' => 'ほげほげ',
     ];
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
             ->createBuilder(ContactType::class, null, [

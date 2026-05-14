@@ -28,13 +28,10 @@ final class TimeZoneTest extends EccubeTestCase
      *
      * @throws \Doctrine\DBAL\DBALException
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->productRepository = $this->entityManager->getRepository(Product::class);
-
         // 2000-01-01 00:00:00 +09 (jst)
         // 1999-12-31 15:00:00 +00 (utc)
         // の日時データを登録
@@ -51,7 +48,6 @@ final class TimeZoneTest extends EccubeTestCase
                 '1999-12-31 15:00:00',
                 '1999-12-31 15:00:00',
                 'product');";
-
         $this->entityManager->getConnection()->exec($sql);
     }
 

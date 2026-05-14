@@ -37,14 +37,11 @@ abstract class AbstractProductRepositoryTestCase extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->productRepository = $this->entityManager->getRepository(Product::class);
         $this->tagRepository = $this->entityManager->getRepository(Tag::class);
-
         $tables = [
             'dtb_product_image',
             'dtb_product_stock',

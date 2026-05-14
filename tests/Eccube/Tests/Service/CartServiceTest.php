@@ -54,16 +54,12 @@ final class CartServiceTest extends AbstractServiceTestCase
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->cartService = static::getContainer()->get(CartService::class);
-
         $refClass = new \ReflectionClass(CartService::class);
         $refClass->getProperty('session')->setValue($this->cartService, new SessionMock());
-
         $this->saleTypeRepository = $this->entityManager->getRepository(SaleType::class);
         $this->orderRepository = $this->entityManager->getRepository(Order::class);
         $this->productClassRepository = $this->entityManager->getRepository(ProductClass::class);
@@ -71,11 +67,9 @@ final class CartServiceTest extends AbstractServiceTestCase
         // クラス名のエイリアスを作成できないため、文字列サービスIDのまま使用
         $serviceId = 'eccube.purchase.flow.cart';
         $this->purchaseFlow = static::getContainer()->get($serviceId);
-
         $this->SaleType1 = $this->saleTypeRepository->find(1);
         $this->SaleType2 = $this->saleTypeRepository->find(2);
         $this->Product = $this->createProduct();
-
         // SaleType 2 の商品を作成
         $this->Product2 = $this->createProduct();
         foreach ($this->Product2->getProductClasses() as $ProductClass) {

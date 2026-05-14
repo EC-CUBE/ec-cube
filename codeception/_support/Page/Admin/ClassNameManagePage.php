@@ -24,14 +24,6 @@ class ClassNameManagePage extends AbstractAdminPageStyleGuide
     public static $管理名編集3 = ['id' => 'class_name_3_backend_name'];
     public static $表示名編集3 = ['id' => 'class_name_3_name'];
 
-    /**
-     * ProductClassPage constructor.
-     */
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     public static function go($I)
     {
         $page = new ClassNameManagePage($I);

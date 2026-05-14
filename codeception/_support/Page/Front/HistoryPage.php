@@ -19,11 +19,6 @@ class HistoryPage extends AbstractFrontPage
     public static $利用ポイント = '//dt[contains(text(), "ご利用ポイント")]/../dd';
     public static $加算ポイント = '//dt[contains(text(), "加算ポイント")]/../dd';
 
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     public static function at($I)
     {
         $page = new self($I);

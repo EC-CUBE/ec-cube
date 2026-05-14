@@ -15,11 +15,6 @@ namespace Page\Front;
 
 class ProductDetailPage extends AbstractFrontPage
 {
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     /**
      * @param $I
      * @param $id

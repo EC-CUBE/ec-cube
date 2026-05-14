@@ -17,11 +17,6 @@ class ShippingCsvUploadPage extends AbstractAdminPageStyleGuide
 {
     public static $完了メッセージ = 'div.alert-primary';
 
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     public static function go(\AcceptanceTester $I)
     {
         $page = new ProductCsvUploadPage($I);

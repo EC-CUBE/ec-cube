@@ -46,31 +46,26 @@ final class PaymentProcessorTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $SaleType = new SaleType();
         $SaleType->setId(1000);
         $SaleType->setName('テスト種別');
         $SaleType->setSortNo(1000);
         $this->entityManager->persist($SaleType);
         $this->entityManager->flush($SaleType);
-
         $Delivery = new Delivery();
         $Delivery->setName('テスト配送');
         $Delivery->setSaleType($SaleType);
         $Delivery->setVisible(true);
         $this->entityManager->persist($Delivery);
         $this->entityManager->flush($Delivery);
-
         $Payment = new Payment();
         $Payment->setMethod('テスト支払');
         $Payment->setVisible(true);
         $this->entityManager->persist($Payment);
         $this->entityManager->flush($Payment);
-
         $PaymentOption = new PaymentOption();
         $PaymentOption->setDeliveryId($Delivery->getId());
         $PaymentOption->setDelivery($Delivery);
@@ -80,13 +75,11 @@ final class PaymentProcessorTest extends EccubeTestCase
         $Payment->addPaymentOption($PaymentOption);
         $this->entityManager->persist($PaymentOption);
         $this->entityManager->flush();
-
         $this->Product = $this->createProduct('テスト商品', 3);
         $this->ProductClass1 = $this->Product->getProductClasses()[0];
         $this->ProductClass2 = $this->Product->getProductClasses()[1];
         $this->ProductClass3 = $this->Product->getProductClasses()[2];
         $this->ProductClass3->setSaleType($SaleType);
-
         $this->validator = new PaymentValidator($this->entityManager->getRepository(Delivery::class));
     }
 

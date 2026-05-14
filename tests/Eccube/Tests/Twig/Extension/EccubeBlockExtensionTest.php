@@ -32,19 +32,15 @@ final class EccubeBlockExtensionTest extends EccubeTestCase
 
     protected ?Environment $twig = null;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $root = vfsStream::setup();
         $this->templateDir = $root->url();
-
         foreach ($this->blockTwigs as $twig_file) {
             // Preventing undefined errors
             file_put_contents($this->templateDir.'/'.$twig_file, '');
         }
-
         $loader = new FilesystemLoader([
             $this->templateDir,
         ]);

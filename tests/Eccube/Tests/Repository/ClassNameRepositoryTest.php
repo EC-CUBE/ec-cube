@@ -42,17 +42,14 @@ final class ClassNameRepositoryTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->productClassRepository = $this->entityManager->getRepository(ProductClass::class);
         $this->classCategoryRepository = $this->entityManager->getRepository(ClassCategory::class);
         $this->classNameRepository = $this->entityManager->getRepository(ClassName::class);
         $this->removeClass();
         $this->Member = $this->entityManager->getRepository(Member::class)->find(2);
-
         for ($i = 0; $i < 3; $i++) {
             $ClassName = new ClassName();
             $ClassName

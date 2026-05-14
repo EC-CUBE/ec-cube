@@ -17,11 +17,6 @@ class AuthorityManagePage extends AbstractAdminPageStyleGuide
 {
     public static $完了メッセージ = '.c-contentsArea .alert-success';
 
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     public static function go(\AcceptanceTester $I)
     {
         $page = new self($I);

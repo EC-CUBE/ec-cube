@@ -123,9 +123,9 @@ class EccubeExtension extends AbstractExtension
     {
         if (is_null($date)) {
             return $value;
-        } else {
-            return $date->format($format);
         }
+
+        return $date->format($format);
     }
 
     /**

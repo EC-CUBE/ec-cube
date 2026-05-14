@@ -33,11 +33,9 @@ final class PaymentRegisterTypeTest extends AbstractTypeTestCase
         'rule_max' => '10000',
     ];
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         // CSRF tokenを無効にしてFormを作成
         // 会員管理会員登録・編集
         $this->form = $this->formFactory

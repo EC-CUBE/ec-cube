@@ -31,14 +31,11 @@ final class CustomerLoginTypeTest extends AbstractTypeTestCase
         'login_pass' => '111111111',
     ];
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $request = Request::createFromGlobals();
         static::getContainer()->get(RequestStack::class)->push($request);
-
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
             ->createBuilder(CustomerLoginType::class, null, [

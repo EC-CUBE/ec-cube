@@ -80,7 +80,7 @@ class MaintenanceController extends AbstractController
      * @throws BadRequestHttpException
      */
     #[Route(path: '/%eccube_admin_route%/disable_maintenance/{mode}', name: 'admin_disable_maintenance', requirements: ['mode' => 'manual|auto_maintenance|auto_maintenance_update'], methods: ['POST'])]
-    public function disableMaintenance(Request $request, $mode, SystemService $systemService): JsonResponse
+    public function disableMaintenance(Request $request, $mode): JsonResponse
     {
         $this->isTokenValid();
 
@@ -98,7 +98,7 @@ class MaintenanceController extends AbstractController
                 'auto_maintenance' => SystemService::AUTO_MAINTENANCE,
                 'auto_maintenance_update' => SystemService::AUTO_MAINTENANCE_UPDATE,
             ];
-            $systemService->disableMaintenance($maintenanceMode[$mode]);
+            $this->systemService->disableMaintenance($maintenanceMode[$mode]);
         }
 
         return $this->json(['success' => true]);

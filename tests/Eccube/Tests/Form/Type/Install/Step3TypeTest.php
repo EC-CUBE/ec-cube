@@ -43,11 +43,9 @@ final class Step3TypeTest extends AbstractTypeTestCase
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
             ->createBuilder(Step3Type::class, null, ['csrf_protection' => false])
