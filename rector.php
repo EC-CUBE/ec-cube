@@ -50,6 +50,8 @@ return RectorConfig::configure()
            ->withSkip([
                // 特定のファイルやディレクトリを除外する場合
                __DIR__ . '/src/Eccube/Rector',
+               // Codeception 自動生成ファイル (codecept build で再生成されるため Rector の指摘は意味なし)
+               __DIR__ . '/codeception/_support/_generated',
                // 特定のルールを除外する場合
                // 親の $entityManager 再宣言と step5 の接続専用 EM の取り違えを防ぐため
                ControllerMethodInjectionToConstructorRector::class => [

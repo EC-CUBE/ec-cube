@@ -1466,6 +1466,7 @@ admin.store.template.delete_error__current_template: You are not allowed to dele
 admin.store.template.template_code_already_exists: This template code is already used.
 admin.store.template.upload_failed: Failed to upload
 admin.store.template.invalid_upload_file: Wrong extension of the file
+admin.store.template.env_override_warning: "ECCUBE_TEMPLATE_CODE is set as an environment variable, so changes to .env will not take effect. To switch templates, update the ECCUBE_TEMPLATE_CODE environment variable."
 admin.store.plugin: Plugins
 admin.store.plugin.plugin_owners_install: Search Plugins
 admin.store.plugin.plugin_list: All Plugins
