@@ -61,9 +61,8 @@ class TwoFactorAuthController extends AbstractController
                         $response->headers->setCookie($this->twoFactorAuthService->createAuthedCookie($Member));
 
                         return $response;
-                    } else {
-                        $error = trans('admin.setting.system.two_factor_auth.invalid_message__reinput');
                     }
+                    $error = trans('admin.setting.system.two_factor_auth.invalid_message__reinput');
                 } else {
                     return $this->redirectToRoute('admin_two_factor_auth_set');
                 }
@@ -89,6 +88,12 @@ class TwoFactorAuthController extends AbstractController
         $Member = $this->getUser();
         if (!$this->twoFactorAuthService->isEnabled() || $this->twoFactorAuthService->isAuth($Member)) {
             return $this->redirectToRoute('admin_homepage');
+        }
+
+        // 既に2FAキーが設定されている場合は、認証画面にリダイレクト
+        // 2FA未認証状態での再設定を防ぐ（MFAバイパス脆弱性対策）
+        if ($Member->getTwoFactorAuthKey()) {
+            return $this->redirectToRoute('admin_two_factor_auth');
         }
 
         return $this->createResponse($request);
@@ -147,9 +152,8 @@ class TwoFactorAuthController extends AbstractController
                     $response->headers->setCookie($this->twoFactorAuthService->createAuthedCookie($Member));
 
                     return $response;
-                } else {
-                    $error = trans('admin.setting.system.two_factor_auth.invalid_message__reinput');
                 }
+                $error = trans('admin.setting.system.two_factor_auth.invalid_message__reinput');
             } else {
                 $error = trans('admin.setting.system.two_factor_auth.invalid_message__invalid');
             }

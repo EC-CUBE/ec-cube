@@ -108,12 +108,14 @@ class TraitProxyAttributeDriver extends AttributeDriver
     }
 
     /** @return string[] */
+    #[\Override]
     public function getPaths(): array
     {
         return $this->paths;
     }
 
     /** @return string[] */
+    #[\Override]
     public function getExcludePaths(): array
     {
         return $this->excludePaths;

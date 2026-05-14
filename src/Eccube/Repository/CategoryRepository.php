@@ -85,7 +85,7 @@ class CategoryRepository extends AbstractRepository
             $qb->where('c1.Parent IS NULL');
         }
         $Categories = $qb->getQuery()
-            ->setResultCacheLifetime($this->getCacheLifetime())
+            ->enableResultCache($this->getCacheLifetime())
             ->getResult();
 
         if ($flat) {

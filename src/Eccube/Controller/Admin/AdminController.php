@@ -511,12 +511,12 @@ class AdminController extends AbstractController
     {
         $raw = [];
         for ($date = $fromDate; $date <= $toDate; $date = $date->addDay()) {
-            $raw[$date->format($format)]['price'] = 0;
+            $raw[$date->format($format)]['price'] = '0';
             $raw[$date->format($format)]['count'] = 0;
         }
 
         foreach ($result as $Order) {
-            $raw[$Order->getOrderDate()->format($format)]['price'] += $Order->getPaymentTotal();
+            $raw[$Order->getOrderDate()->format($format)]['price'] = bcadd($raw[$Order->getOrderDate()->format($format)]['price'], (string) $Order->getPaymentTotal(), 0);
             ++$raw[$Order->getOrderDate()->format($format)]['count'];
         }
 

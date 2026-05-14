@@ -48,7 +48,7 @@ if (!class_exists(LoginHistory::class)) {
 
         #[ORM\ManyToOne(targetEntity: LoginHistoryStatus::class)]
         #[ORM\JoinColumn(name: 'login_history_status_id', referencedColumnName: 'id', nullable: false)]
-        // @phpstan-ignore-next-line doctrine.associationType (Formでの初期化時にnullが必要なためnullableとしている)
+        // @phpstan-ignore doctrine.associationType (Formでの初期化時にnullが必要なためnullableとしている)
         private ?LoginHistoryStatus $Status = null;
 
         #[ORM\ManyToOne(targetEntity: Member::class)]

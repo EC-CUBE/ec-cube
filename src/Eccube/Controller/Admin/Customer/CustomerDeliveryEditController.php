@@ -134,12 +134,11 @@ class CustomerDeliveryEditController extends AbstractController
         $CustomerAddress = $this->customerAddressRepository->find($did);
         if (is_null($CustomerAddress)) {
             throw new NotFoundHttpException();
-        } else {
-            if ($CustomerAddress->getCustomer()->getId() != $Customer->getId()) {
-                $this->deleteMessage();
+        }
+        if ($CustomerAddress->getCustomer()->getId() != $Customer->getId()) {
+            $this->deleteMessage();
 
-                return $this->redirectToRoute('admin_customer_edit', ['id' => $Customer->getId()]);
-            }
+            return $this->redirectToRoute('admin_customer_edit', ['id' => $Customer->getId()]);
         }
 
         try {

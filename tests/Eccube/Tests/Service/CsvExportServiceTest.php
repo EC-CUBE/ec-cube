@@ -36,23 +36,18 @@ final class CsvExportServiceTest extends AbstractServiceTestCase
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->csvExportService = static::getContainer()->get(CsvExportService::class);
         $this->csvRepository = $this->entityManager->getRepository(Csv::class);
         $this->orderRepository = $this->entityManager->getRepository(Order::class);
-
         vfsStream::setup('rootDir');
         $this->url = vfsStream::url('rootDir/test.csv');
-
         // CsvExportService のファイルポインタを Vfs のファイルポインタにしておく
         $objReflect = new \ReflectionClass($this->csvExportService);
         $Property = $objReflect->getProperty('fp');
         $Property->setValue($this->csvExportService, fopen($this->url, 'w'));
-
         $Csv = $this->csvRepository->find(1);
         $this->assertInstanceOf(Csv::class, $Csv);
         $Csv->setSortNo(1);

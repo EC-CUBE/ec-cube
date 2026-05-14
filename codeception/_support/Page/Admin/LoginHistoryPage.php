@@ -22,11 +22,6 @@ class LoginHistoryPage extends AbstractAdminPageStyleGuide
     public static $詳細検索ボタン = '//*[@id="search_form"]/div[1]/div[1]/div/div/div[2]/a/span';
     public static $検索結果_メッセージ = '//*[@id="search_form"]/div[2]/span';
 
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     public static function go(\AcceptanceTester $I)
     {
         $page = new self($I);

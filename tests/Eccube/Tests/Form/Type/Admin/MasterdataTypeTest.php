@@ -23,11 +23,9 @@ final class MasterdataTypeTest extends AbstractTypeTestCase
     /** @var array デフォルト値（正常系）を設定 */
     protected ?array $formData = null;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
             ->createBuilder(MasterdataType::class, null, [

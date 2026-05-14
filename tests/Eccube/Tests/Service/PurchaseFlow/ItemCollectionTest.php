@@ -35,7 +35,6 @@ final class ItemCollectionTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -107,10 +106,14 @@ final class ItemCollectionTest extends EccubeTestCase
         $DiscountType = $this->entityManager->find(OrderItemType::class, OrderItemType::DISCOUNT);
 
         $Items = new ItemCollection($this->Items);
+        $this->assertInstanceOf(OrderItemType::class, $ProductClassType);
 
         $this->assertTrue($Items->hasItemByOrderItemType($ProductClassType));
+        $this->assertInstanceOf(OrderItemType::class, $DeliveryFeeType);
         $this->assertTrue($Items->hasItemByOrderItemType($DeliveryFeeType));
+        $this->assertInstanceOf(OrderItemType::class, $ChargeType);
         $this->assertTrue($Items->hasItemByOrderItemType($ChargeType));
+        $this->assertInstanceOf(OrderItemType::class, $DiscountType);
         $this->assertTrue($Items->hasItemByOrderItemType($DiscountType));
     }
 

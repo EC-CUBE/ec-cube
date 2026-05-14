@@ -75,17 +75,14 @@ final class KanaTypeTest extends AbstractTypeTestCase
         ];
     }
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->form = $this->formFactory->createBuilder(FormType::class, null, ['csrf_protection' => false])
             ->add('kana', KanaType::class)
             ->getForm();
     }
 
-    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();

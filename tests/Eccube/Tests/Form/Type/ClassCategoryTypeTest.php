@@ -27,11 +27,9 @@ final class ClassCategoryTypeTest extends AbstractTypeTestCase
         'name' => '立方体',
     ];
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
             ->createBuilder(ClassCategoryType::class, null, [

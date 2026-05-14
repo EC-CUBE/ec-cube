@@ -17,11 +17,6 @@ class CustomerAgreementSettingPage extends AbstractAdminPage
 {
     public static $登録完了メッセージ = '#main .container-fluid div:nth-child(1) .alert-success';
 
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     public static function go($I)
     {
         $page = new self($I);

@@ -25,7 +25,6 @@ final class OrderTypeTest extends AbstractTypeTestCase
 {
     private $orderType;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

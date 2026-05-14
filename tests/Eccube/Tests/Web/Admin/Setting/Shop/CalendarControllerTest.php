@@ -28,11 +28,9 @@ final class CalendarControllerTest extends AbstractAdminWebTestCase
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->calendarRepository = $this->entityManager->getRepository(Calendar::class);
     }
 

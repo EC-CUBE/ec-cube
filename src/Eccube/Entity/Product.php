@@ -429,9 +429,9 @@ if (!class_exists(Product::class)) {
         {
             if (count($this->ProductImage) > 0) {
                 return $this->ProductImage[0];
-            } else {
-                return null;
             }
+
+            return null;
         }
 
         public function hasProductClass(): bool

@@ -47,13 +47,11 @@ final class MailHistoryRepositoryTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
         $faker = $this->getFaker();
         $this->mailHistoryRepo = $this->entityManager->getRepository(MailHistory::class);
-
         $this->Member = $this->entityManager->getRepository(Member::class)->find(2);
         $this->Customer = $this->createCustomer();
         $this->Order = $this->createOrder($this->Customer);

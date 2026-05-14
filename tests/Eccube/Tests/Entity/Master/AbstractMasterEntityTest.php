@@ -25,7 +25,6 @@ use Eccube\Tests\EccubeTestCase;
  */
 final class AbstractMasterEntityTest extends EccubeTestCase
 {
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

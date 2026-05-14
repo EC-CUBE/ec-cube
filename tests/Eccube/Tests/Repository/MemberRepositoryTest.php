@@ -33,7 +33,6 @@ final class MemberRepositoryTest extends EccubeTestCase
 
     protected ?PasswordHasher $passwordHasher = null;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -42,7 +41,6 @@ final class MemberRepositoryTest extends EccubeTestCase
         $this->Member = $this->memberRepo->find(1);
         $Work = $this->entityManager->getRepository(Work::class)
             ->find(Work::ACTIVE);
-
         for ($i = 0; $i < 3; $i++) {
             $Member = new Member();
             $password = 'password';

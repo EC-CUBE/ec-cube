@@ -17,6 +17,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
+use Eccube\Entity\Master\Country;
+use Eccube\Entity\Master\Pref;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\Master\PrefRepository;
 use Eccube\Service\OrderHelper;
@@ -81,7 +83,7 @@ class ShippingMultipleItemType extends AbstractType
                         $CustomerAddress->setFromCustomer($NonMember);
 
                         if ($CustomerAddresses = $this->session->get('eccube.front.shopping.nonmember.customeraddress')) {
-                            $CustomerAddresses = unserialize($CustomerAddresses);
+                            $CustomerAddresses = unserialize($CustomerAddresses, ['allowed_classes' => [CustomerAddress::class, Customer::class, Pref::class, Country::class]]);
                             $CustomerAddresses = array_merge([$CustomerAddress], $CustomerAddresses);
                             foreach ($CustomerAddresses as $Address) {
                                 $Pref = $this->prefRepository->find($Address->getPref()->getId());
@@ -119,12 +121,12 @@ class ShippingMultipleItemType extends AbstractType
                     }
                 }
 
-                $quantity = 0;
+                $quantity = '0';
                 // Check all shipment items
                 foreach ($data->getProductOrderItems() as $OrderItem) {
                     // Check item distinct for each quantity
                     if ($data->getProductClassOfTemp()->getId() == $OrderItem->getProductClass()->getId()) {
-                        $quantity += $OrderItem->getQuantity();
+                        $quantity = bcadd($quantity, $OrderItem->getQuantity(), 0);
                     }
                 }
                 $form['quantity']->setData($quantity);

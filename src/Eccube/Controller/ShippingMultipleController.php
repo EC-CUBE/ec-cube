@@ -15,7 +15,9 @@ namespace Eccube\Controller;
 
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
+use Eccube\Entity\Master\Country;
 use Eccube\Entity\Master\OrderItemType;
+use Eccube\Entity\Master\Pref;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
@@ -76,7 +78,7 @@ class ShippingMultipleController extends AbstractShoppingController
             $itemId = $item->getProductClass()->getId();
             $quantity = $item->getQuantity();
             if (array_key_exists($itemId, $ItemQuantitiesByClassId)) {
-                $ItemQuantitiesByClassId[$itemId] += $quantity;
+                $ItemQuantitiesByClassId[$itemId] = bcadd($ItemQuantitiesByClassId[$itemId], $quantity, 0);
             } else {
                 $ItemQuantitiesByClassId[$itemId] = $quantity;
             }
@@ -134,7 +136,7 @@ class ShippingMultipleController extends AbstractShoppingController
                         $quantity = $item['quantity']->getData();
 
                         if (isset($arrOrderItemTemp[$customerAddressName]) && array_key_exists($itemId, $arrOrderItemTemp[$customerAddressName])) {
-                            $arrOrderItemTemp[$customerAddressName][$itemId] = $arrOrderItemTemp[$customerAddressName][$itemId] + $quantity;
+                            $arrOrderItemTemp[$customerAddressName][$itemId] = bcadd((string) $arrOrderItemTemp[$customerAddressName][$itemId], (string) $quantity, 0);
                         } else {
                             $arrOrderItemTemp[$customerAddressName][$itemId] = $quantity;
                         }
@@ -147,7 +149,7 @@ class ShippingMultipleController extends AbstractShoppingController
             foreach ($arrOrderItemTemp as $FormItemByAddress) {
                 foreach ($FormItemByAddress as $itemId => $quantity) {
                     if (array_key_exists($itemId, $itemQuantities)) {
-                        $itemQuantities[$itemId] = $itemQuantities[$itemId] + $quantity;
+                        $itemQuantities[$itemId] = bcadd((string) $itemQuantities[$itemId], (string) $quantity, 0);
                     } else {
                         $itemQuantities[$itemId] = $quantity;
                     }
@@ -285,7 +287,7 @@ class ShippingMultipleController extends AbstractShoppingController
             foreach ($Order->getProductOrderItems() as $Item) {
                 $id = $Item->getProductClass()->getId();
                 if (isset($quantityByProductClass[$id])) {
-                    $quantityByProductClass[$id] += $Item->getQuantity();
+                    $quantityByProductClass[$id] = bcadd($quantityByProductClass[$id], $Item->getQuantity(), 0);
                 } else {
                     $quantityByProductClass[$id] = $Item->getQuantity();
                 }
@@ -390,7 +392,7 @@ class ShippingMultipleController extends AbstractShoppingController
             } else {
                 // 非会員用のセッションに追加
                 $CustomerAddresses = $this->session->get(OrderHelper::SESSION_NON_MEMBER_ADDRESSES);
-                $CustomerAddresses = unserialize($CustomerAddresses);
+                $CustomerAddresses = unserialize($CustomerAddresses, ['allowed_classes' => [CustomerAddress::class, Customer::class, Pref::class, Country::class]]);
                 $CustomerAddresses[] = $CustomerAddress;
                 $this->session->set(OrderHelper::SESSION_NON_MEMBER_ADDRESSES, serialize($CustomerAddresses));
             }

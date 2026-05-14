@@ -21,16 +21,13 @@ use Symfony\Component\Filesystem\Filesystem;
 
 final class CustomizeBundleTest extends KernelTestCase
 {
-    #[\Override]
     public function tearDown(): void
     {
         $fs = new Filesystem();
         $fs->remove(__DIR__.'/../../../app/Customize/Bundle');
         $fs->remove(__DIR__.'/../../../app/Customize/Resource/config/bundles.php');
-
         // Restore exception handler to prevent risky test warnings
         restore_exception_handler();
-
         parent::tearDown();
     }
 

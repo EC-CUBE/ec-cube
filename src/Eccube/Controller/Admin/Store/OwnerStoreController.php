@@ -61,6 +61,7 @@ class OwnerStoreController extends AbstractController
         BaseInfoRepository $baseInfoRepository,
         private readonly CacheUtil $cacheUtil,
         protected ValidatorInterface $validator,
+        private readonly PaginatorInterface $paginator,
     ) {
         $this->BaseInfo = $baseInfoRepository->get();
     }
@@ -75,7 +76,7 @@ class OwnerStoreController extends AbstractController
     #[Route(path: '/%eccube_admin_route%/store/plugin/api/search', name: 'admin_store_plugin_owners_search', methods: ['GET', 'POST'])]
     #[Route(path: '/%eccube_admin_route%/store/plugin/api/search/page/{page_no}', name: 'admin_store_plugin_owners_search_page', requirements: ['page_no' => '\d+'], methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Store/plugin_search.twig')]
-    public function search(Request $request, PaginatorInterface $paginator, $page_no = null): array|RedirectResponse
+    public function search(Request $request, $page_no = null): array|RedirectResponse
     {
         if (empty($this->BaseInfo->getAuthenticationKey())) {
             $this->addWarning('admin.store.plugin.search.not_auth', 'admin');
@@ -155,7 +156,7 @@ class OwnerStoreController extends AbstractController
 
         // The usage is set because `$items` are already paged.
         // virtual paging
-        $pagination = $paginator->paginate($items, 1, $pageCount);
+        $pagination = $this->paginator->paginate($items, 1, $pageCount);
         $pagination->setTotalItemCount($total);
         $pagination->setCurrentPageNumber($page_no);
         $pagination->setItemNumberPerPage($pageCount);

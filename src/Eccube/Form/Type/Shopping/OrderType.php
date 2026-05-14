@@ -264,11 +264,11 @@ class OrderType extends AbstractType
                 return true;
             }
 
-            if (null !== $min && bcadd($total, $charge) < $min) {
+            if (null !== $min && bccomp(bcadd($total, $charge ?? '0'), $min) < 0) {
                 return false;
             }
 
-            if (null !== $max && bcadd($total, $charge) > $max) {
+            if (null !== $max && bccomp(bcadd($total, $charge ?? '0'), $max) > 0) {
                 return false;
             }
 

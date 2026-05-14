@@ -1,12 +1,18 @@
-version: "3"
-
 services:
   zap:
-    image: kiy0taka/zap2docker-eccube
-    command: bash -c "zap.sh -cmd -configfile /zap/wrk/options.properties -certpubdump /zap/wrk/owasp_zap_root_ca.cer && sleep infinity"
+    image: ghcr.io/ec-cube/zaproxy:0.1.2
+    
+    # コンテナを待機させる
+    entrypoint: ["sh", "-c"]
+    command: ["tail -f /dev/null"]
+    
+    environment:
+      # HOMEは公式が /home/zap を前提にしているため明示しておくと安全
+      HOME: /home/zap
+
     volumes:
-      - ./zap/policies:/home/zap/.ZAP/policies/
       - ./zap:/zap/wrk/
+      - ./zap/policies:/zap/policies:ro
     depends_on:
       - ec-cube
     networks:
@@ -15,6 +21,7 @@ services:
     tty: true
     healthcheck:
       test: echo 'zap'
-      interval: 3s
-      timeout: 3s
-      retries: 3
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 5s

@@ -27,13 +27,10 @@ final class UserDataControllerTest extends AbstractWebTestCase
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->userDataDir = $this->eccubeConfig->get('eccube_theme_user_data_dir');
-
         $page = new Page();
         $page->setUrl($this->fileName)
             ->setFileName($this->fileName)
@@ -42,13 +39,11 @@ final class UserDataControllerTest extends AbstractWebTestCase
         $this->entityManager->flush();
     }
 
-    #[\Override]
     protected function tearDown(): void
     {
         if (file_exists($this->userDataDir.'/'.$this->fileName.'.twig')) {
             unlink($this->userDataDir.'/'.$this->fileName.'.twig');
         }
-
         parent::tearDown();
     }
 

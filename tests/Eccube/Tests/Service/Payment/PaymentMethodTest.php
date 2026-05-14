@@ -28,7 +28,7 @@ final class PaymentMethodTest extends EccubeTestCase
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
 
-        $form = $this->createMock(FormInterface::class);
+        $form = $this->createStub(FormInterface::class);
         $paymentMethod = static::getContainer()->get($Order->getPayment()->getMethodClass());
         $paymentMethod->setFormType($form);
         $paymentMethod->setOrder($Order);

@@ -57,7 +57,6 @@ final class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTest
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -70,7 +69,6 @@ final class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTest
             'dtb_shipping',
             'dtb_order',
         ]);
-
         $this->removeCustomer();
         $this->Customer = $this->createCustomer('customer@example.com');
         $this->Customer1 = $this->createCustomer('customer1@example.com');

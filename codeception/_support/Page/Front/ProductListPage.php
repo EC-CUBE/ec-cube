@@ -24,11 +24,6 @@ class ProductListPage extends AbstractFrontPage
         return $page;
     }
 
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     public function 表示件数設定($num)
     {
         $this->tester->selectOption(['css' => "select[name = 'disp_number']"], "{$num}件");

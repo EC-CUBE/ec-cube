@@ -54,22 +54,18 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->productRepository = $this->entityManager->getRepository(Product::class);
         $this->baseInfo = $this->entityManager->find(BaseInfo::class, 1);
         $this->taxRuleRepository = $this->entityManager->getRepository(TaxRule::class);
         $this->productStatusRepository = $this->entityManager->getRepository(ProductStatus::class);
         $this->productTagRepository = $this->entityManager->getRepository(ProductTag::class);
-
         // 検索時, IDの重複を防ぐため事前に10個生成しておく
         for ($i = 0; $i < 10; $i++) {
             $this->createProduct();
         }
-
         $this->imageDir = sys_get_temp_dir().'/'.sha1((string) mt_rand());
         $fs = new Filesystem();
         $fs->mkdir($this->imageDir);
@@ -78,7 +74,6 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function tearDown(): void
     {
         $fs = new Filesystem();
@@ -560,6 +555,7 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
         $testProduct = $this->createProduct('Product with status 01', 0);
         $this->createProduct('Product with status 02', 1);
         $display = $this->productStatusRepository->find(ProductStatus::DISPLAY_HIDE);
+        $this->assertInstanceOf(ProductStatus::class, $display);
         $testProduct->setStatus($display);
         $this->entityManager->flush();
 
@@ -601,6 +597,7 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
         $this->createProduct('Product with status 01', 0);
         $testProduct02 = $this->createProduct('Product with status 02', 1);
         $display = $this->productStatusRepository->find(ProductStatus::DISPLAY_HIDE);
+        $this->assertInstanceOf(ProductStatus::class, $display);
         $testProduct02->setStatus($display);
         $this->entityManager->flush();
 
@@ -644,6 +641,7 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
         $this->createProduct('Product with status 01', 0);
         $testProduct02 = $this->createProduct('Product with status 02', 1);
         $display = $this->productStatusRepository->find(ProductStatus::DISPLAY_HIDE);
+        $this->assertInstanceOf(ProductStatus::class, $display);
         $testProduct02->setStatus($display);
         $this->entityManager->flush();
 
@@ -937,6 +935,7 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
             [],
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'HTTP_ECCUBE_CSRF_TOKEN' => 'dummy',
             ]
         );
 

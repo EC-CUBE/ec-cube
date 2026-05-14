@@ -104,9 +104,9 @@ if (!class_exists(ProductClass::class)) {
         {
             if ($this->getStock() > 0 || $this->isStockUnlimited()) {
                 return true;
-            } else {
-                return false;
             }
+
+            return false;
         }
 
         /**

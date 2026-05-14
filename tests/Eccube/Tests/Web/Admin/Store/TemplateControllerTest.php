@@ -42,19 +42,15 @@ final class TemplateControllerTest extends AbstractAdminWebTestCase
 
     protected ?string $env = null;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->templateRepository = $this->entityManager->getRepository(Template::class);
         $this->deviceTypeRepository = $this->entityManager->getRepository(DeviceType::class);
-
         $this->dir = \tempnam(\sys_get_temp_dir(), 'TemplateControllerTest');
         $fs = new Filesystem();
         $fs->remove($this->dir);
         $fs->mkdir($this->dir);
-
         $file = $this->dir.'/template.zip';
         $zip = new \ZipArchive();
         $zip->open($file, \ZipArchive::CREATE);
@@ -62,30 +58,24 @@ final class TemplateControllerTest extends AbstractAdminWebTestCase
         $zip->addEmptyDir('html');
         $zip->close();
         $this->file = new UploadedFile($file, 'dummy.zip', 'application/zip');
-
         $this->code = StringUtil::random(6);
-
         $this->envFile = static::getContainer()->getParameter('kernel.project_dir').'/.env';
         if (file_exists($this->envFile)) {
             $this->env = file_get_contents($this->envFile);
         }
     }
 
-    #[\Override]
     protected function tearDown(): void
     {
         $fs = new Filesystem();
         $fs->remove($this->dir);
-
         $templatePath = static::getContainer()->getParameter('kernel.project_dir').'/app/template/'.$this->code;
         if ($fs->exists($templatePath)) {
             $fs->remove($templatePath);
         }
-
         if ($this->env) {
             file_put_contents($this->envFile, $this->env);
         }
-
         parent::tearDown();
     }
 

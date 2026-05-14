@@ -32,7 +32,7 @@ class NewsController extends AbstractController
     /**
      * NewsController constructor.
      */
-    public function __construct(protected NewsRepository $newsRepository)
+    public function __construct(protected NewsRepository $newsRepository, private readonly PaginatorInterface $paginator, private readonly CacheUtil $cacheUtil)
     {
     }
 
@@ -46,7 +46,7 @@ class NewsController extends AbstractController
     #[Route(path: '/%eccube_admin_route%/content/news', name: 'admin_content_news', methods: ['GET'])]
     #[Route(path: '/%eccube_admin_route%/content/news/page/{page_no}', name: 'admin_content_news_page', requirements: ['page_no' => '\d+'], methods: ['GET'])]
     #[Template(template: '@admin/Content/news.twig')]
-    public function index(Request $request, PaginatorInterface $paginator, $page_no = 1): array
+    public function index(Request $request, $page_no = 1): array
     {
         $qb = $this->newsRepository->getQueryBuilderAll();
 
@@ -58,7 +58,7 @@ class NewsController extends AbstractController
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_CONTENT_NEWS_INDEX_INITIALIZE);
 
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $qb,
             $page_no,
             $this->eccubeConfig->get('eccube_default_page_count')
@@ -79,7 +79,7 @@ class NewsController extends AbstractController
     #[Route(path: '/%eccube_admin_route%/content/news/new', name: 'admin_content_news_new', methods: ['GET', 'POST'])]
     #[Route(path: '/%eccube_admin_route%/content/news/{id}/edit', name: 'admin_content_news_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Content/news_edit.twig')]
-    public function edit(Request $request, CacheUtil $cacheUtil, $id = null): array|RedirectResponse
+    public function edit(Request $request, $id = null): array|RedirectResponse
     {
         if ($id) {
             $News = $this->newsRepository->find($id);
@@ -124,7 +124,7 @@ class NewsController extends AbstractController
             $this->addSuccess('admin.common.save_complete', 'admin');
 
             // キャッシュの削除
-            $cacheUtil->clearDoctrineCache();
+            $this->cacheUtil->clearDoctrineCache();
 
             return $this->redirectToRoute('admin_content_news_edit', ['id' => $News->getId()]);
         }
@@ -139,7 +139,7 @@ class NewsController extends AbstractController
      * 指定した新着情報を削除する。
      */
     #[Route(path: '/%eccube_admin_route%/content/news/{id}/delete', name: 'admin_content_news_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, News $News, CacheUtil $cacheUtil): RedirectResponse
+    public function delete(Request $request, News $News): RedirectResponse
     {
         $this->isTokenValid();
 
@@ -156,7 +156,7 @@ class NewsController extends AbstractController
             log_info('新着情報削除完了', [$News->getId()]);
 
             // キャッシュの削除
-            $cacheUtil->clearDoctrineCache();
+            $this->cacheUtil->clearDoctrineCache();
         } catch (\Exception $e) {
             $message = trans('admin.common.delete_error_foreign_key', ['%name%' => $News->getTitle()]);
             $this->addError($message, 'admin');

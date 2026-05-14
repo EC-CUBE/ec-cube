@@ -146,16 +146,15 @@ class EntryController extends AbstractController
                         log_info('仮会員登録完了画面へリダイレクト');
 
                         return $this->redirectToRoute('entry_complete');
-                    } else {
-                        // 仮会員設定が無効な場合は、会員登録を完了させる.
-                        $qtyInCart = $this->entryActivate($request, $Customer->getSecretKey());
-
-                        // URLを変更するため完了画面にリダイレクト
-                        return $this->redirectToRoute('entry_activate', [
-                            'secret_key' => $Customer->getSecretKey(),
-                            'qtyInCart' => $qtyInCart,
-                        ]);
                     }
+                    // 仮会員設定が無効な場合は、会員登録を完了させる.
+                    $qtyInCart = $this->entryActivate($request, $Customer->getSecretKey());
+
+                    // URLを変更するため完了画面にリダイレクト
+                    return $this->redirectToRoute('entry_activate', [
+                        'secret_key' => $Customer->getSecretKey(),
+                        'qtyInCart' => $qtyInCart,
+                    ]);
             }
         }
 
@@ -225,7 +224,7 @@ class EntryController extends AbstractController
     /**
      * 会員登録処理を行う
      */
-    private function entryActivate(Request $request, string $secret_key): int
+    private function entryActivate(Request $request, string $secret_key): string
     {
         log_info('本会員登録開始');
         $Customer = $this->customerRepository->getProvisionalCustomerBySecretKey($secret_key);
@@ -253,9 +252,9 @@ class EntryController extends AbstractController
 
         // Assign session carts into customer carts
         $Carts = $this->cartService->getCarts();
-        $qtyInCart = 0;
+        $qtyInCart = '0';
         foreach ($Carts as $Cart) {
-            $qtyInCart += $Cart->getTotalQuantity();
+            $qtyInCart = bcadd($qtyInCart, $Cart->getTotalQuantity(), 0);
         }
 
         if ($qtyInCart) {

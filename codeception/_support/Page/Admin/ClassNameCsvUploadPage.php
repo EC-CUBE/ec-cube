@@ -17,14 +17,6 @@ class ClassNameCsvUploadPage extends AbstractAdminPageStyleGuide
 {
     public static $完了メッセージ = '.c-container div.c-contentsArea > div.alert-success';
 
-    /**
-     * ClassNameCsvUploadPage constructor.
-     */
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     public static function go($I)
     {
         $page = new self($I);

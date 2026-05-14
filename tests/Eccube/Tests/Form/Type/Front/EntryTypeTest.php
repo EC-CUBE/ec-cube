@@ -58,11 +58,9 @@ final class EntryTypeTest extends AbstractTypeTestCase
         'job' => 1,
     ];
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
             ->createBuilder(EntryType::class, null, [

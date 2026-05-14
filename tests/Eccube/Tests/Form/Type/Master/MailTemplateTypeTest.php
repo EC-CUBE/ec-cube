@@ -27,12 +27,10 @@ final class MailTemplateTypeTest extends AbstractTypeTestCase
 
     protected ?MailTemplateRepository $mailTemplateRepo = null;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
         $this->mailTemplateRepo = $this->entityManager->getRepository(MailTemplate::class);
-
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
             ->createBuilder(MailTemplateType::class, null, [

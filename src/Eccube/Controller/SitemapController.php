@@ -41,6 +41,7 @@ class SitemapController extends AbstractController
         private readonly ProductListOrderByRepository $productListOrderByRepository,
         private readonly ProductRepository $productRepository,
         BaseInfoRepository $baseInfoRepository,
+        private readonly PaginatorInterface $paginator,
     ) {
         $this->BaseInfo = $baseInfoRepository->get();
     }
@@ -49,7 +50,7 @@ class SitemapController extends AbstractController
      * Output sitemap index
      */
     #[Route(path: '/sitemap.xml', name: 'sitemap_xml', methods: ['GET'])]
-    public function index(PaginatorInterface $paginator): Response
+    public function index(): Response
     {
         $pageQueryBuilder = $this->pageRepository->createQueryBuilder('p');
         $Page = $pageQueryBuilder->select('p')
@@ -60,20 +61,17 @@ class SitemapController extends AbstractController
             ->setMaxResults(1)
             ->getQuery()
             ->getSingleResult();
-
         $Product = $this->productRepository->findOneBy(['Status' => 1], ['update_date' => 'DESC']);
-
         // フロントの商品一覧の条件で商品情報を取得
         $ProductListOrder = $this->productListOrderByRepository->find($this->eccubeConfig['eccube_product_order_newer']);
         $productQueryBuilder = $this->productRepository->getQueryBuilderBySearchData(['orderby' => $ProductListOrder]);
         /** @var SlidingPagination<int, Product> $pagination */
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $productQueryBuilder,
             1,
             $this->eccubeConfig['eccube_sitemap_products_per_page']
         );
         $paginationData = $pagination->getPaginationData();
-
         $Category = $this->categoryRepository->findOneBy([], ['update_date' => 'DESC']);
 
         return $this->outputXml(
@@ -104,7 +102,7 @@ class SitemapController extends AbstractController
      * Output sitemap of products as status is 1
      */
     #[Route(path: '/sitemap_product_{page}.xml', name: 'sitemap_product_xml', requirements: ['page' => '\d+'], methods: ['GET'])]
-    public function product(Request $request, PaginatorInterface $paginator): Response
+    public function product(Request $request): Response
     {
         // Doctrine SQLFilter
         if ($this->BaseInfo->isOptionNostockHidden()) {
@@ -114,7 +112,7 @@ class SitemapController extends AbstractController
         $ProductListOrder = $this->productListOrderByRepository->find($this->eccubeConfig['eccube_product_order_newer']);
         $productQueryBuilder = $this->productRepository->getQueryBuilderBySearchData(['orderby' => $ProductListOrder]);
         /** @var SlidingPagination<int, Product> $pagination */
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $productQueryBuilder,
             $request->get('page') ?: 1,
             $this->eccubeConfig['eccube_sitemap_products_per_page']

@@ -337,24 +337,22 @@ if (!class_exists(TaxRule::class)) {
                 return -1;
             } elseif (!$this->isProductTaxRule() && $Target->isProductTaxRule()) {
                 return 1;
-            } else {
-                if ($this->getApplyDate()->format('YmdHis') == $Target->getApplyDate()->format('YmdHis')) {
-                    if ($this->getSortNo() == $Target->getSortNo()) {
-                        return 0;
-                    }
-                    if ($this->getSortNo() > $Target->getSortNo()) {
-                        return -1;
-                    } else {
-                        return 1;
-                    }
-                } else {
-                    if ($this->getApplyDate()->format('YmdHis') > $Target->getApplyDate()->format('YmdHis')) {
-                        return -1;
-                    } else {
-                        return 1;
-                    }
-                }
             }
+            if ($this->getApplyDate()->format('YmdHis') == $Target->getApplyDate()->format('YmdHis')) {
+                if ($this->getSortNo() == $Target->getSortNo()) {
+                    return 0;
+                }
+                if ($this->getSortNo() > $Target->getSortNo()) {
+                    return -1;
+                }
+
+                return 1;
+            }
+            if ($this->getApplyDate()->format('YmdHis') > $Target->getApplyDate()->format('YmdHis')) {
+                return -1;
+            }
+
+            return 1;
         }
 
         /**

@@ -36,6 +36,7 @@ use Page\Admin\ProductTagPage;
 /**
  * @group admin
  * @group admin01
+ * @group admin01-a
  * @group product
  * @group ea3
  */

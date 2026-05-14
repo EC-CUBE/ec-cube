@@ -32,11 +32,9 @@ final class ClassCategoryValidatorTest extends EccubeTestCase
 
     protected ?ProductClass $ProductClass = null;
 
-    #[\Override]
     public function setUp(): void
     {
         parent::setUp();
-
         $this->Product = $this->entityManager->find(Product::class, 1);
         $this->ProductClass = $this->Product->getProductClasses()->next();
         $this->validator = static::getContainer()->get(ClassCategoryValidator::class);

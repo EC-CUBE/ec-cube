@@ -27,7 +27,6 @@ final class CssControllerTest extends AbstractAdminWebTestCase
 
     private ?string $contents = null;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -37,7 +36,6 @@ final class CssControllerTest extends AbstractAdminWebTestCase
         $fs->dumpFile($this->dir.self::CSS_FILE, '');
     }
 
-    #[\Override]
     protected function tearDown(): void
     {
         chmod($this->dir, 0755);

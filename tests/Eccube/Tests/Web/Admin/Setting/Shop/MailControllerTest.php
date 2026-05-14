@@ -26,13 +26,11 @@ use Symfony\Component\HttpFoundation\Request;
  */
 final class MailControllerTest extends AbstractAdminWebTestCase
 {
-    #[\Override]
     protected function tearDown(): void
     {
         $themeDir = static::getContainer()->getParameter('eccube_theme_front_dir');
         $fs = new Filesystem();
         $fs->remove((new Finder())->in($themeDir)->name('test_*.twig'));
-
         parent::tearDown();
     }
 

@@ -21,14 +21,6 @@ class ProductClassEditPage extends AbstractAdminPageStyleGuide
 
     public static $規格一覧 = ['css' => '#page_admin_product_product_class > div > div.c-contentsArea > div.c-contentsArea__cols > div > div > form > div.card.rounded.border-0.mb-4 > div.card-body.p-0 > table'];
 
-    /**
-     * ProductReProductClassEditPagegisterPage constructor.
-     */
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     public static function at($I)
     {
         $page = new ProductClassEditPage($I);

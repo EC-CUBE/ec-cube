@@ -46,11 +46,9 @@ final class ShoppingShippingTypeTest extends AbstractTypeTestCase
         'phone_number' => '012-345-6789',
     ];
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
             ->createBuilder(ShoppingShippingType::class, null, [
