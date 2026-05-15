@@ -68,10 +68,10 @@ file that was distributed with this source code.
                                     <div class="col">
                                         <div class="row">
                                             <div class="col">
-                                                {{ form_widget(form.name.name01) }}
+                                                {{ form_widget(form.name.name01, {'attr': {'autocomplete': 'given-name'}}) }}
                                             </div>
                                             <div class="col">
-                                                {{ form_widget(form.name.name02) }}
+                                                {{ form_widget(form.name.name02, {'attr': {'autocomplete': 'family-name'}}) }}
                                             </div>
                                         </div>
                                         <div class="row">
@@ -92,10 +92,10 @@ file that was distributed with this source code.
                                     <div class="col">
                                         <div class="row">
                                             <div class="col">
-                                                {{ form_widget(form.kana.kana01) }}
+                                                {{ form_widget(form.kana.kana01, {'attr': {'autocomplete': 'additional-name'}}) }}
                                             </div>
                                             <div class="col">
-                                                {{ form_widget(form.kana.kana02) }}
+                                                {{ form_widget(form.kana.kana02, {'attr': {'autocomplete': 'additional-name'}}) }}
                                             </div>
                                         </div>
                                         <div class="row">
@@ -113,7 +113,7 @@ file that was distributed with this source code.
                                         <span>{{ 'admin.common.company_name'|trans }}</span>
                                     </div>
                                     <div class="col">
-                                        {{ form_widget(form.company_name) }}
+                                        {{ form_widget(form.company_name, {'attr': {'autocomplete': 'organization'}}) }}
                                         {{ form_errors(form.company_name) }}
                                     </div>
                                 </div>
@@ -126,7 +126,7 @@ file that was distributed with this source code.
                                             <div class="row justify-content-start">
                                                 <div class="col-auto pe-0 align-self-center"><span>{{ 'admin.common.postal_symbol'|trans }}</span></div>
                                                 <div class="col-2">
-                                                    {{ form_widget(form.postal_code) }}
+                                                    {{ form_widget(form.postal_code, {'attr': {'autocomplete': 'postal-code'}}) }}
 
                                                 </div>
                                             </div>
@@ -160,7 +160,7 @@ file that was distributed with this source code.
                                         <span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span>
                                     </div>
                                     <div class="col">
-                                        {{ form_widget(form.email) }}
+                                        {{ form_widget(form.email, {'attr': {'autocomplete': 'email'}}) }}
                                         {{ form_errors(form.email) }}
                                     </div>
                                 </div>
@@ -170,7 +170,7 @@ file that was distributed with this source code.
                                         <span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span>
                                     </div>
                                     <div class="col">
-                                        {{ form_widget(form.phone_number) }}
+                                        {{ form_widget(form.phone_number, {'attr': {'autocomplete': 'tel'}}) }}
                                         {{ form_errors(form.phone_number) }}
                                     </div>
                                 </div>
