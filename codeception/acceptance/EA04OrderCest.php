@@ -537,4 +537,59 @@ class EA04OrderCest
         OrderManagePage::go($I)->受注ステータス検索(OrderStatus::NEW);
         $I->see('検索結果：1件が該当しました', OrderManagePage::$検索結果_メッセージ);
     }
+
+    /**
+     * お届け先から選択機能のテスト
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/6594
+     */
+    public function order_お届け先から選択して受注登録(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0404-UC01-T01 お届け先から選択して受注登録');
+
+        // 会員を作成し、お届け先を追加
+        $createCustomer = Fixtures::get('createCustomer');
+        $Customer = $createCustomer();
+        $I->haveInDatabase('dtb_customer_address', [
+            'customer_id' => $Customer->getId(),
+            'name01' => '配送先',
+            'name02' => '太郎',
+            'kana01' => 'ハイソウサキ',
+            'kana02' => 'タロウ',
+            'postal_code' => '530-0001',
+            'pref_id' => 27, // 大阪府
+            'addr01' => '大阪市北区梅田',
+            'addr02' => '2-1-1',
+            'phone_number' => '06-1234-5678',
+        ]);
+
+        // 受注登録画面を開く
+        $OrderEditPage = OrderEditPage::go($I);
+
+        // 会員を検索して選択
+        $I->click(['css' => 'a[data-bs-target="#searchCustomerModal"]']);
+        $I->waitForElementVisible('#searchCustomerModal');
+        $I->fillField(['id' => 'admin_search_customer_multi'], $Customer->getEmail());
+        $I->click('#searchCustomerModalButton');
+        $I->waitForElementVisible('#searchCustomerModalList table');
+        $I->click('#searchCustomerModalList table tbody tr:nth-child(1) .set-customer');
+        $I->waitForElementNotVisible('#searchCustomerModal');
+
+        // 会員選択後、お届け先から選択ボタンが表示されることを確認
+        $I->waitForElementVisible('#selectCustomerAddressButton');
+        $I->seeElement('#selectCustomerAddressButton');
+
+        // お届け先から選択ボタンをクリック
+        $OrderEditPage->お届け先から選択();
+
+        // モーダルからお届け先を選択
+        $OrderEditPage->お届け先選択モーダル_選択(1);
+
+        // 配送先情報が自動入力されているか確認
+        $I->assertEquals('配送先', $OrderEditPage->配送先_姓を取得());
+        $I->assertEquals('太郎', $OrderEditPage->配送先_名を取得());
+        $I->assertEquals('530-0001', $OrderEditPage->配送先_郵便番号を取得());
+        $I->assertEquals('大阪市北区梅田', $OrderEditPage->配送先_住所1を取得());
+        $I->assertEquals('06-1234-5678', $OrderEditPage->配送先_電話番号を取得());
+    }
 }

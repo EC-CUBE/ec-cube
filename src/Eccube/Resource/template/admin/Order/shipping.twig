@@ -140,6 +140,98 @@ file that was distributed with this source code.
         $('#bulkChange').on('click', function() {
             $('.warning-message').css('display', 'none');
         })
+
+        // 注文者情報をコピー
+        $('.copy-customer').on('click', function() {
+            var shippingIndex = $(this).data('shipping-index');
+
+            // Twigから渡された注文者情報をコピー
+            $('#form_shippings_' + shippingIndex + '_name_name01').val('{{ Order.name01|default("") }}');
+            $('#form_shippings_' + shippingIndex + '_name_name02').val('{{ Order.name02|default("") }}');
+            $('#form_shippings_' + shippingIndex + '_kana_kana01').val('{{ Order.kana01|default("") }}');
+            $('#form_shippings_' + shippingIndex + '_kana_kana02').val('{{ Order.kana02|default("") }}');
+            $('#form_shippings_' + shippingIndex + '_postal_code').val('{{ Order.postal_code|default("") }}');
+            $('#form_shippings_' + shippingIndex + '_address_pref').val('{{ Order.Pref ? Order.Pref.id : "" }}');
+            $('#form_shippings_' + shippingIndex + '_address_addr01').val('{{ Order.addr01|default("") }}');
+            $('#form_shippings_' + shippingIndex + '_address_addr02').val('{{ Order.addr02|default("") }}');
+            $('#form_shippings_' + shippingIndex + '_phone_number').val('{{ Order.phone_number|default("") }}');
+            $('#form_shippings_' + shippingIndex + '_company_name').val('{{ Order.company_name|default("") }}');
+        });
+
+        // お届け先選択ボタンのクリックイベント
+        $('.selectCustomerAddressButton').on('click', function() {
+            var shippingIndex = $(this).data('shipping-index');
+            var customerId = {{ Order.Customer ? Order.Customer.id : 'null' }};
+
+            if (!customerId) {
+                alert('会員情報がありません。');
+                return;
+            }
+
+            var modal = $('#selectCustomerAddressModal_' + shippingIndex);
+            var list = modal.find('.customerAddressList');
+            list.children().remove();
+
+            $.ajax({
+                url: '{{ url('admin_shipping_search_customer_address') }}',
+                type: 'POST',
+                dataType: 'json',
+                data: {'customer_id': customerId}
+            }).done(function(data) {
+                if (data.length === 0) {
+                    list.html('<p class="text-center">登録されているお届け先がありません。</p>');
+                } else {
+                    var table = '<table class="table table-hover"><thead><tr><th>氏名</th><th>住所</th><th>電話番号</th><th></th></tr></thead><tbody>';
+                    $.each(data, function(index, address) {
+                        var fullName = address.name01 + ' ' + address.name02;
+                        var fullAddress = '〒' + address.postal_code + ' ' + getPrefName(address.pref, shippingIndex) + address.addr01 + address.addr02;
+                        table += '<tr>';
+                        table += '<td>' + fullName + '</td>';
+                        table += '<td>' + fullAddress + '</td>';
+                        table += '<td>' + address.phone_number + '</td>';
+                        table += '<td><button type="button" class="btn btn-sm btn-primary select-address" data-shipping-index="' + shippingIndex + '" data-address=\'' + JSON.stringify(address) + '\'>選択</button></td>';
+                        table += '</tr>';
+                    });
+                    table += '</tbody></table>';
+                    list.html(table);
+
+                    // 選択ボタンのクリックイベント
+                    $('.select-address').on('click', function() {
+                        var shippingIndex = $(this).data('shipping-index');
+                        var address = JSON.parse($(this).attr('data-address'));
+
+                        $('#form_shippings_' + shippingIndex + '_name_name01').val(address.name01);
+                        $('#form_shippings_' + shippingIndex + '_name_name02').val(address.name02);
+                        $('#form_shippings_' + shippingIndex + '_kana_kana01').val(address.kana01);
+                        $('#form_shippings_' + shippingIndex + '_kana_kana02').val(address.kana02);
+                        $('#form_shippings_' + shippingIndex + '_postal_code').val(address.postal_code);
+                        $('#form_shippings_' + shippingIndex + '_address_pref').val(address.pref);
+                        $('#form_shippings_' + shippingIndex + '_address_addr01').val(address.addr01);
+                        $('#form_shippings_' + shippingIndex + '_address_addr02').val(address.addr02);
+                        $('#form_shippings_' + shippingIndex + '_phone_number').val(address.phone_number);
+                        $('#form_shippings_' + shippingIndex + '_company_name').val(address.company_name || '');
+
+                        modal.modal('hide');
+                    });
+                }
+
+                modal.modal('show');
+            }).fail(function() {
+                alert('お届け先の取得に失敗しました。');
+            });
+        });
+
+        // 都道府県名を取得する関数
+        function getPrefName(prefId, shippingIndex) {
+            var prefName = '';
+            $('#form_shippings_' + shippingIndex + '_address_pref option').each(function() {
+                if ($(this).val() == prefId) {
+                    prefName = $(this).text();
+                    return false;
+                }
+            });
+            return prefName;
+        }
     </script>
 
     {{ include('@admin/Order/confirmationModal_js.twig') }}
@@ -294,6 +386,8 @@ file that was distributed with this source code.
                                 <div class="card-body">
                                     <div class="row mb-3">
                                         <div class="col-6">
+                                            <!-- 注文者情報をコピーボタン -->
+                                            <button type="button" class="btn btn-ec-regular copy-customer" data-shipping-index="{{ loop.index0 }}">{{ 'admin.order.copy_orderer'|trans }}</button>
                                             {% if shippingForm.vars.value.id %}
                                                 {# ボタンは登録済みの出荷のみ表示する #}
                                                 <!-- 納品書を出力ボタン -->
@@ -308,6 +402,24 @@ file that was distributed with this source code.
                                             {% else %}
                                                 {# 未登録の出荷 #}
                                             {% endif %}
+                                            {% if Order.Customer is not empty %}
+                                                <!-- お届け先から選択ボタン -->
+                                                <button type="button" class="btn btn-ec-regular selectCustomerAddressButton" data-shipping-index="{{ loop.index0 }}">お届け先から選択</button>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <!-- お届け先選択モーダル -->
+                                    <div class="modal fade selectCustomerAddressModal" id="selectCustomerAddressModal_{{ loop.index0 }}" tabindex="-1" role="dialog" aria-labelledby="selectCustomerAddressModal_{{ loop.index0 }}" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title fw-bold">お届け先を選択</h5>
+                                                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="mb-3 customerAddressList"></div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <!-- お届先情報 -->

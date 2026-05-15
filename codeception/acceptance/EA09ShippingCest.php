@@ -320,4 +320,85 @@ class EA09ShippingCest
         $csv = $I->getLastDownloadFile('/^shipping\.csv$/');
         $I->assertEquals(mb_convert_encoding(file_get_contents($csv), 'UTF-8', 'Shift_JIS'), '出荷ID,お問い合わせ番号,出荷日'.PHP_EOL);
     }
+
+    /**
+     * 注文者情報をコピー機能のテスト
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/6594
+     */
+    public function shipping_注文者情報をコピー(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0904-UC01-T01 注文者情報をコピー');
+
+        // 受注を作成
+        $createCustomer = Fixtures::get('createCustomer');
+        $Customer = $createCustomer();
+        $createOrders = Fixtures::get('createOrders');
+        /** @var Order[] $Orders */
+        $Orders = $createOrders($Customer, 1, [], OrderStatus::IN_PROGRESS);
+        $Order = $Orders[0];
+
+        // 出荷編集画面を開く
+        $I->amOnPage('/admin/shipping/'.$Order->getId().'/edit');
+
+        // 注文者情報をコピーボタンをクリック
+        $ShippingEditPage = ShippingEditPage::at($I);
+        $ShippingEditPage->注文者情報をコピー(0);
+
+        // 配送先に注文者情報がコピーされていることを確認
+        $I->assertEquals($Order->getName01(), $ShippingEditPage->配送先_姓を取得(0));
+        $I->assertEquals($Order->getName02(), $ShippingEditPage->配送先_名を取得(0));
+        $I->assertEquals($Order->getPostalCode(), $ShippingEditPage->配送先_郵便番号を取得(0));
+        $I->assertEquals($Order->getAddr01(), $ShippingEditPage->配送先_住所1を取得(0));
+        $I->assertEquals($Order->getPhoneNumber(), $ShippingEditPage->配送先_電話番号を取得(0));
+    }
+
+    /**
+     * お届け先から選択機能のテスト
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/6594
+     */
+    public function shipping_お届け先から選択(AcceptanceTester $I)
+    {
+        $I->wantTo('EA0904-UC02-T01 お届け先から選択');
+
+        // 会員を作成し、お届け先を追加
+        $createCustomer = Fixtures::get('createCustomer');
+        $Customer = $createCustomer();
+        $I->haveInDatabase('dtb_customer_address', [
+            'customer_id' => $Customer->getId(),
+            'name01' => '配送先',
+            'name02' => '太郎',
+            'kana01' => 'ハイソウサキ',
+            'kana02' => 'タロウ',
+            'postal_code' => '530-0001',
+            'pref_id' => 27, // 大阪府
+            'addr01' => '大阪市北区梅田',
+            'addr02' => '2-1-1',
+            'phone_number' => '06-1234-5678',
+        ]);
+
+        // 受注を作成
+        $createOrders = Fixtures::get('createOrders');
+        /** @var Order[] $Orders */
+        $Orders = $createOrders($Customer, 1, [], OrderStatus::IN_PROGRESS);
+        $Order = $Orders[0];
+
+        // 出荷編集画面を開く
+        $I->amOnPage('/admin/shipping/'.$Order->getId().'/edit');
+
+        // お届け先から選択ボタンをクリック
+        $ShippingEditPage = ShippingEditPage::at($I);
+        $ShippingEditPage->お届け先から選択(0);
+
+        // モーダルからお届け先を選択
+        $ShippingEditPage->お届け先選択モーダル_選択(1, 0);
+
+        // 配送先情報が自動入力されていることを確認
+        $I->assertEquals('配送先', $ShippingEditPage->配送先_姓を取得(0));
+        $I->assertEquals('太郎', $ShippingEditPage->配送先_名を取得(0));
+        $I->assertEquals('530-0001', $ShippingEditPage->配送先_郵便番号を取得(0));
+        $I->assertEquals('大阪市北区梅田', $ShippingEditPage->配送先_住所1を取得(0));
+        $I->assertEquals('06-1234-5678', $ShippingEditPage->配送先_電話番号を取得(0));
+    }
 }

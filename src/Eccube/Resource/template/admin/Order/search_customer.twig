@@ -30,6 +30,10 @@ file that was distributed with this source code.
             $('#order_email').val(data['email']);
             $('#order_phone_number').val(data['phone_number']);
             $('#order_company_name').val(data['company_name']);
+            // お届け先から選択ボタンの表示を更新
+            if (typeof window.updateSelectCustomerAddressButton === 'function') {
+                window.updateSelectCustomerAddressButton();
+            }
             // モーダルを閉じる.
             $('#searchCustomerModal').modal('hide');
         }).fail(function(data) {

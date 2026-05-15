@@ -190,6 +190,89 @@ file that was distributed with this source code.
                     }
                 }
             });
+
+            // お届け先選択ボタンのクリックイベント
+            $('#selectCustomerAddressButton').on('click', function() {
+                var customerId = $('#order_Customer').val();
+                if (!customerId) {
+                    alert('会員が選択されていません。');
+                    return;
+                }
+
+                var list = $('#customerAddressList');
+                list.children().remove();
+
+                $.ajax({
+                    url: '{{ url('admin_order_search_customer_address') }}',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {'customer_id': customerId}
+                }).done(function(data) {
+                    if (data.length === 0) {
+                        list.html('<p class="text-center">登録されているお届け先がありません。</p>');
+                    } else {
+                        var table = '<table class="table table-hover"><thead><tr><th>氏名</th><th>住所</th><th>電話番号</th><th></th></tr></thead><tbody>';
+                        $.each(data, function(index, address) {
+                            var fullName = address.name01 + ' ' + address.name02;
+                            var fullAddress = '〒' + address.postal_code + ' ' + getPrefName(address.pref) + address.addr01 + address.addr02;
+                            table += '<tr>';
+                            table += '<td>' + fullName + '</td>';
+                            table += '<td>' + fullAddress + '</td>';
+                            table += '<td>' + address.phone_number + '</td>';
+                            table += '<td><button type="button" class="btn btn-sm btn-primary select-address" data-address=\'' + JSON.stringify(address) + '\'>選択</button></td>';
+                            table += '</tr>';
+                        });
+                        table += '</tbody></table>';
+                        list.html(table);
+
+                        // 選択ボタンのクリックイベント
+                        $('.select-address').on('click', function() {
+                            var address = JSON.parse($(this).attr('data-address'));
+                            $('#order_Shipping_name_name01').val(address.name01);
+                            $('#order_Shipping_name_name02').val(address.name02);
+                            $('#order_Shipping_kana_kana01').val(address.kana01);
+                            $('#order_Shipping_kana_kana02').val(address.kana02);
+                            $('#order_Shipping_postal_code').val(address.postal_code);
+                            $('#order_Shipping_address_pref').val(address.pref);
+                            $('#order_Shipping_address_addr01').val(address.addr01);
+                            $('#order_Shipping_address_addr02').val(address.addr02);
+                            $('#order_Shipping_phone_number').val(address.phone_number);
+                            $('#order_Shipping_company_name').val(address.company_name || '');
+
+                            $('#selectCustomerAddressModal').modal('hide');
+                        });
+                    }
+
+                    $('#selectCustomerAddressModal').modal('show');
+                }).fail(function() {
+                    alert('お届け先の取得に失敗しました。');
+                });
+            });
+
+            // 都道府県名を取得する関数
+            function getPrefName(prefId) {
+                var prefName = '';
+                $('#order_Shipping_address_pref option').each(function() {
+                    if ($(this).val() == prefId) {
+                        prefName = $(this).text();
+                        return false;
+                    }
+                });
+                return prefName;
+            }
+
+            // 会員選択時のボタン表示制御（グローバルスコープで定義）
+            window.updateSelectCustomerAddressButton = function() {
+                var customerId = $('#order_Customer').val();
+                if (customerId) {
+                    $('#selectCustomerAddressButton').show();
+                } else {
+                    $('#selectCustomerAddressButton').hide();
+                }
+            };
+
+            // 初期表示時のボタン表示状態を設定
+            updateSelectCustomerAddressButton();
         });
 
         {# ポイント機能が有効かつ会員の場合のみポイントの割引金額を変更する #}
@@ -525,6 +608,7 @@ file that was distributed with this source code.
                                     <div class="row mb-3">
                                         <div class="col-6">
                                             <button type="button" class="btn btn-ec-regular copy-customer">{{ 'admin.order.copy_orderer'|trans }}</button>
+                                            <button type="button" class="btn btn-ec-regular" id="selectCustomerAddressButton" {% if form.Customer.vars.value is empty %}style="display:none;"{% endif %}>お届け先から選択</button>
                                             {% if Order.id is not empty %}
                                                 <a class="btn btn-ec-regular pdf-print" href="{{ url('admin_order_export_pdf') }}?ids[]={{ Order.Shippings[0].id }}">{{ 'admin.order.output_delivery_note'|trans }}</a>
                                             {% endif %}
@@ -535,6 +619,20 @@ file that was distributed with this source code.
                                            }) }}" href="{{ path("admin_shipping_edit", {id: Order.id}) }}">{{ 'admin.order.add_shipping'|trans }}</a>
                                             </div>
                                         {% endif %}
+                                    </div>
+                                    <!-- お届け先選択モーダル -->
+                                    <div class="modal fade" id="selectCustomerAddressModal" tabindex="-1" role="dialog" aria-labelledby="selectCustomerAddressModal" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title fw-bold">お届け先を選択</h5>
+                                                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="mb-3" id="customerAddressList"></div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="row h-adr">
                                         <span class="p-country-name" style="display:none;">Japan</span>

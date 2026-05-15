@@ -21,6 +21,8 @@ use Eccube\Entity\Shipping;
 use Eccube\Form\Type\Admin\SearchProductType;
 use Eccube\Form\Type\Admin\ShippingType;
 use Eccube\Repository\CategoryRepository;
+use Eccube\Repository\CustomerAddressRepository;
+use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\OrderItemRepository;
 use Eccube\Repository\ShippingRepository;
@@ -37,6 +39,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -88,6 +91,16 @@ class ShippingController extends AbstractController
     protected $purchaseFlow;
 
     /**
+     * @var CustomerAddressRepository
+     */
+    protected $customerAddressRepository;
+
+    /**
+     * @var CustomerRepository
+     */
+    protected $customerRepository;
+
+    /**
      * EditController constructor.
      *
      * @param MailService $mailService
@@ -99,6 +112,8 @@ class ShippingController extends AbstractController
      * @param SerializerInterface $serializer
      * @param OrderStateMachine $orderStateMachine
      * @param PurchaseFlow $orderPurchaseFlow
+     * @param CustomerAddressRepository $customerAddressRepository
+     * @param CustomerRepository $customerRepository
      */
     public function __construct(
         MailService $mailService,
@@ -110,6 +125,8 @@ class ShippingController extends AbstractController
         SerializerInterface $serializer,
         OrderStateMachine $orderStateMachine,
         PurchaseFlow $orderPurchaseFlow,
+        CustomerAddressRepository $customerAddressRepository,
+        CustomerRepository $customerRepository,
     ) {
         $this->mailService = $mailService;
         $this->orderItemRepository = $orderItemRepository;
@@ -120,6 +137,8 @@ class ShippingController extends AbstractController
         $this->serializer = $serializer;
         $this->orderStateMachine = $orderStateMachine;
         $this->purchaseFlow = $orderPurchaseFlow;
+        $this->customerAddressRepository = $customerAddressRepository;
+        $this->customerRepository = $customerRepository;
     }
 
     /**
@@ -330,5 +349,62 @@ class ShippingController extends AbstractController
             'mail' => true,
             'shipped' => false,
         ]);
+    }
+
+    /**
+     * 会員のお届け先を取得する.
+     *
+     * @Route("/%eccube_admin_route%/shipping/search/customer_address", name="admin_shipping_search_customer_address", methods={"POST"})
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function searchCustomerAddress(Request $request)
+    {
+        if ($request->isXmlHttpRequest() && $this->isTokenValid()) {
+            log_debug('search customer address start.');
+
+            $customerId = $request->get('customer_id');
+            if (!$customerId) {
+                log_debug('customer_id is required.');
+
+                return $this->json(['error' => 'customer_id is required'], 400);
+            }
+
+            /** @var \Eccube\Entity\Customer $Customer */
+            $Customer = $this->customerRepository->find($customerId);
+
+            if (is_null($Customer)) {
+                log_debug('customer not found.');
+
+                return $this->json([], 404);
+            }
+
+            $CustomerAddresses = $this->customerAddressRepository->findBy(['Customer' => $Customer], ['id' => 'ASC']);
+
+            $data = [];
+            foreach ($CustomerAddresses as $CustomerAddress) {
+                $data[] = [
+                    'id' => $CustomerAddress->getId(),
+                    'name01' => $CustomerAddress->getName01(),
+                    'name02' => $CustomerAddress->getName02(),
+                    'kana01' => $CustomerAddress->getKana01(),
+                    'kana02' => $CustomerAddress->getKana02(),
+                    'postal_code' => $CustomerAddress->getPostalCode(),
+                    'pref' => is_null($CustomerAddress->getPref()) ? null : $CustomerAddress->getPref()->getId(),
+                    'addr01' => $CustomerAddress->getAddr01(),
+                    'addr02' => $CustomerAddress->getAddr02(),
+                    'phone_number' => $CustomerAddress->getPhoneNumber(),
+                    'company_name' => $CustomerAddress->getCompanyName(),
+                ];
+            }
+
+            log_debug('search customer address complete.', ['count' => count($data)]);
+
+            return $this->json($data);
+        }
+
+        throw new BadRequestHttpException();
     }
 }

@@ -761,4 +761,73 @@ class EditControllerTest extends AbstractEditControllerTestCase
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
+
+    /**
+     * 会員のお届け先一覧を取得するAPIのテスト
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/6594
+     */
+    public function testSearchCustomerAddress()
+    {
+        // お届け先を登録
+        $CustomerAddress = $this->createCustomerAddress($this->Customer);
+
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_order_search_customer_address'),
+            ['customer_id' => $this->Customer->getId()],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            ]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $responseData = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertIsArray($responseData);
+        $this->assertGreaterThan(0, count($responseData));
+        $this->assertEquals($CustomerAddress->getName01(), $responseData[0]['name01']);
+        $this->assertEquals($CustomerAddress->getName02(), $responseData[0]['name02']);
+        $this->assertEquals($CustomerAddress->getPostalCode(), $responseData[0]['postal_code']);
+    }
+
+    /**
+     * お届け先取得API - 会員IDが未指定の場合のテスト
+     */
+    public function testSearchCustomerAddressWithoutCustomerId()
+    {
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_order_search_customer_address'),
+            [],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            ]
+        );
+
+        $this->assertEquals(400, $this->client->getResponse()->getStatusCode());
+    }
+
+    /**
+     * お届け先取得API - 会員IDが存在しない場合のテスト
+     */
+    public function testSearchCustomerAddressWithInvalidCustomerId()
+    {
+        $this->client->request(
+            'POST',
+            $this->generateUrl('admin_order_search_customer_address'),
+            ['customer_id' => 99999],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            ]
+        );
+
+        $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
+    }
 }
