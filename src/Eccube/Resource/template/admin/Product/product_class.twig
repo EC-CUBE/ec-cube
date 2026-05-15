@@ -57,6 +57,22 @@ file that was distributed with this source code.
                 }
             });
 
+            // フォーム送信前にチェックOFFの行の不要フィールドをdisabled化してPOSTサイズを削減する.
+            // チェックOFFの行はサーバ側(saveProductClasses)でPOSTデータを破棄しDBから再取得するため,
+            // 価格・在庫等のフィールドを送信する必要がない.
+            // 規格の組み合わせが多い場合にmax_input_varsやWAFの制限に抵触することを防ぐ.
+            $('#ex-product_class').closest('form').on('submit', function() {
+                $(this).find('#ex-product_class table tr[id]').each(function() {
+                    var $row = $(this);
+                    var $checkbox = $row.find('input[id$="_checked"]');
+                    if ($checkbox.length && !$checkbox.prop('checked')) {
+                        $row.find('input, select, textarea').not(
+                            '[id$="_checked"], [id$="_ClassCategory1"], [id$="_ClassCategory2"]'
+                        ).prop('disabled', true);
+                    }
+                });
+            });
+
             // 1行目をコピーボタン
             $('#copy').on('click', function(event) {
                 event.preventDefault();
