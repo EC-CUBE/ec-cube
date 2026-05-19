@@ -66,6 +66,21 @@ file that was distributed with this source code.
                 });
             });
 
+            // 商品検索ページング (動的に追加される要素のため delegate)
+            document.addEventListener('click', function(e) {
+                var target = e.target.closest('#searchProductModalList ul.pagination li.page-item a.page-link');
+                if (!target) return;
+                e.preventDefault();
+                document.getElementById('searchProductModalList').innerHTML = '';
+                window.eccubeFetch(target.getAttribute('href'))
+                    .then(function(response) { return response.text(); })
+                    .then(function(data) {
+                        setHtmlWithScripts(document.getElementById('searchProductModalList'), data);
+                    }).catch(function() {
+                        alert('search product failed.');
+                    });
+            });
+
             // その他明細
             var addOrderItemTypeModal = document.getElementById('addOrderItemType');
             if (addOrderItemTypeModal) {

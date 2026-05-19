@@ -102,6 +102,50 @@ file that was distributed with this source code.
                     });
             });
 
+            // 顧客検索: 「設定」ボタンとページング (innerHTML 差替えで失われないよう document delegate)
+            document.addEventListener('click', function(e) {
+                var setBtn = e.target.closest('#searchCustomerModalList .set-customer');
+                if (setBtn) {
+                    window.eccubeFetch('{{ url('admin_order_search_customer_by_id') }}', {
+                        method: 'POST',
+                        body: new URLSearchParams({'id': setBtn.dataset.customer})
+                    }).then(function(response) { return response.json(); })
+                    .then(function(data) {
+                        document.getElementById('order_CustomerId').textContent = data['id'];
+                        document.getElementById('order_Customer').value = data['id'];
+                        document.getElementById('order_name_name01').value = data['name01'];
+                        document.getElementById('order_name_name02').value = data['name02'];
+                        document.getElementById('order_kana_kana01').value = data['kana01'];
+                        document.getElementById('order_kana_kana02').value = data['kana02'];
+                        document.getElementById('order_postal_code').value = data['postal_code'];
+                        document.getElementById('order_address_pref').value = data['pref'];
+                        document.getElementById('order_address_addr01').value = data['addr01'];
+                        document.getElementById('order_address_addr02').value = data['addr02'];
+                        document.getElementById('order_email').value = data['email'];
+                        document.getElementById('order_phone_number').value = data['phone_number'];
+                        document.getElementById('order_company_name').value = data['company_name'];
+                        bootstrap.Modal.getInstance(document.getElementById('searchCustomerModal'))?.hide();
+                    }).catch(function() {
+                        alert('search customer(by id) failed.');
+                    });
+                    return;
+                }
+
+                var pageLink = e.target.closest('#searchCustomerModalList #customer_pagination a');
+                if (pageLink) {
+                    e.preventDefault();
+                    if (pageLink.parentElement.classList.contains('active')) return;
+                    document.getElementById('searchCustomerModalList').innerHTML = '';
+                    window.eccubeFetch(pageLink.getAttribute('href'))
+                        .then(function(response) { return response.text(); })
+                        .then(function(data) {
+                            setHtmlWithScripts(document.getElementById('searchCustomerModalList'), data);
+                        }).catch(function() {
+                            alert('search customer failed.');
+                        });
+                }
+            });
+
             // 商品追加
             $collectionHolder = document.getElementById('table-form-field');
             index = $collectionHolder.querySelectorAll('tbody > tr').length;

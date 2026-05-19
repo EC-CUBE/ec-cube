@@ -8,53 +8,6 @@ http://www.ec-cube.co.jp/
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
-<script>
-    document.querySelectorAll('.set-customer').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-            window.eccubeFetch('{{ url('admin_order_search_customer_by_id') }}', {
-                method: 'POST',
-                body: new URLSearchParams({'id': this.dataset.customer})
-            }).then(function(response) { return response.json(); })
-            .then(function(data) {
-                document.getElementById('order_CustomerId').textContent = data['id'];
-                document.getElementById('order_Customer').value = data['id'];
-                document.getElementById('order_name_name01').value = data['name01'];
-                document.getElementById('order_name_name02').value = data['name02'];
-                document.getElementById('order_kana_kana01').value = data['kana01'];
-                document.getElementById('order_kana_kana02').value = data['kana02'];
-                document.getElementById('order_postal_code').value = data['postal_code'];
-                document.getElementById('order_address_pref').value = data['pref'];
-                document.getElementById('order_address_addr01').value = data['addr01'];
-                document.getElementById('order_address_addr02').value = data['addr02'];
-                document.getElementById('order_email').value = data['email'];
-                document.getElementById('order_phone_number').value = data['phone_number'];
-                document.getElementById('order_company_name').value = data['company_name'];
-                bootstrap.Modal.getInstance(document.getElementById('searchCustomerModal'))?.hide();
-            }).catch(function() {
-                alert('search customer(by id) failed.');
-            });
-        });
-    });
-
-    // 会員検索
-    document.querySelectorAll('#customer_pagination a').forEach(function(a) {
-        a.addEventListener('click', function(event) {
-            event.preventDefault();
-            if (!this.parentElement.classList.contains('active')) {
-                var list = document.getElementById('searchCustomerModalList');
-                list.innerHTML = '';
-                window.eccubeFetch(this.getAttribute('href'))
-                    .then(function(response) { return response.text(); })
-                    .then(function(data) {
-                        document.getElementById('searchCustomerModalList').innerHTML = data;
-                    }).catch(function() {
-                        alert('search customer failed.');
-                    });
-            }
-        });
-    });
-</script>
-
 <table class="table table-striped">
     <thead class="table-active">
     <tr>

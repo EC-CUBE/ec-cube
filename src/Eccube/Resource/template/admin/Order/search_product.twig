@@ -99,23 +99,9 @@ file that was distributed with this source code.
         return false;
     }
 
-    // 商品検索ページネーション
-    document.querySelectorAll('#product_pagination a').forEach(function(a) {
-        a.addEventListener('click', function(event) {
-            event.preventDefault();
-            if (!this.parentElement.classList.contains('active')) {
-                var list = document.getElementById('searchProductModalList');
-                list.innerHTML = '';
-                window.eccubeFetch(this.getAttribute('href'))
-                    .then(function(response) { return response.text(); })
-                    .then(function(data) {
-                        document.getElementById('searchProductModalList').innerHTML = data;
-                    }).catch(function() {
-                        alert('search product failed.');
-                    });
-            }
-        });
-    });
+    // ページネーション (#searchProductModalList の click) は親テンプレ (edit.twig / shipping.twig)
+    // の document delegate で処理する. ここで直バインドすると innerHTML 差替え後にハンドラが
+    // 失われるためバインドしない.
 </script>
 
 
