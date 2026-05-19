@@ -57,11 +57,15 @@
 
         if (eccube.hasOwnProperty('productsClassCategories')) {
             // 商品一覧時
-            classcat2 = eccube.productsClassCategories[product_id][classcat_id1];
+            var productMap = eccube.productsClassCategories[product_id];
+            classcat2 = productMap ? productMap[classcat_id1] : undefined;
         } else {
             // 詳細表示時
             classcat2 = eccube.classCategories[classcat_id1];
         }
+
+        // 規格1が未選択 / データなしの場合に for...in が例外にならないようフォールバック
+        classcat2 = classcat2 || {};
 
         // 規格2の要素を設定
         for (var key in classcat2) {
@@ -89,8 +93,14 @@
     /**
      * 規格の選択状態に応じて, フィールドを設定する.
      * $form は DOM 要素または jQuery オブジェクトを受け付ける
+     *
+     * 商品一覧画面のように複数フォームがある画面で「ある商品の規格変更」が
+     * 「別商品の表示」を上書きしないよう, 初期値は product_id でキーされたマップに保持する.
      */
-    var price02_origin = [];
+    var product_code_origin = {};
+    var product_cart_origin = {};
+    var price01_origin = {};
+    var price02_origin = {};
     eccube.checkStock = function(form, product_id, classcat_id1, classcat_id2) {
         var formEl = _toEl(form);
 
@@ -100,7 +110,9 @@
 
         if (eccube.hasOwnProperty('productsClassCategories')) {
             // 商品一覧時
-            classcat2 = eccube.productsClassCategories[product_id][classcat_id1]['#' + classcat_id2];
+            var productMap = eccube.productsClassCategories[product_id];
+            var classcat1Map = productMap ? productMap[classcat_id1] : undefined;
+            classcat2 = classcat1Map ? classcat1Map['#' + classcat_id2] : undefined;
         } else {
             // 詳細表示時
             if (typeof eccube.classCategories[classcat_id1] !== 'undefined') {
@@ -112,28 +124,28 @@
 
         if (typeof classcat2 === 'undefined') {
             // 商品コード
-            var productCode = document.querySelector('.product-code-default');
-            if (typeof this.product_code_origin === 'undefined') {
-                this.product_code_origin = productCode ? productCode.textContent : '';
+            var productCode = formParent.querySelector('.product-code-default');
+            if (typeof product_code_origin[product_id] === 'undefined') {
+                product_code_origin[product_id] = productCode ? productCode.textContent : '';
             }
-            if (productCode) productCode.textContent = this.product_code_origin;
+            if (productCode) productCode.textContent = product_code_origin[product_id];
 
             // 在庫(品切れ)
             var cartbtn = formParent.querySelector('.add-cart');
-            if (typeof this.product_cart_origin === 'undefined') {
-                this.product_cart_origin = cartbtn ? cartbtn.innerHTML : '';
+            if (typeof product_cart_origin[product_id] === 'undefined') {
+                product_cart_origin[product_id] = cartbtn ? cartbtn.innerHTML : '';
             }
             if (cartbtn) {
                 cartbtn.disabled = false;
-                cartbtn.innerHTML = this.product_cart_origin;
+                cartbtn.innerHTML = product_cart_origin[product_id];
             }
 
             // 通常価格
             var price01 = formParent.querySelector('.price01-default');
-            if (typeof this.price01_origin === 'undefined') {
-                this.price01_origin = price01 ? price01.innerHTML : '';
+            if (typeof price01_origin[product_id] === 'undefined') {
+                price01_origin[product_id] = price01 ? price01.innerHTML : '';
             }
-            if (price01) price01.innerHTML = this.price01_origin;
+            if (price01) price01.innerHTML = price01_origin[product_id];
 
             // 販売価格
             var price02 = formParent.querySelector('.price02-default');
@@ -151,17 +163,20 @@
 
         } else {
             // 商品コード
-            var productCode = document.querySelector('.product-code-default');
+            var productCode = formParent.querySelector('.product-code-default');
+            if (typeof product_code_origin[product_id] === 'undefined') {
+                product_code_origin[product_id] = productCode ? productCode.textContent : '';
+            }
             if (classcat2 && typeof classcat2.product_code !== 'undefined') {
                 if (productCode) productCode.textContent = classcat2.product_code;
             } else {
-                if (productCode) productCode.textContent = this.product_code_origin;
+                if (productCode) productCode.textContent = product_code_origin[product_id];
             }
 
             // 在庫(品切れ)
             var cartbtn = formParent.querySelector('.add-cart');
-            if (typeof this.product_cart_origin === 'undefined') {
-                this.product_cart_origin = cartbtn ? cartbtn.innerHTML : '';
+            if (typeof product_cart_origin[product_id] === 'undefined') {
+                product_cart_origin[product_id] = cartbtn ? cartbtn.innerHTML : '';
             }
             if (cartbtn) {
                 if (classcat2 && classcat2.stock_find === false) {
@@ -169,20 +184,20 @@
                     cartbtn.textContent = eccube_lang['front.product.out_of_stock'];
                 } else {
                     cartbtn.disabled = false;
-                    cartbtn.innerHTML = this.product_cart_origin;
+                    cartbtn.innerHTML = product_cart_origin[product_id];
                 }
             }
 
             // 通常価格
             var price01 = formParent.querySelector('.price01-default');
-            if (typeof this.price01_origin === 'undefined') {
-                this.price01_origin = price01 ? price01.innerHTML : '';
+            if (typeof price01_origin[product_id] === 'undefined') {
+                price01_origin[product_id] = price01 ? price01.innerHTML : '';
             }
             if (price01) {
                 if (classcat2 && typeof classcat2.price01_inc_tax !== 'undefined' && String(classcat2.price01_inc_tax).length >= 1) {
                     price01.textContent = classcat2.price01_inc_tax_with_currency;
                 } else {
-                    price01.innerHTML = this.price01_origin;
+                    price01.innerHTML = price01_origin[product_id];
                 }
             }
 
