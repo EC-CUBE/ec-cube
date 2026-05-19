@@ -319,11 +319,23 @@
         },
         getPromises: {
             value: function (progress) {
-                var self = this;
+                var urls = [];
                 document.querySelectorAll('input[data-notify-mail-url]:checked').forEach(function (input) {
-                    var url = input.dataset.notifyMailUrl;
-                    ConfirmationModal.prototype.getPromises.call(self, progress, url);
+                    urls.push(input.dataset.notifyMailUrl);
                 });
+                var self = this;
+                // メール送信は SMTP の同時接続を避けるため, BulkStatusUpdate と同様に順次実行する
+                var callback = function () {
+                    var url = urls.shift();
+                    if (!url) return;
+                    ConfirmationModal.prototype.getPromises.call(self, progress, url)
+                        .then(function () {
+                            if (urls.length) {
+                                callback();
+                            }
+                        });
+                };
+                callback();
             }
         }
     });
