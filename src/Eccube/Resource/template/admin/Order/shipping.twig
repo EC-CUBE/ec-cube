@@ -49,22 +49,25 @@ file that was distributed with this source code.
                 container.appendChild(document.createRange().createContextualFragment(html));
             }
 
-            // 商品検索
-            document.getElementById('searchProductModalButton').addEventListener('click', function() {
-                document.getElementById('searchProductModalList').innerHTML = '';
-                window.eccubeFetch('{{ url('admin_order_search_product') }}', {
-                    method: 'POST',
-                    body: new URLSearchParams({
-                        'id': document.getElementById('admin_search_product_id').value,
-                        'category_id': document.getElementById('admin_search_product_category_id').value
-                    })
-                }).then(function(response) { return response.text(); })
-                .then(function(data) {
-                    setHtmlWithScripts(document.getElementById('searchProductModalList'), data);
-                }).catch(function() {
-                    alert('search product failed.');
+            // 商品検索 (テンプレ条件で非表示の場合があるため null ガード)
+            var searchProductModalButton = document.getElementById('searchProductModalButton');
+            if (searchProductModalButton) {
+                searchProductModalButton.addEventListener('click', function() {
+                    document.getElementById('searchProductModalList').innerHTML = '';
+                    window.eccubeFetch('{{ url('admin_order_search_product') }}', {
+                        method: 'POST',
+                        body: new URLSearchParams({
+                            'id': document.getElementById('admin_search_product_id').value,
+                            'category_id': document.getElementById('admin_search_product_category_id').value
+                        })
+                    }).then(function(response) { return response.text(); })
+                    .then(function(data) {
+                        setHtmlWithScripts(document.getElementById('searchProductModalList'), data);
+                    }).catch(function() {
+                        alert('search product failed.');
+                    });
                 });
-            });
+            }
 
             // 商品検索ページング (動的に追加される要素のため delegate)
             document.addEventListener('click', function(e) {
