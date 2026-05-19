@@ -46,7 +46,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(function(result) {
                     if (result.ok) {
                         return window.eccubeFetch("{{ url('admin_disable_maintenance', { 'mode': 'auto_maintenance' }) }}", { method: 'POST' })
-                            .then(function() {
+                            .then(function(res) {
+                                if (!res.ok) {
+                                    // メンテナンスモード解除に失敗した場合は外側の .catch に流して
+                                    // 「削除が完了しました。」と誤表示しないようにする.
+                                    throw new Error('disable maintenance failed: ' + res.status);
+                                }
                                 if (message) message.textContent = '削除が完了しました。';
                                 var log = document.getElementById('deleteLog');
                                 if (log) log.textContent = result.data.log;

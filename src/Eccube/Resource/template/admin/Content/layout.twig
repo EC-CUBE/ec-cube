@@ -181,8 +181,13 @@ file that was distributed with this source code.
                     var blockId = match[1];
                     var blockEdit = codePreview.querySelector('#block-edit');
                     if (blockEdit) {
-                        var onclick = blockEdit.getAttribute('onclick') || '';
-                        onclick = onclick.replace(/{{ constant('Eccube\\Controller\\Admin\\Content\\LayoutController::DUMMY_BLOCK_ID') }}/, blockId);
+                        // 初回オープン時に元の onclick テンプレートを退避し,
+                        // 2 回目以降は常にそこから組み立て直す (前回置換した ID で固定化されるのを防ぐ).
+                        if (!blockEdit.dataset.onclickTemplate) {
+                            blockEdit.dataset.onclickTemplate = blockEdit.getAttribute('onclick') || '';
+                        }
+                        var onclick = blockEdit.dataset.onclickTemplate
+                            .replace(/{{ constant('Eccube\\Controller\\Admin\\Content\\LayoutController::DUMMY_BLOCK_ID') }}/, blockId);
                         blockEdit.setAttribute('onclick', onclick);
                     }
 

@@ -155,6 +155,12 @@ file that was distributed with this source code.
                             var kana02 = document.getElementById('customer-kana02');
                             if (kana01) kana01.value = data.kana01;
                             if (kana02) kana02.value = data.kana02;
+
+                            // 更新成功時のみ表示モードへ切替. fetch 失敗 / status != 'OK' 時は
+                            // 編集モードを維持しユーザがエラーを把握できるようにする.
+                            toggleDisplay('.non-customer-display', true);
+                            toggleDisplay('.non-customer-edit', false);
+                            toggleDisplay('.mod-button', false);
                         }
                     }).catch(function() {
                         alert('{{ 'front.shopping.customer_update_failed'|trans }}');
@@ -162,10 +168,6 @@ file that was distributed with this source code.
                         // overlayを無効
                         loadingOverlay('hide');
                     });
-
-                    toggleDisplay('.non-customer-display', true);
-                    toggleDisplay('.non-customer-edit', false);
-                    toggleDisplay('.mod-button', false);
                 });
             }
 
