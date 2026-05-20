@@ -1144,9 +1144,10 @@ class Generator
      * @param int   $count   生成する件数
      * @param array $options {
      *
-     *     @var int  $productClassNum        visible な ProductClass の数 (デフォルト: 3)
-     *     @var int  $imagesPerProduct       各 Product あたりの ProductImage 数 (デフォルト: 3)
-     *     @var bool $withCategoriesAndTags  全 Category / Tag を関連付ける場合 true (デフォルト: false)
+     *     @var int           $productClassNum        visible な ProductClass の数 (デフォルト: 3)
+     *     @var int           $imagesPerProduct       各 Product あたりの ProductImage 数 (デフォルト: 3)
+     *     @var bool          $withCategoriesAndTags  全 Category / Tag を関連付ける場合 true (デフォルト: false)
+     *     @var callable|null $nameTemplate           function(int $i): string で各 Product の name を生成
      * }
      *
      * @return Product[] 生成された Product の配列
@@ -1161,6 +1162,7 @@ class Generator
         $productClassNum = $options['productClassNum'] ?? 3;
         $imagesPerProduct = $options['imagesPerProduct'] ?? 3;
         $withCategoriesAndTags = $options['withCategoriesAndTags'] ?? false;
+        $nameTemplate = $options['nameTemplate'] ?? null;
 
         $Member = $this->entityManager->find(Member::class, 2);
         $ProductStatus = $this->entityManager->find(ProductStatus::class, ProductStatus::DISPLAY_SHOW);
@@ -1178,7 +1180,7 @@ class Generator
         $productRows = [];
         for ($i = 0; $i < $count; $i++) {
             $productRows[] = [
-                'name' => $faker->realText($faker->numberBetween(10, 50)),
+                'name' => $nameTemplate ? $nameTemplate($i) : $faker->realText($faker->numberBetween(10, 50)),
                 'note' => null,
                 'description_list' => $faker->paragraph(),
                 'description_detail' => $faker->realText(),

@@ -40,9 +40,9 @@ final class CustomerControllerTest extends AbstractAdminWebTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        for ($i = 0; $i < 10; $i++) {
-            $this->createCustomer('user-'.$i.'@example.com');
-        }
+        $this->createCustomers(10, [
+            'emailTemplate' => fn (int $i): string => 'user-'.$i.'@example.com',
+        ]);
         // sqlite では CsvType が生成されないので、ここで作る
         $CsvType = $this->entityManager->find(CsvType::class, 2);
         if (!is_object($CsvType)) {

@@ -50,9 +50,10 @@ abstract class AbstractProductRepositoryTestCase extends EccubeTestCase
             'dtb_product',
         ];
         $this->deleteAllRows($tables);
-        for ($i = 0; $i < 3; $i++) {
-            $this->createProduct('商品-'.$i);
-        }
+        $this->createProducts(3, [
+            'nameTemplate' => fn (int $i): string => '商品-'.$i,
+            'withCategoriesAndTags' => true,
+        ]);
     }
 
     /**

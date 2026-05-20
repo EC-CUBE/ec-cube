@@ -70,10 +70,9 @@ final class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTest
             'dtb_order',
         ]);
         $this->removeCustomer();
-        $this->Customer = $this->createCustomer('customer@example.com');
-        $this->Customer1 = $this->createCustomer('customer1@example.com');
-        $this->Customer2 = $this->createCustomer('customer2@example.com');
-        $this->Customer3 = $this->createCustomer('customer3@example.com');
+        [$this->Customer, $this->Customer1, $this->Customer2, $this->Customer3] = $this->createCustomers(4, [
+            'emailTemplate' => fn (int $i): string => 'customer'.($i === 0 ? '' : (string) $i).'@example.com',
+        ]);
     }
 
     public function removeCustomer()
