@@ -167,7 +167,9 @@ file that was distributed with this source code.
                 }
                 var errEl = document.getElementById('product_image_error');
                 if (errEl) {
-                    errEl.style.display = '';
+                    // Bootstrap 5 の .invalid-feedback は CSS で display: none のため
+                    // 空文字 ('') では display: none が残る. 明示的に block を指定する.
+                    errEl.style.display = 'block';
                     var msg = errEl.querySelector('.form-error-message');
                     if (msg) msg.textContent = message;
                 }
