@@ -860,6 +860,389 @@ class Generator
     }
 
     /**
+     * 複数の Customer をまとめて高速に生成する.
+     *
+     * DBAL の prepared statement で bulk INSERT を行い、
+     * createCustomer() のループより大幅に高速化する.
+     *
+     * @param int   $count   生成する件数
+     * @param array $options {
+     *     @var Sex|null            $sex            全 Customer に設定する Sex
+     *     @var CustomerStatus|null $status         全 Customer に設定する CustomerStatus (デフォルト: ACTIVE)
+     *     @var callable|null       $emailTemplate  function(int $i): string でメールアドレスを生成
+     * }
+     *
+     * @return Customer[] 生成された Customer の配列
+     */
+    public function createCustomers(int $count, array $options = []): array
+    {
+        if ($count < 1) {
+            return [];
+        }
+
+        $faker = $this->getFaker();
+        /** @var Sex|null $Sex */
+        $Sex = $options['sex'] ?? null;
+        /** @var CustomerStatus $Status */
+        $Status = $options['status']
+            ?? $this->entityManager->find(CustomerStatus::class, CustomerStatus::ACTIVE);
+        $emailTemplate = $options['emailTemplate']
+            ?? fn (int $i): string => sprintf('bulk-user-%d-%s@example.com', $i, $faker->uuid);
+
+        $discriminator = $this->entityManager
+            ->getClassMetadata(Customer::class)
+            ->discriminatorValue;
+
+        // bcrypt は計算コストが高いため 1 回だけ計算して使い回す
+        $passwordHash = $this->passwordHasher->hashPassword(new Customer(), 'password');
+        $nowStr = $this->formatDateTime(new \DateTime());
+
+        $rows = [];
+        for ($i = 0; $i < $count; $i++) {
+            $Pref = $this->entityManager->find(Pref::class, $faker->numberBetween(1, 47));
+            $rows[] = [
+                'name01' => $faker->lastName,
+                'name02' => $faker->firstName,
+                'kana01' => $this->locale === 'ja_JP' ? $faker->lastKanaName : '',
+                'kana02' => $this->locale === 'ja_JP' ? $faker->firstKanaName : '',
+                'company_name' => $faker->company,
+                'postal_code' => $faker->postcode,
+                'addr01' => $faker->city,
+                'addr02' => $faker->streetAddress,
+                'email' => $emailTemplate($i),
+                'phone_number' => str_replace('-', '', $faker->phoneNumber),
+                'birth' => $this->formatDateTime($faker->dateTimeThisDecade()),
+                'password' => $passwordHash,
+                'secret_key' => $faker->uuid,
+                'point' => (string) $faker->randomNumber(5),
+                'create_date' => $nowStr,
+                'update_date' => $nowStr,
+                'customer_status_id' => $Status?->getId(),
+                'sex_id' => $Sex?->getId(),
+                'pref_id' => $Pref?->getId(),
+                'discriminator_type' => $discriminator,
+            ];
+        }
+
+        $ids = $this->bulkInsert('dtb_customer', $rows);
+
+        return $this->customerRepository->findBy(['id' => $ids], ['id' => 'ASC']);
+    }
+
+    /**
+     * 複数の Order をまとめて高速に生成する.
+     *
+     * Product / Delivery / PaymentOption は 1 個ずつ作って共有し、
+     * Order / Shipping / OrderItem は DBAL の bulk INSERT で投入する.
+     *
+     * @param Customer[] $customers 各 Order に紐付ける Customer の配列
+     * @param array      $options   {
+     *     @var OrderStatus|null $orderStatus     全 Order の OrderStatus (デフォルト: PROCESSING)
+     *     @var Payment|null     $payment         全 Order の Payment (デフォルト: 1 件目の Payment)
+     *     @var callable|null    $orderNoTemplate function(int $i): string で order_no を生成
+     *     @var Delivery|null    $delivery        共有する Delivery (null なら createDelivery で 1 回生成)
+     *     @var Product|null     $product         共有する Product (null なら createProduct で 1 回生成)
+     * }
+     *
+     * @return Order[] 生成された Order の配列
+     */
+    public function createOrders(array $customers, array $options = []): array
+    {
+        if (empty($customers)) {
+            return [];
+        }
+
+        $faker = $this->getFaker();
+        $nowStr = $this->formatDateTime(new \DateTime());
+
+        /** @var Product $Product */
+        $Product = $options['product'] ?? $this->createProduct(null, 3, false, true, true);
+        $ProductClasses = array_values(array_filter(
+            $Product->getProductClasses()->toArray(),
+            fn (ProductClass $pc): bool => $pc->isVisible()
+        ));
+
+        /** @var Delivery $Delivery */
+        $Delivery = $options['delivery'] ?? $this->createDelivery();
+
+        /** @var Payment $Payment */
+        $Payment = $options['payment'] ?? $this->paymentRepository->findOneBy([], ['id' => 'ASC']);
+
+        // Payment と Delivery の紐付け (PaymentOption) が無ければ作成
+        if ($Delivery->getPaymentOptions()->isEmpty()) {
+            foreach ($this->paymentRepository->findAll() as $p) {
+                $PaymentOption = new PaymentOption();
+                $PaymentOption
+                    ->setDeliveryId($Delivery->getId())
+                    ->setPaymentId($p->getId())
+                    ->setDelivery($Delivery)
+                    ->setPayment($p);
+                $p->addPaymentOption($PaymentOption);
+                $this->entityManager->persist($PaymentOption);
+            }
+            $this->entityManager->flush();
+        }
+
+        /** @var OrderStatus $OrderStatus */
+        $OrderStatus = $options['orderStatus']
+            ?? $this->entityManager->find(OrderStatus::class, OrderStatus::PROCESSING);
+        $orderNoTemplate = $options['orderNoTemplate']
+            ?? fn (int $i): string => $faker->numberBetween(100, 999).'-'.$faker->numberBetween(1000000, 9999999).'-'.$faker->numberBetween(1000000, 9999999);
+
+        $Taxation = $this->entityManager->find(TaxType::class, TaxType::TAXATION);
+        $NonTaxable = $this->entityManager->find(TaxType::class, TaxType::NON_TAXABLE);
+        $TaxExclude = $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::EXCLUDED);
+        $TaxInclude = $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::INCLUDED);
+        $ItemProduct = $this->entityManager->find(OrderItemType::class, OrderItemType::PRODUCT);
+        $ItemDeliveryFee = $this->entityManager->find(OrderItemType::class, OrderItemType::DELIVERY_FEE);
+        $ItemCharge = $this->entityManager->find(OrderItemType::class, OrderItemType::CHARGE);
+        $ItemDiscount = $this->entityManager->find(OrderItemType::class, OrderItemType::DISCOUNT);
+        $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->get();
+
+        $orderDiscriminator = $this->entityManager->getClassMetadata(Order::class)->discriminatorValue;
+        $shippingDiscriminator = $this->entityManager->getClassMetadata(Shipping::class)->discriminatorValue;
+        $orderItemDiscriminator = $this->entityManager->getClassMetadata(OrderItem::class)->discriminatorValue;
+
+        // 1. Order を bulk INSERT
+        $orderRows = [];
+        $perOrder = [];
+        foreach (array_values($customers) as $i => $Customer) {
+            $Pref = $this->entityManager->find(Pref::class, $faker->numberBetween(1, 47));
+            $DeliveryFee = $this->deliveryFeeRepository->findOneBy(['Delivery' => $Delivery, 'Pref' => $Pref]);
+            $fee = is_object($DeliveryFee) ? (int) $DeliveryFee->getFee() : 0;
+
+            $orderRows[] = [
+                'pre_order_id' => sha1(StringUtil::random(32)),
+                'order_no' => $orderNoTemplate($i),
+                'message' => null,
+                'name01' => $Customer->getName01(),
+                'name02' => $Customer->getName02(),
+                'kana01' => $Customer->getKana01(),
+                'kana02' => $Customer->getKana02(),
+                'company_name' => $Customer->getCompanyName(),
+                'email' => $Customer->getEmail(),
+                'phone_number' => $Customer->getPhoneNumber(),
+                'postal_code' => $Customer->getPostalCode(),
+                'addr01' => $Customer->getAddr01(),
+                'addr02' => $Customer->getAddr02(),
+                'birth' => $Customer->getBirth() !== null ? $this->formatDateTime($Customer->getBirth()) : null,
+                'subtotal' => '0',
+                'discount' => '0',
+                'delivery_fee_total' => (string) $fee,
+                'charge' => '0',
+                'tax' => '0',
+                'total' => (string) $fee,
+                'payment_total' => (string) $fee,
+                'payment_method' => $Payment->getMethod(),
+                'note' => null,
+                'create_date' => $nowStr,
+                'update_date' => $nowStr,
+                'add_point' => '0',
+                'use_point' => '0',
+                'customer_id' => $Customer->getId(),
+                'pref_id' => $Pref?->getId(),
+                'sex_id' => $Customer->getSex()?->getId(),
+                'job_id' => $Customer->getJob()?->getId(),
+                'payment_id' => $Payment->getId(),
+                'order_status_id' => $OrderStatus->getId(),
+                'discriminator_type' => $orderDiscriminator,
+            ];
+            $perOrder[] = ['customer' => $Customer, 'pref' => $Pref, 'fee' => $fee];
+        }
+        $orderIds = $this->bulkInsert('dtb_order', $orderRows);
+
+        // 2. Shipping を bulk INSERT (各 Order に 1 件)
+        $shippingRows = [];
+        foreach ($orderIds as $idx => $orderId) {
+            $Customer = $perOrder[$idx]['customer'];
+            $Pref = $perOrder[$idx]['pref'];
+            $shippingRows[] = [
+                'name01' => $Customer->getName01(),
+                'name02' => $Customer->getName02(),
+                'kana01' => $Customer->getKana01(),
+                'kana02' => $Customer->getKana02(),
+                'company_name' => $Customer->getCompanyName(),
+                'phone_number' => $Customer->getPhoneNumber(),
+                'postal_code' => $Customer->getPostalCode(),
+                'addr01' => $Customer->getAddr01(),
+                'addr02' => $Customer->getAddr02(),
+                'delivery_name' => $Delivery->getName(),
+                'create_date' => $nowStr,
+                'update_date' => $nowStr,
+                'order_id' => $orderId,
+                'pref_id' => $Pref?->getId(),
+                'delivery_id' => $Delivery->getId(),
+                'discriminator_type' => $shippingDiscriminator,
+            ];
+        }
+        $shippingIds = $this->bulkInsert('dtb_shipping', $shippingRows);
+
+        // 3. OrderItem を bulk INSERT (各 Order について 商品×N + 送料 + 手数料 + 値引き)
+        $orderItemRows = [];
+        foreach ($orderIds as $idx => $orderId) {
+            $shippingId = $shippingIds[$idx];
+            $fee = $perOrder[$idx]['fee'];
+
+            $quantity = $faker->numberBetween(1, 10);
+            foreach ($ProductClasses as $ProductClass) {
+                $p = $ProductClass->getProduct();
+                $orderItemRows[] = [
+                    'product_name' => $p->getName(),
+                    'product_code' => $ProductClass->getCode(),
+                    'class_name1' => $ProductClass->hasClassCategory1() ? $ProductClass->getClassCategory1()->getClassName()->getName() : null,
+                    'class_name2' => $ProductClass->hasClassCategory2() ? $ProductClass->getClassCategory2()->getClassName()->getName() : null,
+                    'class_category_name1' => $ProductClass->hasClassCategory1() ? $ProductClass->getClassCategory1()->getName() : null,
+                    'class_category_name2' => $ProductClass->hasClassCategory2() ? $ProductClass->getClassCategory2()->getName() : null,
+                    'price' => (string) $ProductClass->getPrice02(),
+                    'quantity' => (string) $quantity,
+                    'tax' => '0',
+                    'tax_rate' => '0',
+                    'tax_adjust' => '0',
+                    'order_id' => $orderId,
+                    'product_id' => $p->getId(),
+                    'product_class_id' => $ProductClass->getId(),
+                    'shipping_id' => $shippingId,
+                    'tax_type_id' => $Taxation->getId(),
+                    'tax_display_type_id' => $TaxExclude->getId(),
+                    'order_item_type_id' => $ItemProduct->getId(),
+                    'point_rate' => (string) $BaseInfo->getBasicPointRate(),
+                    'discriminator_type' => $orderItemDiscriminator,
+                ];
+            }
+
+            $orderItemRows[] = $this->buildNonProductOrderItemRow(
+                '送料', (string) $fee, $orderId, $shippingId,
+                $Taxation->getId(), $TaxInclude->getId(), $ItemDeliveryFee->getId(),
+                $orderItemDiscriminator,
+            );
+            $orderItemRows[] = $this->buildNonProductOrderItemRow(
+                '手数料', '0', $orderId, null,
+                $Taxation->getId(), $TaxInclude->getId(), $ItemCharge->getId(),
+                $orderItemDiscriminator,
+            );
+            $orderItemRows[] = $this->buildNonProductOrderItemRow(
+                '値引き', '0', $orderId, null,
+                $NonTaxable->getId(), $TaxInclude->getId(), $ItemDiscount->getId(),
+                $orderItemDiscriminator,
+            );
+        }
+        $this->bulkInsert('dtb_order_item', $orderItemRows);
+
+        return $this->entityManager->getRepository(Order::class)
+            ->findBy(['id' => $orderIds], ['id' => 'ASC']);
+    }
+
+    /**
+     * 商品以外 (送料 / 手数料 / 値引き) の OrderItem 用行を生成する.
+     */
+    private function buildNonProductOrderItemRow(
+        string $productName,
+        string $price,
+        int $orderId,
+        ?int $shippingId,
+        int $taxTypeId,
+        int $taxDisplayTypeId,
+        int $orderItemTypeId,
+        string $discriminator,
+    ): array {
+        return [
+            'product_name' => $productName,
+            'product_code' => null,
+            'class_name1' => null,
+            'class_name2' => null,
+            'class_category_name1' => null,
+            'class_category_name2' => null,
+            'price' => $price,
+            'quantity' => '1',
+            'tax' => '0',
+            'tax_rate' => '0',
+            'tax_adjust' => '0',
+            'order_id' => $orderId,
+            'product_id' => null,
+            'product_class_id' => null,
+            'shipping_id' => $shippingId,
+            'tax_type_id' => $taxTypeId,
+            'tax_display_type_id' => $taxDisplayTypeId,
+            'order_item_type_id' => $orderItemTypeId,
+            'point_rate' => null,
+            'discriminator_type' => $discriminator,
+        ];
+    }
+
+    /**
+     * UTCDateTimeTzType が DB から読み戻せるフォーマットで datetime 値を生成する.
+     *
+     * UTC に変換してから接続中のプラットフォームの DateTimeTzFormatString
+     * (SQLite/MySQL: "Y-m-d H:i:s", PostgreSQL: "Y-m-d H:i:sO") で整形する.
+     */
+    private function formatDateTime(\DateTimeInterface $dt): string
+    {
+        $dateFormat = $this->entityManager->getConnection()
+            ->getDatabasePlatform()
+            ->getDateTimeTzFormatString();
+
+        return \DateTimeImmutable::createFromInterface($dt)
+            ->setTimezone(new \DateTimeZone('UTC'))
+            ->format($dateFormat);
+    }
+
+    /**
+     * 連想配列の行を DBAL の prepared statement で順次 INSERT する.
+     *
+     * 既存トランザクション内 (DAMA DoctrineTestBundle のテストなど) では
+     * 新たにトランザクションを開始しない.
+     *
+     * @param string                      $tableName 対象テーブル名
+     * @param array<int, array<string, mixed>> $rows  すべて同じキー集合を持つ連想配列の配列
+     *
+     * @return int[] 各 INSERT で採番された ID の配列
+     */
+    private function bulkInsert(string $tableName, array $rows): array
+    {
+        if (empty($rows)) {
+            return [];
+        }
+
+        $conn = $this->entityManager->getConnection();
+        $platform = $conn->getDatabasePlatform()->getName();
+
+        $columns = array_keys($rows[0]);
+        $sql = sprintf(
+            'INSERT INTO %s (%s) VALUES (%s)',
+            $tableName,
+            implode(', ', $columns),
+            implode(', ', array_fill(0, count($columns), '?')),
+        );
+
+        $startedTransaction = false;
+        if (!$conn->isTransactionActive()) {
+            $conn->beginTransaction();
+            $startedTransaction = true;
+        }
+
+        if ('mysql' === $platform) {
+            $conn->executeStatement("SET SESSION sql_mode='NO_AUTO_VALUE_ON_ZERO'");
+        }
+
+        $stmt = $conn->prepare($sql);
+        $ids = [];
+        foreach ($rows as $row) {
+            $idx = 1;
+            foreach ($row as $value) {
+                $stmt->bindValue($idx++, $value);
+            }
+            $stmt->executeStatement();
+            $ids[] = (int) $conn->lastInsertId();
+        }
+
+        if ($startedTransaction) {
+            $conn->commit();
+        }
+
+        return $ids;
+    }
+
+    /**
      * Faker を生成する.
      */
     protected function getFaker(): \Faker\Generator

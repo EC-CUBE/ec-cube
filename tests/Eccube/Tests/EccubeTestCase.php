@@ -183,6 +183,28 @@ abstract class EccubeTestCase extends WebTestCase
     }
 
     /**
+     * 複数の Customer をまとめて生成する (高速).
+     *
+     * @return Customer[]
+     */
+    public function createCustomers(int $count, array $options = []): array
+    {
+        return static::getContainer()->get(Generator::class)->createCustomers($count, $options);
+    }
+
+    /**
+     * 複数の Order をまとめて生成する (高速).
+     *
+     * @param Customer[] $customers
+     *
+     * @return Order[]
+     */
+    public function createOrders(array $customers, array $options = []): array
+    {
+        return static::getContainer()->get(Generator::class)->createOrders($customers, $options);
+    }
+
+    /**
      * Payment オプジェクトを生成して返す.
      *
      * @param Delivery $Delivery デフォルトで設定する配送オブジェクト

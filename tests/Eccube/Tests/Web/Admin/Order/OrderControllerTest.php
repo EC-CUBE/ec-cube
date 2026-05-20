@@ -68,15 +68,15 @@ final class OrderControllerTest extends AbstractAdminWebTestCase
         $Sex = $this->sexRepository->find(1);
         $Payment = $this->paymentRepository->find(1);
         $OrderStatus = $this->orderStatusRepository->find(OrderStatus::NEW);
-        for ($i = 0; $i < 10; $i++) {
-            $Customer = $this->createCustomer('user-'.$i.'@example.com');
-            $Customer->setSex($Sex);
-            $Order = $this->createOrder($Customer);
-            $Order->setOrderNo('order_no_'.$i);
-            $Order->setOrderStatus($OrderStatus);
-            $Order->setPayment($Payment);
-            $this->entityManager->flush();
-        }
+        $customers = $this->createCustomers(10, [
+            'sex' => $Sex,
+            'emailTemplate' => fn (int $i): string => 'user-'.$i.'@example.com',
+        ]);
+        $this->createOrders($customers, [
+            'orderStatus' => $OrderStatus,
+            'payment' => $Payment,
+            'orderNoTemplate' => fn (int $i): string => 'order_no_'.$i,
+        ]);
         // sqlite では CsvType が生成されないので、ここで作る
         $OrderCsvType = $this->csvTypeRepository->find(3);
         if (!is_object($OrderCsvType)) {
