@@ -867,6 +867,7 @@ class Generator
      *
      * @param int   $count   生成する件数
      * @param array $options {
+     *
      *     @var Sex|null            $sex            全 Customer に設定する Sex
      *     @var CustomerStatus|null $status         全 Customer に設定する CustomerStatus (デフォルト: ACTIVE)
      *     @var callable|null       $emailTemplate  function(int $i): string でメールアドレスを生成
@@ -937,6 +938,7 @@ class Generator
      *
      * @param Customer[] $customers 各 Order に紐付ける Customer の配列
      * @param array      $options   {
+     *
      *     @var OrderStatus|null $orderStatus     全 Order の OrderStatus (デフォルト: PROCESSING)
      *     @var Payment|null     $payment         全 Order の Payment (デフォルト: 1 件目の Payment)
      *     @var callable|null    $orderNoTemplate function(int $i): string で order_no を生成
