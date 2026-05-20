@@ -205,6 +205,16 @@ abstract class EccubeTestCase extends WebTestCase
     }
 
     /**
+     * 複数の Product をまとめて生成する (高速).
+     *
+     * @return Product[]
+     */
+    public function createProducts(int $count, array $options = []): array
+    {
+        return static::getContainer()->get(Generator::class)->createProducts($count, $options);
+    }
+
+    /**
      * Payment オプジェクトを生成して返す.
      *
      * @param Delivery $Delivery デフォルトで設定する配送オブジェクト

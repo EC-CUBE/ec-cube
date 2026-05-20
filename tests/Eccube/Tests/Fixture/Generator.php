@@ -1135,6 +1135,216 @@ class Generator
     }
 
     /**
+     * 複数の Product をまとめて高速に生成する.
+     *
+     * Product / ProductClass / ProductStock / ProductImage を DBAL の bulk INSERT で投入する.
+     * デフォルトでは createProduct() の simple_mode=true 相当の挙動となり、
+     * ProductCategory / ProductTag は生成しない (検索結果の母数を増やす目的のテストに最適).
+     *
+     * @param int   $count   生成する件数
+     * @param array $options {
+     *
+     *     @var int  $productClassNum        visible な ProductClass の数 (デフォルト: 3)
+     *     @var int  $imagesPerProduct       各 Product あたりの ProductImage 数 (デフォルト: 3)
+     *     @var bool $withCategoriesAndTags  全 Category / Tag を関連付ける場合 true (デフォルト: false)
+     * }
+     *
+     * @return Product[] 生成された Product の配列
+     */
+    public function createProducts(int $count, array $options = []): array
+    {
+        if ($count < 1) {
+            return [];
+        }
+
+        $faker = $this->getFaker();
+        $productClassNum = $options['productClassNum'] ?? 3;
+        $imagesPerProduct = $options['imagesPerProduct'] ?? 3;
+        $withCategoriesAndTags = $options['withCategoriesAndTags'] ?? false;
+
+        $Member = $this->entityManager->find(Member::class, 2);
+        $ProductStatus = $this->entityManager->find(ProductStatus::class, ProductStatus::DISPLAY_SHOW);
+        $SaleType = $this->entityManager->find(SaleType::class, 1);
+        $DeliveryDurations = $this->durationRepository->findAll();
+        $ClassNames = $this->classNameRepository->findAll();
+
+        $productDiscriminator = $this->entityManager->getClassMetadata(Product::class)->discriminatorValue;
+        $productImageDiscriminator = $this->entityManager->getClassMetadata(ProductImage::class)->discriminatorValue;
+        $productClassDiscriminator = $this->entityManager->getClassMetadata(ProductClass::class)->discriminatorValue;
+        $productStockDiscriminator = $this->entityManager->getClassMetadata(ProductStock::class)->discriminatorValue;
+        $nowStr = $this->formatDateTime(new \DateTime());
+
+        // 1. Product を bulk INSERT
+        $productRows = [];
+        for ($i = 0; $i < $count; $i++) {
+            $productRows[] = [
+                'name' => $faker->realText($faker->numberBetween(10, 50)),
+                'note' => null,
+                'description_list' => $faker->paragraph(),
+                'description_detail' => $faker->realText(),
+                'search_word' => null,
+                'free_area' => null,
+                'create_date' => $nowStr,
+                'update_date' => $nowStr,
+                'creator_id' => $Member?->getId(),
+                'product_status_id' => $ProductStatus?->getId(),
+                'discriminator_type' => $productDiscriminator,
+            ];
+        }
+        $productIds = $this->bulkInsert('dtb_product', $productRows);
+
+        // 2. ProductImage を bulk INSERT (各 Product × N)
+        if ($imagesPerProduct > 0) {
+            $imageRows = [];
+            foreach ($productIds as $productId) {
+                for ($j = 0; $j < $imagesPerProduct; $j++) {
+                    $imageRows[] = [
+                        'file_name' => $faker->word().'.jpg',
+                        'sort_no' => $j,
+                        'create_date' => $nowStr,
+                        'product_id' => $productId,
+                        'creator_id' => $Member?->getId(),
+                        'discriminator_type' => $productImageDiscriminator,
+                    ];
+                }
+            }
+            $this->bulkInsert('dtb_product_image', $imageRows);
+        }
+
+        // 3. ProductClass を bulk INSERT
+        // 各 Product あたり (productClassNum + 1) 行: visible × productClassNum + デフォルト 1 (productClassNum>0 なら invisible)
+        $classRows = [];
+        $productCodesUsed = [];
+        foreach ($productIds as $productId) {
+            $ClassName1 = $ClassNames[$faker->numberBetween(0, count($ClassNames) - 1)];
+            $ClassCategories1 = $this->classCategoryRepository->findBy(['ClassName' => $ClassName1]);
+
+            for ($j = 0; $j < $productClassNum; $j++) {
+                do {
+                    $code = $faker->word();
+                } while (in_array($code, $productCodesUsed, true));
+                $productCodesUsed[] = $code;
+                $cc1Id = array_key_exists($j, $ClassCategories1) ? $ClassCategories1[$j]->getId() : null;
+                $classRows[] = $this->buildProductClassRow(
+                    $code, (string) $faker->numberBetween(100, 999), 1,
+                    (string) $faker->numberBetween(100, 10000), $productId,
+                    $SaleType?->getId(), $cc1Id, null,
+                    $DeliveryDurations[$faker->numberBetween(0, max(0, count($DeliveryDurations) - 1))]?->getId(),
+                    $Member?->getId(), $nowStr, $productClassDiscriminator,
+                );
+            }
+            // デフォルト規格
+            do {
+                $code = $faker->word();
+            } while (in_array($code, $productCodesUsed, true));
+            $productCodesUsed[] = $code;
+            $classRows[] = $this->buildProductClassRow(
+                $code, (string) $faker->randomNumber(3), $productClassNum > 0 ? 0 : 1,
+                (string) $faker->numberBetween(100, 10000), $productId,
+                $SaleType?->getId(), null, null,
+                $DeliveryDurations[$faker->numberBetween(0, max(0, count($DeliveryDurations) - 1))]?->getId(),
+                $Member?->getId(), $nowStr, $productClassDiscriminator,
+            );
+        }
+        $classIds = $this->bulkInsert('dtb_product_class', $classRows);
+
+        // 4. ProductStock を bulk INSERT (各 ProductClass に対して 1 件)
+        $stockRows = [];
+        foreach ($classIds as $classId) {
+            $stockRows[] = [
+                'stock' => (string) $faker->numberBetween(100, 999),
+                'create_date' => $nowStr,
+                'update_date' => $nowStr,
+                'product_class_id' => $classId,
+                'creator_id' => $Member?->getId(),
+                'discriminator_type' => $productStockDiscriminator,
+            ];
+        }
+        $this->bulkInsert('dtb_product_stock', $stockRows);
+
+        // 5. オプション: Category / Tag を関連付け
+        if ($withCategoriesAndTags) {
+            $Categories = $this->categoryRepository->findAll();
+            $Tags = $this->tagRepository->findAll();
+            $productCategoryDiscriminator = $this->entityManager->getClassMetadata(ProductCategory::class)->discriminatorValue;
+            $productTagDiscriminator = $this->entityManager->getClassMetadata(ProductTag::class)->discriminatorValue;
+
+            $catRows = [];
+            foreach ($productIds as $productId) {
+                foreach ($Categories as $Category) {
+                    $catRows[] = [
+                        'category_id' => $Category->getId(),
+                        'product_id' => $productId,
+                        'discriminator_type' => $productCategoryDiscriminator,
+                    ];
+                }
+            }
+            if (!empty($catRows)) {
+                $this->bulkInsert('dtb_product_category', $catRows);
+            }
+
+            $tagRows = [];
+            foreach ($productIds as $productId) {
+                foreach ($Tags as $Tag) {
+                    $tagRows[] = [
+                        'product_id' => $productId,
+                        'tag_id' => $Tag->getId(),
+                        'create_date' => $nowStr,
+                        'creator_id' => $Member?->getId(),
+                        'discriminator_type' => $productTagDiscriminator,
+                    ];
+                }
+            }
+            if (!empty($tagRows)) {
+                $this->bulkInsert('dtb_product_tag', $tagRows);
+            }
+        }
+
+        return $this->entityManager->getRepository(Product::class)
+            ->findBy(['id' => $productIds], ['id' => 'ASC']);
+    }
+
+    /**
+     * dtb_product_class への INSERT 用 1 行を構築する.
+     */
+    private function buildProductClassRow(
+        string $productCode,
+        string $stock,
+        int $visible,
+        string $price02,
+        int $productId,
+        ?int $saleTypeId,
+        ?int $classCategoryId1,
+        ?int $classCategoryId2,
+        ?int $deliveryDurationId,
+        ?int $creatorId,
+        string $nowStr,
+        string $discriminator,
+    ): array {
+        return [
+            'product_code' => $productCode,
+            'stock' => $stock,
+            'stock_unlimited' => 0,
+            'sale_limit' => null,
+            'price01' => null,
+            'price02' => $price02,
+            'delivery_fee' => null,
+            'visible' => $visible,
+            'create_date' => $nowStr,
+            'update_date' => $nowStr,
+            'currency_code' => null,
+            'point_rate' => null,
+            'product_id' => $productId,
+            'sale_type_id' => $saleTypeId,
+            'class_category_id1' => $classCategoryId1,
+            'class_category_id2' => $classCategoryId2,
+            'delivery_duration_id' => $deliveryDurationId,
+            'creator_id' => $creatorId,
+            'discriminator_type' => $discriminator,
+        ];
+    }
+
+    /**
      * 商品以外 (送料 / 手数料 / 値引き) の OrderItem 用行を生成する.
      */
     private function buildNonProductOrderItemRow(

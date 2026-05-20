@@ -63,9 +63,7 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
         $this->productStatusRepository = $this->entityManager->getRepository(ProductStatus::class);
         $this->productTagRepository = $this->entityManager->getRepository(ProductTag::class);
         // 検索時, IDの重複を防ぐため事前に10個生成しておく
-        for ($i = 0; $i < 10; $i++) {
-            $this->createProduct();
-        }
+        $this->createProducts(10);
         $this->imageDir = sys_get_temp_dir().'/'.sha1((string) mt_rand());
         $fs = new Filesystem();
         $fs->mkdir($this->imageDir);

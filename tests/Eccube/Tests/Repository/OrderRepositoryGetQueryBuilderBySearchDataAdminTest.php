@@ -51,18 +51,17 @@ final class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTe
     protected function setUp(): void
     {
         parent::setUp();
-        $this->createProduct();
         $this->orderStatusRepo = $this->entityManager->getRepository(OrderStatus::class);
         $this->paymentRepo = $this->entityManager->getRepository(Payment::class);
         $this->orderRepo = $this->entityManager->getRepository(Order::class);
         $this->sexRepo = $this->entityManager->getRepository(Sex::class);
         $this->Customer = $this->createCustomer();
-        $this->entityManager->persist($this->Customer);
-        $this->entityManager->flush();
-        $this->Order = $this->createOrder($this->Customer);
-        $this->Order1 = $this->createOrder($this->Customer);
-        $this->Order2 = $this->createOrder($this->createCustomer('test@example.com'));
-        // 新規受付にしておく
+        $Customer2 = $this->createCustomer('test@example.com');
+        // Product / Delivery / PaymentOption を 1 個ずつ共有し Order を 3 件 bulk INSERT
+        [$this->Order, $this->Order1, $this->Order2] = $this->createOrders(
+            [$this->Customer, $this->Customer, $Customer2]
+        );
+        // Order1 / Order2 は新規受付 (NEW) に変更し、order_date を設定する
         $NewStatus = $this->orderStatusRepo->find(OrderStatus::NEW);
         $this->assertInstanceOf(OrderStatus::class, $NewStatus);
         $this->Order1
