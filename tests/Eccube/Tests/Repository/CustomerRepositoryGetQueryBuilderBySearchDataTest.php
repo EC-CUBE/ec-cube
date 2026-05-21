@@ -70,9 +70,13 @@ final class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTest
             'dtb_order',
         ]);
         $this->removeCustomer();
-        [$this->Customer, $this->Customer1, $this->Customer2, $this->Customer3] = $this->createCustomers(4, [
-            'emailTemplate' => fn (int $i): string => 'customer'.($i === 0 ? '' : (string) $i).'@example.com',
-        ]);
+        // Phase (b): customer-search シナリオの CSV から Customer × 4 件を一括投入.
+        // 詳細は tests/Eccube/Tests/Fixture/csv/customer-search/README.md を参照.
+        $this->loadCsvFixtures('customer-search');
+        $this->Customer = $this->customerRepo->findOneBy(['email' => 'customer@example.com']);
+        $this->Customer1 = $this->customerRepo->findOneBy(['email' => 'customer1@example.com']);
+        $this->Customer2 = $this->customerRepo->findOneBy(['email' => 'customer2@example.com']);
+        $this->Customer3 = $this->customerRepo->findOneBy(['email' => 'customer3@example.com']);
     }
 
     public function removeCustomer()

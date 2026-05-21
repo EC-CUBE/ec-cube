@@ -55,22 +55,15 @@ final class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTe
         $this->paymentRepo = $this->entityManager->getRepository(Payment::class);
         $this->orderRepo = $this->entityManager->getRepository(Order::class);
         $this->sexRepo = $this->entityManager->getRepository(Sex::class);
-        $this->Customer = $this->createCustomer();
-        $Customer2 = $this->createCustomer('test@example.com');
-        // Product / Delivery / PaymentOption を 1 個ずつ共有し Order を 3 件 bulk INSERT
-        [$this->Order, $this->Order1, $this->Order2] = $this->createOrders(
-            [$this->Customer, $this->Customer, $Customer2]
-        );
-        // Order1 / Order2 は新規受付 (NEW) に変更し、order_date を設定する
-        $NewStatus = $this->orderStatusRepo->find(OrderStatus::NEW);
-        $this->assertInstanceOf(OrderStatus::class, $NewStatus);
-        $this->Order1
-            ->setOrderStatus($NewStatus)
-            ->setOrderDate(new \DateTime());
-        $this->Order2
-            ->setOrderStatus($NewStatus)
-            ->setOrderDate(new \DateTime());
-        $this->entityManager->flush();
+        // Phase (b): order-search-multi-status シナリオの CSV から Customer × 2 + Order × 3 を一括投入.
+        // 各 Order は CSV 内で異なる OrderStatus / order_date を持つため、setUp 内の setter 呼び出しが不要になる.
+        // 詳細は tests/Eccube/Tests/Fixture/csv/order-search-multi-status/README.md を参照.
+        $this->loadCsvFixtures('order-search-multi-status');
+        $this->Customer = $this->entityManager->getRepository(Customer::class)
+            ->findOneBy(['email' => 'customer-multi-status@example.com']);
+        $this->Order = $this->orderRepo->findOneBy(['order_no' => 'order-multi-status-1']);
+        $this->Order1 = $this->orderRepo->findOneBy(['order_no' => 'order-multi-status-2']);
+        $this->Order2 = $this->orderRepo->findOneBy(['order_no' => 'order-multi-status-3']);
     }
 
     public function scenario()

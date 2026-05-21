@@ -40,9 +40,9 @@ final class CustomerControllerTest extends AbstractAdminWebTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->createCustomers(10, [
-            'emailTemplate' => fn (int $i): string => 'user-'.$i.'@example.com',
-        ]);
+        // Phase (b): customer-list シナリオの CSV から本会員 Customer × 10 件を一括投入.
+        // 詳細は tests/Eccube/Tests/Fixture/csv/customer-list/README.md を参照.
+        $this->loadCsvFixtures('customer-list');
         // sqlite では CsvType が生成されないので、ここで作る
         $CsvType = $this->entityManager->find(CsvType::class, 2);
         if (!is_object($CsvType)) {
