@@ -28,6 +28,10 @@ INSERT 行を CSV に固定し、Faker / Doctrine 経由のオーバーヘッド
 - `dtb_product_class.price01` / `currency_code` / `point_rate` を NULL に固定
 - 価格は `price02=1000`, 在庫は `stock=100` の固定値
 - `dtb_product_image.file_name` は `dummy-N-j.jpg` の固定パターン
+- `creator_id` を NULL に固定 (`eccube:fixtures:load` で作られる Member は
+  通常 1 件のみのため、特定の Member ID をハードコードすると
+  MySQL/PostgreSQL で FK 違反となる. 初期 `dtb_product.csv` /
+  `dtb_product_class.csv` でも同様に `creator_id` を NULL としている)
 
 検索結果件数のみを使う `ProductControllerTest::setUp()` 用途では問題ない.
 個別の ProductClass / Tag / Category 関連を検証する用途には**使えない**.
