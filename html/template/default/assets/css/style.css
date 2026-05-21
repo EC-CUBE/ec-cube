@@ -25419,3 +25419,182 @@ Styleguide 22.1
   color: red;
   font-weight: bold;
 }
+
+/* ヘッダーのカスタマイズ */
+.ec-headerNaviRole {
+  background-color: #f5f0eb;
+}
+
+/* ボタンの色をブラウン系に */
+.ec-blockBtn--action {
+  background-color: #8B4513;
+  border-color: #8B4513;
+}
+
+/* 背景色をベージュに */
+body {
+  background-color: #faf7f4 !important;
+}
+
+/* Google Fontsのエレガントなフォントを使用 */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Noto+Serif+JP:wght@300;400&display=swap');
+
+body {
+  font-family: 'Noto Serif JP', 'Cormorant Garamond', serif !important;
+}
+
+/* フッターをベージュに */
+.ec-footerRole {
+  background-color: #3d2b1f !important;
+}
+
+/* フッターの文字色 */
+.ec-footerRole a,
+.ec-footerRole p {
+  color: #f5f0eb !important;
+}
+
+/* デバッグバーを非表示 */
+.ec-debugModeAlert {
+  display: none !important;
+}
+
+/* ヘッダー上部の背景色をベージュに */
+.ec-layoutRole__header {
+  background-color: #f5f0eb !important;
+}
+
+/* カテゴリタブの背景色をベージュに */
+.ec-searchCategoryRole {
+  background-color: #f5f0eb !important;
+}
+
+/* カテゴリタブの背景色をベージュに */
+.ec-searchCategoryRole {
+  background-color: #f5f0eb !important;
+}
+
+/* カテゴリタブの背景色をベージュに */
+.ec-itemNav__nav li a {
+  background-color: #f5f0eb !important;
+  border-bottom: 1px solid #d4c9be !important;
+}
+
+.ec-categoryNavRole {
+  background-color: #f5f0eb !important;
+}
+
+/* モバイルヘッダーの背景色をベージュに */
+.ec-headerNavSP {
+  background-color: #f5f0eb !important;
+}
+
+/* 全体の背景色をベージュに統一 */
+.ec-layoutRole {
+  background-color: #f5f0eb !important;
+}
+
+.ec-layoutRole__main {
+  background-color: #f5f0eb !important;
+}
+
+/* 文字色をブラウンに統一 */
+body {
+  color: #3d2b1f !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #3d2b1f !important;
+}
+
+p,
+span,
+li,
+a {
+  color: #3d2b1f !important;
+}
+
+/* 黒いボタン・背景をブラウンに統一 */
+.ec-headerRole__logo {
+  background-color: #3d2b1f !important;
+}
+
+.ec-itemNav__nav li a.active {
+  background-color: #3d2b1f !important;
+  color: #f5f0eb !important;
+}
+
+/* 検索ボタン */
+.ec-searchnavRole__submit .ec-icon {
+  color: #3d2b1f !important;
+}
+
+/* カテゴリ選択の黒いボタン */
+.ec-select select {
+  border-color: #3d2b1f !important;
+}
+
+/* 黒い背景のボタン全般 */
+.ec-blockBtn {
+  background-color: #3d2b1f !important;
+  border-color: #3d2b1f !important;
+}
+
+/* ヘッダーアイコンをブラウンに */
+.ec-headerNaviRole .ec-icon img {
+  filter: brightness(0) saturate(100%) sepia(100%) hue-rotate(330deg) saturate(300%) brightness(40%);
+}
+
+/* 「全ての商品」ボタンをブラウンに */
+.ec-topicpath .ec-select {
+  background-color: #3d2b1f !important;
+  color: #f5f0eb !important;
+}
+
+.ec-itemNav__navSP {
+  background-color: #3d2b1f !important;
+  color: #f5f0eb !important;
+}
+
+/* 検索バーの「全ての商品」部分 */
+.ec-searchnavRole__category {
+  background-color: #3d2b1f !important;
+  color: #f5f0eb !important;
+}
+
+/* ヘッダーアイコンをブラウンに */
+.ec-headerNav .ec-headerNav__itemIcon {
+  color: #3d2b1f !important;
+}
+
+/* ヘッダーアイコンのリンクテキストをブラウンに */
+.ec-headerNav__itemLink {
+  color: #3d2b1f !important;
+}
+
+/* カートアイコンをブラウンに */
+.ec-cartNavi .ec-cartNavi__icon {
+  color: #3d2b1f !important;
+}
+
+/* カートの金額テキストをブラウンに */
+.ec-cartNavi .ec-cartNavi__label {
+  color: #3d2b1f !important;
+}
+
+/* カートに入れるボタンをフッターと同じブラウンに */
+.ec-blockBtn--action {
+  background-color: #3d2b1f !important;
+  border-color: #3d2b1f !important;
+}
+
+/* カートの背景色をベージュに */
+.ec-cartNavi {
+  background: #f5f0eb !important;
+  border: 1px solid #d4c9be !important;
+}
