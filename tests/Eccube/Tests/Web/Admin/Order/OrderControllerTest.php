@@ -65,18 +65,11 @@ final class OrderControllerTest extends AbstractAdminWebTestCase
         $this->deleteAllRows(['dtb_order_item']);
         $this->deleteAllRows(['dtb_shipping']);
         $this->deleteAllRows(['dtb_order']);
-        $Sex = $this->sexRepository->find(1);
-        $Payment = $this->paymentRepository->find(1);
-        $OrderStatus = $this->orderStatusRepository->find(OrderStatus::NEW);
-        $customers = $this->createCustomers(10, [
-            'sex' => $Sex,
-            'emailTemplate' => fn (int $i): string => 'user-'.$i.'@example.com',
-        ]);
-        $this->createOrders($customers, [
-            'orderStatus' => $OrderStatus,
-            'payment' => $Payment,
-            'orderNoTemplate' => fn (int $i): string => 'order_no_'.$i,
-        ]);
+        // Phase (b): order-search シナリオの CSV から Customer / Order / Shipping / OrderItem を一括投入.
+        // 詳細は tests/Eccube/Tests/Fixture/csv/order-search/README.md を参照.
+        // ※ OrderItem の product_id / product_class_id は NULL で、Shipping の delivery_id も NULL.
+        //   これは本テストが商品参照や配送方法を要求しないための簡略化であり、実運用データとは乖離する.
+        $this->loadCsvFixtures('order-search');
         // sqlite では CsvType が生成されないので、ここで作る
         $OrderCsvType = $this->csvTypeRepository->find(3);
         if (!is_object($OrderCsvType)) {
