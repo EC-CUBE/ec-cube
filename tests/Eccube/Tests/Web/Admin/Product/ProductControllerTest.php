@@ -62,8 +62,10 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
         $this->taxRuleRepository = $this->entityManager->getRepository(TaxRule::class);
         $this->productStatusRepository = $this->entityManager->getRepository(ProductStatus::class);
         $this->productTagRepository = $this->entityManager->getRepository(ProductTag::class);
-        // 検索時, IDの重複を防ぐため事前に10個生成しておく
-        $this->createProducts(10);
+        // Phase (b): 検索時, ID の重複を防ぐため事前に 10 件 Product を投入する.
+        // CSV の id レンジ (6001-9040) は初期データ (id 1, 2) と衝突しないため事前削除不要.
+        // 詳細は tests/Eccube/Tests/Fixture/csv/product-list-mass/README.md を参照.
+        $this->loadCsvFixtures('product-list-mass');
         $this->imageDir = sys_get_temp_dir().'/'.sha1((string) mt_rand());
         $fs = new Filesystem();
         $fs->mkdir($this->imageDir);

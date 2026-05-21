@@ -1,0 +1,11 @@
+id,name,note,description_list,description_detail,search_word,free_area,create_date,update_date,creator_id,product_status_id,discriminator_type
+6001,ProductCsv-1,,csv description list 1,csv description detail 1,,,2026-05-21 00:00:00,2026-05-21 00:00:00,2,1,product
+6002,ProductCsv-2,,csv description list 2,csv description detail 2,,,2026-05-21 00:00:00,2026-05-21 00:00:00,2,1,product
+6003,ProductCsv-3,,csv description list 3,csv description detail 3,,,2026-05-21 00:00:00,2026-05-21 00:00:00,2,1,product
+6004,ProductCsv-4,,csv description list 4,csv description detail 4,,,2026-05-21 00:00:00,2026-05-21 00:00:00,2,1,product
+6005,ProductCsv-5,,csv description list 5,csv description detail 5,,,2026-05-21 00:00:00,2026-05-21 00:00:00,2,1,product
+6006,ProductCsv-6,,csv description list 6,csv description detail 6,,,2026-05-21 00:00:00,2026-05-21 00:00:00,2,1,product
+6007,ProductCsv-7,,csv description list 7,csv description detail 7,,,2026-05-21 00:00:00,2026-05-21 00:00:00,2,1,product
+6008,ProductCsv-8,,csv description list 8,csv description detail 8,,,2026-05-21 00:00:00,2026-05-21 00:00:00,2,1,product
+6009,ProductCsv-9,,csv description list 9,csv description detail 9,,,2026-05-21 00:00:00,2026-05-21 00:00:00,2,1,product
+6010,ProductCsv-10,,csv description list 10,csv description detail 10,,,2026-05-21 00:00:00,2026-05-21 00:00:00,2,1,product
