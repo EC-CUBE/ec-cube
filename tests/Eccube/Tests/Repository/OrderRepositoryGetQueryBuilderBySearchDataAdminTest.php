@@ -57,6 +57,12 @@ final class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTe
         $this->sexRepo = $this->entityManager->getRepository(Sex::class);
         // Phase (b): order-search-multi-status シナリオの CSV から Customer × 2 + Order × 3 を一括投入.
         // 各 Order は CSV 内で異なる OrderStatus / order_date を持つため、setUp 内の setter 呼び出しが不要になる.
+        // ※ シナリオ間の UNIQUE 制約衝突を避けるため、CSV ロード前に対象テーブルを空にする.
+        $this->deleteAllRows(['dtb_order_item']);
+        $this->deleteAllRows(['dtb_shipping']);
+        $this->deleteAllRows(['dtb_order']);
+        $this->deleteAllRows(['dtb_customer_address']);
+        $this->deleteAllRows(['dtb_customer']);
         // 詳細は tests/Eccube/Tests/Fixture/csv/order-search-multi-status/README.md を参照.
         $this->loadCsvFixtures('order-search-multi-status');
         $this->Customer = $this->entityManager->getRepository(Customer::class)
@@ -64,6 +70,15 @@ final class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTe
         $this->Order = $this->orderRepo->findOneBy(['order_no' => 'order-multi-status-1']);
         $this->Order1 = $this->orderRepo->findOneBy(['order_no' => 'order-multi-status-2']);
         $this->Order2 = $this->orderRepo->findOneBy(['order_no' => 'order-multi-status-3']);
+        // CSV の create_date / update_date / order_date は固定値のため、日時範囲検索 (testDateTime) で
+        // 期待件数にヒットしない. テスト実行時の現在時刻に上書きする (Order は order_date=NULL のまま).
+        $now = new \DateTime();
+        foreach ([$this->Order, $this->Order1, $this->Order2] as $Order) {
+            $Order->setCreateDate($now)->setUpdateDate($now);
+        }
+        $this->Order1->setOrderDate($now);
+        $this->Order2->setOrderDate($now);
+        $this->entityManager->flush();
     }
 
     public function scenario()

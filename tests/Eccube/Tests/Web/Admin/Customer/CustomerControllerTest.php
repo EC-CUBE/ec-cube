@@ -41,6 +41,14 @@ final class CustomerControllerTest extends AbstractAdminWebTestCase
     {
         parent::setUp();
         // Phase (b): customer-list シナリオの CSV から本会員 Customer × 10 件を一括投入.
+        // ※ CSV ロード前に dtb_customer を空にしておかないと、他テスト由来の残骸 (CI 全体実行時)
+        //   と email や secret_key の UNIQUE 制約が衝突する可能性があるため事前削除する.
+        //   FK 順序で Order/Shipping/OrderItem も先に削除.
+        $this->deleteAllRows(['dtb_order_item']);
+        $this->deleteAllRows(['dtb_shipping']);
+        $this->deleteAllRows(['dtb_order']);
+        $this->deleteAllRows(['dtb_customer_address']);
+        $this->deleteAllRows(['dtb_customer']);
         // 詳細は tests/Eccube/Tests/Fixture/csv/customer-list/README.md を参照.
         $this->loadCsvFixtures('customer-list');
         // sqlite では CsvType が生成されないので、ここで作る

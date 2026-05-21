@@ -65,6 +65,13 @@ final class OrderControllerTest extends AbstractAdminWebTestCase
         $this->deleteAllRows(['dtb_order_item']);
         $this->deleteAllRows(['dtb_shipping']);
         $this->deleteAllRows(['dtb_order']);
+        // dtb_customer も CSV と重複する可能性があるため事前に削除する.
+        // ※ CsvFixture::load() は内部で beginTransaction/commit を呼び DAMA の
+        //   savepoint と完全には整合しないため、シナリオ間で email や secret_key の
+        //   UNIQUE 制約が衝突する場合がある. setUp で先に消すことで毎テスト独立した
+        //   状態から CSV を投入する.
+        $this->deleteAllRows(['dtb_customer_address']);
+        $this->deleteAllRows(['dtb_customer']);
         // Phase (b): order-search シナリオの CSV から Customer / Order / Shipping / OrderItem を一括投入.
         // 詳細は tests/Eccube/Tests/Fixture/csv/order-search/README.md を参照.
         // ※ OrderItem の product_id / product_class_id は NULL で、Shipping の delivery_id も NULL.

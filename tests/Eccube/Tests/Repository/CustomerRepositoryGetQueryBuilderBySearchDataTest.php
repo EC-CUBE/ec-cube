@@ -77,6 +77,13 @@ final class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTest
         $this->Customer1 = $this->customerRepo->findOneBy(['email' => 'customer1@example.com']);
         $this->Customer2 = $this->customerRepo->findOneBy(['email' => 'customer2@example.com']);
         $this->Customer3 = $this->customerRepo->findOneBy(['email' => 'customer3@example.com']);
+        // CSV の create_date / update_date は固定値のため、日時範囲検索 (testDateTime) で
+        // 期待件数にヒットしない. テスト実行時の現在時刻に上書きする.
+        $now = new \DateTime();
+        foreach ([$this->Customer, $this->Customer1, $this->Customer2, $this->Customer3] as $Customer) {
+            $Customer->setCreateDate($now)->setUpdateDate($now);
+        }
+        $this->entityManager->flush();
     }
 
     public function removeCustomer()
