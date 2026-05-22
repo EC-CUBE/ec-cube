@@ -109,10 +109,10 @@ final class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTest
 
     public function testMultiWithId()
     {
-        // 検索時, IDの重複を防ぐため事前に5個生成しておく
-        for ($i = 0; $i < 10; $i++) {
-            $this->createCustomer('user-'.$i.'@example.com');
-        }
+        // 検索時, IDの重複を防ぐため事前に 10 個生成しておく
+        $this->createCustomers(10, [
+            'emailTemplate' => static fn (int $i): string => 'user-'.$i.'@example.com',
+        ]);
         $Customer = $this->createCustomer('customer@example.jp');
         $this->expected = $Customer->getId();
         $this->searchData = [

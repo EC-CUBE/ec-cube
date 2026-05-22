@@ -88,9 +88,9 @@ final class CustomerControllerTest extends AbstractAdminWebTestCase
      */
     public function testIndexPaging()
     {
-        for ($i = 20; $i < 70; $i++) {
-            $this->createCustomer('user-'.$i.'@example.com');
-        }
+        $this->createCustomers(50, [
+            'emailTemplate' => static fn (int $i): string => 'user-'.($i + 20).'@example.com',
+        ]);
 
         $this->client->request(
             Request::METHOD_GET,

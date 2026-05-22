@@ -686,12 +686,11 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
      */
     public function testExportWithOrderByProduct()
     {
-        $expectedIds = [];
-        for ($i = 1; $i <= 10; $i++) {
-            $productName = 'Product name '.$i;
-            $Product = $this->createProduct($productName, 0);
-            array_unshift($expectedIds, $Product->getId());
-        }
+        $Products = $this->createProducts(10, [
+            'productClassNum' => 0,
+            'nameTemplate' => static fn (int $i): string => 'Product name '.($i + 1),
+        ]);
+        $expectedIds = array_reverse(array_map(static fn ($p) => $p->getId(), $Products));
 
         // 更新日をすべて同一日時に更新
         $qb = $this->entityManager->createQueryBuilder();

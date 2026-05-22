@@ -239,14 +239,9 @@ final class OrderControllerTest extends AbstractAdminWebTestCase
 
     public function testBulkDelete()
     {
-        $orderIds = [];
         $Customer = $this->createCustomer();
-        for ($i = 0; $i < 5; $i++) {
-            $Order = $this->createOrder($Customer);
-            $orderIds[] = $Order->getId();
-        }
-
-        $this->entityManager->flush();
+        $NewOrders = $this->createOrders(array_fill(0, 5, $Customer));
+        $orderIds = array_map(static fn ($o) => $o->getId(), $NewOrders);
 
         $this->client->request(
             Request::METHOD_POST,
