@@ -42,11 +42,15 @@ final class OrderRepositoryTest extends EccubeTestCase
     {
         parent::setUp();
         $this->orderRepository = $this->entityManager->getRepository(Order::class);
-        $this->createProduct();
-        $this->Customer = $this->createCustomer();
-        $this->entityManager->persist($this->Customer);
-        $this->entityManager->flush();
-        $this->Order = $this->createOrder($this->Customer);
+
+        // Phase (b): createProduct + createCustomer + createOrder の代わりに
+        // CSV から最小フィクスチャ (Customer/Order/Shipping/OrderItem 各 1 件) を
+        // 投入する. 詳細は tests/Eccube/Tests/Fixture/csv/order-repository-base/README.md.
+        $this->loadCsvFixtures('order-repository-base');
+        $this->Customer = $this->entityManager->getRepository(Customer::class)
+            ->findOneBy(['email' => 'order-repository-base@example.com']);
+        $this->Order = $this->orderRepository
+            ->findOneBy(['order_no' => 'order-repository-base-1']);
     }
 
     public function testChangeStatusWithPayment()
