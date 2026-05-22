@@ -49,8 +49,10 @@ final class OrderRepositoryTest extends EccubeTestCase
         $this->loadCsvFixtures('order-repository-base');
         $this->Customer = $this->entityManager->getRepository(Customer::class)
             ->findOneBy(['email' => 'order-repository-base@example.com']);
+        $this->assertInstanceOf(Customer::class, $this->Customer);
         $this->Order = $this->orderRepository
             ->findOneBy(['order_no' => 'order-repository-base-1']);
+        $this->assertInstanceOf(Order::class, $this->Order);
     }
 
     public function testChangeStatusWithPayment()
