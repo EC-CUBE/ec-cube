@@ -148,6 +148,12 @@ class Generator
      * Customer オブジェクトを生成して返す.
      *
      * @param string $email メールアドレス. null の場合は, ランダムなメールアドレスが生成される.
+     *
+     * NOTE: 複数件の Customer をテストで投入したい場合は本メソッドを
+     *       ループ呼び出しせず、{@link createCustomers()} (DBAL bulk INSERT)
+     *       か `EccubeTestCase::loadCsvFixtures()` (CSV シナリオ) を
+     *       利用すること. 1 件ごとに Faker / persist / flush が走るため
+     *       数件を超えると CI 全体のボトルネックになる. 詳細は https://github.com/EC-CUBE/ec-cube/issues/6768.
      */
     public function createCustomer(?string $email = null, bool $flush = true): Customer
     {
@@ -287,6 +293,14 @@ class Generator
      * @param string $product_name 商品名. null の場合はランダムな文字列が生成される.
      * @param int $product_class_num 商品規格の生成数
      * @param bool $with_image 画像を生成する場合 true, 生成しない場合 false
+     *
+     * NOTE: 複数件の Product をテストで投入したい場合は本メソッドを
+     *       ループ呼び出しせず、{@link createProducts()} (DBAL bulk INSERT,
+     *       4 テーブルまとめ) か `EccubeTestCase::loadCsvFixtures()`
+     *       (CSV シナリオ) を利用すること. 1 件あたり Product /
+     *       ProductImage / ProductClass / ProductStock + Faker /
+     *       ClassName 参照が走るため数件を超えると CI 全体のボトルネック
+     *       になる. 詳細は https://github.com/EC-CUBE/ec-cube/issues/6768.
      */
     public function createProduct(?string $product_name = null, int $product_class_num = 3, bool $with_image = false, bool $flush = true, bool $simple_mode = false): Product
     {
@@ -505,6 +519,15 @@ class Generator
      * @param int $add_charge Order に加算される手数料
      * @param int $add_discount Order に加算される値引き額
      * @param int $statusTypeId OrderStatus:id
+     *
+     * NOTE: 複数件の Order をテストで投入したい場合は本メソッドを
+     *       ループ呼び出しせず、{@link createOrders()} (DBAL bulk INSERT,
+     *       Order/Shipping/OrderItem まとめ + Product/Delivery 共有) か
+     *       `EccubeTestCase::loadCsvFixtures()` (CSV シナリオ) を利用
+     *       すること. 1 件あたり createProduct + createDelivery +
+     *       OrderItem 4 種類の persist が走るため、N 件ループは N 倍以上の
+     *       コストになる (Order ループは最大の CI ボトルネックだった).
+     *       詳細は https://github.com/EC-CUBE/ec-cube/issues/6768.
      */
     public function createOrder(Customer $Customer, array $ProductClasses = [], ?Delivery $Delivery = null, int $add_charge = 0, int $add_discount = 0, ?int $statusTypeId = null, bool $flush = true, bool $randomizeOrderItems = false): Order
     {
