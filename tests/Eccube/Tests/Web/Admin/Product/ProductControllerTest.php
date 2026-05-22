@@ -356,10 +356,19 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
         $PreProduct = $this->productRepository->findOneBy(['id' => $Product->getId()]);
         $PreUpdateDate = $PreProduct->getUpdateDate();
         $this->assertInstanceOf(\DateTime::class, $PreUpdateDate);
-        $preTimestamp = $PreUpdateDate->getTimestamp();
 
-        // タイムスタンプが変わっていることを確認するために3秒待って更新
-        sleep(3);
+        // sleep(3) を避けるため update_date を 3 秒前に巻き戻す.
+        // SaveEventSubscriber::preUpdate が Doctrine flush 時に
+        // updateDate を NOW で強制上書きするため、ORM 経由ではなく
+        // DBAL で直接 UPDATE して preUpdate を回避する.
+        $threeSecondsAgo = new \DateTime('-3 seconds');
+        $this->entityManager->getConnection()->update(
+            'dtb_product',
+            ['update_date' => $threeSecondsAgo->format('Y-m-d H:i:s')],
+            ['id' => $Product->getId()]
+        );
+        $this->entityManager->refresh($PreProduct);
+        $preTimestamp = $PreProduct->getUpdateDate()->getTimestamp();
 
         $formData['return_link'] = $this->generateUrl('admin_product_category');
         $this->client->request(
