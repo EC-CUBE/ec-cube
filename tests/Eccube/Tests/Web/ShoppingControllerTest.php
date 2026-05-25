@@ -399,8 +399,10 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         ]);
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->expected = 'お支払い方法を選択してください。';
-        $this->actual = $crawler->filter('p.ec-errorMessage')->text();
+
+        // 先頭の支払方法(郵便振替)が選択されていることを確認
+        $this->expected = '1';
+        $this->actual = $crawler->filter('input[name="_shopping_order[Payment]"]:checked')->attr('value');
         $this->verify();
     }
 

@@ -1881,6 +1881,7 @@ purchase_flow.tax_rate_update: 税率が更新されました。金額をご確�
 purchase_flow.over_customer_point: 利用ポイントが所有ポイントを上回っています。
 purchase_flow.over_payment_total: 利用ポイントがお支払い金額を上回っています。
 purchase_flow.over_stock: "「%name%」の在庫が足りません。"
+purchase_flow.payment_method_changed: "配送方法の変更により支払方法が「%name%」に変更されました。"
 
 #------------------------------------------------------------------------------------
 # Command
