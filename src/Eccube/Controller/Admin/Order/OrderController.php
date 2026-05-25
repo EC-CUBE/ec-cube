@@ -519,7 +519,7 @@ class OrderController extends AbstractController
         try {
             if ($Order->getOrderStatus()->getId() == $OrderStatus->getId()) {
                 log_info('対応状況一括変更スキップ');
-                $result = ['message' => trans('admin.order.skip_change_status', ['%name%' => $Shipping->getId()])];
+                $result = ['message' => trans('admin.order.skip_change_status', ['%name%' => $Order->getOrderNo()])];
             } else {
                 if ($this->orderStateMachine->can($Order, $OrderStatus)) {
                     if ($OrderStatus->getId() == OrderStatus::DELIVERED) {
@@ -574,7 +574,7 @@ class OrderController extends AbstractController
                     $from = $Order->getOrderStatus()->getName();
                     $to = $OrderStatus->getName();
                     $result = ['message' => trans('admin.order.failed_to_change_status', [
-                        '%name%' => $Shipping->getId(),
+                        '%name%' => $Order->getOrderNo(),
                         '%from%' => $from,
                         '%to%' => $to,
                     ])];
