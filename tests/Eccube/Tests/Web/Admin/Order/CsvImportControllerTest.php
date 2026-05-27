@@ -29,6 +29,7 @@ final class CsvImportControllerTest extends AbstractAdminWebTestCase
     {
         $OrderStatus = $this->entityManager->find(OrderStatus::class, OrderStatus::NEW);
         $Order = $this->createOrder($this->createCustomer());
+        $this->assertInstanceOf(OrderStatus::class, $OrderStatus);
         $Order->setOrderStatus($OrderStatus);
         $this->entityManager->flush();
         $Shipping = $Order->getShippings()[0];
@@ -67,6 +68,7 @@ final class CsvImportControllerTest extends AbstractAdminWebTestCase
     {
         $OrderStatus = $this->entityManager->find(OrderStatus::class, OrderStatus::NEW);
         $Order = $this->createOrder($this->createCustomer());
+        $this->assertInstanceOf(OrderStatus::class, $OrderStatus);
         $Order->setOrderStatus($OrderStatus);
         $this->entityManager->flush();
         $Shipping = $Order->getShippings()[0];
@@ -88,6 +90,7 @@ final class CsvImportControllerTest extends AbstractAdminWebTestCase
     {
         $OrderStatus = $this->entityManager->find(OrderStatus::class, OrderStatus::NEW);
         $Order = $this->createOrder($this->createCustomer());
+        $this->assertInstanceOf(OrderStatus::class, $OrderStatus);
         $Order->setOrderStatus($OrderStatus);
         $this->entityManager->flush();
         $Shipping = $Order->getShippings()[0];
@@ -191,6 +194,7 @@ final class CsvImportControllerTest extends AbstractAdminWebTestCase
     {
         $OrderStatus = $this->entityManager->find(OrderStatus::class, OrderStatus::NEW);
         $Order1 = $this->createOrder($this->createCustomer());
+        $this->assertInstanceOf(OrderStatus::class, $OrderStatus);
         $Order1->setOrderStatus($OrderStatus);
         $Order2 = $this->createOrder($this->createCustomer());
         $Order2->setOrderStatus($OrderStatus);

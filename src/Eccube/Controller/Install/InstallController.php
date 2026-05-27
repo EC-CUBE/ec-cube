@@ -993,20 +993,17 @@ class InstallController extends AbstractController
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('server_version', 'server_version');
-
         $platform = $em->getConnection()->getDatabasePlatform()->getName();
         $sql = match ($platform) {
             'sqlite' => 'SELECT sqlite_version() AS server_version',
             'mysql' => 'SELECT version() AS server_version',
             default => 'SHOW server_version',
         };
-
         $version = $em->createNativeQuery($sql, $rsm)
             ->getSingleScalarResult();
-
         // postgresqlのバージョンが10.x以降の場合に、getSingleScalarResult()で取得される不要な文字列を除く処理
         if ($platform === 'postgresql') {
-            preg_match('/\A([\d+\.]+)/', $version, $matches);
+            preg_match('/\A([\d+\.]+)/', (string) $version, $matches);
             $version = $matches[1];
         }
 

@@ -34,7 +34,7 @@ use Twig\Error\LoaderError;
 
 class BlockController extends AbstractController
 {
-    public function __construct(protected BlockRepository $blockRepository, protected DeviceTypeRepository $deviceTypeRepository)
+    public function __construct(protected BlockRepository $blockRepository, protected DeviceTypeRepository $deviceTypeRepository, private readonly Environment $twig, private readonly Filesystem $fs, private readonly CacheUtil $cacheUtil)
     {
     }
 
@@ -75,7 +75,7 @@ class BlockController extends AbstractController
     #[Route(path: '/%eccube_admin_route%/content/block/new', name: 'admin_content_block_new', methods: ['GET', 'POST'])]
     #[Route(path: '/%eccube_admin_route%/content/block/{id}/edit', name: 'admin_content_block_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Content/block_edit.twig')]
-    public function edit(Request $request, Environment $twig, Filesystem $fs, CacheUtil $cacheUtil, $id = null): RedirectResponse|array
+    public function edit(Request $request, $id = null): RedirectResponse|array
     {
         $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');
 
@@ -105,7 +105,7 @@ class BlockController extends AbstractController
 
         if ($id) {
             $previousFileName = $Block->getFileName();
-            $html = $twig->getLoader()
+            $html = $this->twig->getLoader()
                 ->getSourceContext('Block/'.$Block->getFileName().'.twig')
                 ->getCode();
         }
@@ -140,19 +140,19 @@ class BlockController extends AbstractController
 
             $source = $form->get('block_html')->getData();
             $source = StringUtil::convertLineFeed($source);
-            $fs->dumpFile($file, $source);
+            $this->fs->dumpFile($file, $source);
 
             // 更新でファイル名を変更した場合、以前のファイルを削除
             if (null !== $previousFileName && $Block->getFileName() !== $previousFileName) {
                 $old = $dir.'/'.$previousFileName.'.twig';
-                if ($fs->exists($old)) {
-                    $fs->remove($old);
+                if ($this->fs->exists($old)) {
+                    $this->fs->remove($old);
                 }
             }
 
             // キャッシュの削除
-            $cacheUtil->clearTwigCache();
-            $cacheUtil->clearDoctrineCache();
+            $this->cacheUtil->clearTwigCache();
+            $this->cacheUtil->clearDoctrineCache();
 
             $event = new EventArgs(
                 [
@@ -176,7 +176,7 @@ class BlockController extends AbstractController
     }
 
     #[Route(path: '/%eccube_admin_route%/content/block/{id}/delete', name: 'admin_content_block_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, Block $Block, Filesystem $fs, CacheUtil $cacheUtil): RedirectResponse
+    public function delete(Request $request, Block $Block): RedirectResponse
     {
         $this->isTokenValid();
 
@@ -188,8 +188,8 @@ class BlockController extends AbstractController
 
             $file = $dir.'/'.$Block->getFileName().'.twig';
 
-            if ($fs->exists($file)) {
-                $fs->remove($file);
+            if ($this->fs->exists($file)) {
+                $this->fs->remove($file);
             }
 
             $this->entityManager->remove($Block);
@@ -206,8 +206,8 @@ class BlockController extends AbstractController
             $this->addSuccess('admin.common.delete_complete', 'admin');
 
             // キャッシュの削除
-            $cacheUtil->clearTwigCache();
-            $cacheUtil->clearDoctrineCache();
+            $this->cacheUtil->clearTwigCache();
+            $this->cacheUtil->clearDoctrineCache();
         }
 
         return $this->redirectToRoute('admin_content_block');

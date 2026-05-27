@@ -30,6 +30,7 @@ use Eccube\Repository\Master\SexRepository;
 use Eccube\Service\CsvExportService;
 use Eccube\Service\MailService;
 use Eccube\Util\FormUtil;
+use Eccube\Util\StringUtil;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -38,11 +39,10 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CustomerController extends AbstractController
 {
-    public function __construct(protected PageMaxRepository $pageMaxRepository, protected CustomerRepository $customerRepository, protected SexRepository $sexRepository, protected PrefRepository $prefRepository, protected MailService $mailService, protected CsvExportService $csvExportService)
+    public function __construct(protected PageMaxRepository $pageMaxRepository, protected CustomerRepository $customerRepository, protected SexRepository $sexRepository, protected PrefRepository $prefRepository, protected MailService $mailService, protected CsvExportService $csvExportService, private readonly PaginatorInterface $paginator)
     {
     }
 
@@ -54,7 +54,7 @@ class CustomerController extends AbstractController
     #[Route(path: '/%eccube_admin_route%/customer', name: 'admin_customer', methods: ['GET', 'POST'])]
     #[Route(path: '/%eccube_admin_route%/customer/page/{page_no}', name: 'admin_customer_page', requirements: ['page_no' => '\d+'], methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Customer/index.twig')]
-    public function index(Request $request, PaginatorInterface $paginator, $page_no = null): array
+    public function index(Request $request, $page_no = null): array
     {
         $session = $this->session;
         $builder = $this->formFactory->createBuilder(SearchCustomerType::class);
@@ -120,20 +120,42 @@ class CustomerController extends AbstractController
         /** @var QueryBuilder $qb */
         $qb = $this->customerRepository->getQueryBuilderBySearchData($searchData);
 
+        $paginate_options = [];
         $event = new EventArgs(
             [
                 'form' => $searchForm,
                 'qb' => $qb,
+                'paginate_options' => $paginate_options,
             ],
             $request
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_CUSTOMER_INDEX_SEARCH);
+        $paginate_options = $event->getArgument('paginate_options');
 
-        $pagination = $paginator->paginate(
-            $qb,
-            $page_no,
-            $pageCount
-        );
+        // JOIN必要な検索条件がない場合はカスタムカウントを使用
+        $useCustomCount = !(isset($searchData['buy_product_name']) && StringUtil::isNotBlank($searchData['buy_product_name']));
+
+        if ($useCustomCount) {
+            // カスタムカウントを使用して高速化
+            $count = $this->customerRepository->countBySearchData($searchData);
+            $query = $qb->getQuery();
+            $query->setHint('knp_paginator.count', $count);
+
+            $pagination = $this->paginator->paginate(
+                $query,
+                $page_no,
+                $pageCount,
+                $paginate_options
+            );
+        } else {
+            // JOIN必要な検索条件がある場合は従来通り
+            $pagination = $this->paginator->paginate(
+                $qb,
+                $page_no,
+                $pageCount,
+                $paginate_options
+            );
+        }
 
         return [
             'searchForm' => $searchForm->createView(),
@@ -193,7 +215,7 @@ class CustomerController extends AbstractController
      * @param string $id
      */
     #[Route(path: '/%eccube_admin_route%/customer/{id}/delete', name: 'admin_customer_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, $id, TranslatorInterface $translator): RedirectResponse
+    public function delete(Request $request, $id): RedirectResponse
     {
         $this->isTokenValid();
 

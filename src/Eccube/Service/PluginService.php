@@ -347,13 +347,32 @@ class PluginService
         try {
             if ($extension == 'zip') {
                 $zip = new \ZipArchive();
-                $zip->open($archive);
+                $result = $zip->open($archive);
+                if ($result !== true) {
+                    throw new PluginException(trans('pluginservice.text.error.upload_failure'));
+                }
+
+                // ZIP Slip 対策: 展開先パスの検証
+                for ($i = 0; $i < $zip->numFiles; $i++) {
+                    $entryName = $zip->getNameIndex($i);
+                    if (str_contains($entryName, '..')
+                        || str_contains($entryName, ':')
+                        || str_starts_with($entryName, '/')
+                        || str_starts_with($entryName, '\\')
+                    ) {
+                        $zip->close();
+                        throw new PluginException(trans('pluginservice.text.error.upload_failure'));
+                    }
+                }
+
                 $zip->extractTo($dir);
                 $zip->close();
             } else {
                 $phar = new \PharData($archive);
                 $phar->extractTo($dir, null, true);
             }
+        } catch (PluginException $e) {
+            throw $e;
         } catch (\Exception) {
             throw new PluginException(trans('pluginservice.text.error.upload_failure'));
         }
@@ -881,7 +900,7 @@ class PluginService
     /**
      * Plugin is exist check
      *
-     * @param array<string, string|int>  $plugins    get from api
+     * @param array<int, array<string, mixed>> $plugins get from api（各行に product_code を含む）
      *
      * @return false|int|string
      */
@@ -890,12 +909,19 @@ class PluginService
         if (str_contains($pluginCode, self::VENDOR_NAME.'/')) {
             $pluginCode = str_replace(self::VENDOR_NAME.'/', '', $pluginCode);
         }
-        // Find plugin in array
-        $index = array_search($pluginCode, array_column($plugins, 'product_code')); // 前方互換用
-        if ($index === false) { /** @phpstan-ignore-line */
-            $index = array_search(strtolower($pluginCode), array_column($plugins, 'product_code'));
+        $productCodes = array_column($plugins, 'product_code');
+        foreach ($productCodes as $index => $code) {
+            if ($code === $pluginCode) {
+                return $index;
+            }
+        }
+        $lowerPluginCode = strtolower($pluginCode);
+        foreach ($productCodes as $index => $code) {
+            if ($code === $lowerPluginCode) {
+                return $index;
+            }
         }
 
-        return $index;
+        return false;
     }
 }

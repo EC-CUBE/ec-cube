@@ -21,14 +21,6 @@ class CategoryManagePage extends AbstractAdminPageStyleGuide
     public static $パンくず_3階層 = 'body > div > div.c-contentsArea > div.c-outsideBlock > div > div > div:nth-child(1) > nav > ol > li:nth-child(4) > a';
     public static $パンくず_4階層 = 'body > div > div.c-contentsArea > div.c-outsideBlock > div > div > div:nth-child(1) > nav > ol > li:nth-child(5) > a';
 
-    /**
-     * CategoryPage constructor.
-     */
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     public static function go($I)
     {
         $page = new self($I);

@@ -36,11 +36,9 @@ final class RepeatedEmailTypeTest extends AbstractTypeTestCase
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->form = $this->formFactory
             ->createBuilder(FormType::class, null, ['csrf_protection' => false])
             ->add('email', RepeatedEmailType::class, [
@@ -48,7 +46,6 @@ final class RepeatedEmailTypeTest extends AbstractTypeTestCase
             ->getForm();
     }
 
-    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();

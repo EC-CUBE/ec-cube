@@ -31,13 +31,11 @@ final class PointRateProcessorTest extends EccubeTestCase
 
     private ?Order $Order = null;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
         $this->processor = static::getContainer()->get(PointRateProcessor::class);
         $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
-
         $this->Order = $this->createOrder($this->createCustomer());
         foreach ($this->Order->getOrderItems() as $OrderItem) {
             $OrderItem->setPointRate(null);

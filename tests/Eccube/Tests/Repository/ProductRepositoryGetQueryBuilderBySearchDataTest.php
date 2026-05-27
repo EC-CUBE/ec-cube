@@ -48,15 +48,12 @@ final class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractPro
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->categoryRepository = $this->entityManager->getRepository(Category::class);
         $this->productListOrderByRepository = $this->entityManager->getRepository(ProductListOrderBy::class);
         $this->paginator = static::getContainer()->get(PaginatorInterface::class);
-
         $this->ProductListMax = new ProductListMax();
         $this->ProductListOrderBy = new ProductListOrderBy();
     }

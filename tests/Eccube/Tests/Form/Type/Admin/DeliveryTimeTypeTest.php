@@ -29,11 +29,9 @@ final class DeliveryTimeTypeTest extends AbstractTypeTestCase
         'sort_no' => '1',
     ];
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
             ->createBuilder(DeliveryTimeType::class, null, [

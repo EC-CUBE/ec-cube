@@ -3,6 +3,9 @@ name: Deny check for EC-CUBE
 on:
   workflow_call:
 
+permissions:
+  contents: read
+
 jobs:
   deploy:
     name: Deny check
@@ -19,19 +22,13 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
 
       - name: Setup PHP
-        uses: nanasess/setup-php@master
+        uses: shivammathur/setup-php@accd6127cb78bee3e8082180cb391013d204ef9f  # v2
         with:
           php-version: '8.3'
-
-      - name: Install ext-redis 6.1+
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y php8.2-redis
-          sudo phpenmod -s cli redis
-          php -m | grep -i redis
+          extensions: redis
 
       - name: Initialize Composer
         uses: ./.github/actions/composer
@@ -94,34 +91,38 @@ jobs:
           docker cp ../eccube.tar.gz eccube:/tmp/
           docker exec -w /tmp eccube bash -c "rm -rf /var/www/html; tar xf /tmp/eccube.tar.gz -C /var/www; mv /var/www/ec-cube /var/www/html; chown -R www-data: /var/www/html"
           docker exec -u www-data eccube bin/console eccube:install -n
-          # docker exec -u www-data eccube bash -c 'for code in Api42 Coupon42 MailMagazine42 ProductReview42 Recommend42 RelatedProduct42 SalesReport42 Securitychecker42 SiteKit42; do bin/console eccube:plugin:enable --code $code; done'
+          # docker exec -u www-data eccube bash -c 'for code in Api42 Coupon42 MailMagazine42 ProductReview42 Recommend42 RelatedProduct42 SalesReport42 Securitychecker42; do bin/console eccube:plugin:enable --code $code; done'
 
-      - name: setup-chromedriver
-        uses: nanasess/setup-chromedriver@master
+      - name: Setup Node.js
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e  # v6.4.0
+        with:
+          node-version: 20
 
-      - name: Prepare test
-        run: |
-          export DISPLAY=:99
-          chromedriver --url-base=/wd/hub --port=9515 &
-          echo ">>> Started chrome-driver"
-          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
-          echo ">>> Started xvfb"
-          composer install --no-scripts --no-interaction --optimize-autoloader
-          echo "modules:
-              enabled:
-              - REST:
-                  depends: PhpBrowser
-                  url: 'http://127.0.0.1:8080'
-              config:
-                  WebDriver:
-                      host: '127.0.0.1'
-                      port: 9515
-                      url: 'http://127.0.0.1:8080'" > codeception/_envs/local.yml
+      - name: Install Playwright dependencies
+        working-directory: e2e
+        run: npm ci
 
-      - name: Run tests
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae  # v5
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('e2e/package-lock.json') }}
+
+      - name: Install Playwright browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        working-directory: e2e
+        run: npx playwright install --with-deps chromium
+
+      - name: Install Playwright system deps
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        working-directory: e2e
+        run: npx playwright install-deps chromium
+
+      - name: Run deny tests
+        working-directory: e2e
         env:
-          APP_ENV: 'codeception'
-          DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
-          DATABASE_SERVER_VERSION: 14
+          BASE_URL: 'http://127.0.0.1:8080'
+          CI: 'true'
         run: |
-          vendor/bin/codecept -vvv run acceptance --env chrome,local CL01DenyCest
+          npx playwright test --project=front-tests deny.spec.ts

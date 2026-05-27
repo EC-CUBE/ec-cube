@@ -55,7 +55,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class EditController extends AbstractController
@@ -63,7 +62,7 @@ class EditController extends AbstractController
     /**
      * EditController constructor.
      */
-    public function __construct(protected TaxRuleService $taxRuleService, protected DeviceTypeRepository $deviceTypeRepository, protected ProductRepository $productRepository, protected CategoryRepository $categoryRepository, protected CustomerRepository $customerRepository, protected SerializerInterface $serializer, protected DeliveryRepository $deliveryRepository, protected PurchaseFlow $orderPurchaseFlow, protected OrderRepository $orderRepository, protected OrderNoProcessor $orderNoProcessor, protected OrderItemTypeRepository $orderItemTypeRepository, protected OrderStatusRepository $orderStatusRepository, protected OrderStateMachine $orderStateMachine, private readonly OrderHelper $orderHelper)
+    public function __construct(protected TaxRuleService $taxRuleService, protected DeviceTypeRepository $deviceTypeRepository, protected ProductRepository $productRepository, protected CategoryRepository $categoryRepository, protected CustomerRepository $customerRepository, protected SerializerInterface $serializer, protected DeliveryRepository $deliveryRepository, protected PurchaseFlow $orderPurchaseFlow, protected OrderRepository $orderRepository, protected OrderNoProcessor $orderNoProcessor, protected OrderItemTypeRepository $orderItemTypeRepository, protected OrderStatusRepository $orderStatusRepository, protected OrderStateMachine $orderStateMachine, private readonly OrderHelper $orderHelper, private readonly PaginatorInterface $paginator)
     {
     }
 
@@ -77,7 +76,7 @@ class EditController extends AbstractController
     #[Route(path: '/%eccube_admin_route%/order/new', name: 'admin_order_new', methods: ['GET', 'POST'])]
     #[Route(path: '/%eccube_admin_route%/order/{id}/edit', name: 'admin_order_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Order/edit.twig')]
-    public function index(Request $request, RouterInterface $router, ?int $id = null): RedirectResponse|array
+    public function index(Request $request, ?int $id = null): RedirectResponse|array
     {
         if (null === $id) {
             // 空のエンティティを作成.
@@ -244,7 +243,7 @@ class EditController extends AbstractController
                                 // $returnLinkはpathの形式で渡される. pathが存在するかをルータでチェックする.
                                 $pattern = '/^'.preg_quote($request->getBasePath(), '/').'/';
                                 $returnLink = preg_replace($pattern, '', (string) $returnLink);
-                                $result = $router->match($returnLink);
+                                $result = $this->router->match($returnLink);
                                 // パラメータのみ抽出
                                 $params = array_filter($result, fn ($key) => !str_starts_with((string) $key, '_'), ARRAY_FILTER_USE_KEY);
 
@@ -327,7 +326,7 @@ class EditController extends AbstractController
     #[Route(path: '/%eccube_admin_route%/order/search/customer/html', name: 'admin_order_search_customer_html', methods: ['GET', 'POST'])]
     #[Route(path: '/%eccube_admin_route%/order/search/customer/html/page/{page_no}', name: 'admin_order_search_customer_html_page', requirements: ['page_no' => '\d+'], methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Order/search_customer.twig')]
-    public function searchCustomerHtml(Request $request, PaginatorInterface $paginator, ?int $page_no = null): array
+    public function searchCustomerHtml(Request $request, ?int $page_no = null): array
     {
         if ($request->isXmlHttpRequest() && $this->isTokenValid()) {
             log_debug('search customer start.');
@@ -367,7 +366,7 @@ class EditController extends AbstractController
             $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_CUSTOMER_SEARCH);
 
             /** @var SlidingPagination<int, Customer> $pagination */
-            $pagination = $paginator->paginate(
+            $pagination = $this->paginator->paginate(
                 $qb,
                 $page_no,
                 $page_count,
@@ -492,7 +491,7 @@ class EditController extends AbstractController
         methods: ['GET', 'POST']
     )]
     #[Template(template: '@admin/Order/search_product.twig')]
-    public function searchProduct(Request $request, PaginatorInterface $paginator, ?int $page_no = null): array
+    public function searchProduct(Request $request, ?int $page_no = null): array
     {
         if ($request->isXmlHttpRequest() && $this->isTokenValid()) {
             log_debug('search product start.');
@@ -535,7 +534,7 @@ class EditController extends AbstractController
             $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_EDIT_SEARCH_PRODUCT_SEARCH);
 
             /** @var SlidingPagination<int, Product> $pagination */
-            $pagination = $paginator->paginate(
+            $pagination = $this->paginator->paginate(
                 $qb,
                 $page_no,
                 $page_count,

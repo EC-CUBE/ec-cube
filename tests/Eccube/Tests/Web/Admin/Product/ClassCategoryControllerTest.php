@@ -30,11 +30,9 @@ final class ClassCategoryControllerTest extends AbstractAdminWebTestCase
 
     protected ?ClassCategoryRepository $classCategoryRepository = null;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->classNameRepository = $this->entityManager->getRepository(ClassName::class);
         $this->classCategoryRepository = $this->entityManager->getRepository(ClassCategory::class);
     }

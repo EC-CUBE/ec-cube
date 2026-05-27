@@ -29,14 +29,11 @@ final class PaymentValidatorTest extends EccubeTestCase
      */
     private $Order;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $deliveryRepository = $this->entityManager->getRepository(Delivery::class);
         $this->validator = new PaymentValidator($deliveryRepository);
-
         $Customer = $this->createCustomer();
         $this->Order = $this->createOrder($Customer);
     }

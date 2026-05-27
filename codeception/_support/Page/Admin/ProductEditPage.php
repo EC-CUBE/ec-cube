@@ -25,14 +25,6 @@ class ProductEditPage extends AbstractAdminPageStyleGuide
     public static $お届可能日 = ['id' => 'admin_product_class_delivery_duration'];
     public static $税率 = ['id' => 'admin_product_class_tax_rate'];
 
-    /**
-     * ProductRegisterPage constructor.
-     */
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     public static function go($I)
     {
         $page = new ProductEditPage($I);

@@ -28,7 +28,7 @@ class SecurityController extends AbstractController
     /**
      * SecurityController constructor.
      */
-    public function __construct(protected TokenStorageInterface $tokenStorage)
+    public function __construct(protected TokenStorageInterface $tokenStorage, private readonly CacheUtil $cacheUtil)
     {
     }
 
@@ -37,7 +37,7 @@ class SecurityController extends AbstractController
      */
     #[Route(path: '/%eccube_admin_route%/setting/system/security', name: 'admin_setting_system_security', methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Setting/System/security.twig')]
-    public function index(Request $request, CacheUtil $cacheUtil): RedirectResponse|array
+    public function index(Request $request): RedirectResponse|array
     {
         $builder = $this->formFactory->createBuilder(SecurityType::class);
         $form = $builder->getForm();
@@ -95,7 +95,7 @@ class SecurityController extends AbstractController
                 $this->tokenStorage->setToken(null);
 
                 // キャッシュの削除
-                $cacheUtil->clearCache();
+                $this->cacheUtil->clearCache();
 
                 // 管理者画面へ再ログイン
                 return $this->redirect($request->getBaseUrl().'/'.$data['admin_route_dir']);
@@ -104,7 +104,7 @@ class SecurityController extends AbstractController
             $this->addSuccess('admin.common.save_complete', 'admin');
 
             // キャッシュの削除
-            $cacheUtil->clearCache();
+            $this->cacheUtil->clearCache();
 
             return $this->redirectToRoute('admin_setting_system_security');
         }

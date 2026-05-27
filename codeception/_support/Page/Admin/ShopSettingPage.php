@@ -23,11 +23,6 @@ class ShopSettingPage extends AbstractAdminPageStyleGuide
     public static $チェックボックス_お気に入り商品機能 = 'shop_master_option_favorite_product';
     public static $チェックボックス_自動ログイン機能 = 'shop_master_option_remember_me';
 
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     public static function go($I)
     {
         $page = new self($I);
@@ -97,6 +92,7 @@ class ShopSettingPage extends AbstractAdminPageStyleGuide
     public function 登録()
     {
         $this->tester->click('#point_form > div.c-conversionArea > div > div > div:nth-child(2) > div > div > button');
+        $this->tester->waitForText('保存しました', 30, self::$登録完了メッセージ);
 
         return $this;
     }
@@ -109,7 +105,6 @@ class ShopSettingPage extends AbstractAdminPageStyleGuide
             $this->tester->click('label[for="shop_master_option_nostock_hidden"]');
             $this->tester->wait(1);
             $this->登録();
-            $this->tester->see('保存しました', ShopSettingPage::$登録完了メッセージ);
         }
         $this->tester->grabAttributeFrom('#shop_master_option_nostock_hidden', 'checked');
 

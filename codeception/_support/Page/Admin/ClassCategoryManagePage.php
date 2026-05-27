@@ -19,14 +19,6 @@ class ClassCategoryManagePage extends AbstractAdminPageStyleGuide
 
     public static $分類名 = ['id' => 'admin_class_category_name'];
 
-    /**
-     * ProductClassCategoryPage constructor.
-     */
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     public static function at($I)
     {
         $page = new ClassCategoryManagePage($I);

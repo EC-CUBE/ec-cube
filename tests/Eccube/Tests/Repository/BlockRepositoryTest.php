@@ -34,7 +34,6 @@ final class BlockRepositoryTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -42,7 +41,6 @@ final class BlockRepositoryTest extends EccubeTestCase
         $this->removeBlock();
         $this->DeviceType = $this->entityManager->getRepository(DeviceType::class)
             ->find(DeviceType::DEVICE_TYPE_PC);
-
         for ($i = 0; $i < 10; $i++) {
             $Block = new Block();
             $Block

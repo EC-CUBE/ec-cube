@@ -25,14 +25,6 @@ class ProductTagPage extends AbstractAdminPageStyleGuide
 
     protected \AcceptanceTester $tester;
 
-    /**
-     * ProductTagPage constructor.
-     */
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     public static function go(\AcceptanceTester $I)
     {
         $page = new ProductTagPage($I);

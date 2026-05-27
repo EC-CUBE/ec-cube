@@ -19,6 +19,7 @@ use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\Pref;
 use Eccube\Entity\Order;
+use Eccube\Event\EccubeEvents;
 use Eccube\Service\MailService;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,7 +47,6 @@ final class MailServiceTest extends AbstractServiceTestCase
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -54,7 +54,6 @@ final class MailServiceTest extends AbstractServiceTestCase
         $this->Order = $this->createOrder($this->Customer);
         $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
         $this->mailService = static::getContainer()->get(MailService::class);
-
         $request = Request::createFromGlobals();
         static::getContainer()->get(RequestStack::class)->push($request);
         $twig = static::getContainer()->get(Environment::class);
@@ -443,5 +442,90 @@ final class MailServiceTest extends AbstractServiceTestCase
 
         $this->assertEmailTextBodyContains($Message, $userData['ipAddress']);
         $this->assertEmailHtmlBodyContains($Message, $userData['ipAddress']);
+    }
+
+    public function testSendShippingNotifyMail()
+    {
+        $Order = $this->Order;
+        $Shipping = $Order->getShippings()->first();
+
+        $this->mailService->sendShippingNotifyMail($Shipping);
+
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
+
+        $this->expected = '['.$this->BaseInfo->getShopName().'] 商品出荷のお知らせ';
+        $this->actual = $Message->getSubject();
+        $this->verify();
+
+        $this->expected = $Order->getEmail();
+        $this->actual = $Message->getTo()[0]->getAddress();
+        $this->verify();
+
+        $this->expected = $this->BaseInfo->getEmail03();
+        $this->actual = $Message->getReplyTo()[0]->getAddress();
+        $this->verify();
+
+        $this->expected = $this->BaseInfo->getEmail01();
+        $this->actual = $Message->getBcc()[0]->getAddress();
+        $this->verify();
+    }
+
+    public function testSendShippingNotifyMailHookPoint()
+    {
+        $Order = $this->Order;
+        $Shipping = $Order->getShippings()->first();
+
+        $hookEmail = 'hook-test@example.com';
+        // SymfonyのFrameworkBundleが内部で登録するサービスだが、
+        // クラス名のエイリアスが標準では存在しないため、文字列サービスIDのまま使用
+        $serviceId = 'event_dispatcher';
+        $eventDispatcher = static::getContainer()->get($serviceId);
+        $eventDispatcher->addListener(EccubeEvents::MAIL_SHIPPING_NOTIFY, function ($event) use ($hookEmail) {
+            /** @var Email $message */
+            $message = $event->getArgument('message');
+            $message->addBcc($hookEmail);
+        });
+
+        $this->mailService->sendShippingNotifyMail($Shipping);
+
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
+
+        // フックポイントで追加したBccが含まれていることを確認
+        $bccAddresses = array_map(fn (Address $a) => $a->getAddress(), $Message->getBcc());
+        $this->assertContains($hookEmail, $bccAddresses);
+    }
+
+    public function testSendCustomerChangeNotifyMailHookPoint()
+    {
+        $userData = [
+            'userAgent' => 'Test User Agent',
+            'ipAddress' => '192.168.0.1',
+        ];
+        $eventName = 'テスト';
+
+        $hookEmail = 'hook-test@example.com';
+        // SymfonyのFrameworkBundleが内部で登録するサービスだが、
+        // クラス名のエイリアスが標準では存在しないため、文字列サービスIDのまま使用
+        $serviceId = 'event_dispatcher';
+        $eventDispatcher = static::getContainer()->get($serviceId);
+        $eventDispatcher->addListener(EccubeEvents::MAIL_CUSTOMER_CHANGE_NOTIFY, function ($event) use ($hookEmail) {
+            /** @var Email $message */
+            $message = $event->getArgument('message');
+            $message->addBcc($hookEmail);
+        });
+
+        $this->mailService->sendCustomerChangeNotifyMail($this->Customer, $userData, $eventName);
+
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
+
+        // フックポイントで追加したBccが含まれていることを確認
+        $bccAddresses = array_map(fn (Address $a) => $a->getAddress(), $Message->getBcc());
+        $this->assertContains($hookEmail, $bccAddresses);
     }
 }

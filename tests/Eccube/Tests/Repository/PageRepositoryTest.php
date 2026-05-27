@@ -23,7 +23,6 @@ final class PageRepositoryTest extends EccubeTestCase
 {
     protected ?PageRepository $pageRepo = null;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();

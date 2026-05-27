@@ -322,7 +322,6 @@ if (!class_exists(Order::class)) {
                 $productClassId = $ProductOrderItem->getProductClass()->getId();
                 if (array_key_exists($productClassId, $orderItemArray)) {
                     // 同じ規格の商品がある場合は個数をまとめる
-                    /** @var OrderItem $OrderItem */
                     $OrderItem = $orderItemArray[$productClassId];
                     $quantity = bcadd($OrderItem->getQuantity(), $ProductOrderItem->getQuantity());
                     $OrderItem->setQuantity($quantity);

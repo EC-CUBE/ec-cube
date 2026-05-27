@@ -218,9 +218,8 @@ class TaxRuleRepository extends AbstractRepository
             $this->rules[$cacheKey] = $TaxRules[0];
 
             return $TaxRules[0];
-        } else {
-            throw new NoResultException();
         }
+        throw new NoResultException();
     }
 
     /**

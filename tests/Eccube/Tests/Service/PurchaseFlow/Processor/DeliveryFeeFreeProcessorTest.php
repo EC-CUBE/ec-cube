@@ -35,11 +35,9 @@ final class DeliveryFeeFreeProcessorTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
         $this->baseInfoRepository = $this->entityManager->getRepository(BaseInfo::class);
         $this->processor = new DeliveryFeeFreePreprocessor($this->baseInfoRepository);

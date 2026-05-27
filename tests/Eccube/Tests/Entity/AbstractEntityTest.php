@@ -211,7 +211,7 @@ final class AbstractEntityTest extends EccubeTestCase
         ];
         $actual = $this->objEntity->toJSON();
 
-        $this->assertSame($expected, json_decode((string) $actual, true));
+        $this->assertSame($expected, json_decode($actual, true));
     }
 
     public function testChildrensWithToXML()

@@ -25,7 +25,7 @@ final class TruncateHyphenListenerTest extends TestCase
     public function testTruncateHyphen()
     {
         $data = '0123-456-789';
-        $form = $this->createMock(FormInterface::class);
+        $form = $this->createStub(FormInterface::class);
         $event = new FormEvent($form, $data);
 
         $filter = new TruncateHyphenListener();

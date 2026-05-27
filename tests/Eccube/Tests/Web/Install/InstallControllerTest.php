@@ -36,34 +36,27 @@ final class InstallControllerTest extends AbstractWebTestCase
 {
     protected ?InstallController $controller = null;
 
-    protected ?Request $request = null;
-
     protected ?string $envFile = null;
 
     protected ?string $envFileBackup = null;
 
     protected ?EccubeSession $session = null;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->envFile = static::getContainer()->getParameter('kernel.project_dir').'/.env';
         $this->envFileBackup = $this->envFile.'.'.date('YmdHis');
         if (file_exists($this->envFile)) {
             rename($this->envFile, $this->envFileBackup);
         }
-
         $favicon = static::getContainer()->getParameter('eccube_html_dir').'/user_data/assets/img/common/favicon.ico';
         if (file_exists($favicon)) {
             unlink($favicon);
         }
-
         $formFactory = static::getContainer()->get(FormFactoryInterface::class);
         $passwordHasher = static::getContainer()->get(UserPasswordHasherInterface::class);
         $cacheUtil = static::getContainer()->get(CacheUtil::class);
-
         $request = new Request();
         $request->setSession(new Session(new MockArraySessionStorage()));
         $requestStack = new RequestStack();
@@ -72,15 +65,11 @@ final class InstallControllerTest extends AbstractWebTestCase
         $this->controller = new InstallController($passwordHasher, $cacheUtil);
         $this->controller->setFormFactory($formFactory);
         $this->controller->setSession($this->session);
-
         $reflectionClass = new \ReflectionClass($this->controller);
         $propContainer = $reflectionClass->getProperty('container');
         $propContainer->setValue($this->controller, self::getContainer());
-
-        $this->request = $this->createMock(Request::class);
     }
 
-    #[\Override]
     protected function tearDown(): void
     {
         if (file_exists($this->envFileBackup)) {
@@ -96,7 +85,7 @@ final class InstallControllerTest extends AbstractWebTestCase
 
     public function testStep1()
     {
-        $this->actual = $this->controller->step1($this->request);
+        $this->actual = $this->controller->step1($this->createStub(Request::class));
         $this->assertTrue(is_array($this->actual));
         $this->assertInstanceOf(FormView::class, $this->actual['form']);
     }
@@ -113,7 +102,7 @@ final class InstallControllerTest extends AbstractWebTestCase
     public function testStep3()
     {
         $entityManager = static::getContainer()->get(EntityManagerInterface::class);
-        $this->actual = $this->controller->step3($this->request, $entityManager);
+        $this->actual = $this->controller->step3($this->createStub(Request::class), $entityManager);
         $this->assertTrue(is_array($this->actual));
         $this->assertInstanceOf(FormView::class, $this->actual['form']);
         $this->assertInstanceOf(Request::class, $this->actual['request']);
@@ -121,7 +110,7 @@ final class InstallControllerTest extends AbstractWebTestCase
 
     public function testStep4()
     {
-        $this->actual = $this->controller->step4($this->request);
+        $this->actual = $this->controller->step4($this->createStub(Request::class));
         $this->assertTrue(is_array($this->actual));
         $this->assertInstanceOf(FormView::class, $this->actual['form']);
     }
@@ -133,7 +122,7 @@ final class InstallControllerTest extends AbstractWebTestCase
                 'authmagic' => 'secret',
                 'admin_allow_hosts' => "127.0.0.1\r\n192.168.0.1",
             ]);
-        $this->actual = $this->controller->complete($this->request);
+        $this->actual = $this->controller->complete($this->createStub(Request::class));
         $this->assertArrayHasKey('admin_url', $this->actual);
     }
 

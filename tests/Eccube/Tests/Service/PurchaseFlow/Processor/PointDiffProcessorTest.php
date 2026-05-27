@@ -37,7 +37,6 @@ final class PointDiffProcessorTest extends EccubeTestCase
 
     private ?OrderStatusRepository $OrderStatusRepository = null;
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -191,6 +190,7 @@ final class PointDiffProcessorTest extends EccubeTestCase
 
         // 編集前の受注
         $BeforeOrder = new Order();
+        $this->assertInstanceOf(OrderStatus::class, $OrderStatus);
         $BeforeOrder->setOrderStatus($OrderStatus);
         $BeforeOrder->setCustomer($Customer);
         $BeforeOrder->setUsePoint((string) $beforeUsePoint);

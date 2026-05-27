@@ -40,13 +40,10 @@ final class CalendarRepositoryTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      */
-    #[\Override]
     protected function setUp(): void
     {
         $this->DateTimeNow = new \DateTime('+1 minutes');
-
         parent::setUp();
-
         $this->calendarRepository = $this->entityManager->getRepository(Calendar::class);
         $this->Calendar1 = $this->createCalendar('春分の日', new \DateTime('2021-03-20 00:00:00'));
         $this->Calendar2 = $this->createCalendar('昭和の日', new \DateTime('2021-04-29 00:00:00'));

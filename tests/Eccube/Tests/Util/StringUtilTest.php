@@ -98,11 +98,11 @@ final class StringUtilTest extends TestCase
 
         $param = "aaaa\r";
         $this->actual = StringUtil::convertLineFeed($param);
-        $this->assertEquals($this->expected, $this->actual);
+        $this->assertSame($this->expected, $this->actual);
 
         $param = "aaaa\n";
         $this->actual = StringUtil::convertLineFeed($param);
-        $this->assertEquals($this->expected, $this->actual);
+        $this->assertSame($this->expected, $this->actual);
     }
 
     public function testConvertLineFeedWithCrlf()
@@ -116,11 +116,11 @@ final class StringUtilTest extends TestCase
 
         $param = "aaaa\r";
         $this->actual = StringUtil::convertLineFeed($param, $lf);
-        $this->assertEquals($this->expected, $this->actual);
+        $this->assertSame($this->expected, $this->actual);
 
         $param = "aaaa\r\n";
         $this->actual = StringUtil::convertLineFeed($param, $lf);
-        $this->assertEquals($this->expected, $this->actual);
+        $this->assertSame($this->expected, $this->actual);
     }
 
     public function testConvertLineFeedWithMultiline()
@@ -134,11 +134,11 @@ final class StringUtilTest extends TestCase
 
         $param = "aaaa\rbbbb\rcccc\r";
         $this->actual = StringUtil::convertLineFeed($param, $lf);
-        $this->assertEquals($this->expected, $this->actual);
+        $this->assertSame($this->expected, $this->actual);
 
         $param = "aaaa\r\nbbbb\r\ncccc\r\n";
         $this->actual = StringUtil::convertLineFeed($param, $lf);
-        $this->assertEquals($this->expected, $this->actual);
+        $this->assertSame($this->expected, $this->actual);
     }
 
     public function testConvertLineFeedWithEmpty()

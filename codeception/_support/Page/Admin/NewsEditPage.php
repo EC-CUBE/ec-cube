@@ -15,14 +15,6 @@ namespace Page\Admin;
 
 class NewsEditPage extends AbstractAdminPage
 {
-    /**
-     * NewsRegisterPage constructor.
-     */
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     public static function of($I)
     {
         $page = new self($I);

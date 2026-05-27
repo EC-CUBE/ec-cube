@@ -53,16 +53,13 @@ final class PaginationTest extends EccubeTestCase
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->productRepository = $this->entityManager->getRepository(Product::class);
         $this->paginator = static::getContainer()->get(PaginatorInterface::class);
         $this->tagRepository = $this->entityManager->getRepository(Tag::class);
         $this->memberRepository = $this->entityManager->getRepository(Member::class);
-
         // TEMPORARY テーブルを作成（暗黙的コミットを引き起こさない）
         /** @var EntityManager $em */
         $em = $this->entityManager;
@@ -70,14 +67,11 @@ final class PaginationTest extends EccubeTestCase
         if (!$conn->isConnected()) {
             $conn->connect();
         }
-
         $this->createTable($conn->getWrappedConnection());
-
         // テスト用のエンティティを用意
         $config = $em->getConfiguration();
         $driver = new AttributeDriver([__DIR__]);
         $config->setMetadataDriverImpl($driver);
-
         // 初期データより大きい値を指定
         $price02 = $this->getFaker()->randomNumber(9);
         for ($i = 0; $i < 5; $i++) {
@@ -93,7 +87,6 @@ final class PaginationTest extends EccubeTestCase
         }
     }
 
-    #[\Override]
     protected function tearDown(): void
     {
         // TEMPORARY テーブルを明示的に削除
@@ -104,7 +97,6 @@ final class PaginationTest extends EccubeTestCase
             $platform = $conn->getDatabasePlatform()->getName();
             $this->dropTable($conn->getWrappedConnection(), $platform);
         }
-
         parent::tearDown();
     }
 

@@ -37,7 +37,6 @@ final class CartValidationTest extends AbstractWebTestCase
     /**
      * setup mail
      */
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -48,7 +47,6 @@ final class CartValidationTest extends AbstractWebTestCase
     /**
      * tear down
      */
-    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();
@@ -1096,6 +1094,7 @@ final class CartValidationTest extends AbstractWebTestCase
         $SaleType = $this->entityManager->getRepository(SaleType::class)->find(2);
         $ProductClass = $this->entityManager->find(ProductClass::class, $ProductClass->getId());
         $this->assertInstanceOf(ProductClass::class, $ProductClass);
+        $this->assertInstanceOf(SaleType::class, $SaleType);
         $ProductClass->setSaleType($SaleType);
         $this->entityManager->persist($ProductClass);
         $this->entityManager->flush();

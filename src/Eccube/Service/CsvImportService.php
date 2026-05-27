@@ -60,9 +60,9 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
     protected \SplFileObject $file;
 
     /**
-     * Column headers as read from the CSV file
+     * Column header name => occurrence count (see array_count_values()).
      *
-     * @var array<int, string|int>
+     * @var array<string, positive-int>
      */
     protected array $columnHeaders = [];
 
@@ -121,7 +121,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      *
      * If a header row has been set, an associative array will be returned
      *
-     * @return array<int, string>|null
+     * @return array<int|string, string>|null
      */
     #[\ReturnTypeWillChange]
     #[\Override]
@@ -145,10 +145,17 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
 
             // Count the number of elements in both: they must be equal.
             if (count($this->columnHeaders) === count($line)) {
-                return array_combine(array_keys($this->columnHeaders), $line);
-            } else {
-                return $line;
+                $row = [];
+                $i = 0;
+                foreach (array_keys($this->columnHeaders) as $headerName) {
+                    $row[$headerName] = $line[$i];
+                    ++$i;
+                }
+
+                return $row;
             }
+
+            return $line;
         }
 
         return null;
@@ -157,7 +164,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
     /**
      * Get column headers
      *
-     * @return array<int, string|int>
+     * @return list<string>
      */
     public function getColumnHeaders(): array
     {

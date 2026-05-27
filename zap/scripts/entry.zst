@@ -177,12 +177,22 @@
     },
     {
       "prefix": "/entry/activate/",
-      "postfix": "\\n",
+      "postfix": "\\r?\\n",
       "location": "BODY",
       "variableName": "activate-key",
       "index": 10,
       "enabled": true,
       "elementType": "ZestAssignRegexDelimiters"
+    },
+    {
+      "replace": "\\r",
+      "replacement": "",
+      "regex": true,
+      "caseExact": false,
+      "variableName": "activate-key",
+      "index": 11,
+      "enabled": true,
+      "elementType": "ZestAssignReplace"
     },
     {
       "urlToken": "https://ec-cube/entry/activate/{{activate-key}}",
@@ -202,7 +212,7 @@
       "followRedirects": false,
       "timestamp": 1655472775089,
       "cookies": [],
-      "index": 11,
+      "index": 12,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -224,7 +234,7 @@
       "followRedirects": false,
       "timestamp": 1655473219305,
       "cookies": [],
-      "index": 12,
+      "index": 13,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -246,7 +256,7 @@
       "followRedirects": false,
       "timestamp": 1655472617940,
       "cookies": [],
-      "index": 13,
+      "index": 14,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -268,7 +278,7 @@
       "followRedirects": false,
       "timestamp": 1655473264713,
       "cookies": [],
-      "index": 14,
+      "index": 15,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -279,7 +289,7 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf3",
-      "index": 15,
+      "index": 16,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
@@ -301,7 +311,7 @@
       "followRedirects": false,
       "timestamp": 1655473272817,
       "cookies": [],
-      "index": 16,
+      "index": 17,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -323,7 +333,7 @@
       "followRedirects": false,
       "timestamp": 1655473272868,
       "cookies": [],
-      "index": 17,
+      "index": 18,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -345,16 +355,16 @@
       "followRedirects": false,
       "timestamp": 1655472749184,
       "cookies": [],
-      "index": 18,
+      "index": 19,
       "enabled": true,
       "elementType": "ZestRequest"
     },
     {
       "prefix": "/forgot/reset/",
-      "postfix": "\\n",
+      "postfix": "\\r?\\n",
       "location": "BODY",
       "variableName": "reset-key",
-      "index": 19,
+      "index": 20,
       "enabled": true,
       "elementType": "ZestAssignRegexDelimiters"
     },
@@ -376,7 +386,7 @@
       "followRedirects": false,
       "timestamp": 1655473553501,
       "cookies": [],
-      "index": 20,
+      "index": 21,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -387,7 +397,7 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf4",
-      "index": 21,
+      "index": 22,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
@@ -409,7 +419,7 @@
       "followRedirects": false,
       "timestamp": 1655473576906,
       "cookies": [],
-      "index": 22,
+      "index": 23,
       "enabled": true,
       "elementType": "ZestRequest"
     }
