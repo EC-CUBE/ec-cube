@@ -17,6 +17,8 @@ namespace Eccube\Tests;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
+use Eccube\Doctrine\Common\CsvDataFixtures\Executor\DbalExecutor;
+use Eccube\Doctrine\Common\CsvDataFixtures\Loader as CsvFixtureLoader;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Delivery;
@@ -180,6 +182,57 @@ abstract class EccubeTestCase extends WebTestCase
     public function createOrderWithProductClasses(Customer $Customer, array $ProductClasses): Order
     {
         return static::getContainer()->get(Generator::class)->createOrder($Customer, $ProductClasses);
+    }
+
+    /**
+     * 複数の Customer をまとめて生成する (高速).
+     *
+     * @return Customer[]
+     */
+    public function createCustomers(int $count, array $options = []): array
+    {
+        return static::getContainer()->get(Generator::class)->createCustomers($count, $options);
+    }
+
+    /**
+     * 複数の Order をまとめて生成する (高速).
+     *
+     * @param Customer[] $customers
+     *
+     * @return Order[]
+     */
+    public function createOrders(array $customers, array $options = []): array
+    {
+        return static::getContainer()->get(Generator::class)->createOrders($customers, $options);
+    }
+
+    /**
+     * 複数の Product をまとめて生成する (高速).
+     *
+     * @return Product[]
+     */
+    public function createProducts(int $count, array $options = []): array
+    {
+        return static::getContainer()->get(Generator::class)->createProducts($count, $options);
+    }
+
+    /**
+     * tests/Eccube/Tests/Fixture/csv/<scenario>/ 配下の CSV をロードする.
+     *
+     * Installer (`eccube:fixtures:load`) で利用されている `CsvFixture` +
+     * `DbalExecutor` をそのまま流用する. シナリオディレクトリ直下に
+     * `definition.yml` を置いて FK 依存順を定義する.
+     *
+     * Faker やマスタの `find()` 呼び出しを伴わないため Generator のバルク
+     * API より更に軽量で、固定値による再現性も高い. ただし CSV と
+     * Doctrine マッピングのズレは CI で検出されない点に注意.
+     */
+    protected function loadCsvFixtures(string $scenario): void
+    {
+        $loader = new CsvFixtureLoader();
+        $loader->loadFromDirectory(__DIR__.'/Fixture/csv/'.$scenario);
+        $executor = new DbalExecutor($this->entityManager);
+        $executor->execute($loader->getFixtures());
     }
 
     /**
