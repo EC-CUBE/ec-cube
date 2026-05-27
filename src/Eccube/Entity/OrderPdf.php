@@ -29,6 +29,7 @@ if (!class_exists(OrderPdf::class)) {
     class OrderPdf extends AbstractEntity
     {
         public mixed $ids;
+        // PDF 出力時に発行日をフォーマット済み文字列で受け取るケースがあるため、意図的に \DateTime|string のユニオン型を維持する。
         public \DateTime|string $issue_date;
         public mixed $default;
 
@@ -197,7 +198,7 @@ if (!class_exists(OrderPdf::class)) {
         /**
          * @return $this
          */
-        public function setCreateDate(\DateTime|string $create_date): static
+        public function setCreateDate(\DateTime $create_date): static
         {
             $this->create_date = $create_date;
 
@@ -215,7 +216,7 @@ if (!class_exists(OrderPdf::class)) {
         /**
          * @return $this
          */
-        public function setUpdateDate(\DateTime|string $update_date): static
+        public function setUpdateDate(\DateTime $update_date): static
         {
             $this->update_date = $update_date;
 
