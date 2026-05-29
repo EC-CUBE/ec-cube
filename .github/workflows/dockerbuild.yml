@@ -25,10 +25,14 @@ jobs:
             database_server_version: 14
           - php: '8.3'
             tag: '8.3-apache'
+            ext_install_args: 'zip gd mysqli pdo_mysql opcache intl'
           - php: '8.4'
             tag: '8.4-apache'
+            ext_install_args: 'zip gd mysqli pdo_mysql opcache intl'
+          # PHP 8.5 以降は opcache がコア組み込みのため install 対象から除外する
           - php: '8.5'
             tag: '8.5-apache'
+            ext_install_args: 'zip gd mysqli pdo_mysql intl'
 
     steps:
       - name: downcase REPO
@@ -69,7 +73,9 @@ jobs:
           load: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          build-args: TAG=${{ matrix.tag }}
+          build-args: |
+            TAG=${{ matrix.tag }}
+            EXT_INSTALL_ARGS=${{ matrix.ext_install_args }}
 
       - name: Setup to EC-CUBE
         env:
@@ -95,4 +101,6 @@ jobs:
           # platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          build-args: TAG=${{ matrix.tag }}
+          build-args: |
+            TAG=${{ matrix.tag }}
+            EXT_INSTALL_ARGS=${{ matrix.ext_install_args }}
