@@ -24,9 +24,16 @@ final class ComposerApiServiceTest extends AbstractServiceTestCase
 {
     private ?string $workingDir = null;
 
+    private string|false $originalMemoryLimit = false;
+
     protected function setUp(): void
     {
         parent::setUp();
+
+        // ComposerApiService::init() が ini_set('memory_limit', ...) を行うため、
+        // phpunit.xml.dist の memory_limit=-1 が上書きされたまま後続テストに
+        // リークしないよう保存しておき tearDown() で復元する
+        $this->originalMemoryLimit = ini_get('memory_limit');
 
         // プロジェクト本体の composer.json を変更しないよう、一時ディレクトリを作業ディレクトリにする
         $this->workingDir = sys_get_temp_dir().'/eccube_composer_api_service_test_'.uniqid();
@@ -36,6 +43,10 @@ final class ComposerApiServiceTest extends AbstractServiceTestCase
 
     protected function tearDown(): void
     {
+        if ($this->originalMemoryLimit !== false) {
+            ini_set('memory_limit', $this->originalMemoryLimit);
+        }
+
         if ($this->workingDir !== null) {
             (new Filesystem())->remove($this->workingDir);
         }
