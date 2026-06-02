@@ -165,23 +165,22 @@ final class MypageControllerTest extends AbstractWebTestCase
      */
     public function testFavoriteWithPaginator()
     {
-        $expectedIds = [];
-        for ($i = 0; $i < 30; $i++) {
-            $Product = $this->createProduct();
-            $expectedIds[] = $Product->getId();
+        // bulk 生成. createProduct を 30 回ループするのではなく、
+        // createProducts(30) で 4 テーブル (product/image/class/stock) を一括投入する.
+        $Products = $this->createProducts(30);
+        $expectedIds = array_map(static fn ($p) => $p->getId(), $Products);
+
+        foreach ($Products as $i => $Product) {
             $CustomerFavoriteProduct = new CustomerFavoriteProduct();
             $CustomerFavoriteProduct->setCustomer($this->Customer);
-            $CustomerFavoriteProduct->setCreateDate(new \DateTime());
-            $CustomerFavoriteProduct->setUpdateDate(new \DateTime());
-            $CustomerFavoriteProduct->setProduct($Product);
-            $this->entityManager->persist($CustomerFavoriteProduct);
-            $this->entityManager->flush();
-
             // id とは 逆順に create_date を設定する.
             // 画面表示は create_date 降順なので, id 昇順にソートされるはず
             $CustomerFavoriteProduct->setCreateDate(new \DateTime('-'.$i.' days'));
-            $this->entityManager->flush();
+            $CustomerFavoriteProduct->setUpdateDate(new \DateTime());
+            $CustomerFavoriteProduct->setProduct($Product);
+            $this->entityManager->persist($CustomerFavoriteProduct);
         }
+        $this->entityManager->flush();
 
         $this->loginTo($this->Customer);
         $crawler = $this->client->request(
