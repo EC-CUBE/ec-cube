@@ -1,0 +1,2 @@
+id,order_id,shipping_id,product_id,product_class_id,tax_type_id,tax_display_type_id,order_item_type_id,product_name,price,quantity,tax,tax_rate,tax_adjust,discriminator_type
+10001,10001,10001,,,1,1,1,商品-1,1000,1,0,0,0,orderitem

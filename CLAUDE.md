@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-EC-CUBE is Japan's leading open-source e-commerce platform. This is the 4.3 branch, built on Symfony 6.4 and PHP 8.1+.
+EC-CUBE is Japan's leading open-source e-commerce platform. This is the 4.4 branch, built on Symfony 7.4 and PHP 8.2+.
 
 - **Repository**: https://github.com/EC-CUBE/ec-cube
 - **Documentation**: https://doc4.ec-cube.net/
@@ -10,13 +10,13 @@ EC-CUBE is Japan's leading open-source e-commerce platform. This is the 4.3 bran
 
 ## Technology Stack
 
-- **PHP**: 8.1 / 8.2 / 8.3
-- **Framework**: Symfony 6.4 (full-stack)
-- **ORM**: Doctrine ORM 2.x, DBAL 3.x
-- **Template**: Twig 3.8
-- **Database**: PostgreSQL 12+ or MySQL 8.4
-- **Frontend**: Sass (SCSS), webpack, jQuery
-- **Testing**: PHPUnit (via symfony/phpunit-bridge), Codeception (E2E)
+- **PHP**: 8.2 / 8.3 / 8.4 / 8.5
+- **Framework**: Symfony 7.4 (full-stack)
+- **ORM**: Doctrine ORM 3.x, DBAL 4.x
+- **Template**: Twig 3.x
+- **Database**: PostgreSQL 13–18 or MySQL 8.4 LTS
+- **Frontend**: Sass (SCSS), webpack, Bootstrap 5.3, jQuery 4.x
+- **Testing**: PHPUnit 11 (via symfony/phpunit-bridge), Codeception 5 (E2E)
 - **Static Analysis**: PHPStan
 - **Code Style**: PHP-CS-Fixer
 
@@ -73,7 +73,7 @@ tests/
 docker compose -f docker-compose.yml -f docker-compose.pgsql.yml up -d
 
 # Composer
-composer create-project ec-cube/ec-cube ec-cube "4.3.x-dev" --keep-vcs
+composer create-project ec-cube/ec-cube ec-cube "4.4.x-dev" --keep-vcs
 bin/console eccube:install
 ```
 

@@ -33,9 +33,14 @@ RUN apt update \
   && locale-gen \
   ;
 
-RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
-  && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
-  && docker-php-ext-install -j$(nproc) zip gd mysqli pdo_mysql opcache intl pgsql pdo_pgsql \
+# PHP 8.5 以降は opcache がコアに静的組み込みされ共有モジュール (.so) を生成しないため、
+# EXT_INSTALL_ARGS から opcache を外す。インストール対象はワークフロー側でバージョン別に制御する。
+ARG GD_OPTIONS="--with-freetype --with-jpeg --with-webp"
+ARG EXT_INSTALL_ARGS="zip gd mysqli pdo_mysql opcache intl"
+
+RUN docker-php-ext-install -j$(nproc) pgsql pdo_pgsql \
+  && docker-php-ext-configure gd ${GD_OPTIONS} \
+  && docker-php-ext-install -j$(nproc) ${EXT_INSTALL_ARGS} \
   ;
 
 RUN pecl install apcu && echo "extension=apcu.so" > /usr/local/etc/php/conf.d/apc.ini
