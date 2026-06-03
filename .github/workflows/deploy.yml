@@ -9,19 +9,23 @@ jobs:
       contents: write
     name: Deploy
     runs-on: ubuntu-24.04
-    services:
-      postgres:
-        image: postgres:14
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
-        ports:
-          - 5432:5432
-        # needed because the postgres container does not provide a healthcheck
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
+
+      ## Docker Hub からの pull はタイムアウトで CI が不安定になるため、
+      ## DB はコンテナではなく setup アクション (apt) でインストールする
+      - name: Setup PostgreSQL
+        uses: ankane/setup-postgres@6d3ffa1aa7498a42b79e9f9f5838b99971839300  # v1
+        with:
+          postgres-version: '14'
+          user: postgres
+      - name: Configure PostgreSQL
+        run: |
+          for _ in $(seq 1 30); do pg_isready -h 127.0.0.1 && break; sleep 1; done
+          psql -h 127.0.0.1 -U postgres -c "ALTER USER postgres PASSWORD 'password'"
+          ## DATABASE_URL と同一経路 (TCP/postgres/password) で接続できることを検証
+          PGPASSWORD=password psql -h 127.0.0.1 -U postgres -c 'SELECT VERSION()'
 
       - name: Setup PHP
         uses: nanasess/setup-php@bc11abbf4dd060b7bfd20d03edeeb43417ebe245  # master
