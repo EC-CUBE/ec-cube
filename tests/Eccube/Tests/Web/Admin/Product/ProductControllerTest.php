@@ -62,10 +62,10 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
         $this->taxRuleRepository = $this->entityManager->getRepository(TaxRule::class);
         $this->productStatusRepository = $this->entityManager->getRepository(ProductStatus::class);
         $this->productTagRepository = $this->entityManager->getRepository(ProductTag::class);
-        // 検索時, IDの重複を防ぐため事前に10個生成しておく
-        for ($i = 0; $i < 10; $i++) {
-            $this->createProduct();
-        }
+        // Phase (b): 検索時, ID の重複を防ぐため事前に 10 件 Product を投入する.
+        // CSV の id レンジ (6001-9040) は初期データ (id 1, 2) と衝突しないため事前削除不要.
+        // 詳細は tests/Eccube/Tests/Fixture/csv/product-list-mass/README.md を参照.
+        $this->loadCsvFixtures('product-list-mass');
         $this->imageDir = sys_get_temp_dir().'/'.sha1((string) mt_rand());
         $fs = new Filesystem();
         $fs->mkdir($this->imageDir);
@@ -356,10 +356,19 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
         $PreProduct = $this->productRepository->findOneBy(['id' => $Product->getId()]);
         $PreUpdateDate = $PreProduct->getUpdateDate();
         $this->assertInstanceOf(\DateTime::class, $PreUpdateDate);
-        $preTimestamp = $PreUpdateDate->getTimestamp();
 
-        // タイムスタンプが変わっていることを確認するために3秒待って更新
-        sleep(3);
+        // sleep(3) を避けるため update_date を 3 秒前に巻き戻す.
+        // SaveEventSubscriber::preUpdate が Doctrine flush 時に
+        // updateDate を NOW で強制上書きするため、ORM 経由ではなく
+        // DBAL で直接 UPDATE して preUpdate を回避する.
+        $threeSecondsAgo = new \DateTime('-3 seconds');
+        $this->entityManager->getConnection()->update(
+            'dtb_product',
+            ['update_date' => $threeSecondsAgo->format('Y-m-d H:i:s')],
+            ['id' => $Product->getId()]
+        );
+        $this->entityManager->refresh($PreProduct);
+        $preTimestamp = $PreProduct->getUpdateDate()->getTimestamp();
 
         $formData['return_link'] = $this->generateUrl('admin_product_category');
         $this->client->request(
@@ -677,12 +686,11 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
      */
     public function testExportWithOrderByProduct()
     {
-        $expectedIds = [];
-        for ($i = 1; $i <= 10; $i++) {
-            $productName = 'Product name '.$i;
-            $Product = $this->createProduct($productName, 0);
-            array_unshift($expectedIds, $Product->getId());
-        }
+        $Products = $this->createProducts(10, [
+            'productClassNum' => 0,
+            'nameTemplate' => static fn (int $i): string => 'Product name '.($i + 1),
+        ]);
+        $expectedIds = array_reverse(array_map(static fn ($p) => $p->getId(), $Products));
 
         // 更新日をすべて同一日時に更新
         $qb = $this->entityManager->createQueryBuilder();

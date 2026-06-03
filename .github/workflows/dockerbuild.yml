@@ -1,9 +1,6 @@
 name: Testing dockerbuild
 on:
-  push:
-    paths:
-      - '**'
-      - '!*.md'
+  workflow_call:
   release:
     types: [ published ]
 env:
@@ -20,21 +17,22 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-24.04 ]
-        php: [ '8.4', '8.5' ]
+        php: [ '8.3', '8.4', '8.5' ]
         db: [ pgsql ]
-        group: [ admin01 ]
         include:
           - db: pgsql
             database_url: postgres://dbuser:secret@127.0.0.1:15432/eccubedb
             database_server_version: 14
-          - group: admin01
-            app_env: 'codeception'
           - php: '8.3'
             tag: '8.3-apache'
+            ext_install_args: 'zip gd mysqli pdo_mysql opcache intl'
           - php: '8.4'
             tag: '8.4-apache'
+            ext_install_args: 'zip gd mysqli pdo_mysql opcache intl'
+          # PHP 8.5 以降は opcache がコア組み込みのため install 対象から除外する
           - php: '8.5'
             tag: '8.5-apache'
+            ext_install_args: 'zip gd mysqli pdo_mysql intl'
 
     steps:
       - name: downcase REPO
@@ -48,30 +46,8 @@ jobs:
       # - name: Set up Docker Buildx
       #   uses: docker/setup-buildx-action@v2
 
-      - name: Setup PHP
-        uses: nanasess/setup-php@bc11abbf4dd060b7bfd20d03edeeb43417ebe245  # master
-        with:
-          php-version: ${{ matrix.php }}
-
-      - name: Install ext-redis 6.1+
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y php${{ matrix.php }}-redis
-          sudo phpenmod -s cli redis
-          php -m | grep -i redis
-
-      - name: Enable register_argc_argv for Codeception
-        if: matrix.php == '8.5'
-        run: |
-          INI_FILE=$(php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||" | tr -d '"')
-          echo "Using php.ini: $INI_FILE"
-          echo "register_argc_argv = On" | sudo tee -a "$INI_FILE"
-          php -i | grep register_argc_argv
-
-      - name: Initialize Composer
-        uses: ./.github/actions/composer
-
       - name: Login to GitHub Container Registry
+        if: github.event_name != 'pull_request'
         uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121  # v4
         with:
           registry: ghcr.io
@@ -97,11 +73,12 @@ jobs:
           load: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          build-args: TAG=${{ matrix.tag }}
+          build-args: |
+            TAG=${{ matrix.tag }}
+            EXT_INSTALL_ARGS=${{ matrix.ext_install_args }}
 
       - name: Setup to EC-CUBE
         env:
-          APP_ENV: ${{ matrix.app_env }}
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           REGISTRY: ${{ env.REGISTRY }}
@@ -113,51 +90,17 @@ jobs:
           sed -i 's!APP_DEBUG: 1!APP_DEBUG: 0!g' docker-compose.yml
           docker compose -f docker-compose.yml -f docker-compose.pgsql.yml up -d --wait
 
-      - name: setup-chromedriver
-        uses: nanasess/setup-chromedriver@5c1220e385aca82610aa6fc7cdf1429306d50f9d  # master
-
-      - name: Run chromedriver
-        run: |
-          export DISPLAY=:99
-          chromedriver --url-base=/wd/hub --port=9515 &
-          echo ">>> Started chrome-driver"
-          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
-          echo ">>> Started xvfb"
-
-      - name: Codeception
-        env:
-          APP_ENV: ${{ matrix.app_env }}
-          DATABASE_URL: ${{ matrix.database_url }}
-          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          MAILER_URL: 'smtp://127.0.0.1:1025'
-          GROUP: ${{ matrix.group }}
-          SYMFONY_DEPRECATIONS_HELPER: weak
-        run: |
-          echo "APP_ENV=${APP_ENV}" > .env
-          sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action_docker.yml
-          php -d opcache.jit=off vendor/bin/codecept -vvv run acceptance --env chrome,github_action_docker -g ${GROUP} --skip-group restrict-file-upload --skip-group change-display-order --html report.html
       ## see https://docs.github.com/ja/packages/managing-github-packages-using-github-actions-workflows/publishing-and-installing-a-package-with-github-actions#publishing-a-package-using-an-action
 
       - name: Push Docker image
+        if: github.event_name != 'pull_request'
         uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f  # v7
-        if: success()
         with:
           context: .
           push: true
           # platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          build-args: TAG=${{ matrix.tag }}
-
-      - name: Upload evidence
-        if: failure()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
-        with:
-          name: codeception-${{ matrix.group }}-evidence
-          path: codeception/_output/
-      - name: Upload logs
-        if: failure()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
-        with:
-          name: codeception-${{ matrix.group }}-logs
-          path: var/log/
+          build-args: |
+            TAG=${{ matrix.tag }}
+            EXT_INSTALL_ARGS=${{ matrix.ext_install_args }}

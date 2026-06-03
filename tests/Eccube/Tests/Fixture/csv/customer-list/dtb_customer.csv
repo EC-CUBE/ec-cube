@@ -1,0 +1,11 @@
+id,customer_status_id,sex_id,pref_id,name01,name02,kana01,kana02,company_name,postal_code,addr01,addr02,email,phone_number,password,secret_key,point,create_date,update_date,discriminator_type
+2001,2,1,13,テスト,太郎0,テスト,タロウ0,テスト会社,5300001,大阪市北区,梅田1-1-1,user-0@example.com,0000000000,dummy_password_hash_for_csv_fixture,csv-secret-key-2001,0,2026-05-21 00:00:00,2026-05-21 00:00:00,customer
+2002,2,1,13,テスト,太郎1,テスト,タロウ1,テスト会社,5300001,大阪市北区,梅田1-1-1,user-1@example.com,0000000000,dummy_password_hash_for_csv_fixture,csv-secret-key-2002,0,2026-05-21 00:00:00,2026-05-21 00:00:00,customer
+2003,2,1,13,テスト,太郎2,テスト,タロウ2,テスト会社,5300001,大阪市北区,梅田1-1-1,user-2@example.com,0000000000,dummy_password_hash_for_csv_fixture,csv-secret-key-2003,0,2026-05-21 00:00:00,2026-05-21 00:00:00,customer
+2004,2,1,13,テスト,太郎3,テスト,タロウ3,テスト会社,5300001,大阪市北区,梅田1-1-1,user-3@example.com,0000000000,dummy_password_hash_for_csv_fixture,csv-secret-key-2004,0,2026-05-21 00:00:00,2026-05-21 00:00:00,customer
+2005,2,1,13,テスト,太郎4,テスト,タロウ4,テスト会社,5300001,大阪市北区,梅田1-1-1,user-4@example.com,0000000000,dummy_password_hash_for_csv_fixture,csv-secret-key-2005,0,2026-05-21 00:00:00,2026-05-21 00:00:00,customer
+2006,2,1,13,テスト,太郎5,テスト,タロウ5,テスト会社,5300001,大阪市北区,梅田1-1-1,user-5@example.com,0000000000,dummy_password_hash_for_csv_fixture,csv-secret-key-2006,0,2026-05-21 00:00:00,2026-05-21 00:00:00,customer
+2007,2,1,13,テスト,太郎6,テスト,タロウ6,テスト会社,5300001,大阪市北区,梅田1-1-1,user-6@example.com,0000000000,dummy_password_hash_for_csv_fixture,csv-secret-key-2007,0,2026-05-21 00:00:00,2026-05-21 00:00:00,customer
+2008,2,1,13,テスト,太郎7,テスト,タロウ7,テスト会社,5300001,大阪市北区,梅田1-1-1,user-7@example.com,0000000000,dummy_password_hash_for_csv_fixture,csv-secret-key-2008,0,2026-05-21 00:00:00,2026-05-21 00:00:00,customer
+2009,2,1,13,テスト,太郎8,テスト,タロウ8,テスト会社,5300001,大阪市北区,梅田1-1-1,user-8@example.com,0000000000,dummy_password_hash_for_csv_fixture,csv-secret-key-2009,0,2026-05-21 00:00:00,2026-05-21 00:00:00,customer
+2010,2,1,13,テスト,太郎9,テスト,タロウ9,テスト会社,5300001,大阪市北区,梅田1-1-1,user-9@example.com,0000000000,dummy_password_hash_for_csv_fixture,csv-secret-key-2010,0,2026-05-21 00:00:00,2026-05-21 00:00:00,customer
