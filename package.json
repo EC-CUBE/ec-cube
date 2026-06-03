@@ -70,7 +70,7 @@
     "postcss-sort-media-queries": "^5.2.0",
     "process": "^0.11.10",
     "sass": "^1.93.3",
-    "webpack": "^5.105.3",
+    "webpack": "^5.107.2",
     "webpack-cli": "^5.1.4",
     "webpack-stream": "^7.0.0"
   }
