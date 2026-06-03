@@ -154,6 +154,24 @@ if (!class_exists(BaseInfo::class)) {
         #[ORM\Column(name: 'ga_id', type: Types::STRING, length: 255, nullable: true)]
         private ?string $gaId = null;
 
+        #[ORM\Column(name: 'acp_enabled', type: Types::BOOLEAN, options: ['default' => false])]
+        private bool $acp_enabled = false;
+
+        #[ORM\Column(name: 'ucp_enabled', type: Types::BOOLEAN, options: ['default' => false])]
+        private bool $ucp_enabled = false;
+
+        #[ORM\Column(name: 'acp_feed_enabled', type: Types::BOOLEAN, options: ['default' => false])]
+        private bool $acp_feed_enabled = false;
+
+        #[ORM\Column(name: 'ucp_catalog_api_enabled', type: Types::BOOLEAN, options: ['default' => false])]
+        private bool $ucp_catalog_api_enabled = false;
+
+        #[ORM\Column(name: 'ucp_catalog_requires_auth', type: Types::BOOLEAN, options: ['default' => false])]
+        private bool $ucp_catalog_requires_auth = false;
+
+        #[ORM\Column(name: 'google_pay_merchant_id', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $google_pay_merchant_id = null;
+
         /**
          * Get id.
          *
@@ -830,6 +848,114 @@ if (!class_exists(BaseInfo::class)) {
         public function getGaId(): ?string
         {
             return $this->gaId;
+        }
+
+        /**
+         * Set acpEnabled.
+         */
+        public function setAcpEnabled(bool $acpEnabled): BaseInfo
+        {
+            $this->acp_enabled = $acpEnabled;
+
+            return $this;
+        }
+
+        /**
+         * Get acpEnabled.
+         */
+        public function isAcpEnabled(): bool
+        {
+            return $this->acp_enabled;
+        }
+
+        /**
+         * Set ucpEnabled.
+         */
+        public function setUcpEnabled(bool $ucpEnabled): BaseInfo
+        {
+            $this->ucp_enabled = $ucpEnabled;
+
+            return $this;
+        }
+
+        /**
+         * Get ucpEnabled.
+         */
+        public function isUcpEnabled(): bool
+        {
+            return $this->ucp_enabled;
+        }
+
+        /**
+         * Set acpFeedEnabled.
+         */
+        public function setAcpFeedEnabled(bool $acpFeedEnabled): BaseInfo
+        {
+            $this->acp_feed_enabled = $acpFeedEnabled;
+
+            return $this;
+        }
+
+        /**
+         * Get acpFeedEnabled.
+         */
+        public function isAcpFeedEnabled(): bool
+        {
+            return $this->acp_feed_enabled;
+        }
+
+        /**
+         * Set ucpCatalogApiEnabled.
+         */
+        public function setUcpCatalogApiEnabled(bool $ucpCatalogApiEnabled): BaseInfo
+        {
+            $this->ucp_catalog_api_enabled = $ucpCatalogApiEnabled;
+
+            return $this;
+        }
+
+        /**
+         * Get ucpCatalogApiEnabled.
+         */
+        public function isUcpCatalogApiEnabled(): bool
+        {
+            return $this->ucp_catalog_api_enabled;
+        }
+
+        /**
+         * Set ucpCatalogRequiresAuth.
+         */
+        public function setUcpCatalogRequiresAuth(bool $ucpCatalogRequiresAuth): BaseInfo
+        {
+            $this->ucp_catalog_requires_auth = $ucpCatalogRequiresAuth;
+
+            return $this;
+        }
+
+        /**
+         * Get ucpCatalogRequiresAuth.
+         */
+        public function isUcpCatalogRequiresAuth(): bool
+        {
+            return $this->ucp_catalog_requires_auth;
+        }
+
+        /**
+         * Set googlePayMerchantId.
+         */
+        public function setGooglePayMerchantId(?string $googlePayMerchantId = null): BaseInfo
+        {
+            $this->google_pay_merchant_id = $googlePayMerchantId;
+
+            return $this;
+        }
+
+        /**
+         * Get googlePayMerchantId.
+         */
+        public function getGooglePayMerchantId(): ?string
+        {
+            return $this->google_pay_merchant_id;
         }
     }
 }

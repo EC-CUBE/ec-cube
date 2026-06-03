@@ -237,3 +237,16 @@ services:
     eccube.asset.user_data_version_strategy:
         alias: Eccube\Asset\FilemtimeVersionStrategy
         public: true
+
+    # Agent Commerce (ACP / UCP) 共通基盤
+    Eccube\Service\AgentCommerce\Security\FilesystemKeyStore:
+        arguments:
+            $projectDir: '%kernel.project_dir%'
+            $envPathOverrides:
+                ucp_signing: '%env(default::string:ECCUBE_AGENT_COMMERCE_UCP_SIGNING_KEY)%'
+
+    Eccube\Service\AgentCommerce\Security\KeyStoreInterface:
+        alias: Eccube\Service\AgentCommerce\Security\FilesystemKeyStore
+
+    Eccube\Service\AgentCommerce\Security\AgentCommerceMessageSignerInterface:
+        alias: Eccube\Service\AgentCommerce\Security\UcpMessageSigner
