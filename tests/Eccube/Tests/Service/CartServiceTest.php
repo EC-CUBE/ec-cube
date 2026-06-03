@@ -69,9 +69,8 @@ final class CartServiceTest extends AbstractServiceTestCase
         $this->purchaseFlow = static::getContainer()->get($serviceId);
         $this->SaleType1 = $this->saleTypeRepository->find(1);
         $this->SaleType2 = $this->saleTypeRepository->find(2);
-        $this->Product = $this->createProduct();
-        // SaleType 2 の商品を作成
-        $this->Product2 = $this->createProduct();
+        // 2 商品を bulk INSERT (2 個目は後段で SaleType2 に切り替え)
+        [$this->Product, $this->Product2] = $this->createProducts(2);
         foreach ($this->Product2->getProductClasses() as $ProductClass) {
             $ProductClass->setSaleType($this->SaleType2);
         }
