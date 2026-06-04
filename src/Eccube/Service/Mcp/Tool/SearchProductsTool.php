@@ -1,0 +1,142 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+ *
+ * http://www.ec-cube.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Eccube\Service\Mcp\Tool;
+
+use Doctrine\ORM\Tools\Pagination\Paginator;
+use Eccube\Entity\Master\ProductStatus;
+use Eccube\Repository\CategoryRepository;
+use Eccube\Repository\Master\ProductStatusRepository;
+use Eccube\Repository\ProductRepository;
+use Eccube\Service\Mcp\EntityArraySerializer;
+use Eccube\Service\Mcp\McpScope;
+use Eccube\Service\Mcp\ToolInvoker;
+use Mcp\Capability\Attribute\McpTool;
+
+/**
+ * 商品検索ツール (`search_products`)。
+ *
+ * 必要 scope: `mcp:product:read`。 出力フィールドは Api44 の allow_list (`Eccube\Entity\Product`)
+ * に列挙された項目のみ。 INNER JOIN による cartesian product を吸収するため Doctrine の
+ * `Paginator` を使う (`fetchJoinCollection: true`)。
+ */
+final readonly class SearchProductsTool
+{
+    public function __construct(
+        private ProductRepository $productRepository,
+        private CategoryRepository $categoryRepository,
+        private ProductStatusRepository $productStatusRepository,
+        private EntityArraySerializer $serializer,
+        private ToolInvoker $invoker,
+    ) {
+    }
+
+    /**
+     * 商品をキーワード / カテゴリ / 公開ステータス / 在庫数で検索する。
+     *
+     * @param string|null $keyword    ID または商品名 / 商品コードの部分一致 (任意)
+     * @param int|null    $categoryId カテゴリ ID。 子カテゴリも対象 (任意)
+     * @param int[]|null  $statusIds  商品ステータス ID の配列。 1=公開、 2=非公開、 3=廃止 (任意、 既定 [1])
+     * @param int|null    $stockMin   在庫数がこの値以上の商品のみ (任意)
+     * @param int|null    $stockMax   在庫数がこの値以下の商品のみ (任意)
+     * @param int         $limit      取得件数。 1〜200 (既定 20)
+     * @param int         $offset     スキップ件数 (既定 0)
+     *
+     * @return array{total:int,limit:int,offset:int,items:list<array<string, mixed>>}
+     */
+    #[McpTool(
+        name: 'search_products',
+        description: 'EC-CUBE の商品をキーワード / カテゴリ / 公開ステータス / 在庫数で検索し、商品一覧を返す。 読み取り専用。 必要 scope: mcp:product:read。',
+    )]
+    public function search(
+        ?string $keyword = null,
+        ?int $categoryId = null,
+        ?array $statusIds = null,
+        ?int $stockMin = null,
+        ?int $stockMax = null,
+        int $limit = 20,
+        int $offset = 0,
+    ): array {
+        /** @var array{total:int,limit:int,offset:int,items:list<array<string, mixed>>} $result */
+        $result = $this->invoker->invoke(
+            toolName: 'search_products',
+            requiredScope: McpScope::ROLE_PRODUCT_READ,
+            args: compact('keyword', 'categoryId', 'statusIds', 'stockMin', 'stockMax', 'limit', 'offset'),
+            work: function () use ($keyword, $categoryId, $statusIds, $stockMin, $stockMax, $limit, $offset): array {
+                $limit = max(1, min(200, $limit));
+                $offset = max(0, $offset);
+
+                $searchData = $this->buildSearchData($keyword, $categoryId, $statusIds);
+                $qb = $this->productRepository->getQueryBuilderBySearchDataForAdmin($searchData);
+
+                if (null !== $stockMin) {
+                    $qb->andWhere('pc.stock_unlimited = false AND pc.stock >= :mcpStockMin')
+                        ->setParameter('mcpStockMin', $stockMin);
+                }
+                if (null !== $stockMax) {
+                    $qb->andWhere('pc.stock_unlimited = false AND pc.stock <= :mcpStockMax')
+                        ->setParameter('mcpStockMax', $stockMax);
+                }
+
+                $qb->setMaxResults($limit)->setFirstResult($offset);
+                $paginator = new Paginator($qb, fetchJoinCollection: true);
+
+                $total = $paginator->count();
+                $items = $this->serializer->toArrayList($paginator);
+
+                return [
+                    'data' => [
+                        'total' => $total,
+                        'limit' => $limit,
+                        'offset' => $offset,
+                        'items' => $items,
+                    ],
+                    'summary' => ['total' => $total, 'returned' => \count($items)],
+                ];
+            },
+        );
+
+        return $result;
+    }
+
+    /**
+     * @param int[]|null $statusIds
+     *
+     * @return array<string, mixed>
+     */
+    private function buildSearchData(?string $keyword, ?int $categoryId, ?array $statusIds): array
+    {
+        $searchData = [];
+
+        if (null !== $keyword && '' !== trim($keyword)) {
+            $searchData['id'] = $keyword;
+        }
+
+        if (null !== $categoryId) {
+            $category = $this->categoryRepository->find($categoryId);
+            if (null !== $category) {
+                $searchData['category_id'] = $category;
+            }
+        }
+
+        $statusIds ??= [ProductStatus::DISPLAY_SHOW];
+        $statuses = $this->productStatusRepository->findBy(['id' => $statusIds]);
+        if ([] !== $statuses) {
+            $searchData['status'] = $statuses;
+        }
+
+        return $searchData;
+    }
+}

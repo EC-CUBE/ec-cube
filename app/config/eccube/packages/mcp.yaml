@@ -1,0 +1,14 @@
+mcp:
+    app: 'EC-CUBE MCP Server'
+    version: '4.4.0'
+    description: 'EC-CUBE 4.4 の管理データ (商品/在庫・注文・顧客会員・プラグイン管理) を AI クライアントから自然言語で参照する読み取り専用 MCP サーバ。 認証認可は API プラグイン (api44) の OAuth2 / scope に委譲する。'
+    client_transports:
+        http: true
+        stdio: true
+    http:
+        path: '/%eccube_admin_route%/mcp'
+        session:
+            store: file
+    discovery:
+        scan_dirs:
+            - src/Eccube/Service/Mcp/Tool

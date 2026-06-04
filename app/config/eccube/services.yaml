@@ -8,6 +8,7 @@ parameters:
     env(ECCUBE_LOCALE): 'ja'
     env(ECCUBE_TIMEZONE): 'Asia/Tokyo'
     env(ECCUBE_CURRENCY): 'JPY'
+    env(ECCUBE_MCP_ALLOWED_ORIGINS): ''
     locale: '%env(ECCUBE_LOCALE)%'
     timezone: '%env(ECCUBE_TIMEZONE)%'
     currency: '%env(ECCUBE_CURRENCY)%'
@@ -28,6 +29,9 @@ services:
           $shoppingPurchaseFlow: '@eccube.purchase.flow.shopping'
           $orderPurchaseFlow: '@eccube.purchase.flow.order'
           $_orderStateMachine: '@state_machine.order'
+          # MCP サーバ用 (path prefix と Origin 許可リスト)
+          $eccubeAdminRoute: '%eccube_admin_route%'
+          $mcpAllowedOriginsCsv: '%env(ECCUBE_MCP_ALLOWED_ORIGINS)%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -214,6 +218,11 @@ services:
 
     Eccube\EventListener\RateLimiterListener:
         arguments: [ !tagged_locator { tag: 'eccube_rate_limiter' } ]
+
+    # MCP: Api44 (ec-cube/api44) の allow_list (`eccube.api.allow_list` タグ) を集約する
+    Eccube\Service\Mcp\AllowListResolver:
+        arguments:
+            $allowLists: !tagged_iterator eccube.api.allow_list
 
     Eccube\Security\PasswordHasher\PasswordHasher:
         arguments:

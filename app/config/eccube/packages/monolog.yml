@@ -1,2 +1,2 @@
 monolog:
-    channels: ['front', 'admin']
+    channels: ['front', 'admin', 'mcp']
