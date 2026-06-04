@@ -19,8 +19,8 @@ services:
     environment:
       POSTGRES_USER: dbuser
       POSTGRES_PASSWORD: secret
-      # postgres:18 から PGDATA のデフォルトが /var/lib/postgresql/18/docker に
-      # 変わったため、従来の volume マウント先 (/var/lib/postgresql/data) を明示する
+      # postgres:18 で PGDATA のデフォルトレイアウトが変わり、従来の volume
+      # マウント先 (/var/lib/postgresql/data) だけでは起動に失敗するため明示する
       PGDATA: /var/lib/postgresql/data
     ports:
       - 15432:5432
