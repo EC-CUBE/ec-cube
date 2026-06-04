@@ -1,0 +1,56 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+ *
+ * http://www.ec-cube.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace DoctrineMigrations;
+
+use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
+
+/**
+ * mtb_country_iso_code (ISO 3166-1 numeric -> alpha-2) の初期データを投入する.
+ *
+ * テーブル自体は doctrine:schema:update でエンティティから生成される。
+ * 新規インストールは import_csv (definition.yml) で投入されるため、
+ * 本マイグレーションは既存インストールのアップグレード時の backfill を担う
+ * (空テーブルのときのみ INSERT する冪等実装)。
+ */
+final class Version20260604120000 extends AbstractMigration
+{
+    public const NAME = 'mtb_country_iso_code';
+
+    public function up(Schema $schema): void
+    {
+        if (!$schema->hasTable(self::NAME)) {
+            return;
+        }
+
+        // 既にデータがある場合 (新規インストールの fixtures 投入済み等) は二重投入しない.
+        $count = $this->connection->fetchOne('SELECT COUNT(*) FROM '.self::NAME);
+        if ($count > 0) {
+            return;
+        }
+
+        $this->addSql("INSERT INTO mtb_country_iso_code (id, name, sort_no, discriminator_type) VALUES (352, 'IS', 1, 'countryisocode'), (372, 'IE', 2, 'countryisocode'), (31, 'AZ', 3, 'countryisocode'), (4, 'AF', 4, 'countryisocode'), (840, 'US', 5, 'countryisocode'), (850, 'VI', 6, 'countryisocode'), (16, 'AS', 7, 'countryisocode'), (784, 'AE', 8, 'countryisocode'), (12, 'DZ', 9, 'countryisocode'), (32, 'AR', 10, 'countryisocode'), (533, 'AW', 11, 'countryisocode'), (8, 'AL', 12, 'countryisocode'), (51, 'AM', 13, 'countryisocode'), (660, 'AI', 14, 'countryisocode'), (24, 'AO', 15, 'countryisocode'), (28, 'AG', 16, 'countryisocode'), (20, 'AD', 17, 'countryisocode'), (887, 'YE', 18, 'countryisocode'), (826, 'GB', 19, 'countryisocode'), (86, 'IO', 20, 'countryisocode'), (92, 'VG', 21, 'countryisocode'), (376, 'IL', 22, 'countryisocode'), (380, 'IT', 23, 'countryisocode'), (368, 'IQ', 24, 'countryisocode'), (364, 'IR', 25, 'countryisocode'), (356, 'IN', 26, 'countryisocode'), (360, 'ID', 27, 'countryisocode'), (876, 'WF', 28, 'countryisocode'), (800, 'UG', 29, 'countryisocode'), (804, 'UA', 30, 'countryisocode'), (860, 'UZ', 31, 'countryisocode'), (858, 'UY', 32, 'countryisocode'), (218, 'EC', 33, 'countryisocode'), (818, 'EG', 34, 'countryisocode'), (233, 'EE', 35, 'countryisocode'), (231, 'ET', 36, 'countryisocode'), (232, 'ER', 37, 'countryisocode'), (222, 'SV', 38, 'countryisocode'), (36, 'AU', 39, 'countryisocode'), (40, 'AT', 40, 'countryisocode'), (248, 'AX', 41, 'countryisocode'), (512, 'OM', 42, 'countryisocode'), (528, 'NL', 43, 'countryisocode'), (288, 'GH', 44, 'countryisocode'), (132, 'CV', 45, 'countryisocode'), (831, 'GG', 46, 'countryisocode'), (328, 'GY', 47, 'countryisocode'), (398, 'KZ', 48, 'countryisocode'), (634, 'QA', 49, 'countryisocode'), (581, 'UM', 50, 'countryisocode'), (124, 'CA', 51, 'countryisocode'), (266, 'GA', 52, 'countryisocode'), (120, 'CM', 53, 'countryisocode'), (270, 'GM', 54, 'countryisocode'), (116, 'KH', 55, 'countryisocode'), (580, 'MP', 56, 'countryisocode'), (324, 'GN', 57, 'countryisocode'), (624, 'GW', 58, 'countryisocode'), (196, 'CY', 59, 'countryisocode'), (192, 'CU', 60, 'countryisocode'), (531, 'CW', 61, 'countryisocode'), (300, 'GR', 62, 'countryisocode'), (296, 'KI', 63, 'countryisocode'), (417, 'KG', 64, 'countryisocode'), (320, 'GT', 65, 'countryisocode'), (312, 'GP', 66, 'countryisocode'), (316, 'GU', 67, 'countryisocode'), (414, 'KW', 68, 'countryisocode'), (184, 'CK', 69, 'countryisocode'), (304, 'GL', 70, 'countryisocode'), (162, 'CX', 71, 'countryisocode'), (268, 'GE', 72, 'countryisocode'), (308, 'GD', 73, 'countryisocode'), (191, 'HR', 74, 'countryisocode'), (136, 'KY', 75, 'countryisocode'), (404, 'KE', 76, 'countryisocode'), (384, 'CI', 77, 'countryisocode'), (166, 'CC', 78, 'countryisocode'), (188, 'CR', 79, 'countryisocode'), (174, 'KM', 80, 'countryisocode'), (170, 'CO', 81, 'countryisocode'), (178, 'CG', 82, 'countryisocode'), (180, 'CD', 83, 'countryisocode'), (682, 'SA', 84, 'countryisocode'), (239, 'GS', 85, 'countryisocode'), (882, 'WS', 86, 'countryisocode'), (678, 'ST', 87, 'countryisocode'), (652, 'BL', 88, 'countryisocode'), (894, 'ZM', 89, 'countryisocode'), (666, 'PM', 90, 'countryisocode'), (674, 'SM', 91, 'countryisocode'), (663, 'MF', 92, 'countryisocode'), (694, 'SL', 93, 'countryisocode'), (262, 'DJ', 94, 'countryisocode'), (292, 'GI', 95, 'countryisocode'), (832, 'JE', 96, 'countryisocode'), (388, 'JM', 97, 'countryisocode'), (760, 'SY', 98, 'countryisocode'), (702, 'SG', 99, 'countryisocode'), (534, 'SX', 100, 'countryisocode'), (716, 'ZW', 101, 'countryisocode'), (756, 'CH', 102, 'countryisocode'), (752, 'SE', 103, 'countryisocode'), (729, 'SD', 104, 'countryisocode'), (744, 'SJ', 105, 'countryisocode'), (724, 'ES', 106, 'countryisocode'), (740, 'SR', 107, 'countryisocode'), (144, 'LK', 108, 'countryisocode'), (703, 'SK', 109, 'countryisocode'), (705, 'SI', 110, 'countryisocode'), (748, 'SZ', 111, 'countryisocode'), (690, 'SC', 112, 'countryisocode'), (226, 'GQ', 113, 'countryisocode'), (686, 'SN', 114, 'countryisocode'), (688, 'RS', 115, 'countryisocode'), (659, 'KN', 116, 'countryisocode'), (670, 'VC', 117, 'countryisocode'), (426, 'LS', 118, 'countryisocode'), (654, 'SH', 119, 'countryisocode'), (662, 'LC', 120, 'countryisocode'), (706, 'SO', 121, 'countryisocode'), (90, 'SB', 122, 'countryisocode'), (796, 'TC', 123, 'countryisocode'), (764, 'TH', 124, 'countryisocode'), (410, 'KR', 125, 'countryisocode'), (158, 'TW', 126, 'countryisocode'), (762, 'TJ', 127, 'countryisocode'), (834, 'TZ', 128, 'countryisocode'), (203, 'CZ', 129, 'countryisocode'), (148, 'TD', 130, 'countryisocode'), (140, 'CF', 131, 'countryisocode'), (156, 'CN', 132, 'countryisocode'), (788, 'TN', 133, 'countryisocode'), (408, 'KP', 134, 'countryisocode'), (152, 'CL', 135, 'countryisocode'), (798, 'TV', 136, 'countryisocode'), (208, 'DK', 137, 'countryisocode'), (276, 'DE', 138, 'countryisocode'), (768, 'TG', 139, 'countryisocode'), (772, 'TK', 140, 'countryisocode'), (214, 'DO', 141, 'countryisocode'), (212, 'DM', 142, 'countryisocode'), (780, 'TT', 143, 'countryisocode'), (795, 'TM', 144, 'countryisocode'), (792, 'TR', 145, 'countryisocode'), (776, 'TO', 146, 'countryisocode'), (566, 'NG', 147, 'countryisocode'), (520, 'NR', 148, 'countryisocode'), (516, 'NA', 149, 'countryisocode'), (10, 'AQ', 150, 'countryisocode'), (570, 'NU', 151, 'countryisocode'), (558, 'NI', 152, 'countryisocode'), (562, 'NE', 153, 'countryisocode'), (392, 'JP', 154, 'countryisocode'), (732, 'EH', 155, 'countryisocode'), (540, 'NC', 156, 'countryisocode'), (554, 'NZ', 157, 'countryisocode'), (524, 'NP', 158, 'countryisocode'), (574, 'NF', 159, 'countryisocode'), (578, 'NO', 160, 'countryisocode'), (334, 'HM', 161, 'countryisocode'), (48, 'BH', 162, 'countryisocode'), (332, 'HT', 163, 'countryisocode'), (586, 'PK', 164, 'countryisocode'), (336, 'VA', 165, 'countryisocode'), (591, 'PA', 166, 'countryisocode'), (548, 'VU', 167, 'countryisocode'), (44, 'BS', 168, 'countryisocode'), (598, 'PG', 169, 'countryisocode'), (60, 'BM', 170, 'countryisocode'), (585, 'PW', 171, 'countryisocode'), (600, 'PY', 172, 'countryisocode'), (52, 'BB', 173, 'countryisocode'), (275, 'PS', 174, 'countryisocode'), (348, 'HU', 175, 'countryisocode'), (50, 'BD', 176, 'countryisocode'), (626, 'TL', 177, 'countryisocode'), (612, 'PN', 178, 'countryisocode'), (242, 'FJ', 179, 'countryisocode'), (608, 'PH', 180, 'countryisocode'), (246, 'FI', 181, 'countryisocode'), (64, 'BT', 182, 'countryisocode'), (74, 'BV', 183, 'countryisocode'), (630, 'PR', 184, 'countryisocode'), (234, 'FO', 185, 'countryisocode'), (238, 'FK', 186, 'countryisocode'), (76, 'BR', 187, 'countryisocode'), (250, 'FR', 188, 'countryisocode'), (254, 'GF', 189, 'countryisocode'), (258, 'PF', 190, 'countryisocode'), (260, 'TF', 191, 'countryisocode'), (100, 'BG', 192, 'countryisocode'), (854, 'BF', 193, 'countryisocode'), (96, 'BN', 194, 'countryisocode'), (108, 'BI', 195, 'countryisocode'), (704, 'VN', 196, 'countryisocode'), (204, 'BJ', 197, 'countryisocode'), (862, 'VE', 198, 'countryisocode'), (112, 'BY', 199, 'countryisocode'), (84, 'BZ', 200, 'countryisocode'), (604, 'PE', 201, 'countryisocode'), (56, 'BE', 202, 'countryisocode'), (616, 'PL', 203, 'countryisocode'), (70, 'BA', 204, 'countryisocode'), (72, 'BW', 205, 'countryisocode'), (535, 'BQ', 206, 'countryisocode'), (68, 'BO', 207, 'countryisocode'), (620, 'PT', 208, 'countryisocode'), (344, 'HK', 209, 'countryisocode'), (340, 'HN', 210, 'countryisocode'), (584, 'MH', 211, 'countryisocode'), (446, 'MO', 212, 'countryisocode'), (807, 'MK', 213, 'countryisocode'), (450, 'MG', 214, 'countryisocode'), (175, 'YT', 215, 'countryisocode'), (454, 'MW', 216, 'countryisocode'), (466, 'ML', 217, 'countryisocode'), (470, 'MT', 218, 'countryisocode'), (474, 'MQ', 219, 'countryisocode'), (458, 'MY', 220, 'countryisocode'), (833, 'IM', 221, 'countryisocode'), (583, 'FM', 222, 'countryisocode'), (710, 'ZA', 223, 'countryisocode'), (728, 'SS', 224, 'countryisocode'), (104, 'MM', 225, 'countryisocode'), (484, 'MX', 226, 'countryisocode'), (480, 'MU', 227, 'countryisocode'), (478, 'MR', 228, 'countryisocode'), (508, 'MZ', 229, 'countryisocode'), (492, 'MC', 230, 'countryisocode'), (462, 'MV', 231, 'countryisocode'), (498, 'MD', 232, 'countryisocode'), (504, 'MA', 233, 'countryisocode'), (496, 'MN', 234, 'countryisocode'), (499, 'ME', 235, 'countryisocode'), (500, 'MS', 236, 'countryisocode'), (400, 'JO', 237, 'countryisocode'), (418, 'LA', 238, 'countryisocode'), (428, 'LV', 239, 'countryisocode'), (440, 'LT', 240, 'countryisocode'), (434, 'LY', 241, 'countryisocode'), (438, 'LI', 242, 'countryisocode'), (430, 'LR', 243, 'countryisocode'), (642, 'RO', 244, 'countryisocode'), (442, 'LU', 245, 'countryisocode'), (646, 'RW', 246, 'countryisocode'), (422, 'LB', 247, 'countryisocode'), (638, 'RE', 248, 'countryisocode'), (643, 'RU', 249, 'countryisocode')");
+    }
+
+    public function down(Schema $schema): void
+    {
+        if (!$schema->hasTable(self::NAME)) {
+            return;
+        }
+
+        $this->addSql('DELETE FROM mtb_country_iso_code');
+    }
+}
