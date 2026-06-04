@@ -15,12 +15,10 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Service\AgentCommerce;
 
-use Doctrine\Persistence\ManagerRegistry;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\Country;
 use Eccube\Entity\Master\Pref;
 use Eccube\Entity\Shipping;
-use Eccube\Repository\Master\CountryIsoCodeRepository;
 use Eccube\Service\AgentCommerce\AddressMappingService;
 use Eccube\Tests\EccubeTestCase;
 
@@ -38,11 +36,9 @@ final class AddressMappingServiceTest extends EccubeTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        // AddressMappingService / CountryIsoCodeRepository は未参照の private サービスで
-        // コンパイラに除去されるため、ManagerRegistry からリポジトリを構築して直接注入する。
-        $registry = self::getContainer()->get('doctrine');
-        \assert($registry instanceof ManagerRegistry);
-        $this->service = new AddressMappingService(new CountryIsoCodeRepository($registry));
+        // AddressMappingService はまだ consumer が無く private では除去されるため、
+        // services_test.yaml で public 化してコンテナから取得する。
+        $this->service = self::getContainer()->get(AddressMappingService::class);
     }
 
     public function testGetAlpha2FromCountryIdKnownIds(): void
