@@ -27,10 +27,6 @@ use phpseclib3\Crypt\PublicKeyLoader;
  */
 class UcpMessageSigner implements AgentCommerceMessageSignerInterface
 {
-    private readonly KeyStoreInterface $keyStore;
-
-    private readonly string $purpose;
-
     /**
      * @var array<int, string> grace period 中の旧公開鍵 PEM 群
      */
@@ -44,12 +40,10 @@ class UcpMessageSigner implements AgentCommerceMessageSignerInterface
      * @param array<int, string>  $gracePublicKeyPems 旧公開鍵 PEM 群 (verify/JWK に含める)
      */
     public function __construct(
-        KeyStoreInterface $keyStore,
-        string $purpose = 'ucp_signing',
+        private readonly KeyStoreInterface $keyStore,
+        private readonly string $purpose = 'ucp_signing',
         array $gracePublicKeyPems = [],
     ) {
-        $this->keyStore = $keyStore;
-        $this->purpose = $purpose;
         $this->gracePublicKeyPems = array_values($gracePublicKeyPems);
     }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -10,7 +12,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Eccube\Tests\Service\AgentCommerce;
 
 use Eccube\Entity\BaseInfo;
@@ -24,7 +25,7 @@ use Eccube\Tests\EccubeTestCase;
  * google_pay_merchant_id defaults to null for the persisted BaseInfo (id=1),
  * matching the "default false / off by default" contract from the base plan.
  */
-class BaseInfoAgentCommerceFlagsTest extends EccubeTestCase
+final class BaseInfoAgentCommerceFlagsTest extends EccubeTestCase
 {
     /** @var string[] The five enable flags that MUST default to false. */
     private const FLAG_PROPERTIES = [
@@ -41,7 +42,7 @@ class BaseInfoAgentCommerceFlagsTest extends EccubeTestCase
 
         foreach (self::FLAG_PROPERTIES as $property) {
             $value = $this->readBooleanFlag($BaseInfo, $property);
-            self::assertFalse($value, sprintf('BaseInfo flag "%s" must default to false (off by default)', $property));
+            $this->assertFalse($value, sprintf('BaseInfo flag "%s" must default to false (off by default)', $property));
         }
     }
 
@@ -49,7 +50,7 @@ class BaseInfoAgentCommerceFlagsTest extends EccubeTestCase
     {
         $BaseInfo = static::getContainer()->get(BaseInfoRepository::class)->get();
 
-        self::assertNull($this->readGooglePayMerchantId($BaseInfo), 'BaseInfo google_pay_merchant_id must default to null');
+        $this->assertNull($this->readGooglePayMerchantId($BaseInfo), 'BaseInfo google_pay_merchant_id must default to null');
     }
 
     public function testNewBaseInfoFlagsDefaultToFalse(): void
@@ -58,10 +59,10 @@ class BaseInfoAgentCommerceFlagsTest extends EccubeTestCase
 
         foreach (self::FLAG_PROPERTIES as $property) {
             $value = $this->readBooleanFlag($BaseInfo, $property);
-            self::assertFalse((bool) $value, sprintf('A freshly constructed BaseInfo must report "%s" as false', $property));
+            $this->assertFalse($value, sprintf('A freshly constructed BaseInfo must report "%s" as false', $property));
         }
 
-        self::assertNull($this->readGooglePayMerchantId($BaseInfo), 'A freshly constructed BaseInfo must report google_pay_merchant_id as null');
+        $this->assertNull($this->readGooglePayMerchantId($BaseInfo), 'A freshly constructed BaseInfo must report google_pay_merchant_id as null');
     }
 
     private function readBooleanFlag(BaseInfo $BaseInfo, string $property): bool

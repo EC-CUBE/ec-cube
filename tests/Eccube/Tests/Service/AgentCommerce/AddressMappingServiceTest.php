@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -10,7 +12,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Eccube\Tests\Service\AgentCommerce;
 
 use Eccube\Entity\Customer;
@@ -27,7 +28,7 @@ use PHPUnit\Framework\TestCase;
  * id shipped in mtb_country.csv resolves to a non-null alpha-2, name/region
  * splitting, and DTO array shaping. Entities are constructed in-memory (no DB).
  */
-class AddressMappingServiceTest extends TestCase
+final class AddressMappingServiceTest extends TestCase
 {
     private AddressMappingService $service;
 
@@ -39,18 +40,18 @@ class AddressMappingServiceTest extends TestCase
 
     public function testGetAlpha2FromCountryIdKnownIds(): void
     {
-        self::assertSame('JP', $this->service->getAlpha2FromCountryId(392), 'ISO 3166-1 numeric 392 is Japan -> JP');
-        self::assertSame('US', $this->service->getAlpha2FromCountryId(840), 'ISO 3166-1 numeric 840 is United States -> US');
-        self::assertSame('GB', $this->service->getAlpha2FromCountryId(826), 'ISO 3166-1 numeric 826 is United Kingdom -> GB');
-        self::assertSame('CN', $this->service->getAlpha2FromCountryId(156), 'ISO 3166-1 numeric 156 is China -> CN');
-        self::assertSame('KR', $this->service->getAlpha2FromCountryId(410), 'ISO 3166-1 numeric 410 is Republic of Korea -> KR');
-        self::assertSame('RU', $this->service->getAlpha2FromCountryId(643), 'ISO 3166-1 numeric 643 is Russia -> RU');
+        $this->assertSame('JP', $this->service->getAlpha2FromCountryId(392), 'ISO 3166-1 numeric 392 is Japan -> JP');
+        $this->assertSame('US', $this->service->getAlpha2FromCountryId(840), 'ISO 3166-1 numeric 840 is United States -> US');
+        $this->assertSame('GB', $this->service->getAlpha2FromCountryId(826), 'ISO 3166-1 numeric 826 is United Kingdom -> GB');
+        $this->assertSame('CN', $this->service->getAlpha2FromCountryId(156), 'ISO 3166-1 numeric 156 is China -> CN');
+        $this->assertSame('KR', $this->service->getAlpha2FromCountryId(410), 'ISO 3166-1 numeric 410 is Republic of Korea -> KR');
+        $this->assertSame('RU', $this->service->getAlpha2FromCountryId(643), 'ISO 3166-1 numeric 643 is Russia -> RU');
     }
 
     public function testGetAlpha2FromCountryIdNullAndUnknown(): void
     {
-        self::assertNull($this->service->getAlpha2FromCountryId(null), 'Null country id must yield null alpha-2');
-        self::assertNull($this->service->getAlpha2FromCountryId(999999), 'Unknown numeric id must yield null alpha-2 (no exception)');
+        $this->assertNull($this->service->getAlpha2FromCountryId(null), 'Null country id must yield null alpha-2');
+        $this->assertNull($this->service->getAlpha2FromCountryId(999999), 'Unknown numeric id must yield null alpha-2 (no exception)');
     }
 
     /**
@@ -60,12 +61,12 @@ class AddressMappingServiceTest extends TestCase
     public function testAllCsvCountryIdsResolve(): void
     {
         $ids = $this->loadCountryIdsFromCsv();
-        self::assertNotEmpty($ids, 'mtb_country.csv must contain country rows for this assertion to be meaningful');
+        $this->assertNotEmpty($ids, 'mtb_country.csv must contain country rows for this assertion to be meaningful');
 
         foreach ($ids as $id) {
             $alpha2 = $this->service->getAlpha2FromCountryId($id);
-            self::assertNotNull($alpha2, sprintf('mtb_country.csv id %d must map to a non-null ISO 3166-1 alpha-2', $id));
-            self::assertMatchesRegularExpression('/^[A-Z]{2}$/', $alpha2, sprintf('mtb_country.csv id %d must map to a two-letter uppercase alpha-2 code', $id));
+            $this->assertNotNull($alpha2, sprintf('mtb_country.csv id %d must map to a non-null ISO 3166-1 alpha-2', $id));
+            $this->assertMatchesRegularExpression('/^[A-Z]{2}$/', $alpha2, sprintf('mtb_country.csv id %d must map to a two-letter uppercase alpha-2 code', $id));
         }
     }
 
@@ -75,8 +76,8 @@ class AddressMappingServiceTest extends TestCase
         $pref->setId(13);
         $pref->setName('東京都');
 
-        self::assertSame('東京都', $this->service->getRegionFromPref($pref), 'Region must be the prefecture name');
-        self::assertNull($this->service->getRegionFromPref(null), 'Null prefecture must yield null region');
+        $this->assertSame('東京都', $this->service->getRegionFromPref($pref), 'Region must be the prefecture name');
+        $this->assertNull($this->service->getRegionFromPref(null), 'Null prefecture must yield null region');
     }
 
     public function testToAddressArrayFromCustomerSplitsNameAndMapsCountry(): void
@@ -103,17 +104,17 @@ class AddressMappingServiceTest extends TestCase
 
         $address = $this->service->toAddressArray($customer);
 
-        self::assertSame('山田', $address['family_name'], 'family_name must come from name01');
-        self::assertSame('太郎', $address['given_name'], 'given_name must come from name02');
-        self::assertSame('ヤマダ', $address['family_name_kana'], 'family_name_kana must come from kana01');
-        self::assertSame('タロウ', $address['given_name_kana'], 'given_name_kana must come from kana02');
-        self::assertSame('株式会社テスト', $address['company'], 'company must come from company_name');
-        self::assertSame('1000001', $address['postal_code'], 'postal_code must be mapped');
-        self::assertSame('東京都', $address['region'], 'region must be the prefecture name');
-        self::assertSame('千代田区千代田', $address['address1'], 'address1 must come from addr01');
-        self::assertSame('1-1', $address['address2'], 'address2 must come from addr02');
-        self::assertSame('JP', $address['country'], 'country must be alpha-2 derived from Country.id (392 -> JP)');
-        self::assertSame('0312345678', $address['phone'], 'phone must come from phone_number');
+        $this->assertSame('山田', $address['family_name'], 'family_name must come from name01');
+        $this->assertSame('太郎', $address['given_name'], 'given_name must come from name02');
+        $this->assertSame('ヤマダ', $address['family_name_kana'], 'family_name_kana must come from kana01');
+        $this->assertSame('タロウ', $address['given_name_kana'], 'given_name_kana must come from kana02');
+        $this->assertSame('株式会社テスト', $address['company'], 'company must come from company_name');
+        $this->assertSame('1000001', $address['postal_code'], 'postal_code must be mapped');
+        $this->assertSame('東京都', $address['region'], 'region must be the prefecture name');
+        $this->assertSame('千代田区千代田', $address['address1'], 'address1 must come from addr01');
+        $this->assertSame('1-1', $address['address2'], 'address2 must come from addr02');
+        $this->assertSame('JP', $address['country'], 'country must be alpha-2 derived from Country.id (392 -> JP)');
+        $this->assertSame('0312345678', $address['phone'], 'phone must come from phone_number');
     }
 
     public function testToAddressArrayFromShipping(): void
@@ -136,11 +137,11 @@ class AddressMappingServiceTest extends TestCase
 
         $address = $this->service->toAddressArray($shipping);
 
-        self::assertSame('佐藤', $address['family_name'], 'Shipping family_name must come from name01');
-        self::assertSame('花子', $address['given_name'], 'Shipping given_name must come from name02');
-        self::assertSame('北海道', $address['region'], 'Shipping region must be the prefecture name');
-        self::assertSame('US', $address['country'], 'Shipping country must be alpha-2 derived from Country.id (840 -> US)');
-        self::assertSame('0111234567', $address['phone'], 'Shipping phone must come from phone_number');
+        $this->assertSame('佐藤', $address['family_name'], 'Shipping family_name must come from name01');
+        $this->assertSame('花子', $address['given_name'], 'Shipping given_name must come from name02');
+        $this->assertSame('北海道', $address['region'], 'Shipping region must be the prefecture name');
+        $this->assertSame('US', $address['country'], 'Shipping country must be alpha-2 derived from Country.id (840 -> US)');
+        $this->assertSame('0111234567', $address['phone'], 'Shipping phone must come from phone_number');
     }
 
     public function testToAddressArrayWithNullCountryAndPref(): void
@@ -151,9 +152,9 @@ class AddressMappingServiceTest extends TestCase
 
         $address = $this->service->toAddressArray($customer);
 
-        self::assertSame('田中', $address['family_name'], 'family_name must be mapped even when country/pref are null');
-        self::assertNull($address['country'], 'Null Country must yield null country alpha-2');
-        self::assertNull($address['region'], 'Null Pref must yield null region');
+        $this->assertSame('田中', $address['family_name'], 'family_name must be mapped even when country/pref are null');
+        $this->assertNull($address['country'], 'Null Country must yield null country alpha-2');
+        $this->assertNull($address['region'], 'Null Pref must yield null region');
     }
 
     /**
@@ -162,12 +163,12 @@ class AddressMappingServiceTest extends TestCase
     private function loadCountryIdsFromCsv(): array
     {
         $csvPath = __DIR__.'/../../../../../src/Eccube/Resource/doctrine/import_csv/ja/mtb_country.csv';
-        self::assertFileExists($csvPath, 'mtb_country.csv must exist at the expected resource path');
+        $this->assertFileExists($csvPath, 'mtb_country.csv must exist at the expected resource path');
 
         $ids = [];
         $handle = fopen($csvPath, 'r');
         $header = fgetcsv($handle, null, ',', '"', ''); // skip header row
-        self::assertIsArray($header, 'mtb_country.csv must have a header row');
+        $this->assertIsArray($header, 'mtb_country.csv must have a header row');
         while (($row = fgetcsv($handle, null, ',', '"', '')) !== false) {
             if (!isset($row[0]) || $row[0] === '') {
                 continue;

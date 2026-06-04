@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -10,7 +12,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Eccube\Tests\Service\AgentCommerce\Security;
 
 use Eccube\Service\AgentCommerce\Security\KeyStoreInterface;
@@ -28,7 +29,7 @@ use PHPUnit\Framework\TestCase;
  *
  * KeyStore is replaced by an in-memory stub so no filesystem/DB is touched.
  */
-class UcpMessageSignerTest extends TestCase
+final class UcpMessageSignerTest extends TestCase
 {
     private const PURPOSE = 'ucp_signing';
 
@@ -39,8 +40,8 @@ class UcpMessageSignerTest extends TestCase
 
         $signature = $signer->sign($base);
 
-        self::assertNotSame('', $signature, 'sign must return a non-empty base64url signature');
-        self::assertTrue($signer->verify($base, $signature), 'A signature produced by sign must verify against the same signature base');
+        $this->assertNotSame('', $signature, 'sign must return a non-empty base64url signature');
+        $this->assertTrue($signer->verify($base, $signature), 'A signature produced by sign must verify against the same signature base');
     }
 
     public function testVerifyFailsOnTamperedSignatureBase(): void
@@ -50,7 +51,7 @@ class UcpMessageSignerTest extends TestCase
 
         $signature = $signer->sign($base);
 
-        self::assertFalse($signer->verify('tampered-signature-base', $signature), 'A signature must not verify against a tampered signature base');
+        $this->assertFalse($signer->verify('tampered-signature-base', $signature), 'A signature must not verify against a tampered signature base');
     }
 
     public function testVerifyFailsOnTamperedSignature(): void
@@ -62,7 +63,7 @@ class UcpMessageSignerTest extends TestCase
         // Flip the first character to corrupt the signature while keeping it base64url-ish.
         $corrupted = ($signature[0] === 'A' ? 'B' : 'A').substr($signature, 1);
 
-        self::assertFalse($signer->verify($base, $corrupted), 'A corrupted signature must not verify');
+        $this->assertFalse($signer->verify($base, $corrupted), 'A corrupted signature must not verify');
     }
 
     public function testGetPublicJwksExposesEcPublicKeyOnly(): void
@@ -71,13 +72,13 @@ class UcpMessageSignerTest extends TestCase
 
         $jwks = $signer->getPublicJwks();
 
-        self::assertNotEmpty($jwks, 'getPublicJwks must return at least the current key');
+        $this->assertNotEmpty($jwks, 'getPublicJwks must return at least the current key');
         foreach ($jwks as $jwk) {
-            self::assertSame('EC', $jwk['kty'], 'UCP signing keys must be EC keys (kty=EC)');
-            self::assertSame('P-256', $jwk['crv'], 'UCP signing keys must use the P-256 curve');
-            self::assertArrayHasKey('x', $jwk, 'EC public JWK must expose the x coordinate');
-            self::assertArrayHasKey('y', $jwk, 'EC public JWK must expose the y coordinate');
-            self::assertArrayNotHasKey('d', $jwk, 'Published JWK must never contain the private key parameter d');
+            $this->assertSame('EC', $jwk['kty'], 'UCP signing keys must be EC keys (kty=EC)');
+            $this->assertSame('P-256', $jwk['crv'], 'UCP signing keys must use the P-256 curve');
+            $this->assertArrayHasKey('x', $jwk, 'EC public JWK must expose the x coordinate');
+            $this->assertArrayHasKey('y', $jwk, 'EC public JWK must expose the y coordinate');
+            $this->assertArrayNotHasKey('d', $jwk, 'Published JWK must never contain the private key parameter d');
         }
     }
 
@@ -86,10 +87,10 @@ class UcpMessageSignerTest extends TestCase
         $signer = new UcpMessageSigner($this->createKeyStore(), self::PURPOSE);
 
         $kid = $signer->getCurrentKid();
-        self::assertNotSame('', $kid, 'getCurrentKid must return a non-empty key id');
+        $this->assertNotSame('', $kid, 'getCurrentKid must return a non-empty key id');
 
         $kids = array_map(static fn (array $jwk) => $jwk['kid'] ?? null, $signer->getPublicJwks());
-        self::assertContains($kid, $kids, 'The current kid must appear among the published JWKs');
+        $this->assertContains($kid, $kids, 'The current kid must appear among the published JWKs');
     }
 
     /**
@@ -106,23 +107,20 @@ class UcpMessageSignerTest extends TestCase
         $oldSignature = $oldSigner->sign($base);
 
         $oldPrivatePem = $oldStore->read(self::PURPOSE);
-        self::assertNotNull($oldPrivatePem, 'The old key store must hold the generated private key');
+        $this->assertNotNull($oldPrivatePem, 'The old key store must hold the generated private key');
         $oldPublicPem = $this->derivePublicPem($oldPrivatePem);
 
         // New signer with a fresh key, carrying the old public key in its grace set.
         $newStore = $this->createKeyStore();
         $newSigner = new UcpMessageSigner($newStore, self::PURPOSE, [$oldPublicPem]);
 
-        self::assertTrue(
-            $newSigner->verify($base, $oldSignature),
-            'A signature made with the rotated-out key must still verify while its public key is in the grace set'
-        );
+        $this->assertTrue($newSigner->verify($base, $oldSignature), 'A signature made with the rotated-out key must still verify while its public key is in the grace set');
 
         // And the grace public key must be advertised in the JWKs without leaking d.
         $jwks = $newSigner->getPublicJwks();
-        self::assertGreaterThanOrEqual(2, count($jwks), 'During grace, both the current and the grace public key must be published');
+        $this->assertGreaterThanOrEqual(2, count($jwks), 'During grace, both the current and the grace public key must be published');
         foreach ($jwks as $jwk) {
-            self::assertArrayNotHasKey('d', $jwk, 'No published JWK (current or grace) may contain the private parameter d');
+            $this->assertArrayNotHasKey('d', $jwk, 'No published JWK (current or grace) may contain the private parameter d');
         }
     }
 

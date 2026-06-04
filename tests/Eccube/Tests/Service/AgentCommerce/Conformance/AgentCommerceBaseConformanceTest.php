@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -10,7 +12,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Eccube\Tests\Service\AgentCommerce\Conformance;
 
 use Eccube\Service\AgentCommerce\MinorUnitConverter;
@@ -27,7 +28,7 @@ use PHPUnit\Framework\TestCase;
  * @see https://github.com/agentic-commerce-protocol/agentic-commerce-protocol/tree/main/spec/2026-04-17
  * @see https://github.com/Universal-Commerce-Protocol/ucp
  */
-class AgentCommerceBaseConformanceTest extends TestCase
+final class AgentCommerceBaseConformanceTest extends TestCase
 {
     /**
      * MUST: monetary amounts are represented as integer minor units (smallest
@@ -41,12 +42,12 @@ class AgentCommerceBaseConformanceTest extends TestCase
         $converter = new MinorUnitConverter();
 
         $jpy = $converter->toMinorUnits('1000', 'JPY');
-        self::assertIsInt($jpy, 'MUST: monetary amounts are integer minor units (JPY, zero-decimal)');
-        self::assertSame(1000, $jpy, 'MUST: a JPY amount of 1000 is 1000 minor units');
+        $this->assertIsInt($jpy, 'MUST: monetary amounts are integer minor units (JPY, zero-decimal)');
+        $this->assertSame(1000, $jpy, 'MUST: a JPY amount of 1000 is 1000 minor units');
 
         $usd = $converter->toMinorUnits('10.99', 'USD');
-        self::assertIsInt($usd, 'MUST: monetary amounts are integer minor units (USD, two-decimal)');
-        self::assertSame(1099, $usd, 'MUST: a USD amount of 10.99 is 1099 minor units (cents)');
+        $this->assertIsInt($usd, 'MUST: monetary amounts are integer minor units (USD, two-decimal)');
+        $this->assertSame(1099, $usd, 'MUST: a USD amount of 10.99 is 1099 minor units (cents)');
     }
 
     /**
@@ -75,10 +76,10 @@ class AgentCommerceBaseConformanceTest extends TestCase
         $signer = new UcpMessageSigner($store, 'ucp_signing');
         $jwks = $signer->getPublicJwks();
 
-        self::assertNotEmpty($jwks, 'MUST: at least one signing key is advertised for discovery');
+        $this->assertNotEmpty($jwks, 'MUST: at least one signing key is advertised for discovery');
         foreach ($jwks as $jwk) {
-            self::assertSame('EC', $jwk['kty'] ?? null, 'MUST: UCP signing keys are EC keys');
-            self::assertArrayNotHasKey('d', $jwk, 'MUST NOT: discovery JWKs must not contain the private parameter d');
+            $this->assertSame('EC', $jwk['kty'] ?? null, 'MUST: UCP signing keys are EC keys');
+            $this->assertArrayNotHasKey('d', $jwk, 'MUST NOT: discovery JWKs must not contain the private parameter d');
         }
     }
 

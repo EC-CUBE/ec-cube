@@ -346,7 +346,7 @@ class AddressMappingService
             'region' => $this->getRegionFromPref($this->extractPref($source)),
             'address1' => $this->callIfExists($source, 'getAddr01'),
             'address2' => $this->callIfExists($source, 'getAddr02'),
-            'country' => $this->getAlpha2FromCountryId($countryId !== null ? (int) $countryId : null),
+            'country' => $this->getAlpha2FromCountryId($countryId ?? null),
             'phone' => $this->extractPhoneNumber($source),
         ];
     }
