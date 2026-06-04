@@ -12,6 +12,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Eccube\Tests\Service\AgentCommerce;
 
 use Eccube\Entity\BaseInfo;
@@ -21,9 +22,11 @@ use Eccube\Tests\EccubeTestCase;
 /**
  * Layer 2 (Doctrine) tests for the agent-commerce BaseInfo flags.
  *
- * Verifies that the five enable flags default to false and that
- * google_pay_merchant_id defaults to null for the persisted BaseInfo (id=1),
- * matching the "default false / off by default" contract from the base plan.
+ * Verifies that the five enable flags (acp_enabled / ucp_enabled /
+ * acp_feed_enabled / ucp_catalog_api_enabled / ucp_catalog_requires_auth)
+ * default to false for both the persisted BaseInfo (id=1) and a freshly
+ * constructed instance, matching the "default false / off by default"
+ * contract from the base plan.
  */
 final class BaseInfoAgentCommerceFlagsTest extends EccubeTestCase
 {
@@ -46,13 +49,6 @@ final class BaseInfoAgentCommerceFlagsTest extends EccubeTestCase
         }
     }
 
-    public function testPersistedBaseInfoGooglePayMerchantIdDefaultsToNull(): void
-    {
-        $BaseInfo = static::getContainer()->get(BaseInfoRepository::class)->get();
-
-        $this->assertNull($this->readGooglePayMerchantId($BaseInfo), 'BaseInfo google_pay_merchant_id must default to null');
-    }
-
     public function testNewBaseInfoFlagsDefaultToFalse(): void
     {
         $BaseInfo = new BaseInfo();
@@ -61,8 +57,6 @@ final class BaseInfoAgentCommerceFlagsTest extends EccubeTestCase
             $value = $this->readBooleanFlag($BaseInfo, $property);
             $this->assertFalse($value, sprintf('A freshly constructed BaseInfo must report "%s" as false', $property));
         }
-
-        $this->assertNull($this->readGooglePayMerchantId($BaseInfo), 'A freshly constructed BaseInfo must report google_pay_merchant_id as null');
     }
 
     private function readBooleanFlag(BaseInfo $BaseInfo, string $property): bool
@@ -75,14 +69,5 @@ final class BaseInfoAgentCommerceFlagsTest extends EccubeTestCase
         }
 
         self::fail(sprintf('BaseInfo must expose a getter (is%1$s or get%1$s) for the "%2$s" flag', $studly, $property));
-    }
-
-    private function readGooglePayMerchantId(BaseInfo $BaseInfo): ?string
-    {
-        if (method_exists($BaseInfo, 'getGooglePayMerchantId')) {
-            return $BaseInfo->getGooglePayMerchantId();
-        }
-
-        self::fail('BaseInfo must expose getGooglePayMerchantId() for the google_pay_merchant_id column');
     }
 }

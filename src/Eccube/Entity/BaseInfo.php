@@ -169,9 +169,6 @@ if (!class_exists(BaseInfo::class)) {
         #[ORM\Column(name: 'ucp_catalog_requires_auth', type: Types::BOOLEAN, options: ['default' => false])]
         private bool $ucp_catalog_requires_auth = false;
 
-        #[ORM\Column(name: 'google_pay_merchant_id', type: Types::STRING, length: 255, nullable: true)]
-        private ?string $google_pay_merchant_id = null;
-
         /**
          * Get id.
          *
@@ -938,24 +935,6 @@ if (!class_exists(BaseInfo::class)) {
         public function isUcpCatalogRequiresAuth(): bool
         {
             return $this->ucp_catalog_requires_auth;
-        }
-
-        /**
-         * Set googlePayMerchantId.
-         */
-        public function setGooglePayMerchantId(?string $googlePayMerchantId = null): BaseInfo
-        {
-            $this->google_pay_merchant_id = $googlePayMerchantId;
-
-            return $this;
-        }
-
-        /**
-         * Get googlePayMerchantId.
-         */
-        public function getGooglePayMerchantId(): ?string
-        {
-            return $this->google_pay_merchant_id;
         }
     }
 }
