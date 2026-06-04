@@ -49,7 +49,9 @@ jobs:
         if: matrix.db == 'mysql'
         run: |
           for _ in $(seq 1 30); do mysqladmin ping -h 127.0.0.1 --silent && break; sleep 1; done
-          sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH caching_sha2_password BY 'password'; FLUSH PRIVILEGES;"
+          mysqladmin ping -h 127.0.0.1 --silent || { echo 'MySQL did not become ready within 30s'; exit 1; }
+          ## DATABASE_URL は TCP(127.0.0.1) 接続のため、TCP 経路でアクセスする root@'%' にも認証情報を設定する
+          sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH caching_sha2_password BY 'password'; CREATE USER IF NOT EXISTS 'root'@'%' IDENTIFIED WITH caching_sha2_password BY 'password'; GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION; FLUSH PRIVILEGES;"
           ## DATABASE_URL と同一経路 (TCP/root/password) で接続できることを検証
           mysql -h 127.0.0.1 -P 3306 -u root -ppassword -e 'SELECT VERSION()'
 
@@ -63,6 +65,7 @@ jobs:
         if: matrix.db == 'pgsql'
         run: |
           for _ in $(seq 1 30); do pg_isready -h 127.0.0.1 && break; sleep 1; done
+          pg_isready -h 127.0.0.1 || { echo 'PostgreSQL did not become ready within 30s'; exit 1; }
           psql -h 127.0.0.1 -U postgres -c "ALTER USER postgres PASSWORD 'password'"
           ## DATABASE_URL と同一経路 (TCP/postgres/password) で接続できることを検証
           PGPASSWORD=password psql -h 127.0.0.1 -U postgres -c 'SELECT VERSION()'
