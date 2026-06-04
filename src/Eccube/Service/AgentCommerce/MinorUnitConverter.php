@@ -19,8 +19,10 @@ use Symfony\Component\Intl\Currencies;
  * 通貨の major-unit (人間が扱う表記) と minor-unit (整数表現) を相互変換するサービス.
  *
  * ACP / UCP の金額はいずれも minor-unit (最小通貨単位) の整数で表現される。
- * 小数桁数は ISO 4217 の権威データ (symfony/intl) から取得するため、
- * JPY/KRW/TWD のようなゼロデシマル通貨や BHD のような 3 桁通貨も正しく扱える。
+ * minor-unit は major-unit を「通貨の小数桁数 (ISO 4217) だけ 10 倍した整数」で、
+ * 同じ "1000" でも通貨ごとに桁数が変わる (JPY は ×1、USD は ×100)。一律 ×100 ではない点に注意。
+ * 桁数は symfony/intl の権威データから取得するため、ゼロデシマル通貨 (JPY/KRW/TWD) や
+ * 3 桁通貨 (BHD 等) も自動で正しく扱える (EC-CUBE 本体の金額カラムは 2 桁まで)。
  * 割引・返金などの負数にも対応する。
  */
 class MinorUnitConverter
@@ -28,10 +30,15 @@ class MinorUnitConverter
     /**
      * major-unit の金額文字列を minor-unit の整数へ変換する.
      *
-     * 例: ("12.34", "USD") => 1234, ("1000", "JPY") => 1000, ("-1.5", "BHD") => -1500
+     * minor-unit は「通貨の小数桁数 (ISO 4217) だけ 0 が増えた整数」。
+     * 同じ金額でも通貨によって桁数が変わる (一律 ×100 ではない):
+     *   ("1000",    "JPY") => 1000     // 0 桁通貨: ×10^0 → 桁は増えない
+     *   ("1000.00", "USD") => 100000   // 2 桁通貨: ×10^2 → 0 が 2 つ増える
+     *   ("12.34",   "USD") => 1234
+     *   ("-15.00",  "USD") => -1500    // 割引・返金などの負数も可
      *
      * @param string $amount   major-unit の金額 (decimal 文字列). 負数可
-     * @param string $currency ISO 4217 通貨コード (例: USD, JPY, BHD)
+     * @param string $currency ISO 4217 通貨コード (例: JPY, USD)
      */
     public function toMinorUnits(string $amount, string $currency): int
     {
@@ -68,9 +75,12 @@ class MinorUnitConverter
     }
 
     /**
-     * minor-unit の整数を major-unit の decimal 文字列へ変換する.
+     * minor-unit の整数を major-unit の decimal 文字列へ変換する (toMinorUnits の逆変換).
      *
-     * 例: (1234, "USD") => "12.34", (1000, "JPY") => "1000", (-1500, "BHD") => "-1.500"
+     *   (1000,   "JPY") => "1000"     // 0 桁通貨: そのまま
+     *   (100000, "USD") => "1000.00"  // 2 桁通貨: 下 2 桁が小数部
+     *   (1234,   "USD") => "12.34"
+     *   (-1500,  "USD") => "-15.00"
      *
      * @param int    $minorUnits minor-unit の整数. 負数可
      * @param string $currency   ISO 4217 通貨コード
