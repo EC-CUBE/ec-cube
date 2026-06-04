@@ -15,7 +15,7 @@ services:
       DATABASE_CHARSET: 'utf8'
 
   postgres:
-    image: postgres:14
+    image: postgres:18
     environment:
       POSTGRES_USER: dbuser
       POSTGRES_PASSWORD: secret

@@ -75,7 +75,7 @@ jobs:
 #            command6: 'EF06OtherCest:other_お問い合わせ1'
     services:
       postgres:
-        image: postgres:14
+        image: postgres:18
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
