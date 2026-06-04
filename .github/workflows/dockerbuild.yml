@@ -17,12 +17,15 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-24.04 ]
-        php: [ '8.3', '8.4', '8.5' ]
+        php: [ '8.2', '8.3', '8.4', '8.5' ]
         db: [ pgsql ]
         include:
           - db: pgsql
             database_url: postgres://dbuser:secret@127.0.0.1:15432/eccubedb
             database_server_version: 14
+          - php: '8.2'
+            tag: '8.2-apache'
+            ext_install_args: 'zip gd mysqli pdo_mysql opcache intl'
           - php: '8.3'
             tag: '8.3-apache'
             ext_install_args: 'zip gd mysqli pdo_mysql opcache intl'
