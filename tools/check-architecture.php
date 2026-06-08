@@ -41,6 +41,8 @@ if ($changed) {
     $cmds = [
         'git -C '.escapeshellarg($root).' diff --name-only --diff-filter=ACM HEAD',
         'git -C '.escapeshellarg($root).' diff --name-only --diff-filter=ACM --cached',
+        // 未追跡（git add 前）の新規ファイルも対象に含める（新規 Controller/Service を書いた直後を拾う）
+        'git -C '.escapeshellarg($root).' ls-files --others --exclude-standard',
     ];
     foreach ($cmds as $cmd) {
         $out = [];

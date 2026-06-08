@@ -78,6 +78,18 @@ foreach ($targets as $target) {
             }
             file_put_contents($path, $content);
         }
+        // ファイル削除で空になったディレクトリを掃除する（深い階層から順に rmdir）
+        if (is_dir($target)) {
+            $dirs = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($target, FilesystemIterator::SKIP_DOTS),
+                RecursiveIteratorIterator::CHILD_FIRST
+            );
+            foreach ($dirs as $entry) {
+                if ($entry->isDir() && !(new FilesystemIterator($entry->getPathname()))->valid()) {
+                    @rmdir($entry->getPathname());
+                }
+            }
+        }
         echo "synced: {$target}\n";
     }
 }

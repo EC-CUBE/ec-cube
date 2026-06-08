@@ -174,7 +174,7 @@ EC-CUBE は Symfony の EventDispatcher を拡張してカスタマイズを実�
 - コントローラは `Eccube\Controller\AbstractController` を継承。
 - FormType は `Symfony\Component\Form\AbstractType` を継承。
 - リポジトリは `Eccube\Repository\AbstractRepository` を継承。
-- **ルーティングは `#[Route]` 属性**（`Symfony\Component\Routing\Annotation\Route`）。
+- **ルーティングは `#[Route]` 属性**（`Symfony\Component\Routing\Attribute\Route`）。
 - テンプレートは `.twig`。管理画面は `Resource/template/admin/`、店頭は `Resource/template/default/`。
 
 ## コーディング規約（レイヤ別・オンデマンド）

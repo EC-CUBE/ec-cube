@@ -11,10 +11,10 @@
   `SKILL.md` のスタブだけを置き、本文（このディレクトリ）を読み込ませる。
 
 ```
-docs/rules/<layer>.md                      ← 規約の本文（実体・1 ソース）
-.claude/skills/eccube-<layer>/SKILL.md     ← Claude Code 用スタブ
-.codex/skills/eccube-<layer>/SKILL.md      ← Codex CLI 用スタブ
-.agents/skills/eccube-<layer>/SKILL.md     ← Google Antigravity 用スタブ
+docs/rules/<layer>.md                ← 規約の本文（実体・1 ソース）
+.claude/skills/<layer>/SKILL.md      ← Claude Code 用スタブ
+.codex/skills/<layer>/SKILL.md       ← Codex CLI 用スタブ
+.agents/skills/<layer>/SKILL.md      ← Google Antigravity 用スタブ
 ```
 
 Cursor は `.claude/skills/` と `.codex/skills/` を互換読み込みするため、専用スタブは不要です。

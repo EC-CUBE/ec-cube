@@ -16,12 +16,12 @@
 3. **Service / Repository(参照) を呼んで処理を委譲**する
 4. フラッシュメッセージ・リダイレクト・テンプレート変数を組み立てて返す
 
-基底クラス `Eccube\Controller\AbstractController` が提供するヘルパを使う:
+基底クラス `Eccube\Controller\AbstractController`（および Symfony の親クラス）が提供するヘルパを使う:
 `addSuccess()` / `addError()` / `addWarning()` / `addRequestError()` /
-`isTokenValid()` / `forwardToRoute()` / `getUser()` など。
+`isTokenValid()` / `forwardToRoute()` / `getUser()`（`getUser()` は Symfony 親クラス由来）など。
 
 ```php
-final class ExampleController extends AbstractController
+class ExampleController extends AbstractController
 {
     public function __construct(
         private readonly ExampleService $exampleService,   // 業務処理は Service に注入
@@ -47,7 +47,7 @@ final class ExampleController extends AbstractController
 }
 ```
 
-- ルーティングは **`#[Route]` 属性**（`Symfony\Component\Routing\Annotation\Route`）。
+- ルーティングは **`#[Route]` 属性**を使う（属性クラスの FQCN は共通規約に集約。`@Route` アノテーションは使わない）。
 - 依存はコンストラクタインジェクション（`private readonly`）。インターフェース型ヒントを優先。
 
 ## コントローラに書いてはいけないこと（Service へ出す）
