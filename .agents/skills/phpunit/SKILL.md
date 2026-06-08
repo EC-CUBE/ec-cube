@@ -3,6 +3,12 @@ name: phpunit
 description: EC-CUBE 4.4 の PHPUnit テストを実装・修正するときの規約。「テストを書いて」「PHPUnitテストを追加して」「コントローラのテストを作って」「テストが落ちる原因を調べて直して」などと言われたとき、または tests/Eccube/Tests 配下のテストコードを作成・編集するときに使用する。
 ---
 
+<!--
+  このファイルは tools/sync-ai-skills.php により同期される Skill スタブです。
+  正本は .claude/skills/ 配下。編集は必ず正本に対して行い、`php tools/sync-ai-skills.php` を実行してください。
+  .codex/skills/・.agents/skills/ 配下は生成物のため直接編集しないこと。
+-->
+
 # EC-CUBE 4.4 PHPUnit テスト規約
 
 EC-CUBE 4.4（Symfony 7.4 / PHP 8.2+ / PHPUnit 11）のテストを実装・修正する際は、

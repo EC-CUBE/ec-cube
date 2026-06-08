@@ -3,6 +3,12 @@ name: migration
 description: EC-CUBE 4.4 のデータベースマイグレーションを作成・編集するときの規約。「マイグレーションを作って」「カラムを追加して」「テーブルを変更して」「スキーマを変えたい」「Entityにフィールドを足したのでDBに反映したい」などと言われたとき、または app/DoctrineMigrations 配下を作成・編集するとき、Entity の属性を変更してスキーマに影響するときに使用する。
 ---
 
+<!--
+  このファイルは tools/sync-ai-skills.php により同期される Skill スタブです。
+  正本は .claude/skills/ 配下。編集は必ず正本に対して行い、`php tools/sync-ai-skills.php` を実行してください。
+  .codex/skills/・.agents/skills/ 配下は生成物のため直接編集しないこと。
+-->
+
 # EC-CUBE 4.4 マイグレーション規約
 
 スキーマ変更・マイグレーション作成時は、必ず次のドキュメントを読み込み、その規約に従うこと。

@@ -3,6 +3,12 @@ name: service
 description: EC-CUBE 4.4 の Service を実装・改修するときの責務分離規約。「サービスを作って」「ロジックをサービスに切り出して」「このサービスを直して」「コントローラから業務処理を抽出して」などと言われたとき、または src/Eccube/Service・app/Customize/Service 配下を作成・編集するときに使用する。業務ロジックの受け皿を単一責任・HTTP非依存に保つための規約。
 ---
 
+<!--
+  このファイルは tools/sync-ai-skills.php により同期される Skill スタブです。
+  正本は .claude/skills/ 配下。編集は必ず正本に対して行い、`php tools/sync-ai-skills.php` を実行してください。
+  .codex/skills/・.agents/skills/ 配下は生成物のため直接編集しないこと。
+-->
+
 # EC-CUBE 4.4 Service 実装規約（責務分離）
 
 Service を実装・改修する際は、必ず次のドキュメントを読み込み、その規約に従うこと。

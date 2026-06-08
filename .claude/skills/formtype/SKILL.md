@@ -3,6 +3,12 @@ name: formtype
 description: EC-CUBE 4.4 のフォーム（FormType）を実装・改修するときの規約。「フォームを作って」「FormTypeを追加して」「入力項目を足して」「バリデーションを設定して」「検索フォームを作って」「既存フォームに項目を追加して」などと言われたとき、または src/Eccube/Form・app/Customize/Form 配下を作成・編集するときに使用する。
 ---
 
+<!--
+  このファイルは tools/sync-ai-skills.php により同期される Skill スタブです。
+  正本は .claude/skills/ 配下。編集は必ず正本に対して行い、`php tools/sync-ai-skills.php` を実行してください。
+  .codex/skills/・.agents/skills/ 配下は生成物のため直接編集しないこと。
+-->
+
 # EC-CUBE 4.4 FormType 実装規約
 
 FormType を実装・改修する際は、必ず次のドキュメントを読み込み、その規約に従うこと。

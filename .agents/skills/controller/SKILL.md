@@ -3,6 +3,12 @@ name: controller
 description: EC-CUBE 4.4 のコントローラを実装・改修するときの責務分離規約。「コントローラを作って」「アクションを追加して」「このコントローラを直して」「ルーティングを追加して」などと言われたとき、または src/Eccube/Controller・app/Customize/Controller 配下を作成・編集するときに使用する。Fat コントローラを避け業務ロジックを Service へ寄せるための規約。
 ---
 
+<!--
+  このファイルは tools/sync-ai-skills.php により同期される Skill スタブです。
+  正本は .claude/skills/ 配下。編集は必ず正本に対して行い、`php tools/sync-ai-skills.php` を実行してください。
+  .codex/skills/・.agents/skills/ 配下は生成物のため直接編集しないこと。
+-->
+
 # EC-CUBE 4.4 コントローラ実装規約（責務分離）
 
 コントローラを実装・改修する際は、必ず次のドキュメントを読み込み、その規約に従うこと。
