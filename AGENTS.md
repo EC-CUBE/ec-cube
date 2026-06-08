@@ -182,11 +182,13 @@ EC-CUBE は Symfony の EventDispatcher を拡張してカスタマイズを実�
 レイヤ別の詳細規約は **常時読み込まず**、必要なときだけ参照します。本文は `docs/rules/` に
 ベンダー中立な Markdown として 1 ソースで管理し、各 AI ツールには「Skill」として発火スタブを置いています。
 
-| レイヤ | 規約ドキュメント | Skill 名 |
+| レイヤ / 観点 | 規約ドキュメント | Skill 名 |
 |--------|------------------|----------|
 | PHPUnit テスト | [`docs/rules/phpunit.md`](./docs/rules/phpunit.md) | `eccube-phpunit` |
+| コントローラ（責務分離・Fat化防止） | [`docs/rules/controller.md`](./docs/rules/controller.md) | `eccube-controller` |
+| 責務分離レビュー（実装直後の自己チェック） | [`docs/rules/controller.md`](./docs/rules/controller.md) | `eccube-responsibility-review` |
 
-> 今後、Entity / Repository / Controller / FormType / Service / Twig / CSS / JS / YAML 等を順次追加予定です。
+> 今後、Entity / Repository / FormType / Service / Twig / CSS / JS / YAML 等を順次追加予定です。
 > 規約の設計方針は [`docs/rules/README.md`](./docs/rules/README.md) を参照してください。
 
 ## 主要エンティティ

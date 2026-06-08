@@ -41,10 +41,21 @@ php tools/sync-ai-skills.php
 | レイヤ | ドキュメント | 状態 |
 |--------|--------------|------|
 | PHPUnit テスト | [`phpunit.md`](./phpunit.md) | ✅ |
+| Controller（責務分離・Fat化防止） | [`controller.md`](./controller.md) | ✅ |
 | Entity | `entity.md` | 予定 |
 | Repository | `repository.md` | 予定 |
-| Controller | `controller.md` | 予定 |
 | FormType | `formtype.md` | 予定 |
 | Service | `service.md` | 予定 |
 | Twig / CSS / JS | `twig.md` / `css.md` / `js.md` | 予定 |
 | YAML 設定 | `yaml.md` | 予定 |
+
+## 責務分離・Fat 化防止について
+
+Fat コントローラや責務分離の崩れは、本プロジェクトでは **CI で既存コードを落とす方式は採らず**、
+次の「書く時」「実装直後」の 2 点で防ぐ方針（段階導入の第1段階。詳細は `controller.md`）:
+
+- **書く時**: Skill `eccube-controller` が `controller.md` を参照させ、薄いコントローラを促す。
+- **実装直後**: Skill `eccube-responsibility-review` が `tools/check-fat-controller.php` を実行し観点を可視化。
+
+`tools/check-fat-controller.php` は依存追加なし・助言用（CI を落とさない）。
+将来、合意が取れれば PHPMD / Deptrac＋ベースラインで段階的に強化できる。
