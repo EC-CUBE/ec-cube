@@ -47,14 +47,15 @@ php tools/sync-ai-skills.php
 | Entity | [`entity.md`](./entity.md) | ✅ |
 | Repository | [`repository.md`](./repository.md) | ✅ |
 | FormType | [`formtype.md`](./formtype.md) | ✅ |
-| Twig / CSS / JS | `twig.md` / `css.md` / `js.md` | 予定 |
-| YAML 設定 | `yaml.md` | 予定 |
+
+> 規約は網羅を目的とせず、**必要になった観点を必要なときに**追加する方針。
+> 新しい規約は上記と同じ構成（本文 `*.md` ＋ 各ツールの Skill スタブ）で足す。
 
 ## Skill の命名規則
 
 リポジトリ内のスキルのため、冗長な `eccube-` 接頭辞は付けない。
 
-- **レイヤ規約系（自動発火）**: トピック名 …… `controller` / `service` / `phpunit` / （今後）`entity` 等。
+- **レイヤ規約系（自動発火）**: トピック名 …… `controller` / `service` / `entity` / `phpunit` 等。
 - **アクション系（人が明示実行）**: 動詞前置 …… `review-responsibility` 等。
 
 > 留意: Cursor / Codex はグローバル `~/.claude/skills` 等も併読するため、ごく稀に名前が衝突しうる。

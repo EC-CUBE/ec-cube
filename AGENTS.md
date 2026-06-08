@@ -193,8 +193,8 @@ EC-CUBE は Symfony の EventDispatcher を拡張してカスタマイズを実�
 | FormType（フォーム） | [`docs/rules/formtype.md`](./docs/rules/formtype.md) | `formtype` |
 | 責務分離レビュー（実装直後の自己チェック・全層） | [`docs/rules/controller.md`](./docs/rules/controller.md) ／ [`service.md`](./docs/rules/service.md) | `review-responsibility` |
 
-> 今後、Twig / CSS / JS / YAML 等を順次追加予定です。
-> 規約の設計方針・Skill 命名規則は [`docs/rules/README.md`](./docs/rules/README.md) を参照してください。
+> 規約は必要になった時点で同じ構成（`docs/rules/*.md` ＋ Skill スタブ）で追加する。
+> 設計方針・Skill 命名規則は [`docs/rules/README.md`](./docs/rules/README.md) を参照してください。
 
 **Skill 命名規則**: リポジトリ内のスキルのため `eccube-` 接頭辞は付けない。
 自動発火するレイヤ規約系はトピック名（`controller` / `service` / `phpunit`）、
