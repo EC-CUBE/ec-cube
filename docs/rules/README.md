@@ -44,9 +44,9 @@ php tools/sync-ai-skills.php
 | Controller（責務分離・Fat化防止） | [`controller.md`](./controller.md) | ✅ |
 | Service（責務分離・単一責任） | [`service.md`](./service.md) | ✅ |
 | マイグレーション（スキーマ変更） | [`migration.md`](./migration.md) | ✅ |
-| Entity | `entity.md` | 予定 |
-| Repository | `repository.md` | 予定 |
-| FormType | `formtype.md` | 予定 |
+| Entity | [`entity.md`](./entity.md) | ✅ |
+| Repository | [`repository.md`](./repository.md) | ✅ |
+| FormType | [`formtype.md`](./formtype.md) | ✅ |
 | Twig / CSS / JS | `twig.md` / `css.md` / `js.md` | 予定 |
 | YAML 設定 | `yaml.md` | 予定 |
 
