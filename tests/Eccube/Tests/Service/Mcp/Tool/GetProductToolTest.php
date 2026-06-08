@@ -18,9 +18,9 @@ namespace Eccube\Tests\Service\Mcp\Tool;
 use Eccube\Service\Mcp\McpScope;
 use Eccube\Service\Mcp\Tool\GetProductTool;
 use Eccube\Tests\EccubeTestCase;
+use Mcp\Exception\ToolCallException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * `GetProductTool` の DB 結合テスト。 商品 ID / 商品コードによる取得と、 不在時の挙動を検証する。
@@ -38,7 +38,7 @@ final class GetProductToolTest extends EccubeTestCase
 
     public function testThrowsWhenScopeIsAbsent(): void
     {
-        $this->expectException(AccessDeniedException::class);
+        $this->expectException(ToolCallException::class);
         $this->tool->get(id: 1);
     }
 

@@ -15,7 +15,7 @@ declare(strict_types=1);
 
 namespace Eccube\Service\Mcp;
 
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Mcp\Exception\ToolCallException;
 
 /**
  * MCP Tool が必ず行う 3 つの横断処理を一括化する: (1) 必要 scope の検査、 (2) 実行時間計測、
@@ -53,7 +53,7 @@ final readonly class ToolInvoker
 
         try {
             $this->scopeChecker->require($requiredScope);
-        } catch (AccessDeniedException $e) {
+        } catch (ToolCallException $e) {
             $this->auditLogger->logToolCall(
                 toolName: $toolName,
                 args: $args,

@@ -18,9 +18,9 @@ namespace Eccube\Tests\Service\Mcp\Tool;
 use Eccube\Service\Mcp\McpScope;
 use Eccube\Service\Mcp\Tool\GetPluginTool;
 use Eccube\Tests\EccubeTestCase;
+use Mcp\Exception\ToolCallException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * `GetPluginTool` の DB 結合テスト。 Api44 を題材に composer.json マージまで確認する。
@@ -38,7 +38,7 @@ final class GetPluginToolTest extends EccubeTestCase
 
     public function testThrowsWhenScopeIsAbsent(): void
     {
-        $this->expectException(AccessDeniedException::class);
+        $this->expectException(ToolCallException::class);
         $this->tool->get(code: 'Api44');
     }
 

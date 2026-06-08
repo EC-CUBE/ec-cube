@@ -18,9 +18,9 @@ namespace Eccube\Tests\Service\Mcp\Tool;
 use Eccube\Service\Mcp\McpScope;
 use Eccube\Service\Mcp\Tool\SearchProductsTool;
 use Eccube\Tests\EccubeTestCase;
+use Mcp\Exception\ToolCallException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * `SearchProductsTool` の DB 結合テスト。
@@ -42,7 +42,7 @@ final class SearchProductsToolTest extends EccubeTestCase
 
     public function testThrowsWhenScopeIsAbsent(): void
     {
-        $this->expectException(AccessDeniedException::class);
+        $this->expectException(ToolCallException::class);
         $this->tool->search();
     }
 

@@ -18,9 +18,9 @@ namespace Eccube\Tests\Service\Mcp\Tool;
 use Eccube\Service\Mcp\McpScope;
 use Eccube\Service\Mcp\Tool\GetShippingTool;
 use Eccube\Tests\EccubeTestCase;
+use Mcp\Exception\ToolCallException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * `GetShippingTool` の DB 結合テスト。 Order に紐づく Shipping 一覧の返却と不在時の挙動を検証する。
@@ -38,7 +38,7 @@ final class GetShippingToolTest extends EccubeTestCase
 
     public function testThrowsWhenScopeIsAbsent(): void
     {
-        $this->expectException(AccessDeniedException::class);
+        $this->expectException(ToolCallException::class);
         $this->tool->get(orderId: 1);
     }
 

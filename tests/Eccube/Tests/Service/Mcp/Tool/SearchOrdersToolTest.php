@@ -22,9 +22,9 @@ use Eccube\Service\Mcp\McpScope;
 use Eccube\Service\Mcp\Tool\SearchOrdersTool;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Tests\Fixture\Generator;
+use Mcp\Exception\ToolCallException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * `SearchOrdersTool` の DB 結合テスト。
@@ -44,7 +44,7 @@ final class SearchOrdersToolTest extends EccubeTestCase
 
     public function testThrowsWhenScopeIsAbsent(): void
     {
-        $this->expectException(AccessDeniedException::class);
+        $this->expectException(ToolCallException::class);
         $this->tool->search();
     }
 

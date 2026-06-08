@@ -19,9 +19,9 @@ use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Service\Mcp\McpScope;
 use Eccube\Service\Mcp\Tool\SearchCustomersTool;
 use Eccube\Tests\EccubeTestCase;
+use Mcp\Exception\ToolCallException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * `SearchCustomersTool` の DB 結合テスト。 scope / 検索 / status 絞り込み / allow_list を検証。
@@ -39,7 +39,7 @@ final class SearchCustomersToolTest extends EccubeTestCase
 
     public function testThrowsWhenScopeIsAbsent(): void
     {
-        $this->expectException(AccessDeniedException::class);
+        $this->expectException(ToolCallException::class);
         $this->tool->search();
     }
 
