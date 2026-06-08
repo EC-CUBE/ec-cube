@@ -75,8 +75,8 @@ final class ExampleController extends AbstractController
 実装・改修後に、変更したコントローラを簡易検査できる（依存追加なし・助言用）:
 
 ```bash
-php tools/check-fat-controller.php --changed   # 変更されたコントローラのみ
-php tools/check-fat-controller.php src/Eccube/Controller/CartController.php
+php tools/check-architecture.php --changed   # 変更された Controller/Service のみ
+php tools/check-architecture.php src/Eccube/Controller/CartController.php
 ```
 
 メソッド長・コンストラクタ依存数・`persist`/`flush` 直書きを報告する。

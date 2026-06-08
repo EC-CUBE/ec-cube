@@ -12,15 +12,15 @@
  */
 
 /*
- * コントローラの Fat 化・責務分離の観点を可視化する助言用スクリプト。
+ * コントローラ/サービスの Fat 化・責務分離（レイヤ違反）の観点を可視化する助言用スクリプト。
  *
  * 追加の依存を必要としない（token_get_all のみ使用）。
  * CI を落とすためのものではなく、実装・レビュー時の自己チェック用。
- * docs/rules/controller.md と対で使う。
+ * docs/rules/controller.md, docs/rules/service.md と対で使う。
  *
- *   php tools/check-fat-controller.php --changed                 # git で変更されたコントローラのみ
- *   php tools/check-fat-controller.php src/Eccube/Controller/...  # ファイル/ディレクトリ指定
- *   php tools/check-fat-controller.php                           # 既定: src/Eccube/Controller と app/Customize/Controller
+ *   php tools/check-architecture.php --changed              # git で変更された Controller/Service のみ
+ *   php tools/check-architecture.php src/Eccube/Service/...  # ファイル/ディレクトリ指定
+ *   php tools/check-architecture.php                        # 既定: Controller と Service 全体
  *
  * 終了コードは常に 0（助言用）。--strict を付けると指摘ありで 1 を返す。
  */
@@ -30,24 +30,33 @@ const MAX_CTOR_ARGS = 7;      // コンストラクタ依存数の目安
 
 $args = array_slice($argv, 1);
 $strict = in_array('--strict', $args, true);
-$args = array_values(array_filter($args, static fn ($a) => $a !== '--strict'));
+$changed = in_array('--changed', $args, true);
+$paths = array_values(array_filter($args, static fn ($a) => !str_starts_with($a, '--')));
 
 $root = dirname(__DIR__);
 
 // 対象ファイルの収集
 $files = [];
-if (in_array('--changed', $args, true)) {
-    exec('git -C '.escapeshellarg($root).' diff --name-only --diff-filter=ACM HEAD', $out);
-    exec('git -C '.escapeshellarg($root).' diff --name-only --diff-filter=ACM --cached', $cached);
-    foreach (array_merge($out, $cached) as $rel) {
-        if (preg_match('#Controller/.*\.php$#', $rel)) {
-            $files[] = $root.'/'.$rel;
+if ($changed) {
+    $cmds = [
+        'git -C '.escapeshellarg($root).' diff --name-only --diff-filter=ACM HEAD',
+        'git -C '.escapeshellarg($root).' diff --name-only --diff-filter=ACM --cached',
+    ];
+    foreach ($cmds as $cmd) {
+        $out = [];
+        exec($cmd, $out);
+        foreach ($out as $rel) {
+            if (preg_match('#(Controller|Service)/.*\.php$#', $rel)) {
+                $files[] = $root.'/'.$rel;
+            }
         }
     }
 } else {
-    $paths = array_values(array_filter($args, static fn ($a) => !str_starts_with($a, '--')));
     if ($paths === []) {
-        $paths = [$root.'/src/Eccube/Controller', $root.'/app/Customize/Controller'];
+        $paths = [
+            $root.'/src/Eccube/Controller', $root.'/app/Customize/Controller',
+            $root.'/src/Eccube/Service', $root.'/app/Customize/Service',
+        ];
     }
     foreach ($paths as $path) {
         if (is_file($path)) {
@@ -65,20 +74,21 @@ if (in_array('--changed', $args, true)) {
 
 $files = array_values(array_unique(array_filter($files, 'is_file')));
 if ($files === []) {
-    echo "対象コントローラが見つかりませんでした。\n";
+    echo "対象（Controller/Service）が見つかりませんでした。\n";
     exit(0);
 }
 
-$findings = 0;
-
-foreach ($files as $file) {
-    $code = (string) file_get_contents($file);
+/**
+ * メソッド長とコンストラクタ引数数を解析する。
+ *
+ * @return array{methods: array<string, int>, ctorArgs: int}
+ */
+function analyzeStructure(string $code): array
+{
     $tokens = token_get_all($code);
-    $rel = str_replace($root.'/', '', $file);
-    $fileFindings = [];
-
-    // トークン index → 行番号のマップを作る（'{' '}' 等の単一文字トークンは行を持たないため）
     $n = count($tokens);
+
+    // トークン index → 行番号のマップ（'{' '}' 等の単一文字トークンは行を持たないため）
     $lineAt = [];
     $line = 1;
     for ($i = 0; $i < $n; $i++) {
@@ -91,12 +101,12 @@ foreach ($files as $file) {
         }
     }
 
-    // メソッドごとの行数・コンストラクタ引数を解析
+    $methods = [];
+    $ctorArgs = 0;
     for ($i = 0; $i < $n; $i++) {
         if (!is_array($tokens[$i]) || $tokens[$i][0] !== T_FUNCTION) {
             continue;
         }
-        // メソッド名を取得
         $name = null;
         for ($j = $i + 1; $j < $n; $j++) {
             if (is_array($tokens[$j]) && $tokens[$j][0] === T_STRING) {
@@ -111,7 +121,6 @@ foreach ($files as $file) {
             continue;
         }
 
-        // 本体 { ... } の範囲を求める
         $depth = 0;
         $startLine = $endLine = null;
         $argCount = 0;
@@ -149,26 +158,54 @@ foreach ($files as $file) {
             }
         }
 
-        if ($name === '__construct' && $argCount > MAX_CTOR_ARGS) {
-            $fileFindings[] = sprintf('  コンストラクタ依存 %d 個（目安 %d 超）: 責務過多の可能性 → Service へ集約を検討', $argCount, MAX_CTOR_ARGS);
+        if ($name === '__construct') {
+            $ctorArgs = $argCount;
         }
-
-        if ($startLine && $endLine) {
-            $lines = $endLine - $startLine + 1;
-            if ($lines > MAX_METHOD_LINES && $name !== '__construct') {
-                $fileFindings[] = sprintf('  %s(): 約 %d 行（目安 %d 超）→ 業務ロジックの Service 抽出を検討', $name, $lines, MAX_METHOD_LINES);
-            }
+        if ($startLine && $endLine && $name !== '__construct') {
+            $methods[$name] = $endLine - $startLine + 1;
         }
     }
 
-    // persist/flush の直書き
-    if (preg_match_all('/->\s*(persist|flush)\s*\(/', $code, $m)) {
+    return ['methods' => $methods, 'ctorArgs' => $ctorArgs];
+}
+
+$findings = 0;
+
+foreach ($files as $file) {
+    $code = (string) file_get_contents($file);
+    $rel = str_replace($root.'/', '', $file);
+    $isController = (bool) preg_match('#/Controller/#', $file);
+    $isService = (bool) preg_match('#/Service/#', $file);
+    $structure = analyzeStructure($code);
+    $fileFindings = [];
+
+    // 共通: コンストラクタ依存数
+    if ($structure['ctorArgs'] > MAX_CTOR_ARGS) {
+        $fileFindings[] = sprintf('  コンストラクタ依存 %d 個（目安 %d 超）: 責務過多の可能性 → 分割を検討', $structure['ctorArgs'], MAX_CTOR_ARGS);
+    }
+
+    // 共通: メソッド長
+    foreach ($structure['methods'] as $name => $lines) {
+        if ($lines > MAX_METHOD_LINES) {
+            $dest = $isController ? '業務ロジックの Service 抽出' : 'private メソッド分割または別クラス抽出';
+            $fileFindings[] = sprintf('  %s(): 約 %d 行（目安 %d 超）→ %s を検討', $name, $lines, MAX_METHOD_LINES, $dest);
+        }
+    }
+
+    // コントローラ固有: persist/flush 直書き（業務的な永続化は Service へ）
+    if ($isController && preg_match_all('/->\s*(persist|flush)\s*\(/', $code, $m)) {
         $fileFindings[] = sprintf('  EntityManager の %s 直書き %d 箇所: 業務的な永続化は Service へ', implode('/', array_unique($m[1])), count($m[0]));
+    }
+
+    // サービス固有: Controller への依存（レイヤ違反）
+    if ($isService && preg_match_all('/\buse\s+[A-Za-z0-9_\\\\]*Controller(?:\\\\[A-Za-z0-9_]+)?\s*;/', $code, $m)) {
+        $fileFindings[] = sprintf('  Controller への依存 %d 件（レイヤ違反）: 依存は Controller → Service の一方向に保つ', count($m[0]));
     }
 
     if ($fileFindings !== []) {
         $findings += count($fileFindings);
-        echo "● {$rel}\n".implode("\n", $fileFindings)."\n\n";
+        $layer = $isController ? 'Controller' : ($isService ? 'Service' : '?');
+        echo "● [{$layer}] {$rel}\n".implode("\n", $fileFindings)."\n\n";
     }
 }
 
@@ -177,7 +214,7 @@ if ($findings === 0) {
     exit(0);
 }
 
-echo "—— {$findings} 件の観点が見つかりました。docs/rules/controller.md を参照し、Service への抽出を検討してください。\n";
+echo "—— {$findings} 件の観点が見つかりました。docs/rules/controller.md・service.md を参照し、責務の整理を検討してください。\n";
 echo "（これは助言であり、必ずしも修正必須ではありません）\n";
 
 exit($strict ? 1 : 0);

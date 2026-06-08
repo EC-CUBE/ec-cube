@@ -1,5 +1,5 @@
 ---
-name: eccube-phpunit
+name: phpunit
 description: EC-CUBE 4.4 の PHPUnit テストを実装・修正するときの規約。「テストを書いて」「PHPUnitテストを追加して」「コントローラのテストを作って」「テストが落ちる原因を調べて直して」などと言われたとき、または tests/Eccube/Tests 配下のテストコードを作成・編集するときに使用する。
 ---
 
