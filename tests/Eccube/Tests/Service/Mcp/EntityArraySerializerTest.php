@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace Eccube\Tests\Service\Mcp;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Persistence\Proxy;
 use Eccube\Service\Mcp\AllowListResolver;
 use Eccube\Service\Mcp\EntityArraySerializer;
 use PHPUnit\Framework\TestCase;
@@ -170,6 +171,65 @@ final class EntityArraySerializerTest extends TestCase
         $this->assertSame(['related' => []], $result);
     }
 
+    public function testResolvesEntityClassThroughDoctrineProxy(): void
+    {
+        // 実機での `Status: []` バグの再現テスト:
+        // Doctrine が Lazy Proxy (Proxies\__CG__\... の自動生成 class) を返した時に、
+        // allow_list が proxy class 名で引かれて未登録扱いになり空配列が返る問題。
+        // 修正後は親クラス (= 実 entity FQCN) で lookup されるため正しく展開される。
+        $serializer = $this->serializerWith([
+            SerializerProxiableEntity::class => ['id', 'name'],
+        ]);
+
+        $proxy = new class extends SerializerProxiableEntity implements Proxy {
+            #[\Override]
+            public function __load(): void
+            {
+            }
+
+            #[\Override]
+            public function __isInitialized(): bool
+            {
+                return true;
+            }
+        };
+        $proxy->id = 99;
+        $proxy->name = 'proxied';
+
+        $result = $serializer->toArray($proxy);
+
+        $this->assertSame(['id' => 99, 'name' => 'proxied'], $result);
+    }
+
+    public function testDefaultMaxDepthOneSummarizesSiblingInnerRelations(): void
+    {
+        // デフォルト maxDepth=1 の検証。 root の直下 (depth 1) までは展開、 さらにその子 (depth 2)
+        // は要約に縮退。 get_product_stock などで sibling Entity の中身が大量に重複表示される
+        // ノイズを抑止するための仕様変更 (旧デフォルト 2 → 1)。
+        $serializer = $this->serializerWith([
+            SerializerDummyEntity::class => ['id', 'related'],
+            SerializerDummyRelated::class => ['code', 'nested'],
+            SerializerDummyNested::class => ['inner'],
+            SerializerDummyInner::class => ['id'],
+        ]);
+
+        $entity = new SerializerDummyEntity();
+        $entity->id = 1;
+        $entity->related = new SerializerDummyRelated();
+        $entity->related->code = 'A';
+        $entity->related->nested = new SerializerDummyNested();
+        $entity->related->nested->inner = new SerializerDummyInner();
+        $entity->related->nested->inner->id = 100;
+
+        $result = $serializer->toArray($entity); // 引数省略 = DEFAULT_MAX_DEPTH (1)
+
+        // related (depth 1) は full、 nested (depth 2) は要約 (SerializerDummyNested に getId 無し → 空 [])
+        $this->assertSame(
+            ['id' => 1, 'related' => ['code' => 'A', 'nested' => []]],
+            $result,
+        );
+    }
+
     /**
      * @param array<string, list<string>> $allowMap
      */
@@ -214,6 +274,18 @@ final class SerializerDummyRelated
 final class SerializerDummyNested
 {
     public ?SerializerDummyInner $inner = null;
+}
+
+/** @internal Doctrine Proxy 互換テスト用 (non-final で extend 可) */
+class SerializerProxiableEntity
+{
+    public ?int $id = null;
+    public ?string $name = null;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 }
 
 /** @internal */

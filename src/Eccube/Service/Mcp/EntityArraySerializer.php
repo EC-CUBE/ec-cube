@@ -16,21 +16,28 @@ declare(strict_types=1);
 namespace Eccube\Service\Mcp;
 
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Persistence\Proxy;
 
 /**
  * Doctrine Entity を `AllowListResolver` の公開プロパティリストに従って配列化する。
  *
  * - 出力フィールドは allow_list に列挙された項目のみ (未列挙は構造上含まれない)
  * - スカラはそのまま、`\DateTimeInterface` は ISO 8601、Collection / Entity は再帰
- * - 深さ上限 (既定 2) を超えた関連は `id` のみの要約に縮退
+ * - 深さ上限 (既定 1) を超えた関連は `id` のみの要約に縮退
  * - 循環参照は `spl_object_id` のセットで検知し要約に切り替える
+ * - **Doctrine Lazy Proxy** が渡された場合は `Doctrine\Persistence\Proxy` を unwrap して
+ *   実 entity クラス名で allow_list を引く (proxy class 名で引くと未登録扱いで空になる罠の回避)
  *
  * 「allow_list 未登録の Entity」が現れた場合の出力は空配列 (= 全プロパティ非公開)。
  * 設計の最小権限の既定 (Api44 未配線時は何も公開しない) と一致する挙動。
+ *
+ * デフォルト深さを 1 にしている理由: `get_product_stock` 等で root が ProductClass の場合、
+ * 深さ 2 まで full だと `Product.ProductClasses[]` 経由で兄弟 ProductClass がすべて展開され、
+ * 同じ Product の中身が大量に重複出力されてしまう。 Tool 側で必要に応じて 2 以上を指定する。
  */
 final readonly class EntityArraySerializer
 {
-    public const DEFAULT_MAX_DEPTH = 2;
+    public const DEFAULT_MAX_DEPTH = 1;
 
     public function __construct(
         private AllowListResolver $allowListResolver,
@@ -80,7 +87,7 @@ final readonly class EntityArraySerializer
         }
         $visited[$oid] = true;
 
-        $allowedProps = $this->allowListResolver->getAllowedProperties($entity::class);
+        $allowedProps = $this->allowListResolver->getAllowedProperties($this->resolveEntityClass($entity));
         $result = [];
         foreach ($allowedProps as $prop) {
             $value = $this->readProperty($entity, $prop);
@@ -208,5 +215,24 @@ final readonly class EntityArraySerializer
         $parts = explode('_', $propertyName);
 
         return $prefix.implode('', array_map(ucfirst(...), $parts));
+    }
+
+    /**
+     * Doctrine Lazy Proxy が渡された場合に実 entity の class 名を返す。
+     *
+     * Proxy インスタンスの `::class` は `Proxies\__CG__\Eccube\Entity\...` 等の自動生成 class 名で、
+     * allow_list (実 entity FQCN で登録) と一致せず lookup が外れる。 `Doctrine\Persistence\Proxy`
+     * インタフェース実装オブジェクトは親クラスが実 entity なので、 そちらを採用する。
+     */
+    private function resolveEntityClass(object $entity): string
+    {
+        if ($entity instanceof Proxy) {
+            $parent = get_parent_class($entity);
+            if (false !== $parent) {
+                return $parent;
+            }
+        }
+
+        return $entity::class;
     }
 }
