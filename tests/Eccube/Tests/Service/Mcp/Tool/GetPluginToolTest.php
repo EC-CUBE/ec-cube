@@ -58,7 +58,7 @@ final class GetPluginToolTest extends EccubeTestCase
 
         $result = $this->tool->get(code: 'NoSuchPlugin');
 
-        $this->assertSame([], $result);
+        $this->assertSame(['found' => false], $result);
     }
 
     public function testReturnsEmptyWhenNeitherIdNorCode(): void
@@ -67,7 +67,7 @@ final class GetPluginToolTest extends EccubeTestCase
 
         $result = $this->tool->get();
 
-        $this->assertSame([], $result);
+        $this->assertSame(['found' => false], $result);
     }
 
     public function testIncludesComposerJsonDescriptionAndRequire(): void

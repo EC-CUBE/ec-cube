@@ -59,7 +59,7 @@ final readonly class GetProductTool
                 $product = $this->resolveProduct($id, $code);
                 if (null === $product) {
                     return [
-                        'data' => [],
+                        'data' => ['found' => false],
                         'summary' => ['found' => false],
                     ];
                 }

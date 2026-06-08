@@ -71,7 +71,7 @@ final class GetOrderToolTest extends EccubeTestCase
 
         $result = $this->tool->get(id: 99999999);
 
-        $this->assertSame([], $result);
+        $this->assertSame(['found' => false], $result);
     }
 
     public function testReturnsEmptyWhenNeitherIdNorOrderNo(): void
@@ -80,7 +80,7 @@ final class GetOrderToolTest extends EccubeTestCase
 
         $result = $this->tool->get();
 
-        $this->assertSame([], $result);
+        $this->assertSame(['found' => false], $result);
     }
 
     private function grantScope(string $role): void

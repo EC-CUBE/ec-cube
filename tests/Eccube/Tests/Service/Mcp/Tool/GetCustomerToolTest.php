@@ -59,7 +59,7 @@ final class GetCustomerToolTest extends EccubeTestCase
 
         $result = $this->tool->get(id: 99999999);
 
-        $this->assertSame([], $result);
+        $this->assertSame(['found' => false], $result);
     }
 
     private function grantScope(string $role): void

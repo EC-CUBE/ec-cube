@@ -61,7 +61,7 @@ final class GetProductToolTest extends EccubeTestCase
 
         $result = $this->tool->get(id: 99999999);
 
-        $this->assertSame([], $result, '不在 ID は空配列を返す');
+        $this->assertSame(['found' => false], $result, '不在 ID は found:false を返す');
     }
 
     public function testReturnsEmptyWhenNeitherIdNorCode(): void
@@ -70,7 +70,7 @@ final class GetProductToolTest extends EccubeTestCase
 
         $result = $this->tool->get();
 
-        $this->assertSame([], $result, '両方未指定は空配列');
+        $this->assertSame(['found' => false], $result, '両方未指定は found:false を返す');
     }
 
     public function testReturnsProductByCode(): void

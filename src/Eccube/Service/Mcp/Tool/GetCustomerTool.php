@@ -57,7 +57,7 @@ final readonly class GetCustomerTool
                 $customer = $this->customerRepository->find($id);
                 if (null === $customer) {
                     return [
-                        'data' => [],
+                        'data' => ['found' => false],
                         'summary' => ['found' => false],
                     ];
                 }

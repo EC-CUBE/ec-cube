@@ -62,7 +62,7 @@ final readonly class GetPluginTool
                 $plugin = $this->resolvePlugin($id, $code);
                 if (null === $plugin) {
                     return [
-                        'data' => [],
+                        'data' => ['found' => false],
                         'summary' => ['found' => false],
                     ];
                 }

@@ -59,7 +59,7 @@ final readonly class GetOrderTool
                 $order = $this->resolveOrder($id, $orderNo);
                 if (null === $order) {
                     return [
-                        'data' => [],
+                        'data' => ['found' => false],
                         'summary' => ['found' => false],
                     ];
                 }
