@@ -187,6 +187,7 @@ EC-CUBE は Symfony の EventDispatcher を拡張してカスタマイズを実�
 | PHPUnit テスト | [`docs/rules/phpunit.md`](./docs/rules/phpunit.md) | `phpunit` |
 | コントローラ（責務分離・Fat化防止） | [`docs/rules/controller.md`](./docs/rules/controller.md) | `controller` |
 | サービス（責務分離・単一責任） | [`docs/rules/service.md`](./docs/rules/service.md) | `service` |
+| マイグレーション（スキーマ変更） | [`docs/rules/migration.md`](./docs/rules/migration.md) | `migration` |
 | 責務分離レビュー（実装直後の自己チェック・全層） | [`docs/rules/controller.md`](./docs/rules/controller.md) ／ [`service.md`](./docs/rules/service.md) | `review-responsibility` |
 
 > 今後、Entity / Repository / FormType / Twig / CSS / JS / YAML 等を順次追加予定です。

@@ -43,6 +43,7 @@ php tools/sync-ai-skills.php
 | PHPUnit テスト | [`phpunit.md`](./phpunit.md) | ✅ |
 | Controller（責務分離・Fat化防止） | [`controller.md`](./controller.md) | ✅ |
 | Service（責務分離・単一責任） | [`service.md`](./service.md) | ✅ |
+| マイグレーション（スキーマ変更） | [`migration.md`](./migration.md) | ✅ |
 | Entity | `entity.md` | 予定 |
 | Repository | `repository.md` | 予定 |
 | FormType | `formtype.md` | 予定 |
