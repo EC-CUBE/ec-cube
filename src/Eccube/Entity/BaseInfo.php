@@ -154,17 +154,11 @@ if (!class_exists(BaseInfo::class)) {
         #[ORM\Column(name: 'ga_id', type: Types::STRING, length: 255, nullable: true)]
         private ?string $gaId = null;
 
-        #[ORM\Column(name: 'acp_enabled', type: Types::BOOLEAN, options: ['default' => false])]
-        private bool $acp_enabled = false;
+        #[ORM\Column(name: 'acp_checkout_enabled', type: Types::BOOLEAN, options: ['default' => false])]
+        private bool $acp_checkout_enabled = false;
 
-        #[ORM\Column(name: 'ucp_enabled', type: Types::BOOLEAN, options: ['default' => false])]
-        private bool $ucp_enabled = false;
-
-        #[ORM\Column(name: 'acp_feed_enabled', type: Types::BOOLEAN, options: ['default' => false])]
-        private bool $acp_feed_enabled = false;
-
-        #[ORM\Column(name: 'ucp_catalog_api_enabled', type: Types::BOOLEAN, options: ['default' => false])]
-        private bool $ucp_catalog_api_enabled = false;
+        #[ORM\Column(name: 'ucp_checkout_enabled', type: Types::BOOLEAN, options: ['default' => false])]
+        private bool $ucp_checkout_enabled = false;
 
         #[ORM\Column(name: 'ucp_catalog_requires_auth', type: Types::BOOLEAN, options: ['default' => false])]
         private bool $ucp_catalog_requires_auth = false;
@@ -848,75 +842,39 @@ if (!class_exists(BaseInfo::class)) {
         }
 
         /**
-         * Set acpEnabled.
+         * Set acpCheckoutEnabled.
          */
-        public function setAcpEnabled(bool $acpEnabled): BaseInfo
+        public function setAcpCheckoutEnabled(bool $acpCheckoutEnabled): BaseInfo
         {
-            $this->acp_enabled = $acpEnabled;
+            $this->acp_checkout_enabled = $acpCheckoutEnabled;
 
             return $this;
         }
 
         /**
-         * Get acpEnabled.
+         * Get acpCheckoutEnabled.
          */
-        public function isAcpEnabled(): bool
+        public function isAcpCheckoutEnabled(): bool
         {
-            return $this->acp_enabled;
+            return $this->acp_checkout_enabled;
         }
 
         /**
-         * Set ucpEnabled.
+         * Set ucpCheckoutEnabled.
          */
-        public function setUcpEnabled(bool $ucpEnabled): BaseInfo
+        public function setUcpCheckoutEnabled(bool $ucpCheckoutEnabled): BaseInfo
         {
-            $this->ucp_enabled = $ucpEnabled;
+            $this->ucp_checkout_enabled = $ucpCheckoutEnabled;
 
             return $this;
         }
 
         /**
-         * Get ucpEnabled.
+         * Get ucpCheckoutEnabled.
          */
-        public function isUcpEnabled(): bool
+        public function isUcpCheckoutEnabled(): bool
         {
-            return $this->ucp_enabled;
-        }
-
-        /**
-         * Set acpFeedEnabled.
-         */
-        public function setAcpFeedEnabled(bool $acpFeedEnabled): BaseInfo
-        {
-            $this->acp_feed_enabled = $acpFeedEnabled;
-
-            return $this;
-        }
-
-        /**
-         * Get acpFeedEnabled.
-         */
-        public function isAcpFeedEnabled(): bool
-        {
-            return $this->acp_feed_enabled;
-        }
-
-        /**
-         * Set ucpCatalogApiEnabled.
-         */
-        public function setUcpCatalogApiEnabled(bool $ucpCatalogApiEnabled): BaseInfo
-        {
-            $this->ucp_catalog_api_enabled = $ucpCatalogApiEnabled;
-
-            return $this;
-        }
-
-        /**
-         * Get ucpCatalogApiEnabled.
-         */
-        public function isUcpCatalogApiEnabled(): bool
-        {
-            return $this->ucp_catalog_api_enabled;
+            return $this->ucp_checkout_enabled;
         }
 
         /**

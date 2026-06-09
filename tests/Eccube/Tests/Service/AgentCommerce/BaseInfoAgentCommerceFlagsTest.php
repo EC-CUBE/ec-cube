@@ -22,20 +22,20 @@ use Eccube\Tests\EccubeTestCase;
 /**
  * Layer 2 (Doctrine) tests for the agent-commerce BaseInfo flags.
  *
- * Verifies that the five enable flags (acp_enabled / ucp_enabled /
- * acp_feed_enabled / ucp_catalog_api_enabled / ucp_catalog_requires_auth)
- * default to false for both the persisted BaseInfo (id=1) and a freshly
- * constructed instance, matching the "default false / off by default"
- * contract from the base plan.
+ * Verifies that the enable flags (acp_checkout_enabled / ucp_checkout_enabled /
+ * ucp_catalog_requires_auth) default to false for both the persisted BaseInfo
+ * (id=1) and a freshly constructed instance, matching the "default false / off
+ * by default" contract from the base plan.
+ *
+ * Discovery / catalog are always public (no flag); only checkout and the future
+ * catalog auth mode are gated by these flags.
  */
 final class BaseInfoAgentCommerceFlagsTest extends EccubeTestCase
 {
-    /** @var string[] The five enable flags that MUST default to false. */
+    /** @var string[] The enable flags that MUST default to false. */
     private const FLAG_PROPERTIES = [
-        'acp_enabled',
-        'ucp_enabled',
-        'acp_feed_enabled',
-        'ucp_catalog_api_enabled',
+        'acp_checkout_enabled',
+        'ucp_checkout_enabled',
         'ucp_catalog_requires_auth',
     ];
 
