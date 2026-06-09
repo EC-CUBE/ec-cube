@@ -16,6 +16,8 @@ declare(strict_types=1);
 namespace Eccube\Tests\Service\Mcp\Contract;
 
 use Eccube\Tests\EccubeTestCase;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * MCP firewall (Api44 が prepend する `mcp` stateless OAuth2 リソースサーバ) が、 admin Cookie firewall
@@ -37,20 +39,20 @@ final class McpFirewallContractTest extends EccubeTestCase
     public function testReturns401WithoutBearerHeader(): void
     {
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             '/'.$this->getAdminRoute().'/mcp',
             server: ['CONTENT_TYPE' => 'application/json'],
             content: '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-03-26","clientInfo":{"name":"t","version":"1"},"capabilities":{}}}',
         );
 
         $response = $this->client->getResponse();
-        $this->assertSame(401, $response->getStatusCode(), 'Bearer なしは admin Cookie firewall ではなく oauth2 firewall で 401');
+        $this->assertSame(Response::HTTP_UNAUTHORIZED, $response->getStatusCode(), 'Bearer なしは admin Cookie firewall ではなく oauth2 firewall で 401');
     }
 
     public function testReturns401WithInvalidBearer(): void
     {
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             '/'.$this->getAdminRoute().'/mcp',
             server: [
                 'CONTENT_TYPE' => 'application/json',
@@ -60,14 +62,14 @@ final class McpFirewallContractTest extends EccubeTestCase
         );
 
         $response = $this->client->getResponse();
-        $this->assertSame(401, $response->getStatusCode(), '不正な Bearer は league の JWT 検証で 401');
+        $this->assertSame(Response::HTTP_UNAUTHORIZED, $response->getStatusCode(), '不正な Bearer は league の JWT 検証で 401');
     }
 
     public function testReturns401WithMalformedJwt(): void
     {
         // 「JWT に見える」 が署名が不正な値。 league の SignedJWT validator で reject される
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             '/'.$this->getAdminRoute().'/mcp',
             server: [
                 'CONTENT_TYPE' => 'application/json',
@@ -77,7 +79,7 @@ final class McpFirewallContractTest extends EccubeTestCase
         );
 
         $response = $this->client->getResponse();
-        $this->assertSame(401, $response->getStatusCode(), '署名不正な JWT は 401');
+        $this->assertSame(Response::HTTP_UNAUTHORIZED, $response->getStatusCode(), '署名不正な JWT は 401');
     }
 
     private function getAdminRoute(): string
