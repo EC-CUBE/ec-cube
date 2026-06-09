@@ -229,6 +229,11 @@ services:
         arguments:
             $inner: '@eccube.mcp.reference_handler.inner'
 
+    # MCP: 監査ログとして記録するため、唯一の書き手として設定します。
+    Eccube\Service\Mcp\McpAuditLogger:
+        arguments:
+            $mcpLogger: '@monolog.logger.mcp'
+
     Eccube\Security\PasswordHasher\PasswordHasher:
         arguments:
             - '%eccube_auth_magic%'
