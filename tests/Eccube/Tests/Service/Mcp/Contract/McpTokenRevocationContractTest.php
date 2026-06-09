@@ -25,6 +25,7 @@ use League\Bundle\OAuth2ServerBundle\Manager\ClientManagerInterface;
 use League\Bundle\OAuth2ServerBundle\Model\AccessToken as AccessTokenModel;
 use League\Bundle\OAuth2ServerBundle\Model\AccessTokenInterface;
 use League\Bundle\OAuth2ServerBundle\Model\Client as ClientModel;
+use League\Bundle\OAuth2ServerBundle\Model\ClientInterface;
 use League\Bundle\OAuth2ServerBundle\ValueObject\Grant;
 use League\Bundle\OAuth2ServerBundle\ValueObject\Scope as ScopeValue;
 use League\OAuth2\Server\CryptKey;
@@ -67,8 +68,15 @@ final class McpTokenRevocationContractTest extends EccubeTestCase
 
         $this->mcpRequest($jwt);
 
-        $status = $this->client->getResponse()->getStatusCode();
-        $this->assertNotSame(401, $status, sprintf('正常 JWT は 401 にならない (実際: %d)', $status));
+        $response = $this->client->getResponse();
+        $body = (string) $response->getContent();
+        // 200 + JSON-RPC result まで見ることで、 firewall を通過し initialize handshake が成立したことを確認する
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode(), $body);
+
+        $decoded = json_decode($body, true);
+        $this->assertIsArray($decoded, $body);
+        $this->assertArrayHasKey('result', $decoded, 'initialize の JSON-RPC result が返る (handshake 成立)');
+        $this->assertArrayNotHasKey('error', $decoded);
     }
 
     public function testRevokedAccessTokenReturns401(): void
@@ -116,7 +124,7 @@ final class McpTokenRevocationContractTest extends EccubeTestCase
         );
     }
 
-    private function ensureClient(): ClientModel
+    private function ensureClient(): ClientInterface
     {
         $existing = $this->clientManager->find(self::TEST_CLIENT_ID);
         if (null !== $existing) {
@@ -134,7 +142,7 @@ final class McpTokenRevocationContractTest extends EccubeTestCase
     /**
      * AccessToken Model を保存し、 同じ identifier の JWT を発行して返す。
      */
-    private function issueJwt(string $identifier, ClientModel $client, Member $member, bool $revoked): string
+    private function issueJwt(string $identifier, ClientInterface $client, Member $member, bool $revoked): string
     {
         $expiry = new \DateTimeImmutable('+1 hour');
         // MemberProvider::loadUserByIdentifier は login_id で検索する。 sub claim には login_id を入れる。
