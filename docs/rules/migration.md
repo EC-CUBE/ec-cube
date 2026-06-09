@@ -28,15 +28,31 @@ bin/console doctrine:migrations:migrate --no-interaction
   → 例: PR #4912（Google アナリティクス機能）は `BaseInfo` にカラムを追加したが、
     ALTER マイグレーションは作らず `schema:update` に委ねている。
 - **マイグレーションを書くのは次の場合に限る**:
-  1. **マスタ/初期データの INSERT**（`mtb_*` のレコード、`dtb_block` 等への初期レコード投入）。
+  1. **マスタ/初期データの INSERT**（`mtb_*` のレコード、`dtb_block` / `dtb_mail_template` / `dtb_csv` 等への初期レコード投入）。
   2. **`schema:update` が安全に扱えない構造変更**（カラムの**型変更・リネーム**、データ移行を伴う変更、
      一意制約の後付けなど、データの保全や変換が必要なもの）。
-- **初期データ・マスタデータの定義そのもの**（新規インストール時に投入される値）は
-  `src/Eccube/Resource/doctrine/import_csv/{ja,en}` に置く。マイグレーションは
-  **既存環境へ後から届ける**ための差分適用に使う。
 
 > リポジトリの実体: `app/DoctrineMigrations/` は大半が `INSERT INTO`（マスタ/初期データ投入）であり、
 > 純粋な `ALTER ... ADD COLUMN` はごく少数（例外的なケース）。「カラムを足したらマイグレーションを書く」は誤り。
+
+## マスタ/初期データの追加は「CSV ＋ マイグレーション」の両方が必要
+
+ここが間違えやすい。**CSV を足すだけでは既存環境に届かない**。両方をセットで行う:
+
+| 用途 | 置き場所 | 反映タイミング |
+|---|---|---|
+| **新規インストール**用の定義 | `src/Eccube/Resource/doctrine/import_csv/{ja,en}/*.csv` に行を追加 | `eccube:fixtures:load`（**インストール時のみ**実行） |
+| **既存環境**への配布 | `app/DoctrineMigrations/` に **INSERT のマイグレーション** | `doctrine:migrations:migrate`（アップデート時に実行） |
+
+- `import_csv` を読む `eccube:fixtures:load` は**インストール時にしか走らない**（composer の `auto-scripts` にも含まれない）。
+  そのため、**CSV に行を足しても既にインストール済みの環境の DB には入らない**。既存環境へは INSERT マイグレーションで届ける。
+- 逆にマイグレーションの INSERT だけでは、新規インストール時の初期データに反映されない（新規は CSV から投入されるため）。
+- **したがって、マスタ/初期データを追加するときは CSV 追記と INSERT マイグレーションを同一 PR で両方行う**。
+
+> 実例（現役の運用）: `Version20240312170000`（2024-03）は `dtb_block` に
+> 「新着商品（自動取得）」ブロックを INSERT すると同時に、同じコミットで `dtb_block.csv` にも同じ行を追加している。
+> 同様に `Version20220603074035`（`mtb_csv_type` のマスタ追加）や `Version20230515023836`（`dtb_mail_template`）など、
+> **2022〜2024 年にわたり継続して INSERT マイグレーション＋CSV の組で運用されている**。
 
 ## 生成手順
 

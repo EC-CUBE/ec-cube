@@ -24,4 +24,6 @@ description: EC-CUBE 4.4 のデータベースマイグレーションを作成�
   **`doctrine:migrations:generate`（空の雛形を手書き）** を使う。
 - 置き場所 `app/DoctrineMigrations/`、`final class VersionYYYYMMDDHHMMSS extends AbstractMigration`、ライセンスヘッダ必須。
 - **`up()`/`down()` 両方を実装**し、存在チェック（`hasTable()`/`hasColumn()`・`SELECT COUNT(*)` 等）で**冪等**にする。
-- 初期・マスタデータの**定義**は `src/Eccube/Resource/doctrine/import_csv/{ja,en}`（既存環境への投入はマイグレーションの INSERT）。
+- マスタ/初期データ追加は **CSV と INSERT マイグレーションの両方**が必要。
+  CSV（`src/Eccube/Resource/doctrine/import_csv/{ja,en}`）は**新規インストール用**で `eccube:fixtures:load` がインストール時のみ投入するため、
+  **既存環境へは INSERT マイグレーションで届ける**。両方を同一 PR で行う。
