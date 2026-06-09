@@ -1,0 +1,26 @@
+name: Sync AI Skills
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  sync-ai-skills:
+    name: Check AI skill stubs are in sync
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc  # v2
+        with:
+          php-version: '8.3'
+
+      - name: Check skill stubs sync
+        # 正本 .claude/skills/ と .codex/.agents/ の差分があれば失敗させる。
+        # 修正方法: php tools/sync-ai-skills.php を実行してコミットする。
+        run: php tools/sync-ai-skills.php --check

@@ -20,6 +20,7 @@
 ```php
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Repository\ExampleRepository;
 

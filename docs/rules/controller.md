@@ -50,6 +50,33 @@ class ExampleController extends AbstractController
 - ルーティングは **`#[Route]` 属性**を使う（属性クラスの FQCN は共通規約に集約。`@Route` アノテーションは使わない）。
 - 依存はコンストラクタインジェクション（`private readonly`）。インターフェース型ヒントを優先。
 
+## 認可・CSRF（セキュリティ）
+
+新規・改修アクションでは、**認可**と **CSRF トークン検証**を必ず意識する。
+
+- **認可**: 管理画面は `security.yaml` の `admin` ファイアウォール（`^/%eccube_admin_route%/`）で保護される。
+  新規の管理アクションは **必ず `%eccube_admin_route%` プレフィックス配下のパス**に置くこと
+  （例: `#[Route(path: '/%eccube_admin_route%/product/...', ...)]`）。配下に置けば認証が要求される。
+  EC-CUBE コアは個別の `#[IsGranted]` 属性ではなく、ファイアウォール＋ロールで制御している点に注意。
+- **CSRF**: **GET 以外の状態変更（更新・削除・Ajax 等）はトークンを検証する**。
+  - フォーム経由（`$form->handleRequest()` ＋ `isValid()`）は CSRF 保護込み（[`formtype.md`](./formtype.md) 参照）。
+  - **フォームを介さない削除・Ajax アクションは、基底クラスの `$this->isTokenValid()` を明示的に呼ぶ**。
+    検証失敗時は `BadRequestHttpException` を投げる（コアの定石）。
+
+```php
+// 削除（フォームを介さない）: methods は GET 以外にし、トークンを検証する
+#[Route(path: '/%eccube_admin_route%/example/{id}/delete', name: 'example_delete', methods: ['DELETE'])]
+public function delete(Request $request, Example $Example): RedirectResponse
+{
+    $this->isTokenValid();   // ← CSRF トークン検証（コアの定石）
+
+    $this->exampleService->delete($Example);
+    $this->addSuccess('削除しました', 'admin');
+
+    return $this->redirectToRoute('example_list');
+}
+```
+
 ## コントローラに書いてはいけないこと（Service へ出す）
 
 以下が混ざり始めたら **Fat 化のサイン**。Service（または Repository のメソッド）へ抽出する。
@@ -89,3 +116,5 @@ php tools/check-architecture.php src/Eccube/Controller/CartController.php
 - ❌ 複数アクションに同じ処理をコピペ → ✅ Service の 1 メソッドに共通化
 - ❌ `@Route` アノテーション → ✅ `#[Route]` 属性
 - ❌ 具象クラス型ヒントで密結合 → ✅ インターフェース型ヒント＋コンストラクタ DI
+- ❌ 削除/Ajax 等の状態変更でトークン未検証 → ✅ `$this->isTokenValid()` を呼ぶ（GET 以外）
+- ❌ 管理アクションを `%eccube_admin_route%` 配下以外に置く → ✅ admin ファイアウォール配下に置く
