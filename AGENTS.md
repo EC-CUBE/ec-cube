@@ -226,6 +226,16 @@ EC-CUBE は Symfony の EventDispatcher を拡張してカスタマイズを実�
 - **Shipping（出荷）** — 1 受注に複数あり得る出荷単位。送料は Shipping 単位で計算される。
 - **受注処理（PurchaseFlow）** — 在庫引当・採番・ポイント付与・値引きは
   `src/Eccube/Service/PurchaseFlow/` のパイプラインが担う（[`docs/rules/service.md`](./docs/rules/service.md) 参照）。
+- **受注ステータス（OrderStatus, `mtb_order_status`）** — `NEW`(新規受付/確定) / `PROCESSING`(購入処理中) /
+  `PENDING`(決済処理中) / `PAID`(入金済) / `DELIVERED`(発送済) / `CANCEL`(取消) / `RETURNED`(返品) / `IN_PROGRESS`(対応中)。
+  **注意: `PROCESSING`・`PENDING` は「確定前の仮受注」**。カート確定の入口で `OrderHelper` が受注を `PROCESSING` で作り、
+  購入完了で `NEW` に遷移する。売上集計や受注一覧はこれらを除外する（`OrderStatusFilter`）。
+  「`Order` が存在する＝確定済み注文」と誤解しないこと。
+- **ProductClass と「規格なし商品」** — 在庫・価格は `Product` ではなく `ProductClass` 単位で持つ。
+  **規格（サイズ・カラー）を持たない商品も、内部的に `ProductClass` を 1 つ持つ**（`Product::hasProductClass()` で規格の有無を判定）。
+- **単一テーブル継承（STI）と `discriminator_type`** — マスタ系（`mtb_*`）や `dtb_block` 等は STI を使い、
+  `discriminator_type` 列で型を区別する。**INSERT 時はこの列の指定が必須**（例: `mtb_sale_type` は `'saletype'`、`dtb_block` は `'block'`）。
+- **Payment（支払方法） / Delivery（配送業者）** — 受注に紐づく基本マスタ。利用可能な組み合わせは販売種別（SaleType）に依存する。
 
 ## Skill の配置と各ツールの読み込み
 
