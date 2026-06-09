@@ -39,6 +39,9 @@ if (!class_exists(Example::class)) {
         #[ORM\Column(length: 255, nullable: true)]
         private ?string $name = null;
 
+        // getId() の戻り値が ?int（nullable）なのは、IDENTITY 採番のため
+        // 永続化（flush）されるまで ID が未採番（null）だから。意図的な nullable で、
+        // 「まだ DB に保存されていない新規エンティティ」を表現できる。
         public function getId(): ?int
         {
             return $this->id;
@@ -60,12 +63,26 @@ if (!class_exists(Example::class)) {
 - リレーションは `#[ORM\OneToMany]` / `#[ORM\ManyToOne]` 等の属性で定義。コレクションは
   コンストラクタで `ArrayCollection` を初期化する。
 - ライフサイクルコールバックは `#[ORM\PrePersist]` / `#[ORM\PreUpdate]` 等（クラスに `#[ORM\HasLifecycleCallbacks]` が必要）。
-- 業務ロジックはエンティティに書きすぎない（計算・永続化の取りまとめは Service／[`service.md`](./service.md)）。
+
+## エンティティに置く「状態ロジック」と、外に出す「処理」の線引き
+
+「業務ロジックをエンティティに書きすぎない」は雑な言い方で、実際には**何を置いてよいか**の区別が重要。
+
+- **置いてよい（自身の状態から導く計算・判定）**: そのエンティティ自身のプロパティだけから決まる値や状態。
+  - 例: `OrderItem::getTotalPrice()`（単価 × 数量）、`Order` の各種金額の合算、
+    `Customer` の表示名の組み立て、ステータス定数の判定メソッドなど。
+  - 副作用を持たず、外部（Repository・EntityManager・他サービス）に依存しない純粋な計算/判定はエンティティの責務。
+- **外に出す（副作用・横断・採番を伴う「処理」）**: 永続化や複数エンティティ・外部リソースを巻き込む処理。
+  - **在庫引当・注文番号の採番・ポイント付与・値引き適用などの受注処理は [`PurchaseFlow`](./service.md) パイプラインへ**。
+  - DB アクセス（クエリ）は Repository、トランザクションを伴う業務操作は Service へ（[`service.md`](./service.md)）。
 
 ## スキーマ変更時
 
-- **エンティティ属性を変更したら、既存環境へ届けるためマイグレーションを追加する**（同一 PR）。
-  → [`migration.md`](./migration.md) に従う。新規インストールは属性から `schema:create` で生成される。
+- **スキーマの源泉は Entity の属性（`#[ORM\...]`）**。カラムの追加・変更は属性を編集するだけでよい。
+  新規インストールは `doctrine:schema:create`、既存環境へのアップデートは `doctrine:schema:update --force` が
+  属性から差分を反映する（**単純なカラム追加に ALTER マイグレーションは不要**）。
+- マイグレーションを書くのは、`schema:update` で扱えないもの（**マスタ/初期データの INSERT、型変更・リネーム等の構造変更**）に限る。
+  → 詳細は [`migration.md`](./migration.md) に従う。
 
 ## カスタマイズ（app/Customize）
 
@@ -75,6 +92,7 @@ if (!class_exists(Example::class)) {
 ## よくある間違い
 
 - ❌ XML / アノテーションでマッピング → ✅ PHP8 属性
-- ❌ マイグレーションを作らずに属性だけ変更 → ✅ 変更と同一 PR でマイグレーション追加
+- ❌ カラムを足したので ALTER マイグレーションを書く → ✅ 属性を足すだけ（`schema:update` が反映）。マイグレーションは INSERT・型変更等に限る
+- ❌ 在庫引当・採番・ポイント付与などの受注処理をエンティティに書く → ✅ PurchaseFlow / Service へ。エンティティは自身の状態から導く計算/判定まで
 - ❌ `class_exists` ラッパなしでコアエンティティを定義 → ✅ プロキシ拡張に対応するラッパで囲う
 - ❌ プロパティ/戻り値の型宣言省略 → ✅ 型を付け、PHPStan level 6 を通す

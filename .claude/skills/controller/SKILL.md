@@ -18,8 +18,10 @@ description: EC-CUBE 4.4 のコントローラを実装・改修するときの�
 要点（詳細は本文参照）:
 - コントローラの責務は「HTTP の入出力変換」のみ: リクエスト受領 → フォーム処理 → **Service/Repository へ委譲** → レスポンス組み立て。
 - **業務ロジック（金額・在庫・送料・ポイント計算、複数 Repository をまたぐ処理、外部連携、メール送信）は Service へ出す**（Service 側の規約は `docs/rules/service.md`）。
+  受注の計算・検証・確定は **PurchaseFlow** へ（在庫引当・採番・ポイント付与・値引き）。
 - アクション内での `$em->persist()` / `$em->flush()` の業務的な直書きは避け、Service にまとめる。
 - ルーティングは `#[Route]` 属性、依存はコンストラクタインジェクション（`private readonly`、インターフェース型ヒント）。
-- 目安: 1 メソッド約 50 行 / コンストラクタ依存約 7 個を超えたら設計を見直す。
+- Fat 化は**質的シグナル**（業務計算の混入・persist/flush 直書き・コピペ重複）で判断。
+  行数・依存数の計測は `tools/check-architecture.php`、整形/型/`@Route`→`#[Route]` 変換は rector・phpstan・php-cs-fixer に委ねる。
 
 実装・改修後は、Skill `review-responsibility` で責務分離を点検すること。

@@ -18,7 +18,8 @@ description: EC-CUBE 4.4 の Doctrine エンティティを実装・改修する
 要点（詳細は本文参照）:
 - `Eccube\Entity\AbstractEntity`（マスタは `AbstractMasterEntity`）を継承。マッピングは **PHP8 属性 `#[ORM\...]`**。
 - コアのエンティティは `if (!class_exists(X::class)) { ... }` で囲い、プロキシ拡張に対応する。
-- setter は `$this` を返す。nullable は DB カラムと一致。テーブル名は `dtb_`/`mtb_`/`plg_`。
-- **属性を変更したらマイグレーションを同一 PR で追加**（[`docs/rules/migration.md`](../../../docs/rules/migration.md)）。
+- setter は `$this` を返す。nullable は DB カラムと一致（`getId(): ?int` は IDENTITY 採番で未永続時 null のため）。テーブル名は `dtb_`/`mtb_`/`plg_`。
+- **スキーマの源泉は属性**。カラム追加・変更は属性編集だけでよく、`schema:update` が反映する（**単純なカラム追加に ALTER マイグレーションは不要**。詳細は [`docs/rules/migration.md`](../../../docs/rules/migration.md)）。
+- **状態ロジックはエンティティに置いてよい**（`OrderItem::getTotalPrice()` 等、自身のプロパティから導く計算/判定）。一方、在庫引当・採番・ポイント付与などの**受注処理は PurchaseFlow**、永続化を伴う業務操作は Service へ。
 - 既存エンティティへのフィールド追加は trait で `app/Customize/Entity/` に置き、`eccube:generate:proxies` で反映。
 - ライセンスヘッダ・型宣言必須。

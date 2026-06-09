@@ -88,33 +88,44 @@ public function delete(Request $request, Example $Example): RedirectResponse
 - **複数 Repository をまたぐ処理**・外部 API 連携・メール送信・ファイル入出力
 - **同じロジックの重複**（複数アクションにコピペされた処理 → Service の 1 メソッドへ）
 
-## Fat 化の目安（新規・改修コード向け）
+## Fat 化のシグナル（質的）
 
-数値はあくまで「超えたら設計を見直す」サイン。機械的な失格条件ではない。
+「1 メソッド何行」「依存いくつ」という**数値はここで規範化しない**。数値で線を引くと
+「51 行だから分割／49 行だから OK」というカーゴカルト的判断を誘発するうえ、計測はツールの仕事だから
+（メソッド長・依存数は `tools/check-architecture.php` が報告する。下記「ツールに委ねる」参照）。
 
-- 1 メソッド: **約 50 行**を超えたら分割・委譲を検討
-- 1 クラス: アクションが増えすぎたら **コントローラ分割**（EC-CUBE は `Admin/Product/` のように機能単位で分割済み）
-- コンストラクタ依存: **約 7 個**を超えたら責務過多のサイン（Service へ集約）
-- 認知的複雑度が高い分岐の塊 → Service の private メソッドへ切り出し
+代わりに、**Service / PurchaseFlow へ出すべき「質的なシグナル」**で判断する。次が混ざり始めたら抽出を検討:
 
-## 自己チェック
+- **業務的な計算・判定**（金額・在庫・送料・ポイント・税の算出）がアクション内にある。
+- アクション内に `$em->persist()` / `$em->flush()` を**業務的に直書き**している。
+- **複数 Repository をまたぐ処理**・外部 API 連携・メール送信・ファイル IO がアクションにある。
+- **同一処理のコピペ重複**が複数アクションに散っている。
+- 1 クラスにアクションが増えすぎた → 機能単位で**コントローラ分割**（EC-CUBE は `Admin/Product/` 等で分割済み）。
 
-実装・改修後に、変更したコントローラを簡易検査できる（依存追加なし・助言用）:
+→ 受注に関わる計算・検証・確定（在庫引当・採番・ポイント付与・値引き）は Service ではなく
+**PurchaseFlow パイプライン**へ（[`service.md`](./service.md) の「PurchaseFlow」参照）。
+
+## ツールに委ねる（整形・変換・計測）
+
+整形・型・アノテーション変換・数値メトリクスは**散文で重複説明せず、ローカルでツールを実行**して担保する
+（CI は最後の砦であって一次防衛線ではない）。実装・改修後に:
 
 ```bash
-php tools/check-architecture.php --changed   # 変更された Controller/Service のみ
-php tools/check-architecture.php src/Eccube/Controller/CartController.php
+vendor/bin/rector process --dry-run            # @Route→#[Route]、アノテ→PHP8属性、コンストラクタDI 等
+vendor/bin/phpstan analyse src                 # 型宣言・静的解析（level 6）
+vendor/bin/php-cs-fixer fix                     # PSR-12 整形・ライセンスヘッダ
+php tools/check-architecture.php --changed      # メソッド長・依存数・persist/flush 直書きの可視化（助言用・CI 非搭載）
 ```
 
-メソッド長・コンストラクタ依存数・`persist`/`flush` 直書きを報告する。
-**CI を落とすためのものではなく、レビュー観点を可視化するための補助**。
+> `.husky/pre-commit`（PR #6761）がマージされれば、staged な `.php` を含む commit 時に rector(dry-run)→phpstan→php-cs-fixer が自動実行される想定。
 
-## よくある間違い
+## よくある間違い（責務・セキュリティの判断）
+
+整形・変換系（`@Route`→`#[Route]` 等）は上記ツールが扱うのでここでは挙げない。**ツールでは判断できない**観点だけ:
 
 - ❌ コントローラ内に金額/在庫/送料の計算ロジック → ✅ Service に移し、コントローラは結果を受け取るだけ
 - ❌ アクション内で `$em->persist()`/`$em->flush()` を直書きして業務処理 → ✅ Service のメソッドに集約
 - ❌ 複数アクションに同じ処理をコピペ → ✅ Service の 1 メソッドに共通化
-- ❌ `@Route` アノテーション → ✅ `#[Route]` 属性
 - ❌ 具象クラス型ヒントで密結合 → ✅ インターフェース型ヒント＋コンストラクタ DI
 - ❌ 削除/Ajax 等の状態変更でトークン未検証 → ✅ `$this->isTokenValid()` を呼ぶ（GET 以外）
 - ❌ 管理アクションを `%eccube_admin_route%` 配下以外に置く → ✅ admin ファイアウォール配下に置く

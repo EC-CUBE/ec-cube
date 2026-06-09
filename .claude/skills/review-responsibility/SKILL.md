@@ -24,12 +24,13 @@ description: EC-CUBE 4.4 で実装・改修したコードの責務分離をチ�
 php tools/check-architecture.php --changed
 ```
 
-各レイヤについて次を報告する:
-- 共通: メソッド長（目安 50 行）/ コンストラクタ依存数（目安 7 個）
+各レイヤについて次を報告する（**数値の線引きはツールに任せ、レビューは質的判断に集中する**）:
+- 共通: メソッド長・コンストラクタ依存数（計測値の可視化。閾値超過＝即修正ではなく、見直しのきっかけ）
 - Controller: `persist`/`flush` の直書き（業務的な永続化は Service へ）
 - Service: Controller への依存（レイヤ違反。依存は Controller → Service → Repository の一方向）
 
 特定ファイルは `php tools/check-architecture.php <path>`。
+整形・型・アノテーション変換は `vendor/bin/rector process --dry-run` / `phpstan analyse src` / `php-cs-fixer fix` で別途担保する。
 
 ### 2. 規約に照らした目視レビュー
 
@@ -37,12 +38,14 @@ php tools/check-architecture.php --changed
 - コントローラ: [`docs/rules/controller.md`](../../../docs/rules/controller.md)
 - サービス: [`docs/rules/service.md`](../../../docs/rules/service.md)
 
-確認観点:
-- 業務ロジック（金額・在庫・送料・ポイント計算、複数 Repository 横断、外部連携、メール送信）が
+確認観点（質的シグナル）:
+- 業務ロジック（金額・送料・ポイント計算、複数 Repository 横断、外部連携、メール送信）が
   コントローラに残っていないか → あれば **Service への抽出**を提案。
+- 受注の計算・検証・確定（在庫引当・採番・ポイント付与・値引き）が **PurchaseFlow 外**に書かれていないか
+  → 該当する Processor/Validator への移動を提案。
 - Service が Controller / HTTP（`Request`/`Response`）に依存していないか → レイヤ違反は是正を提案。
 - 同じ処理が複数箇所にコピペされていないか → 共通の Service メソッドへ。
-- 1 メソッド約 50 行 / コンストラクタ依存約 7 個 の目安を大きく超えていないか。
+- 1 つのクラス/メソッドに無関係な責務が同居していないか（行数の多寡そのものではなく、関心事の数で見る）。
 
 ### 3. 提案のまとめ方
 

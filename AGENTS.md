@@ -117,10 +117,16 @@ docker compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose
 ```bash
 bin/console cache:clear
 bin/console cache:warmup
-bin/console doctrine:schema:update --dump-sql   # SQL のプレビュー
-bin/console doctrine:migrations:diff            # マイグレーション生成
-bin/console doctrine:migrations:migrate         # マイグレーション実行
+
+# スキーマは Entity 属性が源泉。アップデートは 2 段構え:
+bin/console doctrine:schema:update --dump-sql        # 属性差分の SQL プレビュー
+bin/console doctrine:schema:update --force           # 属性から導けるカラム追加・変更を反映
+bin/console doctrine:migrations:migrate              # INSERT・型変更等（schema:update で扱えない分）を適用
+# マイグレーションが必要なときは空の雛形を生成して手書きする（diff は使わない）:
+bin/console doctrine:migrations:generate
 ```
+
+> 単純なカラム追加にマイグレーション（ALTER）は不要。詳細は [`docs/rules/migration.md`](./docs/rules/migration.md)。
 
 ## アーキテクチャ
 
@@ -203,13 +209,23 @@ EC-CUBE は Symfony の EventDispatcher を拡張してカスタマイズを実�
 ## 主要エンティティ
 
 - `Customer` — 会員
-- `Product` / `ProductClass` — 商品とその規格（サイズ・カラー）
+- `Product` / `ProductClass` — 商品とその規格（サイズ・カラー）。在庫・価格は `ProductClass` 単位で持つ。
 - `Order` / `OrderItem` — 受注と明細
-- `Shipping` — 出荷情報（1 受注に複数可）
+- `Shipping` — 出荷単位。**1 受注に複数あり得る**（複数配送先・お届け日違い等）。
 - `Cart` / `CartItem` — カート
 - `Member` — 管理者ユーザー
 - `Plugin` — インストール済みプラグインのメタデータ
 - `BaseInfo` — 店舗設定（店名・住所・税設定）
+
+### ドメイン用語（ツールでは読み取れない知識）
+
+- **販売種別（SaleType）** — 注文を**決済単位に分割するための区分**。販売種別が異なる商品は別の `Order` として扱われる
+  （通常購入と定期購入を分ける、等）。`mtb_sale_type` で定義。
+- **OrderItem の明細種別（OrderItemType）** — 明細行の種類: **商品 / 送料 / 手数料 / 値引き** 等。
+  受注金額はこれらの明細の合算で構成される。送料・手数料・値引きも `OrderItem` の 1 行として表現される点に注意。
+- **Shipping（出荷）** — 1 受注に複数あり得る出荷単位。送料は Shipping 単位で計算される。
+- **受注処理（PurchaseFlow）** — 在庫引当・採番・ポイント付与・値引きは
+  `src/Eccube/Service/PurchaseFlow/` のパイプラインが担う（[`docs/rules/service.md`](./docs/rules/service.md) 参照）。
 
 ## Skill の配置と各ツールの読み込み
 
