@@ -26,8 +26,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\RateLimiter\LimiterStateInterface;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\RateLimiter\Storage\InMemoryStorage;
+use Symfony\Component\RateLimiter\Storage\StorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -144,6 +146,50 @@ final class RateLimitListenerTest extends TestCase
 
         $body = json_decode((string) $response->getContent(), true);
         $this->assertSame('rate_limited', $body['error'] ?? null);
+    }
+
+    public function testFailsClosedWhenLimiterStorageThrows(): void
+    {
+        // cache (カウンタ保存先) 障害を模した、 fetch で例外を投げる storage
+        $brokenLimiter = new RateLimiterFactory(
+            ['id' => 'mcp_ip', 'policy' => 'fixed_window', 'limit' => 2, 'interval' => '1 minute'],
+            new class implements StorageInterface {
+                #[\Override]
+                public function save(LimiterStateInterface $limiterState): void
+                {
+                    throw new \RuntimeException('cache down');
+                }
+
+                #[\Override]
+                public function fetch(string $limiterStateId): ?LimiterStateInterface
+                {
+                    throw new \RuntimeException('cache down');
+                }
+
+                #[\Override]
+                public function delete(string $limiterStateId): void
+                {
+                }
+            },
+        );
+
+        $listener = new RateLimitListener(
+            eccubeAdminRoute: 'admin',
+            mcpIpLimiter: $brokenLimiter,
+            mcpClientLimiter: $brokenLimiter,
+            tokenStorage: new TokenStorage(),
+            auditLogger: new McpAuditLogger(new NullLogger(), new RequestStack()),
+        );
+
+        $event = $this->buildRequestEvent('192.0.2.9', '/admin/mcp');
+        $listener->onKernelRequest($event);
+
+        $response = $event->getResponse();
+        $this->assertInstanceOf(Response::class, $response, 'cache 障害時は素通しせず拒否する (fail-closed)');
+        $this->assertSame(Response::HTTP_SERVICE_UNAVAILABLE, $response->getStatusCode(), (string) $response->getContent());
+
+        $body = json_decode((string) $response->getContent(), true);
+        $this->assertSame('rate_limiter_unavailable', $body['error'] ?? null);
     }
 
     private function buildRequestEvent(string $ip, string $path): RequestEvent

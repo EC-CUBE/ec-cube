@@ -86,14 +86,9 @@ final readonly class RateLimitListener implements EventSubscriberInterface
         }
 
         $ip = $request->getClientIp() ?? 'unknown';
-        $limit = $this->mcpIpLimiter->create('mcp:ip:'.$ip)->consume();
-        if (!$limit->isAccepted()) {
-            $this->auditLogger->logSecurityEvent(AuditResult::RateLimited, [
-                'kind' => 'ip',
-                'ip' => $ip,
-                'retry_after_seconds' => $this->retryAfterSeconds($limit),
-            ]);
-            $event->setResponse($this->buildRateLimitedResponse($limit));
+        $rejection = $this->check($this->mcpIpLimiter, 'mcp:ip:'.$ip, 'ip', ['ip' => $ip]);
+        if (null !== $rejection) {
+            $event->setResponse($rejection);
         }
     }
 
@@ -116,17 +111,53 @@ final readonly class RateLimitListener implements EventSubscriberInterface
         }
 
         $clientId = $token->getOAuthClientId();
-        $limit = $this->mcpClientLimiter->create('mcp:client:'.$clientId)->consume();
-        if (!$limit->isAccepted()) {
-            $this->auditLogger->logSecurityEvent(AuditResult::RateLimited, [
-                'kind' => 'client_id',
-                'client_id' => $clientId,
-                'retry_after_seconds' => $this->retryAfterSeconds($limit),
+        $rejection = $this->check($this->mcpClientLimiter, 'mcp:client:'.$clientId, 'client_id', ['client_id' => $clientId]);
+        if (null !== $rejection) {
+            // ControllerEvent は setResponse を持たないため、 controller を「拒否レスポンスを返す callable」 に差し替える
+            $event->setController(static fn (): Response => $rejection);
+        }
+    }
+
+    /**
+     * レート制限を 1 回消費し、 通してよければ null、 拒否なら送るべき Response を返す。
+     *
+     * **fail-closed**: cache (カウンタ保存先) 障害等で `consume()` が例外を投げた場合、 「数えられない＝
+     * 通さない」 に倒し、 503 を返す (監査エンドポイントなので、 制限を強制できないなら供給しない方針)。
+     * なお例外を投げず黙ってカウンタを失う劣化 (例: Redis ダウン時に miss 扱い) は信号が無く本層では
+     * 検知できない。 その場合は cache アダプタ側のエラーログで気付く想定。
+     *
+     * @param array<string, scalar> $auditContext 監査ログに添える識別情報 (ip / client_id)
+     */
+    private function check(RateLimiterFactory $limiter, string $key, string $kind, array $auditContext): ?Response
+    {
+        try {
+            $limit = $limiter->create($key)->consume();
+        } catch (\Throwable $e) {
+            $this->auditLogger->logSecurityEvent(AuditResult::InternalError, [
+                'kind' => $kind,
+                'reason' => 'rate_limiter_unavailable',
+                'message' => $e->getMessage(),
+                ...$auditContext,
             ]);
 
-            $response = $this->buildRateLimitedResponse($limit);
-            $event->setController(static fn (): Response => $response);
+            return new JsonResponse(
+                ['error' => 'rate_limiter_unavailable'],
+                Response::HTTP_SERVICE_UNAVAILABLE,
+                ['Retry-After' => '60'],
+            );
         }
+
+        if ($limit->isAccepted()) {
+            return null;
+        }
+
+        $this->auditLogger->logSecurityEvent(AuditResult::RateLimited, [
+            'kind' => $kind,
+            'retry_after_seconds' => $this->retryAfterSeconds($limit),
+            ...$auditContext,
+        ]);
+
+        return $this->buildRateLimitedResponse($limit);
     }
 
     private function buildRateLimitedResponse(RateLimit $limit): JsonResponse
