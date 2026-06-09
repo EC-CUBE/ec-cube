@@ -18,7 +18,6 @@ namespace Eccube\Service\Mcp\Tool;
 use Eccube\Entity\Product;
 use Eccube\Repository\ProductRepository;
 use Eccube\Service\Mcp\EntityArraySerializer;
-use Eccube\Service\Mcp\McpScope;
 use Eccube\Service\Mcp\ToolInvoker;
 use Mcp\Capability\Attribute\McpTool;
 
@@ -53,7 +52,6 @@ final readonly class GetProductTool
     {
         return $this->invoker->invoke(
             toolName: 'get_product',
-            requiredScope: McpScope::ROLE_PRODUCT_READ,
             args: compact('id', 'code'),
             work: function () use ($id, $code): array {
                 $product = $this->resolveProduct($id, $code);

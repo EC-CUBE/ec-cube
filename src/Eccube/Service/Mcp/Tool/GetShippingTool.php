@@ -17,7 +17,6 @@ namespace Eccube\Service\Mcp\Tool;
 
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\Mcp\EntityArraySerializer;
-use Eccube\Service\Mcp\McpScope;
 use Eccube\Service\Mcp\ToolInvoker;
 use Mcp\Capability\Attribute\McpTool;
 
@@ -53,7 +52,6 @@ final readonly class GetShippingTool
         /** @var array{order_id:int|null,items:list<array<string, mixed>>} $result */
         $result = $this->invoker->invoke(
             toolName: 'get_shipping',
-            requiredScope: McpScope::ROLE_ORDER_READ,
             args: ['orderId' => $orderId],
             work: function () use ($orderId): array {
                 $order = $this->orderRepository->find($orderId);

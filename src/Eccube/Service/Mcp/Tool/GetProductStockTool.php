@@ -19,7 +19,6 @@ use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\ProductRepository;
 use Eccube\Service\Mcp\EntityArraySerializer;
-use Eccube\Service\Mcp\McpScope;
 use Eccube\Service\Mcp\ToolInvoker;
 use Mcp\Capability\Attribute\McpTool;
 
@@ -55,7 +54,6 @@ final readonly class GetProductStockTool
         /** @var array{summary:array<string, mixed>,items:list<array<string, mixed>>} $result */
         $result = $this->invoker->invoke(
             toolName: 'get_product_stock',
-            requiredScope: McpScope::ROLE_PRODUCT_READ,
             args: ['productId' => $productId],
             work: function () use ($productId): array {
                 $product = $this->productRepository->find($productId);

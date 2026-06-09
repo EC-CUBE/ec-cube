@@ -18,7 +18,6 @@ namespace Eccube\Service\Mcp\Tool;
 use Eccube\Entity\Order;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\Mcp\EntityArraySerializer;
-use Eccube\Service\Mcp\McpScope;
 use Eccube\Service\Mcp\ToolInvoker;
 use Mcp\Capability\Attribute\McpTool;
 
@@ -53,7 +52,6 @@ final readonly class GetOrderTool
     {
         return $this->invoker->invoke(
             toolName: 'get_order',
-            requiredScope: McpScope::ROLE_ORDER_READ,
             args: compact('id', 'orderNo'),
             work: function () use ($id, $orderNo): array {
                 $order = $this->resolveOrder($id, $orderNo);

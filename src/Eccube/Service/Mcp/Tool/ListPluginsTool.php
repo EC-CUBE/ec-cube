@@ -17,7 +17,6 @@ namespace Eccube\Service\Mcp\Tool;
 
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\Mcp\EntityArraySerializer;
-use Eccube\Service\Mcp\McpScope;
 use Eccube\Service\Mcp\ToolInvoker;
 use Mcp\Capability\Attribute\McpTool;
 
@@ -52,7 +51,6 @@ final readonly class ListPluginsTool
         /** @var array{total:int,items:list<array<string, mixed>>} $result */
         $result = $this->invoker->invoke(
             toolName: 'list_plugins',
-            requiredScope: McpScope::ROLE_PLUGIN_READ,
             args: ['enabledOnly' => $enabledOnly],
             work: function () use ($enabledOnly): array {
                 $plugins = match ($enabledOnly) {

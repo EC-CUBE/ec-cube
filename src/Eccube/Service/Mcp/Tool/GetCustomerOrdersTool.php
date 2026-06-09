@@ -19,7 +19,6 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\Mcp\EntityArraySerializer;
-use Eccube\Service\Mcp\McpScope;
 use Eccube\Service\Mcp\ToolInvoker;
 use Mcp\Capability\Attribute\McpTool;
 
@@ -57,7 +56,6 @@ final readonly class GetCustomerOrdersTool
         /** @var array{customer_id:int|null,total:int,limit:int,offset:int,items:list<array<string, mixed>>} $result */
         $result = $this->invoker->invoke(
             toolName: 'get_customer_orders',
-            requiredScope: McpScope::ROLE_CUSTOMER_READ,
             args: ['customerId' => $customerId, 'limit' => $limit, 'offset' => $offset],
             work: function () use ($customerId, $limit, $offset): array {
                 $limit = max(1, min(200, $limit));

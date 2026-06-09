@@ -16,12 +16,8 @@ declare(strict_types=1);
 namespace Eccube\Tests\Service\Mcp\Tool;
 
 use Eccube\Entity\Master\CustomerStatus;
-use Eccube\Service\Mcp\McpScope;
 use Eccube\Service\Mcp\Tool\SearchCustomersTool;
 use Eccube\Tests\EccubeTestCase;
-use Mcp\Exception\ToolCallException;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * `SearchCustomersTool` の DB 結合テスト。 scope / 検索 / status 絞り込み / allow_list を検証。
@@ -34,18 +30,10 @@ final class SearchCustomersToolTest extends EccubeTestCase
     {
         parent::setUp();
         $this->tool = static::getContainer()->get(SearchCustomersTool::class);
-        $this->tokenStorage()->setToken(null);
-    }
-
-    public function testThrowsWhenScopeIsAbsent(): void
-    {
-        $this->expectException(ToolCallException::class);
-        $this->tool->search();
     }
 
     public function testReturnsCustomersWithScope(): void
     {
-        $this->grantScope(McpScope::ROLE_CUSTOMER_READ);
         $this->createCustomer('mcp-customer-1@example.com');
 
         $result = $this->tool->search(limit: 50);
@@ -56,7 +44,6 @@ final class SearchCustomersToolTest extends EccubeTestCase
 
     public function testFiltersByActiveStatus(): void
     {
-        $this->grantScope(McpScope::ROLE_CUSTOMER_READ);
         $this->createCustomer('mcp-customer-active@example.com');
 
         $result = $this->tool->search(statusIds: [CustomerStatus::ACTIVE], limit: 100);
@@ -66,8 +53,6 @@ final class SearchCustomersToolTest extends EccubeTestCase
 
     public function testLimitClampedToUpperBound(): void
     {
-        $this->grantScope(McpScope::ROLE_CUSTOMER_READ);
-
         $result = $this->tool->search(limit: 500);
 
         $this->assertSame(200, $result['limit']);
@@ -75,7 +60,6 @@ final class SearchCustomersToolTest extends EccubeTestCase
 
     public function testItemFieldsAreSubsetOfAllowList(): void
     {
-        $this->grantScope(McpScope::ROLE_CUSTOMER_READ);
         $this->createCustomer('mcp-customer-allow@example.com');
 
         $result = $this->tool->search(limit: 5);
@@ -95,20 +79,5 @@ final class SearchCustomersToolTest extends EccubeTestCase
                 $this->assertContains($key, $allowed, sprintf('出力フィールド "%s" は Customer allow_list 外', $key));
             }
         }
-    }
-
-    private function grantScope(string $role): void
-    {
-        $member = $this->createMember();
-        $token = new UsernamePasswordToken($member, 'admin', [$role]);
-        $this->tokenStorage()->setToken($token);
-    }
-
-    private function tokenStorage(): TokenStorageInterface
-    {
-        $tokenStorage = static::getContainer()->get(TokenStorageInterface::class);
-        $this->assertInstanceOf(TokenStorageInterface::class, $tokenStorage);
-
-        return $tokenStorage;
     }
 }

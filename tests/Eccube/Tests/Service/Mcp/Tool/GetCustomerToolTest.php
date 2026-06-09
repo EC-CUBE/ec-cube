@@ -15,12 +15,8 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Service\Mcp\Tool;
 
-use Eccube\Service\Mcp\McpScope;
 use Eccube\Service\Mcp\Tool\GetCustomerTool;
 use Eccube\Tests\EccubeTestCase;
-use Mcp\Exception\ToolCallException;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * `GetCustomerTool` の DB 結合テスト。
@@ -33,18 +29,10 @@ final class GetCustomerToolTest extends EccubeTestCase
     {
         parent::setUp();
         $this->tool = static::getContainer()->get(GetCustomerTool::class);
-        $this->tokenStorage()->setToken(null);
-    }
-
-    public function testThrowsWhenScopeIsAbsent(): void
-    {
-        $this->expectException(ToolCallException::class);
-        $this->tool->get(id: 1);
     }
 
     public function testReturnsCustomerById(): void
     {
-        $this->grantScope(McpScope::ROLE_CUSTOMER_READ);
         $customer = $this->createCustomer('mcp-getcustomer@example.com');
 
         $result = $this->tool->get(id: $customer->getId());
@@ -55,25 +43,8 @@ final class GetCustomerToolTest extends EccubeTestCase
 
     public function testReturnsEmptyWhenNotFound(): void
     {
-        $this->grantScope(McpScope::ROLE_CUSTOMER_READ);
-
         $result = $this->tool->get(id: 99999999);
 
         $this->assertSame(['found' => false], $result);
-    }
-
-    private function grantScope(string $role): void
-    {
-        $member = $this->createMember();
-        $token = new UsernamePasswordToken($member, 'admin', [$role]);
-        $this->tokenStorage()->setToken($token);
-    }
-
-    private function tokenStorage(): TokenStorageInterface
-    {
-        $tokenStorage = static::getContainer()->get(TokenStorageInterface::class);
-        $this->assertInstanceOf(TokenStorageInterface::class, $tokenStorage);
-
-        return $tokenStorage;
     }
 }

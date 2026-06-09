@@ -224,6 +224,11 @@ services:
         arguments:
             $allowLists: !tagged_iterator eccube.api.allow_list
 
+    # MCP: scope 強制層。 $inner (本物の Tool 実行器) は McpScopeEnforcementPass が構築する
+    Eccube\Service\Mcp\ScopeEnforcingReferenceHandler:
+        arguments:
+            $inner: '@eccube.mcp.reference_handler.inner'
+
     Eccube\Security\PasswordHasher\PasswordHasher:
         arguments:
             - '%eccube_auth_magic%'

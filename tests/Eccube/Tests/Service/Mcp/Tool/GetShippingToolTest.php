@@ -15,12 +15,8 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Service\Mcp\Tool;
 
-use Eccube\Service\Mcp\McpScope;
 use Eccube\Service\Mcp\Tool\GetShippingTool;
 use Eccube\Tests\EccubeTestCase;
-use Mcp\Exception\ToolCallException;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * `GetShippingTool` の DB 結合テスト。 Order に紐づく Shipping 一覧の返却と不在時の挙動を検証する。
@@ -33,18 +29,10 @@ final class GetShippingToolTest extends EccubeTestCase
     {
         parent::setUp();
         $this->tool = static::getContainer()->get(GetShippingTool::class);
-        $this->tokenStorage()->setToken(null);
-    }
-
-    public function testThrowsWhenScopeIsAbsent(): void
-    {
-        $this->expectException(ToolCallException::class);
-        $this->tool->get(orderId: 1);
     }
 
     public function testReturnsShippingsForOrder(): void
     {
-        $this->grantScope(McpScope::ROLE_ORDER_READ);
         $customer = $this->createCustomer('mcp-shipping@example.com');
         $order = $this->createOrder($customer);
 
@@ -57,8 +45,6 @@ final class GetShippingToolTest extends EccubeTestCase
 
     public function testReturnsEmptyForUnknownOrder(): void
     {
-        $this->grantScope(McpScope::ROLE_ORDER_READ);
-
         $result = $this->tool->get(orderId: 99999999);
 
         $this->assertNull($result['order_id']);
@@ -67,7 +53,6 @@ final class GetShippingToolTest extends EccubeTestCase
 
     public function testItemFieldsAreSubsetOfShippingAllowList(): void
     {
-        $this->grantScope(McpScope::ROLE_ORDER_READ);
         $customer = $this->createCustomer('mcp-shipping-allow@example.com');
         $order = $this->createOrder($customer);
 
@@ -89,20 +74,5 @@ final class GetShippingToolTest extends EccubeTestCase
                 $this->assertContains($key, $allowed, sprintf('出力フィールド "%s" は Shipping allow_list 外', $key));
             }
         }
-    }
-
-    private function grantScope(string $role): void
-    {
-        $member = $this->createMember();
-        $token = new UsernamePasswordToken($member, 'admin', [$role]);
-        $this->tokenStorage()->setToken($token);
-    }
-
-    private function tokenStorage(): TokenStorageInterface
-    {
-        $tokenStorage = static::getContainer()->get(TokenStorageInterface::class);
-        $this->assertInstanceOf(TokenStorageInterface::class, $tokenStorage);
-
-        return $tokenStorage;
     }
 }

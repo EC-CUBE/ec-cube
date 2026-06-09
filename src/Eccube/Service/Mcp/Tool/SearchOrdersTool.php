@@ -19,7 +19,6 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\Mcp\EntityArraySerializer;
-use Eccube\Service\Mcp\McpScope;
 use Eccube\Service\Mcp\ToolInvoker;
 use Mcp\Capability\Attribute\McpTool;
 
@@ -76,7 +75,6 @@ final readonly class SearchOrdersTool
         /** @var array{total:int,limit:int,offset:int,items:list<array<string, mixed>>} $result */
         $result = $this->invoker->invoke(
             toolName: 'search_orders',
-            requiredScope: McpScope::ROLE_ORDER_READ,
             args: compact('keyword', 'orderNo', 'statusIds', 'email', 'totalMin', 'totalMax', 'orderDateFrom', 'orderDateTo', 'customerId', 'limit', 'offset'),
             work: function () use ($keyword, $orderNo, $statusIds, $email, $totalMin, $totalMax, $orderDateFrom, $orderDateTo, $customerId, $limit, $offset): array {
                 $limit = max(1, min(200, $limit));

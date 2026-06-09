@@ -19,7 +19,6 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\Master\CustomerStatusRepository;
 use Eccube\Service\Mcp\EntityArraySerializer;
-use Eccube\Service\Mcp\McpScope;
 use Eccube\Service\Mcp\ToolInvoker;
 use Mcp\Capability\Attribute\McpTool;
 
@@ -78,7 +77,6 @@ final readonly class SearchCustomersTool
         /** @var array{total:int,limit:int,offset:int,items:list<array<string, mixed>>} $result */
         $result = $this->invoker->invoke(
             toolName: 'search_customers',
-            requiredScope: McpScope::ROLE_CUSTOMER_READ,
             args: compact('keyword', 'phoneNumber', 'statusIds', 'createDateFrom', 'createDateTo', 'buyTotalMin', 'buyTotalMax', 'buyTimesMin', 'buyTimesMax', 'limit', 'offset'),
             work: function () use ($keyword, $phoneNumber, $statusIds, $createDateFrom, $createDateTo, $buyTotalMin, $buyTotalMax, $buyTimesMin, $buyTimesMax, $limit, $offset): array {
                 $limit = max(1, min(200, $limit));

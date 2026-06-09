@@ -17,7 +17,6 @@ namespace Eccube\Service\Mcp\Tool;
 
 use Eccube\Repository\CustomerRepository;
 use Eccube\Service\Mcp\EntityArraySerializer;
-use Eccube\Service\Mcp\McpScope;
 use Eccube\Service\Mcp\ToolInvoker;
 use Mcp\Capability\Attribute\McpTool;
 
@@ -51,7 +50,6 @@ final readonly class GetCustomerTool
     {
         return $this->invoker->invoke(
             toolName: 'get_customer',
-            requiredScope: McpScope::ROLE_CUSTOMER_READ,
             args: ['id' => $id],
             work: function () use ($id): array {
                 $customer = $this->customerRepository->find($id);

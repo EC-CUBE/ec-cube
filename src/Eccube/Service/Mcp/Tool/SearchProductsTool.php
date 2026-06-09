@@ -21,7 +21,6 @@ use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Service\Mcp\EntityArraySerializer;
-use Eccube\Service\Mcp\McpScope;
 use Eccube\Service\Mcp\ToolInvoker;
 use Mcp\Capability\Attribute\McpTool;
 
@@ -72,7 +71,6 @@ final readonly class SearchProductsTool
         /** @var array{total:int,limit:int,offset:int,items:list<array<string, mixed>>} $result */
         $result = $this->invoker->invoke(
             toolName: 'search_products',
-            requiredScope: McpScope::ROLE_PRODUCT_READ,
             args: compact('keyword', 'categoryId', 'statusIds', 'stockMin', 'stockMax', 'limit', 'offset'),
             work: function () use ($keyword, $categoryId, $statusIds, $stockMin, $stockMax, $limit, $offset): array {
                 $limit = max(1, min(200, $limit));

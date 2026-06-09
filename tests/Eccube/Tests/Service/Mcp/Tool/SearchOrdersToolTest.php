@@ -18,13 +18,9 @@ namespace Eccube\Tests\Service\Mcp\Tool;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
-use Eccube\Service\Mcp\McpScope;
 use Eccube\Service\Mcp\Tool\SearchOrdersTool;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Tests\Fixture\Generator;
-use Mcp\Exception\ToolCallException;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * `SearchOrdersTool` の DB 結合テスト。
@@ -39,18 +35,10 @@ final class SearchOrdersToolTest extends EccubeTestCase
     {
         parent::setUp();
         $this->tool = static::getContainer()->get(SearchOrdersTool::class);
-        $this->tokenStorage()->setToken(null);
-    }
-
-    public function testThrowsWhenScopeIsAbsent(): void
-    {
-        $this->expectException(ToolCallException::class);
-        $this->tool->search();
     }
 
     public function testReturnsOrdersWithScope(): void
     {
-        $this->grantScope(McpScope::ROLE_ORDER_READ);
         $customer = $this->createCustomer();
         $this->createOrderInDefaultSearchable($customer);
 
@@ -63,8 +51,6 @@ final class SearchOrdersToolTest extends EccubeTestCase
 
     public function testLimitClampedToUpperBound(): void
     {
-        $this->grantScope(McpScope::ROLE_ORDER_READ);
-
         $result = $this->tool->search(limit: 500);
 
         $this->assertSame(200, $result['limit']);
@@ -72,7 +58,6 @@ final class SearchOrdersToolTest extends EccubeTestCase
 
     public function testFiltersByCustomerId(): void
     {
-        $this->grantScope(McpScope::ROLE_ORDER_READ);
         $customerA = $this->createCustomer('mcp-order-a@example.com');
         $customerB = $this->createCustomer('mcp-order-b@example.com');
         $this->createOrderInDefaultSearchable($customerA);
@@ -86,7 +71,6 @@ final class SearchOrdersToolTest extends EccubeTestCase
 
     public function testItemFieldsAreSubsetOfAllowList(): void
     {
-        $this->grantScope(McpScope::ROLE_ORDER_READ);
         $customer = $this->createCustomer('mcp-order-allow@example.com');
         $this->createOrderInDefaultSearchable($customer);
 
@@ -124,20 +108,5 @@ final class SearchOrdersToolTest extends EccubeTestCase
         $this->assertInstanceOf(Generator::class, $generator);
 
         return $generator->createOrder($customer, [], null, 0, 0, OrderStatus::NEW);
-    }
-
-    private function grantScope(string $role): void
-    {
-        $member = $this->createMember();
-        $token = new UsernamePasswordToken($member, 'admin', [$role]);
-        $this->tokenStorage()->setToken($token);
-    }
-
-    private function tokenStorage(): TokenStorageInterface
-    {
-        $tokenStorage = static::getContainer()->get(TokenStorageInterface::class);
-        $this->assertInstanceOf(TokenStorageInterface::class, $tokenStorage);
-
-        return $tokenStorage;
     }
 }

@@ -15,12 +15,8 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Service\Mcp\Tool;
 
-use Eccube\Service\Mcp\McpScope;
 use Eccube\Service\Mcp\Tool\GetProductStockTool;
 use Eccube\Tests\EccubeTestCase;
-use Mcp\Exception\ToolCallException;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * `GetProductStockTool` の DB 結合テスト。 規格あり / 規格なし / 在庫無制限 / 不在の各経路を検証する。
@@ -33,18 +29,10 @@ final class GetProductStockToolTest extends EccubeTestCase
     {
         parent::setUp();
         $this->tool = static::getContainer()->get(GetProductStockTool::class);
-        $this->tokenStorage()->setToken(null);
-    }
-
-    public function testThrowsWhenScopeIsAbsent(): void
-    {
-        $this->expectException(ToolCallException::class);
-        $this->tool->get(productId: 1);
     }
 
     public function testReturnsStockForProductWithMultipleClasses(): void
     {
-        $this->grantScope(McpScope::ROLE_PRODUCT_READ);
         $product = $this->createProduct('mcp-stock-multi', 3);
 
         $result = $this->tool->get(productId: $product->getId());
@@ -59,7 +47,6 @@ final class GetProductStockToolTest extends EccubeTestCase
 
     public function testReturnsStockForProductWithoutClasses(): void
     {
-        $this->grantScope(McpScope::ROLE_PRODUCT_READ);
         // 規格数 0 を指定しても代表 ProductClass が 1 つ生成される
         $product = $this->createProduct('mcp-stock-single', 0);
 
@@ -71,8 +58,6 @@ final class GetProductStockToolTest extends EccubeTestCase
 
     public function testReturnsEmptyForUnknownProduct(): void
     {
-        $this->grantScope(McpScope::ROLE_PRODUCT_READ);
-
         $result = $this->tool->get(productId: 99999999);
 
         $this->assertSame(0, $result['summary']['total_classes']);
@@ -81,7 +66,6 @@ final class GetProductStockToolTest extends EccubeTestCase
 
     public function testStockUnlimitedReflectedInSummary(): void
     {
-        $this->grantScope(McpScope::ROLE_PRODUCT_READ);
         $product = $this->createProduct('mcp-stock-unlimited', 2);
 
         // 1 つの規格を在庫無制限に設定
@@ -98,7 +82,6 @@ final class GetProductStockToolTest extends EccubeTestCase
 
     public function testItemFieldsAreSubsetOfAllowList(): void
     {
-        $this->grantScope(McpScope::ROLE_PRODUCT_READ);
         $product = $this->createProduct('mcp-stock-allow', 1);
 
         $result = $this->tool->get(productId: $product->getId());
@@ -118,20 +101,5 @@ final class GetProductStockToolTest extends EccubeTestCase
                 $this->assertContains($key, $allowed, sprintf('出力フィールド "%s" は ProductClass allow_list 外', $key));
             }
         }
-    }
-
-    private function grantScope(string $role): void
-    {
-        $member = $this->createMember();
-        $token = new UsernamePasswordToken($member, 'admin', [$role]);
-        $this->tokenStorage()->setToken($token);
-    }
-
-    private function tokenStorage(): TokenStorageInterface
-    {
-        $tokenStorage = static::getContainer()->get(TokenStorageInterface::class);
-        $this->assertInstanceOf(TokenStorageInterface::class, $tokenStorage);
-
-        return $tokenStorage;
     }
 }

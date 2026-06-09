@@ -19,7 +19,6 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Plugin;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\Mcp\EntityArraySerializer;
-use Eccube\Service\Mcp\McpScope;
 use Eccube\Service\Mcp\ToolInvoker;
 use Mcp\Capability\Attribute\McpTool;
 
@@ -56,7 +55,6 @@ final readonly class GetPluginTool
     {
         return $this->invoker->invoke(
             toolName: 'get_plugin',
-            requiredScope: McpScope::ROLE_PLUGIN_READ,
             args: compact('id', 'code'),
             work: function () use ($id, $code): array {
                 $plugin = $this->resolvePlugin($id, $code);

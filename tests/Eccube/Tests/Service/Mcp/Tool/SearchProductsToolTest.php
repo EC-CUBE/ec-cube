@@ -15,12 +15,8 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Service\Mcp\Tool;
 
-use Eccube\Service\Mcp\McpScope;
 use Eccube\Service\Mcp\Tool\SearchProductsTool;
 use Eccube\Tests\EccubeTestCase;
-use Mcp\Exception\ToolCallException;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * `SearchProductsTool` の DB 結合テスト。
@@ -36,19 +32,10 @@ final class SearchProductsToolTest extends EccubeTestCase
     {
         parent::setUp();
         $this->tool = static::getContainer()->get(SearchProductsTool::class);
-        // 前のテストが残した token があれば消す。 デフォルトの「scope 無し」状態から開始する
-        $this->tokenStorage()->setToken(null);
-    }
-
-    public function testThrowsWhenScopeIsAbsent(): void
-    {
-        $this->expectException(ToolCallException::class);
-        $this->tool->search();
     }
 
     public function testReturnsProductsWithScope(): void
     {
-        $this->grantScope(McpScope::ROLE_PRODUCT_READ);
         $this->createProduct('mcp-search-001', 3);
 
         $result = $this->tool->search(limit: 50);
@@ -62,8 +49,6 @@ final class SearchProductsToolTest extends EccubeTestCase
 
     public function testLimitClampedToUpperBound(): void
     {
-        $this->grantScope(McpScope::ROLE_PRODUCT_READ);
-
         $result = $this->tool->search(limit: 500);
 
         $this->assertSame(200, $result['limit'], 'limit は 200 にクランプされる');
@@ -71,8 +56,6 @@ final class SearchProductsToolTest extends EccubeTestCase
 
     public function testLimitClampedToLowerBound(): void
     {
-        $this->grantScope(McpScope::ROLE_PRODUCT_READ);
-
         $result = $this->tool->search(limit: 0);
 
         $this->assertSame(1, $result['limit'], 'limit は最小 1 にクランプされる');
@@ -80,8 +63,6 @@ final class SearchProductsToolTest extends EccubeTestCase
 
     public function testOffsetClampedToZero(): void
     {
-        $this->grantScope(McpScope::ROLE_PRODUCT_READ);
-
         $result = $this->tool->search(limit: 1, offset: -5);
 
         $this->assertSame(0, $result['offset'], 'offset は最小 0 にクランプされる');
@@ -89,7 +70,6 @@ final class SearchProductsToolTest extends EccubeTestCase
 
     public function testItemFieldsAreSubsetOfAllowList(): void
     {
-        $this->grantScope(McpScope::ROLE_PRODUCT_READ);
         $this->createProduct('mcp-allow-001', 1);
 
         $result = $this->tool->search(limit: 5);
@@ -109,20 +89,5 @@ final class SearchProductsToolTest extends EccubeTestCase
                 $this->assertContains($key, $allowed, sprintf('出力フィールド "%s" は allow_list 外', $key));
             }
         }
-    }
-
-    private function grantScope(string $role): void
-    {
-        $member = $this->createMember();
-        $token = new UsernamePasswordToken($member, 'admin', [$role]);
-        $this->tokenStorage()->setToken($token);
-    }
-
-    private function tokenStorage(): TokenStorageInterface
-    {
-        $tokenStorage = static::getContainer()->get(TokenStorageInterface::class);
-        $this->assertInstanceOf(TokenStorageInterface::class, $tokenStorage);
-
-        return $tokenStorage;
     }
 }
