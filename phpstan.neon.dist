@@ -13,3 +13,10 @@ parameters:
       identifier: doctrine.columnType
   paths:
     - src
+
+# 設計 §8 #4 「`McpAuditLogger` を経由しない `mcp` チャネル書き込みを禁止」 の静的解析ルール。
+services:
+  -
+    class: Eccube\PHPStan\Rules\Mcp\NoDirectMcpLoggerInjectionRule
+    tags:
+      - phpstan.rules.rule
