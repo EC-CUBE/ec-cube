@@ -21,40 +21,51 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 /**
  * `mcp` チャンネル (EC-CUBE 初の監査ログ) への書き込みを `McpAuditLogger` 1 クラスに縛るための DI 配線。
  *
- * monolog は channel ごとに「引数名 autowire alias」 を自動生成する (例: `LoggerInterface $mcpLogger` →
- * `monolog.logger.mcp`)。 このままだと **どのクラスでも `$mcpLogger` を inject すれば mcp 監査チャンネルに
- * 直接書けてしまい**、 設計 §8 #4 の「監査ログは McpAuditLogger を単一入口とする」 が破れる。
+ * monolog は channel ごとに「引数名 autowire alias」 を自動生成する (`LoggerInterface $mcpLogger` →
+ * `monolog.logger.mcp`)。 本 pass はこの **`$mcpLogger` の autowire alias だけを削除**し、 mcp 監査
+ * チャンネルへの到達経路を `@monolog.logger.mcp` の名指し参照 (= McpAuditLogger) のみに限定する。
+ * 他チャンネルの alias と `monolog.logger.mcp` サービス本体には触れない。
  *
- * 本 pass は **`$mcpLogger` の autowire alias だけを削除**する (他チャンネルの alias、 および
- * `monolog.logger.mcp` サービス本体には触れない)。 これにより:
- *   - McpAuditLogger は services.yaml で `@monolog.logger.mcp` を名指し注入するので動き続ける
- *   - それ以外のクラスが `LoggerInterface $mcpLogger` を inject しようとすると、 解決先が無く **起動失敗**
- *     (= 監査ログの単一入口を「静的解析を回すか否か」 に依存しない実行時保証にする)
+ * alias 削除後、 `LoggerInterface $mcpLogger` を inject する他クラスは型フォールバックで default
+ * チャンネル (`monolog.logger`) に解決され、 mcp 監査チャンネルには到達しない。
  *
- * monolog の `LoggerChannelPass` (優先度 0 / before-optimization) が alias を作った後、 かつ Symfony の
- * `AutowirePass` (optimization フェーズ) が alias を消費する前に削除する必要がある。 Kernel 側で
- * before-optimization の負優先度で登録することで、 この区間に確実に収める。
+ * monolog の `LoggerChannelPass` が alias を作った後、 かつ `AutowirePass` (optimization フェーズ) が
+ * alias を消費する前に削除する必要があるため、 Kernel 側で before-optimization の負優先度で登録する。
+ *
+ * alias id は monolog の `registerAliasForArgument(..., 'mcp.logger')` が生成する固定値をハードコード
+ * している。 monolog のバージョン/命名規約変更で id がズレると削除が空振りし、 監査チャンネルが誰でも
+ * 書ける状態に黙って戻る。 これを防ぐため、 mcp チャンネルが存在するのに想定 id の alias が見つからない
+ * 場合は例外で build を止める。
  */
 final class McpAuditLoggerChannelLockPass implements CompilerPassInterface
 {
-    /**
-     * monolog が `registerAliasForArgument(..., 'mcp.logger')` で生成する alias の ID。
-     * 主 alias (camelCase) と、 内部用のドット名 alias の両方を消す。
-     *
-     * @var list<string>
-     */
-    private const MCP_LOGGER_ALIAS_IDS = [
-        'Psr\Log\LoggerInterface $mcpLogger',
-        '.Psr\Log\LoggerInterface $mcp.logger',
-    ];
+    /** mcp チャンネルのロガー本体サービス ID。 これがあれば mcp チャンネルが構成されている。 */
+    private const MCP_LOGGER_SERVICE_ID = 'monolog.logger.mcp';
+
+    /** monolog が `$mcpLogger` 引数向けに張る主 autowire alias ID (これが保護対象)。 */
+    private const MCP_LOGGER_AUTOWIRE_ALIAS_ID = 'Psr\Log\LoggerInterface $mcpLogger';
+
+    /** 同じく内部用のドット名 alias ID (バージョンにより存在しないことがある)。 */
+    private const MCP_LOGGER_INTERNAL_ALIAS_ID = '.Psr\Log\LoggerInterface $mcp.logger';
 
     #[\Override]
     public function process(ContainerBuilder $container): void
     {
-        foreach (self::MCP_LOGGER_ALIAS_IDS as $aliasId) {
-            if ($container->hasAlias($aliasId)) {
-                $container->removeAlias($aliasId);
-            }
+        // mcp チャンネル自体が無い (機能無効化等) なら保護対象も無いのでスキップ
+        if (!$container->hasDefinition(self::MCP_LOGGER_SERVICE_ID) && !$container->has(self::MCP_LOGGER_SERVICE_ID)) {
+            return;
+        }
+
+        // チャンネルがあるのに想定 id の alias が無い = 命名規約変更等で本 pass が空振りした証拠。
+        // 黙って通すと監査チャンネルが誰でも書ける状態に戻るため、 build を止めて気付かせる (fail loud)。
+        if (!$container->hasAlias(self::MCP_LOGGER_AUTOWIRE_ALIAS_ID)) {
+            throw new \LogicException(sprintf('MCP 監査ログ保護に失敗しました: autowire alias "%s" が見つかりません。 monolog のバージョン/命名規約変更の可能性があるため、 %s の alias id を見直してください。', self::MCP_LOGGER_AUTOWIRE_ALIAS_ID, self::class));
+        }
+
+        $container->removeAlias(self::MCP_LOGGER_AUTOWIRE_ALIAS_ID);
+
+        if ($container->hasAlias(self::MCP_LOGGER_INTERNAL_ALIAS_ID)) {
+            $container->removeAlias(self::MCP_LOGGER_INTERNAL_ALIAS_ID);
         }
     }
 }
