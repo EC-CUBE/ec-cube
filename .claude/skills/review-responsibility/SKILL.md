@@ -3,12 +3,6 @@ name: review-responsibility
 description: EC-CUBE 4.4 で実装・改修したコードの責務分離をチェックする。「責務分離を確認して」「Fatコントローラ/Fatサービスになってないか見て」「実装後のレビューをして」「リファクタの観点を出して」「レイヤ違反がないか確認して」などと言われたとき、またはコントローラ/サービスの実装・改修が一区切りついた直後に使用する。業務ロジックの偏りやレイヤ違反を点検する。
 ---
 
-<!--
-  このファイルは tools/sync-ai-skills.php により同期される Skill スタブです。
-  正本は .claude/skills/ 配下。編集は必ず正本に対して行い、`php tools/sync-ai-skills.php` を実行してください。
-  .codex/skills/・.agents/skills/ 配下は生成物のため直接編集しないこと。
--->
-
 # 責務分離レビュー（実装直後の自己チェック）
 
 コントローラ/サービスの実装・改修が一区切りついたら、次の手順で責務分離を点検する。
@@ -35,8 +29,8 @@ php tools/check-architecture.php --changed
 ### 2. 規約に照らした目視レビュー
 
 変更差分について、対応する規約を読み込んで確認する:
-- コントローラ: [`docs/rules/controller.md`](../../../docs/rules/controller.md)
-- サービス: [`docs/rules/service.md`](../../../docs/rules/service.md)
+- コントローラ: Skill [`controller`](../controller/SKILL.md)
+- サービス: Skill [`service`](../service/SKILL.md)
 
 確認観点（質的シグナル）:
 - 業務ロジック（金額・送料・ポイント計算、複数 Repository 横断、外部連携、メール送信）が

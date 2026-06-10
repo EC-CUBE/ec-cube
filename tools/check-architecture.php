@@ -16,7 +16,7 @@
  *
  * 追加の依存を必要としない（token_get_all のみ使用）。
  * CI を落とすためのものではなく、実装・レビュー時の自己チェック用。
- * docs/rules/controller.md, docs/rules/service.md と対で使う。
+ * Skill controller / service（.claude/skills/{controller,service}/SKILL.md）と対で使う。
  *
  *   php tools/check-architecture.php --changed              # git で変更された Controller/Service のみ
  *   php tools/check-architecture.php src/Eccube/Service/...  # ファイル/ディレクトリ指定
@@ -220,7 +220,7 @@ if ($findings === 0) {
     exit(0);
 }
 
-echo "—— {$findings} 件の観点が見つかりました。docs/rules/controller.md・service.md を参照し、責務の整理を検討してください。\n";
+echo "—— {$findings} 件の観点が見つかりました。Skill controller・service（.claude/skills/{controller,service}/SKILL.md）を参照し、責務の整理を検討してください。\n";
 echo "（これは助言であり、必ずしも修正必須ではありません）\n";
 
 exit($strict ? 1 : 0);

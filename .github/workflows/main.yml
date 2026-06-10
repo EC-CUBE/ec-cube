@@ -28,13 +28,11 @@ jobs:
     uses: ./.github/workflows/phpstan.yml
   php-cs-fixer:
     uses: ./.github/workflows/php-cs-fixer.yml
-  sync-ai-skills:
-    uses: ./.github/workflows/sync-ai-skills.yml
   unit-test:
-    needs: [ rector, phpstan, php-cs-fixer, sync-ai-skills ]
+    needs: [ rector, phpstan, php-cs-fixer ]
     uses: ./.github/workflows/unit-test.yml
   e2e-test:
-    needs: [ rector, phpstan, php-cs-fixer, sync-ai-skills ]
+    needs: [ rector, phpstan, php-cs-fixer ]
     uses: ./.github/workflows/e2e-test.yml
   dockerbuild:
     uses: ./.github/workflows/dockerbuild.yml
