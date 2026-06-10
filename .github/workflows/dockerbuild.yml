@@ -1,9 +1,6 @@
 name: Testing dockerbuild
 on:
-  push:
-    paths:
-      - '**'
-      - '!*.md'
+  workflow_call:
   release:
     types: [ published ]
 env:
@@ -20,48 +17,41 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-24.04 ]
-        php: [ '8.4', '8.5' ]
+        php: [ '8.2', '8.3', '8.4', '8.5' ]
         db: [ pgsql ]
         include:
           - db: pgsql
             database_url: postgres://dbuser:secret@127.0.0.1:15432/eccubedb
-            database_server_version: 14
+            database_server_version: 18
+          - php: '8.2'
+            tag: '8.2-apache'
+            ext_install_args: 'zip gd mysqli pdo_mysql opcache intl'
           - php: '8.3'
             tag: '8.3-apache'
+            ext_install_args: 'zip gd mysqli pdo_mysql opcache intl'
           - php: '8.4'
             tag: '8.4-apache'
+            ext_install_args: 'zip gd mysqli pdo_mysql opcache intl'
+          # PHP 8.5 以降は opcache がコア組み込みのため install 対象から除外する
           - php: '8.5'
             tag: '8.5-apache'
+            ext_install_args: 'zip gd mysqli pdo_mysql intl'
 
     steps:
       - name: downcase REPO
         run: |
           echo "IMAGE_NAME=${GITHUB_REPOSITORY,,}-php" >> ${GITHUB_ENV}
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
       ## Used when creating multi-platform images
       # - name: Set up QEMU
       #   uses: docker/setup-qemu-action@v2
       # - name: Set up Docker Buildx
       #   uses: docker/setup-buildx-action@v2
 
-      - name: Setup PHP
-        uses: nanasess/setup-php@bc11abbf4dd060b7bfd20d03edeeb43417ebe245  # master
-        with:
-          php-version: ${{ matrix.php }}
-
-      - name: Install ext-redis 6.1+
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y php${{ matrix.php }}-redis
-          sudo phpenmod -s cli redis
-          php -m | grep -i redis
-
-      - name: Initialize Composer
-        uses: ./.github/actions/composer
-
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121  # v4
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@650006c6eb7dba73a995cc03b0b2d7f5ca915bee  # v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -86,7 +76,9 @@ jobs:
           load: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          build-args: TAG=${{ matrix.tag }}
+          build-args: |
+            TAG=${{ matrix.tag }}
+            EXT_INSTALL_ARGS=${{ matrix.ext_install_args }}
 
       - name: Setup to EC-CUBE
         env:
@@ -104,12 +96,14 @@ jobs:
       ## see https://docs.github.com/ja/packages/managing-github-packages-using-github-actions-workflows/publishing-and-installing-a-package-with-github-actions#publishing-a-package-using-an-action
 
       - name: Push Docker image
+        if: github.event_name != 'pull_request'
         uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f  # v7
-        if: success()
         with:
           context: .
           push: true
           # platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          build-args: TAG=${{ matrix.tag }}
+          build-args: |
+            TAG=${{ matrix.tag }}
+            EXT_INSTALL_ARGS=${{ matrix.ext_install_args }}
