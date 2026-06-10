@@ -19,6 +19,7 @@ use Eccube\EventListener\Mcp\RateLimitListener;
 use Eccube\Service\Mcp\McpAuditLogger;
 use League\Bundle\OAuth2ServerBundle\Security\Authentication\Token\OAuth2Token;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\AbstractLogger;
 use Psr\Log\NullLogger;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -62,6 +63,7 @@ final class RateLimitListenerTest extends TestCase
             mcpClientLimiter: $clientLimiter,
             tokenStorage: $this->tokenStorage,
             auditLogger: new McpAuditLogger(new NullLogger(), new RequestStack()),
+            logger: new NullLogger(),
         );
     }
 
@@ -179,6 +181,7 @@ final class RateLimitListenerTest extends TestCase
             mcpClientLimiter: $brokenLimiter,
             tokenStorage: new TokenStorage(),
             auditLogger: new McpAuditLogger(new NullLogger(), new RequestStack()),
+            logger: new NullLogger(),
         );
 
         $event = $this->buildRequestEvent('192.0.2.9', '/admin/mcp');
@@ -190,6 +193,54 @@ final class RateLimitListenerTest extends TestCase
 
         $body = json_decode((string) $response->getContent(), true);
         $this->assertSame('rate_limiter_unavailable', $body['error'] ?? null);
+    }
+
+    public function testAuditFailureIsRecordedToFallbackAndResponsePreserved(): void
+    {
+        // mcp 監査チャンネル書き込みが落ちる状況を模す
+        $throwingAuditLogger = new McpAuditLogger(
+            new class extends AbstractLogger {
+                public function log($level, string|\Stringable $message, array $context = []): void
+                {
+                    throw new \RuntimeException('mcp channel down');
+                }
+            },
+            new RequestStack(),
+        );
+        // フォールバック先 (default チャンネル) の記録を捕捉する spy
+        $fallback = new class extends AbstractLogger {
+            /** @var list<string> */
+            public array $messages = [];
+
+            public function log($level, string|\Stringable $message, array $context = []): void
+            {
+                $this->messages[] = (string) $message;
+            }
+        };
+        $ipLimiter = new RateLimiterFactory(
+            ['id' => 'mcp_ip', 'policy' => 'fixed_window', 'limit' => 1, 'interval' => '1 minute'],
+            new InMemoryStorage(),
+        );
+
+        $listener = new RateLimitListener(
+            eccubeAdminRoute: 'admin',
+            mcpIpLimiter: $ipLimiter,
+            mcpClientLimiter: $ipLimiter,
+            tokenStorage: new TokenStorage(),
+            auditLogger: $throwingAuditLogger,
+            logger: $fallback,
+        );
+
+        // limit=1: 2 回目で 429 → RateLimited 監査 → 監査が throw → safeAudit が fallback に記録
+        $listener->onKernelRequest($this->buildRequestEvent('192.0.2.50', '/admin/mcp'));
+        $event = $this->buildRequestEvent('192.0.2.50', '/admin/mcp');
+        $listener->onKernelRequest($event);
+
+        $response = $event->getResponse();
+        $this->assertInstanceOf(Response::class, $response, '監査失敗でも 429 は返る');
+        $this->assertSame(Response::HTTP_TOO_MANY_REQUESTS, $response->getStatusCode(), (string) $response->getContent());
+        $this->assertNotEmpty($fallback->messages, '監査失敗が fallback logger に記録される (完全沈黙しない)');
+        $this->assertStringContainsString('mcp 監査ログの書き込みに失敗', $fallback->messages[0]);
     }
 
     private function buildRequestEvent(string $ip, string $path): RequestEvent

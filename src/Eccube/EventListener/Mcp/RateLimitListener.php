@@ -18,6 +18,7 @@ namespace Eccube\EventListener\Mcp;
 use Eccube\Service\Mcp\AuditResult;
 use Eccube\Service\Mcp\McpAuditLogger;
 use League\Bundle\OAuth2ServerBundle\Security\Authentication\Token\OAuth2Token;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -56,6 +57,7 @@ final readonly class RateLimitListener implements EventSubscriberInterface
         private RateLimiterFactory $mcpClientLimiter,
         private TokenStorageInterface $tokenStorage,
         private McpAuditLogger $auditLogger,
+        private LoggerInterface $logger,
     ) {
         $this->mcpPathPrefix = '/'.$eccubeAdminRoute.'/mcp';
     }
@@ -161,7 +163,10 @@ final readonly class RateLimitListener implements EventSubscriberInterface
     }
 
     /**
-     * 監査ログ書き込みが失敗しても拒否/エラーレスポンスの返却を妨げないよう、 例外を握り潰して記録する。
+     * 拒否/エラーレスポンス (429 / 503) の返却を、 監査ログ書き込みの失敗で崩さないための保護。
+     *
+     * 監査が失敗しても応答は守るが、 完全沈黙はしない。 mcp 監査チャンネルの障害が不可視にならないよう、
+     * フォールバック先 (default チャンネル) へ失敗を 1 行残してから握り潰す。
      *
      * @param array<string, mixed> $context
      */
@@ -169,8 +174,11 @@ final readonly class RateLimitListener implements EventSubscriberInterface
     {
         try {
             $this->auditLogger->logSecurityEvent($result, $context);
-        } catch (\Throwable) {
-            // 監査ログ自体の障害で fail-closed (503) / レート制限 (429) の応答を崩さない
+        } catch (\Throwable $e) {
+            $this->logger->error('mcp 監査ログの書き込みに失敗 (拒否レスポンスは維持)', [
+                'result' => $result->value,
+                'exception' => $e,
+            ]);
         }
     }
 
