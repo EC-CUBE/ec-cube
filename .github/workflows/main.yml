@@ -34,6 +34,11 @@ jobs:
   e2e-test:
     needs: [ rector, phpstan, php-cs-fixer ]
     uses: ./.github/workflows/e2e-test.yml
+  dockerbuild:
+    uses: ./.github/workflows/dockerbuild.yml
+    permissions:
+      contents: read
+      packages: write
   plugin-test:
     needs: [ unit-test, e2e-test ]
     uses: ./.github/workflows/plugin-test.yml
@@ -44,7 +49,7 @@ jobs:
 #    needs: [ plugin-test ]
 #    uses: ./.github/workflows/deny-test.yml
   success:
-    needs: [ e2e-test-throttling ]
+    needs: [ e2e-test-throttling, dockerbuild ]
     runs-on: ubuntu-latest
     steps:
       - name: success
