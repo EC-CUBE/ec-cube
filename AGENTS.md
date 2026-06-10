@@ -201,7 +201,7 @@ frontmatter の `description` がトリガ条件で、該当レイヤを触る�
 | 責務分離レビュー（実装直後の自己チェック・全層） | [`.claude/skills/review-responsibility/SKILL.md`](./.claude/skills/review-responsibility/SKILL.md) | `review-responsibility` |
 
 > 規約は必要になった時点で `.claude/skills/<name>/SKILL.md` を 1 ファイル追加して足す（`.codex`/`.agents` は symlink で自動共有）。
-> 各ファイルは frontmatter（`name` / `description`）＋本文の順で書く。
+> 各ファイルは frontmatter（`name` / `description`）＋本文の順で書き、本文は「対象／基本ルール／実装パターン／よくある間違い／実行・確認方法」の構成を推奨する（推測を載せず、必ず `src/Eccube/` の実コードで裏取りする）。
 
 **Skill 命名規則**: リポジトリ内のスキルのため `eccube-` 接頭辞は付けない。
 自動発火するレイヤ規約系はトピック名（`controller` / `service` / `phpunit`）、
