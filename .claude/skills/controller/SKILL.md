@@ -95,9 +95,8 @@ public function delete(Request $request, Example $Example): RedirectResponse
 
 ## Fat 化のシグナル（質的）
 
-「1 メソッド何行」「依存いくつ」という**数値はここで規範化しない**。数値で線を引くと
-「51 行だから分割／49 行だから OK」というカーゴカルト的判断を誘発するうえ、計測はツールの仕事だから
-（メソッド長・依存数は `tools/check-architecture.php` が報告する。下記「ツールに委ねる」参照）。
+「1 メソッド何行」「依存いくつ」という**数値で線を引かない**。
+「51 行だから分割／49 行だから OK」というカーゴカルト的判断を誘発するため、行数や依存数そのものを基準にしない。
 
 代わりに、**Service / PurchaseFlow へ出すべき「質的なシグナル」**で判断する。次が混ざり始めたら抽出を検討:
 
@@ -110,16 +109,15 @@ public function delete(Request $request, Example $Example): RedirectResponse
 → 受注に関わる計算・検証・確定（在庫引当・採番・ポイント付与・値引き）は Service ではなく
 **PurchaseFlow パイプライン**へ（Skill `service` の「PurchaseFlow」参照）。
 
-## ツールに委ねる（整形・変換・計測）
+## ツールに委ねる（整形・変換）
 
-整形・型・アノテーション変換・数値メトリクスは**散文で重複説明せず、ローカルでツールを実行**して担保する
+整形・型・アノテーション変換は**散文で重複説明せず、ローカルでツールを実行**して担保する
 （CI は最後の砦であって一次防衛線ではない）。実装・改修後に:
 
 ```bash
 vendor/bin/rector process --dry-run            # @Route→#[Route]、アノテ→PHP8属性、コンストラクタDI 等
 vendor/bin/phpstan analyse src                 # 型宣言・静的解析（level 6）
 vendor/bin/php-cs-fixer fix                     # PSR-12 整形・ライセンスヘッダ
-php tools/check-architecture.php --changed      # メソッド長・依存数・persist/flush 直書きの可視化（助言用・CI 非搭載）
 ```
 
 > `.husky/pre-commit`（PR #6761）がマージされれば、staged な `.php` を含む commit 時に rector(dry-run)→phpstan→php-cs-fixer が自動実行される想定。

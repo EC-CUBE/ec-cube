@@ -69,22 +69,21 @@ class ExampleService
 
 ## Fat 化のシグナル（質的）
 
-数値（メソッド行数・依存数）はここで規範化しない。計測は `tools/check-architecture.php` の仕事。
+数値（メソッド行数・依存数）で線を引かない。
 代わりに**単一責任が崩れる質的シグナル**で判断する:
 
 - 1 つの Service に**無関係な責務**（例: 商品検索とメール送信）が同居している → 分割。
 - メソッドが**複数の関心事**（取得・整形・永続化・通知）を一気に処理している → private メソッド／別 Service へ。
 - トランザクション境界が曖昧。`flush()` をループ内で乱発している → まとめて `flush()`。
 
-## ツールに委ねる（整形・変換・計測）
+## ツールに委ねる（整形・変換）
 
-整形・型・変換・数値メトリクスは散文で重複説明せず、ローカルでツールを実行して担保する:
+整形・型・変換は散文で重複説明せず、ローカルでツールを実行して担保する:
 
 ```bash
 vendor/bin/rector process --dry-run            # アノテ→PHP8属性、コンストラクタDI 等
 vendor/bin/phpstan analyse src                 # 型宣言・静的解析（level 6）
 vendor/bin/php-cs-fixer fix                     # PSR-12 整形・ライセンスヘッダ
-php tools/check-architecture.php --changed      # メソッド長・依存数・Controller 依存の可視化（助言用・CI 非搭載）
 ```
 
 > `.husky/pre-commit`（PR #6761）がマージされれば、これらが commit 時に自動実行される想定。

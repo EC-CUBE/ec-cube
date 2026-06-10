@@ -10,23 +10,10 @@ description: EC-CUBE 4.4 で実装・改修したコードの責務分離をチ�
 
 ## 手順
 
-### 1. 機械的な観点の可視化（依存追加なし）
+> 行数・依存数などの数値で線を引かず、**質的シグナル**で判断する。
+> 整形・型・アノテーション変換は `vendor/bin/rector process --dry-run` / `phpstan analyse src` / `php-cs-fixer fix` に委ね、レビューは責務分離に集中する。
 
-変更した Controller / Service を検査スクリプトにかける:
-
-```bash
-php tools/check-architecture.php --changed
-```
-
-各レイヤについて次を報告する（**数値の線引きはツールに任せ、レビューは質的判断に集中する**）:
-- 共通: メソッド長・コンストラクタ依存数（計測値の可視化。閾値超過＝即修正ではなく、見直しのきっかけ）
-- Controller: `persist`/`flush` の直書き（業務的な永続化は Service へ）
-- Service: Controller への依存（レイヤ違反。依存は Controller → Service → Repository の一方向）
-
-特定ファイルは `php tools/check-architecture.php <path>`。
-整形・型・アノテーション変換は `vendor/bin/rector process --dry-run` / `phpstan analyse src` / `php-cs-fixer fix` で別途担保する。
-
-### 2. 規約に照らした目視レビュー
+### 1. 規約に照らした目視レビュー
 
 変更差分について、対応する規約を読み込んで確認する:
 - コントローラ: Skill [`controller`](../controller/SKILL.md)
@@ -37,11 +24,12 @@ php tools/check-architecture.php --changed
   コントローラに残っていないか → あれば **Service への抽出**を提案。
 - 受注の計算・検証・確定（在庫引当・採番・ポイント付与・値引き）が **PurchaseFlow 外**に書かれていないか
   → 該当する Processor/Validator への移動を提案。
-- Service が Controller / HTTP（`Request`/`Response`）に依存していないか → レイヤ違反は是正を提案。
+- コントローラ内に `$em->persist()` / `$em->flush()` の**業務的な直書き**がないか → 永続化を伴う業務操作は Service へ。
+- Service が Controller / HTTP（`Request`/`Response`）に依存していないか → レイヤ違反（依存は Controller → Service → Repository の一方向）は是正を提案。
 - 同じ処理が複数箇所にコピペされていないか → 共通の Service メソッドへ。
 - 1 つのクラス/メソッドに無関係な責務が同居していないか（行数の多寡そのものではなく、関心事の数で見る）。
 
-### 3. 提案のまとめ方
+### 2. 提案のまとめ方
 
 - **新規・改修したコードの指摘**を優先して提示する。
 - 既存（変更していない）コードの Fat は、無理に直さず「将来のリファクタ候補」として軽く触れるに留める。
