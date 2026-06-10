@@ -133,7 +133,7 @@ final readonly class RateLimitListener implements EventSubscriberInterface
         try {
             $limit = $limiter->create($key)->consume();
         } catch (\Throwable $e) {
-            $this->auditLogger->logSecurityEvent(AuditResult::InternalError, [
+            $this->safeAudit(AuditResult::InternalError, [
                 'kind' => $kind,
                 'reason' => 'rate_limiter_unavailable',
                 'message' => $e->getMessage(),
@@ -151,13 +151,27 @@ final readonly class RateLimitListener implements EventSubscriberInterface
             return null;
         }
 
-        $this->auditLogger->logSecurityEvent(AuditResult::RateLimited, [
+        $this->safeAudit(AuditResult::RateLimited, [
             'kind' => $kind,
             'retry_after_seconds' => $this->retryAfterSeconds($limit),
             ...$auditContext,
         ]);
 
         return $this->buildRateLimitedResponse($limit);
+    }
+
+    /**
+     * 監査ログ書き込みが失敗しても拒否/エラーレスポンスの返却を妨げないよう、 例外を握り潰して記録する。
+     *
+     * @param array<string, mixed> $context
+     */
+    private function safeAudit(AuditResult $result, array $context): void
+    {
+        try {
+            $this->auditLogger->logSecurityEvent($result, $context);
+        } catch (\Throwable) {
+            // 監査ログ自体の障害で fail-closed (503) / レート制限 (429) の応答を崩さない
+        }
     }
 
     private function buildRateLimitedResponse(RateLimit $limit): JsonResponse
