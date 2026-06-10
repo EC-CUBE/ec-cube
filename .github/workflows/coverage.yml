@@ -18,17 +18,17 @@ jobs:
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
-            database_server_version: 14
+            database_server_version: 18
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
 
       ## Docker Hub からの pull はタイムアウトで CI が不安定になるため、
       ## DB はコンテナではなく setup アクション (apt) でインストールする
       - name: Setup PostgreSQL
         uses: ankane/setup-postgres@6d3ffa1aa7498a42b79e9f9f5838b99971839300  # v1
         with:
-          postgres-version: '14'
+          postgres-version: '18'
           user: postgres
       - name: Configure PostgreSQL
         run: |
@@ -100,7 +100,7 @@ jobs:
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
-            database_server_version: 14
+            database_server_version: 18
           - group: admin01
             app_env: 'codeception'
           - group: admin02
@@ -120,14 +120,14 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
 
       ## Docker Hub からの pull はタイムアウトで CI が不安定になるため、
       ## DB はコンテナではなく setup アクション (apt) でインストールする
       - name: Setup PostgreSQL
         uses: ankane/setup-postgres@6d3ffa1aa7498a42b79e9f9f5838b99971839300  # v1
         with:
-          postgres-version: '14'
+          postgres-version: '18'
           user: postgres
       - name: Configure PostgreSQL
         run: |
@@ -267,7 +267,7 @@ jobs:
     needs: [ phpunit ]  # codeception is disabled
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
       - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c  # v8
         with:
           path: reports
@@ -279,7 +279,7 @@ jobs:
       #     mv reports/codeception-front-reports/acceptance\ \(chrome,\ github_action\).remote.coverage.xml reports/acceptance.front.coverage.xml
       #     mv reports/codeception-installer-reports/acceptance\ \(chrome,\ github_action\).remote.coverage.xml reports/acceptance.installer.coverage.xml
       - name: Upload unit test coverage
-        uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2  # v5
+        uses: codecov/codecov-action@e79a6962e0d4c0c17b229090214935d2e33f8354  # v5
         with:
           files: ./reports/phpunit-reports/coverage1.xml
           flags: Unit
@@ -288,7 +288,7 @@ jobs:
             CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       # E2E coverage is disabled while codeception job is disabled
       # - name: Upload E2E coverage
-      #   uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2  # v5
+      #   uses: codecov/codecov-action@e79a6962e0d4c0c17b229090214935d2e33f8354  # v5
       #   with:
       #     files: ./reports/acceptance.admin01.coverage.xml,./reports/acceptance.admin02.coverage.xml,./reports/acceptance.admin03.coverage.xml,./reports/acceptance.front.coverage.xml,./reports/acceptance.installer.coverage.xml
       #     flags: E2E
