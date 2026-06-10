@@ -174,7 +174,11 @@ function analyzeStructure(string $code): array
 $findings = 0;
 
 foreach ($files as $file) {
-    $code = (string) file_get_contents($file);
+    $code = file_get_contents($file);
+    if ($code === false) {
+        fwrite(STDERR, "WARN: ファイルを読み込めませんでした（検査スキップ）: {$file}\n");
+        continue;
+    }
     $rel = str_replace($root.'/', '', $file);
     $isController = (bool) preg_match('#/Controller/#', $file);
     $isService = (bool) preg_match('#/Service/#', $file);
