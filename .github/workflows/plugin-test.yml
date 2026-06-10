@@ -15,7 +15,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-24.04 ]
-        php: [ '8.2', '8.3', '8.4' ]
+        php: [ '8.2', '8.3', '8.4', '8.5' ]
         db: [ pgsql, mysql ]
         method:
           - test_install_enable_disable_remove_store
@@ -29,11 +29,11 @@ jobs:
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
-            database_server_version: 14
+            database_server_version: 18
             database_charset: utf8
           - db: mysql
             database_url: mysql://root:password@127.0.0.1:3306/eccube_db
-            database_server_version: 5
+            database_server_version: 8
             database_charset: utf8mb4
 
     services:
@@ -45,7 +45,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
 
       ## Docker Hub からの pull はタイムアウトで CI が不安定になるため、
       ## DB はコンテナではなく setup アクション (apt) でインストールする
@@ -68,7 +68,7 @@ jobs:
         if: matrix.db == 'pgsql'
         uses: ankane/setup-postgres@6d3ffa1aa7498a42b79e9f9f5838b99971839300  # v1
         with:
-          postgres-version: '14'
+          postgres-version: '18'
           user: postgres
       - name: Configure PostgreSQL
         if: matrix.db == 'pgsql'
@@ -185,7 +185,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-24.04 ]
-        php: [ '8.2', '8.3', '8.4' ]
+        php: [ '8.2', '8.3', '8.4', '8.5' ]
         db: [ pgsql, mysql ]
         method:
           - test_install_update_remove_store
@@ -197,11 +197,11 @@ jobs:
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
-            database_server_version: 14
+            database_server_version: 18
             database_charset: utf8
           - db: mysql
             database_url: mysql://root:password@127.0.0.1:3306/eccube_db
-            database_server_version: 5
+            database_server_version: 8
             database_charset: utf8mb4
 
     services:
@@ -213,7 +213,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
 
       ## Docker Hub からの pull はタイムアウトで CI が不安定になるため、
       ## DB はコンテナではなく setup アクション (apt) でインストールする
@@ -236,7 +236,7 @@ jobs:
         if: matrix.db == 'pgsql'
         uses: ankane/setup-postgres@6d3ffa1aa7498a42b79e9f9f5838b99971839300  # v1
         with:
-          postgres-version: '14'
+          postgres-version: '18'
           user: postgres
       - name: Configure PostgreSQL
         if: matrix.db == 'pgsql'
@@ -352,7 +352,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-24.04 ]
-        php: [ '8.2', '8.3', '8.4' ]
+        php: [ '8.2', '8.3', '8.4', '8.5' ]
         db: [ pgsql, mysql ]
         method:
           - test_extend_same_table_store
@@ -364,11 +364,11 @@ jobs:
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
-            database_server_version: 14
+            database_server_version: 18
             database_charset: utf8
           - db: mysql
             database_url: mysql://root:password@127.0.0.1:3306/eccube_db
-            database_server_version: 5
+            database_server_version: 8
             database_charset: utf8mb4
 
     services:
@@ -380,7 +380,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
 
       ## Docker Hub からの pull はタイムアウトで CI が不安定になるため、
       ## DB はコンテナではなく setup アクション (apt) でインストールする
@@ -403,7 +403,7 @@ jobs:
         if: matrix.db == 'pgsql'
         uses: ankane/setup-postgres@6d3ffa1aa7498a42b79e9f9f5838b99971839300  # v1
         with:
-          postgres-version: '14'
+          postgres-version: '18'
           user: postgres
       - name: Configure PostgreSQL
         if: matrix.db == 'pgsql'
@@ -519,7 +519,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-24.04 ]
-        php: [ '8.2', '8.3', '8.4' ]
+        php: [ '8.2', '8.3', '8.4', '8.5' ]
         db: [ pgsql, mysql ]
         method:
           - test_dependency_each_install_plugin
@@ -531,11 +531,11 @@ jobs:
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
-            database_server_version: 14
+            database_server_version: 18
             database_charset: utf8
           - db: mysql
             database_url: mysql://root:password@127.0.0.1:3306/eccube_db
-            database_server_version: 5
+            database_server_version: 8
             database_charset: utf8mb4
         exclude:
           - db: mysql
@@ -550,7 +550,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
 
       ## Docker Hub からの pull はタイムアウトで CI が不安定になるため、
       ## DB はコンテナではなく setup アクション (apt) でインストールする
@@ -573,7 +573,7 @@ jobs:
         if: matrix.db == 'pgsql'
         uses: ankane/setup-postgres@6d3ffa1aa7498a42b79e9f9f5838b99971839300  # v1
         with:
-          postgres-version: '14'
+          postgres-version: '18'
           user: postgres
       - name: Configure PostgreSQL
         if: matrix.db == 'pgsql'
@@ -694,11 +694,11 @@ jobs:
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
-            database_server_version: 14
+            database_server_version: 18
             database_charset: utf8
           - db: mysql
             database_url: mysql://root:password@127.0.0.1:3306/eccube_db
-            database_server_version: 5
+            database_server_version: 8
             database_charset: utf8mb4
 
     services:
@@ -710,7 +710,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
 
       ## Docker Hub からの pull はタイムアウトで CI が不安定になるため、
       ## DB はコンテナではなく setup アクション (apt) でインストールする
@@ -733,7 +733,7 @@ jobs:
         if: matrix.db == 'pgsql'
         uses: ankane/setup-postgres@6d3ffa1aa7498a42b79e9f9f5838b99971839300  # v1
         with:
-          postgres-version: '14'
+          postgres-version: '18'
           user: postgres
       - name: Configure PostgreSQL
         if: matrix.db == 'pgsql'
@@ -852,11 +852,11 @@ jobs:
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
-            database_server_version: 14
+            database_server_version: 18
             database_charset: utf8
           - db: mysql
             database_url: mysql://root:password@127.0.0.1:3306/eccube_db
-            database_server_version: 5
+            database_server_version: 8
             database_charset: utf8mb4
 
     services:
@@ -868,7 +868,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
 
       ## Docker Hub からの pull はタイムアウトで CI が不安定になるため、
       ## DB はコンテナではなく setup アクション (apt) でインストールする
@@ -891,7 +891,7 @@ jobs:
         if: matrix.db == 'pgsql'
         uses: ankane/setup-postgres@6d3ffa1aa7498a42b79e9f9f5838b99971839300  # v1
         with:
-          postgres-version: '14'
+          postgres-version: '18'
           user: postgres
       - name: Configure PostgreSQL
         if: matrix.db == 'pgsql'
