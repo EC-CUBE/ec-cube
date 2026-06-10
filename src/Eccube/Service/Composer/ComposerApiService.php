@@ -286,7 +286,7 @@ class ComposerApiService implements ComposerServiceInterface
      * @throws NonUniqueResultException
      * @throws \Exception
      */
-    public function runCommand(array $commands, ?OutputInterface $output = null, bool $init = true): ?string
+    public function runCommand(array $commands, ?OutputInterface $output = null, bool $init = true): string
     {
         if ($init) {
             $this->init();
@@ -322,7 +322,9 @@ class ComposerApiService implements ComposerServiceInterface
             throw new PluginException();
         }
 
-        return null;
+        // $output が渡された場合は出力をバッファリングしないためログを返せない。
+        // execRequire()/execRemove() の返り値型 (string) を満たすため空文字を返す。
+        return '';
     }
 
     /**

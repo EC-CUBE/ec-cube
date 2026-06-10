@@ -253,12 +253,11 @@ final class ShoppingControllerWithMultipleNonmemberTest extends AbstractShopping
     public function testAddMultiShippingWithOneAddressTwoItemsTwoQuantities()
     {
         // Product test 1 with type 1
-        $Product1 = $this->createProduct();
+        [$Product1, $Product2] = $this->createProducts(2);
         $ProductClass1 = $Product1->getProductClasses()->first();
         $ProductClass1->setStock('111');
 
         // Product test 2
-        $Product2 = $this->createProduct();
         $ProductClass2 = $Product2->getProductClasses()->first();
         $ProductClass2->setStock('111');
 
@@ -325,12 +324,11 @@ final class ShoppingControllerWithMultipleNonmemberTest extends AbstractShopping
     public function testAddMultiShippingWithTwoAddressesTwoItemsThreeQuantities()
     {
         // Product test 1 with type 1
-        $Product1 = $this->createProduct();
+        [$Product1, $Product2] = $this->createProducts(2);
         $ProductClass1 = $Product1->getProductClasses()->first();
         $ProductClass1->setStock('111');
 
         // Product test 2
-        $Product2 = $this->createProduct();
         $ProductClass2 = $Product2->getProductClasses()->first();
         $ProductClass2->setStock('111');
 
@@ -416,12 +414,11 @@ final class ShoppingControllerWithMultipleNonmemberTest extends AbstractShopping
     public function testAddMultiShippingWithTwoAddressesTwoItemsEachTwoQuantities()
     {
         // Product test 1 with type 1
-        $Product1 = $this->createProduct();
+        [$Product1, $Product2] = $this->createProducts(2);
         $ProductClass1 = $Product1->getProductClasses()->first();
         $ProductClass1->setStock('111');
 
         // Product test 2
-        $Product2 = $this->createProduct();
         $ProductClass2 = $Product2->getProductClasses()->first();
         $ProductClass2->setStock('111');
 
@@ -518,12 +515,11 @@ final class ShoppingControllerWithMultipleNonmemberTest extends AbstractShopping
         $ProductClass->setStock('111');
 
         // Product test 2
-        $Product2 = $this->createProduct();
+        [$Product2, $Product3] = $this->createProducts(2);
         $ProductClass2 = $Product2->getProductClasses()->first();
         $ProductClass2->setStock('111');
 
         // Product test 3
-        $Product3 = $this->createProduct();
         $ProductClass3 = $Product3->getProductClasses()->first();
         $ProductClass3->setStock('111');
 
@@ -615,17 +611,15 @@ final class ShoppingControllerWithMultipleNonmemberTest extends AbstractShopping
     public function testAddMultiShippingWithTwoAddressesThreeItems()
     {
         // Product test 1 with type 1
-        $Product1 = $this->createProduct();
+        [$Product1, $Product2, $Product3] = $this->createProducts(3);
         $ProductClass1 = $Product1->getProductClasses()->first();
         $ProductClass1->setStock('111');
 
         // Product test 2
-        $Product2 = $this->createProduct();
         $ProductClass2 = $Product2->getProductClasses()->first();
         $ProductClass2->setStock('111');
 
         // Product test 3
-        $Product3 = $this->createProduct();
         $ProductClass3 = $Product3->getProductClasses()->first();
         $ProductClass3->setStock('111');
 
@@ -729,17 +723,15 @@ final class ShoppingControllerWithMultipleNonmemberTest extends AbstractShopping
     public function testAddMultiShippingWithThreeAddressesThreeItems()
     {
         // Product test 1 with type 1
-        $Product1 = $this->createProduct();
+        [$Product1, $Product2, $Product3] = $this->createProducts(3);
         $ProductClass1 = $Product1->getProductClasses()->first();
         $ProductClass1->setStock('111');
 
         // Product test 2
-        $Product2 = $this->createProduct();
         $ProductClass2 = $Product2->getProductClasses()->first();
         $ProductClass2->setStock('111');
 
         // Product test 3
-        $Product3 = $this->createProduct();
         $ProductClass3 = $Product3->getProductClasses()->first();
         $ProductClass3->setStock('111');
 
@@ -1116,17 +1108,15 @@ final class ShoppingControllerWithMultipleNonmemberTest extends AbstractShopping
     public function testAddMultiShippingWithThreeAddressesThreeItemsOnScreen()
     {
         // Product test 1 with type 1
-        $Product1 = $this->createProduct();
+        [$Product1, $Product2, $Product3] = $this->createProducts(3);
         $ProductClass1 = $Product1->getProductClasses()->first();
         $ProductClass1->setStock('111');
 
         // Product test 2
-        $Product2 = $this->createProduct();
         $ProductClass2 = $Product2->getProductClasses()->first();
         $ProductClass2->setStock('111');
 
         // Product test 3
-        $Product3 = $this->createProduct();
         $ProductClass3 = $Product3->getProductClasses()->first();
         $ProductClass3->setStock('111');
 
