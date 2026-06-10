@@ -19,10 +19,17 @@ volumes:
 services:
   ### ECCube4 ##################################
   ec-cube:
-    ### ローカルでビルドする場合は以下のコマンドを使用します
-    ## docker build -t ec-cube --no-cache --pull --build-arg TAG=8.2-apache .
-    ## docker tag ec-cube ghcr.io/ec-cube/ec-cube-php:8.2-apache
+    ### 別バージョンの PHP でローカルビルドする場合は環境変数 TAG を指定します
+    ## TAG=8.3-apache docker compose build
+    ## TAG=8.3-apache docker compose build --no-cache
+    ## TAG=8.3-apache docker compose up -d --build
     image: ${REGISTRY:-ghcr.io}/${IMAGE_NAME:-ec-cube/ec-cube-php}:${TAG:-8.2-apache}
+    build:
+      context: .
+      args:
+        TAG: ${TAG:-8.2-apache}
+      pull: true
+    pull_policy: missing
     ports:
       - 8080:80
       - 4430:443
