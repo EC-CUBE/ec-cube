@@ -75,7 +75,7 @@ jobs:
 #            command6: 'EF06OtherCest:other_お問い合わせ1'
     services:
       postgres:
-        image: postgres:14
+        image: postgres:18
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
@@ -90,7 +90,7 @@ jobs:
           - 1025:1025
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
 
       # - name: "Prepare"
       #   uses: ./.github/workflows/vaddy/prepare

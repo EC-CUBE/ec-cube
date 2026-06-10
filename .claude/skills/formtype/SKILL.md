@@ -3,23 +3,77 @@ name: formtype
 description: EC-CUBE 4.4 のフォーム（FormType）を実装・改修するときの規約。「フォームを作って」「FormTypeを追加して」「入力項目を足して」「バリデーションを設定して」「検索フォームを作って」「既存フォームに項目を追加して」などと言われたとき、または src/Eccube/Form・app/Customize/Form 配下を作成・編集するときに使用する。
 ---
 
-<!--
-  このファイルは tools/sync-ai-skills.php により同期される Skill スタブです。
-  正本は .claude/skills/ 配下。編集は必ず正本に対して行い、`php tools/sync-ai-skills.php` を実行してください。
-  .codex/skills/・.agents/skills/ 配下は生成物のため直接編集しないこと。
--->
+# FormType 規約（EC-CUBE 4.4）
 
-# EC-CUBE 4.4 FormType 実装規約
+**対象**: `src/Eccube/Form/Type/**/*.php`, `app/Customize/Form/**/*.php`
+**前提**: Symfony 7.4 Form / PHP 8.2+
 
-FormType を実装・改修する際は、必ず次のドキュメントを読み込み、その規約に従うこと。
+## 基本ルール
 
-**規約本文: [`docs/rules/formtype.md`](../../../docs/rules/formtype.md)**
+- 名前空間 `Eccube\Form\Type`。`Symfony\Component\Form\AbstractType` を継承する。
+- PHP ファイル先頭に EC-CUBE ライセンスヘッダ。型宣言を付ける（PHPStan level 6）。
+- 依存はコンストラクタインジェクション（`EccubeConfig` 等）。
 
-要点（詳細は本文参照）:
-- `Symfony\Component\Form\AbstractType` を継承。`buildForm()` / `configureOptions()` / `getBlockPrefix()` を実装。
-- **`getBlockPrefix(): string` の戻り値型宣言は必須**。
-- 動的制御は `addEventListener(FormEvents::PRE_SET_DATA / POST_SUBMIT, ...)`。バリデーションは `Assert\*` 制約。
-- エンティティ連動フォームは `configureOptions()` で `data_class` を設定。既存 Type は再利用。
-- **管理画面検索フォームで CSRF を無効化しない**。
-- 既存フォームへの項目追加は **`FormTypeExtension`**（`app/Customize/Form/Extension/`、`getExtendedTypes()`）で行う。
-- ライセンスヘッダ・型宣言必須。
+```php
+namespace Eccube\Form\Type;
+
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
+
+class ExampleType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder->add('name', TextType::class, [
+            'required' => true,
+            'constraints' => [
+                new Assert\NotBlank(),
+                new Assert\Length(max: 255),
+            ],
+        ]);
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'data_class' => Example::class,
+        ]);
+    }
+
+    public function getBlockPrefix(): string   // 戻り値型宣言は必須（Symfony 6+）
+    {
+        return 'example';
+    }
+}
+```
+
+## ポイント
+
+- **`getBlockPrefix(): string` の戻り値型宣言は必須**（省略すると動かない）。
+- フォームの動的制御は `$builder->addEventListener(FormEvents::PRE_SET_DATA, ...)` /
+  `FormEvents::POST_SUBMIT` で行う。
+- バリデーションは制約クラス（`Assert\NotBlank` 等）で付ける。`Range` で min/max 両方指定時は
+  `notInRangeMessage` を使う。
+- エンティティに紐づくフォームは `configureOptions()` で `data_class` を設定する。
+- 既存の EC-CUBE 提供 Type（`AddCartType`・`AddressType`・`PriceType` 等）があれば再利用する。
+- パスワード入力を扱う場合、対象エンティティに `plain_password` プロパティが必要。
+
+## CSRF
+
+- **管理画面の検索フォーム等で CSRF を無効化しない**。`configureOptions()` で
+  `'csrf_protection' => true`（既定）を保ち、テンプレートでトークンを出力する。
+
+## カスタマイズ（app/Customize）
+
+- 既存フォームへのフィールド追加は **コアを書き換えず `FormTypeExtension`** で行い、
+  `app/Customize/Form/Extension/` に置く（`getExtendedTypes()` で対象 Type を指定）。
+
+## よくある間違い
+
+- ❌ `getBlockPrefix()` の戻り値型を省略 → ✅ `: string` を付ける
+- ❌ 既存フォームをコアで直接改変 → ✅ `FormTypeExtension`（app/Customize）で拡張
+- ❌ 管理画面検索フォームで CSRF 無効化 → ✅ CSRF 保護を保つ
+- ❌ 具象クラス依存 → ✅ コンストラクタ DI ＋ 必要なサービスの注入

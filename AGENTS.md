@@ -7,7 +7,7 @@ EC-CUBE 4.4 を扱う際に従う共通の入口であり、**ベンダー中立
 
 - `CLAUDE.md` / `GEMINI.md` は、このファイルを参照する薄いポインタです（下流）。
 - このファイルは `CLAUDE.md` / `GEMINI.md` を参照し返しません（上流）。
-- レイヤ別規約 `docs/rules/*.md` は末端で、上流を参照し返しません。
+- レイヤ別規約は各 Skill 本文（`.claude/skills/<name>/SKILL.md`）が末端で、上流を参照し返しません。
 
 ## プロジェクト概要
 
@@ -126,7 +126,7 @@ bin/console doctrine:migrations:migrate              # INSERT・型変更等（s
 bin/console doctrine:migrations:generate
 ```
 
-> 単純なカラム追加にマイグレーション（ALTER）は不要。詳細は [`docs/rules/migration.md`](./docs/rules/migration.md)。
+> 単純なカラム追加にマイグレーション（ALTER）は不要。詳細は Skill `migration`（[`.claude/skills/migration/SKILL.md`](./.claude/skills/migration/SKILL.md)）。
 
 ## アーキテクチャ
 
@@ -185,22 +185,23 @@ EC-CUBE は Symfony の EventDispatcher を拡張してカスタマイズを実�
 
 ## コーディング規約（レイヤ別・オンデマンド）
 
-レイヤ別の詳細規約は **常時読み込まず**、必要なときだけ参照します。本文は `docs/rules/` に
-ベンダー中立な Markdown として 1 ソースで管理し、各 AI ツールには「Skill」として発火スタブを置いています。
+レイヤ別の詳細規約は各 **Skill**（`.claude/skills/<name>/SKILL.md`）が本文を直接持ちます。
+frontmatter の `description` がトリガ条件で、該当レイヤを触るときだけ発火・参照されます（常時読み込まない）。
+本文は純 Markdown なので GitHub でもそのまま読めます。
 
-| レイヤ / 観点 | 規約ドキュメント | Skill 名 |
+| レイヤ / 観点 | 規約 Skill（本文） | Skill 名 |
 |--------|------------------|----------|
-| PHPUnit テスト | [`docs/rules/phpunit.md`](./docs/rules/phpunit.md) | `phpunit` |
-| コントローラ（責務分離・Fat化防止） | [`docs/rules/controller.md`](./docs/rules/controller.md) | `controller` |
-| サービス（責務分離・単一責任） | [`docs/rules/service.md`](./docs/rules/service.md) | `service` |
-| マイグレーション（スキーマ変更） | [`docs/rules/migration.md`](./docs/rules/migration.md) | `migration` |
-| Entity（Doctrine エンティティ） | [`docs/rules/entity.md`](./docs/rules/entity.md) | `entity` |
-| Repository（データアクセス） | [`docs/rules/repository.md`](./docs/rules/repository.md) | `repository` |
-| FormType（フォーム） | [`docs/rules/formtype.md`](./docs/rules/formtype.md) | `formtype` |
-| 責務分離レビュー（実装直後の自己チェック・全層） | [`docs/rules/controller.md`](./docs/rules/controller.md) ／ [`service.md`](./docs/rules/service.md) | `review-responsibility` |
+| PHPUnit テスト | [`.claude/skills/phpunit/SKILL.md`](./.claude/skills/phpunit/SKILL.md) | `phpunit` |
+| コントローラ（責務分離・Fat化防止） | [`.claude/skills/controller/SKILL.md`](./.claude/skills/controller/SKILL.md) | `controller` |
+| サービス（責務分離・単一責任） | [`.claude/skills/service/SKILL.md`](./.claude/skills/service/SKILL.md) | `service` |
+| マイグレーション（スキーマ変更） | [`.claude/skills/migration/SKILL.md`](./.claude/skills/migration/SKILL.md) | `migration` |
+| Entity（Doctrine エンティティ） | [`.claude/skills/entity/SKILL.md`](./.claude/skills/entity/SKILL.md) | `entity` |
+| Repository（データアクセス） | [`.claude/skills/repository/SKILL.md`](./.claude/skills/repository/SKILL.md) | `repository` |
+| FormType（フォーム） | [`.claude/skills/formtype/SKILL.md`](./.claude/skills/formtype/SKILL.md) | `formtype` |
+| 責務分離レビュー（実装直後の自己チェック・全層） | [`.claude/skills/review-responsibility/SKILL.md`](./.claude/skills/review-responsibility/SKILL.md) | `review-responsibility` |
 
-> 規約は必要になった時点で同じ構成（`docs/rules/*.md` ＋ Skill スタブ）で追加する。
-> 設計方針・Skill 命名規則は [`docs/rules/README.md`](./docs/rules/README.md) を参照してください。
+> 規約は必要になった時点で `.claude/skills/<name>/SKILL.md` を 1 ファイル追加して足す（`.codex`/`.agents` は symlink で自動共有）。
+> 各ファイルは frontmatter（`name` / `description`）＋本文の順で書き、本文は「対象／基本ルール／実装パターン／よくある間違い／実行・確認方法」の構成を推奨する（推測を載せず、必ず `src/Eccube/` の実コードで裏取りする）。
 
 **Skill 命名規則**: リポジトリ内のスキルのため `eccube-` 接頭辞は付けない。
 自動発火するレイヤ規約系はトピック名（`controller` / `service` / `phpunit`）、
@@ -225,7 +226,7 @@ EC-CUBE は Symfony の EventDispatcher を拡張してカスタマイズを実�
   受注金額はこれらの明細の合算で構成される。送料・手数料・値引きも `OrderItem` の 1 行として表現される点に注意。
 - **Shipping（出荷）** — 1 受注に複数あり得る出荷単位。送料は Shipping 単位で計算される。
 - **受注処理（PurchaseFlow）** — 在庫引当・採番・ポイント付与・値引きは
-  `src/Eccube/Service/PurchaseFlow/` のパイプラインが担う（[`docs/rules/service.md`](./docs/rules/service.md) 参照）。
+  `src/Eccube/Service/PurchaseFlow/` のパイプラインが担う（Skill `service` 参照）。
 - **受注ステータス（OrderStatus, `mtb_order_status`）** — `NEW`(新規受付/確定) / `PROCESSING`(購入処理中) /
   `PENDING`(決済処理中) / `PAID`(入金済) / `DELIVERED`(発送済) / `CANCEL`(取消) / `RETURNED`(返品) / `IN_PROGRESS`(対応中)。
   **注意: `PROCESSING`・`PENDING` は「確定前の仮受注」**。カート確定の入口で `OrderHelper` が受注を `PROCESSING` で作り、
@@ -240,24 +241,24 @@ EC-CUBE は Symfony の EventDispatcher を拡張してカスタマイズを実�
 ## Skill の配置と各ツールの読み込み
 
 Skill（`SKILL.md`）の形式は Claude Code / Cursor / Codex / Antigravity で共通です。
-ただしツールごとに読み込むディレクトリが異なるため、同じスタブを複数の場所に配置しています。
+ただしツールごとに読み込むディレクトリが異なるため、正本 `.claude/skills/` を各ツールのディレクトリへ symlink で共有しています。
 
 | ツール | 読み込むディレクトリ |
 |--------|----------------------|
-| Claude Code | `.claude/skills/` |
+| Claude Code | `.claude/skills/`（正本） |
 | Cursor | `.cursor/skills/` ＋ 互換で `.claude/skills/` `.codex/skills/` も読む。root `AGENTS.md` も自動ロード |
-| Codex CLI | `.codex/skills/` ＋ root `AGENTS.md` |
-| Google Antigravity | `.agents/skills/` ＋ `AGENTS.md` |
-| Gemini CLI | Skill 非対応。`GEMINI.md` 経由で本ファイルと `docs/rules/` を参照 |
+| Codex CLI | `.codex/skills/`（→ `.claude/skills` への symlink）＋ root `AGENTS.md` |
+| Google Antigravity | `.agents/skills/`（→ `.claude/skills` への symlink）＋ `AGENTS.md` |
+| Gemini CLI | Skill 非対応。`GEMINI.md` 経由で本ファイルと `.claude/skills/*/SKILL.md` を参照 |
 
-各 Skill の本文は薄いスタブで、実体である `docs/rules/*.md` を読み込んで適用します。
-スタブは `.claude/skills/` を正本とし、`php tools/sync-ai-skills.php` で `.codex/` `.agents/` へ同期します
-（symlink は Windows で壊れやすいため不使用）。
+各 Skill の本文は `.claude/skills/<name>/SKILL.md` が直接保持します（薄いスタブと本文を分ける二層は廃止）。
+`.codex/skills` `.agents/skills` は `.claude/skills` への **symlink**（`../.claude/skills`）で、正本は常に 1 つ。
+コピー同期スクリプトや同期 CI は不要です（Windows で symlink を扱うには git の symlink サポート＝`core.symlinks=true` や Developer Mode が前提）。
 
 ## 基本原則
 
 - **推測実装の禁止**: 「〜のはず」で書かず、必ず既存コード・ドキュメントで裏取りする。
-- **規約準拠**: 該当レイヤの規約（`docs/rules/`）に従う。
+- **規約準拠**: 該当レイヤの Skill（`.claude/skills/`）に従う。
 - **静的解析**: 実装後は `vendor/bin/phpstan analyse src`（level 6）を通す。
 - **コードスタイル**: `vendor/bin/php-cs-fixer fix` で PSR-12 に整える。ライセンスヘッダ必須。
 - **app/Customize 優先**: プロジェクト固有のカスタマイズはコア改変ではなく `app/Customize/` で行う。
