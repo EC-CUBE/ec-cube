@@ -94,7 +94,10 @@ final class McpTokenRevocationContractTest extends EccubeTestCase
 
         $this->mcpRequest($jwt);
 
-        $this->assertSame(Response::HTTP_UNAUTHORIZED, $this->client->getResponse()->getStatusCode(), 'revoked token は 401');
+        $response = $this->client->getResponse();
+        $this->assertSame(Response::HTTP_UNAUTHORIZED, $response->getStatusCode(), 'revoked token は 401');
+        // WWW-Authenticate: Bearer で「oauth2 の bearer 拒否」 を確認し、 無関係な 401 (誤ルーティング等) を排除する
+        $this->assertSame('Bearer', $response->headers->get('WWW-Authenticate'));
     }
 
     public function testDisabledMemberReturns401(): void
@@ -108,7 +111,12 @@ final class McpTokenRevocationContractTest extends EccubeTestCase
 
         $this->mcpRequest($jwt);
 
-        $this->assertSame(Response::HTTP_UNAUTHORIZED, $this->client->getResponse()->getStatusCode(), '無効化された Member の token は 401');
+        $response = $this->client->getResponse();
+        $this->assertSame(Response::HTTP_UNAUTHORIZED, $response->getStatusCode(), '無効化された Member の token は 401');
+        $this->assertSame('Bearer', $response->headers->get('WWW-Authenticate'));
+        // token 検証は通り user 解決 (MemberProvider) で失敗する経路。 token 拒否 (revoke / 署名不正) とは
+        // body が分かれる (Symfony Security の "Bad credentials")。 これで Member 無効化の経路を識別する
+        $this->assertStringContainsString('Bad credentials', (string) $response->getContent());
     }
 
     private function mcpRequest(string $bearerJwt): void
