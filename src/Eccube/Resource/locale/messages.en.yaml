@@ -816,6 +816,20 @@ admin.product.product_csv_upload__message: "Upload the product CSV file. Is it O
 admin.order.order_management: Orders
 admin.order.order_list: All Orders
 admin.order.order_registration: Add New Order
+admin.order.display_setting.title: Display Item Settings
+admin.order.display_setting.non_display_items: Hidden Items
+admin.order.display_setting.display_items: Displayed Items
+admin.order.display_setting.operation: Operation
+admin.order.display_setting.move_to_display: Show
+admin.order.display_setting.move_to_non_display: Hide
+admin.order.display_setting.move_all_to_display: Show All
+admin.order.display_setting.move_all_to_non_display: Hide All
+admin.order.display_setting.display_order: Display Order
+admin.order.display_setting.move_up: Up
+admin.order.display_setting.move_down: Down
+admin.order.display_setting.move_to_top: To Top
+admin.order.display_setting.move_to_bottom: To Bottom
+admin.order.display_setting.how_to_use: "Configure which columns appear in the order list and their order.\nMove items to display into the right box, and items to hide into the left box.\nReorder the displayed items within the right box."
 admin.order.shipping_registration: Add Shipment
 admin.order.shipping_csv_upload: Upload Shipping CSV
 admin.order.mail: Email Notifications

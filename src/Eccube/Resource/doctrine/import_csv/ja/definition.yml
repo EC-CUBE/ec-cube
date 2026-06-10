@@ -35,6 +35,7 @@
 - dtb_class_name.csv
 - dtb_class_category.csv
 - dtb_csv.csv
+- dtb_order_display_setting.csv
 - dtb_customer.csv
 - dtb_customer_address.csv
 - dtb_customer_favorite_product.csv

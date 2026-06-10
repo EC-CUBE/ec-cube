@@ -44,6 +44,9 @@ parameters:
                 shipping_csv_import:
                     name: admin.order.shipping_csv_upload
                     url: admin_shipping_csv_import
+                order_display_setting:
+                    name: admin.order.display_setting.title
+                    url: admin_order_display_setting
         customer:
             name: admin.customer.customer_management
             icon: fa-users

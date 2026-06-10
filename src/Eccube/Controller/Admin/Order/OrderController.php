@@ -30,6 +30,7 @@ use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\Master\PageMaxRepository;
 use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Repository\Master\SexRepository;
+use Eccube\Repository\OrderDisplaySettingRepository;
 use Eccube\Repository\OrderPdfRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
@@ -62,7 +63,7 @@ class OrderController extends AbstractController
      *
      * @param OrderStateMachine $orderStateMachine ;
      */
-    public function __construct(protected PurchaseFlow $purchaseFlow, protected CsvExportService $csvExportService, protected CustomerRepository $customerRepository, protected PaymentRepository $paymentRepository, protected SexRepository $sexRepository, protected OrderStatusRepository $orderStatusRepository, protected PageMaxRepository $pageMaxRepository, protected ProductStatusRepository $productStatusRepository, protected ProductStockRepository $productStockRepository, protected OrderRepository $orderRepository, protected OrderPdfRepository $orderPdfRepository, protected ValidatorInterface $validator, protected OrderStateMachine $orderStateMachine, protected MailService $mailService, private readonly PaginatorInterface $paginator, protected OrderPdfService $orderPdfService)
+    public function __construct(protected PurchaseFlow $purchaseFlow, protected CsvExportService $csvExportService, protected CustomerRepository $customerRepository, protected PaymentRepository $paymentRepository, protected SexRepository $sexRepository, protected OrderStatusRepository $orderStatusRepository, protected PageMaxRepository $pageMaxRepository, protected ProductStatusRepository $productStatusRepository, protected ProductStockRepository $productStockRepository, protected OrderRepository $orderRepository, protected OrderPdfRepository $orderPdfRepository, protected OrderDisplaySettingRepository $orderDisplaySettingRepository, protected ValidatorInterface $validator, protected OrderStateMachine $orderStateMachine, protected MailService $mailService, private readonly PaginatorInterface $paginator, protected OrderPdfService $orderPdfService)
     {
     }
 
@@ -92,6 +93,12 @@ class OrderController extends AbstractController
     {
         $builder = $this->formFactory
             ->createBuilder(SearchOrderType::class);
+
+        // 受注一覧の表示項目設定（有効な列のみ・ソート順）. 未登録時は既定の全項目をフォールバック表示する.
+        $displaySettings = $this->orderDisplaySettingRepository->getEnabledSettings();
+        if (empty($displaySettings)) {
+            $displaySettings = $this->getDefaultOrderDisplaySettings();
+        }
 
         $event = new EventArgs(
             [
@@ -149,6 +156,7 @@ class OrderController extends AbstractController
                     'page_no' => $page_no,
                     'page_count' => $page_count,
                     'has_errors' => true,
+                    'displaySettings' => $displaySettings,
                 ];
             }
         } else {
@@ -244,7 +252,29 @@ class OrderController extends AbstractController
             'page_count' => $page_count,
             'has_errors' => false,
             'OrderStatuses' => $this->orderStatusRepository->findBy([], ['sort_no' => 'ASC']),
+            'displaySettings' => $displaySettings,
         ];
+    }
+
+    /**
+     * 表示項目設定が未登録の場合に使用する既定の表示項目（全項目・既定順）.
+     *
+     * @return array<array<string, string>>
+     */
+    private function getDefaultOrderDisplaySettings(): array
+    {
+        $fieldNames = [
+            'order_info',
+            'payment_method',
+            'order_status',
+            'payment_info',
+            'message',
+            'shipping_status',
+            'tracking_number',
+            'delivery_address',
+        ];
+
+        return array_map(fn (string $fieldName) => ['field_name' => $fieldName], $fieldNames);
     }
 
     #[Route(path: '/%eccube_admin_route%/order/bulk_delete', name: 'admin_order_bulk_delete', methods: ['POST'])]

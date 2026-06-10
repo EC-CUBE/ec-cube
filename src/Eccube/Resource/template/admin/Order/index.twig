@@ -472,14 +472,25 @@ file that was distributed with this source code.
                                         <th class="border-top-0 pt-2 pb-2 text-center ps-3">
                                             <input type="checkbox" id="toggle_check_all" name="filter" value="open">
                                         </th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.common.id'|trans }}<a href="#" class="js-listSort" data-sortkey="orderer"><i class="fa fa-arrow-up" aria-hidden="true"></i></a>{{ 'admin.order.orderer'|trans }}<a href="#" class="js-listSort" data-sortkey="order"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center text-nowrap">{{ 'admin.common.payment_method'|trans }}<a href="#" class="js-listSort" data-sortkey="payment_method"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.order_status'|trans }}<a href="#" class="js-listSort" data-sortkey="order_status"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.purchase_price'|trans }}<a href="#" class="js-listSort" data-sortkey="purchase_price"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.message_short'|trans }}</th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center text-nowrap">{{ 'admin.order.shipping_status'|trans }}<a href="#" class="js-listSort" data-sortkey="shipping_status"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.tracking_number'|trans }}<a href="#" class="js-listSort" data-sortkey="tracking_number"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
-                                        <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.delivery'|trans }}<a href="#" class="js-listSort" data-sortkey="delivery"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
+                                        {% for setting in displaySettings %}
+                                            {% if setting.field_name == 'order_info' %}
+                                                <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.common.id'|trans }}<a href="#" class="js-listSort" data-sortkey="orderer"><i class="fa fa-arrow-up" aria-hidden="true"></i></a>{{ 'admin.order.orderer'|trans }}<a href="#" class="js-listSort" data-sortkey="order"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
+                                            {% elseif setting.field_name == 'payment_method' %}
+                                                <th class="border-top-0 pt-2 pb-2 text-center text-nowrap">{{ 'admin.common.payment_method'|trans }}<a href="#" class="js-listSort" data-sortkey="payment_method"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
+                                            {% elseif setting.field_name == 'order_status' %}
+                                                <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.order_status'|trans }}<a href="#" class="js-listSort" data-sortkey="order_status"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
+                                            {% elseif setting.field_name == 'payment_info' %}
+                                                <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.purchase_price'|trans }}<a href="#" class="js-listSort" data-sortkey="purchase_price"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
+                                            {% elseif setting.field_name == 'message' %}
+                                                <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.message_short'|trans }}</th>
+                                            {% elseif setting.field_name == 'shipping_status' %}
+                                                <th class="border-top-0 pt-2 pb-2 text-center text-nowrap">{{ 'admin.order.shipping_status'|trans }}<a href="#" class="js-listSort" data-sortkey="shipping_status"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
+                                            {% elseif setting.field_name == 'tracking_number' %}
+                                                <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.tracking_number'|trans }}<a href="#" class="js-listSort" data-sortkey="tracking_number"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
+                                            {% elseif setting.field_name == 'delivery_address' %}
+                                                <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.delivery'|trans }}<a href="#" class="js-listSort" data-sortkey="delivery"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
+                                            {% endif %}
+                                        {% endfor %}
                                         <th class="border-top-0 pt-2 pb-2 text-center pe-3"></th>
                                     </tr>
                                     </thead>
@@ -494,61 +505,72 @@ file that was distributed with this source code.
                                                            data-update-status-url="{{ url('admin_shipping_update_order_status', { id: Shipping.id}) }}"
                                                     />
                                                 </td>
-                                                <td class="align-middle text-start">
-                                                    <a class="action-edit" href="{{ url('admin_order_edit', { id : Order.id }) }}">{{ Order.order_no }}<br>{{ Order.name01 ~ Order.name02 }}<br>{{ Order.order_date|date_min }}</a>
-                                                </td>
-                                                <td class="align-middle text-center">
-                                                    {{ Order.payment_method }}
-                                                </td>
-                                                <td class="align-middle text-center">
-                                                    <span class="badge badge-ec-blue" style="background-color: #fff; color: {{ Order.OrderStatusColor }}; border-color: {{ Order.OrderStatusColor }}">{{ Order.OrderStatus }}</span>
-                                                </td>
-                                                <td class="align-middle text-end">
-                                                    {{ Order.payment_total|price }}<br>
-                                                    {{ Order.payment_date ? Order.payment_date|date_day : 'admin.order.not_payment'|trans }}
-                                                </td>
-                                                <td class="align-middle text-center">
-                                                    {% if Order.message is not empty %}
-                                                        <a class="btn btn-ec-actionIcon" href="{{ url('admin_order_edit', { id : Order.id }) }}#order_message" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ Order.message }}" aria-describedby="tooltip819464">
-                                                            <i class="fa fa-commenting fa-lg text-secondary" aria-hidden="true"></i>
-                                                        </a>
-                                                    {% elseif Order.note is not empty %}
-                                                        <a class="btn btn-ec-actionIcon" href="{{ url('admin_order_edit', { id : Order.id }) }}#order_note" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ Order.note }}" aria-describedby="tooltip819464">
-                                                            <i class="fa fa-commenting fa-lg text-secondary" aria-hidden="true"></i>
-                                                        </a>
-                                                    {% endif %}
-                                                </td>
-                                                <td class="align-middle text-center">
-                                                    {% if Order.is_multiple %}
-                                                        <a href="{{ url('admin_shipping_edit', { id: Order.id }) }}">
-                                                            {% if Shipping.shipping_date %}
-                                                                {{ Shipping.shipping_date|date_day }}
-                                                            {% else %}
-                                                                {{ 'admin.order.unshipped'|trans }}
+                                                {% for setting in displaySettings %}
+                                                    {% if setting.field_name == 'order_info' %}
+                                                        <td class="align-middle text-start">
+                                                            <a class="action-edit" href="{{ url('admin_order_edit', { id : Order.id }) }}">{{ Order.order_no }}<br>{{ Order.name01 ~ Order.name02 }}<br>{{ Order.order_date|date_min }}</a>
+                                                        </td>
+                                                    {% elseif setting.field_name == 'payment_method' %}
+                                                        <td class="align-middle text-center">
+                                                            {{ Order.payment_method }}
+                                                        </td>
+                                                    {% elseif setting.field_name == 'order_status' %}
+                                                        <td class="align-middle text-center">
+                                                            <span class="badge badge-ec-blue" style="background-color: #fff; color: {{ Order.OrderStatusColor }}; border-color: {{ Order.OrderStatusColor }}">{{ Order.OrderStatus }}</span>
+                                                        </td>
+                                                    {% elseif setting.field_name == 'payment_info' %}
+                                                        <td class="align-middle text-end">
+                                                            {{ Order.payment_total|price }}<br>
+                                                            {{ Order.payment_date ? Order.payment_date|date_day : 'admin.order.not_payment'|trans }}
+                                                        </td>
+                                                    {% elseif setting.field_name == 'message' %}
+                                                        <td class="align-middle text-center">
+                                                            {% if Order.message is not empty %}
+                                                                <a class="btn btn-ec-actionIcon" href="{{ url('admin_order_edit', { id : Order.id }) }}#order_message" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ Order.message }}" aria-describedby="tooltip819464">
+                                                                    <i class="fa fa-commenting fa-lg text-secondary" aria-hidden="true"></i>
+                                                                </a>
+                                                            {% elseif Order.note is not empty %}
+                                                                <a class="btn btn-ec-actionIcon" href="{{ url('admin_order_edit', { id : Order.id }) }}#order_note" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ Order.note }}" aria-describedby="tooltip819464">
+                                                                    <i class="fa fa-commenting fa-lg text-secondary" aria-hidden="true"></i>
+                                                                </a>
                                                             {% endif %}
-                                                        </a>
-                                                    {% else %}
-                                                        {{ Shipping.shipping_date ? Shipping.shipping_date|date_day : 'admin.order.unshipped'|trans }}
+                                                        </td>
+                                                    {% elseif setting.field_name == 'shipping_status' %}
+                                                        <td class="align-middle text-center">
+                                                            {% if Order.is_multiple %}
+                                                                <a href="{{ url('admin_shipping_edit', { id: Order.id }) }}">
+                                                                    {% if Shipping.shipping_date %}
+                                                                        {{ Shipping.shipping_date|date_day }}
+                                                                    {% else %}
+                                                                        {{ 'admin.order.unshipped'|trans }}
+                                                                    {% endif %}
+                                                                </a>
+                                                            {% else %}
+                                                                {{ Shipping.shipping_date ? Shipping.shipping_date|date_day : 'admin.order.unshipped'|trans }}
+                                                            {% endif %}
+                                                            {% if Shipping.mail_send_date %}
+                                                                {% set send_mail_date = Shipping.mail_send_date|date_min %}
+                                                                <i class="fa fa-envelope fa-lg text-secondary" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.order.shipping_mail__completed'|trans({'%date%': send_mail_date}) }}"></i>
+                                                            {% endif %}
+                                                        </td>
+                                                    {% elseif setting.field_name == 'tracking_number' %}
+                                                        <td class="align-middle text-center">
+                                                            <div class="input-group input-group-sm">
+                                                                <input type="text" id="tracking_number_{{ Shipping.id }}" class="form-control update_tracking_number" placeholder="{{ 'admin.order.tracking_number'|trans }}" value="{{ Shipping.trackingNumber }}" data-shipping_id="{{ Shipping.id }}" data-url="{{ url('admin_shipping_update_tracking_number', { id : Shipping.id }) }}" tabindex="{{ loop.index }}"/>
+                                                                <span class="input-group-btn">
+                                                            <button type="button" class="btn btn-default update_tracking_number" data-target="#tracking_number_{{ Shipping.id }}">
+                                                                <i class="fa fa-check fa-lg text-secondary" aria-hidden="true"></i>
+                                                            </button>
+                                                        </span>
+                                                            </div>
+                                                        </td>
+                                                    {% elseif setting.field_name == 'delivery_address' %}
+                                                        <td class="align-middle text-center">
+                                                            {{ Shipping.name01 ~ Shipping.name02 }}<br>
+                                                            {{ Shipping.Pref.name }}
+                                                        </td>
                                                     {% endif %}
-                                                    {% if Shipping.mail_send_date %}
-                                                        {% set send_mail_date = Shipping.mail_send_date|date_min %}
-                                                        <i class="fa fa-envelope fa-lg text-secondary" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.order.shipping_mail__completed'|trans({'%date%': send_mail_date}) }}"></i>
-                                                    {% endif %}
-                                                </td>
-                                                <td class="align-middle text-center">
-                                                    <div class="input-group input-group-sm">
-                                                        <input type="text" id="tracking_number_{{ Shipping.id }}" class="form-control update_tracking_number" placeholder="{{ 'admin.order.tracking_number'|trans }}" value="{{ Shipping.trackingNumber }}" data-shipping_id="{{ Shipping.id }}" data-url="{{ url('admin_shipping_update_tracking_number', { id : Shipping.id }) }}" tabindex="{{ loop.index }}"/>
-                                                        <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-default update_tracking_number" data-target="#tracking_number_{{ Shipping.id }}">
-                                                        <i class="fa fa-check fa-lg text-secondary" aria-hidden="true"></i>
-                                                    </button>
-                                                </span>
-                                                    </div>
-                                                </td>
-                                                <td class="align-middle text-center">
-                                                    {{ Shipping.name01 ~ Shipping.name02 }}<br>
-                                                    {{ Shipping.Pref.name }}
-                                                </td>
+                                                {% endfor %}
                                                 <td class="align-middle pe-3">
                                                     <div class="text-end">
                                                         <div class="px-1 d-inline-block">

@@ -1,0 +1,175 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends '@admin/default_frame.twig' %}
+
+{% set menus = ['order', 'order_display_setting'] %}
+
+{% block title %}{{ 'admin.order.display_setting.title'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.order.order_management'|trans }}{% endblock %}
+
+{% block javascript %}
+    <script>
+        $(function() {
+            function add(event) {
+                $('#' + event.data.from + ' option:selected')
+                    .appendTo($('#' + event.data.to))
+                    .prop('selected', false);
+            }
+
+            function addAll(event) {
+                $('#' + event.data.from + ' option').each(function() {
+                    $(this).appendTo($('#' + event.data.to));
+                    $(this).prop('selected', false);// 選択状態の解除
+                });
+            }
+
+            $('#add').on('click', {from: 'non-display-items', to: 'display-items'}, add);
+            $('#add-all').on('click', {from: 'non-display-items', to: 'display-items'}, addAll);
+            $('#remove').on('click', {from: 'display-items', to: 'non-display-items'}, add);
+            $('#remove-all').on('click', {from: 'display-items', to: 'non-display-items'}, addAll);
+
+            $('.move').click(function() {
+                var $op = $('#display-items option:selected');
+                var val = $(this).data('value');
+                if ($op.length) {
+                    val == 'up' ? $op.first().prev().before($op) : $op.last().next().after($op);
+                }
+            });
+
+            $('.move-most').click(function() {
+                var $op = $('#display-items option:selected');
+                var val = $(this).data('value');
+                if ($op.length) {
+                    val == 'top' ? $op.prependTo('#display-items') : $op.appendTo('#display-items');
+                }
+            });
+
+            $('#display-setting-form').submit(function() {
+                $('#non-display-items').children().prop('selected', true);
+                $('#display-items').children().prop('selected', true);
+            })
+        });
+    </script>
+{% endblock javascript %}
+
+{% block main %}
+    <form id="display-setting-form" method="post" action="{{ url('admin_order_display_setting') }}">
+        <input type="hidden" name="_token" value="{{ csrf_token('_token') }}">
+        <div class="c-contentsArea__cols">
+            <div class="c-contentsArea__primaryCol">
+                <div class="c-primaryCol">
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header">
+                            <span class="card-title">{{ 'admin.order.display_setting.title'|trans }}</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-2">
+                                <div class="col-4">
+                                    <div class="mb-3">
+                                        <label for="FormControlSelect1">{{ 'admin.order.display_setting.non_display_items'|trans }}</label>
+                                        {{ form_widget(form.non_display_items, {'id': 'non-display-items', 'attr': {'size': '30'}}) }}
+                                    </div>
+                                </div>
+                                <div class="col-2 align-self-center">
+                                    <div class="row mb-2">
+                                        <div class="col text-center"><span>{{ 'admin.order.display_setting.operation'|trans }}</span></div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col text-center">
+                                            <div class="btn btn-ec-regular w-100" id="add"><i class="fa fa-arrow-right" aria-hidden="true"></i><span>&nbsp;{{ 'admin.order.display_setting.move_to_display'|trans }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col text-center">
+                                            <div class="btn btn-ec-regular w-100" id="remove"><i class="fa fa-arrow-left" aria-hidden="true"><span>&nbsp;{{ 'admin.order.display_setting.move_to_non_display'|trans }}</span></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col text-center">
+                                            <div class="btn btn-ec-regular w-100" id="add-all"><i class="fa fa-arrow-circle-right" aria-hidden="true"><span>&nbsp;{{ 'admin.order.display_setting.move_all_to_display'|trans }}</span></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col text-center">
+                                            <div class="btn btn-ec-regular w-100" id="remove-all"><i class="fa fa-arrow-circle-left" aria-hidden="true"><span>&nbsp;{{ 'admin.order.display_setting.move_all_to_non_display'|trans }}</span></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="mb-3">
+                                        <label for="FormControlSelect2">{{ 'admin.order.display_setting.display_items'|trans }}</label>
+                                        {{ form_widget(form.display_items, {'id': 'display-items', 'attr': {'size': '30'}}) }}
+                                    </div>
+                                </div>
+                                <div class="col-2 align-self-center">
+                                    <div class="row mb-2">
+                                        <div class="col text-center"><span>{{ 'admin.order.display_setting.display_order'|trans }}</span></div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col text-center">
+                                            <div class="btn btn-ec-regular w-100 move" data-value="up"><i class="fa fa-arrow-up" aria-hidden="true"><span>&nbsp;{{ 'admin.order.display_setting.move_up'|trans }}</span></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col text-center">
+                                            <div class="btn btn-ec-regular w-100 move" data-value="down"><i class="fa fa-arrow-down" aria-hidden="true"><span>&nbsp;{{ 'admin.order.display_setting.move_down'|trans }}</span></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col text-center">
+                                            <div class="btn btn-ec-regular w-100 move-most" data-value="top"><i class="fa fa-arrow-circle-up" aria-hidden="true"><span>&nbsp;{{ 'admin.order.display_setting.move_to_top'|trans }}</span></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col text-center">
+                                            <div class="btn btn-ec-regular w-100 move-most" data-value="bottom"><i class="fa fa-arrow-circle-down" aria-hidden="true"><span>&nbsp;{{ 'admin.order.display_setting.move_to_bottom'|trans }}</span></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p></p>
+                            {{ 'admin.order.display_setting.how_to_use'|trans|nl2br }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="c-conversionArea">
+            <div class="c-conversionArea__container">
+                <div class="row justify-content-between align-items-center">
+                    <div class="col-6">
+                        <div class="c-conversionArea__leftBlockItem">
+                            <a class="c-baseLink" href="{{ url('admin_order') }}">
+                                <i class="fa fa-backward" aria-hidden="true"></i>
+                                <span>{{ 'admin.order.order_list'|trans }}</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div id="ex-conversion-action" class="row align-items-center justify-content-end">
+                            <div class="col-auto">
+                                <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.common.registration'|trans }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}

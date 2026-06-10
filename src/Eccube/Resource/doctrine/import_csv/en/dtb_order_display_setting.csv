@@ -1,0 +1,9 @@
+id,field_name,disp_name,enabled,sort_no,create_date,update_date
+1,order_info,ID / Orderer,1,1,2024-01-01 00:00:00,2024-01-01 00:00:00
+2,payment_method,Payment Method,1,2,2024-01-01 00:00:00,2024-01-01 00:00:00
+3,order_status,Status,1,3,2024-01-01 00:00:00,2024-01-01 00:00:00
+4,payment_info,Purchase Price,1,4,2024-01-01 00:00:00,2024-01-01 00:00:00
+5,message,Inquiry,1,5,2024-01-01 00:00:00,2024-01-01 00:00:00
+6,shipping_status,Shipping Status,1,6,2024-01-01 00:00:00,2024-01-01 00:00:00
+7,tracking_number,Tracking Number,1,7,2024-01-01 00:00:00,2024-01-01 00:00:00
+8,delivery_address,Shipping Address,1,8,2024-01-01 00:00:00,2024-01-01 00:00:00

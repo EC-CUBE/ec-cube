@@ -1,0 +1,175 @@
+<?php
+
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+ *
+ * http://www.ec-cube.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Eccube\Entity;
+
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\OrderDisplaySettingRepository;
+
+if (!class_exists(OrderDisplaySetting::class)) {
+    /**
+     * OrderDisplaySetting
+     *
+     * 受注一覧画面の表示項目（列）の表示/非表示・並び順を保持する店舗共通設定.
+     */
+    #[ORM\Table(name: 'dtb_order_display_setting')]
+    #[ORM\Entity(repositoryClass: OrderDisplaySettingRepository::class)]
+    class OrderDisplaySetting extends AbstractEntity
+    {
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+        private ?int $id = null;
+
+        #[ORM\Column(name: 'field_name', type: Types::STRING, length: 255)]
+        private string $field_name;
+
+        #[ORM\Column(name: 'disp_name', type: Types::STRING, length: 255)]
+        private string $disp_name;
+
+        #[ORM\Column(name: 'enabled', type: Types::BOOLEAN, options: ['default' => true])]
+        private bool $enabled = true;
+
+        #[ORM\Column(name: 'sort_no', type: Types::INTEGER, options: ['default' => 0])]
+        private int $sort_no = 0;
+
+        /**
+         * @var \DateTime
+         */
+        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
+        private $create_date;
+
+        /**
+         * @var \DateTime
+         */
+        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
+        private $update_date;
+
+        /**
+         * Get id.
+         */
+        public function getId(): ?int
+        {
+            return $this->id;
+        }
+
+        /**
+         * Set fieldName.
+         */
+        public function setFieldName(string $fieldName): OrderDisplaySetting
+        {
+            $this->field_name = $fieldName;
+
+            return $this;
+        }
+
+        /**
+         * Get fieldName.
+         */
+        public function getFieldName(): string
+        {
+            return $this->field_name;
+        }
+
+        /**
+         * Set dispName.
+         */
+        public function setDispName(string $dispName): OrderDisplaySetting
+        {
+            $this->disp_name = $dispName;
+
+            return $this;
+        }
+
+        /**
+         * Get dispName.
+         */
+        public function getDispName(): string
+        {
+            return $this->disp_name;
+        }
+
+        /**
+         * Set enabled.
+         */
+        public function setEnabled(bool $enabled): OrderDisplaySetting
+        {
+            $this->enabled = $enabled;
+
+            return $this;
+        }
+
+        /**
+         * Get enabled.
+         */
+        public function getEnabled(): bool
+        {
+            return $this->enabled;
+        }
+
+        /**
+         * Set sortNo.
+         */
+        public function setSortNo(int $sortNo): OrderDisplaySetting
+        {
+            $this->sort_no = $sortNo;
+
+            return $this;
+        }
+
+        /**
+         * Get sortNo.
+         */
+        public function getSortNo(): int
+        {
+            return $this->sort_no;
+        }
+
+        /**
+         * Set createDate.
+         */
+        public function setCreateDate(\DateTime $createDate): OrderDisplaySetting
+        {
+            $this->create_date = $createDate;
+
+            return $this;
+        }
+
+        /**
+         * Get createDate.
+         */
+        public function getCreateDate(): ?\DateTime
+        {
+            return $this->create_date;
+        }
+
+        /**
+         * Set updateDate.
+         */
+        public function setUpdateDate(\DateTime $updateDate): OrderDisplaySetting
+        {
+            $this->update_date = $updateDate;
+
+            return $this;
+        }
+
+        /**
+         * Get updateDate.
+         */
+        public function getUpdateDate(): ?\DateTime
+        {
+            return $this->update_date;
+        }
+    }
+}
