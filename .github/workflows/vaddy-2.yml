@@ -25,7 +25,7 @@ jobs:
             command1: '-x admin -x front'
     services:
       postgres:
-        image: postgres:14
+        image: postgres:18
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
@@ -40,12 +40,12 @@ jobs:
           - 1025:1025
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
 
       - name: Setup PHP
         uses: nanasess/setup-php@bc11abbf4dd060b7bfd20d03edeeb43417ebe245  # master
         with:
-          php-version: '8.4'
+          php-version: '8.5'
 
       - name: Install ext-redis 6.1+
         run: |
@@ -79,7 +79,7 @@ jobs:
       - name: "EC-CUBE: setup"
         env:
           DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
-          DATABASE_SERVER_VERSION: 14
+          DATABASE_SERVER_VERSION: 18
         run: |
           php bin/template_jp.php
           rm -rf app/Plugin/*
@@ -110,7 +110,7 @@ jobs:
         env:
           APP_ENV: 'prod'
           DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
-          DATABASE_SERVER_VERSION: 14
+          DATABASE_SERVER_VERSION: 18
         run: |
           bin/console eccube:composer:require "ec-cube/recommend4"
           bin/console eccube:composer:require "ec-cube/coupon4"
@@ -126,7 +126,7 @@ jobs:
       - name: Pre Install Plugins
         env:
           DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
-          DATABASE_SERVER_VERSION: 14
+          DATABASE_SERVER_VERSION: 18
           PGPASSWORD: 'password'
         run: |
           psql eccube_db -h 127.0.0.1 -U postgres -c "select id,name,code,0 as enabled,version,source,0 as initialized,'2021-08-13 00:00:00' as create_date,'2021-08-13 00:00:00' as update_date,discriminator_type from dtb_plugin;" -A -F, --pset footer > src/Eccube/Resource/doctrine/import_csv/ja/dtb_plugin.csv
@@ -173,7 +173,7 @@ jobs:
             -e APP_ENV=dev \
             -e APP_DEBUG=1 \
             -e DATABASE_URL="postgres://postgres:password@172.17.0.1:5432/eccube_db" \
-            -e DATABASE_SERVER_VERSION=14 \
+            -e DATABASE_SERVER_VERSION=18 \
             -e MAILER_URL="smtp://172.17.0.1:1025" \
             -v ${PWD}/html:/tmp/html \
             --rm -d -p 8080:80 --name eccube ec-cube
@@ -192,7 +192,7 @@ jobs:
         env:
           APP_ENV: "codeception"
           DATABASE_URL: "postgres://postgres:password@127.0.0.1:5432/eccube_db"
-          DATABASE_SERVER_VERSION: "14"
+          DATABASE_SERVER_VERSION: "18"
           MAILER_URL: "smtp://127.0.0.1:1025"
           BASE_URL: "http://${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}:8080"
           VADDY_PROXY: "${{ secrets.VADDY_PROXY }}"
@@ -238,7 +238,7 @@ jobs:
             -e APP_ENV=dev \
             -e APP_DEBUG=1 \
             -e DATABASE_URL="postgres://postgres:password@172.17.0.1:5432/eccube_db" \
-            -e DATABASE_SERVER_VERSION=14 \
+            -e DATABASE_SERVER_VERSION=18 \
             -e MAILER_URL="smtp://172.17.0.1:1025" \
             -v ${PWD}/html:/tmp/html \
             --rm -d -p 8080:80 --name eccube ec-cube
@@ -259,7 +259,7 @@ jobs:
         env:
           APP_ENV: "codeception"
           DATABASE_URL: "postgres://postgres:password@127.0.0.1:5432/eccube_db"
-          DATABASE_SERVER_VERSION: "14"
+          DATABASE_SERVER_VERSION: "18"
           MAILER_URL: "smtp://127.0.0.1:1025"
           BASE_URL: "http://${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}:8080"
           VADDY_PROXY: "${{ secrets.VADDY_PROXY }}"
@@ -307,7 +307,7 @@ jobs:
             -e APP_ENV=dev \
             -e APP_DEBUG=1 \
             -e DATABASE_URL="postgres://postgres:password@172.17.0.1:5432/eccube_db" \
-            -e DATABASE_SERVER_VERSION=14 \
+            -e DATABASE_SERVER_VERSION=18 \
             -e MAILER_URL="smtp://172.17.0.1:1025" \
             -v ${PWD}/html:/tmp/html \
             --rm -d -p 8080:80 --name eccube ec-cube
@@ -328,7 +328,7 @@ jobs:
         env:
           APP_ENV: "codeception"
           DATABASE_URL: "postgres://postgres:password@127.0.0.1:5432/eccube_db"
-          DATABASE_SERVER_VERSION: "14"
+          DATABASE_SERVER_VERSION: "18"
           MAILER_URL: "smtp://127.0.0.1:1025"
           BASE_URL: "http://${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}:8080"
           VADDY_PROXY: "${{ secrets.VADDY_PROXY }}"
@@ -376,7 +376,7 @@ jobs:
             -e APP_ENV=dev \
             -e APP_DEBUG=1 \
             -e DATABASE_URL="postgres://postgres:password@172.17.0.1:5432/eccube_db" \
-            -e DATABASE_SERVER_VERSION=14 \
+            -e DATABASE_SERVER_VERSION=18 \
             -e MAILER_URL="smtp://172.17.0.1:1025" \
             -v ${PWD}/html:/tmp/html \
             --rm -d -p 8080:80 --name eccube ec-cube
@@ -397,7 +397,7 @@ jobs:
         env:
           APP_ENV: "codeception"
           DATABASE_URL: "postgres://postgres:password@127.0.0.1:5432/eccube_db"
-          DATABASE_SERVER_VERSION: "14"
+          DATABASE_SERVER_VERSION: "18"
           MAILER_URL: "smtp://127.0.0.1:1025"
           BASE_URL: "http://${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}:8080"
           VADDY_PROXY: "${{ secrets.VADDY_PROXY }}"
@@ -445,7 +445,7 @@ jobs:
             -e APP_ENV=dev \
             -e APP_DEBUG=1 \
             -e DATABASE_URL="postgres://postgres:password@172.17.0.1:5432/eccube_db" \
-            -e DATABASE_SERVER_VERSION=14 \
+            -e DATABASE_SERVER_VERSION=18 \
             -e MAILER_URL="smtp://172.17.0.1:1025" \
             -v ${PWD}/html:/tmp/html \
             --rm -d -p 8080:80 --name eccube ec-cube
@@ -466,7 +466,7 @@ jobs:
         env:
           APP_ENV: "codeception"
           DATABASE_URL: "postgres://postgres:password@127.0.0.1:5432/eccube_db"
-          DATABASE_SERVER_VERSION: "14"
+          DATABASE_SERVER_VERSION: "18"
           MAILER_URL: "smtp://127.0.0.1:1025"
           BASE_URL: "http://${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}:8080"
           VADDY_PROXY: "${{ secrets.VADDY_PROXY }}"
