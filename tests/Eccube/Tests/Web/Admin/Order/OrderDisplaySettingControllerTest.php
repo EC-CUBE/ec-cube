@@ -69,7 +69,7 @@ final class OrderDisplaySettingControllerTest extends AbstractAdminWebTestCase
      */
     public function testIndexWithPost()
     {
-        $settings = $this->orderDisplaySettingRepository->getAllSettings();
+        $settings = $this->orderDisplaySettingRepository->findBy([], ['sort_no' => 'ASC']);
         $this->assertNotEmpty($settings, '初期データ（import_csv）が投入されている前提');
 
         // 最初の4項目を表示項目、残りを非表示項目として設定
@@ -101,7 +101,7 @@ final class OrderDisplaySettingControllerTest extends AbstractAdminWebTestCase
 
         // データが正しく保存されたか確認
         $this->entityManager->clear();
-        $updatedSettings = $this->orderDisplaySettingRepository->getAllSettings();
+        $updatedSettings = $this->orderDisplaySettingRepository->findBy([], ['sort_no' => 'ASC']);
         $enabledCount = 0;
         $disabledCount = 0;
         foreach ($updatedSettings as $setting) {
@@ -117,7 +117,7 @@ final class OrderDisplaySettingControllerTest extends AbstractAdminWebTestCase
      */
     public function testIndexSavesSortOrder()
     {
-        $settings = $this->orderDisplaySettingRepository->getAllSettings();
+        $settings = $this->orderDisplaySettingRepository->findBy([], ['sort_no' => 'ASC']);
         $ids = array_map(fn ($setting) => $setting->getId(), $settings);
 
         // 表示項目の並びを反転させて保存
@@ -156,7 +156,7 @@ final class OrderDisplaySettingControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->flush();
 
         // 「支払方法」列を非表示にする
-        $paymentMethod = $this->orderDisplaySettingRepository->findByFieldName('payment_method');
+        $paymentMethod = $this->orderDisplaySettingRepository->findOneBy(['field_name' => 'payment_method']);
         $this->assertInstanceOf(OrderDisplaySetting::class, $paymentMethod);
 
         $enabledIds = array_map(
@@ -292,7 +292,7 @@ final class OrderDisplaySettingControllerTest extends AbstractAdminWebTestCase
         $Order->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
 
         // すべての表示項目を無効化する（有効項目ゼロ＝未登録相当）.
-        foreach ($this->orderDisplaySettingRepository->getAllSettings() as $setting) {
+        foreach ($this->orderDisplaySettingRepository->findBy([], ['sort_no' => 'ASC']) as $setting) {
             $setting->setEnabled(false);
         }
         $this->entityManager->flush();
@@ -327,9 +327,9 @@ final class OrderDisplaySettingControllerTest extends AbstractAdminWebTestCase
         $Order->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
 
         // order_info のみ有効, 残りは無効（有効項目あり＝フォールバックしない）.
-        $orderInfo = $this->orderDisplaySettingRepository->findByFieldName('order_info');
+        $orderInfo = $this->orderDisplaySettingRepository->findOneBy(['field_name' => 'order_info']);
         $this->assertInstanceOf(OrderDisplaySetting::class, $orderInfo);
-        foreach ($this->orderDisplaySettingRepository->getAllSettings() as $setting) {
+        foreach ($this->orderDisplaySettingRepository->findBy([], ['sort_no' => 'ASC']) as $setting) {
             $setting->setEnabled($setting->getId() === $orderInfo->getId());
         }
         $this->entityManager->flush();
