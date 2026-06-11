@@ -184,6 +184,51 @@ final class OrderDisplaySettingControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
+     * コア外の field_name（プラグインが追加した項目を想定）に対して,
+     * 受注一覧にプラグイン拡張用の注入スロットが描画されることのテスト.
+     *
+     * プラグインは @admin/Order/index.twig の TemplateEvent でこの空セルを置換し,
+     * 列を注入する. 列順は displaySettings の sort_no に従う.
+     */
+    public function testOrderListRendersPluginExtensionSlot()
+    {
+        $Order = $this->createOrder($this->createCustomer());
+        $Order->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
+        $this->entityManager->flush();
+
+        // プラグインが追加した項目を想定したレコードを登録する.
+        $fieldName = 'plugin_extension_col';
+        $pluginSetting = new OrderDisplaySetting();
+        $pluginSetting->setFieldName($fieldName);
+        $pluginSetting->setDispName('拡張列');
+        $pluginSetting->setEnabled(true);
+        $pluginSetting->setSortNo(99);
+        $this->entityManager->persist($pluginSetting);
+        $this->entityManager->flush();
+
+        try {
+            $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_order'));
+            $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+            // ヘッダ・ボディ双方に field_name をキーにした注入スロットが出力される.
+            $this->assertGreaterThan(
+                0,
+                $crawler->filter('th[data-order-display-header="'.$fieldName.'"]')->count(),
+                'ヘッダにプラグイン拡張用スロットが描画されること'
+            );
+            $this->assertGreaterThan(
+                0,
+                $crawler->filter('td[data-order-display-cell="'.$fieldName.'"]')->count(),
+                'ボディにプラグイン拡張用スロットが描画されること'
+            );
+        } finally {
+            // 追加したレコードは tearDown の一括リセット対象外のため明示的に削除する.
+            $this->entityManager->remove($pluginSetting);
+            $this->entityManager->flush();
+        }
+    }
+
+    /**
      * 不正な HTTP メソッドでのテスト（GET/POST のみ許可）
      */
     public function testIndexWithInvalidHttpMethod()

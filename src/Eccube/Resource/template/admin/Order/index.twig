@@ -489,6 +489,9 @@ file that was distributed with this source code.
                                                 <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.tracking_number'|trans }}<a href="#" class="js-listSort" data-sortkey="tracking_number"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
                                             {% elseif setting.field_name == 'delivery_address' %}
                                                 <th class="border-top-0 pt-2 pb-2 text-center">{{ 'admin.order.delivery'|trans }}<a href="#" class="js-listSort" data-sortkey="delivery"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
+                                            {% else %}
+                                                {# プラグイン拡張用スロット: コア外の field_name はこの空ヘッダを出力し, @admin/Order/index.twig の TemplateEvent で内容を注入する #}
+                                                <th class="border-top-0 pt-2 pb-2 text-center" data-order-display-header="{{ setting.field_name }}"></th>
                                             {% endif %}
                                         {% endfor %}
                                         <th class="border-top-0 pt-2 pb-2 text-center pe-3"></th>
@@ -569,6 +572,9 @@ file that was distributed with this source code.
                                                             {{ Shipping.name01 ~ Shipping.name02 }}<br>
                                                             {{ Shipping.Pref.name }}
                                                         </td>
+                                                    {% else %}
+                                                        {# プラグイン拡張用スロット: コア外の field_name はこの空セルを出力し, @admin/Order/index.twig の TemplateEvent で内容を注入する #}
+                                                        <td class="align-middle text-center" data-order-display-cell="{{ setting.field_name }}" data-order-id="{{ Order.id }}" data-shipping-id="{{ Shipping.id }}"></td>
                                                     {% endif %}
                                                 {% endfor %}
                                                 <td class="align-middle pe-3">
