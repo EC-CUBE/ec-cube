@@ -283,6 +283,69 @@ final class OrderDisplaySettingControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
+     * 表示項目設定の有効項目がゼロ（未登録相当）の場合に,
+     * 受注一覧がデフォルト（全項目表示）へフォールバックすることのテスト.
+     */
+    public function testOrderListFallsBackToDefaultWhenNoEnabledSetting()
+    {
+        $Order = $this->createOrder($this->createCustomer());
+        $Order->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
+
+        // すべての表示項目を無効化する（有効項目ゼロ＝未登録相当）.
+        foreach ($this->orderDisplaySettingRepository->getAllSettings() as $setting) {
+            $setting->setEnabled(false);
+        }
+        $this->entityManager->flush();
+
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_order'));
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        // デフォルト項目が描画される（代表的な列見出しを確認）.
+        $headerText = $crawler->filter('#search_result thead')->text();
+        foreach ([
+            'admin.common.payment_method',
+            'admin.order.order_status',
+            'admin.order.purchase_price',
+            'admin.order.shipping_status',
+            'admin.order.tracking_number',
+            'admin.order.delivery',
+        ] as $key) {
+            $this->assertStringContainsString(trans($key), $headerText, $key.' の列がフォールバックで描画されること');
+        }
+
+        // チェックボックス列も存在する.
+        $this->assertGreaterThan(0, $crawler->filter('#toggle_check_all')->count());
+    }
+
+    /**
+     * 有効項目を一部のみに絞った（フォールバックしない）状態でも,
+     * チェックボックス列が常に表示されることのテスト.
+     */
+    public function testCheckboxColumnIsAlwaysRenderedWithReducedColumns()
+    {
+        $Order = $this->createOrder($this->createCustomer());
+        $Order->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
+
+        // order_info のみ有効, 残りは無効（有効項目あり＝フォールバックしない）.
+        $orderInfo = $this->orderDisplaySettingRepository->findByFieldName('order_info');
+        $this->assertInstanceOf(OrderDisplaySetting::class, $orderInfo);
+        foreach ($this->orderDisplaySettingRepository->getAllSettings() as $setting) {
+            $setting->setEnabled($setting->getId() === $orderInfo->getId());
+        }
+        $this->entityManager->flush();
+
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_order'));
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        // 設定に関わらずチェックボックス列は存在する.
+        $this->assertGreaterThan(0, $crawler->filter('#toggle_check_all')->count());
+
+        // フォールバックしていない（無効化した支払方法列が出ていない）ことを確認.
+        $headerText = $crawler->filter('#search_result thead')->text();
+        $this->assertStringNotContainsString(trans('admin.common.payment_method'), $headerText);
+    }
+
+    /**
      * 不正な HTTP メソッドでのテスト（GET/POST のみ許可）
      */
     public function testIndexWithInvalidHttpMethod()
