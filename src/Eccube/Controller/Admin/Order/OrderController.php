@@ -94,9 +94,11 @@ class OrderController extends AbstractController
         $builder = $this->formFactory
             ->createBuilder(SearchOrderType::class);
 
-        // 受注一覧の表示項目設定（有効な列のみ・ソート順）. 未登録時は既定の全項目をフォールバック表示する.
+        // 受注一覧の表示項目設定（有効な列のみ・ソート順）.
+        // 設定が1件も登録されていない未投入環境のみ既定の全項目をフォールバック表示する.
+        // 行が存在し全て非表示の場合は、その設定（データ列なし）を尊重する（プラグイン追加列も同様）.
         $displaySettings = $this->orderDisplaySettingRepository->getEnabledSettings();
-        if (empty($displaySettings)) {
+        if (empty($displaySettings) && $this->orderDisplaySettingRepository->count([]) === 0) {
             $displaySettings = $this->getDefaultOrderDisplaySettings();
         }
 

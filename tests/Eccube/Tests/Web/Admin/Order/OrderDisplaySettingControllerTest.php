@@ -283,15 +283,74 @@ final class OrderDisplaySettingControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
-     * 表示項目設定の有効項目がゼロ（未登録相当）の場合に,
+     * 表示項目設定が1件も登録されていない未投入環境の場合に,
      * 受注一覧がデフォルト（全項目表示）へフォールバックすることのテスト.
+     *
+     * フォールバックは「有効行ゼロ」ではなく「テーブルが真に空（行数ゼロ）」が条件.
+     * import_csv の初期8件を一旦退避・削除して未投入状態を再現し, finally で復元する.
      */
-    public function testOrderListFallsBackToDefaultWhenNoEnabledSetting()
+    public function testOrderListFallsBackToDefaultWhenTableIsEmpty()
     {
         $Order = $this->createOrder($this->createCustomer());
         $Order->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
 
-        // すべての表示項目を無効化する（有効項目ゼロ＝未登録相当）.
+        // 既存の全設定を退避してから削除し, テーブルを真に空にする.
+        $existing = $this->orderDisplaySettingRepository->findBy([], ['sort_no' => 'ASC']);
+        $snapshot = array_map(fn (OrderDisplaySetting $s) => [
+            'field_name' => $s->getFieldName(),
+            'disp_name' => $s->getDispName(),
+            'enabled' => $s->getEnabled(),
+            'sort_no' => $s->getSortNo(),
+        ], $existing);
+        foreach ($existing as $setting) {
+            $this->entityManager->remove($setting);
+        }
+        $this->entityManager->flush();
+
+        try {
+            $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_order'));
+            $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+            // デフォルト項目が描画される（代表的な列見出しを確認）.
+            $headerText = $crawler->filter('#search_result thead')->text();
+            foreach ([
+                'admin.common.payment_method',
+                'admin.order.order_status',
+                'admin.order.purchase_price',
+                'admin.order.shipping_status',
+                'admin.order.tracking_number',
+                'admin.order.delivery',
+            ] as $key) {
+                $this->assertStringContainsString(trans($key), $headerText, $key.' の列がフォールバックで描画されること');
+            }
+
+            // チェックボックス列も存在する.
+            $this->assertGreaterThan(0, $crawler->filter('#toggle_check_all')->count());
+        } finally {
+            // 退避した初期設定を復元する（共有DBのため後続テストへ影響させない）.
+            foreach ($snapshot as $data) {
+                $setting = new OrderDisplaySetting();
+                $setting->setFieldName($data['field_name']);
+                $setting->setDispName($data['disp_name']);
+                $setting->setEnabled($data['enabled']);
+                $setting->setSortNo($data['sort_no']);
+                $this->entityManager->persist($setting);
+            }
+            $this->entityManager->flush();
+        }
+    }
+
+    /**
+     * 行は存在するが全項目が非表示の場合は, フォールバックせず設定どおり
+     * データ列を一切描画しないことのテスト（管理者の「全部隠す」意図を尊重）.
+     * チェックボックス列は設定に関わらず常に表示される.
+     */
+    public function testAllDisabledDoesNotFallBackAndHidesDataColumns()
+    {
+        $Order = $this->createOrder($this->createCustomer());
+        $Order->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
+
+        // 全項目を非表示にする（行は残す）.
         foreach ($this->orderDisplaySettingRepository->findBy([], ['sort_no' => 'ASC']) as $setting) {
             $setting->setEnabled(false);
         }
@@ -300,20 +359,18 @@ final class OrderDisplaySettingControllerTest extends AbstractAdminWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_order'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        // デフォルト項目が描画される（代表的な列見出しを確認）.
+        // フォールバックしないため, デフォルト列（支払方法等）は描画されない.
         $headerText = $crawler->filter('#search_result thead')->text();
         foreach ([
             'admin.common.payment_method',
             'admin.order.order_status',
             'admin.order.purchase_price',
-            'admin.order.shipping_status',
-            'admin.order.tracking_number',
             'admin.order.delivery',
         ] as $key) {
-            $this->assertStringContainsString(trans($key), $headerText, $key.' の列がフォールバックで描画されること');
+            $this->assertStringNotContainsString(trans($key), $headerText, $key.' の列が描画されないこと');
         }
 
-        // チェックボックス列も存在する.
+        // チェックボックス列は常に存在する.
         $this->assertGreaterThan(0, $crawler->filter('#toggle_check_all')->count());
     }
 
