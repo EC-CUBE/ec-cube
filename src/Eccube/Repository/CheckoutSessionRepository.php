@@ -15,6 +15,7 @@ namespace Eccube\Repository;
 
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Entity\CheckoutSession;
+use Eccube\Entity\Master\CheckoutSessionStatus;
 
 /**
  * CheckoutSessionRepository
@@ -51,12 +52,15 @@ class CheckoutSessionRepository extends AbstractRepository
         $result = $qb
             ->where('cs.expires_at IS NOT NULL')
             ->andWhere('cs.expires_at < :now')
-            ->andWhere($qb->expr()->notIn('cs.status', ':terminalStatuses'))
+            ->andWhere($qb->expr()->orX(
+                'cs.Status IS NULL',
+                $qb->expr()->notIn('IDENTITY(cs.Status)', ':terminalStatuses')
+            ))
             ->setParameter('now', $now)
             ->setParameter('terminalStatuses', [
-                CheckoutSession::STATUS_COMPLETED,
-                CheckoutSession::STATUS_CANCELED,
-                CheckoutSession::STATUS_EXPIRED,
+                CheckoutSessionStatus::COMPLETED,
+                CheckoutSessionStatus::CANCELED,
+                CheckoutSessionStatus::EXPIRED,
             ])
             ->getQuery()
             ->getResult();

@@ -15,6 +15,8 @@ namespace Eccube\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Entity\Master\AgentProtocol;
+use Eccube\Entity\Master\CheckoutSessionStatus;
 use Eccube\Repository\CheckoutSessionRepository;
 
 if (!class_exists(CheckoutSession::class)) {
@@ -40,25 +42,6 @@ if (!class_exists(CheckoutSession::class)) {
     #[ORM\Entity(repositoryClass: CheckoutSessionRepository::class)]
     class CheckoutSession extends AbstractEntity
     {
-        /** 未完了 (作成直後・住所/配送/支払が未確定). */
-        public const STATUS_INCOMPLETE = 'incomplete';
-
-        /** 確定可能 (必須項目が揃い complete を実行できる). */
-        public const STATUS_READY = 'ready';
-
-        /** 完了 (Order 生成済). */
-        public const STATUS_COMPLETED = 'completed';
-
-        /** 取消. */
-        public const STATUS_CANCELED = 'canceled';
-
-        /** 期限切れ. */
-        public const STATUS_EXPIRED = 'expired';
-
-        public const PROTOCOL_ACP = 'acp';
-
-        public const PROTOCOL_UCP = 'ucp';
-
         #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
@@ -73,10 +56,11 @@ if (!class_exists(CheckoutSession::class)) {
         private string $session_id = '';
 
         /**
-         * プロトコル名 (`acp` / `ucp`).
+         * プロトコル種別 (ACP / UCP) マスタへの参照.
          */
-        #[ORM\Column(name: 'protocol', type: Types::STRING, length: 255)]
-        private string $protocol = '';
+        #[ORM\ManyToOne(targetEntity: AgentProtocol::class)]
+        #[ORM\JoinColumn(name: 'agent_protocol_id', referencedColumnName: 'id')]
+        private ?AgentProtocol $Protocol = null;
 
         /**
          * セッションを開始したエージェントの識別子.
@@ -85,10 +69,11 @@ if (!class_exists(CheckoutSession::class)) {
         private ?string $agent_id = null;
 
         /**
-         * 正規化ステータス (`incomplete`/`ready`/`completed`/`canceled`/`expired`).
+         * 正規化ステータス (incomplete/ready/completed/canceled/expired) マスタへの参照.
          */
-        #[ORM\Column(name: 'status', type: Types::STRING, length: 255, options: ['default' => self::STATUS_INCOMPLETE])]
-        private string $status = self::STATUS_INCOMPLETE;
+        #[ORM\ManyToOne(targetEntity: CheckoutSessionStatus::class)]
+        #[ORM\JoinColumn(name: 'checkout_session_status_id', referencedColumnName: 'id')]
+        private ?CheckoutSessionStatus $Status = null;
 
         /**
          * 通貨コード (ISO 4217 alpha-3).
@@ -178,14 +163,14 @@ if (!class_exists(CheckoutSession::class)) {
             return $this;
         }
 
-        public function getProtocol(): string
+        public function getProtocol(): ?AgentProtocol
         {
-            return $this->protocol;
+            return $this->Protocol;
         }
 
-        public function setProtocol(string $protocol): CheckoutSession
+        public function setProtocol(?AgentProtocol $Protocol = null): CheckoutSession
         {
-            $this->protocol = $protocol;
+            $this->Protocol = $Protocol;
 
             return $this;
         }
@@ -202,14 +187,14 @@ if (!class_exists(CheckoutSession::class)) {
             return $this;
         }
 
-        public function getStatus(): string
+        public function getStatus(): ?CheckoutSessionStatus
         {
-            return $this->status;
+            return $this->Status;
         }
 
-        public function setStatus(string $status): CheckoutSession
+        public function setStatus(?CheckoutSessionStatus $Status = null): CheckoutSession
         {
-            $this->status = $status;
+            $this->Status = $Status;
 
             return $this;
         }

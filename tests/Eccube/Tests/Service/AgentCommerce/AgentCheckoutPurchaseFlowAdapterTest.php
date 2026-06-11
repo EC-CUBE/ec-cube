@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace Eccube\Tests\Service\AgentCommerce;
 
 use Eccube\Entity\Customer;
+use Eccube\Entity\Master\AgentProtocol;
 use Eccube\Entity\ProductClass;
 use Eccube\Service\AgentCommerce\AgentCheckoutPurchaseFlowAdapter;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutAddress;
@@ -79,7 +80,7 @@ final class AgentCheckoutPurchaseFlowAdapterTest extends EccubeTestCase
             lineItems: [new AgentCheckoutLineItem((int) $ProductClass->getId(), 2)],
             buyer: $this->guestAddress(),
             currencyCode: 'JPY',
-            protocol: 'acp',
+            protocolId: AgentProtocol::ACP,
             agentId: 'agent-xyz',
         );
 
@@ -87,7 +88,7 @@ final class AgentCheckoutPurchaseFlowAdapterTest extends EccubeTestCase
         $Order = $result->order;
 
         $this->assertFalse($result->hasError(), '在庫十分なゲスト注文ではエラーメッセージは出ない');
-        $this->assertSame('acp', $Order->getAgentProtocol(), 'agent_protocol が Order に刻まれる');
+        $this->assertSame('acp', $Order->getAgentProtocol()?->getName(), 'agent_protocol マスタが Order に刻まれる');
         $this->assertSame('agent-xyz', $Order->getAgentId(), 'agent_id が Order に刻まれる');
         $this->assertNotInstanceOf(Customer::class, $Order->getCustomer(), 'ゲスト購入では Order.Customer は null');
         $this->assertSame('山田', $Order->getName01(), 'buyer 住所が Order にコピーされる');
@@ -108,7 +109,7 @@ final class AgentCheckoutPurchaseFlowAdapterTest extends EccubeTestCase
         $request = new AgentCheckoutRequest(
             lineItems: [new AgentCheckoutLineItem((int) $ProductClass->getId(), 1)],
             buyer: $this->guestAddress(),
-            protocol: 'acp',
+            protocolId: AgentProtocol::ACP,
         );
 
         $build = $this->adapter->buildOrder($request);
@@ -125,7 +126,7 @@ final class AgentCheckoutPurchaseFlowAdapterTest extends EccubeTestCase
         $request = new AgentCheckoutRequest(
             lineItems: [new AgentCheckoutLineItem((int) $ProductClass->getId(), 5)],
             buyer: $this->guestAddress(),
-            protocol: 'acp',
+            protocolId: AgentProtocol::ACP,
         );
 
         // 在庫超過は例外でなく messages[] (ビジネス系) として返る。

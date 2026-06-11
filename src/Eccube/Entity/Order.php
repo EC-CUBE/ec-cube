@@ -19,6 +19,7 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
+use Eccube\Entity\Master\AgentProtocol;
 use Eccube\Entity\Master\Country;
 use Eccube\Entity\Master\CustomerOrderStatus;
 use Eccube\Entity\Master\DeviceType;
@@ -475,12 +476,13 @@ if (!class_exists(Order::class)) {
         private ?string $complete_mail_message = null;
 
         /**
-         * エージェントコマース (ACP/UCP) 経由の注文を識別するプロトコル名.
+         * エージェントコマース (ACP/UCP) 経由の注文のプロトコル種別マスタへの参照.
          *
-         * 通常購入では null。エージェント経由の注文でのみ `acp` / `ucp` 等がセットされる。
+         * 通常購入では null。エージェント経由の注文でのみ ACP / UCP がセットされる。
          */
-        #[ORM\Column(name: 'agent_protocol', type: Types::STRING, length: 255, nullable: true)]
-        private ?string $agent_protocol = null;
+        #[ORM\ManyToOne(targetEntity: AgentProtocol::class)]
+        #[ORM\JoinColumn(name: 'agent_protocol_id', referencedColumnName: 'id')]
+        private ?AgentProtocol $AgentProtocol = null;
 
         /**
          * エージェントコマース経由の注文を発行したエージェントの識別子.
@@ -1193,14 +1195,14 @@ if (!class_exists(Order::class)) {
             return $this;
         }
 
-        public function getAgentProtocol(): ?string
+        public function getAgentProtocol(): ?AgentProtocol
         {
-            return $this->agent_protocol;
+            return $this->AgentProtocol;
         }
 
-        public function setAgentProtocol(?string $agent_protocol = null): Order
+        public function setAgentProtocol(?AgentProtocol $AgentProtocol = null): Order
         {
-            $this->agent_protocol = $agent_protocol;
+            $this->AgentProtocol = $AgentProtocol;
 
             return $this;
         }

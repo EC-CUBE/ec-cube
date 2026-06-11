@@ -18,6 +18,7 @@ use Eccube\Entity\Cart;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Order;
+use Eccube\Repository\Master\AgentProtocolRepository;
 use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\ProductClassRepository;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutAddress;
@@ -53,6 +54,7 @@ class AgentCheckoutPurchaseFlowAdapter
         private readonly OrderHelper $orderHelper,
         private readonly ProductClassRepository $productClassRepository,
         private readonly PrefRepository $prefRepository,
+        private readonly AgentProtocolRepository $agentProtocolRepository,
         private readonly PurchaseFlow $shoppingPurchaseFlow,
     ) {
     }
@@ -76,8 +78,8 @@ class AgentCheckoutPurchaseFlowAdapter
         $Order = $this->orderHelper->createPurchaseProcessingOrder($Cart, $Customer);
         $Cart->setPreOrderId($Order->getPreOrderId());
 
-        if ($request->protocol !== null) {
-            $Order->setAgentProtocol($request->protocol);
+        if ($request->protocolId !== null) {
+            $Order->setAgentProtocol($this->agentProtocolRepository->find($request->protocolId));
         }
         if ($request->agentId !== null) {
             $Order->setAgentId($request->agentId);

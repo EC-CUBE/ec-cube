@@ -16,14 +16,19 @@ declare(strict_types=1);
 namespace Eccube\Tests\Entity;
 
 use Eccube\Entity\CheckoutSession;
+use Eccube\Entity\Master\AgentProtocol;
+use Eccube\Entity\Master\CheckoutSessionStatus;
 use Eccube\Entity\Order;
 use Eccube\Repository\CheckoutSessionRepository;
+use Eccube\Repository\Master\AgentProtocolRepository;
+use Eccube\Repository\Master\CheckoutSessionStatusRepository;
 use Eccube\Tests\EccubeTestCase;
 
 /**
- * Layer 2 (Doctrine) tests for CheckoutSession + Order の agent カラム.
+ * Layer 2 (Doctrine) tests for CheckoutSession + Order の agent 区分値.
  *
  * - CheckoutSession の永続化・取得・状態遷移 (incomplete -> ready -> completed / canceled / expired)。
+ * - status / protocol が文字列でなくマスタ (CheckoutSessionStatus / AgentProtocol) への FK であること。
  * - SaveEventSubscriber による create_date/update_date 自動付与。
  * - json カラム (buyer_data 等) のラウンドトリップ。
  * - 通常購入の Order で agent_protocol/agent_id が NULL である回帰確認。
@@ -32,10 +37,24 @@ final class CheckoutSessionTest extends EccubeTestCase
 {
     private ?CheckoutSessionRepository $checkoutSessionRepository = null;
 
+    private ?CheckoutSessionStatusRepository $statusRepository = null;
+
+    private ?AgentProtocolRepository $protocolRepository = null;
+
     protected function setUp(): void
     {
         parent::setUp();
         $this->checkoutSessionRepository = self::getContainer()->get(CheckoutSessionRepository::class);
+        $this->statusRepository = self::getContainer()->get(CheckoutSessionStatusRepository::class);
+        $this->protocolRepository = self::getContainer()->get(AgentProtocolRepository::class);
+    }
+
+    private function findStatus(int $id): CheckoutSessionStatus
+    {
+        /** @var CheckoutSessionStatus $status */
+        $status = $this->statusRepository->find($id);
+
+        return $status;
     }
 
     private function createSession(string $sessionId): CheckoutSession
@@ -43,7 +62,8 @@ final class CheckoutSessionTest extends EccubeTestCase
         $session = new CheckoutSession();
         $session
             ->setSessionId($sessionId)
-            ->setProtocol(CheckoutSession::PROTOCOL_ACP)
+            ->setProtocol($this->protocolRepository->find(AgentProtocol::ACP))
+            ->setStatus($this->findStatus(CheckoutSessionStatus::INCOMPLETE))
             ->setCurrencyCode('JPY')
             ->setBuyerData(['family_name' => '山田', 'given_name' => '太郎'])
             ->setMetadata(['acp_status' => 'not_ready_for_payment']);
@@ -60,7 +80,22 @@ final class CheckoutSessionTest extends EccubeTestCase
         $this->assertNotNull($session->getId(), '永続化で id が採番される');
         $this->assertInstanceOf(\DateTime::class, $session->getCreateDate(), 'SaveEventSubscriber が create_date を自動付与する');
         $this->assertInstanceOf(\DateTime::class, $session->getUpdateDate(), 'SaveEventSubscriber が update_date を自動付与する');
-        $this->assertSame(CheckoutSession::STATUS_INCOMPLETE, $session->getStatus(), '初期 status は incomplete');
+        $this->assertSame(CheckoutSessionStatus::INCOMPLETE, $session->getStatus()?->getId(), '初期 status は incomplete マスタ');
+    }
+
+    public function testProtocolAndStatusAreMasterRelations(): void
+    {
+        $session = $this->createSession('cs_test_master');
+        $id = $session->getId();
+        $this->entityManager->clear();
+
+        /** @var CheckoutSession $reloaded */
+        $reloaded = $this->checkoutSessionRepository->find($id);
+
+        $this->assertInstanceOf(AgentProtocol::class, $reloaded->getProtocol(), 'protocol はマスタ AgentProtocol への FK');
+        $this->assertSame('acp', $reloaded->getProtocol()?->getName(), 'AgentProtocol の正準名は acp');
+        $this->assertInstanceOf(CheckoutSessionStatus::class, $reloaded->getStatus(), 'status はマスタ CheckoutSessionStatus への FK');
+        $this->assertSame('incomplete', $reloaded->getStatus()?->getName(), 'CheckoutSessionStatus の正準名は incomplete');
     }
 
     public function testFindOneBySessionId(): void
@@ -93,18 +128,18 @@ final class CheckoutSessionTest extends EccubeTestCase
         $session = $this->createSession('cs_test_status');
 
         foreach ([
-            CheckoutSession::STATUS_READY,
-            CheckoutSession::STATUS_COMPLETED,
+            CheckoutSessionStatus::READY,
+            CheckoutSessionStatus::COMPLETED,
         ] as $next) {
-            $session->setStatus($next);
+            $session->setStatus($this->findStatus($next));
             $this->entityManager->flush();
-            $this->assertSame($next, $session->getStatus());
+            $this->assertSame($next, $session->getStatus()?->getId());
         }
 
-        // canceled / expired も正規化ステータスとして保持できる。
-        $session->setStatus(CheckoutSession::STATUS_CANCELED);
+        // canceled も正規化ステータスマスタとして保持できる。
+        $session->setStatus($this->findStatus(CheckoutSessionStatus::CANCELED));
         $this->entityManager->flush();
-        $this->assertSame('canceled', $session->getStatus(), 'canceled を正規化ステータスとして保持できる');
+        $this->assertSame('canceled', $session->getStatus()?->getName(), 'canceled を正規化ステータスとして保持できる');
     }
 
     public function testIsExpired(): void
@@ -130,7 +165,7 @@ final class CheckoutSessionTest extends EccubeTestCase
         $active->setExpiresAt($past);
 
         $completed = $this->createSession('cs_expired_completed');
-        $completed->setExpiresAt($past)->setStatus(CheckoutSession::STATUS_COMPLETED);
+        $completed->setExpiresAt($past)->setStatus($this->findStatus(CheckoutSessionStatus::COMPLETED));
         $this->entityManager->flush();
 
         $expired = $this->checkoutSessionRepository->findExpired($now);
@@ -145,16 +180,16 @@ final class CheckoutSessionTest extends EccubeTestCase
         // Order に追加した agent_protocol/agent_id が、通常購入相当の Order で NULL であることの回帰確認。
         $order = new Order();
 
-        $this->assertNull($order->getAgentProtocol(), '通常購入では agent_protocol は NULL');
+        $this->assertNotInstanceOf(AgentProtocol::class, $order->getAgentProtocol(), '通常購入では agent_protocol は NULL');
         $this->assertNull($order->getAgentId(), '通常購入では agent_id は NULL');
     }
 
     public function testOrderAgentColumnsAreSettable(): void
     {
         $order = new Order();
-        $order->setAgentProtocol(CheckoutSession::PROTOCOL_ACP)->setAgentId('agent-123');
+        $order->setAgentProtocol($this->protocolRepository->find(AgentProtocol::ACP))->setAgentId('agent-123');
 
-        $this->assertSame('acp', $order->getAgentProtocol());
+        $this->assertSame('acp', $order->getAgentProtocol()?->getName());
         $this->assertSame('agent-123', $order->getAgentId());
     }
 }

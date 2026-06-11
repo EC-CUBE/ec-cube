@@ -23,12 +23,13 @@ final readonly class AgentCheckoutRequest
 {
     /**
      * @param array<int, AgentCheckoutLineItem> $lineItems
+     * @param int|null                          $protocolId プロトコル種別マスタ (`AgentProtocol::ACP` 等) の id
      */
     public function __construct(
         public array $lineItems,
         public ?AgentCheckoutAddress $buyer = null,
         public string $currencyCode = 'JPY',
-        public ?string $protocol = null,
+        public ?int $protocolId = null,
         public ?string $agentId = null,
     ) {
     }

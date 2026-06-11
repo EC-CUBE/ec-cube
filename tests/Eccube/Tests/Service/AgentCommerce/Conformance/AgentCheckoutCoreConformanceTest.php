@@ -15,7 +15,8 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Service\AgentCommerce\Conformance;
 
-use Eccube\Entity\CheckoutSession;
+use Eccube\Entity\Master\AgentProtocol;
+use Eccube\Entity\Master\CheckoutSessionStatus;
 use Eccube\Entity\Order;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutMessageLevel;
 use PHPUnit\Framework\TestCase;
@@ -32,22 +33,23 @@ use PHPUnit\Framework\TestCase;
 final class AgentCheckoutCoreConformanceTest extends TestCase
 {
     /**
-     * CheckoutSession.status は ACP/UCP 横断の正規化ステータスであり、`canceled` を含む.
+     * CheckoutSession.status は ACP/UCP 横断の正規化ステータスマスタであり、`canceled` を含む.
      *
-     * (incomplete / ready / completed / canceled / expired)
+     * (incomplete=1 / ready=2 / completed=3 / canceled=4 / expired=5)
+     * 正準名 (`canceled` 等) は import_csv で seed され、DB 上の値は Layer 2 で検証する。
      */
     public function testNormalizedStatusIncludesCanceled(): void
     {
-        $statuses = [
-            CheckoutSession::STATUS_INCOMPLETE,
-            CheckoutSession::STATUS_READY,
-            CheckoutSession::STATUS_COMPLETED,
-            CheckoutSession::STATUS_CANCELED,
-            CheckoutSession::STATUS_EXPIRED,
+        $ids = [
+            CheckoutSessionStatus::INCOMPLETE,
+            CheckoutSessionStatus::READY,
+            CheckoutSessionStatus::COMPLETED,
+            CheckoutSessionStatus::CANCELED,
+            CheckoutSessionStatus::EXPIRED,
         ];
 
-        $this->assertContains('canceled', $statuses, 'MUST: 正規化ステータスは canceled を含む');
-        $this->assertSame(['incomplete', 'ready', 'completed', 'canceled', 'expired'], $statuses, '正規化ステータスの語彙が仕様どおり');
+        $this->assertContains(CheckoutSessionStatus::CANCELED, $ids, 'MUST: 正規化ステータスマスタは canceled を含む');
+        $this->assertSame([1, 2, 3, 4, 5], $ids, '正規化ステータスマスタの定数が 5 段そろう');
     }
 
     /**
@@ -68,12 +70,13 @@ final class AgentCheckoutCoreConformanceTest extends TestCase
     public function testOrderCarriesAgentAttributionAndDefaultsNull(): void
     {
         $normal = new Order();
-        $this->assertNull($normal->getAgentProtocol(), 'MUST: 通常購入の Order は agent_protocol が NULL');
+        $this->assertNotInstanceOf(AgentProtocol::class, $normal->getAgentProtocol(), 'MUST: 通常購入の Order は agent_protocol が NULL');
         $this->assertNull($normal->getAgentId(), 'MUST: 通常購入の Order は agent_id が NULL');
 
+        $protocol = new AgentProtocol();
         $agentOrder = new Order();
-        $agentOrder->setAgentProtocol(CheckoutSession::PROTOCOL_ACP)->setAgentId('agent-1');
-        $this->assertSame('acp', $agentOrder->getAgentProtocol(), 'エージェント注文は protocol を保持できる');
+        $agentOrder->setAgentProtocol($protocol)->setAgentId('agent-1');
+        $this->assertSame($protocol, $agentOrder->getAgentProtocol(), 'エージェント注文は protocol マスタを保持できる');
     }
 
     /**
