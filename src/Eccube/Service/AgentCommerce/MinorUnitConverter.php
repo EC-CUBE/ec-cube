@@ -54,8 +54,10 @@ class MinorUnitConverter
             $amount = substr($amount, 1);
         }
 
-        // 空や不正な表記は 0 とみなす。
-        if ($amount === '' || $amount === '.') {
+        // 空や不正な表記は 0 とみなす (符号は分離済みなので非負の decimal 形式のみ許可)。
+        // 受け付けない文字列 (abc / 1,000 / 1..2 等) をここで弾かないと
+        // bcmul()/bcadd() が PHP 8 系で ValueError を送出してしまう。
+        if ($amount === '' || !preg_match('/^(?:\d+|\d+\.\d*|\.\d+)$/', $amount)) {
             return 0;
         }
 

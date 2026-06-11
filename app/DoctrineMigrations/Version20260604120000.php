@@ -47,10 +47,9 @@ final class Version20260604120000 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        if (!$schema->hasTable(self::NAME)) {
-            return;
-        }
-
-        $this->addSql('DELETE FROM mtb_country_iso_code');
+        // 新規インストールでは up() が no-op (import_csv 投入済み) のため、
+        // 一律 DELETE すると import_csv 由来の初期データまで巻き添えで消える。
+        // マスタ初期データは不可逆として扱い、ロールバックでは何もしない。
+        $this->throwIrreversibleMigrationException(self::NAME.' はマスタ初期データのため down は非対応です.');
     }
 }

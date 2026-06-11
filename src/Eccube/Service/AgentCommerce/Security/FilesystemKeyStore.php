@@ -56,11 +56,13 @@ class FilesystemKeyStore implements KeyStoreInterface
         $path = $this->resolvePath($purpose);
         $dir = \dirname($path);
 
-        if (!is_dir($dir)) {
-            mkdir($dir, 0700, true);
+        if (!is_dir($dir) && !mkdir($dir, 0700, true) && !is_dir($dir)) {
+            throw new \RuntimeException(sprintf('鍵格納ディレクトリ "%s" を作成できません.', $dir));
         }
 
-        file_put_contents($path, $pem);
+        if (file_put_contents($path, $pem) === false) {
+            throw new \RuntimeException(sprintf('鍵ファイル "%s" への書き込みに失敗しました.', $path));
+        }
         chmod($path, 0600);
     }
 

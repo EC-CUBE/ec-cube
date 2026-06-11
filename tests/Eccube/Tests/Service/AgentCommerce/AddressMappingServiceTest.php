@@ -170,6 +170,7 @@ final class AddressMappingServiceTest extends EccubeTestCase
 
         $ids = [];
         $handle = fopen($csvPath, 'r');
+        $this->assertIsResource($handle, 'mtb_country.csv must be readable');
         fgetcsv($handle, null, ',', '"', ''); // skip header row
         while (($row = fgetcsv($handle, null, ',', '"', '')) !== false) {
             if (!isset($row[0]) || $row[0] === '') {
