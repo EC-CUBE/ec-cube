@@ -25,7 +25,6 @@ namespace Eccube\Service\Mcp;
 enum AuditResult: string
 {
     case Success = 'success';
-    case ValidationError = 'validation_error';
     case OriginInvalid = 'origin_invalid';
     case TokenInvalid = 'token_invalid';
     case ScopeDenied = 'scope_denied';

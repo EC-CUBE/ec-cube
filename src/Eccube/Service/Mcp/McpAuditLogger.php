@@ -108,7 +108,8 @@ final readonly class McpAuditLogger
     {
         return match ($result) {
             AuditResult::Success => 'info',
-            AuditResult::InternalError, AuditResult::TokenInvalid => 'error',
+            // error はサーバ障害のみ。 認証失敗 (TokenInvalid) や拒否系はクライアント都合なので warning
+            AuditResult::InternalError => 'error',
             default => 'warning',
         };
     }
