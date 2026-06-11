@@ -44,15 +44,9 @@ if (!class_exists(OrderDisplaySetting::class)) {
         #[ORM\Column(name: 'sort_no', type: Types::INTEGER, options: ['default' => 0])]
         private int $sort_no = 0;
 
-        /**
-         * @var \DateTime
-         */
         #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
         private ?\DateTime $create_date = null;
 
-        /**
-         * @var \DateTime
-         */
         #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
         private ?\DateTime $update_date = null;
 
