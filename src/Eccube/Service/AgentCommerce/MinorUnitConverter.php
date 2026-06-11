@@ -54,22 +54,22 @@ class MinorUnitConverter
             $amount = substr($amount, 1);
         }
 
-        // 空や不正な表記は 0 とみなす (符号は分離済みなので非負の decimal 形式のみ許可)。
-        // 受け付けない文字列 (abc / 1,000 / 1..2 等) をここで弾かないと
-        // bcmul()/bcadd() が PHP 8 系で ValueError を送出してしまう。
-        if ($amount === '' || !preg_match('/^(?:\d+|\d+\.\d*|\.\d+)$/', $amount)) {
-            return 0;
-        }
-
         // scale を桁数 + 1 にして、丸め用の補正を加える。
         $scale = $digits + 1;
         $factor = bcpow('10', (string) $digits, 0);
 
-        // amount * 10^digits を計算 (まだ小数を含みうる)。
-        $scaled = bcmul($amount, $factor, $scale);
+        try {
+            // amount * 10^digits を計算 (まだ小数を含みうる)。
+            $scaled = bcmul($amount, $factor, $scale);
 
-        // round-half-up: 正の値に 0.5 を足してから切り捨て (bcmath は truncate)。
-        $rounded = bcadd($scaled, '0.5', 0);
+            // round-half-up: 正の値に 0.5 を足してから切り捨て (bcmath は truncate)。
+            $rounded = bcadd($scaled, '0.5', 0);
+        } catch (\ValueError) {
+            // 受け付ける数値文字列形式の判定は BCMath 自身に委譲する。
+            // 不正な表記 (abc / 1,000 / 1e3 等) は ValueError になるため 0 とみなす。
+            // (空文字 '' や '.' は BCMath が 0 として扱うのでここには来ない)
+            return 0;
+        }
 
         $result = (int) $rounded;
 

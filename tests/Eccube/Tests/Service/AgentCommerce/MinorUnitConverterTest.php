@@ -85,6 +85,9 @@ final class MinorUnitConverterTest extends TestCase
         yield 'double dot' => ['1..2'];
         yield 'trailing garbage' => ['12.34x'];
         yield 'whitespace inside' => ['1 000'];
+        yield 'exponential notation' => ['1e3'];
+        yield 'exponential with decimal' => ['1.5e3'];
+        yield 'hex' => ['0x1A'];
     }
 
     public function testToAmountStringZeroDecimalJpy(): void
