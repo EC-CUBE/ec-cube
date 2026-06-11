@@ -73,7 +73,7 @@ class AgentCheckoutPurchaseFlowAdapter
 
         $Customer = $member ?? $this->buildGuestCustomer($request->buyer);
 
-        $Cart = $this->buildCart($request, $Customer);
+        $Cart = $this->buildCart($request);
 
         $Order = $this->orderHelper->createPurchaseProcessingOrder($Cart, $Customer);
         $Cart->setPreOrderId($Order->getPreOrderId());
@@ -141,15 +141,16 @@ class AgentCheckoutPurchaseFlowAdapter
     /**
      * 中立明細から永続化された `Cart` を構築する.
      */
-    private function buildCart(AgentCheckoutRequest $request, Customer $Customer): Cart
+    private function buildCart(AgentCheckoutRequest $request): Cart
     {
         $Cart = new Cart();
         // 合計は Order 側の shopping flow で再計算されるため、ここでは NOT NULL 制約を満たす初期値のみ設定する。
         $Cart->setTotalPrice('0');
         $Cart->setDeliveryFeeTotal('0');
-        if ($Customer->getId()) {
-            $Cart->setCustomer($Customer);
-        }
+        // エージェント所有カートは Web ストアフロント (CartService) の解決対象から除外する。
+        // 会員帰属は Order 側 (OrderHelper) に持たせ、Cart の customer_id は常に NULL に保つ
+        // ことで、ログイン会員の Web カートに混入・操作されないようにする。
+        $Cart->setAgentOwned(true);
 
         foreach ($request->lineItems as $lineItem) {
             if ($lineItem->quantity < 1) {

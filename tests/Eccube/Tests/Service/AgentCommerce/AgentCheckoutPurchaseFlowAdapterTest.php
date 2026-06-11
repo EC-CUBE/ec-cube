@@ -15,9 +15,11 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Service\AgentCommerce;
 
+use Eccube\Entity\Cart;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\AgentProtocol;
 use Eccube\Entity\ProductClass;
+use Eccube\Repository\CartRepository;
 use Eccube\Service\AgentCommerce\AgentCheckoutPurchaseFlowAdapter;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutAddress;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutLineItem;
@@ -117,6 +119,35 @@ final class AgentCheckoutPurchaseFlowAdapterTest extends EccubeTestCase
 
         $this->assertFalse($result->hasError(), 'complete でエラーが出ない');
         $this->assertNotNull($result->order->getOrderNo(), 'complete で受注番号が採番される');
+    }
+
+    public function testAgentCartIsIsolatedFromWebStorefront(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+
+        $request = new AgentCheckoutRequest(
+            lineItems: [new AgentCheckoutLineItem((int) $ProductClass->getId(), 1)],
+            buyer: $this->guestAddress(),
+            protocolId: AgentProtocol::ACP,
+        );
+
+        $this->adapter->buildOrder($request);
+        // buildOrder が生成した agent_owned カートを cartRepository から特定する。
+        $cartRepository = self::getContainer()->get(CartRepository::class);
+
+        $agentCarts = $cartRepository->findBy(['agent_owned' => true]);
+        $this->assertNotEmpty($agentCarts, 'エージェント生成カートは agent_owned=true で保存される');
+        foreach ($agentCarts as $agentCart) {
+            $this->assertTrue($agentCart->isAgentOwned(), 'agent_owned フラグが立つ');
+            $this->assertNull($agentCart->getCustomer(), 'エージェントカートの customer_id は常に NULL (会員帰属は Order 側)');
+        }
+
+        // CartService が Web カート解決に用いる検索条件 (agent_owned=false) では拾われないこと。
+        $webVisible = $cartRepository->findBy(['agent_owned' => false]);
+        $webVisibleIds = array_map(static fn (Cart $c): ?int => $c->getId(), $webVisible);
+        foreach ($agentCarts as $agentCart) {
+            $this->assertNotContains($agentCart->getId(), $webVisibleIds, 'エージェントカートは Web 解決条件 (agent_owned=false) に含まれない');
+        }
     }
 
     public function testOverStockSurfacesAsMessageNotException(): void
