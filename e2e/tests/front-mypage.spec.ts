@@ -182,7 +182,10 @@ async function setTrackingNumberViaAdmin(page: Page, orderNo: string, trackingNu
   await adminPage.locator('#search_form #search_submit').click();
   await adminPage.waitForLoadState('load');
 
-  const orderLink = adminPage.locator('table tbody td a[href*="/order/"]').first();
+  // Target the row whose order number cell matches orderNo, then its order link
+  // (so we never follow the wrong row even if the search returns multiple).
+  const orderRow = adminPage.locator('table tbody tr', { hasText: orderNo });
+  const orderLink = orderRow.locator('a[href*="/order/"]').first();
   await expect(orderLink).toBeVisible();
   const orderEditHref = await orderLink.getAttribute('href');
   await adminPage.goto(orderEditHref!);
@@ -312,9 +315,9 @@ test.describe('Front Mypage (EF05)', () => {
     await page.waitForLoadState('load');
     await expect(page.locator('div.ec-pageHeader h1')).toContainText('ご注文履歴詳細');
 
-    // The tracking number item is not rendered
+    // The tracking number item is not rendered (structural check on the label dt)
     const delivery = page.locator('div.ec-orderDelivery');
-    await expect(delivery).not.toContainText('お問い合わせ番号');
+    await expect(delivery.locator('dt', { hasText: 'お問い合わせ番号' })).toHaveCount(0);
   });
 
   test('EF0503-UC01-T02 Mypage お気に入り一覧', async ({ page }) => {

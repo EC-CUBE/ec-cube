@@ -23,6 +23,7 @@ use Eccube\Entity\Product;
 use Eccube\Entity\Shipping;
 use Eccube\Tests\Fixture\Generator;
 use Eccube\Tests\Web\AbstractWebTestCase;
+use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -202,7 +203,7 @@ final class MypageControllerTest extends AbstractWebTestCase
     /**
      * 注文履歴詳細をログイン会員として取得する.
      */
-    private function requestHistory(Order $Order): \Symfony\Component\DomCrawler\Crawler
+    private function requestHistory(Order $Order): Crawler
     {
         $this->loginTo($this->Customer);
 
@@ -215,7 +216,7 @@ final class MypageControllerTest extends AbstractWebTestCase
     /**
      * お問い合わせ番号が入力されている場合, 注文履歴詳細に表示される.
      */
-    public function testHistoryWithTrackingNumber()
+    public function testHistoryWithTrackingNumber(): void
     {
         $Order = $this->createOrderForHistory();
         $Order->getShippings()->first()->setTrackingNumber('1234567890123');
@@ -231,7 +232,7 @@ final class MypageControllerTest extends AbstractWebTestCase
     /**
      * お問い合わせ番号が null の場合, 項目自体が表示されない.
      */
-    public function testHistoryWithoutTrackingNumber()
+    public function testHistoryWithoutTrackingNumber(): void
     {
         $Order = $this->createOrderForHistory();
         $Order->getShippings()->first()->setTrackingNumber(null);
@@ -246,7 +247,7 @@ final class MypageControllerTest extends AbstractWebTestCase
     /**
      * お問い合わせ番号が空文字列の場合, 項目自体が表示されない.
      */
-    public function testHistoryWithEmptyTrackingNumber()
+    public function testHistoryWithEmptyTrackingNumber(): void
     {
         $Order = $this->createOrderForHistory();
         $Order->getShippings()->first()->setTrackingNumber('');
@@ -261,7 +262,7 @@ final class MypageControllerTest extends AbstractWebTestCase
     /**
      * 複数配送先がある場合, 入力済みの配送先ごとにお問い合わせ番号が表示される.
      */
-    public function testHistoryWithMultipleShippings()
+    public function testHistoryWithMultipleShippings(): void
     {
         $Order = $this->createOrderForHistory();
         $Order->getShippings()->first()->setTrackingNumber('1111111111111');
@@ -280,7 +281,7 @@ final class MypageControllerTest extends AbstractWebTestCase
     /**
      * 複数配送先のうち一部のみ入力されている場合, 入力済みの配送先のみ表示される.
      */
-    public function testHistoryWithMultipleShippingsPartiallyFilled()
+    public function testHistoryWithMultipleShippingsPartiallyFilled(): void
     {
         $Order = $this->createOrderForHistory();
         $Order->getShippings()->first()->setTrackingNumber('1111111111111');
@@ -299,7 +300,7 @@ final class MypageControllerTest extends AbstractWebTestCase
     /**
      * お問い合わせ番号に HTML 特殊文字が含まれていても自動エスケープされ, スクリプトが実行されない.
      */
-    public function testHistoryTrackingNumberXss()
+    public function testHistoryTrackingNumberXss(): void
     {
         $Order = $this->createOrderForHistory();
         $Order->getShippings()->first()->setTrackingNumber('<script>alert("XSS")</script>');
@@ -309,14 +310,14 @@ final class MypageControllerTest extends AbstractWebTestCase
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         $html = $this->client->getResponse()->getContent();
-        $this->assertStringContainsString('&lt;script&gt;', $html);
-        $this->assertStringNotContainsString('<script>alert', $html);
+        $this->assertStringContainsString('&lt;script&gt;', (string) $html);
+        $this->assertStringNotContainsString('<script>alert', (string) $html);
     }
 
     /**
      * お問い合わせ番号ラベルの翻訳定義 (日本語 / 英語).
      */
-    public function testTrackingNumberLabelTranslations()
+    public function testTrackingNumberLabelTranslations(): void
     {
         /** @var TranslatorInterface $translator */
         $translator = static::getContainer()->get(TranslatorInterface::class);
