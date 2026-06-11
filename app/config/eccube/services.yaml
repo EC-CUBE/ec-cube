@@ -250,3 +250,16 @@ services:
 
     Eccube\Service\AgentCommerce\Security\AgentCommerceMessageSignerInterface:
         alias: Eccube\Service\AgentCommerce\Security\UcpMessageSigner
+
+    # Agent Commerce CheckoutSession 中核 (#6777 Phase 1b)
+    Eccube\Service\AgentCommerce\Fulfillment\FulfillmentOptionMapperInterface:
+        alias: Eccube\Service\AgentCommerce\Fulfillment\StandardFulfillmentOptionMapper
+
+    # 標準はゲスト購入 (会員解決なし)。会員 ID 連携は eccube-api4#189 landing 後に差し替える。
+    Eccube\Service\AgentCommerce\CheckoutSession\CustomerResolverInterface:
+        alias: Eccube\Service\AgentCommerce\CheckoutSession\GuestCustomerResolver
+
+    # OAuth2 トークン検証。リソースサーバー (eccube-api4#188) 未導入時は handler が null となり 503 を返す。
+    Eccube\Service\AgentCommerce\Security\AgentCommerceOAuth2Authenticator:
+        arguments:
+            $accessTokenHandler: '@?Symfony\Component\Security\Http\AccessToken\AccessTokenHandlerInterface'

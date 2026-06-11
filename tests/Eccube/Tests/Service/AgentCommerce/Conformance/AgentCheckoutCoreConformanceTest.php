@@ -1,0 +1,96 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+ *
+ * http://www.ec-cube.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Eccube\Tests\Service\AgentCommerce\Conformance;
+
+use Eccube\Entity\CheckoutSession;
+use Eccube\Entity\Order;
+use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutMessageLevel;
+use PHPUnit\Framework\TestCase;
+
+/**
+ * Layer 0 (conformance) tests for the CheckoutSession 中核 (#6777 Phase 1b).
+ *
+ * ACP/UCP 横断の規範要件のうち、共通基盤の CheckoutSession 中核が担保するものを 1:1 でトレースする。
+ * 中核で実装できない要件 (controller での HTTP 変換等) は markTestIncomplete で残す。
+ *
+ * @see https://github.com/agentic-commerce-protocol/agentic-commerce-protocol/tree/main/spec/2026-04-17
+ * @see https://github.com/Universal-Commerce-Protocol/ucp
+ */
+final class AgentCheckoutCoreConformanceTest extends TestCase
+{
+    /**
+     * CheckoutSession.status は ACP/UCP 横断の正規化ステータスであり、`canceled` を含む.
+     *
+     * (incomplete / ready / completed / canceled / expired)
+     */
+    public function testNormalizedStatusIncludesCanceled(): void
+    {
+        $statuses = [
+            CheckoutSession::STATUS_INCOMPLETE,
+            CheckoutSession::STATUS_READY,
+            CheckoutSession::STATUS_COMPLETED,
+            CheckoutSession::STATUS_CANCELED,
+            CheckoutSession::STATUS_EXPIRED,
+        ];
+
+        self::assertContains('canceled', $statuses, 'MUST: 正規化ステータスは canceled を含む');
+        self::assertSame(['incomplete', 'ready', 'completed', 'canceled', 'expired'], $statuses, '正規化ステータスの語彙が仕様どおり');
+    }
+
+    /**
+     * ビジネス系の結果 (HTTP 200 + messages[]) は error/warning/info の 3 段で表現する.
+     *
+     * @see ACP MessageError / MessageWarning / MessageInfo
+     */
+    public function testBusinessMessageLevelsCoverErrorWarningInfo(): void
+    {
+        $levels = array_map(static fn (AgentCheckoutMessageLevel $l): string => $l->value, AgentCheckoutMessageLevel::cases());
+
+        self::assertEqualsCanonicalizing(['error', 'warning', 'info'], $levels, 'MUST: ビジネス系メッセージは error/warning/info の 3 段を持つ');
+    }
+
+    /**
+     * エージェント経由の注文は Order に protocol/agent 識別子を保持でき、通常購入では NULL である.
+     */
+    public function testOrderCarriesAgentAttributionAndDefaultsNull(): void
+    {
+        $normal = new Order();
+        self::assertNull($normal->getAgentProtocol(), 'MUST: 通常購入の Order は agent_protocol が NULL');
+        self::assertNull($normal->getAgentId(), 'MUST: 通常購入の Order は agent_id が NULL');
+
+        $agentOrder = new Order();
+        $agentOrder->setAgentProtocol(CheckoutSession::PROTOCOL_ACP)->setAgentId('agent-1');
+        self::assertSame('acp', $agentOrder->getAgentProtocol(), 'エージェント注文は protocol を保持できる');
+    }
+
+    /**
+     * プロトコル系 (HTTP 4xx/5xx) とビジネス系 (HTTP 200 + messages[]) の 2 系統への
+     * 実際の HTTP 変換は checkout controller (#6776/#6574) の責務であり中核の対象外.
+     */
+    public function testTwoTierHttpMappingIsDeferredToControllerLayer(): void
+    {
+        self::markTestIncomplete('HTTP ステータスと messages[] への 2 系統変換は ACP/UCP checkout controller (#6776/#6574) で検証する。');
+    }
+
+    /**
+     * リプレイ (Idempotency-Key) で副作用を再実行しない不変条件は、controller/middleware の
+     * 冪等性処理に依存するため中核では未実装.
+     */
+    public function testIdempotentReplayIsDeferredToControllerLayer(): void
+    {
+        self::markTestIncomplete('Idempotency-Key によるリプレイ抑止は checkout controller (#6776/#6574) で検証する。');
+    }
+}

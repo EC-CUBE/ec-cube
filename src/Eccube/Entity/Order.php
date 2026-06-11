@@ -475,6 +475,22 @@ if (!class_exists(Order::class)) {
         private ?string $complete_mail_message = null;
 
         /**
+         * エージェントコマース (ACP/UCP) 経由の注文を識別するプロトコル名.
+         *
+         * 通常購入では null。エージェント経由の注文でのみ `acp` / `ucp` 等がセットされる。
+         */
+        #[ORM\Column(name: 'agent_protocol', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $agent_protocol = null;
+
+        /**
+         * エージェントコマース経由の注文を発行したエージェントの識別子.
+         *
+         * 通常購入では null。
+         */
+        #[ORM\Column(name: 'agent_id', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $agent_id = null;
+
+        /**
          * @var Collection<int, OrderItem>
          */
         #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'Order', cascade: ['persist', 'remove'])]
@@ -1173,6 +1189,30 @@ if (!class_exists(Order::class)) {
         public function appendCompleteMailMessage(?string $complete_mail_message = null): Order
         {
             $this->complete_mail_message .= $complete_mail_message;
+
+            return $this;
+        }
+
+        public function getAgentProtocol(): ?string
+        {
+            return $this->agent_protocol;
+        }
+
+        public function setAgentProtocol(?string $agent_protocol = null): Order
+        {
+            $this->agent_protocol = $agent_protocol;
+
+            return $this;
+        }
+
+        public function getAgentId(): ?string
+        {
+            return $this->agent_id;
+        }
+
+        public function setAgentId(?string $agent_id = null): Order
+        {
+            $this->agent_id = $agent_id;
 
             return $this;
         }
