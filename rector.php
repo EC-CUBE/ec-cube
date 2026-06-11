@@ -69,9 +69,11 @@ return RectorConfig::configure()
                // 8.3以上で対応可能
                AddTypeToConstRector::class, // [BC]定数に型を追加する PHP 8.3 以降で有効
                RenameMethodRector::class, //addがaddCommandに変換されてしまうため一旦スキップ
-               // 'security.firewall.map' は private service ID で、 test container では class FQCN で解決できない
+               // 文字列 service ID (private / チャネル別ロガー等) を FQCN に変換すると解決できないテスト
+               // ('security.firewall.map'、 'monolog.logger.mcp' は型ではなく ID で取得する必要がある)
                \Rector\Symfony\Symfony34\Rector\Closure\ContainerGetNameToTypeInTestsRector::class => [
                    __DIR__.'/tests/Eccube/Tests/Service/Mcp/Contract/Api44LifecycleContractTest.php',
+                   __DIR__.'/tests/Eccube/Tests/Service/Mcp/Contract/McpAuditLogIsolationContractTest.php',
                ],
            ])
            // 個別にルールを追加する場合はここに記述
