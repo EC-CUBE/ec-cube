@@ -6,6 +6,8 @@ monolog:
             level: debug
             formatter: eccube.log.formatter.line
             max_files: 10
+            # mcp は専用ハンドラ (mcp) に出すため main(site.log) からは除外する
+            channels: ['!mcp']
         console:
             type: console
             process_psr_3_messages: false

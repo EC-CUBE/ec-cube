@@ -9,6 +9,8 @@ parameters:
     env(ECCUBE_TIMEZONE): 'Asia/Tokyo'
     env(ECCUBE_CURRENCY): 'JPY'
     env(ECCUBE_MCP_ALLOWED_ORIGINS): ''
+    # MCP 監査ログ (mcp.log) の保管日数 (rotating_file の世代数)。 設計 §4.2
+    env(ECCUBE_MCP_LOG_RETENTION_DAYS): '90'
     locale: '%env(ECCUBE_LOCALE)%'
     timezone: '%env(ECCUBE_TIMEZONE)%'
     currency: '%env(ECCUBE_CURRENCY)%'
@@ -233,6 +235,10 @@ services:
     Eccube\Service\Mcp\McpAuditLogger:
         arguments:
             $mcpLogger: '@monolog.logger.mcp'
+
+    # MCP: 監査ログ (mcp.log) は 1 レコード 1 JSON で出力する (機械可読・設計 §4.2)
+    eccube.mcp.log.formatter.json:
+        class: Monolog\Formatter\JsonFormatter
 
     Eccube\Security\PasswordHasher\PasswordHasher:
         arguments:
