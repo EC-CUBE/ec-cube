@@ -47,6 +47,20 @@ final class AuthFailureAuditListenerTest extends TestCase
         $this->assertSame('token_invalid', $record['context']['result_status'] ?? null);
         $this->assertArrayHasKey('client_id', $record['context']);
         $this->assertNull($record['context']['client_id'], 'client_id は best-effort で null');
+        $this->assertSame('unauthorized', $record['context']['reason'] ?? null, 'WWW-Authenticate 無しは fallback');
+    }
+
+    public function testReasonComesFromWwwAuthenticateHeader(): void
+    {
+        $recorder = $this->recordingLogger();
+        $this->buildListener($recorder)->onKernelResponse($this->responseEvent(
+            '/admin/mcp',
+            Response::HTTP_UNAUTHORIZED,
+            ['WWW-Authenticate' => 'Bearer error="invalid_token"'],
+        ));
+
+        $this->assertCount(1, $recorder->records);
+        $this->assertSame('Bearer error="invalid_token"', $recorder->records[0]['context']['reason'] ?? null);
     }
 
     public function testIgnoresNon401Response(): void
@@ -73,7 +87,11 @@ final class AuthFailureAuditListenerTest extends TestCase
     {
         $throwingAudit = new McpAuditLogger(
             new class extends AbstractLogger {
-                public function log($level, string|\Stringable $message, array $context = []): void
+                /**
+                 * @param mixed $level
+                 * @param array<string, mixed> $context
+                 */
+                public function log(mixed $level, string|\Stringable $message, array $context = []): void
                 {
                     throw new \RuntimeException('mcp channel down');
                 }
@@ -103,20 +121,27 @@ final class AuthFailureAuditListenerTest extends TestCase
             /** @var list<array{level: mixed, message: string, context: array<string, mixed>}> */
             public array $records = [];
 
-            public function log($level, string|\Stringable $message, array $context = []): void
+            /**
+             * @param mixed $level
+             * @param array<string, mixed> $context
+             */
+            public function log(mixed $level, string|\Stringable $message, array $context = []): void
             {
                 $this->records[] = ['level' => $level, 'message' => (string) $message, 'context' => $context];
             }
         };
     }
 
-    private function responseEvent(string $path, int $statusCode): ResponseEvent
+    /**
+     * @param array<string, string> $headers
+     */
+    private function responseEvent(string $path, int $statusCode, array $headers = []): ResponseEvent
     {
         return new ResponseEvent(
             $this->createStub(HttpKernelInterface::class),
             Request::create($path, Request::METHOD_POST),
             HttpKernelInterface::MAIN_REQUEST,
-            new Response('', $statusCode),
+            new Response('', $statusCode, $headers),
         );
     }
 }
