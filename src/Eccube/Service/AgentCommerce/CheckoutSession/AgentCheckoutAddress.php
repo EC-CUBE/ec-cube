@@ -19,20 +19,20 @@ namespace Eccube\Service\AgentCommerce\CheckoutSession;
  * `prefId` は EC-CUBE の `mtb_pref.id` (1-47)。プロトコル固有 Mapper が
  * 共通基盤の `AddressMappingService` を用いて region 名等から解決する。
  */
-final class AgentCheckoutAddress
+final readonly class AgentCheckoutAddress
 {
     public function __construct(
-        public readonly ?string $name01 = null,
-        public readonly ?string $name02 = null,
-        public readonly ?string $kana01 = null,
-        public readonly ?string $kana02 = null,
-        public readonly ?string $companyName = null,
-        public readonly ?string $postalCode = null,
-        public readonly ?int $prefId = null,
-        public readonly ?string $addr01 = null,
-        public readonly ?string $addr02 = null,
-        public readonly ?string $email = null,
-        public readonly ?string $phoneNumber = null,
+        public ?string $name01 = null,
+        public ?string $name02 = null,
+        public ?string $kana01 = null,
+        public ?string $kana02 = null,
+        public ?string $companyName = null,
+        public ?string $postalCode = null,
+        public ?int $prefId = null,
+        public ?string $addr01 = null,
+        public ?string $addr02 = null,
+        public ?string $email = null,
+        public ?string $phoneNumber = null,
     ) {
     }
 }

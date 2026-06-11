@@ -21,14 +21,14 @@ use Eccube\Entity\Order;
  * 再計算後の `Order` (税・送料・手数料・合計が確定済) と、ビジネス系メッセージ
  * (在庫不足・販売停止・配送制限等) を保持する。
  */
-final class AgentCheckoutResult
+final readonly class AgentCheckoutResult
 {
     /**
      * @param array<int, AgentCheckoutMessage> $messages
      */
     public function __construct(
-        public readonly Order $order,
-        public readonly array $messages = [],
+        public Order $order,
+        public array $messages = [],
     ) {
     }
 

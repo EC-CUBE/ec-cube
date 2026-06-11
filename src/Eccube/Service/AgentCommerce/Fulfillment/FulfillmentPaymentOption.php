@@ -18,13 +18,13 @@ namespace Eccube\Service\AgentCommerce\Fulfillment;
  *
  * 代引手数料等は `chargeMinor` に minor unit (整数) で保持する。
  */
-final class FulfillmentPaymentOption
+final readonly class FulfillmentPaymentOption
 {
     public function __construct(
-        public readonly int $paymentId,
-        public readonly string $method,
-        public readonly int $chargeMinor,
-        public readonly string $currencyCode,
+        public int $paymentId,
+        public string $method,
+        public int $chargeMinor,
+        public string $currencyCode,
     ) {
     }
 }

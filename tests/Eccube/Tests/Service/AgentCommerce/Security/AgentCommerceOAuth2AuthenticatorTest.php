@@ -47,9 +47,9 @@ final class AgentCommerceOAuth2AuthenticatorTest extends TestCase
      */
     private function handlerWithScopes(array $scopes): AccessTokenHandlerInterface
     {
-        return new class($scopes) implements AccessTokenHandlerInterface {
+        return new readonly class($scopes) implements AccessTokenHandlerInterface {
             /** @param array<int, string> $scopes */
-            public function __construct(private readonly array $scopes)
+            public function __construct(private array $scopes)
             {
             }
 
@@ -79,7 +79,7 @@ final class AgentCommerceOAuth2AuthenticatorTest extends TestCase
 
         $badge = $authenticator->authenticate('valid-token', 'acp', 'checkout');
 
-        self::assertSame('agent-platform', $badge->getUserIdentifier(), 'valid token + matching scope は UserBadge を返す');
+        $this->assertSame('agent-platform', $badge->getUserIdentifier(), 'valid token + matching scope は UserBadge を返す');
     }
 
     public function testSpaceDelimitedScopeAttributeIsAccepted(): void
@@ -94,7 +94,7 @@ final class AgentCommerceOAuth2AuthenticatorTest extends TestCase
 
         $badge = $authenticator->authenticate('valid-token', 'ucp', 'checkout');
 
-        self::assertSame('agent-platform', $badge->getUserIdentifier(), 'OAuth2 標準の空白区切り scope 文字列も解釈できる');
+        $this->assertSame('agent-platform', $badge->getUserIdentifier(), 'OAuth2 標準の空白区切り scope 文字列も解釈できる');
     }
 
     public function testInvalidTokenThrowsAuthenticationException(): void
@@ -126,9 +126,9 @@ final class AgentCommerceOAuth2AuthenticatorTest extends TestCase
     public function testHandlerUnavailableThrowsServiceUnavailable(): void
     {
         // eccube-api4 未導入 = handler が null -> 503。
-        $authenticator = new AgentCommerceOAuth2Authenticator($this->scopeRegistry, null);
+        $authenticator = new AgentCommerceOAuth2Authenticator($this->scopeRegistry);
 
-        self::assertFalse($authenticator->isAvailable(), 'handler 未注入時は isAvailable() が false');
+        $this->assertFalse($authenticator->isAvailable(), 'handler 未注入時は isAvailable() が false');
 
         $this->expectException(ServiceUnavailableHttpException::class);
         $authenticator->authenticate('any-token', 'acp', 'checkout');

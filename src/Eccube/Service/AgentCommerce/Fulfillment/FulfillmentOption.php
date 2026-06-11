@@ -20,18 +20,18 @@ namespace Eccube\Service\AgentCommerce\Fulfillment;
  * 配送日数 (`estimatedDeliveryDays`)、利用可能な支払方法 (`paymentOptions`) を保持する。
  * 金額はすべて minor unit (整数) で表現する。
  */
-final class FulfillmentOption
+final readonly class FulfillmentOption
 {
     /**
      * @param array<int, FulfillmentPaymentOption> $paymentOptions
      */
     public function __construct(
-        public readonly int $deliveryId,
-        public readonly string $name,
-        public readonly int $shippingFeeMinor,
-        public readonly string $currencyCode,
-        public readonly ?int $estimatedDeliveryDays,
-        public readonly array $paymentOptions,
+        public int $deliveryId,
+        public string $name,
+        public int $shippingFeeMinor,
+        public string $currencyCode,
+        public ?int $estimatedDeliveryDays,
+        public array $paymentOptions,
     ) {
     }
 }

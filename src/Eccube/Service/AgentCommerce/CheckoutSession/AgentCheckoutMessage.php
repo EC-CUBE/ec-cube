@@ -16,11 +16,11 @@ namespace Eccube\Service\AgentCommerce\CheckoutSession;
 /**
  * ビジネスロジックの結果メッセージ (中立表現).
  */
-final class AgentCheckoutMessage
+final readonly class AgentCheckoutMessage
 {
     public function __construct(
-        public readonly AgentCheckoutMessageLevel $level,
-        public readonly string $message,
+        public AgentCheckoutMessageLevel $level,
+        public string $message,
     ) {
     }
 }

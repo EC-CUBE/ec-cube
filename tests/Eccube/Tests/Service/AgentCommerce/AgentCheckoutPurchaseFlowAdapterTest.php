@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Service\AgentCommerce;
 
+use Eccube\Entity\Customer;
 use Eccube\Entity\ProductClass;
 use Eccube\Service\AgentCommerce\AgentCheckoutPurchaseFlowAdapter;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutAddress;
@@ -85,19 +86,19 @@ final class AgentCheckoutPurchaseFlowAdapterTest extends EccubeTestCase
         $result = $this->adapter->buildOrder($request);
         $Order = $result->order;
 
-        self::assertFalse($result->hasError(), '在庫十分なゲスト注文ではエラーメッセージは出ない');
-        self::assertSame('acp', $Order->getAgentProtocol(), 'agent_protocol が Order に刻まれる');
-        self::assertSame('agent-xyz', $Order->getAgentId(), 'agent_id が Order に刻まれる');
-        self::assertNull($Order->getCustomer(), 'ゲスト購入では Order.Customer は null');
-        self::assertSame('山田', $Order->getName01(), 'buyer 住所が Order にコピーされる');
+        $this->assertFalse($result->hasError(), '在庫十分なゲスト注文ではエラーメッセージは出ない');
+        $this->assertSame('acp', $Order->getAgentProtocol(), 'agent_protocol が Order に刻まれる');
+        $this->assertSame('agent-xyz', $Order->getAgentId(), 'agent_id が Order に刻まれる');
+        $this->assertNotInstanceOf(Customer::class, $Order->getCustomer(), 'ゲスト購入では Order.Customer は null');
+        $this->assertSame('山田', $Order->getName01(), 'buyer 住所が Order にコピーされる');
 
         // 明細が DTO 通り (単価 = price02 / 数量 = 2) に構築されていること。
         $productItems = $Order->getProductOrderItems();
-        self::assertCount(1, $productItems, '商品明細は 1 行');
-        self::assertSame(2, (int) $productItems[0]->getQuantity(), '数量が DTO の通り反映される');
-        self::assertSame(0, bccomp((string) $productItems[0]->getPrice(), (string) $ProductClass->getPrice02(), 2), '明細単価は price02');
+        $this->assertCount(1, $productItems, '商品明細は 1 行');
+        $this->assertSame(2, (int) $productItems[0]->getQuantity(), '数量が DTO の通り反映される');
+        $this->assertSame(0, bccomp((string) $productItems[0]->getPrice(), (string) $ProductClass->getPrice02(), 2), '明細単価は price02');
         // shopping flow が税・送料・手数料込みの支払総額を計算していること。
-        self::assertGreaterThan(0, (int) $Order->getPaymentTotal(), 'shopping flow で支払総額 (税送料込) が計算される');
+        $this->assertGreaterThan(0, (int) $Order->getPaymentTotal(), 'shopping flow で支払総額 (税送料込) が計算される');
     }
 
     public function testCompleteFinalizesOrder(): void
@@ -113,8 +114,8 @@ final class AgentCheckoutPurchaseFlowAdapterTest extends EccubeTestCase
         $build = $this->adapter->buildOrder($request);
         $result = $this->adapter->complete($build->order);
 
-        self::assertFalse($result->hasError(), 'complete でエラーが出ない');
-        self::assertNotNull($result->order->getOrderNo(), 'complete で受注番号が採番される');
+        $this->assertFalse($result->hasError(), 'complete でエラーが出ない');
+        $this->assertNotNull($result->order->getOrderNo(), 'complete で受注番号が採番される');
     }
 
     public function testOverStockSurfacesAsMessageNotException(): void
@@ -130,7 +131,7 @@ final class AgentCheckoutPurchaseFlowAdapterTest extends EccubeTestCase
         // 在庫超過は例外でなく messages[] (ビジネス系) として返る。
         $result = $this->adapter->buildOrder($request);
 
-        self::assertNotEmpty($result->messages, '在庫超過は messages[] に反映される (HTTP 200 + messages[] 系統)');
+        $this->assertNotEmpty($result->messages, '在庫超過は messages[] に反映される (HTTP 200 + messages[] 系統)');
     }
 
     public function testEmptyLineItemsThrows(): void
@@ -141,7 +142,7 @@ final class AgentCheckoutPurchaseFlowAdapterTest extends EccubeTestCase
             $this->adapter->buildOrder($request);
             self::fail('空明細は AgentCheckoutException を投げる');
         } catch (AgentCheckoutException $e) {
-            self::assertSame(AgentCheckoutErrorCode::EMPTY_LINE_ITEMS, $e->getErrorCode());
+            $this->assertSame(AgentCheckoutErrorCode::EMPTY_LINE_ITEMS, $e->getErrorCode());
         }
     }
 
@@ -156,7 +157,7 @@ final class AgentCheckoutPurchaseFlowAdapterTest extends EccubeTestCase
             $this->adapter->buildOrder($request);
             self::fail('未知の商品参照は AgentCheckoutException を投げる');
         } catch (AgentCheckoutException $e) {
-            self::assertSame(AgentCheckoutErrorCode::PRODUCT_NOT_FOUND, $e->getErrorCode());
+            $this->assertSame(AgentCheckoutErrorCode::PRODUCT_NOT_FOUND, $e->getErrorCode());
         }
     }
 
@@ -165,14 +166,13 @@ final class AgentCheckoutPurchaseFlowAdapterTest extends EccubeTestCase
         $ProductClass = $this->createPurchasableProductClass('100');
         $request = new AgentCheckoutRequest(
             lineItems: [new AgentCheckoutLineItem((int) $ProductClass->getId(), 1)],
-            buyer: null,
         );
 
         try {
             $this->adapter->buildOrder($request);
             self::fail('ゲストで住所が無い場合は AgentCheckoutException を投げる');
         } catch (AgentCheckoutException $e) {
-            self::assertSame(AgentCheckoutErrorCode::MISSING_ADDRESS, $e->getErrorCode());
+            $this->assertSame(AgentCheckoutErrorCode::MISSING_ADDRESS, $e->getErrorCode());
         }
     }
 }

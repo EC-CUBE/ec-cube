@@ -15,6 +15,7 @@ namespace Eccube\Service\AgentCommerce\Security;
 
 use Symfony\Component\HttpKernel\Exception\ServiceUnavailableHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Http\AccessToken\AccessTokenHandlerInterface;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 
@@ -55,7 +56,7 @@ class AgentCommerceOAuth2Authenticator
      * @return UserBadge 検証済みユーザーバッジ (subject 識別子 + attributes)
      *
      * @throws ServiceUnavailableHttpException eccube-api4 未導入 (503 相当)
-     * @throws \Symfony\Component\Security\Core\Exception\AuthenticationException トークン不正 (401 相当)
+     * @throws AuthenticationException トークン不正 (401 相当)
      * @throws AccessDeniedException scope 不足・protocol 越境 (403 相当)
      */
     public function authenticate(string $accessToken, string $protocol, string $capability): UserBadge

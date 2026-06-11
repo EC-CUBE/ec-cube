@@ -19,17 +19,17 @@ namespace Eccube\Service\AgentCommerce\CheckoutSession;
  * 明細と購入者/配送先住所を保持する。`AgentCheckoutPurchaseFlowAdapter` がこれを
  * EC-CUBE の `Cart` → `Order` へ変換し、shopping flow で税・送料・在庫を再計算する。
  */
-final class AgentCheckoutRequest
+final readonly class AgentCheckoutRequest
 {
     /**
      * @param array<int, AgentCheckoutLineItem> $lineItems
      */
     public function __construct(
-        public readonly array $lineItems,
-        public readonly ?AgentCheckoutAddress $buyer = null,
-        public readonly string $currencyCode = 'JPY',
-        public readonly ?string $protocol = null,
-        public readonly ?string $agentId = null,
+        public array $lineItems,
+        public ?AgentCheckoutAddress $buyer = null,
+        public string $currencyCode = 'JPY',
+        public ?string $protocol = null,
+        public ?string $agentId = null,
     ) {
     }
 }

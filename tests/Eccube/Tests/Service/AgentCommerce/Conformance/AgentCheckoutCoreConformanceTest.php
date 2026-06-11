@@ -46,8 +46,8 @@ final class AgentCheckoutCoreConformanceTest extends TestCase
             CheckoutSession::STATUS_EXPIRED,
         ];
 
-        self::assertContains('canceled', $statuses, 'MUST: 正規化ステータスは canceled を含む');
-        self::assertSame(['incomplete', 'ready', 'completed', 'canceled', 'expired'], $statuses, '正規化ステータスの語彙が仕様どおり');
+        $this->assertContains('canceled', $statuses, 'MUST: 正規化ステータスは canceled を含む');
+        $this->assertSame(['incomplete', 'ready', 'completed', 'canceled', 'expired'], $statuses, '正規化ステータスの語彙が仕様どおり');
     }
 
     /**
@@ -59,7 +59,7 @@ final class AgentCheckoutCoreConformanceTest extends TestCase
     {
         $levels = array_map(static fn (AgentCheckoutMessageLevel $l): string => $l->value, AgentCheckoutMessageLevel::cases());
 
-        self::assertEqualsCanonicalizing(['error', 'warning', 'info'], $levels, 'MUST: ビジネス系メッセージは error/warning/info の 3 段を持つ');
+        $this->assertEqualsCanonicalizing(['error', 'warning', 'info'], $levels, 'MUST: ビジネス系メッセージは error/warning/info の 3 段を持つ');
     }
 
     /**
@@ -68,12 +68,12 @@ final class AgentCheckoutCoreConformanceTest extends TestCase
     public function testOrderCarriesAgentAttributionAndDefaultsNull(): void
     {
         $normal = new Order();
-        self::assertNull($normal->getAgentProtocol(), 'MUST: 通常購入の Order は agent_protocol が NULL');
-        self::assertNull($normal->getAgentId(), 'MUST: 通常購入の Order は agent_id が NULL');
+        $this->assertNull($normal->getAgentProtocol(), 'MUST: 通常購入の Order は agent_protocol が NULL');
+        $this->assertNull($normal->getAgentId(), 'MUST: 通常購入の Order は agent_id が NULL');
 
         $agentOrder = new Order();
         $agentOrder->setAgentProtocol(CheckoutSession::PROTOCOL_ACP)->setAgentId('agent-1');
-        self::assertSame('acp', $agentOrder->getAgentProtocol(), 'エージェント注文は protocol を保持できる');
+        $this->assertSame('acp', $agentOrder->getAgentProtocol(), 'エージェント注文は protocol を保持できる');
     }
 
     /**

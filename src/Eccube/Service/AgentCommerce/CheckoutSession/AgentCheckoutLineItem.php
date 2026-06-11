@@ -19,11 +19,11 @@ namespace Eccube\Service\AgentCommerce\CheckoutSession;
  * プロトコル固有 Mapper (#6776 ACP / #6574 UCP) が、各プロトコルの variant 識別子を
  * EC-CUBE の `ProductClass.id` へ解決した上で本 DTO を組み立てる。
  */
-final class AgentCheckoutLineItem
+final readonly class AgentCheckoutLineItem
 {
     public function __construct(
-        public readonly int $productClassId,
-        public readonly int $quantity,
+        public int $productClassId,
+        public int $quantity,
     ) {
     }
 }
