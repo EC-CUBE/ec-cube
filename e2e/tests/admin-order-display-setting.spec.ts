@@ -42,7 +42,7 @@ test.describe('受注一覧 表示項目設定', () => {
 
     await goOrderList(page);
     // 全選択チェックボックスは常に存在する
-    await expect(page.locator('#toggle_check_all')).toBeAttached();
+    await expect(page.locator('#toggle_check_all')).toBeVisible();
   });
 
   test('並び順の変更が受注一覧の列順に反映される', async ({ page }) => {
