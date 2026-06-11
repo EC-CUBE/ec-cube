@@ -17,8 +17,10 @@ namespace Eccube\Tests\Web\Admin\Order;
 
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\OrderDisplaySetting;
+use Eccube\Event\TemplateEvent;
 use Eccube\Repository\OrderDisplaySettingRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -223,6 +225,58 @@ final class OrderDisplaySettingControllerTest extends AbstractAdminWebTestCase
             );
         } finally {
             // 追加したレコードは tearDown の一括リセット対象外のため明示的に削除する.
+            $this->entityManager->remove($pluginSetting);
+            $this->entityManager->flush();
+        }
+    }
+
+    /**
+     * プラグイン相当の TemplateEvent リスナがソースを書き換え,
+     * 注入スロットに列内容が実際に描画されることのテスト.
+     *
+     * 実プラグインをパッケージ化せず, @admin/Order/index.twig の TemplateEvent を
+     * 購読して getSource()/setSource() でスロットを埋める（プラグインと同じ作法）.
+     */
+    public function testOrderListSlotIsFilledViaTemplateEvent()
+    {
+        $Order = $this->createOrder($this->createCustomer());
+        $Order->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
+        $this->entityManager->flush();
+
+        $fieldName = 'plugin_te_injected_col';
+        $injectedText = 'INJECTED_BY_TEMPLATE_EVENT';
+
+        $pluginSetting = new OrderDisplaySetting();
+        $pluginSetting->setFieldName($fieldName);
+        $pluginSetting->setDispName('注入列');
+        $pluginSetting->setEnabled(true);
+        $pluginSetting->setSortNo(99);
+        $this->entityManager->persist($pluginSetting);
+        $this->entityManager->flush();
+
+        // プラグインの TemplateListener 相当: ヘッダの空スロットを内容入りに置換する.
+        /** @var EventDispatcherInterface $eventDispatcher */
+        $eventDispatcher = static::getContainer()->get(EventDispatcherInterface::class);
+        $listener = function (TemplateEvent $event) use ($fieldName, $injectedText) {
+            $anchor = '<th class="border-top-0 pt-2 pb-2 text-center" data-order-display-header="{{ setting.field_name }}"></th>';
+            $filled = '<th class="border-top-0 pt-2 pb-2 text-center" data-order-display-header="{{ setting.field_name }}">'
+                .'{% if setting.field_name == \''.$fieldName.'\' %}'.$injectedText.'{% endif %}</th>';
+            $event->setSource(str_replace($anchor, $filled, $event->getSource()));
+        };
+        $eventDispatcher->addListener('@admin/Order/index.twig', $listener);
+
+        try {
+            $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_order'));
+            $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+            // ソース置換が反映され, スロットに列内容が描画されていること.
+            $this->assertStringContainsString(
+                $injectedText,
+                (string) $this->client->getResponse()->getContent(),
+                'TemplateEvent によるソース置換で注入スロットが埋まること'
+            );
+        } finally {
+            $eventDispatcher->removeListener('@admin/Order/index.twig', $listener);
             $this->entityManager->remove($pluginSetting);
             $this->entityManager->flush();
         }
