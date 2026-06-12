@@ -17,12 +17,15 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-24.04 ]
-        php: [ '8.3', '8.4', '8.5' ]
+        php: [ '8.2', '8.3', '8.4', '8.5' ]
         db: [ pgsql ]
         include:
           - db: pgsql
             database_url: postgres://dbuser:secret@127.0.0.1:15432/eccubedb
-            database_server_version: 14
+            database_server_version: 18
+          - php: '8.2'
+            tag: '8.2-apache'
+            ext_install_args: 'zip gd mysqli pdo_mysql opcache intl'
           - php: '8.3'
             tag: '8.3-apache'
             ext_install_args: 'zip gd mysqli pdo_mysql opcache intl'
@@ -39,7 +42,7 @@ jobs:
         run: |
           echo "IMAGE_NAME=${GITHUB_REPOSITORY,,}-php" >> ${GITHUB_ENV}
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
       ## Used when creating multi-platform images
       # - name: Set up QEMU
       #   uses: docker/setup-qemu-action@v2
