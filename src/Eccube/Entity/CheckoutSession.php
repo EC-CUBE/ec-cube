@@ -360,7 +360,7 @@ if (!class_exists(CheckoutSession::class)) {
          */
         public function isExpired(\DateTime $now): bool
         {
-            return $this->expires_at !== null && $this->expires_at < $now;
+            return $this->expires_at !== null && $this->expires_at <= $now;
         }
     }
 }

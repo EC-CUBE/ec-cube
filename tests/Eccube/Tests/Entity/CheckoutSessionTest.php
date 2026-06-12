@@ -154,6 +154,9 @@ final class CheckoutSessionTest extends EccubeTestCase
 
         $session->setExpiresAt(new \DateTime('2026-06-11 12:00:01'));
         $this->assertFalse($session->isExpired($now), 'expires_at が未来なら期限切れでない');
+
+        $session->setExpiresAt(new \DateTime('2026-06-11 12:00:00'));
+        $this->assertTrue($session->isExpired($now), 'expires_at と現在時刻が同値の境界は期限切れ扱い (<=)');
     }
 
     public function testFindExpiredExcludesTerminalStatuses(): void
