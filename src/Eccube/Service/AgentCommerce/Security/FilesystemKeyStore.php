@@ -60,10 +60,20 @@ class FilesystemKeyStore implements KeyStoreInterface
             throw new \RuntimeException(sprintf('鍵格納ディレクトリ "%s" を作成できません.', $dir));
         }
 
-        if (file_put_contents($path, $pem) === false) {
-            throw new \RuntimeException(sprintf('鍵ファイル "%s" への書き込みに失敗しました.', $path));
+        // file_put_contents は umask 既定 (通常 0644) でファイルを作成してから書き込むため、
+        // chmod(0600) までの間に秘密鍵が group/other から読める瞬間が生じる。
+        // 作成時点から 0600 になるよう、書き込みの間だけ umask(0077) に切り替える。
+        $oldUmask = umask(0077);
+        try {
+            if (file_put_contents($path, $pem) === false) {
+                throw new \RuntimeException(sprintf('鍵ファイル "%s" への書き込みに失敗しました.', $path));
+            }
+            if (!chmod($path, 0600)) {
+                throw new \RuntimeException(sprintf('鍵ファイル "%s" のパーミッション設定に失敗しました.', $path));
+            }
+        } finally {
+            umask($oldUmask);
         }
-        chmod($path, 0600);
     }
 
     /**
