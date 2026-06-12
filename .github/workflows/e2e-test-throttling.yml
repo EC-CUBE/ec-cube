@@ -215,6 +215,9 @@ jobs:
           MAILER_DSN: 'smtp://127.0.0.1:1025'
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
+          # php -S はデフォルト単一プロセスで、遷移時のブラウザ並行接続(Chromium 最大6/host)が
+          # worker を枯渇させ page.goto が 60s タイムアウトするため複数 worker 化する
+          PHP_CLI_SERVER_WORKERS: '8'
         run: php -S 127.0.0.1:8000 codeception/router.php &
 
       - name: Run Playwright tests
