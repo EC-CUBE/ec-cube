@@ -171,6 +171,31 @@ final class ShoppingControllerPreferredShippingPaymentTest extends AbstractShopp
     }
 
     /**
+     * 保存情報が利用できない場合, 注文手続き画面の初期表示で警告が表示され復元ボタンは出ない.
+     */
+    public function testIndexWithUnavailablePreferredShowsWarningWithoutButton(): void
+    {
+        $Customer = $this->createCustomer();
+        $Payment = $this->findPayment(3);
+        $this->setPreferred($Customer, $Payment, $this->findDelivery(1));
+
+        // 保存済みの支払い方法を非公開にする.
+        $Payment->setVisible(false);
+        $this->entityManager->flush();
+
+        $this->scenarioCartIn($Customer);
+        $crawler = $this->scenarioConfirm($Customer);
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $preferredBox = $crawler->filter('.ec-orderPreferred');
+        $this->assertCount(1, $preferredBox);
+        $this->assertStringContainsString('保存された支払い方法が現在利用できません', $preferredBox->text());
+        // 復元ボタン・成功表示は出ない.
+        $this->assertStringNotContainsString('この設定を使用する', $preferredBox->text());
+        $this->assertStringNotContainsString('保存された設定があります', $preferredBox->text());
+    }
+
+    /**
      * 復元で保存された配送方法・支払い方法が受注へ適用され, 成功メッセージが表示される.
      */
     public function testRestorePreferred(): void
