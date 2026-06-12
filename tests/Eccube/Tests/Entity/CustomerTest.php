@@ -37,8 +37,8 @@ final class CustomerTest extends EccubeTestCase
         $Payment = new Payment();
         $Delivery = new Delivery();
 
-        $this->assertNull($Customer->getPreferredPayment());
-        $this->assertNull($Customer->getPreferredDelivery());
+        $this->assertNotInstanceOf(Payment::class, $Customer->getPreferredPayment());
+        $this->assertNotInstanceOf(Delivery::class, $Customer->getPreferredDelivery());
 
         $Customer->setPreferredPayment($Payment);
         $Customer->setPreferredDelivery($Delivery);
@@ -96,7 +96,7 @@ final class CustomerTest extends EccubeTestCase
 
         /** @var Customer $found */
         $found = $this->entityManager->getRepository(Customer::class)->find($Customer->getId());
-        $this->assertNull($found->getPreferredPayment());
-        $this->assertNull($found->getPreferredDelivery());
+        $this->assertNotInstanceOf(Payment::class, $found->getPreferredPayment());
+        $this->assertNotInstanceOf(Delivery::class, $found->getPreferredDelivery());
     }
 }

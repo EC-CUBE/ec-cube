@@ -46,12 +46,8 @@ final class ShoppingControllerValidatePreferredShippingPaymentTest extends TestC
     protected function setUp(): void
     {
         parent::setUp();
-
-        // log_info() が使用する LoggerFacade を初期化する.
-        $mockLogger = $this->createMock(Logger::class);
-        $mockContainer = $this->createMock(ContainerInterface::class);
         $this->resetLoggerFacade();
-        LoggerFacade::init($mockContainer, $mockLogger);
+        LoggerFacade::init($this->createStub(ContainerInterface::class), $this->createStub(Logger::class));
 
         $this->deliveryRepository = $this->createMock(DeliveryRepository::class);
         $this->paymentRepository = $this->createMock(PaymentRepository::class);

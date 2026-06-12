@@ -19,6 +19,7 @@ use Eccube\Entity\Customer;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\Order;
 use Eccube\Entity\Payment;
+use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -81,7 +82,7 @@ final class ShoppingControllerPreferredShippingPaymentTest extends AbstractShopp
         return $form;
     }
 
-    private function scenarioConfirmAsGuest(): \Symfony\Component\DomCrawler\Crawler
+    private function scenarioConfirmAsGuest(): Crawler
     {
         $this->scenarioCartIn();
         $this->scenarioInput($this->createNonmemberFormData());
@@ -139,10 +140,10 @@ final class ShoppingControllerPreferredShippingPaymentTest extends AbstractShopp
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         $preferredBox = $crawler->filter('.ec-orderPreferred');
         $this->assertCount(1, $preferredBox);
-        $this->assertStringContainsString('保存された設定があります', $preferredBox->text());
-        $this->assertStringContainsString($Delivery->getName(), $preferredBox->text());
-        $this->assertStringContainsString($Payment->getMethod(), $preferredBox->text());
-        $this->assertStringContainsString('この設定を使用する', $preferredBox->text());
+        $this->assertStringContainsString('保存された設定があります', (string) $preferredBox->text());
+        $this->assertStringContainsString($Delivery->getName(), (string) $preferredBox->text());
+        $this->assertStringContainsString($Payment->getMethod(), (string) $preferredBox->text());
+        $this->assertStringContainsString('この設定を使用する', (string) $preferredBox->text());
     }
 
     /**
@@ -189,10 +190,10 @@ final class ShoppingControllerPreferredShippingPaymentTest extends AbstractShopp
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         $preferredBox = $crawler->filter('.ec-orderPreferred');
         $this->assertCount(1, $preferredBox);
-        $this->assertStringContainsString('保存された支払い方法が現在利用できません', $preferredBox->text());
+        $this->assertStringContainsString('保存された支払い方法が現在利用できません', (string) $preferredBox->text());
         // 復元ボタン・成功表示は出ない.
-        $this->assertStringNotContainsString('この設定を使用する', $preferredBox->text());
-        $this->assertStringNotContainsString('保存された設定があります', $preferredBox->text());
+        $this->assertStringNotContainsString('この設定を使用する', (string) $preferredBox->text());
+        $this->assertStringNotContainsString('保存された設定があります', (string) $preferredBox->text());
     }
 
     /**
@@ -284,7 +285,7 @@ final class ShoppingControllerPreferredShippingPaymentTest extends AbstractShopp
             ['_token' => '_dummy']
         );
 
-        $this->assertSame(Response::HTTP_FORBIDDEN, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_FORBIDDEN, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 
     /**
@@ -301,9 +302,9 @@ final class ShoppingControllerPreferredShippingPaymentTest extends AbstractShopp
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         $preferredBox = $crawler->filter('.ec-orderPreferred');
         $this->assertCount(1, $preferredBox);
-        $this->assertStringContainsString('保存された設定があります', $preferredBox->text());
-        $this->assertStringContainsString('複数配送先指定時は保存設定の復元はできません', $preferredBox->text());
-        $this->assertStringNotContainsString('この設定を使用する', $preferredBox->text());
+        $this->assertStringContainsString('保存された設定があります', (string) $preferredBox->text());
+        $this->assertStringContainsString('複数配送先指定時は保存設定の復元はできません', (string) $preferredBox->text());
+        $this->assertStringNotContainsString('この設定を使用する', (string) $preferredBox->text());
     }
 
     /**
@@ -371,8 +372,8 @@ final class ShoppingControllerPreferredShippingPaymentTest extends AbstractShopp
         $this->entityManager->clear();
         /** @var Customer $found */
         $found = $this->entityManager->getRepository(Customer::class)->find($Customer->getId());
-        $this->assertNull($found->getPreferredPayment());
-        $this->assertNull($found->getPreferredDelivery());
+        $this->assertNotInstanceOf(Payment::class, $found->getPreferredPayment());
+        $this->assertNotInstanceOf(Delivery::class, $found->getPreferredDelivery());
     }
 
     /**
@@ -389,7 +390,7 @@ final class ShoppingControllerPreferredShippingPaymentTest extends AbstractShopp
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         $checkbox = $crawler->filter('input[name="_shopping_order[save_preferred_shipping_payment]"]');
         $this->assertCount(1, $checkbox);
-        $this->assertStringContainsString('この配送方法と支払い方法を保存する', $crawler->html());
+        $this->assertStringContainsString('この配送方法と支払い方法を保存する', (string) $crawler->html());
     }
 
     /**
@@ -434,8 +435,8 @@ final class ShoppingControllerPreferredShippingPaymentTest extends AbstractShopp
         $this->entityManager->clear();
         /** @var Customer $found */
         $found = $this->entityManager->getRepository(Customer::class)->find($Customer->getId());
-        $this->assertNotNull($found->getPreferredPayment());
-        $this->assertNotNull($found->getPreferredDelivery());
+        $this->assertInstanceOf(Payment::class, $found->getPreferredPayment());
+        $this->assertInstanceOf(Delivery::class, $found->getPreferredDelivery());
         // scenarioComplete は Payment=3, Delivery=1 で注文する.
         $this->assertSame(3, $found->getPreferredPayment()->getId());
         $this->assertSame(1, $found->getPreferredDelivery()->getId());
@@ -458,7 +459,7 @@ final class ShoppingControllerPreferredShippingPaymentTest extends AbstractShopp
         $this->entityManager->clear();
         /** @var Customer $found */
         $found = $this->entityManager->getRepository(Customer::class)->find($Customer->getId());
-        $this->assertNull($found->getPreferredPayment());
-        $this->assertNull($found->getPreferredDelivery());
+        $this->assertNotInstanceOf(Payment::class, $found->getPreferredPayment());
+        $this->assertNotInstanceOf(Delivery::class, $found->getPreferredDelivery());
     }
 }

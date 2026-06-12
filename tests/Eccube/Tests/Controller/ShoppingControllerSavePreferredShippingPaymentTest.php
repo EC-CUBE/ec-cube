@@ -55,7 +55,7 @@ final class ShoppingControllerSavePreferredShippingPaymentTest extends TestCase
 
         // log_info() / log_warning() / log_error() が使用する LoggerFacade を初期化する.
         $this->resetLoggerFacade();
-        LoggerFacade::init($this->createMock(ContainerInterface::class), $this->createMock(Logger::class));
+        LoggerFacade::init($this->createStub(ContainerInterface::class), $this->createStub(Logger::class));
 
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
         $this->flashBag = $this->createMock(FlashBagInterface::class);
@@ -162,12 +162,12 @@ final class ShoppingControllerSavePreferredShippingPaymentTest extends TestCase
     private function createSingleShippingOrder(): Order|MockObject
     {
         $Shipping = $this->createMock(Shipping::class);
-        $Shipping->method('getDelivery')->willReturn($this->createMock(Delivery::class));
+        $Shipping->method('getDelivery')->willReturn($this->createStub(Delivery::class));
 
         $Order = $this->createMock(Order::class);
         $Order->method('getId')->willReturn(1);
         $Order->method('getShippings')->willReturn(new ArrayCollection([$Shipping]));
-        $Order->method('getPayment')->willReturn($this->createMock(Payment::class));
+        $Order->method('getPayment')->willReturn($this->createStub(Payment::class));
 
         return $Order;
     }
