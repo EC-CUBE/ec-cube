@@ -25,8 +25,10 @@ use Eccube\Form\Type\Front\ShoppingShippingType;
 use Eccube\Form\Type\Shopping\CustomerAddressType;
 use Eccube\Form\Type\Shopping\OrderType;
 use Eccube\Repository\BaseInfoRepository;
+use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\OrderRepository;
+use Eccube\Repository\PaymentRepository;
 use Eccube\Repository\TradeLawRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\MailService;
@@ -43,6 +45,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
@@ -51,7 +54,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class ShoppingController extends AbstractShoppingController
 {
-    public function __construct(protected CartService $cartService, protected MailService $mailService, protected OrderRepository $orderRepository, protected OrderHelper $orderHelper, protected ContainerInterface $serviceContainer, protected TradeLawRepository $tradeLawRepository, protected RateLimiterFactoryInterface $shoppingConfirmIpLimiter, protected RateLimiterFactoryInterface $shoppingConfirmCustomerLimiter, protected RateLimiterFactoryInterface $shoppingCheckoutIpLimiter, protected RateLimiterFactoryInterface $shoppingCheckoutCustomerLimiter, protected BaseInfoRepository $baseInfoRepository, protected PrefRepository $prefRepository, private readonly PurchaseFlow $cartPurchaseFlow, private readonly AuthenticationUtils $authenticationUtils)
+    public function __construct(protected CartService $cartService, protected MailService $mailService, protected OrderRepository $orderRepository, protected OrderHelper $orderHelper, protected ContainerInterface $serviceContainer, protected TradeLawRepository $tradeLawRepository, protected RateLimiterFactoryInterface $shoppingConfirmIpLimiter, protected RateLimiterFactoryInterface $shoppingConfirmCustomerLimiter, protected RateLimiterFactoryInterface $shoppingCheckoutIpLimiter, protected RateLimiterFactoryInterface $shoppingCheckoutCustomerLimiter, protected BaseInfoRepository $baseInfoRepository, protected PrefRepository $prefRepository, protected DeliveryRepository $deliveryRepository, protected PaymentRepository $paymentRepository, private readonly PurchaseFlow $cartPurchaseFlow, private readonly AuthenticationUtils $authenticationUtils)
     {
     }
 
@@ -117,11 +120,20 @@ class ShoppingController extends AbstractShoppingController
         $activeTradeLaws = $this->tradeLawRepository->findBy(['displayOrderScreen' => true], ['sortNo' => 'ASC']);
         $form = $this->createForm(OrderType::class, $Order);
 
+        // 保存された配送方法・支払い方法の検証(会員IDがない場合は何も表示しない).
+        $preferredInfo = $this->validatePreferredShippingPayment($Customer, $Order, '[注文手続][保存情報検証]');
+
         return [
             'form' => $form->createView(),
             'Order' => $Order,
             'activeTradeLaws' => $activeTradeLaws,
             'Prefs' => $this->prefRepository->findAll(),
+            'preferredPaymentId' => $preferredInfo['preferredPaymentId'],
+            'preferredPaymentName' => $preferredInfo['preferredPaymentName'],
+            'preferredDeliveryId' => $preferredInfo['preferredDeliveryId'],
+            'preferredDeliveryName' => $preferredInfo['preferredDeliveryName'],
+            'isMultipleShipping' => $preferredInfo['isMultipleShipping'],
+            'preferredUnavailableReason' => $preferredInfo['preferredUnavailableReason'],
         ];
     }
 
@@ -205,12 +217,115 @@ class ShoppingController extends AbstractShoppingController
 
         log_info('[リダイレクト] フォームエラーのため, 注文手続き画面を表示します.', [$Order->getId()]);
 
+        // 保存された配送方法・支払い方法の検証(非会員の場合は検証しない).
+        $Customer = $this->getUser();
+        if ($Customer instanceof Customer) {
+            $preferredInfo = $this->validatePreferredShippingPayment($Customer, $Order, '[リダイレクト][保存情報検証]');
+        } else {
+            $preferredInfo = [
+                'preferredPaymentId' => null,
+                'preferredPaymentName' => null,
+                'preferredDeliveryId' => null,
+                'preferredDeliveryName' => null,
+                'isMultipleShipping' => $Order->getShippings()->count() > 1,
+                'preferredUnavailableReason' => null,
+            ];
+        }
+
         return [
             'form' => $form->createView(),
             'Order' => $Order,
             'activeTradeLaws' => $activeTradeLaws,
             'Prefs' => $this->prefRepository->findAll(),
+            'preferredPaymentId' => $preferredInfo['preferredPaymentId'],
+            'preferredPaymentName' => $preferredInfo['preferredPaymentName'],
+            'preferredDeliveryId' => $preferredInfo['preferredDeliveryId'],
+            'preferredDeliveryName' => $preferredInfo['preferredDeliveryName'],
+            'isMultipleShipping' => $preferredInfo['isMultipleShipping'],
+            'preferredUnavailableReason' => $preferredInfo['preferredUnavailableReason'],
         ];
+    }
+
+    /**
+     * 保存された配送方法・支払い方法を受注へ適用する.
+     *
+     * 会員が保存した優先配送方法・優先支払方法を購入処理中の受注へ適用し, 合計金額を再計算する.
+     * 複数配送先の場合や保存情報が利用できない場合は適用せず, 警告メッセージを表示して注文手続き画面へ戻す.
+     */
+    #[Route(path: '/shopping/restore_preferred', name: 'shopping_restore_preferred', methods: ['POST'])]
+    public function restorePreferred(): RedirectResponse
+    {
+        // ログイン状態のチェック.
+        if ($this->orderHelper->isLoginRequired()) {
+            log_info('[保存設定復元] 未ログインもしくはRememberMeログインのため, ログイン画面に遷移します.');
+
+            return $this->redirectToRoute('shopping_login');
+        }
+
+        // 復元は会員のみ利用可能.
+        $Customer = $this->getUser();
+        if (!$Customer instanceof Customer) {
+            log_info('[保存設定復元] 非会員のため復元できません.');
+
+            throw new AccessDeniedHttpException();
+        }
+
+        $this->isTokenValid();
+
+        // 受注の存在チェック.
+        $preOrderId = $this->cartService->getPreOrderId();
+        $Order = $this->orderHelper->getPurchaseProcessingOrder($preOrderId);
+        if (!$Order) {
+            log_info('[保存設定復元] 購入処理中の受注が存在しません.', [$preOrderId]);
+
+            return $this->redirectToRoute('shopping_error');
+        }
+
+        // 複数配送先の場合は復元しない.
+        if ($Order->getShippings()->count() > 1) {
+            log_info('[保存設定復元] 複数配送先のため復元をスキップします.', [$Order->getId()]);
+            $this->addWarning('front.shopping.preferred_multiple_shipping_notice');
+
+            return $this->redirectToRoute('shopping');
+        }
+
+        // 保存情報の検証.
+        $preferredInfo = $this->validatePreferredShippingPayment($Customer, $Order, '[保存設定復元][保存情報検証]');
+        if ($preferredInfo['preferredUnavailableReason'] !== null) {
+            log_info('[保存設定復元] 保存情報が利用できないため復元をスキップします.', [$preferredInfo['preferredUnavailableReason']]);
+            $this->addWarning($preferredInfo['preferredUnavailableReason']);
+
+            return $this->redirectToRoute('shopping');
+        }
+        if ($preferredInfo['preferredPaymentId'] === null || $preferredInfo['preferredDeliveryId'] === null) {
+            log_info('[保存設定復元] 保存情報が存在しないため復元をスキップします.');
+
+            return $this->redirectToRoute('shopping');
+        }
+
+        // 保存値を受注へ適用する.
+        $Payment = $Customer->getPreferredPayment();
+        $Delivery = $Customer->getPreferredDelivery();
+        $Order->setPayment($Payment);
+        $Order->setPaymentMethod($Payment->getMethod());
+        foreach ($Order->getShippings() as $Shipping) {
+            $Shipping->setDelivery($Delivery);
+            $Shipping->setShippingDeliveryName($Delivery->getName());
+        }
+
+        // 合計金額の再計算.
+        log_info('[保存設定復元] 集計処理を開始します.', [$Order->getId()]);
+        $response = $this->executePurchaseFlow($Order);
+        $this->entityManager->flush();
+
+        if ($response) {
+            return $response;
+        }
+
+        log_info('[保存設定復元] 保存された設定を適用しました.', [$Order->getId()]);
+        $this->addSuccess('front.shopping.preferred_restored_success');
+
+        return $this->redirectToRoute('shopping');
     }
 
     /**
@@ -308,6 +423,7 @@ class ShoppingController extends AbstractShoppingController
                 'form' => $form->createView(),
                 'Order' => $Order,
                 'activeTradeLaws' => $activeTradeLaws,
+                'isMultipleShipping' => $Order->getShippings()->count() > 1,
             ];
         }
 
@@ -477,6 +593,9 @@ class ShoppingController extends AbstractShoppingController
             log_info('[注文処理] 注文メールの送信を行います.', [$Order->getId()]);
             $this->mailService->sendOrderMail($Order);
             $this->entityManager->flush();
+
+            // 配送方法・支払い方法の保存処理(会員かつ単一配送先のみ. 失敗しても注文は継続する).
+            $this->savePreferredShippingPayment($Order, $form);
 
             log_info('[注文処理] 注文処理が完了しました. 購入完了画面へ遷移します.', [$Order->getId()]);
 
@@ -815,6 +934,155 @@ class ShoppingController extends AbstractShoppingController
         }
 
         return [];
+    }
+
+    /**
+     * 注文確定時に配送方法・支払い方法を会員へ保存する.
+     *
+     * 会員かつ単一配送先で, 保存チェックボックスがONの場合のみ保存する.
+     * 保存処理で例外が発生しても注文は継続し, 注文完了画面で保存失敗メッセージを表示する.
+     */
+    private function savePreferredShippingPayment(Order $Order, FormInterface $form): void
+    {
+        $Customer = $this->getUser();
+        if (!$Customer instanceof Customer) {
+            return;
+        }
+
+        // 複数配送先の場合は保存しない.
+        if ($Order->getShippings()->count() > 1) {
+            log_info('[注文処理] 複数配送先のため, 配送方法・支払い方法の保存をスキップします.', [$Order->getId()]);
+
+            return;
+        }
+
+        if (!$form->has('save_preferred_shipping_payment') || !$form->get('save_preferred_shipping_payment')->getData()) {
+            return;
+        }
+
+        try {
+            log_info('[注文処理] 配送方法・支払い方法の保存を開始します.', [$Order->getId()]);
+
+            $Payment = $Order->getPayment();
+            $Shipping = $Order->getShippings()->first();
+            $Delivery = $Shipping ? $Shipping->getDelivery() : null;
+
+            if (!$Payment || !$Delivery) {
+                log_warning('[注文処理] 支払い方法または配送方法が取得できないため, 保存をスキップします.', [$Order->getId()]);
+
+                return;
+            }
+
+            $Customer->setPreferredPayment($Payment);
+            $Customer->setPreferredDelivery($Delivery);
+            $this->entityManager->flush();
+
+            log_info('[注文処理] 配送方法・支払い方法の保存が完了しました.', [$Order->getId()]);
+        } catch (\Exception $e) {
+            // 保存失敗で注文は失敗させない.
+            log_error('[注文処理] 配送方法・支払い方法の保存に失敗しました.', [$e->getMessage()]);
+            $this->session->getFlashBag()->add('preferred_save_error', 'front.shopping.preferred_save_failed');
+        }
+    }
+
+    /**
+     * 会員の保存済み配送方法・支払い方法を検証する.
+     *
+     * 表示(index/redirectTo)と復元(restorePreferred)で共用する.
+     * すべての検証をパスした場合のみ名称・IDを設定し, 利用できない場合は理由のメッセージキーを返す.
+     *
+     * @return array{preferredPaymentId: int|null, preferredPaymentName: string|null, preferredDeliveryId: int|null, preferredDeliveryName: string|null, isMultipleShipping: bool, preferredUnavailableReason: string|null}
+     */
+    private function validatePreferredShippingPayment(Customer $Customer, Order $Order, string $logPrefix = '[保存情報検証]'): array
+    {
+        $result = [
+            'preferredPaymentId' => null,
+            'preferredPaymentName' => null,
+            'preferredDeliveryId' => null,
+            'preferredDeliveryName' => null,
+            'isMultipleShipping' => $Order->getShippings()->count() > 1,
+            'preferredUnavailableReason' => null,
+        ];
+
+        // 会員IDがない場合(非会員)は対象外.
+        if (!$Customer->getId()) {
+            return $result;
+        }
+
+        $PreferredPayment = $Customer->getPreferredPayment();
+        $PreferredDelivery = $Customer->getPreferredDelivery();
+
+        if (!$PreferredPayment && !$PreferredDelivery) {
+            log_info($logPrefix.' 保存情報が存在しません.', [$Customer->getId()]);
+
+            return $result;
+        }
+
+        // 片方のみ保存されている場合(参照先削除によるSET NULL等)は, 欠けている方を利用不可とする.
+        if (!$PreferredDelivery) {
+            $result['preferredUnavailableReason'] = 'front.shopping.preferred_delivery_unavailable';
+
+            return $result;
+        }
+        if (!$PreferredPayment) {
+            $result['preferredUnavailableReason'] = 'front.shopping.preferred_payment_unavailable';
+
+            return $result;
+        }
+
+        // 非公開チェック.
+        if (!$PreferredPayment->isVisible()) {
+            log_info($logPrefix.' 保存された支払い方法が非公開です.', [$PreferredPayment->getId()]);
+            $result['preferredUnavailableReason'] = 'front.shopping.preferred_payment_unavailable';
+
+            return $result;
+        }
+        if (!$PreferredDelivery->isVisible()) {
+            log_info($logPrefix.' 保存された配送方法が非公開です.', [$PreferredDelivery->getId()]);
+            $result['preferredUnavailableReason'] = 'front.shopping.preferred_delivery_unavailable';
+
+            return $result;
+        }
+
+        // 受注の販売種別に対応する配送方法に, 保存された配送方法が含まれるかチェック.
+        $availableDeliveries = $this->deliveryRepository->getDeliveries($Order->getSaleTypes());
+        $matchedDelivery = null;
+        foreach ($availableDeliveries as $Delivery) {
+            if ($Delivery->getId() === $PreferredDelivery->getId()) {
+                $matchedDelivery = $Delivery;
+                break;
+            }
+        }
+        if (!$matchedDelivery) {
+            log_info($logPrefix.' 保存された配送方法が販売種別に対応していません.', [$PreferredDelivery->getId()]);
+            $result['preferredUnavailableReason'] = 'front.shopping.preferred_incompatible_combination';
+
+            return $result;
+        }
+
+        // 保存された配送方法で利用可能な支払い方法に, 保存された支払い方法が含まれるかチェック.
+        $allowedPayments = $this->paymentRepository->findAllowedPayments([$matchedDelivery], true);
+        $allowedPaymentIds = [];
+        foreach ($allowedPayments as $Payment) {
+            if ($Payment->isVisible()) {
+                $allowedPaymentIds[] = $Payment->getId();
+            }
+        }
+        if (!in_array($PreferredPayment->getId(), $allowedPaymentIds, true)) {
+            log_info($logPrefix.' 保存された配送方法と支払い方法の組み合わせが利用できません.', [$PreferredDelivery->getId(), $PreferredPayment->getId()]);
+            $result['preferredUnavailableReason'] = 'front.shopping.preferred_incompatible_combination';
+
+            return $result;
+        }
+
+        // すべての検証をパスした場合のみ名称・IDを設定する.
+        $result['preferredPaymentId'] = $PreferredPayment->getId();
+        $result['preferredPaymentName'] = $PreferredPayment->getMethod();
+        $result['preferredDeliveryId'] = $PreferredDelivery->getId();
+        $result['preferredDeliveryName'] = $PreferredDelivery->getName();
+        log_info($logPrefix.' 検証をパスしました. 復元可能です.', [$PreferredDelivery->getId(), $PreferredPayment->getId()]);
+
+        return $result;
     }
 
     /**
