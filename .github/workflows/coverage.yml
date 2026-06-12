@@ -20,20 +20,24 @@ jobs:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
             database_server_version: 18
-    services:
-      postgres:
-        image: postgres:18
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
-        ports:
-          - 5432:5432
-        # needed because the postgres container does not provide a healthcheck
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-
     steps:
       - name: Checkout
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
+
+      ## Docker Hub からの pull はタイムアウトで CI が不安定になるため、
+      ## DB はコンテナではなく setup アクション (apt) でインストールする
+      - name: Setup PostgreSQL
+        uses: ankane/setup-postgres@6d3ffa1aa7498a42b79e9f9f5838b99971839300  # v1
+        with:
+          postgres-version: '18'
+          user: postgres
+      - name: Configure PostgreSQL
+        run: |
+          for _ in $(seq 1 30); do pg_isready -h 127.0.0.1 && break; sleep 1; done
+          pg_isready -h 127.0.0.1 || { echo 'PostgreSQL did not become ready within 30s'; exit 1; }
+          psql -h 127.0.0.1 -U postgres -c "ALTER USER postgres PASSWORD 'password'"
+          ## DATABASE_URL と同一経路 (TCP/postgres/password) で接続できることを検証
+          PGPASSWORD=password psql -h 127.0.0.1 -U postgres -c 'SELECT VERSION()'
 
       - name: Setup PHP
         uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc  # v2
@@ -122,16 +126,6 @@ jobs:
           - group: installer
             app_env: 'install'
     services:
-      postgres:
-        image: postgres:18
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
-        ports:
-          - 5432:5432
-        # needed because the postgres container does not provide a healthcheck
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-
       mailcatcher:
         image: schickling/mailcatcher
         ports:
@@ -141,6 +135,21 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
+
+      ## Docker Hub からの pull はタイムアウトで CI が不安定になるため、
+      ## DB はコンテナではなく setup アクション (apt) でインストールする
+      - name: Setup PostgreSQL
+        uses: ankane/setup-postgres@6d3ffa1aa7498a42b79e9f9f5838b99971839300  # v1
+        with:
+          postgres-version: '18'
+          user: postgres
+      - name: Configure PostgreSQL
+        run: |
+          for _ in $(seq 1 30); do pg_isready -h 127.0.0.1 && break; sleep 1; done
+          pg_isready -h 127.0.0.1 || { echo 'PostgreSQL did not become ready within 30s'; exit 1; }
+          psql -h 127.0.0.1 -U postgres -c "ALTER USER postgres PASSWORD 'password'"
+          ## DATABASE_URL と同一経路 (TCP/postgres/password) で接続できることを検証
+          PGPASSWORD=password psql -h 127.0.0.1 -U postgres -c 'SELECT VERSION()'
 
       - name: Setup PHP
         uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc  # v2
@@ -289,6 +298,9 @@ jobs:
           files: ./reports/phpunit-reports/coverage1.xml
           flags: Unit
           fail_ci_if_error: true
+          # cli.codecov.io のバイナリは GPG 公開鍵を取得できず署名検証が
+          # "No public key" で失敗するため、PyPI 版 CLI を使い検証経路を回避する
+          use_pypi: true
         env:
             CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       # E2E coverage is disabled while codeception job is disabled
