@@ -30,6 +30,9 @@ jobs:
           - front-product
           - front-customer
           - front-other
+          - front-order
+          - front-mypage
+          - front-invoice
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
