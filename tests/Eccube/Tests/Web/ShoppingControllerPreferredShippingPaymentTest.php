@@ -91,6 +91,39 @@ final class ShoppingControllerPreferredShippingPaymentTest extends AbstractShopp
     }
 
     /**
+     * 数量2の商品を2つのお届け先に分割し, 複数配送先の受注を作成する.
+     */
+    private function createMultiShippingOrder(Customer $Customer): Order
+    {
+        $Customer->addCustomerAddress($this->createCustomerAddress($Customer));
+
+        $this->scenarioCartIn($Customer);
+        $this->scenarioCartIn($Customer);
+        $this->scenarioConfirm($Customer);
+
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('shopping_shipping_multiple'));
+        $shippings = $crawler->filter('#form_shipping_multiple_0_shipping_0_customer_address > option')->each(
+            fn ($node, $i) => [
+                'customer_address' => $node->attr('value'),
+                'quantity' => 1,
+            ]
+        );
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('shopping_shipping_multiple'),
+            ['form' => [
+                'shipping_multiple' => [0 => ['shipping' => $shippings]],
+                '_token' => 'dummy',
+            ]]
+        );
+
+        $Order = $this->findProcessingOrder($Customer);
+        $this->assertCount(2, $Order->getShippings());
+
+        return $Order;
+    }
+
+    /**
      * 保存情報がある会員は注文手続き画面に情報ボックスと復元ボタンが表示される.
      */
     public function testIndexWithPreferredShowsInfoBox(): void
@@ -227,6 +260,94 @@ final class ShoppingControllerPreferredShippingPaymentTest extends AbstractShopp
         );
 
         $this->assertSame(Response::HTTP_FORBIDDEN, $this->client->getResponse()->getStatusCode());
+    }
+
+    /**
+     * 複数配送先の場合, 情報ボックスと注記は表示されるが復元ボタンは表示されない.
+     */
+    public function testIndexWithMultipleShippingShowsInfoBoxWithoutButton(): void
+    {
+        $Customer = $this->createCustomer();
+        $this->setPreferred($Customer, $this->findPayment(3), $this->findDelivery(1));
+        $this->createMultiShippingOrder($Customer);
+
+        $crawler = $this->scenarioConfirm($Customer);
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $preferredBox = $crawler->filter('.ec-orderPreferred');
+        $this->assertCount(1, $preferredBox);
+        $this->assertStringContainsString('保存された設定があります', $preferredBox->text());
+        $this->assertStringContainsString('複数配送先指定時は保存設定の復元はできません', $preferredBox->text());
+        $this->assertStringNotContainsString('この設定を使用する', $preferredBox->text());
+    }
+
+    /**
+     * 複数配送先の場合, 復元処理はスキップされ注記メッセージが表示される.
+     */
+    public function testRestorePreferredWithMultipleShippingSkips(): void
+    {
+        $Customer = $this->createCustomer();
+        $this->setPreferred($Customer, $this->findPayment(3), $this->findDelivery(1));
+        $Order = $this->createMultiShippingOrder($Customer);
+
+        $this->scenarioConfirm($Customer);
+        $this->entityManager->refresh($Order);
+        $beforePaymentId = $Order->getPayment()->getId();
+
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('shopping_restore_preferred'),
+            ['_token' => '_dummy']
+        );
+
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
+
+        $this->entityManager->refresh($Order);
+        $this->assertSame($beforePaymentId, $Order->getPayment()->getId());
+
+        $crawler = $this->client->followRedirect();
+        $this->assertStringContainsString('複数配送先指定時は保存設定の復元はできません', $crawler->html());
+    }
+
+    /**
+     * 複数配送先の場合, 確認画面にチェックボックスは表示されず,
+     * チェックボックス値を細工して送信しても注文は完了し保存はスキップされる.
+     */
+    public function testCheckoutWithMultipleShippingSkipsSave(): void
+    {
+        $Customer = $this->createCustomer();
+        $this->createMultiShippingOrder($Customer);
+        $this->scenarioConfirm($Customer);
+
+        // 確認画面: チェックボックスが表示されない.
+        $crawler = $this->scenarioComplete($Customer, $this->generateUrl('shopping_confirm'), [
+            ['Delivery' => 1, 'DeliveryTime' => 1],
+            ['Delivery' => 1, 'DeliveryTime' => 1],
+        ]);
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertCount(0, $crawler->filter('input[name="_shopping_order[save_preferred_shipping_payment]"]'));
+
+        // チェックボックス値を細工して送信しても注文は完了する.
+        $this->loginTo($Customer);
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('shopping_checkout'),
+            [
+                '_shopping_order' => [
+                    '_token' => 'dummy',
+                    'save_preferred_shipping_payment' => '1',
+                ],
+            ]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_complete')));
+
+        // 保存はスキップされる.
+        $this->entityManager->clear();
+        /** @var Customer $found */
+        $found = $this->entityManager->getRepository(Customer::class)->find($Customer->getId());
+        $this->assertNull($found->getPreferredPayment());
+        $this->assertNull($found->getPreferredDelivery());
     }
 
     /**

@@ -56,25 +56,15 @@ class OrderType extends AbstractType
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        // 配送方法・支払い方法の保存チェックボックス(会員かつ単一配送先のみ).
+        // 配送方法・支払い方法の保存チェックボックス(会員のみ).
         // 注文確認画面からの送信(checkout)時にも値を受け取るため, skip_add_formの判定より前に定義する.
+        // 表示は単一配送先のみ(テンプレート側で制御), 複数配送先時の送信値は注文確定処理で無視される.
         if ($this->requestContext->getCurrentUser() instanceof Customer) {
-            $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
-                /** @var Order|null $Order */
-                $Order = $event->getData();
-                if (null === $Order || !$Order->getId()) {
-                    return;
-                }
-                // 複数配送先の場合は表示しない.
-                if ($Order->getShippings()->count() > 1) {
-                    return;
-                }
-                $event->getForm()->add('save_preferred_shipping_payment', CheckboxType::class, [
-                    'label' => 'front.shopping.save_preferred_shipping_payment',
-                    'required' => false,
-                    'mapped' => false,
-                ]);
-            });
+            $builder->add('save_preferred_shipping_payment', CheckboxType::class, [
+                'label' => 'front.shopping.save_preferred_shipping_payment',
+                'required' => false,
+                'mapped' => false,
+            ]);
         }
 
         // ShoppingController::checkoutから呼ばれる場合は, フォーム項目の定義をスキップする.
