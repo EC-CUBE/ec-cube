@@ -85,14 +85,15 @@ class LoginHistoryListener implements EventSubscriberInterface
             return;
         }
 
-        $Member = null;
-        $userName = null;
+        // Bearer/AccessToken 系認証で passport 生成前に失敗した場合は null になる.
+        // UserBadge を持たない場合もユーザーを特定できないため、ログイン履歴の記録対象外とする.
         $passport = $event->getPassport();
-        if ($passport->hasBadge(UserBadge::class) && $passport->getBadge(UserBadge::class) instanceof UserBadge) {
-            $userName = $passport->getBadge(UserBadge::class)
-                ->getUserIdentifier();
-            $Member = $this->memberRepository->findOneBy(['login_id' => $userName]);
+        if ($passport === null || !$passport->hasBadge(UserBadge::class)) {
+            return;
         }
+
+        $userName = $passport->getBadge(UserBadge::class)->getUserIdentifier();
+        $Member = $this->memberRepository->findOneBy(['login_id' => $userName]);
 
         $LoginHistory = new LoginHistory();
         $LoginHistory
