@@ -218,7 +218,9 @@ jobs:
 
       - name: Setup mock-package-api
         run: |
-          tar cvzf "$GITHUB_WORKSPACE/Api44.tar.gz" -C eccube-api4 ./
+          # eccube-api4 自身の CI と同じ形式で固める (.git/.github 等の dotfiles を除外し ./* で固める)。
+          # .git を含めると composer の dist 展開が失敗する (Install of ec-cube/api44 failed)。
+          ( cd eccube-api4 && tar cvzf "$GITHUB_WORKSPACE/Api44.tar.gz" ./* )
           mkdir -p /tmp/repos
           cp "$GITHUB_WORKSPACE/Api44.tar.gz" /tmp/repos/Api44.tgz
           docker run --name package-api -d -v /tmp/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
