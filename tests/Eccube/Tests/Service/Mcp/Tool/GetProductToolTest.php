@@ -17,10 +17,12 @@ namespace Eccube\Tests\Service\Mcp\Tool;
 
 use Eccube\Service\Mcp\Tool\GetProductTool;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * `GetProductTool` の DB 結合テスト。 商品 ID / 商品コードによる取得と、 不在時の挙動を検証する。
  */
+#[Group('mcp')]
 final class GetProductToolTest extends EccubeTestCase
 {
     private ?GetProductTool $tool = null;

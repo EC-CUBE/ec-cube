@@ -17,10 +17,12 @@ namespace Eccube\Tests\Service\Mcp\Tool;
 
 use Eccube\Service\Mcp\Tool\GetPluginTool;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * `GetPluginTool` の DB 結合テスト。 Api44 を題材に composer.json マージまで確認する。
  */
+#[Group('mcp')]
 final class GetPluginToolTest extends EccubeTestCase
 {
     private ?GetPluginTool $tool = null;

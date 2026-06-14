@@ -21,12 +21,14 @@ use Eccube\Entity\Order;
 use Eccube\Service\Mcp\Tool\SearchOrdersTool;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Tests\Fixture\Generator;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * `SearchOrdersTool` の DB 結合テスト。
  *
  * scope 不在で AccessDenied、 scope 付与で allow_list ベース出力、 customerId 絞り込みを検証。
  */
+#[Group('mcp')]
 final class SearchOrdersToolTest extends EccubeTestCase
 {
     private ?SearchOrdersTool $tool = null;

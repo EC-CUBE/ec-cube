@@ -18,10 +18,12 @@ namespace Eccube\Tests\Service\Mcp\Tool;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Service\Mcp\Tool\SearchCustomersTool;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * `SearchCustomersTool` の DB 結合テスト。 scope / 検索 / status 絞り込み / allow_list を検証。
  */
+#[Group('mcp')]
 final class SearchCustomersToolTest extends EccubeTestCase
 {
     private ?SearchCustomersTool $tool = null;

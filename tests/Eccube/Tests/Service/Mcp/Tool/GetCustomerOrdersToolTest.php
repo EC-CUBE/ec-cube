@@ -17,10 +17,12 @@ namespace Eccube\Tests\Service\Mcp\Tool;
 
 use Eccube\Service\Mcp\Tool\GetCustomerOrdersTool;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * `GetCustomerOrdersTool` の DB 結合テスト。
  */
+#[Group('mcp')]
 final class GetCustomerOrdersToolTest extends EccubeTestCase
 {
     private ?GetCustomerOrdersTool $tool = null;

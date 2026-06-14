@@ -19,6 +19,7 @@ use Eccube\Entity\Plugin;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\Mcp\McpScope;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Bundle\SecurityBundle\Security\FirewallConfig;
 use Symfony\Bundle\SecurityBundle\Security\FirewallMap;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,6 +35,7 @@ use Symfony\Component\HttpFoundation\Request;
  * 定数) が確実に container に登録されている」 こと、 つまり **AC #7 の前半 (有効化で動く)** を半契約として
  * 担保する。 後半「無効化で消える」 は手動確認 (release checklist) で代替する。
  */
+#[Group('mcp')]
 final class Api44LifecycleContractTest extends EccubeTestCase
 {
     private ?PluginRepository $pluginRepository = null;

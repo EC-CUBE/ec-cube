@@ -17,6 +17,7 @@ namespace Eccube\Tests\Service\Mcp\Tool;
 
 use Eccube\Service\Mcp\Tool\SearchProductsTool;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * `SearchProductsTool` の DB 結合テスト。
@@ -24,6 +25,7 @@ use Eccube\Tests\EccubeTestCase;
  * Tool を container 経由で取得し、 scope の有無による拒否 / 許可と、 allow_list 経由出力を検証する。
  * Api44 が install + enable されている前提 (`core.api.allow_list` が container に居る)。
  */
+#[Group('mcp')]
 final class SearchProductsToolTest extends EccubeTestCase
 {
     private ?SearchProductsTool $tool = null;

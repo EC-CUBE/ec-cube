@@ -17,10 +17,12 @@ namespace Eccube\Tests\Service\Mcp\Tool;
 
 use Eccube\Service\Mcp\Tool\GetProductStockTool;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * `GetProductStockTool` の DB 結合テスト。 規格あり / 規格なし / 在庫無制限 / 不在の各経路を検証する。
  */
+#[Group('mcp')]
 final class GetProductStockToolTest extends EccubeTestCase
 {
     private ?GetProductStockTool $tool = null;

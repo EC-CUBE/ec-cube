@@ -22,6 +22,7 @@ use Eccube\Entity\Product;
 use Eccube\Service\Mcp\AllowListResolver;
 use Eccube\Service\Mcp\EntityArraySerializer;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * 受入基準 §8 #3 「Tool の出力フィールドが api44 の allow_list と一致する (未列挙フィールドが漏れない)」
@@ -34,6 +35,7 @@ use Eccube\Tests\EccubeTestCase;
  *
  * allow_list が空 (Api44 未 install 時) でも全プロパティ非公開という安全側に倒れる挙動も含めて検証。
  */
+#[Group('mcp')]
 final class AllowListContractTest extends EccubeTestCase
 {
     private ?AllowListResolver $resolver = null;

@@ -17,10 +17,12 @@ namespace Eccube\Tests\Service\Mcp\Tool;
 
 use Eccube\Service\Mcp\Tool\GetShippingTool;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * `GetShippingTool` の DB 結合テスト。 Order に紐づく Shipping 一覧の返却と不在時の挙動を検証する。
  */
+#[Group('mcp')]
 final class GetShippingToolTest extends EccubeTestCase
 {
     private ?GetShippingTool $tool = null;

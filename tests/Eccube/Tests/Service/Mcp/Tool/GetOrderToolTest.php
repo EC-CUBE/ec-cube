@@ -17,10 +17,12 @@ namespace Eccube\Tests\Service\Mcp\Tool;
 
 use Eccube\Service\Mcp\Tool\GetOrderTool;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * `GetOrderTool` の DB 結合テスト。 ID / 注文番号取得と不在時の挙動を検証する。
  */
+#[Group('mcp')]
 final class GetOrderToolTest extends EccubeTestCase
 {
     private ?GetOrderTool $tool = null;

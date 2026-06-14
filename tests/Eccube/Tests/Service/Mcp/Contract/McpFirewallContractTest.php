@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace Eccube\Tests\Service\Mcp\Contract;
 
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -34,6 +35,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * Api44 install + enable 状態が前提 (テスト DB に Api44 が登録済み)。
  */
+#[Group('mcp')]
 final class McpFirewallContractTest extends EccubeTestCase
 {
     public function testReturns401WithoutBearerHeader(): void

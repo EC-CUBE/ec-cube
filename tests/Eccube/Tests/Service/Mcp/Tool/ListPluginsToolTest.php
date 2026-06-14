@@ -17,11 +17,13 @@ namespace Eccube\Tests\Service\Mcp\Tool;
 
 use Eccube\Service\Mcp\Tool\ListPluginsTool;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * `ListPluginsTool` の DB 結合テスト。 Api44 自身が install + enabled されている前提のため、
  * 最低 1 件 (Api44) が一覧に出ることを期待する。
  */
+#[Group('mcp')]
 final class ListPluginsToolTest extends EccubeTestCase
 {
     private ?ListPluginsTool $tool = null;

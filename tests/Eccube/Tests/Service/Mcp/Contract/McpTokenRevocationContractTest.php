@@ -29,6 +29,7 @@ use League\Bundle\OAuth2ServerBundle\Model\ClientInterface;
 use League\Bundle\OAuth2ServerBundle\ValueObject\Grant;
 use League\Bundle\OAuth2ServerBundle\ValueObject\Scope as ScopeValue;
 use League\OAuth2\Server\CryptKey;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -45,6 +46,7 @@ use Symfony\Component\HttpFoundation\Response;
  * これにより league の `isAccessTokenRevoked` 経路と MemberProvider 経路がそれぞれ独立して fail-fast
  * することを担保する。
  */
+#[Group('mcp')]
 final class McpTokenRevocationContractTest extends EccubeTestCase
 {
     private const TEST_CLIENT_ID = 'mcp-revocation-test-client';
@@ -55,11 +57,6 @@ final class McpTokenRevocationContractTest extends EccubeTestCase
 
     protected function setUp(): void
     {
-        // 実 JWT 発行と firewall を要する結合テスト。 Api44 (league/oauth2-server-bundle) 未導入の
-        // 環境では league クラスが autoload できず fatal になるため、 存在しなければスキップする。
-        if (!interface_exists(ClientManagerInterface::class)) {
-            $this->markTestSkipped('Api44 (league/oauth2-server-bundle) がインストールされていません');
-        }
         parent::setUp();
         $this->clientManager = static::getContainer()->get(ClientManagerInterface::class);
         $this->accessTokenManager = static::getContainer()->get(AccessTokenManagerInterface::class);

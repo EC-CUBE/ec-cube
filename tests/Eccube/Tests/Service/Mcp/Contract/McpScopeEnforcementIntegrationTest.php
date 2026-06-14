@@ -27,6 +27,7 @@ use League\Bundle\OAuth2ServerBundle\Model\ClientInterface;
 use League\Bundle\OAuth2ServerBundle\ValueObject\Grant;
 use League\Bundle\OAuth2ServerBundle\ValueObject\Scope as ScopeValue;
 use League\OAuth2\Server\CryptKey;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -38,6 +39,7 @@ use Symfony\Component\HttpFoundation\Response;
  * scope 付き JWT を自前発行し、 initialize → notifications/initialized → tools/call の handshake を
  * 実カーネルに流して、 scope 充足は result、 不足は isError:true を確認する。
  */
+#[Group('mcp')]
 final class McpScopeEnforcementIntegrationTest extends EccubeTestCase
 {
     private const TEST_CLIENT_ID = 'mcp-scope-it-client';
@@ -47,11 +49,6 @@ final class McpScopeEnforcementIntegrationTest extends EccubeTestCase
 
     protected function setUp(): void
     {
-        // 実 JWT 発行と firewall を要する結合テスト。 Api44 (league/oauth2-server-bundle) 未導入の
-        // 環境では league クラスが autoload できず fatal になるため、 存在しなければスキップする。
-        if (!interface_exists(ClientManagerInterface::class)) {
-            $this->markTestSkipped('Api44 (league/oauth2-server-bundle) がインストールされていません');
-        }
         parent::setUp();
         $this->clientManager = static::getContainer()->get(ClientManagerInterface::class);
         $this->accessTokenManager = static::getContainer()->get(AccessTokenManagerInterface::class);
