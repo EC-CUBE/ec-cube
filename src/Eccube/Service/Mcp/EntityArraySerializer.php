@@ -147,7 +147,12 @@ final readonly class EntityArraySerializer
      */
     private function summarize(object $entity): array
     {
-        if (method_exists($entity, 'getId')) {
+        // 要約経路でも「allow_list のみ公開」を崩さない。 id が許可されていない関連 Entity の
+        // 内部 ID を、 深さ超過 / 循環の縮退をすり抜けて露出させないようにする。
+        if (
+            $this->allowListResolver->isAllowed($this->resolveEntityClass($entity), 'id')
+            && method_exists($entity, 'getId')
+        ) {
             try {
                 $id = $entity->getId();
                 if (null !== $id) {

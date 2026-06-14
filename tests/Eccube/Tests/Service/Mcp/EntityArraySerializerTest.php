@@ -133,6 +133,36 @@ final class EntityArraySerializerTest extends TestCase
         );
     }
 
+    public function testSummaryOmitsIdWhenNotAllowed(): void
+    {
+        // 深さ超過の要約でも「allow_list のみ公開」を守る。 getId があっても allow_list に 'id' が
+        // 無い関連 Entity は、 縮退経路で内部 ID を露出させない。
+        $serializer = $this->serializerWith([
+            SerializerDummyEntity::class => ['related'],
+            SerializerDummyRelated::class => ['nested'],
+            SerializerDummyNested::class => ['inner'],
+            SerializerDummyInner::class => ['name'], // 'id' を意図的に外す (getId は存在する)
+        ]);
+
+        $inner = new SerializerDummyInner();
+        $inner->id = 5;
+        $inner->name = 'deep';
+        $nested = new SerializerDummyNested();
+        $nested->inner = $inner;
+        $related = new SerializerDummyRelated();
+        $related->nested = $nested;
+        $entity = new SerializerDummyEntity();
+        $entity->related = $related;
+
+        // maxDepth=2 → inner(d3) は要約。 allow_list に 'id' が無いので空要約になる。
+        $result = $serializer->toArray($entity, maxDepth: 2);
+
+        $this->assertSame(
+            ['related' => ['nested' => ['inner' => []]]],
+            $result,
+        );
+    }
+
     public function testCircularReferenceSummarized(): void
     {
         $serializer = $this->serializerWith([
