@@ -39,12 +39,19 @@ final class ListPluginsToolTest extends EccubeTestCase
         $this->assertArrayHasKey('total', $result);
         $this->assertArrayHasKey('items', $result);
         $this->assertGreaterThanOrEqual(1, $result['total'], 'Api44 が install されているので最低 1 件');
+        $this->assertContains(
+            'Api44',
+            array_column($result['items'], 'code'),
+            'install 済みの Api44 が一覧に含まれる',
+        );
     }
 
     public function testEnabledFilterReturnsOnlyEnabled(): void
     {
         $enabled = $this->tool->list(enabledOnly: true);
 
+        // 空配列だと foreach が無検証で通るため、 enabled な Api44 が居ることを先に担保する。
+        $this->assertNotEmpty($enabled['items'], 'enabled なプラグイン (Api44) が居るので空ではない');
         foreach ($enabled['items'] as $item) {
             $this->assertTrue($item['enabled'] ?? false, sprintf('プラグイン "%s" は enabled のはず', $item['code'] ?? '?'));
         }

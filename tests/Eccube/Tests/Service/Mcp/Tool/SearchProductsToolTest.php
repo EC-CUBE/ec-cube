@@ -36,13 +36,19 @@ final class SearchProductsToolTest extends EccubeTestCase
 
     public function testReturnsProductsWithScope(): void
     {
-        $this->createProduct('mcp-search-001', 3);
+        $product = $this->createProduct('mcp-search-001', 3);
 
-        $result = $this->tool->search(limit: 50);
+        // 既存データに紛れて緑にならないよう、 作成した商品名で絞り込み、 その id が結果に出ることまで確認する。
+        $result = $this->tool->search(keyword: 'mcp-search-001', limit: 50);
 
         $this->assertArrayHasKey('total', $result);
         $this->assertArrayHasKey('items', $result);
         $this->assertGreaterThanOrEqual(1, $result['total']);
+        $this->assertContains(
+            $product->getId(),
+            array_column($result['items'], 'id'),
+            '作成した商品が検索結果に含まれる',
+        );
         $this->assertSame(50, $result['limit']);
         $this->assertSame(0, $result['offset']);
     }

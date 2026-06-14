@@ -63,7 +63,11 @@ final class AuditResultUsageTest extends TestCase
                 if ('AuditResult.php' === $file->getFilename()) {
                     continue;
                 }
-                $contents .= (string) file_get_contents($file->getPathname());
+                $fileContents = file_get_contents($file->getPathname());
+                if (false === $fileContents) {
+                    throw new \RuntimeException(sprintf('ファイル読み取り失敗: %s', $file->getPathname()));
+                }
+                $contents .= $fileContents;
             }
         }
 

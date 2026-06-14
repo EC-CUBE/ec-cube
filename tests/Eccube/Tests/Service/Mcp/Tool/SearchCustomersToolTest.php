@@ -34,12 +34,18 @@ final class SearchCustomersToolTest extends EccubeTestCase
 
     public function testReturnsCustomersWithScope(): void
     {
-        $this->createCustomer('mcp-customer-1@example.com');
+        $customer = $this->createCustomer('mcp-customer-1@example.com');
 
-        $result = $this->tool->search(limit: 50);
+        // 既存データで緑にならないよう、 作成した会員のメールで絞り込み、 その id が結果に出ることまで確認する。
+        $result = $this->tool->search(keyword: 'mcp-customer-1@example.com', limit: 50);
 
         $this->assertArrayHasKey('total', $result);
         $this->assertGreaterThanOrEqual(1, $result['total']);
+        $this->assertContains(
+            $customer->getId(),
+            array_column($result['items'], 'id'),
+            '作成した会員が検索結果に含まれる',
+        );
     }
 
     public function testFiltersByActiveStatus(): void
