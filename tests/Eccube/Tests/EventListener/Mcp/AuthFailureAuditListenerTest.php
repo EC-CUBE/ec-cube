@@ -88,7 +88,6 @@ final class AuthFailureAuditListenerTest extends TestCase
         $throwingAudit = new McpAuditLogger(
             new class extends AbstractLogger {
                 /**
-                 * @param mixed $level
                  * @param array<string, mixed> $context
                  */
                 public function log(mixed $level, string|\Stringable $message, array $context = []): void
@@ -122,7 +121,6 @@ final class AuthFailureAuditListenerTest extends TestCase
             public array $records = [];
 
             /**
-             * @param mixed $level
              * @param array<string, mixed> $context
              */
             public function log(mixed $level, string|\Stringable $message, array $context = []): void
