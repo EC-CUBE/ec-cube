@@ -61,7 +61,19 @@ final readonly class ToolInvoker
             throw $e;
         }
 
-        $data = $outcome['data'] ?? [];
+        // data キー欠落・非配列は Tool 実装の契約違反。 空の正常応答に化けさせず内部エラーとして扱う
+        // (静かに success へ握り潰すと、 クライアントも監査ログも実装バグを検知できない)。
+        if (!\array_key_exists('data', $outcome) || !\is_array($outcome['data'])) {
+            $this->auditLogger->logToolCall(
+                toolName: $toolName,
+                args: $args,
+                result: AuditResult::InternalError,
+                durationMs: $this->elapsedMs($startedAt),
+            );
+
+            throw new \UnexpectedValueException('Tool result must contain an array `data` key.');
+        }
+
         $summary = $outcome['summary'] ?? null;
 
         $this->auditLogger->logToolCall(
@@ -72,7 +84,7 @@ final readonly class ToolInvoker
             resultSummary: \is_array($summary) ? $summary : null,
         );
 
-        return \is_array($data) ? $data : [];
+        return $outcome['data'];
     }
 
     private function elapsedMs(float $startedAt): float
