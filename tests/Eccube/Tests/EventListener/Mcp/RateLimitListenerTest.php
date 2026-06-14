@@ -17,7 +17,6 @@ namespace Eccube\Tests\EventListener\Mcp;
 
 use Eccube\EventListener\Mcp\RateLimitListener;
 use Eccube\Service\Mcp\McpAuditLogger;
-use League\Bundle\OAuth2ServerBundle\Security\Authentication\Token\OAuth2Token;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\AbstractLogger;
 use Psr\Log\NullLogger;
@@ -31,8 +30,10 @@ use Symfony\Component\RateLimiter\LimiterStateInterface;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\RateLimiter\Storage\InMemoryStorage;
 use Symfony\Component\RateLimiter\Storage\StorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\AbstractToken;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 /**
  * `RateLimitListener` のユニットテスト (DB 不要、 in-memory storage)。
@@ -267,14 +268,22 @@ final class RateLimitListenerTest extends TestCase
         );
     }
 
-    private function buildOAuth2Token(string $clientId): OAuth2Token
+    /**
+     * client_id 単位の制限は、 listener が `getOAuthClientId()` の有無で対象を判定する。
+     * league の具象 OAuth2Token に依存しないよう、 同メソッドを持つ最小トークンで代替する。
+     */
+    private function buildOAuth2Token(string $clientId): TokenInterface
     {
-        return new OAuth2Token(
-            user: null,
-            accessTokenId: 'fake-token-id',
-            oauthClientId: $clientId,
-            scopes: [],
-            rolePrefix: 'ROLE_OAUTH2_',
-        );
+        return new class($clientId) extends AbstractToken {
+            public function __construct(private readonly string $oauthClientId)
+            {
+                parent::__construct();
+            }
+
+            public function getOAuthClientId(): string
+            {
+                return $this->oauthClientId;
+            }
+        };
     }
 }

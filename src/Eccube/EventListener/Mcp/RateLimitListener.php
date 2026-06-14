@@ -17,7 +17,6 @@ namespace Eccube\EventListener\Mcp;
 
 use Eccube\Service\Mcp\AuditResult;
 use Eccube\Service\Mcp\McpAuditLogger;
-use League\Bundle\OAuth2ServerBundle\Security\Authentication\Token\OAuth2Token;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -35,7 +34,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  *   - **IP 単位 (mcp_ip limiter)**: `kernel.request` priority 14 で発火。 admin firewall (priority 8)
  *     より早く動くため、 認証エラー連発攻撃でも IP 単位の枠を消費させて DoS を抑制できる。
  *   - **client_id 単位 (mcp_client limiter)**: `kernel.controller` priority 0 で発火。 firewall を
- *     通過して `OAuth2Token` が `TokenStorage` に乗った後にのみ消費する。 認証済みクライアントを
+ *     通過して OAuth2 認証済みトークンが `TokenStorage` に乗った後にのみ消費する。 認証済みクライアントを
  *     識別して、 IP 制限より細かい (= 通常は緩い) 制限を適用する。
  *
  * 超過時の挙動は両者共通で:
@@ -106,13 +105,14 @@ final readonly class RateLimitListener implements EventSubscriberInterface
         }
 
         $token = $this->tokenStorage->getToken();
-        if (!$token instanceof OAuth2Token) {
-            // firewall 通過後でも OAuth2Token でなければ (= 認証されていない経路) スキップ。
-            // 認証エラーは別途 firewall で 401 として処理される。
+        // OAuth2 認証済みトークン (Api44 由来) のみ client_id 単位の制限を掛ける。 本体は Api44/league
+        // に依存しないため、 具象クラスではなく client_id を返すメソッドの有無で判定する。 未認証経路や
+        // admin Cookie firewall のトークンは持たないためスキップされ、 認証エラーは firewall が 401 を返す。
+        if (null === $token || !method_exists($token, 'getOAuthClientId')) {
             return;
         }
 
-        $clientId = $token->getOAuthClientId();
+        $clientId = (string) $token->getOAuthClientId();
         $rejection = $this->check($this->mcpClientLimiter, 'mcp:client:'.$clientId, 'client_id', ['client_id' => $clientId]);
         if (null !== $rejection) {
             // ControllerEvent は setResponse を持たないため、 controller を「拒否レスポンスを返す callable」 に差し替える

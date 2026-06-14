@@ -47,6 +47,11 @@ final class McpScopeEnforcementIntegrationTest extends EccubeTestCase
 
     protected function setUp(): void
     {
+        // 実 JWT 発行と firewall を要する結合テスト。 Api44 (league/oauth2-server-bundle) 未導入の
+        // 環境では league クラスが autoload できず fatal になるため、 存在しなければスキップする。
+        if (!interface_exists(ClientManagerInterface::class)) {
+            $this->markTestSkipped('Api44 (league/oauth2-server-bundle) がインストールされていません');
+        }
         parent::setUp();
         $this->clientManager = static::getContainer()->get(ClientManagerInterface::class);
         $this->accessTokenManager = static::getContainer()->get(AccessTokenManagerInterface::class);
