@@ -83,7 +83,7 @@ final readonly class GetPluginTool
         }
 
         if (null !== $code && '' !== trim($code)) {
-            return $this->pluginRepository->findByCode($code);
+            return $this->pluginRepository->findByCode(trim($code));
         }
 
         return null;

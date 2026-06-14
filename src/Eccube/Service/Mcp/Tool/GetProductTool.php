@@ -82,7 +82,7 @@ final readonly class GetProductTool
             return $this->productRepository->createQueryBuilder('p')
                 ->innerJoin('p.ProductClasses', 'pc')
                 ->andWhere('pc.code = :code')
-                ->setParameter('code', $code)
+                ->setParameter('code', trim($code))
                 ->getQuery()
                 ->setMaxResults(1)
                 ->getOneOrNullResult();

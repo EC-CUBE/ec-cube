@@ -137,10 +137,10 @@ final readonly class SearchCustomersTool
             }
         }
         if (null !== $createDateFrom && '' !== trim($createDateFrom)) {
-            $searchData['create_date_start'] = new \DateTime($createDateFrom);
+            $searchData['create_date_start'] = $this->parseSearchDate($createDateFrom, 'createDateFrom');
         }
         if (null !== $createDateTo && '' !== trim($createDateTo)) {
-            $searchData['create_date_end'] = new \DateTime($createDateTo);
+            $searchData['create_date_end'] = $this->parseSearchDate($createDateTo, 'createDateTo');
         }
         if (null !== $buyTotalMin) {
             $searchData['buy_total_start'] = $buyTotalMin;
@@ -156,5 +156,18 @@ final readonly class SearchCustomersTool
         }
 
         return $searchData;
+    }
+
+    /**
+     * MCP クライアント由来の日付文字列を `\DateTime` に変換する。
+     * 不正な書式は `new \DateTime()` の不透明な例外ではなく、 引数名を示す `\InvalidArgumentException` に変換する。
+     */
+    private function parseSearchDate(string $value, string $field): \DateTime
+    {
+        try {
+            return new \DateTime($value);
+        } catch (\Exception $e) {
+            throw new \InvalidArgumentException(sprintf('Invalid %s format: %s', $field, $value), 0, $e);
+        }
     }
 }

@@ -148,12 +148,25 @@ final readonly class SearchOrdersTool
             $searchData['payment_total_end'] = $totalMax;
         }
         if (null !== $orderDateFrom && '' !== trim($orderDateFrom)) {
-            $searchData['order_date_start'] = new \DateTime($orderDateFrom);
+            $searchData['order_date_start'] = $this->parseSearchDate($orderDateFrom, 'orderDateFrom');
         }
         if (null !== $orderDateTo && '' !== trim($orderDateTo)) {
-            $searchData['order_date_end'] = new \DateTime($orderDateTo);
+            $searchData['order_date_end'] = $this->parseSearchDate($orderDateTo, 'orderDateTo');
         }
 
         return $searchData;
+    }
+
+    /**
+     * MCP クライアント由来の日付文字列を `\DateTime` に変換する。
+     * 不正な書式は `new \DateTime()` の不透明な例外ではなく、 引数名を示す `\InvalidArgumentException` に変換する。
+     */
+    private function parseSearchDate(string $value, string $field): \DateTime
+    {
+        try {
+            return new \DateTime($value);
+        } catch (\Exception $e) {
+            throw new \InvalidArgumentException(sprintf('Invalid %s format: %s', $field, $value), 0, $e);
+        }
     }
 }

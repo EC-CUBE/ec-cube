@@ -77,7 +77,7 @@ final readonly class GetOrderTool
         }
 
         if (null !== $orderNo && '' !== trim($orderNo)) {
-            return $this->orderRepository->findOneBy(['order_no' => $orderNo]);
+            return $this->orderRepository->findOneBy(['order_no' => trim($orderNo)]);
         }
 
         return null;
