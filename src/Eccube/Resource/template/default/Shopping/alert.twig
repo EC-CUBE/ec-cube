@@ -17,11 +17,11 @@
 {% endfor %}
 {% if error_only == false %}
 {% for success in app.session.flashbag.get('eccube.front.success') %}
-    <div class="ec-cartRole__error">
-        <div class="ec-alert-warning">
-            <div class="ec-alert-warning__inner">
-                <div class="ec-alert-warning__inner__item">
-                    <div class="ec-alert-warning__text">
+    <div class="ec-cartRole__success">
+        <div class="ec-alert-success">
+            <div class="ec-alert-success__inner">
+                <div class="ec-alert-success__inner__item">
+                    <div class="ec-alert-success__text">
                         {{ success|trans|nl2br }}
                     </div>
                 </div>

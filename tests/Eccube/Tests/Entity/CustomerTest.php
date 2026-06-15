@@ -76,6 +76,12 @@ final class CustomerTest extends EccubeTestCase
      */
     public function testPreferredResetToNullWhenReferenceDeleted(): void
     {
+        // SQLite は既定で外部キー制約(ON DELETE SET NULL)を強制しないため, この検証は対象外とする.
+        // 実 DB (PostgreSQL / MySQL) では FK により未設定へ戻ることを担保する.
+        if ($this->entityManager->getConnection()->getDriver()->getDatabasePlatform()->getName() === 'sqlite') {
+            $this->markTestSkipped('SQLite は外部キーの ON DELETE SET NULL を既定で強制しないためスキップします.');
+        }
+
         $Customer = $this->createCustomer();
         $Delivery = static::getContainer()->get(Generator::class)->createDelivery();
         $Payment = $this->createPayment($Delivery, 'テスト支払い方法');
