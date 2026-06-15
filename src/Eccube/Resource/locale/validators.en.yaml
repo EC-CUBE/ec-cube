@@ -72,3 +72,7 @@ form.type.add.quantity: Please enter more than 1.
 form.type.select.select_is_future_or_now_date: Invalid Date of Birth.
 form.type.admin.nottrackingnumberstyle: Tracking No. entry must be alphanumeric chars and hypens.
 form.type.float.invalid: Only numbers and decimal points are accepted.
+form_error.refund_request.quantity_exceed: Quantity must be {{ compared_value }} or less.
+form_error.refund_request.max_files: You can attach up to {{ limit }} files.
+form_error.refund_request.file_size: File is too large. Max {{ limit }}.
+form_error.refund_request.file_type: File type not allowed. Please use JPEG, PNG, GIF, WebP, MP4, MOV, or AVI.

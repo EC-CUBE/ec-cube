@@ -1,0 +1,75 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends 'default_frame.twig' %}
+
+{% set mypageno = 'index' %}
+
+{% set body_class = 'mypage' %}
+
+{% block main %}
+    <div class="ec-layoutRole__main">
+        <div class="ec-mypageRole">
+            <div class="ec-pageHeader">
+                <h1>{{ 'front.mypage.refund_request.confirm_title'|trans }}</h1>
+            </div>
+            {% include 'Mypage/navi.twig' %}
+        </div>
+
+        <div class="ec-orderRole">
+            <div class="ec-orderRole__detail">
+                <div class="ec-orderDelivery__item">
+                    <div class="ec-imageGrid">
+                        <div class="ec-imageGrid__img">
+                            {% if OrderItem.Product is not null %}
+                                <img src="{{ asset(OrderItem.Product.MainListImage|no_image_product, 'save_image') }}"
+                                     alt="{{ OrderItem.productName }}"/>
+                            {% else %}
+                                <img src="{{ asset(''|no_image_product, 'save_image') }}"/>
+                            {% endif %}
+                        </div>
+                        <div class="ec-imageGrid__content">
+                            <p>{{ OrderItem.productName }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ec-borderedDefs">
+                    <dl>
+                        <dt>{{ 'front.mypage.refund_request.quantity'|trans }}</dt>
+                        <dd>{{ RefundRequest.quantity }}</dd>
+                    </dl>
+                    <dl>
+                        <dt>{{ 'front.mypage.refund_request.reason'|trans }}</dt>
+                        <dd>{{ RefundRequest.reason|nl2br }}</dd>
+                    </dl>
+                </div>
+
+                <form method="post" action="{{ url('mypage_refund_request', { order_no: Order.order_no, order_item_id: OrderItem.id }) }}" enctype="multipart/form-data">
+                    {{ form_rest(form) }}
+                    <input type="hidden" name="mode" value="complete">
+
+                    <div class="ec-RegisterRole__actions">
+                        <div class="ec-off4Grid">
+                            <div class="ec-off4Grid__cell">
+                                <button type="submit" class="ec-blockBtn--action">{{ 'front.mypage.refund_request.submit'|trans }}</button>
+                            </div>
+                        </div>
+                        <div class="ec-off4Grid">
+                            <div class="ec-off4Grid__cell">
+                                <a href="{{ url('mypage_refund_request', { order_no: Order.order_no, order_item_id: OrderItem.id }) }}" class="ec-blockBtn--cancel">{{ 'common.back'|trans }}</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

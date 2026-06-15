@@ -1,0 +1,107 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends 'default_frame.twig' %}
+
+{% set mypageno = 'index' %}
+
+{% set body_class = 'mypage' %}
+
+{% block main %}
+    <div class="ec-layoutRole__main">
+        <div class="ec-mypageRole">
+            <div class="ec-pageHeader">
+                <h1>{{ 'front.mypage.refund_request.item_history_title'|trans }}</h1>
+            </div>
+            {% include 'Mypage/navi.twig' %}
+        </div>
+
+        <div class="ec-orderRole">
+            <div class="ec-orderRole__detail">
+                <div class="ec-orderDelivery__item">
+                    <div class="ec-imageGrid">
+                        <div class="ec-imageGrid__img">
+                            {% if OrderItem.Product is not null %}
+                                <img src="{{ asset(OrderItem.Product.MainListImage|no_image_product, 'save_image') }}"
+                                     alt="{{ OrderItem.productName }}"/>
+                            {% else %}
+                                <img src="{{ asset(''|no_image_product, 'save_image') }}"/>
+                            {% endif %}
+                        </div>
+                        <div class="ec-imageGrid__content">
+                            <p>{{ OrderItem.productName }}</p>
+                            {% if OrderItem.ProductClass is not null %}
+                                {% if OrderItem.ProductClass.ClassCategory1 is not null %}
+                                    <p>{{ OrderItem.ProductClass.ClassCategory1.ClassName.name }}：{{ OrderItem.ProductClass.ClassCategory1 }}</p>
+                                {% endif %}
+                                {% if OrderItem.ProductClass.ClassCategory2 is not null %}
+                                    <p>{{ OrderItem.ProductClass.ClassCategory2.ClassName.name }}：{{ OrderItem.ProductClass.ClassCategory2 }}</p>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                {% if RefundRequests is not empty %}
+                    {% for RefundRequest in RefundRequests %}
+                        <div class="ec-borderedDefs" style="margin-top: 20px;">
+                            <dl>
+                                <dt>{{ 'front.mypage.refund_request.request_date'|trans }}</dt>
+                                <dd>{{ RefundRequest.create_date|date_sec }}</dd>
+                            </dl>
+                            <dl>
+                                <dt>{{ 'front.mypage.refund_request.status'|trans }}</dt>
+                                <dd>{{ RefundRequest.RefundRequestStatus }}</dd>
+                            </dl>
+                            <dl>
+                                <dt>{{ 'front.mypage.refund_request.quantity'|trans }}</dt>
+                                <dd>{{ RefundRequest.quantity }}</dd>
+                            </dl>
+                            <dl>
+                                <dt>{{ 'front.mypage.refund_request.reason'|trans }}</dt>
+                                <dd>{{ RefundRequest.reason|nl2br }}</dd>
+                            </dl>
+                            {% if RefundRequest.RefundRequestFiles is not empty %}
+                                <dl>
+                                    <dt>{{ 'front.mypage.refund_request.files'|trans }}</dt>
+                                    <dd>
+                                        {% for File in RefundRequest.RefundRequestFiles %}
+                                            <div style="margin-bottom: 8px;">
+                                                {% if File.isImage %}
+                                                    <a href="{{ url('mypage_refund_request_file', { refund_request_id: RefundRequest.id, file_id: File.id }) }}" target="_blank">
+                                                        <img src="{{ url('mypage_refund_request_file', { refund_request_id: RefundRequest.id, file_id: File.id }) }}" alt="" style="max-width: 200px; max-height: 200px;">
+                                                    </a>
+                                                {% elseif File.isVideo %}
+                                                    <video controls style="max-width: 300px;">
+                                                        <source src="{{ url('mypage_refund_request_file', { refund_request_id: RefundRequest.id, file_id: File.id }) }}" type="{{ File.mime_type }}">
+                                                    </video>
+                                                {% else %}
+                                                    <a href="{{ url('mypage_refund_request_file', { refund_request_id: RefundRequest.id, file_id: File.id }) }}" target="_blank">{{ File.file_name }}</a>
+                                                {% endif %}
+                                            </div>
+                                        {% endfor %}
+                                    </dd>
+                                </dl>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="ec-reportDescription">{{ 'front.mypage.refund_request.no_history'|trans }}</p>
+                {% endif %}
+
+                <div class="ec-off4Grid" style="margin-top: 20px;">
+                    <div class="ec-off4Grid__cell">
+                        <a href="{{ url('mypage_history', { order_no: Order.order_no }) }}" class="ec-blockBtn--cancel">{{ 'common.back'|trans }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

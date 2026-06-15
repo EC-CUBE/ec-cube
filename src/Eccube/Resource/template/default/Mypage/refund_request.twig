@@ -1,0 +1,96 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends 'default_frame.twig' %}
+
+{% set mypageno = 'index' %}
+
+{% set body_class = 'mypage' %}
+
+{% block main %}
+    <div class="ec-layoutRole__main">
+        <div class="ec-mypageRole">
+            <div class="ec-pageHeader">
+                <h1>{{ 'front.mypage.refund_request.title'|trans }}</h1>
+            </div>
+            {% include 'Mypage/navi.twig' %}
+        </div>
+
+        <div class="ec-orderRole">
+            <div class="ec-orderRole__detail">
+                <div class="ec-orderDelivery__item">
+                    <div class="ec-imageGrid">
+                        <div class="ec-imageGrid__img">
+                            {% if OrderItem.Product is not null %}
+                                <img src="{{ asset(OrderItem.Product.MainListImage|no_image_product, 'save_image') }}"
+                                     alt="{{ OrderItem.productName }}"/>
+                            {% else %}
+                                <img src="{{ asset(''|no_image_product, 'save_image') }}"/>
+                            {% endif %}
+                        </div>
+                        <div class="ec-imageGrid__content">
+                            <p>{{ OrderItem.productName }}</p>
+                            {% if OrderItem.ProductClass is not null %}
+                                {% if OrderItem.ProductClass.ClassCategory1 is not null %}
+                                    <p>{{ OrderItem.ProductClass.ClassCategory1.ClassName.name }}：{{ OrderItem.ProductClass.ClassCategory1 }}</p>
+                                {% endif %}
+                                {% if OrderItem.ProductClass.ClassCategory2 is not null %}
+                                    <p>{{ OrderItem.ProductClass.ClassCategory2.ClassName.name }}：{{ OrderItem.ProductClass.ClassCategory2 }}</p>
+                                {% endif %}
+                            {% endif %}
+                            <p>{{ OrderItem.price_inc_tax|price }} × {{ OrderItem.quantity|number_format }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                {% form_theme form 'Form/form_div_layout.twig' %}
+                <form method="post" action="{{ url('mypage_refund_request', { order_no: Order.order_no, order_item_id: OrderItem.id }) }}" enctype="multipart/form-data">
+                    {{ form_widget(form._token) }}
+                    <input type="hidden" name="mode" value="confirm">
+
+                    <div class="ec-borderedDefs">
+                        <dl>
+                            <dt>{{ 'front.mypage.refund_request.quantity'|trans }}<span class="ec-required">{{ 'common.required'|trans }}</span></dt>
+                            <dd>
+                                {{ form_widget(form.quantity, { attr: { min: 1, max: max_quantity }}) }}
+                                {{ form_errors(form.quantity) }}
+                                <p class="ec-para-normal">{{ 'front.mypage.refund_request.quantity_max'|trans({ '%max%': max_quantity }) }}</p>
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>{{ 'front.mypage.refund_request.reason'|trans }}<span class="ec-required">{{ 'common.required'|trans }}</span></dt>
+                            <dd>
+                                {{ form_widget(form.reason, { attr: { rows: 6, placeholder: 'front.mypage.refund_request.reason_placeholder'|trans }}) }}
+                                {{ form_errors(form.reason) }}
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>{{ 'front.mypage.refund_request.files'|trans }}</dt>
+                            <dd>
+                                {{ form_widget(form.files, { attr: { accept: 'image/jpeg,image/png,image/gif,image/webp,video/mp4,video/quicktime,video/x-msvideo' }}) }}
+                                {{ form_errors(form.files) }}
+                                <p class="ec-para-normal">{{ 'front.mypage.refund_request.files_help'|trans }}</p>
+                            </dd>
+                        </dl>
+                    </div>
+
+                    <div class="ec-RegisterRole__actions">
+                        <div class="ec-off4Grid">
+                            <div class="ec-off4Grid__cell">
+                                <button type="submit" class="ec-blockBtn--action">{{ 'front.mypage.refund_request.confirm'|trans }}</button>
+                                <a href="{{ url('mypage_history', { order_no: Order.order_no }) }}" class="ec-blockBtn--cancel">{{ 'common.back'|trans }}</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

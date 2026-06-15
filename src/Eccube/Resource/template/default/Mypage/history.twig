@@ -95,6 +95,12 @@ file that was distributed with this source code.
                                                 {{ 'front.mypage.current_price'|trans }}{{ orderItem.productClass.price02IncTax|price }}</p>
                                             {% set remessage = true %}
                                         {% endif %}
+                                        {% if Order.OrderStatus.id == constant('Eccube\\Entity\\Master\\OrderStatus::DELIVERED') and orderItem.Product is not null and orderItem.Product.isRefundAllowed %}
+                                            <div style="margin-top: 8px;">
+                                                <a href="{{ url('mypage_refund_request', { order_no: Order.order_no, order_item_id: orderItem.id }) }}" class="ec-inlineBtn ec-inlineBtn--action">{{ 'front.mypage.refund_request.apply'|trans }}</a>
+                                                <a href="{{ url('mypage_refund_request_item_history', { order_no: Order.order_no, order_item_id: orderItem.id }) }}" class="ec-inlineBtn">{{ 'front.mypage.refund_request.history'|trans }}</a>
+                                            </div>
+                                        {% endif %}
 
                                     </div>
                                 </div>

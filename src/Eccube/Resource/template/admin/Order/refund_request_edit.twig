@@ -1,0 +1,139 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends '@admin/default_frame.twig' %}
+{% set menus = ['order', 'refund_request'] %}
+
+{% block title %}{{ 'admin.order.refund_request.edit_title'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.order.order_management'|trans }}{% endblock %}
+
+{% form_theme form '@admin/Form/bootstrap_4_layout.html.twig' %}
+{% block javascript %}
+{% endblock %}
+
+{% block main %}
+    <div class="c-outsideBlock--small">
+        <div class="card rounded border-0 mb-4">
+            <div class="card-header">
+                <span class="card-title">{{ 'admin.order.refund_request.detail'|trans }}</span>
+            </div>
+            <div class="card-body">
+                <div class="row mb-2">
+                    <div class="col-3 fw-bold">{{ 'admin.order.refund_request.id'|trans }}</div>
+                    <div class="col">{{ RefundRequest.id }}</div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-3 fw-bold">{{ 'admin.order.refund_request.status'|trans }}</div>
+                    <div class="col">{{ RefundRequest.RefundRequestStatus }}</div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-3 fw-bold">{{ 'admin.order.refund_request.order_no'|trans }}</div>
+                    <div class="col">
+                        <a href="{{ url('admin_order_edit', { id: RefundRequest.Order.id }) }}">{{ RefundRequest.Order.order_no }}</a>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-3 fw-bold">{{ 'admin.order.refund_request.customer'|trans }}</div>
+                    <div class="col">
+                        {% if RefundRequest.Customer %}
+                            <a href="{{ url('admin_customer_edit', { id: RefundRequest.Customer.id }) }}">{{ RefundRequest.Customer.name01 }} {{ RefundRequest.Customer.name02 }}</a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-3 fw-bold">{{ 'admin.order.refund_request.product'|trans }}</div>
+                    <div class="col">{{ RefundRequest.OrderItem.productName }}</div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-3 fw-bold">{{ 'admin.order.refund_request.quantity'|trans }}</div>
+                    <div class="col">{{ RefundRequest.quantity }}</div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-3 fw-bold">{{ 'admin.order.refund_request.reason'|trans }}</div>
+                    <div class="col">{{ RefundRequest.reason|nl2br }}</div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-3 fw-bold">{{ 'admin.order.refund_request.create_date'|trans }}</div>
+                    <div class="col">{{ RefundRequest.create_date|date_sec }}</div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-3 fw-bold">{{ 'admin.order.refund_request.update_date'|trans }}</div>
+                    <div class="col">{{ RefundRequest.update_date|date_sec }}</div>
+                </div>
+
+                {% if RefundRequest.RefundRequestFiles is not empty %}
+                    <div class="row mb-2">
+                        <div class="col-3 fw-bold">{{ 'admin.order.refund_request.files'|trans }}</div>
+                        <div class="col">
+                            {% for File in RefundRequest.RefundRequestFiles %}
+                                <div class="mb-2">
+                                    {% if File.isImage %}
+                                        <a href="{{ url('admin_refund_request_file', { id: RefundRequest.id, file_id: File.id }) }}" target="_blank">
+                                            <img src="{{ url('admin_refund_request_file', { id: RefundRequest.id, file_id: File.id }) }}" alt="" style="max-width: 200px; max-height: 200px;">
+                                        </a>
+                                    {% elseif File.isVideo %}
+                                        <video controls style="max-width: 300px;">
+                                            <source src="{{ url('admin_refund_request_file', { id: RefundRequest.id, file_id: File.id }) }}" type="{{ File.mime_type }}">
+                                        </video>
+                                    {% else %}
+                                        <a href="{{ url('admin_refund_request_file', { id: RefundRequest.id, file_id: File.id }) }}" target="_blank">{{ File.file_name }}</a>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <form method="post" action="{{ url('admin_refund_request_edit', { id: RefundRequest.id }) }}">
+            {{ form_widget(form._token) }}
+            <div class="card rounded border-0 mb-4">
+                <div class="card-header">
+                    <span class="card-title">{{ 'admin.order.refund_request.operation'|trans }}</span>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <label class="col-3 col-form-label fw-bold">{{ 'admin.order.refund_request.admin_note'|trans }}</label>
+                        <div class="col">
+                            {{ form_widget(form.admin_note, { attr: { rows: 4 }}) }}
+                            {{ form_errors(form.admin_note) }}
+                        </div>
+                    </div>
+                    {% if availableTransitions is not empty %}
+                        <div class="row mb-3">
+                            <label class="col-3 col-form-label fw-bold">{{ 'admin.order.refund_request.transition'|trans }}</label>
+                            <div class="col">
+                                {{ form_widget(form.transition) }}
+                                {{ form_errors(form.transition) }}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="c-conversionArea">
+                <div class="c-conversionArea__container">
+                    <div class="row justify-content-between align-items-center">
+                        <div class="col-6">
+                            <a href="{{ url('admin_refund_request') }}?resume=1" class="c-baseLink">
+                                <i class="fa fa-backward" aria-hidden="true"></i>
+                                <span>{{ 'admin.order.refund_request.back_to_list'|trans }}</span>
+                            </a>
+                        </div>
+                        <div class="col-6 text-end">
+                            <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.common.save'|trans }}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
