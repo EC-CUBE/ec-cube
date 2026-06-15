@@ -100,11 +100,37 @@ class AgentCheckoutPurchaseFlowAdapter
      */
     public function complete(Order $Order, ?Customer $member = null): AgentCheckoutResult
     {
-        $messages = $this->runFlow(function (PurchaseContext $context) use ($Order): PurchaseFlowResult {
+        $connection = $this->entityManager->getConnection();
+
+        $messages = $this->runFlow(function (PurchaseContext $context) use ($Order, $connection): PurchaseFlowResult {
             $result = $this->shoppingPurchaseFlow->validate($Order, $context);
-            if (!$result->hasError()) {
+            if ($result->hasError()) {
+                return $result;
+            }
+
+            // PurchaseFlow::prepare()/commit() 内の StockReduceProcessor が
+            // EntityManager::lock() (悲観ロック) を使うためトランザクションが必須。
+            // 通常購入 (ShoppingController) と同様に、未開始なら自前で開始・コミットする。
+            $startedTransaction = false;
+            if (!$connection->isTransactionActive()) {
+                $this->entityManager->beginTransaction();
+                $startedTransaction = true;
+            }
+
+            try {
                 $this->shoppingPurchaseFlow->prepare($Order, $context);
                 $this->shoppingPurchaseFlow->commit($Order, $context);
+                $this->entityManager->flush();
+
+                if ($startedTransaction) {
+                    $this->entityManager->commit();
+                }
+            } catch (\Throwable $e) {
+                if ($startedTransaction) {
+                    $this->entityManager->rollback();
+                }
+
+                throw $e;
             }
 
             return $result;
@@ -192,8 +218,11 @@ class AgentCheckoutPurchaseFlowAdapter
         $Customer
             ->setName01((string) $address->name01)
             ->setName02((string) $address->name02)
-            ->setKana01($address->kana01)
-            ->setKana02($address->kana02)
+            // kana は UCP 等カナを持たないプロトコルでは null になり得る。OrderHelper が
+            // Shipping へコピーする際に Shipping::setKana01() が非 null string を要求するため、
+            // null は空文字へ正規化する (カナ提供時はその値を使う)。
+            ->setKana01($address->kana01 ?? '')
+            ->setKana02($address->kana02 ?? '')
             ->setCompanyName($address->companyName)
             ->setEmail($address->email)
             ->setPhonenumber($address->phoneNumber)

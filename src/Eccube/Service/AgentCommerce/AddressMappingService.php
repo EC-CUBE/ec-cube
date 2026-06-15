@@ -19,6 +19,7 @@ use Eccube\Entity\Master\Country;
 use Eccube\Entity\Master\Pref;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\Master\CountryIsoCodeRepository;
+use Eccube\Repository\Master\PrefRepository;
 
 /**
  * EC-CUBE の住所系エンティティ (Customer / CustomerAddress / Shipping) を
@@ -33,6 +34,7 @@ class AddressMappingService
 {
     public function __construct(
         private readonly CountryIsoCodeRepository $countryIsoCodeRepository,
+        private readonly PrefRepository $prefRepository,
     ) {
     }
 
@@ -59,6 +61,22 @@ class AddressMappingService
         }
 
         return $pref->getName();
+    }
+
+    /**
+     * region 文字列 (都道府県名) から Pref を逆引きする。
+     *
+     * UCP の postal address `region` は EC-CUBE では Pref 名 (例: 東京都) に対応する。
+     * ISO 3166-2:JP コード (JP-13 等) での指定は標準では解決せず、app/Customize での
+     * 拡張余地とする (本サービスを decoration して解決ロジックを差し替え可能)。
+     */
+    public function getPrefFromRegion(?string $region): ?Pref
+    {
+        if ($region === null || $region === '') {
+            return null;
+        }
+
+        return $this->prefRepository->findOneBy(['name' => $region]);
     }
 
     /**
