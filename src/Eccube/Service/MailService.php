@@ -910,7 +910,6 @@ class MailService
             $MailHistory = new MailHistory();
             $MailHistory->setMailSubject($message->getSubject())
                 ->setMailBody($message->getTextBody())
-                ->setMailTemplate($MailTemplate)
                 ->setOrder($RefundRequest->getOrder())
                 ->setSendDate(new \DateTime());
             $this->mailHistoryRepository->save($MailHistory);
