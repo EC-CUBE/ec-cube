@@ -20,8 +20,7 @@ file that was distributed with this source code.
 
 {% block main %}
     <div class="c-outsideBlock--small mb-5">
-        <form name="search_form" id="search_form" method="post" action="{{ url('admin_refund_request') }}">
-            {{ form_widget(searchForm._token) }}
+        <form name="search_form" id="search_form" method="post" action="{{ url('admin_refund_request') }}" novalidate>
             <div class="c-outsideBlock__contents">
                 <div class="row mb-2">
                     <div class="col-6">
