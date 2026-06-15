@@ -118,7 +118,10 @@ final class CheckoutSessionTest extends EccubeTestCase
         /** @var CheckoutSession $reloaded */
         $reloaded = $this->checkoutSessionRepository->find($id);
 
-        $this->assertSame(['family_name' => '山田', 'given_name' => '太郎'], $reloaded->getBuyerData(), 'json buyer_data がラウンドトリップする');
+        // MySQL のネイティブ JSON 型は格納時にオブジェクトのキー順序を保持しない
+        // (PostgreSQL/SQLite は保持)。buyer_data はキーで参照する map で順序に意味は
+        // ないため、順序非依存 (canonicalizing) でラウンドトリップを検証する。
+        $this->assertEqualsCanonicalizing(['family_name' => '山田', 'given_name' => '太郎'], $reloaded->getBuyerData(), 'json buyer_data がラウンドトリップする');
         $this->assertSame(['acp_status' => 'not_ready_for_payment'], $reloaded->getMetadata(), 'json metadata がラウンドトリップする');
         $this->assertNull($reloaded->getFulfillmentData(), '未設定の json カラムは null');
     }
