@@ -1016,6 +1016,7 @@ admin.order.refund_request.transition_placeholder: -- 変更なし --
 admin.order.refund_request.transition_error: ステータスの変更に失敗しました。
 admin.order.refund_request.back_to_list: 返品申請一覧へ戻る
 admin.order.refund_request.multi_search_label: 申請ID・注文番号・会員ID・会員名で検索
+admin.order.refund_request.csv_export: CSVエクスポート
 
 #------------------------------------------------------------------------------------
 # 会員

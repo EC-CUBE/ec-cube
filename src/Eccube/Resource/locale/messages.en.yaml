@@ -1017,6 +1017,7 @@ admin.order.refund_request.transition_placeholder: -- No Change --
 admin.order.refund_request.transition_error: Failed to change status.
 admin.order.refund_request.back_to_list: Back to list
 admin.order.refund_request.multi_search_label: Search by Request ID, Order No, Customer ID, Customer Name
+admin.order.refund_request.csv_export: CSV Export
 
 #------------------------------------------------------------------------------------
 # Customer

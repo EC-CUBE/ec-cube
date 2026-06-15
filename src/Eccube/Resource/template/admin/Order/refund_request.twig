@@ -90,6 +90,11 @@ file that was distributed with this source code.
                 <div>
                     <span class="fw-bold">{{ 'admin.common.search_result'|trans({ '%count%': pagination.getTotalItemCount }) }}</span>
                 </div>
+                <div>
+                    <a href="{{ url('admin_refund_request_export') }}" class="btn btn-ec-regular me-1">
+                        <i class="fa fa-cloud-download me-1"></i>{{ 'admin.order.refund_request.csv_export'|trans }}
+                    </a>
+                </div>
             </div>
 
             <div class="card rounded border-0 mb-4">

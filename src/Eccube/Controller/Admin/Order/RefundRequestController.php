@@ -29,6 +29,7 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -235,6 +236,67 @@ class RefundRequestController extends AbstractController
                 'message' => trans('admin.order.refund_request.transition_error'),
             ], Response::HTTP_BAD_REQUEST);
         }
+    }
+
+    /**
+     * CSVエクスポート.
+     */
+    #[Route(path: '/%eccube_admin_route%/order/refund_request/export', name: 'admin_refund_request_export', methods: ['GET'])]
+    public function export(Request $request): StreamedResponse
+    {
+        set_time_limit(0);
+
+        $this->entityManager->getConfiguration()->setSQLLogger();
+
+        $viewData = $this->session->get('eccube.admin.refund_request.search', []);
+        $searchForm = $this->formFactory->createBuilder(SearchRefundRequestType::class)->getForm();
+        $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
+        $qb = $this->refundRequestRepository->getQueryBuilderBySearchData($searchData);
+
+        $response = new StreamedResponse();
+        $response->setCallback(function () use ($qb): void {
+            $out = fopen('php://output', 'w');
+            fwrite($out, "\xEF\xBB\xBF");
+
+            $header = [
+                trans('admin.order.refund_request.id'),
+                trans('admin.order.refund_request.order_no'),
+                trans('admin.order.refund_request.customer'),
+                trans('admin.order.refund_request.product'),
+                trans('admin.order.refund_request.status'),
+                trans('admin.order.refund_request.quantity'),
+                trans('admin.order.refund_request.reason'),
+                trans('admin.order.refund_request.create_date'),
+                trans('admin.order.refund_request.update_date'),
+            ];
+            fputcsv($out, $header);
+
+            foreach ($qb->getQuery()->toIterable() as $RefundRequest) {
+                $row = [
+                    $RefundRequest->getId(),
+                    $RefundRequest->getOrder()?->getOrderNo(),
+                    $RefundRequest->getCustomer() ? $RefundRequest->getCustomer()->getName01().' '.$RefundRequest->getCustomer()->getName02() : '',
+                    $RefundRequest->getOrderItem()?->getProductName(),
+                    (string) $RefundRequest->getRefundRequestStatus(),
+                    $RefundRequest->getQuantity(),
+                    $RefundRequest->getReason(),
+                    $RefundRequest->getCreateDate()?->format('Y-m-d H:i:s'),
+                    $RefundRequest->getUpdateDate()?->format('Y-m-d H:i:s'),
+                ];
+                fputcsv($out, $row);
+                $this->entityManager->detach($RefundRequest);
+            }
+
+            fclose($out);
+        });
+
+        $filename = 'refund_request_'.(new \DateTime())->format('YmdHis').'.csv';
+        $response->headers->set('Content-Type', 'application/octet-stream');
+        $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
+
+        log_info('返品申請CSV出力', [$filename]);
+
+        return $response;
     }
 
     /**
