@@ -47,17 +47,8 @@ final class AgentCommerceOAuth2AuthenticatorTest extends TestCase
      */
     private function handlerWithScopes(array $scopes): AccessTokenHandlerInterface
     {
-        return new readonly class($scopes) implements AccessTokenHandlerInterface {
-            /** @param array<int, string> $scopes */
-            public function __construct(private array $scopes)
-            {
-            }
-
-            public function getUserBadgeFrom(#[\SensitiveParameter] string $accessToken): UserBadge
-            {
-                return new UserBadge('agent-platform', null, ['scopes' => $this->scopes]);
-            }
-        };
+        // 匿名 readonly クラスは PHP 8.3+ 専用のため (サポート下限 8.2)、名前付きクラスへ切り出す。
+        return new ScopeStubAccessTokenHandler($scopes);
     }
 
     /**
@@ -132,5 +123,24 @@ final class AgentCommerceOAuth2AuthenticatorTest extends TestCase
 
         $this->expectException(ServiceUnavailableHttpException::class);
         $authenticator->authenticate('any-token', 'acp', 'checkout');
+    }
+}
+
+/**
+ * 付与 scope を attributes に載せて UserBadge を返すスタブ handler.
+ *
+ * 名前付き readonly クラス (PHP 8.2 で有効) として定義する。匿名 readonly クラスは
+ * PHP 8.3+ 専用で、サポート下限 (8.2) の CI で parse error になるため使用しない。
+ */
+final readonly class ScopeStubAccessTokenHandler implements AccessTokenHandlerInterface
+{
+    /** @param array<int, string> $scopes */
+    public function __construct(private array $scopes)
+    {
+    }
+
+    public function getUserBadgeFrom(#[\SensitiveParameter] string $accessToken): UserBadge
+    {
+        return new UserBadge('agent-platform', null, ['scopes' => $this->scopes]);
     }
 }
