@@ -126,7 +126,8 @@ final class UcpRequestSignatureVerifierTest extends TestCase
     {
         $profile = ['signing_keys' => [$this->toJwk($advertisedKey, self::KID)]];
         $httpClient = new MockHttpClient(new MockResponse((string) json_encode($profile), ['http_code' => 200]));
-        $fetcher = new UcpProfileFetcher($httpClient);
+        // テストの profile ホスト (agent.example) は実解決できないため、公開 IP へ解決するスタブを注入する。
+        $fetcher = new UcpProfileFetcher($httpClient, static fn (string $host): array => ['93.184.216.34']);
 
         return new UcpRequestSignatureVerifier($fetcher, $this->baseBuilder, $allowedDomains);
     }
