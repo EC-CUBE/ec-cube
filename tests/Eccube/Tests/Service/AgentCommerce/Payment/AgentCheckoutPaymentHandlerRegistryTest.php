@@ -37,7 +37,7 @@ final class AgentCheckoutPaymentHandlerRegistryTest extends TestCase
 
         $this->assertSame($card, $registry->resolveUcpByHandlerId('dev.ucp.payment.card'));
         $this->assertSame($bank, $registry->resolveUcpByHandlerId('dev.ucp.payment.bank'));
-        $this->assertNull($registry->resolveUcpByHandlerId('dev.ucp.payment.unknown'));
+        $this->assertNotInstanceOf(UcpPaymentHandlerInterface::class, $registry->resolveUcpByHandlerId('dev.ucp.payment.unknown'));
     }
 
     public function testUcpHandlersFiltersOnlyUcp(): void
@@ -60,18 +60,18 @@ final class AgentCheckoutPaymentHandlerRegistryTest extends TestCase
     {
         $registry = new AgentCheckoutPaymentHandlerRegistry([new InMemoryUcpPaymentHandler('x', supports: false)]);
 
-        $this->assertNull($registry->resolveForOrder(new Order()));
+        $this->assertNotInstanceOf(AgentCheckoutPaymentHandlerInterface::class, $registry->resolveForOrder(new Order()));
     }
 }
 
 /**
  * テスト用の UCP 決済ハンドラスタブ (本番の具象は決済プラグインが提供する).
  */
-final class InMemoryUcpPaymentHandler implements UcpPaymentHandlerInterface, AgentCheckoutPaymentHandlerInterface
+final readonly class InMemoryUcpPaymentHandler implements UcpPaymentHandlerInterface, AgentCheckoutPaymentHandlerInterface
 {
     public function __construct(
-        private readonly string $handlerId,
-        private readonly bool $supports = false,
+        private string $handlerId,
+        private bool $supports = false,
     ) {
     }
 

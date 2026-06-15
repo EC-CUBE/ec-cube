@@ -52,7 +52,7 @@ class UcpRequestSignatureVerifier
         private readonly Rfc9421SignatureBaseBuilder $signatureBaseBuilder,
         array $allowedDomains = [],
     ) {
-        $this->allowedDomains = array_map('strtolower', $allowedDomains);
+        $this->allowedDomains = array_map(strtolower(...), $allowedDomains);
     }
 
     /**

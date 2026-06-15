@@ -43,7 +43,7 @@ class UcpProfileFetcher
     ) {
         $this->hostResolver = $hostResolver !== null
             ? \Closure::fromCallable($hostResolver)
-            : static fn (string $host): array|false => gethostbynamel($host);
+            : gethostbynamel(...);
     }
 
     /**

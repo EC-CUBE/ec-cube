@@ -16,6 +16,7 @@ namespace Eccube\Service\AgentCommerce\Ucp\Signature;
 use Eccube\Service\AgentCommerce\Exception\UcpSignatureException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
@@ -79,7 +80,7 @@ class UcpSignatureSubscriber implements EventSubscriberInterface
     {
         $event->setController(static fn (): JsonResponse => new JsonResponse(
             ['code' => 'signature_invalid', 'content' => $message],
-            401,
+            Response::HTTP_UNAUTHORIZED,
         ));
     }
 }

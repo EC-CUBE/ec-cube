@@ -15,6 +15,7 @@ namespace Eccube\Service\AgentCommerce\Ucp;
 
 use Eccube\Entity\CheckoutSession;
 use Eccube\Entity\Master\AgentProtocol;
+use Eccube\Entity\Master\CheckoutSessionStatus;
 use Eccube\Entity\Order;
 use Eccube\Repository\ProductClassRepository;
 use Eccube\Service\AgentCommerce\AddressMappingService;
@@ -103,7 +104,7 @@ class UcpCheckoutSessionMapper
             $response['continue_url'] = $continueUrl;
         }
 
-        if ($session->getStatus()?->getId() === \Eccube\Entity\Master\CheckoutSessionStatus::COMPLETED) {
+        if ($session->getStatus()?->getId() === CheckoutSessionStatus::COMPLETED) {
             $response['order'] = [
                 'id' => (string) ($order->getOrderNo() ?? $order->getId()),
                 'permalink_url' => $this->urlResolver->orderPermalinkUrl((string) ($order->getOrderNo() ?? $order->getId())),
@@ -253,32 +254,32 @@ class UcpCheckoutSessionMapper
         $convert = fn (string $amount): int => $this->minorUnitConverter->toMinorUnits($amount, $currency);
 
         $totals = [
-            ['type' => 'subtotal', 'amount' => $convert((string) $order->getSubtotal())],
+            ['type' => 'subtotal', 'amount' => $convert($order->getSubtotal())],
         ];
 
-        $discount = $convert((string) $order->getDiscount());
+        $discount = $convert($order->getDiscount());
         if ($discount !== 0) {
             // UCP の discount は負の符号。
             $totals[] = ['type' => 'discount', 'amount' => -abs($discount)];
         }
 
-        $fulfillment = $convert((string) $order->getDeliveryFeeTotal());
+        $fulfillment = $convert($order->getDeliveryFeeTotal());
         if ($fulfillment !== 0) {
             $totals[] = ['type' => 'fulfillment', 'amount' => $fulfillment];
         }
 
         // 代引手数料 (Payment.charge を Order に集約済み) は fee 行に出す。
-        $fee = $convert((string) $order->getCharge());
+        $fee = $convert($order->getCharge());
         if ($fee !== 0) {
             $totals[] = ['type' => 'fee', 'amount' => $fee];
         }
 
-        $tax = $convert((string) $order->getTax());
+        $tax = $convert($order->getTax());
         if ($tax !== 0) {
             $totals[] = ['type' => 'tax', 'amount' => $tax];
         }
 
-        $totals[] = ['type' => 'total', 'amount' => $convert((string) $order->getPaymentTotal())];
+        $totals[] = ['type' => 'total', 'amount' => $convert($order->getPaymentTotal())];
 
         return $totals;
     }

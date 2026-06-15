@@ -39,7 +39,7 @@ final class Rfc9421SignatureBaseBuilderTest extends TestCase
     public function testBuildsSignatureBaseForPostWithDerivedAndHeaderComponents(): void
     {
         $body = '{"line_items":[]}';
-        $request = Request::create('https://shop.example/ucp/checkout-sessions', 'POST', [], [], [], [], $body);
+        $request = Request::create('https://shop.example/ucp/checkout-sessions', Request::METHOD_POST, [], [], [], [], $body);
         $request->headers->set('Content-Type', 'application/json');
         $request->headers->set('Content-Digest', 'sha-256=:abc:');
 
@@ -64,7 +64,7 @@ final class Rfc9421SignatureBaseBuilderTest extends TestCase
 
     public function testThrowsOnMissingSignedHeader(): void
     {
-        $request = Request::create('https://shop.example/ucp/checkout-sessions', 'POST');
+        $request = Request::create('https://shop.example/ucp/checkout-sessions', Request::METHOD_POST);
 
         $this->expectException(\InvalidArgumentException::class);
         $this->builder->build($request, ['content-digest'], '("content-digest")');
@@ -72,7 +72,7 @@ final class Rfc9421SignatureBaseBuilderTest extends TestCase
 
     public function testThrowsOnUnsupportedDerivedComponent(): void
     {
-        $request = Request::create('https://shop.example/ucp/checkout-sessions', 'POST');
+        $request = Request::create('https://shop.example/ucp/checkout-sessions', Request::METHOD_POST);
 
         $this->expectException(\InvalidArgumentException::class);
         $this->builder->build($request, ['@unknown'], '("@unknown")');

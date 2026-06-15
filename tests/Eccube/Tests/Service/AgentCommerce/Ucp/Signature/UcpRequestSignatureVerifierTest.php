@@ -109,7 +109,7 @@ final class UcpRequestSignatureVerifierTest extends TestCase
 
     public function testRejectsMissingUcpAgentHeader(): void
     {
-        $request = Request::create('https://shop.example/ucp/checkout-sessions', 'POST', [], [], [], [], '{}');
+        $request = Request::create('https://shop.example/ucp/checkout-sessions', Request::METHOD_POST, [], [], [], [], '{}');
         $verifier = $this->verifierWithKey($this->privateKey->getPublicKey());
 
         $this->expectException(UcpSignatureException::class);
@@ -138,7 +138,7 @@ final class UcpRequestSignatureVerifierTest extends TestCase
     private function signedRequest(PublicKey $publicKey, bool $tamperSignature = false): Request
     {
         $body = '{"line_items":[{"item":{"id":"1"},"quantity":1}]}';
-        $request = Request::create('https://shop.example/ucp/checkout-sessions', 'POST', [], [], [], [], $body);
+        $request = Request::create('https://shop.example/ucp/checkout-sessions', Request::METHOD_POST, [], [], [], [], $body);
         $request->headers->set('UCP-Agent', sprintf('profile="%s"', self::PROFILE_URL));
         $request->headers->set('Content-Type', 'application/json');
         $request->headers->set('Content-Digest', 'sha-256=:'.base64_encode(hash('sha256', $body, true)).':');
@@ -153,7 +153,7 @@ final class UcpRequestSignatureVerifierTest extends TestCase
         }
 
         $request->headers->set('Signature-Input', 'sig1='.$params);
-        $request->headers->set('Signature', 'sig1=:'.base64_encode($raw).':');
+        $request->headers->set('Signature', 'sig1=:'.base64_encode((string) $raw).':');
 
         return $request;
     }

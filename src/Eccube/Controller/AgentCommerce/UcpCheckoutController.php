@@ -17,6 +17,7 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\CheckoutSession;
 use Eccube\Entity\Master\AgentProtocol;
 use Eccube\Entity\Master\CheckoutSessionStatus;
+use Eccube\Entity\Order;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CheckoutSessionRepository;
 use Eccube\Repository\Master\AgentProtocolRepository;
@@ -35,6 +36,7 @@ use Eccube\Service\AgentCommerce\Ucp\UcpCheckoutSessionMapper;
 use Eccube\Service\AgentCommerce\Ucp\UcpMessageMapper;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -58,7 +60,6 @@ use Symfony\Component\Routing\Attribute\Route;
  * @see https://github.com/EC-CUBE/ec-cube/issues/6574
  * @see https://github.com/Universal-Commerce-Protocol/ucp UCP checkout-rest.md
  */
-#[Route(path: '/ucp')]
 class UcpCheckoutController extends AbstractController
 {
     public function __construct(
@@ -75,7 +76,7 @@ class UcpCheckoutController extends AbstractController
     ) {
     }
 
-    #[Route(path: '/checkout-sessions', name: 'ucp_checkout_create', methods: ['POST'])]
+    #[Route(path: '/ucp/checkout-sessions', name: 'ucp_checkout_create', methods: ['POST'])]
     public function create(Request $request): JsonResponse
     {
         $this->assertEnabled();
@@ -99,7 +100,7 @@ class UcpCheckoutController extends AbstractController
         });
     }
 
-    #[Route(path: '/checkout-sessions/{sessionId}', name: 'ucp_checkout_get', methods: ['GET'])]
+    #[Route(path: '/ucp/checkout-sessions/{sessionId}', name: 'ucp_checkout_get', methods: ['GET'])]
     public function get(string $sessionId): JsonResponse
     {
         $this->assertEnabled();
@@ -107,13 +108,13 @@ class UcpCheckoutController extends AbstractController
 
         $order = $session->getOrder();
         if ($order !== null) {
-            return new JsonResponse($this->mapper->buildResponseFromOrder($session, $order, []), 200);
+            return new JsonResponse($this->mapper->buildResponseFromOrder($session, $order, []), Response::HTTP_OK);
         }
 
-        return new JsonResponse($this->mapper->buildProvisionalResponse($session, $this->provisionalRequestFromSession($session), []), 200);
+        return new JsonResponse($this->mapper->buildProvisionalResponse($session, $this->provisionalRequestFromSession($session), []), Response::HTTP_OK);
     }
 
-    #[Route(path: '/checkout-sessions/{sessionId}', name: 'ucp_checkout_update', methods: ['PUT'])]
+    #[Route(path: '/ucp/checkout-sessions/{sessionId}', name: 'ucp_checkout_update', methods: ['PUT'])]
     public function update(Request $request, string $sessionId): JsonResponse
     {
         $this->assertEnabled();
@@ -134,7 +135,7 @@ class UcpCheckoutController extends AbstractController
         });
     }
 
-    #[Route(path: '/checkout-sessions/{sessionId}/complete', name: 'ucp_checkout_complete', methods: ['POST'])]
+    #[Route(path: '/ucp/checkout-sessions/{sessionId}/complete', name: 'ucp_checkout_complete', methods: ['POST'])]
     public function complete(Request $request, string $sessionId): JsonResponse
     {
         $this->assertEnabled();
@@ -171,7 +172,7 @@ class UcpCheckoutController extends AbstractController
         });
     }
 
-    #[Route(path: '/checkout-sessions/{sessionId}/cancel', name: 'ucp_checkout_cancel', methods: ['POST'])]
+    #[Route(path: '/ucp/checkout-sessions/{sessionId}/cancel', name: 'ucp_checkout_cancel', methods: ['POST'])]
     public function cancel(Request $request, string $sessionId): JsonResponse
     {
         $this->assertEnabled();
@@ -239,7 +240,7 @@ class UcpCheckoutController extends AbstractController
      *
      * @param array<string, mixed> $payload
      */
-    private function redeemPayment(\Eccube\Entity\Order $order, array $payload): void
+    private function redeemPayment(Order $order, array $payload): void
     {
         $instrument = $payload['payment']['instruments'][0] ?? null;
         if (!is_array($instrument)) {
@@ -279,7 +280,7 @@ class UcpCheckoutController extends AbstractController
         try {
             $result = $this->idempotencyStore->execute($key, $requestHash, $handler);
         } catch (IdempotencyConflictException $e) {
-            return new JsonResponse(['code' => 'idempotency_conflict', 'content' => $e->getMessage()], 409);
+            return new JsonResponse(['code' => 'idempotency_conflict', 'content' => $e->getMessage()], Response::HTTP_CONFLICT);
         }
 
         return new JsonResponse($result['body'], $result['status']);

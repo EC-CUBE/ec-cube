@@ -18,6 +18,8 @@ namespace Eccube\Tests\Web\AgentCommerce;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Tests\EccubeTestCase;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Layer 2 (エンドポイント単体) tests for UcpCheckoutController.
@@ -101,7 +103,7 @@ final class UcpCheckoutControllerTest extends EccubeTestCase
         $ProductClass = $this->createPurchasableProductClass('100');
 
         $created = $this->postJson('/ucp/checkout-sessions', $this->createPayload((int) $ProductClass->getId()));
-        $this->assertSame(201, $this->client->getResponse()->getStatusCode(), 'create は 201 を返す');
+        $this->assertSame(Response::HTTP_CREATED, $this->client->getResponse()->getStatusCode(), 'create は 201 を返す');
         $this->assertSame('2026-04-08', $created['ucp']['version'], 'UCP バージョンを広告する');
         $this->assertSame('ready_for_complete', $created['status'], '住所と在庫が揃えば ready_for_complete');
         $this->assertNotEmpty($created['id']);
@@ -109,8 +111,8 @@ final class UcpCheckoutControllerTest extends EccubeTestCase
 
         // totals: subtotal/total が必ず1つずつ存在する (MUST)。
         $types = array_column($created['totals'], 'type');
-        $this->assertSame(1, count(array_keys($types, 'subtotal', true)), 'totals は subtotal をちょうど1つ含む');
-        $this->assertSame(1, count(array_keys($types, 'total', true)), 'totals は total をちょうど1つ含む');
+        $this->assertCount(1, array_keys($types, 'subtotal', true), 'totals は subtotal をちょうど1つ含む');
+        $this->assertCount(1, array_keys($types, 'total', true), 'totals は total をちょうど1つ含む');
 
         // links: privacy_policy / terms_of_service (法令順守のため必須)。
         $linkTypes = array_column($created['links'], 'type');
@@ -120,12 +122,12 @@ final class UcpCheckoutControllerTest extends EccubeTestCase
         $sessionId = $created['id'];
 
         // GET 取得。
-        $this->client->request('GET', '/ucp/checkout-sessions/'.$sessionId);
-        $this->assertSame(200, $this->client->getResponse()->getStatusCode(), 'get は 200');
+        $this->client->request(Request::METHOD_GET, '/ucp/checkout-sessions/'.$sessionId);
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), 'get は 200');
 
         // complete。
         $completed = $this->postJson('/ucp/checkout-sessions/'.$sessionId.'/complete', []);
-        $this->assertSame(200, $this->client->getResponse()->getStatusCode(), 'complete は 200');
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), 'complete は 200');
         $this->assertSame('completed', $completed['status'], 'complete 後は completed');
         $this->assertArrayHasKey('order', $completed, 'complete 後は order を含む (MUST)');
         $this->assertNotEmpty($completed['order']['id']);
@@ -138,7 +140,7 @@ final class UcpCheckoutControllerTest extends EccubeTestCase
 
         $created = $this->postJson('/ucp/checkout-sessions', $this->createPayload((int) $ProductClass->getId(), withAddress: false));
 
-        $this->assertSame(201, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_CREATED, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
         $this->assertSame('incomplete', $created['status'], '住所未確定なら incomplete');
         $this->assertNotEmpty($created['messages'], '住所要求のメッセージを含む');
         $this->assertSame('recoverable', $created['messages'][0]['severity'], '住所は update で再入力可能なため recoverable');
@@ -146,8 +148,8 @@ final class UcpCheckoutControllerTest extends EccubeTestCase
 
     public function testGetUnknownSessionReturns404(): void
     {
-        $this->client->request('GET', '/ucp/checkout-sessions/ucp_cs_does_not_exist');
-        $this->assertSame(404, $this->client->getResponse()->getStatusCode(), '存在しない/他マーチャントのセッションは 404');
+        $this->client->request(Request::METHOD_GET, '/ucp/checkout-sessions/ucp_cs_does_not_exist');
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), '存在しない/他マーチャントのセッションは 404');
     }
 
     public function testIdempotentCreateReplaysSameSession(): void
@@ -168,7 +170,7 @@ final class UcpCheckoutControllerTest extends EccubeTestCase
         $sessionId = $created['id'];
 
         $canceled = $this->postJson('/ucp/checkout-sessions/'.$sessionId.'/cancel', []);
-        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
         $this->assertSame('canceled', $canceled['status'], 'cancel 後は canceled');
     }
 
@@ -178,7 +180,7 @@ final class UcpCheckoutControllerTest extends EccubeTestCase
         $baseInfo->setUcpCheckoutEnabled(false);
         $this->entityManager->flush();
 
-        $this->client->request('GET', '/ucp/checkout-sessions/ucp_cs_anything');
-        $this->assertSame(404, $this->client->getResponse()->getStatusCode(), 'ucp_checkout_enabled=false なら 404');
+        $this->client->request(Request::METHOD_GET, '/ucp/checkout-sessions/ucp_cs_anything');
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), 'ucp_checkout_enabled=false なら 404');
     }
 }
