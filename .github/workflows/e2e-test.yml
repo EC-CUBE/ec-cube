@@ -26,12 +26,14 @@ jobs:
           - admin-contents
           - admin-basicinfo
           - admin-system
+          - admin-refund-request
           - front-top
           - front-product
           - front-customer
           - front-other
           - front-order
           - front-mypage
+          - front-refund-request
           - front-invoice
         include:
           - db: pgsql

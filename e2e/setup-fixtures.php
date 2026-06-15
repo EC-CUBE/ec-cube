@@ -212,5 +212,29 @@ if (!$existingMultiCartProduct) {
     echo "  Multi-cart test product already exists\n";
 }
 
+// --- 返品申請テスト用（発送済み注文を持つテスト会員） ---
+$refundTestEmail = 'refund-test@test.test';
+$existingRefundCustomer = $entityManager->getRepository(Customer::class)->findOneBy(['email' => $refundTestEmail]);
+if (!$existingRefundCustomer) {
+    $refundCustomer = $generator->createCustomer($refundTestEmail);
+    $Status = $entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::ACTIVE);
+    $refundCustomer->setStatus($Status);
+    $entityManager->flush($refundCustomer);
+
+    $Delivery = $entityManager->getRepository(\Eccube\Entity\Delivery::class)->findAll()[0];
+    $Product = $entityManager->getRepository(\Eccube\Entity\Product::class)->find(2);
+    $Order = $generator->createOrder($refundCustomer, $Product->getProductClasses()->toArray(), $Delivery);
+    $DeliveredStatus = $entityManager->getRepository(OrderStatus::class)->find(OrderStatus::DELIVERED);
+    $Order->setOrderStatus($DeliveredStatus);
+    $Order->setOrderDate(new \DateTime());
+    foreach ($Order->getShippings() as $Shipping) {
+        $Shipping->setShippingDate(new \DateTime());
+    }
+    $entityManager->flush();
+    echo "  Created refund test customer with delivered order: $refundTestEmail\n";
+} else {
+    echo "  Refund test customer already exists: $refundTestEmail\n";
+}
+
 echo "Fixtures setup complete.\n";
 $kernel->shutdown();
