@@ -471,6 +471,9 @@ if (!class_exists(Product::class)) {
         #[ORM\Column(name: 'free_area', type: Types::TEXT, nullable: true)]
         private ?string $free_area = null;
 
+        #[ORM\Column(name: 'refund_allowed', type: Types::BOOLEAN, options: ['default' => true])]
+        private bool $refund_allowed = true;
+
         /**
          * @var \DateTime
          */
@@ -701,6 +704,24 @@ if (!class_exists(Product::class)) {
         public function getFreeArea(): ?string
         {
             return $this->free_area;
+        }
+
+        /**
+         * 返品申請を許可するかどうかを設定する.
+         */
+        public function setRefundAllowed(bool $refundAllowed): Product
+        {
+            $this->refund_allowed = $refundAllowed;
+
+            return $this;
+        }
+
+        /**
+         * 返品申請を許可するかどうかを取得する.
+         */
+        public function isRefundAllowed(): bool
+        {
+            return $this->refund_allowed;
         }
 
         /**
