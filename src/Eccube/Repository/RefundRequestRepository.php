@@ -54,8 +54,10 @@ class RefundRequestRepository extends AbstractRepository
                 ->setParameter('multi_like', '%'.$this->escapeLike($searchData['multi']).'%');
         }
 
-        // ステータス（複数選択）
-        if (!empty($searchData['status']) && is_iterable($searchData['status'])) {
+        // ステータス（複数選択）。Form の EntityType(multiple) は空でも ArrayCollection を返すため
+        // is_iterable は常に true。要素ゼロのまま IN 句を組むと "IN (NULL)" になり何もマッチしないので
+        // 必ず件数チェックする。
+        if (!empty($searchData['status']) && is_iterable($searchData['status']) && count($searchData['status']) > 0) {
             $qb->andWhere($qb->expr()->in('rr.RefundRequestStatus', ':status'))
                 ->setParameter('status', $searchData['status']);
         }

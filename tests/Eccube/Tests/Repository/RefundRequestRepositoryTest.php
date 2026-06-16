@@ -68,6 +68,20 @@ final class RefundRequestRepositoryTest extends EccubeTestCase
         $this->assertNotEmpty($result);
     }
 
+    public function testGetQueryBuilderBySearchDataEmptyStatusCollection(): void
+    {
+        // Form の EntityType(multiple) は空でも ArrayCollection を返す。
+        // この空コレクションで status 条件が IN (NULL) になって全件 0 になる回帰を防ぐ。
+        $this->createTestRefundRequest();
+
+        $qb = $this->refundRequestRepository->getQueryBuilderBySearchData([
+            'status' => new \Doctrine\Common\Collections\ArrayCollection(),
+        ]);
+        $result = $qb->getQuery()->getResult();
+
+        $this->assertNotEmpty($result, '空 status コレクションは全件表示でなければならない');
+    }
+
     public function testGetQueryBuilderBySearchDataByStatus(): void
     {
         $this->createTestRefundRequest();
