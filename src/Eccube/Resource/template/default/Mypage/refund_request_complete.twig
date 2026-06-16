@@ -21,15 +21,13 @@ file that was distributed with this source code.
                 <h1>{{ 'front.mypage.refund_request.complete_title'|trans }}</h1>
             </div>
             {% include 'Mypage/navi.twig' %}
-        </div>
 
-        <div class="ec-orderRole">
-            <div class="ec-orderRole__detail">
-                <div class="ec-reportHeading">
-                    <h2>{{ 'front.mypage.refund_request.complete_message'|trans }}</h2>
-                </div>
-                <p class="ec-reportDescription">{{ 'front.mypage.refund_request.complete_description'|trans }}</p>
+            <div class="ec-reportHeading">
+                <h2>{{ 'front.mypage.refund_request.complete_message'|trans }}</h2>
+            </div>
+            <p class="ec-reportDescription">{{ 'front.mypage.refund_request.complete_description'|trans }}</p>
 
+            <div class="ec-RegisterRole__actions">
                 <div class="ec-off4Grid">
                     <div class="ec-off4Grid__cell">
                         <a href="{{ url('mypage') }}" class="ec-blockBtn--cancel">{{ 'front.mypage.refund_request.back_to_mypage'|trans }}</a>
