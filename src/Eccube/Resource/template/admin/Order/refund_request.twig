@@ -85,7 +85,7 @@ file that was distributed with this source code.
     </div>
 
     {% if pagination is not empty and pagination|length > 0 %}
-        <div class="c-outsideBlock--small mb-5">
+        <div class="c-outsideBlock">
             <div class="d-flex justify-content-between mb-2">
                 <div>
                     <span class="fw-bold">{{ 'admin.common.search_result'|trans({ '%count%': pagination.getTotalItemCount }) }}</span>
@@ -147,11 +147,15 @@ file that was distributed with this source code.
                 </div>
             </div>
 
-            {% include "@admin/pager.twig" with { 'pages': pagination.getPaginationData, 'routes': 'admin_refund_request_page' } %}
+            <div class="row justify-content-md-center pb-4 mb-4">
+                {% if pagination.totalItemCount > 0 %}
+                    {% include "@admin/pager.twig" with { 'pages': pagination.getPaginationData, 'routes': 'admin_refund_request_page' } %}
+                {% endif %}
+            </div>
         </div>
     {% elseif has_errors %}
     {% else %}
-        <div class="c-outsideBlock--small">
+        <div class="c-outsideBlock">
             <div class="card rounded border-0">
                 <div class="card-body p-4">
                     <div class="text-center text-muted mb-4 h5">{{ 'admin.common.search_no_result'|trans }}</div>
