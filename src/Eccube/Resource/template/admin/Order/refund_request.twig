@@ -143,7 +143,13 @@ file that was distributed with this source code.
     {% elseif has_errors %}
     {% else %}
         <div class="c-outsideBlock--small">
-            <p>{{ 'admin.common.search_no_result'|trans }}</p>
+            <div class="card rounded border-0">
+                <div class="card-body p-4">
+                    <div class="text-center text-muted mb-4 h5">{{ 'admin.common.search_no_result'|trans }}</div>
+                    <div class="text-center text-muted">{{ 'admin.common.search_try_change_condition'|trans }}</div>
+                    <div class="text-center text-muted">{{ 'admin.common.search_try_advanced_search'|trans }}</div>
+                </div>
+            </div>
         </div>
     {% endif %}
 {% endblock %}
