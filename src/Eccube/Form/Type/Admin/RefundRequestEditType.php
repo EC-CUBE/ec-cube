@@ -33,6 +33,7 @@ class RefundRequestEditType extends AbstractType
      *
      * @param array<string, mixed> $options
      */
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         /** @var RefundRequest $RefundRequest */
@@ -60,6 +61,7 @@ class RefundRequestEditType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
@@ -71,6 +73,7 @@ class RefundRequestEditType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'admin_refund_request_edit';

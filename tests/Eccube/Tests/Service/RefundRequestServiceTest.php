@@ -24,6 +24,7 @@ use Eccube\Service\RefundRequestService;
 use Eccube\Tests\EccubeTestCase;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpKernel\Debug\TraceableEventDispatcher;
 use Symfony\Component\Mime\Email;
 
 final class RefundRequestServiceTest extends EccubeTestCase
@@ -267,8 +268,8 @@ final class RefundRequestServiceTest extends EccubeTestCase
         $email = $this->getMailerMessage();
         $body = $email->getTextBody();
 
-        $this->assertStringContainsString($Order->getOrderNo(), $body);
-        $this->assertStringContainsString('メール本文検証用の理由テキスト', $body);
+        $this->assertStringContainsString($Order->getOrderNo(), (string) $body);
+        $this->assertStringContainsString('メール本文検証用の理由テキスト', (string) $body);
     }
 
     public function testChangeStatusDispatchesEvent(): void
@@ -290,7 +291,7 @@ final class RefundRequestServiceTest extends EccubeTestCase
         $this->refundRequestService->createRefundRequest($RefundRequest);
 
         $dispatched = false;
-        $dispatcher = static::getContainer()->get('event_dispatcher');
+        $dispatcher = static::getContainer()->get(TraceableEventDispatcher::class);
         $dispatcher->addListener(EccubeEvents::REFUND_REQUEST_STATUS_CHANGE, function () use (&$dispatched): void {
             $dispatched = true;
         });
@@ -303,6 +304,7 @@ final class RefundRequestServiceTest extends EccubeTestCase
     private function setOrderStatus(Order $Order, int $statusId): void
     {
         $Status = $this->entityManager->find(OrderStatus::class, $statusId);
+        $this->assertInstanceOf(OrderStatus::class, $Status);
         $Order->setOrderStatus($Status);
     }
 }

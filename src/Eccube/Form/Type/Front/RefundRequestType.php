@@ -48,6 +48,7 @@ class RefundRequestType extends AbstractType
      *
      * @param array<string, mixed> $options
      */
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $maxQuantity = $options['max_quantity'];
@@ -95,6 +96,7 @@ class RefundRequestType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
@@ -107,6 +109,7 @@ class RefundRequestType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'refund_request';

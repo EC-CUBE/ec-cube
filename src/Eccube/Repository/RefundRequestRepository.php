@@ -47,7 +47,7 @@ class RefundRequestRepository extends AbstractRepository
 
         // 複合検索（申請ID・注文番号・会員ID・会員名）
         if (isset($searchData['multi']) && StringUtil::isNotBlank($searchData['multi'])) {
-            $multi = preg_match('/^\d{0,10}$/', $searchData['multi']) ? $searchData['multi'] : null;
+            $multi = preg_match('/^\d{0,10}$/', (string) $searchData['multi']) ? $searchData['multi'] : null;
             $qb->andWhere('rr.id = :multi_id OR o.order_no LIKE :multi_like OR c.id = :multi_id '
                 .'OR CONCAT(c.name01, c.name02) LIKE :multi_like')
                 ->setParameter('multi_id', $multi)

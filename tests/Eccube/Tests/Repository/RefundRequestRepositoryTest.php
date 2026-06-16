@@ -153,6 +153,7 @@ final class RefundRequestRepositoryTest extends EccubeTestCase
         $OrderItems = $Order->getProductOrderItems();
         $OrderItem = $OrderItems[0];
         $NewStatus = $this->entityManager->find(RefundRequestStatus::class, RefundRequestStatus::NEW);
+        $this->assertInstanceOf(RefundRequestStatus::class, $NewStatus);
 
         $rr1 = new RefundRequest();
         $rr1->setOrder($Order);
@@ -189,6 +190,7 @@ final class RefundRequestRepositoryTest extends EccubeTestCase
         $OrderItem = $Order->getProductOrderItems()[0];
 
         $NewStatus = $this->entityManager->find(RefundRequestStatus::class, RefundRequestStatus::NEW);
+        $this->assertInstanceOf(RefundRequestStatus::class, $NewStatus);
 
         $RefundRequest = new RefundRequest();
         $RefundRequest->setOrder($Order);
@@ -207,6 +209,7 @@ final class RefundRequestRepositoryTest extends EccubeTestCase
     private function setOrderStatus(Order $Order, int $statusId): void
     {
         $Status = $this->entityManager->find(OrderStatus::class, $statusId);
+        $this->assertInstanceOf(OrderStatus::class, $Status);
         $Order->setOrderStatus($Status);
     }
 }

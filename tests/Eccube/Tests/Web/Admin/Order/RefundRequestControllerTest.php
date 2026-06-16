@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Web\Admin\Order;
 
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\RefundRequestStatus;
 use Eccube\Entity\Order;
@@ -45,7 +46,7 @@ final class RefundRequestControllerTest extends AbstractAdminWebTestCase
     {
         $RefundRequest = $this->createTestRefundRequest();
 
-        $crawler = $this->client->request(
+        $this->client->request(
             Request::METHOD_POST,
             $this->generateUrl('admin_refund_request'),
             [
@@ -62,7 +63,7 @@ final class RefundRequestControllerTest extends AbstractAdminWebTestCase
     {
         $this->createTestRefundRequest();
 
-        $crawler = $this->client->request(
+        $this->client->request(
             Request::METHOD_POST,
             $this->generateUrl('admin_refund_request'),
             [
@@ -166,7 +167,7 @@ final class RefundRequestControllerTest extends AbstractAdminWebTestCase
         );
 
         $response = $this->client->getResponse();
-        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode(), (string) $response->getContent());
 
         $data = json_decode($response->getContent(), true);
         $this->assertFalse($data['success']);
@@ -184,7 +185,7 @@ final class RefundRequestControllerTest extends AbstractAdminWebTestCase
             ]
         );
 
-        $this->assertSame(Response::HTTP_BAD_REQUEST, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_BAD_REQUEST, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 
     public function testExport(): void
@@ -203,7 +204,7 @@ final class RefundRequestControllerTest extends AbstractAdminWebTestCase
         $response = $this->client->getResponse();
         $this->assertTrue($response->isSuccessful());
         $this->assertSame('application/octet-stream', $response->headers->get('Content-Type'));
-        $this->assertStringContainsString('refund_request_', $response->headers->get('Content-Disposition'));
+        $this->assertStringContainsString('refund_request_', (string) $response->headers->get('Content-Disposition'));
     }
 
     public function testEditNotFound(): void
@@ -213,7 +214,7 @@ final class RefundRequestControllerTest extends AbstractAdminWebTestCase
             $this->generateUrl('admin_refund_request_edit', ['id' => 999999])
         );
 
-        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 
     public function testPagination(): void
@@ -287,7 +288,7 @@ final class RefundRequestControllerTest extends AbstractAdminWebTestCase
             ])
         );
 
-        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 
     public function testDownloadFilePathTraversal(): void
@@ -311,7 +312,7 @@ final class RefundRequestControllerTest extends AbstractAdminWebTestCase
             ])
         );
 
-        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 
     private function createTestRefundRequest(): RefundRequest
@@ -323,6 +324,7 @@ final class RefundRequestControllerTest extends AbstractAdminWebTestCase
 
         $OrderItem = $Order->getProductOrderItems()[0];
         $NewStatus = $this->entityManager->find(RefundRequestStatus::class, RefundRequestStatus::NEW);
+        $this->assertInstanceOf(RefundRequestStatus::class, $NewStatus);
 
         $RefundRequest = new RefundRequest();
         $RefundRequest->setOrder($Order);
@@ -341,12 +343,13 @@ final class RefundRequestControllerTest extends AbstractAdminWebTestCase
     private function setOrderStatus(Order $Order, int $statusId): void
     {
         $Status = $this->entityManager->find(OrderStatus::class, $statusId);
+        $this->assertInstanceOf(OrderStatus::class, $Status);
         $Order->setOrderStatus($Status);
     }
 
     private function createTestFile(RefundRequest $RefundRequest): RefundRequestFile
     {
-        $dir = static::getContainer()->get('Eccube\Common\EccubeConfig')['eccube_save_refund_request_file_dir'];
+        $dir = static::getContainer()->get(EccubeConfig::class)['eccube_save_refund_request_file_dir'];
         if (!is_dir($dir)) {
             mkdir($dir, 0755, true);
         }

@@ -182,7 +182,7 @@ class RefundRequestController extends AbstractController
                 try {
                     $this->refundRequestService->changeStatus($RefundRequest, $transition);
                     $this->addSuccess('admin.common.save_complete', 'admin');
-                } catch (\InvalidArgumentException $e) {
+                } catch (\InvalidArgumentException) {
                     $this->addError('admin.order.refund_request.transition_error', 'admin');
                 }
             } else {

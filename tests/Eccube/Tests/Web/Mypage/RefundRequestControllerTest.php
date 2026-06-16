@@ -15,10 +15,12 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Web\Mypage;
 
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\RefundRequestStatus;
 use Eccube\Entity\Order;
+use Eccube\Entity\Product;
 use Eccube\Entity\RefundRequest;
 use Eccube\Entity\RefundRequestFile;
 use Eccube\Tests\Web\AbstractWebTestCase;
@@ -169,7 +171,7 @@ final class RefundRequestControllerTest extends AbstractWebTestCase
             ])
         );
 
-        $this->assertSame(Response::HTTP_FORBIDDEN, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_FORBIDDEN, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 
     public function testNotFoundForOtherCustomerOrder(): void
@@ -187,7 +189,7 @@ final class RefundRequestControllerTest extends AbstractWebTestCase
             ])
         );
 
-        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 
     public function testNotFoundForInvalidOrderItemId(): void
@@ -202,7 +204,7 @@ final class RefundRequestControllerTest extends AbstractWebTestCase
             ])
         );
 
-        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 
     public function testNotFoundForOtherCustomerHistory(): void
@@ -220,13 +222,14 @@ final class RefundRequestControllerTest extends AbstractWebTestCase
             ])
         );
 
-        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 
     public function testAccessDeniedForRefundNotAllowed(): void
     {
         $OrderItem = $this->Order->getProductOrderItems()[0];
         $Product = $OrderItem->getProduct();
+        $this->assertInstanceOf(Product::class, $Product);
         $Product->setRefundAllowed(false);
         $this->entityManager->flush();
 
@@ -240,7 +243,7 @@ final class RefundRequestControllerTest extends AbstractWebTestCase
             ])
         );
 
-        $this->assertSame(Response::HTTP_FORBIDDEN, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_FORBIDDEN, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 
     public function testValidationQuantityZero(): void
@@ -248,7 +251,7 @@ final class RefundRequestControllerTest extends AbstractWebTestCase
         $this->loginTo($this->Customer);
         $OrderItem = $this->Order->getProductOrderItems()[0];
 
-        $crawler = $this->client->request(
+        $this->client->request(
             Request::METHOD_POST,
             $this->generateUrl('mypage_refund_request', [
                 'order_no' => $this->Order->getOrderNo(),
@@ -272,7 +275,7 @@ final class RefundRequestControllerTest extends AbstractWebTestCase
         $this->loginTo($this->Customer);
         $OrderItem = $this->Order->getProductOrderItems()[0];
 
-        $crawler = $this->client->request(
+        $this->client->request(
             Request::METHOD_POST,
             $this->generateUrl('mypage_refund_request', [
                 'order_no' => $this->Order->getOrderNo(),
@@ -327,7 +330,7 @@ final class RefundRequestControllerTest extends AbstractWebTestCase
             ])
         );
 
-        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 
     public function testDownloadFileNotFound(): void
@@ -345,7 +348,7 @@ final class RefundRequestControllerTest extends AbstractWebTestCase
             ])
         );
 
-        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 
     public function testDownloadFilePathTraversal(): void
@@ -372,18 +375,20 @@ final class RefundRequestControllerTest extends AbstractWebTestCase
             ])
         );
 
-        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 
     private function setOrderStatus(Order $Order, int $statusId): void
     {
         $Status = $this->entityManager->find(OrderStatus::class, $statusId);
+        $this->assertInstanceOf(OrderStatus::class, $Status);
         $Order->setOrderStatus($Status);
     }
 
     private function createRefundRequest(Order $Order, mixed $OrderItem, Customer $Customer): RefundRequest
     {
         $NewStatus = $this->entityManager->find(RefundRequestStatus::class, RefundRequestStatus::NEW);
+        $this->assertInstanceOf(RefundRequestStatus::class, $NewStatus);
 
         $RefundRequest = new RefundRequest();
         $RefundRequest->setOrder($Order);
@@ -401,7 +406,7 @@ final class RefundRequestControllerTest extends AbstractWebTestCase
 
     private function createTestFile(RefundRequest $RefundRequest): RefundRequestFile
     {
-        $dir = static::getContainer()->get('Eccube\Common\EccubeConfig')['eccube_save_refund_request_file_dir'];
+        $dir = static::getContainer()->get(EccubeConfig::class)['eccube_save_refund_request_file_dir'];
         if (!is_dir($dir)) {
             mkdir($dir, 0755, true);
         }

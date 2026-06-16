@@ -33,6 +33,7 @@ class SearchRefundRequestType extends AbstractType
      *
      * @param array<string, mixed> $options
      */
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -79,6 +80,7 @@ class SearchRefundRequestType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
@@ -89,6 +91,7 @@ class SearchRefundRequestType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getBlockPrefix(): string
     {
         return 'admin_search_refund_request';

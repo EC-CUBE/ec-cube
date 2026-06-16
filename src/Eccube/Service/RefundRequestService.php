@@ -58,9 +58,7 @@ class RefundRequestService
 
         $sortNo = 1;
         foreach ($uploadedFiles as $uploadedFile) {
-            if ($uploadedFile instanceof UploadedFile) {
-                $RefundRequest->addRefundRequestFile($this->saveFile($uploadedFile, $sortNo++));
-            }
+            $RefundRequest->addRefundRequestFile($this->saveFile($uploadedFile, $sortNo++));
         }
 
         $this->entityManager->persist($RefundRequest);

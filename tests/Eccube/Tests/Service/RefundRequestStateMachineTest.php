@@ -31,12 +31,7 @@ final class RefundRequestStateMachineTest extends EccubeTestCase
         $this->stateMachine = static::getContainer()->get(RefundRequestStateMachine::class);
     }
 
-    /**
-     * @param string $transition
-     * @param int $fromId
-     * @param bool $expected
-     */
-    #[DataProvider('canProvider')]
+    #[DataProvider(methodName: 'canProvider')]
     public function testCan(string $transition, int $fromId, bool $expected): void
     {
         $RefundRequest = $this->createRefundRequestWithStatus($fromId);
