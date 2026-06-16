@@ -39,12 +39,13 @@ test.describe('Admin Refund Request', () => {
     await editBtn.click();
     await page.waitForLoadState('load');
 
-    // 詳細ページの項目確認
+    // 詳細ページの項目確認（申請内容カードに各項目が並ぶ）
     await expect(page.locator('.c-pageTitle')).toContainText('返品申請詳細');
-    await expect(page.locator('.card-body')).toContainText('申請ID');
-    await expect(page.locator('.card-body')).toContainText('ステータス');
-    await expect(page.locator('.card-body')).toContainText('注文番号');
-    await expect(page.locator('.card-body')).toContainText('返品理由');
+    const detailCard = page.locator('.card-body').first();
+    await expect(detailCard).toContainText('申請ID');
+    await expect(detailCard).toContainText('ステータス');
+    await expect(detailCard).toContainText('注文番号');
+    await expect(detailCard).toContainText('返品理由');
   });
 
   test('管理者メモを保存できる', async ({ page }) => {
