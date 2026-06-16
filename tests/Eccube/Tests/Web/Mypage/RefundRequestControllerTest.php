@@ -20,6 +20,7 @@ use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\RefundRequestStatus;
 use Eccube\Entity\Order;
 use Eccube\Entity\RefundRequest;
+use Eccube\Entity\RefundRequestFile;
 use Eccube\Tests\Web\AbstractWebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -290,6 +291,90 @@ final class RefundRequestControllerTest extends AbstractWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
+    public function testDownloadFile(): void
+    {
+        $OrderItem = $this->Order->getProductOrderItems()[0];
+        $RefundRequest = $this->createRefundRequest($this->Order, $OrderItem, $this->Customer);
+        $file = $this->createTestFile($RefundRequest);
+
+        $this->loginTo($this->Customer);
+
+        $this->client->request(
+            Request::METHOD_GET,
+            $this->generateUrl('mypage_refund_request_file', [
+                'refund_request_id' => $RefundRequest->getId(),
+                'file_id' => $file->getId(),
+            ])
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
+    public function testDownloadFileOtherCustomer(): void
+    {
+        $OrderItem = $this->Order->getProductOrderItems()[0];
+        $RefundRequest = $this->createRefundRequest($this->Order, $OrderItem, $this->Customer);
+        $file = $this->createTestFile($RefundRequest);
+
+        $OtherCustomer = $this->createCustomer();
+        $this->loginTo($OtherCustomer);
+
+        $this->client->request(
+            Request::METHOD_GET,
+            $this->generateUrl('mypage_refund_request_file', [
+                'refund_request_id' => $RefundRequest->getId(),
+                'file_id' => $file->getId(),
+            ])
+        );
+
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function testDownloadFileNotFound(): void
+    {
+        $OrderItem = $this->Order->getProductOrderItems()[0];
+        $RefundRequest = $this->createRefundRequest($this->Order, $OrderItem, $this->Customer);
+
+        $this->loginTo($this->Customer);
+
+        $this->client->request(
+            Request::METHOD_GET,
+            $this->generateUrl('mypage_refund_request_file', [
+                'refund_request_id' => $RefundRequest->getId(),
+                'file_id' => 999999,
+            ])
+        );
+
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function testDownloadFilePathTraversal(): void
+    {
+        $OrderItem = $this->Order->getProductOrderItems()[0];
+        $RefundRequest = $this->createRefundRequest($this->Order, $OrderItem, $this->Customer);
+
+        $file = new RefundRequestFile();
+        $file->setFileName('../../etc/passwd');
+        $file->setMimeType('text/plain');
+        $file->setFileSize(100);
+        $file->setSortNo(1);
+        $RefundRequest->addRefundRequestFile($file);
+        $this->entityManager->persist($file);
+        $this->entityManager->flush();
+
+        $this->loginTo($this->Customer);
+
+        $this->client->request(
+            Request::METHOD_GET,
+            $this->generateUrl('mypage_refund_request_file', [
+                'refund_request_id' => $RefundRequest->getId(),
+                'file_id' => $file->getId(),
+            ])
+        );
+
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
+    }
+
     private function setOrderStatus(Order $Order, int $statusId): void
     {
         $Status = $this->entityManager->find(OrderStatus::class, $statusId);
@@ -312,5 +397,28 @@ final class RefundRequestControllerTest extends AbstractWebTestCase
         $this->entityManager->flush();
 
         return $RefundRequest;
+    }
+
+    private function createTestFile(RefundRequest $RefundRequest): RefundRequestFile
+    {
+        $dir = static::getContainer()->get('Eccube\Common\EccubeConfig')['eccube_save_refund_request_file_dir'];
+        if (!is_dir($dir)) {
+            mkdir($dir, 0755, true);
+        }
+
+        $fileName = bin2hex(random_bytes(16)).'.jpg';
+        file_put_contents($dir.'/'.$fileName, str_repeat("\x00", 100));
+
+        $file = new RefundRequestFile();
+        $file->setFileName($fileName);
+        $file->setMimeType('image/jpeg');
+        $file->setFileSize(100);
+        $file->setSortNo(1);
+        $RefundRequest->addRefundRequestFile($file);
+
+        $this->entityManager->persist($file);
+        $this->entityManager->flush();
+
+        return $file;
     }
 }

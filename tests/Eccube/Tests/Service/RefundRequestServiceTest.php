@@ -19,9 +19,12 @@ use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\RefundRequestStatus;
 use Eccube\Entity\Order;
 use Eccube\Entity\RefundRequest;
+use Eccube\Event\EccubeEvents;
 use Eccube\Service\RefundRequestService;
 use Eccube\Tests\EccubeTestCase;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Mime\Email;
 
 final class RefundRequestServiceTest extends EccubeTestCase
 {
@@ -172,6 +175,129 @@ final class RefundRequestServiceTest extends EccubeTestCase
         $transitions = $this->refundRequestService->getAvailableTransitions($RefundRequest);
         $this->assertArrayHasKey('start_processing', $transitions);
         $this->assertCount(1, $transitions);
+    }
+
+    public function testCreateRefundRequestWithFiles(): void
+    {
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+        $this->setOrderStatus($Order, OrderStatus::DELIVERED);
+        $this->entityManager->flush();
+
+        $OrderItem = $Order->getProductOrderItems()[0];
+
+        $RefundRequest = new RefundRequest();
+        $RefundRequest->setOrder($Order);
+        $RefundRequest->setOrderItem($OrderItem);
+        $RefundRequest->setCustomer($Customer);
+        $RefundRequest->setQuantity('1');
+        $RefundRequest->setReason('ファイル添付テスト');
+
+        $tmpFile = tempnam(sys_get_temp_dir(), 'refund_test_');
+        file_put_contents($tmpFile, str_repeat("\x00", 100));
+        $uploadedFile = new UploadedFile($tmpFile, 'test.jpg', 'image/jpeg', null, true);
+
+        $result = $this->refundRequestService->createRefundRequest($RefundRequest, [$uploadedFile]);
+
+        $this->assertNotNull($result->getId());
+        $this->assertCount(1, $result->getRefundRequestFiles());
+
+        $file = $result->getRefundRequestFiles()->first();
+        $this->assertNotNull($file->getMimeType());
+        $this->assertSame(1, $file->getSortNo());
+        $this->assertNotNull($file->getFileName());
+        $this->assertEmailCount(1);
+    }
+
+    public function testCreateRefundRequestWithMultipleFiles(): void
+    {
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+        $this->setOrderStatus($Order, OrderStatus::DELIVERED);
+        $this->entityManager->flush();
+
+        $OrderItem = $Order->getProductOrderItems()[0];
+
+        $RefundRequest = new RefundRequest();
+        $RefundRequest->setOrder($Order);
+        $RefundRequest->setOrderItem($OrderItem);
+        $RefundRequest->setCustomer($Customer);
+        $RefundRequest->setQuantity('1');
+        $RefundRequest->setReason('複数ファイル添付テスト');
+
+        $files = [];
+        for ($i = 0; $i < 3; $i++) {
+            $tmpFile = tempnam(sys_get_temp_dir(), 'refund_test_');
+            file_put_contents($tmpFile, str_repeat("\x00", 100));
+            $files[] = new UploadedFile($tmpFile, "test_{$i}.png", 'image/png', null, true);
+        }
+
+        $result = $this->refundRequestService->createRefundRequest($RefundRequest, $files);
+
+        $this->assertCount(3, $result->getRefundRequestFiles());
+
+        $sortNos = [];
+        foreach ($result->getRefundRequestFiles() as $file) {
+            $sortNos[] = $file->getSortNo();
+        }
+        $this->assertSame([1, 2, 3], $sortNos);
+    }
+
+    public function testMailBodyContainsRefundRequestInfo(): void
+    {
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+        $this->setOrderStatus($Order, OrderStatus::DELIVERED);
+        $this->entityManager->flush();
+
+        $OrderItem = $Order->getProductOrderItems()[0];
+
+        $RefundRequest = new RefundRequest();
+        $RefundRequest->setOrder($Order);
+        $RefundRequest->setOrderItem($OrderItem);
+        $RefundRequest->setCustomer($Customer);
+        $RefundRequest->setQuantity('3');
+        $RefundRequest->setReason('メール本文検証用の理由テキスト');
+
+        $this->refundRequestService->createRefundRequest($RefundRequest);
+
+        $this->assertEmailCount(1);
+
+        /** @var Email $email */
+        $email = $this->getMailerMessage();
+        $body = $email->getTextBody();
+
+        $this->assertStringContainsString($Order->getOrderNo(), $body);
+        $this->assertStringContainsString('メール本文検証用の理由テキスト', $body);
+    }
+
+    public function testChangeStatusDispatchesEvent(): void
+    {
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+        $this->setOrderStatus($Order, OrderStatus::DELIVERED);
+        $this->entityManager->flush();
+
+        $OrderItem = $Order->getProductOrderItems()[0];
+
+        $RefundRequest = new RefundRequest();
+        $RefundRequest->setOrder($Order);
+        $RefundRequest->setOrderItem($OrderItem);
+        $RefundRequest->setCustomer($Customer);
+        $RefundRequest->setQuantity('1');
+        $RefundRequest->setReason('イベント検証');
+
+        $this->refundRequestService->createRefundRequest($RefundRequest);
+
+        $dispatched = false;
+        $dispatcher = static::getContainer()->get('event_dispatcher');
+        $dispatcher->addListener(EccubeEvents::REFUND_REQUEST_STATUS_CHANGE, function () use (&$dispatched): void {
+            $dispatched = true;
+        });
+
+        $this->refundRequestService->changeStatus($RefundRequest, 'start_processing');
+
+        $this->assertTrue($dispatched);
     }
 
     private function setOrderStatus(Order $Order, int $statusId): void

@@ -18,6 +18,7 @@ namespace Eccube\Tests\Form\Type\Front;
 use Eccube\Form\Type\Front\RefundRequestType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 final class RefundRequestTypeTest extends AbstractTypeTestCase
 {
@@ -122,5 +123,77 @@ final class RefundRequestTypeTest extends AbstractTypeTestCase
         ]);
 
         $this->assertFalse($this->form->isValid());
+    }
+
+    public function testValidWithFiles(): void
+    {
+        $tmpFile = tempnam(sys_get_temp_dir(), 'refund_type_').'.gif';
+        // GIF89a ヘッダ
+        file_put_contents($tmpFile, "GIF89a\x01\x00\x01\x00\x80\x00\x00\xff\xff\xff\x00\x00\x00!\xf9\x04\x00\x00\x00\x00\x00,\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x02D\x01\x00;");
+
+        $form = $this->formFactory
+            ->createBuilder(RefundRequestType::class, null, [
+                'csrf_protection' => false,
+                'max_quantity' => 10,
+            ])
+            ->getForm();
+
+        $form->submit([
+            'quantity' => '1',
+            'reason' => 'テスト返品理由',
+            'files' => [
+                new UploadedFile($tmpFile, 'test.gif', 'image/gif', null, true),
+            ],
+        ]);
+
+        $this->assertTrue($form->isValid());
+    }
+
+    public function testInvalidFilesExceedMaxCount(): void
+    {
+        $files = [];
+        for ($i = 0; $i < 4; $i++) {
+            $tmpFile = tempnam(sys_get_temp_dir(), 'refund_type_');
+            file_put_contents($tmpFile, str_repeat("\x00", 100));
+            $files[] = new UploadedFile($tmpFile, "test_{$i}.jpg", 'image/jpeg', null, true);
+        }
+
+        $form = $this->formFactory
+            ->createBuilder(RefundRequestType::class, null, [
+                'csrf_protection' => false,
+                'max_quantity' => 10,
+            ])
+            ->getForm();
+
+        $form->submit([
+            'quantity' => '1',
+            'reason' => 'テスト返品理由',
+            'files' => $files,
+        ]);
+
+        $this->assertFalse($form->isValid());
+    }
+
+    public function testInvalidFileDisallowedMimeType(): void
+    {
+        $tmpFile = tempnam(sys_get_temp_dir(), 'refund_type_');
+        file_put_contents($tmpFile, '%PDF-1.4');
+
+        $form = $this->formFactory
+            ->createBuilder(RefundRequestType::class, null, [
+                'csrf_protection' => false,
+                'max_quantity' => 10,
+            ])
+            ->getForm();
+
+        $form->submit([
+            'quantity' => '1',
+            'reason' => 'テスト返品理由',
+            'files' => [
+                new UploadedFile($tmpFile, 'test.pdf', 'application/pdf', null, true),
+            ],
+        ]);
+
+        $this->assertFalse($form->isValid());
     }
 }
