@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Repository;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\RefundRequestStatus;
 use Eccube\Entity\Order;
@@ -75,7 +76,7 @@ final class RefundRequestRepositoryTest extends EccubeTestCase
         $this->createTestRefundRequest();
 
         $qb = $this->refundRequestRepository->getQueryBuilderBySearchData([
-            'status' => new \Doctrine\Common\Collections\ArrayCollection(),
+            'status' => new ArrayCollection(),
         ]);
         $result = $qb->getQuery()->getResult();
 

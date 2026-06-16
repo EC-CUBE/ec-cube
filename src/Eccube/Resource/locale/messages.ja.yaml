@@ -297,6 +297,8 @@ front.mypage.refund_request.status: ステータス
 front.mypage.refund_request.no_history: 返品申請履歴はありません。
 front.mypage.refund_request.apply: 返品申請
 front.mypage.refund_request.history: 返品申請履歴
+front.mypage.refund_request.error: 返品申請の処理に失敗しました。
+front.mypage.refund_request.invalid_token: 不正なリクエストです。お手数ですがやり直してください。
 
 #------------------------------------------------------------------------------------
 # 商品

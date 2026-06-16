@@ -225,7 +225,7 @@ if (!class_exists(RefundRequest::class)) {
                 return false;
             }
             if ($refundRequestFile->getRefundRequest() === $this) {
-                $refundRequestFile->setRefundRequest(null);
+                $refundRequestFile->setRefundRequest();
             }
 
             return true;

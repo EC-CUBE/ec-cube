@@ -172,7 +172,14 @@ class RefundRequestController extends AbstractController
         $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_MYPAGE_REFUND_REQUEST_CONFIRM_INITIALIZE);
 
         if ($request->isMethod('POST')) {
-            $this->isTokenValid();
+            if (!$this->isTokenValid()) {
+                $this->addError('front.mypage.refund_request.invalid_token');
+
+                return $this->redirectToRoute('mypage_refund_request', [
+                    'order_no' => $order_no,
+                    'order_item_id' => $order_item_id,
+                ]);
+            }
 
             $sessionId = $request->getSession()->getId();
             $RefundRequest = new RefundRequest();

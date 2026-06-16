@@ -64,7 +64,7 @@ class RefundRequestService
 
         $extension = $uploadedFile->guessExtension() ?: $uploadedFile->getClientOriginalExtension();
         $key = bin2hex(random_bytes(16)).'.'.$extension;
-        $clientName = (string) $uploadedFile->getClientOriginalName();
+        $clientName = $uploadedFile->getClientOriginalName();
         $mimeType = (string) $uploadedFile->getMimeType();
         $size = (int) $uploadedFile->getSize();
 

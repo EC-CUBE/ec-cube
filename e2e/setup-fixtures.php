@@ -15,6 +15,8 @@ use Dotenv\Dotenv;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Master\RefundRequestStatus;
+use Eccube\Entity\RefundRequest;
 use Eccube\Kernel;
 use Faker\Factory as Faker;
 
@@ -214,26 +216,78 @@ if (!$existingMultiCartProduct) {
 
 // --- 返品申請テスト用（発送済み注文を持つテスト会員） ---
 $refundTestEmail = 'refund-test@test.test';
-$existingRefundCustomer = $entityManager->getRepository(Customer::class)->findOneBy(['email' => $refundTestEmail]);
-if (!$existingRefundCustomer) {
+$refundCustomer = $entityManager->getRepository(Customer::class)->findOneBy(['email' => $refundTestEmail]);
+if (!$refundCustomer) {
     $refundCustomer = $generator->createCustomer($refundTestEmail);
     $Status = $entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::ACTIVE);
     $refundCustomer->setStatus($Status);
     $entityManager->flush($refundCustomer);
+    echo "  Created refund test customer: $refundTestEmail\n";
+} else {
+    echo "  Refund test customer already exists: $refundTestEmail\n";
+}
 
+// 既存の場合でもE2Eの前提として「発送済み注文」が必ず1件以上あることを保証する
+$DeliveredStatus = $entityManager->getRepository(OrderStatus::class)->find(OrderStatus::DELIVERED);
+$deliveredOrderCount = (int) $entityManager->getRepository(\Eccube\Entity\Order::class)->createQueryBuilder('o')
+    ->select('COUNT(o.id)')
+    ->where('o.Customer = :customer')
+    ->andWhere('o.OrderStatus = :status')
+    ->setParameter('customer', $refundCustomer)
+    ->setParameter('status', $DeliveredStatus)
+    ->getQuery()
+    ->getSingleScalarResult();
+
+if ($deliveredOrderCount === 0) {
     $Delivery = $entityManager->getRepository(\Eccube\Entity\Delivery::class)->findAll()[0];
     $Product = $entityManager->getRepository(\Eccube\Entity\Product::class)->find(2);
     $Order = $generator->createOrder($refundCustomer, $Product->getProductClasses()->toArray(), $Delivery);
-    $DeliveredStatus = $entityManager->getRepository(OrderStatus::class)->find(OrderStatus::DELIVERED);
     $Order->setOrderStatus($DeliveredStatus);
     $Order->setOrderDate(new \DateTime());
     foreach ($Order->getShippings() as $Shipping) {
         $Shipping->setShippingDate(new \DateTime());
     }
     $entityManager->flush();
-    echo "  Created refund test customer with delivered order: $refundTestEmail\n";
+    echo "  Created delivered order for refund test customer\n";
 } else {
-    echo "  Refund test customer already exists: $refundTestEmail\n";
+    echo "  Delivered order already exists for refund test customer\n";
+}
+
+// 管理画面E2Eテストの前提として、返品申請を少なくとも1件保証する
+$existingRefundRequestCount = (int) $entityManager->getRepository(RefundRequest::class)->createQueryBuilder('rr')
+    ->select('COUNT(rr.id)')
+    ->where('rr.Customer = :customer')
+    ->setParameter('customer', $refundCustomer)
+    ->getQuery()
+    ->getSingleScalarResult();
+
+if ($existingRefundRequestCount === 0) {
+    $DeliveredOrder = $entityManager->getRepository(\Eccube\Entity\Order::class)->findOneBy([
+        'Customer' => $refundCustomer,
+        'OrderStatus' => $DeliveredStatus,
+    ]);
+    if ($DeliveredOrder !== null) {
+        $OrderItem = null;
+        foreach ($DeliveredOrder->getProductOrderItems() as $item) {
+            $OrderItem = $item;
+            break;
+        }
+        if ($OrderItem !== null) {
+            $NewStatus = $entityManager->getRepository(RefundRequestStatus::class)->find(RefundRequestStatus::NEW);
+            $RefundRequest = new RefundRequest();
+            $RefundRequest->setOrder($DeliveredOrder);
+            $RefundRequest->setOrderItem($OrderItem);
+            $RefundRequest->setCustomer($refundCustomer);
+            $RefundRequest->setQuantity('1');
+            $RefundRequest->setReason('E2Eテスト用の返品申請（fixture）');
+            $RefundRequest->setRefundRequestStatus($NewStatus);
+            $entityManager->persist($RefundRequest);
+            $entityManager->flush();
+            echo "  Created refund request fixture (NEW)\n";
+        }
+    }
+} else {
+    echo "  Refund request fixture already exists\n";
 }
 
 echo "Fixtures setup complete.\n";

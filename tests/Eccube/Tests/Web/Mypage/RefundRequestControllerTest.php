@@ -389,6 +389,10 @@ final class RefundRequestControllerTest extends AbstractWebTestCase
         );
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
+        // 入力エラー時は確認画面に遷移せず、入力画面に留まることを検証
+        $this->assertFalse($this->client->getResponse()->isRedirection());
+        $content = (string) $this->client->getResponse()->getContent();
+        $this->assertStringNotContainsString('返品申請内容確認', $content);
     }
 
     public function testValidationReasonEmpty(): void
@@ -412,6 +416,10 @@ final class RefundRequestControllerTest extends AbstractWebTestCase
         );
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
+        // 入力エラー時は確認画面に遷移せず、入力画面に留まることを検証
+        $this->assertFalse($this->client->getResponse()->isRedirection());
+        $content = (string) $this->client->getResponse()->getContent();
+        $this->assertStringNotContainsString('返品申請内容確認', $content);
     }
 
     public function testDownloadFile(): void
