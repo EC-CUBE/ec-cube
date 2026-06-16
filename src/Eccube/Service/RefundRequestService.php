@@ -30,6 +30,11 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * 申請の作成（エビデンスファイル保存を含む）・ステータス遷移を担う。
  * 受注処理（在庫・採番・ポイント）には関与しない独立サービス。
  * メール送信は MailService に委譲する。
+ *
+ * エビデンスファイルは「確認画面遷移中の一時保存」と「申請確定時の本保存」を分けて扱う。
+ * <input type="file"> は HTML 仕様上 value を再描画できず確認画面を跨いで再 POST できないため、
+ * 入力 → 確認の段階で一時領域（var/refund_request/tmp/{sessionId}/）に move し、
+ * セッションに参照キー（ファイル名と元 MIME/サイズ）を保持して complete 時に本領域へ rename する。
  */
 class RefundRequestService
 {
@@ -44,25 +49,102 @@ class RefundRequestService
     }
 
     /**
-     * 返品申請を作成する.
+     * アップロードされたエビデンスファイルを一時領域に保存する.
      *
-     * ステータスを「新規申請」に設定し、エビデンスファイルを保存して永続化したのち、
-     * 管理者へ通知メールを送信する。
+     * 戻り値はセッションで保持する参照情報。
      *
-     * @param UploadedFile[] $uploadedFiles アップロードされたエビデンスファイル
+     * @return array{key: string, client_name: string, mime_type: string, size: int}
      */
-    public function createRefundRequest(RefundRequest $RefundRequest, array $uploadedFiles = []): RefundRequest
+    public function saveTempFile(UploadedFile $uploadedFile, string $sessionId): array
+    {
+        $dir = $this->getTempDir($sessionId);
+        if (!is_dir($dir) && !@mkdir($dir, 0755, true) && !is_dir($dir)) {
+            throw new \RuntimeException(sprintf('Failed to create temp dir: %s', $dir));
+        }
+
+        $extension = $uploadedFile->guessExtension() ?: $uploadedFile->getClientOriginalExtension();
+        $key = bin2hex(random_bytes(16)).'.'.$extension;
+        $clientName = (string) $uploadedFile->getClientOriginalName();
+        $mimeType = (string) $uploadedFile->getMimeType();
+        $size = (int) $uploadedFile->getSize();
+
+        $uploadedFile->move($dir, $key);
+
+        return [
+            'key' => $key,
+            'client_name' => $clientName,
+            'mime_type' => $mimeType,
+            'size' => $size,
+        ];
+    }
+
+    /**
+     * 一時領域のファイルの実パスを返す（所有セッションのもののみ）.
+     */
+    public function getTempFilePath(string $sessionId, string $key): ?string
+    {
+        $dir = $this->getTempDir($sessionId);
+        $path = $dir.'/'.$key;
+        $real = realpath($path);
+        $realDir = realpath($dir);
+        if ($real === false || $realDir === false || !str_starts_with($real, $realDir.DIRECTORY_SEPARATOR)) {
+            return null;
+        }
+
+        return $real;
+    }
+
+    /**
+     * 一時領域のファイルを削除する.
+     */
+    public function removeTempFile(string $sessionId, string $key): void
+    {
+        $real = $this->getTempFilePath($sessionId, $key);
+        if ($real !== null) {
+            @unlink($real);
+        }
+    }
+
+    /**
+     * 返品申請を確定する.
+     *
+     * セッションに保持していた一時ファイルを本領域へ移動して RefundRequest にひも付け、
+     * ステータスを「新規申請」に設定して永続化したのち、管理者へ通知メールを送信する。
+     *
+     * @param list<array{key: string, client_name?: string, mime_type: string, size: int}> $tempFiles
+     */
+    public function createRefundRequest(RefundRequest $RefundRequest, array $tempFiles, string $sessionId): RefundRequest
     {
         $NewStatus = $this->refundRequestStatusRepository->find(RefundRequestStatus::NEW);
         $RefundRequest->setRefundRequestStatus($NewStatus);
 
+        $finalDir = $this->eccubeConfig['eccube_save_refund_request_file_dir'];
+        if (!is_dir($finalDir) && !@mkdir($finalDir, 0755, true) && !is_dir($finalDir)) {
+            throw new \RuntimeException(sprintf('Failed to create save dir: %s', $finalDir));
+        }
+
         $sortNo = 1;
-        foreach ($uploadedFiles as $uploadedFile) {
-            $RefundRequest->addRefundRequestFile($this->saveFile($uploadedFile, $sortNo++));
+        foreach ($tempFiles as $info) {
+            $tempPath = $this->getTempFilePath($sessionId, $info['key']);
+            if ($tempPath === null) {
+                continue;
+            }
+            $finalPath = $finalDir.'/'.$info['key'];
+            if (!@rename($tempPath, $finalPath)) {
+                throw new \RuntimeException(sprintf('Failed to move temp file: %s', $info['key']));
+            }
+            $File = new RefundRequestFile();
+            $File->setFileName($info['key'])
+                ->setMimeType($info['mime_type'])
+                ->setFileSize($info['size'])
+                ->setSortNo($sortNo++);
+            $RefundRequest->addRefundRequestFile($File);
         }
 
         $this->entityManager->persist($RefundRequest);
         $this->entityManager->flush();
+
+        $this->cleanupTempDir($sessionId);
 
         $this->mailService->sendRefundRequestNotifyMail($RefundRequest);
 
@@ -103,31 +185,22 @@ class RefundRequestService
         return $this->refundRequestStateMachine->getAvailableTransitions($RefundRequest);
     }
 
-    /**
-     * エビデンスファイルを非公開ディレクトリ（var/配下）へ保存する.
-     *
-     * 保存名は推測困難なランダム名にする（実体は公開せず、配信はコントローラ経由に限定）。
-     */
-    private function saveFile(UploadedFile $uploadedFile, int $sortNo): RefundRequestFile
+    private function getTempDir(string $sessionId): string
     {
-        $dir = $this->eccubeConfig['eccube_save_refund_request_file_dir'];
+        $safeId = preg_replace('/[^A-Za-z0-9_-]/', '', $sessionId) ?: 'anon';
+
+        return rtrim((string) $this->eccubeConfig['eccube_temp_refund_request_file_dir'], '/').'/'.$safeId;
+    }
+
+    private function cleanupTempDir(string $sessionId): void
+    {
+        $dir = $this->getTempDir($sessionId);
         if (!is_dir($dir)) {
-            mkdir($dir, 0755, true);
+            return;
         }
-
-        $mimeType = $uploadedFile->getMimeType();
-        $fileSize = $uploadedFile->getSize();
-        $extension = $uploadedFile->guessExtension() ?: $uploadedFile->getClientOriginalExtension();
-        $fileName = bin2hex(random_bytes(16)).'.'.$extension;
-
-        $uploadedFile->move($dir, $fileName);
-
-        $RefundRequestFile = new RefundRequestFile();
-        $RefundRequestFile->setFileName($fileName)
-            ->setMimeType($mimeType)
-            ->setFileSize($fileSize)
-            ->setSortNo($sortNo);
-
-        return $RefundRequestFile;
+        foreach (glob($dir.'/*') ?: [] as $file) {
+            @unlink($file);
+        }
+        @rmdir($dir);
     }
 }

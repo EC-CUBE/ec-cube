@@ -24,6 +24,7 @@ use Eccube\Entity\Product;
 use Eccube\Entity\RefundRequest;
 use Eccube\Entity\RefundRequestFile;
 use Eccube\Tests\Web\AbstractWebTestCase;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -57,7 +58,7 @@ final class RefundRequestControllerTest extends AbstractWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    public function testIndexPostConfirm(): void
+    public function testIndexPostRedirectsToConfirm(): void
     {
         $this->loginTo($this->Customer);
         $OrderItem = $this->Order->getProductOrderItems()[0];
@@ -74,18 +75,68 @@ final class RefundRequestControllerTest extends AbstractWebTestCase
                     'quantity' => '1',
                     'reason' => 'テスト理由です',
                 ],
-                'mode' => 'confirm',
             ]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+        $this->assertStringContainsString('/confirm', (string) $this->client->getResponse()->headers->get('Location'));
+    }
+
+    public function testConfirmDisplay(): void
+    {
+        $this->loginTo($this->Customer);
+        $OrderItem = $this->Order->getProductOrderItems()[0];
+
+        // 入力画面の POST でセッションに格納
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('mypage_refund_request', [
+                'order_no' => $this->Order->getOrderNo(),
+                'order_item_id' => $OrderItem->getId(),
+            ]),
+            [
+                'refund_request' => [
+                    '_token' => 'dummy',
+                    'quantity' => '1',
+                    'reason' => 'テスト理由です',
+                ],
+            ]
+        );
+
+        // 確認画面の GET 表示
+        $this->client->request(
+            Request::METHOD_GET,
+            $this->generateUrl('mypage_refund_request_confirm', [
+                'order_no' => $this->Order->getOrderNo(),
+                'order_item_id' => $OrderItem->getId(),
+            ])
         );
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    public function testIndexPostComplete(): void
+    public function testConfirmWithoutSessionRedirectsToIndex(): void
     {
         $this->loginTo($this->Customer);
         $OrderItem = $this->Order->getProductOrderItems()[0];
 
+        $this->client->request(
+            Request::METHOD_GET,
+            $this->generateUrl('mypage_refund_request_confirm', [
+                'order_no' => $this->Order->getOrderNo(),
+                'order_item_id' => $OrderItem->getId(),
+            ])
+        );
+
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+    }
+
+    public function testConfirmPostCreatesRefundRequest(): void
+    {
+        $this->loginTo($this->Customer);
+        $OrderItem = $this->Order->getProductOrderItems()[0];
+
+        // 入力画面の POST でセッションに格納
         $this->client->request(
             Request::METHOD_POST,
             $this->generateUrl('mypage_refund_request', [
@@ -98,11 +149,82 @@ final class RefundRequestControllerTest extends AbstractWebTestCase
                     'quantity' => '1',
                     'reason' => 'テスト理由です',
                 ],
-                'mode' => 'complete',
             ]
         );
 
+        // 確認画面の POST で確定
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('mypage_refund_request_confirm', [
+                'order_no' => $this->Order->getOrderNo(),
+                'order_item_id' => $OrderItem->getId(),
+            ]),
+            ['_token' => 'dummy']
+        );
+
         $this->assertTrue($this->client->getResponse()->isRedirection());
+        $count = (int) $this->entityManager->createQueryBuilder()
+            ->select('COUNT(rr)')
+            ->from(RefundRequest::class, 'rr')
+            ->where('rr.Customer = :c')
+            ->setParameter('c', $this->Customer)
+            ->getQuery()->getSingleScalarResult();
+        $this->assertSame(1, $count);
+    }
+
+    public function testConfirmPostWithFilePersistsFile(): void
+    {
+        $this->loginTo($this->Customer);
+        $OrderItem = $this->Order->getProductOrderItems()[0];
+
+        // テスト用ダミーアップロードファイルを作成
+        $tmpFile = tempnam(sys_get_temp_dir(), 'rr_test_');
+        // 1x1 透明 PNG
+        $png = base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=');
+        file_put_contents($tmpFile, $png);
+
+        $uploaded = new UploadedFile($tmpFile, 'evidence.png', 'image/png', null, true);
+
+        // 入力画面の POST でセッションに格納（一時保存される）
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('mypage_refund_request', [
+                'order_no' => $this->Order->getOrderNo(),
+                'order_item_id' => $OrderItem->getId(),
+            ]),
+            [
+                'refund_request' => [
+                    '_token' => 'dummy',
+                    'quantity' => '1',
+                    'reason' => 'テスト理由です',
+                ],
+            ],
+            [
+                'refund_request' => ['files' => [$uploaded]],
+            ]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirection(), 'index POST should redirect to confirm');
+
+        // 確認画面の POST で確定
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('mypage_refund_request_confirm', [
+                'order_no' => $this->Order->getOrderNo(),
+                'order_item_id' => $OrderItem->getId(),
+            ]),
+            ['_token' => 'dummy']
+        );
+
+        $this->assertTrue($this->client->getResponse()->isRedirection(), 'confirm POST should redirect to complete');
+
+        $RefundRequest = $this->entityManager->createQueryBuilder()
+            ->select('rr')
+            ->from(RefundRequest::class, 'rr')
+            ->where('rr.Customer = :c')
+            ->setParameter('c', $this->Customer)
+            ->getQuery()->getOneOrNullResult();
+        $this->assertInstanceOf(RefundRequest::class, $RefundRequest);
+        $this->assertCount(1, $RefundRequest->getRefundRequestFiles(), 'エビデンスファイルが永続化されること');
     }
 
     public function testComplete(): void
@@ -263,7 +385,6 @@ final class RefundRequestControllerTest extends AbstractWebTestCase
                     'quantity' => '0',
                     'reason' => 'テスト理由です',
                 ],
-                'mode' => 'confirm',
             ]
         );
 
@@ -287,7 +408,6 @@ final class RefundRequestControllerTest extends AbstractWebTestCase
                     'quantity' => '1',
                     'reason' => '',
                 ],
-                'mode' => 'confirm',
             ]
         );
 

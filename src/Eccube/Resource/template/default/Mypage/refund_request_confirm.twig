@@ -21,55 +21,69 @@ file that was distributed with this source code.
                 <h1>{{ 'front.mypage.refund_request.confirm_title'|trans }}</h1>
             </div>
             {% include 'Mypage/navi.twig' %}
-        </div>
 
-        <div class="ec-orderRole">
-            <div class="ec-orderRole__detail">
-                <div class="ec-orderDelivery__item">
-                    <div class="ec-imageGrid">
-                        <div class="ec-imageGrid__img">
-                            {% if OrderItem.Product is not null %}
-                                <img src="{{ asset(OrderItem.Product.MainListImage|no_image_product, 'save_image') }}"
-                                     alt="{{ OrderItem.productName }}"/>
-                            {% else %}
-                                <img src="{{ asset(''|no_image_product, 'save_image') }}"/>
-                            {% endif %}
-                        </div>
-                        <div class="ec-imageGrid__content">
-                            <p>{{ OrderItem.productName }}</p>
-                        </div>
+            <div class="ec-orderDelivery__item">
+                <div class="ec-imageGrid">
+                    <div class="ec-imageGrid__img">
+                        {% if OrderItem.Product is not null %}
+                            <img src="{{ asset(OrderItem.Product.MainListImage|no_image_product, 'save_image') }}"
+                                 alt="{{ OrderItem.productName }}"/>
+                        {% else %}
+                            <img src="{{ asset(''|no_image_product, 'save_image') }}"/>
+                        {% endif %}
+                    </div>
+                    <div class="ec-imageGrid__content">
+                        <p>{{ OrderItem.productName }}</p>
                     </div>
                 </div>
-
-                <div class="ec-borderedDefs">
-                    <dl>
-                        <dt>{{ 'front.mypage.refund_request.quantity'|trans }}</dt>
-                        <dd>{{ RefundRequest.quantity }}</dd>
-                    </dl>
-                    <dl>
-                        <dt>{{ 'front.mypage.refund_request.reason'|trans }}</dt>
-                        <dd>{{ RefundRequest.reason|nl2br }}</dd>
-                    </dl>
-                </div>
-
-                <form method="post" action="{{ url('mypage_refund_request', { order_no: Order.order_no, order_item_id: OrderItem.id }) }}" enctype="multipart/form-data">
-                    {{ form_rest(form) }}
-                    <input type="hidden" name="mode" value="complete">
-
-                    <div class="ec-RegisterRole__actions">
-                        <div class="ec-off4Grid">
-                            <div class="ec-off4Grid__cell">
-                                <button type="submit" class="ec-blockBtn--action">{{ 'front.mypage.refund_request.submit'|trans }}</button>
-                            </div>
-                        </div>
-                        <div class="ec-off4Grid">
-                            <div class="ec-off4Grid__cell">
-                                <a href="{{ url('mypage_refund_request', { order_no: Order.order_no, order_item_id: OrderItem.id }) }}" class="ec-blockBtn--cancel">{{ 'common.back'|trans }}</a>
-                            </div>
-                        </div>
-                    </div>
-                </form>
             </div>
+
+            <div class="ec-borderedDefs">
+                <dl>
+                    <dt>{{ 'front.mypage.refund_request.quantity'|trans }}</dt>
+                    <dd>{{ data.quantity }}</dd>
+                </dl>
+                <dl>
+                    <dt>{{ 'front.mypage.refund_request.reason'|trans }}</dt>
+                    <dd>{{ data.reason|nl2br }}</dd>
+                </dl>
+                {% if temp_files|length > 0 %}
+                    <dl>
+                        <dt>{{ 'front.mypage.refund_request.files'|trans }}</dt>
+                        <dd>
+                            <ul class="list-unstyled">
+                                {% for file in temp_files %}
+                                    <li>
+                                        {% if file.mime_type starts with 'image/' %}
+                                            <a href="{{ url('mypage_refund_request_temp_file', { key: file.key }) }}" target="_blank">
+                                                <img src="{{ url('mypage_refund_request_temp_file', { key: file.key }) }}" alt="{{ file.client_name }}" style="max-width: 200px; max-height: 200px;">
+                                            </a>
+                                        {% elseif file.mime_type starts with 'video/' %}
+                                            <video controls style="max-width: 320px;">
+                                                <source src="{{ url('mypage_refund_request_temp_file', { key: file.key }) }}" type="{{ file.mime_type }}">
+                                            </video>
+                                        {% endif %}
+                                        <div>{{ file.client_name }} ({{ (file.size / 1024)|number_format(0) }} KB)</div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </dd>
+                    </dl>
+                {% endif %}
+            </div>
+
+            <form method="post" action="{{ url('mypage_refund_request_confirm', { order_no: Order.order_no, order_item_id: OrderItem.id }) }}">
+                <input type="hidden" name="_token" value="{{ csrf_token('_token') }}">
+
+                <div class="ec-RegisterRole__actions">
+                    <div class="ec-off4Grid">
+                        <div class="ec-off4Grid__cell">
+                            <button type="submit" class="ec-blockBtn--action">{{ 'front.mypage.refund_request.submit'|trans }}</button>
+                            <a href="{{ url('mypage_refund_request', { order_no: Order.order_no, order_item_id: OrderItem.id }) }}" class="ec-blockBtn--cancel">{{ 'common.back'|trans }}</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 {% endblock %}
