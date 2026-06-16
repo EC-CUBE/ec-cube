@@ -93,7 +93,7 @@ file that was distributed with this source code.
             </div>
         </div>
 
-        <form method="post" action="{{ url('admin_refund_request_edit', { id: RefundRequest.id }) }}">
+        <form id="refund_request_form" method="post" action="{{ url('admin_refund_request_edit', { id: RefundRequest.id }) }}">
             {{ form_widget(form._token) }}
             <div class="card rounded border-0 mb-4">
                 <div class="card-header">
@@ -119,21 +119,27 @@ file that was distributed with this source code.
                 </div>
             </div>
 
-            <div class="c-conversionArea">
-                <div class="c-conversionArea__container">
-                    <div class="row justify-content-between align-items-center">
-                        <div class="col-6">
-                            <a href="{{ url('admin_refund_request') }}?resume=1" class="c-baseLink">
-                                <i class="fa fa-backward" aria-hidden="true"></i>
-                                <span>{{ 'admin.order.refund_request.back_to_list'|trans }}</span>
-                            </a>
-                        </div>
-                        <div class="col-6 text-end">
-                            <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.common.save'|trans }}</button>
+        </form>
+    </div>
+    <div class="c-conversionArea">
+        <div class="c-conversionArea__container">
+            <div class="row justify-content-between align-items-center">
+                <div class="col-6">
+                    <div class="c-conversionArea__leftBlockItem">
+                        <a href="{{ url('admin_refund_request') }}?resume=1" class="c-baseLink">
+                            <i class="fa fa-backward" aria-hidden="true"></i>
+                            <span>{{ 'admin.order.refund_request.back_to_list'|trans }}</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="row align-items-center justify-content-end">
+                        <div class="col-auto">
+                            <button class="btn btn-ec-conversion px-5" type="submit" form="refund_request_form">{{ 'admin.common.save'|trans }}</button>
                         </div>
                     </div>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
 {% endblock %}
