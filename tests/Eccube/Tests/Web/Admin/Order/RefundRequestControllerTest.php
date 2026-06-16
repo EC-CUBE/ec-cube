@@ -76,6 +76,42 @@ final class RefundRequestControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
+    /**
+     * 件数セレクタの page_count パラメータがセッションに保存されることを検証する.
+     */
+    public function testIndexPageCountPersistsInSession(): void
+    {
+        $this->client->request(
+            Request::METHOD_GET,
+            $this->generateUrl('admin_refund_request_page', ['page_no' => 1, 'page_count' => 20])
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertEquals(20, $this->client->getRequest()->getSession()->get('eccube.admin.refund_request.search.page_count'));
+    }
+
+    /**
+     * 一覧で初期表示時にゼロ件にならないこと（status=空コレクション → IN (NULL) 回帰防止）.
+     */
+    public function testIndexInitialShowsAllRefundRequests(): void
+    {
+        $this->createTestRefundRequest();
+
+        $crawler = $this->client->request(
+            Request::METHOD_GET,
+            $this->generateUrl('admin_refund_request')
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        // 「検索結果に合致するデータが見つかりませんでした」が出ていないこと
+        $this->assertStringNotContainsString(
+            'admin.common.search_no_result',
+            (string) $this->client->getResponse()->getContent()
+        );
+        // テーブル行が 1 行以上存在すること
+        $this->assertGreaterThanOrEqual(1, $crawler->filter('table tbody tr')->count());
+    }
+
     public function testEdit(): void
     {
         $RefundRequest = $this->createTestRefundRequest();

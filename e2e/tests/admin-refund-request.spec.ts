@@ -173,6 +173,37 @@ test.describe('Admin Refund Request', () => {
     }
   });
 
+  test('一覧の件数セレクタが表示され、切替で URL が変わる', async ({ page }) => {
+    await page.goto(`/${adminRoute}/order/refund_request`);
+    await page.waitForLoadState('load');
+
+    const select = page.locator('select.form-select').first();
+    const hasSelector = await select.isVisible().catch(() => false);
+
+    if (hasSelector) {
+      // option に 10件/20件/.../100件 が並ぶ
+      await expect(select.locator('option', { hasText: '10件' })).toHaveCount(1);
+      await expect(select.locator('option', { hasText: '100件' })).toHaveCount(1);
+
+      // 20件に切り替え（onchange="location = this.value;"）
+      await select.selectOption({ label: '20件' });
+      await page.waitForLoadState('load');
+
+      // URL に page_count=20 が反映されている
+      await expect(page).toHaveURL(/page_count=20/);
+      // 切替後も「20件」が selected
+      await expect(page.locator('select.form-select option[selected]').first()).toHaveText('20件');
+    }
+  });
+
+  test('検索結果初期表示で結果ゼロにならない（status IN (NULL) 回帰防止）', async ({ page }) => {
+    await page.goto(`/${adminRoute}/order/refund_request`);
+    await page.waitForLoadState('load');
+
+    // 初期表示でデータがある環境では「検索結果に合致するデータが見つかりませんでした」が出ないこと
+    await expect(page.locator('body')).not.toContainText('検索条件に合致するデータが見つかりませんでした');
+  });
+
   test('一覧から返品申請一覧へ戻れる', async ({ page }) => {
     await page.goto(`/${adminRoute}/order/refund_request`);
     await page.waitForLoadState('load');

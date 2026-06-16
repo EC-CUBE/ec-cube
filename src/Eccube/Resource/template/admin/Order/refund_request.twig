@@ -91,6 +91,15 @@ file that was distributed with this source code.
                     <span class="fw-bold">{{ 'admin.common.search_result'|trans({ '%count%': pagination.getTotalItemCount }) }}</span>
                 </div>
                 <div>
+                    <div class="d-inline-block align-bottom me-1">
+                        <select class="form-select" onchange="location = this.value;">
+                            {% for pageMax in pageMaxis %}
+                                <option {% if pageMax.name == page_count %} selected {% endif %}
+                                        value="{{ path('admin_refund_request_page', {'page_no': 1, 'page_count': pageMax.name}) }}">
+                                    {{ 'admin.common.count'|trans({ '%count%': pageMax.name }) }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
                     <a href="{{ url('admin_refund_request_export') }}" class="btn btn-ec-regular me-1">
                         <i class="fa fa-cloud-download me-1"></i>{{ 'admin.order.refund_request.csv_export'|trans }}
                     </a>
@@ -138,7 +147,7 @@ file that was distributed with this source code.
                 </div>
             </div>
 
-            {% include "@admin/pager.twig" with { 'pages': pagination.getPaginationData } %}
+            {% include "@admin/pager.twig" with { 'pages': pagination.getPaginationData, 'routes': 'admin_refund_request_page' } %}
         </div>
     {% elseif has_errors %}
     {% else %}
