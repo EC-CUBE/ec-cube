@@ -230,7 +230,7 @@ class RefundRequestController extends AbstractController
                 'success' => true,
                 'status' => (string) $RefundRequest->getRefundRequestStatus(),
             ]);
-        } catch (\InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException) {
             return $this->json([
                 'success' => false,
                 'message' => trans('admin.order.refund_request.transition_error'),
@@ -271,17 +271,23 @@ class RefundRequestController extends AbstractController
             ];
             fputcsv($out, $header);
 
+            $sanitize = static function (mixed $value): string {
+                $value = (string) ($value ?? '');
+
+                return preg_match('/^[=+\-@]/', $value) ? "'".$value : $value;
+            };
+
             foreach ($qb->getQuery()->toIterable() as $RefundRequest) {
                 $row = [
-                    $RefundRequest->getId(),
-                    $RefundRequest->getOrder()?->getOrderNo(),
-                    $RefundRequest->getCustomer() ? $RefundRequest->getCustomer()->getName01().' '.$RefundRequest->getCustomer()->getName02() : '',
-                    $RefundRequest->getOrderItem()?->getProductName(),
-                    (string) $RefundRequest->getRefundRequestStatus(),
-                    $RefundRequest->getQuantity(),
-                    $RefundRequest->getReason(),
-                    $RefundRequest->getCreateDate()?->format('Y-m-d H:i:s'),
-                    $RefundRequest->getUpdateDate()?->format('Y-m-d H:i:s'),
+                    $sanitize($RefundRequest->getId()),
+                    $sanitize($RefundRequest->getOrder()?->getOrderNo()),
+                    $sanitize($RefundRequest->getCustomer() ? $RefundRequest->getCustomer()->getName01().' '.$RefundRequest->getCustomer()->getName02() : ''),
+                    $sanitize($RefundRequest->getOrderItem()?->getProductName()),
+                    $sanitize((string) $RefundRequest->getRefundRequestStatus()),
+                    $sanitize($RefundRequest->getQuantity()),
+                    $sanitize($RefundRequest->getReason()),
+                    $sanitize($RefundRequest->getCreateDate()?->format('Y-m-d H:i:s')),
+                    $sanitize($RefundRequest->getUpdateDate()?->format('Y-m-d H:i:s')),
                 ];
                 fputcsv($out, $row);
                 $this->entityManager->detach($RefundRequest);

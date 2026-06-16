@@ -75,8 +75,13 @@ file that was distributed with this source code.
                                         {% for File in RefundRequest.RefundRequestFiles %}
                                             <div style="margin-bottom: 8px;">
                                                 {% if File.isImage %}
-                                                    <a href="{{ url('mypage_refund_request_file', { refund_request_id: RefundRequest.id, file_id: File.id }) }}" target="_blank">
-                                                        <img src="{{ url('mypage_refund_request_file', { refund_request_id: RefundRequest.id, file_id: File.id }) }}" alt="" style="max-width: 200px; max-height: 200px;">
+                                                    <a href="{{ url('mypage_refund_request_file', { refund_request_id: RefundRequest.id, file_id: File.id }) }}"
+                                                       target="_blank"
+                                                       rel="noopener noreferrer"
+                                                       aria-label="{{ File.file_name }}">
+                                                        <img src="{{ url('mypage_refund_request_file', { refund_request_id: RefundRequest.id, file_id: File.id }) }}"
+                                                             alt="{{ File.file_name }}"
+                                                             style="max-width: 200px; max-height: 200px;">
                                                     </a>
                                                 {% elseif File.isVideo %}
                                                     <video controls style="max-width: 300px;">

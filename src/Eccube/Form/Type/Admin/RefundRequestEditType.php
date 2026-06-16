@@ -64,10 +64,8 @@ class RefundRequestEditType extends AbstractType
     #[\Override]
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
-            'refund_request' => null,
-        ]);
-        $resolver->setAllowedTypes('refund_request', [RefundRequest::class, 'null']);
+        $resolver->setRequired('refund_request');
+        $resolver->setAllowedTypes('refund_request', RefundRequest::class);
     }
 
     /**

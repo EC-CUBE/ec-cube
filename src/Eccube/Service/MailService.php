@@ -913,8 +913,11 @@ class MailService
                 ->setOrder($RefundRequest->getOrder())
                 ->setSendDate(new \DateTime());
             $this->mailHistoryRepository->save($MailHistory);
-        } catch (TransportExceptionInterface) {
-            log_error('返品申請通知メールの送信に失敗しました。', ['RefundRequest' => $RefundRequest->getId()]);
+        } catch (TransportExceptionInterface $e) {
+            log_error('返品申請通知メールの送信に失敗しました。', [
+                'RefundRequest' => $RefundRequest->getId(),
+                'error' => $e->getMessage(),
+            ]);
         }
     }
 }

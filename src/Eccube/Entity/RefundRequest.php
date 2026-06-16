@@ -221,7 +221,14 @@ if (!class_exists(RefundRequest::class)) {
 
         public function removeRefundRequestFile(RefundRequestFile $refundRequestFile): bool
         {
-            return $this->RefundRequestFiles->removeElement($refundRequestFile);
+            if (!$this->RefundRequestFiles->removeElement($refundRequestFile)) {
+                return false;
+            }
+            if ($refundRequestFile->getRefundRequest() === $this) {
+                $refundRequestFile->setRefundRequest(null);
+            }
+
+            return true;
         }
     }
 }

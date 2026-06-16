@@ -87,8 +87,8 @@ final class Version20260615000000 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $this->addSql('DELETE FROM dtb_csv WHERE id = 215');
-        $this->addSql('DELETE FROM dtb_mail_template WHERE id = 10');
-        $this->addSql('DELETE FROM mtb_refund_request_status WHERE id IN (1, 2, 3, 4, 5)');
+        $this->addSql("DELETE FROM dtb_csv WHERE id = 215 AND entity_name = 'Eccube\\\\Entity\\\\Product' AND field_name = 'refund_allowed'");
+        $this->addSql("DELETE FROM dtb_mail_template WHERE id = 10 AND file_name = 'Mail/refund_request_notify.twig'");
+        $this->addSql("DELETE FROM mtb_refund_request_status WHERE id IN (1, 2, 3, 4, 5) AND discriminator_type = 'refundrequeststatus'");
     }
 }
