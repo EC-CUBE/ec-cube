@@ -24,6 +24,8 @@ use Eccube\Service\AgentCommerce\Ucp\UcpMessageMapper;
 use Eccube\Service\AgentCommerce\Ucp\UcpStatusMapper;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
+use Symfony\Component\Lock\LockFactory;
+use Symfony\Component\Lock\Store\InMemoryStore;
 
 /**
  * Layer 0: UCP Checkout 仕様適合性 (規範要件 1:1 トレース).
@@ -74,7 +76,7 @@ final class UcpCheckoutConformanceTest extends TestCase
      */
     public function testIdempotencyKeyReuseWithDifferentParamsIsRejected(): void
     {
-        $store = new AgentCheckoutIdempotencyStore(new ArrayAdapter());
+        $store = new AgentCheckoutIdempotencyStore(new ArrayAdapter(), new LockFactory(new InMemoryStore()));
         $store->execute('k', 'hash-A', static fn (): array => ['status' => 201, 'body' => []]);
 
         $this->expectException(IdempotencyConflictException::class);
@@ -88,7 +90,7 @@ final class UcpCheckoutConformanceTest extends TestCase
      */
     public function testIdempotentReplayDoesNotReexecuteSideEffects(): void
     {
-        $store = new AgentCheckoutIdempotencyStore(new ArrayAdapter());
+        $store = new AgentCheckoutIdempotencyStore(new ArrayAdapter(), new LockFactory(new InMemoryStore()));
         $calls = 0;
         $compute = function () use (&$calls): array {
             ++$calls;

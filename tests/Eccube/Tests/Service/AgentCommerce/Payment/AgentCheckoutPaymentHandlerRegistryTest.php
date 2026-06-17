@@ -44,9 +44,21 @@ final class AgentCheckoutPaymentHandlerRegistryTest extends TestCase
     public function testUcpHandlersFiltersOnlyUcp(): void
     {
         $ucp = new InMemoryUcpPaymentHandler('dev.ucp.payment.card');
-        $registry = new AgentCheckoutPaymentHandlerRegistry([$ucp]);
+        // 非 UCP ハンドラを混在させ、ucpHandlers() が UCP のみを返す (フィルタの本質) ことを保証する。
+        $nonUcp = new InMemoryNonUcpPaymentHandler();
+        $registry = new AgentCheckoutPaymentHandlerRegistry([$nonUcp, $ucp]);
 
         $this->assertSame([$ucp], $registry->ucpHandlers());
+    }
+
+    public function testResolveUcpByHandlerIdThrowsOnDuplicate(): void
+    {
+        $a = new InMemoryUcpPaymentHandler('dev.ucp.payment.card');
+        $b = new InMemoryUcpPaymentHandler('dev.ucp.payment.card');
+        $registry = new AgentCheckoutPaymentHandlerRegistry([$a, $b]);
+
+        $this->expectException(\RuntimeException::class);
+        $registry->resolveUcpByHandlerId('dev.ucp.payment.card');
     }
 
     public function testResolveForOrderUsesSupports(): void
@@ -99,5 +111,26 @@ final readonly class InMemoryUcpPaymentHandler implements UcpPaymentHandlerInter
     public function supports(Order $order): bool
     {
         return $this->supports;
+    }
+}
+
+/**
+ * UCP ではない決済ハンドラのスタブ (ucpHandlers のフィルタ検証用).
+ */
+final readonly class InMemoryNonUcpPaymentHandler implements AgentCheckoutPaymentHandlerInterface
+{
+    public function authorize(Order $order, array $paymentData): PaymentOutcome
+    {
+        return PaymentOutcome::completed();
+    }
+
+    public function capture(Order $order, array $paymentData): PaymentOutcome
+    {
+        return PaymentOutcome::completed();
+    }
+
+    public function supports(Order $order): bool
+    {
+        return false;
     }
 }

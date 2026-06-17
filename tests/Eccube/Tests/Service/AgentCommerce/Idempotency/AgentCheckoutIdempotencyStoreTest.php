@@ -19,6 +19,8 @@ use Eccube\Service\AgentCommerce\Exception\IdempotencyConflictException;
 use Eccube\Service\AgentCommerce\Idempotency\AgentCheckoutIdempotencyStore;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
+use Symfony\Component\Lock\LockFactory;
+use Symfony\Component\Lock\Store\InMemoryStore;
 
 /**
  * Layer 1/2 (Idempotency) tests for AgentCheckoutIdempotencyStore.
@@ -35,7 +37,7 @@ final class AgentCheckoutIdempotencyStoreTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->store = new AgentCheckoutIdempotencyStore(new ArrayAdapter());
+        $this->store = new AgentCheckoutIdempotencyStore(new ArrayAdapter(), new LockFactory(new InMemoryStore()));
     }
 
     public function testReplaysSameKeyWithoutReexecutingSideEffects(): void
@@ -82,9 +84,10 @@ final class AgentCheckoutIdempotencyStoreTest extends TestCase
 
     public function testHashRequestIsStableAcrossKeyOrder(): void
     {
+        // キー順が異なっても内容が同じなら同一ハッシュになること (順序非依存)。
         $this->assertSame(
             $this->store->hashRequest(['a' => 1, 'b' => 2]),
-            $this->store->hashRequest(['a' => 1, 'b' => 2]),
+            $this->store->hashRequest(['b' => 2, 'a' => 1]),
         );
     }
 }

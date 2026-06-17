@@ -297,14 +297,19 @@ class UcpCheckoutController extends AbstractController
     private function withIdempotency(Request $request, callable $handler): JsonResponse
     {
         $key = $request->headers->get('Idempotency-Key');
+        // 認証済みエージェント (UcpSignatureSubscriber が検証時に設定) を主体として名前空間化し、
+        // 別エージェントによる越境リプレイを防ぐ。
+        $subject = $request->attributes->get('ucp_agent_profile');
+        $subject = is_string($subject) ? $subject : null;
         $requestHash = $this->idempotencyStore->hashRequest([
             'path' => $request->getPathInfo(),
             'method' => $request->getMethod(),
             'body' => $request->getContent(),
+            'agent' => $subject,
         ]);
 
         try {
-            $result = $this->idempotencyStore->execute($key, $requestHash, $handler);
+            $result = $this->idempotencyStore->execute($key, $requestHash, $handler, $subject);
         } catch (IdempotencyConflictException $e) {
             return new JsonResponse(['code' => 'idempotency_conflict', 'content' => $e->getMessage()], Response::HTTP_CONFLICT);
         }
