@@ -906,7 +906,7 @@ final class CsvImportControllerTest extends AbstractAdminWebTestCase
         );
 
         $Product = $this->productRepo->findOneBy(['name' => '受注メモCSVテスト']);
-        $this->assertNotNull($Product);
+        $this->assertInstanceOf(Product::class, $Product);
         $this->assertSame('梱包時は割れ物注意', $Product->getOrderMemo());
     }
 

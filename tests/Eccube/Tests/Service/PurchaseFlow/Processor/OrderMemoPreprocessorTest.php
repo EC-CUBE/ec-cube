@@ -70,6 +70,7 @@ final class OrderMemoPreprocessorTest extends EccubeTestCase
         // 送料明細(商品メモを持つ Product を紐づけても、商品明細でなければコピーされない)
         $DeliveryFeeType = $this->entityManager->find(OrderItemType::class, OrderItemType::DELIVERY_FEE);
         $FeeItem = new OrderItem();
+        $this->assertInstanceOf(OrderItemType::class, $DeliveryFeeType);
         $FeeItem->setOrderItemType($DeliveryFeeType)
             ->setProduct($this->Product)
             ->setProductName('送料')

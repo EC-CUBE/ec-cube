@@ -29,6 +29,7 @@ use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
 use Rector\Symfony\CodeQuality\Rector\Class_\ControllerMethodInjectionToConstructorRector;
 use Rector\Symfony\Set\SymfonySetList;
+use Rector\Symfony\Symfony34\Rector\Closure\ContainerGetNameToTypeInTestsRector;
 use Rector\Symfony\Symfony61\Rector\Class_\CommandConfigureToAttributeRector;
 use Rector\Symfony\Symfony61\Rector\Class_\CommandPropertyToAttributeRector;
 use Rector\ValueObject\PhpVersion;
@@ -65,6 +66,11 @@ return RectorConfig::configure()
                    __DIR__.'/codeception/_support/Page/Admin/CustomerManagePage.php',
                    __DIR__.'/codeception/_support/Page/Admin/OrderManagePage.php',
                    __DIR__.'/codeception/acceptance/EF06OtherCest.php',
+               ],
+               // shopping/order の各購入フローは同じ PurchaseFlow 型の別サービスであり、
+               // 型解決(get(PurchaseFlow::class))に置き換えると両者の区別が失われテストが無意味化する
+               ContainerGetNameToTypeInTestsRector::class => [
+                   __DIR__.'/tests/Eccube/Tests/Service/PurchaseFlow/OrderMemoFlowTest.php',
                ],
                // 8.3以上で対応可能
                AddTypeToConstRector::class, // [BC]定数に型を追加する PHP 8.3 以降で有効
