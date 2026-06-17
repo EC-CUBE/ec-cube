@@ -665,6 +665,8 @@ admin.product.delivery_fee: 商品送料
 admin.product.tax_rate: 税率
 admin.product.free_area: フリーエリア
 admin.product.free_area__card_title: フリーエリア
+admin.product.order_memo: 受注管理用メモ
+admin.product.order_memo__card_title: 受注管理用メモ
 admin.product.delete_flag: 商品削除フラグ
 admin.product.search_category: カテゴリ検索
 admin.product.save_tag: タグ登録
@@ -736,6 +738,8 @@ admin.product.product_csv.keyword_col: 検索ワード
 admin.product.product_csv.keyword_description: ""
 admin.product.product_csv.free_area_col: フリーエリア
 admin.product.product_csv.free_area_description: ""
+admin.product.product_csv.order_memo_col: 受注管理用メモ
+admin.product.product_csv.order_memo_description: 受注時に注文明細へコピーされる管理用メモです。顧客には表示されません。
 admin.product.product_csv.delete_flag_col: 商品削除フラグ
 admin.product.product_csv.delete_flag_description: 0:登録 1:削除を指定します。未指定の場合、0として扱います。
 admin.product.product_csv.product_image_col: 商品画像
@@ -1696,6 +1700,7 @@ tooltip.product.sale_limit: 購入者が一度に購入できる個数を制限�
 tooltip.product.delivery_duration: 発送日の目安期間を商品ごとに登録できます。
 tooltip.product.product_class: この商品に設定された規格を確認・管理できます。
 tooltip.product.free_area: 商品詳細ページに入力内容が表示されます。表示位置はデザインテンプレートによって異なります。
+tooltip.product.order_memo: 受注時に注文明細へコピーされる管理用メモです。顧客には表示されません。
 tooltip.product.shop_memo: 店舗用のメモ欄です。フロント画面には表示されません。
 tooltip.product.backend_name: 管理者用に別名を登録しておくことができます（例：規格名：サイズ　管理名：サイズ（服）、サイズ（靴）等 ）。フロント画面には表示されません。
 tooltip.product.csv_upload: 所定の型のCSVデータを用いて商品を一括で登録することができます。

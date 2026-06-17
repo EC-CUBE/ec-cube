@@ -666,6 +666,8 @@ admin.product.delivery_fee: Shipping Charge
 admin.product.tax_rate: Tax
 admin.product.free_area: Miscellaneous
 admin.product.free_area__card_title: Miscellaneous
+admin.product.order_memo: Order Management Memo
+admin.product.order_memo__card_title: Order Management Memo
 admin.product.delete_flag: Product Deletion Flag
 admin.product.search_category: Category Search
 admin.product.save_tag: Tags
@@ -737,6 +739,8 @@ admin.product.product_csv.keyword_col: Search Keywords
 admin.product.product_csv.keyword_description: ""
 admin.product.product_csv.free_area_col: Miscellaneous
 admin.product.product_csv.free_area_description: ""
+admin.product.product_csv.order_memo_col: Order Management Memo
+admin.product.product_csv.order_memo_description: Management memo that will be copied to order items. Not visible to customers.
 admin.product.product_csv.delete_flag_col: Product Deletion Flag
 admin.product.product_csv.delete_flag_description: "Specify 0: Register 1: Delete. If unspecified, it will be set to 0."
 admin.product.product_csv.product_image_col: Product Images
@@ -1696,6 +1700,7 @@ tooltip.product.sale_limit: This will limit the number of products shoppers can 
 tooltip.product.delivery_duration: You can register estimated shipping date per product.
 tooltip.product.product_class: You can review and manage the option(s) set to this product.
 tooltip.product.free_area: The entry will be displayed on the product page. The placement varies according to the design templates.
+tooltip.product.order_memo: Management memo that will be copied to order items. Not visible to customers.
 tooltip.product.shop_memo: Notes for store use. This will not be displayed on the Front Screen.
 tooltip.product.backend_name: "You can register an alias for administrator (e.g. Option Name: Size - Alias: Size (Clothing) or Size (Shoes) etc. It will not be displayed on the Front Screen."
 tooltip.product.csv_upload: Bulk product registration is available with a CSV template.

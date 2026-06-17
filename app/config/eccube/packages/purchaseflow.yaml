@@ -108,6 +108,11 @@ services:
             - { name: eccube.item.holder.preprocessor, flow_type: shopping, priority: 1000 }
             - { name: eccube.item.holder.preprocessor, flow_type: order, priority: 1000 }
 
+    eccube.purchase.flow.item.holder.preprocessor.order.memo.preprocessor: # 商品の受注管理用メモを商品明細へコピー
+        class: Eccube\Service\PurchaseFlow\Processor\OrderMemoPreprocessor
+        tags:
+            - { name: eccube.item.holder.preprocessor, flow_type: shopping, priority: 100 }
+
     eccube.purchase.flow.item.holder.preprocessor.order.no.processor:
         class: Eccube\Service\PurchaseFlow\Processor\OrderNoProcessor
         arguments:

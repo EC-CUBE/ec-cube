@@ -1360,4 +1360,23 @@ test.describe('Admin Product (EA03)', () => {
     await page.waitForLoadState('load');
     await expect(page.locator('.alert-success')).toContainText('保存しました');
   });
+
+  test('product_受注管理用メモの保存と表示 - #6821', async ({ page }) => {
+    const memo = `梱包時は割れ物注意 ${Date.now()}\n同梱物: 取扱説明書`;
+
+    // 受注管理用メモを入力して商品を新規登録
+    await page.goto(`/${adminRoute}/product/product/new`);
+    await page.waitForLoadState('load');
+    await page.locator('#admin_product_name').fill('受注メモテスト商品');
+    await page.locator('#admin_product_class_price02').fill('1000');
+    // フリーエリア直後の受注管理用メモカードが存在することを確認
+    await expect(page.locator('#admin_product_order_memo')).toBeVisible();
+    await page.locator('#admin_product_order_memo').fill(memo);
+    await page.locator('button.ladda-button[type="submit"]').click();
+    await page.waitForLoadState('load');
+    await expect(page.locator('.alert-success')).toContainText('保存しました');
+
+    // 編集画面の再表示でメモが保持されていることを確認
+    await expect(page.locator('#admin_product_order_memo')).toHaveValue(memo);
+  });
 });
