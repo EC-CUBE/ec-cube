@@ -263,3 +263,13 @@ services:
     Eccube\Service\AgentCommerce\Security\AgentCommerceOAuth2Authenticator:
         arguments:
             $accessTokenHandler: '@?Symfony\Component\Security\Http\AccessToken\AccessTokenHandlerInterface'
+
+    # 決済ハンドラレジストリ。具象ハンドラ (決済プラグイン) は agent_commerce.payment_handler タグで寄与する。
+    Eccube\Service\AgentCommerce\Payment\AgentCheckoutPaymentHandlerRegistry:
+        arguments:
+            $handlers: !tagged_iterator agent_commerce.payment_handler
+
+    # complete 状態機械オーケストレータ。在庫確保期限は eccube.yaml の設定値を注入。
+    Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutCompletionService:
+        arguments:
+            $escalationExpireMinutes: '%eccube_agent_checkout_escalation_expire%'

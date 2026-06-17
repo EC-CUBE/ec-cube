@@ -27,16 +27,21 @@ interface AgentCheckoutPaymentHandlerInterface
     /**
      * 与信 (オーソリ) を行う.
      *
-     * @param array<string, mixed> $paymentData 支払トークン等の中立表現
+     * complete の**状態機械の入口**であり、初回 complete と再開 complete の双方から呼ばれる
+     * (再入可能)。$paymentData に authentication_result 等の再開情報が含まれていれば、それを
+     * 使って追加認証 (EMV-3DS) を完了させる。追加認証が必要な場合は例外でなく
+     * {@link PaymentOutcome} の REQUIRES_ACTION を返す。
+     *
+     * @param array<string, mixed> $paymentData 支払トークン等の中立表現 (再開時は authentication_result を含む)
      */
-    public function authorize(Order $order, array $paymentData): void;
+    public function authorize(Order $order, array $paymentData): PaymentOutcome;
 
     /**
-     * 売上確定 (キャプチャ) を行う.
+     * 売上確定 (キャプチャ) を行う. {@link authorize()} が COMPLETED を返した後にのみ呼ぶ.
      *
      * @param array<string, mixed> $paymentData 支払トークン等の中立表現
      */
-    public function capture(Order $order, array $paymentData): void;
+    public function capture(Order $order, array $paymentData): PaymentOutcome;
 
     /**
      * このハンドラが指定の支払方法 (Payment.method_class 等) を扱えるか.

@@ -19,6 +19,7 @@ use Eccube\Entity\Master\AgentProtocol;
 use Eccube\Entity\Master\CheckoutSessionStatus;
 use Eccube\Entity\Order;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutMessageLevel;
+use Eccube\Service\AgentCommerce\Payment\PaymentOutcomeStatus;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -35,7 +36,8 @@ final class AgentCheckoutCoreConformanceTest extends TestCase
     /**
      * CheckoutSession.status は ACP/UCP 横断の正規化ステータスマスタであり、`canceled` を含む.
      *
-     * (incomplete=1 / ready=2 / completed=3 / canceled=4 / expired=5)
+     * (incomplete=1 / ready=2 / completed=3 / canceled=4 / expired=5 /
+     *  requires_action=6 / in_progress=7)
      * 正準名 (`canceled` 等) は import_csv で seed され、DB 上の値は Layer 2 で検証する。
      */
     public function testNormalizedStatusIncludesCanceled(): void
@@ -46,10 +48,42 @@ final class AgentCheckoutCoreConformanceTest extends TestCase
             CheckoutSessionStatus::COMPLETED,
             CheckoutSessionStatus::CANCELED,
             CheckoutSessionStatus::EXPIRED,
+            CheckoutSessionStatus::REQUIRES_ACTION,
+            CheckoutSessionStatus::IN_PROGRESS,
         ];
 
         $this->assertContains(CheckoutSessionStatus::CANCELED, $ids, 'MUST: 正規化ステータスマスタは canceled を含む');
-        $this->assertSame([1, 2, 3, 4, 5], $ids, '正規化ステータスマスタの定数が 5 段そろう');
+        $this->assertSame([1, 2, 3, 4, 5, 6, 7], $ids, '正規化ステータスマスタの定数が 7 段そろう');
+    }
+
+    /**
+     * 追加認証 (3DS) / escalation はエラーでなく complete が返す中間状態であり、正規化ステータスとして表現する.
+     *
+     * UCP `requires_escalation` / ACP `authentication_required` → `requires_action`、
+     * `complete_in_progress` → `in_progress` に正規化する (#6777)。これらは在庫を引当のまま保持し
+     * 再開 complete を待つ非終端ステータスである。
+     */
+    public function testNormalizedStatusIncludesIntermediateActionStates(): void
+    {
+        $this->assertSame(6, CheckoutSessionStatus::REQUIRES_ACTION, 'MUST: 追加認証/escalation 待ちの正規化ステータス requires_action を持つ');
+        $this->assertSame(7, CheckoutSessionStatus::IN_PROGRESS, 'MUST: 非同期決済確定待ちの正規化ステータス in_progress を持つ');
+    }
+
+    /**
+     * 決済ハンドラの結果型は「中断→再開」状態機械を表現する 4 値を持つ.
+     *
+     * COMPLETED / REQUIRES_ACTION (3DS/escalation) / PENDING (非同期) / FAILED。
+     * 追加認証はエラー (FAILED) ではなく REQUIRES_ACTION で表現される点が要。
+     */
+    public function testPaymentOutcomeCoversStateMachineSignals(): void
+    {
+        $values = array_map(static fn (PaymentOutcomeStatus $s): string => $s->value, PaymentOutcomeStatus::cases());
+
+        $this->assertEqualsCanonicalizing(
+            ['completed', 'requires_action', 'pending', 'failed'],
+            $values,
+            'MUST: 決済結果型は completed/requires_action/pending/failed の 4 状態を表現できる',
+        );
     }
 
     /**
