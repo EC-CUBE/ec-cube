@@ -66,6 +66,14 @@ class PreOrderIdValidator implements PurchaseProcessor
             return;
         }
 
+        // エージェントコマース (ACP/UCP) の受注はセッションを持たない。操作中カートと受注の
+        // 紐付け・越境防止は CheckoutSession (推測不能な session_id + protocol 照合 +
+        // cart/order の pre_order_id 整合) が controller 層で担保するため、session 依存の
+        // 本チェックは適用外とする。
+        if ($itemHolder->getAgentProtocol() !== null) {
+            return;
+        }
+
         $Cart = $this->cartService->getCart();
 
         // CartがなければBad Requestエラー
