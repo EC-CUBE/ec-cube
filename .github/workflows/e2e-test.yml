@@ -33,6 +33,7 @@ jobs:
           - front-order
           - front-mypage
           - front-invoice
+          - front-cookie-consent
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db

@@ -180,6 +180,20 @@ file that was distributed with this source code.
 <script src="{{ asset('assets/js/function.js') }}"></script>
 <script src="{{ asset('assets/js/eccube.js') }}"></script>
 {% block javascript %}{% endblock %}
+
+{# クッキー同意バナー（クッキーポリシー同意機能が ON のときのみ表示） #}
+{% if BaseInfo.optionCookieConsent %}
+    {{ include('Block/cookie_consent_banner.twig') }}
+    <script>
+        // クッキー同意設定（cookie_consent.js で使用される設定値）
+        window.ECCUBE = window.ECCUBE || {};
+        window.ECCUBE.config = window.ECCUBE.config || {};
+        window.ECCUBE.config.cookieConsent = window.ECCUBE.config.cookieConsent || {};
+        window.ECCUBE.config.cookieConsent.updateUrl = '{{ url('cookie_consent_update') }}';
+    </script>
+    <script src="{{ asset('assets/js/cookie_consent.js') }}"></script>
+{% endif %}
+
 {# Layout: CLOSE_BODY_BEFORE #}
 {% if Layout.CloseBodyBefore %}
     {{ include('block.twig', {'Blocks': Layout.CloseBodyBefore}) }}

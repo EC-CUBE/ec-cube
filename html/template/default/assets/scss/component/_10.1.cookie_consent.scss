@@ -1,0 +1,224 @@
+/*
+クッキー同意
+
+クッキー同意バナー・クッキー設定ページ・クッキーポリシーページのスタイル。
+
+Markup:
+include /assets/tmpl/elements/10.1.cookie_consent.pug
+
+Styleguide 10.1
+*/
+
+// クッキー同意バナー（画面下部固定）
+.ec-cookieConsentBanner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: #333;
+  color: #fff;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+
+  &__inner {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+      padding-right: 24px;
+    }
+  }
+
+  &__close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 4px;
+    line-height: 1;
+    opacity: 0.8;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  &__content {
+    flex: 1;
+  }
+
+  &__message {
+    margin: 0 0 4px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  &__link {
+    margin: 0;
+    font-size: 13px;
+
+    a {
+      color: #fff;
+      text-decoration: underline;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+
+    @media (max-width: 768px) {
+      width: 100%;
+    }
+  }
+
+  &__btnAccept,
+  &__btnReject {
+    white-space: nowrap;
+    padding: 8px 24px;
+    font-size: 14px;
+    border-radius: 2px;
+    cursor: pointer;
+    border: 1px solid transparent;
+
+    @media (max-width: 768px) {
+      flex: 1;
+    }
+  }
+
+  &__btnAccept {
+    background-color: #5cb85c;
+    color: #fff;
+
+    &:hover {
+      background-color: #4cae4c;
+    }
+  }
+
+  &__btnReject {
+    background-color: transparent;
+    color: #fff;
+    border-color: #fff;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+  }
+}
+
+// クッキー設定ページ
+.ec-cookieConsentPage {
+  padding: 24px 0;
+
+  &__description {
+    margin-bottom: 24px;
+    line-height: 1.8;
+
+    p {
+      margin-bottom: 16px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  &__divider {
+    margin: 32px 0;
+    border: none;
+    border-top: 1px solid #ddd;
+  }
+
+  &__currentStatus {
+    margin-bottom: 32px;
+
+    h2 {
+      font-size: 20px;
+      margin-bottom: 16px;
+    }
+  }
+
+  &__statusText {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+  }
+
+  &__form {
+    h2 {
+      font-size: 20px;
+      margin-bottom: 24px;
+    }
+  }
+
+  &__radioGroup {
+    margin-bottom: 32px;
+  }
+
+  &__actions {
+    margin-bottom: 16px;
+  }
+}
+
+// クッキーポリシーページ
+.ec-cookiePolicyPage {
+  padding: 24px 0;
+
+  &__section {
+    margin-bottom: 32px;
+  }
+
+  &__heading {
+    font-size: 20px;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #ddd;
+  }
+
+  &__subheading {
+    font-size: 16px;
+    margin: 16px 0 8px;
+  }
+
+  &__text {
+    line-height: 1.8;
+    margin-bottom: 12px;
+  }
+
+  &__list {
+    margin: 0 0 16px;
+    padding-left: 24px;
+    list-style: disc;
+
+    li {
+      margin-bottom: 4px;
+    }
+  }
+
+  &__notice {
+    padding: 12px 16px;
+    background-color: #f5f7fa;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+
+  &__provider {
+    margin-bottom: 16px;
+  }
+}

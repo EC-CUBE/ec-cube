@@ -1,0 +1,144 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends 'default_frame.twig' %}
+
+{% set body_class = 'cookie_consent_page' %}
+
+{% block title %}{{ 'cookie_consent.page.title'|trans }}{% endblock %}
+
+{% block main %}
+<div class="ec-role">
+    <div class="ec-pageHeader">
+        <h1>{{ 'cookie_consent.page.title'|trans }}</h1>
+    </div>
+</div>
+
+<div class="ec-cookieConsentPage">
+    <div class="ec-off3Grid">
+        <div class="ec-off3Grid__cell">
+            <div class="ec-cookieConsentPage__description">
+                <p>{{ 'cookie_consent.page.description'|trans }}</p>
+                <p>
+                    <a href="{{ url('help_cookie_policy') }}" class="ec-link">
+                        {{ 'cookie_consent.page.detail_link'|trans }}
+                    </a>
+                </p>
+            </div>
+
+            <hr class="ec-cookieConsentPage__divider">
+
+            <div class="ec-cookieConsentPage__currentStatus">
+                <h2>{{ 'cookie_consent.page.current_status'|trans }}</h2>
+                <p class="ec-cookieConsentPage__statusText">
+                    {% if current_status == 'accepted' %}
+                        <i class="fa fa-check-circle text-success" aria-hidden="true"></i>
+                        {{ 'cookie_consent.page.status_accepted'|trans }}
+                    {% elseif current_status == 'rejected' %}
+                        <i class="fa fa-times-circle text-danger" aria-hidden="true"></i>
+                        {{ 'cookie_consent.page.status_rejected'|trans }}
+                    {% else %}
+                        <i class="fa fa-question-circle text-muted" aria-hidden="true"></i>
+                        {{ 'cookie_consent.page.status_not_set'|trans }}
+                    {% endif %}
+                </p>
+            </div>
+
+            <hr class="ec-cookieConsentPage__divider">
+
+            <div class="ec-cookieConsentPage__form">
+                <h2>{{ 'cookie_consent.page.change_setting'|trans }}</h2>
+
+                <div class="ec-cookieConsentPage__radioGroup mb-3">
+                    <div class="form-check mb-2">
+                        <input type="radio"
+                               class="form-check-input"
+                               name="consent_status"
+                               id="consent_accepted"
+                               value="accepted"
+                               {% if current_status == 'accepted' %}checked{% endif %}>
+                        <label class="form-check-label" for="consent_accepted">
+                            {{ 'cookie_consent.page.accept_label'|trans }}
+                        </label>
+                    </div>
+
+                    <div class="form-check mb-2">
+                        <input type="radio"
+                               class="form-check-input"
+                               name="consent_status"
+                               id="consent_rejected"
+                               value="rejected"
+                               {% if current_status == 'rejected' %}checked{% endif %}>
+                        <label class="form-check-label" for="consent_rejected">
+                            {{ 'cookie_consent.page.reject_label'|trans }}
+                        </label>
+                    </div>
+                </div>
+
+                <div class="ec-cookieConsentPage__actions">
+                    <button type="button" class="btn btn-primary btn-block" id="cookie-consent-save">
+                        {{ 'cookie_consent.page.save'|trans }}
+                    </button>
+                </div>
+
+                <div id="cookie-consent-message" class="alert mt-3" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script>
+$(function() {
+    var currentStatus = '{{ current_status|default('') }}';
+
+    $('#cookie-consent-save').on('click', function() {
+        var selectedStatus = $('input[name="consent_status"]:checked').val();
+
+        if (!selectedStatus) {
+            showMessage('{{ 'cookie_consent.error.no_selection'|trans }}', 'danger');
+            return;
+        }
+
+        // cookie_consent.js で定義されたグローバル関数を使用
+        if (window.ECCUBE && window.ECCUBE.cookieConsent && window.ECCUBE.cookieConsent.saveConsentStatus) {
+            window.ECCUBE.cookieConsent.saveConsentStatus(
+                selectedStatus,
+                'settings_page',
+                currentStatus || null,
+                function(response) {
+                    showMessage(response.message, 'success');
+                    setTimeout(function() {
+                        location.reload();
+                    }, 1500);
+                },
+                function(response) {
+                    showMessage(response.message || '{{ 'cookie_consent.page.save_error'|trans }}', 'danger');
+                }
+            );
+        }
+    });
+
+    function showMessage(message, type) {
+        var alertClass = 'alert-' + type;
+        $('#cookie-consent-message')
+            .removeClass('alert-success alert-danger alert-warning alert-info')
+            .addClass(alertClass)
+            .text(message)
+            .show();
+
+        setTimeout(function() {
+            $('#cookie-consent-message').fadeOut();
+        }, 3000);
+    }
+});
+</script>
+{% endblock %}
