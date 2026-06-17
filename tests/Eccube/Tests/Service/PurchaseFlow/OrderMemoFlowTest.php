@@ -20,12 +20,12 @@ use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Tests\EccubeTestCase;
 
 /**
- * 受注管理用メモのコピー処理が購入フローへ正しく配線されていることを検証する。
+ * 受注管理用メモの追記処理が購入フローへ正しく配線されていることを検証する。
  *
- * 振る舞い(明細へのコピー・送料等の除外・NULL)は OrderMemoPreprocessorTest が担保する。
+ * 振る舞い(明細への追記・送料等の除外・NULL・冪等性)は OrderMemoPreprocessorTest が担保する。
  * 本テストは purchaseflow.yaml の登録、すなわち
- *   - 確定フロー(shopping)には登録されている        … 注文確定時にコピーされる
- *   - 受注フロー(order)には登録されていない          … 確定後は再コピーされず、確定時点のスナップショットが保持される
+ *   - 確定フロー(shopping)に登録されている  … フロントの注文確定時に追記される
+ *   - 受注フロー(order)に登録されている      … 管理画面の受注作成・編集時にも追記される
  * を担保する。
  */
 final class OrderMemoFlowTest extends EccubeTestCase
@@ -47,9 +47,9 @@ final class OrderMemoFlowTest extends EccubeTestCase
         $this->assertStringContainsString(OrderMemoPreprocessor::class, $this->shoppingFlow->dump());
     }
 
-    public function testNotRegisteredInOrderFlow(): void
+    public function testRegisteredInOrderFlow(): void
     {
-        // 受注フローには登録されていない（確定後の再コピーを防ぎスナップショットを保持する）
-        $this->assertStringNotContainsString(OrderMemoPreprocessor::class, $this->orderFlow->dump());
+        // 受注フローにも登録されている（管理画面の受注作成・編集時にも追記する）
+        $this->assertStringContainsString(OrderMemoPreprocessor::class, $this->orderFlow->dump());
     }
 }

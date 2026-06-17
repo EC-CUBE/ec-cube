@@ -63,6 +63,38 @@ final class OrderMemoPreprocessorTest extends EccubeTestCase
         }
     }
 
+    public function testSameMemoIsNotAppendedTwice(): void
+    {
+        $this->Product->setOrderMemo('梱包時は割れ物注意');
+
+        // 既に同一文言が入っている明細に対しては追記しない(冪等)
+        foreach ($this->Order->getProductOrderItems() as $OrderItem) {
+            $OrderItem->setOrderMemo('梱包時は割れ物注意');
+        }
+
+        $this->processor->process($this->Order, new PurchaseContext());
+
+        foreach ($this->Order->getProductOrderItems() as $OrderItem) {
+            $this->assertSame('梱包時は割れ物注意', $OrderItem->getOrderMemo());
+        }
+    }
+
+    public function testDifferentMemoIsAppended(): void
+    {
+        $this->Product->setOrderMemo('商品メモ');
+
+        // 既存メモがある明細には、改行区切りで追記し既存メモは残す
+        foreach ($this->Order->getProductOrderItems() as $OrderItem) {
+            $OrderItem->setOrderMemo('既存メモ');
+        }
+
+        $this->processor->process($this->Order, new PurchaseContext());
+
+        foreach ($this->Order->getProductOrderItems() as $OrderItem) {
+            $this->assertSame("既存メモ\n商品メモ", $OrderItem->getOrderMemo());
+        }
+    }
+
     public function testNonProductItemIsNotCopied(): void
     {
         $this->Product->setOrderMemo('商品メモ');

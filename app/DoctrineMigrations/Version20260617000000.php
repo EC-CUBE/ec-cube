@@ -26,8 +26,14 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20260617000000 extends AbstractMigration
 {
+    public const NAME = 'dtb_csv';
+
     public function up(Schema $schema): void
     {
+        if (!$schema->hasTable(self::NAME)) {
+            return;
+        }
+
         // 商品 CSV(csv_type_id = 1)へ Product.order_memo を追加
         $productExists = $this->connection->fetchOne("SELECT COUNT(*) FROM dtb_csv WHERE csv_type_id = 1 AND field_name = 'order_memo'");
         if ($productExists == 0) {
@@ -55,6 +61,10 @@ final class Version20260617000000 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
+        if (!$schema->hasTable(self::NAME)) {
+            return;
+        }
+
         $this->addSql("DELETE FROM dtb_csv WHERE csv_type_id = 1 AND entity_name = 'Eccube\\\\Entity\\\\Product' AND field_name = 'order_memo'");
         $this->addSql("DELETE FROM dtb_csv WHERE csv_type_id = 4 AND entity_name = 'Eccube\\\\Entity\\\\OrderItem' AND field_name = 'order_memo'");
     }
