@@ -24,6 +24,8 @@ use Eccube\Repository\Master\AgentProtocolRepository;
 use Eccube\Repository\Master\CheckoutSessionStatusRepository;
 use Eccube\Service\AgentCommerce\AgentCheckoutPurchaseFlowAdapter;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutAddress;
+use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutCompletionResult;
+use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutCompletionService;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutLineItem;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutRequest;
 use Eccube\Service\AgentCommerce\CheckoutSession\CustomerResolverInterface;
@@ -39,6 +41,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * UCP (Universal Commerce Protocol) checkout の REST エンドポイント.
@@ -73,6 +76,7 @@ class UcpCheckoutController extends AbstractController
         private readonly AgentCheckoutIdempotencyStore $idempotencyStore,
         private readonly AgentCheckoutPaymentHandlerRegistry $paymentHandlerRegistry,
         private readonly CustomerResolverInterface $customerResolver,
+        private readonly AgentCheckoutCompletionService $completionService,
     ) {
     }
 
@@ -143,32 +147,28 @@ class UcpCheckoutController extends AbstractController
 
         return $this->withIdempotency($request, function () use ($request, $session): array {
             $order = $session->getOrder();
-            if ($order === null || $session->getStatus()?->getId() !== CheckoutSessionStatus::READY) {
-                // 確定不能な状態はプロトコル系エラー (4xx)。
+            if ($order === null) {
+                // Order が未構築のセッションは確定不能 (プロトコル系エラー 4xx)。
                 return $this->protocolError(422, 'invalid_session_state', 'The checkout session is not ready for completion.');
             }
 
             try {
                 $payload = $this->decodeBody($request);
-                $this->redeemPayment($order, $payload);
+                // UCP は payment.instruments[].handler_id で決済ハンドラを解決し、クレデンシャルを
+                // ゲートウェイトークンへ交換する。交換後の中立データを状態機械へ渡す。
+                $paymentData = $this->resolvePaymentData($payload);
+                // complete は「中断→再開」状態機械 (#6777)。追加認証 (3DS/escalation) は
+                // エラーでなく requires_action 等の中間状態として返る。在庫引当の保持/回収・
+                // トランザクション境界・与信→売上→確定の順序は CompletionService が担う。
+                $result = $this->completionService->complete($session, $paymentData);
             } catch (AgentCheckoutException $e) {
                 return $this->protocolError(422, $e->getErrorCode()->value, $e->getMessage());
             }
 
-            $result = $this->purchaseFlowAdapter->complete($order, $this->customerResolver->resolve($session));
             $ucpMessages = $this->messageMapper->toUcpMessages($result->messages);
+            $continueUrl = $this->continueUrlFor($session, $result);
 
-            if ($result->hasError()) {
-                // ビジネス系エラー: 確定せず HTTP 200 + messages[]。
-                $this->entityManager->flush();
-
-                return ['status' => 200, 'body' => $this->mapper->buildResponseFromOrder($session, $order, $ucpMessages)];
-            }
-
-            $session->setStatus($this->findStatus(CheckoutSessionStatus::COMPLETED));
-            $this->entityManager->flush();
-
-            return ['status' => 200, 'body' => $this->mapper->buildResponseFromOrder($session, $order, $ucpMessages)];
+            return ['status' => 200, 'body' => $this->mapper->buildResponseFromOrder($session, $order, $ucpMessages, $continueUrl)];
         });
     }
 
@@ -233,34 +233,60 @@ class UcpCheckoutController extends AbstractController
     }
 
     /**
-     * complete 時の支払トークン交換 + 与信/売上.
+     * payment.instruments[].handler_id で UCP 決済ハンドラを解決し、クレデンシャルをゲートウェイ
+     * トークンへ交換した中立データを返す.
      *
-     * payment.instruments[] と一致する UCP ハンドラが登録されていれば exchange→authorize→capture を実行する。
-     * ハンドラ未登録 (代引・無償等) の場合は何もしない。具象ハンドラは決済プラグインが寄与する。
+     * 与信/売上 (authorize/capture) は状態機械 (CompletionService) が実行するため、ここでは交換のみ行う。
+     * ハンドラ未登録 (代引・無償等) の場合は空配列を返し、状態機械が与信不要として確定する。
      *
      * @param array<string, mixed> $payload
+     *
+     * @return array<string, mixed>
      */
-    private function redeemPayment(Order $order, array $payload): void
+    private function resolvePaymentData(array $payload): array
     {
         $instrument = $payload['payment']['instruments'][0] ?? null;
         if (!is_array($instrument)) {
-            return;
+            return [];
         }
 
         $handlerId = is_string($instrument['handler_id'] ?? null) ? $instrument['handler_id'] : null;
         if ($handlerId === null) {
-            return;
+            return [];
         }
 
         $handler = $this->paymentHandlerRegistry->resolveUcpByHandlerId($handlerId);
         if ($handler === null) {
-            return;
+            return [];
         }
 
         $credential = is_array($instrument['credential'] ?? null) ? $instrument['credential'] : [];
-        $paymentData = $handler->exchangePaymentToken($credential);
-        $handler->authorize($order, $paymentData);
-        $handler->capture($order, $paymentData);
+
+        return $handler->exchangePaymentToken($credential);
+    }
+
+    /**
+     * requires_action (escalation) のとき buyer ハンドオフ用の continue_url を解決する.
+     *
+     * UCP では `requires_escalation` 時に continue_url が MUST。決済ハンドラが actionData で
+     * 提供すればそれを優先し、無ければセッション取得 URL を絶対 HTTPS で生成する
+     * (`continue_url` は絶対 HTTPS URL でなければならない)。それ以外の状態では null。
+     */
+    private function continueUrlFor(CheckoutSession $session, AgentCheckoutCompletionResult $result): ?string
+    {
+        if ($session->getStatus()?->getId() !== CheckoutSessionStatus::REQUIRES_ACTION) {
+            return null;
+        }
+
+        $fromHandler = $result->actionData['continue_url'] ?? null;
+        if (is_string($fromHandler) && str_starts_with($fromHandler, 'https://')) {
+            return $fromHandler;
+        }
+
+        $url = $this->generateUrl('ucp_checkout_get', ['sessionId' => $session->getSessionId()], UrlGeneratorInterface::ABSOLUTE_URL);
+
+        // continue_url は絶対 HTTPS URL でなければならない (RequestContext が http のときも https に強制)。
+        return str_starts_with($url, 'http://') ? substr_replace($url, 'https://', 0, 7) : $url;
     }
 
     /**

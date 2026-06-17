@@ -22,8 +22,8 @@ use Eccube\Entity\Master\CheckoutSessionStatus;
  * マスタで保持する。UCP の正準語彙とは `ready` ↔ `ready_for_complete` が異なるため、
  * 公開境界でのみ変換する (マスタは拡張しない方針)。
  *
- * UCP の一過性ステータス `requires_escalation` / `complete_in_progress` はマスタに永続化せず、
- * messages[] の severity から導出する ({@link UcpCheckoutSessionMapper})。
+ * 追加認証 / escalation 待ちの正規化ステータス `requires_action` は UCP の `requires_escalation` へ、
+ * 非同期決済確定待ちの `in_progress` は `complete_in_progress` へ変換する (#6777 の状態機械)。
  *
  * @see https://github.com/Universal-Commerce-Protocol/ucp UCP checkout.json (status enum)
  */
@@ -40,6 +40,10 @@ class UcpStatusMapper
             CheckoutSessionStatus::CANCELED => 'canceled',
             // expired は UCP の正準語彙に無いため、終端の canceled として表現する。
             CheckoutSessionStatus::EXPIRED => 'canceled',
+            // 追加認証 / escalation 待ち (在庫を保持して再開 complete を待つ中間状態)。
+            CheckoutSessionStatus::REQUIRES_ACTION => 'requires_escalation',
+            // 非同期決済の確定待ち。
+            CheckoutSessionStatus::IN_PROGRESS => 'complete_in_progress',
             default => 'incomplete',
         };
     }
