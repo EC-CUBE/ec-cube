@@ -73,6 +73,10 @@ class UcpProfileFetcher
                 // 鍵探索ではリダイレクトを追従しない (なりすまし防止)。
                 'max_redirects' => 0,
                 'headers' => ['Accept' => 'application/json'],
+                // 応答が無いエージェント profile で署名検証がハングしないよう上限を設ける
+                // (timeout=接続/アイドル, max_duration=総時間)。
+                'timeout' => 5,
+                'max_duration' => 10,
             ]);
 
             if ($response->getStatusCode() !== 200) {

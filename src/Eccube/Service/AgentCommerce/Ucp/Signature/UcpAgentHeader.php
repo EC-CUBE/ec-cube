@@ -43,7 +43,8 @@ final readonly class UcpAgentHeader
 
         $url = $matches[1];
         $scheme = parse_url($url, PHP_URL_SCHEME);
-        if ($scheme !== 'https') {
+        // RFC 3986 では scheme は大文字小文字を区別しない (HTTPS == https) ため小文字化して比較する。
+        if (!is_string($scheme) || strtolower($scheme) !== 'https') {
             throw new \InvalidArgumentException('UCP-Agent profile URL must be an absolute HTTPS URL.');
         }
 

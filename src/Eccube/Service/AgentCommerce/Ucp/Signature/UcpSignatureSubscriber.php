@@ -67,8 +67,9 @@ class UcpSignatureSubscriber implements EventSubscriberInterface
 
         try {
             $agent = $this->verifier->verify($request);
-        } catch (UcpSignatureException $e) {
-            $this->reject($event, $e->getMessage());
+        } catch (UcpSignatureException) {
+            // 内部エラー詳細 (鍵の問題・profile 取得失敗理由等) はクライアントへ露出させない。
+            $this->reject($event, 'Request signature verification failed.');
 
             return;
         }
