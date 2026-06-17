@@ -90,21 +90,28 @@ class AgentCheckoutPurchaseFlowAdapter
         $messages = $this->runFlow(fn (PurchaseContext $context) => $this->shoppingPurchaseFlow->validate($Order, $context), $Order, $member);
         $this->entityManager->flush();
 
-        return new AgentCheckoutResult($Order, $messages);
+        return new AgentCheckoutResult($Order, $messages, $Cart);
     }
 
     /**
-     * 注文を確定する (在庫引当・受注番号採番・ポイント付与等).
+     * 在庫・ポイントを引き当て、受注番号を採番する (PurchaseFlow::prepare).
      *
-     * shopping flow の prepare → commit を実行する。ビジネス系エラーは messages[] に反映する。
+     * EC-CUBE 通常購入の `PaymentMethod::apply()` 相当で、**決済オーソリの「前」**に実行する。
+     * ビジネス系エラー (在庫不足・販売制限等) は例外でなく messages[] に反映し、その場合は
+     * prepare を行わない。プロトコル系エラー (不正な商品参照等) は呼び出し前段で弾く。
+     *
+     * 注意: PurchaseFlow の StockReduceProcessor が EntityManager::lock() (悲観ロック) を使うため、
+     * **トランザクションがアクティブな状態で呼ぶこと**。トランザクション境界の管理 (および
+     * EMV-3DS 等の外部サイト遷移時の中断) は決済オーケストレーション層 (PaymentMethod 相当の
+     * 決済ハンドラ / controller) の責務とし、本アダプタ自身はトランザクションを開始しない
+     * (決済処理全体を 1 トランザクションで囲うと外部遷移型決済で破綻するため)。
      */
-    public function complete(Order $Order, ?Customer $member = null): AgentCheckoutResult
+    public function prepare(Order $Order, ?Customer $member = null): AgentCheckoutResult
     {
         $messages = $this->runFlow(function (PurchaseContext $context) use ($Order): PurchaseFlowResult {
             $result = $this->shoppingPurchaseFlow->validate($Order, $context);
             if (!$result->hasError()) {
                 $this->shoppingPurchaseFlow->prepare($Order, $context);
-                $this->shoppingPurchaseFlow->commit($Order, $context);
             }
 
             return $result;
@@ -113,6 +120,31 @@ class AgentCheckoutPurchaseFlowAdapter
         $this->entityManager->flush();
 
         return new AgentCheckoutResult($Order, $messages);
+    }
+
+    /**
+     * 注文を確定する (PurchaseFlow::commit). 決済オーソリ/売上の「成功後」に呼ぶ.
+     *
+     * EC-CUBE 通常購入の `PaymentMethod::checkout()` 成功時相当。{@link prepare()} 済みであること、
+     * トランザクションがアクティブであることが前提。
+     */
+    public function commit(Order $Order, ?Customer $member = null): void
+    {
+        $context = new PurchaseContext(clone $Order, $member);
+        $this->shoppingPurchaseFlow->commit($Order, $context);
+        $this->entityManager->flush();
+    }
+
+    /**
+     * {@link prepare()} で引き当てた在庫・ポイントを戻す (PurchaseFlow::rollback).
+     *
+     * 決済オーソリ失敗・キャンセル時に呼ぶ (EC-CUBE 通常購入の `PaymentMethod::checkout()` 失敗時相当)。
+     */
+    public function rollback(Order $Order, ?Customer $member = null): void
+    {
+        $context = new PurchaseContext(clone $Order, $member);
+        $this->shoppingPurchaseFlow->rollback($Order, $context);
+        $this->entityManager->flush();
     }
 
     /**

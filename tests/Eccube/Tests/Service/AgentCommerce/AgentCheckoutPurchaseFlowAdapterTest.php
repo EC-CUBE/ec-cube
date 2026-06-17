@@ -104,7 +104,7 @@ final class AgentCheckoutPurchaseFlowAdapterTest extends EccubeTestCase
         $this->assertGreaterThan(0, (int) $Order->getPaymentTotal(), 'shopping flow で支払総額 (税送料込) が計算される');
     }
 
-    public function testCompleteFinalizesOrder(): void
+    public function testPrepareThenCommitFinalizesOrder(): void
     {
         $ProductClass = $this->createPurchasableProductClass('100');
 
@@ -114,11 +114,58 @@ final class AgentCheckoutPurchaseFlowAdapterTest extends EccubeTestCase
             protocolId: AgentProtocol::ACP,
         );
 
-        $build = $this->adapter->buildOrder($request);
-        $result = $this->adapter->complete($build->order);
+        $Order = $this->adapter->buildOrder($request)->order;
 
-        $this->assertFalse($result->hasError(), 'complete でエラーが出ない');
-        $this->assertNotNull($result->order->getOrderNo(), 'complete で受注番号が採番される');
+        // PurchaseFlow の悲観ロック (StockReduceProcessor) のためトランザクションを張る。
+        // 通常購入の ShoppingController と同様、トランザクション境界は呼び出し側 (決済
+        // オーケストレーション層) が管理し、Adapter 自身は開始しない。
+        $this->entityManager->beginTransaction();
+        try {
+            // prepare = 在庫引当・受注番号採番 (決済オーソリの「前」, PaymentMethod::apply 相当)。
+            $prepareResult = $this->adapter->prepare($Order);
+            $this->assertFalse($prepareResult->hasError(), 'prepare でエラーが出ない');
+            $this->assertNotNull($Order->getOrderNo(), 'prepare で受注番号が採番される');
+
+            // commit = 確定 (決済オーソリ成功後, PaymentMethod::checkout 成功時相当)。
+            $this->adapter->commit($Order);
+            $this->entityManager->commit();
+        } catch (\Throwable $e) {
+            $this->entityManager->rollback();
+
+            throw $e;
+        }
+
+        $this->assertNotNull($Order->getOrderNo(), 'commit 後も受注番号が保持される');
+    }
+
+    public function testRollbackRestoresStockAfterPrepare(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('10');
+        $ProductStock = $ProductClass->getProductStock();
+        $initialStock = (int) $ProductStock->getStock();
+
+        $request = new AgentCheckoutRequest(
+            lineItems: [new AgentCheckoutLineItem((int) $ProductClass->getId(), 3)],
+            buyer: $this->guestAddress(),
+            protocolId: AgentProtocol::ACP,
+        );
+
+        $Order = $this->adapter->buildOrder($request)->order;
+
+        $this->entityManager->beginTransaction();
+        try {
+            // prepare で在庫を 3 引き当て、決済失敗を想定して rollback で戻す。
+            $this->adapter->prepare($Order);
+            $this->adapter->rollback($Order);
+            $this->entityManager->commit();
+        } catch (\Throwable $e) {
+            $this->entityManager->rollback();
+
+            throw $e;
+        }
+
+        $this->entityManager->refresh($ProductStock);
+        $this->assertSame($initialStock, (int) $ProductStock->getStock(), 'rollback で在庫が prepare 前に戻る (決済失敗時)');
     }
 
     public function testAgentCartIsIsolatedFromWebStorefront(): void
