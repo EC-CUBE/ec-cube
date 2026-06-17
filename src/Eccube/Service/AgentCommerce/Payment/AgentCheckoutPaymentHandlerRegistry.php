@@ -18,9 +18,9 @@ use Eccube\Entity\Order;
 /**
  * エージェントチェックアウトの決済ハンドラレジストリ.
  *
- * `agent_commerce.payment_handler` タグの付いたハンドラを集約し、Order の支払方法、
- * もしくは UCP の handler_id から適切なハンドラを解決する。具象ハンドラは決済プラグインが
- * タグ付きサービスとして寄与する (core には具象実装を持たない)。
+ * `agent_commerce.payment_handler` タグの付いたハンドラを集約し、Order の支払方法、もしくは
+ * UCP の handler_id から適切なハンドラを解決する。具象ハンドラは決済プラグインがタグ付きサービスとして
+ * 寄与する (core には具象実装を持たない)。
  */
 class AgentCheckoutPaymentHandlerRegistry
 {
@@ -53,16 +53,26 @@ class AgentCheckoutPaymentHandlerRegistry
 
     /**
      * UCP の handler_id に一致する UCP ハンドラを返す (なければ null).
+     *
+     * 同一 handler_id を複数のハンドラが宣言している場合は、プラグイン競合による非決定的な
+     * 決済ハンドラ選択を避けるため、null を返さず明示的に例外を投げる。
+     *
+     * @throws \RuntimeException 同一 handler_id が複数登録されている場合
      */
     public function resolveUcpByHandlerId(string $handlerId): ?UcpPaymentHandlerInterface
     {
+        $matched = [];
         foreach ($this->handlers as $handler) {
             if ($handler instanceof UcpPaymentHandlerInterface && $handler->getHandlerId() === $handlerId) {
-                return $handler;
+                $matched[] = $handler;
             }
         }
 
-        return null;
+        if (count($matched) > 1) {
+            throw new \RuntimeException(sprintf('Multiple UCP payment handlers are registered for handler_id "%s". Plugin payment handlers must declare a unique handler_id.', $handlerId));
+        }
+
+        return $matched[0] ?? null;
     }
 
     /**

@@ -18,6 +18,7 @@ namespace Eccube\Tests\Service\AgentCommerce\Payment;
 use Eccube\Entity\Order;
 use Eccube\Service\AgentCommerce\Payment\AgentCheckoutPaymentHandlerInterface;
 use Eccube\Service\AgentCommerce\Payment\AgentCheckoutPaymentHandlerRegistry;
+use Eccube\Service\AgentCommerce\Payment\PaymentOutcome;
 use Eccube\Service\AgentCommerce\Payment\UcpPaymentHandlerInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -85,12 +86,14 @@ final readonly class InMemoryUcpPaymentHandler implements UcpPaymentHandlerInter
         return ['gateway_token' => 'tok_test', 'source' => $credential];
     }
 
-    public function authorize(Order $order, array $paymentData): void
+    public function authorize(Order $order, array $paymentData): PaymentOutcome
     {
+        return PaymentOutcome::completed();
     }
 
-    public function capture(Order $order, array $paymentData): void
+    public function capture(Order $order, array $paymentData): PaymentOutcome
     {
+        return PaymentOutcome::completed();
     }
 
     public function supports(Order $order): bool
