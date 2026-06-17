@@ -74,17 +74,16 @@ final class PaginationTest extends EccubeTestCase
         $config->setMetadataDriverImpl($driver);
         // 初期データより大きい値を指定
         $price02 = $this->getFaker()->randomNumber(9);
-        for ($i = 0; $i < 5; $i++) {
-            $Product = $this->createProduct(null, 3);
+        $products = $this->createProducts(5);
+        foreach ($products as $i => $Product) {
             $this->expectedIds[] = $Product->getId();
-
             $ProductClasses = $Product->getProductClasses();
             foreach ($ProductClasses as $ProductClass) {
                 // product.idの昇順になるよう, product_class.price02を設定する
                 $ProductClass->setPrice02(bcsub((string) $price02, (string) $i, 0));
-                $em->flush();
             }
         }
+        $em->flush();
     }
 
     protected function tearDown(): void
