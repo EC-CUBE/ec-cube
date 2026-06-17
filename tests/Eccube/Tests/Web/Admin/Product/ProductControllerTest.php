@@ -1286,6 +1286,8 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirection());
+        // 保存後の永続化状態を確認するため DB から再読込する
+        $this->entityManager->refresh($Product);
         $this->assertSame('梱包時は割れ物注意', $Product->getOrderMemo());
     }
 

@@ -37,25 +37,27 @@ final class Version20260617000000 extends AbstractMigration
         // 商品 CSV(csv_type_id = 1)へ Product.order_memo を追加
         $productExists = $this->connection->fetchOne("SELECT COUNT(*) FROM dtb_csv WHERE csv_type_id = 1 AND field_name = 'order_memo'");
         if ($productExists == 0) {
-            $sortNo = $this->connection->fetchOne('SELECT MAX(sort_no) + 1 FROM dtb_csv WHERE csv_type_id = 1');
+            // dtb_csv が空でも NULL にならないよう COALESCE で既定値を確保する
+            $sortNo = $this->connection->fetchOne('SELECT COALESCE(MAX(sort_no), 0) + 1 FROM dtb_csv WHERE csv_type_id = 1');
             $this->addSql("INSERT INTO dtb_csv (
                 csv_type_id, creator_id, entity_name, field_name, disp_name, sort_no, enabled, create_date, update_date, discriminator_type
             ) VALUES (
-                1, null, ?, 'order_memo', '受注管理用メモ', $sortNo, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'csv'
+                1, null, ?, 'order_memo', '受注管理用メモ', ?, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'csv'
             )",
-                ['Eccube\\\\Entity\\\\Product']);
+                ['Eccube\\\\Entity\\\\Product', $sortNo]);
         }
 
         // 配送/出荷 CSV(csv_type_id = 4)へ OrderItem.order_memo を追加
         $orderItemExists = $this->connection->fetchOne("SELECT COUNT(*) FROM dtb_csv WHERE csv_type_id = 4 AND field_name = 'order_memo'");
         if ($orderItemExists == 0) {
-            $sortNo = $this->connection->fetchOne('SELECT MAX(sort_no) + 1 FROM dtb_csv WHERE csv_type_id = 4');
+            // dtb_csv が空でも NULL にならないよう COALESCE で既定値を確保する
+            $sortNo = $this->connection->fetchOne('SELECT COALESCE(MAX(sort_no), 0) + 1 FROM dtb_csv WHERE csv_type_id = 4');
             $this->addSql("INSERT INTO dtb_csv (
                 csv_type_id, creator_id, entity_name, field_name, disp_name, sort_no, enabled, create_date, update_date, discriminator_type
             ) VALUES (
-                4, null, ?, 'order_memo', '受注管理用メモ', $sortNo, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'csv'
+                4, null, ?, 'order_memo', '受注管理用メモ', ?, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'csv'
             )",
-                ['Eccube\\\\Entity\\\\OrderItem']);
+                ['Eccube\\\\Entity\\\\OrderItem', $sortNo]);
         }
     }
 
