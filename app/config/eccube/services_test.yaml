@@ -95,3 +95,29 @@ services:
     Eccube\Service\AgentCommerce\CheckoutSession\GuestCustomerResolver:
         autowire: true
         public: true
+    # Idempotency ストア (conformance テストが直接 execute を検証するため public 化)。
+    Eccube\Service\AgentCommerce\Idempotency\AgentCheckoutIdempotencyStore:
+        autowire: true
+        public: true
+    # ACP プロトコル層 (#6776)。consumer (controller) は存在するが、単体テストが直接取得するため public 化。
+    Eccube\Service\AgentCommerce\Acp\AcpCheckoutSessionMapper:
+        autowire: true
+        public: true
+    Eccube\Service\AgentCommerce\Acp\AcpMessageMapper:
+        autowire: true
+        public: true
+    Eccube\Service\AgentCommerce\Acp\AcpStatusMapper:
+        autowire: true
+        public: true
+    Eccube\Service\AgentCommerce\Acp\AcpDiscoveryDocumentBuilder:
+        autowire: true
+        public: true
+    Eccube\Service\AgentCommerce\Acp\AcpMessageSigner:
+        autowire: true
+        public: true
+    # ACP の OAuth2 認証検証用。eccube-api4 非依存のスタブハンドラを AccessTokenHandlerInterface に束ねる。
+    Eccube\Tests\Service\AgentCommerce\Stub\InMemoryAccessTokenHandler:
+        public: true
+    Symfony\Component\Security\Http\AccessToken\AccessTokenHandlerInterface:
+        alias: Eccube\Tests\Service\AgentCommerce\Stub\InMemoryAccessTokenHandler
+        public: true
