@@ -24,12 +24,14 @@ use Eccube\Entity\Master\CsvType;
 use Eccube\Form\Type\Admin\SearchCustomerType;
 use Eccube\Form\Type\Admin\SearchOrderType;
 use Eccube\Form\Type\Admin\SearchProductType;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CsvRepository;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\Master\CsvTypeRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Repository\ShippingRepository;
+use Eccube\Util\CsvFormulaGuard;
 use Eccube\Util\FormUtil;
 use Knp\Component\Pager\Pagination\AbstractPagination;
 use Knp\Component\Pager\PaginatorInterface;
@@ -59,7 +61,7 @@ class CsvExportService
     /**
      * CsvExportService constructor.
      */
-    public function __construct(protected ?EntityManagerInterface $entityManager, protected CsvRepository $csvRepository, protected CsvTypeRepository $csvTypeRepository, protected OrderRepository $orderRepository, protected ShippingRepository $shippingRepository, protected CustomerRepository $customerRepository, protected ProductRepository $productRepository, protected EccubeConfig $eccubeConfig, protected FormFactoryInterface $formFactory, protected PaginatorInterface $paginator)
+    public function __construct(protected ?EntityManagerInterface $entityManager, protected CsvRepository $csvRepository, protected CsvTypeRepository $csvTypeRepository, protected OrderRepository $orderRepository, protected ShippingRepository $shippingRepository, protected CustomerRepository $customerRepository, protected ProductRepository $productRepository, protected EccubeConfig $eccubeConfig, protected FormFactoryInterface $formFactory, protected PaginatorInterface $paginator, protected BaseInfoRepository $baseInfoRepository)
     {
     }
 
@@ -258,6 +260,10 @@ class CsvExportService
     {
         if (is_null($this->convertEncodingCallBack)) {
             $this->convertEncodingCallBack = $this->getConvertEncodingCallback();
+        }
+
+        if ($this->baseInfoRepository->get()->isOptionSanitizeCsvFormulas()) {
+            $row = array_map(CsvFormulaGuard::escape(...), $row);
         }
 
         fputcsv($this->fp, array_map($this->convertEncodingCallBack, $row), $this->eccubeConfig['eccube_csv_export_separator'], '"', '\\');
