@@ -15,42 +15,66 @@ jobs:
       matrix:
         operating-system: [ ubuntu-24.04 ]
         php: [ '8.2', '8.3', '8.4', '8.5' ]
-        db: [ mysql, pgsql, sqlite3 ]
+        db: [ mysql, pgsql, pgsql13, sqlite3 ]
         include:
+          ## database_version: setup アクションでインストールするバージョン
+          ## database_server_version: Doctrine の server_version 設定値
           - db: mysql
             database_url: mysql://root:password@127.0.0.1:3306/eccube_db
+            database_version: '8.4'
             database_server_version: 8
             database_charset: utf8mb4
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
-            database_server_version: 16
+            database_version: '18'
+            database_server_version: 18
+            database_charset: utf8
+          # サポート最小バージョンの PostgreSQL でも検証する
+          - db: pgsql13
+            database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
+            database_version: '13'
+            database_server_version: 13
             database_charset: utf8
           - db: sqlite3
             database_url: sqlite:///var/eccube.db
             database_server_version: 3
             database_charset: utf8
 
-    services:
-      mysql:
-        image: mysql:8.4
-        env:
-          MYSQL_ROOT_PASSWORD: password
-        ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-      postgres:
-        image: postgres:16
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
-        ports:
-          - 5432:5432
-        # needed because the postgres container does not provide a healthcheck
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
+
+      ## Docker Hub からの pull はタイムアウトで CI が不安定になるため、
+      ## DB はコンテナではなく setup アクション (apt/同梱版) でインストールする
+      - name: Setup MySQL
+        if: matrix.db == 'mysql'
+        uses: ankane/setup-mysql@7fef9e1e6d7041dccbe4cda8e2c5940e49db8f30  # v1
+        with:
+          mysql-version: ${{ matrix.database_version }}
+      - name: Configure MySQL
+        if: matrix.db == 'mysql'
+        run: |
+          for _ in $(seq 1 30); do mysqladmin ping -h 127.0.0.1 --silent && break; sleep 1; done
+          mysqladmin ping -h 127.0.0.1 --silent || { echo 'MySQL did not become ready within 30s'; exit 1; }
+          ## DATABASE_URL は TCP(127.0.0.1) 接続のため、TCP 経路でアクセスする root@'%' にも認証情報を設定する
+          sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH caching_sha2_password BY 'password'; CREATE USER IF NOT EXISTS 'root'@'%' IDENTIFIED WITH caching_sha2_password BY 'password'; GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION; FLUSH PRIVILEGES;"
+          ## DATABASE_URL と同一経路 (TCP/root/password) で接続できることを検証
+          mysql -h 127.0.0.1 -P 3306 -u root -ppassword -e 'SELECT VERSION()'
+
+      - name: Setup PostgreSQL
+        if: startsWith(matrix.db, 'pgsql')
+        uses: ankane/setup-postgres@6d3ffa1aa7498a42b79e9f9f5838b99971839300  # v1
+        with:
+          postgres-version: ${{ matrix.database_version }}
+          user: postgres
+      - name: Configure PostgreSQL
+        if: startsWith(matrix.db, 'pgsql')
+        run: |
+          for _ in $(seq 1 30); do pg_isready -h 127.0.0.1 && break; sleep 1; done
+          pg_isready -h 127.0.0.1 || { echo 'PostgreSQL did not become ready within 30s'; exit 1; }
+          psql -h 127.0.0.1 -U postgres -c "ALTER USER postgres PASSWORD 'password'"
+          ## DATABASE_URL と同一経路 (TCP/postgres/password) で接続できることを検証
+          PGPASSWORD=password psql -h 127.0.0.1 -U postgres -c 'SELECT VERSION()'
 
       - name: Setup PHP
         uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc  # v2
@@ -113,7 +137,7 @@ jobs:
           php -c php.ini vendor/bin/phpunit --group cache-clear
           php -c php.ini vendor/bin/phpunit --group cache-clear-install
       - name: PHPUnit (update-schema-doctrine)
-        if: matrix.db == 'pgsql'
+        if: startsWith(matrix.db, 'pgsql')
         env:
           APP_ENV: 'test'
           DATABASE_URL: ${{ matrix.database_url }}
