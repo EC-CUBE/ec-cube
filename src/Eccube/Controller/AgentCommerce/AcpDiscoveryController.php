@@ -18,6 +18,7 @@ use Eccube\Repository\BaseInfoRepository;
 use Eccube\Service\AgentCommerce\Acp\AcpDiscoveryDocumentBuilder;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\EventListener\AbstractSessionListener;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -49,6 +50,9 @@ class AcpDiscoveryController extends AbstractController
         // 認証不要・キャッシュ可 (SHOULD: public, max-age>=3600)。
         $response->setPublic();
         $response->setMaxAge(3600);
+        // EC-CUBE はセッション利用時に Cache-Control を private へ強制する。discovery は公開文書のため、
+        // セッションリスナーの自動 no-cache を抑止して public キャッシュを維持する。
+        $response->headers->set(AbstractSessionListener::NO_AUTO_CACHE_CONTROL_HEADER, 'true');
 
         return $response;
     }
