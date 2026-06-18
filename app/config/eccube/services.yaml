@@ -280,10 +280,7 @@ services:
         arguments:
             $escalationExpireMinutes: '%eccube_agent_checkout_escalation_expire%'
 
-    # 冪等性記録は標準キャッシュ (FilesystemAdapter フォールバック成立) に保管する。
-    Eccube\Service\AgentCommerce\Idempotency\AgentCheckoutIdempotencyStore:
-        arguments:
-            $cache: '@cache.app'
+    # 冪等性記録は DB 一意制約 (dtb_agent_checkout_idempotency) で管理する (EM/Repository は autowire)。
 
     # UCP インバウンド署名検証 (RFC 9421・api4 非依存)。許可ドメイン/必須化は運用で設定する。
     Eccube\Service\AgentCommerce\Ucp\Signature\UcpRequestSignatureVerifier:

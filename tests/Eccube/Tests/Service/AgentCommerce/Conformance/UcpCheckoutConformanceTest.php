@@ -15,17 +15,16 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Service\AgentCommerce\Conformance;
 
+use Eccube\Entity\AgentCheckoutIdempotency;
 use Eccube\Entity\Master\CheckoutSessionStatus;
+use Eccube\Repository\AgentCheckoutIdempotencyRepository;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutMessage;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutMessageLevel;
 use Eccube\Service\AgentCommerce\Exception\IdempotencyConflictException;
 use Eccube\Service\AgentCommerce\Idempotency\AgentCheckoutIdempotencyStore;
 use Eccube\Service\AgentCommerce\Ucp\UcpMessageMapper;
 use Eccube\Service\AgentCommerce\Ucp\UcpStatusMapper;
-use PHPUnit\Framework\TestCase;
-use Symfony\Component\Cache\Adapter\ArrayAdapter;
-use Symfony\Component\Lock\LockFactory;
-use Symfony\Component\Lock\Store\InMemoryStore;
+use Eccube\Tests\EccubeTestCase;
 
 /**
  * Layer 0: UCP Checkout 仕様適合性 (規範要件 1:1 トレース).
@@ -37,8 +36,16 @@ use Symfony\Component\Lock\Store\InMemoryStore;
  *
  * @see https://github.com/Universal-Commerce-Protocol/ucp UCP (pin: v2026-04-08)
  */
-final class UcpCheckoutConformanceTest extends TestCase
+final class UcpCheckoutConformanceTest extends EccubeTestCase
 {
+    private function idempotencyStore(): AgentCheckoutIdempotencyStore
+    {
+        /** @var AgentCheckoutIdempotencyRepository $repository */
+        $repository = $this->entityManager->getRepository(AgentCheckoutIdempotency::class);
+
+        return new AgentCheckoutIdempotencyStore($this->entityManager, $repository);
+    }
+
     /**
      * status は incomplete/requires_escalation/ready_for_complete/complete_in_progress/completed/canceled。
      * EC-CUBE の正規化 ready は UCP の ready_for_complete として広告されなければならない。
@@ -76,7 +83,7 @@ final class UcpCheckoutConformanceTest extends TestCase
      */
     public function testIdempotencyKeyReuseWithDifferentParamsIsRejected(): void
     {
-        $store = new AgentCheckoutIdempotencyStore(new ArrayAdapter(), new LockFactory(new InMemoryStore()));
+        $store = $this->idempotencyStore();
         $store->execute('k', 'hash-A', static fn (): array => ['status' => 201, 'body' => []]);
 
         $this->expectException(IdempotencyConflictException::class);
@@ -90,7 +97,7 @@ final class UcpCheckoutConformanceTest extends TestCase
      */
     public function testIdempotentReplayDoesNotReexecuteSideEffects(): void
     {
-        $store = new AgentCheckoutIdempotencyStore(new ArrayAdapter(), new LockFactory(new InMemoryStore()));
+        $store = $this->idempotencyStore();
         $calls = 0;
         $compute = function () use (&$calls): array {
             ++$calls;

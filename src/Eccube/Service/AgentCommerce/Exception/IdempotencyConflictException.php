@@ -14,12 +14,12 @@
 namespace Eccube\Service\AgentCommerce\Exception;
 
 /**
- * 同一 Idempotency-Key が異なるリクエスト内容で再利用されたことを表す例外.
+ * Idempotency-Key の競合 (HTTP 409 相当).
  *
- * UCP/ACP では同一キーでの再送はキャッシュ結果のリプレイ (副作用の再実行なし) とし、
- * **パラメータが異なる**再利用は HTTP 409 Conflict に変換する。
+ * - 同一キーが**異なるリクエスト内容**で再利用された場合
+ * - 同一キーの**処理がまだ進行中** (並行リクエスト) の場合
  *
- * @see https://github.com/Universal-Commerce-Protocol/ucp UCP checkout-rest.md (Idempotency-Key)
+ * いずれもプロトコル層で HTTP 409 Conflict へ変換する。
  */
 class IdempotencyConflictException extends \RuntimeException
 {

@@ -13,52 +13,44 @@
 
 namespace Eccube\Service\AgentCommerce\Idempotency;
 
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use Doctrine\ORM\EntityManagerInterface;
+use Eccube\Entity\AgentCheckoutIdempotency;
+use Eccube\Repository\AgentCheckoutIdempotencyRepository;
 use Eccube\Service\AgentCommerce\Exception\IdempotencyConflictException;
-use Psr\Cache\CacheItemPoolInterface;
-use Symfony\Component\Lock\LockFactory;
 
 /**
- * エージェントチェックアウトの Idempotency-Key 処理.
+ * エージェントチェックアウトの Idempotency-Key 処理 (DB 一意制約ベース).
  *
- * 状態変更操作 (POST/PUT) で `Idempotency-Key` ヘッダが付与された場合、初回はハンドラを実行し
- * 結果 (HTTP ステータス + レスポンスボディ + リクエストハッシュ) をキャッシュへ保存する。
- * 同一キーの再送はハンドラを再実行せずキャッシュ結果をリプレイする (副作用の再実行なし)。
- * 同一キーが**異なるリクエスト内容**で再利用された場合は {@link IdempotencyConflictException} を投げる。
+ * 状態変更操作 (complete 等) で `Idempotency-Key` ヘッダが付与された場合、初回はハンドラを実行し
+ * 結果を `dtb_agent_checkout_idempotency` へ保存する。同一キーの再送はハンドラを再実行せず保存済み
+ * レスポンスをリプレイする (副作用の再実行なし)。
  *
- * 標準は PSR-6 キャッシュ (FilesystemAdapter フォールバックが常に成立) を用いる。
- * キャッシュクリアでリプレイ記録が消える点に留意 (堅牢化は DB バックエンドを opt-in で差し替え可能)。
+ * **`(idempotency_key, subject)` の DB 一意制約**で直列化するため、Redis 等の共有キャッシュや
+ * ノードローカルな分散ロックに依存せず、**マルチインスタンス (AWS 等) でも単一の共有 DB だけで**
+ * 並行・越境の二重実行を防ぐ。`subject` は認証済みエージェント識別子で名前空間化する。
  *
- * @see https://github.com/Universal-Commerce-Protocol/ucp UCP checkout-rest.md (Idempotency-Key, store >= 24h)
+ * @see https://github.com/Universal-Commerce-Protocol/ucp UCP checkout-rest.md (Idempotency-Key)
  */
 class AgentCheckoutIdempotencyStore
 {
-    /**
-     * @param CacheItemPoolInterface $cache       冪等性記録の保管先 (既定は cache.app)
-     * @param LockFactory            $lockFactory キー単位の排他ロック (同一キー同時実行の二重副作用防止)
-     * @param int                    $ttl         保管期間 (秒)。UCP は 24h 以上を要求するため既定 86400
-     */
     public function __construct(
-        private readonly CacheItemPoolInterface $cache,
-        private readonly LockFactory $lockFactory,
-        private readonly int $ttl = 86400,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly AgentCheckoutIdempotencyRepository $repository,
     ) {
     }
 
     /**
      * Idempotency-Key を考慮してハンドラを実行する.
      *
-     * 同一キーの並行リクエストで副作用 (注文生成・決済) が二重実行されないよう、キー単位の排他ロックを
-     * 取得した上で hit 判定 → compute → save を行う (compute を 1 回に制限する)。
-     * $subject (認証済みエージェント識別子) でキーを名前空間化し、別エージェントによる越境リプレイを防ぐ。
-     *
      * @param string|null                                                 $key         Idempotency-Key ヘッダ値 (null/空ならキー無しとして都度実行)
      * @param string                                                      $requestHash リクエスト内容のハッシュ (異パラメータ再利用検知用)
      * @param callable(): array{status: int, body: array<string, mixed>} $compute     初回に実行するハンドラ
-     * @param string|null                                                 $subject     認証済み主体 (UCP-Agent profile 等)。キー名前空間に用いる
+     * @param string|null                                                 $subject     認証済み主体 (UCP-Agent profile 等)。未認証は null
      *
      * @return array{status: int, body: array<string, mixed>, replayed: bool}
      *
-     * @throws IdempotencyConflictException 同一キーが異なる requestHash で再利用された場合
+     * @throws IdempotencyConflictException 同一キーの異パラメータ再利用、または処理中の並行リクエスト
      */
     public function execute(?string $key, string $requestHash, callable $compute, ?string $subject = null): array
     {
@@ -68,33 +60,40 @@ class AgentCheckoutIdempotencyStore
             return ['status' => $result['status'], 'body' => $result['body'], 'replayed' => false];
         }
 
-        $cacheKey = $this->normalizeKey($key, $subject);
+        $subjectKey = $subject ?? '';
 
-        // キー単位ロックで compute を直列化する (並行 miss による二重実行を防ぐ)。
-        $lock = $this->lockFactory->createLock('lock.'.$cacheKey, 30.0);
-        $lock->acquire(true);
-        try {
-            $item = $this->cache->getItem($cacheKey);
-            if ($item->isHit()) {
-                /** @var array{requestHash: string, status: int, body: array<string, mixed>} $stored */
-                $stored = $item->get();
-                if ($stored['requestHash'] !== $requestHash) {
-                    throw new IdempotencyConflictException(sprintf('Idempotency-Key "%s" was reused with different request parameters.', $key));
-                }
-
-                return ['status' => $stored['status'], 'body' => $stored['body'], 'replayed' => true];
-            }
-
-            $result = $compute();
-
-            $item->set(['requestHash' => $requestHash, 'status' => $result['status'], 'body' => $result['body']]);
-            $item->expiresAfter($this->ttl);
-            $this->cache->save($item);
-
-            return ['status' => $result['status'], 'body' => $result['body'], 'replayed' => false];
-        } finally {
-            $lock->release();
+        // 既存記録があればリプレイ / 競合 / 処理中を判定する (逐次再送はここで完結)。
+        $existing = $this->repository->findOneByKeyAndSubject($key, $subjectKey);
+        if ($existing !== null) {
+            return $this->replay($existing->getRequestHash(), $existing->hasResponse(), (int) $existing->getResponseStatus(), $existing->getResponseBody() ?? [], $requestHash);
         }
+
+        // 予約行を INSERT。一意制約で並行・越境の二重実行を直列化する。
+        $reservation = (new AgentCheckoutIdempotency())
+            ->setIdempotencyKey($key)
+            ->setSubject($subjectKey)
+            ->setRequestHash($requestHash);
+        try {
+            $this->entityManager->persist($reservation);
+            $this->entityManager->flush();
+        } catch (UniqueConstraintViolationException) {
+            // 並行する別リクエストが先に予約した (flush 失敗で EM は閉じるため DBAL で直接読む)。
+            return $this->replayFromDbal($key, $subjectKey, $requestHash);
+        }
+
+        // 予約を獲得 → compute を実行。失敗時は予約を消して再試行可能にする。
+        try {
+            $result = $compute();
+        } catch (\Throwable $e) {
+            $this->deleteReservation($key, $subjectKey);
+
+            throw $e;
+        }
+
+        $reservation->setResponseStatus($result['status'])->setResponseBody($result['body']);
+        $this->entityManager->flush();
+
+        return ['status' => $result['status'], 'body' => $result['body'], 'replayed' => false];
     }
 
     /**
@@ -111,13 +110,60 @@ class AgentCheckoutIdempotencyStore
     }
 
     /**
-     * PSR-6 で予約されている文字 ({}()/\@:) を避けるためキーをハッシュ化する.
+     * 既存記録から リプレイ結果を返す。異パラメータ再利用・処理中は競合例外.
      *
-     * $subject (認証済みエージェント) があれば名前空間に含め、別主体による同一キーの衝突・
-     * 越境リプレイを防ぐ。
+     * @param array<string, mixed> $storedBody
+     *
+     * @return array{status: int, body: array<string, mixed>, replayed: bool}
      */
-    private function normalizeKey(string $key, ?string $subject = null): string
+    private function replay(string $storedHash, bool $hasResponse, int $storedStatus, array $storedBody, string $requestHash): array
     {
-        return 'agent_commerce_idempotency.'.hash('sha256', ($subject ?? '').'|'.$key);
+        if ($storedHash !== $requestHash) {
+            throw new IdempotencyConflictException('Idempotency-Key was reused with different request parameters.');
+        }
+        if (!$hasResponse) {
+            throw new IdempotencyConflictException('A request with the same Idempotency-Key is currently being processed.');
+        }
+
+        return ['status' => $storedStatus, 'body' => $storedBody, 'replayed' => true];
+    }
+
+    /**
+     * 一意制約違反 (EM が閉じた後) に DBAL で既存記録を読み、リプレイ結果を返す.
+     *
+     * @return array{status: int, body: array<string, mixed>, replayed: bool}
+     */
+    private function replayFromDbal(string $key, string $subject, string $requestHash): array
+    {
+        $row = $this->entityManager->getConnection()->fetchAssociative(
+            'SELECT request_hash, response_status, response_body FROM dtb_agent_checkout_idempotency WHERE idempotency_key = :k AND subject = :s',
+            ['k' => $key, 's' => $subject],
+        );
+        if ($row === false) {
+            // 競合相手がロールバック等で消えた場合は処理中扱い (再試行を促す)。
+            throw new IdempotencyConflictException('A request with the same Idempotency-Key is currently being processed.');
+        }
+
+        $hasResponse = $row['response_status'] !== null;
+        $decoded = is_string($row['response_body'] ?? null) ? json_decode($row['response_body'], true) : null;
+
+        return $this->replay(
+            (string) ($row['request_hash'] ?? ''),
+            $hasResponse,
+            (int) ($row['response_status'] ?? 0),
+            is_array($decoded) ? $decoded : [],
+            $requestHash,
+        );
+    }
+
+    /**
+     * 予約行を削除する (compute 失敗時の再試行を可能にするため。EM 状態に依存しない DBAL 経由).
+     */
+    private function deleteReservation(string $key, string $subject): void
+    {
+        $this->entityManager->getConnection()->delete(
+            'dtb_agent_checkout_idempotency',
+            ['idempotency_key' => $key, 'subject' => $subject],
+        );
     }
 }

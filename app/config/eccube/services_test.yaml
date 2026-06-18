@@ -119,8 +119,6 @@ services:
     Eccube\Service\AgentCommerce\Idempotency\AgentCheckoutIdempotencyStore:
         autowire: true
         public: true
-        arguments:
-            $cache: '@cache.app'
     Eccube\Service\AgentCommerce\Payment\AgentCheckoutPaymentHandlerRegistry:
         autowire: true
         public: true
