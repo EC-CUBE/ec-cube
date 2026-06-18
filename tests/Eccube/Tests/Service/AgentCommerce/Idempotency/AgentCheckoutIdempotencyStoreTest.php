@@ -125,7 +125,7 @@ final class AgentCheckoutIdempotencyStoreTest extends EccubeTestCase
         }
 
         // 予約行が削除され、再試行可能な状態に戻っていること。
-        $this->assertNull($this->repository->findOneByKeyAndSubject($key, ''), 'compute 失敗時は予約が消えて再試行できる');
+        $this->assertNotInstanceOf(AgentCheckoutIdempotency::class, $this->repository->findOneByKeyAndSubject($key, ''), 'compute 失敗時は予約が消えて再試行できる');
     }
 
     public function testInProgressReservationReturnsConflict(): void

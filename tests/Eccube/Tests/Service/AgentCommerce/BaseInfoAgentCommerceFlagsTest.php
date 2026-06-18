@@ -66,7 +66,7 @@ final class BaseInfoAgentCommerceFlagsTest extends EccubeTestCase
             if (method_exists($BaseInfo, $getter)) {
                 $value = $BaseInfo->{$getter}();
                 // null を (bool) で false に丸めると「default false」契約を取りこぼすため bool 型を厳密に要求する。
-                self::assertIsBool($value, sprintf('%s() must return bool (got %s)', $getter, get_debug_type($value)));
+                $this->assertIsBool($value, sprintf('%s() must return bool (got %s)', $getter, get_debug_type($value)));
 
                 return $value;
             }
