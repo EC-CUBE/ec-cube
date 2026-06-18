@@ -20,7 +20,9 @@ use Eccube\Entity\Master\AgentProtocol;
 use Eccube\Entity\Master\CheckoutSessionStatus;
 use Eccube\Entity\Order;
 use Eccube\Entity\ProductClass;
+use Eccube\Entity\ProductStock;
 use Eccube\Repository\CheckoutSessionRepository;
+use Eccube\Repository\Master\CheckoutSessionStatusRepository;
 use Eccube\Service\AgentCommerce\AgentCheckoutPurchaseFlowAdapter;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutAddress;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutCompletionService;
@@ -63,6 +65,7 @@ final class AgentCheckoutCompletionServiceTest extends EccubeTestCase
         $this->assertSame(CheckoutSessionStatus::COMPLETED, $session->getStatus()?->getId());
 
         $this->entityManager->refresh($stock);
+        $this->assertInstanceOf(ProductStock::class, $stock);
         $this->assertSame(98, (int) $stock->getStock(), '在庫が 2 引き当てられて確定する');
     }
 
@@ -82,12 +85,13 @@ final class AgentCheckoutCompletionServiceTest extends EccubeTestCase
         // 初回 complete: 追加認証待ち。在庫は引き当てたまま保持し、Order は未確定。
         $first = $service->complete($session, []);
         $this->assertSame(CheckoutSessionStatus::REQUIRES_ACTION, $first->status->getId(), '3DS challenge は requires_action (エラーでない)');
-        $this->assertNull($first->order, 'requires_action では Order は未確定');
+        $this->assertNotInstanceOf(Order::class, $first->order, 'requires_action では Order は未確定');
         $this->assertSame(['continue_url' => 'https://example.com/3ds/abc'], $first->actionData, 'actionData に continue_url 原資が載る');
-        $this->assertNotNull($session->getExpiresAt(), 'requires_action で在庫確保期限 (expires_at) が設定される');
+        $this->assertInstanceOf(\DateTime::class, $session->getExpiresAt(), 'requires_action で在庫確保期限 (expires_at) が設定される');
         $this->assertGreaterThan(new \DateTime(), $session->getExpiresAt(), 'expires_at は将来 (在庫確保期限)');
 
         $this->entityManager->refresh($stock);
+        $this->assertInstanceOf(ProductStock::class, $stock);
         $this->assertSame(98, (int) $stock->getStock(), 'requires_action 中も在庫は引当のまま保持される (rollback しない)');
 
         // 再開 complete: authentication_result を受けて確定。再 prepare せず authorize→capture→commit。
@@ -109,10 +113,11 @@ final class AgentCheckoutCompletionServiceTest extends EccubeTestCase
         $result = $this->service($handler)->complete($session, []);
 
         $this->assertSame(CheckoutSessionStatus::READY, $result->status->getId(), 'retryable な決済失敗は ready に戻す (再 complete 可)');
-        $this->assertNull($result->order, '失敗時は Order を確定しない');
+        $this->assertNotInstanceOf(Order::class, $result->order, '失敗時は Order を確定しない');
         $this->assertNotEmpty($result->messages, '決済失敗はビジネス系メッセージで返る');
 
         $this->entityManager->refresh($stock);
+        $this->assertInstanceOf(ProductStock::class, $stock);
         $this->assertSame(10, (int) $stock->getStock(), '決済失敗で引当をロールバックし在庫が戻る');
     }
 
@@ -139,6 +144,7 @@ final class AgentCheckoutCompletionServiceTest extends EccubeTestCase
         $first = $service->complete($session, []);
         $this->assertSame(CheckoutSessionStatus::COMPLETED, $first->status->getId());
         $this->entityManager->refresh($stock);
+        $this->assertInstanceOf(ProductStock::class, $stock);
         $this->assertSame(98, (int) $stock->getStock());
         $orderId = $first->order?->getId();
 
@@ -169,6 +175,7 @@ final class AgentCheckoutCompletionServiceTest extends EccubeTestCase
         $first = $service->complete($session, []);
         $this->assertSame(CheckoutSessionStatus::IN_PROGRESS, $first->status->getId(), 'PENDING は in_progress で保持');
         $this->entityManager->refresh($stock);
+        $this->assertInstanceOf(ProductStock::class, $stock);
         $this->assertSame(99, (int) $stock->getStock(), 'in_progress 中も在庫は保持');
 
         $second = $service->complete($session, []);
@@ -222,14 +229,14 @@ final class AgentCheckoutCompletionServiceTest extends EccubeTestCase
     private function statusMaster(int $id): CheckoutSessionStatus
     {
         $status = $this->entityManager->getRepository(CheckoutSessionStatus::class)->find($id);
-        self::assertInstanceOf(CheckoutSessionStatus::class, $status);
+        $this->assertInstanceOf(CheckoutSessionStatus::class, $status);
 
         return $status;
     }
 
     private function service(AgentCheckoutPaymentHandlerInterface ...$handlers): AgentCheckoutCompletionService
     {
-        /** @var \Eccube\Repository\Master\CheckoutSessionStatusRepository $statusRepository */
+        /** @var CheckoutSessionStatusRepository $statusRepository */
         $statusRepository = $this->entityManager->getRepository(CheckoutSessionStatus::class);
 
         return new AgentCheckoutCompletionService(
@@ -259,7 +266,7 @@ final class AgentCheckoutCompletionServiceTest extends EccubeTestCase
              */
             public function __construct(
                 private array $authorizeOutcomes,
-                private ?PaymentOutcome $captureOutcome,
+                private readonly ?PaymentOutcome $captureOutcome,
             ) {
             }
 
