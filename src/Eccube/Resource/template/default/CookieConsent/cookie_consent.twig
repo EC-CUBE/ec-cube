@@ -124,6 +124,9 @@ $(function() {
                     showMessage(response.message || '{{ 'cookie_consent.page.save_error'|trans }}', 'danger');
                 }
             );
+        } else {
+            // cookie_consent.js 未ロード等で保存 API が利用できない場合も無反応にしない
+            showMessage('{{ 'cookie_consent.page.save_error'|trans }}', 'danger');
         }
     });
 

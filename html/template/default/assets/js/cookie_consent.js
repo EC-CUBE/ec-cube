@@ -54,7 +54,11 @@ Module: CookieConsent
      */
     function getStatus() {
         var matches = document.cookie.match(new RegExp('(?:^|; )' + COOKIE_NAME + '=([^;]*)'));
-        return matches ? decodeURIComponent(matches[1]) : null;
+        var status = matches ? decodeURIComponent(matches[1]) : null;
+
+        // 許可値（accepted/rejected）以外は未設定（null）扱いに揃える。
+        // 改ざん等で不正値が入ってもバナー再表示・GA 非ロードが破綻しないようにする。
+        return (status === 'accepted' || status === 'rejected') ? status : null;
     }
 
     // 現在状態の getter を公開（GA・店舗・プラグインの初回チェック用）

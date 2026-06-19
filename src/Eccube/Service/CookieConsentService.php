@@ -46,6 +46,11 @@ class CookieConsentService
     private const COOKIE_LIFETIME_DAYS = 365;
 
     /**
+     * 1日の秒数（Cookie有効期限の計算用）
+     */
+    private const SECONDS_PER_DAY = 86400;
+
+    /**
      * 現在の同意状態を取得する。
      *
      * @param Request $request リクエストオブジェクト
@@ -93,7 +98,7 @@ class CookieConsentService
     public function saveConsentStatus(Response $response, string $status, Request $request): void
     {
         // 有効期限を計算（現在時刻 + 365日）
-        $expireTime = time() + (self::COOKIE_LIFETIME_DAYS * 86400);
+        $expireTime = time() + (self::COOKIE_LIFETIME_DAYS * self::SECONDS_PER_DAY);
 
         $cookie = Cookie::create(
             self::COOKIE_NAME,
