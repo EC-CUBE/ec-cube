@@ -109,7 +109,6 @@ EOF
             'update_date' => new \DateTime(),
             'discriminator_type' => 'baseinfo',
             'option_mail_notifier' => true,
-            'option_cookie_consent' => true,
         ], [
             'update_date' => Types::DATETIMETZ_MUTABLE,
         ]);

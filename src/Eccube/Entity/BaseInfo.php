@@ -105,8 +105,8 @@ if (!class_exists(BaseInfo::class)) {
         #[ORM\Column(name: 'option_product_delivery_fee', type: Types::BOOLEAN, options: ['default' => false])]
         private bool $option_product_delivery_fee = false;
 
-        // 既存店舗のアップグレード時はカラム追加で OFF（後方互換: GA の挙動を変えない）。
-        // 新規インストールはインストーラ側で明示的に ON にする。
+        // クッキーポリシー同意機能はオプトイン（既定 OFF）。新規・アップグレードとも OFF で、
+        // 店舗が管理画面「店舗基本情報」で ON にするまでバナー・同意連動は一切動作しない（後方互換）。
         #[ORM\Column(name: 'option_cookie_consent', type: Types::BOOLEAN, options: ['default' => false])]
         private bool $option_cookie_consent = false;
 

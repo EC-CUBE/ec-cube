@@ -31,6 +31,18 @@ async function withAdmin(page: Page, fn: (adminPage: Page) => Promise<void>): Pr
 }
 
 /**
+ * ToggleSwitchType（Bootstrap スイッチ）の ON/OFF を切り替える。
+ * input は視覚的に非表示のため check()/uncheck() は "not visible" で失敗する。
+ * 既存の管理画面 E2E と同様に label クリックで切り替える。
+ */
+async function setToggleSwitch(page: Page, inputId: string, checked: boolean): Promise<void> {
+  const input = page.locator(`#${inputId}`);
+  if ((await input.isChecked()) !== checked) {
+    await page.locator(`label[for="${inputId}"]`).click();
+  }
+}
+
+/**
  * 管理画面「店舗基本情報」でクッキーポリシー同意機能の ON/OFF を切り替える。
  */
 async function setCookieConsentFeature(page: Page, enabled: boolean): Promise<void> {
@@ -38,12 +50,7 @@ async function setCookieConsentFeature(page: Page, enabled: boolean): Promise<vo
     await adminPage.goto(`/${adminRoute}/setting/shop`);
     await adminPage.waitForLoadState('load');
 
-    const toggle = adminPage.locator('#shop_master_option_cookie_consent');
-    if (enabled) {
-      await toggle.check({ force: true });
-    } else {
-      await toggle.uncheck({ force: true });
-    }
+    await setToggleSwitch(adminPage, 'shop_master_option_cookie_consent', enabled);
 
     await adminPage.locator('button.ladda-button[type="submit"]').click();
     await adminPage.waitForLoadState('load');
@@ -59,12 +66,7 @@ async function configureShop(page: Page, opts: { gaId: string; cookieConsent: bo
     await adminPage.waitForLoadState('load');
 
     await adminPage.locator('#shop_master_ga_id').fill(opts.gaId);
-    const toggle = adminPage.locator('#shop_master_option_cookie_consent');
-    if (opts.cookieConsent) {
-      await toggle.check({ force: true });
-    } else {
-      await toggle.uncheck({ force: true });
-    }
+    await setToggleSwitch(adminPage, 'shop_master_option_cookie_consent', opts.cookieConsent);
 
     await adminPage.locator('button.ladda-button[type="submit"]').click();
     await adminPage.waitForLoadState('load');
@@ -86,6 +88,29 @@ async function gaState(page: Page): Promise<{ gtag: boolean; script: boolean; ba
 const TEST_GA_ID = 'G-E2ECOOKIE01';
 
 test.describe('Front Cookie Consent', () => {
+  test.describe.configure({ mode: 'serial' });
+
+  test.beforeAll(async ({ browser }) => {
+    // 機能はオプトイン（既定 OFF）のため、バナー・設定ページを検証する本ブロックでは ON にする
+    const context = await browser.newContext();
+    const page = await context.newPage();
+    try {
+      await setCookieConsentFeature(page, true);
+    } finally {
+      await context.close();
+    }
+  });
+
+  test.afterAll(async ({ browser }) => {
+    // テスト後は既定（OFF）へ戻す
+    const context = await browser.newContext();
+    const page = await context.newPage();
+    try {
+      await setCookieConsentFeature(page, false);
+    } finally {
+      await context.close();
+    }
+  });
 
   test.beforeEach(async ({ context }) => {
     // 各テストは未同意状態から開始する
@@ -142,9 +167,8 @@ test.describe('Front Cookie Consent', () => {
     await page.locator('#consent_accepted').check();
     await page.locator('#cookie-consent-save').click();
 
-    // 保存後、リロードされ accepted 状態が反映される
-    await page.waitForLoadState('load');
-    expect(await getConsentCookie(page)).toBe('accepted');
+    // 保存 API（Ajax）の Set-Cookie 反映を待つ（成功後の自動リロードに依存しない）
+    await expect.poll(async () => await getConsentCookie(page)).toBe('accepted');
   });
 
   test('クッキーポリシーページが表示される', async ({ page }) => {
@@ -190,11 +214,11 @@ test.describe('Front Cookie Consent - 管理画面 ON/OFF', () => {
   test.describe.configure({ mode: 'serial' });
 
   test.afterAll(async ({ browser }) => {
-    // テスト後は必ず ON（デフォルト）へ戻す
+    // テスト後は既定（OFF）へ戻す
     const context = await browser.newContext();
     const page = await context.newPage();
     try {
-      await setCookieConsentFeature(page, true);
+      await setCookieConsentFeature(page, false);
     } finally {
       await context.close();
     }
@@ -233,11 +257,11 @@ test.describe('Front Cookie Consent - Google Analytics 連動', () => {
   });
 
   test.afterAll(async ({ browser }) => {
-    // テスト後は ga_id を空・機能 ON（デフォルト）へ戻す
+    // テスト後は ga_id を空・機能を既定（OFF）へ戻す
     const context = await browser.newContext();
     const page = await context.newPage();
     try {
-      await configureShop(page, { gaId: '', cookieConsent: true });
+      await configureShop(page, { gaId: '', cookieConsent: false });
     } finally {
       await context.close();
     }
