@@ -110,7 +110,7 @@ class AcpCheckoutController extends AbstractController
     public function update(Request $request, string $sessionId): JsonResponse
     {
         $this->assertEnabled();
-        $session = $this->findSession($sessionId);
+        $session = $this->findSession($request, $sessionId);
 
         return $this->withIdempotency($request, function () use ($request, $session): array {
             try {
@@ -127,10 +127,10 @@ class AcpCheckoutController extends AbstractController
     }
 
     #[Route(path: '/acp/checkout_sessions/{sessionId}', name: 'acp_checkout_get', methods: ['GET'])]
-    public function get(string $sessionId): JsonResponse
+    public function get(Request $request, string $sessionId): JsonResponse
     {
         $this->assertEnabled();
-        $session = $this->findSession($sessionId);
+        $session = $this->findSession($request, $sessionId);
 
         $order = $session->getOrder();
         if ($order !== null) {
@@ -144,7 +144,7 @@ class AcpCheckoutController extends AbstractController
     public function complete(Request $request, string $sessionId): JsonResponse
     {
         $this->assertEnabled();
-        $session = $this->findSession($sessionId);
+        $session = $this->findSession($request, $sessionId);
 
         return $this->withIdempotency($request, function () use ($request, $session): array {
             $order = $session->getOrder();
@@ -152,15 +152,17 @@ class AcpCheckoutController extends AbstractController
                 return $this->protocolError(400, 'invalid_session_state', 'The checkout session is not ready for completion.');
             }
 
-            $payload = $this->decodeBody($request);
-            $paymentData = is_array($payload['payment_data'] ?? null) ? $payload['payment_data'] : [];
-
-            // 3DS: authentication_required 状態で authentication_result 無しの再開 complete は 400 requires_3ds。
-            if ($this->isAuthenticationPending($session) && !isset($paymentData['authentication_result'])) {
-                return $this->protocolError(400, 'requires_3ds', 'This checkout session requires issuer authentication. The request must include "authentication_result".', '$.authentication_result');
-            }
-
             try {
+                // decodeBody は不正 JSON で AgentCheckoutException を投げるため try 内に置き、
+                // create/update と同じく 400 プロトコルエラーへ変換する (500 にしない)。
+                $payload = $this->decodeBody($request);
+                $paymentData = is_array($payload['payment_data'] ?? null) ? $payload['payment_data'] : [];
+
+                // 3DS: authentication_required 状態で authentication_result 無しの再開 complete は 400 requires_3ds。
+                if ($this->isAuthenticationPending($session) && !isset($paymentData['authentication_result'])) {
+                    return $this->protocolError(400, 'requires_3ds', 'This checkout session requires issuer authentication. The request must include "authentication_result".', '$.authentication_result');
+                }
+
                 // complete は状態機械 (#6777)。3DS/escalation はエラーでなく requires_action 等の中間状態として返る。
                 $result = $this->completionService->complete($session, $paymentData);
             } catch (AgentCheckoutException $e) {
@@ -177,7 +179,7 @@ class AcpCheckoutController extends AbstractController
     public function cancel(Request $request, string $sessionId): JsonResponse
     {
         $this->assertEnabled();
-        $session = $this->findSession($sessionId);
+        $session = $this->findSession($request, $sessionId);
 
         return $this->withIdempotency($request, function () use ($session): array {
             $statusId = $session->getStatus()?->getId();
@@ -309,11 +311,15 @@ class AcpCheckoutController extends AbstractController
         }
     }
 
-    private function findSession(string $sessionId): CheckoutSession
+    private function findSession(Request $request, string $sessionId): CheckoutSession
     {
         $session = $this->checkoutSessionRepository->findOneBySessionId($sessionId);
-        if ($session === null || $session->getProtocol()?->getId() !== AgentProtocol::ACP) {
-            // 他プロトコル/他マーチャントのセッションへの越境アクセスを遮断する。
+        if ($session === null
+            || $session->getProtocol()?->getId() !== AgentProtocol::ACP
+            || $session->getAgentId() !== $this->resolveAgentId($request)
+        ) {
+            // 他プロトコル/他マーチャント/他エージェントのセッションへの越境アクセスを遮断する
+            // (主体不一致は存在を秘匿して 404)。session_id は乱数で列挙不可だが、漏洩時の越境も防ぐ。
             throw new NotFoundHttpException(sprintf('Checkout session "%s" was not found.', $sessionId));
         }
 

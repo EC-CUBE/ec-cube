@@ -18,6 +18,7 @@ namespace Eccube\Tests\Service\AgentCommerce\Acp;
 use Eccube\Service\AgentCommerce\Acp\AcpMessageMapper;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutMessage;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutMessageLevel;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -85,6 +86,35 @@ final class AcpMessageMapperTest extends TestCase
     public function testAssertNoRawHtmlAllowsPlainMarkdown(): void
     {
         $this->mapper->assertNoRawHtml('**Bold** and [a link](https://example.com)');
+        $this->expectNotToPerformAssertions();
+    }
+
+    /**
+     * whitelist では取りこぼしていた任意タグ・HTML コメントも検知する (MUST: raw HTML 拒否).
+     */
+    #[DataProvider(methodName: 'rawHtmlProvider')]
+    public function testAssertNoRawHtmlRejectsAnyTagOrComment(string $markdown): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->mapper->assertNoRawHtml($markdown);
+    }
+
+    /**
+     * @return iterable<string, array{string}>
+     */
+    public static function rawHtmlProvider(): iterable
+    {
+        yield 'paragraph tag' => ['Hello <p>world</p>'];
+        yield 'heading tag' => ['<h1>Title</h1>'];
+        yield 'self-closing br' => ['line<br/>break'];
+        yield 'html comment' => ['before <!-- secret --> after'];
+        yield 'closing tag' => ['text </span> more'];
+    }
+
+    public function testAssertNoRawHtmlAllowsAutolink(): void
+    {
+        // CommonMark の autolink (<scheme:...>) は raw HTML ではないため誤検知しない。
+        $this->mapper->assertNoRawHtml('See <https://example.com> for details');
         $this->expectNotToPerformAssertions();
     }
 }

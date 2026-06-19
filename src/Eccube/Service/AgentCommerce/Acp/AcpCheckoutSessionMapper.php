@@ -22,6 +22,8 @@ use Eccube\Service\AgentCommerce\AddressMappingService;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutAddress;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutLineItem;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutRequest;
+use Eccube\Service\AgentCommerce\Exception\AgentCheckoutErrorCode;
+use Eccube\Service\AgentCommerce\Exception\AgentCheckoutException;
 use Eccube\Service\AgentCommerce\MinorUnitConverter;
 use Eccube\Service\AgentCommerce\StorefrontUrlResolver;
 
@@ -68,13 +70,15 @@ class AcpCheckoutSessionMapper
                     continue;
                 }
                 // ACP の line_items[].id はカタログの item id (= ProductClass id)。
-                $itemId = $rawLineItem['id'] ?? null;
-                $quantity = $rawLineItem['quantity'] ?? 1;
+                // id・quantity はいずれも正の整数のみ許可する (非数値→0 や負数の素通りを防ぎ、
+                // 不正値は AgentCheckoutException → 400 プロトコルエラーに寄せる)。
+                $itemId = filter_var($rawLineItem['id'] ?? null, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+                $quantity = filter_var($rawLineItem['quantity'] ?? 1, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+                if ($itemId === false || $quantity === false) {
+                    throw new AgentCheckoutException(AgentCheckoutErrorCode::EMPTY_LINE_ITEMS, 'Each line item must include a positive integer "id" and "quantity".');
+                }
 
-                $lineItems[] = new AgentCheckoutLineItem(
-                    is_numeric($itemId) ? (int) $itemId : 0,
-                    is_numeric($quantity) ? (int) $quantity : 0,
-                );
+                $lineItems[] = new AgentCheckoutLineItem($itemId, $quantity);
             }
         }
 

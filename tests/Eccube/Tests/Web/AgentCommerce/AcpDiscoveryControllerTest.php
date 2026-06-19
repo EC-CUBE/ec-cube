@@ -73,9 +73,11 @@ final class AcpDiscoveryControllerTest extends EccubeTestCase
         $this->client->request(Request::METHOD_GET, '/.well-known/acp.json');
         $cacheControl = (string) $this->client->getResponse()->headers->get('Cache-Control');
 
-        // SHOULD include Cache-Control public, max-age >= 3600。
+        // SHOULD include Cache-Control public, max-age >= 3600 (固定値ではなく下限保証で判定)。
         $this->assertStringContainsString('public', $cacheControl, 'SHOULD be publicly cacheable');
-        $this->assertStringContainsString('max-age=3600', $cacheControl);
+        $matches = [];
+        $this->assertSame(1, preg_match('/max-age=(\d+)/', $cacheControl, $matches), 'Cache-Control must include max-age');
+        $this->assertGreaterThanOrEqual(3600, (int) $matches[1], 'max-age must be >= 3600');
     }
 
     public function testDiscoveryReturns404WhenDisabled(): void

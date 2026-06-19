@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -39,6 +41,8 @@ class InMemoryAccessTokenHandler implements AccessTokenHandlerInterface
      */
     private const TOKENS = [
         'acp-checkout-token' => ['identifier' => 'acp-client-1', 'scopes' => ['acp:checkout', 'acp:catalog']],
+        // 別クライアント。他エージェントのセッションへの越境アクセス遮断を検証する用途。
+        'acp-checkout-token-2' => ['identifier' => 'acp-client-9', 'scopes' => ['acp:checkout', 'acp:catalog']],
         'acp-catalog-token' => ['identifier' => 'acp-client-2', 'scopes' => ['acp:catalog']],
         'ucp-checkout-token' => ['identifier' => 'ucp-client-1', 'scopes' => ['ucp:checkout']],
     ];

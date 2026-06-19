@@ -35,8 +35,14 @@ use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutMessageLevel;
  */
 class AcpMessageMapper
 {
-    /** raw HTML 要素 (ACP は markdown content での出力を禁止). */
-    private const RAW_HTML_PATTERN = '/<\s*\/?\s*(script|div|img|iframe|style|object|embed|link|meta|form|input|svg|a|span|table)\b/i';
+    /**
+     * raw HTML 要素・HTML コメント (ACP は markdown content での出力を禁止).
+     *
+     * 任意のタグ名 (`<p>`/`<h1>`/`</div>`/`<br/>` 等) と HTML コメント (`<!-- -->`) を検知する。
+     * CommonMark の autolink (`<https://example.com>` 等。タグ名の直後が `:` になる) は raw HTML ではないため
+     * 誤検知しない (タグ名直後を `空白`/`>`/`/>` に限定)。
+     */
+    private const RAW_HTML_PATTERN = '/<!--|<\/?[a-z][a-z0-9-]*(?:\s|\/?>)/i';
 
     /**
      * 中立メッセージ群を ACP messages[] へ変換する.

@@ -175,6 +175,47 @@ final class AcpCheckoutControllerTest extends EccubeTestCase
         $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), '存在しない/他マーチャントのセッションは 404');
     }
 
+    public function testOtherAgentSessionIsNotAccessible(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $created = $this->postJson('/acp/checkout_sessions', $this->createPayload((int) $ProductClass->getId()));
+        $sessionId = $created['id'];
+
+        // 別クライアント (acp-checkout-token-2) で他エージェントのセッションを GET → 存在を秘匿して 404。
+        $server = ['HTTP_AUTHORIZATION' => 'Bearer acp-checkout-token-2'];
+        $this->client->request(Request::METHOD_GET, '/acp/checkout_sessions/'.$sessionId, [], [], $server);
+
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), '他エージェントのセッションは越境アクセス不可 (404)');
+    }
+
+    public function testNegativeQuantityReturns400(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $payload = $this->createPayload((int) $ProductClass->getId());
+        // quantity は正の整数のみ許可。負数はプロトコルエラー (400) に寄せる。
+        $payload['line_items'][0]['quantity'] = -1;
+
+        $error = $this->postJson('/acp/checkout_sessions', $payload);
+        $this->assertSame(Response::HTTP_BAD_REQUEST, $this->client->getResponse()->getStatusCode(), '不正な line_item は 400');
+        $this->assertSame('empty_line_items', $error['code']);
+    }
+
+    public function testMalformedJsonOnCompleteReturns400(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $created = $this->postJson('/acp/checkout_sessions', $this->createPayload((int) $ProductClass->getId()));
+
+        // complete に壊れた JSON を送る → 500 ではなく 400 プロトコルエラー (create/update と一貫)。
+        $headers = [
+            'CONTENT_TYPE' => 'application/json',
+            'HTTP_AUTHORIZATION' => 'Bearer '.self::TOKEN,
+            'HTTP_Idempotency-Key' => 'idem-'.bin2hex(random_bytes(8)),
+        ];
+        $this->client->request(Request::METHOD_POST, '/acp/checkout_sessions/'.$created['id'].'/complete', [], [], $headers, '{not-json');
+
+        $this->assertSame(Response::HTTP_BAD_REQUEST, $this->client->getResponse()->getStatusCode(), '不正 JSON の complete は 400 (500 にしない)');
+    }
+
     public function testMissingIdempotencyKeyReturns400(): void
     {
         $ProductClass = $this->createPurchasableProductClass('100');
