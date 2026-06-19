@@ -82,13 +82,13 @@ class CookieConsentController extends AbstractController
     #[Route(path: '/cookie_consent/update', name: 'cookie_consent_update', methods: ['POST'])]
     public function update(Request $request): JsonResponse
     {
-        // CSRFトークン検証
-        if (!$this->isTokenValid()) {
-            return $this->json([
-                'success' => false,
-                'message' => trans('cookie_consent.error.invalid_token'),
-            ], 403);
+        // 機能 OFF のときは API も無効（index() がトップへリダイレクトするのと挙動を揃える）
+        if (!$this->baseInfoRepository->get()->isOptionCookieConsent()) {
+            throw $this->createNotFoundException();
         }
+
+        // CSRFトークン検証（失敗時は isTokenValid() が AccessDeniedHttpException を投げ 403 を返す）
+        $this->isTokenValid();
 
         // パラメータ取得
         $consentStatus = $request->request->get('consent_status');

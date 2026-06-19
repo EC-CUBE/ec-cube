@@ -1921,7 +1921,6 @@ cookie_consent.page.reject_label: 第三者への情報提供を拒否する
 cookie_consent.page.save: 保存する
 cookie_consent.page.save_success: 設定を保存しました
 cookie_consent.page.save_error: 保存に失敗しました
-cookie_consent.error.invalid_token: 無効なトークンです
 cookie_consent.error.invalid_status: 無効な状態です
 cookie_consent.error.no_selection: 選択してください
 cookie_policy.page.title: クッキーポリシー

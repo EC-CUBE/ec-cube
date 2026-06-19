@@ -105,8 +105,10 @@ if (!class_exists(BaseInfo::class)) {
         #[ORM\Column(name: 'option_product_delivery_fee', type: Types::BOOLEAN, options: ['default' => false])]
         private bool $option_product_delivery_fee = false;
 
-        #[ORM\Column(name: 'option_cookie_consent', type: Types::BOOLEAN, options: ['default' => true])]
-        private bool $option_cookie_consent = true;
+        // 既存店舗のアップグレード時はカラム追加で OFF（後方互換: GA の挙動を変えない）。
+        // 新規インストールはインストーラ側で明示的に ON にする。
+        #[ORM\Column(name: 'option_cookie_consent', type: Types::BOOLEAN, options: ['default' => false])]
+        private bool $option_cookie_consent = false;
 
         #[ORM\Column(name: 'invoice_registration_number', type: Types::STRING, length: 255, nullable: true)]
         private ?string $invoice_registration_number = null;

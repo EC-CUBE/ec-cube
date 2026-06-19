@@ -1921,7 +1921,6 @@ cookie_consent.page.reject_label: Reject providing information to third parties
 cookie_consent.page.save: Save
 cookie_consent.page.save_success: Settings saved successfully
 cookie_consent.page.save_error: Failed to save settings
-cookie_consent.error.invalid_token: Invalid token
 cookie_consent.error.invalid_status: Invalid status
 cookie_consent.error.no_selection: Please make a selection
 cookie_policy.page.title: Cookie Policy

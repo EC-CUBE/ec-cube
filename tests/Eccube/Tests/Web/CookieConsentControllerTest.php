@@ -228,4 +228,26 @@ final class CookieConsentControllerTest extends AbstractWebTestCase
 
         $this->assertSame(Response::HTTP_BAD_REQUEST, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
+
+    /**
+     * 機能 OFF のとき、更新 API は 404 を返す（index() のリダイレクトと挙動を揃える）。
+     */
+    public function testUpdateReturnsNotFoundWhenFeatureDisabled()
+    {
+        $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->get();
+        $BaseInfo->setOptionCookieConsent(false);
+        $this->entityManager->flush();
+
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('cookie_consent_update'),
+            [
+                'consent_status' => CookieConsentService::STATUS_ACCEPTED,
+                'source' => 'popup',
+                Constant::TOKEN_NAME => 'dummy',
+            ]
+        );
+
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
+    }
 }
