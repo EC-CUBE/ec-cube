@@ -15,9 +15,11 @@ file that was distributed with this source code.
 {% block javascript %}
     <script>
         // redirect_to初期化
+        // フォームの初期actionを保持し、決済プラグイン等で異なる確認画面ルートを使う場合にも対応する
+        var defaultFormAction = $('#shopping-form').attr('action');
         $(window).on('pageshow',function(event) {
             $('#shopping_order_redirect_to').val(null);
-            $('#shopping-form').attr('action','{{ url("shopping_confirm") }}');
+            $('#shopping-form').attr('action', defaultFormAction);
         });
 
         $(function() {
