@@ -25,20 +25,18 @@ use PHPUnit\Framework\TestCase;
 final class FilesystemKeyStoreTest extends TestCase
 {
     /**
-     * @return array<string, array{string}>
+     * @return \Iterator<string, array{string}>
      */
-    public static function invalidPurposeProvider(): array
+    public static function invalidPurposeProvider(): \Iterator
     {
-        return [
-            'parent traversal' => ['../../../etc/passwd'],
-            'slash' => ['foo/bar'],
-            'dot' => ['ucp.signing'],
-            'uppercase' => ['UcpSigning'],
-            'empty' => [''],
-        ];
+        yield 'parent traversal' => ['../../../etc/passwd'];
+        yield 'slash' => ['foo/bar'];
+        yield 'dot' => ['ucp.signing'];
+        yield 'uppercase' => ['UcpSigning'];
+        yield 'empty' => [''];
     }
 
-    #[DataProvider('invalidPurposeProvider')]
+    #[DataProvider(methodName: 'invalidPurposeProvider')]
     public function testReadRejectsInvalidPurpose(string $purpose): void
     {
         $store = new FilesystemKeyStore(sys_get_temp_dir());
