@@ -44,11 +44,7 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           extensions: redis
-
-      - name: Setup pcov
-        run: |
-          sudo apt-get install -y php${{ matrix.php }}-pcov
-          sudo phpenmod -s cli pcov
+          coverage: pcov
 
       - name: Initialize Composer
         uses: ./.github/actions/composer
