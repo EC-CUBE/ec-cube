@@ -66,7 +66,7 @@ class ExampleController extends AbstractController
 - **CSRF**: **GET 以外の状態変更（更新・削除・Ajax 等）はトークンを検証する**。
   - フォーム経由（`$form->handleRequest()` ＋ `isValid()`）は CSRF 保護込み（Skill `formtype` 参照）。
   - **フォームを介さない削除・Ajax アクションは、基底クラスの `$this->isTokenValid()` を明示的に呼ぶ**。
-    検証失敗時は `BadRequestHttpException` を投げる（コアの定石）。
+    `isTokenValid()` は検証失敗時に `AccessDeniedHttpException` を投げる（`AbstractController::isTokenValid()`）。
 
 ```php
 // 削除（フォームを介さない）: methods は GET 以外にし、トークンを検証する
