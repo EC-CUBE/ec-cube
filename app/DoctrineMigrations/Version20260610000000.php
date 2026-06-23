@@ -17,6 +17,7 @@ namespace DoctrineMigrations;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
+use Eccube\Entity\OrderDisplaySetting;
 
 /**
  * 受注一覧画面の表示項目設定（dtb_order_display_setting）の初期データを既存環境へ投入する.
@@ -28,22 +29,6 @@ final class Version20260610000000 extends AbstractMigration
 {
     public const NAME = 'dtb_order_display_setting';
 
-    /**
-     * 初期表示項目（field_name => disp_name）. sort_no は配列順.
-     *
-     * @var array<string, string>
-     */
-    private const DISPLAY_SETTINGS = [
-        'order_info' => 'ID・注文者',
-        'payment_method' => '支払方法',
-        'order_status' => '対応状況',
-        'payment_info' => '購入金額',
-        'message' => 'お問合せ',
-        'shipping_status' => '出荷状況',
-        'tracking_number' => 'お問い合わせ番号',
-        'delivery_address' => 'お届け先',
-    ];
-
     public function up(Schema $schema): void
     {
         // テーブルが存在しない場合は終了（スキーマは Entity 属性＋schema:update が源泉）
@@ -51,8 +36,9 @@ final class Version20260610000000 extends AbstractMigration
             return;
         }
 
+        // 表示項目の正本は Entity 定数。既存環境にも CSV と同じ初期値を投入する.
         $sortNo = 1;
-        foreach (self::DISPLAY_SETTINGS as $fieldName => $dispName) {
+        foreach (OrderDisplaySetting::DEFAULT_DISPLAY_FIELDS as $fieldName => $dispName) {
             $exists = $this->connection->fetchOne(
                 'SELECT COUNT(*) FROM '.self::NAME.' WHERE field_name = :field_name',
                 ['field_name' => $fieldName]

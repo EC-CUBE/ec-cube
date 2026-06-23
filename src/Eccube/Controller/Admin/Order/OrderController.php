@@ -19,6 +19,7 @@ use Eccube\Entity\ExportCsvRow;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Member;
+use Eccube\Entity\OrderDisplaySetting;
 use Eccube\Entity\OrderPdf;
 use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
@@ -265,16 +266,7 @@ class OrderController extends AbstractController
      */
     private function getDefaultOrderDisplaySettings(): array
     {
-        $fieldNames = [
-            'order_info',
-            'payment_method',
-            'order_status',
-            'payment_info',
-            'message',
-            'shipping_status',
-            'tracking_number',
-            'delivery_address',
-        ];
+        $fieldNames = array_keys(OrderDisplaySetting::DEFAULT_DISPLAY_FIELDS);
 
         return array_map(fn (string $fieldName) => ['field_name' => $fieldName], $fieldNames);
     }

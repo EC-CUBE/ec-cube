@@ -27,6 +27,26 @@ if (!class_exists(OrderDisplaySetting::class)) {
     #[ORM\Entity(repositoryClass: OrderDisplaySettingRepository::class)]
     class OrderDisplaySetting extends AbstractEntity
     {
+        /**
+         * 受注一覧の表示項目の既定値（field_name => 既定の表示名）. 配列順が既定の sort_no.
+         *
+         * コード上の正本。未登録時のフォールバック(OrderController)と既存環境向けの
+         * 初期データ投入(マイグレーション)はこの定数を参照し, 定義の二重管理を避ける。
+         * 新規インストールはロケール別の import_csv(dtb_order_display_setting.csv)から投入される。
+         *
+         * @var array<string, string>
+         */
+        public const DEFAULT_DISPLAY_FIELDS = [
+            'order_info' => 'ID・注文者',
+            'payment_method' => '支払方法',
+            'order_status' => '対応状況',
+            'payment_info' => '購入金額',
+            'message' => 'お問合せ',
+            'shipping_status' => '出荷状況',
+            'tracking_number' => 'お問い合わせ番号',
+            'delivery_address' => 'お届け先',
+        ];
+
         #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]
