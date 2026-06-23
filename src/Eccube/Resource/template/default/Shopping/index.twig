@@ -15,9 +15,15 @@ file that was distributed with this source code.
 {% block javascript %}
     <script>
         // redirect_to初期化
-        // フォームの初期actionを保持し、決済プラグイン等で異なる確認画面ルートを使う場合にも対応する
+        // フォームの初期actionを保持する
         var defaultFormAction = $('#shopping-form').attr('action');
-        $(window).on('pageshow',function(event) {
+
+        $(window).on('pageshow', function(event) {
+            // bfcache からの復元時のみ初期化する
+            if (!event.originalEvent.persisted) {
+                return;
+            }
+
             $('#shopping_order_redirect_to').val(null);
             $('#shopping-form').attr('action', defaultFormAction);
         });
