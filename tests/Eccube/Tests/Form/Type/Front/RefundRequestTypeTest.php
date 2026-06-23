@@ -196,4 +196,34 @@ final class RefundRequestTypeTest extends AbstractTypeTestCase
 
         $this->assertFalse($form->isValid());
     }
+
+    public function testInvalidFileExceedMaxSize(): void
+    {
+        // 許可MIME(GIF)ヘッダを書いた上で MAX_FILE_SIZE(15M) を超えるサイズにし, サイズ超過のみで弾かれることを検証する.
+        $tmpFile = tempnam(sys_get_temp_dir(), 'refund_type_').'.gif';
+        $fp = fopen($tmpFile, 'wb');
+        fwrite($fp, "GIF89a\x01\x00\x01\x00\x80\x00\x00\xff\xff\xff\x00\x00\x00!\xf9\x04\x00\x00\x00\x00\x00,\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x02D\x01\x00;");
+        fseek($fp, 16 * 1024 * 1024); // 16MB(>15M)。sparseファイルなので実書き込みは僅か.
+        fwrite($fp, "\x00");
+        fclose($fp);
+
+        $form = $this->formFactory
+            ->createBuilder(RefundRequestType::class, null, [
+                'csrf_protection' => false,
+                'max_quantity' => 10,
+            ])
+            ->getForm();
+
+        $form->submit([
+            'quantity' => '1',
+            'reason' => 'テスト返品理由',
+            'files' => [
+                new UploadedFile($tmpFile, 'test.gif', 'image/gif', null, true),
+            ],
+        ]);
+
+        $this->assertFalse($form->isValid());
+
+        @unlink($tmpFile);
+    }
 }

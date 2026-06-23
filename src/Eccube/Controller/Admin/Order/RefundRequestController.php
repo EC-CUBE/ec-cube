@@ -223,6 +223,14 @@ class RefundRequestController extends AbstractController
             throw new BadRequestHttpException();
         }
 
+        // 現在のステータスから実行できない遷移(未定義・適用不可)は適用前に弾く.
+        if (!$this->refundRequestService->canApplyTransition($RefundRequest, $transition)) {
+            return $this->json([
+                'success' => false,
+                'message' => trans('admin.order.refund_request.transition_error'),
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
         try {
             $this->refundRequestService->changeStatus($RefundRequest, $transition);
 
@@ -332,10 +340,14 @@ class RefundRequestController extends AbstractController
         $realPath = realpath($filePath);
         $realTopDir = realpath($topDir);
 
-        if ($realPath === false || $realTopDir === false || !str_starts_with($realPath, $realTopDir)) {
+        if ($realPath === false || $realTopDir === false || !str_starts_with($realPath, $realTopDir.DIRECTORY_SEPARATOR)) {
             throw new NotFoundHttpException();
         }
 
-        return new BinaryFileResponse($realPath);
+        $response = new BinaryFileResponse($realPath);
+        $response->headers->set('Content-Type', (string) $RefundRequestFile->getMimeType());
+        $response->headers->set('X-Content-Type-Options', 'nosniff');
+
+        return $response;
     }
 }

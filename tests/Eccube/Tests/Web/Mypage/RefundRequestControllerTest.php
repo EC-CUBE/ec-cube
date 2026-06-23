@@ -277,6 +277,39 @@ final class RefundRequestControllerTest extends AbstractWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
+    public function testHistoryButtonShownOnlyWhenRefundRequestExists(): void
+    {
+        $OrderItem = $this->Order->getProductOrderItems()[0];
+        // 返品許可商品にしておく(履歴/申請ボタンの表示条件).
+        $OrderItem->getProduct()->setRefundAllowed(true);
+        $this->entityManager->flush();
+
+        $itemHistoryUrl = $this->generateUrl('mypage_refund_request_item_history', [
+            'order_no' => $this->Order->getOrderNo(),
+            'order_item_id' => $OrderItem->getId(),
+        ]);
+
+        $this->loginTo($this->Customer);
+
+        // 返品申請が無い場合は履歴ボタン(item_history へのリンク)を表示しない.
+        $crawler = $this->client->request(
+            Request::METHOD_GET,
+            $this->generateUrl('mypage_history', ['order_no' => $this->Order->getOrderNo()])
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertStringNotContainsString($itemHistoryUrl, $crawler->html());
+
+        // 返品申請を作成すると履歴ボタンが表示される.
+        $this->createRefundRequest($this->Order, $OrderItem, $this->Customer);
+
+        $crawler = $this->client->request(
+            Request::METHOD_GET,
+            $this->generateUrl('mypage_history', ['order_no' => $this->Order->getOrderNo()])
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertStringContainsString($itemHistoryUrl, $crawler->html());
+    }
+
     public function testAccessDeniedForNonDeliveredOrder(): void
     {
         $this->setOrderStatus($this->Order, OrderStatus::NEW);
