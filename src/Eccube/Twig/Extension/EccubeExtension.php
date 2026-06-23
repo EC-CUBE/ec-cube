@@ -67,7 +67,7 @@ class EccubeExtension extends AbstractExtension
             new TwigFilter('ellipsis', $this->getEllipsis(...)),
             new TwigFilter('time_ago', $this->getTimeAgo(...)),
             new TwigFilter('file_ext_icon', $this->getExtensionIcon(...), ['is_safe' => ['html']]),
-            new TwigFilter('json_encode_safe', $this->getJsonEncodeSafe(...), ['is_safe' => ['js']]),
+            new TwigFilter('json_encode_safe', $this->getJsonEncodeSafe(...), ['is_safe' => ['html', 'js']]),
         ];
     }
 
@@ -325,7 +325,17 @@ class EccubeExtension extends AbstractExtension
     }
 
     /**
-     * Safely encode a value to JSON for use in HTML/JavaScript context.
+     * Encode a value to JSON for safe embedding inside a <script> block.
+     *
+     * The JSON_HEX_* flags escape <, >, &, ', " that appear inside string
+     * values, which neutralizes </script> / <!-- breakouts and JS string
+     * escapes. The output is therefore safe to embed as a bare JavaScript
+     * literal in a <script> block or as HTML text content.
+     *
+     * NOTE: This is NOT safe inside an HTML attribute. JSON_HEX_QUOT only
+     * escapes quotes within string values, so the structural double quotes
+     * of the JSON ({"key":"value"}) remain literal and would terminate a
+     * double-quoted attribute. Use it only in <script> / HTML text contexts.
      */
     public function getJsonEncodeSafe(mixed $value): string
     {
