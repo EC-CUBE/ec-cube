@@ -26,7 +26,7 @@ description: EC-CUBE 4.4 の Twig 拡張（Extension/Filter/Function）とテン
 
 ## Twig 拡張の実装パターン
 
-`src/Eccube/Twig/Extension/` に `AbstractExtension` を継承して置く。`autoconfigure: true`（`services.yaml`）で
+`src/Eccube/Twig/Extension/` に Twig 標準の `AbstractExtension`（`\Twig\Extension\AbstractExtension`）を継承して置く。`autoconfigure: true`（`services.yaml`）で
 自動的に Twig 拡張として登録される（手動タグ不要）。代表例: `EccubeExtension` / `TaxExtension` / `CsrfExtension` / `IntlExtension`。
 
 ```php

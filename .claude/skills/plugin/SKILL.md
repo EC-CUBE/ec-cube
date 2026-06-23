@@ -67,7 +67,7 @@ class PluginManager extends AbstractPluginManager
 ```
 
 - メソッドのシグネチャは **`(array $meta, ContainerInterface $container)`**。`$meta['code']` は composer.json の `extra.code`。
-- **install 直後はデフォルト無効（enabled=false）**。有効化は別途コマンド／管理画面で行う。
+- **install 直後はデフォルト無効（enabled=false）**。有効化は `eccube:plugin:enable` コマンドか管理画面で行う（無効化はコンソールコマンドが無く、管理画面から行う）。
 
 ## 拡張パターン（プラグインから何を足すか）
 

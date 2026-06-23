@@ -74,8 +74,8 @@ if ($this->isGranted('IS_AUTHENTICATED_FULLY')) { ... }
 **新しい「見せない画面」を増やすときは Voter を書くのではなく deny_url 設定で対応できないか先に検討する。**
 
 ### 独自 Voter を追加する場合
-`Symfony\Component\Security\Core\Authorization\Voter\Voter` を継承し `supports()`/`voteOnAttribute()` を実装、
-`#[AutoconfigureTag('security.voter')]` 相当の autoconfigure でタグ付け（コアの既存 Voter に倣う）。
+`Symfony\Component\Security\Core\Authorization\Voter\Voter` を継承し `supports()`/`voteOnAttribute()` を実装する。
+`services.yaml` の `autoconfigure: true` により `security.voter` タグは自動付与される（手動登録は不要。コアの既存 Voter に倣う）。
 **`access_decision` が unanimous なので、棄権（ABSTAIN）と拒否（DENY）の使い分けを誤ると全体が拒否になる**点に注意。
 
 ## よくある間違い（認可・CSRF・IDOR — ツールでは検出できない観点）
