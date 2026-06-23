@@ -214,6 +214,11 @@ final class ShoppingControllerPreferredShippingPaymentTest extends AbstractShopp
         $OtherPayment = $this->findPayment(4);
         $Order->setPayment($OtherPayment);
         $Order->setPaymentMethod($OtherPayment->getMethod());
+        // 復元前にお届け時間を設定しておく(配送方法の差し替えでクリアされるべき).
+        $ShippingBefore = $Order->getShippings()->first();
+        $this->assertNotFalse($ShippingBefore);
+        $ShippingBefore->setTimeId(99);
+        $ShippingBefore->setShippingDeliveryTime('サンプルお届け時間');
         $this->entityManager->flush();
 
         $this->client->request(
@@ -232,6 +237,9 @@ final class ShoppingControllerPreferredShippingPaymentTest extends AbstractShopp
         $this->entityManager->refresh($Shipping);
         $this->assertSame($Delivery->getId(), $Shipping->getDelivery()->getId());
         $this->assertSame($Delivery->getName(), $Shipping->getShippingDeliveryName());
+        // 配送方法の差し替えに伴い, お届け時間はクリアされる.
+        $this->assertNull($Shipping->getTimeId());
+        $this->assertNull($Shipping->getShippingDeliveryTime());
 
         // リダイレクト後の画面に成功メッセージが表示される.
         $crawler = $this->client->followRedirect();

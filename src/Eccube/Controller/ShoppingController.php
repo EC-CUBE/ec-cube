@@ -311,6 +311,9 @@ class ShoppingController extends AbstractShoppingController
         foreach ($Order->getShippings() as $Shipping) {
             $Shipping->setDelivery($Delivery);
             $Shipping->setShippingDeliveryName($Delivery->getName());
+            // 配送方法を差し替えると, 設定済みのお届け時間は新しい配送業者に属さない可能性があるためクリアする.
+            $Shipping->setShippingDeliveryTime();
+            $Shipping->setTimeId(null);
         }
 
         // 合計金額の再計算.
