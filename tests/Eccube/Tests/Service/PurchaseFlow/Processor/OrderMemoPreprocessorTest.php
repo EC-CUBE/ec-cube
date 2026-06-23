@@ -95,6 +95,38 @@ final class OrderMemoPreprocessorTest extends EccubeTestCase
         }
     }
 
+    public function testPartialMatchIsStillAppended(): void
+    {
+        // 商品メモが既存メモ行の部分文字列に偶然含まれていても, 行として一致しなければ追記する.
+        $this->Product->setOrderMemo('注意');
+
+        foreach ($this->Order->getProductOrderItems() as $OrderItem) {
+            $OrderItem->setOrderMemo('取扱注意事項あり');
+        }
+
+        $this->processor->process($this->Order, new PurchaseContext());
+
+        foreach ($this->Order->getProductOrderItems() as $OrderItem) {
+            $this->assertSame("取扱注意事項あり\n注意", $OrderItem->getOrderMemo());
+        }
+    }
+
+    public function testExactLineMatchInMultilineMemoIsNotAppended(): void
+    {
+        // 複数行メモのうち1行が商品メモと完全一致する場合は追記しない(冪等).
+        $this->Product->setOrderMemo('商品メモ');
+
+        foreach ($this->Order->getProductOrderItems() as $OrderItem) {
+            $OrderItem->setOrderMemo("他メモ\n商品メモ");
+        }
+
+        $this->processor->process($this->Order, new PurchaseContext());
+
+        foreach ($this->Order->getProductOrderItems() as $OrderItem) {
+            $this->assertSame("他メモ\n商品メモ", $OrderItem->getOrderMemo());
+        }
+    }
+
     public function testNonProductItemIsNotCopied(): void
     {
         $this->Product->setOrderMemo('商品メモ');

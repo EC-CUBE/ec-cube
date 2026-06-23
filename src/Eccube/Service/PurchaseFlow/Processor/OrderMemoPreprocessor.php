@@ -50,8 +50,11 @@ class OrderMemoPreprocessor implements ItemHolderPreprocessor
             }
 
             $current = $OrderItem->getOrderMemo();
-            // 同一文言が既に含まれていれば追記しない(冪等)
-            if ($current !== null && str_contains($current, $productMemo)) {
+            // 同一文言が「行」として既に含まれていれば追記しない(冪等).
+            // 単純な部分一致だと, 既存行が商品メモを偶然部分文字列として含む場合に誤スキップするため,
+            // 改行で境界を区切って判定する(複数行の商品メモにも対応).
+            if ($current !== null && $current !== ''
+                && str_contains("\n".$current."\n", "\n".$productMemo."\n")) {
                 continue;
             }
 
