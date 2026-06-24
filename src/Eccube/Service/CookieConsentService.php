@@ -63,32 +63,6 @@ class CookieConsentService
     }
 
     /**
-     * 同意が得られているか（同意または拒否のいずれか）をチェックする。
-     *
-     * @param Request $request リクエストオブジェクト
-     *
-     * @return bool true: 同意/拒否のいずれかが選択済み、false: 未設定
-     */
-    public function isConsentGiven(Request $request): bool
-    {
-        $status = $this->getConsentStatus($request);
-
-        return $status === self::STATUS_ACCEPTED || $status === self::STATUS_REJECTED;
-    }
-
-    /**
-     * 同意されているかチェックする。
-     *
-     * @param Request $request リクエストオブジェクト
-     *
-     * @return bool true: 同意済み、false: 拒否または未設定
-     */
-    public function isConsentAccepted(Request $request): bool
-    {
-        return $this->getConsentStatus($request) === self::STATUS_ACCEPTED;
-    }
-
-    /**
      * 同意状態を保存する（Response に Set-Cookie を設定）。
      *
      * @param Response $response レスポンスオブジェクト

@@ -71,68 +71,6 @@ final class CookieConsentServiceTest extends EccubeTestCase
     }
 
     /**
-     * 同意/拒否のいずれかが選択済みのとき true、未設定のとき false を返すことを確認する。
-     *
-     * @param string|null $cookieValue Cookie値
-     * @param bool $expected 期待値
-     */
-    #[DataProvider(methodName: 'provide_is_consent_given_patterns')]
-    public function testIsConsentGivenReturnsCorrectBoolean(?string $cookieValue, bool $expected)
-    {
-        $request = new Request();
-        if ($cookieValue !== null) {
-            $request->cookies->set(CookieConsentService::COOKIE_NAME, $cookieValue);
-        }
-
-        $result = $this->service->isConsentGiven($request);
-
-        $this->assertSame($expected, $result);
-    }
-
-    /**
-     * 同意判定パターンのデータプロバイダ
-     *
-     * @return \Iterator<string, array{(string|null), bool}>
-     */
-    public static function provide_is_consent_given_patterns(): \Iterator
-    {
-        yield '同意済み' => ['accepted', true];
-        yield '拒否済み' => ['rejected', true];
-        yield '未設定' => [null, false];
-    }
-
-    /**
-     * 同意済みの場合のみ true を返すことを確認する。
-     *
-     * @param string|null $cookieValue Cookie値
-     * @param bool $expected 期待値
-     */
-    #[DataProvider(methodName: 'provide_is_accepted_patterns')]
-    public function testIsConsentAcceptedReturnsCorrectBoolean(?string $cookieValue, bool $expected)
-    {
-        $request = new Request();
-        if ($cookieValue !== null) {
-            $request->cookies->set(CookieConsentService::COOKIE_NAME, $cookieValue);
-        }
-
-        $result = $this->service->isConsentAccepted($request);
-
-        $this->assertSame($expected, $result);
-    }
-
-    /**
-     * 同意確認パターンのデータプロバイダ
-     *
-     * @return \Iterator<string, array{(string|null), bool}>
-     */
-    public static function provide_is_accepted_patterns(): \Iterator
-    {
-        yield '同意済み' => ['accepted', true];
-        yield '拒否' => ['rejected', false];
-        yield '未設定' => [null, false];
-    }
-
-    /**
      * 同意 Cookie が正しい属性（Secure は isSecure 連動、HttpOnly=false、SameSite=Lax）で設定されることを確認する。
      *
      * @param string $status 同意状態
