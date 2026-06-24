@@ -131,6 +131,8 @@ vendor/bin/php-cs-fixer fix                     # PSR-12 整形・ライセン�
 - ❌ 複数アクションに同じ処理をコピペ → ✅ Service の 1 メソッドに共通化
 - ❌ 具象クラス型ヒントで密結合 → ✅ インターフェース型ヒント＋コンストラクタ DI
 - ❌ 削除/Ajax 等の状態変更でトークン未検証 → ✅ `$this->isTokenValid()` を呼ぶ（GET 以外）
+- ❌ `$this->isTokenValid();`（戻り値を捨てた bare 呼び出し）を「CSRF 未検証」と誤読 → ✅ 無効時は `AccessDeniedHttpException` を投げ戻り値は常に true。bare 呼び出しで検証は成立し、`if (!isTokenValid())` の false 分岐はデッドコード
+- ❌ `#[Template]` 付きアクションの「エラー時に再描画される」を前提にレビュー判断 → ✅ `#[Template]` は配列を返したときのみ engage。Response/Redirect を返すパス（例: フォーム失敗で `redirectToRoute`）では描画されない
 - ❌ 管理アクションを `%eccube_admin_route%` 配下以外に置く → ✅ admin ファイアウォール配下に置く
 
 ---
