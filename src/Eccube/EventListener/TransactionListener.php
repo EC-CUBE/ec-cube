@@ -62,9 +62,6 @@ class TransactionListener implements EventSubscriberInterface
 
         /** @var Connection $Connection */
         $Connection = $this->em->getConnection();
-        if (!$Connection->isConnected()) {
-            $Connection->connect();
-        }
         $Connection->setAutoCommit(false);
         $Connection->setTransactionIsolation(TransactionIsolationLevel::READ_COMMITTED);
         $this->em->beginTransaction();

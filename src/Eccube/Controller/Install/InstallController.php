@@ -15,7 +15,9 @@ namespace Eccube\Controller\Install;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
-use Doctrine\DBAL\Result;
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManager;
@@ -260,8 +262,8 @@ class InstallController extends AbstractController
         if ($this->isInstalled()) {
             // ショップ名/メールアドレス
             $conn = $entityManager->getConnection();
-            $stmt = $conn->query('SELECT shop_name, email01 FROM dtb_base_info WHERE id = 1;');
-            $row = $stmt->fetch();
+            $stmt = $conn->executeQuery('SELECT shop_name, email01 FROM dtb_base_info WHERE id = 1;');
+            $row = $stmt->fetchAssociative();
             $sessionData['shop_name'] = $row['shop_name'];
             $sessionData['email'] = $row['email01'];
 
@@ -581,10 +583,6 @@ class InstallController extends AbstractController
         $conn = DriverManager::getConnection($params);
         $conn->executeQuery('select 1');
 
-        $platform = $conn->getDatabasePlatform();
-        $platform->markDoctrineTypeCommented('datetime');
-        $platform->markDoctrineTypeCommented('datetimetz');
-
         return $conn;
     }
 
@@ -840,7 +838,7 @@ class InstallController extends AbstractController
         try {
             $password = $this->passwordHasher->hashPassword(new Customer(), $data['login_pass']);
 
-            $id = ('postgresql' === $conn->getDatabasePlatform()->getName())
+            $id = ($conn->getDatabasePlatform() instanceof PostgreSQLPlatform)
                 ? $conn->fetchOne("select nextval('dtb_base_info_id_seq')")
                 : null;
 
@@ -858,7 +856,7 @@ class InstallController extends AbstractController
                 'update_date' => Types::DATETIMETZ_MUTABLE,
             ]);
 
-            $member_id = ('postgresql' === $conn->getDatabasePlatform()->getName())
+            $member_id = ($conn->getDatabasePlatform() instanceof PostgreSQLPlatform)
                 ? $conn->fetchOne("select nextval('dtb_member_id_seq')")
                 : null;
 
@@ -896,35 +894,31 @@ class InstallController extends AbstractController
         $conn->beginTransaction();
         try {
             $salt = StringUtil::random(32);
-            $stmt = $conn->prepare('SELECT id FROM dtb_member WHERE login_id = :login_id;');
-            $stmt->bindParam(':login_id', $data['login_id']);
-            /** @var Result $row */
-            $row = $stmt->executeQuery();
+            $row = $conn->executeQuery('SELECT id FROM dtb_member WHERE login_id = :login_id;', [
+                ':login_id' => $data['login_id'],
+            ]);
             $password = $this->passwordHasher->hashPassword(new Customer(), $data['login_pass']);
             if ($row->fetchOne() !== false) {
                 // 同一の管理者IDであればパスワードのみ更新
-                $sth = $conn->prepare('UPDATE dtb_member set password = :password, update_date = current_timestamp WHERE login_id = :login_id;');
-                $sth->execute([
+                $conn->executeStatement('UPDATE dtb_member set password = :password, update_date = current_timestamp WHERE login_id = :login_id;', [
                     ':password' => $password,
                     ':login_id' => $data['login_id'],
                 ]);
             } else {
                 // 新しい管理者IDが入力されたらinsert
-                $sth = $conn->prepare("INSERT INTO dtb_member (login_id, password, work_id, authority_id, creator_id, sort_no, update_date, create_date,name,department,discriminator_type) VALUES (:login_id, :password, '1', '0', '1', '1', current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP', 'member');");
-                $sth->execute([
+                $conn->executeStatement("INSERT INTO dtb_member (login_id, password, work_id, authority_id, creator_id, sort_no, update_date, create_date,name,department,discriminator_type) VALUES (:login_id, :password, '1', '0', '1', '1', current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP', 'member');", [
                     ':login_id' => $data['login_id'],
                     ':password' => $password,
                 ]);
             }
-            $stmt = $conn->prepare('UPDATE dtb_base_info set
+            $conn->executeStatement('UPDATE dtb_base_info set
                 shop_name = :shop_name,
                 email01 = :admin_mail,
                 email02 = :admin_mail,
                 email03 = :admin_mail,
                 email04 = :admin_mail,
                 update_date = current_timestamp
-            WHERE id = 1;');
-            $stmt->execute([
+            WHERE id = 1;', [
                 ':shop_name' => $data['shop_name'],
                 ':admin_mail' => $data['email'],
             ]);
@@ -942,7 +936,13 @@ class InstallController extends AbstractController
      */
     public function createAppData(array $params, EntityManager $em): array
     {
-        $platform = $em->getConnection()->getDatabasePlatform()->getName();
+        $p = $em->getConnection()->getDatabasePlatform();
+        $platform = match (true) {
+            $p instanceof SQLitePlatform => 'sqlite',
+            $p instanceof AbstractMySQLPlatform => 'mysql',
+            $p instanceof PostgreSQLPlatform => 'postgresql',
+            default => 'unknown',
+        };
         $version = $this->getDatabaseVersion($em);
 
         return [
@@ -993,7 +993,13 @@ class InstallController extends AbstractController
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('server_version', 'server_version');
-        $platform = $em->getConnection()->getDatabasePlatform()->getName();
+        $p = $em->getConnection()->getDatabasePlatform();
+        $platform = match (true) {
+            $p instanceof SQLitePlatform => 'sqlite',
+            $p instanceof AbstractMySQLPlatform => 'mysql',
+            $p instanceof PostgreSQLPlatform => 'postgresql',
+            default => 'unknown',
+        };
         $sql = match ($platform) {
             'sqlite' => 'SELECT sqlite_version() AS server_version',
             'mysql' => 'SELECT version() AS server_version',

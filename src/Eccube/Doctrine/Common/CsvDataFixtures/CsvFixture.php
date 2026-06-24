@@ -15,6 +15,8 @@ namespace Eccube\Doctrine\Common\CsvDataFixtures;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 
@@ -62,8 +64,8 @@ class CsvFixture implements FixtureInterface
         $Connection->beginTransaction();
 
         // mysqlの場合はNO_AUTO_VALUE_ON_ZEROを設定
-        if ('mysql' === $Connection->getDatabasePlatform()->getName()) {
-            $Connection->exec("SET SESSION sql_mode='NO_AUTO_VALUE_ON_ZERO';");
+        if ($Connection->getDatabasePlatform() instanceof AbstractMySQLPlatform) {
+            $Connection->executeStatement("SET SESSION sql_mode='NO_AUTO_VALUE_ON_ZERO';");
         }
 
         // TODO エラーハンドリング
@@ -77,7 +79,7 @@ class CsvFixture implements FixtureInterface
                 $index++;
             }
             // batch insert
-            $prepare->execute();
+            $prepare->executeStatement();
             $this->file->next();
             // 大きなサイズのCSVを扱えるようタイムアウトを延長する
             $seconds = intval(ini_get('max_execution_time'));
@@ -86,18 +88,19 @@ class CsvFixture implements FixtureInterface
         $Connection->commit();
 
         // postgresqlの場合はシーケンスを振り直す
-        if ('postgresql' === $Connection->getDatabasePlatform()->getName()) {
+        if ($Connection->getDatabasePlatform() instanceof PostgreSQLPlatform) {
             // テーブル情報を取得
-            $sm = $Connection->getSchemaManager();
-            $table = $sm->listTableDetails($table_name);
+            $sm = $Connection->createSchemaManager();
+            $table = $sm->introspectTable($table_name);
 
             // 主キーがないテーブルはスキップ
-            if (!$table->hasPrimaryKey()) {
+            $primaryKey = $table->getPrimaryKey();
+            if ($primaryKey === null) {
                 return;
             }
 
             // 複合主キーのテーブルはスキップ
-            $pkColumns = $table->getPrimaryKey()->getColumns();
+            $pkColumns = $primaryKey->getColumns();
             if (count($pkColumns) != 1) {
                 return;
             }

@@ -15,8 +15,8 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Repository;
 
-use Doctrine\DBAL\Logging\DebugStack;
 use Eccube\Entity\Product;
+use Eccube\Tests\Doctrine\Logging\QueryCountLogger;
 
 final class ProductRepositoryTest extends AbstractProductRepositoryTestCase
 {
@@ -64,8 +64,10 @@ final class ProductRepositoryTest extends AbstractProductRepositoryTestCase
         $Product = $this->createProduct('商品-多規格', 100);
 
         // Enable Doctrine query logger to count queries
-        $logger = new DebugStack();
-        $this->entityManager->getConnection()->getConfiguration()->setSQLLogger($logger);
+        // DBAL 4 では DebugStack / SQLLogger が廃止されたため, doctrine.middleware で
+        // 登録した QueryCountLogger (test 環境) でクエリ数を計測する.
+        /** @var QueryCountLogger $logger */
+        $logger = static::getContainer()->get(QueryCountLogger::class);
 
         $this->entityManager->clear();
 
@@ -77,7 +79,7 @@ final class ProductRepositoryTest extends AbstractProductRepositoryTestCase
         $this->assertSame('商品-多規格', $Result->getName());
 
         // Clear the query log for the next test
-        $queriesBeforeCalc = count($logger->queries);
+        $queriesBeforeCalc = $logger->getCount();
 
         // Trigger _calc() which accesses ProductStock and TaxRule
         $Result->getStockMin();
@@ -85,13 +87,10 @@ final class ProductRepositoryTest extends AbstractProductRepositoryTestCase
         $Result->getPrice02Min();
         $Result->getPrice02Max();
 
-        $queriesAfterCalc = count($logger->queries);
+        $queriesAfterCalc = $logger->getCount();
 
         // Assert that no additional queries were executed (N+1 problem is solved)
         // If ProductStock and TaxRule are not eagerly loaded, this would cause 200+ additional queries
         $this->assertSame($queriesBeforeCalc, $queriesAfterCalc, 'N+1 problem detected: Additional queries were executed during _calc(). ProductStock and TaxRule should be eagerly loaded.');
-
-        // Disable logger
-        $this->entityManager->getConnection()->getConfiguration()->setSQLLogger();
     }
 }

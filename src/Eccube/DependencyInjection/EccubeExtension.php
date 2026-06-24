@@ -165,8 +165,8 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
             return;
         }
 
-        $stmt = $conn->query('select * from dtb_plugin');
-        $plugins = $stmt->fetchAll();
+        $stmt = $conn->executeQuery('select * from dtb_plugin');
+        $plugins = $stmt->fetchAllAssociative();
 
         $enabled = [];
         foreach ($plugins as $plugin) {
@@ -253,7 +253,7 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
             return false;
         }
 
-        $tableNames = $conn->getSchemaManager()->listTableNames();
+        $tableNames = $conn->createSchemaManager()->listTableNames();
 
         return in_array('dtb_plugin', $tableNames);
     }

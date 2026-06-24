@@ -2646,10 +2646,8 @@ final class CartValidationTest extends AbstractWebTestCase
     protected function deleteAllProduct()
     {
         // remove product exist
-        $pdo = $this->entityManager->getConnection()->getWrappedConnection();
         $sql = 'DELETE FROM dtb_tax_rule WHERE dtb_tax_rule.id <> 1';
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute();
+        $this->entityManager->getConnection()->executeStatement($sql);
         $this->deleteAllRows([
             'dtb_order_item',
             'dtb_product_stock',

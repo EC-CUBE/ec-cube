@@ -14,6 +14,8 @@
 namespace Eccube\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\ORM\QueryBuilder;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\AbstractEntity;
@@ -64,7 +66,7 @@ abstract class AbstractRepository extends ServiceEntityRepository
      */
     protected function isPostgreSQL(): bool
     {
-        return 'postgresql' == $this->getEntityManager()->getConnection()->getDatabasePlatform()->getName();
+        return $this->getEntityManager()->getConnection()->getDatabasePlatform() instanceof PostgreSQLPlatform;
     }
 
     /**
@@ -72,7 +74,7 @@ abstract class AbstractRepository extends ServiceEntityRepository
      */
     protected function isMySQL(): bool
     {
-        return 'mysql' == $this->getEntityManager()->getConnection()->getDatabasePlatform()->getName();
+        return $this->getEntityManager()->getConnection()->getDatabasePlatform() instanceof AbstractMySQLPlatform;
     }
 
     /**

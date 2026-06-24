@@ -14,6 +14,7 @@
 namespace Eccube\Command;
 
 use Doctrine\Bundle\DoctrineBundle\Command\DoctrineCommand;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\Persistence\ManagerRegistry;
 use Eccube\Common\EccubeConfig;
@@ -69,7 +70,7 @@ EOF
         $password = $this->passwordHasher->hashPassword(new Member(), $login_password);
 
         $conn = $em->getConnection();
-        $member_id = ('postgresql' === $conn->getDatabasePlatform()->getName())
+        $member_id = ($conn->getDatabasePlatform() instanceof PostgreSQLPlatform)
             ? $conn->fetchOne("select nextval('dtb_member_id_seq')")
             : null;
 
@@ -95,7 +96,7 @@ EOF
         $shop_name = env('ECCUBE_SHOP_NAME', 'EC-CUBE SHOP');
         $admin_mail = env('ECCUBE_ADMIN_MAIL', 'admin@example.com');
 
-        $id = ('postgresql' === $conn->getDatabasePlatform()->getName())
+        $id = ($conn->getDatabasePlatform() instanceof PostgreSQLPlatform)
             ? $conn->fetchOne("select nextval('dtb_base_info_id_seq')")
             : null;
 

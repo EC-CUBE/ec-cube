@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Fixture;
 
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
@@ -1441,7 +1442,7 @@ class Generator
         }
 
         $conn = $this->entityManager->getConnection();
-        $platform = $conn->getDatabasePlatform()->getName();
+        $platform = $conn->getDatabasePlatform();
 
         $columns = array_keys($rows[0]);
         $sql = sprintf(
@@ -1457,7 +1458,7 @@ class Generator
             $startedTransaction = true;
         }
 
-        if ('mysql' === $platform) {
+        if ($platform instanceof AbstractMySQLPlatform) {
             $conn->executeStatement("SET SESSION sql_mode='NO_AUTO_VALUE_ON_ZERO'");
         }
 

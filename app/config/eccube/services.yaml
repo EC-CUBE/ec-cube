@@ -237,3 +237,12 @@ services:
     eccube.asset.user_data_version_strategy:
         alias: Eccube\Asset\FilemtimeVersionStrategy
         public: true
+
+    Eccube\Doctrine\EventSubscriber\InitSubscriber:
+        autoconfigure: false
+        tags:
+            - { name: doctrine.middleware }
+
+    Eccube\Doctrine\EventSubscriber\InitDriver:
+        autowire: false
+        autoconfigure: false

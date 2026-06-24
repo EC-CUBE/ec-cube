@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Transaction;
 
+use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Eccube\Application;
 use Eccube\Tests\ServiceProvider\CsrfMockServiceProvider;
 use Eccube\Tests\ServiceProvider\FixtureServiceProvider;
@@ -37,7 +38,7 @@ final class TransactionListenerTest extends WebTestCase
 {
     protected function isSqlite()
     {
-        return $this->app['db']->getDatabasePlatform()->getName() === 'sqlite';
+        return $this->app['db']->getDatabasePlatform() instanceof SQLitePlatform;
     }
 
     protected function setUp(): void

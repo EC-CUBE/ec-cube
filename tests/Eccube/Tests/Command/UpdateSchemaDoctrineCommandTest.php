@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace Eccube\Tests\Command;
 
 use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\Persistence\ManagerRegistry;
@@ -55,9 +56,9 @@ final class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         parent::setUp();
         $conn = $this->entityManager->getConnection();
         // https://github.com/dmaicher/doctrine-test-bundle#troubleshooting
-        $platform = $conn->getDatabasePlatform()->getName();
-        if ('postgresql' !== $platform) {
-            $this->markTestSkipped('does not support of '.$platform);
+        $platform = $conn->getDatabasePlatform();
+        if (!$platform instanceof PostgreSQLPlatform) {
+            $this->markTestSkipped('does not support of '.$platform::class);
         }
         $files = Finder::create()
             ->in(static::getContainer()->getParameter('kernel.project_dir').'/app/proxy/entity')
@@ -77,7 +78,7 @@ final class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         foreach ($columns as $column) {
             if ($column->getName() == 'test_update_schema_command') {
                 $conn = $this->entityManager->getConnection();
-                $conn->executeUpdate('ALTER TABLE dtb_customer DROP test_update_schema_command');
+                $conn->executeStatement('ALTER TABLE dtb_customer DROP test_update_schema_command');
             }
         }
         // Restore exception handler to prevent risky test warning
@@ -355,7 +356,7 @@ final class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
 
     private function getSchemaManager(): AbstractSchemaManager
     {
-        return $this->entityManager->getConnection()->getSchemaManager();
+        return $this->entityManager->getConnection()->createSchemaManager();
     }
 
     // テスト用のダミープラグインを配置する
@@ -469,7 +470,7 @@ EOT
         $columns = $schema->listTableColumns('dtb_customer');
         if (empty(array_filter($columns, fn ($column) => $column->getName() == 'test_update_schema_command'))) {
             $conn = $this->entityManager->getConnection();
-            $conn->executeUpdate('ALTER TABLE dtb_customer ADD test_update_schema_command text');
+            $conn->executeStatement('ALTER TABLE dtb_customer ADD test_update_schema_command text');
         }
     }
 }
