@@ -127,6 +127,35 @@ final class OrderMemoPreprocessorTest extends EccubeTestCase
         }
     }
 
+    public function testWhitespacePaddedMemoIsTrimmedOnAppend(): void
+    {
+        // フォーム保存(trim なし)の前後空白付きメモは trimAll で正規化して追記する.
+        $this->Product->setOrderMemo('  梱包注意  ');
+
+        $this->processor->process($this->Order, new PurchaseContext());
+
+        foreach ($this->Order->getProductOrderItems() as $OrderItem) {
+            $this->assertSame('梱包注意', $OrderItem->getOrderMemo());
+        }
+    }
+
+    public function testWhitespaceOnlyDifferenceIsNotDuplicated(): void
+    {
+        // 既存行は CSV 取込で trim 済み('梱包注意')。商品メモが前後空白付き('梱包注意 ')でも
+        // 正規化後は同一行となり、重複追記されない(入力経路差に頑健).
+        $this->Product->setOrderMemo('梱包注意 ');
+
+        foreach ($this->Order->getProductOrderItems() as $OrderItem) {
+            $OrderItem->setOrderMemo('梱包注意');
+        }
+
+        $this->processor->process($this->Order, new PurchaseContext());
+
+        foreach ($this->Order->getProductOrderItems() as $OrderItem) {
+            $this->assertSame('梱包注意', $OrderItem->getOrderMemo());
+        }
+    }
+
     public function testNonProductItemIsNotCopied(): void
     {
         $this->Product->setOrderMemo('商品メモ');

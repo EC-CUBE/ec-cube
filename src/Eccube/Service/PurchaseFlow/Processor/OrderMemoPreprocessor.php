@@ -17,6 +17,7 @@ use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Order;
 use Eccube\Service\PurchaseFlow\ItemHolderPreprocessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
+use Eccube\Util\StringUtil;
 
 /**
  * 受注の作成・編集時に、商品の受注管理用メモを商品明細(OrderItem)のメモへ追記する.
@@ -44,8 +45,10 @@ class OrderMemoPreprocessor implements ItemHolderPreprocessor
                 continue;
             }
 
-            $productMemo = $OrderItem->getProduct()?->getOrderMemo();
-            if ($productMemo === null || $productMemo === '') {
+            // 入力経路差(フォーム保存は trim なし / CSV 取込は trimAll)による行不一致で
+            // 重複追記されるのを防ぐため、商品メモは CSV と同じ trimAll で正規化してから判定する.
+            $productMemo = (string) StringUtil::trimAll((string) ($OrderItem->getProduct()?->getOrderMemo() ?? ''));
+            if ($productMemo === '') {
                 continue;
             }
 
