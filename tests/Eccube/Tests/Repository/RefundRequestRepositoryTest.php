@@ -16,11 +16,9 @@ declare(strict_types=1);
 namespace Eccube\Tests\Repository;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\RefundRequestStatus;
 use Eccube\Entity\Order;
-use Eccube\Entity\OrderItem;
 use Eccube\Entity\RefundRequest;
 use Eccube\Repository\RefundRequestRepository;
 use Eccube\Tests\EccubeTestCase;
@@ -195,55 +193,6 @@ final class RefundRequestRepositoryTest extends EccubeTestCase
         $counts = $this->refundRequestRepository->getRefundRequestCountsByCustomer($Customer);
 
         $this->assertSame(2, $counts[$OrderItem->getId()]);
-    }
-
-    public function testGetRequestedQuantityExcludesDeclined(): void
-    {
-        $Customer = $this->createCustomer();
-        $Order = $this->createOrder($Customer);
-        $this->setOrderStatus($Order, OrderStatus::DELIVERED);
-        $this->entityManager->flush();
-
-        $OrderItem = $Order->getProductOrderItems()[0];
-
-        // 却下を除く2件（1 + 2 = 3）が合算され、却下（5）は除外される.
-        $this->persistRefundRequest($Order, $OrderItem, $Customer, '1', RefundRequestStatus::NEW);
-        $this->persistRefundRequest($Order, $OrderItem, $Customer, '2', RefundRequestStatus::ACCEPTED);
-        $this->persistRefundRequest($Order, $OrderItem, $Customer, '5', RefundRequestStatus::DECLINED);
-        $this->entityManager->flush();
-
-        $requested = $this->refundRequestRepository->getRequestedQuantity($OrderItem, $Customer);
-
-        $this->assertSame(3, $requested);
-    }
-
-    public function testGetRequestedQuantityEmpty(): void
-    {
-        $Customer = $this->createCustomer();
-        $Order = $this->createOrder($Customer);
-        $this->setOrderStatus($Order, OrderStatus::DELIVERED);
-        $this->entityManager->flush();
-
-        $OrderItem = $Order->getProductOrderItems()[0];
-
-        $this->assertSame(0, $this->refundRequestRepository->getRequestedQuantity($OrderItem, $Customer));
-    }
-
-    private function persistRefundRequest(Order $Order, OrderItem $OrderItem, Customer $Customer, string $quantity, int $statusId): RefundRequest
-    {
-        $Status = $this->entityManager->find(RefundRequestStatus::class, $statusId);
-        $this->assertInstanceOf(RefundRequestStatus::class, $Status);
-
-        $RefundRequest = new RefundRequest();
-        $RefundRequest->setOrder($Order);
-        $RefundRequest->setOrderItem($OrderItem);
-        $RefundRequest->setCustomer($Customer);
-        $RefundRequest->setQuantity($quantity);
-        $RefundRequest->setReason('テスト返品理由');
-        $RefundRequest->setRefundRequestStatus($Status);
-        $this->entityManager->persist($RefundRequest);
-
-        return $RefundRequest;
     }
 
     private function createTestRefundRequest(): RefundRequest

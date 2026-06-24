@@ -70,9 +70,7 @@ class RefundRequestController extends AbstractController
         $RefundRequest->setOrderItem($OrderItem);
         $RefundRequest->setCustomer($Customer);
 
-        // 既申請分（却下を除く）を差し引いた残数量を上限にする（過剰返品の防止）.
-        $requestedQuantity = $this->refundRequestRepository->getRequestedQuantity($OrderItem, $Customer);
-        $maxQuantity = max(0, (int) $OrderItem->getQuantity() - $requestedQuantity);
+        $maxQuantity = (int) $OrderItem->getQuantity();
         $form = $this->createForm(RefundRequestType::class, $RefundRequest, [
             'max_quantity' => $maxQuantity,
         ]);
@@ -176,19 +174,6 @@ class RefundRequestController extends AbstractController
         if ($request->isMethod('POST')) {
             if (!$this->isTokenValid()) {
                 $this->addError('front.mypage.refund_request.invalid_token');
-
-                return $this->redirectToRoute('mypage_refund_request', [
-                    'order_no' => $order_no,
-                    'order_item_id' => $order_item_id,
-                ]);
-            }
-
-            // 入力画面の上限はセッション格納時点の値のため、保存直前に残数量を再検証する
-            // （別タブ・再送信などで注文数量を超える申請が確定されるのを防ぐ）.
-            $requestedQuantity = $this->refundRequestRepository->getRequestedQuantity($OrderItem, $Customer);
-            $remaining = max(0, (int) $OrderItem->getQuantity() - $requestedQuantity);
-            if ((int) $data['quantity'] < 1 || (int) $data['quantity'] > $remaining) {
-                $this->addError('front.mypage.refund_request.quantity_exceeded');
 
                 return $this->redirectToRoute('mypage_refund_request', [
                     'order_no' => $order_no,

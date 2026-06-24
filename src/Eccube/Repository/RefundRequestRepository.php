@@ -16,7 +16,6 @@ namespace Eccube\Repository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Entity\Customer;
-use Eccube\Entity\Master\RefundRequestStatus;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\RefundRequest;
 use Eccube\Util\StringUtil;
@@ -133,28 +132,6 @@ class RefundRequestRepository extends AbstractRepository
         }
 
         return $counts;
-    }
-
-    /**
-     * 指定した注文明細に対する会員の「却下を除く」返品申請数量の合計を返す.
-     *
-     * 過剰返品（注文数量を超える申請）を防ぐための残数量計算に使う。
-     * 却下(DECLINED)済みは数量を解放するため合計に含めない。
-     */
-    public function getRequestedQuantity(OrderItem $OrderItem, Customer $Customer): int
-    {
-        $sum = $this->createQueryBuilder('rr')
-            ->select('COALESCE(SUM(rr.quantity), 0)')
-            ->where('rr.OrderItem = :OrderItem')
-            ->andWhere('rr.Customer = :Customer')
-            ->andWhere('IDENTITY(rr.RefundRequestStatus) != :declined')
-            ->setParameter('OrderItem', $OrderItem)
-            ->setParameter('Customer', $Customer)
-            ->setParameter('declined', RefundRequestStatus::DECLINED)
-            ->getQuery()
-            ->getSingleScalarResult();
-
-        return (int) $sum;
     }
 
     private function escapeLike(string $value): string

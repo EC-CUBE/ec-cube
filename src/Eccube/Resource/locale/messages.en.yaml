@@ -298,7 +298,6 @@ front.mypage.refund_request.no_history: No refund request history.
 front.mypage.refund_request.apply: Refund Request
 front.mypage.refund_request.history: Request History
 front.mypage.refund_request.error: Failed to process the refund request.
-front.mypage.refund_request.quantity_exceeded: The requested quantity exceeds the allowable amount. Please check the quantity and try again.
 front.mypage.refund_request.invalid_token: Invalid request. Please try again.
 
 #------------------------------------------------------------------------------------
