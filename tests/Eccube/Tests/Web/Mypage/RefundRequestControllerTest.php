@@ -172,6 +172,52 @@ final class RefundRequestControllerTest extends AbstractWebTestCase
         $this->assertSame(1, $count);
     }
 
+    public function testConfirmPostRejectsWhenQuantityExceedsRemaining(): void
+    {
+        $this->loginTo($this->Customer);
+        $OrderItem = $this->Order->getProductOrderItems()[0];
+
+        // 既存の申請（却下以外）で注文数量を使い切らせ、残数量を 0 にする.
+        $existing = $this->createRefundRequest($this->Order, $OrderItem, $this->Customer);
+        $existing->setQuantity((string) (int) $OrderItem->getQuantity());
+        $this->entityManager->flush();
+
+        // 入力画面の POST（残数量 0 のためフォーム検証で弾かれ confirm へは進まない）
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('mypage_refund_request', [
+                'order_no' => $this->Order->getOrderNo(),
+                'order_item_id' => $OrderItem->getId(),
+            ]),
+            [
+                'refund_request' => [
+                    '_token' => 'dummy',
+                    'quantity' => '1',
+                    'reason' => 'テスト理由です',
+                ],
+            ]
+        );
+
+        // 確認画面の POST を直接叩いても確定されない（セッション無し or 残数量超過で弾く）
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('mypage_refund_request_confirm', [
+                'order_no' => $this->Order->getOrderNo(),
+                'order_item_id' => $OrderItem->getId(),
+            ]),
+            ['_token' => 'dummy']
+        );
+
+        // 新規申請は作られず、既存の1件のみ.
+        $count = (int) $this->entityManager->createQueryBuilder()
+            ->select('COUNT(rr)')
+            ->from(RefundRequest::class, 'rr')
+            ->where('rr.Customer = :c')
+            ->setParameter('c', $this->Customer)
+            ->getQuery()->getSingleScalarResult();
+        $this->assertSame(1, $count);
+    }
+
     public function testConfirmPostWithFilePersistsFile(): void
     {
         $this->loginTo($this->Customer);

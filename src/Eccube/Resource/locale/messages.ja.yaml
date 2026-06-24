@@ -298,6 +298,7 @@ front.mypage.refund_request.no_history: 返品申請履歴はありません。
 front.mypage.refund_request.apply: 返品申請
 front.mypage.refund_request.history: 返品申請履歴
 front.mypage.refund_request.error: 返品申請の処理に失敗しました。
+front.mypage.refund_request.quantity_exceeded: 申請可能な数量を超えています。お手数ですが数量を確認のうえやり直してください。
 front.mypage.refund_request.invalid_token: 不正なリクエストです。お手数ですがやり直してください。
 
 #------------------------------------------------------------------------------------

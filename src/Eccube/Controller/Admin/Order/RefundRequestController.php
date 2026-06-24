@@ -216,6 +216,8 @@ class RefundRequestController extends AbstractController
     #[Route(path: '/%eccube_admin_route%/order/refund_request/{id}/update_status', name: 'admin_refund_request_update_status', requirements: ['id' => '\d+'], methods: ['PUT'])]
     public function updateStatus(Request $request, RefundRequest $RefundRequest): JsonResponse
     {
+        // isTokenValid() は無効トークン時に AccessDeniedHttpException を投げる（戻り値は常に true）。
+        // 破壊的な PUT API のため、ここで CSRF を強制する。
         $this->isTokenValid();
 
         $transition = $request->get('transition');
