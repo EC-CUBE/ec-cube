@@ -77,6 +77,10 @@ if (!class_exists(Example::class)) {
   - 例: `OrderItem::getTotalPrice()`（単価 × 数量）、`Order` の各種金額の合算、
     `Customer` の表示名の組み立て、ステータス定数の判定メソッドなど。
   - 副作用を持たず、外部（Repository・EntityManager・他サービス）に依存しない純粋な計算/判定はエンティティの責務。
+  - **金額プロパティ（`Types::DECIMAL`）は Doctrine ORM 3.x で `?string`**（getter は `string` 戻り、setter も `string` 引数）。
+    `Order` の `total` / `subtotal` / `payment_total` 等（`src/Eccube/Entity/Order.php`）が実例。
+    計算は **float で四則演算せず `bcmath`**（`bcadd` / `bcmul` / `bccomp` 等、スケール 2）で行う。
+    実例: `OrderItem::getTotalPrice()` = `bcmul($this->getPriceIncTax(), $this->getQuantity(), 2)`（`src/Eccube/Entity/OrderItem.php`）。
 - **外に出す（副作用・横断・採番を伴う「処理」）**: 永続化や複数エンティティ・外部リソースを巻き込む処理。
   - **在庫引当・注文番号の採番・ポイント付与・値引き適用などの受注処理は PurchaseFlow（Skill `service` 参照）パイプラインへ**。
   - DB アクセス（クエリ）は Repository、トランザクションを伴う業務操作は Service へ（Skill `service`）。
@@ -101,3 +105,5 @@ if (!class_exists(Example::class)) {
 - ❌ 在庫引当・採番・ポイント付与などの受注処理をエンティティに書く → ✅ PurchaseFlow / Service へ。エンティティは自身の状態から導く計算/判定まで
 - ❌ `class_exists` ラッパなしでコアエンティティを定義 → ✅ プロキシ拡張に対応するラッパで囲う
 - ❌ プロパティ/戻り値の型宣言省略 → ✅ 型を付け、PHPStan level 6 を通す
+- ❌ 金額 getter（`Order::getTotal()`・`OrderItem::getTotalPrice()` 等）の戻り値を int/float 扱い → ✅ DECIMAL は `?string`（getter は `string`）。型宣言・代入もこれに合わせる
+- ❌ 金額を float で四則演算（丸め誤差）→ ✅ `bcmath`（`bcadd` / `bcmul` / `bccomp`、スケール 2）で計算する
