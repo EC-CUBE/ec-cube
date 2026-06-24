@@ -67,7 +67,7 @@ final class Version20260610000000 extends AbstractMigration
             return;
         }
 
-        foreach (array_keys(self::DISPLAY_SETTINGS) as $fieldName) {
+        foreach (array_keys(OrderDisplaySetting::DEFAULT_DISPLAY_FIELDS) as $fieldName) {
             $this->addSql(
                 'DELETE FROM '.self::NAME.' WHERE field_name = :field_name',
                 ['field_name' => $fieldName]
