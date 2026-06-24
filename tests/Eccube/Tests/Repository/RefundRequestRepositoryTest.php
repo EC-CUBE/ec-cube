@@ -16,8 +16,8 @@ declare(strict_types=1);
 namespace Eccube\Tests\Repository;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Customer;
+use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\RefundRequestStatus;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
