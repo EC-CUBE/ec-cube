@@ -198,7 +198,7 @@ final class RefundRequestControllerTest extends AbstractWebTestCase
             ]
         );
 
-        // 確認画面の POST を直接叩いても確定されない（セッション無し or 残数量超過で弾く）
+        // 残数量 0 のため入力が弾かれセッション未格納 → 確認画面 POST も確定に至らない.
         $this->client->request(
             Request::METHOD_POST,
             $this->generateUrl('mypage_refund_request_confirm', [
@@ -209,6 +209,58 @@ final class RefundRequestControllerTest extends AbstractWebTestCase
         );
 
         // 新規申請は作られず、既存の1件のみ.
+        $count = (int) $this->entityManager->createQueryBuilder()
+            ->select('COUNT(rr)')
+            ->from(RefundRequest::class, 'rr')
+            ->where('rr.Customer = :c')
+            ->setParameter('c', $this->Customer)
+            ->getQuery()->getSingleScalarResult();
+        $this->assertSame(1, $count);
+    }
+
+    public function testConfirmPostRevalidatesRemainingAndRejectsWhenShrunk(): void
+    {
+        // confirm() の「保存直前の残数量再検証」を確実に通すケース.
+        // 入力時点では残数量が足りていたが、確認画面 POST までの間に別申請で
+        // 残数量が 0 に縮小した状況（別タブ・再送信）を再現し、確定が弾かれることを検証する.
+        $this->loginTo($this->Customer);
+        $OrderItem = $this->Order->getProductOrderItems()[0];
+        $qty = (string) (int) $OrderItem->getQuantity();
+
+        // 1) 既申請なしの状態で入力画面 POST（残数量=注文数量のためフォーム有効）→ セッション格納.
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('mypage_refund_request', [
+                'order_no' => $this->Order->getOrderNo(),
+                'order_item_id' => $OrderItem->getId(),
+            ]),
+            [
+                'refund_request' => [
+                    '_token' => 'dummy',
+                    'quantity' => $qty,
+                    'reason' => 'テスト理由です',
+                ],
+            ]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+
+        // 2) 確認画面 POST の前に、別申請が注文数量を使い切り残数量を 0 に縮小させる.
+        $existing = $this->createRefundRequest($this->Order, $OrderItem, $this->Customer);
+        $existing->setQuantity($qty);
+        $this->entityManager->flush();
+
+        // 3) 確認画面 POST：confirm() が残数量を再計算し、data quantity > remaining(0) で弾く.
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('mypage_refund_request_confirm', [
+                'order_no' => $this->Order->getOrderNo(),
+                'order_item_id' => $OrderItem->getId(),
+            ]),
+            ['_token' => 'dummy']
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+
+        // confirm 由来の新規申請は作られず、既存の1件のみ.
         $count = (int) $this->entityManager->createQueryBuilder()
             ->select('COUNT(rr)')
             ->from(RefundRequest::class, 'rr')
