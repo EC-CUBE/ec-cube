@@ -339,11 +339,12 @@ jobs:
           mkdir -p app/PluginData/Api44/oauth
           ## インストール時に鍵が生成済みのことがあるため --overwrite で確実に再生成する
           bin/console league:oauth2-server:generate-keypair --overwrite
-          ## client_credentials + agentic scope のクライアントを発行 (identifier secret は CI 固定値)
+          ## create-client の引数は <name> <identifier> <secret> の順 (name が先頭)。
+          ## identifier/secret は英数字 (admin フォームの規約・ハイフン由来の不具合回避)。
           bin/console league:oauth2-server:create-client \
             --grant-type=client_credentials \
             --scope=acp:checkout --scope=ucp:checkout \
-            agent-e2e-client agent-e2e-secret
+            agentE2e agente2eclient agente2esecret
 
       - name: Start PHP Development Server
         env:
@@ -364,8 +365,8 @@ jobs:
         run: |
           resp=$(curl -s -X POST http://127.0.0.1:8000/token \
             -d grant_type=client_credentials \
-            -d client_id=agent-e2e-client \
-            -d client_secret=agent-e2e-secret \
+            -d client_id=agente2eclient \
+            -d client_secret=agente2esecret \
             --data-urlencode 'scope=acp:checkout ucp:checkout')
           echo "--- /token response ---"; echo "$resp" | jq . || echo "$resp"
           tok=$(echo "$resp" | jq -r '.access_token // empty')
