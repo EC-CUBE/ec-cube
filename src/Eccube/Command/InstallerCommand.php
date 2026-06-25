@@ -13,10 +13,12 @@
 
 namespace Eccube\Command;
 
+use Doctrine\Bundle\DoctrineBundle\ConnectionFactory;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLitePlatform;
+use Doctrine\DBAL\Tools\DsnParser;
 use Dotenv\Dotenv;
 use Eccube\Common\EccubeConfig;
 use Eccube\Util\StringUtil;
@@ -295,9 +297,9 @@ class InstallerCommand extends Command
     protected function getDatabaseServerVersion(string $databaseUrl): false|string
     {
         try {
-            $conn = DriverManager::getConnection([
-                'url' => $databaseUrl,
-            ]);
+            // DBAL 4 では DriverManager が 'url' を解析しなくなったため, DsnParser で展開する.
+            $params = (new DsnParser(ConnectionFactory::DEFAULT_SCHEME_MAP))->parse($databaseUrl);
+            $conn = DriverManager::getConnection($params);
         } catch (\Exception) {
             throw new \LogicException(sprintf('Database Url %s is invalid.', $databaseUrl));
         }

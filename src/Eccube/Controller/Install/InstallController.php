@@ -13,11 +13,13 @@
 
 namespace Eccube\Controller\Install;
 
+use Doctrine\Bundle\DoctrineBundle\ConnectionFactory;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLitePlatform;
+use Doctrine\DBAL\Tools\DsnParser;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManager;
@@ -569,7 +571,13 @@ class InstallController extends AbstractController
      */
     protected function createConnection(array $params): Connection
     {
-        if (str_contains((string) $params['url'], 'mysql')) {
+        // DBAL 4 では DriverManager が 'url' を解析しなくなったため, DsnParser で driver/host/dbname 等へ展開する.
+        $url = (string) ($params['url'] ?? '');
+        if ($url !== '') {
+            $params = (new DsnParser(ConnectionFactory::DEFAULT_SCHEME_MAP))->parse($url);
+        }
+
+        if (str_contains($url, 'mysql')) {
             $params['charset'] = 'utf8mb4';
             $params['defaultTableOptions'] = [
                 'charset' => 'utf8mb4',
