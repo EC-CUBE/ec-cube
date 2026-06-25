@@ -90,6 +90,7 @@ if ($this->isGranted('IS_AUTHENTICATED_FULLY')) { ... }
 - ❌ 独自 Voter で「対象外」を `ACCESS_DENIED` で返す → ✅ 対象外は `ACCESS_ABSTAIN`（unanimous 戦略で誤拒否を防ぐ）
 - ❌ 自前でパスワードをハッシュ/平文比較 → ✅ `PasswordHasher` 経由に統一
 - ❌ ユーザー入力を Twig で `|raw` 出力 → ✅ エスケープを効かせる（Skill `twig-template`）
+- ❌ アップロード/ファイル操作を伴う管理ルートを新設したが `eccube_restrict_file_upload` の遮断対象を考慮しない → ✅ コアは `eccube_restrict_file_upload === '1'` のとき `eccube_restrict_file_upload_urls` のルートを `RestrictFileUploadListener` で遮断する。新規ルートを遮断対象に含めるべきか検討する
 
 ## 実行・確認方法
 

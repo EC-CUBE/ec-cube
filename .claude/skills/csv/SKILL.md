@@ -168,6 +168,7 @@ try {
 - ❌ インポートをトランザクション無しで `flush()`／エラー時も一時ファイルを残す → ✅ `beginTransaction`〜`commit`/`rollback` で囲み、終了時に `removeUploadedFile()`
 - ❌ 出力項目追加のためにコアの export 処理を改変する → ✅ `ADMIN_*_CSV_EXPORT*` イベントを購読して `ExportCsvRow` に列追加
 - ❌ `mtb_csv_type` へ `discriminator_type` を指定せず INSERT する（STI のため壊れる） → ✅ 種別追加時は discriminator を必ず指定（Skill `migration`）
+- ❌ 素の `fputcsv($fp, $row)` で escape 引数を省略（**PHP 8.4 で deprecation**：`the $escape parameter must be provided`）→ ✅ 第5引数まで明示（コアは `fputcsv(..., ',', '"', '\\')`）。そもそも `CsvExportService::fputcsv()` に乗れば吸収される
 
 ## 実行・確認方法
 

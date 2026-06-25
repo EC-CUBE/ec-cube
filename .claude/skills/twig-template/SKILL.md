@@ -68,7 +68,9 @@ class ExampleExtension extends AbstractExtension
 
 - **管理画面テンプレートを参照するときは `@admin` 名前空間**を付ける（例: `{{ include('@admin/...') }}`）。名前空間を忘れると探索先を誤る。
 - 上書きは `app/template/` 直下ではなく、**`admin/` か `default(テーマ)/` の正しいサブディレクトリ**に置く。
-- 文字列テンプレートを動的に描画する場合は `template_from_string(...)` ＋ `sandboxed = true`（コアの定石。例: `default_frame.twig` の CMS メタタグ）。
+- **ユーザーが編集できるテンプレート文字列（CMS コンテンツ・フリーエリア・メール本文等）を描画するときは Twig サンドボックスを通す**。
+  文字列テンプレートは `template_from_string(...)` ＋ `sandboxed = true` で描画する（コアの定石。例: `default_frame.twig` の CMS メタタグ）。
+  許可するタグ/フィルタ/関数はコアの `SecurityPolicyDecorator`（`src/Eccube/Twig/Sandbox/`）で制御されており、**サンドボックスを外すとテンプレートインジェクションになる**（過去の脆弱性修正の中心領域）。
 
 ## テンプレートイベント（差し込み）
 
@@ -93,6 +95,7 @@ public function onTemplateCart(TemplateEvent $event): void
 - ❌ `is_safe => ['html']` を付けた関数内で外部入力を未エスケープ連結 → ✅ `htmlspecialchars(..., ENT_QUOTES, 'UTF-8')`
 - ❌ HTML を返すフィルタに `is_safe` を付け忘れ → ✅ 付ける（さもないと二重エスケープで `&lt;` 等が表示される）
 - ❌ 上書きを `app/template/` 直下に置く / `@admin` 名前空間を付け忘れる → ✅ 正しいサブディレクトリ・名前空間に置く
+- ❌ **管理画面テンプレートだから安全**と油断して `|raw` する → ✅ admin 配下も XSS シンク（過去の XSS 修正は管理画面テンプレートに多い）。DB/入力由来の値は admin でも必ずエスケープする
 - ❌ テンプレートイベントにエンティティ永続化など業務処理を書く → ✅ 見た目調整のみ。業務は対応するコントローライベントへ
 
 ## 実行・確認方法
