@@ -608,8 +608,34 @@ class PluginService
     public function unregisterPlugin(Plugin $p): void
     {
         $em = $this->entityManager;
+        $this->reconcileMySqlTransaction($em->getConnection());
         $em->remove($p);
         $em->flush();
+    }
+
+    /**
+     * MySQL の DDL 暗黙 COMMIT によるトランザクション不整合を解消する.
+     *
+     * composer 経由のプラグイン uninstall などでは, 処理途中の MySQL の DDL が暗黙 COMMIT を
+     * 発行して実接続のトランザクションを終了させる一方, DBAL のネストレベルだけが残ることがある.
+     * この状態で flush() すると内部の commit/rollBack が実接続側で実行され, DBAL 4 では
+     * "There is no active transaction" 例外になる. ネストレベルだけが残り実接続に
+     * トランザクションが無い不整合を検知した場合は, 接続を閉じてネストレベルをリセットする
+     * (実接続は次の操作で再接続される. 暗黙 COMMIT 済みのため失われる未確定の変更は無い).
+     */
+    private function reconcileMySqlTransaction(Connection $conn): void
+    {
+        if (!$conn->getDatabasePlatform() instanceof AbstractMySQLPlatform) {
+            return;
+        }
+        if ($conn->getTransactionNestingLevel() === 0) {
+            return;
+        }
+        /** @var \PDO $nativeConnection */
+        $nativeConnection = $conn->getNativeConnection();
+        if (!$nativeConnection->inTransaction()) {
+            $conn->close();
+        }
     }
 
     /**
