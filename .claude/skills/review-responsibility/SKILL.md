@@ -9,7 +9,7 @@ description: EC-CUBE 4.4 で実装・改修したコードを実装直後に自�
 **これは助言であり、必ずしも全件修正を要求しない**（既存コードの一括修正は求めない）。
 
 > 行数・依存数などの数値で線を引かず、**質的シグナル**で判断する。
-> 整形・型・アノテーション変換は `rector --dry-run` / `phpstan analyse src` / `php-cs-fixer fix` に委ね、レビューは下記の観点に集中する（QA 実行は Skill `docker-qa`）。
+> 整形・型・アノテーション変換は `rector --dry-run` / `phpstan analyse src` / `php-cs-fixer fix` に委ね、レビューは下記の観点に集中する（QA 実行方法は AGENTS.md「開発コマンド」を参照）。
 
 ## 進め方
 

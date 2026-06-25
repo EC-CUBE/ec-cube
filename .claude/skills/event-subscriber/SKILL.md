@@ -111,7 +111,7 @@ class ExampleDoctrineListener
 
 ## 実行・確認方法
 
-QA ツール・コンソールは Docker 上で実行する（Skill `docker-qa`）。
+QA ツール・コンソール（PHPUnit / PHPStan / PHP-CS-Fixer）の実行方法は AGENTS.md「開発コマンド」を参照。
 
 ```bash
 bin/console debug:event-dispatcher                                   # 登録済みリスナー一覧

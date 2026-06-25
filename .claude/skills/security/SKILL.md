@@ -92,7 +92,7 @@ if ($this->isGranted('IS_AUTHENTICATED_FULLY')) { ... }
 
 ## 実行・確認方法
 
-QA ツールは Docker 上で実行する（Skill `docker-qa`）。ローカルの `vendor/bin/*` を直接叩かない。
+QA ツール（PHPUnit / PHPStan / PHP-CS-Fixer）の実行方法は AGENTS.md「開発コマンド」を参照。
 
 - **Voter の単体テスト**: `tests/Eccube/Tests/Security/Voter/AuthorityVoterTest.php`（deny_url パターンごとの GRANTED/DENIED）。
 - **管理ログイン/リダイレクトのテスト**: `tests/Eccube/Tests/Web/Admin/LoginControllerTest.php`

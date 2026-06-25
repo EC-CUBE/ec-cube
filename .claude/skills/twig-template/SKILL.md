@@ -97,7 +97,7 @@ public function onTemplateCart(TemplateEvent $event): void
 
 ## 実行・確認方法
 
-QA ツールは Docker 上で実行する（Skill `docker-qa`）。
+QA ツール（PHPUnit / PHPStan / PHP-CS-Fixer）の実行方法は AGENTS.md「開発コマンド」を参照。
 
 ```bash
 bin/console lint:twig src/Eccube/Resource/template/   # Twig 構文チェック

@@ -11,9 +11,29 @@ description: EC-CUBE 4.4 のプラグインを実装・改修するときの規�
 > 目的: 自己完結したパッケージとして機能を追加し、コアやプロジェクト固有カスタマイズ（`app/Customize/`）と混同しないこと。
 > プロジェクト固有の 1 回限りの改変は `app/Customize/`、再配布・着脱可能な機能は `app/Plugin/`。
 
+## 雛形の生成（まず CLI で骨組みを作る）
+
+新規プラグインは**手書きで一から作らず、コアの生成コマンドで雛形を作る**のが定石。
+
+```bash
+bin/console eccube:plugin:generate <name> <code> <ver>
+# 例: bin/console eccube:plugin:generate "My Plugin" Example 1.0.0
+```
+
+`app/Plugin/{code}/` に骨組み一式が生成される（`src/Eccube/Command/PluginGenerateCommand.php`）:
+`composer.json` ・ 管理画面の `Controller/Admin/ConfigController.php` ・ `Entity/Config.php`（`plg_{code}_config`）・
+`Repository/ConfigRepository.php` ・ `Form/Type/Admin/ConfigType.php` ・ `Resource/template/admin/config.twig` ・
+`TwigBlock.php` / `Nav.php` / `Event.php` ・ `Resource/locale/messages.ja.yaml` 等 ・
+`.github/workflows/release.yml` ・ `.gitattributes`。
+
+- 引数は **`name`（表示名）/ `code`（PluginCode）/ `ver`（composer.json の version）** の順（位置引数）。
+- 生成物は **Config 画面・Entity 込みのフル構成**。**使わないファイルは削ってよい**（残すべき最小は下記）。
+- `code` は `^\w+$`（後述の制約）。`PluginManager.php` は生成されないので、ライフサイクル処理が要るときは下記に従い手で足す。
+
 ## プラグインの最小構成と配置
 
 プラグインは必ず **`app/Plugin/{PluginCode}/`** に置く。PSR-4 で `Plugin\{PluginCode}\` ＝ `app/Plugin/{PluginCode}/`。
+`generate` が作る雛形から不要分を削ると、最終的に残すべきは次の構成（手書きするときもこれが下限）。
 
 ```
 app/Plugin/{PluginCode}/
@@ -109,6 +129,7 @@ bin/console eccube:generate:proxies   # app/proxy/entity/ を再生成
 
 ## よくある間違い
 
+- ❌ 雛形を手で一から作る → ✅ `bin/console eccube:plugin:generate <name> <code> <ver>` で骨組みを生成し、不要分を削る
 - ❌ `composer.json` に `extra.code` が無い → ✅ 必須。無いと install で失敗
 - ❌ PluginCode に `-` を使う → ✅ `^\w+$`（英数字・アンダースコアのみ）
 - ❌ install しただけで動くと思う → ✅ install 直後は無効。`eccube:plugin:enable --code=...` で有効化
@@ -119,9 +140,10 @@ bin/console eccube:generate:proxies   # app/proxy/entity/ を再生成
 
 ## 実行・確認方法
 
-コンソール・QA ツールは Docker 上で実行する（Skill `docker-qa`）。
+コンソール・QA ツール（PHPUnit / PHPStan / PHP-CS-Fixer）の実行方法は AGENTS.md「開発コマンド」を参照。
 
 ```bash
+bin/console eccube:plugin:generate "My Plugin" Example 1.0.0   # 雛形生成（name code ver）
 bin/console eccube:plugin:install --code=Example   # 既存ディレクトリからインストール
 bin/console eccube:plugin:enable  --code=Example   # 有効化
 bin/console eccube:plugin:update  Example          # 更新（PluginManager::update を呼ぶ）
