@@ -337,7 +337,8 @@ jobs:
           DATABASE_CHARSET: ${{ matrix.database_charset }}
         run: |
           mkdir -p app/PluginData/Api44/oauth
-          bin/console league:oauth2-server:generate-keypair
+          ## インストール時に鍵が生成済みのことがあるため --overwrite で確実に再生成する
+          bin/console league:oauth2-server:generate-keypair --overwrite
           ## client_credentials + agentic scope のクライアントを発行 (identifier secret は CI 固定値)
           bin/console league:oauth2-server:create-client \
             --grant-type=client_credentials \
