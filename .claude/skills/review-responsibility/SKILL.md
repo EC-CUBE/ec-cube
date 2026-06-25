@@ -42,6 +42,13 @@ description: EC-CUBE 4.4 で実装・改修したコードを実装直後に自�
 - リスナー/サブスクライバに**業務ロジックが偏っていないか**（重い処理は Service へ委譲、リスナーは薄く）。
 - `getSubscribedEvents()` が `static` か、イベント名に `EccubeEvents` 定数を使っているか。
 
+### Entity — Skill [`entity`](../entity/SKILL.md)
+- 金額（DECIMAL）を int/float 扱いしていないか（`?string`／bcmath）。`create_date`/`update_date` を自前 PrePersist で二重実装していないか。
+- 他エンティティ（特にコアの `Product`/`Customer` 等）への関連で、親削除時の挙動（`onDelete` or Service/disable での後始末）を決めているか（未決定だと退会・商品削除を FK で止める）。
+
+### Repository — Skill [`repository`](../repository/SKILL.md)
+- 生 SQL 連結でなく QueryBuilder＋`setParameter` か。画面表示の一覧・関連取得が無制限になっていないか（ページング/上限）。
+
 ### プラグイン — Skill [`plugin`](../plugin/SKILL.md)
 - エンティティトレイトに `#[EntityExtension]` を付け、**proxy 再生成**を意識しているか。
 - プロジェクト固有の改変を不要にプラグイン化していないか（`app/Customize` との使い分け）。

@@ -108,3 +108,4 @@ if (!class_exists(Example::class)) {
 - ❌ 金額 getter（`Order::getTotal()`・`OrderItem::getTotalPrice()` 等）の戻り値を int/float 扱い → ✅ DECIMAL は `?string`（getter は `string`）。型宣言・代入もこれに合わせる
 - ❌ 金額を float で四則演算（丸め誤差）→ ✅ `bcmath`（`bcadd` / `bcmul` / `bccomp`、スケール 2）で計算する
 - ❌ `create_date` / `update_date` を自前の `#[ORM\PrePersist]`（＋`#[ORM\HasLifecycleCallbacks]`）でセット → ✅ コアの `SaveEventSubscriber`（グローバル Doctrine prePersist/preUpdate）が `method_exists` で `setCreateDate`/`setUpdateDate`/`setCreator` を自動セットする（`src/Eccube/Doctrine/EventSubscriber/SaveEventSubscriber.php`）。setter さえ生やせばよく、自前 PrePersist は二重実装になるので書かない
+- ❌ 他エンティティ（特にコアの `Product`/`Customer` 等、自分で制御できない親）への関連で親削除時の挙動を未決定 → ✅ FK は既定で削除を止める（RESTRICT 相当）。未指定だと**退会・商品削除が FK 違反で失敗**したり孤児化する。`onDelete`（`SET NULL`／`CASCADE`）を指定するか、Service・プラグイン disable 等で後始末する（コアは `onDelete` を限定使用し[95 JoinColumn 中 2 件]、多くは Service 側で関連を整理している）
