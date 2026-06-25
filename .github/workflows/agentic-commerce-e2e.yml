@@ -117,6 +117,9 @@ jobs:
           ## untrusted な可能性のある dispatch 入力は env 経由で受け、シェル展開でのインジェクションを防ぐ
           API4_REF: ${{ inputs.api4_ref }}
           SAMPLE_REF: ${{ inputs.sample_ref }}
+          ## 公開フォークでも composer は GitHub API でバージョン解決/dist 取得するため、
+          ## CI 共有 IP のレート制限回避にトークンが要る。COMPOSER_AUTH は COMPOSER_HOME 非依存で効く。
+          COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.GITHUB_TOKEN }}"}}'
         run: |
           bin/console eccube:composer:require "ec-cube/api44:dev-${API4_REF}"
           bin/console eccube:composer:require "ec-cube/samplepayment44:dev-${SAMPLE_REF}"
@@ -252,6 +255,8 @@ jobs:
           ## untrusted な可能性のある dispatch 入力は env 経由で受ける
           API4_REF: ${{ inputs.api4_ref }}
           SAMPLE_REF: ${{ inputs.sample_ref }}
+          ## 公開フォークの VCS 解決に GitHub トークンを渡す (レート制限回避)
+          COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.GITHUB_TOKEN }}"}}'
         run: |
           echo "APP_ENV=${APP_ENV}" > .env
           echo "ECCUBE_AUTH_MAGIC=${ECCUBE_AUTH_MAGIC}" >> .env
