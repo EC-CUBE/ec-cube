@@ -5,6 +5,7 @@ on:
 
 permissions:
   contents: read
+  code-quality: write
 
 jobs:
   phpunit:
@@ -13,37 +14,37 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ '8.4', '8.5' ]
+        php: [ '8.5' ]
         db: [ pgsql ]
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
-            database_server_version: 14
-    services:
-      postgres:
-        image: postgres:14
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
-        ports:
-          - 5432:5432
-        # needed because the postgres container does not provide a healthcheck
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-
+            database_server_version: 18
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
+
+      ## Docker Hub からの pull はタイムアウトで CI が不安定になるため、
+      ## DB はコンテナではなく setup アクション (apt) でインストールする
+      - name: Setup PostgreSQL
+        uses: ankane/setup-postgres@6d3ffa1aa7498a42b79e9f9f5838b99971839300  # v1
+        with:
+          postgres-version: '18'
+          user: postgres
+      - name: Configure PostgreSQL
+        run: |
+          for _ in $(seq 1 30); do pg_isready -h 127.0.0.1 && break; sleep 1; done
+          pg_isready -h 127.0.0.1 || { echo 'PostgreSQL did not become ready within 30s'; exit 1; }
+          psql -h 127.0.0.1 -U postgres -c "ALTER USER postgres PASSWORD 'password'"
+          ## DATABASE_URL と同一経路 (TCP/postgres/password) で接続できることを検証
+          PGPASSWORD=password psql -h 127.0.0.1 -U postgres -c 'SELECT VERSION()'
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@accd6127cb78bee3e8082180cb391013d204ef9f  # v2
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240  # v2
         with:
           php-version: ${{ matrix.php }}
           extensions: redis
-
-      - name: Setup pcov
-        run: |
-          sudo apt-get install -y php8.4-pcov
-          sudo phpenmod -s cli pcov
+          coverage: pcov
 
       - name: Initialize Composer
         uses: ./.github/actions/composer
@@ -63,6 +64,7 @@ jobs:
           bin/console eccube:fixtures:load
 
       - name: PHPUnit
+        id: phpunit
         env:
           APP_ENV: 'test'
           DATABASE_URL: ${{ matrix.database_url }}
@@ -72,7 +74,19 @@ jobs:
         run: |
           echo "session.save_path=$PWD/var/sessions/test" > php.ini
           echo "memory_limit=1012M" >> php.ini
-          php -c php.ini -dpcov.enabled=1 vendor/bin/phpunit --exclude-group cache-clear --exclude-group cache-clear-install --exclude-group update-schema-doctrine --coverage-clover=coverage1.xml --testdox
+          php -c php.ini -dpcov.enabled=1 vendor/bin/phpunit --exclude-group cache-clear --exclude-group cache-clear-install --exclude-group update-schema-doctrine --coverage-cobertura=coverage1.xml --testdox
+      # GitHub のコードカバレッジ (Code Quality) にアップロードする。
+      # - PHPUnit ステップの outcome でガードする: 上記の continue-on-error により
+      #   テストがクラッシュしてもジョブは成功扱いのままになり、coverage1.xml が
+      #   欠損・不完全な状態でアップロードされる恐れがあるため。
+      # - fork からの PR ではアクション内部でスキップされる (GITHUB_TOKEN が read-only のため)。
+      - name: Upload coverage to GitHub
+        if: steps.phpunit.outcome == 'success'
+        uses: actions/upload-code-coverage@abb5995db9e0199b0e2bb9dbd136fce4cb1ec4d3  # v1.3.0
+        with:
+          file: coverage1.xml
+          language: PHP
+          label: Unit
       - name: Upload report
         if: success()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
@@ -96,7 +110,7 @@ jobs:
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
-            database_server_version: 14
+            database_server_version: 18
           - group: admin01
             app_env: 'codeception'
           - group: admin02
@@ -108,16 +122,6 @@ jobs:
           - group: installer
             app_env: 'install'
     services:
-      postgres:
-        image: postgres:14
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
-        ports:
-          - 5432:5432
-        # needed because the postgres container does not provide a healthcheck
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-
       mailcatcher:
         image: schickling/mailcatcher
         ports:
@@ -126,10 +130,25 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
+
+      ## Docker Hub からの pull はタイムアウトで CI が不安定になるため、
+      ## DB はコンテナではなく setup アクション (apt) でインストールする
+      - name: Setup PostgreSQL
+        uses: ankane/setup-postgres@6d3ffa1aa7498a42b79e9f9f5838b99971839300  # v1
+        with:
+          postgres-version: '18'
+          user: postgres
+      - name: Configure PostgreSQL
+        run: |
+          for _ in $(seq 1 30); do pg_isready -h 127.0.0.1 && break; sleep 1; done
+          pg_isready -h 127.0.0.1 || { echo 'PostgreSQL did not become ready within 30s'; exit 1; }
+          psql -h 127.0.0.1 -U postgres -c "ALTER USER postgres PASSWORD 'password'"
+          ## DATABASE_URL と同一経路 (TCP/postgres/password) で接続できることを検証
+          PGPASSWORD=password psql -h 127.0.0.1 -U postgres -c 'SELECT VERSION()'
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@accd6127cb78bee3e8082180cb391013d204ef9f  # v2
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240  # v2
         with:
           php-version: ${{ matrix.php }}
           github-token: ''
@@ -187,13 +206,13 @@ jobs:
           bin/console eccube:fixtures:load --env=dev
 
       - name: Cache apt packages
-        uses: awalsh128/cache-apt-pkgs-action@acb598e5ddbc6f68a970c5da0688d2f3a9f04d05  # latest
+        uses: awalsh128/cache-apt-pkgs-action@681749ae568c81c2037cb9185e38b709b261bd2f  # latest
         with:
           packages: fonts-ipafont fonts-ipaexfont
           version: 1.0
 
       - name: setup-chromedriver
-        uses: nanasess/setup-chromedriver@5c1220e385aca82610aa6fc7cdf1429306d50f9d  # master
+        uses: nanasess/setup-chromedriver@1bb5094b84e4b4809967f1544187c57220f8e2d5  # master
 
       - name: Run chromedriver
         run: |
@@ -258,7 +277,7 @@ jobs:
     needs: [ phpunit ]  # codeception is disabled
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
       - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c  # v8
         with:
           path: reports
@@ -270,16 +289,19 @@ jobs:
       #     mv reports/codeception-front-reports/acceptance\ \(chrome,\ github_action\).remote.coverage.xml reports/acceptance.front.coverage.xml
       #     mv reports/codeception-installer-reports/acceptance\ \(chrome,\ github_action\).remote.coverage.xml reports/acceptance.installer.coverage.xml
       - name: Upload unit test coverage
-        uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2  # v5
+        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f  # v5
         with:
           files: ./reports/phpunit-reports/coverage1.xml
           flags: Unit
           fail_ci_if_error: true
+          # cli.codecov.io のバイナリは GPG 公開鍵を取得できず署名検証が
+          # "No public key" で失敗するため、PyPI 版 CLI を使い検証経路を回避する
+          use_pypi: true
         env:
             CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       # E2E coverage is disabled while codeception job is disabled
       # - name: Upload E2E coverage
-      #   uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2  # v5
+      #   uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f  # v5
       #   with:
       #     files: ./reports/acceptance.admin01.coverage.xml,./reports/acceptance.admin02.coverage.xml,./reports/acceptance.admin03.coverage.xml,./reports/acceptance.front.coverage.xml,./reports/acceptance.installer.coverage.xml
       #     flags: E2E
