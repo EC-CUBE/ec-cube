@@ -151,6 +151,14 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
         // dtb_plugin を読めず「全プラグインが無効」と誤判定される. そのため DsnParser で
         // DATABASE_URL を明示的に driver/host/dbname 等へ展開してから接続する.
         // スキームマップは DoctrineBundle\ConnectionFactory::DEFAULT_SCHEME_MAP に合わせる.
+        $databaseUrl = (string) env('DATABASE_URL');
+        if ($databaseUrl === '') {
+            // DATABASE_URL 未設定 (インストール前や DB を要しない cache:warmup 等) では
+            // 有効プラグインを判定できない. DsnParser は空文字を driver 無しで解析するため,
+            // そのまま getConnection() に渡すと DriverRequired 例外で warmup が落ちる.
+            // ファイル設置のみ = 全プラグイン無効として早期 return する (従来の挙動を踏襲).
+            return;
+        }
         $dsnParser = new DsnParser([
             'db2' => 'ibm_db2',
             'mssql' => 'pdo_sqlsrv',
@@ -162,7 +170,7 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
             'sqlite' => 'pdo_sqlite',
             'sqlite3' => 'pdo_sqlite',
         ]);
-        $params = $dsnParser->parse(env('DATABASE_URL'));
+        $params = $dsnParser->parse($databaseUrl);
         $conn = DriverManager::getConnection($params);
 
         if (!$this->isConnected($conn)) {
