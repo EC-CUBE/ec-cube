@@ -116,9 +116,36 @@ class SchemaService
      */
     public function updateSchema(array $generatedFiles, string $proxiesDirectory, bool $saveMode = false): void
     {
-        $this->executeCallback(function (SchemaTool $tool, array $metaData): void {
-            $tool->updateSchema($metaData);
+        $this->executeCallback(function (SchemaTool $tool, array $metaData) use ($saveMode): void {
+            if (!$saveMode) {
+                $tool->updateSchema($metaData);
+
+                return;
+            }
+
+            // ORM 3 で SchemaTool::updateSchema() の $saveMode 引数 (追加系のみ適用) が廃止されたため,
+            // getUpdateSchemaSql() の結果から破壊的な文 (DROP TABLE / DROP COLUMN / DROP CONSTRAINT 等) を
+            // 除外して追加系のみ適用し, 従来の saveMode 相当の挙動を再現する.
+            // プラグインの Entity テーブル削除は uninstall 時に dropTable() で明示的に行うため,
+            // ここで他テーブルを巻き込んで DROP してはならない (例: 依存プラグインの FK が残る
+            // テーブルを DROP しようとして "cannot drop ... because other objects depend on it" になる).
+            $connection = $this->entityManager->getConnection();
+            foreach ($tool->getUpdateSchemaSql($metaData) as $sql) {
+                if ($this->isDestructiveSql($sql)) {
+                    continue;
+                }
+                $connection->executeStatement($sql);
+            }
         }, $generatedFiles, $proxiesDirectory);
+    }
+
+    /**
+     * スキーマ更新 SQL がテーブル・カラム・制約などを削除する破壊的な文かどうかを判定する.
+     */
+    private function isDestructiveSql(string $sql): bool
+    {
+        return (bool) preg_match('/\bDROP\s+(TABLE|SEQUENCE|INDEX|CONSTRAINT|FOREIGN\s+KEY)\b/i', $sql)
+            || (bool) preg_match('/\bALTER\s+TABLE\b.*\bDROP\b/i', $sql);
     }
 
     /**
