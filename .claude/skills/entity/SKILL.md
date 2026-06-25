@@ -107,3 +107,4 @@ if (!class_exists(Example::class)) {
 - ❌ プロパティ/戻り値の型宣言省略 → ✅ 型を付け、PHPStan level 6 を通す
 - ❌ 金額 getter（`Order::getTotal()`・`OrderItem::getTotalPrice()` 等）の戻り値を int/float 扱い → ✅ DECIMAL は `?string`（getter は `string`）。型宣言・代入もこれに合わせる
 - ❌ 金額を float で四則演算（丸め誤差）→ ✅ `bcmath`（`bcadd` / `bcmul` / `bccomp`、スケール 2）で計算する
+- ❌ `create_date` / `update_date` を自前の `#[ORM\PrePersist]`（＋`#[ORM\HasLifecycleCallbacks]`）でセット → ✅ コアの `SaveEventSubscriber`（グローバル Doctrine prePersist/preUpdate）が `method_exists` で `setCreateDate`/`setUpdateDate`/`setCreator` を自動セットする（`src/Eccube/Doctrine/EventSubscriber/SaveEventSubscriber.php`）。setter さえ生やせばよく、自前 PrePersist は二重実装になるので書かない
