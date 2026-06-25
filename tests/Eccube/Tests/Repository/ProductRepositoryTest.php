@@ -16,7 +16,6 @@ declare(strict_types=1);
 namespace Eccube\Tests\Repository;
 
 use Eccube\Entity\Product;
-use Eccube\Tests\Doctrine\Logging\QueryCountLogger;
 
 final class ProductRepositoryTest extends AbstractProductRepositoryTestCase
 {
@@ -63,12 +62,6 @@ final class ProductRepositoryTest extends AbstractProductRepositoryTestCase
         // Create a product with 100 product classes to simulate N+1 problem scenario
         $Product = $this->createProduct('商品-多規格', 100);
 
-        // Enable Doctrine query logger to count queries
-        // DBAL 4 では DebugStack / SQLLogger が廃止されたため, doctrine.middleware で
-        // 登録した QueryCountLogger (test 環境) でクエリ数を計測する.
-        /** @var QueryCountLogger $logger */
-        $logger = static::getContainer()->get(QueryCountLogger::class);
-
         $this->entityManager->clear();
 
         // Fetch the product with all relations
@@ -78,8 +71,14 @@ final class ProductRepositoryTest extends AbstractProductRepositoryTestCase
         $this->assertInstanceOf(Product::class, $Result);
         $this->assertSame('商品-多規格', $Result->getName());
 
-        // Clear the query log for the next test
-        $queriesBeforeCalc = $logger->getCount();
+        // DBAL 4 では DebugStack / SQLLogger が廃止されたため, DoctrineBundle 標準の
+        // doctrine.debug_data_holder (debug middleware が記録するクエリ) でクエリ数を計測する.
+        // 自前の doctrine.middleware を追加すると dama のトランザクション分離が壊れるため使わない.
+        // クラス名のエイリアスが標準では存在しないため、文字列サービスIDのまま使用
+        $serviceId = 'doctrine.debug_data_holder';
+        $debugDataHolder = static::getContainer()->get($serviceId);
+        $data = $debugDataHolder->getData()['default'] ?? [];
+        $queriesBeforeCalc = is_array($data) ? count($data) : count($data->getQueries());
 
         // Trigger _calc() which accesses ProductStock and TaxRule
         $Result->getStockMin();
@@ -87,7 +86,8 @@ final class ProductRepositoryTest extends AbstractProductRepositoryTestCase
         $Result->getPrice02Min();
         $Result->getPrice02Max();
 
-        $queriesAfterCalc = $logger->getCount();
+        $data = $debugDataHolder->getData()['default'] ?? [];
+        $queriesAfterCalc = is_array($data) ? count($data) : count($data->getQueries());
 
         // Assert that no additional queries were executed (N+1 problem is solved)
         // If ProductStock and TaxRule are not eagerly loaded, this would cause 200+ additional queries

@@ -29,6 +29,7 @@ use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
 use Rector\Symfony\CodeQuality\Rector\Class_\ControllerMethodInjectionToConstructorRector;
 use Rector\Symfony\Set\SymfonySetList;
+use Rector\Symfony\Symfony34\Rector\Closure\ContainerGetNameToTypeInTestsRector;
 use Rector\Symfony\Symfony61\Rector\Class_\CommandConfigureToAttributeRector;
 use Rector\Symfony\Symfony61\Rector\Class_\CommandPropertyToAttributeRector;
 use Rector\ValueObject\PhpVersion;
@@ -79,6 +80,13 @@ return RectorConfig::configure()
                EventSubscriberInterfaceToAttributeRector::class, // Doctrine EventSubscriberをAsDoctrineListenerアトリビュートに変換する
                AttributeArgumentsOrderRector::class, // すべての Attribute の引数をコンストラクタ引数順序に統一する
                NormalizePhpDocArrayGenericSpacingRector::class, // PHPDoc の配列ジェネリクス表記のカンマ後のスペースを統一する
+               // $container->get('service.id') の文字列サービスIDを get(Type::class) へ変換する。
+               // クラス名のエイリアスを持たない private サービス (例: 'doctrine.debug_data_holder',
+               // 'event_dispatcher', 'twig', 'session.factory') では ServiceNotFoundException に
+               // なるため, それらはサービスIDを変数へ代入して get($serviceId) の形にし変換対象から
+               // 外すこと (ルールは無効化せず変数経由で回避する)。
+               // 既存例: AbstractWebTestCase / MailServiceTest / CartServiceTest / TwigExtensionPass
+               ContainerGetNameToTypeInTestsRector::class,
            ])
            // よく使われるルールセットを有効化
            ->withSets([
