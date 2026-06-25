@@ -30,6 +30,8 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 $baseUrl = rtrim((string) (getenv('BASE_URL') ?: 'http://127.0.0.1:8000'), '/');
 $token = (string) (getenv('AGENT_E2E_TOKEN') ?: '');
 $itemId = (int) (getenv('AGENT_E2E_ITEM_ID') ?: '1');
+// complete (決済実行) は決済ハンドラ (#3) が要るため、明示的に許可された時のみ実行する。
+$paymentReady = 'true' === (string) getenv('AGENT_E2E_PAYMENT_READY');
 
 $client = HttpClient::create(['base_uri' => $baseUrl.'/', 'timeout' => 30]);
 
@@ -106,10 +108,11 @@ if ('' === $token) {
     exit(0);
 }
 
-section('Phase 2: ACP checkout flow');
-runCheckout($client, $token, $itemId);
+section('Phase 2: ACP checkout flow (OAuth2 authenticated)');
+runCheckout($client, $token, $itemId, $paymentReady);
 
-fwrite(STDOUT, "\n\033[32mPASS\033[0m ({$passed} assertions, full checkout)\n");
+$mode = $paymentReady ? 'auth + session + complete' : 'auth + session (complete は #3 待ち)';
+fwrite(STDOUT, "\n\033[32mPASS\033[0m ({$passed} assertions, {$mode})\n");
 exit(0);
 
 // ─────────────────────────────────────────────────────────────────────────
@@ -141,7 +144,7 @@ function containsKey(mixed $data, string $key): bool
  * {@link \Eccube\Service\AgentCommerce\Acp\AcpCheckoutSessionMapper} の契約に対して
  * 実データで突き合わせる (本関数の payload は ACP 2026-04-17 spec ベースの暫定形)。
  */
-function runCheckout(HttpClientInterface $client, string $token, int $itemId): void
+function runCheckout(HttpClientInterface $client, string $token, int $itemId, bool $paymentReady): void
 {
     $auth = ['Authorization' => 'Bearer '.$token, 'Content-Type' => 'application/json'];
     $idempotencyKey = bin2hex(random_bytes(16));
@@ -187,6 +190,13 @@ function runCheckout(HttpClientInterface $client, string $token, int $itemId): v
     assertTrue(($res->toArray(false)['id'] ?? null) === $sessionId, 'get returns the same session id');
 
     // 4. complete (POST /acp/checkout_sessions/{id}/complete)
+    // 決済実行は sample-payment 決済ハンドラ (#3) が前提のため、許可された時のみ実行する。
+    if (!$paymentReady) {
+        fwrite(STDOUT, "  \033[33m⏸\033[0m complete skipped: AGENT_E2E_PAYMENT_READY!=true (#3 決済ハンドラ待ち)\n");
+
+        return;
+    }
+
     $res = $client->request('POST', 'acp/checkout_sessions/'.$sessionId.'/complete', [
         'headers' => $auth + ['Idempotency-Key' => bin2hex(random_bytes(16))],
         'json' => ['payment_data' => ['token' => 'e2e-dummy-spt', 'provider' => 'sample_payment']],

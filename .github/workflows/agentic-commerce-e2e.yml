@@ -18,8 +18,8 @@ on:
         description: 'sample-payment-plugin (nanasess fork) のブランチ'
         type: string
         default: 'feature/agentic-commerce'
-      run_checkout:
-        description: 'Job B (checkout E2E) を実行する (api4#188 + 決済ハンドラ landing 後に true)'
+      run_payment:
+        description: 'complete (決済実行) まで通す (#3 sample-payment 決済ハンドラ landing 後に true)'
         type: boolean
         default: false
 
@@ -237,14 +237,14 @@ jobs:
             ${{ runner.temp }}/php-server.log
 
   ## ───────────────────────────────────────────────────────────────────────
-  ## Job B: client_credentials トークン発行 → PHP エージェントシミュレータで
-  ## ACP/UCP checkout を完走。api4#188 + 決済ハンドラの landing まで skip ゲート
-  ## (inputs.run_checkout=false の間はジョブごと skip = CI を赤にしない)。
+  ## Job B: client_credentials トークンを実発行 (api4#188) → PHP エージェントシミュレータで
+  ## OAuth2 認証 + checkout セッション (create/update/get) を検証。
+  ## complete (決済実行) は #3 sample-payment 決済ハンドラ待ちのため inputs.run_payment で sub-gate
+  ## (既定 false でも認証 + セッション構築までは常に検証する = #188 の結合を CI で保証)。
   ## ───────────────────────────────────────────────────────────────────────
   checkout-e2e:
-    name: Checkout E2E (skip ゲート - api4#188 + 決済ハンドラ待ち)
+    name: Checkout E2E (OAuth2 認証 + セッション・complete は #3 待ち)
     needs: integration-smoke
-    if: ${{ inputs.run_checkout == true }}
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
@@ -305,6 +305,8 @@ jobs:
         run: |
           echo "APP_ENV=${APP_ENV}" > .env
           echo "ECCUBE_AUTH_MAGIC=${ECCUBE_AUTH_MAGIC}" >> .env
+          ## api4 (#188) の OAuth2 encryption_key 既定は <change.me> プレースホルダのため実値を設定
+          echo "ECCUBE_OAUTH2_ENCRYPTION_KEY=$(openssl rand -base64 32)" >> .env
           bin/console doctrine:database:create --env=dev
           bin/console doctrine:schema:create --env=dev
           bin/console eccube:fixtures:load --env=dev
@@ -325,21 +327,22 @@ jobs:
           bin/console dbal:run-sql "UPDATE dtb_base_info SET acp_checkout_enabled = true, ucp_checkout_enabled = true"
           bin/console cache:pool:clear --all
 
-      ## OAuth2 client_credentials トークン発行 (api4#188 実装後に有効化)。
-      ## 現状は scope 登録/grant 未対応のため取得を試み、失敗してもシミュレータ側で
-      ## discovery-only モードにフォールバックする。
-      - name: Issue OAuth2 client_credentials token (acp:checkout)
-        id: token
-        continue-on-error: true
+      ## api4#188: OAuth2 鍵ペア生成 + client_credentials クライアント作成。
+      ## PluginManager は鍵を生成しないため league のコマンドで明示生成する。
+      - name: Setup OAuth2 keypair & client (client_credentials)
         env:
+          APP_ENV: 'prod'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
         run: |
-          ## TODO(api4#188): client_credentials grant + acp:/ucp: scope 登録後に
-          ## oauth2:create-client → /token POST で実トークンを取得する。
-          echo "token=" >> "$GITHUB_OUTPUT"
-          echo "::notice::OAuth2 token issuance is pending api4#188; simulator falls back to discovery-only."
+          mkdir -p app/PluginData/Api44/oauth
+          bin/console league:oauth2-server:generate-keypair
+          ## client_credentials + agentic scope のクライアントを発行 (identifier secret は CI 固定値)
+          bin/console league:oauth2-server:create-client \
+            --grant-type=client_credentials \
+            --scope=acp:checkout --scope=ucp:checkout \
+            agent-e2e-client agent-e2e-secret
 
       - name: Start PHP Development Server
         env:
@@ -350,23 +353,44 @@ jobs:
           MAILER_URL: 'smtp://127.0.0.1:1025'
           ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
         run: |
-          ## EC-CUBE は public-dir="." のため front controller はルートの index.php。
-          ## codeception/router.php は GET に対し false を返すため、php-S の静的フォールバック挙動
-          ## (PHP version 依存) によっては app ルートが 404 になる。discovery/checkout は API のみで
-          ## 静的アセット配信が不要なので、front controller の index.php を直接 router にして確実に
-          ## kernel へ通す (symfony の `php -S -t public public/index.php` と同等)。
+          ## front controller の index.php を直接 router にして確実に kernel へ通す (Job A と同方針)
           php -S 127.0.0.1:8000 index.php > "${RUNNER_TEMP}/php-server.log" 2>&1 &
           for _ in $(seq 1 30); do curl -sf http://127.0.0.1:8000/ >/dev/null && break; sleep 1; done
 
-      - name: Run ACP agent simulator
+      ## /token (client_credentials) で実 JWT を取得 (api4#188 が機能していることの実証)
+      - name: Issue OAuth2 access token (client_credentials)
+        id: token
+        run: |
+          resp=$(curl -s -X POST http://127.0.0.1:8000/token \
+            -d grant_type=client_credentials \
+            -d client_id=agent-e2e-client \
+            -d client_secret=agent-e2e-secret \
+            --data-urlencode 'scope=acp:checkout ucp:checkout')
+          echo "--- /token response ---"; echo "$resp" | jq . || echo "$resp"
+          tok=$(echo "$resp" | jq -r '.access_token // empty')
+          if [ -z "$tok" ]; then
+            echo '::error::client_credentials token issuance failed (api4#188)'
+            tail -80 "${RUNNER_TEMP}/php-server.log"; exit 1
+          fi
+          echo "token=${tok}" >> "$GITHUB_OUTPUT"
+
+      - name: Run ACP agent simulator (auth + session; complete は run_payment 時のみ)
         env:
           BASE_URL: 'http://127.0.0.1:8000'
           AGENT_E2E_TOKEN: ${{ steps.token.outputs.token }}
+          ## complete (決済実行) は #3 決済ハンドラ landing 後に run_payment=true で有効化
+          AGENT_E2E_PAYMENT_READY: ${{ inputs.run_payment }}
         run: php e2e/agent/acp-checkout.php
+
+      - name: Dump server log on failure
+        if: failure()
+        run: tail -120 "${RUNNER_TEMP}/php-server.log" || true
 
       - name: Upload logs
         if: failure()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
         with:
           name: checkout-e2e-${{ matrix.db }}-logs
-          path: var/log/
+          path: |
+            var/log/
+            ${{ runner.temp }}/php-server.log
