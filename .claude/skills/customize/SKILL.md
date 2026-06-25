@@ -11,7 +11,12 @@ description: EC-CUBE 4.4 の app/Customize によるカスタマイズ（コア�
 ## 対象 / 前提
 
 `app/Customize/` は **プロジェクト固有の改変** を置く場所。コア（`src/Eccube/`）を直接書き換えず、
-ここで拡張・上書きすることで **コアのアップグレード（composer update）の影響を受けない** のが目的。
+ここで拡張・上書きすることで、コアを直接書き換えずに改変するのが目的。
+
+> **注意: 「アップグレード安全」は限定的（過信しない）**
+> - 影響を受けにくいのは **パッチバージョン**の更新まで。マイナー/メジャー更新ではコア側の変更で破綻し得る。
+> - **コアエンティティそのものは上書き（置換）できない**。拡張は **trait＋`#[EntityExtension]` による「追加」のみ**（既存カラム/メソッドの差し替えは不可）。
+> - サービス/テンプレートを `app/Customize` で **override すると、コアに当たった脆弱性パッチ・修正が自動では反映されず、個別に再適用が必要**になる。override は最小限にし、慎重に使う。
 
 - PSR-4 で **`Customize\` ＝ `app/Customize/`**（`composer.json` の `autoload.psr-4`）。
 - `app/config/eccube/services.yaml` で `Customize\` 名前空間は **autowire / autoconfigure 済み**として登録される

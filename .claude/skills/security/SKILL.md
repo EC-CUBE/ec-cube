@@ -82,6 +82,7 @@ if ($this->isGranted('IS_AUTHENTICATED_FULLY')) { ... }
 
 - ❌ 管理アクションを `%eccube_admin_route%` 配下**以外**に置く → ✅ 配下に置き admin firewall の保護下にする
 - ❌ フォームを介さない POST/DELETE/Ajax で CSRF 未検証 → ✅ `$this->isTokenValid()` を呼ぶ（GET 以外）
+- ❌ Ajax 専用アクションで XHR 以外（直アクセス等）も受け付ける → ✅ CSRF 検証に加え **`$request->isXmlHttpRequest()`** を併用し XHR 由来に限定する（コア例: `NonMemberShoppingController` / `Admin/Content/MaintenanceController`）
 - ❌ フロントで `{id}` から取得したエンティティを所有権チェックせず編集/削除（**IDOR**）
   → ✅ `$this->getUser()` と突き合わせ、他人のリソースなら `AccessDeniedHttpException`
 - ❌ パスワード変更・退会など重要操作を `IS_AUTHENTICATED_REMEMBERED` で許可

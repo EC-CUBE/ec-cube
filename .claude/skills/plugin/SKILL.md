@@ -30,6 +30,13 @@ bin/console eccube:plugin:generate <name> <code> <ver>
 - 生成物は **Config 画面・Entity 込みのフル構成**。**使わないファイルは削ってよい**（残すべき最小は下記）。
 - `code` は `^\w+$`（後述の制約）。`PluginManager.php` は生成されないので、ライフサイクル処理が要るときは下記に従い手で足す。
 
+> **開発時の置き場所（事故防止・重要）**: `app/Plugin/{code}/` 直下で直接開発すると、**プラグイン削除（uninstall）のテストをした瞬間にソースごと消える**。
+> 実開発では**別ディレクトリで開発し、シンボリックリンクで配置**するのが安全。コアの local path リポジトリ機能を使う:
+> ```bash
+> bin/console eccube:composer:require <パッケージ名> --from <別ディレクトリのパス>
+> ```
+> `--from` で指定したローカルパスを composer リポジトリとして登録し、`app/Plugin/` へシンボリックリンクで取り込む（`ComposerRequireCommand` の `--from` オプション。参考: PR #5843）。
+
 ## プラグインの最小構成と配置
 
 プラグインは必ず **`app/Plugin/{PluginCode}/`** に置く。PSR-4 で `Plugin\{PluginCode}\` ＝ `app/Plugin/{PluginCode}/`。
