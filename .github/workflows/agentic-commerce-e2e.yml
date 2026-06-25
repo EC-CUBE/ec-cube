@@ -42,13 +42,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ '8.3' ]            # 安定後に 8.2/8.4 へ拡張
-        db: [ pgsql ]             # 安定後に mysql を追加
+        php: [ '8.2', '8.3', '8.4' ]
+        db: [ pgsql, mysql ]
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
             database_server_version: 18
             database_charset: utf8
+          - db: mysql
+            database_url: mysql://root:password@127.0.0.1:3306/eccube_db
+            database_server_version: 8
+            database_charset: utf8mb4
 
     services:
       mailcatcher:
@@ -63,12 +67,28 @@ jobs:
 
       ## Docker Hub からの pull はタイムアウトで CI が不安定になるため、
       ## DB はコンテナではなく setup アクション (apt) でインストールする (plugin-test.yml 準拠)
+      - name: Setup MySQL
+        if: matrix.db == 'mysql'
+        uses: ankane/setup-mysql@7fef9e1e6d7041dccbe4cda8e2c5940e49db8f30  # v1
+        with:
+          mysql-version: '8.4'
+      - name: Configure MySQL
+        if: matrix.db == 'mysql'
+        run: |
+          for _ in $(seq 1 30); do mysqladmin ping -h 127.0.0.1 --silent && break; sleep 1; done
+          mysqladmin ping -h 127.0.0.1 --silent || { echo 'MySQL did not become ready within 30s'; exit 1; }
+          ## DATABASE_URL は TCP(127.0.0.1) 接続のため、TCP 経路でアクセスする root@'%' にも認証情報を設定する
+          sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH caching_sha2_password BY 'password'; CREATE USER IF NOT EXISTS 'root'@'%' IDENTIFIED WITH caching_sha2_password BY 'password'; GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION; FLUSH PRIVILEGES;"
+          mysql -h 127.0.0.1 -P 3306 -u root -ppassword -e 'SELECT VERSION()'
+
       - name: Setup PostgreSQL
+        if: matrix.db == 'pgsql'
         uses: ankane/setup-postgres@6d3ffa1aa7498a42b79e9f9f5838b99971839300  # v1
         with:
           postgres-version: '18'
           user: postgres
       - name: Configure PostgreSQL
+        if: matrix.db == 'pgsql'
         run: |
           for _ in $(seq 1 30); do pg_isready -h 127.0.0.1 && break; sleep 1; done
           pg_isready -h 127.0.0.1 || { echo 'PostgreSQL did not become ready within 30s'; exit 1; }
