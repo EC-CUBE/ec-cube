@@ -1,0 +1,313 @@
+name: Agentic Commerce E2E
+
+## 本体 (ACP/UCP) ↔ eccube-api4 (OAuth2) ↔ sample-payment-plugin (決済ハンドラ) の
+## 結合を検証する E2E。骨組み先行: Job A スモークは day 1 から green を狙い、
+## Job B checkout は api4#188 (client_credentials) + 決済ハンドラの landing まで skip ゲート。
+##
+## ローカルでの完全再現が難しいため workflow_dispatch トリガとする
+## (CLAUDE.md「ローカル困難な CI は workflow_dispatch でテスト」)。
+
+on:
+  workflow_dispatch:
+    inputs:
+      api4_ref:
+        description: 'eccube-api4 (nanasess fork) のブランチ'
+        type: string
+        default: 'feature/agentic-commerce'
+      sample_ref:
+        description: 'sample-payment-plugin (nanasess fork) のブランチ'
+        type: string
+        default: 'feature/agentic-commerce'
+      run_checkout:
+        description: 'Job B (checkout E2E) を実行する (api4#188 + 決済ハンドラ landing 後に true)'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+env:
+  ## VCS リポジトリ (Packagist 未公開の開発期間は fork を VCS 経由で引く)
+  API44_VCS: 'https://github.com/nanasess/eccube-api4.git'
+  SAMPLEPAYMENT44_VCS: 'https://github.com/nanasess/sample-payment-plugin.git'
+
+jobs:
+  ## ───────────────────────────────────────────────────────────────────────
+  ## Job A: 本体 + api44 + samplepayment44 の三者共存 + discovery 生存確認。
+  ## composer/autoload/DI 衝突を早期検知する実質スモーク。day 1 から green を狙う。
+  ## ───────────────────────────────────────────────────────────────────────
+  integration-smoke:
+    name: Integration smoke (本体 + api44 + samplepayment44)
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ '8.3' ]            # 安定後に 8.2/8.4 へ拡張
+        db: [ pgsql ]             # 安定後に mysql を追加
+        include:
+          - db: pgsql
+            database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
+            database_server_version: 18
+            database_charset: utf8
+
+    services:
+      mailcatcher:
+        image: schickling/mailcatcher
+        ports:
+          - 1080:1080
+          - 1025:1025
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
+
+      ## Docker Hub からの pull はタイムアウトで CI が不安定になるため、
+      ## DB はコンテナではなく setup アクション (apt) でインストールする (plugin-test.yml 準拠)
+      - name: Setup PostgreSQL
+        uses: ankane/setup-postgres@6d3ffa1aa7498a42b79e9f9f5838b99971839300  # v1
+        with:
+          postgres-version: '18'
+          user: postgres
+      - name: Configure PostgreSQL
+        run: |
+          for _ in $(seq 1 30); do pg_isready -h 127.0.0.1 && break; sleep 1; done
+          pg_isready -h 127.0.0.1 || { echo 'PostgreSQL did not become ready within 30s'; exit 1; }
+          psql -h 127.0.0.1 -U postgres -c "ALTER USER postgres PASSWORD 'password'"
+          PGPASSWORD=password psql -h 127.0.0.1 -U postgres -c 'SELECT VERSION()'
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc  # v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: redis
+
+      - name: Initialize Composer
+        uses: ./.github/actions/composer
+
+      - name: Generate ECCUBE_AUTH_MAGIC
+        run: echo "ECCUBE_AUTH_MAGIC=$(openssl rand -hex 32)" >> $GITHUB_ENV
+
+      - name: Setup to EC-CUBE
+        env:
+          APP_ENV: 'prod'
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_CHARSET: ${{ matrix.database_charset }}
+          ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
+        run: |
+          echo "APP_ENV=${APP_ENV}" > .env
+          echo "ECCUBE_AUTH_MAGIC=${ECCUBE_AUTH_MAGIC}" >> .env
+          bin/console doctrine:database:create --env=dev
+          bin/console doctrine:schema:create --env=dev
+          bin/console eccube:fixtures:load --env=dev
+
+      ## ── 結合の核心: 本体に api44 と samplepayment44 を VCS 経由で共存インストール ──
+      - name: Register plugin VCS repositories
+        run: |
+          composer config repositories.api44 vcs "${API44_VCS}"
+          composer config repositories.samplepayment44 vcs "${SAMPLEPAYMENT44_VCS}"
+
+      - name: Install & enable plugins (api44 + samplepayment44)
+        env:
+          APP_ENV: 'prod'
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_CHARSET: ${{ matrix.database_charset }}
+          ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
+          ## untrusted な可能性のある dispatch 入力は env 経由で受け、シェル展開でのインジェクションを防ぐ
+          API4_REF: ${{ inputs.api4_ref }}
+          SAMPLE_REF: ${{ inputs.sample_ref }}
+        run: |
+          bin/console eccube:composer:require "ec-cube/api44:dev-${API4_REF}"
+          bin/console eccube:composer:require "ec-cube/samplepayment44:dev-${SAMPLE_REF}"
+          bin/console eccube:plugin:enable --code=Api44
+          bin/console eccube:plugin:enable --code=SamplePayment44
+
+      ## 三者共存の実証: 全プラグイン enable 状態で DI コンテナが衝突なくコンパイルできる
+      - name: Assert three-way coexistence (DI / autoload)
+        env:
+          APP_ENV: 'prod'
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_CHARSET: ${{ matrix.database_charset }}
+          ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
+        run: |
+          bin/console cache:clear --no-warmup
+          bin/console cache:warmup
+          ## 両プラグインが enable=1 で登録されていることを確認
+          bin/console eccube:plugin:list | tee /tmp/plugins.txt
+          grep -q 'Api44' /tmp/plugins.txt || { echo 'Api44 not installed'; exit 1; }
+          grep -q 'SamplePayment44' /tmp/plugins.txt || { echo 'SamplePayment44 not installed'; exit 1; }
+
+      ## discovery を公開状態にする (acp.json は acp_checkout_enabled ゲート / ucp は常時公開)
+      - name: Enable ACP checkout flag (discovery 公開のため)
+        env:
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_CHARSET: ${{ matrix.database_charset }}
+        run: |
+          bin/console dbal:run-sql "UPDATE dtb_base_info SET acp_checkout_enabled = true"
+          ## BaseInfo は result cache (lifetime 3600s) されるため、SQL 直接更新後は
+          ## pool を消さないと acp.json ゲートが stale(false) のまま 404 になる。
+          bin/console cache:pool:clear --all
+
+      - name: Start PHP Development Server
+        env:
+          APP_ENV: 'prod'
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_CHARSET: ${{ matrix.database_charset }}
+          MAILER_URL: 'smtp://127.0.0.1:1025'
+          ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
+        run: |
+          ## EC-CUBE は public-dir="." のため front controller はルートの index.php。
+          ## 既存 e2e-test.yml と同じく codeception/router.php を built-in server の router にする。
+          php -S 127.0.0.1:8000 codeception/router.php &
+          for _ in $(seq 1 30); do curl -sf http://127.0.0.1:8000/ >/dev/null && break; sleep 1; done
+
+      ## ── discovery スモーク (RFC 8615・一次仕様準拠の最小チェック) ──
+      - name: Smoke - UCP discovery (/.well-known/ucp, 常時公開)
+        run: |
+          curl -sf http://127.0.0.1:8000/.well-known/ucp -o /tmp/ucp.json
+          jq -e '.ucp.version' /tmp/ucp.json          # version (YYYY-MM-DD) 必須
+          jq -e '.ucp.capabilities' /tmp/ucp.json      # capabilities 宣言
+          ## signing_keys は公開鍵限定 (秘密鍵パラメータ d を含まない)
+          ! jq -e '.signing_keys[]?.d' /tmp/ucp.json   # d があれば異常 (秘密鍵混入)
+
+      - name: Smoke - ACP discovery (/.well-known/acp.json, acp_checkout_enabled ゲート)
+        run: |
+          curl -sf http://127.0.0.1:8000/.well-known/acp.json -o /tmp/acp.json
+          test "$(jq -r '.protocol.name' /tmp/acp.json)" = "acp"   # protocol.name=acp
+          ## merchant_id は MUST NOT (混入していたら異常)
+          ! jq -e '.. | .merchant_id? // empty' /tmp/acp.json
+
+      - name: Upload logs
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
+        with:
+          name: integration-smoke-${{ matrix.db }}-logs
+          path: var/log/
+
+  ## ───────────────────────────────────────────────────────────────────────
+  ## Job B: client_credentials トークン発行 → PHP エージェントシミュレータで
+  ## ACP/UCP checkout を完走。api4#188 + 決済ハンドラの landing まで skip ゲート
+  ## (inputs.run_checkout=false の間はジョブごと skip = CI を赤にしない)。
+  ## ───────────────────────────────────────────────────────────────────────
+  checkout-e2e:
+    name: Checkout E2E (skip ゲート - api4#188 + 決済ハンドラ待ち)
+    needs: integration-smoke
+    if: ${{ inputs.run_checkout == true }}
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ '8.3' ]
+        db: [ pgsql ]
+        include:
+          - db: pgsql
+            database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
+            database_server_version: 18
+            database_charset: utf8
+
+    services:
+      mailcatcher:
+        image: schickling/mailcatcher
+        ports:
+          - 1080:1080
+          - 1025:1025
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
+
+      - name: Setup PostgreSQL
+        uses: ankane/setup-postgres@6d3ffa1aa7498a42b79e9f9f5838b99971839300  # v1
+        with:
+          postgres-version: '18'
+          user: postgres
+      - name: Configure PostgreSQL
+        run: |
+          for _ in $(seq 1 30); do pg_isready -h 127.0.0.1 && break; sleep 1; done
+          psql -h 127.0.0.1 -U postgres -c "ALTER USER postgres PASSWORD 'password'"
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc  # v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: redis
+
+      - name: Initialize Composer
+        uses: ./.github/actions/composer
+
+      - name: Generate ECCUBE_AUTH_MAGIC
+        run: echo "ECCUBE_AUTH_MAGIC=$(openssl rand -hex 32)" >> $GITHUB_ENV
+
+      - name: Setup to EC-CUBE + plugins
+        env:
+          APP_ENV: 'prod'
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_CHARSET: ${{ matrix.database_charset }}
+          ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
+          ## untrusted な可能性のある dispatch 入力は env 経由で受ける
+          API4_REF: ${{ inputs.api4_ref }}
+          SAMPLE_REF: ${{ inputs.sample_ref }}
+        run: |
+          echo "APP_ENV=${APP_ENV}" > .env
+          echo "ECCUBE_AUTH_MAGIC=${ECCUBE_AUTH_MAGIC}" >> .env
+          bin/console doctrine:database:create --env=dev
+          bin/console doctrine:schema:create --env=dev
+          bin/console eccube:fixtures:load --env=dev
+          composer config repositories.api44 vcs "${API44_VCS}"
+          composer config repositories.samplepayment44 vcs "${SAMPLEPAYMENT44_VCS}"
+          bin/console eccube:composer:require "ec-cube/api44:dev-${API4_REF}"
+          bin/console eccube:composer:require "ec-cube/samplepayment44:dev-${SAMPLE_REF}"
+          bin/console eccube:plugin:enable --code=Api44
+          bin/console eccube:plugin:enable --code=SamplePayment44
+          bin/console cache:clear
+          ## フラグ反転後に result cache pool を消す (acp.json/ucp ゲートの stale 回避)
+          bin/console dbal:run-sql "UPDATE dtb_base_info SET acp_checkout_enabled = true, ucp_checkout_enabled = true"
+          bin/console cache:pool:clear --all
+
+      ## OAuth2 client_credentials トークン発行 (api4#188 実装後に有効化)。
+      ## 現状は scope 登録/grant 未対応のため取得を試み、失敗してもシミュレータ側で
+      ## discovery-only モードにフォールバックする。
+      - name: Issue OAuth2 client_credentials token (acp:checkout)
+        id: token
+        continue-on-error: true
+        env:
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_CHARSET: ${{ matrix.database_charset }}
+        run: |
+          ## TODO(api4#188): client_credentials grant + acp:/ucp: scope 登録後に
+          ## oauth2:create-client → /token POST で実トークンを取得する。
+          echo "token=" >> "$GITHUB_OUTPUT"
+          echo "::notice::OAuth2 token issuance is pending api4#188; simulator falls back to discovery-only."
+
+      - name: Start PHP Development Server
+        env:
+          APP_ENV: 'prod'
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_CHARSET: ${{ matrix.database_charset }}
+          MAILER_URL: 'smtp://127.0.0.1:1025'
+          ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
+        run: |
+          ## EC-CUBE は public-dir="." のため front controller はルートの index.php。
+          ## 既存 e2e-test.yml と同じく codeception/router.php を built-in server の router にする。
+          php -S 127.0.0.1:8000 codeception/router.php &
+          for _ in $(seq 1 30); do curl -sf http://127.0.0.1:8000/ >/dev/null && break; sleep 1; done
+
+      - name: Run ACP agent simulator
+        env:
+          BASE_URL: 'http://127.0.0.1:8000'
+          AGENT_E2E_TOKEN: ${{ steps.token.outputs.token }}
+        run: php e2e/agent/acp-checkout.php
+
+      - name: Upload logs
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
+        with:
+          name: checkout-e2e-${{ matrix.db }}-logs
+          path: var/log/
