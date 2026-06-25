@@ -177,13 +177,15 @@ jobs:
         run: |
           ## EC-CUBE は public-dir="." のため front controller はルートの index.php。
           ## 既存 e2e-test.yml と同じく codeception/router.php を built-in server の router にする。
-          php -S 127.0.0.1:8000 codeception/router.php &
+          php -S 127.0.0.1:8000 codeception/router.php > "${RUNNER_TEMP}/php-server.log" 2>&1 &
           for _ in $(seq 1 30); do curl -sf http://127.0.0.1:8000/ >/dev/null && break; sleep 1; done
 
       ## ── discovery スモーク (RFC 8615・一次仕様準拠の最小チェック) ──
       - name: Smoke - UCP discovery (/.well-known/ucp, 常時公開)
         run: |
-          curl -sf http://127.0.0.1:8000/.well-known/ucp -o /tmp/ucp.json
+          code=$(curl -s -o /tmp/ucp.json -w '%{http_code}' http://127.0.0.1:8000/.well-known/ucp)
+          echo "HTTP ${code}"; echo '--- body ---'; cat /tmp/ucp.json; echo
+          if [ "${code}" != "200" ]; then echo '--- php server log ---'; tail -80 "${RUNNER_TEMP}/php-server.log"; exit 1; fi
           jq -e '.ucp.version' /tmp/ucp.json          # version (YYYY-MM-DD) 必須
           jq -e '.ucp.capabilities' /tmp/ucp.json      # capabilities 宣言
           ## signing_keys は公開鍵限定 (秘密鍵パラメータ d を含まない)
@@ -191,17 +193,25 @@ jobs:
 
       - name: Smoke - ACP discovery (/.well-known/acp.json, acp_checkout_enabled ゲート)
         run: |
-          curl -sf http://127.0.0.1:8000/.well-known/acp.json -o /tmp/acp.json
+          code=$(curl -s -o /tmp/acp.json -w '%{http_code}' http://127.0.0.1:8000/.well-known/acp.json)
+          echo "HTTP ${code}"; echo '--- body ---'; cat /tmp/acp.json; echo
+          if [ "${code}" != "200" ]; then echo '--- php server log ---'; tail -80 "${RUNNER_TEMP}/php-server.log"; exit 1; fi
           test "$(jq -r '.protocol.name' /tmp/acp.json)" = "acp"   # protocol.name=acp
           ## merchant_id は MUST NOT (混入していたら異常)
           ! jq -e '.. | .merchant_id? // empty' /tmp/acp.json
+
+      - name: Dump server log on failure
+        if: failure()
+        run: tail -120 "${RUNNER_TEMP}/php-server.log" || true
 
       - name: Upload logs
         if: failure()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
         with:
           name: integration-smoke-${{ matrix.db }}-logs
-          path: var/log/
+          path: |
+            var/log/
+            ${{ runner.temp }}/php-server.log
 
   ## ───────────────────────────────────────────────────────────────────────
   ## Job B: client_credentials トークン発行 → PHP エージェントシミュレータで
@@ -319,7 +329,7 @@ jobs:
         run: |
           ## EC-CUBE は public-dir="." のため front controller はルートの index.php。
           ## 既存 e2e-test.yml と同じく codeception/router.php を built-in server の router にする。
-          php -S 127.0.0.1:8000 codeception/router.php &
+          php -S 127.0.0.1:8000 codeception/router.php > "${RUNNER_TEMP}/php-server.log" 2>&1 &
           for _ in $(seq 1 30); do curl -sf http://127.0.0.1:8000/ >/dev/null && break; sleep 1; done
 
       - name: Run ACP agent simulator
