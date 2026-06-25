@@ -145,12 +145,14 @@ jobs:
           DATABASE_CHARSET: ${{ matrix.database_charset }}
           ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
         run: |
+          ## cache:warmup が全プラグイン enable 状態で成功すること = DI/autoload に三者衝突が無いこと
           bin/console cache:clear --no-warmup
           bin/console cache:warmup
-          ## 両プラグインが enable=1 で登録されていることを確認
-          bin/console eccube:plugin:list | tee /tmp/plugins.txt
-          grep -q 'Api44' /tmp/plugins.txt || { echo 'Api44 not installed'; exit 1; }
-          grep -q 'SamplePayment44' /tmp/plugins.txt || { echo 'SamplePayment44 not installed'; exit 1; }
+          ## 両プラグインが dtb_plugin に enabled=1 で登録されていることを確認
+          ## (EC-CUBE に eccube:plugin:list は無いため dtb_plugin を直接参照する)
+          bin/console dbal:run-sql "SELECT code, enabled FROM dtb_plugin WHERE code IN ('Api44','SamplePayment44')" | tee /tmp/plugins.txt
+          grep -q 'Api44' /tmp/plugins.txt || { echo 'Api44 not registered'; exit 1; }
+          grep -q 'SamplePayment44' /tmp/plugins.txt || { echo 'SamplePayment44 not registered'; exit 1; }
 
       ## discovery を公開状態にする (acp.json は acp_checkout_enabled ゲート / ucp は常時公開)
       - name: Enable ACP checkout flag (discovery 公開のため)
