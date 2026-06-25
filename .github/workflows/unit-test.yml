@@ -107,7 +107,12 @@ jobs:
           DATABASE_CHARSET: ${{ matrix.database_charset }}
           ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
         run: |
-          bin/console doctrine:database:create
+          # SQLite はファイルベースで CREATE DATABASE が無く, DBAL 4 では
+          # SQLitePlatform::getCreateDatabaseSQL が未サポートで例外になるためスキップする
+          # (schema:create が DB ファイルを生成する)。
+          if [ "${{ matrix.db }}" != 'sqlite3' ]; then
+            bin/console doctrine:database:create
+          fi
           bin/console doctrine:schema:create
           bin/console eccube:fixtures:load
 

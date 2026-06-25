@@ -241,7 +241,12 @@ services:
     Eccube\Doctrine\EventSubscriber\InitSubscriber:
         autoconfigure: false
         tags:
-            - { name: doctrine.middleware }
+            # dama/doctrine-test-bundle の StaticDriver (priority: 100) より内側 (実ドライバ直上) へ
+            # 配置する。外側に置くと初期化 SQL (SET TIME ZONE 等) が StaticConnection
+            # (savepoint でトランザクションをエミュレートするラッパ) に対して発行され,
+            # テスト分離用トランザクションのロールバックが壊れる (PostgreSQL/MySQL で
+            # UniqueConstraintViolation が多発する)。物理接続へ直接発行するため priority を高くする。
+            - { name: doctrine.middleware, priority: 200 }
 
     Eccube\Doctrine\EventSubscriber\InitDriver:
         autowire: false
