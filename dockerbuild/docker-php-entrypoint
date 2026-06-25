@@ -19,10 +19,16 @@ if [ ! -d /var/www/html/vendor/bin ]; then
 fi
 
 bin/console doctrine:query:sql 'select * from dtb_base_info' > /dev/null 2>&1 || (
-    if [ -z ${DATABASE_URL} ]; then
+    database_url="${DATABASE_URL:-}"
+    if [ -z "${database_url}" ]; then
         cp .env.dist .env
+        # .env.dist のデフォルトは SQLite のため, コピー後は .env の実効値で判定する
+        # (コメントアウト行は除外し, 値を囲む引用符は取り除く)
+        database_url="$(grep '^DATABASE_URL=' .env | tail -n 1 | cut -d= -f2-)"
+        database_url="${database_url#\"}"; database_url="${database_url%\"}"
+        database_url="${database_url#\'}"; database_url="${database_url%\'}"
     fi
-    case "${DATABASE_URL}" in
+    case "${database_url}" in
         sqlite*)
             bin/console doctrine:schema:create
             bin/console eccube:fixtures:load
