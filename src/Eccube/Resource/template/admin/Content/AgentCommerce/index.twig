@@ -1,0 +1,97 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+
+{% extends '@admin/default_frame.twig' %}
+
+{% set menus = ['content', 'agent_commerce'] %}
+
+{% block title %}{{ 'admin.content.agent_commerce'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.content.contents_management'|trans }}{% endblock %}
+
+{% block main %}
+    <div class="c-outsideBlock">
+        <div class="c-outsideBlock__contents">
+
+            <div class="alert alert-warning" role="alert">
+                <i class="fa fa-exclamation-triangle me-1"></i>
+                {{ 'admin.content.agent_commerce.notice'|trans }}
+            </div>
+
+            {# ACP Product Feed (push) #}
+            <div class="card rounded border-0 mb-4">
+                <div class="card-header">
+                    <span class="card-title">{{ 'admin.content.agent_commerce.acp.title'|trans }}</span>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted">{{ 'admin.content.agent_commerce.acp.description'|trans }}</p>
+
+                    {# 差分 push / 全置換 push は同一フォームの formaction で振り分ける (feed_id を共有) #}
+                    {# push は認証情報 (ECCUBE_AGENT_COMMERCE_ACP_FEED_BASE_URL / _API_KEY) 未設定時はエラーになる #}
+                    <form method="post" action="{{ url('admin_content_agent_commerce_acp_feed_push') }}">
+                        <input type="hidden" name="{{ constant('Eccube\\Common\\Constant::TOKEN_NAME') }}"
+                               value="{{ csrf_token(constant('Eccube\\Common\\Constant::TOKEN_NAME')) }}">
+                        <div class="row mb-3 align-items-end">
+                            <div class="col-4">
+                                <label class="form-label" for="acp_feed_id">{{ 'admin.content.agent_commerce.acp.feed_id'|trans }}</label>
+                                <input type="text" class="form-control" id="acp_feed_id" name="feed_id" placeholder="feed_xxxxx">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-ec-conversion me-2">
+                            {{ 'admin.content.agent_commerce.acp.push_now'|trans }}
+                        </button>
+                        <button type="submit" class="btn btn-ec-regular"
+                                formaction="{{ url('admin_content_agent_commerce_acp_feed_push_full') }}">
+                            {{ 'admin.content.agent_commerce.acp.push_full'|trans }}
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            {# UCP Catalog (pull / cache) #}
+            <div class="card rounded border-0 mb-4">
+                <div class="card-header">
+                    <span class="card-title">{{ 'admin.content.agent_commerce.ucp.title'|trans }}</span>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted">{{ 'admin.content.agent_commerce.ucp.description'|trans }}</p>
+
+                    <div class="row mb-3">
+                        <div class="col-3">
+                            <span class="text-secondary">{{ 'admin.content.agent_commerce.ucp.catalog_status'|trans }}</span>
+                        </div>
+                        <div class="col">
+                            <span class="badge bg-success">{{ 'admin.content.agent_commerce.published'|trans }}</span>
+                        </div>
+                    </div>
+
+                    <form method="post" class="d-inline-block me-2"
+                          action="{{ url('admin_content_agent_commerce_ucp_catalog_cache_warmup') }}">
+                        <input type="hidden" name="{{ constant('Eccube\\Common\\Constant::TOKEN_NAME') }}"
+                               value="{{ csrf_token(constant('Eccube\\Common\\Constant::TOKEN_NAME')) }}">
+                        <button type="submit" class="btn btn-ec-conversion">
+                            {{ 'admin.content.agent_commerce.ucp.cache_warmup'|trans }}
+                        </button>
+                    </form>
+
+                    <form method="post" class="d-inline-block"
+                          action="{{ url('admin_content_agent_commerce_ucp_catalog_cache_clear') }}">
+                        <input type="hidden" name="{{ constant('Eccube\\Common\\Constant::TOKEN_NAME') }}"
+                               value="{{ csrf_token(constant('Eccube\\Common\\Constant::TOKEN_NAME')) }}">
+                        <button type="submit" class="btn btn-ec-regular">
+                            {{ 'admin.content.agent_commerce.ucp.cache_clear'|trans }}
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

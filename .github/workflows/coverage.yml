@@ -67,6 +67,14 @@ jobs:
           bin/console doctrine:schema:create
           bin/console eccube:fixtures:load
 
+      # Agent Commerce (#6794) の UCP スキーマ契約テスト用に UCP 公式 schema を取得する。
+      # リポジトリには同梱しない (Apache-2.0)。docblock の参照バージョンと一致するリリースタグ
+      # v2026-04-08 に固定し、var/ (gitignore) へ clone する。未取得環境では該当テストは skip。
+      - name: Fetch UCP spec schemas (tag v2026-04-08)
+        run: |
+          git clone --filter=blob:none --branch v2026-04-08 --single-branch --quiet \
+            https://github.com/Universal-Commerce-Protocol/ucp.git var/agent-commerce-spec/ucp
+
       - name: PHPUnit
         id: phpunit
         env:
