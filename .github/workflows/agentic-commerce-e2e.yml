@@ -79,7 +79,7 @@ jobs:
         uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc  # v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: redis
+          extensions: redis, sodium
 
       - name: Initialize Composer
         uses: ./.github/actions/composer
@@ -101,11 +101,20 @@ jobs:
           bin/console doctrine:schema:create --env=dev
           bin/console eccube:fixtures:load --env=dev
 
-      ## ── 結合の核心: 本体に api44 と samplepayment44 を VCS 経由で共存インストール ──
-      - name: Register plugin VCS repositories
+      ## ── 結合の核心: 本体に api44 と samplepayment44 を共存インストール ──
+      ## fork のデフォルトブランチが旧名 (ec-cube/api・ec-cube/SamplePayment) のため、composer の
+      ## VCS ドライバはデフォルトブランチから決まる名前で repo をキーする → 新名 (api44/samplepayment44)
+      ## の feature ブランチが名前不一致でスキップされ "not found" になる。これを避けるため、
+      ## 対象ブランチを clone して **path リポジトリ**として参照する (clone 先 composer.json の名前で解決)。
+      - name: Clone plugins & register path repositories
+        env:
+          API4_REF: ${{ inputs.api4_ref }}
+          SAMPLE_REF: ${{ inputs.sample_ref }}
         run: |
-          composer config repositories.api44 vcs "${API44_VCS}"
-          composer config repositories.samplepayment44 vcs "${SAMPLEPAYMENT44_VCS}"
+          git clone --depth 1 --branch "${API4_REF}" "${API44_VCS}" "${RUNNER_TEMP}/api44"
+          git clone --depth 1 --branch "${SAMPLE_REF}" "${SAMPLEPAYMENT44_VCS}" "${RUNNER_TEMP}/samplepayment44"
+          composer config repositories.api44 path "${RUNNER_TEMP}/api44"
+          composer config repositories.samplepayment44 path "${RUNNER_TEMP}/samplepayment44"
 
       - name: Install & enable plugins (api44 + samplepayment44)
         env:
@@ -114,15 +123,12 @@ jobs:
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
           ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
-          ## untrusted な可能性のある dispatch 入力は env 経由で受け、シェル展開でのインジェクションを防ぐ
-          API4_REF: ${{ inputs.api4_ref }}
-          SAMPLE_REF: ${{ inputs.sample_ref }}
-          ## 公開フォークでも composer は GitHub API でバージョン解決/dist 取得するため、
-          ## CI 共有 IP のレート制限回避にトークンが要る。COMPOSER_AUTH は COMPOSER_HOME 非依存で効く。
+          ## league/oauth2 等の dist 取得でレート制限回避にトークンを渡す
           COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.GITHUB_TOKEN }}"}}'
         run: |
-          bin/console eccube:composer:require "ec-cube/api44:dev-${API4_REF}"
-          bin/console eccube:composer:require "ec-cube/samplepayment44:dev-${SAMPLE_REF}"
+          ## path リポジトリの公開バージョン (composer.json の version) で取り込む
+          bin/console eccube:composer:require "ec-cube/api44:*"
+          bin/console eccube:composer:require "ec-cube/samplepayment44:*"
           bin/console eccube:plugin:enable --code=Api44
           bin/console eccube:plugin:enable --code=SamplePayment44
 
@@ -237,7 +243,7 @@ jobs:
         uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc  # v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: redis
+          extensions: redis, sodium
 
       - name: Initialize Composer
         uses: ./.github/actions/composer
@@ -263,10 +269,13 @@ jobs:
           bin/console doctrine:database:create --env=dev
           bin/console doctrine:schema:create --env=dev
           bin/console eccube:fixtures:load --env=dev
-          composer config repositories.api44 vcs "${API44_VCS}"
-          composer config repositories.samplepayment44 vcs "${SAMPLEPAYMENT44_VCS}"
-          bin/console eccube:composer:require "ec-cube/api44:dev-${API4_REF}"
-          bin/console eccube:composer:require "ec-cube/samplepayment44:dev-${SAMPLE_REF}"
+          ## fork デフォルトブランチの旧名問題を避けるため path リポジトリで取り込む (Job A と同方針)
+          git clone --depth 1 --branch "${API4_REF}" "${API44_VCS}" "${RUNNER_TEMP}/api44"
+          git clone --depth 1 --branch "${SAMPLE_REF}" "${SAMPLEPAYMENT44_VCS}" "${RUNNER_TEMP}/samplepayment44"
+          composer config repositories.api44 path "${RUNNER_TEMP}/api44"
+          composer config repositories.samplepayment44 path "${RUNNER_TEMP}/samplepayment44"
+          bin/console eccube:composer:require "ec-cube/api44:*"
+          bin/console eccube:composer:require "ec-cube/samplepayment44:*"
           bin/console eccube:plugin:enable --code=Api44
           bin/console eccube:plugin:enable --code=SamplePayment44
           bin/console cache:clear
