@@ -113,6 +113,10 @@ jobs:
         run: |
           git clone --depth 1 --branch "${API4_REF}" "${API44_VCS}" "${RUNNER_TEMP}/api44"
           git clone --depth 1 --branch "${SAMPLE_REF}" "${SAMPLEPAYMENT44_VCS}" "${RUNNER_TEMP}/samplepayment44"
+          ## ec-cube/plugin-installer は composer.json extra.id を必須参照する (通常は store API が供給)。
+          ## api44 は extra.id を持たないため、path インストール用にダミー id を注入する (fork は改変しない)。
+          jq '.extra.id = 990044' "${RUNNER_TEMP}/api44/composer.json" > "${RUNNER_TEMP}/api44/composer.json.tmp"
+          mv "${RUNNER_TEMP}/api44/composer.json.tmp" "${RUNNER_TEMP}/api44/composer.json"
           composer config repositories.api44 path "${RUNNER_TEMP}/api44"
           composer config repositories.samplepayment44 path "${RUNNER_TEMP}/samplepayment44"
 
@@ -272,6 +276,9 @@ jobs:
           ## fork デフォルトブランチの旧名問題を避けるため path リポジトリで取り込む (Job A と同方針)
           git clone --depth 1 --branch "${API4_REF}" "${API44_VCS}" "${RUNNER_TEMP}/api44"
           git clone --depth 1 --branch "${SAMPLE_REF}" "${SAMPLEPAYMENT44_VCS}" "${RUNNER_TEMP}/samplepayment44"
+          ## api44 は extra.id を持たないため path インストール用にダミー id を注入 (Job A と同方針)
+          jq '.extra.id = 990044' "${RUNNER_TEMP}/api44/composer.json" > "${RUNNER_TEMP}/api44/composer.json.tmp"
+          mv "${RUNNER_TEMP}/api44/composer.json.tmp" "${RUNNER_TEMP}/api44/composer.json"
           composer config repositories.api44 path "${RUNNER_TEMP}/api44"
           composer config repositories.samplepayment44 path "${RUNNER_TEMP}/samplepayment44"
           bin/console eccube:composer:require "ec-cube/api44:*"
