@@ -50,7 +50,7 @@ EC-CUBE は **個別アクションの `#[IsGranted]` ではなく、ファイ�
 ## 実装パターン
 
 ### CSRF トークン検証（フォームを介さない削除・Ajax）
-基底クラス `AbstractController::isTokenValid()` を呼ぶ。トークン名は `Constant::TOKEN_NAME = '_token'`、
+基底クラス `AbstractController::isTokenValid()` を呼ぶ。トークン名は `Constant::TOKEN_NAME`（`src/Eccube/Common/Constant.php`、値は `'_token'`）、
 リクエストパラメータ `_token` またはヘッダ `ECCUBE-CSRF-TOKEN` から取得し、失敗時は例外を投げる。
 
 ```php
