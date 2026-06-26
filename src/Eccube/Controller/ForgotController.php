@@ -19,6 +19,7 @@ use Eccube\Form\Type\Front\ForgotType;
 use Eccube\Form\Type\Front\PasswordResetType;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Service\MailService;
+use Eccube\Util\PasswordNormalizer;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -184,7 +185,7 @@ class ForgotController extends AbstractController
                 ->getRegularCustomerByResetKey($reset_key, $form->get('login_email')->getData());
             if ($Customer) {
                 // パスワードの発行・更新
-                $password = $this->passwordHasher->hashPassword($Customer, $form->get('password')->getData());
+                $password = $this->passwordHasher->hashPassword($Customer, PasswordNormalizer::normalize($form->get('password')->getData()));
                 $Customer->setPassword($password);
 
                 // リセットキーをクリア

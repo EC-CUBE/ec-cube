@@ -1,0 +1,3 @@
+parameters:
+    # テスト環境では HaveIBeenPwned への外部通信を行わない
+    eccube_password_compromised_check: false

@@ -36,6 +36,7 @@ use Eccube\Repository\MemberRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Service\PluginApiService;
+use Eccube\Util\PasswordNormalizer;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -266,7 +267,7 @@ class AdminController extends AbstractController
             /** @var Member $Member */
             $Member = $this->getUser();
             $salt = $Member->getSalt();
-            $password = $form->get('change_password')->getData();
+            $password = PasswordNormalizer::normalize($form->get('change_password')->getData());
             $password = $this->passwordHasher->hashPassword($Member, $password);
 
             $Member
