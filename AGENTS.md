@@ -198,6 +198,15 @@ frontmatter の `description` がトリガ条件で、該当レイヤを触る�
 | Entity（Doctrine エンティティ） | [`.claude/skills/entity/SKILL.md`](./.claude/skills/entity/SKILL.md) | `entity` |
 | Repository（データアクセス） | [`.claude/skills/repository/SKILL.md`](./.claude/skills/repository/SKILL.md) | `repository` |
 | FormType（フォーム） | [`.claude/skills/formtype/SKILL.md`](./.claude/skills/formtype/SKILL.md) | `formtype` |
+| セキュリティ（認証・認可・CSRF・IDOR） | [`.claude/skills/security/SKILL.md`](./.claude/skills/security/SKILL.md) | `security` |
+| Twig 拡張・テンプレート（XSS・上書き） | [`.claude/skills/twig-template/SKILL.md`](./.claude/skills/twig-template/SKILL.md) | `twig-template` |
+| イベント（Subscriber・テンプレート/Doctrine イベント） | [`.claude/skills/event-subscriber/SKILL.md`](./.claude/skills/event-subscriber/SKILL.md) | `event-subscriber` |
+| プラグイン（ライフサイクル・配置・拡張） | [`.claude/skills/plugin/SKILL.md`](./.claude/skills/plugin/SKILL.md) | `plugin` |
+| 受注処理（PurchaseFlow の Processor/Validator） | [`.claude/skills/purchase-flow/SKILL.md`](./.claude/skills/purchase-flow/SKILL.md) | `purchase-flow` |
+| メール（MailService・テンプレート・MailHistory） | [`.claude/skills/mail/SKILL.md`](./.claude/skills/mail/SKILL.md) | `mail` |
+| カスタマイズ（app/Customize での拡張・上書き・デコレーション） | [`.claude/skills/customize/SKILL.md`](./.claude/skills/customize/SKILL.md) | `customize` |
+| CSV 入出力（CsvImport/Export・CSV 定義） | [`.claude/skills/csv/SKILL.md`](./.claude/skills/csv/SKILL.md) | `csv` |
+| コンソールコマンド（Symfony Console・バッチ） | [`.claude/skills/command/SKILL.md`](./.claude/skills/command/SKILL.md) | `command` |
 | 責務分離レビュー（実装直後の自己チェック・全層） | [`.claude/skills/review-responsibility/SKILL.md`](./.claude/skills/review-responsibility/SKILL.md) | `review-responsibility` |
 
 > 規約は必要になった時点で `.claude/skills/<name>/SKILL.md` を 1 ファイル追加して足す（`.codex`/`.agents` は symlink で自動共有）。
