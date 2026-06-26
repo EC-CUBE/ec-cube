@@ -97,7 +97,7 @@ E2E（Playwright、`e2e/` 配下で実行）:
 
 ```bash
 cd e2e && npm ci
-# project は front-tests / admin-tests。spec ファイル名でフィルタ
+# project は front-tests / admin-tests / plugin-tests。spec ファイル名でフィルタ
 npx playwright test --project=setup --project=front-tests front-product.spec.ts
 ```
 
