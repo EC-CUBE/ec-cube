@@ -45,6 +45,8 @@ final class PasswordBlocklistValidatorTest extends AbstractTypeTestCase
     {
         // ブロックリストに掲載された値は不可
         yield ['passwordpassword', false];
+        // 拡充エントリ(キーボード配列 walk)も不可
+        yield ['qwertyuiop123456', false];
         // 大文字小文字を無視して照合する
         yield ['PASSWORDPASSWORD', false];
         // NFKC 正規化して照合する(全角は半角に正規化されて一致)
