@@ -152,7 +152,7 @@ final class MemberTypeTest extends AbstractTypeTestCase
      * MemberType は RepeatedPasswordType の制約を上書きするため,
      * ブロックリスト制約が引き継がれていることを検証する(退行防止).
      */
-    public function testInvalidPasswordBlocklisted()
+    public function testInvalidPasswordBlocklisted(): void
     {
         $this->formData['plain_password']['first'] = 'passwordpassword';
         $this->formData['plain_password']['second'] = 'passwordpassword';

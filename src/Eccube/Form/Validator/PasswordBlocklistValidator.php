@@ -15,6 +15,7 @@ namespace Eccube\Form\Validator;
 
 use Eccube\Common\EccubeConfig;
 use Eccube\Util\PasswordNormalizer;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -32,7 +33,7 @@ class PasswordBlocklistValidator extends ConstraintValidator
      */
     private ?array $blocklist = null;
 
-    public function __construct(private readonly EccubeConfig $eccubeConfig)
+    public function __construct(private readonly EccubeConfig $eccubeConfig, private readonly LoggerInterface $logger)
     {
     }
 
@@ -87,11 +88,17 @@ class PasswordBlocklistValidator extends ConstraintValidator
 
         $file = $this->eccubeConfig['eccube_password_blocklist'] ?? null;
         if (!$file || !is_file($file) || !is_readable($file)) {
+            // 設定ミス等でブロックリストが読めない場合, 無言で無効化(fail-open)せず警告を残す.
+            // 漏洩チェック(NotCompromisedPassword)が主防御のため登録自体は継続する.
+            $this->logger->warning('パスワードブロックリストを読み込めませんでした。', ['file' => $file]);
+
             return $this->blocklist;
         }
 
         $lines = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
         if ($lines === false) {
+            $this->logger->warning('パスワードブロックリストの読み込みに失敗しました。', ['file' => $file]);
+
             return $this->blocklist;
         }
 

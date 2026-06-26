@@ -30,12 +30,8 @@ final class PasswordBlocklistValidatorTest extends AbstractTypeTestCase
         $this->validator = static::getContainer()->get(ValidatorInterface::class);
     }
 
-    /**
-     * @param mixed $password
-     * @param mixed $expectedValid
-     */
     #[DataProvider(methodName: 'passwordProvider')]
-    public function testValidate($password, $expectedValid)
+    public function testValidate(?string $password, bool $expectedValid): void
     {
         $errors = $this->validator->validate($password, new PasswordBlocklist());
 

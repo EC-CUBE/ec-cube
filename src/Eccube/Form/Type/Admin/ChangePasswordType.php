@@ -15,10 +15,13 @@ namespace Eccube\Form\Type\Admin;
 
 use Eccube\Common\EccubeConfig;
 use Eccube\Form\Validator\PasswordBlocklist;
+use Eccube\Util\PasswordNormalizer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -56,6 +59,20 @@ class ChangePasswordType extends AbstractType
         if ($this->eccubeConfig['eccube_password_compromised_check']) {
             $changePasswordConstraints[] = new Assert\NotCompromisedPassword(['skipOnError' => true]);
         }
+
+        // 検証と保存を同一の正規化済み値で行うため, 検証前(PRE_SUBMIT)に新パスワードを NFKC 正規化する.
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event): void {
+            $data = $event->getData();
+            if (!is_array($data) || !isset($data['change_password']) || !is_array($data['change_password'])) {
+                return;
+            }
+            foreach (['first', 'second'] as $key) {
+                if (isset($data['change_password'][$key]) && is_string($data['change_password'][$key])) {
+                    $data['change_password'][$key] = PasswordNormalizer::normalize($data['change_password'][$key]);
+                }
+            }
+            $event->setData($data);
+        });
 
         $builder
             ->add('current_password', PasswordType::class, [

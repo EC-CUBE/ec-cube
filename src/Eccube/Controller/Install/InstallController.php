@@ -38,7 +38,6 @@ use Eccube\Form\Type\Install\Step3Type;
 use Eccube\Form\Type\Install\Step4Type;
 use Eccube\Form\Type\Install\Step5Type;
 use Eccube\Util\CacheUtil;
-use Eccube\Util\PasswordNormalizer;
 use Eccube\Util\StringUtil;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Filesystem\Filesystem;
@@ -839,7 +838,7 @@ class InstallController extends AbstractController
     {
         $conn->beginTransaction();
         try {
-            $password = $this->passwordHasher->hashPassword(new Customer(), PasswordNormalizer::normalize($data['login_pass']));
+            $password = $this->passwordHasher->hashPassword(new Customer(), $data['login_pass']);
 
             $id = ('postgresql' === $conn->getDatabasePlatform()->getName())
                 ? $conn->fetchOne("select nextval('dtb_base_info_id_seq')")
@@ -901,7 +900,7 @@ class InstallController extends AbstractController
             $stmt->bindParam(':login_id', $data['login_id']);
             /** @var Result $row */
             $row = $stmt->executeQuery();
-            $password = $this->passwordHasher->hashPassword(new Customer(), PasswordNormalizer::normalize($data['login_pass']));
+            $password = $this->passwordHasher->hashPassword(new Customer(), $data['login_pass']);
             if ($row->fetchOne() !== false) {
                 // 同一の管理者IDであればパスワードのみ更新
                 $sth = $conn->prepare('UPDATE dtb_member set password = :password, update_date = current_timestamp WHERE login_id = :login_id;');

@@ -15,9 +15,13 @@ namespace Eccube\Form\Type;
 
 use Eccube\Common\EccubeConfig;
 use Eccube\Form\Validator\PasswordBlocklist;
+use Eccube\Util\PasswordNormalizer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -31,6 +35,31 @@ class RepeatedPasswordType extends AbstractType
      */
     public function __construct(protected EccubeConfig $eccubeConfig)
     {
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
+     */
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        // 検証と保存を同一の正規化済み値で行うため, 検証前(PRE_SUBMIT)に NFKC 正規化する.
+        // これにより, 互換文字で長さ・ブロックリスト・漏洩チェックをすり抜けて
+        // 正規化後に別の値が保存される, という不整合を防ぐ.
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event): void {
+            $data = $event->getData();
+            if (!is_array($data)) {
+                return;
+            }
+            foreach (['first', 'second'] as $key) {
+                if (isset($data[$key]) && is_string($data[$key])) {
+                    $data[$key] = PasswordNormalizer::normalize($data[$key]);
+                }
+            }
+            $event->setData($data);
+        });
     }
 
     /**

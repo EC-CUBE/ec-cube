@@ -21,12 +21,8 @@ use PHPUnit\Framework\TestCase;
 
 final class PasswordNormalizerTest extends TestCase
 {
-    /**
-     * @param string|null $input
-     * @param string|null $expected
-     */
     #[DataProvider(methodName: 'normalizeProvider')]
-    public function testNormalize($input, $expected)
+    public function testNormalize(?string $input, ?string $expected): void
     {
         $this->assertSame($expected, PasswordNormalizer::normalize($input));
     }

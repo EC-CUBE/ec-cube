@@ -224,7 +224,7 @@ final class Step3TypeTest extends AbstractTypeTestCase
 
     public function testInvalidAdminDirBlank()
     {
-        $this->formData['login_pass'] = '';
+        $this->formData['admin_dir'] = '';
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -232,7 +232,7 @@ final class Step3TypeTest extends AbstractTypeTestCase
 
     public function testInvalidAdminDirMin()
     {
-        $this->formData['login_pass'] = str_repeat('a', $this->eccubeConfig['eccube_id_min_len'] - 1);
+        $this->formData['admin_dir'] = str_repeat('a', $this->eccubeConfig['eccube_id_min_len'] - 1);
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());

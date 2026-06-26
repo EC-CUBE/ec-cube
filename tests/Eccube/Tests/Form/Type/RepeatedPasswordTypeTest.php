@@ -147,6 +147,18 @@ final class RepeatedPasswordTypeTest extends AbstractTypeTestCase
     }
 
     /**
+     * 検証は NFKC 正規化後の値で行われる(CodeRabbit 指摘の回避経路対策).
+     * 結合文字で見かけ上16文字でも, 正規化後は8文字となり min15 未満として拒否される.
+     */
+    public function testInvalidLengthAfterNormalization()
+    {
+        $password = str_repeat("e\u{0301}", 8); // 16コードポイント → NFKC で "é"×8 = 8文字
+        $this->submitPassword($password);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
+    /**
      * 制御文字(改行・タブ)を含む場合は不可.
      */
     public function testInvalidControlCharacter()
