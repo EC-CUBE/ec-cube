@@ -205,6 +205,7 @@ frontmatter の `description` がトリガ条件で、該当レイヤを触る�
 | レイヤ / 観点 | 規約 Skill（本文） | Skill 名 |
 |--------|------------------|----------|
 | PHPUnit テスト | [`.claude/skills/phpunit/SKILL.md`](./.claude/skills/phpunit/SKILL.md) | `phpunit` |
+| E2E（Playwright・spec 作成 / flaky 対策） | [`.claude/skills/e2e/SKILL.md`](./.claude/skills/e2e/SKILL.md) | `e2e` |
 | コントローラ（責務分離・Fat化防止） | [`.claude/skills/controller/SKILL.md`](./.claude/skills/controller/SKILL.md) | `controller` |
 | サービス（責務分離・単一責任） | [`.claude/skills/service/SKILL.md`](./.claude/skills/service/SKILL.md) | `service` |
 | マイグレーション（スキーマ変更） | [`.claude/skills/migration/SKILL.md`](./.claude/skills/migration/SKILL.md) | `migration` |
