@@ -98,7 +98,7 @@ file that was distributed with this source code.
 {% block javascript %}
 <script>
 $(function() {
-    var currentStatus = '{{ current_status|default('') }}';
+    var currentStatus = '{{ current_status|default('')|e('js') }}';
 
     $('#cookie-consent-save').on('click', function() {
         var selectedStatus = $('input[name="consent_status"]:checked').val();

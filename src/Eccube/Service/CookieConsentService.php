@@ -59,7 +59,37 @@ class CookieConsentService
      */
     public function getConsentStatus(Request $request): ?string
     {
-        return $request->cookies->get(self::COOKIE_NAME);
+        $status = $request->cookies->get(self::COOKIE_NAME);
+
+        // 外部から注入された不正な Cookie 値を画面・判定へ素通しさせない。
+        // 許可値（accepted/rejected）以外はすべて未設定（null）に正規化する（JS 側 getStatus() と挙動を揃える）。
+        return \in_array($status, [self::STATUS_ACCEPTED, self::STATUS_REJECTED], true) ? $status : null;
+    }
+
+    /**
+     * 同意が得られているか（同意または拒否のいずれか）をチェックする。
+     *
+     * @param Request $request リクエストオブジェクト
+     *
+     * @return bool true: 同意/拒否のいずれかが選択済み、false: 未設定
+     */
+    public function isConsentGiven(Request $request): bool
+    {
+        $status = $this->getConsentStatus($request);
+
+        return $status === self::STATUS_ACCEPTED || $status === self::STATUS_REJECTED;
+    }
+
+    /**
+     * 同意されているかチェックする。
+     *
+     * @param Request $request リクエストオブジェクト
+     *
+     * @return bool true: 同意済み、false: 拒否または未設定
+     */
+    public function isConsentAccepted(Request $request): bool
+    {
+        return $this->getConsentStatus($request) === self::STATUS_ACCEPTED;
     }
 
     /**

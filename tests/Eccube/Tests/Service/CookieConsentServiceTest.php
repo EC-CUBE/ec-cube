@@ -67,7 +67,69 @@ final class CookieConsentServiceTest extends EccubeTestCase
         yield '同意済み' => ['accepted', 'accepted'];
         yield '拒否' => ['rejected', 'rejected'];
         yield '未設定' => [null, null];
-        yield '不正な値' => ['invalid', 'invalid'];
+        yield '不正な値は未設定に正規化' => ['invalid', null];
+    }
+
+    /**
+     * 同意/拒否のいずれかが選択済みのとき true、未設定のとき false を返すことを確認する。
+     *
+     * @param string|null $cookieValue Cookie値
+     * @param bool $expected 期待値
+     */
+    #[DataProvider(methodName: 'provide_is_consent_given_patterns')]
+    public function testIsConsentGivenReturnsCorrectBoolean(?string $cookieValue, bool $expected)
+    {
+        $request = new Request();
+        if ($cookieValue !== null) {
+            $request->cookies->set(CookieConsentService::COOKIE_NAME, $cookieValue);
+        }
+
+        $result = $this->service->isConsentGiven($request);
+
+        $this->assertSame($expected, $result);
+    }
+
+    /**
+     * 同意判定パターンのデータプロバイダ
+     *
+     * @return \Iterator<string, array{(string|null), bool}>
+     */
+    public static function provide_is_consent_given_patterns(): \Iterator
+    {
+        yield '同意済み' => ['accepted', true];
+        yield '拒否済み' => ['rejected', true];
+        yield '未設定' => [null, false];
+    }
+
+    /**
+     * 同意済みの場合のみ true を返すことを確認する。
+     *
+     * @param string|null $cookieValue Cookie値
+     * @param bool $expected 期待値
+     */
+    #[DataProvider(methodName: 'provide_is_accepted_patterns')]
+    public function testIsConsentAcceptedReturnsCorrectBoolean(?string $cookieValue, bool $expected)
+    {
+        $request = new Request();
+        if ($cookieValue !== null) {
+            $request->cookies->set(CookieConsentService::COOKIE_NAME, $cookieValue);
+        }
+
+        $result = $this->service->isConsentAccepted($request);
+
+        $this->assertSame($expected, $result);
+    }
+
+    /**
+     * 同意確認パターンのデータプロバイダ
+     *
+     * @return \Iterator<string, array{(string|null), bool}>
+     */
+    public static function provide_is_accepted_patterns(): \Iterator
+    {
+        yield '同意済み' => ['accepted', true];
+        yield '拒否' => ['rejected', false];
+        yield '未設定' => [null, false];
     }
 
     /**
