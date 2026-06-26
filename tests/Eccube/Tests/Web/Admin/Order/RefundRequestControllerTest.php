@@ -295,6 +295,43 @@ final class RefundRequestControllerTest extends AbstractAdminWebTestCase
         $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 
+    public function testDownloadFileRejectsSubDirectory(): void
+    {
+        // 本保存領域のサブディレクトリ(旧 tmp 配置や将来のサブパス採用)に置かれたファイルは,
+        // プレフィックス一致では素通りし得るため, 直下限定の検証で 404 になることを保証する.
+        $RefundRequest = $this->createTestRefundRequest();
+
+        $topDir = static::getContainer()->get(EccubeConfig::class)['eccube_save_refund_request_file_dir'];
+        $subDir = $topDir.'/sub';
+        if (!is_dir($subDir)) {
+            mkdir($subDir, 0755, true);
+        }
+        $leakName = bin2hex(random_bytes(16)).'.png';
+        file_put_contents($subDir.'/'.$leakName, str_repeat("\x00", 100));
+
+        $file = new RefundRequestFile();
+        $file->setFileName('sub/'.$leakName);
+        $file->setMimeType('image/png');
+        $file->setFileSize(100);
+        $file->setSortNo(1);
+        $RefundRequest->addRefundRequestFile($file);
+        $this->entityManager->persist($file);
+        $this->entityManager->flush();
+
+        $this->client->request(
+            Request::METHOD_GET,
+            $this->generateUrl('admin_refund_request_file', [
+                'id' => $RefundRequest->getId(),
+                'file_id' => $file->getId(),
+            ])
+        );
+
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
+
+        @unlink($subDir.'/'.$leakName);
+        @rmdir($subDir);
+    }
+
     private function createTestRefundRequest(): RefundRequest
     {
         $Customer = $this->createCustomer();

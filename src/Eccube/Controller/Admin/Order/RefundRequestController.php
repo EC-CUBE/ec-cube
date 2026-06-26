@@ -295,14 +295,17 @@ class RefundRequestController extends AbstractController
         $filePath = $this->eccubeConfig['eccube_save_refund_request_file_dir'].'/'.$RefundRequestFile->getFileName();
         $topDir = $this->eccubeConfig['eccube_save_refund_request_file_dir'];
 
-        if (str_contains($filePath, '..')) {
-            throw new NotFoundHttpException();
-        }
-
         $realPath = realpath($filePath);
         $realTopDir = realpath($topDir);
 
-        if ($realPath === false || $realTopDir === false || !str_starts_with($realPath, $realTopDir.DIRECTORY_SEPARATOR)) {
+        // 本保存領域の直下にあり, DB 記録のファイル名と完全一致するファイルのみ配信する.
+        // 一時領域(サブディレクトリ)や, 将来 file_name 生成方式が変わった場合のトラバーサルを防ぐ.
+        if (
+            $realPath === false
+            || $realTopDir === false
+            || \dirname($realPath) !== $realTopDir
+            || \basename($realPath) !== $RefundRequestFile->getFileName()
+        ) {
             throw new NotFoundHttpException();
         }
 
