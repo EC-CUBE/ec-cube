@@ -1,3 +1,5 @@
 parameters:
-    # テスト環境では HaveIBeenPwned への外部通信を行わない
+    # テスト環境では HaveIBeenPwned への外部通信を行わない(NotCompromisedPassword を無効化).
+    # このため各フォームテストで「有効」と判定するパスワードは, 長さ・パターン・ブロックリストの
+    # 各層を通過することのみを意味し, 本番では HIBP 漏洩チェックにより別途弾かれ得る点に注意.
     eccube_password_compromised_check: false

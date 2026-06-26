@@ -51,6 +51,7 @@ class MemberType extends AbstractType
         // RepeatedPasswordType の options.constraints を上書きするため,
         // 長さ・パターンに加えてブロックリスト・漏洩チェックもここで明示的に付与する.
         $passwordConstraints = [
+            new Assert\NotBlank(),
             new Assert\Length([
                 'min' => $this->eccubeConfig['eccube_password_min_len'],
                 'max' => $this->eccubeConfig['eccube_password_max_len'],
@@ -60,7 +61,6 @@ class MemberType extends AbstractType
                 'message' => 'form_error.password_pattern_invalid',
             ]),
             new PasswordBlocklist(),
-            new Assert\NotBlank(),
         ];
         // NIST SP 800-63B-4 対応の漏洩パスワードチェック. 閉域網等では config で無効化できる.
         if ($this->eccubeConfig['eccube_password_compromised_check']) {
