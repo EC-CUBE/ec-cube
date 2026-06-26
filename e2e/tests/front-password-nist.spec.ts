@@ -13,10 +13,10 @@ import { test, expect, Page } from '@playwright/test';
 
 const adminRoute = process.env.ECCUBE_ADMIN_ROUTE || 'admin';
 
-// 半角カナ + 数字(NFKC で全角へ正規化される)
-const RAW_PASSWORD = 'ﾊﾟｽﾜｰﾄﾞﾃｽﾄ123456';
-// 上記を NFKC 正規化した文字列(全角)
-const NORMALIZED_PASSWORD = 'パスワードテスト123456';
+// 半角カナ + 数字(NFKC で全角へ正規化される)。正規化後 15 文字以上(min15 要件)。
+const RAW_PASSWORD = 'ﾊﾟｽﾜｰﾄﾞﾃｽﾄ1234567';
+// 上記を NFKC 正規化した文字列(全角)。15 文字。
+const NORMALIZED_PASSWORD = 'パスワードテスト1234567';
 
 /**
  * 管理画面から本会員を作成し, メールアドレスを返す。
