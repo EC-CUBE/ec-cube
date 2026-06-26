@@ -136,28 +136,6 @@ final class RefundRequestServiceTest extends EccubeTestCase
         $this->refundRequestService->changeStatus($RefundRequest, 'accept');
     }
 
-    public function testCanApplyTransition(): void
-    {
-        $Customer = $this->createCustomer();
-        $Order = $this->createOrder($Customer);
-        $this->setOrderStatus($Order, OrderStatus::DELIVERED);
-        $this->entityManager->flush();
-
-        $OrderItem = $Order->getProductOrderItems()[0];
-
-        $RefundRequest = new RefundRequest();
-        $RefundRequest->setOrder($Order);
-        $RefundRequest->setOrderItem($OrderItem);
-        $RefundRequest->setCustomer($Customer);
-        $RefundRequest->setQuantity('1');
-        $RefundRequest->setReason('テスト理由');
-
-        $this->refundRequestService->createRefundRequest($RefundRequest, [], self::SESSION_ID);
-
-        $this->assertTrue($this->refundRequestService->canApplyTransition($RefundRequest, 'start_processing'));
-        $this->assertFalse($this->refundRequestService->canApplyTransition($RefundRequest, 'accept'));
-    }
-
     public function testGetAvailableTransitions(): void
     {
         $Customer = $this->createCustomer();

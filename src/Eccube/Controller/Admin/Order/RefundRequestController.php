@@ -26,11 +26,9 @@ use Eccube\Util\FormUtil;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -208,44 +206,6 @@ class RefundRequestController extends AbstractController
             'RefundRequest' => $RefundRequest,
             'availableTransitions' => $availableTransitions,
         ];
-    }
-
-    /**
-     * ステータス変更 API.
-     */
-    #[Route(path: '/%eccube_admin_route%/order/refund_request/{id}/update_status', name: 'admin_refund_request_update_status', requirements: ['id' => '\d+'], methods: ['PUT'])]
-    public function updateStatus(Request $request, RefundRequest $RefundRequest): JsonResponse
-    {
-        // isTokenValid() は無効トークン時に AccessDeniedHttpException を投げる（戻り値は常に true）。
-        // 破壊的な PUT API のため、ここで CSRF を強制する。
-        $this->isTokenValid();
-
-        $transition = $request->get('transition');
-        if (!$transition) {
-            throw new BadRequestHttpException();
-        }
-
-        // 現在のステータスから実行できない遷移(未定義・適用不可)は適用前に弾く.
-        if (!$this->refundRequestService->canApplyTransition($RefundRequest, $transition)) {
-            return $this->json([
-                'success' => false,
-                'message' => trans('admin.order.refund_request.transition_error'),
-            ], Response::HTTP_BAD_REQUEST);
-        }
-
-        try {
-            $this->refundRequestService->changeStatus($RefundRequest, $transition);
-
-            return $this->json([
-                'success' => true,
-                'status' => (string) $RefundRequest->getRefundRequestStatus(),
-            ]);
-        } catch (\InvalidArgumentException) {
-            return $this->json([
-                'success' => false,
-                'message' => trans('admin.order.refund_request.transition_error'),
-            ], Response::HTTP_BAD_REQUEST);
-        }
     }
 
     /**

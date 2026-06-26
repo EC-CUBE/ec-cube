@@ -168,14 +168,6 @@ class RefundRequestService
     }
 
     /**
-     * 指定した遷移が実行可能かどうかを判定する.
-     */
-    public function canApplyTransition(RefundRequest $RefundRequest, string $transition): bool
-    {
-        return $this->refundRequestStateMachine->can($RefundRequest, $transition);
-    }
-
-    /**
      * 現在のステータスから実行可能な遷移を取得する.
      *
      * @return array<string, RefundRequestStatus> [遷移名 => 遷移先ステータス]

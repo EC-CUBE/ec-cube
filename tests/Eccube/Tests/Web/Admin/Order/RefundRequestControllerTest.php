@@ -168,62 +168,6 @@ final class RefundRequestControllerTest extends AbstractAdminWebTestCase
         $this->assertSame(RefundRequestStatus::PROCESSING, $RefundRequest->getRefundRequestStatus()->getId());
     }
 
-    public function testUpdateStatus(): void
-    {
-        $RefundRequest = $this->createTestRefundRequest();
-
-        $this->client->request(
-            Request::METHOD_PUT,
-            $this->generateUrl('admin_refund_request_update_status', ['id' => $RefundRequest->getId()]),
-            [
-                'transition' => 'start_processing',
-                '_token' => 'dummy',
-            ]
-        );
-
-        $response = $this->client->getResponse();
-        $this->assertTrue($response->isSuccessful());
-        $this->assertSame('application/json', $response->headers->get('Content-Type'));
-
-        $data = json_decode($response->getContent(), true);
-        $this->assertTrue($data['success']);
-    }
-
-    public function testUpdateStatusInvalidTransition(): void
-    {
-        $RefundRequest = $this->createTestRefundRequest();
-
-        $this->client->request(
-            Request::METHOD_PUT,
-            $this->generateUrl('admin_refund_request_update_status', ['id' => $RefundRequest->getId()]),
-            [
-                'transition' => 'accept',
-                '_token' => 'dummy',
-            ]
-        );
-
-        $response = $this->client->getResponse();
-        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode(), (string) $response->getContent());
-
-        $data = json_decode($response->getContent(), true);
-        $this->assertFalse($data['success']);
-    }
-
-    public function testUpdateStatusNoTransition(): void
-    {
-        $RefundRequest = $this->createTestRefundRequest();
-
-        $this->client->request(
-            Request::METHOD_PUT,
-            $this->generateUrl('admin_refund_request_update_status', ['id' => $RefundRequest->getId()]),
-            [
-                '_token' => 'dummy',
-            ]
-        );
-
-        $this->assertSame(Response::HTTP_BAD_REQUEST, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
-    }
-
     public function testExport(): void
     {
         $this->createTestRefundRequest();
