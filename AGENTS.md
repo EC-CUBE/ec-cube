@@ -25,7 +25,8 @@ EC-CUBE は日本で広く使われる OSS の EC プラットフォームです
 - **テンプレート**: Twig 3.x
 - **データベース**: PostgreSQL 13–18 または MySQL 8.4 LTS
 - **フロントエンド**: Sass (SCSS) / webpack / Bootstrap 5.3 / jQuery 4.x
-- **テスト**: PHPUnit 11（`symfony/phpunit-bridge` 経由）/ Codeception 5（E2E）
+- **テスト**: PHPUnit 11（`symfony/phpunit-bridge` 経由）/ Playwright（E2E、`e2e/`）
+  - ※ `codeception/` は残置（レガシー）。CI の Codeception ジョブは無効化（`if: false`）されており、E2E は Playwright が正。
 - **静的解析**: PHPStan（`phpstan.neon.dist` で level 6）
 - **コードスタイル**: PHP-CS-Fixer（PSR-12）
 
@@ -65,6 +66,10 @@ html/                 # 公開ドキュメントルート
 
 tests/
   Eccube/Tests/       # PHPUnit テスト
+
+e2e/                  # Playwright E2E（spec / Page Object / fixtures）
+  tests/              # *.spec.ts（CI は e2e-test.yml のマトリクスで 1 ファイル = 1 シャード）
+  pages/  models/  helpers/  fixtures/
 ```
 
 ## 開発コマンド
@@ -86,6 +91,14 @@ bin/console eccube:install
 bin/phpunit                                                      # 全テスト
 bin/phpunit tests/Eccube/Tests/Web/ShoppingControllerTest.php    # 単一ファイル
 bin/phpunit --filter testCompleteWithLogin                       # フィルタ
+```
+
+E2E（Playwright、`e2e/` 配下で実行）:
+
+```bash
+cd e2e && npm ci
+# project は front-tests / admin-tests。spec ファイル名でフィルタ
+npx playwright test --project=setup --project=front-tests front-product.spec.ts
 ```
 
 ### 静的解析
