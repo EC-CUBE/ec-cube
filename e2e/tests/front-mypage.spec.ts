@@ -20,7 +20,7 @@ async function loginAsTestCustomer(page: Page) {
 async function createCustomerViaAdmin(page: Page): Promise<{ email: string; password: string }> {
   const adminRoute = process.env.ECCUBE_ADMIN_ROUTE || 'admin';
   const email = `test_withdraw_${Date.now()}@example.com`;
-  const password = 'password1234';
+  const password = 'EccubeE2ePassword1';
 
   const adminPage = await page.context().newPage();
   await adminPage.goto(`/${adminRoute}/`);
