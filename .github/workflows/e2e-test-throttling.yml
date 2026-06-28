@@ -208,7 +208,7 @@ jobs:
         run: npx playwright install-deps chromium
 
       - name: Cache apt packages
-        uses: awalsh128/cache-apt-pkgs-action@681749ae568c81c2037cb9185e38b709b261bd2f  # latest
+        uses: awalsh128/cache-apt-pkgs-action@5513791f75b039e2a79653b1a92238d3fb8d99b4  # latest
         with:
           packages: fonts-ipafont fonts-ipaexfont
           version: 1.0
