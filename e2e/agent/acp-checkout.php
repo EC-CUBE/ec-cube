@@ -248,7 +248,13 @@ function completeAcp(HttpClientInterface $client, array $auth, string $sessionId
         'headers' => $auth + ['Idempotency-Key' => bin2hex(random_bytes(16))],
         'json' => ['payment_data' => $paymentData],
     ]);
-    assertTrue(200 === $res->getStatusCode(), 'complete returns HTTP 200 (business outcomes are in messages[])');
+    $status = $res->getStatusCode();
+    $raw = $res->getContent(false);
+    if (200 !== $status) {
+        // 失敗時は HTTP ステータスとレスポンス本体を出力して原因 (payment_handler_not_found / 500 等) を可視化する。
+        fwrite(STDERR, "    \033[33m↳ complete HTTP {$status}\033[0m: ".substr($raw, 0, 1000)."\n");
+    }
+    assertTrue(200 === $status, 'complete returns HTTP 200 (business outcomes are in messages[])');
 
-    return $res->toArray(false);
+    return json_decode($raw, true) ?: [];
 }

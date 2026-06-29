@@ -13,9 +13,9 @@
 
 namespace Eccube\Service\AgentCommerce\Payment;
 
-use Eccube\Entity\Delivery;
 use Eccube\Entity\Order;
 use Eccube\Entity\Payment;
+use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\PaymentRepository;
 
 /**
@@ -31,6 +31,7 @@ class DefaultAgentPaymentMethodResolver implements AgentPaymentMethodResolverInt
 {
     public function __construct(
         private readonly PaymentRepository $paymentRepository,
+        private readonly DeliveryRepository $deliveryRepository,
         private readonly AgentCheckoutPaymentHandlerRegistry $handlerRegistry,
     ) {
     }
@@ -75,26 +76,28 @@ class DefaultAgentPaymentMethodResolver implements AgentPaymentMethodResolverInt
     }
 
     /**
-     * 注文の配送業者に紐づく利用可能な支払方法を取得する.
+     * 注文で利用可能な支払方法を取得する.
+     *
+     * 通常購入の {@link \Eccube\Service\OrderHelper} と同じく、注文の販売種別に紐づく配送業者から
+     * 解決する (エージェント注文は確定前に Shipping へ配送業者が割り当たらないことがあるため、
+     * Shipping ではなく販売種別を起点にする)。
      *
      * @return list<Payment>
      */
     private function findCandidatePayments(Order $order): array
     {
-        $deliveries = [];
-        foreach ($order->getShippings() as $shipping) {
-            $delivery = $shipping->getDelivery();
-            if ($delivery instanceof Delivery && $delivery->getId() !== null) {
-                $deliveries[$delivery->getId()] = $delivery;
-            }
+        $saleTypes = $order->getSaleTypes();
+        if ($saleTypes === []) {
+            return [];
         }
 
+        $deliveries = $this->deliveryRepository->getDeliveries($saleTypes);
         if ($deliveries === []) {
             return [];
         }
 
         /** @var list<Payment> $payments */
-        $payments = $this->paymentRepository->findAllowedPayments(array_values($deliveries), true);
+        $payments = $this->paymentRepository->findAllowedPayments($deliveries, true);
 
         return $payments;
     }
