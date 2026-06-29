@@ -66,7 +66,7 @@ class AddressMappingService
     /**
      * region 文字列 (都道府県名) から Pref を逆引きする。
      *
-     * UCP の postal address `region` は EC-CUBE では Pref 名 (例: 東京都) に対応する。
+     * ACP / UCP の postal address `region`/`state` は EC-CUBE では Pref 名 (例: 東京都) に対応する。
      * ISO 3166-2:JP コード (JP-13 等) での指定は標準では解決せず、app/Customize での
      * 拡張余地とする (本サービスを decoration して解決ロジックを差し替え可能)。
      */

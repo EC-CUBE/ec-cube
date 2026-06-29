@@ -289,6 +289,11 @@ final class AgentCheckoutCompletionServiceTest extends EccubeTestCase
             {
                 return true;
             }
+
+            public function getHandlerId(): string
+            {
+                return 'test_handler';
+            }
         };
     }
 

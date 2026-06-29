@@ -18,10 +18,11 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 /**
  * エージェントコマースの discovery / checkout レスポンスに必要な店舗 URL を生成する.
  *
- * UCP checkout レスポンスの `links[]` (privacy_policy / terms_of_service) は標準ページ
- * (`help_privacy` / `help_agreement`) から**絶対 URL を実行時生成**する (BaseInfo にカラム化しない方針)。
- * URL のベースは `RequestContext` (TRUSTED_PROXIES 反映) から決まる。app/Customize で
- * 本サービスを decoration すれば独自ページへ差し替え可能。
+ * プロトコル非依存の共通ユーティリティ。ACP / UCP いずれの checkout レスポンスからも利用する
+ * (例: 注文 permalink、プライバシーポリシー / 利用規約ページ)。URL は標準ページ
+ * (`help_privacy` / `help_agreement` / `mypage_history`) から**絶対 URL を実行時生成**する
+ * (BaseInfo にカラム化しない方針)。URL のベースは `RequestContext` (TRUSTED_PROXIES 反映) から決まる。
+ * app/Customize で本サービスを decoration すれば独自ページへ差し替え可能。
  */
 class StorefrontUrlResolver
 {
@@ -49,7 +50,7 @@ class StorefrontUrlResolver
     /**
      * 注文の参照先 (permalink) 絶対 URL.
      *
-     * UCP complete レスポンスの `order.permalink_url` に用いる。標準ではマイページの注文履歴
+     * checkout complete レスポンスの注文 permalink に用いる。標準ではマイページの注文履歴
      * (`mypage_history`) を指す。ゲスト注文は会員ログインへ誘導されるが URL 自体は絶対 URL として有効。
      * 独自の注文確認ページへ差し替えたい場合は本サービスを decoration する。
      */

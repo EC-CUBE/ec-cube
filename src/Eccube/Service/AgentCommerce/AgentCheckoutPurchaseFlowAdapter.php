@@ -28,6 +28,7 @@ use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutRequest;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutResult;
 use Eccube\Service\AgentCommerce\Exception\AgentCheckoutErrorCode;
 use Eccube\Service\AgentCommerce\Exception\AgentCheckoutException;
+use Eccube\Service\AgentCommerce\Payment\AgentPaymentMethodResolverInterface;
 use Eccube\Service\OrderHelper;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
@@ -56,6 +57,7 @@ class AgentCheckoutPurchaseFlowAdapter
         private readonly PrefRepository $prefRepository,
         private readonly AgentProtocolRepository $agentProtocolRepository,
         private readonly PurchaseFlow $shoppingPurchaseFlow,
+        private readonly AgentPaymentMethodResolverInterface $paymentMethodResolver,
     ) {
     }
 
@@ -84,6 +86,11 @@ class AgentCheckoutPurchaseFlowAdapter
         if ($request->agentId !== null) {
             $Order->setAgentId($request->agentId);
         }
+
+        // 見積算出のため、エージェント決済可能な支払方法を best-effort で割り当てる
+        // (sort_no 先頭の自動割当に依存しない)。該当が無ければ既定のまま据え置き、
+        // 確定時 (complete) に handler_id 駆動で再解決・厳格判定する。
+        $this->paymentMethodResolver->resolve($Order);
 
         $this->entityManager->flush();
 
