@@ -1089,6 +1089,48 @@ final class ShoppingControllerTest extends AbstractShoppingControllerTestCase
     }
 
     /**
+     * 利用条件(利用可能金額)に合致しないデフォルト支払方法の手数料が,
+     * 注文手続き画面の初期表示で加算されないことを確認する.
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/6200
+     */
+    public function testDefaultPaymentChargeNotAppliedWhenConditionUnmet()
+    {
+        $Customer = $this->createCustomer();
+
+        // 商品価格を上げ, デフォルト支払方法の利用上限を超えるようにする.
+        /** @var ProductClass $ProductClass */
+        $ProductClass = $this->entityManager->getRepository(ProductClass::class)->find(2);
+        $ProductClass->setPrice02('3000');
+        $this->entityManager->flush($ProductClass);
+
+        // 先頭(デフォルト)の支払方法に手数料と低い利用上限を設定する (#6200 再現条件).
+        /** @var Payment $DefaultPayment */
+        $DefaultPayment = $this->paymentRepository->find(1);
+        $DefaultPayment->setCharge('500')->setRuleMin('0')->setRuleMax('1000');
+        $this->entityManager->flush($DefaultPayment);
+
+        // カート投入 → 注文手続き画面.
+        $this->scenarioCartIn($Customer, 2);
+        $crawler = $this->scenarioConfirm($Customer);
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        /** @var Order $Order */
+        $Order = $this->entityManager->getRepository(Order::class)->findOneBy([
+            'Customer' => $Customer,
+            'OrderStatus' => OrderStatus::PROCESSING,
+        ]);
+
+        // 利用条件外のデフォルト支払方法が選択されず, 手数料(¥500)が加算されていないこと.
+        $this->assertInstanceOf(Payment::class, $Order->getPayment());
+        $this->assertNotSame($DefaultPayment->getId(), $Order->getPayment()->getId());
+        $this->assertEquals(0, $Order->getCharge());
+
+        // 利用条件外の支払方法は選択肢に表示されないこと.
+        $this->assertStringNotContainsString($DefaultPayment->getMethod(), (string) $crawler->filter('body')->html());
+    }
+
+    /**
      * @param Payment[] $Payments
      */
     private function setUpPayments(Delivery $Delivery, array $Payments)
