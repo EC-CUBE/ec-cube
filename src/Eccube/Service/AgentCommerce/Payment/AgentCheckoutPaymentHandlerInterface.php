@@ -25,6 +25,17 @@ use Eccube\Entity\Order;
 interface AgentCheckoutPaymentHandlerInterface
 {
     /**
+     * このハンドラの識別子 (エージェントの complete リクエストの handler_id と突合する).
+     *
+     * ACP は payment_data.handler_id (例: "card_tokenized")、UCP は逆ドメイン名形式の
+     * payment.instruments[].handler_id (例: "dev.ucp.payment.card") と突合する。
+     * {@link AgentCheckoutPaymentHandlerRegistry::resolveByHandlerId()} および
+     * {@link AgentPaymentMethodResolverInterface} がエージェントの選んだ handler_id から
+     * Payment を解決するために用いる。プラグイン間で一意でなければならない。
+     */
+    public function getHandlerId(): string;
+
+    /**
      * 与信 (オーソリ) を行う.
      *
      * complete の**状態機械の入口**であり、初回 complete と再開 complete の双方から呼ばれる
