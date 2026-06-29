@@ -53,17 +53,24 @@ class OrderMemoPreprocessor implements ItemHolderPreprocessor
             }
 
             $current = $OrderItem->getOrderMemo();
-            // 同一文言が「行」として既に含まれていれば追記しない(冪等).
-            // 単純な部分一致だと, 既存行が商品メモを偶然部分文字列として含む場合に誤スキップするため,
-            // 改行で境界を区切って判定する(複数行の商品メモにも対応).
-            if ($current !== null && $current !== ''
-                && str_contains("\n".$current."\n", "\n".$productMemo."\n")) {
+            $existingLines = ($current === null || $current === '') ? [] : explode("\n", $current);
+
+            // 商品メモの各行のうち, 既存メモに「行」として未だ含まれていないものだけを追記する(冪等).
+            // 商品メモをブロック単位で照合すると, 複数行の商品メモの一部行のみが先に含まれる場合に
+            // ブロック全体を再追記し行が重複する(例: 既存="A", 商品メモ="A\nB" → "A\nA\nB").
+            // 行単位で差分追記することで, 何度フローが走っても・商品メモを編集し直しても重複しない.
+            $appendLines = [];
+            foreach (explode("\n", $productMemo) as $line) {
+                if (!in_array($line, $existingLines, true)) {
+                    $appendLines[] = $line;
+                }
+            }
+
+            if ($appendLines === []) {
                 continue;
             }
 
-            $OrderItem->setOrderMemo(
-                ($current === null || $current === '') ? $productMemo : $current."\n".$productMemo
-            );
+            $OrderItem->setOrderMemo(implode("\n", array_merge($existingLines, $appendLines)));
         }
     }
 }

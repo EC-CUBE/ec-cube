@@ -127,6 +127,36 @@ final class OrderMemoPreprocessorTest extends EccubeTestCase
         }
     }
 
+    public function testMultilineMemoAppendsOnlyMissingLines(): void
+    {
+        // 複数行の商品メモのうち一部行のみが既存メモに含まれる場合, 不足行だけを追記する.
+        // ブロック単位照合だと商品メモ全体を再追記し "商品メモ\n商品メモ\n追加メモ" のように重複する.
+        $this->Product->setOrderMemo("商品メモ\n追加メモ");
+
+        foreach ($this->Order->getProductOrderItems() as $OrderItem) {
+            $OrderItem->setOrderMemo('商品メモ');
+        }
+
+        $this->processor->process($this->Order, new PurchaseContext());
+
+        foreach ($this->Order->getProductOrderItems() as $OrderItem) {
+            $this->assertSame("商品メモ\n追加メモ", $OrderItem->getOrderMemo());
+        }
+    }
+
+    public function testMultilineMemoIsIdempotentOnRerun(): void
+    {
+        // 複数行の商品メモを 2 回処理しても重複しない(冪等).
+        $this->Product->setOrderMemo("一行目\n二行目");
+
+        $this->processor->process($this->Order, new PurchaseContext());
+        $this->processor->process($this->Order, new PurchaseContext());
+
+        foreach ($this->Order->getProductOrderItems() as $OrderItem) {
+            $this->assertSame("一行目\n二行目", $OrderItem->getOrderMemo());
+        }
+    }
+
     public function testWhitespacePaddedMemoIsTrimmedOnAppend(): void
     {
         // フォーム保存(trim なし)の前後空白付きメモは trimAll で正規化して追記する.
