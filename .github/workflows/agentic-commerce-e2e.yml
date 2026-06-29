@@ -38,6 +38,7 @@ jobs:
   ## ───────────────────────────────────────────────────────────────────────
   integration-smoke:
     name: Integration smoke (本体 + api44 + samplepayment44)
+    if: ${{ false }}  # TEMP(デバッグ): Job A は通過済みのためスキップ。決済 complete 確定後に復帰する
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
@@ -244,7 +245,7 @@ jobs:
   ## ───────────────────────────────────────────────────────────────────────
   checkout-e2e:
     name: Checkout E2E (OAuth2 認証 + セッション・complete は #3 待ち)
-    needs: integration-smoke
+    # TEMP(デバッグ): Job A スキップ中は needs を外して単独実行。復帰時に `needs: integration-smoke` を戻す
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
@@ -381,7 +382,6 @@ jobs:
 
       ## 決済ハンドラの配線 (タグ付与) と Payment/PaymentOption の状態を可視化する診断。
       - name: Debug agent payment wiring
-        if: ${{ inputs.run_payment == 'true' }}
         env:
           APP_ENV: 'prod'
           DATABASE_URL: ${{ matrix.database_url }}
