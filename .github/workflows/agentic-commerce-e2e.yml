@@ -401,6 +401,9 @@ jobs:
         env:
           BASE_URL: 'http://127.0.0.1:8000'
           AGENT_E2E_TOKEN: ${{ steps.token.outputs.token }}
+          ## fixtures の ProductClass id=1 は visible=0 のダミー規格で purchase flow が明細除去するため、
+          ## 購入可能な規格 (id=2) を使う。
+          AGENT_E2E_ITEM_ID: '2'
           ## complete (決済実行) は #3 決済ハンドラ landing 後に run_payment=true で有効化
           AGENT_E2E_PAYMENT_READY: ${{ inputs.run_payment }}
         run: php e2e/agent/acp-checkout.php

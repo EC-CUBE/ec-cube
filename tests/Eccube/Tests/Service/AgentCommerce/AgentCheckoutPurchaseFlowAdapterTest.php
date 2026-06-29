@@ -104,6 +104,27 @@ final class AgentCheckoutPurchaseFlowAdapterTest extends EccubeTestCase
         $this->assertGreaterThan(0, (int) $Order->getPaymentTotal(), 'shopping flow で支払総額 (税送料込) が計算される');
     }
 
+    public function testReloadKeepsProductItems(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $request = new AgentCheckoutRequest(
+            lineItems: [new AgentCheckoutLineItem((int) $ProductClass->getId(), 1)],
+            buyer: $this->guestAddress(),
+            protocolId: AgentProtocol::ACP,
+        );
+        $Order = $this->adapter->buildOrder($request)->order;
+        $orderId = $Order->getId();
+        $this->assertCount(1, $Order->getProductOrderItems(), 'in-memory: 商品明細 1 行');
+
+        $this->entityManager->flush();
+        $this->entityManager->clear();
+
+        $reloaded = $this->entityManager->getRepository(\Eccube\Entity\Order::class)->find($orderId);
+        self::assertNotNull($reloaded);
+        $this->assertCount(1, $reloaded->getProductOrderItems(), 'reload 後: 商品明細 1 行');
+        $this->assertNotEmpty($reloaded->getSaleTypes(), 'reload 後: 販売種別が取れる');
+    }
+
     public function testPrepareThenCommitFinalizesOrder(): void
     {
         $ProductClass = $this->createPurchasableProductClass('100');
