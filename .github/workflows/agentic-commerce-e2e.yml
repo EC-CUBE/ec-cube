@@ -379,6 +379,24 @@ jobs:
           fi
           echo "token=${tok}" >> "$GITHUB_OUTPUT"
 
+      ## 決済ハンドラの配線 (タグ付与) と Payment/PaymentOption の状態を可視化する診断。
+      - name: Debug agent payment wiring
+        if: ${{ inputs.run_payment == 'true' }}
+        env:
+          APP_ENV: 'prod'
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_CHARSET: ${{ matrix.database_charset }}
+        run: |
+          echo "=== tagged agent payment handlers ==="
+          bin/console debug:container --tag=agent_commerce.payment_handler 2>&1 || true
+          echo "=== dtb_payment ==="
+          bin/console dbal:run-sql "SELECT id, method_class, visible, sort_no FROM dtb_payment ORDER BY id" 2>&1 || true
+          echo "=== dtb_payment_option ==="
+          bin/console dbal:run-sql "SELECT delivery_id, payment_id FROM dtb_payment_option ORDER BY delivery_id, payment_id" 2>&1 || true
+          echo "=== dtb_delivery ==="
+          bin/console dbal:run-sql "SELECT id, sale_type_id, visible FROM dtb_delivery ORDER BY id" 2>&1 || true
+
       - name: Run ACP agent simulator (auth + session; complete は run_payment 時のみ)
         env:
           BASE_URL: 'http://127.0.0.1:8000'
