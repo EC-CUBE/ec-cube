@@ -76,6 +76,35 @@ class AgentCheckoutPaymentHandlerRegistry
     }
 
     /**
+     * handler_id に一致するハンドラ (ACP/UCP 横断) を返す (なければ null).
+     *
+     * ACP ({@link AcpPaymentHandlerInterface}) / UCP ({@link UcpPaymentHandlerInterface}) は
+     * いずれも `getHandlerId()` を宣言する。{@link AgentPaymentMethodResolverInterface} が
+     * エージェントの選んだ handler_id から Payment を解決するために用いる。
+     *
+     * UCP 同様、同一 handler_id を複数のハンドラが宣言している場合はプラグイン競合による
+     * 非決定的な選択を避けるため明示的に例外を投げる (ACP 側にも一意性を強制する)。
+     *
+     * @throws \RuntimeException 同一 handler_id が複数登録されている場合
+     */
+    public function resolveByHandlerId(string $handlerId): ?AgentCheckoutPaymentHandlerInterface
+    {
+        $matched = [];
+        foreach ($this->handlers as $handler) {
+            if (($handler instanceof AcpPaymentHandlerInterface || $handler instanceof UcpPaymentHandlerInterface)
+                && $handler->getHandlerId() === $handlerId) {
+                $matched[] = $handler;
+            }
+        }
+
+        if (count($matched) > 1) {
+            throw new \RuntimeException(sprintf('Multiple agent payment handlers are registered for handler_id "%s". Plugin payment handlers must declare a unique handler_id.', $handlerId));
+        }
+
+        return $matched[0] ?? null;
+    }
+
+    /**
      * 登録済みの UCP ハンドラを返す (discovery の payment_handlers 広告に使用).
      *
      * @return list<UcpPaymentHandlerInterface>

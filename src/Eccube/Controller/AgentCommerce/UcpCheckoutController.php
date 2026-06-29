@@ -34,6 +34,7 @@ use Eccube\Service\AgentCommerce\Exception\AgentCheckoutException;
 use Eccube\Service\AgentCommerce\Exception\IdempotencyConflictException;
 use Eccube\Service\AgentCommerce\Idempotency\AgentCheckoutIdempotencyStore;
 use Eccube\Service\AgentCommerce\Payment\AgentCheckoutPaymentHandlerRegistry;
+use Eccube\Service\AgentCommerce\Payment\AgentPaymentMethodResolverInterface;
 use Eccube\Service\AgentCommerce\Ucp\UcpCheckoutSessionMapper;
 use Eccube\Service\AgentCommerce\Ucp\UcpMessageMapper;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -77,6 +78,7 @@ class UcpCheckoutController extends AbstractController
         private readonly AgentCheckoutPaymentHandlerRegistry $paymentHandlerRegistry,
         private readonly CustomerResolverInterface $customerResolver,
         private readonly AgentCheckoutCompletionService $completionService,
+        private readonly AgentPaymentMethodResolverInterface $paymentMethodResolver,
     ) {
     }
 
@@ -154,6 +156,12 @@ class UcpCheckoutController extends AbstractController
 
             try {
                 $payload = $this->decodeBody($request);
+                // エージェントが選んだ決済ハンドラ (payment.instruments[].handler_id) に対応する Payment を
+                // 割り当て、状態機械の resolveForOrder が同一ハンドラへ解決することを保証する (sort_no 非依存)。
+                $handlerId = $this->extractHandlerId($payload);
+                if ($handlerId !== null && $this->paymentMethodResolver->resolve($order, $handlerId) === null) {
+                    return $this->protocolError(422, 'payment_handler_not_found', sprintf('No enabled payment method supports the requested payment handler "%s" (payment.instruments[0].handler_id).', $handlerId));
+                }
                 // UCP は payment.instruments[].handler_id で決済ハンドラを解決し、クレデンシャルを
                 // ゲートウェイトークンへ交換する。交換後の中立データを状態機械へ渡す。
                 $paymentData = $this->resolvePaymentData($payload);
@@ -245,12 +253,7 @@ class UcpCheckoutController extends AbstractController
      */
     private function resolvePaymentData(array $payload): array
     {
-        $instrument = $payload['payment']['instruments'][0] ?? null;
-        if (!is_array($instrument)) {
-            return [];
-        }
-
-        $handlerId = is_string($instrument['handler_id'] ?? null) ? $instrument['handler_id'] : null;
+        $handlerId = $this->extractHandlerId($payload);
         if ($handlerId === null) {
             return [];
         }
@@ -260,9 +263,25 @@ class UcpCheckoutController extends AbstractController
             return [];
         }
 
+        $instrument = $payload['payment']['instruments'][0] ?? [];
         $credential = is_array($instrument['credential'] ?? null) ? $instrument['credential'] : [];
 
         return $handler->exchangePaymentToken($credential);
+    }
+
+    /**
+     * payment.instruments[0].handler_id を取り出す (なければ null).
+     *
+     * @param array<string, mixed> $payload
+     */
+    private function extractHandlerId(array $payload): ?string
+    {
+        $instrument = $payload['payment']['instruments'][0] ?? null;
+        if (!is_array($instrument)) {
+            return null;
+        }
+
+        return is_string($instrument['handler_id'] ?? null) ? $instrument['handler_id'] : null;
     }
 
     /**
