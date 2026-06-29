@@ -390,6 +390,14 @@ jobs:
           AGENT_E2E_PAYMENT_READY: ${{ inputs.run_payment }}
         run: php e2e/agent/acp-checkout.php
 
+      ## UCP は RFC 9421 署名 (requireSignature=false で署名なし可) のため OAuth2 トークン不要。
+      - name: Run UCP agent simulator (session; complete は run_payment 時のみ)
+        env:
+          BASE_URL: 'http://127.0.0.1:8000'
+          AGENT_E2E_ITEM_ID: '2'
+          AGENT_E2E_PAYMENT_READY: ${{ inputs.run_payment }}
+        run: php e2e/agent/ucp-checkout.php
+
       - name: Dump server log on failure
         if: failure()
         run: tail -120 "${RUNNER_TEMP}/php-server.log" || true
