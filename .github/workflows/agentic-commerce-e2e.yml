@@ -322,6 +322,9 @@ jobs:
           bin/console eccube:composer:require "ec-cube/samplepayment44:*"
           bin/console eccube:plugin:enable --code=Api44
           bin/console eccube:plugin:enable --code=SamplePayment44
+          ## sample 決済を全配送業者へ allowed にする (PaymentManager は PaymentOption を作らないため)。
+          ## これがないと findAllowedPayments に sample CreditCard が出ず、エージェント決済の Payment 解決が空になる。
+          bin/console dbal:run-sql "INSERT INTO dtb_payment_option (delivery_id, payment_id, discriminator_type) SELECT d.id, p.id, 'paymentoption' FROM dtb_delivery d CROSS JOIN dtb_payment p WHERE p.visible = true AND NOT EXISTS (SELECT 1 FROM dtb_payment_option po WHERE po.delivery_id = d.id AND po.payment_id = p.id)"
           bin/console cache:clear
           ## フラグ反転後に result cache pool を消す (acp.json/ucp ゲートの stale 回避)
           bin/console dbal:run-sql "UPDATE dtb_base_info SET acp_checkout_enabled = true, ucp_checkout_enabled = true"

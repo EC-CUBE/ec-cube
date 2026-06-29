@@ -191,20 +191,64 @@ function runCheckout(HttpClientInterface $client, string $token, int $itemId, bo
 
     // 4. complete (POST /acp/checkout_sessions/{id}/complete)
     // 決済実行は sample-payment 決済ハンドラ (#3) が前提のため、許可された時のみ実行する。
+    // 各シナリオは状態が確定するため新規セッションで実行する。
     if (!$paymentReady) {
         fwrite(STDOUT, "  \033[33m⏸\033[0m complete skipped: AGENT_E2E_PAYMENT_READY!=true (#3 決済ハンドラ待ち)\n");
 
         return;
     }
 
+    section('Phase 2b: ACP complete scenarios (sample-payment ハンドラ経由)');
+
+    // (a) 正常系: handler_id 駆動で sample CreditCard ハンドラが与信→売上→確定する。
+    $sid = createSession($client, $auth, $createBody);
+    $body = completeAcp($client, $auth, $sid, ['handler_id' => 'card_tokenized', 'token' => 'e2e-acp-spt-ok', 'provider' => 'sample_payment']);
+    assertTrue(($body['status'] ?? null) === 'completed', 'complete (ok token) => status "completed"');
+
+    // (b) 3DS: 中断 (authentication_required) → authentication_result 付きで再開 → completed。
+    //     silent passthrough (ハンドラ未通過) なら 3DS は発生しないため、これはハンドラ実行の証跡。
+    $sid = createSession($client, $auth, $createBody);
+    $body = completeAcp($client, $auth, $sid, ['handler_id' => 'card_tokenized', 'token' => 'e2e-acp-spt-3ds', 'provider' => 'sample_payment']);
+    assertTrue(($body['status'] ?? null) === 'authentication_required', 'complete (3ds token) => "authentication_required" (handler ran)');
+    $body = completeAcp($client, $auth, $sid, ['handler_id' => 'card_tokenized', 'token' => 'e2e-acp-spt-3ds', 'provider' => 'sample_payment', 'authentication_result' => ['outcome' => 'authenticated']]);
+    assertTrue(($body['status'] ?? null) === 'completed', 'complete (3ds resume w/ authentication_result) => "completed"');
+
+    // (c) 拒否: ハンドラが FAILED を返し、注文は確定しない (ready_for_payment) + messages[]。
+    //     handler_id が無視され既定 Payment ですり抜けると completed になるため、この負ケースが seam を守る。
+    $sid = createSession($client, $auth, $createBody);
+    $body = completeAcp($client, $auth, $sid, ['handler_id' => 'card_tokenized', 'token' => 'e2e-acp-spt-decline', 'provider' => 'sample_payment']);
+    assertTrue(($body['status'] ?? null) !== 'completed', 'complete (decline token) => not "completed" (handler rejected)');
+    assertTrue(!empty($body['messages']), 'complete (decline token) => business messages[] present');
+}
+
+/** complete シナリオ用に新規セッションを作成し session id を返す。 */
+function createSession(HttpClientInterface $client, array $auth, array $createBody): string
+{
+    $res = $client->request('POST', 'acp/checkout_sessions', [
+        'headers' => $auth + ['Idempotency-Key' => bin2hex(random_bytes(16))],
+        'json' => $createBody,
+    ]);
+    assertTrue(in_array($res->getStatusCode(), [200, 201], true), 'scenario: create checkout session');
+    $sid = $res->toArray(false)['id'] ?? null;
+    assertTrue(is_string($sid) && '' !== $sid, 'scenario: created session has id');
+
+    return $sid;
+}
+
+/**
+ * complete を呼び、HTTP 200 (2 系統エラーは messages[]) を確認してレスポンス body を返す。
+ *
+ * @param array<string, mixed> $paymentData
+ *
+ * @return array<string, mixed>
+ */
+function completeAcp(HttpClientInterface $client, array $auth, string $sessionId, array $paymentData): array
+{
     $res = $client->request('POST', 'acp/checkout_sessions/'.$sessionId.'/complete', [
         'headers' => $auth + ['Idempotency-Key' => bin2hex(random_bytes(16))],
-        'json' => ['payment_data' => ['token' => 'e2e-dummy-spt', 'provider' => 'sample_payment']],
+        'json' => ['payment_data' => $paymentData],
     ]);
-    assertTrue(200 === $res->getStatusCode(), 'POST /acp/checkout_sessions/{id}/complete returns 200');
-    $completed = $res->toArray(false);
-    assertTrue(
-        in_array($completed['status'] ?? null, ['completed', 'complete_in_progress', 'authentication_required'], true),
-        'complete returns a terminal/intermediate status (completed / complete_in_progress / authentication_required)'
-    );
+    assertTrue(200 === $res->getStatusCode(), 'complete returns HTTP 200 (business outcomes are in messages[])');
+
+    return $res->toArray(false);
 }
