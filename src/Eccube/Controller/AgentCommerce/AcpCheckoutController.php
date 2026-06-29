@@ -169,10 +169,7 @@ class AcpCheckoutController extends AbstractController
                 // 状態機械の resolveForOrder が同一ハンドラへ解決することを保証する (sort_no 非依存)。
                 $handlerId = is_string($paymentData['handler_id'] ?? null) ? $paymentData['handler_id'] : null;
                 if ($handlerId !== null && $this->paymentMethodResolver->resolve($order, $handlerId) === null) {
-                    // TEMP(デバッグ): null の原因切り分けのため order 状態を message に含める。確定後に除去する。
-                    $dbg = sprintf(' [DEBUG proto=%s payment=%s items=%d saleTypes=%d]', (string) ($order->getAgentProtocol()?->getId() ?? 'null'), (string) ($order->getPayment()?->getMethodClass() ?? 'null'), count($order->getOrderItems()), count($order->getSaleTypes()));
-
-                    return $this->protocolError(400, 'payment_handler_not_found', sprintf('No enabled payment method supports the requested payment handler "%s".', $handlerId).$dbg, '$.payment_data.handler_id');
+                    return $this->protocolError(400, 'payment_handler_not_found', sprintf('No enabled payment method supports the requested payment handler "%s".', $handlerId), '$.payment_data.handler_id');
                 }
 
                 // complete は状態機械 (#6777)。3DS/escalation はエラーでなく requires_action 等の中間状態として返る。

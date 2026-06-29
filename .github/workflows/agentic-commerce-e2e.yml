@@ -38,7 +38,6 @@ jobs:
   ## ───────────────────────────────────────────────────────────────────────
   integration-smoke:
     name: Integration smoke (本体 + api44 + samplepayment44)
-    if: ${{ false }}  # TEMP(デバッグ): Job A は通過済みのためスキップ。決済 complete 確定後に復帰する
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
@@ -245,7 +244,7 @@ jobs:
   ## ───────────────────────────────────────────────────────────────────────
   checkout-e2e:
     name: Checkout E2E (OAuth2 認証 + セッション・complete は #3 待ち)
-    # TEMP(デバッグ): Job A スキップ中は needs を外して単独実行。復帰時に `needs: integration-smoke` を戻す
+    needs: integration-smoke
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
@@ -380,23 +379,6 @@ jobs:
           fi
           echo "token=${tok}" >> "$GITHUB_OUTPUT"
 
-      ## 決済ハンドラの配線 (タグ付与) と Payment/PaymentOption の状態を可視化する診断。
-      - name: Debug agent payment wiring
-        env:
-          APP_ENV: 'prod'
-          DATABASE_URL: ${{ matrix.database_url }}
-          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          DATABASE_CHARSET: ${{ matrix.database_charset }}
-        run: |
-          echo "=== tagged agent payment handlers ==="
-          bin/console debug:container --tag=agent_commerce.payment_handler 2>&1 || true
-          echo "=== dtb_payment ==="
-          bin/console dbal:run-sql "SELECT id, method_class, visible, sort_no FROM dtb_payment ORDER BY id" 2>&1 || true
-          echo "=== dtb_payment_option ==="
-          bin/console dbal:run-sql "SELECT delivery_id, payment_id FROM dtb_payment_option ORDER BY delivery_id, payment_id" 2>&1 || true
-          echo "=== dtb_delivery ==="
-          bin/console dbal:run-sql "SELECT id, sale_type_id, visible FROM dtb_delivery ORDER BY id" 2>&1 || true
-
       - name: Run ACP agent simulator (auth + session; complete は run_payment 時のみ)
         env:
           BASE_URL: 'http://127.0.0.1:8000'
@@ -407,20 +389,6 @@ jobs:
           ## complete (決済実行) は #3 決済ハンドラ landing 後に run_payment=true で有効化
           AGENT_E2E_PAYMENT_READY: ${{ inputs.run_payment }}
         run: php e2e/agent/acp-checkout.php
-
-      ## TEMP(デバッグ): エージェント注文の明細に product_class_id が永続化されているか確認する。
-      - name: Debug agent order items
-        if: ${{ always() }}
-        env:
-          APP_ENV: 'prod'
-          DATABASE_URL: ${{ matrix.database_url }}
-          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          DATABASE_CHARSET: ${{ matrix.database_charset }}
-        run: |
-          echo "=== dtb_order (latest) ==="
-          bin/console dbal:run-sql "SELECT id, order_status_id, agent_protocol_id, payment_method FROM dtb_order ORDER BY id DESC LIMIT 6" 2>&1 || true
-          echo "=== dtb_order_item (latest) ==="
-          bin/console dbal:run-sql "SELECT order_id, product_class_id, order_item_type_id, product_name FROM dtb_order_item ORDER BY order_id DESC, id DESC LIMIT 12" 2>&1 || true
 
       - name: Dump server log on failure
         if: failure()
