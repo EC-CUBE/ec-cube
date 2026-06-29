@@ -405,6 +405,20 @@ jobs:
           AGENT_E2E_PAYMENT_READY: ${{ inputs.run_payment }}
         run: php e2e/agent/acp-checkout.php
 
+      ## TEMP(デバッグ): エージェント注文の明細に product_class_id が永続化されているか確認する。
+      - name: Debug agent order items
+        if: ${{ always() }}
+        env:
+          APP_ENV: 'prod'
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_CHARSET: ${{ matrix.database_charset }}
+        run: |
+          echo "=== dtb_order (latest) ==="
+          bin/console dbal:run-sql "SELECT id, order_status_id, agent_protocol_id, payment_method FROM dtb_order ORDER BY id DESC LIMIT 6" 2>&1 || true
+          echo "=== dtb_order_item (latest) ==="
+          bin/console dbal:run-sql "SELECT order_id, product_class_id, order_item_type_id, product_name FROM dtb_order_item ORDER BY order_id DESC, id DESC LIMIT 12" 2>&1 || true
+
       - name: Dump server log on failure
         if: failure()
         run: tail -120 "${RUNNER_TEMP}/php-server.log" || true

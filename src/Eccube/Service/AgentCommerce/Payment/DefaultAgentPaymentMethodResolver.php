@@ -38,8 +38,9 @@ class DefaultAgentPaymentMethodResolver implements AgentPaymentMethodResolverInt
 
     public function resolve(Order $order, ?string $handlerId = null): ?Payment
     {
-        $candidates = $this->findCandidatePayments($order);
-        if ($candidates === []) {
+        // 明示選択: handler_id が示すハンドラが扱える Payment のみを採用する。
+        $requestedHandler = $handlerId !== null ? $this->handlerRegistry->resolveByHandlerId($handlerId) : null;
+        if ($handlerId !== null && $requestedHandler === null) {
             return null;
         }
 
@@ -47,25 +48,15 @@ class DefaultAgentPaymentMethodResolver implements AgentPaymentMethodResolverInt
         // 不適合のまま走査を終えたら元へ戻し、注文を汚さない。
         $original = $order->getPayment();
 
-        // 明示選択: handler_id が示すハンドラが扱える Payment のみを採用する。
-        $requestedHandler = $handlerId !== null ? $this->handlerRegistry->resolveByHandlerId($handlerId) : null;
-        if ($handlerId !== null && $requestedHandler === null) {
-            return null;
+        // 既に割り当て済みの Payment が要求ハンドラ (handler_id 指定時) もしくはいずれかのエージェント
+        // 決済ハンドラに適合するなら、それを尊重する。complete は create で割当済みの Payment を引き継ぐため、
+        // 別リクエストで再読込された注文 (Shipping へ配送業者未割当・販売種別から候補を引けない) でも解決できる。
+        if ($original !== null && $this->isSupported($order, $original, $requestedHandler)) {
+            return $original;
         }
 
-        foreach ($candidates as $payment) {
-            $this->assign($order, $payment);
-
-            if ($requestedHandler !== null) {
-                if ($requestedHandler->supports($order)) {
-                    return $payment;
-                }
-
-                continue;
-            }
-
-            // 既定選択: いずれかのエージェント決済ハンドラが扱える最初の Payment。
-            if ($this->handlerRegistry->resolveForOrder($order) !== null) {
+        foreach ($this->findCandidatePayments($order) as $payment) {
+            if ($this->isSupported($order, $payment, $requestedHandler)) {
                 return $payment;
             }
         }
@@ -73,6 +64,21 @@ class DefaultAgentPaymentMethodResolver implements AgentPaymentMethodResolverInt
         $this->assign($order, $original);
 
         return null;
+    }
+
+    /**
+     * 候補 Payment を Order に仮設定し、要求ハンドラ (指定時) もしくはいずれかのエージェント決済
+     * ハンドラが扱えるかを判定する.
+     */
+    private function isSupported(Order $order, Payment $payment, ?AgentCheckoutPaymentHandlerInterface $requestedHandler): bool
+    {
+        $this->assign($order, $payment);
+
+        if ($requestedHandler !== null) {
+            return $requestedHandler->supports($order);
+        }
+
+        return $this->handlerRegistry->resolveForOrder($order) !== null;
     }
 
     /**
