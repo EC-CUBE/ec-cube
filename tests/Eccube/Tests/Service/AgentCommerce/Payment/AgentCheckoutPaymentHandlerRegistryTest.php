@@ -133,4 +133,9 @@ final readonly class InMemoryNonUcpPaymentHandler implements AgentCheckoutPaymen
     {
         return false;
     }
+
+    public function getHandlerId(): string
+    {
+        return 'non_ucp_handler';
+    }
 }

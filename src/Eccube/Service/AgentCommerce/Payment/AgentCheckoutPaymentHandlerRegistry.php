@@ -76,14 +76,14 @@ class AgentCheckoutPaymentHandlerRegistry
     }
 
     /**
-     * handler_id に一致するハンドラ (ACP/UCP 横断) を返す (なければ null).
+     * handler_id に一致するハンドラを返す (なければ null).
      *
-     * ACP ({@link AcpPaymentHandlerInterface}) / UCP ({@link UcpPaymentHandlerInterface}) は
-     * いずれも `getHandlerId()` を宣言する。{@link AgentPaymentMethodResolverInterface} が
+     * {@link AgentCheckoutPaymentHandlerInterface::getHandlerId()} で突合する
+     * (プロトコル非依存)。{@link AgentPaymentMethodResolverInterface} が
      * エージェントの選んだ handler_id から Payment を解決するために用いる。
      *
-     * UCP 同様、同一 handler_id を複数のハンドラが宣言している場合はプラグイン競合による
-     * 非決定的な選択を避けるため明示的に例外を投げる (ACP 側にも一意性を強制する)。
+     * 同一 handler_id を複数のハンドラが宣言している場合は、プラグイン競合による
+     * 非決定的な決済ハンドラ選択を避けるため、null を返さず明示的に例外を投げる。
      *
      * @throws \RuntimeException 同一 handler_id が複数登録されている場合
      */
@@ -91,8 +91,7 @@ class AgentCheckoutPaymentHandlerRegistry
     {
         $matched = [];
         foreach ($this->handlers as $handler) {
-            if (($handler instanceof AcpPaymentHandlerInterface || $handler instanceof UcpPaymentHandlerInterface)
-                && $handler->getHandlerId() === $handlerId) {
+            if ($handler->getHandlerId() === $handlerId) {
                 $matched[] = $handler;
             }
         }
