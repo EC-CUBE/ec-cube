@@ -35,6 +35,7 @@ use Eccube\Service\AgentCommerce\Exception\AgentCheckoutErrorCode;
 use Eccube\Service\AgentCommerce\Exception\AgentCheckoutException;
 use Eccube\Service\AgentCommerce\Exception\IdempotencyConflictException;
 use Eccube\Service\AgentCommerce\Idempotency\AgentCheckoutIdempotencyStore;
+use Eccube\Service\AgentCommerce\Payment\AgentPaymentMethodResolverInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -78,6 +79,7 @@ class AcpCheckoutController extends AbstractController
         private readonly AgentCheckoutIdempotencyStore $idempotencyStore,
         private readonly CustomerResolverInterface $customerResolver,
         private readonly AgentCheckoutCompletionService $completionService,
+        private readonly AgentPaymentMethodResolverInterface $paymentMethodResolver,
     ) {
     }
 
@@ -161,6 +163,13 @@ class AcpCheckoutController extends AbstractController
                 // 3DS: authentication_required 状態で authentication_result 無しの再開 complete は 400 requires_3ds。
                 if ($this->isAuthenticationPending($session) && !isset($paymentData['authentication_result'])) {
                     return $this->protocolError(400, 'requires_3ds', 'This checkout session requires issuer authentication. The request must include "authentication_result".', '$.authentication_result');
+                }
+
+                // エージェントが選んだ決済ハンドラ (payment_data.handler_id) に対応する Payment を割り当て、
+                // 状態機械の resolveForOrder が同一ハンドラへ解決することを保証する (sort_no 非依存)。
+                $handlerId = is_string($paymentData['handler_id'] ?? null) ? $paymentData['handler_id'] : null;
+                if ($handlerId !== null && $this->paymentMethodResolver->resolve($order, $handlerId) === null) {
+                    return $this->protocolError(400, 'payment_handler_not_found', sprintf('No enabled payment method supports the requested payment handler "%s".', $handlerId), '$.payment_data.handler_id');
                 }
 
                 // complete は状態機械 (#6777)。3DS/escalation はエラーでなく requires_action 等の中間状態として返る。
