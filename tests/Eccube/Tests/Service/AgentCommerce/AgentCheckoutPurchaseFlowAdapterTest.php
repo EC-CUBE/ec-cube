@@ -18,6 +18,7 @@ namespace Eccube\Tests\Service\AgentCommerce;
 use Eccube\Entity\Cart;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\AgentProtocol;
+use Eccube\Entity\Order;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\CartRepository;
 use Eccube\Service\AgentCommerce\AgentCheckoutPurchaseFlowAdapter;
@@ -119,8 +120,8 @@ final class AgentCheckoutPurchaseFlowAdapterTest extends EccubeTestCase
         $this->entityManager->flush();
         $this->entityManager->clear();
 
-        $reloaded = $this->entityManager->getRepository(\Eccube\Entity\Order::class)->find($orderId);
-        self::assertNotNull($reloaded);
+        $reloaded = $this->entityManager->getRepository(Order::class)->find($orderId);
+        $this->assertInstanceOf(Order::class, $reloaded);
         $this->assertCount(1, $reloaded->getProductOrderItems(), 'reload 後: 商品明細 1 行');
         $this->assertNotEmpty($reloaded->getSaleTypes(), 'reload 後: 販売種別が取れる');
     }
