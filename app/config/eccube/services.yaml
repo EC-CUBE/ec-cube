@@ -271,6 +271,11 @@ services:
         arguments:
             $handlers: !tagged_iterator agent_commerce.payment_handler
 
+    # エージェント注文の支払方法解決 (handler_id 駆動・sort_no 非依存)。
+    # 店舗ごとに選択ロジックを変える場合は app/Customize で実装しエイリアスを差し替える。
+    Eccube\Service\AgentCommerce\Payment\AgentPaymentMethodResolverInterface:
+        alias: Eccube\Service\AgentCommerce\Payment\DefaultAgentPaymentMethodResolver
+
     # complete 状態機械オーケストレータ。在庫確保期限は eccube.yaml の設定値を注入。
     Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutCompletionService:
         arguments:
