@@ -211,6 +211,10 @@ jobs:
           if [ "${code}" != "200" ]; then echo '--- php server log ---'; tail -80 "${RUNNER_TEMP}/php-server.log"; exit 1; fi
           jq -e '.ucp.version' /tmp/ucp.json          # version (YYYY-MM-DD) 必須
           jq -e '.ucp.capabilities' /tmp/ucp.json      # capabilities 宣言
+          jq -e '.ucp.payment_handlers' /tmp/ucp.json  # payment_handlers レジストリ 必須
+          ## SamplePayment44 の UCP ハンドラが自動広告される (登録するだけで discovery に載る)
+          jq -e '.ucp.payment_handlers["dev.ucp.payment.card"][0].id == "dev.ucp.payment.card"' /tmp/ucp.json
+          jq -e '.ucp.payment_handlers["dev.ucp.payment.card"][0].version' /tmp/ucp.json  # entity version 必須
           ## signing_keys は公開鍵限定 (秘密鍵パラメータ d を含まない)
           ! jq -e '.signing_keys[]?.d' /tmp/ucp.json   # d があれば異常 (秘密鍵混入)
 

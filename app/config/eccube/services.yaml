@@ -335,3 +335,8 @@ services:
 
     Eccube\Service\AgentCommerce\Discovery\PaymentHandlerRegistryInterface:
         alias: Eccube\Service\AgentCommerce\Discovery\EmptyPaymentHandlerRegistry
+
+    # 登録済み UCP 決済ハンドラ (agent_commerce.payment_handler) から payment_handlers を自動広告する。
+    # プラグインは UCP ハンドラを 1 つ登録するだけで discovery にも載る (ゼロ設定)。
+    Eccube\Service\AgentCommerce\Discovery\UcpPaymentHandlerDiscoveryRegistry:
+        tags: ['eccube.agent_commerce.payment_handler_registry']
