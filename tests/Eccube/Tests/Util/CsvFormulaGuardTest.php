@@ -33,6 +33,9 @@ final class CsvFormulaGuardTest extends TestCase
         yield ['@SUM(1)', "'@SUM(1)"];
         yield ["\tfoo", "'\tfoo"];
         yield ["\rfoo", "'\rfoo"];
+        // 既に ' で始まる値は二重化する(エスケープ文字自身をエスケープし往復を可逆にする)
+        yield ["'=SUM(A1)", "''=SUM(A1)"];
+        yield ["'foo", "''foo"];
         // 通常の文字列は変更しない
         yield ['foo', 'foo'];
         yield ['山田太郎', '山田太郎'];
@@ -54,7 +57,7 @@ final class CsvFormulaGuardTest extends TestCase
     }
 
     /**
-     * escape() で付与した ' のみ剥がし, 利用者由来の先頭 ' は維持する.
+     * 先頭の ' を 1 つだけ剥がす.
      *
      * @return \Iterator<int, array{string, string}>
      */
@@ -64,9 +67,11 @@ final class CsvFormulaGuardTest extends TestCase
         yield ["'=SUM(A1:A2)", '=SUM(A1:A2)'];
         yield ["'+1+1", '+1+1'];
         yield ["'@SUM(1)", '@SUM(1)'];
-        // 後続が数式トリガでない先頭 ' は利用者由来とみなし維持する
-        yield ["'foo", "'foo"];
-        yield ["'", "'"];
+        // 二重化された先頭 ' は 1 つだけ剥がす
+        yield ["''=SUM(A1)", "'=SUM(A1)"];
+        yield ["''foo", "'foo"];
+        yield ["'foo", 'foo'];
+        yield ["'", ''];
         // ' で始まらない値は変更しない
         yield ['=SUM(A1:A2)', '=SUM(A1:A2)'];
         yield ['foo', 'foo'];
@@ -92,6 +97,10 @@ final class CsvFormulaGuardTest extends TestCase
         yield ['foo'];
         yield ['山田太郎'];
         yield ['user@example.com'];
+        // 先頭 ' を含む利用者入力も往復で保存される(回帰: 旧実装では import 時に削れていた)
+        yield ["'=1+1"];
+        yield ["'foo"];
+        yield ["'"];
     }
 
     #[DataProvider(methodName: 'roundTripProvider')]
@@ -103,15 +112,12 @@ final class CsvFormulaGuardTest extends TestCase
     }
 
     /**
-     * 値先頭の ' が付与由来か利用者由来かは区別できないため,
-     * 利用者が元から「' + 数式トリガ」を入力していた場合は取込時に ' が剥がれる.
-     * これは ' を可逆マーカーに用いる方式の構造的限界であり, 意図された挙動.
+     * 既に ' で始まる値は escape で二重化され, unescape で 1 つ剥がして元に戻る.
+     * これにより「' + 数式トリガ」を入力した値も往復で保存される.
      */
-    public function testUnescapeStripsUserSuppliedLeadingQuoteBeforeFormula(): void
+    public function testEscapeDoublesLeadingQuoteForReversibleRoundTrip(): void
     {
-        // export は先頭 ' を数式トリガとみなさないため素通しする
-        $this->assertSame("'=SUM(A1)", CsvFormulaGuard::escape("'=SUM(A1)"));
-        // import は付与由来と区別できず先頭 ' を剥がす
-        $this->assertSame('=SUM(A1)', CsvFormulaGuard::unescape("'=SUM(A1)"));
+        $this->assertSame("''=SUM(A1)", CsvFormulaGuard::escape("'=SUM(A1)"));
+        $this->assertSame("'=SUM(A1)", CsvFormulaGuard::unescape("''=SUM(A1)"));
     }
 }
