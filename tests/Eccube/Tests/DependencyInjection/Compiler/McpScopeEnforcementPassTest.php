@@ -65,5 +65,11 @@ final class McpScopeEnforcementPassTest extends TestCase
         (new McpScopeEnforcementPass())->process($container);
 
         $this->assertFalse($container->hasDefinition('mcp.server.builder'));
+        // builder 不在なら配線されない inner ReferenceHandler 定義も残さない
+        // (残すと builder 不在構成のコンテナコンパイルを乱す)
+        $this->assertFalse(
+            $container->hasDefinition(McpScopeEnforcementPass::INNER_REFERENCE_HANDLER_ID),
+            'builder 不在では inner ReferenceHandler を定義しない',
+        );
     }
 }

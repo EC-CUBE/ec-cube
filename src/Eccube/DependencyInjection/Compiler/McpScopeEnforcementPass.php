@@ -43,9 +43,15 @@ final class McpScopeEnforcementPass implements CompilerPassInterface
     #[\Override]
     public function process(ContainerBuilder $container): void
     {
+        // builder が無い (mcp-bundle 未配線) 環境では scope 強制を差し込む先が無い。 ここで先に
+        // return しないと、 配線されない ReferenceHandler 定義だけが残り、 builder 不在構成の
+        // コンテナコンパイルを乱す。 MCP サーバが無ければ守る対象も無いのでスキップしてよい。
+        if (!$container->hasDefinition('mcp.server.builder')) {
+            return;
+        }
+
         // 本物の Tool 実行器に渡す Tool ServiceLocator を決める。
         // mcp-bundle が builder->setContainer に渡したロケータをそのまま再利用し、 集合の乖離を無くす。
-        // (builder 不在 = mcp-bundle 未導入時は mcp.tool タグから自前収集する安全フォールバック)
         $toolLocator = $this->resolveToolLocator($container);
 
         $container->setDefinition(
@@ -54,10 +60,8 @@ final class McpScopeEnforcementPass implements CompilerPassInterface
         );
 
         // 全 Tool 呼び出しが通る referenceHandler を scope 強制版に差し替える。
-        if ($container->hasDefinition('mcp.server.builder')) {
-            $container->getDefinition('mcp.server.builder')
-                ->addMethodCall('setReferenceHandler', [new Reference(ScopeEnforcingReferenceHandler::class)]);
-        }
+        $container->getDefinition('mcp.server.builder')
+            ->addMethodCall('setReferenceHandler', [new Reference(ScopeEnforcingReferenceHandler::class)]);
     }
 
     /**
