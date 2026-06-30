@@ -75,8 +75,11 @@ final class DefaultAgentPaymentMethodResolverTest extends TestCase
         $resolved = $resolver->resolve($order, 'not-registered');
 
         // 未登録 handler_id は沈黙フォールバックせず null。注文の支払方法も据え置き (null のまま)。
+        // resolve()/getPayment() は ?Payment 型のため rector が assertNull を assertNotInstanceOf へ
+        // 変換する (false/[] は型上返せず実質 null 固定)。method 名 (?string) は assertNull で締める。
         $this->assertNotInstanceOf(Payment::class, $resolved);
         $this->assertNotInstanceOf(Payment::class, $order->getPayment());
+        $this->assertNull($order->getPaymentMethod());
     }
 
     public function testReturnsNullWhenNoCandidateSupportsRequestedHandler(): void
