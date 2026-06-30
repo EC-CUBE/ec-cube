@@ -18,6 +18,7 @@ namespace Eccube\Tests\Service;
 use Eccube\Entity\Csv;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\Order;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CsvRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\CsvExportService;
@@ -73,7 +74,7 @@ final class CsvExportServiceTest extends AbstractServiceTestCase
 
     public function testFputcsvEscapesFormulaWhenOptionEnabled()
     {
-        $BaseInfo = static::getContainer()->get(\Eccube\Repository\BaseInfoRepository::class)->get();
+        $BaseInfo = static::getContainer()->get(BaseInfoRepository::class)->get();
         $BaseInfo->setOptionSanitizeCsvFormulas(true);
         $this->entityManager->flush();
 
@@ -83,7 +84,7 @@ final class CsvExportServiceTest extends AbstractServiceTestCase
 
     public function testFputcsvSkipsEscapeWhenOptionDisabled()
     {
-        $BaseInfo = static::getContainer()->get(\Eccube\Repository\BaseInfoRepository::class)->get();
+        $BaseInfo = static::getContainer()->get(BaseInfoRepository::class)->get();
         $BaseInfo->setOptionSanitizeCsvFormulas(false);
         $this->entityManager->flush();
 

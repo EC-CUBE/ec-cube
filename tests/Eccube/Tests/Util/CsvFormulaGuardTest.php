@@ -22,90 +22,84 @@ use PHPUnit\Framework\TestCase;
 final class CsvFormulaGuardTest extends TestCase
 {
     /**
-     * @return array<int, array{string, string}>
+     * @return \Iterator<int, array{string, string}>
      */
-    public static function escapeProvider(): array
+    public static function escapeProvider(): \Iterator
     {
-        return [
-            // 数式評価され得る先頭文字には ' を付与する
-            ['=SUM(A1:A2)', "'=SUM(A1:A2)"],
-            ['+1+1', "'+1+1"],
-            ['-1+cmd|\'/c calc\'!A1', "'-1+cmd|'/c calc'!A1"],
-            ['@SUM(1)', "'@SUM(1)"],
-            ["\tfoo", "'\tfoo"],
-            ["\rfoo", "'\rfoo"],
-            // 通常の文字列は変更しない
-            ['foo', 'foo'],
-            ['山田太郎', '山田太郎'],
-            ['user@example.com', 'user@example.com'],
-            // 空文字は変更しない
-            ['', ''],
-        ];
+        // 数式評価され得る先頭文字には ' を付与する
+        yield ['=SUM(A1:A2)', "'=SUM(A1:A2)"];
+        yield ['+1+1', "'+1+1"];
+        yield ['-1+cmd|\'/c calc\'!A1', "'-1+cmd|'/c calc'!A1"];
+        yield ['@SUM(1)', "'@SUM(1)"];
+        yield ["\tfoo", "'\tfoo"];
+        yield ["\rfoo", "'\rfoo"];
+        // 通常の文字列は変更しない
+        yield ['foo', 'foo'];
+        yield ['山田太郎', '山田太郎'];
+        yield ['user@example.com', 'user@example.com'];
+        // 空文字は変更しない
+        yield ['', ''];
     }
 
-    #[DataProvider('escapeProvider')]
+    #[DataProvider(methodName: 'escapeProvider')]
     public function testEscape(string $input, string $expected): void
     {
-        self::assertSame($expected, CsvFormulaGuard::escape($input));
+        $this->assertSame($expected, CsvFormulaGuard::escape($input));
     }
 
     public function testEscapePassesThroughNonString(): void
     {
-        self::assertSame(100, CsvFormulaGuard::escape(100));
-        self::assertNull(CsvFormulaGuard::escape(null));
+        $this->assertSame(100, CsvFormulaGuard::escape(100));
+        $this->assertNull(CsvFormulaGuard::escape(null));
     }
 
     /**
      * escape() で付与した ' のみ剥がし, 利用者由来の先頭 ' は維持する.
      *
-     * @return array<int, array{string, string}>
+     * @return \Iterator<int, array{string, string}>
      */
-    public static function unescapeProvider(): array
+    public static function unescapeProvider(): \Iterator
     {
-        return [
-            // escape 済みの値は元に戻す
-            ["'=SUM(A1:A2)", '=SUM(A1:A2)'],
-            ["'+1+1", '+1+1'],
-            ["'@SUM(1)", '@SUM(1)'],
-            // 後続が数式トリガでない先頭 ' は利用者由来とみなし維持する
-            ["'foo", "'foo"],
-            ["'", "'"],
-            // ' で始まらない値は変更しない
-            ['=SUM(A1:A2)', '=SUM(A1:A2)'],
-            ['foo', 'foo'],
-        ];
+        // escape 済みの値は元に戻す
+        yield ["'=SUM(A1:A2)", '=SUM(A1:A2)'];
+        yield ["'+1+1", '+1+1'];
+        yield ["'@SUM(1)", '@SUM(1)'];
+        // 後続が数式トリガでない先頭 ' は利用者由来とみなし維持する
+        yield ["'foo", "'foo"];
+        yield ["'", "'"];
+        // ' で始まらない値は変更しない
+        yield ['=SUM(A1:A2)', '=SUM(A1:A2)'];
+        yield ['foo', 'foo'];
     }
 
-    #[DataProvider('unescapeProvider')]
+    #[DataProvider(methodName: 'unescapeProvider')]
     public function testUnescape(string $input, string $expected): void
     {
-        self::assertSame($expected, CsvFormulaGuard::unescape($input));
+        $this->assertSame($expected, CsvFormulaGuard::unescape($input));
     }
 
     /**
      * 出力(escape)→取込(unescape)の往復で値が変わらないこと.
      *
-     * @return array<int, array{string}>
+     * @return \Iterator<int, array{string}>
      */
-    public static function roundTripProvider(): array
+    public static function roundTripProvider(): \Iterator
     {
-        return [
-            ['=SUM(A1:A2)'],
-            ['+1+1'],
-            ['-100'],
-            ['@SUM(1)'],
-            ['foo'],
-            ['山田太郎'],
-            ['user@example.com'],
-        ];
+        yield ['=SUM(A1:A2)'];
+        yield ['+1+1'];
+        yield ['-100'];
+        yield ['@SUM(1)'];
+        yield ['foo'];
+        yield ['山田太郎'];
+        yield ['user@example.com'];
     }
 
-    #[DataProvider('roundTripProvider')]
+    #[DataProvider(methodName: 'roundTripProvider')]
     public function testRoundTripPreservesValue(string $value): void
     {
         $exported = CsvFormulaGuard::escape($value);
-        self::assertIsString($exported);
-        self::assertSame($value, CsvFormulaGuard::unescape($exported));
+        $this->assertIsString($exported);
+        $this->assertSame($value, CsvFormulaGuard::unescape($exported));
     }
 
     /**
@@ -116,8 +110,8 @@ final class CsvFormulaGuardTest extends TestCase
     public function testUnescapeStripsUserSuppliedLeadingQuoteBeforeFormula(): void
     {
         // export は先頭 ' を数式トリガとみなさないため素通しする
-        self::assertSame("'=SUM(A1)", CsvFormulaGuard::escape("'=SUM(A1)"));
+        $this->assertSame("'=SUM(A1)", CsvFormulaGuard::escape("'=SUM(A1)"));
         // import は付与由来と区別できず先頭 ' を剥がす
-        self::assertSame('=SUM(A1)', CsvFormulaGuard::unescape("'=SUM(A1)"));
+        $this->assertSame('=SUM(A1)', CsvFormulaGuard::unescape("'=SUM(A1)"));
     }
 }
