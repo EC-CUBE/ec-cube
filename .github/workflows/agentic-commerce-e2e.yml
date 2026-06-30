@@ -243,11 +243,11 @@ jobs:
   ## ───────────────────────────────────────────────────────────────────────
   ## Job B: client_credentials トークンを実発行 (api4#188) → PHP エージェントシミュレータで
   ## OAuth2 認証 + checkout セッション (create/update/get) を検証。
-  ## complete (決済実行) は #3 sample-payment 決済ハンドラ待ちのため inputs.run_payment で sub-gate
+  ## complete (決済実行) は決済情報を要するため inputs.run_payment で sub-gate する
   ## (既定 false でも認証 + セッション構築までは常に検証する = #188 の結合を CI で保証)。
   ## ───────────────────────────────────────────────────────────────────────
   checkout-e2e:
-    name: Checkout E2E (OAuth2 認証 + セッション・complete は #3 待ち)
+    name: Checkout E2E (OAuth2 認証 + セッション検証 / complete は run_payment 指定時のみ)
     needs: integration-smoke
     runs-on: ubuntu-24.04
     strategy:
