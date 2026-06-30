@@ -24,7 +24,7 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * MCP の scope 検査を「mcp-bundle が Tool を呼ぶ手前の 1 箇所」 に強制するための DI 配線 (設計案 A)。
+ * MCP の scope 検査を「mcp-bundle が Tool を呼ぶ手前の 1 箇所」 に強制するための DI 配線。
  *
  * mcp-bundle の `Builder::setReferenceHandler()` に {@see ScopeEnforcingReferenceHandler} を差し込み、
  * 全 Tool 呼び出しが本層を必ず通過するようにする。 本層が委譲する「本物の」 Tool 実行器
@@ -70,11 +70,10 @@ final class McpScopeEnforcementPass implements CompilerPassInterface
      */
     private function resolveToolLocator(ContainerBuilder $container): Reference
     {
-        if ($container->hasDefinition('mcp.server.builder')) {
-            foreach ($container->getDefinition('mcp.server.builder')->getMethodCalls() as [$method, $arguments]) {
-                if ('setContainer' === $method && isset($arguments[0]) && $arguments[0] instanceof Reference) {
-                    return $arguments[0];
-                }
+        // 呼び出し元 (process) が builder の存在を保証済み。
+        foreach ($container->getDefinition('mcp.server.builder')->getMethodCalls() as [$method, $arguments]) {
+            if ('setContainer' === $method && isset($arguments[0]) && $arguments[0] instanceof Reference) {
+                return $arguments[0];
             }
         }
 
