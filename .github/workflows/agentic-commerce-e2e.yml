@@ -99,7 +99,10 @@ jobs:
         uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc  # v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: redis, sodium
+          # sodium は意図的に入れない: 共有レンタルサーバー相当の sodium 拡張なし環境を再現し、
+          # composer.json の config.platform.ext-sodium だけで api44 (lcobucci/jwt の ext-sodium 要求)
+          # が導入でき、実行時も RSA/openssl 経路で動作することを検証する (#6827)。
+          extensions: redis
 
       - name: Initialize Composer
         uses: ./.github/actions/composer
@@ -286,7 +289,10 @@ jobs:
         uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc  # v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: redis, sodium
+          # sodium は意図的に入れない: 共有レンタルサーバー相当の sodium 拡張なし環境を再現し、
+          # composer.json の config.platform.ext-sodium だけで api44 (lcobucci/jwt の ext-sodium 要求)
+          # が導入でき、実行時も RSA/openssl 経路で動作することを検証する (#6827)。
+          extensions: redis
 
       - name: Initialize Composer
         uses: ./.github/actions/composer
