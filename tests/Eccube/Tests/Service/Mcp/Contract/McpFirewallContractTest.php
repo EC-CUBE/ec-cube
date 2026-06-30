@@ -49,6 +49,13 @@ final class McpFirewallContractTest extends EccubeTestCase
 
         $response = $this->client->getResponse();
         $this->assertSame(Response::HTTP_UNAUTHORIZED, $response->getStatusCode(), 'Bearer なしは admin Cookie firewall ではなく oauth2 firewall で 401');
+
+        // RFC 9728: 401 の WWW-Authenticate に resource_metadata (well-known の場所) を載せ、
+        // MCP クライアントが認可サーバを自動発見できることを担保する (OAuth ディスカバリの中核)。
+        // entry_point は Api44 の McpAuthenticationEntryPoint。
+        $header = (string) $response->headers->get('WWW-Authenticate');
+        $this->assertStringContainsString('resource_metadata=', $header);
+        $this->assertStringContainsString('/.well-known/oauth-protected-resource', $header);
     }
 
     public function testReturns401WithInvalidBearer(): void
