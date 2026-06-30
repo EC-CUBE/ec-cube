@@ -99,10 +99,10 @@ jobs:
         uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc  # v2
         with:
           php-version: ${{ matrix.php }}
-          # sodium は意図的に入れない: 共有レンタルサーバー相当の sodium 拡張なし環境を再現し、
-          # composer.json の config.platform.ext-sodium だけで api44 (lcobucci/jwt の ext-sodium 要求)
-          # が導入でき、実行時も RSA/openssl 経路で動作することを検証する (#6827)。
-          extensions: redis
+          # 追加拡張は指定しない (必要な拡張は setup-php 既定で揃う)。共有レンタルサーバー相当の環境を
+          # 再現するため sodium は意図的に外す: composer.json の config.platform.ext-sodium だけで
+          # api44 (lcobucci/jwt の ext-sodium 要求) が導入でき、実行時も RSA/openssl 経路で動作することを
+          # 検証する (#6827)。redis も本 E2E は FilesystemAdapter のため未使用。
 
       - name: Initialize Composer
         uses: ./.github/actions/composer
@@ -289,10 +289,10 @@ jobs:
         uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc  # v2
         with:
           php-version: ${{ matrix.php }}
-          # sodium は意図的に入れない: 共有レンタルサーバー相当の sodium 拡張なし環境を再現し、
-          # composer.json の config.platform.ext-sodium だけで api44 (lcobucci/jwt の ext-sodium 要求)
-          # が導入でき、実行時も RSA/openssl 経路で動作することを検証する (#6827)。
-          extensions: redis
+          # 追加拡張は指定しない (必要な拡張は setup-php 既定で揃う)。共有レンタルサーバー相当の環境を
+          # 再現するため sodium は意図的に外す: composer.json の config.platform.ext-sodium だけで
+          # api44 (lcobucci/jwt の ext-sodium 要求) が導入でき、実行時も RSA/openssl 経路で動作することを
+          # 検証する (#6827)。redis も本 E2E は FilesystemAdapter のため未使用。
 
       - name: Initialize Composer
         uses: ./.github/actions/composer
