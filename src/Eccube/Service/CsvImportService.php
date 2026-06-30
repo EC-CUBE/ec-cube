@@ -166,9 +166,9 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      * CSV インジェクション対策で出力時に付与された先頭の ' を除去し, 元の値を復元する.
      * ヘッダ行・データ行とも出力側で付与されるため, 同じ規則で対称に剥がす.
      *
-     * @param array<int, string>|string|false $row
+     * @param array<int, string|null>|string|false $row
      *
-     * @return array<int, string>|string|false
+     * @return array<int, string|null>|string|false
      */
     private function unescapeRow(array|string|false $row): array|string|false
     {
@@ -176,8 +176,9 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
             return $row;
         }
 
+        // 空行は [0 => null] として読まれるため null セルを素通しする
         return array_map(
-            static fn (string $value): string => CsvFormulaGuard::unescape($value),
+            static fn (?string $value): ?string => $value === null ? null : CsvFormulaGuard::unescape($value),
             $row
         );
     }

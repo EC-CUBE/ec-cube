@@ -71,6 +71,26 @@ final class CsvExportServiceTest extends AbstractServiceTestCase
         $this->verify();
     }
 
+    public function testFputcsvEscapesFormulaWhenOptionEnabled()
+    {
+        $BaseInfo = static::getContainer()->get(\Eccube\Repository\BaseInfoRepository::class)->get();
+        $BaseInfo->setOptionSanitizeCsvFormulas(true);
+        $this->entityManager->flush();
+
+        $this->csvExportService->fputcsv(['=SUM(A1)', 'foo']);
+        $this->assertSame("'=SUM(A1),foo\n", file_get_contents($this->url));
+    }
+
+    public function testFputcsvSkipsEscapeWhenOptionDisabled()
+    {
+        $BaseInfo = static::getContainer()->get(\Eccube\Repository\BaseInfoRepository::class)->get();
+        $BaseInfo->setOptionSanitizeCsvFormulas(false);
+        $this->entityManager->flush();
+
+        $this->csvExportService->fputcsv(['=SUM(A1)', 'foo']);
+        $this->assertSame("=SUM(A1),foo\n", file_get_contents($this->url));
+    }
+
     public function testExportData()
     {
         $Customer = $this->createCustomer();
