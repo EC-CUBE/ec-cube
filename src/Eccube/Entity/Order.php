@@ -190,7 +190,7 @@ if (!class_exists(Order::class)) {
                 }
 
                 // totalPrice * (rate / (100 + rate))
-                $rateStr = (string) $rate;
+                $rateStr = $rate;
                 $taxRate = bcdiv($rateStr, bcadd('100', $rateStr, 6), 6);
                 $value = bcmul($totalPrice, $taxRate, 6);
 

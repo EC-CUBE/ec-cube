@@ -338,7 +338,7 @@ final class OrderTest extends EccubeTestCase
 
         $total = $Order->getTotalByTaxRate();
 
-        $this->assertSame('9999', bcadd($total['8'], $total['10'], 0), '税率別合計の総和が支払額と一致していません');
+        $this->assertSame('9999', bcadd((string) $total['8'], (string) $total['10'], 0), '税率別合計の総和が支払額と一致していません');
     }
 
     /**
