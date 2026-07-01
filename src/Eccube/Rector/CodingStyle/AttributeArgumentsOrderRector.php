@@ -51,7 +51,7 @@ final class AttributeArgumentsOrderRector extends AbstractRector
      * 差し替え、置換後のクラスの正しいパラメータ順序（例: Template の $template）を使う。
      * 差し替えるのはリフレクション対象のみで、出力される Attribute 名ノードには手を加えない。
      *
-     * @var array<class-string, class-string>
+     * @var array<string, class-string>
      *
      * @see https://github.com/EC-CUBE/ec-cube/issues/6540
      */
