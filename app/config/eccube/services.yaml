@@ -224,6 +224,10 @@ services:
         parent: cache.adapter.doctrine_dbal
         abstract: true
         arguments:
+            # index_0 に DBAL 接続を焼き込む. プール設定側で provider を指定すると
+            # test 環境の filesystem プールにも provider がマージで漏れて TypeError に
+            # なるため, ここで接続を渡す.
+            index_0: '@doctrine.dbal.default_connection'
             index_3:
                 db_table: 'dtb_rate_limiter'
                 db_id_col: 'cache_key'
