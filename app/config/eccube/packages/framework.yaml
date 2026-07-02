@@ -49,6 +49,9 @@ framework:
         # to avoid collisions when multiple apps share the same cache backend (e.g. a Redis server)
         # See https://symfony.com/doc/current/reference/configuration/framework.html#prefix-seed
         prefix_seed: ec-cube
+    # Lock factory. flock store works on shared hosting without external infra.
+    # Used by Agent Commerce (UCP Catalog) cache stampede prevention.
+    lock: flock
     # The 'ide' option turns all of the file paths in an exception page
     # into clickable links that open the given file using your favorite IDE.
     # When 'ide' is set to null the file is opened in your web browser.
