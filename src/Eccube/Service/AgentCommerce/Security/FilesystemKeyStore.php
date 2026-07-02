@@ -57,15 +57,22 @@ class FilesystemKeyStore implements KeyStoreInterface
         $dir = \dirname($path);
 
         if (!is_dir($dir) && !mkdir($dir, 0700, true) && !is_dir($dir)) {
-            throw new \RuntimeException(sprintf('Failed to create key directory: %s', $dir));
+            throw new \RuntimeException(sprintf('鍵格納ディレクトリ "%s" を作成できません.', $dir));
         }
 
-        if (file_put_contents($path, $pem, LOCK_EX) === false) {
-            throw new \RuntimeException(sprintf('Failed to write key file: %s', $path));
-        }
-
-        if (!chmod($path, 0600)) {
-            throw new \RuntimeException(sprintf('Failed to set key file permission: %s', $path));
+        // file_put_contents は umask 既定 (通常 0644) でファイルを作成してから書き込むため、
+        // chmod(0600) までの間に秘密鍵が group/other から読める瞬間が生じる。
+        // 作成時点から 0600 になるよう、書き込みの間だけ umask(0077) に切り替える。
+        $oldUmask = umask(0077);
+        try {
+            if (file_put_contents($path, $pem, LOCK_EX) === false) {
+                throw new \RuntimeException(sprintf('鍵ファイル "%s" への書き込みに失敗しました.', $path));
+            }
+            if (!chmod($path, 0600)) {
+                throw new \RuntimeException(sprintf('鍵ファイル "%s" のパーミッション設定に失敗しました.', $path));
+            }
+        } finally {
+            umask($oldUmask);
         }
     }
 
@@ -74,9 +81,18 @@ class FilesystemKeyStore implements KeyStoreInterface
      *
      * $envPathOverrides[$purpose] が非空文字ならそのパスを優先し、
      * それ以外は既定パスを使用する。
+     *
+     * $purpose は既定パスへ直接連結されるため、パストラバーサル ("../" 等) を防ぐべく
+     * 許可文字 ([a-z0-9_-]) のみに制限する。
+     *
+     * @throws \InvalidArgumentException $purpose に許可外の文字が含まれる場合
      */
     private function resolvePath(string $purpose): string
     {
+        if (!preg_match('/\A[a-z0-9_-]+\z/', $purpose)) {
+            throw new \InvalidArgumentException(sprintf('Invalid key purpose "%s". Only lowercase alphanumerics, "_" and "-" are allowed.', $purpose));
+        }
+
         $override = $this->envPathOverrides[$purpose] ?? '';
 
         if ($override !== '') {

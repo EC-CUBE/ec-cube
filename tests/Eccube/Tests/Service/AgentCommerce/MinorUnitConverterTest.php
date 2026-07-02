@@ -68,6 +68,28 @@ final class MinorUnitConverterTest extends TestCase
         $this->assertSame(-1010, $this->converter->toMinorUnits('-10.095', 'USD'), 'Round-half-up on negative magnitude: -10.095 USD rounds to -1010 cents');
     }
 
+    #[DataProvider(methodName: 'malformedAmountProvider')]
+    public function testToMinorUnitsMalformedReturnsZero(string $amount): void
+    {
+        // 仕様: 空や不正な表記は 0。BCMath に渡す前に弾き ValueError を起こさないこと。
+        $this->assertSame(0, $this->converter->toMinorUnits($amount, 'USD'), sprintf('Malformed amount "%s" must convert to 0 without throwing', $amount));
+    }
+
+    public static function malformedAmountProvider(): \Iterator
+    {
+        yield 'empty' => [''];
+        yield 'dot only' => ['.'];
+        yield 'sign only' => ['-'];
+        yield 'alpha' => ['abc'];
+        yield 'thousands separator' => ['1,000'];
+        yield 'double dot' => ['1..2'];
+        yield 'trailing garbage' => ['12.34x'];
+        yield 'whitespace inside' => ['1 000'];
+        yield 'exponential notation' => ['1e3'];
+        yield 'exponential with decimal' => ['1.5e3'];
+        yield 'hex' => ['0x1A'];
+    }
+
     public function testToAmountStringZeroDecimalJpy(): void
     {
         $this->assertSame('1000', $this->converter->toAmountString(1000, 'JPY'), 'JPY minor units map back to the same integer string with no decimal point');

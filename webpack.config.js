@@ -32,18 +32,6 @@ module.exports = {
       {
         test: /\.png|jpg|svg|gif|eot|wof|woff|ttf$/,
         use: ['url-loader']
-      },
-      {
-        test: /\.js$/,
-        use: [
-          {
-            loader: 'babel-loader',
-            options: {
-              presets: ['@babel/preset-env']
-            }
-          }
-        ],
-        exclude: /node_modules/
       }
     ]
   },

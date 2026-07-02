@@ -100,6 +100,8 @@ EC-CUBE 4.x 系の仕様や手順、開発Tipsに関するドキュメントを�
 EC-CUBE 4.4の不具合の修正、機能のブラッシュアップを目的として、継続的に開発を行っております。  
 コードのリファクタリング、不具合修正以外のPullRequestを送る際は、Pull Requestのコメントなどに意図を明確に記載してください。  
 
+開発環境の構築・ブランチ運用（PR の宛先は `4.4`）・PR を出す前に通すべき CI チェック（コードスタイル / 静的解析 / Rector / テスト）・ライセンスヘッダなど、**コントリビューションの具体的な手順は [CONTRIBUTING.md](.github/CONTRIBUTING.md) を参照**してください。レイヤ別の実装規約は [AGENTS.md](AGENTS.md) に集約しています。
+
 Pull Requestの送信前に、Issueにて提議いただく事も可能です。
 Issuesの利用方法については、[こちら](https://github.com/EC-CUBE/ec-cube/wiki/Issues%E3%81%AE%E5%88%A9%E7%94%A8%E6%96%B9%E6%B3%95)をご確認ください。
 
