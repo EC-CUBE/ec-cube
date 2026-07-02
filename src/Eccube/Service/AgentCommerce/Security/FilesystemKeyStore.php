@@ -81,9 +81,18 @@ class FilesystemKeyStore implements KeyStoreInterface
      *
      * $envPathOverrides[$purpose] が非空文字ならそのパスを優先し、
      * それ以外は既定パスを使用する。
+     *
+     * $purpose は既定パスへ直接連結されるため、パストラバーサル ("../" 等) を防ぐべく
+     * 許可文字 ([a-z0-9_-]) のみに制限する。
+     *
+     * @throws \InvalidArgumentException $purpose に許可外の文字が含まれる場合
      */
     private function resolvePath(string $purpose): string
     {
+        if (!preg_match('/\A[a-z0-9_-]+\z/', $purpose)) {
+            throw new \InvalidArgumentException(sprintf('Invalid key purpose "%s". Only lowercase alphanumerics, "_" and "-" are allowed.', $purpose));
+        }
+
         $override = $this->envPathOverrides[$purpose] ?? '';
 
         if ($override !== '') {

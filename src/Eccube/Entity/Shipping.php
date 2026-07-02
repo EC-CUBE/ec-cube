@@ -239,7 +239,7 @@ if (!class_exists(Shipping::class)) {
         /**
          * Set kana01.
          */
-        public function setKana01(string $kana01): Shipping
+        public function setKana01(?string $kana01): Shipping
         {
             $this->kana01 = $kana01;
 
@@ -249,7 +249,7 @@ if (!class_exists(Shipping::class)) {
         /**
          * Get kana01.
          */
-        public function getKana01(): string
+        public function getKana01(): ?string
         {
             return $this->kana01;
         }
@@ -257,7 +257,7 @@ if (!class_exists(Shipping::class)) {
         /**
          * Set kana02.
          */
-        public function setKana02(string $kana02): Shipping
+        public function setKana02(?string $kana02): Shipping
         {
             $this->kana02 = $kana02;
 
@@ -267,7 +267,7 @@ if (!class_exists(Shipping::class)) {
         /**
          * Get kana02.
          */
-        public function getKana02(): string
+        public function getKana02(): ?string
         {
             return $this->kana02;
         }
@@ -643,7 +643,7 @@ if (!class_exists(Shipping::class)) {
         /**
          * Set trackingNumber
          */
-        public function setTrackingNumber(string $trackingNumber): Shipping
+        public function setTrackingNumber(?string $trackingNumber): Shipping
         {
             $this->tracking_number = $trackingNumber;
 
