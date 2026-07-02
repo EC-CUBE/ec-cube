@@ -65,7 +65,7 @@ class FilesystemKeyStore implements KeyStoreInterface
         // 作成時点から 0600 になるよう、書き込みの間だけ umask(0077) に切り替える。
         $oldUmask = umask(0077);
         try {
-            if (file_put_contents($path, $pem) === false) {
+            if (file_put_contents($path, $pem, LOCK_EX) === false) {
                 throw new \RuntimeException(sprintf('鍵ファイル "%s" への書き込みに失敗しました.', $path));
             }
             if (!chmod($path, 0600)) {
@@ -81,9 +81,18 @@ class FilesystemKeyStore implements KeyStoreInterface
      *
      * $envPathOverrides[$purpose] が非空文字ならそのパスを優先し、
      * それ以外は既定パスを使用する。
+     *
+     * $purpose は既定パスへ直接連結されるため、パストラバーサル ("../" 等) を防ぐべく
+     * 許可文字 ([a-z0-9_-]) のみに制限する。
+     *
+     * @throws \InvalidArgumentException $purpose に許可外の文字が含まれる場合
      */
     private function resolvePath(string $purpose): string
     {
+        if (!preg_match('/\A[a-z0-9_-]+\z/', $purpose)) {
+            throw new \InvalidArgumentException(sprintf('Invalid key purpose "%s". Only lowercase alphanumerics, "_" and "-" are allowed.', $purpose));
+        }
+
         $override = $this->envPathOverrides[$purpose] ?? '';
 
         if ($override !== '') {

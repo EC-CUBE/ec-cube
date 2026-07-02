@@ -14,6 +14,7 @@
 namespace Eccube\Service\AgentCommerce\Catalog\Ucp;
 
 use Psr\Cache\CacheItemInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Lock\LockFactory;
 
@@ -43,6 +44,7 @@ class UcpCatalogCache
      */
     public function __construct(
         private readonly LockFactory $lockFactory,
+        private readonly LoggerInterface $logger,
         string $cacheDir,
         private readonly int $defaultLifetime = 3600,
     ) {
@@ -87,7 +89,10 @@ class UcpCatalogCache
         $item = $this->adapter->getItem($key);
         $item->set($value);
         $item->expiresAfter($this->defaultLifetime > 0 ? $this->defaultLifetime : null);
-        $this->adapter->save($item);
+        if (!$this->adapter->save($item)) {
+            // I/O エラー等で永続化に失敗してもキャッシュは再計算可能なため処理は継続する。
+            $this->logger->error('Failed to persist UCP catalog cache item.', ['key' => $key]);
+        }
     }
 
     /**
@@ -130,7 +135,10 @@ class UcpCatalogCache
      */
     public function clear(): void
     {
-        $this->adapter->clear();
+        if (!$this->adapter->clear()) {
+            // クリア失敗時は古いレスポンスが残り得るため、運用者が気付けるようログへ残す。
+            $this->logger->error('Failed to clear UCP catalog cache.');
+        }
     }
 
     /**
