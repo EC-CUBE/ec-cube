@@ -902,21 +902,24 @@ class InstallController extends AbstractController
         $conn->beginTransaction();
         try {
             $salt = StringUtil::random(32);
+            // DBAL 4 の executeQuery/executeStatement は名前付きパラメータを expandArrayParameters()
+            // で展開する際, プレースホルダからコロンを除いた名前 (:login_id → login_id) で配列キーを
+            // 引くため, パラメータ配列のキーはコロンを付けない (付けると MissingNamedParameter になる).
             $row = $conn->executeQuery('SELECT id FROM dtb_member WHERE login_id = :login_id;', [
-                ':login_id' => $data['login_id'],
+                'login_id' => $data['login_id'],
             ]);
             $password = $this->passwordHasher->hashPassword(new Customer(), $data['login_pass']);
             if ($row->fetchOne() !== false) {
                 // 同一の管理者IDであればパスワードのみ更新
                 $conn->executeStatement('UPDATE dtb_member set password = :password, update_date = current_timestamp WHERE login_id = :login_id;', [
-                    ':password' => $password,
-                    ':login_id' => $data['login_id'],
+                    'password' => $password,
+                    'login_id' => $data['login_id'],
                 ]);
             } else {
                 // 新しい管理者IDが入力されたらinsert
                 $conn->executeStatement("INSERT INTO dtb_member (login_id, password, work_id, authority_id, creator_id, sort_no, update_date, create_date,name,department,discriminator_type) VALUES (:login_id, :password, '1', '0', '1', '1', current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP', 'member');", [
-                    ':login_id' => $data['login_id'],
-                    ':password' => $password,
+                    'login_id' => $data['login_id'],
+                    'password' => $password,
                 ]);
             }
             $conn->executeStatement('UPDATE dtb_base_info set
@@ -927,8 +930,8 @@ class InstallController extends AbstractController
                 email04 = :admin_mail,
                 update_date = current_timestamp
             WHERE id = 1;', [
-                ':shop_name' => $data['shop_name'],
-                ':admin_mail' => $data['email'],
+                'shop_name' => $data['shop_name'],
+                'admin_mail' => $data['email'],
             ]);
             $conn->commit();
         } catch (\Exception $e) {
