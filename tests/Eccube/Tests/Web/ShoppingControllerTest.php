@@ -1136,7 +1136,7 @@ final class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         ]);
 
         // 利用条件外のデフォルト支払方法が選択されず, 手数料(¥500)が加算されていないこと.
-        $this->assertNotNull($Order->getPayment());
+        $this->assertInstanceOf(Payment::class, $Order->getPayment());
         $this->assertSame($ValidAlternative->getId(), $Order->getPayment()->getId());
         $this->assertEquals(0, $Order->getCharge());
 
