@@ -75,6 +75,7 @@ class PhoneNumberType extends AbstractType
         $resolver->setDefaults([
             'attr' => [
                 'placeholder' => 'common.phone_number_sample',
+                'autocomplete' => 'tel',
             ],
             'trim' => true,
         ]);
