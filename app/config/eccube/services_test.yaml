@@ -77,3 +77,7 @@ services:
     Eccube\Service\Composer\ComposerApiService:
         autowire: true
         public: true
+    # AddressMappingService はまだ consumer が無く private では除去されるためテスト時のみ public 化
+    Eccube\Service\AgentCommerce\AddressMappingService:
+        autowire: true
+        public: true

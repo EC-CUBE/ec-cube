@@ -154,6 +154,15 @@ if (!class_exists(BaseInfo::class)) {
         #[ORM\Column(name: 'ga_id', type: Types::STRING, length: 255, nullable: true)]
         private ?string $gaId = null;
 
+        #[ORM\Column(name: 'acp_checkout_enabled', type: Types::BOOLEAN, options: ['default' => false])]
+        private bool $acp_checkout_enabled = false;
+
+        #[ORM\Column(name: 'ucp_checkout_enabled', type: Types::BOOLEAN, options: ['default' => false])]
+        private bool $ucp_checkout_enabled = false;
+
+        #[ORM\Column(name: 'ucp_catalog_requires_auth', type: Types::BOOLEAN, options: ['default' => false])]
+        private bool $ucp_catalog_requires_auth = false;
+
         /**
          * Get id.
          *
@@ -830,6 +839,60 @@ if (!class_exists(BaseInfo::class)) {
         public function getGaId(): ?string
         {
             return $this->gaId;
+        }
+
+        /**
+         * Set acpCheckoutEnabled.
+         */
+        public function setAcpCheckoutEnabled(bool $acpCheckoutEnabled): BaseInfo
+        {
+            $this->acp_checkout_enabled = $acpCheckoutEnabled;
+
+            return $this;
+        }
+
+        /**
+         * Get acpCheckoutEnabled.
+         */
+        public function isAcpCheckoutEnabled(): bool
+        {
+            return $this->acp_checkout_enabled;
+        }
+
+        /**
+         * Set ucpCheckoutEnabled.
+         */
+        public function setUcpCheckoutEnabled(bool $ucpCheckoutEnabled): BaseInfo
+        {
+            $this->ucp_checkout_enabled = $ucpCheckoutEnabled;
+
+            return $this;
+        }
+
+        /**
+         * Get ucpCheckoutEnabled.
+         */
+        public function isUcpCheckoutEnabled(): bool
+        {
+            return $this->ucp_checkout_enabled;
+        }
+
+        /**
+         * Set ucpCatalogRequiresAuth.
+         */
+        public function setUcpCatalogRequiresAuth(bool $ucpCatalogRequiresAuth): BaseInfo
+        {
+            $this->ucp_catalog_requires_auth = $ucpCatalogRequiresAuth;
+
+            return $this;
+        }
+
+        /**
+         * Get ucpCatalogRequiresAuth.
+         */
+        public function isUcpCatalogRequiresAuth(): bool
+        {
+            return $this->ucp_catalog_requires_auth;
         }
     }
 }
