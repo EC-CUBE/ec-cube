@@ -218,6 +218,9 @@ class ShopMasterType extends AbstractType
                     ]),
                 ],
             ])
+            // エージェントコマース checkout の有効化フラグ (discovery / catalog は常時公開、checkout のみ制御)
+            ->add('acp_checkout_enabled', ToggleSwitchType::class)
+            ->add('ucp_checkout_enabled', ToggleSwitchType::class)
         ;
 
         $builder->add(

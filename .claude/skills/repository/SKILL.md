@@ -71,3 +71,4 @@ class ExampleRepository extends AbstractRepository
 - ❌ Repository に業務ロジックを書く → ✅ データアクセスに徹し、ロジックは Service
 - ❌ `ServiceEntityRepository` を直接継承 → ✅ `AbstractRepository<T>` を継承
 - ❌ オーバーライドで親と異なるシグネチャ → ✅ 親シグネチャを厳守
+- ❌ 画面表示の一覧・関連取得を無制限に全件取得（件数が際限なく増え得る）→ ✅ ページング（Paginator 用に QueryBuilder を返す）か上限を設ける

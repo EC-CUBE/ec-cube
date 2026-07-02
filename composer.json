@@ -184,7 +184,8 @@
     },
     "config": {
         "platform": {
-            "php": "8.2.0"
+            "php": "8.2.0",
+            "ext-sodium": "1.0.18"
         },
         "preferred-install": {
             "*": "dist"

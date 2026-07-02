@@ -1,5 +1,4 @@
-const $ = require('jquery');
-global.$ = global.jQuery = $;
+global.$ = global.jQuery = require('jquery');
 
 const { Spinner } = require('spin.js');
 global.Spinner = Spinner;
