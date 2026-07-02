@@ -1146,6 +1146,27 @@ admin.setting.system.log_display: ログ表示
 admin.setting.system.login_history: ログイン履歴
 admin.setting.system.master_data_management: マスタデータ管理
 admin.setting.system.system_info: システム情報
+admin.content.agent_commerce: エージェントコマース
+admin.content.agent_commerce.notice: この機能は日本国内では未提供です。検証目的に限定してご利用ください。
+admin.content.agent_commerce.published: 公開中
+admin.content.agent_commerce.acp.title: ACP プロダクトフィード (push)
+admin.content.agent_commerce.acp.description: OpenAI がホストする ACP Feed API へ商品フィードを送出します。送出には認証情報 (base URL / API キー) の設定が必要です。
+admin.content.agent_commerce.acp.feed_id: フィード ID
+admin.content.agent_commerce.acp.feed_id_required: フィード ID を入力してください。
+admin.content.agent_commerce.acp.push_now: 今すぐ push (差分)
+admin.content.agent_commerce.acp.push_full: 全置換 push
+admin.content.agent_commerce.acp.push_success: 差分 push を送信しました。
+admin.content.agent_commerce.acp.push_full_success: "全置換 push を送信しました (%count% 件)。"
+admin.content.agent_commerce.acp.push_no_products: 送信対象の商品がありません。
+admin.content.agent_commerce.acp.push_not_accepted: Feed API に受理されませんでした。
+admin.content.agent_commerce.acp.push_failed: push の送信に失敗しました。設定を確認してください。
+admin.content.agent_commerce.ucp.title: UCP カタログ (pull)
+admin.content.agent_commerce.ucp.description: UCP カタログ API のキャッシュを操作します。カタログは常時公開されます。
+admin.content.agent_commerce.ucp.catalog_status: カタログ API
+admin.content.agent_commerce.ucp.cache_warmup: キャッシュ生成
+admin.content.agent_commerce.ucp.cache_clear: キャッシュクリア
+admin.content.agent_commerce.ucp.cache_warmup_success: カタログキャッシュを生成しました。
+admin.content.agent_commerce.ucp.cache_clear_success: カタログキャッシュをクリアしました。
 
 #------------------------------------------------------------------------------------
 # 設定：店舗設定：基本設定

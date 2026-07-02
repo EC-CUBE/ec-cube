@@ -29,7 +29,6 @@
     ]
   },
   "dependencies": {
-    "@babel/polyfill": "^7.12.1",
     "@popperjs/core": "^2.11.8",
     "ace-builds": "^1.32.3",
     "bootstrap": "^5.3.8",
@@ -50,10 +49,7 @@
     "url-loader": "^4.1.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.29.6",
-    "@babel/preset-env": "^7.26.0",
     "autoprefixer": "^10.4.23",
-    "babel-loader": "^10.1.0",
     "browser-sync": "^3.0.4",
     "cross-env": "^7.0.2",
     "gulp": "^5.0.0",
