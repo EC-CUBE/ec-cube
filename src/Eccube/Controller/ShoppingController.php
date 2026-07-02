@@ -122,8 +122,23 @@ class ShoppingController extends AbstractShoppingController
         // 選択可能な支払方法の先頭に再設定し, 手数料を再集計する.
         // @see https://github.com/EC-CUBE/ec-cube/issues/6200
         if ($this->reselectUnavailablePayment($Order, $form)) {
-            $this->executePurchaseFlow($Order, false);
+            $flowResult = $this->executePurchaseFlow($Order, false);
             $this->entityManager->flush();
+            if ($flowResult->hasError()) {
+                log_info('[注文手続] Errorが発生したため購入エラー画面へ遷移します.', [$flowResult->getErrors()]);
+
+                return $this->redirectToRoute('shopping_error');
+            }
+            if ($flowResult->hasWarning()) {
+                log_info('[注文手続] Warningが発生しました.', [$flowResult->getWarning()]);
+
+                // 受注明細と同期をとるため, CartPurchaseFlowを実行する
+                $this->cartPurchaseFlow->validate($Cart, new PurchaseContext($Cart, $this->getUser()));
+
+                // 注文フローで取得されるカートの入れ替わりを防止する
+                // @see https://github.com/EC-CUBE/ec-cube/issues/4293
+                $this->cartService->setPrimary($Cart->getCartKey());
+            }
             $form = $this->createForm(OrderType::class, $Order);
         }
 

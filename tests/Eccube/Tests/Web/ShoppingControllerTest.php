@@ -1094,9 +1094,10 @@ final class ShoppingControllerTest extends AbstractShoppingControllerTestCase
      *
      * @see https://github.com/EC-CUBE/ec-cube/issues/6200
      */
-    public function testDefaultPaymentChargeNotAppliedWhenConditionUnmet()
+    public function testDefaultPaymentChargeNotAppliedWhenConditionUnmet(): void
     {
         $Customer = $this->createCustomer();
+        $Generator = static::getContainer()->get(Generator::class);
 
         // 商品価格を上げ, デフォルト支払方法の利用上限を超えるようにする.
         /** @var ProductClass $ProductClass */
@@ -1104,11 +1105,24 @@ final class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $ProductClass->setPrice02('3000');
         $this->entityManager->flush($ProductClass);
 
-        // 先頭(デフォルト)の支払方法に手数料と低い利用上限を設定する (#6200 再現条件).
-        /** @var Payment $DefaultPayment */
-        $DefaultPayment = $this->paymentRepository->find(1);
-        $DefaultPayment->setCharge('500')->setRuleMin('0')->setRuleMax('1000');
-        $this->entityManager->flush($DefaultPayment);
+        // フィクスチャ配送を除外し, このテスト専用の配送・支払方法だけを使う.
+        /** @var Delivery $FixtureDelivery */
+        $FixtureDelivery = $this->entityManager->find(Delivery::class, 1);
+        $FixtureDelivery->setVisible(false);
+        $this->entityManager->flush($FixtureDelivery);
+
+        $Delivery = $Generator->createDelivery();
+        $Delivery->setSaleType($ProductClass->getSaleType());
+        $Delivery->setSortNo(999);
+        $this->entityManager->flush($Delivery);
+
+        // 先頭(デフォルト)候補: 手数料あり・利用上限 ¥1,000（#6200 再現条件）.
+        $InvalidDefault = $Generator->createPayment($Delivery, 'INVALID6200', 500, 0, 1000);
+        $InvalidDefault->setSortNo(10);
+        // 再選択先: 手数料 ¥0・利用条件内.
+        $ValidAlternative = $Generator->createPayment($Delivery, 'VALID6200', 0, 0, 999999999);
+        $ValidAlternative->setSortNo(5);
+        $this->entityManager->flush();
 
         // カート投入 → 注文手続き画面.
         $this->scenarioCartIn($Customer, 2);
@@ -1122,12 +1136,14 @@ final class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         ]);
 
         // 利用条件外のデフォルト支払方法が選択されず, 手数料(¥500)が加算されていないこと.
-        $this->assertInstanceOf(Payment::class, $Order->getPayment());
-        $this->assertNotSame($DefaultPayment->getId(), $Order->getPayment()->getId());
+        $this->assertNotNull($Order->getPayment());
+        $this->assertSame($ValidAlternative->getId(), $Order->getPayment()->getId());
         $this->assertEquals(0, $Order->getCharge());
 
+        $html = (string) $crawler->filter('body')->html();
         // 利用条件外の支払方法は選択肢に表示されないこと.
-        $this->assertStringNotContainsString($DefaultPayment->getMethod(), (string) $crawler->filter('body')->html());
+        $this->assertStringNotContainsString($InvalidDefault->getMethod(), $html);
+        $this->assertStringContainsString($ValidAlternative->getMethod(), $html);
     }
 
     /**
