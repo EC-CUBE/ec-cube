@@ -61,6 +61,80 @@ final class FileControllerTest extends AbstractAdminWebTestCase
         $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 
+    /**
+     * download で select_file にディレクトリトラバーサル(`../`)を与えても弾かれることを確認する.
+     *
+     * checkDir() が `..` を含むパスを拒否するため 404 になる.
+     */
+    public function testDownloadWithTraversalFailure()
+    {
+        $filepath = $this->getUserDataDir().'/aaa.html';
+        $contents = '<html><body><h1>test</h1></body></html>';
+        file_put_contents($filepath, $contents);
+
+        $this->client->request(
+            Request::METHOD_GET,
+            $this->generateUrl('admin_content_file_download').'?select_file=/../user_data/aaa.html'
+        );
+        $this->assertFalse($this->client->getResponse()->isSuccessful());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
+    }
+
+    /**
+     * delete で select_file にディレクトリトラバーサル(`../`)を与えても
+     * user_data 外のファイルが削除されないことを確認する.
+     *
+     * checkDir() が `..` を含むパスを拒否するため, リダイレクトはするが remove は実行されない.
+     */
+    public function testDeleteWithTraversalDoesNotRemoveFile()
+    {
+        // user_data の外（親ディレクトリ）にファイルを作成する
+        $outsideFile = $this->getUserDataDir().'/../traversal_target.html';
+        file_put_contents($outsideFile, '<html><body><h1>target</h1></body></html>');
+
+        $this->client->request(
+            Request::METHOD_DELETE,
+            $this->generateUrl('admin_content_file_delete').'?select_file=/../traversal_target.html'
+        );
+
+        // checkDir で弾かれるため user_data 外のファイルは削除されない
+        $this->assertFileExists($outsideFile);
+
+        unlink($outsideFile);
+    }
+
+    /**
+     * create(mkdir) で now_dir にディレクトリトラバーサル(`../`)を与えても
+     * user_data 外にディレクトリが作成されないことを確認する.
+     *
+     * checkDir() が `..` を含む now_dir を拒否し, 作成先は user_data 直下にフォールバックする.
+     */
+    public function testIndexWithCreateTraversalStaysInUserDataDir()
+    {
+        $folder = 'traversal_folder';
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_content_file'),
+            [
+                'form' => [
+                    '_token' => 'dummy',
+                    'create_file' => $folder,
+                    'file' => '',
+                ],
+                'mode' => 'create',
+                'now_dir' => $this->getUserDataDir().'/../',
+            ]
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        // user_data 外（親ディレクトリ）には作成されない
+        $this->assertDirectoryDoesNotExist($this->getUserDataDir().'/../'.$folder);
+        // user_data 直下へフォールバックして作成される
+        $this->assertDirectoryExists($this->getUserDataDir().'/'.$folder);
+
+        rmdir($this->getUserDataDir().'/'.$folder);
+    }
+
     public function testDownload()
     {
         $filepath = $this->getUserDataDir().'/aaa.html';

@@ -11,6 +11,10 @@ parameters:
     locale: '%env(ECCUBE_LOCALE)%'
     timezone: '%env(ECCUBE_TIMEZONE)%'
     currency: '%env(ECCUBE_CURRENCY)%'
+    # Agent Commerce (#6794): 未設定時は空文字を既定とする (string 型注入で null TypeError を避ける)
+    env(ECCUBE_AGENT_COMMERCE_UCP_SIGNING_KEY): ''
+    env(ECCUBE_AGENT_COMMERCE_ACP_FEED_BASE_URL): ''
+    env(ECCUBE_AGENT_COMMERCE_ACP_FEED_API_KEY): ''
 
 services:
     # default configuration for services in *this* file
@@ -249,3 +253,50 @@ services:
     Eccube\Doctrine\EventSubscriber\InitDriver:
         autowire: false
         autoconfigure: false
+
+    # Agent Commerce (ACP / UCP) 共通基盤
+    Eccube\Service\AgentCommerce\Security\FilesystemKeyStore:
+        arguments:
+            $projectDir: '%kernel.project_dir%'
+            $envPathOverrides:
+                ucp_signing: '%env(ECCUBE_AGENT_COMMERCE_UCP_SIGNING_KEY)%'
+
+    Eccube\Service\AgentCommerce\Security\KeyStoreInterface:
+        alias: Eccube\Service\AgentCommerce\Security\FilesystemKeyStore
+
+    Eccube\Service\AgentCommerce\Security\AgentCommerceMessageSignerInterface:
+        alias: Eccube\Service\AgentCommerce\Security\UcpMessageSigner
+
+    # Agent Commerce: Product Feed / Catalog 共通基盤 (#6794)
+    Eccube\Service\AgentCommerce\Catalog\ProductReferenceResolverInterface:
+        alias: Eccube\Service\AgentCommerce\Catalog\ProductReferenceResolver
+
+    Eccube\Service\AgentCommerce\Catalog\CatalogProviderInterface:
+        alias: Eccube\Service\AgentCommerce\Catalog\CatalogProvider
+
+    # Agent Commerce: ACP Product Feed (push) (#6794)
+    Eccube\Service\AgentCommerce\Catalog\Acp\AcpFeedValidator:
+        arguments:
+            $schemaPath: '%kernel.project_dir%/src/Eccube/Resource/AgentCommerce/Acp/schema.feed.json'
+
+    Eccube\Service\AgentCommerce\Catalog\Acp\AcpFeedClient:
+        arguments:
+            $baseUrl: '%env(ECCUBE_AGENT_COMMERCE_ACP_FEED_BASE_URL)%'
+            $apiKey: '%env(ECCUBE_AGENT_COMMERCE_ACP_FEED_API_KEY)%'
+
+    Eccube\Service\AgentCommerce\Catalog\Acp\AcpFeedClientInterface:
+        alias: Eccube\Service\AgentCommerce\Catalog\Acp\AcpFeedClient
+
+    # Agent Commerce: UCP Catalog (pull / REST) (#6794)
+    Eccube\Service\AgentCommerce\Catalog\Ucp\UcpCatalogCache:
+        arguments:
+            $cacheDir: '%kernel.cache_dir%'
+
+    # Agent Commerce: UCP Discovery (/.well-known/ucp) (#6794 / #6777)
+    # payment_handlers は決済ハンドラプラグインが tagged service で寄与する (既定は空 {}).
+    Eccube\Service\AgentCommerce\Discovery\EmptyPaymentHandlerRegistry:
+        arguments:
+            $registries: !tagged_iterator eccube.agent_commerce.payment_handler_registry
+
+    Eccube\Service\AgentCommerce\Discovery\PaymentHandlerRegistryInterface:
+        alias: Eccube\Service\AgentCommerce\Discovery\EmptyPaymentHandlerRegistry
