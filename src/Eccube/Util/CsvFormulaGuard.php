@@ -37,6 +37,12 @@ final class CsvFormulaGuard
     private const FORMULA_TRIGGER = '/^[=+\-@\t\r]/';
 
     /**
+     * escape() が生成し得る先頭パターン. 先頭 ' の直後が数式トリガまたは ' の場合のみ剥がす.
+     * EC-CUBE 以外が作成した CSV の正規の先頭 ' (後続が非トリガ) を破損させないため, escape の逆写像に絞る.
+     */
+    private const ESCAPED_PREFIX = "/^'[=+\\-@\\t\\r']/";
+
+    /**
      * 出力値を無害化する. 数式評価され得る先頭文字, または既に ' で始まる文字列に ' を付与する.
      */
     public static function escape(int|string|null $value): int|string|null
@@ -57,7 +63,7 @@ final class CsvFormulaGuard
      */
     public static function unescape(string $value): string
     {
-        if (str_starts_with($value, "'")) {
+        if (preg_match(self::ESCAPED_PREFIX, $value)) {
             return substr($value, 1);
         }
 

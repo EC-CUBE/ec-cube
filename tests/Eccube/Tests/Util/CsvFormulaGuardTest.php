@@ -70,11 +70,14 @@ final class CsvFormulaGuardTest extends TestCase
         yield ["'@SUM(1)", '@SUM(1)'];
         yield ["'\tfoo", "\tfoo"];
         yield ["'\rfoo", "\rfoo"];
-        // 二重化された先頭 ' は 1 つだけ剥がす
+        // 二重化された先頭 ' (直後が ') は 1 つだけ剥がす
         yield ["''=SUM(A1)", "'=SUM(A1)"];
         yield ["''foo", "'foo"];
-        yield ["'foo", 'foo'];
-        yield ["'", ''];
+        // EC-CUBE 以外が作成した CSV の正規の先頭 ' (直後が非トリガ) は剥がさず保持する
+        yield ["'foo", "'foo"];
+        yield ["'Hello", "'Hello"];
+        yield ["'07012345678", "'07012345678"];
+        yield ["'", "'"];
         // ' で始まらない値は変更しない
         yield ['=SUM(A1:A2)', '=SUM(A1:A2)'];
         yield ['foo', 'foo'];

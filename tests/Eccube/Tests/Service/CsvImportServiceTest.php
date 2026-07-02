@@ -228,6 +228,17 @@ final class CsvImportServiceTest extends AbstractServiceTestCase
     }
 
     /**
+     * EC-CUBE 以外が作成した CSV の正規の先頭 ' (直後が数式トリガでない) は取込時に保持する.
+     */
+    public function testExternalLeadingQuoteIsPreserved(): void
+    {
+        $reader = $this->getStringReader("col1,col2\n'Hello,'07012345678\n");
+        $reader->setHeaderRowNumber(0);
+
+        $this->assertSame(['col1' => "'Hello", 'col2' => "'07012345678"], $reader->getRow(1));
+    }
+
+    /**
      * 無効化時(unescapeFormulas=false)は先頭 ' を剥がさず素通しする.
      */
     public function testLeadingQuoteIsKeptWhenUnescapeDisabled(): void
