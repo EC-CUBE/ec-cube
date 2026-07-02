@@ -56,6 +56,16 @@ class UcpCatalogController extends AbstractController
      */
     private const MAX_LIMIT = 100;
 
+    /**
+     * lookup で 1 リクエストに受け付ける ids[] の上限 (公開エンドポイントの負荷耐性).
+     */
+    private const MAX_LOOKUP_IDS = 100;
+
+    /**
+     * cursor offset の上限 (大 offset による高コストなページングを抑止).
+     */
+    private const MAX_OFFSET = 10000;
+
     public function __construct(
         private readonly ProductRepository $productRepository,
         private readonly ProductReferenceResolverInterface $referenceResolver,
@@ -118,13 +128,20 @@ class UcpCatalogController extends AbstractController
         $body = $this->cache->getOrCompute($key, function () use ($payload): string {
             $ids = isset($payload['ids']) && is_array($payload['ids']) ? $payload['ids'] : [];
 
-            $products = [];
-            $seen = [];
+            // 入力 id を文字列へ正規化し重複排除した上で件数上限へクランプする (解決処理/DB アクセスの増大を抑止)。
+            $normalizedIds = [];
             foreach ($ids as $id) {
                 if (!is_string($id) && !is_int($id)) {
                     continue;
                 }
-                $product = $this->resolveProductByIdentifier((string) $id);
+                $normalizedIds[(string) $id] = true;
+            }
+            $normalizedIds = array_slice(array_keys($normalizedIds), 0, self::MAX_LOOKUP_IDS);
+
+            $products = [];
+            $seen = [];
+            foreach ($normalizedIds as $id) {
+                $product = $this->resolveProductByIdentifier($id);
                 if ($product === null) {
                     continue;
                 }
@@ -242,7 +259,9 @@ class UcpCatalogController extends AbstractController
             return 0;
         }
 
-        return max(0, (int) substr($decoded, strlen('offset:')));
+        $offset = max(0, (int) substr($decoded, strlen('offset:')));
+
+        return min($offset, self::MAX_OFFSET);
     }
 
     /**

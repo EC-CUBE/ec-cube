@@ -182,9 +182,14 @@ class AcpFeedClient implements AcpFeedClientInterface
             throw new AcpFeedTransportException(sprintf('ACP Feed API transport error during %s %s.', $method, $path), previous: $e);
         }
 
-        $decoded = $content === '' ? [] : json_decode($content, true);
-        if (!\is_array($decoded)) {
+        if ($content === '') {
             $decoded = [];
+        } else {
+            $decoded = json_decode($content, true);
+            if (!\is_array($decoded)) {
+                // 2xx であってもボディが JSON でない場合は成功扱いにせず異常として明示する。
+                throw new AcpFeedTransportException(sprintf('ACP Feed API returned a non-JSON response for %s %s.', $method, $path), $status);
+            }
         }
 
         if ($status >= 400) {

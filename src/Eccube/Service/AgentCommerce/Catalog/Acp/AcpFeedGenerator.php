@@ -35,6 +35,7 @@ class AcpFeedGenerator
         private readonly CatalogProviderInterface $catalogProvider,
         private readonly CatalogMapper $catalogMapper,
         private readonly AcpFeedProductSerializer $serializer,
+        private readonly AcpFeedValidator $validator,
         private readonly AddressMappingService $addressMappingService,
         private readonly BaseInfoRepository $baseInfoRepository,
     ) {
@@ -63,8 +64,13 @@ class AcpFeedGenerator
                 continue;
             }
 
+            // 全置換フローでも差分 upsert と同様に Product を schema.feed.json で検証してから書き出す
+            // (不適合な Product 行が push されるのを防ぐ)。検証失敗は AcpFeedValidationException を送出する。
+            $payload = $this->serializer->serialize($dto);
+            $this->validator->validateProduct($payload);
+
             $line = json_encode(
-                $this->serializer->serialize($dto),
+                $payload,
                 JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES,
             );
 

@@ -10,7 +10,8 @@ vendor/bin/phpunit tests/Eccube/Tests/Service/AgentCommerce tests/Eccube/Tests/W
 
 ## スキーマ契約テストと spec schema の解決
 
-ACP / UCP の JSON Schema は**リポジトリに同梱しません** (Apache-2.0 ライセンスの露出を避けるため)。
+UCP の JSON Schema は**リポジトリに同梱しません** (取得物のため。Apache-2.0 ライセンスの露出を避ける)。
+ACP の JSON Schema は runtime 検証 (pre-push) に必要なため `src/Eccube/Resource/AgentCommerce/Acp/schema.feed.json` を同梱します。
 
 ### ACP feed schema
 

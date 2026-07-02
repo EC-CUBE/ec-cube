@@ -158,13 +158,18 @@ class AgentCommerceController extends AbstractController
             throw new BadRequestHttpException();
         }
 
-        $body = $this->buildDefaultSearchBody(self::WARMUP_LIMIT);
-        foreach (['', '{}'] as $rawBody) {
-            $key = $this->ucpCatalogCache->buildKey('search', $rawBody);
-            $this->ucpCatalogCache->warmup($key, fn (): string => $body);
+        try {
+            $body = $this->buildDefaultSearchBody(self::WARMUP_LIMIT);
+            foreach (['', '{}'] as $rawBody) {
+                $key = $this->ucpCatalogCache->buildKey('search', $rawBody);
+                $this->ucpCatalogCache->warmup($key, fn (): string => $body);
+            }
+            $this->addSuccess('admin.content.agent_commerce.ucp.cache_warmup_success', 'admin');
+        } catch (\JsonException $e) {
+            // JSON_THROW_ON_ERROR による失敗時は 500 にせず管理画面のエラーメッセージへ変換する。
+            $this->addError('admin.common.system_error', 'admin');
+            log_error('UCP catalog cache warmup failed.', ['message' => $e->getMessage()]);
         }
-
-        $this->addSuccess('admin.content.agent_commerce.ucp.cache_warmup_success', 'admin');
 
         return $this->redirectToRoute('admin_content_agent_commerce');
     }

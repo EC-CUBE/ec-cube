@@ -56,12 +56,17 @@ class FilesystemKeyStore implements KeyStoreInterface
         $path = $this->resolvePath($purpose);
         $dir = \dirname($path);
 
-        if (!is_dir($dir)) {
-            mkdir($dir, 0700, true);
+        if (!is_dir($dir) && !mkdir($dir, 0700, true) && !is_dir($dir)) {
+            throw new \RuntimeException(sprintf('Failed to create key directory: %s', $dir));
         }
 
-        file_put_contents($path, $pem);
-        chmod($path, 0600);
+        if (file_put_contents($path, $pem, LOCK_EX) === false) {
+            throw new \RuntimeException(sprintf('Failed to write key file: %s', $path));
+        }
+
+        if (!chmod($path, 0600)) {
+            throw new \RuntimeException(sprintf('Failed to set key file permission: %s', $path));
+        }
     }
 
     /**
