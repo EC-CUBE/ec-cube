@@ -265,10 +265,20 @@ class EccubeExtension extends AbstractExtension
      */
     public function encodeJsonLd(array $data): string
     {
-        return json_encode(
+        $json = json_encode(
             $data,
             JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT
         );
+
+        // 不正な UTF-8 等でエンコードに失敗した場合、空の <script> を黙って出さず
+        // ログに残したうえで妥当な JSON（空オブジェクト）を返す.
+        if ($json === false) {
+            log_error('JSON-LD のエンコードに失敗しました: '.json_last_error_msg());
+
+            return '{}';
+        }
+
+        return $json;
     }
 
     /**

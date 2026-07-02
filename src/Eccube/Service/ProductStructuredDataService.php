@@ -221,13 +221,29 @@ class ProductStructuredDataService
         return $offers;
     }
 
+    /**
+     * offerCount 算出用に有効な規格数を数える.
+     *
+     * lowPrice/highPrice の元になる Product::_calc() と同一条件で絞り込む
+     * （ProductClass 本体に加えて ClassCategory1/2 の表示状態も判定）ことで、
+     * 非表示のクラスカテゴリを持つ規格が offerCount に混入しないようにする.
+     */
     private function countVisibleProductClasses(Product $Product): int
     {
         $count = 0;
         foreach ($Product->getProductClasses() as $ProductClass) {
-            if ($ProductClass->isVisible()) {
-                ++$count;
+            if (!$ProductClass->isVisible()) {
+                continue;
             }
+            $ClassCategory1 = $ProductClass->getClassCategory1();
+            if ($ClassCategory1 && !$ClassCategory1->isVisible()) {
+                continue;
+            }
+            $ClassCategory2 = $ProductClass->getClassCategory2();
+            if ($ClassCategory2 && !$ClassCategory2->isVisible()) {
+                continue;
+            }
+            ++$count;
         }
 
         return $count;
