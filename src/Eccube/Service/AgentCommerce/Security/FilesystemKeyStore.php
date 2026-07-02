@@ -65,7 +65,7 @@ class FilesystemKeyStore implements KeyStoreInterface
         // 作成時点から 0600 になるよう、書き込みの間だけ umask(0077) に切り替える。
         $oldUmask = umask(0077);
         try {
-            if (file_put_contents($path, $pem) === false) {
+            if (file_put_contents($path, $pem, LOCK_EX) === false) {
                 throw new \RuntimeException(sprintf('鍵ファイル "%s" への書き込みに失敗しました.', $path));
             }
             if (!chmod($path, 0600)) {
