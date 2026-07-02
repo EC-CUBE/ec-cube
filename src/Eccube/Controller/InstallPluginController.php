@@ -17,7 +17,6 @@ use Eccube\Controller\Install\InstallController;
 use Eccube\Entity\Plugin;
 use Eccube\Exception\PluginException;
 use Eccube\Repository\PluginRepository;
-use Eccube\Service\Composer\ComposerApiService;
 use Eccube\Service\PluginService;
 use Eccube\Service\SystemService;
 use Eccube\Util\CacheUtil;
@@ -33,7 +32,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class InstallPluginController extends InstallController
 {
-    public function __construct(protected CacheUtil $cacheUtil, protected PluginRepository $pluginReposigoty, protected EventDispatcherInterface $eventDispatcher, private readonly SystemService $systemService, private readonly PluginService $pluginService, private readonly ComposerApiService $composerApiService)
+    public function __construct(protected CacheUtil $cacheUtil, protected PluginRepository $pluginReposigoty, protected EventDispatcherInterface $eventDispatcher, private readonly SystemService $systemService, private readonly PluginService $pluginService)
     {
     }
 
@@ -162,7 +161,13 @@ class InstallPluginController extends InstallController
 
     /**
      * WebApiプラグインのシステム要件をチェックする
-     * sodium拡張がインストールされていない場合、WebApiプラグインをアンインストールする
+     *
+     * かつては sodium 拡張が無い環境で WebApi プラグイン (ec-cube/api42) を自動アンインストールしていたが、
+     * 同プラグインの実行時 (OAuth2 トークンの署名・検証) は RSA + openssl で処理し sodium 関数を呼ばないため、
+     * sodium 拡張が無くても動作する。composer の install 時の platform チェックは composer.json の
+     * config.platform.ext-sodium で満たすため、sodium 非対応の共有レンタルサーバーでも導入・維持できる (#6827)。
+     * 本エンドポイントはインストーラ画面 (install/complete.twig) からの呼び出し互換のため残しているが、
+     * 要件不適合によるアンインストールは行わない。
      *
      * @throws BadRequestHttpException|NotFoundHttpException
      */
@@ -177,22 +182,6 @@ class InstallPluginController extends InstallController
         $token = $request->headers->get('ECCUBE-CSRF-TOKEN');
         if (!$this->isValidTransaction($token)) {
             throw new NotFoundHttpException();
-        }
-
-        /** @var Plugin|null $Plugin */
-        $Plugin = $this->pluginReposigoty->findByCode('Api42');
-
-        // WebApiプラグインがインストールされているが、sodium拡張がない場合は、プラグインをアンインストールする
-        if ($Plugin && !extension_loaded('sodium')) {
-            $this->clearCacheOnTerminate();
-
-            try {
-                $this->composerApiService->execRemove('ec-cube/api42');
-            } catch (\Exception $e) {
-                log_error($e);
-
-                return $this->json(['success' => false, 'log' => $e->getMessage()], 500);
-            }
         }
 
         return $this->json(['success' => true]);

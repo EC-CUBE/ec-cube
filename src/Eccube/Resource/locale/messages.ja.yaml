@@ -1185,6 +1185,10 @@ admin.setting.shop.shop.option_point_rate: ポイント付与率
 admin.setting.shop.shop.option_point_conversion_rate: ポイント換算レート
 admin.setting.shop.shop.ga: "Googleアナリティクス設定"
 admin.setting.shop.shop.ga.tracking_id: "トラッキングID"
+admin.setting.shop.shop.agent_commerce: "エージェントコマース"
+admin.setting.shop.shop.agent_commerce.description: "AIエージェント (ChatGPT / Gemini 等) 経由のチェックアウトを有効化します。Discovery / カタログは常時公開され、ここでは checkout のみを制御します。checkout は日本未提供のため、通常は無効のままにしてください。"
+admin.setting.shop.shop.agent_commerce.acp_checkout_enabled: "ACP チェックアウトを有効にする"
+admin.setting.shop.shop.agent_commerce.ucp_checkout_enabled: "UCP チェックアウトを有効にする"
 
 #------------------------------------------------------------------------------------
 # 設定：店舗設定：特定商取引法設定
