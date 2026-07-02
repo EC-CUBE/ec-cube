@@ -208,7 +208,7 @@ final class CsvImportServiceTest extends AbstractServiceTestCase
      * 出力時に付与された先頭 ' を, ヘッダ・データ行とも対称に剥がして復元する.
      * 空行(null セル)を含んでも例外なく取り込めること(数式無害化導入時の回帰防止)もあわせて確認する.
      */
-    public function testFormulaCellsAreUnescapedIncludingBlankLine()
+    public function testFormulaCellsAreUnescapedIncludingBlankLine(): void
     {
         // ヘッダ・データとも先頭 ' 付き(=出力済みCSV)、途中に空行を含む
         $reader = $this->getStringReader("'=col1,col2\n'=1+1,a\n\n'@SUM(1),b\n");
@@ -230,7 +230,7 @@ final class CsvImportServiceTest extends AbstractServiceTestCase
     /**
      * 無効化時(unescapeFormulas=false)は先頭 ' を剥がさず素通しする.
      */
-    public function testLeadingQuoteIsKeptWhenUnescapeDisabled()
+    public function testLeadingQuoteIsKeptWhenUnescapeDisabled(): void
     {
         $file = $this->createStringFile("'=col1,col2\n'=1+1,a\n");
         $reader = new CsvImportService($file, ',', '"', '\\', false);
@@ -240,7 +240,7 @@ final class CsvImportServiceTest extends AbstractServiceTestCase
         $this->assertSame(["'=col1" => "'=1+1", 'col2' => 'a'], $reader->getRow(1));
     }
 
-    protected function getReader($filename)
+    protected function getReader(string $filename): CsvImportService
     {
         $file = new \SplFileObject(__DIR__.'/../../../Fixtures/'.$filename);
 

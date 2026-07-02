@@ -66,7 +66,10 @@ final class CsvFormulaGuardTest extends TestCase
         // escape 済みの値は元に戻す
         yield ["'=SUM(A1:A2)", '=SUM(A1:A2)'];
         yield ["'+1+1", '+1+1'];
+        yield ["'-1+1", '-1+1'];
         yield ["'@SUM(1)", '@SUM(1)'];
+        yield ["'\tfoo", "\tfoo"];
+        yield ["'\rfoo", "\rfoo"];
         // 二重化された先頭 ' は 1 つだけ剥がす
         yield ["''=SUM(A1)", "'=SUM(A1)"];
         yield ["''foo", "'foo"];
@@ -94,6 +97,8 @@ final class CsvFormulaGuardTest extends TestCase
         yield ['+1+1'];
         yield ['-100'];
         yield ['@SUM(1)'];
+        yield ["\tfoo"];
+        yield ["\rfoo"];
         yield ['foo'];
         yield ['山田太郎'];
         yield ['user@example.com'];

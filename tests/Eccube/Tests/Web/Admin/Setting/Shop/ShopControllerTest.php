@@ -107,7 +107,7 @@ final class ShopControllerTest extends AbstractAdminWebTestCase
      */
     #[DataProvider(methodName: 'dataSanitizeCsvFormulasProvider')]
     #[Group(name: 'cache-clear')]
-    public function testSubmitPersistsSanitizeCsvFormulasOption(bool $checked, bool $expected)
+    public function testSubmitPersistsSanitizeCsvFormulasOption(bool $checked, bool $expected): void
     {
         $formData = $this->createFormData();
         if ($checked) {

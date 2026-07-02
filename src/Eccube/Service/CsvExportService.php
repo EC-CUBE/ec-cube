@@ -49,6 +49,12 @@ class CsvExportService
 
     protected ?\Closure $convertEncodingCallBack = null;
 
+    /**
+     * 数式インジェクション対策の有効/無効. 1 回の出力中に設定が切り替わっても
+     * 同一 CSV 内でエスケープが混在しないよう, 出力開始時に 1 度だけ解決して保持する.
+     */
+    protected ?bool $sanitizeFormulas = null;
+
     protected ?QueryBuilder $qb = null;
 
     protected ?CsvType $CsvType = null;
@@ -149,6 +155,8 @@ class CsvExportService
             throw new \LogicException('init csv type incomplete.');
         }
 
+        $this->sanitizeFormulas = $this->baseInfoRepository->get()->isOptionSanitizeCsvFormulas();
+
         $row = [];
         foreach ($this->Csvs as $Csv) {
             $row[] = $Csv->getDispName();
@@ -168,6 +176,8 @@ class CsvExportService
         if (is_null($this->qb) || is_null($this->entityManager)) {
             throw new \LogicException('query builder not set.');
         }
+
+        $this->sanitizeFormulas = $this->baseInfoRepository->get()->isOptionSanitizeCsvFormulas();
 
         $this->fopen();
 
@@ -262,7 +272,9 @@ class CsvExportService
             $this->convertEncodingCallBack = $this->getConvertEncodingCallback();
         }
 
-        if ($this->baseInfoRepository->get()->isOptionSanitizeCsvFormulas()) {
+        // 出力開始時(exportHeader/exportData)に解決済み. 単体で fputcsv だけ呼ぶ場合は都度解決する.
+        $sanitizeFormulas = $this->sanitizeFormulas ?? $this->baseInfoRepository->get()->isOptionSanitizeCsvFormulas();
+        if ($sanitizeFormulas) {
             $row = array_map(CsvFormulaGuard::escape(...), $row);
         }
 
@@ -275,6 +287,8 @@ class CsvExportService
             fclose($this->fp);
             $this->closed = true;
         }
+        // 次回の出力に前回の設定を持ち越さない.
+        $this->sanitizeFormulas = null;
     }
 
     /**

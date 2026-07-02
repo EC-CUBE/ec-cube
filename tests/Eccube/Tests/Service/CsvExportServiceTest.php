@@ -72,7 +72,7 @@ final class CsvExportServiceTest extends AbstractServiceTestCase
         $this->verify();
     }
 
-    public function testFputcsvEscapesFormulaWhenOptionEnabled()
+    public function testFputcsvEscapesFormulaWhenOptionEnabled(): void
     {
         $BaseInfo = static::getContainer()->get(BaseInfoRepository::class)->get();
         $BaseInfo->setOptionSanitizeCsvFormulas(true);
@@ -82,7 +82,7 @@ final class CsvExportServiceTest extends AbstractServiceTestCase
         $this->assertSame("'=SUM(A1),foo\n", file_get_contents($this->url));
     }
 
-    public function testFputcsvSkipsEscapeWhenOptionDisabled()
+    public function testFputcsvSkipsEscapeWhenOptionDisabled(): void
     {
         $BaseInfo = static::getContainer()->get(BaseInfoRepository::class)->get();
         $BaseInfo->setOptionSanitizeCsvFormulas(false);
