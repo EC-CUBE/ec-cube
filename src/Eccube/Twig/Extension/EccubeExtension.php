@@ -67,6 +67,7 @@ class EccubeExtension extends AbstractExtension
             new TwigFilter('ellipsis', $this->getEllipsis(...)),
             new TwigFilter('time_ago', $this->getTimeAgo(...)),
             new TwigFilter('file_ext_icon', $this->getExtensionIcon(...), ['is_safe' => ['html']]),
+            new TwigFilter('json_ld', $this->encodeJsonLd(...), ['is_safe' => ['html']]),
         ];
     }
 
@@ -252,6 +253,22 @@ class EccubeExtension extends AbstractExtension
         }
 
         return json_encode($class_categories);
+    }
+
+    /**
+     * JSON-LD 連想配列を `<script type="application/ld+json">` 埋め込み用に安全にエンコードする.
+     *
+     * JSON_HEX_TAG 等により `< > & ' "` をエスケープし、`</script>` 混入による
+     * スクリプト破壊・蓄積型 XSS を機械的に防ぐ.
+     *
+     * @param array<string, mixed> $data
+     */
+    public function encodeJsonLd(array $data): string
+    {
+        return json_encode(
+            $data,
+            JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT
+        );
     }
 
     /**
