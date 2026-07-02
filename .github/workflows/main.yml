@@ -34,6 +34,9 @@ jobs:
   e2e-test:
     needs: [ rector, phpstan, php-cs-fixer ]
     uses: ./.github/workflows/e2e-test.yml
+    # PR/push では最新 PHP のみ。全バージョンは weekly-test.yml が週次で回す
+    with:
+      php-versions: "['8.5']"
   dockerbuild:
     uses: ./.github/workflows/dockerbuild.yml
     permissions:
@@ -42,9 +45,13 @@ jobs:
   plugin-test:
     needs: [ unit-test, e2e-test ]
     uses: ./.github/workflows/plugin-test.yml
+    with:
+      php-versions: "['8.5']"
   e2e-test-throttling:
     needs: [ plugin-test ]
     uses: ./.github/workflows/e2e-test-throttling.yml
+    with:
+      php-versions: "['8.5']"
 #  deny-test:
 #    needs: [ plugin-test ]
 #    uses: ./.github/workflows/deny-test.yml
