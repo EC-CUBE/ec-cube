@@ -2,13 +2,17 @@ runs:
   using: "Composite"
   steps:
     - name: Get Composer Cache Directory
-      uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306  # v5
       id: composer-cache
+      run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+      shell: bash
+
+    - name: Cache Composer downloads
+      uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306  # v5
       with:
-        path: ${{ github.workspace }}/vendor
-        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer-cache-${{ hashFiles('**/composer.lock') }}
         restore-keys: |
-          ${{ runner.os }}-composer-
+          ${{ runner.os }}-composer-cache-
 
     - name: composer install
       run: composer install --dev --no-interaction -o --apcu-autoloader
