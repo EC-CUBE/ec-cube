@@ -26,5 +26,5 @@ interface CartItemComparator
      *
      * @return bool 同じ明細になる場合はtrue
      */
-    public function compare(CartItem $item1, CartItem $item2);
+    public function compare(CartItem $item1, CartItem $item2): bool;
 }

@@ -22,14 +22,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class PluginManagementType extends AbstractType
 {
-    public function __construct()
-    {
-    }
-
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $plugin_id = $options['plugin_id'];
 
@@ -57,7 +56,8 @@ class PluginManagementType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    #[\Override]
+    public function getBlockPrefix(): string
     {
         return 'plugin_management';
     }
@@ -65,7 +65,8 @@ class PluginManagementType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired(['plugin_id']);
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -16,32 +18,21 @@ namespace Eccube\Tests\Service;
 use Eccube\Entity\Csv;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\Order;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CsvRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\CsvExportService;
 use org\bovigo\vfs\vfsStream;
 
-class CsvExportServiceTest extends AbstractServiceTestCase
+final class CsvExportServiceTest extends AbstractServiceTestCase
 {
-    /**
-     * @var string
-     */
-    protected $url;
+    protected ?string $url = null;
 
-    /**
-     * @var CsvExportService
-     */
-    protected $csvExportService;
+    protected ?CsvExportService $csvExportService = null;
 
-    /**
-     * @var CsvRepository
-     */
-    protected $csvRepository;
+    protected ?CsvRepository $csvRepository = null;
 
-    /**
-     * @var OrderRepository
-     */
-    protected $orderRepository;
+    protected ?OrderRepository $orderRepository = null;
 
     /**
      * {@inheritdoc}
@@ -49,21 +40,17 @@ class CsvExportServiceTest extends AbstractServiceTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->csvExportService = static::getContainer()->get(CsvExportService::class);
         $this->csvRepository = $this->entityManager->getRepository(Csv::class);
         $this->orderRepository = $this->entityManager->getRepository(Order::class);
-
         vfsStream::setup('rootDir');
         $this->url = vfsStream::url('rootDir/test.csv');
-
         // CsvExportService のファイルポインタを Vfs のファイルポインタにしておく
         $objReflect = new \ReflectionClass($this->csvExportService);
         $Property = $objReflect->getProperty('fp');
-        $Property->setAccessible(true);
         $Property->setValue($this->csvExportService, fopen($this->url, 'w'));
-
         $Csv = $this->csvRepository->find(1);
+        $this->assertInstanceOf(Csv::class, $Csv);
         $Csv->setSortNo(1);
         $Csv->setEnabled(false);
         $this->entityManager->flush();
@@ -83,6 +70,26 @@ class CsvExportServiceTest extends AbstractServiceTestCase
         $this->expected = count($Csv);
         $this->actual = count($arrHeader);
         $this->verify();
+    }
+
+    public function testFputcsvEscapesFormulaWhenOptionEnabled(): void
+    {
+        $BaseInfo = static::getContainer()->get(BaseInfoRepository::class)->get();
+        $BaseInfo->setOptionSanitizeCsvFormulas(true);
+        $this->entityManager->flush();
+
+        $this->csvExportService->fputcsv(['=SUM(A1)', 'foo']);
+        $this->assertSame("'=SUM(A1),foo\n", file_get_contents($this->url));
+    }
+
+    public function testFputcsvSkipsEscapeWhenOptionDisabled(): void
+    {
+        $BaseInfo = static::getContainer()->get(BaseInfoRepository::class)->get();
+        $BaseInfo->setOptionSanitizeCsvFormulas(false);
+        $this->entityManager->flush();
+
+        $this->csvExportService->fputcsv(['=SUM(A1)', 'foo']);
+        $this->assertSame("=SUM(A1),foo\n", file_get_contents($this->url));
     }
 
     public function testExportData()

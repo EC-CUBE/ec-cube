@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -19,19 +21,16 @@ use Eccube\Repository\Master\PrefRepository;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use Symfony\Component\Form\FormInterface;
 
-class PrefTypeTest extends AbstractTypeTestCase
+final class PrefTypeTest extends AbstractTypeTestCase
 {
-    /** @var FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
-    /** @var PrefRepository */
-    protected $prefRepo;
+    protected ?PrefRepository $prefRepo = null;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->prefRepo = $this->entityManager->getRepository(Pref::class);
-
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
             ->createBuilder(PrefType::class, null)

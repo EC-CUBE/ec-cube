@@ -20,7 +20,8 @@ use Psr\Container\ContainerInterface;
 
 class PluginManager extends AbstractPluginManager
 {
-    public function install(array $config, ContainerInterface $container)
+    #[\Override]
+    public function install(array $config, ContainerInterface $container): void
     {
         echo '*******************************************'.PHP_EOL;
         echo 'Install Boomerang10 1.0.0'.PHP_EOL;
@@ -32,10 +33,11 @@ class PluginManager extends AbstractPluginManager
         $bar->name = 'Boomerang10 1.0.0';
         $bar->mail = 'bar@example.com';
         $entityManager->persist($bar);
-        $entityManager->flush($bar);
+        $entityManager->flush();
     }
 
-    public function enable(array $config, ContainerInterface $container)
+    #[\Override]
+    public function enable(array $config, ContainerInterface $container): void
     {
         echo '*******************************************'.PHP_EOL;
         echo 'Enable Boomerang10 1.0.0'.PHP_EOL;
@@ -44,7 +46,8 @@ class PluginManager extends AbstractPluginManager
         $entityManager->find(Bar::class, 2);
     }
 
-    public function disable(array $config, ContainerInterface $container)
+    #[\Override]
+    public function disable(array $config, ContainerInterface $container): void
     {
         echo '*******************************************'.PHP_EOL;
         echo 'Disable Boomerang10 1.0.0'.PHP_EOL;
@@ -53,7 +56,8 @@ class PluginManager extends AbstractPluginManager
         $entityManager->find(Bar::class, 2);
     }
 
-    public function update(array $config, ContainerInterface $container)
+    #[\Override]
+    public function update(array $config, ContainerInterface $container): void
     {
         echo '*******************************************'.PHP_EOL;
         echo 'Update Boomerang10 1.0.0'.PHP_EOL;
@@ -62,7 +66,8 @@ class PluginManager extends AbstractPluginManager
         $entityManager->find(Bar::class, 2);
     }
 
-    public function uninstall(array $config, ContainerInterface $container)
+    #[\Override]
+    public function uninstall(array $config, ContainerInterface $container): void
     {
         echo '*******************************************'.PHP_EOL;
         echo 'Uninstall Boomerang10 1.0.0'.PHP_EOL;

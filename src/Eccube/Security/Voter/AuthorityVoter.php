@@ -18,42 +18,26 @@ use Eccube\Entity\Member;
 use Eccube\Repository\AuthorityRoleRepository;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class AuthorityVoter implements VoterInterface
 {
-    /**
-     * @var AuthorityRoleRepository
-     */
-    protected $authorityRoleRepository;
-
-    /**
-     * @var RequestStack
-     */
-    protected $requestStack;
-
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    public function __construct(
-        AuthorityRoleRepository $authorityRoleRepository,
-        RequestStack $requestStack,
-        EccubeConfig $eccubeConfig,
-    ) {
-        $this->authorityRoleRepository = $authorityRoleRepository;
-        $this->requestStack = $requestStack;
-        $this->eccubeConfig = $eccubeConfig;
+    public function __construct(protected AuthorityRoleRepository $authorityRoleRepository, protected RequestStack $requestStack, protected EccubeConfig $eccubeConfig)
+    {
     }
 
-    public function vote(TokenInterface $token, $object, array $attributes)
+    /**
+     * @param array<mixed> $attributes
+     */
+    #[\Override]
+    public function vote(TokenInterface $token, mixed $subject, array $attributes, ?Vote $vote = null): int
     {
         $path = null;
 
         try {
             $request = $this->requestStack->getMainRequest();
-        } catch (\RuntimeException $e) {
+        } catch (\RuntimeException) {
             // requestが取得できない場合、棄権する(テストプログラムで不要なため)
             return VoterInterface::ACCESS_ABSTAIN;
         }
@@ -73,13 +57,13 @@ class AuthorityVoter implements VoterInterface
                 try {
                     // 正規表現でURLチェック
                     $denyUrl = str_replace('/', '\/', $AuthorityRole->getDenyUrl());
-                    if (preg_match("/^(\/{$adminRoute}{$denyUrl})/i", $path)) {
+                    if (preg_match("/^(\/{$adminRoute}{$denyUrl})/i", (string) $path)) {
                         return VoterInterface::ACCESS_DENIED;
                     }
-                } catch (\Exception $e) {
+                } catch (\Exception) {
                     // 拒否URLの指定に誤りがある場合、エスケープさせてチェック
-                    $denyUrl = preg_quote($AuthorityRole->getDenyUrl(), '/');
-                    if (preg_match("/^(\/{$adminRoute}{$denyUrl})/i", $path)) {
+                    $denyUrl = preg_quote((string) $AuthorityRole->getDenyUrl(), '/');
+                    if (preg_match("/^(\/{$adminRoute}{$denyUrl})/i", (string) $path)) {
                         return VoterInterface::ACCESS_DENIED;
                     }
                 }

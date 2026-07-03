@@ -15,6 +15,7 @@ namespace Eccube\Controller\Admin\Product;
 
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Category;
+use Eccube\Entity\ExportCsvRow;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -22,51 +23,40 @@ use Eccube\Form\Type\Admin\CategoryType;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Service\CsvExportService;
 use Eccube\Util\CacheUtil;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class CategoryController extends AbstractController
 {
     /**
-     * @var CsvExportService
-     */
-    protected $csvExportService;
-
-    /**
-     * @var CategoryRepository
-     */
-    protected $categoryRepository;
-
-    /**
      * CategoryController constructor.
-     *
-     * @param CsvExportService $csvExportService
-     * @param CategoryRepository $categoryRepository
      */
-    public function __construct(
-        CsvExportService $csvExportService,
-        CategoryRepository $categoryRepository,
-    ) {
-        $this->csvExportService = $csvExportService;
-        $this->categoryRepository = $categoryRepository;
+    public function __construct(protected CsvExportService $csvExportService, protected CategoryRepository $categoryRepository, private readonly CacheUtil $cacheUtil)
+    {
     }
 
     /**
-     * @Route("/%eccube_admin_route%/product/category", name="admin_product_category", methods={"GET", "POST"})
-     * @Route("/%eccube_admin_route%/product/category/{parent_id}", requirements={"parent_id" = "\d+"}, name="admin_product_category_show", methods={"GET", "POST"})
-     * @Route("/%eccube_admin_route%/product/category/{id}/edit", requirements={"id" = "\d+"}, name="admin_product_category_edit", methods={"GET", "POST"})
+     * @param string|null $parent_id
+     * @param string|null $id
      *
-     * @Template("@admin/Product/category.twig")
+     * @return RedirectResponse|array<string, mixed>
+     *
+     * @throws NotFoundHttpException|BadRequestHttpException|\Exception
      */
-    public function index(Request $request, CacheUtil $cacheUtil, $parent_id = null, $id = null)
+    #[Route(path: '/%eccube_admin_route%/product/category', name: 'admin_product_category', methods: ['GET', 'POST'])]
+    #[Route(path: '/%eccube_admin_route%/product/category/{parent_id}', name: 'admin_product_category_show', requirements: ['parent_id' => "\d+"], methods: ['GET', 'POST'])]
+    #[Route(path: '/%eccube_admin_route%/product/category/{id}/edit', name: 'admin_product_category_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Product/category.twig')]
+    public function index(Request $request, $parent_id = null, $id = null): RedirectResponse|array
     {
         if ($parent_id) {
-            /** @var Category $Parent */
+            /** @var Category|null $Parent */
             $Parent = $this->categoryRepository->find($parent_id);
             if (!$Parent) {
                 throw new NotFoundHttpException();
@@ -93,7 +83,7 @@ class CategoryController extends AbstractController
         $Categories = $this->categoryRepository->getList($Parent);
 
         // ツリー表示のため、ルートからのカテゴリを取得
-        $TopCategories = $this->categoryRepository->getList(null);
+        $TopCategories = $this->categoryRepository->getList();
 
         $builder = $this->formFactory
             ->createBuilder(CategoryType::class, $TargetCategory);
@@ -143,13 +133,13 @@ class CategoryController extends AbstractController
 
                 $this->addSuccess('admin.common.save_complete', 'admin');
 
-                $cacheUtil->clearDoctrineCache();
+                $this->cacheUtil->clearDoctrineCache();
 
                 if ($Parent) {
                     return $this->redirectToRoute('admin_product_category_show', ['parent_id' => $Parent->getId()]);
-                } else {
-                    return $this->redirectToRoute('admin_product_category');
                 }
+
+                return $this->redirectToRoute('admin_product_category');
             }
 
             foreach ($forms as $editForm) {
@@ -174,13 +164,13 @@ class CategoryController extends AbstractController
 
                     $this->addSuccess('admin.common.save_complete', 'admin');
 
-                    $cacheUtil->clearDoctrineCache();
+                    $this->cacheUtil->clearDoctrineCache();
 
                     if ($Parent) {
                         return $this->redirectToRoute('admin_product_category_show', ['parent_id' => $Parent->getId()]);
-                    } else {
-                        return $this->redirectToRoute('admin_product_category');
                     }
+
+                    return $this->redirectToRoute('admin_product_category');
                 }
             }
         }
@@ -213,9 +203,12 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/product/category/{id}/delete", requirements={"id" = "\d+"}, name="admin_product_category_delete", methods={"DELETE"})
+     * @param string $id
+     *
+     * @throws \Exception
      */
-    public function delete(Request $request, $id, CacheUtil $cacheUtil)
+    #[Route(path: '/%eccube_admin_route%/product/category/{id}/delete', name: 'admin_product_category_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    public function delete(Request $request, $id): RedirectResponse
     {
         $this->isTokenValid();
 
@@ -244,7 +237,7 @@ class CategoryController extends AbstractController
 
             log_info('カテゴリ削除完了', [$id]);
 
-            $cacheUtil->clearDoctrineCache();
+            $this->cacheUtil->clearDoctrineCache();
         } catch (\Exception $e) {
             log_info('カテゴリ削除エラー', [$id, $e]);
 
@@ -254,15 +247,16 @@ class CategoryController extends AbstractController
 
         if ($Parent) {
             return $this->redirectToRoute('admin_product_category_show', ['parent_id' => $Parent->getId()]);
-        } else {
-            return $this->redirectToRoute('admin_product_category');
         }
+
+        return $this->redirectToRoute('admin_product_category');
     }
 
     /**
-     * @Route("/%eccube_admin_route%/product/category/sort_no/move", name="admin_product_category_sort_no_move", methods={"POST"})
+     * @throws BadRequestHttpException|\Exception
      */
-    public function moveSortNo(Request $request, CacheUtil $cacheUtil)
+    #[Route(path: '/%eccube_admin_route%/product/category/sort_no/move', name: 'admin_product_category_sort_no_move', methods: ['POST'])]
+    public function moveSortNo(Request $request): Response
     {
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();
@@ -279,32 +273,29 @@ class CategoryController extends AbstractController
             }
             $this->entityManager->flush();
 
-            $cacheUtil->clearDoctrineCache();
+            $this->cacheUtil->clearDoctrineCache();
 
             return new Response('Successful');
         }
+
+        throw new BadRequestHttpException();
     }
 
     /**
      * カテゴリCSVの出力.
-     *
-     * @Route("/%eccube_admin_route%/product/category/export", name="admin_product_category_export", methods={"GET"})
-     *
-     * @param Request $request
-     *
-     * @return StreamedResponse
      */
-    public function export(Request $request)
+    #[Route(path: '/%eccube_admin_route%/product/category/export', name: 'admin_product_category_export', methods: ['GET'])]
+    public function export(Request $request): StreamedResponse
     {
         // タイムアウトを無効にする.
         set_time_limit(0);
 
         // sql loggerを無効にする.
         $em = $this->entityManager;
-        $em->getConfiguration()->setSQLLogger(null);
+        $em->getConfiguration()->setSQLLogger();
 
         $response = new StreamedResponse();
-        $response->setCallback(function () use ($request) {
+        $response->setCallback(function () use ($request): void {
             // CSV種別を元に初期化.
             $this->csvExportService->initCsvType(CsvType::CSV_TYPE_CATEGORY);
 
@@ -317,14 +308,14 @@ class CategoryController extends AbstractController
 
             // データ行の出力.
             $this->csvExportService->setExportQueryBuilder($qb);
-            $this->csvExportService->exportData(function ($entity, $csvService) use ($request) {
+            $this->csvExportService->exportData(function ($entity, $csvService) use ($request): void {
                 $Csvs = $csvService->getCsvs();
 
                 /** @var Category $Category */
                 $Category = $entity;
 
                 // CSV出力項目と合致するデータを取得.
-                $ExportCsvRow = new \Eccube\Entity\ExportCsvRow();
+                $ExportCsvRow = new ExportCsvRow();
                 foreach ($Csvs as $Csv) {
                     $ExportCsvRow->setData($csvService->getData($Csv, $Category));
 

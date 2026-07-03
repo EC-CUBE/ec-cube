@@ -14,6 +14,7 @@
 namespace Eccube\Entity\Master;
 
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\Master\TaxTypeRepository;
 
 if (!class_exists(TaxType::class, false)) {
     /**
@@ -21,20 +22,14 @@ if (!class_exists(TaxType::class, false)) {
      *
      * 消費税の課税区分
      *
-     * @ORM\Table(name="mtb_tax_type")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\Master\TaxTypeRepository")
-     *
-     * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
-     *
      * @see https://www.nta.go.jp/taxanswer/shohi/6209.htm
      */
+    #[ORM\Table(name: 'mtb_tax_type')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: TaxTypeRepository::class)]
+    #[ORM\Cache(usage: 'NONSTRICT_READ_WRITE')]
     class TaxType extends AbstractMasterEntity
     {
         /**

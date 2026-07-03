@@ -15,12 +15,15 @@ namespace Eccube\Controller\Admin;
 
 use Carbon\Carbon;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\ProductStatus;
+use Eccube\Entity\Member;
+use Eccube\Entity\Order;
 use Eccube\Entity\ProductStock;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -33,104 +36,36 @@ use Eccube\Repository\MemberRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Service\PluginApiService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class AdminController extends AbstractController
 {
     /**
-     * @var AuthorizationCheckerInterface
+     * @var array<int, int> 売り上げ状況用受注状況
      */
-    protected $authorizationChecker;
-
-    /**
-     * @var AuthenticationUtils
-     */
-    protected $helper;
-
-    /**
-     * @var MemberRepository
-     */
-    protected $memberRepository;
-
-    /**
-     * @var UserPasswordHasherInterface
-     */
-    protected $passwordHasher;
-
-    /**
-     * @var OrderRepository
-     */
-    protected $orderRepository;
-
-    /**
-     * @var OrderStatusRepository
-     */
-    protected $orderStatusRepository;
-
-    /**
-     * @var CustomerRepository
-     */
-    protected $customerRepository;
-
-    /**
-     * @var ProductRepository
-     */
-    protected $productRepository;
-
-    /** @var PluginApiService */
-    protected $pluginApiService;
-
-    /**
-     * @var array 売り上げ状況用受注状況
-     */
-    private $excludes = [OrderStatus::CANCEL, OrderStatus::PENDING, OrderStatus::PROCESSING, OrderStatus::RETURNED];
+    private array $excludes = [OrderStatus::CANCEL, OrderStatus::PENDING, OrderStatus::PROCESSING, OrderStatus::RETURNED];
 
     /**
      * AdminController constructor.
-     *
-     * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param AuthenticationUtils $helper
-     * @param MemberRepository $memberRepository
-     * @param UserPasswordHasherInterface $passwordHasher
-     * @param OrderRepository $orderRepository
-     * @param OrderStatusRepository $orderStatusRepository
-     * @param CustomerRepository $custmerRepository
-     * @param ProductRepository $productRepository
-     * @param PluginApiService $pluginApiService
      */
-    public function __construct(
-        AuthorizationCheckerInterface $authorizationChecker,
-        AuthenticationUtils $helper,
-        MemberRepository $memberRepository,
-        UserPasswordHasherInterface $passwordHasher,
-        OrderRepository $orderRepository,
-        OrderStatusRepository $orderStatusRepository,
-        CustomerRepository $custmerRepository,
-        ProductRepository $productRepository,
-        PluginApiService $pluginApiService,
-    ) {
-        $this->authorizationChecker = $authorizationChecker;
-        $this->helper = $helper;
-        $this->memberRepository = $memberRepository;
-        $this->passwordHasher = $passwordHasher;
-        $this->orderRepository = $orderRepository;
-        $this->orderStatusRepository = $orderStatusRepository;
-        $this->customerRepository = $custmerRepository;
-        $this->productRepository = $productRepository;
-        $this->pluginApiService = $pluginApiService;
+    public function __construct(protected AuthorizationCheckerInterface $authorizationChecker, protected AuthenticationUtils $helper, protected MemberRepository $memberRepository, protected UserPasswordHasherInterface $passwordHasher, protected OrderRepository $orderRepository, protected OrderStatusRepository $orderStatusRepository, protected CustomerRepository $customerRepository, protected ProductRepository $productRepository, protected PluginApiService $pluginApiService)
+    {
     }
 
     /**
-     * @Route("/%eccube_admin_route%/login", name="admin_login", methods={"GET", "POST"})
-     *
-     * @Template("@admin/login.twig")
+     * @return RedirectResponse|array<string, mixed>
      */
-    public function login(Request $request)
+    #[Route(path: '/%eccube_admin_route%/login', name: 'admin_login', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/login.twig')]
+    public function login(Request $request): RedirectResponse|array
     {
         if ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('admin_homepage');
@@ -157,18 +92,14 @@ class AdminController extends AbstractController
     /**
      * 管理画面ホーム
      *
-     * @param Request $request
-     *
-     * @return array
+     * @return array<string, mixed>
      *
      * @throws NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     *
-     * @Route("/%eccube_admin_route%/", name="admin_homepage", methods={"GET"})
-     *
-     * @Template("@admin/index.twig")
+     * @throws NonUniqueResultException
      */
-    public function index(Request $request)
+    #[Route(path: '/%eccube_admin_route%/', name: 'admin_homepage', methods: ['GET'])]
+    #[Template(template: '@admin/index.twig')]
+    public function index(Request $request): array
     {
         $adminRoute = $this->eccubeConfig['eccube_admin_route'];
         $is_danger_admin_url = false;
@@ -254,7 +185,7 @@ class AdminController extends AbstractController
         $recommendedPlugins = [];
         try {
             $recommendedPlugins = $this->pluginApiService->getRecommended();
-        } catch (PluginApiException $ignore) {
+        } catch (PluginApiException) {
         }
 
         return [
@@ -273,14 +204,9 @@ class AdminController extends AbstractController
 
     /**
      * 売上状況の取得
-     *
-     * @param Request $request
-     *
-     * @Route("/%eccube_admin_route%/sale_chart", name="admin_homepage_sale", methods={"GET"})
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function sale(Request $request)
+    #[Route(path: '/%eccube_admin_route%/sale_chart', name: 'admin_homepage_sale', methods: ['GET'])]
+    public function sale(Request $request): JsonResponse
     {
         if (!($request->isXmlHttpRequest() && $this->isTokenValid())) {
             return $this->json(['status' => 'NG'], 400);
@@ -316,15 +242,11 @@ class AdminController extends AbstractController
     /**
      * パスワード変更画面
      *
-     * @Route("/%eccube_admin_route%/change_password", name="admin_change_password", methods={"GET", "POST"})
-     *
-     * @Template("@admin/change_password.twig")
-     *
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array
+     * @return RedirectResponse|array<string, mixed>
      */
-    public function changePassword(Request $request)
+    #[Route(path: '/%eccube_admin_route%/change_password', name: 'admin_change_password', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/change_password.twig')]
+    public function changePassword(Request $request): RedirectResponse|array
     {
         $builder = $this->formFactory
             ->createBuilder(ChangePasswordType::class);
@@ -341,6 +263,7 @@ class AdminController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var Member $Member */
             $Member = $this->getUser();
             $salt = $Member->getSalt();
             $password = $form->get('change_password')->getData();
@@ -373,14 +296,9 @@ class AdminController extends AbstractController
 
     /**
      * 在庫なし商品の検索結果を表示する.
-     *
-     * @Route("/%eccube_admin_route%/search_nonstock", name="admin_homepage_nonstock", methods={"GET"})
-     *
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function searchNonStockProducts(Request $request)
+    #[Route(path: '/%eccube_admin_route%/search_nonstock', name: 'admin_homepage_nonstock', methods: ['GET'])]
+    public function searchNonStockProducts(Request $request): Response
     {
         // 在庫なし商品の検索条件をセッションに付与し, 商品マスタへリダイレクトする.
         $searchData = [];
@@ -395,14 +313,9 @@ class AdminController extends AbstractController
 
     /**
      * 本会員の検索結果を表示する.
-     *
-     * @Route("/%eccube_admin_route%/search_customer", name="admin_homepage_customer", methods={"GET"})
-     *
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function searchCustomer(Request $request)
+    #[Route(path: '/%eccube_admin_route%/search_customer', name: 'admin_homepage_customer', methods: ['GET'])]
+    public function searchCustomer(Request $request): Response
     {
         $searchData = [];
         $searchData['customer_status'] = [CustomerStatus::REGULAR];
@@ -415,12 +328,11 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @param \Doctrine\ORM\EntityManagerInterface $em
-     * @param array $excludes
+     * @param array<int, int> $excludes
      *
-     * @return Request|null
+     * @return array<int|string, mixed>|null
      */
-    protected function getOrderEachStatus(array $excludes)
+    protected function getOrderEachStatus(array $excludes): ?array
     {
         $sql = 'SELECT
                     t1.order_status_id as status,
@@ -448,13 +360,11 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @param \DateTime $dateTime
+     * @return array<string, int>
      *
-     * @return array|mixed
-     *
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
-    protected function getSalesByDay($dateTime)
+    protected function getSalesByDay(\DateTime $dateTime): array
     {
         $dateTimeStart = clone $dateTime;
         $dateTimeStart->setTime(0, 0, 0, 0);
@@ -477,7 +387,7 @@ class AdminController extends AbstractController
         $result = [];
         try {
             $result = $q->getSingleResult();
-        } catch (NoResultException $e) {
+        } catch (NoResultException) {
             // 結果がない場合は空の配列を返す.
         }
 
@@ -485,13 +395,11 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @param \DateTime $dateTime
+     * @return array<string, int>
      *
-     * @return array|mixed
-     *
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
-    protected function getSalesByMonth($dateTime)
+    protected function getSalesByMonth(\DateTime $dateTime): array
     {
         $dateTimeStart = clone $dateTime;
         $dateTimeStart->setTime(0, 0, 0, 0);
@@ -516,7 +424,7 @@ class AdminController extends AbstractController
         $result = [];
         try {
             $result = $q->getSingleResult();
-        } catch (NoResultException $e) {
+        } catch (NoResultException) {
             // 結果がない場合は空の配列を返す.
         }
 
@@ -526,11 +434,9 @@ class AdminController extends AbstractController
     /**
      * 在庫切れ商品数を取得
      *
-     * @return mixed
-     *
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
-    protected function countNonStockProducts()
+    protected function countNonStockProducts(): int|string|null
     {
         $qb = $this->productRepository->createQueryBuilder('p')
             ->select('count(DISTINCT p.id)')
@@ -546,11 +452,9 @@ class AdminController extends AbstractController
     /**
      * 商品数を取得
      *
-     * @return mixed
-     *
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
-    protected function countProducts()
+    protected function countProducts(): int|string|null
     {
         $qb = $this->productRepository->createQueryBuilder('p')
             ->select('count(p.id)')
@@ -563,11 +467,9 @@ class AdminController extends AbstractController
     /**
      * 本会員数を取得
      *
-     * @return mixed
-     *
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
-    protected function countCustomers()
+    protected function countCustomers(): int|string|null
     {
         $qb = $this->customerRepository->createQueryBuilder('c')
             ->select('count(c.id)')
@@ -580,13 +482,9 @@ class AdminController extends AbstractController
     /**
      * 期間指定のデータを取得
      *
-     * @param Carbon $fromDate
-     * @param Carbon $toDate
-     * @param $format
-     *
-     * @return array
+     * @return array<string, mixed>
      */
-    protected function getData(Carbon $fromDate, Carbon $toDate, $format)
+    protected function getData(Carbon $fromDate, Carbon $toDate, string $format): array
     {
         $qb = $this->orderRepository->createQueryBuilder('o')
             ->andWhere('o.order_date >= :fromDate')
@@ -605,23 +503,20 @@ class AdminController extends AbstractController
     /**
      * 期間毎にデータをまとめる
      *
-     * @param $result
-     * @param Carbon $fromDate
-     * @param Carbon $toDate
-     * @param $format
+     * @param array<Order>|null $result
      *
-     * @return array
+     * @return array<mixed>
      */
-    protected function convert($result, Carbon $fromDate, Carbon $toDate, $format)
+    protected function convert(?array $result, Carbon $fromDate, Carbon $toDate, string $format): array
     {
         $raw = [];
         for ($date = $fromDate; $date <= $toDate; $date = $date->addDay()) {
-            $raw[$date->format($format)]['price'] = 0;
+            $raw[$date->format($format)]['price'] = '0';
             $raw[$date->format($format)]['count'] = 0;
         }
 
         foreach ($result as $Order) {
-            $raw[$Order->getOrderDate()->format($format)]['price'] += $Order->getPaymentTotal();
+            $raw[$Order->getOrderDate()->format($format)]['price'] = bcadd($raw[$Order->getOrderDate()->format($format)]['price'], (string) $Order->getPaymentTotal(), 0);
             ++$raw[$Order->getOrderDate()->format($format)]['count'];
         }
 

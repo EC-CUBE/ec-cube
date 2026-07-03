@@ -13,8 +13,16 @@
 
 namespace Eccube\Twig;
 
+use Eccube\Common\EccubeConfig;
+use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Layout;
+use Eccube\Entity\Page;
 use Eccube\Event\TemplateEvent;
+use Symfony\Bridge\Twig\AppVariable;
+use Symfony\Component\EventDispatcher\Debug\TraceableEventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Twig\Error\LoaderError;
+use Twig\Error\SyntaxError;
 use Twig\Source;
 
 class Template extends \Twig\Template
@@ -22,13 +30,17 @@ class Template extends \Twig\Template
     /**
      * {@inheritdoc}
      *
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\SyntaxError
+     * @param array<string, AppVariable|BaseInfo|EccubeConfig|TraceableEventDispatcher|Layout|Page|string|bool> $context
+     * @param array<string, array<int, string|object>>  $blocks
+     *
+     * @throws LoaderError
+     * @throws SyntaxError
      */
-    public function display(array $context, array $blocks = [])
+    #[\Override]
+    public function display(array $context, array $blocks = []): void
     {
         $globals = $this->env->getGlobals();
-        if (isset($globals['event_dispatcher']) && strpos($this->getTemplateName(), '__string_template__') !== 0) {
+        if (isset($globals['event_dispatcher']) && !str_starts_with($this->getTemplateName(), '__string_template__')) {
             /** @var EventDispatcherInterface $eventDispatcher */
             $eventDispatcher = $globals['event_dispatcher'];
             $originCode = $this->env->getLoader()->getSourceContext($this->getTemplateName())->getCode();
@@ -45,7 +57,8 @@ class Template extends \Twig\Template
         }
     }
 
-    public function getTemplateName()
+    #[\Override]
+    public function getTemplateName(): string
     {
         // Templateのキャッシュ作成時に動的に作成されるメソッド
         // デバッグツールバーでエラーが発生するため空文字を返しておく。
@@ -53,18 +66,30 @@ class Template extends \Twig\Template
         return '';
     }
 
-    public function getDebugInfo()
+    /**
+     * @return array<empty>
+     */
+    #[\Override]
+    public function getDebugInfo(): array
     {
         // Templateのキャッシュ作成時に動的に作成されるメソッド
         return [];
     }
 
-    protected function doDisplay(array $context, array $blocks = [])
+    /**
+     * @param array<mixed> $context
+     * @param array<mixed> $blocks
+     *
+     * @return array<empty>
+     */
+    protected function doDisplay(array $context, array $blocks = []): array
     {
         // Templateのキャッシュ作成時に動的に作成されるメソッド
+        return [];
     }
 
-    public function getSourceContext()
+    #[\Override]
+    public function getSourceContext(): Source
     {
         // FIXME Twig\Loader\FilesystemLoader の実装を持ってきたが,これで問題ないか要確認
         return new Source('', $this->getTemplateName(), '');

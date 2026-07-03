@@ -17,6 +17,7 @@ use Doctrine\DBAL\DriverManager;
 use Dotenv\Dotenv;
 use Eccube\Common\EccubeConfig;
 use Eccube\Util\StringUtil;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -25,50 +26,55 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
+#[AsCommand(name: 'eccube:install', description: 'Install EC-CUBE')]
 class InstallerCommand extends Command
 {
-    protected static $defaultName = 'eccube:install';
+    protected SymfonyStyle $io;
 
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
+    protected string $databaseUrl;
 
-    /**
-     * @var SymfonyStyle
-     */
-    protected $io;
+    private readonly object $envFileUpdater;
 
-    /**
-     * @var string
-     */
-    protected $databaseUrl;
-
-    private $envFileUpdater;
-
-    public function __construct(EccubeConfig $eccubeConfig)
+    public function __construct(protected EccubeConfig $eccubeConfig)
     {
         parent::__construct();
 
-        $this->eccubeConfig = $eccubeConfig;
-
         /* env更新処理無名クラス */
         $this->envFileUpdater = new class {
-            public $appEnv;
-            public $appDebug;
-            public $databaseUrl;
-            public $serverVersion;
-            public $databaseCharset;
-            public $mailerDsn;
-            public $authMagic;
-            public $adminRoute;
-            public $templateCode;
-            public $locale;
-            public $trustedHosts;
+            /**
+             * @var array<mixed>|false|string
+             */
+            public array|bool|string $appEnv;
 
-            public $envDir;
+            /**
+             * @var array<mixed>|false|string
+             */
+            public array|bool|string $appDebug;
 
-            private function getEnvParameters()
+            public bool|float|int|string|null $databaseUrl = null;
+
+            public false|string $serverVersion;
+
+            public string $databaseCharset;
+
+            public ?string $mailerDsn = null;
+
+            public ?string $authMagic = null;
+
+            public ?string $adminRoute = null;
+
+            public ?string $templateCode = null;
+
+            public ?string $locale = null;
+
+            public ?string $trustedHosts = null;
+
+            public ?string $envDir = null;
+
+            /**
+             * @return array<string, mixed>
+             */
+            private function getEnvParameters(): array
             {
                 return [
                     'APP_ENV' => $this->appEnv,
@@ -88,7 +94,7 @@ class InstallerCommand extends Command
             /**
              * envファイル更新処理
              */
-            public function updateEnvFile()
+            public function updateEnvFile(): void
             {
                 // $envDir = $this->eccubeConfig->get('kernel.project_dir');
                 $envFile = $this->envDir.'/.env';
@@ -105,13 +111,13 @@ class InstallerCommand extends Command
         };
     }
 
-    protected function configure()
+    #[\Override]
+    protected function configure(): void
     {
-        $this
-            ->setDescription('Install EC-CUBE');
     }
 
-    protected function interact(InputInterface $input, OutputInterface $output)
+    #[\Override]
+    protected function interact(InputInterface $input, OutputInterface $output): void
     {
         $this->io->title('EC-CUBE Installer Interactive Wizard');
         $this->io->text([
@@ -144,7 +150,7 @@ class InstallerCommand extends Command
         $this->envFileUpdater->serverVersion = $this->getDatabaseServerVersion($databaseUrl);
 
         // DATABASE_CHARSET
-        $this->envFileUpdater->databaseCharset = \str_starts_with($databaseUrl, 'mysql') ? 'utf8mb4' : 'utf8';
+        $this->envFileUpdater->databaseCharset = \str_starts_with((string) $databaseUrl, 'mysql') ? 'utf8mb4' : 'utf8';
 
         // MAILER_DSN
         $mailerDsn = $this->eccubeConfig->get('eccube_mailer_dsn');
@@ -197,7 +203,7 @@ class InstallerCommand extends Command
         $question = new ConfirmationQuestion('Is it OK?');
         if (!$this->io->askQuestion($question)) {
             // `no`の場合はキャンセルメッセージを出力して終了する
-            $this->setCode(function () {
+            $this->setCode(function (): void {
                 $this->io->success('EC-CUBE installation stopped.');
             });
 
@@ -209,12 +215,14 @@ class InstallerCommand extends Command
         $this->envFileUpdater->updateEnvFile();
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    #[\Override]
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    #[\Override]
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         // Process実行時に, APP_ENV/APP_DEBUGが子プロセスに引き継がれてしまうため,
         // 生成された.envをロードして上書きする.
@@ -263,47 +271,46 @@ class InstallerCommand extends Command
         return 0;
     }
 
-    protected function getDatabaseName($databaseUrl)
+    protected function getDatabaseName(string $databaseUrl): string
     {
-        if (0 === strpos($databaseUrl, 'sqlite')) {
+        if (str_starts_with($databaseUrl, 'sqlite')) {
             return 'sqlite';
         }
-        if (0 === strpos($databaseUrl, 'postgres') || 0 === strpos($databaseUrl, 'pgsql')) {
+        if (str_starts_with($databaseUrl, 'postgres') || str_starts_with($databaseUrl, 'pgsql')) {
             return 'postgres';
         }
-        if (0 === strpos($databaseUrl, 'mysql')) {
+        if (str_starts_with($databaseUrl, 'mysql')) {
             return 'mysql';
         }
 
         throw new \LogicException(sprintf('Database Url %s is invalid.', $databaseUrl));
     }
 
-    protected function getDatabaseServerVersion($databaseUrl)
+    /**
+     * @return false|string
+     *
+     * @throws \Doctrine\DBAL\Exception
+     */
+    protected function getDatabaseServerVersion(string $databaseUrl): false|string
     {
         try {
             $conn = DriverManager::getConnection([
                 'url' => $databaseUrl,
             ]);
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             throw new \LogicException(sprintf('Database Url %s is invalid.', $databaseUrl));
         }
         $platform = $conn->getDatabasePlatform()->getName();
-        switch ($platform) {
-            case 'sqlite':
-                $sql = 'SELECT sqlite_version() AS server_version';
-                break;
-            case 'mysql':
-                $sql = 'SELECT version() AS server_version';
-                break;
-            case 'postgresql':
-            default:
-                $sql = 'SHOW server_version';
-        }
+        $sql = match ($platform) {
+            'sqlite' => 'SELECT sqlite_version() AS server_version',
+            'mysql' => 'SELECT version() AS server_version',
+            default => 'SHOW server_version',
+        };
         $stmt = $conn->executeQuery($sql);
         $version = $stmt->fetchOne();
 
         if ($platform === 'postgresql') {
-            preg_match('/\A([\d+\.]+)/', $version, $matches);
+            preg_match('/\A([\d+\.]+)/', (string) $version, $matches);
             $version = $matches[1];
         }
 

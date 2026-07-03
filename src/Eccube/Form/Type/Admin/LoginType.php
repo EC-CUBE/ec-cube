@@ -24,28 +24,17 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class LoginType extends AbstractType
 {
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
-     * @var Session
-     */
-    protected $session;
-
-    public function __construct(
-        EccubeConfig $eccubeConfig,
-        Session $session,
-    ) {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->session = $session;
+    public function __construct(protected EccubeConfig $eccubeConfig, protected Session $session)
+    {
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('login_id', TextType::class, [
             'attr' => [
@@ -69,7 +58,8 @@ class LoginType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'csrf_protection' => false,
@@ -79,7 +69,8 @@ class LoginType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    #[\Override]
+    public function getBlockPrefix(): string
     {
         return 'admin_login';
     }

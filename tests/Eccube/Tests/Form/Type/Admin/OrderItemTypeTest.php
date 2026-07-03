@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,13 +19,12 @@ use Eccube\Form\Type\Admin\OrderItemType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use Symfony\Component\Form\FormInterface;
 
-class OrderItemTypeTest extends AbstractTypeTestCase
+final class OrderItemTypeTest extends AbstractTypeTestCase
 {
-    /** @var FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = [
+    protected ?array $formData = [
         'ProductClass' => '1',
         'price' => '10000',
         'quantity' => '10000',
@@ -35,14 +36,12 @@ class OrderItemTypeTest extends AbstractTypeTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
             ->createBuilder(OrderItemType::class, null, [
                 'csrf_protection' => false,
             ])
             ->getForm();
-
         $Product = $this->createProduct();
         $ProductClass = $Product->getProductClasses()->first();
         $this->formData['ProductClass'] = $ProductClass->getId();
@@ -104,7 +103,7 @@ class OrderItemTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidQuantityNotNumeric()
+    public function testInvalidQuantityNotNumeric(): never
     {
         $this->markTestIncomplete('testInvalidQuantity_NotNumeric is not implemented.');
         $this->formData['quantity'] = 'abcde';
@@ -113,7 +112,7 @@ class OrderItemTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidQuantityHasMinus()
+    public function testInvalidQuantityHasMinus(): never
     {
         $this->markTestIncomplete('testInvalidQuantity_HasMinus is not implemented.');
         $this->formData['quantity'] = '-123456';

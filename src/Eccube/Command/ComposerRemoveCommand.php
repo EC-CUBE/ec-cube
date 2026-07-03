@@ -13,35 +13,37 @@
 
 namespace Eccube\Command;
 
+use Eccube\Exception\PluginException;
 use Eccube\Service\Composer\ComposerApiService;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Exception\ExceptionInterface;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(name: 'eccube:composer:remove')]
 class ComposerRemoveCommand extends Command
 {
-    protected static $defaultName = 'eccube:composer:remove';
-
-    /**
-     * @var ComposerApiService
-     */
-    private $composerService;
-
-    public function __construct(ComposerApiService $composerService)
+    public function __construct(private readonly ComposerApiService $composerService)
     {
         parent::__construct();
-        $this->composerService = $composerService;
     }
 
-    protected function configure()
+    #[\Override]
+    protected function configure(): void
     {
         $this->addArgument('package', InputArgument::REQUIRED);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    /**
+     * @throws ExceptionInterface
+     * @throws PluginException
+     */
+    #[\Override]
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->composerService->execRemove($input->getArgument('package'), $output);
 

@@ -13,85 +13,55 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\DeliveryTimeRepository;
 
 if (!class_exists(DeliveryTime::class)) {
     /**
      * DeliveryTime
-     *
-     * @ORM\Table(name="dtb_delivery_time")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\DeliveryTimeRepository")
      */
-    class DeliveryTime extends AbstractEntity
+    #[ORM\Table(name: 'dtb_delivery_time')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: DeliveryTimeRepository::class)]
+    class DeliveryTime extends AbstractEntity implements \Stringable
     {
-        public function __toString()
+        #[\Override]
+        public function __toString(): string
         {
             return (string) $this->delivery_time;
         }
 
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
-         */
-        private $id;
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+        private ?int $id = null;
 
-        /**
-         * @var string
-         *
-         * @ORM\Column(name="delivery_time", type="string", length=255)
-         */
-        private $delivery_time;
+        #[ORM\Column(name: 'delivery_time', type: Types::STRING, length: 255)]
+        private ?string $delivery_time = null;
 
-        /**
-         * @var Delivery
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Delivery", inversedBy="DeliveryTimes")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="delivery_id", referencedColumnName="id")
-         * })
-         */
-        private $Delivery;
+        #[ORM\ManyToOne(targetEntity: Delivery::class, inversedBy: 'DeliveryTimes')]
+        #[ORM\JoinColumn(name: 'delivery_id', referencedColumnName: 'id')]
+        private ?Delivery $Delivery = null;
 
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="sort_no", type="smallint", options={"unsigned":true})
-         */
-        protected $sort_no;
+        #[ORM\Column(name: 'sort_no', type: Types::SMALLINT, options: ['unsigned' => true])]
+        protected ?int $sort_no = null;
 
-        /**
-         * @var bool
-         *
-         * @ORM\Column(name="visible", type="boolean", options={"default":true})
-         */
-        private $visible;
+        #[ORM\Column(name: 'visible', type: Types::BOOLEAN, options: ['default' => true])]
+        private ?bool $visible = null;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
         private $create_date;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
         private $update_date;
 
         /**
@@ -99,19 +69,15 @@ if (!class_exists(DeliveryTime::class)) {
          *
          * @return int
          */
-        public function getId()
+        public function getId(): ?int
         {
             return $this->id;
         }
 
         /**
          * Set deliveryTime.
-         *
-         * @param string $deliveryTime
-         *
-         * @return DeliveryTime
          */
-        public function setDeliveryTime($deliveryTime)
+        public function setDeliveryTime(string $deliveryTime): DeliveryTime
         {
             $this->delivery_time = $deliveryTime;
 
@@ -120,22 +86,16 @@ if (!class_exists(DeliveryTime::class)) {
 
         /**
          * Get deliveryTime.
-         *
-         * @return string
          */
-        public function getDeliveryTime()
+        public function getDeliveryTime(): string
         {
             return $this->delivery_time;
         }
 
         /**
          * Set delivery.
-         *
-         * @param Delivery|null $delivery
-         *
-         * @return DeliveryTime
          */
-        public function setDelivery(?Delivery $delivery = null)
+        public function setDelivery(?Delivery $delivery = null): DeliveryTime
         {
             $this->Delivery = $delivery;
 
@@ -144,10 +104,8 @@ if (!class_exists(DeliveryTime::class)) {
 
         /**
          * Get delivery.
-         *
-         * @return Delivery|null
          */
-        public function getDelivery()
+        public function getDelivery(): ?Delivery
         {
             return $this->Delivery;
         }
@@ -155,11 +113,9 @@ if (!class_exists(DeliveryTime::class)) {
         /**
          * Set sort_no.
          *
-         * @param int $sort_no
-         *
          * @return $this
          */
-        public function setSortNo($sort_no)
+        public function setSortNo(int $sort_no): static
         {
             $this->sort_no = $sort_no;
 
@@ -168,22 +124,16 @@ if (!class_exists(DeliveryTime::class)) {
 
         /**
          * Get sort_no.
-         *
-         * @return int
          */
-        public function getSortNo()
+        public function getSortNo(): int
         {
             return $this->sort_no;
         }
 
         /**
          * Set visible
-         *
-         * @param bool $visible
-         *
-         * @return DeliveryTime
          */
-        public function setVisible($visible)
+        public function setVisible(bool $visible): DeliveryTime
         {
             $this->visible = $visible;
 
@@ -192,22 +142,16 @@ if (!class_exists(DeliveryTime::class)) {
 
         /**
          * Is the visibility visible?
-         *
-         * @return bool
          */
-        public function isVisible()
+        public function isVisible(): bool
         {
             return $this->visible;
         }
 
         /**
          * Set createDate.
-         *
-         * @param \DateTime $createDate
-         *
-         * @return DeliveryTime
          */
-        public function setCreateDate($createDate)
+        public function setCreateDate(\DateTime $createDate): DeliveryTime
         {
             $this->create_date = $createDate;
 
@@ -216,22 +160,16 @@ if (!class_exists(DeliveryTime::class)) {
 
         /**
          * Get createDate.
-         *
-         * @return \DateTime
          */
-        public function getCreateDate()
+        public function getCreateDate(): ?\DateTime
         {
             return $this->create_date;
         }
 
         /**
          * Set updateDate.
-         *
-         * @param \DateTime $updateDate
-         *
-         * @return DeliveryTime
          */
-        public function setUpdateDate($updateDate)
+        public function setUpdateDate(\DateTime $updateDate): DeliveryTime
         {
             $this->update_date = $updateDate;
 
@@ -240,10 +178,8 @@ if (!class_exists(DeliveryTime::class)) {
 
         /**
          * Get updateDate.
-         *
-         * @return \DateTime
          */
-        public function getUpdateDate()
+        public function getUpdateDate(): ?\DateTime
         {
             return $this->update_date;
         }

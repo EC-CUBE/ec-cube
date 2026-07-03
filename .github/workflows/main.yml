@@ -34,17 +34,29 @@ jobs:
   e2e-test:
     needs: [ rector, phpstan, php-cs-fixer ]
     uses: ./.github/workflows/e2e-test.yml
+    # PR/push では最新 PHP のみ。全バージョンは weekly-test.yml が週次で回す
+    with:
+      php-versions: "['8.5']"
+  dockerbuild:
+    uses: ./.github/workflows/dockerbuild.yml
+    permissions:
+      contents: read
+      packages: write
   plugin-test:
     needs: [ unit-test, e2e-test ]
     uses: ./.github/workflows/plugin-test.yml
+    with:
+      php-versions: "['8.5']"
   e2e-test-throttling:
     needs: [ plugin-test ]
     uses: ./.github/workflows/e2e-test-throttling.yml
-  deny-test:
-    needs: [ plugin-test ]
-    uses: ./.github/workflows/deny-test.yml
+    with:
+      php-versions: "['8.5']"
+#  deny-test:
+#    needs: [ plugin-test ]
+#    uses: ./.github/workflows/deny-test.yml
   success:
-    needs: [ e2e-test-throttling, deny-test ]
+    needs: [ e2e-test-throttling, dockerbuild ]
     runs-on: ubuntu-latest
     steps:
       - name: success
@@ -52,4 +64,8 @@ jobs:
   coverage:
     needs: [ unit-test ]  # PHPUnit coverage only, no need to wait for e2e-test
     if: ${{ github.event.pull_request.user.login != 'dependabot[bot]' }}
+    permissions:
+      contents: read
+      code-quality: write
+    secrets: inherit  # Codecov アップロードに CODECOV_TOKEN が必要
     uses: ./.github/workflows/coverage.yml

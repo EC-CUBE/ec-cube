@@ -14,6 +14,8 @@
 namespace Eccube\Form\Type;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Form\EventListener\ConvertKanaListener;
+use Eccube\Form\EventListener\TruncateHyphenListener;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -26,34 +28,30 @@ use Symfony\Component\Validator\Constraints as Assert;
 class PhoneNumberType extends AbstractType
 {
     /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
      * PhoneNumberType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
-    public function __construct(EccubeConfig $eccubeConfig)
+    public function __construct(protected EccubeConfig $eccubeConfig)
     {
-        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         // 全角英数を事前に半角にする
-        $builder->addEventSubscriber(new \Eccube\Form\EventListener\ConvertKanaListener());
-        $builder->addEventSubscriber(new \Eccube\Form\EventListener\TruncateHyphenListener());
+        $builder->addEventSubscriber(new ConvertKanaListener());
+        $builder->addEventSubscriber(new TruncateHyphenListener());
     }
 
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setNormalizer('constraints', function ($options, $value) {
             $constraints = [];
@@ -66,10 +64,10 @@ class PhoneNumberType extends AbstractType
                 'max' => $this->eccubeConfig['eccube_tel_len_max'],
             ]);
 
-            $constraints[] = new Assert\Type([
-                'type' => 'digit',
-                'message' => 'form_error.numeric_only',
-            ]);
+            $constraints[] = new Assert\Type(
+                type: 'digit',
+                message: 'form_error.numeric_only'
+            );
 
             return array_merge($constraints, $value);
         });
@@ -85,7 +83,8 @@ class PhoneNumberType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    #[\Override]
+    public function getParent(): ?string
     {
         return TelType::class;
     }
@@ -93,7 +92,8 @@ class PhoneNumberType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    #[\Override]
+    public function getBlockPrefix(): string
     {
         return 'phone_number';
     }

@@ -29,35 +29,17 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class OrderStatusSettingType extends AbstractType
 {
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
-     * @var OrderStatusColorRepository
-     */
-    protected $orderStatusColorRepository;
-
-    /**
-     * @var CustomerOrderStatusRepository
-     */
-    protected $customerOrderStatusRepository;
-
-    public function __construct(
-        EccubeConfig $eccubeConfig,
-        OrderStatusColorRepository $orderStatusColorRepository,
-        CustomerOrderStatusRepository $customerOrderStatusRepository,
-    ) {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->orderStatusColorRepository = $orderStatusColorRepository;
-        $this->customerOrderStatusRepository = $customerOrderStatusRepository;
+    public function __construct(protected EccubeConfig $eccubeConfig, protected OrderStatusColorRepository $orderStatusColorRepository, protected CustomerOrderStatusRepository $customerOrderStatusRepository)
+    {
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('name', TextType::class, [
@@ -87,7 +69,7 @@ class OrderStatusSettingType extends AbstractType
             ])
         ;
 
-        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event): void {
             $data = $event->getData();
             $form = $event->getForm();
 
@@ -109,7 +91,8 @@ class OrderStatusSettingType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => OrderStatus::class,

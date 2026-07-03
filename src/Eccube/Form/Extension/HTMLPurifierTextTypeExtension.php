@@ -22,40 +22,37 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class HTMLPurifierTextTypeExtension extends AbstractTypeExtension
 {
-    /**
-     * @var Context
-     */
-    private $context;
-
-    public function __construct(Context $context)
+    public function __construct(private readonly Context $context)
     {
-        $this->context = $context;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         if ($this->context->isFront()) {
             $resolver->setDefault('purify_html', true);
         }
     }
 
-    /**
-     * @return string
-     */
     public function getExtendedType(): string
     {
         return TextType::class;
     }
 
     /**
-     * @return iterable
+     * @return iterable<mixed>
      */
+    #[\Override]
     public static function getExtendedTypes(): iterable
     {
         yield TextType::class;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    /**
+     * @param array<string, mixed> $options
+     */
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         if ($this->context->isFront() && $options['purify_html']) {
             $builder->addEventSubscriber(

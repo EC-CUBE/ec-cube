@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,17 +19,14 @@ use Eccube\Form\Type\Install\Step4Type;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use Symfony\Component\Form\FormInterface;
 
-class Step4TypeTest extends AbstractTypeTestCase
+final class Step4TypeTest extends AbstractTypeTestCase
 {
-    /**
-     * @var FormInterface
-     */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /**
      * @var array デフォルト値を設定
      */
-    protected $formData = [
+    protected ?array $formData = [
         'database' => '',
         'database_host' => '',
         'database_port' => '',
@@ -39,14 +38,13 @@ class Step4TypeTest extends AbstractTypeTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->form = $this->formFactory
             ->createBuilder(Step4Type::class, null, ['csrf_protection' => false])
             ->getForm();
     }
 
     // DB への接続チェックも行われてしまうので、テストが難しい
-    public function testInvalidData()
+    public function testInvalidData(): never
     {
         // Request に依存しているため WebTest で代替する
         $this->markTestIncomplete('Can not support of FormInterface::submit()');

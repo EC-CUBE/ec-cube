@@ -23,11 +23,6 @@ class ShopSettingPage extends AbstractAdminPageStyleGuide
     public static $チェックボックス_お気に入り商品機能 = 'shop_master_option_favorite_product';
     public static $チェックボックス_自動ログイン機能 = 'shop_master_option_remember_me';
 
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     public static function go($I)
     {
         $page = new self($I);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -14,18 +16,18 @@
 namespace Eccube\Tests\Form\Type;
 
 use Eccube\Form\Type\KanaType;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormInterface;
 
-class KanaTypeTest extends AbstractTypeTestCase
+final class KanaTypeTest extends AbstractTypeTestCase
 {
-    /** @var FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
-    protected $maxLength = 25;
+    protected const maxLength = 25;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = [
+    protected ?array $formData = [
         'kana' => [
             'kana01' => 'たかはし',
             'kana02' => 'しんいち',
@@ -36,42 +38,38 @@ class KanaTypeTest extends AbstractTypeTestCase
      * getValidTestData
      *
      * 正常系のデータパターンを返す
-     *
-     * @return array
      */
-    public function getValidTestData()
+    public static function getValidTestData(): \Iterator
     {
-        return [
+        yield [
             [
-                'data' => [
-                    'kana' => [
-                        'kana01' => 'たかはし',
-                        'kana02' => 'しんいち',
-                    ],
+                'kana' => [
+                    'kana01' => 'たかはし',
+                    'kana02' => 'しんいち',
                 ],
             ],
+        ];
+        yield [
             [
-                'data' => [
-                    'kana' => [
-                        'kana01' => 'タカハシ',
-                        'kana02' => 'しんいち',
-                    ],
+                'kana' => [
+                    'kana01' => 'タカハシ',
+                    'kana02' => 'しんいち',
                 ],
             ],
+        ];
+        yield [
             [
-                'data' => [
-                    'kana' => [
-                        'kana01' => 'たかはし',
-                        'kana02' => 'シンイチ',
-                    ],
+                'kana' => [
+                    'kana01' => 'たかはし',
+                    'kana02' => 'シンイチ',
                 ],
             ],
+        ];
+        yield [
             [
-                'data' => [
-                    'kana' => [
-                        'kana01' => str_repeat('ア', $this->maxLength),
-                        'kana02' => str_repeat('ア', $this->maxLength),
-                    ],
+                'kana' => [
+                    'kana01' => str_repeat('ア', self::maxLength),
+                    'kana02' => str_repeat('ア', self::maxLength),
                 ],
             ],
         ];
@@ -80,7 +78,6 @@ class KanaTypeTest extends AbstractTypeTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->form = $this->formFactory->createBuilder(FormType::class, null, ['csrf_protection' => false])
             ->add('kana', KanaType::class)
             ->getForm();
@@ -93,8 +90,9 @@ class KanaTypeTest extends AbstractTypeTestCase
     }
 
     /**
-     * @dataProvider getValidTestData
+     * @param mixed $data
      */
+    #[DataProvider(methodName: 'getValidTestData')]
     public function testValidData($data)
     {
         $this->form->submit($data);
@@ -105,7 +103,7 @@ class KanaTypeTest extends AbstractTypeTestCase
     {
         $data = [
             'kana' => [
-                'kana01' => str_repeat('ア', $this->maxLength + 1),
+                'kana01' => str_repeat('ア', self::maxLength + 1),
                 'kana02' => 'にゅうりょく',
             ], ];
 
@@ -118,7 +116,7 @@ class KanaTypeTest extends AbstractTypeTestCase
         $data = [
             'kana' => [
                 'kana01' => 'にゅうりょく',
-                'kana02' => str_repeat('ア', $this->maxLength + 1),
+                'kana02' => str_repeat('ア', self::maxLength + 1),
             ], ];
 
         $this->form->submit($data);

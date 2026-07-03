@@ -23,16 +23,7 @@ class ProductTagPage extends AbstractAdminPageStyleGuide
     public static $アラートメッセージ = ['css' => '.c-contentsArea > .alert'];
     public static $タグ一覧 = ['css' => '.c-primaryCol .list-group'];
 
-    /** @var \AcceptanceTester */
-    protected $tester;
-
-    /**
-     * ProductTagPage constructor.
-     */
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
+    protected \AcceptanceTester $tester;
 
     public static function go(\AcceptanceTester $I)
     {

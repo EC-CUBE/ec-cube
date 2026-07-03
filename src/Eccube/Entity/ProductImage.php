@@ -13,106 +13,66 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\ProductImageRepository;
 
 if (!class_exists(ProductImage::class)) {
     /**
      * ProductImage
-     *
-     * @ORM\Table(name="dtb_product_image")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\ProductImageRepository")
      */
-    class ProductImage extends AbstractEntity
+    #[ORM\Table(name: 'dtb_product_image')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: ProductImageRepository::class)]
+    class ProductImage extends AbstractEntity implements \Stringable
     {
-        /**
-         * @return string
-         */
-        public function __toString()
+        #[\Override]
+        public function __toString(): string
         {
-            return (string) $this->getFileName();
+            return $this->getFileName();
         }
 
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
-         */
-        private $id;
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+        private ?int $id = null;
 
-        /**
-         * @var string
-         *
-         * @ORM\Column(name="file_name", type="string", length=255)
-         */
-        private $file_name;
+        #[ORM\Column(name: 'file_name', type: Types::STRING, length: 255)]
+        private ?string $file_name = null;
 
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="sort_no", type="smallint", options={"unsigned":true})
-         */
-        private $sort_no;
+        #[ORM\Column(name: 'sort_no', type: Types::SMALLINT, options: ['unsigned' => true])]
+        private ?int $sort_no = null;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
         private $create_date;
 
-        /**
-         * @var Product
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Product", inversedBy="ProductImage")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="product_id", referencedColumnName="id")
-         * })
-         */
-        private $Product;
+        #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'ProductImage')]
+        #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id')]
+        private ?Product $Product = null;
 
-        /**
-         * @var Member
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
-         * })
-         */
-        private $Creator;
+        #[ORM\ManyToOne(targetEntity: Member::class)]
+        #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
+        private ?Member $Creator = null;
 
         /**
          * Get id.
          *
          * @return int
          */
-        public function getId()
+        public function getId(): ?int
         {
             return $this->id;
         }
 
         /**
          * Set fileName.
-         *
-         * @param string $fileName
-         *
-         * @return ProductImage
          */
-        public function setFileName($fileName)
+        public function setFileName(string $fileName): ProductImage
         {
             $this->file_name = $fileName;
 
@@ -121,22 +81,16 @@ if (!class_exists(ProductImage::class)) {
 
         /**
          * Get fileName.
-         *
-         * @return string
          */
-        public function getFileName()
+        public function getFileName(): string
         {
             return $this->file_name;
         }
 
         /**
          * Set sortNo.
-         *
-         * @param int $sortNo
-         *
-         * @return ProductImage
          */
-        public function setSortNo($sortNo)
+        public function setSortNo(int $sortNo): ProductImage
         {
             $this->sort_no = $sortNo;
 
@@ -145,22 +99,16 @@ if (!class_exists(ProductImage::class)) {
 
         /**
          * Get sortNo.
-         *
-         * @return int
          */
-        public function getSortNo()
+        public function getSortNo(): int
         {
             return $this->sort_no;
         }
 
         /**
          * Set createDate.
-         *
-         * @param \DateTime $createDate
-         *
-         * @return ProductImage
          */
-        public function setCreateDate($createDate)
+        public function setCreateDate(\DateTime $createDate): ProductImage
         {
             $this->create_date = $createDate;
 
@@ -169,22 +117,16 @@ if (!class_exists(ProductImage::class)) {
 
         /**
          * Get createDate.
-         *
-         * @return \DateTime
          */
-        public function getCreateDate()
+        public function getCreateDate(): ?\DateTime
         {
             return $this->create_date;
         }
 
         /**
          * Set product.
-         *
-         * @param Product|null $product
-         *
-         * @return ProductImage
          */
-        public function setProduct(?Product $product = null)
+        public function setProduct(?Product $product = null): ProductImage
         {
             $this->Product = $product;
 
@@ -193,22 +135,16 @@ if (!class_exists(ProductImage::class)) {
 
         /**
          * Get product.
-         *
-         * @return Product|null
          */
-        public function getProduct()
+        public function getProduct(): ?Product
         {
             return $this->Product;
         }
 
         /**
          * Set creator.
-         *
-         * @param Member|null $creator
-         *
-         * @return ProductImage
          */
-        public function setCreator(?Member $creator = null)
+        public function setCreator(?Member $creator = null): ProductImage
         {
             $this->Creator = $creator;
 
@@ -217,10 +153,8 @@ if (!class_exists(ProductImage::class)) {
 
         /**
          * Get creator.
-         *
-         * @return Member|null
          */
-        public function getCreator()
+        public function getCreator(): ?Member
         {
             return $this->Creator;
         }

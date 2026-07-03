@@ -13,11 +13,9 @@
 
 namespace Eccube\DependencyInjection\Compiler;
 
-use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\AnnotationRegistry;
-use Eccube\Annotation\CartFlow;
-use Eccube\Annotation\OrderFlow;
-use Eccube\Annotation\ShoppingFlow;
+use Eccube\Attribute\CartFlow;
+use Eccube\Attribute\OrderFlow;
+use Eccube\Attribute\ShoppingFlow;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PriorityTaggedServiceTrait;
@@ -37,7 +35,11 @@ class PurchaseFlowPass implements CompilerPassInterface
     public const ITEM_HOLDER_POST_VALIDATOR_TAG = 'eccube.item.holder.post.validator';
     public const PURCHASE_PROCESSOR_TAG = 'eccube.purchase.processor';
 
-    public function process(ContainerBuilder $container)
+    /**
+     * @throws \ReflectionException
+     */
+    #[\Override]
+    public function process(ContainerBuilder $container): void
     {
         $flowTypes = [
             PurchaseContext::CART_FLOW => $container->findDefinition('eccube.purchase.flow.cart'),
@@ -59,18 +61,16 @@ class PurchaseFlowPass implements CompilerPassInterface
                     if (isset($attributes['flow_type'])) {
                         $attributes['id'] = $id;
                         $attributes['index'] = ++$i;
-                        $attributes['priority'] = isset($attributes['priority']) ? $attributes['priority'] : 0;
+                        $attributes['priority'] ??= 0;
                         $allMethod[$attributes['flow_type']][] = $attributes;
                     }
                 }
             }
-            /**
-             * @var string $flowType
-             * @var Definition $purchaseFlowDef
-             */
+            /** @var string $flowType */
             foreach ($allMethod as $flowType => $flowMethod) {
-                $purchaseFlowDef = isset($flowTypes[$flowType]) ? $flowTypes[$flowType] : null;
-                if (!is_null($purchaseFlowDef) && count($flowMethod) > 0) {
+                /** @var Definition|null $purchaseFlowDef */
+                $purchaseFlowDef = $flowTypes[$flowType] ?? null;
+                if (!is_null($purchaseFlowDef)) {
                     // flow_typeごとにソートをしてセットする
                     uasort($flowMethod, static fn ($a, $b) => $b['priority'] <=> $a['priority'] ?: $a['index'] <=> $b['index']);
                     foreach ($flowMethod as $attributes) {
@@ -86,26 +86,33 @@ class PurchaseFlowPass implements CompilerPassInterface
             OrderFlow::class => $container->findDefinition('eccube.purchase.flow.order'),
         ];
 
-        // TODO doctrine/anntationsをv2へアップデート。影響がある場合は要調査。
-        // AnnotationRegistry::registerAutoloadNamespace('Eccube\Annotation', __DIR__ . '/../../../../src');
-        $reader = new AnnotationReader();
-
         /*
-         * アノテーションで追加対象のフローを指定した場合の処理
+         * アトリビュートで追加対象のフローを指定した場合の処理
          */
         foreach ($this->getProcessorTags() as $tag => $methodName) {
             /** @var Reference $id */
             foreach ($this->findAndSortTaggedServices($tag, $container) as $id) {
                 $def = $container->getDefinition($id);
+                // %param% を含むことがあるため、解決してからReflectionする。
+                $class = $container->getParameterBag()->resolveValue($def->getClass());
+                // クラスが無い場合はスキップ
+                if (!\is_string($class) || !class_exists($class)) {
+                    continue;
+                }
+                $rc = new \ReflectionClass($class);
+
                 /**
-                 * @var string $annotationName
+                 * @var string     $attributeClass
                  * @var Definition $purchaseFlowDef
                  */
-                foreach ($flowDefs as $annotationName => $purchaseFlowDef) {
-                    $anno = $reader->getClassAnnotation(new \ReflectionClass($def->getClass()), $annotationName);
-                    if ($anno) {
-                        $purchaseFlowDef->addMethodCall($methodName, [$id]);
-                        $purchaseFlowDef->setPublic(true);
+                foreach ($flowDefs as $attributeClass => $purchaseFlowDef) {
+                    // IS_INSTANCEOFで継承した属性も拾う
+                    if (\count($rc->getAttributes($attributeClass, \ReflectionAttribute::IS_INSTANCEOF)) > 0) {
+                        // 既にYAML側で配線済みならスキップ（重複防止）
+                        if (!$this->alreadyWired($purchaseFlowDef, $methodName, $id)) {
+                            $purchaseFlowDef->addMethodCall($methodName, [$id]);
+                            $purchaseFlowDef->setPublic(true);
+                        }
                     }
                 }
             }
@@ -126,5 +133,24 @@ class PurchaseFlowPass implements CompilerPassInterface
             self::DISCOUNT_PROCESSOR_TAG => 'addDiscountProcessor',
             self::PURCHASE_PROCESSOR_TAG => 'addPurchaseProcessor',
         ];
+    }
+
+    /**
+     * 既に同一メソッド・同一サービスIDが登録済みかを定義から判定し、二重登録を防ぐ。
+     */
+    private function alreadyWired(Definition $flowDef, string $methodName, string $serviceId): bool
+    {
+        foreach ($flowDef->getMethodCalls() as [$m, $args]) {
+            if ($m !== $methodName || empty($args)) {
+                continue;
+            }
+            // 文字列IDでも Reference でも比較可能に正規化
+            $arg0 = (string) $args[0];
+            if ($arg0 === $serviceId) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

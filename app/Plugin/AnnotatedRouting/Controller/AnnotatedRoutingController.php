@@ -14,43 +14,27 @@
 namespace Plugin\AnnotatedRouting\Controller;
 
 use Eccube\Application;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Method;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
-/**
- * @Route(value="/arc", service=AnnotatedRoutingController::class)
- */
+#[Route(path: '/arc')]
 class AnnotatedRoutingController
 {
-    /**
-     * @Route("/")
-     *
-     * @Template("AnnotatedRouting/Resource/template/index.twig")
-     */
+    #[Route(path: '/')]
+    #[Template('AnnotatedRouting/Resource/template/index.twig')]
     public function index(Application $app)
     {
         return [];
     }
 
-    /**
-     * @Route("/form")
-     *
-     * @Method("GET")
-     *
-     * @Template("AnnotatedRouting/Resource/template/form.twig")
-     */
+    #[Route(path: '/form', methods: ['GET'])]
+    #[Template('AnnotatedRouting/Resource/template/form.twig')]
     public function form(Application $app)
     {
         return [];
     }
 
-    /**
-     * @Route("/form")
-     *
-     * @Method("POST")
-     */
+    #[Route(path: '/form', methods: ['POST'])]
     public function submit(Application $app, Request $request)
     {
         return $app->escape('Hello, '.$request->get('value'));

@@ -17,34 +17,27 @@ use Eccube\Controller\AbstractController;
 use Eccube\Form\Type\Admin\SecurityType;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class SecurityController extends AbstractController
 {
     /**
-     * @var TokenStorageInterface
-     */
-    protected $tokenStorage;
-
-    /**
      * SecurityController constructor.
-     *
-     * @param TokenStorageInterface $tokenStorage
      */
-    public function __construct(TokenStorageInterface $tokenStorage)
+    public function __construct(protected TokenStorageInterface $tokenStorage, private readonly CacheUtil $cacheUtil)
     {
-        $this->tokenStorage = $tokenStorage;
     }
 
     /**
-     * @Route("/%eccube_admin_route%/setting/system/security", name="admin_setting_system_security", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Setting/System/security.twig")
+     * @return RedirectResponse|array<string, mixed>
      */
-    public function index(Request $request, CacheUtil $cacheUtil)
+    #[Route(path: '/%eccube_admin_route%/setting/system/security', name: 'admin_setting_system_security', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Setting/System/security.twig')]
+    public function index(Request $request): RedirectResponse|array
     {
         $builder = $this->formFactory->createBuilder(SecurityType::class);
         $form = $builder->getForm();
@@ -63,25 +56,17 @@ class SecurityController extends AbstractController
             $env = file_get_contents($envFile);
 
             $frontAllowHosts = \json_encode(
-                array_filter(\explode("\n", StringUtil::convertLineFeed($data['front_allow_hosts'])), function ($str) {
-                    return StringUtil::isNotBlank($str);
-                })
+                array_filter(\explode("\n", StringUtil::convertLineFeed($data['front_allow_hosts'])), fn ($str) => StringUtil::isNotBlank($str))
             );
             $frontDenyHosts = \json_encode(
-                array_filter(\explode("\n", StringUtil::convertLineFeed($data['front_deny_hosts'])), function ($str) {
-                    return StringUtil::isNotBlank($str);
-                })
+                array_filter(\explode("\n", StringUtil::convertLineFeed($data['front_deny_hosts'])), fn ($str) => StringUtil::isNotBlank($str))
             );
 
             $adminAllowHosts = \json_encode(
-                array_filter(\explode("\n", StringUtil::convertLineFeed($data['admin_allow_hosts'])), function ($str) {
-                    return StringUtil::isNotBlank($str);
-                })
+                array_filter(\explode("\n", StringUtil::convertLineFeed($data['admin_allow_hosts'])), fn ($str) => StringUtil::isNotBlank($str))
             );
             $adminDenyHosts = \json_encode(
-                array_filter(\explode("\n", StringUtil::convertLineFeed($data['admin_deny_hosts'])), function ($str) {
-                    return StringUtil::isNotBlank($str);
-                })
+                array_filter(\explode("\n", StringUtil::convertLineFeed($data['admin_deny_hosts'])), fn ($str) => StringUtil::isNotBlank($str))
             );
 
             $env = StringUtil::replaceOrAddEnv($env, [
@@ -110,7 +95,7 @@ class SecurityController extends AbstractController
                 $this->tokenStorage->setToken(null);
 
                 // キャッシュの削除
-                $cacheUtil->clearCache();
+                $this->cacheUtil->clearCache();
 
                 // 管理者画面へ再ログイン
                 return $this->redirect($request->getBaseUrl().'/'.$data['admin_route_dir']);
@@ -119,7 +104,7 @@ class SecurityController extends AbstractController
             $this->addSuccess('admin.common.save_complete', 'admin');
 
             // キャッシュの削除
-            $cacheUtil->clearCache();
+            $this->cacheUtil->clearCache();
 
             return $this->redirectToRoute('admin_setting_system_security');
         }

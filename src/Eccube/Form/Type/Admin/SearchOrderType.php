@@ -15,6 +15,7 @@ namespace Eccube\Form\Type\Admin;
 
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Shipping;
+use Eccube\Form\EventListener\ConvertKanaListener;
 use Eccube\Form\Type\Master\OrderStatusType;
 use Eccube\Form\Type\Master\PaymentType;
 use Eccube\Form\Type\PhoneNumberType;
@@ -33,20 +34,17 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class SearchOrderType extends AbstractType
 {
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    public function __construct(EccubeConfig $eccubeConfig)
+    public function __construct(protected EccubeConfig $eccubeConfig)
     {
-        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             // 受注ID・注文者名・注文者（フリガナ）・注文者会社名
@@ -77,7 +75,7 @@ class SearchOrderType extends AbstractType
                         ]),
                     ],
                 ])
-                ->addEventSubscriber(new \Eccube\Form\EventListener\ConvertKanaListener('CV')
+                ->addEventSubscriber(new ConvertKanaListener('CV')
                 ))
             ->add('company_name', TextType::class, [
                 'label' => 'admin.order.orderer_company_name',
@@ -416,7 +414,7 @@ class SearchOrderType extends AbstractType
                 'label' => 'admin.list.sort.type',
                 'required' => false,
             ])
-            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
                 $form = $event->getForm();
 
                 // 注文日
@@ -465,7 +463,8 @@ class SearchOrderType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    #[\Override]
+    public function getBlockPrefix(): string
     {
         return 'admin_search_order';
     }

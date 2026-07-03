@@ -13,23 +13,23 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Entity\Master\DeviceType;
+use Eccube\Repository\LayoutRepository;
 
 if (!class_exists(Layout::class)) {
     /**
      * Layout
-     *
-     * @ORM\Table(name="dtb_layout")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\LayoutRepository")
      */
-    class Layout extends AbstractEntity
+    #[ORM\Table(name: 'dtb_layout')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: LayoutRepository::class)]
+    class Layout extends AbstractEntity implements \Stringable
     {
         // 配置ID
         /** 配置ID: 未使用 */
@@ -62,15 +62,13 @@ if (!class_exists(Layout::class)) {
          */
         public const DEFAULT_LAYOUT_UNDERLAYER_PAGE = 2;
 
-        /**
-         * @return string
-         */
-        public function __toString()
+        #[\Override]
+        public function __toString(): string
         {
             return (string) $this->name;
         }
 
-        public function isDefault()
+        public function isDefault(): bool
         {
             return in_array($this->id, [self::DEFAULT_LAYOUT_PREVIEW_PAGE, self::DEFAULT_LAYOUT_TOP_PAGE, self::DEFAULT_LAYOUT_UNDERLAYER_PAGE]);
         }
@@ -78,7 +76,7 @@ if (!class_exists(Layout::class)) {
         /**
          * @return Page[]
          */
-        public function getPages()
+        public function getPages(): array
         {
             $Pages = [];
             foreach ($this->PageLayouts as $PageLayout) {
@@ -89,11 +87,9 @@ if (!class_exists(Layout::class)) {
         }
 
         /**
-         * @param int|null $targetId
-         *
          * @return Block[]
          */
-        public function getBlocks($targetId = null)
+        public function getBlocks(?int $targetId = null): array
         {
             /** @var BlockPosition[] $TargetBlockPositions */
             $TargetBlockPositions = [];
@@ -110,9 +106,7 @@ if (!class_exists(Layout::class)) {
             }
 
             // blockRow順にsort
-            uasort($TargetBlockPositions, function (BlockPosition $a, BlockPosition $b) {
-                return ($a->getBlockRow() < $b->getBlockRow()) ? -1 : 1;
-            });
+            uasort($TargetBlockPositions, fn (BlockPosition $a, BlockPosition $b) => ($a->getBlockRow() < $b->getBlockRow()) ? -1 : 1);
 
             // Blockの配列を作成
             $TargetBlocks = [];
@@ -124,90 +118,123 @@ if (!class_exists(Layout::class)) {
         }
 
         /**
-         * @param int $targetId
-         *
-         * @return BlockPosition[]
+         * @return Collection<int, BlockPosition>
          */
-        public function getBlockPositionsByTargetId($targetId)
+        public function getBlockPositionsByTargetId(int $targetId): Collection
         {
             return $this->BlockPositions->filter(
-                function ($BlockPosition) use ($targetId) {
-                    return $BlockPosition->getSection() == $targetId;
-                }
+                fn ($BlockPosition) => $BlockPosition->getSection() == $targetId
             );
         }
 
-        public function getUnused()
+        /**
+         * @return Block[]
+         */
+        public function getUnused(): array
         {
             return $this->getBlocks(self::TARGET_ID_UNUSED);
         }
 
-        public function getHead()
+        /**
+         * @return Block[]
+         */
+        public function getHead(): array
         {
             return $this->getBlocks(self::TARGET_ID_HEAD);
         }
 
-        public function getBodyAfter()
+        /**
+         * @return Block[]
+         */
+        public function getBodyAfter(): array
         {
             return $this->getBlocks(self::TARGET_ID_BODY_AFTER);
         }
 
-        public function getHeader()
+        /**
+         * @return Block[]
+         */
+        public function getHeader(): array
         {
             return $this->getBlocks(self::TARGET_ID_HEADER);
         }
 
-        public function getContentsTop()
+        /**
+         * @return Block[]
+         */
+        public function getContentsTop(): array
         {
             return $this->getBlocks(self::TARGET_ID_CONTENTS_TOP);
         }
 
-        public function getSideLeft()
+        /**
+         * @return Block[]
+         */
+        public function getSideLeft(): array
         {
             return $this->getBlocks(self::TARGET_ID_SIDE_LEFT);
         }
 
-        public function getMainTop()
+        /**
+         * @return Block[]
+         */
+        public function getMainTop(): array
         {
             return $this->getBlocks(self::TARGET_ID_MAIN_TOP);
         }
 
-        public function getMainBottom()
+        /**
+         * @return Block[]
+         */
+        public function getMainBottom(): array
         {
             return $this->getBlocks(self::TARGET_ID_MAIN_BOTTOM);
         }
 
-        public function getSideRight()
+        /**
+         * @return Block[]
+         */
+        public function getSideRight(): array
         {
             return $this->getBlocks(self::TARGET_ID_SIDE_RIGHT);
         }
 
-        public function getContentsBottom()
+        /**
+         * @return Block[]
+         */
+        public function getContentsBottom(): array
         {
             return $this->getBlocks(self::TARGET_ID_CONTENTS_BOTTOM);
         }
 
-        public function getFooter()
+        /**
+         * @return Block[]
+         */
+        public function getFooter(): array
         {
             return $this->getBlocks(self::TARGET_ID_FOOTER);
         }
 
-        public function getDrawer()
+        /**
+         * @return Block[]
+         */
+        public function getDrawer(): array
         {
             return $this->getBlocks(self::TARGET_ID_DRAWER);
         }
 
-        public function getCloseBodyBefore()
+        /**
+         * @return Block[]
+         */
+        public function getCloseBodyBefore(): array
         {
             return $this->getBlocks(self::TARGET_ID_CLOSE_BODY_BEFORE);
         }
 
         /**
          * Get ColumnNum
-         *
-         * @return int
          */
-        public function getColumnNum()
+        public function getColumnNum(): int
         {
             return 1 + ($this->getSideLeft() ? 1 : 0) + ($this->getSideRight() ? 1 : 0);
         }
@@ -215,74 +242,50 @@ if (!class_exists(Layout::class)) {
         // -----------------------
         // generated by doctrine
         // -----------------------
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+        private ?int $id = null;
 
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
-         */
-        private $id;
-
-        /**
-         * @var string
-         *
-         * @ORM\Column(name="layout_name", type="string", length=255, nullable=true)
-         */
-        private $name;
+        #[ORM\Column(name: 'layout_name', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $name = null;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
         private $create_date;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
         private $update_date;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection
-         *
-         * @ORM\OneToMany(targetEntity="Eccube\Entity\BlockPosition", mappedBy="Layout", cascade={"persist","remove"})
+         * @var Collection<int, BlockPosition>
          */
+        #[ORM\OneToMany(targetEntity: BlockPosition::class, mappedBy: 'Layout', cascade: ['persist', 'remove'])]
         private $BlockPositions;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection
-         *
-         * @ORM\OneToMany(targetEntity="Eccube\Entity\PageLayout", mappedBy="Layout", cascade={"persist","remove"})
-         *
-         * @ORM\OrderBy({"sort_no" = "ASC"})
+         * @var Collection<int, PageLayout>
          */
+        #[ORM\OneToMany(targetEntity: PageLayout::class, mappedBy: 'Layout', cascade: ['persist', 'remove'])]
+        #[ORM\OrderBy(['sort_no' => 'ASC'])]
         private $PageLayouts;
 
-        /**
-         * @var Master\DeviceType
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\DeviceType")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="device_type_id", referencedColumnName="id")
-         * })
-         */
-        private $DeviceType;
+        #[ORM\ManyToOne(targetEntity: DeviceType::class)]
+        #[ORM\JoinColumn(name: 'device_type_id', referencedColumnName: 'id')]
+        private ?DeviceType $DeviceType = null;
 
         /**
          * Constructor
          */
         public function __construct()
         {
-            $this->BlockPositions = new \Doctrine\Common\Collections\ArrayCollection();
-            $this->PageLayouts = new \Doctrine\Common\Collections\ArrayCollection();
+            $this->BlockPositions = new ArrayCollection();
+            $this->PageLayouts = new ArrayCollection();
         }
 
         /**
@@ -290,19 +293,15 @@ if (!class_exists(Layout::class)) {
          *
          * @return int
          */
-        public function getId()
+        public function getId(): ?int
         {
             return $this->id;
         }
 
         /**
          * Set name
-         *
-         * @param string $name
-         *
-         * @return Layout
          */
-        public function setName($name)
+        public function setName(string $name): Layout
         {
             $this->name = $name;
 
@@ -311,22 +310,16 @@ if (!class_exists(Layout::class)) {
 
         /**
          * Get name
-         *
-         * @return string
          */
-        public function getName()
+        public function getName(): string
         {
             return $this->name;
         }
 
         /**
          * Set createDate
-         *
-         * @param \DateTime $createDate
-         *
-         * @return Layout
          */
-        public function setCreateDate($createDate)
+        public function setCreateDate(\DateTime $createDate): Layout
         {
             $this->create_date = $createDate;
 
@@ -338,19 +331,15 @@ if (!class_exists(Layout::class)) {
          *
          * @return \DateTime
          */
-        public function getCreateDate()
+        public function getCreateDate(): ?\DateTime
         {
             return $this->create_date;
         }
 
         /**
          * Set updateDate
-         *
-         * @param \DateTime $updateDate
-         *
-         * @return Layout
          */
-        public function setUpdateDate($updateDate)
+        public function setUpdateDate(\DateTime $updateDate): Layout
         {
             $this->update_date = $updateDate;
 
@@ -362,19 +351,15 @@ if (!class_exists(Layout::class)) {
          *
          * @return \DateTime
          */
-        public function getUpdateDate()
+        public function getUpdateDate(): ?\DateTime
         {
             return $this->update_date;
         }
 
         /**
          * Add blockPosition
-         *
-         * @param BlockPosition $blockPosition
-         *
-         * @return Layout
          */
-        public function addBlockPosition(BlockPosition $blockPosition)
+        public function addBlockPosition(BlockPosition $blockPosition): Layout
         {
             $this->BlockPositions[] = $blockPosition;
 
@@ -383,10 +368,8 @@ if (!class_exists(Layout::class)) {
 
         /**
          * Remove blockPosition
-         *
-         * @param BlockPosition $blockPosition
          */
-        public function removeBlockPosition(BlockPosition $blockPosition)
+        public function removeBlockPosition(BlockPosition $blockPosition): void
         {
             $this->BlockPositions->removeElement($blockPosition);
         }
@@ -394,21 +377,17 @@ if (!class_exists(Layout::class)) {
         /**
          * Get blockPositions
          *
-         * @return \Doctrine\Common\Collections\Collection
+         * @return Collection<int, BlockPosition>
          */
-        public function getBlockPositions()
+        public function getBlockPositions(): Collection
         {
             return $this->BlockPositions;
         }
 
         /**
          * Add pageLayoutLayout
-         *
-         * @param PageLayout $PageLayout
-         *
-         * @return Layout
          */
-        public function addPageLayout(PageLayout $PageLayout)
+        public function addPageLayout(PageLayout $PageLayout): Layout
         {
             $this->PageLayouts[] = $PageLayout;
 
@@ -417,10 +396,8 @@ if (!class_exists(Layout::class)) {
 
         /**
          * Remove pageLayoutLayout
-         *
-         * @param PageLayout $PageLayout
          */
-        public function removePageLayout(PageLayout $PageLayout)
+        public function removePageLayout(PageLayout $PageLayout): void
         {
             $this->PageLayouts->removeElement($PageLayout);
         }
@@ -428,9 +405,9 @@ if (!class_exists(Layout::class)) {
         /**
          * Get pageLayoutLayouts
          *
-         * @return \Doctrine\Common\Collections\Collection
+         * @return Collection<int, PageLayout>
          */
-        public function getPageLayouts()
+        public function getPageLayouts(): Collection
         {
             return $this->PageLayouts;
         }
@@ -438,11 +415,9 @@ if (!class_exists(Layout::class)) {
         /**
          * Set deviceType
          *
-         * @param Master\DeviceType $deviceType
-         *
-         * @return Layout
+         * @param DeviceType $deviceType
          */
-        public function setDeviceType(?Master\DeviceType $deviceType = null)
+        public function setDeviceType(?DeviceType $deviceType = null): Layout
         {
             $this->DeviceType = $deviceType;
 
@@ -451,20 +426,16 @@ if (!class_exists(Layout::class)) {
 
         /**
          * Get deviceType
-         *
-         * @return Master\DeviceType
          */
-        public function getDeviceType()
+        public function getDeviceType(): ?DeviceType
         {
             return $this->DeviceType;
         }
 
         /**
          * Check layout can delete or not
-         *
-         * @return bool
          */
-        public function isDeletable()
+        public function isDeletable(): bool
         {
             if (!$this->getPageLayouts()->isEmpty()) {
                 return false;

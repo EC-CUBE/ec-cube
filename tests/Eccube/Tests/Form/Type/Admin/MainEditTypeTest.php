@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,13 +19,12 @@ use Eccube\Form\Type\Admin\MainEditType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use Symfony\Component\Form\FormInterface;
 
-class MainEditTypeTest extends AbstractTypeTestCase
+final class MainEditTypeTest extends AbstractTypeTestCase
 {
-    /** @var FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = [
+    protected ?array $formData = [
         'name' => 'テストページ',
         'url' => 'test',
         'file_name' => 'foo/bar/baz',
@@ -41,7 +42,6 @@ class MainEditTypeTest extends AbstractTypeTestCase
         $options = [
             'csrf_protection' => false,
         ];
-
         $this->form = $this->formFactory
             ->createBuilder(MainEditType::class, $this->createPage(), $options)
             ->getForm();

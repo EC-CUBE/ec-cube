@@ -14,29 +14,29 @@
 namespace Eccube\EventListener;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\Customer;
+use Eccube\Entity\Member;
 use Eccube\Request\Context;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class RateLimiterListener implements EventSubscriberInterface
 {
-    private ContainerInterface $locator;
-    private EccubeConfig $eccubeConfig;
-    private Context $requestContext;
-
-    public function __construct(ContainerInterface $locator, EccubeConfig $eccubeConfig, Context $requestContext)
+    public function __construct(private readonly ContainerInterface $locator, private EccubeConfig $eccubeConfig, private readonly Context $requestContext)
     {
-        $this->locator = $locator;
-        $this->eccubeConfig = $eccubeConfig;
-        $this->requestContext = $requestContext;
     }
 
-    public function onController(ControllerEvent $event)
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function onController(ControllerEvent $event): void
     {
         if (!$event->isMainRequest()) {
             return;
@@ -59,9 +59,7 @@ class RateLimiterListener implements EventSubscriberInterface
             }
 
             if (!empty($config['params'])) {
-                $matchParams = array_filter($config['params'], function ($value, $key) use ($request) {
-                    return $request->get($key) === $value;
-                }, ARRAY_FILTER_USE_BOTH);
+                $matchParams = array_filter($config['params'], fn ($value, $key) => $request->get($key) === $value, ARRAY_FILTER_USE_BOTH);
 
                 if (count($config['params']) !== count($matchParams)) {
                     // パラメータが不一致であればスキップ
@@ -76,12 +74,17 @@ class RateLimiterListener implements EventSubscriberInterface
             /** @var RateLimiterFactory $factory */
             $factory = $this->locator->get($limiterId);
             if (in_array('customer', $config['type']) || in_array('user', $config['type'])) {
+                /** @var Customer|Member|null $User */
                 $User = $this->requestContext->getCurrentUser();
-                if ($User instanceof UserInterface) {
-                    $limiter = $factory->create($User->getId());
-                    if (!$limiter->consume()->isAccepted()) {
-                        throw new TooManyRequestsHttpException();
-                    }
+                // ゲスト購入時など未ログイン経路でも customer / user スコープのレート制限が
+                // 設定された route (例: shopping_shipping_multiple_edit) に到達することがある.
+                // その場合 $User は null となり, getId() で TypeError になるため早期 continue する.
+                if ($User === null) {
+                    continue;
+                }
+                $limiter = $factory->create((string) $User->getId());
+                if (!$limiter->consume()->isAccepted()) {
+                    throw new TooManyRequestsHttpException();
                 }
             }
             if (in_array('ip', $config['type'])) {
@@ -96,7 +99,8 @@ class RateLimiterListener implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    #[\Override]
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::CONTROLLER => ['onController', 0],

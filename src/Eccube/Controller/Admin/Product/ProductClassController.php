@@ -13,7 +13,9 @@
 
 namespace Eccube\Controller\Admin\Product;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\ClassName;
@@ -27,67 +29,36 @@ use Eccube\Repository\ProductClassRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Util\CacheUtil;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\Form\ClickableInterface;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class ProductClassController extends AbstractController
 {
     /**
-     * @var ProductRepository
-     */
-    protected $productRepository;
-
-    /**
-     * @var ProductClassRepository
-     */
-    protected $productClassRepository;
-
-    /**
-     * @var ClassCategoryRepository
-     */
-    protected $classCategoryRepository;
-
-    /**
-     * @var BaseInfoRepository
-     */
-    protected $baseInfoRepository;
-
-    /**
-     * @var TaxRuleRepository
-     */
-    protected $taxRuleRepository;
-
-    /**
      * ProductClassController constructor.
-     *
-     * @param ProductClassRepository $productClassRepository
-     * @param ClassCategoryRepository $classCategoryRepository
      */
-    public function __construct(
-        ProductRepository $productRepository,
-        ProductClassRepository $productClassRepository,
-        ClassCategoryRepository $classCategoryRepository,
-        BaseInfoRepository $baseInfoRepository,
-        TaxRuleRepository $taxRuleRepository,
-    ) {
-        $this->productRepository = $productRepository;
-        $this->productClassRepository = $productClassRepository;
-        $this->classCategoryRepository = $classCategoryRepository;
-        $this->baseInfoRepository = $baseInfoRepository;
-        $this->taxRuleRepository = $taxRuleRepository;
+    public function __construct(protected ProductRepository $productRepository, protected ProductClassRepository $productClassRepository, protected ClassCategoryRepository $classCategoryRepository, protected BaseInfoRepository $baseInfoRepository, protected TaxRuleRepository $taxRuleRepository, private readonly CacheUtil $cacheUtil)
+    {
     }
 
     /**
      * 商品規格が登録されていなければ新規登録, 登録されていれば更新画面を表示する
      *
-     * @Route("/%eccube_admin_route%/product/product/class/{id}", requirements={"id" = "\d+"}, name="admin_product_product_class", methods={"GET", "POST"})
+     * @param string $id
      *
-     * @Template("@admin/Product/product_class.twig")
+     * @return RedirectResponse|array<string, mixed>
+     *
+     * @throws NotFoundHttpException|NonUniqueResultException
      */
-    public function index(Request $request, $id, CacheUtil $cacheUtil)
+    #[Route(path: '/%eccube_admin_route%/product/product/class/{id}', name: 'admin_product_product_class', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Product/product_class.twig')]
+    public function index(Request $request, $id): RedirectResponse|array
     {
         $Product = $this->findProduct($id);
         if (!$Product) {
@@ -100,9 +71,7 @@ class ProductClassController extends AbstractController
         if ($Product->hasProductClass()) {
             // 規格ありの商品は編集画面を表示する.
             $ProductClasses = $Product->getProductClasses()
-                ->filter(function ($pc) {
-                    return $pc->getClassCategory1() !== null;
-                });
+                ->filter(fn ($pc) => $pc->getClassCategory1() !== null);
 
             // 設定されている規格名1, 2を取得(商品規格の規格分類には必ず同じ値がセットされている)
             $FirstProductClass = $ProductClasses->first();
@@ -128,7 +97,7 @@ class ProductClassController extends AbstractController
 
                 $this->addSuccess('admin.common.save_complete', 'admin');
 
-                $cacheUtil->clearDoctrineCache();
+                $this->cacheUtil->clearDoctrineCache();
 
                 if ($request->get('return_product_list')) {
                     return $this->redirectToRoute('admin_product_product_class', ['id' => $Product->getId(), 'return_product_list' => true]);
@@ -146,7 +115,9 @@ class ProductClassController extends AbstractController
                 $this->isTokenValid();
 
                 // 登録,更新ボタンが押下されたかどうか.
-                $isSave = $form['save']->isClicked();
+                /** @var ClickableInterface $saveForm */
+                $saveForm = $form['save'];
+                $isSave = $saveForm->isClicked();
 
                 // 規格名1/2から商品規格の組み合わせを生成する.
                 $ClassName1 = $form['class_name1']->getData();
@@ -167,7 +138,7 @@ class ProductClassController extends AbstractController
 
                         $this->addSuccess('admin.common.save_complete', 'admin');
 
-                        $cacheUtil->clearDoctrineCache();
+                        $this->cacheUtil->clearDoctrineCache();
 
                         if ($request->get('return_product_list')) {
                             return $this->redirectToRoute('admin_product_product_class', ['id' => $Product->getId(), 'return_product_list' => true]);
@@ -192,9 +163,10 @@ class ProductClassController extends AbstractController
     /**
      * 商品規格を初期化する.
      *
-     * @Route("/%eccube_admin_route%/product/product/class/{id}/clear", requirements={"id" = "\d+"}, name="admin_product_product_class_clear", methods={"POST"})
+     * @throws ForeignKeyConstraintViolationException|\Exception
      */
-    public function clearProductClasses(Request $request, Product $Product, CacheUtil $cacheUtil)
+    #[Route(path: '/%eccube_admin_route%/product/product/class/{id}/clear', name: 'admin_product_product_class_clear', requirements: ['id' => '\d+'], methods: ['POST'])]
+    public function clearProductClasses(Request $request, Product $Product): RedirectResponse
     {
         if (!$Product->hasProductClass()) {
             return $this->redirectToRoute('admin_product_product_class', ['id' => $Product->getId()]);
@@ -229,7 +201,7 @@ class ProductClassController extends AbstractController
 
                 $this->addSuccess('admin.product.reset_complete', 'admin');
 
-                $cacheUtil->clearDoctrineCache();
+                $this->cacheUtil->clearDoctrineCache();
             } catch (ForeignKeyConstraintViolationException $e) {
                 log_error('商品規格の初期化失敗', [$e]);
 
@@ -248,12 +220,9 @@ class ProductClassController extends AbstractController
     /**
      * 規格名1/2から, 商品規格の組み合わせを生成する.
      *
-     * @param ClassName $ClassName1
-     * @param ClassName|null $ClassName2
-     *
      * @return array|ProductClass[]
      */
-    protected function createProductClasses(ClassName $ClassName1, ?ClassName $ClassName2 = null)
+    protected function createProductClasses(ClassName $ClassName1, ?ClassName $ClassName2 = null): array
     {
         $ProductClasses = [];
         $ClassCategories1 = $this->classCategoryRepository->findBy(['ClassName' => $ClassName1], ['sort_no' => 'DESC']);
@@ -285,12 +254,12 @@ class ProductClassController extends AbstractController
     /**
      * 商品規格の配列をマージする.
      *
-     * @param $ProductClassesForMatrix
-     * @param $ProductClasses
+     * @param array<int, ProductClass> $ProductClassesForMatrix
+     * @param ArrayCollection<int, ProductClass> $ProductClasses
      *
      * @return array|ProductClass[]
      */
-    protected function mergeProductClasses($ProductClassesForMatrix, $ProductClasses)
+    protected function mergeProductClasses(array $ProductClassesForMatrix, ArrayCollection $ProductClasses): array
     {
         $mergedProductClasses = [];
         foreach ($ProductClassesForMatrix as $pcfm) {
@@ -320,10 +289,11 @@ class ProductClassController extends AbstractController
     /**
      * 商品規格を登録, 更新する.
      *
-     * @param Product $Product
      * @param array|ProductClass[] $ProductClasses
+     *
+     * @throws NoResultException
      */
-    protected function saveProductClasses(Product $Product, $ProductClasses = [])
+    protected function saveProductClasses(Product $Product, array $ProductClasses = []): void
     {
         foreach ($ProductClasses as $pc) {
             // 新規登録時、チェックを入れていなければ更新しない
@@ -333,7 +303,7 @@ class ProductClassController extends AbstractController
 
             // 無効から有効にした場合は, 過去の登録情報を検索.
             if (!$pc->getId()) {
-                /** @var ProductClass $ExistsProductClass */
+                /** @var ProductClass|null $ExistsProductClass */
                 $ExistsProductClass = $this->productClassRepository->findOneBy([
                     'Product' => $Product,
                     'ClassCategory1' => $pc->getClassCategory1(),
@@ -392,7 +362,7 @@ class ProductClassController extends AbstractController
                 } else {
                     if ($TaxRule) {
                         $this->taxRuleRepository->delete($TaxRule);
-                        $pc->setTaxRule(null);
+                        $pc->setTaxRule();
                     }
                 }
             }
@@ -412,19 +382,15 @@ class ProductClassController extends AbstractController
     /**
      * 商品規格登録フォームを生成する.
      *
-     * @param array $ProductClasses
-     * @param ClassName|null $ClassName1
-     * @param ClassName|null $ClassName2
-     * @param array $options
-     *
-     * @return \Symfony\Component\Form\FormInterface
+     * @param array<int, ProductClass> $ProductClasses
+     * @param array<string, mixed> $options
      */
     protected function createMatrixForm(
-        $ProductClasses = [],
+        array $ProductClasses = [],
         ?ClassName $ClassName1 = null,
         ?ClassName $ClassName2 = null,
         array $options = [],
-    ) {
+    ): FormInterface {
         $options = array_merge(['csrf_protection' => false], $options);
         $builder = $this->formFactory->createBuilder(ProductClassMatrixType::class, [
             'product_classes' => $ProductClasses,
@@ -439,13 +405,9 @@ class ProductClassController extends AbstractController
      * 商品を取得する.
      * 商品規格はvisible=trueのものだけを取得し, 規格分類はsort_no=DESCでソートされている.
      *
-     * @param $id
-     *
-     * @return Product|null
-     *
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
-    protected function findProduct($id)
+    protected function findProduct(string|int $id): ?Product
     {
         $qb = $this->productRepository->createQueryBuilder('p')
             ->addSelect(['pc', 'cc1', 'cc2'])
@@ -461,7 +423,7 @@ class ProductClassController extends AbstractController
 
         try {
             return $qb->getQuery()->getSingleResult();
-        } catch (NoResultException $e) {
+        } catch (NoResultException) {
             return null;
         }
     }

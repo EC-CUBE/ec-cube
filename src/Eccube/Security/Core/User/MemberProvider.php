@@ -24,34 +24,13 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
+/**
+ * @implements UserProviderInterface<Member>
+ */
 class MemberProvider implements UserProviderInterface, PasswordUpgraderInterface
 {
-    /**
-     * @var MemberRepository
-     */
-    protected $memberRepository;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
-    public function __construct(MemberRepository $memberRepository, EntityManagerInterface $entityManager)
+    public function __construct(protected MemberRepository $memberRepository, private readonly EntityManagerInterface $entityManager)
     {
-        $this->memberRepository = $memberRepository;
-        $this->entityManager = $entityManager;
-    }
-
-    /**
-     * @return UserInterface
-     *
-     * @throws UserNotFoundException
-     *
-     * @deprecated since Symfony 5.3, use loadUserByIdentifier() instead
-     */
-    public function loadUserByUsername($username): Member
-    {
-        return $this->loadUserByIdentifier($username);
     }
 
     /**
@@ -62,31 +41,30 @@ class MemberProvider implements UserProviderInterface, PasswordUpgraderInterface
      * object can just be merged into some internal array of users / identity
      * map.
      *
-     * @return UserInterface
-     *
      * @throws UnsupportedUserException if the user is not supported
      */
-    public function refreshUser(UserInterface $user)
+    #[\Override]
+    public function refreshUser(UserInterface $user): UserInterface
     {
         if (!$user instanceof Member) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_class($user)));
+            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $user::class));
         }
 
-        return $this->loadUserByUsername($user->getUsername());
+        return $this->loadUserByIdentifier($user->getUsername());
     }
 
     /**
      * Whether this provider supports the given user class.
      *
      * @param string $class
-     *
-     * @return bool
      */
-    public function supportsClass($class)
+    #[\Override]
+    public function supportsClass($class): bool
     {
         return Member::class === $class || is_subclass_of($class, Member::class);
     }
 
+    #[\Override]
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
         $Member = $this->memberRepository->findOneBy(['login_id' => $identifier, 'Work' => Work::ACTIVE]);
@@ -98,8 +76,10 @@ class MemberProvider implements UserProviderInterface, PasswordUpgraderInterface
         return $Member;
     }
 
+    #[\Override]
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
+        /** @var Member $user */
         $user->setPassword($newHashedPassword);
         $this->entityManager->flush();
     }

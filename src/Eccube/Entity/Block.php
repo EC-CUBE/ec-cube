@@ -13,22 +13,23 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Entity\Master\DeviceType;
+use Eccube\Repository\BlockRepository;
 
 if (!class_exists(Block::class)) {
     /**
      * Block
-     *
-     * @ORM\Table(name="dtb_block", uniqueConstraints={@ORM\UniqueConstraint(name="device_type_id", columns={"device_type_id", "file_name"})})
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\BlockRepository")
      */
+    #[ORM\Table(name: 'dtb_block')]
+    #[ORM\UniqueConstraint(name: 'device_type_id', columns: ['device_type_id', 'file_name'])]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: BlockRepository::class)]
     class Block extends AbstractEntity
     {
         /**
@@ -36,94 +37,57 @@ if (!class_exists(Block::class)) {
          */
         public const UNUSED_BLOCK_ID = 0;
 
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
-         */
-        private $id;
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+        private ?int $id = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="block_name", type="string", length=255, nullable=true)
-         */
-        private $name;
+        #[ORM\Column(name: 'block_name', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $name = null;
 
-        /**
-         * @var string
-         *
-         * @ORM\Column(name="file_name", type="string", length=255)
-         */
-        private $file_name;
+        #[ORM\Column(name: 'file_name', type: Types::STRING, length: 255)]
+        private ?string $file_name = null;
 
-        /**
-         * @var bool
-         *
-         * @ORM\Column(name="use_controller", type="boolean", options={"default":false})
-         */
-        private $use_controller = false;
+        #[ORM\Column(name: 'use_controller', type: Types::BOOLEAN, options: ['default' => false])]
+        private bool $use_controller = false;
 
-        /**
-         * @var bool
-         *
-         * @ORM\Column(name="deletable", type="boolean", options={"default":true})
-         */
-        private $deletable = true;
+        #[ORM\Column(name: 'deletable', type: Types::BOOLEAN, options: ['default' => true])]
+        private bool $deletable = true;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
         private $create_date;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
         private $update_date;
 
         /**
-         * @var \Doctrine\Common\Collections\Collection
-         *
-         * @ORM\OneToMany(targetEntity="Eccube\Entity\BlockPosition", mappedBy="Block", cascade={"persist","remove"})
+         * @var Collection<int, BlockPosition>
          */
+        #[ORM\OneToMany(targetEntity: BlockPosition::class, mappedBy: 'Block', cascade: ['persist', 'remove'])]
         private $BlockPositions;
 
-        /**
-         * @var Master\DeviceType
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\DeviceType")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="device_type_id", referencedColumnName="id")
-         * })
-         */
-        private $DeviceType;
+        #[ORM\ManyToOne(targetEntity: DeviceType::class)]
+        #[ORM\JoinColumn(name: 'device_type_id', referencedColumnName: 'id')]
+        private ?DeviceType $DeviceType = null;
 
         /**
          * Constructor
          */
         public function __construct()
         {
-            $this->BlockPositions = new \Doctrine\Common\Collections\ArrayCollection();
+            $this->BlockPositions = new ArrayCollection();
         }
 
         /**
          * Set id
-         *
-         * @param int $id
-         *
-         * @return Block
          */
-        public function setId($id)
+        public function setId(int $id): Block
         {
             $this->id = $id;
 
@@ -135,19 +99,15 @@ if (!class_exists(Block::class)) {
          *
          * @return int
          */
-        public function getId()
+        public function getId(): ?int
         {
             return $this->id;
         }
 
         /**
          * Set name
-         *
-         * @param string $name
-         *
-         * @return Block
          */
-        public function setName($name)
+        public function setName(string $name): Block
         {
             $this->name = $name;
 
@@ -156,22 +116,16 @@ if (!class_exists(Block::class)) {
 
         /**
          * Get name
-         *
-         * @return string
          */
-        public function getName()
+        public function getName(): string
         {
             return $this->name;
         }
 
         /**
          * Set fileName
-         *
-         * @param string $fileName
-         *
-         * @return Block
          */
-        public function setFileName($fileName)
+        public function setFileName(string $fileName): Block
         {
             $this->file_name = $fileName;
 
@@ -180,22 +134,16 @@ if (!class_exists(Block::class)) {
 
         /**
          * Get fileName
-         *
-         * @return string
          */
-        public function getFileName()
+        public function getFileName(): string
         {
             return $this->file_name;
         }
 
         /**
          * Set useController
-         *
-         * @param bool $useController
-         *
-         * @return Block
          */
-        public function setUseController($useController)
+        public function setUseController(bool $useController): Block
         {
             $this->use_controller = $useController;
 
@@ -204,22 +152,16 @@ if (!class_exists(Block::class)) {
 
         /**
          * Get useController
-         *
-         * @return bool
          */
-        public function isUseController()
+        public function isUseController(): bool
         {
             return $this->use_controller;
         }
 
         /**
          * Set deletable
-         *
-         * @param bool $deletable
-         *
-         * @return Block
          */
-        public function setDeletable($deletable)
+        public function setDeletable(bool $deletable): Block
         {
             $this->deletable = $deletable;
 
@@ -228,22 +170,16 @@ if (!class_exists(Block::class)) {
 
         /**
          * Get deletable
-         *
-         * @return bool
          */
-        public function isDeletable()
+        public function isDeletable(): bool
         {
             return $this->deletable;
         }
 
         /**
          * Set createDate
-         *
-         * @param \DateTime $createDate
-         *
-         * @return Block
          */
-        public function setCreateDate($createDate)
+        public function setCreateDate(\DateTime $createDate): Block
         {
             $this->create_date = $createDate;
 
@@ -255,19 +191,15 @@ if (!class_exists(Block::class)) {
          *
          * @return \DateTime
          */
-        public function getCreateDate()
+        public function getCreateDate(): ?\DateTime
         {
             return $this->create_date;
         }
 
         /**
          * Set updateDate
-         *
-         * @param \DateTime $updateDate
-         *
-         * @return Block
          */
-        public function setUpdateDate($updateDate)
+        public function setUpdateDate(\DateTime $updateDate): Block
         {
             $this->update_date = $updateDate;
 
@@ -279,19 +211,15 @@ if (!class_exists(Block::class)) {
          *
          * @return \DateTime
          */
-        public function getUpdateDate()
+        public function getUpdateDate(): ?\DateTime
         {
             return $this->update_date;
         }
 
         /**
          * Add blockPosition
-         *
-         * @param BlockPosition $blockPosition
-         *
-         * @return Block
          */
-        public function addBlockPosition(BlockPosition $blockPosition)
+        public function addBlockPosition(BlockPosition $blockPosition): Block
         {
             $this->BlockPositions[] = $blockPosition;
 
@@ -300,10 +228,8 @@ if (!class_exists(Block::class)) {
 
         /**
          * Remove blockPosition
-         *
-         * @param BlockPosition $blockPosition
          */
-        public function removeBlockPosition(BlockPosition $blockPosition)
+        public function removeBlockPosition(BlockPosition $blockPosition): void
         {
             $this->BlockPositions->removeElement($blockPosition);
         }
@@ -311,9 +237,9 @@ if (!class_exists(Block::class)) {
         /**
          * Get blockPositions
          *
-         * @return \Doctrine\Common\Collections\Collection
+         * @return Collection<int, BlockPosition>
          */
-        public function getBlockPositions()
+        public function getBlockPositions(): Collection
         {
             return $this->BlockPositions;
         }
@@ -321,11 +247,9 @@ if (!class_exists(Block::class)) {
         /**
          * Set deviceType
          *
-         * @param Master\DeviceType $deviceType
-         *
-         * @return Block
+         * @param DeviceType $deviceType
          */
-        public function setDeviceType(?Master\DeviceType $deviceType = null)
+        public function setDeviceType(?DeviceType $deviceType = null): Block
         {
             $this->DeviceType = $deviceType;
 
@@ -334,10 +258,8 @@ if (!class_exists(Block::class)) {
 
         /**
          * Get deviceType
-         *
-         * @return Master\DeviceType
          */
-        public function getDeviceType()
+        public function getDeviceType(): ?DeviceType
         {
             return $this->DeviceType;
         }

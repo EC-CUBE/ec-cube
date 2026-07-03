@@ -15,11 +15,6 @@ namespace Page\Front;
 
 class CustomerAddressListPage extends AbstractFrontPage
 {
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     public static function at($I)
     {
         $page = new self($I);

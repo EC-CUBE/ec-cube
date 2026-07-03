@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -23,33 +25,23 @@ use Eccube\Entity\TaxRule;
 use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Repository\TaxRuleRepository;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\DomCrawler\Form;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class ProductClassControllerTest
  */
-class ProductClassControllerTest extends AbstractProductCommonTestCase
+final class ProductClassControllerTest extends AbstractProductCommonTestCase
 {
-    /**
-     * @var BaseInfo
-     */
-    protected $BaseInfo;
+    protected ?BaseInfo $BaseInfo = null;
 
-    /**
-     * @var ClassCategoryRepository
-     */
-    protected $classCategoryRepository;
+    protected ?ClassCategoryRepository $classCategoryRepository = null;
 
-    /**
-     * @var ProductRepository
-     */
-    protected $productRepository;
+    protected ?ProductRepository $productRepository = null;
 
-    /**
-     * @var TaxRuleRepository
-     */
-    protected $taxRuleRepository;
+    protected ?TaxRuleRepository $taxRuleRepository = null;
 
     /**
      * {@inheritdoc}
@@ -57,7 +49,6 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
         $this->productRepository = $this->entityManager->getRepository(Product::class);
         $this->taxRuleRepository = $this->entityManager->getRepository(TaxRule::class);
@@ -71,7 +62,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
     {
         $Product = $this->createProduct();
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_product_product_class', ['id' => $Product->getId()])
         );
 
@@ -90,7 +81,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
     {
         $Product = $this->createProduct(null, 0);
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_product_product_class', ['id' => $Product->getId()])
         );
 
@@ -120,7 +111,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // select class name
         /* @var Crawler $crawler */
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_product_product_class', ['id' => $product->getId()])
         );
         $form = $crawler->selectButton('商品規格の設定')->form();
@@ -164,7 +155,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // select class name
         /* @var Crawler $crawler */
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_product_product_class', ['id' => $product->getId()])
         );
         $form = $crawler->selectButton('商品規格の設定')->form();
@@ -196,9 +187,8 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
      * Test product class new.
      * Test when product tax rule enable.
      * Case: Tax rule is zero.
-     *
-     * @group decimal
      */
+    #[Group(name: 'decimal')]
     public function testProductClassNewWhenProductTaxRuleEnableAndEditTaxRuleIsZero()
     {
         // GIVE
@@ -213,7 +203,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // select class name
         /* @var Crawler $crawler */
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_product_product_class', ['id' => $product->getId()])
         );
         $form = $crawler->selectButton('商品規格の設定')->form();
@@ -238,6 +228,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
 
         // check database
         $taxRule = $this->taxRuleRepository->findOneBy(['Product' => $product]);
+        $this->assertInstanceOf(TaxRule::class, $taxRule);
         $this->assertSame($taxRate, $taxRule->getTaxRate());
     }
 
@@ -260,7 +251,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // select class name
         /* @var Crawler $crawler */
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_product_product_class', ['id' => $product->getId()])
         );
         $form = $crawler->selectButton('商品規格の設定')->form();
@@ -285,6 +276,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // check database
         /* @var TaxRule $taxRule */
         $taxRule = $this->taxRuleRepository->findOneBy(['Product' => $product]);
+        $this->assertInstanceOf(TaxRule::class, $taxRule);
 
         $this->assertEquals($form['product_class_matrix[product_classes][0][tax_rate]']->getValue(), $taxRule->getTaxRate());
     }
@@ -304,7 +296,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // select class name
         /* @var Crawler $crawler */
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_product_product_class', ['id' => $id])
         );
 
@@ -330,9 +322,8 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
      * Test product class edit.
      * Test when product tax rule enable.
      * Case: Tax rule is zero.
-     *
-     * @group decimal
      */
+    #[Group(name: 'decimal')]
     public function testProductClassEditWhenProductTaxRuleEnableAndEditTaxRuleIsZero()
     {
         // GIVE
@@ -343,7 +334,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // select class name
         /* @var Crawler $crawler */
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_product_product_class', ['id' => $id])
         );
 
@@ -366,7 +357,8 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         $product = $this->productRepository->find($id);
         /* @var TaxRule $taxRule */
         $taxRule = $this->taxRuleRepository->findOneBy(['Product' => $product]);
-        $this->assertSame('0', (string) $taxRule->getTaxRate());
+        $this->assertInstanceOf(TaxRule::class, $taxRule);
+        $this->assertSame('0', $taxRule->getTaxRate());
     }
 
     /**
@@ -383,7 +375,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // select class name
         /* @var Crawler $crawler */
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_product_product_class', ['id' => $id])
         );
 
@@ -406,7 +398,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         $product = $this->productRepository->find($id);
         /* @var TaxRule $taxRule */
         $taxRule = $this->taxRuleRepository->findOneBy(['Product' => $product]);
-        $this->assertNull($taxRule);
+        $this->assertNotInstanceOf(TaxRule::class, $taxRule);
     }
 
     /**
@@ -423,7 +415,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
 
         /* @var Crawler $crawler */
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_product_product_class', ['id' => $id])
         );
 
@@ -445,7 +437,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         $product = $this->productRepository->find($id);
         /* @var TaxRule $taxRule */
         $taxRule = $this->taxRuleRepository->findOneBy(['Product' => $product]);
-        $this->assertNotNull($taxRule);
+        $this->assertInstanceOf(TaxRule::class, $taxRule);
     }
 
     /**
@@ -478,7 +470,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // select class name
         /* @var Crawler $crawler */
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_product_product_class', ['id' => $product->getId()])
         );
 
@@ -519,7 +511,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // select class name
         /* @var Crawler $crawler */
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_product_product_class', ['id' => $id])
         );
 
@@ -579,7 +571,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         // select class name
         /* @var Crawler $crawler */
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_product_product_class', ['id' => $id])
         );
 
@@ -604,6 +596,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         $ProductTaxRule = $this->taxRuleRepository->findOneBy(['Product' => $product]);
 
         $this->expected = RoundingType::CEIL;
+        $this->assertInstanceOf(TaxRule::class, $ProductTaxRule);
         $this->actual = $ProductTaxRule->getRoundingType()->getId();
         $this->verify();
     }
@@ -637,16 +630,16 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         $this->entityManager->persist($ClassCategory);
         $this->entityManager->flush($ClassCategory);
         $client = $this->client;
-        $crawler = $client->request('GET', $this->generateUrl('admin_product_product_class', ['id' => 1]));
+        $crawler = $client->request(Request::METHOD_GET, $this->generateUrl('admin_product_product_class', ['id' => 1]));
         $this->assertTrue($client->getResponse()->isSuccessful());
 
         $classCategories = [];
-        foreach ($crawler->filterXPath('//table/tr') as $tr) {
-            $crawler = new Crawler($tr);
-            foreach ($crawler->filter('td') as $j => $td) {
-                if ($j === 1) {
-                    $classCategories[] = trim($td->nodeValue);
-                }
+        // PHP 8.4対応: XPathではなくCSSセレクタを使用
+        foreach ($crawler->filter('table tr') as $tr) {
+            $trCrawler = new Crawler($tr);
+            $tds = $trCrawler->filter('td');
+            if ($tds->count() > 1) {
+                $classCategories[] = trim($tds->eq(1)->text());
             }
         }
 
@@ -675,11 +668,11 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
             'id' => $Product->getId(),
             Constant::TOKEN_NAME => 'dummy',
         ];
-        $this->client->request('POST', $this->generateUrl('admin_product_product_copy', $params));
+        $this->client->request(Request::METHOD_POST, $this->generateUrl('admin_product_product_copy', $params));
         $this->assertTrue($this->client->getResponse()->isRedirect(), '商品コピーが正常に完了しました');
 
         preg_match('|product/product/([0-9]+)/edit|', $this->client->getResponse()->headers->get('Location') ?? '', $matches);
-        list(, $product_id) = $matches;
+        [, $product_id] = $matches;
         $ProductClasses = $this->entityManager->getRepository(ProductClass::class)->findBy(
             [
                 'Product' => $product_id,
@@ -688,7 +681,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         );
         $this->assertCount(3, $ProductClasses, '規格の数が3個であること');
 
-        $crawler = $this->client->request('GET', $this->generateUrl('admin_product_product_class', ['id' => $product_id]));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_product_product_class', ['id' => $product_id]));
 
         $form = $crawler->selectButton('規格を初期化')->form();
         $this->client->submit($form);

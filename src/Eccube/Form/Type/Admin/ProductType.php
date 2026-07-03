@@ -15,6 +15,7 @@ namespace Eccube\Form\Type\Admin;
 
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Category;
+use Eccube\Entity\Tag;
 use Eccube\Form\Type\Master\ProductStatusType;
 use Eccube\Form\Validator\TwigLint;
 use Eccube\Repository\CategoryRepository;
@@ -40,33 +41,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ProductType extends AbstractType
 {
     /**
-     * @var CategoryRepository
-     */
-    protected $categoryRepository;
-
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
      * ProductType constructor.
-     *
-     * @param CategoryRepository $categoryRepository
-     * @param EccubeConfig $eccubeConfig
      */
-    public function __construct(
-        CategoryRepository $categoryRepository,
-        EccubeConfig $eccubeConfig,
-    ) {
-        $this->categoryRepository = $categoryRepository;
-        $this->eccubeConfig = $eccubeConfig;
+    public function __construct(protected CategoryRepository $categoryRepository, protected EccubeConfig $eccubeConfig)
+    {
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             // 商品規格情報
@@ -104,18 +91,14 @@ class ProductType extends AbstractType
                 'mapped' => false,
                 'expanded' => true,
                 'choices' => $this->categoryRepository->getList(null, true),
-                'choice_value' => function (?Category $Category = null) {
-                    return $Category ? $Category->getId() : null;
-                },
+                'choice_value' => fn (?Category $Category = null) => $Category ? $Category->getId() : null,
             ])
 
             // 詳細な説明
             ->add('Tag', EntityType::class, [
-                'class' => \Eccube\Entity\Tag::class,
-                'query_builder' => function ($er) {
-                    return $er->createQueryBuilder('t')
-                    ->orderBy('t.sort_no', 'DESC');
-                },
+                'class' => Tag::class,
+                'query_builder' => fn ($er) => $er->createQueryBuilder('t')
+                ->orderBy('t.sort_no', 'DESC'),
                 'required' => false,
                 'multiple' => true,
                 'expanded' => true,
@@ -185,7 +168,7 @@ class ProductType extends AbstractType
             ])
         ;
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             /** @var FormInterface $form */
             $form = $event->getForm();
             $saveImgDir = $this->eccubeConfig['eccube_save_image_dir'];
@@ -198,13 +181,12 @@ class ProductType extends AbstractType
     /**
      * 指定された複数ディレクトリのうち、いずれかのディレクトリ以下にファイルが存在するかを確認。
      *
-     * @param $form FormInterface
-     * @param $dirs array
+     * @param array<int, string> $dirs
      */
-    private function validateFilePath($form, $dirs)
+    private function validateFilePath(FormInterface $form, array $dirs): void
     {
         foreach ($form->getData() as $fileName) {
-            if (strpos($fileName, '..') !== false) {
+            if (str_contains((string) $fileName, '..')) {
                 $form->getRoot()['product_image']->addError(new FormError(trans('admin.product.image__invalid_path')));
                 break;
             }
@@ -212,7 +194,7 @@ class ProductType extends AbstractType
                 $filePath = realpath($dir.'/'.$fileName);
                 $topDirPath = realpath($dir);
 
-                return strpos($filePath, $topDirPath) === 0 && $filePath !== $topDirPath;
+                return str_starts_with($filePath, (string) $topDirPath) && $filePath !== $topDirPath;
             });
             if (!$fileInDir) {
                 $form->getRoot()['product_image']->addError(new FormError(trans('admin.product.image__invalid_path')));
@@ -223,14 +205,16 @@ class ProductType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    #[\Override]
+    public function getBlockPrefix(): string
     {
         return 'admin_product';
     }

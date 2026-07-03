@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -14,34 +16,26 @@
 namespace Eccube\Tests\Command;
 
 use Eccube\Command\CsvLoaderCommand;
+use Eccube\Entity\Master\Job;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class CsvLoaderCommandTest extends AbstractCommandTest
+final class CsvLoaderCommandTest extends CommandTestCase
 {
-    /** @var \SplFileObject */
-    protected $file;
-
-    public static function setUpBeforeClass(): void
-    {
-        self::markTestIncomplete();
-    }
+    protected \SplFileObject $file;
 
     protected function setUp(): void
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
+        $this->markTestIncomplete(self::class.' は未実装です');
         parent::setUp();
         if ($this->app['config']['database']['driver'] == 'pdo_sqlite') {
             $this->markTestSkipped('Can not support for sqlite3');
         }
-
         $this->initCommand(new CsvLoaderCommand());
-
-        $Jobs = $this->app['orm.em']->getRepository(\Eccube\Entity\Master\Job::class)->findAll();
+        $Jobs = $this->app['orm.em']->getRepository(Job::class)->findAll();
         foreach ($Jobs as $Job) {
             $this->app['orm.em']->remove($Job);
         }
         $this->app['orm.em']->flush();
-
         $this->file = new \SplFileObject(__DIR__.'/../../../Fixtures/import_csv/mtb_job.csv');
     }
 
@@ -75,7 +69,7 @@ class CsvLoaderCommandTest extends AbstractCommandTest
         }
 
         $this->file->rewind();
-        $Jobs = $this->app['orm.em']->getRepository(\Eccube\Entity\Master\Job::class)->findAll();
+        $Jobs = $this->app['orm.em']->getRepository(Job::class)->findAll();
 
         $this->expected = count($rows);
         $this->actual = count($Jobs);

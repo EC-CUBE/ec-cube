@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,38 +17,37 @@ namespace Eccube\Tests\Web\Admin\Order;
 
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderStatus;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * 複数配送設定用 EditController のテストケース.
  *
  * @author Kentaro Ohkouchi
  */
-class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
+final class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
 {
     protected $Customer;
-    protected $Order;
     protected $Product;
 
     protected function setUp(): void
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
+        $this->markTestIncomplete(self::class.' は未実装です');
         parent::setUp();
         $this->Customer = $this->createCustomer();
         $this->Product = $this->createProduct();
-
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
         $this->app['orm.em']->flush($BaseInfo);
     }
 
-    public function testRoutingAdminOrderNew()
+    public function testRoutingAdminOrderNew(): never
     {
         $this->markTestIncomplete('新しい配送管理の実装が完了するまでスキップ');
 
-        $this->client->request('GET', $this->app->url('admin_order_new'));
+        $this->client->request(Request::METHOD_GET, $this->app->url('admin_order_new'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    public function testRoutingAdminOrderNewPost()
+    public function testRoutingAdminOrderNewPost(): never
     {
         $this->markTestIncomplete('新しい配送管理の実装が完了するまでスキップ');
 
@@ -54,7 +55,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
         $Shippings[] = $this->createShipping($this->Product->getProductClasses()->toArray());
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->app->url('admin_order_new'),
             [
                 'order' => $this->createFormDataForMultiple($this->Customer, $Shippings),
@@ -66,18 +67,18 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($url));
     }
 
-    public function testRoutingAdminOrderEdit()
+    public function testRoutingAdminOrderEdit(): never
     {
         $this->markTestIncomplete('新しい配送管理の実装が完了するまでスキップ');
 
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
-        $this->client->request('GET', $this->app->url('admin_order_edit', ['id' => $Order->getId()]));
+        $this->client->request(Request::METHOD_GET, $this->app->url('admin_order_edit', ['id' => $Order->getId()]));
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    public function testRoutingAdminOrderEditPost()
+    public function testRoutingAdminOrderEditPost(): never
     {
         $this->markTestIncomplete('新しい配送管理の実装が完了するまでスキップ');
 
@@ -88,7 +89,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         $Order = $this->createOrder($Customer);
         $formData = $this->createFormDataForMultiple($Customer, $Shippings);
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->app->url('admin_order_edit', ['id' => $Order->getId()]),
             [
                 'order' => $formData,
@@ -106,7 +107,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
     public function testSearchCustomer()
     {
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->app->url('admin_order_search_customer'),
             [
                 'search_word' => $this->Customer->getId(),
@@ -127,7 +128,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
     public function testSearchCustomerHtml()
     {
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->app->url('admin_order_search_customer'),
             [
                 'search_word' => $this->Customer->getId(),
@@ -145,7 +146,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
     public function testSearchCustomerById()
     {
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->app->url('admin_order_search_customer_by_id'),
             [
                 'id' => $this->Customer->getId(),
@@ -167,7 +168,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
     public function testSearchProduct()
     {
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->app->url('admin_order_search_product'),
             [
                 'id' => $this->Product->getId(),
@@ -202,7 +203,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         $formData['OrderStatus'] = OrderStatus::PROCESSING; // 購入処理中で受注を登録する
         // 管理画面から受注登録
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->app->url('admin_order_edit', ['id' => $Order->getId()]),
             [
                 'order' => $formData,
@@ -218,7 +219,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
 
         // フロント側から, product_class_id = 1 をカート投入
         $client = $this->client;
-        $crawler = $client->request('POST', '/cart/add', ['product_class_id' => 1]);
+        $crawler = $client->request(Request::METHOD_POST, '/cart/add', ['product_class_id' => 1]);
         $this->app['eccube.service.cart']->lock();
 
         $faker = $this->getFaker();
@@ -249,13 +250,13 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         ];
 
         $client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->app->path('shopping_nonmember'),
             ['nonmember' => $clientFormData]
         );
         $this->app['eccube.service.cart']->lock();
 
-        $crawler = $client->request('GET', $this->app->path('shopping'));
+        $crawler = $client->request(Request::METHOD_GET, $this->app->path('shopping'));
         $this->expected = 'ご注文内容のご確認';
         $this->actual = $crawler->filter('h1.page-heading')->text();
         $this->verify();
@@ -294,7 +295,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         $formData = $this->createFormDataForMultiple($Customer, $Shippings);
         // 管理画面から受注登録
         $this->client->request(
-            'POST', $this->app->url('admin_order_edit', ['id' => $Order->getId()]), [
+            Request::METHOD_POST, $this->app->url('admin_order_edit', ['id' => $Order->getId()]), [
                 'order' => $formData,
                 'mode' => 'register',
             ]
@@ -323,7 +324,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
 
         // 管理画面で受注編集する
         $this->client->request(
-            'POST', $this->app->url('admin_order_edit', ['id' => $Order->getId()]), [
+            Request::METHOD_POST, $this->app->url('admin_order_edit', ['id' => $Order->getId()]), [
                 'order' => $formDataForEdit,
                 'mode' => 'register',
             ]
@@ -349,7 +350,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         $Shippings = $Order->getShippings();
 
         $this->client->request(
-            'POST', $this->app->url('admin_order_edit', ['id' => $Order->getId()]), [
+            Request::METHOD_POST, $this->app->url('admin_order_edit', ['id' => $Order->getId()]), [
                 'order' => $formData,
                 'mode' => 'register',
             ]
@@ -375,7 +376,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
             }
         }
         $this->client->request(
-            'POST', $this->app->url('admin_order_edit', ['id' => $Order->getId()]), [
+            Request::METHOD_POST, $this->app->url('admin_order_edit', ['id' => $Order->getId()]), [
                 'order' => $newFormData,
                 'mode' => 'register',
             ]
@@ -409,7 +410,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
         $Shippings = $Order->getShippings();
 
         $this->client->request(
-            'POST', $this->app->url('admin_order_edit', ['id' => $Order->getId()]), [
+            Request::METHOD_POST, $this->app->url('admin_order_edit', ['id' => $Order->getId()]), [
                 'order' => $formData,
                 'mode' => 'register',
             ]
@@ -433,7 +434,7 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
             $productClassExpected[] = $Shippings;
         }
         $this->client->request(
-            'POST', $this->app->url('admin_order_edit', ['id' => $Order->getId()]), [
+            Request::METHOD_POST, $this->app->url('admin_order_edit', ['id' => $Order->getId()]), [
                 'order' => $newFormData,
                 'mode' => 'register',
             ]
@@ -458,14 +459,11 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
      * createFormData() との違いは、 $Shipping[N]['OrderItems'] がフォームに追加されている.
      * OrderItems は、 $Shippings[N]['OrderItems] から生成される.
      *
-     * @param Customer $Customer
      * @param array $Shippings お届け先情報の配列
-     *
-     * @return array
      */
-    public function createFormDataForMultiple(Customer $Customer, array $Shippings)
+    public function createFormDataForMultiple(Customer $Customer, array $Shippings): array
     {
-        $formData = parent::createFormData($Customer, null);
+        $formData = parent::createFormData($Customer);
         $formData['Shippings'] = $Shippings;
         $OrderItems = [];
         foreach ($Shippings as $Shipping) {
@@ -497,10 +495,8 @@ class EditControllerWithMultipleTest extends AbstractEditControllerTestCase
      * 引数に渡した商品規格のお届け商品明細が生成される.
      *
      * @param array $ProductClasses 商品規格の配列.
-     *
-     * @return array
      */
-    public function createShipping(array $ProductClasses)
+    public function createShipping(array $ProductClasses): array
     {
         $faker = $this->getFaker();
         $delivery_date = $faker->dateTimeBetween('now', '+ 5 days');

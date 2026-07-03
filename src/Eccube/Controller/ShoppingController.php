@@ -36,93 +36,23 @@ use Eccube\Service\Payment\PaymentMethodInterface;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Psr\Container\ContainerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
-use Symfony\Component\RateLimiter\RateLimiterFactory;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class ShoppingController extends AbstractShoppingController
 {
-    /**
-     * @var CartService
-     */
-    protected $cartService;
-
-    /**
-     * @var MailService
-     */
-    protected $mailService;
-
-    /**
-     * @var OrderHelper
-     */
-    protected $orderHelper;
-
-    /**
-     * @var OrderRepository
-     */
-    protected $orderRepository;
-
-    /**
-     * @var ContainerInterface
-     */
-    protected $serviceContainer;
-
-    /**
-     * @var BaseInfoRepository
-     */
-    protected $baseInfoRepository;
-
-    /**
-     * @var TradeLawRepository
-     */
-    protected TradeLawRepository $tradeLawRepository;
-
-    /**
-     * @var PrefRepository
-     */
-    protected PrefRepository $prefRepository;
-
-    protected RateLimiterFactory $shoppingConfirmIpLimiter;
-
-    protected RateLimiterFactory $shoppingConfirmCustomerLimiter;
-
-    protected RateLimiterFactory $shoppingCheckoutIpLimiter;
-
-    protected RateLimiterFactory $shoppingCheckoutCustomerLimiter;
-
-    public function __construct(
-        CartService $cartService,
-        MailService $mailService,
-        OrderRepository $orderRepository,
-        OrderHelper $orderHelper,
-        ContainerInterface $serviceContainer,
-        TradeLawRepository $tradeLawRepository,
-        RateLimiterFactory $shoppingConfirmIpLimiter,
-        RateLimiterFactory $shoppingConfirmCustomerLimiter,
-        RateLimiterFactory $shoppingCheckoutIpLimiter,
-        RateLimiterFactory $shoppingCheckoutCustomerLimiter,
-        BaseInfoRepository $baseInfoRepository,
-        PrefRepository $prefRepository,
-    ) {
-        $this->cartService = $cartService;
-        $this->mailService = $mailService;
-        $this->orderRepository = $orderRepository;
-        $this->orderHelper = $orderHelper;
-        $this->serviceContainer = $serviceContainer;
-        $this->tradeLawRepository = $tradeLawRepository;
-        $this->shoppingConfirmIpLimiter = $shoppingConfirmIpLimiter;
-        $this->shoppingConfirmCustomerLimiter = $shoppingConfirmCustomerLimiter;
-        $this->shoppingCheckoutIpLimiter = $shoppingCheckoutIpLimiter;
-        $this->shoppingCheckoutCustomerLimiter = $shoppingCheckoutCustomerLimiter;
-        $this->baseInfoRepository = $baseInfoRepository;
-        $this->prefRepository = $prefRepository;
+    public function __construct(protected CartService $cartService, protected MailService $mailService, protected OrderRepository $orderRepository, protected OrderHelper $orderHelper, protected ContainerInterface $serviceContainer, protected TradeLawRepository $tradeLawRepository, protected RateLimiterFactoryInterface $shoppingConfirmIpLimiter, protected RateLimiterFactoryInterface $shoppingConfirmCustomerLimiter, protected RateLimiterFactoryInterface $shoppingCheckoutIpLimiter, protected RateLimiterFactoryInterface $shoppingCheckoutCustomerLimiter, protected BaseInfoRepository $baseInfoRepository, protected PrefRepository $prefRepository, private readonly PurchaseFlow $cartPurchaseFlow, private readonly AuthenticationUtils $authenticationUtils)
+    {
     }
 
     /**
@@ -136,11 +66,11 @@ class ShoppingController extends AbstractShoppingController
      *
      * purchaseFlowの集計処理実行後, warningがある場合はカートど同期をとるため, カートのPurchaseFlowを実行する.
      *
-     * @Route("/shopping", name="shopping", methods={"GET"})
-     *
-     * @Template("Shopping/index.twig")
+     * @return RedirectResponse|array<string, mixed>
      */
-    public function index(PurchaseFlow $cartPurchaseFlow)
+    #[Route(path: '/shopping', name: 'shopping', methods: ['GET'])]
+    #[Template(template: 'Shopping/index.twig')]
+    public function index(): RedirectResponse|array
     {
         // ログイン状態のチェック.
         if ($this->orderHelper->isLoginRequired()) {
@@ -148,7 +78,6 @@ class ShoppingController extends AbstractShoppingController
 
             return $this->redirectToRoute('shopping_login');
         }
-
         // カートチェック.
         $Cart = $this->cartService->getCart();
         if (!($Cart && $this->orderHelper->verifyCart($Cart))) {
@@ -156,42 +85,36 @@ class ShoppingController extends AbstractShoppingController
 
             return $this->redirectToRoute('cart');
         }
-
         // 受注の初期化.
         log_info('[注文手続] 受注の初期化処理を開始します.');
-        $Customer = $this->getUser() ? $this->getUser() : $this->orderHelper->getNonMember();
+        /** @var Customer $Customer */
+        $Customer = $this->getUser() ?: $this->orderHelper->getNonMember();
         $Order = $this->orderHelper->initializeOrder($Cart, $Customer);
-
         // 集計処理.
         log_info('[注文手続] 集計処理を開始します.', [$Order->getId()]);
         $flowResult = $this->executePurchaseFlow($Order, false);
         $this->entityManager->flush();
-
         if ($flowResult->hasError()) {
             log_info('[注文手続] Errorが発生したため購入エラー画面へ遷移します.', [$flowResult->getErrors()]);
 
             return $this->redirectToRoute('shopping_error');
         }
-
         if ($flowResult->hasWarning()) {
             log_info('[注文手続] Warningが発生しました.', [$flowResult->getWarning()]);
 
             // 受注明細と同期をとるため, CartPurchaseFlowを実行する
-            $cartPurchaseFlow->validate($Cart, new PurchaseContext($Cart, $this->getUser()));
+            $this->cartPurchaseFlow->validate($Cart, new PurchaseContext($Cart, $this->getUser()));
 
             // 注文フローで取得されるカートの入れ替わりを防止する
             // @see https://github.com/EC-CUBE/ec-cube/issues/4293
             $this->cartService->setPrimary($Cart->getCartKey());
         }
-
         // マイページで会員情報が更新されていれば, Orderの注文者情報も更新する.
         if ($Customer->getId()) {
             $this->orderHelper->updateCustomerInfo($Order, $Customer);
             $this->entityManager->flush();
         }
-
         $activeTradeLaws = $this->tradeLawRepository->findBy(['displayOrderScreen' => true], ['sortNo' => 'ASC']);
-
         $form = $this->createForm(OrderType::class, $Order);
 
         return [
@@ -218,11 +141,11 @@ class ShoppingController extends AbstractShoppingController
      * data-triggerは, click/change/blur等のイベント名を指定してください。
      * data-pathは任意のパラメータです. 指定しない場合, 注文手続き画面へリダイレクトします.
      *
-     * @Route("/shopping/redirect_to", name="shopping_redirect_to", methods={"POST"})
-     *
-     * @Template("Shopping/index.twig")
+     * @return RedirectResponse|array<string, mixed>
      */
-    public function redirectTo(Request $request, RouterInterface $router)
+    #[Route(path: '/shopping/redirect_to', name: 'shopping_redirect_to', methods: ['POST'])]
+    #[Template(template: 'Shopping/index.twig')]
+    public function redirectTo(Request $request): RedirectResponse|array
     {
         // ログイン状態のチェック.
         if ($this->orderHelper->isLoginRequired()) {
@@ -262,12 +185,10 @@ class ShoppingController extends AbstractShoppingController
             try {
                 // リダイレクト先のチェック.
                 $pattern = '/^'.preg_quote($request->getBasePath(), '/').'/';
-                $redirectTo = preg_replace($pattern, '', $redirectTo);
-                $result = $router->match($redirectTo);
+                $redirectTo = preg_replace($pattern, '', (string) $redirectTo);
+                $result = $this->router->match($redirectTo);
                 // パラメータのみ抽出
-                $params = array_filter($result, function ($key) {
-                    return 0 !== \strpos($key, '_');
-                }, ARRAY_FILTER_USE_KEY);
+                $params = array_filter($result, fn ($key) => !str_starts_with((string) $key, '_'), ARRAY_FILTER_USE_KEY);
 
                 log_info('[リダイレクト] リダイレクトを実行します.', [$result['_route'], $params]);
 
@@ -299,11 +220,13 @@ class ShoppingController extends AbstractShoppingController
      * PaymentMethod::verifyではクレジットカードの有効性チェック等, 注文手続きを進められるかどうかのチェック処理を行う事を想定しています.
      * PaymentMethod::verifyでエラーが発生した場合は, 注文手続き画面へリダイレクトします.
      *
-     * @Route("/shopping/confirm", name="shopping_confirm", methods={"POST"})
+     * @return RedirectResponse|Response|array<string, mixed>
      *
-     * @Template("Shopping/confirm.twig")
+     * @throws TooManyRequestsHttpException
      */
-    public function confirm(Request $request)
+    #[Route(path: '/shopping/confirm', name: 'shopping_confirm', methods: ['POST'])]
+    #[Template(template: 'Shopping/confirm.twig')]
+    public function confirm(Request $request): RedirectResponse|Response|array
     {
         // ログイン状態のチェック.
         if ($this->orderHelper->isLoginRequired()) {
@@ -344,7 +267,7 @@ class ShoppingController extends AbstractShoppingController
             $Customer = $this->getUser();
             if ($Customer instanceof Customer) {
                 log_info('[注文確認] 会員ベースのスロットリングを実行します.');
-                $customerLimiter = $this->shoppingConfirmCustomerLimiter->create($Customer->getId());
+                $customerLimiter = $this->shoppingConfirmCustomerLimiter->create((string) $Customer->getId());
                 if (!$customerLimiter->consume()->isAccepted()) {
                     log_info('[注文確認] 試行回数制限を超過しました(会員ベース)');
                     throw new TooManyRequestsHttpException();
@@ -368,7 +291,7 @@ class ShoppingController extends AbstractShoppingController
                 }
 
                 $response = $PaymentResult->getResponse();
-                if ($response instanceof Response && ($response->isRedirection() || $response->isSuccessful())) {
+                if ($response->isRedirection() || $response->isSuccessful()) {
                     $this->entityManager->flush();
 
                     log_info('[注文確認] PaymentMethod::verifyが指定したレスポンスを表示します.');
@@ -390,11 +313,12 @@ class ShoppingController extends AbstractShoppingController
 
         log_info('[注文確認] フォームエラーのため, 注文手続画面を表示します.', [$Order->getId()]);
 
-        $template = new Template([
-            'owner' => [$this, 'confirm'],
-            'template' => 'Shopping/index.twig',
-        ]);
-        $request->attributes->set('_template', $template);
+        // $template = new Template([
+        //     'owner' => $this->confirm(...),
+        //     'template' => 'Shopping/index.twig',
+        // ]);
+        // TODO これであっているか要確認
+        $request->attributes->set('_template', new Template('Shopping/index.twig'));
 
         return [
             'form' => $form->createView(),
@@ -409,11 +333,13 @@ class ShoppingController extends AbstractShoppingController
      *
      * 決済プラグインによる決済処理および注文の確定処理を行います.
      *
-     * @Route("/shopping/checkout", name="shopping_checkout", methods={"POST"})
+     * @return RedirectResponse|array<string, mixed>|Response
      *
-     * @Template("Shopping/confirm.twig")
+     * @throws TooManyRequestsHttpException
      */
-    public function checkout(Request $request)
+    #[Route(path: '/shopping/checkout', name: 'shopping_checkout', methods: ['POST'])]
+    #[Template(template: 'Shopping/confirm.twig')]
+    public function checkout(Request $request): RedirectResponse|array|Response
     {
         // ログイン状態のチェック.
         if ($this->orderHelper->isLoginRequired()) {
@@ -463,7 +389,7 @@ class ShoppingController extends AbstractShoppingController
                 $Customer = $this->getUser();
                 if ($Customer instanceof Customer) {
                     log_info('[注文完了] 会員ベースのスロットリングを実行します.');
-                    $customerLimiter = $this->shoppingCheckoutCustomerLimiter->create($Customer->getId());
+                    $customerLimiter = $this->shoppingCheckoutCustomerLimiter->create((string) $Customer->getId());
                     if (!$customerLimiter->consume()->isAccepted()) {
                         log_info('[注文完了] 試行回数制限を超過しました(会員ベース)');
                         throw new TooManyRequestsHttpException();
@@ -473,11 +399,22 @@ class ShoppingController extends AbstractShoppingController
                 log_info('[注文処理] PaymentMethodを取得します.', [$Order->getPayment()->getMethodClass()]);
                 $paymentMethod = $this->createPaymentMethod($Order, $form);
 
+                // Symfony 7対応: トランザクションを明示的に開始
+                // PurchaseFlow::prepare()およびcommit()内でentityManager->lock()を使用するため、トランザクションが必要
+                if (!$this->entityManager->getConnection()->isTransactionActive()) {
+                    $this->entityManager->beginTransaction();
+                }
+
                 /*
                  * 決済実行(前処理)
                  */
                 log_info('[注文処理] PaymentMethod::applyを実行します.');
                 if ($response = $this->executeApply($paymentMethod)) {
+                    // 成功時はトランザクションをコミット
+                    if ($this->entityManager->getConnection()->isTransactionActive()) {
+                        $this->entityManager->commit();
+                    }
+
                     return $response;
                 }
 
@@ -487,17 +424,31 @@ class ShoppingController extends AbstractShoppingController
                  * PaymentMethod::checkoutでは決済処理が行われ, 正常に処理出来た場合はPurchaseFlow::commitがコールされます.
                  */
                 log_info('[注文処理] PaymentMethod::checkoutを実行します.');
+
                 if ($response = $this->executeCheckout($paymentMethod)) {
+                    // 成功時はトランザクションをコミット
+                    if ($this->entityManager->getConnection()->isTransactionActive()) {
+                        $this->entityManager->commit();
+                    }
+
                     return $response;
                 }
 
                 $this->entityManager->flush();
 
+                // トランザクションをコミット
+                if ($this->entityManager->getConnection()->isTransactionActive()) {
+                    $this->entityManager->commit();
+                }
+
                 log_info('[注文処理] 注文処理が完了しました.', [$Order->getId()]);
             } catch (ShoppingException $e) {
                 log_error('[注文処理] 購入エラーが発生しました.', [$e->getMessage()]);
 
-                $this->entityManager->rollback();
+                // トランザクションをロールバック
+                if ($this->entityManager->getConnection()->isTransactionActive()) {
+                    $this->entityManager->rollback();
+                }
 
                 $this->addError($e->getMessage());
 
@@ -505,7 +456,10 @@ class ShoppingController extends AbstractShoppingController
             } catch (\Exception $e) {
                 log_error('[注文処理] 予期しないエラーが発生しました.', [$e->getMessage()]);
 
-                // $this->entityManager->rollback(); FIXME ユニットテストで There is no active transaction エラーになってしまう
+                // トランザクションをロールバック
+                if ($this->entityManager->getConnection()->isTransactionActive()) {
+                    $this->entityManager->rollback();
+                }
 
                 $this->addError('front.shopping.system_error');
 
@@ -537,11 +491,11 @@ class ShoppingController extends AbstractShoppingController
     /**
      * 購入完了画面を表示する.
      *
-     * @Route("/shopping/complete", name="shopping_complete", methods={"GET"})
-     *
-     * @Template("Shopping/complete.twig")
+     * @return RedirectResponse|Response|array<string, mixed>
      */
-    public function complete(Request $request)
+    #[Route(path: '/shopping/complete', name: 'shopping_complete', methods: ['GET'])]
+    #[Template(template: 'Shopping/complete.twig')]
+    public function complete(Request $request): RedirectResponse|Response|array
     {
         log_info('[注文完了] 注文完了画面を表示します.');
 
@@ -603,11 +557,11 @@ class ShoppingController extends AbstractShoppingController
      * 会員ログイン時, お届け先を選択する画面を表示する
      * 非会員の場合はこの画面は使用しない。
      *
-     * @Route("/shopping/shipping/{id}", name="shopping_shipping", requirements={"id" = "\d+"}, methods={"GET", "POST"})
-     *
-     * @Template("Shopping/shipping.twig")
+     * @return RedirectResponse|array<string, mixed>
      */
-    public function shipping(Request $request, Shipping $Shipping)
+    #[Route(path: '/shopping/shipping/{id}', name: 'shopping_shipping', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: 'Shopping/shipping.twig')]
+    public function shipping(Request $request, Shipping $Shipping): RedirectResponse|array
     {
         // ログイン状態のチェック.
         if ($this->orderHelper->isLoginRequired()) {
@@ -678,11 +632,11 @@ class ShoppingController extends AbstractShoppingController
      * 会員時は新しいお届け先を作成し, 作成したお届け先を選択状態にして注文手続き画面へ遷移する.
      * 非会員時は選択されたお届け先の編集を行う.
      *
-     * @Route("/shopping/shipping_edit/{id}", name="shopping_shipping_edit", requirements={"id" = "\d+"}, methods={"GET", "POST"})
-     *
-     * @Template("Shopping/shipping_edit.twig")
+     * @return RedirectResponse|array<string, mixed>
      */
-    public function shippingEdit(Request $request, Shipping $Shipping)
+    #[Route(path: '/shopping/shipping_edit/{id}', name: 'shopping_shipping_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: 'Shopping/shipping_edit.twig')]
+    public function shippingEdit(Request $request, Shipping $Shipping): RedirectResponse|array
     {
         // ログイン状態のチェック.
         if ($this->orderHelper->isLoginRequired()) {
@@ -703,6 +657,7 @@ class ShoppingController extends AbstractShoppingController
 
         $CustomerAddress = new CustomerAddress();
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            /** @var Customer $Customer */
             $Customer = $this->getUser();
             $addressCurrNum = count($Customer->getCustomerAddresses());
             $addressMax = $this->eccubeConfig['eccube_deliv_addr_max'];
@@ -711,7 +666,9 @@ class ShoppingController extends AbstractShoppingController
             }
 
             // ログイン時は会員と紐付け
-            $CustomerAddress->setCustomer($this->getUser());
+            /** @var Customer $Customer */
+            $Customer = $this->getUser();
+            $CustomerAddress->setCustomer($Customer);
         } else {
             // 非会員時はお届け先をセット
             $CustomerAddress->setFromShipping($Shipping);
@@ -742,6 +699,7 @@ class ShoppingController extends AbstractShoppingController
 
                 // 会員情報変更時にメールを送信
                 if ($this->baseInfoRepository->get()->isOptionMailNotifier()) {
+                    /** @var Customer $Customer */
                     $Customer = $this->getUser();
 
                     // 情報のセット
@@ -784,19 +742,21 @@ class ShoppingController extends AbstractShoppingController
     /**
      * ログイン画面.
      *
-     * @Route("/shopping/login", name="shopping_login", methods={"GET"})
-     *
-     * @Template("Shopping/login.twig")
+     * @return RedirectResponse|array<string, mixed>
      */
-    public function login(Request $request, AuthenticationUtils $authenticationUtils)
+    #[Route(path: '/shopping/login', name: 'shopping_login', methods: ['GET'])]
+    #[Template(template: 'Shopping/login.twig')]
+    public function login(Request $request): RedirectResponse|array
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $this->redirectToRoute('shopping');
         }
 
+        /** @var FormBuilderInterface $builder */
         $builder = $this->formFactory->createNamedBuilder('', CustomerLoginType::class);
 
         if ($this->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            /** @var Customer|null $Customer */
             $Customer = $this->getUser();
             if ($Customer) {
                 $builder->get('login_email')->setData($Customer->getEmail());
@@ -814,7 +774,7 @@ class ShoppingController extends AbstractShoppingController
         $form = $builder->getForm();
 
         return [
-            'error' => $authenticationUtils->getLastAuthenticationError(),
+            'error' => $this->authenticationUtils->getLastAuthenticationError(),
             'form' => $form->createView(),
         ];
     }
@@ -822,24 +782,26 @@ class ShoppingController extends AbstractShoppingController
     /**
      * 購入エラー画面.
      *
-     * @Route("/shopping/error", name="shopping_error", methods={"GET"})
-     *
-     * @Template("Shopping/shopping_error.twig")
+     * @return Response|array<empty>
      */
-    public function error(Request $request, PurchaseFlow $cartPurchaseFlow)
+    #[Route(path: '/shopping/error', name: 'shopping_error', methods: ['GET'])]
+    #[Template(template: 'Shopping/shopping_error.twig')]
+    public function error(Request $request): Response|array
     {
         // 受注とカートのずれを合わせるため, カートのPurchaseFlowをコールする.
         $Cart = $this->cartService->getCart();
         if (null !== $Cart) {
-            $cartPurchaseFlow->validate($Cart, new PurchaseContext($Cart, $this->getUser()));
+            $this->cartPurchaseFlow->validate($Cart, new PurchaseContext($Cart, $this->getUser()));
             $this->cartService->setPreOrderId(null);
             $this->cartService->save();
         }
 
         // 購入エラー画面についてはwarninメッセージを出力しない為、warningレベルのメッセージが存在する場合、削除する.
         // (warningが残っている場合、購入エラー画面以降のタイミングで誤って表示されてしまう為.)
-        if ($this->session->getFlashBag()->has('eccube.front.warning')) {
-            $this->session->getFlashBag()->get('eccube.front.warning');
+        /** @var Session $session */
+        $session = $this->session;
+        if ($session->getFlashBag()->has('eccube.front.warning')) {
+            $session->getFlashBag()->get('eccube.front.warning');
         }
 
         $event = new EventArgs(
@@ -857,13 +819,8 @@ class ShoppingController extends AbstractShoppingController
 
     /**
      * PaymentMethodをコンテナから取得する.
-     *
-     * @param Order $Order
-     * @param FormInterface $form
-     *
-     * @return PaymentMethodInterface
      */
-    private function createPaymentMethod(Order $Order, FormInterface $form)
+    private function createPaymentMethod(Order $Order, FormInterface $form): PaymentMethodInterface
     {
         $PaymentMethod = $this->serviceContainer->get($Order->getPayment()->getMethodClass());
         $PaymentMethod->setOrder($Order);
@@ -874,12 +831,8 @@ class ShoppingController extends AbstractShoppingController
 
     /**
      * PaymentMethod::applyを実行する.
-     *
-     * @param PaymentMethodInterface $paymentMethod
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
-    protected function executeApply(PaymentMethodInterface $paymentMethod)
+    protected function executeApply(PaymentMethodInterface $paymentMethod): RedirectResponse|Response|null
     {
         $dispatcher = $paymentMethod->apply(); // 決済処理中.
 
@@ -889,7 +842,7 @@ class ShoppingController extends AbstractShoppingController
             $this->entityManager->flush();
 
             // dispatcherがresponseを保持している場合はresponseを返す
-            if ($response instanceof Response && ($response->isRedirection() || $response->isSuccessful())) {
+            if ($response->isRedirection() || $response->isSuccessful()) {
                 log_info('[注文処理] PaymentMethod::applyが指定したレスポンスを表示します.');
 
                 return $response;
@@ -902,29 +855,26 @@ class ShoppingController extends AbstractShoppingController
 
                 return $this->forwardToRoute($dispatcher->getRoute(), $dispatcher->getPathParameters(),
                     $dispatcher->getQueryParameters());
-            } else {
-                log_info('[注文処理] PaymentMethod::applyによりリダイレクトします.',
-                    [$dispatcher->getRoute(), $dispatcher->getPathParameters(), $dispatcher->getQueryParameters()]);
-
-                return $this->redirectToRoute($dispatcher->getRoute(),
-                    array_merge($dispatcher->getPathParameters(), $dispatcher->getQueryParameters()));
             }
+            log_info('[注文処理] PaymentMethod::applyによりリダイレクトします.',
+                [$dispatcher->getRoute(), $dispatcher->getPathParameters(), $dispatcher->getQueryParameters()]);
+
+            return $this->redirectToRoute($dispatcher->getRoute(),
+                array_merge($dispatcher->getPathParameters(), $dispatcher->getQueryParameters()));
         }
+
+        return null;
     }
 
     /**
      * PaymentMethod::checkoutを実行する.
-     *
-     * @param PaymentMethodInterface $paymentMethod
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response|null
      */
-    protected function executeCheckout(PaymentMethodInterface $paymentMethod)
+    protected function executeCheckout(PaymentMethodInterface $paymentMethod): RedirectResponse|Response|null
     {
         $PaymentResult = $paymentMethod->checkout();
         $response = $PaymentResult->getResponse();
         // PaymentResultがresponseを保持している場合はresponseを返す
-        if ($response instanceof Response && ($response->isRedirection() || $response->isSuccessful())) {
+        if ($response && ($response->isRedirection() || $response->isSuccessful())) {
             $this->entityManager->flush();
             log_info('[注文処理] PaymentMethod::checkoutが指定したレスポンスを表示します.');
 

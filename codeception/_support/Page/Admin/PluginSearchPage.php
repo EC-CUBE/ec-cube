@@ -15,11 +15,6 @@ namespace Page\Admin;
 
 class PluginSearchPage extends AbstractAdminPageStyleGuide
 {
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     public static function go($I)
     {
         $page = new self($I);
@@ -29,10 +24,8 @@ class PluginSearchPage extends AbstractAdminPageStyleGuide
 
     /**
      * @param $pluginCode
-     *
-     * @return PluginStoreInstallPage
      */
-    public function 入手する($pluginCode)
+    public function 入手する($pluginCode): PluginStoreInstallPage
     {
         $this->tester->click(['xpath' => '//*[@id="plugin-list"]//a[@data-code="'.$pluginCode.'"]/../../div[3]/form/a[contains(text(), "入手する")]']);
 

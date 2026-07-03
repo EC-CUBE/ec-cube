@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,13 +20,13 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Processor;
 
-class ConfigurationTest extends KernelTestCase
+final class ConfigurationTest extends KernelTestCase
 {
     public function testGetConfigTreeBuilder()
     {
         $configuration = new Configuration();
         $builder = $configuration->getConfigTreeBuilder();
-        self::assertInstanceOf(TreeBuilder::class, $builder);
+        $this->assertInstanceOf(TreeBuilder::class, $builder);
     }
 
     public function testProcessConfiguration()
@@ -75,6 +77,6 @@ class ConfigurationTest extends KernelTestCase
         $configuration = new Configuration();
         $actual = $processor->processConfiguration($configuration, $configs);
 
-        self::assertSame($expected, $actual);
+        $this->assertSame($expected, $actual);
     }
 }

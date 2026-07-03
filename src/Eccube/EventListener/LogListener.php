@@ -15,6 +15,7 @@ namespace Eccube\EventListener;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -28,20 +29,15 @@ use Symfony\Component\HttpKernel\KernelEvents;
  */
 class LogListener implements EventSubscriberInterface
 {
-    /**
-     * @var LoggerInterface
-     */
-    protected $logger;
-
-    public function __construct(LoggerInterface $logger)
+    public function __construct(protected LoggerInterface $logger)
     {
-        $this->logger = $logger;
     }
 
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    #[\Override]
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::REQUEST => [
@@ -61,10 +57,7 @@ class LogListener implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @param RequestEvent $event
-     */
-    public function onKernelRequestEarly(RequestEvent $event)
+    public function onKernelRequestEarly(RequestEvent $event): void
     {
         if (!$event->isMainRequest()) {
             return;
@@ -73,10 +66,7 @@ class LogListener implements EventSubscriberInterface
         $this->logger->debug('INIT');
     }
 
-    /**
-     * @param ResponseEvent $event
-     */
-    public function onKernelRequest(RequestEvent $event)
+    public function onKernelRequest(RequestEvent $event): void
     {
         if (!$event->isMainRequest()) {
             return;
@@ -88,20 +78,13 @@ class LogListener implements EventSubscriberInterface
 
     /**
      * ルーティング名を取得する.
-     *
-     * @param $request
-     *
-     * @return string
      */
-    private function getRoute($request)
+    private function getRoute(Request $request): ?string
     {
         return $request->attributes->get('_route');
     }
 
-    /**
-     * @param ControllerEvent $event
-     */
-    public function onKernelController(ControllerEvent $event)
+    public function onKernelController(ControllerEvent $event): void
     {
         if (!$event->isMainRequest()) {
             return;
@@ -111,10 +94,7 @@ class LogListener implements EventSubscriberInterface
         $this->logger->debug('LOGIC START', [$route]);
     }
 
-    /**
-     * @param FilterResponseEvent $event
-     */
-    public function onKernelResponse(ResponseEvent $event)
+    public function onKernelResponse(ResponseEvent $event): void
     {
         if (!$event->isMainRequest()) {
             return;
@@ -124,19 +104,13 @@ class LogListener implements EventSubscriberInterface
         $this->logger->debug('LOGIC END', [$route]);
     }
 
-    /**
-     * @param PostResponseEvent $event
-     */
-    public function onKernelTerminate(TerminateEvent $event)
+    public function onKernelTerminate(TerminateEvent $event): void
     {
         $route = $this->getRoute($event->getRequest());
         $this->logger->debug('PROCESS END', [$route]);
     }
 
-    /**
-     * @param ExceptionEvent $event
-     */
-    public function onKernelException(ExceptionEvent $event)
+    public function onKernelException(ExceptionEvent $event): void
     {
         $e = $event->getThrowable();
         if ($e instanceof HttpExceptionInterface && $e->getStatusCode() < 500) {
@@ -144,7 +118,7 @@ class LogListener implements EventSubscriberInterface
         } else {
             $message = sprintf(
                 '%s: %s (uncaught exception) at %s line %s',
-                get_class($e),
+                $e::class,
                 $e->getMessage(),
                 $e->getFile(),
                 $e->getLine()

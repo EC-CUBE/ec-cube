@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -25,42 +27,27 @@ use Eccube\Tests\EccubeTestCase;
 /**
  * BlockPositionRepository test cases.
  */
-class BlockPositionRepositoryTest extends EccubeTestCase
+final class BlockPositionRepositoryTest extends EccubeTestCase
 {
-    /**
-     * @var  DeviceType
-     */
-    protected $DeviceType;
+    protected ?DeviceType $DeviceType = null;
+
+    private ?int $layout_id = null;
 
     /**
-     * @var  string
+     * @var  Block[]|null
      */
-    private $layout_id;
+    private ?array $UsedBlocks = [];
 
     /**
-     * @var  Block
+     * @var  Block[]|null
      */
-    private $UsedBlocks;
+    private ?array $UnusedBlocks = [];
 
-    /**
-     * @var  Block
-     */
-    private $UnusedBlocks;
+    protected ?BlockRepository $blockRepository = null;
 
-    /**
-     * @var  BlockRepository
-     */
-    protected $blockRepository;
+    protected ?BlockPositionRepository $blockPositionRepository = null;
 
-    /**
-     * @var  BlockPositionRepository
-     */
-    protected $blockPositionRepository;
-
-    /**
-     * @var  LayoutRepository
-     */
-    protected $layoutRepository;
+    protected ?LayoutRepository $layoutRepository = null;
 
     /**
      * {@inheritdoc}
@@ -74,15 +61,14 @@ class BlockPositionRepositoryTest extends EccubeTestCase
         $this->remove();
         $this->DeviceType = $this->entityManager->getRepository(DeviceType::class)
             ->find(DeviceType::DEVICE_TYPE_PC);
-
         $Layout = new Layout();
         $Layout
             ->setName('テスト用レイアウト')
             ->setDeviceType($this->DeviceType);
         $this->entityManager->persist($Layout);
-        $this->entityManager->flush($Layout); // ここで flush しないと, MySQL で ID が取得できない
+        $this->entityManager->flush($Layout);
+        // ここで flush しないと, MySQL で ID が取得できない
         $this->layout_id = $Layout->getId();
-
         for ($i = 0; $i < 3; $i++) {
             $UsedBlocks = new Block();
             $UsedBlocks
@@ -95,7 +81,6 @@ class BlockPositionRepositoryTest extends EccubeTestCase
             $this->entityManager->flush($UsedBlocks);
             $this->UsedBlocks[] = $UsedBlocks;
         }
-
         for ($i = 3; $i < 10; $i++) {
             $UnusedBlocks = new Block();
             $UnusedBlocks

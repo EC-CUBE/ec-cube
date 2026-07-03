@@ -29,44 +29,17 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 class PaymentChargePreprocessor implements ItemHolderPreprocessor
 {
     /**
-     * @var OrderItemTypeRepository
-     */
-    protected $orderItemTypeRepository;
-
-    /**
-     * @var TaxDisplayTypeRepository
-     */
-    protected $taxDisplayTypeRepository;
-
-    /**
-     * @var TaxTypeRepository
-     */
-    protected $taxTypeRepository;
-
-    /**
      * PaymentChargePreprocessor constructor.
-     *
-     * @param OrderItemTypeRepository $orderItemTypeRepository
-     * @param TaxDisplayTypeRepository $taxDisplayTypeRepository
-     * @param TaxTypeRepository $taxTypeRepository
      */
-    public function __construct(
-        OrderItemTypeRepository $orderItemTypeRepository,
-        TaxDisplayTypeRepository $taxDisplayTypeRepository,
-        TaxTypeRepository $taxTypeRepository,
-    ) {
-        $this->orderItemTypeRepository = $orderItemTypeRepository;
-        $this->taxDisplayTypeRepository = $taxDisplayTypeRepository;
-        $this->taxTypeRepository = $taxTypeRepository;
+    public function __construct(protected OrderItemTypeRepository $orderItemTypeRepository, protected TaxDisplayTypeRepository $taxDisplayTypeRepository, protected TaxTypeRepository $taxTypeRepository)
+    {
     }
 
     /**
      * {@inheritdoc}
-     *
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
      */
-    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    #[\Override]
+    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         if (!$itemHolder instanceof Order) {
             return;
@@ -74,7 +47,7 @@ class PaymentChargePreprocessor implements ItemHolderPreprocessor
         if (!$itemHolder->getPayment() instanceof Payment || !$itemHolder->getPayment()->getId()) {
             return;
         }
-
+        /** @var OrderItem $item */
         foreach ($itemHolder->getItems() as $item) {
             if ($item->getProcessorName() == PaymentChargePreprocessor::class) {
                 $item->setPrice($itemHolder->getPayment()->getCharge());
@@ -88,18 +61,20 @@ class PaymentChargePreprocessor implements ItemHolderPreprocessor
 
     /**
      * Add charge item to item holder
-     *
-     * @param ItemHolderInterface $itemHolder
      */
-    protected function addChargeItem(ItemHolderInterface $itemHolder)
+    protected function addChargeItem(ItemHolderInterface $itemHolder): void
     {
+        /** @var Order $itemHolder */
+        /** @var OrderItemType $OrderItemType */
         $OrderItemType = $this->orderItemTypeRepository->find(OrderItemType::CHARGE);
+        /** @var TaxDisplayType $TaxDisplayType */
         $TaxDisplayType = $this->taxDisplayTypeRepository->find(TaxDisplayType::INCLUDED);
+        /** @var TaxType $Taxation */
         $Taxation = $this->taxTypeRepository->find(TaxType::TAXATION);
         $item = new OrderItem();
         $item->setProductName($OrderItemType->getName())
-            ->setQuantity(1)
-            ->setPrice($itemHolder->getPayment()->getCharge())
+            ->setQuantity('1')
+            ->setPrice($itemHolder->getPayment()?->getCharge())
             ->setOrderItemType($OrderItemType)
             ->setOrder($itemHolder)
             ->setTaxDisplayType($TaxDisplayType)

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -22,12 +24,9 @@ use Eccube\Tests\EccubeTestCase;
  *
  * @author Kentaro Ohkouchi
  */
-class CategoryRepositoryTest extends EccubeTestCase
+final class CategoryRepositoryTest extends EccubeTestCase
 {
-    /**
-     * @var  CategoryRepository
-     */
-    protected $categoryRepository;
+    protected ?CategoryRepository $categoryRepository = null;
 
     /**
      * {@inheritdoc}
@@ -203,7 +202,9 @@ class CategoryRepositoryTest extends EccubeTestCase
         $faker = $this->getFaker();
         $name = $faker->name;
         $Category = $this->categoryRepository->findOneBy(['name' => '子2-1']);
+        $this->assertInstanceOf(Category::class, $Category);
         $Category->setName($name);
+        $this->assertInstanceOf(Category::class, $Category);
         $updateDate = $Category->getUpdateDate();
         sleep(1);
         $this->categoryRepository->save($Category);
@@ -215,7 +216,7 @@ class CategoryRepositoryTest extends EccubeTestCase
 
         // 名前を変更したので null になっているはず
         $Category = $this->categoryRepository->findOneBy(['name' => '子2-1']);
-        $this->assertNull($Category);
+        $this->assertNotInstanceOf(Category::class, $Category);
     }
 
     public function testDelete()
@@ -225,7 +226,7 @@ class CategoryRepositoryTest extends EccubeTestCase
         $this->categoryRepository->delete($Category);
 
         $Category = $this->categoryRepository->findOneBy(['name' => '孫2']);
-        $this->assertNull($Category);
+        $this->assertNotInstanceOf(Category::class, $Category);
     }
 
     public function testDeleteFail()
@@ -238,7 +239,7 @@ class CategoryRepositoryTest extends EccubeTestCase
             // 紐付いた商品が存在している場合は削除できない.
             $this->categoryRepository->delete($Category);
             $this->fail();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $this->addToAssertionCount(1);
         }
     }

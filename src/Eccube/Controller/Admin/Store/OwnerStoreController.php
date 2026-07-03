@@ -13,11 +13,14 @@
 
 namespace Eccube\Controller\Admin\Store;
 
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\PageMax;
 use Eccube\Entity\Plugin;
 use Eccube\Exception\PluginApiException;
+use Eccube\Exception\PluginException;
 use Eccube\Form\Type\Admin\SearchPluginApiType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\PluginRepository;
@@ -28,108 +31,52 @@ use Eccube\Service\SystemService;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\FormUtil;
 use Knp\Component\Pager\PaginatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/**
- * @Route("/%eccube_admin_route%/store/plugin/api")
- */
 class OwnerStoreController extends AbstractController
 {
-    /**
-     * @var PluginRepository
-     */
-    protected $pluginRepository;
-
-    /**
-     * @var PluginService
-     */
-    protected $pluginService;
-
-    /**
-     * @var ValidatorInterface
-     */
-    protected ValidatorInterface $validator;
-
-    /**
-     * @var ComposerServiceInterface
-     */
-    protected $composerService;
-
-    /**
-     * @var SystemService
-     */
-    protected $systemService;
-
-    /**
-     * @var PluginApiService
-     */
-    protected $pluginApiService;
-
-    private static $vendorName = 'ec-cube';
-
-    /** @var BaseInfo */
-    private $BaseInfo;
-
-    /** @var CacheUtil */
-    private $cacheUtil;
+    private static string $vendorName = 'ec-cube';
+    private readonly BaseInfo $BaseInfo;
 
     /**
      * OwnerStoreController constructor.
      *
-     * @param PluginRepository $pluginRepository
-     * @param PluginService $pluginService
-     * @param ComposerServiceInterface $composerService
-     * @param SystemService $systemService
-     * @param PluginApiService $pluginApiService
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param CacheUtil $cacheUtil
-     * @param ValidatorInterface $validatorInterface
-     *
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NoResultException
+     * @throws NonUniqueResultException|\Exception
      */
     public function __construct(
-        PluginRepository $pluginRepository,
-        PluginService $pluginService,
-        ComposerServiceInterface $composerService,
-        SystemService $systemService,
-        PluginApiService $pluginApiService,
+        protected PluginRepository $pluginRepository,
+        protected PluginService $pluginService,
+        protected ComposerServiceInterface $composerService,
+        protected SystemService $systemService,
+        protected PluginApiService $pluginApiService,
         BaseInfoRepository $baseInfoRepository,
-        CacheUtil $cacheUtil,
-        ValidatorInterface $validatorInterface,
+        private readonly CacheUtil $cacheUtil,
+        protected ValidatorInterface $validator,
+        private readonly PaginatorInterface $paginator,
     ) {
-        $this->pluginRepository = $pluginRepository;
-        $this->pluginService = $pluginService;
-        $this->systemService = $systemService;
-        $this->pluginApiService = $pluginApiService;
         $this->BaseInfo = $baseInfoRepository->get();
-        $this->cacheUtil = $cacheUtil;
-        $this->validator = $validatorInterface;
-
-        // TODO: Check the flow of the composer service below
-        $this->composerService = $composerService;
     }
 
     /**
      * Owner's Store Plugin Installation Screen - Search function
      *
-     * @Route("/search", name="admin_store_plugin_owners_search", methods={"GET", "POST"})
-     * @Route("/search/page/{page_no}", name="admin_store_plugin_owners_search_page", requirements={"page_no" = "\d+"}, methods={"GET", "POST"})
-     *
-     * @Template("@admin/Store/plugin_search.twig")
-     *
-     * @param Request     $request
      * @param int $page_no
-     * @param PaginatorInterface $paginator
      *
-     * @return array
+     * @return array<string, mixed>|RedirectResponse
      */
-    public function search(Request $request, PaginatorInterface $paginator, $page_no = null)
+    #[Route(path: '/%eccube_admin_route%/store/plugin/api/search', name: 'admin_store_plugin_owners_search', methods: ['GET', 'POST'])]
+    #[Route(path: '/%eccube_admin_route%/store/plugin/api/search/page/{page_no}', name: 'admin_store_plugin_owners_search_page', requirements: ['page_no' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Store/plugin_search.twig')]
+    public function search(Request $request, $page_no = null): array|RedirectResponse
     {
         if (empty($this->BaseInfo->getAuthenticationKey())) {
             $this->addWarning('admin.store.plugin.search.not_auth', 'admin');
@@ -209,7 +156,7 @@ class OwnerStoreController extends AbstractController
 
         // The usage is set because `$items` are already paged.
         // virtual paging
-        $pagination = $paginator->paginate($items, 1, $pageCount);
+        $pagination = $this->paginator->paginate($items, 1, $pageCount);
         $pagination->setTotalItemCount($total);
         $pagination->setCurrentPageNumber($page_no);
         $pagination->setItemNumberPerPage($pageCount);
@@ -226,28 +173,23 @@ class OwnerStoreController extends AbstractController
     /**
      * Do confirm page
      *
-     * @Route("/install/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_install_confirm", methods={"GET"})
+     * @param string|int $id
      *
-     * @Template("@admin/Store/plugin_confirm.twig")
-     *
-     * @param Request $request
-     *
-     * @return array
-     *
-     * @throws \Eccube\Exception\PluginException
+     * @throws PluginException
      */
-    public function doConfirm(Request $request, $id)
+    #[Route(path: '/%eccube_admin_route%/store/plugin/api/install/{id}/confirm', name: 'admin_store_plugin_install_confirm', requirements: ['id' => '\d+'], methods: ['GET'])]
+    public function doConfirm($id): RedirectResponse|Response
     {
         try {
             $item = $this->pluginApiService->getPlugin($id);
             // Todo: need define item's dependency mechanism
             $requires = $this->pluginService->getPluginRequired($item);
 
-            return [
+            return $this->render('@admin/Store/plugin_confirm.twig', [
                 'item' => $item,
                 'requires' => $requires,
                 'is_update' => false,
-            ];
+            ]);
         } catch (PluginApiException $e) {
             $this->addError($e->getMessage(), 'admin');
 
@@ -257,14 +199,9 @@ class OwnerStoreController extends AbstractController
 
     /**
      * Api Install plugin by composer connect with package repo
-     *
-     * @Route("/install", name="admin_store_plugin_api_install", methods={"POST"})
-     *
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function apiInstall(Request $request)
+    #[Route(path: '/%eccube_admin_route%/store/plugin/api/install', name: 'admin_store_plugin_api_install', methods: ['POST'])]
+    public function apiInstall(Request $request): JsonResponse
     {
         $this->isTokenValid();
 
@@ -308,14 +245,9 @@ class OwnerStoreController extends AbstractController
 
     /**
      * New ways to remove plugin: using composer command
-     *
-     * @Route("/delete/{id}/uninstall", requirements={"id" = "\d+"}, name="admin_store_plugin_api_uninstall", methods={"DELETE"})
-     *
-     * @param Plugin $Plugin
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function apiUninstall(Plugin $Plugin)
+    #[Route(path: '/%eccube_admin_route%/store/plugin/api/delete/{id}/uninstall', name: 'admin_store_plugin_api_uninstall', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    public function apiUninstall(Plugin $Plugin): JsonResponse
     {
         $this->isTokenValid();
 
@@ -358,14 +290,9 @@ class OwnerStoreController extends AbstractController
 
     /**
      * オーナーズブラグインインストール、アップデート
-     *
-     * @Route("/upgrade", name="admin_store_plugin_api_upgrade", methods={"POST"})
-     *
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function apiUpgrade(Request $request)
+    #[Route(path: '/%eccube_admin_route%/store/plugin/api/upgrade', name: 'admin_store_plugin_api_upgrade', methods: ['POST'])]
+    public function apiUpgrade(Request $request): JsonResponse
     {
         $this->isTokenValid();
 
@@ -428,14 +355,9 @@ class OwnerStoreController extends AbstractController
 
     /**
      * オーナーズブラグインインストール、スキーマ更新
-     *
-     * @Route("/schema_update", name="admin_store_plugin_api_schema_update", methods={"POST"})
-     *
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function apiSchemaUpdate(Request $request)
+    #[Route(path: '/%eccube_admin_route%/store/plugin/api/schema_update', name: 'admin_store_plugin_api_schema_update', methods: ['POST'])]
+    public function apiSchemaUpdate(Request $request): JsonResponse
     {
         $this->isTokenValid();
 
@@ -479,14 +401,9 @@ class OwnerStoreController extends AbstractController
 
     /**
      * オーナーズブラグインインストール、更新処理
-     *
-     * @Route("/update", name="admin_store_plugin_api_update", methods={"POST"})
-     *
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function apiUpdate(Request $request)
+    #[Route(path: '/%eccube_admin_route%/store/plugin/api/update', name: 'admin_store_plugin_api_update', methods: ['POST'])]
+    public function apiUpdate(Request $request): JsonResponse
     {
         $this->isTokenValid();
 
@@ -520,15 +437,11 @@ class OwnerStoreController extends AbstractController
     /**
      * Do confirm update page
      *
-     * @Route("/upgrade/{id}/confirm", requirements={"id" = "\d+"}, name="admin_store_plugin_update_confirm", methods={"GET"})
-     *
-     * @Template("@admin/Store/plugin_confirm.twig")
-     *
-     * @param Plugin $Plugin
-     *
-     * @return array
+     * @return array<string, mixed>|RedirectResponse
      */
-    public function doUpdateConfirm(Plugin $Plugin)
+    #[Route(path: '/%eccube_admin_route%/store/plugin/api/upgrade/{id}/confirm', name: 'admin_store_plugin_update_confirm', requirements: ['id' => '\d+'], methods: ['GET'])]
+    #[Template(template: '@admin/Store/plugin_confirm.twig')]
+    public function doUpdateConfirm(Plugin $Plugin): array|RedirectResponse
     {
         try {
             $item = $this->pluginApiService->getPlugin($Plugin->getSource());

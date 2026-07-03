@@ -21,14 +21,12 @@ use Doctrine\ORM\QueryBuilder;
 abstract class OrderByCustomizer implements QueryCustomizer
 {
     /**
-     * @param QueryBuilder $builder
-     * @param array $params
-     * @param string $queryKey
-     *
-     * @return void
+     * @param array<mixed>|null $params
      */
-    final public function customize(QueryBuilder $builder, $params, $queryKey)
+    #[\Override]
+    final public function customize(QueryBuilder $builder, ?array $params, string $queryKey): void
     {
+        $params ??= [];
         foreach ($this->createStatements($params, $queryKey) as $index => $orderByClause) {
             if ($index === 0) {
                 $builder->orderBy($orderByClause->getSort(), $orderByClause->getOrder());
@@ -42,10 +40,9 @@ abstract class OrderByCustomizer implements QueryCustomizer
      * 変更するORDER BY句を組み立てます。
      * このメソッドの戻り値で、元のクエリのORDER BY句が上書きされます。
      *
-     * @param array $params
-     * @param $queryKey
+     * @param array<mixed> $params
      *
      * @return OrderByClause[]
      */
-    abstract protected function createStatements($params, $queryKey);
+    abstract protected function createStatements(array $params, string $queryKey): array;
 }

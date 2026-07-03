@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -25,8 +27,11 @@ abstract class AbstractAdminWebTestCase extends AbstractWebTestCase
 
     /**
      * @deprecated \Eccube\Tests\Web\AbstractWebTestCase::loginTo() を使用してください.
+     *
+     * @param mixed|null $user
      */
-    public function logIn($user = null)
+    #[\Override]
+    public function logIn(mixed $user = null)
     {
         if (!is_object($user)) {
             $user = $this->createMember();

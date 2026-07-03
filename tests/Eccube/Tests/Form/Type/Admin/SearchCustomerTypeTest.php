@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,14 +17,12 @@ namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Form\Type\Admin\SearchCustomerType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Form\FormInterface;
 
-class SearchCustomerTypeTest extends AbstractTypeTestCase
+final class SearchCustomerTypeTest extends AbstractTypeTestCase
 {
-    /**
-     * @var FormInterface
-     */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /**
      * {@inheritdoc}
@@ -30,7 +30,6 @@ class SearchCustomerTypeTest extends AbstractTypeTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
             ->createBuilder(SearchCustomerType::class, null, ['csrf_protection' => false])
@@ -59,11 +58,8 @@ class SearchCustomerTypeTest extends AbstractTypeTestCase
 
     /**
      * EC-CUBE 4.0.4 以前のバージョンで互換性を保つため yyyy-MM-dd のフォーマットもチェック
-     *
-     * @dataProvider dataFormDateProvider
-     *
-     * @param string $formName
      */
+    #[DataProvider(methodName: 'dataFormDateProvider')]
     public function testDateSearch(string $formName)
     {
         $formData = [
@@ -76,29 +72,22 @@ class SearchCustomerTypeTest extends AbstractTypeTestCase
 
     /**
      * Data provider date form test.
-     *
-     * @return array
      */
-    public function dataFormDateProvider()
+    public static function dataFormDateProvider(): \Iterator
     {
-        return [
-            ['create_date_start'],
-            ['update_date_start'],
-            ['last_buy_start'],
-            ['create_date_end'],
-            ['update_date_end'],
-            ['last_buy_end'],
-            ['birth_start'],
-        ];
+        yield ['create_date_start'];
+        yield ['update_date_start'];
+        yield ['last_buy_start'];
+        yield ['create_date_end'];
+        yield ['update_date_end'];
+        yield ['last_buy_end'];
+        yield ['birth_start'];
     }
 
     /**
      * EC-CUBE 4.0.5 以降で yyyy-MM-dd HH:mm:ss のフォーマットでの検索機能を追加
-     *
-     * @dataProvider dataFormDateTimeProvider
-     *
-     * @param string $formName
      */
+    #[DataProvider(methodName: 'dataFormDateTimeProvider')]
     public function testDateTimeSearch(string $formName)
     {
         $formData = [
@@ -111,18 +100,14 @@ class SearchCustomerTypeTest extends AbstractTypeTestCase
 
     /**
      * Data provider datetime form test.
-     *
-     * @return array
      */
-    public function dataFormDateTimeProvider()
+    public static function dataFormDateTimeProvider(): \Iterator
     {
-        return [
-            ['create_datetime_start'],
-            ['update_datetime_start'],
-            ['last_buy_datetime_start'],
-            ['create_datetime_end'],
-            ['update_datetime_end'],
-            ['last_buy_datetime_end'],
-        ];
+        yield ['create_datetime_start'];
+        yield ['update_datetime_start'];
+        yield ['last_buy_datetime_start'];
+        yield ['create_datetime_end'];
+        yield ['update_datetime_end'];
+        yield ['last_buy_datetime_end'];
     }
 }

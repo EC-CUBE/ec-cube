@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -14,9 +16,11 @@
 namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\String\ByteString;
 
-class TradeLawControllerTest extends AbstractAdminWebTestCase
+final class TradeLawControllerTest extends AbstractAdminWebTestCase
 {
     public function setUp(): void
     {
@@ -31,21 +35,19 @@ class TradeLawControllerTest extends AbstractAdminWebTestCase
     /**
      * 正式的に設定画面が読み込まれ、正しい初期入力フィールドが表示されることを確認するテスト
      * Test to confirm settings index page loads and displays the correct initial input fields
-     *
-     * @return void
      */
-    public function testIndexView()
+    public function testIndexView(): void
     {
-        $response = $this->client->request('GET', $this->generateUrl('admin_setting_shop_tradelaw'));
+        $response = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_shop_tradelaw'));
         // Has success code response
-        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
         $inputFieldsName = $response->filter('input[id*="_name"]');
         $inputFieldsDescription = $response->filter('textarea[id*="_description"]');
 
         // Contains 15x2 initial input fields + toggle switch
-        $this->assertSame(15, $inputFieldsName->count());
-        $this->assertSame(15, $inputFieldsDescription->count());
-        $this->assertSame(15, $response->filter('.c-toggleSwitch')->count());
+        $this->assertCount(15, $inputFieldsName);
+        $this->assertCount(15, $inputFieldsDescription);
+        $this->assertCount(15, $response->filter('.c-toggleSwitch'));
 
         // Check initial fields show and in order
         $notFoundNames = [
@@ -80,62 +82,56 @@ class TradeLawControllerTest extends AbstractAdminWebTestCase
     /**
      * 名称入力欄が255文字以上の場合、バリデーションエラーが発生されるかどうかのチェック
      * Validation check on setting name with characters over 255
-     *
-     * @return void
      */
-    public function testValidationNameMoreThan255Characters()
+    public function testValidationNameMoreThan255Characters(): void
     {
         $form = $this->createBaseForm();
         $form['TradeLaws'][0]['name'] = ByteString::fromRandom(256)->toString();
         $responseCrawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop_tradelaw'),
             ['form' => $form]
         );
         // Validation errors return success response.
-        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
         $failedInput = $responseCrawler->filter('#form_TradeLaws_0_name.is-invalid');
         // Check that the correct cell is failing validation with red border
-        $this->assertSame(1, $failedInput->count());
+        $this->assertCount(1, $failedInput);
 
         // Check Text
-        $this->assertSame('<span class="form-error-message">値が長すぎます。255文字以内でなければなりません。</span>',
+        $this->assertSame('<span class="form-error-message">長すぎます。この値は255文字以下で入力してください。</span>',
             $failedInput->nextAll()->filter('.form-error-message')->outerHtml());
     }
 
     /**
      * 説明入力欄が4000文字以上の場合、バリデーションエラーが発生されるかどうかのチェック
      * Validation check on setting name with characters over 4000
-     *
-     * @return void
      */
-    public function testValidationDescriptionMoreThan4000Characters()
+    public function testValidationDescriptionMoreThan4000Characters(): void
     {
         $form = $this->createBaseForm();
         $form['TradeLaws'][0]['description'] = ByteString::fromRandom(4001)->toString();
         $responseCrawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop_tradelaw'),
             ['form' => $form]
         );
         // Validation errors return success response.
-        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
         $failedInput = $responseCrawler->filter('#form_TradeLaws_0_description.is-invalid');
         // Check that the correct cell is failing validation with red border
-        $this->assertSame(1, $failedInput->count());
+        $this->assertCount(1, $failedInput);
 
         // Check Text
-        $this->assertSame('<span class="form-error-message">値が長すぎます。4000文字以内でなければなりません。</span>',
+        $this->assertSame('<span class="form-error-message">長すぎます。この値は4000文字以下で入力してください。</span>',
             $failedInput->nextAll()->filter('.form-error-message')->outerHtml());
     }
 
     /**
      * 正しいデータでフォーム内容が更新されるかどうかのチェック
      * With correct input entries, check if the data is correctly saved.
-     *
-     * @return void
      */
-    public function testUpdate()
+    public function testUpdate(): void
     {
         $form = $this->createBaseForm();
         $form['TradeLaws'][10]['name'] = 'UTテスト：名称';
@@ -143,12 +139,12 @@ class TradeLawControllerTest extends AbstractAdminWebTestCase
         $form['TradeLaws'][10]['displayOrderScreen'] = '1';
 
         $responseCrawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop_tradelaw'),
             ['form' => $form]
         );
         // Validation errors return success response with redirect 302 (error will respond 200).
-        $this->assertSame(302, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
         $responseCrawler = $this->client->followRedirect();
 
         $editedName = $responseCrawler->filter('#form_TradeLaws_10_name');
@@ -156,17 +152,17 @@ class TradeLawControllerTest extends AbstractAdminWebTestCase
         $editedToggle = $responseCrawler->filter('#form_TradeLaws_10_displayOrderScreen');
 
         // Check that the correct cell is *not* failing validation with red border and contains registered value
-        $this->assertStringNotContainsString('is-invalid', $editedName->attr('class'));
+        $this->assertStringNotContainsString('is-invalid', (string) $editedName->attr('class'));
         $this->assertSame('UTテスト：名称', $editedName->attr('value'));
 
-        $this->assertStringNotContainsString('is-invalid', $editedDescription->attr('class'));
+        $this->assertStringNotContainsString('is-invalid', (string) $editedDescription->attr('class'));
         $this->assertSame('UTテスト: 説明', $editedDescription->innerText());
 
         $this->assertStringNotContainsString('is-invalid', $editedToggle->attr('class') ?: '');
         $this->assertSame('1', $editedToggle->attr('value'));
 
         // Check save success message exists
-        $this->assertSame(1, $responseCrawler->filter('.alert.alert-success')->count());
+        $this->assertCount(1, $responseCrawler->filter('.alert.alert-success'));
     }
 
     protected function createBaseForm(): array

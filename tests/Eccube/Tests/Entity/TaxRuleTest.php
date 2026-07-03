@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -23,7 +25,7 @@ use Eccube\Tests\EccubeTestCase;
  *
  * @author Kentaro Ohkouchi
  */
-class TaxRuleTest extends EccubeTestCase
+final class TaxRuleTest extends EccubeTestCase
 {
     public function testCompareTo()
     {
@@ -35,9 +37,7 @@ class TaxRuleTest extends EccubeTestCase
         $this->expected = $TaxRules;
 
         shuffle($TaxRules);
-        usort($TaxRules, function ($a, $b) {
-            return $a->compareTo($b);
-        });
+        usort($TaxRules, fn ($a, $b) => $a->compareTo($b));
         $this->actual = $TaxRules;
 
         $this->verify();
@@ -55,9 +55,7 @@ class TaxRuleTest extends EccubeTestCase
         $this->expected = $TaxRules;
 
         shuffle($TaxRules);
-        usort($TaxRules, function ($a, $b) {
-            return $a->compareTo($b);
-        });
+        usort($TaxRules, fn ($a, $b) => $a->compareTo($b));
         $this->actual = $TaxRules;
 
         $this->verify();
@@ -74,9 +72,7 @@ class TaxRuleTest extends EccubeTestCase
         $this->expected = $TaxRules;
 
         shuffle($TaxRules);
-        usort($TaxRules, function ($a, $b) {
-            return $a->compareTo($b);
-        });
+        usort($TaxRules, fn ($a, $b) => $a->compareTo($b));
         $this->actual = $TaxRules;
 
         $this->verify();
@@ -93,9 +89,7 @@ class TaxRuleTest extends EccubeTestCase
         $this->expected = $TaxRules;
 
         shuffle($TaxRules);
-        usort($TaxRules, function ($a, $b) {
-            return $a->compareTo($b);
-        });
+        usort($TaxRules, fn ($a, $b) => $a->compareTo($b));
         $this->actual = $TaxRules;
 
         $this->verify();
@@ -112,24 +106,16 @@ class TaxRuleTest extends EccubeTestCase
         $this->expected = $TaxRules;
 
         shuffle($TaxRules);
-        usort($TaxRules, function ($a, $b) {
-            return $a->compareTo($b);
-        });
+        usort($TaxRules, fn ($a, $b) => $a->compareTo($b));
         $this->actual = $TaxRules;
 
         $this->verify();
     }
 
     /**
-     * @param string $taxRate
-     * @param int $sortNo
-     * @param \DateTime|null $applyDate
-     * @param ProductClass|null $ProductClass
      * @param Product|null $Product;
-     *
-     * @return TaxRule
      */
-    private function createTaxRule($taxRate, $sortNo = 0, ?\DateTime $applyDate = null, ?ProductClass $ProductClass = null, ?Product $Product = null)
+    private function createTaxRule(string $taxRate, int $sortNo = 0, ?\DateTime $applyDate = null, ?ProductClass $ProductClass = null, ?Product $Product = null): TaxRule
     {
         if ($applyDate === null) {
             $applyDate = new \DateTime();

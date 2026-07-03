@@ -13,31 +13,29 @@
 
 namespace Eccube\Log\Processor;
 
+use Eccube\Entity\Customer;
+use Eccube\Entity\Member;
+use Monolog\LogRecord;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class TokenProcessor
 {
-    /**
-     * @var TokenStorageInterface
-     */
-    protected $tokenStorage;
-
-    public function __construct(TokenStorageInterface $tokenStorage)
+    public function __construct(protected TokenStorageInterface $tokenStorage)
     {
-        $this->tokenStorage = $tokenStorage;
     }
 
-    public function __invoke(array $records)
+    public function __invoke(LogRecord $record): LogRecord
     {
-        $records['extra']['user_id'] = 'N/A';
+        $userId = 'N/A';
 
         if (null !== $token = $this->tokenStorage->getToken()) {
+            /** @var Customer|Member|null $user */
             $user = $token->getUser();
-            $records['extra']['user_id'] = is_object($user)
+            $userId = is_object($user)
                 ? $user->getId()
                 : $user;
         }
 
-        return $records;
+        return $record->with(extra: array_merge($record->extra, ['user_id' => $userId]));
     }
 }

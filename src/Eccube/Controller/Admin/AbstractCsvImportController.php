@@ -14,30 +14,36 @@
 namespace Eccube\Controller\Admin;
 
 use Eccube\Controller\AbstractController;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Service\CsvImportService;
 use Eccube\Util\StringUtil;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class AbstractCsvImportController extends AbstractController
 {
     /**
      * アップロードされたCSVファイル名
-     *
-     * @var string
      */
-    protected $csvFileName;
+    protected string $csvFileName;
+
+    protected BaseInfoRepository $baseInfoRepository;
+
+    #[Required]
+    public function setBaseInfoRepository(BaseInfoRepository $baseInfoRepository): void
+    {
+        $this->baseInfoRepository = $baseInfoRepository;
+    }
 
     /**
      * アップロードされたCSVファイルの行ごとの処理
      *
-     * @param UploadedFile $formFile
-     *
-     * @return CsvImportService|bool
+     * @return CsvImportService<int, mixed>|bool
      */
-    protected function getImportData(UploadedFile $formFile)
+    protected function getImportData(UploadedFile $formFile): CsvImportService|bool
     {
         // アップロードされたCSVファイルを一時ディレクトリに保存
         $this->csvFileName = 'upload_'.StringUtil::random().'.'.$formFile->getClientOriginalExtension();
@@ -48,17 +54,20 @@ class AbstractCsvImportController extends AbstractController
         set_time_limit(0);
 
         // アップロードされたCSVファイルを行ごとに取得
-        $data = new CsvImportService($file, $this->eccubeConfig['eccube_csv_import_delimiter'], $this->eccubeConfig['eccube_csv_import_enclosure']);
+        $data = new CsvImportService($file, $this->eccubeConfig['eccube_csv_import_delimiter'], $this->eccubeConfig['eccube_csv_import_enclosure'], '\\', $this->baseInfoRepository->get()->isOptionSanitizeCsvFormulas());
 
         return $data->setHeaderRowNumber(0) ? $data : false;
     }
 
-    protected function sendTemplateResponse(Request $request, $columns, $filename)
+    /**
+     * @param array<int, mixed> $columns
+     */
+    protected function sendTemplateResponse(Request $request, array $columns, string $filename): StreamedResponse
     {
         set_time_limit(0);
 
         $response = new StreamedResponse();
-        $response->setCallback(function () use ($columns) {
+        $response->setCallback(function () use ($columns): void {
             // ヘッダ行の出力
             $row = [];
             foreach ($columns as $column) {
@@ -79,13 +88,13 @@ class AbstractCsvImportController extends AbstractController
     /**
      * アップロードされたCSVファイルの削除
      */
-    protected function removeUploadedFile()
+    protected function removeUploadedFile(): void
     {
         if (!empty($this->csvFileName)) {
             try {
                 $fs = new Filesystem();
                 $fs->remove($this->eccubeConfig['eccube_csv_temp_realdir'].'/'.$this->csvFileName);
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 // エラーが発生しても無視する
             }
         }

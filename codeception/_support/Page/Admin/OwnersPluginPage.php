@@ -17,14 +17,6 @@ class OwnersPluginPage extends AbstractAdminPage
 {
     public static $完了メッセージ = '#main .container-fluid div:nth-child(1) .alert-success';
 
-    /**
-     * OwnersPluginPage constructor.
-     */
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     public static function go($I)
     {
         $page = new self($I);

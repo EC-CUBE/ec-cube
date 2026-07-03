@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -20,25 +22,15 @@ use Eccube\Service\PurchaseFlow\Processor\DeliveryFeeFreePreprocessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
-class DeliveryFeeFreeProcessorTest extends EccubeTestCase
+final class DeliveryFeeFreeProcessorTest extends EccubeTestCase
 {
-    /**
-     * @var DeliveryFeeFreePreprocessor
-     */
-    protected $processor;
+    protected ?DeliveryFeeFreePreprocessor $processor = null;
 
-    /**
-     * @var Order
-     */
-    protected $Order;
+    protected ?Order $Order = null;
 
-    /**
-     * @var BaseInfo
-     */
-    protected $BaseInfo;
+    protected ?BaseInfo $BaseInfo = null;
 
-    /** @var BaseInfoRepository */
-    protected $baseInfoRepository;
+    protected ?BaseInfoRepository $baseInfoRepository = null;
 
     /**
      * {@inheritdoc}
@@ -46,7 +38,6 @@ class DeliveryFeeFreeProcessorTest extends EccubeTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
         $this->baseInfoRepository = $this->entityManager->getRepository(BaseInfo::class);
         $this->processor = new DeliveryFeeFreePreprocessor($this->baseInfoRepository);
@@ -55,7 +46,7 @@ class DeliveryFeeFreeProcessorTest extends EccubeTestCase
 
     public function testNewInstance()
     {
-        self::assertInstanceOf(DeliveryFeeFreePreprocessor::class, $this->processor);
+        $this->assertInstanceOf(DeliveryFeeFreePreprocessor::class, $this->processor);
     }
 
     /**
@@ -67,7 +58,7 @@ class DeliveryFeeFreeProcessorTest extends EccubeTestCase
 
         $items = $this->getDeliveryFeeItems($this->Order);
         foreach ($items as $item) {
-            self::assertSame('1', $item->getQuantity());
+            $this->assertSame('1', $item->getQuantity());
         }
     }
 
@@ -78,13 +69,13 @@ class DeliveryFeeFreeProcessorTest extends EccubeTestCase
     {
         /** @var BaseInfo $BaseInfo */
         $BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
-        $BaseInfo->setDeliveryFreeAmount(1); // 1円以上で送料無料
+        $BaseInfo->setDeliveryFreeAmount('1'); // 1円以上で送料無料
 
         $this->processor->process($this->Order, new PurchaseContext());
 
         $items = $this->getDeliveryFeeItems($this->Order);
         foreach ($items as $item) {
-            self::assertSame(0, $item->getQuantity());
+            $this->assertSame('0', $item->getQuantity());
         }
     }
 
@@ -101,7 +92,7 @@ class DeliveryFeeFreeProcessorTest extends EccubeTestCase
 
         $items = $this->getDeliveryFeeItems($this->Order);
         foreach ($items as $item) {
-            self::assertSame(0, $item->getQuantity());
+            $this->assertSame('0', $item->getQuantity());
         }
     }
 

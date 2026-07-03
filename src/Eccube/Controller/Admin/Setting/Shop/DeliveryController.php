@@ -31,11 +31,13 @@ use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\Master\SaleTypeRepository;
 use Eccube\Repository\PaymentOptionRepository;
 use Eccube\Twig\Extension\EccubeExtension;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 /**
  * Class DeliveryController
@@ -43,59 +45,18 @@ use Symfony\Component\Routing\Annotation\Route;
 class DeliveryController extends AbstractController
 {
     /**
-     * @var PaymentOptionRepository
-     */
-    protected $paymentOptionRepository;
-
-    /**
-     * @var DeliveryFeeRepository
-     */
-    protected $deliveryFeeRepository;
-
-    /**
-     * @var PrefRepository
-     */
-    protected $prefRepository;
-
-    /**
-     * @var DeliveryRepository
-     */
-    protected $deliveryRepository;
-
-    /**
-     * @var DeliveryTimeRepository
-     */
-    protected $deliveryTimeRepository;
-
-    /**
-     * @var DeliveryTimeRepository
-     */
-    protected $saleTypeRepository;
-
-    /**
      * DeliveryController constructor.
-     *
-     * @param PaymentOptionRepository $paymentOptionRepository
-     * @param DeliveryFeeRepository $deliveryFeeRepository
-     * @param PrefRepository $prefRepository
-     * @param DeliveryRepository $deliveryRepository
      */
-    public function __construct(PaymentOptionRepository $paymentOptionRepository, DeliveryFeeRepository $deliveryFeeRepository, PrefRepository $prefRepository, DeliveryRepository $deliveryRepository, DeliveryTimeRepository $deliveryTimeRepository, SaleTypeRepository $saleTypeRepository)
+    public function __construct(protected PaymentOptionRepository $paymentOptionRepository, protected DeliveryFeeRepository $deliveryFeeRepository, protected PrefRepository $prefRepository, protected DeliveryRepository $deliveryRepository, protected DeliveryTimeRepository $deliveryTimeRepository, protected SaleTypeRepository $saleTypeRepository, private readonly EccubeExtension $extension)
     {
-        $this->paymentOptionRepository = $paymentOptionRepository;
-        $this->deliveryFeeRepository = $deliveryFeeRepository;
-        $this->prefRepository = $prefRepository;
-        $this->deliveryRepository = $deliveryRepository;
-        $this->deliveryTimeRepository = $deliveryTimeRepository;
-        $this->saleTypeRepository = $saleTypeRepository;
     }
 
     /**
-     * @Route("/%eccube_admin_route%/setting/shop/delivery", name="admin_setting_shop_delivery", methods={"GET"})
-     *
-     * @Template("@admin/Setting/Shop/delivery.twig")
+     * @return array<string, mixed>
      */
-    public function index(Request $request)
+    #[Route(path: '/%eccube_admin_route%/setting/shop/delivery', name: 'admin_setting_shop_delivery', methods: ['GET'])]
+    #[Template(template: '@admin/Setting/Shop/delivery.twig')]
+    public function index(Request $request): array
     {
         $Deliveries = $this->deliveryRepository
             ->findBy([], ['sort_no' => 'DESC']);
@@ -114,12 +75,16 @@ class DeliveryController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/setting/shop/delivery/new", name="admin_setting_shop_delivery_new", methods={"GET", "POST"})
-     * @Route("/%eccube_admin_route%/setting/shop/delivery/{id}/edit", requirements={"id" = "\d+"}, name="admin_setting_shop_delivery_edit", methods={"GET", "POST"})
+     * @param string|int|null $id
      *
-     * @Template("@admin/Setting/Shop/delivery_edit.twig")
+     * @return RedirectResponse|array<string, mixed>
+     *
+     * @throws NotFoundHttpException
      */
-    public function edit(Request $request, EccubeExtension $extension, $id = null)
+    #[Route(path: '/%eccube_admin_route%/setting/shop/delivery/new', name: 'admin_setting_shop_delivery_new', methods: ['GET', 'POST'])]
+    #[Route(path: '/%eccube_admin_route%/setting/shop/delivery/{id}/edit', name: 'admin_setting_shop_delivery_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Setting/Shop/delivery_edit.twig')]
+    public function edit(Request $request, $id = null): RedirectResponse|array
     {
         if (is_null($id)) {
             $SaleType = $this->saleTypeRepository->findOneBy([], ['sort_no' => 'ASC']);
@@ -142,6 +107,7 @@ class DeliveryController extends AbstractController
             }
         }
 
+        /** @var ArrayCollection<int, DeliveryTime> $originalDeliveryTimes */
         $originalDeliveryTimes = new ArrayCollection();
 
         foreach ($Delivery->getDeliveryTimes() as $deliveryTime) {
@@ -215,7 +181,6 @@ class DeliveryController extends AbstractController
                 $DeliveryData = $form->getData();
 
                 // 配送時間の登録
-                /** @var DeliveryTime $DeliveryTime */
                 foreach ($originalDeliveryTimes as $DeliveryTime) {
                     if (false === $Delivery->getDeliveryTimes()->contains($DeliveryTime)) {
                         $this->entityManager->remove($DeliveryTime);
@@ -273,8 +238,8 @@ class DeliveryController extends AbstractController
                     if (count($mergedRules) > 1) {
                         for ($i = 1; $i < count($mergedRules); $i++) {
                             $message = trans('admin.setting.shop.delivery.payment_warning', [
-                                '%min%' => $extension->getPriceFilter($mergedRules[$i - 1]['max']),
-                                '%max%' => $extension->getPriceFilter($mergedRules[$i]['min'] - 1),
+                                '%min%' => $this->extension->getPriceFilter($mergedRules[$i - 1]['max']),
+                                '%max%' => $this->extension->getPriceFilter($mergedRules[$i]['min'] - 1),
                             ]);
                             $this->addWarning($message, 'admin');
                         }
@@ -291,17 +256,15 @@ class DeliveryController extends AbstractController
         ];
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/setting/shop/delivery/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_shop_delivery_delete", methods={"DELETE"})
-     */
-    public function delete(Request $request, Delivery $Delivery)
+    #[Route(path: '/%eccube_admin_route%/setting/shop/delivery/{id}/delete', name: 'admin_setting_shop_delivery_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    public function delete(Request $request, Delivery $Delivery): RedirectResponse
     {
         $this->isTokenValid();
 
         try {
             $this->entityManager->remove($Delivery);
             $this->entityManager->flush();
-        } catch (ForeignKeyConstraintViolationException $e) {
+        } catch (ForeignKeyConstraintViolationException) {
             $this->addError(trans('admin.common.delete_error_foreign_key', ['%name%' => $Delivery->getName()]), 'admin');
 
             return $this->redirectToRoute('admin_setting_shop_delivery');
@@ -334,10 +297,8 @@ class DeliveryController extends AbstractController
         return $this->redirectToRoute('admin_setting_shop_delivery');
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/setting/shop/delivery/{id}/visibility", requirements={"id" = "\d+"}, name="admin_setting_shop_delivery_visibility", methods={"PUT"})
-     */
-    public function visibility(Request $request, Delivery $Delivery)
+    #[Route(path: '/%eccube_admin_route%/setting/shop/delivery/{id}/visibility', name: 'admin_setting_shop_delivery_visibility', requirements: ['id' => '\d+'], methods: ['PUT'])]
+    public function visibility(Request $request, Delivery $Delivery): RedirectResponse
     {
         $this->isTokenValid();
 
@@ -367,9 +328,10 @@ class DeliveryController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/setting/shop/delivery/sort_no/move", name="admin_setting_shop_delivery_sort_no_move", methods={"POST"})
+     * @throws BadRequestHttpException
      */
-    public function moveSortNo(Request $request)
+    #[Route(path: '/%eccube_admin_route%/setting/shop/delivery/sort_no/move', name: 'admin_setting_shop_delivery_sort_no_move', methods: ['POST'])]
+    public function moveSortNo(Request $request): JsonResponse
     {
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();
@@ -393,48 +355,39 @@ class DeliveryController extends AbstractController
      *
      * @param Payment[] $PaymentsData
      *
-     * @return array
+     * @return array<int, array<string, float|string|null>>
      */
-    private function getMergeRules(array $PaymentsData)
+    private function getMergeRules(array $PaymentsData): array
     {
         // 手数料抜きの利用条件の一覧を作成
-        $rules = array_map(function (Payment $Payment) {
-            return [
-                'min' => $Payment->getRuleMin() ? $Payment->getRuleMin() - $Payment->getCharge() : 0,
-                'max' => $Payment->getRuleMax() ? $Payment->getRuleMax() - $Payment->getCharge() + 1 : PHP_INT_MAX,
-            ];
-        }, $PaymentsData);
+        $rules = array_map(fn (Payment $Payment) => [
+            'min' => $Payment->getRuleMin() ? bcsub($Payment->getRuleMin(), $Payment->getCharge() ?? '0') : '0',
+            'max' => $Payment->getRuleMax() ? bcadd(bcsub($Payment->getRuleMax(), $Payment->getCharge() ?? '0'), '1') : (string) PHP_INT_MAX,
+        ], $PaymentsData);
 
+        /** @var array<int, array{min: int, max: int}> $mergeRules */
         $mergeRules = [];
 
         foreach ($rules as $rule) {
             // かぶる条件があれば抽出
-            $targetRules = array_filter($mergeRules, function ($mergeRule) use ($rule) {
-                return $rule['min'] <= $mergeRule['max'] && $mergeRule['min'] <= $rule['max'];
-            });
+            $targetRules = array_filter($mergeRules, fn ($mergeRule) => $rule['min'] <= $mergeRule['max'] && $mergeRule['min'] <= $rule['max']);
 
             if (count($targetRules) === 0) {
                 $mergeRules[] = $rule;
             } else {
                 // 被らない条件を抽出
-                $mergeRules = array_filter($mergeRules, function ($mergeRule) use ($rule) {
-                    return $rule['min'] > $mergeRule['max'] || $mergeRule['min'] > $rule['max'];
-                });
+                $mergeRules = array_filter($mergeRules, fn ($mergeRule) => $rule['min'] > $mergeRule['max'] || $mergeRule['min'] > $rule['max']);
 
                 $targetRules[] = $rule;
-                $min = min(array_map(function ($rule) {
-                    return $rule['min'];
-                }, $targetRules));
+                $min = min(array_map(fn ($rule) => $rule['min'], $targetRules));
 
-                $max = max(array_map(function ($rule) {
-                    return $rule['max'];
-                }, $targetRules));
+                $max = max(array_map(fn ($rule) => $rule['max'], $targetRules));
 
                 $mergeRules[] = ['min' => $min, 'max' => $max];
             }
         }
 
-        usort($mergeRules, function ($a, $b) {
+        usort($mergeRules, function (array $a, array $b): int {
             if ($a['min'] == $b['min']) {
                 return 0;
             }

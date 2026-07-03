@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -16,25 +18,16 @@ namespace Eccube\Tests\Service;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\RoundingType;
 use Eccube\Entity\TaxRule;
-use Eccube\Repository\TaxRuleRepository;
 use Eccube\Service\TaxRuleService;
+use PHPUnit\Framework\Attributes\Group;
 
-class TaxRuleServiceTest extends AbstractServiceTestCase
+final class TaxRuleServiceTest extends AbstractServiceTestCase
 {
-    /**
-     * @var TaxRuleService
-     */
-    private $taxRuleService;
+    private ?TaxRuleService $taxRuleService = null;
 
-    /**
-     * @var  TaxRuleRepository
-     */
-    protected $TaxRule1;
+    protected ?TaxRule $TaxRule1 = null;
 
-    /**
-     * @var  BaseInfo
-     */
-    protected $BaseInfo;
+    protected ?BaseInfo $BaseInfo = null;
 
     /**
      * {@inheritdoc}
@@ -43,16 +36,14 @@ class TaxRuleServiceTest extends AbstractServiceTestCase
     {
         parent::setUp();
         $this->BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->get();
-        $this->BaseInfo->setOptionProductTaxRule(0);
+        $this->BaseInfo->setOptionProductTaxRule(false);
         $this->TaxRule1 = $this->entityManager->getRepository(TaxRule::class)->find(1);
         $this->TaxRule1->setApplyDate(new \DateTime('-1 day'));
-        static::getContainer()->get('doctrine')->getManager()->flush();
+        $this->entityManager->flush();
         $this->taxRuleService = static::getContainer()->get(TaxRuleService::class);
     }
 
-    /**
-     * @group decimal
-     */
+    #[Group(name: 'decimal')]
     public function testRoundByCalcRuleWithDefault()
     {
         $input = '100.4';
@@ -76,9 +67,7 @@ class TaxRuleServiceTest extends AbstractServiceTestCase
         $this->verify();
     }
 
-    /**
-     * @group decimal
-     */
+    #[Group(name: 'decimal')]
     public function testRoundByRoundingTypeWithCeil()
     {
         $input = '100.4';
@@ -102,9 +91,7 @@ class TaxRuleServiceTest extends AbstractServiceTestCase
         $this->verify();
     }
 
-    /**
-     * @group decimal
-     */
+    #[Group(name: 'decimal')]
     public function testRoundByRoundingTypeWithRound()
     {
         $input = '100.4';
@@ -128,9 +115,7 @@ class TaxRuleServiceTest extends AbstractServiceTestCase
         $this->verify();
     }
 
-    /**
-     * @group decimal
-     */
+    #[Group(name: 'decimal')]
     public function testRoundByRoundingTypeWithFloor()
     {
         $input = '100.4';
@@ -154,9 +139,7 @@ class TaxRuleServiceTest extends AbstractServiceTestCase
         $this->verify();
     }
 
-    /**
-     * @group decimal
-     */
+    #[Group(name: 'decimal')]
     public function testCalcTax()
     {
         $input = '1000';
@@ -166,9 +149,7 @@ class TaxRuleServiceTest extends AbstractServiceTestCase
         $this->verify();
     }
 
-    /**
-     * @group decimal
-     */
+    #[Group(name: 'decimal')]
     public function testCalcTaxWithAdjust()
     {
         $input = '1008';
@@ -179,9 +160,7 @@ class TaxRuleServiceTest extends AbstractServiceTestCase
         $this->verify();
     }
 
-    /**
-     * @group decimal
-     */
+    #[Group(name: 'decimal')]
     public function testGetTax()
     {
         $input = '1000';
@@ -190,9 +169,7 @@ class TaxRuleServiceTest extends AbstractServiceTestCase
         $this->verify();
     }
 
-    /**
-     * @group decimal
-     */
+    #[Group(name: 'decimal')]
     public function testCalcIncTax()
     {
         $input = '1000';

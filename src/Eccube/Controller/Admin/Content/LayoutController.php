@@ -17,6 +17,7 @@ use Doctrine\ORM\NoResultException;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Layout;
 use Eccube\Entity\Master\ProductStatus;
+use Eccube\Entity\Page;
 use Eccube\Form\Type\Admin\LayoutType;
 use Eccube\Repository\BlockPositionRepository;
 use Eccube\Repository\BlockRepository;
@@ -26,85 +27,34 @@ use Eccube\Repository\PageLayoutRepository;
 use Eccube\Repository\PageRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Util\CacheUtil;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment as Twig;
 
 class LayoutController extends AbstractController
 {
     public const DUMMY_BLOCK_ID = 9999999999;
 
-    /**
-     * @var BlockRepository
-     */
-    protected $blockRepository;
-    /**
-     * @var BlockPositionRepository
-     */
-    protected $blockPositionRepository;
-
-    /**
-     * @var LayoutRepository
-     */
-    protected $layoutRepository;
-
-    /**
-     * @var PageLayoutRepository
-     */
-    protected $pageLayoutRepository;
-
-    /**
-     * @var PageRepository
-     */
-    protected $pageRepository;
-
-    /**
-     * @var ProductRepository
-     */
-    protected $productRepository;
-
-    /**
-     * @var DeviceTypeRepository
-     */
-    protected $deviceTypeRepository;
-
-    /**
-     * @var bool
-     */
-    protected $isPreview = false;
+    protected bool $isPreview = false;
 
     /**
      * LayoutController constructor.
-     *
-     * @param BlockRepository $blockRepository
-     * @param LayoutRepository $layoutRepository
-     * @param PageLayoutRepository $pageLayoutRepository
-     * @param PageRepository $pageRepository
-     * @param ProductRepository $productRepository
-     * @param DeviceTypeRepository $deviceTypeRepository
      */
-    public function __construct(BlockRepository $blockRepository, BlockPositionRepository $blockPositionRepository, LayoutRepository $layoutRepository, PageLayoutRepository $pageLayoutRepository, PageRepository $pageRepository, ProductRepository $productRepository, DeviceTypeRepository $deviceTypeRepository)
+    public function __construct(protected BlockRepository $blockRepository, protected BlockPositionRepository $blockPositionRepository, protected LayoutRepository $layoutRepository, protected PageLayoutRepository $pageLayoutRepository, protected PageRepository $pageRepository, protected ProductRepository $productRepository, protected DeviceTypeRepository $deviceTypeRepository, private readonly CacheUtil $cacheUtil, private readonly Twig $twig)
     {
-        $this->blockRepository = $blockRepository;
-        $this->blockPositionRepository = $blockPositionRepository;
-        $this->layoutRepository = $layoutRepository;
-        $this->pageLayoutRepository = $pageLayoutRepository;
-        $this->pageRepository = $pageRepository;
-        $this->productRepository = $productRepository;
-        $this->deviceTypeRepository = $deviceTypeRepository;
     }
 
     /**
-     * @Route("/%eccube_admin_route%/content/layout", name="admin_content_layout", methods={"GET"})
-     *
-     * @Template("@admin/Content/layout_list.twig")
+     * @return array<string, mixed>
      */
-    public function index()
+    #[Route(path: '/%eccube_admin_route%/content/layout', name: 'admin_content_layout', methods: ['GET'])]
+    #[Template(template: '@admin/Content/layout_list.twig')]
+    public function index(): array
     {
         $qb = $this->layoutRepository->createQueryBuilder('l');
         $Layouts = $qb->where('l.id != :DefaultLayoutPreviewPage')
@@ -119,14 +69,8 @@ class LayoutController extends AbstractController
         ];
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/content/layout/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_layout_delete", methods={"DELETE"})
-     *
-     * @param Layout $Layout
-     *
-     * @return RedirectResponse
-     */
-    public function delete(Layout $Layout, CacheUtil $cacheUtil)
+    #[Route(path: '/%eccube_admin_route%/content/layout/{id}/delete', name: 'admin_content_layout_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    public function delete(Layout $Layout): RedirectResponse
     {
         $this->isTokenValid();
 
@@ -143,18 +87,23 @@ class LayoutController extends AbstractController
         $this->addSuccess('admin.common.delete_complete', 'admin');
 
         // キャッシュの削除
-        $cacheUtil->clearDoctrineCache();
+        $this->cacheUtil->clearDoctrineCache();
 
         return $this->redirectToRoute('admin_content_layout');
     }
 
     /**
-     * @Route("/%eccube_admin_route%/content/layout/new", name="admin_content_layout_new", methods={"GET", "POST"})
-     * @Route("/%eccube_admin_route%/content/layout/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_layout_edit", methods={"GET", "POST"})
+     * @param string|null $id
+     * @param string|null $previewPageId
      *
-     * @Template("@admin/Content/layout.twig")
+     * @return RedirectResponse|array<string, mixed>
+     *
+     * @throws NotFoundHttpException
      */
-    public function edit(Request $request, CacheUtil $cacheUtil, $id = null, $previewPageId = null)
+    #[Route(path: '/%eccube_admin_route%/content/layout/{id}/edit', name: 'admin_content_layout_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Route(path: '/%eccube_admin_route%/content/layout/new', name: 'admin_content_layout_new', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Content/layout.twig')]
+    public function edit(Request $request, $id = null, $previewPageId = null): RedirectResponse|array
     {
         if (is_null($id)) {
             $Layout = new Layout();
@@ -198,18 +147,21 @@ class LayoutController extends AbstractController
             $this->blockPositionRepository->register($data, $Blocks, $UnusedBlocks, $Layout);
 
             // キャッシュの削除
-            $cacheUtil->clearDoctrineCache();
+            $this->cacheUtil->clearDoctrineCache();
 
             // プレビューモード
             if ($this->isPreview) {
                 // プレビューする画面を取得
                 try {
                     $Page = $this->pageRepository->find($previewPageId);
-                } catch (NoResultException $e) {
+                    if ($Page === null) {
+                        throw new NoResultException();
+                    }
+                } catch (NoResultException) {
                     throw new NotFoundHttpException();
                 }
 
-                if ($Page->getEditType() >= \Eccube\Entity\Page::EDIT_TYPE_DEFAULT) {
+                if ($Page->getEditType() >= Page::EDIT_TYPE_DEFAULT) {
                     if ($Page->getUrl() === 'product_detail') {
                         $product = $this->productRepository->findOneBy(['Status' => ProductStatus::DISPLAY_SHOW]);
                         if (is_null($product)) {
@@ -217,9 +169,9 @@ class LayoutController extends AbstractController
                         }
 
                         return $this->redirectToRoute($Page->getUrl(), ['preview' => 1, 'id' => $product->getId()]);
-                    } else {
-                        return $this->redirectToRoute($Page->getUrl(), ['preview' => 1]);
                     }
+
+                    return $this->redirectToRoute($Page->getUrl(), ['preview' => 1]);
                 }
 
                 return $this->redirectToRoute('user_data', ['route' => $Page->getUrl(), 'preview' => 1]);
@@ -237,15 +189,8 @@ class LayoutController extends AbstractController
         ];
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/content/layout/view_block", name="admin_content_layout_view_block", methods={"GET"})
-     *
-     * @param Request $request
-     * @param Twig $twig
-     *
-     * @return JsonResponse
-     */
-    public function viewBlock(Request $request, Twig $twig)
+    #[Route(path: '/%eccube_admin_route%/content/layout/view_block', name: 'admin_content_layout_view_block', methods: ['GET'])]
+    public function viewBlock(Request $request): JsonResponse
     {
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();
@@ -263,7 +208,7 @@ class LayoutController extends AbstractController
             throw new NotFoundHttpException();
         }
 
-        $source = $twig->getLoader()
+        $source = $this->twig->getLoader()
             ->getSourceContext('Block/'.$Block->getFileName().'.twig')
             ->getCode();
 
@@ -274,13 +219,16 @@ class LayoutController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/content/layout/{id}/preview", requirements={"id" = "\d+"}, name="admin_content_layout_preview", methods={"POST"})
+     * @param string $id
+     *
+     * @return RedirectResponse|array<string, mixed>
      */
-    public function preview(Request $request, $id, CacheUtil $cacheUtil)
+    #[Route(path: '/%eccube_admin_route%/content/layout/{id}/preview', name: 'admin_content_layout_preview', requirements: ['id' => '\d+'], methods: ['POST'])]
+    public function preview(Request $request, $id): RedirectResponse|array
     {
         $form = $request->get('admin_layout');
         $this->isPreview = true;
 
-        return $this->edit($request, $cacheUtil, $id, $form['Page']);
+        return $this->edit($request, $id, $form['Page']);
     }
 }

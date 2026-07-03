@@ -13,64 +13,45 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\TagRepository;
 
 if (!class_exists(Tag::class)) {
     /**
      * Tag
-     *
-     * @ORM\Table(name="dtb_tag")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\TagRepository")
-     *
-     * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
      */
-    class Tag extends AbstractEntity
+    #[ORM\Table(name: 'dtb_tag')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: TagRepository::class)]
+    #[ORM\Cache(usage: 'NONSTRICT_READ_WRITE')]
+    class Tag extends AbstractEntity implements \Stringable
     {
-        /**
-         * @return string
-         */
-        public function __toString()
+        #[\Override]
+        public function __toString(): string
         {
-            return (string) $this->getName();
+            return $this->getName() ?? '';
         }
 
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
-         */
-        protected $id;
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+        protected ?int $id = null;
+
+        #[ORM\Column(name: 'name', type: Types::STRING, length: 255)]
+        protected ?string $name = null;
+
+        #[ORM\Column(name: 'sort_no', type: Types::SMALLINT, options: ['unsigned' => true])]
+        protected ?int $sort_no = null;
 
         /**
-         * @var string
-         *
-         * @ORM\Column(name="name", type="string", length=255)
+         * @var Collection<int, ProductTag>
          */
-        protected $name;
-
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="sort_no", type="smallint", options={"unsigned":true})
-         */
-        protected $sort_no;
-
-        /**
-         * @var \Doctrine\Common\Collections\Collection
-         *
-         * @ORM\OneToMany(targetEntity="Eccube\Entity\ProductTag", mappedBy="Tag")
-         */
+        #[ORM\OneToMany(targetEntity: ProductTag::class, mappedBy: 'Tag')]
         protected $ProductTag;
 
         /**
@@ -78,17 +59,15 @@ if (!class_exists(Tag::class)) {
          */
         public function __construct()
         {
-            $this->ProductTag = new \Doctrine\Common\Collections\ArrayCollection();
+            $this->ProductTag = new ArrayCollection();
         }
 
         /**
          * Set id.
          *
-         * @param int $id
-         *
          * @return $this
          */
-        public function setId($id)
+        public function setId(int $id): static
         {
             $this->id = $id;
 
@@ -97,10 +76,8 @@ if (!class_exists(Tag::class)) {
 
         /**
          * Get id.
-         *
-         * @return int
          */
-        public function getId()
+        public function getId(): ?int
         {
             return $this->id;
         }
@@ -108,11 +85,9 @@ if (!class_exists(Tag::class)) {
         /**
          * Set name.
          *
-         * @param string $name
-         *
          * @return $this
          */
-        public function setName($name)
+        public function setName(?string $name): static
         {
             $this->name = $name;
 
@@ -121,10 +96,8 @@ if (!class_exists(Tag::class)) {
 
         /**
          * Get name.
-         *
-         * @return string
          */
-        public function getName()
+        public function getName(): ?string
         {
             return $this->name;
         }
@@ -132,11 +105,9 @@ if (!class_exists(Tag::class)) {
         /**
          * Set sort_no.
          *
-         * @param int $sort_no
-         *
          * @return $this
          */
-        public function setSortNo($sort_no)
+        public function setSortNo(int $sort_no): static
         {
             $this->sort_no = $sort_no;
 
@@ -145,22 +116,16 @@ if (!class_exists(Tag::class)) {
 
         /**
          * Get sort_no.
-         *
-         * @return int
          */
-        public function getSortNo()
+        public function getSortNo(): int
         {
             return $this->sort_no;
         }
 
         /**
          * Add productTag.
-         *
-         * @param ProductTag $productTag
-         *
-         * @return Tag
          */
-        public function addProductTag(ProductTag $productTag)
+        public function addProductTag(ProductTag $productTag): Tag
         {
             $this->ProductTag[] = $productTag;
 
@@ -170,11 +135,9 @@ if (!class_exists(Tag::class)) {
         /**
          * Remove productTag.
          *
-         * @param ProductTag $productTag
-         *
          * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
          */
-        public function removeProductTag(ProductTag $productTag)
+        public function removeProductTag(ProductTag $productTag): bool
         {
             return $this->ProductTag->removeElement($productTag);
         }
@@ -182,9 +145,9 @@ if (!class_exists(Tag::class)) {
         /**
          * Get productTag.
          *
-         * @return \Doctrine\Common\Collections\Collection
+         * @return Collection<int, ProductTag>
          */
-        public function getProductTag()
+        public function getProductTag(): Collection
         {
             return $this->ProductTag;
         }

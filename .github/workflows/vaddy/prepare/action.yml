@@ -29,8 +29,15 @@ runs:
       with:
         php-version: '7.4'
 
+    - name: Install ext-redis 6.1+
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y php7.4-redis || (sudo pecl uninstall redis || true; sudo pecl install redis)
+        sudo phpenmod -s cli redis || true
+        php -m | grep -i redis || echo "Redis extension may not be available for PHP 7.4"
+
     - name: setup-chromedriver
-      uses: nanasess/setup-chromedriver@c75c3d53d445b96d41dbf2355797b470953c6c30  # v2.4.0
+      uses: nanasess/setup-chromedriver@fc3dc5897c11410827ed268ab625038ee63dc6fe  # master
 
     - name: Install fonts
       shell: bash
@@ -66,7 +73,7 @@ runs:
       shell: bash
       env:
         DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
-        DATABASE_SERVER_VERSION: 14
+        DATABASE_SERVER_VERSION: 18
       run: |
         composer install --no-scripts --no-dev --no-interaction --optimize-autoloader --no-plugins
         php bin/template_jp.php
@@ -106,7 +113,7 @@ runs:
       env:
         APP_ENV: 'prod'
         DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
-        DATABASE_SERVER_VERSION: 14
+        DATABASE_SERVER_VERSION: 18
         PGPASSWORD: 'password'
       run: |
         bin/console eccube:composer:require "ec-cube/recommend42"

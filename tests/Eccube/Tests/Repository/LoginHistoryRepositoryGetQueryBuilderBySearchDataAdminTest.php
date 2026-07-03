@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,26 +19,18 @@ use Eccube\Entity\LoginHistory;
 use Eccube\Entity\Master\LoginHistoryStatus;
 use Eccube\Repository\LoginHistoryRepository;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * LoginHistoryRepository test cases.
  */
-class LoginHistoryRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
+final class LoginHistoryRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
 {
-    /**
-     * @var array
-     */
-    protected $Results;
+    protected ?array $Results = null;
 
-    /**
-     * @var array
-     */
-    protected $searchData;
+    protected ?array $searchData = null;
 
-    /**
-     * @var LoginHistoryRepository
-     */
-    private $loginHistoryRepository;
+    private ?LoginHistoryRepository $loginHistoryRepository = null;
 
     /**
      * {@inheritdoc}
@@ -44,7 +38,6 @@ class LoginHistoryRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeT
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->loginHistoryRepository = $this->entityManager->getRepository(LoginHistory::class);
         $this->Member1 = $this->createMember('member1');
         $this->LoginHistory1 = $this->createLoginHistory('member1', '127.0.0.1', LoginHistoryStatus::SUCCESS, $this->Member1);
@@ -96,11 +89,10 @@ class LoginHistoryRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeT
     }
 
     /**
-     * @dataProvider dataStatusProvider
-     *
      * @param $status
      * @param $expected
      */
+    #[DataProvider(methodName: 'dataStatusProvider')]
     public function testStatus($status, $expected)
     {
         $this->searchData = [
@@ -114,20 +106,16 @@ class LoginHistoryRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeT
     }
 
     /**
-     * @return array[]
+     * @return \Iterator<(int | string), array<mixed>>
      */
-    public function dataStatusProvider()
+    public static function dataStatusProvider(): \Iterator
     {
-        return [
-            [[LoginHistoryStatus::SUCCESS], 1],
-            [[LoginHistoryStatus::FAILURE], 2],
-            [[LoginHistoryStatus::SUCCESS, LoginHistoryStatus::FAILURE], 3],
-        ];
+        yield [[LoginHistoryStatus::SUCCESS], 1];
+        yield [[LoginHistoryStatus::FAILURE], 2];
+        yield [[LoginHistoryStatus::SUCCESS, LoginHistoryStatus::FAILURE], 3];
     }
 
-    /**
-     * @dataProvider dataFormDateProvider
-     */
+    #[DataProvider(methodName: 'dataFormDateProvider')]
     public function testDate(string $formName, string $time, int $expected)
     {
         $this->searchData = [
@@ -148,22 +136,16 @@ class LoginHistoryRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeT
      * - today: 今日の00:00:00
      * - tomorrow: 明日の00:00:00
      * - yesterday: 昨日の00:00:00
-     *
-     * @return array
      */
-    public function dataFormDateProvider()
+    public static function dataFormDateProvider(): \Iterator
     {
-        return [
-            ['create_date_start', 'today', 3],
-            ['create_date_start', 'tomorrow', 0],
-            ['create_date_end', 'today', 3],
-            ['create_date_end', 'yesterday', 0],
-        ];
+        yield ['create_date_start', 'today', 3];
+        yield ['create_date_start', 'tomorrow', 0];
+        yield ['create_date_end', 'today', 3];
+        yield ['create_date_end', 'yesterday', 0];
     }
 
-    /**
-     * @dataProvider dataFormDateTimeProvider
-     */
+    #[DataProvider(methodName: 'dataFormDateTimeProvider')]
     public function testDateTime(string $formName, string $time, int $expected)
     {
         $this->searchData = [
@@ -179,16 +161,12 @@ class LoginHistoryRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeT
 
     /**
      * Data provider datetime form test.
-     *
-     * @return array
      */
-    public function dataFormDateTimeProvider()
+    public static function dataFormDateTimeProvider(): \Iterator
     {
-        return [
-            ['create_datetime_start', '- 1 hour', 3],
-            ['create_datetime_start', '+ 1 hour', 0],
-            ['create_datetime_end', '+ 1 hour', 3],
-            ['create_datetime_end', '- 1 hour', 0],
-        ];
+        yield ['create_datetime_start', '- 1 hour', 3];
+        yield ['create_datetime_start', '+ 1 hour', 0];
+        yield ['create_datetime_end', '+ 1 hour', 3];
+        yield ['create_datetime_end', '- 1 hour', 0];
     }
 }

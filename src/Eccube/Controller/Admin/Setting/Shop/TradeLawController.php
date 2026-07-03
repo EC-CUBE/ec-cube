@@ -18,34 +18,26 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\TradeLawType;
 use Eccube\Repository\TradeLawRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class TradeLawController extends AbstractController
 {
-    protected TradeLawRepository $tradeLawRepository;
-
-    /**
-     * @param TradeLawRepository $tradeLawRepository
-     */
-    public function __construct(
-        TradeLawRepository $tradeLawRepository,
-    ) {
-        $this->tradeLawRepository = $tradeLawRepository;
+    public function __construct(protected TradeLawRepository $tradeLawRepository)
+    {
     }
 
     /**
      * 特定商取引法設定の初期表示・登録
      *
-     * @Route("/%eccube_admin_route%/setting/shop/tradelaw", name="admin_setting_shop_tradelaw", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Setting/Shop/tradelaw.twig")
-     *
-     * @param Request $request
+     * @return RedirectResponse|array<string, mixed>
      */
-    public function index(Request $request)
+    #[Route(path: '/%eccube_admin_route%/setting/shop/tradelaw', name: 'admin_setting_shop_tradelaw', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Setting/Shop/tradelaw.twig')]
+    public function index(Request $request): RedirectResponse|array
     {
         $tradeLawDetails = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
         $builder = $this->formFactory->createBuilder();

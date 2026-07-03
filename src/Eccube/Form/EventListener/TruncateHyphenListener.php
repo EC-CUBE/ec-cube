@@ -20,19 +20,17 @@ use Symfony\Component\Form\FormEvents;
 class TruncateHyphenListener implements EventSubscriberInterface
 {
     /**
-     * @return array
+     * @return array<string, string>
      */
-    public static function getSubscribedEvents()
+    #[\Override]
+    public static function getSubscribedEvents(): array
     {
         return [
             FormEvents::PRE_SUBMIT => 'onPreSubmit',
         ];
     }
 
-    /**
-     * @param FormEvent $event
-     */
-    public function onPreSubmit(FormEvent $event)
+    public function onPreSubmit(FormEvent $event): void
     {
         $data = $event->getData();
         if (is_string($data)) {

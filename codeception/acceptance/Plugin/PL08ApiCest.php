@@ -46,7 +46,7 @@ class PL08ApiCest
         $I->click(['id' => 'oauth_authorization_approve']);
 
         $redirectUrl = $I->grabFromCurrentUrl();
-        $code = preg_replace('/.*code=(.*)&.*/', '$1', $redirectUrl);
+        $code = preg_replace('/.*code=(.*)&.*/', '$1', (string) $redirectUrl);
 
         $tokens = $I->executeJS("
             res = await fetch('/token', {

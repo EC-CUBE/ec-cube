@@ -18,14 +18,6 @@ class LayoutEditPage extends AbstractAdminPageStyleGuide
     public static $未使用ブロックアイテム = ['css' => '#unused-block div.sort'];
     public static $登録完了メッセージ = ['xpath' => "//div[@class='alert alert-success alert-dismissible fade show m-3']"];
 
-    /**
-     * LayoutEditPage constructor.
-     */
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     public static function at($I)
     {
         $page = new self($I);

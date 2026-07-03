@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -20,31 +22,25 @@ use Eccube\Repository\AuthorityRoleRepository;
 use Eccube\Repository\Master\AuthorityRepository;
 use Eccube\Repository\MemberRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class AuthorityControllerTest
  */
-class AuthorityControllerTest extends AbstractAdminWebTestCase
+final class AuthorityControllerTest extends AbstractAdminWebTestCase
 {
     /**
      * @var MemberRepository;
      */
     protected $memberRepository;
 
-    /**
-     * @var AuthorityRepository
-     */
-    protected $authorityMasterRepository;
+    protected ?AuthorityRepository $authorityMasterRepository = null;
 
-    /**
-     * @var AuthorityRoleRepository
-     */
-    protected $authorityRoleRepository;
+    protected ?AuthorityRoleRepository $authorityRoleRepository = null;
 
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->memberRepository = $this->entityManager->getRepository(Member::class);
         $this->authorityMasterRepository = $this->entityManager->getRepository(Authority::class);
         $this->authorityRoleRepository = $this->entityManager->getRepository(AuthorityRole::class);
@@ -57,7 +53,7 @@ class AuthorityControllerTest extends AbstractAdminWebTestCase
     {
         $client = $this->client;
         $client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_setting_system_authority')
         );
         $this->assertTrue($client->getResponse()->isSuccessful());
@@ -73,7 +69,7 @@ class AuthorityControllerTest extends AbstractAdminWebTestCase
         $url = $this->generateUrl('admin_setting_system_authority');
 
         $client->request(
-            'GET',
+            Request::METHOD_GET,
             $url,
             [
                 'form' => [
@@ -97,7 +93,7 @@ class AuthorityControllerTest extends AbstractAdminWebTestCase
         $url = $this->generateUrl('admin_setting_system_authority');
         // makes the POST request
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $url,
             [
                 'form' => [
@@ -130,7 +126,7 @@ class AuthorityControllerTest extends AbstractAdminWebTestCase
         $url = $this->generateUrl('admin_setting_system_authority');
         // makes the POST request
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $url,
             [
                 'form' => [
@@ -145,6 +141,7 @@ class AuthorityControllerTest extends AbstractAdminWebTestCase
 
         $this->expected = $form[0]['deny_url'];
         $AuthorityRole = $this->authorityRoleRepository->findOneBy(['deny_url' => $form[0]['deny_url']]);
+        $this->assertInstanceOf(AuthorityRole::class, $AuthorityRole);
         $this->actual = $AuthorityRole->getDenyUrl();
         $this->verify();
     }
@@ -166,7 +163,7 @@ class AuthorityControllerTest extends AbstractAdminWebTestCase
         $url = $this->generateUrl('admin_setting_system_authority');
         // makes the POST request
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $url,
             [
                 'form' => [
@@ -182,10 +179,7 @@ class AuthorityControllerTest extends AbstractAdminWebTestCase
         $this->assertNull($AuthorityRole->getId());
     }
 
-    /**
-     * @return AuthorityRole
-     */
-    private function newTestAuthorityRole()
+    private function newTestAuthorityRole(): AuthorityRole
     {
         $TestCreator = $this->memberRepository->find(1);
         $AuthorityRole = new AuthorityRole();
@@ -200,12 +194,7 @@ class AuthorityControllerTest extends AbstractAdminWebTestCase
         return $AuthorityRole;
     }
 
-    /**
-     * @param null $AuthorityRole
-     *
-     * @return array
-     */
-    protected function createFormData($AuthorityRole = null)
+    protected function createFormData(?AuthorityRole $AuthorityRole = null): array
     {
         if (!$AuthorityRole) {
             $AuthorityRole = $this->newTestAuthorityRole();

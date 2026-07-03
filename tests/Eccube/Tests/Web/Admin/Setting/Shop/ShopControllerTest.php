@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,31 +17,31 @@ namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
 use Eccube\Entity\BaseInfo;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class ShopControllerTest
- *
- * @group cache-clear
  */
-class ShopControllerTest extends AbstractAdminWebTestCase
+#[Group('cache-clear')]
+final class ShopControllerTest extends AbstractAdminWebTestCase
 {
     /**
      * Routing
      */
     public function testRouting()
     {
-        $this->client->request('GET', $this->generateUrl('admin_setting_shop'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_shop'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     /**
      * @param bool $isSuccess
      * @param bool $expected
-     *
-     * @dataProvider dataSubmitProvider
-     *
-     * @group cache-clear
      */
+    #[DataProvider(methodName: 'dataSubmitProvider')]
+    #[Group(name: 'cache-clear')]
     public function testSubmit($isSuccess, $expected)
     {
         $formData = $this->createFormData();
@@ -47,7 +49,7 @@ class ShopControllerTest extends AbstractAdminWebTestCase
             $formData['shop_name'] = '';
         }
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop'),
             ['shop_master' => $formData]
         );
@@ -95,16 +97,46 @@ class ShopControllerTest extends AbstractAdminWebTestCase
             'option_nostock_hidden' => '0',
             'option_point' => 1,
             'basic_point_rate' => 1,
+            'option_sanitize_csv_formulas' => '0',
         ];
     }
 
-    public function dataSubmitProvider()
+    /**
+     * CSVの数式インジェクション対策トグルが BaseInfo に保存されること.
+     * チェックボックスは未チェックをキー欠落で表すため, 無効化はキーを送らないことで再現する.
+     */
+    #[DataProvider(methodName: 'dataSanitizeCsvFormulasProvider')]
+    #[Group(name: 'cache-clear')]
+    public function testSubmitPersistsSanitizeCsvFormulasOption(bool $checked, bool $expected): void
     {
-        return [
-            [false, false],
-            [true, true],
-            // To do implement
-        ];
+        $formData = $this->createFormData();
+        if ($checked) {
+            $formData['option_sanitize_csv_formulas'] = '1';
+        } else {
+            unset($formData['option_sanitize_csv_formulas']);
+        }
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_setting_shop'),
+            ['shop_master' => $formData]
+        );
+
+        $this->entityManager->clear();
+        $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->find(1);
+        $this->assertInstanceOf(BaseInfo::class, $BaseInfo);
+        $this->assertSame($expected, $BaseInfo->isOptionSanitizeCsvFormulas());
+    }
+
+    public static function dataSanitizeCsvFormulasProvider(): \Iterator
+    {
+        yield [true, true];
+        yield [false, false];
+    }
+
+    public static function dataSubmitProvider(): \Iterator
+    {
+        yield [false, false];
+        yield [true, true];
     }
 
     /**
@@ -119,11 +151,12 @@ class ShopControllerTest extends AbstractAdminWebTestCase
         $formData['email03'] = 'aa..@example.com';
         $formData['email04'] = 'aa..@example.com';
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop'),
             ['shop_master' => $formData]
         );
         $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->find(1);
+        $this->assertInstanceOf(BaseInfo::class, $BaseInfo);
 
         $this->expected = $BaseInfo->getEmail01();
         $this->actual = $formData['email01'];

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,14 +19,15 @@ use Customize\Bundle\CustomizeBundle;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
-class CustomizeBundleTest extends KernelTestCase
+final class CustomizeBundleTest extends KernelTestCase
 {
     public function tearDown(): void
     {
         $fs = new Filesystem();
         $fs->remove(__DIR__.'/../../../app/Customize/Bundle');
         $fs->remove(__DIR__.'/../../../app/Customize/Resource/config/bundles.php');
-
+        // Restore exception handler to prevent risky test warnings
+        restore_exception_handler();
         parent::tearDown();
     }
 
@@ -38,10 +41,10 @@ class CustomizeBundleTest extends KernelTestCase
         $kernel = static::bootKernel();
         $bundleNames = [];
         foreach ($kernel->getBundles() as $bundle) {
-            $bundleNames[] = get_class($bundle);
+            $bundleNames[] = $bundle::class;
         }
 
-        self::assertContains(CustomizeBundle::class, $bundleNames);
+        $this->assertContains(CustomizeBundle::class, $bundleNames);
     }
 
     public function testNotContainsCustomizeBundle()
@@ -49,9 +52,9 @@ class CustomizeBundleTest extends KernelTestCase
         $kernel = static::bootKernel();
         $bundleNames = [];
         foreach ($kernel->getBundles() as $bundle) {
-            $bundleNames[] = get_class($bundle);
+            $bundleNames[] = $bundle::class;
         }
 
-        self::assertNotContains(CustomizeBundle::class, $bundleNames);
+        $this->assertNotContains(CustomizeBundle::class, $bundleNames);
     }
 }

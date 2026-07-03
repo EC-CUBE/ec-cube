@@ -13,11 +13,9 @@
 
 class VaddyCest
 {
-    /** @var string */
-    private $vaddyVerificationFile;
+    private string $vaddyVerificationFile;
 
-    /** @var string */
-    private $vaddyVerificationCode;
+    private string $vaddyVerificationCode;
 
     public function _before(AcceptanceTester $I)
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,17 +23,11 @@ use Eccube\Tests\EccubeTestCase;
 /**
  * LayoutRepository test cases.
  */
-class LayoutRepositoryTest extends EccubeTestCase
+final class LayoutRepositoryTest extends EccubeTestCase
 {
-    /**
-     * @var  DeviceType
-     */
-    protected $DeviceType;
+    protected ?DeviceType $DeviceType = null;
 
-    /**
-     * @var  LayoutRepository
-     */
-    protected $layoutRepository;
+    protected ?LayoutRepository $layoutRepository = null;
 
     /**
      * {@inheritdoc}
@@ -42,7 +38,6 @@ class LayoutRepositoryTest extends EccubeTestCase
         $this->layoutRepository = $this->entityManager->getRepository(Layout::class);
         $this->DeviceType = $this->entityManager->getRepository(DeviceType::class)
             ->find(DeviceType::DEVICE_TYPE_PC);
-
         $Layout = new Layout();
         $Layout
             ->setName('テスト用レイアウト')

@@ -29,25 +29,10 @@ use Twig\TwigTest;
 class EccubeExtension extends AbstractExtension
 {
     /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
-     * @var ProductRepository
-     */
-    private $productRepository;
-
-    /**
      * EccubeExtension constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
-     * @param ProductRepository $productRepository
      */
-    public function __construct(EccubeConfig $eccubeConfig, ProductRepository $productRepository)
+    public function __construct(protected EccubeConfig $eccubeConfig, private readonly ProductRepository $productRepository)
     {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->productRepository = $productRepository;
     }
 
     /**
@@ -55,14 +40,15 @@ class EccubeExtension extends AbstractExtension
      *
      * @return TwigFunction[] An array of functions
      */
-    public function getFunctions()
+    #[\Override]
+    public function getFunctions(): array
     {
         return [
-            new TwigFunction('has_errors', [$this, 'hasErrors']),
-            new TwigFunction('active_menus', [$this, 'getActiveMenus']),
-            new TwigFunction('class_categories_as_json', [$this, 'getClassCategoriesAsJson']),
-            new TwigFunction('product', [$this, 'getProduct']),
-            new TwigFunction('currency_symbol', [$this, 'getCurrencySymbol']),
+            new TwigFunction('has_errors', $this->hasErrors(...)),
+            new TwigFunction('active_menus', $this->getActiveMenus(...)),
+            new TwigFunction('class_categories_as_json', $this->getClassCategoriesAsJson(...)),
+            new TwigFunction('product', $this->getProduct(...)),
+            new TwigFunction('currency_symbol', $this->getCurrencySymbol(...)),
         ];
     }
 
@@ -71,15 +57,16 @@ class EccubeExtension extends AbstractExtension
      *
      * @return TwigFilter[]
      */
-    public function getFilters()
+    #[\Override]
+    public function getFilters(): array
     {
         return [
-            new TwigFilter('no_image_product', [$this, 'getNoImageProduct']),
-            new TwigFilter('date_format', [$this, 'getDateFormatFilter']),
-            new TwigFilter('price', [$this, 'getPriceFilter']),
-            new TwigFilter('ellipsis', [$this, 'getEllipsis']),
-            new TwigFilter('time_ago', [$this, 'getTimeAgo']),
-            new TwigFilter('file_ext_icon', [$this, 'getExtensionIcon'], ['is_safe' => ['html']]),
+            new TwigFilter('no_image_product', $this->getNoImageProduct(...)),
+            new TwigFilter('date_format', $this->getDateFormatFilter(...)),
+            new TwigFilter('price', $this->getPriceFilter(...)),
+            new TwigFilter('ellipsis', $this->getEllipsis(...)),
+            new TwigFilter('time_ago', $this->getTimeAgo(...)),
+            new TwigFilter('file_ext_icon', $this->getExtensionIcon(...), ['is_safe' => ['html']]),
         ];
     }
 
@@ -88,19 +75,18 @@ class EccubeExtension extends AbstractExtension
      *
      * @return TwigTest[]
      */
-    public function getTests()
+    #[\Override]
+    public function getTests(): array
     {
         return [
-            new TwigTest('integer', function ($value) { return is_integer($value); }),
+            new TwigTest('integer', fn ($value) => is_integer($value)),
         ];
     }
 
     /**
      * Name of this extension
-     *
-     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return 'eccube';
     }
@@ -108,11 +94,11 @@ class EccubeExtension extends AbstractExtension
     /**
      * Name of this extension
      *
-     * @param array $menus
+     * @param array<mixed> $menus
      *
-     * @return array
+     * @return array<mixed>
      */
-    public function getActiveMenus($menus = [])
+    public function getActiveMenus(array $menus = []): array
     {
         $count = count($menus);
         for ($i = $count; $i <= 2; $i++) {
@@ -124,68 +110,58 @@ class EccubeExtension extends AbstractExtension
 
     /**
      * return No Image filename
-     *
-     * @return string
      */
-    public function getNoImageProduct($image)
+    public function getNoImageProduct(?string $image): string
     {
         return empty($image) ? 'no_image_product.png' : $image;
     }
 
     /**
      * Name of this extension
-     *
-     * @return string
      */
-    public function getDateFormatFilter($date, $value = '', $format = 'Y/m/d')
+    public function getDateFormatFilter(?\DateTimeInterface $date, string $value = '', string $format = 'Y/m/d'): string
     {
         if (is_null($date)) {
             return $value;
-        } else {
-            return $date->format($format);
         }
+
+        return $date->format($format);
     }
 
     /**
      * Name of this extension
-     *
-     * @return string
      */
-    public function getPriceFilter($number, $decimals = 0, $decPoint = '.', $thousandsSep = ',')
+    public function getPriceFilter(float|string|null $number, int $decimals = 0, string $decPoint = '.', string $thousandsSep = ','): string
     {
+        /** @var string $locale */
         $locale = $this->eccubeConfig['locale'];
+        /** @var string $currency */
         $currency = $this->eccubeConfig['currency'];
         $formatter = new \NumberFormatter($locale, \NumberFormatter::CURRENCY);
 
-        return $formatter->formatCurrency($number ?? 0, $currency);
+        return $formatter->formatCurrency((float) ($number ?? 0), $currency);
     }
 
     /**
      * Name of this extension
-     *
-     * @return string
      */
-    public function getEllipsis($value, $length = 100, $end = '...')
+    public function getEllipsis(string $value, int $length = 100, string $end = '...'): string
     {
         return StringUtil::ellipsis($value, $length, $end);
     }
 
     /**
      * Name of this extension
-     *
-     * @return string
      */
-    public function getTimeAgo($date)
+    public function getTimeAgo(string|\DateTimeInterface $date): string
     {
         return StringUtil::timeAgo($date);
     }
 
     /**
      * FormView にエラーが含まれるかを返す.
-     *
-     * @return bool
      */
-    public function hasErrors()
+    public function hasErrors(): bool
     {
         $hasErrors = false;
 
@@ -207,12 +183,8 @@ class EccubeExtension extends AbstractExtension
      * product_idで指定したProductを取得
      * Productが取得できない場合、または非公開の場合、商品情報は表示させない。
      * デバッグ環境以外ではProductが取得できなくでもエラー画面は表示させず無視される。
-     *
-     * @param $id
-     *
-     * @return Product|null
      */
-    public function getProduct($id)
+    public function getProduct(int|float|string $id): ?Product
     {
         try {
             $Product = $this->productRepository->findWithSortedClassCategories($id);
@@ -220,7 +192,7 @@ class EccubeExtension extends AbstractExtension
             if ($Product->getStatus()->getId() == ProductStatus::DISPLAY_SHOW) {
                 return $Product;
             }
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             return null;
         }
 
@@ -229,12 +201,8 @@ class EccubeExtension extends AbstractExtension
 
     /**
      * Get the ClassCategories as JSON.
-     *
-     * @param Product $Product
-     *
-     * @return string
      */
-    public function getClassCategoriesAsJson(Product $Product)
+    public function getClassCategoriesAsJson(Product $Product): string
     {
         $Product->_calc();
         $class_categories = [
@@ -269,17 +237,17 @@ class EccubeExtension extends AbstractExtension
                 'classcategory_id2' => $class_category_id2,
                 'name' => $class_category_name2,
                 'stock_find' => $ProductClass->getStockFind(),
-                'price01' => $ProductClass->getPrice01() === null ? '' : number_format($ProductClass->getPrice01()),
-                'price02' => number_format($ProductClass->getPrice02()),
-                'price01_inc_tax' => $ProductClass->getPrice01() === null ? '' : number_format($ProductClass->getPrice01IncTax()),
-                'price02_inc_tax' => number_format($ProductClass->getPrice02IncTax()),
+                'price01' => $ProductClass->getPrice01() === null ? '' : number_format((float) $ProductClass->getPrice01()),
+                'price02' => number_format((float) $ProductClass->getPrice02()),
+                'price01_inc_tax' => $ProductClass->getPrice01() === null ? '' : number_format((float) $ProductClass->getPrice01IncTax()),
+                'price02_inc_tax' => number_format((float) $ProductClass->getPrice02IncTax()),
                 'price01_with_currency' => $ProductClass->getPrice01() === null ? '' : $this->getPriceFilter($ProductClass->getPrice01()),
                 'price02_with_currency' => $this->getPriceFilter($ProductClass->getPrice02()),
                 'price01_inc_tax_with_currency' => $ProductClass->getPrice01() === null ? '' : $this->getPriceFilter($ProductClass->getPrice01IncTax()),
                 'price02_inc_tax_with_currency' => $this->getPriceFilter($ProductClass->getPrice02IncTax()),
                 'product_class_id' => (string) $ProductClass->getId(),
-                'product_code' => $ProductClass->getCode() === null ? '' : $ProductClass->getCode(),
-                'sale_type' => (string) $ProductClass->getSaleType()->getId(),
+                'product_code' => $ProductClass->getCode() ?? '',
+                'sale_type' => (string) $ProductClass->getSaleType()?->getId(),
             ];
         }
 
@@ -289,13 +257,10 @@ class EccubeExtension extends AbstractExtension
     /**
      * Display file extension icon
      *
-     * @param $ext
-     * @param $attr
+     * @param array<string, string> $attr
      * @param bool $iconOnly アイコンのクラス名のみ返す場合はtrue
-     *
-     * @return string
      */
-    public function getExtensionIcon($ext, $attr = [], $iconOnly = false)
+    public function getExtensionIcon(string $ext, array $attr = [], bool $iconOnly = false): string
     {
         $classes = [
             'txt' => 'fa-file-text-o',
@@ -328,7 +293,7 @@ class EccubeExtension extends AbstractExtension
         ];
         $ext = strtolower($ext);
 
-        $class = isset($classes[$ext]) ? $classes[$ext] : 'fa-file-o';
+        $class = $classes[$ext] ?? 'fa-file-o';
 
         if ($iconOnly) {
             return $class;
@@ -342,25 +307,19 @@ class EccubeExtension extends AbstractExtension
         foreach ($attr as $name => $value) {
             $html .= "{$name}=\"$value\" ";
         }
-        $html .= '></i>';
 
-        return $html;
+        return $html.'></i>';
     }
 
     /**
      * Get currency symbol
-     *
-     * @param null $currency
-     *
-     * @return bool|string
      */
-    public function getCurrencySymbol($currency = null)
+    public function getCurrencySymbol(?string $currency = null): bool|string
     {
-        if (is_null($currency)) {
+        if ($currency === null) {
             $currency = $this->eccubeConfig->get('currency');
         }
-        $symbol = Currencies::getSymbol($currency);
 
-        return $symbol;
+        return Currencies::getSymbol($currency);
     }
 }

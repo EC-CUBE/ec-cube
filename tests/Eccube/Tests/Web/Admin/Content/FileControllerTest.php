@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -14,14 +16,17 @@
 namespace Eccube\Tests\Web\Admin\Content;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-class FileControllerTest extends AbstractAdminWebTestCase
+final class FileControllerTest extends AbstractAdminWebTestCase
 {
     public function testIndex()
     {
-        $this->client->request('GET', $this->generateUrl('admin_content_file'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_content_file'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -32,7 +37,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
         file_put_contents($filepath, $contents);
 
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_content_file_view').'?file='.$this->getJailDir($filepath)
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -49,11 +54,85 @@ class FileControllerTest extends AbstractAdminWebTestCase
         file_put_contents($filepath, $contents);
 
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_content_file_view').'?file=/../user_data/aaa.html'
         );
         $this->assertFalse($this->client->getResponse()->isSuccessful());
-        $this->assertSame(404, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
+    }
+
+    /**
+     * download で select_file にディレクトリトラバーサル(`../`)を与えても弾かれることを確認する.
+     *
+     * checkDir() が `..` を含むパスを拒否するため 404 になる.
+     */
+    public function testDownloadWithTraversalFailure()
+    {
+        $filepath = $this->getUserDataDir().'/aaa.html';
+        $contents = '<html><body><h1>test</h1></body></html>';
+        file_put_contents($filepath, $contents);
+
+        $this->client->request(
+            Request::METHOD_GET,
+            $this->generateUrl('admin_content_file_download').'?select_file=/../user_data/aaa.html'
+        );
+        $this->assertFalse($this->client->getResponse()->isSuccessful());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
+    }
+
+    /**
+     * delete で select_file にディレクトリトラバーサル(`../`)を与えても
+     * user_data 外のファイルが削除されないことを確認する.
+     *
+     * checkDir() が `..` を含むパスを拒否するため, リダイレクトはするが remove は実行されない.
+     */
+    public function testDeleteWithTraversalDoesNotRemoveFile()
+    {
+        // user_data の外（親ディレクトリ）にファイルを作成する
+        $outsideFile = $this->getUserDataDir().'/../traversal_target.html';
+        file_put_contents($outsideFile, '<html><body><h1>target</h1></body></html>');
+
+        $this->client->request(
+            Request::METHOD_DELETE,
+            $this->generateUrl('admin_content_file_delete').'?select_file=/../traversal_target.html'
+        );
+
+        // checkDir で弾かれるため user_data 外のファイルは削除されない
+        $this->assertFileExists($outsideFile);
+
+        unlink($outsideFile);
+    }
+
+    /**
+     * create(mkdir) で now_dir にディレクトリトラバーサル(`../`)を与えても
+     * user_data 外にディレクトリが作成されないことを確認する.
+     *
+     * checkDir() が `..` を含む now_dir を拒否し, 作成先は user_data 直下にフォールバックする.
+     */
+    public function testIndexWithCreateTraversalStaysInUserDataDir()
+    {
+        $folder = 'traversal_folder';
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_content_file'),
+            [
+                'form' => [
+                    '_token' => 'dummy',
+                    'create_file' => $folder,
+                    'file' => '',
+                ],
+                'mode' => 'create',
+                'now_dir' => $this->getUserDataDir().'/../',
+            ]
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        // user_data 外（親ディレクトリ）には作成されない
+        $this->assertDirectoryDoesNotExist($this->getUserDataDir().'/../'.$folder);
+        // user_data 直下へフォールバックして作成される
+        $this->assertDirectoryExists($this->getUserDataDir().'/'.$folder);
+
+        rmdir($this->getUserDataDir().'/'.$folder);
     }
 
     public function testDownload()
@@ -63,7 +142,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
         file_put_contents($filepath, $contents);
 
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_content_file_download').'?select_file='.$this->getJailDir($filepath)
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -80,11 +159,11 @@ class FileControllerTest extends AbstractAdminWebTestCase
         file_put_contents($filepath, $contents);
 
         $this->client->request(
-            'DELETE',
+            Request::METHOD_DELETE,
             $this->generateUrl('admin_content_file_delete').'?select_file='.$this->getJailDir($filepath)
         );
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_content_file', ['tree_select_file' => dirname($this->getJailDir($filepath))])));
-        $this->assertFalse(file_exists($filepath));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_content_file', ['tree_select_file' => dirname((string) $this->getJailDir($filepath))])));
+        $this->assertFileDoesNotExist($filepath);
     }
 
     /**
@@ -95,7 +174,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
     public function testDeleteWithEmpty()
     {
         $this->client->request(
-            'DELETE',
+            Request::METHOD_DELETE,
             $this->generateUrl('admin_content_file_delete').'?select_file='
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_content_file')));
@@ -105,7 +184,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
     {
         $folder = 'create_folder';
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_content_file'),
             [
                 'form' => [
@@ -118,7 +197,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
             ]
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertTrue(is_dir($this->getUserDataDir().'/'.$folder));
+        $this->assertDirectoryExists($this->getUserDataDir().'/'.$folder);
     }
 
     /**
@@ -128,7 +207,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
     {
         $folder = 'create_folder';
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_content_file'),
             [
                 'form' => [
@@ -141,9 +220,9 @@ class FileControllerTest extends AbstractAdminWebTestCase
             ]
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertTrue(is_dir($this->getUserDataDir().'/'.$folder));
+        $this->assertDirectoryExists($this->getUserDataDir().'/'.$folder);
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_content_file'),
             [
                 'form' => [
@@ -156,7 +235,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
             ]
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertTrue(is_dir($this->getUserDataDir().'/'.$folder));
+        $this->assertDirectoryExists($this->getUserDataDir().'/'.$folder);
         $this->assertCount(1, $crawler->filter('p.errormsg'));
     }
 
@@ -185,7 +264,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
             true                // test mode
         );
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_content_file'),
             [
                 'form' => [
@@ -200,51 +279,53 @@ class FileControllerTest extends AbstractAdminWebTestCase
         );
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertTrue(file_exists($this->getUserDataDir().'/aaa.html'));
-        $this->assertTrue(file_exists($this->getUserDataDir().'/bbb.html'));
+        $this->assertFileExists($this->getUserDataDir().'/aaa.html');
+        $this->assertFileExists($this->getUserDataDir().'/bbb.html');
     }
 
-    public function dataProviderUploadIgnoreFiles(): array
+    public static function dataProviderUploadIgnoreFiles(): \Iterator
     {
-        return [
-            ['test.php', 'x-php', 'アップロードできないファイル拡張子です', false],
-            ['.dotfile', 'text/plain', '.で始まるファイルはアップロードできません。', false],
-            ['test.jpg', 'image/jpeg', '', true],
-            ['test.jpeg', 'image/jpeg', '', true],
-            ['test.png', 'image/png', '', true],
-            ['test.gif', 'image/gif', '', true],
-            ['test.webp', 'image/webp', '', true],
-            ['test.svg', 'image/svg+xml', '', true],
-            ['test.ico', 'image/ico', '', true],
-            ['test.html', 'text/html', '', true],
-            ['test.htm', 'text/htm', '', true],
-            ['test.js', 'text/javascript', '', true],
-            ['test.css', 'text/css', '', true],
-            ['test.txt', 'text/txt', '', true],
-            ['test.pdf', 'application/pdf', '', true],
-            ['test.zip', 'application/zip', 'アップロードできないファイル拡張子です', false],
-            ['test.gz', 'application/gzip', 'アップロードできないファイル拡張子です', false],
-            ['test.tar', 'application/tar', 'アップロードできないファイル拡張子です', false],
-            ['test.doc', 'application/msword', 'アップロードできないファイル拡張子です', false],
-            ['test.xls', 'application/vnd.ms-excel', 'アップロードできないファイル拡張子です', false],
-            ['test.ppt', 'application/vnd.ms-powerpoint', 'アップロードできないファイル拡張子です', false],
-            ['test.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'アップロードできないファイル拡張子です', false],
-            ['test.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'アップロードできないファイル拡張子です', false],
-            ['test.pptx', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'アップロードできないファイル拡張子です', false],
-            ['test.woff', 'application/font-woff', 'アップロードできないファイル拡張子です', false],
-            ['test.woff2', 'application/font-woff2', 'アップロードできないファイル拡張子です', false],
-            ['test.ttf', 'application/font-ttf', 'アップロードできないファイル拡張子です', false],
-            ['test.otf', 'application/font-otf', 'アップロードできないファイル拡張子です', false],
-            ['test.eot', 'application/vnd.ms-fontobject', 'アップロードできないファイル拡張子です', false],
-            ['test.xml', 'text/xml', 'アップロードできないファイル拡張子です', false],
-            ['test.csv', 'text/csv', 'アップロードできないファイル拡張子です', false],
-            ['test.json', 'application/json', 'アップロードできないファイル拡張子です', false],
-        ];
+        yield ['test.php', 'x-php', 'アップロードできないファイル拡張子です', false];
+        yield ['.dotfile', 'text/plain', '.で始まるファイルはアップロードできません。', false];
+        yield ['test.jpg', 'image/jpeg', '', true];
+        yield ['test.jpeg', 'image/jpeg', '', true];
+        yield ['test.png', 'image/png', '', true];
+        yield ['test.gif', 'image/gif', '', true];
+        yield ['test.webp', 'image/webp', '', true];
+        yield ['test.svg', 'image/svg+xml', '', true];
+        yield ['test.ico', 'image/ico', '', true];
+        yield ['test.html', 'text/html', '', true];
+        yield ['test.htm', 'text/htm', '', true];
+        yield ['test.js', 'text/javascript', '', true];
+        yield ['test.css', 'text/css', '', true];
+        yield ['test.txt', 'text/txt', '', true];
+        yield ['test.pdf', 'application/pdf', '', true];
+        yield ['test.zip', 'application/zip', 'アップロードできないファイル拡張子です', false];
+        yield ['test.gz', 'application/gzip', 'アップロードできないファイル拡張子です', false];
+        yield ['test.tar', 'application/tar', 'アップロードできないファイル拡張子です', false];
+        yield ['test.doc', 'application/msword', 'アップロードできないファイル拡張子です', false];
+        yield ['test.xls', 'application/vnd.ms-excel', 'アップロードできないファイル拡張子です', false];
+        yield ['test.ppt', 'application/vnd.ms-powerpoint', 'アップロードできないファイル拡張子です', false];
+        yield ['test.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'アップロードできないファイル拡張子です', false];
+        yield ['test.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'アップロードできないファイル拡張子です', false];
+        yield ['test.pptx', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'アップロードできないファイル拡張子です', false];
+        yield ['test.woff', 'application/font-woff', 'アップロードできないファイル拡張子です', false];
+        yield ['test.woff2', 'application/font-woff2', 'アップロードできないファイル拡張子です', false];
+        yield ['test.ttf', 'application/font-ttf', 'アップロードできないファイル拡張子です', false];
+        yield ['test.otf', 'application/font-otf', 'アップロードできないファイル拡張子です', false];
+        yield ['test.eot', 'application/vnd.ms-fontobject', 'アップロードできないファイル拡張子です', false];
+        yield ['test.xml', 'text/xml', 'アップロードできないファイル拡張子です', false];
+        yield ['test.csv', 'text/csv', 'アップロードできないファイル拡張子です', false];
+        yield ['test.json', 'application/json', 'アップロードできないファイル拡張子です', false];
     }
 
     /**
-     * @dataProvider dataProviderUploadIgnoreFiles
+     * @param mixed $fileName
+     * @param mixed $mimeType
+     * @param mixed $errorMessage
+     * @param mixed $exists
      */
+    #[DataProvider(methodName: 'dataProviderUploadIgnoreFiles')]
     public function testUploadIgnoreFiles($fileName, $mimeType, $errorMessage, $exists)
     {
         $file = $this->getUserDataDir().'/../'.$fileName;
@@ -259,7 +340,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
         );
 
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_content_file'),
             [
                 'form' => [
@@ -273,9 +354,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
             ['form' => ['file' => [$uploadFile]]]
         );
 
-        $messages = $crawler->filter('p.errormsg')->each(function (Crawler $node) {
-            return $node->text();
-        });
+        $messages = $crawler->filter('p.errormsg')->each(fn (Crawler $node) => $node->text());
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
@@ -303,7 +382,7 @@ class FileControllerTest extends AbstractAdminWebTestCase
         );
 
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_content_file'),
             [
                 'form' => [
@@ -317,13 +396,11 @@ class FileControllerTest extends AbstractAdminWebTestCase
             ['form' => ['file' => [$quotefile]]]
         );
 
-        $messages = $crawler->filter('p.errormsg')->each(function (Crawler $node) {
-            return $node->text();
-        });
+        $messages = $crawler->filter('p.errormsg')->each(fn (Crawler $node) => $node->text());
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         $this->assertContains('使用できない文字が含まれています。', $messages);
-        $this->assertFalse(file_exists($this->getUserDataDir()."/'quote'.txt"));
+        $this->assertFileDoesNotExist($this->getUserDataDir()."/'quote'.txt");
 
         unlink($quote);
     }
@@ -336,9 +413,10 @@ class FileControllerTest extends AbstractAdminWebTestCase
     private function getJailDir($path)
     {
         $realpath = realpath($path);
-        $jailPath = str_replace(realpath($this->getUserDataDir()), '', $realpath);
+        $userDataDirRealpath = realpath($this->getUserDataDir());
+        $jailPath = ($realpath !== false && $userDataDirRealpath !== false) ? str_replace($userDataDirRealpath, '', $realpath) : '/';
 
-        return $jailPath ? $jailPath : '/';
+        return $jailPath ?: '/';
     }
 
     protected function tearDown(): void

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -20,32 +22,19 @@ use Eccube\Service\PurchaseFlow\Processor\ClassCategoryValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
-class ClassCategoryValidatorTest extends EccubeTestCase
+final class ClassCategoryValidatorTest extends EccubeTestCase
 {
-    /**
-     * @var ClassCategoryValidator
-     */
-    protected $validator;
+    protected ?ClassCategoryValidator $validator = null;
 
-    /**
-     * @var CartItem
-     */
-    protected $cartItem;
+    protected ?CartItem $cartItem = null;
 
-    /**
-     * @var Product
-     */
-    protected $Product;
+    protected ?Product $Product = null;
 
-    /**
-     * @var ProductClass
-     */
-    protected $ProductClass;
+    protected ?ProductClass $ProductClass = null;
 
     public function setUp(): void
     {
         parent::setUp();
-
         $this->Product = $this->entityManager->find(Product::class, 1);
         $this->ProductClass = $this->Product->getProductClasses()->next();
         $this->validator = static::getContainer()->get(ClassCategoryValidator::class);
@@ -56,7 +45,7 @@ class ClassCategoryValidatorTest extends EccubeTestCase
 
     public function testInstance()
     {
-        self::assertInstanceOf(ClassCategoryValidator::class, $this->validator);
+        $this->assertInstanceOf(ClassCategoryValidator::class, $this->validator);
     }
 
     /**
@@ -68,7 +57,7 @@ class ClassCategoryValidatorTest extends EccubeTestCase
 
         $this->validator->execute($this->cartItem, new PurchaseContext());
 
-        self::assertSame(0, $this->cartItem->getQuantity());
+        $this->assertSame('0', $this->cartItem->getQuantity());
     }
 
     /**
@@ -80,6 +69,6 @@ class ClassCategoryValidatorTest extends EccubeTestCase
 
         $this->validator->execute($this->cartItem, new PurchaseContext());
 
-        self::assertSame(0, $this->cartItem->getQuantity());
+        $this->assertSame('0', $this->cartItem->getQuantity());
     }
 }

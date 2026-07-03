@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -22,22 +24,13 @@ use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
-class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
+final class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
 {
-    /**
-     * @var PluginService
-     */
-    private $service;
+    private ?PluginService $service = null;
 
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
-    private $mockSchemaService;
+    private \PHPUnit_Framework_MockObject_MockObject $mockSchemaService;
 
-    /**
-     * @var PluginRepository
-     */
-    private $pluginRepository;
+    private ?PluginRepository $pluginRepository = null;
 
     /**
      * {@inheritdoc}
@@ -48,16 +41,12 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
     {
         // Fixme: because the proxy entity still not working, it's can not help to run this test case
         $this->markTestIncomplete('Fatal error: Cannot declare class Eccube\Entity\BaseInfo, because the name is already in use in app\proxy\entity\BaseInfo.php on line 28');
-
         parent::setUp();
-
         $this->mockSchemaService = $this->createMock(SchemaService::class);
         $this->service = static::getContainer()->get(PluginService::class);
         $rc = new \ReflectionClass($this->service);
         $prop = $rc->getProperty('schemaService');
-        $prop->setAccessible(true);
         $prop->setValue($this->service, $this->mockSchemaService);
-
         $this->pluginRepository = $this->entityManager->getRepository(Plugin::class);
     }
 
@@ -68,22 +57,18 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
             ->in(static::getContainer()->getParameter('kernel.project_dir').'/app/Plugin')
             ->name('dummy*')
             ->directories();
-
         $dirs = [];
         foreach ($iterator as $dir) {
             $dirs[] = $dir->getPathName();
         }
-
         foreach ($dirs as $dir) {
             $this->deleteFile($dir);
         }
-
         $files = Finder::create()
             ->in(static::getContainer()->getParameter('kernel.project_dir').'/app/proxy/entity')
             ->files();
         $f = new Filesystem();
         $f->remove($files);
-
         parent::tearDown();
     }
 
@@ -99,7 +84,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
      */
     public function testInstallPlugin()
     {
-        list($configA, $fileA) = $this->createDummyPluginWithEntityExtension();
+        [$configA, $fileA] = $this->createDummyPluginWithEntityExtension();
 
         // スキーマ更新されるはず
         $this->mockSchemaService->expects($this->once())->method('updateSchema');
@@ -108,7 +93,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
         $this->service->install($fileA);
 
         // Proxyは生成されない
-        self::assertFalse(file_exists(static::getContainer()->getParameter('kernel.project_dir').'/app/proxy/entity/Customer.php'));
+        $this->assertFileDoesNotExist(static::getContainer()->getParameter('kernel.project_dir').'/app/proxy/entity/Customer.php');
     }
 
     /**
@@ -116,7 +101,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
      */
     public function testEnablePlugin()
     {
-        list($configA, $fileA) = $this->createDummyPluginWithEntityExtension();
+        [$configA, $fileA] = $this->createDummyPluginWithEntityExtension();
 
         // インストール
         $this->service->install($fileA);
@@ -138,7 +123,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
      */
     public function testDisablePlugin()
     {
-        list($configA, $fileA) = $this->createDummyPluginWithEntityExtension();
+        [$configA, $fileA] = $this->createDummyPluginWithEntityExtension();
 
         // インストール
         $this->service->install($fileA);
@@ -163,7 +148,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
      */
     public function testUninstallPlugin()
     {
-        list($configA, $fileA) = $this->createDummyPluginWithEntityExtension();
+        [$configA, $fileA] = $this->createDummyPluginWithEntityExtension();
 
         // インストール
         $this->service->install($fileA);
@@ -194,7 +179,7 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
      */
     public function testImmediatelyUninstallPlugin()
     {
-        list($configA, $fileA) = $this->createDummyPluginWithEntityExtension();
+        [$configA, $fileA] = $this->createDummyPluginWithEntityExtension();
 
         // インストール
         $this->service->install($fileA);
@@ -222,8 +207,8 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
      */
     public function testInstallWithEntityExtensionWithDisabledPlugin()
     {
-        list($configDisabled, $fileDisabled) = $this->createDummyPluginWithEntityExtension();
-        list($configEnabled, $fileEnabled) = $this->createDummyPluginWithEntityExtension();
+        [$configDisabled, $fileDisabled] = $this->createDummyPluginWithEntityExtension();
+        [$configEnabled, $fileEnabled] = $this->createDummyPluginWithEntityExtension();
 
         // スキーマ更新は2回行われるはず
         $this->mockSchemaService->expects($this->exactly(2))->method('updateSchema');
@@ -311,11 +296,9 @@ class PluginServiceWithEntityExtensionTest extends AbstractServiceTestCase
 
 namespace Plugin\\{$tmpname}\\Entity;
 
-use Eccube\Annotation\EntityExtension;
+use Eccube\Attribute\EntityExtension;
 
-/**
- * @EntityExtension("Eccube\Entity\Customer")
- */
+ #[\Eccube\Attribute\EntityExtension(\Eccube\Entity\Customer::class)]
 trait HogeTrait
 {
 }

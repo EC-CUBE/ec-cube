@@ -30,18 +30,20 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class ProductClassMatrixType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    /**
+     * {@inheritDoc}
+     *
+     * @param array<string, mixed> $options
+     */
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('class_name1', EntityType::class, [
                 'class' => ClassName::class,
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('cn')
-                        ->orderBy('cn.sort_no', 'DESC');
-                },
-                'choice_label' => function (ClassName $className) {
-                    return sprintf('%s (%s)', $className->getName(), $className->getBackendName());
-                },
+                'query_builder' => fn (EntityRepository $er) => $er->createQueryBuilder('cn')
+                    ->orderBy('cn.sort_no', 'DESC'),
+                'choice_label' => fn (ClassName $className) => sprintf('%s (%s)', $className->getName(), $className->getBackendName()),
                 'placeholder' => 'admin.product.select__class1',
                 'constraints' => [
                     new NotBlank(),
@@ -49,18 +51,14 @@ class ProductClassMatrixType extends AbstractType
             ])
             ->add('class_name2', EntityType::class, [
                 'class' => ClassName::class,
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('cn')
-                        ->orderBy('cn.sort_no', 'DESC');
-                },
-                'choice_label' => function (ClassName $className) {
-                    return sprintf('%s (%s)', $className->getName(), $className->getBackendName());
-                },
+                'query_builder' => fn (EntityRepository $er) => $er->createQueryBuilder('cn')
+                    ->orderBy('cn.sort_no', 'DESC'),
+                'choice_label' => fn (ClassName $className) => sprintf('%s (%s)', $className->getName(), $className->getBackendName()),
                 'placeholder' => 'admin.product.select__class2',
                 'constraints' => new Callback(function (
-                    ?ClassName $ClassName2 = null,
+                    ?ClassName $ClassName2,
                     ExecutionContextInterface $context,
-                ) {
+                ): void {
                     $ClassName1 = $context->getRoot()->get('class_name1')->getData();
                     if ($ClassName1 && $ClassName2) {
                         if ($ClassName1->getId() === $ClassName2->getId()) {
@@ -80,7 +78,7 @@ class ProductClassMatrixType extends AbstractType
             ->add('save', SubmitType::class);
 
         if ($options['product_classes_exist']) {
-            $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
                 $form = $event->getForm();
                 $ProductClasses = $form['product_classes']->getData();
                 $hasVisible = false;
@@ -98,7 +96,11 @@ class ProductClassMatrixType extends AbstractType
         }
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    /**
+     * {@inheritDoc}
+     */
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'product_classes_exist' => false,

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -26,22 +28,13 @@ use Eccube\Tests\EccubeTestCase;
  *
  * @author Kentaro Ohkouchi
  */
-class ClassCategoryRepositoryTest extends EccubeTestCase
+final class ClassCategoryRepositoryTest extends EccubeTestCase
 {
-    /**
-     * @var  ProductClassRepository
-     */
-    protected $productClassRepository;
+    protected ?ProductClassRepository $productClassRepository = null;
 
-    /**
-     * @var  ClassCategoryRepository
-     */
-    protected $classCategoryRepository;
+    protected ?ClassCategoryRepository $classCategoryRepository = null;
 
-    /**
-     * @var  ClassNameRepository
-     */
-    protected $classNameRepository;
+    protected ?ClassNameRepository $classNameRepository = null;
 
     /**
      * {@inheritdoc}
@@ -53,7 +46,6 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
         $this->classCategoryRepository = $this->entityManager->getRepository(ClassCategory::class);
         $this->classNameRepository = $this->entityManager->getRepository(ClassName::class);
         $this->removeClass();
-
         for ($i = 0; $i < 3; $i++) {
             $ClassName = new ClassName();
             $ClassName
@@ -137,6 +129,7 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
         );
 
         $ClassCategory = new ClassCategory();
+        $this->assertInstanceOf(ClassName::class, $ClassName);
         $ClassCategory
             ->setName($faker->name)
             ->setClassName($ClassName);
@@ -176,10 +169,11 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
         $ClassCategory = $this->classCategoryRepository->findOneBy(
             ['name' => 'classcategory-1-0']
         );
+        $this->assertInstanceOf(ClassCategory::class, $ClassCategory);
         $ClassCategoryId = $ClassCategory->getId();
         $this->classCategoryRepository->delete($ClassCategory);
 
-        self::assertNull($this->entityManager->find(ClassCategory::class, $ClassCategoryId));
+        $this->assertNotInstanceOf(ClassCategory::class, $this->entityManager->find(ClassCategory::class, $ClassCategoryId));
     }
 
     public function testDeleteWithException()
@@ -196,7 +190,7 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
                 // 外部キー制約違反のため例外が発生するはず.
                 $this->classCategoryRepository->delete($ClassCategory1);
                 $this->fail();
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 $this->addToAssertionCount(1);
             }
         }
@@ -207,11 +201,13 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
         $ClassCategory = $this->classCategoryRepository->findOneBy(
             ['name' => 'classcategory-1-0']
         );
+        $this->assertInstanceOf(ClassCategory::class, $ClassCategory);
         $ClassCategoryId = $ClassCategory->getId();
         $this->classCategoryRepository->toggleVisibility($ClassCategory);
 
         $actual = $this->entityManager->find(ClassCategory::class, $ClassCategoryId);
-        self::assertFalse($actual->isVisible());
+        $this->assertInstanceOf(ClassCategory::class, $actual);
+        $this->assertFalse($actual->isVisible());
     }
 
     public function testToggleVisibilityToVisible()
@@ -219,6 +215,7 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
         $ClassCategory = $this->classCategoryRepository->findOneBy(
             ['name' => 'classcategory-1-0']
         );
+        $this->assertInstanceOf(ClassCategory::class, $ClassCategory);
         $ClassCategory->setVisible(false);
         $this->entityManager->flush($ClassCategory);
         $ClassCategoryId = $ClassCategory->getId();
@@ -226,6 +223,7 @@ class ClassCategoryRepositoryTest extends EccubeTestCase
         $this->classCategoryRepository->toggleVisibility($ClassCategory);
 
         $actual = $this->entityManager->find(ClassCategory::class, $ClassCategoryId);
-        self::assertTrue($actual->isVisible());
+        $this->assertInstanceOf(ClassCategory::class, $actual);
+        $this->assertTrue($actual->isVisible());
     }
 }

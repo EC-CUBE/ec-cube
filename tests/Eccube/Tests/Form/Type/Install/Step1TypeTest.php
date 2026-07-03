@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,61 +17,55 @@ namespace Eccube\Tests\Form\Type\Install;
 
 use Eccube\Form\Type\Install\Step1Type;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Form\FormInterface;
 
-class Step1TypeTest extends AbstractTypeTestCase
+final class Step1TypeTest extends AbstractTypeTestCase
 {
-    /**
-     * @var FormInterface
-     */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /**
      * getValidTestData
      *
      * 正常系のデータパターンを返す
-     *
-     * @return array
      */
-    public function getValidTestData()
+    public static function getValidTestData(): \Iterator
     {
-        return [
+        yield [
             [
-                'data' => [
-                    'agree' => true,
-                ],
+                'agree' => true,
             ],
+        ];
+        yield [
             [
-                'data' => [
-                    'agree' => false,
-                ],
+                'agree' => false,
             ],
+        ];
+        yield [
             [
-                'data' => [
-                    'agree' => null,
-                ],
+                'agree' => null,
             ],
+        ];
+        yield [
             [
-                'data' => [
-                    'agree' => '',
-                ],
+                'agree' => '',
             ],
         ];
     }
 
     protected function setUp(): void
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
+        $this->markTestIncomplete(self::class.' は未実装です');
         parent::setUp();
-
         $this->form = $this->formFactory
             ->createBuilder(Step1Type::class, null, ['csrf_protection' => false])
             ->getForm();
     }
 
     /**
-     * @dataProvider getValidTestData
+     * @param mixed $data
      */
+    #[DataProvider(methodName: 'getValidTestData')]
     public function testValidData($data)
     {
         $this->form->submit($data);

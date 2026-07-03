@@ -16,28 +16,32 @@ namespace Eccube\Controller\Admin\Content;
 use Eccube\Controller\AbstractController;
 use Eccube\Service\SystemService;
 use Eccube\Util\CacheUtil;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class CacheController extends AbstractController
 {
+    public function __construct(private readonly CacheUtil $cacheUtil, private readonly SystemService $systemService)
+    {
+    }
+
     /**
-     * @Route("/%eccube_admin_route%/content/cache", name="admin_content_cache", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Content/cache.twig")
+     * @return array<string, mixed>
      */
-    public function index(Request $request, CacheUtil $cacheUtil, SystemService $systemService)
+    #[Route(path: '/%eccube_admin_route%/content/cache', name: 'admin_content_cache', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Content/cache.twig')]
+    public function index(Request $request): array
     {
         $builder = $this->formFactory->createBuilder(FormType::class);
         $form = $builder->getForm();
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $systemService->switchMaintenance(true);
+            $this->systemService->switchMaintenance(true);
 
-            $cacheUtil->clearCache();
+            $this->cacheUtil->clearCache();
 
             $this->addFlash('eccube.admin.disable_maintenance', '');
 

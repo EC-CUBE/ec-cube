@@ -13,17 +13,17 @@
 
 namespace Eccube\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\Routing\Attribute\Route;
 
 class TopController extends AbstractController
 {
     /**
-     * @Route("/", name="homepage", methods={"GET"})
-     *
-     * @Template("index.twig")
+     * @return array<empty>
      */
-    public function index()
+    #[Route(path: '/', name: 'homepage', methods: ['GET'])]
+    #[Template(template: 'index.twig')]
+    public function index(): array
     {
         return [];
     }

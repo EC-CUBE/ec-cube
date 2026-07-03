@@ -13,6 +13,7 @@
 
 use Carbon\Carbon;
 use Codeception\Util\Fixtures;
+use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderStatus;
 use Page\Admin\CalendarSettingsPage;
 use Page\Admin\CsvSettingsPage;
@@ -145,7 +146,7 @@ class EA07BasicinfoCest
         $I->wantTo('EA0701-UC01-T08_会員設定の設定、編集(マイページに注文状況を表示：無効)');
 
         $entityManager = Fixtures::get('entityManager');
-        $customer = $entityManager->getRepository(Eccube\Entity\Customer::class)->find(1);
+        $customer = $entityManager->getRepository(Customer::class)->find(1);
         ShopSettingPage::go($I)
             ->入力_チェックボックス(ShopSettingPage::$チェックボックス_マイページに注文状況を表示, false)
             ->登録();
@@ -574,7 +575,7 @@ class EA07BasicinfoCest
 
         $test_text = uniqid('テストテキスト');
         $before = PageEditPage::at($I)->出力_内容();
-        $after = preg_replace('/(<\/h1>.*?\n)/', "</h1>{$test_text}\n", $before);
+        $after = preg_replace('/(<\/h1>.*?\n)/', "</h1>{$test_text}\n", (string) $before);
         PageEditPage::at($I)
             ->入力_内容($after)
             ->登録();
@@ -1040,9 +1041,7 @@ class EA07BasicinfoCest
 
         $I->expect('納品書を出力します');
         $findOrders = Fixtures::get('findOrders'); // Closure
-        $TargetOrders = array_filter($findOrders(), function ($Order) {
-            return !in_array($Order->getOrderStatus()->getId(), [OrderStatus::PROCESSING, OrderStatus::PENDING]);
-        });
+        $TargetOrders = array_filter($findOrders(), fn ($Order) => !in_array($Order->getOrderStatus()->getId(), [OrderStatus::PROCESSING, OrderStatus::PENDING]));
         $OrderListPage = OrderManagePage::go($I)->検索();
         $I->waitForText('検索結果：'.count($TargetOrders).'件が該当しました', 10, OrderManagePage::$検索結果_メッセージ);
 

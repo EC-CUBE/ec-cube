@@ -19,36 +19,8 @@ use Psr\Log\LoggerInterface;
 
 class Logger extends AbstractLogger
 {
-    /**
-     * @var Context
-     */
-    protected $context;
-
-    /**
-     * @var LoggerInterface
-     */
-    protected $logger;
-
-    /**
-     * @var LoggerInterface
-     */
-    protected $frontLogger;
-
-    /**
-     * @var LoggerInterface
-     */
-    protected $adminLogger;
-
-    public function __construct(
-        Context $context,
-        LoggerInterface $logger,
-        LoggerInterface $frontLogger,
-        LoggerInterface $adminLogger,
-    ) {
-        $this->context = $context;
-        $this->logger = $logger;
-        $this->frontLogger = $frontLogger;
-        $this->adminLogger = $adminLogger;
+    public function __construct(protected Context $context, protected LoggerInterface $logger, protected LoggerInterface $frontLogger, protected LoggerInterface $adminLogger)
+    {
     }
 
     /**
@@ -56,9 +28,10 @@ class Logger extends AbstractLogger
      *
      * @param mixed $level
      * @param string $message
-     * @param array $context
+     * @param array<string, mixed> $context
      */
-    public function log($level, $message, array $context = [])
+    #[\Override]
+    public function log($level, $message, array $context = []): void
     {
         if ($this->context->isAdmin()) {
             $this->adminLogger->log($level, $message, $context);

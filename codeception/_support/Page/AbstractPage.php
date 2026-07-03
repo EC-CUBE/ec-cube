@@ -15,15 +15,11 @@ namespace Page;
 
 abstract class AbstractPage
 {
-    /** @var \AcceptanceTester */
-    protected $tester;
-
     /**
      * AbstractAdminPage constructor.
      */
-    public function __construct(\AcceptanceTester $I)
+    public function __construct(protected \AcceptanceTester $tester)
     {
-        $this->tester = $I;
     }
 
     /**
@@ -33,7 +29,7 @@ abstract class AbstractPage
      *
      * @return $this
      */
-    protected function goPage($url, $pageTitle = '')
+    protected function goPage($url, mixed $pageTitle = '')
     {
         $this->tester->amOnPage($url);
         $this->tester->waitForJS("return location.pathname + location.search == '{$url}'", 30);

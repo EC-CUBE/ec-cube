@@ -14,6 +14,7 @@
 namespace Eccube\Form\Type;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Eccube\Entity\Category;
 use Eccube\Entity\Master\ProductListMax;
 use Eccube\Entity\Master\ProductListOrderBy;
 use Eccube\Form\Type\Master\ProductListMaxType;
@@ -29,30 +30,19 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class SearchProductType extends AbstractType
 {
     /**
-     * @var CategoryRepository
-     */
-    protected $categoryRepository;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
      * SearchProductType constructor.
-     *
-     * @param CategoryRepository $categoryRepository
      */
-    public function __construct(CategoryRepository $categoryRepository, EntityManagerInterface $entityManager)
+    public function __construct(protected CategoryRepository $categoryRepository, protected EntityManagerInterface $entityManager)
     {
-        $this->categoryRepository = $categoryRepository;
-        $this->entityManager = $entityManager;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $Categories = $this->categoryRepository
             ->getList(null, true);
@@ -61,7 +51,7 @@ class SearchProductType extends AbstractType
             'data' => 'search',
         ]);
         $builder->add('category_id', EntityType::class, [
-            'class' => \Eccube\Entity\Category::class,
+            'class' => Category::class,
             'choice_label' => 'NameWithLevel',
             'choices' => $Categories,
             'placeholder' => 'common.select__all_products',
@@ -87,7 +77,8 @@ class SearchProductType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'csrf_protection' => false,
@@ -98,7 +89,8 @@ class SearchProductType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    #[\Override]
+    public function getBlockPrefix(): string
     {
         return 'search_product';
     }

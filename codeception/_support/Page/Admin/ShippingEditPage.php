@@ -19,14 +19,6 @@ class ShippingEditPage extends AbstractAdminPageStyleGuide
 
     public static $登録完了メッセージ = '#page_admin_shipping_edit > div > div.c-contentsArea > div.alert.alert-success.alert-dismissible.fade.show.m-3 > span';
 
-    /**
-     * ShippingRegisterPage constructor.
-     */
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     public static function go($I)
     {
         $page = new self($I);
@@ -35,10 +27,7 @@ class ShippingEditPage extends AbstractAdminPageStyleGuide
         return $page;
     }
 
-    /**
-     * @param \AcceptanceTester $I
-     */
-    public static function at($I)
+    public static function at(\AcceptanceTester $I)
     {
         $page = new self($I);
         $page->atPage('出荷登録受注管理');
@@ -61,50 +50,35 @@ class ShippingEditPage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
-    /**
-     * @param string $value
-     */
-    public function 入力_姓($value, $num = 0)
+    public function 入力_姓(string $value, mixed $num = 0)
     {
         $this->tester->fillField(['id' => 'form_shippings_'.$num.'_name_name01'], $value);
 
         return $this;
     }
 
-    /**
-     * @param string $value
-     */
-    public function 入力_名($value, $num = 0)
+    public function 入力_名(string $value, mixed $num = 0)
     {
         $this->tester->fillField(['id' => 'form_shippings_'.$num.'_name_name02'], $value);
 
         return $this;
     }
 
-    /**
-     * @param string $value
-     */
-    public function 入力_セイ($value, $num = 0)
+    public function 入力_セイ(string $value, mixed $num = 0)
     {
         $this->tester->fillField(['id' => 'form_shippings_'.$num.'_kana_kana01'], $value);
 
         return $this;
     }
 
-    /**
-     * @param string $value
-     */
-    public function 入力_メイ($value, $num = 0)
+    public function 入力_メイ(string $value, mixed $num = 0)
     {
         $this->tester->fillField(['id' => 'form_shippings_'.$num.'_kana_kana02'], $value);
 
         return $this;
     }
 
-    /**
-     * @param string $value
-     */
-    public function 入力_郵便番号($value, $num = 0)
+    public function 入力_郵便番号(string $value, mixed $num = 0)
     {
         $this->tester->fillField(['id' => 'form_shippings_'.$num.'_postal_code'], $value);
 
@@ -118,30 +92,21 @@ class ShippingEditPage extends AbstractAdminPageStyleGuide
         return $this;
     }
 
-    /**
-     * @param string $value
-     */
-    public function 入力_市区町村名($value, $num = 0)
+    public function 入力_市区町村名(string $value, mixed $num = 0)
     {
         $this->tester->fillField(['id' => 'form_shippings_'.$num.'_address_addr01'], $value);
 
         return $this;
     }
 
-    /**
-     * @param string $value
-     */
-    public function 入力_番地_ビル名($value, $num = 0)
+    public function 入力_番地_ビル名(string $value, mixed $num = 0)
     {
         $this->tester->fillField(['id' => 'form_shippings_'.$num.'_address_addr02'], $value);
 
         return $this;
     }
 
-    /**
-     * @param string $value
-     */
-    public function 入力_電話番号($value, $num = 0)
+    public function 入力_電話番号(string $value, mixed $num = 0)
     {
         $this->tester->fillField(['id' => 'form_shippings_'.$num.'_phone_number'], $value);
 

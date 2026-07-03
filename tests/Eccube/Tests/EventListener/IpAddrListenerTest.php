@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,47 +19,59 @@ use Eccube\Common\EccubeConfig;
 use Eccube\EventListener\IpAddrListener;
 use Eccube\Request\Context;
 use Eccube\Tests\Web\AbstractWebTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
-class IpAddrListenerTest extends AbstractWebTestCase
+final class IpAddrListenerTest extends AbstractWebTestCase
 {
     protected $clientIp = '192.168.56.1';
 
-    public function ipAddressParams()
+    public static function ipAddressParams(): \Iterator
     {
         // 第1要素：許可IPリスト
         // 第2要素：拒否IPリスト
         // 第3要素：想定結果（許可->true、拒否->false）
-        return [
-            // allowチェック 許可パターン
-            [[], [], true], // 空
-            [['192.168.56.1'], [], true], // IPアドレスのみ
-            [['192.168.56.1/32'], [], true], // IPアドレスとビットマスク最大値
-            [['127.0.0.1', '192.168.56.1/32'], [],  true], // 複数行に渡る記述
-
-            // allowチェック 拒否パターン
-            [['192.168.56.2'], [], false], // IPアドレスのみ
-            [['192.168.56.2/32'], [], false], // IPアドレスとビットマスク最大値
-            [['127.0.0.1', '192.168.56.2/32'], [],  false], // 複数行に渡る記述
-
-            // denyチェック 拒否パターン
-            [[], ['192.168.56.1'], false], // IPアドレスのみ
-            [[], ['192.168.56.1/32'], false], // IPアドレスとビットマスク最大値
-            [[], ['127.0.0.1', '192.168.56.1/32'], false], // 複数行に渡る記述
-            [['192.168.56.1/32'], ['192.168.56.1/32'], false], // 許可リストで許可後、拒否リストに同様の記述があるため結果拒否される
-
-            // denyチェック 許可パターン
-            [[], ['192.168.56.2'], true], // IPアドレスのみ
-            [[], ['192.168.56.2/32'], true], // IPアドレスとビットマスク最大値
-            [[], ['127.0.0.1', '192.168.56.2/32'],  true], // 複数行に渡る記述
-        ];
+        // allowチェック 許可パターン
+        yield [[], [], true];
+        // 空
+        yield [['192.168.56.1'], [], true];
+        // IPアドレスのみ
+        yield [['192.168.56.1/32'], [], true];
+        // IPアドレスとビットマスク最大値
+        yield [['127.0.0.1', '192.168.56.1/32'], [],  true];
+        // 複数行に渡る記述
+        // allowチェック 拒否パターン
+        yield [['192.168.56.2'], [], false];
+        // IPアドレスのみ
+        yield [['192.168.56.2/32'], [], false];
+        // IPアドレスとビットマスク最大値
+        yield [['127.0.0.1', '192.168.56.2/32'], [],  false];
+        // 複数行に渡る記述
+        // denyチェック 拒否パターン
+        yield [[], ['192.168.56.1'], false];
+        // IPアドレスのみ
+        yield [[], ['192.168.56.1/32'], false];
+        // IPアドレスとビットマスク最大値
+        yield [[], ['127.0.0.1', '192.168.56.1/32'], false];
+        // 複数行に渡る記述
+        yield [['192.168.56.1/32'], ['192.168.56.1/32'], false];
+        // 許可リストで許可後、拒否リストに同様の記述があるため結果拒否される
+        // denyチェック 許可パターン
+        yield [[], ['192.168.56.2'], true];
+        // IPアドレスのみ
+        yield [[], ['192.168.56.2/32'], true];
+        // IPアドレスとビットマスク最大値
+        yield [[], ['127.0.0.1', '192.168.56.2/32'],  true];
     }
 
     /**
-     * @dataProvider ipAddressParams
+     * @param mixed $allowHost
+     * @param mixed $denyHost
+     * @param mixed $expected
      */
+    #[DataProvider(methodName: 'ipAddressParams')]
     public function testOnKernelRequest($allowHost, $denyHost, $expected)
     {
         $event = $this->createStub(RequestEvent::class);
@@ -74,7 +88,7 @@ class IpAddrListenerTest extends AbstractWebTestCase
         ];
         $eccubeConfig = $this->createStub(EccubeConfig::class);
         $eccubeConfig->method('offsetGet')
-            ->will($this->returnValueMap($map));
+            ->willReturnMap($map);
 
         $request = $this->createStub(Request::class);
         $request->method('getClientIp')
@@ -88,7 +102,7 @@ class IpAddrListenerTest extends AbstractWebTestCase
         $actual = true;
         try {
             $ipAddrListerner->onKernelRequest($event);
-        } catch (AccessDeniedHttpException $e) {
+        } catch (AccessDeniedHttpException) {
             $actual = false;
         }
 
@@ -96,8 +110,11 @@ class IpAddrListenerTest extends AbstractWebTestCase
     }
 
     /**
-     * @dataProvider ipAddressParams
+     * @param mixed $allowHost
+     * @param mixed $denyHost
+     * @param mixed $expected
      */
+    #[DataProvider(methodName: 'ipAddressParams')]
     public function testOnKernelRequesAdmin($allowHost, $denyHost, $expected)
     {
         $event = $this->createStub(RequestEvent::class);
@@ -114,7 +131,7 @@ class IpAddrListenerTest extends AbstractWebTestCase
         ];
         $eccubeConfig = $this->createStub(EccubeConfig::class);
         $eccubeConfig->method('offsetGet')
-            ->will($this->returnValueMap($map));
+            ->willReturnMap($map);
 
         $request = $this->createStub(Request::class);
         $request->method('getClientIp')
@@ -128,7 +145,7 @@ class IpAddrListenerTest extends AbstractWebTestCase
         $actual = true;
         try {
             $ipAddrListerner->onKernelRequest($event);
-        } catch (AccessDeniedHttpException $e) {
+        } catch (AccessDeniedHttpException) {
             $actual = false;
         }
 

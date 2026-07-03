@@ -13,56 +13,39 @@
 
 namespace Eccube\Entity\Master;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Entity\AbstractEntity;
 
 /**
- * AbstractMasterentity
- *
- * @ORM\MappedSuperclass
+ * AbstractMasterEntity
  */
-abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity
+#[ORM\MappedSuperclass]
+abstract class AbstractMasterEntity extends AbstractEntity implements \Stringable
 {
-    /**
-     * @return string
-     */
-    public function __toString()
+    #[\Override]
+    public function __toString(): string
     {
-        return (string) $this->getName();
+        return $this->getName();
     }
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="smallint", options={"unsigned":true})
-     *
-     * @ORM\Id
-     *
-     * @ORM\GeneratedValue(strategy="NONE")
-     */
-    protected $id;
+    #[ORM\Id]
+    #[ORM\Column(name: 'id', type: Types::SMALLINT, options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'NONE')]
+    protected ?int $id = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255)
-     */
-    protected $name;
+    #[ORM\Column(name: 'name', type: Types::STRING, length: 255)]
+    protected ?string $name = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="sort_no", type="smallint", options={"unsigned":true})
-     */
-    protected $sort_no;
+    #[ORM\Column(name: 'sort_no', type: Types::SMALLINT, options: ['unsigned' => true])]
+    protected ?int $sort_no = null;
 
     /**
      * Set id.
      *
-     * @param int $id
-     *
      * @return $this
      */
-    public function setId($id)
+    public function setId(int $id): static
     {
         $this->id = $id;
 
@@ -71,10 +54,8 @@ abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity
 
     /**
      * Get id.
-     *
-     * @return int
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -82,11 +63,9 @@ abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity
     /**
      * Set name.
      *
-     * @param string $name
-     *
      * @return $this
      */
-    public function setName($name)
+    public function setName(?string $name): static
     {
         $this->name = $name;
 
@@ -95,10 +74,8 @@ abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity
 
     /**
      * Get name.
-     *
-     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -106,11 +83,9 @@ abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity
     /**
      * Set sortNo.
      *
-     * @param int $sortNo
-     *
      * @return $this
      */
-    public function setSortNo($sortNo)
+    public function setSortNo(int $sortNo): static
     {
         $this->sort_no = $sortNo;
 
@@ -119,15 +94,13 @@ abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity
 
     /**
      * Get sortNo.
-     *
-     * @return int
      */
-    public function getSortNo()
+    public function getSortNo(): int
     {
         return $this->sort_no;
     }
 
-    public function __get($name)
+    public function __get(string $name): mixed
     {
         return self::getConstantValue($name);
     }
@@ -138,12 +111,15 @@ abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity
         // see also. https://github.com/EC-CUBE/ec-cube/issues/6469
     }
 
-    public static function __callStatic($name, $arguments)
+    public static function __callStatic(string $name, mixed $arguments): mixed
     {
         return self::getConstantValue($name);
     }
 
-    protected static function getConstantValue($name)
+    /**
+     * @throws \ReflectionException
+     */
+    protected static function getConstantValue(string $name): mixed
     {
         @trigger_error(
             sprintf(
@@ -165,7 +141,6 @@ abstract class AbstractMasterEntity extends \Eccube\Entity\AbstractEntity
         }
         // XXX $obj = new static(); とすると segmentation fault が発生するため, リフレクションで値を取得する
         $refProperty = $ref->getProperty($name);
-        $refProperty->setAccessible(true);
 
         return $refProperty->getValue($ref->newInstance());
     }

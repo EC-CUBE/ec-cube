@@ -13,40 +13,27 @@
 
 namespace Plugin\Horizon\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Plugin\Horizon\Repository\DashRepository;
 
 if (!class_exists(Dash::class)) {
     /**
      * Plugin
-     *
-     * @ORM\Table(name="dtb_dash")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Plugin\Horizon\Repository\DashRepository")
      */
+    #[ORM\Table(name: 'dtb_dash')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: DashRepository::class)]
     class Dash
     {
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
-         */
-        public $id;
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+        public ?int $id = null;
 
-        /**
-         * @var string
-         *
-         * @ORM\Column(name="name", type="string", length=255)
-         */
-        public $name;
+        #[ORM\Column(name: 'name', type: Types::STRING, length: 255)]
+        public ?string $name = null;
     }
 }

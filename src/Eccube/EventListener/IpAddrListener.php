@@ -22,23 +22,14 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class IpAddrListener implements EventSubscriberInterface
 {
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
-     * @var Context
-     */
-    protected $requestContext;
-
-    public function __construct(EccubeConfig $eccubeConfig, Context $requestContext)
+    public function __construct(protected EccubeConfig $eccubeConfig, protected Context $requestContext)
     {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->requestContext = $requestContext;
     }
 
-    public function onKernelRequest(RequestEvent $event)
+    /**
+     * @throws AccessDeniedHttpException|\Exception
+     */
+    public function onKernelRequest(RequestEvent $event): void
     {
         if (!$event->isMainRequest()) {
             return;
@@ -76,13 +67,14 @@ class IpAddrListener implements EventSubscriberInterface
         }
     }
 
-    private function isClientIpInList($hostList, $clientIp)
+    /**
+     * @param array<int, string> $hostList
+     */
+    private function isClientIpInList(array $hostList, ?string $clientIp): bool
     {
         log_debug('Host List: '.implode(',', $hostList));
         if ($hostList) {
-            $isInList = array_filter($hostList, function ($host) use ($clientIp) {
-                return IpUtils::checkIp($clientIp, $host);
-            });
+            $isInList = array_filter($hostList, fn ($host) => IpUtils::checkIp($clientIp, $host));
 
             return count($isInList) > 0;
         }
@@ -90,7 +82,11 @@ class IpAddrListener implements EventSubscriberInterface
         return true;
     }
 
-    public static function getSubscribedEvents()
+    /**
+     * @return array<string, array<int, string|int>>
+     */
+    #[\Override]
+    public static function getSubscribedEvents(): array
     {
         return [
             'kernel.request' => ['onKernelRequest', 512],

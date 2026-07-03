@@ -19,19 +19,23 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\MasterdataEditType;
 use Eccube\Form\Type\Admin\MasterdataType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 
 class MasterdataController extends AbstractController
 {
     /**
-     * @Route("/%eccube_admin_route%/setting/system/masterdata", name="admin_setting_system_masterdata", methods={"GET", "POST"})
-     * @Route("/%eccube_admin_route%/setting/system/masterdata/{entity}/edit", name="admin_setting_system_masterdata_view", methods={"GET", "POST"})
+     * @param class-string|null $entity
      *
-     * @Template("@admin/Setting/System/masterdata.twig")
+     * @return RedirectResponse|Response|array<string, mixed>
      */
-    public function index(Request $request, $entity = null)
+    #[Route(path: '/%eccube_admin_route%/setting/system/masterdata', name: 'admin_setting_system_masterdata', methods: ['GET', 'POST'])]
+    #[Route(path: '/%eccube_admin_route%/setting/system/masterdata/{entity}/edit', name: 'admin_setting_system_masterdata_view', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Setting/System/masterdata.twig')]
+    public function index(Request $request, $entity = null): RedirectResponse|Response|array
     {
         $data = [];
 
@@ -69,6 +73,7 @@ class MasterdataController extends AbstractController
         } elseif (!is_null($entity)) {
             $form->submit(['masterdata' => $entity]);
             if ($form['masterdata']->isValid()) {
+                /** @var class-string $entityName */
                 $entityName = str_replace('-', '\\', $entity);
                 try {
                     $masterdata = $this->entityManager->getRepository($entityName)->findBy(
@@ -85,7 +90,7 @@ class MasterdataController extends AbstractController
                         'id' => '',
                         'name' => '',
                     ];
-                } catch (MappingException $e) {
+                } catch (MappingException) {
                 }
             }
         }
@@ -109,11 +114,11 @@ class MasterdataController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/setting/system/masterdata/edit", name="admin_setting_system_masterdata_edit", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Setting/System/masterdata.twig")
+     * @return RedirectResponse|array<string, mixed>
      */
-    public function edit(Request $request)
+    #[Route(path: '/%eccube_admin_route%/setting/system/masterdata/edit', name: 'admin_setting_system_masterdata_edit', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Setting/System/masterdata.twig')]
+    public function edit(Request $request): RedirectResponse|array
     {
         $builder2 = $this->formFactory->createBuilder(MasterdataEditType::class);
 
@@ -132,13 +137,11 @@ class MasterdataController extends AbstractController
 
             if ($form2->isValid()) {
                 $data = $form2->getData();
-
+                /** @var class-string $entityName */
                 $entityName = str_replace('-', '\\', $data['masterdata_name']);
                 $sortNo = 0;
                 $ids = array_filter(array_map(
-                    function ($v) {
-                        return $v['id'];
-                    },
+                    fn ($v) => $v['id'],
                     $data['data']
                 ));
 
@@ -178,7 +181,7 @@ class MasterdataController extends AbstractController
                     );
 
                     $this->addSuccess('admin.common.save_complete', 'admin');
-                } catch (\Exception $e) {
+                } catch (\Exception) {
                     // 外部キー制約などで削除できない場合に例外エラーになる
                     $this->addError('admin.common.save_error', 'admin');
                 }

@@ -16,6 +16,7 @@ namespace Eccube\Form\Type\Admin;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Block;
+use Eccube\Entity\Master\DeviceType;
 use Eccube\Form\Validator\TwigLint;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -31,31 +32,21 @@ use Symfony\Component\Validator\Constraints as Assert;
 class BlockType extends AbstractType
 {
     /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
      * BlockType constructor.
      *
      * @param $entityManager
-     * @param EccubeConfig $eccubeConfig
      */
-    public function __construct(EntityManagerInterface $entityManager, EccubeConfig $eccubeConfig)
+    public function __construct(protected EntityManagerInterface $entityManager, protected EccubeConfig $eccubeConfig)
     {
-        $this->entityManager = $entityManager;
-        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('name', TextType::class, [
@@ -91,11 +82,11 @@ class BlockType extends AbstractType
                 ],
             ])
             ->add('DeviceType', EntityType::class, [
-                'class' => \Eccube\Entity\Master\DeviceType::class,
+                'class' => DeviceType::class,
                 'choice_label' => 'id',
             ])
             ->add('id', HiddenType::class)
-            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function ($event): void {
                 $form = $event->getForm();
                 $file_name = $form['file_name']->getData();
                 $DeviceType = $form['DeviceType']->getData();
@@ -126,7 +117,8 @@ class BlockType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Block::class,
@@ -136,7 +128,8 @@ class BlockType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    #[\Override]
+    public function getBlockPrefix(): string
     {
         return 'block';
     }

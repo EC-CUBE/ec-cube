@@ -29,107 +29,37 @@ use Eccube\Service\OrderStateMachine;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\TaxRuleService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class ShippingController extends AbstractController
 {
     /**
-     * @var OrderItemRepository
-     */
-    protected $orderItemRepository;
-
-    /**
-     * @var CategoryRepository
-     */
-    protected $categoryRepository;
-
-    /**
-     * @var DeliveryRepository
-     */
-    protected $deliveryRepository;
-
-    /**
-     * @var TaxRuleService
-     */
-    protected $taxRuleService;
-
-    /**
-     * @var ShippingRepository
-     */
-    protected $shippingRepository;
-
-    /**
-     * @var SerializerInterface
-     */
-    protected $serializer;
-
-    /**
-     * @var MailService
-     */
-    protected $mailService;
-
-    /**
-     * @var OrderStateMachine
-     */
-    protected $orderStateMachine;
-
-    /**
-     * @var PurchaseFlow
-     */
-    protected $purchaseFlow;
-
-    /**
      * EditController constructor.
-     *
-     * @param MailService $mailService
-     * @param OrderItemRepository $orderItemRepository
-     * @param CategoryRepository $categoryRepository
-     * @param DeliveryRepository $deliveryRepository
-     * @param TaxRuleService $taxRuleService
-     * @param ShippingRepository $shippingRepository
-     * @param SerializerInterface $serializer
-     * @param OrderStateMachine $orderStateMachine
-     * @param PurchaseFlow $orderPurchaseFlow
      */
-    public function __construct(
-        MailService $mailService,
-        OrderItemRepository $orderItemRepository,
-        CategoryRepository $categoryRepository,
-        DeliveryRepository $deliveryRepository,
-        TaxRuleService $taxRuleService,
-        ShippingRepository $shippingRepository,
-        SerializerInterface $serializer,
-        OrderStateMachine $orderStateMachine,
-        PurchaseFlow $orderPurchaseFlow,
-    ) {
-        $this->mailService = $mailService;
-        $this->orderItemRepository = $orderItemRepository;
-        $this->categoryRepository = $categoryRepository;
-        $this->deliveryRepository = $deliveryRepository;
-        $this->taxRuleService = $taxRuleService;
-        $this->shippingRepository = $shippingRepository;
-        $this->serializer = $serializer;
-        $this->orderStateMachine = $orderStateMachine;
-        $this->purchaseFlow = $orderPurchaseFlow;
+    public function __construct(protected MailService $mailService, protected OrderItemRepository $orderItemRepository, protected CategoryRepository $categoryRepository, protected DeliveryRepository $deliveryRepository, protected TaxRuleService $taxRuleService, protected ShippingRepository $shippingRepository, protected SerializerInterface $serializer, protected OrderStateMachine $orderStateMachine, protected PurchaseFlow $orderPurchaseFlow)
+    {
     }
 
     /**
      * 出荷登録/編集画面.
      *
-     * @Route("/%eccube_admin_route%/shipping/{id}/edit", requirements={"id" = "\d+"}, name="admin_shipping_edit", methods={"GET", "POST"})
+     * @return RedirectResponse|array<string, mixed>
      *
-     * @Template("@admin/Order/shipping.twig")
+     * @throws \Exception
      */
-    public function index(Request $request, Order $Order)
+    #[Route(path: '/%eccube_admin_route%/shipping/{id}/edit', name: 'admin_shipping_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Order/shipping.twig')]
+    public function index(Request $request, Order $Order): RedirectResponse|array
     {
         $OriginOrder = clone $Order;
         $purchaseContext = new PurchaseContext($OriginOrder, $OriginOrder->getCustomer());
@@ -137,7 +67,9 @@ class ShippingController extends AbstractController
         $TargetShippings = $Order->getShippings();
 
         // 編集前の受注情報を保持
+        /** @var ArrayCollection<int, Shipping> $OriginShippings */
         $OriginShippings = new ArrayCollection();
+        /** @var array<int, ArrayCollection<int, OrderItem>> $OriginOrderItems */
         $OriginOrderItems = [];
 
         foreach ($TargetShippings as $key => $TargetShipping) {
@@ -168,7 +100,7 @@ class ShippingController extends AbstractController
             ]);
 
         // 配送先の追加フラグが立っている場合は新しいお届け先を追加
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event): void {
             $data = $event->getData();
             if ($data['add_shipping']) {
                 $Shippings = $data['shippings'];
@@ -186,12 +118,10 @@ class ShippingController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             // 削除された項目の削除
-            /** @var Shipping $OriginShipping */
             foreach ($OriginShippings as $key => $OriginShipping) {
                 if (false === $TargetShippings->contains($OriginShipping)) {
                     // お届け先自体が削除された場合
                     // 削除されたお届け先に紐づく明細の削除
-                    /** @var OrderItem $OriginOrderItem */
                     foreach ($OriginOrderItems[$key] as $OriginOrderItem) {
                         $Order->removeOrderItem($OriginOrderItem);
                         $this->entityManager->remove($OriginOrderItem);
@@ -202,7 +132,6 @@ class ShippingController extends AbstractController
                 } else {
                     // お届け先は削除されていない場合
                     // 削除された明細の削除
-                    /** @var OrderItem $OriginOrderItem */
                     foreach ($OriginOrderItems[$key] as $OriginOrderItem) {
                         if (false === $TargetShippings[$key]->getOrderItems()->contains($OriginOrderItem)) {
                             $Order->removeOrderItem($OriginOrderItem);
@@ -215,12 +144,13 @@ class ShippingController extends AbstractController
             // 追加された項目の追加
             foreach ($TargetShippings as $TargetShipping) {
                 // 追加された明細の追加
-                /** @var OrderItem $OrderItem */
                 foreach ($TargetShipping->getOrderItems() as $OrderItem) {
-                    $OrderItem->setShipping($TargetShipping);
-                    if (is_null($OrderItem->getOrder())) {
-                        $OrderItem->setOrder($Order);
-                        $Order->addOrderItem($OrderItem);
+                    if ($OrderItem instanceof OrderItem) {
+                        $OrderItem->setShipping($TargetShipping);
+                        if (is_null($OrderItem->getOrder())) {
+                            $OrderItem->setOrder($Order);
+                            $Order->addOrderItem($OrderItem);
+                        }
                     }
                 }
 
@@ -228,7 +158,7 @@ class ShippingController extends AbstractController
                 $TargetShipping->setOrder($Order);
             }
 
-            $flowResult = $this->purchaseFlow->validate($Order, $purchaseContext);
+            $flowResult = $this->orderPurchaseFlow->validate($Order, $purchaseContext);
 
             if ($flowResult->hasWarning()) {
                 foreach ($flowResult->getWarning() as $warning) {
@@ -246,11 +176,16 @@ class ShippingController extends AbstractController
                 log_info('出荷登録開始', [$Order->getId()]);
 
                 try {
-                    $this->purchaseFlow->prepare($Order, $purchaseContext);
-                    $this->purchaseFlow->commit($Order, $purchaseContext);
+                    $this->orderPurchaseFlow->prepare($Order, $purchaseContext);
+                    $this->orderPurchaseFlow->commit($Order, $purchaseContext);
                     $this->entityManager->persist($Order);
 
                     foreach ($TargetShippings as $TargetShipping) {
+                        // 新しいShippingエンティティの場合、タイムスタンプを手動で設定
+                        if (null === $TargetShipping->getId()) {
+                            $TargetShipping->setCreateDate(new \DateTime());
+                            $TargetShipping->setUpdateDate(new \DateTime());
+                        }
                         $this->entityManager->persist($TargetShipping);
                     }
                     $this->entityManager->flush();
@@ -293,30 +228,14 @@ class ShippingController extends AbstractController
         ];
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/shipping/preview_notify_mail/{id}", requirements={"id" = "\d+"}, name="admin_shipping_preview_notify_mail", methods={"GET"})
-     *
-     * @param Shipping $Shipping
-     *
-     * @return Response
-     *
-     * @throws \Twig_Error
-     */
-    public function previewShippingNotifyMail(Shipping $Shipping)
+    #[Route(path: '/%eccube_admin_route%/shipping/preview_notify_mail/{id}', name: 'admin_shipping_preview_notify_mail', requirements: ['id' => '\d+'], methods: ['GET'])]
+    public function previewShippingNotifyMail(Shipping $Shipping): Response
     {
         return new Response($this->mailService->getShippingNotifyMailBody($Shipping, $Shipping->getOrder(), null, true));
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/shipping/notify_mail/{id}", requirements={"id" = "\d+"}, name="admin_shipping_notify_mail", methods={"PUT"})
-     *
-     * @param Shipping $Shipping
-     *
-     * @return JsonResponse
-     *
-     * @throws \Twig_Error
-     */
-    public function notifyMail(Shipping $Shipping)
+    #[Route(path: '/%eccube_admin_route%/shipping/notify_mail/{id}', name: 'admin_shipping_notify_mail', requirements: ['id' => '\d+'], methods: ['PUT'])]
+    public function notifyMail(Shipping $Shipping): JsonResponse
     {
         $this->isTokenValid();
 

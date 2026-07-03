@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,17 +20,18 @@ use Eccube\Entity\Member;
 use Eccube\Entity\Order;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\OrderRepository;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class IndexControllerTest extends AbstractAdminWebTestCase
+final class IndexControllerTest extends AbstractAdminWebTestCase
 {
-    /** @var Member */
-    protected $Member;
+    protected ?Member $Member = null;
 
-    /** @var OrderStatusRepository */
-    protected $orderStatusRepository;
+    protected ?OrderStatusRepository $orderStatusRepository = null;
 
-    /** @var OrderRepository */
-    protected $orderRepository;
+    protected ?OrderRepository $orderRepository = null;
 
     protected function setUp(): void
     {
@@ -40,13 +43,13 @@ class IndexControllerTest extends AbstractAdminWebTestCase
 
     public function testRoutingAdminIndex()
     {
-        $this->client->request('GET', $this->generateUrl('admin_homepage'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_homepage'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testRoutingAdminChangePassword()
     {
-        $this->client->request('GET', $this->generateUrl('admin_change_password'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_change_password'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -54,11 +57,9 @@ class IndexControllerTest extends AbstractAdminWebTestCase
      * @see https://github.com/EC-CUBE/ec-cube/issues/1143
      *
      * @param int $hour
-     *
-     * @dataProvider indexWithSalesProvider
-     *
-     * @group decimal
      */
+    #[DataProvider(methodName: 'indexWithSalesProvider')]
+    #[Group(name: 'decimal')]
     public function testIndexWithSales($hour)
     {
         $Customer = $this->createCustomer();
@@ -71,42 +72,38 @@ class IndexControllerTest extends AbstractAdminWebTestCase
         $OrderCancel = $this->orderStatusRepository->find(OrderStatus::CANCEL);
         $OrderProcessing = $this->orderStatusRepository->find(OrderStatus::PROCESSING);
 
+        // bulk 生成 → OrderDate 設定 → 1 回 flush. createOrder ループ (内部で createProduct/createDelivery が走る) を避ける.
         $todaysSales = '0';
-        for ($i = 0; $i < 3; $i++) {
-            $Order = $this->createOrder($Customer);
-            $Order->setOrderStatus($OrderNew);
+        $todaysOrders = $this->createOrders(array_fill(0, 3, $Customer), ['orderStatus' => $OrderNew]);
+        foreach ($todaysOrders as $Order) {
             $Order->setOrderDate($Today);
-            $this->entityManager->flush();
             $todaysSales = bcadd($todaysSales, $Order->getPaymentTotal(), 2);
         }
         $yesterdaysSales = '0';
-        for ($i = 0; $i < 3; $i++) {
-            $Order = $this->createOrder($Customer);
-            $Order->setOrderStatus($OrderNew);
+        $yesterdaysOrders = $this->createOrders(array_fill(0, 3, $Customer), ['orderStatus' => $OrderNew]);
+        foreach ($yesterdaysOrders as $Order) {
             $Order->setOrderDate($Yesterday);
-            $this->entityManager->flush();
             $yesterdaysSales = bcadd($yesterdaysSales, $Order->getPaymentTotal(), 2);
         }
+        $this->entityManager->flush();
 
-        // excludes
+        // excludes: ステータス別に 2 件ずつ bulk 生成し、Today / Yesterday を割り当てる.
         foreach ([$OrderCancel, $OrderPending, $OrderProcessing] as $OrderStatus) {
-            foreach ([$Today, $Yesterday] as $OrderDate) {
-                $Order = $this->createOrder($Customer);
-                $Order->setOrderStatus($OrderStatus);
-                $Order->setOrderDate($OrderDate);
-                $this->entityManager->flush();
-            }
+            $excludeOrders = $this->createOrders(array_fill(0, 2, $Customer), ['orderStatus' => $OrderStatus]);
+            $excludeOrders[0]->setOrderDate($Today);
+            $excludeOrders[1]->setOrderDate($Yesterday);
         }
+        $this->entityManager->flush();
 
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_homepage')
         );
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         preg_match('/^￥([0-9,]+) \/ ([0-9]+)/u', trim($crawler->filter('#chart-statistics > div.card-body > div.row:nth-child(1) > div:nth-child(2) > div')->text()), $match);
-        $this->expected = number_format($todaysSales);
+        $this->expected = number_format((float) $todaysSales);
         $this->actual = $match[1];
         $this->verify('本日の売上');
 
@@ -115,7 +112,7 @@ class IndexControllerTest extends AbstractAdminWebTestCase
         $this->verify('本日の売上件数');
 
         preg_match('/^￥([0-9,]+) \/ ([0-9]+)/u', trim($crawler->filter('#chart-statistics > div.card-body > div.row:nth-child(1) > div:nth-child(3) > div')->text()), $match);
-        $this->expected = number_format($yesterdaysSales);
+        $this->expected = number_format((float) $yesterdaysSales);
         $this->actual = $match[1];
         $this->verify('昨日の売上');
 
@@ -124,7 +121,7 @@ class IndexControllerTest extends AbstractAdminWebTestCase
         $this->verify('昨日の売上件数');
 
         preg_match('/^￥([0-9,]+) \/ ([0-9]+)/u', trim($crawler->filter('#chart-statistics > div.card-body > div.row:nth-child(1) > div:nth-child(1) > div')->text()), $match);
-        $this->expected = number_format((new \DateTime('today'))->format('m') === (new \DateTime('yesterday'))->format('m') ? bcadd($todaysSales, $yesterdaysSales, 2) : $todaysSales);
+        $this->expected = number_format((float) ((new \DateTime('today'))->format('m') === (new \DateTime('yesterday'))->format('m') ? bcadd($todaysSales, $yesterdaysSales, 2) : $todaysSales));
         $this->actual = $match[1];
         $this->verify('今月の売上');
 
@@ -133,12 +130,10 @@ class IndexControllerTest extends AbstractAdminWebTestCase
         $this->verify('今月の売上件数');
     }
 
-    public function indexWithSalesProvider()
+    public static function indexWithSalesProvider(): \Iterator
     {
-        return [
-            [8],
-            [10],
-        ];
+        yield [8];
+        yield [10];
     }
 
     public function testChangePasswordWithPost()
@@ -150,20 +145,20 @@ class IndexControllerTest extends AbstractAdminWebTestCase
         $current_password = $form['current_password'];
         $new_password = $form['change_password']['first'];
 
-        $hasher = static::getContainer()->get('security.user_password_hasher');
-        self::assertTrue($hasher->isPasswordValid($this->Member, $current_password));
-        self::assertFalse($hasher->isPasswordValid($this->Member, $new_password));
+        $hasher = static::getContainer()->get(UserPasswordHasherInterface::class);
+        $this->assertTrue($hasher->isPasswordValid($this->Member, $current_password));
+        $this->assertFalse($hasher->isPasswordValid($this->Member, $new_password));
 
         $client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_change_password'),
             ['admin_change_password' => $form]
         );
 
         $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('admin_change_password')));
 
-        self::assertFalse($hasher->isPasswordValid($this->Member, $current_password));
-        self::assertTrue($hasher->isPasswordValid($this->Member, $new_password));
+        $this->assertFalse($hasher->isPasswordValid($this->Member, $current_password));
+        $this->assertTrue($hasher->isPasswordValid($this->Member, $new_password));
     }
 
     public function testChangePasswordWithPostInvalid()
@@ -172,7 +167,7 @@ class IndexControllerTest extends AbstractAdminWebTestCase
         $client = $this->client;
 
         $client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_change_password'),
             []
         );

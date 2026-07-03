@@ -26,10 +26,12 @@ class PluginManager extends AbstractPluginManager
     /**
      * Install the plugin.
      *
-     * @param array $meta
+     * @param array<mixed> $meta
      * @param ContainerInterface $container
+     *
+     * @return void
      */
-    public function install(array $meta, ContainerInterface $container)
+    public function install(array $meta, ContainerInterface $container): void
     {
         dump('install '.self::VERSION);
     }
@@ -37,10 +39,12 @@ class PluginManager extends AbstractPluginManager
     /**
      * Update the plugin.
      *
-     * @param array $meta
+     * @param array<mixed> $meta
      * @param ContainerInterface $container
+     *
+     * @return void
      */
-    public function update(array $meta, ContainerInterface $container)
+    public function update(array $meta, ContainerInterface $container): void
     {
         $entityManager = $container->get('doctrine')->getManager();
         dump('update '.self::VERSION);
@@ -50,10 +54,12 @@ class PluginManager extends AbstractPluginManager
     /**
      * Enable the plugin.
      *
-     * @param array $meta
+     * @param array<mixed> $meta
      * @param ContainerInterface $container
+     *
+     * @return void
      */
-    public function enable(array $meta, ContainerInterface $container)
+    public function enable(array $meta, ContainerInterface $container): void
     {
         dump('enable '.self::VERSION);
     }
@@ -61,10 +67,12 @@ class PluginManager extends AbstractPluginManager
     /**
      * Disable the plugin.
      *
-     * @param array $meta
+     * @param array<mixed> $meta
      * @param ContainerInterface $container
+     *
+     * @return void
      */
-    public function disable(array $meta, ContainerInterface $container)
+    public function disable(array $meta, ContainerInterface $container): void
     {
         $entityManager = $container->get('doctrine')->getManager();
         dump('disable '.self::VERSION);
@@ -74,10 +82,12 @@ class PluginManager extends AbstractPluginManager
     /**
      * Uninstall the plugin.
      *
-     * @param array $meta
+     * @param array<mixed> $meta
      * @param ContainerInterface $container
+     *
+     * @return void
      */
-    public function uninstall(array $meta, ContainerInterface $container)
+    public function uninstall(array $meta, ContainerInterface $container): void
     {
         dump('uninstall '.self::VERSION);
     }

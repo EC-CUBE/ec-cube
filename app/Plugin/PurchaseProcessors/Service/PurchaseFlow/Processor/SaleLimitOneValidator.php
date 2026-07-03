@@ -13,9 +13,9 @@
 
 namespace Plugin\PurchaseProcessors\Service\PurchaseFlow\Processor;
 
-use Eccube\Annotation\CartFlow;
-use Eccube\Annotation\OrderFlow;
-use Eccube\Annotation\ShoppingFlow;
+use Eccube\Attribute\CartFlow;
+use Eccube\Attribute\OrderFlow;
+use Eccube\Attribute\ShoppingFlow;
 use Eccube\Entity\ItemInterface;
 use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\ItemValidator;
@@ -36,16 +36,13 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
  * * PurchaseProcessor
  *
  * ## 追加対象のフローの指定方法
- * * カートのPurchaseFlowにProcessorを追加する場合はCartFlowアノテーションを追加
- * * 購入フローのPurchaseFlowにProcessorを追加する場合はShoppingFlowアノテーションを追加
- * * 管理画面でのPurchaseFlowにProcessorを追加する場合はOrderFlowアノテーションを追加
- *
- * @CartFlow
- *
- * @ShoppingFlow
- *
- * @OrderFlow
+ * * カートのPurchaseFlowにProcessorを追加する場合はCartFlowアトリビュートを追加
+ * * 購入フローのPurchaseFlowにProcessorを追加する場合はShoppingFlowアトリビュートを追加
+ * * 管理画面でのPurchaseFlowにProcessorを追加する場合はOrderFlowアトリビュートを追加
  */
+#[CartFlow]
+#[ShoppingFlow]
+#[OrderFlow]
 class SaleLimitOneValidator extends ItemValidator
 {
     /**
@@ -54,7 +51,7 @@ class SaleLimitOneValidator extends ItemValidator
      *
      * @throws InvalidItemException
      */
-    protected function validate(ItemInterface $item, PurchaseContext $context)
+    protected function validate(ItemInterface $item, PurchaseContext $context): void
     {
         if (!$item->isProduct()) {
             return;
@@ -66,7 +63,7 @@ class SaleLimitOneValidator extends ItemValidator
         }
     }
 
-    protected function handle(ItemInterface $item, PurchaseContext $context)
+    protected function handle(ItemInterface $item, PurchaseContext $context): void
     {
         $item->setQuantity(1);
     }

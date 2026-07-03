@@ -21,18 +21,10 @@ use Twig\TwigFunction;
 class TaxExtension extends AbstractExtension
 {
     /**
-     * @var TaxRuleRepository
-     */
-    private $taxRuleRepository;
-
-    /**
      * TaxExtension constructor.
-     *
-     * @param TaxRuleRepository $taxRuleRepository
      */
-    public function __construct(TaxRuleRepository $taxRuleRepository)
+    public function __construct(private readonly TaxRuleRepository $taxRuleRepository)
     {
-        $this->taxRuleRepository = $taxRuleRepository;
     }
 
     /**
@@ -40,10 +32,11 @@ class TaxExtension extends AbstractExtension
      *
      * @return TwigFunction[] An array of functions
      */
-    public function getFunctions()
+    #[\Override]
+    public function getFunctions(): array
     {
         return [
-            new TwigFunction('is_reduced_tax_rate', [$this, 'isReducedTaxRate']),
+            new TwigFunction('is_reduced_tax_rate', $this->isReducedTaxRate(...)),
         ];
     }
 
@@ -51,12 +44,8 @@ class TaxExtension extends AbstractExtension
      * 明細が軽減税率対象かどうかを返す.
      *
      * 受注作成時点での標準税率と比較し, 異なれば軽減税率として判定する.
-     *
-     * @param OrderItem $OrderItem
-     *
-     * @return bool
      */
-    public function isReducedTaxRate(OrderItem $OrderItem)
+    public function isReducedTaxRate(OrderItem $OrderItem): bool
     {
         $Order = $OrderItem->getOrder();
 
@@ -69,7 +58,7 @@ class TaxExtension extends AbstractExtension
                 ->setMaxResults(1)
                 ->getQuery()
                 ->getOneOrNullResult();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             return false;
         }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -14,11 +16,11 @@
 namespace Eccube\Tests\Web\Admin\Setting\System;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use PHPUnit\Framework\Attributes\Group;
+use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @group cache-clear
- */
-class SecurityControllerTest extends AbstractAdminWebTestCase
+#[Group('cache-clear')]
+final class SecurityControllerTest extends AbstractAdminWebTestCase
 {
     protected $envFile;
 
@@ -27,7 +29,6 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->envFile = static::getContainer()->getParameter('kernel.project_dir').'/.env';
         if (file_exists($this->envFile)) {
             $this->env = file_get_contents($this->envFile);
@@ -39,7 +40,6 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
         if ($this->env) {
             file_put_contents($this->envFile, $this->env);
         }
-
         parent::tearDown();
     }
 
@@ -48,22 +48,21 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
      */
     public function testRouting()
     {
-        $this->client->request('GET', $this->generateUrl('admin_setting_system_security'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_system_security'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     /**
      * Submit test
-     *
-     * @group cache-clear
      */
+    #[Group(name: 'cache-clear')]
     public function testSubmit()
     {
         $session = $this->createSession($this->client);
         $formData = $this->createFormData();
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_system_security'),
             [
                 'admin_security' => $formData,
@@ -78,7 +77,7 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
         $this->expected = 'admin.setting.system.security.admin_url_changed';
         $this->verify();
 
-        self::assertMatchesRegularExpression('/ECCUBE_ADMIN_ROUTE='.$formData['admin_route_dir'].'/', file_get_contents($this->envFile));
+        $this->assertMatchesRegularExpression('/ECCUBE_ADMIN_ROUTE='.$formData['admin_route_dir'].'/', file_get_contents($this->envFile));
     }
 
     /**
@@ -95,25 +94,23 @@ class SecurityControllerTest extends AbstractAdminWebTestCase
         $formData['force_ssl'] = null;
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_system_security'),
             [
                 'admin_security' => $formData,
             ]
         );
 
-        self::assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         $newEnv = file_exists($this->envFile) ? file_get_contents($this->envFile) : null;
-        self::assertSame($this->env, $newEnv);
+        $this->assertSame($this->env, $newEnv);
     }
 
     /**
      * Submit form
-     *
-     * @return array
      */
-    public function createFormData()
+    public function createFormData(): array
     {
         return [
             '_token' => 'dummy',

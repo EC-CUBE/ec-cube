@@ -21,11 +21,6 @@ class MyPage extends AbstractFrontPage
     public const ADDRESS = 'ul.ec-navlistRole__navlist li:nth-child(4) a';
     public const WITHDRAW = 'ul.ec-navlistRole__navlist li:nth-child(5) a';
 
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     public static function go($I)
     {
         $page = new self($I);

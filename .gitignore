@@ -10,6 +10,9 @@ node_modules
 !/app/Plugin/.gitkeep
 /app/PluginData/*
 !/app/PluginData/.gitkeep
+/app/keystore/*
+!/app/keystore/.gitkeep
+!/app/keystore/.htaccess
 /app/template/*
 !/app/template/admin
 !/app/template/default
@@ -51,3 +54,7 @@ node_modules
 /.php-cs-fixer.*.php
 ###< friendsofphp/php-cs-fixer ###
 screenshots/
+
+###> symfony/flex ###
+/app/config/eccube/reference.php
+###< symfony/flex ###

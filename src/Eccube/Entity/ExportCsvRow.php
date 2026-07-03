@@ -17,23 +17,18 @@ if (!class_exists(ExportCsvRow::class)) {
     class ExportCsvRow extends AbstractEntity
     {
         /**
-         * @var \Doctrine\Common\Collections\Collection
+         * @var array<int, string|null>
          */
-        private $row = [];
+        private array $row = [];
 
-        /**
-         * @var string
-         */
-        private $data;
+        private ?string $data = null;
 
         /**
          * Set data
          *
          * @param string $data
-         *
-         * @return ExportCsvRow
          */
-        public function setData($data = null)
+        public function setData(?string $data = null): ExportCsvRow
         {
             $this->data = $data;
 
@@ -42,22 +37,20 @@ if (!class_exists(ExportCsvRow::class)) {
 
         /**
          * Is data null
-         *
-         * @return bool
          */
-        public function isDataNull()
+        public function isDataNull(): bool
         {
             if (is_null($this->data)) {
                 return true;
-            } else {
-                return false;
             }
+
+            return false;
         }
 
         /**
          * Push data
          */
-        public function pushData()
+        public function pushData(): void
         {
             $this->row[] = $this->data;
             $this->data = null;
@@ -66,9 +59,9 @@ if (!class_exists(ExportCsvRow::class)) {
         /**
          * Get row
          *
-         * @return \Doctrine\Common\Collections\Collection
+         * @return array<int, string|null>
          */
-        public function getRow()
+        public function getRow(): array
         {
             return $this->row;
         }

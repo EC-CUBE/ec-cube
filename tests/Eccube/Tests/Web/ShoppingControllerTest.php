@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -30,27 +32,20 @@ use Eccube\Repository\TradeLawRepository;
 use Eccube\Tests\Fixture\Generator;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class ShoppingControllerTest extends AbstractShoppingControllerTestCase
+final class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 {
     use MailerAssertionsTrait;
 
-    /**
-     * @var BaseInfoRepository
-     */
-    private $baseInfoRepository;
+    private ?BaseInfoRepository $baseInfoRepository = null;
 
-    /**
-     * @var PaymentRepository
-     */
-    private $paymentRepository;
+    private ?PaymentRepository $paymentRepository = null;
 
-    /**
-     * @var EntityRepository|ObjectRepository|TradeLawRepository
-     */
-    private $tradeLawRepository;
+    private EntityRepository|ObjectRepository|TradeLawRepository|null $tradeLawRepository = null;
 
     protected function setUp(): void
     {
@@ -62,7 +57,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
     public function testRoutingShoppingLogin()
     {
-        $crawler = $this->client->request('GET', '/shopping/login');
+        $crawler = $this->client->request(Request::METHOD_GET, '/shopping/login');
         $this->expected = 'ログイン';
         $this->actual = $crawler->filter('.ec-pageHeader h1')->text();
         $this->verify();
@@ -77,7 +72,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $session->set('eccube.front.shopping.order.id', $Order->getId());
         $session->save();
 
-        $this->client->request('GET', $this->generateUrl('shopping_complete'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('shopping_complete'));
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         $this->assertNull($session->get('eccube.front.shopping.order.id'));
@@ -91,10 +86,8 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
      *     ・ <script> スクリプトインジェクション
      *
      * @see https://github.com/EC-CUBE/ec-cube/issues/5372
-     *
-     * @return void
      */
-    public function testCompleteWithXssInjectionAttack()
+    public function testCompleteWithXssInjectionAttack(): void
     {
         // Create a new news item for the homepage with a XSS attack (via <script> AND id attribute injection)
         $Customer = $this->createCustomer();
@@ -114,17 +107,17 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $session = $this->createSession($this->client);
         $session->set('eccube.front.shopping.order.id', $Order->getId());
         $session->save();
-        $crawler = $this->client->request('GET', $this->generateUrl('shopping_complete'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('shopping_complete'));
 
         // <div>タグから危険なid属性が削除されていることを確認する。
         // Find that dangerous id attributes are removed from <div> tags.
         $testNewsArea_notFoundTest = $crawler->filter('#test-news-id');
-        $this->assertSame(0, $testNewsArea_notFoundTest->count());
+        $this->assertCount(0, $testNewsArea_notFoundTest);
 
         // 安全なclass属性が出力されているかどうかを確認する。
         // Find if classes (which are safe) have been outputted
         $testNewsArea = $crawler->filter('.safe_to_use_class');
-        $this->assertSame(1, $testNewsArea->count());
+        $this->assertCount(1, $testNewsArea);
 
         // 安全なHTMLが存在するかどうかを確認する
         // Find if the safe HTML exists
@@ -138,7 +131,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
     public function testShoppingError()
     {
-        $this->client->request('GET', $this->generateUrl('shopping_error'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('shopping_error'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -186,6 +179,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
         $OrderNew = $this->entityManager->getRepository(OrderStatus::class)->find(OrderStatus::NEW);
         $this->expected = $OrderNew;
+        $this->assertInstanceOf(Order::class, $Order);
         $this->actual = $Order->getOrderStatus();
         $this->verify();
 
@@ -320,7 +314,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
     /**
      * 購入確認画面→支払い方法失敗する、レイアウトヘッダーとフッター確認
      */
-    public function testOrtderConfirmLayout()
+    public function testOrtderConfirmLayout(): never
     {
         $this->markTestIncomplete('ShoppingController is not implemented.');
         $faker = $this->getFaker();
@@ -335,7 +329,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
         // 支払い方法選択
         $crawler = $client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_payment'),
             [
                 'shopping' => [
@@ -420,8 +414,8 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         // 支払い方法のMINとMAXルール変更
         $PaymentColl = $this->paymentRepository->findAll();
         foreach ($PaymentColl as $Payment) {
-            $Payment->setRuleMin(0);
-            $Payment->setRuleMax(0);
+            $Payment->setRuleMin('0');
+            $Payment->setRuleMax('0');
         }
         // 確認画面
         $crawler = $this->scenarioConfirm($Customer);
@@ -473,7 +467,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
      *
      * @see https://github.com/EC-CUBE/ec-cube/issues/1305
      */
-    public function testShippingShippingPost()
+    public function testShippingShippingPost(): never
     {
         $this->markTestIncomplete('新しい配送管理の実装が完了するまでスキップ');
 
@@ -487,13 +481,13 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $crawler = $this->scenarioConfirm($Customer);
         // お届け先の設定
         $shipping_url = $crawler->filter('a.btn-shipping')->attr('href');
-        $crawler = $this->scenarioComplete($client, $shipping_url);
+        $crawler = $this->scenarioComplete(null, $shipping_url, $client);
 
         // お届け先一覧
         $shipping_url = str_replace('shipping_change', 'shipping', $shipping_url);
 
         $crawler = $client->request(
-            'GET',
+            Request::METHOD_GET,
             $shipping_url
         );
 
@@ -507,7 +501,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
         // お届け先入力画面
         $client->request(
-            'GET',
+            Request::METHOD_GET,
             $shipping_edit_url
         );
         $this->assertTrue($client->getResponse()->isSuccessful());
@@ -516,7 +510,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $formData = $this->createShippingFormData();
         $formData['phone_number'] = $faker->phoneNumber;
         $client->request(
-            'POST',
+            Request::METHOD_POST,
             $shipping_edit_url,
             ['shopping_shipping' => $formData]
         );
@@ -524,7 +518,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('shopping')));
 
         // ご注文完了
-        $this->scenarioComplete($client, $this->generateUrl('shopping_confirm'));
+        $this->scenarioComplete(null, $this->generateUrl('shopping_confirm'), $client);
 
         $this->baseInfoRepository->get();
         $Messages = $this->getMailCatcherMessages();
@@ -537,7 +531,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
     /**
      * @see https://github.com/EC-CUBE/ec-cube/issues/1280
      */
-    public function testShippingEditTitle()
+    public function testShippingEditTitle(): never
     {
         // FIXME ShoppingController の登録チェックが実装されたら有効にする
         $this->markTestIncomplete('ShoppingController is not implemented.');
@@ -557,7 +551,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $url = str_replace('shipping_change', 'shipping_edit', $url);
 
         // Get shipping edit
-        $crawler = $client->request('GET', $url);
+        $crawler = $client->request(Request::METHOD_GET, $url);
 
         // Title
         $this->assertStringContainsString('お届け先の追加', $crawler->html());
@@ -630,6 +624,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
         $OrderNew = $this->entityManager->getRepository(OrderStatus::class)->find(OrderStatus::NEW);
         $this->expected = $OrderNew;
+        $this->assertInstanceOf(Order::class, $Order);
         $this->actual = $Order->getOrderStatus();
         $this->verify();
 
@@ -704,10 +699,8 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
     /**
      * 取引法を無効にすると、配信設定ページに取引法テスト文字が表示されないことを確認すること。
      * Check that with no trade law enabled, no trade law test will appear on the delivery settings page.
-     *
-     * @return void
      */
-    public function testDeliveryPageWithNoTradeLawsEnabled()
+    public function testDeliveryPageWithNoTradeLawsEnabled(): void
     {
         // Disable all trade laws
         $tradeLaws = $this->tradeLawRepository->findAll();
@@ -729,17 +722,15 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         // ご注文手続きページ
         // Request delivery page
         $crawler = $this->scenarioConfirm($Customer);
-        $this->assertStringNotContainsString('Trade名称', $crawler->outerHtml());
-        $this->assertStringNotContainsString('Trade説明', $crawler->outerHtml());
+        $this->assertStringNotContainsString('Trade名称', (string) $crawler->outerHtml());
+        $this->assertStringNotContainsString('Trade説明', (string) $crawler->outerHtml());
     }
 
     /**
      * Check that with all trade laws enabled that trade law text will appear on the delivery settings page.
      * すべての取引法を有効にすると、取引法のテキストがご注文手続きページに表示されることを確認すること。
-     *
-     * @return void
      */
-    public function testDeliveryPageWithTradeLawsEnabled()
+    public function testDeliveryPageWithTradeLawsEnabled(): void
     {
         // Enable all trade laws
         $tradeLaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
@@ -764,7 +755,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         $headerId = 5;
 
         foreach ($tradeLaws as $tradeLaw) {
-            $this->assertStringContainsString($tradeLaw->getDescription(), $crawler->outerHtml());
+            $this->assertStringContainsString($tradeLaw->getDescription(), (string) $crawler->outerHtml());
             // Check sort order
             $this->assertEquals(
                 $tradeLaw->getName(),
@@ -776,10 +767,8 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
     /**
      * Check that with no trade law enabled, no trade law test will appear on the delivery settings page.
-     *
-     * @return void
      */
-    public function testConfirmationPageWithNoTradeLawsEnabled()
+    public function testConfirmationPageWithNoTradeLawsEnabled(): void
     {
         // Disable all trade laws
         $tradeLaws = $this->tradeLawRepository->findAll();
@@ -813,16 +802,14 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
             ]
         );
 
-        $this->assertStringNotContainsString('Trade名称', $crawler->outerHtml());
-        $this->assertStringNotContainsString('Trade説明', $crawler->outerHtml());
+        $this->assertStringNotContainsString('Trade名称', (string) $crawler->outerHtml());
+        $this->assertStringNotContainsString('Trade説明', (string) $crawler->outerHtml());
     }
 
     /**
      * Check that with all trade laws enabled, trade law test will appear on the delivery settings page.
-     *
-     * @return void
      */
-    public function testConfirmationPageWithTradeLawsEnabled()
+    public function testConfirmationPageWithTradeLawsEnabled(): void
     {
         // Disable all trade laws
         $tradeLaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
@@ -858,7 +845,7 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
 
         $headerId = 5;
         foreach ($tradeLaws as $tradeLaw) {
-            $this->assertStringContainsString($tradeLaw->getDescription(), $crawler->outerHtml());
+            $this->assertStringContainsString($tradeLaw->getDescription(), (string) $crawler->outerHtml());
             // Check sort order
             $this->assertEquals(
                 $tradeLaw->getName(),
@@ -872,10 +859,8 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
      *  Delivery Page
      * Test that no trade law data will be visible even if the display_order_screen is true
      * when name is empty or null
-     *
-     * @return void
      */
-    public function testDeliveryPageInvalidTradeLawDataEmptyName()
+    public function testDeliveryPageInvalidTradeLawDataEmptyName(): void
     {
         $tradeLaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
         $id = 0;
@@ -900,18 +885,16 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         // Request delivery page
         $crawler = $this->scenarioConfirm($Customer);
 
-        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
-        $this->assertStringNotContainsString('Trade：テスト説明', $crawler->outerHtml());
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
+        $this->assertStringNotContainsString('Trade：テスト説明', (string) $crawler->outerHtml());
     }
 
     /**
      * Delivery Page
      * Test that no trade law data will be visible even if the display_order_screen is true
      * when description is empty or null
-     *
-     * @return void
      */
-    public function testDeliveryPageInvalidTradeLawDataEmptyDescription()
+    public function testDeliveryPageInvalidTradeLawDataEmptyDescription(): void
     {
         $tradeLaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
         $id = 0;
@@ -935,18 +918,16 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         // ご注文手続きページ
         // Request delivery page
         $crawler = $this->scenarioConfirm($Customer);
-        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
-        $this->assertStringNotContainsString('Trade：テスト名称', $crawler->outerHtml());
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
+        $this->assertStringNotContainsString('Trade：テスト名称', (string) $crawler->outerHtml());
     }
 
     /**
      * Confirmation Page
      * Test that no trade law data will be visible even if the display_order_screen is true
      * when name is empty or null
-     *
-     * @return void
      */
-    public function testConfirmationPageInvalidTradeLawDataEmptyName()
+    public function testConfirmationPageInvalidTradeLawDataEmptyName(): void
     {
         // Disable all trade laws
         $tradeLaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
@@ -983,18 +964,16 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
             ]
         );
 
-        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
-        $this->assertStringNotContainsString('Trade：テスト名称', $crawler->outerHtml());
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
+        $this->assertStringNotContainsString('Trade：テスト名称', (string) $crawler->outerHtml());
     }
 
     /**
      * Confirmation Page
      * Test that no trade law data will be visible even if the display_order_screen is true
      * when description is empty or null
-     *
-     * @return void
      */
-    public function testConfirmationPageInvalidTradeLawDataEmptyDescription()
+    public function testConfirmationPageInvalidTradeLawDataEmptyDescription(): void
     {
         // Disable all trade laws
         $tradeLaws = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
@@ -1031,8 +1010,8 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
             ]
         );
 
-        $this->assertSame(200, $this->client->getResponse()->getStatusCode());
-        $this->assertStringNotContainsString('Trade：テスト説明', $crawler->outerHtml());
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
+        $this->assertStringNotContainsString('Trade：テスト説明', (string) $crawler->outerHtml());
     }
 
     /**
@@ -1042,14 +1021,14 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
     public function testPaymentLimitAndPointCombination()
     {
         $Customer = $this->createCustomer();
-        $Customer->setPoint(99999);
+        $Customer->setPoint('99999');
         $this->entityManager->flush($Customer);
 
         $price = 27777;
         $pointUse = 27777;
         /** @var ProductClass $ProductClass */
         $ProductClass = $this->entityManager->getRepository(ProductClass::class)->find(2);
-        $ProductClass->setPrice02($price);
+        $ProductClass->setPrice02((string) $price);
         $this->entityManager->flush($ProductClass);
 
         $Delivery = static::getContainer()->get(Generator::class)->createDelivery();
@@ -1110,7 +1089,6 @@ class ShoppingControllerTest extends AbstractShoppingControllerTestCase
     }
 
     /**
-     * @param Delivery $Delivery
      * @param Payment[] $Payments
      */
     private function setUpPayments(Delivery $Delivery, array $Payments)

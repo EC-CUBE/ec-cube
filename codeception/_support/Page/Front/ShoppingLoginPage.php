@@ -15,10 +15,7 @@ namespace Page\Front;
 
 class ShoppingLoginPage extends AbstractFrontPage
 {
-    /**
-     * @param \AcceptanceTester $I
-     */
-    public static function at($I)
+    public static function at(\AcceptanceTester $I)
     {
         $page = new self($I);
         $page->tester->see('ログイン', 'div.ec-pageHeader h1');
@@ -36,10 +33,7 @@ class ShoppingLoginPage extends AbstractFrontPage
         return $this;
     }
 
-    /**
-     * @return ShoppingNonmemberPage
-     */
-    public function ゲスト購入()
+    public function ゲスト購入(): ShoppingNonmemberPage
     {
         $this->tester->click('div.ec-guest a.ec-blockBtn--cancel');
 

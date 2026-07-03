@@ -13,106 +13,68 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\Master\LoginHistoryStatus;
+use Eccube\Repository\LoginHistoryRepository;
 
 if (!class_exists(LoginHistory::class)) {
     /**
      * LoginHistory
-     *
-     * @ORM\Table(name="dtb_login_history")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\LoginHistoryRepository")
      */
+    #[ORM\Table(name: 'dtb_login_history')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: LoginHistoryRepository::class)]
     class LoginHistory extends AbstractEntity
     {
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
-         */
-        private $id;
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+        private ?int $id = null;
 
-        /**
-         * @var string
-         *
-         * @ORM\Column(type="text",nullable=true)
-         */
-        private $user_name;
+        #[ORM\Column(type: Types::TEXT, nullable: true)]
+        private ?string $user_name = null;
 
-        /**
-         * @var string
-         *
-         * @ORM\Column(type="text",nullable=true)
-         */
-        private $client_ip;
+        #[ORM\Column(type: Types::TEXT, nullable: true)]
+        private ?string $client_ip = null;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
         private $create_date;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
         private $update_date;
 
-        /**
-         * @var LoginHistoryStatus
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\LoginHistoryStatus")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="login_history_status_id", referencedColumnName="id", nullable=false)
-         * })
-         */
-        private $Status;
+        #[ORM\ManyToOne(targetEntity: LoginHistoryStatus::class)]
+        #[ORM\JoinColumn(name: 'login_history_status_id', referencedColumnName: 'id', nullable: false)]
+        // @phpstan-ignore doctrine.associationType (Formでの初期化時にnullが必要なためnullableとしている)
+        private ?LoginHistoryStatus $Status = null;
 
-        /**
-         * @var Member
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="member_id", referencedColumnName="id", onDelete="SET NULL")
-         * })
-         */
-        private $LoginUser;
+        #[ORM\ManyToOne(targetEntity: Member::class)]
+        #[ORM\JoinColumn(name: 'member_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+        private ?Member $LoginUser = null;
 
         /**
          * Get id
          *
          * @return int
          */
-        public function getId()
+        public function getId(): ?int
         {
             return $this->id;
         }
 
         /**
          * Set user_name
-         *
-         * @param string $userName
-         *
-         * @return LoginHistory
          */
-        public function setUserName($userName)
+        public function setUserName(string $userName): LoginHistory
         {
             $this->user_name = $userName;
 
@@ -121,42 +83,28 @@ if (!class_exists(LoginHistory::class)) {
 
         /**
          * Get user_name
-         *
-         * @return string
          */
-        public function getUserName()
+        public function getUserName(): string
         {
             return $this->user_name;
         }
 
-        /**
-         * @param LoginHistoryStatus $Status
-         *
-         * @return LoginHistory
-         */
-        public function setStatus($Status)
+        public function setStatus(LoginHistoryStatus $Status): LoginHistory
         {
             $this->Status = $Status;
 
             return $this;
         }
 
-        /**
-         * @return LoginHistoryStatus
-         */
-        public function getStatus()
+        public function getStatus(): LoginHistoryStatus
         {
             return $this->Status;
         }
 
         /**
          * Set client_ip
-         *
-         * @param string $clientIp
-         *
-         * @return LoginHistory
          */
-        public function setClientIp($clientIp)
+        public function setClientIp(string $clientIp): LoginHistory
         {
             $this->client_ip = $clientIp;
 
@@ -165,22 +113,16 @@ if (!class_exists(LoginHistory::class)) {
 
         /**
          * Get client_ip
-         *
-         * @return string
          */
-        public function getClientIp()
+        public function getClientIp(): string
         {
             return $this->client_ip;
         }
 
         /**
          * Set create_date
-         *
-         * @param \DateTime $createDate
-         *
-         * @return LoginHistory
          */
-        public function setCreateDate($createDate)
+        public function setCreateDate(\DateTime $createDate): LoginHistory
         {
             $this->create_date = $createDate;
 
@@ -192,19 +134,15 @@ if (!class_exists(LoginHistory::class)) {
          *
          * @return \DateTime
          */
-        public function getCreateDate()
+        public function getCreateDate(): ?\DateTime
         {
             return $this->create_date;
         }
 
         /**
          * Set update_date
-         *
-         * @param \DateTime $updateDate
-         *
-         * @return LoginHistory
          */
-        public function setUpdateDate($updateDate)
+        public function setUpdateDate(\DateTime $updateDate): LoginHistory
         {
             $this->update_date = $updateDate;
 
@@ -216,7 +154,7 @@ if (!class_exists(LoginHistory::class)) {
          *
          * @return \DateTime
          */
-        public function getUpdateDate()
+        public function getUpdateDate(): ?\DateTime
         {
             return $this->update_date;
         }
@@ -225,10 +163,8 @@ if (!class_exists(LoginHistory::class)) {
          * Set LoginUser
          *
          * @param Member $loginUser
-         *
-         * @return LoginHistory
          */
-        public function setLoginUser(?Member $loginUser = null)
+        public function setLoginUser(?Member $loginUser = null): LoginHistory
         {
             $this->LoginUser = $loginUser;
 
@@ -237,10 +173,8 @@ if (!class_exists(LoginHistory::class)) {
 
         /**
          * Get LoginUser
-         *
-         * @return Member
          */
-        public function getLoginUser()
+        public function getLoginUser(): Member
         {
             return $this->LoginUser;
         }

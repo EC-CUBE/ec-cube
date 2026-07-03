@@ -20,37 +20,26 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class PaymentDispatcher
 {
-    /**
-     * @var Response
-     */
-    private $response;
+    private ?Response $response = null;
+
+    private bool $forward;
+
+    private string $route;
 
     /**
-     * @var bool
+     * @var array<string, string>
      */
-    private $forward;
+    private array $pathParameters = [];
 
     /**
-     * @var string
+     * @var array<string, string>
      */
-    private $route;
-
-    /**
-     * @var array
-     */
-    private $pathParameters = [];
-
-    /**
-     * @var array
-     */
-    private $queryParameters = [];
+    private array $queryParameters = [];
 
     /**
      * Forward を使用するかどうか.
-     *
-     * @return bool
      */
-    public function isForward()
+    public function isForward(): bool
     {
         return $this->forward;
     }
@@ -59,12 +48,8 @@ class PaymentDispatcher
      * Forward を使用するかどうかを設定します.
      *
      * Forward を使用する場合は true, Redirect を使用する場合は false を設定します.
-     *
-     * @param bool $forward
-     *
-     * @return PaymentDispatcher
      */
-    public function setForward($forward)
+    public function setForward(bool $forward): PaymentDispatcher
     {
         $this->forward = $forward;
 
@@ -73,22 +58,16 @@ class PaymentDispatcher
 
     /**
      * 処理を移譲するルート名を返します.
-     *
-     * @return string
      */
-    public function getRoute()
+    public function getRoute(): string
     {
         return $this->route;
     }
 
     /**
      * 処理を移譲するルート名を設定します.
-     *
-     * @param string $route
-     *
-     * @return PaymentDispatcher
      */
-    public function setRoute($route)
+    public function setRoute(string $route): PaymentDispatcher
     {
         $this->route = $route;
 
@@ -98,9 +77,9 @@ class PaymentDispatcher
     /**
      * クエリパラメータの配列を返します.
      *
-     * @return array
+     * @return array<string, string>
      */
-    public function getQueryParameters()
+    public function getQueryParameters(): array
     {
         return $this->queryParameters;
     }
@@ -108,11 +87,9 @@ class PaymentDispatcher
     /**
      * クエリパラメータの配列を設定します.
      *
-     * @param array
-     *
-     * @return PaymentDispatcher
+     * @param array<string, string> $queryParameters
      */
-    public function setQueryParameters(array $queryParameters)
+    public function setQueryParameters(array $queryParameters): PaymentDispatcher
     {
         $this->queryParameters = $queryParameters;
 
@@ -122,9 +99,9 @@ class PaymentDispatcher
     /**
      * パスパラメータの配列を返します.
      *
-     * @return array
+     * @return array<string, string>
      */
-    public function getPathParameters()
+    public function getPathParameters(): array
     {
         return $this->pathParameters;
     }
@@ -132,11 +109,9 @@ class PaymentDispatcher
     /**
      * パスパラメータの配列を設定します.
      *
-     * @param array
-     *
-     * @return PaymentDispatcher
+     * @param array<string, string> $pathParameters
      */
-    public function setPathParameters(array $pathParameters)
+    public function setPathParameters(array $pathParameters): PaymentDispatcher
     {
         $this->pathParameters = $pathParameters;
 
@@ -147,12 +122,8 @@ class PaymentDispatcher
      * Response を設定します.
      *
      * 外部のサイトへリダイレクトする等, 特殊な用途に使用してください.
-     *
-     * @param Response $response
-     *
-     * @return PaymentResult
      */
-    public function setResponse(Response $response)
+    public function setResponse(Response $response): PaymentDispatcher
     {
         $this->response = $response;
 
@@ -161,10 +132,8 @@ class PaymentDispatcher
 
     /**
      * Response を返します.
-     *
-     * @return Response
      */
-    public function getResponse()
+    public function getResponse(): ?Response
     {
         return $this->response;
     }

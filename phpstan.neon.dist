@@ -1,6 +1,15 @@
 parameters:
-  level: 1
+  level: 6
+  excludePaths:
+    - 'var/*'
+    - 'vendor/*'
+  doctrine:
+    objectManagerLoader: tests/object-manager.php
+    ormRepositoryClass: Eccube\Repository\AbstractRepository
   ignoreErrors:
+    # Rector適用後、new EntityClassName() で nullable が必要なプロパティの型不一致を許容
     -
-      message: "#^Function twig_include not found\\.$#"
-      path: src/Eccube/Twig/Extension/IgnoreTwigSandboxErrorExtension.php
+      message: "#^Property .+::\\$.+ type mapping mismatch: property can contain .+\\|null but database expects .+\\.$#"
+      identifier: doctrine.columnType
+  paths:
+    - src

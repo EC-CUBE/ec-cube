@@ -14,31 +14,33 @@
 namespace Eccube\Command;
 
 use Eccube\Entity\Plugin;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(name: 'eccube:plugin:update', description: 'Execute plugin update process.')]
 class PluginUpdateCommand extends Command
 {
     use PluginCommandTrait;
-    protected static $defaultName = 'eccube:plugin:update';
 
-    protected function configure()
+    #[\Override]
+    protected function configure(): void
     {
         $this
-            ->addArgument('code', InputArgument::REQUIRED, 'Plugin code')
-            ->setDescription('Execute plugin update process.');
+            ->addArgument('code', InputArgument::REQUIRED, 'Plugin code');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    #[\Override]
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 
         $code = $input->getArgument('code');
 
-        /** @var Plugin $Plugin */
+        /** @var Plugin|null $Plugin */
         $Plugin = $this->pluginRepository->findByCode($code);
 
         if (!$Plugin) {

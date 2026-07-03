@@ -15,6 +15,7 @@ namespace Eccube\Controller\Admin\Order;
 
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\MailHistory;
+use Eccube\Entity\MailTemplate;
 use Eccube\Entity\Order;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -22,58 +23,35 @@ use Eccube\Form\Type\Admin\OrderMailType;
 use Eccube\Repository\MailHistoryRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\MailService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class MailController extends AbstractController
 {
     /**
-     * @var MailService
-     */
-    protected $mailService;
-
-    /**
-     * @var MailHistoryRepository
-     */
-    protected $mailHistoryRepository;
-
-    /**
-     * @var OrderRepository
-     */
-    protected $orderRepository;
-    /**
-     * @var Environment
-     */
-    protected $twig;
-
-    /**
      * MailController constructor.
-     *
-     * @param MailService $mailService
-     * @param MailHistoryRepository $mailHistoryRepository
-     * @param OrderRepository $orderRepository
-     * @param twig $twig
      */
-    public function __construct(
-        MailService $mailService,
-        MailHistoryRepository $mailHistoryRepository,
-        OrderRepository $orderRepository,
-        Environment $twig,
-    ) {
-        $this->mailService = $mailService;
-        $this->mailHistoryRepository = $mailHistoryRepository;
-        $this->orderRepository = $orderRepository;
-        $this->twig = $twig;
+    public function __construct(protected MailService $mailService, protected MailHistoryRepository $mailHistoryRepository, protected OrderRepository $orderRepository, protected Environment $twig)
+    {
     }
 
     /**
-     * @Route("/%eccube_admin_route%/order/{id}/mail", requirements={"id" = "\d+"}, name="admin_order_mail", methods={"GET", "POST"})
+     * @return Response|RedirectResponse|array<string, mixed>
      *
-     * @Template("@admin/Order/mail.twig")
+     * @throws LoaderError  When the template cannot be found
+     * @throws SyntaxError  When an error occurred during compilation
+     * @throws RuntimeError When an error occurred during rendering
      */
-    public function index(Request $request, Order $Order)
+    #[Route(path: '/%eccube_admin_route%/order/{id}/mail', name: 'admin_order_mail', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Order/mail.twig')]
+    public function index(Request $request, Order $Order): Response|RedirectResponse|array
     {
         $MailHistories = $this->mailHistoryRepository->findBy(['Order' => $Order]);
 
@@ -101,6 +79,7 @@ class MailController extends AbstractController
             switch ($mode) {
                 case 'change':
                     if ($form->get('template')->isValid()) {
+                        /** @var MailTemplate|null $MailTemplate */
                         $MailTemplate = $form->get('template')->getData();
 
                         if ($MailTemplate) {
@@ -192,7 +171,7 @@ class MailController extends AbstractController
         ];
     }
 
-    private function createBody($Order, $twig = 'Mail/order.twig')
+    private function createBody(Order $Order, string $twig = 'Mail/order.twig'): string
     {
         $body = '';
         try {

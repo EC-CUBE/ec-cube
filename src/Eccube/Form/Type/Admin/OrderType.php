@@ -16,10 +16,11 @@ namespace Eccube\Form\Type\Admin;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
 use Eccube\Entity\Payment;
-use Eccube\Form\DataTransformer;
+use Eccube\Form\DataTransformer\EntityToIdTransformer;
 use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\KanaType;
 use Eccube\Form\Type\NameType;
@@ -47,48 +48,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 class OrderType extends AbstractType
 {
     /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
-     * @var OrderStateMachine
-     */
-    protected $orderStateMachine;
-
-    /**
-     * @var OrderStatusRepository
-     */
-    protected $orderStatusRepository;
-
-    /**
      * OrderType constructor.
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param EccubeConfig $eccubeConfig
-     * @param OrderStateMachine $orderStateMachine
      */
-    public function __construct(
-        EntityManagerInterface $entityManager,
-        EccubeConfig $eccubeConfig,
-        OrderStateMachine $orderStateMachine,
-        OrderStatusRepository $orderStatusRepository,
-    ) {
-        $this->entityManager = $entityManager;
-        $this->eccubeConfig = $eccubeConfig;
-        $this->orderStateMachine = $orderStateMachine;
-        $this->orderStatusRepository = $orderStatusRepository;
+    public function __construct(protected EntityManagerInterface $entityManager, protected EccubeConfig $eccubeConfig, protected OrderStateMachine $orderStateMachine, protected OrderStatusRepository $orderStatusRepository)
+    {
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('name', NameType::class, [
@@ -110,9 +82,7 @@ class OrderType extends AbstractType
             ->add('company_name', TextType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('postal_code', PostalType::class, [
@@ -135,9 +105,7 @@ class OrderType extends AbstractType
                 'addr01_options' => [
                     'constraints' => [
                         new Assert\NotBlank(),
-                        new Assert\Length([
-                            'max' => $this->eccubeConfig['eccube_mtext_len'],
-                        ]),
+                        new Assert\Length(max: $this->eccubeConfig['eccube_mtext_len']),
                     ],
                     'attr' => ['class' => 'p-locality p-street-address'],
                 ],
@@ -145,9 +113,7 @@ class OrderType extends AbstractType
                     'required' => false,
                     'constraints' => [
                         new Assert\NotBlank(),
-                        new Assert\Length([
-                            'max' => $this->eccubeConfig['eccube_mtext_len'],
-                        ]),
+                        new Assert\Length(max: $this->eccubeConfig['eccube_mtext_len']),
                     ],
                     'attr' => ['class' => 'p-extended-address'],
                 ],
@@ -168,9 +134,7 @@ class OrderType extends AbstractType
             ->add('message', TextareaType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_ltext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_ltext_len']),
                 ],
             ])
             ->add('discount', PriceType::class, [
@@ -185,38 +149,32 @@ class OrderType extends AbstractType
             ->add('use_point', NumberType::class, [
                 'required' => true,
                 'constraints' => [
-                    new Assert\Regex([
-                        'pattern' => "/^\d+$/u",
-                        'message' => 'form_error.numeric_only',
-                    ]),
-                    new Assert\Range([
-                        'min' => 0,
-                        'max' => $this->eccubeConfig['eccube_price_max'],
-                    ]),
+                    new Assert\Regex(
+                        pattern: "/^\d+$/u",
+                        message: 'form_error.numeric_only'
+                    ),
+                    new Assert\Range(
+                        min: 0,
+                        max: $this->eccubeConfig['eccube_price_max']
+                    ),
                 ],
             ])
             ->add('note', TextareaType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_ltext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_ltext_len']),
                 ],
             ])
             ->add('Payment', EntityType::class, [
                 'required' => false,
                 'class' => Payment::class,
-                'choice_label' => function (Payment $Payment) {
-                    return $Payment->isVisible()
-                        ? $Payment->getMethod()
-                        : $Payment->getMethod().trans('admin.common.hidden_label');
-                },
+                'choice_label' => fn (Payment $Payment) => $Payment->isVisible()
+                    ? $Payment->getMethod()
+                    : $Payment->getMethod().trans('admin.common.hidden_label'),
                 'placeholder' => false,
-                'query_builder' => function ($er) {
-                    return $er->createQueryBuilder('p')
-                        ->orderBy('p.visible', 'DESC')  // 非表示は下に配置
-                        ->addOrderBy('p.sort_no', 'ASC');
-                },
+                'query_builder' => fn ($er) => $er->createQueryBuilder('p')
+                    ->orderBy('p.visible', 'DESC')  // 非表示は下に配置
+                    ->addOrderBy('p.sort_no', 'ASC'),
                 'constraints' => [
                     new Assert\NotBlank(),
                 ],
@@ -236,24 +194,25 @@ class OrderType extends AbstractType
 
         $builder
             ->add($builder->create('Customer', HiddenType::class)
-                ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
+                ->addModelTransformer(new EntityToIdTransformer(
                     $this->entityManager,
-                    \Eccube\Entity\Customer::class
+                    Customer::class
                 )));
 
-        $builder->addEventListener(FormEvents::POST_SET_DATA, [$this, 'sortOrderItems']);
-        $builder->addEventListener(FormEvents::POST_SET_DATA, [$this, 'addOrderStatusForm']);
-        $builder->addEventListener(FormEvents::POST_SET_DATA, [$this, 'addShippingForm']);
-        $builder->addEventListener(FormEvents::POST_SUBMIT, [$this, 'copyFields']);
-        $builder->addEventListener(FormEvents::POST_SUBMIT, [$this, 'validateOrderStatus']);
-        $builder->addEventListener(FormEvents::POST_SUBMIT, [$this, 'validateOrderItems']);
-        $builder->addEventListener(FormEvents::POST_SUBMIT, [$this, 'associateOrderAndShipping']);
+        $builder->addEventListener(FormEvents::POST_SET_DATA, $this->sortOrderItems(...));
+        $builder->addEventListener(FormEvents::POST_SET_DATA, $this->addOrderStatusForm(...));
+        $builder->addEventListener(FormEvents::POST_SET_DATA, $this->addShippingForm(...));
+        $builder->addEventListener(FormEvents::POST_SUBMIT, $this->copyFields(...));
+        $builder->addEventListener(FormEvents::POST_SUBMIT, $this->validateOrderStatus(...));
+        $builder->addEventListener(FormEvents::POST_SUBMIT, $this->validateOrderItems(...));
+        $builder->addEventListener(FormEvents::POST_SUBMIT, $this->associateOrderAndShipping(...));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Order::class,
@@ -263,19 +222,18 @@ class OrderType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    #[\Override]
+    public function getBlockPrefix(): string
     {
         return 'order';
     }
 
     /**
      * 受注明細をソートする.
-     *
-     * @param FormEvent $event
      */
-    public function sortOrderItems(FormEvent $event)
+    public function sortOrderItems(FormEvent $event): void
     {
-        /** @var Order $Order */
+        /** @var Order|null $Order */
         $Order = $event->getData();
         if (null === $Order) {
             return;
@@ -291,18 +249,16 @@ class OrderType extends AbstractType
      * 新規登録の際は, ユーザ編集不可のため追加しない.
      *
      * ステータスのプルダウンは, ステートマシンで遷移可能なステータスのみ表示する.
-     *
-     * @param FormEvent $event
      */
-    public function addOrderStatusForm(FormEvent $event)
+    public function addOrderStatusForm(FormEvent $event): void
     {
-        /** @var Order $Order */
+        /** @var Order|null $Order */
         $Order = $event->getData();
-        if (null === $Order || ($Order && !$Order->getId())) {
+        if (null === $Order || !$Order->getId()) {
             return;
         }
 
-        /** @var ArrayCollection|OrderStatus[] $OrderStatuses */
+        /** @var OrderStatus[] $OrderStatuses */
         $OrderStatuses = $this->orderStatusRepository->findBy([], ['sort_no' => 'ASC']);
         $OrderStatuses = new ArrayCollection($OrderStatuses);
 
@@ -334,12 +290,10 @@ class OrderType extends AbstractType
     /**
      * 単一配送時に, Shippingのフォームを追加する.
      * 複数配送時はShippingの編集は行わない.
-     *
-     * @param FormEvent $event
      */
-    public function addShippingForm(FormEvent $event)
+    public function addShippingForm(FormEvent $event): void
     {
-        /** @var Order $Order */
+        /** @var Order|null $Order */
         $Order = $event->getData();
 
         // 複数配送時はShippingの編集は行わない
@@ -361,10 +315,8 @@ class OrderType extends AbstractType
      * - 支払方法の名称
      * - 会員の性別/職業/誕生日
      * - 受注ステータス(新規登録時)
-     *
-     * @param FormEvent $event
      */
-    public function copyFields(FormEvent $event)
+    public function copyFields(FormEvent $event): void
     {
         /** @var Order $Order */
         $Order = $event->getData();
@@ -397,10 +349,8 @@ class OrderType extends AbstractType
 
     /**
      * 受注ステータスのバリデーションを行う.
-     *
-     * @param FormEvent $event
      */
-    public function validateOrderStatus(FormEvent $event)
+    public function validateOrderStatus(FormEvent $event): void
     {
         /** @var Order $Order */
         $Order = $event->getData();
@@ -432,10 +382,8 @@ class OrderType extends AbstractType
     /**
      * 受注明細のバリデーションを行う.
      * 商品明細が1件も登録されていない場合はエラーとする.
-     *
-     * @param FormEvent $event
      */
-    public function validateOrderItems(FormEvent $event)
+    public function validateOrderItems(FormEvent $event): void
     {
         /** @var Order $Order */
         $Order = $event->getData();
@@ -457,10 +405,8 @@ class OrderType extends AbstractType
 
     /**
      * 受注明細と, Order/Shippingの紐付けを行う.
-     *
-     * @param FormEvent $event
      */
-    public function associateOrderAndShipping(FormEvent $event)
+    public function associateOrderAndShipping(FormEvent $event): void
     {
         /** @var Order $Order */
         $Order = $event->getData();

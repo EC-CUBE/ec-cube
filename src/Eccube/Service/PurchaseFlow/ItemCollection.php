@@ -15,17 +15,25 @@ namespace Eccube\Service\PurchaseFlow;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Eccube\Entity\CartItem;
 use Eccube\Entity\ItemInterface;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Order;
+use Eccube\Entity\OrderItem;
 
+/**
+ * @extends ArrayCollection<int, ItemInterface>
+ */
 class ItemCollection extends ArrayCollection
 {
-    protected $type;
+    protected string $type;
 
-    public function __construct($Items, $type = null)
+    /**
+     * @param array<int, ItemInterface>|array<int, OrderItem>|Collection<int, ItemInterface>|Collection<int, OrderItem>|array<int, CartItem>|Collection<int, CartItem>|null $Items
+     */
+    public function __construct(array|Collection|null $Items = null, ?string $type = null)
     {
-        $this->type = is_null($type) ? Order::class : $type;
+        $this->type = $type ?? Order::class;
 
         if ($Items instanceof Collection) {
             $Items = $Items->toArray();
@@ -33,42 +41,59 @@ class ItemCollection extends ArrayCollection
         parent::__construct($Items);
     }
 
-    public function reduce(\Closure $func, $initial = null)
+    /**
+     * @template TReturn
+     *
+     * @param \Closure(TReturn, ItemInterface): TReturn $func
+     * @param TReturn|null $initial
+     *
+     * @return TReturn|null
+     */
+    #[\Override]
+    public function reduce(\Closure $func, mixed $initial = null): mixed
     {
-        return array_reduce($this->toArray(), $func, $initial);
+        return parent::reduce($func, $initial);
     }
 
+    /**
+     * @return ItemCollection<int, ItemInterface>
+     */
     // 明細種別ごとに返すメソッド作る
-    public function getProductClasses()
+    public function getProductClasses(): ItemCollection
     {
         return $this->filter(
-            function (ItemInterface $OrderItem) {
-                return $OrderItem->isProduct();
-            });
+            fn (ItemInterface $OrderItem) => $OrderItem->isProduct()
+        );
     }
 
-    public function getDeliveryFees()
+    /**
+     * @return ItemCollection<int, ItemInterface>
+     */
+    public function getDeliveryFees(): ItemCollection
     {
         return $this->filter(
-            function (ItemInterface $OrderItem) {
-                return $OrderItem->isDeliveryFee();
-            });
+            fn (ItemInterface $OrderItem) => $OrderItem->isDeliveryFee()
+        );
     }
 
-    public function getCharges()
+    /**
+     * @return ItemCollection<int, ItemInterface>
+     */
+    public function getCharges(): ItemCollection
     {
         return $this->filter(
-            function (ItemInterface $OrderItem) {
-                return $OrderItem->isCharge();
-            });
+            fn (ItemInterface $OrderItem) => $OrderItem->isCharge()
+        );
     }
 
-    public function getDiscounts()
+    /**
+     * @return ItemCollection<int, ItemInterface>
+     */
+    public function getDiscounts(): ItemCollection
     {
         return $this->filter(
-            function (ItemInterface $OrderItem) {
-                return $OrderItem->isDiscount() || $OrderItem->isPoint();
-            });
+            fn (ItemInterface $OrderItem) => $OrderItem->isDiscount() || $OrderItem->isPoint()
+        );
     }
 
     /**
@@ -76,11 +101,11 @@ class ItemCollection extends ArrayCollection
      *
      * TODO 暫定対応. 本来は明細種別でチェックする.
      */
-    public function hasProductByName($productName)
+    public function hasProductByName(string $productName): bool
     {
         $OrderItems = $this->filter(
             function (ItemInterface $OrderItem) use ($productName) {
-                /* @var OrderItem $OrderItem */
+                /** @var OrderItem $OrderItem */
                 return $OrderItem->getProductName() == $productName;
             });
 
@@ -89,27 +114,23 @@ class ItemCollection extends ArrayCollection
 
     /**
      * 指定した受注明細区分の明細が存在するかどうか.
-     *
-     * @param OrderItemType $OrderItemType 受注区分
-     *
-     * @return bool
      */
-    public function hasItemByOrderItemType($OrderItemType)
+    public function hasItemByOrderItemType(OrderItemType $OrderItemType): bool
     {
-        $filteredItems = $this->filter(function (ItemInterface $OrderItem) use ($OrderItemType) {
-            /* @var OrderItem $OrderItem */
-            return $OrderItem->getOrderItemType() && $OrderItem->getOrderItemType()->getId() == $OrderItemType->getId();
-        });
+        $filteredItems = $this->filter(
+            fn (ItemInterface $OrderItem) => $OrderItem->getOrderItemType()
+                && $OrderItem->getOrderItemType()->getId() == $OrderItemType->getId()
+        );
 
         return !$filteredItems->isEmpty();
     }
 
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
 
-    public function sort()
+    public function sort(): ItemCollection
     {
         $Items = $this->toArray();
         usort($Items, function (ItemInterface $a, ItemInterface $b) {

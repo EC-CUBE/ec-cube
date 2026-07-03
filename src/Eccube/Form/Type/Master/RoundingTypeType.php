@@ -13,26 +13,33 @@
 
 namespace Eccube\Form\Type\Master;
 
+use Eccube\Entity\Master\RoundingType;
 use Eccube\Form\Type\MasterType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RoundingTypeType extends AbstractType
 {
-    public function configureOptions(OptionsResolver $resolver)
+    /**
+     * {@inheritDoc}
+     */
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'class' => \Eccube\Entity\Master\RoundingType::class,
+            'class' => RoundingType::class,
             'expanded' => false,
         ]);
     }
 
-    public function getParent()
+    #[\Override]
+    public function getParent(): string
     {
         return MasterType::class;
     }
 
-    public function getBlockPrefix()
+    #[\Override]
+    public function getBlockPrefix(): string
     {
         return 'rounding_type';
     }

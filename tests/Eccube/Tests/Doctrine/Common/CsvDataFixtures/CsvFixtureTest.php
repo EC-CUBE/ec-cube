@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,22 +20,13 @@ use Eccube\Entity\Master\Job;
 use Eccube\Repository\Master\JobRepository;
 use Eccube\Tests\EccubeTestCase;
 
-class CsvFixtureTest extends EccubeTestCase
+final class CsvFixtureTest extends EccubeTestCase
 {
-    /**
-     * @var CsvFixture
-     */
-    protected $fixture;
+    protected ?CsvFixture $fixture = null;
 
-    /**
-     * @var \SplFileObject
-     */
-    protected $file;
+    protected ?\SplFileObject $file = null;
 
-    /**
-     * @var JobRepository
-     */
-    protected $jobRepository;
+    protected ?JobRepository $jobRepository = null;
 
     /**
      * {@inheritdoc}
@@ -41,15 +34,12 @@ class CsvFixtureTest extends EccubeTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->jobRepository = $this->entityManager->getRepository(Job::class);
-
         $Jobs = $this->jobRepository->findAll();
         foreach ($Jobs as $Job) {
             $this->entityManager->remove($Job);
         }
         $this->entityManager->flush();
-
         $this->file = new \SplFileObject(
             __DIR__.'/../../../../../Fixtures/import_csv/mtb_job.csv'
         );

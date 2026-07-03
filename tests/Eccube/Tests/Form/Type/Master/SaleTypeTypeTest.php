@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -19,19 +21,16 @@ use Eccube\Repository\Master\SaleTypeRepository;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use Symfony\Component\Form\FormInterface;
 
-class SaleTypeTypeTest extends AbstractTypeTestCase
+final class SaleTypeTypeTest extends AbstractTypeTestCase
 {
-    /** @var FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
-    /** @var SaleTypeRepository */
-    protected $saleTypeRepo;
+    protected ?SaleTypeRepository $saleTypeRepo = null;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->saleTypeRepo = $this->entityManager->getRepository(SaleType::class);
-
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
             ->createBuilder(SaleTypeType::class, null, [

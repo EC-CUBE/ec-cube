@@ -38,41 +38,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 class SearchProductType extends AbstractType
 {
     /**
-     * @var ProductStatusRepository
-     */
-    protected $productStatusRepository;
-
-    /**
-     * @var CategoryRepository
-     */
-    protected $categoryRepository;
-
-    /**
-     * @var TagRepository
-     */
-    protected $tagRepository;
-
-    /**
      * SearchProductType constructor.
-     *
-     * @param ProductStatusRepository $productStatusRepository
-     * @param CategoryRepository $categoryRepository
-     * @param TagRepository $tagRepository
      */
-    public function __construct(
-        ProductStatusRepository $productStatusRepository,
-        CategoryRepository $categoryRepository,
-        TagRepository $tagRepository,
-    ) {
-        $this->productStatusRepository = $productStatusRepository;
-        $this->categoryRepository = $categoryRepository;
-        $this->tagRepository = $tagRepository;
+    public function __construct(protected ProductStatusRepository $productStatusRepository, protected CategoryRepository $categoryRepository, protected TagRepository $tagRepository)
+    {
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('id', TextType::class, [
@@ -87,9 +65,7 @@ class SearchProductType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'choices' => $this->categoryRepository->getList(null, true),
-                'choice_value' => function (?Category $Category = null) {
-                    return $Category ? $Category->getId() : null;
-                },
+                'choice_value' => fn (?Category $Category = null) => $Category ? $Category->getId() : null,
             ])
             ->add('status', ProductStatusType::class, [
                 'label' => 'admin.product.display_status',
@@ -118,10 +94,8 @@ class SearchProductType extends AbstractType
                 'required' => false,
                 'multiple' => false,
                 'expanded' => false,
-                'query_builder' => function ($er) {
-                    return $er->createQueryBuilder('t')
-                    ->orderBy('t.sort_no', 'DESC');
-                },
+                'query_builder' => fn ($er) => $er->createQueryBuilder('t')
+                ->orderBy('t.sort_no', 'DESC'),
             ])
             ->add('create_date_start', DateType::class, [
                 'label' => 'admin.common.create_date__start',
@@ -272,7 +246,7 @@ class SearchProductType extends AbstractType
                 'label' => 'admin.list.sort.type',
                 'required' => false,
             ])
-            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
                 $form = $event->getForm();
 
                 // 登録日
@@ -301,7 +275,8 @@ class SearchProductType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    #[\Override]
+    public function getBlockPrefix(): string
     {
         return 'admin_search_product';
     }

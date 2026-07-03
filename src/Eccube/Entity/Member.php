@@ -13,42 +13,31 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Entity\Master\Authority;
+use Eccube\Entity\Master\Work;
+use Eccube\Repository\MemberRepository;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\LegacyPasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 if (!class_exists(Member::class)) {
     /**
      * Member
-     *
-     * @ORM\Table(name="dtb_member")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\MemberRepository")
      */
-    class Member extends AbstractEntity implements UserInterface, PasswordAuthenticatedUserInterface, LegacyPasswordAuthenticatedUserInterface, \Serializable
+    #[ORM\Table(name: 'dtb_member')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: MemberRepository::class)]
+    #[UniqueEntity(fields: 'login_id', message: 'form_error.member_already_exists')]
+    class Member extends AbstractEntity implements UserInterface, PasswordAuthenticatedUserInterface, LegacyPasswordAuthenticatedUserInterface, \Serializable, \Stringable
     {
-        public static function loadValidatorMetadata(ClassMetadata $metadata)
-        {
-            $metadata->addConstraint(new UniqueEntity([
-                'fields' => 'login_id',
-                'message' => 'form_error.member_already_exists',
-            ]));
-        }
-
-        /**
-         * @return string
-         */
-        public function __toString()
+        #[\Override]
+        public function __toString(): string
         {
             return (string) $this->getName();
         }
@@ -56,15 +45,13 @@ if (!class_exists(Member::class)) {
         /**
          * {@inheritdoc}
          */
+        #[\Override]
         public function getRoles(): array
         {
             return ['ROLE_ADMIN'];
         }
 
-        /**
-         * {@inheritdoc}
-         */
-        public function getUsername()
+        public function getUsername(): string
         {
             return $this->login_id;
         }
@@ -72,159 +59,90 @@ if (!class_exists(Member::class)) {
         /**
          * {@inheritdoc}
          */
-        public function eraseCredentials()
+        #[\Override]
+        #[\Deprecated(message: 'eraseCredentials() is empty as we moved the logic to __serialize()', since: 'eccube/eccube 7.3')]
+        public function eraseCredentials(): void
         {
         }
 
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
-         */
-        private $id;
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+        private ?int $id = null;
+
+        #[ORM\Column(name: 'name', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $name = null;
+
+        #[ORM\Column(name: 'department', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $department = null;
+
+        #[ORM\Column(name: 'login_id', type: Types::STRING, length: 255)]
+        private ?string $login_id = null;
 
         /**
          * @var string|null
-         *
-         * @ORM\Column(name="name", type="string", length=255, nullable=true)
          */
-        private $name;
-
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="department", type="string", length=255, nullable=true)
-         */
-        private $department;
-
-        /**
-         * @var string
-         *
-         * @ORM\Column(name="login_id", type="string", length=255)
-         */
-        private $login_id;
-
-        /**
-         * @Assert\NotBlank()
-         *
-         * @Assert\Length(max=4096)
-         */
+        #[Assert\NotBlank]
+        #[Assert\Length(max: 4096)]
         private $plainPassword;
 
-        /**
-         * @var string
-         *
-         * @ORM\Column(name="password", type="string", length=255)
-         */
-        private $password;
+        #[ORM\Column(name: 'password', type: Types::STRING, length: 255)]
+        private ?string $password = null;
 
-        /**
-         * @var string
-         *
-         * @ORM\Column(name="salt", type="string", length=255, nullable=true)
-         */
-        private $salt;
+        #[ORM\Column(name: 'salt', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $salt = null;
 
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="sort_no", type="smallint", options={"unsigned":true})
-         */
-        private $sort_no;
+        #[ORM\Column(name: 'sort_no', type: Types::SMALLINT, options: ['unsigned' => true])]
+        private ?int $sort_no = null;
 
-        /**
-         * @var string
-         *
-         * @ORM\Column(name="two_factor_auth_key",type="string",length=255,nullable=true,options={"fixed":false})
-         */
-        private $two_factor_auth_key;
+        #[ORM\Column(name: 'two_factor_auth_key', type: Types::STRING, length: 255, nullable: true, options: ['fixed' => false])]
+        private ?string $two_factor_auth_key = null;
 
-        /**
-         * @ORM\Column(name="two_factor_auth_enabled",type="boolean",nullable=false,options={"default":false})
-         *
-         * @var int
-         */
-        private $two_factor_auth_enabled = false;
+        #[ORM\Column(name: 'two_factor_auth_enabled', type: Types::BOOLEAN, nullable: false, options: ['default' => false])]
+        private bool $two_factor_auth_enabled = false;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
         private $create_date;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
         private $update_date;
 
         /**
          * @var \DateTime|null
-         *
-         * @ORM\Column(name="login_date", type="datetimetz", nullable=true)
          */
+        #[ORM\Column(name: 'login_date', type: Types::DATETIMETZ_MUTABLE, nullable: true)]
         private $login_date;
 
-        /**
-         * @var Master\Work
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Work")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="work_id", referencedColumnName="id")
-         * })
-         */
-        private $Work;
+        #[ORM\ManyToOne(targetEntity: Work::class)]
+        #[ORM\JoinColumn(name: 'work_id', referencedColumnName: 'id')]
+        private ?Work $Work = null;
 
-        /**
-         * @var Master\Authority
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Authority")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="authority_id", referencedColumnName="id")
-         * })
-         */
-        private $Authority;
+        #[ORM\ManyToOne(targetEntity: Authority::class)]
+        #[ORM\JoinColumn(name: 'authority_id', referencedColumnName: 'id')]
+        private ?Authority $Authority = null;
 
-        /**
-         * @var Member
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
-         * })
-         */
-        private $Creator;
+        #[ORM\ManyToOne(targetEntity: Member::class)]
+        #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
+        private ?Member $Creator = null;
 
         /**
          * Get id.
-         *
-         * @return int
          */
-        public function getId()
+        public function getId(): ?int
         {
             return $this->id;
         }
 
         /**
          * Set name.
-         *
-         * @param string|null $name
-         *
-         * @return Member
          */
-        public function setName($name = null)
+        public function setName(?string $name = null): Member
         {
             $this->name = $name;
 
@@ -233,22 +151,16 @@ if (!class_exists(Member::class)) {
 
         /**
          * Get name.
-         *
-         * @return string|null
          */
-        public function getName()
+        public function getName(): ?string
         {
             return $this->name;
         }
 
         /**
          * Set department.
-         *
-         * @param string|null $department
-         *
-         * @return Member
          */
-        public function setDepartment($department = null)
+        public function setDepartment(?string $department = null): Member
         {
             $this->department = $department;
 
@@ -257,22 +169,16 @@ if (!class_exists(Member::class)) {
 
         /**
          * Get department.
-         *
-         * @return string|null
          */
-        public function getDepartment()
+        public function getDepartment(): ?string
         {
             return $this->department;
         }
 
         /**
          * Set loginId.
-         *
-         * @param string $loginId
-         *
-         * @return Member
          */
-        public function setLoginId($loginId)
+        public function setLoginId(string $loginId): Member
         {
             $this->login_id = $loginId;
 
@@ -281,17 +187,12 @@ if (!class_exists(Member::class)) {
 
         /**
          * Get loginId.
-         *
-         * @return string
          */
-        public function getLoginId()
+        public function getLoginId(): string
         {
             return $this->login_id;
         }
 
-        /**
-         * @return string|null
-         */
         public function getPlainPassword(): ?string
         {
             return $this->plainPassword;
@@ -302,7 +203,7 @@ if (!class_exists(Member::class)) {
          *
          * @return $this
          */
-        public function setPlainPassword(?string $password): self
+        public function setPlainPassword(?string $password): static
         {
             $this->plainPassword = $password;
 
@@ -311,12 +212,8 @@ if (!class_exists(Member::class)) {
 
         /**
          * Set password.
-         *
-         * @param string $password
-         *
-         * @return Member
          */
-        public function setPassword($password)
+        public function setPassword(string $password): Member
         {
             $this->password = $password;
 
@@ -325,22 +222,17 @@ if (!class_exists(Member::class)) {
 
         /**
          * Get password.
-         *
-         * @return string
          */
-        public function getPassword(): ?string
+        #[\Override]
+        public function getPassword(): string
         {
             return $this->password;
         }
 
         /**
          * Set salt.
-         *
-         * @param string $salt
-         *
-         * @return Member
          */
-        public function setSalt($salt)
+        public function setSalt(?string $salt): Member
         {
             $this->salt = $salt;
 
@@ -349,9 +241,8 @@ if (!class_exists(Member::class)) {
 
         /**
          * Get salt.
-         *
-         * @return string
          */
+        #[\Override]
         public function getSalt(): ?string
         {
             return $this->salt;
@@ -359,12 +250,8 @@ if (!class_exists(Member::class)) {
 
         /**
          * Set sortNo.
-         *
-         * @param int $sortNo
-         *
-         * @return Member
          */
-        public function setSortNo($sortNo)
+        public function setSortNo(int $sortNo): Member
         {
             $this->sort_no = $sortNo;
 
@@ -373,22 +260,16 @@ if (!class_exists(Member::class)) {
 
         /**
          * Get sortNo.
-         *
-         * @return int
          */
-        public function getSortNo()
+        public function getSortNo(): int
         {
             return $this->sort_no;
         }
 
         /**
          * Set twoFactorAuthKey.
-         *
-         * @param string $two_factor_auth_key
-         *
-         * @return Member
          */
-        public function setTwoFactorAuthKey($two_factor_auth_key)
+        public function setTwoFactorAuthKey(?string $two_factor_auth_key): Member
         {
             $this->two_factor_auth_key = $two_factor_auth_key;
 
@@ -397,22 +278,16 @@ if (!class_exists(Member::class)) {
 
         /**
          * Get twoFactorAuthKey.
-         *
-         * @return string
          */
-        public function getTwoFactorAuthKey()
+        public function getTwoFactorAuthKey(): ?string
         {
             return $this->two_factor_auth_key;
         }
 
         /**
          * Set twoFactorAuthEnabled.
-         *
-         * @param bool $two_factor_auth_enabled
-         *
-         * @return Member
          */
-        public function setTwoFactorAuthEnabled($two_factor_auth_enabled)
+        public function setTwoFactorAuthEnabled(bool $two_factor_auth_enabled): Member
         {
             $this->two_factor_auth_enabled = $two_factor_auth_enabled;
 
@@ -421,22 +296,16 @@ if (!class_exists(Member::class)) {
 
         /**
          * Get twoFactorAuthEnabled.
-         *
-         * @return bool
          */
-        public function isTwoFactorAuthEnabled()
+        public function isTwoFactorAuthEnabled(): bool
         {
             return $this->two_factor_auth_enabled;
         }
 
         /**
          * Set createDate.
-         *
-         * @param \DateTime $createDate
-         *
-         * @return Member
          */
-        public function setCreateDate($createDate)
+        public function setCreateDate(\DateTime $createDate): Member
         {
             $this->create_date = $createDate;
 
@@ -445,22 +314,16 @@ if (!class_exists(Member::class)) {
 
         /**
          * Get createDate.
-         *
-         * @return \DateTime
          */
-        public function getCreateDate()
+        public function getCreateDate(): ?\DateTime
         {
             return $this->create_date;
         }
 
         /**
          * Set updateDate.
-         *
-         * @param \DateTime $updateDate
-         *
-         * @return Member
          */
-        public function setUpdateDate($updateDate)
+        public function setUpdateDate(\DateTime $updateDate): Member
         {
             $this->update_date = $updateDate;
 
@@ -469,22 +332,16 @@ if (!class_exists(Member::class)) {
 
         /**
          * Get updateDate.
-         *
-         * @return \DateTime
          */
-        public function getUpdateDate()
+        public function getUpdateDate(): ?\DateTime
         {
             return $this->update_date;
         }
 
         /**
          * Set loginDate.
-         *
-         * @param \DateTime|null $loginDate
-         *
-         * @return Member
          */
-        public function setLoginDate($loginDate = null)
+        public function setLoginDate(?\DateTime $loginDate = null): Member
         {
             $this->login_date = $loginDate;
 
@@ -493,22 +350,16 @@ if (!class_exists(Member::class)) {
 
         /**
          * Get loginDate.
-         *
-         * @return \DateTime|null
          */
-        public function getLoginDate()
+        public function getLoginDate(): ?\DateTime
         {
             return $this->login_date;
         }
 
         /**
          * Set Work
-         *
-         * @param Master\Work
-         *
-         * @return Member
          */
-        public function setWork(?Master\Work $work = null)
+        public function setWork(?Work $work = null): Member
         {
             $this->Work = $work;
 
@@ -517,22 +368,16 @@ if (!class_exists(Member::class)) {
 
         /**
          * Get work.
-         *
-         * @return Master\Work|null
          */
-        public function getWork()
+        public function getWork(): ?Work
         {
             return $this->Work;
         }
 
         /**
          * Set authority.
-         *
-         * @param Master\Authority|null $authority
-         *
-         * @return Member
          */
-        public function setAuthority(?Master\Authority $authority = null)
+        public function setAuthority(?Authority $authority = null): Member
         {
             $this->Authority = $authority;
 
@@ -541,22 +386,16 @@ if (!class_exists(Member::class)) {
 
         /**
          * Get authority.
-         *
-         * @return Master\Authority|null
          */
-        public function getAuthority()
+        public function getAuthority(): ?Authority
         {
             return $this->Authority;
         }
 
         /**
          * Set creator.
-         *
-         * @param Member|null $creator
-         *
-         * @return Member
          */
-        public function setCreator(?Member $creator = null)
+        public function setCreator(?Member $creator = null): Member
         {
             $this->Creator = $creator;
 
@@ -565,10 +404,8 @@ if (!class_exists(Member::class)) {
 
         /**
          * Get creator.
-         *
-         * @return Member|null
          */
-        public function getCreator()
+        public function getCreator(): ?Member
         {
             return $this->Creator;
         }
@@ -582,10 +419,11 @@ if (!class_exists(Member::class)) {
          *
          * @since 5.1.0
          */
-        public function serialize()
+        #[\Override]
+        public function serialize(): string
         {
             // see https://symfony.com/doc/2.7/security/entity_provider.html#create-your-user-entity
-            // MemberRepository::loadUserByUsername() で Work をチェックしているため、ここでは不要
+            // MemberRepository::loadUserByIdentifier() で Work をチェックしているため、ここでは不要
             return serialize([
                 $this->id,
                 $this->login_id,
@@ -603,22 +441,33 @@ if (!class_exists(Member::class)) {
          * The string representation of the object.
          * </p>
          *
-         * @return void
-         *
          * @since 5.1.0
          */
-        public function unserialize($serialized)
+        #[\Override]
+        public function unserialize($serialized): void
         {
-            list(
-                $this->id,
-                $this->login_id,
-                $this->password,
-                $this->salt) = unserialize($serialized);
+            [$this->id, $this->login_id, $this->password, $this->salt] = unserialize($serialized);
         }
 
+        #[\Override]
         public function getUserIdentifier(): string
         {
             return $this->login_id;
+        }
+
+        public function __serialize(): array
+        {
+            return ['p' => $this->serialize()];
+        }
+
+        /**
+         * @param array<string, mixed> $data
+         */
+        public function __unserialize(array $data): void
+        {
+            if (isset($data['p']) && is_string($data['p'])) {
+                $this->unserialize($data['p']);
+            }
         }
     }
 }

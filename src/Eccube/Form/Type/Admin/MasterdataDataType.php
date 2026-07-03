@@ -28,24 +28,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 class MasterdataDataType extends AbstractType
 {
     /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
      * MasterdataDataType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
-    public function __construct(EccubeConfig $eccubeConfig)
+    public function __construct(protected EccubeConfig $eccubeConfig)
     {
-        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('id', TextType::class, [
@@ -63,7 +58,7 @@ class MasterdataDataType extends AbstractType
             ->add('name', TextType::class, [
                 'required' => false,
             ])
-        ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             $form = $event->getForm();
             $data = $form->getData();
             if (isset($data['id']) && strlen($data['name'] ?? '') == 0) {
@@ -75,7 +70,8 @@ class MasterdataDataType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    #[\Override]
+    public function getBlockPrefix(): string
     {
         return 'admin_system_masterdata_data';
     }

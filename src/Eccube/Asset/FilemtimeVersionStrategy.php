@@ -20,10 +20,7 @@ use Symfony\Component\Asset\VersionStrategy\VersionStrategyInterface;
  */
 class FilemtimeVersionStrategy implements VersionStrategyInterface
 {
-    /**
-     * @var string
-     */
-    private $basePath;
+    private readonly string $basePath;
 
     /**
      * @param string $basePath アセットファイルのベースパス

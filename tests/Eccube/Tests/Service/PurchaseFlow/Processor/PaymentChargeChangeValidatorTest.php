@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -20,29 +22,18 @@ use Eccube\Service\PurchaseFlow\Processor\PaymentChargeChangeValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
-class PaymentChargeChangeValidatorTest extends EccubeTestCase
+final class PaymentChargeChangeValidatorTest extends EccubeTestCase
 {
-    /**
-     * @var PaymentChargeChangeValidator
-     */
-    private $validator;
+    private ?PaymentChargeChangeValidator $validator = null;
 
-    /**
-     * @var Customer
-     */
-    private $Customer;
+    private ?Customer $Customer = null;
 
-    /**
-     * @var Order
-     */
-    private $Order;
+    private ?Order $Order = null;
 
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->validator = new PaymentChargeChangeValidator();
-
         $this->Customer = $this->createCustomer();
         $this->Order = $this->createOrder($this->Customer);
     }
@@ -51,7 +42,7 @@ class PaymentChargeChangeValidatorTest extends EccubeTestCase
     {
         $validator = new PaymentChargeChangeValidator();
 
-        self::assertInstanceOf(PaymentChargeChangeValidator::class, $validator);
+        $this->assertInstanceOf(PaymentChargeChangeValidator::class, $validator);
     }
 
     public function testValidateWithCart()
@@ -59,7 +50,7 @@ class PaymentChargeChangeValidatorTest extends EccubeTestCase
         $result = $this->validator->execute(new Cart(), new PurchaseContext());
 
         // カートの場合は何もしない.
-        self::assertTrue($result->isSuccess());
+        $this->assertTrue($result->isSuccess());
     }
 
     public function testValidateNoCharged()
@@ -70,7 +61,7 @@ class PaymentChargeChangeValidatorTest extends EccubeTestCase
 
         $result = $this->validator->execute($this->Order, new PurchaseContext($CloneOrder));
 
-        self::assertTrue($result->isSuccess());
+        $this->assertTrue($result->isSuccess());
     }
 
     public function testValidateChanged()
@@ -81,6 +72,6 @@ class PaymentChargeChangeValidatorTest extends EccubeTestCase
 
         $result = $this->validator->execute($this->Order, new PurchaseContext($CloneOrder));
 
-        self::assertTrue($result->isWarning());
+        $this->assertTrue($result->isWarning());
     }
 }

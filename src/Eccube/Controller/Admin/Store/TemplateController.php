@@ -20,54 +20,34 @@ use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\TemplateRepository;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class TemplateController extends AbstractController
 {
     /**
-     * @var TemplateRepository
-     */
-    protected $templateRepository;
-
-    /**
-     * @var DeviceTypeRepository
-     */
-    protected $deviceTypeRepository;
-
-    /**
      * TemplateController constructor.
-     *
-     * @param TemplateRepository $templateRepository
-     * @param DeviceTypeRepository $deviceTypeRepository
      */
-    public function __construct(
-        TemplateRepository $templateRepository,
-        DeviceTypeRepository $deviceTypeRepository,
-    ) {
-        $this->templateRepository = $templateRepository;
-        $this->deviceTypeRepository = $deviceTypeRepository;
+    public function __construct(protected TemplateRepository $templateRepository, protected DeviceTypeRepository $deviceTypeRepository, private readonly CacheUtil $cacheUtil)
+    {
     }
 
     /**
      * テンプレート一覧画面
      *
-     * @Route("/%eccube_admin_route%/store/template", name="admin_store_template", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Store/template.twig")
-     *
-     * @param Request $request
-     *
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return array<string, mixed>|RedirectResponse
      */
-    public function index(Request $request, CacheUtil $cacheUtil)
+    #[Route(path: '/%eccube_admin_route%/store/template', name: 'admin_store_template', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Store/template.twig')]
+    public function index(Request $request): array|RedirectResponse
     {
         $DeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_PC);
 
@@ -98,7 +78,7 @@ class TemplateController extends AbstractController
                 $this->addWarning('admin.store.template.env_override_warning', 'admin');
             }
 
-            $cacheUtil->clearCache();
+            $this->cacheUtil->clearCache();
 
             return $this->redirectToRoute('admin_store_template');
         }
@@ -111,15 +91,9 @@ class TemplateController extends AbstractController
 
     /**
      * テンプレート一覧からのダウンロード
-     *
-     * @Route("/%eccube_admin_route%/store/template/{id}/download", name="admin_store_template_download", requirements={"id" = "\d+"}, methods={"GET"})
-     *
-     * @param Request $request
-     * @param \Eccube\Entity\Template $Template
-     *
-     * @return BinaryFileResponse
      */
-    public function download(Request $request, \Eccube\Entity\Template $Template)
+    #[Route(path: '/%eccube_admin_route%/store/template/{id}/download', name: 'admin_store_template_download', requirements: ['id' => '\d+'], methods: ['GET'])]
+    public function download(Request $request, \Eccube\Entity\Template $Template): BinaryFileResponse
     {
         // 該当テンプレートのディレクトリ
         $templateCode = $Template->getCode();
@@ -159,7 +133,7 @@ class TemplateController extends AbstractController
             $tmpDir,
             $tarFile,
             $tarGzFile
-        ) {
+        ): void {
             log_debug('remove temp file: '.$tmpDir);
             log_debug('remove temp file: '.$tarFile);
             log_debug('remove temp file: '.$tarGzFile);
@@ -175,10 +149,8 @@ class TemplateController extends AbstractController
         return $response;
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/store/template/{id}/delete", name="admin_store_template_delete", requirements={"id" = "\d+"}, methods={"DELETE"})
-     */
-    public function delete(Request $request, \Eccube\Entity\Template $Template)
+    #[Route(path: '/%eccube_admin_route%/store/template/{id}/delete', name: 'admin_store_template_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    public function delete(Request $request, \Eccube\Entity\Template $Template): RedirectResponse
     {
         $this->isTokenValid();
 
@@ -217,15 +189,11 @@ class TemplateController extends AbstractController
     /**
      * テンプレートの追加画面.
      *
-     * @Route("/%eccube_admin_route%/store/template/install", name="admin_store_template_install", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Store/template_add.twig")
-     *
-     * @param Request $request
-     *
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return array<string, mixed>|RedirectResponse
      */
-    public function install(Request $request)
+    #[Route(path: '/%eccube_admin_route%/store/template/install', name: 'admin_store_template_install', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Store/template_add.twig')]
+    public function install(Request $request): array|RedirectResponse
     {
         $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');
 
@@ -237,10 +205,8 @@ class TemplateController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var \Eccube\Entity\Template $Template */
             $Template = $form->getData();
-
             $TemplateExists = $this->templateRepository->findByCode($Template->getCode());
-
-            // テンプレートコードの重複チェック.
+            // テンプレートコードの重複チェック.s
             if ($TemplateExists) {
                 $form['code']->addError(new FormError(trans('admin.store.template.template_code_already_exists')));
 
@@ -269,7 +235,7 @@ class TemplateController extends AbstractController
 
             // 一時ディレクトリへ解凍する.
             try {
-                if (strtolower($formFile->getClientOriginalExtension()) === 'zip') {
+                if (strtolower((string) $formFile->getClientOriginalExtension()) === 'zip') {
                     $zip = new \ZipArchive();
                     $zip->open($tmpDir.'/'.$archive);
                     $zip->extractTo($tmpDir);
@@ -278,7 +244,7 @@ class TemplateController extends AbstractController
                     $phar = new \PharData($tmpDir.'/'.$archive);
                     $phar->extractTo($tmpDir, null, true);
                 }
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 $form['file']->addError(new FormError(trans('admin.common.upload_error')));
 
                 return [

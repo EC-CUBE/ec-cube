@@ -26,12 +26,10 @@ class CsvImportType extends AbstractType
     /**
      * @var int CSVの最大アップロードサイズ
      */
-    private $csvMaxSize;
+    private readonly int $csvMaxSize;
 
     /**
      * CsvImportType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(EccubeConfig $eccubeConfig)
     {
@@ -40,8 +38,11 @@ class CsvImportType extends AbstractType
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('import_file', FileType::class, [
@@ -70,7 +71,8 @@ class CsvImportType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    #[\Override]
+    public function getBlockPrefix(): string
     {
         return 'admin_csv_import';
     }

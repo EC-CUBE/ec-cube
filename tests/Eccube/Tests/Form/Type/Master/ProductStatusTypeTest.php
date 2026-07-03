@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -19,19 +21,16 @@ use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use Symfony\Component\Form\FormInterface;
 
-class ProductStatusTypeTest extends AbstractTypeTestCase
+final class ProductStatusTypeTest extends AbstractTypeTestCase
 {
-    /** @var FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
-    /** @var ProductStatusRepository */
-    protected $productStatusRepo;
+    protected ?ProductStatusRepository $productStatusRepo = null;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->productStatusRepo = $this->entityManager->getRepository(ProductStatus::class);
-
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
             ->createBuilder(ProductStatusType::class, null, [

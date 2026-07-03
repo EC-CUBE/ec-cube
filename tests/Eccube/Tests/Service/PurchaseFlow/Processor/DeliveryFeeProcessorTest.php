@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -24,19 +26,12 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Tests\Fixture\Generator;
 
-class DeliveryFeeProcessorTest extends EccubeTestCase
+final class DeliveryFeeProcessorTest extends EccubeTestCase
 {
-    /** @var BaseInfoRepository */
-    protected $BaseInfoRepository;
-    /**
-     * @var Product
-     */
-    protected $Product;
+    protected ?BaseInfoRepository $BaseInfoRepository = null;
+    protected ?Product $Product = null;
 
-    /**
-     * @var ProductClass
-     */
-    protected $ProductClass;
+    protected ?ProductClass $ProductClass = null;
 
     /**
      * {@inheritdoc}
@@ -44,7 +39,6 @@ class DeliveryFeeProcessorTest extends EccubeTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->BaseInfoRepository = $this->entityManager->getRepository(BaseInfo::class);
         $this->Product = $this->createProduct('テスト商品', 1);
         $this->ProductClass = $this->Product->getProductClasses()[0];
@@ -63,7 +57,7 @@ class DeliveryFeeProcessorTest extends EccubeTestCase
             }
         }
         $processor->process($Order, new PurchaseContext());
-        self::assertNotEmpty($this->getDeliveryFees($Order));
+        $this->assertNotEmpty($this->getDeliveryFees($Order));
     }
 
     public function testProcessWithDeliveryFeePerProduct()
@@ -73,7 +67,7 @@ class DeliveryFeeProcessorTest extends EccubeTestCase
         $this->entityManager->persist($BaseInfo);
         $this->entityManager->flush($BaseInfo);
         $deliveryFee = 10000;
-        $this->ProductClass->setDeliveryFee($deliveryFee);
+        $this->ProductClass->setDeliveryFee((string) $deliveryFee);
         $this->entityManager->persist($this->ProductClass);
         $this->entityManager->flush($this->ProductClass);
 
@@ -108,8 +102,6 @@ class DeliveryFeeProcessorTest extends EccubeTestCase
 
     private function getDeliveryFees(Order $Order)
     {
-        return array_filter($Order->getOrderItems()->toArray(), function ($OrderItem) {
-            return $OrderItem->isDeliveryFee();
-        });
+        return array_filter($Order->getOrderItems()->toArray(), fn ($OrderItem) => $OrderItem->isDeliveryFee());
     }
 }

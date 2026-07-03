@@ -17,29 +17,25 @@ use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
+/**
+ * @template T of object
+ *
+ * @implements DataTransformerInterface<T|null, string|int|null>
+ */
 class EntityToIdTransformer implements DataTransformerInterface
 {
     /**
-     * @var ObjectManager
+     * @param class-string<T> $className
      */
-    private $om;
-
-    /**
-     * @var string
-     */
-    private $className;
-
-    /**
-     * @param ObjectManager $om
-     * @param string $className
-     */
-    public function __construct(ObjectManager $om, $className)
+    public function __construct(private readonly ObjectManager $om, private $className)
     {
-        $this->om = $om;
-        $this->className = $className;
     }
 
-    public function transform($entity)
+    /**
+     * @param T|null $entity
+     */
+    #[\Override]
+    public function transform(mixed $entity): string|int|null
     {
         if (null === $entity) {
             return '';
@@ -48,14 +44,21 @@ class EntityToIdTransformer implements DataTransformerInterface
         return $entity->getId();
     }
 
-    public function reverseTransform($id)
+    /**
+     * @param string|int|null $id
+     *
+     * @return T|null
+     */
+    #[\Override]
+    public function reverseTransform(mixed $id): ?object
     {
         if ('' === $id || null === $id) {
             return null;
         }
-
+        /** @var class-string<T> $classname */
+        $classname = $this->className;
         $entity = $this->om
-            ->getRepository($this->className)
+            ->getRepository($classname)
             ->find($id)
         ;
 

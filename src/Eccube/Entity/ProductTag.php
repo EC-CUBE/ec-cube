@@ -13,31 +13,26 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\ProductTagRepository;
 
 if (!class_exists(ProductTag::class)) {
     /**
      * ProductTag
-     *
-     * @ORM\Table(name="dtb_product_tag")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\ProductTagRepository")
      */
+    #[ORM\Table(name: 'dtb_product_tag')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: ProductTagRepository::class)]
     class ProductTag extends AbstractEntity
     {
         /**
          * Get tag_id
          * use csv export
-         *
-         * @return int
          */
-        public function getTagId()
+        public function getTagId(): ?int
         {
             if (empty($this->Tag)) {
                 return null;
@@ -46,78 +41,43 @@ if (!class_exists(ProductTag::class)) {
             return $this->Tag->getId();
         }
 
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
-         */
-        private $id;
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+        private ?int $id = null;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
         private $create_date;
 
-        /**
-         * @var Product
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Product", inversedBy="ProductTag")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="product_id", referencedColumnName="id")
-         * })
-         */
-        private $Product;
+        #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'ProductTag')]
+        #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id')]
+        private ?Product $Product = null;
 
-        /**
-         * @var Tag
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Tag", inversedBy="ProductTag")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="tag_id", referencedColumnName="id")
-         * })
-         */
-        private $Tag;
+        #[ORM\ManyToOne(targetEntity: Tag::class, inversedBy: 'ProductTag')]
+        #[ORM\JoinColumn(name: 'tag_id', referencedColumnName: 'id')]
+        private ?Tag $Tag = null;
 
-        /**
-         * @var Member
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
-         * })
-         */
-        private $Creator;
+        #[ORM\ManyToOne(targetEntity: Member::class)]
+        #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
+        private ?Member $Creator = null;
 
         /**
          * Get id.
          *
          * @return int
          */
-        public function getId()
+        public function getId(): ?int
         {
             return $this->id;
         }
 
         /**
          * Set createDate.
-         *
-         * @param \DateTime $createDate
-         *
-         * @return ProductTag
          */
-        public function setCreateDate($createDate)
+        public function setCreateDate(\DateTime $createDate): ProductTag
         {
             $this->create_date = $createDate;
 
@@ -126,22 +86,16 @@ if (!class_exists(ProductTag::class)) {
 
         /**
          * Get createDate.
-         *
-         * @return \DateTime
          */
-        public function getCreateDate()
+        public function getCreateDate(): ?\DateTime
         {
             return $this->create_date;
         }
 
         /**
          * Set product.
-         *
-         * @param Product|null $product
-         *
-         * @return ProductTag
          */
-        public function setProduct(?Product $product = null)
+        public function setProduct(?Product $product = null): ProductTag
         {
             $this->Product = $product;
 
@@ -150,22 +104,16 @@ if (!class_exists(ProductTag::class)) {
 
         /**
          * Get product.
-         *
-         * @return Product|null
          */
-        public function getProduct()
+        public function getProduct(): ?Product
         {
             return $this->Product;
         }
 
         /**
          * Set tag.
-         *
-         * @param Tag|null $tag
-         *
-         * @return ProductTag
          */
-        public function setTag(?Tag $tag = null)
+        public function setTag(?Tag $tag = null): ProductTag
         {
             $this->Tag = $tag;
 
@@ -174,22 +122,16 @@ if (!class_exists(ProductTag::class)) {
 
         /**
          * Get tag.
-         *
-         * @return Tag|null
          */
-        public function getTag()
+        public function getTag(): ?Tag
         {
             return $this->Tag;
         }
 
         /**
          * Set creator.
-         *
-         * @param Member|null $creator
-         *
-         * @return ProductTag
          */
-        public function setCreator(?Member $creator = null)
+        public function setCreator(?Member $creator = null): ProductTag
         {
             $this->Creator = $creator;
 
@@ -198,10 +140,8 @@ if (!class_exists(ProductTag::class)) {
 
         /**
          * Get creator.
-         *
-         * @return Member|null
          */
-        public function getCreator()
+        public function getCreator(): ?Member
         {
             return $this->Creator;
         }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -19,13 +21,11 @@ use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Product;
 use Eccube\Tests\Fixture\Generator;
 use Eccube\Tests\Web\AbstractWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
-class MypageControllerTest extends AbstractWebTestCase
+final class MypageControllerTest extends AbstractWebTestCase
 {
-    /**
-     * @var Customer
-     */
-    protected $Customer;
+    protected ?Customer $Customer = null;
 
     protected function setUp(): void
     {
@@ -37,7 +37,7 @@ class MypageControllerTest extends AbstractWebTestCase
     {
         $this->logInTo($this->Customer);
 
-        $this->client->request('GET', $this->generateUrl('mypage_favorite'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('mypage_favorite'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -52,8 +52,9 @@ class MypageControllerTest extends AbstractWebTestCase
 
         // main
         $redirectUrl = $this->generateUrl('mypage_favorite');
-        $this->client->request('DELETE',
-            $this->generateUrl('mypage_favorite_delete', ['id' => $TestFavorite->getId()])
+        // mypage_favorite_deleteはprocutt_idを受け取る
+        $this->client->request(Request::METHOD_DELETE,
+            $this->generateUrl('mypage_favorite_delete', ['id' => $TestFavorite->getProduct()->getId()])
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
 
@@ -69,7 +70,7 @@ class MypageControllerTest extends AbstractWebTestCase
 
         $Order = $this->createOrder($this->Customer);
 
-        $client->request('PUT',
+        $client->request(Request::METHOD_PUT,
             $this->generateUrl('mypage_order', ['order_no' => $Order->getOrderNo()])
         );
 
@@ -80,7 +81,7 @@ class MypageControllerTest extends AbstractWebTestCase
     {
         $this->logInTo($this->Customer);
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('mypage_login')
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('mypage')));
@@ -89,7 +90,7 @@ class MypageControllerTest extends AbstractWebTestCase
     public function testLoginWithFailure()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('mypage_login')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -101,7 +102,7 @@ class MypageControllerTest extends AbstractWebTestCase
         $this->logInTo($this->Customer);
 
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('mypage')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -118,7 +119,7 @@ class MypageControllerTest extends AbstractWebTestCase
         $client = $this->client;
 
         $client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('mypage_history', ['order_no' => $Order->getOrderNo()])
         );
         $this->assertTrue($client->getResponse()->isSuccessful());
@@ -134,7 +135,7 @@ class MypageControllerTest extends AbstractWebTestCase
         $this->loginTo($this->Customer);
 
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('mypage_history', ['order_no' => $Order->getOrderNo()])
         );
 
@@ -148,7 +149,7 @@ class MypageControllerTest extends AbstractWebTestCase
         $this->loginTo($this->Customer);
 
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('mypage_history', ['order_no' => 999999999])
         );
 
@@ -164,27 +165,26 @@ class MypageControllerTest extends AbstractWebTestCase
      */
     public function testFavoriteWithPaginator()
     {
-        $expectedIds = [];
-        for ($i = 0; $i < 30; $i++) {
-            $Product = $this->createProduct();
-            $expectedIds[] = $Product->getId();
+        // bulk 生成. createProduct を 30 回ループするのではなく、
+        // createProducts(30) で 4 テーブル (product/image/class/stock) を一括投入する.
+        $Products = $this->createProducts(30);
+        $expectedIds = array_map(static fn ($p) => $p->getId(), $Products);
+
+        foreach ($Products as $i => $Product) {
             $CustomerFavoriteProduct = new CustomerFavoriteProduct();
             $CustomerFavoriteProduct->setCustomer($this->Customer);
-            $CustomerFavoriteProduct->setCreateDate(new \DateTime());
-            $CustomerFavoriteProduct->setUpdateDate(new \DateTime());
-            $CustomerFavoriteProduct->setProduct($Product);
-            $this->entityManager->persist($CustomerFavoriteProduct);
-            $this->entityManager->flush();
-
             // id とは 逆順に create_date を設定する.
             // 画面表示は create_date 降順なので, id 昇順にソートされるはず
             $CustomerFavoriteProduct->setCreateDate(new \DateTime('-'.$i.' days'));
-            $this->entityManager->flush();
+            $CustomerFavoriteProduct->setUpdateDate(new \DateTime());
+            $CustomerFavoriteProduct->setProduct($Product);
+            $this->entityManager->persist($CustomerFavoriteProduct);
         }
+        $this->entityManager->flush();
 
         $this->loginTo($this->Customer);
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('mypage_favorite')
         );
         // 最初の画面で表示されているお気に入りの ID を取得する
@@ -192,7 +192,7 @@ class MypageControllerTest extends AbstractWebTestCase
         $nodes = $crawler->filterXPath('//div[@class="product_item"]/a[1]');
         foreach ($nodes as $node) {
             $href = $node->getAttribute('href');
-            if (preg_match('/detail\/([0-9]+)/', $href, $matched)) {
+            if (preg_match('/detail\/([0-9]+)/', (string) $href, $matched)) {
                 $actualIds[] = $matched[1];
             }
         }

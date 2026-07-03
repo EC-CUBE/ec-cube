@@ -13,117 +13,75 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\MailTemplateRepository;
 
 if (!class_exists(MailTemplate::class)) {
     /**
      * MailTemplate
-     *
-     * @ORM\Table(name="dtb_mail_template")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\MailTemplateRepository")
      */
-    class MailTemplate extends AbstractEntity
+    #[ORM\Table(name: 'dtb_mail_template')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: MailTemplateRepository::class)]
+    class MailTemplate extends AbstractEntity implements \Stringable
     {
-        /**
-         * @return string
-         */
-        public function __toString()
+        #[\Override]
+        public function __toString(): string
         {
-            return $this->getName() ? $this->getName() : '';
+            return $this->getName() ?: '';
         }
 
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
-         */
-        private $id;
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+        private ?int $id = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="name", type="string", length=255, nullable=true)
-         */
-        private $name;
+        #[ORM\Column(name: 'name', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $name = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="file_name", type="string", length=255, nullable=true)
-         */
-        private $file_name;
+        #[ORM\Column(name: 'file_name', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $file_name = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="mail_subject", type="string", length=255, nullable=true)
-         */
-        private $mail_subject;
+        #[ORM\Column(name: 'mail_subject', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $mail_subject = null;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
         private $create_date;
 
         /**
          * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
          */
+        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
         private $update_date;
 
-        /**
-         * @var Member
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
-         * })
-         */
-        private $Creator;
+        #[ORM\ManyToOne(targetEntity: Member::class)]
+        #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
+        private ?Member $Creator = null;
 
         /**
          * テンプレートの削除可否。
-         *
-         * @var bool
-         *
-         * @ORM\Column(name="deletable", type="boolean", options={"default":false}))
          */
+        #[ORM\Column(name: 'deletable', type: Types::BOOLEAN, options: ['default' => false])]
         private bool $deletable = false;
 
         /**
          * Get id.
-         *
-         * @return int
          */
-        public function getId()
+        public function getId(): ?int
         {
             return $this->id;
         }
 
         /**
          * Set name.
-         *
-         * @param string|null $name
-         *
-         * @return MailTemplate
          */
-        public function setName($name = null)
+        public function setName(?string $name = null): MailTemplate
         {
             $this->name = $name;
 
@@ -132,22 +90,16 @@ if (!class_exists(MailTemplate::class)) {
 
         /**
          * Get name.
-         *
-         * @return string|null
          */
-        public function getName()
+        public function getName(): ?string
         {
             return $this->name;
         }
 
         /**
          * Set fileName.
-         *
-         * @param string|null $fileName
-         *
-         * @return MailTemplate
          */
-        public function setFileName($fileName = null)
+        public function setFileName(?string $fileName = null): MailTemplate
         {
             $this->file_name = $fileName;
 
@@ -156,22 +108,16 @@ if (!class_exists(MailTemplate::class)) {
 
         /**
          * Get fileName.
-         *
-         * @return string|null
          */
-        public function getFileName()
+        public function getFileName(): ?string
         {
             return $this->file_name;
         }
 
         /**
          * Set mailSubject.
-         *
-         * @param string|null $mailSubject
-         *
-         * @return MailTemplate
          */
-        public function setMailSubject($mailSubject = null)
+        public function setMailSubject(?string $mailSubject = null): MailTemplate
         {
             $this->mail_subject = $mailSubject;
 
@@ -180,22 +126,16 @@ if (!class_exists(MailTemplate::class)) {
 
         /**
          * Get mailSubject.
-         *
-         * @return string|null
          */
-        public function getMailSubject()
+        public function getMailSubject(): ?string
         {
             return $this->mail_subject;
         }
 
         /**
          * Set createDate.
-         *
-         * @param \DateTime $createDate
-         *
-         * @return MailTemplate
          */
-        public function setCreateDate($createDate)
+        public function setCreateDate(\DateTime $createDate): MailTemplate
         {
             $this->create_date = $createDate;
 
@@ -204,22 +144,16 @@ if (!class_exists(MailTemplate::class)) {
 
         /**
          * Get createDate.
-         *
-         * @return \DateTime
          */
-        public function getCreateDate()
+        public function getCreateDate(): ?\DateTime
         {
             return $this->create_date;
         }
 
         /**
          * Set updateDate.
-         *
-         * @param \DateTime $updateDate
-         *
-         * @return MailTemplate
          */
-        public function setUpdateDate($updateDate)
+        public function setUpdateDate(\DateTime $updateDate): MailTemplate
         {
             $this->update_date = $updateDate;
 
@@ -228,22 +162,16 @@ if (!class_exists(MailTemplate::class)) {
 
         /**
          * Get updateDate.
-         *
-         * @return \DateTime
          */
-        public function getUpdateDate()
+        public function getUpdateDate(): ?\DateTime
         {
             return $this->update_date;
         }
 
         /**
          * Set creator.
-         *
-         * @param Member|null $creator
-         *
-         * @return MailTemplate
          */
-        public function setCreator(?Member $creator = null)
+        public function setCreator(?Member $creator = null): MailTemplate
         {
             $this->Creator = $creator;
 
@@ -252,28 +180,21 @@ if (!class_exists(MailTemplate::class)) {
 
         /**
          * Get creator.
-         *
-         * @return Member|null
          */
-        public function getCreator()
+        public function getCreator(): ?Member
         {
             return $this->Creator;
         }
 
-        /**
-         * @return bool
-         */
         public function isDeletable(): bool
         {
             return $this->deletable;
         }
 
         /**
-         * @param bool $deletable
-         *
          * @return $this
          */
-        public function setDeletable(bool $deletable): self
+        public function setDeletable(bool $deletable): static
         {
             $this->deletable = $deletable;
 

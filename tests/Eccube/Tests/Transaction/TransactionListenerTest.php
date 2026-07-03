@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,6 +19,7 @@ use Eccube\Application;
 use Eccube\Tests\ServiceProvider\CsrfMockServiceProvider;
 use Eccube\Tests\ServiceProvider\FixtureServiceProvider;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * TransactinoListener のテストケース.
@@ -30,7 +33,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
  *
  * @author Kentaro Ohkouchi
  */
-class TransactionListenerTest extends WebTestCase
+final class TransactionListenerTest extends WebTestCase
 {
     protected function isSqlite()
     {
@@ -39,7 +42,7 @@ class TransactionListenerTest extends WebTestCase
 
     protected function setUp(): void
     {
-        $this->markTestIncomplete(get_class($this).' は未実装です');
+        $this->markTestIncomplete(self::class.' は未実装です');
         parent::setUp();
 
         if ($this->isSqlite()) {
@@ -60,6 +63,7 @@ class TransactionListenerTest extends WebTestCase
         $this->app->mount('', $c);
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         if ($this->app['orm.em']) {
@@ -74,7 +78,7 @@ class TransactionListenerTest extends WebTestCase
     public function testTran1()
     {
         $client = $this->createClient();
-        $client->request('GET', '/tran1');
+        $client->request(Request::METHOD_GET, '/tran1');
 
         $this->verify('tran1');
     }
@@ -88,7 +92,7 @@ class TransactionListenerTest extends WebTestCase
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
         $companyName = $BaseInfo->getCompanyName();
         $client = $this->createClient();
-        $client->request('GET', '/tran2');
+        $client->request(Request::METHOD_GET, '/tran2');
 
         $this->verify($companyName);
     }
@@ -105,7 +109,7 @@ class TransactionListenerTest extends WebTestCase
         }
 
         $client = $this->createClient();
-        $client->request('GET', '/tran3');
+        $client->request(Request::METHOD_GET, '/tran3');
 
         $this->verify('tran3');
     }
@@ -128,7 +132,7 @@ class TransactionListenerTest extends WebTestCase
         $companyName = $BaseInfo->getCompanyName();
 
         $client = $this->createClient();
-        $client->request('GET', '/tran4');
+        $client->request(Request::METHOD_GET, '/tran4');
 
         $this->verify($companyName);
     }
@@ -153,7 +157,7 @@ class TransactionListenerTest extends WebTestCase
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
         $companyName = $BaseInfo->getCompanyName();
         $client = $this->createClient();
-        $client->request('GET', '/tran5');
+        $client->request(Request::METHOD_GET, '/tran5');
 
         $this->verify($companyName);
     }
@@ -177,7 +181,7 @@ class TransactionListenerTest extends WebTestCase
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
         $companyName = $BaseInfo->getCompanyName();
         $client = $this->createClient();
-        $client->request('GET', '/tran6');
+        $client->request(Request::METHOD_GET, '/tran6');
 
         $this->verify($companyName);
     }
@@ -204,7 +208,7 @@ class TransactionListenerTest extends WebTestCase
         }
 
         $client = $this->createClient();
-        $client->request('GET', '/tran7');
+        $client->request(Request::METHOD_GET, '/tran7');
 
         $this->verify('tran7-3');
     }
@@ -233,7 +237,7 @@ class TransactionListenerTest extends WebTestCase
         $BaseInfo = $this->app['eccube.repository.base_info']->get();
         $companyName = $BaseInfo->getCompanyName();
         $client = $this->createClient();
-        $client->request('GET', '/tran8');
+        $client->request(Request::METHOD_GET, '/tran8');
 
         $this->verify($companyName);
     }
@@ -255,7 +259,7 @@ class TransactionListenerTest extends WebTestCase
     public function testTran9()
     {
         $client = $this->createClient();
-        $client->request('GET', '/tran9');
+        $client->request(Request::METHOD_GET, '/tran9');
 
         $this->verify('tran9-3');
     }
@@ -337,7 +341,7 @@ class TransactionControllerMock
         return $app->render('index.twig');
     }
 
-    public function tran2(Application $app)
+    public function tran2(Application $app): never
     {
         // update 1
         $BaseInfo = $app['eccube.repository.base_info']->get();
@@ -361,7 +365,7 @@ class TransactionControllerMock
             $BaseInfo->setCompanyName('tran3');
             $app['orm.em']->flush($BaseInfo);
             $app['orm.em']->commit();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $app['orm.em']->rollback();
         }
 
@@ -381,7 +385,7 @@ class TransactionControllerMock
 
             // update 1 は rollback
             throw new \Exception();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $app['orm.em']->rollback();
         }
 
@@ -398,7 +402,7 @@ class TransactionControllerMock
             $BaseInfo->setCompanyName('tran5-1');
             $app['orm.em']->flush($BaseInfo);
             $app['orm.em']->commit();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $app['orm.em']->rollback();
         }
 
@@ -410,7 +414,7 @@ class TransactionControllerMock
             $BaseInfo->setCompanyName('tran5-2');
             $app['orm.em']->flush($BaseInfo);
             $app['orm.em']->commit();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $app['orm.em']->rollback();
         }
 
@@ -428,7 +432,7 @@ class TransactionControllerMock
             $BaseInfo->setCompanyName('tran6-1');
             $app['orm.em']->flush($BaseInfo);
             $app['orm.em']->commit();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $app['orm.em']->rollback();
         }
 
@@ -457,7 +461,7 @@ class TransactionControllerMock
 
             // update 1がrollback
             throw new \Exception();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             // update 1がrollback
             $app['orm.em']->rollback();
         }
@@ -487,7 +491,7 @@ class TransactionControllerMock
 
             // update 1がrollback
             throw new \Exception();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             // update 1がrollback
             $app['orm.em']->rollback();
         }
@@ -522,7 +526,7 @@ class TransactionControllerMock
 
             // プラグイン内部でエラー
             throw new \Exception();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             // update 1 / update 2 がrollbackされる.
             $app['orm.em']->rollback();
         }

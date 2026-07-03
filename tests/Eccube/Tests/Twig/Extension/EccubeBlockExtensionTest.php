@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -19,7 +21,7 @@ use org\bovigo\vfs\vfsStream;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
-class EccubeBlockExtensionTest extends EccubeTestCase
+final class EccubeBlockExtensionTest extends EccubeTestCase
 {
     protected $templateDir;
 
@@ -28,23 +30,17 @@ class EccubeBlockExtensionTest extends EccubeTestCase
         'test_block2.twig',
     ];
 
-    /**
-     * @var Environment
-     */
-    protected $twig;
+    protected ?Environment $twig = null;
 
     protected function setUp(): void
     {
         parent::setUp();
-
         $root = vfsStream::setup();
         $this->templateDir = $root->url();
-
         foreach ($this->blockTwigs as $twig_file) {
             // Preventing undefined errors
             file_put_contents($this->templateDir.'/'.$twig_file, '');
         }
-
         $loader = new FilesystemLoader([
             $this->templateDir,
         ]);

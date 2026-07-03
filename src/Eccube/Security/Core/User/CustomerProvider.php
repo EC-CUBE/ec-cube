@@ -24,34 +24,13 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
+/**
+ * @implements UserProviderInterface<Customer>
+ */
 class CustomerProvider implements UserProviderInterface, PasswordUpgraderInterface
 {
-    /**
-     * @var CustomerRepository
-     */
-    protected $customerRepository;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
-    public function __construct(CustomerRepository $customerRepository, EntityManagerInterface $entityManager)
+    public function __construct(protected CustomerRepository $customerRepository, private readonly EntityManagerInterface $entityManager)
     {
-        $this->customerRepository = $customerRepository;
-        $this->entityManager = $entityManager;
-    }
-
-    /**
-     * @return UserInterface
-     *
-     * @throws UserNotFoundException
-     *
-     * @deprecated since Symfony 5.3, use loadUserByIdentifier() instead
-     */
-    public function loadUserByUsername($username): Customer
-    {
-        return $this->loadUserByIdentifier($username);
     }
 
     /**
@@ -62,31 +41,30 @@ class CustomerProvider implements UserProviderInterface, PasswordUpgraderInterfa
      * object can just be merged into some internal array of users / identity
      * map.
      *
-     * @return UserInterface
-     *
      * @throws UnsupportedUserException if the user is not supported
      */
-    public function refreshUser(UserInterface $user)
+    #[\Override]
+    public function refreshUser(UserInterface $user): UserInterface
     {
         if (!$user instanceof Customer) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_class($user)));
+            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $user::class));
         }
 
-        return $this->loadUserByUsername($user->getUsername());
+        return $this->loadUserByIdentifier($user->getUsername());
     }
 
     /**
      * Whether this provider supports the given user class.
      *
      * @param string $class
-     *
-     * @return bool
      */
-    public function supportsClass($class)
+    #[\Override]
+    public function supportsClass($class): bool
     {
         return Customer::class === $class || is_subclass_of($class, Customer::class);
     }
 
+    #[\Override]
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
         $Customer = $this->customerRepository->findOneBy([
@@ -101,8 +79,10 @@ class CustomerProvider implements UserProviderInterface, PasswordUpgraderInterfa
         return $Customer;
     }
 
+    #[\Override]
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
+        /** @var Customer $user */
         $user->setPassword($newHashedPassword);
         $this->entityManager->flush();
     }

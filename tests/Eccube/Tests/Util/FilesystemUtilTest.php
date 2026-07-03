@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -16,7 +18,7 @@ namespace Eccube\Tests\Util;
 use Eccube\Util\FilesystemUtil;
 use PHPUnit\Framework\TestCase;
 
-class FilesystemUtilTest extends TestCase
+final class FilesystemUtilTest extends TestCase
 {
     public function testSizeToHumanReadable()
     {

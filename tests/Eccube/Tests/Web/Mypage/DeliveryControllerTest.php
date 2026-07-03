@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -16,13 +18,11 @@ namespace Eccube\Tests\Web\Mypage;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Tests\Web\AbstractWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
-class DeliveryControllerTest extends AbstractWebTestCase
+final class DeliveryControllerTest extends AbstractWebTestCase
 {
-    /**
-     * @var Customer
-     */
-    protected $Customer;
+    protected ?Customer $Customer = null;
 
     protected function setUp(): void
     {
@@ -63,7 +63,7 @@ class DeliveryControllerTest extends AbstractWebTestCase
         $client = $this->client;
 
         $client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('mypage_delivery')
         );
         $this->assertTrue($client->getResponse()->isSuccessful());
@@ -75,7 +75,7 @@ class DeliveryControllerTest extends AbstractWebTestCase
         $client = $this->client;
 
         $client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('mypage_delivery_new')
         );
         $this->assertTrue($client->getResponse()->isSuccessful());
@@ -88,7 +88,7 @@ class DeliveryControllerTest extends AbstractWebTestCase
 
         $form = $this->createFormData();
         $client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('mypage_delivery_new'),
             ['customer_address' => $form]
         );
@@ -104,9 +104,10 @@ class DeliveryControllerTest extends AbstractWebTestCase
         $CustomerAddress = $this->entityManager->getRepository(CustomerAddress::class)->findOneBy(
             ['Customer' => $this->Customer]
         );
+        $this->assertInstanceOf(CustomerAddress::class, $CustomerAddress);
 
         $client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('mypage_delivery_edit', ['id' => $CustomerAddress->getId()])
         );
 
@@ -122,8 +123,9 @@ class DeliveryControllerTest extends AbstractWebTestCase
         );
 
         $form = $this->createFormData();
+        $this->assertInstanceOf(CustomerAddress::class, $CustomerAddress);
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('mypage_delivery_edit', ['id' => $CustomerAddress->getId()]),
             ['customer_address' => $form]
         );
@@ -142,18 +144,19 @@ class DeliveryControllerTest extends AbstractWebTestCase
         $CustomerAddress = $this->entityManager->getRepository(CustomerAddress::class)->findOneBy(
             ['Customer' => $this->Customer]
         );
+        $this->assertInstanceOf(CustomerAddress::class, $CustomerAddress);
         $id = $CustomerAddress->getId();
 
         $this->createFormData();
         $this->client->request(
-            'DELETE',
+            Request::METHOD_DELETE,
             $this->generateUrl('mypage_delivery_delete', ['id' => $id])
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('mypage_delivery')));
 
         $CustomerAddress = $this->entityManager->getRepository(CustomerAddress::class)->find($id);
-        $this->assertNull($CustomerAddress);
+        $this->assertNotInstanceOf(CustomerAddress::class, $CustomerAddress);
     }
 
     public function testDeleteWithFailure()
@@ -161,7 +164,7 @@ class DeliveryControllerTest extends AbstractWebTestCase
         $this->logInTo($this->Customer);
 
         $this->client->request(
-            'DELETE',
+            Request::METHOD_DELETE,
             $this->generateUrl('mypage_delivery_delete', ['id' => 999999999])
         );
 
@@ -178,7 +181,7 @@ class DeliveryControllerTest extends AbstractWebTestCase
         $this->logInTo($this->Customer);
 
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('mypage_delivery')
         );
 
@@ -192,7 +195,7 @@ class DeliveryControllerTest extends AbstractWebTestCase
         }
 
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('mypage_delivery')
         );
 
