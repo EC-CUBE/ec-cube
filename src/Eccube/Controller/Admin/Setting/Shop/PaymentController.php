@@ -170,13 +170,13 @@ class PaymentController extends AbstractController
      */
     public function imageProcess(Request $request)
     {
-        if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
+        if (!$request->isXmlHttpRequest() || !$this->isTokenValid()) {
             throw new BadRequestHttpException();
         }
 
         $images = $request->files->get('payment_register');
 
-        $allowExtensions = ['gif', 'jpg', 'jpeg', 'png'];
+        $allowExtensions = ['gif', 'jpg', 'jpeg', 'png', 'webp'];
 
         $filename = null;
         if (isset($images['payment_image_file'])) {
@@ -251,7 +251,7 @@ class PaymentController extends AbstractController
      */
     public function imageRevert(Request $request)
     {
-        if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
+        if (!$request->isXmlHttpRequest() || !$this->isTokenValid()) {
             throw new BadRequestHttpException();
         }
 

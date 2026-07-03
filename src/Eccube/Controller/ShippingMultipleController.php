@@ -451,7 +451,7 @@ class ShippingMultipleController extends AbstractShoppingController
             } else {
                 // 非会員用のセッションに追加
                 $CustomerAddresses = $this->session->get(OrderHelper::SESSION_NON_MEMBER_ADDRESSES);
-                $CustomerAddresses = unserialize($CustomerAddresses);
+                $CustomerAddresses = unserialize($CustomerAddresses, ['allowed_classes' => [CustomerAddress::class, Customer::class, \Eccube\Entity\Master\Pref::class, \Eccube\Entity\Master\Country::class]]);
                 $CustomerAddresses[] = $CustomerAddress;
                 $this->session->set(OrderHelper::SESSION_NON_MEMBER_ADDRESSES, serialize($CustomerAddresses));
             }

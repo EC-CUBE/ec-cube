@@ -247,30 +247,49 @@ class ProductController extends AbstractController
 
         $qb = $this->productRepository->getQueryBuilderBySearchDataForAdmin($searchData);
 
+        $sortKey = $searchData['sortkey'];
+        $paginate_options = ['wrap-queries' => true];
+        if (empty($this->productRepository::COLUMNS[$sortKey]) || $sortKey == 'code' || $sortKey == 'status') {
+            $paginate_options = [];
+        }
+
         $event = new EventArgs(
             [
                 'qb' => $qb,
                 'searchData' => $searchData,
+                'paginate_options' => $paginate_options,
             ],
             $request
         );
 
         $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_PRODUCT_INDEX_SEARCH);
+        $paginate_options = $event->getArgument('paginate_options');
 
-        $sortKey = $searchData['sortkey'];
+        // JOIN必要な検索条件がない場合はカスタムカウントを使用
+        $useCustomCount = empty($searchData['category_id'])
+            && empty($searchData['stock_status'])
+            && empty($searchData['stock'])
+            && empty($searchData['tag_id']);
 
-        if (empty($this->productRepository::COLUMNS[$sortKey]) || $sortKey == 'code' || $sortKey == 'status') {
+        if ($useCustomCount) {
+            // カスタムカウントを使用して高速化
+            $count = $this->productRepository->countBySearchDataForAdmin($searchData);
+            $query = $qb->getQuery();
+            $query->setHint('knp_paginator.count', $count);
+
             $pagination = $paginator->paginate(
-                $qb,
+                $query,
                 $page_no,
-                $page_count
+                $page_count,
+                $paginate_options
             );
         } else {
+            // JOIN必要な検索条件がある場合は従来通り
             $pagination = $paginator->paginate(
                 $qb,
                 $page_no,
                 $page_count,
-                ['wrap-queries' => true]
+                $paginate_options
             );
         }
 
@@ -293,7 +312,7 @@ class ProductController extends AbstractController
      */
     public function loadProductClasses(Request $request, Product $Product)
     {
-        if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
+        if (!$request->isXmlHttpRequest() || !$this->isTokenValid()) {
             throw new BadRequestHttpException();
         }
 
@@ -324,13 +343,13 @@ class ProductController extends AbstractController
      */
     public function imageProcess(Request $request)
     {
-        if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
+        if (!$request->isXmlHttpRequest() || !$this->isTokenValid()) {
             throw new BadRequestHttpException();
         }
 
         $images = $request->files->get('admin_product');
 
-        $allowExtensions = ['gif', 'jpg', 'jpeg', 'png'];
+        $allowExtensions = ['gif', 'jpg', 'jpeg', 'png', 'webp'];
         $files = [];
         if (count($images) > 0) {
             foreach ($images as $img) {
@@ -411,7 +430,7 @@ class ProductController extends AbstractController
      */
     public function imageRevert(Request $request)
     {
-        if (!$request->isXmlHttpRequest() && $this->isTokenValid()) {
+        if (!$request->isXmlHttpRequest() || !$this->isTokenValid()) {
             throw new BadRequestHttpException();
         }
 

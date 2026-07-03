@@ -97,6 +97,7 @@ class ShopSettingPage extends AbstractAdminPageStyleGuide
     public function 登録()
     {
         $this->tester->click('#point_form > div.c-conversionArea > div > div > div:nth-child(2) > div > div > button');
+        $this->tester->waitForText('保存しました', 30, self::$登録完了メッセージ);
 
         return $this;
     }
@@ -109,7 +110,6 @@ class ShopSettingPage extends AbstractAdminPageStyleGuide
             $this->tester->click('label[for="shop_master_option_nostock_hidden"]');
             $this->tester->wait(1);
             $this->登録();
-            $this->tester->see('保存しました', ShopSettingPage::$登録完了メッセージ);
         }
         $this->tester->grabAttributeFrom('#shop_master_option_nostock_hidden', 'checked');
 

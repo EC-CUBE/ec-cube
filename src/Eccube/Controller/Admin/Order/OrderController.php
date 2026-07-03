@@ -39,6 +39,7 @@ use Eccube\Service\OrderPdfService;
 use Eccube\Service\OrderStateMachine;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Util\FormUtil;
+use Eccube\Util\StringUtil;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormBuilder;
@@ -292,29 +293,53 @@ class OrderController extends AbstractController
 
         $qb = $this->orderRepository->getQueryBuilderBySearchDataForAdmin($searchData);
 
+        $sortKey = $searchData['sortkey'];
+        $paginate_options = ['wrap-queries' => true];
+        if (empty($this->orderRepository::COLUMNS[$sortKey]) || $sortKey == 'order_status') {
+            $paginate_options = [];
+        }
+
         $event = new EventArgs(
             [
                 'qb' => $qb,
                 'searchData' => $searchData,
+                'paginate_options' => $paginate_options,
             ],
             $request
         );
 
         $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_ORDER_INDEX_SEARCH);
-        $sortKey = $searchData['sortkey'];
+        $paginate_options = $event->getArgument('paginate_options');
 
-        if (empty($this->orderRepository::COLUMNS[$sortKey]) || $sortKey == 'order_status') {
+        // JOIN必要な検索条件がない場合はカスタムカウントを使用
+        $useCustomCount = !(isset($searchData['buy_product_name']) && StringUtil::isNotBlank($searchData['buy_product_name']))
+            && empty($searchData['payment'])
+            && !(isset($searchData['shipping_mail']) && StringUtil::isNotBlank($searchData['shipping_mail']))
+            && !(isset($searchData['tracking_number']) && StringUtil::isNotBlank($searchData['tracking_number']))
+            && empty($searchData['shipping_delivery_datetime_start'])
+            && empty($searchData['shipping_delivery_datetime_end'])
+            && empty($searchData['shipping_delivery_date_start'])
+            && empty($searchData['shipping_delivery_date_end']);
+
+        if ($useCustomCount) {
+            // カスタムカウントを使用して高速化
+            $count = $this->orderRepository->countBySearchDataForAdmin($searchData);
+            $query = $qb->getQuery();
+            $query->setHint('knp_paginator.count', $count);
+
             $pagination = $paginator->paginate(
-                $qb,
+                $query,
                 $page_no,
-                $page_count
+                $page_count,
+                $paginate_options
             );
         } else {
+            // JOIN必要な検索条件がある場合は従来通り
             $pagination = $paginator->paginate(
                 $qb,
                 $page_no,
                 $page_count,
-                ['wrap-queries' => true]
+                $paginate_options
             );
         }
 

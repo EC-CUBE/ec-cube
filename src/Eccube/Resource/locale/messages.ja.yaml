@@ -291,6 +291,8 @@ front.product.add_cart_complete: カートに追加しました。
 front.product.add_cart_error: カートへの追加に失敗しました。
 front.product.add_favorite: お気に入りに追加
 front.product.add_favorite_alrady: お気に入りに追加済です。
+front.product.delete_favorite: お気に入りから削除
+front.product.delete_favorite_confirm: お気に入りから削除してもよろしいですか？
 front.product.out_of_stock: ただいま品切れ中です。
 front.product.out_of_stock_label: (品切れ中)
 front.product.added_to_favorite: お気に入りに追加済です。
@@ -314,7 +316,7 @@ front.cart.nav__order: ご注文手続き
 front.cart.nav__confirm: ご注文内容確認
 front.cart.nav__complete: 完了
 front.cart.total_price: "商品の合計金額は「<strong>%price%</strong>」です。"
-front.cart.divide_cart: 同時購入できない商品がカートに含まれています。
+front.cart.divide_cart: 同時購入できない商品のカートを分けました。お手数ですが別々で注文してください。
 front.cart.delete: 削除
 front.cart.delete__confirm: カートから商品を削除してよろしいですか？
 front.cart.product: 商品内容
@@ -359,6 +361,7 @@ front.shopping.shipping_send_selected_shipping: 選択したお届け先に送�
 front.shopping.shipping_multiple_title: お届け先の複数指定
 front.shopping.shipping_multiple_message: 各商品のお届け先を選択してください。
 front.shppping.shipping_multiple_add_shipping: 各商品のお届け先を選択してください。
+front.shopping.customer_update_failed: 更新に失敗しました。入力内容を確認してください。
 front.shopping.confirm_title: ご注文内容のご確認
 front.shopping.checkout: 注文する
 front.shopping.back_to_order: ご注文手続きに戻る
@@ -1400,6 +1403,19 @@ admin.setting.system.login_history.status: ステータス
 
 admin.setting.system.log.line_number: 行
 admin.setting.system.log.read: 読み込む
+admin.setting.system.log.log_level: ログレベル
+admin.setting.system.log.keyword: キーワード検索
+admin.setting.system.log.keyword_placeholder: クラス名、エラーメッセージなど
+admin.setting.system.log.no_logs: ログが見つかりません
+admin.setting.system.log.level.all: すべて
+admin.setting.system.log.level.debug: DEBUG
+admin.setting.system.log.level.info: INFO
+admin.setting.system.log.level.notice: NOTICE
+admin.setting.system.log.level.warning: WARNING
+admin.setting.system.log.level.error: ERROR
+admin.setting.system.log.level.critical: CRITICAL
+admin.setting.system.log.level.alert: ALERT
+admin.setting.system.log.level.emergency: EMERGENCY
 
 #------------------------------------------------------------------------------------
 # 設定：システム設定：マスタデータ管理
@@ -1449,6 +1465,7 @@ admin.store.template.delete_error__current_template: 設定中のテンプレー
 admin.store.template.template_code_already_exists: テンプレートコードは既に利用されています
 admin.store.template.upload_failed: アップロードに失敗しました
 admin.store.template.invalid_upload_file: ファイルの拡張子に誤りがあります
+admin.store.template.env_override_warning: "ECCUBE_TEMPLATE_CODE が環境変数として設定されているため、.env への変更は反映されません。テンプレートを切り替えるには環境変数の ECCUBE_TEMPLATE_CODE を変更してください。"
 admin.store.plugin: プラグイン
 admin.store.plugin.plugin_owners_install: プラグインを探す
 admin.store.plugin.plugin_list: プラグイン一覧
@@ -1473,6 +1490,7 @@ admin.store.setting.api_key: 認証キー
 admin.store.setting.api_key_tooltip: 購入したプラグイン等のインストールに必要となるキーです。
 admin.store.setting.get_api_key: 認証キー新規発行
 admin.store.setting.get_api_key_info: 認証キーの新規発行と登録を行います。
+admin.store.setting.get_api_key_modal_info: 新しい認証キーを発行します。既に認証キーがある場合は、発行せずに既存のキーを設定してください。
 admin.store.setting.captcha_message: 画像に表示されている文字を入力してください。
 admin.store.setting.php_path_setting: PHPパスの設定
 admin.store.setting.php_path: PHPパス
@@ -1484,6 +1502,7 @@ admin.store.package.api.500.error: オーナーズストアとの通信に失敗
 admin.plugin.uninstall.error.not_disable: プラグインを無効にしてください。
 admin.plugin.uninstall.depend: "「%depend_name%」が「%name%」に依存しているため削除できません。"
 admin.plugin.disable.depend: "「%name%」を無効にする前に、「%depend_name%」を無効にしてください。 "
+pluginservice.text.error.upload_failure: プラグインのアップロードに失敗しました。
 
 # TODO: メッセージ精査
 admin.store.plugin.popup.delete.confirm.title: プラグインの削除を確認する

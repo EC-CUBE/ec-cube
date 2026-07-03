@@ -32,6 +32,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -305,6 +306,52 @@ class ProductController extends AbstractController
 
             return $this->redirectToRoute('mypage_login');
         }
+    }
+
+    /**
+     * お気に入り削除.
+     *
+     * @Route("/products/delete_favorite/{id}", name="product_delete_favorite", requirements={"id" = "\d+"}, methods={"DELETE"})
+     */
+    public function deleteFavorite(Request $request, Product $Product)
+    {
+        $event = new EventArgs(
+            [
+                'Product' => $Product,
+            ],
+            $request
+        );
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_PRODUCT_FAVORITE_DELETE_INITIALIZE);
+
+        if ($this->isGranted('ROLE_USER')) {
+            $Customer = $this->getUser();
+            $this->isTokenValid();
+
+            log_info('お気に入り商品削除開始', [$Customer->getId(), $Product->getId()]);
+
+            $CustomerFavoriteProduct = $this->customerFavoriteProductRepository->findOneBy(['Customer' => $Customer, 'Product' => $Product]);
+
+            if ($CustomerFavoriteProduct) {
+                $this->customerFavoriteProductRepository->delete($CustomerFavoriteProduct);
+
+                log_info('お気に入り商品削除完了', [$Customer->getId(), $Product->getId()]);
+            } else {
+                throw new BadRequestHttpException();
+            }
+
+            $event = new EventArgs(
+                [
+                    'Product' => $Product,
+                    'Customer' => $Customer,
+                ],
+                $request
+            );
+            $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_PRODUCT_FAVORITE_DELETE_COMPLETE);
+
+            return $this->redirectToRoute('product_detail', ['id' => $Product->getId()]);
+        }
+
+        return $this->redirectToRoute('mypage_login');
     }
 
     /**

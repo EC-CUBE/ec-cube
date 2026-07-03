@@ -15,10 +15,12 @@ namespace Eccube\Tests\Web;
 
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\ClassCategory;
+use Eccube\Entity\CustomerFavoriteProduct;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\ClassCategoryRepository;
+use Eccube\Repository\CustomerFavoriteProductRepository;
 use Eccube\Repository\ProductRepository;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpKernel\Client;
@@ -41,12 +43,18 @@ class ProductControllerTest extends AbstractWebTestCase
      */
     private $classCategoryRepository;
 
+    /**
+     * @var CustomerFavoriteProductRepository
+     */
+    private $customerFavoriteProductRepository;
+
     protected function setUp(): void
     {
         parent::setUp();
         $this->baseInfoRepository = $this->entityManager->getRepository(BaseInfo::class);
         $this->productRepository = $this->entityManager->getRepository(Product::class);
         $this->classCategoryRepository = $this->entityManager->getRepository(ClassCategory::class);
+        $this->customerFavoriteProductRepository = $this->entityManager->getRepository(CustomerFavoriteProduct::class);
     }
 
     public function testRoutingList()
@@ -70,7 +78,8 @@ class ProductControllerTest extends AbstractWebTestCase
         $BaseInfo->setOptionFavoriteProduct(true);
 
         $client = $this->client;
-        $client->request('POST',
+        $client->request(
+            'POST',
             $this->generateUrl('product_add_favorite', ['id' => '1'])
         );
         $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('mypage_login')));
@@ -171,7 +180,7 @@ class ProductControllerTest extends AbstractWebTestCase
         // Case 2: after add favorite check
         $html = $crawler->filter('div.ec-productRole__profile')->html();
         $this->assertStringContainsString('ただいま品切れ中です', $html);
-        $this->assertStringContainsString('お気に入りに追加済です', $html);
+        $this->assertStringContainsString('お気に入りから削除', $html);
     }
 
     /**
@@ -209,7 +218,7 @@ class ProductControllerTest extends AbstractWebTestCase
         // Case 4: after add favorite when 商品在庫>0
         $html = $crawler->filter('div.ec-productRole__profile')->html();
         $this->assertStringContainsString('カートに入れる', $html);
-        $this->assertStringContainsString('お気に入りに追加済です', $html);
+        $this->assertStringContainsString('お気に入りから削除', $html);
     }
 
     /**
@@ -256,7 +265,7 @@ class ProductControllerTest extends AbstractWebTestCase
         $crawler = $client->followRedirect();
 
         $html = $crawler->filter('div.ec-productRole__profile')->html();
-        $this->assertStringContainsString('お気に入りに追加済です', $html);
+        $this->assertStringContainsString('お気に入りから削除', $html);
     }
 
     /**
@@ -372,5 +381,124 @@ class ProductControllerTest extends AbstractWebTestCase
         $crawler = $this->client->request('GET', $productUrl);
 
         $this->assertSame('noindex', $crawler->filter('meta[name="robots"]')->attr('content'));
+    }
+
+    /**
+     * お気に入り削除テスト（正常系）
+     *
+     * フロントエンドでは削除リンクにCSRFトークンが付与され、JavaScriptが
+     * POSTリクエスト + _method: delete で送信する。このテストでは同じフローを再現する。
+     */
+    public function testProductFavoriteDelete()
+    {
+        // お気に入り商品機能を有効化
+        $BaseInfo = $this->baseInfoRepository->get();
+        $BaseInfo->setOptionFavoriteProduct(true);
+
+        $Product = $this->createProduct('Product favorite delete test', 1);
+        $Customer = $this->createCustomer();
+        $this->loginTo($Customer);
+
+        // お気に入りを追加
+        $this->customerFavoriteProductRepository->addFavorite($Customer, $Product);
+        $this->entityManager->flush();
+
+        // 商品詳細ページを取得してCSRFトークンを抽出
+        $crawler = $this->client->request('GET', $this->generateUrl('product_detail', ['id' => $Product->getId()]));
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        // 削除リンクからCSRFトークンを取得
+        $deleteLink = $crawler->filter('a#favorite[data-method="delete"]');
+        $this->assertGreaterThan(0, $deleteLink->count());
+        $token = $deleteLink->attr('token-for-anchor');
+
+        // JavaScriptと同様にPOSTリクエストで送信（_method: deleteを含む）
+        $this->client->request(
+            'POST',
+            $this->generateUrl('product_delete_favorite', ['id' => $Product->getId()]),
+            [
+                '_token' => $token,
+                '_method' => 'delete',
+            ]
+        );
+
+        // 商品詳細ページにリダイレクトされることを確認
+        $this->assertTrue($this->client->getResponse()->isRedirect(
+            $this->generateUrl('product_detail', ['id' => $Product->getId()])
+        ));
+
+        // お気に入りが削除されていることを確認
+        $this->entityManager->clear();
+        $CustomerFavoriteProduct = $this->customerFavoriteProductRepository->findOneBy([
+            'Customer' => $Customer,
+            'Product' => $Product,
+        ]);
+        $this->assertNull($CustomerFavoriteProduct);
+    }
+
+    /**
+     * お気に入り削除テスト（お気に入りが存在しない場合は400エラー）
+     */
+    public function testProductFavoriteDeleteWithNotFavorite()
+    {
+        // お気に入り商品機能を有効化
+        $BaseInfo = $this->baseInfoRepository->get();
+        $BaseInfo->setOptionFavoriteProduct(true);
+
+        $Product = $this->createProduct('Product not favorite', 1);
+        $Customer = $this->createCustomer();
+        $this->loginTo($Customer);
+
+        // 商品詳細ページを取得（お気に入り未登録なので削除リンクはない）
+        $this->client->request('GET', $this->generateUrl('product_detail', ['id' => $Product->getId()]));
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        // Symfonyのテスト用CSRFトークンを使用
+        $csrfToken = $this->client->getContainer()->get('security.csrf.token_manager')
+            ->getToken(\Eccube\Common\Constant::TOKEN_NAME)->getValue();
+
+        // お気に入りに追加していない状態で削除を実行
+        $this->client->request(
+            'POST',
+            $this->generateUrl('product_delete_favorite', ['id' => $Product->getId()]),
+            [
+                '_token' => $csrfToken,
+                '_method' => 'delete',
+            ]
+        );
+
+        // 400エラーが返されることを確認
+        $this->expected = 400;
+        $this->actual = $this->client->getResponse()->getStatusCode();
+        $this->verify();
+    }
+
+    /**
+     * お気に入り削除テスト（未ログイン時はログインページにリダイレクト）
+     *
+     * Note: 未ログイン時はCSRFチェックより先にログインリダイレクトが発生するため、
+     * CSRFトークンを含めずにテストしています。
+     */
+    public function testProductFavoriteDeleteWithNotLoggedIn()
+    {
+        // お気に入り商品機能を有効化
+        $BaseInfo = $this->baseInfoRepository->get();
+        $BaseInfo->setOptionFavoriteProduct(true);
+
+        $Product = $this->createProduct('Product favorite delete not logged in', 1);
+
+        // 未ログイン状態でお気に入り削除を実行
+        $this->client->request(
+            'POST',
+            $this->generateUrl('product_delete_favorite', ['id' => $Product->getId()]),
+            [
+                '_method' => 'delete',
+            ]
+        );
+
+        // ログインページにリダイレクトされることを確認
+        $this->assertTrue($this->client->getResponse()->isRedirect(
+            $this->generateUrl('mypage_login')
+        ));
     }
 }

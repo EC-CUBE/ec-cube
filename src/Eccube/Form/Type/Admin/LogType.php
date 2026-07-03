@@ -84,6 +84,32 @@ class LogType extends AbstractType
                     new Assert\Range(['min' => 1, 'max' => 50000]),
                 ],
             ])
+            ->add('log_level', ChoiceType::class, [
+                'label' => 'admin.setting.system.log.log_level',
+                'choices' => [
+                    'admin.setting.system.log.level.all' => '',
+                    'admin.setting.system.log.level.debug' => 'DEBUG',
+                    'admin.setting.system.log.level.info' => 'INFO',
+                    'admin.setting.system.log.level.notice' => 'NOTICE',
+                    'admin.setting.system.log.level.warning' => 'WARNING',
+                    'admin.setting.system.log.level.error' => 'ERROR',
+                    'admin.setting.system.log.level.critical' => 'CRITICAL',
+                ],
+                'required' => false,
+                'placeholder' => false,
+                'data' => '',
+            ])
+            ->add('keyword', TextType::class, [
+                'label' => 'admin.setting.system.log.keyword',
+                'required' => false,
+                'attr' => [
+                    'maxlength' => 255,
+                    'placeholder' => 'admin.setting.system.log.keyword_placeholder',
+                ],
+                'constraints' => [
+                    new Assert\Length(['max' => 255]),
+                ],
+            ])
             ->add('download', SubmitType::class, [
                 'label' => 'admin.common.download',
             ]);

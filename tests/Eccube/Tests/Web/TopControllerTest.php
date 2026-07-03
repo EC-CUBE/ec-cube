@@ -30,7 +30,14 @@ class TopControllerTest extends AbstractWebTestCase
     {
         $crawler = $this->client->request('GET', $this->generateUrl('homepage'));
         $node = $crawler->filter('link[rel=icon]');
-        $this->assertSame('/html/user_data/assets/img/common/favicon.ico', $node->attr('href'));
+        $href = $node->attr('href');
+
+        // バージョンパラメータ付きのURLを期待（キャッシュバスティング）
+        $this->assertMatchesRegularExpression(
+            '#^/html/user_data/assets/img/common/favicon\.ico(\?v=\d+)?$#',
+            $href,
+            'Favicon URL should be /html/user_data/assets/img/common/favicon.ico with optional version parameter'
+        );
     }
 
     public function testGAスクリプト表示確認()
