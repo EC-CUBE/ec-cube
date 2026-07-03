@@ -45,6 +45,16 @@ if (!class_exists(Cart::class)) {
         #[ORM\Column(name: 'cart_key', type: Types::STRING, nullable: true)]
         private ?string $cart_key = null;
 
+        /**
+         * エージェントコマース (CheckoutSession) が所有するカートか.
+         *
+         * true のカートは Web ストアフロント (CartService) のカート解決から除外され、
+         * ログイン会員のカートマージ・再計算・購入完了等で操作されない。
+         * 通常購入のカートは常に false。
+         */
+        #[ORM\Column(name: 'agent_owned', type: Types::BOOLEAN, options: ['default' => false])]
+        private bool $agent_owned = false;
+
         #[ORM\ManyToOne(targetEntity: Customer::class)]
         #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'id')]
         private ?Customer $Customer = null;
@@ -121,6 +131,18 @@ if (!class_exists(Cart::class)) {
         public function setCartKey(string $cartKey): Cart
         {
             $this->cart_key = $cartKey;
+
+            return $this;
+        }
+
+        public function isAgentOwned(): bool
+        {
+            return $this->agent_owned;
+        }
+
+        public function setAgentOwned(bool $agentOwned): Cart
+        {
+            $this->agent_owned = $agentOwned;
 
             return $this;
         }
