@@ -177,7 +177,7 @@ final class TemplateControllerTest extends AbstractAdminWebTestCase
             $session = $this->createSession($this->client);
 
             // テンプレートを選択
-            $this->client->request('POST', $this->generateUrl('admin_store_template'), [
+            $this->client->request(Request::METHOD_POST, $this->generateUrl('admin_store_template'), [
                 'form' => [
                     '_token' => 'dummy',
                     'selected' => $Template->getId(),
@@ -187,7 +187,7 @@ final class TemplateControllerTest extends AbstractAdminWebTestCase
 
             // 警告メッセージが表示されている
             $warnings = $session->getFlashBag()->get('eccube.admin.warning');
-            self::assertContains('admin.store.template.env_override_warning', $warnings);
+            $this->assertContains('admin.store.template.env_override_warning', $warnings);
         } finally {
             // プロセス環境変数を元に戻す
             putenv('ECCUBE_TEMPLATE_CODE');
