@@ -15,12 +15,14 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Web\Admin\Setting\System;
 
+use Eccube\Entity\AuthorityRole;
 use Eccube\Entity\Member;
 use Eccube\Repository\MemberRepository;
 use Eccube\Service\TwoFactorAuthService;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use RobThree\Auth\TwoFactorAuth;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 final class TwoFactorAuthControllerTest extends AbstractAdminWebTestCase
 {
@@ -209,6 +211,50 @@ final class TwoFactorAuthControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue(
             $response->isRedirect($this->generateUrl('admin_two_factor_auth')),
             '2FAキー設定済みユーザーが未認証で設定画面にアクセスした場合、認証画面にリダイレクトされるべき。実際のレスポンス: Status='.$response->getStatusCode().', Location='.$response->headers->get('Location')
+        );
+    }
+
+    /**
+     * 回帰テスト(#6406): 権限管理で "/setting" が拒否URLに設定されていても、
+     * 2段階認証の再設定画面にアクセスできること。
+     *
+     * 修正前は edit ルートが "/setting/system/two_factor_auth/edit" だったため
+     * 拒否URL "/setting" の前方一致で AuthorityVoter に 403 で弾かれていた。
+     */
+    public function testEditIsNotForbiddenWhenSettingUrlIsDenied()
+    {
+        if (!$this->twoFactorAuthService->isEnabled()) {
+            $this->markTestSkipped('2FAが無効のためスキップ');
+        }
+
+        // 2FA設定済みの新規メンバーを作成
+        $Member = $this->createMember();
+        $Member->setTwoFactorAuthEnabled(true);
+        $Member->setTwoFactorAuthKey($this->twoFactorAuthService->createSecret());
+        $this->entityManager->persist($Member);
+
+        // メンバーの権限に対して "/setting" 配下を拒否する権限設定を追加
+        $AuthorityRole = new AuthorityRole();
+        $AuthorityRole
+            ->setDenyUrl('/setting')
+            ->setAuthority($Member->getAuthority())
+            ->setCreator($Member)
+            ->setCreateDate(new \DateTime())
+            ->setUpdateDate(new \DateTime());
+        $this->entityManager->persist($AuthorityRole);
+        $this->entityManager->flush();
+
+        // 新しいMemberでログイン
+        $this->loginTo($Member);
+
+        // 2段階認証の再設定画面にアクセス
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_system_two_factor_auth_edit'));
+
+        // "/setting" 拒否設定下でも 403(アクセス拒否) にならないこと
+        $this->assertNotSame(
+            Response::HTTP_FORBIDDEN,
+            $this->client->getResponse()->getStatusCode(),
+            '"/setting" が拒否URLでも2段階認証の再設定画面はアクセス拒否されないべき'
         );
     }
 }
