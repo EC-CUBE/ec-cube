@@ -1,5 +1,4 @@
-const $ = require('jquery');
-global.$ = global.jQuery = $;
+global.$ = global.jQuery = require('jquery');
 
 require('bootstrap/dist/css/bootstrap.min.css');
 const bootstrap = require('bootstrap');

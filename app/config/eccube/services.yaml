@@ -11,6 +11,10 @@ parameters:
     locale: '%env(ECCUBE_LOCALE)%'
     timezone: '%env(ECCUBE_TIMEZONE)%'
     currency: '%env(ECCUBE_CURRENCY)%'
+    # Agent Commerce (#6794): 未設定時は空文字を既定とする (string 型注入で null TypeError を避ける)
+    env(ECCUBE_AGENT_COMMERCE_UCP_SIGNING_KEY): ''
+    env(ECCUBE_AGENT_COMMERCE_ACP_FEED_BASE_URL): ''
+    env(ECCUBE_AGENT_COMMERCE_ACP_FEED_API_KEY): ''
 
 services:
     # default configuration for services in *this* file
@@ -237,3 +241,78 @@ services:
     eccube.asset.user_data_version_strategy:
         alias: Eccube\Asset\FilemtimeVersionStrategy
         public: true
+
+    # Agent Commerce (ACP / UCP) 共通基盤
+    Eccube\Service\AgentCommerce\Security\FilesystemKeyStore:
+        arguments:
+            $projectDir: '%kernel.project_dir%'
+            $envPathOverrides:
+                ucp_signing: '%env(ECCUBE_AGENT_COMMERCE_UCP_SIGNING_KEY)%'
+
+    Eccube\Service\AgentCommerce\Security\KeyStoreInterface:
+        alias: Eccube\Service\AgentCommerce\Security\FilesystemKeyStore
+
+    Eccube\Service\AgentCommerce\Security\AgentCommerceMessageSignerInterface:
+        alias: Eccube\Service\AgentCommerce\Security\UcpMessageSigner
+
+    # Agent Commerce: Product Feed / Catalog 共通基盤 (#6794)
+    Eccube\Service\AgentCommerce\Catalog\ProductReferenceResolverInterface:
+        alias: Eccube\Service\AgentCommerce\Catalog\ProductReferenceResolver
+
+    Eccube\Service\AgentCommerce\Catalog\CatalogProviderInterface:
+        alias: Eccube\Service\AgentCommerce\Catalog\CatalogProvider
+
+    # Agent Commerce: ACP Product Feed (push) (#6794)
+    Eccube\Service\AgentCommerce\Catalog\Acp\AcpFeedValidator:
+        arguments:
+            $schemaPath: '%kernel.project_dir%/src/Eccube/Resource/AgentCommerce/Acp/schema.feed.json'
+
+    Eccube\Service\AgentCommerce\Catalog\Acp\AcpFeedClient:
+        arguments:
+            $baseUrl: '%env(ECCUBE_AGENT_COMMERCE_ACP_FEED_BASE_URL)%'
+            $apiKey: '%env(ECCUBE_AGENT_COMMERCE_ACP_FEED_API_KEY)%'
+
+    Eccube\Service\AgentCommerce\Catalog\Acp\AcpFeedClientInterface:
+        alias: Eccube\Service\AgentCommerce\Catalog\Acp\AcpFeedClient
+
+    # Agent Commerce: UCP Catalog (pull / REST) (#6794)
+    Eccube\Service\AgentCommerce\Catalog\Ucp\UcpCatalogCache:
+        arguments:
+            $cacheDir: '%kernel.cache_dir%'
+
+    # Agent Commerce: UCP Discovery (/.well-known/ucp) (#6794 / #6777)
+    # payment_handlers は決済ハンドラプラグインが tagged service で寄与する (既定は空 {}).
+    Eccube\Service\AgentCommerce\Discovery\EmptyPaymentHandlerRegistry:
+        arguments:
+            $registries: !tagged_iterator eccube.agent_commerce.payment_handler_registry
+
+    Eccube\Service\AgentCommerce\Discovery\PaymentHandlerRegistryInterface:
+        alias: Eccube\Service\AgentCommerce\Discovery\EmptyPaymentHandlerRegistry
+
+    # Agent Commerce CheckoutSession 中核 (#6777 Phase 1b)
+    Eccube\Service\AgentCommerce\Fulfillment\FulfillmentOptionMapperInterface:
+        alias: Eccube\Service\AgentCommerce\Fulfillment\StandardFulfillmentOptionMapper
+
+    # 標準はゲスト購入 (会員解決なし)。会員 ID 連携は eccube-api4#189 landing 後に差し替える。
+    Eccube\Service\AgentCommerce\CheckoutSession\CustomerResolverInterface:
+        alias: Eccube\Service\AgentCommerce\CheckoutSession\GuestCustomerResolver
+
+    # OAuth2 トークン検証。リソースサーバー (eccube-api4#188) 未導入時は handler が null となり 503 を返す。
+    Eccube\Service\AgentCommerce\Security\AgentCommerceOAuth2Authenticator:
+        arguments:
+            $accessTokenHandler: '@?Symfony\Component\Security\Http\AccessToken\AccessTokenHandlerInterface'
+
+    # 決済ハンドラレジストリ。具象ハンドラ (決済プラグイン) は agent_commerce.payment_handler タグで寄与する。
+    Eccube\Service\AgentCommerce\Payment\AgentCheckoutPaymentHandlerRegistry:
+        arguments:
+            $handlers: !tagged_iterator agent_commerce.payment_handler
+
+    # エージェント注文の支払方法解決 (handler_id 駆動・sort_no 非依存)。
+    # 店舗ごとに選択ロジックを変える場合は app/Customize で実装しエイリアスを差し替える。
+    Eccube\Service\AgentCommerce\Payment\AgentPaymentMethodResolverInterface:
+        alias: Eccube\Service\AgentCommerce\Payment\DefaultAgentPaymentMethodResolver
+
+    # complete 状態機械オーケストレータ。在庫確保期限は eccube.yaml の設定値を注入。
+    Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutCompletionService:
+        arguments:
+            $escalationExpireMinutes: '%eccube_agent_checkout_escalation_expire%'
