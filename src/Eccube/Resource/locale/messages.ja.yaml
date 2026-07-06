@@ -1146,6 +1146,27 @@ admin.setting.system.log_display: ログ表示
 admin.setting.system.login_history: ログイン履歴
 admin.setting.system.master_data_management: マスタデータ管理
 admin.setting.system.system_info: システム情報
+admin.content.agent_commerce: エージェントコマース
+admin.content.agent_commerce.notice: この機能は日本国内では未提供です。検証目的に限定してご利用ください。
+admin.content.agent_commerce.published: 公開中
+admin.content.agent_commerce.acp.title: ACP プロダクトフィード (push)
+admin.content.agent_commerce.acp.description: OpenAI がホストする ACP Feed API へ商品フィードを送出します。送出には認証情報 (base URL / API キー) の設定が必要です。
+admin.content.agent_commerce.acp.feed_id: フィード ID
+admin.content.agent_commerce.acp.feed_id_required: フィード ID を入力してください。
+admin.content.agent_commerce.acp.push_now: 今すぐ push (差分)
+admin.content.agent_commerce.acp.push_full: 全置換 push
+admin.content.agent_commerce.acp.push_success: 差分 push を送信しました。
+admin.content.agent_commerce.acp.push_full_success: "全置換 push を送信しました (%count% 件)。"
+admin.content.agent_commerce.acp.push_no_products: 送信対象の商品がありません。
+admin.content.agent_commerce.acp.push_not_accepted: Feed API に受理されませんでした。
+admin.content.agent_commerce.acp.push_failed: push の送信に失敗しました。設定を確認してください。
+admin.content.agent_commerce.ucp.title: UCP カタログ (pull)
+admin.content.agent_commerce.ucp.description: UCP カタログ API のキャッシュを操作します。カタログは常時公開されます。
+admin.content.agent_commerce.ucp.catalog_status: カタログ API
+admin.content.agent_commerce.ucp.cache_warmup: キャッシュ生成
+admin.content.agent_commerce.ucp.cache_clear: キャッシュクリア
+admin.content.agent_commerce.ucp.cache_warmup_success: カタログキャッシュを生成しました。
+admin.content.agent_commerce.ucp.cache_clear_success: カタログキャッシュをクリアしました。
 
 #------------------------------------------------------------------------------------
 # 設定：店舗設定：基本設定
@@ -1176,6 +1197,8 @@ admin.setting.shop.shop.option_remember_me: 自動ログイン機能
 admin.setting.shop.shop.option_mail_notifier: 重要操作時メール通知機能
 admin.setting.shop.shop.option_product: 商品設定
 admin.setting.shop.shop.nostock_hidden: 在庫切れ商品の非表示
+admin.setting.shop.shop.option_csv: CSV設定
+admin.setting.shop.shop.option_sanitize_csv_formulas: CSVの数式インジェクション対策
 admin.setting.shop.shop.option_tax: 税設定
 admin.setting.shop.shop.option_invoice_registration_number: 適格請求書発行事業者登録番号
 admin.setting.shop.shop.option_product_tax: 商品別税率機能
@@ -1185,6 +1208,10 @@ admin.setting.shop.shop.option_point_rate: ポイント付与率
 admin.setting.shop.shop.option_point_conversion_rate: ポイント換算レート
 admin.setting.shop.shop.ga: "Googleアナリティクス設定"
 admin.setting.shop.shop.ga.tracking_id: "トラッキングID"
+admin.setting.shop.shop.agent_commerce: "エージェントコマース"
+admin.setting.shop.shop.agent_commerce.description: "AIエージェント (ChatGPT / Gemini 等) 経由のチェックアウトを有効化します。Discovery / カタログは常時公開され、ここでは checkout のみを制御します。checkout は日本未提供のため、通常は無効のままにしてください。"
+admin.setting.shop.shop.agent_commerce.acp_checkout_enabled: "ACP チェックアウトを有効にする"
+admin.setting.shop.shop.agent_commerce.ucp_checkout_enabled: "UCP チェックアウトを有効にする"
 
 #------------------------------------------------------------------------------------
 # 設定：店舗設定：特定商取引法設定
@@ -1466,6 +1493,7 @@ admin.store.template.delete_error__current_template: 設定中のテンプレー
 admin.store.template.template_code_already_exists: テンプレートコードは既に利用されています
 admin.store.template.upload_failed: アップロードに失敗しました
 admin.store.template.invalid_upload_file: ファイルの拡張子に誤りがあります
+admin.store.template.env_override_warning: "ECCUBE_TEMPLATE_CODE が環境変数として設定されているため、.env への変更は反映されません。テンプレートを切り替えるには環境変数の ECCUBE_TEMPLATE_CODE を変更してください。"
 admin.store.plugin: プラグイン
 admin.store.plugin.plugin_owners_install: プラグインを探す
 admin.store.plugin.plugin_list: プラグイン一覧
@@ -1750,6 +1778,7 @@ tooltip.setting.shop.shop.option_delivery_fee_free_quantity: この個数を超�
 tooltip.setting.shop.shop.option_delivery_fee_by_product: ここをオンにすると、商品ごとに送料を指定できるようになります。
 tooltip.setting.shop.shop.option_guest_purchase: ゲスト（会員登録なし）での購入を許可する機能です。オフにすると、購入にはログインまたは新規会員登録が必要になります。
 tooltip.setting.shop.shop.option_customer_activate: 顧客の会員登録直後は仮会員とし、メールアドレスの確認などを経て本会員として登録できる機能です。
+tooltip.setting.shop.shop.option_sanitize_csv_formulas: CSV出力時に、表計算ソフトで数式評価され得る先頭文字（= + - @ など）を無害化します。Excelで数式として実行されるのを防げますが、無効にすると出力値がそのままになります。CSV取込時の復元処理も同じ設定に連動するため、有効時に出力したCSVは有効なまま取り込んでください。
 tooltip.setting.shop.shop.option_favorite_product: 顧客が任意の商品をお気に入りとして登録できるようにする機能です。
 tooltip.setting.shop.shop.option_remember_me: 顧客に一定期間の自動ログインを許可します。
 tooltip.setting.shop.shop.option_mail_notifier: フロント側での会員情報編集・配送先変更操作時にメール通知を行う機能です。

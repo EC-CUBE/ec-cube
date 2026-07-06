@@ -71,6 +71,7 @@
         "symfony/flex": "^2.7",
         "symfony/form": "^7.4",
         "symfony/framework-bundle": "^7.4",
+        "symfony/http-client": "^7.4",
         "symfony/http-foundation": "^7.4",
         "symfony/http-kernel": "^7.4",
         "symfony/intl": "^7.4",
@@ -184,7 +185,8 @@
     },
     "config": {
         "platform": {
-            "php": "8.3.24"
+            "php": "8.2.0",
+            "ext-sodium": "1.0.18"
         },
         "preferred-install": {
             "*": "dist"
@@ -198,17 +200,5 @@
             "phpstan/extension-installer": true,
             "symfony/flex": true
         }
-    },
-    "repositories": [
-        {
-            "name": "eccube",
-            "type": "composer",
-            "url": "https://package-api-c2.ec-cube.net/v43",
-            "options": {
-                "http": {
-                    "header": ["X-ECCUBE-KEY: abcxyzABCXYZ123098"]
-                }
-            }
-        }
-        ]
+    }
 }

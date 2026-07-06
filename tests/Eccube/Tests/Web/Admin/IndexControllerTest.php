@@ -77,32 +77,28 @@ final class IndexControllerTest extends AbstractAdminWebTestCase
         $OrderProcessing = $this->orderStatusRepository->find(OrderStatus::PROCESSING);
         $OrderReturned = $this->orderStatusRepository->find(OrderStatus::RETURNED);
 
+        // bulk 生成 → OrderDate 設定 → 1 回 flush. createOrder ループ (内部で createProduct/createDelivery が走る) を避ける.
         $todaysSales = '0';
-        for ($i = 0; $i < 3; $i++) {
-            $Order = $this->createOrder($Customer);
-            $Order->setOrderStatus($OrderNew);
+        $todaysOrders = $this->createOrders(array_fill(0, 3, $Customer), ['orderStatus' => $OrderNew]);
+        foreach ($todaysOrders as $Order) {
             $Order->setOrderDate($Today);
-            $this->entityManager->flush();
             $todaysSales = bcadd($todaysSales, $Order->getPaymentTotal(), 2);
         }
         $yesterdaysSales = '0';
-        for ($i = 0; $i < 3; $i++) {
-            $Order = $this->createOrder($Customer);
-            $Order->setOrderStatus($OrderNew);
+        $yesterdaysOrders = $this->createOrders(array_fill(0, 3, $Customer), ['orderStatus' => $OrderNew]);
+        foreach ($yesterdaysOrders as $Order) {
             $Order->setOrderDate($Yesterday);
-            $this->entityManager->flush();
             $yesterdaysSales = bcadd($yesterdaysSales, $Order->getPaymentTotal(), 2);
         }
+        $this->entityManager->flush();
 
-        // excludes
+        // excludes: ステータス別に 2 件ずつ bulk 生成し、Today / Yesterday を割り当てる.
         foreach ([$OrderCancel, $OrderPending, $OrderProcessing, $OrderReturned] as $OrderStatus) {
-            foreach ([$Today, $Yesterday] as $OrderDate) {
-                $Order = $this->createOrder($Customer);
-                $Order->setOrderStatus($OrderStatus);
-                $Order->setOrderDate($OrderDate);
-                $this->entityManager->flush();
-            }
+            $excludeOrders = $this->createOrders(array_fill(0, 2, $Customer), ['orderStatus' => $OrderStatus]);
+            $excludeOrders[0]->setOrderDate($Today);
+            $excludeOrders[1]->setOrderDate($Yesterday);
         }
+        $this->entityManager->flush();
 
         $crawler = $this->client->request(
             Request::METHOD_GET,

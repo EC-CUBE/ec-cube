@@ -51,26 +51,33 @@ final class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTe
     protected function setUp(): void
     {
         parent::setUp();
-        $this->createProduct();
         $this->orderStatusRepo = $this->entityManager->getRepository(OrderStatus::class);
         $this->paymentRepo = $this->entityManager->getRepository(Payment::class);
         $this->orderRepo = $this->entityManager->getRepository(Order::class);
         $this->sexRepo = $this->entityManager->getRepository(Sex::class);
-        $this->Customer = $this->createCustomer();
-        $this->entityManager->persist($this->Customer);
-        $this->entityManager->flush();
-        $this->Order = $this->createOrder($this->Customer);
-        $this->Order1 = $this->createOrder($this->Customer);
-        $this->Order2 = $this->createOrder($this->createCustomer('test@example.com'));
-        // 新規受付にしておく
-        $NewStatus = $this->orderStatusRepo->find(OrderStatus::NEW);
-        $this->assertInstanceOf(OrderStatus::class, $NewStatus);
-        $this->Order1
-            ->setOrderStatus($NewStatus)
-            ->setOrderDate(new \DateTime());
-        $this->Order2
-            ->setOrderStatus($NewStatus)
-            ->setOrderDate(new \DateTime());
+        // Phase (b): order-search-multi-status シナリオの CSV から Customer × 2 + Order × 3 を一括投入.
+        // 各 Order は CSV 内で異なる OrderStatus / order_date を持つため、setUp 内の setter 呼び出しが不要になる.
+        // ※ シナリオ間の UNIQUE 制約衝突を避けるため、CSV ロード前に対象テーブルを空にする.
+        $this->deleteAllRows(['dtb_order_item']);
+        $this->deleteAllRows(['dtb_shipping']);
+        $this->deleteAllRows(['dtb_order']);
+        $this->deleteAllRows(['dtb_customer_address']);
+        $this->deleteAllRows(['dtb_customer']);
+        // 詳細は tests/Eccube/Tests/Fixture/csv/order-search-multi-status/README.md を参照.
+        $this->loadCsvFixtures('order-search-multi-status');
+        $this->Customer = $this->entityManager->getRepository(Customer::class)
+            ->findOneBy(['email' => 'customer-multi-status@example.com']);
+        $this->Order = $this->orderRepo->findOneBy(['order_no' => 'order-multi-status-1']);
+        $this->Order1 = $this->orderRepo->findOneBy(['order_no' => 'order-multi-status-2']);
+        $this->Order2 = $this->orderRepo->findOneBy(['order_no' => 'order-multi-status-3']);
+        // CSV の create_date / update_date / order_date は固定値のため、日時範囲検索 (testDateTime) で
+        // 期待件数にヒットしない. テスト実行時の現在時刻に上書きする (Order は order_date=NULL のまま).
+        $now = new \DateTime();
+        foreach ([$this->Order, $this->Order1, $this->Order2] as $Order) {
+            $Order->setCreateDate($now)->setUpdateDate($now);
+        }
+        $this->Order1->setOrderDate($now);
+        $this->Order2->setOrderDate($now);
         $this->entityManager->flush();
     }
 

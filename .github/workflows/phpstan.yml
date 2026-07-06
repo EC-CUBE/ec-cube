@@ -14,19 +14,19 @@ jobs:
 
     steps:
     - name: "Checkout"
-      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
+      uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
 
     - name: Setup PHP
-      uses: shivammathur/setup-php@accd6127cb78bee3e8082180cb391013d204ef9f  # v2
+      uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240  # v2
       with:
-        php-version: '8.3'
+        php-version: '8.5'
         extensions: redis
 
     - name: Initialize Composer
       uses: ./.github/actions/composer
 
     - name: Restore PHPStan cache
-      uses: actions/cache/restore@668228422ae6a00e4ad889ee87cd7109ec5666a7  # v5
+      uses: actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae  # v5
       with:
         path: /tmp/phpstan
         key: ${{ runner.os }}-phpstan-${{ hashFiles('phpstan.neon.dist', 'composer.lock', 'src/**/*.php') }}
@@ -38,7 +38,7 @@ jobs:
 
     - name: Save PHPStan cache
       if: always()
-      uses: actions/cache/save@668228422ae6a00e4ad889ee87cd7109ec5666a7  # v5
+      uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v5
       with:
         path: /tmp/phpstan
         key: ${{ runner.os }}-phpstan-${{ hashFiles('phpstan.neon.dist', 'composer.lock', 'src/**/*.php') }}

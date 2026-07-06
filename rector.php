@@ -33,6 +33,13 @@ use Rector\Symfony\Symfony61\Rector\Class_\CommandConfigureToAttributeRector;
 use Rector\Symfony\Symfony61\Rector\Class_\CommandPropertyToAttributeRector;
 use Rector\ValueObject\PhpVersion;
 
+// この設定ファイルは Rector の CLI 実行専用。
+// 公開ディレクトリに配置された場合に Web 経由で実行されないようガードする。
+if (PHP_SAPI !== 'cli') {
+    http_response_code(403);
+    exit;
+}
+
 return RectorConfig::configure()
            // EC-CUBEのPHPバージョンに合わせて設定
            ->withPhpVersion(PhpVersion::PHP_83)
@@ -50,6 +57,8 @@ return RectorConfig::configure()
            ->withSkip([
                // 特定のファイルやディレクトリを除外する場合
                __DIR__ . '/src/Eccube/Rector',
+               // Codeception 自動生成ファイル (codecept build で再生成されるため Rector の指摘は意味なし)
+               __DIR__ . '/codeception/_support/_generated',
                // 特定のルールを除外する場合
                // 親の $entityManager 再宣言と step5 の接続専用 EM の取り違えを防ぐため
                ControllerMethodInjectionToConstructorRector::class => [
