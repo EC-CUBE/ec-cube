@@ -43,6 +43,7 @@ jobs:
           - front-order
           - front-mypage
           - front-invoice
+          - front-mail
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
@@ -201,6 +202,7 @@ jobs:
         working-directory: e2e
         env:
           BASE_URL: 'http://127.0.0.1:8000'
+          MAILPIT_URL: 'http://127.0.0.1:8025'
           DATABASE_URL: ${{ matrix.database_url }}
           ECCUBE_ADMIN_ROUTE: 'admin'
           ADMIN_USER: 'admin'
