@@ -105,12 +105,6 @@ abstract class AbstractMasterEntity extends AbstractEntity implements \Stringabl
         return self::getConstantValue($name);
     }
 
-    public function __set(string $name, mixed $value): void
-    {
-        // Allow Doctrine ORM 3.x lazy ghost objects to hydrate properties
-        // see also. https://github.com/EC-CUBE/ec-cube/issues/6469
-    }
-
     public static function __callStatic(string $name, mixed $arguments): mixed
     {
         return self::getConstantValue($name);
