@@ -155,8 +155,19 @@ class EntityProxyService
                     ->files();
 
                 foreach ($files as $file) {
-                    require_once $file->getRealPath();
-                    $includedFiles[] = $file->getRealPath();
+                    $realPath = $file->getRealPath();
+                    $includedFiles[] = $realPath;
+                    // 既にProxy等でロード済みのEntityクラスを再度require_onceすると
+                    // "Cannot redeclare class" になるため、宣言済みならスキップする.
+                    // 対象は app/Plugin/**/Entity と app/Customize/Entity の両方.
+                    $normalized = str_replace('\\', '/', $realPath);
+                    if (preg_match('#/app/((?:Plugin|Customize)/[^.]+)\.php$#', $normalized, $matches)) {
+                        $fqcn = str_replace('/', '\\', $matches[1]);
+                        if (class_exists($fqcn, false)) {
+                            continue;
+                        }
+                    }
+                    require_once $realPath;
                 }
             }
             $includedFileSets[] = $includedFiles;
