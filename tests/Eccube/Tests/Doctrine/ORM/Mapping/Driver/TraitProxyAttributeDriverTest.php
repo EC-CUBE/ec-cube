@@ -39,7 +39,6 @@ final class TraitProxyAttributeDriverTest extends TestCase
 
     private const FQCN = 'Eccube\\Tests\\Fixture\\Doctrine\\RedeclareGuardTarget';
 
-    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -48,7 +47,6 @@ final class TraitProxyAttributeDriverTest extends TestCase
         $this->sourceLikeDir = $base.'/source';
         $fs = new Filesystem();
         $fs->mkdir([$this->proxyLikeDir, $this->sourceLikeDir]);
-
         // 同一 FQCN を持つ Entity を「Proxy 相当」「元ソース相当」の 2 パスに配置する.
         $code = <<<'PHP'
             <?php
@@ -71,7 +69,6 @@ final class TraitProxyAttributeDriverTest extends TestCase
         file_put_contents($this->sourceLikeDir.'/RedeclareGuardTarget.php', $code);
     }
 
-    #[\Override]
     protected function tearDown(): void
     {
         $fs = new Filesystem();
@@ -90,7 +87,7 @@ final class TraitProxyAttributeDriverTest extends TestCase
     {
         // Kernel::loadEntityProxies 相当: 元ソースとは別パス(Proxy 相当)からクラスをロードする
         require_once $this->proxyLikeDir.'/RedeclareGuardTarget.php';
-        self::assertTrue(class_exists(self::FQCN, false));
+        $this->assertTrue(class_exists(self::FQCN, false));
 
         $driver = new TraitProxyAttributeDriver([$this->sourceLikeDir]);
         // Proxy ディレクトリを実在しないパスに向け、元ソース require の分岐を通す.
@@ -99,6 +96,6 @@ final class TraitProxyAttributeDriverTest extends TestCase
 
         $classNames = $driver->getAllClassNames();
 
-        self::assertContains(self::FQCN, $classNames);
+        $this->assertContains(self::FQCN, $classNames);
     }
 }
