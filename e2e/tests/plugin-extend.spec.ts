@@ -128,6 +128,8 @@ test.describe('Plugin Extend', () => {
     await masterPage.選択('mtb_device_type');
     await masterPage.保存();
 
+    // 後片付け(無効化・削除)はプラグイン管理画面上で行うため、マスタデータ画面から戻る
+    await page.goto(`/${config.adminRoute}/store/plugin`);
     await plugin.無効化();
     await plugin.削除();
   });
