@@ -16,8 +16,17 @@ declare(strict_types=1);
 namespace Eccube\Tests\Rector\CodingStyle;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Rector\Testing\PHPUnit\AbstractRectorTestCase;
 
+/**
+ * Rector を実行するため rector 同梱の nikic/php-parser を読み込む。
+ * pcov 有効のカバレッジ実行では本体の nikic/php-parser と衝突して
+ * "Cannot redeclare class PhpParser\Node\Scalar\Float_" で fatal になるため、
+ * カバレッジ実行から除外できるよう rector グループを付与する
+ * (coverage.yml で --exclude-group rector)。
+ */
+#[Group('rector')]
 final class AttributeArgumentsOrderRectorTest extends AbstractRectorTestCase
 {
     #[DataProvider(methodName: 'provideData')]

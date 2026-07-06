@@ -82,7 +82,10 @@ jobs:
         run: |
           echo "session.save_path=$PWD/var/sessions/test" > php.ini
           echo "memory_limit=1012M" >> php.ini
-          php -c php.ini -dpcov.enabled=1 vendor/bin/phpunit --exclude-group cache-clear --exclude-group cache-clear-install --exclude-group update-schema-doctrine --coverage-cobertura=coverage1.xml --testdox
+          # rector グループ (AttributeArgumentsOrderRectorTest) は rector 同梱の
+          # nikic/php-parser を読み込み、pcov 有効時に本体の nikic/php-parser と衝突して
+          # fatal (Cannot redeclare PhpParser\Node\Scalar\Float_) になるため除外する。
+          php -c php.ini -dpcov.enabled=1 vendor/bin/phpunit --exclude-group cache-clear --exclude-group cache-clear-install --exclude-group update-schema-doctrine --exclude-group rector --coverage-cobertura=coverage1.xml --testdox
       # GitHub のコードカバレッジ (Code Quality) にアップロードする。
       # - PHPUnit ステップの outcome でガードする: 上記の continue-on-error により
       #   テストがクラッシュしてもジョブは成功扱いのままになり、coverage1.xml が
