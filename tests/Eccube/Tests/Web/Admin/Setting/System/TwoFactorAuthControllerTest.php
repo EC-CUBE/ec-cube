@@ -19,6 +19,7 @@ use Eccube\Entity\Member;
 use Eccube\Repository\MemberRepository;
 use Eccube\Service\TwoFactorAuthService;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use RobThree\Auth\Providers\Qr\QRServerProvider;
 use RobThree\Auth\TwoFactorAuth;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -35,7 +36,7 @@ final class TwoFactorAuthControllerTest extends AbstractAdminWebTestCase
         parent::setUp();
         $this->memberRepository = $this->entityManager->getRepository(Member::class);
         $this->twoFactorAuthService = static::getContainer()->get(TwoFactorAuthService::class);
-        $this->tfa = new TwoFactorAuth();
+        $this->tfa = new TwoFactorAuth(new QRServerProvider());
     }
 
     /**
