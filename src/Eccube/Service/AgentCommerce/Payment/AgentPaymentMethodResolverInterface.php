@@ -39,8 +39,9 @@ interface AgentPaymentMethodResolverInterface
     /**
      * エージェント注文に割り当てる Payment を解決し、$order へ設定する.
      *
-     * - $handlerId 指定時: その `handler_id` を宣言する決済ハンドラ ({@link AcpPaymentHandlerInterface} /
-     *   {@link UcpPaymentHandlerInterface}) が扱える Payment を選ぶ (エージェントの明示選択を尊重)。
+     * - $handlerId 指定時: その `handler_id` を宣言する決済ハンドラ
+     *   ({@link AgentCheckoutPaymentHandlerInterface::getHandlerId()}) が扱える Payment を
+     *   選ぶ (エージェントの明示選択を尊重)。
      * - $handlerId 省略時: その注文のプロトコルでエージェント決済可能な Payment の既定を選ぶ
      *   (create 時の見積算出向け)。
      *
