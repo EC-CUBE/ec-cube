@@ -16,8 +16,8 @@ declare(strict_types=1);
 namespace Eccube\Tests\Service\AgentCommerce\Conformance;
 
 use Eccube\Service\AgentCommerce\MinorUnitConverter;
-use Eccube\Service\AgentCommerce\Security\KeyStoreInterface;
 use Eccube\Service\AgentCommerce\Security\UcpMessageSigner;
+use Eccube\Service\Security\KeyStoreInterface;
 use PHPUnit\Framework\TestCase;
 
 /**

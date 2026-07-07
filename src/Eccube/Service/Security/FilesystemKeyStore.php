@@ -11,12 +11,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Eccube\Service\AgentCommerce\Security;
+namespace Eccube\Service\Security;
 
 /**
- * 署名鍵をファイルシステムに保管する標準キーストア実装。
+ * 暗号鍵をファイルシステムに保管する標準キーストア実装。
  *
- * 既定パスは "{projectDir}/app/keystore/agent-commerce/{purpose}.key"。
+ * 既定パスは "{projectDir}/app/keystore/{feature}/{purpose}.key"。
+ * $feature は機能単位の鍵グループ (サブディレクトリ名) で、機能ごとにインスタンスを分けて登録する。
  * purpose ごとに環境変数等によるパス上書き ($envPathOverrides) が可能。
  * 鍵ファイルはパーミッション 0600、格納ディレクトリは 0700 で作成する。
  */
@@ -24,12 +25,20 @@ class FilesystemKeyStore implements KeyStoreInterface
 {
     /**
      * @param string                $projectDir       プロジェクトルート (%kernel.project_dir%)
+     * @param string                $feature          鍵グループ (app/keystore/<feature>/ のサブディレクトリ名)
      * @param array<string, string> $envPathOverrides purpose => 絶対パスの上書きマップ
+     *
+     * @throws \InvalidArgumentException $feature に許可外の文字が含まれる場合
      */
     public function __construct(
         private readonly string $projectDir,
+        private readonly string $feature,
         private readonly array $envPathOverrides = [],
     ) {
+        // $feature は既定パスの segment になるため、パストラバーサルを防ぐべく許可文字のみに制限する。
+        if (!preg_match('/\A[a-z0-9_-]+\z/', $this->feature)) {
+            throw new \InvalidArgumentException(sprintf('Invalid keystore feature "%s". Only lowercase alphanumerics, "_" and "-" are allowed.', $this->feature));
+        }
     }
 
     /**
@@ -80,7 +89,7 @@ class FilesystemKeyStore implements KeyStoreInterface
      * purpose から鍵ファイルの絶対パスを解決する。
      *
      * $envPathOverrides[$purpose] が非空文字ならそのパスを優先し、
-     * それ以外は既定パスを使用する。
+     * それ以外は既定パス "{projectDir}/app/keystore/{feature}/{purpose}.key" を使用する。
      *
      * $purpose は既定パスへ直接連結されるため、パストラバーサル ("../" 等) を防ぐべく
      * 許可文字 ([a-z0-9_-]) のみに制限する。
@@ -99,6 +108,6 @@ class FilesystemKeyStore implements KeyStoreInterface
             return $override;
         }
 
-        return $this->projectDir.'/app/keystore/agent-commerce/'.$purpose.'.key';
+        return $this->projectDir.'/app/keystore/'.$this->feature.'/'.$purpose.'.key';
     }
 }

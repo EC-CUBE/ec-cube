@@ -13,6 +13,7 @@ node_modules
 /app/keystore/*
 !/app/keystore/.gitkeep
 !/app/keystore/.htaccess
+!/app/keystore/README.md
 /app/template/*
 !/app/template/admin
 !/app/template/default

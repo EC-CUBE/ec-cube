@@ -11,11 +11,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Eccube\Service\AgentCommerce\Security;
+namespace Eccube\Service\Security;
 
 /**
- * エージェントコマースの署名鍵等を永続化するキーストアの抽象。
+ * 暗号鍵・シークレット素材 (PEM 等) を永続化するキーストアの抽象。
  *
+ * EC-CUBE の複数の core 機能 (エージェントコマース・MCP サーバ等) が共通で利用する
+ * 横断基盤。鍵は機能ごとに app/keystore/<feature>/ 配下へ分離して保管する。
  * 実装は app/Customize で差し替え可能 (例: DB 保管・Vault 連携)。
  * 標準実装はファイルシステム (FilesystemKeyStore)。
  */

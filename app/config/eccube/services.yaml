@@ -242,15 +242,28 @@ services:
         alias: Eccube\Asset\FilemtimeVersionStrategy
         public: true
 
-    # Agent Commerce (ACP / UCP) 共通基盤
-    Eccube\Service\AgentCommerce\Security\FilesystemKeyStore:
+    # 共通鍵保管基盤 (Eccube\Service\Security) の抽象テンプレート。
+    # 機能ごとに parent を継承し feature を束ねたインスタンスを登録する。
+    # $feature はデフォルト無しスカラーのため autowire できない。抽象化して直接の
+    # 自動登録・注入を避け、各機能は下記 eccube.keystore.* を明示的に注入する。
+    Eccube\Service\Security\FilesystemKeyStore:
+        abstract: true
+        autowire: false
         arguments:
             $projectDir: '%kernel.project_dir%'
+
+    # 将来 MCP 等が鍵を持つ場合は eccube.keystore.mcp ($feature: 'mcp') を同様に足す。
+    eccube.keystore.agent_commerce:
+        parent: Eccube\Service\Security\FilesystemKeyStore
+        arguments:
+            $feature: 'agent-commerce'
             $envPathOverrides:
                 ucp_signing: '%env(ECCUBE_AGENT_COMMERCE_UCP_SIGNING_KEY)%'
 
-    Eccube\Service\AgentCommerce\Security\KeyStoreInterface:
-        alias: Eccube\Service\AgentCommerce\Security\FilesystemKeyStore
+    # Agent Commerce (ACP / UCP) 共通基盤
+    Eccube\Service\AgentCommerce\Security\UcpMessageSigner:
+        arguments:
+            $keyStore: '@eccube.keystore.agent_commerce'
 
     Eccube\Service\AgentCommerce\Security\AgentCommerceMessageSignerInterface:
         alias: Eccube\Service\AgentCommerce\Security\UcpMessageSigner

@@ -15,8 +15,8 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Service\AgentCommerce\Security;
 
-use Eccube\Service\AgentCommerce\Security\KeyStoreInterface;
 use Eccube\Service\AgentCommerce\Security\UcpMessageSigner;
+use Eccube\Service\Security\KeyStoreInterface;
 use phpseclib3\Crypt\PublicKeyLoader;
 use PHPUnit\Framework\TestCase;
 

@@ -13,6 +13,7 @@
 
 namespace Eccube\Service\AgentCommerce\Security;
 
+use Eccube\Service\Security\KeyStoreInterface;
 use phpseclib3\Crypt\EC;
 use phpseclib3\Crypt\EC\PrivateKey;
 use phpseclib3\Crypt\EC\PublicKey;
