@@ -1,1 +1,32 @@
-npx lint-staged -q || node -e ''
+#!/usr/bin/env sh
+# Pre-commit hook (軽量): staged な *.php を php-cs-fixer で auto-fix するだけ。
+# 重い rector / phpstan は pre-push に分離。
+#
+# 実行環境は自動判定: ec-cube コンテナ稼働中なら docker compose exec、
+# 無ければ host の vendor/bin、どちらも無ければ skip。
+# 強制指定: ECCUBE_HOOK_RUNNER=docker|host|skip / バイパス: HUSKY=0 git commit
+
+[ "$HUSKY" = "0" ] && exit 0
+
+STAGED_PHP=$(git diff --cached --name-only --diff-filter=ACMR | grep '\.php$' || true)
+[ -z "$STAGED_PHP" ] && exit 0
+
+DC="docker compose"; SVC="ec-cube"
+case "${ECCUBE_HOOK_RUNNER:-auto}" in
+  docker) RUN="$DC exec -T $SVC" ;;
+  host)   RUN="" ;;
+  skip)   exit 0 ;;
+  auto)
+    if $DC exec -T "$SVC" true >/dev/null 2>&1; then RUN="$DC exec -T $SVC"
+    elif command -v php >/dev/null 2>&1 && [ -x vendor/bin/php-cs-fixer ]; then RUN=""
+    else echo "pre-commit: no container / no host php+vendor; skip (HUSKY=0 to bypass)"; exit 0
+    fi ;;
+esac
+
+echo "pre-commit: php-cs-fixer (staged)"
+if ! echo "$STAGED_PHP" | xargs $RUN vendor/bin/php-cs-fixer \
+       --config=.php-cs-fixer.dist.php --path-mode=intersection fix; then
+  echo "FAIL: php-cs-fixer"
+  exit 1
+fi
+echo "$STAGED_PHP" | xargs git add
