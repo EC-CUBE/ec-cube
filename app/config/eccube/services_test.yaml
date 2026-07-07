@@ -77,3 +77,21 @@ services:
     Eccube\Service\Composer\ComposerApiService:
         autowire: true
         public: true
+    # AddressMappingService はまだ consumer が無く private では除去されるためテスト時のみ public 化
+    Eccube\Service\AgentCommerce\AddressMappingService:
+        autowire: true
+        public: true
+    # CheckoutSession 中核 (#6777 Phase 1b) も consumer (checkout controller) が #6776/#6574 まで
+    # 無いため、テスト時のみ public 化してコンテナから取得する。
+    Eccube\Service\AgentCommerce\AgentCheckoutPurchaseFlowAdapter:
+        autowire: true
+        public: true
+        # 明示定義により _defaults の $shoppingPurchaseFlow bind が外れるため、ここで再束縛する。
+        arguments:
+            $shoppingPurchaseFlow: '@eccube.purchase.flow.shopping'
+    Eccube\Service\AgentCommerce\Fulfillment\StandardFulfillmentOptionMapper:
+        autowire: true
+        public: true
+    Eccube\Service\AgentCommerce\CheckoutSession\GuestCustomerResolver:
+        autowire: true
+        public: true

@@ -25,7 +25,8 @@ EC-CUBE は日本で広く使われる OSS の EC プラットフォームです
 - **テンプレート**: Twig 3.x
 - **データベース**: PostgreSQL 13–18 または MySQL 8.4 LTS
 - **フロントエンド**: Sass (SCSS) / webpack / Bootstrap 5.3 / jQuery 4.x
-- **テスト**: PHPUnit 11（`symfony/phpunit-bridge` 経由）/ Codeception 5（E2E）
+- **テスト**: PHPUnit 11（`symfony/phpunit-bridge` 経由）/ Playwright（E2E、`e2e/`）
+  - ※ `codeception/` は残置（レガシー）。CI の Codeception ジョブは無効化（`if: false`）されており、E2E は Playwright が正。
 - **静的解析**: PHPStan（`phpstan.neon.dist` で level 6）
 - **コードスタイル**: PHP-CS-Fixer（PSR-12）
 
@@ -65,6 +66,10 @@ html/                 # 公開ドキュメントルート
 
 tests/
   Eccube/Tests/       # PHPUnit テスト
+
+e2e/                  # Playwright E2E（spec / Page Object / fixtures）
+  tests/              # *.spec.ts（CI は e2e-test.yml のマトリクスで 1 ファイル = 1 シャード）
+  pages/  models/  helpers/  fixtures/
 ```
 
 ## 開発コマンド
@@ -86,6 +91,14 @@ bin/console eccube:install
 bin/phpunit                                                      # 全テスト
 bin/phpunit tests/Eccube/Tests/Web/ShoppingControllerTest.php    # 単一ファイル
 bin/phpunit --filter testCompleteWithLogin                       # フィルタ
+```
+
+E2E（Playwright、`e2e/` 配下で実行）:
+
+```bash
+cd e2e && npm ci
+# project は front-tests / admin-tests / plugin-tests。spec ファイル名でフィルタ
+npx playwright test --project=setup --project=front-tests front-product.spec.ts
 ```
 
 ### 静的解析
@@ -192,12 +205,22 @@ frontmatter の `description` がトリガ条件で、該当レイヤを触る�
 | レイヤ / 観点 | 規約 Skill（本文） | Skill 名 |
 |--------|------------------|----------|
 | PHPUnit テスト | [`.claude/skills/phpunit/SKILL.md`](./.claude/skills/phpunit/SKILL.md) | `phpunit` |
+| E2E（Playwright・spec 作成 / flaky 対策） | [`.claude/skills/e2e/SKILL.md`](./.claude/skills/e2e/SKILL.md) | `e2e` |
 | コントローラ（責務分離・Fat化防止） | [`.claude/skills/controller/SKILL.md`](./.claude/skills/controller/SKILL.md) | `controller` |
 | サービス（責務分離・単一責任） | [`.claude/skills/service/SKILL.md`](./.claude/skills/service/SKILL.md) | `service` |
 | マイグレーション（スキーマ変更） | [`.claude/skills/migration/SKILL.md`](./.claude/skills/migration/SKILL.md) | `migration` |
 | Entity（Doctrine エンティティ） | [`.claude/skills/entity/SKILL.md`](./.claude/skills/entity/SKILL.md) | `entity` |
 | Repository（データアクセス） | [`.claude/skills/repository/SKILL.md`](./.claude/skills/repository/SKILL.md) | `repository` |
 | FormType（フォーム） | [`.claude/skills/formtype/SKILL.md`](./.claude/skills/formtype/SKILL.md) | `formtype` |
+| セキュリティ（認証・認可・CSRF・IDOR） | [`.claude/skills/security/SKILL.md`](./.claude/skills/security/SKILL.md) | `security` |
+| Twig 拡張・テンプレート（XSS・上書き） | [`.claude/skills/twig-template/SKILL.md`](./.claude/skills/twig-template/SKILL.md) | `twig-template` |
+| イベント（Subscriber・テンプレート/Doctrine イベント） | [`.claude/skills/event-subscriber/SKILL.md`](./.claude/skills/event-subscriber/SKILL.md) | `event-subscriber` |
+| プラグイン（ライフサイクル・配置・拡張） | [`.claude/skills/plugin/SKILL.md`](./.claude/skills/plugin/SKILL.md) | `plugin` |
+| 受注処理（PurchaseFlow の Processor/Validator） | [`.claude/skills/purchase-flow/SKILL.md`](./.claude/skills/purchase-flow/SKILL.md) | `purchase-flow` |
+| メール（MailService・テンプレート・MailHistory） | [`.claude/skills/mail/SKILL.md`](./.claude/skills/mail/SKILL.md) | `mail` |
+| カスタマイズ（app/Customize での拡張・上書き・デコレーション） | [`.claude/skills/customize/SKILL.md`](./.claude/skills/customize/SKILL.md) | `customize` |
+| CSV 入出力（CsvImport/Export・CSV 定義） | [`.claude/skills/csv/SKILL.md`](./.claude/skills/csv/SKILL.md) | `csv` |
+| コンソールコマンド（Symfony Console・バッチ） | [`.claude/skills/command/SKILL.md`](./.claude/skills/command/SKILL.md) | `command` |
 | 責務分離レビュー（実装直後の自己チェック・全層） | [`.claude/skills/review-responsibility/SKILL.md`](./.claude/skills/review-responsibility/SKILL.md) | `review-responsibility` |
 
 > 規約は必要になった時点で `.claude/skills/<name>/SKILL.md` を 1 ファイル追加して足す（`.codex`/`.agents` は symlink で自動共有）。

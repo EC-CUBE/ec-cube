@@ -59,7 +59,7 @@ jobs:
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@030e881283bb7a6894de51c315a6bfe6a94e05cf  # v6
+        uses: docker/metadata-action@80c7e94dd9b9319bd5eb7a0e0fe9291e23a2a2e9  # v6
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
@@ -70,7 +70,7 @@ jobs:
             type=ref,event=pr,prefix=${{ matrix.php }}-apache-pr-
 
       - name: Build and export to Docker
-        uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f  # v7
+        uses: docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf  # v7
         with:
           context: .
           load: true
@@ -97,7 +97,7 @@ jobs:
 
       - name: Push Docker image
         if: github.event_name != 'pull_request'
-        uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f  # v7
+        uses: docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf  # v7
         with:
           context: .
           push: true
