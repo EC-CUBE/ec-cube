@@ -936,6 +936,7 @@ admin.order.search_customer_title: Search Customers
 admin.order.product_info: Product Info
 admin.order.edit_multiple_shipping: Edit Delivery Address
 admin.order.edit_multiple_shipping_description: If you selected multiple delivery addresses, you can edit each of them from the this button.
+admin.order.edit_conflict: The order was updated by another operation and could not be saved. Please reload the page and try again.
 admin.order.product_item_not_found: No item is found
 admin.order.delivery_note_create_date: Date of Issue
 admin.order.delivery_note_title: Title

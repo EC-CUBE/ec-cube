@@ -935,6 +935,7 @@ admin.order.search_customer_title: 会員を検索
 admin.order.product_info: 商品情報
 admin.order.edit_multiple_shipping: お届け先を編集
 admin.order.edit_multiple_shipping_description: 複数配送を指定している場合は、こちらのボタンからそれぞれの配送設定の編集ができます
+admin.order.edit_conflict: 受注情報が別の操作で更新されたため、登録できませんでした。画面を再読み込みしてからやり直してください。
 admin.order.product_item_not_found: 商品が追加されていません
 admin.order.delivery_note_create_date: 発行日
 admin.order.delivery_note_title: タイトル
