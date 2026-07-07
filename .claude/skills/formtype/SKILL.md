@@ -77,3 +77,4 @@ class ExampleType extends AbstractType
 - ❌ 既存フォームをコアで直接改変 → ✅ `FormTypeExtension`（app/Customize）で拡張
 - ❌ 管理画面検索フォームで CSRF 無効化 → ✅ CSRF 保護を保つ
 - ❌ 具象クラス依存 → ✅ コンストラクタ DI ＋ 必要なサービスの注入
+- ❌ 既存フォームに二重送信防止/楽観ロック用の unmapped hidden を足し、サーバー側で値未送信を即エラー扱い → ✅ 値が空/未送信なら判定をスキップ（プログラム的 POST・既存テスト・外部連携を壊さない後方互換を保つ）
