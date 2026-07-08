@@ -49,7 +49,7 @@ AI エージェント向けの情報は、この `AGENTS.md` を**正典（ハ�
 - **テンプレートと粒度**の基準はパイロット [`src/Eccube/Service/PurchaseFlow/README.html`](./src/Eccube/Service/PurchaseFlow/README.html)（＋ 同ディレクトリの `README.md`）。新規配置時はこれを金型にする。
   - `README.html` は自己完結 HTML。共通 CSS を将来当てられるよう過度なインライン装飾を避け、`data-customer="true"`＝顧客提出にも載る章 / `"false"`＝開発者向け（拡張・内部注意点）で振り分ける。
   - Skill が無いディレクトリ（例 `Doctrine/` `DependencyInjection/` `Attribute/` `Service/AgentCommerce/`）は `README.md` の SKILL 行を省き `README.html` のみを指す。
-- **静的サイト／PDF 化**（戦略資料 §8.2）: 全 `README.html` を集約した静的サイトでの常時公開と、`bin/console eccube:docs:export --filter=customer` による顧客提出 HTML／PDF 派生は**後続 PR**で実装する。
+- **静的サイト／PDF 化**（戦略資料 §8.2）: `bin/console eccube:docs:export [--filter=customer]` で全 `README.html` を集約・出力できる（`--filter=customer` は `data-customer="true"` の章だけを抽出）。顧客提出 PDF は出力 HTML をブラウザの「印刷 → PDF」で派生させる。静的サイトジェネレータの比較・選定は [`docs/spec-static-site-poc.md`](./docs/spec-static-site-poc.md)（PoC。第一候補 VitePress）。本番サイト（`docs.ec-cube.net/spec/`）のホスティング構築は後続作業。鮮度は PR テンプレートのチェック項目と CI（`docs-check`）で維持する。
 
 ## プロジェクト概要
 
