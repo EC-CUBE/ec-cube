@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin/Order — 仕様</title>
+<style>
+ /* 最小限のスタイル。§8.2 の静的サイト側で共通 CSS を上書きできるよう、
+    装飾はクラス指定に寄せ、過度なインライン装飾は避ける。 */
+ body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.7;max-width:960px;margin:0 auto;padding:2rem;color:#222}
+ h1,h2{border-bottom:1px solid #ddd;padding-bottom:.3rem}
+ h1{margin-bottom:.2rem}
+ .nav{font-size:.9rem;color:#555;margin:.2rem 0 1.5rem}
+ table{border-collapse:collapse;width:100%;margin:1rem 0}
+ th,td{border:1px solid #ccc;padding:.4rem .6rem;text-align:left;vertical-align:top}
+ th{background:#f4f4f4}
+ code{background:#f4f4f4;padding:.1rem .3rem;border-radius:3px;font-size:.92em}
+ .flow{background:#f9f9f9;border:1px solid #ddd;padding:1rem;white-space:pre;overflow-x:auto;font-family:ui-monospace,monospace;font-size:.88rem;line-height:1.5}
+ .note{background:#fff8e1;border-left:4px solid #f0c040;padding:.6rem 1rem;margin:1rem 0}
+ .dev-only{font-size:.75rem;color:#888;font-weight:normal;margin-left:.5rem}
+ .badge{display:inline-block;background:#eef;border:1px solid #ccd;border-radius:3px;padding:0 .4rem;font-size:.8rem}
+</style>
+</head>
+<body>
+
+<h1>Admin/Order — 管理画面の受注管理</h1>
+<p class="nav">
+ 索引: <a href="./README.md">README.md</a>
+ ／ 実装規約（AI・開発者向け）: <a href="../../../../../.claude/skills/controller/SKILL.md">controller/SKILL.md</a>
+ ／ ドメイン詳細: <a href="https://doc4.ec-cube.net/spec_order">doc4「受注」仕様</a>
+</p>
+
+<section data-section="overview" data-customer="true">
+ <h2>概要</h2>
+ <p><code>src/Eccube/Controller/Admin/Order/</code> は、<strong>管理画面から受注（<code>Order</code>）を操作する</strong>コントローラ群です。
+ 受注の一覧・検索・登録・編集、出荷（<code>Shipping</code>）の編集・出荷通知、受注メールの送信、出荷情報の CSV 取込などを担います。</p>
+ <p>受注ドメインの詳細（受注ステータスの遷移・明細種別・出荷単位など）は複製せず
+ <a href="https://doc4.ec-cube.net/spec_order">doc4「受注」仕様</a> を参照してください。</p>
+</section>
+
+<section data-section="classification" data-customer="true">
+ <h2>主要な役割・分類</h2>
+ <table>
+  <tr><th>コントローラ</th><th>役割</th></tr>
+  <tr><td><code>OrderController</code></td><td>受注一覧・検索・一括削除・CSV/PDF 出力・出荷ステータス／伝票番号の更新。</td></tr>
+  <tr><td><code>EditController</code></td><td>受注の新規登録（<code>admin_order_new</code>）と編集（<code>admin_order_edit</code>）。商品・会員・明細種別の検索補助も持つ。</td></tr>
+  <tr><td><code>ShippingController</code></td><td>出荷（<code>Shipping</code>）の編集と、出荷完了通知メールのプレビュー／送信。</td></tr>
+  <tr><td><code>MailController</code></td><td>受注に対する任意メールの作成・プレビュー・送信（<code>MailHistory</code> に記録）。</td></tr>
+  <tr><td><code>CsvImportController</code></td><td>出荷情報 CSV の取込とテンプレート配布（<code>AbstractCsvImportController</code> 継承）。</td></tr>
+ </table>
+</section>
+
+<section data-section="flow" data-customer="true">
+ <h2>代表的な処理の流れ</h2>
+ <p>受注の登録・編集（<code>EditController</code> / <code>ShippingController</code>）は、店頭の購入と<strong>同じ受注処理パイプライン（PurchaseFlow）</strong>を
+ <code>order</code> フローで実行します。管理者が組んだ受注も、金額計算・在庫・採番の扱いを店頭購入と一貫させるためです。</p>
+ <div class="flow">① フォーム処理     受注編集フォームを handleRequest() → isValid()
+② 検証・計算       PurchaseFlow.validate()  … warning / error を収集して画面に表示
+③ 確定（登録時）    PurchaseFlow.prepare() → commit()  … 在庫引当・注文番号採番など
+④ ステータス遷移    変更時は OrderStateMachine.apply() で受注ステータスを更新</div>
+ <p>詳細は <a href="../../../Service/PurchaseFlow/README.html">PurchaseFlow の仕様</a> を参照してください。</p>
+</section>
+
+<section data-section="extension" data-customer="false">
+ <h2>拡張ポイント<span class="dev-only">開発者向け</span></h2>
+ <ul>
+  <li>受注編集の途中に処理を差し込むには <strong>テンプレートイベント／コントローライベント</strong>（例: <code>ADMIN_ORDER_EDIT_INDEX_PROGRESS</code>）を購読する。コントローラ本体は改変しない。</li>
+  <li>受注に対する検証・計算・確定ロジックの追加は <strong>PurchaseFlow の <code>order</code> フロー</strong>に部品を登録する（Processor / Validator）。コントローラには書かない。</li>
+  <li>プロジェクト固有の振る舞いは <code>app/Customize/</code> 側で拡張・上書きする。</li>
+ </ul>
+</section>
+
+<section data-section="notes" data-customer="false">
+ <h2>注意点<span class="dev-only">開発者向け</span></h2>
+ <ul>
+  <li><strong>管理操作が実世界を変える「二重副作用」に注意。</strong> <code>EditController</code> / <code>ShippingController</code> は管理画面の操作から <code>PurchaseFlow.prepare()</code>/<code>commit()</code> を呼ぶため、在庫引当・注文番号採番・（設定によっては）メール送信が管理画面から発火する。確定系を安易に増やさない。</li>
+  <li><strong>受注ステータスは <code>OrderStateMachine</code> 経由で遷移させる。</strong> 直接 <code>setOrderStatus()</code> で書き換えず、遷移可否チェックを通す。</li>
+  <li><strong>Fat コントローラを増やさない。</strong> 受注の計算・検証・確定は PurchaseFlow へ。コントローラは HTTP 入出力と画面遷移に徹する。</li>
+  <li><strong>認可・CSRF。</strong> パスは <code>%eccube_admin_route%</code> 配下（admin ファイアウォールで保護）。一括削除・ステータス更新・伝票番号更新など GET 以外の状態変更は CSRF トークンを検証する。</li>
+ </ul>
+</section>
+
+</body>
+</html>

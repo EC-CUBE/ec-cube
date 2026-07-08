@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Form/Type — 仕様</title>
+<style>
+ /* 最小限のスタイル。§8.2 の静的サイト側で共通 CSS を上書きできるよう、
+    装飾はクラス指定に寄せ、過度なインライン装飾は避ける。 */
+ body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.7;max-width:960px;margin:0 auto;padding:2rem;color:#222}
+ h1,h2{border-bottom:1px solid #ddd;padding-bottom:.3rem}
+ h1{margin-bottom:.2rem}
+ .nav{font-size:.9rem;color:#555;margin:.2rem 0 1.5rem}
+ table{border-collapse:collapse;width:100%;margin:1rem 0}
+ th,td{border:1px solid #ccc;padding:.4rem .6rem;text-align:left;vertical-align:top}
+ th{background:#f4f4f4}
+ code{background:#f4f4f4;padding:.1rem .3rem;border-radius:3px;font-size:.92em}
+ .flow{background:#f9f9f9;border:1px solid #ddd;padding:1rem;white-space:pre;overflow-x:auto;font-family:ui-monospace,monospace;font-size:.88rem;line-height:1.5}
+ .note{background:#fff8e1;border-left:4px solid #f0c040;padding:.6rem 1rem;margin:1rem 0}
+ .dev-only{font-size:.75rem;color:#888;font-weight:normal;margin-left:.5rem}
+ .badge{display:inline-block;background:#eef;border:1px solid #ccd;border-radius:3px;padding:0 .4rem;font-size:.8rem}
+</style>
+</head>
+<body>
+
+<h1>Form/Type — フォーム型</h1>
+<p class="nav">
+ 索引: <a href="./README.md">README.md</a>
+ ／ 実装規約（AI・開発者向け）: <a href="../../../../.claude/skills/formtype/SKILL.md">formtype/SKILL.md</a>
+</p>
+
+<section data-section="overview" data-customer="true">
+ <h2>概要</h2>
+ <p>ここは EC-CUBE の <strong>フォーム定義（FormType）</strong>を置くディレクトリです。会員登録・お問い合わせ・
+ 購入手続き（フロント）や、商品・受注・会員の編集画面（管理画面）で使う入力フォームを、
+ <strong>1 つの型 = 1 クラス</strong>として定義します。</p>
+ <p>各クラスは Symfony の <code>AbstractType</code> を継承し、次の 3 つで構成されます。</p>
+ <table>
+  <tr><th>メソッド</th><th>役割</th></tr>
+  <tr><td><code>buildForm()</code></td><td>フィールド（<code>add()</code>）とバリデーション制約（<code>Assert\*</code>）を組み立てる</td></tr>
+  <tr><td><code>configureOptions()</code></td><td>既定オプションを設定。エンティティに紐づくフォームは <code>data_class</code> を指定する</td></tr>
+  <tr><td><code>getBlockPrefix(): string</code></td><td>テンプレートのブロック名・フィールド名の接頭辞。<strong>戻り値型 <code>: string</code> は必須</strong></td></tr>
+ </table>
+</section>
+
+<section data-section="structure" data-customer="true">
+ <h2>ディレクトリ構成と代表的な型</h2>
+ <p>用途ごとにサブディレクトリへ分かれています。直下には「どの画面からも使い回す部品型」を置きます。</p>
+ <table>
+  <tr><th>場所</th><th>役割</th><th>代表クラス</th></tr>
+  <tr><td>直下</td><td>再利用される汎用フィールド型</td><td><code>AddressType</code> / <code>NameType</code> / <code>KanaType</code> / <code>PriceType</code> / <code>PhoneNumberType</code> / <code>MasterType</code></td></tr>
+  <tr><td><code>Front/</code></td><td>店頭（フロント）画面のフォーム</td><td><code>EntryType</code>（会員登録）/ <code>ContactType</code> / <code>CustomerLoginType</code> / <code>ShoppingShippingType</code></td></tr>
+  <tr><td><code>Admin/</code></td><td>管理画面のフォーム（編集・検索）</td><td><code>ProductType</code> / <code>OrderType</code> / <code>CustomerType</code> / <code>SearchProductType</code></td></tr>
+  <tr><td><code>Shopping/</code></td><td>購入手続き（受注確定）まわり</td><td><code>OrderType</code> / <code>ShippingType</code> / <code>OrderItemType</code></td></tr>
+  <tr><td><code>Master/</code></td><td>マスタ（<code>mtb_*</code>）を選択肢にするドロップダウン</td><td><code>PrefType</code>（都道府県）/ <code>SexType</code> / <code>SaleTypeType</code> / <code>PaymentType</code></td></tr>
+  <tr><td><code>Install/</code></td><td>インストーラの各ステップ</td><td><code>Step1Type</code> … <code>Step5Type</code></td></tr>
+ </table>
+</section>
+
+<section data-section="reuse" data-customer="true">
+ <h2>使いどころ：部品型を組み合わせる</h2>
+ <p>複雑なフォームは、汎用フィールド型を <code>add()</code> で埋め込んで作ります。<strong>同じ入力（住所・金額・都道府県 等）を毎回手書きしない</strong>のが原則です。</p>
+ <table>
+  <tr><th>やりたいこと</th><th>使う型</th></tr>
+  <tr><td>金額入力（通貨・桁区切り・上下限を EC-CUBE 設定から自動適用）</td><td><code>PriceType</code>（内部で <code>MoneyType</code> を親に持つ）</td></tr>
+  <tr><td>住所（都道府県 + 住所1 + 住所2 をまとめて）</td><td><code>AddressType</code></td></tr>
+  <tr><td>マスタ選択肢（都道府県・性別・支払方法 等）</td><td><code>Master/*Type</code>（<code>MasterType</code> = <code>EntityType</code> ベース）</td></tr>
+  <tr><td>確認用にメール／パスワードを 2 回入力</td><td><code>RepeatedEmailType</code> / <code>RepeatedPasswordType</code></td></tr>
+ </table>
+ <div class="note">入力値の動的制御（他フィールドの値でバリデーションを変える等）は <code>$builder-&gt;addEventListener(FormEvents::PRE_SET_DATA, ...)</code> /
+ <code>POST_SUBMIT</code> で行います。<code>AddressType</code> は <code>required</code> に応じて <code>NotBlank</code> を後付けする実例です。</div>
+</section>
+
+<section data-section="extension" data-customer="false">
+ <h2>拡張ポイント：既存フォームへ項目を足す<span class="dev-only">開発者向け</span></h2>
+ <p><strong>既存フォームにフィールドを追加したいときは、コアの FormType を書き換えず <code>FormTypeExtension</code> を使う</strong>のが鉄則です。
+ 詳しい DO/DON'T は <a href="../../../../.claude/skills/formtype/SKILL.md">formtype/SKILL.md</a> が正典です。</p>
+ <ul>
+  <li><span class="badge">コア</span> 横断的な拡張は <code>src/Eccube/Form/Extension/</code> に <code>AbstractTypeExtension</code> を継承して置く。
+  <code>getExtendedTypes()</code> で対象 Type を指定する（例: <code>HelpTypeExtension</code> は全 <code>FormType</code> に <code>help</code> を追加、<code>HTMLPurifierTextTypeExtension</code> は入力を無害化）。</li>
+  <li><span class="badge">プラグイン / Customize</span> プロジェクト固有の項目追加は <code>app/Customize/Form/Extension/</code> に置く（コアはアップグレードで上書きされるため）。</li>
+ </ul>
+ <p>新規フォームを一から作る場合は名前空間 <code>Eccube\Form\Type</code>・<code>AbstractType</code> 継承・ライセンスヘッダ・型宣言（PHPStan level 6）を守り、依存はコンストラクタ DI で受けます。</p>
+</section>
+
+<section data-section="notes" data-customer="false">
+ <h2>注意点<span class="dev-only">開発者向け</span></h2>
+ <ul>
+  <li><strong><code>getBlockPrefix(): string</code> の戻り値型は必須</strong>。省略すると動かない（Symfony 6+）。</li>
+  <li><strong>管理画面の検索フォームでも CSRF を無効化しない</strong>。<code>csrf_protection =&gt; true</code>（既定）を保ち、テンプレートでトークンを出力する。</li>
+  <li>バリデーションは制約クラス（<code>Assert\NotBlank</code> 等）で付ける。<code>Range</code> で min/max 両方指定時は <code>notInRangeMessage</code> を使う。</li>
+  <li>既存の EC-CUBE 提供 Type（<code>AddCartType</code> / <code>AddressType</code> / <code>PriceType</code> 等）があれば再利用し、具象クラス直依存を避ける。</li>
+  <li>パスワード入力を扱う場合、対象エンティティに <code>plain_password</code> プロパティが必要。</li>
+ </ul>
+</section>
+
+</body>
+</html>

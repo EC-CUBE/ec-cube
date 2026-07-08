@@ -20,6 +20,8 @@ AI エージェント向けの情報は、この `AGENTS.md` を**正典（ハ�
 | `GEMINI.md` | 薄いポインタ。Gemini CLI は Skill 非対応のため索引経由で `SKILL.md` へ誘導 | Gemini CLI |
 | `llms.txt` | 外部 LLM・クローラ向けの英語サマリ（llmstxt.org 準拠。公開 URL 前提） | LLM クローラ・外部 LLM |
 | `.claude/skills/<name>/SKILL.md` | レイヤ別の詳細規約（末端）。`.codex/skills`・`.agents/skills` は symlink 共有 | Skill 対応ツール（詳細は「Skill の配置と各ツールの読み込み」節） |
+| `<機能ディレクトリ>/README.html` | コード近接の**人間向け真の仕様書**（挙動・なぜ・図表）。`data-section`/`data-customer` で章立て。§8.2 で静的サイト／PDF に派生（後続 PR） | 人間（開発者・新規参加者・顧客） |
+| `<機能ディレクトリ>/README.md` | コード近接の**短い索引**。GitHub のディレクトリビューで自動表示され、`README.html`（人間向け仕様）と `SKILL.md`（AI 向け規約）への道標を兼ねる | GitHub 閲覧者・AI エージェント |
 
 ### 定義ファイルを増やすときの原則
 
@@ -28,6 +30,26 @@ AI エージェント向けの情報は、この `AGENTS.md` を**正典（ハ�
   - 不要な例: **Cursor / GitHub Copilot / Codex CLI は `AGENTS.md` をネイティブに読む**ため、`.cursor/rules/*` や `.github/copilot-instructions.md` は追加しない。
 - 新しい定義ファイルを足すときは、上のインデックス表にも 1 行追加し、所在を本節で一元管理する。
 - 設計思想・アーキテクチャの詳細文書（`DESIGN.md` / `ARCHITECTURE.md`）は現状未整備。整備する場合も本ファイルはハブに留め、詳細はそれらへリンクして本節の表に追記する。
+
+### コード近接ドキュメント（README.html / README.md）
+
+主要な機能ディレクトリ（`src/Eccube/` の各レイヤ根や高複雑サブシステム、一部 `app/`）には、コードと同じ場所へ 2 ファイルを置く。
+**読者別に 3 層へ分離し、同じ事柄を二度書かず相互にリンクする**（Issue #6906）。
+
+| 成果物 | 主読者 | 役割 |
+|---|---|---|
+| `README.html` | 人間（開発者・新規参加者・顧客） | **真の仕様書**（挙動・なぜ・図表）。`<section data-section="…" data-customer="true\|false">` で章立てし、顧客提出時は `data-customer="true"` の章だけ抽出できる |
+| `README.md` | GitHub 閲覧者・AI エージェント | **短い索引**。要点＋ `README.html`（人間向け仕様）と `SKILL.md`（AI 向け規約）へのリンク |
+| `.claude/skills/<name>/SKILL.md` | AI エージェント | **実装の書き方ルール**（規約・DO/DON'T）。仕様説明は `README.html` に委ね相互リンク |
+
+- **棲み分け**: `README.html`＝「機能の仕様（人間向け）」、`SKILL.md`＝「コードの書き方（AI 向け）」。読者と目的が異なるため両立する。
+- **参照トポロジ**（既存の一方向ルールを維持）: `README.md`（索引）→ `README.html`（仕様）／ `SKILL.md`（規約）→ `AGENTS.md`（正典）。
+  上流（`AGENTS.md`）から個別 README への下向き内容参照は足さない。
+- **ドメイン詳細は複製しない**: 受注 ER・ステートマシン・計算仕様など doc4 に既出のものは `README.html` から `https://doc4.ec-cube.net/` へリンクする。
+- **テンプレートと粒度**の基準はパイロット [`src/Eccube/Service/PurchaseFlow/README.html`](./src/Eccube/Service/PurchaseFlow/README.html)（＋ 同ディレクトリの `README.md`）。新規配置時はこれを金型にする。
+  - `README.html` は自己完結 HTML。共通 CSS を将来当てられるよう過度なインライン装飾を避け、`data-customer="true"`＝顧客提出にも載る章 / `"false"`＝開発者向け（拡張・内部注意点）で振り分ける。
+  - Skill が無いディレクトリ（例 `Doctrine/` `DependencyInjection/` `Attribute/` `Service/AgentCommerce/`）は `README.md` の SKILL 行を省き `README.html` のみを指す。
+- **静的サイト／PDF 化**（戦略資料 §8.2）: 全 `README.html` を集約した静的サイトでの常時公開と、`bin/console eccube:docs:export --filter=customer` による顧客提出 HTML／PDF 派生は**後続 PR**で実装する。
 
 ## プロジェクト概要
 

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AgentCommerce Exception — 仕様</title>
+<style>
+ /* 最小限のスタイル。§8.2 の静的サイト側で共通 CSS を上書きできるよう、
+    装飾はクラス指定に寄せ、過度なインライン装飾は避ける。 */
+ body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.7;max-width:960px;margin:0 auto;padding:2rem;color:#222}
+ h1,h2{border-bottom:1px solid #ddd;padding-bottom:.3rem}
+ h1{margin-bottom:.2rem}
+ .nav{font-size:.9rem;color:#555;margin:.2rem 0 1.5rem}
+ table{border-collapse:collapse;width:100%;margin:1rem 0}
+ th,td{border:1px solid #ccc;padding:.4rem .6rem;text-align:left;vertical-align:top}
+ th{background:#f4f4f4}
+ code{background:#f4f4f4;padding:.1rem .3rem;border-radius:3px;font-size:.92em}
+ .flow{background:#f9f9f9;border:1px solid #ddd;padding:1rem;white-space:pre;overflow-x:auto;font-family:ui-monospace,monospace;font-size:.88rem;line-height:1.5}
+ .note{background:#fff8e1;border-left:4px solid #f0c040;padding:.6rem 1rem;margin:1rem 0}
+ .dev-only{font-size:.75rem;color:#888;font-weight:normal;margin-left:.5rem}
+ .badge{display:inline-block;background:#eef;border:1px solid #ccd;border-radius:3px;padding:0 .4rem;font-size:.8rem}
+</style>
+</head>
+<body>
+
+<h1>AgentCommerce Exception — 例外とエラー分類</h1>
+<p class="nav">
+ 親: <a href="../README.html">AgentCommerce README</a>
+ ／ 索引: <a href="./README.md">README.md</a>
+</p>
+
+<section data-section="overview" data-customer="true">
+ <h2>概要</h2>
+ <p>エージェントチェックアウトの<strong>プロトコル系エラー</strong>（不正要求・処理不能）を分類・表現するサブドメインです。
+ ACP/UCP 共通の「2 系統エラー」のうち、ここで扱うのは <strong>HTTP 4xx/5xx + Error</strong> に対応する側です。
+ 在庫切れ・販売停止等の<strong>ビジネス系エラー</strong>（HTTP 200 + <code>messages[]</code>）は例外ではなく
+ <a href="../CheckoutSession/README.html">CheckoutSession</a> の <code>AgentCheckoutMessage</code> で表現します。</p>
+</section>
+
+<section data-section="classes" data-customer="true">
+ <h2>主要クラス / enum</h2>
+ <table>
+  <tr><th>クラス</th><th>役割</th></tr>
+  <tr><td><code>AgentCheckoutErrorCode</code></td><td>プロトコル系エラーのコード分類 enum（空明細・商品未検出・住所不正・数量不正等）。</td></tr>
+  <tr><td><code>AgentCheckoutException</code></td><td>プロトコル系エラーの例外。不正要求・処理不能を表す。</td></tr>
+  <tr><td><code>IdempotencyConflictException</code></td><td>Idempotency-Key の競合（HTTP 409 相当）。<a href="../Idempotency/README.html">Idempotency</a> サブドメインから投げられる。</td></tr>
+ </table>
+</section>
+
+<section data-section="notes" data-customer="false">
+ <h2>注意点<span class="dev-only">開発者向け</span></h2>
+ <ul>
+  <li>HTTP ステータスや <code>messages[]</code> への<strong>具体的な変換アダプタはプロトコル層（#6776 / #6574）が担う</strong>。本サブドメインは中立なエラー分類・例外型のみを提供する。</li>
+  <li>ビジネス系（在庫切れ等）をここで例外にしない。混同すると本来 HTTP 200 で返すべき結果を 4xx/5xx で返してしまう。</li>
+ </ul>
+</section>
+
+</body>
+</html>

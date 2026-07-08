@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Entity — 仕様</title>
+<style>
+ /* 最小限のスタイル。§8.2 の静的サイト側で共通 CSS を上書きできるよう、
+    装飾はクラス指定に寄せ、過度なインライン装飾は避ける。 */
+ body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.7;max-width:960px;margin:0 auto;padding:2rem;color:#222}
+ h1,h2{border-bottom:1px solid #ddd;padding-bottom:.3rem}
+ h1{margin-bottom:.2rem}
+ .nav{font-size:.9rem;color:#555;margin:.2rem 0 1.5rem}
+ table{border-collapse:collapse;width:100%;margin:1rem 0}
+ th,td{border:1px solid #ccc;padding:.4rem .6rem;text-align:left;vertical-align:top}
+ th{background:#f4f4f4}
+ code{background:#f4f4f4;padding:.1rem .3rem;border-radius:3px;font-size:.92em}
+ .flow{background:#f9f9f9;border:1px solid #ddd;padding:1rem;white-space:pre;overflow-x:auto;font-family:ui-monospace,monospace;font-size:.88rem;line-height:1.5}
+ .note{background:#fff8e1;border-left:4px solid #f0c040;padding:.6rem 1rem;margin:1rem 0}
+ .dev-only{font-size:.75rem;color:#888;font-weight:normal;margin-left:.5rem}
+ .badge{display:inline-block;background:#eef;border:1px solid #ccd;border-radius:3px;padding:0 .4rem;font-size:.8rem}
+</style>
+</head>
+<body>
+
+<h1>Entity — Doctrine エンティティ</h1>
+<p class="nav">
+ 索引: <a href="./README.md">README.md</a>
+ ／ 実装規約（AI・開発者向け）: <a href="../../../.claude/skills/entity/SKILL.md">entity/SKILL.md</a>
+ ／ ドメイン詳細: <a href="https://doc4.ec-cube.net/spec_order">doc4「受注」仕様</a>
+</p>
+
+<section data-section="overview" data-customer="true">
+ <h2>概要</h2>
+ <p>このディレクトリは、EC-CUBE のデータ構造を表す <strong>Doctrine エンティティ</strong>を置きます。
+ 会員・商品・受注・カートといった業務データは、ここに定義したクラスがそのまま DB のテーブルに対応します。</p>
+ <p>マッピング（クラス／プロパティと DB テーブル／カラムの対応）は <strong>PHP8 属性 <code>#[ORM\...]</code></strong> で
+ クラスに直接書きます（XML・アノテーションは使いません）。<strong>スキーマの源泉はこの属性</strong>であり、
+ カラムを足したいときは属性を書き換えます。</p>
+ <table>
+  <tr><th>種類</th><th>置き場所 / 継承</th><th>例</th></tr>
+  <tr><td>データ系エンティティ（<code>dtb_*</code>）</td><td><code>Eccube\Entity</code>／<code>AbstractEntity</code> を継承</td><td><code>Customer</code> <code>Product</code> <code>Order</code></td></tr>
+  <tr><td>マスタ系エンティティ（<code>mtb_*</code>）</td><td><code>Eccube\Entity\Master</code>／<code>AbstractMasterEntity</code> を継承</td><td><code>OrderStatus</code> <code>SaleType</code> <code>Pref</code></td></tr>
+ </table>
+</section>
+
+<section data-section="entities" data-customer="true">
+ <h2>主要エンティティと関連</h2>
+ <p>受注ドメインの詳細（ER 図・受注ステータスの遷移）は複製せず
+ <a href="https://doc4.ec-cube.net/spec_order">doc4「受注」仕様</a> を参照してください。ここでは代表的なクラスと関連だけを示します。</p>
+ <table>
+  <tr><th>エンティティ</th><th>役割</th><th>主な関連</th></tr>
+  <tr><td><code>Customer</code></td><td>会員</td><td>複数の <code>CustomerAddress</code> / <code>Order</code> を持つ</td></tr>
+  <tr><td><code>Product</code> / <code>ProductClass</code></td><td>商品とその規格（サイズ・カラー）</td><td>1 商品は複数 <code>ProductClass</code> を持つ。<strong>在庫・価格は <code>ProductClass</code> 単位</strong></td></tr>
+  <tr><td><code>Order</code> / <code>OrderItem</code></td><td>受注と明細</td><td>1 受注は複数 <code>OrderItem</code>・複数 <code>Shipping</code> を持つ</td></tr>
+  <tr><td><code>Shipping</code></td><td>出荷単位</td><td><strong>1 受注に複数あり得る</strong>（配送先・お届け日違い）。送料は Shipping 単位</td></tr>
+  <tr><td><code>Cart</code> / <code>CartItem</code></td><td>カートと明細</td><td>確定前の一時データ。確定で <code>Order</code> になる</td></tr>
+  <tr><td><code>Member</code></td><td>管理者ユーザー</td><td>—</td></tr>
+  <tr><td><code>BaseInfo</code></td><td>店舗設定（店名・住所・税設定）</td><td>単一レコード</td></tr>
+ </table>
+ <p>関連は <code>#[ORM\OneToMany]</code> / <code>#[ORM\ManyToOne]</code> 等の属性で定義し、
+ コレクション（1 対多の「多」側）はコンストラクタで <code>ArrayCollection</code> を初期化します。</p>
+</section>
+
+<section data-section="data" data-customer="true">
+ <h2>データの持ち方</h2>
+ <ul>
+  <li><strong>在庫・価格は <code>Product</code> ではなく <code>ProductClass</code> が持つ。</strong> 規格を持たない商品も内部的に
+  <code>ProductClass</code> を 1 つ持ちます（規格の有無は <code>Product::hasProductClass()</code> で判定）。</li>
+  <li><strong>金額は文字列で持つ。</strong> <code>Types::DECIMAL</code> のカラム（<code>Order</code> の <code>total</code>・<code>subtotal</code> 等）は
+  Doctrine ORM 3.x で <code>?string</code> になります。計算は float ではなく <strong><code>bcmath</code></strong>（<code>bcadd</code>/<code>bcmul</code>/<code>bccomp</code>、スケール 2）で行います。</li>
+  <li><strong>単一テーブル継承（STI）。</strong> マスタ系や <code>Order</code>・<code>Block</code> 等は 1 テーブルに複数の型を格納し、
+  <code>discriminator_type</code> 列で型を区別します（<code>#[ORM\InheritanceType('SINGLE_TABLE')]</code>）。</li>
+  <li><strong>作成・更新日時は自動。</strong> <code>create_date</code>/<code>update_date</code>/<code>creator</code> はコアの <code>SaveEventSubscriber</code> が
+  永続化時に自動セットするため、setter を生やすだけでよく、自前の <code>#[ORM\PrePersist]</code> は書きません。</li>
+ </ul>
+ <div class="note">「<code>Order</code> が存在する＝確定済み注文」ではありません。カート確定の入口で受注は <code>PROCESSING</code>（仮受注）で作られ、
+ 購入完了で <code>NEW</code> に遷移します。受注ステータスの詳細は <a href="https://doc4.ec-cube.net/spec_order">doc4「受注」仕様</a> を参照。</div>
+</section>
+
+<section data-section="extension" data-customer="false">
+ <h2>拡張ポイント<span class="dev-only">開発者向け</span></h2>
+ <p>既存エンティティへのフィールド追加は<strong>コアを書き換えず trait で行い</strong>、<code>app/Customize/Entity/</code> に置きます。
+ 反映には <code>bin/console eccube:generate:proxies</code> でプロキシを再生成します（<code>app/proxy/entity/</code> に拡張後のエンティティが生成される）。
+ 実装の書き方・DO/DON'T は <a href="../../../.claude/skills/entity/SKILL.md">entity/SKILL.md</a> が正典です。</p>
+ <table>
+  <tr><th>やりたいこと</th><th>やり方</th></tr>
+  <tr><td>コアエンティティにカラムを足す</td><td>trait を作り <code>app/Customize/Entity/</code> に置く → プロキシ再生成</td></tr>
+  <tr><td>新規テーブルを追加する</td><td><code>Eccube\Entity</code> にクラスを作り <code>#[ORM\...]</code> でマッピング（<code>class_exists</code> ラッパで囲う）</td></tr>
+  <tr><td>スキーマへ反映する</td><td><code>doctrine:schema:update --force</code>（単純なカラム追加に ALTER マイグレーションは不要）</td></tr>
+ </table>
+</section>
+
+<section data-section="notes" data-customer="false">
+ <h2>注意点<span class="dev-only">開発者向け</span></h2>
+ <ul>
+  <li><strong>コアエンティティは <code>class_exists</code> ラッパで囲う。</strong> プラグイン/カスタマイズによる trait 追加（プロキシ生成）に対応するため
+  <code>if (!class_exists(X::class)) { ... }</code> で定義を囲みます。</li>
+  <li><strong>ID の getter が <code>?int</code>（nullable）なのは意図的。</strong> <code>IDENTITY</code> 採番は永続化まで ID が未採番（null）だからです。</li>
+  <li><strong>金額 getter の戻り値を int/float 扱いしない。</strong> <code>DECIMAL</code> は <code>?string</code>。型宣言・代入・計算をこれに合わせます。</li>
+  <li><strong>他エンティティへの関連は親削除時の挙動を決める。</strong> FK は既定で削除を止めます（RESTRICT 相当）。未指定だと退会・商品削除が FK 違反で失敗し得るため、
+  <code>onDelete</code> を指定するか Service 側で後始末します。</li>
+  <li><strong>STI テーブルへの INSERT は <code>discriminator_type</code> の指定が必須</strong>（例: <code>mtb_sale_type</code> は <code>'saletype'</code>）。</li>
+ </ul>
+</section>
+
+</body>
+</html>

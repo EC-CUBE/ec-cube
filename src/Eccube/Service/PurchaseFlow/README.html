@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PurchaseFlow — 受注処理パイプライン 仕様</title>
+<style>
+ /* 最小限のスタイル。§8.2 の静的サイト側で共通 CSS を上書きできるよう、
+    装飾はクラス指定に寄せ、過度なインライン装飾は避ける。 */
+ body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.7;max-width:960px;margin:0 auto;padding:2rem;color:#222}
+ h1,h2{border-bottom:1px solid #ddd;padding-bottom:.3rem}
+ h1{margin-bottom:.2rem}
+ .nav{font-size:.9rem;color:#555;margin:.2rem 0 1.5rem}
+ table{border-collapse:collapse;width:100%;margin:1rem 0}
+ th,td{border:1px solid #ccc;padding:.4rem .6rem;text-align:left;vertical-align:top}
+ th{background:#f4f4f4}
+ code{background:#f4f4f4;padding:.1rem .3rem;border-radius:3px;font-size:.92em}
+ .flow{background:#f9f9f9;border:1px solid #ddd;padding:1rem;white-space:pre;overflow-x:auto;font-family:ui-monospace,monospace;font-size:.88rem;line-height:1.5}
+ .note{background:#fff8e1;border-left:4px solid #f0c040;padding:.6rem 1rem;margin:1rem 0}
+ .dev-only{font-size:.75rem;color:#888;font-weight:normal;margin-left:.5rem}
+ .badge{display:inline-block;background:#eef;border:1px solid #ccd;border-radius:3px;padding:0 .4rem;font-size:.8rem}
+</style>
+</head>
+<body>
+
+<h1>PurchaseFlow — 受注処理パイプライン</h1>
+<p class="nav">
+ 索引: <a href="./README.md">README.md</a>
+ ／ 実装規約（AI・開発者向け）: <a href="../../../../.claude/skills/purchase-flow/SKILL.md">purchase-flow/SKILL.md</a>
+ ／ ドメイン詳細: <a href="https://doc4.ec-cube.net/spec_order">doc4「受注」仕様</a>
+</p>
+
+<section data-section="overview" data-customer="true">
+ <h2>概要</h2>
+ <p><code>PurchaseFlow</code> は、カート・注文確認・受注確定・受注編集の各場面で使われる
+ <strong>受注処理の中核パイプライン</strong>です。送料・手数料・税・値引き・ポイント・在庫引当・注文番号採番といった
+ 「受注に関わる計算・検証・確定」を、コントローラや個別サービスに散らさず、この 1 本のパイプラインに集約します。</p>
+
+ <p>パイプラインは <strong>cart / shopping / order の 3 フロー</strong>ぶん存在し、それぞれ別々の
+ 処理部品（Processor / Validator）の組を持ちます。どのフローで実行中かは <code>PurchaseContext</code> が保持します。</p>
+
+ <table>
+  <tr><th>フロー</th><th>使われる場面</th></tr>
+  <tr><td>cart</td><td>カート投入・数量変更時の検証と金額再計算</td></tr>
+  <tr><td>shopping</td><td>注文確認画面での検証・送料/手数料/税/ポイントの確定計算</td></tr>
+  <tr><td>order</td><td>管理画面の受注編集など、確定済み受注に対する再計算・差分反映</td></tr>
+ </table>
+</section>
+
+<section data-section="glossary" data-customer="true">
+ <h2>用語</h2>
+ <p>受注ドメインの詳細（ER 図・受注ステータスの遷移・税計算の仕様）は複製せず
+ <a href="https://doc4.ec-cube.net/spec_order">doc4「受注」仕様</a> を参照してください。ここでは本パイプラインの理解に必要な語だけをまとめます。</p>
+ <table>
+  <tr><th>用語</th><th>意味</th></tr>
+  <tr><td>明細（Item）</td><td><code>OrderItem</code> / <code>CartItem</code>。<strong>商品だけでなく送料・手数料・値引き・ポイント・税も「明細の 1 行」</strong>として表現される。</td></tr>
+  <tr><td>受注/カート全体（ItemHolder）</td><td><code>Order</code> / <code>Cart</code>。明細を束ねる入れ物。<code>Order</code> 固有の概念（出荷・ポイント）は Cart には無い。</td></tr>
+  <tr><td>出荷（Shipping）</td><td>1 受注に複数あり得る出荷単位。送料は Shipping 単位で計算される。</td></tr>
+  <tr><td>販売種別（SaleType）</td><td>注文を決済単位に分割する区分（通常購入／定期購入など）。詳細は doc4。</td></tr>
+ </table>
+</section>
+
+<section data-section="flow" data-customer="true">
+ <h2>処理フロー</h2>
+ <p>検証・計算は <code>validate()</code> が、受注の確定は <code>prepare()</code> → <code>commit()</code>（失敗時 <code>rollback()</code>）が担います。
+ この 2 系統は独立して呼び出されます。</p>
+
+ <h3>検証・計算：<code>validate()</code> の実行順</h3>
+ <p>各段階の合間で金額が再集計（<code>calculateAll()</code>：送料 → 手数料 → 値引き → 小計 → 税 → 合計。計算は bcmath）されます。</p>
+ <div class="flow">① 明細検証        ItemValidator            … 明細1行ごとの検証（在庫・価格変更 等）
+   ↓ calculateAll
+② 受注検証        ItemHolderValidator      … カート/受注全体の検証（空明細・在庫合算 等）
+   ↓ calculateAll
+③ 明細前処理      ItemPreprocessor         … 明細1行ごとの調整（コアでは未使用の拡張点）
+   ↓ calculateAll
+④ 受注前処理      ItemHolderPreprocessor   … 送料/手数料/税 明細の付与・調整
+   ↓ calculateAll
+⑤ 値引き(削除)    DiscountProcessor        … 既存の値引き明細をいったん全消し
+   ↓ calculateAll
+⑥ 値引き(追加)    DiscountProcessor        … 値引き明細を積み直す（合計を超えない範囲で）
+   ↓ calculateAll
+⑦ 最終検証        ItemHolderPostValidator  … 全処理後の最終検証・確定値の確定（ポイント付与 等）</div>
+ <div class="note">値引きは「⑤ いったん全消し → ⑥ 再計算で積み直す」のが大前提です。前処理も同様に、
+ 自分が付けた明細を毎回削除してから付け直すことで<strong>何度実行しても結果が変わらない（冪等）</strong>ように作られています。</div>
+
+ <h3>確定：<code>prepare()</code> / <code>commit()</code> / <code>rollback()</code></h3>
+ <p>確定系は <code>PurchaseProcessor</code> のみが担います。在庫引当や注文番号採番など、実際に世界を変える処理です。</p>
+ <div class="flow">prepare()   仮確定（在庫引当 等）… 失敗時は例外を投げてフロー中断
+commit()    確定
+rollback()  仮確定の取消（在庫戻し 等）… prepare の逆操作</div>
+</section>
+
+<section data-section="extension" data-customer="false">
+ <h2>拡張ポイント<span class="dev-only">開発者向け</span></h2>
+ <p>受注処理へ独自の検証・計算を差し込むには、対応する部品を拡張して対象フローへ登録します。
+ <strong>実装の書き方・DO/DON'T は <a href="../../../../.claude/skills/purchase-flow/SKILL.md">purchase-flow/SKILL.md</a> が正典</strong>です。ここでは全体像だけ示します。</p>
+ <table>
+  <tr><th>やりたいこと</th><th>拡張する部品（基底）</th></tr>
+  <tr><td>明細1行の検証</td><td><code>ItemValidator</code>（abstract。常に warning 化）</td></tr>
+  <tr><td>カート/受注全体の検証（購入を止めたい）</td><td><code>ItemHolderValidator</code> / <code>ItemHolderPostValidator</code></td></tr>
+  <tr><td>送料・手数料・税など明細の付与/調整</td><td><code>ItemHolderPreprocessor</code></td></tr>
+  <tr><td>値引き</td><td><code>DiscountProcessor</code></td></tr>
+  <tr><td>在庫引当・採番・ポイント付与など確定処理</td><td><code>PurchaseProcessor</code>（<code>AbstractPurchaseProcessor</code> 継承）</td></tr>
+ </table>
+ <p>登録方法は 2 通り（併用しない）:</p>
+ <ul>
+  <li><span class="badge">コア</span> <code>app/config/eccube/packages/purchaseflow.yaml</code> でタグ登録。<code>flow_type</code> で対象フロー、<code>priority</code>（降順＝大きいほど先）で実行順を指定。</li>
+  <li><span class="badge">プラグイン / Customize</span> <code>#[CartFlow]</code> / <code>#[ShoppingFlow]</code> / <code>#[OrderFlow]</code> 属性で対象フローを宣言（<code>src/Eccube/Attribute/</code>）。基底の継承で自動タグ付けされる。順序制御が必要なら YAML タグを使う。</li>
+ </ul>
+</section>
+
+<section data-section="notes" data-customer="false">
+ <h2>注意点<span class="dev-only">開発者向け</span></h2>
+ <ul>
+  <li><strong>金額計算は bcmath</strong>（<code>bcadd</code>/<code>bcsub</code>/<code>bcmul</code>/<code>bccomp</code>）。float で組まない。合計の集計は <code>calculateAll()</code> が行うので、部品側は明細の足し引きに集中する。</li>
+  <li><strong><code>ItemValidator</code> は常に warning</strong> に変換される（購入は止まらない）。購入を中断したい検証は <code>ItemHolderValidator</code> / <code>ItemHolderPostValidator</code> で warning なしの error にする。</li>
+  <li><strong><code>Cart</code> と <code>Order</code> の違いに注意</strong>。Shipping・ポイント・Customer は <code>Order</code> 固有。<code>instanceof Order</code> でガードする。</li>
+  <li><code>PurchaseProcessor</code> の <code>rollback()</code> 実装漏れに注意（<code>prepare()</code> の逆操作を必ず用意する）。</li>
+  <li>パイプラインに実際にどの部品がどの順で乗っているかは <code>PurchaseFlow::dump()</code>（<code>__toString()</code>）で確認できる（確定系の PurchaseProcessor は dump に出ない点に注意）。</li>
+ </ul>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AgentCommerce — 仕様</title>
+<style>
+ /* 最小限のスタイル。§8.2 の静的サイト側で共通 CSS を上書きできるよう、
+    装飾はクラス指定に寄せ、過度なインライン装飾は避ける。 */
+ body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.7;max-width:960px;margin:0 auto;padding:2rem;color:#222}
+ h1,h2{border-bottom:1px solid #ddd;padding-bottom:.3rem}
+ h1{margin-bottom:.2rem}
+ .nav{font-size:.9rem;color:#555;margin:.2rem 0 1.5rem}
+ table{border-collapse:collapse;width:100%;margin:1rem 0}
+ th,td{border:1px solid #ccc;padding:.4rem .6rem;text-align:left;vertical-align:top}
+ th{background:#f4f4f4}
+ code{background:#f4f4f4;padding:.1rem .3rem;border-radius:3px;font-size:.92em}
+ .flow{background:#f9f9f9;border:1px solid #ddd;padding:1rem;white-space:pre;overflow-x:auto;font-family:ui-monospace,monospace;font-size:.88rem;line-height:1.5}
+ .note{background:#fff8e1;border-left:4px solid #f0c040;padding:.6rem 1rem;margin:1rem 0}
+ .dev-only{font-size:.75rem;color:#888;font-weight:normal;margin-left:.5rem}
+ .badge{display:inline-block;background:#eef;border:1px solid #ccd;border-radius:3px;padding:0 .4rem;font-size:.8rem}
+</style>
+</head>
+<body>
+
+<h1>AgentCommerce — エージェントコマース基盤</h1>
+<p class="nav">
+ 索引: <a href="./README.md">README.md</a>
+ ／ 同梱リソースの出所: <a href="../../Resource/AgentCommerce/README.md">Resource/AgentCommerce/README.md</a>
+ ／ プロトコル仕様: <a href="https://github.com/agentic-commerce-protocol/agentic-commerce-protocol">ACP</a>
+ ・ <a href="https://github.com/Universal-Commerce-Protocol/ucp">UCP</a>
+</p>
+
+<section data-section="overview" data-customer="true">
+ <h2>概要</h2>
+ <p><code>AgentCommerce</code> は、AI エージェント（OpenAI 等）が EC-CUBE の商品を発見し購入できるようにするための
+ <strong>エージェントコマース対応の基盤サービス群</strong>です。ブラウザセッションを持たないエージェントからの
+ カタログ提供・チェックアウト・決済・署名検証を、コントローラや個別サービスに散らさずこのディレクトリに集約します。</p>
+
+ <p>対応プロトコルは 2 系統あり、<strong>プロトコル非依存の中立表現（DTO・中間結果）</strong>を核に置いて、
+ 各プロトコルの入出力へ写す設計です。プロトコル固有のコントローラ／マッパーは別 PR（ACP=#6776 / UCP=#6574）が担い、
+ 本ディレクトリはその共通基盤に徹します。</p>
+
+ <table>
+  <tr><th>プロトコル</th><th>意味</th></tr>
+  <tr><td>ACP</td><td>Agentic Commerce Protocol（OpenAI ホスト）。カタログは push 型の Feed API。</td></tr>
+  <tr><td>UCP</td><td>Universal Commerce Protocol。カタログは POST RPC、discovery は <code>/.well-known/ucp</code>。</td></tr>
+ </table>
+
+ <div class="note"><strong>設計の核心（#6777）: 新規の購入フローは作らない。</strong>
+ エージェントチェックアウトも通常購入と<strong>同一の shopping flow</strong>（<code>PurchaseFlow</code>）を再利用し、
+ 税計算・送料・手数料・ポイント・在庫引当・受注番号採番のロジックを完全共有します。
+ 詳細は <a href="../PurchaseFlow/README.html">PurchaseFlow の README</a> を参照。</div>
+</section>
+
+<section data-section="glossary" data-customer="true">
+ <h2>用語</h2>
+ <table>
+  <tr><th>用語</th><th>意味</th></tr>
+  <tr><td>中立表現（プロトコル非依存 DTO）</td><td>ACP / UCP どちらにも写せる共通の入出力表現。<code>AgentCatalog*Dto</code> / <code>AgentCheckout*</code> 等。プロトコル固有の変換は各プロトコル層が行う。</td></tr>
+  <tr><td>addressable unit</td><td>カタログで一意に指せる購入単位。EC-CUBE では親=<code>Product</code>、variant=<code>ProductClass</code> に対応。</td></tr>
+  <tr><td>minor-unit（最小通貨単位）</td><td>ACP / UCP の金額表現。通貨の小数桁数（ISO 4217）だけ整数化した値。JPY は ×1、USD は ×100 と通貨ごとに桁数が変わる。<code>MinorUnitConverter</code> が変換。</td></tr>
+  <tr><td>2 系統エラー</td><td><strong>プロトコル系</strong>（HTTP 4xx/5xx + Error＝不正要求・処理不能）と<strong>ビジネス系</strong>（HTTP 200 + <code>messages[]</code>＝在庫切れ・販売停止等）を明確に分ける。</td></tr>
+  <tr><td>discovery</td><td>エージェントが店舗の対応機能・決済ハンドラ・署名鍵を発見する仕組み（UCP の <code>/.well-known/ucp</code> profile 等）。</td></tr>
+ </table>
+</section>
+
+<section data-section="subdomains" data-customer="true">
+ <h2>サブドメイン索引</h2>
+ <p>本ディレクトリは 8 つのサブドメインで構成されます。各サブドメインの詳細はそれぞれの README を参照してください。</p>
+ <table>
+  <tr><th>サブドメイン</th><th>担うこと</th></tr>
+  <tr><td><a href="./Catalog/README.html">Catalog</a></td><td>商品カタログの中立 DTO 化と ACP Feed / UCP Catalog への出力・検証。</td></tr>
+  <tr><td><a href="./CheckoutSession/README.html">CheckoutSession</a></td><td>見積〜確定（complete）の中立表現と、中断→再開する状態機械オーケストレーション。</td></tr>
+  <tr><td><a href="./Discovery/README.html">Discovery</a></td><td>UCP discovery profile の組み立てと決済ハンドラの収集口。</td></tr>
+  <tr><td><a href="./Fulfillment/README.html">Fulfillment</a></td><td>配送方法・送料・支払方法の選択肢を EC-CUBE マスタから中立表現へ。</td></tr>
+  <tr><td><a href="./Idempotency/README.html">Idempotency</a></td><td>Idempotency-Key による状態変更操作の二重実行防止（DB 一意制約ベース）。</td></tr>
+  <tr><td><a href="./Payment/README.html">Payment</a></td><td>エージェント決済ハンドラのレジストリと、Order への支払方法割当リゾルバ。</td></tr>
+  <tr><td><a href="./Security/README.html">Security</a></td><td>インバウンド OAuth2 検証・scope 照合・メッセージ署名（RFC 9421）・鍵ストア。</td></tr>
+  <tr><td><a href="./Exception/README.html">Exception</a></td><td>プロトコル系エラーのコード分類と例外（ビジネス系は CheckoutSession の message で表現）。</td></tr>
+ </table>
+</section>
+
+<section data-section="root-services" data-customer="false">
+ <h2>ルート直下の共通ユーティリティ<span class="dev-only">開発者向け</span></h2>
+ <p>サブドメインをまたいで使われる、プロトコル非依存の共通部品です。</p>
+ <table>
+  <tr><th>クラス</th><th>役割</th></tr>
+  <tr><td><code>AgentCheckoutPurchaseFlowAdapter</code></td><td>中立 DTO → <code>Cart</code>/<code>Order</code> を構築し、通常購入と<strong>同一の shopping flow</strong> で税・送料・在庫を再計算。<code>buildOrder</code>（見積）/ <code>prepare</code>（在庫引当・採番）/ <code>commit</code> / <code>rollback</code> を提供。自身はトランザクションを開始しない（境界は決済オーケストレーション層の責務）。</td></tr>
+  <tr><td><code>AddressMappingService</code></td><td>住所系エンティティ（<code>Customer</code> / <code>CustomerAddress</code> / <code>Shipping</code>）を ACP/UCP 住所 DTO へ写す。国コードは <code>mtb_country_iso_code</code> で numeric→alpha-2 変換、region は <code>Pref</code> 名。</td></tr>
+  <tr><td><code>MinorUnitConverter</code></td><td>major-unit（表記）と minor-unit（整数）を相互変換。桁数は symfony/intl の ISO 4217 権威データから取得（一律 ×100 ではない）。負数（割引・返金）対応。金額計算は bcmath。</td></tr>
+  <tr><td><code>StorefrontUrlResolver</code></td><td>discovery / checkout レスポンスに必要な店舗 URL（プライバシーポリシー・利用規約・注文 permalink）を <code>UrlGenerator</code> から絶対 URL で実行時生成。BaseInfo にカラム化しない。</td></tr>
+ </table>
+</section>
+
+<section data-section="notes" data-customer="false">
+ <h2>注意点<span class="dev-only">開発者向け</span></h2>
+ <ul>
+  <li><strong>2 系統エラーを混同しない</strong>。在庫不足・販売停止・配送制限などのビジネス系は例外を投げず <code>AgentCheckoutMessage</code>（HTTP 200 + <code>messages[]</code>）に写す。不正な商品参照・空明細などのプロトコル系のみ <code>AgentCheckoutException</code> を投げる。</li>
+  <li><strong>金額は minor-unit 整数</strong>で持ち回る。通貨ごとに桁数が違うため一律 ×100 で組まない（必ず <code>MinorUnitConverter</code> を通す）。EC-CUBE 本体の金額カラムは 2 桁までである点に注意。</li>
+  <li><strong>会員はゲスト購入が基準線</strong>。会員 ID 連携は eccube-api4 の Customer authorization_code grant に依存し、標準実装（<code>GuestCustomerResolver</code>）は常に <code>null</code>（ゲスト）を返す。会員解決は <code>CustomerResolverInterface</code> の差し替えで有効化する。</li>
+  <li><strong>支払方法の「沈黙のすり抜け」に注意</strong>。利用可能な支払方法の先頭（sort_no 最小）を機械採用するとエージェント決済不可能な方法（銀行振込等）が割り当たる。<code>AgentPaymentMethodResolverInterface</code> は登録済みハンドラが扱える <code>Payment</code> のみを候補にする。</li>
+  <li><strong>拡張は各 Interface の差し替え（seam）で</strong>。<code>ProductReferenceResolverInterface</code> / <code>CustomerResolverInterface</code> / <code>FulfillmentOptionMapperInterface</code> / <code>KeyStoreInterface</code> 等を <code>app/Customize</code> で実装・alias 上書きする。core は具象決済実装を持たず、決済ハンドラは決済プラグインがタグ付きサービスで寄与する。</li>
+  <li><strong>本ディレクトリはプロトコル非依存に徹する</strong>。HTTP ステータス／各プロトコルのレスポンス形への変換はプロトコル層（ACP=#6776 / UCP=#6574）が担う。ここに HTTP 依存を持ち込まない。</li>
+ </ul>
+</section>
+
+</body>
+</html>
