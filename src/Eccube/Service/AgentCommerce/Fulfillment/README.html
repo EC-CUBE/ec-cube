@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AgentCommerce Fulfillment — 仕様</title>
+<style>
+ /* 最小限のスタイル。§8.2 の静的サイト側で共通 CSS を上書きできるよう、
+    装飾はクラス指定に寄せ、過度なインライン装飾は避ける。 */
+ body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.7;max-width:960px;margin:0 auto;padding:2rem;color:#222}
+ h1,h2{border-bottom:1px solid #ddd;padding-bottom:.3rem}
+ h1{margin-bottom:.2rem}
+ .nav{font-size:.9rem;color:#555;margin:.2rem 0 1.5rem}
+ table{border-collapse:collapse;width:100%;margin:1rem 0}
+ th,td{border:1px solid #ccc;padding:.4rem .6rem;text-align:left;vertical-align:top}
+ th{background:#f4f4f4}
+ code{background:#f4f4f4;padding:.1rem .3rem;border-radius:3px;font-size:.92em}
+ .flow{background:#f9f9f9;border:1px solid #ddd;padding:1rem;white-space:pre;overflow-x:auto;font-family:ui-monospace,monospace;font-size:.88rem;line-height:1.5}
+ .note{background:#fff8e1;border-left:4px solid #f0c040;padding:.6rem 1rem;margin:1rem 0}
+ .dev-only{font-size:.75rem;color:#888;font-weight:normal;margin-left:.5rem}
+ .badge{display:inline-block;background:#eef;border:1px solid #ccd;border-radius:3px;padding:0 .4rem;font-size:.8rem}
+</style>
+</head>
+<body>
+
+<h1>AgentCommerce Fulfillment — 配送方法の提示</h1>
+<p class="nav">
+ 親: <a href="../README.html">AgentCommerce README</a>
+ ／ 索引: <a href="./README.md">README.md</a>
+</p>
+
+<section data-section="overview" data-customer="true">
+ <h2>概要</h2>
+ <p>エージェントへ提示する<strong>配送方法の選択肢</strong>を、EC-CUBE の配送マスタから中立表現へ組み立てるサブドメインです。
+ 各選択肢は配送方法（<code>Delivery</code>）に対応し、配送先（<code>Pref</code>）に対する送料・配送日数・利用可能な支払方法を保持します。
+ 金額はすべて minor-unit（整数）で表現します。</p>
+</section>
+
+<section data-section="classes" data-customer="true">
+ <h2>主要クラス</h2>
+ <table>
+  <tr><th>クラス</th><th>役割</th></tr>
+  <tr><td><code>FulfillmentOption</code></td><td>配送方法の選択肢（<code>Delivery</code> 1 件）。送料（<code>shippingFeeMinor</code>）・配送日数・支払方法選択肢を保持。</td></tr>
+  <tr><td><code>FulfillmentPaymentOption</code></td><td>配送方法に紐づく支払方法の選択肢。代引手数料等を <code>chargeMinor</code>（minor-unit）で保持。</td></tr>
+  <tr><td><code>FulfillmentOptionMapperInterface</code></td><td>明細と配送先から選択肢を組み立てる seam（<code>app/Customize</code> で差し替え可能）。</td></tr>
+  <tr><td><code>StandardFulfillmentOptionMapper</code></td><td>標準実装。<code>Delivery</code>/<code>DeliveryFee</code>/<code>Payment</code>/<code>DeliveryDuration</code> マスタから選択肢を組み立てる。</td></tr>
+ </table>
+</section>
+
+<section data-section="notes" data-customer="false">
+ <h2>標準実装の判定<span class="dev-only">開発者向け</span></h2>
+ <ul>
+  <li>利用可能な <code>Delivery</code> は明細の <code>SaleType</code> から <code>DeliveryRepository::getDeliveries()</code> で絞る。</li>
+  <li>送料は配送先 <code>Pref</code> と <code>Delivery</code> の <code>DeliveryFee</code> から解決（該当行が無ければ<strong>配送不可として除外</strong>）。</li>
+  <li>手数料（代引等）は <code>Delivery</code> の <code>PaymentOption</code> → <code>Payment::getCharge()</code> から解決。</li>
+  <li>配送日数は明細横断の <code>DeliveryDuration::getDuration()</code> の最大値（負数=お取り寄せが 1 件でもあれば未確定として <code>null</code>）。</li>
+  <li>複数 <code>SaleType</code> をまたぐ注文（複数配送分割）の厳密な表現は標準実装の対象外で、<code>app/Customize</code> での差し替えに委ねる（フラットな一覧を返す）。</li>
+ </ul>
+</section>
+
+</body>
+</html>

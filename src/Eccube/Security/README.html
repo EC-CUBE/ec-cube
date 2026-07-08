@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Security — 仕様</title>
+<style>
+ /* 最小限のスタイル。§8.2 の静的サイト側で共通 CSS を上書きできるよう、
+    装飾はクラス指定に寄せ、過度なインライン装飾は避ける。 */
+ body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.7;max-width:960px;margin:0 auto;padding:2rem;color:#222}
+ h1,h2{border-bottom:1px solid #ddd;padding-bottom:.3rem}
+ h1{margin-bottom:.2rem}
+ .nav{font-size:.9rem;color:#555;margin:.2rem 0 1.5rem}
+ table{border-collapse:collapse;width:100%;margin:1rem 0}
+ th,td{border:1px solid #ccc;padding:.4rem .6rem;text-align:left;vertical-align:top}
+ th{background:#f4f4f4}
+ code{background:#f4f4f4;padding:.1rem .3rem;border-radius:3px;font-size:.92em}
+ .flow{background:#f9f9f9;border:1px solid #ddd;padding:1rem;white-space:pre;overflow-x:auto;font-family:ui-monospace,monospace;font-size:.88rem;line-height:1.5}
+ .note{background:#fff8e1;border-left:4px solid #f0c040;padding:.6rem 1rem;margin:1rem 0}
+ .dev-only{font-size:.75rem;color:#888;font-weight:normal;margin-left:.5rem}
+ .badge{display:inline-block;background:#eef;border:1px solid #ccd;border-radius:3px;padding:0 .4rem;font-size:.8rem}
+</style>
+</head>
+<body>
+
+<h1>Security — 認証・認可</h1>
+<p class="nav">
+ 索引: <a href="./README.md">README.md</a>
+ ／ 実装規約（AI・開発者向け）: <a href="../../../.claude/skills/security/SKILL.md">security/SKILL.md</a>
+</p>
+
+<section data-section="overview" data-customer="true">
+ <h2>概要</h2>
+ <p>このディレクトリは、EC-CUBE の<strong>認証（誰か）・認可（何を許すか）の中核部品</strong>を収めます。
+ EC-CUBE のアクセス制御は「<strong>ファイアウォール＋ロール＋Voter</strong>」の 3 層モデルで、
+ 個々のアクションに <code>#[IsGranted]</code> を撒くのではなく、<strong>パスのプレフィックスで面的に</strong>守るのが基本です。</p>
+
+ <p>ファイアウォールと access_control の宣言は <code>app/config/eccube/packages/security.yaml</code>、
+ および <code>src/Eccube/DependencyInjection/EccubeExtension.php</code>（後述の動的生成）にあります。
+ このディレクトリはそこに差し込まれる実装（UserProvider / PasswordHasher / Voter / 各種ハンドラ）を提供します。</p>
+
+ <table>
+  <tr><th>ファイアウォール</th><th>対象パス</th><th>認証する主体</th></tr>
+  <tr><td>admin</td><td><code>^/%eccube_admin_route%/</code></td><td><code>Member</code>（管理者）。CSRF 有効・ログイン試行制限あり</td></tr>
+  <tr><td>customer</td><td><code>^/</code>（サイト全体）</td><td><code>Customer</code>（会員）。remember_me あり</td></tr>
+  <tr><td>dev</td><td>静的リソース等</td><td><code>security: false</code>（認証対象外）</td></tr>
+ </table>
+ <p><strong>認可判定は unanimous 戦略</strong>（<code>allow_if_all_abstain: false</code>）。
+ 1 つでも Voter が DENY すれば拒否、全 Voter が棄権しても拒否（=明示的な許可が必要）です。</p>
+</section>
+
+<section data-section="structure" data-customer="true">
+ <h2>ディレクトリ構成と役割</h2>
+ <table>
+  <tr><th>サブ</th><th>クラス</th><th>役割</th></tr>
+  <tr><td>Core/User</td><td><code>CustomerProvider</code> / <code>MemberProvider</code></td>
+      <td>ログイン ID からユーザーを解決する <code>UserProviderInterface</code>。会員は <code>email</code>＋本会員（<code>REGULAR</code>）、管理者は <code>login_id</code>＋有効（<code>Work::ACTIVE</code>）で引く。<code>PasswordUpgraderInterface</code> 実装によりログイン成功時にハッシュを自動再計算・保存する。</td></tr>
+  <tr><td>PasswordHasher</td><td><code>PasswordHasher</code></td>
+      <td>パスワードのハッシュ・照合（<code>hash_hmac</code>）。旧バージョン（2.11 未満）からの移行照合も内包。</td></tr>
+  <tr><td>Core/Encoder</td><td><code>PasswordEncoder</code></td>
+      <td>ハッシュ生成・照合・salt 生成のヘルパ。<code>eccube_auth_magic</code> 等の設定を参照する。</td></tr>
+  <tr><td>Voter</td><td><code>AuthorityVoter</code></td>
+      <td>管理画面内の URL 単位の権限制御。<code>Member</code> の <code>Authority</code> に紐づく <code>AuthorityRole.deny_url</code> にパスが一致したら <code>ACCESS_DENIED</code>。</td></tr>
+  <tr><td>Http/Authentication</td><td><code>EccubeAuthenticationSuccessHandler</code> / <code>EccubeAuthenticationFailureHandler</code> / <code>EccubeLogoutSuccessHandler</code></td>
+      <td>ログイン成功・失敗時のリダイレクト先を絶対 URL からパスへ正規化（オープンリダイレクト対策）。ログアウト時は管理画面のメンテナンス Cookie を破棄。</td></tr>
+ </table>
+</section>
+
+<section data-section="access-control" data-customer="true">
+ <h2>access_control はどこで決まるか</h2>
+ <p>「どのパスにどのロールを要求するか」は <strong>security.yaml に直書きされておらず、
+ <code>EccubeExtension.php</code> が動的に生成</strong>して差し込みます。security.yaml だけを見ても全体像は掴めません。</p>
+ <div class="flow">^/%eccube_admin_route%/login            IS_AUTHENTICATED_ANONYMOUSLY   … ログイン画面は誰でも
+^/%eccube_admin_route%/                 ROLE_ADMIN                     … 管理画面全体（面で保護）
+^/mypage/login                          IS_AUTHENTICATED_ANONYMOUSLY
+^/mypage/withdraw_complete              IS_AUTHENTICATED_ANONYMOUSLY
+^/mypage/change                         IS_AUTHENTICATED_FULLY         … 重要操作は FULLY（remember-me 除外）
+^/mypage/                               ROLE_USER                      … 会員ページ全体</div>
+ <div class="note"><strong>最重要の含意</strong>: 新しい管理アクションは、認可の主装置が<strong>ファイアウォール（パスのプレフィックス）</strong>なので、
+ 必ず <code>%eccube_admin_route%</code> 配下のパスに置くこと。配下から外すと無認証で到達できてしまう（よくある重大な事故）。
+ <br>また <code>^/mypage/</code> は <code>ROLE_USER</code> 前提なので、その配下のコントローラでは <code>getUser()</code> は非 null が保証される。</div>
+</section>
+
+<section data-section="extension" data-customer="false">
+ <h2>拡張ポイント<span class="dev-only">開発者向け</span></h2>
+ <p><strong>実装の書き方・DO/DON'T は <a href="../../../.claude/skills/security/SKILL.md">security/SKILL.md</a> が正典</strong>です。ここでは全体像だけ示します。</p>
+ <table>
+  <tr><th>やりたいこと</th><th>手段</th></tr>
+  <tr><td>特定の権限にこの管理画面を見せない</td><td>コントローラ改変ではなく <code>dtb_authority_role</code> の <code>deny_url</code> 設定。<code>AuthorityVoter</code> が拾う。</td></tr>
+  <tr><td>独自の認可ルールを足す</td><td>Symfony の <code>Voter</code> を継承（<code>autoconfigure</code> で <code>security.voter</code> タグは自動付与）。対象外は必ず <code>ACCESS_ABSTAIN</code>。</td></tr>
+  <tr><td>ログイン後の遷移・ハンドラを変える</td><td>Http/Authentication の各ハンドラを継承／デコレート。</td></tr>
+  <tr><td>フォームを介さない状態変更（削除・Ajax）</td><td>コントローラで <code>$this->isTokenValid()</code> を明示的に呼び CSRF を検証（GET 以外は必須）。</td></tr>
+ </table>
+</section>
+
+<section data-section="notes" data-customer="false">
+ <h2>注意点<span class="dev-only">開発者向け</span></h2>
+ <ul>
+  <li><strong>unanimous 戦略に注意</strong>。独自 Voter で「対象外」を <code>ACCESS_DENIED</code> で返すと全体が拒否になる。対象外は必ず <code>ACCESS_ABSTAIN</code>。</li>
+  <li><strong>IDOR</strong>: フロントで <code>{id}</code> から取得したエンティティは <code>getUser()</code> と突き合わせ、他人のものなら <code>AccessDeniedHttpException</code>。</li>
+  <li><strong>重要操作は <code>IS_AUTHENTICATED_FULLY</code></strong>（パスワード変更・退会・購入確定など）。remember-me（盗難 Cookie）を弾く。</li>
+  <li>パスワードは <code>PasswordHasher</code> / <code>PasswordEncoder</code> 任せにし、<strong>自前ハッシュ・平文比較を書かない</strong>。<code>PasswordHasher::needsRehash()</code> が常に true を返すため、ログインのたびに現行アルゴリズムへ再ハッシュされる。</li>
+  <li><code>AuthorityVoter</code> はリクエストが取得できないとき（テスト等）<code>ACCESS_ABSTAIN</code> を返す。<code>deny_url</code> は正規表現として評価され、誤りがあれば <code>preg_quote</code> でエスケープしてリトライする。</li>
+  <li>ログイン成功／失敗ハンドラは、リダイレクト先が絶対 URL のときパス部分だけを取り出す（外部ドメインへの<strong>オープンリダイレクト対策</strong>）。</li>
+ </ul>
+</section>
+
+</body>
+</html>

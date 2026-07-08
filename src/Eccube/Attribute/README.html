@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Attribute — 仕様</title>
+<style>
+ /* 最小限のスタイル。§8.2 の静的サイト側で共通 CSS を上書きできるよう、
+    装飾はクラス指定に寄せ、過度なインライン装飾は避ける。 */
+ body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.7;max-width:960px;margin:0 auto;padding:2rem;color:#222}
+ h1,h2{border-bottom:1px solid #ddd;padding-bottom:.3rem}
+ h1{margin-bottom:.2rem}
+ .nav{font-size:.9rem;color:#555;margin:.2rem 0 1.5rem}
+ table{border-collapse:collapse;width:100%;margin:1rem 0}
+ th,td{border:1px solid #ccc;padding:.4rem .6rem;text-align:left;vertical-align:top}
+ th{background:#f4f4f4}
+ code{background:#f4f4f4;padding:.1rem .3rem;border-radius:3px;font-size:.92em}
+ .flow{background:#f9f9f9;border:1px solid #ddd;padding:1rem;white-space:pre;overflow-x:auto;font-family:ui-monospace,monospace;font-size:.88rem;line-height:1.5}
+ .note{background:#fff8e1;border-left:4px solid #f0c040;padding:.6rem 1rem;margin:1rem 0}
+ .dev-only{font-size:.75rem;color:#888;font-weight:normal;margin-left:.5rem}
+ .badge{display:inline-block;background:#eef;border:1px solid #ccd;border-radius:3px;padding:0 .4rem;font-size:.8rem}
+</style>
+</head>
+<body>
+
+<h1>Attribute — EC-CUBE 独自の PHP 属性</h1>
+<p class="nav">
+ 索引: <a href="./README.md">README.md</a>
+ ／ 関連: <a href="../Service/PurchaseFlow/README.html">PurchaseFlow</a>
+ ・ <a href="../DependencyInjection/README.html">DependencyInjection</a>
+</p>
+
+<section data-section="overview" data-customer="true">
+ <h2>概要</h2>
+ <p>このディレクトリは、EC-CUBE が独自に定義する <strong>PHP8 属性（Attribute）</strong>を集めた場所です。
+ いずれも <strong>クラス・プロパティ・メソッドに「印（マーカー）」を付けるためだけ</strong>の宣言で、
+ 属性そのものはロジックを持ちません。付けられた印を<strong>別の場所（CompilerPass・EventListener・拡張サービス）が
+ Reflection で拾って動作を変える</strong>、という使われ方をします。</p>
+
+ <p>用途で分けると 3 系統あります。</p>
+ <table>
+  <tr><th>系統</th><th>属性</th><th>拾う側</th></tr>
+  <tr><td>受注処理フローへの登録マーカー</td><td><code>CartFlow</code> / <code>ShoppingFlow</code> / <code>OrderFlow</code></td><td><code>PurchaseFlowPass</code></td></tr>
+  <tr><td>拡張機構（エンティティ・フォーム）</td><td><code>EntityExtension</code> / <code>FormAppend</code></td><td><code>EntityProxyService</code> / <code>DoctrineOrmExtension</code></td></tr>
+  <tr><td>コントローラのアクセス制限</td><td><code>ForwardOnly</code></td><td><code>ForwardOnlyListener</code></td></tr>
+ </table>
+</section>
+
+<section data-section="attributes" data-customer="true">
+ <h2>属性一覧</h2>
+ <table>
+  <tr><th>属性</th><th>対象</th><th>意味</th></tr>
+  <tr><td><code>#[CartFlow]</code></td><td>クラス</td><td>この Processor/Validator を <strong>cart フロー</strong>に登録する印。</td></tr>
+  <tr><td><code>#[ShoppingFlow]</code></td><td>クラス</td><td>同じく <strong>shopping フロー</strong>への登録マーカー。</td></tr>
+  <tr><td><code>#[OrderFlow]</code></td><td>クラス</td><td>同じく <strong>order フロー</strong>への登録マーカー。</td></tr>
+  <tr><td><code>#[EntityExtension('...')]</code></td><td>クラス（<strong>繰り返し可</strong>）</td><td>トレイトを既存エンティティへ合成する対象クラス名を指定。プロキシ生成の入力になる。</td></tr>
+  <tr><td><code>#[FormAppend]</code></td><td>プロパティ</td><td>エンティティ拡張で追加したプロパティを、既存フォームへ差し込む設定（<code>type</code> / <code>options</code> / <code>form_theme</code> / <code>auto_render</code> / <code>style_class</code>）。</td></tr>
+  <tr><td><code>#[ForwardOnly]</code></td><td>メソッド</td><td>そのコントローラアクションを <strong>forward（内部転送）専用</strong>にし、直接 URL アクセスを拒否する印。</td></tr>
+ </table>
+ <div class="note"><code>CartFlow</code> / <code>ShoppingFlow</code> / <code>OrderFlow</code> は<strong>引数なしの純粋なマーカー</strong>です。
+ 対象フローが名前で決まるだけで、優先度などの制御は持ちません（順序制御が必要なら YAML タグ側で行う）。</div>
+</section>
+
+<section data-section="purchaseflow-marker" data-customer="false">
+ <h2>受注フロー登録マーカーの仕組み<span class="dev-only">開発者向け</span></h2>
+ <p><code>#[CartFlow]</code> / <code>#[ShoppingFlow]</code> / <code>#[OrderFlow]</code> は、プラグインや <code>app/Customize</code> が
+ 受注処理の部品（Processor/Validator）を<strong>どのフローに載せるかを宣言する</strong>ためのものです。</p>
+ <div class="flow">Processor/Validator クラスに #[ShoppingFlow] を付与
+   ↓ 基底クラスの継承で自動タグ付け
+PurchaseFlowPass が ReflectionAttribute::IS_INSTANCEOF で属性を検出
+   ↓
+eccube.purchase.flow.shopping へ addMethodCall で配線（YAML 配線済みなら重複登録しない）</div>
+ <p>詳しい配線ロジックは <a href="../DependencyInjection/README.html">DependencyInjection</a> の PurchaseFlowPass、
+ 受注処理そのものの全体像は <a href="../Service/PurchaseFlow/README.html">PurchaseFlow</a> を参照してください。</p>
+</section>
+
+<section data-section="extension-marker" data-customer="false">
+ <h2>拡張機構マーカーの仕組み<span class="dev-only">開発者向け</span></h2>
+ <p><code>#[EntityExtension]</code> と <code>#[FormAppend]</code> は、コアを改変せずにエンティティ・フォームを
+ 拡張するための印です（アップグレード安全なカスタマイズ）。</p>
+ <table>
+  <tr><th>属性</th><th>拾う側</th><th>動作</th></tr>
+  <tr><td><code>#[EntityExtension(Target::class)]</code></td><td><code>EntityProxyService</code></td><td>トレイトに付けると、<code>value</code> で指定した対象エンティティにそのトレイトを合成した<strong>プロキシを生成</strong>する（<code>IS_INSTANCEOF</code> で検出）。複数指定のため <code>IS_REPEATABLE</code>。</td></tr>
+  <tr><td><code>#[FormAppend]</code></td><td><code>DoctrineOrmExtension</code>（FormTypeExtension）</td><td>拡張プロパティに付けると、その <code>type</code>・<code>options</code> 等を読み取り、対応する既存フォームへ自動でフィールドを追加する。</td></tr>
+ </table>
+ <p>実運用のサンプルは <code>app/Plugin/EntityExtension/</code>・<code>app/Plugin/EntityForm/</code> にあります。</p>
+</section>
+
+<section data-section="notes" data-customer="false">
+ <h2>注意点<span class="dev-only">開発者向け</span></h2>
+ <ul>
+  <li><strong>属性は宣言だけ・ロジックは持たない</strong>。挙動を追うときは「付けた側」ではなく「拾う側」（<code>PurchaseFlowPass</code> / <code>EntityProxyService</code> / <code>DoctrineOrmExtension</code> / <code>ForwardOnlyListener</code>）を読む。</li>
+  <li><code>#[EntityExtension]</code> を足したら<strong>プロキシ再生成</strong>が必要（<code>bin/console eccube:generate:proxies</code>）。付けただけでは反映されない。</li>
+  <li>フロー登録マーカーは<strong>順序を持たない</strong>。実行順の制御が必要なときは <code>purchaseflow.yaml</code> の <code>priority</code> 付きタグを使う（属性とタグの併用はしない）。</li>
+  <li><code>#[ForwardOnly]</code> は直接アクセス時に <code>AccessDeniedHttpException</code> を投げる。認可（ロール）ではなく<strong>内部転送か否か</strong>で弾く仕組みである点に注意。</li>
+ </ul>
+</section>
+
+</body>
+</html>

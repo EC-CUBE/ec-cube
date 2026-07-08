@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AgentCommerce Idempotency — 仕様</title>
+<style>
+ /* 最小限のスタイル。§8.2 の静的サイト側で共通 CSS を上書きできるよう、
+    装飾はクラス指定に寄せ、過度なインライン装飾は避ける。 */
+ body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.7;max-width:960px;margin:0 auto;padding:2rem;color:#222}
+ h1,h2{border-bottom:1px solid #ddd;padding-bottom:.3rem}
+ h1{margin-bottom:.2rem}
+ .nav{font-size:.9rem;color:#555;margin:.2rem 0 1.5rem}
+ table{border-collapse:collapse;width:100%;margin:1rem 0}
+ th,td{border:1px solid #ccc;padding:.4rem .6rem;text-align:left;vertical-align:top}
+ th{background:#f4f4f4}
+ code{background:#f4f4f4;padding:.1rem .3rem;border-radius:3px;font-size:.92em}
+ .flow{background:#f9f9f9;border:1px solid #ddd;padding:1rem;white-space:pre;overflow-x:auto;font-family:ui-monospace,monospace;font-size:.88rem;line-height:1.5}
+ .note{background:#fff8e1;border-left:4px solid #f0c040;padding:.6rem 1rem;margin:1rem 0}
+ .dev-only{font-size:.75rem;color:#888;font-weight:normal;margin-left:.5rem}
+ .badge{display:inline-block;background:#eef;border:1px solid #ccd;border-radius:3px;padding:0 .4rem;font-size:.8rem}
+</style>
+</head>
+<body>
+
+<h1>AgentCommerce Idempotency — 冪等性</h1>
+<p class="nav">
+ 親: <a href="../README.html">AgentCommerce README</a>
+ ／ 索引: <a href="./README.md">README.md</a>
+</p>
+
+<section data-section="overview" data-customer="true">
+ <h2>概要</h2>
+ <p>状態変更操作（complete 等）の<strong>二重実行を防ぐ</strong>ためのサブドメインです。
+ リクエストに <code>Idempotency-Key</code> ヘッダが付与された場合、初回はハンドラを実行して結果を保存し、
+ 同一キーの再送はハンドラを再実行せず<strong>保存済みレスポンスをリプレイ</strong>します（副作用の再実行なし）。</p>
+</section>
+
+<section data-section="classes" data-customer="true">
+ <h2>主要クラス</h2>
+ <table>
+  <tr><th>クラス</th><th>役割</th></tr>
+  <tr><td><code>AgentCheckoutIdempotencyStore</code></td><td>Idempotency-Key 処理の本体。<code>dtb_agent_checkout_idempotency</code> に結果を保存し、再送時にリプレイする。</td></tr>
+ </table>
+ <div class="note"><strong><code>(idempotency_key, subject)</code> の DB 一意制約</strong>で直列化するため、Redis 等の共有キャッシュや分散ロックに依存せず、<strong>マルチインスタンス（AWS 等）でも単一の共有 DB だけで</strong>並行・越境の二重実行を防ぐ。<code>subject</code> は認証済みエージェント識別子で名前空間化する。</div>
+</section>
+
+<section data-section="conflict" data-customer="false">
+ <h2>競合の扱い<span class="dev-only">開発者向け</span></h2>
+ <p>次の場合は <code>IdempotencyConflictException</code>（<a href="../Exception/README.html">Exception</a> サブドメイン）を投げ、プロトコル層で HTTP 409 Conflict へ変換する。</p>
+ <ul>
+  <li>同一キーが<strong>異なるリクエスト内容</strong>で再利用された場合</li>
+  <li>同一キーの<strong>処理がまだ進行中</strong>（並行リクエスト）の場合</li>
+ </ul>
+</section>
+
+</body>
+</html>
