@@ -376,8 +376,8 @@ final class MemberControllerTest extends AbstractAdminWebTestCase
             'department' => $faker->word(),
             'login_id' => 'logintest',
             'plain_password' => [
-                'first' => 'password1234',
-                'second' => 'password1234',
+                'first' => 'password1234abc',
+                'second' => 'password1234abc',
             ],
             'Authority' => random_int(0, 1),
             'Work' => random_int(0, 1),

@@ -15,6 +15,7 @@ namespace Eccube\Service;
 
 use Eccube\Stream\Filter\ConvertLineFeedFilter;
 use Eccube\Stream\Filter\SjisToUtf8EncodingFilter;
+use Eccube\Util\CsvFormulaGuard;
 
 /**
  * Copyright (C) 2012-2014 David de Boer <david@ddeboer.nl>
@@ -90,7 +91,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      */
     protected ?int $duplicateHeadersFlag = null;
 
-    public function __construct(\SplFileObject $file, string $delimiter = ',', string $enclosure = '"', string $escape = '\\')
+    public function __construct(\SplFileObject $file, string $delimiter = ',', string $enclosure = '"', string $escape = '\\', protected bool $unescapeFormulas = true)
     {
         // stream filter を適用して文字エンコーディングと改行コードの変換を行う
         // see https://github.com/EC-CUBE/ec-cube/issues/5252
@@ -129,12 +130,12 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
     {
         // If the CSV has no column headers just return the line
         if (empty($this->columnHeaders)) {
-            return $this->file->current();
+            return $this->unescapeRow($this->file->current());
         }
 
         // Since the CSV has column headers use them to construct an associative array for the columns in this line
         if ($this->valid()) {
-            $current = $this->file->current();
+            $current = $this->unescapeRow($this->file->current());
 
             $line = $current;
 
@@ -159,6 +160,27 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
         }
 
         return null;
+    }
+
+    /**
+     * CSV インジェクション対策で出力時に付与された先頭の ' を除去し, 元の値を復元する.
+     * ヘッダ行・データ行とも出力側で付与されるため, 同じ規則で対称に剥がす.
+     *
+     * @param array<int, string|null>|string|false $row
+     *
+     * @return array<int, string|null>|string|false
+     */
+    private function unescapeRow(array|string|false $row): array|string|false
+    {
+        if (!$this->unescapeFormulas || !is_array($row)) {
+            return $row;
+        }
+
+        // 空行は [0 => null] として読まれるため null セルを素通しする
+        return array_map(
+            static fn (?string $value): ?string => $value === null ? null : CsvFormulaGuard::unescape($value),
+            $row
+        );
     }
 
     /**
@@ -369,7 +391,7 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
     {
         $this->file->seek($rowNumber);
 
-        return $this->file->current();
+        return $this->unescapeRow($this->file->current());
     }
 
     /**

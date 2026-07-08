@@ -16,6 +16,7 @@ namespace Eccube\Controller;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Order;
+use Eccube\Entity\Payment;
 use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -117,12 +118,70 @@ class ShoppingController extends AbstractShoppingController
         $activeTradeLaws = $this->tradeLawRepository->findBy(['displayOrderScreen' => true], ['sortNo' => 'ASC']);
         $form = $this->createForm(OrderType::class, $Order);
 
+        // 初期選択された支払方法が利用条件に合致せず選択肢に含まれない場合は,
+        // 選択可能な支払方法の先頭に再設定し, 手数料を再集計する.
+        // @see https://github.com/EC-CUBE/ec-cube/issues/6200
+        if ($this->reselectUnavailablePayment($Order, $form)) {
+            $flowResult = $this->executePurchaseFlow($Order, false);
+            $this->entityManager->flush();
+            if ($flowResult->hasError()) {
+                log_info('[注文手続] Errorが発生したため購入エラー画面へ遷移します.', [$flowResult->getErrors()]);
+
+                return $this->redirectToRoute('shopping_error');
+            }
+            if ($flowResult->hasWarning()) {
+                log_info('[注文手続] Warningが発生しました.', [$flowResult->getWarning()]);
+
+                // 受注明細と同期をとるため, CartPurchaseFlowを実行する
+                $this->cartPurchaseFlow->validate($Cart, new PurchaseContext($Cart, $this->getUser()));
+
+                // 注文フローで取得されるカートの入れ替わりを防止する
+                // @see https://github.com/EC-CUBE/ec-cube/issues/4293
+                $this->cartService->setPrimary($Cart->getCartKey());
+            }
+            $form = $this->createForm(OrderType::class, $Order);
+        }
+
         return [
             'form' => $form->createView(),
             'Order' => $Order,
             'activeTradeLaws' => $activeTradeLaws,
             'Prefs' => $this->prefRepository->findAll(),
         ];
+    }
+
+    /**
+     * 受注に設定された支払方法が, フォームで選択可能な支払方法に含まれているかを判定する.
+     *
+     * 利用条件(利用可能金額の範囲)に合致しない支払方法が初期選択されている場合,
+     * 選択可能な支払方法の先頭に再設定する. 再設定を行った場合は true を返す.
+     */
+    private function reselectUnavailablePayment(Order $Order, FormInterface $form): bool
+    {
+        if (!$form->has('Payment')) {
+            return false;
+        }
+
+        /** @var Payment[] $Payments */
+        $Payments = $form->get('Payment')->getConfig()->getOption('choices');
+        $Payment = $Order->getPayment();
+
+        // 選択中の支払方法が選択肢に含まれていれば補正不要.
+        $selectableIds = array_map(static fn (Payment $p) => $p->getId(), $Payments);
+        if ($Payment && in_array($Payment->getId(), $selectableIds, true)) {
+            return false;
+        }
+
+        $NewPayment = $Payments ? reset($Payments) : null;
+        // 既に同じ状態(共にnull)であれば補正不要.
+        if ($Payment === $NewPayment) {
+            return false;
+        }
+
+        $Order->setPayment($NewPayment ?: null);
+        $Order->setPaymentMethod($NewPayment ? $NewPayment->getMethod() : null);
+
+        return true;
     }
 
     /**

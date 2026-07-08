@@ -82,8 +82,8 @@ test.describe('Front Other Pages (EF06)', () => {
     await adminPage.locator('#admin_customer_address_addr02').fill('梅田');
     await adminPage.locator('#admin_customer_phone_number').fill('111111111');
     await adminPage.locator('#admin_customer_email').fill(tempEmail);
-    await adminPage.locator('#admin_customer_plain_password_first').fill('password');
-    await adminPage.locator('#admin_customer_plain_password_second').fill('password');
+    await adminPage.locator('#admin_customer_plain_password_first').fill('EccubeE2ePassword1');
+    await adminPage.locator('#admin_customer_plain_password_second').fill('EccubeE2ePassword1');
     // ステータスを仮会員(1)に設定
     await adminPage.locator('#admin_customer_status').selectOption({ value: '1' });
     await adminPage.locator('button.btn-ec-conversion').click();
@@ -95,7 +95,7 @@ test.describe('Front Other Pages (EF06)', () => {
     await page.goto('/mypage/login');
     await page.waitForLoadState('load');
     await page.locator('input[name="login_email"]').fill(tempEmail);
-    await page.locator('input[name="login_pass"]').fill('password');
+    await page.locator('input[name="login_pass"]').fill('EccubeE2ePassword1');
     await page.locator('#login_mypage button[type="submit"]').click();
     await page.waitForLoadState('load');
 
