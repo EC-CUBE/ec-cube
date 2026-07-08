@@ -19,6 +19,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\Master\CustomerStatusRepository;
 use Eccube\Service\Mcp\EntityArraySerializer;
+use Eccube\Service\Mcp\McpSummaryFields;
 use Eccube\Service\Mcp\ToolInvoker;
 use Mcp\Capability\Attribute\McpTool;
 
@@ -52,7 +53,7 @@ final readonly class SearchCustomersTool
      * @param int|null    $buyTotalMax     購入合計の上限 (任意)
      * @param int|null    $buyTimesMin     購入回数の下限 (任意)
      * @param int|null    $buyTimesMax     購入回数の上限 (任意)
-     * @param int         $limit           取得件数 1〜200 (既定 20)
+     * @param int         $limit           取得件数 1〜200 (既定 10)
      * @param int         $offset          スキップ件数 (既定 0)
      *
      * @return array{total:int,limit:int,offset:int,items:list<array<string, mixed>>}
@@ -71,7 +72,7 @@ final readonly class SearchCustomersTool
         ?int $buyTotalMax = null,
         ?int $buyTimesMin = null,
         ?int $buyTimesMax = null,
-        int $limit = 20,
+        int $limit = 10,
         int $offset = 0,
     ): array {
         /** @var array{total:int,limit:int,offset:int,items:list<array<string, mixed>>} $result */
@@ -89,7 +90,7 @@ final readonly class SearchCustomersTool
                 $paginator = new Paginator($qb, fetchJoinCollection: true);
 
                 $total = $paginator->count();
-                $items = $this->serializer->toArrayList($paginator);
+                $items = $this->serializer->toSummaryList($paginator, McpSummaryFields::CUSTOMER);
 
                 return [
                     'data' => [

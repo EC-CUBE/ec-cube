@@ -76,7 +76,7 @@ final class SearchProductsToolTest extends EccubeTestCase
         $this->assertSame(0, $result['offset'], 'offset は最小 0 にクランプされる');
     }
 
-    public function testItemFieldsAreSubsetOfAllowList(): void
+    public function testItemsReturnSummaryShape(): void
     {
         $this->createProduct('mcp-allow-001', 1);
 
@@ -84,18 +84,22 @@ final class SearchProductsToolTest extends EccubeTestCase
 
         $this->assertNotEmpty($result['items']);
 
-        // Api44 の core.api.allow_list で `Eccube\Entity\Product` に列挙されている項目
-        $allowed = [
-            'id', 'name', 'note', 'description_list', 'description_detail',
-            'search_word', 'free_area', 'create_date', 'update_date',
-            'ProductCategories', 'ProductClasses', 'ProductImage',
-            'ProductTag', 'CustomerFavoriteProducts', 'Creator', 'Status',
-        ];
+        // サマリ射影のキーのみ: allow_list 由来 (id / name / Status) ＋ 集約値 (price / stock)。
+        // description_detail 等の重量フィールドが出ないことをホワイトリストで担保する。
+        $summaryKeys = ['id', 'name', 'Status', 'price', 'stock'];
 
         foreach ($result['items'] as $item) {
             foreach (array_keys($item) as $key) {
-                $this->assertContains($key, $allowed, sprintf('出力フィールド "%s" は allow_list 外', $key));
+                $this->assertContains($key, $summaryKeys, sprintf('サマリ外のフィールド "%s" が出力された', $key));
             }
+            $this->assertArrayHasKey('id', $item);
+            $this->assertArrayHasKey('price', $item);
+            $this->assertArrayHasKey('min', $item['price']);
+            $this->assertArrayHasKey('max', $item['price']);
+            $this->assertArrayHasKey('stock', $item);
+            $this->assertArrayHasKey('min', $item['stock']);
+            $this->assertArrayHasKey('max', $item['stock']);
+            $this->assertArrayHasKey('unlimited', $item['stock']);
         }
     }
 }

@@ -19,6 +19,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\Mcp\EntityArraySerializer;
+use Eccube\Service\Mcp\McpSummaryFields;
 use Eccube\Service\Mcp\ToolInvoker;
 use Mcp\Capability\Attribute\McpTool;
 
@@ -50,7 +51,7 @@ final readonly class SearchOrdersTool
      * @param string|null $orderDateFrom   注文日 (ISO 8601) の開始 (任意)
      * @param string|null $orderDateTo     注文日 (ISO 8601) の終了 (任意)
      * @param int|null    $customerId      Customer ID で絞り込み (任意)
-     * @param int         $limit           取得件数 1〜200 (既定 20)
+     * @param int         $limit           取得件数 1〜200 (既定 10)
      * @param int         $offset          スキップ件数 (既定 0)
      *
      * @return array{total:int,limit:int,offset:int,items:list<array<string, mixed>>}
@@ -69,7 +70,7 @@ final readonly class SearchOrdersTool
         ?string $orderDateFrom = null,
         ?string $orderDateTo = null,
         ?int $customerId = null,
-        int $limit = 20,
+        int $limit = 10,
         int $offset = 0,
     ): array {
         /** @var array{total:int,limit:int,offset:int,items:list<array<string, mixed>>} $result */
@@ -92,7 +93,7 @@ final readonly class SearchOrdersTool
                 $paginator = new Paginator($qb, fetchJoinCollection: true);
 
                 $total = $paginator->count();
-                $items = $this->serializer->toArrayList($paginator);
+                $items = $this->serializer->toSummaryList($paginator, McpSummaryFields::ORDER);
 
                 return [
                     'data' => [

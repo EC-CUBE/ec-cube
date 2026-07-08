@@ -260,6 +260,110 @@ final class EntityArraySerializerTest extends TestCase
         );
     }
 
+    public function testSummaryReturnsOnlyListedScalars(): void
+    {
+        $serializer = $this->serializerWith([
+            SerializerDummyEntity::class => ['id', 'name', 'active'],
+        ]);
+        $entity = new SerializerDummyEntity();
+        $entity->id = 1;
+        $entity->name = 'foo';
+        $entity->active = true;
+
+        // active は allow_list にあるがサマリ定義に無い → 出力されない
+        $this->assertSame(
+            ['id' => 1, 'name' => 'foo'],
+            $serializer->toSummary($entity, ['id', 'name']),
+        );
+    }
+
+    public function testSummarySkipsFieldsNotInAllowList(): void
+    {
+        // fail-closed: allow_list に無い項目はサマリ定義に入れても出力されない
+        $serializer = $this->serializerWith([
+            SerializerDummyEntity::class => ['id'], // name は allow_list 外
+        ]);
+        $entity = new SerializerDummyEntity();
+        $entity->id = 1;
+        $entity->name = 'secret';
+
+        $this->assertSame(['id' => 1], $serializer->toSummary($entity, ['id', 'name']));
+    }
+
+    public function testSummaryDoesNotExpandCollections(): void
+    {
+        $serializer = $this->serializerWith([
+            SerializerDummyEntity::class => ['id', 'items'],
+            SerializerDummyRelated::class => ['code'],
+        ]);
+        $related = new SerializerDummyRelated();
+        $related->code = 'A';
+        $entity = new SerializerDummyEntity();
+        $entity->id = 1;
+        $entity->items = new ArrayCollection([$related]);
+
+        // items は allow_list 許可だが Collection なので展開されず null になる
+        $this->assertSame(['id' => 1, 'items' => null], $serializer->toSummary($entity, ['id', 'items']));
+    }
+
+    public function testSummaryResolvesDottedRelationField(): void
+    {
+        $serializer = $this->serializerWith([
+            SerializerDummyEntity::class => ['id', 'related'],
+            SerializerDummyRelated::class => ['code'],
+        ]);
+        $entity = new SerializerDummyEntity();
+        $entity->id = 1;
+        $entity->related = new SerializerDummyRelated();
+        $entity->related->code = 'X-1';
+
+        $this->assertSame(
+            ['id' => 1, 'related' => ['code' => 'X-1']],
+            $serializer->toSummary($entity, ['id', 'related.code']),
+        );
+    }
+
+    public function testSummaryDottedSkippedWhenSubFieldNotAllowed(): void
+    {
+        // 親で related は許可だが、 子 Entity で code が許可されていない → ドット path をスキップ (security)
+        $serializer = $this->serializerWith([
+            SerializerDummyEntity::class => ['id', 'related'],
+            SerializerDummyRelated::class => [],
+        ]);
+        $entity = new SerializerDummyEntity();
+        $entity->id = 1;
+        $entity->related = new SerializerDummyRelated();
+        $entity->related->code = 'X-1';
+
+        $this->assertSame(['id' => 1], $serializer->toSummary($entity, ['id', 'related.code']));
+    }
+
+    public function testSummaryDottedKeepsNullKeyWhenRelationAbsent(): void
+    {
+        // relation は許可されているが値が無い (データ状態) → security スキップと区別し、 キーは null で残す
+        $serializer = $this->serializerWith([
+            SerializerDummyEntity::class => ['id', 'related'],
+            SerializerDummyRelated::class => ['code'],
+        ]);
+        $entity = new SerializerDummyEntity();
+        $entity->id = 1;
+        $entity->related = null;
+
+        $this->assertSame(['id' => 1, 'related' => null], $serializer->toSummary($entity, ['id', 'related.code']));
+    }
+
+    public function testSummaryFormatsDateTimeAsAtom(): void
+    {
+        $serializer = $this->serializerWith([SerializerDummyEntity::class => ['createDate']]);
+        $entity = new SerializerDummyEntity();
+        $entity->createDate = new \DateTime('2026-06-04T12:34:56+09:00');
+
+        $this->assertSame(
+            ['createDate' => '2026-06-04T12:34:56+09:00'],
+            $serializer->toSummary($entity, ['createDate']),
+        );
+    }
+
     /**
      * @param array<string, list<string>> $allowMap
      */

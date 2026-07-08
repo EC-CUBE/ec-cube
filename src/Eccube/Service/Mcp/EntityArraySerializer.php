@@ -74,6 +74,85 @@ final readonly class EntityArraySerializer
     }
 
     /**
+     * Entity を「サマリ射影」で配列化する (一覧系ツール向けの軽量出力)。
+     *
+     * $fields は「スカラ名 (例 `order_no`)」または 1 段のドット path (例 `OrderStatus.name`) のリスト。
+     * full 経路 (toArray) と同じく allow_list を通過した項目だけを出力する。 allow_list で許可されない
+     * 項目だけをキーごと出さない (security)。 一方、 許可済みだが値が無いだけのもの (スカラ null /
+     * ドット path で関連が存在しない) はキーを null で残す。 関連 (Collection / Entity) は展開せず
+     * 値は null になる (キーは出るが中身は持ち込まない)。 よって出力は常にフラットで小さい。
+     *
+     * @param list<string> $fields
+     *
+     * @return array<string, mixed>
+     */
+    public function toSummary(object $entity, array $fields): array
+    {
+        $class = $this->resolveEntityClass($entity);
+        $result = [];
+        foreach ($fields as $field) {
+            if (str_contains($field, '.')) {
+                [$relation, $sub] = explode('.', $field, 2);
+                if (!$this->allowListResolver->isAllowed($class, $relation)) {
+                    continue; // relation が allow_list 外 (security) — キーごと出さない
+                }
+                $related = $this->readProperty($entity, $relation);
+                if (!\is_object($related)) {
+                    // 関連が存在しない (データ状態)。 security 由来のスキップと区別し、
+                    // スカラ経路と対称にキーは null で残す。
+                    $result[$relation] = null;
+                    continue;
+                }
+                if (!$this->allowListResolver->isAllowed($this->resolveEntityClass($related), $sub)) {
+                    continue; // sub が allow_list 外 (security)
+                }
+                $result[$relation][$sub] = $this->toScalar($this->readProperty($related, $sub));
+                continue;
+            }
+            if (!$this->allowListResolver->isAllowed($class, $field)) {
+                continue;
+            }
+            $result[$field] = $this->toScalar($this->readProperty($entity, $field));
+        }
+
+        return $result;
+    }
+
+    /**
+     * 複数 Entity をサマリ射影でまとめて変換する。
+     *
+     * @param iterable<object> $entities
+     * @param list<string>     $fields
+     *
+     * @return list<array<string, mixed>>
+     */
+    public function toSummaryList(iterable $entities, array $fields): array
+    {
+        $result = [];
+        foreach ($entities as $entity) {
+            $result[] = $this->toSummary($entity, $fields);
+        }
+
+        return $result;
+    }
+
+    /**
+     * サマリ出力用のスカラ化。 スカラはそのまま、 `\DateTimeInterface` は ISO 8601。
+     * それ以外 (オブジェクト / 配列 / Collection) はすべて null (サマリでは関連を持ち込まない)。
+     */
+    private function toScalar(mixed $value): mixed
+    {
+        if (null === $value || \is_scalar($value)) {
+            return $value;
+        }
+        if ($value instanceof \DateTimeInterface) {
+            return $value->format(\DateTimeInterface::ATOM);
+        }
+
+        return null;
+    }
+
+    /**
      * @param array<int, bool> $visited spl_object_id をキーにした訪問済みセット
      *
      * @return array<string, mixed>

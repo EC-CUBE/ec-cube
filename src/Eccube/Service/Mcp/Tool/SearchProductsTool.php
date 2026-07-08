@@ -17,10 +17,13 @@ namespace Eccube\Service\Mcp\Tool;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Eccube\Entity\Master\ProductStatus;
+use Eccube\Entity\Product;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Service\Mcp\EntityArraySerializer;
+use Eccube\Service\Mcp\McpSummaryFields;
+use Eccube\Service\Mcp\ProductPriceStockSummarizer;
 use Eccube\Service\Mcp\ToolInvoker;
 use Mcp\Capability\Attribute\McpTool;
 
@@ -38,6 +41,7 @@ final readonly class SearchProductsTool
         private CategoryRepository $categoryRepository,
         private ProductStatusRepository $productStatusRepository,
         private EntityArraySerializer $serializer,
+        private ProductPriceStockSummarizer $priceStockSummarizer,
         private ToolInvoker $invoker,
     ) {
     }
@@ -50,7 +54,7 @@ final readonly class SearchProductsTool
      * @param int[]|null  $statusIds  商品ステータス ID の配列。 1=公開、 2=非公開、 3=廃止 (任意、 既定 [1])
      * @param int|null    $stockMin   在庫数がこの値以上の商品のみ (任意)
      * @param int|null    $stockMax   在庫数がこの値以下の商品のみ (任意)
-     * @param int         $limit      取得件数。 1〜200 (既定 20)
+     * @param int         $limit      取得件数。 1〜200 (既定 10)
      * @param int         $offset     スキップ件数 (既定 0)
      *
      * @return array{total:int,limit:int,offset:int,items:list<array<string, mixed>>}
@@ -65,7 +69,7 @@ final readonly class SearchProductsTool
         ?array $statusIds = null,
         ?int $stockMin = null,
         ?int $stockMax = null,
-        int $limit = 20,
+        int $limit = 10,
         int $offset = 0,
     ): array {
         /** @var array{total:int,limit:int,offset:int,items:list<array<string, mixed>>} $result */
@@ -92,7 +96,14 @@ final readonly class SearchProductsTool
                 $paginator = new Paginator($qb, fetchJoinCollection: true);
 
                 $total = $paginator->count();
-                $items = $this->serializer->toArrayList($paginator);
+                $items = [];
+                foreach ($paginator as $product) {
+                    /** @var Product $product */
+                    // `+` は左辺優先。 サマリ (左) と price/stock (右) はキーが衝突しない前提。
+                    // McpSummaryFields::PRODUCT に price/stock と同名キーを足さないこと (足すと集約値が消える)。
+                    $items[] = $this->serializer->toSummary($product, McpSummaryFields::PRODUCT)
+                        + $this->priceStockSummarizer->summarize($product);
+                }
 
                 return [
                     'data' => [
