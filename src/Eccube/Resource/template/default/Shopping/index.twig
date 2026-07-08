@@ -15,9 +15,17 @@ file that was distributed with this source code.
 {% block javascript %}
     <script>
         // redirect_to初期化
-        $(window).on('pageshow',function(event) {
+        // フォームの初期actionを保持する
+        var defaultFormAction = $('#shopping-form').attr('action');
+
+        $(window).on('pageshow', function(event) {
+            // bfcache からの復元時のみ初期化する
+            if (!event.originalEvent.persisted) {
+                return;
+            }
+
             $('#shopping_order_redirect_to').val(null);
-            $('#shopping-form').attr('action','{{ url("shopping_confirm") }}');
+            $('#shopping-form').attr('action', defaultFormAction);
         });
 
         $(function() {

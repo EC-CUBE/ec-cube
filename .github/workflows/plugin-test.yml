@@ -2,7 +2,17 @@ name: Plugin test for EC-CUBE
 
 on:
   workflow_call:
+    inputs:
+      php-versions:
+        description: 'テスト対象 PHP バージョンの JSON 配列'
+        type: string
+        default: "['8.2', '8.3', '8.4', '8.5']"
   workflow_dispatch:
+    inputs:
+      php-versions:
+        description: 'テスト対象 PHP バージョンの JSON 配列'
+        type: string
+        default: "['8.2', '8.3', '8.4', '8.5']"
 
 permissions:
   contents: read
@@ -15,7 +25,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-24.04 ]
-        php: [ '8.2', '8.3', '8.4', '8.5' ]
+        php: ${{ fromJSON(inputs.php-versions) }}
         db: [ pgsql, mysql ]
         method:
           - test_install_enable_disable_remove_store
@@ -35,13 +45,6 @@ jobs:
             database_url: mysql://root:password@127.0.0.1:3306/eccube_db
             database_server_version: 8
             database_charset: utf8mb4
-
-    services:
-      mailcatcher:
-        image: schickling/mailcatcher
-        ports:
-          - 1080:1080
-          - 1025:1025
 
     steps:
       - name: Checkout
@@ -80,7 +83,7 @@ jobs:
           PGPASSWORD=password psql -h 127.0.0.1 -U postgres -c 'SELECT VERSION()'
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc  # v2
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240  # v2
         with:
           php-version: ${{ matrix.php }}
           extensions: redis
@@ -107,7 +110,7 @@ jobs:
 
       - name: Cache apt packages
         if: matrix.db == 'pgsql'
-        uses: awalsh128/cache-apt-pkgs-action@acb598e5ddbc6f68a970c5da0688d2f3a9f04d05  # latest
+        uses: awalsh128/cache-apt-pkgs-action@681749ae568c81c2037cb9185e38b709b261bd2f  # latest
         with:
           packages: postgresql-client
           version: 1.0
@@ -134,6 +137,9 @@ jobs:
       - name: Install Playwright browsers
         working-directory: e2e
         run: npx playwright install chromium --with-deps
+
+      - name: Start Mailpit (SMTP sink)
+        uses: ./.github/actions/mailpit
 
       - name: Start PHP Development Server
         env:
@@ -185,7 +191,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-24.04 ]
-        php: [ '8.2', '8.3', '8.4', '8.5' ]
+        php: ${{ fromJSON(inputs.php-versions) }}
         db: [ pgsql, mysql ]
         method:
           - test_install_update_remove_store
@@ -203,13 +209,6 @@ jobs:
             database_url: mysql://root:password@127.0.0.1:3306/eccube_db
             database_server_version: 8
             database_charset: utf8mb4
-
-    services:
-      mailcatcher:
-        image: schickling/mailcatcher
-        ports:
-          - 1080:1080
-          - 1025:1025
 
     steps:
       - name: Checkout
@@ -248,7 +247,7 @@ jobs:
           PGPASSWORD=password psql -h 127.0.0.1 -U postgres -c 'SELECT VERSION()'
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc  # v2
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240  # v2
         with:
           php-version: ${{ matrix.php }}
           extensions: redis
@@ -275,7 +274,7 @@ jobs:
 
       - name: Cache apt packages
         if: matrix.db == 'pgsql'
-        uses: awalsh128/cache-apt-pkgs-action@acb598e5ddbc6f68a970c5da0688d2f3a9f04d05  # latest
+        uses: awalsh128/cache-apt-pkgs-action@681749ae568c81c2037cb9185e38b709b261bd2f  # latest
         with:
           packages: postgresql-client
           version: 1.0
@@ -302,6 +301,9 @@ jobs:
       - name: Install Playwright browsers
         working-directory: e2e
         run: npx playwright install chromium --with-deps
+
+      - name: Start Mailpit (SMTP sink)
+        uses: ./.github/actions/mailpit
 
       - name: Start PHP Development Server
         env:
@@ -352,7 +354,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-24.04 ]
-        php: [ '8.2', '8.3', '8.4', '8.5' ]
+        php: ${{ fromJSON(inputs.php-versions) }}
         db: [ pgsql, mysql ]
         method:
           - test_extend_same_table_store
@@ -370,13 +372,6 @@ jobs:
             database_url: mysql://root:password@127.0.0.1:3306/eccube_db
             database_server_version: 8
             database_charset: utf8mb4
-
-    services:
-      mailcatcher:
-        image: schickling/mailcatcher
-        ports:
-          - 1080:1080
-          - 1025:1025
 
     steps:
       - name: Checkout
@@ -415,7 +410,7 @@ jobs:
           PGPASSWORD=password psql -h 127.0.0.1 -U postgres -c 'SELECT VERSION()'
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc  # v2
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240  # v2
         with:
           php-version: ${{ matrix.php }}
           extensions: redis
@@ -442,7 +437,7 @@ jobs:
 
       - name: Cache apt packages
         if: matrix.db == 'pgsql'
-        uses: awalsh128/cache-apt-pkgs-action@acb598e5ddbc6f68a970c5da0688d2f3a9f04d05  # latest
+        uses: awalsh128/cache-apt-pkgs-action@681749ae568c81c2037cb9185e38b709b261bd2f  # latest
         with:
           packages: postgresql-client
           version: 1.0
@@ -469,6 +464,9 @@ jobs:
       - name: Install Playwright browsers
         working-directory: e2e
         run: npx playwright install chromium --with-deps
+
+      - name: Start Mailpit (SMTP sink)
+        uses: ./.github/actions/mailpit
 
       - name: Start PHP Development Server
         env:
@@ -519,7 +517,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-24.04 ]
-        php: [ '8.2', '8.3', '8.4', '8.5' ]
+        php: ${{ fromJSON(inputs.php-versions) }}
         db: [ pgsql, mysql ]
         method:
           - test_dependency_each_install_plugin
@@ -540,13 +538,6 @@ jobs:
         exclude:
           - db: mysql
             method: test_dependency_plugin_update
-
-    services:
-      mailcatcher:
-        image: schickling/mailcatcher
-        ports:
-          - 1080:1080
-          - 1025:1025
 
     steps:
       - name: Checkout
@@ -585,7 +576,7 @@ jobs:
           PGPASSWORD=password psql -h 127.0.0.1 -U postgres -c 'SELECT VERSION()'
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc  # v2
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240  # v2
         with:
           php-version: ${{ matrix.php }}
           extensions: redis
@@ -612,7 +603,7 @@ jobs:
 
       - name: Cache apt packages
         if: matrix.db == 'pgsql'
-        uses: awalsh128/cache-apt-pkgs-action@acb598e5ddbc6f68a970c5da0688d2f3a9f04d05  # latest
+        uses: awalsh128/cache-apt-pkgs-action@681749ae568c81c2037cb9185e38b709b261bd2f  # latest
         with:
           packages: postgresql-client
           version: 1.0
@@ -639,6 +630,9 @@ jobs:
       - name: Install Playwright browsers
         working-directory: e2e
         run: npx playwright install chromium --with-deps
+
+      - name: Start Mailpit (SMTP sink)
+        uses: ./.github/actions/mailpit
 
       - name: Start PHP Development Server
         env:
@@ -689,7 +683,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-24.04 ]
-        php: [ '8.2' ]
+        php: [ '8.5' ]
         db: [ pgsql, mysql ]
         include:
           - db: pgsql
@@ -700,13 +694,6 @@ jobs:
             database_url: mysql://root:password@127.0.0.1:3306/eccube_db
             database_server_version: 8
             database_charset: utf8mb4
-
-    services:
-      mailcatcher:
-        image: schickling/mailcatcher
-        ports:
-          - 1080:1080
-          - 1025:1025
 
     steps:
       - name: Checkout
@@ -745,7 +732,7 @@ jobs:
           PGPASSWORD=password psql -h 127.0.0.1 -U postgres -c 'SELECT VERSION()'
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc  # v2
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240  # v2
         with:
           php-version: ${{ matrix.php }}
           github-token: ''
@@ -772,7 +759,7 @@ jobs:
 
       - name: Cache apt packages
         if: matrix.db == 'pgsql'
-        uses: awalsh128/cache-apt-pkgs-action@acb598e5ddbc6f68a970c5da0688d2f3a9f04d05  # latest
+        uses: awalsh128/cache-apt-pkgs-action@681749ae568c81c2037cb9185e38b709b261bd2f  # latest
         with:
           packages: postgresql-client
           version: 1.0
@@ -799,6 +786,9 @@ jobs:
       - name: Install Playwright browsers
         working-directory: e2e
         run: npx playwright install chromium --with-deps
+
+      - name: Start Mailpit (SMTP sink)
+        uses: ./.github/actions/mailpit
 
       - name: Start PHP Development Server
         env:
@@ -847,7 +837,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ ubuntu-24.04 ]
-        php: [ '8.2' ]
+        php: [ '8.5' ]
         db: [ pgsql, mysql ]
         include:
           - db: pgsql
@@ -858,13 +848,6 @@ jobs:
             database_url: mysql://root:password@127.0.0.1:3306/eccube_db
             database_server_version: 8
             database_charset: utf8mb4
-
-    services:
-      mailcatcher:
-        image: schickling/mailcatcher
-        ports:
-          - 1080:1080
-          - 1025:1025
 
     steps:
       - name: Checkout
@@ -903,7 +886,7 @@ jobs:
           PGPASSWORD=password psql -h 127.0.0.1 -U postgres -c 'SELECT VERSION()'
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc  # v2
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240  # v2
         with:
           php-version: ${{ matrix.php }}
           github-token: ''
@@ -930,7 +913,7 @@ jobs:
 
       - name: Cache apt packages
         if: matrix.db == 'pgsql'
-        uses: awalsh128/cache-apt-pkgs-action@acb598e5ddbc6f68a970c5da0688d2f3a9f04d05  # latest
+        uses: awalsh128/cache-apt-pkgs-action@681749ae568c81c2037cb9185e38b709b261bd2f  # latest
         with:
           packages: postgresql-client
           version: 1.0
@@ -957,6 +940,9 @@ jobs:
       - name: Install Playwright browsers
         working-directory: e2e
         run: npx playwright install chromium --with-deps
+
+      - name: Start Mailpit (SMTP sink)
+        uses: ./.github/actions/mailpit
 
       - name: Start PHP Development Server
         env:

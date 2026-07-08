@@ -26,6 +26,7 @@ use Eccube\Repository\CustomerFavoriteProductRepository;
 use Eccube\Repository\Master\ProductListMaxRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Service\CartService;
+use Eccube\Service\ProductStructuredDataService;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
@@ -62,6 +63,7 @@ class ProductController extends AbstractController
         protected AuthenticationUtils $helper,
         protected ProductListMaxRepository $productListMaxRepository,
         private readonly PaginatorInterface $paginator,
+        private readonly ProductStructuredDataService $productStructuredDataService,
     ) {
         $this->purchaseFlow = $cartPurchaseFlow;
         $this->BaseInfo = $baseInfoRepository->get();
@@ -207,12 +209,20 @@ class ProductController extends AbstractController
             $is_favorite = $this->customerFavoriteProductRepository->isFavorite($Customer, $Product);
         }
 
+        $productJsonLd = $this->productStructuredDataService->createProductJsonLd(
+            $Product,
+            $request->getSchemeAndHttpHost(),
+            $this->generateUrl('product_detail', ['id' => $Product->getId()], UrlGeneratorInterface::ABSOLUTE_URL),
+            $this->eccubeConfig['currency'],
+        );
+
         return [
             'title' => $this->title,
             'subtitle' => $Product->getName(),
             'form' => $builder->getForm()->createView(),
             'Product' => $Product,
             'is_favorite' => $is_favorite,
+            'product_json_ld' => $productJsonLd,
         ];
     }
 
