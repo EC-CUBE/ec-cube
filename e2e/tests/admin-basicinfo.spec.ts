@@ -732,8 +732,8 @@ test.describe('Admin Basic Info (EA07)', () => {
     await page.locator('#entry_phone_number').fill('111-111-111');
     await page.locator('#entry_email_first').fill(email1);
     await page.locator('#entry_email_second').fill(email1);
-    await page.locator('#entry_plain_password_first').fill('password1234');
-    await page.locator('#entry_plain_password_second').fill('password1234');
+    await page.locator('#entry_plain_password_first').fill('EccubeE2ePassword1');
+    await page.locator('#entry_plain_password_second').fill('EccubeE2ePassword1');
     await page.locator('#entry_user_policy_check').check();
     await page.locator('button.ec-blockBtn--action[type="submit"]').click();
     await page.waitForLoadState('load');
@@ -794,8 +794,8 @@ test.describe('Admin Basic Info (EA07)', () => {
     await page.locator('#entry_phone_number').fill('111-111-111');
     await page.locator('#entry_email_first').fill(email2);
     await page.locator('#entry_email_second').fill(email2);
-    await page.locator('#entry_plain_password_first').fill('password1234');
-    await page.locator('#entry_plain_password_second').fill('password1234');
+    await page.locator('#entry_plain_password_first').fill('EccubeE2ePassword1');
+    await page.locator('#entry_plain_password_second').fill('EccubeE2ePassword1');
     await page.locator('#entry_user_policy_check').check();
     await page.locator('button.ec-blockBtn--action[type="submit"]').click();
     await page.waitForLoadState('load');

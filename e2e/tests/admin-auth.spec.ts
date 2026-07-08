@@ -48,7 +48,7 @@ test.describe('Admin Authentication (EA02)', () => {
   test('authentication_非稼働_削除', async ({ page }) => {
     const loginId = 'not_active_test';
     const memberName = '非稼働テストメンバー';
-    const memberPassword = 'memberPass1234';
+    const memberPassword = 'EccubeMemberPass01';
 
     await loginAsAdmin(page);
 
