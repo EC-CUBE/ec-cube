@@ -9,6 +9,26 @@ EC-CUBE 4.4 を扱う際に従う共通の入口であり、**ベンダー中立
 - このファイルは `CLAUDE.md` / `GEMINI.md` を参照し返しません（上流）。
 - レイヤ別規約は各 Skill 本文（`.claude/skills/<name>/SKILL.md`）が末端で、上流を参照し返しません。
 
+## AI 向けドキュメント インデックス（定義ファイルと読み込み）
+
+AI エージェント向けの情報は、この `AGENTS.md` を**正典（ハブ）**とし、周辺の定義ファイルはすべてここへ収斂します。所在の一覧は次の通り。
+
+| ファイル | 役割 | 主な読み手 |
+|---|---|---|
+| `AGENTS.md`（本ファイル） | ベンダー中立の正典。規約・アーキテクチャ・Skill 索引の入口 | 全エージェント＋人間。`AGENTS.md` をネイティブ参照するツール（Cursor / GitHub Copilot / Codex CLI / Google Antigravity 等）は本ファイルを直接読む |
+| `CLAUDE.md` | 薄いポインタ（`@./AGENTS.md`）。Claude Code は `CLAUDE.md` を native に読むため | Claude Code |
+| `GEMINI.md` | 薄いポインタ。Gemini CLI は Skill 非対応のため索引経由で `SKILL.md` へ誘導 | Gemini CLI |
+| `llms.txt` | 外部 LLM・クローラ向けの英語サマリ（llmstxt.org 準拠。公開 URL 前提） | LLM クローラ・外部 LLM |
+| `.claude/skills/<name>/SKILL.md` | レイヤ別の詳細規約（末端）。`.codex/skills`・`.agents/skills` は symlink 共有 | Skill 対応ツール（詳細は「Skill の配置と各ツールの読み込み」節） |
+
+### 定義ファイルを増やすときの原則
+
+- **ポインタ定義ファイルは「`AGENTS.md` をネイティブに読まないツール」にだけ置く。** それ以外は正典を二重に指すだけの冗長ファイルになるため作らない。
+  - 必要な例: Claude Code → `CLAUDE.md`、Gemini CLI → `GEMINI.md`（いずれも `AGENTS.md` を native に読まない）。
+  - 不要な例: **Cursor / GitHub Copilot / Codex CLI は `AGENTS.md` を native に読む**ため、`.cursor/rules/*` や `.github/copilot-instructions.md` は追加しない。
+- 新しい定義ファイルを足すときは、上のインデックス表にも 1 行追加し、所在を本節で一元管理する。
+- 設計思想・アーキテクチャの詳細文書（`DESIGN.md` / `ARCHITECTURE.md`）は現状未整備。整備する場合も本ファイルはハブに留め、詳細はそれらへリンクして本節の表に追記する。
+
 ## プロジェクト概要
 
 EC-CUBE は日本で広く使われる OSS の EC プラットフォームです。本ブランチ（4.4）は **Symfony 7.4 / PHP 8.2+** 上に構築されています。
