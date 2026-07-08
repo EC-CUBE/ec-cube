@@ -95,3 +95,35 @@ services:
     Eccube\Service\AgentCommerce\CheckoutSession\GuestCustomerResolver:
         autowire: true
         public: true
+    # UCP checkout (#6574) サービス群。テストからコンテナ取得するため public 化する。
+    Eccube\Service\AgentCommerce\Ucp\UcpCheckoutSessionMapper:
+        autowire: true
+        public: true
+    Eccube\Service\AgentCommerce\Ucp\UcpMessageMapper:
+        autowire: true
+        public: true
+    Eccube\Service\AgentCommerce\Ucp\UcpStatusMapper:
+        autowire: true
+        public: true
+    Eccube\Service\AgentCommerce\Ucp\Signature\Rfc9421SignatureBaseBuilder:
+        autowire: true
+        public: true
+    Eccube\Service\AgentCommerce\Ucp\Signature\UcpProfileFetcher:
+        autowire: true
+        public: true
+    Eccube\Service\AgentCommerce\Ucp\Signature\UcpRequestSignatureVerifier:
+        autowire: true
+        public: true
+        arguments:
+            $allowedDomains: []
+    Eccube\Service\AgentCommerce\Idempotency\AgentCheckoutIdempotencyStore:
+        autowire: true
+        public: true
+    Eccube\Service\AgentCommerce\Payment\AgentCheckoutPaymentHandlerRegistry:
+        autowire: true
+        public: true
+        arguments:
+            $handlers: !tagged_iterator agent_commerce.payment_handler
+    Eccube\Service\AgentCommerce\StorefrontUrlResolver:
+        autowire: true
+        public: true
