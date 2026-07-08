@@ -171,6 +171,42 @@ final class RefundRequestServiceTest extends EccubeTestCase
         $this->assertNotNull($this->refundRequestService->getTempFilePath(self::SESSION_ID, $info['key']));
     }
 
+    public function testSaveTempFileDerivesExtensionFromContent(): void
+    {
+        // 保存名の拡張子はクライアント申告ではなく、検証済みのファイル内容(MIME)から導出する.
+        // 中身は PNG だがクライアント名は .jpg を申告するケースで、保存キーが .png になることを確認する.
+        $tmpFile = tempnam(sys_get_temp_dir(), 'refund_test_');
+        file_put_contents($tmpFile, base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII='));
+        $uploadedFile = new UploadedFile($tmpFile, 'evil.php.jpg', 'image/jpeg', null, true);
+
+        $info = $this->refundRequestService->saveTempFile($uploadedFile, self::SESSION_ID);
+
+        $this->assertStringEndsWith('.png', $info['key']);
+        $this->assertStringNotContainsString('.php', $info['key']);
+    }
+
+    public function testCleanupExpiredTempDirs(): void
+    {
+        $tempBase = rtrim((string) static::getContainer()->get(EccubeConfig::class)['eccube_temp_refund_request_file_dir'], '/');
+
+        // 2 セッション分の一時ファイルを作成する.
+        $oldInfo = $this->refundRequestService->saveTempFile($this->createUploadedFile('old.jpg', 'image/jpeg'), 'expired-session');
+        $freshInfo = $this->refundRequestService->saveTempFile($this->createUploadedFile('fresh.jpg', 'image/jpeg'), self::SESSION_ID);
+
+        // 期限切れセッションのディレクトリだけ最終更新を 2 時間前へ巻き戻す.
+        $expiredDir = $tempBase.'/'.hash('sha256', 'expired-session');
+        touch($expiredDir, time() - 7200);
+        clearstatcache();
+
+        // 1 時間より古い一時ディレクトリだけ削除する.
+        $removed = $this->refundRequestService->cleanupExpiredTempDirs(3600);
+
+        $this->assertGreaterThanOrEqual(1, $removed);
+        // 期限切れは削除され, 新しいディレクトリは残る.
+        $this->assertNull($this->refundRequestService->getTempFilePath('expired-session', $oldInfo['key']));
+        $this->assertNotNull($this->refundRequestService->getTempFilePath(self::SESSION_ID, $freshInfo['key']));
+    }
+
     public function testCreateRefundRequestWithTempFiles(): void
     {
         $Customer = $this->createCustomer();

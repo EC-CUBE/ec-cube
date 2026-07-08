@@ -68,4 +68,8 @@ server {
     location ~^/(var|test|vendor|app|src|bin)  {
             deny all;
     }
+    # 返品申請のエビデンスファイルは私的な証跡のため直リンク配信を禁止する（配信はコントローラ経由に限定）
+    location ^~ /upload/refund_request/ {
+            deny all;
+    }
 }

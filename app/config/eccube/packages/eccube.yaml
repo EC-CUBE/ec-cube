@@ -52,11 +52,13 @@ parameters:
     eccube_twig_block_templates: []
     eccube_save_image_dir: '%kernel.project_dir%/html/upload/save_image'
     eccube_temp_image_dir: '%kernel.project_dir%/html/upload/temp_image'
-    # 返品申請のエビデンスファイル保存先。公開ドキュメントルート外(var/配下)に置き、配信はコントローラ経由(所有者チェック付き)に限定する
-    eccube_save_refund_request_file_dir: '%kernel.project_dir%/var/refund_request'
+    # 返品申請のエビデンスファイル保存先。他のアップロード画像と同じ html/upload 配下に置く。
+    # ただし私的な証跡ファイルのため、html/upload/refund_request/.htaccess(Deny from all) と nginx で直リンク配信を禁止し、
+    # 配信はコントローラ経由(所有者チェック付き)に限定する
+    eccube_save_refund_request_file_dir: '%kernel.project_dir%/html/upload/refund_request/save'
     # 返品申請の一時アップロード先（確認画面遷移中の保留領域）。complete 時に %eccube_save_refund_request_file_dir% へ移動する
-    # 本保存領域(eccube_save_refund_request_file_dir)の配下に置かない。配信検証のプレフィックス一致で一時ファイルが到達可能になるのを防ぐため、別ディレクトリに分離する
-    eccube_temp_refund_request_file_dir: '%kernel.project_dir%/var/refund_request_tmp'
+    # 本保存領域(eccube_save_refund_request_file_dir)の配下に置かない。配信検証のプレフィックス一致で一時ファイルが到達可能になるのを防ぐため、兄弟ディレクトリ(temp)に分離する
+    eccube_temp_refund_request_file_dir: '%kernel.project_dir%/html/upload/refund_request/temp'
     eccube_csv_size: 5                 # post_max_size, upload_max_filesize に任せればよい？
     eccube_csv_temp_realdir: '%kernel.cache_dir%/%kernel.environment%/eccube' # upload_tmp_dir に任せればよい？
     eccube_csv_split_lines: 100
