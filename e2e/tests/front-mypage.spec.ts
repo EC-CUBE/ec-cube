@@ -144,6 +144,71 @@ async function addDeliveryAddress(page: Page, addr01: string) {
   await expect(page.locator('div.ec-pageHeader h1')).toContainText('お届け先一覧');
 }
 
+/**
+ * Helper: Return the order number of the most recently created order for the
+ * logged-in customer by reading the first "詳細を見る" link on the order history.
+ * The order detail link is /mypage/history/{order_no}.
+ */
+async function getLatestOrderNo(page: Page): Promise<string> {
+  await page.goto('/mypage/');
+  await page.waitForLoadState('load');
+  const href = await page.locator('p.ec-historyListHeader__action a').first().getAttribute('href');
+  const matched = href?.match(/\/mypage\/history\/(.+)$/);
+  expect(matched, `order detail link should contain an order_no: ${href}`).not.toBeNull();
+  return matched![1];
+}
+
+/**
+ * Helper: Set the tracking number (お問い合わせ番号) of the given order's first
+ * shipping via the admin order/shipping edit screen. Opens a separate admin page,
+ * logs in, searches for the order by its order number (so the test never depends
+ * on global ordering), and saves the tracking number.
+ */
+async function setTrackingNumberViaAdmin(page: Page, orderNo: string, trackingNumber: string) {
+  const adminRoute = process.env.ECCUBE_ADMIN_ROUTE || 'admin';
+
+  const adminPage = await page.context().newPage();
+  await adminPage.goto(`/${adminRoute}/`);
+  await adminPage.waitForLoadState('load');
+  await adminPage.locator('#login_id').fill(process.env.ADMIN_USER || 'admin');
+  await adminPage.locator('#password').fill(process.env.ADMIN_PASSWORD || 'password');
+  await adminPage.getByRole('button', { name: 'ログイン' }).click();
+  await adminPage.waitForLoadState('load');
+
+  // Search the order by its order number and open that specific order
+  await adminPage.goto(`/${adminRoute}/order`);
+  await adminPage.waitForLoadState('load');
+  await adminPage.locator('#admin_search_order_multi').fill(orderNo);
+  await adminPage.locator('#search_form #search_submit').click();
+  await adminPage.waitForLoadState('load');
+
+  // Target the row whose order number cell matches orderNo, then its order link
+  // (so we never follow the wrong row even if the search returns multiple).
+  const orderRow = adminPage.locator('table tbody tr', { hasText: orderNo });
+  const orderLink = orderRow.locator('a[href*="/order/"]').first();
+  await expect(orderLink).toBeVisible();
+  const orderEditHref = await orderLink.getAttribute('href');
+  await adminPage.goto(orderEditHref!);
+  await adminPage.waitForLoadState('load');
+
+  // Navigate to the shipping edit page
+  const shippingEditLink = adminPage.locator('a[href*="/shipping/"][href*="/edit"]');
+  await expect(shippingEditLink).toBeVisible();
+  const shippingEditHref = await shippingEditLink.getAttribute('href');
+  await adminPage.goto(shippingEditHref!);
+  await adminPage.waitForLoadState('load');
+  await expect(adminPage.locator('.c-pageTitle')).toContainText('出荷登録');
+
+  // Fill the tracking number and save
+  await adminPage.locator('#form_shippings_0_tracking_number').fill(trackingNumber);
+  await adminPage.locator('button.ladda-button[type="submit"]').click();
+  await adminPage.waitForLoadState('load');
+  await expect(adminPage.locator('.alert-success')).toContainText('保存しました', { timeout: 30_000 });
+  await expect(adminPage.locator('#form_shippings_0_tracking_number')).toHaveValue(trackingNumber);
+
+  await adminPage.close();
+}
+
 test.describe('Front Mypage (EF05)', () => {
 
   test('EF0501-UC01-T01 Mypage 初期表示', async ({ page }) => {
@@ -211,6 +276,48 @@ test.describe('Front Mypage (EF05)', () => {
     await expect(totalBox).toContainText('手数料');
     await expect(totalBox).toContainText('送料');
     await expect(totalBox).toContainText('合計');
+  });
+
+  test('EF0503-UC01-T03 Mypage ご注文履歴詳細 お問い合わせ番号表示', async ({ page }) => {
+    const trackingNumber = '1234567890123';
+
+    await loginAsTestCustomer(page);
+
+    // Create an order, capture its order number, then set its tracking number via admin
+    await createOrder(page);
+    const orderNo = await getLatestOrderNo(page);
+    await setTrackingNumberViaAdmin(page, orderNo, trackingNumber);
+
+    // Open that specific order's detail page directly (no dependency on list ordering)
+    await page.goto(`/mypage/history/${orderNo}`);
+    await page.waitForLoadState('load');
+    await expect(page.locator('div.ec-pageHeader h1')).toContainText('ご注文履歴詳細');
+
+    // The tracking number label and value are shown in the delivery section
+    const delivery = page.locator('div.ec-orderDelivery');
+    await expect(delivery).toContainText('お問い合わせ番号');
+    await expect(delivery).toContainText(trackingNumber);
+
+    // The tracking number is displayed right after the delivery time item
+    const labels = delivery.locator('div.ec-definitions--soft dt');
+    const deliveryTimeIndex = (await labels.allTextContents()).findIndex(t => t.includes('お届け時間'));
+    expect(deliveryTimeIndex).toBeGreaterThanOrEqual(0);
+    await expect(labels.nth(deliveryTimeIndex + 1)).toContainText('お問い合わせ番号');
+  });
+
+  test('EF0503-UC01-T04 Mypage ご注文履歴詳細 お問い合わせ番号未設定は非表示', async ({ page }) => {
+    await loginAsTestCustomer(page);
+
+    // Create an order without a tracking number, then open that specific order
+    await createOrder(page);
+    const orderNo = await getLatestOrderNo(page);
+    await page.goto(`/mypage/history/${orderNo}`);
+    await page.waitForLoadState('load');
+    await expect(page.locator('div.ec-pageHeader h1')).toContainText('ご注文履歴詳細');
+
+    // The tracking number item is not rendered (structural check on the label dt)
+    const delivery = page.locator('div.ec-orderDelivery');
+    await expect(delivery.locator('dt', { hasText: 'お問い合わせ番号' })).toHaveCount(0);
   });
 
   test('EF0503-UC01-T02 Mypage お気に入り一覧', async ({ page }) => {

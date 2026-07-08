@@ -48,6 +48,7 @@ node_modules
 .phpunit
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
+/.phpunit.result.cache
 
 ###> friendsofphp/php-cs-fixer ###
 /.php-cs-fixer.cache

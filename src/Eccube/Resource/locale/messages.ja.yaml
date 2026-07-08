@@ -246,6 +246,7 @@ front.mypage.delivery: お届け先
 front.mypage.delivery_provider: 配送方法
 front.mypage.delivery_date: お届け日
 front.mypage.delivery_time: お届け時間
+front.mypage.tracking_number: お問い合わせ番号
 front.mypage.current_price: 【現在価格】
 front.mypage.reorder: 再注文する
 front.mypage.payment_info: お支払い情報
@@ -1197,6 +1198,8 @@ admin.setting.shop.shop.option_remember_me: 自動ログイン機能
 admin.setting.shop.shop.option_mail_notifier: 重要操作時メール通知機能
 admin.setting.shop.shop.option_product: 商品設定
 admin.setting.shop.shop.nostock_hidden: 在庫切れ商品の非表示
+admin.setting.shop.shop.option_csv: CSV設定
+admin.setting.shop.shop.option_sanitize_csv_formulas: CSVの数式インジェクション対策
 admin.setting.shop.shop.option_tax: 税設定
 admin.setting.shop.shop.option_invoice_registration_number: 適格請求書発行事業者登録番号
 admin.setting.shop.shop.option_product_tax: 商品別税率機能
@@ -1776,6 +1779,7 @@ tooltip.setting.shop.shop.option_delivery_fee_free_quantity: この個数を超�
 tooltip.setting.shop.shop.option_delivery_fee_by_product: ここをオンにすると、商品ごとに送料を指定できるようになります。
 tooltip.setting.shop.shop.option_guest_purchase: ゲスト（会員登録なし）での購入を許可する機能です。オフにすると、購入にはログインまたは新規会員登録が必要になります。
 tooltip.setting.shop.shop.option_customer_activate: 顧客の会員登録直後は仮会員とし、メールアドレスの確認などを経て本会員として登録できる機能です。
+tooltip.setting.shop.shop.option_sanitize_csv_formulas: CSV出力時に、表計算ソフトで数式評価され得る先頭文字（= + - @ など）を無害化します。Excelで数式として実行されるのを防げますが、無効にすると出力値がそのままになります。CSV取込時の復元処理も同じ設定に連動するため、有効時に出力したCSVは有効なまま取り込んでください。
 tooltip.setting.shop.shop.option_favorite_product: 顧客が任意の商品をお気に入りとして登録できるようにする機能です。
 tooltip.setting.shop.shop.option_remember_me: 顧客に一定期間の自動ログインを許可します。
 tooltip.setting.shop.shop.option_mail_notifier: フロント側での会員情報編集・配送先変更操作時にメール通知を行う機能です。

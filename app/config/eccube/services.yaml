@@ -288,3 +288,31 @@ services:
 
     Eccube\Service\AgentCommerce\Discovery\PaymentHandlerRegistryInterface:
         alias: Eccube\Service\AgentCommerce\Discovery\EmptyPaymentHandlerRegistry
+
+    # Agent Commerce CheckoutSession 中核 (#6777 Phase 1b)
+    Eccube\Service\AgentCommerce\Fulfillment\FulfillmentOptionMapperInterface:
+        alias: Eccube\Service\AgentCommerce\Fulfillment\StandardFulfillmentOptionMapper
+
+    # 標準はゲスト購入 (会員解決なし)。会員 ID 連携は eccube-api4#189 landing 後に差し替える。
+    Eccube\Service\AgentCommerce\CheckoutSession\CustomerResolverInterface:
+        alias: Eccube\Service\AgentCommerce\CheckoutSession\GuestCustomerResolver
+
+    # OAuth2 トークン検証。リソースサーバー (eccube-api4#188) 未導入時は handler が null となり 503 を返す。
+    Eccube\Service\AgentCommerce\Security\AgentCommerceOAuth2Authenticator:
+        arguments:
+            $accessTokenHandler: '@?Symfony\Component\Security\Http\AccessToken\AccessTokenHandlerInterface'
+
+    # 決済ハンドラレジストリ。具象ハンドラ (決済プラグイン) は agent_commerce.payment_handler タグで寄与する。
+    Eccube\Service\AgentCommerce\Payment\AgentCheckoutPaymentHandlerRegistry:
+        arguments:
+            $handlers: !tagged_iterator agent_commerce.payment_handler
+
+    # エージェント注文の支払方法解決 (handler_id 駆動・sort_no 非依存)。
+    # 店舗ごとに選択ロジックを変える場合は app/Customize で実装しエイリアスを差し替える。
+    Eccube\Service\AgentCommerce\Payment\AgentPaymentMethodResolverInterface:
+        alias: Eccube\Service\AgentCommerce\Payment\DefaultAgentPaymentMethodResolver
+
+    # complete 状態機械オーケストレータ。在庫確保期限は eccube.yaml の設定値を注入。
+    Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutCompletionService:
+        arguments:
+            $escalationExpireMinutes: '%eccube_agent_checkout_escalation_expire%'

@@ -120,6 +120,9 @@ if (!class_exists(BaseInfo::class)) {
         #[ORM\Column(name: 'option_mail_notifier', type: Types::BOOLEAN, options: ['default' => false])]
         private bool $option_mail_notifier = false;
 
+        #[ORM\Column(name: 'option_sanitize_csv_formulas', type: Types::BOOLEAN, options: ['default' => true])]
+        private bool $option_sanitize_csv_formulas = true;
+
         #[ORM\Column(name: 'authentication_key', type: Types::STRING, length: 255, nullable: true)]
         private ?string $authentication_key = null;
 
@@ -693,6 +696,24 @@ if (!class_exists(BaseInfo::class)) {
         public function isOptionMailNotifier(): bool
         {
             return $this->option_mail_notifier;
+        }
+
+        /**
+         * Set optionSanitizeCsvFormulas.
+         */
+        public function setOptionSanitizeCsvFormulas(bool $optionSanitizeCsvFormulas): BaseInfo
+        {
+            $this->option_sanitize_csv_formulas = $optionSanitizeCsvFormulas;
+
+            return $this;
+        }
+
+        /**
+         * Get optionSanitizeCsvFormulas.
+         */
+        public function isOptionSanitizeCsvFormulas(): bool
+        {
+            return $this->option_sanitize_csv_formulas;
         }
 
         /**

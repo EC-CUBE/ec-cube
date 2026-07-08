@@ -1,4 +1,6 @@
+- mtb_agent_protocol.csv
 - mtb_authority.csv
+- mtb_checkout_session_status.csv
 - mtb_country.csv
 - mtb_country_iso_code.csv
 - mtb_csv_type.csv

@@ -107,10 +107,10 @@ file that was distributed with this source code.
 
         {% if form.classcategory_id2 is defined %}
         fnSetClassCategories(
-            $('#form1'), {{ form.classcategory_id2.vars.value|json_encode|raw }}
+            $('#form1'), {{ form.classcategory_id2.vars.value|json_encode_safe }}
         );
         {% elseif form.classcategory_id1 is defined %}
-        eccube.checkStock($('#form1'), {{ Product.id }}, {{ form.classcategory_id1.vars.value|json_encode|raw }}, null);
+        eccube.checkStock($('#form1'), {{ Product.id }}, {{ form.classcategory_id1.vars.value|json_encode_safe }}, null);
         {% endif %}
     </script>
     <script>
