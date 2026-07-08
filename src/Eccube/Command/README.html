@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Command — 仕様</title>
+<style>
+ /* 最小限のスタイル。§8.2 の静的サイト側で共通 CSS を上書きできるよう、
+    装飾はクラス指定に寄せ、過度なインライン装飾は避ける。 */
+ body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.7;max-width:960px;margin:0 auto;padding:2rem;color:#222}
+ h1,h2{border-bottom:1px solid #ddd;padding-bottom:.3rem}
+ h1{margin-bottom:.2rem}
+ .nav{font-size:.9rem;color:#555;margin:.2rem 0 1.5rem}
+ table{border-collapse:collapse;width:100%;margin:1rem 0}
+ th,td{border:1px solid #ccc;padding:.4rem .6rem;text-align:left;vertical-align:top}
+ th{background:#f4f4f4}
+ code{background:#f4f4f4;padding:.1rem .3rem;border-radius:3px;font-size:.92em}
+ .flow{background:#f9f9f9;border:1px solid #ddd;padding:1rem;white-space:pre;overflow-x:auto;font-family:ui-monospace,monospace;font-size:.88rem;line-height:1.5}
+ .note{background:#fff8e1;border-left:4px solid #f0c040;padding:.6rem 1rem;margin:1rem 0}
+ .dev-only{font-size:.75rem;color:#888;font-weight:normal;margin-left:.5rem}
+ .badge{display:inline-block;background:#eef;border:1px solid #ccd;border-radius:3px;padding:0 .4rem;font-size:.8rem}
+</style>
+</head>
+<body>
+
+<h1>Command — コンソールコマンド／バッチ</h1>
+<p class="nav">
+ 索引: <a href="./README.md">README.md</a>
+ ／ 実装規約（AI・開発者向け）: <a href="../../../.claude/skills/command/SKILL.md">command/SKILL.md</a>
+</p>
+
+<section data-section="overview" data-customer="true">
+ <h2>概要</h2>
+ <p>この <code>Command/</code> ディレクトリは、EC-CUBE の <strong>コンソールコマンド（<code>bin/console</code> から実行するコマンド／バッチ）</strong>が置かれる場所です。
+ インストール・プロキシ生成・プラグイン管理・ダミーデータ生成・不要データの削除など、
+ <strong>Web 画面を介さずに実行する運用・保守処理</strong>をここに集約します。</p>
+
+ <p>各コマンドの共通の性質:</p>
+ <ul>
+  <li><code>Symfony\Component\Console\Command\Command</code> を継承し、クラスに <strong><code>#[AsCommand(name: ..., description: ...)]</code> 属性</strong>を付ける。</li>
+  <li>コマンド名は <strong><code>eccube:</code> 接頭辞のコロン区切り</strong>（<code>eccube:install</code> / <code>eccube:plugin:enable</code> 等）。</li>
+  <li><strong>サービス登録は不要</strong>。<code>services.yaml</code> の <code>autoconfigure: true</code> で <code>#[AsCommand]</code> を付けるだけで <code>console.command</code> として自動登録される。</li>
+  <li>コマンドは「もう 1 つの入口」であって、<strong>業務ロジックの置き場所ではない</strong>。処理は Service／Repository へ委譲する。</li>
+ </ul>
+ <div class="note">プロジェクト固有のコマンドは <code>app/Customize/Command/</code>、プラグインは各プラグインの <code>Command/</code> に置きます。
+ 名前空間が <code>Customize\</code> / <code>Plugin\</code> でも <code>autoconfigure</code> の対象なので、置くだけで登録されます。</div>
+</section>
+
+<section data-section="catalog" data-customer="true">
+ <h2>代表的なコマンド</h2>
+ <p>コアが標準搭載する主なコマンド（全一覧は <code>bin/console list eccube</code>）:</p>
+ <table>
+  <tr><th>コマンド名</th><th>役割</th></tr>
+  <tr><td><code>eccube:install</code></td><td>EC-CUBE の初期インストール（DB スキーマ作成・初期データ投入）。</td></tr>
+  <tr><td><code>eccube:generate:proxies</code></td><td>エンティティプロキシの再生成（トレイト拡張の反映）。</td></tr>
+  <tr><td><code>eccube:schema:update</code></td><td>エンティティ属性からのスキーマ更新。</td></tr>
+  <tr><td><code>eccube:fixtures:generate</code> / <code>eccube:fixtures:load</code></td><td>ダミーデータの生成・フィクスチャの投入。</td></tr>
+  <tr><td><code>eccube:delete-carts</code></td><td>不要になったカートデータの削除（バッチの手本）。</td></tr>
+  <tr><td><code>eccube:plugin:install|enable|disable|uninstall|update</code></td><td>プラグインのライフサイクル操作。</td></tr>
+  <tr><td><code>eccube:composer:install|require|update|remove</code></td><td>プラグイン導入に伴う Composer 操作のラッパ。</td></tr>
+ </table>
+</section>
+
+<section data-section="flow" data-customer="true">
+ <h2>コマンドの実行フロー</h2>
+ <p>Symfony Console の実行順は決まっています。EC-CUBE のコマンドはこの型に沿って
+ 「引数の取得 → Service へ委譲 → 結果の出力 → 終了コード」に徹します。</p>
+ <div class="flow">#[AsCommand(name: 'eccube:...')]    … コマンド名を宣言（autoconfigure で自動登録）
+   │
+   ▼
+__construct(...依存...)              … Service / Repository / EntityManager を DI
+   │  parent::__construct() が必須
+   ▼
+configure()                          … addArgument() / addOption() で入力を宣言
+   │
+   ▼
+execute(InputInterface, OutputInterface): int
+   │  $io = new SymfonyStyle(...)     … 出力は SymfonyStyle に寄せる
+   │  業務処理は Service へ委譲
+   ▼
+return 0;                            … 正常 0 / 異常は非 0（コアは 0 リテラルで統一）</div>
+ <div class="note">大量データを扱うバッチは、ループ内で毎回 <code>flush()</code> せず
+ <strong>一定件数ごとにまとめて <code>flush()</code></strong> する（端数も最後に flush）。トランザクション境界が要るなら
+ <code>beginTransaction()</code>／<code>commit()</code>／失敗時 <code>rollback()</code> で囲む（<code>DeleteCartsCommand</code> が手本）。</div>
+</section>
+
+<section data-section="extension" data-customer="false">
+ <h2>コマンドの追加<span class="dev-only">開発者向け</span></h2>
+ <p>新しいコマンドは 1 クラス足すだけです。
+ <strong>実装の書き方・DO/DON'T は <a href="../../../.claude/skills/command/SKILL.md">command/SKILL.md</a> が正典</strong>です。ここでは要点だけ示します。</p>
+ <table>
+  <tr><th>やること</th><th>作法</th></tr>
+  <tr><td>クラスを宣言する</td><td><code>Command</code> を継承し <code>#[AsCommand(name: 'eccube:...')]</code> を付ける</td></tr>
+  <tr><td>依存を受ける</td><td>コンストラクタインジェクション。<strong><code>parent::__construct()</code> を必ず呼ぶ</strong></td></tr>
+  <tr><td>入力を宣言する</td><td><code>configure()</code> で <code>addArgument()</code>／<code>addOption()</code>（<code>VALUE_REQUIRED</code>／<code>VALUE_NONE</code> を使い分け）</td></tr>
+  <tr><td>処理を書く</td><td><code>execute()</code> で入力取得 → Service へ委譲 → <code>SymfonyStyle</code> で出力 → <code>int</code> を返す</td></tr>
+ </table>
+ <div class="note"><strong>cron／定期実行:</strong> EC-CUBE 4.4 のコアに独自スケジューラ（Symfony Scheduler 等）は無い。
+ 定期実行は OS の cron 等から <code>bin/console &lt;コマンド名&gt;</code> を叩く前提で、<strong>冪等・安全に再実行できる</strong>設計にする。</div>
+</section>
+
+<section data-section="notes" data-customer="false">
+ <h2>注意点<span class="dev-only">開発者向け</span></h2>
+ <ul>
+  <li><strong><code>parent::__construct()</code> を呼び忘れない</strong>（呼ばないと実行時エラー）。</li>
+  <li><strong><code>execute()</code> は <code>int</code> を返す</strong>（正常 <code>0</code>、異常は非 0）。<code>void</code> にしない。</li>
+  <li><code>execute()</code> に業務ロジックを直書きしない。複数 Repository 横断や計算・判定は Service へ委譲する。</li>
+  <li><code>#[AsCommand]</code>＋<code>autoconfigure</code> 任せにし、<strong><code>services.yaml</code> に手書きで <code>console.command</code> タグを足さない</strong>。</li>
+  <li>コマンド名は独自命名にせず <strong><code>eccube:</code> 接頭辞のコロン区切り</strong>（既存コマンドに倣う）。</li>
+  <li>「Symfony Scheduler で定期実行」と推測で書かない。コアに機構は無い。</li>
+  <li>登録できているかは <code>bin/console list</code> に自分のコマンドが現れるかで確認する。</li>
+ </ul>
+</section>
+
+</body>
+</html>

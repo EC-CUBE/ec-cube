@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DependencyInjection — 仕様</title>
+<style>
+ /* 最小限のスタイル。§8.2 の静的サイト側で共通 CSS を上書きできるよう、
+    装飾はクラス指定に寄せ、過度なインライン装飾は避ける。 */
+ body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.7;max-width:960px;margin:0 auto;padding:2rem;color:#222}
+ h1,h2{border-bottom:1px solid #ddd;padding-bottom:.3rem}
+ h1{margin-bottom:.2rem}
+ .nav{font-size:.9rem;color:#555;margin:.2rem 0 1.5rem}
+ table{border-collapse:collapse;width:100%;margin:1rem 0}
+ th,td{border:1px solid #ccc;padding:.4rem .6rem;text-align:left;vertical-align:top}
+ th{background:#f4f4f4}
+ code{background:#f4f4f4;padding:.1rem .3rem;border-radius:3px;font-size:.92em}
+ .flow{background:#f9f9f9;border:1px solid #ddd;padding:1rem;white-space:pre;overflow-x:auto;font-family:ui-monospace,monospace;font-size:.88rem;line-height:1.5}
+ .note{background:#fff8e1;border-left:4px solid #f0c040;padding:.6rem 1rem;margin:1rem 0}
+ .dev-only{font-size:.75rem;color:#888;font-weight:normal;margin-left:.5rem}
+ .badge{display:inline-block;background:#eef;border:1px solid #ccd;border-radius:3px;padding:0 .4rem;font-size:.8rem}
+</style>
+</head>
+<body>
+
+<h1>DependencyInjection — DI 拡張とコンテナ組み立て</h1>
+<p class="nav">
+ 索引: <a href="./README.md">README.md</a>
+ ／ 関連: <a href="../Attribute/README.html">Attribute</a>
+ ・ <a href="../Service/PurchaseFlow/README.html">PurchaseFlow</a>
+</p>
+
+<section data-section="overview" data-customer="true">
+ <h2>概要</h2>
+ <p>このディレクトリは、EC-CUBE を <strong>Symfony の DI コンテナに載せるための拡張ポイント</strong>を集めた場所です。
+ 「アプリ起動時に、設定を読み込み、プラグインの有効/無効を判定し、各種サービスをタグで自動配線する」といった
+ <strong>コンテナのブート／組み立て処理</strong>をここが担います。実行時のリクエスト処理ではなく、
+ コンテナのコンパイル（ビルド）フェーズで動くコードが中心です。</p>
+
+ <p>大きく 4 種類の部品で構成されます。</p>
+ <table>
+  <tr><th>部品</th><th>役割</th></tr>
+  <tr><td><code>EccubeExtension</code></td><td>バンドル拡張（Extension）。<code>eccube</code> 設定の読み込みと、他バンドル設定への <strong>prepend</strong>（動的な差し込み）を行う。</td></tr>
+  <tr><td><code>Configuration</code></td><td><code>eccube</code> 名前空間の設定スキーマ定義。現状は <code>rate_limiter</code>（レートリミッタ）セクションを定義。</td></tr>
+  <tr><td><code>Compiler/</code></td><td>コンテナのコンパイル時に走る CompilerPass 群。タグ収集・自動配線・定義の書き換えを行う。</td></tr>
+  <tr><td><code>Facade/</code></td><td>DI コンテナの外（静的コンテキスト）から一部サービスへアクセスするための singleton ファサード。</td></tr>
+ </table>
+</section>
+
+<section data-section="files" data-customer="true">
+ <h2>Compiler パス一覧</h2>
+ <p>各 CompilerPass は「特定タグの付いたサービスを集めて、別のサービスへ配線する／定義を書き換える」責務を持ちます。
+ 登録は <code>Kernel::build()</code>（<code>src/Eccube/Kernel.php</code>）で行い、一部は実行順のため優先度を指定しています。</p>
+ <table>
+  <tr><th>パス</th><th>やること</th></tr>
+  <tr><td><code>AutoConfigurationTagPass</code></td><td><code>doctrine.event_subscriber</code> / rate_limiter / payment_method のタグを条件に応じて<strong>自動付与</strong>。<span class="badge">優先度 11</span>（PluginPass より先）。</td></tr>
+  <tr><td><code>PluginPass</code></td><td><strong>無効なプラグイン</strong>のサービスタグをクリアし、拡張機構を無効化（<code>doctrine.repository_service</code> は除く）。<span class="badge">優先度 10</span>。</td></tr>
+  <tr><td><code>PurchaseFlowPass</code></td><td>受注処理の 3 フロー（cart/shopping/order）へ Processor/Validator を配線。詳細は下記および <a href="../Service/PurchaseFlow/README.html">PurchaseFlow</a>。</td></tr>
+  <tr><td><code>QueryCustomizerPass</code></td><td><code>eccube.query_customizer</code> タグを <code>Queries</code> に <code>addCustomizer()</code> で登録。</td></tr>
+  <tr><td><code>NavCompilerPass</code></td><td><code>eccube.nav</code> タグの <code>EccubeNav::getNav()</code> を集約し、<code>eccube_nav</code> パラメータへマージ。</td></tr>
+  <tr><td><code>PaymentMethodPass</code></td><td><code>eccube.payment.method</code> タグのサービスを public 化。</td></tr>
+  <tr><td><code>TwigBlockPass</code></td><td><code>eccube.twig_block</code> タグの <code>EccubeTwigBlock::getTwigBlock()</code> を <code>eccube_twig_block_templates</code> へ集約。</td></tr>
+  <tr><td><code>TwigExtensionPass</code></td><td>本番環境のみ、<code>twig</code> に <code>IgnoreRoutingNotFoundExtension</code> を追加（未定義ルートで例外を投げない）。</td></tr>
+  <tr><td><code>WebServerDocumentRootPass</code></td><td><code>web_server</code> コマンドのドキュメントルートを <code>public</code> からプロジェクトルートへ変更。</td></tr>
+  <tr><td><code>StripReportFieldsArgPass</code></td><td>ORM3 環境で <code>AttributeDriver</code> の余分な引数を <code>paths</code> 1 引数へ統一（<a href="https://github.com/doctrine/DoctrineBundle/issues/1844">DoctrineBundle #1844</a> 回避）。<span class="badge">優先度 -1000</span>。</td></tr>
+ </table>
+</section>
+
+<section data-section="prepend" data-customer="false">
+ <h2>EccubeExtension の prepend と access_control 動的生成<span class="dev-only">開発者向け</span></h2>
+ <p><code>EccubeExtension</code> は <code>PrependExtensionInterface</code> を実装し、<code>prepend()</code> で
+ <strong>他バンドルの設定を起動時に動的に差し込みます</strong>。</p>
+ <div class="flow">prepend()
+ ├ configureFramework()  … security の access_control を動的生成 ＋ framework の rate_limiter を組み立て
+ └ configurePlugins()    … DB に直接接続して dtb_plugin を読み、有効/無効プラグインを判定
+                            → 有効プラグインの twig paths・翻訳 paths を framework/twig に差し込む</div>
+
+ <div class="note"><strong>非自明な挙動: <code>/admin</code>・<code>/mypage</code> の <code>access_control</code> は <code>security.yaml</code> ではなく、ここ（<code>configureFramework()</code>）で動的生成されます。</strong>
+ <code>security.yaml</code> だけを見て認可仕様を判断すると誤読するので注意（認可レビューで <code>^/mypage/</code> を「未保護」と誤検出しない）。</div>
+
+ <p>生成される <code>access_control</code>（この順序＝上から評価。<code>%eccube_admin_route%</code> は管理画面プレフィックス）:</p>
+ <table>
+  <tr><th>path</th><th>roles</th></tr>
+  <tr><td><code>^/{admin}/login</code></td><td><code>IS_AUTHENTICATED_ANONYMOUSLY</code></td></tr>
+  <tr><td><code>^/{admin}/</code></td><td><code>ROLE_ADMIN</code></td></tr>
+  <tr><td><code>^/mypage/login</code></td><td><code>IS_AUTHENTICATED_ANONYMOUSLY</code></td></tr>
+  <tr><td><code>^/mypage/withdraw_complete</code></td><td><code>IS_AUTHENTICATED_ANONYMOUSLY</code></td></tr>
+  <tr><td><code>^/mypage/change</code></td><td><code>IS_AUTHENTICATED_FULLY</code></td></tr>
+  <tr><td><code>^/mypage/</code></td><td><code>ROLE_USER</code></td></tr>
+ </table>
+ <p>環境変数 <code>ECCUBE_FORCE_SSL</code> が有効なときは、全エントリに <code>requires_channel: https</code> を付与し https に限定します。</p>
+</section>
+
+<section data-section="purchaseflow-wiring" data-customer="false">
+ <h2>PurchaseFlow の配線<span class="dev-only">開発者向け</span></h2>
+ <p><code>PurchaseFlowPass</code> は受注処理パイプラインの 3 フロー（<code>eccube.purchase.flow.cart</code> /
+ <code>.shopping</code> / <code>.order</code>）へ、Processor / Validator を <strong>2 経路</strong>で配線します。</p>
+ <ul>
+  <li><span class="badge">YAML タグ</span> <code>purchaseflow.yaml</code> の <code>flow_type</code> ＋ <code>priority</code> 指定。
+  <code>findAndSortTaggedServices()</code> の並びを <code>flow_type</code> ごとに再ソートして登録する。</li>
+  <li><span class="badge">属性</span> <code>#[CartFlow]</code> / <code>#[ShoppingFlow]</code> / <code>#[OrderFlow]</code>（<a href="../Attribute/README.html">Attribute</a>）を
+  <code>ReflectionAttribute::IS_INSTANCEOF</code> で拾って対象フローへ登録。<strong>YAML で配線済みなら重複登録しない</strong>（<code>alreadyWired()</code>）。</li>
+ </ul>
+ <p>タグ ↔ 追加メソッドの対応は <code>getProcessorTags()</code> に定義（<code>eccube.item.validator → addItemValidator</code> など 7 種）。</p>
+</section>
+
+<section data-section="notes" data-customer="false">
+ <h2>注意点<span class="dev-only">開発者向け</span></h2>
+ <ul>
+  <li><strong>ここは基本的にコンパイル時のコード</strong>。CompilerPass や <code>prepend()</code> の変更はコンテナの再ビルド（<code>bin/console cache:clear</code>）で反映される。</li>
+  <li><code>configurePlugins()</code> は prepend フェーズでコンテナが未完成のため、<strong>DBAL の接続を直接生成</strong>して <code>dtb_plugin</code> を読む。DB 未接続・テーブル未作成時は安全に空扱いで抜ける（インストール前を考慮）。</li>
+  <li>認可仕様を確認するときは <code>security.yaml</code> だけでなく必ず <code>EccubeExtension::configureFramework()</code> を併読する（上記 access_control 動的生成のため）。</li>
+  <li>CompilerPass の実行順が重要なものは優先度で制御されている（<code>AutoConfigurationTagPass</code>=11 → <code>PluginPass</code>=10、<code>StripReportFieldsArgPass</code>=-1000）。順序前提を崩さないこと。</li>
+  <li><code>Facade/</code> の <code>LoggerFacade</code> / <code>TranslatorFacade</code> は、DI が使えない静的コンテキスト向けの避難口。通常のサービスでは<strong>コンストラクタ注入を優先</strong>する。</li>
+ </ul>
+</section>
+
+</body>
+</html>

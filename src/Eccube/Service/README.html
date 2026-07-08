@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Service — 仕様</title>
+<style>
+ /* 最小限のスタイル。§8.2 の静的サイト側で共通 CSS を上書きできるよう、
+    装飾はクラス指定に寄せ、過度なインライン装飾は避ける。 */
+ body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.7;max-width:960px;margin:0 auto;padding:2rem;color:#222}
+ h1,h2{border-bottom:1px solid #ddd;padding-bottom:.3rem}
+ h1{margin-bottom:.2rem}
+ .nav{font-size:.9rem;color:#555;margin:.2rem 0 1.5rem}
+ table{border-collapse:collapse;width:100%;margin:1rem 0}
+ th,td{border:1px solid #ccc;padding:.4rem .6rem;text-align:left;vertical-align:top}
+ th{background:#f4f4f4}
+ code{background:#f4f4f4;padding:.1rem .3rem;border-radius:3px;font-size:.92em}
+ .flow{background:#f9f9f9;border:1px solid #ddd;padding:1rem;white-space:pre;overflow-x:auto;font-family:ui-monospace,monospace;font-size:.88rem;line-height:1.5}
+ .note{background:#fff8e1;border-left:4px solid #f0c040;padding:.6rem 1rem;margin:1rem 0}
+ .dev-only{font-size:.75rem;color:#888;font-weight:normal;margin-left:.5rem}
+ .badge{display:inline-block;background:#eef;border:1px solid #ccd;border-radius:3px;padding:0 .4rem;font-size:.8rem}
+</style>
+</head>
+<body>
+
+<h1>Service — 業務ロジックの置き場所</h1>
+<p class="nav">
+ 索引: <a href="./README.md">README.md</a>
+ ／ 実装規約（AI・開発者向け）: <a href="../../../.claude/skills/service/SKILL.md">service/SKILL.md</a>
+</p>
+
+<section data-section="overview" data-customer="true">
+ <h2>概要</h2>
+ <p><code>src/Eccube/Service/</code> は、EC-CUBE の<strong>業務ロジックの受け皿</strong>です。
+ 税の算出、カートの操作、受注ステータスの遷移、プラグインの導入、メール送信・CSV 入出力・PDF 出力といった
+ 「アプリの仕事そのもの」を、コントローラ（画面・HTTP の担当）から切り離してここに集約します。</p>
+
+ <p>Service に集約する狙いは 2 つ。
+ <strong>複数の画面・コマンドから同じ処理を再利用できる</strong>こと、そして
+ <strong>1 つの Service が 1 つの責務だけを持つ（単一責任）</strong>ことで見通しとテスト容易性を保つことです。
+ コントローラは「入出力の交通整理」に徹し、実処理は Service に委ねる、という分担になっています。</p>
+
+ <div class="note"><strong>受注に関わる計算・検証・確定は別枠です。</strong>
+ 送料・手数料・税・値引き・ポイント・在庫引当・注文番号採番は、汎用 Service ではなく
+ <a href="./PurchaseFlow/README.html">PurchaseFlow パイプライン</a>（同ディレクトリ配下・別途 README あり）が担います。
+ この境界が EC-CUBE の受注処理の核心です。</p></div>
+</section>
+
+<section data-section="services" data-customer="true">
+ <h2>サービスの役割と代表例</h2>
+ <p>このディレクトリ直下にある主な Service は次の通りです（実装は各ファイル）。</p>
+ <table>
+  <tr><th>サービス</th><th>役割</th></tr>
+  <tr><td><code>CartService</code></td><td>カートの取得・商品の追加/削除・保存。セッション上のカートと永続化カートの統合も担う。</td></tr>
+  <tr><td><code>TaxRuleService</code></td><td>税額の算出（<code>getTax()</code> / <code>calcTax()</code>）。税込価格の計算と丸め処理。</td></tr>
+  <tr><td><code>OrderHelper</code></td><td>カートから購入処理中（<code>PROCESSING</code>）の受注を組み立てる入口。会員情報の反映・仮注文 ID の発番など。</td></tr>
+  <tr><td><code>OrderStateMachine</code></td><td>受注ステータスの遷移（<code>apply()</code> / <code>can()</code>）。遷移に伴うポイント・在庫の確定/巻き戻しをイベントで実行。</td></tr>
+  <tr><td><code>PluginService</code></td><td>プラグインの install/enable/disable/uninstall。アーカイブ展開・プロキシ生成・スキーマ更新まで。</td></tr>
+  <tr><td><code>OrderPdfService</code></td><td>受注情報の PDF（納品書等）出力。</td></tr>
+  <tr><td><code>TwoFactorAuthService</code></td><td>管理者の 2 要素認証（シークレット生成・コード検証・認証済み Cookie 発行）。</td></tr>
+  <tr><td><code>SystemService</code></td><td>システム情報の取得とメンテナンスモードの切り替え。</td></tr>
+ </table>
+ <p>このほか、計算補助（<code>Calculator/</code>）・決済（<code>Payment/</code>）・Agentic Commerce（<code>AgentCommerce/</code>）など、
+ 用途別のサブディレクトリを持ちます。</p>
+</section>
+
+<section data-section="related" data-customer="true">
+ <h2>関連する仕様（別ディレクトリ・別 Skill）</h2>
+ <p>Service 配下でも、次の領域はそれぞれ専用の実装規約（Skill）が正典です。独立配置はせず本 README から案内します。</p>
+ <table>
+  <tr><th>領域</th><th>対象クラス</th><th>参照先（実装規約）</th></tr>
+  <tr><td>受注処理パイプライン</td><td><code>PurchaseFlow/</code></td><td><a href="./PurchaseFlow/README.html">PurchaseFlow の README</a></td></tr>
+  <tr><td>CSV 入出力</td><td><code>CsvImportService</code> / <code>CsvExportService</code></td><td><a href="../../../.claude/skills/csv/SKILL.md">csv/SKILL.md</a></td></tr>
+  <tr><td>メール送信</td><td><code>MailService</code></td><td><a href="../../../.claude/skills/mail/SKILL.md">mail/SKILL.md</a></td></tr>
+ </table>
+</section>
+
+<section data-section="extension" data-customer="false">
+ <h2>拡張ポイント<span class="dev-only">開発者向け</span></h2>
+ <p>プロジェクト固有の業務ロジックはコアを直接改変せず、<code>app/Customize/Service/</code> に追加します。
+ コアアップグレードの影響を避けるためです。既存 Service の振る舞いを差し替えたいときは 2 通り。</p>
+ <table>
+  <tr><th>やりたいこと</th><th>手段</th></tr>
+  <tr><td>新しい業務ロジックを足す</td><td><code>app/Customize/Service/</code> に新規 Service を置き、コンストラクタ DI で利用する。</td></tr>
+  <tr><td>既存 Service の一部を差し替える</td><td>サービスデコレーション（<code>#[AsDecorator]</code>）またはコンパイラパスで置換する。</td></tr>
+ </table>
+ <p><strong>実装の書き方・DO/DON'T は <a href="../../../.claude/skills/service/SKILL.md">service/SKILL.md</a> が正典</strong>です（app/Customize 全般は <code>customize</code> Skill）。</p>
+</section>
+
+<section data-section="notes" data-customer="false">
+ <h2>注意点<span class="dev-only">開発者向け</span></h2>
+ <ul>
+  <li><strong>依存は一方向</strong>（Controller → Service → Repository）。Service が <code>Eccube\Controller\...</code> を <code>use</code> / 型ヒントするのはレイヤ違反。</li>
+  <li><strong>HTTP の知識を持ち込まない</strong>。<code>Request</code> / <code>Response</code> を引数で受けず、必要な値（プリミティブやエンティティ）だけを渡す。</li>
+  <li><strong>単一責任を保つ</strong>。1 つの Service に無関係な責務（例: 商品検索とメール送信）を同居させない。責務が増えたら分割する。</li>
+  <li><strong>受注の計算・検証・確定は Service に直書きしない</strong>。<a href="./PurchaseFlow/README.html">PurchaseFlow</a> の Processor / Validator を拡張する。</li>
+  <li>永続化（<code>persist()</code> / <code>flush()</code>）は Service に置いてよい。ただし <code>flush()</code> をループ内で乱発せず、トランザクション境界を意識してまとめる。</li>
+ </ul>
+</section>
+
+</body>
+</html>

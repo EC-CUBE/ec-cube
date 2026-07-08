@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EventListener — 仕様</title>
+<style>
+ /* 最小限のスタイル。§8.2 の静的サイト側で共通 CSS を上書きできるよう、
+    装飾はクラス指定に寄せ、過度なインライン装飾は避ける。 */
+ body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.7;max-width:960px;margin:0 auto;padding:2rem;color:#222}
+ h1,h2{border-bottom:1px solid #ddd;padding-bottom:.3rem}
+ h1{margin-bottom:.2rem}
+ .nav{font-size:.9rem;color:#555;margin:.2rem 0 1.5rem}
+ table{border-collapse:collapse;width:100%;margin:1rem 0}
+ th,td{border:1px solid #ccc;padding:.4rem .6rem;text-align:left;vertical-align:top}
+ th{background:#f4f4f4}
+ code{background:#f4f4f4;padding:.1rem .3rem;border-radius:3px;font-size:.92em}
+ .flow{background:#f9f9f9;border:1px solid #ddd;padding:1rem;white-space:pre;overflow-x:auto;font-family:ui-monospace,monospace;font-size:.88rem;line-height:1.5}
+ .note{background:#fff8e1;border-left:4px solid #f0c040;padding:.6rem 1rem;margin:1rem 0}
+ .dev-only{font-size:.75rem;color:#888;font-weight:normal;margin-left:.5rem}
+ .badge{display:inline-block;background:#eef;border:1px solid #ccd;border-radius:3px;padding:0 .4rem;font-size:.8rem}
+</style>
+</head>
+<body>
+
+<h1>EventListener — イベント購読による拡張</h1>
+<p class="nav">
+ 索引: <a href="./README.md">README.md</a>
+ ／ 実装規約（AI・開発者向け）: <a href="../../../.claude/skills/event-subscriber/SKILL.md">event-subscriber/SKILL.md</a>
+</p>
+
+<section data-section="overview" data-customer="true">
+ <h2>概要</h2>
+ <p>EC-CUBE の拡張は「<strong>コアを直接書き換えるのではなくイベントを購読する</strong>」のが基本方針です。
+ この <code>EventListener/</code> ディレクトリには、コア自身が Symfony の <code>EventDispatcher</code> に登録する
+ <strong>イベントサブスクライバ</strong>が置かれています。いずれも <code>EventSubscriberInterface</code> を実装し、
+ リクエスト／レスポンス／認証など<strong>アプリケーションのライフサイクルの節目にフック</strong>して横断的な処理を行います。</p>
+
+ <p>各リスナーの共通の性質:</p>
+ <ul>
+  <li><code>Symfony\Component\EventDispatcher\EventSubscriberInterface</code> を実装し、<strong><code>static</code> な <code>getSubscribedEvents()</code></strong> で購読するイベントを宣言する。</li>
+  <li><strong>サービス登録は不要</strong>。<code>services.yaml</code> の <code>autoconfigure: true</code> で <code>Eccube\</code> 配下は自動的に <code>kernel.event_subscriber</code> タグが付く。</li>
+  <li>業務ロジックはリスナー本体に溜め込まず、注入した Service へ委譲する薄い層として作られている。</li>
+ </ul>
+ <div class="note">このディレクトリは<strong>コアが標準搭載するリスナー</strong>です。プロジェクト固有の購読は
+ <code>app/Customize/EventListener/</code>、プラグインは各プラグインの <code>EventListener/</code> に置きます（配置場所が違うだけで作り方は同じ）。</div>
+</section>
+
+<section data-section="kinds" data-customer="true">
+ <h2>イベントの種類と代表リスナー</h2>
+ <p>EC-CUBE のイベントは大きく 4 種類あります。<strong>このディレクトリの中身はほぼ「Symfony Kernel／Security イベント」</strong>で、
+ コントローラ前後にフックする「EC-CUBE 独自イベント」やテンプレートへの差し込みは、隣の <code>Event/</code> が定義を提供し、主にプラグイン側のリスナーが購読します。</p>
+ <table>
+  <tr><th>種類</th><th>購読キー</th><th>用途</th></tr>
+  <tr><td>Symfony Kernel イベント</td><td><code>KernelEvents::REQUEST</code> 等</td><td>リクエスト／レスポンスのライフサイクル</td></tr>
+  <tr><td>Security イベント</td><td><code>LoginFailureEvent::class</code> 等</td><td>認証の成否にフック</td></tr>
+  <tr><td>EC-CUBE 独自イベント</td><td><code>EccubeEvents::XXX</code> 定数（<a href="../Event/">../Event/</a>）</td><td>コントローラ処理の前後にフック</td></tr>
+  <tr><td>Doctrine イベント</td><td><code>#[AsDoctrineListener(event: ...)]</code>（<a href="../Doctrine/EventSubscriber/">../Doctrine/EventSubscriber/</a>）</td><td>エンティティの永続化前後</td></tr>
+ </table>
+
+ <p>コアの代表的な Kernel／Security リスナー:</p>
+ <table>
+  <tr><th>リスナー</th><th>役割</th></tr>
+  <tr><td><code>TransactionListener</code></td><td>リクエスト単位で DB トランザクションを開始し、正常終了で commit・例外で rollback する（<code>REQUEST</code>/<code>EXCEPTION</code>/<code>TERMINATE</code>）。</td></tr>
+  <tr><td><code>TwigInitializeListener</code></td><td>リクエスト時に Twig のグローバル変数（店舗情報・ログイン状態等）を初期化する。</td></tr>
+  <tr><td><code>MaintenanceListener</code></td><td>メンテナンスモード時にレスポンスを差し替える（<code>RESPONSE</code>）。</td></tr>
+  <tr><td><code>SecurityListener</code> / <code>LoginHistoryListener</code></td><td>認証成功・失敗（<code>LoginFailureEvent</code> 等）にフックしてログイン履歴やロック処理を行う。</td></tr>
+  <tr><td><code>TwoFactorAuthListener</code></td><td><code>CONTROLLER_ARGUMENTS</code> にフックし、二段階認証が必要なコントローラを制御する。</td></tr>
+  <tr><td><code>MobileTemplatePathListener</code></td><td>モバイル端末を判定し、テンプレート探索パスを切り替える。</td></tr>
+  <tr><td><code>ExceptionListener</code> / <code>LogListener</code></td><td>例外時のエラーページ描画・アクセスログ／エラーログ出力。</td></tr>
+ </table>
+</section>
+
+<section data-section="flow" data-customer="true">
+ <h2>隣接する定義（Event / Doctrine）との関係</h2>
+ <p>「イベントの<strong>定義</strong>」と「イベントの<strong>購読</strong>」は場所が分かれています。全体像は次の通りです。</p>
+ <div class="flow">コントローラ
+   │  new EventArgs(['key' => $v], $request) を dispatch
+   ▼
+Event/EccubeEvents.php        … EC-CUBE 独自イベント名の定数（命名: CONTEXT_CONTROLLER_ACTION_PHASE）
+Event/EventArgs.php           … 独自イベントのペイロード（getArgument / setArgument / setResponse）
+Event/TemplateEvent.php       … 画面差し込み（addSnippet / addAsset / setSource）
+   │
+   ▼  ← これらを購読する側が…
+EventListener/                … コア標準のリスナー（Kernel / Security 中心）※このディレクトリ
+app/Customize/EventListener/  … プロジェクト固有の購読
+app/Plugin/*/EventListener/   … プラグインの購読（独自イベント購読の主戦場）
+
+Doctrine/EventSubscriber/     … エンティティ永続化前後のフック（#[AsDoctrineListener]）
+                                 SaveEventSubscriber（作成日時/更新日時の自動設定）が手本</div>
+ <p>Doctrine 系（<a href="../Doctrine/EventSubscriber/">../Doctrine/EventSubscriber/</a>）は Kernel／Security リスナーと別ディレクトリで、
+ <code>#[AsDoctrineListener(event: Events::prePersist)]</code> のように属性でイベントを宣言します。
+ <code>InitSubscriber</code>（<code>postConnect</code>）・<code>SaveEventSubscriber</code>（<code>prePersist</code>/<code>preUpdate</code>）・<code>TaxRuleEventSubscriber</code> が実例です。</p>
+</section>
+
+<section data-section="extension" data-customer="false">
+ <h2>拡張ポイント<span class="dev-only">開発者向け</span></h2>
+ <p>独自の処理をフックするには、購読したいイベントに応じてリスナーを 1 つ足すだけです。
+ <strong>実装の書き方・DO/DON'T は <a href="../../../.claude/skills/event-subscriber/SKILL.md">event-subscriber/SKILL.md</a> が正典</strong>です。ここでは要点だけ示します。</p>
+ <table>
+  <tr><th>やりたいこと</th><th>フックするイベント</th></tr>
+  <tr><td>コントローラ処理の前後に割り込む</td><td>EC-CUBE 独自イベント（<code>EccubeEvents::XXX</code> 定数）を購読し <code>EventArgs</code> で読み書き</td></tr>
+  <tr><td>リクエスト／レスポンスを横断的に変える</td><td>Kernel イベント（<code>KernelEvents::REQUEST</code> 等）。<code>if (!$event-&gt;isMainRequest()) return;</code> でサブリクエストを除外</td></tr>
+  <tr><td>画面に HTML／アセットを差し込む</td><td>テンプレートイベント（ファイル名がイベント名。Skill <code>twig-template</code>）</td></tr>
+  <tr><td>エンティティの永続化前後に処理を足す</td><td>Doctrine イベント（<code>#[AsDoctrineListener]</code>）</td></tr>
+ </table>
+ <p>登録の実際:</p>
+ <ul>
+  <li><span class="badge">共通</span> クラスに <code>EventSubscriberInterface</code> を実装し <strong><code>public static function getSubscribedEvents()</code></strong> を定義するだけ。<code>Eccube\</code> / <code>Customize\</code> / <code>Plugin\</code> 配下は <code>autoconfigure</code> で自動登録される（<strong>services.yaml への手動登録は二重発火の元</strong>）。</li>
+  <li><span class="badge">優先度</span> 同一イベントを複数が購読するとき、<code>[メソッド名, 優先度]</code> の <strong>数値が大きいほど先</strong>に実行される。</li>
+ </ul>
+</section>
+
+<section data-section="notes" data-customer="false">
+ <h2>注意点<span class="dev-only">開発者向け</span></h2>
+ <ul>
+  <li><strong><code>getSubscribedEvents()</code> は必ず <code>static</code></strong>。非 static だと登録されず、リスナーが黙って動かない。</li>
+  <li><strong>独自イベント名は文字列直書きせず <code>EccubeEvents</code> 定数を使う</strong>（タイポの温床）。定義は <a href="../Event/">../Event/EccubeEvents.php</a>。</li>
+  <li><strong><code>autoconfigure</code> 済みなのに <code>services.yaml</code> に手動登録しない</strong>（二重発火する）。</li>
+  <li>Kernel イベントでは <strong>サブリクエストの除外</strong>（<code>isMainRequest()</code>）を忘れない。<code>TransactionListener</code> のようにライフサイクル全体を跨ぐリスナーは特に注意。</li>
+  <li>リスナーに業務ロジックを溜め込まない。重い処理は Service へ委譲し、リスナーは「フック点で Service を呼ぶ」薄い層に保つ。</li>
+  <li>登録状況・優先度は <code>bin/console debug:event-dispatcher</code> で確認できる。効かないときはまずここに出ているかを見る。</li>
+ </ul>
+</section>
+
+</body>
+</html>

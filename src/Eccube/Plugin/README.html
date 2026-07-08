@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plugin 基盤（コア） — 仕様</title>
+<style>
+ /* 最小限のスタイル。§8.2 の静的サイト側で共通 CSS を上書きできるよう、
+    装飾はクラス指定に寄せ、過度なインライン装飾は避ける。 */
+ body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.7;max-width:960px;margin:0 auto;padding:2rem;color:#222}
+ h1,h2{border-bottom:1px solid #ddd;padding-bottom:.3rem}
+ h1{margin-bottom:.2rem}
+ .nav{font-size:.9rem;color:#555;margin:.2rem 0 1.5rem}
+ table{border-collapse:collapse;width:100%;margin:1rem 0}
+ th,td{border:1px solid #ccc;padding:.4rem .6rem;text-align:left;vertical-align:top}
+ th{background:#f4f4f4}
+ code{background:#f4f4f4;padding:.1rem .3rem;border-radius:3px;font-size:.92em}
+ .flow{background:#f9f9f9;border:1px solid #ddd;padding:1rem;white-space:pre;overflow-x:auto;font-family:ui-monospace,monospace;font-size:.88rem;line-height:1.5}
+ .note{background:#fff8e1;border-left:4px solid #f0c040;padding:.6rem 1rem;margin:1rem 0}
+ .dev-only{font-size:.75rem;color:#888;font-weight:normal;margin-left:.5rem}
+ .badge{display:inline-block;background:#eef;border:1px solid #ccd;border-radius:3px;padding:0 .4rem;font-size:.8rem}
+</style>
+</head>
+<body>
+
+<h1>Plugin 基盤（コア）</h1>
+<p class="nav">
+ 索引: <a href="./README.md">README.md</a>
+ ／ 実装規約（AI・開発者向け）: <a href="../../../.claude/skills/plugin/SKILL.md">plugin/SKILL.md</a>
+</p>
+
+<section data-section="overview" data-customer="true">
+ <h2>概要</h2>
+ <p>このディレクトリ（<code>src/Eccube/Plugin/</code>）は、プラグインの<strong>ライフサイクル基盤</strong>を提供します。
+ 実体は <code>AbstractPluginManager.php</code> ただ 1 ファイルで、各プラグインの <code>PluginManager</code> はこれを継承します。</p>
+
+ <p>プラグインそのものの置き場所は <strong><code>app/Plugin/{PluginCode}/</code></strong>（別ディレクトリ。<a href="../../../app/Plugin/README.md">app/Plugin/README.md</a>）です。
+ ここはあくまで<strong>コア側の共通処理</strong>を持ち、プラグイン本体のコードは含みません。</p>
+
+ <div class="note">プラグインの install/enable/disable/update/uninstall を駆動する<strong>コア機構本体</strong>は、この階層ではなく
+ <code>src/Eccube/Service/PluginService.php</code>・<code>src/Eccube/Service/Composer/</code>・<code>src/Eccube/Command/Plugin*Command.php</code> にあります。
+ このディレクトリは「プラグインが継承する基底クラス」の置き場です。</div>
+</section>
+
+<section data-section="lifecycle" data-customer="true">
+ <h2>ライフサイクルと AbstractPluginManager</h2>
+ <p><code>AbstractPluginManager</code> は 5 つのライフサイクルメソッドを持ち、<strong>いずれもデフォルト no-op</strong>です。
+ プラグインは必要なものだけ override します（すべて任意）。呼び出しはコアの <code>PluginService</code> が行います。</p>
+ <table>
+  <tr><th>メソッド</th><th>呼ばれる契機</th><th>用途の例</th></tr>
+  <tr><td><code>install</code></td><td>インストール時</td><td>初期データ投入</td></tr>
+  <tr><td><code>enable</code></td><td>有効化時</td><td>マイグレーション適用</td></tr>
+  <tr><td><code>disable</code></td><td>無効化時</td><td>マイグレーションを戻す</td></tr>
+  <tr><td><code>update</code></td><td>更新時</td><td>差分マイグレーション</td></tr>
+  <tr><td><code>uninstall</code></td><td>アンインストール時</td><td>クリーンアップ</td></tr>
+ </table>
+ <p>シグネチャは全メソッド共通で <code>(array $meta, ContainerInterface $container)</code>。<code>$meta['code']</code> は
+ プラグインの <code>composer.json</code> の <code>extra.code</code>（PluginCode）です。</p>
+
+ <h3>migration() ヘルパ</h3>
+ <p><code>AbstractPluginManager::migration()</code> は、プラグイン専用のマイグレーションを実行するための共通処理です。</p>
+ <div class="flow">$this->migration($connection, $meta['code']);
+   → 対象ディレクトリ: app/Plugin/{code}/DoctrineMigrations/（省略時の既定）
+   → 名前空間      : Plugin\{code}\DoctrineMigrations
+   → 管理テーブル   : migration_{code}（小文字。コア本体の migration_versions とは別）</div>
+ <div class="note"><code>PluginManager</code> 実行時にはコアが Doctrine の <code>schema:update</code> を自動で行うため、
+ このメソッドは主に<strong>データの更新（INSERT 等）</strong>に使います（カラム追加は属性＋schema:update で足りる）。</div>
+</section>
+
+<section data-section="extension" data-customer="false">
+ <h2>PluginManager の書き方<span class="dev-only">開発者向け</span></h2>
+ <p>ライフサイクル処理が必要なときだけ、プラグイン側に <code>Plugin\{Code}\PluginManager</code>（クラス名は固定）を作り、
+ <code>AbstractPluginManager</code> を継承します。<strong>実装の書き方・DO/DON'T は
+ <a href="../../../.claude/skills/plugin/SKILL.md">plugin/SKILL.md</a> が正典</strong>です。</p>
+ <div class="flow">namespace Plugin\Example;
+
+class PluginManager extends AbstractPluginManager
+{
+    public function enable(array $meta, ContainerInterface $container): void
+    {
+        $conn = $container->get('doctrine')->getManager()->getConnection();
+        $this->migration($conn, $meta['code']);   // migration_example テーブルで管理
+    }
+}</div>
+</section>
+
+<section data-section="notes" data-customer="false">
+ <h2>注意点<span class="dev-only">開発者向け</span></h2>
+ <ul>
+  <li><strong>ここにプラグイン本体を置かない</strong>。プラグインは <code>app/Plugin/{PluginCode}/</code>。このディレクトリは基底クラス専用。</li>
+  <li>install 直後は<strong>デフォルト無効</strong>（<code>enabled=false</code>）。有効化は <code>eccube:plugin:enable --code=...</code> か管理画面で行う。</li>
+  <li>プラグインのマイグレーションは<strong>コアの <code>app/DoctrineMigrations/</code> とは別管理</strong>（<code>migration_{code}</code> テーブル）。混同しない。</li>
+  <li>コア機構（インストール・Composer 連携・コマンド）を追う場合は <code>PluginService</code> / <code>src/Eccube/Command/Plugin*Command.php</code> を見る。</li>
+ </ul>
+</section>
+
+</body>
+</html>

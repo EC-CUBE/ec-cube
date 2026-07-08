@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AgentCommerce Discovery — 仕様</title>
+<style>
+ /* 最小限のスタイル。§8.2 の静的サイト側で共通 CSS を上書きできるよう、
+    装飾はクラス指定に寄せ、過度なインライン装飾は避ける。 */
+ body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.7;max-width:960px;margin:0 auto;padding:2rem;color:#222}
+ h1,h2{border-bottom:1px solid #ddd;padding-bottom:.3rem}
+ h1{margin-bottom:.2rem}
+ .nav{font-size:.9rem;color:#555;margin:.2rem 0 1.5rem}
+ table{border-collapse:collapse;width:100%;margin:1rem 0}
+ th,td{border:1px solid #ccc;padding:.4rem .6rem;text-align:left;vertical-align:top}
+ th{background:#f4f4f4}
+ code{background:#f4f4f4;padding:.1rem .3rem;border-radius:3px;font-size:.92em}
+ .flow{background:#f9f9f9;border:1px solid #ddd;padding:1rem;white-space:pre;overflow-x:auto;font-family:ui-monospace,monospace;font-size:.88rem;line-height:1.5}
+ .note{background:#fff8e1;border-left:4px solid #f0c040;padding:.6rem 1rem;margin:1rem 0}
+ .dev-only{font-size:.75rem;color:#888;font-weight:normal;margin-left:.5rem}
+ .badge{display:inline-block;background:#eef;border:1px solid #ccd;border-radius:3px;padding:0 .4rem;font-size:.8rem}
+</style>
+</head>
+<body>
+
+<h1>AgentCommerce Discovery — 機能発見</h1>
+<p class="nav">
+ 親: <a href="../README.html">AgentCommerce README</a>
+ ／ 索引: <a href="./README.md">README.md</a>
+ ／ プロトコル仕様: <a href="https://github.com/Universal-Commerce-Protocol/ucp/blob/main/schemas/profile.json">UCP profile.json</a>
+</p>
+
+<section data-section="overview" data-customer="true">
+ <h2>概要</h2>
+ <p>エージェントが店舗の対応機能を発見するための <strong>UCP discovery profile（<code>/.well-known/ucp</code>）</strong>を組み立てるサブドメインです。
+ profile には対応サービス・決済ハンドラ・署名鍵（JWK）が含まれ、これを起点にエージェントはカタログ取得やチェックアウトを行います。</p>
+ <div class="flow">{ "ucp": { version, services, payment_handlers, capabilities }, "signing_keys": [JWK...] }</div>
+ <p>services / capabilities / payment_handlers のキーは <strong>reverse-domain</strong> 形式。endpoint（絶対 URL）はパスをハードコードせず <code>UrlGenerator</code>（<code>RequestContext</code>）から動的生成します。</p>
+</section>
+
+<section data-section="classes" data-customer="true">
+ <h2>主要クラス</h2>
+ <table>
+  <tr><th>クラス</th><th>役割</th></tr>
+  <tr><td><code>UcpProfileBuilder</code></td><td>UCP discovery profile ドキュメントを組み立てる。<code>signing_keys[]</code> は EC 公開鍵 JWK のみ（秘密鍵パラメータ非混入、<code>UcpMessageSigner</code> の戻りをそのまま使う）。</td></tr>
+  <tr><td><code>PaymentHandlerRegistryInterface</code></td><td>profile の <code>payment_handlers</code>（reverse-domain キーのレジストリ）を寄与する口。</td></tr>
+  <tr><td><code>EmptyPaymentHandlerRegistry</code></td><td>既定実装。tagged service で寄与された各レジストリをマージ。寄与が無ければ空オブジェクト <code>{}</code> を返す。</td></tr>
+ </table>
+</section>
+
+<section data-section="notes" data-customer="false">
+ <h2>注意点<span class="dev-only">開発者向け</span></h2>
+ <ul>
+  <li>core 本体は <code>payment_handlers</code> をカラム化せず、<code>PaymentHandlerRegistryInterface</code> の実装からのみ収集する。決済ハンドラプラグイン（将来の Google Pay 等）が <code>eccube.agent_commerce.payment_handler_registry</code> タグ付きサービスで寄与する。</li>
+  <li>UCP profile schema 上 <code>payment_handlers</code> は必須のため、寄与が無い場合でも空オブジェクト <code>{}</code> を出す（空配列 <code>[]</code> ではない）。</li>
+ </ul>
+</section>
+
+</body>
+</html>

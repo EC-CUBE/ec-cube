@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AgentCommerce Payment — 仕様</title>
+<style>
+ /* 最小限のスタイル。§8.2 の静的サイト側で共通 CSS を上書きできるよう、
+    装飾はクラス指定に寄せ、過度なインライン装飾は避ける。 */
+ body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.7;max-width:960px;margin:0 auto;padding:2rem;color:#222}
+ h1,h2{border-bottom:1px solid #ddd;padding-bottom:.3rem}
+ h1{margin-bottom:.2rem}
+ .nav{font-size:.9rem;color:#555;margin:.2rem 0 1.5rem}
+ table{border-collapse:collapse;width:100%;margin:1rem 0}
+ th,td{border:1px solid #ccc;padding:.4rem .6rem;text-align:left;vertical-align:top}
+ th{background:#f4f4f4}
+ code{background:#f4f4f4;padding:.1rem .3rem;border-radius:3px;font-size:.92em}
+ .flow{background:#f9f9f9;border:1px solid #ddd;padding:1rem;white-space:pre;overflow-x:auto;font-family:ui-monospace,monospace;font-size:.88rem;line-height:1.5}
+ .note{background:#fff8e1;border-left:4px solid #f0c040;padding:.6rem 1rem;margin:1rem 0}
+ .dev-only{font-size:.75rem;color:#888;font-weight:normal;margin-left:.5rem}
+ .badge{display:inline-block;background:#eef;border:1px solid #ccd;border-radius:3px;padding:0 .4rem;font-size:.8rem}
+</style>
+</head>
+<body>
+
+<h1>AgentCommerce Payment — 決済ハンドラ</h1>
+<p class="nav">
+ 親: <a href="../README.html">AgentCommerce README</a>
+ ／ 索引: <a href="./README.md">README.md</a>
+</p>
+
+<section data-section="overview" data-customer="true">
+ <h2>概要</h2>
+ <p>エージェント注文の<strong>決済ハンドラの型と、支払方法の割当・解決</strong>を担うサブドメインです。
+ 通常購入では買い手が画面で支払方法を選びますが、エージェントは画面を持たず discovery で広告された決済ハンドラを
+ <code>handler_id</code> で指定します。<strong>core は具象決済実装を持たず</strong>、決済プラグインがタグ付きサービスとして
+ ハンドラを寄与します（型のみ core が保持）。</p>
+</section>
+
+<section data-section="classes" data-customer="true">
+ <h2>主要クラス / enum</h2>
+ <table>
+  <tr><th>クラス</th><th>役割</th></tr>
+  <tr><td><code>AgentCheckoutPaymentHandlerInterface</code></td><td>決済ハンドラの共通基底。プロトコル固有のトークン償還（ACP Shared Payment Token / UCP Payment Token Exchange）は派生 IF が定義。</td></tr>
+  <tr><td><code>AgentCheckoutPaymentHandlerRegistry</code></td><td><code>agent_commerce.payment_handler</code> タグのハンドラを集約し、Order の支払方法から適切なハンドラを解決。</td></tr>
+  <tr><td><code>AgentPaymentMethodResolverInterface</code></td><td>エージェント注文に割り当てる <code>Payment</code> を解決する seam。</td></tr>
+  <tr><td><code>DefaultAgentPaymentMethodResolver</code></td><td>標準実装。<code>PaymentRepository::findAllowedPayments()</code> を、登録済みハンドラが扱える <code>Payment</code> へ絞り込む。</td></tr>
+  <tr><td><code>PaymentOutcome</code> / <code>PaymentOutcomeStatus</code></td><td>決済ハンドラ（authorize/capture）の処理結果（Symfony Response 非依存の中立 DTO）とステータス enum。</td></tr>
+ </table>
+</section>
+
+<section data-section="notes" data-customer="false">
+ <h2>注意点<span class="dev-only">開発者向け</span></h2>
+ <ul>
+  <li><strong>sort_no の機械採用は禁止</strong>。利用可能な支払方法の先頭（sort_no 最小）を採ると、エージェント決済不可能な方法（銀行振込等）が割り当たりハンドラ未通過のまま確定する「沈黙のすり抜け」を招く。リゾルバは登録済みハンドラが扱える <code>Payment</code> のみを候補にし、sort_no は候補内のタイブレークとしてのみ使う。</li>
+  <li><code>DefaultAgentPaymentMethodResolver</code> は methodClass 等のプロトコル固有判定をハンドラ側（<code>supports()</code>）に委ね、特定の決済クラスに依存しない（将来 PSP が新 methodClass を出しても無改変で動く）。</li>
+  <li><code>PaymentOutcomeStatus</code> は追加認証（EMV-3DS）や外部ハンドオフ（escalation）を<strong>エラーでなく正常な中間状態</strong>として表す。これを受けて <code>CheckoutSession/AgentCheckoutCompletionService</code> がステータス遷移・在庫引当の保持/回収を決める。</li>
+  <li>店舗ごとに選択ロジック（PSP 優先順位・通貨別ルーティング等）を変えるには <code>AgentPaymentMethodResolverInterface</code> を <code>app/Customize</code> で実装し alias を差し替える。</li>
+ </ul>
+</section>
+
+</body>
+</html>
