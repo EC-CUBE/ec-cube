@@ -397,6 +397,7 @@ front.shopping.not_available_payment_method: 選択したお支払い方法は�
 front.shopping.payment_method_not_fount: 選択できるお支払い方法がありません。配送方法が異なる場合は同じ配送方法を選んでください。
 front.under_maintenance: メンテナンスモードが有効になっています。
 front.under_debug_mode: デバッグモードが有効になっています。
+front.admin_login_active: 管理画面にログイン中です。
 
 #====================================================================================
 # 管理画面
