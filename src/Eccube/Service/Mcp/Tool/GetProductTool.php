@@ -62,7 +62,9 @@ final readonly class GetProductTool
                     ];
                 }
 
-                $data = $this->serializer->toArray($product);
+                // お気に入り登録は商品詳細に不要なため id 要約へ縮退する。
+                // ProductClasses (規格・価格・在庫) / ProductImage は詳細の本体なので残す。
+                $data = $this->serializer->toArray($product, summarizeRelations: ['CustomerFavoriteProducts']);
 
                 return [
                     'data' => $data,

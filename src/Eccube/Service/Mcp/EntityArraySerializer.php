@@ -47,13 +47,20 @@ final readonly class EntityArraySerializer
     /**
      * Entity を allow_list に従って `array<string, mixed>` に変換する。
      *
+     * $summarizeRelations に挙げた root 直下の関連は、 深さに関係なく要約 (Collection は各要素の
+     * `{id}` リスト、 単一 Entity は `{id}`) へ縮退する。 詳細系ツールで巨大・不要な関連
+     * (例: Customer.Orders) を落としつつ本体フィールドは残す用途。 縮退は root (depth 0) の
+     * 直下関連にのみ効く。
+     *
+     * @param list<string> $summarizeRelations id 要約へ縮退する root 直下の関連プロパティ名
+     *
      * @return array<string, mixed>
      */
-    public function toArray(object $entity, int $maxDepth = self::DEFAULT_MAX_DEPTH): array
+    public function toArray(object $entity, int $maxDepth = self::DEFAULT_MAX_DEPTH, array $summarizeRelations = []): array
     {
         $visited = [];
 
-        return $this->convertEntity($entity, 0, $maxDepth, $visited);
+        return $this->convertEntity($entity, 0, $maxDepth, $visited, $summarizeRelations);
     }
 
     /**
@@ -153,11 +160,12 @@ final readonly class EntityArraySerializer
     }
 
     /**
-     * @param array<int, bool> $visited spl_object_id をキーにした訪問済みセット
+     * @param array<int, bool> $visited            spl_object_id をキーにした訪問済みセット
+     * @param list<string>     $summarizeRelations root 直下で id 要約へ縮退する関連プロパティ名
      *
      * @return array<string, mixed>
      */
-    private function convertEntity(object $entity, int $depth, int $maxDepth, array &$visited): array
+    private function convertEntity(object $entity, int $depth, int $maxDepth, array &$visited, array $summarizeRelations = []): array
     {
         $oid = spl_object_id($entity);
         if (isset($visited[$oid])) {
@@ -170,12 +178,33 @@ final readonly class EntityArraySerializer
         $result = [];
         foreach ($allowedProps as $prop) {
             $value = $this->readProperty($entity, $prop);
+            if (0 === $depth && \in_array($prop, $summarizeRelations, true)) {
+                // root 直下の指定関連は深さに関係なく id 要約へ縮退する
+                $result[$prop] = $this->summarizeRelation($value);
+                continue;
+            }
             $result[$prop] = $this->convertValue($value, $depth + 1, $maxDepth, $visited);
         }
 
         unset($visited[$oid]);
 
         return $result;
+    }
+
+    /**
+     * root 直下の指定関連を要約へ縮退する。 Collection は各要素の `{id}` リスト、 単一 Entity は
+     * `{id}`、 関連が無ければ null。 id 露出可否は `summarize()` が allow_list で再判定する。
+     */
+    private function summarizeRelation(mixed $value): mixed
+    {
+        if ($value instanceof Collection || (\is_iterable($value) && !\is_array($value))) {
+            return $this->summarizeMany($value);
+        }
+        if (\is_object($value)) {
+            return $this->summarize($value);
+        }
+
+        return null;
     }
 
     /**

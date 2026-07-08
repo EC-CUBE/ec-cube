@@ -364,6 +364,63 @@ final class EntityArraySerializerTest extends TestCase
         );
     }
 
+    public function testSummarizeRelationsCollapsesRootCollectionToIds(): void
+    {
+        $serializer = $this->serializerWith([
+            SerializerDummyEntity::class => ['id', 'items'],
+            SerializerDummyRelated::class => ['id', 'code'],
+        ]);
+        $a = new SerializerDummyRelated();
+        $a->code = 'A';
+        $b = new SerializerDummyRelated();
+        $b->code = 'B';
+        $entity = new SerializerDummyEntity();
+        $entity->id = 1;
+        $entity->items = new ArrayCollection([$a, $b]);
+
+        // 通常は items を full 展開するが、 summarizeRelations 指定で各要素 id のみに縮退する
+        $this->assertSame(
+            ['id' => 1, 'items' => [['id' => crc32('A')], ['id' => crc32('B')]]],
+            $serializer->toArray($entity, summarizeRelations: ['items']),
+        );
+    }
+
+    public function testSummarizeRelationsCollapsesRootSingleRelation(): void
+    {
+        $serializer = $this->serializerWith([
+            SerializerDummyEntity::class => ['id', 'related'],
+            SerializerDummyRelated::class => ['id', 'code'],
+        ]);
+        $entity = new SerializerDummyEntity();
+        $entity->id = 1;
+        $entity->related = new SerializerDummyRelated();
+        $entity->related->code = 'X';
+
+        // full なら related.code まで出るが、 縮退指定で {id} のみになる
+        $this->assertSame(
+            ['id' => 1, 'related' => ['id' => crc32('X')]],
+            $serializer->toArray($entity, summarizeRelations: ['related']),
+        );
+    }
+
+    public function testSummarizeRelationsOnlyAffectsListedRelations(): void
+    {
+        // 指定していない関連は従来どおり full 展開される
+        $serializer = $this->serializerWith([
+            SerializerDummyEntity::class => ['id', 'related'],
+            SerializerDummyRelated::class => ['id', 'code'],
+        ]);
+        $entity = new SerializerDummyEntity();
+        $entity->id = 1;
+        $entity->related = new SerializerDummyRelated();
+        $entity->related->code = 'X';
+
+        $this->assertSame(
+            ['id' => 1, 'related' => ['id' => crc32('X'), 'code' => 'X']],
+            $serializer->toArray($entity, summarizeRelations: ['items']),
+        );
+    }
+
     /**
      * @param array<string, list<string>> $allowMap
      */

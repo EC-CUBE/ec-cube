@@ -61,7 +61,9 @@ final readonly class GetCustomerTool
                 }
 
                 return [
-                    'data' => $this->serializer->toArray($customer),
+                    // 注文一覧はサイズが大きく詳細に不要 (専用の get_customer_orders に委譲)。
+                    // お気に入りも詳細で不要なため id 要約へ縮退する。
+                    'data' => $this->serializer->toArray($customer, summarizeRelations: ['Orders', 'CustomerFavoriteProducts']),
                     'summary' => ['found' => true, 'customer_id' => $customer->getId()],
                 ];
             },

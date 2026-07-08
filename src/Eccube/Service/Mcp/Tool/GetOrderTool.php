@@ -63,7 +63,9 @@ final readonly class GetOrderTool
                 }
 
                 return [
-                    'data' => $this->serializer->toArray($order),
+                    // メール送信履歴は本文級で重く注文詳細に不要なため id 要約へ縮退する。
+                    // OrderItems / Shippings は注文詳細の本体なので残す。
+                    'data' => $this->serializer->toArray($order, summarizeRelations: ['MailHistories']),
                     'summary' => ['found' => true, 'order_id' => $order->getId()],
                 ];
             },
