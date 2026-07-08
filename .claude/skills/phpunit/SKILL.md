@@ -108,6 +108,7 @@ public static function provideStatuses(): array
 - ❌ `new Client()` など HTTP クライアントの自前生成 → ✅ 親クラスの `$this->client`。
 - ❌ URL の文字列直書き（`'/products/list'`）→ ✅ `$this->generateUrl('product_list')`。
 - ❌ Entity の手組み → ✅ `createXxx()` フィクスチャヘルパ。
+- ❌ 支払方法のデフォルト/再選択テストで `find(1)` 等の ID 前提 → ✅ `Generator::createPayment()` で sort_no・利用条件を明示し `assertSame()` で再選択先を固定（フィクスチャ並び変更で偽陽性になり得る）。
 - ❌ ステータス値のハードコーディング（`if ($status == 1)`）→ ✅ 定数（例: `OrderStatus::NEW`）を使う。
 - ❌ 型宣言の省略 → ✅ 引数・戻り値に型を付け、PHPStan level 6 を通す。
 
