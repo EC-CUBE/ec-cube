@@ -32,8 +32,8 @@ final class MemberTypeTest extends AbstractTypeTestCase
         'department' => 'EC-CUBE事業部',
         'login_id' => 'takahashi',
         'plain_password' => [
-            'first' => 'password1234',
-            'second' => 'password1234',
+            'first' => 'password1234abc',
+            'second' => 'password1234abc',
         ],
         'Authority' => 1,
         'Work' => 1,
@@ -143,6 +143,19 @@ final class MemberTypeTest extends AbstractTypeTestCase
     {
         $this->formData['password']['first'] = 'あいうえお';
         $this->formData['password']['second'] = 'あいうえお';
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
+    /**
+     * MemberType は RepeatedPasswordType の制約を上書きするため,
+     * ブロックリスト制約が引き継がれていることを検証する(退行防止).
+     */
+    public function testInvalidPasswordBlocklisted(): void
+    {
+        $this->formData['plain_password']['first'] = 'passwordpassword';
+        $this->formData['plain_password']['second'] = 'passwordpassword';
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
