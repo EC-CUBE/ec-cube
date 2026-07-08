@@ -34,6 +34,13 @@ use Rector\Symfony\Symfony61\Rector\Class_\CommandConfigureToAttributeRector;
 use Rector\Symfony\Symfony61\Rector\Class_\CommandPropertyToAttributeRector;
 use Rector\ValueObject\PhpVersion;
 
+// この設定ファイルは Rector の CLI 実行専用。
+// 公開ディレクトリに配置された場合に Web 経由で実行されないようガードする。
+if (PHP_SAPI !== 'cli') {
+    http_response_code(403);
+    exit;
+}
+
 return RectorConfig::configure()
            // EC-CUBEのPHPバージョンに合わせて設定
            ->withPhpVersion(PhpVersion::PHP_83)
