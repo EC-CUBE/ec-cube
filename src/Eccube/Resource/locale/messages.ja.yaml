@@ -246,6 +246,7 @@ front.mypage.delivery: お届け先
 front.mypage.delivery_provider: 配送方法
 front.mypage.delivery_date: お届け日
 front.mypage.delivery_time: お届け時間
+front.mypage.tracking_number: お問い合わせ番号
 front.mypage.current_price: 【現在価格】
 front.mypage.reorder: 再注文する
 front.mypage.payment_info: お支払い情報

@@ -246,6 +246,7 @@ front.mypage.delivery: Delivery to
 front.mypage.delivery_provider: Delivery Method
 front.mypage.delivery_date: Delivery Date
 front.mypage.delivery_time: Delivery Time
+front.mypage.tracking_number: Tracking No.
 front.mypage.current_price: [Current Price]
 front.mypage.reorder: Reorder
 front.mypage.payment_info: Payment Info
