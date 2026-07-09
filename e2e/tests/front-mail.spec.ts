@@ -52,8 +52,8 @@ test.describe('会員登録メール (EF04)', () => {
     await page.locator('#entry_phone_number').fill('111-111-111');
     await page.locator('#entry_email_first').fill(newEmail);
     await page.locator('#entry_email_second').fill(newEmail);
-    await page.locator('#entry_plain_password_first').fill('password1234');
-    await page.locator('#entry_plain_password_second').fill('password1234');
+    await page.locator('#entry_plain_password_first').fill('EccubeE2ePassword1');
+    await page.locator('#entry_plain_password_second').fill('EccubeE2ePassword1');
     await page.locator('#entry_job').selectOption({ value: '1' });
     await page.locator('#entry_user_policy_check').check();
 
