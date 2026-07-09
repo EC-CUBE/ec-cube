@@ -159,9 +159,11 @@ class EntityProxyService
                     $includedFiles[] = $realPath;
                     // 既にProxy等でロード済みのEntityクラスを再度require_onceすると
                     // "Cannot redeclare class" になるため、宣言済みならスキップする.
-                    // 対象は app/Plugin/**/Entity と app/Customize/Entity の両方.
+                    // 対象は Entity ディレクトリ配下 (app/Plugin/*/Entity, app/Customize/Entity) に限定する.
+                    // Plugin が同梱するライブラリ (例: phpseclib) 等の非Entityファイルは
+                    // 偽のFQCNを組み立てないよう対象外とし、従来どおり require_once する.
                     $normalized = str_replace('\\', '/', $realPath);
-                    if (preg_match('#/app/((?:Plugin|Customize)/[^.]+)\.php$#', $normalized, $matches)) {
+                    if (preg_match('#/app/(Customize/Entity/[^.]+|Plugin/[^/]+/Entity/[^.]+)\.php$#', $normalized, $matches)) {
                         $fqcn = str_replace('/', '\\', $matches[1]);
                         if (class_exists($fqcn, false)) {
                             continue;
