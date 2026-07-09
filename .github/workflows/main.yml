@@ -37,6 +37,12 @@ jobs:
     # PR/push では最新 PHP のみ。全バージョンは weekly-test.yml が週次で回す
     with:
       php-versions: "['8.5']"
+  agentic-commerce-e2e:
+    # plugin-test と並列で実行する (同じ needs)。
+    needs: [ unit-test, e2e-test ]
+    # 本体 ↔ eccube-api4 ↔ sample-payment-plugin の結合 E2E。
+    # 依存プラグインは fork の feature/agentic-commerce を既定参照 (org 移行後に別 PR で差し替え)。
+    uses: ./.github/workflows/agentic-commerce-e2e.yml
   dockerbuild:
     uses: ./.github/workflows/dockerbuild.yml
     permissions:
@@ -56,7 +62,7 @@ jobs:
 #    needs: [ plugin-test ]
 #    uses: ./.github/workflows/deny-test.yml
   success:
-    needs: [ e2e-test-throttling, dockerbuild ]
+    needs: [ e2e-test-throttling, dockerbuild, agentic-commerce-e2e ]
     runs-on: ubuntu-latest
     steps:
       - name: success
