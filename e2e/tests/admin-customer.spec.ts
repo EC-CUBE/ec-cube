@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
+import { ADMIN_ROUTE, VALID_PASSWORD } from '../config/default.config';
 
-const adminRoute = process.env.ECCUBE_ADMIN_ROUTE || 'admin';
+const adminRoute = ADMIN_ROUTE;
 const pageTitle = '.c-pageTitle';
 const searchBtn = '#search_form .c-outsideBlock__contents button';
 const searchResultMsg = '#search_form > div.c-outsideBlock__contents.mb-5 > span';
@@ -49,8 +50,8 @@ test.describe('Admin Customer (EA05)', () => {
     await page.locator('#admin_customer_address_addr02').fill('ブリーゼタワー13F');
     await page.locator('#admin_customer_email').fill(createdCustomerEmail);
     await page.locator('#admin_customer_phone_number').fill('111111111');
-    await page.locator('#admin_customer_plain_password_first').fill('EccubeE2ePassword1');
-    await page.locator('#admin_customer_plain_password_second').fill('EccubeE2ePassword1');
+    await page.locator('#admin_customer_plain_password_first').fill(VALID_PASSWORD);
+    await page.locator('#admin_customer_plain_password_second').fill(VALID_PASSWORD);
 
     // Submit
     await page.locator('#customer_form .c-conversionArea button[type="submit"]').click();
@@ -234,8 +235,8 @@ test.describe('Admin Customer (EA05)', () => {
     await page.locator('#admin_customer_address_addr02').fill('梅田');
     await page.locator('#admin_customer_email').fill(cancelTestEmail);
     await page.locator('#admin_customer_phone_number').fill('111111111');
-    await page.locator('#admin_customer_plain_password_first').fill('EccubeE2ePassword1');
-    await page.locator('#admin_customer_plain_password_second').fill('EccubeE2ePassword1');
+    await page.locator('#admin_customer_plain_password_first').fill(VALID_PASSWORD);
+    await page.locator('#admin_customer_plain_password_second').fill(VALID_PASSWORD);
     await page.locator('#customer_form .c-conversionArea button[type="submit"]').click();
     await page.waitForLoadState('load');
     await expect(page.locator(successAlert)).toContainText('保存しました');
@@ -297,8 +298,8 @@ test.describe('Admin Customer (EA05)', () => {
     await page.locator('#admin_customer_address_addr02').fill('梅田');
     await page.locator('#admin_customer_email').fill(editTestEmail);
     await page.locator('#admin_customer_phone_number').fill('111111111');
-    await page.locator('#admin_customer_plain_password_first').fill('EccubeE2ePassword1');
-    await page.locator('#admin_customer_plain_password_second').fill('EccubeE2ePassword1');
+    await page.locator('#admin_customer_plain_password_first').fill(VALID_PASSWORD);
+    await page.locator('#admin_customer_plain_password_second').fill(VALID_PASSWORD);
     await page.locator('#customer_form .c-conversionArea button[type="submit"]').click();
     await page.waitForLoadState('load');
     await expect(page.locator(successAlert)).toContainText('保存しました');
