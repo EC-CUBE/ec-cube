@@ -134,6 +134,7 @@ vendor/bin/php-cs-fixer fix                     # PSR-12 整形・ライセン�
 - ❌ `$this->isTokenValid();`（戻り値を捨てた bare 呼び出し）を「CSRF 未検証」と誤読 → ✅ 無効時は `AccessDeniedHttpException` を投げ戻り値は常に true。bare 呼び出しで検証は成立し、`if (!isTokenValid())` の false 分岐はデッドコード
 - ❌ `#[Template]` 付きアクションの「エラー時に再描画される」を前提にレビュー判断 → ✅ `#[Template]` は配列を返したときのみ engage。Response/Redirect を返すパス（例: フォーム失敗で `redirectToRoute`）では描画されない
 - ❌ 管理アクションを `%eccube_admin_route%` 配下以外に置く → ✅ admin ファイアウォール配下に置く
+- ❌ 同一アクションで `executePurchaseFlow()` を複数回呼ぶとき 2 回目以降の `FlowResult` を無視する → ✅ 毎回 `hasError()`/`hasWarning()` の分岐を 1 回目と同じに揃える（共通化可）
 
 ---
 

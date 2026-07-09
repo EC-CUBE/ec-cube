@@ -44,8 +44,8 @@ test.describe('Admin System Info (EA08)', () => {
     await page.locator('#admin_member_name').fill('admintest');
     await page.locator('#admin_member_department').fill('admintest department');
     await page.locator('#admin_member_login_id').fill('admintest');
-    await page.locator('#admin_member_plain_password_first').fill('password1234');
-    await page.locator('#admin_member_plain_password_second').fill('password1234');
+    await page.locator('#admin_member_plain_password_first').fill('EccubeE2ePassword1');
+    await page.locator('#admin_member_plain_password_second').fill('EccubeE2ePassword1');
     await page.locator('#admin_member_Authority').selectOption({ label: 'システム管理者' });
     await page.locator('#admin_member_Work_1').check();
 
@@ -73,8 +73,8 @@ test.describe('Admin System Info (EA08)', () => {
     await page.locator('#admin_member_name').fill('admintest2');
     await page.locator('#admin_member_department').fill('admintest department');
     await page.locator('#admin_member_login_id').fill('admintest');
-    await page.locator('#admin_member_plain_password_first').fill('password1234');
-    await page.locator('#admin_member_plain_password_second').fill('password1234');
+    await page.locator('#admin_member_plain_password_first').fill('EccubeE2ePassword1');
+    await page.locator('#admin_member_plain_password_second').fill('EccubeE2ePassword1');
     await page.locator('#admin_member_Authority').selectOption({ label: 'システム管理者' });
     await page.locator('#admin_member_Work_1').check();
 
