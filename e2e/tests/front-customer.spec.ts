@@ -21,8 +21,8 @@ test.describe('Front Customer Registration (EF04)', () => {
     await page.locator('#entry_phone_number').fill('111-111-111');
     await page.locator('#entry_email_first').fill(email);
     await page.locator('#entry_email_second').fill(email);
-    await page.locator('#entry_plain_password_first').fill('password1234');
-    await page.locator('#entry_plain_password_second').fill('password1234');
+    await page.locator('#entry_plain_password_first').fill('EccubeE2ePassword1');
+    await page.locator('#entry_plain_password_second').fill('EccubeE2ePassword1');
     await page.locator('#entry_job').selectOption({ value: '1' });
     await page.locator('#entry_user_policy_check').check();
 
@@ -59,8 +59,8 @@ test.describe('Front Customer Registration (EF04)', () => {
     await page.locator('#entry_phone_number').fill('111-111-111');
     await page.locator('#entry_email_first').fill(email);
     await page.locator('#entry_email_second').fill(email);
-    await page.locator('#entry_plain_password_first').fill('password1234');
-    await page.locator('#entry_plain_password_second').fill('password1234');
+    await page.locator('#entry_plain_password_first').fill('EccubeE2ePassword1');
+    await page.locator('#entry_plain_password_second').fill('EccubeE2ePassword1');
 
     // 「同意する」ボタンを押下
     await page.locator('button.ec-blockBtn--action[type="submit"]').click();
@@ -106,8 +106,8 @@ test.describe('Front Customer Registration (EF04)', () => {
     await page.locator('#entry_phone_number').fill('111-111-111');
     await page.locator('#entry_email_first').fill(email);
     await page.locator('#entry_email_second').fill(email);
-    await page.locator('#entry_plain_password_first').fill('password1234');
-    await page.locator('#entry_plain_password_second').fill('password1234');
+    await page.locator('#entry_plain_password_first').fill('EccubeE2ePassword1');
+    await page.locator('#entry_plain_password_second').fill('EccubeE2ePassword1');
     await page.locator('#entry_job').selectOption({ value: '1' });
     await page.locator('#entry_user_policy_check').check();
 
@@ -145,8 +145,8 @@ test.describe('Front Customer Registration (EF04)', () => {
     await page.locator('#entry_phone_number').fill('111-111-111');
     await page.locator('#entry_email_first').fill(existingEmail);
     await page.locator('#entry_email_second').fill(existingEmail);
-    await page.locator('#entry_plain_password_first').fill('password1234');
-    await page.locator('#entry_plain_password_second').fill('password1234');
+    await page.locator('#entry_plain_password_first').fill('EccubeE2ePassword1');
+    await page.locator('#entry_plain_password_second').fill('EccubeE2ePassword1');
 
     // 「同意する」ボタンを押下
     await page.locator('button.ec-blockBtn--action[type="submit"]').click();
@@ -175,8 +175,8 @@ test.describe('Front Customer Registration (EF04)', () => {
     await page.locator('#entry_phone_number').fill('111-111-111');
     await page.locator('#entry_email_first').fill(newEmail);
     await page.locator('#entry_email_second').fill(newEmail);
-    await page.locator('#entry_plain_password_first').fill('password1234');
-    await page.locator('#entry_plain_password_second').fill('password1234');
+    await page.locator('#entry_plain_password_first').fill('EccubeE2ePassword1');
+    await page.locator('#entry_plain_password_second').fill('EccubeE2ePassword1');
     await page.locator('#entry_job').selectOption({ value: '1' });
     await page.locator('#entry_user_policy_check').check();
 
@@ -232,7 +232,7 @@ test.describe('Front Customer Registration (EF04)', () => {
     await page.goto('/mypage/login');
     await page.waitForLoadState('load');
     await page.locator('input[name="login_email"]').fill(newEmail);
-    await page.locator('input[name="login_pass"]').fill('password1234');
+    await page.locator('input[name="login_pass"]').fill('EccubeE2ePassword1');
     await page.locator('#login_mypage button[type="submit"]').click();
     await page.waitForLoadState('load');
 
@@ -285,8 +285,8 @@ test.describe('Front Customer Registration (EF04)', () => {
     await page.locator('#entry_phone_number').fill('111-111-111');
     await page.locator('#entry_email_first').fill(newEmail);
     await page.locator('#entry_email_second').fill(newEmail);
-    await page.locator('#entry_plain_password_first').fill('password1234');
-    await page.locator('#entry_plain_password_second').fill('password1234');
+    await page.locator('#entry_plain_password_first').fill('EccubeE2ePassword1');
+    await page.locator('#entry_plain_password_second').fill('EccubeE2ePassword1');
     await page.locator('#entry_job').selectOption({ value: '1' });
     await page.locator('#entry_user_policy_check').check();
 
@@ -339,7 +339,7 @@ test.describe('Front Customer Registration (EF04)', () => {
 
     // ログイン
     await page.locator('input[name="login_email"]').fill(newEmail);
-    await page.locator('input[name="login_pass"]').fill('password1234');
+    await page.locator('input[name="login_pass"]').fill('EccubeE2ePassword1');
     await page.getByRole('button', { name: 'ログイン' }).click();
     await page.waitForLoadState('load');
 
