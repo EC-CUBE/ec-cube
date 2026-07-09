@@ -77,3 +77,4 @@ class ExampleType extends AbstractType
 - ❌ 既存フォームをコアで直接改変 → ✅ `FormTypeExtension`（app/Customize）で拡張
 - ❌ 管理画面検索フォームで CSRF 無効化 → ✅ CSRF 保護を保つ
 - ❌ 具象クラス依存 → ✅ コンストラクタ DI ＋ 必要なサービスの注入
+- ❌ 共通 FormType(RepeatedPasswordType 等)を子で使い `options.constraints` を渡す（親が定義した制約が全置換され消える） → ✅ 親の制約一式も再掲して付与する

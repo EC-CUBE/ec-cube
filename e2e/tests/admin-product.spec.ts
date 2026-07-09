@@ -1,7 +1,8 @@
 import { test, expect } from '@playwright/test';
+import { ADMIN_ROUTE } from '../config/default.config';
 import path from 'path';
 
-const adminRoute = process.env.ECCUBE_ADMIN_ROUTE || 'admin';
+const adminRoute = ADMIN_ROUTE;
 const pageTitle = '.c-pageTitle';
 const searchResultMsg = '#search_form > div.c-outsideBlock__contents.mb-5 > span';
 const searchResultList = '#page_admin_product table tbody';
