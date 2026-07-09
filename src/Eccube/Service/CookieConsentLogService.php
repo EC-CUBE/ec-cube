@@ -19,6 +19,14 @@ namespace Eccube\Service;
  * 同意/拒否の操作を Monolog 専用チャンネル `cookie_consent` へ出力する。
  * DB・外部ストレージには依存せず、出力はベストエフォート（失敗してもユーザー体験を妨げない）。
  *
+ * 【GDPR/APPI 制限事項】本ログは IP アドレス・User-Agent・会員 ID を含むため、ログ自体が
+ * 個人データ（GDPR）／個人関連情報（改正個人情報保護法）の取扱いに該当する。運用時は以下に留意すること。
+ *   - 取得・保持の事実はクッキーポリシーで開示すること。
+ *   - ログの保持期間はファイルログのため Monolog のローテーション設定に依存する（同意 Cookie の有効期限
+ *     COOKIE_LIFETIME_DAYS=365 とは別物。ログ側に自動削除の仕組みはない）。
+ *   - 退会・消去請求時に該当記録を削除する導線は現状ない（ファイルログのため）。
+ *   - 拒否操作の IP まで保持するため、データ最小化の観点では将来ハッシュ化等を検討。
+ *
  * @see \logs() src/Eccube/Resource/functions/log.php
  */
 class CookieConsentLogService

@@ -103,7 +103,7 @@ Module: CookieConsent
      */
     window.ECCUBE.cookieConsent.saveConsentStatus = function(status, source, previousStatus, onSuccess, onError) {
         var config = window.ECCUBE && window.ECCUBE.config && window.ECCUBE.config.cookieConsent;
-        var updateUrl = (config && config.updateUrl) || '/cookie_consent/update';
+        var updateUrl = (config && config.updateUrl) || '/cookie-consent/update';
 
         $.ajax({
             url: updateUrl,

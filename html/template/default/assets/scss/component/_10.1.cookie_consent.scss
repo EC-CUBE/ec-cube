@@ -111,12 +111,14 @@ Styleguide 10.1
   }
 
   &__btnReject {
-    background-color: transparent;
+    // 拒否ボタンも塗り潰しにし、同意ボタンと視覚的重みを対等にする（EDPB ガイドライン 03/2022）。
+    // 同意（緑）と区別できるようニュートラルなグレーを用いる。
+    background-color: #6c757d;
     color: #fff;
-    border-color: #fff;
+    border-color: #6c757d;
 
     &:hover {
-      background-color: rgba(255, 255, 255, 0.1);
+      background-color: #5a6268;
     }
   }
 }

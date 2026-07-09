@@ -79,7 +79,7 @@ class CookieConsentController extends AbstractController
      * CSRF トークン検証必須。同意 Cookie はこのレスポンスの Set-Cookie でのみ設定する。
      * 操作記録のログ出力はベストエフォートで、失敗しても Cookie 設定・画面動作は継続する。
      */
-    #[Route(path: '/cookie_consent/update', name: 'cookie_consent_update', methods: ['POST'])]
+    #[Route(path: '/cookie-consent/update', name: 'cookie_consent_update', methods: ['POST'])]
     public function update(Request $request): JsonResponse
     {
         // 機能 OFF のときは API も無効（index() がトップへリダイレクトするのと挙動を揃える）
@@ -91,17 +91,30 @@ class CookieConsentController extends AbstractController
         $this->isTokenValid();
 
         // パラメータ取得
-        $consentStatus = $request->request->get('consent_status');
-        $source = $request->request->get('source', 'popup');
-        $previousStatus = $request->request->get('previous_status');
+        // InputBag::get()/getString() は配列など非スカラー入力で BadRequestException を投げ、
+        // 下の allowlist 検証（クリーンな 400 JSON）へ到達できない。all() で生値を受け取り、
+        // 想定外の型・値は後続の検証／正規化で弾く。
+        $params = $request->request->all();
+        $consentStatus = $params['consent_status'] ?? null;
+        $source = $params['source'] ?? CookieConsentService::SOURCE_POPUP;
+        $previousStatus = $params['previous_status'] ?? null;
 
-        // バリデーション
+        // バリデーション（consent_status は許可値のみ。非スカラーも in_array で false になり 400 へ落ちる）
         if (!in_array($consentStatus, [CookieConsentService::STATUS_ACCEPTED, CookieConsentService::STATUS_REJECTED], true)) {
             return $this->json([
                 'success' => false,
                 'message' => trans('cookie_consent.error.invalid_status'),
             ], 400);
         }
+
+        // source / previous_status を許可値へ正規化（getConsentStatus() と同じ allowlist 方式）。
+        // 任意文字列や非スカラーがログ context へ素通しされるのを防ぐ。
+        $source = in_array($source, [CookieConsentService::SOURCE_POPUP, CookieConsentService::SOURCE_SETTINGS_PAGE], true)
+            ? $source
+            : CookieConsentService::SOURCE_POPUP;
+        $previousStatus = in_array($previousStatus, [CookieConsentService::STATUS_ACCEPTED, CookieConsentService::STATUS_REJECTED], true)
+            ? $previousStatus
+            : null;
 
         // ログデータを構築
         $customer = $this->getUser();
@@ -116,8 +129,8 @@ class CookieConsentController extends AbstractController
             $sessionId,
             $ipAddress,
             $userAgent,
-            is_string($source) ? $source : 'popup',
-            is_string($previousStatus) ? $previousStatus : null
+            $source,
+            $previousStatus
         );
 
         // 操作記録のログ出力（ベストエフォート：失敗してもユーザー体験を損なわない）

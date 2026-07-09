@@ -200,7 +200,12 @@ final class CookieConsentControllerTest extends AbstractWebTestCase
             ]
         );
 
-        $this->assertSame(Response::HTTP_BAD_REQUEST, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
+        $response = $this->client->getResponse();
+        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode(), (string) $response->getContent());
+        // 非スカラー入力でも汎用 BadRequestException ではなく、クリーンな JSON（success:false）で 400 を返すこと。
+        $json = json_decode((string) $response->getContent(), true);
+        $this->assertIsArray($json, (string) $response->getContent());
+        $this->assertFalse($json['success']);
     }
 
     /**
@@ -211,6 +216,7 @@ final class CookieConsentControllerTest extends AbstractWebTestCase
         yield '空文字' => [''];
         yield '不正な値' => ['invalid'];
         yield '大文字' => ['ACCEPTED'];
+        yield '配列（非スカラー）' => [['accepted']];
     }
 
     /**

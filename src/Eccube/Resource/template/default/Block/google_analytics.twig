@@ -10,6 +10,9 @@ file that was distributed with this source code.
 #}
 {% if BaseInfo.ga_id is not empty %}
     {% if not BaseInfo.optionCookieConsent %}
+        {# 【GDPR/ePrivacy 制限事項】本機能 OFF（既定）時は同意なしで GA を無条件ロードする。
+           後方互換のための挙動であり、EU 圏の利用者を対象とする店舗では ePrivacy 指令・GDPR が
+           要求する事前同意要件を満たさない。EU 対応が必要な場合は管理画面「店舗基本情報」で本機能を ON にすること。 #}
         {# クッキーポリシー同意機能が OFF のときは従来どおり無条件で読み込む（後方互換） #}
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id={{ BaseInfo.ga_id }}"></script>
@@ -70,6 +73,8 @@ file that was distributed with this source code.
                 }
 
                 // 変化時: その場で同意したらリロードなしでロード（新規ユーザー向け）。
+                // 【GDPR 制限事項】撤回（accepted→rejected）は即時反映されない。ロード済み gtag は
+                // 現在ページでは停止せず、ブラウザに残存する GA Cookie も削除しない（非ロードになるのは次ページ遷移以降）。
                 document.addEventListener('eccube:cookie-consent:changed', function(e) {
                     if (e.detail && e.detail.status === 'accepted') {
                         window.ECCUBE.cookieConsent.loadGoogleAnalytics();

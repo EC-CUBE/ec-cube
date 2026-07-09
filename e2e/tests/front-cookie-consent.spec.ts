@@ -196,7 +196,7 @@ test.describe('Front Cookie Consent', () => {
 
     // 不正な _token を載せて更新 API を直接叩く（正しい CSRF ヘッダは付与しない）
     const status = await page.evaluate(async () => {
-      const res = await fetch('/cookie_consent/update', {
+      const res = await fetch('/cookie-consent/update', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: 'consent_status=accepted&source=popup&_token=invalid-token',

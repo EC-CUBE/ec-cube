@@ -41,6 +41,16 @@ class CookieConsentService
     public const STATUS_REJECTED = 'rejected';
 
     /**
+     * 操作元: 同意バナー（ポップアップ）
+     */
+    public const SOURCE_POPUP = 'popup';
+
+    /**
+     * 操作元: クッキー設定ページ
+     */
+    public const SOURCE_SETTINGS_PAGE = 'settings_page';
+
+    /**
      * Cookie有効期限（日数）
      */
     private const COOKIE_LIFETIME_DAYS = 365;
