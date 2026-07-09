@@ -45,7 +45,7 @@ common.mail_address: メールアドレス
 common.mail_address_sample: 例：ec-cube@example.com
 common.repeated_confirm: 確認のためもう一度入力してください
 common.password: パスワード
-common.password_sample: "半角英数記号%min%〜%max%文字"
+common.password_sample: "%min%〜%max%文字"
 common.password_eq_email: パスワードはメールアドレスと同じ値を設定できません。
 common.password_for_confirmation: パスワード(確認)
 common.gender: 性別
@@ -246,6 +246,7 @@ front.mypage.delivery: お届け先
 front.mypage.delivery_provider: 配送方法
 front.mypage.delivery_date: お届け日
 front.mypage.delivery_time: お届け時間
+front.mypage.tracking_number: お問い合わせ番号
 front.mypage.current_price: 【現在価格】
 front.mypage.reorder: 再注文する
 front.mypage.payment_info: お支払い情報
@@ -396,6 +397,7 @@ front.shopping.not_available_payment_method: 選択したお支払い方法は�
 front.shopping.payment_method_not_fount: 選択できるお支払い方法がありません。配送方法が異なる場合は同じ配送方法を選んでください。
 front.under_maintenance: メンテナンスモードが有効になっています。
 front.under_debug_mode: デバッグモードが有効になっています。
+front.admin_login_active: 管理画面にログイン中です。
 
 #====================================================================================
 # 管理画面

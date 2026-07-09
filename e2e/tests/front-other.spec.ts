@@ -1,8 +1,9 @@
 import { test, expect } from '@playwright/test';
+import { ADMIN_ROUTE, CUSTOMER_PASSWORD, VALID_PASSWORD } from '../config/default.config';
 import fs from 'fs';
 import path from 'path';
 
-const adminRoute = process.env.ECCUBE_ADMIN_ROUTE || 'admin';
+const adminRoute = ADMIN_ROUTE;
 
 /**
  * Helper: get an active customer email from admin storage state.
@@ -37,7 +38,7 @@ test.describe('Front Other Pages (EF06)', () => {
     await page.waitForLoadState('load');
 
     await page.locator('input[name="login_email"]').fill(email);
-    await page.locator('input[name="login_pass"]').fill('password');
+    await page.locator('input[name="login_pass"]').fill(CUSTOMER_PASSWORD);
     await page.locator('#login_mypage button[type="submit"]').click();
     await page.waitForLoadState('load');
 
@@ -59,7 +60,7 @@ test.describe('Front Other Pages (EF06)', () => {
 
   test('EF0601-UC01-T02 ログイン異常 仮会員', async ({ page }) => {
     // 仮会員を作成するためにadminから新規会員を仮会員ステータスで登録
-    const adminRoute = process.env.ECCUBE_ADMIN_ROUTE || 'admin';
+    const adminRoute = ADMIN_ROUTE;
     const browser = page.context().browser()!;
     const authFile = path.join(__dirname, '..', '.auth', 'admin.json');
     const storageState = JSON.parse(fs.readFileSync(authFile, 'utf-8'));
@@ -82,8 +83,8 @@ test.describe('Front Other Pages (EF06)', () => {
     await adminPage.locator('#admin_customer_address_addr02').fill('梅田');
     await adminPage.locator('#admin_customer_phone_number').fill('111111111');
     await adminPage.locator('#admin_customer_email').fill(tempEmail);
-    await adminPage.locator('#admin_customer_plain_password_first').fill('password');
-    await adminPage.locator('#admin_customer_plain_password_second').fill('password');
+    await adminPage.locator('#admin_customer_plain_password_first').fill(VALID_PASSWORD);
+    await adminPage.locator('#admin_customer_plain_password_second').fill(VALID_PASSWORD);
     // ステータスを仮会員(1)に設定
     await adminPage.locator('#admin_customer_status').selectOption({ value: '1' });
     await adminPage.locator('button.btn-ec-conversion').click();
@@ -95,7 +96,7 @@ test.describe('Front Other Pages (EF06)', () => {
     await page.goto('/mypage/login');
     await page.waitForLoadState('load');
     await page.locator('input[name="login_email"]').fill(tempEmail);
-    await page.locator('input[name="login_pass"]').fill('password');
+    await page.locator('input[name="login_pass"]').fill(VALID_PASSWORD);
     await page.locator('#login_mypage button[type="submit"]').click();
     await page.waitForLoadState('load');
 
@@ -109,7 +110,7 @@ test.describe('Front Other Pages (EF06)', () => {
 
     // 存在しないメールアドレスでログイン
     await page.locator('input[name="login_email"]').fill('nonexistent_wrong@test.test.bad');
-    await page.locator('input[name="login_pass"]').fill('password');
+    await page.locator('input[name="login_pass"]').fill(CUSTOMER_PASSWORD);
     await page.locator('#login_mypage button[type="submit"]').click();
     await page.waitForLoadState('load');
 

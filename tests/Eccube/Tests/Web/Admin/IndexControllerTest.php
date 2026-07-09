@@ -178,7 +178,7 @@ final class IndexControllerTest extends AbstractAdminWebTestCase
     {
         $faker = $this->getFaker();
 
-        $password = $faker->lexify('????????????').'a1';
+        $password = $faker->lexify('?????????????').'a1';
 
         return [
             'current_password' => 'password',
