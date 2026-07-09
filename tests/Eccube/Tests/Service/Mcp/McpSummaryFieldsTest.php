@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace Eccube\Tests\Service\Mcp;
 
 use Eccube\Service\Mcp\McpSummaryFields;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -40,7 +41,7 @@ final class McpSummaryFieldsTest extends TestCase
     /**
      * @param list<string> $fields
      */
-    #[\PHPUnit\Framework\Attributes\DataProvider('summaryDefinitions')]
+    #[DataProvider(methodName: 'summaryDefinitions')]
     public function testDefinitionsAreWellFormed(array $fields): void
     {
         $this->assertNotEmpty($fields);
