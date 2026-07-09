@@ -9,6 +9,26 @@ EC-CUBE 4.4 を扱う際に従う共通の入口であり、**ベンダー中立
 - このファイルは `CLAUDE.md` / `GEMINI.md` を参照し返しません（上流）。
 - レイヤ別規約は各 Skill 本文（`.claude/skills/<name>/SKILL.md`）が末端で、上流を参照し返しません。
 
+## AI 向けドキュメント インデックス（定義ファイルと読み込み）
+
+AI エージェント向けの情報は、この `AGENTS.md` を**正典（ハブ）**とし、周辺の定義ファイルはすべてここへ収斂します。所在の一覧は次の通り。
+
+| ファイル | 役割 | 主な読み手 |
+|---|---|---|
+| `AGENTS.md`（本ファイル） | ベンダー中立の正典。規約・アーキテクチャ・Skill 索引の入口 | 全エージェント＋人間。`AGENTS.md` をネイティブに読むツール（Cursor / GitHub Copilot / Codex CLI / Google Antigravity 等）はこれを直接参照する |
+| `CLAUDE.md` | 薄いポインタ（`@./AGENTS.md`）。Claude Code は `CLAUDE.md` をネイティブに読むため | Claude Code |
+| `GEMINI.md` | 薄いポインタ。Gemini CLI は Skill 非対応のため索引経由で `SKILL.md` へ誘導 | Gemini CLI |
+| `llms.txt` | 外部 LLM・クローラ向けの英語サマリ（llmstxt.org 準拠。公開 URL 前提） | LLM クローラ・外部 LLM |
+| `.claude/skills/<name>/SKILL.md` | レイヤ別の詳細規約（末端）。`.codex/skills`・`.agents/skills` は symlink 共有 | Skill 対応ツール（詳細は「Skill の配置と各ツールの読み込み」節） |
+
+### 定義ファイルを増やすときの原則
+
+- **ポインタ定義ファイルは「`AGENTS.md` をネイティブに読まないツール」にだけ置く。** それ以外は正典を二重に指すだけの冗長ファイルになるため作らない。
+  - 必要な例: Claude Code → `CLAUDE.md`、Gemini CLI → `GEMINI.md`（いずれも `AGENTS.md` をネイティブに読まない）。
+  - 不要な例: **Cursor / GitHub Copilot / Codex CLI は `AGENTS.md` をネイティブに読む**ため、`.cursor/rules/*` や `.github/copilot-instructions.md` は追加しない。
+- 新しい定義ファイルを足すときは、上のインデックス表にも 1 行追加し、所在を本節で一元管理する。
+- 設計思想・アーキテクチャの詳細文書（`DESIGN.md` / `ARCHITECTURE.md`）は現状未整備。整備する場合も本ファイルはハブに留め、詳細はそれらへリンクして本節の表に追記する。
+
 ## プロジェクト概要
 
 EC-CUBE は日本で広く使われる OSS の EC プラットフォームです。本ブランチ（4.4）は **Symfony 7.4 / PHP 8.2+** 上に構築されています。
@@ -25,7 +45,8 @@ EC-CUBE は日本で広く使われる OSS の EC プラットフォームです
 - **テンプレート**: Twig 3.x
 - **データベース**: PostgreSQL 13–18 または MySQL 8.4 LTS
 - **フロントエンド**: Sass (SCSS) / webpack / Bootstrap 5.3 / jQuery 4.x
-- **テスト**: PHPUnit 11（`symfony/phpunit-bridge` 経由）/ Codeception 5（E2E）
+- **テスト**: PHPUnit 11（`symfony/phpunit-bridge` 経由）/ Playwright（E2E、`e2e/`）
+  - ※ `codeception/` は残置（レガシー）。CI の Codeception ジョブは無効化（`if: false`）されており、E2E は Playwright が正。
 - **静的解析**: PHPStan（`phpstan.neon.dist` で level 6）
 - **コードスタイル**: PHP-CS-Fixer（PSR-12）
 
@@ -65,6 +86,10 @@ html/                 # 公開ドキュメントルート
 
 tests/
   Eccube/Tests/       # PHPUnit テスト
+
+e2e/                  # Playwright E2E（spec / Page Object / fixtures）
+  tests/              # *.spec.ts（CI は e2e-test.yml のマトリクスで 1 ファイル = 1 シャード）
+  pages/  models/  helpers/  fixtures/
 ```
 
 ## 開発コマンド
@@ -86,6 +111,14 @@ bin/console eccube:install
 bin/phpunit                                                      # 全テスト
 bin/phpunit tests/Eccube/Tests/Web/ShoppingControllerTest.php    # 単一ファイル
 bin/phpunit --filter testCompleteWithLogin                       # フィルタ
+```
+
+E2E（Playwright、`e2e/` 配下で実行）:
+
+```bash
+cd e2e && npm ci
+# project は front-tests / admin-tests / plugin-tests。spec ファイル名でフィルタ
+npx playwright test --project=setup --project=front-tests front-product.spec.ts
 ```
 
 ### 静的解析
@@ -192,12 +225,22 @@ frontmatter の `description` がトリガ条件で、該当レイヤを触る�
 | レイヤ / 観点 | 規約 Skill（本文） | Skill 名 |
 |--------|------------------|----------|
 | PHPUnit テスト | [`.claude/skills/phpunit/SKILL.md`](./.claude/skills/phpunit/SKILL.md) | `phpunit` |
+| E2E（Playwright・spec 作成 / flaky 対策） | [`.claude/skills/e2e/SKILL.md`](./.claude/skills/e2e/SKILL.md) | `e2e` |
 | コントローラ（責務分離・Fat化防止） | [`.claude/skills/controller/SKILL.md`](./.claude/skills/controller/SKILL.md) | `controller` |
 | サービス（責務分離・単一責任） | [`.claude/skills/service/SKILL.md`](./.claude/skills/service/SKILL.md) | `service` |
 | マイグレーション（スキーマ変更） | [`.claude/skills/migration/SKILL.md`](./.claude/skills/migration/SKILL.md) | `migration` |
 | Entity（Doctrine エンティティ） | [`.claude/skills/entity/SKILL.md`](./.claude/skills/entity/SKILL.md) | `entity` |
 | Repository（データアクセス） | [`.claude/skills/repository/SKILL.md`](./.claude/skills/repository/SKILL.md) | `repository` |
 | FormType（フォーム） | [`.claude/skills/formtype/SKILL.md`](./.claude/skills/formtype/SKILL.md) | `formtype` |
+| セキュリティ（認証・認可・CSRF・IDOR） | [`.claude/skills/security/SKILL.md`](./.claude/skills/security/SKILL.md) | `security` |
+| Twig 拡張・テンプレート（XSS・上書き） | [`.claude/skills/twig-template/SKILL.md`](./.claude/skills/twig-template/SKILL.md) | `twig-template` |
+| イベント（Subscriber・テンプレート/Doctrine イベント） | [`.claude/skills/event-subscriber/SKILL.md`](./.claude/skills/event-subscriber/SKILL.md) | `event-subscriber` |
+| プラグイン（ライフサイクル・配置・拡張） | [`.claude/skills/plugin/SKILL.md`](./.claude/skills/plugin/SKILL.md) | `plugin` |
+| 受注処理（PurchaseFlow の Processor/Validator） | [`.claude/skills/purchase-flow/SKILL.md`](./.claude/skills/purchase-flow/SKILL.md) | `purchase-flow` |
+| メール（MailService・テンプレート・MailHistory） | [`.claude/skills/mail/SKILL.md`](./.claude/skills/mail/SKILL.md) | `mail` |
+| カスタマイズ（app/Customize での拡張・上書き・デコレーション） | [`.claude/skills/customize/SKILL.md`](./.claude/skills/customize/SKILL.md) | `customize` |
+| CSV 入出力（CsvImport/Export・CSV 定義） | [`.claude/skills/csv/SKILL.md`](./.claude/skills/csv/SKILL.md) | `csv` |
+| コンソールコマンド（Symfony Console・バッチ） | [`.claude/skills/command/SKILL.md`](./.claude/skills/command/SKILL.md) | `command` |
 | 責務分離レビュー（実装直後の自己チェック・全層） | [`.claude/skills/review-responsibility/SKILL.md`](./.claude/skills/review-responsibility/SKILL.md) | `review-responsibility` |
 
 > 規約は必要になった時点で `.claude/skills/<name>/SKILL.md` を 1 ファイル追加して足す（`.codex`/`.agents` は symlink で自動共有）。

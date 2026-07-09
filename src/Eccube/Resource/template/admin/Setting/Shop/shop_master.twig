@@ -293,6 +293,20 @@ file that was distributed with this source code.
                         </div>
                     </div>
                     <div class="card rounded border-0 mb-4">
+                        <div class="card-header"><span>{{ 'admin.setting.shop.shop.option_csv'|trans }}</span></div>
+                        <div id="ex-shop-csv" class="card-body">
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.shop.shop.option_sanitize_csv_formulas'|trans }}"><span>{{ 'admin.setting.shop.shop.option_sanitize_csv_formulas'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i></div>
+                                </div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.option_sanitize_csv_formulas) }}
+                                    {{ form_errors(form.option_sanitize_csv_formulas) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card rounded border-0 mb-4">
                         <div class="card-header"><span>{{ 'admin.setting.shop.shop.option_tax'|trans }}</span></div>
                         <div id="ex-shop-tax" class="card-body">
                              <div class="row">
@@ -383,6 +397,30 @@ file that was distributed with this source code.
                                 <div class="col mb-2">
                                     {{ form_widget(form.option_cookie_consent) }}
                                     {{ form_errors(form.option_cookie_consent) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header"><span>{{ 'admin.setting.shop.shop.agent_commerce'|trans }}</span></div>
+                        <div id="ex-shop-agent-commerce" class="card-body">
+                            <p class="text-muted">{{ 'admin.setting.shop.shop.agent_commerce.description'|trans }}</p>
+                            <div class="row mb-3">
+                                <div class="col-3">
+                                    <span>{{ 'admin.setting.shop.shop.agent_commerce.acp_checkout_enabled'|trans }}</span>
+                                </div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.acp_checkout_enabled) }}
+                                    {{ form_errors(form.acp_checkout_enabled) }}
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-3">
+                                    <span>{{ 'admin.setting.shop.shop.agent_commerce.ucp_checkout_enabled'|trans }}</span>
+                                </div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.ucp_checkout_enabled) }}
+                                    {{ form_errors(form.ucp_checkout_enabled) }}
                                 </div>
                             </div>
                         </div>

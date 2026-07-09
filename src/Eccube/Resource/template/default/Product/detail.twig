@@ -107,10 +107,10 @@ file that was distributed with this source code.
 
         {% if form.classcategory_id2 is defined %}
         fnSetClassCategories(
-            $('#form1'), {{ form.classcategory_id2.vars.value|json_encode|raw }}
+            $('#form1'), {{ form.classcategory_id2.vars.value|json_encode_safe }}
         );
         {% elseif form.classcategory_id1 is defined %}
-        eccube.checkStock($('#form1'), {{ Product.id }}, {{ form.classcategory_id1.vars.value|json_encode|raw }}, null);
+        eccube.checkStock($('#form1'), {{ Product.id }}, {{ form.classcategory_id1.vars.value|json_encode_safe }}, null);
         {% endif %}
     </script>
     <script>
@@ -248,32 +248,9 @@ file that was distributed with this source code.
             $('.ec-modal').hide()
         });
     </script>
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org/",
-        "@type": "Product",
-        "name": "{{ Product.name }}",
-        "image": [
-            {% for img in Product.ProductImage %}
-                "{{ app.request.schemeAndHttpHost }}{{ asset(img, 'save_image') }}"{% if not loop.last %},{% endif %}
-
-            {% else %}
-                "{{ app.request.schemeAndHttpHost }}{{ asset(''|no_image_product, 'save_image') }}"
-            {% endfor %}
-        ],
-        "description": "{{ Product.description_list | default(Product.description_detail) | replace({'\n': '', '\r': ''}) | slice(0,300) }}",
-        {% if Product.code_min %}
-        "sku": "{{ Product.code_min }}",
-        {% endif %}
-        "offers": {
-            "@type": "Offer",
-            "url": "{{ url('product_detail', {'id': Product.id}) }}",
-            "priceCurrency": "{{ eccube_config.currency }}",
-            "price": {{ Product.getPrice02IncTaxMin ? Product.getPrice02IncTaxMin : 0}},
-            "availability": "{{ Product.stock_find ? "InStock" : "OutOfStock" }}"
-        }
-    }
-    </script>
+    {% if product_json_ld is defined and product_json_ld %}
+    <script type="application/ld+json">{{ product_json_ld|json_ld }}</script>
+    {% endif %}
 {% endblock %}
 
 {% block main %}

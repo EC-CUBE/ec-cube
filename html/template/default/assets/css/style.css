@@ -10582,6 +10582,7 @@ Styleguide 11.2
   min-height: 100dvh;
   transition: transform 0.3s;
   background: #fff;
+  padding-top: calc(var(--ec-mode-alert-strips, 0) * 50px);
 }
 .ec-layoutRole .ec-layoutRole__contentTop {
   padding: 0;
@@ -10757,6 +10758,10 @@ Styleguide 11.2
 .ec-headerNaviRole .ec-headerNaviRole__cart a:hover {
   text-decoration: none;
 }
+.ec-headerNavSP,
+.ec-drawerRoleClose {
+  top: calc(var(--ec-mode-alert-strips, 0) * 50px + 10px);
+}
 .ec-headerNavSP {
   display: block;
   cursor: pointer;
@@ -10770,9 +10775,8 @@ Styleguide 11.2
   color: black;
   background: white;
   position: fixed;
-  top: 10px;
   left: 10px;
-  z-index: 1000;
+  z-index: 10001;
 }
 .ec-headerNavSP .fas {
   vertical-align: top;
@@ -11253,9 +11257,8 @@ Styleguide 11.2.6
   color: black;
   background: white;
   position: fixed;
-  top: 10px;
   left: 270px;
-  z-index: 1000;
+  z-index: 10001;
 }
 .ec-drawerRoleClose .fas {
   position: absolute;
@@ -11313,14 +11316,21 @@ Styleguide 11.2.7
 .ec-itemNavAccordion {
   display: none;
 }
-.ec-maintenanceAlert {
-  background: steelblue;
-  height: 50px;
+.ec-modeAlertStack {
   position: fixed;
   top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+}
+.ec-maintenanceAlert {
+  background: steelblue;
+  flex-shrink: 0;
+  height: 50px;
   width: 100%;
   color: white;
-  z-index: 9999;
   display: flex;
   font-weight: bold;
 }
@@ -11336,18 +11346,12 @@ Styleguide 11.2.7
   fill: #fff;
   vertical-align: top;
 }
-.ec-maintenanceAlert + * {
-  margin-top: 50px;
-}
-/* devモードの追加 */
 .ec-debugModeAlert {
   background: red;
+  flex-shrink: 0;
   height: 50px;
-  position: fixed;
-  top: 0;
   width: 100%;
   color: white;
-  z-index: 9999;
   display: flex;
   font-weight: bold;
 }
@@ -11363,11 +11367,26 @@ Styleguide 11.2.7
   fill: #fff;
   vertical-align: top;
 }
-.ec-debugModeAlert + * {
-  margin-top: 50px;
+.ec-adminLoginAlert {
+  background: #fd7e14;
+  flex-shrink: 0;
+  height: 50px;
+  width: 100%;
+  color: white;
+  display: flex;
+  font-weight: bold;
 }
-.ec-twoModeAlert + * {
-  margin-top: 100px;
+.ec-adminLoginAlert > * {
+  margin: auto;
+}
+.ec-adminLoginAlert .ec-adminLoginAlert__icon {
+  display: inline-block;
+  margin-right: 1rem;
+  width: 20px;
+  height: 20px;
+  color: #fff;
+  fill: #fff;
+  vertical-align: top;
 }
 /**
 メディアクエリ

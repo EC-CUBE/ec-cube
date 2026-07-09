@@ -49,8 +49,8 @@ test.describe('Admin Customer (EA05)', () => {
     await page.locator('#admin_customer_address_addr02').fill('ブリーゼタワー13F');
     await page.locator('#admin_customer_email').fill(createdCustomerEmail);
     await page.locator('#admin_customer_phone_number').fill('111111111');
-    await page.locator('#admin_customer_plain_password_first').fill('password1234');
-    await page.locator('#admin_customer_plain_password_second').fill('password1234');
+    await page.locator('#admin_customer_plain_password_first').fill('EccubeE2ePassword1');
+    await page.locator('#admin_customer_plain_password_second').fill('EccubeE2ePassword1');
 
     // Submit
     await page.locator('#customer_form .c-conversionArea button[type="submit"]').click();
@@ -234,8 +234,8 @@ test.describe('Admin Customer (EA05)', () => {
     await page.locator('#admin_customer_address_addr02').fill('梅田');
     await page.locator('#admin_customer_email').fill(cancelTestEmail);
     await page.locator('#admin_customer_phone_number').fill('111111111');
-    await page.locator('#admin_customer_plain_password_first').fill('password1234');
-    await page.locator('#admin_customer_plain_password_second').fill('password1234');
+    await page.locator('#admin_customer_plain_password_first').fill('EccubeE2ePassword1');
+    await page.locator('#admin_customer_plain_password_second').fill('EccubeE2ePassword1');
     await page.locator('#customer_form .c-conversionArea button[type="submit"]').click();
     await page.waitForLoadState('load');
     await expect(page.locator(successAlert)).toContainText('保存しました');
@@ -297,8 +297,8 @@ test.describe('Admin Customer (EA05)', () => {
     await page.locator('#admin_customer_address_addr02').fill('梅田');
     await page.locator('#admin_customer_email').fill(editTestEmail);
     await page.locator('#admin_customer_phone_number').fill('111111111');
-    await page.locator('#admin_customer_plain_password_first').fill('password1234');
-    await page.locator('#admin_customer_plain_password_second').fill('password1234');
+    await page.locator('#admin_customer_plain_password_first').fill('EccubeE2ePassword1');
+    await page.locator('#admin_customer_plain_password_second').fill('EccubeE2ePassword1');
     await page.locator('#customer_form .c-conversionArea button[type="submit"]').click();
     await page.waitForLoadState('load');
     await expect(page.locator(successAlert)).toContainText('保存しました');
