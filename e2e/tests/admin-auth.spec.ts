@@ -1,11 +1,12 @@
 import { test, expect } from '@playwright/test';
+import { ADMIN_PASSWORD, ADMIN_ROUTE, ADMIN_USER } from '../config/default.config';
 
-const adminRoute = process.env.ECCUBE_ADMIN_ROUTE || 'admin';
+const adminRoute = ADMIN_ROUTE;
 
 // 認証テストはログイン/ログアウトを繰り返すため、共有storageStateを使わない
 test.use({ storageState: { cookies: [], origins: [] } });
 
-async function loginAsAdmin(page: import('@playwright/test').Page, loginId = process.env.ADMIN_USER || 'admin', password = process.env.ADMIN_PASSWORD || 'password') {
+async function loginAsAdmin(page: import('@playwright/test').Page, loginId = ADMIN_USER, password = ADMIN_PASSWORD) {
   await page.goto(`/${adminRoute}/`);
   await page.locator('#login_id').fill(loginId);
   await page.locator('#password').fill(password);
@@ -121,11 +122,11 @@ test.describe('Admin Authentication (EA02)', () => {
 
     // ログアウトして旧パスワードではログインできないことを確認
     await logoutAsAdmin(page);
-    await submitLoginForm(page, 'admin', 'password');
+    await submitLoginForm(page, ADMIN_USER, ADMIN_PASSWORD);
     await expect(page.locator('#form1 > div:nth-child(5) > span')).toContainText('ログインできませんでした。');
 
     // password1 でログインできることを確認
-    await loginAsAdmin(page, 'admin', password1);
+    await loginAsAdmin(page, ADMIN_USER, password1);
 
     // 画面右上のパスワード変更で password2 に変更する
     await page.goto(`/${adminRoute}/change_password`);
@@ -139,10 +140,10 @@ test.describe('Admin Authentication (EA02)', () => {
 
     // password1 ではログインできないことを確認
     await logoutAsAdmin(page);
-    await submitLoginForm(page, 'admin', password1);
+    await submitLoginForm(page, ADMIN_USER, password1);
     await expect(page.locator('#form1 > div:nth-child(5) > span')).toContainText('ログインできませんでした。');
 
     // password2 でログインできることを確認
-    await loginAsAdmin(page, 'admin', password2);
+    await loginAsAdmin(page, ADMIN_USER, password2);
   });
 });
