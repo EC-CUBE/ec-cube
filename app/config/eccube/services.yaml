@@ -247,7 +247,9 @@ services:
         arguments:
             $projectDir: '%kernel.project_dir%'
             $envPathOverrides:
-                ucp_signing: '%env(ECCUBE_AGENT_COMMERCE_UCP_SIGNING_KEY)%'
+                ucp_signing: '%env(default::string:ECCUBE_AGENT_COMMERCE_UCP_SIGNING_KEY)%'
+                # ACP Webhook (Merchant-Signature) の共有シークレット保管先 (#6776、outbound 送出は後続 PR)。
+                acp_webhook: '%env(default::string:ECCUBE_AGENT_COMMERCE_ACP_WEBHOOK_SECRET)%'
 
     Eccube\Service\AgentCommerce\Security\KeyStoreInterface:
         alias: Eccube\Service\AgentCommerce\Security\FilesystemKeyStore
