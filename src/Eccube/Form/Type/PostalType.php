@@ -76,7 +76,6 @@ class PostalType extends AbstractType
             'attr' => [
                 'class' => 'p-postal-code',
                 'placeholder' => 'common.postal_code_sample',
-                'autocomplete' => 'postal-code',
             ],
             'trim' => true,
         ]);

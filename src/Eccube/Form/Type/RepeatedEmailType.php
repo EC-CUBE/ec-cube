@@ -53,13 +53,11 @@ class RepeatedEmailType extends AbstractType
             'first_options' => [
                 'attr' => [
                     'placeholder' => 'common.mail_address_sample',
-                    'autocomplete' => 'email',
                 ],
             ],
             'second_options' => [
                 'attr' => [
                     'placeholder' => 'common.repeated_confirm',
-                    'autocomplete' => 'email',
                 ],
             ],
             'error_bubbling' => false,

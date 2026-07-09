@@ -97,7 +97,6 @@ class NameType extends AbstractType
             'lastname_options' => [
                 'attr' => [
                     'placeholder' => 'common.last_name',
-                    'autocomplete' => 'family-name',
                 ],
                 'constraints' => [
                     new Assert\Length([
@@ -112,7 +111,6 @@ class NameType extends AbstractType
             'firstname_options' => [
                 'attr' => [
                     'placeholder' => 'common.first_name',
-                    'autocomplete' => 'given-name',
                 ],
                 'constraints' => [
                     new Assert\Length([
