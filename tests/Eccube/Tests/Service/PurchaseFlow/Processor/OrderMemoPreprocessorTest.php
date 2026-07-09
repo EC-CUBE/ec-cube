@@ -23,6 +23,14 @@ use Eccube\Service\PurchaseFlow\Processor\OrderMemoPreprocessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
+/**
+ * 受注管理用メモのコピー処理(スナップショット・上書き)の単体テスト。
+ *
+ * 注文確定時点の商品メモを商品明細へ「常に上書き」でコピーする(Issue #6821 §3.2)。
+ * 追記や冪等判定は行わない。「確定後に商品側メモを変更しても既存受注明細のメモは
+ * 変わらない」(§8)という要件は、本 Preprocessor を order フローに登録せず
+ * shopping フローでのみ実行することで担保する(配線は OrderMemoFlowTest が検証)。
+ */
 final class OrderMemoPreprocessorTest extends EccubeTestCase
 {
     private ?OrderMemoPreprocessor $processor = null;
@@ -63,27 +71,11 @@ final class OrderMemoPreprocessorTest extends EccubeTestCase
         }
     }
 
-    public function testSameMemoIsNotAppendedTwice(): void
+    public function testExistingMemoIsOverwritten(): void
     {
-        $this->Product->setOrderMemo('梱包時は割れ物注意');
-
-        // 既に同一文言が入っている明細に対しては追記しない(冪等)
-        foreach ($this->Order->getProductOrderItems() as $OrderItem) {
-            $OrderItem->setOrderMemo('梱包時は割れ物注意');
-        }
-
-        $this->processor->process($this->Order, new PurchaseContext());
-
-        foreach ($this->Order->getProductOrderItems() as $OrderItem) {
-            $this->assertSame('梱包時は割れ物注意', $OrderItem->getOrderMemo());
-        }
-    }
-
-    public function testDifferentMemoIsAppended(): void
-    {
+        // 明細に既存メモがあっても、確定時点の商品メモで常に上書きする(追記しない)。
         $this->Product->setOrderMemo('商品メモ');
 
-        // 既存メモがある明細には、改行区切りで追記し既存メモは残す
         foreach ($this->Order->getProductOrderItems() as $OrderItem) {
             $OrderItem->setOrderMemo('既存メモ');
         }
@@ -91,98 +83,37 @@ final class OrderMemoPreprocessorTest extends EccubeTestCase
         $this->processor->process($this->Order, new PurchaseContext());
 
         foreach ($this->Order->getProductOrderItems() as $OrderItem) {
-            $this->assertSame("既存メモ\n商品メモ", $OrderItem->getOrderMemo());
+            $this->assertSame('商品メモ', $OrderItem->getOrderMemo());
         }
     }
 
-    public function testPartialMatchIsStillAppended(): void
+    public function testNullProductMemoOverwritesExistingMemoToNull(): void
     {
-        // 商品メモが既存メモ行の部分文字列に偶然含まれていても, 行として一致しなければ追記する.
-        $this->Product->setOrderMemo('注意');
+        // 商品メモが未設定(null)なら、明細の既存メモも null で上書きされる。
+        $this->Product->setOrderMemo(null);
 
         foreach ($this->Order->getProductOrderItems() as $OrderItem) {
-            $OrderItem->setOrderMemo('取扱注意事項あり');
+            $OrderItem->setOrderMemo('既存メモ');
         }
 
         $this->processor->process($this->Order, new PurchaseContext());
 
         foreach ($this->Order->getProductOrderItems() as $OrderItem) {
-            $this->assertSame("取扱注意事項あり\n注意", $OrderItem->getOrderMemo());
+            $this->assertNull($OrderItem->getOrderMemo());
         }
     }
 
-    public function testExactLineMatchInMultilineMemoIsNotAppended(): void
+    public function testChangedProductMemoIsReflectedOnReprocess(): void
     {
-        // 複数行メモのうち1行が商品メモと完全一致する場合は追記しない(冪等).
-        $this->Product->setOrderMemo('商品メモ');
+        // 同一フロー内で再処理した場合、常に最新の商品メモで上書きされる(スナップショット)。
+        $this->Product->setOrderMemo('旧メモ');
+        $this->processor->process($this->Order, new PurchaseContext());
 
-        foreach ($this->Order->getProductOrderItems() as $OrderItem) {
-            $OrderItem->setOrderMemo("他メモ\n商品メモ");
-        }
-
+        $this->Product->setOrderMemo('新メモ');
         $this->processor->process($this->Order, new PurchaseContext());
 
         foreach ($this->Order->getProductOrderItems() as $OrderItem) {
-            $this->assertSame("他メモ\n商品メモ", $OrderItem->getOrderMemo());
-        }
-    }
-
-    public function testMultilineMemoAppendsOnlyMissingLines(): void
-    {
-        // 複数行の商品メモのうち一部行のみが既存メモに含まれる場合, 不足行だけを追記する.
-        // ブロック単位照合だと商品メモ全体を再追記し "商品メモ\n商品メモ\n追加メモ" のように重複する.
-        $this->Product->setOrderMemo("商品メモ\n追加メモ");
-
-        foreach ($this->Order->getProductOrderItems() as $OrderItem) {
-            $OrderItem->setOrderMemo('商品メモ');
-        }
-
-        $this->processor->process($this->Order, new PurchaseContext());
-
-        foreach ($this->Order->getProductOrderItems() as $OrderItem) {
-            $this->assertSame("商品メモ\n追加メモ", $OrderItem->getOrderMemo());
-        }
-    }
-
-    public function testMultilineMemoIsIdempotentOnRerun(): void
-    {
-        // 複数行の商品メモを 2 回処理しても重複しない(冪等).
-        $this->Product->setOrderMemo("一行目\n二行目");
-
-        $this->processor->process($this->Order, new PurchaseContext());
-        $this->processor->process($this->Order, new PurchaseContext());
-
-        foreach ($this->Order->getProductOrderItems() as $OrderItem) {
-            $this->assertSame("一行目\n二行目", $OrderItem->getOrderMemo());
-        }
-    }
-
-    public function testWhitespacePaddedMemoIsTrimmedOnAppend(): void
-    {
-        // フォーム保存(trim なし)の前後空白付きメモは trimAll で正規化して追記する.
-        $this->Product->setOrderMemo('  梱包注意  ');
-
-        $this->processor->process($this->Order, new PurchaseContext());
-
-        foreach ($this->Order->getProductOrderItems() as $OrderItem) {
-            $this->assertSame('梱包注意', $OrderItem->getOrderMemo());
-        }
-    }
-
-    public function testWhitespaceOnlyDifferenceIsNotDuplicated(): void
-    {
-        // 既存行は CSV 取込で trim 済み('梱包注意')。商品メモが前後空白付き('梱包注意 ')でも
-        // 正規化後は同一行となり、重複追記されない(入力経路差に頑健).
-        $this->Product->setOrderMemo('梱包注意 ');
-
-        foreach ($this->Order->getProductOrderItems() as $OrderItem) {
-            $OrderItem->setOrderMemo('梱包注意');
-        }
-
-        $this->processor->process($this->Order, new PurchaseContext());
-
-        foreach ($this->Order->getProductOrderItems() as $OrderItem) {
-            $this->assertSame('梱包注意', $OrderItem->getOrderMemo());
+            $this->assertSame('新メモ', $OrderItem->getOrderMemo());
         }
     }
 
