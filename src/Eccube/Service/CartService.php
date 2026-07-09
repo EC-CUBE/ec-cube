@@ -98,7 +98,9 @@ class CartService
      */
     public function getPersistedCarts(): array
     {
-        return $this->cartRepository->findBy(['Customer' => $this->getUser()]);
+        // agent_owned (エージェントコマースの CheckoutSession 所有) のカートは
+        // Web ストアフロントの操作対象から除外する。
+        return $this->cartRepository->findBy(['Customer' => $this->getUser(), 'agent_owned' => false]);
     }
 
     /**
@@ -114,7 +116,7 @@ class CartService
             return [];
         }
 
-        return $this->cartRepository->findBy(['cart_key' => $cartKeys], ['id' => 'ASC']);
+        return $this->cartRepository->findBy(['cart_key' => $cartKeys, 'agent_owned' => false], ['id' => 'ASC']);
     }
 
     /**

@@ -71,6 +71,15 @@ test.describe('Admin Basic Info (EA07)', () => {
     // --- CREATE ---
     await page.goto(`/${adminRoute}/setting/shop/payment`);
     await page.waitForLoadState('load');
+    // 別コンテキストの front 操作で admin セッションが無効化されることがあるため、
+    // 再ログイン→未遷移なら payment へ再 goto し、一覧描画(.c-pageTitle)を待ってから
+    // 件数取得・新規作成ボタンを押す（btn-ec-regular 不在による click timeout 回避）。
+    await ensureAdminLoggedIn(page);
+    if (!page.url().includes('/payment')) {
+      await page.goto(`/${adminRoute}/setting/shop/payment`);
+      await page.waitForLoadState('load');
+    }
+    await expect(page.locator('.c-pageTitle')).toContainText('支払方法一覧');
     const beforeCount = await page.locator('.c-contentsArea__primaryCol li.sortable-item').count();
 
     await page.locator('.c-contentsArea__primaryCol .btn-ec-regular').click();
@@ -87,6 +96,7 @@ test.describe('Admin Basic Info (EA07)', () => {
     // Verify on list
     await page.goto(`/${adminRoute}/setting/shop/payment`);
     await page.waitForLoadState('load');
+    await expect(page.locator('.c-pageTitle')).toContainText('支払方法一覧');
     const afterCreateCount = await page.locator('.c-contentsArea__primaryCol li.sortable-item').count();
     expect(afterCreateCount).toBe(beforeCount + 1);
     // New payment appears first (nth-child(2) because list has a header item)
@@ -105,6 +115,7 @@ test.describe('Admin Basic Info (EA07)', () => {
 
     await page.goto(`/${adminRoute}/setting/shop/payment`);
     await page.waitForLoadState('load');
+    await expect(page.locator('.c-pageTitle')).toContainText('支払方法一覧');
     await expect(page.locator('.c-contentsArea__primaryCol .c-primaryCol .card-body ul li:nth-child(2)')).toContainText(paymentNameEdited);
 
     // --- DELETE ---
@@ -119,6 +130,7 @@ test.describe('Admin Basic Info (EA07)', () => {
     // Verify count is back to original
     await page.goto(`/${adminRoute}/setting/shop/payment`);
     await page.waitForLoadState('load');
+    await expect(page.locator('.c-pageTitle')).toContainText('支払方法一覧');
     const afterDeleteCount = await page.locator('.c-contentsArea__primaryCol li.sortable-item').count();
     expect(afterDeleteCount).toBe(beforeCount);
   });
@@ -570,7 +582,10 @@ test.describe('Admin Basic Info (EA07)', () => {
 
     // Select quantity if needed, then add to cart
     await frontPage.locator('.ec-productRole__btn button[type="submit"]').first().click();
-    await frontPage.waitForLoadState('load');
+    // カート投入は product_add_cart への AJAX で画面遷移しないため、waitForLoadState('load') は
+    // 即時 resolve してしまう。成功モーダル表示でカート反映完了を待つ。
+    await expect(frontPage.locator('div.ec-modal-box')).toBeVisible({ timeout: 10_000 });
+    await expect(frontPage.locator('#ec-modal-header')).toContainText('カートに追加しました');
 
     // Go to cart and proceed to checkout
     await frontPage.goto('/cart');
@@ -650,7 +665,10 @@ test.describe('Admin Basic Info (EA07)', () => {
     await frontPage.goto('/products/detail/2');
     await frontPage.waitForLoadState('load');
     await frontPage.locator('.ec-productRole__btn button[type="submit"]').first().click();
-    await frontPage.waitForLoadState('load');
+    // カート投入は product_add_cart への AJAX で画面遷移しないため、waitForLoadState('load') は
+    // 即時 resolve してしまう。成功モーダル表示でカート反映完了を待つ。
+    await expect(frontPage.locator('div.ec-modal-box')).toBeVisible({ timeout: 10_000 });
+    await expect(frontPage.locator('#ec-modal-header')).toContainText('カートに追加しました');
 
     // Go to cart -> checkout
     await frontPage.goto('/cart');
@@ -714,8 +732,8 @@ test.describe('Admin Basic Info (EA07)', () => {
     await page.locator('#entry_phone_number').fill('111-111-111');
     await page.locator('#entry_email_first').fill(email1);
     await page.locator('#entry_email_second').fill(email1);
-    await page.locator('#entry_plain_password_first').fill('password1234');
-    await page.locator('#entry_plain_password_second').fill('password1234');
+    await page.locator('#entry_plain_password_first').fill('EccubeE2ePassword1');
+    await page.locator('#entry_plain_password_second').fill('EccubeE2ePassword1');
     await page.locator('#entry_user_policy_check').check();
     await page.locator('button.ec-blockBtn--action[type="submit"]').click();
     await page.waitForLoadState('load');
@@ -776,8 +794,8 @@ test.describe('Admin Basic Info (EA07)', () => {
     await page.locator('#entry_phone_number').fill('111-111-111');
     await page.locator('#entry_email_first').fill(email2);
     await page.locator('#entry_email_second').fill(email2);
-    await page.locator('#entry_plain_password_first').fill('password1234');
-    await page.locator('#entry_plain_password_second').fill('password1234');
+    await page.locator('#entry_plain_password_first').fill('EccubeE2ePassword1');
+    await page.locator('#entry_plain_password_second').fill('EccubeE2ePassword1');
     await page.locator('#entry_user_policy_check').check();
     await page.locator('button.ec-blockBtn--action[type="submit"]').click();
     await page.waitForLoadState('load');

@@ -93,8 +93,8 @@ async function submitEntryFormWithConfirm(page: import('@playwright/test').Page)
   await page.locator('#entry_phone_number').fill('111-111-111');
   await page.locator('#entry_email_first').fill(email);
   await page.locator('#entry_email_second').fill(email);
-  await page.locator('#entry_plain_password_first').fill('password1234');
-  await page.locator('#entry_plain_password_second').fill('password1234');
+  await page.locator('#entry_plain_password_first').fill('EccubeE2ePassword1');
+  await page.locator('#entry_plain_password_second').fill('EccubeE2ePassword1');
   await page.locator('#entry_user_policy_check').check();
 
   // Click agree/submit button
@@ -128,8 +128,8 @@ async function submitEntryFormWithoutConfirm(page: import('@playwright/test').Pa
   await page.locator('#entry_phone_number').fill('111-111-111');
   await page.locator('#entry_email_first').fill(email);
   await page.locator('#entry_email_second').fill(email);
-  await page.locator('#entry_plain_password_first').fill('password1234');
-  await page.locator('#entry_plain_password_second').fill('password1234');
+  await page.locator('#entry_plain_password_first').fill('EccubeE2ePassword1');
+  await page.locator('#entry_plain_password_second').fill('EccubeE2ePassword1');
 
   // Submit without checking user_policy_check (goes to confirm without mode=complete)
   await page.locator('button.ec-blockBtn--action[type="submit"]').click();
@@ -934,7 +934,7 @@ test.describe('Throttling (EF09)', () => {
 
     // Create a new member with 2FA enabled
     const loginId = 'admin_2fa_' + Date.now().toString(36);
-    const memberPassword = 'password1234';
+    const memberPassword = 'EccubeE2ePassword1';
 
     await adminPage.goto(`/${adminRoute}/setting/system/member/new`);
     await adminPage.waitForLoadState('load');

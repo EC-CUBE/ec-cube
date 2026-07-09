@@ -46,8 +46,8 @@ final class EntryTypeTest extends AbstractTypeTestCase
             'second' => 'eccube1@example.com',
         ],
         'plain_password' => [
-            'first' => '1234567890ab',
-            'second' => '1234567890ab',
+            'first' => '1234567890abcde',
+            'second' => '1234567890abcde',
         ],
         'birth' => [
             'year' => '1980',

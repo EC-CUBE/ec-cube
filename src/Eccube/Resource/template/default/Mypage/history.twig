@@ -127,6 +127,12 @@ file that was distributed with this source code.
                             <dt>{{ 'front.mypage.delivery_time'|trans }} :</dt>
                             <dd>{{ Shipping.shipping_delivery_time|default('common.select__unspecified'|trans) }}</dd>
                         </div>
+                        {% if Shipping.tracking_number %}
+                            <div class="ec-definitions--soft">
+                                <dt>{{ 'front.mypage.tracking_number'|trans }} :</dt>
+                                <dd>{{ Shipping.tracking_number }}</dd>
+                            </div>
+                        {% endif %}
                     {% endfor %}
                 </div>
                 <div class="ec-orderPayment">

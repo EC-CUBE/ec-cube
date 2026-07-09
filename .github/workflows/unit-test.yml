@@ -44,6 +44,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
 
+      # CVE-2026-24765 (GHSA-vvj3-c3rp-c85p) 対策 (多層防御):
+      # 悪意ある *.coverage ファイルが PHPUnit の PHPT ランナーで unserialize され
+      # RCE に至るのを防ぐため、テスト実行前に削除する。
+      - name: Remove potentially malicious coverage files
+        run: find . -name "*.coverage" -delete
+
       ## Docker Hub からの pull はタイムアウトで CI が不安定になるため、
       ## DB はコンテナではなく setup アクション (apt/同梱版) でインストールする
       - name: Setup MySQL
@@ -77,7 +83,7 @@ jobs:
           PGPASSWORD=password psql -h 127.0.0.1 -U postgres -c 'SELECT VERSION()'
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc  # v2
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240  # v2
         with:
           php-version: ${{ matrix.php }}
           github-token: ''
@@ -110,6 +116,14 @@ jobs:
           bin/console doctrine:database:create
           bin/console doctrine:schema:create
           bin/console eccube:fixtures:load
+
+      # Agent Commerce (#6794) の UCP スキーマ契約テスト用に UCP 公式 schema を取得する。
+      # リポジトリには同梱しない (Apache-2.0)。docblock の参照バージョンと一致するリリースタグ
+      # v2026-04-08 に固定し、var/ (gitignore) へ clone する。未取得環境では該当テストは skip。
+      - name: Fetch UCP spec schemas (tag v2026-04-08)
+        run: |
+          git clone --filter=blob:none --branch v2026-04-08 --single-branch --quiet \
+            https://github.com/Universal-Commerce-Protocol/ucp.git var/agent-commerce-spec/ucp
 
       - name: PHPUnit
         uses: nick-invision/retry@ad984534de44a9489a53aefd81eb77f87c70dc60  # v4.0.0
