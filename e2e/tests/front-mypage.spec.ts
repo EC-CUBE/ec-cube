@@ -1,4 +1,5 @@
 import { test, expect, Page } from '@playwright/test';
+import { ADMIN_PASSWORD, ADMIN_ROUTE, ADMIN_USER, CUSTOMER_PASSWORD, VALID_PASSWORD } from '../config/default.config';
 
 /**
  * Helper: Login as the test customer via /mypage/login.
@@ -7,7 +8,7 @@ async function loginAsTestCustomer(page: Page) {
   await page.goto('/mypage/login');
   await page.waitForLoadState('load');
   await page.locator('input[name="login_email"]').fill('playwright@test.test');
-  await page.locator('input[name="login_pass"]').fill('password');
+  await page.locator('input[name="login_pass"]').fill(CUSTOMER_PASSWORD);
   await page.getByRole('button', { name: 'ログイン' }).click();
   await page.waitForLoadState('load');
 }
@@ -18,15 +19,15 @@ async function loginAsTestCustomer(page: Page) {
  * which may require email confirmation.
  */
 async function createCustomerViaAdmin(page: Page): Promise<{ email: string; password: string }> {
-  const adminRoute = process.env.ECCUBE_ADMIN_ROUTE || 'admin';
+  const adminRoute = ADMIN_ROUTE;
   const email = `test_withdraw_${Date.now()}@example.com`;
-  const password = 'EccubeE2ePassword1';
+  const password = VALID_PASSWORD;
 
   const adminPage = await page.context().newPage();
   await adminPage.goto(`/${adminRoute}/`);
   await adminPage.waitForLoadState('load');
-  await adminPage.locator('#login_id').fill(process.env.ADMIN_USER || 'admin');
-  await adminPage.locator('#password').fill(process.env.ADMIN_PASSWORD || 'password');
+  await adminPage.locator('#login_id').fill(ADMIN_USER);
+  await adminPage.locator('#password').fill(ADMIN_PASSWORD);
   await adminPage.getByRole('button', { name: 'ログイン' }).click();
   await adminPage.waitForLoadState('load');
 
@@ -165,13 +166,13 @@ async function getLatestOrderNo(page: Page): Promise<string> {
  * on global ordering), and saves the tracking number.
  */
 async function setTrackingNumberViaAdmin(page: Page, orderNo: string, trackingNumber: string) {
-  const adminRoute = process.env.ECCUBE_ADMIN_ROUTE || 'admin';
+  const adminRoute = ADMIN_ROUTE;
 
   const adminPage = await page.context().newPage();
   await adminPage.goto(`/${adminRoute}/`);
   await adminPage.waitForLoadState('load');
-  await adminPage.locator('#login_id').fill(process.env.ADMIN_USER || 'admin');
-  await adminPage.locator('#password').fill(process.env.ADMIN_PASSWORD || 'password');
+  await adminPage.locator('#login_id').fill(ADMIN_USER);
+  await adminPage.locator('#password').fill(ADMIN_PASSWORD);
   await adminPage.getByRole('button', { name: 'ログイン' }).click();
   await adminPage.waitForLoadState('load');
 

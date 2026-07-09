@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { CUSTOMER_PASSWORD } from '../config/default.config';
 
 /**
  * Helper: Add a product to cart and go to the cart page.
@@ -23,7 +24,7 @@ async function loginAsTestCustomer(page: import('@playwright/test').Page) {
   await page.goto('/mypage/login');
   await page.waitForLoadState('load');
   await page.locator('input[name="login_email"]').fill('playwright@test.test');
-  await page.locator('input[name="login_pass"]').fill('password');
+  await page.locator('input[name="login_pass"]').fill(CUSTOMER_PASSWORD);
   await page.getByRole('button', { name: 'ログイン' }).click();
   await page.waitForLoadState('load');
 }
@@ -78,7 +79,7 @@ test.describe('Front Order (EF03)', () => {
     // ショッピングログインページでログイン
     await expect(page).toHaveURL(/\/shopping\/login/);
     await page.locator('input[name="login_email"]').fill('playwright@test.test');
-    await page.locator('input[name="login_pass"]').fill('password');
+    await page.locator('input[name="login_pass"]').fill(CUSTOMER_PASSWORD);
     await page.getByRole('button', { name: 'ログイン' }).click();
     await page.waitForLoadState('load');
 
@@ -352,7 +353,7 @@ test.describe('Front Order (EF03)', () => {
 
     // ログイン
     await page.locator('input[name="login_email"]').fill('playwright@test.test');
-    await page.locator('input[name="login_pass"]').fill('password');
+    await page.locator('input[name="login_pass"]').fill(CUSTOMER_PASSWORD);
     await page.getByRole('button', { name: 'ログイン' }).click();
     await page.waitForLoadState('load');
 
@@ -382,7 +383,7 @@ test.describe('Front Order (EF03)', () => {
 
     // ログイン
     await page.locator('input[name="login_email"]').fill('playwright@test.test');
-    await page.locator('input[name="login_pass"]').fill('password');
+    await page.locator('input[name="login_pass"]').fill(CUSTOMER_PASSWORD);
     await page.getByRole('button', { name: 'ログイン' }).click();
     await page.waitForLoadState('load');
 
@@ -452,7 +453,7 @@ test.describe('Front Order (EF03)', () => {
     await page1.goto('/mypage/login');
     await page1.waitForLoadState('load');
     await page1.locator('input[name="login_email"]').fill('playwright@test.test');
-    await page1.locator('input[name="login_pass"]').fill('password');
+    await page1.locator('input[name="login_pass"]').fill(CUSTOMER_PASSWORD);
     await page1.getByRole('button', { name: 'ログイン' }).click();
     await page1.waitForLoadState('load');
 
@@ -462,7 +463,7 @@ test.describe('Front Order (EF03)', () => {
     await page2.goto('/mypage/login');
     await page2.waitForLoadState('load');
     await page2.locator('input[name="login_email"]').fill('playwright@test.test');
-    await page2.locator('input[name="login_pass"]').fill('password');
+    await page2.locator('input[name="login_pass"]').fill(CUSTOMER_PASSWORD);
     await page2.getByRole('button', { name: 'ログイン' }).click();
     await page2.waitForLoadState('load');
 
@@ -502,7 +503,7 @@ test.describe('Front Order (EF03)', () => {
     await page1.goto('/mypage/login');
     await page1.waitForLoadState('load');
     await page1.locator('input[name="login_email"]').fill('playwright@test.test');
-    await page1.locator('input[name="login_pass"]').fill('password');
+    await page1.locator('input[name="login_pass"]').fill(CUSTOMER_PASSWORD);
     await page1.getByRole('button', { name: 'ログイン' }).click();
     await page1.waitForLoadState('load');
 
@@ -535,7 +536,7 @@ test.describe('Front Order (EF03)', () => {
     await page2.goto('/mypage/login');
     await page2.waitForLoadState('load');
     await page2.locator('input[name="login_email"]').fill('playwright@test.test');
-    await page2.locator('input[name="login_pass"]').fill('password');
+    await page2.locator('input[name="login_pass"]').fill(CUSTOMER_PASSWORD);
     await page2.getByRole('button', { name: 'ログイン' }).click();
     await page2.waitForLoadState('load');
 
@@ -684,7 +685,7 @@ test.describe('Front Order (EF03)', () => {
 
     // Login at shopping login page
     await page.locator('input[name="login_email"]').fill('playwright@test.test');
-    await page.locator('input[name="login_pass"]').fill('password');
+    await page.locator('input[name="login_pass"]').fill(CUSTOMER_PASSWORD);
     await page.getByRole('button', { name: 'ログイン' }).click();
     await page.waitForLoadState('load');
 
