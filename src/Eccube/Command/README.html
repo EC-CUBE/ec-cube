@@ -59,6 +59,8 @@
   <tr><td><code>eccube:plugin:install|enable|disable|uninstall|update</code></td><td>プラグインのライフサイクル操作。</td></tr>
   <tr><td><code>eccube:composer:install|require|update|remove</code></td><td>プラグイン導入に伴う Composer 操作のラッパ。</td></tr>
  </table>
+ <div class="note"><strong><code>eccube:schema:update</code> は Doctrine の <code>doctrine:schema:update</code> を alias で上書きしている</strong>（<code>#[AsCommand(name: 'eccube:schema:update', aliases: ['doctrine:schema:update'])]</code>、<code>OrmUpdateCommand</code> を継承）。
+ 素の Doctrine コマンドと違い、<strong>プラグインのプロキシを一時生成してから差分を取る</strong>ため、トレイト拡張分も含めてスキーマ更新できる（<code>--no-proxy</code> で素の挙動に戻る）。<code>src/Eccube/Command/UpdateSchemaDoctrineCommand.php:38,82</code>。</div>
 </section>
 
 <section data-section="flow" data-customer="true">
