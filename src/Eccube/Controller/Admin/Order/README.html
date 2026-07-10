@@ -79,7 +79,7 @@
   <li><strong>認可・CSRF。</strong> パスは <code>%eccube_admin_route%</code> 配下（admin ファイアウォールで保護）。一括削除・ステータス更新・伝票番号更新など GET 以外の状態変更は CSRF トークンを検証する。</li>
   <li><strong>ルートの <code>{id}</code> が指す対象に注意。</strong> 出荷編集 <code>admin_shipping_edit</code>（<code>/shipping/{id}/edit</code>）の <code>{id}</code> は <strong>Shipping ではなく Order の ID</strong>で、1 受注の全お届け先をまとめて編集する。一方で対応状況・送り状番号の更新（<code>admin_shipping_update_order_status</code> / <code>admin_shipping_update_tracking_number</code>）は <code>ShippingController</code> ではなく <code>OrderController</code> に置かれ、<code>{id}</code> は Shipping の ID を指す。</li>
   <li><strong>発送済（<code>DELIVERED</code>）遷移は全出荷が揃って初めて受注に反映。</strong> 出荷 1 件を発送済にしても、受注ステータスが <code>DELIVERED</code> へ進むのは <strong>受注内の全 Shipping が発送済のときだけ</strong>。未発送の出荷が残る間は当該 Shipping の <code>shippingDate</code> だけ設定される（部分出荷）。</li>
-  <li><strong>ステータス変更が在庫・会員サマリを動かす。</strong> <code>IN_PROGRESS</code>／<code>CANCEL</code> への遷移は商品在庫を増減し、受注に会員が紐づく場合はいずれの遷移でも <code>updateOrderSummary()</code> で購入回数・購入金額を再計算する（受注登録・編集でも同様）。</li>
+  <li><strong>ステータス変更が在庫・会員サマリを更新する。</strong> <code>IN_PROGRESS</code>／<code>CANCEL</code> への遷移は商品在庫を増減し、受注に会員が紐づく場合はいずれの遷移でも <code>updateOrderSummary()</code> で購入回数・購入金額を再計算する（受注登録・編集でも同様）。</li>
   <li><strong>一括削除は物理削除。</strong> <code>bulkDelete()</code> は <code>$em->remove($Order)</code> による物理削除で、論理削除フラグを立てるのではなく受注そのものを消す。</li>
  </ul>
 </section>

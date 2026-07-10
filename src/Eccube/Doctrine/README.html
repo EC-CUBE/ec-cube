@@ -35,7 +35,7 @@
  「クエリの後付け拡張」「日時の UTC 保存」「日本語検索用の DQL 関数」「表示制御用のフィルタ」「Proxy を安全に読むマッピングドライバ」
  「CSV からの初期データ投入」といった<strong>基盤側の仕組み</strong>が対象です。</p>
 
- <div class="note"><strong>区分の凡例（この機構は何のためにあるか）</strong>: <span class="badge">拡張ポイント</span>＝プラグイン/Customize が割り込むための仕組み ／
+ <div class="note"><strong>区分の凡例（この機構は何のためにあるか）</strong>: <span class="badge">拡張ポイント</span>＝プラグイン/Customize が介入するための仕組み ／
  <span class="badge">ドメイン</span>＝EC 業務要件そのもの ／ <span class="badge">portability</span>＝複数 DB・タイムゾーン吸収 ／
  <span class="badge">基盤</span>＝横断インフラ ／ <span class="badge">負債</span>＝歴史的経緯による簡素化候補。
  「拡張ポイントの多さ＝コアの複雑さの主因」を可視化するためのタグ。</div>
@@ -69,7 +69,7 @@ OrderByCustomizer→ OrderByClause[] を addOrderBy で追加</div>
   <tr><td><code>QueryCustomizer</code>（interface）</td><td><code>customize()</code> と <code>getQueryKey()</code> を持つ。対象クエリは queryKey で識別。</td></tr>
   <tr><td><code>Queries</code></td><td>queryKey ごとに Customizer を保持し、<code>customize()</code> で該当分をまとめて適用。</td></tr>
   <tr><td><code>WhereCustomizer</code> / <code>JoinCustomizer</code> / <code>OrderByCustomizer</code>（abstract）</td><td>用途別の基底。<code>createStatements()</code> だけ実装すればよい。</td></tr>
-  <tr><td><code>WhereClause</code></td><td>WHERE 句のファクトリ（<code>eq</code> / <code>like</code> / <code>in</code> / <code>between</code> / <code>gt</code> …）。パラメータバインドまで面倒を見る。</td></tr>
+  <tr><td><code>WhereClause</code></td><td>WHERE 句のファクトリ（<code>eq</code> / <code>like</code> / <code>in</code> / <code>between</code> / <code>gt</code> …）。パラメータバインドまで自動で行う。</td></tr>
   <tr><td><code>JoinClause</code> / <code>OrderByClause</code></td><td>JOIN / ORDER BY を組み立てる値オブジェクト。JoinClause は付随する WHERE / ORDER BY も持てる。</td></tr>
  </table>
  <p>登録は DI タグ <code>eccube.query_customizer</code>（<code>QueryCustomizerPass</code> が収集）。実装が <code>QueryCustomizer</code> を継承していないとコンパイル時に弾かれます。</p>

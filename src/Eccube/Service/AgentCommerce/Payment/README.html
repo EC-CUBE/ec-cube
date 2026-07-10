@@ -52,11 +52,11 @@
 <section data-section="notes" data-customer="false">
  <h2>注意点<span class="dev-only">開発者向け</span></h2>
  <ul>
-  <li><strong>sort_no の機械採用は禁止</strong>。利用可能な支払方法の先頭（sort_no 最小）を採ると、エージェント決済不可能な方法（銀行振込等）が割り当たりハンドラ未通過のまま確定する「沈黙のすり抜け」を招く。リゾルバは登録済みハンドラが扱える <code>Payment</code> のみを候補にし、sort_no は候補内のタイブレークとしてのみ使う。</li>
+  <li><strong>sort_no の機械採用は禁止</strong>。利用可能な支払方法の先頭（sort_no 最小）を採ると、エージェント決済不可能な方法（銀行振込等）が割り当たり、ハンドラ未通過のまま検知されず確定してしまう。リゾルバは登録済みハンドラが扱える <code>Payment</code> のみを候補にし、sort_no は候補内のタイブレークとしてのみ使う。</li>
   <li><code>DefaultAgentPaymentMethodResolver</code> は methodClass 等のプロトコル固有判定をハンドラ側（<code>supports()</code>）に委ね、特定の決済クラスに依存しない（将来 PSP が新 methodClass を出しても無改変で動く）。</li>
   <li><code>PaymentOutcomeStatus</code> は追加認証（EMV-3DS）や外部ハンドオフ（escalation）を<strong>エラーでなく正常な中間状態</strong>として表す。これを受けて <code>CheckoutSession/AgentCheckoutCompletionService</code> がステータス遷移・在庫引当の保持/回収を決める。</li>
   <li><strong><code>handler_id</code> はプラグイン間で一意必須</strong>。同一 <code>handler_id</code> を複数のハンドラが宣言すると <code>resolveByHandlerId()</code> は null でなく <code>RuntimeException</code> を投げ、非決定的なハンドラ選択を fail-fast で防ぐ。</li>
-  <li><strong>候補 Payment は Shipping でなく販売種別（SaleType）起点</strong>で引く。エージェント注文は確定前に <code>Shipping</code> へ配送業者が割り当たらないことがあるため、<code>DefaultAgentPaymentMethodResolver</code> は SaleType → 配送業者 → 利用可能 Payment の順で解決する。既に割当済みの Payment がハンドラ適合ならそれを尊重し（create→complete の引き継ぎ・別リクエストでの再読込に対応）、不適合なら元の割当へ戻して注文を汚さない。</li>
+  <li><strong>候補 Payment は Shipping でなく販売種別（SaleType）起点</strong>で引く。エージェント注文は確定前に <code>Shipping</code> へ配送業者が割り当たらないことがあるため、<code>DefaultAgentPaymentMethodResolver</code> は SaleType → 配送業者 → 利用可能 Payment の順で解決する。既に割当済みの Payment がハンドラ適合ならそれを尊重し（create→complete の引き継ぎ・別リクエストでの再読込に対応）、不適合なら元の割当へ戻して注文の状態を変えない。</li>
  </ul>
 </section>
 
