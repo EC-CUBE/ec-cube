@@ -73,6 +73,9 @@
   <strong>両方の <code>stock</code> を同時に更新</strong>して整合させます。<strong>片方だけ書き換えると表示と実在庫がずれる</strong>ため、在庫を触る処理は必ず両方を更新します。</li>
   <li><strong>金額は文字列で持つ。</strong> <code>Types::DECIMAL</code> のカラム（<code>Order</code> の <code>total</code>・<code>subtotal</code> 等）は
   Doctrine ORM 3.x で <code>?string</code> になります。計算は float ではなく <strong><code>bcmath</code></strong>（<code>bcadd</code>/<code>bcmul</code>/<code>bccomp</code>、スケール 2）で行います。</li>
+  <li><strong>受注金額は <code>OrderItem</code> 明細の合算。</strong> 商品行だけでなく<strong>送料・手数料・値引き・税・ポイントもそれぞれ独立した <code>OrderItem</code> の 1 行</strong>として持ち、
+  明細種別（<code>OrderItemType</code>）で区別します（<code>OrderItem::isProduct()</code> / <code>isDeliveryFee()</code> / <code>isCharge()</code> / <code>isDiscount()</code> / <code>isTax()</code> / <code>isPoint()</code>）。
+  「<code>OrderItem</code> ＝ 購入商品」ではないため、金額を集計・加工するときは明細種別で絞り込みます。</li>
   <li><strong>単一テーブル継承（STI）。</strong> マスタ系や <code>Order</code>・<code>Block</code> 等は 1 テーブルに複数の型を格納し、
   <code>discriminator_type</code> 列で型を区別します（<code>#[ORM\InheritanceType('SINGLE_TABLE')]</code>）。</li>
   <li><strong>作成・更新日時は自動。</strong> <code>create_date</code>/<code>update_date</code>/<code>creator</code> はコアの <code>SaveEventSubscriber</code> が

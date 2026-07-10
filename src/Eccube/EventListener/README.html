@@ -68,6 +68,8 @@
   <tr><td><code>TwoFactorAuthListener</code></td><td><code>CONTROLLER_ARGUMENTS</code> にフックし、二段階認証が必要なコントローラを制御する。</td></tr>
   <tr><td><code>MobileTemplatePathListener</code></td><td>モバイル端末を判定し、テンプレート探索パスを切り替える。</td></tr>
   <tr><td><code>ExceptionListener</code> / <code>LogListener</code></td><td>例外時のエラーページ描画・アクセスログ／エラーログ出力。</td></tr>
+  <tr><td><code>PasswordNormalizationListener</code></td><td>ログイン送信パスワードを <strong>NFKC 正規化</strong>してから firewall に渡す（NIST SP 800-63B 対応）。<code>REQUEST</code> を優先度 <strong>16</strong>（RouterListener の 32 の後・firewall の 8 の前）で購読するのが肝で、この順序を外すと Unicode パスワードの表記ゆれで照合に失敗する。対象は <code>admin_login</code> / <code>mypage_login</code> ルートのみ。</td></tr>
+  <tr><td><code>ForwardOnlyListener</code></td><td>コントローラのアクションに <code>#[ForwardOnly]</code> 属性が付いていると、<strong>内部 forward 専用</strong>となり直接 HTTP アクセスは <code>AccessDeniedHttpException</code>（<code>CONTROLLER</code> でチェック）。URL を持たせず内部遷移だけで呼びたいアクションに使う。</td></tr>
  </table>
 </section>
 

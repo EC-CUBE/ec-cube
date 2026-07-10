@@ -82,7 +82,8 @@
  <ul>
   <li><strong>Fat コントローラを増やさない。</strong> 金額・在庫・送料・ポイント等の計算、<code>$em->persist()</code>/<code>$em->flush()</code> を伴う業務的な永続化、複数 Repository をまたぐ処理・外部 API・メール送信・ファイル IO がアクションに混ざり始めたら Service（受注処理は PurchaseFlow）へ抽出する。行数で線引きしない。</li>
   <li><strong>認可はファイアウォール＋ロールで制御。</strong> 管理アクションは必ず <code>%eccube_admin_route%</code> 配下に置く（admin ファイアウォールで認証が要求される）。EC-CUBE コアは個別の <code>#[IsGranted]</code> ではなくファイアウォールで守る点に注意。</li>
-  <li><strong>CSRF: GET 以外の状態変更はトークン検証。</strong> フォーム経由（<code>handleRequest()</code>＋<code>isValid()</code>）は保護込み。フォームを介さない削除・Ajax は基底の <code>$this->isTokenValid()</code> を明示的に呼ぶ（無効時は <code>AccessDeniedHttpException</code>）。</li>
+  <li><strong>CSRF: GET 以外の状態変更はトークン検証。</strong> フォーム経由（<code>handleRequest()</code>＋<code>isValid()</code>）は保護込み。フォームを介さない削除・Ajax は基底の <code>$this->isTokenValid()</code> を明示的に呼ぶ（無効時は <code>AccessDeniedHttpException</code>）。<code>isTokenValid()</code> はトークンをリクエストパラメータ <code>Constant::TOKEN_NAME</code> だけでなく <code>ECCUBE-CSRF-TOKEN</code> ヘッダからも受け付けるため、Ajax はヘッダ送信でよい。</li>
+  <li><strong>フラッシュメッセージの名前空間はデフォルトが <code>front</code>。</strong> <code>addSuccess()</code>/<code>addError()</code> 等の第 2 引数を省略すると <code>eccube.front.*</code> に積まれる。管理画面では <code>addSuccess($msg, 'admin')</code> のように <code>'admin'</code> を明示しないと、メッセージが front 名前空間に入り管理画面テンプレートに表示されない。</li>
   <li><code>AbstractController</code> が <code>#[Required]</code> セッター注入で提供する依存（<code>eventDispatcher</code>・<code>entityManager</code>・<code>translator</code>・<code>formFactory</code>・<code>session</code>・<code>router</code>・<code>eccubeConfig</code>）はコンストラクタで再注入しない。</li>
  </ul>
 </section>

@@ -84,7 +84,8 @@ uninstall  … 取り外し。app/Plugin/{code}/ ごと削除され得る</div>
   <li><strong>名前空間を混同しない</strong>: プラグインは <code>Plugin\{Code}\</code>（独立名前空間）。プロジェクト固有の 1 回限りの改変は <code>Customize\</code>（<a href="../Customize/README.md">app/Customize/</a>）。</li>
   <li>install しただけでは動かない。<code>eccube:plugin:enable --code=...</code> で有効化する。</li>
   <li>エンティティ拡張トレイトを足したら <code>bin/console eccube:generate:proxies</code> でプロキシ再生成（enable/disable/uninstall 時はコアが自動再生成）。</li>
-  <li>プラグインのマイグレーションは <code>migration_{code}</code> テーブルで管理され、コアの <code>app/DoctrineMigrations/</code> とは<strong>別系統</strong>。</li>
+  <li>プラグインのマイグレーションは <code>migration_{code}</code> テーブルで管理され、コアの <code>app/DoctrineMigrations/</code> とは<strong>別系統</strong>（正確には <code>migration_</code>＋コードの小文字化。<code>src/Eccube/Plugin/AbstractPluginManager.php:27,55</code>）。</li>
+  <li><strong>enable/disable とロードの非対称に注意</strong>: <code>Resource/config/services.(php|yaml)</code> は<strong>物理的に存在する全プラグイン</strong>が glob で無条件ロードされる（<code>src/Eccube/Kernel.php:180-182</code>）が、<strong>ルーティングは有効プラグインのみ</strong>（<code>eccube.plugins.enabled</code>）読み込まれる（同 <code>:215-227</code>）。disable してもディレクトリが残る限りサービス定義はコンテナに載る（消えるのはルートだけ）。完全に外すには uninstall（ディレクトリ削除）が要る。</li>
  </ul>
 </section>
 

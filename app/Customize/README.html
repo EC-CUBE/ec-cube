@@ -83,6 +83,7 @@
   <li>カラム追加に <code>ALTER</code> マイグレーションは<strong>不要</strong>（属性が源泉。<code>schema:update --force</code> が反映）。型変更・データ投入は <a href="../DoctrineMigrations/README.md">app/DoctrineMigrations/</a>。</li>
   <li>サービス上書きは <code>#[AsDecorator]</code> ではなく <code>services.yaml</code> の <code>decorates</code>（コアの作法に合わせる）。</li>
   <li>テンプレートは<strong>コア原本を編集しない</strong>。<code>app/template/</code> に同じ相対パスで同名ファイルを置くと app 側が優先される。</li>
+  <li><strong>カスタムのサービス/バンドル定義は <code>app/Customize/Resource/config/</code> に置く</strong>。Kernel が <code>services.(php|yaml)</code>（＋<code>services_{env}</code>）を glob で自動ロードし（<code>src/Eccube/Kernel.php:185-187</code>）、<code>bundles.php</code> があれば追加 Symfony バンドルも登録する（同 <code>:115-123</code>）。<code>decorates</code> を書く services.yaml の置き場所はここ。コントローラのルートは属性走査（<code>customize_controllers</code>）だが、この <code>Resource/config</code> は Customize のルート読み込み対象ではない点に注意。</li>
  </ul>
 </section>
 

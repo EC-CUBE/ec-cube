@@ -61,7 +61,10 @@
  <ul>
   <li>OAuth2 の実体（リソースサーバー）は eccube-api4 が提供する想定（[EC-CUBE/eccube-api4#188]）。<strong>eccube-api4 未導入時は handler が null となり 503（ServiceUnavailable）を返す</strong>フィーチャーフラグ的フォールバック。firewall への配線は checkout エンドポイントを持つ #6776/#6574 で行う。</li>
   <li>付与 scope は <code>UserBadge</code> の attributes に handler が載せる前提（<code>scopes</code>: array もしくは <code>scope</code>: 空白区切り string）。</li>
-  <li><code>signing_keys[]</code> には EC <strong>公開鍵</strong> JWK のみを出す（秘密鍵パラメータ非混入）。秘密鍵が鍵ストアに無ければ生成して永続化する。</li>
+  <li><code>signing_keys[]</code> には EC <strong>公開鍵</strong> JWK のみを出す（秘密鍵パラメータ非混入）。秘密鍵が鍵ストアに無ければ生成して永続化する。<code>kid</code> は RFC 7638 の JWK Thumbprint。</li>
+  <li><code>UcpMessageSigner</code> は grace period の<strong>旧公開鍵（<code>gracePublicKeyPems</code>）を verify と <code>signing_keys[]</code> 広告の両方に含める</strong>ことで無停止の鍵ローテーションを可能にする。verify は現用＋旧鍵を順に試し、署名長不正等の例外は握り潰して次の鍵へ進む。</li>
+  <li><code>FilesystemKeyStore::write()</code> は書き込みの間だけ <code>umask(0077)</code> に切り替える。<code>file_put_contents</code> の作成直後～<code>chmod(0600)</code> までの間に秘密鍵が group/other から読める<strong>競合ウィンドウを塞ぐ</strong>ためで、単なる 0600 設定ではない。</li>
+  <li><code>purpose</code> は既定パスへ直接連結されるため <code>[a-z0-9_-]</code> のみに制限し、<strong>パストラバーサル（<code>../</code> 等）を防ぐ</strong>（違反時 <code>InvalidArgumentException</code>）。</li>
  </ul>
 </section>
 
