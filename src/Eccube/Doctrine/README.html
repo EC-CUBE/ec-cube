@@ -35,16 +35,22 @@
  「クエリの後付け拡張」「日時の UTC 保存」「日本語検索用の DQL 関数」「表示制御用のフィルタ」「Proxy を安全に読むマッピングドライバ」
  「CSV からの初期データ投入」といった<strong>基盤側の仕組み</strong>が対象です。</p>
 
+ <div class="note"><strong>「なぜ存在するか」の凡例</strong>: <span class="badge">拡張 seam</span>＝プラグイン/Customize が割り込むための仕組み ／
+ <span class="badge">ドメイン</span>＝EC 業務要件そのもの ／ <span class="badge">portability</span>＝複数 DB・タイムゾーン吸収 ／
+ <span class="badge">基盤</span>＝横断インフラ ／ <span class="badge">負債</span>＝歴史的経緯による簡素化候補。
+ 「拡張 seam の多さ＝コアの複雑さの主因」を可視化するためのタグ。</div>
  <table>
-  <tr><th>サブ</th><th>目的</th></tr>
-  <tr><td>Query/</td><td>既存クエリに WHERE / JOIN / ORDER BY を<strong>後付けで差し込む</strong>カスタマイズ機構（プラグイン拡張の要）</td></tr>
-  <tr><td>DBAL/Types/</td><td>DB へは常に UTC で保存し、PHP 側でアプリのタイムゾーンへ変換するカスタム型</td></tr>
-  <tr><td>ORM/Query/</td><td>日本語検索・日時抽出のための独自 DQL 関数（<code>NORMALIZE</code> / <code>EXTRACT</code>）</td></tr>
-  <tr><td>Filter/</td><td>全クエリに横断的に効く SQL フィルタ（在庫なし非表示・仮受注除外）</td></tr>
-  <tr><td>ORM/Mapping/Driver/</td><td>エンティティプロキシ機構を成立させる属性マッピングドライバ</td></tr>
-  <tr><td>EventSubscriber/</td><td>Doctrine ライフサイクルへのフック（作成/更新日時の自動セット・税込価格算出・接続時 TZ 設定）</td></tr>
-  <tr><td>Common/CsvDataFixtures/</td><td>インストール時に CSV からマスタ等を一括投入する仕組み</td></tr>
+  <tr><th>サブ</th><th>なぜ</th><th>目的</th></tr>
+  <tr><td>Query/</td><td><span class="badge">拡張 seam</span></td><td>既存クエリに WHERE / JOIN / ORDER BY を<strong>後付けで差し込む</strong>カスタマイズ機構（プラグイン拡張の要）</td></tr>
+  <tr><td>ORM/Mapping/Driver/</td><td><span class="badge">拡張 seam</span></td><td>エンティティプロキシ機構（trait 拡張）を成立させる属性マッピングドライバ</td></tr>
+  <tr><td>DBAL/Types/</td><td><span class="badge">portability</span></td><td>DB へは常に UTC で保存し、PHP 側でアプリのタイムゾーンへ変換するカスタム型</td></tr>
+  <tr><td>ORM/Query/</td><td><span class="badge">portability</span></td><td>日本語検索・日時抽出のための独自 DQL 関数（<code>NORMALIZE</code> / <code>EXTRACT</code>。DB 別に SQL 出し分け）</td></tr>
+  <tr><td>Filter/</td><td><span class="badge">ドメイン</span></td><td>全クエリに横断的に効く SQL フィルタ（在庫なし非表示・仮受注除外）</td></tr>
+  <tr><td>EventSubscriber/</td><td><span class="badge">基盤</span></td><td>Doctrine ライフサイクルへのフック（作成/更新日時の自動セット・税込価格算出・接続時 TZ 設定）</td></tr>
+  <tr><td>Common/CsvDataFixtures/</td><td><span class="badge">基盤</span></td><td>インストール時に CSV からマスタ等を一括投入する仕組み</td></tr>
  </table>
+ <p>このディレクトリは <strong>7 サブ中 2 つ（Query/・Mapping Driver/）が純粋な拡張 seam</strong>で、行数の多くを占めます。
+ 「Doctrine を薄くラップ」ではなく「<strong>Doctrine を拡張可能にするため厚く被せている</strong>」のがコアの複雑さの一因です。</p>
 </section>
 
 <section data-section="query" data-customer="true">
