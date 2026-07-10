@@ -35,12 +35,12 @@
  「クエリの後付け拡張」「日時の UTC 保存」「日本語検索用の DQL 関数」「表示制御用のフィルタ」「Proxy を安全に読むマッピングドライバ」
  「CSV からの初期データ投入」といった<strong>基盤側の仕組み</strong>が対象です。</p>
 
- <div class="note"><strong>「なぜ存在するか」の凡例</strong>: <span class="badge">拡張ポイント</span>＝プラグイン/Customize が割り込むための仕組み ／
+ <div class="note"><strong>区分の凡例（この機構は何のためにあるか）</strong>: <span class="badge">拡張ポイント</span>＝プラグイン/Customize が割り込むための仕組み ／
  <span class="badge">ドメイン</span>＝EC 業務要件そのもの ／ <span class="badge">portability</span>＝複数 DB・タイムゾーン吸収 ／
  <span class="badge">基盤</span>＝横断インフラ ／ <span class="badge">負債</span>＝歴史的経緯による簡素化候補。
  「拡張ポイントの多さ＝コアの複雑さの主因」を可視化するためのタグ。</div>
  <table>
-  <tr><th>サブ</th><th>なぜ</th><th>目的</th></tr>
+  <tr><th>サブ</th><th>区分</th><th>目的</th></tr>
   <tr><td>Query/</td><td><span class="badge">拡張ポイント</span></td><td>既存クエリに WHERE / JOIN / ORDER BY を<strong>後付けで差し込む</strong>カスタマイズ機構（プラグイン拡張の要）</td></tr>
   <tr><td>ORM/Mapping/Driver/</td><td><span class="badge">拡張ポイント</span></td><td>エンティティプロキシ機構（trait 拡張）を成立させる属性マッピングドライバ</td></tr>
   <tr><td>DBAL/Types/</td><td><span class="badge">portability</span></td><td>DB へは常に UTC で保存し、PHP 側でアプリのタイムゾーンへ変換するカスタム型</td></tr>
