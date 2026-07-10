@@ -50,7 +50,7 @@ AI エージェント向けの情報は、この `AGENTS.md` を**正典（ハ�
 - **テンプレートと粒度**の基準はパイロット [`src/Eccube/Service/PurchaseFlow/README.html`](./src/Eccube/Service/PurchaseFlow/README.html)（＋ 同ディレクトリの `README.md`）。新規配置時はこれを金型にする。
   - `README.html` は自己完結 HTML。共通 CSS を将来当てられるよう過度なインライン装飾を避け、`data-customer="true"`＝顧客提出にも載る章 / `"false"`＝開発者向け（拡張・内部注意点）で振り分ける。
   - Skill が無いディレクトリ（例 `Doctrine/` `DependencyInjection/` `Attribute/` `Service/AgentCommerce/`）は `README.md` の SKILL 行を省き `README.html` のみを指す。
-- **静的サイト／PDF 化**（戦略資料 §8.2）: 各 `README.html` は自己完結 HTML なので、**専用の静的サイトジェネレータ（SSG）は導入せず、`README.html` ツリー＋ルート [`README.html`](./README.html) 目次をそのまま配信／ローカルで開く**方針（PoC の結論。[`docs/spec-static-site-poc.md`](./docs/spec-static-site-poc.md)）。`bin/console eccube:docs:export [--filter=customer]` で全 `README.html` を集約・出力でき（`--filter=customer` は `data-customer="true"` の章だけを抽出）、顧客提出 PDF は出力 HTML をブラウザの「印刷 → PDF」で派生させる。本番サイト（`docs.ec-cube.net/spec/`）のホスティング構築は後続作業。鮮度は PR テンプレートのチェック項目と CI（`docs-check`）で維持する。
+- **静的サイト／PDF 化**（戦略資料 §8.2）: 各 `README.html` は自己完結 HTML なので、**専用の静的サイトジェネレータ（SSG）は導入せず、`README.html` ツリー＋ルート [`README.html`](./README.html) 目次をそのまま配信／ローカルで開く**方針。SSG（VitePress / Astro Starlight / Antora）は検討のうえ見送り — 自己完結 HTML では SSG が足すのは索引・ナビ・検索だけで、その対価に Node ビルド・依存を負うため（サイト全文検索やリポジトリ横断の版管理が必要になったら再検討）。`bin/console eccube:docs:export [--filter=customer]` で全 `README.html` を集約・出力でき（`--filter=customer` は `data-customer="true"` の章だけを抽出）、顧客提出 PDF は出力 HTML をブラウザの「印刷 → PDF」で派生させる。本番サイト（`docs.ec-cube.net/spec/`）のホスティング構築は後続作業。鮮度は PR テンプレートのチェック項目と CI（`docs-check`）で維持する。
 
 ## プロジェクト概要
 
