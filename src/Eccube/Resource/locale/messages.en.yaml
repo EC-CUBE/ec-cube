@@ -45,7 +45,7 @@ common.mail_address: Email
 common.mail_address_sample: e.g. ec-cube@example.com
 common.repeated_confirm: Please re-enter
 common.password: Password
-common.password_sample: "Alphabets, numbers and symbols %min% - %max%chars"
+common.password_sample: "%min% - %max% chars"
 common.password_eq_email: Password cannot be set to the same value as email address.
 common.password_for_confirmation: Password (Re-enter)
 common.gender: Gender
@@ -246,6 +246,7 @@ front.mypage.delivery: Delivery to
 front.mypage.delivery_provider: Delivery Method
 front.mypage.delivery_date: Delivery Date
 front.mypage.delivery_time: Delivery Time
+front.mypage.tracking_number: Tracking No.
 front.mypage.current_price: [Current Price]
 front.mypage.reorder: Reorder
 front.mypage.payment_info: Payment Info
@@ -397,6 +398,7 @@ front.shopping.not_available_payment_method: The payment method you have selecte
 front.shopping.payment_method_not_fount: Sorry, you have no payment options. If you have selected multiple delivery methods, you can only select the same payment option for them all.
 front.under_maintenance: The site is currently under maintenance.
 front.under_debug_mode: The site is currently under debug mode.
+front.admin_login_active: You are logged in to the Admin Console.
 
 #====================================================================================
 # Admin Console

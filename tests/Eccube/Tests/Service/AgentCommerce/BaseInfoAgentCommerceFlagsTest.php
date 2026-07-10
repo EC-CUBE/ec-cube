@@ -64,7 +64,11 @@ final class BaseInfoAgentCommerceFlagsTest extends EccubeTestCase
         $studly = str_replace('_', '', ucwords($property, '_'));
         foreach (['is'.$studly, 'get'.$studly] as $getter) {
             if (method_exists($BaseInfo, $getter)) {
-                return (bool) $BaseInfo->{$getter}();
+                $value = $BaseInfo->{$getter}();
+                // null を (bool) で false に丸めると「default false」契約を取りこぼすため bool 型を厳密に要求する。
+                $this->assertIsBool($value, sprintf('%s() must return bool (got %s)', $getter, get_debug_type($value)));
+
+                return $value;
             }
         }
 

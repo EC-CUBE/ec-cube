@@ -1,8 +1,9 @@
 import { test, expect } from '@playwright/test';
+import { ADMIN_ROUTE } from '../config/default.config';
 import path from 'path';
 import fs from 'fs';
 
-const adminRoute = process.env.ECCUBE_ADMIN_ROUTE || 'admin';
+const adminRoute = ADMIN_ROUTE;
 
 // ---------------------------------------------------------------------------
 // News management

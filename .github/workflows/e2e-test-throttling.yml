@@ -43,12 +43,6 @@ jobs:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
             database_server_version: 18
-    services:
-      mailcatcher:
-        image: schickling/mailcatcher
-        ports:
-          - 1080:1080
-          - 1025:1025
 
     steps:
       - name: Checkout
@@ -222,6 +216,9 @@ jobs:
         with:
           packages: fonts-ipafont fonts-ipaexfont
           version: 1.0
+
+      - name: Start Mailpit (SMTP sink)
+        uses: ./.github/actions/mailpit
 
       - name: Start PHP Development Server
         env:
