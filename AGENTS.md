@@ -43,6 +43,7 @@ AI エージェント向けの情報は、この `AGENTS.md` を**正典（ハ�
 | `.claude/skills/<name>/SKILL.md` | AI エージェント | **実装の書き方ルール**（規約・DO/DON'T）。仕様説明は `README.html` に委ね相互リンク |
 
 - **棲み分け**: `README.html`＝「機能の仕様（人間向け）」、`SKILL.md`＝「コードの書き方（AI 向け）」。読者と目的が異なるため両立する。
+- **入口（TOP ページ）**: リポジトリルートの [`README.html`](./README.html) が全 `README.html` へのポータル（目次）。ビルド不要でブラウザで開ける。新しい `README.html` を配置したら、この目次にも 1 行追加する（漏れは CI `docs-check` が検出）。
 - **参照トポロジ**（既存の一方向ルールを維持）: `README.md`（索引）→ `README.html`（仕様）／ `SKILL.md`（規約）→ `AGENTS.md`（正典）。
   上流（`AGENTS.md`）から個別 README への下向き内容参照は足さない。
 - **ドメイン詳細は複製しない**: 受注 ER・ステートマシン・計算仕様など doc4 に既出のものは `README.html` から `https://doc4.ec-cube.net/` へリンクする。

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EC-CUBE 仕様書ポータル</title>
+<style>
+ /* 最小限のスタイル。§8.2 の静的サイト側で共通 CSS を上書きできるよう、
+    装飾はクラス指定に寄せ、過度なインライン装飾は避ける。 */
+ body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.7;max-width:960px;margin:0 auto;padding:2rem;color:#222}
+ h1,h2{border-bottom:1px solid #ddd;padding-bottom:.3rem}
+ h1{margin-bottom:.2rem}
+ .nav{font-size:.9rem;color:#555;margin:.2rem 0 1.5rem}
+ table{border-collapse:collapse;width:100%;margin:1rem 0}
+ th,td{border:1px solid #ccc;padding:.4rem .6rem;text-align:left;vertical-align:top}
+ th{background:#f4f4f4}
+ code{background:#f4f4f4;padding:.1rem .3rem;border-radius:3px;font-size:.92em}
+ .flow{background:#f9f9f9;border:1px solid #ddd;padding:1rem;white-space:pre;overflow-x:auto;font-family:ui-monospace,monospace;font-size:.88rem;line-height:1.5}
+ .note{background:#fff8e1;border-left:4px solid #f0c040;padding:.6rem 1rem;margin:1rem 0}
+ .dev-only{font-size:.75rem;color:#888;font-weight:normal;margin-left:.5rem}
+ .badge{display:inline-block;background:#eef;border:1px solid #ccd;border-radius:3px;padding:0 .4rem;font-size:.8rem}
+</style>
+</head>
+<body>
+
+<h1>EC-CUBE 仕様書ポータル</h1>
+<p class="nav">
+ 索引: <a href="./README.md">README.md</a>
+ ／ 規約ハブ（正典）: <a href="./AGENTS.md">AGENTS.md</a>
+ ／ ドメイン詳細: <a href="https://doc4.ec-cube.net/">doc4.ec-cube.net</a>
+</p>
+
+<section data-section="overview" data-customer="true">
+ <h2>このページについて</h2>
+ <p>EC-CUBE の主要な機能ディレクトリには、コードと同じ場所へ <strong><code>README.html</code>（人間向けの真の仕様書）</strong>と
+ <code>README.md</code>（GitHub 表示用の短い索引）を配置しています（Issue #6906・<a href="./AGENTS.md">AGENTS.md</a> §8.1）。
+ このページは、それら各ディレクトリの <code>README.html</code> への<strong>入口（TOP ページ）</strong>です。</p>
+ <p>各 <code>README.html</code> は<strong>自己完結した HTML 文書</strong>なので、リポジトリを取得したあと
+ ビルド不要でそのままブラウザで開けます。このページをブラウザで開き、目的のディレクトリのリンクをたどってください。</p>
+ <div class="note">実装の書き方ルール（AI・開発者向けの規約 / DO・DON'T）は各 <code>README.html</code> からリンクする
+ <code>.claude/skills/&lt;name&gt;/SKILL.md</code> が正典です。<code>README.html</code>＝「機能の仕様」、<code>SKILL.md</code>＝「コードの書き方」で棲み分けます。</div>
+</section>
+
+<section data-section="core-layers" data-customer="true">
+ <h2>コアレイヤ（<code>src/Eccube/</code>）</h2>
+ <table>
+  <tr><th>ディレクトリ</th><th>役割</th><th>仕様</th></tr>
+  <tr><td><code>Controller/</code></td><td>HTTP コントローラ（管理画面・フロント）</td><td><a href="src/Eccube/Controller/README.html">README.html</a></td></tr>
+  <tr><td><code>Entity/</code></td><td>Doctrine エンティティ（<code>#[ORM\…]</code> 属性マッピング）</td><td><a href="src/Eccube/Entity/README.html">README.html</a></td></tr>
+  <tr><td><code>Repository/</code></td><td>データアクセス（クエリ・検索）</td><td><a href="src/Eccube/Repository/README.html">README.html</a></td></tr>
+  <tr><td><code>Form/Type/</code></td><td>フォーム型（FormType）</td><td><a href="src/Eccube/Form/Type/README.html">README.html</a></td></tr>
+  <tr><td><code>Service/</code></td><td>ビジネスロジックの受け皿</td><td><a href="src/Eccube/Service/README.html">README.html</a></td></tr>
+  <tr><td><code>EventListener/</code></td><td>イベントリスナ</td><td><a href="src/Eccube/EventListener/README.html">README.html</a></td></tr>
+  <tr><td><code>Security/</code></td><td>認証・認可</td><td><a href="src/Eccube/Security/README.html">README.html</a></td></tr>
+  <tr><td><code>Twig/Extension/</code></td><td>Twig 拡張（Filter・Function）</td><td><a href="src/Eccube/Twig/Extension/README.html">README.html</a></td></tr>
+  <tr><td><code>Command/</code></td><td>コンソールコマンド（バッチ）</td><td><a href="src/Eccube/Command/README.html">README.html</a></td></tr>
+  <tr><td><code>Plugin/</code></td><td>プラグイン管理</td><td><a href="src/Eccube/Plugin/README.html">README.html</a></td></tr>
+  <tr><td><code>Attribute/</code></td><td>PHP 属性定義（フロー宣言 等）</td><td><a href="src/Eccube/Attribute/README.html">README.html</a></td></tr>
+  <tr><td><code>DependencyInjection/</code></td><td>DI 拡張・コンパイラパス</td><td><a href="src/Eccube/DependencyInjection/README.html">README.html</a></td></tr>
+  <tr><td><code>Doctrine/</code></td><td>Doctrine 関連（マッピング・ライフサイクル支援）</td><td><a href="src/Eccube/Doctrine/README.html">README.html</a></td></tr>
+ </table>
+</section>
+
+<section data-section="subsystems" data-customer="true">
+ <h2>高複雑サブシステム</h2>
+ <table>
+  <tr><th>ディレクトリ</th><th>役割</th><th>仕様</th></tr>
+  <tr><td><code>Service/PurchaseFlow/</code></td><td>受注処理パイプライン（計算・検証・確定）</td><td><a href="src/Eccube/Service/PurchaseFlow/README.html">README.html</a></td></tr>
+  <tr><td><code>Controller/Admin/Order/</code></td><td>管理画面の受注管理</td><td><a href="src/Eccube/Controller/Admin/Order/README.html">README.html</a></td></tr>
+  <tr><td><code>Service/AgentCommerce/</code></td><td>エージェントコマース（ACP）基盤</td><td><a href="src/Eccube/Service/AgentCommerce/README.html">README.html</a></td></tr>
+ </table>
+</section>
+
+<section data-section="agent-commerce" data-customer="true">
+ <h2>AgentCommerce サブドメイン（<code>src/Eccube/Service/AgentCommerce/</code>）</h2>
+ <table>
+  <tr><th>サブドメイン</th><th>役割</th><th>仕様</th></tr>
+  <tr><td><code>Catalog/</code></td><td>カタログ（商品フィード）</td><td><a href="src/Eccube/Service/AgentCommerce/Catalog/README.html">README.html</a></td></tr>
+  <tr><td><code>CheckoutSession/</code></td><td>チェックアウトセッション</td><td><a href="src/Eccube/Service/AgentCommerce/CheckoutSession/README.html">README.html</a></td></tr>
+  <tr><td><code>Discovery/</code></td><td>ディスカバリ（capability 提示）</td><td><a href="src/Eccube/Service/AgentCommerce/Discovery/README.html">README.html</a></td></tr>
+  <tr><td><code>Exception/</code></td><td>例外</td><td><a href="src/Eccube/Service/AgentCommerce/Exception/README.html">README.html</a></td></tr>
+  <tr><td><code>Fulfillment/</code></td><td>フルフィルメント（出荷）</td><td><a href="src/Eccube/Service/AgentCommerce/Fulfillment/README.html">README.html</a></td></tr>
+  <tr><td><code>Idempotency/</code></td><td>冪等性（重複実行の防止）</td><td><a href="src/Eccube/Service/AgentCommerce/Idempotency/README.html">README.html</a></td></tr>
+  <tr><td><code>Payment/</code></td><td>決済</td><td><a href="src/Eccube/Service/AgentCommerce/Payment/README.html">README.html</a></td></tr>
+  <tr><td><code>Security/</code></td><td>セキュリティ（認証・スコープ）</td><td><a href="src/Eccube/Service/AgentCommerce/Security/README.html">README.html</a></td></tr>
+ </table>
+</section>
+
+<section data-section="app" data-customer="true">
+ <h2>プロジェクト領域（<code>app/</code>）</h2>
+ <table>
+  <tr><th>ディレクトリ</th><th>役割</th><th>仕様</th></tr>
+  <tr><td><code>app/Customize/</code></td><td>プロジェクト固有のカスタマイズ（アップグレード安全）</td><td><a href="app/Customize/README.html">README.html</a></td></tr>
+  <tr><td><code>app/DoctrineMigrations/</code></td><td>DB マイグレーション</td><td><a href="app/DoctrineMigrations/README.html">README.html</a></td></tr>
+  <tr><td><code>app/Plugin/</code></td><td>インストール済みプラグイン</td><td><a href="app/Plugin/README.html">README.html</a></td></tr>
+ </table>
+</section>
+
+</body>
+</html>
