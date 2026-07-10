@@ -67,6 +67,10 @@
  <ul>
   <li><strong>在庫・価格は <code>Product</code> ではなく <code>ProductClass</code> が持つ。</strong> 規格を持たない商品も内部的に
   <code>ProductClass</code> を 1 つ持ちます（規格の有無は <code>Product::hasProductClass()</code> で判定）。</li>
+  <li><strong>在庫数は 2 つのテーブルに二重で持つ。</strong> <code>ProductClass</code>（<code>dtb_product_class.stock</code> / <code>stock_unlimited</code>）が
+  一覧・表示に使う値、<code>ProductStock</code>（<code>dtb_product_stock.stock</code>。<code>ProductClass</code> と 1:1）が在庫の実体です
+  （在庫無制限フラグ <code>stock_unlimited</code> は <code>ProductClass</code> 側のみ）。購入時の在庫引当（<code>StockReduceProcessor</code>）は
+  <strong>両方の <code>stock</code> を同時に更新</strong>して整合させます。<strong>片方だけ書き換えると表示と実在庫がずれる</strong>ため、在庫を触る処理は必ず両方を更新します。</li>
   <li><strong>金額は文字列で持つ。</strong> <code>Types::DECIMAL</code> のカラム（<code>Order</code> の <code>total</code>・<code>subtotal</code> 等）は
   Doctrine ORM 3.x で <code>?string</code> になります。計算は float ではなく <strong><code>bcmath</code></strong>（<code>bcadd</code>/<code>bcmul</code>/<code>bccomp</code>、スケール 2）で行います。</li>
   <li><strong>単一テーブル継承（STI）。</strong> マスタ系や <code>Order</code>・<code>Block</code> 等は 1 テーブルに複数の型を格納し、
