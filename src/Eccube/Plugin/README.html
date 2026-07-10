@@ -35,7 +35,7 @@
  実体は <code>AbstractPluginManager.php</code> ただ 1 ファイルで、各プラグインの <code>PluginManager</code> はこれを継承します。</p>
  <div class="note"><strong>存在理由: <span class="badge">拡張ポイント</span></strong>（プラグイン拡張のための仕組み）。この階層に業務ロジックは無く、
  「プラグインがコアへ割り込むための基底クラス」だけを提供する ——「拡張性のためにコアが抱える複雑さ」の一部。
- 分類の凡例は他レイヤ README（例 <a href="../Doctrine/README.html">Doctrine</a>）と共通。</div>
+ 区分の凡例は他レイヤ README（例 <a href="../Doctrine/README.html">Doctrine</a>）と共通。</div>
 
  <p>プラグインそのものの置き場所は <strong><code>app/Plugin/{PluginCode}/</code></strong>（別ディレクトリ。<a href="../../../app/Plugin/README.md">app/Plugin/README.md</a>）です。
  ここはあくまで<strong>コア側の共通処理</strong>を持ち、プラグイン本体のコードは含みません。</p>
