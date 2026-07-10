@@ -53,6 +53,8 @@
  <ul>
   <li>core 本体は <code>payment_handlers</code> をカラム化せず、<code>PaymentHandlerRegistryInterface</code> の実装からのみ収集する。決済ハンドラプラグイン（将来の Google Pay 等）が <code>eccube.agent_commerce.payment_handler_registry</code> タグ付きサービスで寄与する。</li>
   <li>UCP profile schema 上 <code>payment_handlers</code> は必須のため、寄与が無い場合でも空オブジェクト <code>{}</code> を出す（空配列 <code>[]</code> ではない）。</li>
+  <li><code>signing_keys</code> は署名鍵が無い（signer が空を返す）とキー自体を出力しない（常に空 <code>{}</code> を出す <code>payment_handlers</code> とは非対称）。</li>
+  <li>services の <code>endpoint</code> は base パスをハードコードせず <code>agent_ucp_catalog_search</code> ルートの絶対 URL から末尾 <code>/search</code> を除去して導出する（個別 RPC パスは capability/schema 側で定義）。</li>
  </ul>
 </section>
 

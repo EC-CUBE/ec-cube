@@ -80,5 +80,13 @@
  <div class="note">ACP Feed は <strong>push モデル</strong>（Agent=OpenAI がホスト、加盟店がクライアント）で、outbound Bearer で認証する。inbound OAuth2（eccube-api4）とは無関係な点に注意。</div>
 </section>
 
+<section data-section="notes" data-customer="false">
+ <h2>注意点<span class="dev-only">開発者向け</span></h2>
+ <ul>
+  <li><strong>画像 URL は <code>RequestContext</code> 由来</strong>。商品画像はルーティング対象でない静的ファイルのため、<code>CatalogMapper</code> は scheme/host/port/baseUrl を <code>RequestContext</code> から組み立てて絶対 URL 化する。<strong>Feed 生成を CLI/cron で回すと Request が無い</strong>ため、<code>router.request_context.*</code>（scheme/host/base_url）を設定しないと既定値のホストで URL が出る。リバースプロキシ配下では <code>TRUSTED_PROXIES</code> と <code>X-Forwarded-*</code> に依存する。</li>
+  <li><strong><code>list_price</code> は割引時のみ</strong>。<code>list_price</code>（pre-discount 参照価格）は <code>price01 &gt; price02</code>（実際に割引がある場合）のみ出力する。店頭 <code>detail.twig</code> は price01 設定時に常に通常価格を表示するのと<strong>セマンティクスが異なる</strong>ので、店頭表示と機械的に一致させないこと。</li>
+ </ul>
+</section>
+
 </body>
 </html>
