@@ -1,0 +1,25 @@
+name: 'Start Mailpit'
+description: 'mailcatcher コンテナの代替として mailpit(SMTP シンク)を起動する'
+
+# mailcatcher コンテナ(Docker Hub pull で不安定)の代替。mailpit を GitHub Releases から
+# 取得し SHA256 で固定検証、1025 で SMTP 受信する。起動後 /api/v1/info の readiness を
+# 待ち、起動失敗を fail-closed にする。
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+        MAILPIT_VERSION: v1.30.3
+        MAILPIT_SHA256: 6c7af993fb4054def4adfc7c85b40f9570fd6172eaccd0221c4969f2cc7a6294
+      run: |
+        gh release download "$MAILPIT_VERSION" --repo axllent/mailpit --pattern 'mailpit-linux-amd64.tar.gz' --dir "$RUNNER_TEMP"
+        echo "${MAILPIT_SHA256}  ${RUNNER_TEMP}/mailpit-linux-amd64.tar.gz" | sha256sum -c -
+        tar -xzf "$RUNNER_TEMP/mailpit-linux-amd64.tar.gz" -C "$RUNNER_TEMP"
+        "$RUNNER_TEMP/mailpit" --smtp 127.0.0.1:1025 --listen 127.0.0.1:8025 &
+        for _ in $(seq 1 30); do
+          curl -fsS http://127.0.0.1:8025/api/v1/info >/dev/null 2>&1 && exit 0
+          sleep 1
+        done
+        echo "mailpit did not become ready on :8025" >&2
+        exit 1

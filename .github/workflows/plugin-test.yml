@@ -46,13 +46,6 @@ jobs:
             database_server_version: 8
             database_charset: utf8mb4
 
-    services:
-      mailcatcher:
-        image: schickling/mailcatcher
-        ports:
-          - 1080:1080
-          - 1025:1025
-
     steps:
       - name: Checkout
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
@@ -144,6 +137,9 @@ jobs:
       - name: Install Playwright browsers
         working-directory: e2e
         run: npx playwright install chromium --with-deps
+
+      - name: Start Mailpit (SMTP sink)
+        uses: ./.github/actions/mailpit
 
       - name: Start PHP Development Server
         env:
@@ -214,13 +210,6 @@ jobs:
             database_server_version: 8
             database_charset: utf8mb4
 
-    services:
-      mailcatcher:
-        image: schickling/mailcatcher
-        ports:
-          - 1080:1080
-          - 1025:1025
-
     steps:
       - name: Checkout
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
@@ -312,6 +301,9 @@ jobs:
       - name: Install Playwright browsers
         working-directory: e2e
         run: npx playwright install chromium --with-deps
+
+      - name: Start Mailpit (SMTP sink)
+        uses: ./.github/actions/mailpit
 
       - name: Start PHP Development Server
         env:
@@ -381,13 +373,6 @@ jobs:
             database_server_version: 8
             database_charset: utf8mb4
 
-    services:
-      mailcatcher:
-        image: schickling/mailcatcher
-        ports:
-          - 1080:1080
-          - 1025:1025
-
     steps:
       - name: Checkout
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
@@ -479,6 +464,9 @@ jobs:
       - name: Install Playwright browsers
         working-directory: e2e
         run: npx playwright install chromium --with-deps
+
+      - name: Start Mailpit (SMTP sink)
+        uses: ./.github/actions/mailpit
 
       - name: Start PHP Development Server
         env:
@@ -551,13 +539,6 @@ jobs:
           - db: mysql
             method: test_dependency_plugin_update
 
-    services:
-      mailcatcher:
-        image: schickling/mailcatcher
-        ports:
-          - 1080:1080
-          - 1025:1025
-
     steps:
       - name: Checkout
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
@@ -650,6 +631,9 @@ jobs:
         working-directory: e2e
         run: npx playwright install chromium --with-deps
 
+      - name: Start Mailpit (SMTP sink)
+        uses: ./.github/actions/mailpit
+
       - name: Start PHP Development Server
         env:
           APP_ENV: 'codeception'
@@ -711,13 +695,6 @@ jobs:
             database_server_version: 8
             database_charset: utf8mb4
 
-    services:
-      mailcatcher:
-        image: schickling/mailcatcher
-        ports:
-          - 1080:1080
-          - 1025:1025
-
     steps:
       - name: Checkout
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
@@ -809,6 +786,9 @@ jobs:
       - name: Install Playwright browsers
         working-directory: e2e
         run: npx playwright install chromium --with-deps
+
+      - name: Start Mailpit (SMTP sink)
+        uses: ./.github/actions/mailpit
 
       - name: Start PHP Development Server
         env:
@@ -869,13 +849,6 @@ jobs:
             database_server_version: 8
             database_charset: utf8mb4
 
-    services:
-      mailcatcher:
-        image: schickling/mailcatcher
-        ports:
-          - 1080:1080
-          - 1025:1025
-
     steps:
       - name: Checkout
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
@@ -967,6 +940,9 @@ jobs:
       - name: Install Playwright browsers
         working-directory: e2e
         run: npx playwright install chromium --with-deps
+
+      - name: Start Mailpit (SMTP sink)
+        uses: ./.github/actions/mailpit
 
       - name: Start PHP Development Server
         env:
