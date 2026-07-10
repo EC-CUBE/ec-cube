@@ -20,7 +20,7 @@ AI エージェント向けの情報は、この `AGENTS.md` を**正典（ハ�
 | `GEMINI.md` | 薄いポインタ。Gemini CLI は Skill 非対応のため索引経由で `SKILL.md` へ誘導 | Gemini CLI |
 | `llms.txt` | 外部 LLM・クローラ向けの英語サマリ（llmstxt.org 準拠。公開 URL 前提） | LLM クローラ・外部 LLM |
 | `.claude/skills/<name>/SKILL.md` | レイヤ別の詳細規約（末端）。`.codex/skills`・`.agents/skills` は symlink 共有 | Skill 対応ツール（詳細は「Skill の配置と各ツールの読み込み」節） |
-| `<機能ディレクトリ>/README.html` | コード近接の**人間向け真の仕様書**（挙動・なぜ・図表）。`data-section`/`data-customer` で章立て。§8.2 で静的配信／PDF に派生 | 人間（開発者・新規参加者・顧客） |
+| `<機能ディレクトリ>/README.html` | コード近接の**人間向けの仕様書**（挙動・なぜ・図表）。`data-section`/`data-customer` で章立て（顧客提出フィルタ用） | 人間（開発者・新規参加者・顧客） |
 | `<機能ディレクトリ>/README.md` | コード近接の**短い索引**。GitHub のディレクトリビューで自動表示され、`README.html`（人間向け仕様）と `SKILL.md`（AI 向け規約）への道標を兼ねる | GitHub 閲覧者・AI エージェント |
 
 ### 定義ファイルを増やすときの原則
@@ -50,7 +50,7 @@ AI エージェント向けの情報は、この `AGENTS.md` を**正典（ハ�
 - **テンプレートと粒度**の基準はパイロット [`src/Eccube/Service/PurchaseFlow/README.html`](./src/Eccube/Service/PurchaseFlow/README.html)（＋ 同ディレクトリの `README.md`）。新規配置時はこれを金型にする。
   - `README.html` は自己完結 HTML。共通 CSS を将来当てられるよう過度なインライン装飾を避け、`data-customer="true"`＝顧客提出にも載る章 / `"false"`＝開発者向け（拡張・内部注意点）で振り分ける。
   - Skill が無いディレクトリ（例 `Doctrine/` `DependencyInjection/` `Attribute/` `Service/AgentCommerce/`）は `README.md` の SKILL 行を省き `README.html` のみを指す。
-- **静的サイト／PDF 化**（戦略資料 §8.2）: 各 `README.html` は自己完結 HTML なので、**専用の静的サイトジェネレータ（SSG）は導入せず、`README.html` ツリー＋ルート [`README.html`](./README.html) 目次をそのまま配信／ローカルで開く**方針。SSG（VitePress / Astro Starlight / Antora）は検討のうえ見送り — 自己完結 HTML では SSG が足すのは索引・ナビ・検索だけで、その対価に Node ビルド・依存を負うため（サイト全文検索やリポジトリ横断の版管理が必要になったら再検討）。`bin/console eccube:docs:export [--filter=customer]` で全 `README.html` を集約・出力でき（`--filter=customer` は `data-customer="true"` の章だけを抽出）、顧客提出 PDF は出力 HTML をブラウザの「印刷 → PDF」で派生させる。本番サイト（`docs.ec-cube.net/spec/`）のホスティング構築は後続作業。鮮度は PR テンプレートのチェック項目と CI（`docs-check`）で維持する。
+- **集約出力・鮮度維持**: `bin/console eccube:docs:export [--filter=customer]` で全 `README.html` を集約出力できる（`--filter=customer` は `data-customer="true"` の章だけ抽出）。鮮度は PR テンプレートのチェック項目と CI（`docs-check`）で維持する。静的サイト化・本番公開先（doc4 への統合を含む）は **Issue #6906** で検討（未確定）。
 
 ## プロジェクト概要
 
