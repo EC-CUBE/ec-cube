@@ -39,13 +39,13 @@
 
 <section data-section="structure" data-customer="true">
  <h2>ディレクトリ構成（Form レイヤの地図）</h2>
- <div class="note"><strong>「なぜ存在するか」の凡例</strong>: <span class="badge">拡張 seam</span>＝プラグイン/Customize が割り込む仕組み ／
+ <div class="note"><strong>「なぜ存在するか」の凡例</strong>: <span class="badge">拡張ポイント</span>＝プラグイン/Customize が割り込む仕組み ／
  <span class="badge">ドメイン</span>＝EC 業務要件 ／ <span class="badge">基盤</span>＝フォーム機能の土台。
- Form レイヤは <strong>拡張 seam は <code>Extension/</code> の 1 つだけ</strong>で、他はフォームを作るための素の機構（Doctrine ほど seam は濃くない）。</div>
+ Form レイヤは <strong>拡張ポイントは <code>Extension/</code> の 1 つだけ</strong>で、他はフォームを作るための素の機構（Doctrine ほど拡張ポイントは多くない）。</div>
  <table>
   <tr><th>サブディレクトリ</th><th>なぜ</th><th>役割</th><th>代表クラス</th></tr>
   <tr><td><code>Type/</code></td><td><span class="badge">基盤</span></td><td><strong>フォーム型本体</strong>（1 型 = 1 クラス）。用途別にサブ（<code>Admin/</code> <code>Front/</code> <code>Shopping/</code> <code>Master/</code> <code>Install/</code>）へ分かれる</td><td><code>AddressType</code> / <code>PriceType</code> / <code>Front/EntryType</code> / <code>Admin/ProductType</code></td></tr>
-  <tr><td><code>Extension/</code></td><td><span class="badge">拡張 seam</span></td><td><strong>既存 FormType への横断拡張</strong>(<code>AbstractTypeExtension</code>)。コアを書き換えず全フォームに機能を足す</td><td><code>HelpTypeExtension</code> / <code>HTMLPurifierTextTypeExtension</code> / <code>DoctrineOrmExtension</code></td></tr>
+  <tr><td><code>Extension/</code></td><td><span class="badge">拡張ポイント</span></td><td><strong>既存 FormType への横断拡張</strong>(<code>AbstractTypeExtension</code>)。コアを書き換えず全フォームに機能を足す</td><td><code>HelpTypeExtension</code> / <code>HTMLPurifierTextTypeExtension</code> / <code>DoctrineOrmExtension</code></td></tr>
   <tr><td><code>Validator/</code></td><td><span class="badge">ドメイン</span></td><td><strong>フォーム用の独自バリデーション</strong>（<code>Constraint</code> ＋ <code>ConstraintValidator</code> の対）</td><td><code>Email</code> / <code>PasswordBlocklist</code> / <code>TwigLint</code></td></tr>
   <tr><td><code>EventListener/</code></td><td><span class="badge">基盤</span></td><td><strong>送信値の前処理</strong>（Symfony Form の <code>PRE_SUBMIT</code> で入力を整形）。※カーネルの <a href="../EventListener/README.html">EventListener レイヤ</a>とは別物</td><td><code>ConvertKanaListener</code> / <code>TruncateHyphenListener</code> / <code>HTMLPurifierListener</code></td></tr>
   <tr><td><code>DataTransformer/</code></td><td><span class="badge">基盤</span></td><td><strong>フォーム値とモデルの相互変換</strong>（<code>DataTransformerInterface</code>）</td><td><code>EntityToIdTransformer</code></td></tr>
