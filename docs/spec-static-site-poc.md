@@ -1,10 +1,11 @@
-# 仕様書 静的サイト PoC — ジェネレータ比較（Issue #6906 §8.2）
+# 仕様書 静的サイト PoC — SSG 要否の検証（Issue #6906 §8.2）
 
-コード近接の `README.html`（人間向けの真の仕様書）を集約して常時公開する**静的サイト**（戦略資料 §8.2）の
-ジェネレータを選定するための PoC 記録。候補は戦略資料が挙げる **Astro Starlight / VitePress / Antora**。
+コード近接の `README.html`（人間向けの真の仕様書）を集約して常時公開する**静的サイト**（戦略資料 §8.2）を
+どう作るかの PoC 記録。戦略資料は候補として **Astro Starlight / VitePress / Antora** を挙げていたため実際に評価し、
+**結論として「専用の静的サイトジェネレータ（SSG）は当面導入しない」**に至った経緯を残す。
 
 > 本 PR（Phase B）のスコープは「`eccube:docs:export` コマンド」「PoC による方針決定」「鮮度維持（PR テンプレ・CI）」まで。
-> 静的サイトの本番構築・ホスティング（`docs.ec-cube.net/spec/`）は本 PoC の結論に基づく後続作業とする。
+> 本番サイトのホスティング（`docs.ec-cube.net/spec/`）は本 PoC の結論に基づく後続作業とする。
 
 ## 前提となる制約（PoC で判明した最重要事実）
 
@@ -15,67 +16,68 @@
 - **どの SSG も「素の完結 HTML 文書」をテーマ適用付きの本文としては取り込まない。** 取り込むなら
   (a) 静的アセット（`public/` 等）としてそのまま配信する、(b) iframe で埋め込む、(c) HTML→MD/MDX へ変換する、のいずれか。
 - 本仕様書は「自己完結 HTML であること」自体が価値（§8.1：単一ソースで顧客提出 PDF を派生できる）なので、
-  **(c) 変換は本末転倒**。現実的には **(a) 静的アセット配信 ＋ SSG は索引・ナビ・検索の layer** に徹する構成が素直。
-- この構成なら、`bin/console eccube:docs:export` の出力（集約済み `README.html` 群）を **SSG の `public/` に流し込む**だけでよく、
-  SSG 間の差は「索引/ナビ/検索の作り」「導入の重さ」「EC-CUBE の既存ツールチェーンとの親和性」に集約される。
+  **(c) 変換は本末転倒**。つまり SSG を使っても現実には **(a) 静的アセット配信 ＋ SSG は索引・ナビ・検索の layer** に徹するしかない。
+- ⇒ **SSG が足すのは「索引・ナビ・検索」だけ**で、仕様書本体は SSG を通しても素の HTML のまま配信される。
 
-## PoC 実施結果
+## SSG 評価（実施結果）
 
-### VitePress（実際にビルド実行 ✅）
+### VitePress（実際にビルド実行）
 
-最小構成で PoC を実行し、**ビルド成功**を確認した。
+最小構成でビルドは成功した（`public/spec/` に 27 ファイルを相対構造のままコピー → 索引を生成 → `vitepress build` で
+`dist/` に索引＋27 個の自己完結 `README.html` が生成）。追加依存 126 パッケージ / インストール約 12 秒・ビルド約 4 秒。
+**ビルドは通るが、得られる価値は「索引ページ」だけ**で、仕様書本体は素の HTML のまま配信された。
 
-- 手順: `docs/public/spec/` に全 `README.html`（27 ファイル）を相対構造のままコピー → 索引 `index.md` を自動生成 →
-  `vitepress build`。
-- 結果: **`dist/` に索引 `index.html` が生成され、27 個の `README.html` が自己完結のまま（`<style>`・`<section>`・
-  日本語をそのまま保持して）配信された。** 追加依存は 126 パッケージ / インストール約 12 秒、ビルド約 4 秒。
-- 所見: EC-CUBE は既に **Node/npm/webpack** を使う（`package.json` あり）ため導入障壁が最も低い。
-  索引 `index.md` は `eccube:docs:export` の出力一覧から機械生成でき、鮮度維持と相性が良い。
+### Astro Starlight / Antora（評価）
 
-### Astro Starlight（評価）
+- **Astro Starlight**: テーマ・全文検索・サイドバーが充実（MDX 一次）。ただし自己完結 HTML は `public/` 配信で、
+  テーマの恩恵は索引側にしか及ばない。依存は VitePress より重め。
+- **Antora**: 複数リポジトリ横断・バージョン別に最強（AsciiDoc 一次）だが、本仕様書（HTML）とコンテンツモデルが最も乖離。
+  単一リポジトリ・HTML 集約の現段階ではオーバースペック。
 
-- ドキュメントサイト向けにテーマ・全文検索・サイドバー・バージョニングが充実。MDX 一次で表現力は高い。
-- 本用途では自己完結 HTML を `public/` 配信する点は VitePress と同じで、**テーマの恩恵は索引側にしか及ばない**。
-- 依存・ビルド構成は VitePress より重め。将来「Markdown で書き直した本文にテーマを当てる」方針に転換するなら有力。
+## 結論：SSG は当面導入しない
 
-### Antora（評価）
+PoC の結果、**専用 SSG の導入は本用途に対して過剰**と判断する。理由:
 
-- **複数リポジトリ横断・バージョン別**ドキュメントに最強（AsciiDoc 一次）。EC-CUBE 本体＋プラグイン群を
-  横断する将来像では魅力的。
-- ただし一次コンテンツが **AsciiDoc** で、本仕様書（HTML）とはコンテンツモデルが最も乖離する。導入・運用も最重量。
-- 現段階（単一リポジトリ・HTML 集約）ではオーバースペック。
+- 仕様書本体は SSG を通しても素の HTML のまま。SSG が足すのは索引・ナビ・検索だけで、その対価に **Node ビルド・依存
+  （100+ パッケージ）・ビルド CI・使い捨てプロジェクトの保守**を負う。
+- 各 `README.html` は自己完結なので、**リポジトリを取得した人はビルドなしでそのままブラウザで開ける**。OSS 利用者に
+  ビルドを課すのは DX を損なう。
+- 「索引」はリポジトリルートの [`README.html`](../README.html)（全 `README.html` へのポータル）を **静的にコミット**すれば足り、
+  SSG のビルドは不要。鮮度は CI（`docs-check`）が「ポータルが全 `README.html` を列挙しているか」を検査して担保する。
+- 「全文検索」は当面 (a) 各ページの Ctrl+F、(b) GitHub のリポジトリ検索でまかなう。サイト全文検索が本当に必要になったら、
+  フレームワークを入れずとも **生成済み JSON インデックス＋数十行のバニラ JS** で後付けできる。
 
-## 比較表
+### 採用する構成（SSG なし）
 
-| 観点 | VitePress | Astro Starlight | Antora |
-|---|---|---|---|
-| 一次コンテンツ | Markdown | MDX/Markdown | AsciiDoc |
-| 自己完結 HTML の扱い | `public/` 配信（PoC 実証） | `public/` 配信 | 静的資産配信 |
-| 導入の軽さ | ◎（Node、~126 pkg） | ○ | △（最重量） |
-| 索引/ナビ/検索 | ○ | ◎（検索標準） | ◎（横断・版管理） |
-| EC-CUBE 既存ツールチェーン親和性 | ◎（npm/webpack 既存） | ○ | △ |
-| 複数リポジトリ・版管理 | △ | ○ | ◎ |
-| 本用途の総合 | **◎（PoC 実証済み）** | ○ | △ |
-
-## 推奨（PoC の結論）
-
-- **第一候補: VitePress。** 自己完結 HTML を `public/` に置く前提では SSG 間の本質差は小さく、
-  **導入の軽さと EC-CUBE 既存 Node ツールチェーンとの親和性**で優位。索引は `eccube:docs:export` 出力から機械生成でき、
-  本 PoC で **27 ファイル集約 → ビルド成功**を実証済み。
-- 全文検索・テーマを重視するなら Astro Starlight、将来プラグイン群まで横断・版管理するなら Antora を再評価する。
-- **最終決定は本 PoC を土台にメンテナと合意**し、後続作業で本番サイト（`docs.ec-cube.net/spec/`）を構築する。
-
-## 再現手順（参考）
-
-```bash
-# 1) 集約済み README.html を出力
-bin/console eccube:docs:export            # var/docs/all/ に全章
-bin/console eccube:docs:export --filter=customer   # var/docs/customer/ に顧客向け章のみ
-
-# 2) SSG の public/ に配置して索引を生成 → ビルド（VitePress の例）
-#    出力 index.html ＋ 各 README.html が集約された静的サイトが得られる。
-#    顧客提出 PDF は出力 HTML をブラウザの「印刷 → PDF」で派生させる。
+```
+README.html（各機能ディレクトリ・自己完結 HTML＝仕様書本体）
+   │
+   ├─ リポジトリ内でそのまま参照（AI / 開発者）           … ビルド不要
+   ├─ ルート README.html（ポータル＝索引）をブラウザで開く … ビルド不要・ローカル閲覧
+   ├─ 本番公開: README.html ツリー＋ルート README.html を
+   │            静的ホスティング（GitHub Pages / S3 / nginx）にそのまま配置 … SSG 不要
+   ├─ bin/console eccube:docs:export --filter=customer → 顧客向け HTML（dev 章を除去）
+   └─ ブラウザ「印刷 → PDF」で顧客提出 PDF を派生
 ```
 
-> PoC の VitePress プロジェクト（`node_modules` 含む）はリポジトリにコミットしない使い捨て。
-> 本番採用時に構成を確定してから追加する。
+### 将来 SSG を再検討する条件
+
+次のいずれかが強く求められたら、その時点で Astro Starlight / Antora を再評価する（本 PoC を土台に）:
+
+- サイト横断の**全文検索**やテーマ統一が必須になった → Astro Starlight
+- **本体＋プラグイン群を横断**し、**バージョン別**に版管理して公開したくなった → Antora
+
+## 顧客向け出力の再現手順（参考）
+
+```bash
+# 全章を集約出力（開発者向けフル版）
+bin/console eccube:docs:export                     # var/docs/all/ に全 README.html＋ルート目次
+
+# 顧客提出向け（data-customer="true" の章だけ抽出）
+bin/console eccube:docs:export --filter=customer   # var/docs/customer/ に顧客向け章のみ
+#   出力フォルダをそのままブラウザで開く／静的ホスティングに置くだけで公開できる。
+#   顧客提出 PDF は出力 HTML をブラウザの「印刷 → PDF」で派生させる。
+```
+
+> 本番サイト（`docs.ec-cube.net/spec/`）へのデプロイ自動化はホスティング所有・権限の合意が要るため後続作業。
+> その際も SSG ビルドは不要で、`export` 出力（＋ルート `README.html`）を静的ホスティングへ配置する CI で足りる。

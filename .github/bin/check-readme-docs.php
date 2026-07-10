@@ -17,6 +17,7 @@
  * アプリを起動せず単体で走る軽量チェック。CI（.github/workflows/docs-check.yml）から実行する。
  *   - README.html の各 <section> に data-section / data-customer 属性があること
  *   - README.html / README.md 内の相対リンク（http/# 以外）が実在すること
+ *   - ルート README.html（仕様書ポータル）が全 README.html を列挙していること
  *
  * 使い方: php .github/bin/check-readme-docs.php [対象ディレクトリ(既定: リポジトリルート)]
  * 終了コード: 問題なし=0 / 問題あり=1
@@ -54,7 +55,9 @@ $findReadmes = static function (string $dir) use ($excludes): array {
 
 $problems = [];
 
-foreach ($findReadmes($root) as $path) {
+$readmes = $findReadmes($root);
+
+foreach ($readmes as $path) {
     $html = (string) file_get_contents($path);
     $dir = \dirname((string) $path);
 
@@ -90,6 +93,21 @@ foreach ($findReadmes($root) as $path) {
         $target = $dir.'/'.$href;
         if (!file_exists($target)) {
             $problems[] = "$path: リンク切れ ($href)";
+        }
+    }
+}
+
+// ルート README.html（仕様書ポータル）が全 README.html を列挙しているか（TOP ページの鮮度）
+$portalPath = $root.'/README.html';
+if (is_file($portalPath)) {
+    $portalHtml = (string) file_get_contents($portalPath);
+    foreach ($readmes as $path) {
+        if (!str_ends_with($path, 'README.html') || $path === $portalPath) {
+            continue;
+        }
+        $relative = ltrim(substr($path, \strlen($root)), '/');
+        if (!str_contains($portalHtml, 'href="'.$relative.'"')) {
+            $problems[] = "$portalPath: ポータル（TOP ページ）に $relative へのリンクがありません（新しい README.html は目次へ追加してください）";
         }
     }
 }
