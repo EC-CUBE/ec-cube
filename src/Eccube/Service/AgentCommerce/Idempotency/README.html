@@ -54,7 +54,7 @@
  </ul>
  <ul>
   <li><code>Idempotency-Key</code> が <strong>null / 空のリクエストは重複排除されず毎回 <code>compute</code> を実行</strong>する。冪等保証はキー付与が前提。</li>
-  <li>初回は <code>compute</code> の<strong>前に</strong>予約行を INSERT し、<code>compute</code> が例外を投げた場合は<strong>予約行を削除して同一キーでの再試行を許す</strong>（失敗でキーを焼き付けない）。</li>
+  <li>初回は <code>compute</code> の<strong>前に</strong>予約行を INSERT し、<code>compute</code> が例外を投げた場合は<strong>予約行を削除して同一キーでの再試行を許す</strong>（失敗時にキーを確定・固定しない）。</li>
   <li>並行 INSERT が一意制約違反になると <code>flush()</code> 失敗で <code>EntityManager</code> が閉じるため、以降は<strong>生 DBAL でリプレイ元を直接読む</strong>（ORM を使わない）。相手がロールバック等で行が消えていれば「処理中」扱いにして再試行を促す。</li>
  </ul>
 </section>
