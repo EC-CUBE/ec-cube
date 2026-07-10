@@ -73,7 +73,7 @@
 <section data-section="notes" data-customer="false">
  <h2>注意点<span class="dev-only">開発者向け</span></h2>
  <ul>
-  <li><strong>管理画面の操作が購入と同じ確定処理を呼ぶ点に注意。</strong> <code>EditController</code> / <code>ShippingController</code> は管理画面の操作から、購入時と同じ <code>PurchaseFlow.prepare()</code>/<code>commit()</code> を実行する。そのため「画面をちょっと編集しただけ」に見えても、<strong>在庫引当・注文番号採番・（出荷画面では）出荷通知メール送信</strong>といった<strong>実際に世界を変える副作用</strong>が管理操作から発火する。確定系の呼び出しを安易に増やさない。</li>
+  <li><strong>管理画面の操作が購入と同じ確定処理を呼ぶ点に注意。</strong> <code>EditController</code> / <code>ShippingController</code> は管理画面の操作から、購入時と同じ <code>PurchaseFlow.prepare()</code>/<code>commit()</code> を実行する。そのため画面上は編集操作でも、<strong>在庫引当・注文番号採番・（出荷画面では）出荷通知メール送信</strong>といった副作用が同時に走る。確定系の呼び出しを安易に増やさない。</li>
   <li><strong>受注ステータスは <code>OrderStateMachine</code> 経由で遷移させる。</strong> 直接 <code>setOrderStatus()</code> で書き換えず、遷移可否チェックを通す。</li>
   <li><strong>Fat コントローラを増やさない。</strong> 受注の計算・検証・確定は PurchaseFlow へ。コントローラは HTTP 入出力と画面遷移に徹する。</li>
   <li><strong>認可・CSRF。</strong> パスは <code>%eccube_admin_route%</code> 配下（admin ファイアウォールで保護）。一括削除・ステータス更新・伝票番号更新など GET 以外の状態変更は CSRF トークンを検証する。</li>
