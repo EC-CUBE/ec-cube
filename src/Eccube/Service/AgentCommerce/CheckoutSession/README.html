@@ -57,7 +57,7 @@
   <tr><th>クラス</th><th>役割</th></tr>
   <tr><td><code>AgentCheckoutCompletionService</code></td><td>complete を<strong>「中断 → 再開」する状態機械</strong>として実行するオーケストレータ。追加認証（EMV-3DS）や外部ハンドオフ（escalation）はエラーでなく正常な中間状態として扱う。在庫引当の保持/回収・正規化ステータス遷移・トランザクション境界を core に集約。</td></tr>
   <tr><td><code>CustomerResolverInterface</code></td><td>セッションに紐づく会員（<code>Customer</code>）を解決する seam。OAuth2 トークン → Customer 解決（eccube-api4 依存）。</td></tr>
-  <tr><td><code>GuestCustomerResolver</code></td><td>標準実装。会員 ID 連携が landing するまで常に <code>null</code>（ゲスト購入）を返す。</td></tr>
+  <tr><td><code>GuestCustomerResolver</code></td><td>標準実装。会員 ID 連携が実装されるまで常に <code>null</code>（ゲスト購入）を返す。</td></tr>
  </table>
  <div class="note">complete は冪等な単発呼び出しではなく<strong>複数回呼ばれる状態機械</strong>である。<code>prepare</code> で物理引当した在庫は <code>REQUIRES_ACTION</code>/<code>PENDING</code> では rollback せず保持し、<code>FAILED</code>/期限切れで rollback する。<code>StockReduceProcessor</code> の悲観ロックに対応するため各 complete を明示トランザクションで囲む。</div>
  <ul>

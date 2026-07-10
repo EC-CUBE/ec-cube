@@ -98,12 +98,12 @@
  <ul>
   <li><strong>2 系統エラーを混同しない</strong>。在庫不足・販売停止・配送制限などのビジネス系は例外を投げず <code>AgentCheckoutMessage</code>（HTTP 200 + <code>messages[]</code>）に写す。不正な商品参照・空明細などのプロトコル系のみ <code>AgentCheckoutException</code> を投げる。</li>
   <li><strong>金額は minor-unit 整数</strong>で持ち回る。通貨ごとに桁数が違うため一律 ×100 で組まない（必ず <code>MinorUnitConverter</code> を通す）。EC-CUBE 本体の金額カラムは 2 桁までである点に注意。</li>
-  <li><strong>会員はゲスト購入が基準線</strong>。会員 ID 連携は eccube-api4 の Customer authorization_code grant に依存し、標準実装（<code>GuestCustomerResolver</code>）は常に <code>null</code>（ゲスト）を返す。会員解決は <code>CustomerResolverInterface</code> の差し替えで有効化する。</li>
-  <li><strong>支払方法の「沈黙のすり抜け」に注意</strong>。利用可能な支払方法の先頭（sort_no 最小）を機械採用するとエージェント決済不可能な方法（銀行振込等）が割り当たる。<code>AgentPaymentMethodResolverInterface</code> は登録済みハンドラが扱える <code>Payment</code> のみを候補にする。</li>
+  <li><strong>会員は既定でゲスト購入</strong>。会員 ID 連携は eccube-api4 の Customer authorization_code grant に依存し、標準実装（<code>GuestCustomerResolver</code>）は常に <code>null</code>（ゲスト）を返す。会員解決は <code>CustomerResolverInterface</code> の差し替えで有効化する。</li>
+  <li><strong>ハンドラ非対応の支払方法が検知されず割り当たる問題に注意</strong>。利用可能な支払方法の先頭（sort_no 最小）を機械採用するとエージェント決済不可能な方法（銀行振込等）が割り当たる。<code>AgentPaymentMethodResolverInterface</code> は登録済みハンドラが扱える <code>Payment</code> のみを候補にする。</li>
   <li><strong>拡張は各 Interface の差し替え（seam）で</strong>。<code>ProductReferenceResolverInterface</code> / <code>CustomerResolverInterface</code> / <code>FulfillmentOptionMapperInterface</code> / <code>KeyStoreInterface</code> 等を <code>app/Customize</code> で実装・alias 上書きする。core は具象決済実装を持たず、決済ハンドラは決済プラグインがタグ付きサービスで寄与する。</li>
   <li><strong>本ディレクトリはプロトコル非依存に徹する</strong>。HTTP ステータス／各プロトコルのレスポンス形への変換はプロトコル層（ACP=#6776 / UCP=#6574）が担う。ここに HTTP 依存を持ち込まない。</li>
   <li><strong>エージェント所有 <code>Cart</code> は Web カートと隔離</strong>。<code>AgentCheckoutPurchaseFlowAdapter</code> が組む <code>Cart</code> は <code>setAgentOwned(true)</code> を立て、Web ストアフロントの <code>CartService</code> の解決対象から外す。会員帰属は <code>Order</code> 側に持たせ <code>Cart</code> の <code>customer_id</code> は常に NULL に保つ（ログイン会員の Web カートへの混入・操作を防ぐため）。</li>
-  <li><strong><code>MinorUnitConverter</code> は不正入力を黙って握り潰す</strong>。未知の通貨コードは安全側に倒して 2 桁（<code>×100</code>）扱い、数値として解釈できない金額文字列（<code>abc</code> / <code>1,000</code> / <code>1e3</code> 等）は例外でなく <code>0</code> を返す。呼び出し側で通貨・金額の妥当性を保証すること。</li>
+  <li><strong><code>MinorUnitConverter</code> は不正入力を例外にせず既定値で処理する</strong>。未知の通貨コードは安全側に倒して 2 桁（<code>×100</code>）扱い、数値として解釈できない金額文字列（<code>abc</code> / <code>1,000</code> / <code>1e3</code> 等）は例外でなく <code>0</code> を返す。呼び出し側で通貨・金額の妥当性を保証すること。</li>
  </ul>
 </section>
 

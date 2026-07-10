@@ -111,7 +111,7 @@
   <li><code>configurePlugins()</code> は prepend フェーズでコンテナが未完成のため、<strong>DBAL の接続を直接生成</strong>して <code>dtb_plugin</code> を読む。DB 未接続・テーブル未作成時は安全に空扱いで抜ける（インストール前を考慮）。</li>
   <li>認可仕様を確認するときは <code>security.yaml</code> だけでなく必ず <code>EccubeExtension::configureFramework()</code> を併読する（上記 access_control 動的生成のため）。</li>
   <li>CompilerPass の実行順が重要なものは優先度で制御されている（<code>AutoConfigurationTagPass</code>=11 → <code>PluginPass</code>=10、<code>StripReportFieldsArgPass</code>=-1000）。順序前提を崩さないこと。</li>
-  <li><code>Facade/</code> の <code>LoggerFacade</code> / <code>TranslatorFacade</code> は、DI が使えない静的コンテキスト向けの避難口。通常のサービスでは<strong>コンストラクタ注入を優先</strong>する。</li>
+  <li><code>Facade/</code> の <code>LoggerFacade</code> / <code>TranslatorFacade</code> は、DI が使えない静的コンテキストで例外的にサービスへアクセスする手段。通常のサービスでは<strong>コンストラクタ注入を優先</strong>する。</li>
  </ul>
 </section>
 

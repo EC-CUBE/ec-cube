@@ -33,7 +33,7 @@
  <h2>概要</h2>
  <p>このディレクトリは、EC-CUBE の<strong>認証（誰か）・認可（何を許すか）の中核部品</strong>を収めます。
  EC-CUBE のアクセス制御は「<strong>ファイアウォール＋ロール＋Voter</strong>」の 3 層モデルで、
- 個々のアクションに <code>#[IsGranted]</code> を撒くのではなく、<strong>パスのプレフィックスで面的に</strong>守るのが基本です。</p>
+ 個々のアクションに <code>#[IsGranted]</code> を付けるのではなく、<strong>パスのプレフィックス単位でまとめて</strong>守るのが基本です。</p>
 
  <p>ファイアウォールと access_control の宣言は <code>app/config/eccube/packages/security.yaml</code>、
  および <code>src/Eccube/DependencyInjection/EccubeExtension.php</code>（後述の動的生成）にあります。
@@ -71,12 +71,12 @@
  <p>「どのパスにどのロールを要求するか」は <strong>security.yaml に直書きされておらず、
  <code>EccubeExtension.php</code> が動的に生成</strong>して差し込みます。security.yaml だけを見ても全体像は掴めません。</p>
  <div class="flow">^/%eccube_admin_route%/login            IS_AUTHENTICATED_ANONYMOUSLY   … ログイン画面は誰でも
-^/%eccube_admin_route%/                 ROLE_ADMIN                     … 管理画面全体（面で保護）
+^/%eccube_admin_route%/                 ROLE_ADMIN                     … 管理画面全体（プレフィックス単位で保護）
 ^/mypage/login                          IS_AUTHENTICATED_ANONYMOUSLY
 ^/mypage/withdraw_complete              IS_AUTHENTICATED_ANONYMOUSLY
 ^/mypage/change                         IS_AUTHENTICATED_FULLY         … 重要操作は FULLY（remember-me 除外）
 ^/mypage/                               ROLE_USER                      … 会員ページ全体</div>
- <div class="note"><strong>最重要の含意</strong>: 新しい管理アクションは、認可の主装置が<strong>ファイアウォール（パスのプレフィックス）</strong>なので、
+ <div class="note"><strong>最重要の含意</strong>: 新しい管理アクションは、認可の主たる仕組みが<strong>ファイアウォール（パスのプレフィックス）</strong>なので、
  必ず <code>%eccube_admin_route%</code> 配下のパスに置くこと。配下から外すと無認証で到達できてしまう（よくある重大な事故）。
  <br>また <code>^/mypage/</code> は <code>ROLE_USER</code> 前提なので、その配下のコントローラでは <code>getUser()</code> は非 null が保証される。</div>
 </section>
