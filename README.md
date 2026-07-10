@@ -53,7 +53,7 @@ JavaScript のライブラリは webpack でバンドル/minifyされます。
 バンドルするライブラリを変更する場合は、テンプレートごとに以下の bundle.js を修正し、リビルドしてください。
 - [html/template/admin/assets/js/bundle.js](html/template/admin/assets/js/bundle.js)
 - [html/template/default/assets/js/bundle.js](html/template/default/assets/js/bundle.js)
-- [html/template/install/assets/js/bundle.js](html/template/default/install/js/bundle.js)
+- [html/template/install/assets/js/bundle.js](html/template/install/assets/js/bundle.js)
 
 ```shell
 npm ci # 初回およびpackage-lock.jsonに変更があったとき
