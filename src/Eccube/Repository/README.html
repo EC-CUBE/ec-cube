@@ -72,6 +72,13 @@ return $qb-&gt;orderBy('p.id', 'DESC');           // 一覧はページング用
  <h2>永続化と拡張<span class="dev-only">開発者向け</span></h2>
  <p>保存・削除は <code>AbstractRepository</code> が提供する <code>save(AbstractEntity $entity)</code> / <code>delete(AbstractEntity $entity)</code> を使います。
  これらをオーバーライドする場合は<strong>親クラスのシグネチャを厳守</strong>します。</p>
+ <div class="note"><strong><code>save()</code> / <code>delete()</code> は <code>flush()</code> しません。</strong> 実体は <code>persist()</code> / <code>remove()</code> の呼び出しのみで、
+ DB への確定は行いません（<code>AbstractRepository::save()</code>/<code>delete()</code>）。呼び出し側で <code>EntityManager::flush()</code> を明示的に実行するか、
+ 一連の処理をまとめて 1 回 flush します。「<code>save()</code> したのに保存されない」の多くはこの flush 漏れです。</div>
+ <p><strong>検索クエリの拡張はサービス／メソッド差し替えではなくフックで行えます。</strong> 主要な検索系メソッドは組み立てた <code>QueryBuilder</code> を
+ <code>Queries::customize(QueryKey::&lt;対象&gt;, $qb, $searchData)</code> に通してから返します（<code>ProductRepository</code> / <code>OrderRepository</code> / <code>CustomerRepository</code> 等）。
+ <code>QueryCustomizer</code> を実装して登録すると、対象の <code>QueryKey</code>（<code>QueryKey.php</code> に定義）に対して検索条件や JOIN を後付けで注入できます。
+ プラグイン／カスタマイズで検索条件を足すときはこのフックを使い、リポジトリのコアメソッド自体は書き換えません。</p>
  <p>プロジェクト固有の検索メソッド追加は <code>app/Customize/Repository/</code> で行います。
  実装の書き方・DO/DON'T は <a href="../../../.claude/skills/repository/SKILL.md">repository/SKILL.md</a> が正典です。</p>
 </section>

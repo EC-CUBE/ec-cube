@@ -52,6 +52,8 @@
  <ul>
   <li>HTTP ステータスや <code>messages[]</code> への<strong>具体的な変換アダプタはプロトコル層（#6776 / #6574）が担う</strong>。本サブドメインは中立なエラー分類・例外型のみを提供する。</li>
   <li>ビジネス系（在庫切れ等）をここで例外にしない。混同すると本来 HTTP 200 で返すべき結果を 4xx/5xx で返してしまう。</li>
+  <li><code>IdempotencyConflictException</code> は <code>AgentCheckoutException</code> の<strong>サブクラスではなく</strong>、直接 <code>\RuntimeException</code> を継承する別系統（<code>errorCode</code> を持たない）。<code>catch (AgentCheckoutException)</code> では捕捉できない点に注意（409 と 4xx/5xx を別ハンドラで扱う）。</li>
+  <li><code>AgentCheckoutException</code> はメッセージ未指定時、例外メッセージに <code>errorCode->value</code>（例 <code>product_not_found</code>）をそのまま用いる。</li>
  </ul>
 </section>
 

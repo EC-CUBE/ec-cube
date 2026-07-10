@@ -33,7 +33,7 @@
  <h2>概要</h2>
  <p>このディレクトリは、コア本体の DB マイグレーション（<code>VersionYYYYMMDDHHMMSS.php</code>）を置く場所です。
  名前空間は <code>DoctrineMigrations</code>、各クラスは <code>final class VersionYYYYMMDDHHMMSS extends AbstractMigration</code>。
- 適用状況は <code>migration_versions</code> テーブルが管理します。</p>
+ 適用状況は <code>doctrine_migration_versions</code> テーブルが管理します（doctrine-migrations-bundle 既定名。<code>migration_versions</code> は旧称で、EC-CUBE は table_name を上書きしていない）。</p>
 
  <div class="note"><strong>最重要: スキーマの源泉は Entity の属性（<code>#[ORM\...]</code>）であって、マイグレーションではない</strong>。
  マイグレーションは「属性＋<code>schema:update</code> では届かないもの」を補うためだけに書きます。</div>
@@ -91,6 +91,7 @@
   <li>❌ INSERT・構造変更でガードなし → ✅ 存在チェックで冪等に。</li>
   <li><strong>プラグインのマイグレーションはここに置かない</strong>。各プラグインの <code>DoctrineMigrations/</code>（<code>migration_{code}</code> テーブル）で別管理。</li>
   <li>STI テーブル（<code>mtb_*</code> / <code>dtb_block</code> 等）への INSERT は <code>discriminator_type</code> 列の指定が必須。</li>
+  <li><strong>「カラム追加＝不要」は原則だが、コアに反例が実在する</strong>。<code>Version20260316234241</code> は <code>dtb_base_info</code> に <code>ALTER TABLE ... ADD option_guest_purchase</code> でカラムを追加している（属性追加だけで済ませていない）。単純なカラム追加でも運用都合で ALTER を添えることはあり、「カラム追加なのに ALTER がある＝規約違反」と機械的に断じない。</li>
  </ul>
 </section>
 

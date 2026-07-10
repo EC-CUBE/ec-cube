@@ -79,6 +79,8 @@
   <li><span class="badge">コア</span> 横断的な拡張は <code>src/Eccube/Form/Extension/</code> に <code>AbstractTypeExtension</code> を継承して置く。
   <code>getExtendedTypes()</code> で対象 Type を指定する（例: <code>HelpTypeExtension</code> は全 <code>FormType</code> に <code>help</code> を追加、<code>HTMLPurifierTextTypeExtension</code> は入力を無害化）。</li>
   <li><span class="badge">プラグイン / Customize</span> プロジェクト固有の項目追加は <code>app/Customize/Form/Extension/</code> に置く（コアはアップグレードで上書きされるため）。</li>
+  <li><span class="badge">エンティティ属性</span> <strong><code>FormTypeExtension</code> を書かずに、エンティティのプロパティへ <code>#[FormAppend(type: ...)]</code> 属性を付けるだけでも項目を追加できる</strong>。
+  <code>DoctrineOrmExtension</code> が全 <code>FormType</code> の <code>PRE_SET_DATA</code> でメタデータを走査し、<code>data_class</code> のプロパティに <code>#[FormAppend]</code> があれば自動で <code>add()</code> する（EC-CUBE 独自機構。Symfony 標準ドキュメントには無い）。</li>
  </ul>
  <p>新規フォームを一から作る場合は名前空間 <code>Eccube\Form\Type</code>・<code>AbstractType</code> 継承・ライセンスヘッダ・型宣言（PHPStan level 6）を守り、依存はコンストラクタ DI で受けます。</p>
 </section>
@@ -91,6 +93,7 @@
   <li>バリデーションは制約クラス（<code>Assert\NotBlank</code> 等）で付ける。<code>Range</code> で min/max 両方指定時は <code>notInRangeMessage</code> を使う。</li>
   <li>既存の EC-CUBE 提供 Type（<code>AddCartType</code> / <code>AddressType</code> / <code>PriceType</code> 等）があれば再利用し、具象クラス直依存を避ける。</li>
   <li>パスワード入力を扱う場合、対象エンティティに <code>plain_password</code> プロパティが必要。</li>
+  <li><strong><code>TextType</code> の HTML 自動無害化（HTMLPurifier）はフロントのリクエスト時だけ効く</strong>（<code>HTMLPurifierTextTypeExtension</code> は <code>Context::isFront()</code> のときのみ <code>purify_html</code> を有効化）。管理画面の <code>TextType</code> 入力は自動サニタイズされないので、出力側（Twig）でのエスケープに頼る。</li>
  </ul>
 </section>
 
