@@ -859,6 +859,15 @@ final class EditControllerTest extends AbstractEditControllerTestCase
             $this->assertNull($OrderItem->getProductCode(), '非商品明細に商品コードが引き継がれている');
             $this->assertNull($OrderItem->getClassName1(), '非商品明細に規格名が引き継がれている');
             $this->assertNotInstanceOf(Product::class, $OrderItem->getProduct(), '非商品明細に商品が引き継がれている');
+
+            // 送料・手数料は必ず税込(INCLUDED). 旧商品明細の税抜(EXCLUDED)が引き継がれていないこと.
+            if (in_array($OrderItem->getOrderItemType()->getId(), [OrderItemType::DELIVERY_FEE, OrderItemType::CHARGE], true)) {
+                $this->assertSame(
+                    TaxDisplayType::INCLUDED,
+                    $OrderItem->getTaxDisplayType()->getId(),
+                    '送料・手数料の税表示区分に旧商品明細の税抜が引き継がれている'
+                );
+            }
         }
     }
 
