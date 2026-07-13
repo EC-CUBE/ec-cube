@@ -396,6 +396,18 @@ front.shopping.different_payment_methods: Sorry, your order includes items with 
 front.shopping.payment_method_unselected: Please select the payment method.
 front.shopping.not_available_payment_method: The payment method you have selected is not available.
 front.shopping.payment_method_not_fount: Sorry, you have no payment options. If you have selected multiple delivery methods, you can only select the same payment option for them all.
+front.shopping.save_preferred_shipping_payment: Save this shipping and payment method
+front.shopping.save_preferred_shipping_payment_help: Use with one click for next order
+front.shopping.preferred_info_title: Saved settings available
+front.shopping.preferred_delivery_label: Shipping method
+front.shopping.preferred_payment_label: Payment method
+front.shopping.use_preferred_button: Use this setting
+front.shopping.preferred_restored_success: Saved settings have been applied
+front.shopping.preferred_payment_unavailable: Your saved payment method is currently unavailable
+front.shopping.preferred_delivery_unavailable: Your saved shipping method is currently unavailable
+front.shopping.preferred_multiple_shipping_notice: Saved settings cannot be restored when multiple shipping addresses are specified
+front.shopping.preferred_incompatible_combination: The combination of your saved shipping and payment methods is currently unavailable
+front.shopping.preferred_save_failed: Your order has been completed, but saving shipping and payment methods failed
 front.under_maintenance: The site is currently under maintenance.
 front.under_debug_mode: The site is currently under debug mode.
 front.admin_login_active: You are logged in to the Admin Console.

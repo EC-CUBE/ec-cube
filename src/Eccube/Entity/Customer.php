@@ -190,6 +190,14 @@ if (!class_exists(Customer::class)) {
         #[ORM\JoinColumn(name: 'pref_id', referencedColumnName: 'id')]
         private ?Pref $Pref = null;
 
+        #[ORM\ManyToOne(targetEntity: Payment::class)]
+        #[ORM\JoinColumn(name: 'preferred_payment_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+        private ?Payment $PreferredPayment = null;
+
+        #[ORM\ManyToOne(targetEntity: Delivery::class)]
+        #[ORM\JoinColumn(name: 'preferred_delivery_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+        private ?Delivery $PreferredDelivery = null;
+
         /**
          * Constructor
          */
@@ -849,6 +857,42 @@ if (!class_exists(Customer::class)) {
         public function getPref(): ?Pref
         {
             return $this->Pref;
+        }
+
+        /**
+         * Set preferredPayment.
+         */
+        public function setPreferredPayment(?Payment $preferredPayment = null): Customer
+        {
+            $this->PreferredPayment = $preferredPayment;
+
+            return $this;
+        }
+
+        /**
+         * Get preferredPayment.
+         */
+        public function getPreferredPayment(): ?Payment
+        {
+            return $this->PreferredPayment;
+        }
+
+        /**
+         * Set preferredDelivery.
+         */
+        public function setPreferredDelivery(?Delivery $preferredDelivery = null): Customer
+        {
+            $this->PreferredDelivery = $preferredDelivery;
+
+            return $this;
+        }
+
+        /**
+         * Get preferredDelivery.
+         */
+        public function getPreferredDelivery(): ?Delivery
+        {
+            return $this->PreferredDelivery;
         }
 
         /**
