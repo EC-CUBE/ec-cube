@@ -48,8 +48,8 @@ file that was distributed with this source code.
                                 </dt>
                                 <dd>
                                     <div class="ec-halfInput{{ has_errors(form.name.name01, form.name.name02) ? ' error'}}">
-                                        {{ form_widget(form.name.name01, { 'attr': { 'placeholder': 'common.last_name' }}) }}
-                                        {{ form_widget(form.name.name02, { 'attr': { 'placeholder': 'common.first_name' }}) }}
+                                        {{ form_widget(form.name.name01, { 'attr': { 'placeholder': 'common.last_name', 'autocomplete': 'shipping family-name' }}) }}
+                                        {{ form_widget(form.name.name02, { 'attr': { 'placeholder': 'common.first_name', 'autocomplete': 'shipping given-name' }}) }}
                                         {{ form_errors(form.name.name01) }}
                                         {{ form_errors(form.name.name02) }}
                                     </div>
@@ -74,7 +74,7 @@ file that was distributed with this source code.
                                 </dt>
                                 <dd>
                                     <div class="ec-halfInput{{ has_errors(form.company_name) ? ' error' }}">
-                                        {{ form_widget(form.company_name) }}
+                                        {{ form_widget(form.company_name, { 'attr': { 'autocomplete': 'shipping organization' }}) }}
                                         {{ form_errors(form.company_name) }}
                                     </div>
                                 </dd>
@@ -85,7 +85,7 @@ file that was distributed with this source code.
                                 </dt>
                                 <dd>
                                     <div class="ec-zipInput{{ has_errors(form.postal_code) ? ' error' }}"><span>{{ 'common.postal_symbol'|trans }}</span>
-                                        {{ form_widget(form.postal_code) }}
+                                        {{ form_widget(form.postal_code, { 'attr': { 'autocomplete': 'shipping postal-code' }}) }}
                                         <div class="ec-zipInputHelp">
                                             <div class="ec-zipInputHelp__icon">
                                                 <div class="ec-icon"><img
@@ -97,15 +97,15 @@ file that was distributed with this source code.
                                     </div>
 
                                     <div class="ec-select{{ has_errors(form.address.pref) ? ' error' }}">
-                                        {{ form_widget(form.address.pref) }}
+                                        {{ form_widget(form.address.pref, { 'attr': { 'autocomplete': 'shipping address-level1' }}) }}
                                         {{ form_errors(form.address.pref) }}
                                     </div>
                                     <div class="ec-input{{ has_errors(form.address.addr01) ? ' error' }}">
-                                        {{ form_widget(form.address.addr01, { 'attr': { 'placeholder': 'common.address_sample_01' }}) }}
+                                        {{ form_widget(form.address.addr01, { 'attr': { 'placeholder': 'common.address_sample_01', 'autocomplete': 'shipping address-line1' }}) }}
                                         {{ form_errors(form.address.addr01) }}
                                     </div>
                                     <div class="ec-input{{ has_errors(form.address.addr02) ? ' error' }}">
-                                        {{ form_widget(form.address.addr02,  { 'attr': { 'placeholder': 'common.address_sample_02' }}) }}
+                                        {{ form_widget(form.address.addr02,  { 'attr': { 'placeholder': 'common.address_sample_02', 'autocomplete': 'shipping address-line2' }}) }}
                                         {{ form_errors(form.address.addr02) }}
                                     </div>
                                 </dd>
@@ -116,7 +116,7 @@ file that was distributed with this source code.
                                 </dt>
                                 <dd>
                                     <div class="ec-telInput{{ has_errors(form.phone_number) ? ' error' }}">
-                                        {{ form_widget(form.phone_number) }}
+                                        {{ form_widget(form.phone_number, { 'attr': { 'autocomplete': 'shipping tel' }}) }}
                                         {{ form_errors(form.phone_number) }}
                                     </div>
                                 </dd>
