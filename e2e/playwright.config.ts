@@ -64,5 +64,14 @@ export default defineConfig({
         storageState: { cookies: [], origins: [] },
       },
     },
+    {
+      name: 'mcp-tests',
+      testMatch: /mcp\.spec\.ts/,
+      dependencies: ['setup'],
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: path.join(__dirname, '.auth', 'admin.json'),
+      },
+    },
   ],
 });
