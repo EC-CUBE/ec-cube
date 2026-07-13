@@ -128,6 +128,48 @@ class OrderItemType extends AbstractType
                     ProductClass::class
                 )));
 
+        // 受注編集画面で明細の最終行を削除し, 保存せずに明細を追加すると, 未保存のため DB から再読込された
+        // 削除対象の OrderItem に新しい明細がバインドされ, 明細種別/規格が変わっても tax_display_type や
+        // 商品コード・規格名等の派生値が旧明細から引き継がれてしまう(#6444). これを防ぐため, 明細種別または
+        // ProductClass が元の値から変わった場合は派生値をクリアし, 後続の補完ロジックで正しく再設定させる.
+        $originalOrderItemTypeId = null;
+        $originalProductClassId = null;
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use (&$originalOrderItemTypeId, &$originalProductClassId): void {
+            /** @var OrderItem|null $OrderItem */
+            $OrderItem = $event->getData();
+            if (null === $OrderItem) {
+                return;
+            }
+            $originalOrderItemTypeId = $OrderItem->getOrderItemType()?->getId();
+            $originalProductClassId = $OrderItem->getProductClass()?->getId();
+        });
+
+        // 既存の補完 POST_SUBMIT リスナより先に実行する必要があるため priority を高くする.
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use (&$originalOrderItemTypeId, &$originalProductClassId): void {
+            /** @var OrderItem|null $OrderItem */
+            $OrderItem = $event->getData();
+            if (null === $OrderItem) {
+                return;
+            }
+
+            // 元データを持たない新規追加明細は既存の補完ロジックに委ねる.
+            if (null === $originalOrderItemTypeId) {
+                return;
+            }
+
+            $newOrderItemTypeId = $OrderItem->getOrderItemType()?->getId();
+            $newProductClassId = $OrderItem->getProductClass()?->getId();
+
+            // 種別・ProductClass ともに変化していなければ引き継ぎ問題は起きないため何もしない.
+            if ($originalOrderItemTypeId === $newOrderItemTypeId && $originalProductClassId === $newProductClassId) {
+                return;
+            }
+
+            // 旧明細から引き継がれた派生値をクリアする. tax_adjust は rounding_type を null にすると
+            // 後続の補完で TaxRule から再設定されるため, ここでは触らない.
+            $OrderItem->setProduct()->setProductCode()->setClassName1()->setClassName2()->setClassCategoryName1()->setClassCategoryName2()->setTaxDisplayType()->setRoundingType();
+        }, 10);
+
         // 受注明細フォームの税率を補完する
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event): void {
             $OrderItem = $event->getData();

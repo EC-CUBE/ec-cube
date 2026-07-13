@@ -21,9 +21,11 @@ use Eccube\Entity\Customer;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\MailHistory;
 use Eccube\Entity\Master\Job;
+use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\RoundingType;
 use Eccube\Entity\Master\Sex;
+use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Order;
 use Eccube\Entity\Product;
@@ -747,5 +749,178 @@ final class EditControllerTest extends AbstractEditControllerTestCase
         );
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
+    /**
+     * 明細の最終行を削除し保存せずに商品を追加したとき, 削除した明細(送料等)の
+     * 税表示区分が商品明細に引き継がれないことのテスト.
+     *
+     * 未保存の削除により DB から再読込された既存 OrderItem のスロットが再利用され,
+     * 新しい商品明細のデータがバインドされる状況を再現する.
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/6444
+     */
+    public function testOrderItemTaxDisplayTypeNotCarriedOverWhenFeeSlotReusedByProduct()
+    {
+        $Order = $this->createOrder($this->Customer);
+        $Order->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
+        $this->entityManager->flush();
+        $orderId = $Order->getId();
+
+        $ProductClass = $this->Product->getProductClasses()[0];
+        $productData = [
+            'ProductClass' => $ProductClass->getId(),
+            'price' => $ProductClass->getPrice02(),
+            'quantity' => 1,
+            'product_name' => $this->Product->getName(),
+            'order_item_type' => OrderItemType::PRODUCT,
+            'tax_type' => TaxType::TAXATION,
+            'tax_rate' => '10',
+        ];
+
+        $EditOrder = $this->orderRepository->find($orderId);
+        $formData = $this->createFormDataForEdit($EditOrder);
+        $this->fillTaxType($formData, $EditOrder);
+
+        // 送料明細(税込)のスロットを商品明細のデータで上書きする.
+        $replaced = $this->replaceOrderItemSlot($formData, OrderItemType::DELIVERY_FEE, $productData);
+        $this->assertGreaterThan(0, $replaced, '送料明細のスロットが見つからなかった');
+
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_order_edit', ['id' => $orderId]),
+            ['order' => $formData, 'mode' => 'register']
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_edit', ['id' => $orderId])));
+
+        $EditedOrder = $this->orderRepository->find($orderId);
+        $ProductOrderItems = $EditedOrder->getProductOrderItems();
+        $this->assertNotEmpty($ProductOrderItems);
+        $productCodes = [];
+        foreach ($ProductOrderItems as $ProductItem) {
+            // 商品明細は必ず税抜(EXCLUDED). 旧送料明細の税込(INCLUDED)が引き継がれていないこと.
+            $this->assertSame(
+                TaxDisplayType::EXCLUDED,
+                $ProductItem->getTaxDisplayType()->getId(),
+                '商品明細の税表示区分に旧明細の値が引き継がれている'
+            );
+            $productCodes[] = $ProductItem->getProductCode();
+        }
+        // 送料スロットに追加した商品には, 自身の ProductClass の商品コードが設定されていること.
+        $this->assertContains($ProductClass->getCode(), $productCodes);
+    }
+
+    /**
+     * 明細の最終行(商品)を削除し保存せずにその他明細を追加したとき, 削除した商品明細の
+     * 規格情報(商品コード・規格名)がその他明細に引き継がれないことのテスト.
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/6444
+     */
+    public function testOrderItemProductSpecNotCarriedOverWhenProductSlotReusedByFee()
+    {
+        // 商品を1つ残すため, 2つの規格で受注を作成する.
+        $ProductClasses = $this->Product->getProductClasses();
+        $Order = $this->createOrderWithProductClasses($this->Customer, [$ProductClasses[0], $ProductClasses[1]]);
+        $Order->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
+        $this->entityManager->flush();
+        $orderId = $Order->getId();
+
+        $chargeData = [
+            'ProductClass' => null,
+            'price' => 100,
+            'quantity' => 1,
+            'product_name' => '手数料',
+            'order_item_type' => OrderItemType::CHARGE,
+            'tax_type' => TaxType::TAXATION,
+            'tax_rate' => '10',
+        ];
+
+        $EditOrder = $this->orderRepository->find($orderId);
+        $formData = $this->createFormDataForEdit($EditOrder);
+        $this->fillTaxType($formData, $EditOrder);
+
+        // 商品明細のスロット1つを手数料明細のデータで上書きする(商品は1つ残る).
+        $replaced = $this->replaceOrderItemSlot($formData, OrderItemType::PRODUCT, $chargeData, 1);
+        $this->assertSame(1, $replaced, '商品明細のスロットが見つからなかった');
+
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_order_edit', ['id' => $orderId]),
+            ['order' => $formData, 'mode' => 'register']
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_edit', ['id' => $orderId])));
+
+        $EditedOrder = $this->orderRepository->find($orderId);
+        foreach ($EditedOrder->getOrderItems() as $OrderItem) {
+            if ($OrderItem->getOrderItemType()->getId() === OrderItemType::PRODUCT) {
+                continue;
+            }
+            // 非商品明細に旧商品明細の規格情報が引き継がれていないこと.
+            $this->assertNull($OrderItem->getProductCode(), '非商品明細に商品コードが引き継がれている');
+            $this->assertNull($OrderItem->getClassName1(), '非商品明細に規格名が引き継がれている');
+            $this->assertNotInstanceOf(Product::class, $OrderItem->getProduct(), '非商品明細に商品が引き継がれている');
+        }
+    }
+
+    /**
+     * createFormDataForEdit は tax_type を含めないため, 実フォーム(hidden で tax_type を送信)に合わせて
+     * 各明細に tax_type を補完する. これをしないと再バインド時に tax_type が null 化する.
+     *
+     * @param array<string, mixed> $formData
+     */
+    private function fillTaxType(array &$formData, Order $Order): void
+    {
+        $items = array_values($Order->getOrderItems()->toArray());
+        foreach ($formData['OrderItems'] as $i => &$fd) {
+            if (isset($items[$i]) && null !== $items[$i]->getTaxType()) {
+                $fd['tax_type'] = $items[$i]->getTaxType()->getId();
+            }
+        }
+        unset($fd);
+
+        if (isset($formData['Shipping']['OrderItems'])) {
+            $shippingItems = array_values($Order->getShippings()[0]->getOrderItems()->toArray());
+            foreach ($formData['Shipping']['OrderItems'] as $i => &$fd) {
+                if (isset($shippingItems[$i]) && null !== $shippingItems[$i]->getTaxType()) {
+                    $fd['tax_type'] = $shippingItems[$i]->getTaxType()->getId();
+                }
+            }
+            unset($fd);
+        }
+    }
+
+    /**
+     * フォームデータ内(order[OrderItems] と Shipping[OrderItems] の双方)の指定種別の明細スロットを
+     * 別の明細データで上書きする. 上書きした件数を返す.
+     *
+     * @param array<string, mixed> $formData
+     * @param array<string, mixed> $newItem
+     */
+    private function replaceOrderItemSlot(array &$formData, int $orderItemType, array $newItem, ?int $limit = null): int
+    {
+        $replaced = 0;
+        foreach ($formData['OrderItems'] as $i => $item) {
+            if (null !== $limit && $replaced >= $limit) {
+                break;
+            }
+            if ((int) $item['order_item_type'] === $orderItemType) {
+                $formData['OrderItems'][$i] = $newItem;
+                ++$replaced;
+            }
+        }
+        if (isset($formData['Shipping']['OrderItems'])) {
+            $shippingReplaced = 0;
+            foreach ($formData['Shipping']['OrderItems'] as $i => $item) {
+                if (null !== $limit && $shippingReplaced >= $limit) {
+                    break;
+                }
+                if ((int) $item['order_item_type'] === $orderItemType) {
+                    $formData['Shipping']['OrderItems'][$i] = $newItem;
+                    ++$shippingReplaced;
+                }
+            }
+        }
+
+        return $replaced;
     }
 }
