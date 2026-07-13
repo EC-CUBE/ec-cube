@@ -69,10 +69,10 @@ jobs:
           ## DATABASE_URL と同一経路 (TCP/postgres/password) で接続できることを検証
           PGPASSWORD=password psql -h 127.0.0.1 -U postgres -c 'SELECT VERSION()'
 
-      # codeception環境ではprodの設定が読み込まれないため、ベース設定を作成
+      # e2e環境ではprodの設定が読み込まれないため、ベース設定を作成
       - name: Prepare rate limiter config
         run: |
-          cp app/config/eccube/packages/prod/eccube_rate_limiter.yaml app/config/eccube/packages/codeception/eccube_rate_limiter.yaml
+          cp app/config/eccube/packages/prod/eccube_rate_limiter.yaml app/config/eccube/packages/e2e/eccube_rate_limiter.yaml
 
       # ShoppingController::checkoutをテストするため、confirmの上限値を変更する
       - name: Fix limiter limit
@@ -95,7 +95,7 @@ jobs:
                   shopping_checkout_customer:
                       route: ~
                       limit: 10
-                      interval: '30 minutes'" > app/config/eccube/packages/codeception/eccube_rate_limiter.yaml
+                      interval: '30 minutes'" > app/config/eccube/packages/e2e/eccube_rate_limiter.yaml
 
       # 配送先情報_削除のテストするため、delivery addの上限値を変更する
       - name: Fix limiter limit for delivery delete
@@ -114,7 +114,7 @@ jobs:
                       method: [ 'DELETE' ]
                       type: customer
                       limit: 10
-                      interval: '30 minutes'" > app/config/eccube/packages/codeception/eccube_rate_limiter.yaml
+                      interval: '30 minutes'" > app/config/eccube/packages/e2e/eccube_rate_limiter.yaml
 
       - name: Setup PHP
         uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240  # v2
@@ -160,7 +160,7 @@ jobs:
 
       - name: Setup to EC-CUBE
         env:
-          APP_ENV: 'codeception'
+          APP_ENV: 'e2e'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
@@ -168,9 +168,9 @@ jobs:
           echo "APP_ENV=${APP_ENV}" > .env
           echo "TRUSTED_HOSTS=127.0.0.1,localhost" >> .env
           echo "ECCUBE_AUTH_MAGIC=${ECCUBE_AUTH_MAGIC}" >> .env
-          bin/console doctrine:database:create --env=dev
-          bin/console doctrine:schema:create --env=dev
-          bin/console eccube:fixtures:load --env=dev
+          bin/console doctrine:database:create
+          bin/console doctrine:schema:create
+          bin/console eccube:fixtures:load
 
       - name: Create test customer
         env:
@@ -225,7 +225,7 @@ jobs:
 
       - name: Start PHP Development Server
         env:
-          APP_ENV: 'codeception'
+          APP_ENV: 'e2e'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           MAILER_DSN: 'smtp://127.0.0.1:1025'

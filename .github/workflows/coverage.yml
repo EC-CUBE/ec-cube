@@ -120,13 +120,13 @@ jobs:
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
             database_server_version: 18
           - group: admin01
-            app_env: 'codeception'
+            app_env: 'e2e'
           - group: admin02
-            app_env: 'codeception'
+            app_env: 'e2e'
           - group: admin03
-            app_env: 'codeception'
+            app_env: 'e2e'
           - group: front
-            app_env: 'codeception'
+            app_env: 'e2e'
           - group: installer
             app_env: 'install'
     services:

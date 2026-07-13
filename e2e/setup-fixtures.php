@@ -22,7 +22,7 @@ if (file_exists(__DIR__.'/../.env')) {
     Dotenv::createUnsafeMutable(__DIR__.'/../')->load();
 }
 
-$appEnv = getenv('APP_ENV') ?: 'codeception';
+$appEnv = getenv('APP_ENV') ?: 'e2e';
 $kernel = new Kernel($appEnv, false);
 $kernel->boot();
 
