@@ -6,8 +6,16 @@ monolog:
             level: debug
             formatter: eccube.log.formatter.line
             max_files: 10
-            # mcp は専用ハンドラ (mcp) に出すため main(site.log) からは除外する
-            channels: ['!mcp']
+            # mcp は専用ハンドラ (mcp)、 cookie_consent は専用ハンドラに出すため main(site.log) から除外する
+            channels: ['!mcp', '!cookie_consent']
+        # Cookie consent: 同意操作の証跡を info レベルで専用ファイルへ直接出力する。
+        cookie_consent:
+            type: rotating_file
+            max_files: 365
+            path: '%kernel.logs_dir%/%kernel.environment%/cookie_consent.log'
+            formatter: eccube.log.formatter.line
+            level: info
+            channels: ['cookie_consent']
         console:
             type: console
             process_psr_3_messages: false

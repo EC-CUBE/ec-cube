@@ -1,5 +1,5 @@
 monolog:
-    channels: ['front', 'admin', 'mcp']
+    channels: ['front', 'admin', 'mcp', 'cookie_consent']
     handlers:
         # MCP 監査ログ: PII を含み得るため site.log と分離した専用ファイルに、 1 レコード 1 JSON で出力する。
         # fingers_crossed を挟まず info から常時書き出す (監査記録は error 連動で握り潰してはならない)。

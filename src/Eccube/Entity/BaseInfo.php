@@ -105,6 +105,11 @@ if (!class_exists(BaseInfo::class)) {
         #[ORM\Column(name: 'option_product_delivery_fee', type: Types::BOOLEAN, options: ['default' => false])]
         private bool $option_product_delivery_fee = false;
 
+        // クッキーポリシー同意機能はオプトイン（既定 OFF）。新規・アップグレードとも OFF で、
+        // 店舗が管理画面「店舗基本情報」で ON にするまでバナー・同意連動は一切動作しない（後方互換）。
+        #[ORM\Column(name: 'option_cookie_consent', type: Types::BOOLEAN, options: ['default' => false])]
+        private bool $option_cookie_consent = false;
+
         #[ORM\Column(name: 'invoice_registration_number', type: Types::STRING, length: 255, nullable: true)]
         private ?string $invoice_registration_number = null;
 
@@ -588,6 +593,24 @@ if (!class_exists(BaseInfo::class)) {
         public function isOptionProductDeliveryFee(): bool
         {
             return $this->option_product_delivery_fee;
+        }
+
+        /**
+         * Set optionCookieConsent.
+         */
+        public function setOptionCookieConsent(bool $optionCookieConsent): BaseInfo
+        {
+            $this->option_cookie_consent = $optionCookieConsent;
+
+            return $this;
+        }
+
+        /**
+         * Get optionCookieConsent.
+         */
+        public function isOptionCookieConsent(): bool
+        {
+            return $this->option_cookie_consent;
         }
 
         /**
