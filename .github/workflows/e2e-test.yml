@@ -43,6 +43,7 @@ jobs:
           - front-order
           - front-mypage
           - front-invoice
+          - front-cookie-consent
           - front-mail
           - front-password-nist
         include:
