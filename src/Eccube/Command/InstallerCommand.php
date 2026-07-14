@@ -224,10 +224,19 @@ class InstallerCommand extends Command
     #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $envDir = $this->eccubeConfig->get('kernel.project_dir');
+
+        // インストールは .env を再生成するため, dump-env 済みの .env.local.php は
+        // 古いスナップショットとなり, 起動時に新しい .env より優先されてしまう.
+        // 存在すれば削除し, 再最適化を促す.
+        if (file_exists($envDir.'/.env.local.php')) {
+            @unlink($envDir.'/.env.local.php');
+            $this->io->note('.env.local.php を削除しました。最適化を再適用するには `composer symfony:dump-env prod` を実行してください。');
+        }
+
         // Process実行時に, APP_ENV/APP_DEBUGが子プロセスに引き継がれてしまうため,
         // 生成された.envをロードして上書きする.
         if ($input->isInteractive()) {
-            $envDir = $this->eccubeConfig->get('kernel.project_dir');
             if (file_exists($envDir.'/.env')) {
                 (new Dotenv())->overload($envDir.'/.env');
             }

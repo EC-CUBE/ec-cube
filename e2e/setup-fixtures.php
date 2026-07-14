@@ -18,8 +18,10 @@ use Eccube\Entity\Master\OrderStatus;
 use Eccube\Kernel;
 use Faker\Factory as Faker;
 
-if (file_exists(__DIR__.'/../.env')) {
-    (new Dotenv())->overload(__DIR__.'/../.env');
+if (file_exists(__DIR__.'/../.env')
+    || file_exists(__DIR__.'/../.env.local')
+    || file_exists(__DIR__.'/../.env.local.php')) {
+    (new Dotenv())->bootEnv(__DIR__.'/../.env', 'dev', ['test'], true);
 }
 
 $appEnv = getenv('APP_ENV') ?: 'codeception';

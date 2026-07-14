@@ -15,12 +15,23 @@ require __DIR__.'/../vendor/autoload.php';
 if (!class_exists(Application::class)) {
     throw new \RuntimeException('You need to add "symfony/framework-bundle" as a Composer dependency.');
 }
+$dotenvExists = file_exists(__DIR__.'/../.env')
+    || file_exists(__DIR__.'/../.env.local')
+    || file_exists(__DIR__.'/../.env.local.php');
+
 if (!isset($_SERVER['APP_ENV'])) {
-    if (file_exists(__DIR__.'/../.env')) {
-        (new Dotenv())->overload(__DIR__.'/../.env');
+    // OS 環境変数 APP_ENV が未設定の環境: .env を設定の源泉として読み込む。
+    // bootEnv は .env.local.php を優先し、無ければ .env 系をカスケード読み込みする。
+    // 第4引数 true = .env 系の値が既存値より優先（従来の overload 相当）。
+    if ($dotenvExists) {
+        (new Dotenv())->bootEnv(__DIR__.'/../.env', 'dev', ['test'], true);
     } else {
         (new Dotenv())->overload(__DIR__.'/../.env.install');
     }
+} elseif ($dotenvExists) {
+    // OS 環境変数 APP_ENV が設定済みの環境（Docker など）。
+    // 第4引数 false = 既存の OS 環境変数は上書きしない。
+    (new Dotenv())->bootEnv(__DIR__.'/../.env', 'dev', ['test'], false);
 }
 
 $input = new ArgvInput();

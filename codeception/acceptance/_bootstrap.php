@@ -39,8 +39,10 @@ $config = parse_ini_file(__DIR__.'/config.ini', true);
  */
 require_once __DIR__.'/../../vendor/autoload.php';
 
-if (file_exists(__DIR__.'/../../.env')) {
-    (new Dotenv())->overload(__DIR__.'/../../.env');
+if (file_exists(__DIR__.'/../../.env')
+    || file_exists(__DIR__.'/../../.env.local')
+    || file_exists(__DIR__.'/../../.env.local.php')) {
+    (new Dotenv())->bootEnv(__DIR__.'/../../.env', 'dev', ['test'], true);
 }
 $kernel = new Kernel('test', false);
 $kernel->boot();
