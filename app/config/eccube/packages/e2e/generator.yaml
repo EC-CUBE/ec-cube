@@ -19,4 +19,4 @@ services:
       - '@request_stack'
       - 'ja_JP'
     lazy: true
-    public: true # Codeception対応
+    public: true # コンテナから直接 get するため
