@@ -45,7 +45,9 @@ services:
         resource: '../../../src/Eccube/*'
         # you can exclude directories or files
         # but if a service is unused, it's removed anyway
-        exclude: '../../../src/Eccube/{Annotation,Common,Entity,Exception,Log,Plugin,ServiceProvider,Resource,Doctrine/ORM/tools/,Rector}'
+        # EccubeCliToolCommand は McpCliCommandPass がツールごとに定義を生成するため、 glob からは除外する
+        # (scalar 引数 $toolName を持ち autowire できず、 名前なしの console.command 自動登録も壊れるため)。
+        exclude: '../../../src/Eccube/{Annotation,Common,Entity,Exception,Log,Plugin,ServiceProvider,Resource,Doctrine/ORM/tools/,Rector,Command/EccubeCliToolCommand.php}'
 
     Eccube\Common\EccubeConfig:
         public: true

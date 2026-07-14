@@ -18,6 +18,7 @@ use Eccube\Common\EccubeNav;
 use Eccube\Common\EccubeTwigBlock;
 use Eccube\DependencyInjection\Compiler\AutoConfigurationTagPass;
 use Eccube\DependencyInjection\Compiler\McpAuditLoggerChannelLockPass;
+use Eccube\DependencyInjection\Compiler\McpCliCommandPass;
 use Eccube\DependencyInjection\Compiler\McpScopeEnforcementPass;
 use Eccube\DependencyInjection\Compiler\NavCompilerPass;
 use Eccube\DependencyInjection\Compiler\PaymentMethodPass;
@@ -296,6 +297,10 @@ class Kernel extends BaseKernel
         // MCP: 監査ログ (mcp チャンネル) の autowire alias を削除し、 書き手を McpAuditLogger に縛る。
         // monolog の LoggerChannelPass (優先度 0) が alias を作った後に走らせるため負の優先度で登録する。
         $container->addCompilerPass(new McpAuditLoggerChannelLockPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, -100);
+
+        // MCP: 各ツールを eccube:cli:<tool> コマンドとして登録する。 inner ReferenceHandler を定義する
+        // McpScopeEnforcementPass (-100) の後に走らせるため、 それより低い優先度で登録する。
+        $container->addCompilerPass(new McpCliCommandPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, -200);
     }
 
     protected function addEntityExtensionPass(ContainerBuilder $container): void

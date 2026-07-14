@@ -82,6 +82,11 @@ return RectorConfig::configure()
                    __DIR__.'/tests/Eccube/Tests/Service/Mcp/Contract/Api44LifecycleContractTest.php',
                    __DIR__.'/tests/Eccube/Tests/Service/Mcp/Contract/McpAuditLogIsolationContractTest.php',
                ],
+               // EccubeCliToolCommand の description は runtime (ツールの description) で組み立てるため、
+               // #[AsCommand(description:)] へ移せない (属性は定数式のみ)。 このルールをスキップする。
+               CommandConfigureToAttributeRector::class => [
+                   __DIR__.'/src/Eccube/Command/EccubeCliToolCommand.php',
+               ],
            ])
            // 個別にルールを追加する場合はここに記述
            ->withRules([
