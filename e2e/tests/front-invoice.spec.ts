@@ -1,6 +1,7 @@
 import { test, expect, Page, BrowserContext } from '@playwright/test';
+import { ADMIN_PASSWORD, ADMIN_ROUTE, ADMIN_USER, CUSTOMER_PASSWORD } from '../config/default.config';
 
-const adminRoute = process.env.ECCUBE_ADMIN_ROUTE || 'admin';
+const adminRoute = ADMIN_ROUTE;
 
 /**
  * Helper: Login as admin user in a given page.
@@ -8,8 +9,8 @@ const adminRoute = process.env.ECCUBE_ADMIN_ROUTE || 'admin';
 async function loginAsAdmin(page: Page) {
   await page.goto(`/${adminRoute}/`);
   await page.waitForLoadState('load');
-  await page.locator('#login_id').fill(process.env.ADMIN_USER || 'admin');
-  await page.locator('#password').fill(process.env.ADMIN_PASSWORD || 'password');
+  await page.locator('#login_id').fill(ADMIN_USER);
+  await page.locator('#password').fill(ADMIN_PASSWORD);
   await page.getByRole('button', { name: 'ログイン' }).click();
   await page.waitForLoadState('load');
 }
@@ -21,7 +22,7 @@ async function loginAsTestCustomer(page: Page) {
   await page.goto('/mypage/login');
   await page.waitForLoadState('load');
   await page.locator('input[name="login_email"]').fill('playwright@test.test');
-  await page.locator('input[name="login_pass"]').fill('password');
+  await page.locator('input[name="login_pass"]').fill(CUSTOMER_PASSWORD);
   await page.getByRole('button', { name: 'ログイン' }).click();
   await page.waitForLoadState('load');
 }

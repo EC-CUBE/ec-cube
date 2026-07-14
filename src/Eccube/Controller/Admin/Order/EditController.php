@@ -312,7 +312,7 @@ class EditController extends AbstractController
             'searchProductModalForm' => $searchProductModalForm->createView(),
             'Order' => $TargetOrder,
             'id' => $id,
-            'shippingDeliveryTimes' => $this->serializer->serialize($times, 'json'),
+            'shippingDeliveryTimes' => json_encode($times, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT),
         ];
     }
 

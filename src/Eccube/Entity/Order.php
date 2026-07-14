@@ -19,6 +19,7 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
+use Eccube\Entity\Master\AgentProtocol;
 use Eccube\Entity\Master\Country;
 use Eccube\Entity\Master\CustomerOrderStatus;
 use Eccube\Entity\Master\DeviceType;
@@ -458,6 +459,23 @@ if (!class_exists(Order::class)) {
          */
         #[ORM\Column(name: 'complete_mail_message', type: Types::TEXT, nullable: true)]
         private ?string $complete_mail_message = null;
+
+        /**
+         * エージェントコマース (ACP/UCP) 経由の注文のプロトコル種別マスタへの参照.
+         *
+         * 通常購入では null。エージェント経由の注文でのみ ACP / UCP がセットされる。
+         */
+        #[ORM\ManyToOne(targetEntity: AgentProtocol::class)]
+        #[ORM\JoinColumn(name: 'agent_protocol_id', referencedColumnName: 'id')]
+        private ?AgentProtocol $AgentProtocol = null;
+
+        /**
+         * エージェントコマース経由の注文を発行したエージェントの識別子.
+         *
+         * 通常購入では null。
+         */
+        #[ORM\Column(name: 'agent_id', type: Types::STRING, length: 255, nullable: true)]
+        private ?string $agent_id = null;
 
         /**
          * @var Collection<int, OrderItem>
@@ -1158,6 +1176,30 @@ if (!class_exists(Order::class)) {
         public function appendCompleteMailMessage(?string $complete_mail_message = null): Order
         {
             $this->complete_mail_message .= $complete_mail_message;
+
+            return $this;
+        }
+
+        public function getAgentProtocol(): ?AgentProtocol
+        {
+            return $this->AgentProtocol;
+        }
+
+        public function setAgentProtocol(?AgentProtocol $AgentProtocol = null): Order
+        {
+            $this->AgentProtocol = $AgentProtocol;
+
+            return $this;
+        }
+
+        public function getAgentId(): ?string
+        {
+            return $this->agent_id;
+        }
+
+        public function setAgentId(?string $agent_id = null): Order
+        {
+            $this->agent_id = $agent_id;
 
             return $this;
         }

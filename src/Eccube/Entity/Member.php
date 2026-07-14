@@ -18,6 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\Master\Authority;
 use Eccube\Entity\Master\Work;
 use Eccube\Repository\MemberRepository;
+use Eccube\Util\PasswordNormalizer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\LegacyPasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -196,7 +197,8 @@ if (!class_exists(Member::class)) {
          */
         public function setPlainPassword(?string $password): static
         {
-            $this->plainPassword = $password;
+            // NIST SP 800-63B-4 に従い, 保存時とログイン照合時で表記ゆれを統一するため NFKC 正規化する.
+            $this->plainPassword = PasswordNormalizer::normalize($password);
 
             return $this;
         }

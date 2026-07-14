@@ -97,7 +97,40 @@ final class ShopControllerTest extends AbstractAdminWebTestCase
             'option_nostock_hidden' => '0',
             'option_point' => 1,
             'basic_point_rate' => 1,
+            'option_sanitize_csv_formulas' => '0',
         ];
+    }
+
+    /**
+     * CSVの数式インジェクション対策トグルが BaseInfo に保存されること.
+     * チェックボックスは未チェックをキー欠落で表すため, 無効化はキーを送らないことで再現する.
+     */
+    #[DataProvider(methodName: 'dataSanitizeCsvFormulasProvider')]
+    #[Group(name: 'cache-clear')]
+    public function testSubmitPersistsSanitizeCsvFormulasOption(bool $checked, bool $expected): void
+    {
+        $formData = $this->createFormData();
+        if ($checked) {
+            $formData['option_sanitize_csv_formulas'] = '1';
+        } else {
+            unset($formData['option_sanitize_csv_formulas']);
+        }
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_setting_shop'),
+            ['shop_master' => $formData]
+        );
+
+        $this->entityManager->clear();
+        $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->find(1);
+        $this->assertInstanceOf(BaseInfo::class, $BaseInfo);
+        $this->assertSame($expected, $BaseInfo->isOptionSanitizeCsvFormulas());
+    }
+
+    public static function dataSanitizeCsvFormulasProvider(): \Iterator
+    {
+        yield [true, true];
+        yield [false, false];
     }
 
     public static function dataSubmitProvider(): \Iterator

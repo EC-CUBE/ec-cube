@@ -23,6 +23,7 @@ use Eccube\Entity\Master\Job;
 use Eccube\Entity\Master\Pref;
 use Eccube\Entity\Master\Sex;
 use Eccube\Repository\CustomerRepository;
+use Eccube\Util\PasswordNormalizer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\LegacyPasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -167,6 +168,14 @@ if (!class_exists(Customer::class)) {
         #[ORM\ManyToOne(targetEntity: Pref::class)]
         #[ORM\JoinColumn(name: 'pref_id', referencedColumnName: 'id')]
         private ?Pref $Pref = null;
+
+        #[ORM\ManyToOne(targetEntity: Payment::class)]
+        #[ORM\JoinColumn(name: 'preferred_payment_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+        private ?Payment $PreferredPayment = null;
+
+        #[ORM\ManyToOne(targetEntity: Delivery::class)]
+        #[ORM\JoinColumn(name: 'preferred_delivery_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+        private ?Delivery $PreferredDelivery = null;
 
         /**
          * Constructor
@@ -420,7 +429,8 @@ if (!class_exists(Customer::class)) {
          */
         public function setPlainPassword(?string $password): static
         {
-            $this->plain_password = $password;
+            // NIST SP 800-63B-4 に従い, 保存時とログイン照合時で表記ゆれを統一するため NFKC 正規化する.
+            $this->plain_password = PasswordNormalizer::normalize($password);
 
             return $this;
         }
@@ -826,6 +836,42 @@ if (!class_exists(Customer::class)) {
         public function getPref(): ?Pref
         {
             return $this->Pref;
+        }
+
+        /**
+         * Set preferredPayment.
+         */
+        public function setPreferredPayment(?Payment $preferredPayment = null): Customer
+        {
+            $this->PreferredPayment = $preferredPayment;
+
+            return $this;
+        }
+
+        /**
+         * Get preferredPayment.
+         */
+        public function getPreferredPayment(): ?Payment
+        {
+            return $this->PreferredPayment;
+        }
+
+        /**
+         * Set preferredDelivery.
+         */
+        public function setPreferredDelivery(?Delivery $preferredDelivery = null): Customer
+        {
+            $this->PreferredDelivery = $preferredDelivery;
+
+            return $this;
+        }
+
+        /**
+         * Get preferredDelivery.
+         */
+        public function getPreferredDelivery(): ?Delivery
+        {
+            return $this->PreferredDelivery;
         }
 
         /**
