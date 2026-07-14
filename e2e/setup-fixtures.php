@@ -11,7 +11,7 @@
 
 require_once __DIR__.'/../vendor/autoload.php';
 
-use Dotenv\Dotenv;
+use Symfony\Component\Dotenv\Dotenv;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\OrderStatus;
@@ -19,7 +19,7 @@ use Eccube\Kernel;
 use Faker\Factory as Faker;
 
 if (file_exists(__DIR__.'/../.env')) {
-    Dotenv::createUnsafeMutable(__DIR__.'/../')->load();
+    (new Dotenv())->overload(__DIR__.'/../.env');
 }
 
 $appEnv = getenv('APP_ENV') ?: 'codeception';

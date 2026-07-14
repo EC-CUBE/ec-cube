@@ -14,7 +14,6 @@
 namespace Eccube\Command;
 
 use Doctrine\DBAL\DriverManager;
-use Dotenv\Dotenv;
 use Eccube\Common\EccubeConfig;
 use Eccube\Util\StringUtil;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -23,6 +22,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
@@ -229,13 +229,13 @@ class InstallerCommand extends Command
         if ($input->isInteractive()) {
             $envDir = $this->eccubeConfig->get('kernel.project_dir');
             if (file_exists($envDir.'/.env')) {
-                Dotenv::createUnsafeMutable($envDir)->load();
+                (new Dotenv())->overload($envDir.'/.env');
             }
         }
 
         // 対話モード実行時, eccubeConfig->get('eccube_database_url')では
-        // 更新後の値が取得できないため, getenv()を使用する.
-        $databaseUrl = getenv('DATABASE_URL');
+        // 更新後の値が取得できないため, overload() で更新された $_SERVER を使用する.
+        $databaseUrl = $_SERVER['DATABASE_URL'] ?? '';
         $databaseName = $this->getDatabaseName($databaseUrl);
 
         $databaseCreate = ['doctrine:database:create'];

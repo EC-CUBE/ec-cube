@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-use Dotenv\Dotenv;
+use Symfony\Component\Dotenv\Dotenv;
 use Eccube\Kernel;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
@@ -17,9 +17,9 @@ if (!class_exists(Application::class)) {
 }
 if (!isset($_SERVER['APP_ENV'])) {
     if (file_exists(__DIR__.'/../.env')) {
-        (Dotenv::createUnsafeMutable(__DIR__.'/../'))->load();
+        (new Dotenv())->overload(__DIR__.'/../.env');
     } else {
-        (Dotenv::createUnsafeMutable(__DIR__.'/../', '.env.install'))->load();
+        (new Dotenv())->overload(__DIR__.'/../.env.install');
     }
 }
 

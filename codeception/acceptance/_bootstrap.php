@@ -12,7 +12,6 @@
  */
 
 use Codeception\Util\Fixtures;
-use Dotenv\Dotenv;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Category;
@@ -28,6 +27,7 @@ use Eccube\Entity\Shipping;
 use Eccube\Kernel;
 use Eccube\Tests\Fixture\Generator;
 use Faker\Factory as Faker;
+use Symfony\Component\Dotenv\Dotenv;
 
 $config = parse_ini_file(__DIR__.'/config.ini', true);
 
@@ -40,7 +40,7 @@ $config = parse_ini_file(__DIR__.'/config.ini', true);
 require_once __DIR__.'/../../vendor/autoload.php';
 
 if (file_exists(__DIR__.'/../../.env')) {
-    Dotenv::createUnsafeMutable(__DIR__.'/../../')->load();
+    (new Dotenv())->overload(__DIR__.'/../../.env');
 }
 $kernel = new Kernel('test', false);
 $kernel->boot();
