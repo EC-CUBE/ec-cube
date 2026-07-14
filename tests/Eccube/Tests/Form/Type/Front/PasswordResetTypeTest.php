@@ -26,8 +26,8 @@ final class PasswordResetTypeTest extends AbstractTypeTestCase
     protected ?array $formData = [
         'login_email' => 'hideki_okajima@ec-cube.co.jp',
         'password' => [
-            'first' => 'password1234',
-            'second' => 'password1234',
+            'first' => 'password1234abc',
+            'second' => 'password1234abc',
         ],
     ];
 

@@ -26,6 +26,7 @@ use Page\Front\ShoppingConfirmPage;
 use Page\Front\ShoppingLoginPage;
 use Page\Front\ShoppingNonmemberPage;
 use Page\Front\ShoppingPage;
+use RobThree\Auth\Providers\Qr\QRServerProvider;
 use RobThree\Auth\TwoFactorAuth;
 
 /**
@@ -777,7 +778,7 @@ class EF09ThrottlingCest
 
         // 二段階認証のセットアップ
         $secret = $I->executeJS('return $("#admin_two_factor_auth_auth_key").val();');
-        $tfa = new TwoFactorAuth();
+        $tfa = new TwoFactorAuth(new QRServerProvider());
         $code = $tfa->getCode($secret);
         $I->fillField(['id' => 'admin_two_factor_auth_device_token'], $code);
         $I->click('登録');
