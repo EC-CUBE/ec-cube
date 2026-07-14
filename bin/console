@@ -20,9 +20,12 @@ $dotenvExists = file_exists(__DIR__.'/../.env')
     || file_exists(__DIR__.'/../.env.local.php');
 
 // OS 環境変数 APP_ENV が設定済みの場合は .env を読み込まない（従来の bin/console の挙動）。
-// これにより `cache:warmup --env=dev` のように CLI で env を切り替える際、
-// .env（prod）の APP_DEBUG=0 が読み込まれて debug=false になり、
-// dev の debug コンテナ（Eccube_KernelDevDebugContainer.xml）が生成されない問題を避ける。
+// これにより、rector CI のように `APP_ENV=dev bin/console cache:warmup --env=dev` と
+// OS 環境変数で env を切り替える際、.env（prod）の APP_DEBUG=0 が読み込まれて
+// debug=false になり、dev の debug コンテナ（Eccube_KernelDevDebugContainer.xml）が
+// 生成されない問題を避ける。
+// 注: CLI 引数 --env のみ（OS 環境変数 APP_ENV なし）では $_SERVER['APP_ENV'] は
+// セットされずこの分岐に入らないため、.env は読み込まれる。
 if (!isset($_SERVER['APP_ENV'])) {
     // OS 環境変数 APP_ENV が未設定の環境: .env を設定の源泉として読み込む。
     // bootEnv は .env.local.php を優先し、無ければ .env 系をカスケード読み込みする。
