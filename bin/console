@@ -19,6 +19,10 @@ $dotenvExists = file_exists(__DIR__.'/../.env')
     || file_exists(__DIR__.'/../.env.local')
     || file_exists(__DIR__.'/../.env.local.php');
 
+// OS 環境変数 APP_ENV が設定済みの場合は .env を読み込まない（従来の bin/console の挙動）。
+// これにより `cache:warmup --env=dev` のように CLI で env を切り替える際、
+// .env（prod）の APP_DEBUG=0 が読み込まれて debug=false になり、
+// dev の debug コンテナ（Eccube_KernelDevDebugContainer.xml）が生成されない問題を避ける。
 if (!isset($_SERVER['APP_ENV'])) {
     // OS 環境変数 APP_ENV が未設定の環境: .env を設定の源泉として読み込む。
     // bootEnv は .env.local.php を優先し、無ければ .env 系をカスケード読み込みする。
@@ -28,10 +32,6 @@ if (!isset($_SERVER['APP_ENV'])) {
     } else {
         (new Dotenv())->overload(__DIR__.'/../.env.install');
     }
-} elseif ($dotenvExists) {
-    // OS 環境変数 APP_ENV が設定済みの環境（Docker など）。
-    // 第4引数 false = 既存の OS 環境変数は上書きしない。
-    (new Dotenv())->bootEnv(__DIR__.'/../.env', 'dev', ['test'], false);
 }
 
 $input = new ArgvInput();
