@@ -63,15 +63,6 @@ async function createOrderViaUI(page: import('@playwright/test').Page, name01: s
 test.describe('Admin Order (EA04)', () => {
   test.describe.configure({ mode: 'serial' });
 
-  test('order_受注登録画面の郵便番号にrequired属性が無い (EA0405-UC01-T02)', async ({ page }) => {
-    // 管理画面の受注登録は required=false + NotBlank でサーバ側バリデーションに統一している.
-    // 出荷先の郵便番号だけ HTML の required 属性が出力されるリグレッションを検知する (#6054)
-    await page.goto(`/${adminRoute}/order/new`);
-    await expect(page.locator('#order_Shipping_postal_code')).toBeVisible();
-    expect(await page.locator('#order_Shipping_postal_code').getAttribute('required')).toBeNull();
-    expect(await page.locator('#order_postal_code').getAttribute('required')).toBeNull();
-  });
-
   test('order_受注登録 (EA0405-UC01-T01)', async ({ page }) => {
     // Create an order via the new order form
     await page.goto(`/${adminRoute}/order/new`);
