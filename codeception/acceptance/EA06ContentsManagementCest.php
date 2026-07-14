@@ -524,7 +524,7 @@ class EA06ContentsManagementCest
 
         $I->expect('トップページを確認します');
         $I->amOnPage('/');
-        $I->waitForText('メンテナンスモードが有効になっています。', 10, '#page_homepage > div.ec-maintenanceAlert > div');
+        $I->waitForText('メンテナンスモードが有効になっています。', 10, '#page_homepage .ec-maintenanceAlert > div');
         $I->waitForText('全ての商品', 10, TopPage::$検索_カテゴリ選択);
 
         $I->expect('ログアウトします');
@@ -533,7 +533,7 @@ class EA06ContentsManagementCest
 
         $I->expect('トップページを確認します');
         $I->amOnPage('/');
-        $I->dontSee('メンテナンスモードが有効になっています。', '#page_homepage > div.ec-maintenanceAlert > div');
+        $I->dontSee('メンテナンスモードが有効になっています。', '#page_homepage .ec-maintenanceAlert > div');
         $I->waitForText('ただいまメンテナンス中です。', 10, 'body > div > div > div > div > p.ec-404Role__title.ec-reportHeading');
 
         // 画面遷移がスムーズにいかない場合があるため、ログイン画面に遷移させておく
@@ -552,7 +552,7 @@ class EA06ContentsManagementCest
 
         $I->expect('トップページを確認します');
         $I->amOnPage('/');
-        $I->dontSee('メンテナンスモードが有効になっています。', '#page_homepage > div.ec-maintenanceAlert > div');
+        $I->dontSee('メンテナンスモードが有効になっています。', '#page_homepage .ec-maintenanceAlert > div');
         $I->waitForText('全ての商品', 10, TopPage::$検索_カテゴリ選択);
     }
 

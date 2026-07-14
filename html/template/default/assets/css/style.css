@@ -10582,6 +10582,7 @@ Styleguide 11.2
   min-height: 100dvh;
   transition: transform 0.3s;
   background: #fff;
+  padding-top: calc(var(--ec-mode-alert-strips, 0) * 50px);
 }
 .ec-layoutRole .ec-layoutRole__contentTop {
   padding: 0;
@@ -10757,6 +10758,10 @@ Styleguide 11.2
 .ec-headerNaviRole .ec-headerNaviRole__cart a:hover {
   text-decoration: none;
 }
+.ec-headerNavSP,
+.ec-drawerRoleClose {
+  top: calc(var(--ec-mode-alert-strips, 0) * 50px + 10px);
+}
 .ec-headerNavSP {
   display: block;
   cursor: pointer;
@@ -10770,9 +10775,8 @@ Styleguide 11.2
   color: black;
   background: white;
   position: fixed;
-  top: 10px;
   left: 10px;
-  z-index: 1000;
+  z-index: 10001;
 }
 .ec-headerNavSP .fas {
   vertical-align: top;
@@ -11253,9 +11257,8 @@ Styleguide 11.2.6
   color: black;
   background: white;
   position: fixed;
-  top: 10px;
   left: 270px;
-  z-index: 1000;
+  z-index: 10001;
 }
 .ec-drawerRoleClose .fas {
   position: absolute;
@@ -11313,14 +11316,21 @@ Styleguide 11.2.7
 .ec-itemNavAccordion {
   display: none;
 }
-.ec-maintenanceAlert {
-  background: steelblue;
-  height: 50px;
+.ec-modeAlertStack {
   position: fixed;
   top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+}
+.ec-maintenanceAlert {
+  background: steelblue;
+  flex-shrink: 0;
+  height: 50px;
   width: 100%;
   color: white;
-  z-index: 9999;
   display: flex;
   font-weight: bold;
 }
@@ -11336,18 +11346,12 @@ Styleguide 11.2.7
   fill: #fff;
   vertical-align: top;
 }
-.ec-maintenanceAlert + * {
-  margin-top: 50px;
-}
-/* devモードの追加 */
 .ec-debugModeAlert {
   background: red;
+  flex-shrink: 0;
   height: 50px;
-  position: fixed;
-  top: 0;
   width: 100%;
   color: white;
-  z-index: 9999;
   display: flex;
   font-weight: bold;
 }
@@ -11363,11 +11367,26 @@ Styleguide 11.2.7
   fill: #fff;
   vertical-align: top;
 }
-.ec-debugModeAlert + * {
-  margin-top: 50px;
+.ec-adminLoginAlert {
+  background: #fd7e14;
+  flex-shrink: 0;
+  height: 50px;
+  width: 100%;
+  color: white;
+  display: flex;
+  font-weight: bold;
 }
-.ec-twoModeAlert + * {
-  margin-top: 100px;
+.ec-adminLoginAlert > * {
+  margin: auto;
+}
+.ec-adminLoginAlert .ec-adminLoginAlert__icon {
+  display: inline-block;
+  margin-right: 1rem;
+  width: 20px;
+  height: 20px;
+  color: #fff;
+  fill: #fff;
+  vertical-align: top;
 }
 /**
 メディアクエリ
@@ -20200,3 +20219,180 @@ Styleguide 22.1
     display: none !important;
   }
 }/*# sourceMappingURL=style.css.map */
+
+/*
+クッキー同意
+*/
+.ec-cookieConsentBanner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: #333;
+  color: #fff;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+}
+.ec-cookieConsentBanner__inner {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+.ec-cookieConsentBanner__close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+  opacity: 0.8;
+}
+.ec-cookieConsentBanner__close:hover {
+  opacity: 1;
+}
+.ec-cookieConsentBanner__content {
+  flex: 1;
+}
+.ec-cookieConsentBanner__message {
+  margin: 0 0 4px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.ec-cookieConsentBanner__link {
+  margin: 0;
+  font-size: 13px;
+}
+.ec-cookieConsentBanner__link a {
+  color: #fff;
+  text-decoration: underline;
+}
+.ec-cookieConsentBanner__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.ec-cookieConsentBanner__btnAccept, .ec-cookieConsentBanner__btnReject {
+  white-space: nowrap;
+  padding: 8px 24px;
+  font-size: 14px;
+  border-radius: 2px;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+.ec-cookieConsentBanner__btnAccept {
+  background-color: #5cb85c;
+  color: #fff;
+}
+.ec-cookieConsentBanner__btnAccept:hover {
+  background-color: #4cae4c;
+}
+.ec-cookieConsentBanner__btnReject {
+  background-color: #6c757d;
+  color: #fff;
+  border-color: #6c757d;
+}
+.ec-cookieConsentBanner__btnReject:hover {
+  background-color: #5a6268;
+}
+.ec-cookieConsentPage {
+  padding: 24px 0;
+}
+.ec-cookieConsentPage__description {
+  margin-bottom: 24px;
+  line-height: 1.8;
+}
+.ec-cookieConsentPage__description p {
+  margin-bottom: 16px;
+}
+.ec-cookieConsentPage__description p:last-child {
+  margin-bottom: 0;
+}
+.ec-cookieConsentPage__divider {
+  margin: 32px 0;
+  border: none;
+  border-top: 1px solid #ddd;
+}
+.ec-cookieConsentPage__currentStatus {
+  margin-bottom: 32px;
+}
+.ec-cookieConsentPage__currentStatus h2, .ec-cookieConsentPage__currentStatus .h2 {
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+.ec-cookieConsentPage__statusText {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+}
+.ec-cookieConsentPage__form h2, .ec-cookieConsentPage__form .h2 {
+  font-size: 20px;
+  margin-bottom: 24px;
+}
+.ec-cookieConsentPage__radioGroup {
+  margin-bottom: 32px;
+}
+.ec-cookieConsentPage__actions {
+  margin-bottom: 16px;
+}
+.ec-cookiePolicyPage {
+  padding: 24px 0;
+}
+.ec-cookiePolicyPage__section {
+  margin-bottom: 32px;
+}
+.ec-cookiePolicyPage__heading {
+  font-size: 20px;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #ddd;
+}
+.ec-cookiePolicyPage__subheading {
+  font-size: 16px;
+  margin: 16px 0 8px;
+}
+.ec-cookiePolicyPage__text {
+  line-height: 1.8;
+  margin-bottom: 12px;
+}
+.ec-cookiePolicyPage__list {
+  margin: 0 0 16px;
+  padding-left: 24px;
+  list-style: disc;
+}
+.ec-cookiePolicyPage__list li {
+  margin-bottom: 4px;
+}
+.ec-cookiePolicyPage__notice {
+  padding: 12px 16px;
+  background-color: #f5f7fa;
+  border-radius: 4px;
+  font-size: 14px;
+}
+.ec-cookiePolicyPage__provider {
+  margin-bottom: 16px;
+}
+@media (max-width: 768px){
+  .ec-cookieConsentBanner__inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding-right: 24px;
+  }
+  .ec-cookieConsentBanner__actions {
+    width: 100%;
+  }
+  .ec-cookieConsentBanner__btnAccept, .ec-cookieConsentBanner__btnReject {
+    flex: 1;
+  }
+}

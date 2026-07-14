@@ -43,16 +43,13 @@ jobs:
           - front-order
           - front-mypage
           - front-invoice
+          - front-cookie-consent
+          - front-mail
+          - front-password-nist
         include:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
             database_server_version: 18
-    services:
-      mailcatcher:
-        image: schickling/mailcatcher
-        ports:
-          - 1080:1080
-          - 1025:1025
 
     steps:
       - name: Checkout
@@ -164,6 +161,9 @@ jobs:
           packages: fonts-ipafont fonts-ipaexfont
           version: 1.0
 
+      - name: Start Mailpit (SMTP sink)
+        uses: ./.github/actions/mailpit
+
       - name: Start PHP Development Server
         env:
           APP_ENV: 'codeception'
@@ -188,6 +188,7 @@ jobs:
         working-directory: e2e
         env:
           BASE_URL: 'http://127.0.0.1:8000'
+          MAILPIT_URL: 'http://127.0.0.1:8025'
           DATABASE_URL: ${{ matrix.database_url }}
           ECCUBE_ADMIN_ROUTE: 'admin'
           ADMIN_USER: 'admin'
