@@ -56,11 +56,13 @@ final class McpAuditLogIsolationContractTest extends EccubeTestCase
         }
     }
 
-    public function testProdAndDevMainHandlerExcludesMcpChannel(): void
+    public function testMainHandlerExcludesMcpChannelPerEnv(): void
     {
         $root = (string) static::getContainer()->getParameter('kernel.project_dir');
 
-        foreach (['prod', 'dev'] as $env) {
+        // site.log の main ハンドラを持つ環境はすべて mcp チャネルを除外する必要がある。
+        // codeception は e2e (Playwright) が MCP を実行する環境なので必須。
+        foreach (['prod', 'dev', 'codeception'] as $env) {
             $config = Yaml::parseFile($root.'/app/config/eccube/packages/'.$env.'/monolog.yml');
             $channels = $config['monolog']['handlers']['main']['channels'] ?? [];
 
