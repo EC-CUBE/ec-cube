@@ -63,4 +63,24 @@ final class GetCustomerOrdersToolTest extends EccubeTestCase
 
         $this->assertSame(200, $result['limit']);
     }
+
+    public function testItemsAreOrderSummaryShape(): void
+    {
+        // 顧客 scope から明細・配送先 PII を露出させないため、 各 Order はサマリ形のみ
+        // (OrderItems / Shippings を含まない)。 search_orders と同じ ORDER サマリキー。
+        $customer = $this->createCustomer('mcp-customer-orders-shape@example.com');
+        $this->createOrder($customer);
+
+        $result = $this->tool->get(customerId: $customer->getId(), limit: 50);
+        $this->assertNotEmpty($result['items']);
+
+        $summaryKeys = ['id', 'order_no', 'order_date', 'payment_total', 'name01', 'name02', 'email', 'OrderStatus'];
+        foreach ($result['items'] as $item) {
+            foreach (array_keys($item) as $key) {
+                $this->assertContains($key, $summaryKeys, sprintf('サマリ外のフィールド "%s" が出力された', $key));
+            }
+            $this->assertArrayNotHasKey('OrderItems', $item);
+            $this->assertArrayNotHasKey('Shippings', $item);
+        }
+    }
 }
