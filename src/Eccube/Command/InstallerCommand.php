@@ -23,6 +23,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Dotenv\Dotenv;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
@@ -229,8 +230,10 @@ class InstallerCommand extends Command
         // インストールは .env を再生成するため, dump-env 済みの .env.local.php は
         // 古いスナップショットとなり, 起動時に新しい .env より優先されてしまう.
         // 存在すれば削除し, 再最適化を促す.
-        if (file_exists($envDir.'/.env.local.php')) {
-            @unlink($envDir.'/.env.local.php');
+        $fs = new Filesystem();
+        if ($fs->exists($envDir.'/.env.local.php')) {
+            // 削除失敗時は Filesystem が IOException を送出するため, エラーを握りつぶさない.
+            $fs->remove($envDir.'/.env.local.php');
             $this->io->note('.env.local.php を削除しました。最適化を再適用するには `composer symfony:dump-env prod` を実行してください。');
         }
 
