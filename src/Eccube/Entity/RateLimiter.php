@@ -75,7 +75,7 @@ if (!class_exists(RateLimiter::class)) {
          *
          * @return resource|string|null
          */
-        public function getCacheData()
+        public function getCacheData(): mixed
         {
             return $this->cacheData;
         }
@@ -85,7 +85,7 @@ if (!class_exists(RateLimiter::class)) {
          *
          * @param resource|string|null $cacheData
          */
-        public function setCacheData($cacheData): RateLimiter
+        public function setCacheData(mixed $cacheData): RateLimiter
         {
             $this->cacheData = $cacheData;
 
