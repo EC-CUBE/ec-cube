@@ -17,6 +17,7 @@ use Eccube\Entity\Order;
 use Page\Admin\CsvSettingsPage;
 use Page\Admin\OrderEditPage;
 use Page\Admin\OrderManagePage;
+use Page\Admin\ShippingEditPage;
 
 /**
  * @group admin
@@ -505,5 +506,127 @@ class EA04OrderCest
 
         OrderManagePage::go($I)->受注ステータス検索(OrderStatus::NEW);
         $I->see('検索結果：1件が該当しました', OrderManagePage::$検索結果_メッセージ);
+    }
+
+    /**
+     * @group vaddy
+     */
+    public function order_出荷編集_注文者情報をコピー(AcceptanceTester $I): void
+    {
+        $I->wantTo('EA0405-UC08-T01 出荷編集画面で注文者情報をコピー');
+
+        // 新規受付ステータスの受注を作る
+        $createCustomer = Fixtures::get('createCustomer');
+        $createOrders = Fixtures::get('createOrders');
+        /** @var Order[] $newOrders */
+        $newOrders = $createOrders($createCustomer(), 1, [], OrderStatus::NEW);
+        $Order = $newOrders[0];
+
+        // 出荷編集画面を開く
+        $ShippingEditPage = ShippingEditPage::goByOrderId($I, $Order);
+
+        // YubinBangoを無効化（住所自動入力との競合を回避）
+        $ShippingEditPage->YubinBangoを無効化(0);
+
+        // 出荷情報の初期値をクリアするために空の値を入力
+        $ShippingEditPage
+            ->入力_姓('', 0)
+            ->入力_名('', 0)
+            ->入力_セイ('', 0)
+            ->入力_メイ('', 0)
+            ->入力_郵便番号('', 0)
+            ->入力_市区町村名('', 0)
+            ->入力_番地_ビル名('', 0)
+            ->入力_電話番号('', 0);
+
+        // 注文者情報をコピーボタンをクリック
+        $ShippingEditPage->注文者情報をコピー(0);
+
+        // コピー後の値を検証
+        $I->assertEquals($Order->getName01(), $ShippingEditPage->出荷情報のフィールド値を取得(0, 'name01'));
+        $I->assertEquals($Order->getName02(), $ShippingEditPage->出荷情報のフィールド値を取得(0, 'name02'));
+        $I->assertEquals($Order->getKana01(), $ShippingEditPage->出荷情報のフィールド値を取得(0, 'kana01'));
+        $I->assertEquals($Order->getKana02(), $ShippingEditPage->出荷情報のフィールド値を取得(0, 'kana02'));
+        $I->assertEquals($Order->getPostalCode(), $ShippingEditPage->出荷情報のフィールド値を取得(0, 'postal_code'));
+        $I->assertEquals((string) $Order->getPref()->getId(), $ShippingEditPage->出荷情報のフィールド値を取得(0, 'pref'));
+        $I->assertEquals($Order->getAddr01(), $ShippingEditPage->出荷情報のフィールド値を取得(0, 'addr01'));
+        $I->assertEquals($Order->getAddr02(), $ShippingEditPage->出荷情報のフィールド値を取得(0, 'addr02'));
+        $I->assertEquals($Order->getPhoneNumber(), $ShippingEditPage->出荷情報のフィールド値を取得(0, 'phone_number'));
+    }
+
+    /**
+     * @group vaddy
+     */
+    public function order_出荷編集_他の出荷情報からコピー(AcceptanceTester $I): void
+    {
+        $I->wantTo('EA0405-UC08-T02 出荷編集画面で他の出荷情報からコピー');
+
+        // 新規受付ステータスの受注を作る
+        $createCustomer = Fixtures::get('createCustomer');
+        $createOrders = Fixtures::get('createOrders');
+        /** @var Order[] $newOrders */
+        $newOrders = $createOrders($createCustomer(), 1, [], OrderStatus::NEW);
+        $Order = $newOrders[0];
+
+        // 出荷編集画面を開く
+        $ShippingEditPage = ShippingEditPage::goByOrderId($I, $Order);
+
+        // 出荷先を追加
+        $ShippingEditPage->出荷先を追加();
+        $I->wait(3);
+
+        // 再度出荷編集画面を開く（出荷先追加後にリロードされるため）
+        $ShippingEditPage = ShippingEditPage::at($I);
+
+        // 出荷先1にテストデータを入力
+        // YubinBangoを無効化してから入力（住所自動入力との競合を回避）
+        $ShippingEditPage
+            ->YubinBangoを無効化(0)
+            ->入力_姓('テスト姓', 0)
+            ->入力_名('テスト名', 0)
+            ->入力_セイ('テストセイ', 0)
+            ->入力_メイ('テストメイ', 0)
+            ->入力_郵便番号('1000001', 0)
+            ->入力_都道府県(['13' => '東京都'], 0)
+            ->入力_市区町村名('千代田区', 0)
+            ->入力_番地_ビル名('1-1-1', 0)
+            ->入力_電話番号('0312345678', 0);
+
+        // 出荷先2に「他の出荷情報からコピー」を実行
+        $ShippingEditPage->他の出荷情報からコピー(1, 0);
+
+        // コピー後の値を検証
+        $I->assertEquals('テスト姓', $ShippingEditPage->出荷情報のフィールド値を取得(1, 'name01'));
+        $I->assertEquals('テスト名', $ShippingEditPage->出荷情報のフィールド値を取得(1, 'name02'));
+        $I->assertEquals('テストセイ', $ShippingEditPage->出荷情報のフィールド値を取得(1, 'kana01'));
+        $I->assertEquals('テストメイ', $ShippingEditPage->出荷情報のフィールド値を取得(1, 'kana02'));
+        $I->assertEquals('13', $ShippingEditPage->出荷情報のフィールド値を取得(1, 'pref'));
+        $I->assertEquals('千代田区', $ShippingEditPage->出荷情報のフィールド値を取得(1, 'addr01'));
+        $I->assertEquals('1-1-1', $ShippingEditPage->出荷情報のフィールド値を取得(1, 'addr02'));
+        $I->assertEquals('0312345678', $ShippingEditPage->出荷情報のフィールド値を取得(1, 'phone_number'));
+    }
+
+    /**
+     * @group vaddy
+     */
+    public function order_出荷編集_出荷先1件時はコピードロップダウン非表示(AcceptanceTester $I): void
+    {
+        $I->wantTo('EA0405-UC08-T03 出荷先が1件の場合、他の出荷情報からコピーが非表示');
+
+        // 新規受付ステータスの受注を作る
+        $createCustomer = Fixtures::get('createCustomer');
+        $createOrders = Fixtures::get('createOrders');
+        /** @var Order[] $newOrders */
+        $newOrders = $createOrders($createCustomer(), 1, [], OrderStatus::NEW);
+        $Order = $newOrders[0];
+
+        // 出荷編集画面を開く
+        ShippingEditPage::goByOrderId($I, $Order);
+
+        // 「注文者情報をコピー」ボタンは表示される
+        $I->seeElement('.copy-orderer');
+
+        // 出荷先が1件の場合、「他の出荷情報からコピー」ドロップダウンは表示されない
+        $I->dontSeeElement('#shipmentOverview_0 .btn-group .dropdown-toggle');
     }
 }

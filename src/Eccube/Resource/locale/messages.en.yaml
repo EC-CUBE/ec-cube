@@ -861,6 +861,7 @@ admin.order.orderer_name: Customer Name
 admin.order.orderer_kana: Customer Name (Phonetic)
 admin.order.orderer_company_name: Customer Name (Company)
 admin.order.copy_orderer: Copy Customer Info
+admin.order.copy_from_other_shipping: Copy from Other Shipping
 admin.order.output_delivery_note: Print Delivery Slip
 admin.order.output_delivery_note_short: Print Delivery Slip
 admin.order.add_shipping: Add Shipping Info
