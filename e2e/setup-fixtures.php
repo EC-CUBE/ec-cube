@@ -23,7 +23,7 @@ if (file_exists(__DIR__.'/../.env')
     boot_env(__DIR__.'/../.env', true);
 }
 
-$appEnv = getenv('APP_ENV') ?: 'codeception';
+$appEnv = getenv('APP_ENV') ?: 'e2e';
 $kernel = new Kernel($appEnv, false);
 $kernel->boot();
 
