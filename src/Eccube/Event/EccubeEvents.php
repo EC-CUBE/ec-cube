@@ -22,7 +22,6 @@ final class EccubeEvents
     public const ADMIN_ADMIM_LOGIN_INITIALIZE = 'admin.admin.login.initialize';
 
     // index
-    public const ADMIN_ADMIM_INDEX_INITIALIZE = 'admin.admin.index.initialize';
     public const ADMIN_ADMIM_INDEX_ORDER = 'admin.admin.index.order';
     public const ADMIN_ADMIM_INDEX_SALES = 'admin.admin.index.sales';
     public const ADMIN_ADMIM_INDEX_COMPLETE = 'admin.admin.index.complete';
@@ -63,8 +62,6 @@ final class EccubeEvents
      * Admin/Content/LayoutController
      */
     // index
-    public const ADMIN_CONTENT_LAYOUT_INDEX_INITIALIZE = 'admin.content.layout.index.initialize';
-    public const ADMIN_CONTENT_LAYOUT_INDEX_COMPLETE = 'admin.content.layout.index.complete';
 
     /**
      * Admin/Content/NewsController
@@ -149,14 +146,9 @@ final class EccubeEvents
     // index
     public const ADMIN_ORDER_MAIL_INDEX_INITIALIZE = 'admin.order.mail.index.initialize';
     public const ADMIN_ORDER_MAIL_INDEX_CHANGE = 'admin.order.mail.index.change';
-    public const ADMIN_ORDER_MAIL_INDEX_CONFIRM = 'admin.order.mail.index.confirm';
     public const ADMIN_ORDER_MAIL_INDEX_COMPLETE = 'admin.order.mail.index.complete';
 
     // mailAll
-    public const ADMIN_ORDER_MAIL_MAIL_ALL_INITIALIZE = 'admin.order.mail.mail.all.initialize';
-    public const ADMIN_ORDER_MAIL_MAIL_ALL_CHANGE = 'admin.order.mail.mail.all.change';
-    public const ADMIN_ORDER_MAIL_MAIL_ALL_CONFIRM = 'admin.order.mail.mail.all.confirm';
-    public const ADMIN_ORDER_MAIL_MAIL_ALL_COMPLETE = 'admin.order.mail.mail.all.complete';
 
     /**
      * Admin/Order/OrderController
@@ -166,20 +158,16 @@ final class EccubeEvents
     public const ADMIN_ORDER_INDEX_SEARCH = 'admin.order.index.search';
 
     // delete
-    public const ADMIN_ORDER_DELETE_COMPLETE = 'admin.order.delete.complete';
 
     // exportOrder
     public const ADMIN_ORDER_CSV_EXPORT_ORDER = 'admin.order.csv.export.order';
 
     // exportShipping
-    public const ADMIN_ORDER_CSV_EXPORT_SHIPPING = 'admin.order.csv.export.shipping';
 
     /**
      * Admin/Shipping/ShippingController
      */
     // index
-    public const ADMIN_SHIPPING_INDEX_INITIALIZE = 'admin.shipping.index.initialize';
-    public const ADMIN_SHIPPING_INDEX_SEARCH = 'admin.shipping.index.search';
 
     /**
      * Admin/Product/CategoryController
@@ -265,7 +253,6 @@ final class EccubeEvents
     public const ADMIN_PRODUCT_COPY_COMPLETE = 'admin.product.copy.complete';
 
     // display
-    public const ADMIN_PRODUCT_DISPLAY_COMPLETE = 'admin.product.display.complete';
 
     // export
     public const ADMIN_PRODUCT_CSV_EXPORT = 'admin.product.csv.export';
@@ -331,8 +318,6 @@ final class EccubeEvents
     // delete
     public const ADMIN_SETTING_SHOP_TAX_RULE_DELETE_COMPLETE = 'admin.setting.shop.tax.rule.delete.complete';
     // editParameter
-    public const ADMIN_SETTING_SHOP_TAX_RULE_EDIT_PARAMETER_INITIALIZE = 'admin.setting.shop.tax.rule.edit.parameter.initialize';
-    public const ADMIN_SETTING_SHOP_TAX_RULE_EDIT_PARAMETER_COMPLETE = 'admin.setting.shop.tax.rule.edit.parameter.complete';
 
     /**
      * Admin/Setting/System/AuthorityController
@@ -372,7 +357,6 @@ final class EccubeEvents
     public const ADMIN_SETTING_SYSTEM_MEMBER_EDIT_COMPLETE = 'admin.setting.system.member.edit.complete';
 
     // delete
-    public const ADMIN_SETTING_SYSTEM_MEMBER_DELETE_INITIALIZE = 'admin.setting.system.member.delete.initialize';
     public const ADMIN_SETTING_SYSTEM_MEMBER_DELETE_COMPLETE = 'admin.setting.system.member.delete.complete';
 
     /**
@@ -418,7 +402,6 @@ final class EccubeEvents
     public const FRONT_MYPAGE_MYPAGE_FAVORITE_SEARCH = 'front.mypage.mypage.favorite.search';
 
     // delete
-    public const FRONT_MYPAGE_MYPAGE_DELETE_INITIALIZE = 'front.mypage.mypage.delete.initialize';
     public const FRONT_MYPAGE_MYPAGE_DELETE_COMPLETE = 'front.mypage.mypage.delete.complete';
 
     /**
@@ -432,26 +415,13 @@ final class EccubeEvents
      * CartController
      */
     // index
-    public const FRONT_CART_INDEX_INITIALIZE = 'front.cart.index.initialize';
-    public const FRONT_CART_INDEX_COMPLETE = 'front.cart.index.complete';
     // add
-    public const FRONT_CART_ADD_INITIALIZE = 'front.cart.add.initialize';
-    public const FRONT_CART_ADD_COMPLETE = 'front.cart.add.complete';
-    public const FRONT_CART_ADD_EXCEPTION = 'front.cart.add.exception';
 
     // up
-    public const FRONT_CART_UP_INITIALIZE = 'front.cart.up.initialize';
-    public const FRONT_CART_UP_COMPLETE = 'front.cart.up.complete';
-    public const FRONT_CART_UP_EXCEPTION = 'front.cart.up.exception';
 
     // down
-    public const FRONT_CART_DOWN_INITIALIZE = 'front.cart.down.initialize';
-    public const FRONT_CART_DOWN_COMPLETE = 'front.cart.down.complete';
-    public const FRONT_CART_DOWN_EXCEPTION = 'front.cart.down.exception';
 
     // remove
-    public const FRONT_CART_REMOVE_INITIALIZE = 'front.cart.remove.initialize';
-    public const FRONT_CART_REMOVE_COMPLETE = 'front.cart.remove.complete';
 
     // buystep
     public const FRONT_CART_BUYSTEP_INITIALIZE = 'front.cart.buystep.initialize';
@@ -488,14 +458,9 @@ final class EccubeEvents
     // index
     public const FRONT_PRODUCT_INDEX_INITIALIZE = 'front.product.index.initialize';
     public const FRONT_PRODUCT_INDEX_SEARCH = 'front.product.index.search';
-    public const FRONT_PRODUCT_INDEX_COMPLETE = 'front.product.index.complete';
-    public const FRONT_PRODUCT_INDEX_DISP = 'front.product.index.disp';
-    public const FRONT_PRODUCT_INDEX_ORDER = 'front.product.index.order';
 
     // detail
     public const FRONT_PRODUCT_DETAIL_INITIALIZE = 'front.product.detail.initialize';
-    public const FRONT_PRODUCT_DETAIL_FAVORITE = 'front.product.detail.favorite';
-    public const FRONT_PRODUCT_DETAIL_COMPLETE = 'front.product.detail.complete';
 
     public const FRONT_PRODUCT_CART_ADD_INITIALIZE = 'front.product.cart.add.initialize';
     public const FRONT_PRODUCT_CART_ADD_COMPLETE = 'front.product.cart.add.complete';
@@ -510,32 +475,22 @@ final class EccubeEvents
      * ShoppingController
      */
     // index
-    public const FRONT_SHOPPING_INDEX_INITIALIZE = 'front.shopping.index.initialize';
 
     // confirm
-    public const FRONT_SHOPPING_CONFIRM_INITIALIZE = 'front.shopping.confirm.initialize';
-    public const FRONT_SHOPPING_CONFIRM_PROCESSING = 'front.shopping.confirm.processing';
-    public const FRONT_SHOPPING_CONFIRM_COMPLETE = 'front.shopping.confirm.complete';
 
     // complete
     public const FRONT_SHOPPING_COMPLETE_INITIALIZE = 'front.shopping.complete.initialize';
 
     // delivery
-    public const FRONT_SHOPPING_DELIVERY_INITIALIZE = 'front.shopping.delivery.initialize';
-    public const FRONT_SHOPPING_DELIVERY_COMPLETE = 'front.shopping.delivery.complete';
 
     // payment
-    public const FRONT_SHOPPING_PAYMENT_INITIALIZE = 'front.shopping.payment.initialize';
-    public const FRONT_SHOPPING_PAYMENT_COMPLETE = 'front.shopping.payment.complete';
 
     // shippingChange
-    public const FRONT_SHOPPING_SHIPPING_CHANGE_INITIALIZE = 'front.shopping.shipping.change.initialize';
 
     // shipping
     public const FRONT_SHOPPING_SHIPPING_COMPLETE = 'front.shopping.shipping.complete';
 
     // shippingEditChange
-    public const FRONT_SHOPPING_SHIPPING_EDIT_CHANGE_INITIALIZE = 'front.shopping.shipping.edit.change.initialize';
 
     // shippingEdit
     public const FRONT_SHOPPING_SHIPPING_EDIT_INITIALIZE = 'front.shopping.shipping.edit.initialize';
@@ -552,7 +507,6 @@ final class EccubeEvents
     public const FRONT_SHOPPING_NONMEMBER_COMPLETE = 'front.shopping.nonmember.complete';
 
     // shippingMultipleChange
-    public const FRONT_SHOPPING_SHIPPING_MULTIPLE_CHANGE_INITIALIZE = 'front.shopping.shipping.multiple.change.initialize';
 
     // shippingMultiple
     public const FRONT_SHOPPING_SHIPPING_MULTIPLE_INITIALIZE = 'front.shopping.shipping.multiple.initialize';
