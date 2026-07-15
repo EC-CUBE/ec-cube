@@ -259,7 +259,9 @@ services:
         arguments:
             $projectDir: '%kernel.project_dir%'
             $envPathOverrides:
-                ucp_signing: '%env(ECCUBE_AGENT_COMMERCE_UCP_SIGNING_KEY)%'
+                ucp_signing: '%env(default::string:ECCUBE_AGENT_COMMERCE_UCP_SIGNING_KEY)%'
+                # ACP Webhook (Merchant-Signature) の共有シークレット保管先 (#6776、outbound 送出は後続 PR)。
+                acp_webhook: '%env(default::string:ECCUBE_AGENT_COMMERCE_ACP_WEBHOOK_SECRET)%'
 
     Eccube\Service\AgentCommerce\Security\KeyStoreInterface:
         alias: Eccube\Service\AgentCommerce\Security\FilesystemKeyStore
@@ -314,6 +316,12 @@ services:
         arguments:
             $accessTokenHandler: '@?Symfony\Component\Security\Http\AccessToken\AccessTokenHandlerInterface'
 
+    # Agent Commerce 決済ハンドラ (#6574 UCP / #6776 ACP)
+    # 具象ハンドラは決済プラグインが agent_commerce.payment_handler タグで寄与する。
+    _instanceof:
+        Eccube\Service\AgentCommerce\Payment\AgentCheckoutPaymentHandlerInterface:
+            tags: ['agent_commerce.payment_handler']
+
     # 決済ハンドラレジストリ。具象ハンドラ (決済プラグイン) は agent_commerce.payment_handler タグで寄与する。
     Eccube\Service\AgentCommerce\Payment\AgentCheckoutPaymentHandlerRegistry:
         arguments:
@@ -328,3 +336,14 @@ services:
     Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutCompletionService:
         arguments:
             $escalationExpireMinutes: '%eccube_agent_checkout_escalation_expire%'
+
+    # 冪等性記録は DB 一意制約 (dtb_agent_checkout_idempotency) で管理する (EM/Repository は autowire)。
+
+    # UCP インバウンド署名検証 (RFC 9421・api4 非依存)。許可ドメイン/必須化は運用で設定する。
+    Eccube\Service\AgentCommerce\Ucp\Signature\UcpRequestSignatureVerifier:
+        arguments:
+            $allowedDomains: []
+
+    Eccube\Service\AgentCommerce\Ucp\Signature\UcpSignatureSubscriber:
+        arguments:
+            $requireSignature: false

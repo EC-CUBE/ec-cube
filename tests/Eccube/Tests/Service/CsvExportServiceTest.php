@@ -18,6 +18,7 @@ namespace Eccube\Tests\Service;
 use Eccube\Entity\Csv;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\Order;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CsvRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\CsvExportService;
@@ -69,6 +70,26 @@ final class CsvExportServiceTest extends AbstractServiceTestCase
         $this->expected = count($Csv);
         $this->actual = count($arrHeader);
         $this->verify();
+    }
+
+    public function testFputcsvEscapesFormulaWhenOptionEnabled(): void
+    {
+        $BaseInfo = static::getContainer()->get(BaseInfoRepository::class)->get();
+        $BaseInfo->setOptionSanitizeCsvFormulas(true);
+        $this->entityManager->flush();
+
+        $this->csvExportService->fputcsv(['=SUM(A1)', 'foo']);
+        $this->assertSame("'=SUM(A1),foo\n", file_get_contents($this->url));
+    }
+
+    public function testFputcsvSkipsEscapeWhenOptionDisabled(): void
+    {
+        $BaseInfo = static::getContainer()->get(BaseInfoRepository::class)->get();
+        $BaseInfo->setOptionSanitizeCsvFormulas(false);
+        $this->entityManager->flush();
+
+        $this->csvExportService->fputcsv(['=SUM(A1)', 'foo']);
+        $this->assertSame("=SUM(A1),foo\n", file_get_contents($this->url));
     }
 
     public function testExportData()

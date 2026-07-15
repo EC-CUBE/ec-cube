@@ -1,7 +1,8 @@
 import { test, expect } from '@playwright/test';
+import { ADMIN_PASSWORD, ADMIN_ROUTE, ADMIN_USER, VALID_PASSWORD } from '../config/default.config';
 import path from 'path';
 
-const adminRoute = process.env.ECCUBE_ADMIN_ROUTE || 'admin';
+const adminRoute = ADMIN_ROUTE;
 const authFile = path.join(__dirname, '..', '.auth', 'admin.json');
 
 test.describe('Admin System Info (EA08)', () => {
@@ -44,8 +45,8 @@ test.describe('Admin System Info (EA08)', () => {
     await page.locator('#admin_member_name').fill('admintest');
     await page.locator('#admin_member_department').fill('admintest department');
     await page.locator('#admin_member_login_id').fill('admintest');
-    await page.locator('#admin_member_plain_password_first').fill('password1234');
-    await page.locator('#admin_member_plain_password_second').fill('password1234');
+    await page.locator('#admin_member_plain_password_first').fill(VALID_PASSWORD);
+    await page.locator('#admin_member_plain_password_second').fill(VALID_PASSWORD);
     await page.locator('#admin_member_Authority').selectOption({ label: 'システム管理者' });
     await page.locator('#admin_member_Work_1').check();
 
@@ -73,8 +74,8 @@ test.describe('Admin System Info (EA08)', () => {
     await page.locator('#admin_member_name').fill('admintest2');
     await page.locator('#admin_member_department').fill('admintest department');
     await page.locator('#admin_member_login_id').fill('admintest');
-    await page.locator('#admin_member_plain_password_first').fill('password1234');
-    await page.locator('#admin_member_plain_password_second').fill('password1234');
+    await page.locator('#admin_member_plain_password_first').fill(VALID_PASSWORD);
+    await page.locator('#admin_member_plain_password_second').fill(VALID_PASSWORD);
     await page.locator('#admin_member_Authority').selectOption({ label: 'システム管理者' });
     await page.locator('#admin_member_Work_1').check();
 
@@ -216,8 +217,8 @@ test.describe('Admin System Info (EA08)', () => {
     // Login via the new admin URL
     await page.goto('/admin2/');
     await page.waitForLoadState('load');
-    await page.locator('#login_id').fill(process.env.ADMIN_USER || 'admin');
-    await page.locator('#password').fill(process.env.ADMIN_PASSWORD || 'password');
+    await page.locator('#login_id').fill(ADMIN_USER);
+    await page.locator('#password').fill(ADMIN_PASSWORD);
     await page.getByRole('button', { name: 'ログイン' }).click();
     await expect(page.locator('.c-pageTitle__titles')).toContainText('ホーム', { timeout: 30_000 });
 
@@ -231,8 +232,8 @@ test.describe('Admin System Info (EA08)', () => {
     // Login again via the original admin URL and save auth state for subsequent tests
     await page.goto(`/${adminRoute}/`);
     await page.waitForLoadState('load');
-    await page.locator('#login_id').fill(process.env.ADMIN_USER || 'admin');
-    await page.locator('#password').fill(process.env.ADMIN_PASSWORD || 'password');
+    await page.locator('#login_id').fill(ADMIN_USER);
+    await page.locator('#password').fill(ADMIN_PASSWORD);
     await page.getByRole('button', { name: 'ログイン' }).click();
     await expect(page.locator('.c-pageTitle__titles')).toContainText('ホーム', { timeout: 30_000 });
 
@@ -577,12 +578,12 @@ test.describe('Admin System Info (EA08)', () => {
     await page.waitForLoadState('load');
     await expect(page.locator('.c-pageTitle')).toContainText('ログイン履歴');
 
-    await page.locator('#admin_search_login_history_multi').fill('admin');
+    await page.locator('#admin_search_login_history_multi').fill(ADMIN_USER);
     await page.locator('#search_form .c-outsideBlock__contents button').click();
     await page.waitForLoadState('load');
 
     // Verify first result contains 'admin' and '成功'
-    await expect(page.locator('#search_form table tbody tr:nth-child(1) td:nth-child(2)')).toContainText('admin');
+    await expect(page.locator('#search_form table tbody tr:nth-child(1) td:nth-child(2)')).toContainText(ADMIN_USER);
     await expect(page.locator('#search_form table tbody tr:nth-child(1) td:nth-child(5) span')).toContainText('成功');
   });
 });

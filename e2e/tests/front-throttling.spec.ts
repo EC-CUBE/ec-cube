@@ -1,7 +1,8 @@
 import { test, expect } from '@playwright/test';
+import { ADMIN_PASSWORD, ADMIN_ROUTE, ADMIN_USER, CUSTOMER_PASSWORD, VALID_PASSWORD } from '../config/default.config';
 import { authenticator } from '@otplib/preset-default';
 
-const adminRoute = process.env.ECCUBE_ADMIN_ROUTE || 'admin';
+const adminRoute = ADMIN_ROUTE;
 
 /**
  * EF09 Throttling Tests
@@ -19,7 +20,7 @@ test.use({ storageState: { cookies: [], origins: [] } });
 /**
  * Helper: Log in as a customer on the front site.
  */
-async function loginAsMember(page: import('@playwright/test').Page, email: string, password = 'password') {
+async function loginAsMember(page: import('@playwright/test').Page, email: string, password = CUSTOMER_PASSWORD) {
   await page.goto('/mypage/login');
   await page.waitForLoadState('load');
   await page.locator('input[name="login_email"]').fill(email);
@@ -36,7 +37,7 @@ function getTestCustomerEmail(): string {
 }
 
 function getTestCustomerPassword(): string {
-  return process.env.CUSTOMER_PASSWORD || 'password';
+  return CUSTOMER_PASSWORD;
 }
 
 /**
@@ -93,8 +94,8 @@ async function submitEntryFormWithConfirm(page: import('@playwright/test').Page)
   await page.locator('#entry_phone_number').fill('111-111-111');
   await page.locator('#entry_email_first').fill(email);
   await page.locator('#entry_email_second').fill(email);
-  await page.locator('#entry_plain_password_first').fill('password1234');
-  await page.locator('#entry_plain_password_second').fill('password1234');
+  await page.locator('#entry_plain_password_first').fill(VALID_PASSWORD);
+  await page.locator('#entry_plain_password_second').fill(VALID_PASSWORD);
   await page.locator('#entry_user_policy_check').check();
 
   // Click agree/submit button
@@ -128,8 +129,8 @@ async function submitEntryFormWithoutConfirm(page: import('@playwright/test').Pa
   await page.locator('#entry_phone_number').fill('111-111-111');
   await page.locator('#entry_email_first').fill(email);
   await page.locator('#entry_email_second').fill(email);
-  await page.locator('#entry_plain_password_first').fill('password1234');
-  await page.locator('#entry_plain_password_second').fill('password1234');
+  await page.locator('#entry_plain_password_first').fill(VALID_PASSWORD);
+  await page.locator('#entry_plain_password_second').fill(VALID_PASSWORD);
 
   // Submit without checking user_policy_check (goes to confirm without mode=complete)
   await page.locator('button.ec-blockBtn--action[type="submit"]').click();
@@ -927,14 +928,14 @@ test.describe('Throttling (EF09)', () => {
 
     await adminPage.goto(`/${adminRoute}/`);
     await adminPage.waitForLoadState('load');
-    await adminPage.locator('#login_id').fill(process.env.ADMIN_USER || 'admin');
-    await adminPage.locator('#password').fill(process.env.ADMIN_PASSWORD || 'password');
+    await adminPage.locator('#login_id').fill(ADMIN_USER);
+    await adminPage.locator('#password').fill(ADMIN_PASSWORD);
     await adminPage.getByRole('button', { name: 'ログイン' }).click();
     await expect(adminPage.locator('.c-pageTitle__titles')).toContainText('ホーム', { timeout: 30_000 });
 
     // Create a new member with 2FA enabled
     const loginId = 'admin_2fa_' + Date.now().toString(36);
-    const memberPassword = 'password1234';
+    const memberPassword = VALID_PASSWORD;
 
     await adminPage.goto(`/${adminRoute}/setting/system/member/new`);
     await adminPage.waitForLoadState('load');

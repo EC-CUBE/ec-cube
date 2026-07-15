@@ -49,7 +49,7 @@
         "psr/http-message": "^1.0 || ^2.0",
         "psr/log": "~2.0",
         "psr/simple-cache": "^3.0",
-        "robthree/twofactorauth": "^1.8",
+        "robthree/twofactorauth": "^3.0",
         "setasign/fpdi": "^2.2",
         "skorp/detect-incompatible-samesite-useragents": "^1.0",
         "softcreatr/jsonpath": "^0.8",
