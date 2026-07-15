@@ -30,10 +30,8 @@ if (!isset($_SERVER['APP_ENV'])) {
     }
 
     if ($dotenvExists) {
-        // bootEnv は .env.local.php（dump-env の最適化済みスナップショット）を優先し、
-        // 無ければ .env → .env.local → .env.$env → .env.$env.local をカスケード読み込みする。
-        // 第4引数 true = .env 系の値が既存値より優先（従来の overload 相当）。
-        (new Dotenv())->bootEnv(__DIR__.'/.env', 'dev', ['test'], true);
+        // 第2引数 true = .env 系の値が既存値より優先（従来の overload 相当）。
+        boot_env(__DIR__.'/.env', true);
 
         if (str_contains($_SERVER['DATABASE_URL'] ?? '', 'sqlite') && !extension_loaded('pdo_sqlite')) {
             (new Dotenv())->overload(__DIR__.'/.env.install');
@@ -43,11 +41,11 @@ if (!isset($_SERVER['APP_ENV'])) {
     }
 } elseif (class_exists(Dotenv::class) && $dotenvExists) {
     // OS 環境変数 APP_ENV が設定済みの環境（Docker など）でも .env を読み込む。
-    // 第4引数 false = 既存の OS 環境変数（Docker で設定済みのもの）は上書きしない。
+    // 第2引数 false = 既存の OS 環境変数（Docker で設定済みのもの）は上書きしない。
     // OS 環境変数を保護しつつ、.env 側の非 OS 変数（ECCUBE_TEMPLATE_CODE 等）は反映される。
     // これにより管理画面からのテンプレート切り替えが .env への書き込みで反映される。
     // putenv は使わない（スレッド安全性のため）ので、env() 関数（$_ENV / $_SERVER 優先）と整合する。
-    (new Dotenv())->bootEnv(__DIR__.'/.env', 'dev', ['test'], false);
+    boot_env(__DIR__.'/.env', false);
 }
 error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
 

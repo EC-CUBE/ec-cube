@@ -27,7 +27,6 @@ use Eccube\Entity\Shipping;
 use Eccube\Kernel;
 use Eccube\Tests\Fixture\Generator;
 use Faker\Factory as Faker;
-use Symfony\Component\Dotenv\Dotenv;
 
 $config = parse_ini_file(__DIR__.'/config.ini', true);
 
@@ -42,7 +41,7 @@ require_once __DIR__.'/../../vendor/autoload.php';
 if (file_exists(__DIR__.'/../../.env')
     || file_exists(__DIR__.'/../../.env.local')
     || file_exists(__DIR__.'/../../.env.local.php')) {
-    (new Dotenv())->bootEnv(__DIR__.'/../../.env', 'dev', ['test'], true);
+    boot_env(__DIR__.'/../../.env', true);
 }
 $kernel = new Kernel('test', false);
 $kernel->boot();

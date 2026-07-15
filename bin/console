@@ -28,10 +28,9 @@ $dotenvExists = file_exists(__DIR__.'/../.env')
 // セットされずこの分岐に入らないため、.env は読み込まれる。
 if (!isset($_SERVER['APP_ENV'])) {
     // OS 環境変数 APP_ENV が未設定の環境: .env を設定の源泉として読み込む。
-    // bootEnv は .env.local.php を優先し、無ければ .env 系をカスケード読み込みする。
-    // 第4引数 true = .env 系の値が既存値より優先（従来の overload 相当）。
+    // 第2引数 true = .env 系の値が既存値より優先（従来の overload 相当）。
     if ($dotenvExists) {
-        (new Dotenv())->bootEnv(__DIR__.'/../.env', 'dev', ['test'], true);
+        boot_env(__DIR__.'/../.env', true);
     } else {
         (new Dotenv())->overload(__DIR__.'/../.env.install');
     }
