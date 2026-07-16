@@ -30,6 +30,7 @@ use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Order;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
+use Eccube\Entity\Shipping;
 use Eccube\Entity\TaxRule;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\OrderRepository;
@@ -868,6 +869,63 @@ final class EditControllerTest extends AbstractEditControllerTestCase
                     '送料・手数料の税表示区分に旧商品明細の税抜が引き継がれている'
                 );
             }
+        }
+    }
+
+    /**
+     * 明細の最終行(値引き)を削除し保存せずに商品を追加したとき, 追加した商品明細が
+     * Shipping に紐づく(shipping_id が NULL にならない)ことのテスト.
+     *
+     * 値引き・手数料明細は shipping_id が NULL のため, これらのスロットが商品明細に
+     * 再利用されると, associateOrderAndShipping が id 有りの明細をスキップしていた旧実装では
+     * 商品が Shipping に紐づかず, 納品書・出荷完了メール・出荷登録画面・マイページ履歴から
+     * 商品が消えてしまっていた. 既定の受注構成でも最終行は値引きのため発生する.
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/6444
+     */
+    public function testOrderItemShippingNotOrphanedWhenDiscountSlotReusedByProduct()
+    {
+        $Order = $this->createOrder($this->Customer);
+        $Order->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
+        $this->entityManager->flush();
+        $orderId = $Order->getId();
+
+        $ProductClass = $this->Product->getProductClasses()[0];
+        $productData = [
+            'ProductClass' => $ProductClass->getId(),
+            'price' => $ProductClass->getPrice02(),
+            'quantity' => 1,
+            'product_name' => $this->Product->getName(),
+            'order_item_type' => OrderItemType::PRODUCT,
+            'tax_type' => TaxType::TAXATION,
+            'tax_rate' => '10',
+        ];
+
+        $EditOrder = $this->orderRepository->find($orderId);
+        $formData = $this->createFormDataForEdit($EditOrder);
+        $this->fillTaxType($formData, $EditOrder);
+
+        // 値引き明細(shipping_id=NULL)のスロットを商品明細のデータで上書きする.
+        $replaced = $this->replaceOrderItemSlot($formData, OrderItemType::DISCOUNT, $productData);
+        $this->assertGreaterThan(0, $replaced, '値引き明細のスロットが見つからなかった');
+
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_order_edit', ['id' => $orderId]),
+            ['order' => $formData, 'mode' => 'register']
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_edit', ['id' => $orderId])));
+
+        $EditedOrder = $this->orderRepository->find($orderId);
+        $ProductOrderItems = $EditedOrder->getProductOrderItems();
+        $this->assertNotEmpty($ProductOrderItems);
+        foreach ($ProductOrderItems as $ProductItem) {
+            // 全ての商品明細が Shipping に紐づいていること(値引きスロット再利用でも孤児化しない).
+            $this->assertInstanceOf(
+                Shipping::class,
+                $ProductItem->getShipping(),
+                '商品明細が Shipping に紐づいていない(孤児化している)'
+            );
         }
     }
 

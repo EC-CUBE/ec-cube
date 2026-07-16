@@ -439,25 +439,27 @@ class OrderType extends AbstractType
         $OrderItems = $Order->getOrderItems();
 
         // 明細とOrder, Shippingを紐付ける.
-        // 新規の明細のみが対象, 更新時はスキップする.
+        // 紐付けの判定は「id の有無」ではなく「本来 Shipping を持つべき明細なのに未紐付け」で行う.
+        // 未保存の削除でスロットが再利用された既存明細(#6444)は id を持つため, id 判定では
+        // Shipping が設定されず, 追加された商品明細が shipping_id=NULL のまま孤児化してしまう
+        // (納品書・出荷メール・マイページ履歴等から商品が消える). 未紐付けの明細のみ紐付けることで,
+        // 既に特定の Shipping に紐づく明細(複数配送)は移動させずに孤児明細だけを修復する.
         foreach ($OrderItems as $OrderItem) {
-            // 更新時はスキップ
-            if ($OrderItem->getId()) {
-                continue;
+            // 新規明細のみ Order を紐付ける(既存明細は DB 読込時に紐付け済み).
+            if (null === $OrderItem->getId()) {
+                $OrderItem->setOrder($Order);
             }
 
-            $OrderItem->setOrder($Order);
-
-            // 送料明細の紐付けを行う.
+            // 送料明細の紐付けを行う. 未紐付けのものだけが対象.
             // 複数配送の場合は, 常に最初のShippingと紐付ける.
             // Order::getShippingsは氏名でソートされている.
-            if ($OrderItem->isDeliveryFee()) {
+            if ($OrderItem->isDeliveryFee() && null === $OrderItem->getShipping()) {
                 $OrderItem->setShipping($Order->getShippings()->first());
             }
 
-            // 商品明細の紐付けを行う.
-            // 複数配送時は, 明細の追加は行われないためスキップする.
-            if ($OrderItem->isProduct() && !$Order->isMultiple()) {
+            // 商品明細は必ず Shipping に紐づく. 未紐付けのものだけを紐付ける
+            // (既に紐付いている明細は複数配送でも移動させない).
+            if ($OrderItem->isProduct() && null === $OrderItem->getShipping()) {
                 $OrderItem->setShipping($Order->getShippings()->first());
             }
         }

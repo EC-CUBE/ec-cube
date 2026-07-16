@@ -167,7 +167,10 @@ class OrderItemType extends AbstractType
 
             // 旧明細から引き継がれた派生値をクリアする. tax_adjust は rounding_type を null にすると
             // 後続の補完で TaxRule から再設定されるため, ここでは触らない.
-            $OrderItem->setProduct()->setProductCode()->setClassName1()->setClassName2()->setClassCategoryName1()->setClassCategoryName2()->setTaxDisplayType()->setRoundingType();
+            // processor_name はフォーム項目ではないため, クリアしないと旧値が残る. 特にポイント明細の
+            // スロットが再利用されると PointHelper::removePointDiscountItem が processor_name だけで判定して
+            // 追加明細を削除してしまうため, ここでクリアしておく.
+            $OrderItem->setProduct()->setProductCode()->setClassName1()->setClassName2()->setClassCategoryName1()->setClassCategoryName2()->setTaxDisplayType()->setRoundingType()->setProcessorName();
         }, 10);
 
         // 受注明細フォームの税率を補完する
