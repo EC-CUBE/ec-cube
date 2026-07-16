@@ -35,12 +35,15 @@ final class ToolInputSchema
 
     public function __construct(Tool $tool)
     {
-        // sdk は引数なしツールの properties を \stdClass で入れるため、 配列以外は空扱いに正規化する。
+        // sdk は引数なしツールの properties を空配列でなく \stdClass に正規化する (Tool::normalizeSchemaProperties)。
+        // inputSchema の PHPDoc は properties: array と宣言するが実体は array|\stdClass なので、 その型で受けて配列化する。
+        /** @var array<string, mixed>|\stdClass $rawProperties */
         $rawProperties = $tool->inputSchema['properties'] ?? [];
         $this->properties = \is_array($rawProperties) ? $rawProperties : [];
 
+        // required は上記の正規化対象外で常に配列 (SDK は required の型を変換しない)。
         $rawRequired = $tool->inputSchema['required'] ?? [];
-        $this->required = \is_array($rawRequired) ? array_values(array_map(strval(...), $rawRequired)) : [];
+        $this->required = array_values(array_map(strval(...), $rawRequired));
     }
 
     /**
