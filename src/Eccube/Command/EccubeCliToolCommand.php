@@ -17,6 +17,7 @@ namespace Eccube\Command;
 
 use Eccube\Service\Mcp\McpCliToolInvoker;
 use Eccube\Service\Mcp\McpMarkdownFormatter;
+use Eccube\Service\Mcp\ToolInputSchema;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -51,12 +52,13 @@ final class EccubeCliToolCommand extends Command
         $tool = $this->invoker->tool($this->toolName)->tool;
         $this->setDescription(($tool->description ?? '').' (MCP ツール '.$this->toolName.' 相当・ローカル信頼・トークン不要)');
 
-        foreach ($this->properties() as $name => $spec) {
+        $schema = new ToolInputSchema($tool);
+        foreach ($schema->propertyNames() as $name) {
             $mode = InputOption::VALUE_REQUIRED;
-            if ('array' === $this->baseType($spec['type'] ?? 'string')) {
+            if ($schema->isArray($name)) {
                 $mode |= InputOption::VALUE_IS_ARRAY;
             }
-            $this->addOption($name, null, $mode, (string) ($spec['description'] ?? ''));
+            $this->addOption($name, null, $mode, $schema->description($name));
         }
     }
 
@@ -64,21 +66,21 @@ final class EccubeCliToolCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
+        $schema = new ToolInputSchema($this->invoker->tool($this->toolName)->tool);
 
         $arguments = [];
-        foreach ($this->properties() as $name => $spec) {
+        foreach ($schema->propertyNames() as $name) {
             $raw = $input->getOption($name);
-            $type = $this->baseType($spec['type'] ?? 'string');
 
-            if ('array' === $type) {
+            if ($schema->isArray($name)) {
                 if ([] === (array) $raw) {
                     continue;
                 }
-                $elementType = $this->baseType($spec['items']['type'] ?? 'string');
+                $elementType = $schema->elementType($name);
                 $values = [];
                 foreach ((array) $raw as $element) {
-                    [$ok, $cast] = $this->cast((string) $element, $elementType);
-                    if (!$ok) {
+                    $cast = $this->cast((string) $element, $elementType);
+                    if (null === $cast) {
                         $io->error(sprintf('--%s の要素 "%s" は %s で指定してください。', $name, $element, $elementType));
 
                         return Command::INVALID;
@@ -87,8 +89,9 @@ final class EccubeCliToolCommand extends Command
                 }
                 $arguments[$name] = $values;
             } elseif (null !== $raw) {
-                [$ok, $cast] = $this->cast((string) $raw, $type);
-                if (!$ok) {
+                $type = $schema->baseType($name);
+                $cast = $this->cast((string) $raw, $type);
+                if (null === $cast) {
                     $io->error(sprintf('--%s は %s で指定してください。', $name, $type));
 
                     return Command::INVALID;
@@ -99,7 +102,7 @@ final class EccubeCliToolCommand extends Command
 
         // 必須検証はキャスト後に走るため、 不正な数値は上の cast 失敗で先に弾かれる
         // (0 に化けて array_key_exists を素通りさせない)。
-        foreach ($this->requiredProperties() as $required) {
+        foreach ($schema->requiredNames() as $required) {
             if (!\array_key_exists($required, $arguments)) {
                 $io->error(sprintf('必須オプション --%s を指定してください。', $required));
 
@@ -116,60 +119,19 @@ final class EccubeCliToolCommand extends Command
     }
 
     /**
-     * @return array<string, array<string, mixed>>
-     */
-    private function properties(): array
-    {
-        /** @var array<string, array<string, mixed>> $properties */
-        $properties = $this->invoker->tool($this->toolName)->tool->inputSchema['properties'] ?? [];
-
-        return $properties;
-    }
-
-    /**
-     * @return list<string>
-     */
-    private function requiredProperties(): array
-    {
-        /** @var list<string> $required */
-        $required = $this->invoker->tool($this->toolName)->tool->inputSchema['required'] ?? [];
-
-        return $required;
-    }
-
-    /**
-     * JSON Schema の type から nullable を外した基底型を返す (例: ['null','integer'] → 'integer')。
-     */
-    private function baseType(mixed $type): string
-    {
-        if (\is_array($type)) {
-            foreach ($type as $candidate) {
-                if ('null' !== $candidate) {
-                    return (string) $candidate;
-                }
-            }
-
-            return 'string';
-        }
-
-        return \is_string($type) ? $type : 'string';
-    }
-
-    /**
      * CLI の文字列オプションを inputSchema の型へ検証しつつ変換する。
-     * 数値型で不正な入力 (例 "abc") は黙って 0 にせず、 失敗を返して呼び出し側で弾かせる。
+     * 数値型で不正な入力 (例 "abc") は黙って 0 にせず、 変換失敗として null を返す
+     * (成功値は決して null にならないため、 null が失敗を一意に表す)。
      * 要素型が不明な配列は文字列のまま渡す (数値らしい文字列を勝手に int 化して float や
      * 先頭ゼロ ID を壊さない)。
-     *
-     * @return array{0: bool, 1: int|float|bool|string} 変換成否と変換値
      */
-    private function cast(string $value, string $type): array
+    private function cast(string $value, string $type): int|float|bool|string|null
     {
         return match ($type) {
-            'integer' => false !== ($i = filter_var($value, FILTER_VALIDATE_INT)) ? [true, $i] : [false, ''],
-            'number' => false !== ($f = filter_var($value, FILTER_VALIDATE_FLOAT)) ? [true, $f] : [false, ''],
-            'boolean' => [true, \in_array(strtolower($value), ['1', 'true', 'yes', 'on'], true)],
-            default => [true, $value],
+            'integer' => false !== ($i = filter_var($value, FILTER_VALIDATE_INT)) ? $i : null,
+            'number' => false !== ($f = filter_var($value, FILTER_VALIDATE_FLOAT)) ? $f : null,
+            'boolean' => \in_array(strtolower($value), ['1', 'true', 'yes', 'on'], true),
+            default => $value,
         };
     }
 }

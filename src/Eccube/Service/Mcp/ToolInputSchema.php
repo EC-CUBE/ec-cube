@@ -1,0 +1,104 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+ *
+ * http://www.ec-cube.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Eccube\Service\Mcp;
+
+use Mcp\Schema\Tool;
+
+/**
+ * MCP ツールの inputSchema (JSON Schema の PHP 配列) を読むための read-model。
+ *
+ * sdk は引数を持たないツールの `properties` を空配列でなく `\stdClass` で表現する等の癖があり、
+ * JSON Schema を生配列のまま各所で掘ると型注釈が実態と乖離する。 本 VO が正規化と
+ * 「nullable を外した基底型」 の解釈を 1 箇所に閉じ込め、 利用側 (CLI コマンド) から
+ * JSON Schema の知識を排除する。
+ */
+final class ToolInputSchema
+{
+    /** @var array<string, array<string, mixed>> */
+    private readonly array $properties;
+
+    /** @var list<string> */
+    private readonly array $required;
+
+    public function __construct(Tool $tool)
+    {
+        // sdk は引数なしツールの properties を \stdClass で入れるため、 配列以外は空扱いに正規化する。
+        $rawProperties = $tool->inputSchema['properties'] ?? [];
+        $this->properties = \is_array($rawProperties) ? $rawProperties : [];
+
+        $rawRequired = $tool->inputSchema['required'] ?? [];
+        $this->required = \is_array($rawRequired) ? array_values(array_map(strval(...), $rawRequired)) : [];
+    }
+
+    /**
+     * @return list<string>
+     */
+    public function propertyNames(): array
+    {
+        return array_keys($this->properties);
+    }
+
+    /**
+     * @return list<string>
+     */
+    public function requiredNames(): array
+    {
+        return $this->required;
+    }
+
+    public function isArray(string $name): bool
+    {
+        return 'array' === $this->baseType($name);
+    }
+
+    /**
+     * プロパティの基底型 (nullable を外した型。 例: ['null','integer'] → 'integer')。
+     */
+    public function baseType(string $name): string
+    {
+        return $this->normalizeType($this->properties[$name]['type'] ?? 'string');
+    }
+
+    /**
+     * 配列プロパティの要素型 (items.type)。 未指定なら 'string'。
+     */
+    public function elementType(string $name): string
+    {
+        $items = $this->properties[$name]['items'] ?? [];
+
+        return $this->normalizeType(\is_array($items) ? ($items['type'] ?? 'string') : 'string');
+    }
+
+    public function description(string $name): string
+    {
+        return (string) ($this->properties[$name]['description'] ?? '');
+    }
+
+    private function normalizeType(mixed $type): string
+    {
+        if (\is_array($type)) {
+            foreach ($type as $candidate) {
+                if ('null' !== $candidate) {
+                    return (string) $candidate;
+                }
+            }
+
+            return 'string';
+        }
+
+        return \is_string($type) ? $type : 'string';
+    }
+}

@@ -115,7 +115,7 @@ final class McpMarkdownFormatter
     }
 
     /**
-     * オブジェクトの list を Markdown 表にする。 列は先頭要素のキー。
+     * オブジェクトの list を Markdown 表にする。 列は全行キーの和集合 (行ごとにキーが異なっても列落ちさせない)。
      *
      * @param list<mixed> $rows
      */
@@ -166,7 +166,7 @@ final class McpMarkdownFormatter
     }
 
     /**
-     * 表のセル 1 個を 1 行文字列にする。 パイプは表を壊すのでエスケープする。
+     * 表のセル 1 個を 1 行文字列にする。 パイプと改行は表を壊すのでエスケープ / 空白化する。
      */
     private function cellToString(mixed $value): string
     {
@@ -176,7 +176,9 @@ final class McpMarkdownFormatter
 
         $array = (array) $value;
         // {min, max} は価格 / 在庫の集約なので "min – max" 表記にする。 在庫は unlimited フラグを持つ。
-        if (\array_key_exists('min', $array) && \array_key_exists('max', $array)) {
+        // min / max がスカラーのときだけレンジ扱いし、 そうでなければ下の JSON 経路に落とす。
+        if (\array_key_exists('min', $array) && \array_key_exists('max', $array)
+            && $this->isScalar($array['min']) && $this->isScalar($array['max'])) {
             $unlimited = !empty($array['unlimited']);
             if (null === $array['min'] && null === $array['max']) {
                 return $unlimited ? '無制限' : '';
