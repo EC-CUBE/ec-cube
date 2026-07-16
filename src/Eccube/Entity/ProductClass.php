@@ -52,16 +52,6 @@ if (!class_exists(ProductClass::class)) {
         }
 
         /**
-         * Is Enable
-         *
-         * @deprecated
-         */
-        public function isEnable(): bool
-        {
-            return $this->getProduct()->isEnable();
-        }
-
-        /**
          * Set price01 IncTax
          */
         public function setPrice01IncTax(?string $price01_inc_tax): ProductClass

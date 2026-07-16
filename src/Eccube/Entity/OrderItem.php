@@ -419,28 +419,6 @@ if (!class_exists(OrderItem::class)) {
         }
 
         /**
-         * Set taxRuleId.
-         *
-         * @deprecated 税率設定は受注作成時に決定するため廃止予定
-         */
-        public function setTaxRuleId(?int $taxRuleId = null): OrderItem
-        {
-            $this->tax_rule_id = $taxRuleId;
-
-            return $this;
-        }
-
-        /**
-         * Get taxRuleId.
-         *
-         * @deprecated 税率設定は受注作成時に決定するため廃止予定
-         */
-        public function getTaxRuleId(): ?int
-        {
-            return $this->tax_rule_id;
-        }
-
-        /**
          * Get currencyCode.
          */
         public function getCurrencyCode(): string

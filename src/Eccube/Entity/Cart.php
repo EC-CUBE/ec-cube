@@ -59,8 +59,6 @@ if (!class_exists(Cart::class)) {
         #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'id')]
         private ?Customer $Customer = null;
 
-        private bool $lock = false;
-
         /**
          * @var Collection<int, CartItem>
          */
@@ -143,24 +141,6 @@ if (!class_exists(Cart::class)) {
         public function setAgentOwned(bool $agentOwned): Cart
         {
             $this->agent_owned = $agentOwned;
-
-            return $this;
-        }
-
-        /**
-         * @deprecated 使用しないので削除予定
-         */
-        public function getLock(): bool
-        {
-            return $this->lock;
-        }
-
-        /**
-         * @deprecated 使用しないので削除予定
-         */
-        public function setLock(bool $lock): Cart
-        {
-            $this->lock = $lock;
 
             return $this;
         }

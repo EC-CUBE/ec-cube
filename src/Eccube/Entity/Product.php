@@ -151,16 +151,6 @@ if (!class_exists(Product::class)) {
         }
 
         /**
-         * Is Enable
-         *
-         * @deprecated
-         */
-        public function isEnable(): bool
-        {
-            return $this->getStatus()->getId() === ProductStatus::DISPLAY_SHOW ? true : false;
-        }
-
-        /**
          * Get ClassName1
          */
         public function getClassName1(): ?string
