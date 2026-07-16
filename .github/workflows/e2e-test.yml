@@ -122,7 +122,7 @@ jobs:
 
       - name: Setup to EC-CUBE
         env:
-          APP_ENV: 'codeception'
+          APP_ENV: 'e2e'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
@@ -130,9 +130,9 @@ jobs:
           echo "APP_ENV=${APP_ENV}" > .env
           echo "TRUSTED_HOSTS=127.0.0.1,localhost" >> .env
           echo "ECCUBE_AUTH_MAGIC=${ECCUBE_AUTH_MAGIC}" >> .env
-          bin/console doctrine:database:create --env=dev
-          bin/console doctrine:schema:create --env=dev
-          bin/console eccube:fixtures:load --env=dev
+          bin/console doctrine:database:create
+          bin/console doctrine:schema:create
+          bin/console eccube:fixtures:load
 
       - name: Install Playwright dependencies
         working-directory: e2e
@@ -166,7 +166,7 @@ jobs:
 
       - name: Start PHP Development Server
         env:
-          APP_ENV: 'codeception'
+          APP_ENV: 'e2e'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           MAILER_DSN: 'smtp://127.0.0.1:1025'
@@ -193,7 +193,7 @@ jobs:
           ECCUBE_ADMIN_ROUTE: 'admin'
           ADMIN_USER: 'admin'
           ADMIN_PASSWORD: 'password'
-          APP_ENV: 'codeception'
+          APP_ENV: 'e2e'
           CI: 'true'
         run: |
           npx playwright test --project=setup --project=${{ steps.project.outputs.project }} ${{ matrix.suite }}.spec.ts

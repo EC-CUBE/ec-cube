@@ -19,7 +19,6 @@ use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Doctrine\DBAL\Tools\DsnParser;
-use Dotenv\Dotenv;
 use Eccube\Common\EccubeConfig;
 use Eccube\Util\StringUtil;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -28,6 +27,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Dotenv\Dotenv;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
@@ -229,18 +230,29 @@ class InstallerCommand extends Command
     #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $envDir = $this->eccubeConfig->get('kernel.project_dir');
+
+        // インストールは .env を再生成するため, dump-env 済みの .env.local.php は
+        // 古いスナップショットとなり, 起動時に新しい .env より優先されてしまう.
+        // 存在すれば削除し, 再最適化を促す.
+        $fs = new Filesystem();
+        if ($fs->exists($envDir.'/.env.local.php')) {
+            // 削除失敗時は Filesystem が IOException を送出するため, エラーを握りつぶさない.
+            $fs->remove($envDir.'/.env.local.php');
+            $this->io->note('.env.local.php を削除しました。最適化を再適用するには `composer symfony:dump-env prod` を実行してください。');
+        }
+
         // Process実行時に, APP_ENV/APP_DEBUGが子プロセスに引き継がれてしまうため,
         // 生成された.envをロードして上書きする.
         if ($input->isInteractive()) {
-            $envDir = $this->eccubeConfig->get('kernel.project_dir');
             if (file_exists($envDir.'/.env')) {
-                Dotenv::createUnsafeMutable($envDir)->load();
+                (new Dotenv())->overload($envDir.'/.env');
             }
         }
 
         // 対話モード実行時, eccubeConfig->get('eccube_database_url')では
-        // 更新後の値が取得できないため, getenv()を使用する.
-        $databaseUrl = getenv('DATABASE_URL');
+        // 更新後の値が取得できないため, overload() で更新された $_SERVER を使用する.
+        $databaseUrl = $_SERVER['DATABASE_URL'] ?? '';
         $databaseName = $this->getDatabaseName($databaseUrl);
 
         // データベース作成, スキーマ作成, 初期データの投入を行う.

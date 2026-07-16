@@ -748,4 +748,49 @@ final class EditControllerTest extends AbstractEditControllerTestCase
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
+
+    /**
+     * 二重送信・多重編集による受注明細の破損を防止するテスト.
+     *
+     * フォーム描画時点の更新日時と現在の更新日時が異なる場合は, 既に別の操作で
+     * 更新済みと判断し, 登録処理を中断する.
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/6671
+     */
+    public function testOrderEditRejectedWhenUpdateDateIsStale()
+    {
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+        $Order->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
+        $this->entityManager->flush();
+
+        $url = $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]);
+        $formData = $this->createFormData($Customer, $this->Product);
+
+        // 描画時点の更新日時が一致していれば登録できる.
+        $EditedOrder = $this->orderRepository->find($Order->getId());
+        $this->assertInstanceOf(Order::class, $EditedOrder);
+        $formData['form_update_date'] = $EditedOrder->getUpdateDate()->format('Y-m-d H:i:s');
+        $this->client->request(
+            Request::METHOD_POST, $url, ['order' => $formData, 'mode' => 'register']
+        );
+        $this->assertTrue(
+            $this->client->getResponse()->isRedirect($url),
+            '更新日時が一致する場合は登録できる'
+        );
+
+        // 描画時点の更新日時が古い(＝別の操作で更新済み)場合は登録を中断する.
+        $formData['form_update_date'] = '2000-01-01 00:00:00';
+        $this->client->request(
+            Request::METHOD_POST, $url, ['order' => $formData, 'mode' => 'register']
+        );
+        $this->assertFalse(
+            $this->client->getResponse()->isRedirect(),
+            '更新日時が古い場合は登録されない'
+        );
+        $this->assertStringContainsString(
+            '別の操作で更新',
+            (string) $this->client->getResponse()->getContent()
+        );
+    }
 }
