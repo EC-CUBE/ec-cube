@@ -251,6 +251,18 @@ services:
         alias: Eccube\Asset\FilemtimeVersionStrategy
         public: true
 
+    Eccube\Doctrine\EventSubscriber\InitSubscriber:
+        autoconfigure: false
+        tags:
+            # 初期化 SQL (SET TIME ZONE 等) は物理接続へ 1 回だけ発行したいので,
+            # dama/doctrine-test-bundle の StaticDriver (priority: 100) より内側 (実ドライバ直上) に
+            # 配置する (DBAL 3 の postConnect イベント相当の挙動)。priority が高いほど内側になる。
+            - { name: doctrine.middleware, priority: 200 }
+
+    Eccube\Doctrine\EventSubscriber\InitDriver:
+        autowire: false
+        autoconfigure: false
+
     # Agent Commerce (ACP / UCP) 共通基盤
     Eccube\Service\AgentCommerce\Security\FilesystemKeyStore:
         arguments:
