@@ -337,18 +337,6 @@ if (!class_exists(Order::class)) {
             return array_values($orderItemArray);
         }
 
-        /**
-         * 合計金額を計算
-         *
-         * @deprecated
-         */
-        public function getTotalPrice(): string
-        {
-            @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
-
-            return $this->getPaymentTotal();
-        }
-
         #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]

@@ -166,7 +166,7 @@ class Generator
             } while ($this->customerRepository->findBy(['email' => $email]));
         }
         $phoneNumber = str_replace('-', '', $faker->phoneNumber);
-        $Status = $this->entityManager->find(CustomerStatus::class, CustomerStatus::ACTIVE);
+        $Status = $this->entityManager->find(CustomerStatus::class, CustomerStatus::REGULAR);
         $Pref = $this->entityManager->find(Pref::class, $faker->numberBetween(1, 47));
         $Sex = $this->entityManager->find(Sex::class, $faker->numberBetween(1, 2));
         $Job = $this->entityManager->find(Job::class, $faker->numberBetween(1, 18));
@@ -909,7 +909,7 @@ class Generator
         $Sex = $options['sex'] ?? null;
         /** @var CustomerStatus $Status */
         $Status = $options['status']
-            ?? $this->entityManager->find(CustomerStatus::class, CustomerStatus::ACTIVE);
+            ?? $this->entityManager->find(CustomerStatus::class, CustomerStatus::REGULAR);
         $emailTemplate = $options['emailTemplate']
             ?? fn (int $i): string => sprintf('bulk-user-%d-%s@example.com', $i, $faker->uuid);
 

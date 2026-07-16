@@ -30,20 +30,6 @@ if (!class_exists(CustomerStatus::class, false)) {
     {
         /**
          * 仮会員.
-         *
-         * @deprecated
-         */
-        public const NONACTIVE = 1;
-
-        /**
-         * 本会員.
-         *
-         * @deprecated
-         */
-        public const ACTIVE = 2;
-
-        /**
-         * 仮会員.
          */
         public const PROVISIONAL = 1;
 

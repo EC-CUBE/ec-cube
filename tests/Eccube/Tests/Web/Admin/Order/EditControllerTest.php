@@ -239,7 +239,7 @@ final class EditControllerTest extends AbstractEditControllerTestCase
         $this->assertInstanceOf(Order::class, $EditedOrder);
 
         // 顧客の購入回数と購入金額確認
-        $totalPrice = $EditedOrder->getTotalPrice();
+        $totalPrice = $EditedOrder->getPaymentTotal();
 
         $this->expected = $totalPrice;
         $this->actual = $EditedOrder->getCustomer()->getBuyTotal();
@@ -267,7 +267,7 @@ final class EditControllerTest extends AbstractEditControllerTestCase
         $this->assertInstanceOf(Order::class, $EditedOrder);
 
         // 顧客の購入回数と購入金額確認
-        $this->expected = bcadd($totalPrice, $EditedOrder->getTotalPrice(), 2);
+        $this->expected = bcadd($totalPrice, $EditedOrder->getPaymentTotal(), 2);
         // XXX SQLite の場合、小数点以下の '.00' が省略されるため、bcadd() で正規化して比較する
         $this->actual = bcadd((string) $EditedOrder->getCustomer()->getBuyTotal(), '0', 2);
         $this->verify();
