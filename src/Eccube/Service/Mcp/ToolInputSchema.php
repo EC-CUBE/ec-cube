@@ -27,7 +27,7 @@ use Mcp\Schema\Tool;
  */
 final readonly class ToolInputSchema
 {
-    /** @var array<string, array<string, mixed>> */
+    /** @var array<string, mixed> */
     private array $properties;
 
     /** @var list<string> */
@@ -72,7 +72,7 @@ final readonly class ToolInputSchema
      */
     public function baseType(string $name): string
     {
-        return $this->normalizeType($this->properties[$name]['type'] ?? 'string');
+        return $this->normalizeType($this->spec($name)['type'] ?? 'string');
     }
 
     /**
@@ -80,14 +80,27 @@ final readonly class ToolInputSchema
      */
     public function elementType(string $name): string
     {
-        $items = $this->properties[$name]['items'] ?? [];
+        $items = $this->spec($name)['items'] ?? [];
 
         return $this->normalizeType(\is_array($items) ? ($items['type'] ?? 'string') : 'string');
     }
 
     public function description(string $name): string
     {
-        return (string) ($this->properties[$name]['description'] ?? '');
+        return (string) ($this->spec($name)['description'] ?? '');
+    }
+
+    /**
+     * 1 プロパティのスキーマ断片を配列として得る。 SDK は各プロパティを JSON オブジェクト (=配列) で
+     * 渡すが型を過信せず、 非配列は空スキーマ扱いにして掘り先 (['type'] 等) の TypeError を防ぐ。
+     *
+     * @return array<string, mixed>
+     */
+    private function spec(string $name): array
+    {
+        $spec = $this->properties[$name] ?? null;
+
+        return \is_array($spec) ? $spec : [];
     }
 
     private function normalizeType(mixed $type): string

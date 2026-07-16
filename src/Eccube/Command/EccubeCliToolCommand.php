@@ -120,8 +120,9 @@ final class EccubeCliToolCommand extends Command
 
     /**
      * CLI の文字列オプションを inputSchema の型へ検証しつつ変換する。
-     * 数値型で不正な入力 (例 "abc") は黙って 0 にせず、 変換失敗として null を返す
-     * (成功値は決して null にならないため、 null が失敗を一意に表す)。
+     * 数値・真偽型で不正な入力 (例 "abc" / "treu") は黙って 0・false にせず、 変換失敗として null を返す
+     * (成功値は決して null にならないため、 null が失敗を一意に表す)。 真偽型を寛容に false 化すると
+     * sdk 側の真偽値検証も握り潰すため、 認識できない値は失敗にして INVALID で弾く。
      * 要素型が不明な配列は文字列のまま渡す (数値らしい文字列を勝手に int 化して float や
      * 先頭ゼロ ID を壊さない)。
      */
@@ -130,7 +131,11 @@ final class EccubeCliToolCommand extends Command
         return match ($type) {
             'integer' => false !== ($i = filter_var($value, FILTER_VALIDATE_INT)) ? $i : null,
             'number' => false !== ($f = filter_var($value, FILTER_VALIDATE_FLOAT)) ? $f : null,
-            'boolean' => \in_array(strtolower($value), ['1', 'true', 'yes', 'on'], true),
+            'boolean' => match (strtolower($value)) {
+                '1', 'true', 'yes', 'on' => true,
+                '0', 'false', 'no', 'off' => false,
+                default => null,
+            },
             default => $value,
         };
     }
