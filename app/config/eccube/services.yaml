@@ -107,9 +107,18 @@ services:
         bind:
           $blockTemplates: '%eccube_twig_block_templates%'
 
-    Plugin\:
-        resource: '../../../app/Plugin/*'
-        exclude: '../../../app/Plugin/*/{Entity,Resource,ServiceProvider,Tests,Codeception,DoctrineMigrations}'
+    # Plugin\ の自動登録は services.php で定義する (#6915)。
+    # プラグインが同梱する非 PSR-4 ライブラリ (例: phpseclib) を動的に exclude するため,
+    # 静的な YAML では表現できず, ネストした composer.json を検出する PHP 設定へ移した。
+
+    # PurchaseFlow / OrderStateMachine の名前付き引数をコンテナ全体で解決するための別名。
+    # 上記 _defaults の bind はこのファイル内のサービスにのみ適用されるため, services.php で
+    # 登録するプラグインのサービス (例: 決済プラグインの Payment Method) からも解決できるよう,
+    # 名前付きオートワイヤリング別名として明示的に定義する。
+    Eccube\Service\PurchaseFlow\PurchaseFlow $cartPurchaseFlow: '@eccube.purchase.flow.cart'
+    Eccube\Service\PurchaseFlow\PurchaseFlow $shoppingPurchaseFlow: '@eccube.purchase.flow.shopping'
+    Eccube\Service\PurchaseFlow\PurchaseFlow $orderPurchaseFlow: '@eccube.purchase.flow.order'
+    Symfony\Component\Workflow\WorkflowInterface $_orderStateMachine: '@state_machine.order'
 
     Customize\:
         resource: '../../../app/Customize/*'

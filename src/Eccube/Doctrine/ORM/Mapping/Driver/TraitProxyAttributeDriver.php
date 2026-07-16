@@ -81,30 +81,104 @@ class TraitProxyAttributeDriver extends AttributeDriver
                 // Replace /path/to/ec-cube to proxies path
                 $proxyFile = str_replace($projectDir, $this->trait_proxies_directory, $path).'/'.basename((string) $sourceFile);
                 if (file_exists($proxyFile)) {
-                    require_once $proxyFile;
-
                     $sourceFile = $proxyFile;
-                } else {
-                    require_once $sourceFile;
                 }
 
+                // ソースファイルからFQCNを取得し、未宣言のクラスだけをロードする.
+                // Proxy(app/proxy/entity)と元ソースは同一FQCNを持つため、既にロード済み
+                // (例: Kernel::loadEntityProxies)の状態で require_once すると
+                // "Cannot redeclare class" になる. 旧実装では各Entityの if (!class_exists())
+                // ガードがこれを吸収していた.
+                $classNames = $this->extractClassNames($sourceFile);
+                if ($classNames === []) {
+                    // interface / trait 等 (Entity以外) はそのままロードする
+                    require_once $sourceFile;
+                    $includedFiles[] = realpath($sourceFile);
+                    continue;
+                }
+
+                $undeclared = array_filter($classNames, static fn ($fqcn) => !class_exists($fqcn, false));
+                if ($undeclared !== []) {
+                    require_once $sourceFile;
+                }
                 $includedFiles[] = realpath($sourceFile);
+
+                foreach ($classNames as $className) {
+                    if (class_exists($className) && !$this->isTransient($className)) {
+                        $classes[] = $className;
+                    }
+                }
             }
         }
 
-        $declared = get_declared_classes();
+        $this->classNames = array_values(array_unique($classes));
 
-        foreach ($declared as $className) {
-            $rc = new \ReflectionClass($className);
-            $sourceFile = $rc->getFileName();
-            if (in_array($sourceFile, $includedFiles) && !$this->isTransient($className)) {
-                $classes[] = $className;
+        return $this->classNames;
+    }
+
+    /**
+     * ソースファイルを字句解析して定義されているクラスのFQCNを返す.
+     *
+     * interface / trait / enum は対象外 (Entityではないため).
+     *
+     * @return array<int, string>
+     */
+    protected function extractClassNames(string $file): array
+    {
+        $contents = file_get_contents($file);
+        if ($contents === false) {
+            return [];
+        }
+
+        $tokens = \PhpToken::tokenize($contents);
+        $count = count($tokens);
+        $namespace = '';
+        $classNames = [];
+
+        for ($i = 0; $i < $count; $i++) {
+            $token = $tokens[$i];
+
+            if ($token->is(T_NAMESPACE)) {
+                for ($j = $i + 1; $j < $count; $j++) {
+                    if ($tokens[$j]->is([T_STRING, T_NAME_QUALIFIED, T_NAME_FULLY_QUALIFIED])) {
+                        $namespace = ltrim($tokens[$j]->text, '\\');
+                        break;
+                    }
+                    if (';' === $tokens[$j]->text || '{' === $tokens[$j]->text) {
+                        break;
+                    }
+                }
+
+                continue;
+            }
+
+            if ($token->is(T_CLASS)) {
+                // ::class や無名クラスを除外する
+                $prev = null;
+                for ($j = $i - 1; $j >= 0; $j--) {
+                    if ($tokens[$j]->is([T_WHITESPACE, T_COMMENT, T_DOC_COMMENT])) {
+                        continue;
+                    }
+                    $prev = $tokens[$j];
+                    break;
+                }
+                if ($prev !== null && $prev->is([T_DOUBLE_COLON, T_NEW])) {
+                    continue;
+                }
+
+                for ($j = $i + 1; $j < $count; $j++) {
+                    if ($tokens[$j]->is([T_WHITESPACE, T_COMMENT, T_DOC_COMMENT])) {
+                        continue;
+                    }
+                    if ($tokens[$j]->is(T_STRING)) {
+                        $classNames[] = '' !== $namespace ? $namespace.'\\'.$tokens[$j]->text : $tokens[$j]->text;
+                    }
+                    break;
+                }
             }
         }
 
-        $this->classNames = $classes;
-
-        return $classes;
+        return $classNames;
     }
 
     /** @return string[] */

@@ -315,10 +315,11 @@ class Kernel extends BaseKernel
         $container->addCompilerPass(new DoctrineOrmMappingsPass($driver, $namespaces, []));
 
         // Customize
-        $container->addCompilerPass(DoctrineOrmMappingsPass::createAttributeMappingDriver(
-            ['Customize\\Entity'],
-            ['%kernel.project_dir%/app/Customize/Entity']
-        ));
+        $customizePaths = ['%kernel.project_dir%/app/Customize/Entity'];
+        $customizeNamespaces = ['Customize\\Entity'];
+        $customizeDriver = new Definition(TraitProxyAttributeDriver::class, [$customizePaths]);
+        $customizeDriver->addMethodCall('setTraitProxiesDirectory', [$projectDir.'/app/proxy/entity']);
+        $container->addCompilerPass(new DoctrineOrmMappingsPass($customizeDriver, $customizeNamespaces, []));
 
         // Plugin
         $pluginDir = $projectDir.'/app/Plugin';
