@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Fixture;
 
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
@@ -1441,7 +1442,7 @@ class Generator
         }
 
         $conn = $this->entityManager->getConnection();
-        $platform = $conn->getDatabasePlatform()->getName();
+        $platform = $conn->getDatabasePlatform();
 
         $columns = array_keys($rows[0]);
         $sql = sprintf(
@@ -1457,7 +1458,7 @@ class Generator
             $startedTransaction = true;
         }
 
-        if ('mysql' === $platform) {
+        if ($platform instanceof AbstractMySQLPlatform) {
             $conn->executeStatement("SET SESSION sql_mode='NO_AUTO_VALUE_ON_ZERO'");
         }
 
@@ -1469,7 +1470,14 @@ class Generator
                 $stmt->bindValue($idx++, $value);
             }
             $stmt->executeStatement();
-            $ids[] = (int) $conn->lastInsertId();
+            // DBAL 4 では PDO mysql の lastInsertId() が '0' を返すと NoIdentityValue 例外になる
+            // (native prepared statement 経由では AUTO_INCREMENT 値が PDO::lastInsertId() に
+            //  反映されないことがある)。mysql では SELECT LAST_INSERT_ID() で確実に取得する。
+            if ($platform instanceof AbstractMySQLPlatform) {
+                $ids[] = (int) $conn->fetchOne('SELECT LAST_INSERT_ID()');
+            } else {
+                $ids[] = (int) $conn->lastInsertId();
+            }
         }
 
         if ($startedTransaction) {

@@ -13,7 +13,12 @@
 
 namespace Eccube\Command;
 
+use Doctrine\Bundle\DoctrineBundle\ConnectionFactory;
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLitePlatform;
+use Doctrine\DBAL\Tools\DsnParser;
 use Eccube\Common\EccubeConfig;
 use Eccube\Util\StringUtil;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -250,19 +255,17 @@ class InstallerCommand extends Command
         $databaseUrl = $_SERVER['DATABASE_URL'] ?? '';
         $databaseName = $this->getDatabaseName($databaseUrl);
 
-        $databaseCreate = ['doctrine:database:create'];
-        if ($databaseName !== 'sqlite') {
-            $databaseCreate[] = '--if-not-exists';
-        }
-
         // データベース作成, スキーマ作成, 初期データの投入を行う.
-        $commands = [
-            $databaseCreate,
+        $commands = [];
+        if ($databaseName !== 'sqlite') {
+            $commands[] = ['doctrine:database:create', '--if-not-exists'];
+        }
+        $commands = array_merge($commands, [
             ['doctrine:schema:drop', '--force'],
             ['doctrine:schema:create'],
             ['eccube:fixtures:load'],
             ['cache:clear', '--no-warmup'],
-        ];
+        ]);
 
         // コンテナを再ロードするため別プロセスで実行する.
         foreach ($commands as $command) {
@@ -306,22 +309,22 @@ class InstallerCommand extends Command
     protected function getDatabaseServerVersion(string $databaseUrl): false|string
     {
         try {
-            $conn = DriverManager::getConnection([
-                'url' => $databaseUrl,
-            ]);
+            // DBAL 4 では DriverManager が 'url' を解析しなくなったため, DsnParser で展開する.
+            $params = (new DsnParser(ConnectionFactory::DEFAULT_SCHEME_MAP))->parse($databaseUrl);
+            $conn = DriverManager::getConnection($params);
         } catch (\Exception) {
             throw new \LogicException(sprintf('Database Url %s is invalid.', $databaseUrl));
         }
-        $platform = $conn->getDatabasePlatform()->getName();
-        $sql = match ($platform) {
-            'sqlite' => 'SELECT sqlite_version() AS server_version',
-            'mysql' => 'SELECT version() AS server_version',
+        $platform = $conn->getDatabasePlatform();
+        $sql = match (true) {
+            $platform instanceof SQLitePlatform => 'SELECT sqlite_version() AS server_version',
+            $platform instanceof AbstractMySQLPlatform => 'SELECT version() AS server_version',
             default => 'SHOW server_version',
         };
         $stmt = $conn->executeQuery($sql);
         $version = $stmt->fetchOne();
 
-        if ($platform === 'postgresql') {
+        if ($platform instanceof PostgreSQLPlatform) {
             preg_match('/\A([\d+\.]+)/', (string) $version, $matches);
             $version = $matches[1];
         }
