@@ -142,9 +142,15 @@ final class McpMarkdownFormatter
 
         $body = [];
         foreach ($rows as $row) {
+            if (!\is_array($row)) {
+                // 表の途中に紛れたスカラー要素も値を落とさず先頭列に出す (列数分パディング)。
+                $body[] = '| '.implode(' | ', array_pad([$this->cellToString($row)], \count($columns), '')).' |';
+
+                continue;
+            }
             $cells = [];
             foreach ($columns as $column) {
-                $cells[] = $this->cellToString(\is_array($row) ? ($row[$column] ?? null) : null);
+                $cells[] = $this->cellToString($row[$column] ?? null);
             }
             $body[] = '| '.implode(' | ', $cells).' |';
         }
@@ -179,7 +185,8 @@ final class McpMarkdownFormatter
         // min / max がスカラーのときだけレンジ扱いし、 そうでなければ下の JSON 経路に落とす。
         if (\array_key_exists('min', $array) && \array_key_exists('max', $array)
             && $this->isScalar($array['min']) && $this->isScalar($array['max'])) {
-            $unlimited = !empty($array['unlimited']);
+            // 文字列 "false" 等でも誤って無制限にしないよう真偽値として厳密に解釈する。
+            $unlimited = filter_var($array['unlimited'] ?? false, FILTER_VALIDATE_BOOLEAN);
             if (null === $array['min'] && null === $array['max']) {
                 return $unlimited ? '無制限' : '';
             }

@@ -106,13 +106,11 @@ final readonly class ToolInputSchema
     private function normalizeType(mixed $type): string
     {
         if (\is_array($type)) {
-            foreach ($type as $candidate) {
-                if ('null' !== $candidate) {
-                    return (string) $candidate;
-                }
-            }
+            $nonNull = array_values(array_filter($type, static fn ($candidate): bool => 'null' !== $candidate));
 
-            return 'string';
+            // 単一型ならその型。 複数型の union はどれか一意に決められないため、 誤って int 等で
+            // キャストして有効な他型入力を弾かないよう最も寛容な string として扱う。
+            return 1 === \count($nonNull) ? (string) $nonNull[0] : 'string';
         }
 
         return \is_string($type) ? $type : 'string';

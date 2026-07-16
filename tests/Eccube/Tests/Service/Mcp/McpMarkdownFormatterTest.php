@@ -90,6 +90,24 @@ final class McpMarkdownFormatterTest extends TestCase
         $this->assertStringContainsString('a\\|b c', $md);
     }
 
+    public function testScalarRowAmongObjectsKeepsValue(): void
+    {
+        // 先頭がオブジェクトの list に紛れたスカラー要素も、 値を落とさず先頭列に出す。
+        $md = $this->format(['items' => [['id' => 1, 'name' => 'a'], 'orphan']]);
+
+        $this->assertStringContainsString('| id | name |', $md);
+        $this->assertStringContainsString('orphan', $md);
+    }
+
+    public function testUnlimitedFlagAsStringFalseIsNotUnlimited(): void
+    {
+        // "false" 文字列を無制限と誤読しない。
+        $md = $this->format(['items' => [['stock' => ['min' => 1, 'max' => 3, 'unlimited' => 'false']]]]);
+
+        $this->assertStringContainsString('1 – 3', $md);
+        $this->assertStringNotContainsString('無制限', $md);
+    }
+
     /**
      * @param array<string, mixed> $result
      */

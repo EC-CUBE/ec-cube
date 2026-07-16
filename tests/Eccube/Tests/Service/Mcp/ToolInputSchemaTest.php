@@ -106,6 +106,21 @@ final class ToolInputSchemaTest extends TestCase
         $this->assertSame([], (new ToolInputSchema($tool))->propertyNames());
     }
 
+    public function testUnionOfMultipleTypesFallsBackToString(): void
+    {
+        // 単一 nullable は基底型に還元、 複数型 union は一意に決められず string 扱い (誤 reject 回避)。
+        $schema = $this->schema([
+            'type' => 'object',
+            'properties' => [
+                'a' => ['type' => ['null', 'integer']],
+                'b' => ['type' => ['integer', 'string']],
+            ],
+        ]);
+
+        $this->assertSame('integer', $schema->baseType('a'));
+        $this->assertSame('string', $schema->baseType('b'));
+    }
+
     /**
      * @param array<string, mixed> $inputSchema
      */
