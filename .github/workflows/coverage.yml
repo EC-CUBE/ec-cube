@@ -256,7 +256,7 @@ jobs:
       - name: Codeception
         env:
           GROUP: ${{ matrix.group }}
-          SYMFONY_DEPRECATIONS_HELPER: weak
+          SYMFONY_DEPRECATIONS_HELPER: 'max[direct]=0'
         continue-on-error: true
         run: |
           sed -i "s|%GITHUB_WORKSPACE%|${GITHUB_WORKSPACE}|g" codeception/_envs/github_action.yml
