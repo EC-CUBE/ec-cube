@@ -25,13 +25,13 @@ use Mcp\Schema\Tool;
  * 「nullable を外した基底型」 の解釈を 1 箇所に閉じ込め、 利用側 (CLI コマンド) から
  * JSON Schema の知識を排除する。
  */
-final class ToolInputSchema
+final readonly class ToolInputSchema
 {
     /** @var array<string, array<string, mixed>> */
-    private readonly array $properties;
+    private array $properties;
 
     /** @var list<string> */
-    private readonly array $required;
+    private array $required;
 
     public function __construct(Tool $tool)
     {
