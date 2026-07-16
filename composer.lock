@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b609f33937ec3f4694c1dc84c1f135f3",
+    "content-hash": "24ff6ea2484f4f8eef6753e72d0f6220",
     "packages": [
         {
             "name": "carbonphp/carbon-doctrine-types",
@@ -5338,54 +5338,6 @@
                 }
             ],
             "time": "2026-05-13T10:16:22+00:00"
-        },
-        {
-            "name": "skorp/detect-incompatible-samesite-useragents",
-            "version": "1.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/skorp/detect-incompatible-samesite-useragents.git",
-                "reference": "e3277efe3c12ac618af4536ba1bdb55c33c1ef80"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/skorp/detect-incompatible-samesite-useragents/zipball/e3277efe3c12ac618af4536ba1bdb55c33c1ef80",
-                "reference": "e3277efe3c12ac618af4536ba1bdb55c33c1ef80",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.0 || ^8.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^8.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Skorp\\Dissua\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Kadir Özdemir"
-                }
-            ],
-            "description": "Determine if UserAgent is incompatible with SameSite=None",
-            "keywords": [
-                "cookies",
-                "safari",
-                "samesite",
-                "samesite cookie"
-            ],
-            "support": {
-                "issues": "https://github.com/skorp/detect-incompatible-samesite-useragents/issues",
-                "source": "https://github.com/skorp/detect-incompatible-samesite-useragents/tree/1.0.1"
-            },
-            "time": "2021-06-25T07:29:16+00:00"
         },
         {
             "name": "softcreatr/jsonpath",
@@ -15290,18 +15242,22 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "RC",
+    "minimum-stability": "stable",
     "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^8.2",
         "ext-curl": "*",
+        "ext-filter": "*",
         "ext-intl": "*",
         "ext-json": "*",
         "ext-mbstring": "*",
         "ext-openssl": "*",
-        "ext-zip": "*"
+        "ext-tokenizer": "*",
+        "ext-xml": "*",
+        "ext-zip": "*",
+        "ext-zlib": "*"
     },
     "platform-dev": {},
     "platform-overrides": {

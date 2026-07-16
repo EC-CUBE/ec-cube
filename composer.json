@@ -10,16 +10,19 @@
     "support": {
         "issues": "https://github.com/EC-CUBE/ec-cube/issues"
     },
-    "minimum-stability": "RC",
     "prefer-stable": true,
     "require": {
         "php": "^8.2",
         "ext-curl": "*",
+        "ext-filter": "*",
         "ext-intl": "*",
         "ext-json": "*",
         "ext-mbstring": "*",
         "ext-openssl": "*",
+        "ext-tokenizer": "*",
+        "ext-xml": "*",
         "ext-zip": "*",
+        "ext-zlib": "*",
         "composer/ca-bundle": "^1.1",
         "composer/composer": "^2.9",
         "doctrine/collections": "^2.1",
@@ -37,13 +40,16 @@
         "ec-cube/plugin-installer": "^2.0",
         "egulias/email-validator": "^4.0",
         "exercise/htmlpurifier-bundle": "^5.0",
+        "ezyang/htmlpurifier": "^4.14",
         "friendsofphp/php-cs-fixer": "^3.75",
         "guzzlehttp/guzzle": "^7.4.5",
+        "justinrainbow/json-schema": "^6.5",
         "knplabs/knp-paginator-bundle": "^6.8",
         "mobiledetect/mobiledetectlib": "^2.8",
         "monolog/monolog": "^3.0",
         "nanasess/bcmath-polyfill": "^1.0",
         "nesbot/carbon": "^3",
+        "phpseclib/phpseclib": "^3.0",
         "psr/cache": "^3.0",
         "psr/container": "^2.0",
         "psr/http-message": "^1.0 || ^2.0",
@@ -51,7 +57,6 @@
         "psr/simple-cache": "^3.0",
         "robthree/twofactorauth": "^3.0",
         "setasign/fpdi": "^2.2",
-        "skorp/detect-incompatible-samesite-useragents": "^1.0",
         "softcreatr/jsonpath": "^0.8",
         "symfony/asset": "^7.4",
         "symfony/cache": "^7.4",
@@ -167,19 +172,13 @@
         ]
     },
     "conflict": {
-        "symfony/symfony": "*",
-        "easycorp/easy-log-handler": "1.0.4|1.0.5"
+        "symfony/symfony": "*"
     },
     "extra": {
         "symfony": {
             "id": "01C0Q71D54BCVSB8ZWR3VECDRD",
             "allow-contrib": false
-        },
-        "symfony-web-dir": ".",
-        "bin-dir": "bin",
-        "src-dir": "src/Eccube",
-        "config-dir": "app/config/eccube",
-        "public-dir": "."
+        }
     },
     "config": {
         "platform": {
@@ -193,7 +192,6 @@
         "sort-packages": true,
         "allow-plugins": {
             "composer/*": true,
-            "kylekatarnls/update-helper": true,
             "ec-cube/plugin-installer": true,
             "phpstan/extension-installer": true,
             "symfony/flex": true
