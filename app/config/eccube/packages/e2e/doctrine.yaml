@@ -3,26 +3,18 @@
 doctrine:
     orm:
         metadata_cache_driver:
-            type: service
-            id: doctrine.app_cache_provider
+            type: pool
+            pool: doctrine.app_cache_pool
         query_cache_driver:
-            type: service
-            id: doctrine.app_cache_provider
+            type: pool
+            pool: doctrine.app_cache_pool
         result_cache_driver:
-            type: service
-            id: doctrine.app_cache_provider
+            type: pool
+            pool: doctrine.app_cache_pool
         second_level_cache:
             region_cache_driver:
-                type: service
-                id: doctrine.app_cache_provider
-
-services:
-    doctrine.app_cache_provider:
-        class: Doctrine\Common\Cache\Psr6\DoctrineProvider
-        factory: ['Doctrine\Common\Cache\Psr6\DoctrineProvider', wrap]
-        public: false
-        arguments:
-            - '@doctrine.app_cache_pool'
+                type: pool
+                pool: doctrine.app_cache_pool
 
 framework:
     cache:

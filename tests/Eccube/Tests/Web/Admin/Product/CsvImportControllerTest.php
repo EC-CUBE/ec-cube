@@ -199,11 +199,8 @@ final class CsvImportControllerTest extends AbstractAdminWebTestCase
 
         // 規格1のみ商品の確認
         // dtb_product_class.del_flg = 1 の確認をしたいので PDO で取得
-        $pdo = $this->entityManager->getConnection()->getWrappedConnection();
         $sql = "SELECT * FROM dtb_product_class WHERE product_code = 'class1-only' ORDER BY visible ASC";
-        $stmt = $pdo->prepare($sql);
-        $resultSet = $stmt->execute();
-        $result = $resultSet->fetchAllAssociative();
+        $result = $this->entityManager->getConnection()->executeQuery($sql)->fetchAllAssociative();
 
         $this->expected = 2;
         $this->actual = count($result);
@@ -309,11 +306,8 @@ final class CsvImportControllerTest extends AbstractAdminWebTestCase
 
         // 規格1のみ商品の確認
         // dtb_product_class.del_flg = 1 の確認をしたいので PDO で取得
-        $pdo = $this->entityManager->getConnection()->getWrappedConnection();
         $sql = 'SELECT * FROM dtb_product_class WHERE product_id = 2 ORDER BY visible ASC';
-        $stmt = $pdo->prepare($sql);
-        $resultSet = $stmt->execute();
-        $result = $resultSet->fetchAllAssociative();
+        $result = $this->entityManager->getConnection()->executeQuery($sql)->fetchAllAssociative();
 
         $this->expected = 2;
         $this->actual = count($result);
