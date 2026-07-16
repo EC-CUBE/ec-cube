@@ -221,7 +221,7 @@ jobs:
   ## MCP の Playwright E2E。 トークン発行 UI → Bearer で /admin/mcp にツール呼び出し、 の経路を通す。
   ## MCP は Api44 (OAuth2 / scope / firewall) 前提のため、 メインの playwright マトリクスとは別に、
   ## Api44 を導入した専用環境で mcp.spec.ts を実走する (Api44 導入手順は unit-test.yml の mcp ジョブと同じ)。
-  ## 環境は既存 playwright ジョブと同じ混成 (.env=codeception / スキーマ・fixtures・Api44 導入は --env=dev)。
+  ## 環境は既存 playwright ジョブと同じ混成 (.env=e2e / スキーマ・fixtures・Api44 導入は --env=dev)。
   ## ブラウザ経由の admin ログインが通る実績のある構成に合わせる。
   mcp:
     name: Playwright (mcp)
@@ -280,11 +280,11 @@ jobs:
           cp "$GITHUB_WORKSPACE/Api44.tar.gz" /tmp/repos/Api44.tgz
           docker run --name package-api -d -v /tmp/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
 
-      # 既存 playwright ジョブと同じ混成: .env は codeception、 スキーマ/fixtures/Api44 導入は
+      # 既存 playwright ジョブと同じ混成: .env は e2e、 スキーマ/fixtures/Api44 導入は
       # --env=dev で流す (ブラウザ経由 admin ログインが通る実績のある構成)。
       - name: Setup EC-CUBE
         env:
-          APP_ENV: 'codeception'
+          APP_ENV: 'e2e'
           DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
           DATABASE_SERVER_VERSION: 16
           ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
@@ -321,7 +321,7 @@ jobs:
 
       - name: Start PHP Development Server
         env:
-          APP_ENV: 'codeception'
+          APP_ENV: 'e2e'
           DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
           DATABASE_SERVER_VERSION: 16
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
@@ -336,7 +336,7 @@ jobs:
           ECCUBE_ADMIN_ROUTE: 'admin'
           ADMIN_USER: 'admin'
           ADMIN_PASSWORD: 'password'
-          APP_ENV: 'codeception'
+          APP_ENV: 'e2e'
           CI: 'true'
         run: npx playwright test --project=setup --project=mcp-tests mcp.spec.ts
 
