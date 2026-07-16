@@ -97,8 +97,22 @@ final class McpCliCommandTest extends EccubeTestCase
         $this->assertSame(Command::INVALID, $tester->getStatusCode());
     }
 
+    public function testSearchProductsWithUnresolvableStatusReturnsNoData(): void
+    {
+        // 明示 statusIds が 1 つも解決しないときは、 全公開状態に広がらず該当なしを返す
+        $this->createProduct('MCPCLI Status Guard Product');
+
+        $tester = $this->execute('eccube:cli:search_products', [
+            '--keyword' => 'MCPCLI Status Guard Product',
+            '--statusIds' => ['999'],
+        ]);
+
+        $this->assertSame(Command::SUCCESS, $tester->getStatusCode());
+        $this->assertStringContainsString('該当なし', $tester->getDisplay());
+    }
+
     /**
-     * @param array<string, string> $input
+     * @param array<string, string|list<string>> $input
      */
     private function execute(string $name, array $input): CommandTester
     {

@@ -81,6 +81,16 @@ final readonly class SearchProductsTool
                 $offset = max(0, $offset);
 
                 $searchData = $this->buildSearchData($keyword, $categoryId, $statusIds);
+
+                // 明示指定した statusIds が 1 つも解決しないと、 admin 検索は status フィルタ落ちで
+                // 全状態 (非公開・廃止含む) を返してしまう。 絞り込み意図を尊重し 0 件を返す。
+                if (null !== $statusIds && !isset($searchData['status'])) {
+                    return [
+                        'data' => ['total' => 0, 'limit' => $limit, 'offset' => $offset, 'items' => []],
+                        'summary' => ['total' => 0, 'returned' => 0],
+                    ];
+                }
+
                 $qb = $this->productRepository->getQueryBuilderBySearchDataForAdmin($searchData);
 
                 if (null !== $stockMin) {
