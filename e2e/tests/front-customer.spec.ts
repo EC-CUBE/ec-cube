@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { ADMIN_ROUTE, VALID_PASSWORD } from '../config/default.config';
 
 test.describe('Front Customer Registration (EF04)', () => {
 
@@ -21,8 +22,8 @@ test.describe('Front Customer Registration (EF04)', () => {
     await page.locator('#entry_phone_number').fill('111-111-111');
     await page.locator('#entry_email_first').fill(email);
     await page.locator('#entry_email_second').fill(email);
-    await page.locator('#entry_plain_password_first').fill('password1234');
-    await page.locator('#entry_plain_password_second').fill('password1234');
+    await page.locator('#entry_plain_password_first').fill(VALID_PASSWORD);
+    await page.locator('#entry_plain_password_second').fill(VALID_PASSWORD);
     await page.locator('#entry_job').selectOption({ value: '1' });
     await page.locator('#entry_user_policy_check').check();
 
@@ -59,8 +60,8 @@ test.describe('Front Customer Registration (EF04)', () => {
     await page.locator('#entry_phone_number').fill('111-111-111');
     await page.locator('#entry_email_first').fill(email);
     await page.locator('#entry_email_second').fill(email);
-    await page.locator('#entry_plain_password_first').fill('password1234');
-    await page.locator('#entry_plain_password_second').fill('password1234');
+    await page.locator('#entry_plain_password_first').fill(VALID_PASSWORD);
+    await page.locator('#entry_plain_password_second').fill(VALID_PASSWORD);
 
     // 「同意する」ボタンを押下
     await page.locator('button.ec-blockBtn--action[type="submit"]').click();
@@ -106,8 +107,8 @@ test.describe('Front Customer Registration (EF04)', () => {
     await page.locator('#entry_phone_number').fill('111-111-111');
     await page.locator('#entry_email_first').fill(email);
     await page.locator('#entry_email_second').fill(email);
-    await page.locator('#entry_plain_password_first').fill('password1234');
-    await page.locator('#entry_plain_password_second').fill('password1234');
+    await page.locator('#entry_plain_password_first').fill(VALID_PASSWORD);
+    await page.locator('#entry_plain_password_second').fill(VALID_PASSWORD);
     await page.locator('#entry_job').selectOption({ value: '1' });
     await page.locator('#entry_user_policy_check').check();
 
@@ -145,8 +146,8 @@ test.describe('Front Customer Registration (EF04)', () => {
     await page.locator('#entry_phone_number').fill('111-111-111');
     await page.locator('#entry_email_first').fill(existingEmail);
     await page.locator('#entry_email_second').fill(existingEmail);
-    await page.locator('#entry_plain_password_first').fill('password1234');
-    await page.locator('#entry_plain_password_second').fill('password1234');
+    await page.locator('#entry_plain_password_first').fill(VALID_PASSWORD);
+    await page.locator('#entry_plain_password_second').fill(VALID_PASSWORD);
 
     // 「同意する」ボタンを押下
     await page.locator('button.ec-blockBtn--action[type="submit"]').click();
@@ -175,8 +176,8 @@ test.describe('Front Customer Registration (EF04)', () => {
     await page.locator('#entry_phone_number').fill('111-111-111');
     await page.locator('#entry_email_first').fill(newEmail);
     await page.locator('#entry_email_second').fill(newEmail);
-    await page.locator('#entry_plain_password_first').fill('password1234');
-    await page.locator('#entry_plain_password_second').fill('password1234');
+    await page.locator('#entry_plain_password_first').fill(VALID_PASSWORD);
+    await page.locator('#entry_plain_password_second').fill(VALID_PASSWORD);
     await page.locator('#entry_job').selectOption({ value: '1' });
     await page.locator('#entry_user_policy_check').check();
 
@@ -201,7 +202,7 @@ test.describe('Front Customer Registration (EF04)', () => {
     // アクティベーション(メール確認はスキップ。DBを直接操作してアクティベートする)
     // DB上のCustomerStatusをactivateするためにadminから会員を検索して本会員にする
     // admin認証を使うためにブラウザコンテキストを分ける
-    const adminRoute = process.env.ECCUBE_ADMIN_ROUTE || 'admin';
+    const adminRoute = ADMIN_ROUTE;
     const browser = page.context().browser()!;
     const fs = await import('fs');
     const path = await import('path');
@@ -232,7 +233,7 @@ test.describe('Front Customer Registration (EF04)', () => {
     await page.goto('/mypage/login');
     await page.waitForLoadState('load');
     await page.locator('input[name="login_email"]').fill(newEmail);
-    await page.locator('input[name="login_pass"]').fill('password1234');
+    await page.locator('input[name="login_pass"]').fill(VALID_PASSWORD);
     await page.locator('#login_mypage button[type="submit"]').click();
     await page.waitForLoadState('load');
 
@@ -285,8 +286,8 @@ test.describe('Front Customer Registration (EF04)', () => {
     await page.locator('#entry_phone_number').fill('111-111-111');
     await page.locator('#entry_email_first').fill(newEmail);
     await page.locator('#entry_email_second').fill(newEmail);
-    await page.locator('#entry_plain_password_first').fill('password1234');
-    await page.locator('#entry_plain_password_second').fill('password1234');
+    await page.locator('#entry_plain_password_first').fill(VALID_PASSWORD);
+    await page.locator('#entry_plain_password_second').fill(VALID_PASSWORD);
     await page.locator('#entry_job').selectOption({ value: '1' });
     await page.locator('#entry_user_policy_check').check();
 
@@ -307,7 +308,7 @@ test.describe('Front Customer Registration (EF04)', () => {
     await page.waitForLoadState('load');
 
     // DBで直接アクティベート(adminで操作)
-    const adminRoute = process.env.ECCUBE_ADMIN_ROUTE || 'admin';
+    const adminRoute = ADMIN_ROUTE;
     const browser = page.context().browser()!;
     const fs = await import('fs');
     const path = await import('path');
@@ -339,7 +340,7 @@ test.describe('Front Customer Registration (EF04)', () => {
 
     // ログイン
     await page.locator('input[name="login_email"]').fill(newEmail);
-    await page.locator('input[name="login_pass"]').fill('password1234');
+    await page.locator('input[name="login_pass"]').fill(VALID_PASSWORD);
     await page.getByRole('button', { name: 'ログイン' }).click();
     await page.waitForLoadState('load');
 

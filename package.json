@@ -1,6 +1,6 @@
 {
   "name": "eccube",
-  "version": "4.3.1-p1",
+  "version": "4.4.0-dev",
   "description": "EC-CUBE EC open platform.",
   "main": "index.js",
   "directories": {

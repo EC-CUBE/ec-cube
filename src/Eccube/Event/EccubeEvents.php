@@ -462,6 +462,14 @@ final class EccubeEvents
     // detail
     public const FRONT_PRODUCT_DETAIL_INITIALIZE = 'front.product.detail.initialize';
 
+    /**
+     * 商品詳細ページの構造化データ（JSON-LD）を組み立てる際に発火.
+     *
+     * EventArgs の 'json_ld' に注入対象の連想配列、'Product' に対象商品を渡す。
+     * プラグインは 'json_ld' を読み取り aggregateRating / review 等を追加して setArgument できる。
+     */
+    public const FRONT_PRODUCT_DETAIL_JSON_LD = 'front.product.detail.json_ld';
+
     public const FRONT_PRODUCT_CART_ADD_INITIALIZE = 'front.product.cart.add.initialize';
     public const FRONT_PRODUCT_CART_ADD_COMPLETE = 'front.product.cart.add.complete';
 

@@ -46,13 +46,6 @@ jobs:
             database_server_version: 8
             database_charset: utf8mb4
 
-    services:
-      mailcatcher:
-        image: schickling/mailcatcher
-        ports:
-          - 1080:1080
-          - 1025:1025
-
     steps:
       - name: Checkout
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
@@ -103,7 +96,7 @@ jobs:
 
       - name: Setup to EC-CUBE
         env:
-          APP_ENV: 'codeception'
+          APP_ENV: 'e2e'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
@@ -111,9 +104,9 @@ jobs:
         run: |
           echo "APP_ENV=${APP_ENV}" > .env
           echo "ECCUBE_AUTH_MAGIC=${ECCUBE_AUTH_MAGIC}" >> .env
-          bin/console doctrine:database:create --env=dev
-          bin/console doctrine:schema:create --env=dev
-          bin/console eccube:fixtures:load --env=dev
+          bin/console doctrine:database:create
+          bin/console doctrine:schema:create
+          bin/console eccube:fixtures:load
 
       - name: Cache apt packages
         if: matrix.db == 'pgsql'
@@ -145,9 +138,12 @@ jobs:
         working-directory: e2e
         run: npx playwright install chromium --with-deps
 
+      - name: Start Mailpit (SMTP sink)
+        uses: ./.github/actions/mailpit
+
       - name: Start PHP Development Server
         env:
-          APP_ENV: 'codeception'
+          APP_ENV: 'e2e'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
@@ -214,13 +210,6 @@ jobs:
             database_server_version: 8
             database_charset: utf8mb4
 
-    services:
-      mailcatcher:
-        image: schickling/mailcatcher
-        ports:
-          - 1080:1080
-          - 1025:1025
-
     steps:
       - name: Checkout
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
@@ -271,7 +260,7 @@ jobs:
 
       - name: Setup to EC-CUBE
         env:
-          APP_ENV: 'codeception'
+          APP_ENV: 'e2e'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
@@ -279,9 +268,9 @@ jobs:
         run: |
           echo "APP_ENV=${APP_ENV}" > .env
           echo "ECCUBE_AUTH_MAGIC=${ECCUBE_AUTH_MAGIC}" >> .env
-          bin/console doctrine:database:create --env=dev
-          bin/console doctrine:schema:create --env=dev
-          bin/console eccube:fixtures:load --env=dev
+          bin/console doctrine:database:create
+          bin/console doctrine:schema:create
+          bin/console eccube:fixtures:load
 
       - name: Cache apt packages
         if: matrix.db == 'pgsql'
@@ -313,9 +302,12 @@ jobs:
         working-directory: e2e
         run: npx playwright install chromium --with-deps
 
+      - name: Start Mailpit (SMTP sink)
+        uses: ./.github/actions/mailpit
+
       - name: Start PHP Development Server
         env:
-          APP_ENV: 'codeception'
+          APP_ENV: 'e2e'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
@@ -381,13 +373,6 @@ jobs:
             database_server_version: 8
             database_charset: utf8mb4
 
-    services:
-      mailcatcher:
-        image: schickling/mailcatcher
-        ports:
-          - 1080:1080
-          - 1025:1025
-
     steps:
       - name: Checkout
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
@@ -438,7 +423,7 @@ jobs:
 
       - name: Setup to EC-CUBE
         env:
-          APP_ENV: 'codeception'
+          APP_ENV: 'e2e'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
@@ -446,9 +431,9 @@ jobs:
         run: |
           echo "APP_ENV=${APP_ENV}" > .env
           echo "ECCUBE_AUTH_MAGIC=${ECCUBE_AUTH_MAGIC}" >> .env
-          bin/console doctrine:database:create --env=dev
-          bin/console doctrine:schema:create --env=dev
-          bin/console eccube:fixtures:load --env=dev
+          bin/console doctrine:database:create
+          bin/console doctrine:schema:create
+          bin/console eccube:fixtures:load
 
       - name: Cache apt packages
         if: matrix.db == 'pgsql'
@@ -480,9 +465,12 @@ jobs:
         working-directory: e2e
         run: npx playwright install chromium --with-deps
 
+      - name: Start Mailpit (SMTP sink)
+        uses: ./.github/actions/mailpit
+
       - name: Start PHP Development Server
         env:
-          APP_ENV: 'codeception'
+          APP_ENV: 'e2e'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
@@ -551,13 +539,6 @@ jobs:
           - db: mysql
             method: test_dependency_plugin_update
 
-    services:
-      mailcatcher:
-        image: schickling/mailcatcher
-        ports:
-          - 1080:1080
-          - 1025:1025
-
     steps:
       - name: Checkout
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
@@ -608,7 +589,7 @@ jobs:
 
       - name: Setup to EC-CUBE
         env:
-          APP_ENV: 'codeception'
+          APP_ENV: 'e2e'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
@@ -616,9 +597,9 @@ jobs:
         run: |
           echo "APP_ENV=${APP_ENV}" > .env
           echo "ECCUBE_AUTH_MAGIC=${ECCUBE_AUTH_MAGIC}" >> .env
-          bin/console doctrine:database:create --env=dev
-          bin/console doctrine:schema:create --env=dev
-          bin/console eccube:fixtures:load --env=dev
+          bin/console doctrine:database:create
+          bin/console doctrine:schema:create
+          bin/console eccube:fixtures:load
 
       - name: Cache apt packages
         if: matrix.db == 'pgsql'
@@ -650,9 +631,12 @@ jobs:
         working-directory: e2e
         run: npx playwright install chromium --with-deps
 
+      - name: Start Mailpit (SMTP sink)
+        uses: ./.github/actions/mailpit
+
       - name: Start PHP Development Server
         env:
-          APP_ENV: 'codeception'
+          APP_ENV: 'e2e'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
@@ -711,13 +695,6 @@ jobs:
             database_server_version: 8
             database_charset: utf8mb4
 
-    services:
-      mailcatcher:
-        image: schickling/mailcatcher
-        ports:
-          - 1080:1080
-          - 1025:1025
-
     steps:
       - name: Checkout
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
@@ -768,7 +745,7 @@ jobs:
 
       - name: Setup to EC-CUBE
         env:
-          APP_ENV: 'codeception'
+          APP_ENV: 'e2e'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
@@ -776,9 +753,9 @@ jobs:
         run: |
           echo "APP_ENV=${APP_ENV}" > .env
           echo "ECCUBE_AUTH_MAGIC=${ECCUBE_AUTH_MAGIC}" >> .env
-          bin/console doctrine:database:create --env=dev
-          bin/console doctrine:schema:create --env=dev
-          bin/console eccube:fixtures:load --env=dev
+          bin/console doctrine:database:create
+          bin/console doctrine:schema:create
+          bin/console eccube:fixtures:load
 
       - name: Cache apt packages
         if: matrix.db == 'pgsql'
@@ -810,9 +787,12 @@ jobs:
         working-directory: e2e
         run: npx playwright install chromium --with-deps
 
+      - name: Start Mailpit (SMTP sink)
+        uses: ./.github/actions/mailpit
+
       - name: Start PHP Development Server
         env:
-          APP_ENV: 'codeception'
+          APP_ENV: 'e2e'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
@@ -869,13 +849,6 @@ jobs:
             database_server_version: 8
             database_charset: utf8mb4
 
-    services:
-      mailcatcher:
-        image: schickling/mailcatcher
-        ports:
-          - 1080:1080
-          - 1025:1025
-
     steps:
       - name: Checkout
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
@@ -926,7 +899,7 @@ jobs:
 
       - name: Setup to EC-CUBE
         env:
-          APP_ENV: 'codeception'
+          APP_ENV: 'e2e'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
@@ -934,9 +907,9 @@ jobs:
         run: |
           echo "APP_ENV=${APP_ENV}" > .env
           echo "ECCUBE_AUTH_MAGIC=${ECCUBE_AUTH_MAGIC}" >> .env
-          bin/console doctrine:database:create --env=dev
-          bin/console doctrine:schema:create --env=dev
-          bin/console eccube:fixtures:load --env=dev
+          bin/console doctrine:database:create
+          bin/console doctrine:schema:create
+          bin/console eccube:fixtures:load
 
       - name: Cache apt packages
         if: matrix.db == 'pgsql'
@@ -968,9 +941,12 @@ jobs:
         working-directory: e2e
         run: npx playwright install chromium --with-deps
 
+      - name: Start Mailpit (SMTP sink)
+        uses: ./.github/actions/mailpit
+
       - name: Start PHP Development Server
         env:
-          APP_ENV: 'codeception'
+          APP_ENV: 'e2e'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
