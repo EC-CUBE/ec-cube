@@ -316,7 +316,9 @@ final class ShoppingControllerTest extends AbstractShoppingControllerTestCase
      */
     public function testOrtderConfirmLayout(): never
     {
-        $this->markTestIncomplete('ShoppingController is not implemented.');
+        // 旧購入フロー(shopping_payment ルート / shopping フォーム / P.errormsg)前提のため保留.
+        // 現行は shopping_redirect_to + _shopping_order フォームで、エラー表示も p.ec-errorMessage.
+        $this->markTestIncomplete('現行の購入フロー・エラー表示に追従するまでスキップ');
         $faker = $this->getFaker();
         $Customer = $this->logIn();
         $client = $this->client;
@@ -330,7 +332,7 @@ final class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         // 支払い方法選択
         $crawler = $client->request(
             Request::METHOD_POST,
-            $this->generateUrl('shopping_payment'),
+            $this->generateUrl('shopping_redirect_to'),
             [
                 'shopping' => [
                     'shippings' => [
