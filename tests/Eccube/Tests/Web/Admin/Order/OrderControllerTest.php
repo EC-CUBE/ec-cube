@@ -443,7 +443,18 @@ final class OrderControllerTest extends AbstractAdminWebTestCase
         $orderIds = [];
         $OrderStatusNew = $this->orderStatusRepository->find(OrderStatus::NEW);
         $OrderStatusDelivered = $this->orderStatusRepository->find(OrderStatus::DELIVERED);
+
+        // Generator が生成する Order の OrderStatus は既定で PROCESSING のため,
+        // NEW の受注をここで用意する. 用意しないと findBy が 0 件を返し,
+        // 以降の foreach が回らずアサーションが 1 つも実行されない (空振りで green になる).
+        for ($i = 0; $i < 2; $i++) {
+            $Order = $this->createOrder($this->createCustomer('simple-update-status-'.$i.'@example.com'));
+            $Order->setOrderStatus($OrderStatusNew);
+        }
+        $this->entityManager->flush();
+
         $Orders = $this->orderRepository->findBy(['OrderStatus' => $OrderStatusNew], [], 2);
+        $this->assertCount(2, $Orders, 'NEW の受注が用意されていること');
         foreach ($Orders as $Order) {
             $this->assertEquals(null, $Order->getPaymentDate());
             $orderIds[] = $Order->getId();

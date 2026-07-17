@@ -47,8 +47,9 @@ final class CsvImportControllerTest extends AbstractAdminWebTestCase
         parent::setUp();
         $this->productRepo = $this->entityManager->getRepository(Product::class);
         $this->categoryRepo = $this->entityManager->getRepository(Category::class);
-        $this->filepath = __DIR__.'/products.csv';
-        // 削除されてしまうのでコピーしておく
+        // インポート処理で削除されてしまうのでコピーしておく.
+        // コピー先を __DIR__ にするとリポジトリ内にテスト成果物が残るため, 一時ディレクトリを使う.
+        $this->filepath = sys_get_temp_dir().'/products.csv';
         copy(__DIR__.'/../../../../../Fixtures/products.csv', $this->filepath);
         $fs = new Filesystem();
         $fs->mkdir($this->eccubeConfig['eccube_csv_temp_realdir']);
@@ -461,7 +462,7 @@ final class CsvImportControllerTest extends AbstractAdminWebTestCase
      */
     public function testCsvCategory()
     {
-        $this->filepath = __DIR__.'/categories.csv';
+        $this->filepath = sys_get_temp_dir().'/categories.csv';
         copy(__DIR__.'/../../../../../Fixtures/categories.csv', $this->filepath); // 削除されてしまうのでコピーしておく
 
         $crawler = $this->scenario('admin_product_category_csv_import', 'categories.csv');
@@ -480,7 +481,7 @@ final class CsvImportControllerTest extends AbstractAdminWebTestCase
      */
     public function testCsvCategoryWithNew()
     {
-        $this->filepath = __DIR__.'/categories.csv';
+        $this->filepath = sys_get_temp_dir().'/categories.csv';
         copy(__DIR__.'/../../../../../Fixtures/categories.csv', $this->filepath);
         $csv = [
             ['カテゴリID', 'カテゴリ名', '親カテゴリID', 'カテゴリ削除フラグ'],
@@ -504,7 +505,7 @@ final class CsvImportControllerTest extends AbstractAdminWebTestCase
      */
     public function testCsvCategoryWithOnlyCategoryName()
     {
-        $this->filepath = __DIR__.'/categories.csv';
+        $this->filepath = sys_get_temp_dir().'/categories.csv';
         copy(__DIR__.'/../../../../../Fixtures/categories.csv', $this->filepath); // 削除されてしまうのでコピーしておく
 
         $csv = [
@@ -529,7 +530,7 @@ final class CsvImportControllerTest extends AbstractAdminWebTestCase
      */
     public function testCsvCategoryWithCategoryNameIsNull()
     {
-        $this->filepath = __DIR__.'/categories.csv';
+        $this->filepath = sys_get_temp_dir().'/categories.csv';
         copy(__DIR__.'/../../../../../Fixtures/categories.csv', $this->filepath); // 削除されてしまうのでコピーしておく
 
         $categories = $this->categoryRepo->findAll();
@@ -555,7 +556,7 @@ final class CsvImportControllerTest extends AbstractAdminWebTestCase
      */
     public function testCsvCategoryWithoutCategoryNameColumn()
     {
-        $this->filepath = __DIR__.'/categories.csv';
+        $this->filepath = sys_get_temp_dir().'/categories.csv';
         copy(__DIR__.'/../../../../../Fixtures/categories.csv', $this->filepath); // 削除されてしまうのでコピーしておく
 
         $categories = $this->categoryRepo->findAll();
@@ -581,7 +582,7 @@ final class CsvImportControllerTest extends AbstractAdminWebTestCase
      */
     public function testCsvCategoryWithColumnSorted()
     {
-        $this->filepath = __DIR__.'/categories.csv';
+        $this->filepath = sys_get_temp_dir().'/categories.csv';
         copy(__DIR__.'/../../../../../Fixtures/categories.csv', $this->filepath); // 削除されてしまうのでコピーしておく
         /* @var Generator $faker */
         $this->getFaker();
