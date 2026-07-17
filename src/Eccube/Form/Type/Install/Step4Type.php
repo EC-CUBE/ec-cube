@@ -130,9 +130,6 @@ class Step4Type extends AbstractType
 
     /**
      * Assert\Callback から各フィールドの値が渡されるため, $data はスカラー値となる.
-     *
-     * @param mixed $data
-     * @param mixed|null $param
      */
     public function validate(mixed $data, ExecutionContextInterface $context, mixed $param = null): void
     {
