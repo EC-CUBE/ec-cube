@@ -23,6 +23,48 @@
 
 開発ドキュメントの [インストール方法](https://doc4.ec-cube.net/quickstart/install) の手順に従ってインストールしてください。
 
+### Docker 環境へのアクセス
+
+`docker compose ... up -d` で起動後、以下の URL でアクセスします。
+
+- フロント: `https://127.0.0.1:4430/`
+- 管理画面: `https://127.0.0.1:4430/admin/`（初期ログインは `admin` / `password`）
+- MailCatcher（送信メールの確認）: `http://localhost:1080/`
+
+> **HTTP（`http://localhost:8080`）ではログインできません。**
+> セッションクッキーが `SameSite=None` で発行されるため、ブラウザの仕様上 HTTPS 接続でないとクッキーが破棄され、ログイン・カートなどセッションを使う操作が成立しません（設定: `app/config/eccube/packages/framework.yaml` の `cookie_secure: auto` / `cookie_samesite: none`）。開発時は HTTPS（4430 番ポート）を使用してください。
+
+#### 「保護されていない通信」の警告を消す（任意）
+
+HTTPS でアクセスすると、ブラウザに「保護されていない通信」の警告が表示されます。これは Docker イメージが Apache の自己署名証明書（snakeoil）を使っているためで、動作上の問題はありません。そのまま「詳細設定」→「127.0.0.1 にアクセスする（安全ではありません）」で進めば利用できます。
+
+警告自体を消したい場合は、[mkcert](https://github.com/FiloSottile/mkcert) でローカル信頼の証明書を発行し、コンテナの証明書と差し替えます。
+
+```shell
+# 1. ローカル CA を OS に登録し、127.0.0.1 用の証明書を発行する
+mkcert -install
+mkcert 127.0.0.1 localhost
+# → 127.0.0.1+1.pem（証明書）と 127.0.0.1+1-key.pem（秘密鍵）が生成される
+```
+
+`docker-compose.dev.yml` の `ec-cube` サービスに、生成した証明書をコンテナの snakeoil 証明書へ上書きマウントする設定を追記します。
+
+```yaml
+services:
+  ec-cube:
+    volumes:
+      - ".:/var/www/html:cached"
+      - "./127.0.0.1+1.pem:/etc/ssl/certs/ssl-cert-snakeoil.pem"
+      - "./127.0.0.1+1-key.pem:/etc/ssl/private/ssl-cert-snakeoil.key"
+```
+
+```shell
+# 2. コンテナを再作成して反映する
+docker compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.pgsql.yml up -d
+```
+
+> 生成した `*.pem` / `*-key.pem`（特に秘密鍵）はリポジトリにコミットしないでください（`.gitignore` に追加するなどしてください）。
+
 ### CSS の編集・ビルド方法
 
 [Sass](https://sass-lang.com) を使用して記述されています。
@@ -147,7 +189,9 @@ Key differentiators:
 git clone https://github.com/EC-CUBE/ec-cube.git
 cd ec-cube
 docker compose -f docker-compose.yml -f docker-compose.pgsql.yml up -d
-# Access http://localhost:8080
+# Access https://127.0.0.1:4430/ (admin: https://127.0.0.1:4430/admin/)
+# Note: login does not work over HTTP (http://localhost:8080) because the
+# session cookie is issued with SameSite=None, which browsers only accept over HTTPS.
 ```
 
 #### Composer
