@@ -405,7 +405,6 @@ final class ShoppingControllerTest extends AbstractShoppingControllerTestCase
      */
     public function testPaymentEmpty()
     {
-        $this->markTestIncomplete('ShoppingController is not implemented.');
         $this->getFaker();
         $Customer = $this->logIn();
         $client = $this->client;
@@ -419,14 +418,26 @@ final class ShoppingControllerTest extends AbstractShoppingControllerTestCase
             $Payment->setRuleMin('0');
             $Payment->setRuleMax('0');
         }
+        $this->entityManager->flush();
         // 確認画面
         $crawler = $this->scenarioConfirm($Customer);
 
-        $BaseInfo = $this->baseInfoRepository->get();
-        $email02 = $BaseInfo->getEmail02();
         $this->assertTrue($client->getResponse()->isSuccessful());
-        $this->expected = '合計金額に対して可能な支払い方法がありません。'.$email02.'にお問い合わせ下さい。';
-        $this->actual = $crawler->filter('p.errormsg')->text();
+
+        // 利用条件を満たす支払い方法が無いため, 支払い方法のラジオボタンは描画されない.
+        $this->assertSame(0, $crawler->filter('.ec-orderPayment input[type="radio"]')->count());
+
+        // 確認画面の GET 時点ではフォームが送信されていないためエラーは表示されない.
+        $this->assertSame(0, $crawler->filter('.ec-errorMessage')->count());
+
+        // 注文内容を確定しようとすると Payment の NotBlank でエラーになる.
+        // 選択肢が空の場合のメッセージは front.shopping.payment_method_not_fount.
+        // @see \Eccube\Form\Type\Shopping\OrderType::addPaymentForm()
+        $crawler = $this->scenarioComplete($Customer, $this->generateUrl('shopping_confirm'));
+
+        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->expected = trans('front.shopping.payment_method_not_fount');
+        $this->actual = $crawler->filter('.ec-orderPayment .ec-errorMessage')->text();
         $this->verify();
     }
 
@@ -469,94 +480,92 @@ final class ShoppingControllerTest extends AbstractShoppingControllerTestCase
      *
      * @see https://github.com/EC-CUBE/ec-cube/issues/1305
      */
-    public function testShippingShippingPost(): never
+    public function testShippingShippingPost()
     {
-        $this->markTestIncomplete('新しい配送管理の実装が完了するまでスキップ');
-
-        $faker = $this->getFaker();
-        $Customer = $this->logIn();
+        $Customer = $this->createCustomer();
         $client = $this->client;
 
         // カート画面
         $this->scenarioCartIn($Customer);
-        // 確認画面
+
+        // 手続き画面
         $crawler = $this->scenarioConfirm($Customer);
-        // お届け先の設定
-        $shipping_url = $crawler->filter('a.btn-shipping')->attr('href');
-        $crawler = $this->scenarioComplete(null, $shipping_url, $client);
 
-        // お届け先一覧
-        $shipping_url = str_replace('shipping_change', 'shipping', $shipping_url);
+        // お届け先の変更ボタンから Shipping の id を取得する.
+        $shippingId = $crawler->filter('div.ec-orderDelivery__change > button')->attr('data-id');
 
-        $crawler = $client->request(
-            Request::METHOD_GET,
-            $shipping_url
-        );
-
-        $this->assertTrue($client->getResponse()->isSuccessful());
-
-        $this->expected = 'お届け先の指定';
-        $this->actual = $crawler->filter('h1.page-heading')->text();
-        $this->verify();
-
-        $shipping_edit_url = $crawler->filter('a.btn-default')->attr('href');
-
-        // お届け先入力画面
+        // お届け先追加画面
         $client->request(
             Request::METHOD_GET,
-            $shipping_edit_url
+            $this->generateUrl('shopping_shipping_edit', ['id' => $shippingId])
         );
         $this->assertTrue($client->getResponse()->isSuccessful());
 
-        // お届け先設定画面へ遷移し POST 送信
+        // お届け先を追加する. 電話番号は受注メールでの検証用に固定値を設定する.
+        $phoneNumber = '222-222-222';
         $formData = $this->createShippingFormData();
-        $formData['phone_number'] = $faker->phoneNumber;
+        $formData['phone_number'] = $phoneNumber;
         $client->request(
             Request::METHOD_POST,
-            $shipping_edit_url,
+            $this->generateUrl('shopping_shipping_edit', ['id' => $shippingId]),
             ['shopping_shipping' => $formData]
         );
-
         $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('shopping')));
 
-        // ご注文完了
-        $this->scenarioComplete(null, $this->generateUrl('shopping_confirm'), $client);
+        // 確認画面
+        $this->scenarioComplete($Customer, $this->generateUrl('shopping_confirm'));
 
-        $this->baseInfoRepository->get();
-        $Messages = $this->getMailCatcherMessages();
-        $Message = $this->getMailCatcherMessage($Messages[0]->id);
+        // 完了画面
+        $this->scenarioCheckout($Customer);
+        $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('shopping_complete')));
 
-        // https://github.com/EC-CUBE/ec-cube/issues/1305
-        $this->assertMatchesRegularExpression('/222-222-222/', $this->parseMailCatcherSource($Message), '変更した 電話番号が一致するか');
+        // 変更した電話番号が受注メールのお届け先に反映されていること.
+        // @see https://github.com/EC-CUBE/ec-cube/issues/1305
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
+        // 電話番号はハイフンが除去されて保存される.
+        // @see \Eccube\Form\EventListener\TruncateHyphenListener (PhoneNumberType の PRE_SUBMIT)
+        $this->assertStringContainsString(
+            str_replace('-', '', $phoneNumber),
+            (string) $Message->getTextBody(),
+            '変更した電話番号が一致するか'
+        );
     }
 
     /**
      * @see https://github.com/EC-CUBE/ec-cube/issues/1280
      */
-    public function testShippingEditTitle(): never
+    public function testShippingEditTitle()
     {
-        // FIXME ShoppingController の登録チェックが実装されたら有効にする
-        $this->markTestIncomplete('ShoppingController is not implemented.');
         $Customer = $this->createCustomer();
-        $this->logIn();
         $client = $this->client;
+
+        // カート画面
         $this->scenarioCartIn($Customer);
 
+        // 手続き画面
         /** @var Crawler $crawler */
         $crawler = $this->scenarioConfirm($Customer);
-        $this->expected = 'ご注文内容のご確認';
-        $this->actual = $crawler->filter('h1.page-heading')->text();
+        $this->expected = 'ご注文手続き';
+        $this->actual = $crawler->filter('.ec-pageHeader h1')->text();
         $this->verify();
 
-        $shippingCrawler = $crawler->filter('#shipping_confirm_box--0');
-        $url = $shippingCrawler->selectLink('変更')->link()->getUri();
-        $url = str_replace('shipping_change', 'shipping_edit', $url);
+        // お届け先の変更ボタンから Shipping の id を取得する.
+        $shippingId = $crawler->filter('div.ec-orderDelivery__change > button')->attr('data-id');
 
-        // Get shipping edit
-        $crawler = $client->request(Request::METHOD_GET, $url);
+        // お届け先追加画面
+        $crawler = $client->request(
+            Request::METHOD_GET,
+            $this->generateUrl('shopping_shipping_edit', ['id' => $shippingId])
+        );
+        $this->assertTrue($client->getResponse()->isSuccessful());
 
-        // Title
-        $this->assertStringContainsString('お届け先の追加', $crawler->html());
+        // 会員としてログインしているため, 見出しは「お届け先の追加」になる.
+        // @see https://github.com/EC-CUBE/ec-cube/issues/1280
+        $this->expected = trans('front.shopping.shipping_edit_header_customer');
+        $this->actual = $crawler->filter('.ec-pageHeader h1')->text();
+        $this->verify();
     }
 
     /**

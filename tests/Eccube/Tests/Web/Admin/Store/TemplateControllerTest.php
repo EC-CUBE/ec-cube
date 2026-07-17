@@ -23,6 +23,7 @@ use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Eccube\Util\StringUtil;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -186,10 +187,8 @@ final class TemplateControllerTest extends AbstractAdminWebTestCase
     /**
      * ダウンロード
      */
-    public function testDownload(): never
+    public function testDownload()
     {
-        $this->markTestIncomplete("See: \Eccube\Controller\Admin\Store\TemplateController::L151");
-
         // テンプレートをアップロード
         $this->scenarioUpload();
         $this->verifyUpload();
@@ -197,9 +196,49 @@ final class TemplateControllerTest extends AbstractAdminWebTestCase
         $Template = $this->templateRepository->findOneBy(['code' => $this->code]);
         $this->assertInstanceOf(Template::class, $Template);
 
-        // XXX failed to open stream: No such file or directoryが発生する
-        $this->client->request(Request::METHOD_GET,
-            $this->generateUrl('admin_store_template_download', ['id' => $Template->getId()]));
+        // NOTE: BrowserKit の HttpKernelBrowser::doRequest() は handle() の直後に
+        // terminate() を呼び, その後 filterResponse() で sendContent() する.
+        // TemplateController::download() は kernel.terminate で一時ファイルを削除するため,
+        // $this->client->request() 経由だと BinaryFileResponse の読み出し前に
+        // ファイルが消えてしまう (実際のリクエストでは送信後に terminate されるため問題ない).
+        // そのため, ここではカーネルを直接 handle して検証し, 最後に terminate する.
+        $kernel = $this->client->getKernel();
+        $cookies = [];
+        foreach ($this->client->getCookieJar()->all() as $cookie) {
+            $cookies[$cookie->getName()] = $cookie->getValue();
+        }
+        $request = Request::create(
+            $this->generateUrl('admin_store_template_download', ['id' => $Template->getId()]),
+            Request::METHOD_GET,
+            [],
+            $cookies
+        );
+        $response = $kernel->handle($request);
+
+        try {
+            $this->assertInstanceOf(BinaryFileResponse::class, $response);
+            $this->assertTrue($response->isSuccessful());
+            $this->assertSame(
+                'attachment; filename='.$this->code.'.tar.gz',
+                $response->headers->get('content-disposition')
+            );
+
+            // terminate 前は一時ファイルが存在し, tar.gz として読み出せる.
+            $tarGzFile = $response->getFile()->getPathname();
+            $this->assertFileExists($tarGzFile);
+            // tar.gz として読み出せ, app ディレクトリを含むこと.
+            // アップロードした zip は app/html とも空ディレクトリで,
+            // PharData::buildFromDirectory は空ディレクトリを含めないため,
+            // app は download() 側の addEmptyDir で補われる.
+            // @see https://github.com/EC-CUBE/ec-cube/issues/742
+            $phar = new \PharData($tarGzFile);
+            $this->assertTrue(isset($phar['app']));
+        } finally {
+            // kernel.terminate のリスナが一時ファイルを削除する.
+            $kernel->terminate($request, $response);
+        }
+
+        $this->assertFileDoesNotExist($tarGzFile);
     }
 
     /**

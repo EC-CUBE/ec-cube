@@ -324,11 +324,23 @@ final class OrderControllerTest extends AbstractAdminWebTestCase
     #[DataProvider(methodName: 'dataBulkOrderStatusProvider')]
     public function testBulkOrderStatus($orderStatusId)
     {
-        $this->markTestIncomplete('使用していないルーティングのためスキップ.');
+        // Generator が生成する Order の OrderStatus は既定で PROCESSING のため,
+        // 受注一覧からの一括ステータス更新の起点となる NEW の受注をここで用意する.
+        $OrderStatus = $this->orderStatusRepository->find(OrderStatus::NEW);
+        $this->assertInstanceOf(OrderStatus::class, $OrderStatus);
+        for ($i = 0; $i < 2; $i++) {
+            $Order = $this->createOrder($this->createCustomer('bulk-order-status-'.$i.'@example.com'));
+            $Order->setOrderStatus($OrderStatus);
+        }
+        $this->entityManager->flush();
+
+        $TargetOrderStatus = $this->orderStatusRepository->find($orderStatusId);
+        $this->assertInstanceOf(OrderStatus::class, $TargetOrderStatus);
+
         // case true
         $orderIds = [];
-        $OrderStatus = $this->orderStatusRepository->find(OrderStatus::NEW);
         $Orders = $this->orderRepository->findBy(['OrderStatus' => $OrderStatus], [], 2);
+        $this->assertCount(2, $Orders);
         foreach ($Orders as $Order) {
             $this->assertEquals(null, $Order->getPaymentDate());
             $orderIds[] = $Order->getId();
@@ -352,8 +364,10 @@ final class OrderControllerTest extends AbstractAdminWebTestCase
             }
         }
 
-        $result = $this->orderRepository->findBy(['id' => $orderIds, 'OrderStatus' => $OrderStatus]);
+        // 更新後は対象の OrderStatus へ遷移している (NEW -> PAID は pay, NEW -> DELIVERED は ship).
+        $result = $this->orderRepository->findBy(['id' => $orderIds, 'OrderStatus' => $TargetOrderStatus]);
         if ($orderStatusId == OrderStatus::PAID) {
+            // 入金日は pay 遷移 (workflow.order.transition.pay) でのみ設定される.
             foreach ($result as $Order) {
                 $this->assertInstanceOf(\DateTime::class, $Order->getPaymentDate());
             }
