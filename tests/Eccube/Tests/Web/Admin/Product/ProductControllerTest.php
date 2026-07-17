@@ -1077,7 +1077,7 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
         $this->assertInstanceOf(StreamedResponse::class, $Response);
         $this->assertSame('application/octet-stream', $Response->headers->get('Content-Type'));
 
-        return (string) $this->client->getInternalResponse()->getContent();
+        return $this->client->getInternalResponse()->getContent();
     }
 
     private function createSearchForm(): array

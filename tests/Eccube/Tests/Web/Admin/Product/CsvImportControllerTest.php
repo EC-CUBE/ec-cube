@@ -640,7 +640,7 @@ final class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->assertSame('attachment; filename='.$filename, $Response->headers->get('Content-Disposition'));
 
         $encoding = $this->eccubeConfig['eccube_csv_export_encoding'];
-        $content = (string) $this->client->getInternalResponse()->getContent();
+        $content = $this->client->getInternalResponse()->getContent();
         $this->assertTrue(
             mb_check_encoding($content, $encoding),
             sprintf('CSV 雛形は %s で出力される', $encoding)

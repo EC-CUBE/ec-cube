@@ -70,7 +70,7 @@ final class ContactControllerTest extends AbstractWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         // 確認ページ(Contact/confirm.twig)がレンダリングされていること
-        $this->assertSame(1, $crawler->filter('.ec-contactConfirmRole')->count());
+        $this->assertCount(1, $crawler->filter('.ec-contactConfirmRole'));
 
         // ContactController が Page(contact_confirm) を渡していること.
         // contact_confirm の Page は meta_tags に noindex を持つ.

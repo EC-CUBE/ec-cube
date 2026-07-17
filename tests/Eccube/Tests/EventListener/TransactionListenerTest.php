@@ -85,10 +85,7 @@ final class TransactionListenerTest extends EccubeTestCase
         $listener = new TransactionListener($entityManager, true);
         $listener->onKernelRequest($this->createRequestEvent());
 
-        self::assertSame(
-            ['connect', 'setAutoCommit', 'setTransactionIsolation', 'beginTransaction'],
-            $calls
-        );
+        $this->assertSame(['connect', 'setAutoCommit', 'setTransactionIsolation', 'beginTransaction'], $calls);
     }
 
     /**
@@ -298,7 +295,7 @@ final class TransactionListenerTest extends EccubeTestCase
 
     public function testGetSubscribedEvents(): void
     {
-        self::assertSame([
+        $this->assertSame([
             KernelEvents::REQUEST => 'onKernelRequest',
             KernelEvents::EXCEPTION => 'onKernelException',
             KernelEvents::TERMINATE => 'onKernelTerminate',
@@ -363,6 +360,10 @@ final class TransactionListenerTest extends EccubeTestCase
 
     private function getKernel(): HttpKernelInterface
     {
-        return static::getContainer()->get('kernel');
+        // 'kernel' はクラス名のエイリアスを持たないため, サービスIDを変数へ代入して
+        // ContainerGetNameToTypeInTestsRector の変換対象から外す.
+        $serviceId = 'kernel';
+
+        return static::getContainer()->get($serviceId);
     }
 }

@@ -232,7 +232,7 @@ final class TemplateControllerTest extends AbstractAdminWebTestCase
             // app は download() 側の addEmptyDir で補われる.
             // @see https://github.com/EC-CUBE/ec-cube/issues/742
             $phar = new \PharData($tarGzFile);
-            $this->assertTrue(isset($phar['app']));
+            $this->assertArrayHasKey('app', $phar);
         } finally {
             // kernel.terminate のリスナが一時ファイルを削除する.
             $kernel->terminate($request, $response);

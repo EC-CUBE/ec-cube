@@ -134,14 +134,12 @@ final class OrderItemTypeTest extends AbstractTypeTestCase
     }
 
     /**
-     * @return array<string, array{int, string}>
+     * @return \Iterator<string, array{int, string}>
      */
-    public static function getQuantitySignValidatedOrderItemTypes(): array
+    public static function getQuantitySignValidatedOrderItemTypes(): \Iterator
     {
-        return [
-            'discount' => [\Eccube\Entity\Master\OrderItemType::DISCOUNT, '-10000'],
-            'delivery_fee' => [\Eccube\Entity\Master\OrderItemType::DELIVERY_FEE, '10000'],
-            'charge' => [\Eccube\Entity\Master\OrderItemType::CHARGE, '10000'],
-        ];
+        yield 'discount' => [\Eccube\Entity\Master\OrderItemType::DISCOUNT, '-10000'];
+        yield 'delivery_fee' => [\Eccube\Entity\Master\OrderItemType::DELIVERY_FEE, '10000'];
+        yield 'charge' => [\Eccube\Entity\Master\OrderItemType::CHARGE, '10000'];
     }
 }

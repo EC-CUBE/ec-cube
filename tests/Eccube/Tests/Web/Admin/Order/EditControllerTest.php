@@ -355,6 +355,7 @@ final class EditControllerTest extends AbstractEditControllerTestCase
 
         $EditedOrder = $this->orderRepository->find($Order->getId());
         $this->expected = $formData['OrderStatus'];
+        $this->assertInstanceOf(Order::class, $EditedOrder);
         $this->actual = $EditedOrder->getOrderStatus()->getId();
         $this->verify();
     }
