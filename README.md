@@ -65,6 +65,8 @@ docker compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose
 
 > 生成した `*.pem` / `*-key.pem`（特に秘密鍵）はリポジトリにコミットしないでください（`.gitignore` に追加するなどしてください）。
 
+> **WSL2 + Windows のブラウザを使う場合**: WSL 内で `mkcert -install` を実行しても、Windows 側ブラウザ（Chrome / Edge は Windows の証明書ストアを参照）には反映されません。`mkcert -CAROOT` にある `rootCA.pem` を Windows にコピーし、Windows 側で「信頼されたルート証明機関」に取り込んでください（例: PowerShell で `Import-Certificate -FilePath <path> -CertStoreLocation Cert:\CurrentUser\Root`）。取り込み後はブラウザを完全に再起動します。
+
 ### CSS の編集・ビルド方法
 
 [Sass](https://sass-lang.com) を使用して記述されています。
