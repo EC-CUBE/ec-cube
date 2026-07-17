@@ -17,6 +17,7 @@ namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Form\Type\Admin\OrderItemType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Form\FormInterface;
 
 final class OrderItemTypeTest extends AbstractTypeTestCase
@@ -111,12 +112,36 @@ final class OrderItemTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidQuantityHasMinus(): never
+    /**
+     * 個数のマイナス値を許容しない明細種別の検証.
+     *
+     * 商品明細(PRODUCT)は「金額 -> 正, 個数 -> 正負」が仕様であり、
+     * 個数のマイナス値が valid となるため対象外とする。
+     * 値引き(DISCOUNT)・送料(DELIVERY_FEE)・手数料(CHARGE)のみ個数の符号が検証される。
+     *
+     * @see OrderItemType::buildForm() の POST_SUBMIT リスナ
+     */
+    #[DataProvider(methodName: 'getQuantitySignValidatedOrderItemTypes')]
+    public function testInvalidQuantityHasMinus(int $orderItemType, string $price)
     {
-        $this->markTestIncomplete('testInvalidQuantity_HasMinus is not implemented.');
+        $this->formData['order_item_type'] = $orderItemType;
+        // 値引き明細は金額 -> 負が要求されるため、個数のみを検証対象とするよう明細種別ごとに妥当な金額を与える
+        $this->formData['price'] = $price;
         $this->formData['quantity'] = '-123456';
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
+    }
+
+    /**
+     * @return array<string, array{int, string}>
+     */
+    public static function getQuantitySignValidatedOrderItemTypes(): array
+    {
+        return [
+            'discount' => [\Eccube\Entity\Master\OrderItemType::DISCOUNT, '-10000'],
+            'delivery_fee' => [\Eccube\Entity\Master\OrderItemType::DELIVERY_FEE, '10000'],
+            'charge' => [\Eccube\Entity\Master\OrderItemType::CHARGE, '10000'],
+        ];
     }
 }
