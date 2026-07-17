@@ -103,9 +103,8 @@ final class OrderItemTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidQuantityNotNumeric(): never
+    public function testInvalidQuantityNotNumeric()
     {
-        $this->markTestIncomplete('testInvalidQuantity_NotNumeric is not implemented.');
         $this->formData['quantity'] = 'abcde';
 
         $this->form->submit($this->formData);
