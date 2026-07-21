@@ -62,8 +62,14 @@ class TransactionListener implements EventSubscriberInterface
 
         /** @var Connection $Connection */
         $Connection = $this->em->getConnection();
+        // DBAL 4 では Connection::connect() が protected になったため, 接続の明示確立には
+        // getNativeConnection() を用いる。autoCommit を false にする前に接続しておくことが重要で,
+        // 先に autoCommit=false にすると DBAL 4 が connect() 時に暗黙のトランザクションを開始し
+        // (Connection::connect 内の `if ($this->autoCommit === false) { $this->beginTransaction(); }`),
+        // 後続の beginTransaction がネストして onKernelTerminate の commit でリクエスト全体の
+        // トランザクションが確定されず, 書き込みが永続化されなくなる。
         if (!$Connection->isConnected()) {
-            $Connection->connect();
+            $Connection->getNativeConnection();
         }
         $Connection->setAutoCommit(false);
         $Connection->setTransactionIsolation(TransactionIsolationLevel::READ_COMMITTED);

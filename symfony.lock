@@ -171,9 +171,6 @@
             "ref": "bb31a3bbec00a8fc8aa1c9fbf9b0ef9fc492f93d"
         }
     },
-    "graham-campbell/result-type": {
-        "version": "v1.0.4"
-    },
     "guzzlehttp/guzzle": {
         "version": "6.3.0"
     },
@@ -230,9 +227,6 @@
     },
     "phpdocumentor/type-resolver": {
         "version": "0.4.0"
-    },
-    "phpoption/phpoption": {
-        "version": "1.8.1"
     },
     "phpspec/prophecy": {
         "version": "1.7.5"
@@ -673,9 +667,6 @@
     },
     "twig/twig": {
         "version": "v2.4.4"
-    },
-    "vlucas/phpdotenv": {
-        "version": "v2.4.0"
     },
     "webmozart/assert": {
         "version": "1.3.0"

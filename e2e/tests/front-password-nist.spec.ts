@@ -1,4 +1,5 @@
 import { test, expect, Page } from '@playwright/test';
+import { ADMIN_PASSWORD, ADMIN_ROUTE, ADMIN_USER, NORMALIZED_PASSWORD, RAW_PASSWORD } from '../config/default.config';
 
 /**
  * NIST SP 800-63B-4 対応(#6488)の E2E。
@@ -11,12 +12,7 @@ import { test, expect, Page } from '@playwright/test';
  * PRE_SUBMIT で NFKC 正規化されるため, 保存値は正規化後の文字列になる。
  */
 
-const adminRoute = process.env.ECCUBE_ADMIN_ROUTE || 'admin';
-
-// 半角カナ + 数字(NFKC で全角へ正規化される)。正規化後 15 文字以上(min15 要件)。
-const RAW_PASSWORD = 'ﾊﾟｽﾜｰﾄﾞﾃｽﾄ1234567';
-// 上記を NFKC 正規化した文字列(全角)。15 文字。
-const NORMALIZED_PASSWORD = 'パスワードテスト1234567';
+const adminRoute = ADMIN_ROUTE;
 
 /**
  * 管理画面から本会員を作成し, メールアドレスを返す。
@@ -27,8 +23,8 @@ async function createActiveCustomerViaAdmin(page: Page, password: string): Promi
   const adminPage = await page.context().newPage();
   await adminPage.goto(`/${adminRoute}/`);
   await adminPage.waitForLoadState('load');
-  await adminPage.locator('#login_id').fill(process.env.ADMIN_USER || 'admin');
-  await adminPage.locator('#password').fill(process.env.ADMIN_PASSWORD || 'password');
+  await adminPage.locator('#login_id').fill(ADMIN_USER);
+  await adminPage.locator('#password').fill(ADMIN_PASSWORD);
   await adminPage.getByRole('button', { name: 'ログイン' }).click();
   await adminPage.waitForLoadState('load');
 

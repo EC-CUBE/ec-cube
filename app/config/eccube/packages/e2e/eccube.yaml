@@ -1,5 +1,5 @@
 parameters:
-    # E2E(Playwright/codeception 環境)では HaveIBeenPwned への外部通信を行わない.
+    # E2E(Playwright)環境では HaveIBeenPwned への外部通信を行わない.
     # 外部 API の可用性・内容に E2E が依存しないようにするため(test 環境と同方針).
     # 長さ・パターン・ブロックリストの各検証は引き続き有効.
     eccube_password_compromised_check: false
