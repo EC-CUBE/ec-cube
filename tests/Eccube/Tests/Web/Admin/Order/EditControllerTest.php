@@ -157,6 +157,112 @@ final class EditControllerTest extends AbstractEditControllerTestCase
     }
 
     /**
+     * 受注編集画面で入金日を手動で編集できることを確認するテスト.
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/6528
+     */
+    public function testEditPaymentDate()
+    {
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+        $Order->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
+        $this->entityManager->flush($Order);
+
+        $formData = $this->createFormData($Customer, $this->Product);
+        // ステータス遷移を発生させず入金日の編集のみを検証する.
+        $formData['OrderStatus'] = OrderStatus::NEW;
+        $formData['payment_date'] = '2021-05-06T07:08:09';
+
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]),
+            [
+                'order' => $formData,
+                'mode' => 'register',
+            ]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_edit', ['id' => $Order->getId()])));
+
+        $EditedOrder = $this->orderRepository->find($Order->getId());
+        // タイムゾーン表現に依存せず, 指し示す時刻(instant)が一致することを確認する.
+        $this->expected = (new \DateTime('2021-05-06T07:08:09'))->getTimestamp();
+        $this->assertInstanceOf(Order::class, $EditedOrder);
+        $this->actual = $EditedOrder->getPaymentDate()->getTimestamp();
+        $this->verify();
+    }
+
+    /**
+     * 受注編集画面で出荷日を手動で編集できることを確認するテスト.
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/6528
+     */
+    public function testEditShippingDate()
+    {
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+        $Order->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
+        $this->entityManager->flush($Order);
+
+        $formData = $this->createFormData($Customer, $this->Product);
+        $formData['OrderStatus'] = OrderStatus::NEW;
+        $formData['Shipping']['shipping_date'] = '2021-05-06T07:08:09';
+
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]),
+            [
+                'order' => $formData,
+                'mode' => 'register',
+            ]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_edit', ['id' => $Order->getId()])));
+
+        $EditedOrder = $this->orderRepository->find($Order->getId());
+        // タイムゾーン表現に依存せず, 指し示す時刻(instant)が一致することを確認する.
+        $this->expected = (new \DateTime('2021-05-06T07:08:09'))->getTimestamp();
+        $this->assertInstanceOf(Order::class, $EditedOrder);
+        $this->actual = $EditedOrder->getShippings()->first()->getShippingDate()->getTimestamp();
+        $this->verify();
+    }
+
+    /**
+     * 手動で入金日を設定しつつ入金済みへ遷移させても, 手動値が自動セットで上書きされないことを確認するテスト.
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/6528
+     */
+    public function testEditPaymentDateNotOverwrittenOnPayTransition()
+    {
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+        $Order->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
+        $this->entityManager->flush($Order);
+
+        $formData = $this->createFormData($Customer, $this->Product);
+        // 入金済みへ遷移させつつ, 入金日を手動で設定する.
+        $formData['OrderStatus'] = OrderStatus::PAID;
+        $formData['payment_date'] = '2021-05-06T07:08:09';
+
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]),
+            [
+                'order' => $formData,
+                'mode' => 'register',
+            ]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_edit', ['id' => $Order->getId()])));
+
+        $EditedOrder = $this->orderRepository->find($Order->getId());
+        $this->assertInstanceOf(Order::class, $EditedOrder);
+        // 入金済みに遷移していること.
+        $this->assertSame(OrderStatus::PAID, $EditedOrder->getOrderStatus()->getId());
+        // 手動で設定した入金日が, 遷移時の自動セット(現在日時)で上書きされていないこと.
+        $this->expected = (new \DateTime('2021-05-06T07:08:09'))->getTimestamp();
+        $this->actual = $EditedOrder->getPaymentDate()->getTimestamp();
+        $this->verify();
+    }
+
+    /**
      * 危険なXSS htmlインジェクションが削除されたことを確認するテスト
      *
      * 下記のものをチェックします。

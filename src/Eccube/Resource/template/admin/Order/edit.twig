@@ -190,6 +190,13 @@ file that was distributed with this source code.
                     }
                 }
             });
+
+            // 入金日・出荷日: 鉛筆アイコン押下で入力欄を表示する(誤操作防止).
+            $(document).on('click', '.date-edit-toggle', function() {
+                var $col = $(this).closest('.col');
+                $col.find('.date-edit-view').addClass('d-none');
+                $col.find('.date-edit-input').removeClass('d-none');
+            });
         });
 
         {# ポイント機能が有効かつ会員の場合のみポイントの割引金額を変更する #}
@@ -301,13 +308,29 @@ file that was distributed with this source code.
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col-3"><i class="fa fa-money fa-fw me-1" aria-hidden="true"></i>{{ 'admin.order.payment_date'|trans }}</div>
-                                            <div class="col">{{ Order.payment_date ? Order.payment_date|date_sec : '' }}</div>
+                                            <div class="col">
+                                                <span class="date-edit-view">
+                                                    {{ Order.payment_date ? Order.payment_date|date_sec : '' }}
+                                                    <a class="btn btn-ec-actionIcon date-edit-toggle" href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.edit'|trans }}"><i class="fa fa-pencil fa-lg text-secondary" aria-hidden="true"></i></a>
+                                                </span>
+                                                <span class="date-edit-input d-none">
+                                                    {{ form_widget(form.payment_date) }}
+                                                    {{ form_errors(form.payment_date) }}
+                                                </span>
+                                            </div>
                                         </div>
                                         {% if not Order.isMultiple %}
                                             <div class="row mb-3">
                                                 <div class="col-3"><i class="fa fa-truck fa-fw me-1" aria-hidden="true"></i>{{ 'admin.order.shipping_date'|trans }}</div>
                                                 <div class="col">
-                                                    {{ Order.Shippings[0].shipping_date|date_sec }}
+                                                    <span class="date-edit-view">
+                                                        {{ Order.Shippings[0].shipping_date|date_sec }}
+                                                        <a class="btn btn-ec-actionIcon date-edit-toggle" href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.edit'|trans }}"><i class="fa fa-pencil fa-lg text-secondary" aria-hidden="true"></i></a>
+                                                    </span>
+                                                    <span class="date-edit-input d-none">
+                                                        {{ form_widget(form.Shipping.shipping_date) }}
+                                                        {{ form_errors(form.Shipping.shipping_date) }}
+                                                    </span>
                                                 </div>
                                             </div>
                                         {% endif %}

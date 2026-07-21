@@ -33,6 +33,7 @@ use Eccube\Service\OrderStateMachine;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -163,6 +164,18 @@ class OrderType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new Assert\Length(max: $this->eccubeConfig['eccube_ltext_len']),
+                ],
+            ])
+            ->add('payment_date', DateTimeType::class, [
+                'required' => false,
+                'input' => 'datetime',
+                'widget' => 'single_text',
+                'with_seconds' => true,
+                'constraints' => [
+                    new Assert\Range([
+                        'min' => '0003-01-01',
+                        'minMessage' => 'form_error.out_of_range',
+                    ]),
                 ],
             ])
             ->add('Payment', EntityType::class, [
