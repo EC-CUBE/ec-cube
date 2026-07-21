@@ -17,133 +17,131 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Repository\ProductTagRepository;
 
-if (!class_exists(ProductTag::class)) {
+/**
+ * ProductTag
+ */
+#[ORM\Table(name: 'dtb_product_tag')]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: ProductTagRepository::class)]
+class ProductTag extends AbstractEntity
+{
     /**
-     * ProductTag
+     * Get tag_id
+     * use csv export
      */
-    #[ORM\Table(name: 'dtb_product_tag')]
-    #[ORM\InheritanceType('SINGLE_TABLE')]
-    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
-    #[ORM\HasLifecycleCallbacks]
-    #[ORM\Entity(repositoryClass: ProductTagRepository::class)]
-    class ProductTag extends AbstractEntity
+    public function getTagId(): ?int
     {
-        /**
-         * Get tag_id
-         * use csv export
-         */
-        public function getTagId(): ?int
-        {
-            if (empty($this->Tag)) {
-                return null;
-            }
-
-            return $this->Tag->getId();
+        if (empty($this->Tag)) {
+            return null;
         }
 
-        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
-        #[ORM\Id]
-        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-        private ?int $id = null;
+        return $this->Tag->getId();
+    }
 
-        /**
-         * @var \DateTime
-         */
-        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
-        private $create_date;
+    #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    private ?int $id = null;
 
-        #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'ProductTag')]
-        #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id')]
-        private ?Product $Product = null;
+    /**
+     * @var \DateTime
+     */
+    #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
+    private $create_date;
 
-        #[ORM\ManyToOne(targetEntity: Tag::class, inversedBy: 'ProductTag')]
-        #[ORM\JoinColumn(name: 'tag_id', referencedColumnName: 'id')]
-        private ?Tag $Tag = null;
+    #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'ProductTag')]
+    #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id')]
+    private ?Product $Product = null;
 
-        #[ORM\ManyToOne(targetEntity: Member::class)]
-        #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
-        private ?Member $Creator = null;
+    #[ORM\ManyToOne(targetEntity: Tag::class, inversedBy: 'ProductTag')]
+    #[ORM\JoinColumn(name: 'tag_id', referencedColumnName: 'id')]
+    private ?Tag $Tag = null;
 
-        /**
-         * Get id.
-         *
-         * @return int
-         */
-        public function getId(): ?int
-        {
-            return $this->id;
-        }
+    #[ORM\ManyToOne(targetEntity: Member::class)]
+    #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
+    private ?Member $Creator = null;
 
-        /**
-         * Set createDate.
-         */
-        public function setCreateDate(\DateTime $createDate): ProductTag
-        {
-            $this->create_date = $createDate;
+    /**
+     * Get id.
+     *
+     * @return int
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
-            return $this;
-        }
+    /**
+     * Set createDate.
+     */
+    public function setCreateDate(\DateTime $createDate): ProductTag
+    {
+        $this->create_date = $createDate;
 
-        /**
-         * Get createDate.
-         */
-        public function getCreateDate(): ?\DateTime
-        {
-            return $this->create_date;
-        }
+        return $this;
+    }
 
-        /**
-         * Set product.
-         */
-        public function setProduct(?Product $product = null): ProductTag
-        {
-            $this->Product = $product;
+    /**
+     * Get createDate.
+     */
+    public function getCreateDate(): ?\DateTime
+    {
+        return $this->create_date;
+    }
 
-            return $this;
-        }
+    /**
+     * Set product.
+     */
+    public function setProduct(?Product $product = null): ProductTag
+    {
+        $this->Product = $product;
 
-        /**
-         * Get product.
-         */
-        public function getProduct(): ?Product
-        {
-            return $this->Product;
-        }
+        return $this;
+    }
 
-        /**
-         * Set tag.
-         */
-        public function setTag(?Tag $tag = null): ProductTag
-        {
-            $this->Tag = $tag;
+    /**
+     * Get product.
+     */
+    public function getProduct(): ?Product
+    {
+        return $this->Product;
+    }
 
-            return $this;
-        }
+    /**
+     * Set tag.
+     */
+    public function setTag(?Tag $tag = null): ProductTag
+    {
+        $this->Tag = $tag;
 
-        /**
-         * Get tag.
-         */
-        public function getTag(): ?Tag
-        {
-            return $this->Tag;
-        }
+        return $this;
+    }
 
-        /**
-         * Set creator.
-         */
-        public function setCreator(?Member $creator = null): ProductTag
-        {
-            $this->Creator = $creator;
+    /**
+     * Get tag.
+     */
+    public function getTag(): ?Tag
+    {
+        return $this->Tag;
+    }
 
-            return $this;
-        }
+    /**
+     * Set creator.
+     */
+    public function setCreator(?Member $creator = null): ProductTag
+    {
+        $this->Creator = $creator;
 
-        /**
-         * Get creator.
-         */
-        public function getCreator(): ?Member
-        {
-            return $this->Creator;
-        }
+        return $this;
+    }
+
+    /**
+     * Get creator.
+     */
+    public function getCreator(): ?Member
+    {
+        return $this->Creator;
     }
 }

@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace Eccube\Tests\Command;
 
 use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\Persistence\ManagerRegistry;
@@ -55,9 +56,24 @@ final class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         parent::setUp();
         $conn = $this->entityManager->getConnection();
         // https://github.com/dmaicher/doctrine-test-bundle#troubleshooting
-        $platform = $conn->getDatabasePlatform()->getName();
-        if ('postgresql' !== $platform) {
-            $this->markTestSkipped('does not support of '.$platform);
+        // 本テスト群は PostgreSQL 限定で実行する。追加当初は詳細不明だったが、
+        // 実機検証(PostgreSQL 18 / MySQL 8.4 / SQLite)により以下の理由が判明している:
+        //
+        // - MySQL: install/update 時の DDL(ALTER TABLE 等)が暗黙コミットを起こし、
+        //   DAMA\DoctrineTestBundle のテストトランザクション(SAVEPOINT)を破壊するため
+        //   "SAVEPOINT DAMA_TEST does not exist" / "There is no active transaction" になる。
+        // - SQLite: DROP COLUMN をテーブル再構築で表現するため --dump-sql の DDL 文字列が
+        //   PostgreSQL と一致せず、さらに拡張カラムが dump に現れない(schema-diff 挙動が異なる)。
+        // - PostgreSQL: DDL がトランザクション内で完結するため、本テストの方式が唯一成立する。
+        //
+        // すなわち skip は Proxy の二重宣言(redeclare)対策ではなく、DDL とテスト用
+        // トランザクション(DAMA)の相性というテストインフラ上の制約による。Proxy の
+        // 二重宣言そのものは DB 非依存で、TraitProxyAttributeDriver 側で回避しており
+        // (cf. Eccube\Tests\Doctrine\ORM\Mapping\Driver\TraitProxyAttributeDriverTest)、
+        // 全 DB で防止済み。
+        $platform = $conn->getDatabasePlatform();
+        if (!$platform instanceof PostgreSQLPlatform) {
+            $this->markTestSkipped('does not support of '.$platform::class);
         }
         $files = Finder::create()
             ->in(static::getContainer()->getParameter('kernel.project_dir').'/app/proxy/entity')
@@ -77,7 +93,7 @@ final class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         foreach ($columns as $column) {
             if ($column->getName() == 'test_update_schema_command') {
                 $conn = $this->entityManager->getConnection();
-                $conn->executeUpdate('ALTER TABLE dtb_customer DROP test_update_schema_command');
+                $conn->executeStatement('ALTER TABLE dtb_customer DROP test_update_schema_command');
             }
         }
         // Restore exception handler to prevent risky test warning
@@ -355,7 +371,7 @@ final class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
 
     private function getSchemaManager(): AbstractSchemaManager
     {
-        return $this->entityManager->getConnection()->getSchemaManager();
+        return $this->entityManager->getConnection()->createSchemaManager();
     }
 
     // テスト用のダミープラグインを配置する
@@ -469,7 +485,7 @@ EOT
         $columns = $schema->listTableColumns('dtb_customer');
         if (empty(array_filter($columns, fn ($column) => $column->getName() == 'test_update_schema_command'))) {
             $conn = $this->entityManager->getConnection();
-            $conn->executeUpdate('ALTER TABLE dtb_customer ADD test_update_schema_command text');
+            $conn->executeStatement('ALTER TABLE dtb_customer ADD test_update_schema_command text');
         }
     }
 }
