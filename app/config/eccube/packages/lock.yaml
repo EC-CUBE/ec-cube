@@ -1,6 +1,0 @@
-framework:
-    # lock store を flock に固定する (コンパイル時の sysvsem 有無で自動選択させない)。
-    # PHP 8.2 が最低要件だが sysvsem 拡張は環境によって存在せず、 既定の自動判定
-    # (sysvsem あり→semaphore) では sysvsem の無い環境で SemaphoreStore の生成に失敗する。
-    # MCP の Rate Limiter / login_throttling が使う既定 lock を flock に倒し環境非依存にする。
-    lock: 'flock'
