@@ -43,7 +43,7 @@ final readonly class SearchOrdersTool
      * 注文をキーワード / 注文番号 / ステータス / 期間 / 金額レンジ / 顧客 ID で検索する。
      *
      * @param string|null $keyword         注文者名 / 注文番号 / メール等の汎用検索 (任意)
-     * @param string|null $orderNo         注文番号の部分一致 (任意)
+     * @param string|null $orderNo         注文番号の完全一致 (任意。 部分一致で探すなら keyword を使う)
      * @param int[]|null  $statusIds       OrderStatus ID の配列 (任意。 例: 1=新規受付、 5=対応中)
      * @param string|null $email           注文者メール部分一致 (任意)
      * @param int|null    $totalMin        支払合計の下限 (任意)
@@ -82,6 +82,16 @@ final readonly class SearchOrdersTool
                 $offset = max(0, $offset);
 
                 $searchData = $this->buildSearchData($keyword, $orderNo, $statusIds, $email, $totalMin, $totalMax, $orderDateFrom, $orderDateTo);
+
+                // 明示指定した statusIds が 1 つも解決しないと status フィルタが落ち、
+                // 全注文 (PII 込み) を返してしまう。 絞り込み意図を尊重し 0 件を返す。
+                if (null !== $statusIds && !isset($searchData['status'])) {
+                    return [
+                        'data' => ['total' => 0, 'limit' => $limit, 'offset' => $offset, 'items' => []],
+                        'summary' => ['total' => 0, 'returned' => 0],
+                    ];
+                }
+
                 $qb = $this->orderRepository->getQueryBuilderBySearchDataForAdmin($searchData);
 
                 if (null !== $customerId) {
@@ -131,7 +141,8 @@ final readonly class SearchOrdersTool
             $searchData['multi'] = $keyword;
         }
         if (null !== $orderNo && '' !== trim($orderNo)) {
-            $searchData['order_no'] = $orderNo;
+            // OrderRepository は order_no を完全一致で検索するため、 前後空白を除去して渡す。
+            $searchData['order_no'] = trim($orderNo);
         }
         if (null !== $statusIds && [] !== $statusIds) {
             $statuses = $this->orderStatusRepository->findBy(['id' => $statusIds]);

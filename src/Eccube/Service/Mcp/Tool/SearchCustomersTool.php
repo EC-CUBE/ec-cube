@@ -84,6 +84,16 @@ final readonly class SearchCustomersTool
                 $offset = max(0, $offset);
 
                 $searchData = $this->buildSearchData($keyword, $phoneNumber, $statusIds, $createDateFrom, $createDateTo, $buyTotalMin, $buyTotalMax, $buyTimesMin, $buyTimesMax);
+
+                // 明示指定した statusIds が 1 つも解決しないと customer_status フィルタが落ち、
+                // 全会員 (PII 込み) を返してしまう。 絞り込み意図を尊重し 0 件を返す。
+                if (null !== $statusIds && !isset($searchData['customer_status'])) {
+                    return [
+                        'data' => ['total' => 0, 'limit' => $limit, 'offset' => $offset, 'items' => []],
+                        'summary' => ['total' => 0, 'returned' => 0],
+                    ];
+                }
+
                 $qb = $this->customerRepository->getQueryBuilderBySearchData($searchData);
                 $qb->setMaxResults($limit)->setFirstResult($offset);
 
