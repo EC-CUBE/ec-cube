@@ -111,6 +111,36 @@ final class McpCliCommandTest extends EccubeTestCase
         $this->assertStringContainsString('該当なし', $tester->getDisplay());
     }
 
+    public function testSearchCustomersWithUnresolvableStatusReturnsNoData(): void
+    {
+        // 解決不能な statusIds で全会員 (PII 込み) に広がらず該当なしを返す
+        $this->createCustomer();
+
+        $tester = $this->execute('eccube:cli:search_customers', ['--statusIds' => ['999']]);
+
+        $this->assertSame(Command::SUCCESS, $tester->getStatusCode());
+        $this->assertStringContainsString('該当なし', $tester->getDisplay());
+    }
+
+    public function testSearchOrdersWithUnresolvableStatusReturnsNoData(): void
+    {
+        // 解決不能な statusIds で全注文 (PII 込み) に広がらず該当なしを返す
+        $this->createOrder($this->createCustomer());
+
+        $tester = $this->execute('eccube:cli:search_orders', ['--statusIds' => ['999']]);
+
+        $this->assertSame(Command::SUCCESS, $tester->getStatusCode());
+        $this->assertStringContainsString('該当なし', $tester->getDisplay());
+    }
+
+    public function testSearchProductsStockFilterExecutes(): void
+    {
+        // stock 絞り込みの EXISTS 部分クエリが DQL として妥当に実行される (エラーにならない)
+        $tester = $this->execute('eccube:cli:search_products', ['--stockMin' => '1', '--stockMax' => '1000']);
+
+        $this->assertSame(Command::SUCCESS, $tester->getStatusCode());
+    }
+
     /**
      * @param array<string, string|list<string>> $input
      */
