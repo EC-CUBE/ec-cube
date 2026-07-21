@@ -18,6 +18,7 @@ namespace Eccube\Service\Mcp\Tool;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\Product;
+use Eccube\Entity\ProductClass;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Repository\ProductRepository;
@@ -93,13 +94,21 @@ final readonly class SearchProductsTool
 
                 $qb = $this->productRepository->getQueryBuilderBySearchDataForAdmin($searchData);
 
+                // 在庫での絞り込みは fetch-join した pc を直接制約すると、 Paginator(fetchJoinCollection)
+                // が ProductClasses を「条件に合う規格だけ」部分ハイドレートし、 価格/在庫レンジ集計
+                // (ProductPriceStockSummarizer) が条件外の規格を落としてレンジが縮む。 商品単位の EXISTS
+                // 部分クエリで絞り込み、 pc の完全ハイドレート (=正しいレンジ) を保つ。
                 if (null !== $stockMin) {
-                    $qb->andWhere('pc.stock_unlimited = false AND pc.stock >= :mcpStockMin')
-                        ->setParameter('mcpStockMin', $stockMin);
+                    $qb->andWhere($qb->expr()->exists(
+                        'SELECT pcStockMin.id FROM '.ProductClass::class.' pcStockMin'
+                        .' WHERE pcStockMin.Product = p AND pcStockMin.stock_unlimited = false AND pcStockMin.stock >= :mcpStockMin'
+                    ))->setParameter('mcpStockMin', $stockMin);
                 }
                 if (null !== $stockMax) {
-                    $qb->andWhere('pc.stock_unlimited = false AND pc.stock <= :mcpStockMax')
-                        ->setParameter('mcpStockMax', $stockMax);
+                    $qb->andWhere($qb->expr()->exists(
+                        'SELECT pcStockMax.id FROM '.ProductClass::class.' pcStockMax'
+                        .' WHERE pcStockMax.Product = p AND pcStockMax.stock_unlimited = false AND pcStockMax.stock <= :mcpStockMax'
+                    ))->setParameter('mcpStockMax', $stockMax);
                 }
 
                 $qb->setMaxResults($limit)->setFirstResult($offset);
