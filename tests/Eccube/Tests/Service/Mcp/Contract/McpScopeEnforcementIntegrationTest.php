@@ -77,6 +77,28 @@ final class McpScopeEnforcementIntegrationTest extends EccubeTestCase
         $this->assertStringContainsString('Insufficient scope: mcp:order:read', (string) $text);
     }
 
+    public function testToolCallDeniedForCustomerScope(): void
+    {
+        // product scope のみの token で customer 領域の tool を呼ぶ → 拒否
+        $jwt = $this->issueScopedJwt(['mcp:product:read']);
+
+        $result = $this->callTool($jwt, 'search_customers', ['limit' => 1]);
+
+        $this->assertTrue($result['result']['isError'] ?? false, 'scope 不足の tool は isError:true');
+        $this->assertStringContainsString('Insufficient scope: mcp:customer:read', (string) ($result['result']['content'][0]['text'] ?? ''));
+    }
+
+    public function testToolCallDeniedForPluginScope(): void
+    {
+        // product scope のみの token で plugin 領域の tool を呼ぶ → 拒否
+        $jwt = $this->issueScopedJwt(['mcp:product:read']);
+
+        $result = $this->callTool($jwt, 'list_plugins', []);
+
+        $this->assertTrue($result['result']['isError'] ?? false, 'scope 不足の tool は isError:true');
+        $this->assertStringContainsString('Insufficient scope: mcp:plugin:read', (string) ($result['result']['content'][0]['text'] ?? ''));
+    }
+
     /**
      * initialize → notifications/initialized → tools/call の handshake を実カーネルに流し、
      * tools/call の JSON-RPC レスポンス (デコード済み) を返す。
