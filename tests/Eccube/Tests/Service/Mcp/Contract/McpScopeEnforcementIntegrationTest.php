@@ -99,6 +99,29 @@ final class McpScopeEnforcementIntegrationTest extends EccubeTestCase
         $this->assertStringContainsString('Insufficient scope: mcp:plugin:read', (string) ($result['result']['content'][0]['text'] ?? ''));
     }
 
+    public function testFirewallDeniesTokenWithoutAnyMcpScope(): void
+    {
+        // mcp scope を 1 つも持たない token は、 ツール到達前に /admin/mcp の access_control 段で 403。
+        // (Member 認証で ROLE_ADMIN は付くが、 mcp read scope が無いと access_map の mcp ルールで弾く)
+        $jwt = $this->issueScopedJwt([]);
+        $path = '/'.$this->getAdminRoute().'/mcp';
+
+        $this->client->request(Request::METHOD_POST, $path, server: [
+            'CONTENT_TYPE' => 'application/json',
+            'HTTP_ACCEPT' => 'application/json, text/event-stream',
+            'HTTP_AUTHORIZATION' => 'Bearer '.$jwt,
+        ], content: (string) json_encode([
+            'jsonrpc' => '2.0', 'id' => 1, 'method' => 'initialize',
+            'params' => ['protocolVersion' => '2025-03-26', 'clientInfo' => ['name' => 'it', 'version' => '1'], 'capabilities' => []],
+        ]));
+
+        $this->assertSame(
+            Response::HTTP_FORBIDDEN,
+            $this->client->getResponse()->getStatusCode(),
+            (string) $this->client->getResponse()->getContent(),
+        );
+    }
+
     /**
      * initialize → notifications/initialized → tools/call の handshake を実カーネルに流し、
      * tools/call の JSON-RPC レスポンス (デコード済み) を返す。
