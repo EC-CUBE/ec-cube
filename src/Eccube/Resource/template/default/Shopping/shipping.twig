@@ -16,6 +16,9 @@ file that was distributed with this source code.
            このお届け先選択画面に限りセル幅を固定し, 全行の列位置を揃える. #}
         .ec-addressList__remove { display: table-cell; width: 1%; white-space: nowrap; }
         .ec-addressList__action { display: table-cell; top: 0; white-space: nowrap; }
+        {# 枠なしアイコンの編集・削除リンク #}
+        .ec-addressList__actionIcon { display: inline-block; padding: 8px; margin-left: 4px; color: #767676; font-size: 16px; line-height: 1; }
+        .ec-addressList__actionIcon:hover { color: #DE5D50; }
     </style>
 {% endblock %}
 
@@ -76,8 +79,8 @@ file that was distributed with this source code.
                             {# 会員本人の住所(id=null)には編集・削除を出さないが, 列幅を揃えるため操作セルは常に描画する #}
                             <div class="ec-addressList__action">
                                 {% if Address.id %}
-                                    <a class="ec-inlineBtn" href="{{ url('shopping_shipping_customer_address_edit', {'id': shippingId, 'ca_id': Address.id}) }}" title="{{ 'common.change'|trans }}" aria-label="{{ 'common.change'|trans }}"><i class="fas fa-pen-to-square"></i></a>
-                                    <a class="ec-inlineBtn" href="{{ url('shopping_shipping_customer_address_delete', {'id': shippingId, 'ca_id': Address.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" title="{{ 'common.delete'|trans }}" aria-label="{{ 'common.delete'|trans }}"><i class="fas fa-trash-can"></i></a>
+                                    <a class="ec-addressList__actionIcon" href="{{ url('shopping_shipping_customer_address_edit', {'id': shippingId, 'ca_id': Address.id}) }}" title="{{ 'common.change'|trans }}" aria-label="{{ 'common.change'|trans }}"><i class="fas fa-pen-to-square"></i></a>
+                                    <a class="ec-addressList__actionIcon" href="{{ url('shopping_shipping_customer_address_delete', {'id': shippingId, 'ca_id': Address.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" title="{{ 'common.delete'|trans }}" aria-label="{{ 'common.delete'|trans }}"><i class="fas fa-trash-can"></i></a>
                                 {% endif %}
                             </div>
                         </div>
