@@ -17,6 +17,7 @@ namespace Eccube\Tests\Web\Admin\Order;
 
 use Eccube\Common\Constant;
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderPdf;
@@ -405,6 +406,50 @@ final class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $this->assertNull($OrderPdf->getNote1());
         $this->assertNull($OrderPdf->getNote2());
         $this->assertNull($OrderPdf->getNote3());
+    }
+
+    /**
+     * 納品書PDFの出力項目トグル（会社名・カナ・営業時間・メッセージ等）を全て ON にした状態でも
+     * PDF が生成できること (#6197). とくに「店舗からのメッセージ」の折り返し描画(MultiCell)の回帰防止.
+     */
+    public function testDownloadSuccessWithAllOrderPdfItemsVisible()
+    {
+        $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->find(1);
+        $this->assertInstanceOf(BaseInfo::class, $BaseInfo);
+        $BaseInfo->setOrderPdfVisibleShopName(true)
+            ->setOrderPdfVisibleShopKana(true)
+            ->setOrderPdfVisibleShopNameEng(true)
+            ->setOrderPdfVisibleAddress(true)
+            ->setOrderPdfVisibleCompanyName(true)
+            ->setOrderPdfVisibleCompanyKana(true)
+            ->setOrderPdfVisiblePhoneNumber(true)
+            ->setOrderPdfVisibleBusinessHour(true)
+            ->setOrderPdfVisibleEmail(true)
+            ->setOrderPdfVisibleInvoiceNumber(true)
+            ->setOrderPdfVisibleMessage(true)
+            ->setCompanyName('テスト株式会社')
+            ->setCompanyKana('テストカブシキガイシャ')
+            ->setBusinessHour('10:00-19:00')
+            ->setMessage(str_repeat('毎度ご利用ありがとうございます。', 20));
+        $this->entityManager->flush();
+
+        $Order = $this->createOrderForSearch();
+        $Shippings = $Order->getShippings();
+        $shippingId = $Shippings[0]->getId();
+
+        $client = $this->client;
+        $crawler = $client->request(Request::METHOD_POST, $this->generateUrl('admin_order_export_pdf'),
+            [
+                '_token' => 'dummy',
+                'ids' => [$shippingId],
+            ]);
+
+        $form = $this->getForm($crawler);
+        $client->submit($form);
+
+        $this->actual = $client->getResponse()->headers->get('Content-Type');
+        $this->expected = 'application/pdf';
+        $this->verify();
     }
 
     private function getForm(Crawler $crawler): Form

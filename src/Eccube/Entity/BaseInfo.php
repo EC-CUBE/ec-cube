@@ -170,6 +170,42 @@ class BaseInfo extends AbstractEntity
     #[ORM\Column(name: 'ucp_catalog_requires_auth', type: Types::BOOLEAN, options: ['default' => false])]
     private bool $ucp_catalog_requires_auth = false;
 
+    // 納品書PDFの店舗情報の出力項目トグル（#6197）。
+    // 既定は「現状出力している項目＋インボイス要件の会社名」を ON、新規項目は OFF とし、
+    // アップグレード時も既存の納品書の見た目を極力維持する。
+    #[ORM\Column(name: 'order_pdf_visible_shop_name', type: Types::BOOLEAN, options: ['default' => true])]
+    private bool $order_pdf_visible_shop_name = true;
+
+    #[ORM\Column(name: 'order_pdf_visible_shop_kana', type: Types::BOOLEAN, options: ['default' => false])]
+    private bool $order_pdf_visible_shop_kana = false;
+
+    #[ORM\Column(name: 'order_pdf_visible_shop_name_eng', type: Types::BOOLEAN, options: ['default' => false])]
+    private bool $order_pdf_visible_shop_name_eng = false;
+
+    #[ORM\Column(name: 'order_pdf_visible_address', type: Types::BOOLEAN, options: ['default' => true])]
+    private bool $order_pdf_visible_address = true;
+
+    #[ORM\Column(name: 'order_pdf_visible_company_name', type: Types::BOOLEAN, options: ['default' => true])]
+    private bool $order_pdf_visible_company_name = true;
+
+    #[ORM\Column(name: 'order_pdf_visible_company_kana', type: Types::BOOLEAN, options: ['default' => false])]
+    private bool $order_pdf_visible_company_kana = false;
+
+    #[ORM\Column(name: 'order_pdf_visible_phone_number', type: Types::BOOLEAN, options: ['default' => true])]
+    private bool $order_pdf_visible_phone_number = true;
+
+    #[ORM\Column(name: 'order_pdf_visible_business_hour', type: Types::BOOLEAN, options: ['default' => false])]
+    private bool $order_pdf_visible_business_hour = false;
+
+    #[ORM\Column(name: 'order_pdf_visible_email', type: Types::BOOLEAN, options: ['default' => true])]
+    private bool $order_pdf_visible_email = true;
+
+    #[ORM\Column(name: 'order_pdf_visible_invoice_number', type: Types::BOOLEAN, options: ['default' => true])]
+    private bool $order_pdf_visible_invoice_number = true;
+
+    #[ORM\Column(name: 'order_pdf_visible_message', type: Types::BOOLEAN, options: ['default' => false])]
+    private bool $order_pdf_visible_message = false;
+
     /**
      * Get id.
      *
@@ -936,5 +972,203 @@ class BaseInfo extends AbstractEntity
     public function isUcpCatalogRequiresAuth(): bool
     {
         return $this->ucp_catalog_requires_auth;
+    }
+
+    /**
+     * Set orderPdfVisibleShopName.
+     */
+    public function setOrderPdfVisibleShopName(bool $orderPdfVisibleShopName): BaseInfo
+    {
+        $this->order_pdf_visible_shop_name = $orderPdfVisibleShopName;
+
+        return $this;
+    }
+
+    /**
+     * Get orderPdfVisibleShopName.
+     */
+    public function isOrderPdfVisibleShopName(): bool
+    {
+        return $this->order_pdf_visible_shop_name;
+    }
+
+    /**
+     * Set orderPdfVisibleShopKana.
+     */
+    public function setOrderPdfVisibleShopKana(bool $orderPdfVisibleShopKana): BaseInfo
+    {
+        $this->order_pdf_visible_shop_kana = $orderPdfVisibleShopKana;
+
+        return $this;
+    }
+
+    /**
+     * Get orderPdfVisibleShopKana.
+     */
+    public function isOrderPdfVisibleShopKana(): bool
+    {
+        return $this->order_pdf_visible_shop_kana;
+    }
+
+    /**
+     * Set orderPdfVisibleShopNameEng.
+     */
+    public function setOrderPdfVisibleShopNameEng(bool $orderPdfVisibleShopNameEng): BaseInfo
+    {
+        $this->order_pdf_visible_shop_name_eng = $orderPdfVisibleShopNameEng;
+
+        return $this;
+    }
+
+    /**
+     * Get orderPdfVisibleShopNameEng.
+     */
+    public function isOrderPdfVisibleShopNameEng(): bool
+    {
+        return $this->order_pdf_visible_shop_name_eng;
+    }
+
+    /**
+     * Set orderPdfVisibleAddress.
+     */
+    public function setOrderPdfVisibleAddress(bool $orderPdfVisibleAddress): BaseInfo
+    {
+        $this->order_pdf_visible_address = $orderPdfVisibleAddress;
+
+        return $this;
+    }
+
+    /**
+     * Get orderPdfVisibleAddress.
+     */
+    public function isOrderPdfVisibleAddress(): bool
+    {
+        return $this->order_pdf_visible_address;
+    }
+
+    /**
+     * Set orderPdfVisibleCompanyName.
+     */
+    public function setOrderPdfVisibleCompanyName(bool $orderPdfVisibleCompanyName): BaseInfo
+    {
+        $this->order_pdf_visible_company_name = $orderPdfVisibleCompanyName;
+
+        return $this;
+    }
+
+    /**
+     * Get orderPdfVisibleCompanyName.
+     */
+    public function isOrderPdfVisibleCompanyName(): bool
+    {
+        return $this->order_pdf_visible_company_name;
+    }
+
+    /**
+     * Set orderPdfVisibleCompanyKana.
+     */
+    public function setOrderPdfVisibleCompanyKana(bool $orderPdfVisibleCompanyKana): BaseInfo
+    {
+        $this->order_pdf_visible_company_kana = $orderPdfVisibleCompanyKana;
+
+        return $this;
+    }
+
+    /**
+     * Get orderPdfVisibleCompanyKana.
+     */
+    public function isOrderPdfVisibleCompanyKana(): bool
+    {
+        return $this->order_pdf_visible_company_kana;
+    }
+
+    /**
+     * Set orderPdfVisiblePhoneNumber.
+     */
+    public function setOrderPdfVisiblePhoneNumber(bool $orderPdfVisiblePhoneNumber): BaseInfo
+    {
+        $this->order_pdf_visible_phone_number = $orderPdfVisiblePhoneNumber;
+
+        return $this;
+    }
+
+    /**
+     * Get orderPdfVisiblePhoneNumber.
+     */
+    public function isOrderPdfVisiblePhoneNumber(): bool
+    {
+        return $this->order_pdf_visible_phone_number;
+    }
+
+    /**
+     * Set orderPdfVisibleBusinessHour.
+     */
+    public function setOrderPdfVisibleBusinessHour(bool $orderPdfVisibleBusinessHour): BaseInfo
+    {
+        $this->order_pdf_visible_business_hour = $orderPdfVisibleBusinessHour;
+
+        return $this;
+    }
+
+    /**
+     * Get orderPdfVisibleBusinessHour.
+     */
+    public function isOrderPdfVisibleBusinessHour(): bool
+    {
+        return $this->order_pdf_visible_business_hour;
+    }
+
+    /**
+     * Set orderPdfVisibleEmail.
+     */
+    public function setOrderPdfVisibleEmail(bool $orderPdfVisibleEmail): BaseInfo
+    {
+        $this->order_pdf_visible_email = $orderPdfVisibleEmail;
+
+        return $this;
+    }
+
+    /**
+     * Get orderPdfVisibleEmail.
+     */
+    public function isOrderPdfVisibleEmail(): bool
+    {
+        return $this->order_pdf_visible_email;
+    }
+
+    /**
+     * Set orderPdfVisibleInvoiceNumber.
+     */
+    public function setOrderPdfVisibleInvoiceNumber(bool $orderPdfVisibleInvoiceNumber): BaseInfo
+    {
+        $this->order_pdf_visible_invoice_number = $orderPdfVisibleInvoiceNumber;
+
+        return $this;
+    }
+
+    /**
+     * Get orderPdfVisibleInvoiceNumber.
+     */
+    public function isOrderPdfVisibleInvoiceNumber(): bool
+    {
+        return $this->order_pdf_visible_invoice_number;
+    }
+
+    /**
+     * Set orderPdfVisibleMessage.
+     */
+    public function setOrderPdfVisibleMessage(bool $orderPdfVisibleMessage): BaseInfo
+    {
+        $this->order_pdf_visible_message = $orderPdfVisibleMessage;
+
+        return $this;
+    }
+
+    /**
+     * Get orderPdfVisibleMessage.
+     */
+    public function isOrderPdfVisibleMessage(): bool
+    {
+        return $this->order_pdf_visible_message;
     }
 }

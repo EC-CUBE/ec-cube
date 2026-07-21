@@ -285,36 +285,6 @@ class OrderPdfService extends Fpdi
         // 基準座標を設定する
         $this->setBasePosition();
 
-        // ショップ名
-        $this->lfText(125, 58, $this->baseInfoRepository->getShopName(), 8, 'B');
-
-        // 郵便番号
-        $postalCode = $this->baseInfoRepository->getPostalCode();
-        if (!empty($postalCode)) {
-            $this->lfText(121, 63, "\u{3012}".' '.mb_substr($postalCode, 0, 3).' - '.mb_substr($postalCode, 3, 4), 8);
-        }
-
-        // 都道府県+所在地
-        $text = $this->baseInfoRepository->getPref().$this->baseInfoRepository->getAddr01();
-        $this->lfText(125, 66, $text, 8);
-        $this->lfText(125, 69, $this->baseInfoRepository->getAddr02(), 8);
-
-        // 電話番号
-        $text = 'TEL: '.$this->baseInfoRepository->getPhoneNumber();
-        $this->lfText(125, 72, $text, 8); // TEL・FAX
-
-        // メールアドレス
-        if (strlen((string) $this->baseInfoRepository->getEmail01()) > 0) {
-            $text = 'Email: '.$this->baseInfoRepository->getEmail01();
-            $this->lfText(125, 75, $text, 8); // Email
-        }
-
-        // インボイス登録番号
-        if (!empty($this->baseInfoRepository->getInvoiceRegistrationNumber())) {
-            $text = '登録番号: '.$this->baseInfoRepository->getInvoiceRegistrationNumber();
-            $this->lfText(125, 79, $text, 8);
-        }
-
         // user_dataにlogo.pngが配置されている場合は優先的に読み込む
         $logoFile = $this->eccubeConfig->get('eccube_html_dir').'/user_data/assets/pdf/logo.png';
 
@@ -323,6 +293,110 @@ class OrderPdfService extends Fpdi
         }
 
         $this->Image($logoFile, 124, 46, 40);
+
+        // 店舗情報は基準の x=125 から、上から順に「表示トグルが ON かつ 値が非空」の行だけを詰めて描画する。
+        // 非表示・空値の行は座標を空けず後続の行が繰り上がる（#6197）。
+        // 表示/非表示は基本設定の order_pdf_visible_* トグルで制御する。
+        $BaseInfo = $this->baseInfoRepository;
+        $x = 125;
+        $y = 58.0;
+        $lineHeight = 3.3;
+
+        // 店名（太字）
+        if ($BaseInfo->isOrderPdfVisibleShopName() && !empty($BaseInfo->getShopName())) {
+            $this->lfText($x, (int) round($y), $BaseInfo->getShopName(), 8, 'B');
+            $y += $lineHeight;
+        }
+
+        // 店名（カナ）
+        if ($BaseInfo->isOrderPdfVisibleShopKana() && !empty($BaseInfo->getShopKana())) {
+            $this->lfText($x, (int) round($y), $BaseInfo->getShopKana(), 8);
+            $y += $lineHeight;
+        }
+
+        // 店名（英語表記）
+        if ($BaseInfo->isOrderPdfVisibleShopNameEng() && !empty($BaseInfo->getShopNameEng())) {
+            $this->lfText($x, (int) round($y), $BaseInfo->getShopNameEng(), 8);
+            $y += $lineHeight;
+        }
+
+        // 郵便番号・住所（〒 / 都道府県+addr01 / addr02 の最大3行を1トグルで制御。各行は空ならスキップ）
+        if ($BaseInfo->isOrderPdfVisibleAddress()) {
+            $postalCode = $BaseInfo->getPostalCode();
+            if (!empty($postalCode)) {
+                // 郵便マーク(〒)分だけ左に寄せる
+                $this->lfText($x - 4, (int) round($y), "\u{3012}".' '.mb_substr($postalCode, 0, 3).' - '.mb_substr($postalCode, 3, 4), 8);
+                $y += $lineHeight;
+            }
+            $address1 = $BaseInfo->getPref().$BaseInfo->getAddr01();
+            if (!empty($address1)) {
+                $this->lfText($x, (int) round($y), $address1, 8);
+                $y += $lineHeight;
+            }
+            if (!empty($BaseInfo->getAddr02())) {
+                $this->lfText($x, (int) round($y), $BaseInfo->getAddr02(), 8);
+                $y += $lineHeight;
+            }
+        }
+
+        // 会社名
+        if ($BaseInfo->isOrderPdfVisibleCompanyName() && !empty($BaseInfo->getCompanyName())) {
+            $this->lfText($x, (int) round($y), $BaseInfo->getCompanyName(), 8);
+            $y += $lineHeight;
+        }
+
+        // 会社名（カナ）
+        if ($BaseInfo->isOrderPdfVisibleCompanyKana() && !empty($BaseInfo->getCompanyKana())) {
+            $this->lfText($x, (int) round($y), $BaseInfo->getCompanyKana(), 8);
+            $y += $lineHeight;
+        }
+
+        // 電話番号
+        if ($BaseInfo->isOrderPdfVisiblePhoneNumber() && !empty($BaseInfo->getPhoneNumber())) {
+            $this->lfText($x, (int) round($y), 'TEL: '.$BaseInfo->getPhoneNumber(), 8);
+            $y += $lineHeight;
+        }
+
+        // 店舗営業時間
+        if ($BaseInfo->isOrderPdfVisibleBusinessHour() && !empty($BaseInfo->getBusinessHour())) {
+            $this->lfText($x, (int) round($y), $BaseInfo->getBusinessHour(), 8);
+            $y += $lineHeight;
+        }
+
+        // メールアドレス
+        if ($BaseInfo->isOrderPdfVisibleEmail() && strlen((string) $BaseInfo->getEmail01()) > 0) {
+            $this->lfText($x, (int) round($y), 'Email: '.$BaseInfo->getEmail01(), 8);
+            $y += $lineHeight;
+        }
+
+        // インボイス登録番号
+        if ($BaseInfo->isOrderPdfVisibleInvoiceNumber() && !empty($BaseInfo->getInvoiceRegistrationNumber())) {
+            $this->lfText($x, (int) round($y), '登録番号: '.$BaseInfo->getInvoiceRegistrationNumber(), 8);
+            $y += $lineHeight;
+        }
+
+        // 店舗からのメッセージ（長文になり得るため折り返して描画する）
+        if ($BaseInfo->isOrderPdfVisibleMessage() && !empty($BaseInfo->getMessage())) {
+            $this->renderShopMessage($x, $y, $BaseInfo->getMessage());
+        }
+    }
+
+    /**
+     * 店舗情報欄に「店舗からのメッセージ」を折り返して描画する.
+     *
+     * 合計金額ボックス（y≈95.5）を侵食しないよう、右カラムの残り高さに収める.
+     */
+    protected function renderShopMessage(int $x, float $y, string $message): void
+    {
+        // 合計金額ボックス（y≈95.5）の直前までを上限高さとする（侵食させない）
+        $maxHeight = 94.0 - $y;
+        if ($maxHeight <= 0) {
+            return;
+        }
+
+        $this->SetFont(self::FONT_SJIS, '', 8);
+        // lfText と同じオフセットで位置を合わせ、幅・最大高さを指定して折り返す
+        $this->MultiCell(70, 3.3, $message, 0, 'L', false, 1, $x + $this->baseOffsetX, $y + $this->baseOffsetY, true, 0, false, true, $maxHeight, 'T');
     }
 
     /**
