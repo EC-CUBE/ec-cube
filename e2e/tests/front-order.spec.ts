@@ -391,7 +391,8 @@ test.describe('Front Order (EF03)', () => {
     await expect(page.locator('.ec-addressList')).toContainText('桜子6259');
 
     // 削除: 確認ダイアログを承認 → 一覧から消えること.
-    page.on('dialog', dialog => dialog.accept());
+    // once にして afterEach(clearCart)のダイアログハンドラと二重に accept しないようにする.
+    page.once('dialog', dialog => dialog.accept());
     const editedItem = page.locator('.ec-addressList__item', { hasText: '桜子6259' });
     await editedItem.getByRole('link', { name: '削除' }).click();
     await page.waitForLoadState('load');
