@@ -43,6 +43,30 @@ async function clearCart(page: import('@playwright/test').Page) {
   }
 }
 
+/**
+ * Helper: Add a customer address from MyPage with a distinctive name02 marker.
+ * Returns to caller on the address list page.
+ */
+async function addCustomerAddressFromMypage(page: import('@playwright/test').Page, name02: string) {
+  await page.goto('/mypage/delivery');
+  await page.waitForLoadState('load');
+  await page.locator('div.ec-addressRole div.ec-addressRole__actions a').click();
+  await page.waitForLoadState('load');
+  await page.locator('#customer_address_name_name01').fill('配送6259');
+  await page.locator('#customer_address_name_name02').fill(name02);
+  await page.locator('#customer_address_kana_kana01').fill('ハイソウ');
+  await page.locator('#customer_address_kana_kana02').fill('ハナコ');
+  await page.locator('#customer_address_postal_code').fill('530-0001');
+  await page.locator('#customer_address_address_pref').selectOption({ value: '27' });
+  await page.waitForTimeout(1000);
+  await page.locator('#customer_address_address_addr01').fill('大阪市北区');
+  await page.locator('#customer_address_address_addr02').fill('梅田1-1-1');
+  await page.locator('#customer_address_phone_number').fill('111-111-111');
+  await page.locator('div.ec-RegisterRole__actions button').click();
+  await page.waitForLoadState('load');
+  await expect(page.locator('div.ec-pageHeader h1')).toContainText('お届け先一覧');
+}
+
 test.describe('Front Order (EF03)', () => {
 
   test.afterEach(async ({ page }) => {
@@ -331,6 +355,48 @@ test.describe('Front Order (EF03)', () => {
     await page.waitForLoadState('load');
     await expect(page).toHaveURL(/\/shopping\/complete/);
     await expect(page.locator('.ec-pageHeader h1')).toContainText('ご注文完了');
+  });
+
+  // お届け先選択画面での住所の編集・削除 (issue #6259)
+  test('EF0305-UC10-T01 会員 お届け先の編集・削除', async ({ page }) => {
+    await loginAsTestCustomer(page);
+
+    // 一意な名前のお届け先を追加(テスト末尾で削除して原状復帰する).
+    await addCustomerAddressFromMypage(page, '花子6259');
+
+    // カート→レジ→ご注文手続き.
+    await addProductToCartAndGoToCart(page, 1);
+    await page.locator('a.ec-blockBtn--action', { hasText: 'レジに進む' }).click();
+    await page.waitForLoadState('load');
+    await expect(page).toHaveURL(/\/shopping$/);
+
+    // お届け先選択画面へ.
+    await page.locator('div.ec-orderDelivery__change button').first().click();
+    await page.waitForLoadState('load');
+    await expect(page.locator('div.ec-pageHeader h1')).toContainText('お届け先の指定');
+
+    // 追加した住所の項目に「変更」「削除」ボタンがあること.
+    const item = page.locator('.ec-addressList__item', { hasText: '花子6259' });
+    await expect(item.getByRole('link', { name: '変更' })).toBeVisible();
+    await expect(item.getByRole('link', { name: '削除' })).toBeVisible();
+
+    // 編集: name02 を変更して登録 → 選択画面に戻り反映されること.
+    await item.getByRole('link', { name: '変更' }).click();
+    await page.waitForLoadState('load');
+    await expect(page.locator('div.ec-pageHeader h1')).toContainText('お届け先の変更');
+    await page.locator('#shopping_shipping_name_name02').fill('桜子6259');
+    await page.locator('div.ec-RegisterRole__actions button.ec-blockBtn--action').click();
+    await page.waitForLoadState('load');
+    await expect(page.locator('div.ec-pageHeader h1')).toContainText('お届け先の指定');
+    await expect(page.locator('.ec-addressList')).toContainText('桜子6259');
+
+    // 削除: 確認ダイアログを承認 → 一覧から消えること.
+    page.on('dialog', dialog => dialog.accept());
+    const editedItem = page.locator('.ec-addressList__item', { hasText: '桜子6259' });
+    await editedItem.getByRole('link', { name: '削除' }).click();
+    await page.waitForLoadState('load');
+    await expect(page.locator('div.ec-pageHeader h1')).toContainText('お届け先の指定');
+    await expect(page.locator('.ec-addressList')).not.toContainText('桜子6259');
   });
 
   test('EF0305-UC07-T01 ログインしてカートをマージ', async ({ page }) => {

@@ -64,6 +64,12 @@ file that was distributed with this source code.
                                 <div>〒{{ Address.postal_code }} {{ Address.Pref }}{{ Address.addr01 }}{{ Address.addr02 }}</div>
                                 <div>{{ Address.phone_number }}</div>
                             </div>
+                            {% if Address.id %}
+                                <div class="ec-addressList__action">
+                                    <a class="ec-inlineBtn" href="{{ url('shopping_shipping_customer_address_edit', {'id': shippingId, 'ca_id': Address.id}) }}">{{ 'common.change'|trans }}</a>
+                                    <a class="ec-inlineBtn" href="{{ url('shopping_shipping_customer_address_delete', {'id': shippingId, 'ca_id': Address.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete">{{ 'common.delete'|trans }}</a>
+                                </div>
+                            {% endif %}
                         </div>
                         {% endfor %}
                     </div>

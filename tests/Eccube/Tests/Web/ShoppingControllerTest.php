@@ -18,6 +18,8 @@ namespace Eccube\Tests\Web;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ObjectRepository;
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Customer;
+use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\SaleType;
@@ -460,6 +462,181 @@ final class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         ]);
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_shipping', ['id' => $shippingId])));
+    }
+
+    /**
+     * 注文手続き画面のお届け先選択画面で, 登録済みお届け先の編集画面を表示する.
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/6259
+     */
+    public function testShippingCustomerAddressEditGet()
+    {
+        $Customer = $this->createCustomer('shopping-6259-edit-get@example.com');
+        $CustomerAddress = $this->createCustomerAddress($Customer);
+
+        $this->scenarioCartIn($Customer);
+        $this->scenarioConfirm($Customer);
+        $shippingId = $this->getShippingId($Customer);
+
+        $crawler = $this->client->request(
+            Request::METHOD_GET,
+            $this->generateUrl('shopping_shipping_customer_address_edit', ['id' => $shippingId, 'ca_id' => $CustomerAddress->getId()])
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertStringContainsString('お届け先の変更', $crawler->html());
+    }
+
+    /**
+     * 注文手続き画面のお届け先選択画面で, 登録済みお届け先を編集する.
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/6259
+     */
+    public function testShippingCustomerAddressEdit()
+    {
+        $Customer = $this->createCustomer('shopping-6259-edit@example.com');
+        $CustomerAddress = $this->createCustomerAddress($Customer);
+
+        $this->scenarioCartIn($Customer);
+        $this->scenarioConfirm($Customer);
+        $shippingId = $this->getShippingId($Customer);
+
+        $form = $this->createShippingFormData();
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('shopping_shipping_customer_address_edit', ['id' => $shippingId, 'ca_id' => $CustomerAddress->getId()]),
+            ['shopping_shipping' => $form]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_shipping', ['id' => $shippingId])));
+
+        // クライアントのサブリクエストで更新された内容を確認するため, 最新状態を取得する.
+        $id = $CustomerAddress->getId();
+        $this->entityManager->clear();
+        $updated = $this->entityManager->getRepository(CustomerAddress::class)->find($id);
+
+        $this->assertInstanceOf(CustomerAddress::class, $updated);
+        $this->expected = $form['name']['name01'];
+        $this->actual = $updated->getName01();
+        $this->verify();
+    }
+
+    /**
+     * 注文手続き画面のお届け先選択画面で, 登録済みお届け先を削除する.
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/6259
+     */
+    public function testShippingCustomerAddressDelete()
+    {
+        $Customer = $this->createCustomer('shopping-6259-delete@example.com');
+        $CustomerAddress = $this->createCustomerAddress($Customer);
+        $id = $CustomerAddress->getId();
+
+        $this->scenarioCartIn($Customer);
+        $this->scenarioConfirm($Customer);
+        $shippingId = $this->getShippingId($Customer);
+
+        $this->client->request(
+            Request::METHOD_DELETE,
+            $this->generateUrl('shopping_shipping_customer_address_delete', ['id' => $shippingId, 'ca_id' => $id])
+        );
+
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_shipping', ['id' => $shippingId])));
+
+        $deleted = $this->entityManager->getRepository(CustomerAddress::class)->find($id);
+        $this->assertNotInstanceOf(CustomerAddress::class, $deleted);
+    }
+
+    /**
+     * 他人のお届け先は編集できない(IDOR対策).
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/6259
+     */
+    public function testShippingCustomerAddressEditForbiddenOtherCustomer()
+    {
+        $Customer = $this->createCustomer('shopping-6259-idor-edit-a@example.com');
+        $Other = $this->createCustomer('shopping-6259-idor-edit-b@example.com');
+        $OtherAddress = $this->createCustomerAddress($Other);
+
+        $this->scenarioCartIn($Customer);
+        $this->scenarioConfirm($Customer);
+        $shippingId = $this->getShippingId($Customer);
+
+        $this->client->request(
+            Request::METHOD_GET,
+            $this->generateUrl('shopping_shipping_customer_address_edit', ['id' => $shippingId, 'ca_id' => $OtherAddress->getId()])
+        );
+
+        $this->expected = 404;
+        $this->actual = $this->client->getResponse()->getStatusCode();
+        $this->verify();
+    }
+
+    /**
+     * 他人のお届け先は削除できない(IDOR対策).
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/6259
+     */
+    public function testShippingCustomerAddressDeleteForbiddenOtherCustomer()
+    {
+        $Customer = $this->createCustomer('shopping-6259-idor-delete-a@example.com');
+        $Other = $this->createCustomer('shopping-6259-idor-delete-b@example.com');
+        $OtherAddress = $this->createCustomerAddress($Other);
+        $id = $OtherAddress->getId();
+
+        $this->scenarioCartIn($Customer);
+        $this->scenarioConfirm($Customer);
+        $shippingId = $this->getShippingId($Customer);
+
+        $this->client->request(
+            Request::METHOD_DELETE,
+            $this->generateUrl('shopping_shipping_customer_address_delete', ['id' => $shippingId, 'ca_id' => $id])
+        );
+
+        $this->expected = 404;
+        $this->actual = $this->client->getResponse()->getStatusCode();
+        $this->verify();
+
+        // 他人のお届け先が削除されていないこと.
+        $notDeleted = $this->entityManager->getRepository(CustomerAddress::class)->find($id);
+        $this->assertInstanceOf(CustomerAddress::class, $notDeleted);
+    }
+
+    /**
+     * 存在しないお届け先の編集は404.
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/6259
+     */
+    public function testShippingCustomerAddressEditNotFound()
+    {
+        $Customer = $this->createCustomer('shopping-6259-edit-404@example.com');
+
+        $this->scenarioCartIn($Customer);
+        $this->scenarioConfirm($Customer);
+        $shippingId = $this->getShippingId($Customer);
+
+        $this->client->request(
+            Request::METHOD_GET,
+            $this->generateUrl('shopping_shipping_customer_address_edit', ['id' => $shippingId, 'ca_id' => 999999999])
+        );
+
+        $this->expected = 404;
+        $this->actual = $this->client->getResponse()->getStatusCode();
+        $this->verify();
+    }
+
+    /**
+     * 購入処理中の受注に紐づく Shipping の id を取得する.
+     */
+    private function getShippingId(Customer $Customer): int
+    {
+        /** @var Order $Order */
+        $Order = $this->entityManager->getRepository(Order::class)->findOneBy(
+            ['Customer' => $Customer],
+            ['id' => 'DESC']
+        );
+
+        return $Order->getShippings()->first()->getId();
     }
 
     /**
