@@ -28,6 +28,8 @@ use Symfony\Component\HttpKernel\KernelEvents;
  *
  * - `Content-Type` が `application/json` で始まらない POST/PUT/DELETE 等は **415** で拒否
  * - `ECCUBE_MCP_ALLOWED_ORIGINS` が設定されている時、`Origin` ヘッダがその許可リストに無ければ **403**
+ * - 許可リスト未設定時: dev/test は Origin 検証を skip、 **prod では検証できない Origin (=ブラウザ発) を
+ *   403** で拒否 (Origin 無しの非ブラウザは通す)。 未設定のまま prod で DNS リバインディング等に晒さない
  * - GET / HEAD / OPTIONS は対象外 (Content-Type を伴わない、 CORS preflight も含むため)
  *
  * 拒否時のレスポンスは JSON 一本 (MCP クライアント前提)。 違反は `McpAuditLogger` に
@@ -45,6 +47,7 @@ final readonly class OriginContentTypeListener implements EventSubscriberInterfa
         string $eccubeAdminRoute,
         string $mcpAllowedOriginsCsv,
         private McpAuditLogger $auditLogger,
+        private bool $skipUnvalidatedOrigin,
     ) {
         $this->mcpPathPrefix = '/'.$eccubeAdminRoute.'/mcp';
         $this->allowedOrigins = array_values(array_filter(
@@ -96,7 +99,23 @@ final readonly class OriginContentTypeListener implements EventSubscriberInterfa
         }
 
         if ([] === $this->allowedOrigins) {
-            // 許可リスト未設定 = 開発時用に Origin 検証 skip
+            // 許可リスト未設定時:
+            // - dev/test ($skipUnvalidatedOrigin=true): 開発利便のため Origin 検証を skip
+            // - prod: Origin 無し (curl/サーバ間) は通し、 検証できない Origin (=ブラウザ発) は 403
+            if ($this->skipUnvalidatedOrigin || null === $request->headers->get('Origin')) {
+                return;
+            }
+
+            $this->auditLogger->logSecurityEvent(AuditResult::OriginInvalid, [
+                'path' => $request->getPathInfo(),
+                'origin' => $request->headers->get('Origin'),
+                'reason' => 'origin_not_configured',
+            ]);
+            $event->setResponse(new JsonResponse(
+                ['error' => 'forbidden', 'message' => 'Origin validation is not configured; browser-originated requests are rejected.'],
+                Response::HTTP_FORBIDDEN,
+            ));
+
             return;
         }
 

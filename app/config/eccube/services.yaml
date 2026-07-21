@@ -38,6 +38,8 @@ services:
           # MCP サーバ用 (path prefix と Origin 許可リスト)
           $eccubeAdminRoute: '%eccube_admin_route%'
           $mcpAllowedOriginsCsv: '%env(ECCUBE_MCP_ALLOWED_ORIGINS)%'
+          # 許可リスト未設定時、 dev/test は Origin 検証を skip し prod は検証不能な Origin を拒否する
+          $skipUnvalidatedOrigin: '%kernel.debug%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name

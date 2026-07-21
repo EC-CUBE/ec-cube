@@ -111,12 +111,37 @@ final class OriginContentTypeListenerTest extends TestCase
 
     public function testSkipsOriginCheckWhenAllowListIsEmpty(): void
     {
+        // dev/test (skip=true) は許可リスト未設定なら Origin 検証 skip
         $event = $this->dispatch(
             $this->makeListener(allowedOriginsCsv: ''),
             $this->makeRequest('POST', '/admin/mcp', contentType: 'application/json', origin: 'http://anything'),
         );
 
-        $this->assertNotInstanceOf(Response::class, $event->getResponse(), '許可リスト未設定なら Origin 検証 skip');
+        $this->assertNotInstanceOf(Response::class, $event->getResponse(), 'dev/test は許可リスト未設定で Origin 検証 skip');
+    }
+
+    public function testRejectsUnvalidatedBrowserOriginInProd(): void
+    {
+        // prod (skip=false) は許可リスト未設定でも、 検証できない Origin (=ブラウザ発) を 403 で拒否
+        $event = $this->dispatch(
+            $this->makeListener(allowedOriginsCsv: '', skipUnvalidatedOrigin: false),
+            $this->makeRequest('POST', '/admin/mcp', contentType: 'application/json', origin: 'https://evil.example'),
+        );
+
+        $response = $event->getResponse();
+        $this->assertInstanceOf(JsonResponse::class, $response);
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode(), (string) $response->getContent());
+    }
+
+    public function testPassesOriginlessRequestInProdWhenAllowListEmpty(): void
+    {
+        // prod でも Origin 無し (curl/サーバ間) は検証不要で通す
+        $event = $this->dispatch(
+            $this->makeListener(allowedOriginsCsv: '', skipUnvalidatedOrigin: false),
+            $this->makeRequest('POST', '/admin/mcp', contentType: 'application/json'),
+        );
+
+        $this->assertNotInstanceOf(Response::class, $event->getResponse(), 'Origin 無しは prod でも通過');
     }
 
     public function testSkipsOriginCheckWhenOriginHeaderAbsent(): void
@@ -129,11 +154,11 @@ final class OriginContentTypeListenerTest extends TestCase
         $this->assertNotInstanceOf(Response::class, $event->getResponse(), 'Origin 無し (curl 等) は通過');
     }
 
-    private function makeListener(string $allowedOriginsCsv = ''): OriginContentTypeListener
+    private function makeListener(string $allowedOriginsCsv = '', bool $skipUnvalidatedOrigin = true): OriginContentTypeListener
     {
         $auditLogger = new McpAuditLogger(new NullLogger(), new RequestStack());
 
-        return new OriginContentTypeListener('admin', $allowedOriginsCsv, $auditLogger);
+        return new OriginContentTypeListener('admin', $allowedOriginsCsv, $auditLogger, $skipUnvalidatedOrigin);
     }
 
     private function makeRequest(string $method, string $path, ?string $contentType, ?string $origin = null): Request
