@@ -345,6 +345,11 @@ jobs:
       ## インストール完了後は生成された .env により APP_ENV=prod へ切り替わる。
       - name: Start Symfony web server (HTTPS)
         run: |
+          ## composer install (Symfony Flex) が .env.dist から .env を生成し
+          ## APP_ENV=prod / DATABASE_URL=sqlite になるため削除する。.env が無い
+          ## ときだけ index.php は .env.install を読んで APP_ENV=install となり、
+          ## Web インストーラが動作する。
+          rm -f .env .env.local .env.local.php
           ## TLS 証明書を生成する (これを行わないと HTTP で起動してしまう)。
           ## ブラウザのトラストストアへの登録は certutil / ブラウザプロファイルを
           ## 必要とし CI ランナーでは失敗するが、証明書ファイル自体は生成される。
