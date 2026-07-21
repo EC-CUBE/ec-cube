@@ -64,12 +64,13 @@ file that was distributed with this source code.
                                 <div>〒{{ Address.postal_code }} {{ Address.Pref }}{{ Address.addr01 }}{{ Address.addr02 }}</div>
                                 <div>{{ Address.phone_number }}</div>
                             </div>
-                            {% if Address.id %}
-                                <div class="ec-addressList__action">
+                            {# 会員本人の住所(id=null)には編集・削除を出さないが, 列幅を揃えるため操作セルは常に描画する #}
+                            <div class="ec-addressList__action">
+                                {% if Address.id %}
                                     <a class="ec-inlineBtn" href="{{ url('shopping_shipping_customer_address_edit', {'id': shippingId, 'ca_id': Address.id}) }}" title="{{ 'common.change'|trans }}" aria-label="{{ 'common.change'|trans }}"><i class="fas fa-pen-to-square"></i></a>
                                     <a class="ec-inlineBtn" href="{{ url('shopping_shipping_customer_address_delete', {'id': shippingId, 'ca_id': Address.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete" title="{{ 'common.delete'|trans }}" aria-label="{{ 'common.delete'|trans }}"><i class="fas fa-trash-can"></i></a>
-                                </div>
-                            {% endif %}
+                                {% endif %}
+                            </div>
                         </div>
                         {% endfor %}
                     </div>
