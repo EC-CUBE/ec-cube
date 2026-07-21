@@ -345,14 +345,19 @@ jobs:
       ## インストール完了後は生成された .env により APP_ENV=prod へ切り替わる。
       - name: Start Symfony web server (HTTPS)
         run: |
-          ## TLS 証明書を生成する (これを行わないと HTTP で起動してしまう)
-          symfony server:ca:install
+          ## TLS 証明書を生成する (これを行わないと HTTP で起動してしまう)。
+          ## ブラウザのトラストストアへの登録は certutil / ブラウザプロファイルを
+          ## 必要とし CI ランナーでは失敗するが、証明書ファイル自体は生成される。
+          ## Playwright 側は ignoreHTTPSErrors で自己署名証明書を受け入れるため、
+          ## 登録失敗は無視してよい。証明書が生成されたことだけを検証する。
+          symfony server:ca:install || true
           symfony server:start --port=8000 --daemon
           for _ in $(seq 1 30); do
             curl -ksSf -o /dev/null https://127.0.0.1:8000/install/step1 && break
             sleep 1
           done
-          ## HTTPS で起動できていることを確認する (HTTP になっていたら失敗させる)
+          ## HTTPS で起動できていることを確認する。証明書生成に失敗していると
+          ## HTTP でリッスンするため、この HTTPS リクエストが失敗して検知できる。
           curl -ksSf -o /dev/null https://127.0.0.1:8000/install/step1
 
       ## HTTPS で起動するため https。これによりインストール後 (APP_ENV=prod) の
