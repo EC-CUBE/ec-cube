@@ -10,6 +10,15 @@ file that was distributed with this source code.
 #}
 {% extends 'default_frame.twig' %}
 
+{% block stylesheet %}
+    <style>
+        {# 各行を display:table で組むため, 操作セルの有無で列幅配分が変わりラジオ・住所がずれる.
+           このお届け先選択画面に限りセル幅を固定し, 全行の列位置を揃える. #}
+        .ec-addressList__remove { display: table-cell; width: 1%; white-space: nowrap; }
+        .ec-addressList__action { display: table-cell; top: 0; white-space: nowrap; }
+    </style>
+{% endblock %}
+
 {% block main %}
     <div class="ec-role">
         <div class="ec-pageHeader">
