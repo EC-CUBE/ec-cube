@@ -20,6 +20,7 @@ use Eccube\Entity\Member;
 use Eccube\Tests\EccubeTestCase;
 use League\Bundle\OAuth2ServerBundle\Entity\AccessToken as AccessTokenEntity;
 use League\Bundle\OAuth2ServerBundle\Entity\Client as ClientEntity;
+use League\Bundle\OAuth2ServerBundle\Entity\Scope as ScopeEntity;
 use League\Bundle\OAuth2ServerBundle\Manager\AccessTokenManagerInterface;
 use League\Bundle\OAuth2ServerBundle\Manager\ClientManagerInterface;
 use League\Bundle\OAuth2ServerBundle\Model\AccessToken as AccessTokenModel;
@@ -175,6 +176,12 @@ final class McpTokenRevocationContractTest extends EccubeTestCase
         $clientEntity = new ClientEntity();
         $clientEntity->setIdentifier($client->getIdentifier());
         $tokenEntity->setClient($clientEntity);
+
+        // /admin/mcp の access_control は最低 1 つの mcp read scope を要求するため、
+        // 認証経路 (正常/失効/無効化) を検証する有効フロー用に付与する。
+        $scopeEntity = new ScopeEntity();
+        $scopeEntity->setIdentifier('mcp:product:read');
+        $tokenEntity->addScope($scopeEntity);
 
         $privateKeyPath = static::getContainer()->getParameter('kernel.project_dir').'/app/PluginData/Api44/oauth/private.key';
         \assert(\is_string($privateKeyPath));
