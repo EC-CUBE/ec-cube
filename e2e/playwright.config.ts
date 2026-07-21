@@ -79,6 +79,10 @@ export default defineConfig({
         // certificate, so accept it instead of relying on the CA being
         // registered in the browser trust store.
         ignoreHTTPSErrors: true,
+        // Keep the trace on failure so CI can be diagnosed (the installer is
+        // not idempotent, so it is run with --retries=0 and the failing run is
+        // the only run).
+        trace: 'retain-on-failure',
       },
     },
   ],

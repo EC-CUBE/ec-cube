@@ -21,6 +21,10 @@ jobs:
   playwright:
     name: Playwright (${{ matrix.suite }})
     runs-on: ubuntu-24.04
+    ## workflow_dispatch (手動実行) では installer ジョブのみを回し、全 spec の
+    ## 実行は行わない (インストーラの動作確認だけを安価に回すため)。
+    ## push / pull_request (main.yml からの呼び出し) では従来どおり全 spec を実行する。
+    if: ${{ github.event_name != 'workflow_dispatch' }}
     strategy:
       fail-fast: false
       matrix:
@@ -374,7 +378,10 @@ jobs:
           ## インストーラの step4 に入力する接続情報 (spec が組み立てに使う)
           DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
           CI: 'true'
-        run: npx playwright test --project=install-tests
+        ## インストーラは冪等でない (1 回目でインストールが完了し .env が
+        ## 生成されるため、リトライすると 2 回目は APP_ENV=prod になり別状態と
+        ## なる)。リトライせず 1 回で判定する。
+        run: npx playwright test --project=install-tests --retries=0
 
       - name: Stop Symfony web server
         if: always()
