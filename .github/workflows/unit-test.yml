@@ -43,6 +43,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
+        with:
+          persist-credentials: false
 
       # CVE-2026-24765 (GHSA-vvj3-c3rp-c85p) 対策 (多層防御):
       # 悪意ある *.coverage ファイルが PHPUnit の PHPT ランナーで unserialize され
