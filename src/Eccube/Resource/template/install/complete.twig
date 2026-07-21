@@ -20,6 +20,10 @@ file that was distributed with this source code.
 
          var modal = $('#PluginProgressModal');
          var bootstrapModal = new bootstrap.Modal(modal.get(0));
+         // 表示アニメーションの完了を記録する。show() の途中で hide() を呼ぶと
+         // bootstrap が hide を無視し、モーダルが表示されたまま残ることがあるため。
+         var modalShown = false;
+         modal.on('shown.bs.modal', function () { modalShown = true; });
          bootstrapModal.show();
          var progress = $('div.progress', modal).show();
          var progress_message = $('#progress_message');
@@ -106,7 +110,17 @@ file that was distributed with this source code.
              }).always(function () {
                  // モーダルをクローズ
                  progress.hide();
-                 bootstrapModal.hide();
+                 // 処理が一瞬で終わると show アニメーションの途中で hide を呼ぶ
+                 // ことになり、bootstrap がこれを無視してモーダルが残る。表示が
+                 // 完了してから閉じることで、モーダルが残ってボタンを押せなくなる
+                 // のを防ぐ。
+                 if (modalShown) {
+                     bootstrapModal.hide();
+                 } else {
+                     modal.one('shown.bs.modal', function () {
+                         bootstrapModal.hide();
+                     });
+                 }
 
                  enableGoToAdminPage();
              });
