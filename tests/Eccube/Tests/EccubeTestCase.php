@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Eccube\Tests;
 
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Doctrine\Common\CsvDataFixtures\Executor\DbalExecutor;
@@ -282,18 +283,24 @@ abstract class EccubeTestCase extends WebTestCase
         $conn = $this->entityManager->getConnection();
 
         // MySQLの場合は参照制約を無効にする.
-        if ('mysql' === $conn->getDatabasePlatform()->getName()) {
-            $conn->query('SET FOREIGN_KEY_CHECKS = 0');
+        $isMySql = $conn->getDatabasePlatform() instanceof AbstractMySQLPlatform;
+        if ($isMySql) {
+            $conn->executeStatement('SET FOREIGN_KEY_CHECKS = 0');
         }
 
-        foreach ($tables as $table) {
-            $sql = 'DELETE FROM '.$table;
-            $stmt = $conn->prepare($sql);
-            $stmt->execute();
-        }
-
-        if ('mysql' === $conn->getDatabasePlatform()->getName()) {
-            $conn->query('SET FOREIGN_KEY_CHECKS = 1');
+        // DELETE が失敗しても FOREIGN_KEY_CHECKS を必ず復元する.
+        // (deleteAllRows() は接続を共有する複数テストから呼ばれるため,
+        //  復元漏れがあると後続テストが制約無効のまま走ってしまう)
+        try {
+            foreach ($tables as $table) {
+                $sql = 'DELETE FROM '.$table;
+                $stmt = $conn->prepare($sql);
+                $stmt->executeStatement();
+            }
+        } finally {
+            if ($isMySql) {
+                $conn->executeStatement('SET FOREIGN_KEY_CHECKS = 1');
+            }
         }
     }
 

@@ -109,12 +109,10 @@ class Step4Type extends AbstractType
                         'driver' => $data['database'],
                         'port' => $data['database_port'],
                     ];
-                    $conn = DriverManager::getConnection($connectionParams, $config);
-                    $conn->connect();
-
                     // todo MySQL, PostgreSQLのバージョンチェックも欲しい.DBALで接続すればエラーになる？
                     $conn = DriverManager::getConnection($connectionParams, $config);
-                    $conn->connect();
+                    // DBAL 4 では connect() が protected のため, 実クエリ発行で接続検証する.
+                    $conn->executeQuery('SELECT 1');
                 } catch (\Exception $e) {
                     $form['database']->addError(new FormError(trans('install.database_connection_error').$e->getMessage()));
                 }

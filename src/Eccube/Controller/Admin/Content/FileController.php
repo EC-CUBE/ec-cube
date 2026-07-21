@@ -88,7 +88,7 @@ class FileController extends AbstractController
             : $topDir;
 
         // パンくず表示用データ
-        $nowDirList = json_encode(explode('/', trim(str_replace($htmlDir, '', $nowDir), '/')));
+        $nowDirList = json_encode(explode('/', trim(str_replace($htmlDir, '', $nowDir), '/')), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
         $jailNowDir = $this->getJailDir($nowDir);
         $isTopDir = ($topDir === $jailNowDir);
         $parentDir = substr((string) $nowDir, 0, strrpos((string) $nowDir, '/'));
@@ -112,7 +112,7 @@ class FileController extends AbstractController
 
         return [
             'form' => $form->createView(),
-            'tpl_javascript' => json_encode($tree),
+            'tpl_javascript' => json_encode($tree, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT),
             'top_dir' => $this->getJailDir($topDir),
             'tpl_is_top_dir' => $isTopDir,
             'tpl_now_dir' => $jailNowDir,
@@ -121,7 +121,7 @@ class FileController extends AbstractController
             'tpl_parent_dir' => $this->getJailDir($parentDir),
             'arrFileList' => $arrFileList,
             'errors' => $this->errors,
-            'paths' => json_encode($paths),
+            'paths' => json_encode($paths, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT),
         ];
     }
 
