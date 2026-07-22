@@ -56,9 +56,14 @@ function databaseConfig(): InstallDatabaseConfig {
 // 2 つ目のテストは 1 つ目でインストールが完了していることが前提のため直列実行する
 test.describe.serial('インストーラ', () => {
   test('インストール完了まで実行し、管理画面へ遷移できる', async ({ page }) => {
+    // インストーラのフロー (/install/*) で 4xx/5xx が出ないことを検証する.
+    // 完了後の管理画面 (/${ADMIN_DIR}/*) への遷移は対象外にする。完了画面の
+    // 「管理画面を表示」ボタンはキャッシュ削除中の一時的な 500 を前提に
+    // waitForAdminPage() で再試行するため、その 500 を集計すると最終的に
+    // 遷移できてもテストが失敗してしまう。
     const responseErrors: string[] = [];
     page.on('response', (response) => {
-      if (response.status() >= 400) {
+      if (response.status() >= 400 && new URL(response.url()).pathname.startsWith('/install/')) {
         responseErrors.push(`${response.status()} ${response.request().method()} ${response.url()}`);
       }
     });

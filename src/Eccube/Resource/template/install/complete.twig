@@ -162,8 +162,25 @@ file that was distributed with this source code.
                  console.log(error);
              }).then(function () {
                  return waitForAdminPage(adminUrl, 20, 500);
-             }).then(function () {
-                 window.location.href = adminUrl;
+             }).then(function (ready) {
+                 if (ready) {
+                     window.location.href = adminUrl;
+                     return;
+                 }
+                 // 管理画面がまだ応答しない場合は遷移せず, 再試行を促す.
+                 // ボタンは有効なままなので, 再度クリックできる.
+                 var modalEl = document.getElementById('PluginProgressModal');
+                 var messageEl = document.getElementById('progress_message');
+                 if (messageEl) {
+                     messageEl.textContent = '管理画面の準備に時間がかかっています。しばらくしてから「管理画面を表示」を再度クリックしてください。';
+                 }
+                 var footer = modalEl ? modalEl.querySelector('.modal-footer') : null;
+                 if (footer) {
+                     footer.style.display = '';
+                 }
+                 if (modalEl) {
+                     bootstrap.Modal.getOrCreateInstance(modalEl).show();
+                 }
              });
          });
      }
@@ -186,8 +203,11 @@ file that was distributed with this source code.
                  return false;
              })
              .then(function (ready) {
-                 if (ready || retries <= 0) {
-                     return;
+                 if (ready) {
+                     return true;
+                 }
+                 if (retries <= 0) {
+                     return false;
                  }
                  return new Promise(function (resolve) {
                      setTimeout(resolve, interval);

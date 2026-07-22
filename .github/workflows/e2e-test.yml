@@ -243,6 +243,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
+        with:
+          ## 後続の Composer/npm/build でリポジトリ内のコードを実行するため、
+          ## GitHub トークンを .git/config に残さない (このジョブは push しない)。
+          persist-credentials: false
 
       - name: Setup PostgreSQL
         uses: ankane/setup-postgres@6d3ffa1aa7498a42b79e9f9f5838b99971839300  # v1
