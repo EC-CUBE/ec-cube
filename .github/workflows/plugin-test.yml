@@ -49,6 +49,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
+        with:
+          persist-credentials: false
 
       ## Docker Hub からの pull はタイムアウトで CI が不安定になるため、
       ## DB はコンテナではなく setup アクション (apt) でインストールする
@@ -213,6 +215,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
+        with:
+          persist-credentials: false
 
       ## Docker Hub からの pull はタイムアウトで CI が不安定になるため、
       ## DB はコンテナではなく setup アクション (apt) でインストールする
@@ -376,6 +380,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
+        with:
+          persist-credentials: false
 
       ## Docker Hub からの pull はタイムアウトで CI が不安定になるため、
       ## DB はコンテナではなく setup アクション (apt) でインストールする
@@ -542,6 +548,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
+        with:
+          persist-credentials: false
 
       ## Docker Hub からの pull はタイムアウトで CI が不安定になるため、
       ## DB はコンテナではなく setup アクション (apt) でインストールする
@@ -698,6 +706,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
+        with:
+          persist-credentials: false
 
       ## Docker Hub からの pull はタイムアウトで CI が不安定になるため、
       ## DB はコンテナではなく setup アクション (apt) でインストールする
@@ -852,6 +862,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
+        with:
+          persist-credentials: false
 
       ## Docker Hub からの pull はタイムアウトで CI が不安定になるため、
       ## DB はコンテナではなく setup アクション (apt) でインストールする
