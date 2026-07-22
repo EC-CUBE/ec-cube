@@ -394,9 +394,12 @@ class OrderPdfService extends Fpdi
             return;
         }
 
+        // 後続の描画に影響しないよう、フォント状態を退避・復元する（lfText と同じ扱い）
+        $this->backupFont();
         $this->SetFont(self::FONT_SJIS, '', 8);
         // lfText と同じオフセットで位置を合わせ、幅・最大高さを指定して折り返す
         $this->MultiCell(70, 3.3, $message, 0, 'L', false, 1, $x + $this->baseOffsetX, $y + $this->baseOffsetY, true, 0, false, true, $maxHeight, 'T');
+        $this->restoreFont();
     }
 
     /**

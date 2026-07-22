@@ -1348,37 +1348,42 @@ test.describe('Admin Basic Info (EA07)', () => {
     await expect(hourCheckbox).toBeAttached();
     await expect(invoiceCheckbox).toBeAttached();
 
-    // 初期状態を退避（テスト後に非破壊で復元する）
+    // 初期状態を退避（アサーション失敗時も finally で必ず復元する）
     const hourInitial = await hourCheckbox.isChecked();
     const invoiceInitial = await invoiceCheckbox.isChecked();
 
-    // 既定 OFF の「店舗営業時間」と既定 ON の「インボイス登録番号」を反転して保存
-    await page.locator('label[for="shop_master_order_pdf_visible_business_hour"]').click();
-    await page.locator('label[for="shop_master_order_pdf_visible_invoice_number"]').click();
-    await page.waitForTimeout(500);
-    await page.locator('button.ladda-button[type="submit"]').click();
-    await page.waitForLoadState('load');
-    await expect(page.locator('.alert-success')).toContainText('保存しました', { timeout: 30_000 });
-
-    // 再表示して反転後の状態が保持されていること
-    await page.goto(`/${adminRoute}/setting/shop`);
-    await page.waitForLoadState('load');
-    await hideDebugToolbar();
-    await expect(page.locator('#shop_master_order_pdf_visible_business_hour')).toBeChecked({ checked: !hourInitial });
-    await expect(page.locator('#shop_master_order_pdf_visible_invoice_number')).toBeChecked({ checked: !invoiceInitial });
-
-    // 初期状態へ復元して保存
-    const hourNow = await page.locator('#shop_master_order_pdf_visible_business_hour').isChecked();
-    if (hourNow !== hourInitial) {
+    try {
+      // 既定 OFF の「店舗営業時間」と既定 ON の「インボイス登録番号」を反転して保存
       await page.locator('label[for="shop_master_order_pdf_visible_business_hour"]').click();
-    }
-    const invoiceNow = await page.locator('#shop_master_order_pdf_visible_invoice_number').isChecked();
-    if (invoiceNow !== invoiceInitial) {
       await page.locator('label[for="shop_master_order_pdf_visible_invoice_number"]').click();
+      await page.waitForTimeout(500);
+      await page.locator('button.ladda-button[type="submit"]').click();
+      await page.waitForLoadState('load');
+      await expect(page.locator('.alert-success')).toContainText('保存しました', { timeout: 30_000 });
+
+      // 再表示して反転後の状態が保持されていること
+      await page.goto(`/${adminRoute}/setting/shop`);
+      await page.waitForLoadState('load');
+      await hideDebugToolbar();
+      await expect(page.locator('#shop_master_order_pdf_visible_business_hour')).toBeChecked({ checked: !hourInitial });
+      await expect(page.locator('#shop_master_order_pdf_visible_invoice_number')).toBeChecked({ checked: !invoiceInitial });
+    } finally {
+      // 初期状態へ復元して保存（アサーションが失敗しても設定を元に戻す）
+      await page.goto(`/${adminRoute}/setting/shop`);
+      await page.waitForLoadState('load');
+      await hideDebugToolbar();
+      const hourNow = await page.locator('#shop_master_order_pdf_visible_business_hour').isChecked();
+      if (hourNow !== hourInitial) {
+        await page.locator('label[for="shop_master_order_pdf_visible_business_hour"]').click();
+      }
+      const invoiceNow = await page.locator('#shop_master_order_pdf_visible_invoice_number').isChecked();
+      if (invoiceNow !== invoiceInitial) {
+        await page.locator('label[for="shop_master_order_pdf_visible_invoice_number"]').click();
+      }
+      await page.waitForTimeout(500);
+      await page.locator('button.ladda-button[type="submit"]').click();
+      await page.waitForLoadState('load');
+      await expect(page.locator('.alert-success')).toContainText('保存しました', { timeout: 30_000 });
     }
-    await page.waitForTimeout(500);
-    await page.locator('button.ladda-button[type="submit"]').click();
-    await page.waitForLoadState('load');
-    await expect(page.locator('.alert-success')).toContainText('保存しました', { timeout: 30_000 });
   });
 });
