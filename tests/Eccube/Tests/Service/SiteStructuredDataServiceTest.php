@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace Eccube\Tests\Service;
 
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\OpeningHours;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Service\SiteStructuredDataService;
 
@@ -177,5 +178,33 @@ final class SiteStructuredDataServiceTest extends AbstractServiceTestCase
         $this->assertArrayNotHasKey('numberOfEmployees', $org);
         $this->assertArrayNotHasKey('image', $org);
         $this->assertArrayNotHasKey('copyrightYear', $web);
+    }
+
+    public function testOpeningHoursSpecification(): void
+    {
+        $this->BaseInfo->getOpeningHours()->clear();
+        $OpeningHours = new OpeningHours();
+        $OpeningHours->setDayOfWeek(['Monday', 'Tuesday']);
+        $OpeningHours->setOpens(new \DateTime('09:00'));
+        $OpeningHours->setCloses(new \DateTime('18:00'));
+        $this->BaseInfo->addOpeningHour($OpeningHours);
+
+        $data = $this->service->createOrganizationJsonLd($this->BaseInfo);
+
+        $this->assertArrayHasKey('openingHoursSpecification', $data);
+        $spec = $data['openingHoursSpecification'][0];
+        $this->assertSame('OpeningHoursSpecification', $spec['@type']);
+        $this->assertSame(['Monday', 'Tuesday'], $spec['dayOfWeek']);
+        $this->assertSame('09:00', $spec['opens']);
+        $this->assertSame('18:00', $spec['closes']);
+    }
+
+    public function testEmptyOpeningHoursIsOmitted(): void
+    {
+        $this->BaseInfo->getOpeningHours()->clear();
+
+        $data = $this->service->createOrganizationJsonLd($this->BaseInfo);
+
+        $this->assertArrayNotHasKey('openingHoursSpecification', $data);
     }
 }

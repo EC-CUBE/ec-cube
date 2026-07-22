@@ -19,6 +19,32 @@ file that was distributed with this source code.
 
 {% block javascript %}
     <script src="//yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
+    <script>
+        $(function() {
+            var $holder = $('#opening-hours-group');
+            var index = $holder.find('.opening-hours-item').length;
+
+            // 営業時間の行を追加する
+            $('#add-opening-hour-button').on('click', function() {
+                var prototype = $holder.data('prototype');
+                var newForm = $(prototype.replace(/__name__/g, index));
+                $holder.append(newForm);
+                index++;
+            });
+
+            // 営業時間の行を削除する
+            $holder.on('click', '.delete-opening-hour', function() {
+                $(this).closest('.opening-hours-item').remove();
+            });
+
+            // 時刻入力欄をクリックしたら時刻ピッカーを開く（時計アイコンを押さなくてもよい）
+            $holder.on('click', 'input[type="time"]', function() {
+                if (typeof this.showPicker === 'function') {
+                    this.showPicker();
+                }
+            });
+        });
+    </script>
 {% endblock %}
 
 {% block main %}
@@ -213,6 +239,19 @@ file that was distributed with this source code.
                                 <div class="col mb-2">
                                     {{ form_widget(form.site_image) }}
                                     {{ form_errors(form.site_image) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.shop.shop.opening_hours'|trans }}"><span>{{ 'admin.setting.shop.shop.opening_hours'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i></div>
+                                </div>
+                                <div class="col mb-2">
+                                    <div id="opening-hours-group" data-prototype="{% apply escape %}{{ include('@admin/Setting/Shop/opening_hours_prototype.twig', {'form': form.OpeningHours.vars.prototype}) }}{% endapply %}">
+                                        {% for child in form.OpeningHours %}
+                                            {{ include('@admin/Setting/Shop/opening_hours_prototype.twig', {'form': child}) }}
+                                        {% endfor %}
+                                    </div>
+                                    <button type="button" id="add-opening-hour-button" class="btn btn-ec-regular mt-2">{{ 'admin.setting.shop.opening_hours.add'|trans }}</button>
                                 </div>
                             </div>
                             {# エンティティ拡張の自動出力 #}

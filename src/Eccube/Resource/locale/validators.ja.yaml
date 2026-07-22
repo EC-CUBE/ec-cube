@@ -77,3 +77,8 @@ form.type.add.quantity: 1以上で入力してください。
 form.type.select.select_is_future_or_now_date: 生年月日が不正な日付です。
 form.type.admin.nottrackingnumberstyle: 送り状番号は半角英数字かハイフンのみを入力してください。
 form.type.float.invalid: 数字と小数点のみ入力できます。
+admin.setting.shop.opening_hours.error.day_required: 曜日を1つ以上選択してください。
+admin.setting.shop.opening_hours.error.opens_required: 開店時刻を入力してください。
+admin.setting.shop.opening_hours.error.closes_required: 閉店時刻を入力してください。
+admin.setting.shop.opening_hours.error.opens_before_closes: 開店時刻は閉店時刻より前にしてください。
+admin.setting.shop.opening_hours.error.overlap: 同じ曜日で営業時間が重複しています。

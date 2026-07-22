@@ -134,7 +134,51 @@ class SiteStructuredDataService
             $data['sameAs'] = $sameAs;
         }
 
+        $openingHours = $this->buildOpeningHours($BaseInfo);
+        if ($openingHours !== []) {
+            $data['openingHoursSpecification'] = $openingHours;
+        }
+
         return $data;
+    }
+
+    /**
+     * 店舗設定の営業時間を OpeningHoursSpecification のリストに変換する.
+     *
+     * 曜日・開店時刻・閉店時刻がいずれも無いエントリは出力しない.
+     *
+     * @return list<array<string, mixed>>
+     */
+    private function buildOpeningHours(BaseInfo $BaseInfo): array
+    {
+        $specs = [];
+        foreach ($BaseInfo->getOpeningHours() as $OpeningHours) {
+            $spec = ['@type' => 'OpeningHoursSpecification'];
+
+            $dayOfWeek = $OpeningHours->getDayOfWeek();
+            if ($dayOfWeek !== null && $dayOfWeek !== []) {
+                $spec['dayOfWeek'] = array_values($dayOfWeek);
+            }
+
+            $opens = $OpeningHours->getOpens();
+            if ($opens !== null) {
+                $spec['opens'] = $opens->format('H:i');
+            }
+
+            $closes = $OpeningHours->getCloses();
+            if ($closes !== null) {
+                $spec['closes'] = $closes->format('H:i');
+            }
+
+            // @type 以外に情報が無いエントリは出力しない
+            if (count($spec) === 1) {
+                continue;
+            }
+
+            $specs[] = $spec;
+        }
+
+        return $specs;
     }
 
     /**

@@ -13,11 +13,14 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\Master\Country;
 use Eccube\Entity\Master\Pref;
 use Eccube\Repository\BaseInfoRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: 'dtb_base_info')]
 #[ORM\InheritanceType('SINGLE_TABLE')]
@@ -184,6 +187,19 @@ class BaseInfo extends AbstractEntity
 
     #[ORM\Column(name: 'site_image', type: Types::STRING, length: 255, nullable: true)]
     private ?string $site_image = null;
+
+    /**
+     * @var Collection<int, OpeningHours>
+     */
+    #[ORM\OneToMany(targetEntity: OpeningHours::class, mappedBy: 'BaseInfo', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OrderBy(['sort_no' => 'ASC'])]
+    #[Assert\Valid]
+    private Collection $OpeningHours;
+
+    public function __construct()
+    {
+        $this->OpeningHours = new ArrayCollection();
+    }
 
     /**
      * Get id.
@@ -1041,6 +1057,33 @@ class BaseInfo extends AbstractEntity
     public function setSiteImage(?string $siteImage): BaseInfo
     {
         $this->site_image = $siteImage;
+
+        return $this;
+    }
+
+    /**
+     * Get openingHours.
+     *
+     * @return Collection<int, OpeningHours>
+     */
+    public function getOpeningHours(): Collection
+    {
+        return $this->OpeningHours;
+    }
+
+    public function addOpeningHour(OpeningHours $openingHour): BaseInfo
+    {
+        if (!$this->OpeningHours->contains($openingHour)) {
+            $this->OpeningHours[] = $openingHour;
+            $openingHour->setBaseInfo($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOpeningHour(OpeningHours $openingHour): BaseInfo
+    {
+        $this->OpeningHours->removeElement($openingHour);
 
         return $this;
     }

@@ -23,6 +23,7 @@ use Eccube\Form\Type\PriceType;
 use Eccube\Form\Type\ToggleSwitchType;
 use Eccube\Form\Validator\Email;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -32,6 +33,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * Class ShopMasterType
@@ -184,6 +186,14 @@ class ShopMasterType extends AbstractType
                     new Assert\Url(),
                 ],
             ])
+            ->add('OpeningHours', CollectionType::class, [
+                'entry_type' => OpeningHoursType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'prototype' => true,
+                'by_reference' => false,
+                'required' => false,
+            ])
             // 送料設定
             ->add('delivery_free_amount', PriceType::class, [
                 'required' => false,
@@ -310,7 +320,51 @@ class ShopMasterType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => BaseInfo::class,
+            'constraints' => [
+                new Assert\Callback([$this, 'validateOpeningHoursOverlap']),
+            ],
         ]);
+    }
+
+    /**
+     * 同一曜日を含む営業時間の時間帯が重複していないか検証する.
+     */
+    public function validateOpeningHoursOverlap(?BaseInfo $BaseInfo, ExecutionContextInterface $context): void
+    {
+        if (!$BaseInfo instanceof BaseInfo) {
+            return;
+        }
+
+        $list = array_values($BaseInfo->getOpeningHours()->toArray());
+        $count = count($list);
+        for ($i = 0; $i < $count; ++$i) {
+            for ($j = $i + 1; $j < $count; ++$j) {
+                $a = $list[$i];
+                $b = $list[$j];
+
+                $daysA = $a->getDayOfWeek() ?? [];
+                $daysB = $b->getDayOfWeek() ?? [];
+                if (array_intersect($daysA, $daysB) === []) {
+                    continue;
+                }
+
+                $opensA = $a->getOpens();
+                $closesA = $a->getCloses();
+                $opensB = $b->getOpens();
+                $closesB = $b->getCloses();
+                // 時刻が欠けている行は単体バリデーションに委ねる
+                if ($opensA === null || $closesA === null || $opensB === null || $closesB === null) {
+                    continue;
+                }
+
+                // 時間帯が交差する場合はエラー（max(開店) < min(閉店)）
+                if (max($opensA, $opensB) < min($closesA, $closesB)) {
+                    $context->buildViolation('admin.setting.shop.opening_hours.error.overlap')
+                        ->atPath('OpeningHours['.$j.']')
+                        ->addViolation();
+                }
+            }
+        }
     }
 
     /**

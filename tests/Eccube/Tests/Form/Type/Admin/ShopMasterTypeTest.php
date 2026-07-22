@@ -169,4 +169,51 @@ final class ShopMasterTypeTest extends AbstractTypeTestCase
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
+
+    public function testValidOpeningHours()
+    {
+        $this->formData['OpeningHours'] = [
+            ['day_of_week' => ['Monday', 'Tuesday'], 'opens' => '09:00', 'closes' => '18:00'],
+        ];
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInValidOpeningHoursOpensAfterCloses()
+    {
+        $this->formData['OpeningHours'] = [
+            ['day_of_week' => ['PublicHolidays'], 'opens' => '20:00', 'closes' => '15:00'],
+        ];
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInValidOpeningHoursMissingDay()
+    {
+        $this->formData['OpeningHours'] = [
+            ['day_of_week' => [], 'opens' => '09:00', 'closes' => '18:00'],
+        ];
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInValidOpeningHoursOverlapSameDay()
+    {
+        $this->formData['OpeningHours'] = [
+            ['day_of_week' => ['Saturday'], 'opens' => '10:00', 'closes' => '15:00'],
+            ['day_of_week' => ['Saturday'], 'opens' => '14:00', 'closes' => '18:00'],
+        ];
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testValidOpeningHoursDifferentDayNoOverlap()
+    {
+        $this->formData['OpeningHours'] = [
+            ['day_of_week' => ['Saturday'], 'opens' => '10:00', 'closes' => '15:00'],
+            ['day_of_week' => ['Sunday'], 'opens' => '10:00', 'closes' => '15:00'],
+        ];
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
+    }
 }

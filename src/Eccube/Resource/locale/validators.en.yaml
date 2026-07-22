@@ -74,3 +74,8 @@ form.type.add.quantity: Please enter more than 1.
 form.type.select.select_is_future_or_now_date: Invalid Date of Birth.
 form.type.admin.nottrackingnumberstyle: Tracking No. entry must be alphanumeric chars and hypens.
 form.type.float.invalid: Only numbers and decimal points are accepted.
+admin.setting.shop.opening_hours.error.day_required: Please select at least one day of the week.
+admin.setting.shop.opening_hours.error.opens_required: Please enter the opening time.
+admin.setting.shop.opening_hours.error.closes_required: Please enter the closing time.
+admin.setting.shop.opening_hours.error.opens_before_closes: The opening time must be earlier than the closing time.
+admin.setting.shop.opening_hours.error.overlap: The opening hours overlap on the same day of the week.

@@ -1,0 +1,26 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+<div class="opening-hours-item card card-body mb-2">
+    <div class="mb-2">
+        {{ form_widget(form.day_of_week) }}
+        {{ form_errors(form.day_of_week) }}
+    </div>
+    <div class="d-flex align-items-center">
+        {{ form_widget(form.opens) }}
+        <span class="mx-2">〜</span>
+        {{ form_widget(form.closes) }}
+        <button type="button" class="btn btn-ec-actionIcon ms-3 delete-opening-hour" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.delete'|trans }}">
+            <i class="fa fa-close fa-lg text-secondary"></i>
+        </button>
+    </div>
+    {{ form_errors(form.opens) }}
+    {{ form_errors(form.closes) }}
+</div>
