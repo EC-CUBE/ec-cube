@@ -31,6 +31,7 @@ use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\PageLayoutRepository;
 use Eccube\Repository\PageRepository;
 use Eccube\Request\Context;
+use Eccube\Service\SiteStructuredDataService;
 use Eccube\Service\SystemService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -49,7 +50,7 @@ class TwigInitializeListener implements EventSubscriberInterface
     /**
      * TwigInitializeListener constructor.
      */
-    public function __construct(protected Environment $twig, protected BaseInfoRepository $baseInfoRepository, protected PageRepository $pageRepository, protected PageLayoutRepository $pageLayoutRepository, protected BlockPositionRepository $blockPositionRepository, protected DeviceTypeRepository $deviceTypeRepository, private readonly AuthorityRoleRepository $authorityRoleRepository, private EccubeConfig $eccubeConfig, protected Context $requestContext, private readonly MobileDetect $mobileDetector, private readonly UrlGeneratorInterface $router, private readonly LayoutRepository $layoutRepository, protected SystemService $systemService)
+    public function __construct(protected Environment $twig, protected BaseInfoRepository $baseInfoRepository, protected PageRepository $pageRepository, protected PageLayoutRepository $pageLayoutRepository, protected BlockPositionRepository $blockPositionRepository, protected DeviceTypeRepository $deviceTypeRepository, private readonly AuthorityRoleRepository $authorityRoleRepository, private EccubeConfig $eccubeConfig, protected Context $requestContext, private readonly MobileDetect $mobileDetector, private readonly UrlGeneratorInterface $router, private readonly LayoutRepository $layoutRepository, protected SystemService $systemService, private readonly SiteStructuredDataService $siteStructuredDataService)
     {
     }
 
@@ -177,6 +178,7 @@ class TwigInitializeListener implements EventSubscriberInterface
         $this->twig->addGlobal('title', $Page->getName());
         $this->twig->addGlobal('isMaintenance', $this->systemService->isMaintenanceMode());
         $this->twig->addGlobal('isDebugMode', env('APP_DEBUG'));
+        $this->twig->addGlobal('site_json_ld', $this->siteStructuredDataService->createWebSiteJsonLd($this->baseInfoRepository->get()));
     }
 
     public function setAdminGlobals(RequestEvent $event): void
