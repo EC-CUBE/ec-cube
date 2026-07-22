@@ -170,6 +170,51 @@ file that was distributed with this source code.
                                     {{ form_errors(form.message) }}
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.shop.shop.same_as'|trans }}"><span>{{ 'admin.setting.shop.shop.same_as'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i></div>
+                                </div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.same_as) }}
+                                    {{ form_errors(form.same_as) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.shop.shop.founding_date'|trans }}"><span>{{ 'admin.setting.shop.shop.founding_date'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i></div>
+                                </div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.founding_date) }}
+                                    {{ form_errors(form.founding_date) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.shop.shop.number_of_employees'|trans }}"><span>{{ 'admin.setting.shop.shop.number_of_employees'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i></div>
+                                </div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.number_of_employees) }}
+                                    {{ form_errors(form.number_of_employees) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.shop.shop.copyright_year'|trans }}"><span>{{ 'admin.setting.shop.shop.copyright_year'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i></div>
+                                </div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.copyright_year) }}
+                                    {{ form_errors(form.copyright_year) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.shop.shop.site_image'|trans }}"><span>{{ 'admin.setting.shop.shop.site_image'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i></div>
+                                </div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.site_image) }}
+                                    {{ form_errors(form.site_image) }}
+                                </div>
+                            </div>
                             {# エンティティ拡張の自動出力 #}
                             {% for f in form|filter(f => f.vars.eccube_form_options.auto_render) %}
                                 {% if f.vars.eccube_form_options.form_theme %}

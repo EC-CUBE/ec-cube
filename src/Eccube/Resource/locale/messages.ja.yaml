@@ -1200,6 +1200,11 @@ admin.setting.shop.shop.email_reply_to: 返信先メールアドレス(ReplyTo)
 admin.setting.shop.shop.email_return_path: 送信エラー通知メールアドレス(ReturnPath)
 admin.setting.shop.shop.good_traded: 取り扱い商品説明文
 admin.setting.shop.shop.message: 店舗からのメッセージ
+admin.setting.shop.shop.same_as: SNS等の公式URL
+admin.setting.shop.shop.founding_date: 稼働開始日
+admin.setting.shop.shop.number_of_employees: 従業員数
+admin.setting.shop.shop.copyright_year: 著作権表示の開始年
+admin.setting.shop.shop.site_image: サイト代表画像URL
 admin.setting.shop.shop.option_delivery_fee: 送料設定
 admin.setting.shop.shop.option_delivery_fee_free_amount: 送料無料条件（金額）
 admin.setting.shop.shop.option_delivery_fee_free_quantity: 送料無料条件（数量）
@@ -1791,6 +1796,11 @@ tooltip.setting.shop.shop.email_reply_to: 返信メールを受け付けるメ�
 tooltip.setting.shop.shop.email_return_path: 店舗からメールを送信しエラーが生じた場合に、その通知を受信するメールアドレスです。
 tooltip.setting.shop.shop.good_traded: 店舗が取り扱う商品についての簡単な説明文です。
 tooltip.setting.shop.shop.message: フロント側に表示されます。表示位置はデザインテンプレートによって異なります。
+tooltip.setting.shop.shop.same_as: 構造化データ（Organization.sameAs）に出力する、SNS等の公式アカウントURLです。1行に1URLで複数指定できます。
+tooltip.setting.shop.shop.founding_date: 構造化データ（Organization.foundingDate）に出力する、店舗・法人の稼働開始日です。
+tooltip.setting.shop.shop.number_of_employees: 構造化データ（Organization.numberOfEmployees）に出力する従業員数です。
+tooltip.setting.shop.shop.copyright_year: 構造化データ（WebSite.copyrightYear）に出力する著作権表示の開始年です。
+tooltip.setting.shop.shop.site_image: 構造化データ（Organization.image）に出力するサイト代表画像の絶対URLです。
 tooltip.setting.shop.shop.option_delivery_fee_free_amount: この金額を超える購入があった場合、送料を無料とします。
 tooltip.setting.shop.shop.option_delivery_fee_free_quantity: この個数を超える購入があった場合、送料を無料とします。
 tooltip.setting.shop.shop.option_delivery_fee_by_product: ここをオンにすると、商品ごとに送料を指定できるようになります。

@@ -23,6 +23,7 @@ use Eccube\Form\Type\PriceType;
 use Eccube\Form\Type\ToggleSwitchType;
 use Eccube\Form\Validator\Email;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -140,6 +141,47 @@ class ShopMasterType extends AbstractType
                     new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_ltext_len'],
                     ]),
+                ],
+            ])
+            // 構造化データ（JSON-LD / schema.org）
+            ->add('same_as', TextareaType::class, [
+                'required' => false,
+                'constraints' => [
+                    new Assert\Length([
+                        'max' => $this->eccubeConfig['eccube_ltext_len'],
+                    ]),
+                ],
+            ])
+            ->add('founding_date', DateType::class, [
+                'required' => false,
+                'input' => 'datetime',
+                'widget' => 'single_text',
+            ])
+            ->add('number_of_employees', IntegerType::class, [
+                'required' => false,
+                'constraints' => [
+                    new Assert\Regex([
+                        'pattern' => "/^\d+$/u",
+                        'message' => 'form_error.numeric_only',
+                    ]),
+                ],
+            ])
+            ->add('copyright_year', IntegerType::class, [
+                'required' => false,
+                'constraints' => [
+                    new Assert\Range([
+                        'min' => 1900,
+                        'max' => 9999,
+                    ]),
+                ],
+            ])
+            ->add('site_image', TextType::class, [
+                'required' => false,
+                'constraints' => [
+                    new Assert\Length([
+                        'max' => $this->eccubeConfig['eccube_stext_len'],
+                    ]),
+                    new Assert\Url(),
                 ],
             ])
             // 送料設定

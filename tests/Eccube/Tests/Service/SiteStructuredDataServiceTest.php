@@ -100,4 +100,82 @@ final class SiteStructuredDataServiceTest extends AbstractServiceTestCase
         // 空文字の場合は "0221:" だけの iso6523Code を出力しない
         $this->assertArrayNotHasKey('iso6523Code', $data);
     }
+
+    public function testSameAsIsSplitIntoListAndTrimmed(): void
+    {
+        $this->BaseInfo->setSameAs("https://example.com/a\n  https://example.com/b  \n\nhttps://example.com/c");
+
+        $data = $this->service->createOrganizationJsonLd($this->BaseInfo);
+
+        // 改行区切り→trim→空行除去でURLのリストになる
+        $this->assertSame([
+            'https://example.com/a',
+            'https://example.com/b',
+            'https://example.com/c',
+        ], $data['sameAs']);
+    }
+
+    public function testEmptySameAsIsOmitted(): void
+    {
+        $this->BaseInfo->setSameAs("  \n  ");
+
+        $data = $this->service->createOrganizationJsonLd($this->BaseInfo);
+
+        $this->assertArrayNotHasKey('sameAs', $data);
+    }
+
+    public function testFoundingDateIsFormatted(): void
+    {
+        $this->BaseInfo->setFoundingDate(new \DateTime('2000-04-01'));
+
+        $data = $this->service->createOrganizationJsonLd($this->BaseInfo);
+
+        $this->assertSame('2000-04-01', $data['foundingDate']);
+    }
+
+    public function testNumberOfEmployeesIsQuantitativeValue(): void
+    {
+        $this->BaseInfo->setNumberOfEmployees(42);
+
+        $data = $this->service->createOrganizationJsonLd($this->BaseInfo);
+
+        $this->assertSame('QuantitativeValue', $data['numberOfEmployees']['@type']);
+        $this->assertSame(42, $data['numberOfEmployees']['value']);
+    }
+
+    public function testSiteImageIsOutputAsImage(): void
+    {
+        $this->BaseInfo->setSiteImage('https://example.com/site.png');
+
+        $data = $this->service->createOrganizationJsonLd($this->BaseInfo);
+
+        $this->assertSame('https://example.com/site.png', $data['image']);
+    }
+
+    public function testCopyrightYearIsOutputOnWebSite(): void
+    {
+        $this->BaseInfo->setCopyrightYear(2020);
+
+        $data = $this->service->createWebSiteJsonLd($this->BaseInfo);
+
+        $this->assertSame(2020, $data['copyrightYear']);
+    }
+
+    public function testOptionalSchemaFieldsAreOmittedWhenUnset(): void
+    {
+        $this->BaseInfo->setSameAs(null);
+        $this->BaseInfo->setFoundingDate(null);
+        $this->BaseInfo->setNumberOfEmployees(null);
+        $this->BaseInfo->setSiteImage(null);
+        $this->BaseInfo->setCopyrightYear(null);
+
+        $org = $this->service->createOrganizationJsonLd($this->BaseInfo);
+        $web = $this->service->createWebSiteJsonLd($this->BaseInfo);
+
+        $this->assertArrayNotHasKey('sameAs', $org);
+        $this->assertArrayNotHasKey('foundingDate', $org);
+        $this->assertArrayNotHasKey('numberOfEmployees', $org);
+        $this->assertArrayNotHasKey('image', $org);
+        $this->assertArrayNotHasKey('copyrightYear', $web);
+    }
 }

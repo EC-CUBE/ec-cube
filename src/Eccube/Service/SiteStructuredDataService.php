@@ -62,6 +62,12 @@ class SiteStructuredDataService
             ],
             'query-input' => 'required name=search_term_string',
         ];
+
+        $copyrightYear = $BaseInfo->getCopyrightYear();
+        if ($copyrightYear !== null) {
+            $data['copyrightYear'] = $copyrightYear;
+        }
+
         $data['author'] = $this->createOrganizationJsonLd($BaseInfo);
 
         return $data;
@@ -87,6 +93,7 @@ class SiteStructuredDataService
         $this->addIfNotEmpty($data, 'alternateName', $BaseInfo->getShopNameEng());
         $this->addIfNotEmpty($data, 'legalName', $BaseInfo->getCompanyName());
         $this->addIfNotEmpty($data, 'description', $BaseInfo->getMessage());
+        $this->addIfNotEmpty($data, 'image', $BaseInfo->getSiteImage());
         $this->addIfNotEmpty($data, 'email', $BaseInfo->getEmail01());
 
         $phoneNumber = $BaseInfo->getPhoneNumber();
@@ -104,12 +111,48 @@ class SiteStructuredDataService
             $data['contactPoint'] = $contactPoint;
         }
 
+        $foundingDate = $BaseInfo->getFoundingDate();
+        if ($foundingDate !== null) {
+            $data['foundingDate'] = $foundingDate->format('Y-m-d');
+        }
+
+        $numberOfEmployees = $BaseInfo->getNumberOfEmployees();
+        if ($numberOfEmployees !== null) {
+            $data['numberOfEmployees'] = [
+                '@type' => 'QuantitativeValue',
+                'value' => $numberOfEmployees,
+            ];
+        }
+
         $invoiceRegistrationNumber = $BaseInfo->getInvoiceRegistrationNumber();
         if ($invoiceRegistrationNumber !== null && $invoiceRegistrationNumber !== '') {
             $data['iso6523Code'] = '0221:'.$invoiceRegistrationNumber;
         }
 
+        $sameAs = $this->buildSameAs($BaseInfo->getSameAs());
+        if ($sameAs !== []) {
+            $data['sameAs'] = $sameAs;
+        }
+
         return $data;
+    }
+
+    /**
+     * 改行区切りの SNS 等公式 URL 文字列を、空要素を除いた URL のリストに変換する.
+     *
+     * @return list<string>
+     */
+    private function buildSameAs(?string $sameAs): array
+    {
+        if ($sameAs === null || $sameAs === '') {
+            return [];
+        }
+
+        $urls = preg_split('/\R/u', $sameAs) ?: [];
+        $urls = array_map(trim(...), $urls);
+        $urls = array_filter($urls, static fn (string $url): bool => $url !== '');
+
+        return array_values($urls);
     }
 
     /**

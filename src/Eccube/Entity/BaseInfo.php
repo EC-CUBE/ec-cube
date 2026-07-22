@@ -170,6 +170,21 @@ class BaseInfo extends AbstractEntity
     #[ORM\Column(name: 'ucp_catalog_requires_auth', type: Types::BOOLEAN, options: ['default' => false])]
     private bool $ucp_catalog_requires_auth = false;
 
+    #[ORM\Column(name: 'same_as', type: Types::TEXT, nullable: true)]
+    private ?string $same_as = null;
+
+    #[ORM\Column(name: 'founding_date', type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTime $founding_date = null;
+
+    #[ORM\Column(name: 'number_of_employees', type: Types::INTEGER, nullable: true)]
+    private ?int $number_of_employees = null;
+
+    #[ORM\Column(name: 'copyright_year', type: Types::INTEGER, nullable: true)]
+    private ?int $copyright_year = null;
+
+    #[ORM\Column(name: 'site_image', type: Types::STRING, length: 255, nullable: true)]
+    private ?string $site_image = null;
+
     /**
      * Get id.
      *
@@ -936,5 +951,97 @@ class BaseInfo extends AbstractEntity
     public function isUcpCatalogRequiresAuth(): bool
     {
         return $this->ucp_catalog_requires_auth;
+    }
+
+    /**
+     * Get sameAs.
+     *
+     * 構造化データ（Organization.sameAs）に出力する SNS 等の公式 URL を改行区切りで保持する.
+     */
+    public function getSameAs(): ?string
+    {
+        return $this->same_as;
+    }
+
+    /**
+     * Set sameAs.
+     */
+    public function setSameAs(?string $sameAs): BaseInfo
+    {
+        $this->same_as = $sameAs;
+
+        return $this;
+    }
+
+    /**
+     * Get foundingDate.
+     */
+    public function getFoundingDate(): ?\DateTime
+    {
+        return $this->founding_date;
+    }
+
+    /**
+     * Set foundingDate.
+     */
+    public function setFoundingDate(?\DateTime $foundingDate): BaseInfo
+    {
+        $this->founding_date = $foundingDate;
+
+        return $this;
+    }
+
+    /**
+     * Get numberOfEmployees.
+     */
+    public function getNumberOfEmployees(): ?int
+    {
+        return $this->number_of_employees;
+    }
+
+    /**
+     * Set numberOfEmployees.
+     */
+    public function setNumberOfEmployees(?int $numberOfEmployees): BaseInfo
+    {
+        $this->number_of_employees = $numberOfEmployees;
+
+        return $this;
+    }
+
+    /**
+     * Get copyrightYear.
+     */
+    public function getCopyrightYear(): ?int
+    {
+        return $this->copyright_year;
+    }
+
+    /**
+     * Set copyrightYear.
+     */
+    public function setCopyrightYear(?int $copyrightYear): BaseInfo
+    {
+        $this->copyright_year = $copyrightYear;
+
+        return $this;
+    }
+
+    /**
+     * Get siteImage.
+     */
+    public function getSiteImage(): ?string
+    {
+        return $this->site_image;
+    }
+
+    /**
+     * Set siteImage.
+     */
+    public function setSiteImage(?string $siteImage): BaseInfo
+    {
+        $this->site_image = $siteImage;
+
+        return $this;
     }
 }
