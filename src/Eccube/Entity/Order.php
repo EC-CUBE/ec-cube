@@ -128,6 +128,10 @@ class Order extends AbstractEntity implements PurchaseInterface, ItemHolderInter
         $taxFreeDiscount = $this->getTaxFreeDiscount();
 
         foreach ($this->getTaxableTotalByTaxRate() as $rate => $totalPrice) {
+            if (!array_key_exists($rate, $roundingTypes) || null === $roundingTypes[$rate]) {
+                continue;
+            }
+
             if (bccomp($taxableTotal, '0', 2) !== 0) {
                 // 按分計算: totalPrice - (abs(taxFreeDiscount) * totalPrice / taxableTotal)
                 $absDiscount = ltrim($taxFreeDiscount, '-');
