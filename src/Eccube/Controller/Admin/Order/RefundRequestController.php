@@ -216,8 +216,6 @@ class RefundRequestController extends AbstractController
     {
         set_time_limit(0);
 
-        $this->entityManager->getConfiguration()->setSQLLogger();
-
         $viewData = $this->session->get('eccube.admin.refund_request.search', []);
         $searchForm = $this->formFactory->createBuilder(SearchRefundRequestType::class)->getForm();
         $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
