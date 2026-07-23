@@ -12,7 +12,6 @@
  */
 
 use Codeception\Util\Fixtures;
-use Dotenv\Dotenv;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Category;
@@ -39,8 +38,10 @@ $config = parse_ini_file(__DIR__.'/config.ini', true);
  */
 require_once __DIR__.'/../../vendor/autoload.php';
 
-if (file_exists(__DIR__.'/../../.env')) {
-    Dotenv::createUnsafeMutable(__DIR__.'/../../')->load();
+if (file_exists(__DIR__.'/../../.env')
+    || file_exists(__DIR__.'/../../.env.local')
+    || file_exists(__DIR__.'/../../.env.local.php')) {
+    boot_env(__DIR__.'/../../.env', true);
 }
 $kernel = new Kernel('test', false);
 $kernel->boot();

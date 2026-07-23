@@ -14,6 +14,8 @@
 namespace Eccube\Service;
 
 use Doctrine\Bundle\DoctrineBundle\Mapping\MappingDriver;
+use Doctrine\DBAL\Schema\ComparatorConfig;
+use Doctrine\DBAL\Schema\SchemaDiff;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 use Doctrine\ORM\Tools\SchemaTool;
@@ -116,8 +118,47 @@ class SchemaService
      */
     public function updateSchema(array $generatedFiles, string $proxiesDirectory, bool $saveMode = false): void
     {
-        $this->executeCallback(function (SchemaTool $tool, array $metaData): void {
-            $tool->updateSchema($metaData);
+        $this->executeCallback(function (SchemaTool $tool, array $metaData) use ($saveMode): void {
+            if (!$saveMode) {
+                $tool->updateSchema($metaData);
+
+                return;
+            }
+
+            // ORM 3 で SchemaTool::updateSchema() の $saveMode 引数 (追加系のみ適用) が廃止されたため,
+            // スキーマ差分から「テーブル / シーケンスの削除」だけを除外して適用し, 従来の saveMode 相当の
+            // 挙動を再現する。プラグインの Entity テーブル削除は uninstall 時に dropTable() で明示的に
+            // 行うため, スキーマ更新で他プラグインが参照を残すテーブルを巻き込んで DROP してはならない
+            // (例: dtb_cart の FK が依存する dtb_foo を DROP しようとして
+            // "cannot drop table dtb_foo because other objects depend on it" になる)。
+            // なお列追加に伴う SQLite のテーブル再作成 (内部的な DROP/RENAME) は alteredTables 側で
+            // SQL 生成されるため, ここで除外する droppedTables / droppedSequences には含まれない。
+            $connection = $this->entityManager->getConnection();
+            $schemaManager = $connection->createSchemaManager();
+
+            $toSchema = $tool->getSchemaFromMetadata($metaData);
+            // schemaAssetsFilter が未設定の EC-CUBE では SchemaTool::getUpdateSchemaSql() の
+            // 比較元 (createSchemaForComparison) は introspectSchema() と等価。
+            $fromSchema = $schemaManager->introspectSchema();
+            $comparator = $schemaManager->createComparator(
+                (new ComparatorConfig())->withReportModifiedIndexes(false)
+            );
+            $schemaDiff = $comparator->compareSchemas($fromSchema, $toSchema);
+
+            $additiveDiff = new SchemaDiff(
+                $schemaDiff->getCreatedSchemas(),
+                $schemaDiff->getDroppedSchemas(),
+                $schemaDiff->getCreatedTables(),
+                $schemaDiff->getAlteredTables(),
+                [],
+                $schemaDiff->getCreatedSequences(),
+                $schemaDiff->getAlteredSequences(),
+                [],
+            );
+
+            foreach ($connection->getDatabasePlatform()->getAlterSchemaSQL($additiveDiff) as $sql) {
+                $connection->executeStatement($sql);
+            }
         }, $generatedFiles, $proxiesDirectory);
     }
 

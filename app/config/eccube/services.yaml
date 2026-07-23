@@ -99,9 +99,18 @@ services:
         bind:
           $blockTemplates: '%eccube_twig_block_templates%'
 
-    Plugin\:
-        resource: '../../../app/Plugin/*'
-        exclude: '../../../app/Plugin/*/{Entity,Resource,ServiceProvider,Tests,Codeception,DoctrineMigrations}'
+    # Plugin\ の自動登録は services.php で定義する (#6915)。
+    # プラグインが同梱する非 PSR-4 ライブラリ (例: phpseclib) を動的に exclude するため,
+    # 静的な YAML では表現できず, ネストした composer.json を検出する PHP 設定へ移した。
+
+    # PurchaseFlow / OrderStateMachine の名前付き引数をコンテナ全体で解決するための別名。
+    # 上記 _defaults の bind はこのファイル内のサービスにのみ適用されるため, services.php で
+    # 登録するプラグインのサービス (例: 決済プラグインの Payment Method) からも解決できるよう,
+    # 名前付きオートワイヤリング別名として明示的に定義する。
+    Eccube\Service\PurchaseFlow\PurchaseFlow $cartPurchaseFlow: '@eccube.purchase.flow.cart'
+    Eccube\Service\PurchaseFlow\PurchaseFlow $shoppingPurchaseFlow: '@eccube.purchase.flow.shopping'
+    Eccube\Service\PurchaseFlow\PurchaseFlow $orderPurchaseFlow: '@eccube.purchase.flow.order'
+    Symfony\Component\Workflow\WorkflowInterface $_orderStateMachine: '@state_machine.order'
 
     Customize\:
         resource: '../../../app/Customize/*'
@@ -241,6 +250,18 @@ services:
     eccube.asset.user_data_version_strategy:
         alias: Eccube\Asset\FilemtimeVersionStrategy
         public: true
+
+    Eccube\Doctrine\EventSubscriber\InitSubscriber:
+        autoconfigure: false
+        tags:
+            # 初期化 SQL (SET TIME ZONE 等) は物理接続へ 1 回だけ発行したいので,
+            # dama/doctrine-test-bundle の StaticDriver (priority: 100) より内側 (実ドライバ直上) に
+            # 配置する (DBAL 3 の postConnect イベント相当の挙動)。priority が高いほど内側になる。
+            - { name: doctrine.middleware, priority: 200 }
+
+    Eccube\Doctrine\EventSubscriber\InitDriver:
+        autowire: false
+        autoconfigure: false
 
     # Agent Commerce (ACP / UCP) 共通基盤
     Eccube\Service\AgentCommerce\Security\FilesystemKeyStore:

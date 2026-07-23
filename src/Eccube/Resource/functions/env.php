@@ -11,6 +11,33 @@
  * file that was distributed with this source code.
  */
 
+use Symfony\Component\Dotenv\Dotenv;
+
+/**
+ * .env 系ファイルを読み込む.
+ *
+ * Dotenv::bootEnv() は .env.local.php（dump-env の最適化済みスナップショット）を優先し,
+ * 無ければ .env → .env.local → .env.$env → .env.$env.local をカスケード読み込みする.
+ *
+ * ただし bootEnv() は APP_ENV が prod 以外のとき APP_DEBUG を自動導出して
+ * $_SERVER / $_ENV へ書き込む. EC-CUBE は APP_DEBUG 未定義を「未指定」として扱い,
+ * デバッグ判定は index.php / bin/console 側で, 画面表示は env('APP_DEBUG') で行うため,
+ * 導出値が混入すると .env に APP_DEBUG を持たない環境（APP_ENV=codeception 等）で
+ * 挙動が変わってしまう. これを避けるため, 導出先を未使用のキーへ逃がして破棄する.
+ * .env 系や OS 環境変数に APP_DEBUG が定義されている場合は, 従来どおりその値が使われる.
+ *
+ * @param string $path .env ファイルのパス
+ * @param bool $overrideExistingVars true の場合, .env 系の値が既存の環境変数より優先される
+ */
+function boot_env(string $path, bool $overrideExistingVars = false): void
+{
+    $unusedDebugKey = '__ECCUBE_UNUSED_APP_DEBUG';
+
+    (new Dotenv('APP_ENV', $unusedDebugKey))->bootEnv($path, 'dev', ['test'], $overrideExistingVars);
+
+    unset($_SERVER[$unusedDebugKey], $_ENV[$unusedDebugKey]);
+}
+
 /**
  * Gets the value of an environment variable. Supports boolean, null and empty values.
  *

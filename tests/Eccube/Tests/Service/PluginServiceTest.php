@@ -16,6 +16,9 @@ declare(strict_types=1);
 namespace Eccube\Tests\Service;
 
 use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Eccube\Common\Constant;
 use Eccube\Entity\Plugin;
 use Eccube\Exception\PluginException;
@@ -564,7 +567,13 @@ EOD;
     public function testCreateEntityAndTrait()
     {
         $conn = $this->entityManager->getConnection();
-        $platform = $conn->getDatabasePlatform()->getName();
+        $dbalPlatform = $conn->getDatabasePlatform();
+        $platform = match (true) {
+            $dbalPlatform instanceof AbstractMySQLPlatform => 'mysql',
+            $dbalPlatform instanceof PostgreSQLPlatform => 'postgresql',
+            $dbalPlatform instanceof SQLitePlatform => 'sqlite',
+            default => '',
+        };
         if ('postgresql' !== $platform) {
             $this->markTestSkipped('does not support of '.$platform);
         }

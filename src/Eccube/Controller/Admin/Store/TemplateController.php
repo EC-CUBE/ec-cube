@@ -72,9 +72,14 @@ class TemplateController extends AbstractController
 
             $this->addSuccess('admin.common.save_complete', 'admin');
 
-            // ECCUBE_TEMPLATE_CODE がプロセス環境変数として設定されている場合（Docker などで明示的に設定した場合）、
-            // createImmutable では上書きされないため .env への書き込みが反映されない。
-            if (false !== getenv('ECCUBE_TEMPLATE_CODE')) {
+            // 次のいずれかの場合、.env への書き込みが起動時のロードで反映されない:
+            //   1. ECCUBE_TEMPLATE_CODE がプロセス環境変数として設定されている（Docker などで明示的に設定した場合）。
+            //      bootEnv は OS 環境変数を上書きしないため .env の値が使われない。
+            //   2. .env.local.php（dump-env の最適化済みスナップショット）が存在する。
+            //      bootEnv は .env より .env.local.php を優先するため、再度 `composer symfony:dump-env` を
+            //      実行するまで .env の変更が反映されない。
+            $envLocalPhp = $this->getParameter('kernel.project_dir').'/.env.local.php';
+            if (false !== getenv('ECCUBE_TEMPLATE_CODE') || file_exists($envLocalPhp)) {
                 $this->addWarning('admin.store.template.env_override_warning', 'admin');
             }
 
