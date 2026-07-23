@@ -32,6 +32,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 final class CsvImportControllerTest extends AbstractAdminWebTestCase
 {
@@ -46,8 +47,9 @@ final class CsvImportControllerTest extends AbstractAdminWebTestCase
         parent::setUp();
         $this->productRepo = $this->entityManager->getRepository(Product::class);
         $this->categoryRepo = $this->entityManager->getRepository(Category::class);
-        $this->filepath = __DIR__.'/products.csv';
-        // 削除されてしまうのでコピーしておく
+        // インポート処理で削除されてしまうのでコピーしておく.
+        // コピー先を __DIR__ にするとリポジトリ内にテスト成果物が残るため, 一時ディレクトリを使う.
+        $this->filepath = sys_get_temp_dir().'/products.csv';
         copy(__DIR__.'/../../../../../Fixtures/products.csv', $this->filepath);
         $fs = new Filesystem();
         $fs->mkdir($this->eccubeConfig['eccube_csv_temp_realdir']);
@@ -367,22 +369,35 @@ final class CsvImportControllerTest extends AbstractAdminWebTestCase
         }
     }
 
-    public function testCsvTemplateWithProduct(): never
+    public function testCsvTemplateWithProduct(): void
     {
-        $this->markTestIncomplete('Impossible to call set("eccube.constants") on a frozen ParameterBag. => skip');
-        // 一旦別の変数に代入しないと, config 以下の値を書きかえることができない
-        $config = $this->eccubeConfig;
-        $config['eccube_csv_export_encoding'] = 'UTF-8'; // SJIS だと比較できないので UTF-8 に変更しておく
-        static::getContainer()->setParameter('eccube.constants', $config);
-
-        $this->expectOutputString('商品ID,公開ステータス(ID),商品名,ショップ用メモ欄,商品説明(一覧),商品説明(詳細),検索ワード,フリーエリア,商品削除フラグ,商品画像,商品カテゴリ(ID),タグ(ID),販売種別(ID),規格分類1(ID),規格分類2(ID),発送日目安(ID),商品コード,在庫数,在庫数無制限フラグ,販売制限数,通常価格,販売価格,送料,税率'."\n");
-
-        $this->client->request(
-            Request::METHOD_GET,
-            $this->generateUrl('admin_product_csv_template', ['type' => 'product'])
-        );
-
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertCsvTemplate('product', 'product.csv', [
+            '商品ID',
+            '公開ステータス(ID)',
+            '商品名',
+            'ショップ用メモ欄',
+            '商品説明(一覧)',
+            '商品説明(詳細)',
+            '検索ワード',
+            'フリーエリア',
+            '商品削除フラグ',
+            '商品画像',
+            '商品カテゴリ(ID)',
+            'タグ(ID)',
+            '販売種別(ID)',
+            '規格分類1(ID)',
+            '規格分類2(ID)',
+            '発送日目安(ID)',
+            '商品コード',
+            '在庫数',
+            '在庫数無制限フラグ',
+            '販売制限数',
+            '通常価格',
+            '販売価格',
+            '送料',
+            '税率',
+            '商品規格表示フラグ',
+        ]);
     }
 
     /**
@@ -447,7 +462,7 @@ final class CsvImportControllerTest extends AbstractAdminWebTestCase
      */
     public function testCsvCategory()
     {
-        $this->filepath = __DIR__.'/categories.csv';
+        $this->filepath = sys_get_temp_dir().'/categories.csv';
         copy(__DIR__.'/../../../../../Fixtures/categories.csv', $this->filepath); // 削除されてしまうのでコピーしておく
 
         $crawler = $this->scenario('admin_product_category_csv_import', 'categories.csv');
@@ -466,7 +481,7 @@ final class CsvImportControllerTest extends AbstractAdminWebTestCase
      */
     public function testCsvCategoryWithNew()
     {
-        $this->filepath = __DIR__.'/categories.csv';
+        $this->filepath = sys_get_temp_dir().'/categories.csv';
         copy(__DIR__.'/../../../../../Fixtures/categories.csv', $this->filepath);
         $csv = [
             ['カテゴリID', 'カテゴリ名', '親カテゴリID', 'カテゴリ削除フラグ'],
@@ -490,7 +505,7 @@ final class CsvImportControllerTest extends AbstractAdminWebTestCase
      */
     public function testCsvCategoryWithOnlyCategoryName()
     {
-        $this->filepath = __DIR__.'/categories.csv';
+        $this->filepath = sys_get_temp_dir().'/categories.csv';
         copy(__DIR__.'/../../../../../Fixtures/categories.csv', $this->filepath); // 削除されてしまうのでコピーしておく
 
         $csv = [
@@ -515,7 +530,7 @@ final class CsvImportControllerTest extends AbstractAdminWebTestCase
      */
     public function testCsvCategoryWithCategoryNameIsNull()
     {
-        $this->filepath = __DIR__.'/categories.csv';
+        $this->filepath = sys_get_temp_dir().'/categories.csv';
         copy(__DIR__.'/../../../../../Fixtures/categories.csv', $this->filepath); // 削除されてしまうのでコピーしておく
 
         $categories = $this->categoryRepo->findAll();
@@ -541,7 +556,7 @@ final class CsvImportControllerTest extends AbstractAdminWebTestCase
      */
     public function testCsvCategoryWithoutCategoryNameColumn()
     {
-        $this->filepath = __DIR__.'/categories.csv';
+        $this->filepath = sys_get_temp_dir().'/categories.csv';
         copy(__DIR__.'/../../../../../Fixtures/categories.csv', $this->filepath); // 削除されてしまうのでコピーしておく
 
         $categories = $this->categoryRepo->findAll();
@@ -567,7 +582,7 @@ final class CsvImportControllerTest extends AbstractAdminWebTestCase
      */
     public function testCsvCategoryWithColumnSorted()
     {
-        $this->filepath = __DIR__.'/categories.csv';
+        $this->filepath = sys_get_temp_dir().'/categories.csv';
         copy(__DIR__.'/../../../../../Fixtures/categories.csv', $this->filepath); // 削除されてしまうのでコピーしておく
         /* @var Generator $faker */
         $this->getFaker();
@@ -592,22 +607,52 @@ final class CsvImportControllerTest extends AbstractAdminWebTestCase
     //    CSV export template test
     // ======================================================================
 
-    public function testCsvTemplateWithCategory(): never
+    public function testCsvTemplateWithCategory(): void
     {
-        $this->markTestIncomplete('Impossible to call set() on a frozen ParameterBag.');
-        // 一旦別の変数に代入しないと, config 以下の値を書きかえることができない
-        $config = $this->eccubeConfig;
-        $config['eccube_csv_export_encoding'] = 'UTF-8'; // SJIS だと比較できないので UTF-8 に変更しておく
-        static::getContainer()->setParameter('eccube.constants', $config);
+        $this->assertCsvTemplate('category', 'category.csv', [
+            'カテゴリID',
+            'カテゴリ名',
+            '親カテゴリID',
+            'カテゴリ削除フラグ',
+        ]);
+    }
 
-        $this->expectOutputString('カテゴリID,カテゴリ名,親カテゴリID,カテゴリ削除フラグ'."\n");
-
+    /**
+     * CSV 雛形ダウンロードのヘッダ行を検証する.
+     *
+     * 雛形は eccube_csv_export_encoding (既定は SJIS-win) へ変換して出力されるため,
+     * 出力を UTF-8 へ復号してから列名の配列として比較する.
+     * バイト列のまま比較しないのは, SJIS では 2 バイト目に 0x5C (fputcsv のエスケープ文字) を
+     * 含む文字 (例: 「表」= 0x95 0x5C) があり, その列だけが引用符で囲まれるため.
+     *
+     * @param string[] $expectedColumns UTF-8 の期待列名
+     */
+    private function assertCsvTemplate(string $type, string $filename, array $expectedColumns): void
+    {
         $this->client->request(
             Request::METHOD_GET,
-            $this->generateUrl('admin_product_csv_template', ['type' => 'category'])
+            $this->generateUrl('admin_product_csv_template', ['type' => $type])
         );
 
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $Response = $this->client->getResponse();
+        $this->assertTrue($Response->isSuccessful());
+        $this->assertInstanceOf(StreamedResponse::class, $Response);
+        $this->assertSame('application/octet-stream', $Response->headers->get('Content-Type'));
+        $this->assertSame('attachment; filename='.$filename, $Response->headers->get('Content-Disposition'));
+
+        $encoding = $this->eccubeConfig['eccube_csv_export_encoding'];
+        $content = $this->client->getInternalResponse()->getContent();
+        $this->assertTrue(
+            mb_check_encoding($content, $encoding),
+            sprintf('CSV 雛形は %s で出力される', $encoding)
+        );
+
+        $decoded = rtrim(mb_convert_encoding($content, 'UTF-8', $encoding), "\n");
+
+        $this->assertSame(
+            $expectedColumns,
+            str_getcsv($decoded, $this->eccubeConfig['eccube_csv_export_separator'], '"', '\\')
+        );
     }
 
     // ======================================================================
