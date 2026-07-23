@@ -90,6 +90,33 @@ final class TemplateControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
+     * ECCUBE_TEMPLATE_CODE がプロセス環境変数として設定されている場合、画面表示時に
+     * 警告を表示し、登録ボタンを無効化することを確認する（#6130）。
+     */
+    #[Group(name: 'cache-clear')]
+    public function testDisplayWarningAndDisableButtonWhenEnvOverridden()
+    {
+        $key = 'ECCUBE_TEMPLATE_CODE';
+        $original = getenv($key);
+        putenv($key.'=default');
+        try {
+            $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_store_template'));
+            $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+            // 登録ボタンが無効化されている
+            $this->assertGreaterThan(0, $crawler->filter('button[type="submit"][disabled]')->count());
+
+            // 反映されない旨の警告が表示されている
+            $this->assertStringContainsString(
+                trans('admin.system.env.ineffective.overridden'),
+                (string) $this->client->getResponse()->getContent()
+            );
+        } finally {
+            false === $original ? putenv($key) : putenv($key.'='.$original);
+        }
+    }
+
+    /**
      * テンプレートの変更
      */
     #[Group(name: 'cache-clear')]

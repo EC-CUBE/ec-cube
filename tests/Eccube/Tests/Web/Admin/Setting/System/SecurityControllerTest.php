@@ -81,6 +81,33 @@ final class SecurityControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
+     * 環境変数が OS のプロセス環境変数として設定されている場合、画面表示時に
+     * 警告を表示し、登録ボタンを無効化することを確認する（#6130）。
+     */
+    #[Group(name: 'cache-clear')]
+    public function testDisplayWarningAndDisableButtonWhenEnvOverridden(): void
+    {
+        $key = 'ECCUBE_ADMIN_ROUTE';
+        $original = getenv($key);
+        putenv($key.'=admin');
+        try {
+            $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_system_security'));
+            $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+            // 登録ボタンが無効化されている
+            $this->assertGreaterThan(0, $crawler->filter('button[type="submit"][disabled]')->count());
+
+            // 反映されない旨の警告が表示されている
+            $this->assertStringContainsString(
+                trans('admin.system.env.ineffective.overridden'),
+                (string) $this->client->getResponse()->getContent()
+            );
+        } finally {
+            false === $original ? putenv($key) : putenv($key.'='.$original);
+        }
+    }
+
+    /**
      * 環境変数が OS のプロセス環境変数として設定されている場合、.env への書き込みは
      * 反映されないため保存を拒否しエラーを表示することを確認する（#6130）。
      */
