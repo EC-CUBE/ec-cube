@@ -170,6 +170,8 @@ class ShopMasterType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new Assert\PositiveOrZero(),
+                    // DB カラムは INT。桁あふれによる保存時エラーを防ぐため上限を設ける
+                    new Assert\LessThanOrEqual(2147483647),
                 ],
             ])
             ->add('copyright_year', IntegerType::class, [

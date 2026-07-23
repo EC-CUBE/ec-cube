@@ -253,6 +253,20 @@ final class ShopMasterTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
+    public function testValidNumberOfEmployeesIntMax()
+    {
+        $this->formData['number_of_employees'] = '2147483647';
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInValidNumberOfEmployeesOverIntMax()
+    {
+        $this->formData['number_of_employees'] = '2147483648';
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
     public function testValidCopyrightYearRangeMin()
     {
         $this->formData['copyright_year'] = '1900';
