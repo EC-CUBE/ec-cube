@@ -81,6 +81,40 @@ final class SecurityControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
+     * 環境変数が OS のプロセス環境変数として設定されている場合、.env への書き込みは
+     * 反映されないため保存を拒否しエラーを表示することを確認する（#6130）。
+     */
+    #[Group(name: 'cache-clear')]
+    public function testSubmitRejectedWhenEnvOverridden()
+    {
+        $session = $this->createSession($this->client);
+        $formData = $this->createFormData();
+
+        // この画面が書き込む環境変数の1つをプロセス環境変数として設定
+        putenv('ECCUBE_ADMIN_ROUTE=admin');
+        try {
+            $this->client->request(
+                Request::METHOD_POST,
+                $this->generateUrl('admin_setting_system_security'),
+                [
+                    'admin_security' => $formData,
+                ]
+            );
+
+            $this->assertTrue($this->client->getResponse()->isRedirection());
+
+            // 保存が拒否されエラーが表示される
+            $errors = $session->getFlashBag()->get('eccube.admin.error');
+            $this->assertContains('admin.common.save_error', $errors);
+
+            // .env は書き換えられていない
+            $this->assertDoesNotMatchRegularExpression('/ECCUBE_ADMIN_ROUTE='.$formData['admin_route_dir'].'/', file_get_contents($this->envFile));
+        } finally {
+            putenv('ECCUBE_ADMIN_ROUTE');
+        }
+    }
+
+    /**
      * Submit when empty
      */
     public function testSubmitEmpty()

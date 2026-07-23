@@ -119,10 +119,9 @@ final class TemplateControllerTest extends AbstractAdminWebTestCase
      * テンプレートの変更（ECCUBE_TEMPLATE_CODEがプロセス環境変数として設定されている場合）
      *
      * Docker などでプロセス環境変数として ECCUBE_TEMPLATE_CODE が設定されている場合、
-     * .env への書き込みは反映されないため警告が表示されることを確認する。
-     *
-     * @group cache-clear
+     * .env への書き込みは反映されないため、保存を拒否しエラーを表示することを確認する。
      */
+    #[Group(name: 'cache-clear')]
     public function testChangeTemplateWithEnvOverride()
     {
         // テンプレートをアップロード
@@ -146,9 +145,12 @@ final class TemplateControllerTest extends AbstractAdminWebTestCase
             ]);
             $this->assertTrue($this->client->getResponse()->isRedirection());
 
-            // 警告メッセージが表示されている
-            $warnings = $session->getFlashBag()->get('eccube.admin.warning');
-            $this->assertContains('admin.store.template.env_override_warning', $warnings);
+            // 環境変数オーバーライド時は保存が拒否され、エラーが表示される
+            $errors = $session->getFlashBag()->get('eccube.admin.error');
+            $this->assertContains('admin.common.save_error', $errors);
+
+            // .env は書き換えられていない
+            $this->assertDoesNotMatchRegularExpression('/ECCUBE_TEMPLATE_CODE='.$Template->getCode().'/', file_get_contents($this->envFile));
         } finally {
             // プロセス環境変数を元に戻す
             putenv('ECCUBE_TEMPLATE_CODE');

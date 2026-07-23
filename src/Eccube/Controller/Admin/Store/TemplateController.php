@@ -18,6 +18,7 @@ use Eccube\Entity\Master\DeviceType;
 use Eccube\Form\Type\Admin\TemplateType;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\TemplateRepository;
+use Eccube\Service\EnvFileService;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Symfony\Bridge\Twig\Attribute\Template;
@@ -34,9 +35,14 @@ use Symfony\Component\Routing\Attribute\Route;
 class TemplateController extends AbstractController
 {
     /**
+     * この画面が .env へ書き込む環境変数キー（OS 環境変数によるオーバーライド判定に使用）.
+     */
+    private const ENV_KEYS = ['ECCUBE_TEMPLATE_CODE'];
+
+    /**
      * TemplateController constructor.
      */
-    public function __construct(protected TemplateRepository $templateRepository, protected DeviceTypeRepository $deviceTypeRepository, private readonly CacheUtil $cacheUtil)
+    public function __construct(protected TemplateRepository $templateRepository, protected DeviceTypeRepository $deviceTypeRepository, private readonly CacheUtil $cacheUtil, private readonly EnvFileService $envFileService)
     {
     }
 
@@ -59,10 +65,20 @@ class TemplateController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // .env への書き込みが反映されない状況では保存を拒否する
+            //   - .env が存在しない / 書き込み不可
+            //   - .env.local.php（dump-env の最適化済みスナップショット）が .env より優先される
+            //   - ECCUBE_TEMPLATE_CODE が OS のプロセス環境変数として設定され .env を上書きしている
+            if (!$this->envFileService->isEffective(self::ENV_KEYS)) {
+                $this->addError('admin.common.save_error', 'admin');
+
+                return $this->redirectToRoute('admin_store_template');
+            }
+
             $Template = $this->templateRepository->find($form['selected']->getData());
 
             $envFile = $this->getParameter('kernel.project_dir').'/.env';
-            $env = file_exists($envFile) ? file_get_contents($envFile) : '';
+            $env = file_get_contents($envFile);
 
             $env = StringUtil::replaceOrAddEnv($env, [
                 'ECCUBE_TEMPLATE_CODE' => $Template->getCode(),
@@ -72,25 +88,21 @@ class TemplateController extends AbstractController
 
             $this->addSuccess('admin.common.save_complete', 'admin');
 
-            // 次のいずれかの場合、.env への書き込みが起動時のロードで反映されない:
-            //   1. ECCUBE_TEMPLATE_CODE がプロセス環境変数として設定されている（Docker などで明示的に設定した場合）。
-            //      bootEnv は OS 環境変数を上書きしないため .env の値が使われない。
-            //   2. .env.local.php（dump-env の最適化済みスナップショット）が存在する。
-            //      bootEnv は .env より .env.local.php を優先するため、再度 `composer symfony:dump-env` を
-            //      実行するまで .env の変更が反映されない。
-            $envLocalPhp = $this->getParameter('kernel.project_dir').'/.env.local.php';
-            if (false !== getenv('ECCUBE_TEMPLATE_CODE') || file_exists($envLocalPhp)) {
-                $this->addWarning('admin.store.template.env_override_warning', 'admin');
-            }
-
             $this->cacheUtil->clearCache();
 
             return $this->redirectToRoute('admin_store_template');
         }
 
+        // .env への書き込みが反映されない状況では警告を出し、登録ボタンを無効化する。
+        $ineffectiveReasons = $this->envFileService->getIneffectiveReasons(self::ENV_KEYS);
+        foreach ($ineffectiveReasons as $reason) {
+            $this->addWarning('admin.system.env.ineffective.'.$reason, 'admin');
+        }
+
         return [
             'form' => $form->createView(),
             'Templates' => $Templates,
+            'envWritable' => [] === $ineffectiveReasons,
         ];
     }
 

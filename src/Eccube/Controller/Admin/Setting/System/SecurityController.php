@@ -15,6 +15,7 @@ namespace Eccube\Controller\Admin\Setting\System;
 
 use Eccube\Controller\AbstractController;
 use Eccube\Form\Type\Admin\SecurityType;
+use Eccube\Service\EnvFileService;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Symfony\Bridge\Twig\Attribute\Template;
@@ -26,10 +27,26 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 class SecurityController extends AbstractController
 {
     /**
+     * この画面が .env へ書き込む環境変数キー（OS 環境変数によるオーバーライド判定に使用）.
+     */
+    private const ENV_KEYS = [
+        'ECCUBE_FRONT_ALLOW_HOSTS',
+        'ECCUBE_FRONT_DENY_HOSTS',
+        'ECCUBE_ADMIN_ALLOW_HOSTS',
+        'ECCUBE_ADMIN_DENY_HOSTS',
+        'ECCUBE_FORCE_SSL',
+        'TRUSTED_HOSTS',
+        'ECCUBE_ADMIN_ROUTE',
+    ];
+
+    /**
      * SecurityController constructor.
      */
-    public function __construct(protected TokenStorageInterface $tokenStorage, private readonly CacheUtil $cacheUtil)
-    {
+    public function __construct(
+        protected TokenStorageInterface $tokenStorage,
+        private readonly CacheUtil $cacheUtil,
+        private readonly EnvFileService $envFileService,
+    ) {
     }
 
     /**
@@ -44,8 +61,8 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // .envファイルが存在しないときに設定は失敗する
-            if (file_exists($this->getParameter('kernel.project_dir').'/.env') === false) {
+            // .env への書き込みが反映されない状況では保存を拒否する
+            if (!$this->envFileService->isEffective(self::ENV_KEYS)) {
                 $this->addError('admin.common.save_error', 'admin');
 
                 return $this->redirectToRoute('admin_setting_system_security');
@@ -115,13 +132,15 @@ class SecurityController extends AbstractController
             $this->addWarning('admin.setting.system.security.admin_url_warning', 'admin');
         }
 
-        // .envファイルが存在しない場合警告を出す。
-        if (file_exists($this->getParameter('kernel.project_dir').'/.env') === false) {
-            $this->addWarning('admin.setting.system.security.not_found_env_file', 'admin');
+        // .env への書き込みが反映されない状況では警告を出し、登録ボタンを無効化する。
+        $ineffectiveReasons = $this->envFileService->getIneffectiveReasons(self::ENV_KEYS);
+        foreach ($ineffectiveReasons as $reason) {
+            $this->addWarning('admin.system.env.ineffective.'.$reason, 'admin');
         }
 
         return [
             'form' => $form->createView(),
+            'envWritable' => [] === $ineffectiveReasons,
         ];
     }
 }
