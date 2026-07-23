@@ -82,3 +82,5 @@ admin.setting.shop.opening_hours.error.opens_required: 開店時刻を入力し�
 admin.setting.shop.opening_hours.error.closes_required: 閉店時刻を入力してください。
 admin.setting.shop.opening_hours.error.opens_before_closes: 開店時刻は閉店時刻より前にしてください。
 admin.setting.shop.opening_hours.error.overlap: 同じ曜日で営業時間が重複しています。
+admin.setting.shop.same_as.error.invalid_url: 各行にSNS等の有効なURLを入力してください。
+admin.setting.shop.founding_date.error.not_future: 稼働開始日は未来の日付にできません。

@@ -152,20 +152,24 @@ class ShopMasterType extends AbstractType
                     new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_ltext_len'],
                     ]),
+                    new Assert\Callback($this->validateSameAsUrls(...)),
                 ],
             ])
             ->add('founding_date', DateType::class, [
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
+                'constraints' => [
+                    new Assert\LessThanOrEqual([
+                        'value' => 'today',
+                        'message' => 'admin.setting.shop.founding_date.error.not_future',
+                    ]),
+                ],
             ])
             ->add('number_of_employees', IntegerType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Regex([
-                        'pattern' => "/^\d+$/u",
-                        'message' => 'form_error.numeric_only',
-                    ]),
+                    new Assert\PositiveOrZero(),
                 ],
             ])
             ->add('copyright_year', IntegerType::class, [
@@ -321,9 +325,37 @@ class ShopMasterType extends AbstractType
         $resolver->setDefaults([
             'data_class' => BaseInfo::class,
             'constraints' => [
-                new Assert\Callback([$this, 'validateOpeningHoursOverlap']),
+                new Assert\Callback($this->validateOpeningHoursOverlap(...)),
             ],
         ]);
+    }
+
+    /**
+     * sameAs（改行区切りの複数URL）の各行が有効な URL か検証する.
+     *
+     * 単一URLの site_image と同じ Assert\Url で1行ずつ検証し、
+     * 1行でも不正なら項目全体にエラーを付ける（空行は無視する）.
+     */
+    public function validateSameAsUrls(?string $sameAs, ExecutionContextInterface $context): void
+    {
+        if ($sameAs === null || $sameAs === '') {
+            return;
+        }
+
+        $validator = $context->getValidator();
+        $lines = preg_split('/\R/u', $sameAs) ?: [];
+        foreach ($lines as $line) {
+            $url = trim($line);
+            if ($url === '') {
+                continue;
+            }
+            if ($validator->validate($url, new Assert\Url())->count() > 0) {
+                $context->buildViolation('admin.setting.shop.same_as.error.invalid_url')
+                    ->addViolation();
+
+                return;
+            }
+        }
     }
 
     /**
@@ -358,9 +390,10 @@ class ShopMasterType extends AbstractType
                 }
 
                 // 時間帯が交差する場合はエラー（max(開店) < min(閉店)）
+                // 描画済みのリーフ（closes）にエラーを付け、該当行に表示されるようにする
                 if (max($opensA, $opensB) < min($closesA, $closesB)) {
                     $context->buildViolation('admin.setting.shop.opening_hours.error.overlap')
-                        ->atPath('OpeningHours['.$j.']')
+                        ->atPath('OpeningHours['.$j.'].closes')
                         ->addViolation();
                 }
             }

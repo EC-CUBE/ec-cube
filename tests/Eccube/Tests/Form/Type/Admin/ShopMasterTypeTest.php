@@ -216,4 +216,104 @@ final class ShopMasterTypeTest extends AbstractTypeTestCase
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
     }
+
+    public function testValidSameAsMultipleUrls()
+    {
+        $this->formData['same_as'] = "https://example.com/a\nhttps://example.com/b";
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInValidSameAsContainsNonUrl()
+    {
+        $this->formData['same_as'] = "https://example.com/a\nnot-a-url";
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInValidSameAsMaxLength()
+    {
+        // 形式は有効なURLだが最大長を超えるケース（長さ制約のみを検証）
+        $this->formData['same_as'] = 'https://example.com/'.str_repeat('a', $this->eccubeConfig['eccube_ltext_len']);
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testValidNumberOfEmployeesZero()
+    {
+        $this->formData['number_of_employees'] = '0';
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInValidNumberOfEmployeesNegative()
+    {
+        $this->formData['number_of_employees'] = '-1';
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testValidCopyrightYearRangeMin()
+    {
+        $this->formData['copyright_year'] = '1900';
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testValidCopyrightYearRangeMax()
+    {
+        $this->formData['copyright_year'] = '9999';
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInValidCopyrightYearBelowMin()
+    {
+        $this->formData['copyright_year'] = '1899';
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInValidCopyrightYearAboveMax()
+    {
+        $this->formData['copyright_year'] = '10000';
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testValidFoundingDatePast()
+    {
+        $this->formData['founding_date'] = '2000-04-01';
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInValidFoundingDateFuture()
+    {
+        $this->formData['founding_date'] = (new \DateTime('+1 year'))->format('Y-m-d');
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testValidSiteImageUrl()
+    {
+        $this->formData['site_image'] = 'https://example.com/site.png';
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInValidSiteImageNotUrl()
+    {
+        $this->formData['site_image'] = 'not-a-url';
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInValidSiteImageMaxLength()
+    {
+        // 形式は有効なURLだが最大長を超えるケース（長さ制約のみを検証）
+        $this->formData['site_image'] = 'https://example.com/'.str_repeat('a', $this->eccubeConfig['eccube_stext_len']);
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
 }
