@@ -36,6 +36,7 @@ jobs:
           - admin-contents
           - admin-basicinfo
           - admin-system
+          - admin-store
           - front-top
           - front-product
           - front-customer
