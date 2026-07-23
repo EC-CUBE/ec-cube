@@ -52,9 +52,8 @@ final class ForgotControllerTest extends AbstractWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    public function testIndexWithPostAndVerify(): never
+    public function testIndexWithPostAndVerify()
     {
-        $this->markTestIncomplete('expected and actual is diff');
         $Customer = $this->createCustomer();
         $BaseInfo = $this->baseInfoRepository->get();
 
@@ -79,7 +78,7 @@ final class ForgotControllerTest extends AbstractWebTestCase
         $this->actual = $Message->getSubject();
         $this->verify();
 
-        $cleanContent = quoted_printable_decode((string) $Message->getBody());
+        $cleanContent = quoted_printable_decode((string) $Message->getTextBody());
         $this->assertSame(1, preg_match('|http://localhost(.*)|', $cleanContent, $urls));
         $forgot_path = trim($urls[1]);
 
@@ -90,7 +89,7 @@ final class ForgotControllerTest extends AbstractWebTestCase
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $this->expected = 'パスワード再発行(再設定ページ)';
+        $this->expected = 'パスワード再発行(再設定)';
         $this->actual = $crawler->filter('div.ec-pageHeader > h1')->text();
         $this->verify();
 
@@ -98,16 +97,18 @@ final class ForgotControllerTest extends AbstractWebTestCase
         $password = 'password_Changed';
         $this->client->request(
             Request::METHOD_POST,
-            $this->generateUrl('forgot_reset'),
+            $forgot_path,
             [
                 'login_email' => $Customer->getEmail(),
-                'password[first]' => $password,
-                'password[second]' => $password,
+                'password' => [
+                    'first' => $password,
+                    'second' => $password,
+                ],
                 Constant::TOKEN_NAME => 'dummy',
             ]
         );
 
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('mypage_login')));
     }
 
     public function testResetWithInvalid()

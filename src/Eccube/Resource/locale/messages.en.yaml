@@ -97,6 +97,7 @@ front.block.cart.no_item: Your cart is empty.
 front.block.footer.about_us: About Us
 front.block.footer.privacy_policy: Privacy Policy
 front.block.footer.inquiry: Contact Us
+front.block.footer.cookie_settings: Cookie Settings
 front.block.footer.act_on_specified_commercial_transactions: Shipping & Returns
 front.block.category.list: All Categories
 front.block.category.category__en: CATEGORIES
@@ -422,6 +423,18 @@ front.shopping.different_payment_methods: Sorry, your order includes items with 
 front.shopping.payment_method_unselected: Please select the payment method.
 front.shopping.not_available_payment_method: The payment method you have selected is not available.
 front.shopping.payment_method_not_fount: Sorry, you have no payment options. If you have selected multiple delivery methods, you can only select the same payment option for them all.
+front.shopping.save_preferred_shipping_payment: Save this shipping and payment method
+front.shopping.save_preferred_shipping_payment_help: Use with one click for next order
+front.shopping.preferred_info_title: Saved settings available
+front.shopping.preferred_delivery_label: Shipping method
+front.shopping.preferred_payment_label: Payment method
+front.shopping.use_preferred_button: Use this setting
+front.shopping.preferred_restored_success: Saved settings have been applied
+front.shopping.preferred_payment_unavailable: Your saved payment method is currently unavailable
+front.shopping.preferred_delivery_unavailable: Your saved shipping method is currently unavailable
+front.shopping.preferred_multiple_shipping_notice: Saved settings cannot be restored when multiple shipping addresses are specified
+front.shopping.preferred_incompatible_combination: The combination of your saved shipping and payment methods is currently unavailable
+front.shopping.preferred_save_failed: Your order has been completed, but saving shipping and payment methods failed
 front.under_maintenance: The site is currently under maintenance.
 front.under_debug_mode: The site is currently under debug mode.
 front.admin_login_active: You are logged in to the Admin Console.
@@ -964,6 +977,7 @@ admin.order.search_customer_title: Search Customers
 admin.order.product_info: Product Info
 admin.order.edit_multiple_shipping: Edit Delivery Address
 admin.order.edit_multiple_shipping_description: If you selected multiple delivery addresses, you can edit each of them from the this button.
+admin.order.edit_conflict: The order was updated by another operation and could not be saved. Please reload the page and try again.
 admin.order.product_item_not_found: No item is found
 admin.order.delivery_note_create_date: Date of Issue
 admin.order.delivery_note_title: Title
@@ -1266,6 +1280,8 @@ admin.setting.shop.shop.option_point_rate: Point Return Rate
 admin.setting.shop.shop.option_point_conversion_rate: Point Conversion Rate
 admin.setting.shop.shop.ga: "Google Analytics"
 admin.setting.shop.shop.ga.tracking_id: "Tracking ID"
+admin.setting.shop.shop.option_cookie_consent_section: Cookie Policy Settings
+admin.setting.shop.shop.option_cookie_consent: Cookie Consent Feature
 admin.setting.shop.shop.agent_commerce: "Agent Commerce"
 admin.setting.shop.shop.agent_commerce.description: "Enable checkout via AI agents (ChatGPT / Gemini, etc.). Discovery and catalog are always public; only checkout is controlled here. Checkout is not yet available in Japan, so normally leave these disabled."
 admin.setting.shop.shop.agent_commerce.acp_checkout_enabled: "Enable ACP checkout"
@@ -1845,6 +1861,7 @@ tooltip.setting.shop.shop.option_point_enabled: If turned on, the point system i
 tooltip.setting.shop.shop.option_point_rate: You can change the point return rate by purchase amount.
 tooltip.setting.shop.shop.option_point_conversion_rate: Conversion rate per 1 point. E.g. If you set ''1'', the point becomes available to shoppers with the rate of 1 point = 1 yen.
 tooltip.setting.shop.shop.ga.tracking_id: "Set tracking id when you analyze your site access using Google Analytics.(Please refer to Google Analytics terms and conditions)"
+tooltip.setting.shop.shop.option_cookie_consent: "When ON, Google Analytics (the GA tracking ID in shop settings) is not loaded until the visitor consents, and a consent banner is shown on the front. Cookies required for site operation such as login and cart are used regardless of consent. If you use analytics or advertising tags other than GA (Google Tag Manager, ad pixels, etc.), additional implementation is required to link them with the consent state. When OFF, GA is always loaded as before (the consent banner is not shown)."
 tooltip.setting.shop.payment.rule: You can set the terms of use for the payment method. If the total payment amount (tax included) including your own fee matches the conditions, it will be displayed in the payment method options of the purchase flow.
 tooltip.setting.shop.payment.logo_image: You can upload the payment option icons displayed in the payment methods during the checkout process. If not registered, the payment methods will be displayed w/o images.
 tooltip.setting.shop.delivery.tracking_number_url: Enter the URL of the shipping tracker of the delivery company.
@@ -1980,3 +1997,56 @@ command.composer_require_already_installed.not_supported_plugin: "%name% %plugin
 #------------------------------------------------------------------------------------
 admin.list.sort.key: listSortKey
 admin.list.sort.type: listSortType
+
+#------------------------------------------------------------------------------------
+# Cookie consent
+#------------------------------------------------------------------------------------
+cookie_consent.banner.message: We provide usage information to third parties to improve our services.
+cookie_consent.banner.detail_link: Learn more
+cookie_consent.banner.accept: Accept
+cookie_consent.banner.reject: Reject
+cookie_consent.banner.close: Close
+cookie_consent.page.title: Cookie Settings
+cookie_consent.page.description: We provide customer usage information to third parties (such as Google Analytics) to improve our services.
+cookie_consent.page.detail_link: View Cookie Policy
+cookie_consent.page.current_status: Current Setting
+cookie_consent.page.status_accepted: You have consented to providing information to third parties
+cookie_consent.page.status_rejected: You have rejected providing information to third parties
+cookie_consent.page.status_not_set: Not set
+cookie_consent.page.change_setting: Change Settings
+cookie_consent.page.accept_label: Consent to providing information to third parties
+cookie_consent.page.reject_label: Reject providing information to third parties
+cookie_consent.page.save: Save
+cookie_consent.page.save_success: Settings saved successfully
+cookie_consent.page.save_error: Failed to save settings
+cookie_consent.error.invalid_status: Invalid status
+cookie_consent.error.no_selection: Please make a selection
+cookie_policy.page.title: Cookie Policy
+cookie_policy.section.what_is_cookie.title: What are Cookies?
+cookie_policy.section.what_is_cookie.description: Cookies are a mechanism for temporarily storing data on your device (PC, smartphone, etc.) through your web browser when you visit a website. Cookies are used to improve various functions and services provided by the website and to enhance your convenience.
+cookie_policy.section.cookie_types.title: Cookies Used on This Site
+cookie_policy.section.cookie_types.essential.title: Essential Cookies
+cookie_policy.section.cookie_types.essential.description: Cookies necessary to provide the basic functions of the site. These cookies are always enabled.
+cookie_policy.section.cookie_types.essential.item1: Maintaining login status
+cookie_policy.section.cookie_types.essential.item2: Retaining shopping cart information
+cookie_policy.section.cookie_types.essential.item3: Security protection (CSRF protection, etc.)
+cookie_policy.section.cookie_types.analytics.title: Analytics Cookies (Optional)
+cookie_policy.section.cookie_types.analytics.description: Cookies used to analyze website usage and improve services. They are only used with your consent.
+cookie_policy.section.cookie_types.analytics.item1: Measuring number of visitors and page views with Google Analytics
+cookie_policy.section.cookie_types.analytics.item2: Analyzing customer browsing behavior (time on site, pages viewed, etc.)
+cookie_policy.section.cookie_types.analytics.consent_required: These cookies are only used with your consent.
+cookie_policy.section.third_party.title: Purpose of Providing Information to Third Parties
+cookie_policy.section.third_party.description: "We provide customer usage information to third parties for the following purposes:"
+cookie_policy.section.third_party.purpose1: Analyzing and improving website usage
+cookie_policy.section.third_party.purpose2: Research to provide better services to customers
+cookie_policy.section.third_party.purpose3: Measuring the effectiveness of marketing activities
+cookie_policy.section.providers.title: Information Recipients
+cookie_policy.section.providers.google.description: This site uses Google Analytics provided by Google LLC to analyze website usage. Google Analytics collects your visit history using cookies. The collected information is managed in accordance with Google's Privacy Policy.
+cookie_policy.section.providers.provider_name: Provider
+cookie_policy.section.providers.privacy_policy: Privacy Policy
+cookie_policy.section.change_consent.title: How to Change Your Consent
+cookie_policy.section.change_consent.description: You can change your consent regarding cookie usage at any time from the cookie settings page.
+cookie_policy.section.change_consent.settings_link: Go to Cookie Settings Page
+cookie_policy.section.contact.title: Contact Us
+cookie_policy.section.contact.description: If you have any questions or concerns about our cookie policy, please contact us through our contact page.
+cookie_policy.section.contact.contact_link: Go to Contact Page

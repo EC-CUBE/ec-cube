@@ -11,7 +11,6 @@
 
 require_once __DIR__.'/../vendor/autoload.php';
 
-use Dotenv\Dotenv;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\OrderStatus;
@@ -20,11 +19,13 @@ use Eccube\Entity\RefundRequest;
 use Eccube\Kernel;
 use Faker\Factory as Faker;
 
-if (file_exists(__DIR__.'/../.env')) {
-    Dotenv::createUnsafeMutable(__DIR__.'/../')->load();
+if (file_exists(__DIR__.'/../.env')
+    || file_exists(__DIR__.'/../.env.local')
+    || file_exists(__DIR__.'/../.env.local.php')) {
+    boot_env(__DIR__.'/../.env', true);
 }
 
-$appEnv = getenv('APP_ENV') ?: 'codeception';
+$appEnv = getenv('APP_ENV') ?: 'e2e';
 $kernel = new Kernel($appEnv, false);
 $kernel->boot();
 
