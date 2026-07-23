@@ -23,6 +23,8 @@ test.describe('Admin Store (EA10)', () => {
     const confirmModal = page.locator('#authentication_key_confirm');
     await expect(confirmModal).toBeVisible();
     await expect(confirmModal).toContainText('オーナーズストア');
+    // オーナーズストア確認リンクが正しい遷移先を指すこと（機能の核心）
+    await expect(confirmModal.getByRole('link')).toHaveAttribute('href', /\/mypage\/login\.php$/);
     await expect(page.locator('#captcha')).toBeHidden();
 
     // 「発行手続きへ進む」で注意喚起モーダルが閉じ、既存の CAPTCHA モーダルへ遷移する
