@@ -29,6 +29,8 @@ test.describe('Admin Store (EA10)', () => {
     await page.locator('#proceed_to_captcha').click();
     await expect(confirmModal).toBeHidden();
     await expect(page.locator('#captcha')).toBeVisible();
+    // モーダル連鎖(hide→show)でバックドロップが二重化・残留しないこと
+    await expect(page.locator('.modal-backdrop')).toHaveCount(1);
   });
 
   test('store_authkey_confirm_modal_cancel - EA1001-UC01-T02', async ({ page }) => {
@@ -42,5 +44,7 @@ test.describe('Admin Store (EA10)', () => {
     await confirmModal.getByRole('button', { name: 'キャンセル' }).click();
     await expect(confirmModal).toBeHidden();
     await expect(page.locator('#captcha')).toBeHidden();
+    // 閉じた後にバックドロップが残留しないこと
+    await expect(page.locator('.modal-backdrop')).toHaveCount(0);
   });
 });
