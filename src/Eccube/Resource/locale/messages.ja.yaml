@@ -1427,7 +1427,7 @@ admin.setting.system.security.admin_url_warning: 管理画面URLは、セキュ�
 admin.setting.system.security.not_found_env_file: .envファイルが見つかりません。.envを利用していない場合はセキュリティ設定を管理画面から変更できません。
 admin.system.env.ineffective.not_found: '.env ファイルが存在しないため、この設定は管理画面から変更できません。サーバーの環境変数を直接設定してください。'
 admin.system.env.ineffective.not_writable: '.env ファイルに書き込み権限がないため、この設定は管理画面から変更できません。.env ファイルの書き込み権限を確認してください。'
-admin.system.env.ineffective.local_php: '.env.local.php が存在するため、.env への変更は反映されません。サーバーの環境変数を変更するか、composer symfony:dump-env を再実行してください。'
+admin.system.env.ineffective.local_php: '.env.local.php が存在するため、.env への変更は反映されず、管理画面からは変更できません。サーバー側で .env を更新してから composer dump-env を再実行するか、.env.local.php を削除して管理画面からの変更を再開してください。'
 admin.system.env.ineffective.overridden: 'この設定の環境変数が OS のプロセス環境変数として設定されているため、.env への変更は反映されません。サーバーの環境変数を直接変更してください。'
 admin.setting.system.security.trusted_hosts: 信頼できるホスト名
 admin.setting.system.security.trusted_hosts_sample: ^example\.com$,^example\.org$

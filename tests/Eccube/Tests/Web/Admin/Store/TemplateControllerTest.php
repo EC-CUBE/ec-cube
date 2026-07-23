@@ -131,7 +131,9 @@ final class TemplateControllerTest extends AbstractAdminWebTestCase
         $Template = $this->templateRepository->findOneBy(['code' => $this->code]);
 
         // プロセス環境変数として ECCUBE_TEMPLATE_CODE を設定
-        putenv('ECCUBE_TEMPLATE_CODE=default');
+        $key = 'ECCUBE_TEMPLATE_CODE';
+        $original = getenv($key);
+        putenv($key.'=default');
 
         try {
             $session = $this->createSession($this->client);
@@ -152,8 +154,8 @@ final class TemplateControllerTest extends AbstractAdminWebTestCase
             // .env は書き換えられていない
             $this->assertDoesNotMatchRegularExpression('/ECCUBE_TEMPLATE_CODE='.$Template->getCode().'/', file_get_contents($this->envFile));
         } finally {
-            // プロセス環境変数を元に戻す
-            putenv('ECCUBE_TEMPLATE_CODE');
+            // 実行環境が事前に設定していた値を復元する
+            false === $original ? putenv($key) : putenv($key.'='.$original);
         }
     }
 

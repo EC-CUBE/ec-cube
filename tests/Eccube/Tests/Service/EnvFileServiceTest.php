@@ -94,15 +94,18 @@ final class EnvFileServiceTest extends TestCase
 
         $service = new EnvFileService($this->projectDir);
 
-        putenv('ECCUBE_TEST_OVERRIDE_KEY=1');
+        $key = 'ECCUBE_TEST_OVERRIDE_KEY';
+        $original = getenv($key);
+        putenv($key.'=1');
         try {
-            $reasons = $service->getIneffectiveReasons(['ECCUBE_TEST_OVERRIDE_KEY']);
+            $reasons = $service->getIneffectiveReasons([$key]);
             $this->assertContains(EnvFileService::REASON_OVERRIDDEN, $reasons);
-            $this->assertFalse($service->isEffective(['ECCUBE_TEST_OVERRIDE_KEY']));
+            $this->assertFalse($service->isEffective([$key]));
             // 対象キーに含めなければ反映可能と判定される
             $this->assertTrue($service->isEffective(['UNRELATED_KEY']));
         } finally {
-            putenv('ECCUBE_TEST_OVERRIDE_KEY');
+            // 実行環境が事前に設定していた値を復元する
+            false === $original ? putenv($key) : putenv($key.'='.$original);
         }
     }
 }

@@ -85,13 +85,15 @@ final class SecurityControllerTest extends AbstractAdminWebTestCase
      * 反映されないため保存を拒否しエラーを表示することを確認する（#6130）。
      */
     #[Group(name: 'cache-clear')]
-    public function testSubmitRejectedWhenEnvOverridden()
+    public function testSubmitRejectedWhenEnvOverridden(): void
     {
         $session = $this->createSession($this->client);
         $formData = $this->createFormData();
 
         // この画面が書き込む環境変数の1つをプロセス環境変数として設定
-        putenv('ECCUBE_ADMIN_ROUTE=admin');
+        $key = 'ECCUBE_ADMIN_ROUTE';
+        $original = getenv($key);
+        putenv($key.'=admin');
         try {
             $this->client->request(
                 Request::METHOD_POST,
@@ -110,7 +112,8 @@ final class SecurityControllerTest extends AbstractAdminWebTestCase
             // .env は書き換えられていない
             $this->assertDoesNotMatchRegularExpression('/ECCUBE_ADMIN_ROUTE='.$formData['admin_route_dir'].'/', file_get_contents($this->envFile));
         } finally {
-            putenv('ECCUBE_ADMIN_ROUTE');
+            // 実行環境が事前に設定していた値を復元する
+            false === $original ? putenv($key) : putenv($key.'='.$original);
         }
     }
 
