@@ -470,6 +470,9 @@ class Product extends AbstractEntity implements \Stringable
     #[ORM\Column(name: 'free_area', type: Types::TEXT, nullable: true)]
     private ?string $free_area = null;
 
+    #[ORM\Column(name: 'order_memo', type: Types::TEXT, nullable: true)]
+    private ?string $order_memo = null;
+
     #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
     private ?\DateTime $create_date = null;
 
@@ -694,6 +697,24 @@ class Product extends AbstractEntity implements \Stringable
     public function getFreeArea(): ?string
     {
         return $this->free_area;
+    }
+
+    /**
+     * Set orderMemo.
+     */
+    public function setOrderMemo(?string $orderMemo = null): Product
+    {
+        $this->order_memo = $orderMemo;
+
+        return $this;
+    }
+
+    /**
+     * Get orderMemo.
+     */
+    public function getOrderMemo(): ?string
+    {
+        return $this->order_memo;
     }
 
     /**

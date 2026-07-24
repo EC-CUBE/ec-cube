@@ -74,6 +74,11 @@ return RectorConfig::configure()
                    __DIR__.'/codeception/_support/Page/Admin/OrderManagePage.php',
                    __DIR__.'/codeception/acceptance/EF06OtherCest.php',
                ],
+               // shopping/order の各購入フローは同じ PurchaseFlow 型の別サービスであり、
+               // 型解決(get(PurchaseFlow::class))に置き換えると両者の区別が失われテストが無意味化する
+               ContainerGetNameToTypeInTestsRector::class => [
+                   __DIR__.'/tests/Eccube/Tests/Service/PurchaseFlow/OrderMemoFlowTest.php',
+               ],
                // 8.3以上で対応可能
                AddTypeToConstRector::class, // [BC]定数に型を追加する PHP 8.3 以降で有効
                RenameMethodRector::class, //addがaddCommandに変換されてしまうため一旦スキップ
