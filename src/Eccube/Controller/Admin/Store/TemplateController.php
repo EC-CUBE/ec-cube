@@ -110,7 +110,7 @@ class TemplateController extends AbstractController
      * テンプレート一覧からのダウンロード
      */
     #[Route(path: '/%eccube_admin_route%/store/template/{id}/download', name: 'admin_store_template_download', requirements: ['id' => '\d+'], methods: ['GET'])]
-    public function download(Request $request, \Eccube\Entity\Template $Template): BinaryFileResponse
+    public function download(\Eccube\Entity\Template $Template): BinaryFileResponse
     {
         // 該当テンプレートのディレクトリ
         $templateCode = $Template->getCode();
@@ -167,7 +167,7 @@ class TemplateController extends AbstractController
     }
 
     #[Route(path: '/%eccube_admin_route%/store/template/{id}/delete', name: 'admin_store_template_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, \Eccube\Entity\Template $Template): RedirectResponse
+    public function delete(\Eccube\Entity\Template $Template): RedirectResponse
     {
         $this->isTokenValid();
 
