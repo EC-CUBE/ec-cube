@@ -127,7 +127,8 @@ class Order extends AbstractEntity implements PurchaseInterface, ItemHolderInter
         $taxableTotal = $this->getTaxableTotal();
         $taxFreeDiscount = $this->getTaxFreeDiscount();
 
-        foreach ($this->getTaxableTotalByTaxRate() as $rate => $totalPrice) {
+        $taxableTotalByTaxRate = $this->getTaxableTotalByTaxRate();
+        foreach ($taxableTotalByTaxRate as $rate => $totalPrice) {
             if (!array_key_exists($rate, $roundingTypes) || null === $roundingTypes[$rate]) {
                 continue;
             }
@@ -147,6 +148,23 @@ class Order extends AbstractEntity implements PurchaseInterface, ItemHolderInter
             );
         }
 
+        // 値引きを税率ごとに按分・丸めすると, 税率別合計の総和が実際の課税支払額と
+        // ±数円ずれる場合がある (基本税率が切り捨て設定 + ポイント利用等で顕在化).
+        // 丸めで生じた誤差を最高税率(標準税率)のバケットへ寄せ, 総和を支払額に一致させる.
+        // refs https://github.com/EC-CUBE/ec-cube/issues/6335
+        // 全税率に丸め規則が揃っている (按分計算が確定している) ときのみ補正する.
+        if (bccomp($taxableTotal, '0', 2) !== 0 && count($total) === count($taxableTotalByTaxRate)) {
+            // 値引後の課税支払額 (taxFreeDiscount は負数のため加算で減算となる)
+            $target = bcadd($taxableTotal, $taxFreeDiscount, 2);
+            $sum = array_reduce($total, fn ($carry, $value) => bcadd($carry, $value, 2), '0');
+            $diff = bcsub($target, $sum, 2);
+            if (bccomp($diff, '0', 2) !== 0) {
+                // getTaxableTotalByTaxRate() は税率降順 (krsort) のため先頭キーが最高税率
+                $adjustRate = array_key_first($taxableTotalByTaxRate);
+                $total[$adjustRate] = bcadd($total[$adjustRate], $diff, 0);
+            }
+        }
+
         ksort($total);
 
         return $total;
@@ -163,33 +181,18 @@ class Order extends AbstractEntity implements PurchaseInterface, ItemHolderInter
     {
         $roundingTypes = $this->getRoundingTypeByTaxRate();
         $tax = [];
-        $taxableTotal = $this->getTaxableTotal();
-        $taxFreeDiscount = $this->getTaxFreeDiscount();
 
-        foreach ($this->getTaxableTotalByTaxRate() as $rate => $totalPrice) {
+        // 誤差補正済みの税率別税込合計から割戻し計算する (税込合計と税額の整合を担保する).
+        // refs https://github.com/EC-CUBE/ec-cube/issues/6335
+        foreach ($this->getTotalByTaxRate() as $rate => $totalPrice) {
             if (!array_key_exists($rate, $roundingTypes) || null === $roundingTypes[$rate]) {
                 continue;
             }
 
-            if (bccomp($taxableTotal, '0', 2) !== 0) {
-                // (totalPrice - abs(taxFreeDiscount) * totalPrice / taxableTotal) * (rate / (100 + rate))
-                $absDiscount = ltrim($taxFreeDiscount, '-');
-
-                // abs(taxFreeDiscount) * totalPrice / taxableTotal
-                $discountPortion = bcdiv(bcmul($absDiscount, $totalPrice, 6), $taxableTotal, 6);
-
-                // totalPrice - discountPortion
-                $afterDiscount = bcsub($totalPrice, $discountPortion, 6);
-
-                // rate / (100 + rate)
-                $rateStr = $rate;
-                $taxRate = bcdiv($rateStr, bcadd('100', $rateStr, 6), 6);
-
-                // 最終計算
-                $value = bcmul($afterDiscount, $taxRate, 6);
-            } else {
-                $value = '0';
-            }
+            // totalPrice * (rate / (100 + rate))
+            $rateStr = $rate;
+            $taxRate = bcdiv($rateStr, bcadd('100', $rateStr, 6), 6);
+            $value = bcmul($totalPrice, $taxRate, 6);
 
             $tax[$rate] = TaxRuleService::roundByRoundingType(
                 $value,
