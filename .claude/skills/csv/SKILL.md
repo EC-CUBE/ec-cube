@@ -151,7 +151,7 @@ try {
 - **管理画面で増やせる出力項目**は `dtb_csv` のレコード追加（CSV 設定画面）で完結する。コード変更は不要。
 - **コードで列を足したい**場合は、コア改変ではなく **CSV エクスポートイベントを購読**する。
   `EccubeEvents` に種別ごとのイベントがある:
-  - `ADMIN_ORDER_CSV_EXPORT_ORDER` / `ADMIN_ORDER_CSV_EXPORT_SHIPPING`
+  - `ADMIN_ORDER_CSV_EXPORT_ORDER`（受注・出荷 CSV 共通。`OrderController::exportCsv()` は受注/出荷どちらのエクスポートでもこの1イベントを dispatch する）
   - `ADMIN_PRODUCT_CSV_EXPORT` / `ADMIN_CUSTOMER_CSV_EXPORT`
   - `ADMIN_PRODUCT_CATEGORY_CSV_EXPORT` / `ADMIN_PRODUCT_CLASS_NAME_CSV_EXPORT` / `ADMIN_PRODUCT_CLASS_CATEGORY_CSV_EXPORT`
   購読側で `EventArgs` から `ExportCsvRow` を受け取り、`setData()` / `pushData()` で列を追加する

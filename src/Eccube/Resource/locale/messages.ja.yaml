@@ -97,6 +97,7 @@ front.block.cart.no_item: 現在カート内に商品はございません。
 front.block.footer.about_us: 当サイトについて
 front.block.footer.privacy_policy: プライバシーポリシー
 front.block.footer.inquiry: お問い合わせ
+front.block.footer.cookie_settings: クッキー設定
 front.block.footer.act_on_specified_commercial_transactions: 特定商取引法に基づく表記
 front.block.category.list: カテゴリ一覧
 front.block.category.category__en: CATEGORY
@@ -395,6 +396,18 @@ front.shopping.different_payment_methods: 支払い方法が異なる商品が�
 front.shopping.payment_method_unselected: お支払い方法を選択してください。
 front.shopping.not_available_payment_method: 選択したお支払い方法はご利用できません。
 front.shopping.payment_method_not_fount: 選択できるお支払い方法がありません。配送方法が異なる場合は同じ配送方法を選んでください。
+front.shopping.save_preferred_shipping_payment: この配送方法と支払い方法を保存する
+front.shopping.save_preferred_shipping_payment_help: 次回の注文時にワンクリックで設定できます
+front.shopping.preferred_info_title: 保存された設定があります
+front.shopping.preferred_delivery_label: 配送方法
+front.shopping.preferred_payment_label: 支払い方法
+front.shopping.use_preferred_button: この設定を使用する
+front.shopping.preferred_restored_success: 保存された設定を適用しました
+front.shopping.preferred_payment_unavailable: 保存された支払い方法が現在利用できません
+front.shopping.preferred_delivery_unavailable: 保存された配送方法が現在利用できません
+front.shopping.preferred_multiple_shipping_notice: 複数配送先指定時は保存設定の復元はできません
+front.shopping.preferred_incompatible_combination: 保存された配送方法と支払い方法の組み合わせが現在利用できません
+front.shopping.preferred_save_failed: 注文は完了しましたが、配送方法・支払い方法の保存に失敗しました
 front.under_maintenance: メンテナンスモードが有効になっています。
 front.under_debug_mode: デバッグモードが有効になっています。
 front.admin_login_active: 管理画面にログイン中です。
@@ -667,6 +680,8 @@ admin.product.delivery_fee: 商品送料
 admin.product.tax_rate: 税率
 admin.product.free_area: フリーエリア
 admin.product.free_area__card_title: フリーエリア
+admin.product.order_memo: 受注管理用メモ
+admin.product.order_memo__card_title: 受注管理用メモ
 admin.product.delete_flag: 商品削除フラグ
 admin.product.search_category: カテゴリ検索
 admin.product.save_tag: タグ登録
@@ -738,6 +753,8 @@ admin.product.product_csv.keyword_col: 検索ワード
 admin.product.product_csv.keyword_description: ""
 admin.product.product_csv.free_area_col: フリーエリア
 admin.product.product_csv.free_area_description: ""
+admin.product.product_csv.order_memo_col: 受注管理用メモ
+admin.product.product_csv.order_memo_description: 受注時に注文明細へコピーされる管理用メモです。顧客には表示されません。
 admin.product.product_csv.delete_flag_col: 商品削除フラグ
 admin.product.product_csv.delete_flag_description: 0:登録 1:削除を指定します。未指定の場合、0として扱います。
 admin.product.product_csv.product_image_col: 商品画像
@@ -937,6 +954,7 @@ admin.order.search_customer_title: 会員を検索
 admin.order.product_info: 商品情報
 admin.order.edit_multiple_shipping: お届け先を編集
 admin.order.edit_multiple_shipping_description: 複数配送を指定している場合は、こちらのボタンからそれぞれの配送設定の編集ができます
+admin.order.edit_conflict: 受注情報が別の操作で更新されたため、登録できませんでした。画面を再読み込みしてからやり直してください。
 admin.order.product_item_not_found: 商品が追加されていません
 admin.order.delivery_note_create_date: 発行日
 admin.order.delivery_note_title: タイトル
@@ -1210,6 +1228,8 @@ admin.setting.shop.shop.option_point_rate: ポイント付与率
 admin.setting.shop.shop.option_point_conversion_rate: ポイント換算レート
 admin.setting.shop.shop.ga: "Googleアナリティクス設定"
 admin.setting.shop.shop.ga.tracking_id: "トラッキングID"
+admin.setting.shop.shop.option_cookie_consent_section: クッキーポリシー設定
+admin.setting.shop.shop.option_cookie_consent: クッキーポリシー同意機能
 admin.setting.shop.shop.agent_commerce: "エージェントコマース"
 admin.setting.shop.shop.agent_commerce.description: "AIエージェント (ChatGPT / Gemini 等) 経由のチェックアウトを有効化します。Discovery / カタログは常時公開され、ここでは checkout のみを制御します。checkout は日本未提供のため、通常は無効のままにしてください。"
 admin.setting.shop.shop.agent_commerce.acp_checkout_enabled: "ACP チェックアウトを有効にする"
@@ -1725,6 +1745,7 @@ tooltip.product.sale_limit: 購入者が一度に購入できる個数を制限�
 tooltip.product.delivery_duration: 発送日の目安期間を商品ごとに登録できます。
 tooltip.product.product_class: この商品に設定された規格を確認・管理できます。
 tooltip.product.free_area: 商品詳細ページに入力内容が表示されます。表示位置はデザインテンプレートによって異なります。
+tooltip.product.order_memo: 受注時に注文明細へコピーされる管理用メモです。顧客には表示されません。
 tooltip.product.shop_memo: 店舗用のメモ欄です。フロント画面には表示されません。
 tooltip.product.backend_name: 管理者用に別名を登録しておくことができます（例：規格名：サイズ　管理名：サイズ（服）、サイズ（靴）等 ）。フロント画面には表示されません。
 tooltip.product.csv_upload: 所定の型のCSVデータを用いて商品を一括で登録することができます。
@@ -1790,6 +1811,7 @@ tooltip.setting.shop.shop.option_point_enabled: オンにすると、ポイン�
 tooltip.setting.shop.shop.option_point_rate: 購入金額に対するポイント付与率を編集できます。
 tooltip.setting.shop.shop.option_point_conversion_rate: 1ポイントあたりの換算レートです。例：「1」と設定すると1ポイント「1円」として利用可能になります。
 tooltip.setting.shop.shop.ga.tracking_id: "Googleアナリティクスでアクセス解析を行う場合に設定してください（Googleアナリティクスの規約も参照ください）"
+tooltip.setting.shop.shop.option_cookie_consent: "ONにすると、利用者が同意するまでGoogle Analytics（店舗設定のGAトラッキングID）を読み込まず、フロントに同意バナーを表示します。ログイン・カート等のサイト動作に必要なCookieは同意に関わらず利用されます。GA以外の解析・広告タグ（Google Tag Manager・広告ピクセル等）を利用している場合は、同意状態と連動させる追加実装が別途必要です。OFFにすると、従来どおりGAを常に読み込みます（同意バナーは表示しません）。"
 tooltip.setting.shop.payment.rule: お支払い方法の利用条件を設定できます。自身の手数料を含む支払総額(税込)が条件に一致する場合、購入フローのお支払い方法の選択肢に表示されまます。
 tooltip.setting.shop.payment.logo_image: 購入フローのお支払い方法に表示される画像を登録できます。登録がない場合は画像なしで表示されます。
 tooltip.setting.shop.delivery.tracking_number_url: 配送業者のお問い合わせページURLを指定します。
@@ -1925,3 +1947,56 @@ command.composer_require_already_installed.not_supported_plugin: "%name% %plugin
 #------------------------------------------------------------------------------------
 admin.list.sort.key: listSortKey # 検索条件の表示制御に利用
 admin.list.sort.type: listSortType # 検索条件の表示制御に利用
+
+#------------------------------------------------------------------------------------
+# クッキー同意機能
+#------------------------------------------------------------------------------------
+cookie_consent.banner.message: 当サイトでは、サービス向上のため利用状況を第三者へ提供しています。
+cookie_consent.banner.detail_link: 詳細はこちら
+cookie_consent.banner.accept: 同意する
+cookie_consent.banner.reject: 拒否する
+cookie_consent.banner.close: 閉じる
+cookie_consent.page.title: クッキー設定
+cookie_consent.page.description: 当サイトでは、サービス向上のため、お客様の利用状況を第三者（Google Analytics等）へ提供しています。
+cookie_consent.page.detail_link: クッキーポリシーを見る
+cookie_consent.page.current_status: 現在の設定
+cookie_consent.page.status_accepted: 第三者への情報提供に同意しています
+cookie_consent.page.status_rejected: 第三者への情報提供を拒否しています
+cookie_consent.page.status_not_set: 未設定
+cookie_consent.page.change_setting: 設定変更
+cookie_consent.page.accept_label: 第三者への情報提供に同意する
+cookie_consent.page.reject_label: 第三者への情報提供を拒否する
+cookie_consent.page.save: 保存する
+cookie_consent.page.save_success: 設定を保存しました
+cookie_consent.page.save_error: 保存に失敗しました
+cookie_consent.error.invalid_status: 無効な状態です
+cookie_consent.error.no_selection: 選択してください
+cookie_policy.page.title: クッキーポリシー
+cookie_policy.section.what_is_cookie.title: クッキー（Cookie）とは
+cookie_policy.section.what_is_cookie.description: クッキーとは、ウェブサイトを訪問した際に、ウェブブラウザを通じてお客様のデバイス（PC、スマートフォン等）に一時的にデータを保存する仕組みです。クッキーは、ウェブサイトが提供する様々な機能やサービスの向上、お客様の利便性を高めるために使用されます。
+cookie_policy.section.cookie_types.title: 当サイトで使用するクッキー
+cookie_policy.section.cookie_types.essential.title: 必須クッキー
+cookie_policy.section.cookie_types.essential.description: サイトの基本機能を提供するために必要なクッキーです。これらのクッキーは常に有効になっています。
+cookie_policy.section.cookie_types.essential.item1: ログイン状態の維持
+cookie_policy.section.cookie_types.essential.item2: カート内の商品情報の保持
+cookie_policy.section.cookie_types.essential.item3: セキュリティ保護（CSRF対策等）
+cookie_policy.section.cookie_types.analytics.title: 分析クッキー（任意）
+cookie_policy.section.cookie_types.analytics.description: ウェブサイトの利用状況を分析し、サービス向上のために使用されるクッキーです。お客様の同意がある場合にのみ使用されます。
+cookie_policy.section.cookie_types.analytics.item1: Google Analytics による訪問者数・ページビューの測定
+cookie_policy.section.cookie_types.analytics.item2: お客様の閲覧行動の分析（滞在時間、閲覧ページ等）
+cookie_policy.section.cookie_types.analytics.consent_required: これらのクッキーはお客様の同意がある場合にのみ使用されます。
+cookie_policy.section.third_party.title: 第三者への情報提供の目的
+cookie_policy.section.third_party.description: "当サイトでは、以下の目的でお客様の利用状況を第三者へ提供しています："
+cookie_policy.section.third_party.purpose1: ウェブサイトの利用状況の分析・改善
+cookie_policy.section.third_party.purpose2: お客様により良いサービスを提供するための調査・研究
+cookie_policy.section.third_party.purpose3: マーケティング活動の効果測定
+cookie_policy.section.providers.title: 情報提供先
+cookie_policy.section.providers.google.description: 当サイトでは、Google LLCが提供するGoogle Analyticsを使用して、ウェブサイトの利用状況を分析しています。Google Analyticsは、クッキーを使用してお客様の訪問履歴を収集します。収集された情報は、Googleのプライバシーポリシーに従って管理されます。
+cookie_policy.section.providers.provider_name: 提供先
+cookie_policy.section.providers.privacy_policy: プライバシーポリシー
+cookie_policy.section.change_consent.title: 同意の変更方法
+cookie_policy.section.change_consent.description: クッキーの使用に関する同意は、いつでもクッキー設定ページから変更することができます。
+cookie_policy.section.change_consent.settings_link: クッキー設定ページへ
+cookie_policy.section.contact.title: お問い合わせ
+cookie_policy.section.contact.description: クッキーポリシーに関するご質問やご不明な点がございましたら、お問い合わせページからご連絡ください。
+cookie_policy.section.contact.contact_link: お問い合わせページへ

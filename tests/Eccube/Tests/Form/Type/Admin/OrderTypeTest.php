@@ -182,6 +182,21 @@ final class OrderTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form['postal_code']->isValid());
     }
 
+    public function testInvalidShippingPostalCodeBlank(): void
+    {
+        $this->formData['Shipping']['postal_code'] = '';
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form['Shipping']['postal_code']->isValid());
+    }
+
+    public function testShippingPostalCodeIsNotRequired(): void
+    {
+        // 管理画面の受注登録は required=false + NotBlank でサーバ側バリデーションに統一している.
+        // 出荷先の郵便番号だけ HTML の required 属性が出力されないことを確認する (#6054)
+        $view = $this->form->createView();
+        $this->assertFalse($view['Shipping']['postal_code']->vars['required']);
+    }
+
     public function testInValidUsePointHasMinus()
     {
         $this->formData['use_point'] = '-12345';

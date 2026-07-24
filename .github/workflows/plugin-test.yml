@@ -49,6 +49,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
+        with:
+          persist-credentials: false
 
       ## Docker Hub からの pull はタイムアウトで CI が不安定になるため、
       ## DB はコンテナではなく setup アクション (apt) でインストールする
@@ -96,7 +98,7 @@ jobs:
 
       - name: Setup to EC-CUBE
         env:
-          APP_ENV: 'codeception'
+          APP_ENV: 'e2e'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
@@ -104,13 +106,13 @@ jobs:
         run: |
           echo "APP_ENV=${APP_ENV}" > .env
           echo "ECCUBE_AUTH_MAGIC=${ECCUBE_AUTH_MAGIC}" >> .env
-          bin/console doctrine:database:create --env=dev
-          bin/console doctrine:schema:create --env=dev
-          bin/console eccube:fixtures:load --env=dev
+          bin/console doctrine:database:create
+          bin/console doctrine:schema:create
+          bin/console eccube:fixtures:load
 
       - name: Cache apt packages
         if: matrix.db == 'pgsql'
-        uses: awalsh128/cache-apt-pkgs-action@681749ae568c81c2037cb9185e38b709b261bd2f  # latest
+        uses: awalsh128/cache-apt-pkgs-action@553a35bb8ebd9fcabcb1c9451aa4c98e1b4ca8a9  # latest
         with:
           packages: postgresql-client
           version: 1.0
@@ -143,7 +145,7 @@ jobs:
 
       - name: Start PHP Development Server
         env:
-          APP_ENV: 'codeception'
+          APP_ENV: 'e2e'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
@@ -213,6 +215,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
+        with:
+          persist-credentials: false
 
       ## Docker Hub からの pull はタイムアウトで CI が不安定になるため、
       ## DB はコンテナではなく setup アクション (apt) でインストールする
@@ -260,7 +264,7 @@ jobs:
 
       - name: Setup to EC-CUBE
         env:
-          APP_ENV: 'codeception'
+          APP_ENV: 'e2e'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
@@ -268,13 +272,13 @@ jobs:
         run: |
           echo "APP_ENV=${APP_ENV}" > .env
           echo "ECCUBE_AUTH_MAGIC=${ECCUBE_AUTH_MAGIC}" >> .env
-          bin/console doctrine:database:create --env=dev
-          bin/console doctrine:schema:create --env=dev
-          bin/console eccube:fixtures:load --env=dev
+          bin/console doctrine:database:create
+          bin/console doctrine:schema:create
+          bin/console eccube:fixtures:load
 
       - name: Cache apt packages
         if: matrix.db == 'pgsql'
-        uses: awalsh128/cache-apt-pkgs-action@681749ae568c81c2037cb9185e38b709b261bd2f  # latest
+        uses: awalsh128/cache-apt-pkgs-action@553a35bb8ebd9fcabcb1c9451aa4c98e1b4ca8a9  # latest
         with:
           packages: postgresql-client
           version: 1.0
@@ -307,7 +311,7 @@ jobs:
 
       - name: Start PHP Development Server
         env:
-          APP_ENV: 'codeception'
+          APP_ENV: 'e2e'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
@@ -376,6 +380,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
+        with:
+          persist-credentials: false
 
       ## Docker Hub からの pull はタイムアウトで CI が不安定になるため、
       ## DB はコンテナではなく setup アクション (apt) でインストールする
@@ -423,7 +429,7 @@ jobs:
 
       - name: Setup to EC-CUBE
         env:
-          APP_ENV: 'codeception'
+          APP_ENV: 'e2e'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
@@ -431,13 +437,13 @@ jobs:
         run: |
           echo "APP_ENV=${APP_ENV}" > .env
           echo "ECCUBE_AUTH_MAGIC=${ECCUBE_AUTH_MAGIC}" >> .env
-          bin/console doctrine:database:create --env=dev
-          bin/console doctrine:schema:create --env=dev
-          bin/console eccube:fixtures:load --env=dev
+          bin/console doctrine:database:create
+          bin/console doctrine:schema:create
+          bin/console eccube:fixtures:load
 
       - name: Cache apt packages
         if: matrix.db == 'pgsql'
-        uses: awalsh128/cache-apt-pkgs-action@681749ae568c81c2037cb9185e38b709b261bd2f  # latest
+        uses: awalsh128/cache-apt-pkgs-action@553a35bb8ebd9fcabcb1c9451aa4c98e1b4ca8a9  # latest
         with:
           packages: postgresql-client
           version: 1.0
@@ -470,7 +476,7 @@ jobs:
 
       - name: Start PHP Development Server
         env:
-          APP_ENV: 'codeception'
+          APP_ENV: 'e2e'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
@@ -542,6 +548,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
+        with:
+          persist-credentials: false
 
       ## Docker Hub からの pull はタイムアウトで CI が不安定になるため、
       ## DB はコンテナではなく setup アクション (apt) でインストールする
@@ -589,7 +597,7 @@ jobs:
 
       - name: Setup to EC-CUBE
         env:
-          APP_ENV: 'codeception'
+          APP_ENV: 'e2e'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
@@ -597,13 +605,13 @@ jobs:
         run: |
           echo "APP_ENV=${APP_ENV}" > .env
           echo "ECCUBE_AUTH_MAGIC=${ECCUBE_AUTH_MAGIC}" >> .env
-          bin/console doctrine:database:create --env=dev
-          bin/console doctrine:schema:create --env=dev
-          bin/console eccube:fixtures:load --env=dev
+          bin/console doctrine:database:create
+          bin/console doctrine:schema:create
+          bin/console eccube:fixtures:load
 
       - name: Cache apt packages
         if: matrix.db == 'pgsql'
-        uses: awalsh128/cache-apt-pkgs-action@681749ae568c81c2037cb9185e38b709b261bd2f  # latest
+        uses: awalsh128/cache-apt-pkgs-action@553a35bb8ebd9fcabcb1c9451aa4c98e1b4ca8a9  # latest
         with:
           packages: postgresql-client
           version: 1.0
@@ -636,7 +644,7 @@ jobs:
 
       - name: Start PHP Development Server
         env:
-          APP_ENV: 'codeception'
+          APP_ENV: 'e2e'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
@@ -698,6 +706,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
+        with:
+          persist-credentials: false
 
       ## Docker Hub からの pull はタイムアウトで CI が不安定になるため、
       ## DB はコンテナではなく setup アクション (apt) でインストールする
@@ -745,7 +755,7 @@ jobs:
 
       - name: Setup to EC-CUBE
         env:
-          APP_ENV: 'codeception'
+          APP_ENV: 'e2e'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
@@ -753,13 +763,13 @@ jobs:
         run: |
           echo "APP_ENV=${APP_ENV}" > .env
           echo "ECCUBE_AUTH_MAGIC=${ECCUBE_AUTH_MAGIC}" >> .env
-          bin/console doctrine:database:create --env=dev
-          bin/console doctrine:schema:create --env=dev
-          bin/console eccube:fixtures:load --env=dev
+          bin/console doctrine:database:create
+          bin/console doctrine:schema:create
+          bin/console eccube:fixtures:load
 
       - name: Cache apt packages
         if: matrix.db == 'pgsql'
-        uses: awalsh128/cache-apt-pkgs-action@681749ae568c81c2037cb9185e38b709b261bd2f  # latest
+        uses: awalsh128/cache-apt-pkgs-action@553a35bb8ebd9fcabcb1c9451aa4c98e1b4ca8a9  # latest
         with:
           packages: postgresql-client
           version: 1.0
@@ -792,7 +802,7 @@ jobs:
 
       - name: Start PHP Development Server
         env:
-          APP_ENV: 'codeception'
+          APP_ENV: 'e2e'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
@@ -852,6 +862,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
+        with:
+          persist-credentials: false
 
       ## Docker Hub からの pull はタイムアウトで CI が不安定になるため、
       ## DB はコンテナではなく setup アクション (apt) でインストールする
@@ -899,7 +911,7 @@ jobs:
 
       - name: Setup to EC-CUBE
         env:
-          APP_ENV: 'codeception'
+          APP_ENV: 'e2e'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
@@ -907,13 +919,13 @@ jobs:
         run: |
           echo "APP_ENV=${APP_ENV}" > .env
           echo "ECCUBE_AUTH_MAGIC=${ECCUBE_AUTH_MAGIC}" >> .env
-          bin/console doctrine:database:create --env=dev
-          bin/console doctrine:schema:create --env=dev
-          bin/console eccube:fixtures:load --env=dev
+          bin/console doctrine:database:create
+          bin/console doctrine:schema:create
+          bin/console eccube:fixtures:load
 
       - name: Cache apt packages
         if: matrix.db == 'pgsql'
-        uses: awalsh128/cache-apt-pkgs-action@681749ae568c81c2037cb9185e38b709b261bd2f  # latest
+        uses: awalsh128/cache-apt-pkgs-action@553a35bb8ebd9fcabcb1c9451aa4c98e1b4ca8a9  # latest
         with:
           packages: postgresql-client
           version: 1.0
@@ -946,7 +958,7 @@ jobs:
 
       - name: Start PHP Development Server
         env:
-          APP_ENV: 'codeception'
+          APP_ENV: 'e2e'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}

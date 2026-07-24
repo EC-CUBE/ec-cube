@@ -186,6 +186,8 @@ class ShopMasterType extends AbstractType
             ->add('option_product_tax_rule', ToggleSwitchType::class)
             // ポイント設定
             ->add('option_point', ToggleSwitchType::class)
+            // クッキーポリシー同意機能
+            ->add('option_cookie_consent', ToggleSwitchType::class)
             ->add('basic_point_rate', NumberType::class, [
                 'required' => false,
                 'constraints' => [
