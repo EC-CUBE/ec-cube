@@ -11,18 +11,19 @@
 
 require_once __DIR__.'/../vendor/autoload.php';
 
-use Dotenv\Dotenv;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Kernel;
 use Faker\Factory as Faker;
 
-if (file_exists(__DIR__.'/../.env')) {
-    Dotenv::createUnsafeMutable(__DIR__.'/../')->load();
+if (file_exists(__DIR__.'/../.env')
+    || file_exists(__DIR__.'/../.env.local')
+    || file_exists(__DIR__.'/../.env.local.php')) {
+    boot_env(__DIR__.'/../.env', true);
 }
 
-$appEnv = getenv('APP_ENV') ?: 'codeception';
+$appEnv = getenv('APP_ENV') ?: 'e2e';
 $kernel = new Kernel($appEnv, false);
 $kernel->boot();
 
@@ -210,6 +211,33 @@ if (!$existingMultiCartProduct) {
     }
 } else {
     echo "  Multi-cart test product already exists\n";
+}
+
+// --- 受注管理用メモ確認用の受注 (#6821) ---
+// 注文確定時に商品メモが受注明細へコピーされた状態を再現し、
+// 受注編集画面のメモアイコン/モーダル表示を E2E で検証できるようにする。
+$orderMemoName01 = '受注メモ確認用';
+$orderMemoText = "梱包時は割れ物注意\n同梱物: 取扱説明書";
+$existingMemoOrder = $entityManager->getRepository(\Eccube\Entity\Order::class)
+    ->findOneBy(['name01' => $orderMemoName01]);
+if (!$existingMemoOrder) {
+    $memoProduct = $generator->createProduct('受注管理用メモ商品', 0);
+    $memoProduct->setOrderMemo($orderMemoText);
+    $memoCustomer = $entityManager->getRepository(Customer::class)->findAll()[0];
+    $Delivery = $entityManager->getRepository(\Eccube\Entity\Delivery::class)->findAll()[0];
+    $Order = $generator->createOrder($memoCustomer, $memoProduct->getProductClasses()->toArray(), $Delivery);
+    $Order->setName01($orderMemoName01);
+    $Order->setName02('太郎');
+    $Order->setOrderStatus($entityManager->getRepository(OrderStatus::class)->find(OrderStatus::NEW));
+    $Order->setOrderDate(new \DateTime());
+    // 注文確定時のコピーを再現: 商品明細にのみメモを設定する
+    foreach ($Order->getProductOrderItems() as $item) {
+        $item->setOrderMemo($memoProduct->getOrderMemo());
+    }
+    $entityManager->flush();
+    echo "  Created order-memo test order\n";
+} else {
+    echo "  Order-memo test order already exists\n";
 }
 
 echo "Fixtures setup complete.\n";
