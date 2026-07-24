@@ -48,6 +48,7 @@ final class EccubeEntityMetadataDriverTest extends EccubeTestCase
         $coreEntityDir = realpath(__DIR__.'/../../../../../../src/Eccube/Entity');
         $this->assertIsString($coreEntityDir);
 
+        $coreEntityDrivers = [];
         foreach ($this->flattenDrivers($driver) as $each) {
             if (!method_exists($each, 'getPaths')) {
                 continue;
@@ -56,11 +57,18 @@ final class EccubeEntityMetadataDriverTest extends EccubeTestCase
                 if (realpath($path) !== $coreEntityDir) {
                     continue;
                 }
+                $coreEntityDrivers[] = $each;
                 $this->assertInstanceOf(TraitProxyAttributeDriver::class, $each, 'src/Eccube/Entity は TraitProxyAttributeDriver 以外から登録してはならない'
                 .' (素の AttributeDriver は Entity ソースを無条件に require_once するため、'
                 .'Proxy ロード済みの環境で "Cannot redeclare class" になる)');
             }
         }
+
+        // 対象ドライバが 0 件でもループが素通りするため、明示登録そのものが失われた構成も検知する
+        $this->assertNotEmpty(
+            $coreEntityDrivers,
+            'src/Eccube/Entity のマッピングドライバ (Kernel::addEntityExtensionPass の TraitProxyAttributeDriver) が登録されていない'
+        );
     }
 
     /**
