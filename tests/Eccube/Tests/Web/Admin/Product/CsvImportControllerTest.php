@@ -380,6 +380,7 @@ final class CsvImportControllerTest extends AbstractAdminWebTestCase
             '商品説明(詳細)',
             '検索ワード',
             'フリーエリア',
+            '受注管理用メモ',
             '商品削除フラグ',
             '商品画像',
             '商品カテゴリ(ID)',
