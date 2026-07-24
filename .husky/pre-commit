@@ -1,1 +1,55 @@
-npx lint-staged -q || node -e ''
+#!/usr/bin/env sh
+# Pre-commit hook
+# stage に *.php があれば:
+#   1. rector --dry-run で project-wide チェック
+#   2. phpstan で静的解析
+#   3. lint-staged で php-cs-fixer を auto-fix (style 修正)
+# rector / phpstan が修正点・エラーを検出したらコミット中止.
+# cs-fixer は logic を変えない style 修正のみのため最後に auto-fix.
+#
+# 各ツールのコマンドは以下の workflow に準拠:
+#   - .github/workflows/rector.yml      (path: var/rector_cache)
+#   - .github/workflows/phpstan.yml     (path: /tmp/phpstan)
+#   - .github/workflows/php-cs-fixer.yml は lint-staged 側で対応
+
+# stage された .php ファイルを抽出
+STAGED_PHP=$(git diff --cached --name-only --diff-filter=ACMR | grep '\.php$' || true)
+
+if [ -z "$STAGED_PHP" ]; then
+  exit 0
+fi
+
+echo "Pre-commit: staged .php detected; running checks"
+echo ""
+
+# 1. Rector (dry-run)
+echo "[1/3] vendor/bin/rector process --dry-run --ansi --config=rector.php"
+rm -rf var/rector_cache
+if ! vendor/bin/rector process --dry-run --ansi --config=rector.php; then
+  echo ""
+  echo "FAIL: Rector で修正点が検出されました。修正する場合:"
+  echo "  vendor/bin/rector process --config=rector.php"
+  exit 1
+fi
+echo ""
+
+# 2. PHPStan
+echo "[2/3] vendor/bin/phpstan analyze src/"
+rm -rf /tmp/phpstan
+if ! vendor/bin/phpstan analyze src/; then
+  echo ""
+  echo "FAIL: PHPStan エラーが検出されました"
+  exit 1
+fi
+echo ""
+
+# 3. lint-staged (php-cs-fixer auto-fix)
+echo "[3/3] npx lint-staged (php-cs-fixer auto-fix)"
+if ! npx lint-staged; then
+  echo ""
+  echo "FAIL: lint-staged で失敗しました"
+  exit 1
+fi
+echo ""
+
+echo "Pre-commit: all checks passed"
