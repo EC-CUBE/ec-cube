@@ -15,6 +15,9 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Doctrine\ORM\Query;
 
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Eccube\Entity\Product;
 use Eccube\Tests\EccubeTestCase;
 
@@ -26,19 +29,16 @@ final class NormalizeTest extends EccubeTestCase
             ->select('p.id')->from(Product::class, 'p')
             ->where('NORMALIZE(p.name) LIKE :name')
             ->getQuery()->getSql();
-        switch ($this->entityManager->getConnection()->getDriver()->getDatabasePlatform()->getName()) {
-            case 'postgresql':
-                $this->assertStringContainsString('LOWER(TRANSLATE(', (string) $sql);
-                $this->assertStringContainsString('あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをんがぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽぁぃぅぇぉっゃゅょゎゐゑー', (string) $sql);
-                $this->assertStringContainsString('アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポァィゥェォッャュョヮヰヱー', (string) $sql);
-                break;
-            case 'mysql':
-                $this->assertStringContainsString('CONVERT(', (string) $sql);
-                $this->assertStringContainsString('USING utf8) COLLATE utf8_unicode_ci', (string) $sql);
-                break;
-            case 'sqlite':
-                $this->assertStringContainsString('LOWER(', (string) $sql);
-                break;
+        $platform = $this->entityManager->getConnection()->getDatabasePlatform();
+        if ($platform instanceof PostgreSQLPlatform) {
+            $this->assertStringContainsString('LOWER(TRANSLATE(', (string) $sql);
+            $this->assertStringContainsString('あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをんがぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽぁぃぅぇぉっゃゅょゎゐゑー', (string) $sql);
+            $this->assertStringContainsString('アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポァィゥェォッャュョヮヰヱー', (string) $sql);
+        } elseif ($platform instanceof AbstractMySQLPlatform) {
+            $this->assertStringContainsString('CONVERT(', (string) $sql);
+            $this->assertStringContainsString('USING utf8) COLLATE utf8_unicode_ci', (string) $sql);
+        } elseif ($platform instanceof SQLitePlatform) {
+            $this->assertStringContainsString('LOWER(', (string) $sql);
         }
     }
 }

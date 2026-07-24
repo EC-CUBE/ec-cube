@@ -16,6 +16,19 @@
     </div>
 {% endfor %}
 {% if error_only == false %}
+{% for success in app.session.flashbag.get('eccube.front.success') %}
+    <div class="ec-cartRole__success">
+        <div class="ec-alert-success">
+            <div class="ec-alert-success__inner">
+                <div class="ec-alert-success__inner__item">
+                    <div class="ec-alert-success__text">
+                        {{ success|trans|nl2br }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
 {% for error in app.session.flashbag.get('eccube.front.warning') %}
     <div class="ec-cartRole__error">
         <div class="ec-alert-warning">

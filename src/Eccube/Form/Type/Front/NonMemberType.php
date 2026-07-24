@@ -51,6 +51,9 @@ class NonMemberType extends AbstractType
             ])
             ->add('company_name', TextType::class, [
                 'required' => false,
+                'attr' => [
+                    'autocomplete' => 'organization',
+                ],
                 'constraints' => [
                     new Assert\Length([
                         'max' => $this->eccubeConfig['eccube_stext_len'],

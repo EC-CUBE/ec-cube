@@ -15,6 +15,7 @@ namespace Eccube\Service;
 
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Member;
+use RobThree\Auth\Providers\Qr\QRServerProvider;
 use RobThree\Auth\TwoFactorAuth;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
@@ -50,7 +51,9 @@ class TwoFactorAuthService
         protected RequestStack $requestStack,
     ) {
         $this->request = $this->requestStack->getCurrentRequest();
-        $this->tfa = new TwoFactorAuth();
+        // v3 では QR プロバイダの注入が必須。QR 生成はテンプレート側(JS)で行い
+        // ライブラリの getQRCodeImage() は呼ばないため、注入しても外部通信は発生しない。
+        $this->tfa = new TwoFactorAuth(new QRServerProvider());
 
         if ($this->eccubeConfig->get('eccube_2fa_cookie_name')) {
             $this->cookieName = $this->eccubeConfig->get('eccube_2fa_cookie_name');

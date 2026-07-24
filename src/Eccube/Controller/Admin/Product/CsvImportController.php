@@ -156,7 +156,6 @@ class CsvImportController extends AbstractCsvImportController
                     $headerByKey = array_flip(array_map($getId, $headers));
                     $deleteImages = [];
 
-                    $this->entityManager->getConfiguration()->setSQLLogger();
                     $this->entityManager->getConnection()->beginTransaction();
                     // CSVファイルの登録処理
                     foreach ($data as $row) {
@@ -293,6 +292,14 @@ class CsvImportController extends AbstractCsvImportController
                                 $Product->setFreeArea($this->purifier->purify(StringUtil::trimAll($row[$headerByKey['free_area']])));
                             } else {
                                 $Product->setFreeArea();
+                            }
+                        }
+
+                        if (isset($row[$headerByKey['order_memo']])) {
+                            if (StringUtil::isNotBlank($row[$headerByKey['order_memo']])) {
+                                $Product->setOrderMemo(StringUtil::trimAll($row[$headerByKey['order_memo']]));
+                            } else {
+                                $Product->setOrderMemo();
                             }
                         }
 
@@ -676,7 +683,6 @@ class CsvImportController extends AbstractCsvImportController
 
                         return $this->renderWithError($form, $headers, false);
                     }
-                    $this->entityManager->getConfiguration()->setSQLLogger();
                     $this->entityManager->getConnection()->beginTransaction();
                     // CSVファイルの登録処理
                     foreach ($data as $row) {
@@ -834,7 +840,6 @@ class CsvImportController extends AbstractCsvImportController
 
                         return $this->renderWithError($form, $headers, false);
                     }
-                    $this->entityManager->getConfiguration()->setSQLLogger();
                     $this->entityManager->getConnection()->beginTransaction();
                     // CSVファイルの登録処理
                     foreach ($data as $row) {
@@ -949,7 +954,6 @@ class CsvImportController extends AbstractCsvImportController
 
                         return $this->renderWithError($form, $headers, false);
                     }
-                    $this->entityManager->getConfiguration()->setSQLLogger();
                     $this->entityManager->getConnection()->beginTransaction();
                     // CSVファイルの登録処理
                     foreach ($data as $row) {
@@ -1670,6 +1674,11 @@ class CsvImportController extends AbstractCsvImportController
             trans('admin.product.product_csv.free_area_col') => [
                 'id' => 'free_area',
                 'description' => 'admin.product.product_csv.free_area_description',
+                'required' => false,
+            ],
+            trans('admin.product.product_csv.order_memo_col') => [
+                'id' => 'order_memo',
+                'description' => 'admin.product.product_csv.order_memo_description',
                 'required' => false,
             ],
             trans('admin.product.product_csv.delete_flag_col') => [

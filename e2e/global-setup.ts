@@ -19,7 +19,7 @@ export default function globalSetup() {
         timeout: 120_000,
         env: {
           ...process.env,
-          APP_ENV: process.env.APP_ENV || 'codeception',
+          APP_ENV: process.env.APP_ENV || 'e2e',
         },
         stdio: ['pipe', 'pipe', 'pipe'],
       }

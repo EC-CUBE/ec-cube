@@ -19,331 +19,329 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Repository\PaymentRepository;
 
-if (!class_exists(Payment::class)) {
-    /**
-     * Payment
-     */
-    #[ORM\Table(name: 'dtb_payment')]
-    #[ORM\InheritanceType('SINGLE_TABLE')]
-    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
-    #[ORM\HasLifecycleCallbacks]
-    #[ORM\Entity(repositoryClass: PaymentRepository::class)]
-    class Payment extends AbstractEntity implements \Stringable
+/**
+ * Payment
+ */
+#[ORM\Table(name: 'dtb_payment')]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: PaymentRepository::class)]
+class Payment extends AbstractEntity implements \Stringable
+{
+    #[\Override]
+    public function __toString(): string
     {
-        #[\Override]
-        public function __toString(): string
-        {
-            return (string) $this->getMethod();
-        }
+        return (string) $this->getMethod();
+    }
 
-        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
-        #[ORM\Id]
-        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-        private ?int $id = null;
+    #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    private ?int $id = null;
 
-        #[ORM\Column(name: 'payment_method', type: Types::STRING, length: 255, nullable: true)]
-        private ?string $method = null;
+    #[ORM\Column(name: 'payment_method', type: Types::STRING, length: 255, nullable: true)]
+    private ?string $method = null;
 
-        #[ORM\Column(name: 'charge', type: Types::DECIMAL, precision: 12, scale: 2, nullable: true, options: ['unsigned' => true, 'default' => 0])]
-        private ?string $charge = '0';
+    #[ORM\Column(name: 'charge', type: Types::DECIMAL, precision: 12, scale: 2, nullable: true, options: ['unsigned' => true, 'default' => 0])]
+    private ?string $charge = '0';
 
-        #[ORM\Column(name: 'rule_max', type: Types::DECIMAL, precision: 12, scale: 2, nullable: true, options: ['unsigned' => true])]
-        private ?string $rule_max = null;
+    #[ORM\Column(name: 'rule_max', type: Types::DECIMAL, precision: 12, scale: 2, nullable: true, options: ['unsigned' => true])]
+    private ?string $rule_max = null;
 
-        #[ORM\Column(name: 'sort_no', type: Types::SMALLINT, nullable: true, options: ['unsigned' => true])]
-        private ?int $sort_no = null;
+    #[ORM\Column(name: 'sort_no', type: Types::SMALLINT, nullable: true, options: ['unsigned' => true])]
+    private ?int $sort_no = null;
 
-        #[ORM\Column(name: 'fixed', type: Types::BOOLEAN, options: ['default' => true])]
-        private ?bool $fixed = true;
+    #[ORM\Column(name: 'fixed', type: Types::BOOLEAN, options: ['default' => true])]
+    private ?bool $fixed = true;
 
-        #[ORM\Column(name: 'payment_image', type: Types::STRING, length: 255, nullable: true)]
-        private ?string $payment_image = null;
+    #[ORM\Column(name: 'payment_image', type: Types::STRING, length: 255, nullable: true)]
+    private ?string $payment_image = null;
 
-        #[ORM\Column(name: 'rule_min', type: Types::DECIMAL, precision: 12, scale: 2, nullable: true, options: ['unsigned' => true])]
-        private ?string $rule_min = null;
+    #[ORM\Column(name: 'rule_min', type: Types::DECIMAL, precision: 12, scale: 2, nullable: true, options: ['unsigned' => true])]
+    private ?string $rule_min = null;
 
-        #[ORM\Column(name: 'method_class', type: Types::STRING, length: 255, nullable: true)]
-        private ?string $method_class = null;
+    #[ORM\Column(name: 'method_class', type: Types::STRING, length: 255, nullable: true)]
+    private ?string $method_class = null;
 
-        #[ORM\Column(name: 'visible', type: Types::BOOLEAN, options: ['default' => true])]
-        private ?bool $visible = null;
+    #[ORM\Column(name: 'visible', type: Types::BOOLEAN, options: ['default' => true])]
+    private ?bool $visible = null;
 
-        /**
-         * @var \DateTime
-         */
-        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
-        private $create_date;
+    /**
+     * @var \DateTime
+     */
+    #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
+    private $create_date;
 
-        /**
-         * @var \DateTime
-         */
-        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
-        private $update_date;
+    /**
+     * @var \DateTime
+     */
+    #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
+    private $update_date;
 
-        /**
-         * @var Collection<int, PaymentOption>
-         */
-        #[ORM\OneToMany(targetEntity: PaymentOption::class, mappedBy: 'Payment')]
-        private $PaymentOptions;
+    /**
+     * @var Collection<int, PaymentOption>
+     */
+    #[ORM\OneToMany(targetEntity: PaymentOption::class, mappedBy: 'Payment')]
+    private $PaymentOptions;
 
-        #[ORM\ManyToOne(targetEntity: Member::class)]
-        #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
-        private ?Member $Creator = null;
+    #[ORM\ManyToOne(targetEntity: Member::class)]
+    #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
+    private ?Member $Creator = null;
 
-        /**
-         * Constructor
-         */
-        public function __construct()
-        {
-            $this->PaymentOptions = new ArrayCollection();
-        }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->PaymentOptions = new ArrayCollection();
+    }
 
-        /**
-         * Get id.
-         */
-        public function getId(): ?int
-        {
-            return $this->id;
-        }
+    /**
+     * Get id.
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
-        /**
-         * Set method.
-         */
-        public function setMethod(?string $method = null): Payment
-        {
-            $this->method = $method;
+    /**
+     * Set method.
+     */
+    public function setMethod(?string $method = null): Payment
+    {
+        $this->method = $method;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get method.
-         */
-        public function getMethod(): ?string
-        {
-            return $this->method;
-        }
+    /**
+     * Get method.
+     */
+    public function getMethod(): ?string
+    {
+        return $this->method;
+    }
 
-        /**
-         * Set charge.
-         */
-        public function setCharge(?string $charge = null): Payment
-        {
-            $this->charge = $charge;
+    /**
+     * Set charge.
+     */
+    public function setCharge(?string $charge = null): Payment
+    {
+        $this->charge = $charge;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get charge.
-         */
-        public function getCharge(): ?string
-        {
-            return $this->charge;
-        }
+    /**
+     * Get charge.
+     */
+    public function getCharge(): ?string
+    {
+        return $this->charge;
+    }
 
-        /**
-         * Set ruleMax.
-         */
-        public function setRuleMax(?string $ruleMax = null): Payment
-        {
-            $this->rule_max = $ruleMax;
+    /**
+     * Set ruleMax.
+     */
+    public function setRuleMax(?string $ruleMax = null): Payment
+    {
+        $this->rule_max = $ruleMax;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get ruleMax.
-         */
-        public function getRuleMax(): ?string
-        {
-            return $this->rule_max;
-        }
+    /**
+     * Get ruleMax.
+     */
+    public function getRuleMax(): ?string
+    {
+        return $this->rule_max;
+    }
 
-        /**
-         * Set sortNo.
-         */
-        public function setSortNo(?int $sortNo = null): Payment
-        {
-            $this->sort_no = $sortNo;
+    /**
+     * Set sortNo.
+     */
+    public function setSortNo(?int $sortNo = null): Payment
+    {
+        $this->sort_no = $sortNo;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get sortNo.
-         */
-        public function getSortNo(): ?int
-        {
-            return $this->sort_no;
-        }
+    /**
+     * Get sortNo.
+     */
+    public function getSortNo(): ?int
+    {
+        return $this->sort_no;
+    }
 
-        /**
-         * Set fixed.
-         */
-        public function setFixed(?bool $fixed): Payment
-        {
-            $this->fixed = $fixed;
+    /**
+     * Set fixed.
+     */
+    public function setFixed(?bool $fixed): Payment
+    {
+        $this->fixed = $fixed;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get fixed.
-         */
-        public function isFixed(): bool
-        {
-            return $this->fixed;
-        }
+    /**
+     * Get fixed.
+     */
+    public function isFixed(): bool
+    {
+        return $this->fixed;
+    }
 
-        /**
-         * Set paymentImage.
-         */
-        public function setPaymentImage(?string $paymentImage = null): Payment
-        {
-            $this->payment_image = $paymentImage;
+    /**
+     * Set paymentImage.
+     */
+    public function setPaymentImage(?string $paymentImage = null): Payment
+    {
+        $this->payment_image = $paymentImage;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get paymentImage.
-         */
-        public function getPaymentImage(): ?string
-        {
-            return $this->payment_image;
-        }
+    /**
+     * Get paymentImage.
+     */
+    public function getPaymentImage(): ?string
+    {
+        return $this->payment_image;
+    }
 
-        /**
-         * Set ruleMin.
-         */
-        public function setRuleMin(?string $ruleMin = null): Payment
-        {
-            $this->rule_min = $ruleMin;
+    /**
+     * Set ruleMin.
+     */
+    public function setRuleMin(?string $ruleMin = null): Payment
+    {
+        $this->rule_min = $ruleMin;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get ruleMin.
-         */
-        public function getRuleMin(): ?string
-        {
-            return $this->rule_min;
-        }
+    /**
+     * Get ruleMin.
+     */
+    public function getRuleMin(): ?string
+    {
+        return $this->rule_min;
+    }
 
-        /**
-         * Set methodClass.
-         */
-        public function setMethodClass(?string $methodClass = null): Payment
-        {
-            $this->method_class = $methodClass;
+    /**
+     * Set methodClass.
+     */
+    public function setMethodClass(?string $methodClass = null): Payment
+    {
+        $this->method_class = $methodClass;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get methodClass.
-         */
-        public function getMethodClass(): ?string
-        {
-            return $this->method_class;
-        }
+    /**
+     * Get methodClass.
+     */
+    public function getMethodClass(): ?string
+    {
+        return $this->method_class;
+    }
 
-        public function isVisible(): bool
-        {
-            return $this->visible;
-        }
+    public function isVisible(): bool
+    {
+        return $this->visible;
+    }
 
-        public function setVisible(bool $visible): Payment
-        {
-            $this->visible = $visible;
+    public function setVisible(bool $visible): Payment
+    {
+        $this->visible = $visible;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Set createDate.
-         */
-        public function setCreateDate(\DateTime $createDate): Payment
-        {
-            $this->create_date = $createDate;
+    /**
+     * Set createDate.
+     */
+    public function setCreateDate(\DateTime $createDate): Payment
+    {
+        $this->create_date = $createDate;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get createDate.
-         */
-        public function getCreateDate(): ?\DateTime
-        {
-            return $this->create_date;
-        }
+    /**
+     * Get createDate.
+     */
+    public function getCreateDate(): ?\DateTime
+    {
+        return $this->create_date;
+    }
 
-        /**
-         * Set updateDate.
-         */
-        public function setUpdateDate(\DateTime $updateDate): Payment
-        {
-            $this->update_date = $updateDate;
+    /**
+     * Set updateDate.
+     */
+    public function setUpdateDate(\DateTime $updateDate): Payment
+    {
+        $this->update_date = $updateDate;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get updateDate.
-         */
-        public function getUpdateDate(): ?\DateTime
-        {
-            return $this->update_date;
-        }
+    /**
+     * Get updateDate.
+     */
+    public function getUpdateDate(): ?\DateTime
+    {
+        return $this->update_date;
+    }
 
-        /**
-         * Add paymentOption.
-         */
-        public function addPaymentOption(PaymentOption $paymentOption): Payment
-        {
-            $this->PaymentOptions[] = $paymentOption;
+    /**
+     * Add paymentOption.
+     */
+    public function addPaymentOption(PaymentOption $paymentOption): Payment
+    {
+        $this->PaymentOptions[] = $paymentOption;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Remove paymentOption.
-         *
-         * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
-         */
-        public function removePaymentOption(PaymentOption $paymentOption): bool
-        {
-            return $this->PaymentOptions->removeElement($paymentOption);
-        }
+    /**
+     * Remove paymentOption.
+     *
+     * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removePaymentOption(PaymentOption $paymentOption): bool
+    {
+        return $this->PaymentOptions->removeElement($paymentOption);
+    }
 
-        /**
-         * Get paymentOptions.
-         *
-         * @return Collection<int, PaymentOption>
-         */
-        public function getPaymentOptions(): Collection
-        {
-            return $this->PaymentOptions;
-        }
+    /**
+     * Get paymentOptions.
+     *
+     * @return Collection<int, PaymentOption>
+     */
+    public function getPaymentOptions(): Collection
+    {
+        return $this->PaymentOptions;
+    }
 
-        /**
-         * Set creator.
-         */
-        public function setCreator(?Member $creator = null): Payment
-        {
-            $this->Creator = $creator;
+    /**
+     * Set creator.
+     */
+    public function setCreator(?Member $creator = null): Payment
+    {
+        $this->Creator = $creator;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get creator.
-         */
-        public function getCreator(): ?Member
-        {
-            return $this->Creator;
-        }
+    /**
+     * Get creator.
+     */
+    public function getCreator(): ?Member
+    {
+        return $this->Creator;
     }
 }
