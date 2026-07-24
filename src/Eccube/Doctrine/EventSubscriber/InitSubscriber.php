@@ -13,28 +13,13 @@
 
 namespace Eccube\Doctrine\EventSubscriber;
 
-use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
-use Doctrine\DBAL\Event\ConnectionEventArgs;
-use Doctrine\DBAL\Events;
-use Doctrine\DBAL\Platforms\MySQLPlatform;
-use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
-use Doctrine\DBAL\Platforms\SqlitePlatform;
+use Doctrine\DBAL\Driver;
+use Doctrine\DBAL\Driver\Middleware;
 
-#[AsDoctrineListener(event: Events::postConnect)]
-class InitSubscriber
+class InitSubscriber implements Middleware
 {
-    public function __invoke(ConnectionEventArgs $args): void
+    public function wrap(Driver $driver): Driver
     {
-        $db = $args->getConnection();
-        $platform = $args->getConnection()->getDatabasePlatform();
-
-        if ($platform instanceof MySQLPlatform) {
-            $db->executeQuery("SET SESSION time_zone = '+00:00'");
-        } elseif ($platform instanceof PostgreSQLPlatform) {
-            $db->executeQuery("SET TIME ZONE 'UTC'");
-        } elseif ($platform instanceof SqlitePlatform) {
-            // FIXME schema updateが通らないので一旦コメントアウト.
-            // $db->executeQuery("PRAGMA foreign_keys = ON");
-        }
+        return new InitDriver($driver);
     }
 }

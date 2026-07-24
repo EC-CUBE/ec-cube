@@ -18,11 +18,13 @@ namespace Eccube\Tests\Web;
 use Eccube\Common\Constant;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
+use Eccube\Entity\Delivery;
 use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\Master\SaleType;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\Master\ProductStatusRepository;
+use Eccube\Service\CartService;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -434,158 +436,68 @@ final class CartValidationTest extends AbstractWebTestCase
     }
 
     /**
-     * Test product in cart when product has other type
+     * 販売種別が異なる商品をカートに入れると, カートが販売種別ごとに分割される.
      */
     public function testProductInCartSaleType()
     {
-        $this->markTestIncomplete('複数配送が実装されるまでスキップ');
-        $this->entityManager->persist($this->BaseInfo);
-        $this->entityManager->flush();
-
-        // Stock
+        // GIVE
+        $Customer = $this->createCustomer();
         $stock = 10;
-        $productName = $this->getFaker()->word;
-        /** @var Product $Product */
+
+        $productName = $this->getFaker()->word.'_saletype1';
         $Product = $this->createProduct($productName, 1, $stock);
-        $SaleType = $this->entityManager->getRepository(SaleType::class)->find(2);
+        /** @var ProductClass $ProductClass */
         $ProductClass = $Product->getProductClasses()->first();
-        $ProductClass->setSaleType($SaleType);
-        $productClassId = $ProductClass->getId();
-        $productId = $Product->getId();
 
-        $this->entityManager->persist($ProductClass);
-        $this->entityManager->flush();
+        // 販売種別違いの商品
+        $productName2 = $this->getFaker()->word.'_saletype2';
+        $ProductClass2 = $this->createProductWithOtherSaleType($productName2, $stock);
 
-        /** @var Client $client */
-        $client = $this->client;
+        // WHEN
+        $this->scenarioCartIn($Customer, $ProductClass);
+        $this->scenarioCartIn($Customer, $ProductClass2);
 
-        // render
-        $client->request(
-            Request::METHOD_GET,
-            $this->generateUrl('product_detail', ['id' => $productId])
-        );
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('cart'));
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        // submit product type 2
-        $arrForm = [
-            'ProductClass' => $productClassId,
-            'quantity' => 1,
-            'product_id' => $Product->getId(),
-            '_token' => 'dummy',
-        ];
-        if ($ProductClass->hasClassCategory1()) {
-            $arrForm['classcategory_id1'] = $ProductClass->getClassCategory1()->getId();
-        }
-        if ($ProductClass->hasClassCategory2()) {
-            $arrForm['classcategory_id2'] = $ProductClass->getClassCategory2()->getId();
-        }
-
-        $client->request(
-            Request::METHOD_POST,
-            $this->generateUrl('product_add_cart', ['id' => $productId]),
-            $arrForm
-        );
-
-        // submit product type 1
-        $arrForm = [
-            'ProductClass' => 1,
-            'classcategory_id1' => 3,
-            'classcategory_id2' => 6,
-            'quantity' => 1,
-            '_token' => 'dummy',
-        ];
-
-        $client->request(
-            Request::METHOD_POST,
-            $this->generateUrl('product_add_cart', ['id' => 1]),
-            $arrForm
-        );
-
-        $this->assertTrue($this->client->getResponse()->isRedirection());
-
-        $crawler = $client->followRedirect();
-
-        $message = $crawler->filter('.ec-alert-warning')->text();
-        $this->assertStringContainsString('この商品は同時に購入することはできません。', (string) $message);
+        // THEN
+        // 購入は拒否されず, 販売種別ごとにカートが分割される
+        $this->assertCartDivided($crawler, [$productName, $productName2]);
     }
 
     /**
-     * Test product in cart when product has other type
-     * with MultiShipping
-     * enable add cart
+     * 販売種別ごとに分割されたカートは, それぞれ独立してレジへ進める.
+     *
+     * 3系では複数配送を有効にすると販売種別違いの同時購入が許可されたが,
+     * 4系に複数配送の ON/OFF 設定 (BaseInfo) は存在せず, 販売種別違いは常にカート分割となる.
+     * このため「別々で注文してください」の導線 (カートごとの cart_buystep) が機能することを検証する.
      */
     public function testProductInCartSaleTypeWithMultiShipping()
     {
-        $this->markTestIncomplete('複数配送が実装されるまでスキップ');
-        $this->entityManager->persist($this->BaseInfo);
-        $this->entityManager->flush();
-
-        // Stock
+        // GIVE
+        $Customer = $this->createCustomer();
         $stock = 10;
-        $productName = $this->getFaker()->word;
-        /** @var Product $Product */
+
+        $productName = $this->getFaker()->word.'_saletype1';
         $Product = $this->createProduct($productName, 1, $stock);
-        $SaleType = $this->entityManager->find(SaleType::class, 2);
+        /** @var ProductClass $ProductClass */
         $ProductClass = $Product->getProductClasses()->first();
-        $ProductClass->setSaleType($SaleType);
-        $productClassId = $ProductClass->getId();
-        $productId = $Product->getId();
 
-        $this->entityManager->persist($ProductClass);
-        $this->entityManager->flush();
+        $productName2 = $this->getFaker()->word.'_saletype2';
+        $ProductClass2 = $this->createProductWithOtherSaleType($productName2, $stock);
 
-        /** @var Client $client */
-        $client = $this->client;
+        // WHEN
+        $this->scenarioCartIn($Customer, $ProductClass);
+        $this->scenarioCartIn($Customer, $ProductClass2);
 
-        // render
-        $client->request(
-            Request::METHOD_GET,
-            $this->generateUrl('product_detail', ['id' => $productId])
-        );
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('cart'));
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        // submit product type 2
-        $arrForm = [
-            'product_id' => $productId,
-            'mode' => 'add_cart',
-            'product_class_id' => $productClassId,
-            'quantity' => 1,
-            '_token' => 'dummy',
-        ];
-        if ($ProductClass->hasClassCategory1()) {
-            $arrForm['classcategory_id1'] = $ProductClass->getClassCategory1()->getId();
-        }
-        if ($ProductClass->hasClassCategory2()) {
-            $arrForm['classcategory_id2'] = $ProductClass->getClassCategory2()->getId();
-        }
+        // THEN
+        $this->assertCartDivided($crawler, [$productName, $productName2]);
 
-        $client->request(
-            Request::METHOD_POST,
-            $this->generateUrl('product_detail', ['id' => $productId]),
-            $arrForm
-        );
-
-        // submit product type 1
-        $arrForm = [
-            'product_id' => 1,
-            'mode' => 'add_cart',
-            'product_class_id' => 1,
-            'classcategory_id1' => 3,
-            'classcategory_id2' => 6,
-            'quantity' => 1,
-            '_token' => 'dummy',
-        ];
-
-        $client->request(
-            Request::METHOD_POST,
-            $this->generateUrl('product_detail', ['id' => 1]),
-            $arrForm
-        );
-
-        $this->assertTrue($this->client->getResponse()->isRedirection());
-
-        $crawler = $client->followRedirect();
-
-        // expect not contain the error message
-        $this->assertEmpty($crawler->filter('.ec-alert-warning'));
+        // カートごとに個別のレジへ進む導線を持つ
+        $this->assertPerCartCheckoutLinks($crawler, $Customer, [$ProductClass, $ProductClass2]);
     }
 
     /**
@@ -818,15 +730,19 @@ final class CartValidationTest extends AbstractWebTestCase
 
     /**
      * Test product in cart when product type change from shopping step
+     *
+     * 名前に反して販売種別ではなく「配送方法が削除された商品」のテスト.
+     * atest プレフィクスで無効化されており実行されない.
      */
     public function atestProductInCartSaleTypeFromShopping(): never
     {
-        $this->markTestIncomplete('複数配送が実装されるまでスキップ');
+        // 期待する DOM (h1.page-heading, #cart_box__message--1) は Silex 時代のもので現行テンプレートに存在しない.
+        $this->markTestIncomplete('期待する DOM が Silex 時代のもので現行テンプレートに追従していない');
         // GIVE
         $this->entityManager->persist($this->BaseInfo);
         $this->entityManager->flush();
 
-        $this->logIn();
+        $Customer = $this->createCustomer();
         $productStock = 10;
         $productClassNum = 1;
 
@@ -834,34 +750,31 @@ final class CartValidationTest extends AbstractWebTestCase
         $productName = $this->getFaker()->word;
         /** @var Product $Product */
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
+        /** @var ProductClass $ProductClass */
         $ProductClass = $Product->getProductClasses()->first();
-        $productClassId = $ProductClass->getId();
 
         // WHEN
-        /** @var Client $client */
-        $client = $this->client;
-
         // add to cart
-        $this->scenarioCartIn($client, $productClassId);
+        $this->scenarioCartIn($Customer, $ProductClass);
 
         // Delete related delivery type
         $Delivery = $this->entityManager->find(Delivery::class, 1);
         $this->entityManager->remove($Delivery);
-        $this->entityManager->flush($Delivery);
+        $this->entityManager->flush();
 
         // shopping
-        $crawler = $this->scenarioConfirm($client, $ProductClass);
-        $crawler = $client->followRedirect();
-        $crawler = $client->followRedirect();
+        $this->scenarioConfirm($Customer, $ProductClass);
+        $this->client->followRedirect();
+        $crawler = $this->client->followRedirect();
 
         // THEN
         // check page title
         $message = $crawler->filter('h1.page-heading')->text();
-        $this->assertStringContainsString('ショッピングカート', (string) $message);
+        $this->assertStringContainsString('ショッピングカート', $message);
         // check message error
         $message = $crawler->filter('#cart_box__message--1')->text();
-        $this->assertStringContainsString('配送の準備ができていない商品が含まれております。', (string) $message);
-        $this->assertStringContainsString('恐れ入りますがお問い合わせページよりお問い合わせください。', (string) $message);
+        $this->assertStringContainsString('配送の準備ができていない商品が含まれております。', $message);
+        $this->assertStringContainsString('恐れ入りますがお問い合わせページよりお問い合わせください。', $message);
         $this->assertEmpty($crawler->filter('#cart_box__message--2'));
     }
 
@@ -1056,111 +969,75 @@ final class CartValidationTest extends AbstractWebTestCase
     }
 
     /**
-     * Test product in cart when product type is changing before plus one
+     * カート内の商品の販売種別が変更された後に数量を増やすと, カートが分割される.
      */
-    public function testProductInCartChangeSaleTypeBeforePlus(): never
+    public function testProductInCartChangeSaleTypeBeforePlus()
     {
-        $this->markTestIncomplete('複数配送対応するまでスキップ');
         // GIVE
-        $this->entityManager->persist($this->BaseInfo);
-        $this->entityManager->flush();
-
         $Customer = $this->createCustomer();
         $productStock = 10;
-        $productClassNum = 1;
 
-        $productName = $this->getFaker()->word;
-        $Product = $this->createProduct($productName, $productClassNum, $productStock);
+        $productName = $this->getFaker()->word.'_changed';
+        $Product = $this->createProduct($productName, 1, $productStock);
         /** @var ProductClass $ProductClass */
         $ProductClass = $Product->getProductClasses()->first();
 
-        // product 2
-        $productName2 = $this->getFaker()->word;
-        /** @var Product $Product2 */
-        $Product2 = $this->createProduct($productName2, $productClassNum, $productStock);
+        $productName2 = $this->getFaker()->word.'_kept';
+        $Product2 = $this->createProduct($productName2, 1, $productStock);
         /** @var ProductClass $ProductClass2 */
         $ProductClass2 = $Product2->getProductClasses()->first();
 
         // WHEN
-        /** @var Client $client */
-        $client = $this->client;
+        // 同じ販売種別の商品を 2 件カートに入れる (この時点ではカートは 1 つ)
+        $this->scenarioCartIn($Customer, $ProductClass);
+        $this->scenarioCartIn($Customer, $ProductClass2);
 
-        // add to cart
-        $stockInCart = 1;
-        $this->scenarioCartIn($Customer, $ProductClass, $stockInCart);
-        $this->scenarioCartIn($Customer, $ProductClass2, $stockInCart);
-
-        // Change product type
-        $SaleType = $this->entityManager->getRepository(SaleType::class)->find(2);
-        $ProductClass = $this->entityManager->find(ProductClass::class, $ProductClass->getId());
-        $this->assertInstanceOf(ProductClass::class, $ProductClass);
-        $this->assertInstanceOf(SaleType::class, $SaleType);
-        $ProductClass->setSaleType($SaleType);
-        $this->entityManager->persist($ProductClass);
-        $this->entityManager->flush();
+        // 一方の販売種別を変更する
+        $ProductClass = $this->changeSaleType($ProductClass);
 
         // cart up
         $this->scenarioCartUp($Customer, $ProductClass);
-        $crawler = $client->followRedirect();
+        $crawler = $this->client->followRedirect();
 
         // THEN
-        // check message error
-        $message = $crawler->filter('body')->text();
-        $this->assertStringContainsString('この商品は同時に購入することはできません。', (string) $message);
+        // エラーにはならず, 販売種別ごとにカートが分割される
+        $this->assertCartDivided($crawler, [$productName, $productName2]);
     }
 
     /**
-     * Test product in cart when product type is changing before plus one
-     * with MultiShipping
-     * enable add cart
+     * 販売種別変更後に数量を増やしても, 分割された各カートは独立してレジへ進める.
+     *
+     * @see self::testProductInCartSaleTypeWithMultiShipping 4系に複数配送の ON/OFF 設定は存在しない
      */
-    public function testProductInCartChangeSaleTypeBeforePlusWithMultiShipping(): never
+    public function testProductInCartChangeSaleTypeBeforePlusWithMultiShipping()
     {
-        $this->markTestIncomplete('複数配送対応するまでスキップ');
         // GIVE
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $this->entityManager->persist($BaseInfo);
-        $this->entityManager->flush();
-
-        $this->logIn();
+        $Customer = $this->createCustomer();
         $productStock = 10;
-        $productClassNum = 1;
 
-        $productName = $this->getFaker()->word;
-        $Product = $this->createProduct($productName, $productClassNum, $productStock);
+        $productName = $this->getFaker()->word.'_changed';
+        $Product = $this->createProduct($productName, 1, $productStock);
+        /** @var ProductClass $ProductClass */
         $ProductClass = $Product->getProductClasses()->first();
-        $productClassId = $ProductClass->getId();
 
-        // product 2
-        $productName2 = $this->getFaker()->word;
-        $Product2 = $this->createProduct($productName2, $productClassNum, $productStock);
+        $productName2 = $this->getFaker()->word.'_kept';
+        $Product2 = $this->createProduct($productName2, 1, $productStock);
+        /** @var ProductClass $ProductClass2 */
         $ProductClass2 = $Product2->getProductClasses()->first();
-        $productClassId2 = $ProductClass2->getId();
 
         // WHEN
-        /** @var Client $client */
-        $client = $this->client;
+        $this->scenarioCartIn($Customer, $ProductClass);
+        $this->scenarioCartIn($Customer, $ProductClass2);
 
-        // add to cart
-        $stockInCart = 1;
-        $this->scenarioCartIn($client, $productClassId, $stockInCart);
-        $this->app['eccube.service.cart']->unlock();
-        $this->scenarioCartIn($client, $productClassId2, $stockInCart);
-
-        // Change product type
-        $SaleType = $this->entityManager->find(SaleType::class, 2);
-        $ProductClass->setSaleType($SaleType);
-        $this->entityManager->persist($ProductClass);
-        $this->entityManager->flush();
+        $ProductClass = $this->changeSaleType($ProductClass);
 
         // cart up
-        $this->scenarioCartUp($client, $productClassId);
-        $crawler = $client->followRedirect();
+        $this->scenarioCartUp($Customer, $ProductClass);
+        $crawler = $this->client->followRedirect();
 
         // THEN
-        // check message error (expect not contain)
-        $message = $crawler->filter('#cart_box__body')->text();
-        $this->assertNotContains('この商品は同時に購入することはできません。', $message);
+        $this->assertCartDivided($crawler, [$productName, $productName2]);
+        $this->assertPerCartCheckoutLinks($crawler, $Customer, [$ProductClass, $ProductClass2]);
     }
 
     /**
@@ -1345,109 +1222,76 @@ final class CartValidationTest extends AbstractWebTestCase
     }
 
     /**
-     * Test product in cart when product type is changing before Minus one
+     * カート内の商品の販売種別が変更された後に数量を減らすと, カートが分割される.
      */
-    public function testProductInCartChangeSaleTypeBeforeMinus(): never
+    public function testProductInCartChangeSaleTypeBeforeMinus()
     {
-        $this->markTestIncomplete('複数配送対応するまでスキップ');
         // GIVE
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $this->entityManager->persist($BaseInfo);
-        $this->entityManager->flush();
-
-        $this->logIn();
+        $Customer = $this->createCustomer();
         $productStock = 10;
-        $productClassNum = 1;
 
-        $productName = $this->getFaker()->word;
-        $Product = $this->createProduct($productName, $productClassNum, $productStock);
+        $productName = $this->getFaker()->word.'_changed';
+        $Product = $this->createProduct($productName, 1, $productStock);
+        /** @var ProductClass $ProductClass */
         $ProductClass = $Product->getProductClasses()->first();
-        $productClassId = $ProductClass->getId();
 
-        // product 2
-        $productName2 = $this->getFaker()->word;
-        $Product2 = $this->createProduct($productName2, $productClassNum, $productStock);
+        $productName2 = $this->getFaker()->word.'_kept';
+        $Product2 = $this->createProduct($productName2, 1, $productStock);
+        /** @var ProductClass $ProductClass2 */
         $ProductClass2 = $Product2->getProductClasses()->first();
-        $productClassId2 = $ProductClass2->getId();
 
         // WHEN
-        /** @var Client $client */
-        $client = $this->client;
-
-        // add to cart
+        // 数量を減らせるように 2 個ずつカートに入れる
         $stockInCart = 2;
-        $this->scenarioCartIn($client, $productClassId, $stockInCart);
-        $this->app['eccube.service.cart']->unlock();
-        $this->scenarioCartIn($client, $productClassId2, $stockInCart);
+        $this->scenarioCartIn($Customer, $ProductClass, $stockInCart);
+        $this->scenarioCartIn($Customer, $ProductClass2, $stockInCart);
 
-        // Change product type
-        $SaleType = $this->entityManager->find(SaleType::class, 2);
-        $ProductClass->setSaleType($SaleType);
-        $this->entityManager->persist($ProductClass);
-        $this->entityManager->flush();
+        // 一方の販売種別を変更する
+        $ProductClass = $this->changeSaleType($ProductClass);
 
         // cart down
-        $this->scenarioCartDown($client, $productClassId);
-        $crawler = $client->followRedirect();
+        $this->scenarioCartDown($Customer, $ProductClass);
+        $crawler = $this->client->followRedirect();
 
         // THEN
-        // check message error
-        $message = $crawler->filter('#cart_box__body')->text();
-        $this->assertStringContainsString('この商品は同時に購入することはできません。', (string) $message);
+        $this->assertCartDivided($crawler, [$productName, $productName2]);
     }
 
     /**
-     * Test product in cart when product type is changing before Minus one
-     * with MultiShipping
-     * enable add cart
+     * 販売種別変更後に数量を減らしても, 分割された各カートは独立してレジへ進める.
+     *
+     * @see self::testProductInCartSaleTypeWithMultiShipping 4系に複数配送の ON/OFF 設定は存在しない
      */
-    public function testProductInCartChangeSaleTypeBeforeMinusWithMultiShipping(): never
+    public function testProductInCartChangeSaleTypeBeforeMinusWithMultiShipping()
     {
-        $this->markTestIncomplete('複数配送対応するまでスキップ');
         // GIVE
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $this->entityManager->persist($BaseInfo);
-        $this->entityManager->flush();
-
-        $this->logIn();
+        $Customer = $this->createCustomer();
         $productStock = 10;
-        $productClassNum = 1;
 
-        $productName = $this->getFaker()->word;
-        $Product = $this->createProduct($productName, $productClassNum, $productStock);
+        $productName = $this->getFaker()->word.'_changed';
+        $Product = $this->createProduct($productName, 1, $productStock);
+        /** @var ProductClass $ProductClass */
         $ProductClass = $Product->getProductClasses()->first();
-        $productClassId = $ProductClass->getId();
 
-        // product 2
-        $productName2 = $this->getFaker()->word;
-        $Product2 = $this->createProduct($productName2, $productClassNum, $productStock);
+        $productName2 = $this->getFaker()->word.'_kept';
+        $Product2 = $this->createProduct($productName2, 1, $productStock);
+        /** @var ProductClass $ProductClass2 */
         $ProductClass2 = $Product2->getProductClasses()->first();
-        $productClassId2 = $ProductClass2->getId();
 
         // WHEN
-        /** @var Client $client */
-        $client = $this->client;
-
-        // add to cart
         $stockInCart = 2;
-        $this->scenarioCartIn($client, $productClassId, $stockInCart);
-        $this->app['eccube.service.cart']->unlock();
-        $this->scenarioCartIn($client, $productClassId2, $stockInCart);
+        $this->scenarioCartIn($Customer, $ProductClass, $stockInCart);
+        $this->scenarioCartIn($Customer, $ProductClass2, $stockInCart);
 
-        // Change product type
-        $SaleType = $this->entityManager->find(SaleType::class, 2);
-        $ProductClass->setSaleType($SaleType);
-        $this->entityManager->persist($ProductClass);
-        $this->entityManager->flush();
+        $ProductClass = $this->changeSaleType($ProductClass);
 
         // cart down
-        $this->scenarioCartDown($client, $productClassId);
-        $crawler = $client->followRedirect();
+        $this->scenarioCartDown($Customer, $ProductClass);
+        $crawler = $this->client->followRedirect();
 
         // THEN
-        // check message error (expect not contain)
-        $message = $crawler->filter('#cart_box__body')->text();
-        $this->assertNotContains('この商品は同時に購入することはできません。', $message);
+        $this->assertCartDivided($crawler, [$productName, $productName2]);
+        $this->assertPerCartCheckoutLinks($crawler, $Customer, [$ProductClass, $ProductClass2]);
     }
 
     /**
@@ -2060,7 +1904,8 @@ final class CartValidationTest extends AbstractWebTestCase
      */
     public function testProductInHistoryOrderDeletedFromOrderAgain(): never
     {
-        $this->markTestIncomplete('マイページ対応するまでスキップ');
+        // scenarioConfirm 後にリダイレクトが発生しなくなっており(購入フロー変更), マイページの履歴 UI も未追従.
+        $this->markTestIncomplete('購入フロー・マイページ履歴 UI に追従するまでスキップ');
         // GIVE
         $Customer = $this->createCustomer();
         $productStock = 10;
@@ -2114,7 +1959,7 @@ final class CartValidationTest extends AbstractWebTestCase
         $this->assertStringContainsString('現在カート内に商品はございません。', $message);
 
         // check cart
-        $arrCartItem = $this->app['eccube.service.cart']->getCart()->getCartItems();
+        $arrCartItem = static::getContainer()->get(CartService::class)->getCart()->getCartItems();
         $this->actual = count($arrCartItem);
         $this->expected = 0;
         $this->verify('Cart item is not empty!');
@@ -2125,63 +1970,61 @@ final class CartValidationTest extends AbstractWebTestCase
      */
     public function testProductInHistoryOrderIsPrivateFromOrderAgain(): never
     {
-        $this->markTestIncomplete('マイページ対応するまでスキップ');
+        // scenarioConfirm 後にリダイレクトが発生しなくなっており(購入フロー変更), マイページの履歴 UI も未追従.
+        $this->markTestIncomplete('購入フロー・マイページ履歴 UI に追従するまでスキップ');
         // GIVE
-        $this->logIn();
+        $Customer = $this->createCustomer();
         $productStock = 10;
         $productClassNum = 1;
 
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
+        /** @var ProductClass $ProductClass */
         $ProductClass = $Product->getProductClasses()->first();
-        $productClassId = $ProductClass->getId();
 
         // WHEN
-        /** @var Client $client */
-        $client = $this->client;
-
         // add to cart
         $stockInCart = 2;
-        $this->scenarioCartIn($client, $productClassId, $stockInCart);
+        $this->scenarioCartIn($Customer, $ProductClass, $stockInCart);
 
         // shopping step
-        $this->scenarioConfirm($client, $ProductClass);
-        $client->followRedirect();
+        $this->scenarioConfirm($Customer, $ProductClass);
+        $this->client->followRedirect();
 
         // order complete
-        $this->scenarioComplete($client);
-        $client->followRedirect();
+        $this->scenarioComplete($Customer);
+        $this->client->followRedirect();
 
         // my page
-        $crawler = $client->request(Request::METHOD_GET, $this->generateUrl('mypage'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('mypage'));
         $orderNode = $crawler->filter('#history_list__body .historylist_column')->first();
         $historyLink = $orderNode->selectLink('詳細を見る')->link()->getUri();
 
         // history view
-        $crawler = $client->request(Request::METHOD_GET, $historyLink);
+        $crawler = $this->client->request(Request::METHOD_GET, $historyLink);
         $product = $crawler->filter('#detail_list_box__list')->text();
 
         // check order product name
-        $this->assertStringContainsString($productName, (string) $product);
+        $this->assertStringContainsString($productName, $product);
 
         // change status
         $this->changeStatus($Product, ProductStatus::DISPLAY_HIDE);
 
         // Order again
         $orderLink = $crawler->filter('body #confirm_side')->selectLink('再注文する')->link()->getUri();
-        $client->request(Request::METHOD_PUT, $orderLink, ['_token' => 'dummy']);
-        $crawler = $client->followRedirect();
+        $this->client->request(Request::METHOD_PUT, $orderLink, ['_token' => 'dummy']);
+        $crawler = $this->client->followRedirect();
 
         // THEN
         // check message error
         $message = $crawler->filter('#cart_box__message--1')->text();
-        $this->assertStringContainsString('現時点で購入できない商品が含まれておりました。該当商品をカートから削除しました。', (string) $message);
+        $this->assertStringContainsString('現時点で購入できない商品が含まれておりました。該当商品をカートから削除しました。', $message);
         $this->assertEmpty($crawler->filter('#cart_box__message--2'));
         $message = $crawler->filter('#cart_box__message')->text();
-        $this->assertStringContainsString('現在カート内に商品はございません。', (string) $message);
+        $this->assertStringContainsString('現在カート内に商品はございません。', $message);
 
         // check cart
-        $arrCartItem = $this->app['eccube.service.cart']->getCart()->getCartItems();
+        $arrCartItem = static::getContainer()->get(CartService::class)->getCart()->getCartItems();
         $this->actual = count($arrCartItem);
         $this->expected = 0;
         $this->verify('Cart item is not empty!');
@@ -2192,44 +2035,42 @@ final class CartValidationTest extends AbstractWebTestCase
      */
     public function testProductInHistoryOrderOutOfStockFromOrderAgain(): never
     {
-        $this->markTestIncomplete('マイページ対応するまでスキップ');
+        // scenarioConfirm 後にリダイレクトが発生しなくなっており(購入フロー変更), マイページの履歴 UI も未追従.
+        $this->markTestIncomplete('購入フロー・マイページ履歴 UI に追従するまでスキップ');
         // GIVE
-        $this->logIn();
+        $Customer = $this->createCustomer();
         $productStock = 10;
         $productClassNum = 1;
 
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
+        /** @var ProductClass $ProductClass */
         $ProductClass = $Product->getProductClasses()->first();
-        $productClassId = $ProductClass->getId();
 
         // WHEN
-        /** @var Client $client */
-        $client = $this->client;
-
         // add to cart
         $stockInCart = 2;
-        $this->scenarioCartIn($client, $productClassId, $stockInCart);
+        $this->scenarioCartIn($Customer, $ProductClass, $stockInCart);
 
         // shopping step
-        $this->scenarioConfirm($client, $ProductClass);
-        $client->followRedirect();
+        $this->scenarioConfirm($Customer, $ProductClass);
+        $this->client->followRedirect();
 
         // order complete
-        $this->scenarioComplete($client);
-        $client->followRedirect();
+        $this->scenarioComplete($Customer);
+        $this->client->followRedirect();
 
         // my page
-        $crawler = $client->request(Request::METHOD_GET, $this->generateUrl('mypage'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('mypage'));
         $orderNode = $crawler->filter('#history_list__body .historylist_column')->first();
         $historyLink = $orderNode->selectLink('詳細を見る')->link()->getUri();
 
         // history view
-        $crawler = $client->request(Request::METHOD_GET, $historyLink);
+        $crawler = $this->client->request(Request::METHOD_GET, $historyLink);
         $product = $crawler->filter('#detail_list_box__list')->text();
 
         // check order product name
-        $this->assertStringContainsString($productName, (string) $product);
+        $this->assertStringContainsString($productName, $product);
 
         // change stock
         $stock = 0;
@@ -2237,17 +2078,17 @@ final class CartValidationTest extends AbstractWebTestCase
 
         // Order again
         $orderLink = $crawler->filter('body #confirm_side')->selectLink('再注文する')->link()->getUri();
-        $client->request(Request::METHOD_PUT, $orderLink, ['_token' => 'dummy']);
-        $crawler = $client->followRedirect();
+        $this->client->request(Request::METHOD_PUT, $orderLink, ['_token' => 'dummy']);
+        $crawler = $this->client->followRedirect();
 
         // THEN
         // check message error
         $message = $crawler->filter('#cart_box__body')->text();
-        $this->assertStringContainsString('「'.$this->getProductName($ProductClass).'」の在庫が不足しております。', (string) $message);
-        $this->assertStringContainsString('該当商品をカートから削除しました。', (string) $message);
+        $this->assertStringContainsString('「'.$this->getProductName($ProductClass).'」の在庫が不足しております。', $message);
+        $this->assertStringContainsString('該当商品をカートから削除しました。', $message);
 
         // check cart
-        $arrCartItem = $this->app['eccube.service.cart']->getCart()->getCartItems();
+        $arrCartItem = static::getContainer()->get(CartService::class)->getCart()->getCartItems();
         $this->actual = count($arrCartItem);
         $this->expected = 0;
         $this->verify('Cart item is not empty!');
@@ -2258,44 +2099,42 @@ final class CartValidationTest extends AbstractWebTestCase
      */
     public function testProductInHistoryOrderStockNotEnoughFromOrderAgain(): never
     {
-        $this->markTestIncomplete('マイページ対応するまでスキップ');
+        // scenarioConfirm 後にリダイレクトが発生しなくなっており(購入フロー変更), マイページの履歴 UI も未追従.
+        $this->markTestIncomplete('購入フロー・マイページ履歴 UI に追従するまでスキップ');
         // GIVE
-        $this->logIn();
+        $Customer = $this->createCustomer();
         $productStock = 10;
         $productClassNum = 1;
 
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
+        /** @var ProductClass $ProductClass */
         $ProductClass = $Product->getProductClasses()->first();
-        $productClassId = $ProductClass->getId();
 
         // WHEN
-        /** @var Client $client */
-        $client = $this->client;
-
         // add to cart
         $stockInCart = 3;
-        $this->scenarioCartIn($client, $productClassId, $stockInCart);
+        $this->scenarioCartIn($Customer, $ProductClass, $stockInCart);
 
         // shopping step
-        $this->scenarioConfirm($client, $ProductClass);
-        $client->followRedirect();
+        $this->scenarioConfirm($Customer, $ProductClass);
+        $this->client->followRedirect();
 
         // order complete
-        $this->scenarioComplete($client);
-        $client->followRedirect();
+        $this->scenarioComplete($Customer);
+        $this->client->followRedirect();
 
         // my page
-        $crawler = $client->request(Request::METHOD_GET, $this->generateUrl('mypage'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('mypage'));
         $orderNode = $crawler->filter('#history_list__body .historylist_column')->first();
         $historyLink = $orderNode->selectLink('詳細を見る')->link()->getUri();
 
         // history view
-        $crawler = $client->request(Request::METHOD_GET, $historyLink);
+        $crawler = $this->client->request(Request::METHOD_GET, $historyLink);
         $product = $crawler->filter('#detail_list_box__list')->text();
 
         // check order product name
-        $this->assertStringContainsString($productName, (string) $product);
+        $this->assertStringContainsString($productName, $product);
 
         // change stock
         $stock = 1;
@@ -2303,17 +2142,17 @@ final class CartValidationTest extends AbstractWebTestCase
 
         // Order again
         $orderLink = $crawler->filter('body #confirm_side')->selectLink('再注文する')->link()->getUri();
-        $client->request(Request::METHOD_PUT, $orderLink, ['_token' => 'dummy']);
-        $crawler = $client->followRedirect();
+        $this->client->request(Request::METHOD_PUT, $orderLink, ['_token' => 'dummy']);
+        $crawler = $this->client->followRedirect();
 
         // THEN
         // check message error
         $message = $crawler->filter('#cart_box__body')->text();
-        $this->assertStringContainsString('「'.$this->getProductName($ProductClass).'」の在庫が不足しております。', (string) $message);
-        $this->assertStringContainsString('一度に在庫数を超える購入はできません。', (string) $message);
+        $this->assertStringContainsString('「'.$this->getProductName($ProductClass).'」の在庫が不足しております。', $message);
+        $this->assertStringContainsString('一度に在庫数を超える購入はできません。', $message);
 
         // check cart
-        $CartItem = $this->app['eccube.service.cart']->getCart()->getCartItems()->first();
+        $CartItem = static::getContainer()->get(CartService::class)->getCart()->getCartItems()->first();
         $this->actual = $CartItem->getQuantity();
         $this->expected = $stock;
         $this->verify('Cart item quantity is not enough!!');
@@ -2324,44 +2163,42 @@ final class CartValidationTest extends AbstractWebTestCase
      */
     public function testProductInHistoryOrderStockLimitFromOrderAgain(): never
     {
-        $this->markTestIncomplete('マイページ対応するまでスキップ');
+        // scenarioConfirm 後にリダイレクトが発生しなくなっており(購入フロー変更), マイページの履歴 UI も未追従.
+        $this->markTestIncomplete('購入フロー・マイページ履歴 UI に追従するまでスキップ');
         // GIVE
-        $this->logIn();
+        $Customer = $this->createCustomer();
         $productStock = 10;
         $productClassNum = 1;
 
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
+        /** @var ProductClass $ProductClass */
         $ProductClass = $Product->getProductClasses()->first();
-        $productClassId = $ProductClass->getId();
 
         // WHEN
-        /** @var Client $client */
-        $client = $this->client;
-
         // add to cart
         $stockInCart = 3;
-        $this->scenarioCartIn($client, $productClassId, $stockInCart);
+        $this->scenarioCartIn($Customer, $ProductClass, $stockInCart);
 
         // shopping step
-        $this->scenarioConfirm($client, $ProductClass);
-        $client->followRedirect();
+        $this->scenarioConfirm($Customer, $ProductClass);
+        $this->client->followRedirect();
 
         // order complete
-        $this->scenarioComplete($client);
-        $client->followRedirect();
+        $this->scenarioComplete($Customer);
+        $this->client->followRedirect();
 
         // my page
-        $crawler = $client->request(Request::METHOD_GET, $this->generateUrl('mypage'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('mypage'));
         $orderNode = $crawler->filter('#history_list__body .historylist_column')->first();
         $historyLink = $orderNode->selectLink('詳細を見る')->link()->getUri();
 
         // history view
-        $crawler = $client->request(Request::METHOD_GET, $historyLink);
+        $crawler = $this->client->request(Request::METHOD_GET, $historyLink);
         $product = $crawler->filter('#detail_list_box__list')->text();
 
         // check order product name
-        $this->assertStringContainsString($productName, (string) $product);
+        $this->assertStringContainsString($productName, $product);
 
         // sale limit
         $saleLimit = 1;
@@ -2371,17 +2208,17 @@ final class CartValidationTest extends AbstractWebTestCase
 
         // Order again
         $orderLink = $crawler->filter('body #confirm_side')->selectLink('再注文する')->link()->getUri();
-        $client->request(Request::METHOD_PUT, $orderLink, ['_token' => 'dummy']);
-        $crawler = $client->followRedirect();
+        $this->client->request(Request::METHOD_PUT, $orderLink, ['_token' => 'dummy']);
+        $crawler = $this->client->followRedirect();
 
         // THEN
         // check message error
         $message = $crawler->filter('#cart_box__body')->text();
-        $this->assertStringContainsString('「'.$this->getProductName($ProductClass).'」は販売制限しております。', (string) $message);
-        $this->assertStringContainsString('一度に販売制限数を超える購入はできません。', (string) $message);
+        $this->assertStringContainsString('「'.$this->getProductName($ProductClass).'」は販売制限しております。', $message);
+        $this->assertStringContainsString('一度に販売制限数を超える購入はできません。', $message);
 
         // check cart
-        $CartItem = $this->app['eccube.service.cart']->getCart()->getCartItems()->first();
+        $CartItem = static::getContainer()->get(CartService::class)->getCart()->getCartItems()->first();
         $this->actual = $CartItem->getQuantity();
         $this->expected = $saleLimit;
         $this->verify('Cart item sale quantity has been limited!!');
@@ -2392,72 +2229,69 @@ final class CartValidationTest extends AbstractWebTestCase
      */
     public function testProductInHistoryOrderWhenSaleTypeIsChangedFromOrderAgain(): never
     {
-        $this->markTestIncomplete('マイページ対応するまでスキップ');
+        // scenarioConfirm 後にリダイレクトが発生しなくなっており(購入フロー変更), マイページの履歴 UI も未追従.
+        $this->markTestIncomplete('購入フロー・マイページ履歴 UI に追従するまでスキップ');
         // GIVE
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $this->entityManager->persist($BaseInfo);
+        $this->entityManager->persist($this->BaseInfo);
         $this->entityManager->flush();
-        $this->logIn();
+        $Customer = $this->createCustomer();
         $productStock = 10;
         $productClassNum = 1;
 
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
+        /** @var ProductClass $ProductClass */
         $ProductClass = $Product->getProductClasses()->first();
-        $productClassId = $ProductClass->getId();
 
         /* product 2 */
         $productName2 = $this->getFaker()->word;
         $Product2 = $this->createProduct($productName2, $productClassNum, $productStock);
+        /** @var ProductClass $ProductClass2 */
         $ProductClass2 = $Product2->getProductClasses()->first();
-        $productClassId2 = $ProductClass2->getId();
 
         // WHEN
-        /** @var Client $client */
-        $client = $this->client;
-
         // add to cart
         $stockInCart = 3;
-        $this->scenarioCartIn($client, $productClassId, $stockInCart);
-        $this->app['eccube.service.cart']->unlock();
-        $this->scenarioCartIn($client, $productClassId2, $stockInCart);
+        $this->scenarioCartIn($Customer, $ProductClass, $stockInCart);
+        $this->scenarioCartIn($Customer, $ProductClass2, $stockInCart);
 
         // shopping step
-        $this->scenarioConfirm($client, $ProductClass);
-        $client->followRedirect();
+        $this->scenarioConfirm($Customer, $ProductClass);
+        $this->client->followRedirect();
 
         // order complete
-        $this->scenarioComplete($client);
-        $client->followRedirect();
+        $this->scenarioComplete($Customer);
+        $this->client->followRedirect();
 
         // my page
-        $crawler = $client->request(Request::METHOD_GET, $this->generateUrl('mypage'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('mypage'));
         $orderNode = $crawler->filter('#history_list__body .historylist_column')->first();
         $historyLink = $orderNode->selectLink('詳細を見る')->link()->getUri();
 
         // history view
-        $crawler = $client->request(Request::METHOD_GET, $historyLink);
+        $crawler = $this->client->request(Request::METHOD_GET, $historyLink);
         $product = $crawler->filter('#detail_list_box__list')->text();
 
         // check order product name
-        $this->assertStringContainsString($productName, (string) $product);
-        $this->assertStringContainsString($productName2, (string) $product);
+        $this->assertStringContainsString($productName, $product);
+        $this->assertStringContainsString($productName2, $product);
 
         // change type
         $SaleType = $this->entityManager->find(SaleType::class, 2);
+        $this->assertInstanceOf(SaleType::class, $SaleType);
         $ProductClass2->setSaleType($SaleType);
         $this->entityManager->persist($ProductClass2);
         $this->entityManager->flush();
 
         // Order again
         $orderLink = $crawler->filter('body #confirm_side')->selectLink('再注文する')->link()->getUri();
-        $client->request(Request::METHOD_PUT, $orderLink, ['_token' => 'dummy']);
-        $crawler = $client->followRedirect();
+        $this->client->request(Request::METHOD_PUT, $orderLink, ['_token' => 'dummy']);
+        $crawler = $this->client->followRedirect();
 
         // THEN
         // check message error
         $message = $crawler->filter('#cart_box__body')->text();
-        $this->assertStringContainsString('この商品は同時に購入することはできません。', (string) $message);
+        $this->assertStringContainsString('この商品は同時に購入することはできません。', $message);
     }
 
     /**
@@ -2467,66 +2301,64 @@ final class CartValidationTest extends AbstractWebTestCase
      */
     public function testProductInHistoryOrderWhenSaleTypeIsChangedFromOrderAgainWithMultiShipping(): never
     {
-        $this->markTestIncomplete('マイページ対応するまでスキップ');
+        // scenarioConfirm 後にリダイレクトが発生しなくなっており(購入フロー変更), マイページの履歴 UI も未追従.
+        $this->markTestIncomplete('購入フロー・マイページ履歴 UI に追従するまでスキップ');
         // GIVE
         $this->entityManager->persist($this->BaseInfo);
         $this->entityManager->flush();
-        $this->logIn();
+        $Customer = $this->createCustomer();
         $productStock = 10;
         $productClassNum = 1;
 
         $productName = $this->getFaker()->word;
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
+        /** @var ProductClass $ProductClass */
         $ProductClass = $Product->getProductClasses()->first();
-        $productClassId = $ProductClass->getId();
 
         /* product 2 */
         $productName2 = $this->getFaker()->word;
         $Product2 = $this->createProduct($productName2, $productClassNum, $productStock);
+        /** @var ProductClass $ProductClass2 */
         $ProductClass2 = $Product2->getProductClasses()->first();
-        $productClassId2 = $ProductClass2->getId();
 
         // WHEN
-        /** @var Client $client */
-        $client = $this->client;
-
         // add to cart
         $stockInCart = 3;
-        $this->scenarioCartIn($client, $productClassId, $stockInCart);
-        $this->app['eccube.service.cart']->unlock();
-        $this->scenarioCartIn($client, $productClassId2, $stockInCart);
+        $this->scenarioCartIn($Customer, $ProductClass, $stockInCart);
+        $this->scenarioCartIn($Customer, $ProductClass2, $stockInCart);
 
         // shopping step
-        $this->scenarioConfirm($client, $ProductClass);
-        $client->followRedirect();
+        $this->scenarioConfirm($Customer, $ProductClass);
+        $this->client->followRedirect();
 
         // order complete
-        $this->scenarioComplete($client);
-        $client->followRedirect();
+        $this->scenarioComplete($Customer);
+        $this->client->followRedirect();
 
         // my page
-        $crawler = $client->request(Request::METHOD_GET, $this->generateUrl('mypage'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('mypage'));
         $orderNode = $crawler->filter('#history_list__body .historylist_column')->first();
         $historyLink = $orderNode->selectLink('詳細を見る')->link()->getUri();
 
         // history view
-        $crawler = $client->request(Request::METHOD_GET, $historyLink);
+        $crawler = $this->client->request(Request::METHOD_GET, $historyLink);
         $product = $crawler->filter('#detail_list_box__list')->text();
 
         // check order product name
-        $this->assertStringContainsString($productName, (string) $product);
-        $this->assertStringContainsString($productName2, (string) $product);
+        $this->assertStringContainsString($productName, $product);
+        $this->assertStringContainsString($productName2, $product);
 
         // change type
         $SaleType = $this->entityManager->find(SaleType::class, 2);
+        $this->assertInstanceOf(SaleType::class, $SaleType);
         $ProductClass2->setSaleType($SaleType);
         $this->entityManager->persist($ProductClass2);
         $this->entityManager->flush();
 
         // Order again
         $orderLink = $crawler->filter('body #confirm_side')->selectLink('再注文する')->link()->getUri();
-        $client->request(Request::METHOD_PUT, $orderLink, ['_token' => 'dummy']);
-        $crawler = $client->followRedirect();
+        $this->client->request(Request::METHOD_PUT, $orderLink, ['_token' => 'dummy']);
+        $crawler = $this->client->followRedirect();
 
         // THEN
         // check message error (expect not contain)
@@ -2568,7 +2400,7 @@ final class CartValidationTest extends AbstractWebTestCase
     {
         $faker = $this->getFaker();
         if (strlen($confirmUrl) == 0) {
-            $confirmUrl = $this->generateUrl('shopping_order');
+            $confirmUrl = $this->generateUrl('shopping_confirm');
         }
 
         if (count($arrShopping) == 0) {
@@ -2646,10 +2478,8 @@ final class CartValidationTest extends AbstractWebTestCase
     protected function deleteAllProduct()
     {
         // remove product exist
-        $pdo = $this->entityManager->getConnection()->getWrappedConnection();
         $sql = 'DELETE FROM dtb_tax_rule WHERE dtb_tax_rule.id <> 1';
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute();
+        $this->entityManager->getConnection()->executeStatement($sql);
         $this->deleteAllRows([
             'dtb_order_item',
             'dtb_product_stock',
@@ -2671,6 +2501,91 @@ final class CartValidationTest extends AbstractWebTestCase
         $this->changeStock($ProductClass, $stock);
 
         return $Product;
+    }
+
+    /**
+     * 販売種別違いの商品でカートが分割されていることを検証する.
+     *
+     * 4系では販売種別 (SaleType) が異なる商品の購入を拒否せず, 決済単位ごとにカートを分割する.
+     *
+     * @see \Eccube\Service\Cart\SaleTypeCartAllocator 販売種別 ID をカートの識別子にする
+     *
+     * @param string[] $expectedProductNames 分割後の各カートに 1 つずつ含まれることを期待する商品名
+     */
+    private function assertCartDivided(Crawler $crawler, array $expectedProductNames): void
+    {
+        // カートを分割した旨の案内が表示される (Cart/index.twig の Carts|length > 1 の分岐)
+        $errorNodes = $crawler->filter('.ec-cartRole__error');
+        $this->assertGreaterThan(0, $errorNodes->count(), 'カート分割の案内が表示されていること');
+        $this->assertStringContainsString('同時購入できない商品のカートを分けました。', $errorNodes->text());
+
+        // 販売種別ごとにカートが分割される
+        $cartNodes = $crawler->filter('.ec-cartRole__cart');
+        $this->assertCount(
+            count($expectedProductNames),
+            $cartNodes,
+            '販売種別ごとにカートが分割されていること'
+        );
+
+        // 各商品がちょうど 1 つのカートにのみ含まれる (= 別々のカートに振り分けられている)
+        $cartTexts = $cartNodes->each(static fn (Crawler $node): string => $node->filter('.ec-cartRow__name')->text());
+        foreach ($expectedProductNames as $productName) {
+            $matched = array_filter($cartTexts, static fn (string $text): bool => str_contains($text, $productName));
+            $this->assertCount(
+                1,
+                $matched,
+                sprintf('「%s」がちょうど 1 つのカートに含まれていること', $productName)
+            );
+        }
+    }
+
+    /**
+     * 分割された各カートが, 自身の cart_key で独立したレジ導線を持つことを検証する.
+     *
+     * @param ProductClass[] $ProductClasses 分割後の各カートに含まれる商品規格
+     */
+    private function assertPerCartCheckoutLinks(Crawler $crawler, Customer $Customer, array $ProductClasses): void
+    {
+        $checkoutUrls = $crawler->filter('.ec-cartRole__actions a.ec-blockBtn--action')
+            ->each(static fn (Crawler $node): string => (string) $node->attr('href'));
+
+        $this->assertCount(count($ProductClasses), $checkoutUrls);
+        $this->assertSame($checkoutUrls, array_values(array_unique($checkoutUrls)), 'カートごとに異なる cart_key のレジ導線を持つこと');
+
+        foreach ($ProductClasses as $ProductClass) {
+            $this->assertContains(
+                $this->generateUrl('cart_buystep', ['cart_key' => $Customer->getId().'_'.$ProductClass->getSaleType()->getId()]),
+                $checkoutUrls
+            );
+        }
+    }
+
+    /**
+     * 販売種別 2 を割り当てた商品を作成する
+     */
+    private function createProductWithOtherSaleType(string $productName, int $stock): ProductClass
+    {
+        $Product = $this->createProduct($productName, 1, $stock);
+        /** @var ProductClass $ProductClass */
+        $ProductClass = $Product->getProductClasses()->first();
+
+        return $this->changeSaleType($ProductClass);
+    }
+
+    /**
+     * 商品規格の販売種別を変更する
+     */
+    private function changeSaleType(ProductClass $ProductClass, int $saleTypeId = 2): ProductClass
+    {
+        $SaleType = $this->entityManager->find(SaleType::class, $saleTypeId);
+        $ProductClass = $this->entityManager->find(ProductClass::class, $ProductClass->getId());
+        $this->assertInstanceOf(ProductClass::class, $ProductClass);
+        $this->assertInstanceOf(SaleType::class, $SaleType);
+        $ProductClass->setSaleType($SaleType);
+        $this->entityManager->persist($ProductClass);
+        $this->entityManager->flush();
+
+        return $ProductClass;
     }
 
     /**

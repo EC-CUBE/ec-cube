@@ -13,57 +13,55 @@
 
 namespace Eccube\Entity;
 
-if (!class_exists(ExportCsvRow::class)) {
-    class ExportCsvRow extends AbstractEntity
+class ExportCsvRow extends AbstractEntity
+{
+    /**
+     * @var array<int, string|null>
+     */
+    private array $row = [];
+
+    private ?string $data = null;
+
+    /**
+     * Set data
+     *
+     * @param string $data
+     */
+    public function setData(?string $data = null): ExportCsvRow
     {
-        /**
-         * @var array<int, string|null>
-         */
-        private array $row = [];
+        $this->data = $data;
 
-        private ?string $data = null;
+        return $this;
+    }
 
-        /**
-         * Set data
-         *
-         * @param string $data
-         */
-        public function setData(?string $data = null): ExportCsvRow
-        {
-            $this->data = $data;
-
-            return $this;
+    /**
+     * Is data null
+     */
+    public function isDataNull(): bool
+    {
+        if (is_null($this->data)) {
+            return true;
         }
 
-        /**
-         * Is data null
-         */
-        public function isDataNull(): bool
-        {
-            if (is_null($this->data)) {
-                return true;
-            }
+        return false;
+    }
 
-            return false;
-        }
+    /**
+     * Push data
+     */
+    public function pushData(): void
+    {
+        $this->row[] = $this->data;
+        $this->data = null;
+    }
 
-        /**
-         * Push data
-         */
-        public function pushData(): void
-        {
-            $this->row[] = $this->data;
-            $this->data = null;
-        }
-
-        /**
-         * Get row
-         *
-         * @return array<int, string|null>
-         */
-        public function getRow(): array
-        {
-            return $this->row;
-        }
+    /**
+     * Get row
+     *
+     * @return array<int, string|null>
+     */
+    public function getRow(): array
+    {
+        return $this->row;
     }
 }
