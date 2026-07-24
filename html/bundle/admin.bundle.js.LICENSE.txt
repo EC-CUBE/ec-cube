@@ -5,16 +5,16 @@
   */
 
 /*!
- * @kurkle/color v0.2.1
+ * @kurkle/color v0.3.4
  * https://github.com/kurkle/color#readme
- * (c) 2022 Jukka Kurkela
+ * (c) 2024 Jukka Kurkela
  * Released under the MIT License
  */
 
 /*!
- * Chart.js v3.9.1
+ * Chart.js v4.5.1
  * https://www.chartjs.org
- * (c) 2022 Chart.js Contributors
+ * (c) 2025 Chart.js Contributors
  * Released under the MIT License
  */
 
@@ -62,7 +62,7 @@
  */
 
 /*!
- * jQuery UI :data 1.13.3
+ * jQuery UI :data 1.14.2
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -71,7 +71,7 @@
  */
 
 /*!
- * jQuery UI Disable Selection 1.13.3
+ * jQuery UI Disable Selection 1.14.2
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -80,7 +80,7 @@
  */
 
 /*!
- * jQuery UI Keycode 1.13.3
+ * jQuery UI Keycode 1.14.2
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -89,7 +89,7 @@
  */
 
 /*!
- * jQuery UI Mouse 1.13.3
+ * jQuery UI Mouse 1.14.2
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -98,7 +98,7 @@
  */
 
 /*!
- * jQuery UI Position 1.13.3
+ * jQuery UI Position 1.14.2
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -109,7 +109,7 @@
  */
 
 /*!
- * jQuery UI Resizable 1.13.3
+ * jQuery UI Resizable 1.14.2
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -118,7 +118,7 @@
  */
 
 /*!
- * jQuery UI Scroll Parent 1.13.3
+ * jQuery UI Scroll Parent 1.14.2
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -127,7 +127,7 @@
  */
 
 /*!
- * jQuery UI Sortable 1.13.3
+ * jQuery UI Sortable 1.14.2
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -136,7 +136,7 @@
  */
 
 /*!
- * jQuery UI Tooltip 1.13.3
+ * jQuery UI Tooltip 1.14.2
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -145,7 +145,7 @@
  */
 
 /*!
- * jQuery UI Unique ID 1.13.3
+ * jQuery UI Unique ID 1.14.2
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors
@@ -154,7 +154,7 @@
  */
 
 /*!
- * jQuery UI Widget 1.13.3
+ * jQuery UI Widget 1.14.2
  * https://jqueryui.com
  *
  * Copyright OpenJS Foundation and other contributors

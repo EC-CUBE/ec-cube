@@ -10,6 +10,9 @@ node_modules
 !/app/Plugin/.gitkeep
 /app/PluginData/*
 !/app/PluginData/.gitkeep
+/app/keystore/*
+!/app/keystore/.gitkeep
+!/app/keystore/.htaccess
 /app/template/*
 !/app/template/admin
 !/app/template/default
@@ -38,6 +41,9 @@ node_modules
 .vscode/
 *.php~
 .env
+.env.local
+.env.local.php
+.env.*.local
 .maintenance
 *.neon
 
@@ -45,6 +51,7 @@ node_modules
 .phpunit
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
+/.phpunit.result.cache
 
 ###> friendsofphp/php-cs-fixer ###
 /.php-cs-fixer.cache

@@ -1,5 +1,4 @@
-const $ = require('jquery');
-global.$ = global.jQuery = $;
+global.$ = global.jQuery = require('jquery');
 
 const { Spinner } = require('spin.js');
 global.Spinner = Spinner;
@@ -11,7 +10,6 @@ require('ace-builds/webpack-resolver');
 require('jquery.qrcode');
 
 require('jquery-ui/themes/base/all.css');
-require('jquery-ui/ui/core');
 require('jquery-ui/ui/position');
 require('jquery-ui/ui/widget');
 require('jquery-ui/ui/widgets/mouse');

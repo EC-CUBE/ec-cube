@@ -85,6 +85,9 @@ parameters:
                 maintenance:
                     name: admin.content.maintenance_management
                     url: admin_content_maintenance
+                agent_commerce:
+                    name: admin.content.agent_commerce
+                    url: admin_content_agent_commerce
         setting:
             name: admin.setting
             icon: fa-cog

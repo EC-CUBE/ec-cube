@@ -125,6 +125,17 @@ if (typeof Ladda !== 'undefined') {
     $('button[type=submit].btn-ec-regular').attr('data-spinner-color', '#595959');
 }
 
+// Laddaのtimeout(2000ms)でボタンが再有効化された後の二重送信を防止する.
+// 一度submitされたフォームは以降のsubmitをキャンセルする. (Issue #6671)
+// ページ遷移(登録成功・バリデーションエラー)でJSが再初期化されるため, フラグは自動的にリセットされる.
+$('form').on('submit', function () {
+    var $form = $(this);
+    if ($form.data('ecSubmitted')) {
+        return false;
+    }
+    $form.data('ecSubmitted', true);
+});
+
 // anchorをクリックした時にformを裏で作って指定のメソッドでリクエストを飛ばす
 // Twigには以下のように埋め込む
 // <a href="PATH" {{ csrf_token_for_anchor() }} data-method="(put/delete/postのうちいずれか)" data-confirm="xxxx" data-message="xxxx">
