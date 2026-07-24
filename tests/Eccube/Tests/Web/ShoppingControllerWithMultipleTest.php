@@ -15,13 +15,13 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Web;
 
+use Eccube\Common\Constant;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\OrderRepository;
-use Eccube\Service\CartService;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mime\Email;
@@ -40,11 +40,9 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  * 7. multi shipping with 3 item, 1 address => one shipping
  * 8. multi shipping with 3 item, 2 address => two shipping
  * 9. multi shipping with 3 item, 3 address => three shipping
- * 10. multi shipping with cart unlock => redirect to cart
- * 11. multi shipping add with cart unlock => redirect to cart
- * 12. multi shipping without cart item => redirect to cart
- * 13. multi shipping with total quantity of product are not equal => reload with error message: 数量の数が異なっています
- * 14. multi shipping with orders have shipped earlier. => redirect to shopping
+ * 10. multi shipping without cart item => redirect to shopping_error
+ * 11. multi shipping with total quantity of product are not equal => reload with error message: 数量の数が異なっています
+ * 12. multi shipping with orders have shipped earlier. => redirect to shopping
  *
  * @author Kentaro Ohkouchi
  */
@@ -906,19 +904,13 @@ final class ShoppingControllerWithMultipleTest extends AbstractShoppingControlle
     }
 
     /**
-     * Test add multi shipping
+     * カートが空の状態で複数配送設定画面へアクセスした場合、エラー画面へリダイレクトされる.
      */
-    public function testAddMultiShippingWithoutCart(): never
+    public function testAddMultiShippingWithoutCart()
     {
-        $this->markTestIncomplete('カートのクリア処理');
-
         $Customer = $this->createCustomer();
         $Customer->addCustomerAddress($this->createCustomerAddress($Customer));
         $Customer->addCustomerAddress($this->createCustomerAddress($Customer));
-
-        $this->client->request(Request::METHOD_POST, '/cart/add', ['product_class_id' => 10, 'quantity' => 2]);
-        $this->client->request(Request::METHOD_POST, '/cart/add', ['product_class_id' => 1, 'quantity' => 1]);
-        $this->client->request(Request::METHOD_POST, '/cart/add', ['product_class_id' => 2, 'quantity' => 1]);
 
         $this->scenarioCartIn($Customer);
 
@@ -980,8 +972,15 @@ final class ShoppingControllerWithMultipleTest extends AbstractShoppingControlle
             ],
         ];
 
-        $cartService = static::getContainer()->get(CartService::class);
-        $cartService->clear();
+        // カートを空にする. CartService をテストプロセスから直接操作するとセッションが解決できないため,
+        // クライアントのセッションを介して明細を削除する.
+        $this->client->request(
+            Request::METHOD_PUT,
+            $this->generateUrl('cart_handle_item', ['operation' => 'remove', 'productClassId' => 2]),
+            [Constant::TOKEN_NAME => '_dummy']
+        );
+        // 空になったカートを削除させるためカート画面を表示する.
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('cart'));
 
         $this->client->request(
             Request::METHOD_POST,
@@ -989,7 +988,7 @@ final class ShoppingControllerWithMultipleTest extends AbstractShoppingControlle
             ['form' => $multiForm]
         );
 
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('cart')));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_error')));
     }
 
     /**
