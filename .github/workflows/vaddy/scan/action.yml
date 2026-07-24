@@ -56,7 +56,7 @@ runs:
     - name: "VAddy: crawl"
       shell: bash
       env:
-        APP_ENV: "codeception"
+        APP_ENV: "e2e"
         DATABASE_URL: "postgres://postgres:password@127.0.0.1:5432/eccube_db"
         DATABASE_SERVER_VERSION: "18"
         MAILER_URL: "smtp://127.0.0.1:1025"

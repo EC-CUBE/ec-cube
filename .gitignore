@@ -41,6 +41,9 @@ node_modules
 .vscode/
 *.php~
 .env
+.env.local
+.env.local.php
+.env.*.local
 .maintenance
 *.neon
 

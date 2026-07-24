@@ -19,374 +19,372 @@ use Eccube\Entity\Master\Country;
 use Eccube\Entity\Master\Pref;
 use Eccube\Repository\CustomerAddressRepository;
 
-if (!class_exists(CustomerAddress::class)) {
+/**
+ * CustomerAddress
+ */
+#[ORM\Table(name: 'dtb_customer_address')]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: CustomerAddressRepository::class)]
+class CustomerAddress extends AbstractEntity
+{
     /**
-     * CustomerAddress
+     * getShippingMultipleDefaultName
      */
-    #[ORM\Table(name: 'dtb_customer_address')]
-    #[ORM\InheritanceType('SINGLE_TABLE')]
-    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
-    #[ORM\HasLifecycleCallbacks]
-    #[ORM\Entity(repositoryClass: CustomerAddressRepository::class)]
-    class CustomerAddress extends AbstractEntity
+    public function getShippingMultipleDefaultName(): string
     {
-        /**
-         * getShippingMultipleDefaultName
-         */
-        public function getShippingMultipleDefaultName(): string
-        {
-            return $this->getName01().' '.$this->getPref()->getName().' '.$this->getAddr01().' '.$this->getAddr02();
-        }
+        return $this->getName01().' '.$this->getPref()->getName().' '.$this->getAddr01().' '.$this->getAddr02();
+    }
 
-        /**
-         * Set from customer.
-         */
-        public function setFromCustomer(Customer $Customer): CustomerAddress
-        {
-            $this
-            ->setCustomer($Customer)
-            ->setName01($Customer->getName01())
-            ->setName02($Customer->getName02())
-            ->setKana01($Customer->getKana01())
-            ->setKana02($Customer->getKana02())
-            ->setCompanyName($Customer->getCompanyName())
-            ->setPhoneNumber($Customer->getPhoneNumber())
-            ->setPostalCode($Customer->getPostalCode())
-            ->setPref($Customer->getPref())
-            ->setAddr01($Customer->getAddr01())
-            ->setAddr02($Customer->getAddr02());
+    /**
+     * Set from customer.
+     */
+    public function setFromCustomer(Customer $Customer): CustomerAddress
+    {
+        $this
+        ->setCustomer($Customer)
+        ->setName01($Customer->getName01())
+        ->setName02($Customer->getName02())
+        ->setKana01($Customer->getKana01())
+        ->setKana02($Customer->getKana02())
+        ->setCompanyName($Customer->getCompanyName())
+        ->setPhoneNumber($Customer->getPhoneNumber())
+        ->setPostalCode($Customer->getPostalCode())
+        ->setPref($Customer->getPref())
+        ->setAddr01($Customer->getAddr01())
+        ->setAddr02($Customer->getAddr02());
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Set from Shipping.
-         */
-        public function setFromShipping(Shipping $Shipping): CustomerAddress
-        {
-            $this
-            ->setName01($Shipping->getName01())
-            ->setName02($Shipping->getName02())
-            ->setKana01($Shipping->getKana01())
-            ->setKana02($Shipping->getKana02())
-            ->setCompanyName($Shipping->getCompanyName())
-            ->setPhoneNumber($Shipping->getPhoneNumber())
-            ->setPostalCode($Shipping->getPostalCode())
-            ->setPref($Shipping->getPref())
-            ->setAddr01($Shipping->getAddr01())
-            ->setAddr02($Shipping->getAddr02());
+    /**
+     * Set from Shipping.
+     */
+    public function setFromShipping(Shipping $Shipping): CustomerAddress
+    {
+        $this
+        ->setName01($Shipping->getName01())
+        ->setName02($Shipping->getName02())
+        ->setKana01($Shipping->getKana01())
+        ->setKana02($Shipping->getKana02())
+        ->setCompanyName($Shipping->getCompanyName())
+        ->setPhoneNumber($Shipping->getPhoneNumber())
+        ->setPostalCode($Shipping->getPostalCode())
+        ->setPref($Shipping->getPref())
+        ->setAddr01($Shipping->getAddr01())
+        ->setAddr02($Shipping->getAddr02());
 
-            return $this;
-        }
+        return $this;
+    }
 
-        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
-        #[ORM\Id]
-        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-        private ?int $id = null;
+    #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    private ?int $id = null;
 
-        #[ORM\Column(name: 'name01', type: Types::STRING, length: 255)]
-        private ?string $name01 = null;
+    #[ORM\Column(name: 'name01', type: Types::STRING, length: 255)]
+    private ?string $name01 = null;
 
-        #[ORM\Column(name: 'name02', type: Types::STRING, length: 255)]
-        private ?string $name02 = null;
+    #[ORM\Column(name: 'name02', type: Types::STRING, length: 255)]
+    private ?string $name02 = null;
 
-        #[ORM\Column(name: 'kana01', type: Types::STRING, length: 255, nullable: true)]
-        private ?string $kana01 = null;
+    #[ORM\Column(name: 'kana01', type: Types::STRING, length: 255, nullable: true)]
+    private ?string $kana01 = null;
 
-        #[ORM\Column(name: 'kana02', type: Types::STRING, length: 255, nullable: true)]
-        private ?string $kana02 = null;
+    #[ORM\Column(name: 'kana02', type: Types::STRING, length: 255, nullable: true)]
+    private ?string $kana02 = null;
 
-        #[ORM\Column(name: 'company_name', type: Types::STRING, length: 255, nullable: true)]
-        private ?string $company_name = null;
+    #[ORM\Column(name: 'company_name', type: Types::STRING, length: 255, nullable: true)]
+    private ?string $company_name = null;
 
-        #[ORM\Column(name: 'postal_code', type: Types::STRING, length: 8, nullable: true)]
-        private ?string $postal_code = null;
+    #[ORM\Column(name: 'postal_code', type: Types::STRING, length: 8, nullable: true)]
+    private ?string $postal_code = null;
 
-        #[ORM\Column(name: 'addr01', type: Types::STRING, length: 255, nullable: true)]
-        private ?string $addr01 = null;
+    #[ORM\Column(name: 'addr01', type: Types::STRING, length: 255, nullable: true)]
+    private ?string $addr01 = null;
 
-        #[ORM\Column(name: 'addr02', type: Types::STRING, length: 255, nullable: true)]
-        private ?string $addr02 = null;
+    #[ORM\Column(name: 'addr02', type: Types::STRING, length: 255, nullable: true)]
+    private ?string $addr02 = null;
 
-        #[ORM\Column(name: 'phone_number', type: Types::STRING, length: 14, nullable: true)]
-        private ?string $phone_number = null;
+    #[ORM\Column(name: 'phone_number', type: Types::STRING, length: 14, nullable: true)]
+    private ?string $phone_number = null;
 
-        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
-        private ?\DateTime $create_date = null;
+    #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
+    private ?\DateTime $create_date = null;
 
-        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
-        private ?\DateTime $update_date = null;
+    #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
+    private ?\DateTime $update_date = null;
 
-        #[ORM\ManyToOne(targetEntity: Customer::class, inversedBy: 'CustomerAddresses')]
-        #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'id')]
-        private ?Customer $Customer = null;
+    #[ORM\ManyToOne(targetEntity: Customer::class, inversedBy: 'CustomerAddresses')]
+    #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'id')]
+    private ?Customer $Customer = null;
 
-        #[ORM\ManyToOne(targetEntity: Country::class)]
-        #[ORM\JoinColumn(name: 'country_id', referencedColumnName: 'id')]
-        private ?Country $Country = null;
+    #[ORM\ManyToOne(targetEntity: Country::class)]
+    #[ORM\JoinColumn(name: 'country_id', referencedColumnName: 'id')]
+    private ?Country $Country = null;
 
-        #[ORM\ManyToOne(targetEntity: Pref::class)]
-        #[ORM\JoinColumn(name: 'pref_id', referencedColumnName: 'id')]
-        private ?Pref $Pref = null;
+    #[ORM\ManyToOne(targetEntity: Pref::class)]
+    #[ORM\JoinColumn(name: 'pref_id', referencedColumnName: 'id')]
+    private ?Pref $Pref = null;
 
-        /**
-         * Get id.
-         */
-        public function getId(): ?int
-        {
-            return $this->id;
-        }
+    /**
+     * Get id.
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
-        /**
-         * Set name01.
-         */
-        public function setName01(?string $name01 = null): CustomerAddress
-        {
-            $this->name01 = $name01;
+    /**
+     * Set name01.
+     */
+    public function setName01(?string $name01 = null): CustomerAddress
+    {
+        $this->name01 = $name01;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get name01.
-         */
-        public function getName01(): ?string
-        {
-            return $this->name01;
-        }
+    /**
+     * Get name01.
+     */
+    public function getName01(): ?string
+    {
+        return $this->name01;
+    }
 
-        /**
-         * Set name02.
-         */
-        public function setName02(?string $name02 = null): CustomerAddress
-        {
-            $this->name02 = $name02;
+    /**
+     * Set name02.
+     */
+    public function setName02(?string $name02 = null): CustomerAddress
+    {
+        $this->name02 = $name02;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get name02.
-         */
-        public function getName02(): ?string
-        {
-            return $this->name02;
-        }
+    /**
+     * Get name02.
+     */
+    public function getName02(): ?string
+    {
+        return $this->name02;
+    }
 
-        /**
-         * Set kana01.
-         */
-        public function setKana01(?string $kana01 = null): CustomerAddress
-        {
-            $this->kana01 = $kana01;
+    /**
+     * Set kana01.
+     */
+    public function setKana01(?string $kana01 = null): CustomerAddress
+    {
+        $this->kana01 = $kana01;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get kana01.
-         */
-        public function getKana01(): ?string
-        {
-            return $this->kana01;
-        }
+    /**
+     * Get kana01.
+     */
+    public function getKana01(): ?string
+    {
+        return $this->kana01;
+    }
 
-        /**
-         * Set kana02.
-         */
-        public function setKana02(?string $kana02 = null): CustomerAddress
-        {
-            $this->kana02 = $kana02;
+    /**
+     * Set kana02.
+     */
+    public function setKana02(?string $kana02 = null): CustomerAddress
+    {
+        $this->kana02 = $kana02;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get kana02.
-         */
-        public function getKana02(): ?string
-        {
-            return $this->kana02;
-        }
+    /**
+     * Get kana02.
+     */
+    public function getKana02(): ?string
+    {
+        return $this->kana02;
+    }
 
-        /**
-         * Set companyName.
-         */
-        public function setCompanyName(?string $companyName = null): CustomerAddress
-        {
-            $this->company_name = $companyName;
+    /**
+     * Set companyName.
+     */
+    public function setCompanyName(?string $companyName = null): CustomerAddress
+    {
+        $this->company_name = $companyName;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get companyName.
-         */
-        public function getCompanyName(): ?string
-        {
-            return $this->company_name;
-        }
+    /**
+     * Get companyName.
+     */
+    public function getCompanyName(): ?string
+    {
+        return $this->company_name;
+    }
 
-        /**
-         * Set postal_code.
-         */
-        public function setPostalCode(?string $postal_code = null): CustomerAddress
-        {
-            $this->postal_code = $postal_code;
+    /**
+     * Set postal_code.
+     */
+    public function setPostalCode(?string $postal_code = null): CustomerAddress
+    {
+        $this->postal_code = $postal_code;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get postal_code.
-         */
-        public function getPostalCode(): ?string
-        {
-            return $this->postal_code;
-        }
+    /**
+     * Get postal_code.
+     */
+    public function getPostalCode(): ?string
+    {
+        return $this->postal_code;
+    }
 
-        /**
-         * Set addr01.
-         */
-        public function setAddr01(?string $addr01 = null): CustomerAddress
-        {
-            $this->addr01 = $addr01;
+    /**
+     * Set addr01.
+     */
+    public function setAddr01(?string $addr01 = null): CustomerAddress
+    {
+        $this->addr01 = $addr01;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get addr01.
-         */
-        public function getAddr01(): ?string
-        {
-            return $this->addr01;
-        }
+    /**
+     * Get addr01.
+     */
+    public function getAddr01(): ?string
+    {
+        return $this->addr01;
+    }
 
-        /**
-         * Set addr02.
-         */
-        public function setAddr02(?string $addr02 = null): CustomerAddress
-        {
-            $this->addr02 = $addr02;
+    /**
+     * Set addr02.
+     */
+    public function setAddr02(?string $addr02 = null): CustomerAddress
+    {
+        $this->addr02 = $addr02;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get addr02.
-         */
-        public function getAddr02(): ?string
-        {
-            return $this->addr02;
-        }
+    /**
+     * Get addr02.
+     */
+    public function getAddr02(): ?string
+    {
+        return $this->addr02;
+    }
 
-        /**
-         * Set phone_number.
-         */
-        public function setPhoneNumber(?string $phone_number = null): CustomerAddress
-        {
-            $this->phone_number = $phone_number;
+    /**
+     * Set phone_number.
+     */
+    public function setPhoneNumber(?string $phone_number = null): CustomerAddress
+    {
+        $this->phone_number = $phone_number;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get phone_number.
-         */
-        public function getPhoneNumber(): ?string
-        {
-            return $this->phone_number;
-        }
+    /**
+     * Get phone_number.
+     */
+    public function getPhoneNumber(): ?string
+    {
+        return $this->phone_number;
+    }
 
-        /**
-         * Set createDate.
-         */
-        public function setCreateDate(\DateTime $createDate): CustomerAddress
-        {
-            $this->create_date = $createDate;
+    /**
+     * Set createDate.
+     */
+    public function setCreateDate(\DateTime $createDate): CustomerAddress
+    {
+        $this->create_date = $createDate;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get createDate.
-         */
-        public function getCreateDate(): ?\DateTime
-        {
-            return $this->create_date;
-        }
+    /**
+     * Get createDate.
+     */
+    public function getCreateDate(): ?\DateTime
+    {
+        return $this->create_date;
+    }
 
-        /**
-         * Set updateDate.
-         */
-        public function setUpdateDate(\DateTime $updateDate): CustomerAddress
-        {
-            $this->update_date = $updateDate;
+    /**
+     * Set updateDate.
+     */
+    public function setUpdateDate(\DateTime $updateDate): CustomerAddress
+    {
+        $this->update_date = $updateDate;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get updateDate.
-         */
-        public function getUpdateDate(): ?\DateTime
-        {
-            return $this->update_date;
-        }
+    /**
+     * Get updateDate.
+     */
+    public function getUpdateDate(): ?\DateTime
+    {
+        return $this->update_date;
+    }
 
-        /**
-         * Set customer.
-         */
-        public function setCustomer(?Customer $customer = null): CustomerAddress
-        {
-            $this->Customer = $customer;
+    /**
+     * Set customer.
+     */
+    public function setCustomer(?Customer $customer = null): CustomerAddress
+    {
+        $this->Customer = $customer;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get customer.
-         */
-        public function getCustomer(): ?Customer
-        {
-            return $this->Customer;
-        }
+    /**
+     * Get customer.
+     */
+    public function getCustomer(): ?Customer
+    {
+        return $this->Customer;
+    }
 
-        /**
-         * Set country.
-         */
-        public function setCountry(?Country $country = null): CustomerAddress
-        {
-            $this->Country = $country;
+    /**
+     * Set country.
+     */
+    public function setCountry(?Country $country = null): CustomerAddress
+    {
+        $this->Country = $country;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get country.
-         */
-        public function getCountry(): ?Country
-        {
-            return $this->Country;
-        }
+    /**
+     * Get country.
+     */
+    public function getCountry(): ?Country
+    {
+        return $this->Country;
+    }
 
-        /**
-         * Set pref.
-         */
-        public function setPref(?Pref $pref = null): CustomerAddress
-        {
-            $this->Pref = $pref;
+    /**
+     * Set pref.
+     */
+    public function setPref(?Pref $pref = null): CustomerAddress
+    {
+        $this->Pref = $pref;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get pref.
-         */
-        public function getPref(): ?Pref
-        {
-            return $this->Pref;
-        }
+    /**
+     * Get pref.
+     */
+    public function getPref(): ?Pref
+    {
+        return $this->Pref;
     }
 }

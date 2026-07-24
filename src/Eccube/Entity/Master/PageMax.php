@@ -16,17 +16,15 @@ namespace Eccube\Entity\Master;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Repository\Master\PageMaxRepository;
 
-if (!class_exists(PageMax::class, false)) {
-    /**
-     * PageMax
-     */
-    #[ORM\Table(name: 'mtb_page_max')]
-    #[ORM\InheritanceType('SINGLE_TABLE')]
-    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
-    #[ORM\HasLifecycleCallbacks]
-    #[ORM\Entity(repositoryClass: PageMaxRepository::class)]
-    #[ORM\Cache(usage: 'NONSTRICT_READ_WRITE')]
-    class PageMax extends AbstractMasterEntity
-    {
-    }
+/**
+ * PageMax
+ */
+#[ORM\Table(name: 'mtb_page_max')]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: PageMaxRepository::class)]
+#[ORM\Cache(usage: 'NONSTRICT_READ_WRITE')]
+class PageMax extends AbstractMasterEntity
+{
 }

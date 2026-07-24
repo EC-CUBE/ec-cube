@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Entity;
 
+use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\Payment;
@@ -78,7 +79,7 @@ final class CustomerTest extends EccubeTestCase
     {
         // SQLite は既定で外部キー制約(ON DELETE SET NULL)を強制しないため, この検証は対象外とする.
         // 実 DB (PostgreSQL / MySQL) では FK により未設定へ戻ることを担保する.
-        if ($this->entityManager->getConnection()->getDriver()->getDatabasePlatform()->getName() === 'sqlite') {
+        if ($this->entityManager->getConnection()->getDatabasePlatform() instanceof SQLitePlatform) {
             $this->markTestSkipped('SQLite は外部キーの ON DELETE SET NULL を既定で強制しないためスキップします.');
         }
 
