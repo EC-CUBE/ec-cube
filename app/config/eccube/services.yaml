@@ -325,13 +325,11 @@ services:
         arguments:
             $accessTokenHandler: '@?Symfony\Component\Security\Http\AccessToken\AccessTokenHandlerInterface'
 
-    # Agent Commerce 決済ハンドラ (#6574 UCP / #6776 ACP)
-    # 具象ハンドラは決済プラグインが agent_commerce.payment_handler タグで寄与する。
-    _instanceof:
-        Eccube\Service\AgentCommerce\Payment\AgentCheckoutPaymentHandlerInterface:
-            tags: ['agent_commerce.payment_handler']
-
-    # 決済ハンドラレジストリ。具象ハンドラ (決済プラグイン) は agent_commerce.payment_handler タグで寄与する。
+    # Agent Commerce 決済ハンドラレジストリ (#6574 UCP / #6776 ACP)
+    # 具象ハンドラ (決済プラグイン) は agent_commerce.payment_handler タグで寄与する。
+    # タグ付けは Kernel::build() の registerForAutoconfiguration で行う (PaymentMethodInterface と同様)。
+    # services.yaml の _instanceof はファイルスコープのため、Plugin\ glob (services.php・#6915) で
+    # 登録される決済プラグインの具象ハンドラには届かない。
     Eccube\Service\AgentCommerce\Payment\AgentCheckoutPaymentHandlerRegistry:
         arguments:
             $handlers: !tagged_iterator agent_commerce.payment_handler
