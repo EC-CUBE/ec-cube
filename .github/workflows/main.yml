@@ -62,9 +62,19 @@ jobs:
 #    needs: [ plugin-test ]
 #    uses: ./.github/workflows/deny-test.yml
   success:
-    needs: [ e2e-test-throttling, dockerbuild, agentic-commerce-e2e ]
+    # 全ジョブを直接 needs する。チェーン依存(success←throttling←plugin-test←unit-test)だと
+    # 上流の failure が各ホップで skipped に化けて末端へ届かず、必須チェック success が
+    # skipped=パス扱いとなって赤テストのまま auto-merge されてしまうため(#6840)。
+    needs: [ rector, phpstan, php-cs-fixer, unit-test, e2e-test, plugin-test, e2e-test-throttling, dockerbuild, agentic-commerce-e2e ]
+    # 上流が失敗しても success 自体は必ず実行する(skip させない)
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
+      # skipped は許容(dependabot の coverage 等、正当な skip がある)。
+      # failure / cancelled のみを赤として扱い、auto-merge をブロックする。
+      - name: Check required jobs
+        if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
+        run: echo "::error::required job failed or was cancelled" && exit 1
       - name: success
         run: echo "::notice::success!"
   coverage:
