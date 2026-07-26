@@ -51,7 +51,7 @@ jobs:
           PGPASSWORD=password psql -h 127.0.0.1 -U postgres -c 'SELECT VERSION()'
 
       - name: Setup PHP
-        uses: nanasess/setup-php@bc11abbf4dd060b7bfd20d03edeeb43417ebe245  # master
+        uses: nanasess/setup-php@3f36b116d024300a7df978629a2bad9afceb2be3  # master
         with:
           php-version: '8.5'
 
