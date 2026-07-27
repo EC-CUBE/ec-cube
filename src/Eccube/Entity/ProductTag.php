@@ -45,11 +45,8 @@ class ProductTag extends AbstractEntity
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     private ?int $id = null;
 
-    /**
-     * @var \DateTime
-     */
     #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
-    private $create_date;
+    private ?\DateTime $create_date = null;
 
     #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'ProductTag')]
     #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id')]
