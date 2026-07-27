@@ -295,6 +295,14 @@ class CsvImportController extends AbstractCsvImportController
                             }
                         }
 
+                        if (isset($row[$headerByKey['order_memo']])) {
+                            if (StringUtil::isNotBlank($row[$headerByKey['order_memo']])) {
+                                $Product->setOrderMemo(StringUtil::trimAll($row[$headerByKey['order_memo']]));
+                            } else {
+                                $Product->setOrderMemo();
+                            }
+                        }
+
                         // 商品画像登録
                         $this->createProductImage($row, $Product, $data, $headerByKey);
 
@@ -1666,6 +1674,11 @@ class CsvImportController extends AbstractCsvImportController
             trans('admin.product.product_csv.free_area_col') => [
                 'id' => 'free_area',
                 'description' => 'admin.product.product_csv.free_area_description',
+                'required' => false,
+            ],
+            trans('admin.product.product_csv.order_memo_col') => [
+                'id' => 'order_memo',
+                'description' => 'admin.product.product_csv.order_memo_description',
                 'required' => false,
             ],
             trans('admin.product.product_csv.delete_flag_col') => [

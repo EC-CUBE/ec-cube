@@ -173,6 +173,9 @@ class OrderItem extends AbstractEntity implements ItemInterface
     #[ORM\Column(name: 'processor_name', type: Types::STRING, nullable: true)]
     private ?string $processor_name = null;
 
+    #[ORM\Column(name: 'order_memo', type: Types::TEXT, nullable: true)]
+    private ?string $order_memo = null;
+
     #[ORM\ManyToOne(targetEntity: Order::class, inversedBy: 'OrderItems')]
     #[ORM\JoinColumn(name: 'order_id', referencedColumnName: 'id')]
     private ?Order $Order = null;
@@ -473,6 +476,26 @@ class OrderItem extends AbstractEntity implements ItemInterface
     public function setProcessorName(?string $processorName = null): static
     {
         $this->processor_name = $processorName;
+
+        return $this;
+    }
+
+    /**
+     * Get orderMemo.
+     */
+    public function getOrderMemo(): ?string
+    {
+        return $this->order_memo;
+    }
+
+    /**
+     * Set orderMemo.
+     *
+     * @return $this
+     */
+    public function setOrderMemo(?string $orderMemo = null): static
+    {
+        $this->order_memo = $orderMemo;
 
         return $this;
     }

@@ -116,6 +116,7 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
             'Tag' => [1],
             'search_word' => $faker->word(),
             'free_area' => $faker->realText,
+            'order_memo' => $faker->realText,
             'Status' => 1,
             'note' => $faker->realText,
             'tags' => [],
@@ -1250,5 +1251,45 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
             ['description_detail', 'getDescriptionDetail'],
             ['free_area', 'getFreeArea'],
         ];
+    }
+
+    /**
+     * 受注管理用メモが保存できることを確認する.
+     */
+    public function testEditWithOrderMemo(): void
+    {
+        $Product = $this->createProduct(null, 0);
+        $formData = $this->createFormData();
+        $formData['order_memo'] = '梱包時は割れ物注意';
+
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()]),
+            ['admin_product' => $formData]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+        // 保存後の永続化状態を確認するため DB から再読込する
+        $this->entityManager->refresh($Product);
+        $this->assertSame('梱包時は割れ物注意', $Product->getOrderMemo());
+    }
+
+    /**
+     * 受注管理用メモが文字数上限を超えるとバリデーションエラーになることを確認する.
+     */
+    public function testEditWithOrderMemoOverMaxLength(): void
+    {
+        $Product = $this->createProduct(null, 0);
+        $formData = $this->createFormData();
+        $formData['order_memo'] = str_repeat('a', $this->eccubeConfig['eccube_lltext_len'] + 1);
+
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()]),
+            ['admin_product' => $formData]
+        );
+
+        // バリデーションエラーのため再描画され、リダイレクトしない
+        $this->assertFalse($this->client->getResponse()->isRedirection());
     }
 }
