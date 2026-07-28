@@ -928,6 +928,8 @@ class ShoppingController extends AbstractShoppingController
      * 注文手続き中に, 登録済みのお届け先を編集する. 編集後はお届け先選択画面へ戻る.
      * マイページのお届け先編集と同等の機能を注文手続き画面に提供する.
      *
+     * 編集した住所が現在のお届け先に適用中の場合は, お届け先にも反映して合計金額を再計算する.
+     *
      * @return RedirectResponse|array<string, mixed>
      */
     #[Route(path: '/shopping/shipping_edit/{id}/{ca_id}', name: 'shopping_shipping_customer_address_edit', requirements: ['id' => '\d+', 'ca_id' => '\d+'], methods: ['GET', 'POST'])]
@@ -968,6 +970,10 @@ class ShoppingController extends AbstractShoppingController
             throw new NotFoundHttpException();
         }
 
+        // フォームは $CustomerAddress を直接バインドするため, handleRequest 後は編集前の値が失われる.
+        // お届け先に適用中の住所かどうかは, ここで判定して退避しておく.
+        $isAppliedToShipping = $Shipping->getShippingMultipleDefaultName() === $CustomerAddress->getShippingMultipleDefaultName();
+
         $builder = $this->formFactory->createBuilder(ShoppingShippingType::class, $CustomerAddress);
 
         $event = new EventArgs(
@@ -979,7 +985,7 @@ class ShoppingController extends AbstractShoppingController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_SHOPPING_SHIPPING_EDIT_INITIALIZE);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_SHOPPING_SHIPPING_CUSTOMER_ADDRESS_EDIT_INITIALIZE);
 
         $form = $builder->getForm();
         $form->handleRequest($request);
@@ -988,7 +994,11 @@ class ShoppingController extends AbstractShoppingController
             log_info('お届け先編集処理開始', ['order_id' => $Order->getId(), 'shipping_id' => $Shipping->getId(), 'customer_address_id' => $ca_id]);
 
             $this->entityManager->persist($CustomerAddress);
-            $this->entityManager->flush();
+
+            if ($isAppliedToShipping) {
+                // 編集した住所が現在のお届け先に適用中の場合は, お届け先にも反映する.
+                $Shipping->setFromCustomerAddress($CustomerAddress);
+            }
 
             // 会員情報変更時にメールを送信
             if ($this->baseInfoRepository->get()->isOptionMailNotifier()) {
@@ -999,15 +1009,28 @@ class ShoppingController extends AbstractShoppingController
                 $this->mailService->sendCustomerChangeNotifyMail($Customer, $userData, trans('front.mypage.delivery.notify_title'));
             }
 
+            $response = null;
+            if ($isAppliedToShipping) {
+                // 送料は都道府県に依存するため, 合計金額を再計算する.
+                $response = $this->executePurchaseFlow($Order);
+            }
+
+            $this->entityManager->flush();
+
+            if ($response) {
+                return $response;
+            }
+
             $event = new EventArgs(
                 [
                     'form' => $form,
+                    'Order' => $Order,
                     'Shipping' => $Shipping,
                     'CustomerAddress' => $CustomerAddress,
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_SHOPPING_SHIPPING_EDIT_COMPLETE);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_SHOPPING_SHIPPING_CUSTOMER_ADDRESS_EDIT_COMPLETE);
 
             log_info('お届け先編集処理完了', ['order_id' => $Order->getId(), 'shipping_id' => $Shipping->getId(), 'customer_address_id' => $ca_id]);
 
@@ -1070,6 +1093,17 @@ class ShoppingController extends AbstractShoppingController
         log_info('お届け先削除処理開始', ['order_id' => $Order->getId(), 'shipping_id' => $Shipping->getId(), 'customer_address_id' => $ca_id]);
 
         $this->customerAddressRepository->delete($CustomerAddress);
+
+        $event = new EventArgs(
+            [
+                'Order' => $Order,
+                'Shipping' => $Shipping,
+                'Customer' => $Customer,
+                'CustomerAddress' => $CustomerAddress,
+            ],
+            $request
+        );
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_SHOPPING_SHIPPING_CUSTOMER_ADDRESS_DELETE_COMPLETE);
 
         // 会員情報変更時にメールを送信
         if ($this->baseInfoRepository->get()->isOptionMailNotifier()) {
