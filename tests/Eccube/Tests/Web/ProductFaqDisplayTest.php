@@ -17,6 +17,7 @@ namespace Eccube\Tests\Web;
 
 use Eccube\Entity\Faq;
 use Eccube\Entity\Product;
+use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -60,7 +61,7 @@ final class ProductFaqDisplayTest extends AbstractWebTestCase
 
         // FAQPage の JSON-LD が出力され、表示分のみ含む
         $jsonLdList = $crawler->filter('script[type="application/ld+json"]')->each(
-            static fn ($node): string => $node->text()
+            static fn (Crawler $node): string => $node->text()
         );
         $faqPageJsonLd = array_values(array_filter(
             $jsonLdList,
@@ -84,7 +85,7 @@ final class ProductFaqDisplayTest extends AbstractWebTestCase
         $this->assertCount(0, $crawler->filter('.ec-faqRole'));
 
         $jsonLdList = $crawler->filter('script[type="application/ld+json"]')->each(
-            static fn ($node): string => $node->text()
+            static fn (Crawler $node): string => $node->text()
         );
         $faqPageJsonLd = array_filter($jsonLdList, static fn (string $json): bool => str_contains($json, 'FAQPage'));
         $this->assertCount(0, $faqPageJsonLd);

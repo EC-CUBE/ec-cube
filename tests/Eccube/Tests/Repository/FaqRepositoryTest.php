@@ -70,6 +70,20 @@ final class FaqRepositoryTest extends EccubeTestCase
         $this->assertSame(['common-a', 'common-b'], $questions);
     }
 
+    public function testGetCommonFaqRespectsLimit(): void
+    {
+        $this->createFaq('limit-1', 1);
+        $this->createFaq('limit-2', 2);
+        $this->createFaq('limit-3', 3);
+
+        // 上限を指定すると、その件数までに制限される（残留データがあっても超えない）。
+        $this->assertCount(1, $this->faqRepository->getCommonFaq(1));
+        $this->assertCount(2, $this->faqRepository->getCommonFaq(2));
+
+        // 上限なしなら作成した3件以上が返る。
+        $this->assertGreaterThanOrEqual(3, count($this->faqRepository->getCommonFaq()));
+    }
+
     public function testGetProductFaq(): void
     {
         $Product = $this->createProduct();

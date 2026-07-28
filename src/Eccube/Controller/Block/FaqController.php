@@ -36,7 +36,7 @@ class FaqController extends AbstractController
     #[Template(template: 'Block/faq.twig')]
     public function index(): array
     {
-        $Faqs = $this->faqRepository->getCommonFaq();
+        $Faqs = $this->faqRepository->getCommonFaq($this->eccubeConfig['eccube_max_number_faq_get']);
 
         return [
             'Faqs' => $Faqs,

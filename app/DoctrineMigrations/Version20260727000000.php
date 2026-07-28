@@ -43,6 +43,11 @@ final class Version20260727000000 extends AbstractMigration
     #[\Override]
     public function down(Schema $schema): void
     {
+        // テーブルが存在しない場合終了
+        if (!$schema->hasTable(self::NAME)) {
+            return;
+        }
+
         $this->addSql("DELETE FROM dtb_block WHERE file_name = 'faq'");
     }
 }

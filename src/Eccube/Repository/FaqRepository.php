@@ -67,18 +67,24 @@ class FaqRepository extends AbstractRepository
     /**
      * フロント表示用のサイト共通FAQ（表示のみ・並び順）を返す.
      *
+     * サイト共通FAQは全ページに配置され得るため、$limit で取得件数の上限を設ける。
+     *
      * @return Faq[]
      */
-    public function getCommonFaq(): array
+    public function getCommonFaq(?int $limit = null): array
     {
-        return $this->createQueryBuilder('f')
+        $qb = $this->createQueryBuilder('f')
             ->where('f.Product IS NULL')
             ->andWhere('f.Category IS NULL')
             ->andWhere('f.visible = true')
             ->orderBy('f.sort_no', 'ASC')
-            ->addOrderBy('f.id', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->addOrderBy('f.id', 'ASC');
+
+        if ($limit !== null) {
+            $qb->setMaxResults($limit);
+        }
+
+        return $qb->getQuery()->getResult();
     }
 
     /**
