@@ -24,7 +24,7 @@ use Eccube\Entity\Master\RefundRequestStatus;
  *
  * - mtb_refund_request_status（返品申請ステータス・マスタ）
  * - dtb_mail_template（管理者向け返品申請通知メール / id=10）
- * - dtb_csv（商品CSV出力項目 refund_allowed / id=215）
+ * - dtb_csv（商品CSV出力項目 refund_allowed / id=217）
  *
  * テーブル自体は Entity 属性＋schema:update で反映されるため、ここでは INSERT のみを扱う。
  */
@@ -73,13 +73,13 @@ final class Version20260615000000 extends AbstractMigration
 
         // dtb_csv（商品CSV出力項目 refund_allowed）
         $csvExists = $this->connection->fetchOne(
-            'SELECT COUNT(*) FROM dtb_csv WHERE id = 215'
+            'SELECT COUNT(*) FROM dtb_csv WHERE id = 217'
         );
         if ($csvExists == 0) {
             $dispName = $lang === 'en' ? 'Refund Allowed Flag' : '返品許可フラグ';
             $this->addSql(
                 'INSERT INTO dtb_csv (id, csv_type_id, creator_id, entity_name, field_name, reference_field_name, disp_name, sort_no, enabled, create_date, update_date, discriminator_type) '
-                ."VALUES (215, 1, null, 'Eccube\\Entity\\Product', 'refund_allowed', null, ?, 33, false, '2017-03-07 10:14:00', '2017-03-07 10:14:00', 'csv')",
+                ."VALUES (217, 1, null, 'Eccube\\Entity\\Product', 'refund_allowed', null, ?, 33, false, '2017-03-07 10:14:00', '2017-03-07 10:14:00', 'csv')",
                 [$dispName]
             );
         }
@@ -87,7 +87,7 @@ final class Version20260615000000 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $this->addSql("DELETE FROM dtb_csv WHERE id = 215 AND entity_name = 'Eccube\\\\Entity\\\\Product' AND field_name = 'refund_allowed'");
+        $this->addSql("DELETE FROM dtb_csv WHERE id = 217 AND entity_name = 'Eccube\\\\Entity\\\\Product' AND field_name = 'refund_allowed'");
         $this->addSql("DELETE FROM dtb_mail_template WHERE id = 10 AND file_name = 'Mail/refund_request_notify.twig'");
         $this->addSql("DELETE FROM mtb_refund_request_status WHERE id IN (1, 2, 3, 4, 5) AND discriminator_type = 'refundrequeststatus'");
     }
