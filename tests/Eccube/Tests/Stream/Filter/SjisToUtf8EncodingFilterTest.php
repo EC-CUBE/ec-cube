@@ -38,7 +38,7 @@ final class SjisToUtf8EncodingFilterTest extends TestCase
         $utf8Value = 'あ,い,う';
         $sjisValue = $this->getSjisValue($utf8Value);
         $resource = $this->createReadableResource($sjisValue);
-        $this->assertSame(['あ', 'い', 'う'], \fgetcsv($resource));
+        $this->assertSame(['あ', 'い', 'う'], \fgetcsv($resource, escape: '\\'));
     }
 
     #[Test]
@@ -51,7 +51,7 @@ final class SjisToUtf8EncodingFilterTest extends TestCase
         // SJIS string will be separated into 5 chunks like following:
         //  1 2 3 4 5   1 2 3 4 5   1 2 3 4 5   1 2 3 4 5   1 2 3 4 5
         // [k a k i k] [u k e k o] [, s a s i] [s u s e s] [o        ]
-        $this->assertSame(['かきくけこ', 'さしすせそ'], \fgetcsv($resource));
+        $this->assertSame(['かきくけこ', 'さしすせそ'], \fgetcsv($resource, escape: '\\'));
     }
 
     #[Test]
@@ -61,7 +61,10 @@ final class SjisToUtf8EncodingFilterTest extends TestCase
         $sjisValue = $this->getSjisValue($utf8Value);
         $this->assertSame('22 95 5c 22 ', \chunk_split(\bin2hex($sjisValue), 2, ' '));
         $resource = $this->createReadableResource($sjisValue);
-        $this->assertSame(['表'], \fgetcsv($resource));
+        // $escape は現行の既定値 '\\' を明示する（PHP 8.4 で明示指定が必須）。
+        // このテストは SJIS の 2 バイト目 0x5c を escape 文字として誤認しないことの確認なので、
+        // 既定値を変えずに明示することが重要
+        $this->assertSame(['表'], \fgetcsv($resource, escape: '\\'));
     }
 
     #[Test]
@@ -76,7 +79,7 @@ final class SjisToUtf8EncodingFilterTest extends TestCase
         // 82 a0 / 20   82 / a0 20 / 82 a0 / 20   82 / a0 20 (chunked data)
         //       /      82 /       /       /      82 /       (buffered content)
         // 82 a0 / 20 / 82   a0 20 / 82 a0 / 20 / 82 a0 20   (encoding unit)
-        $this->assertSame([$utf8Value], \fgetcsv($resource));
+        $this->assertSame([$utf8Value], \fgetcsv($resource, escape: '\\'));
     }
 
     private function getSjisValue(string $utf8Value): string
