@@ -18,7 +18,15 @@ updates:
       prefix-development: "chore(deps-dev)"
     allow:
       - dependency-type: "all"
-    # グループは上から順に評価され、依存は最初にマッチした 1 つのグループにだけ入る。
+    # 所属グループは記載順ではなくパターンの具体性 (specificity) スコアで決まる。
+    # dependabot-core の PatternSpecificityCalculator が算出し、スコアが高い方が勝つ。
+    #   patterns 未指定 = 500 / "doctrine/*" = 95 / "symfony/*" = 94 / "*" = 1
+    # このため require-dev の symfony/* (browser-kit, phpunit-bridge) は symfony ではなく
+    # php-dev-tools に入る。phpunit-bridge は Symfony 本体とバージョン系列が揃わない
+    # (本体 7.4 系に対し 8.x) ため、これは意図した挙動。
+    # なお GitHub のドキュメントは "first group it matches" と記述しているが、
+    # 実装は 2026-05-19 に specificity 判定が常時有効化されており乖離している。
+    # https://github.com/dependabot/dependabot-core/issues/14576
     # どのグループにもマッチしない更新 (= major) は、従来どおり個別の PR になる。
     groups:
       # require-dev。CI が通れば実質そのままマージできる
@@ -32,7 +40,8 @@ updates:
       doctrine:
         patterns: [ "doctrine/*" ]
         update-types: [ "minor", "patch" ]
-      # 上記以外の production。exclude-patterns は評価順に依存しないための保険
+      # 上記以外。patterns が "*" (スコア 1) のため symfony/doctrine には競り負けるが、
+      # exclude-patterns で contains? の時点から明示的に外しておく
       php-production:
         patterns: [ "*" ]
         exclude-patterns: [ "symfony/*", "doctrine/*" ]
