@@ -6,7 +6,7 @@ description: EC-CUBE 4.4 の PHPUnit テストを実装・修正するときの�
 # PHPUnit テスト規約（EC-CUBE 4.4）
 
 **対象**: `tests/Eccube/Tests/**/*Test.php`
-**前提**: PHPUnit 11（`symfony/phpunit-bridge` 経由）/ PHP 8.2+ / Symfony 7.4
+**前提**: PHPUnit 11（`vendor/bin/phpunit` を直接実行）/ PHP 8.2+ / Symfony 7.4
 
 ## 基本ルール
 
@@ -111,16 +111,19 @@ public static function provideStatuses(): array
 - ❌ 支払方法のデフォルト/再選択テストで `find(1)` 等の ID 前提 → ✅ `Generator::createPayment()` で sort_no・利用条件を明示し `assertSame()` で再選択先を固定（フィクスチャ並び変更で偽陽性になり得る）。
 - ❌ ステータス値のハードコーディング（`if ($status == 1)`）→ ✅ 定数（例: `OrderStatus::NEW`）を使う。
 - ❌ 型宣言の省略 → ✅ 引数・戻り値に型を付け、PHPStan level 6 を通す。
+- ❌ `setUp()` で未宣言のプロパティに代入（`$this->Member = ...`）→ ✅ プロパティを必ず宣言する。PHP 8.2 の動的プロパティ deprecation が `failOnDeprecation`（`phpunit.xml.dist`）で CI red になる。
+- ❌ テストのプロパティを非 nullable で宣言（`protected array $Items = [];`）→ ✅ `protected ?array $Items = null;` と nullable にする。`EccubeTestCase::cleanUpProperties()` が tearDown で全プロパティに `null` を代入するため、非 nullable だと `TypeError` で全テストが落ちる（初期値が必要なら `setUp()` で代入する）。
+- ❌ HTML パートを持たないメールに `assertEmailHtmlBodyNotContains()` → ✅ `assertNull($Message->getHtmlBody())`。前者は `str_contains(null, …)` の deprecation を出し、かつ「HTML パートが無いので必ず通る」空振りアサーションになる。
 
 ## 実行方法
 
 ```bash
 # 全テスト
-bin/phpunit
+vendor/bin/phpunit
 
 # 単一ファイル
-bin/phpunit tests/Eccube/Tests/Web/ProductControllerTest.php
+vendor/bin/phpunit tests/Eccube/Tests/Web/ProductControllerTest.php
 
 # フィルタ
-bin/phpunit --filter testRouting
+vendor/bin/phpunit --filter testRouting
 ```
