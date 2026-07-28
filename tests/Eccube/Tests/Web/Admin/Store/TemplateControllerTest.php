@@ -120,9 +120,8 @@ final class TemplateControllerTest extends AbstractAdminWebTestCase
      *
      * Docker などでプロセス環境変数として ECCUBE_TEMPLATE_CODE が設定されている場合、
      * .env への書き込みは反映されないため警告が表示されることを確認する。
-     *
-     * @group cache-clear
      */
+    #[Group(name: 'cache-clear')]
     public function testChangeTemplateWithEnvOverride()
     {
         // テンプレートをアップロード
