@@ -1,4 +1,5 @@
 import { test as base, expect } from '@playwright/test';
+import { ADMIN_ROUTE } from '../config/default.config';
 import { createDbClient, DbClient } from '../helpers/db-client';
 import { compressPlugin, emptyDir } from '../helpers/tar-helper';
 import path from 'path';
@@ -33,7 +34,7 @@ export const test = base.extend<PluginFixtures>({
   config: async ({}, use) => {
     const config: PluginTestConfig = {
       projectDir: process.env.ECCUBE_PROJECT_DIR || path.resolve(__dirname, '..', '..'),
-      adminRoute: process.env.ECCUBE_ADMIN_ROUTE || 'admin',
+      adminRoute: ADMIN_ROUTE,
       reposDir: process.env.REPOS_DIR || path.resolve(__dirname, '..', '..', 'repos'),
       pluginDataDir: process.env.PLUGIN_DATA_DIR || path.resolve(__dirname, '..', '..', 'codeception', '_data', 'plugins'),
     };

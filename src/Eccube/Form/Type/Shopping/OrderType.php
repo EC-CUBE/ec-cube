@@ -14,6 +14,7 @@
 namespace Eccube\Form\Type\Shopping;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Eccube\Entity\Customer;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\Order;
 use Eccube\Entity\Payment;
@@ -24,6 +25,7 @@ use Eccube\Repository\PaymentRepository;
 use Eccube\Request\Context;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -54,6 +56,17 @@ class OrderType extends AbstractType
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        // 配送方法・支払い方法の保存チェックボックス(会員のみ).
+        // 注文確認画面からの送信(checkout)時にも値を受け取るため, skip_add_formの判定より前に定義する.
+        // 表示は単一配送先のみ(テンプレート側で制御), 複数配送先時の送信値は注文確定処理で無視される.
+        if ($this->requestContext->getCurrentUser() instanceof Customer) {
+            $builder->add('save_preferred_shipping_payment', CheckboxType::class, [
+                'label' => 'front.shopping.save_preferred_shipping_payment',
+                'required' => false,
+                'mapped' => false,
+            ]);
+        }
+
         // ShoppingController::checkoutから呼ばれる場合は, フォーム項目の定義をスキップする.
         if ($options['skip_add_form']) {
             return;

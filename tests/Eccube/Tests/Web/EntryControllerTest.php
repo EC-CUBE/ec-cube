@@ -35,7 +35,7 @@ final class EntryControllerTest extends AbstractWebTestCase
     {
         $faker = $this->getFaker();
         $email = $faker->safeEmail;
-        $password = $faker->lexify('????????????').'a1';
+        $password = $faker->lexify('?????????????').'a1';
         $birth = $faker->dateTimeBetween;
 
         return [

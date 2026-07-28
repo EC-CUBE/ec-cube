@@ -31,6 +31,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
+        with:
+          persist-credentials: false
 
       ## Docker Hub からの pull はタイムアウトで CI が不安定になるため、
       ## DB はコンテナではなく setup アクション (apt) でインストールする
@@ -60,7 +62,7 @@ jobs:
           php -m | grep -i redis
 
       - name: setup-chromedriver
-        uses: nanasess/setup-chromedriver@1bb5094b84e4b4809967f1544187c57220f8e2d5  # master
+        uses: nanasess/setup-chromedriver@d702ce40645b0ecd44b4cd52f6ff52174f299f03  # master
 
       - name: "VAddy: install"
         working-directory: /tmp
@@ -145,7 +147,7 @@ jobs:
         run: docker build -t ec-cube --build-arg SKIP_INSTALL_SCRIPT_ON_DOCKER_BUILD=true .
       - name: "Codeception: prepare"
         run: |
-          echo "APP_ENV=codeception" > .env
+          echo "APP_ENV=e2e" > .env
           export DISPLAY=:99
           chromedriver --url-base=/wd/hub --port=9515 &
           echo ">>> Started chrome-driver"
@@ -195,7 +197,7 @@ jobs:
 
       - name: "VAddy: crawl"
         env:
-          APP_ENV: "codeception"
+          APP_ENV: "e2e"
           DATABASE_URL: "postgres://postgres:password@127.0.0.1:5432/eccube_db"
           DATABASE_SERVER_VERSION: "18"
           MAILER_URL: "smtp://127.0.0.1:1025"
@@ -262,7 +264,7 @@ jobs:
       - name: "VAddy: crawl"
         if: ${{ matrix.command2 != '' && success() }}
         env:
-          APP_ENV: "codeception"
+          APP_ENV: "e2e"
           DATABASE_URL: "postgres://postgres:password@127.0.0.1:5432/eccube_db"
           DATABASE_SERVER_VERSION: "18"
           MAILER_URL: "smtp://127.0.0.1:1025"
@@ -331,7 +333,7 @@ jobs:
       - name: "VAddy: crawl"
         if: ${{ matrix.command3 != '' && success() }}
         env:
-          APP_ENV: "codeception"
+          APP_ENV: "e2e"
           DATABASE_URL: "postgres://postgres:password@127.0.0.1:5432/eccube_db"
           DATABASE_SERVER_VERSION: "18"
           MAILER_URL: "smtp://127.0.0.1:1025"
@@ -400,7 +402,7 @@ jobs:
       - name: "VAddy: crawl"
         if: ${{ matrix.command4 != '' && success() }}
         env:
-          APP_ENV: "codeception"
+          APP_ENV: "e2e"
           DATABASE_URL: "postgres://postgres:password@127.0.0.1:5432/eccube_db"
           DATABASE_SERVER_VERSION: "18"
           MAILER_URL: "smtp://127.0.0.1:1025"
@@ -469,7 +471,7 @@ jobs:
       - name: "VAddy: crawl"
         if: ${{ matrix.command5 != '' && success() }}
         env:
-          APP_ENV: "codeception"
+          APP_ENV: "e2e"
           DATABASE_URL: "postgres://postgres:password@127.0.0.1:5432/eccube_db"
           DATABASE_SERVER_VERSION: "18"
           MAILER_URL: "smtp://127.0.0.1:1025"

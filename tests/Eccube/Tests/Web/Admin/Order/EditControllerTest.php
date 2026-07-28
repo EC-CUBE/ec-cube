@@ -15,7 +15,6 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Web\Admin\Order;
 
-use Eccube\Common\Constant;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Delivery;
@@ -31,7 +30,6 @@ use Eccube\Entity\ProductClass;
 use Eccube\Entity\TaxRule;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\OrderRepository;
-use Eccube\Service\CartService;
 use Eccube\Service\TaxRuleService;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
@@ -45,8 +43,6 @@ final class EditControllerTest extends AbstractEditControllerTestCase
 
     protected ?Product $Product = null;
 
-    protected ?CartService $cartService = null;
-
     protected ?OrderRepository $orderRepository = null;
 
     protected ?CustomerRepository $customerRepository = null;
@@ -58,7 +54,6 @@ final class EditControllerTest extends AbstractEditControllerTestCase
         $this->Product = $this->createProduct();
         $this->customerRepository = $this->entityManager->getRepository(Customer::class);
         $this->orderRepository = $this->entityManager->getRepository(Order::class);
-        $this->cartService = static::getContainer()->get(CartService::class);
         $BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
         $this->entityManager->flush($BaseInfo);
     }
@@ -334,11 +329,14 @@ final class EditControllerTest extends AbstractEditControllerTestCase
     }
 
     /**
-     * 管理画面から購入処理中で受注登録し, フロントを参照するテスト
+     * 管理画面から購入処理中(PROCESSING)で受注登録できるテスト.
+     *
+     * 元々は #1452 の確認としてフロントの購入確認画面までを検証していたが,
+     * その部分は廃止された CartService::lock() に依存していたため削除した.
      *
      * @see https://github.com/EC-CUBE/ec-cube/issues/1452
      */
-    public function testOrderProcessingToFrontConfirm()
+    public function testOrderProcessingRegister()
     {
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
@@ -357,77 +355,9 @@ final class EditControllerTest extends AbstractEditControllerTestCase
 
         $EditedOrder = $this->orderRepository->find($Order->getId());
         $this->expected = $formData['OrderStatus'];
+        $this->assertInstanceOf(Order::class, $EditedOrder);
         $this->actual = $EditedOrder->getOrderStatus()->getId();
         $this->verify();
-
-        $this->markTestIncomplete('フロントとのセッション管理の実装が完了するまでスキップ');
-        // フロント側から, product_class_id = 1 をカート投入
-        $client = $this->client;
-        $client->request(
-            Request::METHOD_PUT,
-            $this->generateUrl(
-                'cart_handle_item',
-                [
-                    'operation' => 'up',
-                    'productClassId' => 1,
-                ]
-            ),
-            [Constant::TOKEN_NAME => '_dummy']
-        );
-
-        $faker = $this->getFaker();
-        $email = $faker->safeEmail;
-
-        $clientFormData = [
-            'name' => [
-                'name01' => $faker->lastName,
-                'name02' => $faker->firstName,
-            ],
-            'kana' => [
-                'kana01' => $faker->lastKanaName,
-                'kana02' => $faker->firstKanaName,
-            ],
-            'company_name' => $faker->company,
-            'postal_code' => $faker->postcode,
-            'address' => [
-                'pref' => '5',
-                'addr01' => $faker->city,
-                'addr02' => $faker->streetAddress,
-            ],
-            'phone_number' => $faker->phoneNumber,
-            'email' => [
-                'first' => $email,
-                'second' => $email,
-            ],
-            '_token' => 'dummy',
-        ];
-
-        $client->request(
-            Request::METHOD_POST,
-            $this->generateUrl('shopping_nonmember'),
-            ['nonmember' => $clientFormData]
-        );
-        $this->cartService->lock();
-
-        $crawler = $client->request(Request::METHOD_GET, $this->generateUrl('shopping'));
-        $this->expected = 'ご注文内容のご確認';
-        $this->actual = $crawler->filter('h1.page-heading')->text();
-        $this->verify();
-
-        $this->assertTrue($client->getResponse()->isSuccessful());
-
-        $this->expected = 'ディナーフォーク';
-        $this->actual = $crawler->filter('dt.item_name')->last()->text();
-
-        $OrderItems = $EditedOrder->getOrderItems();
-        foreach ($OrderItems as $OrderItem) {
-            if (is_object($OrderItem->getProduct())
-                && $this->actual == $OrderItem->getProduct()->getName()) {
-                $this->fail('#1452 の不具合');
-            }
-        }
-
-        $this->verify('カートに投入した商品が表示される');
     }
 
     /**
@@ -747,5 +677,50 @@ final class EditControllerTest extends AbstractEditControllerTestCase
         );
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
+    /**
+     * 二重送信・多重編集による受注明細の破損を防止するテスト.
+     *
+     * フォーム描画時点の更新日時と現在の更新日時が異なる場合は, 既に別の操作で
+     * 更新済みと判断し, 登録処理を中断する.
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/6671
+     */
+    public function testOrderEditRejectedWhenUpdateDateIsStale()
+    {
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+        $Order->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
+        $this->entityManager->flush();
+
+        $url = $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]);
+        $formData = $this->createFormData($Customer, $this->Product);
+
+        // 描画時点の更新日時が一致していれば登録できる.
+        $EditedOrder = $this->orderRepository->find($Order->getId());
+        $this->assertInstanceOf(Order::class, $EditedOrder);
+        $formData['form_update_date'] = $EditedOrder->getUpdateDate()->format('Y-m-d H:i:s');
+        $this->client->request(
+            Request::METHOD_POST, $url, ['order' => $formData, 'mode' => 'register']
+        );
+        $this->assertTrue(
+            $this->client->getResponse()->isRedirect($url),
+            '更新日時が一致する場合は登録できる'
+        );
+
+        // 描画時点の更新日時が古い(＝別の操作で更新済み)場合は登録を中断する.
+        $formData['form_update_date'] = '2000-01-01 00:00:00';
+        $this->client->request(
+            Request::METHOD_POST, $url, ['order' => $formData, 'mode' => 'register']
+        );
+        $this->assertFalse(
+            $this->client->getResponse()->isRedirect(),
+            '更新日時が古い場合は登録されない'
+        );
+        $this->assertStringContainsString(
+            '別の操作で更新',
+            (string) $this->client->getResponse()->getContent()
+        );
     }
 }

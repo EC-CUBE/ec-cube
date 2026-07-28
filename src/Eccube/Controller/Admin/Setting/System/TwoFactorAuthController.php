@@ -102,7 +102,7 @@ class TwoFactorAuthController extends AbstractController
     /**
      * @return RedirectResponse|array<string, mixed>
      */
-    #[Route(path: '/%eccube_admin_route%/setting/system/two_factor_auth/edit', name: 'admin_setting_system_two_factor_auth_edit', methods: ['GET', 'POST'])]
+    #[Route(path: '/%eccube_admin_route%/two_factor_auth/edit', name: 'admin_setting_system_two_factor_auth_edit', methods: ['GET', 'POST'])]
     #[Template(template: '@admin/Setting/System/two_factor_auth_edit.twig')]
     public function edit(Request $request): RedirectResponse|array
     {

@@ -241,6 +241,47 @@ final class OrderTest extends EccubeTestCase
         $this->assertSame('65261', $Order->getTaxByTaxRate()['10'], '10%対象値引き後消費税額');
     }
 
+    /**
+     * RoundingType 未設定の課税明細があっても致命的エラーにならないこと.
+     *
+     * 通常は PurchaseFlow の TaxProcessor が必ず設定するが, 明細を直接組み立てた場合は
+     * null になり得る. getTaxByTaxRate() は元から null を読み飛ばすため, 両者で
+     * 集計対象の税率がずれると OrderPdfService が getTaxByTaxRate()[$rate] で
+     * 未定義キーを引く. 税率キーの集合が一致することを検証する.
+     */
+    #[Group(name: 'decimal')]
+    public function testGetTotalByTaxRateWithoutRoundingType()
+    {
+        $Order = $this->createTestOrder();
+
+        $Taxation = $this->entityManager->find(TaxType::class, TaxType::TAXATION);
+        $this->assertInstanceOf(TaxType::class, $Taxation);
+        $ProductItem = $this->entityManager->find(OrderItemType::class, OrderItemType::PRODUCT);
+        $this->assertInstanceOf(OrderItemType::class, $ProductItem);
+        $TaxExcluded = $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::EXCLUDED);
+        $this->assertInstanceOf(TaxDisplayType::class, $TaxExcluded);
+
+        // RoundingType を設定しない課税明細を追加する
+        $OrderItem = new OrderItem();
+        $OrderItem->setTaxType($Taxation);
+        $OrderItem->setTaxRate('20');
+        $OrderItem->setPrice('1000');
+        $OrderItem->setTax('200');
+        $OrderItem->setQuantity('1');
+        $OrderItem->setOrderItemType($ProductItem);
+        $OrderItem->setTaxDisplayType($TaxExcluded);
+        $Order->addOrderItem($OrderItem);
+
+        $total = $Order->getTotalByTaxRate();
+
+        $this->assertArrayNotHasKey('20', $total, 'RoundingType 未設定の税率は集計対象外');
+        $this->assertSame(
+            array_keys($Order->getTaxByTaxRate()),
+            array_keys($total),
+            'getTotalByTaxRate と getTaxByTaxRate の税率が一致すること'
+        );
+    }
+
     protected function createTestOrder()
     {
         $Taxation = $this->entityManager->find(TaxType::class, TaxType::TAXATION);

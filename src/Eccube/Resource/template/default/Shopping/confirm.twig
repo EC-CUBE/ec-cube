@@ -221,6 +221,16 @@ file that was distributed with this source code.
                     </dl>
                 </div>
                 {% endif %}
+                {# 配送方法・支払い方法の保存チェックボックス(会員かつ単一配送先のみ) #}
+                {% if form.save_preferred_shipping_payment is defined and (isMultipleShipping is not defined or not isMultipleShipping) %}
+                <div class="ec-totalBox__preferred">
+                    <div class="ec-checkbox">
+                        {{ form_widget(form.save_preferred_shipping_payment) }}
+                        {{ form_label(form.save_preferred_shipping_payment) }}
+                        <p>{{ 'front.shopping.save_preferred_shipping_payment_help'|trans }}</p>
+                    </div>
+                </div>
+                {% endif %}
                 <div class="ec-totalBox__btn">
                     <button type="submit" class="ec-blockBtn--action">{{ 'front.shopping.checkout'|trans }}</button>
                     <a href="{{ url('shopping') }}" class="ec-blockBtn--cancel">{{ 'front.shopping.back_to_order'|trans }}</a>
