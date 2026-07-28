@@ -441,22 +441,6 @@ file that was distributed with this source code.
                  {{ include(template_from_string(Product.freearea), sandboxed = true) }}
             </div>
         {% endif %}
-        {% if Faqs is defined and Faqs is not empty %}
-            <div class="ec-role ec-faqRole">
-                <div class="ec-secHeading">
-                    <span class="ec-secHeading__en">{{ 'front.block.faq.title__en'|trans }}</span>
-                    <span class="ec-secHeading__line"></span>
-                    <span class="ec-secHeading__ja">{{ 'front.block.faq.title__ja'|trans }}</span>
-                </div>
-                <div class="ec-faqRole__list">
-                    {% for Faq in Faqs %}
-                        <dl class="ec-faqRole__item">
-                            <dt class="ec-faqRole__question">{{ Faq.question }}</dt>
-                            <dd class="ec-faqRole__answer">{{ Faq.answer|purify|nl2br }}</dd>
-                        </dl>
-                    {% endfor %}
-                </div>
-            </div>
-        {% endif %}
+        {% include '_faq_list.twig' with {'Faqs': Faqs|default([])} only %}
     </div>
 {% endblock %}
