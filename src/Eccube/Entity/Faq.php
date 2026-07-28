@@ -76,17 +76,11 @@ class Faq extends AbstractEntity implements \Stringable
     #[ORM\Column(name: 'visible', type: Types::BOOLEAN, options: ['default' => true])]
     private bool $visible = true;
 
-    /**
-     * @var \DateTime
-     */
     #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
-    private $create_date;
+    private ?\DateTime $create_date = null;
 
-    /**
-     * @var \DateTime
-     */
     #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
-    private $update_date;
+    private ?\DateTime $update_date = null;
 
     #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'Faqs')]
     #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
@@ -177,15 +171,16 @@ class Faq extends AbstractEntity implements \Stringable
         return $this->update_date;
     }
 
+    /**
+     * 商品ごとFAQ の紐付け先を設定する.
+     *
+     * Product と Category が同時に設定されることは想定しない（管理画面には両方を設定する経路が無く、
+     * それぞれ Product::addFaq() / Category::addFaq() の一方だけを通る）。
+     * 区分の導出は getFaqType() に集約している。
+     */
     public function setProduct(?Product $product = null): self
     {
         $this->Product = $product;
-
-        // 区分は Product / Category の設定状態から排他的に導出するため、
-        // 一方を設定したらもう一方の関連は解除する。
-        if ($product !== null) {
-            $this->Category = null;
-        }
 
         return $this;
     }
@@ -195,13 +190,14 @@ class Faq extends AbstractEntity implements \Stringable
         return $this->Product;
     }
 
+    /**
+     * カテゴリごとFAQ の紐付け先を設定する.
+     *
+     * Product との同時設定を想定しない点は setProduct() と同じ。
+     */
     public function setCategory(?Category $category = null): self
     {
         $this->Category = $category;
-
-        if ($category !== null) {
-            $this->Product = null;
-        }
 
         return $this;
     }

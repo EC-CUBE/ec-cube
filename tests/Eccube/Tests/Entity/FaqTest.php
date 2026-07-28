@@ -20,30 +20,12 @@ use Eccube\Entity\Faq;
 use Eccube\Entity\Product;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * FAQ の区分（サイト共通 / 商品ごと / カテゴリごと）が
+ * Product・Category の設定状態から導出されることを検証する。
+ */
 final class FaqTest extends TestCase
 {
-    public function testSetProductClearsCategory(): void
-    {
-        $Faq = new Faq();
-        $Faq->setCategory(new Category());
-        $Faq->setProduct(new Product());
-
-        $this->assertInstanceOf(Product::class, $Faq->getProduct());
-        $this->assertNotInstanceOf(Category::class, $Faq->getCategory());
-        $this->assertSame(Faq::FAQ_TYPE_PRODUCT, $Faq->getFaqType());
-    }
-
-    public function testSetCategoryClearsProduct(): void
-    {
-        $Faq = new Faq();
-        $Faq->setProduct(new Product());
-        $Faq->setCategory(new Category());
-
-        $this->assertInstanceOf(Category::class, $Faq->getCategory());
-        $this->assertNotInstanceOf(Product::class, $Faq->getProduct());
-        $this->assertSame(Faq::FAQ_TYPE_CATEGORY, $Faq->getFaqType());
-    }
-
     public function testFaqTypeIsCommonWhenNeitherSet(): void
     {
         $Faq = new Faq();
@@ -51,5 +33,25 @@ final class FaqTest extends TestCase
         $this->assertNotInstanceOf(Product::class, $Faq->getProduct());
         $this->assertNotInstanceOf(Category::class, $Faq->getCategory());
         $this->assertSame(Faq::FAQ_TYPE_COMMON, $Faq->getFaqType());
+    }
+
+    public function testFaqTypeIsProductWhenProductSet(): void
+    {
+        $Faq = new Faq();
+        $Faq->setProduct(new Product());
+
+        $this->assertInstanceOf(Product::class, $Faq->getProduct());
+        $this->assertNotInstanceOf(Category::class, $Faq->getCategory());
+        $this->assertSame(Faq::FAQ_TYPE_PRODUCT, $Faq->getFaqType());
+    }
+
+    public function testFaqTypeIsCategoryWhenCategorySet(): void
+    {
+        $Faq = new Faq();
+        $Faq->setCategory(new Category());
+
+        $this->assertInstanceOf(Category::class, $Faq->getCategory());
+        $this->assertNotInstanceOf(Product::class, $Faq->getProduct());
+        $this->assertSame(Faq::FAQ_TYPE_CATEGORY, $Faq->getFaqType());
     }
 }
