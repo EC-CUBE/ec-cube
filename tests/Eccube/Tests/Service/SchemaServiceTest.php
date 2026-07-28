@@ -18,6 +18,7 @@ namespace Eccube\Tests\Service;
 use Doctrine\Bundle\DoctrineBundle\Mapping\MappingDriver as BundleMappingDriver;
 use Doctrine\Persistence\Mapping\Driver\MappingDriverChain;
 use Eccube\Doctrine\ORM\Mapping\Driver\ReloadSafeAttributeDriver;
+use Eccube\Entity\Product;
 use Eccube\Service\PluginContext;
 use Eccube\Service\SchemaService;
 use Eccube\Tests\EccubeTestCase;
@@ -64,5 +65,45 @@ final class SchemaServiceTest extends EccubeTestCase
             .' プラグインの #[EntityExtension] トレイトによる Customize エンティティへの'
             .'カラム追加が、インストール/有効化時のスキーマ更新に反映されなくなる'
         );
+    }
+
+    /**
+     * 差し替え後のドライバは、Entity が 1 つも無い名前空間 (標準構成の app/Customize/Entity は
+     * 空ディレクトリ) でも getAllClassNames() で配列を返す必要がある.
+     *
+     * null を返すと MappingDriverChain::getAllClassNames() の foreach が
+     * "foreach() argument must be of type array|object, null given" となり,
+     * スキーマ更新を伴うプラグインのインストール・更新が全て失敗する.
+     */
+    public function testExecuteCallbackKeepsAllClassNamesResolvable(): void
+    {
+        $schemaService = new SchemaService(
+            $this->entityManager,
+            static::getContainer()->get(PluginContext::class)
+        );
+
+        $classNamesByNamespace = [];
+        $chainClassNames = null;
+        $schemaService->executeCallback(function () use (&$classNamesByNamespace, &$chainClassNames): void {
+            $driver = $this->entityManager->getConfiguration()->getMetadataDriverImpl();
+            if ($driver instanceof BundleMappingDriver) {
+                $driver = $driver->getDriver();
+            }
+            $this->assertInstanceOf(MappingDriverChain::class, $driver);
+            foreach ($driver->getDrivers() as $namespace => $eachDriver) {
+                $classNamesByNamespace[$namespace] = $eachDriver->getAllClassNames();
+            }
+            $chainClassNames = $driver->getAllClassNames();
+        }, [], static::getContainer()->getParameter('kernel.project_dir').'/app/proxy/entity');
+
+        foreach ($classNamesByNamespace as $namespace => $classNames) {
+            $this->assertIsArray(
+                $classNames,
+                sprintf('%s のドライバが getAllClassNames() で配列を返していない', $namespace)
+            );
+        }
+
+        $this->assertIsArray($chainClassNames);
+        $this->assertContains(Product::class, $chainClassNames);
     }
 }

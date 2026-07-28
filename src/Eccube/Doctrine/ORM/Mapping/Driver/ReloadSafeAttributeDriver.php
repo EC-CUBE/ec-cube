@@ -109,6 +109,11 @@ class ReloadSafeAttributeDriver extends TraitProxyAttributeDriver
             }
         }
 
+        // 対象ディレクトリに Entity が 1 つも無い場合 (例: 標準構成の app/Customize/Entity) でも
+        // null ではなく空配列を返す. MappingDriverChain::getAllClassNames() は戻り値を foreach するため,
+        // null を返すと "foreach() argument must be of type array|object, null given" になる.
+        $this->classNames ??= [];
+
         return $this->classNames;
     }
 
