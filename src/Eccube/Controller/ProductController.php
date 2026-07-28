@@ -163,7 +163,10 @@ class ProductController extends AbstractController
 
         $Category = $searchForm->get('category_id')->getData();
 
-        $categoryFaqs = $Category ? $this->faqRepository->getCategoryFaq($Category, $this->eccubeConfig['eccube_max_number_faq_get']) : [];
+        // カテゴリFAQ は1ページ目のみ表示する（全ページに出すと同じ FAQPage の構造化データが重複するため）
+        $categoryFaqs = $Category && $pagination->getCurrentPageNumber() === 1
+            ? $this->faqRepository->getCategoryFaq($Category, $this->eccubeConfig['eccube_max_number_faq_get'])
+            : [];
 
         return [
             'subtitle' => $this->getPageTitle($searchData),

@@ -15,13 +15,14 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Web;
 
+use Eccube\Entity\Category;
 use Eccube\Entity\Faq;
 use Eccube\Entity\Product;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * 商品詳細ページでの商品FAQ表示・FAQPage(JSON-LD)出力の確認.
+ * 商品詳細・商品一覧でのFAQ表示・FAQPage(JSON-LD)出力の確認.
  */
 final class ProductFaqDisplayTest extends AbstractWebTestCase
 {
@@ -37,6 +38,23 @@ final class ProductFaqDisplayTest extends AbstractWebTestCase
         $this->entityManager->flush();
 
         return $Faq;
+    }
+
+    /**
+     * ページ内の FAQPage な JSON-LD だけを抜き出す.
+     *
+     * @return list<string>
+     */
+    private function findFaqPageJsonLd(Crawler $crawler): array
+    {
+        $jsonLdList = $crawler->filter('script[type="application/ld+json"]')->each(
+            static fn (Crawler $node): string => $node->text()
+        );
+
+        return array_values(array_filter(
+            $jsonLdList,
+            static fn (string $json): bool => str_contains($json, 'FAQPage')
+        ));
     }
 
     public function testProductDetailShowsVisibleFaqAndFaqPageJsonLd(): void
@@ -60,13 +78,7 @@ final class ProductFaqDisplayTest extends AbstractWebTestCase
         $this->assertStringNotContainsString('非表示の回答テキスト', $faqHtml);
 
         // FAQPage の JSON-LD が出力され、表示分のみ含む
-        $jsonLdList = $crawler->filter('script[type="application/ld+json"]')->each(
-            static fn (Crawler $node): string => $node->text()
-        );
-        $faqPageJsonLd = array_values(array_filter(
-            $jsonLdList,
-            static fn (string $json): bool => str_contains($json, 'FAQPage')
-        ));
+        $faqPageJsonLd = $this->findFaqPageJsonLd($crawler);
         $this->assertCount(1, $faqPageJsonLd);
         $this->assertStringContainsString('表示される質問ですか', $faqPageJsonLd[0]);
         $this->assertStringNotContainsString('非表示の質問ですか', $faqPageJsonLd[0]);
@@ -83,11 +95,44 @@ final class ProductFaqDisplayTest extends AbstractWebTestCase
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         $this->assertCount(0, $crawler->filter('.ec-faqRole'));
+        $this->assertCount(0, $this->findFaqPageJsonLd($crawler));
+    }
 
-        $jsonLdList = $crawler->filter('script[type="application/ld+json"]')->each(
-            static fn (Crawler $node): string => $node->text()
+    /**
+     * カテゴリFAQ は商品一覧の1ページ目のみに出す（全ページに出すと FAQPage が重複するため）.
+     */
+    public function testCategoryFaqIsShownOnFirstPageOnly(): void
+    {
+        $Category = $this->entityManager->getRepository(Category::class)->findOneBy([]);
+        $this->assertInstanceOf(Category::class, $Category);
+
+        $Faq = new Faq();
+        $Faq->setQuestion('カテゴリFAQの質問ですか')
+            ->setAnswer('カテゴリFAQの回答テキスト')
+            ->setVisible(true)
+            ->setSortNo(1)
+            ->setCategory($Category);
+        $this->entityManager->persist($Faq);
+        $this->entityManager->flush();
+
+        // 1ページ目: 可視FAQ と FAQPage が出る
+        $crawler = $this->client->request(
+            Request::METHOD_GET,
+            $this->generateUrl('product_list', ['category_id' => $Category->getId()])
         );
-        $faqPageJsonLd = array_filter($jsonLdList, static fn (string $json): bool => str_contains($json, 'FAQPage'));
-        $this->assertCount(0, $faqPageJsonLd);
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertStringContainsString('カテゴリFAQの質問ですか', $crawler->filter('.ec-faqRole')->html());
+        $this->assertCount(1, $this->findFaqPageJsonLd($crawler));
+
+        // 2ページ目: 出ない
+        $crawler = $this->client->request(
+            Request::METHOD_GET,
+            $this->generateUrl('product_list', ['category_id' => $Category->getId(), 'pageno' => 2])
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertCount(0, $crawler->filter('.ec-faqRole'));
+        $this->assertCount(0, $this->findFaqPageJsonLd($crawler));
     }
 }
