@@ -181,6 +181,12 @@ class Faq extends AbstractEntity implements \Stringable
     {
         $this->Product = $product;
 
+        // 区分は Product / Category の設定状態から排他的に導出するため、
+        // 一方を設定したらもう一方の関連は解除する。
+        if ($product !== null) {
+            $this->Category = null;
+        }
+
         return $this;
     }
 
@@ -192,6 +198,10 @@ class Faq extends AbstractEntity implements \Stringable
     public function setCategory(?Category $category = null): self
     {
         $this->Category = $category;
+
+        if ($category !== null) {
+            $this->Product = null;
+        }
 
         return $this;
     }
