@@ -27,6 +27,7 @@ use Eccube\Entity\Order;
 use Eccube\Entity\Payment;
 use Eccube\Entity\PaymentOption;
 use Eccube\Entity\ProductClass;
+use Eccube\Entity\Shipping;
 use Eccube\Entity\TradeLaw;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\PaymentRepository;
@@ -535,6 +536,80 @@ final class ShoppingControllerTest extends AbstractShoppingControllerTestCase
     }
 
     /**
+     * 適用中のお届け先住所を編集した場合は, 編集内容が Shipping にも反映される.
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/6259
+     */
+    public function testShippingCustomerAddressEditAppliedToShipping()
+    {
+        $Customer = $this->createCustomer('shopping-6259-edit-applied@example.com');
+        $CustomerAddress = $this->createCustomerAddress($Customer);
+
+        $this->scenarioCartIn($Customer);
+        $this->scenarioConfirm($Customer);
+        $shippingId = $this->getShippingId($Customer);
+
+        // 追加したお届け先を選択し, Shipping に適用する.
+        $this->scenarioSelectCustomerAddress($shippingId, $CustomerAddress);
+
+        $form = $this->createShippingFormData();
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('shopping_shipping_customer_address_edit', ['id' => $shippingId, 'ca_id' => $CustomerAddress->getId()]),
+            ['shopping_shipping' => $form]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_shipping', ['id' => $shippingId])));
+
+        // クライアントのサブリクエストで更新された内容を確認するため, 最新状態を取得する.
+        $this->entityManager->clear();
+        $Shipping = $this->entityManager->getRepository(Shipping::class)->find($shippingId);
+
+        // 適用中の住所を編集したため, 識別名に含まれない name02 も Shipping に反映される.
+        $this->assertInstanceOf(Shipping::class, $Shipping);
+        $this->expected = $form['name']['name02'];
+        $this->actual = $Shipping->getName02();
+        $this->verify();
+    }
+
+    /**
+     * 適用中でないお届け先住所を編集した場合は, Shipping は変更されない.
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/6259
+     */
+    public function testShippingCustomerAddressEditNotAppliedToShipping()
+    {
+        $Customer = $this->createCustomer('shopping-6259-edit-not-applied@example.com');
+        $CustomerAddress = $this->createCustomerAddress($Customer);
+
+        $this->scenarioCartIn($Customer);
+        $this->scenarioConfirm($Customer);
+        $shippingId = $this->getShippingId($Customer);
+
+        // 選択せずに編集するため, Shipping には会員本人の住所が適用されている.
+        $Shipping = $this->entityManager->getRepository(Shipping::class)->find($shippingId);
+        $this->assertInstanceOf(Shipping::class, $Shipping);
+        $before = $Shipping->getName02();
+
+        $form = $this->createShippingFormData();
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('shopping_shipping_customer_address_edit', ['id' => $shippingId, 'ca_id' => $CustomerAddress->getId()]),
+            ['shopping_shipping' => $form]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_shipping', ['id' => $shippingId])));
+
+        $this->entityManager->clear();
+        $Shipping = $this->entityManager->getRepository(Shipping::class)->find($shippingId);
+
+        $this->assertInstanceOf(Shipping::class, $Shipping);
+        $this->expected = $before;
+        $this->actual = $Shipping->getName02();
+        $this->verify();
+    }
+
+    /**
      * 注文手続き画面のお届け先選択画面で, 登録済みお届け先を削除する.
      *
      * @see https://github.com/EC-CUBE/ec-cube/issues/6259
@@ -650,6 +725,33 @@ final class ShoppingControllerTest extends AbstractShoppingControllerTestCase
         );
 
         return $Order->getShippings()->first()->getId();
+    }
+
+    /**
+     * お届け先選択画面で, 指定した会員のお届け先住所を選択して Shipping に適用する.
+     */
+    private function scenarioSelectCustomerAddress(int $shippingId, CustomerAddress $CustomerAddress): void
+    {
+        $crawler = $this->client->request(
+            Request::METHOD_GET,
+            $this->generateUrl('shopping_shipping', ['id' => $shippingId])
+        );
+
+        // 対象の住所の項目に描画されているラジオボタンの値を取得する.
+        $addr02 = $CustomerAddress->getAddr02();
+        $this->assertNotNull($addr02);
+        $value = $crawler->filter('.ec-addressList__item')
+            ->reduce(fn (Crawler $node) => str_contains($node->text(), $addr02))
+            ->filter('input[type="radio"]')
+            ->attr('value');
+        $this->assertNotNull($value);
+
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('shopping_shipping', ['id' => $shippingId]),
+            ['customer_address' => ['addresses' => $value, '_token' => 'dummy']]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
     }
 
     /**
