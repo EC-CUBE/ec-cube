@@ -17,6 +17,7 @@ namespace Eccube\Tests\Repository;
 
 use Eccube\Entity\LoginHistory;
 use Eccube\Entity\Master\LoginHistoryStatus;
+use Eccube\Entity\Member;
 use Eccube\Repository\LoginHistoryRepository;
 use Eccube\Tests\EccubeTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -29,6 +30,14 @@ final class LoginHistoryRepositoryGetQueryBuilderBySearchDataAdminTest extends E
     protected ?array $Results = null;
 
     protected ?array $searchData = null;
+
+    protected ?Member $Member1 = null;
+
+    protected ?LoginHistory $LoginHistory1 = null;
+
+    protected ?LoginHistory $LoginHistory2 = null;
+
+    protected ?LoginHistory $LoginHistory3 = null;
 
     private ?LoginHistoryRepository $loginHistoryRepository = null;
 

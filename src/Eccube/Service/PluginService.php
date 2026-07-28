@@ -366,12 +366,15 @@ class PluginService
     }
 
     /**
-     * @param array<int, string> $arr
+     * 未作成のディレクトリを表す null も受け取る（install()/update() は例外発生時点で
+     * 変数が未設定のまま渡すため）。
+     *
+     * @param array<int, string|null> $arr
      */
     public function deleteDirs(array $arr): void
     {
         foreach ($arr as $dir) {
-            if (file_exists($dir)) {
+            if (null !== $dir && file_exists($dir)) {
                 $fs = new Filesystem();
                 $fs->remove($dir);
             }
