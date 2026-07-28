@@ -1139,7 +1139,8 @@ admin.content.faq.faq_registration: Create FAQ
 admin.content.faq.product_faq: Product FAQ
 admin.content.faq.category_faq: Category FAQ
 admin.content.faq.add: Add FAQ
-front.block.faq.title: FAQ
+front.block.faq.title__en: FAQ
+front.block.faq.title__ja: FAQ
 admin.content.maintenance__card_title: Maintenance mode
 admin.content.maintenance_message: |
   When the maintenance mode is enabled, the shop is temporarily stopped and only the Admin Console can be accessed.

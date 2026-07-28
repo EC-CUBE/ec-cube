@@ -17,6 +17,7 @@ namespace Eccube\Tests\Web\Admin\Product;
 
 use Eccube\Common\Constant;
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Faq;
 use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\Master\RoundingType;
 use Eccube\Entity\Product;
@@ -393,6 +394,78 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
         $editedTimestamp = $EditedUpdateDate->getTimestamp();
 
         $this->assertNotSame($preTimestamp, $editedTimestamp);
+    }
+
+    /**
+     * 商品編集経由で商品ごとFAQを追加・更新・削除する保存経路を検証する.
+     *
+     * CollectionType + allow_delete + Product::$Faqs の orphanRemoval を通るため、
+     * 送信内容から漏れた FAQ が削除される（＝全削除事故が起き得る）最も危険な経路。
+     */
+    public function testEditWithProductFaq()
+    {
+        $Product = $this->createProduct(null, 0);
+        $productId = $Product->getId();
+        $faqRepository = $this->entityManager->getRepository(Faq::class);
+
+        // FAQ を2件付与して保存
+        $formData = $this->createFormData();
+        $formData['faqs'] = [
+            [
+                'question' => '発送はいつですか',
+                'answer' => 'ご注文から3営業日以内に発送します',
+                'sort_no' => '1',
+                'visible' => '1',
+            ],
+            [
+                'question' => '返品できますか',
+                'answer' => '到着後8日以内なら可能です',
+                'sort_no' => '2',
+                'visible' => '0',
+            ],
+        ];
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product_product_edit', ['id' => $productId]),
+            ['admin_product' => $formData]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect(
+            $this->generateUrl('admin_product_product_edit', ['id' => $productId])
+        ));
+
+        $this->entityManager->clear();
+        /** @var Faq[] $Faqs */
+        $Faqs = $faqRepository->findBy(['Product' => $productId], ['sort_no' => 'ASC']);
+        $this->assertCount(2, $Faqs);
+        $this->assertSame('発送はいつですか', $Faqs[0]->getQuestion());
+        $this->assertSame(Faq::FAQ_TYPE_PRODUCT, $Faqs[0]->getFaqType());
+        $this->assertTrue($Faqs[0]->isVisible());
+        $this->assertFalse($Faqs[1]->isVisible());
+        $deletedId = $Faqs[1]->getId();
+
+        // 2件目を除外し1件目を更新して再送信 → orphanRemoval で2件目が削除される
+        $formData['faqs'] = [
+            [
+                'question' => '発送はいつですか（更新）',
+                'answer' => '当日出荷に変更しました',
+                'sort_no' => '1',
+                'visible' => '1',
+            ],
+        ];
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product_product_edit', ['id' => $productId]),
+            ['admin_product' => $formData]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect(
+            $this->generateUrl('admin_product_product_edit', ['id' => $productId])
+        ));
+
+        $this->entityManager->clear();
+        $Remaining = $faqRepository->findBy(['Product' => $productId]);
+        $this->assertCount(1, $Remaining);
+        $this->assertSame('発送はいつですか（更新）', $Remaining[0]->getQuestion());
+        $this->assertNotInstanceOf(Faq::class, $faqRepository->find($deletedId));
     }
 
     public function testDisplayProduct()

@@ -18,6 +18,7 @@ namespace Eccube\Tests\Web\Admin\Content;
 use Eccube\Entity\Faq;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 final class FaqControllerTest extends AbstractAdminWebTestCase
 {
@@ -28,6 +29,21 @@ final class FaqControllerTest extends AbstractAdminWebTestCase
             ->setAnswer('回答')
             ->setSortNo(1)
             ->setVisible(true);
+        $this->entityManager->persist($Faq);
+        $this->entityManager->flush();
+
+        return $Faq;
+    }
+
+    private function createProductFaq(): Faq
+    {
+        $Product = $this->createProduct();
+        $Faq = new Faq();
+        $Faq->setQuestion('商品FAQ質問')
+            ->setAnswer('商品FAQ回答')
+            ->setSortNo(1)
+            ->setVisible(true)
+            ->setProduct($Product);
         $this->entityManager->persist($Faq);
         $this->entityManager->flush();
 
@@ -74,16 +90,57 @@ final class FaqControllerTest extends AbstractAdminWebTestCase
         $location = (string) $response->headers->get('Location');
         $this->assertStringContainsString($this->generateUrl('admin_content_faq').'/', $location);
         $this->assertStringEndsWith('/edit', $location);
+
+        // DB に永続化されていることを検証する。
+        $this->entityManager->clear();
+        $Faq = $this->entityManager->getRepository(Faq::class)->findOneBy(['question' => 'テスト質問']);
+        $this->assertInstanceOf(Faq::class, $Faq);
+        $this->assertSame('テスト回答', $Faq->getAnswer());
+        $this->assertSame(Faq::FAQ_TYPE_COMMON, $Faq->getFaqType());
     }
 
     public function testRoutingAdminContentFaqDelete(): void
     {
         $Faq = $this->createCommonFaq();
+        $id = $Faq->getId();
 
         $this->client->request(Request::METHOD_DELETE,
-            $this->generateUrl('admin_content_faq_delete', ['id' => $Faq->getId()])
+            $this->generateUrl('admin_content_faq_delete', ['id' => $id])
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_content_faq')));
+
+        // DB から削除されていることを検証する。
+        $this->entityManager->clear();
+        $this->assertNotInstanceOf(Faq::class, $this->entityManager->getRepository(Faq::class)->find($id));
+    }
+
+    public function testFaqEditReturns404ForNonCommonFaq(): void
+    {
+        // 商品FAQ（サイト共通以外）はサイト共通FAQ専用の編集画面では 404 になる。
+        $Faq = $this->createProductFaq();
+
+        $this->client->request(Request::METHOD_GET,
+            $this->generateUrl('admin_content_faq_edit', ['id' => $Faq->getId()])
+        );
+
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
+    }
+
+    public function testFaqDeleteReturns404ForNonCommonFaq(): void
+    {
+        // 商品FAQ（サイト共通以外）はサイト共通FAQ専用の削除では 404 になる。
+        $Faq = $this->createProductFaq();
+        $id = $Faq->getId();
+
+        $this->client->request(Request::METHOD_DELETE,
+            $this->generateUrl('admin_content_faq_delete', ['id' => $id])
+        );
+
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
+
+        // 404 のため削除されず残っていることを検証する。
+        $this->entityManager->clear();
+        $this->assertInstanceOf(Faq::class, $this->entityManager->getRepository(Faq::class)->find($id));
     }
 }

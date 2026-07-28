@@ -173,6 +173,11 @@ class ProductType extends AbstractType
                 'mapped' => false,
             ])
             // 商品ごとFAQ
+            //
+            // 注意: allow_delete + Product::$Faqs の orphanRemoval により、送信時に faqs が
+            // 未描画（空コレクション）だと既存 FAQ が全削除される。商品編集テンプレート
+            // app/template/admin/Product/product.twig を上書きしている店舗では、上書き先に
+            // faqs の描画（form_widget(form.faqs)）を必ず含めること。
             ->add('faqs', CollectionType::class, [
                 'entry_type' => FaqType::class,
                 'prototype' => true,

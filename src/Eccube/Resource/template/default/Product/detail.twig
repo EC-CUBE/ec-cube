@@ -444,7 +444,9 @@ file that was distributed with this source code.
         {% if Faqs is defined and Faqs is not empty %}
             <div class="ec-role ec-faqRole">
                 <div class="ec-secHeading">
-                    <span class="ec-secHeading__en">{{ 'front.block.faq.title'|trans }}</span>
+                    <span class="ec-secHeading__en">{{ 'front.block.faq.title__en'|trans }}</span>
+                    <span class="ec-secHeading__line"></span>
+                    <span class="ec-secHeading__ja">{{ 'front.block.faq.title__ja'|trans }}</span>
                 </div>
                 <div class="ec-faqRole__list">
                     {% for Faq in Faqs %}

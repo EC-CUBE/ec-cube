@@ -1138,7 +1138,8 @@ admin.content.faq.faq_registration: FAQ登録
 admin.content.faq.product_faq: 商品FAQ
 admin.content.faq.category_faq: カテゴリFAQ
 admin.content.faq.add: FAQを追加
-front.block.faq.title: よくある質問
+front.block.faq.title__en: FAQ
+front.block.faq.title__ja: よくある質問
 admin.content.maintenance__card_title: メンテナンスモード
 admin.content.maintenance_message: |
   メンテナンスモードを有効にすると、SHOPの機能を一時的に停止し、管理画面のみアクセス可能な状態となります。
