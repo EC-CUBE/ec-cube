@@ -122,6 +122,73 @@ final class McpScopeEnforcementIntegrationTest extends EccubeTestCase
         );
     }
 
+    public function testToolsListFilteredByGrantedScope(): void
+    {
+        // product scope のみの token では、 tools/list に product 系 Tool だけが現れ他領域は隠れる。
+        // (呼び出し拒否とは別に、 一覧の可視性そのものを scope で絞る = 最小権限)
+        $jwt = $this->issueScopedJwt(['mcp:product:read']);
+
+        $names = $this->listToolNames($jwt);
+
+        $this->assertContains('search_products', $names);
+        $this->assertContains('get_product', $names);
+        $this->assertContains('get_product_stock', $names);
+
+        $this->assertNotContains('search_orders', $names);
+        $this->assertNotContains('search_customers', $names);
+        $this->assertNotContains('list_plugins', $names);
+    }
+
+    /**
+     * initialize → notifications/initialized → tools/list を実カーネルに流し、 返った Tool 名の一覧を返す。
+     *
+     * @return list<string>
+     */
+    private function listToolNames(string $jwt): array
+    {
+        $path = '/'.$this->getAdminRoute().'/mcp';
+        $headers = [
+            'CONTENT_TYPE' => 'application/json',
+            'HTTP_ACCEPT' => 'application/json, text/event-stream',
+            'HTTP_AUTHORIZATION' => 'Bearer '.$jwt,
+        ];
+
+        $this->client->request(Request::METHOD_POST, $path, server: $headers, content: (string) json_encode([
+            'jsonrpc' => '2.0', 'id' => 1, 'method' => 'initialize',
+            'params' => ['protocolVersion' => '2025-03-26', 'clientInfo' => ['name' => 'it', 'version' => '1'], 'capabilities' => []],
+        ]));
+        $initResponse = $this->client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $initResponse->getStatusCode(), (string) $initResponse->getContent());
+        $sessionId = $initResponse->headers->get('mcp-session-id');
+        $this->assertNotNull($sessionId, 'initialize で Mcp-Session-Id が返る');
+
+        $headers['HTTP_MCP_SESSION_ID'] = $sessionId;
+        $this->client->request(Request::METHOD_POST, $path, server: $headers, content: (string) json_encode([
+            'jsonrpc' => '2.0', 'method' => 'notifications/initialized',
+        ]));
+
+        $this->client->request(Request::METHOD_POST, $path, server: $headers, content: (string) json_encode([
+            'jsonrpc' => '2.0', 'id' => 2, 'method' => 'tools/list',
+        ]));
+
+        $result = $this->decodeJsonRpc((string) $this->client->getResponse()->getContent());
+        $this->assertArrayHasKey('result', $result);
+        $inner = $result['result'];
+        $this->assertIsArray($inner);
+        $this->assertArrayHasKey('tools', $inner);
+        $tools = $inner['tools'];
+        $this->assertIsArray($tools);
+
+        $names = [];
+        foreach ($tools as $tool) {
+            $this->assertIsArray($tool);
+            $this->assertArrayHasKey('name', $tool);
+            $names[] = (string) $tool['name'];
+        }
+
+        return $names;
+    }
+
     /**
      * initialize → notifications/initialized → tools/call の handshake を実カーネルに流し、
      * tools/call の JSON-RPC レスポンス (デコード済み) を返す。

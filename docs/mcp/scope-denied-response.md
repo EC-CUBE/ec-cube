@@ -65,6 +65,16 @@ public function require(string $role): void
 - role → scope 名変換 (`ROLE_OAUTH2_MCP:ORDER:READ` → `mcp:order:read`) を行い、 OAuth2 仕様のキーで LLM 側に伝える。
 - `ToolInvoker` は `ToolCallException` を専用 catch し、 監査ログに `AuditResult::ScopeDenied` を記録してから再 throw する。 mcp-bundle の専用 catch (1) に乗る。
 
+## tools/list の scope フィルタ (可視性)
+
+上記の call 時拒否とは別に、 `tools/list` の応答自体を現在のトークンの scope で絞る。 呼べない Tool は一覧に出さない (最小権限: LLM に呼べない Tool を見せない)。
+
+- `Eccube\Service\Mcp\ScopeFilteringRegistry` が mcp-bundle の `mcp.registry` を装飾し、 `getTools()` だけを上書きする。 各 Tool の必要 scope を `McpToolScopeMap` で引き、 `AuthorizationCheckerInterface::isGranted()` で通ったものだけ返す。
+- 中央マップ未登録の Tool (= call 時 fail-closed deny) は一覧からも隠す。
+- 認証トークンが無い経路 (CLI 等) は絞り込まず素通しする。
+
+これは可視性の制御であり、 呼び出しの拒否ではない。 一覧に出さないことと呼べないことは独立で、 実際の拒否は `ScopeEnforcingReferenceHandler` が call 時に fail-closed で担保する (二重防御: このフィルタが外れても未認可 Tool は実行されない)。
+
 ## LLM クライアントから見える挙動
 
 - HTTP は 200 OK で返る (LLM クライアントは「ネットワーク的には成功」と認識)。

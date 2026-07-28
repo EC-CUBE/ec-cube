@@ -248,6 +248,13 @@ services:
         arguments:
             $inner: '@eccube.mcp.reference_handler.inner'
 
+    # MCP: tools/list を現トークンの scope で絞る (呼べない Tool を一覧から隠す = 最小権限)。
+    # call 時の fail-closed 拒否は ScopeEnforcingReferenceHandler が担う二重防御。
+    Eccube\Service\Mcp\ScopeFilteringRegistry:
+        decorates: mcp.registry
+        arguments:
+            $inner: '@.inner'
+
     # MCP: 監査ログとして記録するため、唯一の書き手として設定します。
     Eccube\Service\Mcp\McpAuditLogger:
         arguments:
