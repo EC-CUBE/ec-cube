@@ -68,9 +68,17 @@ class TemplateController extends AbstractController
             // .env への書き込みが反映されない状況では保存を拒否する
             //   - .env が存在しない / 書き込み不可
             //   - .env.local.php（dump-env の最適化済みスナップショット）が .env より優先される
-            //   - ECCUBE_TEMPLATE_CODE が OS のプロセス環境変数として設定され .env を上書きしている
-            if (!$this->envFileService->isEffective(self::ENV_KEYS)) {
+            //   - ECCUBE_TEMPLATE_CODE が OS 環境変数やカスケードファイルで .env を上書きしている
+            $ineffectiveReasons = $this->envFileService->getIneffectiveReasons();
+            $overriddenKeys = $this->envFileService->getOverriddenKeys(self::ENV_KEYS);
+            if ([] !== $ineffectiveReasons || [] !== $overriddenKeys) {
                 $this->addError('admin.common.save_error', 'admin');
+                foreach ($ineffectiveReasons as $reason) {
+                    $this->addError('admin.system.env.ineffective.'.$reason, 'admin');
+                }
+                if ([] !== $overriddenKeys) {
+                    $this->addError(trans('admin.system.env.ineffective.overridden', ['%keys%' => implode(', ', $overriddenKeys)]), 'admin');
+                }
 
                 return $this->redirectToRoute('admin_store_template');
             }
@@ -94,15 +102,22 @@ class TemplateController extends AbstractController
         }
 
         // .env への書き込みが反映されない状況では警告を出し、登録ボタンを無効化する。
-        $ineffectiveReasons = $this->envFileService->getIneffectiveReasons(self::ENV_KEYS);
+        $ineffectiveReasons = $this->envFileService->getIneffectiveReasons();
         foreach ($ineffectiveReasons as $reason) {
             $this->addWarning('admin.system.env.ineffective.'.$reason, 'admin');
+        }
+
+        // 対象キー（ECCUBE_TEMPLATE_CODE）が上書きされている場合は名指しで警告する。
+        $overriddenKeys = $this->envFileService->getOverriddenKeys(self::ENV_KEYS);
+        if ([] !== $overriddenKeys) {
+            $this->addWarning(trans('admin.system.env.ineffective.overridden', ['%keys%' => implode(', ', $overriddenKeys)]), 'admin');
         }
 
         return [
             'form' => $form->createView(),
             'Templates' => $Templates,
-            'envWritable' => [] === $ineffectiveReasons,
+            // この画面が扱うキーは 1 つのみのため, 上書きされていれば実質全滅として無効化する。
+            'envWritable' => [] === $ineffectiveReasons && [] === $overriddenKeys,
         ];
     }
 

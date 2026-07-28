@@ -61,12 +61,19 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // .env への書き込みが反映されない状況では保存を拒否する
-            if (!$this->envFileService->isEffective(self::ENV_KEYS)) {
+            // .env ファイル自体が読み込まれない状況（全キー反映不可）では保存を拒否する
+            $ineffectiveReasons = $this->envFileService->getIneffectiveReasons();
+            if ([] !== $ineffectiveReasons) {
                 $this->addError('admin.common.save_error', 'admin');
+                foreach ($ineffectiveReasons as $reason) {
+                    $this->addError('admin.system.env.ineffective.'.$reason, 'admin');
+                }
 
                 return $this->redirectToRoute('admin_setting_system_security');
             }
+
+            // OS 環境変数やカスケードファイルで上書きされているキーは書き込んでも反映されないため除外する
+            $overriddenKeys = $this->envFileService->getOverriddenKeys(self::ENV_KEYS);
 
             $data = $form->getData();
             $envFile = $this->getParameter('kernel.project_dir').'/.env';
@@ -86,20 +93,29 @@ class SecurityController extends AbstractController
                 array_filter(\explode("\n", StringUtil::convertLineFeed($data['admin_deny_hosts'])), fn ($str) => StringUtil::isNotBlank($str))
             );
 
-            $env = StringUtil::replaceOrAddEnv($env, [
+            // 上書きされているキーは書き込み対象から除外する
+            $replace = array_diff_key([
                 'ECCUBE_FRONT_ALLOW_HOSTS' => "'{$frontAllowHosts}'",
                 'ECCUBE_FRONT_DENY_HOSTS' => "'{$frontDenyHosts}'",
                 'ECCUBE_ADMIN_ALLOW_HOSTS' => "'{$adminAllowHosts}'",
                 'ECCUBE_ADMIN_DENY_HOSTS' => "'{$adminDenyHosts}'",
                 'ECCUBE_FORCE_SSL' => $data['force_ssl'] ? '1' : '0',
                 'TRUSTED_HOSTS' => $data['trusted_hosts'],
-            ]);
+            ], array_flip($overriddenKeys));
 
-            file_put_contents($envFile, $env);
+            if ([] !== $replace) {
+                $env = StringUtil::replaceOrAddEnv($env, $replace);
+                file_put_contents($envFile, $env);
+            }
 
-            // 管理画面URLの更新. 変更されている場合はログアウトし再ログインさせる.
+            // 上書きされ反映されなかったキーは名指しで警告する
+            if ([] !== $overriddenKeys) {
+                $this->addWarning(trans('admin.system.env.ineffective.overridden', ['%keys%' => implode(', ', $overriddenKeys)]), 'admin');
+            }
+
+            // 管理画面URLの更新. 上書きされておらず変更されている場合はログアウトし再ログインさせる.
             $adminRoute = $this->eccubeConfig['eccube_admin_route'];
-            if ($adminRoute !== $data['admin_route_dir']) {
+            if ($adminRoute !== $data['admin_route_dir'] && !in_array('ECCUBE_ADMIN_ROUTE', $overriddenKeys, true)) {
                 $env = StringUtil::replaceOrAddEnv($env, [
                     'ECCUBE_ADMIN_ROUTE' => $data['admin_route_dir'],
                 ]);
@@ -132,10 +148,16 @@ class SecurityController extends AbstractController
             $this->addWarning('admin.setting.system.security.admin_url_warning', 'admin');
         }
 
-        // .env への書き込みが反映されない状況では警告を出し、登録ボタンを無効化する。
-        $ineffectiveReasons = $this->envFileService->getIneffectiveReasons(self::ENV_KEYS);
+        // .env ファイル自体が読み込まれない状況では警告を出し、登録ボタンを無効化する。
+        $ineffectiveReasons = $this->envFileService->getIneffectiveReasons();
         foreach ($ineffectiveReasons as $reason) {
             $this->addWarning('admin.system.env.ineffective.'.$reason, 'admin');
+        }
+
+        // 個々のキーが OS 環境変数等で上書きされている場合は該当キーを名指しで警告する。
+        $overriddenKeys = $this->envFileService->getOverriddenKeys(self::ENV_KEYS);
+        if ([] !== $overriddenKeys) {
+            $this->addWarning(trans('admin.system.env.ineffective.overridden', ['%keys%' => implode(', ', $overriddenKeys)]), 'admin');
         }
 
         return [

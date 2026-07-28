@@ -55,7 +55,6 @@ final class SecurityControllerTest extends AbstractAdminWebTestCase
     /**
      * Submit test
      */
-    #[Group(name: 'cache-clear')]
     public function testSubmit()
     {
         $session = $this->createSession($this->client);
@@ -81,67 +80,64 @@ final class SecurityControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
-     * 環境変数が OS のプロセス環境変数として設定されている場合、画面表示時に
-     * 警告を表示し、登録ボタンを無効化することを確認する（#6130）。
+     * 反映可能な環境（.env が書き込み可能）では登録ボタンが無効化されないことを確認する（対照）。
      */
-    #[Group(name: 'cache-clear')]
-    public function testDisplayWarningAndDisableButtonWhenEnvOverridden(): void
+    public function testDisplayButtonEnabledWhenEffective(): void
     {
-        $key = 'ECCUBE_ADMIN_ROUTE';
-        $original = getenv($key);
-        putenv($key.'=admin');
-        try {
-            $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_system_security'));
-            $this->assertTrue($this->client->getResponse()->isSuccessful());
-
-            // 登録ボタンが無効化されている
-            $this->assertGreaterThan(0, $crawler->filter('button[type="submit"][disabled]')->count());
-
-            // 反映されない旨の警告が表示されている
-            $this->assertStringContainsString(
-                trans('admin.system.env.ineffective.overridden'),
-                (string) $this->client->getResponse()->getContent()
-            );
-        } finally {
-            false === $original ? putenv($key) : putenv($key.'='.$original);
-        }
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_system_security'));
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertCount(0, $crawler->filter('button[type="submit"][disabled]'));
     }
 
     /**
-     * 環境変数が OS のプロセス環境変数として設定されている場合、.env への書き込みは
-     * 反映されないため保存を拒否しエラーを表示することを確認する（#6130）。
+     * 対象キーの 1 つ（ECCUBE_ADMIN_ROUTE）が OS 環境変数で上書きされていても、
+     * 画面全体はブロックせず（登録ボタンは有効のまま）、該当キーを名指しで警告することを確認する（#6130 / #2）。
      */
-    #[Group(name: 'cache-clear')]
-    public function testSubmitRejectedWhenEnvOverridden(): void
+    public function testDisplayWarnsNamedKeyButKeepsButtonEnabledWhenSingleKeyOverridden(): void
+    {
+        $this->forceKeyOverridden('ECCUBE_ADMIN_ROUTE', function (): void {
+            $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_system_security'));
+            $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+            // 残りのキーは .env に書けるため登録ボタンは無効化されない
+            $this->assertCount(0, $crawler->filter('button[type="submit"][disabled]'));
+
+            // 上書きされているキーを名指しした警告が表示される
+            $this->assertStringContainsString(
+                trans('admin.system.env.ineffective.overridden', ['%keys%' => 'ECCUBE_ADMIN_ROUTE']),
+                (string) $this->client->getResponse()->getContent()
+            );
+        });
+    }
+
+    /**
+     * 対象キーの 1 つ（ECCUBE_ADMIN_ROUTE）が上書きされている場合、そのキーは .env に書かず、
+     * 反映される他キー（TRUSTED_HOSTS 等）は保存されることを確認する（#6130 / #2 の退行解消）。
+     */
+    public function testSubmitSkipsOverriddenKeyButSavesOthers(): void
     {
         $session = $this->createSession($this->client);
         $formData = $this->createFormData();
 
-        // この画面が書き込む環境変数の1つをプロセス環境変数として設定
-        $key = 'ECCUBE_ADMIN_ROUTE';
-        $original = getenv($key);
-        putenv($key.'=admin');
-        try {
+        $this->forceKeyOverridden('ECCUBE_ADMIN_ROUTE', function () use ($session, $formData): void {
             $this->client->request(
                 Request::METHOD_POST,
                 $this->generateUrl('admin_setting_system_security'),
-                [
-                    'admin_security' => $formData,
-                ]
+                ['admin_security' => $formData]
             );
 
             $this->assertTrue($this->client->getResponse()->isRedirection());
 
-            // 保存が拒否されエラーが表示される
+            // 保存自体は拒否されない（save_error は出ない）
             $errors = $session->getFlashBag()->get('eccube.admin.error');
-            $this->assertContains('admin.common.save_error', $errors);
+            $this->assertNotContains('admin.common.save_error', $errors);
 
-            // .env は書き換えられていない
-            $this->assertDoesNotMatchRegularExpression('/ECCUBE_ADMIN_ROUTE='.$formData['admin_route_dir'].'/', file_get_contents($this->envFile));
-        } finally {
-            // 実行環境が事前に設定していた値を復元する
-            false === $original ? putenv($key) : putenv($key.'='.$original);
-        }
+            $content = file_get_contents($this->envFile);
+            // 上書きされている ECCUBE_ADMIN_ROUTE は書き換わらない
+            $this->assertDoesNotMatchRegularExpression('/ECCUBE_ADMIN_ROUTE='.$formData['admin_route_dir'].'/', $content);
+            // 反映される TRUSTED_HOSTS は保存される
+            $this->assertStringContainsString('TRUSTED_HOSTS='.$formData['trusted_hosts'], (string) $content);
+        });
     }
 
     /**
@@ -169,6 +165,43 @@ final class SecurityControllerTest extends AbstractAdminWebTestCase
 
         $newEnv = file_exists($this->envFile) ? file_get_contents($this->envFile) : null;
         $this->assertSame($this->env, $newEnv);
+    }
+
+    /**
+     * 指定キーが「.env 由来でなく OS のプロセス環境変数で上書きされている」状態を
+     * 決定的に作り出してコールバックを実行し、終了後に $_SERVER を元へ復元する.
+     *
+     * テスト環境では bootEnv により .env のキーが SYMFONY_DOTENV_VARS に載るため
+     * putenv では上書き状態を再現できない（EnvFileService は SYMFONY_DOTENV_VARS を優先する）。
+     * そこで当該キーを SYMFONY_DOTENV_VARS から除外し、$_SERVER にプロセス環境変数値を注入する.
+     */
+    private function forceKeyOverridden(string $key, callable $fn): void
+    {
+        $sentinel = '__ECCUBE_TEST_UNSET__';
+        $origVars = \array_key_exists('SYMFONY_DOTENV_VARS', $_SERVER) ? $_SERVER['SYMFONY_DOTENV_VARS'] : $sentinel;
+        $origVal = \array_key_exists($key, $_SERVER) ? $_SERVER[$key] : $sentinel;
+
+        $vars = array_filter(
+            explode(',', (string) ($sentinel === $origVars ? '' : $origVars)),
+            fn ($k) => $k !== $key && '' !== $k
+        );
+        $_SERVER['SYMFONY_DOTENV_VARS'] = implode(',', $vars);
+        $_SERVER[$key] = 'osvalue';
+
+        try {
+            $fn();
+        } finally {
+            if ($sentinel === $origVars) {
+                unset($_SERVER['SYMFONY_DOTENV_VARS']);
+            } else {
+                $_SERVER['SYMFONY_DOTENV_VARS'] = $origVars;
+            }
+            if ($sentinel === $origVal) {
+                unset($_SERVER[$key]);
+            } else {
+                $_SERVER[$key] = $origVal;
+            }
+        }
     }
 
     /**

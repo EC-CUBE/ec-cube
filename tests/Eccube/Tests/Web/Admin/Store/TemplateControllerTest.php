@@ -96,24 +96,19 @@ final class TemplateControllerTest extends AbstractAdminWebTestCase
     #[Group(name: 'cache-clear')]
     public function testDisplayWarningAndDisableButtonWhenEnvOverridden()
     {
-        $key = 'ECCUBE_TEMPLATE_CODE';
-        $original = getenv($key);
-        putenv($key.'=default');
-        try {
+        $this->forceKeyOverridden('ECCUBE_TEMPLATE_CODE', function (): void {
             $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_store_template'));
             $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-            // 登録ボタンが無効化されている
+            // この画面が扱うキーは1つのみのため, 上書き時は登録ボタンが無効化されている
             $this->assertGreaterThan(0, $crawler->filter('button[type="submit"][disabled]')->count());
 
-            // 反映されない旨の警告が表示されている
+            // 上書きされているキーを名指しした警告が表示されている
             $this->assertStringContainsString(
-                trans('admin.system.env.ineffective.overridden'),
+                trans('admin.system.env.ineffective.overridden', ['%keys%' => 'ECCUBE_TEMPLATE_CODE']),
                 (string) $this->client->getResponse()->getContent()
             );
-        } finally {
-            false === $original ? putenv($key) : putenv($key.'='.$original);
-        }
+        });
     }
 
     /**
@@ -156,13 +151,9 @@ final class TemplateControllerTest extends AbstractAdminWebTestCase
         $this->verifyUpload();
 
         $Template = $this->templateRepository->findOneBy(['code' => $this->code]);
+        $this->assertInstanceOf(Template::class, $Template);
 
-        // プロセス環境変数として ECCUBE_TEMPLATE_CODE を設定
-        $key = 'ECCUBE_TEMPLATE_CODE';
-        $original = getenv($key);
-        putenv($key.'=default');
-
-        try {
+        $this->forceKeyOverridden('ECCUBE_TEMPLATE_CODE', function () use ($Template): void {
             $session = $this->createSession($this->client);
 
             // テンプレートを選択
@@ -177,13 +168,15 @@ final class TemplateControllerTest extends AbstractAdminWebTestCase
             // 環境変数オーバーライド時は保存が拒否され、エラーが表示される
             $errors = $session->getFlashBag()->get('eccube.admin.error');
             $this->assertContains('admin.common.save_error', $errors);
+            // 原因となる上書きキー名も併記される（#8）
+            $this->assertContains(
+                trans('admin.system.env.ineffective.overridden', ['%keys%' => 'ECCUBE_TEMPLATE_CODE']),
+                $errors
+            );
 
             // .env は書き換えられていない
             $this->assertDoesNotMatchRegularExpression('/ECCUBE_TEMPLATE_CODE='.$Template->getCode().'/', file_get_contents($this->envFile));
-        } finally {
-            // 実行環境が事前に設定していた値を復元する
-            false === $original ? putenv($key) : putenv($key.'='.$original);
-        }
+        });
     }
 
     /**
@@ -297,6 +290,43 @@ final class TemplateControllerTest extends AbstractAdminWebTestCase
         $Template = $this->templateRepository->find($id);
         $this->assertNotInstanceOf(Template::class, $Template);
         $this->assertFileDoesNotExist(static::getContainer()->getParameter('kernel.project_dir').'/app/template/'.$code);
+    }
+
+    /**
+     * 指定キーが「.env 由来でなく OS のプロセス環境変数で上書きされている」状態を
+     * 決定的に作り出してコールバックを実行し、終了後に $_SERVER を元へ復元する.
+     *
+     * テスト環境では bootEnv により .env のキーが SYMFONY_DOTENV_VARS に載るため
+     * putenv では上書き状態を再現できない（EnvFileService は SYMFONY_DOTENV_VARS を優先する）。
+     * そこで当該キーを SYMFONY_DOTENV_VARS から除外し、$_SERVER にプロセス環境変数値を注入する.
+     */
+    private function forceKeyOverridden(string $key, callable $fn): void
+    {
+        $sentinel = '__ECCUBE_TEST_UNSET__';
+        $origVars = \array_key_exists('SYMFONY_DOTENV_VARS', $_SERVER) ? $_SERVER['SYMFONY_DOTENV_VARS'] : $sentinel;
+        $origVal = \array_key_exists($key, $_SERVER) ? $_SERVER[$key] : $sentinel;
+
+        $vars = array_filter(
+            explode(',', (string) ($sentinel === $origVars ? '' : $origVars)),
+            fn ($k) => $k !== $key && '' !== $k
+        );
+        $_SERVER['SYMFONY_DOTENV_VARS'] = implode(',', $vars);
+        $_SERVER[$key] = 'osvalue';
+
+        try {
+            $fn();
+        } finally {
+            if ($sentinel === $origVars) {
+                unset($_SERVER['SYMFONY_DOTENV_VARS']);
+            } else {
+                $_SERVER['SYMFONY_DOTENV_VARS'] = $origVars;
+            }
+            if ($sentinel === $origVal) {
+                unset($_SERVER[$key]);
+            } else {
+                $_SERVER[$key] = $origVal;
+            }
+        }
     }
 
     protected function scenarioUpload($uppercase = false)

@@ -48,7 +48,7 @@ final class EnvFileServiceTest extends TestCase
 
         $service = new EnvFileService($this->projectDir);
 
-        $this->assertSame([], $service->getIneffectiveReasons(['FOO']));
+        $this->assertSame([], $service->getIneffectiveReasons());
         $this->assertTrue($service->isEffective(['FOO']));
     }
 
@@ -88,24 +88,130 @@ final class EnvFileServiceTest extends TestCase
         $this->assertFalse($service->isEffective());
     }
 
-    public function testOverriddenWhenKeyIsInProcessEnv(): void
+    /**
+     * .env 系ファイルから Dotenv が populate したキー（SYMFONY_DOTENV_VARS に載る）は,
+     * $_SERVER / getenv に同名の値があっても「.env が実効」として上書き扱いしないこと.
+     *
+     * index.php:34 の boot_env(.., true) 経路（APP_ENV 未設定＝非 Docker）では .env が
+     * OS 環境変数に勝つ. この経路を getenv だけで判定すると誤検知し, 反映される保存を
+     * ブロックしてしまう回帰を防ぐ（#6130 の核心）.
+     */
+    public function testNotOverriddenWhenKeyIsPopulatedFromDotenv(): void
+    {
+        $this->fs->dumpFile($this->projectDir.'/.env', "ECCUBE_TEST_KEY_A=fromdotenv\n");
+        $service = new EnvFileService($this->projectDir);
+        $key = 'ECCUBE_TEST_KEY_A';
+
+        $this->withGlobals([
+            'server' => ['SYMFONY_DOTENV_VARS' => $key, $key => 'fromdotenv'],
+        ], function () use ($service, $key): void {
+            $this->assertSame([], $service->getOverriddenKeys([$key]));
+            $this->assertTrue($service->isEffective([$key]));
+        });
+    }
+
+    /**
+     * Dotenv が触れていない（SYMFONY_DOTENV_VARS 非掲載）のに $_SERVER 側に値がある
+     * キー（nginx fastcgi_param / Apache SetEnv 相当）は上書きと判定すること.
+     */
+    public function testOverriddenWhenKeyOnlyInServer(): void
     {
         $this->fs->dumpFile($this->projectDir.'/.env', "FOO=bar\n");
+        $service = new EnvFileService($this->projectDir);
+        $key = 'ECCUBE_TEST_KEY_B';
 
+        $this->withGlobals([
+            'server' => ['SYMFONY_DOTENV_VARS' => '', $key => 'osvalue'],
+        ], function () use ($service, $key): void {
+            $this->assertSame([$key], $service->getOverriddenKeys([$key]));
+            $this->assertFalse($service->isEffective([$key]));
+        });
+    }
+
+    /**
+     * .env.local / .env.$APP_ENV 等のカスケードファイルで対象キーが再定義されている場合,
+     * .env の値は上書きされるため上書きと判定すること. 対象キーを含まないファイルは無視すること.
+     */
+    public function testOverriddenWhenKeyRedefinedInCascadeFile(): void
+    {
+        $this->fs->dumpFile($this->projectDir.'/.env', "ECCUBE_TEST_KEY_A=fromdotenv\nECCUBE_TEST_KEY_B=fromdotenv\n");
+        // .env.local は KEY_A のみ再定義する
+        $this->fs->dumpFile($this->projectDir.'/.env.local', "ECCUBE_TEST_KEY_A=fromlocal\n");
         $service = new EnvFileService($this->projectDir);
 
-        $key = 'ECCUBE_TEST_OVERRIDE_KEY';
-        $original = getenv($key);
-        putenv($key.'=1');
+        $this->withGlobals([
+            'server' => ['SYMFONY_DOTENV_VARS' => 'ECCUBE_TEST_KEY_A,ECCUBE_TEST_KEY_B'],
+        ], function () use ($service): void {
+            // KEY_A はカスケードで上書きされるため反映されない
+            $this->assertSame(['ECCUBE_TEST_KEY_A'], $service->getOverriddenKeys(['ECCUBE_TEST_KEY_A']));
+            // KEY_B はカスケードに無く .env 由来のため反映される
+            $this->assertSame([], $service->getOverriddenKeys(['ECCUBE_TEST_KEY_B']));
+        });
+    }
+
+    /**
+     * 複数キーのうち上書きされているキーだけを部分集合として返すこと（画面全体を止めないための土台）.
+     */
+    public function testGetOverriddenKeysReturnsOnlyOverriddenSubset(): void
+    {
+        $this->fs->dumpFile($this->projectDir.'/.env', "ECCUBE_TEST_KEY_A=fromdotenv\nECCUBE_TEST_KEY_B=fromdotenv\n");
+        $service = new EnvFileService($this->projectDir);
+
+        $this->withGlobals([
+            // KEY_A/KEY_B は .env 由来。うち KEY_A だけ OS 環境変数が上書き（SYMFONY_DOTENV_VARS には未掲載）
+            'server' => ['SYMFONY_DOTENV_VARS' => 'ECCUBE_TEST_KEY_B', 'ECCUBE_TEST_KEY_A' => 'osvalue'],
+        ], function () use ($service): void {
+            $this->assertSame(
+                ['ECCUBE_TEST_KEY_A'],
+                $service->getOverriddenKeys(['ECCUBE_TEST_KEY_A', 'ECCUBE_TEST_KEY_B'])
+            );
+        });
+    }
+
+    public function testGetOverriddenKeysReturnsEmptyForNoKeys(): void
+    {
+        $this->fs->dumpFile($this->projectDir.'/.env', "FOO=bar\n");
+        $service = new EnvFileService($this->projectDir);
+
+        $this->assertSame([], $service->getOverriddenKeys([]));
+    }
+
+    /**
+     * $_SERVER / $_ENV の指定キーを一時的に差し替え, コールバック実行後に元へ復元する.
+     *
+     * @param array{server?: array<string, string>, env?: array<string, string>} $overrides
+     */
+    private function withGlobals(array $overrides, callable $fn): void
+    {
+        $sentinel = '__ECCUBE_TEST_UNSET__';
+        $backup = ['server' => [], 'env' => []];
+
+        foreach (($overrides['server'] ?? []) as $key => $value) {
+            $backup['server'][$key] = \array_key_exists($key, $_SERVER) ? $_SERVER[$key] : $sentinel;
+            $_SERVER[$key] = $value;
+        }
+        foreach (($overrides['env'] ?? []) as $key => $value) {
+            $backup['env'][$key] = \array_key_exists($key, $_ENV) ? $_ENV[$key] : $sentinel;
+            $_ENV[$key] = $value;
+        }
+
         try {
-            $reasons = $service->getIneffectiveReasons([$key]);
-            $this->assertContains(EnvFileService::REASON_OVERRIDDEN, $reasons);
-            $this->assertFalse($service->isEffective([$key]));
-            // 対象キーに含めなければ反映可能と判定される
-            $this->assertTrue($service->isEffective(['UNRELATED_KEY']));
+            $fn();
         } finally {
-            // 実行環境が事前に設定していた値を復元する
-            false === $original ? putenv($key) : putenv($key.'='.$original);
+            foreach ($backup['server'] as $key => $value) {
+                if ($sentinel === $value) {
+                    unset($_SERVER[$key]);
+                } else {
+                    $_SERVER[$key] = $value;
+                }
+            }
+            foreach ($backup['env'] as $key => $value) {
+                if ($sentinel === $value) {
+                    unset($_ENV[$key]);
+                } else {
+                    $_ENV[$key] = $value;
+                }
+            }
         }
     }
 }
