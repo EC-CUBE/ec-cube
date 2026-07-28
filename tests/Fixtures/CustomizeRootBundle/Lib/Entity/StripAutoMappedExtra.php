@@ -13,6 +13,7 @@
 
 namespace Customize\Lib\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -24,7 +25,7 @@ use Doctrine\ORM\Mapping as ORM;
 class StripAutoMappedExtra
 {
     #[ORM\Id]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: Types::INTEGER)]
     #[ORM\GeneratedValue]
     private ?int $id = null;
 

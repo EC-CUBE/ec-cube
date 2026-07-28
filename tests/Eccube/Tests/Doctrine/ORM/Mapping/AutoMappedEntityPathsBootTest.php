@@ -15,6 +15,8 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Doctrine\ORM\Mapping;
 
+use Customize\Entity\StripAutoMappedTarget;
+use Customize\Lib\Entity\StripAutoMappedExtra;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Filesystem\Filesystem;
@@ -50,9 +52,10 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 final class AutoMappedEntityPathsBootTest extends KernelTestCase
 {
-    private const TARGET_ENTITY = 'Customize\\Entity\\StripAutoMappedTarget';
+    // fixture を app/Customize へ配置して初めて実体を持つクラス. ::class は静的解決のためロードは発生しない
+    private const TARGET_ENTITY = StripAutoMappedTarget::class;
 
-    private const EXTRA_ENTITY = 'Customize\\Lib\\Entity\\StripAutoMappedExtra';
+    private const EXTRA_ENTITY = StripAutoMappedExtra::class;
 
     private string $projectDir;
 
