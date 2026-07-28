@@ -78,16 +78,14 @@ return RectorConfig::configure()
                // 型解決(get(PurchaseFlow::class))に置き換えると両者の区別が失われテストが無意味化する
                ContainerGetNameToTypeInTestsRector::class => [
                    __DIR__.'/tests/Eccube/Tests/Service/PurchaseFlow/OrderMemoFlowTest.php',
+                   // private / チャネル別ロガー ('security.firewall.map' / 'monolog.logger.mcp') も
+                   // 型でなく文字列 ID で取得するため FQCN 変換を除外する
+                   __DIR__.'/tests/Eccube/Tests/Service/Mcp/Contract/Api44LifecycleContractTest.php',
+                   __DIR__.'/tests/Eccube/Tests/Service/Mcp/Contract/McpAuditLogIsolationContractTest.php',
                ],
                // 8.3以上で対応可能
                AddTypeToConstRector::class, // [BC]定数に型を追加する PHP 8.3 以降で有効
                RenameMethodRector::class, //addがaddCommandに変換されてしまうため一旦スキップ
-               // 文字列 service ID (private / チャネル別ロガー等) を FQCN に変換すると解決できないテスト
-               // ('security.firewall.map'、 'monolog.logger.mcp' は型ではなく ID で取得する必要がある)
-               \Rector\Symfony\Symfony34\Rector\Closure\ContainerGetNameToTypeInTestsRector::class => [
-                   __DIR__.'/tests/Eccube/Tests/Service/Mcp/Contract/Api44LifecycleContractTest.php',
-                   __DIR__.'/tests/Eccube/Tests/Service/Mcp/Contract/McpAuditLogIsolationContractTest.php',
-               ],
                // EccubeCliToolCommand の description は runtime (ツールの description) で組み立てるため、
                // #[AsCommand(description:)] へ移せない (属性は定数式のみ)。 このルールをスキップする。
                CommandConfigureToAttributeRector::class => [

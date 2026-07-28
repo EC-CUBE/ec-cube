@@ -39,8 +39,8 @@ final class OrderMemoFlowTest extends EccubeTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->shoppingFlow = static::getContainer()->get(PurchaseFlow::class);
-        $this->orderFlow = static::getContainer()->get(PurchaseFlow::class);
+        $this->shoppingFlow = static::getContainer()->get('eccube.purchase.flow.shopping');
+        $this->orderFlow = static::getContainer()->get('eccube.purchase.flow.order');
     }
 
     public function testRegisteredInShoppingFlow(): void
