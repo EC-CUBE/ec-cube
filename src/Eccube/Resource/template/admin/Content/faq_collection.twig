@@ -1,0 +1,95 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+商品編集・カテゴリ編集で共用する FAQ 入力コレクション。
+呼び出し側から `faqs`（form.faqs の FormView）を渡す。
+#}
+{% macro faq_item(faq) %}
+    <div class="faq-collection__item card border mb-2">
+        <div class="card-body">
+            <div class="d-flex justify-content-end">
+                <button type="button" class="btn btn-ec-actionIcon faq-collection__remove"
+                        data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.delete'|trans }}">
+                    <i class="fa fa-trash fa-lg text-secondary"></i>
+                </button>
+            </div>
+            <div class="row mb-2 align-items-center">
+                <div class="col-3">
+                    <span>{{ 'admin.content.faq.question'|trans }}</span>
+                </div>
+                <div class="col-9">
+                    {{ form_widget(faq.question) }}
+                    {{ form_errors(faq.question) }}
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-3">
+                    <span>{{ 'admin.content.faq.answer'|trans }}</span>
+                </div>
+                <div class="col-9">
+                    {{ form_widget(faq.answer, {attr: {rows: '4'}}) }}
+                    {{ form_errors(faq.answer) }}
+                </div>
+            </div>
+            <div class="row mb-2 align-items-center">
+                <div class="col-3">
+                    <span>{{ 'admin.content.faq.sort_no'|trans }}</span>
+                </div>
+                <div class="col-3">
+                    {{ form_widget(faq.sort_no) }}
+                    {{ form_errors(faq.sort_no) }}
+                </div>
+                <div class="col-3">
+                    <span>{{ 'admin.content.faq.display_status'|trans }}</span>
+                </div>
+                <div class="col-3">
+                    {{ form_widget(faq.visible) }}
+                    {{ form_errors(faq.visible) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{% import _self as faqMacro %}
+
+<div class="faq-collection"
+     data-prototype="{{ faqMacro.faq_item(faqs.vars.prototype)|e('html_attr') }}"
+     data-index="{{ faqs.children|length }}">
+    <div class="faq-collection__items">
+        {% for faq in faqs %}
+            {{ faqMacro.faq_item(faq) }}
+        {% endfor %}
+    </div>
+    <div class="mt-2">
+        <button type="button" class="btn btn-ec-regular faq-collection__add">{{ 'admin.content.faq.add'|trans }}</button>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.faq-collection').each(function () {
+            var $collection = $(this);
+            var $items = $collection.find('.faq-collection__items');
+
+            $collection.find('.faq-collection__add').on('click', function () {
+                var index = parseInt($collection.attr('data-index'), 10);
+                var prototype = $collection.attr('data-prototype');
+                var newForm = prototype.replace(/__name__/g, index);
+                $collection.attr('data-index', index + 1);
+                $items.append(newForm);
+            });
+
+            $collection.on('click', '.faq-collection__remove', function () {
+                $(this).closest('.faq-collection__item').remove();
+            });
+        });
+    });
+</script>

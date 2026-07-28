@@ -172,6 +172,15 @@ class ProductType extends AbstractType
             ->add('return_link', HiddenType::class, [
                 'mapped' => false,
             ])
+            // 商品ごとFAQ
+            ->add('faqs', CollectionType::class, [
+                'entry_type' => FaqType::class,
+                'prototype' => true,
+                'mapped' => true,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+            ])
         ;
 
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {

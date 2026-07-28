@@ -1,0 +1,117 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends '@admin/default_frame.twig' %}
+
+{% set menus = ['content', 'faq'] %}
+
+
+{% block title %}{{ 'admin.content.faq_management'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.content.contents_management'|trans }}{% endblock %}
+
+{% block stylesheet %}
+    <style type="text/css">
+        li.list-group-item {
+            z-index: inherit !important;
+        }
+    </style>
+{% endblock %}
+
+{% block main %}
+    <div class="c-contentsArea__cols">
+        <div class="c-contentsArea__primaryCol">
+            <div class="c-primaryCol">
+                <div class="d-block mb-3">
+                    <a id="addNew" class="btn btn-ec-regular"
+                       href="{{ url('admin_content_faq_new') }}">{{ 'admin.common.create__new'|trans }}</a>
+                </div>
+                <div class="card rounded border-0 mb-4">
+                    <div class="card-body p-0">
+                        <ul class="list-group list-group-flush mb-4">
+                            <li class="list-group-item">
+                                <div class="row justify-content-around">
+                                    <div class="col-2"><strong>{{ 'admin.content.faq.sort_no'|trans }}</strong>
+                                    </div>
+                                    <div class="col-1"><strong>{{ 'admin.content.faq.display_status'|trans }}</strong>
+                                    </div>
+                                    <div class="col"><strong>{{ 'admin.content.faq.question'|trans }}</strong></div>
+                                </div>
+                            </li>
+                            {% for Faq in pagination %}
+                                <li class="list-group-item" data-id="{{ Faq.id }}">
+                                    <div class="row justify-content-around">
+                                        <div class="col-2 d-flex align-items-center">
+                                            <span>{{ Faq.sortNo }}</span></div>
+                                        <div class="col-1 d-flex align-items-center">{{ Faq.visible ? 'admin.common.show'|trans : 'admin.common.hide'|trans }}</div>
+                                        <div class="col d-flex align-items-center"><a
+                                                    href="{{ url('admin_content_faq_edit', {id: Faq.id}) }}">{{ Faq.question }}</a>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="row">
+                                                <div class="col px-0 text-center">
+                                                    <a class="btn btn-ec-actionIcon"
+                                                       href="{{ url('admin_content_faq_edit', {id: Faq.id}) }}"
+                                                       data-bs-toggle="tooltip" data-bs-placement="top"
+                                                       title="{{ 'admin.common.edit'|trans }}">
+                                                        <i class="fa fa-pencil fa-lg text-secondary"></i>
+                                                    </a>
+                                                </div>
+                                                <div class="col ps-0 text-center" data-bs-toggle="tooltip"
+                                                     data-bs-placement="top" title="{{ 'admin.common.delete'|trans }}">
+                                                    <a class="btn btn-ec-actionIcon" data-bs-toggle="modal"
+                                                       data-bs-target="#delete_{{ Faq.id }}">
+                                                        <i class="fa fa-close fa-lg text-secondary"
+                                                           aria-hidden="true"></i>
+                                                    </a>
+                                                    <div class="modal fade" id="delete_{{ Faq.id }}" tabindex="-1"
+                                                         role="dialog"
+                                                         aria-labelledby="delete_{{ Faq.id }}" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title fw-bold">{{ 'admin.common.delete_modal__title'|trans }}</h5>
+                                                                    <button class="btn-close" type="button"
+                                                                            data-bs-dismiss="modal"
+                                                                            aria-label="Close">
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body text-start">
+                                                                    <p class="text-start">{{ 'admin.common.delete_modal__message'|trans({'%name%': Faq.question}) }}</p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button class="btn btn-ec-sub" type="button"
+                                                                            data-bs-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
+                                                                    <a class="btn btn-ec-delete"
+                                                                       href="{{ url('admin_content_faq_delete', {id: Faq.id}) }}" {{ csrf_token_for_anchor() }}
+                                                                       data-method="delete"
+                                                                       data-confirm="false">{{ 'admin.common.delete'|trans }}</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+
+                        {% if pagination.paginationData.pageCount > 1 %}
+                            <div class="row justify-content-md-center mb-4">
+                                {% include "@admin/pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_content_faq_page' } %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

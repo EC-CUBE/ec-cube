@@ -20396,3 +20396,50 @@ Styleguide 22.1
     flex: 1;
   }
 }
+
+/* FAQ (#6148) */
+.ec-faqRole {
+  padding: 40px 0 0;
+}
+.ec-faqRole .ec-faqRole__list {
+  box-sizing: border-box;
+}
+.ec-faqRole .ec-faqRole__item {
+  width: 100%;
+  margin: 0;
+  padding: 16px 0;
+}
+.ec-faqRole .ec-faqRole__item:not(:last-of-type) {
+  border-bottom: 1px solid #ccc;
+}
+.ec-faqRole .ec-faqRole__question {
+  position: relative;
+  padding-left: 1.75em;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+.ec-faqRole .ec-faqRole__question::before {
+  content: "Q.";
+  position: absolute;
+  left: 0;
+  color: #de5d50;
+  font-weight: bold;
+}
+.ec-faqRole .ec-faqRole__answer {
+  position: relative;
+  padding-left: 1.75em;
+  margin: 0;
+  color: #525263;
+}
+.ec-faqRole .ec-faqRole__answer::before {
+  content: "A.";
+  position: absolute;
+  left: 0;
+  color: #5b8bd8;
+  font-weight: bold;
+}
+@media (min-width: 768px) {
+  .ec-faqRole {
+    padding: 60px 0 0;
+  }
+}

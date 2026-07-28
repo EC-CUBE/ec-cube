@@ -95,6 +95,9 @@ file that was distributed with this source code.
             $('.ec-modal').hide()
         });
     </script>
+    {% if faq_json_ld is defined and faq_json_ld %}
+    <script type="application/ld+json">{{ faq_json_ld|json_ld }}</script>
+    {% endif %}
 {% endblock %}
 
 {% block main %}
@@ -230,5 +233,20 @@ file that was distributed with this source code.
                 {% include "pager.twig" with {'pages': pagination.paginationData} %}
             </div>
         {% endif %}
+    {% endif %}
+    {% if Faqs is defined and Faqs is not empty %}
+        <div class="ec-role ec-faqRole">
+            <div class="ec-secHeading">
+                <span class="ec-secHeading__en">{{ 'front.block.faq.title'|trans }}</span>
+            </div>
+            <div class="ec-faqRole__list">
+                {% for Faq in Faqs %}
+                    <dl class="ec-faqRole__item">
+                        <dt class="ec-faqRole__question">{{ Faq.question }}</dt>
+                        <dd class="ec-faqRole__answer">{{ Faq.answer|raw }}</dd>
+                    </dl>
+                {% endfor %}
+            </div>
+        </div>
     {% endif %}
 {% endblock %}

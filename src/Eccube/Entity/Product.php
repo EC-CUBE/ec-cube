@@ -510,6 +510,13 @@ class Product extends AbstractEntity implements \Stringable
     #[ORM\OneToMany(targetEntity: CustomerFavoriteProduct::class, mappedBy: 'Product')]
     private Collection $CustomerFavoriteProducts;
 
+    /**
+     * @var Collection<int, Faq>
+     */
+    #[ORM\OneToMany(targetEntity: Faq::class, mappedBy: 'Product', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OrderBy(['sort_no' => 'ASC'])]
+    private Collection $Faqs;
+
     #[ORM\ManyToOne(targetEntity: Member::class)]
     #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
     private ?Member $Creator = null;
@@ -528,6 +535,7 @@ class Product extends AbstractEntity implements \Stringable
         $this->ProductImage = new ArrayCollection();
         $this->ProductTag = new ArrayCollection();
         $this->CustomerFavoriteProducts = new ArrayCollection();
+        $this->Faqs = new ArrayCollection();
     }
 
     public function __clone()
@@ -578,6 +586,13 @@ class Product extends AbstractEntity implements \Stringable
             $CloneTag = clone $Tag;
             $this->addProductTag($CloneTag);
             $CloneTag->setProduct($this);
+        }
+
+        $Faqs = $Product->getFaqs();
+        $this->Faqs = new ArrayCollection();
+        foreach ($Faqs as $Faq) {
+            $CloneFaq = clone $Faq;
+            $this->addFaq($CloneFaq);
         }
 
         return $this;
@@ -890,6 +905,39 @@ class Product extends AbstractEntity implements \Stringable
         usort($tags, fn (Tag $tag1, Tag $tag2) => $tag1->getSortNo() <=> $tag2->getSortNo());
 
         return $tags;
+    }
+
+    /**
+     * Add faq.
+     */
+    public function addFaq(Faq $faq): Product
+    {
+        if (!$this->Faqs->contains($faq)) {
+            $this->Faqs[] = $faq;
+            $faq->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove faq.
+     *
+     * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeFaq(Faq $faq): bool
+    {
+        return $this->Faqs->removeElement($faq);
+    }
+
+    /**
+     * Get faqs.
+     *
+     * @return Collection<int, Faq>
+     */
+    public function getFaqs(): Collection
+    {
+        return $this->Faqs;
     }
 
     /**

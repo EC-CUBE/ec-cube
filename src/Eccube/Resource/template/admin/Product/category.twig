@@ -234,6 +234,12 @@ file that was distributed with this source code.
                                                            title="{{ 'admin.common.edit'|trans }}">
                                                             <i class="fa fa-pencil fa-lg text-secondary"></i>
                                                         </a>
+                                                        <a class="btn btn-ec-actionIcon me-2"
+                                                           href="{{ url('admin_product_category_faq', {id: Category.id}) }}"
+                                                           data-bs-toggle="tooltip" data-bs-placement="top"
+                                                           title="{{ 'admin.content.faq.category_faq'|trans }}">
+                                                            <i class="fa fa-comments-o fa-lg text-secondary"></i>
+                                                        </a>
                                                         <div class="d-inline-block me-2" data-bs-toggle="tooltip" data-bs-placement="top"
                                                              title="{{ 'admin.common.delete'|trans }}">
                                                             <a class="btn btn-ec-actionIcon{% if Category.Children|length > 0 or Category.hasProductCategories %} disabled{% endif %}"

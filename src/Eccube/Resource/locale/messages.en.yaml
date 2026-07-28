@@ -1130,6 +1130,16 @@ admin.content.news.url: URL
 admin.content.news.body: Body
 admin.content.news.news_registration: Create News
 admin.content.news.new_window: Open in a New Window
+admin.content.faq_management: FAQ
+admin.content.faq.question: Question
+admin.content.faq.answer: Answer
+admin.content.faq.sort_no: Display Order
+admin.content.faq.display_status: Display Status
+admin.content.faq.faq_registration: Create FAQ
+admin.content.faq.product_faq: Product FAQ
+admin.content.faq.category_faq: Category FAQ
+admin.content.faq.add: Add FAQ
+front.block.faq.title: FAQ
 admin.content.maintenance__card_title: Maintenance mode
 admin.content.maintenance_message: |
   When the maintenance mode is enabled, the shop is temporarily stopped and only the Admin Console can be accessed.

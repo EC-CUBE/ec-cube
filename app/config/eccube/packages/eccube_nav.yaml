@@ -61,6 +61,9 @@ parameters:
                 news:
                     name: admin.content.news_management
                     url : admin_content_news
+                faq:
+                    name: admin.content.faq_management
+                    url: admin_content_faq
                 file:
                     name: admin.content.file_management
                     url: admin_content_file

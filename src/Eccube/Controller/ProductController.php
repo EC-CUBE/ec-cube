@@ -23,9 +23,11 @@ use Eccube\Form\Type\AddCartType;
 use Eccube\Form\Type\SearchProductType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerFavoriteProductRepository;
+use Eccube\Repository\FaqRepository;
 use Eccube\Repository\Master\ProductListMaxRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Service\CartService;
+use Eccube\Service\FaqStructuredDataService;
 use Eccube\Service\ProductStructuredDataService;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
@@ -64,6 +66,8 @@ class ProductController extends AbstractController
         protected ProductListMaxRepository $productListMaxRepository,
         private readonly PaginatorInterface $paginator,
         private readonly ProductStructuredDataService $productStructuredDataService,
+        private readonly FaqRepository $faqRepository,
+        private readonly FaqStructuredDataService $faqStructuredDataService,
     ) {
         $this->purchaseFlow = $cartPurchaseFlow;
         $this->BaseInfo = $baseInfoRepository->get();
@@ -159,12 +163,16 @@ class ProductController extends AbstractController
 
         $Category = $searchForm->get('category_id')->getData();
 
+        $categoryFaqs = $Category ? $this->faqRepository->getCategoryFaq($Category) : [];
+
         return [
             'subtitle' => $this->getPageTitle($searchData),
             'pagination' => $pagination,
             'search_form' => $searchForm->createView(),
             'forms' => $forms,
             'Category' => $Category,
+            'Faqs' => $categoryFaqs,
+            'faq_json_ld' => $this->faqStructuredDataService->createFaqPageJsonLd($categoryFaqs),
         ];
     }
 
@@ -216,6 +224,8 @@ class ProductController extends AbstractController
             $this->eccubeConfig['currency'],
         );
 
+        $productFaqs = $this->faqRepository->getProductFaq($Product);
+
         return [
             'title' => $this->title,
             'subtitle' => $Product->getName(),
@@ -223,6 +233,8 @@ class ProductController extends AbstractController
             'Product' => $Product,
             'is_favorite' => $is_favorite,
             'product_json_ld' => $productJsonLd,
+            'Faqs' => $productFaqs,
+            'faq_json_ld' => $this->faqStructuredDataService->createFaqPageJsonLd($productFaqs),
         ];
     }
 
