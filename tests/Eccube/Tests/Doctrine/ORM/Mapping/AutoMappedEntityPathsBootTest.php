@@ -47,6 +47,11 @@ use Symfony\Component\Process\Process;
  * 同一プロセスで起動すると tearDown が実行されず fixture が残るため、
  * 子プロセスに閉じ込めて終了コードで判定する.
  *
+ * サブプロセスは専用の APP_ENV で実行する. fixture を反映させるにはコンテナの再生成が必要だが、
+ * var/cache/test を削除すると、同一プロセスで実行中の他テストがコンテナから遅延ロードする
+ * サービス定義ファイルまで消えてしまうため (Kernel::configureContainer は
+ * packages/<env> を is_dir で判定するので、専用環境名でも共通設定だけで起動できる).
+ *
  * 実プロジェクトのファイルを一時的に置き換えるため、既存ファイルは setUp で退避し tearDown で復元する.
  *
  * @see https://github.com/EC-CUBE/ec-cube/issues/6979
@@ -60,6 +65,9 @@ final class AutoMappedEntityPathsBootTest extends TestCase
     private const EXTRA_ENTITY = StripAutoMappedExtra::class;
 
     private const PROXY_PATH = 'app/proxy/entity/app/Customize/Entity/StripAutoMappedTarget.php';
+
+    /** サブプロセス専用の環境名. var/cache/test を他テストと共有しないために分ける */
+    private const SUBPROCESS_ENV = 'test_auto_mapped';
 
     /**
      * 本テストが作成・削除するパス (プロジェクトルートからの相対).
@@ -101,13 +109,13 @@ final class AutoMappedEntityPathsBootTest extends TestCase
         );
 
         // 明示登録・auto_mapping ともにコンパイル時に決まるため、コンテナを作り直させる
-        $this->fs->remove($this->projectDir.'/var/cache/test');
+        $this->fs->remove($this->subprocessCacheDir());
     }
 
     protected function tearDown(): void
     {
         $this->restoreStashedFiles();
-        $this->fs->remove($this->projectDir.'/var/cache/test');
+        $this->fs->remove($this->subprocessCacheDir());
         parent::tearDown();
     }
 
@@ -119,7 +127,11 @@ final class AutoMappedEntityPathsBootTest extends TestCase
      */
     public function testMappingIsResolvedWithRootLevelBundleAndProxy(): void
     {
-        $process = new Process(['bin/console', 'doctrine:mapping:info'], $this->projectDir, ['APP_ENV' => 'test']);
+        $process = new Process(
+            ['bin/console', 'doctrine:mapping:info'],
+            $this->projectDir,
+            ['APP_ENV' => self::SUBPROCESS_ENV]
+        );
         $process->run();
 
         $output = $process->getOutput().$process->getErrorOutput();
@@ -140,6 +152,11 @@ final class AutoMappedEntityPathsBootTest extends TestCase
             $output,
             'auto_mapping 側のパス除去が過剰で、第三者バンドルの Entity まで失われている'
         );
+    }
+
+    private function subprocessCacheDir(): string
+    {
+        return $this->projectDir.'/var/cache/'.self::SUBPROCESS_ENV;
     }
 
     /**
