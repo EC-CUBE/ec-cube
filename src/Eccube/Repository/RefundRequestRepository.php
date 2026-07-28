@@ -39,7 +39,9 @@ class RefundRequestRepository extends AbstractRepository
      */
     public function getQueryBuilderBySearchData(array $searchData): QueryBuilder
     {
+        // ToOne の関連は addSelect で同時ハイドレートし, 管理一覧・CSV エクスポートでの N+1 を防ぐ.
         $qb = $this->createQueryBuilder('rr')
+            ->addSelect('o', 'oi', 'c', 's')
             ->innerJoin('rr.Order', 'o')
             ->innerJoin('rr.OrderItem', 'oi')
             ->innerJoin('rr.Customer', 'c')
