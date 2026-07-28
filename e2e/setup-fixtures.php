@@ -48,13 +48,13 @@ if ($existingCustomers < $customerNum) {
     for ($i = 0; $i < $needed; $i++) {
         $email = microtime(true).'.'.$faker->safeEmail;
         $Customer = $generator->createCustomer($email);
-        $Status = $entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::ACTIVE);
+        $Status = $entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::REGULAR);
         $Customer->setStatus($Status);
         $entityManager->flush($Customer);
     }
     // 仮会員も1名作成
     $nonActiveCustomer = $generator->createCustomer(microtime(true).'.'.$faker->safeEmail);
-    $nonActiveStatus = $entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::NONACTIVE);
+    $nonActiveStatus = $entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::PROVISIONAL);
     $nonActiveCustomer->setStatus($nonActiveStatus);
     $entityManager->flush($nonActiveCustomer);
     echo "  Created ".($needed + 1)." customers\n";
@@ -138,7 +138,7 @@ $testEmail = 'playwright@test.test';
 $existing = $entityManager->getRepository(Customer::class)->findOneBy(['email' => $testEmail]);
 if (!$existing) {
     $testCustomer = $generator->createCustomer($testEmail);
-    $Status = $entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::ACTIVE);
+    $Status = $entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::REGULAR);
     $testCustomer->setStatus($Status);
     $entityManager->flush($testCustomer);
     echo "  Created test customer: $testEmail\n";

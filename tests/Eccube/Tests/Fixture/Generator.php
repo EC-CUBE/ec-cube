@@ -893,7 +893,7 @@ class Generator
      * @param array $options {
      *
      *     @var Sex|null            $sex            全 Customer に設定する Sex
-     *     @var CustomerStatus|null $status         全 Customer に設定する CustomerStatus (デフォルト: ACTIVE)
+     *     @var CustomerStatus|null $status         全 Customer に設定する CustomerStatus (デフォルト: REGULAR)
      *     @var callable|null       $emailTemplate  function(int $i): string でメールアドレスを生成
      * }
      *
