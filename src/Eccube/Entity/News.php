@@ -39,11 +39,8 @@ class News extends AbstractEntity implements \Stringable
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     private ?int $id = null;
 
-    /**
-     * @var \DateTime|null
-     */
     #[ORM\Column(name: 'publish_date', type: Types::DATETIMETZ_MUTABLE, nullable: true)]
-    private $publish_date;
+    private ?\DateTime $publish_date = null;
 
     #[ORM\Column(name: 'title', type: Types::STRING, length: 255)]
     private ?string $title = null;
@@ -57,17 +54,11 @@ class News extends AbstractEntity implements \Stringable
     #[ORM\Column(name: 'link_method', type: Types::BOOLEAN, options: ['default' => false])]
     private bool $link_method = false;
 
-    /**
-     * @var \DateTime
-     */
     #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
-    private $create_date;
+    private ?\DateTime $create_date = null;
 
-    /**
-     * @var \DateTime
-     */
     #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
-    private $update_date;
+    private ?\DateTime $update_date = null;
 
     #[ORM\Column(name: 'visible', type: Types::BOOLEAN, options: ['default' => true])]
     private ?bool $visible = null;

@@ -547,8 +547,8 @@ class InstallController extends AbstractController
                 $this->addInfo(trans('install.recommend_extension_disabled', ['%module%' => 'wincache']), 'install');
             }
         } else {
-            if (!extension_loaded('apc')) {
-                $this->addInfo(trans('install.recommend_extension_disabled', ['%module%' => 'apc']), 'install');
+            if (!extension_loaded('apcu')) {
+                $this->addInfo(trans('install.recommend_extension_disabled', ['%module%' => 'apcu']), 'install');
             }
         }
         if (isset($_SERVER['SERVER_SOFTWARE']) && str_contains((string) $_SERVER['SERVER_SOFTWARE'], 'Apache')) {

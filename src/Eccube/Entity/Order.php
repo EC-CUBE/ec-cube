@@ -128,6 +128,10 @@ class Order extends AbstractEntity implements PurchaseInterface, ItemHolderInter
         $taxFreeDiscount = $this->getTaxFreeDiscount();
 
         foreach ($this->getTaxableTotalByTaxRate() as $rate => $totalPrice) {
+            if (!array_key_exists($rate, $roundingTypes) || null === $roundingTypes[$rate]) {
+                continue;
+            }
+
             if (bccomp($taxableTotal, '0', 2) !== 0) {
                 // 按分計算: totalPrice - (abs(taxFreeDiscount) * totalPrice / taxableTotal)
                 $absDiscount = ltrim($taxFreeDiscount, '-');
@@ -392,11 +396,8 @@ class Order extends AbstractEntity implements PurchaseInterface, ItemHolderInter
     #[ORM\Column(name: 'addr02', type: Types::STRING, length: 255, nullable: true)]
     private ?string $addr02 = null;
 
-    /**
-     * @var \DateTime|null
-     */
     #[ORM\Column(name: 'birth', type: Types::DATETIMETZ_MUTABLE, nullable: true)]
-    private $birth;
+    private ?\DateTime $birth = null;
 
     #[ORM\Column(name: 'subtotal', type: Types::DECIMAL, precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
     private ?string $subtotal = '0';
@@ -428,29 +429,17 @@ class Order extends AbstractEntity implements PurchaseInterface, ItemHolderInter
     #[ORM\Column(name: 'note', type: Types::STRING, length: 4000, nullable: true)]
     private ?string $note = null;
 
-    /**
-     * @var \DateTime
-     */
     #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
-    private $create_date;
+    private ?\DateTime $create_date = null;
 
-    /**
-     * @var \DateTime
-     */
     #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
-    private $update_date;
+    private ?\DateTime $update_date = null;
 
-    /**
-     * @var \DateTime|null
-     */
     #[ORM\Column(name: 'order_date', type: Types::DATETIMETZ_MUTABLE, nullable: true)]
-    private $order_date;
+    private ?\DateTime $order_date = null;
 
-    /**
-     * @var \DateTime|null
-     */
     #[ORM\Column(name: 'payment_date', type: Types::DATETIMETZ_MUTABLE, nullable: true)]
-    private $payment_date;
+    private ?\DateTime $payment_date = null;
 
     #[ORM\Column(name: 'currency_code', type: Types::STRING, nullable: true)]
     private ?string $currency_code = null;
@@ -495,20 +484,20 @@ class Order extends AbstractEntity implements PurchaseInterface, ItemHolderInter
      * @var Collection<int, OrderItem>
      */
     #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'Order', cascade: ['persist', 'remove'])]
-    private $OrderItems;
+    private Collection $OrderItems;
 
     /**
      * @var Collection<int, Shipping>
      */
     #[ORM\OneToMany(targetEntity: Shipping::class, mappedBy: 'Order', cascade: ['persist', 'remove'])]
-    private $Shippings;
+    private Collection $Shippings;
 
     /**
      * @var Collection<int, MailHistory>
      */
     #[ORM\OneToMany(targetEntity: MailHistory::class, mappedBy: 'Order', cascade: ['remove'])]
     #[ORM\OrderBy(['send_date' => 'DESC'])]
-    private $MailHistories;
+    private Collection $MailHistories;
 
     #[ORM\ManyToOne(targetEntity: Customer::class, inversedBy: 'Orders')]
     #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'id')]

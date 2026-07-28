@@ -81,17 +81,11 @@ class Page extends AbstractEntity
     #[ORM\Column(name: 'keyword', type: Types::STRING, length: 255, nullable: true)]
     private ?string $keyword = null;
 
-    /**
-     * @var \DateTime
-     */
     #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
-    private $create_date;
+    private ?\DateTime $create_date = null;
 
-    /**
-     * @var \DateTime
-     */
     #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
-    private $update_date;
+    private ?\DateTime $update_date = null;
 
     #[ORM\Column(name: 'meta_robots', type: Types::STRING, length: 255, nullable: true)]
     private ?string $meta_robots = null;
@@ -103,7 +97,7 @@ class Page extends AbstractEntity
      * @var Collection<int, PageLayout>
      */
     #[ORM\OneToMany(targetEntity: PageLayout::class, mappedBy: 'Page', cascade: ['persist', 'remove'])]
-    private $PageLayouts;
+    private Collection $PageLayouts;
 
     #[ORM\ManyToOne(targetEntity: Page::class)]
     #[ORM\JoinColumn(name: 'master_page_id', referencedColumnName: 'id')]

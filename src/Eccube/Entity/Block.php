@@ -53,23 +53,17 @@ class Block extends AbstractEntity
     #[ORM\Column(name: 'deletable', type: Types::BOOLEAN, options: ['default' => true])]
     private bool $deletable = true;
 
-    /**
-     * @var \DateTime
-     */
     #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
-    private $create_date;
+    private ?\DateTime $create_date = null;
 
-    /**
-     * @var \DateTime
-     */
     #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
-    private $update_date;
+    private ?\DateTime $update_date = null;
 
     /**
      * @var Collection<int, BlockPosition>
      */
     #[ORM\OneToMany(targetEntity: BlockPosition::class, mappedBy: 'Block', cascade: ['persist', 'remove'])]
-    private $BlockPositions;
+    private Collection $BlockPositions;
 
     #[ORM\ManyToOne(targetEntity: DeviceType::class)]
     #[ORM\JoinColumn(name: 'device_type_id', referencedColumnName: 'id')]
