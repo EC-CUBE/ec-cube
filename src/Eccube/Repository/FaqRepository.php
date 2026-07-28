@@ -92,16 +92,20 @@ class FaqRepository extends AbstractRepository
      *
      * @return Faq[]
      */
-    public function getProductFaq(Product $Product): array
+    public function getProductFaq(Product $Product, ?int $limit = null): array
     {
-        return $this->createQueryBuilder('f')
+        $qb = $this->createQueryBuilder('f')
             ->where('f.Product = :Product')
             ->andWhere('f.visible = true')
             ->setParameter('Product', $Product)
             ->orderBy('f.sort_no', 'ASC')
-            ->addOrderBy('f.id', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->addOrderBy('f.id', 'ASC');
+
+        if ($limit !== null) {
+            $qb->setMaxResults($limit);
+        }
+
+        return $qb->getQuery()->getResult();
     }
 
     /**
@@ -109,15 +113,19 @@ class FaqRepository extends AbstractRepository
      *
      * @return Faq[]
      */
-    public function getCategoryFaq(Category $Category): array
+    public function getCategoryFaq(Category $Category, ?int $limit = null): array
     {
-        return $this->createQueryBuilder('f')
+        $qb = $this->createQueryBuilder('f')
             ->where('f.Category = :Category')
             ->andWhere('f.visible = true')
             ->setParameter('Category', $Category)
             ->orderBy('f.sort_no', 'ASC')
-            ->addOrderBy('f.id', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->addOrderBy('f.id', 'ASC');
+
+        if ($limit !== null) {
+            $qb->setMaxResults($limit);
+        }
+
+        return $qb->getQuery()->getResult();
     }
 }

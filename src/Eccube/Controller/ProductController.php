@@ -163,7 +163,7 @@ class ProductController extends AbstractController
 
         $Category = $searchForm->get('category_id')->getData();
 
-        $categoryFaqs = $Category ? $this->faqRepository->getCategoryFaq($Category) : [];
+        $categoryFaqs = $Category ? $this->faqRepository->getCategoryFaq($Category, $this->eccubeConfig['eccube_max_number_faq_get']) : [];
 
         return [
             'subtitle' => $this->getPageTitle($searchData),
@@ -224,7 +224,7 @@ class ProductController extends AbstractController
             $this->eccubeConfig['currency'],
         );
 
-        $productFaqs = $this->faqRepository->getProductFaq($Product);
+        $productFaqs = $this->faqRepository->getProductFaq($Product, $this->eccubeConfig['eccube_max_number_faq_get']);
 
         return [
             'title' => $this->title,

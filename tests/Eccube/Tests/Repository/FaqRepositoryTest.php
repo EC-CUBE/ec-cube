@@ -96,6 +96,9 @@ final class FaqRepositoryTest extends EccubeTestCase
 
         $questions = array_map(static fn (Faq $f): ?string => $f->getQuestion(), $result);
         $this->assertSame(['p-1', 'p-2'], $questions);
+
+        // 上限を指定するとその件数までに制限される。
+        $this->assertCount(1, $this->faqRepository->getProductFaq($Product, 1));
     }
 
     public function testGetCategoryFaq(): void
@@ -117,5 +120,8 @@ final class FaqRepositoryTest extends EccubeTestCase
             static fn (?string $q): bool => in_array($q, $mine, true)
         ));
         $this->assertSame(['c-1', 'c-2'], $questions);
+
+        // 上限を指定するとその件数までに制限される。
+        $this->assertCount(1, $this->faqRepository->getCategoryFaq($Category, 1));
     }
 }
