@@ -44,11 +44,8 @@ class ProductImage extends AbstractEntity implements \Stringable
     #[ORM\Column(name: 'sort_no', type: Types::SMALLINT, options: ['unsigned' => true])]
     private ?int $sort_no = null;
 
-    /**
-     * @var \DateTime
-     */
     #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
-    private $create_date;
+    private ?\DateTime $create_date = null;
 
     #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'ProductImage')]
     #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id')]

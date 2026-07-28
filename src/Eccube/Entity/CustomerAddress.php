@@ -110,17 +110,11 @@ class CustomerAddress extends AbstractEntity
     #[ORM\Column(name: 'phone_number', type: Types::STRING, length: 14, nullable: true)]
     private ?string $phone_number = null;
 
-    /**
-     * @var \DateTime
-     */
     #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
-    private $create_date;
+    private ?\DateTime $create_date = null;
 
-    /**
-     * @var \DateTime
-     */
     #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
-    private $update_date;
+    private ?\DateTime $update_date = null;
 
     #[ORM\ManyToOne(targetEntity: Customer::class, inversedBy: 'CustomerAddresses')]
     #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'id')]

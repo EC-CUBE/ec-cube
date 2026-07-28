@@ -195,6 +195,7 @@ id,csv_type_id,creator_id,entity_name,field_name,reference_field_name,disp_name,
 196,4,,Eccube\\Entity\\Shipping,tracking_number,,Tracking No. ,69,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
 197,4,,Eccube\\Entity\\Shipping,note,,Delivery Notes,70,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
 198,4,,Eccube\\Entity\\Shipping,mail_send_date,,Shipping notice sent on,71,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
+216,4,,Eccube\\Entity\\OrderItem,order_memo,,Order Management Memo,72,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
 199,5,,Eccube\\Entity\\Category,id,,Category ID,1,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
 200,5,,Eccube\\Entity\\Category,sort_no,,Display Priority,2,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
 201,5,,Eccube\\Entity\\Category,name,,Category Name,3,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
@@ -203,6 +204,7 @@ id,csv_type_id,creator_id,entity_name,field_name,reference_field_name,disp_name,
 204,1,,Eccube\\Entity\\ProductClass,TaxRule,tax_rate,Tax Rate,"31","0","2017-03-07 10:14:00","2017-03-07 10:14:00","csv"
 205,2,,Eccube\\Entity\\Customer,point,,Point,32,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
 206,1,,Eccube\\Entity\\ProductClass,visible,,Product options visible flag,32,0,2022-11-24 00:00:00,2022-11-24 00:00:00,csv
+215,1,,Eccube\\Entity\\Product,order_memo,,Order Management Memo,33,1,2017-03-07 10:14:00,2017-03-07 10:14:00,csv
 207,6,,Eccube\\Entity\\ClassName,id,,Class Name ID,1,1,2021-05-18 01:26:41,2021-05-18 01:26:41,csv
 208,6,,Eccube\\Entity\\ClassName,name,,Class Name,2,1,2021-05-18 01:26:41,2021-05-18 01:26:41,csv
 209,6,,Eccube\\Entity\\ClassName,backend_name,,Backend Name,3,1,2021-05-18 01:26:41,2021-05-18 01:26:41,csv

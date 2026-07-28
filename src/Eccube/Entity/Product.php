@@ -473,48 +473,45 @@ class Product extends AbstractEntity implements \Stringable
     #[ORM\Column(name: 'refund_allowed', type: Types::BOOLEAN, options: ['default' => true])]
     private bool $refund_allowed = true;
 
-    /**
-     * @var \DateTime
-     */
-    #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
-    private $create_date;
+    #[ORM\Column(name: 'order_memo', type: Types::TEXT, nullable: true)]
+    private ?string $order_memo = null;
 
-    /**
-     * @var \DateTime
-     */
+    #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
+    private ?\DateTime $create_date = null;
+
     #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
-    private $update_date;
+    private ?\DateTime $update_date = null;
 
     /**
      * @var Collection<int, ProductCategory>
      */
     #[ORM\OneToMany(targetEntity: ProductCategory::class, mappedBy: 'Product', cascade: ['persist', 'remove'])]
-    private $ProductCategories;
+    private Collection $ProductCategories;
 
     /**
      * @var Collection<int, ProductClass>
      */
     #[ORM\OneToMany(targetEntity: ProductClass::class, mappedBy: 'Product', cascade: ['persist', 'remove'])]
-    private $ProductClasses;
+    private Collection $ProductClasses;
 
     /**
      * @var Collection<int, ProductImage>
      */
     #[ORM\OneToMany(targetEntity: ProductImage::class, mappedBy: 'Product', cascade: ['remove'])]
     #[ORM\OrderBy(['sort_no' => 'ASC'])]
-    private $ProductImage;
+    private Collection $ProductImage;
 
     /**
      * @var Collection<int, ProductTag>
      */
     #[ORM\OneToMany(targetEntity: ProductTag::class, mappedBy: 'Product', cascade: ['remove'])]
-    private $ProductTag;
+    private Collection $ProductTag;
 
     /**
      * @var Collection<int, CustomerFavoriteProduct>
      */
     #[ORM\OneToMany(targetEntity: CustomerFavoriteProduct::class, mappedBy: 'Product')]
-    private $CustomerFavoriteProducts;
+    private Collection $CustomerFavoriteProducts;
 
     #[ORM\ManyToOne(targetEntity: Member::class)]
     #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
@@ -721,6 +718,24 @@ class Product extends AbstractEntity implements \Stringable
     public function isRefundAllowed(): bool
     {
         return $this->refund_allowed;
+    }
+
+    /**
+     * Set orderMemo.
+     */
+    public function setOrderMemo(?string $orderMemo = null): Product
+    {
+        $this->order_memo = $orderMemo;
+
+        return $this;
+    }
+
+    /**
+     * Get orderMemo.
+     */
+    public function getOrderMemo(): ?string
+    {
+        return $this->order_memo;
     }
 
     /**
