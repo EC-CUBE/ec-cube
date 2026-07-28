@@ -55,6 +55,11 @@ if (!class_exists(Faq::class)) {
             return (string) $this->getQuestion();
         }
 
+        public function __clone()
+        {
+            $this->id = null;
+        }
+
         #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
         #[ORM\Id]
         #[ORM\GeneratedValue(strategy: 'IDENTITY')]

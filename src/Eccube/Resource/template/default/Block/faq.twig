@@ -20,7 +20,7 @@ file that was distributed with this source code.
             {% for Faq in Faqs %}
                 <dl class="ec-faqRole__item">
                     <dt class="ec-faqRole__question">{{ Faq.question }}</dt>
-                    <dd class="ec-faqRole__answer">{{ Faq.answer|raw }}</dd>
+                    <dd class="ec-faqRole__answer">{{ Faq.answer|purify|nl2br }}</dd>
                 </dl>
             {% endfor %}
         </div>
