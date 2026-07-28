@@ -1138,6 +1138,7 @@ admin.content.faq.faq_registration: FAQ登録
 admin.content.faq.product_faq: 商品FAQ
 admin.content.faq.category_faq: カテゴリFAQ
 admin.content.faq.add: FAQを追加
+admin.content.faq.display_limit_notice: フロントに表示されるのは、公開状態が「表示」のFAQのうち表示順の上位 %count% 件までです。
 front.block.faq.title__en: FAQ
 front.block.faq.title__ja: よくある質問
 admin.content.maintenance__card_title: メンテナンスモード

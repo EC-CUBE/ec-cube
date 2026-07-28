@@ -60,6 +60,8 @@ file that was distributed with this source code.
 
 {% import _self as faqMacro %}
 
+<p class="text-muted">{{ 'admin.content.faq.display_limit_notice'|trans({'%count%': eccube_config.eccube_max_number_faq_get}) }}</p>
+
 <div class="faq-collection"
      data-prototype="{{ faqMacro.faq_item(faqs.vars.prototype)|e('html_attr') }}"
      data-index="{{ faqs.children|length }}">

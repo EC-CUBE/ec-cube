@@ -32,6 +32,7 @@ file that was distributed with this source code.
                     <a id="addNew" class="btn btn-ec-regular"
                        href="{{ url('admin_content_faq_new') }}">{{ 'admin.common.create__new'|trans }}</a>
                 </div>
+                <p class="text-muted">{{ 'admin.content.faq.display_limit_notice'|trans({'%count%': eccube_config.eccube_max_number_faq_get}) }}</p>
                 <div class="card rounded border-0 mb-4">
                     <div class="card-body p-0">
                         <ul class="list-group list-group-flush mb-4">
