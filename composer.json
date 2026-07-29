@@ -83,7 +83,7 @@
         "symfony/mailer": "^7.4",
         "symfony/maker-bundle": "^1.0",
         "symfony/monolog-bridge": "^7.4",
-        "symfony/monolog-bundle": "^3.1",
+        "symfony/monolog-bundle": "^4.0",
         "symfony/options-resolver": "^7.4",
         "symfony/password-hasher": "^7.4",
         "symfony/process": "^7.4",
