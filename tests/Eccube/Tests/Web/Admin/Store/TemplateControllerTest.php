@@ -19,6 +19,7 @@ use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Template;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\TemplateRepository;
+use Eccube\Tests\EnvOverrideTrait;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Eccube\Util\StringUtil;
 use PHPUnit\Framework\Attributes\Group;
@@ -29,6 +30,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class TemplateControllerTest extends AbstractAdminWebTestCase
 {
+    use EnvOverrideTrait;
+
     protected ?string $dir = null;
 
     protected ?UploadedFile $file = null;
@@ -96,7 +99,7 @@ final class TemplateControllerTest extends AbstractAdminWebTestCase
     #[Group(name: 'cache-clear')]
     public function testDisplayWarningAndDisableButtonWhenEnvOverridden()
     {
-        $this->forceKeyOverridden('ECCUBE_TEMPLATE_CODE', function (): void {
+        $this->forceKeyOverridden('ECCUBE_TEMPLATE_CODE', $this->currentThemeCode(), function (): void {
             $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_store_template'));
             $this->assertTrue($this->client->getResponse()->isSuccessful());
 
@@ -153,7 +156,7 @@ final class TemplateControllerTest extends AbstractAdminWebTestCase
         $Template = $this->templateRepository->findOneBy(['code' => $this->code]);
         $this->assertInstanceOf(Template::class, $Template);
 
-        $this->forceKeyOverridden('ECCUBE_TEMPLATE_CODE', function () use ($Template): void {
+        $this->forceKeyOverridden('ECCUBE_TEMPLATE_CODE', $this->currentThemeCode(), function () use ($Template): void {
             $session = $this->createSession($this->client);
 
             // テンプレートを選択
@@ -293,40 +296,15 @@ final class TemplateControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
-     * 指定キーが「.env 由来でなく OS のプロセス環境変数で上書きされている」状態を
-     * 決定的に作り出してコールバックを実行し、終了後に $_SERVER を元へ復元する.
+     * 現在アプリケーションが使用しているテンプレートコード.
      *
-     * テスト環境では bootEnv により .env のキーが SYMFONY_DOTENV_VARS に載るため
-     * putenv では上書き状態を再現できない（EnvFileService は SYMFONY_DOTENV_VARS を優先する）。
-     * そこで当該キーを SYMFONY_DOTENV_VARS から除外し、$_SERVER にプロセス環境変数値を注入する.
+     * ECCUBE_TEMPLATE_CODE の上書きを再現する際、実効値と異なる値を注入すると
+     * twig.paths が存在しない app/template/<code> を指し全リクエストが 500 になるため、
+     * 実効値をそのまま注入する（{@see EnvOverrideTrait::forceKeyOverridden()}）.
      */
-    private function forceKeyOverridden(string $key, callable $fn): void
+    private function currentThemeCode(): string
     {
-        $sentinel = '__ECCUBE_TEST_UNSET__';
-        $origVars = \array_key_exists('SYMFONY_DOTENV_VARS', $_SERVER) ? $_SERVER['SYMFONY_DOTENV_VARS'] : $sentinel;
-        $origVal = \array_key_exists($key, $_SERVER) ? $_SERVER[$key] : $sentinel;
-
-        $vars = array_filter(
-            explode(',', (string) ($sentinel === $origVars ? '' : $origVars)),
-            fn ($k) => $k !== $key && '' !== $k
-        );
-        $_SERVER['SYMFONY_DOTENV_VARS'] = implode(',', $vars);
-        $_SERVER[$key] = 'osvalue';
-
-        try {
-            $fn();
-        } finally {
-            if ($sentinel === $origVars) {
-                unset($_SERVER['SYMFONY_DOTENV_VARS']);
-            } else {
-                $_SERVER['SYMFONY_DOTENV_VARS'] = $origVars;
-            }
-            if ($sentinel === $origVal) {
-                unset($_SERVER[$key]);
-            } else {
-                $_SERVER[$key] = $origVal;
-            }
-        }
+        return (string) static::getContainer()->getParameter('eccube.theme');
     }
 
     protected function scenarioUpload($uppercase = false)
