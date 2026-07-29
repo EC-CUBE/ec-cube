@@ -57,6 +57,30 @@ final class SiteStructuredDataServiceTest extends AbstractServiceTestCase
         $this->assertSame((string) $this->BaseInfo->getShopName(), $data['name']);
     }
 
+    /**
+     * logo.contentUrl は絶対URLで出力する（ProductStructuredDataService の画像URLと同じ方針）.
+     *
+     * Packages::getUrl() はルート相対パス（/html/user_data/...）を返すため、
+     * スキーム込みホストが前置されていることを検証する。
+     */
+    public function testLogoContentUrlIsAbsolute(): void
+    {
+        $data = $this->service->createOrganizationJsonLd($this->BaseInfo);
+        $contentUrl = (string) $data['logo']['contentUrl'];
+        $url = (string) $data['url'];
+
+        $this->assertMatchesRegularExpression('#^https?://#', $contentUrl);
+
+        // url と同じスキーム・ホストで出力される
+        $this->assertStringStartsWith(
+            parse_url($url, PHP_URL_SCHEME).'://'.parse_url($url, PHP_URL_HOST),
+            $contentUrl
+        );
+
+        // asset パッケージが解決したパスは保持される
+        $this->assertStringContainsString('/html/user_data/assets/img/common/favicon.ico', $contentUrl);
+    }
+
     public function testEmptyOptionalPropertiesAreOmitted(): void
     {
         $this->BaseInfo->setShopNameEng(null);

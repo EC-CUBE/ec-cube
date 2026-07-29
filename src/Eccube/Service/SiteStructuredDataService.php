@@ -80,7 +80,7 @@ class SiteStructuredDataService
             'url' => $this->generateAbsoluteUrl('homepage'),
             'logo' => [
                 '@type' => 'ImageObject',
-                'contentUrl' => $this->packages->getUrl(self::LOGO_FILE, 'user_data'),
+                'contentUrl' => $this->generateAbsoluteAssetUrl(self::LOGO_FILE, 'user_data'),
             ],
             'name' => (string) $BaseInfo->getShopName(),
         ];
@@ -164,6 +164,42 @@ class SiteStructuredDataService
     private function generateAbsoluteUrl(string $route): string
     {
         return $this->urlGenerator->generate($route, [], UrlGeneratorInterface::ABSOLUTE_URL);
+    }
+
+    /**
+     * アセットの絶対URLを生成する.
+     *
+     * Packages::getUrl() は既定の設定ではルート相対パス（/html/user_data/...）を返すため,
+     * 構造化データではスキーム込みホストを前置して絶対URLにする
+     * （ProductStructuredDataService の画像URLと同じ方針）.
+     * asset パッケージに base_urls（CDN 等）が設定されている場合は既に絶対URLなのでそのまま返す.
+     */
+    private function generateAbsoluteAssetUrl(string $path, string $package): string
+    {
+        $url = $this->packages->getUrl($path, $package);
+
+        if (str_starts_with($url, 'http://') || str_starts_with($url, 'https://') || str_starts_with($url, '//')) {
+            return $url;
+        }
+
+        return $this->getSchemeAndHttpHost().$url;
+    }
+
+    /**
+     * ルーティングコンテキストからスキーム込みホスト（例: https://example.com）を返す.
+     */
+    private function getSchemeAndHttpHost(): string
+    {
+        $context = $this->urlGenerator->getContext();
+        $scheme = $context->getScheme();
+        $host = $context->getHost();
+        $port = $scheme === 'https' ? $context->getHttpsPort() : $context->getHttpPort();
+
+        if (($scheme === 'http' && $port !== 80) || ($scheme === 'https' && $port !== 443)) {
+            $host .= ':'.$port;
+        }
+
+        return $scheme.'://'.$host;
     }
 
     /**
