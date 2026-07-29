@@ -99,6 +99,14 @@ services:
     Eccube\Service\AgentCommerce\Idempotency\AgentCheckoutIdempotencyStore:
         autowire: true
         public: true
+    Eccube\Service\AgentCommerce\Payment\AgentCheckoutPaymentHandlerRegistry:
+        autowire: true
+        public: true
+        arguments:
+            $handlers: !tagged_iterator agent_commerce.payment_handler
+    Eccube\Service\AgentCommerce\StorefrontUrlResolver:
+        autowire: true
+        public: true
     # ACP プロトコル層 (#6776)。consumer (controller) は存在するが、単体テストが直接取得するため public 化。
     Eccube\Service\AgentCommerce\Acp\AcpCheckoutSessionMapper:
         autowire: true
@@ -115,13 +123,7 @@ services:
     Eccube\Service\AgentCommerce\Acp\AcpMessageSigner:
         autowire: true
         public: true
-    # ACP の OAuth2 認証検証用。eccube-api4 非依存のスタブハンドラを AccessTokenHandlerInterface に束ねる。
-    Eccube\Tests\Service\AgentCommerce\Stub\InMemoryAccessTokenHandler:
-        public: true
-    Symfony\Component\Security\Http\AccessToken\AccessTokenHandlerInterface:
-        alias: Eccube\Tests\Service\AgentCommerce\Stub\InMemoryAccessTokenHandler
-        public: true
-    # UCP checkout (#6574) サービス群 (upstream/4.4 で #6837 merge 済)。テストからコンテナ取得するため public 化する。
+    # UCP checkout (#6574) サービス群。テストからコンテナ取得するため public 化する。
     Eccube\Service\AgentCommerce\Ucp\UcpCheckoutSessionMapper:
         autowire: true
         public: true
@@ -142,11 +144,9 @@ services:
         public: true
         arguments:
             $allowedDomains: []
-    Eccube\Service\AgentCommerce\Payment\AgentCheckoutPaymentHandlerRegistry:
-        autowire: true
+    # ACP の OAuth2 認証検証用。eccube-api4 非依存のスタブハンドラを AccessTokenHandlerInterface に束ねる。
+    Eccube\Tests\Service\AgentCommerce\Stub\InMemoryAccessTokenHandler:
         public: true
-        arguments:
-            $handlers: !tagged_iterator agent_commerce.payment_handler
-    Eccube\Service\AgentCommerce\StorefrontUrlResolver:
-        autowire: true
+    Symfony\Component\Security\Http\AccessToken\AccessTokenHandlerInterface:
+        alias: Eccube\Tests\Service\AgentCommerce\Stub\InMemoryAccessTokenHandler
         public: true
