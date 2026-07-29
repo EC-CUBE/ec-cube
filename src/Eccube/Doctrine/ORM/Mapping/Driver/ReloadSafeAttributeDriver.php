@@ -99,9 +99,11 @@ class ReloadSafeAttributeDriver extends TraitProxyAttributeDriver
                     $projectDir = str_replace('\\', '/', $projectDir);
                 }
 
-                // Replace /path/to/ec-cube to proxies path
-                $proxyFile = str_replace($projectDir, $this->trait_proxies_directory, $path).'/'.basename((string) $sourceFile);
-                if (file_exists($proxyFile)) {
+                // Replace /path/to/ec-cube to proxies path.
+                // Entity/Master 等のサブディレクトリ配下のクラスでもProxyパスが正しく解決されるよう、
+                // basename()でファイル名だけに丸めず$sourceFileのパス構造ごと変換する（Issue #5400 / #6273）.
+                $proxyFile = str_replace($projectDir, $this->trait_proxies_directory, (string) $sourceFile);
+                if ($proxyFile !== $sourceFile && file_exists($proxyFile)) {
                     $sourceFile = $proxyFile;
                 }
 
