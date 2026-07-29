@@ -101,23 +101,14 @@ class Member extends AbstractEntity implements UserInterface, PasswordAuthentica
     #[ORM\Column(name: 'two_factor_auth_enabled', type: Types::BOOLEAN, nullable: false, options: ['default' => false])]
     private bool $two_factor_auth_enabled = false;
 
-    /**
-     * @var \DateTime
-     */
     #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
-    private $create_date;
+    private ?\DateTime $create_date = null;
 
-    /**
-     * @var \DateTime
-     */
     #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
-    private $update_date;
+    private ?\DateTime $update_date = null;
 
-    /**
-     * @var \DateTime|null
-     */
     #[ORM\Column(name: 'login_date', type: Types::DATETIMETZ_MUTABLE, nullable: true)]
-    private $login_date;
+    private ?\DateTime $login_date = null;
 
     #[ORM\ManyToOne(targetEntity: Work::class)]
     #[ORM\JoinColumn(name: 'work_id', referencedColumnName: 'id')]

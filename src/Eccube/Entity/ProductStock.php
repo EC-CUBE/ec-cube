@@ -58,17 +58,11 @@ class ProductStock extends AbstractEntity
     #[ORM\Column(name: 'stock', type: Types::DECIMAL, precision: 10, scale: 0, nullable: true)]
     private ?string $stock = null;
 
-    /**
-     * @var \DateTime
-     */
     #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
-    private $create_date;
+    private ?\DateTime $create_date = null;
 
-    /**
-     * @var \DateTime
-     */
     #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
-    private $update_date;
+    private ?\DateTime $update_date = null;
 
     #[ORM\OneToOne(targetEntity: ProductClass::class, inversedBy: 'ProductStock')]
     #[ORM\JoinColumn(name: 'product_class_id', referencedColumnName: 'id')]

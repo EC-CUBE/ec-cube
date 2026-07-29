@@ -48,23 +48,14 @@ class Calendar extends AbstractEntity
     #[ORM\Column(name: 'title', type: Types::STRING, length: 255, nullable: true)]
     private ?string $title = null;
 
-    /**
-     * @var \DateTime
-     */
     #[ORM\Column(name: 'holiday', type: Types::DATETIMETZ_MUTABLE)]
-    private $holiday;
+    private ?\DateTime $holiday = null;
 
-    /**
-     * @var \DateTime
-     */
     #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
-    private $create_date;
+    private ?\DateTime $create_date = null;
 
-    /**
-     * @var \DateTime
-     */
     #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
-    private $update_date;
+    private ?\DateTime $update_date = null;
 
     /**
      * Get id.

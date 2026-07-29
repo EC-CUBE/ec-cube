@@ -28,6 +28,7 @@ use Eccube\Repository\OrderPdfRepository;
 class OrderPdf extends AbstractEntity
 {
     public mixed $ids;
+    // PDF 出力時に発行日をフォーマット済み文字列で受け取るケースがあるため、意図的に \DateTime|string のユニオン型を維持する。
     public \DateTime|string $issue_date;
     public mixed $default;
 
@@ -56,17 +57,11 @@ class OrderPdf extends AbstractEntity
     #[ORM\Column(name: 'note3', type: Types::STRING, nullable: true)]
     private ?string $note3 = null;
 
-    /**
-     * @var \DateTime
-     */
     #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
-    private $create_date;
+    private ?\DateTime $create_date = null;
 
-    /**
-     * @var \DateTime
-     */
     #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
-    private $update_date;
+    private ?\DateTime $update_date = null;
 
     #[ORM\Column(name: 'visible', type: Types::BOOLEAN, options: ['default' => true])]
     private bool $visible = true;
@@ -202,7 +197,7 @@ class OrderPdf extends AbstractEntity
     /**
      * @return $this
      */
-    public function setCreateDate(\DateTime|string $create_date): static
+    public function setCreateDate(\DateTime $create_date): static
     {
         $this->create_date = $create_date;
 
@@ -220,7 +215,7 @@ class OrderPdf extends AbstractEntity
     /**
      * @return $this
      */
-    public function setUpdateDate(\DateTime|string $update_date): static
+    public function setUpdateDate(\DateTime $update_date): static
     {
         $this->update_date = $update_date;
 

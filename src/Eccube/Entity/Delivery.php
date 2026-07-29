@@ -59,36 +59,30 @@ class Delivery extends AbstractEntity implements \Stringable
     #[ORM\Column(name: 'visible', type: Types::BOOLEAN, options: ['default' => true])]
     private bool $visible = true;
 
-    /**
-     * @var \DateTime
-     */
     #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
-    private $create_date;
+    private ?\DateTime $create_date = null;
 
-    /**
-     * @var \DateTime
-     */
     #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
-    private $update_date;
+    private ?\DateTime $update_date = null;
 
     /**
      * @var Collection<int, PaymentOption>
      */
     #[ORM\OneToMany(targetEntity: PaymentOption::class, mappedBy: 'Delivery', cascade: ['persist', 'remove'])]
-    private $PaymentOptions;
+    private Collection $PaymentOptions;
 
     /**
      * @var Collection<int, DeliveryFee>
      */
     #[ORM\OneToMany(targetEntity: DeliveryFee::class, mappedBy: 'Delivery', cascade: ['persist', 'remove'])]
-    private $DeliveryFees;
+    private Collection $DeliveryFees;
 
     /**
      * @var Collection<int, DeliveryTime>
      */
     #[ORM\OneToMany(targetEntity: DeliveryTime::class, mappedBy: 'Delivery', cascade: ['persist', 'remove'])]
     #[ORM\OrderBy(['sort_no' => 'ASC'])]
-    private $DeliveryTimes;
+    private Collection $DeliveryTimes;
 
     #[ORM\ManyToOne(targetEntity: Member::class)]
     #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
