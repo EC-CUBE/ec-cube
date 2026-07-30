@@ -21,7 +21,6 @@ use Rector\DeadCode\Rector\Cast\RecastingRemovalRector;
 use Rector\Doctrine\Bundle210\Rector\Class_\EventSubscriberInterfaceToAttributeRector;
 use Rector\Doctrine\Set\DoctrineSetList;
 use Rector\Php83\Rector\ClassConst\AddTypeToConstRector;
-use Rector\PHPUnit\CodeQuality\Rector\MethodCall\AssertEqualsToSameRector;
 use Rector\PHPUnit\PHPUnit100\Rector\Class_\StaticDataProviderClassMethodRector;
 use Rector\PHPUnit\Set\PHPUnitSetList;
 use Rector\Renaming\Rector\MethodCall\RenameMethodRector;
@@ -85,7 +84,6 @@ return RectorConfig::configure()
            ])
            // 個別にルールを追加する場合はここに記述
            ->withRules([
-               AssertEqualsToSameRector::class, // PHPUnitのassertEqualsをassertSameに変換する,
                CommandConfigureToAttributeRector::class, // Symfonyコマンドのconfigureメソッドをアトリビュートに変換する
                CommandPropertyToAttributeRector::class, // Symfonyコマンドのプロパティをアトリビュートに変換する,
                StaticDataProviderClassMethodRector::class, // PHPUnitのデータプロバイダを静的メソッドに変換する
