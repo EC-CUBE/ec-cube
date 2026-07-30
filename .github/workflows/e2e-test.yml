@@ -21,6 +21,10 @@ jobs:
   playwright:
     name: Playwright (${{ matrix.suite }})
     runs-on: ubuntu-24.04
+    ## workflow_dispatch (手動実行) では installer ジョブのみを回し、全 spec の
+    ## 実行は行わない (インストーラの動作確認だけを安価に回すため)。
+    ## push / pull_request (main.yml からの呼び出し) では従来どおり全 spec を実行する。
+    if: ${{ github.event_name != 'workflow_dispatch' }}
     strategy:
       fail-fast: false
       matrix:
@@ -36,12 +40,14 @@ jobs:
           - admin-contents
           - admin-basicinfo
           - admin-system
+          - admin-refund-request
           - front-top
           - front-product
           - front-customer
           - front-other
           - front-order
           - front-mypage
+          - front-refund-request
           - front-invoice
           - front-cookie-consent
           - front-mail
@@ -53,7 +59,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v6
         with:
           persist-credentials: false
 
@@ -218,4 +224,193 @@ jobs:
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
         with:
           name: playwright-${{ matrix.suite }}-logs
+          path: var/log/
+
+  ## Web インストーラは「EC-CUBE が未インストールであること」が前提のため、
+  ## playwright ジョブ (.env を作成し schema:create 済み) とは同居できず別ジョブにする。
+  ## playwright ジョブとの違い:
+  ##   - .env を作らない (index.php は .env が無いときだけ APP_ENV=install になる)
+  ##   - APP_ENV を渡さない (渡すとインストール後も install 環境のままになり、
+  ##     .env 生成後に prod へ切り替わることを検証できない)
+  ##   - ECCUBE_AUTH_MAGIC を渡さない (渡すと isInstalled() が true になり、
+  ##     step3 が存在しない dtb_base_info を SELECT して落ちる)
+  ##   - データベースは空で作成するだけ (step5 の dropTables() はスキーマを
+  ##     消すだけでデータベース自体は作らないため、作成は必要)
+  playwright-installer:
+    name: Playwright (installer)
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ${{ fromJSON(inputs.php-versions) }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
+        with:
+          ## 後続の Composer/npm/build でリポジトリ内のコードを実行するため、
+          ## GitHub トークンを .git/config に残さない (このジョブは push しない)。
+          persist-credentials: false
+
+      - name: Setup PostgreSQL
+        uses: ankane/setup-postgres@6d3ffa1aa7498a42b79e9f9f5838b99971839300  # v1
+        with:
+          postgres-version: '18'
+          user: postgres
+      - name: Configure PostgreSQL
+        run: |
+          for _ in $(seq 1 30); do pg_isready -h 127.0.0.1 && break; sleep 1; done
+          pg_isready -h 127.0.0.1 || { echo 'PostgreSQL did not become ready within 30s'; exit 1; }
+          psql -h 127.0.0.1 -U postgres -c "ALTER USER postgres PASSWORD 'password'"
+          ## インストーラの step4 が接続する空のデータベースを用意する
+          psql -h 127.0.0.1 -U postgres -c 'CREATE DATABASE eccube_db'
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240  # v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: redis
+
+      - name: Setup Node.js
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e  # v6.4.0
+        with:
+          node-version: 20
+
+      - name: Initialize Composer
+        uses: ./.github/actions/composer
+
+      - name: Cache npm dependencies
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae  # v5
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
+      - name: Cache build artifacts
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae  # v5
+        id: build-cache
+        with:
+          path: |
+            html/template/**/css
+            html/bundle
+          key: ${{ runner.os }}-build-${{ hashFiles('html/template/**/scss/**/*.scss', 'html/template/**/js/**/*.js', 'package-lock.json', 'gulpfile.js', 'webpack.config.js', 'gulp/**/*.js') }}
+          restore-keys: |
+            ${{ runner.os }}-build-
+
+      ## 完了画面の JS は install.bundle.js に依存するため、ビルドは必須
+      - name: Build Sass and JavaScript
+        if: steps.build-cache.outputs.cache-hit != 'true'
+        run: |
+          npm ci
+          npm run build
+
+      - name: Install Playwright dependencies
+        working-directory: e2e
+        run: npm ci
+
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae  # v5
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('e2e/package-lock.json') }}
+
+      - name: Install Playwright browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        working-directory: e2e
+        run: npx playwright install --with-deps chromium
+
+      - name: Install Playwright system deps
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        working-directory: e2e
+        run: npx playwright install-deps chromium
+
+      - name: Cache apt packages
+        uses: awalsh128/cache-apt-pkgs-action@681749ae568c81c2037cb9185e38b709b261bd2f  # latest
+        with:
+          packages: fonts-ipafont fonts-ipaexfont
+          version: 1.0
+
+      ## インストール完了後は APP_ENV=prod となるが、prod の session cookie は
+      ## cookie_samesite: none / cookie_secure: auto のため、HTTP では Secure が
+      ## 付かずブラウザが cookie を破棄してしまい、管理画面にログインできない。
+      ## php -S は HTTPS に対応していないため、TLS を張れる symfony CLI を使う。
+      ##
+      ## インストーラのスクリプトを curl | bash で実行するとサプライチェーン上の
+      ## リスクがあるため、バージョンを固定してチェックサムを検証する。
+      - name: Install Symfony CLI
+        env:
+          SYMFONY_CLI_VERSION: v5.17.1
+          SYMFONY_CLI_SHA256: 526c26e029427a94f275f06298a12119ed95c7df037ca13b93f29405740d2f4e
+        run: |
+          curl -fsSL -o symfony-cli.tar.gz \
+            "https://github.com/symfony-cli/symfony-cli/releases/download/${SYMFONY_CLI_VERSION}/symfony-cli_linux_amd64.tar.gz"
+          echo "${SYMFONY_CLI_SHA256}  symfony-cli.tar.gz" | sha256sum -c -
+          tar xzf symfony-cli.tar.gz symfony
+          sudo install -m 0755 symfony /usr/local/bin/symfony
+          rm -f symfony symfony-cli.tar.gz
+          symfony version
+
+      ## APP_ENV / ECCUBE_AUTH_MAGIC / DATABASE_URL は意図的に渡さない。
+      ## .env が無い状態で起動することで APP_ENV=install となり、
+      ## インストール完了後は生成された .env により APP_ENV=prod へ切り替わる。
+      - name: Start Symfony web server (HTTPS)
+        run: |
+          ## composer install (Symfony Flex) が .env.dist から .env を生成し
+          ## APP_ENV=prod / DATABASE_URL=sqlite になるため削除する。.env が無い
+          ## ときだけ index.php は .env.install を読んで APP_ENV=install となり、
+          ## Web インストーラが動作する。
+          rm -f .env .env.local .env.local.php
+          ## TLS 証明書を生成する (これを行わないと HTTP で起動してしまう)。
+          ## ブラウザのトラストストアへの登録は certutil / ブラウザプロファイルを
+          ## 必要とし CI ランナーでは失敗するが、証明書ファイル自体は生成される。
+          ## Playwright 側は ignoreHTTPSErrors で自己署名証明書を受け入れるため、
+          ## 登録失敗は無視してよい。証明書が生成されたことだけを検証する。
+          symfony server:ca:install || true
+          symfony server:start --port=8000 --daemon
+          for _ in $(seq 1 30); do
+            curl -ksSf -o /dev/null https://127.0.0.1:8000/install/step1 && break
+            sleep 1
+          done
+          ## HTTPS で起動できていることを確認する。証明書生成に失敗していると
+          ## HTTP でリッスンするため、この HTTPS リクエストが失敗して検知できる。
+          curl -ksSf -o /dev/null https://127.0.0.1:8000/install/step1
+
+      ## HTTPS で起動するため https。これによりインストール後 (APP_ENV=prod) の
+      ## 管理画面ログインまで検証できる。
+      - name: Run Playwright tests
+        working-directory: e2e
+        env:
+          BASE_URL: 'https://127.0.0.1:8000'
+          ## インストーラの step4 に入力する接続情報 (spec が組み立てに使う)
+          DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
+          CI: 'true'
+        ## インストーラは冪等でない (1 回目でインストールが完了し .env が
+        ## 生成されるため、リトライすると 2 回目は APP_ENV=prod になり別状態と
+        ## なる)。リトライせず 1 回で判定する。
+        run: npx playwright test --project=install-tests --retries=0
+
+      - name: Stop Symfony web server
+        if: always()
+        run: symfony server:stop || true
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
+        with:
+          name: playwright-installer-report
+          path: e2e/playwright-report/
+
+      - name: Upload ScreenShots
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
+        with:
+          name: playwright-installer-results
+          path: e2e/test-results/
+
+      - name: Upload logs
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
+        with:
+          name: playwright-installer-logs
           path: var/log/

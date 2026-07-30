@@ -1,0 +1,6 @@
+id,name,sort_no,discriminator_type
+1,New,0,refundrequeststatus
+2,Processing,1,refundrequeststatus
+3,Accepted,2,refundrequeststatus
+4,Declined,3,refundrequeststatus
+5,Information Requested,4,refundrequeststatus

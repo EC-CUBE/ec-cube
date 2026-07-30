@@ -122,7 +122,7 @@
         "phpunit/phpunit": "^11.0",
         "rector/rector": "^2.1",
         "symfony/browser-kit": "^7.4",
-        "symfony/phpunit-bridge": "^7.4"
+        "symfony/phpunit-bridge": "^8.1"
     },
     "autoload": {
         "files": [
