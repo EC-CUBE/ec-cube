@@ -58,7 +58,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
-          ref: ${{ github.ref_name }}
+          # ブランチ名ではなくトリガとなったコミットを固定してチェックアウトする。
+          # ブランチ名だとチェックアウト時点の先端が解決されるため、build ジョブと
+          # push ジョブが別のコミットを見て、生成物と package-lock.json が
+          # 食い違ったままコミットされうる。
+          ref: ${{ github.sha }}
           # 認証情報を git config に残さない。このジョブは push しない。
           persist-credentials: false
 
@@ -97,8 +101,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
-          # push されたブランチを (detached ではなく) チェックアウトして push し返せるようにする。
-          ref: ${{ github.ref_name }}
+          # build ジョブと同じコミットを固定してチェックアウトする (detached HEAD だが、
+          # 後段の push は HEAD:$BRANCH の形なのでブランチ上にいる必要はない)。
+          # この run が dependabot の追加 push に追い越されていた場合、ここで作るコミットは
+          # ブランチ先端の子孫にならないため、push が non-fast-forward で失敗して赤くなる。
+          # GITHUB_TOKEN による push は新しい run を作らない (無限ループ防止として利用している)
+          # 以上、古い成果物を黙ってコミットすると誰も直せないので、失敗させるほうが安全。
+          ref: ${{ github.sha }}
           # 認証情報を git config に残さない。push する最終ステップでだけ明示的に認証する。
           persist-credentials: false
 
