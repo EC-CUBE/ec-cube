@@ -18,6 +18,7 @@ use Eccube\Rector\CodingStyle\NormalizePhpDocArrayGenericSpacingRector;
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
 use Rector\Config\RectorConfig;
 use Rector\DeadCode\Rector\Cast\RecastingRemovalRector;
+use Rector\DeadCode\Rector\Property\RemoveDefaultValueFromAssignedPropertyRector;
 use Rector\Doctrine\Bundle210\Rector\Class_\EventSubscriberInterfaceToAttributeRector;
 use Rector\Doctrine\Set\DoctrineSetList;
 use Rector\Php83\Rector\ClassConst\AddTypeToConstRector;
@@ -82,6 +83,12 @@ return RectorConfig::configure()
                // 8.3以上で対応可能
                AddTypeToConstRector::class, // [BC]定数に型を追加する PHP 8.3 以降で有効
                RenameMethodRector::class, //addがaddCommandに変換されてしまうため一旦スキップ
+               // プロパティ初期化子の削除はエンティティと static Facade で不都合が出るためスキップする。
+               // - Entity (Order::$delivery_fee_total, Customer::$buy_times 等) は
+               //   #[ORM\Column(options: ['default' => 0])] と対になる初期値の表明であり削除しない
+               // - LoggerFacade / TranslatorFacade の static プロパティは init() 前にも参照され得るため,
+               //   初期化子を消すと nullable 型なのに未初期化アクセスの Error になる
+               RemoveDefaultValueFromAssignedPropertyRector::class,
            ])
            // 個別にルールを追加する場合はここに記述
            ->withRules([

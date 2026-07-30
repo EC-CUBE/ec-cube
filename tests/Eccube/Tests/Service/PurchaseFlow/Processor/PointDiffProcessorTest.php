@@ -19,7 +19,6 @@ use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
-use Eccube\Entity\ProductClass;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Service\PurchaseFlow\Processor\PointDiffProcessor;
 use Eccube\Service\PurchaseFlow\Processor\PointProcessor;

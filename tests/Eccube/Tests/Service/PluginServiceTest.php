@@ -24,7 +24,6 @@ use Eccube\Entity\Plugin;
 use Eccube\Exception\PluginException;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\PluginService;
-use Faker\Generator;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -749,7 +748,6 @@ EOD;
      */
     private function createComposerJsonFile($config): array
     {
-        /** @var Generator $faker */
         $faker = $this->getFaker();
 
         return [

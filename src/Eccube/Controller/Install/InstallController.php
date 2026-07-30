@@ -968,8 +968,6 @@ class InstallController extends AbstractController
 
     /**
      * @param array<string, mixed> $params
-     *
-     * @return $this
      */
     protected function sendAppData(array $params, EntityManager $em): static
     {

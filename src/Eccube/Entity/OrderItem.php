@@ -326,8 +326,6 @@ class OrderItem extends AbstractEntity implements ItemInterface
 
     /**
      * Set price.
-     *
-     * @return $this
      */
     public function setPrice(?string $price): static
     {
@@ -349,8 +347,6 @@ class OrderItem extends AbstractEntity implements ItemInterface
      * Set quantity.
      *
      * @param string $quantity
-     *
-     * @return $this
      */
     #[\Override]
     public function setQuantity($quantity): static
@@ -374,9 +370,6 @@ class OrderItem extends AbstractEntity implements ItemInterface
         return $this->tax;
     }
 
-    /**
-     * @return $this
-     */
     public function setTax(string $tax): static
     {
         $this->tax = $tax;
@@ -470,8 +463,6 @@ class OrderItem extends AbstractEntity implements ItemInterface
 
     /**
      * Set processorName.
-     *
-     * @return $this
      */
     public function setProcessorName(?string $processorName = null): static
     {
@@ -490,8 +481,6 @@ class OrderItem extends AbstractEntity implements ItemInterface
 
     /**
      * Set orderMemo.
-     *
-     * @return $this
      */
     public function setOrderMemo(?string $orderMemo = null): static
     {
@@ -587,9 +576,6 @@ class OrderItem extends AbstractEntity implements ItemInterface
         return $this->RoundingType;
     }
 
-    /**
-     * @return $this
-     */
     public function setRoundingType(?RoundingType $RoundingType = null): static
     {
         $this->RoundingType = $RoundingType;

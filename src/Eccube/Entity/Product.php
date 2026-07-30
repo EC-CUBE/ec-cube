@@ -156,7 +156,7 @@ class Product extends AbstractEntity implements \Stringable
      */
     public function isEnable(): bool
     {
-        return $this->getStatus()->getId() === ProductStatus::DISPLAY_SHOW ? true : false;
+        return $this->getStatus()->getId() === ProductStatus::DISPLAY_SHOW;
     }
 
     /**

@@ -34,11 +34,6 @@ final class WithdrawControllerTest extends AbstractWebTestCase
         $this->Customer = $this->createCustomer();
     }
 
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-    }
-
     public function testIndex()
     {
         $this->logInTo($this->Customer);

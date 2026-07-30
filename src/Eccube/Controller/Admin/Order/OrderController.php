@@ -52,7 +52,6 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintViolationInterface;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class OrderController extends AbstractController
@@ -468,7 +467,6 @@ class OrderController extends AbstractController
         $trackingNumber = $request->get('tracking_number') ?? '';
         $trackingNumber = mb_convert_kana((string) $trackingNumber, 'a', 'utf-8');
 
-        /** @var ConstraintViolationListInterface $errors */
         $errors = $this->validator->validate(
             $trackingNumber,
             [
