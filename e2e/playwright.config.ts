@@ -73,5 +73,26 @@ export default defineConfig({
         storageState: path.join(__dirname, '.auth', 'admin.json'),
       },
     },
+    {
+      name: 'install-tests',
+      testMatch: /install-.*\.spec\.ts/,
+      // The installer runs before EC-CUBE is installed: there is no admin
+      // account yet, so this project must not depend on the `setup` project.
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: { cookies: [], origins: [] },
+        // Logging into the admin after the install requires HTTPS: once
+        // installed the app runs as APP_ENV=prod, whose session cookie uses
+        // SameSite=None, which browsers drop without the Secure flag.
+        // The server is a local dev server (symfony serve) with a self-signed
+        // certificate, so accept it instead of relying on the CA being
+        // registered in the browser trust store.
+        ignoreHTTPSErrors: true,
+        // Keep the trace on failure so CI can be diagnosed (the installer is
+        // not idempotent, so it is run with --retries=0 and the failing run is
+        // the only run).
+        trace: 'retain-on-failure',
+      },
+    },
   ],
 });

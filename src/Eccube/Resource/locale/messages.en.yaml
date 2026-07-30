@@ -277,6 +277,32 @@ front.mypage.customer.notify_title: Change customer information
 front.mypage.delivery.notify_title: Change delivery information
 
 #------------------------------------------------------------------------------------
+# Refund Request (Front)
+#------------------------------------------------------------------------------------
+front.mypage.refund_request.title: Refund Request
+front.mypage.refund_request.confirm_title: Confirm Refund Request
+front.mypage.refund_request.complete_title: Refund Request Complete
+front.mypage.refund_request.item_history_title: Refund Request History
+front.mypage.refund_request.quantity: Quantity
+front.mypage.refund_request.quantity_max: "Up to %max% items"
+front.mypage.refund_request.reason: Reason
+front.mypage.refund_request.reason_placeholder: Please enter the reason for refund
+front.mypage.refund_request.files: Evidence Files
+front.mypage.refund_request.files_help: "You can attach up to 3 files (JPEG, PNG, GIF, WebP, MP4, MOV, AVI). Max 15MB each."
+front.mypage.refund_request.confirm: Confirm
+front.mypage.refund_request.submit: Submit Request
+front.mypage.refund_request.complete_message: Your refund request has been submitted
+front.mypage.refund_request.complete_description: We will review your request and contact you shortly. Please wait.
+front.mypage.refund_request.back_to_mypage: Back to My Page
+front.mypage.refund_request.request_date: Request Date
+front.mypage.refund_request.status: Status
+front.mypage.refund_request.no_history: No refund request history.
+front.mypage.refund_request.apply: Refund Request
+front.mypage.refund_request.history: Request History
+front.mypage.refund_request.error: Failed to process the refund request.
+front.mypage.refund_request.invalid_token: Invalid request. Please try again.
+
+#------------------------------------------------------------------------------------
 # Products
 #------------------------------------------------------------------------------------
 
@@ -985,6 +1011,35 @@ admin.order.shipping_csv.tracking_number_col: Tracking No.
 admin.order.shipping_csv.tracking_number_description: Enter alphanumeric characters or hyphens
 admin.order.shipping_csv.shipping_date_col: Shipping Date
 admin.order.shipping_csv.shipping_date_description: Enter the shipping date in the format of MM/DD/YYYY
+
+#------------------------------------------------------------------------------------
+# Refund Request (Admin)
+#------------------------------------------------------------------------------------
+admin.order.refund_request.list_title: Refund Requests
+admin.order.refund_request.edit_title: Refund Request Detail
+admin.order.refund_request.detail: Request Detail
+admin.order.refund_request.operation: Operation
+admin.order.refund_request.id: Request ID
+admin.order.refund_request.order_no: Order No
+admin.order.refund_request.customer: Customer
+admin.order.refund_request.product: Product
+admin.order.refund_request.status: Status
+admin.order.refund_request.quantity: Quantity
+admin.order.refund_request.reason: Reason
+admin.order.refund_request.create_date: Request Date
+admin.order.refund_request.create_date__start: Request Date (from)
+admin.order.refund_request.create_date__end: Request Date (to)
+admin.order.refund_request.update_date: Updated
+admin.order.refund_request.update_date__start: Updated (from)
+admin.order.refund_request.update_date__end: Updated (to)
+admin.order.refund_request.files: Attached Files
+admin.order.refund_request.admin_note: Admin Note
+admin.order.refund_request.transition: Change Status
+admin.order.refund_request.transition_placeholder: -- No Change --
+admin.order.refund_request.transition_error: Failed to change status.
+admin.order.refund_request.back_to_list: Back to list
+admin.order.refund_request.multi_search_label: Search by Request ID, Order No, Customer ID, Customer Name
+admin.order.refund_request.csv_export: CSV Export
 
 #------------------------------------------------------------------------------------
 # Customer
