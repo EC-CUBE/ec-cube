@@ -19,16 +19,7 @@ updates:
     allow:
       - dependency-type: "all"
     ignore:
-      # EC-CUBE 4.4 は Symfony 7.4 系に固定しているため 8.x への更新は受け付けない。
-      # これを書かないと、composer.json に制約を持たない間接依存 (symfony/clock,
-      # symfony/error-handler, symfony/security-http 等) の update-type が
-      # 制約外の 8.x を基準に major と判定され、実際の更新幅が patch であっても
-      # symfony グループから漏れて個別 PR になる (#6996 / #6997 / #6998 の事例)。
-      #
-      # 注意: このパターンは Symfony 本体 (7.4 系) だけでなく、独自バージョニングの
-      # symfony/flex (2.x) / symfony/monolog-bundle (3.x) / symfony/polyfill-* (1.x) /
-      # symfony/*-contracts (3.x) の major も止める。これらを個別に上げたいときは
-      # PR 上で `@dependabot unignore <name>` を使う。
+      # Symfony のメジャーバージョンアップは除外
       - dependency-name: "symfony/*"
         update-types: [ "version-update:semver-major" ]
     # 所属グループは記載順ではなくパターンの具体性 (specificity) スコアで決まる。
