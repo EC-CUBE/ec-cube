@@ -255,6 +255,7 @@ file that was distributed with this source code.
         <input type="hidden" name="mode" value="">
         {{ form_widget(form._token) }}
         {{ form_widget(form.return_link) }}
+        {{ form_widget(form.form_update_date) }}
         <div class="c-contentsArea__cols">
             <div class="c-contentsArea__primaryCol">
                 <div class="c-primaryCol">
@@ -781,6 +782,31 @@ file that was distributed with this source code.
                                                     {% endif %}
                                                 </span>
                                                 {{ form_errors(orderItemForm.product_name) }}
+                                                {# 受注管理用メモ(メモがある商品明細のみアイコン表示・表示専用) #}
+                                                {% if OrderItem.isProduct and OrderItem.order_memo is not empty %}
+                                                    <span class="d-inline-block mt-1" data-bs-toggle="tooltip" data-bs-placement="top"
+                                                          title="{{ 'admin.product.order_memo'|trans }}">
+                                                        <a class="btn btn-ec-actionIcon" data-bs-toggle="modal" data-bs-target="#order_memo_{{ orderItemForm.vars.id }}">
+                                                            <i class="fa fa-sticky-note fa-lg text-secondary" aria-hidden="true"></i>
+                                                        </a>
+                                                    </span>
+                                                    <div class="modal fade" id="order_memo_{{ orderItemForm.vars.id }}" tabindex="-1" role="dialog" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title">{{ 'admin.product.order_memo'|trans }}</h5>
+                                                                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body" style="max-height: 60vh; overflow: auto;">
+                                                                    <p class="mb-0 text-break">{{ OrderItem.order_memo|nl2br }}</p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">{{ 'admin.common.close'|trans }}</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
                                             </td>
                                             <!-- 金額 -->
                                             <td class="align-middle">

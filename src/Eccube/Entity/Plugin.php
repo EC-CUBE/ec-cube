@@ -17,204 +17,196 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Repository\PluginRepository;
 
-if (!class_exists(Plugin::class)) {
+/**
+ * Plugin
+ */
+#[ORM\Table(name: 'dtb_plugin')]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: PluginRepository::class)]
+class Plugin extends AbstractEntity
+{
+    #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    private ?int $id = null;
+
+    #[ORM\Column(name: 'name', type: Types::STRING, length: 255)]
+    private ?string $name = null;
+
+    #[ORM\Column(name: 'code', type: Types::STRING, length: 255)]
+    private ?string $code = null;
+
+    #[ORM\Column(name: 'enabled', type: Types::BOOLEAN, options: ['default' => false])]
+    private bool $enabled = false;
+
+    #[ORM\Column(name: 'version', type: Types::STRING, length: 255)]
+    private ?string $version = null;
+
+    #[ORM\Column(name: 'source', type: Types::STRING, length: 255)]
+    private ?string $source = null;
+
+    #[ORM\Column(name: 'initialized', type: Types::BOOLEAN, options: ['default' => false])]
+    private bool $initialized = false;
+
+    #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
+    private ?\DateTime $create_date = null;
+
+    #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
+    private ?\DateTime $update_date = null;
+
     /**
-     * Plugin
+     * Get id.
+     *
+     * @return int
      */
-    #[ORM\Table(name: 'dtb_plugin')]
-    #[ORM\InheritanceType('SINGLE_TABLE')]
-    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
-    #[ORM\HasLifecycleCallbacks]
-    #[ORM\Entity(repositoryClass: PluginRepository::class)]
-    class Plugin extends AbstractEntity
+    public function getId(): ?int
     {
-        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
-        #[ORM\Id]
-        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-        private ?int $id = null;
+        return $this->id;
+    }
 
-        #[ORM\Column(name: 'name', type: Types::STRING, length: 255)]
-        private ?string $name = null;
+    /**
+     * Set name.
+     */
+    public function setName(string $name): Plugin
+    {
+        $this->name = $name;
 
-        #[ORM\Column(name: 'code', type: Types::STRING, length: 255)]
-        private ?string $code = null;
+        return $this;
+    }
 
-        #[ORM\Column(name: 'enabled', type: Types::BOOLEAN, options: ['default' => false])]
-        private bool $enabled = false;
+    /**
+     * Get name.
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
 
-        #[ORM\Column(name: 'version', type: Types::STRING, length: 255)]
-        private ?string $version = null;
+    /**
+     * Set code.
+     */
+    public function setCode(string $code): Plugin
+    {
+        $this->code = $code;
 
-        #[ORM\Column(name: 'source', type: Types::STRING, length: 255)]
-        private ?string $source = null;
+        return $this;
+    }
 
-        #[ORM\Column(name: 'initialized', type: Types::BOOLEAN, options: ['default' => false])]
-        private bool $initialized = false;
+    /**
+     * Get code.
+     */
+    public function getCode(): string
+    {
+        return $this->code;
+    }
 
-        /**
-         * @var \DateTime
-         */
-        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
-        private $create_date;
+    /**
+     * Set enabled.
+     */
+    public function setEnabled(bool $enabled): Plugin
+    {
+        $this->enabled = $enabled;
 
-        /**
-         * @var \DateTime
-         */
-        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
-        private $update_date;
+        return $this;
+    }
 
-        /**
-         * Get id.
-         *
-         * @return int
-         */
-        public function getId(): ?int
-        {
-            return $this->id;
-        }
+    /**
+     * Get enabled.
+     */
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
 
-        /**
-         * Set name.
-         */
-        public function setName(string $name): Plugin
-        {
-            $this->name = $name;
+    /**
+     * Set version.
+     */
+    public function setVersion(string $version): Plugin
+    {
+        $this->version = $version;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get name.
-         */
-        public function getName(): string
-        {
-            return $this->name;
-        }
+    /**
+     * Get version.
+     */
+    public function getVersion(): string
+    {
+        return $this->version;
+    }
 
-        /**
-         * Set code.
-         */
-        public function setCode(string $code): Plugin
-        {
-            $this->code = $code;
+    /**
+     * Set source.
+     */
+    public function setSource(string|int $source): Plugin
+    {
+        $this->source = $source;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get code.
-         */
-        public function getCode(): string
-        {
-            return $this->code;
-        }
+    /**
+     * Get source.
+     */
+    public function getSource(): string
+    {
+        return $this->source;
+    }
 
-        /**
-         * Set enabled.
-         */
-        public function setEnabled(bool $enabled): Plugin
-        {
-            $this->enabled = $enabled;
+    /**
+     * Get initialized.
+     */
+    public function isInitialized(): bool
+    {
+        return $this->initialized;
+    }
 
-            return $this;
-        }
+    /**
+     * Set initialized.
+     */
+    public function setInitialized(bool $initialized): Plugin
+    {
+        $this->initialized = $initialized;
 
-        /**
-         * Get enabled.
-         */
-        public function isEnabled(): bool
-        {
-            return $this->enabled;
-        }
+        return $this;
+    }
 
-        /**
-         * Set version.
-         */
-        public function setVersion(string $version): Plugin
-        {
-            $this->version = $version;
+    /**
+     * Set createDate.
+     */
+    public function setCreateDate(\DateTime $createDate): Plugin
+    {
+        $this->create_date = $createDate;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get version.
-         */
-        public function getVersion(): string
-        {
-            return $this->version;
-        }
+    /**
+     * Get createDate.
+     */
+    public function getCreateDate(): ?\DateTime
+    {
+        return $this->create_date;
+    }
 
-        /**
-         * Set source.
-         */
-        public function setSource(string|int $source): Plugin
-        {
-            $this->source = $source;
+    /**
+     * Set updateDate.
+     */
+    public function setUpdateDate(\DateTime $updateDate): Plugin
+    {
+        $this->update_date = $updateDate;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get source.
-         */
-        public function getSource(): string
-        {
-            return $this->source;
-        }
-
-        /**
-         * Get initialized.
-         */
-        public function isInitialized(): bool
-        {
-            return $this->initialized;
-        }
-
-        /**
-         * Set initialized.
-         */
-        public function setInitialized(bool $initialized): Plugin
-        {
-            $this->initialized = $initialized;
-
-            return $this;
-        }
-
-        /**
-         * Set createDate.
-         */
-        public function setCreateDate(\DateTime $createDate): Plugin
-        {
-            $this->create_date = $createDate;
-
-            return $this;
-        }
-
-        /**
-         * Get createDate.
-         */
-        public function getCreateDate(): ?\DateTime
-        {
-            return $this->create_date;
-        }
-
-        /**
-         * Set updateDate.
-         */
-        public function setUpdateDate(\DateTime $updateDate): Plugin
-        {
-            $this->update_date = $updateDate;
-
-            return $this;
-        }
-
-        /**
-         * Get updateDate.
-         */
-        public function getUpdateDate(): ?\DateTime
-        {
-            return $this->update_date;
-        }
+    /**
+     * Get updateDate.
+     */
+    public function getUpdateDate(): ?\DateTime
+    {
+        return $this->update_date;
     }
 }

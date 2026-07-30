@@ -29,6 +29,10 @@ node_modules
 !/html/upload/save_image/no_image_product.png
 /html/upload/temp_image/*
 !/html/upload/temp_image/.gitkeep
+/html/upload/refund_request/save/*
+!/html/upload/refund_request/save/.gitkeep
+/html/upload/refund_request/temp/*
+!/html/upload/refund_request/temp/.gitkeep
 /html/template/*
 !/html/template/admin
 !/html/template/default
@@ -43,6 +47,9 @@ node_modules
 .vscode/
 *.php~
 .env
+.env.local
+.env.local.php
+.env.*.local
 .maintenance
 *.neon
 

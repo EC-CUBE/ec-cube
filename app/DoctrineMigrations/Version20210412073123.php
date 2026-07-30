@@ -53,9 +53,9 @@ final class Version20210412073123 extends AbstractMigration
                 ->select('*')
                 ->from('plg_admin_record')
                 ->orderBy('id', 'ASC')
-                ->execute();
+                ->executeQuery();
 
-            while ($row = $stmt->fetch()) {
+            while ($row = $stmt->fetchAssociative()) {
                 $this->addSql(
                     "INSERT INTO dtb_login_history (user_name, client_ip, create_date, update_date, login_history_status_id, member_id, discriminator_type) VALUES (?, ?, ?, ?, ?, ?, 'loginhistory')",
                     [

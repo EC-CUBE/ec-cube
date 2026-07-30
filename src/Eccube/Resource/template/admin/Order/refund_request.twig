@@ -1,0 +1,172 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends '@admin/default_frame.twig' %}
+{% set menus = ['order', 'refund_request'] %}
+
+{% block title %}{{ 'admin.order.refund_request.list_title'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.order.order_management'|trans }}{% endblock %}
+
+{% form_theme searchForm '@admin/Form/bootstrap_4_layout.html.twig' %}
+{% block javascript %}
+{% endblock %}
+
+{% block main %}
+    <div class="c-outsideBlock--small mb-5">
+        <form name="search_form" id="search_form" method="post" action="{{ url('admin_refund_request') }}" novalidate>
+            <div class="c-outsideBlock__contents">
+                <div class="row mb-2">
+                    <div class="col-6">
+                        <div class="d-inline-block" data-bs-toggle="collapse" href="#searchDetail"
+                             aria-expanded="false" aria-controls="searchDetail">
+                            <a>
+                                <i class="fa fa-plus-square-o fw-bold me-1"></i>
+                                <span class="fw-bold">{{ 'admin.common.search_detail'|trans }}</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col">
+                        {{ form_widget(searchForm.multi, { attr: { placeholder: 'admin.order.refund_request.multi_search_label'|trans }}) }}
+                        {{ form_errors(searchForm.multi) }}
+                    </div>
+                </div>
+
+                <div class="collapse" id="searchDetail">
+                    <div class="row mb-2">
+                        <div class="col">
+                            <label class="col-form-label">{{ 'admin.order.refund_request.status'|trans }}</label>
+                            <div>{{ form_widget(searchForm.status) }}</div>
+                            {{ form_errors(searchForm.status) }}
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-6">
+                            <label class="col-form-label">{{ 'admin.order.refund_request.create_date__start'|trans }}</label>
+                            {{ form_widget(searchForm.create_date_start) }}
+                            {{ form_errors(searchForm.create_date_start) }}
+                        </div>
+                        <div class="col-6">
+                            <label class="col-form-label">{{ 'admin.order.refund_request.create_date__end'|trans }}</label>
+                            {{ form_widget(searchForm.create_date_end) }}
+                            {{ form_errors(searchForm.create_date_end) }}
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-6">
+                            <label class="col-form-label">{{ 'admin.order.refund_request.update_date__start'|trans }}</label>
+                            {{ form_widget(searchForm.update_date_start) }}
+                            {{ form_errors(searchForm.update_date_start) }}
+                        </div>
+                        <div class="col-6">
+                            <label class="col-form-label">{{ 'admin.order.refund_request.update_date__end'|trans }}</label>
+                            {{ form_widget(searchForm.update_date_end) }}
+                            {{ form_errors(searchForm.update_date_end) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row justify-content-end mb-3">
+                    <div class="col-auto">
+                        <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.common.search'|trans }}</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    {% if pagination is not empty and pagination|length > 0 %}
+        <div class="c-outsideBlock">
+            <div class="c-outsideBlock__contents mb-5">
+            <div class="d-flex justify-content-between mb-2">
+                <div>
+                    <span class="fw-bold">{{ 'admin.common.search_result'|trans({ '%count%': pagination.getTotalItemCount }) }}</span>
+                </div>
+                <div>
+                    <div class="d-inline-block align-bottom me-1">
+                        <select class="form-select" onchange="location = this.value;">
+                            {% for pageMax in pageMaxis %}
+                                <option {% if pageMax.name == page_count %} selected {% endif %}
+                                        value="{{ path('admin_refund_request_page', {'page_no': 1, 'page_count': pageMax.name}) }}">
+                                    {{ 'admin.common.count'|trans({ '%count%': pageMax.name }) }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <a href="{{ url('admin_refund_request_export') }}" class="btn btn-ec-regular me-1">
+                        <i class="fa fa-cloud-download me-1"></i>{{ 'admin.order.refund_request.csv_export'|trans }}
+                    </a>
+                </div>
+            </div>
+
+            <div class="card rounded border-0 mb-4">
+                <div class="card-body p-0">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th class="border-top-0 pt-2 pb-2 ps-3">{{ 'admin.order.refund_request.id'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2">{{ 'admin.order.refund_request.order_no'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2">{{ 'admin.order.refund_request.customer'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2">{{ 'admin.order.refund_request.product'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2">{{ 'admin.order.refund_request.status'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2">{{ 'admin.order.refund_request.create_date'|trans }}</th>
+                                <th class="border-top-0 pt-2 pb-2"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for RefundRequest in pagination %}
+                                <tr>
+                                    <td class="ps-3 align-middle">{{ RefundRequest.id }}</td>
+                                    <td class="align-middle">
+                                        <a href="{{ url('admin_order_edit', { id: RefundRequest.Order.id }) }}">{{ RefundRequest.Order.order_no }}</a>
+                                    </td>
+                                    <td class="align-middle">
+                                        {% if RefundRequest.Customer %}
+                                            <a href="{{ url('admin_customer_edit', { id: RefundRequest.Customer.id }) }}">{{ RefundRequest.Customer.name01 }} {{ RefundRequest.Customer.name02 }}</a>
+                                        {% endif %}
+                                    </td>
+                                    <td class="align-middle">{{ RefundRequest.OrderItem.productName }}</td>
+                                    <td class="align-middle">{{ RefundRequest.RefundRequestStatus }}</td>
+                                    <td class="align-middle">{{ RefundRequest.create_date|date_sec }}</td>
+                                    <td class="align-middle text-end pe-3">
+                                        <a href="{{ url('admin_refund_request_edit', { id: RefundRequest.id }) }}" class="btn btn-ec-actionIcon">
+                                            <i class="fa fa-pencil fa-lg text-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.edit'|trans }}"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="row justify-content-md-center pb-4 mb-4">
+                {% if pagination.totalItemCount > 0 %}
+                    {% include "@admin/pager.twig" with { 'pages': pagination.getPaginationData, 'routes': 'admin_refund_request_page' } %}
+                {% endif %}
+            </div>
+            </div>
+        </div>
+    {% elseif has_errors %}
+    {% else %}
+        <div class="c-outsideBlock">
+            <div class="c-outsideBlock__contents">
+                <div class="card rounded border-0">
+                    <div class="card-body p-4">
+                        <div class="text-center text-muted mb-4 h5">{{ 'admin.common.search_no_result'|trans }}</div>
+                        <div class="text-center text-muted">{{ 'admin.common.search_try_change_condition'|trans }}</div>
+                        <div class="text-center text-muted">{{ 'admin.common.search_try_advanced_search'|trans }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

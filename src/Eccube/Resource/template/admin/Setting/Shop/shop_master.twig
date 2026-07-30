@@ -388,6 +388,20 @@ file that was distributed with this source code.
                         </div>
                     </div>
                     <div class="card rounded border-0 mb-4">
+                        <div class="card-header"><span>{{ 'admin.setting.shop.shop.option_cookie_consent_section'|trans }}</span></div>
+                        <div id="ex-shop-cookie-consent" class="card-body">
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.shop.shop.option_cookie_consent'|trans }}"><span>{{ 'admin.setting.shop.shop.option_cookie_consent'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i></div>
+                                </div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.option_cookie_consent) }}
+                                    {{ form_errors(form.option_cookie_consent) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card rounded border-0 mb-4">
                         <div class="card-header"><span>{{ 'admin.setting.shop.shop.agent_commerce'|trans }}</span></div>
                         <div id="ex-shop-agent-commerce" class="card-body">
                             <p class="text-muted">{{ 'admin.setting.shop.shop.agent_commerce.description'|trans }}</p>

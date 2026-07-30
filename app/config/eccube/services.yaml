@@ -99,9 +99,18 @@ services:
         bind:
           $blockTemplates: '%eccube_twig_block_templates%'
 
-    Plugin\:
-        resource: '../../../app/Plugin/*'
-        exclude: '../../../app/Plugin/*/{Entity,Resource,ServiceProvider,Tests,Codeception,DoctrineMigrations}'
+    # Plugin\ の自動登録は services.php で定義する (#6915)。
+    # プラグインが同梱する非 PSR-4 ライブラリ (例: phpseclib) を動的に exclude するため,
+    # 静的な YAML では表現できず, ネストした composer.json を検出する PHP 設定へ移した。
+
+    # PurchaseFlow / OrderStateMachine の名前付き引数をコンテナ全体で解決するための別名。
+    # 上記 _defaults の bind はこのファイル内のサービスにのみ適用されるため, services.php で
+    # 登録するプラグインのサービス (例: 決済プラグインの Payment Method) からも解決できるよう,
+    # 名前付きオートワイヤリング別名として明示的に定義する。
+    Eccube\Service\PurchaseFlow\PurchaseFlow $cartPurchaseFlow: '@eccube.purchase.flow.cart'
+    Eccube\Service\PurchaseFlow\PurchaseFlow $shoppingPurchaseFlow: '@eccube.purchase.flow.shopping'
+    Eccube\Service\PurchaseFlow\PurchaseFlow $orderPurchaseFlow: '@eccube.purchase.flow.order'
+    Symfony\Component\Workflow\WorkflowInterface $_orderStateMachine: '@state_machine.order'
 
     Customize\:
         resource: '../../../app/Customize/*'
@@ -242,18 +251,75 @@ services:
         alias: Eccube\Asset\FilemtimeVersionStrategy
         public: true
 
+    Eccube\Doctrine\EventSubscriber\InitSubscriber:
+        autoconfigure: false
+        tags:
+            # 初期化 SQL (SET TIME ZONE 等) は物理接続へ 1 回だけ発行したいので,
+            # dama/doctrine-test-bundle の StaticDriver (priority: 100) より内側 (実ドライバ直上) に
+            # 配置する (DBAL 3 の postConnect イベント相当の挙動)。priority が高いほど内側になる。
+            - { name: doctrine.middleware, priority: 200 }
+
+    Eccube\Doctrine\EventSubscriber\InitDriver:
+        autowire: false
+        autoconfigure: false
+
     # Agent Commerce (ACP / UCP) 共通基盤
     Eccube\Service\AgentCommerce\Security\FilesystemKeyStore:
         arguments:
             $projectDir: '%kernel.project_dir%'
             $envPathOverrides:
-                ucp_signing: '%env(ECCUBE_AGENT_COMMERCE_UCP_SIGNING_KEY)%'
+                ucp_signing: '%env(default::string:ECCUBE_AGENT_COMMERCE_UCP_SIGNING_KEY)%'
+                # ACP Webhook (Merchant-Signature) の共有シークレット保管先 (#6776、outbound 送出は後続 PR)。
+                acp_webhook: '%env(default::string:ECCUBE_AGENT_COMMERCE_ACP_WEBHOOK_SECRET)%'
 
     Eccube\Service\AgentCommerce\Security\KeyStoreInterface:
         alias: Eccube\Service\AgentCommerce\Security\FilesystemKeyStore
 
     Eccube\Service\AgentCommerce\Security\AgentCommerceMessageSignerInterface:
         alias: Eccube\Service\AgentCommerce\Security\UcpMessageSigner
+
+    # Agent Commerce CheckoutSession 中核 (#6777 Phase 1b)
+    Eccube\Service\AgentCommerce\Fulfillment\FulfillmentOptionMapperInterface:
+        alias: Eccube\Service\AgentCommerce\Fulfillment\StandardFulfillmentOptionMapper
+
+    # 標準はゲスト購入 (会員解決なし)。会員 ID 連携は eccube-api4#189 landing 後に差し替える。
+    Eccube\Service\AgentCommerce\CheckoutSession\CustomerResolverInterface:
+        alias: Eccube\Service\AgentCommerce\CheckoutSession\GuestCustomerResolver
+
+    # OAuth2 トークン検証。リソースサーバー (eccube-api4#188) 未導入時は handler が null となり 503 を返す。
+    Eccube\Service\AgentCommerce\Security\AgentCommerceOAuth2Authenticator:
+        arguments:
+            $accessTokenHandler: '@?Symfony\Component\Security\Http\AccessToken\AccessTokenHandlerInterface'
+
+    # Agent Commerce 決済ハンドラレジストリ (#6574 UCP / #6776 ACP)
+    # 具象ハンドラ (決済プラグイン) は agent_commerce.payment_handler タグで寄与する。
+    # タグ付けは Kernel::build() の registerForAutoconfiguration で行う (PaymentMethodInterface と同様)。
+    # services.yaml の _instanceof はファイルスコープのため、Plugin\ glob (services.php・#6915) で
+    # 登録される決済プラグインの具象ハンドラには届かない。
+    Eccube\Service\AgentCommerce\Payment\AgentCheckoutPaymentHandlerRegistry:
+        arguments:
+            $handlers: !tagged_iterator agent_commerce.payment_handler
+
+    # エージェント注文の支払方法解決 (handler_id 駆動・sort_no 非依存)。
+    # 店舗ごとに選択ロジックを変える場合は app/Customize で実装しエイリアスを差し替える。
+    Eccube\Service\AgentCommerce\Payment\AgentPaymentMethodResolverInterface:
+        alias: Eccube\Service\AgentCommerce\Payment\DefaultAgentPaymentMethodResolver
+
+    # complete 状態機械オーケストレータ。在庫確保期限は eccube.yaml の設定値を注入。
+    Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutCompletionService:
+        arguments:
+            $escalationExpireMinutes: '%eccube_agent_checkout_escalation_expire%'
+
+    # 冪等性記録は DB 一意制約 (dtb_agent_checkout_idempotency) で管理する (EM/Repository は autowire)。
+
+    # UCP インバウンド署名検証 (RFC 9421・api4 非依存)。許可ドメイン/必須化は運用で設定する。
+    Eccube\Service\AgentCommerce\Ucp\Signature\UcpRequestSignatureVerifier:
+        arguments:
+            $allowedDomains: []
+
+    Eccube\Service\AgentCommerce\Ucp\Signature\UcpSignatureSubscriber:
+        arguments:
+            $requireSignature: false
 
     # Agent Commerce: Product Feed / Catalog 共通基盤 (#6794)
     Eccube\Service\AgentCommerce\Catalog\ProductReferenceResolverInterface:
@@ -289,30 +355,7 @@ services:
     Eccube\Service\AgentCommerce\Discovery\PaymentHandlerRegistryInterface:
         alias: Eccube\Service\AgentCommerce\Discovery\EmptyPaymentHandlerRegistry
 
-    # Agent Commerce CheckoutSession 中核 (#6777 Phase 1b)
-    Eccube\Service\AgentCommerce\Fulfillment\FulfillmentOptionMapperInterface:
-        alias: Eccube\Service\AgentCommerce\Fulfillment\StandardFulfillmentOptionMapper
-
-    # 標準はゲスト購入 (会員解決なし)。会員 ID 連携は eccube-api4#189 landing 後に差し替える。
-    Eccube\Service\AgentCommerce\CheckoutSession\CustomerResolverInterface:
-        alias: Eccube\Service\AgentCommerce\CheckoutSession\GuestCustomerResolver
-
-    # OAuth2 トークン検証。リソースサーバー (eccube-api4#188) 未導入時は handler が null となり 503 を返す。
-    Eccube\Service\AgentCommerce\Security\AgentCommerceOAuth2Authenticator:
-        arguments:
-            $accessTokenHandler: '@?Symfony\Component\Security\Http\AccessToken\AccessTokenHandlerInterface'
-
-    # 決済ハンドラレジストリ。具象ハンドラ (決済プラグイン) は agent_commerce.payment_handler タグで寄与する。
-    Eccube\Service\AgentCommerce\Payment\AgentCheckoutPaymentHandlerRegistry:
-        arguments:
-            $handlers: !tagged_iterator agent_commerce.payment_handler
-
-    # エージェント注文の支払方法解決 (handler_id 駆動・sort_no 非依存)。
-    # 店舗ごとに選択ロジックを変える場合は app/Customize で実装しエイリアスを差し替える。
-    Eccube\Service\AgentCommerce\Payment\AgentPaymentMethodResolverInterface:
-        alias: Eccube\Service\AgentCommerce\Payment\DefaultAgentPaymentMethodResolver
-
-    # complete 状態機械オーケストレータ。在庫確保期限は eccube.yaml の設定値を注入。
-    Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutCompletionService:
-        arguments:
-            $escalationExpireMinutes: '%eccube_agent_checkout_escalation_expire%'
+    # 登録済み UCP 決済ハンドラ (agent_commerce.payment_handler) から payment_handlers を自動広告する。
+    # プラグインは UCP ハンドラを 1 つ登録するだけで discovery にも載る (ゼロ設定)。
+    Eccube\Service\AgentCommerce\Discovery\UcpPaymentHandlerDiscoveryRegistry:
+        tags: ['eccube.agent_commerce.payment_handler_registry']

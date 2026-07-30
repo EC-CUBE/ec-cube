@@ -183,15 +183,18 @@ final class ShoppingControllerWithNonmemberTest extends AbstractShoppingControll
     public function testShippingEdit(): never
     {
         // FIXME お届け先情報編集機能が実装されたら有効にする
-        $this->markTestIncomplete('Shipping edit is not implemented.');
+        // 旧テンプレート由来のセレクタ(a.btn-shipping-edit / h1.page-heading)と
+        // mode/param 形式の shipping_edit_change 遷移が現行 UI に存在しないため保留.
+        $this->markTestIncomplete('お届け先編集の現行 UI に追従するまでスキップ');
 
         $faker = $this->getFaker();
         $client = $this->client;
 
-        $this->scenarioCartIn($client);
-        $this->createNonmemberFormData();
-        $this->scenarioInput($client);
-        $crawler = $this->scenarioConfirm($client);
+        $this->scenarioCartIn();
+        $formData = $this->createNonmemberFormData();
+        $this->scenarioInput($formData);
+        $this->client->followRedirect();
+        $crawler = $this->scenarioConfirm();
 
         $this->expected = 'ご注文内容のご確認';
         $this->actual = $crawler->filter('h1.page-heading')->text();
@@ -203,7 +206,7 @@ final class ShoppingControllerWithNonmemberTest extends AbstractShoppingControll
         // 値を保持してお届け先設定画面へ遷移
         $crawler = $client->request(
             Request::METHOD_POST,
-            $this->app->path('shopping_redirect_to'),
+            $this->generateUrl('shopping_redirect_to'),
             [
                 '_shopping_order' => [
                     'Shippings' => [
@@ -240,15 +243,18 @@ final class ShoppingControllerWithNonmemberTest extends AbstractShoppingControll
     public function testShippingEditWithPostToComplete(): never
     {
         // FIXME お届け先情報編集機能が実装されたら有効にする
-        $this->markTestIncomplete('Shipping edit is not implemented.');
+        // 旧テンプレート由来のセレクタ(a.btn-shipping-edit / h1.page-heading)と
+        // mode/param 形式の shipping_edit_change 遷移が現行 UI に存在しないため保留.
+        $this->markTestIncomplete('お届け先編集の現行 UI に追従するまでスキップ');
 
         $faker = $this->getFaker();
         $client = $this->client;
 
-        $this->scenarioCartIn($client);
+        $this->scenarioCartIn();
         $formData = $this->createNonmemberFormData();
-        $this->scenarioInput($client);
-        $crawler = $this->scenarioConfirm($client);
+        $this->scenarioInput($formData);
+        $this->client->followRedirect();
+        $crawler = $this->scenarioConfirm();
 
         $this->expected = 'ご注文内容のご確認';
         $this->actual = $crawler->filter('h1.page-heading')->text();
@@ -260,7 +266,7 @@ final class ShoppingControllerWithNonmemberTest extends AbstractShoppingControll
         // 値を保持してお届け先設定画面へ遷移
         $crawler = $client->request(
             Request::METHOD_POST,
-            $this->app->path('shopping_redirect_to'),
+            $this->generateUrl('shopping_redirect_to'),
             [
                 '_shopping_order' => [
                     'Shippings' => [
@@ -300,14 +306,14 @@ final class ShoppingControllerWithNonmemberTest extends AbstractShoppingControll
             ['shopping_shipping' => $formData]
         );
 
-        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping')));
+        $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('shopping')));
 
         // ご注文完了
-        $this->scenarioComplete(null, $this->app->path('shopping_confirm'), $client);
+        $this->scenarioComplete(null, $this->generateUrl('shopping_confirm'));
+        $this->scenarioCheckout();
 
-        $this->app['eccube.repository.base_info']->get();
-        $Messages = $this->getMailCatcherMessages();
-        $this->getMailCatcherMessage($Messages[0]->id);
+        $this->assertEmailCount(1);
+        $this->getMailerMessage(0);
 
         //        $this->assertMatchesRegularExpression('/111-111-111/', $this->parseMailCatcherSource($Message), '変更した FAX 番号が一致するか');
     }
