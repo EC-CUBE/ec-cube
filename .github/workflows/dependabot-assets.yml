@@ -1,0 +1,64 @@
+name: Update assets for Dependabot
+
+# Dependabot の npm PR では package.json / package-lock.json だけが更新され、
+# git 管理下のビルド成果物 (html/bundle, html/template/**/assets/css) は再生成されない。
+# EC-CUBE は成果物をコミットして配布するため、依存を更新しても再ビルドしなければ
+# 実際に配信されるバンドル・CSS は古いままになる。
+# このワークフローは dependabot の npm ブランチへの push を受けてビルドし、
+# 差分があれば同じブランチへ追記コミットする。
+on:
+  push:
+    branches:
+      - "dependabot/npm_and_yarn/**"
+      # e2e (Playwright) の依存はフロントエンドの成果物に影響しないため除外する。
+      # branches と branches-ignore は併用できないので否定パターンで指定する。
+      - "!dependabot/npm_and_yarn/e2e/**"
+
+permissions:
+  contents: read
+
+jobs:
+  update-assets:
+    # dependabot 以外による push では動かさない安全弁。
+    if: github.actor == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    permissions:
+      # 再生成した成果物をブランチへ push し返すために必要。
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          # push されたブランチを (detached ではなく) チェックアウトして push し返せるようにする。
+          ref: ${{ github.ref_name }}
+          # 既定の GITHUB_TOKEN で push する。GITHUB_TOKEN による push は新たな workflow を
+          # 再トリガーしないため、追記コミットがこのワークフロー自身を再起動する無限ループを防げる。
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e  # v6.4.0
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Build assets
+        run: |
+          npm ci
+          npm run build
+
+      - name: Commit regenerated assets
+        # ブランチ名を run スクリプトへ直接展開せず env 経由で渡し、シェルインジェクションを防ぐ。
+        env:
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          # ace のバージョンアップでファイルが増減する場合があるため、
+          # 追跡外のファイルも拾えるよう add してから差分を判定する。
+          git add html/bundle html/template/admin/assets/css html/template/default/assets/css
+          if git diff --cached --quiet; then
+            echo "No changes in build assets; skipping commit."
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'build: 依存更新に伴いビルド成果物を再生成'
+          git push origin "HEAD:$BRANCH"
