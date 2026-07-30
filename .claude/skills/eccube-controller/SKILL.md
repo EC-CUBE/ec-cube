@@ -1,6 +1,7 @@
 ---
 name: eccube-controller
 description: EC-CUBE 4.4 のコントローラを実装・改修するときの責務分離規約。「コントローラを作って」「アクションを追加して」「このコントローラを直して」「ルーティングを追加して」などと言われたとき、または src/Eccube/Controller・app/Customize/Controller 配下を作成・編集するときに使用する。Fat コントローラを避け業務ロジックを Service へ寄せるための規約。
+
 ---
 
 # Controller 規約 — 責務分離と Fat 化防止（EC-CUBE 4.4）
@@ -136,6 +137,22 @@ vendor/bin/php-cs-fixer fix                     # PSR-12 整形・ライセン�
 - ❌ 管理アクションを `%eccube_admin_route%` 配下以外に置く → ✅ admin ファイアウォール配下に置く
 - ❌ 同一アクションで `executePurchaseFlow()` を複数回呼ぶとき 2 回目以降の `FlowResult` を無視する → ✅ 毎回 `hasError()`/`hasWarning()` の分岐を 1 回目と同じに揃える（共通化可）
 - ❌ 配列が来る可能性のあるリクエスト値を `getString()` でスカラーに強制する → ✅ `InputBag` は非スカラーで例外を投げるため強制できない。`all()` で受けて型を検査する
+
+## 実行・確認方法
+
+```bash
+# ルーティングが意図どおり登録されたか（#[Route] の属性ミスはここで気づく）
+bin/console debug:router | grep <ルート名>
+bin/console cache:clear
+
+# 該当コントローラのテストだけを回す
+bin/phpunit tests/Eccube/Tests/Web/<対象>ControllerTest.php
+```
+
+- 実装後の整形・型・静的解析・テストは **AGENTS.md「開発コマンド」** に従って実行する
+  （PHP-CS-Fixer / PHPStan level 6 / PHPUnit）。
+- 認可の入り口は `security.yaml` だけでは追えない（`access_control` は `EccubeExtension` が動的注入する）。
+  新規の管理アクションは Skill `eccube-security` の「アクセス制御モデル」を確認する。
 
 ---
 

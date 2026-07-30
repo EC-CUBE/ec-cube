@@ -1,6 +1,7 @@
 ---
 name: eccube-migration
 description: EC-CUBE 4.4 のデータベースマイグレーションを作成・編集するときの規約。「マイグレーションを作って」「マスタデータ/初期データを投入したい」「カラムの型を変えたい/リネームしたい」「スキーマを変えたい」などと言われたとき、または app/DoctrineMigrations 配下を作成・編集するときに使用する。注意: 単純なカラム追加は Entity 属性＋schema:update で反映されるためマイグレーション不要（その判断にも本 Skill を参照）。
+
 ---
 
 # マイグレーション規約（EC-CUBE 4.4）
@@ -132,3 +133,24 @@ final class Version20240101000000 extends AbstractMigration
 - ❌ マイグレーションでテーブルを"新規定義"してスキーマの源泉にする → ✅ 源泉は Entity 属性。
 - ❌ INSERT・構造変更でガードなし → 再実行や環境差で失敗。✅ 存在チェックで冪等にする。
 - ❌ `down()` 未実装 → ロールバック不能。✅ `up()`/`down()` を対で実装。
+
+## 実行・確認方法
+
+```bash
+# 属性から導ける差分（カラム追加・変更）は schema:update 側で反映される
+bin/console doctrine:schema:update --dump-sql
+
+# マイグレーション（INSERT・型変更等）を適用し、down() も往復で確かめる
+bin/console doctrine:migrations:migrate
+bin/console doctrine:migrations:migrate prev
+bin/console doctrine:migrations:migrate
+```
+
+- 実装後の整形・型・静的解析・テストは **AGENTS.md「開発コマンド」** に従って実行する
+  （PHP-CS-Fixer / PHPStan level 6 / PHPUnit）。
+- 冪等性は「同じマイグレーションを 2 回流しても失敗しない」ことで確認する。
+- 新規インストール経路（`doctrine:schema:create` ＋ 初期データ）でも通ることを確認する。
+
+---
+
+実装・改修後は、Skill `eccube-review-responsibility` で責務分離を点検すること。

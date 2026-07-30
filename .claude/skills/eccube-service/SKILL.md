@@ -1,6 +1,7 @@
 ---
 name: eccube-service
 description: EC-CUBE 4.4 の Service を実装・改修するときの責務分離規約。「サービスを作って」「ロジックをサービスに切り出して」「このサービスを直して」「コントローラから業務処理を抽出して」などと言われたとき、または src/Eccube/Service・app/Customize/Service 配下を作成・編集するときに使用する。業務ロジックの受け皿を単一責任・HTTP非依存に保つための規約。
+
 ---
 
 # Service 規約 — 業務ロジックの置き場所（EC-CUBE 4.4）
@@ -95,6 +96,21 @@ vendor/bin/php-cs-fixer fix                     # PSR-12 整形・ライセン�
 - ❌ `Request` を Service に渡す → ✅ 必要な値だけを引数で渡す
 - ❌ ループ内で毎回 `flush()` → ✅ まとめて `flush()`（トランザクション境界を意識）
 - ❌ `flush()` を確定として扱う → ✅ `TransactionListener` が 1 リクエスト＝1 トランザクションで包み、コミットは `kernel.terminate`。`flush` は SQL 発行のみ
+
+## 実行・確認方法
+
+```bash
+# サービスが登録され、依存が解決できているかを確認する
+bin/console debug:container <サービス ID の一部>
+bin/console cache:clear
+
+# 該当サービスのテストだけを回す
+bin/phpunit tests/Eccube/Tests/Service/<対象>ServiceTest.php
+```
+
+- 実装後の整形・型・静的解析・テストは **AGENTS.md「開発コマンド」** に従って実行する
+  （PHP-CS-Fixer / PHPStan level 6 / PHPUnit）。
+- デコレーション・差し替えをした場合は `debug:container` の出力で解決先が意図どおりか確認する。
 
 ---
 
