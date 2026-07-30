@@ -13,9 +13,11 @@
 
 namespace Page\Admin;
 
+use Eccube\Entity\Order;
+
 class ShippingEditPage extends AbstractAdminPageStyleGuide
 {
-    public static $姓_エラーメッセージ = '#shipmentOverview_0 > div > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div > div > div:nth-child(1) > span > span > span.form-error-message';
+    public static $姓_エラーメッセージ = '#shipmentOverview_0 > div > div:nth-child(3) > div:nth-child(1) > div:nth-child(1) > div > div > div:nth-child(1) > span > span > span.form-error-message';
 
     public static $登録完了メッセージ = '#page_admin_shipping_edit > div > div.c-contentsArea > div.alert.alert-success.alert-dismissible.fade.show.m-3 > span';
 
@@ -166,7 +168,7 @@ class ShippingEditPage extends AbstractAdminPageStyleGuide
     public function 出荷完了にする($num = 0)
     {
         $this->tester->scrollTo(['id' => 'shipmentOverview_'.$num], 0, 50);
-        $this->tester->click('#shipmentOverview_'.$num.' > div > div:nth-child(4) > div:nth-child(2) > div:nth-child(3) > div > button');
+        $this->tester->click('#shipmentOverview_'.$num.' .confirmationModal[data-type="status"]');
 
         return $this;
     }
@@ -193,6 +195,100 @@ class ShippingEditPage extends AbstractAdminPageStyleGuide
     {
         $this->tester->scrollTo(['id' => 'shipmentOverview_'.$num], 0, 50);
         $this->tester->see((new \DateTime())->format('Y/m/d'),
-            '#shipmentOverview_'.$num.' > div > div:nth-child(4) > div:nth-child(2) > div:nth-child(3) > div > span');
+            '#shipmentOverview_'.$num.' > div > div:nth-child(5) > div:nth-child(2) > div:nth-child(3) > div > span');
+    }
+
+    /**
+     * 受注を指定して出荷編集画面を開く
+     */
+    public static function goByOrderId(\AcceptanceTester $I, Order $Order): self
+    {
+        $page = new self($I);
+        $page->goPage('/shipping/'.$Order->getId().'/edit', '出荷登録受注管理');
+
+        return $page;
+    }
+
+    /**
+     * YubinBangoによる住所自動入力を無効化する
+     *
+     * h-adrクラスを削除することでYubinBangoの監視対象から外す
+     *
+     * @param int $shippingNo 出荷番号（0から始まる）
+     */
+    public function YubinBangoを無効化(int $shippingNo = 0): self
+    {
+        $this->tester->executeJS("
+            var container = document.getElementById('shipmentOverview_{$shippingNo}');
+            if (container) {
+                container.classList.remove('h-adr');
+                var hadrElements = container.querySelectorAll('.h-adr');
+                hadrElements.forEach(function(el) { el.classList.remove('h-adr'); });
+            }
+        ");
+        $this->tester->wait(0.5);
+
+        return $this;
+    }
+
+    /**
+     * 注文者情報をコピー
+     *
+     * @param int $shippingNo 出荷番号（0から始まる）
+     */
+    public function 注文者情報をコピー(int $shippingNo = 0): self
+    {
+        $this->tester->scrollTo('#shipmentOverview_'.$shippingNo);
+        $this->tester->click('.copy-orderer[data-shipping-no="'.$shippingNo.'"]');
+        $this->tester->wait(1);
+
+        return $this;
+    }
+
+    /**
+     * 他の出荷情報からコピー
+     *
+     * @param int $targetShippingNo コピー先の出荷番号（0から始まる）
+     * @param int $sourceShippingNo コピー元の出荷番号（0から始まる）
+     */
+    public function 他の出荷情報からコピー(int $targetShippingNo, int $sourceShippingNo): self
+    {
+        $this->tester->scrollTo('#shipmentOverview_'.$targetShippingNo);
+        // ドロップダウンを開く
+        $this->tester->click('#shipmentOverview_'.$targetShippingNo.' .btn-group .dropdown-toggle');
+        $this->tester->waitForElementVisible('#shipmentOverview_'.$targetShippingNo.' .dropdown-menu');
+        // コピー元を選択
+        $this->tester->click('.copy-other-shipping[data-shipping-no="'.$targetShippingNo.'"][data-source-no="'.$sourceShippingNo.'"]');
+        $this->tester->wait(1);
+
+        return $this;
+    }
+
+    /**
+     * 出荷情報のフィールド値を取得
+     *
+     * @param int $shippingNo 出荷番号（0から始まる）
+     * @param string $field フィールド名
+     */
+    public function 出荷情報のフィールド値を取得(int $shippingNo, string $field): string
+    {
+        $fieldMap = [
+            'name01' => 'name_name01',
+            'name02' => 'name_name02',
+            'kana01' => 'kana_kana01',
+            'kana02' => 'kana_kana02',
+            'postal_code' => 'postal_code',
+            'pref' => 'address_pref',
+            'addr01' => 'address_addr01',
+            'addr02' => 'address_addr02',
+            'phone_number' => 'phone_number',
+            'company_name' => 'company_name',
+        ];
+
+        if (!array_key_exists($field, $fieldMap)) {
+            throw new \InvalidArgumentException('Unknown field: '.$field);
+        }
+
+        return $this->tester->grabValueFrom(['id' => 'form_shippings_'.$shippingNo.'_'.$fieldMap[$field]]);
     }
 }

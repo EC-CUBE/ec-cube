@@ -22,6 +22,56 @@ file that was distributed with this source code.
     <script src="//yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
 
     <script>
+        // 注文者情報
+        var ordererInfo = {
+            name01: {{ Order.name01|json_encode|raw }},
+            name02: {{ Order.name02|json_encode|raw }},
+            kana01: {{ Order.kana01|json_encode|raw }},
+            kana02: {{ Order.kana02|json_encode|raw }},
+            postal_code: {{ Order.postal_code|json_encode|raw }},
+            pref_id: {{ Order.Pref ? Order.Pref.id|json_encode|raw : 'null' }},
+            addr01: {{ Order.addr01|json_encode|raw }},
+            addr02: {{ Order.addr02|json_encode|raw }},
+            phone_number: {{ Order.phone_number|json_encode|raw }},
+            company_name: {{ Order.company_name|json_encode|raw }}
+        };
+
+        // 注文者情報をコピー
+        $(document).on('click', '.copy-orderer', function() {
+            var shippingNo = $(this).data('shipping-no');
+            var prefix = '#form_shippings_' + shippingNo + '_';
+
+            $(prefix + 'name_name01').val(ordererInfo.name01);
+            $(prefix + 'name_name02').val(ordererInfo.name02);
+            $(prefix + 'kana_kana01').val(ordererInfo.kana01);
+            $(prefix + 'kana_kana02').val(ordererInfo.kana02);
+            $(prefix + 'postal_code').val(ordererInfo.postal_code);
+            $(prefix + 'address_pref').val(ordererInfo.pref_id);
+            $(prefix + 'address_addr01').val(ordererInfo.addr01);
+            $(prefix + 'address_addr02').val(ordererInfo.addr02);
+            $(prefix + 'phone_number').val(ordererInfo.phone_number);
+            $(prefix + 'company_name').val(ordererInfo.company_name);
+        });
+
+        // 他の出荷情報からコピー
+        $(document).on('click', '.copy-other-shipping', function() {
+            var targetNo = $(this).data('shipping-no');
+            var sourceNo = $(this).data('source-no');
+            var targetPrefix = '#form_shippings_' + targetNo + '_';
+            var sourcePrefix = '#form_shippings_' + sourceNo + '_';
+
+            $(targetPrefix + 'name_name01').val($(sourcePrefix + 'name_name01').val());
+            $(targetPrefix + 'name_name02').val($(sourcePrefix + 'name_name02').val());
+            $(targetPrefix + 'kana_kana01').val($(sourcePrefix + 'kana_kana01').val());
+            $(targetPrefix + 'kana_kana02').val($(sourcePrefix + 'kana_kana02').val());
+            $(targetPrefix + 'postal_code').val($(sourcePrefix + 'postal_code').val());
+            $(targetPrefix + 'address_pref').val($(sourcePrefix + 'address_pref').val());
+            $(targetPrefix + 'address_addr01').val($(sourcePrefix + 'address_addr01').val());
+            $(targetPrefix + 'address_addr02').val($(sourcePrefix + 'address_addr02').val());
+            $(targetPrefix + 'phone_number').val($(sourcePrefix + 'phone_number').val());
+            $(targetPrefix + 'company_name').val($(sourcePrefix + 'company_name').val());
+        });
+
         // 商品追加
         $('.addProduct-button').on('click', function() {
             var no = $(this).data('shipping-no');
@@ -311,6 +361,31 @@ file that was distributed with this source code.
                                         </div>
                                     </div>
                                     <!-- お届先情報 -->
+                                    {% set currentShippingNo = loop.index0 %}
+                                    {% set currentShippingIndex = loop.index %}
+                                    <div class="row mb-3">
+                                        <div class="col-12">
+                                            <button type="button" class="btn btn-ec-regular copy-orderer" data-shipping-no="{{ currentShippingNo }}">{{ 'admin.order.copy_orderer'|trans }}</button>
+                                            {% if form.shippings|length > 1 %}
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-ec-regular dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        {{ 'admin.order.copy_from_other_shipping'|trans }}
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        {% for otherShippingForm in form.shippings %}
+                                                            {% if loop.index0 != currentShippingNo %}
+                                                                <li>
+                                                                    <a class="dropdown-item copy-other-shipping" href="javascript:;" data-shipping-no="{{ currentShippingNo }}" data-source-no="{{ loop.index0 }}">
+                                                                        {{ 'admin.order.shipping__card_title'|trans }}({{ loop.index }})
+                                                                    </a>
+                                                                </li>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <div class="col-6">
                                             <div class="row mb-3">

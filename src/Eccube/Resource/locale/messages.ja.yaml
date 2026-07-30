@@ -890,6 +890,7 @@ admin.order.orderer_name: 注文者名
 admin.order.orderer_kana: 注文者名(カナ)
 admin.order.orderer_company_name: 注文者会社名
 admin.order.copy_orderer: 注文者情報をコピー
+admin.order.copy_from_other_shipping: 他の出荷情報からコピー
 admin.order.output_delivery_note: 納品書を出力
 admin.order.output_delivery_note_short: 納品書出力
 admin.order.add_shipping: 出荷情報の追加
