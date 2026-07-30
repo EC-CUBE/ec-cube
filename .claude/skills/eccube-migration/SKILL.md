@@ -126,8 +126,9 @@ final class Version20240101000000 extends AbstractMigration
 
 ## よくある間違い
 
-- ❌ カラムを足したので `ALTER TABLE ... ADD COLUMN` のマイグレーションを書く
-  → ✅ Entity 属性を足すだけ。新規は `schema:create`、既存は `schema:update --force` が反映する。
+- ❌ カラムを足したので反射的に `ALTER TABLE ... ADD COLUMN` のマイグレーションを書く
+  → ✅ 既定は Entity 属性を足すだけ（新規は `schema:create`、既存は `schema:update --force` が反映）。
+    既存行への既定値投入など理由があれば書いてよい（上記「両方の前例がある」を参照）。
 - ❌ `doctrine:migrations:diff` で Entity 差分から ALTER を自動生成する
   → ✅ `doctrine:migrations:generate` で空の雛形を作り、必要な SQL（INSERT・型変更等）だけ手で書く。
 - ❌ マイグレーションでテーブルを"新規定義"してスキーマの源泉にする → ✅ 源泉は Entity 属性。

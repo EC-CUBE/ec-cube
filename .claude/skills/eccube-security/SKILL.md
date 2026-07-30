@@ -34,6 +34,10 @@ EC-CUBE は **個別アクションの `#[IsGranted]` ではなく、ファイ�
 > **認可レビューで `security.yaml` だけを見ると、この 6 規則が見えず誤検出する。**
 > 例: `^/mypage/` 配下は `ROLE_USER` が前提なので `getUser()` は非 null だが、
 > これを知らないと「null 参照で 500 になる」と誤って指摘してしまう。
+> **ただし規則は上から順に最初に一致したものが適用される**ため、より上に並ぶ
+> `/mypage/login`・`/mypage/withdraw_complete`（`IS_AUTHENTICATED_ANONYMOUSLY`）は
+> 匿名で到達でき、`getUser()` が null になり得る。**`^/mypage/` 配下を一律に
+> 「認証済み」と扱わない**こと（`/mypage/change` は逆に `IS_AUTHENTICATED_FULLY` で更に厳しい）。
 > 認可の穴を探すときは必ず `EccubeExtension.php` 側も合わせて読む。
 
 - **firewalls** は 3 つ:
