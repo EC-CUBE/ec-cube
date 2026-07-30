@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Service\Mcp\Tool;
 
+use Eccube\Entity\Product;
 use Eccube\Service\Mcp\Tool\SearchProductsTool;
 use Eccube\Tests\EccubeTestCase;
 use PHPUnit\Framework\Attributes\Group;
@@ -101,5 +102,115 @@ final class SearchProductsToolTest extends EccubeTestCase
             $this->assertArrayHasKey('max', $item['stock']);
             $this->assertArrayHasKey('unlimited', $item['stock']);
         }
+    }
+
+    /**
+     * ② 回帰ガード: 在庫で絞り込んでも、 返る商品の在庫レンジは全表示規格ぶんのまま縮まない。
+     * 商品単位の EXISTS で絞り、 fetch-join した規格を部分ハイドレートしないことを担保する。
+     */
+    public function testStockFilterDoesNotShrinkStockRange(): void
+    {
+        $name = 'mcp-stock-range-'.uniqid();
+        $product = $this->makeProductWithStocks($name, [100, 900], hiddenStock: 0);
+
+        $unfiltered = $this->findById($this->tool->search(keyword: $name, limit: 50), $product->getId());
+        $this->assertNotNull($unfiltered, '絞り込み無しで作成商品が出る');
+
+        // 900 の規格だけが満たす条件でも商品はヒットし、 在庫レンジは 100〜900 のまま。
+        $filtered = $this->findById($this->tool->search(keyword: $name, stockMin: 800, limit: 50), $product->getId());
+        $this->assertNotNull($filtered, 'stockMin=800 でも作成商品はヒットする (900 の規格が満たす)');
+
+        $this->assertSame((string) $unfiltered['stock']['min'], (string) $filtered['stock']['min'], '絞り込み有無で stock.min が一致 (レンジが縮まない)');
+        $this->assertSame((string) $unfiltered['stock']['max'], (string) $filtered['stock']['max'], '絞り込み有無で stock.max が一致');
+        $this->assertSame('100', (string) $filtered['stock']['min']);
+        $this->assertSame('900', (string) $filtered['stock']['max']);
+    }
+
+    /**
+     * A: 単一 EXISTS のセマンティクス。 [stockMin, stockMax] に入る規格が 1 つも無い商品はヒットしない
+     * (min と max を別々の規格が満たす「レンジ交差」ではヒットさせない)。
+     */
+    public function testStockRangeRequiresSingleClassWithinBounds(): void
+    {
+        $name = 'mcp-stock-cross-'.uniqid();
+        // どの規格も [400,800] に入らない (300 と 900)。 交差解釈なら 900>=400 かつ 300<=800 でヒットしてしまう。
+        $product = $this->makeProductWithStocks($name, [300, 900], hiddenStock: 0);
+
+        $result = $this->tool->search(keyword: $name, stockMin: 400, stockMax: 800, limit: 50);
+
+        $this->assertNull(
+            $this->findById($result, $product->getId()),
+            '[400,800] に入る規格が無い商品はヒットしない',
+        );
+    }
+
+    /**
+     * C: 在庫絞り込みは表示規格のみを母集団にする。 非表示規格だけが条件を満たす商品はヒットしない
+     * (出力レンジ = ProductPriceStockSummarizer も非表示規格を除外するため母集団を揃える)。
+     */
+    public function testStockFilterIgnoresInvisibleClasses(): void
+    {
+        $name = 'mcp-stock-hidden-'.uniqid();
+        // 表示規格は 100、 非表示規格だけが 900。 stockMin=800 は非表示規格しか満たさない。
+        $product = $this->makeProductWithStocks($name, [100], hiddenStock: 900);
+
+        $result = $this->tool->search(keyword: $name, stockMin: 800, limit: 50);
+
+        $this->assertNull(
+            $this->findById($result, $product->getId()),
+            '非表示規格だけが在庫条件を満たす商品はヒットしない',
+        );
+    }
+
+    /**
+     * @param array{items: list<array<string, mixed>>} $result
+     *
+     * @return array<string, mixed>|null
+     */
+    private function findById(array $result, ?int $productId): ?array
+    {
+        foreach ($result['items'] as $item) {
+            if ((int) ($item['id'] ?? 0) === $productId) {
+                return $item;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * 表示規格の在庫を $visibleStocks で、 (指定時) 非表示のデフォルト規格の在庫を $hiddenStock で固定した
+     * 商品を作る。 Generator は全表示規格を在庫ランダムで作るため、 テスト内で上書きする。
+     *
+     * @param list<int> $visibleStocks 表示規格に順に割り当てる在庫
+     */
+    private function makeProductWithStocks(string $name, array $visibleStocks, ?int $hiddenStock = null): Product
+    {
+        $product = $this->createProduct($name, \count($visibleStocks));
+
+        $visible = [];
+        $hidden = [];
+        foreach ($product->getProductClasses() ?? [] as $pc) {
+            if ($pc->isVisible()) {
+                $visible[] = $pc;
+            } else {
+                $hidden[] = $pc;
+            }
+        }
+        $this->assertCount(\count($visibleStocks), $visible, 'createProduct が期待どおりの表示規格数を作る');
+
+        foreach ($visible as $i => $pc) {
+            $pc->setStockUnlimited(false);
+            $pc->setStock($visibleStocks[$i]);
+        }
+        if (null !== $hiddenStock) {
+            $this->assertNotEmpty($hidden, '非表示のデフォルト規格が存在する');
+            $hidden[0]->setStockUnlimited(false);
+            $hidden[0]->setStock($hiddenStock);
+        }
+
+        $this->entityManager->flush();
+
+        return $product;
     }
 }

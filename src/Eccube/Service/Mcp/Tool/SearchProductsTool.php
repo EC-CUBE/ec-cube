@@ -53,8 +53,8 @@ final readonly class SearchProductsTool
      * @param string|null $keyword    ID または商品名 / 商品コードの部分一致 (任意)
      * @param int|null    $categoryId カテゴリ ID。 子カテゴリも対象 (任意)
      * @param int[]|null  $statusIds  商品ステータス ID の配列。 1=公開、 2=非公開、 3=廃止 (任意、 既定 [1])
-     * @param int|null    $stockMin   在庫数がこの値以上の商品のみ (任意)
-     * @param int|null    $stockMax   在庫数がこの値以下の商品のみ (任意)
+     * @param int|null    $stockMin   在庫がこの値以上の表示規格を持つ商品のみ (任意)。 stockMax と併用時は同一規格が [stockMin, stockMax] に入る商品に限る
+     * @param int|null    $stockMax   在庫がこの値以下の表示規格を持つ商品のみ (任意)。 stockMin と併用時は同一規格が [stockMin, stockMax] に入る商品に限る
      * @param int         $limit      取得件数。 1〜200 (既定 10)
      * @param int         $offset     スキップ件数 (既定 0)
      *
@@ -98,17 +98,27 @@ final readonly class SearchProductsTool
                 // が ProductClasses を「条件に合う規格だけ」部分ハイドレートし、 価格/在庫レンジ集計
                 // (ProductPriceStockSummarizer) が条件外の規格を落としてレンジが縮む。 商品単位の EXISTS
                 // 部分クエリで絞り込み、 pc の完全ハイドレート (=正しいレンジ) を保つ。
-                if (null !== $stockMin) {
-                    $qb->andWhere($qb->expr()->exists(
-                        'SELECT pcStockMin.id FROM '.ProductClass::class.' pcStockMin'
-                        .' WHERE pcStockMin.Product = p AND pcStockMin.stock_unlimited = false AND pcStockMin.stock >= :mcpStockMin'
-                    ))->setParameter('mcpStockMin', $stockMin);
-                }
-                if (null !== $stockMax) {
-                    $qb->andWhere($qb->expr()->exists(
-                        'SELECT pcStockMax.id FROM '.ProductClass::class.' pcStockMax'
-                        .' WHERE pcStockMax.Product = p AND pcStockMax.stock_unlimited = false AND pcStockMax.stock <= :mcpStockMax'
-                    ))->setParameter('mcpStockMax', $stockMax);
+                //
+                // min/max は 1 本の EXISTS にまとめ、 同一規格が両方を満たすこと (=「在庫が [stockMin, stockMax]
+                // に入る規格を持つ商品」) を要求する。 別々の EXISTS だと min と max を別規格が満たしてもヒットし
+                // レンジ交差になる。 visible = true は、 出力レンジ側 (ProductPriceStockSummarizer が非表示規格を
+                // 除外して集計) と絞り込みの母集団を揃えるため (非表示規格だけが条件を満たす商品を除外する)。
+                if (null !== $stockMin || null !== $stockMax) {
+                    $dql = 'SELECT pcStock.id FROM '.ProductClass::class.' pcStock'
+                        .' WHERE pcStock.Product = p AND pcStock.visible = true AND pcStock.stock_unlimited = false';
+                    if (null !== $stockMin) {
+                        $dql .= ' AND pcStock.stock >= :mcpStockMin';
+                    }
+                    if (null !== $stockMax) {
+                        $dql .= ' AND pcStock.stock <= :mcpStockMax';
+                    }
+                    $qb->andWhere($qb->expr()->exists($dql));
+                    if (null !== $stockMin) {
+                        $qb->setParameter('mcpStockMin', $stockMin);
+                    }
+                    if (null !== $stockMax) {
+                        $qb->setParameter('mcpStockMax', $stockMax);
+                    }
                 }
 
                 $qb->setMaxResults($limit)->setFirstResult($offset);
