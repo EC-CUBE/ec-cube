@@ -110,6 +110,8 @@ public static function provideStatuses(): array
 - ❌ Entity の手組み → ✅ `createXxx()` フィクスチャヘルパ。
 - ❌ 支払方法のデフォルト/再選択テストで `find(1)` 等の ID 前提 → ✅ `Generator::createPayment()` で sort_no・利用条件を明示し `assertSame()` で再選択先を固定（フィクスチャ並び変更で偽陽性になり得る）。
 - ❌ ステータス値のハードコーディング（`if ($status == 1)`）→ ✅ 定数（例: `OrderStatus::NEW`）を使う。
+- ❌ 回帰テストを追加して、修正を外すと落ちることを確認せずに完了とする → ✅ 修正を 1 つずつ外してどのテストが落ちるか実測する（落ちないテストはゲートにならない）。
+- ❌ PHP Warning が出ることを回帰の証拠にする → ✅ `phpunit.xml.dist` に `failOnWarning` が無いため Warning では落ちない。戻り値を assert で直接検証する。
 - ❌ 型宣言の省略 → ✅ 引数・戻り値に型を付け、PHPStan level 6 を通す。
 
 ## 実行方法

@@ -72,3 +72,5 @@ class ExampleRepository extends AbstractRepository
 - ❌ `ServiceEntityRepository` を直接継承 → ✅ `AbstractRepository<T>` を継承
 - ❌ オーバーライドで親と異なるシグネチャ → ✅ 親シグネチャを厳守
 - ❌ 画面表示の一覧・関連取得を無制限に全件取得（件数が際限なく増え得る）→ ✅ ページング（Paginator 用に QueryBuilder を返す）か上限を設ける
+- ❌ join 先への絞り込みを EXISTS 部分クエリへ移すとき、その別名に掛かっていた既存の制約を引き継がない → ✅ 同じ制約を EXISTS 内に再掲し、集計・出力側の母集団と一致させる
+- ❌ 1 対多の範囲絞り込みで下限・上限を独立した EXISTS 2 本に分ける（別々の子行が満たせばヒットしてしまう）→ ✅ 同一の子行に両条件を要求するなら EXISTS 1 本にまとめる
