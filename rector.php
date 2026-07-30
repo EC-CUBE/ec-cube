@@ -57,7 +57,7 @@ return RectorConfig::configure()
            // スキップするパスやルールを指定
            ->withSkip([
                // 特定のファイルやディレクトリを除外する場合
-               __DIR__ . '/src/Eccube/Rector',
+               __DIR__ . '/rector',
                // Codeception 自動生成ファイル (codecept build で再生成されるため Rector の指摘は意味なし)
                __DIR__ . '/codeception/_support/_generated',
                // 特定のルールを除外する場合
