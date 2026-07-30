@@ -19,137 +19,135 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Repository\TagRepository;
 
-if (!class_exists(Tag::class)) {
-    /**
-     * Tag
-     */
-    #[ORM\Table(name: 'dtb_tag')]
-    #[ORM\InheritanceType('SINGLE_TABLE')]
-    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
-    #[ORM\HasLifecycleCallbacks]
-    #[ORM\Entity(repositoryClass: TagRepository::class)]
-    #[ORM\Cache(usage: 'NONSTRICT_READ_WRITE')]
-    class Tag extends AbstractEntity implements \Stringable
+/**
+ * Tag
+ */
+#[ORM\Table(name: 'dtb_tag')]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: TagRepository::class)]
+#[ORM\Cache(usage: 'NONSTRICT_READ_WRITE')]
+class Tag extends AbstractEntity implements \Stringable
+{
+    #[\Override]
+    public function __toString(): string
     {
-        #[\Override]
-        public function __toString(): string
-        {
-            return $this->getName() ?? '';
-        }
+        return $this->getName() ?? '';
+    }
 
-        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
-        #[ORM\Id]
-        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-        protected ?int $id = null;
+    #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    protected ?int $id = null;
 
-        #[ORM\Column(name: 'name', type: Types::STRING, length: 255)]
-        protected ?string $name = null;
+    #[ORM\Column(name: 'name', type: Types::STRING, length: 255)]
+    protected ?string $name = null;
 
-        #[ORM\Column(name: 'sort_no', type: Types::SMALLINT, options: ['unsigned' => true])]
-        protected ?int $sort_no = null;
+    #[ORM\Column(name: 'sort_no', type: Types::SMALLINT, options: ['unsigned' => true])]
+    protected ?int $sort_no = null;
 
-        /**
-         * @var Collection<int, ProductTag>
-         */
-        #[ORM\OneToMany(targetEntity: ProductTag::class, mappedBy: 'Tag')]
-        protected $ProductTag;
+    /**
+     * @var Collection<int, ProductTag>
+     */
+    #[ORM\OneToMany(targetEntity: ProductTag::class, mappedBy: 'Tag')]
+    protected Collection $ProductTag;
 
-        /**
-         * Constructor
-         */
-        public function __construct()
-        {
-            $this->ProductTag = new ArrayCollection();
-        }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->ProductTag = new ArrayCollection();
+    }
 
-        /**
-         * Set id.
-         *
-         * @return $this
-         */
-        public function setId(int $id): static
-        {
-            $this->id = $id;
+    /**
+     * Set id.
+     *
+     * @return $this
+     */
+    public function setId(int $id): static
+    {
+        $this->id = $id;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get id.
-         */
-        public function getId(): ?int
-        {
-            return $this->id;
-        }
+    /**
+     * Get id.
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
-        /**
-         * Set name.
-         *
-         * @return $this
-         */
-        public function setName(?string $name): static
-        {
-            $this->name = $name;
+    /**
+     * Set name.
+     *
+     * @return $this
+     */
+    public function setName(?string $name): static
+    {
+        $this->name = $name;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get name.
-         */
-        public function getName(): ?string
-        {
-            return $this->name;
-        }
+    /**
+     * Get name.
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
 
-        /**
-         * Set sort_no.
-         *
-         * @return $this
-         */
-        public function setSortNo(int $sort_no): static
-        {
-            $this->sort_no = $sort_no;
+    /**
+     * Set sort_no.
+     *
+     * @return $this
+     */
+    public function setSortNo(int $sort_no): static
+    {
+        $this->sort_no = $sort_no;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get sort_no.
-         */
-        public function getSortNo(): int
-        {
-            return $this->sort_no;
-        }
+    /**
+     * Get sort_no.
+     */
+    public function getSortNo(): int
+    {
+        return $this->sort_no;
+    }
 
-        /**
-         * Add productTag.
-         */
-        public function addProductTag(ProductTag $productTag): Tag
-        {
-            $this->ProductTag[] = $productTag;
+    /**
+     * Add productTag.
+     */
+    public function addProductTag(ProductTag $productTag): Tag
+    {
+        $this->ProductTag[] = $productTag;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Remove productTag.
-         *
-         * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
-         */
-        public function removeProductTag(ProductTag $productTag): bool
-        {
-            return $this->ProductTag->removeElement($productTag);
-        }
+    /**
+     * Remove productTag.
+     *
+     * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeProductTag(ProductTag $productTag): bool
+    {
+        return $this->ProductTag->removeElement($productTag);
+    }
 
-        /**
-         * Get productTag.
-         *
-         * @return Collection<int, ProductTag>
-         */
-        public function getProductTag(): Collection
-        {
-            return $this->ProductTag;
-        }
+    /**
+     * Get productTag.
+     *
+     * @return Collection<int, ProductTag>
+     */
+    public function getProductTag(): Collection
+    {
+        return $this->ProductTag;
     }
 }

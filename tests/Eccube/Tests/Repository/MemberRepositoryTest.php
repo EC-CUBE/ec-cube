@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Repository;
 
+use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Eccube\Entity\Master\Work;
 use Eccube\Entity\Member;
 use Eccube\Repository\MemberRepository;
@@ -156,7 +157,7 @@ final class MemberRepositoryTest extends EccubeTestCase
 
     public function testDeleteWithException()
     {
-        if ($this->entityManager->getConnection()->getDatabasePlatform()->getName() == 'sqlite') {
+        if ($this->entityManager->getConnection()->getDatabasePlatform() instanceof SQLitePlatform) {
             $this->markTestSkipped('Can not support for sqlite3');
         }
 

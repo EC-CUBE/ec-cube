@@ -1,0 +1,6 @@
+id,name,sort_no,discriminator_type
+1,新規申請,0,refundrequeststatus
+2,処理中,1,refundrequeststatus
+3,承認済,2,refundrequeststatus
+4,却下,3,refundrequeststatus
+5,追加情報依頼,4,refundrequeststatus
