@@ -67,6 +67,7 @@ class EccubeExtension extends AbstractExtension
             new TwigFilter('ellipsis', $this->getEllipsis(...)),
             new TwigFilter('time_ago', $this->getTimeAgo(...)),
             new TwigFilter('file_ext_icon', $this->getExtensionIcon(...), ['is_safe' => ['html']]),
+            new TwigFilter('json_ld', $this->encodeJsonLd(...), ['is_safe' => ['html']]),
             new TwigFilter('json_encode_safe', $this->getJsonEncodeSafe(...), ['is_safe' => ['html', 'js']]),
         ];
     }
@@ -253,6 +254,32 @@ class EccubeExtension extends AbstractExtension
         }
 
         return json_encode($class_categories, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
+    }
+
+    /**
+     * JSON-LD 連想配列を `<script type="application/ld+json">` 埋め込み用に安全にエンコードする.
+     *
+     * JSON_HEX_TAG 等により `< > & ' "` をエスケープし、`</script>` 混入による
+     * スクリプト破壊・蓄積型 XSS を機械的に防ぐ.
+     *
+     * @param array<string, mixed> $data
+     */
+    public function encodeJsonLd(array $data): string
+    {
+        $json = json_encode(
+            $data,
+            JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT
+        );
+
+        // 不正な UTF-8 等でエンコードに失敗した場合、空の <script> を黙って出さず
+        // ログに残したうえで妥当な JSON（空オブジェクト）を返す.
+        if ($json === false) {
+            log_error('JSON-LD のエンコードに失敗しました: '.json_last_error_msg());
+
+            return '{}';
+        }
+
+        return $json;
     }
 
     /**

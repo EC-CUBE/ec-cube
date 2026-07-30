@@ -13,9 +13,9 @@
 
 namespace Eccube\DependencyInjection;
 
-use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Configuration as DoctrineBundleConfiguration;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Tools\DsnParser;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -142,31 +142,43 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
         // DB接続後, 有効無効の判定を行う.
         $container->setParameter('eccube.plugins.disabled', $pluginDirs);
 
-        // doctrine.yml, または他のprependで差し込まれたdoctrineの設定値を取得する.
-        $configs = $container->getExtensionConfig('doctrine');
-
-        // $configsは, env変数(%env(xxx)%)やパラメータ変数(%xxx.xxx%)がまだ解決されていないため, resolveEnvPlaceholders()で解決する
-        // @see https://github.com/symfony/symfony/issues/22456
-        $configs = $container->resolveEnvPlaceholders($configs, true);
-
-        // doctrine bundleのconfigurationで設定値を正規化する.
-        $configuration = new DoctrineBundleConfiguration($container->getParameter('kernel.debug'));
-        $config = $this->processConfiguration($configuration, $configs);
-
-        // prependのタイミングではコンテナのインスタンスは利用できない.
+        // prependのタイミングではコンテナのインスタンスは利用できないため,
         // 直接dbalのconnectionを生成し, dbアクセスを行う.
-        $params = $config['dbal']['connections'][$config['dbal']['default_connection']];
-        // ContainerInterface::resolveEnvPlaceholders() で取得した DATABASE_URL は
-        // % がエスケープされているため、環境変数から取得し直す
-        $params['url'] = env('DATABASE_URL');
+        //
+        // DBAL 4 では DriverManager::getConnection() が 'url' パラメータを解析しなくなった
+        // (DBAL 3 までは url から driver/host/dbname 等を導出していた). url を渡しても無視され,
+        // doctrine.yaml の既定 driver (pdo_sqlite) のまま実 DB とは別の接続が張られてしまい,
+        // dtb_plugin を読めず「全プラグインが無効」と誤判定される. そのため DsnParser で
+        // DATABASE_URL を明示的に driver/host/dbname 等へ展開してから接続する.
+        // スキームマップは DoctrineBundle\ConnectionFactory::DEFAULT_SCHEME_MAP に合わせる.
+        $databaseUrl = (string) env('DATABASE_URL');
+        if ($databaseUrl === '') {
+            // DATABASE_URL 未設定 (インストール前や DB を要しない cache:warmup 等) では
+            // 有効プラグインを判定できない. DsnParser は空文字を driver 無しで解析するため,
+            // そのまま getConnection() に渡すと DriverRequired 例外で warmup が落ちる.
+            // ファイル設置のみ = 全プラグイン無効として早期 return する (従来の挙動を踏襲).
+            return;
+        }
+        $dsnParser = new DsnParser([
+            'db2' => 'ibm_db2',
+            'mssql' => 'pdo_sqlsrv',
+            'mysql' => 'pdo_mysql',
+            'mysql2' => 'pdo_mysql',
+            'postgres' => 'pdo_pgsql',
+            'postgresql' => 'pdo_pgsql',
+            'pgsql' => 'pdo_pgsql',
+            'sqlite' => 'pdo_sqlite',
+            'sqlite3' => 'pdo_sqlite',
+        ]);
+        $params = $dsnParser->parse($databaseUrl);
         $conn = DriverManager::getConnection($params);
 
         if (!$this->isConnected($conn)) {
             return;
         }
 
-        $stmt = $conn->query('select * from dtb_plugin');
-        $plugins = $stmt->fetchAll();
+        $stmt = $conn->executeQuery('select * from dtb_plugin');
+        $plugins = $stmt->fetchAllAssociative();
 
         $enabled = [];
         foreach ($plugins as $plugin) {
@@ -253,7 +265,7 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
             return false;
         }
 
-        $tableNames = $conn->getSchemaManager()->listTableNames();
+        $tableNames = $conn->createSchemaManager()->listTableNames();
 
         return in_array('dtb_plugin', $tableNames);
     }

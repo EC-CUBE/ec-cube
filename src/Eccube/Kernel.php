@@ -34,6 +34,7 @@ use Eccube\Doctrine\DBAL\Types\UTCDateTimeTzType;
 use Eccube\Doctrine\ORM\Mapping\Driver\TraitProxyAttributeDriver;
 use Eccube\Doctrine\Query\QueryCustomizer;
 use Eccube\Log\Logger;
+use Eccube\Service\AgentCommerce\Payment\AgentCheckoutPaymentHandlerInterface;
 use Eccube\Service\Payment\PaymentMethodInterface;
 use Eccube\Service\PurchaseFlow\DiscountProcessor;
 use Eccube\Service\PurchaseFlow\ItemHolderPostValidator;
@@ -268,6 +269,13 @@ class Kernel extends BaseKernel
             ->addTag(PaymentMethodPass::PAYMENT_METHOD_TAG);
         $container->addCompilerPass(new PaymentMethodPass());
 
+        // Agent Commerce 決済ハンドラ (#6574 UCP / #6776 ACP) の拡張。
+        // 決済プラグインの具象ハンドラは Plugin\ glob (services.php・#6915) で登録されるため、
+        // services.yaml のファイルスコープな _instanceof ではタグが付かない。
+        // PaymentMethodInterface と同様にコンテナ全体へ効く registerForAutoconfiguration でタグ付けする。
+        $container->registerForAutoconfiguration(AgentCheckoutPaymentHandlerInterface::class)
+            ->addTag('agent_commerce.payment_handler');
+
         // PurchaseFlow の拡張
         $container->registerForAutoconfiguration(ItemPreprocessor::class)
             ->addTag(PurchaseFlowPass::ITEM_PREPROCESSOR_TAG);
@@ -300,10 +308,11 @@ class Kernel extends BaseKernel
         $container->addCompilerPass(new DoctrineOrmMappingsPass($driver, $namespaces, []));
 
         // Customize
-        $container->addCompilerPass(DoctrineOrmMappingsPass::createAttributeMappingDriver(
-            ['Customize\\Entity'],
-            ['%kernel.project_dir%/app/Customize/Entity']
-        ));
+        $customizePaths = ['%kernel.project_dir%/app/Customize/Entity'];
+        $customizeNamespaces = ['Customize\\Entity'];
+        $customizeDriver = new Definition(TraitProxyAttributeDriver::class, [$customizePaths]);
+        $customizeDriver->addMethodCall('setTraitProxiesDirectory', [$projectDir.'/app/proxy/entity']);
+        $container->addCompilerPass(new DoctrineOrmMappingsPass($customizeDriver, $customizeNamespaces, []));
 
         // Plugin
         $pluginDir = $projectDir.'/app/Plugin';
