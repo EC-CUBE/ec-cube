@@ -243,12 +243,33 @@ frontmatter の `description` がトリガ条件で、該当レイヤを触る�
 | コンソールコマンド（Symfony Console・バッチ） | [`.claude/skills/eccube-command/SKILL.md`](./.claude/skills/eccube-command/SKILL.md) | `eccube-command` |
 | 責務分離レビュー（実装直後の自己チェック・全層） | [`.claude/skills/eccube-review-responsibility/SKILL.md`](./.claude/skills/eccube-review-responsibility/SKILL.md) | `eccube-review-responsibility` |
 
-> 規約は必要になった時点で `.claude/skills/<name>/SKILL.md` を 1 ファイル追加して足す（`.codex`/`.agents` は symlink で自動共有）。
+> 規約は必要になった時点で `.claude/skills/eccube-<name>/SKILL.md` を 1 ファイル追加して足す（`.codex`/`.agents` は symlink で自動共有）。
 > 各ファイルは frontmatter（`name` / `description`）＋本文の順で書き、本文は「対象／基本ルール／実装パターン／よくある間違い／実行・確認方法」の構成を推奨する（推測を載せず、必ず `src/Eccube/` の実コードで裏取りする）。
 
-**Skill 命名規則**: リポジトリ内のスキルのため `eccube-` 接頭辞は付けない。
-自動発火するレイヤ規約系はトピック名（`controller` / `service` / `phpunit`）、
-人が明示的に実行するアクション系は動詞前置（`review-responsibility`）とする。
+**Skill 命名規則**: **`eccube-` 接頭辞を必ず付ける**（`eccube-controller` / `eccube-service` / `eccube-phpunit`）。
+接頭辞の後ろは、自動発火するレイヤ規約系はトピック名、
+人が明示的に実行するアクション系は動詞前置（`eccube-review-responsibility`）とする。
+
+接頭辞を付ける理由は、**AI ツールの組み込みスラッシュコマンド・組み込み Skill との名前衝突を避ける**ため。
+`plugin` は Claude Code 組み込みの `/plugin`（プラグイン管理 UI）と完全一致し、
+本リポジトリを開いている間は組み込みコマンドへ到達できなくなっていた（#6978）。
+`entity` `mail` `service` `command` のような汎用語は将来同じ問題を起こすため、
+1 件ずつ例外対応せず全 Skill を `eccube-` 名前空間に入れる。接頭辞だけで衝突回避と
+ピッカーでの一括絞り込みは足りるので、`-dev` のような接尾辞は付けない。
+
+**「よくある間違い」を書き足すときの歯止め**: 検証やレビューで得た知見を追記していくと、
+このセクションは放置すると際限なく伸び、個別事例が一般則の顔で並ぶ。次の 3 点を守る。
+
+- **一般化テスト**: 固有のメソッド名・列名・テーブル名を消しても項目が成立するか確認する。
+  成立しないものは Skill に書かない（そのレイヤ全体に効く規約ではなく、特定の調査結果である）。
+  成立するなら例示を削って一般則だけ残す。固有名を残すと、無関係な箇所へ誤って適用される。
+- **上限**: 1 Skill あたり 10 項・1 項 120 字程度に収める。超えたら**追記ではなく既存項への統合か削除**を選ぶ。
+- **頻度順**: 踏まれやすいものを上に置く。読み手の注意は前方に効くため、頻度順でないリストは下位が実質死ぬ。
+
+この歯止めは**追記するときに適用する**。本規則の導入時点で上限を超えている Skill
+（項数: `eccube-mail` 11 / `eccube-purchase-flow` 12、字数: `eccube-controller` `eccube-csv` `eccube-e2e`
+`eccube-entity` `eccube-phpunit` `eccube-purchase-flow` `eccube-security` `eccube-twig-template`）は、
+次にその節へ手を入れるときに統合・短縮する。既存の超過を理由に新規追記の歯止めを緩めない。
 
 ## 主要エンティティ
 
