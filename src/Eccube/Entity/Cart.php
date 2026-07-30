@@ -22,417 +22,431 @@ use Eccube\Repository\CartRepository;
 use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\ItemCollection;
 
-if (!class_exists(Cart::class)) {
+/**
+ * Cart
+ */
+#[ORM\Table(name: 'dtb_cart')]
+#[ORM\Index(columns: ['update_date'], name: 'dtb_cart_update_date_idx')]
+#[ORM\UniqueConstraint(name: 'dtb_cart_pre_order_id_idx', columns: ['pre_order_id'])]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: CartRepository::class)]
+class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterface
+{
+    use PointTrait;
+
+    #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    private ?int $id = null;
+
+    #[ORM\Column(name: 'cart_key', type: Types::STRING, nullable: true)]
+    private ?string $cart_key = null;
+
     /**
-     * Cart
+     * エージェントコマース (CheckoutSession) が所有するカートか.
+     *
+     * true のカートは Web ストアフロント (CartService) のカート解決から除外され、
+     * ログイン会員のカートマージ・再計算・購入完了等で操作されない。
+     * 通常購入のカートは常に false。
      */
-    #[ORM\Table(name: 'dtb_cart')]
-    #[ORM\Index(columns: ['update_date'], name: 'dtb_cart_update_date_idx')]
-    #[ORM\UniqueConstraint(name: 'dtb_cart_pre_order_id_idx', columns: ['pre_order_id'])]
-    #[ORM\InheritanceType('SINGLE_TABLE')]
-    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
-    #[ORM\HasLifecycleCallbacks]
-    #[ORM\Entity(repositoryClass: CartRepository::class)]
-    class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterface
+    #[ORM\Column(name: 'agent_owned', type: Types::BOOLEAN, options: ['default' => false])]
+    private bool $agent_owned = false;
+
+    #[ORM\ManyToOne(targetEntity: Customer::class)]
+    #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'id')]
+    private ?Customer $Customer = null;
+
+    private bool $lock = false;
+
+    /**
+     * @var Collection<int, CartItem>
+     */
+    #[ORM\OneToMany(targetEntity: CartItem::class, mappedBy: 'Cart', cascade: ['persist'])]
+    #[ORM\OrderBy(['id' => 'ASC'])]
+    private Collection $CartItems;
+
+    #[ORM\Column(name: 'pre_order_id', type: Types::STRING, length: 255, nullable: true)]
+    private ?string $pre_order_id = null;
+
+    #[ORM\Column(name: 'total_price', type: Types::DECIMAL, precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
+    private ?string $total_price = null;
+
+    #[ORM\Column(name: 'delivery_fee_total', type: Types::DECIMAL, precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
+    private ?string $delivery_fee_total = null;
+
+    #[ORM\Column(name: 'sort_no', type: Types::SMALLINT, nullable: true, options: ['unsigned' => true])]
+    private ?int $sort_no = null;
+
+    #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
+    private ?\DateTime $create_date = null;
+
+    #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
+    private ?\DateTime $update_date = null;
+
+    /**
+     * @var InvalidItemException[]
+     */
+    private array $errors = [];
+
+    public function __wakeup(): void
     {
-        use PointTrait;
+        $this->errors = [];
+    }
 
-        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
-        #[ORM\Id]
-        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-        private ?int $id = null;
+    public function __construct()
+    {
+        $this->CartItems = new ArrayCollection();
+    }
 
-        #[ORM\Column(name: 'cart_key', type: Types::STRING, nullable: true)]
-        private ?string $cart_key = null;
+    /**
+     * @return InvalidItemException[]
+     */
+    public function getErrors(): array
+    {
+        return $this->errors;
+    }
 
-        #[ORM\ManyToOne(targetEntity: Customer::class)]
-        #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'id')]
-        private ?Customer $Customer = null;
+    /**
+     * @return int
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
-        private bool $lock = false;
+    public function getCartKey(): string
+    {
+        return $this->cart_key;
+    }
 
-        /**
-         * @var Collection<int, CartItem>
-         */
-        #[ORM\OneToMany(targetEntity: CartItem::class, mappedBy: 'Cart', cascade: ['persist'])]
-        #[ORM\OrderBy(['id' => 'ASC'])]
-        private $CartItems;
+    public function setCartKey(string $cartKey): Cart
+    {
+        $this->cart_key = $cartKey;
 
-        #[ORM\Column(name: 'pre_order_id', type: Types::STRING, length: 255, nullable: true)]
-        private ?string $pre_order_id = null;
+        return $this;
+    }
 
-        #[ORM\Column(name: 'total_price', type: Types::DECIMAL, precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
-        private ?string $total_price = null;
+    public function isAgentOwned(): bool
+    {
+        return $this->agent_owned;
+    }
 
-        #[ORM\Column(name: 'delivery_fee_total', type: Types::DECIMAL, precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
-        private ?string $delivery_fee_total = null;
+    public function setAgentOwned(bool $agentOwned): Cart
+    {
+        $this->agent_owned = $agentOwned;
 
-        #[ORM\Column(name: 'sort_no', type: Types::SMALLINT, nullable: true, options: ['unsigned' => true])]
-        private ?int $sort_no = null;
+        return $this;
+    }
 
-        /**
-         * @var \DateTime
-         */
-        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
-        private $create_date;
+    /**
+     * @deprecated 使用しないので削除予定
+     */
+    public function getLock(): bool
+    {
+        return $this->lock;
+    }
 
-        /**
-         * @var \DateTime
-         */
-        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
-        private $update_date;
+    /**
+     * @deprecated 使用しないので削除予定
+     */
+    public function setLock(bool $lock): Cart
+    {
+        $this->lock = $lock;
 
-        /**
-         * @var InvalidItemException[]
-         */
-        private array $errors = [];
+        return $this;
+    }
 
-        public function __wakeup(): void
-        {
-            $this->errors = [];
+    public function getPreOrderId(): ?string
+    {
+        return $this->pre_order_id;
+    }
+
+    public function setPreOrderId(?string $pre_order_id): Cart
+    {
+        $this->pre_order_id = $pre_order_id;
+
+        return $this;
+    }
+
+    public function addCartItem(CartItem $CartItem): Cart
+    {
+        $this->CartItems[] = $CartItem;
+
+        return $this;
+    }
+
+    /**
+     * カートの中に出荷データがないので、空のコレクションを返します。
+     *
+     * @return ArrayCollection<int, Shipping>
+     */
+    public function getShippings(): ArrayCollection
+    {
+        return new ArrayCollection();
+    }
+
+    public function clearCartItems(): Cart
+    {
+        $this->CartItems->clear();
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CartItem>
+     */
+    public function getCartItems(): Collection
+    {
+        return $this->CartItems;
+    }
+
+    /**
+     * Alias of getCartItems()
+     *
+     * @return ItemCollection<int, ItemInterface>
+     */
+    #[\Override]
+    public function getItems(): ItemCollection
+    {
+        return (new ItemCollection($this->getCartItems()))->sort();
+    }
+
+    /**
+     * @param  Collection<int, CartItem> $CartItems
+     */
+    public function setCartItems(Collection $CartItems): Cart
+    {
+        $this->CartItems = $CartItems;
+
+        return $this;
+    }
+
+    /**
+     * Set total.
+     *
+     * @return $this
+     */
+    public function setTotalPrice(string $total_price): static
+    {
+        $this->total_price = $total_price;
+
+        return $this;
+    }
+
+    public function getTotalPrice(): string
+    {
+        return $this->total_price;
+    }
+
+    /**
+     * Alias of setTotalPrice.
+     *
+     * @param string $total
+     *
+     * @return $this
+     */
+    #[\Override]
+    public function setTotal($total): static
+    {
+        return $this->setTotalPrice($total);
+    }
+
+    /**
+     * Alias of getTotalPrice
+     */
+    #[\Override]
+    public function getTotal(): string
+    {
+        return $this->getTotalPrice();
+    }
+
+    public function getTotalQuantity(): string
+    {
+        $totalQuantity = '0';
+        foreach ($this->CartItems as $CartItem) {
+            $totalQuantity = bcadd($totalQuantity, $CartItem->getQuantity());
         }
 
-        public function __construct()
-        {
-            $this->CartItems = new ArrayCollection();
+        return $totalQuantity;
+    }
+
+    #[\Override]
+    public function addItem(ItemInterface $item): void
+    {
+        if ($item instanceof CartItem) {
+            $this->CartItems->add($item);
         }
+    }
 
-        /**
-         * @return InvalidItemException[]
-         */
-        public function getErrors(): array
-        {
-            return $this->errors;
+    public function removeItem(ItemInterface $item): void
+    {
+        if ($item instanceof CartItem) {
+            $this->CartItems->removeElement($item);
         }
+    }
 
-        /**
-         * @return int
-         */
-        public function getId(): ?int
-        {
-            return $this->id;
-        }
+    /**
+     * 個数の合計を返します。
+     */
+    #[\Override]
+    public function getQuantity(): string
+    {
+        return $this->getTotalQuantity();
+    }
 
-        public function getCartKey(): string
-        {
-            return $this->cart_key;
-        }
+    /**
+     * {@inheritdoc}
+     *
+     * @param string $total
+     *
+     * @return $this
+     */
+    #[\Override]
+    public function setDeliveryFeeTotal($total): static
+    {
+        $this->delivery_fee_total = $total;
 
-        public function setCartKey(string $cartKey): Cart
-        {
-            $this->cart_key = $cartKey;
+        return $this;
+    }
 
-            return $this;
-        }
+    /**
+     * {@inheritdoc}
+     */
+    #[\Override]
+    public function getDeliveryFeeTotal(): string
+    {
+        return $this->delivery_fee_total;
+    }
 
-        /**
-         * @deprecated 使用しないので削除予定
-         */
-        public function getLock(): bool
-        {
-            return $this->lock;
-        }
+    public function getCustomer(): ?Customer
+    {
+        return $this->Customer;
+    }
 
-        /**
-         * @deprecated 使用しないので削除予定
-         */
-        public function setLock(bool $lock): Cart
-        {
-            $this->lock = $lock;
+    public function setCustomer(?Customer $Customer = null): Cart
+    {
+        $this->Customer = $Customer;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        public function getPreOrderId(): ?string
-        {
-            return $this->pre_order_id;
-        }
+    /**
+     * Set sortNo.
+     */
+    public function setSortNo(?int $sortNo = null): Cart
+    {
+        $this->sort_no = $sortNo;
 
-        public function setPreOrderId(?string $pre_order_id): Cart
-        {
-            $this->pre_order_id = $pre_order_id;
+        return $this;
+    }
 
-            return $this;
-        }
+    /**
+     * Get sortNo.
+     */
+    public function getSortNo(): ?int
+    {
+        return $this->sort_no;
+    }
 
-        public function addCartItem(CartItem $CartItem): Cart
-        {
-            $this->CartItems[] = $CartItem;
+    /**
+     * Set createDate.
+     */
+    public function setCreateDate(\DateTime $createDate): Cart
+    {
+        $this->create_date = $createDate;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * カートの中に出荷データがないので、空のコレクションを返します。
-         *
-         * @return ArrayCollection<int, Shipping>
-         */
-        public function getShippings(): ArrayCollection
-        {
-            return new ArrayCollection();
-        }
+    /**
+     * Get createDate.
+     */
+    public function getCreateDate(): ?\DateTime
+    {
+        return $this->create_date;
+    }
 
-        public function clearCartItems(): Cart
-        {
-            $this->CartItems->clear();
+    /**
+     * Set updateDate.
+     */
+    public function setUpdateDate(\DateTime $updateDate): Cart
+    {
+        $this->update_date = $updateDate;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * @return Collection<int, CartItem>
-         */
-        public function getCartItems(): Collection
-        {
-            return $this->CartItems;
-        }
+    /**
+     * Get updateDate.
+     */
+    public function getUpdateDate(): ?\DateTime
+    {
+        return $this->update_date;
+    }
 
-        /**
-         * Alias of getCartItems()
-         *
-         * @return ItemCollection<int, ItemInterface>
-         */
-        #[\Override]
-        public function getItems(): ItemCollection
-        {
-            return (new ItemCollection($this->getCartItems()))->sort();
-        }
+    /**
+     * {@inheritdoc}
+     *
+     * @param string $total
+     *
+     * @return $this
+     */
+    #[\Override]
+    public function setDiscount($total): static
+    {
+        // quiet
+        return $this;
+    }
 
-        /**
-         * @param  Collection<int, CartItem> $CartItems
-         */
-        public function setCartItems(Collection $CartItems): Cart
-        {
-            $this->CartItems = $CartItems;
+    /**
+     * {@inheritdoc}
+     *
+     * @param string $total
+     *
+     * @return $this
+     */
+    #[\Override]
+    public function setCharge($total): static
+    {
+        // quiet
+        return $this;
+    }
 
-            return $this;
-        }
+    /**
+     * {@inheritdoc}
+     *
+     * @param string $total
+     *
+     * @return $this
+     *
+     * @deprecated
+     */
+    #[\Override]
+    public function setTax($total): static
+    {
+        // quiet
+        return $this;
+    }
 
-        /**
-         * Set total.
-         *
-         * @return $this
-         */
-        public function setTotalPrice(string $total_price): static
-        {
-            $this->total_price = $total_price;
+    /**
+     * 注文ではないので、nullを返します。
+     *
+     * Rectorのルール対策のためOrderStatus|nullとしています。
+     */
+    public function getOrderStatus(): ?OrderStatus
+    {
+        return null;
+    }
 
-            return $this;
-        }
-
-        public function getTotalPrice(): string
-        {
-            return $this->total_price;
-        }
-
-        /**
-         * Alias of setTotalPrice.
-         *
-         * @param string $total
-         *
-         * @return $this
-         */
-        #[\Override]
-        public function setTotal($total): static
-        {
-            return $this->setTotalPrice($total);
-        }
-
-        /**
-         * Alias of getTotalPrice
-         */
-        #[\Override]
-        public function getTotal(): string
-        {
-            return $this->getTotalPrice();
-        }
-
-        public function getTotalQuantity(): string
-        {
-            $totalQuantity = '0';
-            foreach ($this->CartItems as $CartItem) {
-                $totalQuantity = bcadd($totalQuantity, $CartItem->getQuantity());
-            }
-
-            return $totalQuantity;
-        }
-
-        #[\Override]
-        public function addItem(ItemInterface $item): void
-        {
-            if ($item instanceof CartItem) {
-                $this->CartItems->add($item);
-            }
-        }
-
-        public function removeItem(ItemInterface $item): void
-        {
-            if ($item instanceof CartItem) {
-                $this->CartItems->removeElement($item);
-            }
-        }
-
-        /**
-         * 個数の合計を返します。
-         */
-        #[\Override]
-        public function getQuantity(): string
-        {
-            return $this->getTotalQuantity();
-        }
-
-        /**
-         * {@inheritdoc}
-         *
-         * @param string $total
-         *
-         * @return $this
-         */
-        #[\Override]
-        public function setDeliveryFeeTotal($total): static
-        {
-            $this->delivery_fee_total = $total;
-
-            return $this;
-        }
-
-        /**
-         * {@inheritdoc}
-         */
-        #[\Override]
-        public function getDeliveryFeeTotal(): string
-        {
-            return $this->delivery_fee_total;
-        }
-
-        public function getCustomer(): ?Customer
-        {
-            return $this->Customer;
-        }
-
-        public function setCustomer(?Customer $Customer = null): Cart
-        {
-            $this->Customer = $Customer;
-
-            return $this;
-        }
-
-        /**
-         * Set sortNo.
-         */
-        public function setSortNo(?int $sortNo = null): Cart
-        {
-            $this->sort_no = $sortNo;
-
-            return $this;
-        }
-
-        /**
-         * Get sortNo.
-         */
-        public function getSortNo(): ?int
-        {
-            return $this->sort_no;
-        }
-
-        /**
-         * Set createDate.
-         */
-        public function setCreateDate(\DateTime $createDate): Cart
-        {
-            $this->create_date = $createDate;
-
-            return $this;
-        }
-
-        /**
-         * Get createDate.
-         */
-        public function getCreateDate(): ?\DateTime
-        {
-            return $this->create_date;
-        }
-
-        /**
-         * Set updateDate.
-         */
-        public function setUpdateDate(\DateTime $updateDate): Cart
-        {
-            $this->update_date = $updateDate;
-
-            return $this;
-        }
-
-        /**
-         * Get updateDate.
-         */
-        public function getUpdateDate(): ?\DateTime
-        {
-            return $this->update_date;
-        }
-
-        /**
-         * {@inheritdoc}
-         *
-         * @param string $total
-         *
-         * @return $this
-         */
-        #[\Override]
-        public function setDiscount($total): static
-        {
-            // quiet
-            return $this;
-        }
-
-        /**
-         * {@inheritdoc}
-         *
-         * @param string $total
-         *
-         * @return $this
-         */
-        #[\Override]
-        public function setCharge($total): static
-        {
-            // quiet
-            return $this;
-        }
-
-        /**
-         * {@inheritdoc}
-         *
-         * @param string $total
-         *
-         * @return $this
-         *
-         * @deprecated
-         */
-        #[\Override]
-        public function setTax($total): static
-        {
-            // quiet
-            return $this;
-        }
-
-        /**
-         * 注文ではないので、nullを返します。
-         *
-         * Rectorのルール対策のためOrderStatus|nullとしています。
-         */
-        public function getOrderStatus(): ?OrderStatus
-        {
-            return null;
-        }
-
-        /**
-         * {@inheritdoc}
-         *
-         * @return OrderItem[]
-         */
-        public function getProductOrderItems(): array
-        {
-            return [];
-        }
+    /**
+     * {@inheritdoc}
+     *
+     * @return OrderItem[]
+     */
+    public function getProductOrderItems(): array
+    {
+        return [];
     }
 }

@@ -39,6 +39,30 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 final class AttributeArgumentsOrderRector extends AbstractRector
 {
     /**
+     * 非推奨アノテーションクラス → 新しい Attribute クラスのマッピング
+     *
+     * AnnotationToAttributeRector が Sensio FrameworkExtraBundle のアノテーションを
+     * Attribute に変換した直後、まだ use 文が Sensio クラスを指している段階で本ルールが走ると、
+     * リフレクションで Sensio 側のコンストラクタ第一パラメータ（例: Template の $data）を
+     * 読み取ってしまい、後段の RenameClassRector がクラスだけ置換しても誤った名前付き引数
+     * （例: #[Template(data: '...')]）が残る。
+     *
+     * これを避けるため、リフレクション対象のクラス名を「新しい Attribute クラス」へ事前に
+     * 差し替え、置換後のクラスの正しいパラメータ順序（例: Template の $template）を使う。
+     * 差し替えるのはリフレクション対象のみで、出力される Attribute 名ノードには手を加えない。
+     *
+     * @var array<string, class-string>
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/6540
+     */
+    private const DEPRECATED_CLASS_MAPPING = [
+        'Sensio\Bundle\FrameworkExtraBundle\Configuration\Template' => \Symfony\Bridge\Twig\Attribute\Template::class,
+        'Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache' => \Symfony\Component\HttpKernel\Attribute\Cache::class,
+        'Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted' => \Symfony\Component\Security\Http\Attribute\IsGranted::class,
+        'Sensio\Bundle\FrameworkExtraBundle\Configuration\Security' => \Symfony\Component\Security\Http\Attribute\IsGranted::class,
+    ];
+
+    /**
      * コンストラクタパラメータ順序のキャッシュ
      *
      * @var array<string, array<string, int>>
@@ -195,6 +219,10 @@ CODE_SAMPLE
      */
     private function getConstructorParameterOrder(string $className): array
     {
+        // 非推奨アノテーションクラスは新しい Attribute クラスへ差し替えてからリフレクションする
+        // (#6540: Sensio クラスの第一パラメータ名が残ってしまう問題への対策)
+        $className = self::DEPRECATED_CLASS_MAPPING[$className] ?? $className;
+
         // キャッシュをチェック
         if (isset($this->constructorParameterOrderCache[$className])) {
             return $this->constructorParameterOrderCache[$className];

@@ -25,6 +25,7 @@ Invalid CSRF token.: |
 Too many failed login attempts, please try again later.: ログイン試行回数を超えました。しばらくして再度お試しください。
 Too many failed login attempts, please try again in %minutes% minute.: ログイン試行回数が多すぎます。%minutes%分後に再度お試しください。
 Too many failed login attempts, please try again in %minutes% minutes.: ログイン試行回数が多すぎます。%minutes%分後に再度お試しください。
+This password has been leaked in a data breach, it must not be used. Please use another password.: このパスワードは過去に漏洩が確認されています。別のパスワードを設定してください。
 
 #------------------------------------------------------------------------------------
 # EC-CUBE error message
@@ -45,7 +46,8 @@ form_error.same_email: 同じメールアドレスを入力してください。
 form_error.admin_is_not_available: ディレクトリ名に「admin」を使用することはできません。
 form_error.member_already_exists: 既に利用されているログインIDです。
 form_error.customer_already_exists:  このメールアドレスは利用できません。
-form_error.password_pattern_invalid: 英数字をそれぞれ1種類使用してください。
+form_error.password_pattern_invalid: 使用できない文字（制御文字など）が含まれています。
+form_error.password_blocklisted: 推測されやすいパスワードです。別のパスワードを設定してください。
 form_error.out_of_range: 不正な日付です。
 
 #------------------------------------------------------------------------------------
@@ -75,3 +77,7 @@ form.type.add.quantity: 1以上で入力してください。
 form.type.select.select_is_future_or_now_date: 生年月日が不正な日付です。
 form.type.admin.nottrackingnumberstyle: 送り状番号は半角英数字かハイフンのみを入力してください。
 form.type.float.invalid: 数字と小数点のみ入力できます。
+form_error.refund_request.quantity_exceed: 返品数量は{{ compared_value }}以下で指定してください。
+form_error.refund_request.max_files: ファイルは{{ limit }}件まで添付できます。
+form_error.refund_request.file_size: ファイルサイズが大きすぎます。{{ limit }}以内にしてください。
+form_error.refund_request.file_type: 許可されていないファイル形式です。画像（JPEG, PNG, GIF, WebP）または動画（MP4, MOV, AVI）を添付してください。

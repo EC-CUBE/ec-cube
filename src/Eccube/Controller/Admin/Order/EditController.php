@@ -49,6 +49,7 @@ use Knp\Component\Pager\Pagination\SlidingPagination;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -152,6 +153,15 @@ class EditController extends AbstractController
             switch ($request->get('mode')) {
                 case 'register':
                     log_info('受注登録開始', [$TargetOrder->getId()]);
+
+                    // 二重送信・多重編集による受注明細の破損を防止する.
+                    // フォーム描画時点と現在の更新日時が異なる場合は, 既に他の操作で
+                    // 更新されているため, DB を変更せずに処理を中断する. (Issue #6671)
+                    if ($TargetOrder->getId() && $this->isOrderUpdatedSinceFormRendered($form, $OriginOrder)) {
+                        log_info('受注が既に更新されているため登録を中断', [$TargetOrder->getId()]);
+                        $this->addError('admin.order.edit_conflict', 'admin');
+                        break;
+                    }
 
                     if (!$flowResult->hasError() && $form->isValid()) {
                         try {
@@ -312,8 +322,31 @@ class EditController extends AbstractController
             'searchProductModalForm' => $searchProductModalForm->createView(),
             'Order' => $TargetOrder,
             'id' => $id,
-            'shippingDeliveryTimes' => $this->serializer->serialize($times, 'json'),
+            'shippingDeliveryTimes' => json_encode($times, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT),
         ];
+    }
+
+    /**
+     * フォーム描画後に受注が更新されているかを判定する.
+     *
+     * フォーム描画時点の更新日時 (hidden) と, 現在の受注の更新日時を突合し,
+     * 異なる場合は二重送信・多重編集で既に更新済みと判断する. (Issue #6671)
+     */
+    private function isOrderUpdatedSinceFormRendered(FormInterface $form, Order $OriginOrder): bool
+    {
+        $currentUpdateDate = $OriginOrder->getUpdateDate();
+        if (null === $currentUpdateDate) {
+            return false;
+        }
+
+        $renderedUpdateDate = $form->get('form_update_date')->getData();
+        // 描画時点の更新日時が送信されていない場合は判定しない (後方互換のため).
+        // 通常の編集画面では hidden フィールドで必ず送信される.
+        if (null === $renderedUpdateDate || '' === $renderedUpdateDate) {
+            return false;
+        }
+
+        return $renderedUpdateDate !== $currentUpdateDate->format('Y-m-d H:i:s');
     }
 
     /**

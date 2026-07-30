@@ -42,7 +42,15 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v6
+        with:
+          persist-credentials: false
+
+      # CVE-2026-24765 (GHSA-vvj3-c3rp-c85p) 対策 (多層防御):
+      # 悪意ある *.coverage ファイルが PHPUnit の PHPT ランナーで unserialize され
+      # RCE に至るのを防ぐため、テスト実行前に削除する。
+      - name: Remove potentially malicious coverage files
+        run: find . -name "*.coverage" -delete
 
       ## Docker Hub からの pull はタイムアウトで CI が不安定になるため、
       ## DB はコンテナではなく setup アクション (apt/同梱版) でインストールする
@@ -89,7 +97,7 @@ jobs:
         run: echo "ECCUBE_AUTH_MAGIC=$(openssl rand -hex 32)" >> $GITHUB_ENV
 
       - name: Cache Database Schema
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae  # v5
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v5
         id: schema-cache
         with:
           path: |
@@ -107,9 +115,22 @@ jobs:
           DATABASE_CHARSET: ${{ matrix.database_charset }}
           ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
         run: |
-          bin/console doctrine:database:create
+          # SQLite はファイルベースで CREATE DATABASE が無く, DBAL 4 では
+          # SQLitePlatform::getCreateDatabaseSQL が未サポートで例外になるためスキップする
+          # (schema:create が DB ファイルを生成する)。
+          if [ "${{ matrix.db }}" != 'sqlite3' ]; then
+            bin/console doctrine:database:create
+          fi
           bin/console doctrine:schema:create
           bin/console eccube:fixtures:load
+
+      # Agent Commerce (#6794) の UCP スキーマ契約テスト用に UCP 公式 schema を取得する。
+      # リポジトリには同梱しない (Apache-2.0)。docblock の参照バージョンと一致するリリースタグ
+      # v2026-04-08 に固定し、var/ (gitignore) へ clone する。未取得環境では該当テストは skip。
+      - name: Fetch UCP spec schemas (tag v2026-04-08)
+        run: |
+          git clone --filter=blob:none --branch v2026-04-08 --single-branch --quiet \
+            https://github.com/Universal-Commerce-Protocol/ucp.git var/agent-commerce-spec/ucp
 
       - name: PHPUnit
         uses: nick-invision/retry@ad984534de44a9489a53aefd81eb77f87c70dc60  # v4.0.0

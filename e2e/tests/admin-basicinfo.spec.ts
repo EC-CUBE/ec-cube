@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
+import { ADMIN_PASSWORD, ADMIN_ROUTE, ADMIN_USER, CUSTOMER_PASSWORD, VALID_PASSWORD } from '../config/default.config';
 
-const adminRoute = process.env.ECCUBE_ADMIN_ROUTE || 'admin';
+const adminRoute = ADMIN_ROUTE;
 
 /**
  * Helper: Re-login to admin if session expired.
@@ -9,8 +10,8 @@ const adminRoute = process.env.ECCUBE_ADMIN_ROUTE || 'admin';
  */
 async function ensureAdminLoggedIn(page: import('@playwright/test').Page) {
   if (await page.locator('#login_id').count() > 0) {
-    await page.locator('#login_id').fill(process.env.ADMIN_USER || 'admin');
-    await page.locator('#password').fill(process.env.ADMIN_PASSWORD || 'password');
+    await page.locator('#login_id').fill(ADMIN_USER);
+    await page.locator('#password').fill(ADMIN_PASSWORD);
     await page.getByRole('button', { name: 'ログイン' }).click();
     await page.waitForLoadState('load');
   }
@@ -71,6 +72,15 @@ test.describe('Admin Basic Info (EA07)', () => {
     // --- CREATE ---
     await page.goto(`/${adminRoute}/setting/shop/payment`);
     await page.waitForLoadState('load');
+    // 別コンテキストの front 操作で admin セッションが無効化されることがあるため、
+    // 再ログイン→未遷移なら payment へ再 goto し、一覧描画(.c-pageTitle)を待ってから
+    // 件数取得・新規作成ボタンを押す（btn-ec-regular 不在による click timeout 回避）。
+    await ensureAdminLoggedIn(page);
+    if (!page.url().includes('/payment')) {
+      await page.goto(`/${adminRoute}/setting/shop/payment`);
+      await page.waitForLoadState('load');
+    }
+    await expect(page.locator('.c-pageTitle')).toContainText('支払方法一覧');
     const beforeCount = await page.locator('.c-contentsArea__primaryCol li.sortable-item').count();
 
     await page.locator('.c-contentsArea__primaryCol .btn-ec-regular').click();
@@ -87,6 +97,7 @@ test.describe('Admin Basic Info (EA07)', () => {
     // Verify on list
     await page.goto(`/${adminRoute}/setting/shop/payment`);
     await page.waitForLoadState('load');
+    await expect(page.locator('.c-pageTitle')).toContainText('支払方法一覧');
     const afterCreateCount = await page.locator('.c-contentsArea__primaryCol li.sortable-item').count();
     expect(afterCreateCount).toBe(beforeCount + 1);
     // New payment appears first (nth-child(2) because list has a header item)
@@ -105,6 +116,7 @@ test.describe('Admin Basic Info (EA07)', () => {
 
     await page.goto(`/${adminRoute}/setting/shop/payment`);
     await page.waitForLoadState('load');
+    await expect(page.locator('.c-pageTitle')).toContainText('支払方法一覧');
     await expect(page.locator('.c-contentsArea__primaryCol .c-primaryCol .card-body ul li:nth-child(2)')).toContainText(paymentNameEdited);
 
     // --- DELETE ---
@@ -119,6 +131,7 @@ test.describe('Admin Basic Info (EA07)', () => {
     // Verify count is back to original
     await page.goto(`/${adminRoute}/setting/shop/payment`);
     await page.waitForLoadState('load');
+    await expect(page.locator('.c-pageTitle')).toContainText('支払方法一覧');
     const afterDeleteCount = await page.locator('.c-contentsArea__primaryCol li.sortable-item').count();
     expect(afterDeleteCount).toBe(beforeCount);
   });
@@ -560,7 +573,7 @@ test.describe('Admin Basic Info (EA07)', () => {
     await frontPage.goto('/mypage/login');
     await frontPage.waitForLoadState('load');
     await frontPage.locator('input[name="login_email"]').fill(email);
-    await frontPage.locator('input[name="login_pass"]').fill('password');
+    await frontPage.locator('input[name="login_pass"]').fill(CUSTOMER_PASSWORD);
     await frontPage.locator('#login_mypage button[type="submit"]').click();
     await frontPage.waitForLoadState('load');
 
@@ -570,7 +583,10 @@ test.describe('Admin Basic Info (EA07)', () => {
 
     // Select quantity if needed, then add to cart
     await frontPage.locator('.ec-productRole__btn button[type="submit"]').first().click();
-    await frontPage.waitForLoadState('load');
+    // カート投入は product_add_cart への AJAX で画面遷移しないため、waitForLoadState('load') は
+    // 即時 resolve してしまう。成功モーダル表示でカート反映完了を待つ。
+    await expect(frontPage.locator('div.ec-modal-box')).toBeVisible({ timeout: 10_000 });
+    await expect(frontPage.locator('#ec-modal-header')).toContainText('カートに追加しました');
 
     // Go to cart and proceed to checkout
     await frontPage.goto('/cart');
@@ -611,8 +627,8 @@ test.describe('Admin Basic Info (EA07)', () => {
 
     // Re-login if session expired
     if (await page.locator('#login_id').count() > 0) {
-      await page.locator('#login_id').fill(process.env.ADMIN_USER || 'admin');
-      await page.locator('#password').fill(process.env.ADMIN_PASSWORD || 'password');
+      await page.locator('#login_id').fill(ADMIN_USER);
+      await page.locator('#password').fill(ADMIN_PASSWORD);
       await page.getByRole('button', { name: 'ログイン' }).click();
       await page.waitForLoadState('load');
       await page.goto(`/${adminRoute}/setting/shop`);
@@ -642,7 +658,7 @@ test.describe('Admin Basic Info (EA07)', () => {
     await frontPage.goto('/mypage/login');
     await frontPage.waitForLoadState('load');
     await frontPage.locator('input[name="login_email"]').fill(email);
-    await frontPage.locator('input[name="login_pass"]').fill('password');
+    await frontPage.locator('input[name="login_pass"]').fill(CUSTOMER_PASSWORD);
     await frontPage.locator('#login_mypage button[type="submit"]').click();
     await frontPage.waitForLoadState('load');
 
@@ -650,7 +666,10 @@ test.describe('Admin Basic Info (EA07)', () => {
     await frontPage.goto('/products/detail/2');
     await frontPage.waitForLoadState('load');
     await frontPage.locator('.ec-productRole__btn button[type="submit"]').first().click();
-    await frontPage.waitForLoadState('load');
+    // カート投入は product_add_cart への AJAX で画面遷移しないため、waitForLoadState('load') は
+    // 即時 resolve してしまう。成功モーダル表示でカート反映完了を待つ。
+    await expect(frontPage.locator('div.ec-modal-box')).toBeVisible({ timeout: 10_000 });
+    await expect(frontPage.locator('#ec-modal-header')).toContainText('カートに追加しました');
 
     // Go to cart -> checkout
     await frontPage.goto('/cart');
@@ -714,8 +733,8 @@ test.describe('Admin Basic Info (EA07)', () => {
     await page.locator('#entry_phone_number').fill('111-111-111');
     await page.locator('#entry_email_first').fill(email1);
     await page.locator('#entry_email_second').fill(email1);
-    await page.locator('#entry_plain_password_first').fill('password1234');
-    await page.locator('#entry_plain_password_second').fill('password1234');
+    await page.locator('#entry_plain_password_first').fill(VALID_PASSWORD);
+    await page.locator('#entry_plain_password_second').fill(VALID_PASSWORD);
     await page.locator('#entry_user_policy_check').check();
     await page.locator('button.ec-blockBtn--action[type="submit"]').click();
     await page.waitForLoadState('load');
@@ -776,8 +795,8 @@ test.describe('Admin Basic Info (EA07)', () => {
     await page.locator('#entry_phone_number').fill('111-111-111');
     await page.locator('#entry_email_first').fill(email2);
     await page.locator('#entry_email_second').fill(email2);
-    await page.locator('#entry_plain_password_first').fill('password1234');
-    await page.locator('#entry_plain_password_second').fill('password1234');
+    await page.locator('#entry_plain_password_first').fill(VALID_PASSWORD);
+    await page.locator('#entry_plain_password_second').fill(VALID_PASSWORD);
     await page.locator('#entry_user_policy_check').check();
     await page.locator('button.ec-blockBtn--action[type="submit"]').click();
     await page.waitForLoadState('load');
@@ -838,7 +857,7 @@ test.describe('Admin Basic Info (EA07)', () => {
     await frontPage.goto('/mypage/login');
     await frontPage.waitForLoadState('load');
     await frontPage.locator('input[name="login_email"]').fill(email);
-    await frontPage.locator('input[name="login_pass"]').fill('password');
+    await frontPage.locator('input[name="login_pass"]').fill(CUSTOMER_PASSWORD);
     await frontPage.locator('#login_mypage button[type="submit"]').click();
     await frontPage.waitForLoadState('load');
 
@@ -883,7 +902,7 @@ test.describe('Admin Basic Info (EA07)', () => {
     await frontPage2.goto('/mypage/login');
     await frontPage2.waitForLoadState('load');
     await frontPage2.locator('input[name="login_email"]').fill(email);
-    await frontPage2.locator('input[name="login_pass"]').fill('password');
+    await frontPage2.locator('input[name="login_pass"]').fill(CUSTOMER_PASSWORD);
     await frontPage2.locator('#login_mypage button[type="submit"]').click();
     await frontPage2.waitForLoadState('load');
 
@@ -1254,8 +1273,8 @@ test.describe('Admin Basic Info (EA07)', () => {
     await page.goto(`/${adminRoute}/setting/shop/calendar`);
     await page.waitForLoadState('load');
     if (page.url().includes('/login')) {
-      await page.locator('#login_id').fill(process.env.ADMIN_USER || 'admin');
-      await page.locator('#password').fill(process.env.ADMIN_PASSWORD || 'password');
+      await page.locator('#login_id').fill(ADMIN_USER);
+      await page.locator('#password').fill(ADMIN_PASSWORD);
       await page.getByRole('button', { name: 'ログイン' }).click();
       await page.waitForLoadState('load');
       await page.goto(`/${adminRoute}/setting/shop/calendar`);

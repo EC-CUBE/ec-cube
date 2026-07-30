@@ -2,7 +2,17 @@ name: E2E test(Throttoling) for EC-CUBE
 
 on:
   workflow_call:
+    inputs:
+      php-versions:
+        description: 'テスト対象 PHP バージョンの JSON 配列'
+        type: string
+        default: "['8.2', '8.3', '8.4', '8.5']"
   workflow_dispatch:
+    inputs:
+      php-versions:
+        description: 'テスト対象 PHP バージョンの JSON 配列'
+        type: string
+        default: "['8.2', '8.3', '8.4', '8.5']"
 
 permissions:
   contents: read
@@ -14,7 +24,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ '8.2', '8.3', '8.4', '8.5' ]
+        php: ${{ fromJSON(inputs.php-versions) }}
         db: [ pgsql ]
         method:
           - フロント画面ログイン_IP
@@ -33,16 +43,12 @@ jobs:
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
             database_server_version: 18
-    services:
-      mailcatcher:
-        image: schickling/mailcatcher
-        ports:
-          - 1080:1080
-          - 1025:1025
 
     steps:
       - name: Checkout
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v6
+        with:
+          persist-credentials: false
 
       ## Docker Hub からの pull はタイムアウトで CI が不安定になるため、
       ## DB はコンテナではなく setup アクション (apt) でインストールする
@@ -59,10 +65,10 @@ jobs:
           ## DATABASE_URL と同一経路 (TCP/postgres/password) で接続できることを検証
           PGPASSWORD=password psql -h 127.0.0.1 -U postgres -c 'SELECT VERSION()'
 
-      # codeception環境ではprodの設定が読み込まれないため、ベース設定を作成
+      # e2e環境ではprodの設定が読み込まれないため、ベース設定を作成
       - name: Prepare rate limiter config
         run: |
-          cp app/config/eccube/packages/prod/eccube_rate_limiter.yaml app/config/eccube/packages/codeception/eccube_rate_limiter.yaml
+          cp app/config/eccube/packages/prod/eccube_rate_limiter.yaml app/config/eccube/packages/e2e/eccube_rate_limiter.yaml
 
       # ShoppingController::checkoutをテストするため、confirmの上限値を変更する
       - name: Fix limiter limit
@@ -85,7 +91,7 @@ jobs:
                   shopping_checkout_customer:
                       route: ~
                       limit: 10
-                      interval: '30 minutes'" > app/config/eccube/packages/codeception/eccube_rate_limiter.yaml
+                      interval: '30 minutes'" > app/config/eccube/packages/e2e/eccube_rate_limiter.yaml
 
       # 配送先情報_削除のテストするため、delivery addの上限値を変更する
       - name: Fix limiter limit for delivery delete
@@ -104,7 +110,7 @@ jobs:
                       method: [ 'DELETE' ]
                       type: customer
                       limit: 10
-                      interval: '30 minutes'" > app/config/eccube/packages/codeception/eccube_rate_limiter.yaml
+                      interval: '30 minutes'" > app/config/eccube/packages/e2e/eccube_rate_limiter.yaml
 
       - name: Setup PHP
         uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240  # v2
@@ -124,7 +130,7 @@ jobs:
         run: echo "ECCUBE_AUTH_MAGIC=$(openssl rand -hex 32)" >> $GITHUB_ENV
 
       - name: Cache npm dependencies
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae  # v5
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v5
         with:
           path: ~/.npm
           key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
@@ -132,7 +138,7 @@ jobs:
             ${{ runner.os }}-npm-
 
       - name: Cache build artifacts
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae  # v5
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v5
         id: build-cache
         with:
           path: |
@@ -150,7 +156,7 @@ jobs:
 
       - name: Setup to EC-CUBE
         env:
-          APP_ENV: 'codeception'
+          APP_ENV: 'e2e'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
@@ -158,9 +164,9 @@ jobs:
           echo "APP_ENV=${APP_ENV}" > .env
           echo "TRUSTED_HOSTS=127.0.0.1,localhost" >> .env
           echo "ECCUBE_AUTH_MAGIC=${ECCUBE_AUTH_MAGIC}" >> .env
-          bin/console doctrine:database:create --env=dev
-          bin/console doctrine:schema:create --env=dev
-          bin/console eccube:fixtures:load --env=dev
+          bin/console doctrine:database:create
+          bin/console doctrine:schema:create
+          bin/console eccube:fixtures:load
 
       - name: Create test customer
         env:
@@ -192,7 +198,7 @@ jobs:
 
       - name: Cache Playwright browsers
         id: playwright-cache
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae  # v5
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v5
         with:
           path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ hashFiles('e2e/package-lock.json') }}
@@ -208,14 +214,17 @@ jobs:
         run: npx playwright install-deps chromium
 
       - name: Cache apt packages
-        uses: awalsh128/cache-apt-pkgs-action@681749ae568c81c2037cb9185e38b709b261bd2f  # latest
+        uses: awalsh128/cache-apt-pkgs-action@553a35bb8ebd9fcabcb1c9451aa4c98e1b4ca8a9  # latest
         with:
           packages: fonts-ipafont fonts-ipaexfont
           version: 1.0
 
+      - name: Start Mailpit (SMTP sink)
+        uses: ./.github/actions/mailpit
+
       - name: Start PHP Development Server
         env:
-          APP_ENV: 'codeception'
+          APP_ENV: 'e2e'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           MAILER_DSN: 'smtp://127.0.0.1:1025'
