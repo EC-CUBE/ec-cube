@@ -58,6 +58,9 @@ description: EC-CUBE 4.4 の受注処理（PurchaseFlow の Processor/Validator�
   メソッドを実装する**。PurchaseProcessor は `AbstractPurchaseProcessor` を継承すれば必要なメソッドだけ override 可。
 - **`supports()` で早期 return**: フロー種別・`Order` か否か・店舗設定（`BaseInfo`）で適用可否を判定し、
   対象外なら何もしない（`AddPointProcessor::supports()` が手本）。
+- **トランザクション境界はリクエスト全体**: `TransactionListener` が `kernel.request` で `beginTransaction()`、
+  `kernel.terminate` で `commit()`、例外時に `rollback()` する。Processor 内の `flush()` は SQL を発行するだけで
+  **コミットではない**ため、在庫引当・採番の可視性や競合を論じるときは「flush 済み＝確定」と読み替えないこと。
 - **金額計算は `bcmath`**（`bcadd` / `bcsub` / `bcmul` / `bccomp`）。float 演算で組まない。
   合計・税・送料・値引きの集計は `PurchaseFlow::calculateAll()` が各段階後に行うので、Processor 側は
   **明細（Item）を足し引きする**ことに集中する（合計の手計算は不要）。

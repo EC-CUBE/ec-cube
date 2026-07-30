@@ -94,6 +94,7 @@ vendor/bin/php-cs-fixer fix                     # PSR-12 整形・ライセン�
 - ❌ 1 つの Service に無関係な処理を寄せ集める → ✅ 単一責任で分割
 - ❌ `Request` を Service に渡す → ✅ 必要な値だけを引数で渡す
 - ❌ ループ内で毎回 `flush()` → ✅ まとめて `flush()`（トランザクション境界を意識）
+- ❌ `flush()` を確定として扱う → ✅ `TransactionListener` が 1 リクエスト＝1 トランザクションで包み、コミットは `kernel.terminate`。`flush` は SQL 発行のみ
 
 ---
 

@@ -17,6 +17,25 @@ description: EC-CUBE 4.4 の認証・認可・CSRF などセキュリティを�
 EC-CUBE は **個別アクションの `#[IsGranted]` ではなく、ファイアウォール＋ロール＋Voter** で制御する。
 設定は `app/config/eccube/packages/security.yaml`。
 
+> **`access_control` は `security.yaml` に無い。`src/Eccube/DependencyInjection/EccubeExtension.php`
+> の `configureFramework()` が `prependExtensionConfig('security', ...)` で動的に注入している**
+> （コード内コメント「security.ymlでは制御できないため, ここで定義する」）。生成されるのは次の 6 規則で、
+> `ECCUBE_FORCE_SSL` が有効なら全規則に `requires_channel: https` が足される。
+>
+> | path | roles |
+> |---|---|
+> | `^/%eccube_admin_route%/login` | `IS_AUTHENTICATED_ANONYMOUSLY` |
+> | `^/%eccube_admin_route%/` | `ROLE_ADMIN` |
+> | `^/mypage/login` | `IS_AUTHENTICATED_ANONYMOUSLY` |
+> | `^/mypage/withdraw_complete` | `IS_AUTHENTICATED_ANONYMOUSLY` |
+> | `^/mypage/change` | `IS_AUTHENTICATED_FULLY` |
+> | `^/mypage/` | `ROLE_USER` |
+>
+> **認可レビューで `security.yaml` だけを見ると、この 6 規則が見えず誤検出する。**
+> 例: `^/mypage/` 配下は `ROLE_USER` が前提なので `getUser()` は非 null だが、
+> これを知らないと「null 参照で 500 になる」と誤って指摘してしまう。
+> 認可の穴を探すときは必ず `EccubeExtension.php` 側も合わせて読む。
+
 - **firewalls** は 3 つ:
   - `admin`: `pattern: '^/%eccube_admin_route%/'` — `Member`(管理者) を認証。`enable_csrf: true`、login throttling 有り。
   - `customer`: `pattern: '^/'`（サイト全体）— `Customer`(会員) を認証。remember_me 有り。

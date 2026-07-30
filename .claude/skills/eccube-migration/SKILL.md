@@ -32,6 +32,11 @@ bin/console doctrine:migrations:migrate --no-interaction
   Entity 属性を足せば、新規は `schema:create`、既存は `schema:update` が拾う。
   → 例: PR #4912（Google アナリティクス機能）は `BaseInfo` にカラムを追加したが、
     ALTER マイグレーションは作らず `schema:update` に委ねている。
+  > **ただし実際のコアには両方の前例がある**。`Version20260316234241` は `dtb_base_info` への
+  > カラム追加に対して `ALTER TABLE dtb_base_info ADD ...` を書いている。
+  > つまり「カラム追加にマイグレーションが付いている＝規約違反」とは言い切れない。
+  > レビューで「マイグレーション欠落」「マイグレーション不要」を**断定しない**こと。
+  > 既定は不要（`schema:update` に委ねる）だが、既存行へ既定値を確実に入れたい等の理由があれば付けてよい。
 - **マイグレーションを書くのは次の場合に限る**:
   1. **マスタ/初期データの INSERT**（`mtb_*` のレコード、`dtb_block` / `dtb_mail_template` / `dtb_csv` 等への初期レコード投入）。
   2. **`schema:update` が安全に扱えない構造変更**（カラムの**型変更・リネーム**、データ移行を伴う変更、
