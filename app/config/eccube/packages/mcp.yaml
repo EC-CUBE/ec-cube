@@ -9,6 +9,3 @@ mcp:
         path: '/%eccube_admin_route%/mcp'
         session:
             store: file
-    discovery:
-        scan_dirs:
-            - src/Eccube/Service/Mcp/Tool

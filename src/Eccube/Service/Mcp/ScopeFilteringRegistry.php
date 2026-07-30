@@ -15,7 +15,6 @@ declare(strict_types=1);
 
 namespace Eccube\Service\Mcp;
 
-use Mcp\Capability\Discovery\DiscoveryState;
 use Mcp\Capability\Registry\PromptReference;
 use Mcp\Capability\Registry\ResourceReference;
 use Mcp\Capability\Registry\ResourceTemplateReference;
@@ -24,7 +23,7 @@ use Mcp\Capability\RegistryInterface;
 use Mcp\Exception\InvalidCursorException;
 use Mcp\Schema\Page;
 use Mcp\Schema\Prompt;
-use Mcp\Schema\Resource;
+use Mcp\Schema\ResourceDefinition;
 use Mcp\Schema\ResourceTemplate;
 use Mcp\Schema\Tool;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -110,15 +109,15 @@ final readonly class ScopeFilteringRegistry implements RegistryInterface
     }
 
     #[\Override]
-    public function registerTool(Tool $tool, callable|array|string $handler, bool $isManual = false): void
+    public function registerTool(Tool $tool, callable|array|string $handler): ToolReference
     {
-        $this->inner->registerTool($tool, $handler, $isManual);
+        return $this->inner->registerTool($tool, $handler);
     }
 
     #[\Override]
-    public function registerResource(Resource $resource, callable|array|string $handler, bool $isManual = false): void
+    public function registerResource(ResourceDefinition $resource, callable|array|string $handler): ResourceReference
     {
-        $this->inner->registerResource($resource, $handler, $isManual);
+        return $this->inner->registerResource($resource, $handler);
     }
 
     /**
@@ -129,9 +128,8 @@ final readonly class ScopeFilteringRegistry implements RegistryInterface
         ResourceTemplate $template,
         callable|array|string $handler,
         array $completionProviders = [],
-        bool $isManual = false,
-    ): void {
-        $this->inner->registerResourceTemplate($template, $handler, $completionProviders, $isManual);
+    ): ResourceTemplateReference {
+        return $this->inner->registerResourceTemplate($template, $handler, $completionProviders);
     }
 
     /**
@@ -142,27 +140,56 @@ final readonly class ScopeFilteringRegistry implements RegistryInterface
         Prompt $prompt,
         callable|array|string $handler,
         array $completionProviders = [],
-        bool $isManual = false,
-    ): void {
-        $this->inner->registerPrompt($prompt, $handler, $completionProviders, $isManual);
+    ): PromptReference {
+        return $this->inner->registerPrompt($prompt, $handler, $completionProviders);
     }
 
     #[\Override]
-    public function clear(): void
+    public function unregisterTool(string $name): void
     {
-        $this->inner->clear();
+        $this->inner->unregisterTool($name);
     }
 
     #[\Override]
-    public function getDiscoveryState(): DiscoveryState
+    public function unregisterResource(string $uri): void
     {
-        return $this->inner->getDiscoveryState();
+        $this->inner->unregisterResource($uri);
     }
 
     #[\Override]
-    public function setDiscoveryState(DiscoveryState $state): void
+    public function unregisterResourceTemplate(string $uriTemplate): void
     {
-        $this->inner->setDiscoveryState($state);
+        $this->inner->unregisterResourceTemplate($uriTemplate);
+    }
+
+    #[\Override]
+    public function unregisterPrompt(string $name): void
+    {
+        $this->inner->unregisterPrompt($name);
+    }
+
+    #[\Override]
+    public function hasTool(string $name): bool
+    {
+        return $this->inner->hasTool($name);
+    }
+
+    #[\Override]
+    public function hasResource(string $uri): bool
+    {
+        return $this->inner->hasResource($uri);
+    }
+
+    #[\Override]
+    public function hasResourceTemplate(string $uriTemplate): bool
+    {
+        return $this->inner->hasResourceTemplate($uriTemplate);
+    }
+
+    #[\Override]
+    public function hasPrompt(string $name): bool
+    {
+        return $this->inner->hasPrompt($name);
     }
 
     #[\Override]
