@@ -21,6 +21,7 @@ use Eccube\Entity\MailHistory;
 use Eccube\Entity\MailTemplate;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
+use Eccube\Entity\RefundRequest;
 use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -856,5 +857,66 @@ class MailService
         }
 
         return new Address($email);
+    }
+
+    /**
+     * 管理者へ返品申請の通知メールを送信する.
+     */
+    public function sendRefundRequestNotifyMail(RefundRequest $RefundRequest): void
+    {
+        log_info('返品申請通知メール送信開始', ['id' => $RefundRequest->getId()]);
+
+        $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['eccube_refund_request_notify_mail_template_id']);
+
+        $body = $this->twig->render($MailTemplate->getFileName(), [
+            'RefundRequest' => $RefundRequest,
+        ]);
+
+        $message = (new Email())
+            ->subject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
+            ->from(new Address($this->BaseInfo->getEmail01(), $this->BaseInfo->getShopName()))
+            ->to($this->BaseInfo->getEmail01())
+            ->replyTo($this->BaseInfo->getEmail03())
+            ->returnPath($this->BaseInfo->getEmail04());
+
+        $htmlFileName = $this->getHtmlTemplate($MailTemplate->getFileName());
+        if (!is_null($htmlFileName)) {
+            $htmlBody = $this->twig->render($htmlFileName, [
+                'RefundRequest' => $RefundRequest,
+            ]);
+            $message
+                ->text($body)
+                ->html($htmlBody);
+        } else {
+            $message->text($body);
+        }
+
+        $event = new EventArgs(
+            [
+                'message' => $message,
+                'RefundRequest' => $RefundRequest,
+                'MailTemplate' => $MailTemplate,
+                'BaseInfo' => $this->BaseInfo,
+            ]
+        );
+        $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_REFUND_REQUEST);
+
+        $message = $event->getArgument('message');
+
+        try {
+            $this->mailer->send($message);
+
+            $MailHistory = new MailHistory();
+            $MailHistory->setMailSubject($message->getSubject())
+                ->setMailBody($message->getTextBody())
+                ->setOrder($RefundRequest->getOrder())
+                ->setSendDate(new \DateTime());
+            $this->mailHistoryRepository->save($MailHistory);
+        } catch (TransportExceptionInterface $e) {
+            log_error('返品申請通知メールの送信に失敗しました。', [
+                'RefundRequest' => $RefundRequest->getId(),
+                'error' => $e->getMessage(),
+            ]);
+        }
     }
 }

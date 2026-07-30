@@ -1025,7 +1025,10 @@ class InstallController extends AbstractController
         return $version;
     }
 
-    public function convertAdminAllowHosts(string $adminAllowHosts): string
+    /**
+     * admin_allow_hosts は任意入力のため, 未入力の場合は null が渡される.
+     */
+    public function convertAdminAllowHosts(?string $adminAllowHosts): string
     {
         if (empty($adminAllowHosts)) {
             return '[]';

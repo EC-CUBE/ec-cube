@@ -99,15 +99,22 @@ class ReloadSafeAttributeDriver extends TraitProxyAttributeDriver
                     $projectDir = str_replace('\\', '/', $projectDir);
                 }
 
-                // Replace /path/to/ec-cube to proxies path
-                $proxyFile = str_replace($projectDir, $this->trait_proxies_directory, $path).'/'.basename((string) $sourceFile);
-                if (file_exists($proxyFile)) {
+                // Replace /path/to/ec-cube to proxies path.
+                // Entity/Master 等のサブディレクトリ配下のクラスでもProxyパスが正しく解決されるよう、
+                // basename()でファイル名だけに丸めず$sourceFileのパス構造ごと変換する（Issue #5400 / #6273）.
+                $proxyFile = str_replace($projectDir, $this->trait_proxies_directory, (string) $sourceFile);
+                if ($proxyFile !== $sourceFile && file_exists($proxyFile)) {
                     $sourceFile = $proxyFile;
                 }
 
                 $this->classNames = array_merge($this->classNames ?: [], $this->getClassNamesFromTokens($sourceFile));
             }
         }
+
+        // 対象ディレクトリに Entity が 1 つも無い場合 (例: 標準構成の app/Customize/Entity) でも
+        // null ではなく空配列を返す. MappingDriverChain::getAllClassNames() は戻り値を foreach するため,
+        // null を返すと "foreach() argument must be of type array|object, null given" になる.
+        $this->classNames ??= [];
 
         return $this->classNames;
     }
