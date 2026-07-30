@@ -120,10 +120,10 @@ final class SearchProductsToolTest extends EccubeTestCase
         $filtered = $this->findById($this->tool->search(keyword: $name, stockMin: 800, limit: 50), $product->getId());
         $this->assertNotNull($filtered, 'stockMin=800 でも作成商品はヒットする (900 の規格が満たす)');
 
-        $this->assertSame((string) $unfiltered['stock']['min'], (string) $filtered['stock']['min'], '絞り込み有無で stock.min が一致 (レンジが縮まない)');
-        $this->assertSame((string) $unfiltered['stock']['max'], (string) $filtered['stock']['max'], '絞り込み有無で stock.max が一致');
-        $this->assertSame('100', (string) $filtered['stock']['min']);
-        $this->assertSame('900', (string) $filtered['stock']['max']);
+        $this->assertSame((int) $unfiltered['stock']['min'], (int) $filtered['stock']['min'], '絞り込み有無で stock.min が一致 (レンジが縮まない)');
+        $this->assertSame((int) $unfiltered['stock']['max'], (int) $filtered['stock']['max'], '絞り込み有無で stock.max が一致');
+        $this->assertSame(100, (int) $filtered['stock']['min']);
+        $this->assertSame(900, (int) $filtered['stock']['max']);
     }
 
     /**
@@ -201,12 +201,12 @@ final class SearchProductsToolTest extends EccubeTestCase
 
         foreach ($visible as $i => $pc) {
             $pc->setStockUnlimited(false);
-            $pc->setStock($visibleStocks[$i]);
+            $pc->setStock((string) $visibleStocks[$i]);
         }
         if (null !== $hiddenStock) {
             $this->assertNotEmpty($hidden, '非表示のデフォルト規格が存在する');
             $hidden[0]->setStockUnlimited(false);
-            $hidden[0]->setStock($hiddenStock);
+            $hidden[0]->setStock((string) $hiddenStock);
         }
 
         $this->entityManager->flush();
