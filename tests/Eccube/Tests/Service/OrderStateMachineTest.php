@@ -103,6 +103,19 @@ final class OrderStateMachineTest extends EccubeTestCase
         $this->assertInstanceOf(\DateTime::class, $Order->getPaymentDate(), '入金済みになれば入金日が設定される');
     }
 
+    public function testTransitionPayKeepsManualPaymentDate()
+    {
+        $Order = $this->createOrder($this->createCustomer());
+        $Order->setOrderStatus($this->statusOf(OrderStatus::NEW));
+        // 管理者が手動で入金日を設定済みのケース.
+        $manualPaymentDate = new \DateTime('2020-01-01 12:34:56');
+        $Order->setPaymentDate($manualPaymentDate);
+
+        $this->stateMachine->apply($Order, $this->statusOf(OrderStatus::PAID));
+
+        $this->assertEquals($manualPaymentDate, $Order->getPaymentDate(), '手動設定した入金日は入金済み遷移で上書きされない');
+    }
+
     public function testTransitionCancel()
     {
         /** @var ProductClass[] $ProductClasses */
