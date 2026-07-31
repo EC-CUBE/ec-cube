@@ -95,11 +95,14 @@ file that was distributed with this source code.
     $('#captcha-refresh').on('click', refreshCaptchaImage);
 
     // 注意喚起モーダルで「発行手続きへ進む」を押したら、閉じてからCAPTCHAモーダルを開く
+    // フェードアウト中もボタンは押せるため、連打でハンドラが積み重ならないよう
+    // 専用の名前空間 (.proceed) で登録前に解除しておく
     $('#proceed_to_captcha').on('click', function() {
-        $('#authentication_key_confirm').one('hidden.bs.modal', function() {
+        var $confirm = $('#authentication_key_confirm');
+        $confirm.off('hidden.bs.modal.proceed').one('hidden.bs.modal.proceed', function() {
             $('#captcha').modal('show');
         });
-        $('#authentication_key_confirm').modal('hide');
+        $confirm.modal('hide');
     });
 </script>
 {% endblock %}

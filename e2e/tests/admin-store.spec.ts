@@ -37,6 +37,8 @@ test.describe('Admin Store (EA10)', () => {
 
   test('store_authkey_confirm_modal_cancel - EA1001-UC01-T02', async ({ page }) => {
     await page.goto(`/${adminRoute}/store/plugin/authentication_setting`);
+    // 到達確認（ログイン画面へリダイレクトされた場合に原因が分かるようにする）
+    await expect(page.locator('.c-pageTitle__titles')).toContainText('認証キー設定');
 
     await page.locator('button[data-bs-target="#authentication_key_confirm"]').click();
     const confirmModal = page.locator('#authentication_key_confirm');

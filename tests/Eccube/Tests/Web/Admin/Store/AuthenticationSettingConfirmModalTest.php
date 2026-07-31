@@ -60,11 +60,12 @@ final class AuthenticationSettingConfirmModalTest extends AbstractAdminWebTestCa
         $this->assertCount(1, $crawler->filter('#authentication_key_confirm'), '注意喚起モーダルが描画されるべき');
         $this->assertCount(1, $crawler->filter('#proceed_to_captcha'), '発行手続きへ進むボタンが描画されるべき');
 
-        // 注意喚起文（翻訳済み）が出力されていること
-        $expected = trans('admin.store.setting.get_api_key_confirm_info');
+        // 注意喚起文（翻訳済み）がモーダル内に出力されていること.
+        // 生 HTML ではなく Crawler のテキストで比較する（文言に & や ' が入っても
+        // autoescape 後の実体参照で落ちないようにするため）
         $this->assertStringContainsString(
-            $expected,
-            (string) $this->client->getResponse()->getContent(),
+            trans('admin.store.setting.get_api_key_confirm_info'),
+            $crawler->filter('#authentication_key_confirm .alert')->text(),
             '注意喚起メッセージが出力されるべき'
         );
     }
