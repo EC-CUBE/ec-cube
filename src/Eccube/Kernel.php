@@ -22,6 +22,7 @@ use Eccube\DependencyInjection\Compiler\PaymentMethodPass;
 use Eccube\DependencyInjection\Compiler\PluginPass;
 use Eccube\DependencyInjection\Compiler\PurchaseFlowPass;
 use Eccube\DependencyInjection\Compiler\QueryCustomizerPass;
+use Eccube\DependencyInjection\Compiler\StripAutoMappedEntityPathsPass;
 use Eccube\DependencyInjection\Compiler\StripReportFieldsArgPass;
 use Eccube\DependencyInjection\Compiler\TwigBlockPass;
 use Eccube\DependencyInjection\Compiler\TwigExtensionPass;
@@ -300,12 +301,16 @@ class Kernel extends BaseKernel
     {
         $projectDir = $container->getParameter('kernel.project_dir');
 
+        // TraitProxyAttributeDriver で明示登録した Entity ディレクトリ
+        $explicitlyMappedPaths = [];
+
         // Eccube
         $paths = ['%kernel.project_dir%/src/Eccube/Entity'];
         $namespaces = ['Eccube\\Entity'];
         $driver = new Definition(TraitProxyAttributeDriver::class, [$paths]);
         $driver->addMethodCall('setTraitProxiesDirectory', [$projectDir.'/app/proxy/entity']);
         $container->addCompilerPass(new DoctrineOrmMappingsPass($driver, $namespaces, []));
+        $explicitlyMappedPaths = [...$explicitlyMappedPaths, ...$paths];
 
         // Customize
         $customizePaths = ['%kernel.project_dir%/app/Customize/Entity'];
@@ -313,6 +318,7 @@ class Kernel extends BaseKernel
         $customizeDriver = new Definition(TraitProxyAttributeDriver::class, [$customizePaths]);
         $customizeDriver->addMethodCall('setTraitProxiesDirectory', [$projectDir.'/app/proxy/entity']);
         $container->addCompilerPass(new DoctrineOrmMappingsPass($customizeDriver, $customizeNamespaces, []));
+        $explicitlyMappedPaths = [...$explicitlyMappedPaths, ...$customizePaths];
 
         // Plugin
         $pluginDir = $projectDir.'/app/Plugin';
@@ -330,8 +336,17 @@ class Kernel extends BaseKernel
                 $driver = new Definition(TraitProxyAttributeDriver::class, [$paths]);
                 $driver->addMethodCall('setTraitProxiesDirectory', [$projectDir.'/app/proxy/entity']);
                 $container->addCompilerPass(new DoctrineOrmMappingsPass($driver, $namespaces, []));
+                $explicitlyMappedPaths = [...$explicitlyMappedPaths, ...$paths];
             }
         }
+
+        // 明示登録した Entity ディレクトリを auto_mapping の素の AttributeDriver から取り除く.
+        // StripReportFieldsArgPass が paths を第1引数へ正規化した後に実行する必要があるため、優先度を-1001に設定
+        $container->addCompilerPass(
+            new StripAutoMappedEntityPathsPass($explicitlyMappedPaths),
+            PassConfig::TYPE_BEFORE_OPTIMIZATION,
+            -1001
+        );
     }
 
     protected function loadEntityProxies(): void
