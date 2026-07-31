@@ -132,6 +132,8 @@ front.block.news.title__en: NEWS
 front.block.news.title__ja: 新着情報
 front.block.news.read_more: more
 front.block.news.see_details: 詳しくはこちら
+front.block.faq.title__en: FAQ
+front.block.faq.title__ja: よくある質問
 front.block.login.customer_registration: 新規会員登録
 front.block.login.mypage: マイページ
 front.block.login.favorite: お気に入り
@@ -1194,8 +1196,14 @@ admin.content.faq.product_faq: 商品FAQ
 admin.content.faq.category_faq: カテゴリFAQ
 admin.content.faq.add: FAQを追加
 admin.content.faq.display_limit_notice: フロントに表示されるのは、公開状態が「表示」のFAQのうち表示順の上位 %count% 件までです。
-front.block.faq.title__en: FAQ
-front.block.faq.title__ja: よくある質問
+admin.content.faq.faq_type: 区分
+admin.content.faq.faq_type__common: サイト共通
+admin.content.faq.faq_type__product: 商品ごと
+admin.content.faq.faq_type__category: カテゴリごと
+admin.content.faq.faq_type__all: すべて
+admin.content.faq.linked_to: 紐付け先
+admin.content.faq.sort_no_notice: 表示順の並び替えは「サイト共通」で絞り込んだときに行えます。商品ごと・カテゴリごとのFAQは、それぞれの編集画面で並び替えてください。
+admin.content.faq.category_faq_count: FAQ %count% 件
 admin.content.maintenance__card_title: メンテナンスモード
 admin.content.maintenance_message: |
   メンテナンスモードを有効にすると、SHOPの機能を一時的に停止し、管理画面のみアクセス可能な状態となります。

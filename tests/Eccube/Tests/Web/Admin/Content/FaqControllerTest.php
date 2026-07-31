@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace Eccube\Tests\Web\Admin\Content;
 
 use Eccube\Entity\Faq;
+use Eccube\Entity\Product;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -99,6 +100,43 @@ final class FaqControllerTest extends AbstractAdminWebTestCase
         $this->assertSame(Faq::FAQ_TYPE_COMMON, $Faq->getFaqType());
     }
 
+    public function testFaqCreateWithoutSortNoAssignsNextNumber(): void
+    {
+        // 表示順を空欄で登録すると 0 ではなく最大値 + 1 が採番される。
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_content_faq_new'));
+        $form = $crawler->filter('#form1')->form();
+        $form['admin_faq[question]'] = '表示順未入力の質問';
+        $form['admin_faq[answer]'] = '回答';
+        $form['admin_faq[sort_no]'] = '';
+        $form['admin_faq[visible]']->select('1');
+        $this->client->submit($form);
+
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+
+        $this->entityManager->clear();
+        $Faq = $this->entityManager->getRepository(Faq::class)->findOneBy(['question' => '表示順未入力の質問']);
+        $this->assertInstanceOf(Faq::class, $Faq);
+        $this->assertGreaterThan(0, $Faq->getSortNo());
+    }
+
+    public function testFaqCreateRejectsZeroSortNo(): void
+    {
+        // 表示順 0 はバリデーションで弾かれる（1 始まりに揃える）。
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_content_faq_new'));
+        $form = $crawler->filter('#form1')->form();
+        $form['admin_faq[question]'] = '表示順ゼロの質問';
+        $form['admin_faq[answer]'] = '回答';
+        $form['admin_faq[sort_no]'] = '0';
+        $form['admin_faq[visible]']->select('1');
+        $this->client->submit($form);
+
+        // リダイレクトせず入力画面に留まる。
+        $this->assertFalse($this->client->getResponse()->isRedirection());
+
+        $this->entityManager->clear();
+        $this->assertNotInstanceOf(Faq::class, $this->entityManager->getRepository(Faq::class)->findOneBy(['question' => '表示順ゼロの質問']));
+    }
+
     public function testRoutingAdminContentFaqDelete(): void
     {
         $Faq = $this->createCommonFaq();
@@ -142,5 +180,77 @@ final class FaqControllerTest extends AbstractAdminWebTestCase
         // 404 のため削除されず残っていることを検証する。
         $this->entityManager->clear();
         $this->assertInstanceOf(Faq::class, $this->entityManager->getRepository(Faq::class)->find($id));
+    }
+
+    public function testIndexListsAllFaqTypes(): void
+    {
+        // 一覧はページングされるため、残留データがあると検証対象が1ページ目から溢れる。
+        $this->deleteAllRows(['dtb_faq']);
+
+        $CommonFaq = $this->createCommonFaq();
+        $ProductFaq = $this->createProductFaq();
+
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_content_faq'));
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        // 区分を絞り込まない一覧には、サイト共通FAQと商品FAQの双方が並ぶ。
+        $content = $crawler->filter('.c-primaryCol')->text();
+        $this->assertStringContainsString((string) $CommonFaq->getQuestion(), $content);
+        $this->assertStringContainsString((string) $ProductFaq->getQuestion(), $content);
+
+        // 紐付け先として商品名が表示される。
+        $Product = $ProductFaq->getProduct();
+        $this->assertInstanceOf(Product::class, $Product);
+        $this->assertStringContainsString($Product->getName(), $content);
+    }
+
+    public function testIndexFiltersByFaqType(): void
+    {
+        // 一覧はページングされるため、残留データがあると検証対象が1ページ目から溢れる。
+        $this->deleteAllRows(['dtb_faq']);
+
+        $CommonFaq = $this->createCommonFaq();
+        $ProductFaq = $this->createProductFaq();
+
+        $crawler = $this->client->request(Request::METHOD_GET,
+            $this->generateUrl('admin_content_faq', ['faq_type' => Faq::FAQ_TYPE_COMMON])
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $content = $crawler->filter('.c-primaryCol')->text();
+        $this->assertStringContainsString((string) $CommonFaq->getQuestion(), $content);
+        $this->assertStringNotContainsString((string) $ProductFaq->getQuestion(), $content);
+    }
+
+    public function testMoveSortNoUpdatesOnlyCommonFaq(): void
+    {
+        $CommonFaq = $this->createCommonFaq();
+        $ProductFaq = $this->createProductFaq();
+
+        $this->client->request(Request::METHOD_POST,
+            $this->generateUrl('admin_content_faq_sort_no_move'),
+            [
+                (string) $CommonFaq->getId() => 20,
+                (string) $ProductFaq->getId() => 30,
+            ],
+            [],
+            ['HTTP_X-Requested-With' => 'XMLHttpRequest']
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $this->entityManager->clear();
+        $repository = $this->entityManager->getRepository(Faq::class);
+
+        $Common = $repository->find($CommonFaq->getId());
+        $Product = $repository->find($ProductFaq->getId());
+        $this->assertInstanceOf(Faq::class, $Common);
+        $this->assertInstanceOf(Faq::class, $Product);
+
+        // サイト共通FAQの表示順は更新される。
+        $this->assertSame(20, $Common->getSortNo());
+
+        // 商品FAQは並び替えの対象外なので、送信しても更新されない。
+        $this->assertSame(1, $Product->getSortNo());
     }
 }

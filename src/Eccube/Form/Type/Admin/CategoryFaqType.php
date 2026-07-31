@@ -32,6 +32,7 @@ class CategoryFaqType extends AbstractType
         $builder
             ->add('faqs', CollectionType::class, [
                 'entry_type' => FaqType::class,
+                'entry_options' => ['sortable' => true],
                 'prototype' => true,
                 'mapped' => true,
                 'allow_add' => true,

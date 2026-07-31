@@ -17,6 +17,20 @@ file that was distributed with this source code.
 
 {% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
+{% block stylesheet %}
+    <style>
+        /* FAQ件数はアイコンの右上に重ねる。絶対配置なのでボタン幅を変えず、行ごとに操作アイコンの位置がずれない。
+           Bootstrap の `.btn .badge{position:relative}` に勝つため、セレクタを .btn 付きにしている。
+           min-width は1桁と2桁で見た目を揃えるため */
+        .btn .faq-count {
+            position: absolute;
+            top: -0.25rem;
+            right: -0.35rem;
+            min-width: 1.5rem;
+        }
+    </style>
+{% endblock %}
+
 {% block javascript %}
     <script>
         $(function() {
@@ -234,11 +248,15 @@ file that was distributed with this source code.
                                                            title="{{ 'admin.common.edit'|trans }}">
                                                             <i class="fa fa-pencil fa-lg text-secondary"></i>
                                                         </a>
-                                                        <a class="btn btn-ec-actionIcon me-2"
+                                                        {% set faqCount = faqCounts[Category.id]|default(0) %}
+                                                        <a class="btn btn-ec-actionIcon me-2 position-relative"
                                                            href="{{ url('admin_product_category_faq', {id: Category.id}) }}"
                                                            data-bs-toggle="tooltip" data-bs-placement="top"
-                                                           title="{{ 'admin.content.faq.category_faq'|trans }}">
+                                                           title="{{ faqCount > 0 ? 'admin.content.faq.category_faq_count'|trans({'%count%': faqCount}) : 'admin.content.faq.category_faq'|trans }}">
                                                             <i class="fa fa-comments-o fa-lg text-secondary"></i>
+                                                            {% if faqCount > 0 %}
+                                                                <span class="badge bg-secondary rounded-pill faq-count">{{ faqCount }}</span>
+                                                            {% endif %}
                                                         </a>
                                                         <div class="d-inline-block me-2" data-bs-toggle="tooltip" data-bs-placement="top"
                                                              title="{{ 'admin.common.delete'|trans }}">

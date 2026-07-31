@@ -26,6 +26,8 @@ use Eccube\Repository\FaqRepository;
  *  - Category のみ設定            … カテゴリごとFAQ
  */
 #[ORM\Table(name: 'dtb_faq')]
+#[ORM\Index(columns: ['product_id'], name: 'dtb_faq_product_id_idx')]
+#[ORM\Index(columns: ['category_id'], name: 'dtb_faq_category_id_idx')]
 #[ORM\InheritanceType('SINGLE_TABLE')]
 #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
 #[ORM\HasLifecycleCallbacks]
@@ -70,8 +72,11 @@ class Faq extends AbstractEntity implements \Stringable
     #[ORM\Column(name: 'answer', type: Types::TEXT, nullable: true)]
     private ?string $answer = null;
 
+    /**
+     * 表示順. 未採番（null）で保存されたときは FaqRepository::save() が最大値 + 1 を割り当てる。
+     */
     #[ORM\Column(name: 'sort_no', type: Types::INTEGER, options: ['default' => 0])]
-    private int $sort_no = 0;
+    private ?int $sort_no = null;
 
     #[ORM\Column(name: 'visible', type: Types::BOOLEAN, options: ['default' => true])]
     private bool $visible = true;
@@ -123,14 +128,14 @@ class Faq extends AbstractEntity implements \Stringable
         return $this->answer;
     }
 
-    public function setSortNo(int $sortNo): self
+    public function setSortNo(?int $sortNo): self
     {
         $this->sort_no = $sortNo;
 
         return $this;
     }
 
-    public function getSortNo(): int
+    public function getSortNo(): ?int
     {
         return $this->sort_no;
     }

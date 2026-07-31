@@ -24,6 +24,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -37,7 +38,10 @@ class FaqController extends AbstractController
     }
 
     /**
-     * サイト共通FAQ一覧を表示する。
+     * FAQ一覧を表示する。
+     *
+     * 商品ごと・カテゴリごとのFAQは各編集画面を開かないと存在が分からないため、
+     * この一覧は3区分を横断して表示し、区分での絞り込みを提供する。
      *
      * @param int $page_no
      *
@@ -48,7 +52,8 @@ class FaqController extends AbstractController
     #[Template(template: '@admin/Content/faq.twig')]
     public function index(Request $request, $page_no = 1): array
     {
-        $qb = $this->faqRepository->getQueryBuilderAll();
+        $faqType = $this->resolveFaqType($request);
+        $qb = $this->faqRepository->getQueryBuilderAll($faqType);
 
         $event = new EventArgs(
             [
@@ -66,7 +71,54 @@ class FaqController extends AbstractController
 
         return [
             'pagination' => $pagination,
+            'faqType' => $faqType,
         ];
+    }
+
+    /**
+     * リクエストの区分絞り込みパラメータを Faq::FAQ_TYPE_* に解決する。
+     *
+     * 未指定・不正値はすべて「絞り込みなし」として扱う。
+     */
+    private function resolveFaqType(Request $request): ?string
+    {
+        $faqType = $request->query->all()['faq_type'] ?? null;
+
+        if (!is_string($faqType)) {
+            return null;
+        }
+
+        return in_array($faqType, [Faq::FAQ_TYPE_COMMON, Faq::FAQ_TYPE_PRODUCT, Faq::FAQ_TYPE_CATEGORY], true)
+            ? $faqType
+            : null;
+    }
+
+    /**
+     * サイト共通FAQの表示順を並び替える。
+     *
+     * 一覧は3区分を横断するが、並び替えは同一区分内でしか意味を持たないため対象は
+     * サイト共通FAQのみ。商品ごと・カテゴリごとのFAQは各編集画面で並び替える。
+     */
+    #[Route(path: '/%eccube_admin_route%/content/faq/sort_no/move', name: 'admin_content_faq_sort_no_move', methods: ['POST'])]
+    public function moveSortNo(Request $request): Response
+    {
+        if ($request->isXmlHttpRequest() && $this->isTokenValid()) {
+            $sortNos = $request->request->all();
+            foreach ($sortNos as $faqId => $sortNo) {
+                $Faq = $this->faqRepository->find($faqId);
+                if (!$Faq || $Faq->getFaqType() !== Faq::FAQ_TYPE_COMMON) {
+                    continue;
+                }
+                $Faq->setSortNo((int) $sortNo);
+                $this->entityManager->persist($Faq);
+            }
+            $this->entityManager->flush();
+
+            // キャッシュの削除
+            $this->cacheUtil->clearDoctrineCache();
+        }
+
+        return new Response();
     }
 
     /**

@@ -556,6 +556,56 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
+     * 商品コピーで商品ごとFAQが複製され、コピー元のFAQが残ることを検証する.
+     *
+     * copyProperties() が $Faqs の PersistentCollection をコピー元と共有した状態で
+     * persist()＋flush() される経路を通るため、orphanRemoval: true との組み合わせで
+     * コピー元が消えないことを固定する（安全性が ORM の実行順に依存している）。
+     */
+    public function testCopyWithProductFaq()
+    {
+        $Product = $this->createProduct();
+        $faqRepository = $this->entityManager->getRepository(Faq::class);
+
+        $Faq = new Faq();
+        $Faq->setQuestion('コピー元FAQ')
+            ->setAnswer('コピー元の回答')
+            ->setSortNo(1)
+            ->setVisible(true)
+            ->setProduct($Product);
+        $Product->addFaq($Faq);
+        $this->entityManager->persist($Faq);
+        $this->entityManager->flush();
+
+        $sourceId = $Product->getId();
+        $sourceFaqId = $Faq->getId();
+
+        $this->client->request(Request::METHOD_POST, $this->generateUrl('admin_product_product_copy', [
+            'id' => $sourceId,
+            Constant::TOKEN_NAME => 'dummy',
+        ]));
+        $this->assertTrue($this->client->getResponse()->isRedirect());
+
+        $this->entityManager->clear();
+
+        // コピー元のFAQが残っている（orphanRemoval で消えない）。
+        $SourceFaq = $faqRepository->find($sourceFaqId);
+        $this->assertInstanceOf(Faq::class, $SourceFaq);
+        $this->assertSame('コピー元FAQ', $SourceFaq->getQuestion());
+
+        // コピー先にFAQが複製されている。
+        $CopiedFaqs = $faqRepository->createQueryBuilder('f')
+            ->where('f.Product != :Product')
+            ->andWhere('f.question = :question')
+            ->setParameter('Product', $sourceId)
+            ->setParameter('question', 'コピー元FAQ')
+            ->getQuery()
+            ->getResult();
+        $this->assertCount(1, $CopiedFaqs);
+        $this->assertSame(Faq::FAQ_TYPE_PRODUCT, $CopiedFaqs[0]->getFaqType());
+    }
+
+    /**
      * @param $taxRate
      * @param $expected
      */

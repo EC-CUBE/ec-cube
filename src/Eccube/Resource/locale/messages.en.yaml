@@ -132,6 +132,8 @@ front.block.news.title__en: WHAT'S NEW
 front.block.news.title__ja: What's New
 front.block.news.read_more: More
 front.block.news.see_details: Read details
+front.block.faq.title__en: FAQ
+front.block.faq.title__ja: Frequently Asked Questions
 front.block.login.customer_registration: Sign up
 front.block.login.mypage: My Account
 front.block.login.favorite: Favorites
@@ -1195,8 +1197,14 @@ admin.content.faq.product_faq: Product FAQ
 admin.content.faq.category_faq: Category FAQ
 admin.content.faq.add: Add FAQ
 admin.content.faq.display_limit_notice: 'Only the first %count% displayed FAQs, in display order, are shown on the storefront.'
-front.block.faq.title__en: FAQ
-front.block.faq.title__ja: FAQ
+admin.content.faq.faq_type: Type
+admin.content.faq.faq_type__common: Site-wide
+admin.content.faq.faq_type__product: Product
+admin.content.faq.faq_type__category: Category
+admin.content.faq.faq_type__all: All
+admin.content.faq.linked_to: Linked to
+admin.content.faq.sort_no_notice: 'FAQs can be reordered when the list is filtered by "Site-wide". Reorder product and category FAQs on their own edit screens.'
+admin.content.faq.category_faq_count: '%count% FAQs'
 admin.content.maintenance__card_title: Maintenance mode
 admin.content.maintenance_message: |
   When the maintenance mode is enabled, the shop is temporarily stopped and only the Admin Console can be accessed.

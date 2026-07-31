@@ -180,6 +180,7 @@ class ProductType extends AbstractType
             // faqs の描画（form_widget(form.faqs)）を必ず含めること。
             ->add('faqs', CollectionType::class, [
                 'entry_type' => FaqType::class,
+                'entry_options' => ['sortable' => true],
                 'prototype' => true,
                 'mapped' => true,
                 'allow_add' => true,

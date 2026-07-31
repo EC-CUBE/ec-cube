@@ -124,4 +124,79 @@ final class FaqRepositoryTest extends EccubeTestCase
         // 上限を指定するとその件数までに制限される。
         $this->assertCount(1, $this->faqRepository->getCategoryFaq($Category, 1));
     }
+
+    public function testSaveAssignsNextSortNoWhenNotSpecified(): void
+    {
+        $Faq = new Faq();
+        $Faq->setQuestion('表示順を指定しないFAQ')
+            ->setAnswer('保存時に最大値 + 1 が採番される')
+            ->setVisible(true);
+        $this->assertNull($Faq->getSortNo());
+
+        $expected = 1 + (int) $this->entityManager->createQueryBuilder()
+            ->select('COALESCE(MAX(f.sort_no), 0)')
+            ->from(Faq::class, 'f')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        $this->faqRepository->save($Faq);
+
+        // 0 ではなく既存の最大値 + 1 が入る（コアの Category と同じ 1 始まり）。
+        $this->assertSame($expected, $Faq->getSortNo());
+        $this->assertGreaterThan(0, $Faq->getSortNo());
+    }
+
+    public function testGetCategoryFaqInheritsAncestors(): void
+    {
+        $Parent = $this->createCategory('faq-parent', 1);
+        $Child = $this->createCategory('faq-child', 2, $Parent);
+
+        $this->createFaq('parent-2', 2, true, null, $Parent);
+        $this->createFaq('parent-1', 1, true, null, $Parent);
+        $this->createFaq('parent-hidden', 0, false, null, $Parent);
+        $this->createFaq('child-1', 1, true, null, $Child);
+
+        // 子カテゴリでは、自カテゴリのFAQが先頭・祖先のFAQが後ろ（近い順）に並ぶ。
+        $this->assertSame(
+            ['child-1', 'parent-1', 'parent-2'],
+            $this->questionsOf($this->faqRepository->getCategoryFaq($Child))
+        );
+
+        // 上限で切り捨てられるのは常に遠い祖先側。
+        $this->assertSame(
+            ['child-1', 'parent-1'],
+            $this->questionsOf($this->faqRepository->getCategoryFaq($Child, 2))
+        );
+
+        // 継承するのは祖先方向のみ。親カテゴリに子のFAQは出ない。
+        $this->assertSame(
+            ['parent-1', 'parent-2'],
+            $this->questionsOf($this->faqRepository->getCategoryFaq($Parent))
+        );
+    }
+
+    private function createCategory(string $name, int $hierarchy, ?Category $Parent = null): Category
+    {
+        $Category = new Category();
+        $Category->setName($name)
+            ->setSortNo($hierarchy)
+            ->setHierarchy($hierarchy)
+            ->setParent($Parent)
+            ->setCreateDate(new \DateTime())
+            ->setUpdateDate(new \DateTime());
+        $this->entityManager->persist($Category);
+        $this->entityManager->flush();
+
+        return $Category;
+    }
+
+    /**
+     * @param Faq[] $Faqs
+     *
+     * @return string[]
+     */
+    private function questionsOf(array $Faqs): array
+    {
+        return array_map(static fn (Faq $Faq): string => (string) $Faq->getQuestion(), $Faqs);
+    }
 }

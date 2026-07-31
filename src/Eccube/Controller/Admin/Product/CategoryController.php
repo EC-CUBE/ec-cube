@@ -21,6 +21,7 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\CategoryType;
 use Eccube\Repository\CategoryRepository;
+use Eccube\Repository\FaqRepository;
 use Eccube\Service\CsvExportService;
 use Eccube\Util\CacheUtil;
 use Symfony\Bridge\Twig\Attribute\Template;
@@ -37,7 +38,7 @@ class CategoryController extends AbstractController
     /**
      * CategoryController constructor.
      */
-    public function __construct(protected CsvExportService $csvExportService, protected CategoryRepository $categoryRepository, private readonly CacheUtil $cacheUtil)
+    public function __construct(protected CsvExportService $csvExportService, protected CategoryRepository $categoryRepository, private readonly CacheUtil $cacheUtil, private readonly FaqRepository $faqRepository)
     {
     }
 
@@ -190,6 +191,15 @@ class CategoryController extends AbstractController
         }
         $Ids[] = intval($parent_id);
 
+        // FAQの登録有無をツリー上で判別できるようにするため、表示中の階層の件数をまとめて取得する
+        $categoryIds = [];
+        foreach ($Categories as $Category) {
+            $categoryId = $Category->getId();
+            if ($categoryId !== null) {
+                $categoryIds[] = $categoryId;
+            }
+        }
+
         return [
             'form' => $form->createView(),
             'Parent' => $Parent,
@@ -199,6 +209,7 @@ class CategoryController extends AbstractController
             'TargetCategory' => $TargetCategory,
             'forms' => $formViews,
             'error_forms' => $formErrors,
+            'faqCounts' => $this->faqRepository->countByCategoryIds($categoryIds),
         ];
     }
 

@@ -32,13 +32,30 @@ class FaqRepository extends AbstractRepository
 
     /**
      * FAQ を登録/保存します.
+     *
+     * 表示順が未採番（null）のときは既存の最大値 + 1 を割り当てる（コアの Category と同じ 1 始まり）。
      */
     #[\Override]
     public function save(AbstractEntity $entity): void
     {
+        if ($entity instanceof Faq && $entity->getSortNo() === null) {
+            $entity->setSortNo($this->getMaxSortNo() + 1);
+        }
+
         $em = $this->getEntityManager();
         $em->persist($entity);
         $em->flush();
+    }
+
+    /**
+     * 登録済みFAQの表示順の最大値を返す（未登録なら 0）.
+     */
+    private function getMaxSortNo(): int
+    {
+        return (int) $this->createQueryBuilder('f')
+            ->select('COALESCE(MAX(f.sort_no), 0)')
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
     /**
@@ -53,15 +70,75 @@ class FaqRepository extends AbstractRepository
     }
 
     /**
-     * サイト共通FAQ（商品・カテゴリに紐付かない）の一覧 QueryBuilder を返す（管理画面用）.
+     * 3区分を横断したFAQ一覧の QueryBuilder を返す（管理画面用）.
+     *
+     * 商品ごと・カテゴリごとのFAQは各編集画面を開かないと存在が分からないため、
+     * 管理画面の一覧は既定で全区分を対象にする。$faqType を渡すと区分で絞り込む。
+     *
+     * 紐付け先（商品名・カテゴリ名）を一覧に表示するため Product / Category を
+     * fetch join し、行ごとの追加クエリ（N+1）を避けている。
+     *
+     * 並びは「サイト共通 → カテゴリごと → 商品ごと」の順に、紐付け先ごとにまとまる。
+     * NULL の並び順は DB 実装によって異なるため、COALESCE で 0 に寄せて揃えている。
+     *
+     * @param string|null $faqType Faq::FAQ_TYPE_* のいずれか。null なら全区分
      */
-    public function getQueryBuilderAll(): QueryBuilder
+    public function getQueryBuilderAll(?string $faqType = null): QueryBuilder
     {
-        return $this->createQueryBuilder('f')
-            ->where('f.Product IS NULL')
-            ->andWhere('f.Category IS NULL')
-            ->orderBy('f.sort_no', 'ASC')
+        $qb = $this->createQueryBuilder('f')
+            ->leftJoin('f.Product', 'p')
+            ->leftJoin('f.Category', 'c')
+            ->addSelect('p')
+            ->addSelect('c')
+            ->addSelect('COALESCE(p.id, 0) AS HIDDEN product_order')
+            ->addSelect('COALESCE(c.id, 0) AS HIDDEN category_order')
+            ->orderBy('product_order', 'ASC')
+            ->addOrderBy('category_order', 'ASC')
+            ->addOrderBy('f.sort_no', 'ASC')
             ->addOrderBy('f.id', 'ASC');
+
+        match ($faqType) {
+            Faq::FAQ_TYPE_COMMON => $qb->where('f.Product IS NULL')
+                ->andWhere('f.Category IS NULL'),
+            Faq::FAQ_TYPE_PRODUCT => $qb->where('f.Product IS NOT NULL'),
+            Faq::FAQ_TYPE_CATEGORY => $qb->where('f.Category IS NOT NULL'),
+            default => $qb,
+        };
+
+        return $qb;
+    }
+
+    /**
+     * 指定したカテゴリのFAQ件数をまとめて返す（管理画面のカテゴリツリー用）.
+     *
+     * カテゴリ行ごとに件数を数えると N+1 になるため、1クエリで取得する。
+     *
+     * @param int[] $categoryIds
+     *
+     * @return array<int, int> カテゴリID => FAQ件数（0件のカテゴリはキーを持たない）
+     */
+    public function countByCategoryIds(array $categoryIds): array
+    {
+        if ($categoryIds === []) {
+            return [];
+        }
+
+        $rows = $this->createQueryBuilder('f')
+            ->select('c.id AS category_id')
+            ->addSelect('COUNT(f.id) AS faq_count')
+            ->innerJoin('f.Category', 'c')
+            ->where('c.id IN (:categoryIds)')
+            ->setParameter('categoryIds', $categoryIds)
+            ->groupBy('c.id')
+            ->getQuery()
+            ->getScalarResult();
+
+        $counts = [];
+        foreach ($rows as $row) {
+            $counts[(int) $row['category_id']] = (int) $row['faq_count'];
+        }
+
+        return $counts;
     }
 
     /**
@@ -111,15 +188,24 @@ class FaqRepository extends AbstractRepository
     /**
      * フロント表示用のカテゴリごとFAQ（表示のみ・並び順）を返す.
      *
+     * 祖先カテゴリに登録されたFAQも継承して表示する。上位カテゴリに共通のFAQをまとめて置く
+     * 運用に対応するため、対象は Category::getPath() が返す「ルート〜自身」の集合。
+     *
+     * 並び順は「自カテゴリを先頭・祖先は近い順に後ろ」（カテゴリ階層 hierarchy の降順）とし、
+     * 同一カテゴリ内は表示順・IDの昇順。$limit はこの並びの統合後に適用するため、
+     * 件数超過で切り捨てられるのは常に遠い祖先側になる。
+     *
      * @return Faq[]
      */
     public function getCategoryFaq(Category $Category, ?int $limit = null): array
     {
         $qb = $this->createQueryBuilder('f')
-            ->where('f.Category = :Category')
+            ->innerJoin('f.Category', 'c')
+            ->where('f.Category IN (:Categories)')
             ->andWhere('f.visible = true')
-            ->setParameter('Category', $Category)
-            ->orderBy('f.sort_no', 'ASC')
+            ->setParameter('Categories', $Category->getPath())
+            ->orderBy('c.hierarchy', 'DESC')
+            ->addOrderBy('f.sort_no', 'ASC')
             ->addOrderBy('f.id', 'ASC');
 
         if ($limit !== null) {

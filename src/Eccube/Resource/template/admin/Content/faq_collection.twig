@@ -10,15 +10,42 @@ file that was distributed with this source code.
 
 商品編集・カテゴリ編集で共用する FAQ 入力コレクション。
 呼び出し側から `faqs`（form.faqs の FormView）を渡す。
+
+表示順はドラッグ＆ドロップと ↑↓ で並び替え、hidden の sort_no に JS が連番を振る。
+JS は呼び出し側の block javascript で `@admin/Content/faq_collection_javascript.twig` を include すること。
 #}
 {% macro faq_item(faq) %}
-    <div class="faq-collection__item card border mb-2">
+    <div class="faq-collection__item sortable-item card border mb-2">
         <div class="card-body">
-            <div class="d-flex justify-content-end">
-                <button type="button" class="btn btn-ec-actionIcon faq-collection__remove"
-                        data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.delete'|trans }}">
-                    <i class="fa fa-trash fa-lg text-secondary"></i>
-                </button>
+            {# 公開状態は1行を占有させず、ドラッグ・並び替えと同じ操作行にまとめる。
+               入力欄の左端を質問・回答と揃えるため、下の行と同じ col-3 / col-9 の割り付けにする #}
+            <div class="row align-items-center mb-2">
+                <div class="col-3">
+                    <i class="fa fa-bars fa-lg text-ec-gray"></i>
+                </div>
+                <div class="col-9">
+                    <div class="row align-items-center">
+                        <div class="col-4" data-bs-toggle="tooltip" data-bs-placement="top"
+                             title="{{ 'admin.content.faq.display_status'|trans }}">
+                            {{ form_widget(faq.visible) }}
+                            {{ form_errors(faq.visible) }}
+                        </div>
+                        <div class="col text-end">
+                            <a class="btn btn-ec-actionIcon action-up" href="#"
+                               data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.up'|trans }}">
+                                <i class="fa fa-arrow-up fa-lg text-secondary"></i>
+                            </a>
+                            <a class="btn btn-ec-actionIcon action-down" href="#"
+                               data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.down'|trans }}">
+                                <i class="fa fa-arrow-down fa-lg text-secondary"></i>
+                            </a>
+                            <button type="button" class="btn btn-ec-actionIcon faq-collection__remove"
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.delete'|trans }}">
+                                <i class="fa fa-trash fa-lg text-secondary"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="row mb-2 align-items-center">
                 <div class="col-3">
@@ -38,22 +65,9 @@ file that was distributed with this source code.
                     {{ form_errors(faq.answer) }}
                 </div>
             </div>
-            <div class="row mb-2 align-items-center">
-                <div class="col-3">
-                    <span>{{ 'admin.content.faq.sort_no'|trans }}</span>
-                </div>
-                <div class="col-3">
-                    {{ form_widget(faq.sort_no) }}
-                    {{ form_errors(faq.sort_no) }}
-                </div>
-                <div class="col-3">
-                    <span>{{ 'admin.content.faq.display_status'|trans }}</span>
-                </div>
-                <div class="col-3">
-                    {{ form_widget(faq.visible) }}
-                    {{ form_errors(faq.visible) }}
-                </div>
-            </div>
+            {# 表示順は hidden. 並び順に応じて JS が連番を振る #}
+            {{ form_widget(faq.sort_no) }}
+            {{ form_errors(faq.sort_no) }}
         </div>
     </div>
 {% endmacro %}
@@ -65,7 +79,7 @@ file that was distributed with this source code.
 <div class="faq-collection"
      data-prototype="{{ faqMacro.faq_item(faqs.vars.prototype)|e('html_attr') }}"
      data-index="{{ faqs.children|length }}">
-    <div class="faq-collection__items">
+    <div class="faq-collection__items sortable-container">
         {% for faq in faqs %}
             {{ faqMacro.faq_item(faq) }}
         {% endfor %}
@@ -74,24 +88,4 @@ file that was distributed with this source code.
         <button type="button" class="btn btn-ec-regular faq-collection__add">{{ 'admin.content.faq.add'|trans }}</button>
     </div>
 </div>
-
-<script>
-    $(function () {
-        $('.faq-collection').each(function () {
-            var $collection = $(this);
-            var $items = $collection.find('.faq-collection__items');
-
-            $collection.find('.faq-collection__add').on('click', function () {
-                var index = parseInt($collection.attr('data-index'), 10);
-                var prototype = $collection.attr('data-prototype');
-                var newForm = prototype.replace(/__name__/g, index);
-                $collection.attr('data-index', index + 1);
-                $items.append(newForm);
-            });
-
-            $collection.on('click', '.faq-collection__remove', function () {
-                $(this).closest('.faq-collection__item').remove();
-            });
-        });
-    });
-</script>
+<p>{{ 'admin.common.drag_and_drop_description'|trans }}</p>
