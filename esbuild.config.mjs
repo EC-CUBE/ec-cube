@@ -166,7 +166,17 @@ async function buildScssFile(scssPath, minify) {
   fs.writeFileSync(cssPath, processed.css)
 
   if (processed.map) {
-    fs.writeFileSync(path.join(path.dirname(cssPath), mapName), processed.map.toString())
+    const mapDir = path.dirname(cssPath)
+    const map = processed.map.toJSON()
+    // sass-embedded は sources を file:// の絶対 URL で返す。生成物をコミットする運用では
+    // ビルドマシンのパスが焼き込まれ、誰が再ビルドしても map だけが差分化するため、
+    // map ファイルからの相対パス (区切りは POSIX 固定) に直してから書き出す。
+    map.sources = map.sources.map((src) => {
+      const abs = src.startsWith('file://') ? fileURLToPath(src) : src
+
+      return path.isAbsolute(abs) ? path.relative(mapDir, abs).split(path.sep).join('/') : abs
+    })
+    fs.writeFileSync(path.join(mapDir, mapName), JSON.stringify(map))
   }
 }
 
