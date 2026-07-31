@@ -18,6 +18,7 @@ namespace Eccube\Tests\Service\Mcp\Contract;
 use Eccube\Entity\Master\Work;
 use Eccube\Entity\Member;
 use Eccube\Tests\EccubeTestCase;
+use Eccube\Tests\Service\Mcp\EnablesMcpTrait;
 use League\Bundle\OAuth2ServerBundle\Entity\AccessToken as AccessTokenEntity;
 use League\Bundle\OAuth2ServerBundle\Entity\Client as ClientEntity;
 use League\Bundle\OAuth2ServerBundle\Entity\Scope as ScopeEntity;
@@ -50,6 +51,8 @@ use Symfony\Component\HttpFoundation\Response;
 #[Group('mcp')]
 final class McpTokenRevocationContractTest extends EccubeTestCase
 {
+    use EnablesMcpTrait;
+
     private const TEST_CLIENT_ID = 'mcp-revocation-test-client';
 
     // EccubeTestCase::tearDown() が全プロパティに null を強制代入するため nullable + default null が必須
@@ -61,6 +64,7 @@ final class McpTokenRevocationContractTest extends EccubeTestCase
         parent::setUp();
         $this->clientManager = static::getContainer()->get(ClientManagerInterface::class);
         $this->accessTokenManager = static::getContainer()->get(AccessTokenManagerInterface::class);
+        $this->setMcpEnabled(true);
     }
 
     public function testValidJwtIsAcceptedByFirewall(): void

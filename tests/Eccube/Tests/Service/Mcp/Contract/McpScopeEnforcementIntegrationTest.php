@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace Eccube\Tests\Service\Mcp\Contract;
 
 use Eccube\Tests\EccubeTestCase;
+use Eccube\Tests\Service\Mcp\EnablesMcpTrait;
 use League\Bundle\OAuth2ServerBundle\Entity\AccessToken as AccessTokenEntity;
 use League\Bundle\OAuth2ServerBundle\Entity\Client as ClientEntity;
 use League\Bundle\OAuth2ServerBundle\Entity\Scope as ScopeEntity;
@@ -42,6 +43,8 @@ use Symfony\Component\HttpFoundation\Response;
 #[Group('mcp')]
 final class McpScopeEnforcementIntegrationTest extends EccubeTestCase
 {
+    use EnablesMcpTrait;
+
     private const TEST_CLIENT_ID = 'mcp-scope-it-client';
 
     private ?ClientManagerInterface $clientManager = null;
@@ -52,6 +55,7 @@ final class McpScopeEnforcementIntegrationTest extends EccubeTestCase
         parent::setUp();
         $this->clientManager = static::getContainer()->get(ClientManagerInterface::class);
         $this->accessTokenManager = static::getContainer()->get(AccessTokenManagerInterface::class);
+        $this->setMcpEnabled(true);
     }
 
     public function testToolCallSucceedsWhenScopeGranted(): void

@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace Eccube\Service\Mcp;
 
 use Eccube\DependencyInjection\Compiler\McpScopeEnforcementPass;
+use Eccube\Repository\BaseInfoRepository;
 use Mcp\Capability\Registry\ReferenceHandlerInterface;
 use Mcp\Capability\Registry\ToolReference;
 use Mcp\Capability\RegistryInterface;
@@ -42,6 +43,7 @@ final class McpCliToolInvoker
         private readonly Builder $builder,
         #[Autowire(service: McpScopeEnforcementPass::INNER_REFERENCE_HANDLER_ID)]
         private readonly ReferenceHandlerInterface $handler,
+        private readonly BaseInfoRepository $baseInfoRepository,
     ) {
     }
 
@@ -62,6 +64,10 @@ final class McpCliToolInvoker
      */
     public function call(string $name, array $arguments): mixed
     {
+        if (!$this->baseInfoRepository->get()->isMcpEnabled()) {
+            throw new \RuntimeException('MCP 機能は無効です。 店舗設定で MCP サーバを有効にしてください。');
+        }
+
         $reference = $this->tool($name);
 
         // sdk の ReferenceHandler は arguments['_session'] を無条件参照する (本来はサーバが

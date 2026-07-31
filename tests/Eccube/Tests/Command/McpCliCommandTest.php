@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace Eccube\Tests\Command;
 
 use Eccube\Tests\EccubeTestCase;
+use Eccube\Tests\Service\Mcp\EnablesMcpTrait;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Command\Command;
@@ -30,12 +31,15 @@ use Symfony\Component\Console\Tester\CommandTester;
 #[Group('mcp')]
 final class McpCliCommandTest extends EccubeTestCase
 {
+    use EnablesMcpTrait;
+
     private ?Application $application = null;
 
     public function setUp(): void
     {
         parent::setUp();
         $this->application = new Application(static::$kernel);
+        $this->setMcpEnabled(true);
     }
 
     public function testToolsAreRegisteredAsCommands(): void
@@ -139,6 +143,17 @@ final class McpCliCommandTest extends EccubeTestCase
         $tester = $this->execute('eccube:cli:search_products', ['--stockMin' => '1', '--stockMax' => '1000']);
 
         $this->assertSame(Command::SUCCESS, $tester->getStatusCode());
+    }
+
+    public function testToolExecutionFailsWhenMcpDisabled(): void
+    {
+        // 機能 OFF では McpCliToolInvoker::call() が例外を投げ、 ツールを実行させない
+        $this->setMcpEnabled(false);
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('MCP 機能は無効です');
+
+        $this->execute('eccube:cli:search_products', ['--limit' => '1']);
     }
 
     /**

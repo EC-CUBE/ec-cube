@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace Eccube\Tests\Service\Mcp\Contract;
 
 use Eccube\Tests\EccubeTestCase;
+use Eccube\Tests\Service\Mcp\EnablesMcpTrait;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,6 +39,14 @@ use Symfony\Component\HttpFoundation\Response;
 #[Group('mcp')]
 final class McpFirewallContractTest extends EccubeTestCase
 {
+    use EnablesMcpTrait;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->setMcpEnabled(true);
+    }
+
     public function testReturns401WithoutBearerHeader(): void
     {
         $this->client->request(
