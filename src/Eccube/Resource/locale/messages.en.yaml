@@ -1596,6 +1596,10 @@ admin.store.setting.api_key_tooltip: This key is required for installing purchas
 admin.store.setting.get_api_key: Obtain an API authentication key
 admin.store.setting.get_api_key_info: Issue a new authentication key
 admin.store.setting.get_api_key_modal_info: A new authentication key will be issued. If you already have an authentication key, please set the existing key without issuing a new one.
+admin.store.setting.get_api_key_confirm_title: Please confirm
+admin.store.setting.get_api_key_confirm_info: Have you already issued an authentication key at the Owner's Store? To avoid holding multiple authentication keys, please check before issuing a new one.
+admin.store.setting.get_api_key_confirm_link: Check at the Owner's Store
+admin.store.setting.get_api_key_confirm_proceed: Proceed to issue
 admin.store.setting.captcha_message: Please enter the letters displayed.
 admin.store.setting.php_path_setting: Set PHP Path
 admin.store.setting.php_path: PHP Path

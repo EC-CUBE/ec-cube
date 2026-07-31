@@ -1596,6 +1596,10 @@ admin.store.setting.api_key_tooltip: 購入したプラグイン等のインス�
 admin.store.setting.get_api_key: 認証キー新規発行
 admin.store.setting.get_api_key_info: 認証キーの新規発行と登録を行います。
 admin.store.setting.get_api_key_modal_info: 新しい認証キーを発行します。既に認証キーがある場合は、発行せずに既存のキーを設定してください。
+admin.store.setting.get_api_key_confirm_title: ご確認ください
+admin.store.setting.get_api_key_confirm_info: オーナーズストアで既に認証キーを発行していませんか？認証キーの複数持ちを防ぐため、新規発行の前に一度ご確認ください。
+admin.store.setting.get_api_key_confirm_link: オーナーズストアで確認する
+admin.store.setting.get_api_key_confirm_proceed: 発行手続きへ進む
 admin.store.setting.captcha_message: 画像に表示されている文字を入力してください。
 admin.store.setting.php_path_setting: PHPパスの設定
 admin.store.setting.php_path: PHPパス
