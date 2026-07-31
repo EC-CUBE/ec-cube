@@ -13,6 +13,7 @@
 - mtb_order_item_type.csv
 - mtb_order_status.csv
 - mtb_order_status_color.csv
+- mtb_refund_request_status.csv
 - mtb_page_max.csv
 - mtb_pref.csv
 - mtb_product_list_max.csv

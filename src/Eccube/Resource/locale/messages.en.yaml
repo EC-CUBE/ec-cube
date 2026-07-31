@@ -277,6 +277,32 @@ front.mypage.customer.notify_title: Change customer information
 front.mypage.delivery.notify_title: Change delivery information
 
 #------------------------------------------------------------------------------------
+# Refund Request (Front)
+#------------------------------------------------------------------------------------
+front.mypage.refund_request.title: Refund Request
+front.mypage.refund_request.confirm_title: Confirm Refund Request
+front.mypage.refund_request.complete_title: Refund Request Complete
+front.mypage.refund_request.item_history_title: Refund Request History
+front.mypage.refund_request.quantity: Quantity
+front.mypage.refund_request.quantity_max: "Up to %max% items"
+front.mypage.refund_request.reason: Reason
+front.mypage.refund_request.reason_placeholder: Please enter the reason for refund
+front.mypage.refund_request.files: Evidence Files
+front.mypage.refund_request.files_help: "You can attach up to 3 files (JPEG, PNG, GIF, WebP, MP4, MOV, AVI). Max 15MB each."
+front.mypage.refund_request.confirm: Confirm
+front.mypage.refund_request.submit: Submit Request
+front.mypage.refund_request.complete_message: Your refund request has been submitted
+front.mypage.refund_request.complete_description: We will review your request and contact you shortly. Please wait.
+front.mypage.refund_request.back_to_mypage: Back to My Page
+front.mypage.refund_request.request_date: Request Date
+front.mypage.refund_request.status: Status
+front.mypage.refund_request.no_history: No refund request history.
+front.mypage.refund_request.apply: Refund Request
+front.mypage.refund_request.history: Request History
+front.mypage.refund_request.error: Failed to process the refund request.
+front.mypage.refund_request.invalid_token: Invalid request. Please try again.
+
+#------------------------------------------------------------------------------------
 # Products
 #------------------------------------------------------------------------------------
 
@@ -987,6 +1013,35 @@ admin.order.shipping_csv.shipping_date_col: Shipping Date
 admin.order.shipping_csv.shipping_date_description: Enter the shipping date in the format of MM/DD/YYYY
 
 #------------------------------------------------------------------------------------
+# Refund Request (Admin)
+#------------------------------------------------------------------------------------
+admin.order.refund_request.list_title: Refund Requests
+admin.order.refund_request.edit_title: Refund Request Detail
+admin.order.refund_request.detail: Request Detail
+admin.order.refund_request.operation: Operation
+admin.order.refund_request.id: Request ID
+admin.order.refund_request.order_no: Order No
+admin.order.refund_request.customer: Customer
+admin.order.refund_request.product: Product
+admin.order.refund_request.status: Status
+admin.order.refund_request.quantity: Quantity
+admin.order.refund_request.reason: Reason
+admin.order.refund_request.create_date: Request Date
+admin.order.refund_request.create_date__start: Request Date (from)
+admin.order.refund_request.create_date__end: Request Date (to)
+admin.order.refund_request.update_date: Updated
+admin.order.refund_request.update_date__start: Updated (from)
+admin.order.refund_request.update_date__end: Updated (to)
+admin.order.refund_request.files: Attached Files
+admin.order.refund_request.admin_note: Admin Note
+admin.order.refund_request.transition: Change Status
+admin.order.refund_request.transition_placeholder: -- No Change --
+admin.order.refund_request.transition_error: Failed to change status.
+admin.order.refund_request.back_to_list: Back to list
+admin.order.refund_request.multi_search_label: Search by Request ID, Order No, Customer ID, Customer Name
+admin.order.refund_request.csv_export: CSV Export
+
+#------------------------------------------------------------------------------------
 # Customer
 #------------------------------------------------------------------------------------
 
@@ -1440,7 +1495,10 @@ admin.setting.system.security.force_ssl_description: Only https access is allowe
 admin.setting.system.security.ip_limit_invalid_ipv4: "%ip% is not an IPv4 address."
 admin.setting.system.security.ip_limit_invalid_https: "http is not allowed to do this setting."
 admin.setting.system.security.admin_url_warning: Please set the Admin Console URL that is hard to guess for security.
-admin.setting.system.security.not_found_env_file: .env file not found. If you do not use the .env file you can not change security config in Admin Console.
+admin.system.env.ineffective.not_found: 'The .env file does not exist, so this setting cannot be changed from the admin screen. Please set the environment variables on the server directly.'
+admin.system.env.ineffective.not_writable: 'The .env file is not writable, so this setting cannot be changed from the admin screen. Please check the write permission of the .env file.'
+admin.system.env.ineffective.local_php: 'Because .env.local.php exists, changes to .env are not applied and cannot be made from the admin screen. Update .env on the server and re-run composer dump-env, or remove .env.local.php to re-enable changes from the admin screen.'
+admin.system.env.ineffective.overridden: 'The environment variable(s) for this setting (%keys%) are overridden by OS process environment variables or a cascade file (.env.local, etc.), so changes to .env are not applied. Please change the environment variable on the server directly.'
 admin.setting.system.security.trusted_hosts: Trusted hosts
 admin.setting.system.security.trusted_hosts_sample: ^example\.com$,^example\.org$
 admin.setting.system.security.trusted_hosts_description: |
@@ -1527,7 +1585,6 @@ admin.store.template.delete_error__current_template: You are not allowed to dele
 admin.store.template.template_code_already_exists: This template code is already used.
 admin.store.template.upload_failed: Failed to upload
 admin.store.template.invalid_upload_file: Wrong extension of the file
-admin.store.template.env_override_warning: "ECCUBE_TEMPLATE_CODE is set as an environment variable, so changes to .env will not take effect. To switch templates, update the ECCUBE_TEMPLATE_CODE environment variable."
 admin.store.plugin: Plugins
 admin.store.plugin.plugin_owners_install: Search Plugins
 admin.store.plugin.plugin_list: All Plugins
@@ -1553,6 +1610,10 @@ admin.store.setting.api_key_tooltip: This key is required for installing purchas
 admin.store.setting.get_api_key: Obtain an API authentication key
 admin.store.setting.get_api_key_info: Issue a new authentication key
 admin.store.setting.get_api_key_modal_info: A new authentication key will be issued. If you already have an authentication key, please set the existing key without issuing a new one.
+admin.store.setting.get_api_key_confirm_title: Please confirm
+admin.store.setting.get_api_key_confirm_info: Have you already issued an authentication key at the Owner's Store? To avoid holding multiple authentication keys, please check before issuing a new one.
+admin.store.setting.get_api_key_confirm_link: Check at the Owner's Store
+admin.store.setting.get_api_key_confirm_proceed: Proceed to issue
 admin.store.setting.captcha_message: Please enter the letters displayed.
 admin.store.setting.php_path_setting: Set PHP Path
 admin.store.setting.php_path: PHP Path
