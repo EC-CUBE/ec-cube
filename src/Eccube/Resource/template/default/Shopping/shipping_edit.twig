@@ -27,7 +27,11 @@ file that was distributed with this source code.
     <div class="ec-role">
         <div class="ec-pageHeader">
             {% if is_granted('ROLE_USER') %}
-                <h1>{{ 'front.shopping.shipping_edit_header_customer'|trans }}</h1>
+                {% if customerAddressId is defined and customerAddressId %}
+                    <h1>{{ 'front.shopping.shipping_customer_address_edit_title'|trans }}</h1>
+                {% else %}
+                    <h1>{{ 'front.shopping.shipping_edit_header_customer'|trans }}</h1>
+                {% endif %}
             {% else %}
                 <h1>{{ 'front.shopping.shipping_edit_header_nonmember'|trans }}</h1>
             {% endif %}
@@ -38,7 +42,12 @@ file that was distributed with this source code.
         <div class="ec-registerRole">
             <div class="ec-off1Grid">
                 <div class="ec-off1Grid__cell">
-                    <form method="post" action="{{ url('shopping_shipping_edit', {'id': shippingId}) }}" class="h-adr">
+                    {% if customerAddressId is defined and customerAddressId %}
+                        {% set edit_action = url('shopping_shipping_customer_address_edit', {'id': shippingId, 'ca_id': customerAddressId}) %}
+                    {% else %}
+                        {% set edit_action = url('shopping_shipping_edit', {'id': shippingId}) %}
+                    {% endif %}
+                    <form method="post" action="{{ edit_action }}" class="h-adr">
                         <span class="p-country-name" style="display:none;">Japan</span>
                         {{ form_widget(form._token) }}
                         <div class="ec-borderedDefs">
