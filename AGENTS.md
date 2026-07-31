@@ -160,7 +160,7 @@ bin/console doctrine:migrations:migrate              # INSERT・型変更等（s
 bin/console doctrine:migrations:generate
 ```
 
-> 単純なカラム追加にマイグレーション（ALTER）は不要。詳細は Skill `migration`（[`.claude/skills/migration/SKILL.md`](./.claude/skills/migration/SKILL.md)）。
+> 単純なカラム追加にマイグレーション（ALTER）は不要。詳細は Skill `eccube-migration`（[`.claude/skills/eccube-migration/SKILL.md`](./.claude/skills/eccube-migration/SKILL.md)）。
 
 ## アーキテクチャ
 
@@ -225,31 +225,52 @@ frontmatter の `description` がトリガ条件で、該当レイヤを触る�
 
 | レイヤ / 観点 | 規約 Skill（本文） | Skill 名 |
 |--------|------------------|----------|
-| PHPUnit テスト | [`.claude/skills/phpunit/SKILL.md`](./.claude/skills/phpunit/SKILL.md) | `phpunit` |
-| E2E（Playwright・spec 作成 / flaky 対策） | [`.claude/skills/e2e/SKILL.md`](./.claude/skills/e2e/SKILL.md) | `e2e` |
-| コントローラ（責務分離・Fat化防止） | [`.claude/skills/controller/SKILL.md`](./.claude/skills/controller/SKILL.md) | `controller` |
-| サービス（責務分離・単一責任） | [`.claude/skills/service/SKILL.md`](./.claude/skills/service/SKILL.md) | `service` |
-| マイグレーション（スキーマ変更） | [`.claude/skills/migration/SKILL.md`](./.claude/skills/migration/SKILL.md) | `migration` |
-| Entity（Doctrine エンティティ） | [`.claude/skills/entity/SKILL.md`](./.claude/skills/entity/SKILL.md) | `entity` |
-| Repository（データアクセス） | [`.claude/skills/repository/SKILL.md`](./.claude/skills/repository/SKILL.md) | `repository` |
-| FormType（フォーム） | [`.claude/skills/formtype/SKILL.md`](./.claude/skills/formtype/SKILL.md) | `formtype` |
-| セキュリティ（認証・認可・CSRF・IDOR） | [`.claude/skills/security/SKILL.md`](./.claude/skills/security/SKILL.md) | `security` |
-| Twig 拡張・テンプレート（XSS・上書き） | [`.claude/skills/twig-template/SKILL.md`](./.claude/skills/twig-template/SKILL.md) | `twig-template` |
-| イベント（Subscriber・テンプレート/Doctrine イベント） | [`.claude/skills/event-subscriber/SKILL.md`](./.claude/skills/event-subscriber/SKILL.md) | `event-subscriber` |
-| プラグイン（ライフサイクル・配置・拡張） | [`.claude/skills/plugin/SKILL.md`](./.claude/skills/plugin/SKILL.md) | `plugin` |
-| 受注処理（PurchaseFlow の Processor/Validator） | [`.claude/skills/purchase-flow/SKILL.md`](./.claude/skills/purchase-flow/SKILL.md) | `purchase-flow` |
-| メール（MailService・テンプレート・MailHistory） | [`.claude/skills/mail/SKILL.md`](./.claude/skills/mail/SKILL.md) | `mail` |
-| カスタマイズ（app/Customize での拡張・上書き・デコレーション） | [`.claude/skills/customize/SKILL.md`](./.claude/skills/customize/SKILL.md) | `customize` |
-| CSV 入出力（CsvImport/Export・CSV 定義） | [`.claude/skills/csv/SKILL.md`](./.claude/skills/csv/SKILL.md) | `csv` |
-| コンソールコマンド（Symfony Console・バッチ） | [`.claude/skills/command/SKILL.md`](./.claude/skills/command/SKILL.md) | `command` |
-| 責務分離レビュー（実装直後の自己チェック・全層） | [`.claude/skills/review-responsibility/SKILL.md`](./.claude/skills/review-responsibility/SKILL.md) | `review-responsibility` |
+| PHPUnit テスト | [`.claude/skills/eccube-phpunit/SKILL.md`](./.claude/skills/eccube-phpunit/SKILL.md) | `eccube-phpunit` |
+| E2E（Playwright・spec 作成 / flaky 対策） | [`.claude/skills/eccube-e2e/SKILL.md`](./.claude/skills/eccube-e2e/SKILL.md) | `eccube-e2e` |
+| コントローラ（責務分離・Fat化防止） | [`.claude/skills/eccube-controller/SKILL.md`](./.claude/skills/eccube-controller/SKILL.md) | `eccube-controller` |
+| サービス（責務分離・単一責任） | [`.claude/skills/eccube-service/SKILL.md`](./.claude/skills/eccube-service/SKILL.md) | `eccube-service` |
+| マイグレーション（スキーマ変更） | [`.claude/skills/eccube-migration/SKILL.md`](./.claude/skills/eccube-migration/SKILL.md) | `eccube-migration` |
+| Entity（Doctrine エンティティ） | [`.claude/skills/eccube-entity/SKILL.md`](./.claude/skills/eccube-entity/SKILL.md) | `eccube-entity` |
+| Repository（データアクセス） | [`.claude/skills/eccube-repository/SKILL.md`](./.claude/skills/eccube-repository/SKILL.md) | `eccube-repository` |
+| FormType（フォーム） | [`.claude/skills/eccube-formtype/SKILL.md`](./.claude/skills/eccube-formtype/SKILL.md) | `eccube-formtype` |
+| セキュリティ（認証・認可・CSRF・IDOR） | [`.claude/skills/eccube-security/SKILL.md`](./.claude/skills/eccube-security/SKILL.md) | `eccube-security` |
+| Twig 拡張・テンプレート（XSS・上書き） | [`.claude/skills/eccube-twig-template/SKILL.md`](./.claude/skills/eccube-twig-template/SKILL.md) | `eccube-twig-template` |
+| イベント（Subscriber・テンプレート/Doctrine イベント） | [`.claude/skills/eccube-event-subscriber/SKILL.md`](./.claude/skills/eccube-event-subscriber/SKILL.md) | `eccube-event-subscriber` |
+| プラグイン（ライフサイクル・配置・拡張） | [`.claude/skills/eccube-plugin/SKILL.md`](./.claude/skills/eccube-plugin/SKILL.md) | `eccube-plugin` |
+| 受注処理（PurchaseFlow の Processor/Validator） | [`.claude/skills/eccube-purchase-flow/SKILL.md`](./.claude/skills/eccube-purchase-flow/SKILL.md) | `eccube-purchase-flow` |
+| メール（MailService・テンプレート・MailHistory） | [`.claude/skills/eccube-mail/SKILL.md`](./.claude/skills/eccube-mail/SKILL.md) | `eccube-mail` |
+| カスタマイズ（app/Customize での拡張・上書き・デコレーション） | [`.claude/skills/eccube-customize/SKILL.md`](./.claude/skills/eccube-customize/SKILL.md) | `eccube-customize` |
+| CSV 入出力（CsvImport/Export・CSV 定義） | [`.claude/skills/eccube-csv/SKILL.md`](./.claude/skills/eccube-csv/SKILL.md) | `eccube-csv` |
+| コンソールコマンド（Symfony Console・バッチ） | [`.claude/skills/eccube-command/SKILL.md`](./.claude/skills/eccube-command/SKILL.md) | `eccube-command` |
+| 責務分離レビュー（実装直後の自己チェック・全層） | [`.claude/skills/eccube-review-responsibility/SKILL.md`](./.claude/skills/eccube-review-responsibility/SKILL.md) | `eccube-review-responsibility` |
 
-> 規約は必要になった時点で `.claude/skills/<name>/SKILL.md` を 1 ファイル追加して足す（`.codex`/`.agents` は symlink で自動共有）。
+> 規約は必要になった時点で `.claude/skills/eccube-<name>/SKILL.md` を 1 ファイル追加して足す（`.codex`/`.agents` は symlink で自動共有）。
 > 各ファイルは frontmatter（`name` / `description`）＋本文の順で書き、本文は「対象／基本ルール／実装パターン／よくある間違い／実行・確認方法」の構成を推奨する（推測を載せず、必ず `src/Eccube/` の実コードで裏取りする）。
 
-**Skill 命名規則**: リポジトリ内のスキルのため `eccube-` 接頭辞は付けない。
-自動発火するレイヤ規約系はトピック名（`controller` / `service` / `phpunit`）、
-人が明示的に実行するアクション系は動詞前置（`review-responsibility`）とする。
+**Skill 命名規則**: **`eccube-` 接頭辞を必ず付ける**（`eccube-controller` / `eccube-service` / `eccube-phpunit`）。
+接頭辞の後ろは、自動発火するレイヤ規約系はトピック名、
+人が明示的に実行するアクション系は動詞前置（`eccube-review-responsibility`）とする。
+
+接頭辞を付ける理由は、**AI ツールの組み込みスラッシュコマンド・組み込み Skill との名前衝突を避ける**ため。
+`plugin` は Claude Code 組み込みの `/plugin`（プラグイン管理 UI）と完全一致し、
+本リポジトリを開いている間は組み込みコマンドへ到達できなくなっていた（#6978）。
+`entity` `mail` `service` `command` のような汎用語は将来同じ問題を起こすため、
+1 件ずつ例外対応せず全 Skill を `eccube-` 名前空間に入れる。接頭辞だけで衝突回避と
+ピッカーでの一括絞り込みは足りるので、`-dev` のような接尾辞は付けない。
+
+**「よくある間違い」を書き足すときの歯止め**: 検証やレビューで得た知見を追記していくと、
+このセクションは放置すると際限なく伸び、個別事例が一般則の顔で並ぶ。次の 3 点を守る。
+
+- **一般化テスト**: 固有のメソッド名・列名・テーブル名を消しても項目が成立するか確認する。
+  成立しないものは Skill に書かない（そのレイヤ全体に効く規約ではなく、特定の調査結果である）。
+  成立するなら例示を削って一般則だけ残す。固有名を残すと、無関係な箇所へ誤って適用される。
+- **上限**: 1 Skill あたり 10 項・1 項 120 字程度に収める。超えたら**追記ではなく既存項への統合か削除**を選ぶ。
+- **頻度順**: 踏まれやすいものを上に置く。読み手の注意は前方に効くため、頻度順でないリストは下位が実質死ぬ。
+
+この歯止めは**追記するときに適用する**。本規則の導入時点で上限を超えている Skill
+（項数: `eccube-mail` 11 / `eccube-purchase-flow` 12、字数: `eccube-controller` `eccube-csv` `eccube-e2e`
+`eccube-entity` `eccube-phpunit` `eccube-purchase-flow` `eccube-security` `eccube-twig-template`）は、
+次にその節へ手を入れるときに統合・短縮する。既存の超過を理由に新規追記の歯止めを緩めない。
 
 ## 主要エンティティ
 
@@ -270,7 +291,7 @@ frontmatter の `description` がトリガ条件で、該当レイヤを触る�
   受注金額はこれらの明細の合算で構成される。送料・手数料・値引きも `OrderItem` の 1 行として表現される点に注意。
 - **Shipping（出荷）** — 1 受注に複数あり得る出荷単位。送料は Shipping 単位で計算される。
 - **受注処理（PurchaseFlow）** — 在庫引当・採番・ポイント付与・値引きは
-  `src/Eccube/Service/PurchaseFlow/` のパイプラインが担う（Skill `service` 参照）。
+  `src/Eccube/Service/PurchaseFlow/` のパイプラインが担う（Skill `eccube-service` 参照）。
 - **受注ステータス（OrderStatus, `mtb_order_status`）** — `NEW`(新規受付/確定) / `PROCESSING`(購入処理中) /
   `PENDING`(決済処理中) / `PAID`(入金済) / `DELIVERED`(発送済) / `CANCEL`(取消) / `RETURNED`(返品) / `IN_PROGRESS`(対応中)。
   **注意: `PROCESSING`・`PENDING` は「確定前の仮受注」**。カート確定の入口で `OrderHelper` が受注を `PROCESSING` で作り、

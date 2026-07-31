@@ -22,7 +22,7 @@ jobs:
             database_server_version: 18
     steps:
       - name: Checkout
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v6
         with:
           persist-credentials: false
 
@@ -90,7 +90,10 @@ jobs:
         run: |
           echo "session.save_path=$PWD/var/sessions/test" > php.ini
           echo "memory_limit=1012M" >> php.ini
-          php -c php.ini -dpcov.enabled=1 vendor/bin/phpunit --exclude-group cache-clear --exclude-group cache-clear-install --exclude-group update-schema-doctrine --coverage-cobertura=coverage1.xml --testdox
+          # rector グループ (AttributeArgumentsOrderRectorTest) は rector 同梱の
+          # nikic/php-parser を読み込み、pcov 有効時に本体の nikic/php-parser と衝突して
+          # fatal (Cannot redeclare PhpParser\Node\Scalar\Float_) になるため除外する。
+          php -c php.ini -dpcov.enabled=1 vendor/bin/phpunit --exclude-group cache-clear --exclude-group cache-clear-install --exclude-group update-schema-doctrine --exclude-group rector --coverage-cobertura=coverage1.xml --testdox
       # GitHub のコードカバレッジ (Code Quality) にアップロードする。
       # - PHPUnit ステップの outcome でガードする: 上記の continue-on-error により
       #   テストがクラッシュしてもジョブは成功扱いのままになり、coverage1.xml が
@@ -98,7 +101,7 @@ jobs:
       # - fork からの PR ではアクション内部でスキップされる (GITHUB_TOKEN が read-only のため)。
       - name: Upload coverage to GitHub
         if: steps.phpunit.outcome == 'success'
-        uses: actions/upload-code-coverage@abb5995db9e0199b0e2bb9dbd136fce4cb1ec4d3  # v1.3.0
+        uses: actions/upload-code-coverage@1c15be36fc3733ba839b1dd643bd9556e4426dc1  # v1.4.1
         with:
           file: coverage1.xml
           language: PHP
@@ -116,7 +119,7 @@ jobs:
     needs: [ phpunit ]
     steps:
       - name: Checkout
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v6
         with:
           persist-credentials: false
       - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c  # v8
