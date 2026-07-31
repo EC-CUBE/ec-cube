@@ -8,7 +8,14 @@ require('ace-builds/src-min-noconflict/ext-language_tools');
 // mode / theme / worker は html/bundle/ace に静的配置している。
 // サブディレクトリに設置した場合でも解決できるよう、このバンドル自身の URL を基準にする。
 const bundleSrc = document.currentScript ? document.currentScript.src : window.location.href;
-window.ace.config.set('basePath', new URL('ace/', bundleSrc).href);
+const acePath = new URL('ace/', bundleSrc).href;
+// ace は読み込み時に自身の置き場 (= このバンドルの位置) を basePath だけでなく
+// modePath / themePath / workerPath にも入れる。config.moduleUrl() は
+// options[component + 'Path'] を basePath より優先するため、basePath だけ上書きしても
+// mode / theme / worker は html/bundle 直下を見て 404 になる。4 つとも設定する。
+// snippetsPath は設定しないこと: 設定すると moduleUrl() が component と区切り文字を落とし、
+// ace/snippets/foo が ace/foo.js に解決されて逆に壊れる (未設定なら basePath へフォールバックする)。
+['basePath', 'modePath', 'themePath', 'workerPath'].forEach((key) => window.ace.config.set(key, acePath));
 
 require('jquery.qrcode');
 
