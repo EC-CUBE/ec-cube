@@ -18,6 +18,10 @@ updates:
       prefix-development: "chore(deps-dev)"
     allow:
       - dependency-type: "all"
+    ignore:
+      # Symfony のメジャーバージョンアップは除外
+      - dependency-name: "symfony/*"
+        update-types: [ "version-update:semver-major" ]
     # 所属グループは記載順ではなくパターンの具体性 (specificity) スコアで決まる。
     # dependabot-core の PatternSpecificityCalculator が算出し、スコアが高い方が勝つ。
     #   patterns 未指定 = 500 / "doctrine/*" = 95 / "symfony/*" = 94 / "*" = 1
