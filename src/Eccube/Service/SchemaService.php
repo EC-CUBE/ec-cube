@@ -71,7 +71,7 @@ class SchemaService
 
             $drivers = $driver->getDrivers();
             foreach ($drivers as $namespace => $oldDriver) {
-                if ('Eccube\Entity' === $namespace || preg_match('/^Plugin\\\\.*\\\\Entity$/', $namespace)) {
+                if ('Eccube\Entity' === $namespace || 'Customize\Entity' === $namespace || preg_match('/^Plugin\\\\.*\\\\Entity$/', $namespace)) {
                     // Setup to AttributeDriver
                     if (!$oldDriver instanceof AttributeDriver) {
                         continue;

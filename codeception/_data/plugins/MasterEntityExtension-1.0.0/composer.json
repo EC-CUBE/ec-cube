@@ -1,0 +1,1 @@
+{"name":"ec-cube/masterentityextension","description":"エンティティ拡張機能(Master)のサンプル","version":"1.0.0","type":"eccube-plugin","require":{"ec-cube/plugin-installer":"^2.0@dev"},"extra":{"code":"MasterEntityExtension","id":10000}}

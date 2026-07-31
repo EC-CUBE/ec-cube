@@ -38,11 +38,8 @@ class MailHistory extends AbstractEntity implements \Stringable
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     private ?int $id = null;
 
-    /**
-     * @var \DateTime|null
-     */
     #[ORM\Column(name: 'send_date', type: Types::DATETIMETZ_MUTABLE, nullable: true)]
-    private $send_date;
+    private ?\DateTime $send_date = null;
 
     #[ORM\Column(name: 'mail_subject', type: Types::STRING, length: 255, nullable: true)]
     private ?string $mail_subject = null;
