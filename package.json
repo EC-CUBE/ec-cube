@@ -33,7 +33,7 @@
     "ace-builds": "^1.32.3",
     "bootstrap": "^5.3.8",
     "chart.js": "^4.5.1",
-    "css-loader": "^7.1.2",
+    "css-loader": "^7.1.4",
     "file-loader": "^6.2.0",
     "filepond": "^4.30.6",
     "filepond-plugin-file-validate-size": "^2.2.8",
@@ -49,10 +49,10 @@
     "url-loader": "^4.1.1"
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.23",
+    "autoprefixer": "^10.5.4",
     "browser-sync": "^3.0.4",
     "cross-env": "^7.0.2",
-    "gulp": "^5.0.0",
+    "gulp": "^5.0.1",
     "gulp-clean-css": "^4.2.0",
     "gulp-notify": "^4.0.0",
     "gulp-plumber": "^1.2.1",
@@ -65,8 +65,8 @@
     "postcss-import": "^16.1.1",
     "postcss-sort-media-queries": "^5.2.0",
     "process": "^0.11.10",
-    "sass": "^1.93.3",
-    "webpack": "^5.107.2",
+    "sass": "^1.102.0",
+    "webpack": "^5.109.2",
     "webpack-cli": "^5.1.4",
     "webpack-stream": "^7.0.0"
   }
