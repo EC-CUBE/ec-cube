@@ -40,6 +40,7 @@ jobs:
           - admin-contents
           - admin-basicinfo
           - admin-system
+          - admin-store
           - admin-refund-request
           - front-top
           - front-product

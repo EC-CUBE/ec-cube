@@ -405,6 +405,7 @@ front.shopping.nonmember: お客様情報の入力
 front.shopping.shipping_edit_title_nomember: 商品購入/お届け先の変更
 front.shopping.shipping_edit_header_customer: お届け先の追加
 front.shopping.shipping_edit_header_nonmember: お届け先の変更
+front.shopping.shipping_customer_address_edit_title: お届け先の変更
 front.shopping.error: 購入エラー
 front.shopping.order_error: 購入処理でエラーが発生しました。
 front.shopping.system_error: 購入処理で予期しないエラーが発生しました。恐れ入りますがお問い合わせページよりご連絡ください。
@@ -1483,7 +1484,10 @@ admin.setting.system.security.ip_limit_invalid_ipv4: "%ip%はIPv4アドレスで
 admin.setting.system.security.ip_limit_invalid_ip_and_submask: "%ip%はIPv4/ビットマスクの形式ではありません。"
 admin.setting.system.security.ip_limit_invalid_https: "httpの場合には設定できません。"
 admin.setting.system.security.admin_url_warning: 管理画面URLは、セキュリティのため推測されにくいものを設定してください。
-admin.setting.system.security.not_found_env_file: .envファイルが見つかりません。.envを利用していない場合はセキュリティ設定を管理画面から変更できません。
+admin.system.env.ineffective.not_found: '.env ファイルが存在しないため、この設定は管理画面から変更できません。サーバーの環境変数を直接設定してください。'
+admin.system.env.ineffective.not_writable: '.env ファイルに書き込み権限がないため、この設定は管理画面から変更できません。.env ファイルの書き込み権限を確認してください。'
+admin.system.env.ineffective.local_php: '.env.local.php が存在するため、.env への変更は反映されず、管理画面からは変更できません。サーバー側で .env を更新してから composer dump-env を再実行するか、.env.local.php を削除して管理画面からの変更を再開してください。'
+admin.system.env.ineffective.overridden: 'この設定の環境変数（%keys%）が OS のプロセス環境変数またはカスケードファイル（.env.local 等）で上書きされているため、.env への変更は反映されません。サーバーの環境変数を直接変更してください。'
 admin.setting.system.security.trusted_hosts: 信頼できるホスト名
 admin.setting.system.security.trusted_hosts_sample: ^example\.com$,^example\.org$
 admin.setting.system.security.trusted_hosts_description: |
@@ -1570,7 +1574,6 @@ admin.store.template.delete_error__current_template: 設定中のテンプレー
 admin.store.template.template_code_already_exists: テンプレートコードは既に利用されています
 admin.store.template.upload_failed: アップロードに失敗しました
 admin.store.template.invalid_upload_file: ファイルの拡張子に誤りがあります
-admin.store.template.env_override_warning: "ECCUBE_TEMPLATE_CODE が環境変数として設定されているため、.env への変更は反映されません。テンプレートを切り替えるには環境変数の ECCUBE_TEMPLATE_CODE を変更してください。"
 admin.store.plugin: プラグイン
 admin.store.plugin.plugin_owners_install: プラグインを探す
 admin.store.plugin.plugin_list: プラグイン一覧
@@ -1596,6 +1599,10 @@ admin.store.setting.api_key_tooltip: 購入したプラグイン等のインス�
 admin.store.setting.get_api_key: 認証キー新規発行
 admin.store.setting.get_api_key_info: 認証キーの新規発行と登録を行います。
 admin.store.setting.get_api_key_modal_info: 新しい認証キーを発行します。既に認証キーがある場合は、発行せずに既存のキーを設定してください。
+admin.store.setting.get_api_key_confirm_title: ご確認ください
+admin.store.setting.get_api_key_confirm_info: オーナーズストアで既に認証キーを発行していませんか？認証キーの複数持ちを防ぐため、新規発行の前に一度ご確認ください。
+admin.store.setting.get_api_key_confirm_link: オーナーズストアで確認する
+admin.store.setting.get_api_key_confirm_proceed: 発行手続きへ進む
 admin.store.setting.captcha_message: 画像に表示されている文字を入力してください。
 admin.store.setting.php_path_setting: PHPパスの設定
 admin.store.setting.php_path: PHPパス

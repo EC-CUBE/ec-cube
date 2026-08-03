@@ -18,6 +18,7 @@ use Eccube\Entity\Master\DeviceType;
 use Eccube\Form\Type\Admin\TemplateType;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\TemplateRepository;
+use Eccube\Service\EnvFileService;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Symfony\Bridge\Twig\Attribute\Template;
@@ -34,9 +35,14 @@ use Symfony\Component\Routing\Attribute\Route;
 class TemplateController extends AbstractController
 {
     /**
+     * この画面が .env へ書き込む環境変数キー（OS 環境変数によるオーバーライド判定に使用）.
+     */
+    private const ENV_KEYS = ['ECCUBE_TEMPLATE_CODE'];
+
+    /**
      * TemplateController constructor.
      */
-    public function __construct(protected TemplateRepository $templateRepository, protected DeviceTypeRepository $deviceTypeRepository, private readonly CacheUtil $cacheUtil)
+    public function __construct(protected TemplateRepository $templateRepository, protected DeviceTypeRepository $deviceTypeRepository, private readonly CacheUtil $cacheUtil, private readonly EnvFileService $envFileService)
     {
     }
 
@@ -59,10 +65,28 @@ class TemplateController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // .env への書き込みが反映されない状況では保存を拒否する
+            //   - .env が存在しない / 書き込み不可
+            //   - .env.local.php（dump-env の最適化済みスナップショット）が .env より優先される
+            //   - ECCUBE_TEMPLATE_CODE が OS 環境変数やカスケードファイルで .env を上書きしている
+            $ineffectiveReasons = $this->envFileService->getIneffectiveReasons();
+            $overriddenKeys = $this->envFileService->getOverriddenKeys(self::ENV_KEYS);
+            if ([] !== $ineffectiveReasons || [] !== $overriddenKeys) {
+                $this->addError('admin.common.save_error', 'admin');
+                foreach ($ineffectiveReasons as $reason) {
+                    $this->addError('admin.system.env.ineffective.'.$reason, 'admin');
+                }
+                if ([] !== $overriddenKeys) {
+                    $this->addError(trans('admin.system.env.ineffective.overridden', ['%keys%' => implode(', ', $overriddenKeys)]), 'admin');
+                }
+
+                return $this->redirectToRoute('admin_store_template');
+            }
+
             $Template = $this->templateRepository->find($form['selected']->getData());
 
             $envFile = $this->getParameter('kernel.project_dir').'/.env';
-            $env = file_exists($envFile) ? file_get_contents($envFile) : '';
+            $env = file_get_contents($envFile);
 
             $env = StringUtil::replaceOrAddEnv($env, [
                 'ECCUBE_TEMPLATE_CODE' => $Template->getCode(),
@@ -72,25 +96,28 @@ class TemplateController extends AbstractController
 
             $this->addSuccess('admin.common.save_complete', 'admin');
 
-            // 次のいずれかの場合、.env への書き込みが起動時のロードで反映されない:
-            //   1. ECCUBE_TEMPLATE_CODE がプロセス環境変数として設定されている（Docker などで明示的に設定した場合）。
-            //      bootEnv は OS 環境変数を上書きしないため .env の値が使われない。
-            //   2. .env.local.php（dump-env の最適化済みスナップショット）が存在する。
-            //      bootEnv は .env より .env.local.php を優先するため、再度 `composer symfony:dump-env` を
-            //      実行するまで .env の変更が反映されない。
-            $envLocalPhp = $this->getParameter('kernel.project_dir').'/.env.local.php';
-            if (false !== getenv('ECCUBE_TEMPLATE_CODE') || file_exists($envLocalPhp)) {
-                $this->addWarning('admin.store.template.env_override_warning', 'admin');
-            }
-
             $this->cacheUtil->clearCache();
 
             return $this->redirectToRoute('admin_store_template');
         }
 
+        // .env への書き込みが反映されない状況では警告を出し、登録ボタンを無効化する。
+        $ineffectiveReasons = $this->envFileService->getIneffectiveReasons();
+        foreach ($ineffectiveReasons as $reason) {
+            $this->addWarning('admin.system.env.ineffective.'.$reason, 'admin');
+        }
+
+        // 対象キー（ECCUBE_TEMPLATE_CODE）が上書きされている場合は名指しで警告する。
+        $overriddenKeys = $this->envFileService->getOverriddenKeys(self::ENV_KEYS);
+        if ([] !== $overriddenKeys) {
+            $this->addWarning(trans('admin.system.env.ineffective.overridden', ['%keys%' => implode(', ', $overriddenKeys)]), 'admin');
+        }
+
         return [
             'form' => $form->createView(),
             'Templates' => $Templates,
+            // この画面が扱うキーは 1 つのみのため, 上書きされていれば実質全滅として無効化する。
+            'envWritable' => [] === $ineffectiveReasons && [] === $overriddenKeys,
         ];
     }
 
@@ -98,7 +125,7 @@ class TemplateController extends AbstractController
      * テンプレート一覧からのダウンロード
      */
     #[Route(path: '/%eccube_admin_route%/store/template/{id}/download', name: 'admin_store_template_download', requirements: ['id' => '\d+'], methods: ['GET'])]
-    public function download(Request $request, \Eccube\Entity\Template $Template): BinaryFileResponse
+    public function download(\Eccube\Entity\Template $Template): BinaryFileResponse
     {
         // 該当テンプレートのディレクトリ
         $templateCode = $Template->getCode();
@@ -155,7 +182,7 @@ class TemplateController extends AbstractController
     }
 
     #[Route(path: '/%eccube_admin_route%/store/template/{id}/delete', name: 'admin_store_template_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
-    public function delete(Request $request, \Eccube\Entity\Template $Template): RedirectResponse
+    public function delete(\Eccube\Entity\Template $Template): RedirectResponse
     {
         $this->isTokenValid();
 

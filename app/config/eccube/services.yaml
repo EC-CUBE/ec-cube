@@ -58,6 +58,10 @@ services:
         lazy: true
         public: true
 
+    Eccube\Service\EnvFileService:
+        arguments:
+            $projectDir: '%kernel.project_dir%'
+
     Eccube\Service\Composer\ComposerProcessService:
         lazy: true
 

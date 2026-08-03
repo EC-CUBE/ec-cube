@@ -14929,6 +14929,11 @@ Styleguide 16.2.6
   color: #33A8D0;
 }
 
+/**
+メディアクエリ
+SP フォーストで記述する。
+Twitter Bootstrap デフォルト準拠
+ */
 /*
 住所一覧
 
@@ -14986,6 +14991,34 @@ Styleguide 17.1
   text-align: right;
   top: 27px;
   padding-right: 10px;
+}
+
+/*
+住所一覧(お届け先選択)
+
+ラジオボタンでお届け先を選択する一覧です。ご購入手続きの「お届け先の指定」で使用します。
+操作(変更・削除)を持たない行(会員本人の住所)でも列位置が揃うように、セル幅を固定します。
+
+ex [ご購入手続き お届け先の指定](http://demo3.ec-cube.net/shopping/shipping/1)
+
+Styleguide 17.1.1
+
+*/
+.ec-addressList--selectable .ec-addressList__remove {
+  display: table-cell;
+  width: 1%;
+  white-space: nowrap;
+}
+.ec-addressList--selectable .ec-addressList__address {
+  width: auto;
+}
+.ec-addressList--selectable .ec-addressList__action {
+  display: table-cell;
+  width: 1%;
+  top: 0;
+}
+.ec-addressList--selectable .ec-addressList__action .ec-inlineBtn + .ec-inlineBtn {
+  margin-left: 4px;
 }
 
 /**
@@ -18363,6 +18396,9 @@ Styleguide 22.1
   }
   .ec-historyListHeader .ec-historyListHeader__action a {
     font-size: 14px;
+  }
+  .ec-addressList--selectable .ec-addressList__action {
+    white-space: nowrap;
   }
   .ec-customerRole .ec-blockBtn--action {
     margin-bottom: 16px;
