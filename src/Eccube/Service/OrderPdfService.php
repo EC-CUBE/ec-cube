@@ -50,6 +50,25 @@ class OrderPdfService extends Fpdi
     /** FONT 明朝 */
     public const FONT_SJIS = 'kozminproregular';
 
+    /** ロゴ画像の描画位置(x, y)と幅(mm). 高さは画像の縦横比で決まる */
+    public const LOGO_X = 124.0;
+    public const LOGO_Y = 46.0;
+    public const LOGO_WIDTH = 40.0;
+
+    /** 店舗情報欄の幅(mm) */
+    public const SHOP_INFO_WIDTH = 70.0;
+    /** 店舗情報欄の行送り(mm) */
+    public const SHOP_INFO_LINE_HEIGHT = 3.3;
+    /**
+     * 店舗情報欄の下限(実座標 mm).
+     *
+     * 合計金額は renderOrderData() が y=95.5 を基準に高さ 7mm の余白セルを挟んでから描画するため、
+     * 実際に金額が載るのは y=102.5 以降. その手前までを店舗情報欄が使える範囲とする.
+     */
+    public const SHOP_INFO_BOTTOM = 101.5;
+    /** 「店舗からのメッセージ」のフォントサイズ(pt)と行送り(mm)の候補. 全文が収まる最初の組み合わせを使う */
+    public const SHOP_MESSAGE_FONT_STEPS = [[8.0, 3.3], [7.0, 2.9], [6.0, 2.5]];
+
     // ====================================
     // 変数宣言
     // ====================================
@@ -292,31 +311,31 @@ class OrderPdfService extends Fpdi
             $logoFile = $this->eccubeConfig->get('eccube_html_admin_dir').'/assets/pdf/logo.png';
         }
 
-        $this->Image($logoFile, 124, 46, 40);
-
         // 店舗情報は基準の x=125 から、上から順に「表示トグルが ON かつ 値が非空」の行だけを詰めて描画する。
         // 非表示・空値の行は座標を空けず後続の行が繰り上がる（#6197）。
         // 表示/非表示は基本設定の order_pdf_visible_* トグルで制御する。
+        // プロパティ名に反して $baseInfoRepository の実体は BaseInfo エンティティ（コンストラクタで get() 済み）
         $BaseInfo = $this->baseInfoRepository;
         $x = 125;
-        $y = 58.0;
-        $lineHeight = 3.3;
+        $lineHeight = self::SHOP_INFO_LINE_HEIGHT;
+        // ロゴに重ならない位置から開始する（差し替えロゴが縦長でも重ならないよう実寸から求める）
+        $y = $this->getShopInfoStartY($logoFile, $lineHeight);
 
         // 店名（太字）
         if ($BaseInfo->isOrderPdfVisibleShopName() && !empty($BaseInfo->getShopName())) {
-            $this->lfText($x, (int) round($y), $BaseInfo->getShopName(), 8, 'B');
+            $this->lfText($x, $y, $BaseInfo->getShopName(), 8, 'B');
             $y += $lineHeight;
         }
 
         // 店名（カナ）
         if ($BaseInfo->isOrderPdfVisibleShopKana() && !empty($BaseInfo->getShopKana())) {
-            $this->lfText($x, (int) round($y), $BaseInfo->getShopKana(), 8);
+            $this->lfText($x, $y, $BaseInfo->getShopKana(), 8);
             $y += $lineHeight;
         }
 
         // 店名（英語表記）
         if ($BaseInfo->isOrderPdfVisibleShopNameEng() && !empty($BaseInfo->getShopNameEng())) {
-            $this->lfText($x, (int) round($y), $BaseInfo->getShopNameEng(), 8);
+            $this->lfText($x, $y, $BaseInfo->getShopNameEng(), 8);
             $y += $lineHeight;
         }
 
@@ -325,53 +344,53 @@ class OrderPdfService extends Fpdi
             $postalCode = $BaseInfo->getPostalCode();
             if (!empty($postalCode)) {
                 // 郵便マーク(〒)分だけ左に寄せる
-                $this->lfText($x - 4, (int) round($y), "\u{3012}".' '.mb_substr($postalCode, 0, 3).' - '.mb_substr($postalCode, 3, 4), 8);
+                $this->lfText($x - 4, $y, "\u{3012}".' '.mb_substr($postalCode, 0, 3).' - '.mb_substr($postalCode, 3, 4), 8);
                 $y += $lineHeight;
             }
             $address1 = $BaseInfo->getPref().$BaseInfo->getAddr01();
             if (!empty($address1)) {
-                $this->lfText($x, (int) round($y), $address1, 8);
+                $this->lfText($x, $y, $address1, 8);
                 $y += $lineHeight;
             }
             if (!empty($BaseInfo->getAddr02())) {
-                $this->lfText($x, (int) round($y), $BaseInfo->getAddr02(), 8);
+                $this->lfText($x, $y, $BaseInfo->getAddr02(), 8);
                 $y += $lineHeight;
             }
         }
 
         // 会社名
         if ($BaseInfo->isOrderPdfVisibleCompanyName() && !empty($BaseInfo->getCompanyName())) {
-            $this->lfText($x, (int) round($y), $BaseInfo->getCompanyName(), 8);
+            $this->lfText($x, $y, $BaseInfo->getCompanyName(), 8);
             $y += $lineHeight;
         }
 
         // 会社名（カナ）
         if ($BaseInfo->isOrderPdfVisibleCompanyKana() && !empty($BaseInfo->getCompanyKana())) {
-            $this->lfText($x, (int) round($y), $BaseInfo->getCompanyKana(), 8);
+            $this->lfText($x, $y, $BaseInfo->getCompanyKana(), 8);
             $y += $lineHeight;
         }
 
         // 電話番号
         if ($BaseInfo->isOrderPdfVisiblePhoneNumber() && !empty($BaseInfo->getPhoneNumber())) {
-            $this->lfText($x, (int) round($y), 'TEL: '.$BaseInfo->getPhoneNumber(), 8);
+            $this->lfText($x, $y, 'TEL: '.$BaseInfo->getPhoneNumber(), 8);
             $y += $lineHeight;
         }
 
         // 店舗営業時間
         if ($BaseInfo->isOrderPdfVisibleBusinessHour() && !empty($BaseInfo->getBusinessHour())) {
-            $this->lfText($x, (int) round($y), $BaseInfo->getBusinessHour(), 8);
+            $this->lfText($x, $y, $BaseInfo->getBusinessHour(), 8);
             $y += $lineHeight;
         }
 
         // メールアドレス
         if ($BaseInfo->isOrderPdfVisibleEmail() && strlen((string) $BaseInfo->getEmail01()) > 0) {
-            $this->lfText($x, (int) round($y), 'Email: '.$BaseInfo->getEmail01(), 8);
+            $this->lfText($x, $y, 'Email: '.$BaseInfo->getEmail01(), 8);
             $y += $lineHeight;
         }
 
         // インボイス登録番号
         if ($BaseInfo->isOrderPdfVisibleInvoiceNumber() && !empty($BaseInfo->getInvoiceRegistrationNumber())) {
-            $this->lfText($x, (int) round($y), '登録番号: '.$BaseInfo->getInvoiceRegistrationNumber(), 8);
+            $this->lfText($x, $y, '登録番号: '.$BaseInfo->getInvoiceRegistrationNumber(), 8);
             $y += $lineHeight;
         }
 
@@ -379,27 +398,81 @@ class OrderPdfService extends Fpdi
         if ($BaseInfo->isOrderPdfVisibleMessage() && !empty($BaseInfo->getMessage())) {
             $this->renderShopMessage($x, $y, $BaseInfo->getMessage());
         }
+
+        // ロゴは店舗情報の描画後に重ねる（PDFは後から描いた要素が上になるため、元の重なり順を維持する）
+        $this->Image($logoFile, self::LOGO_X, self::LOGO_Y, self::LOGO_WIDTH);
+    }
+
+    /**
+     * 店舗情報欄の描画開始位置（lfText の y 座標）を求める.
+     *
+     * ロゴは幅のみ指定して描画するため高さは画像の縦横比で決まる.
+     * 差し替えロゴが縦長でも文字と重ならないよう、実寸から下端を求めて 1 行分下げた位置を返す.
+     */
+    protected function getShopInfoStartY(string $logoFile, float $lineHeight): float
+    {
+        $logoBottom = self::LOGO_Y;
+        $imageSize = @getimagesize($logoFile);
+        if (false !== $imageSize && $imageSize[0] > 0) {
+            $logoBottom += self::LOGO_WIDTH * $imageSize[1] / $imageSize[0];
+        }
+
+        // lfText は baseOffsetY 分ずらして描画するため、その分を戻して紙面上の位置に合わせる
+        return $logoBottom + $lineHeight - $this->baseOffsetY;
     }
 
     /**
      * 店舗情報欄に「店舗からのメッセージ」を折り返して描画する.
      *
-     * 合計金額ボックス（y≈95.5）を侵食しないよう、右カラムの残り高さに収める.
+     * 合計金額欄（実座標 y=95.5 以降）を侵食しないよう、右カラムの残り高さに収める.
+     * 既定サイズで全文が入らない場合は、入る範囲でフォントを縮小する.
      */
-    protected function renderShopMessage(int $x, float $y, string $message): void
+    protected function renderShopMessage(int|float $x, float $y, string $message): void
     {
-        // 合計金額ボックス（y≈95.5）の直前までを上限高さとする（侵食させない）
-        $maxHeight = 94.0 - $y;
+        // lfText と同じオフセットを掛けた実座標を基準に、残り高さを求める
+        $maxHeight = self::SHOP_INFO_BOTTOM - ($y + $this->baseOffsetY);
         if ($maxHeight <= 0) {
             return;
         }
 
         // 後続の描画に影響しないよう、フォント状態を退避・復元する（lfText と同じ扱い）
         $this->backupFont();
-        $this->SetFont(self::FONT_SJIS, '', 8);
-        // lfText と同じオフセットで位置を合わせ、幅・最大高さを指定して折り返す
-        $this->MultiCell(70, 3.3, $message, 0, 'L', false, 1, $x + $this->baseOffsetX, $y + $this->baseOffsetY, true, 0, false, true, $maxHeight, 'T');
+
+        [$fontSize, $lineHeight] = $this->fitShopMessageFont($message, $maxHeight);
+        $this->SetFont(self::FONT_SJIS, '', $fontSize);
+
+        // MultiCell の行送りは第2引数ではなく「フォントサイズ × cell_height_ratio」で決まるため、
+        // 指定の行送りになるよう比率を一時的に変更する（既定の 1.25 では 8pt で 3.53mm になる）
+        $bakCellHeightRatio = $this->getCellHeightRatio();
+        $this->setCellHeightRatio($lineHeight / $this->getFontSize());
+
+        // lfText と同じオフセットで位置を合わせ、幅・最大高さを指定して折り返す。
+        // autopadding は無効にして、セル余白の分だけ描画高さが膨らまないようにする
+        $this->MultiCell(self::SHOP_INFO_WIDTH, $lineHeight, $message, 0, 'L', false, 1, $x + $this->baseOffsetX, $y + $this->baseOffsetY, true, 0, false, false, $maxHeight, 'T');
+
+        $this->setCellHeightRatio($bakCellHeightRatio);
         $this->restoreFont();
+    }
+
+    /**
+     * 「店舗からのメッセージ」が指定高さに収まるフォントサイズと行送りを求める.
+     *
+     * 縮小しても全文が入らない場合は既定サイズを返す（MultiCell 側で末尾が省略される）.
+     * 読めない大きさまで縮めたうえに省略もされる、という状態を避けるための判断.
+     *
+     * @return array{0: float, 1: float} フォントサイズ(pt)と行送り(mm)
+     */
+    protected function fitShopMessageFont(string $message, float $maxHeight): array
+    {
+        foreach (self::SHOP_MESSAGE_FONT_STEPS as [$fontSize, $lineHeight]) {
+            $this->SetFont(self::FONT_SJIS, '', $fontSize);
+            // 描画時と同じ条件（autopadding 無効）で行数を数える
+            if ($this->getNumLines($message, self::SHOP_INFO_WIDTH, false, false) * $lineHeight <= $maxHeight) {
+                return [$fontSize, $lineHeight];
+            }
+        }
+
+        return self::SHOP_MESSAGE_FONT_STEPS[0];
     }
 
     /**
@@ -695,13 +768,13 @@ class OrderPdfService extends Fpdi
     /**
      * PDFへのテキスト書き込み
      *
-     * @param int $x X座標
-     * @param int $y Y座標
+     * @param int|float $x X座標
+     * @param int|float $y Y座標(行送りに小数を使うため float も受ける)
      * @param string|null $text テキスト
      * @param int $size フォントサイズ
      * @param string $style フォントスタイル
      */
-    protected function lfText(int $x, int $y, ?string $text, int $size = 0, string $style = ''): void
+    protected function lfText(int|float $x, int|float $y, ?string $text, int $size = 0, string $style = ''): void
     {
         // 退避
         $bakFontStyle = $this->FontStyle;
