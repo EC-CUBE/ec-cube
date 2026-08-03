@@ -220,7 +220,7 @@ $refundTestEmail = 'refund-test@test.test';
 $refundCustomer = $entityManager->getRepository(Customer::class)->findOneBy(['email' => $refundTestEmail]);
 if (!$refundCustomer) {
     $refundCustomer = $generator->createCustomer($refundTestEmail);
-    $Status = $entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::ACTIVE);
+    $Status = $entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::REGULAR);
     $refundCustomer->setStatus($Status);
     $entityManager->flush($refundCustomer);
     echo "  Created refund test customer: $refundTestEmail\n";
