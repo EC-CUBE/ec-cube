@@ -1326,7 +1326,7 @@ test.describe('Admin Basic Info (EA07)', () => {
     await expect(page.locator('#page_admin_setting_shop_calendar .alert-success')).toContainText('保存しました');
   });
 
-  test('basicinfo_納品書PDFの出力項目トグル - EA0701-UC01-T15', async ({ page }) => {
+  test('basicinfo_納品書PDFの出力項目トグル - EA0701-UC01-T18', async ({ page }) => {
     // dev 環境の Symfony デバッグツールバーが送信ボタンを覆うことがあるため非表示にする
     // (CI の test 環境ではツールバー自体が存在しないため no-op)。
     const hideDebugToolbar = () => page.addStyleTag({
@@ -1342,7 +1342,7 @@ test.describe('Admin Basic Info (EA07)', () => {
     }
     await hideDebugToolbar();
 
-    // 納品書PDFの出力項目セクションが表示されていること
+    // 納品書PDFの出力トグルが各入力欄の横（店舗情報／税設定カード）に表示されていること
     const hourCheckbox = page.locator('#shop_master_order_pdf_visible_business_hour');
     const invoiceCheckbox = page.locator('#shop_master_order_pdf_visible_invoice_number');
     await expect(hourCheckbox).toBeAttached();

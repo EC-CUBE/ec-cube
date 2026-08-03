@@ -183,15 +183,13 @@ final class ShopMasterTypeTest extends AbstractTypeTestCase
             ->getForm();
 
         $formData = $this->formData;
-        // 既定 OFF の店舗営業時間・メッセージを ON にし, 既定 ON の店名はキーを送らず OFF にする
+        // 既定 OFF の店舗営業時間を ON にし, 既定 ON の店名はキーを送らず OFF にする
         $formData['order_pdf_visible_business_hour'] = '1';
-        $formData['order_pdf_visible_message'] = '1';
 
         $form->submit($formData);
 
         $this->assertTrue($form->isValid());
         $this->assertFalse($BaseInfo->isOrderPdfVisibleShopName());
         $this->assertTrue($BaseInfo->isOrderPdfVisibleBusinessHour());
-        $this->assertTrue($BaseInfo->isOrderPdfVisibleMessage());
     }
 }

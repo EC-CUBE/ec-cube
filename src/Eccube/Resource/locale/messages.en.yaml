@@ -1231,19 +1231,7 @@ admin.setting.shop.shop.agent_commerce: "Agent Commerce"
 admin.setting.shop.shop.agent_commerce.description: "Enable checkout via AI agents (ChatGPT / Gemini, etc.). Discovery and catalog are always public; only checkout is controlled here. Checkout is not yet available in Japan, so normally leave these disabled."
 admin.setting.shop.shop.agent_commerce.acp_checkout_enabled: "Enable ACP checkout"
 admin.setting.shop.shop.agent_commerce.ucp_checkout_enabled: "Enable UCP checkout"
-admin.setting.shop.shop.order_pdf: "Delivery slip PDF items"
-admin.setting.shop.shop.order_pdf.description: "Choose the items to print in the shop information area of the delivery slip PDF. Only the items turned ON are printed, using the values entered in the basic settings (items with an empty value are not printed)."
-admin.setting.shop.shop.order_pdf.shop_name: "Shop name"
-admin.setting.shop.shop.order_pdf.shop_kana: "Shop name (kana)"
-admin.setting.shop.shop.order_pdf.shop_name_eng: "Shop name (English)"
-admin.setting.shop.shop.order_pdf.address: "Postal code / address"
-admin.setting.shop.shop.order_pdf.company_name: "Company name"
-admin.setting.shop.shop.order_pdf.company_kana: "Company name (kana)"
-admin.setting.shop.shop.order_pdf.phone_number: "Phone number"
-admin.setting.shop.shop.order_pdf.business_hour: "Business hours"
-admin.setting.shop.shop.order_pdf.email: "Email address"
-admin.setting.shop.shop.order_pdf.invoice_number: "Invoice registration number"
-admin.setting.shop.shop.order_pdf.message: "Message from shop"
+admin.setting.shop.shop.order_pdf: "Delivery slip PDF"
 
 #------------------------------------------------------------------------------------
 # Settings：Store Settings：Trade Law Settings
@@ -1804,6 +1792,7 @@ tooltip.setting.shop.shop.email_reply_to: This is the email address by which you
 tooltip.setting.shop.shop.email_return_path: This is the email address by which you will receive a notice when a transmission error occurs in sending emails from your store.
 tooltip.setting.shop.shop.good_traded: Brief descriptions of your products.
 tooltip.setting.shop.shop.message: This will be displayed on storefront. The placement varies according to the design templates.
+tooltip.setting.shop.shop.order_pdf: Items printed in the shop information area of the delivery slip PDF. Among the items turned ON, only those with a value entered are printed.
 tooltip.setting.shop.shop.option_delivery_fee_free_amount: Shipping charge will be waived if a customer purchases more than this amount.
 tooltip.setting.shop.shop.option_delivery_fee_free_quantity: Shipping charge will be waived if a customer purchases more than this quantity.
 tooltip.setting.shop.shop.option_delivery_fee_by_product: If turned on, you can set shipping charge per product.

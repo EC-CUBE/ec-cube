@@ -143,7 +143,7 @@ final class ShopControllerTest extends AbstractAdminWebTestCase
     public function testSubmitPersistsOrderPdfVisibleOptions(bool $checked, bool $expected): void
     {
         $formData = $this->createFormData();
-        foreach (['order_pdf_visible_shop_name', 'order_pdf_visible_message'] as $key) {
+        foreach (['order_pdf_visible_shop_name', 'order_pdf_visible_business_hour'] as $key) {
             if ($checked) {
                 $formData[$key] = '1';
             } else {
@@ -159,9 +159,9 @@ final class ShopControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->clear();
         $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->find(1);
         $this->assertInstanceOf(BaseInfo::class, $BaseInfo);
-        // 既定 ON の店名, 既定 OFF のメッセージ, いずれも送信内容どおりに保存される
+        // 既定 ON の店名, 既定 OFF の店舗営業時間, いずれも送信内容どおりに保存される
         $this->assertSame($expected, $BaseInfo->isOrderPdfVisibleShopName());
-        $this->assertSame($expected, $BaseInfo->isOrderPdfVisibleMessage());
+        $this->assertSame($expected, $BaseInfo->isOrderPdfVisibleBusinessHour());
     }
 
     public static function dataOrderPdfVisibleProvider(): \Iterator

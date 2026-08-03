@@ -176,9 +176,6 @@ class BaseInfo extends AbstractEntity
     #[ORM\Column(name: 'order_pdf_visible_shop_name', type: Types::BOOLEAN, options: ['default' => true])]
     private bool $order_pdf_visible_shop_name = true;
 
-    #[ORM\Column(name: 'order_pdf_visible_shop_kana', type: Types::BOOLEAN, options: ['default' => false])]
-    private bool $order_pdf_visible_shop_kana = false;
-
     #[ORM\Column(name: 'order_pdf_visible_shop_name_eng', type: Types::BOOLEAN, options: ['default' => false])]
     private bool $order_pdf_visible_shop_name_eng = false;
 
@@ -187,9 +184,6 @@ class BaseInfo extends AbstractEntity
 
     #[ORM\Column(name: 'order_pdf_visible_company_name', type: Types::BOOLEAN, options: ['default' => true])]
     private bool $order_pdf_visible_company_name = true;
-
-    #[ORM\Column(name: 'order_pdf_visible_company_kana', type: Types::BOOLEAN, options: ['default' => false])]
-    private bool $order_pdf_visible_company_kana = false;
 
     #[ORM\Column(name: 'order_pdf_visible_phone_number', type: Types::BOOLEAN, options: ['default' => true])]
     private bool $order_pdf_visible_phone_number = true;
@@ -202,9 +196,6 @@ class BaseInfo extends AbstractEntity
 
     #[ORM\Column(name: 'order_pdf_visible_invoice_number', type: Types::BOOLEAN, options: ['default' => true])]
     private bool $order_pdf_visible_invoice_number = true;
-
-    #[ORM\Column(name: 'order_pdf_visible_message', type: Types::BOOLEAN, options: ['default' => false])]
-    private bool $order_pdf_visible_message = false;
 
     /**
      * Get id.
@@ -993,24 +984,6 @@ class BaseInfo extends AbstractEntity
     }
 
     /**
-     * Set orderPdfVisibleShopKana.
-     */
-    public function setOrderPdfVisibleShopKana(bool $orderPdfVisibleShopKana): BaseInfo
-    {
-        $this->order_pdf_visible_shop_kana = $orderPdfVisibleShopKana;
-
-        return $this;
-    }
-
-    /**
-     * Get orderPdfVisibleShopKana.
-     */
-    public function isOrderPdfVisibleShopKana(): bool
-    {
-        return $this->order_pdf_visible_shop_kana;
-    }
-
-    /**
      * Set orderPdfVisibleShopNameEng.
      */
     public function setOrderPdfVisibleShopNameEng(bool $orderPdfVisibleShopNameEng): BaseInfo
@@ -1062,24 +1035,6 @@ class BaseInfo extends AbstractEntity
     public function isOrderPdfVisibleCompanyName(): bool
     {
         return $this->order_pdf_visible_company_name;
-    }
-
-    /**
-     * Set orderPdfVisibleCompanyKana.
-     */
-    public function setOrderPdfVisibleCompanyKana(bool $orderPdfVisibleCompanyKana): BaseInfo
-    {
-        $this->order_pdf_visible_company_kana = $orderPdfVisibleCompanyKana;
-
-        return $this;
-    }
-
-    /**
-     * Get orderPdfVisibleCompanyKana.
-     */
-    public function isOrderPdfVisibleCompanyKana(): bool
-    {
-        return $this->order_pdf_visible_company_kana;
     }
 
     /**
@@ -1152,23 +1107,5 @@ class BaseInfo extends AbstractEntity
     public function isOrderPdfVisibleInvoiceNumber(): bool
     {
         return $this->order_pdf_visible_invoice_number;
-    }
-
-    /**
-     * Set orderPdfVisibleMessage.
-     */
-    public function setOrderPdfVisibleMessage(bool $orderPdfVisibleMessage): BaseInfo
-    {
-        $this->order_pdf_visible_message = $orderPdfVisibleMessage;
-
-        return $this;
-    }
-
-    /**
-     * Get orderPdfVisibleMessage.
-     */
-    public function isOrderPdfVisibleMessage(): bool
-    {
-        return $this->order_pdf_visible_message;
     }
 }

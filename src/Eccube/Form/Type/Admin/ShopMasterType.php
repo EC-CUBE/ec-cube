@@ -227,16 +227,13 @@ class ShopMasterType extends AbstractType
             ->add('ucp_checkout_enabled', ToggleSwitchType::class)
             // 納品書PDFの店舗情報出力項目トグル（#6197）。並び順は納品書の描画順にそろえる
             ->add('order_pdf_visible_shop_name', ToggleSwitchType::class)
-            ->add('order_pdf_visible_shop_kana', ToggleSwitchType::class)
             ->add('order_pdf_visible_shop_name_eng', ToggleSwitchType::class)
             ->add('order_pdf_visible_address', ToggleSwitchType::class)
             ->add('order_pdf_visible_company_name', ToggleSwitchType::class)
-            ->add('order_pdf_visible_company_kana', ToggleSwitchType::class)
             ->add('order_pdf_visible_phone_number', ToggleSwitchType::class)
             ->add('order_pdf_visible_business_hour', ToggleSwitchType::class)
             ->add('order_pdf_visible_email', ToggleSwitchType::class)
             ->add('order_pdf_visible_invoice_number', ToggleSwitchType::class)
-            ->add('order_pdf_visible_message', ToggleSwitchType::class)
         ;
 
         $builder->add(

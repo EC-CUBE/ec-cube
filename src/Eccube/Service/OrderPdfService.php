@@ -55,19 +55,8 @@ class OrderPdfService extends Fpdi
     public const LOGO_Y = 46.0;
     public const LOGO_WIDTH = 40.0;
 
-    /** 店舗情報欄の幅(mm) */
-    public const SHOP_INFO_WIDTH = 70.0;
     /** 店舗情報欄の行送り(mm) */
     public const SHOP_INFO_LINE_HEIGHT = 3.3;
-    /**
-     * 店舗情報欄の下限(実座標 mm).
-     *
-     * 合計金額は renderOrderData() が y=95.5 を基準に高さ 7mm の余白セルを挟んでから描画するため、
-     * 実際に金額が載るのは y=102.5 以降. その手前までを店舗情報欄が使える範囲とする.
-     */
-    public const SHOP_INFO_BOTTOM = 101.5;
-    /** 「店舗からのメッセージ」のフォントサイズ(pt)と行送り(mm)の候補. 全文が収まる最初の組み合わせを使う */
-    public const SHOP_MESSAGE_FONT_STEPS = [[8.0, 3.3], [7.0, 2.9], [6.0, 2.5]];
 
     // ====================================
     // 変数宣言
@@ -327,12 +316,6 @@ class OrderPdfService extends Fpdi
             $y += $lineHeight;
         }
 
-        // 店名（カナ）
-        if ($BaseInfo->isOrderPdfVisibleShopKana() && !empty($BaseInfo->getShopKana())) {
-            $this->lfText($x, $y, $BaseInfo->getShopKana(), 8);
-            $y += $lineHeight;
-        }
-
         // 店名（英語表記）
         if ($BaseInfo->isOrderPdfVisibleShopNameEng() && !empty($BaseInfo->getShopNameEng())) {
             $this->lfText($x, $y, $BaseInfo->getShopNameEng(), 8);
@@ -364,12 +347,6 @@ class OrderPdfService extends Fpdi
             $y += $lineHeight;
         }
 
-        // 会社名（カナ）
-        if ($BaseInfo->isOrderPdfVisibleCompanyKana() && !empty($BaseInfo->getCompanyKana())) {
-            $this->lfText($x, $y, $BaseInfo->getCompanyKana(), 8);
-            $y += $lineHeight;
-        }
-
         // 電話番号
         if ($BaseInfo->isOrderPdfVisiblePhoneNumber() && !empty($BaseInfo->getPhoneNumber())) {
             $this->lfText($x, $y, 'TEL: '.$BaseInfo->getPhoneNumber(), 8);
@@ -394,11 +371,6 @@ class OrderPdfService extends Fpdi
             $y += $lineHeight;
         }
 
-        // 店舗からのメッセージ（長文になり得るため折り返して描画する）
-        if ($BaseInfo->isOrderPdfVisibleMessage() && !empty($BaseInfo->getMessage())) {
-            $this->renderShopMessage($x, $y, $BaseInfo->getMessage());
-        }
-
         // ロゴは店舗情報の描画後に重ねる（PDFは後から描いた要素が上になるため、元の重なり順を維持する）
         $this->Image($logoFile, self::LOGO_X, self::LOGO_Y, self::LOGO_WIDTH);
     }
@@ -419,60 +391,6 @@ class OrderPdfService extends Fpdi
 
         // lfText は baseOffsetY 分ずらして描画するため、その分を戻して紙面上の位置に合わせる
         return $logoBottom + $lineHeight - $this->baseOffsetY;
-    }
-
-    /**
-     * 店舗情報欄に「店舗からのメッセージ」を折り返して描画する.
-     *
-     * 合計金額欄（実座標 y=95.5 以降）を侵食しないよう、右カラムの残り高さに収める.
-     * 既定サイズで全文が入らない場合は、入る範囲でフォントを縮小する.
-     */
-    protected function renderShopMessage(int|float $x, float $y, string $message): void
-    {
-        // lfText と同じオフセットを掛けた実座標を基準に、残り高さを求める
-        $maxHeight = self::SHOP_INFO_BOTTOM - ($y + $this->baseOffsetY);
-        if ($maxHeight <= 0) {
-            return;
-        }
-
-        // 後続の描画に影響しないよう、フォント状態を退避・復元する（lfText と同じ扱い）
-        $this->backupFont();
-
-        [$fontSize, $lineHeight] = $this->fitShopMessageFont($message, $maxHeight);
-        $this->SetFont(self::FONT_SJIS, '', $fontSize);
-
-        // MultiCell の行送りは第2引数ではなく「フォントサイズ × cell_height_ratio」で決まるため、
-        // 指定の行送りになるよう比率を一時的に変更する（既定の 1.25 では 8pt で 3.53mm になる）
-        $bakCellHeightRatio = $this->getCellHeightRatio();
-        $this->setCellHeightRatio($lineHeight / $this->getFontSize());
-
-        // lfText と同じオフセットで位置を合わせ、幅・最大高さを指定して折り返す。
-        // autopadding は無効にして、セル余白の分だけ描画高さが膨らまないようにする
-        $this->MultiCell(self::SHOP_INFO_WIDTH, $lineHeight, $message, 0, 'L', false, 1, $x + $this->baseOffsetX, $y + $this->baseOffsetY, true, 0, false, false, $maxHeight, 'T');
-
-        $this->setCellHeightRatio($bakCellHeightRatio);
-        $this->restoreFont();
-    }
-
-    /**
-     * 「店舗からのメッセージ」が指定高さに収まるフォントサイズと行送りを求める.
-     *
-     * 縮小しても全文が入らない場合は既定サイズを返す（MultiCell 側で末尾が省略される）.
-     * 読めない大きさまで縮めたうえに省略もされる、という状態を避けるための判断.
-     *
-     * @return array{0: float, 1: float} フォントサイズ(pt)と行送り(mm)
-     */
-    protected function fitShopMessageFont(string $message, float $maxHeight): array
-    {
-        foreach (self::SHOP_MESSAGE_FONT_STEPS as [$fontSize, $lineHeight]) {
-            $this->SetFont(self::FONT_SJIS, '', $fontSize);
-            // 描画時と同じ条件（autopadding 無効）で行数を数える
-            if ($this->getNumLines($message, self::SHOP_INFO_WIDTH, false, false) * $lineHeight <= $maxHeight) {
-                return [$fontSize, $lineHeight];
-            }
-        }
-
-        return self::SHOP_MESSAGE_FONT_STEPS[0];
     }
 
     /**
