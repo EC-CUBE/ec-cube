@@ -408,6 +408,7 @@ front.shopping.nonmember: Enter Customer Information
 front.shopping.shipping_edit_title_nomember: Purchase / Change of Delivery Address
 front.shopping.shipping_edit_header_customer: Add Delivery Address
 front.shopping.shipping_edit_header_nonmember: Change Delivery Address
+front.shopping.shipping_customer_address_edit_title: Change Delivery Address
 front.shopping.error: Error in the checkout
 front.shopping.order_error: An error occurred during the checkout process.
 front.shopping.system_error: Sorry, we have faced an unexpected error during the checkout process. Please contact us from the inquiry form. We are sorry for the inconvenience.

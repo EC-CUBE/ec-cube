@@ -517,6 +517,13 @@ final class EccubeEvents
     public const FRONT_SHOPPING_SHIPPING_EDIT_INITIALIZE = 'front.shopping.shipping.edit.initialize';
     public const FRONT_SHOPPING_SHIPPING_EDIT_COMPLETE = 'front.shopping.shipping.edit.complete';
 
+    // shippingEditCustomerAddress
+    public const FRONT_SHOPPING_SHIPPING_CUSTOMER_ADDRESS_EDIT_INITIALIZE = 'front.shopping.shipping.customer_address.edit.initialize';
+    public const FRONT_SHOPPING_SHIPPING_CUSTOMER_ADDRESS_EDIT_COMPLETE = 'front.shopping.shipping.customer_address.edit.complete';
+
+    // shippingDeleteCustomerAddress
+    public const FRONT_SHOPPING_SHIPPING_CUSTOMER_ADDRESS_DELETE_COMPLETE = 'front.shopping.shipping.customer_address.delete.complete';
+
     // customer
     public const FRONT_SHOPPING_CUSTOMER_INITIALIZE = 'front.shopping.customer.initialize';
 
