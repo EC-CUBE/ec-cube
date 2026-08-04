@@ -88,8 +88,7 @@ final class OrderPdfServiceTest extends AbstractServiceTestCase
         $probe = $this->createProbe();
         $BaseInfo = $this->createBaseInfoWithAllItemsVisible();
         // 店名（英語表記）はトグル OFF, 会社名は値が空
-        $BaseInfo->setOrderPdfVisibleShopNameEng(false)
-            ->setCompanyName(null);
+        $BaseInfo->setOrderPdfVisibleShopNameEng(false)->setCompanyName();
         $probe->baseInfoRepository = $BaseInfo;
 
         $probe->renderShopDataForTest();
@@ -188,17 +187,20 @@ final class OrderPdfLayoutProbe extends OrderPdfService
         $this->renderShopData();
     }
 
+    #[\Override]
     protected function lfText(int|float $x, int|float $y, ?string $text, int $size = 0, string $style = ''): void
     {
         // lfText() は baseOffsetY 分ずらして描画するため, 紙面上の位置へ換算して記録する
         $this->lineYs[] = (float) $y + $this->baseOffsetY;
     }
 
+    #[\Override]
     protected function setBasePosition(int|float|null $x = null, int|float|null $y = null): void
     {
         // ページが無い状態ではカーソル移動は不要
     }
 
+    #[\Override]
     public function Image($file, $x = null, $y = null, $w = 0, $h = 0, $type = '', $link = '', $align = '', $resize = false, $dpi = 300, $palign = '', $ismask = false, $imgmask = false, $border = 0, $fitbox = false, $hidden = false, $fitonpage = false, $alt = false, $altimgs = [])
     {
         // ページが無い状態では画像を描画できない
