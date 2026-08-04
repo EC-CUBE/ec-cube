@@ -410,7 +410,10 @@ final class OrderPdfControllerTest extends AbstractAdminWebTestCase
 
     /**
      * 納品書PDFの出力項目トグルを全て ON にした状態でも PDF が生成できること (#6197).
-     * 行数が最大になるため, 店舗情報欄が合計金額欄を侵食しないことの回帰防止.
+     *
+     * ここで検証するのは PDF が生成できること（レスポンスが application/pdf であること）のみ.
+     * 店舗情報欄の描画座標（ロゴとの重なり・合計金額欄の侵食）は
+     * {@see \Eccube\Tests\Service\OrderPdfServiceTest} で検証する.
      */
     public function testDownloadSuccessWithAllOrderPdfItemsVisible()
     {

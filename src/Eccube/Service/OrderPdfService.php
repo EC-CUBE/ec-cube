@@ -58,6 +58,14 @@ class OrderPdfService extends Fpdi
     /** 店舗情報欄の行送り(mm) */
     public const SHOP_INFO_LINE_HEIGHT = 3.3;
 
+    /**
+     * 総合計金額の描画基準 y 座標(mm).
+     *
+     * この位置から空セル(高さ7mm)を挟んで金額セルを描画するため, 金額の実描画は 102.5mm 以降になる.
+     * 店舗情報欄はこの基準位置より上に収める（安全側のマージンを含む下限）.
+     */
+    public const PAYMENT_TOTAL_BASE_Y = 95.5;
+
     // ====================================
     // 変数宣言
     // ====================================
@@ -519,7 +527,7 @@ class OrderPdfService extends Fpdi
             $this->SetFont(self::FONT_SJIS, 'B', 15);
             $paymentTotalText = $this->eccubeExtension->getPriceFilter($Order->getPaymentTotal());
 
-            $this->setBasePosition(120, 95.5);
+            $this->setBasePosition(120, self::PAYMENT_TOTAL_BASE_Y);
             $this->Cell(5, 7, '', 0, 0, '', false, '');
             $this->Cell(67, 8, $paymentTotalText, 0, 2, 'R', false, '');
             $this->Cell(0, 45, '', 0, 2, '', false, '');
