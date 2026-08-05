@@ -30,6 +30,13 @@ trait StructuredDataDescriptionTrait
             return '';
         }
 
+        // strip_tags() はタグを削除するだけなので、そのままでは <p>商品A</p><p>商品B</p> が
+        // 「商品A商品B」と連結してしまう。改行・ブロック要素の境界を空白へ置換してから除去する。
+        $description = preg_replace(
+            '#<(?:br\s*/?|/?(?:p|div|li|ul|ol|tr|td|th|table|h[1-6]|section|article|header|footer|blockquote|pre|dl|dt|dd))\b[^>]*>#i',
+            ' ',
+            $description
+        ) ?? $description;
         $description = strip_tags($description);
         $description = preg_replace('/\s+/u', ' ', $description) ?? $description;
         $description = trim($description);

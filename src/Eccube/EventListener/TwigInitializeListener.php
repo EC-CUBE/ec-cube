@@ -18,6 +18,7 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\AuthorityRole;
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Layout;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Member;
@@ -71,12 +72,13 @@ class TwigInitializeListener implements EventSubscriberInterface
             return;
         }
 
-        $this->twig->addGlobal('BaseInfo', $this->baseInfoRepository->get());
+        $BaseInfo = $this->baseInfoRepository->get();
+        $this->twig->addGlobal('BaseInfo', $BaseInfo);
 
         if ($this->requestContext->isAdmin()) {
             $this->setAdminGlobals($event);
         } else {
-            $this->setFrontVariables($event);
+            $this->setFrontVariables($event, $BaseInfo);
         }
 
         $this->initialized = true;
@@ -115,8 +117,11 @@ class TwigInitializeListener implements EventSubscriberInterface
     /**
      * @throws NonUniqueResultException
      */
-    public function setFrontVariables(RequestEvent $event): void
+    public function setFrontVariables(RequestEvent $event, ?BaseInfo $BaseInfo = null): void
     {
+        // 呼び出し元（onKernelRequest）が取得済みの BaseInfo を渡す。
+        // 引数は後方互換のため任意にしており、渡されなければここで取得する。
+        $BaseInfo ??= $this->baseInfoRepository->get();
         $request = $event->getRequest();
         /** @var ParameterBag $attributes */
         $attributes = $request->attributes;
@@ -191,7 +196,7 @@ class TwigInitializeListener implements EventSubscriberInterface
         $this->twig->addGlobal(
             'site_json_ld',
             in_array($route, self::SITE_STRUCTURED_DATA_ROUTES, true)
-                ? $this->siteStructuredDataService->createWebSiteJsonLd($this->baseInfoRepository->get())
+                ? $this->siteStructuredDataService->createWebSiteJsonLd($BaseInfo)
                 : []
         );
     }

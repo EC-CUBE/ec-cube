@@ -74,37 +74,48 @@ final class SiteStructuredDataServiceTest extends AbstractServiceTestCase
 
         $this->assertSame('Organization', $data['@type']);
         $this->assertStringStartsWith('http', $data['url']);
-        $this->assertSame('ImageObject', $data['logo']['@type']);
-        $this->assertNotEmpty($data['logo']['contentUrl']);
         $this->assertSame((string) $this->BaseInfo->getShopName(), $data['name']);
     }
 
     /**
-     * logo.contentUrl は絶対URLで出力する（ProductStructuredDataService の画像URLと同じ方針）.
+     * logo は Google の最小サイズ要件（112x112）を満たす画像だけを出力する.
      *
-     * Packages::getUrl() はルート相対パス（/html/user_data/...）を返すため、
-     * スキーム込みホストが前置されていることを検証する。
+     * 参照先は帳票 PDF と共通の店舗ロゴ（`assets/pdf/logo.png`、user_data 優先）。
+     * 既定の帳票ロゴは 301x38 で要件を満たさないため、差し替えていない店舗では logo を出力しない。
+     * 出力する場合は絶対URL（Packages::getUrl() はルート相対パスを返すためホストを前置する）。
      */
-    public function testLogoContentUrlIsAbsolute(): void
+    public function testLogoIsOutputOnlyWhenItSatisfiesSizeRequirements(): void
     {
         $data = $this->service->createOrganizationJsonLd($this->BaseInfo);
+
+        // 実際に参照される画像から期待値を導く（探索順は Service と同じ user_data → admin）
+        $projectDir = static::getContainer()->getParameter('kernel.project_dir');
+        $expectedUrl = null;
+        foreach (['/html/user_data/assets/pdf/logo.png', '/html/template/admin/assets/pdf/logo.png'] as $relative) {
+            $path = $projectDir.$relative;
+            if (file_exists($path)) {
+                $size = @getimagesize($path);
+                $expectedUrl = ($size !== false && $size[0] >= 112 && $size[1] >= 112) ? $relative : null;
+                break;
+            }
+        }
+
+        if ($expectedUrl === null) {
+            $this->assertArrayNotHasKey('logo', $data, '要件を満たさない画像は logo として出力しない');
+
+            return;
+        }
+
         $contentUrl = (string) $data['logo']['contentUrl'];
         $url = (string) $data['url'];
 
+        $this->assertSame('ImageObject', $data['logo']['@type']);
         $this->assertMatchesRegularExpression('#^https?://#', $contentUrl);
-
-        // url と同じスキーム・ホストで出力される
         $this->assertStringStartsWith(
             parse_url($url, PHP_URL_SCHEME).'://'.parse_url($url, PHP_URL_HOST),
             $contentUrl
         );
-
-        // asset パッケージが解決したパスは保持される。参照先は帳票 PDF と共通の店舗ロゴで、
-        // user_data に配置されていればそれを使い、無ければ管理画面テンプレート同梱の既定ロゴになる
-        $this->assertMatchesRegularExpression(
-            '#(/html/user_data/assets/pdf/logo\.png|/html/template/admin/assets/pdf/logo\.png)#',
-            $contentUrl
-        );
+        $this->assertStringContainsString($expectedUrl, $contentUrl);
     }
 
     /**
@@ -136,6 +147,20 @@ final class SiteStructuredDataServiceTest extends AbstractServiceTestCase
         $this->assertStringNotContainsString('<p>', (string) $data['description']);
         $this->assertStringNotContainsString("\n", (string) $data['description']);
         $this->assertSame(300, mb_strlen((string) $data['description']));
+    }
+
+    /**
+     * 隣接するブロック要素の境界は空白として保持する.
+     *
+     * strip_tags() はタグを削除するだけなので、前処理なしでは「商品A商品B」と連結してしまう。
+     */
+    public function testAdjacentBlockElementsKeepSeparation(): void
+    {
+        $this->BaseInfo->setMessage('<p>商品A</p><p>商品B</p>商品C<br>商品D');
+
+        $data = $this->service->createOrganizationJsonLd($this->BaseInfo);
+
+        $this->assertSame('商品A 商品B 商品C 商品D', $data['description']);
     }
 
     /**
