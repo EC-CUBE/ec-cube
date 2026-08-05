@@ -55,6 +55,8 @@ class JoinClause
 
     /**
      * WHERE句を追加します。
+     *
+     * @return $this
      */
     public function addWhere(WhereClause $whereClause): static
     {
@@ -65,6 +67,8 @@ class JoinClause
 
     /**
      * ORDER BY句を追加します。
+     *
+     * @return $this
      */
     public function addOrderBy(OrderByClause $orderByClause): static
     {

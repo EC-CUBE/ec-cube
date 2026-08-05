@@ -41,6 +41,7 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Psr\Container\ContainerInterface;
 use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -1131,6 +1132,7 @@ class ShoppingController extends AbstractShoppingController
             return $this->redirectToRoute('shopping');
         }
 
+        /** @var FormBuilderInterface $builder */
         $builder = $this->formFactory->createNamedBuilder('', CustomerLoginType::class);
 
         if ($this->isGranted('IS_AUTHENTICATED_REMEMBERED')) {

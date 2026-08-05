@@ -78,6 +78,8 @@ final class AcpFeedProductSerializerTest extends TestCase
         $product = new AgentCatalogItemDto(
             id: '100',
             title: 'Coffee',
+            description: null,
+            url: null,
             media: [],
             variants: [$this->minimalVariant()],
         );
@@ -223,7 +225,10 @@ final class AcpFeedProductSerializerTest extends TestCase
             currency: 'JPY',
             available: true,
             availabilityStatus: AvailabilityStatus::IN_STOCK,
+            sku: null,
             listPriceMinorUnits: $listPriceMinorUnits,
+            description: null,
+            url: null,
             options: $options,
             barcodes: $barcodes,
             media: [],

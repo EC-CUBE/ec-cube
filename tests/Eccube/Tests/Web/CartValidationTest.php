@@ -46,6 +46,14 @@ final class CartValidationTest extends AbstractWebTestCase
         $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
     }
 
+    /**
+     * tear down
+     */
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+    }
+
     // 商品詳細画面からカート画面のvalidation
 
     /**
@@ -53,6 +61,7 @@ final class CartValidationTest extends AbstractWebTestCase
      */
     public function testValidationStock()
     {
+        /** @var Product $Product */
         $Product = $this->createProduct('test1');
 
         /** @var ProductClass $ProductClass */
@@ -106,6 +115,7 @@ final class CartValidationTest extends AbstractWebTestCase
      */
     public function testProductInCartDeleted()
     {
+        /** @var Product $Product */
         $Product = $this->createProduct('test', 1, 1);
 
         $productClassId = $Product->getProductClasses()->first()->getId();
@@ -142,6 +152,7 @@ final class CartValidationTest extends AbstractWebTestCase
      */
     public function testProductInCartIsPrivate()
     {
+        /** @var Product $Product */
         $Product = $this->createProduct('test', 1, 1);
 
         $productClassId = $Product->getProductClasses()->first()->getId();
@@ -183,6 +194,7 @@ final class CartValidationTest extends AbstractWebTestCase
     {
         $this->markTestIncomplete('在庫がゼロの場合フォームエラーになってしまう');
 
+        /** @var Product $Product */
         $Product = $this->createProduct('test', 0, 1);
         $ProductClass = $Product->getProductClasses()->first();
 
@@ -233,6 +245,7 @@ final class CartValidationTest extends AbstractWebTestCase
      */
     public function testProductInCartIsStockOutWithProductClass()
     {
+        /** @var Product $Product */
         $Product = $this->createProduct('test', 2, 1);
         $ProductClass = $Product->getProductClasses()->first();
 
@@ -289,6 +302,7 @@ final class CartValidationTest extends AbstractWebTestCase
     {
         $stock = 1;
         $productName = $this->getFaker()->word;
+        /** @var Product $Product */
         $Product = $this->createProduct($productName, 1, $stock);
         $ProductClass = $Product->getProductClasses()->first();
 
@@ -344,6 +358,7 @@ final class CartValidationTest extends AbstractWebTestCase
     public function testProductInCartIsNotEnoughAndLimit()
     {
         $productName = $this->getFaker()->word;
+        /** @var Product $Product */
         $Product = parent::createProduct($productName, 1);
         $ProductClass = $Product->getProductClasses()->first();
         $ProductClass->setPrice02('999999911');
@@ -496,6 +511,7 @@ final class CartValidationTest extends AbstractWebTestCase
         $limit = 5;
 
         $productName = $this->getFaker()->word;
+        /** @var Product $Product */
         $Product = $this->createProduct($productName, 1, $stock);
         $ProductClass = $Product->getProductClasses()->first();
 
@@ -554,6 +570,7 @@ final class CartValidationTest extends AbstractWebTestCase
         $Customer = $this->createCustomer();
         $this->loginTo($Customer);
 
+        /** @var Product $Product */
         $Product = $this->createProduct('test', 1, 1);
         /** @var ProductClass $ProductClass */
         $ProductClass = $Product->getProductClasses()->get(0);
@@ -580,6 +597,7 @@ final class CartValidationTest extends AbstractWebTestCase
     public function testProductInCartIsPrivateFromShopping()
     {
         $Customer = $this->createCustomer();
+        /** @var Product $Product */
         $Product = $this->createProduct('test', 1, 1);
         /** @var ProductClass $productClass */
         $ProductClass = $Product->getProductClasses()->first();
@@ -730,6 +748,7 @@ final class CartValidationTest extends AbstractWebTestCase
 
         // product type A
         $productName = $this->getFaker()->word;
+        /** @var Product $Product */
         $Product = $this->createProduct($productName, $productClassNum, $productStock);
         /** @var ProductClass $ProductClass */
         $ProductClass = $Product->getProductClasses()->first();

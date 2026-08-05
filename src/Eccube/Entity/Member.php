@@ -191,6 +191,8 @@ class Member extends AbstractEntity implements UserInterface, PasswordAuthentica
 
     /**
      * @param string $password
+     *
+     * @return $this
      */
     public function setPlainPassword(?string $password): static
     {

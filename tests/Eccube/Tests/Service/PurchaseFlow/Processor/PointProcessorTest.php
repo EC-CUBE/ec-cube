@@ -22,6 +22,7 @@ use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
+use Eccube\Entity\ProductClass;
 use Eccube\Service\PurchaseFlow\Processor\AddPointProcessor;
 use Eccube\Service\PurchaseFlow\Processor\PointProcessor;
 use Eccube\Service\PurchaseFlow\ProcessResult;

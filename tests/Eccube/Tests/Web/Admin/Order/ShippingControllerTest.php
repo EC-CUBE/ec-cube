@@ -15,8 +15,10 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Web\Admin\Order;
 
+use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Order;
+use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\ShippingRepository;
@@ -52,6 +54,7 @@ final class ShippingControllerTest extends AbstractEditControllerTestCase
     public function testShippingMessageNoticeWhenPost()
     {
         $Customer = $this->createCustomer();
+        /** @var Order $Order */
         $Order = $this->createOrder($Customer);
 
         $crawler = $this->client->request(
@@ -308,6 +311,7 @@ final class ShippingControllerTest extends AbstractEditControllerTestCase
     #[Group(name: 'decimal')]
     public function testCalculateTax()
     {
+        /** @var Product $Product */
         $Product = $this->createProduct('test', 2);
         /** @var ProductClass $ProductClass1 */
         $ProductClass1 = $Product->getProductClasses()[0];
@@ -321,6 +325,7 @@ final class ShippingControllerTest extends AbstractEditControllerTestCase
         $this->entityManager->persist($ProductClass2);
         $this->entityManager->flush();
 
+        /** @var Customer $Customer */
         $Customer = $this->createCustomer();
         $Order = $this->createOrderWithProductClasses($Customer, [$ProductClass1]);
         $Shipping = $Order->getShippings()->first();

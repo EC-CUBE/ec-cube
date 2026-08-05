@@ -20,6 +20,7 @@ use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
+use Eccube\Entity\ProductClass;
 use Eccube\Entity\ProductStock;
 use Eccube\Repository\Master\OrderItemTypeRepository;
 use Eccube\Repository\Master\OrderStatusRepository;

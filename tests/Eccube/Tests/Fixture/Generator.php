@@ -833,6 +833,7 @@ class Generator
     public function createPage(): Page
     {
         $faker = $this->getFaker();
+        /** @var Page $Page */
         $Page = $this->pageRepository->newPage();
         do {
             $url = $faker->word();

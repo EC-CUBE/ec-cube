@@ -13,6 +13,7 @@
 
 namespace Eccube\Service;
 
+use Eccube\Entity\Category;
 use Eccube\Entity\Product;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;

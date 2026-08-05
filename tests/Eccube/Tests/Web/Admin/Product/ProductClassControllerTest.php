@@ -27,6 +27,7 @@ use Eccube\Repository\ProductRepository;
 use Eccube\Repository\TaxRuleRepository;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\DomCrawler\Form;
 use Symfony\Component\HttpFoundation\Request;
 
 /**

@@ -32,7 +32,7 @@ class OrderItemCollection extends ArrayCollection
     public function __construct(?array $OrderItems = null, ?string $type = null)
     {
         // $OrderItems が Collection だったら toArray(); する
-        $this->type = $type ?? Order::class;
+        $this->type = is_null($type) ? Order::class : $type;
         parent::__construct($OrderItems);
     }
 

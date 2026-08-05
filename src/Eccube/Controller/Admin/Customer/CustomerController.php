@@ -14,6 +14,7 @@
 namespace Eccube\Controller\Admin\Customer;
 
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use Doctrine\ORM\QueryBuilder;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Customer;
@@ -116,6 +117,7 @@ class CustomerController extends AbstractController
             $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
         }
 
+        /** @var QueryBuilder $qb */
         $qb = $this->customerRepository->getQueryBuilderBySearchData($searchData);
 
         $paginate_options = [];

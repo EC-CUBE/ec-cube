@@ -67,12 +67,18 @@ interface ItemInterface
 
     public function getQuantity(): string;
 
+    /**
+     * @return $this
+     */
     public function setQuantity(string $quantity): static;
 
     public function getId(): ?int;
 
     public function getPointRate(): ?string;
 
+    /**
+     * @return $this
+     */
     public function setPrice(?string $price): static;
 
     public function getPriceIncTax(): string;

@@ -71,6 +71,9 @@ class OrderPdf extends AbstractEntity
         return $this->member_id;
     }
 
+    /**
+     * @return $this
+     */
     public function setMemberId(int $member_id): static
     {
         $this->member_id = $member_id;
@@ -83,6 +86,9 @@ class OrderPdf extends AbstractEntity
         return $this->title;
     }
 
+    /**
+     * @return $this
+     */
     public function setTitle(string $title): static
     {
         $this->title = $title;
@@ -95,6 +101,9 @@ class OrderPdf extends AbstractEntity
         return $this->message1;
     }
 
+    /**
+     * @return $this
+     */
     public function setMessage1(?string $message1): static
     {
         $this->message1 = $message1;
@@ -107,6 +116,9 @@ class OrderPdf extends AbstractEntity
         return $this->message2;
     }
 
+    /**
+     * @return $this
+     */
     public function setMessage2(?string $message2): static
     {
         $this->message2 = $message2;
@@ -119,6 +131,9 @@ class OrderPdf extends AbstractEntity
         return $this->message3;
     }
 
+    /**
+     * @return $this
+     */
     public function setMessage3(?string $message3): static
     {
         $this->message3 = $message3;
@@ -131,6 +146,9 @@ class OrderPdf extends AbstractEntity
         return $this->note1;
     }
 
+    /**
+     * @return $this
+     */
     public function setNote1(?string $note1): static
     {
         $this->note1 = $note1;
@@ -143,6 +161,9 @@ class OrderPdf extends AbstractEntity
         return $this->note2;
     }
 
+    /**
+     * @return $this
+     */
     public function setNote2(?string $note2): static
     {
         $this->note2 = $note2;
@@ -155,6 +176,9 @@ class OrderPdf extends AbstractEntity
         return $this->note3;
     }
 
+    /**
+     * @return $this
+     */
     public function setNote3(?string $note3): static
     {
         $this->note3 = $note3;
@@ -170,6 +194,9 @@ class OrderPdf extends AbstractEntity
         return $this->create_date;
     }
 
+    /**
+     * @return $this
+     */
     public function setCreateDate(\DateTime $create_date): static
     {
         $this->create_date = $create_date;
@@ -185,6 +212,9 @@ class OrderPdf extends AbstractEntity
         return $this->update_date;
     }
 
+    /**
+     * @return $this
+     */
     public function setUpdateDate(\DateTime $update_date): static
     {
         $this->update_date = $update_date;

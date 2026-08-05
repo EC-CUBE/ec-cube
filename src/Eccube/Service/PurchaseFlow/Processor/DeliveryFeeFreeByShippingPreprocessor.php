@@ -46,6 +46,7 @@ class DeliveryFeeFreeByShippingPreprocessor implements ItemHolderPreprocessor
 
         // Orderの場合はお届け先ごとに判定する.
         if ($itemHolder instanceof Order) {
+            /** @var Order $Order */
             $Order = $itemHolder;
             foreach ($Order->getShippings() as $Shipping) {
                 $isFree = false;

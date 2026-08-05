@@ -42,6 +42,8 @@ abstract class AbstractMasterEntity extends AbstractEntity implements \Stringabl
 
     /**
      * Set id.
+     *
+     * @return $this
      */
     public function setId(int $id): static
     {
@@ -60,6 +62,8 @@ abstract class AbstractMasterEntity extends AbstractEntity implements \Stringabl
 
     /**
      * Set name.
+     *
+     * @return $this
      */
     public function setName(?string $name): static
     {
@@ -78,6 +82,8 @@ abstract class AbstractMasterEntity extends AbstractEntity implements \Stringabl
 
     /**
      * Set sortNo.
+     *
+     * @return $this
      */
     public function setSortNo(int $sortNo): static
     {

@@ -417,7 +417,7 @@ class FileController extends AbstractController
                 'path' => $path,
                 'type' => $type,
                 'depth' => $depth,
-                'open' => in_array($path, $openDirs),
+                'open' => (in_array($path, $openDirs)) ? true : false,
             ];
         }
 
@@ -477,7 +477,7 @@ class FileController extends AbstractController
                 'file_size' => FilesystemUtil::sizeToHumanReadable($dir->getSize()),
                 'file_time' => $dir->getmTime(),
                 'is_dir' => true,
-                'is_empty' => $countNumber == 0,
+                'is_empty' => $countNumber == 0 ? true : false,
             ];
         }
         foreach ($files as $file) {

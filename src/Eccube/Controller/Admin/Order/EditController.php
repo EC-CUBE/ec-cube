@@ -48,6 +48,7 @@ use Eccube\Service\TaxRuleService;
 use Knp\Component\Pager\Pagination\SlidingPagination;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -582,6 +583,7 @@ class EditController extends AbstractController
 
             $forms = [];
             foreach ($Products as $Product) {
+                /** @var FormBuilderInterface $builder */
                 $builder = $this->formFactory->createNamedBuilder('', AddCartType::class, null, [
                     'product' => $Product,
                 ]);

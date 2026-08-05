@@ -26,6 +26,11 @@ final class EntryControllerTest extends AbstractWebTestCase
 {
     use MailerAssertionsTrait;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+    }
+
     protected function createFormData()
     {
         $faker = $this->getFaker();

@@ -177,6 +177,9 @@ class CartItem extends AbstractEntity implements ItemInterface
         return $ItemType;
     }
 
+    /**
+     * @return $this
+     */
     public function setProductClass(ProductClass $ProductClass): static
     {
         $this->ProductClass = $ProductClass;
@@ -208,6 +211,9 @@ class CartItem extends AbstractEntity implements ItemInterface
         return $this->Cart;
     }
 
+    /**
+     * @return $this
+     */
     public function setCart(Cart $Cart): static
     {
         $this->Cart = $Cart;

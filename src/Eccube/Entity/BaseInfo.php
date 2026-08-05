@@ -853,6 +853,8 @@ class BaseInfo extends AbstractEntity
 
     /**
      * @deprecated 使用していないため、削除予定
+     *
+     * @return $this
      */
     public function setPhpPath(?string $php_path): static
     {

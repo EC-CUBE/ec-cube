@@ -27,6 +27,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class RefundRequestControllerTest extends AbstractAdminWebTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+    }
+
     public function testIndex(): void
     {
         $this->client->request(

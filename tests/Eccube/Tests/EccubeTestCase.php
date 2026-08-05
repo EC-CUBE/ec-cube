@@ -87,6 +87,8 @@ abstract class EccubeTestCase extends WebTestCase
      *
      * @param string $locale ロケールを指定する. デフォルト ja_JP
      *
+     * @return \Faker\Generator
+     *
      * @see https://github.com/fzaninotto/Faker
      */
     public function getFaker(string $locale = 'ja_JP'): \Faker\Generator

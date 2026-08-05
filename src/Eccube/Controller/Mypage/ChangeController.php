@@ -23,6 +23,8 @@ use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Service\MailService;
 use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -56,6 +58,7 @@ class ChangeController extends AbstractController
         $Customer = $this->getUser();
         $Customer->setPlainPassword($this->eccubeConfig['eccube_default_password']);
 
+        /** @var FormBuilderInterface $builder */
         $builder = $this->formFactory->createBuilder(EntryType::class, $Customer);
 
         $event = new EventArgs(
@@ -67,6 +70,7 @@ class ChangeController extends AbstractController
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_MYPAGE_CHANGE_INDEX_INITIALIZE);
 
+        /** @var FormInterface $form */
         $form = $builder->getForm();
         $form->handleRequest($request);
 

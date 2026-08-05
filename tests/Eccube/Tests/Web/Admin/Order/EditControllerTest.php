@@ -684,6 +684,7 @@ final class EditControllerTest extends AbstractEditControllerTestCase
     {
         /** @var RoundingType $RoundingType */
         $RoundingType = $this->entityManager->find(RoundingType::class, RoundingType::ROUND);
+        /** @var Product $Product */
         $Product = $this->createProduct(null, 1);
         $this->entityManager->persist($Product);
 

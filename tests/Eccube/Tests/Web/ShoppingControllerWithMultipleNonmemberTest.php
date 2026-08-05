@@ -44,6 +44,11 @@ final class ShoppingControllerWithMultipleNonmemberTest extends AbstractShopping
         $this->orderRepository = $this->entityManager->getRepository(Order::class);
     }
 
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+    }
+
     /**
      * 非会員情報入力→購入確認画面→複数配送設定→お届け先追加→複数配送設定→購入確認画面→完了画面
      */
@@ -233,7 +238,7 @@ final class ShoppingControllerWithMultipleNonmemberTest extends AbstractShopping
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
 
-        $Order = $this->getLastOrder();
+        $Order = $Order = $this->getLastOrder();
 
         // One shipping
         $Shipping = $Order->getShippings();

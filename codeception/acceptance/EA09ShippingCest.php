@@ -12,6 +12,7 @@
  */
 
 use Codeception\Util\Fixtures;
+use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
 use Page\Admin\OrderEditPage;

@@ -341,6 +341,9 @@ class UcpCheckoutSessionMapper
         return new AgentCheckoutAddress(
             name01: $familyName,
             name02: $givenName,
+            kana01: null,
+            kana02: null,
+            companyName: null,
             postalCode: $this->stringOrNull($postal['postal_code'] ?? null),
             prefId: $pref?->getId(),
             addr01: $this->stringOrNull($postal['address_locality'] ?? null),

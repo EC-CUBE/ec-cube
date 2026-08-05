@@ -175,6 +175,7 @@ class ProductType extends AbstractType
         ;
 
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
+            /** @var FormInterface $form */
             $form = $event->getForm();
             $saveImgDir = $this->eccubeConfig['eccube_save_image_dir'];
             $tempImgDir = $this->eccubeConfig['eccube_temp_image_dir'];

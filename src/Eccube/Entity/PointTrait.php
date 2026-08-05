@@ -26,6 +26,8 @@ trait PointTrait
 
     /**
      * Set addPoint
+     *
+     * @return $this
      */
     public function setAddPoint(string $addPoint): static
     {
@@ -44,6 +46,8 @@ trait PointTrait
 
     /**
      * Set usePoint
+     *
+     * @return $this
      */
     public function setUsePoint(?string $usePoint): static
     {

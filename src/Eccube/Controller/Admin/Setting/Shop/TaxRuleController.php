@@ -23,6 +23,7 @@ use Eccube\Form\Type\Admin\TaxRuleType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -99,6 +100,7 @@ class TaxRuleController extends AbstractController
         $errors = [];
         /** @var TaxRule $TaxRule */
         foreach ($TaxRules as $TaxRule) {
+            /** @var FormBuilderInterface $builder */
             $builder = $this->formFactory->createBuilder(TaxRuleType::class, $TaxRule);
             if ($TaxRule->isDefaultTaxRule()) {
                 $builder->remove('apply_date');

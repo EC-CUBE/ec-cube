@@ -87,6 +87,7 @@ final class UcpCatalogProductSerializerTest extends TestCase
         $product = new AgentCatalogItemDto(
             id: '100',
             title: 'Coffee',
+            description: null,
             variants: [$this->variant('200', 1200)],
         );
 
@@ -114,6 +115,7 @@ final class UcpCatalogProductSerializerTest extends TestCase
         $product = new AgentCatalogItemDto(
             id: '100',
             title: 'Coffee',
+            url: null,
             media: [],
             categories: [],
             variants: [$this->variant('200', 1200)],
@@ -217,6 +219,9 @@ final class UcpCatalogProductSerializerTest extends TestCase
             available: $available,
             availabilityStatus: $status,
             sku: $sku,
+            listPriceMinorUnits: null,
+            description: null,
+            url: null,
             options: $options,
             barcodes: [],
             media: [],

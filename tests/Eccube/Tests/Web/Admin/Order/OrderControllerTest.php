@@ -31,6 +31,7 @@ use Eccube\Repository\PaymentRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Email;
@@ -297,6 +298,7 @@ final class OrderControllerTest extends AbstractAdminWebTestCase
             '_token' => 'dummy',
             'email' => 'user-1',
         ];
+        /** @var Crawler $crawler */
         $crawler = $this->client->request(
             Request::METHOD_POST,
             $this->generateUrl('admin_order'),

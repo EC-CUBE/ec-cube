@@ -280,7 +280,7 @@ class Order extends AbstractEntity implements PurchaseInterface, ItemHolderInter
             }
         }
 
-        return count($Shippings) > 1;
+        return count($Shippings) > 1 ? true : false;
     }
 
     /**
@@ -409,7 +409,7 @@ class Order extends AbstractEntity implements PurchaseInterface, ItemHolderInter
     private ?string $discount = '0';
 
     #[ORM\Column(name: 'delivery_fee_total', type: Types::DECIMAL, precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
-    private ?string $delivery_fee_total;
+    private ?string $delivery_fee_total = '0';
 
     #[ORM\Column(name: 'charge', type: Types::DECIMAL, precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
     private ?string $charge = '0';
@@ -904,6 +904,8 @@ class Order extends AbstractEntity implements PurchaseInterface, ItemHolderInter
      * Set deliveryFeeTotal.
      *
      * @param string $deliveryFeeTotal
+     *
+     * @return $this
      */
     #[\Override]
     public function setDeliveryFeeTotal($deliveryFeeTotal): static
@@ -926,6 +928,8 @@ class Order extends AbstractEntity implements PurchaseInterface, ItemHolderInter
      * Set charge.
      *
      * @param string $charge
+     *
+     * @return $this
      */
     #[\Override]
     public function setCharge($charge): static
@@ -947,6 +951,8 @@ class Order extends AbstractEntity implements PurchaseInterface, ItemHolderInter
      * Set tax.
      *
      * @param string $tax
+     *
+     * @return $this
      *
      * @deprecated 明細ごとに集計した税額と差異が発生する場合があるため非推奨
      */
@@ -1126,6 +1132,8 @@ class Order extends AbstractEntity implements PurchaseInterface, ItemHolderInter
 
     /**
      * Set currencyCode.
+     *
+     * @return $this
      */
     public function setCurrencyCode(?string $currencyCode = null): static
     {
@@ -1139,6 +1147,9 @@ class Order extends AbstractEntity implements PurchaseInterface, ItemHolderInter
         return $this->complete_message;
     }
 
+    /**
+     * @return $this
+     */
     public function setCompleteMessage(?string $complete_message = null): static
     {
         $this->complete_message = $complete_message;
@@ -1146,6 +1157,9 @@ class Order extends AbstractEntity implements PurchaseInterface, ItemHolderInter
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function appendCompleteMessage(?string $complete_message = null): static
     {
         $this->complete_message .= $complete_message;

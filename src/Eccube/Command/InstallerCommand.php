@@ -118,6 +118,11 @@ class InstallerCommand extends Command
     }
 
     #[\Override]
+    protected function configure(): void
+    {
+    }
+
+    #[\Override]
     protected function interact(InputInterface $input, OutputInterface $output): void
     {
         $this->io->title('EC-CUBE Installer Interactive Wizard');
@@ -297,6 +302,8 @@ class InstallerCommand extends Command
     }
 
     /**
+     * @return false|string
+     *
      * @throws \Doctrine\DBAL\Exception
      */
     protected function getDatabaseServerVersion(string $databaseUrl): false|string

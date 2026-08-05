@@ -21,6 +21,7 @@ use Eccube\Entity\ClassName;
 use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\ClassNameRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 
 final class ClassCategoryControllerTest extends AbstractAdminWebTestCase
@@ -228,6 +229,7 @@ final class ClassCategoryControllerTest extends AbstractAdminWebTestCase
             ['HTTP_X-Requested-With' => 'XMLHttpRequest']
         );
         $this->assertTrue($client->getResponse()->isSuccessful());
+        /** @var Crawler $crawler */
         $crawler = $client->request(Request::METHOD_GET, $this->generateUrl('admin_product_class_category', ['class_name_id' => 1]));
 
         // チョコ, 抹茶, バニラ sort by rank setup above.
