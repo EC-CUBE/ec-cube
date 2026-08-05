@@ -105,6 +105,44 @@ final class ShippingControllerTest extends AbstractEditControllerTestCase
     }
 
     /**
+     * 出荷編集画面(複数配送対応の ShippingController)で出荷日を手動編集できることを確認するテスト.
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/6528
+     */
+    public function testEditShippingDate()
+    {
+        $Order = $this->createOrder($this->createCustomer());
+        /** @var Shipping $Shipping */
+        $Shipping = $Order->getShippings()->first();
+        $shippingId = $Shipping->getId();
+
+        $shippingFormData = $this->createShippingFormDataForEdit($Shipping);
+        $shippingFormData['shipping_date'] = '2021-05-06T07:08:09';
+
+        $formData['shippings'] = [$shippingFormData];
+        $formData['_token'] = 'dummy';
+        $formData['add_shipping'] = '';
+
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_shipping_edit', ['id' => $Order->getId()]),
+            [
+                'form' => $formData,
+                'mode' => 'register',
+            ]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_shipping_edit', ['id' => $Order->getId()])));
+
+        $expectedShipping = $this->entityManager->find(Shipping::class, $shippingId);
+        $this->assertInstanceOf(Shipping::class, $expectedShipping);
+        // タイムゾーン表現に依存せず, 指し示す時刻(instant)が一致することを確認する.
+        $this->assertSame(
+            (new \DateTime('2021-05-06T07:08:09'))->getTimestamp(),
+            $expectedShipping->getShippingDate()->getTimestamp()
+        );
+    }
+
+    /**
      * 出荷先の追加と削除のテスト
      */
     public function testAddAndDeleteShipping()

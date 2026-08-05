@@ -142,7 +142,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Eccube\\Tests\\": "tests/Eccube/Tests"
+            "Eccube\\Tests\\": "tests/Eccube/Tests",
+            "Eccube\\Rector\\": "rector"
         }
     },
     "scripts": {
