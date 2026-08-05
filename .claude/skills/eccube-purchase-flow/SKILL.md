@@ -240,6 +240,7 @@ class SaleLimitOneValidator extends ItemValidator
 - ❌ PurchaseProcessor の `rollback()` を実装し忘れる → ✅ `prepare()` の逆操作（在庫戻し等）を必ず実装する
 - ❌ 属性方式で実行順を制御しようとする → ✅ 順序が要るなら YAML タグの `priority`（降順）で指定する
 - ❌ (A) YAML タグと (B) 属性を両方付ける → ✅ どちらか一方。コアは YAML、プラグイン/Customize は属性が定石
+- ❌ 送料無料を商品単位の性質として扱う（商品詳細に「この商品は送料無料」と出す、構造化データに `shippingRate: 0` を出す等）→ ✅ `DeliveryFeeFreePreprocessor` は `BaseInfo::getDeliveryFreeAmount()` を `$itemHolder->getTotal()` と、`getDeliveryFreeQuantity()` を `getQuantity()` と比較する **カート全体の合計に対する条件**。カートが確定していない商品ページでは判定できないので、出せない値は出さない
 
 ## 実行・確認方法
 

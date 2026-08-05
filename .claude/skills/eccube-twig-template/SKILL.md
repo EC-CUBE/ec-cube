@@ -98,6 +98,7 @@ public function onTemplateCart(TemplateEvent $event): void
 - ❌ **管理画面テンプレートだから安全**と油断して `|raw` する → ✅ admin 配下も XSS シンク（過去の XSS 修正は管理画面テンプレートに多い）。DB/入力由来の値は admin でも必ずエスケープする
 - ❌ テンプレートイベントにエンティティ永続化など業務処理を書く → ✅ 見た目調整のみ。業務は対応するコントローライベントへ
 - ❌ inline `<script>`（JSON-LD `application/ld+json` 等）に動的値を文字列直書き／素の `json_encode` で埋める → ✅ 商品名・説明中の `</script>` や `"` で XSS・JSON 破壊になる。`json_encode($data, JSON_UNESCAPED_SLASHES｜JSON_HEX_TAG｜JSON_HEX_AMP｜JSON_HEX_APOS｜JSON_HEX_QUOT)` で `<`/`>`/`&` をエスケープする
+- ❌ 管理画面テンプレートの `$('#modal').on('show.bs.modal', ...)` を「Bootstrap 5 は jQuery 非対応だから動かない」と判断して書き換える → ✅ 本体は Bootstrap 5.3 と jQuery を併存させており、BS5 は jQuery があるときイベントを jQuery 側にも発火させる。コアの管理画面テンプレート 10 以上（`Content/layout.twig`・`Order/edit.twig` ほか）がこの書き方で動いている。モーダルの挙動を推測で判断せず、疑うなら実機か E2E で確認する
 
 ## 実行・確認方法
 

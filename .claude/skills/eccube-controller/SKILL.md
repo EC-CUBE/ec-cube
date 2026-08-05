@@ -137,6 +137,7 @@ vendor/bin/php-cs-fixer fix                     # PSR-12 整形・ライセン�
 - ❌ 管理アクションを `%eccube_admin_route%` 配下以外に置く → ✅ admin ファイアウォール配下に置く
 - ❌ 同一アクションで `executePurchaseFlow()` を複数回呼ぶとき 2 回目以降の `FlowResult` を無視する → ✅ 毎回 `hasError()`/`hasWarning()` の分岐を 1 回目と同じに揃える（共通化可）
 - ❌ 配列が来る可能性のあるリクエスト値を `getString()` でスカラーに強制する → ✅ `InputBag` は非スカラーで例外を投げるため強制できない。`all()` で受けて型を検査する
+- ❌ 削除アクションで外部キー違反だけを狙って個別の例外型を catch する → ✅ コアは `catch (\Exception)` で受けて `trans('admin.common.delete_error_foreign_key')` を返す形に統一している（`CategoryController` ほか 10 以上のコントローラ）。例外型を絞る実装は「動作としては正しいがコア非準拠」なので、揃えるかどうかは受入基準で判断する
 
 ## 実行・確認方法
 

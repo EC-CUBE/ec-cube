@@ -42,6 +42,7 @@ description: EC-CUBE 4.4 の E2E テスト（Playwright・`e2e/` 配下）を実
 - ❌ retry でプラグイン/データが残留し「既にインストール済み」で再失敗 → ✅ `beforeEach`/`afterEach` で cleanup（無効化→削除→ディレクトリ削除。`plugin-misc.spec.ts` 修正例）。
 - ❌ パスワードを見た目の文字数で作る → ✅ NFKC 正規化後で 15 文字以上か数える（min15。`[...str.normalize('NFKC')].length` で確認。#6488）。
 - ❌ 新規 `admin-*`/`front-*` spec を作ったのに CI で実行されない → ✅ `.github/workflows/e2e-test.yml` の `suite:` 配列にファイル名（接尾辞 `.spec.ts` 抜き）を追加する。
+- ❌ 無関係な複数スイートが一斉に落ちたのを spec 側の不具合として個別に追う → ✅ 先に **globalSetup のログ**を見る。`setup-fixtures.php` は各ブロックに try-catch を持たない直列スクリプトなので、途中で Fatal になると**以降のフィクスチャが丸ごと未生成**になり、それに依存するスイートが連鎖的に落ちる。しかも `global-setup.ts` は失敗を catch して `Continuing without additional fixtures...` と警告するだけで**実行を止めない**ため、原因が spec 側にあるように見える。ログ末尾に `Fixtures setup complete.` が出ているかで切り分ける（コアの定数削除で `setup-fixtures.php` の置換が 1 箇所漏れ、admin-order / admin-refund-request / front-refund-request が同時に落ちた例がある）。
 
 ## 実行・確認方法
 

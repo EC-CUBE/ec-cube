@@ -111,6 +111,7 @@ if (!class_exists(Example::class)) {
 - ❌ `create_date` / `update_date` を自前の `#[ORM\PrePersist]`（＋`#[ORM\HasLifecycleCallbacks]`）でセット → ✅ コアの `SaveEventSubscriber`（グローバル Doctrine prePersist/preUpdate）が `method_exists` で `setCreateDate`/`setUpdateDate`/`setCreator` を自動セットする（`src/Eccube/Doctrine/EventSubscriber/SaveEventSubscriber.php`）。setter さえ生やせばよく、自前 PrePersist は二重実装になるので書かない
 - ❌ 他エンティティ（特にコアの `Product`/`Customer` 等、自分で制御できない親）への関連で親削除時の挙動を未決定 → ✅ FK は既定で削除を止める（RESTRICT 相当）。未指定だと**退会・商品削除が FK 違反で失敗**したり孤児化する。`onDelete`（`SET NULL`／`CASCADE`）を指定するか、Service・プラグイン disable 等で後始末する（コアは `onDelete` を限定使用し[95 JoinColumn 中 2 件]、多くは Service 側で関連を整理している）
 - ❌ `@deprecated` なゲッタを未使用と判断して削除する → ✅ CSV 出力項目（`dtb_csv`）のアクセサとして現役のことがあり、削除は仕様変更になる。先に CSV 定義と照合する
+- ❌ トレイト拡張・プロキシ絡みの不具合を「手元で再現しないから誤検知」と判断する → ✅ `TraitProxyAttributeDriver` は対象 FQCN が**まだ宣言されていないときだけ** `app/proxy/entity` の生成物を `require_once` する（同一 FQCN を二重宣言して `Cannot redeclare class` になるのを避けるため）。まっさらな状態では修正の有無にかかわらずトレイト由来の列が出るので、不具合はクラスとメタデータがロード済みのときだけ顕在化する。再現するには `getMetadataFor()` などで対象を先にロードした状態を作り、検証のたびに `app/proxy/entity` を消してから試す
 
 ## 実行・確認方法
 
