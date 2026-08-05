@@ -22,6 +22,12 @@ updates:
       # Symfony のメジャーバージョンアップは除外
       - dependency-name: "symfony/*"
         update-types: [ "version-update:semver-major" ]
+      # rector 2.4 以降は同梱の symfony/polyfill-php84 が PHP 8.4 未満で RoundingMode を
+      # class として class_alias する。nanasess/bcmath-polyfill 1.0.2 以前は enum_exists で
+      # 存在判定するため衝突を検知できず、PHP 8.2/8.3 では rector が起動時に fatal になる。
+      # bcmath-polyfill を 1.0.3 以降へ更新したらこの除外と composer.json の上限を解除する。
+      - dependency-name: "rector/rector"
+        versions: [ ">=2.4" ]
     # 所属グループは記載順ではなくパターンの具体性 (specificity) スコアで決まる。
     # dependabot-core の PatternSpecificityCalculator が算出し、スコアが高い方が勝つ。
     #   patterns 未指定 = 500 / "doctrine/*" = 95 / "symfony/*" = 94 / "*" = 1
