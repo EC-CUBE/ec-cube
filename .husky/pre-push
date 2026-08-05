@@ -1,0 +1,50 @@
+#!/usr/bin/env sh
+# Pre-push hook (重い): rector --dry-run と phpstan を push 前に project-wide 実行。
+# push のたびに 1 回。stdin の ref 情報は使わず常に全体を検査する。
+#
+# 実行環境は自動判定: ec-cube コンテナ稼働中なら docker compose exec、
+# 無ければ host の vendor/bin、どちらも無ければ skip。
+# 強制指定: ECCUBE_HOOK_RUNNER=docker|host|skip / バイパス: HUSKY=0 git push
+
+[ "$HUSKY" = "0" ] && exit 0
+
+DC="docker compose"; SVC="ec-cube"
+case "${ECCUBE_HOOK_RUNNER:-auto}" in
+  docker) RUN="$DC exec -T $SVC" ;;
+  host)   RUN="" ;;
+  skip)   exit 0 ;;
+  auto)
+    if $DC exec -T "$SVC" true >/dev/null 2>&1; then RUN="$DC exec -T $SVC"
+    elif command -v php >/dev/null 2>&1 && [ -x vendor/bin/rector ] && [ -x vendor/bin/phpstan ]; then RUN=""
+    else echo "pre-push: no container / no host php+vendor; skip (HUSKY=0 to bypass)"; exit 0
+    fi ;;
+  *) echo "pre-push: invalid ECCUBE_HOOK_RUNNER='$ECCUBE_HOOK_RUNNER' (docker|host|skip|auto)"; exit 1 ;;
+esac
+[ -n "$RUN" ] && echo "pre-push: running in Docker ($SVC)" || echo "pre-push: running on host"
+
+# rector.php は dev の Symfony コンテナ XML (var/cache/dev/Eccube_KernelDevDebugContainer.xml) を
+# 参照する。fresh clone / cache:clear 直後など XML が無い cold 状態だと rector が全ファイルで
+# read error → exit 非ゼロになり push がブロックされる。無ければ dev キャッシュを生成しておく。
+# （cache:warmup では XML が再生成されないため cache:clear を使う）
+CONTAINER_XML="var/cache/dev/Eccube_KernelDevDebugContainer.xml"
+if ! $RUN test -f "$CONTAINER_XML"; then
+  echo "pre-push: dev container XML 不在のため cache:clear --env=dev で生成"
+  if ! $RUN bin/console cache:clear --env=dev; then
+    echo "FAIL: cache:clear（dev コンテナ XML を生成できませんでした）"
+    exit 1
+  fi
+fi
+
+echo "[1/2] rector (dry-run)"
+if ! $RUN vendor/bin/rector process --dry-run --ansi --config=rector.php; then
+  echo "FAIL: Rector で修正点が検出されました。修正: vendor/bin/rector process --config=rector.php"
+  exit 1
+fi
+
+echo "[2/2] phpstan analyze src/"
+if ! $RUN vendor/bin/phpstan analyze src/; then
+  echo "FAIL: PHPStan エラーが検出されました"
+  exit 1
+fi
+
+echo "pre-push: all checks passed"

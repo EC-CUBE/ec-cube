@@ -33,9 +33,10 @@ interface PaymentHandlerRegistryInterface
      * payment_handlers レジストリを連想配列で返す.
      *
      * キーは reverse-domain 形式 (例: "dev.ucp.payment.google_pay")、
-     * 値は当該決済ハンドラの宣言オブジェクト.
+     * 値は当該決済ハンドラの宣言オブジェクトの **配列** (UCP profile schema 準拠・各エントリは
+     * `id`/`version` 必須)。
      *
-     * @return array<string, array<string, mixed>> reverse-domain キーのレジストリ (既定は空)
+     * @return array<string, list<array<string, mixed>>> reverse-domain キーのレジストリ (既定は空)
      */
     public function collect(): array;
 }

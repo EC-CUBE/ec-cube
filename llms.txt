@@ -32,7 +32,7 @@ bin/console eccube:install
 - **ORM**: Doctrine ORM 3.x with Doctrine DBAL 4.x
 - **Template Engine**: Twig 3.x
 - **Database**: PostgreSQL 13–18 or MySQL 8.4 LTS
-- **Frontend**: Sass (SCSS), webpack, Bootstrap 5.3, jQuery 4.x
+- **Frontend**: Sass (SCSS), esbuild, Bootstrap 5.3, jQuery 4.x
 - **License**: GPL-2.0 / proprietary dual license
 
 ### Directory Structure

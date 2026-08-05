@@ -1,4 +1,4 @@
-global.$ = global.jQuery = require('jquery');
+window.$ = window.jQuery = require('jquery');
 
 require('slick-carousel');
 require('slick-carousel/slick/slick.css');

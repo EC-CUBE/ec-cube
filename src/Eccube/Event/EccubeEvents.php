@@ -504,6 +504,13 @@ final class EccubeEvents
     public const FRONT_SHOPPING_SHIPPING_EDIT_INITIALIZE = 'front.shopping.shipping.edit.initialize';
     public const FRONT_SHOPPING_SHIPPING_EDIT_COMPLETE = 'front.shopping.shipping.edit.complete';
 
+    // shippingEditCustomerAddress
+    public const FRONT_SHOPPING_SHIPPING_CUSTOMER_ADDRESS_EDIT_INITIALIZE = 'front.shopping.shipping.customer_address.edit.initialize';
+    public const FRONT_SHOPPING_SHIPPING_CUSTOMER_ADDRESS_EDIT_COMPLETE = 'front.shopping.shipping.customer_address.edit.complete';
+
+    // shippingDeleteCustomerAddress
+    public const FRONT_SHOPPING_SHIPPING_CUSTOMER_ADDRESS_DELETE_COMPLETE = 'front.shopping.shipping.customer_address.delete.complete';
+
     // customer
     public const FRONT_SHOPPING_CUSTOMER_INITIALIZE = 'front.shopping.customer.initialize';
 
@@ -547,4 +554,32 @@ final class EccubeEvents
     public const MAIL_PASSWORD_RESET_COMPLETE = 'mail.password.reset.complete';
     public const MAIL_SHIPPING_NOTIFY = 'mail.shipping.notify';
     public const MAIL_CUSTOMER_CHANGE_NOTIFY = 'mail.customer.change.notify';
+    public const MAIL_REFUND_REQUEST = 'mail.refund_request';
+
+    /**
+     * Mypage RefundRequestController
+     */
+    // index（申請フォーム）
+    public const FRONT_MYPAGE_REFUND_REQUEST_INDEX_INITIALIZE = 'front.mypage.refund_request.index.initialize';
+    public const FRONT_MYPAGE_REFUND_REQUEST_INDEX_COMPLETE = 'front.mypage.refund_request.index.complete';
+    // confirm（確認画面）
+    public const FRONT_MYPAGE_REFUND_REQUEST_CONFIRM_INITIALIZE = 'front.mypage.refund_request.confirm.initialize';
+    public const FRONT_MYPAGE_REFUND_REQUEST_CONFIRM_COMPLETE = 'front.mypage.refund_request.confirm.complete';
+    // itemHistory（商品別申請履歴）
+    public const FRONT_MYPAGE_REFUND_REQUEST_ITEM_HISTORY_INITIALIZE = 'front.mypage.refund_request.item_history.initialize';
+
+    /**
+     * Admin RefundRequestController
+     */
+    // index（一覧・検索）
+    public const ADMIN_REFUND_REQUEST_INDEX_INITIALIZE = 'admin.refund_request.index.initialize';
+    public const ADMIN_REFUND_REQUEST_INDEX_SEARCH = 'admin.refund_request.index.search';
+    // edit（詳細・編集）
+    public const ADMIN_REFUND_REQUEST_EDIT_INITIALIZE = 'admin.refund_request.edit.initialize';
+    public const ADMIN_REFUND_REQUEST_EDIT_COMPLETE = 'admin.refund_request.edit.complete';
+
+    /**
+     * RefundRequest ステータス変更
+     */
+    public const REFUND_REQUEST_STATUS_CHANGE = 'refund_request.status.change';
 }

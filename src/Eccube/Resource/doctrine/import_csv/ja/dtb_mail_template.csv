@@ -8,3 +8,4 @@ id,creator_id,name,file_name,mail_subject,deletable,create_date,update_date,disc
 "7",,"パスワードリマインダー","Mail/reset_complete_mail.twig","パスワード変更のお知らせ",0,"2017-03-07 10:14:52","2017-03-07 10:14:52","mailtemplate"
 "8",,"出荷通知メール","Mail/shipping_notify.twig","商品出荷のお知らせ",0,"2017-03-07 10:14:52","2017-03-07 10:14:52","mailtemplate"
 "9",,"会員情報変更通知メール","Mail/customer_change_notify.twig","会員情報変更のお知らせ",0,"2017-03-07 10:14:52","2017-03-07 10:14:52","mailtemplate"
+"10",,"返品申請通知メール","Mail/refund_request_notify.twig","返品申請を受け付けました",0,"2017-03-07 10:14:52","2017-03-07 10:14:52","mailtemplate"
