@@ -24,7 +24,7 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Context\ExecutionContext;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class Step4Type extends AbstractType
 {
@@ -129,14 +129,14 @@ class Step4Type extends AbstractType
     }
 
     /**
-     * @param array<mixed> $data
-     * @param mixed|null $param
+     * Assert\Callback から各フィールドの値が渡されるため, $data はスカラー値となる.
      */
-    public function validate(array $data, ExecutionContext $context, mixed $param = null): void
+    public function validate(mixed $data, ExecutionContextInterface $context, mixed $param = null): void
     {
-        $parameters = $this->requestStack->getCurrentRequest()->get('install_step4');
-        if ($parameters['database'] != 'pdo_sqlite') {
-            $context->getValidator()->validate($data, [
+        $parameters = $this->requestStack->getCurrentRequest()?->get('install_step4');
+        if (($parameters['database'] ?? null) !== 'pdo_sqlite') {
+            // inContext() を経由しないと違反が現在のコンテキストに追加されない.
+            $context->getValidator()->inContext($context)->validate($data, [
                 new Assert\NotBlank(),
             ]);
         }

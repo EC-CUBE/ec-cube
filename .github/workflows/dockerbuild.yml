@@ -1,6 +1,11 @@
 name: Testing dockerbuild
 on:
   workflow_call:
+    inputs:
+      platforms:
+        description: 'ビルド対象プラットフォームの JSON 配列。CI (PR/push) は amd64 のみ'
+        type: string
+        default: '["linux/amd64"]'
   release:
     types: [ published ]
 env:
@@ -9,14 +14,20 @@ env:
 jobs:
   dockerbuild:
     name: dockerbuild
-    runs-on: ${{ matrix.operating-system }}
+    # プラットフォームごとのネイティブランナー。 QEMU エミュレーションは使わない
+    # (arm64 を x86 上でエミュレートすると拡張のコンパイルで 20〜30 分かかるため)。
+    # include で対応付けると、 amd64 のみの CI 時に arm64 の include が
+    # どの組み合わせにも一致せず空のジョブを生むため、 式で解決する。
+    runs-on: ${{ matrix.platform == 'linux/arm64' && 'ubuntu-24.04-arm' || 'ubuntu-24.04' }}
     permissions:
       contents: read
       packages: write
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ ubuntu-24.04 ]
+        # release 公開時のみ arm64 を含める。 workflow_call (CI) は既定の amd64 のみで、
+        # ジョブ数・所要時間は従来と変わらない。
+        platform: ${{ fromJSON(inputs.platforms || '["linux/amd64", "linux/arm64"]') }}
         php: [ '8.2', '8.3', '8.4', '8.5' ]
         db: [ pgsql ]
         include:
@@ -39,18 +50,130 @@ jobs:
 
     steps:
       - name: downcase REPO
+        env:
+          PLATFORM: ${{ matrix.platform }}
         run: |
           echo "IMAGE_NAME=${GITHUB_REPOSITORY,,}-php" >> ${GITHUB_ENV}
+          echo "PLATFORM_PAIR=${PLATFORM//\//-}" >> ${GITHUB_ENV}
       - name: Checkout
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
-      ## Used when creating multi-platform images
-      # - name: Set up QEMU
-      #   uses: docker/setup-qemu-action@v2
-      # - name: Set up Docker Buildx
-      #   uses: docker/setup-buildx-action@v2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v6
+        with:
+          persist-credentials: false
+
+      # ダイジェスト push (push-by-digest) は buildx の既定ドライバでは使えないため
+      # docker-container ドライバのビルダーを用意する。 各アーキはネイティブランナーで
+      # ビルドするため QEMU (docker/setup-qemu-action) は不要。
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f  # v3
 
       - name: Login to GitHub Container Registry
         if: github.event_name != 'pull_request'
+        uses: docker/login-action@af1e73f918a031802d376d3c8bbc3fe56130a9b0  # v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@80c7e94dd9b9319bd5eb7a0e0fe9291e23a2a2e9  # v6
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            # set latest tag for default branch
+            type=raw,value=${{ matrix.php }}-apache,prefix=,enable={{is_default_branch}}
+            type=ref,event=branch,prefix=${{ matrix.php }}-apache-
+            type=ref,event=tag,prefix=${{ matrix.php }}-apache-
+            type=ref,event=pr,prefix=${{ matrix.php }}-apache-pr-
+
+      # load (docker へのロード) は単一プラットフォームでしか行えないため、
+      # 起動確認は amd64 (ランナーと同一アーキ) でのみ実施する。
+      - name: Build and export to Docker
+        if: matrix.platform == 'linux/amd64'
+        uses: docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf  # v7
+        with:
+          context: .
+          load: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            TAG=${{ matrix.tag }}
+            EXT_INSTALL_ARGS=${{ matrix.ext_install_args }}
+
+      - name: Setup to EC-CUBE
+        if: matrix.platform == 'linux/amd64'
+        env:
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          REGISTRY: ${{ env.REGISTRY }}
+          IMAGE_NAME: ${{ env.IMAGE_NAME }}
+          TAG: ${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
+        run: |
+          docker compose -f docker-compose.yml -f docker-compose.pgsql.yml up -d --wait
+          sed -i 's!APP_ENV: "dev"!APP_ENV: "prod"!g' docker-compose.yml
+          sed -i 's!APP_DEBUG: 1!APP_DEBUG: 0!g' docker-compose.yml
+          docker compose -f docker-compose.yml -f docker-compose.pgsql.yml up -d --wait
+
+      ## see https://docs.github.com/ja/packages/managing-github-packages-using-github-actions-workflows/publishing-and-installing-a-package-with-github-actions#publishing-a-package-using-an-action
+
+      # アーキごとにタグ無しでダイジェストのみ push し、 merge ジョブでマニフェストを束ねる。
+      - name: Build and push by digest
+        id: build
+        if: github.event_name != 'pull_request'
+        uses: docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf  # v7
+        with:
+          context: .
+          platforms: ${{ matrix.platform }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            TAG=${{ matrix.tag }}
+            EXT_INSTALL_ARGS=${{ matrix.ext_install_args }}
+          outputs: type=image,name=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }},push-by-digest=true,name-canonical=true,push=true
+
+      - name: Export digest
+        if: github.event_name != 'pull_request'
+        env:
+          DIGEST: ${{ steps.build.outputs.digest }}
+        run: |
+          mkdir -p /tmp/digests
+          touch "/tmp/digests/${DIGEST#sha256:}"
+
+      - name: Upload digest
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
+        with:
+          name: digests-${{ matrix.php }}-${{ env.PLATFORM_PAIR }}
+          path: /tmp/digests/*
+          if-no-files-found: error
+          retention-days: 1
+
+  # ダイジェストをマニフェストリストに束ねてタグを付ける。
+  # 単一プラットフォーム (CI) でも同じ経路を通り、 結果は従来と同じタグになる。
+  merge:
+    name: merge ${{ matrix.php }}
+    needs: dockerbuild
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ '8.2', '8.3', '8.4', '8.5' ]
+
+    steps:
+      - name: downcase REPO
+        run: echo "IMAGE_NAME=${GITHUB_REPOSITORY,,}-php" >> ${GITHUB_ENV}
+
+      - name: Download digests
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c  # v8
+        with:
+          path: /tmp/digests
+          pattern: digests-${{ matrix.php }}-*
+          merge-multiple: true
+
+      - name: Login to GitHub Container Registry
         uses: docker/login-action@650006c6eb7dba73a995cc03b0b2d7f5ca915bee  # v4
         with:
           registry: ghcr.io
@@ -69,41 +192,18 @@ jobs:
             type=ref,event=tag,prefix=${{ matrix.php }}-apache-
             type=ref,event=pr,prefix=${{ matrix.php }}-apache-pr-
 
-      - name: Build and export to Docker
-        uses: docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf  # v7
-        with:
-          context: .
-          load: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          build-args: |
-            TAG=${{ matrix.tag }}
-            EXT_INSTALL_ARGS=${{ matrix.ext_install_args }}
-
-      - name: Setup to EC-CUBE
+      - name: Create manifest list and push
+        working-directory: /tmp/digests
         env:
-          DATABASE_URL: ${{ matrix.database_url }}
-          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
-          REGISTRY: ${{ env.REGISTRY }}
-          IMAGE_NAME: ${{ env.IMAGE_NAME }}
-          TAG: ${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
+          IMAGE: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
         run: |
-          docker compose -f docker-compose.yml -f docker-compose.pgsql.yml up -d --wait
-          sed -i 's!APP_ENV: "dev"!APP_ENV: "prod"!g' docker-compose.yml
-          sed -i 's!APP_DEBUG: 1!APP_DEBUG: 0!g' docker-compose.yml
-          docker compose -f docker-compose.yml -f docker-compose.pgsql.yml up -d --wait
+          # shellcheck disable=SC2046
+          docker buildx imagetools create \
+            $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "${DOCKER_METADATA_OUTPUT_JSON}") \
+            $(printf "${IMAGE}@sha256:%s " *)
 
-      ## see https://docs.github.com/ja/packages/managing-github-packages-using-github-actions-workflows/publishing-and-installing-a-package-with-github-actions#publishing-a-package-using-an-action
-
-      - name: Push Docker image
-        if: github.event_name != 'pull_request'
-        uses: docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf  # v7
-        with:
-          context: .
-          push: true
-          # platforms: linux/amd64,linux/arm64
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          build-args: |
-            TAG=${{ matrix.tag }}
-            EXT_INSTALL_ARGS=${{ matrix.ext_install_args }}
+      - name: Inspect manifest
+        env:
+          VERSION: ${{ steps.meta.outputs.version }}
+          IMAGE: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+        run: docker buildx imagetools inspect "${IMAGE}:${VERSION}"

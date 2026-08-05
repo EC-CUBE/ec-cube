@@ -277,6 +277,32 @@ front.mypage.customer.notify_title: 会員情報編集
 front.mypage.delivery.notify_title: お届け先情報編集
 
 #------------------------------------------------------------------------------------
+# 返品申請（フロント）
+#------------------------------------------------------------------------------------
+front.mypage.refund_request.title: 返品申請
+front.mypage.refund_request.confirm_title: 返品申請内容確認
+front.mypage.refund_request.complete_title: 返品申請完了
+front.mypage.refund_request.item_history_title: 返品申請履歴
+front.mypage.refund_request.quantity: 返品希望数量
+front.mypage.refund_request.quantity_max: "最大 %max% 個まで申請できます"
+front.mypage.refund_request.reason: 返品理由
+front.mypage.refund_request.reason_placeholder: 返品理由を入力してください
+front.mypage.refund_request.files: 証拠ファイル
+front.mypage.refund_request.files_help: "画像（JPEG, PNG, GIF, WebP）または動画（MP4, MOV, AVI）を最大3件まで添付できます。1ファイル15MBまで。"
+front.mypage.refund_request.confirm: 確認画面へ
+front.mypage.refund_request.submit: 申請する
+front.mypage.refund_request.complete_message: 返品申請を受け付けました
+front.mypage.refund_request.complete_description: 返品申請の内容を確認のうえ、ご連絡いたします。しばらくお待ちください。
+front.mypage.refund_request.back_to_mypage: マイページへ戻る
+front.mypage.refund_request.request_date: 申請日時
+front.mypage.refund_request.status: ステータス
+front.mypage.refund_request.no_history: 返品申請履歴はありません。
+front.mypage.refund_request.apply: 返品申請
+front.mypage.refund_request.history: 返品申請履歴
+front.mypage.refund_request.error: 返品申請の処理に失敗しました。
+front.mypage.refund_request.invalid_token: 不正なリクエストです。お手数ですがやり直してください。
+
+#------------------------------------------------------------------------------------
 # 商品
 #------------------------------------------------------------------------------------
 
@@ -379,6 +405,7 @@ front.shopping.nonmember: お客様情報の入力
 front.shopping.shipping_edit_title_nomember: 商品購入/お届け先の変更
 front.shopping.shipping_edit_header_customer: お届け先の追加
 front.shopping.shipping_edit_header_nonmember: お届け先の変更
+front.shopping.shipping_customer_address_edit_title: お届け先の変更
 front.shopping.error: 購入エラー
 front.shopping.order_error: 購入処理でエラーが発生しました。
 front.shopping.system_error: 購入処理で予期しないエラーが発生しました。恐れ入りますがお問い合わせページよりご連絡ください。
@@ -680,6 +707,8 @@ admin.product.delivery_fee: 商品送料
 admin.product.tax_rate: 税率
 admin.product.free_area: フリーエリア
 admin.product.free_area__card_title: フリーエリア
+admin.product.order_memo: 受注管理用メモ
+admin.product.order_memo__card_title: 受注管理用メモ
 admin.product.delete_flag: 商品削除フラグ
 admin.product.search_category: カテゴリ検索
 admin.product.save_tag: タグ登録
@@ -751,6 +780,8 @@ admin.product.product_csv.keyword_col: 検索ワード
 admin.product.product_csv.keyword_description: ""
 admin.product.product_csv.free_area_col: フリーエリア
 admin.product.product_csv.free_area_description: ""
+admin.product.product_csv.order_memo_col: 受注管理用メモ
+admin.product.product_csv.order_memo_description: 受注時に注文明細へコピーされる管理用メモです。顧客には表示されません。
 admin.product.product_csv.delete_flag_col: 商品削除フラグ
 admin.product.product_csv.delete_flag_description: 0:登録 1:削除を指定します。未指定の場合、0として扱います。
 admin.product.product_csv.product_image_col: 商品画像
@@ -980,6 +1011,35 @@ admin.order.shipping_csv.tracking_number_col: お問い合わせ番号
 admin.order.shipping_csv.tracking_number_description: 半角英数字かハイフンのみで設定
 admin.order.shipping_csv.shipping_date_col: 出荷日
 admin.order.shipping_csv.shipping_date_description: "出荷日を「YYYY-MM-DD」の形式で設定"
+
+#------------------------------------------------------------------------------------
+# 返品申請（管理画面）
+#------------------------------------------------------------------------------------
+admin.order.refund_request.list_title: 返品申請管理
+admin.order.refund_request.edit_title: 返品申請詳細
+admin.order.refund_request.detail: 申請内容
+admin.order.refund_request.operation: 操作
+admin.order.refund_request.id: 申請ID
+admin.order.refund_request.order_no: 注文番号
+admin.order.refund_request.customer: 会員
+admin.order.refund_request.product: 商品
+admin.order.refund_request.status: ステータス
+admin.order.refund_request.quantity: 返品数量
+admin.order.refund_request.reason: 返品理由
+admin.order.refund_request.create_date: 申請日時
+admin.order.refund_request.create_date__start: 申請日（開始）
+admin.order.refund_request.create_date__end: 申請日（終了）
+admin.order.refund_request.update_date: 更新日時
+admin.order.refund_request.update_date__start: 更新日（開始）
+admin.order.refund_request.update_date__end: 更新日（終了）
+admin.order.refund_request.files: 添付ファイル
+admin.order.refund_request.admin_note: 管理者メモ
+admin.order.refund_request.transition: ステータス変更
+admin.order.refund_request.transition_placeholder: -- 変更なし --
+admin.order.refund_request.transition_error: ステータスの変更に失敗しました。
+admin.order.refund_request.back_to_list: 返品申請一覧へ戻る
+admin.order.refund_request.multi_search_label: 申請ID・注文番号・会員ID・会員名で検索
+admin.order.refund_request.csv_export: CSVエクスポート
 
 #------------------------------------------------------------------------------------
 # 会員
@@ -1424,7 +1484,10 @@ admin.setting.system.security.ip_limit_invalid_ipv4: "%ip%はIPv4アドレスで
 admin.setting.system.security.ip_limit_invalid_ip_and_submask: "%ip%はIPv4/ビットマスクの形式ではありません。"
 admin.setting.system.security.ip_limit_invalid_https: "httpの場合には設定できません。"
 admin.setting.system.security.admin_url_warning: 管理画面URLは、セキュリティのため推測されにくいものを設定してください。
-admin.setting.system.security.not_found_env_file: .envファイルが見つかりません。.envを利用していない場合はセキュリティ設定を管理画面から変更できません。
+admin.system.env.ineffective.not_found: '.env ファイルが存在しないため、この設定は管理画面から変更できません。サーバーの環境変数を直接設定してください。'
+admin.system.env.ineffective.not_writable: '.env ファイルに書き込み権限がないため、この設定は管理画面から変更できません。.env ファイルの書き込み権限を確認してください。'
+admin.system.env.ineffective.local_php: '.env.local.php が存在するため、.env への変更は反映されず、管理画面からは変更できません。サーバー側で .env を更新してから composer dump-env を再実行するか、.env.local.php を削除して管理画面からの変更を再開してください。'
+admin.system.env.ineffective.overridden: 'この設定の環境変数（%keys%）が OS のプロセス環境変数またはカスケードファイル（.env.local 等）で上書きされているため、.env への変更は反映されません。サーバーの環境変数を直接変更してください。'
 admin.setting.system.security.trusted_hosts: 信頼できるホスト名
 admin.setting.system.security.trusted_hosts_sample: ^example\.com$,^example\.org$
 admin.setting.system.security.trusted_hosts_description: |
@@ -1511,7 +1574,6 @@ admin.store.template.delete_error__current_template: 設定中のテンプレー
 admin.store.template.template_code_already_exists: テンプレートコードは既に利用されています
 admin.store.template.upload_failed: アップロードに失敗しました
 admin.store.template.invalid_upload_file: ファイルの拡張子に誤りがあります
-admin.store.template.env_override_warning: "ECCUBE_TEMPLATE_CODE が環境変数として設定されているため、.env への変更は反映されません。テンプレートを切り替えるには環境変数の ECCUBE_TEMPLATE_CODE を変更してください。"
 admin.store.plugin: プラグイン
 admin.store.plugin.plugin_owners_install: プラグインを探す
 admin.store.plugin.plugin_list: プラグイン一覧
@@ -1537,6 +1599,10 @@ admin.store.setting.api_key_tooltip: 購入したプラグイン等のインス�
 admin.store.setting.get_api_key: 認証キー新規発行
 admin.store.setting.get_api_key_info: 認証キーの新規発行と登録を行います。
 admin.store.setting.get_api_key_modal_info: 新しい認証キーを発行します。既に認証キーがある場合は、発行せずに既存のキーを設定してください。
+admin.store.setting.get_api_key_confirm_title: ご確認ください
+admin.store.setting.get_api_key_confirm_info: オーナーズストアで既に認証キーを発行していませんか？認証キーの複数持ちを防ぐため、新規発行の前に一度ご確認ください。
+admin.store.setting.get_api_key_confirm_link: オーナーズストアで確認する
+admin.store.setting.get_api_key_confirm_proceed: 発行手続きへ進む
 admin.store.setting.captcha_message: 画像に表示されている文字を入力してください。
 admin.store.setting.php_path_setting: PHPパスの設定
 admin.store.setting.php_path: PHPパス
@@ -1741,6 +1807,7 @@ tooltip.product.sale_limit: 購入者が一度に購入できる個数を制限�
 tooltip.product.delivery_duration: 発送日の目安期間を商品ごとに登録できます。
 tooltip.product.product_class: この商品に設定された規格を確認・管理できます。
 tooltip.product.free_area: 商品詳細ページに入力内容が表示されます。表示位置はデザインテンプレートによって異なります。
+tooltip.product.order_memo: 受注時に注文明細へコピーされる管理用メモです。顧客には表示されません。
 tooltip.product.shop_memo: 店舗用のメモ欄です。フロント画面には表示されません。
 tooltip.product.backend_name: 管理者用に別名を登録しておくことができます（例：規格名：サイズ　管理名：サイズ（服）、サイズ（靴）等 ）。フロント画面には表示されません。
 tooltip.product.csv_upload: 所定の型のCSVデータを用いて商品を一括で登録することができます。

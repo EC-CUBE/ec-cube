@@ -39,17 +39,11 @@ class LoginHistory extends AbstractEntity
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $client_ip = null;
 
-    /**
-     * @var \DateTime
-     */
     #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
-    private $create_date;
+    private ?\DateTime $create_date = null;
 
-    /**
-     * @var \DateTime
-     */
     #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
-    private $update_date;
+    private ?\DateTime $update_date = null;
 
     #[ORM\ManyToOne(targetEntity: LoginHistoryStatus::class)]
     #[ORM\JoinColumn(name: 'login_history_status_id', referencedColumnName: 'id', nullable: false)]
