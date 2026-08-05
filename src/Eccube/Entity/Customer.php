@@ -106,10 +106,10 @@ class Customer extends AbstractEntity implements UserInterface, PasswordAuthenti
     private ?\DateTime $last_buy_date = null;
 
     #[ORM\Column(name: 'buy_times', type: Types::DECIMAL, precision: 10, scale: 0, nullable: true, options: ['unsigned' => true, 'default' => 0])]
-    private ?string $buy_times = '0';
+    private ?string $buy_times;
 
     #[ORM\Column(name: 'buy_total', type: Types::DECIMAL, precision: 12, scale: 2, nullable: true, options: ['unsigned' => true, 'default' => 0])]
-    private ?string $buy_total = '0';
+    private ?string $buy_total;
 
     #[ORM\Column(name: 'note', type: Types::STRING, length: 4000, nullable: true)]
     private ?string $note = null;
@@ -423,9 +423,6 @@ class Customer extends AbstractEntity implements UserInterface, PasswordAuthenti
         return $this->birth;
     }
 
-    /**
-     * @return $this
-     */
     public function setPlainPassword(?string $password): static
     {
         // NIST SP 800-63B-4 に従い, 保存時とログイン照合時で表記ゆれを統一するため NFKC 正規化する.

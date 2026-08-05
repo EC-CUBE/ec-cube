@@ -73,7 +73,7 @@ class OutputParser
     public static function parseConfig(string $output): ?array
     {
         $rowArray = explode(PHP_EOL, str_replace('\r\n', PHP_EOL, $output));
-        $rowArray = array_filter($rowArray, fn ($line) => !preg_match('/^<warning>.*/', (string) $line));
+        $rowArray = array_filter($rowArray, fn ($line) => !preg_match('/^<warning>.*/', $line));
 
         return $rowArray ? json_decode(array_shift($rowArray), true) : [];
     }
@@ -141,7 +141,7 @@ class OutputParser
     public static function parseComposerVersion(string $output): ?string
     {
         $rowArray = explode(PHP_EOL, str_replace('\r\n', PHP_EOL, $output));
-        $rowArray = array_filter($rowArray, fn ($line) => preg_match('/^Composer */', (string) $line));
+        $rowArray = array_filter($rowArray, fn ($line) => preg_match('/^Composer */', $line));
 
         return array_shift($rowArray);
     }

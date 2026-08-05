@@ -65,14 +65,6 @@ final class ShoppingControllerWithMultipleTest extends AbstractShoppingControlle
     }
 
     /**
-     * tearDown: rollback and clear mail
-     */
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-    }
-
-    /**
      * カート→購入確認画面→複数配送設定画面→購入確認画面→完了画面
      */
     public function testCompleteWithLogin()

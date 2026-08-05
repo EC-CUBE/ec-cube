@@ -24,7 +24,6 @@ use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\OrderPdfRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
-use Faker\Generator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\DomCrawler\Form;
@@ -80,9 +79,6 @@ final class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $Order = $this->createOrderForSearch();
         $Shippings = $Order->getShippings();
         $shippingId = $Shippings[0]->getId();
-        /**
-         * @var Crawler
-         */
         $crawler = $this->client->request(
             Request::METHOD_GET,
             $this->generateUrl('admin_order')
@@ -104,9 +100,6 @@ final class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $Shippings = $Order->getShippings();
         $shippingId = $Shippings[0]->getId();
 
-        /**
-         * @var Crawler
-         */
         $crawler = $this->client->request(Request::METHOD_POST,
             $this->generateUrl('admin_order_export_pdf'),
             [
@@ -131,9 +124,6 @@ final class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $Shippings = $Order->getShippings();
         $shippingId = $Shippings[0]->getId();
 
-        /**
-         * @var Crawler
-         */
         $crawler = $this->client->request(Request::METHOD_POST,
             $this->generateUrl('admin_order_export_pdf'),
             [
@@ -143,9 +133,6 @@ final class OrderPdfControllerTest extends AbstractAdminWebTestCase
 
         $form = $this->getForm($crawler);
 
-        /**
-         * @var Generator
-         */
         $faker = $this->getFaker();
         $form['order_pdf[title]'] = $faker->text(50);
         $form['order_pdf[message1]'] = $faker->text(30);
@@ -185,9 +172,6 @@ final class OrderPdfControllerTest extends AbstractAdminWebTestCase
     {
         $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_order_export_pdf'));
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order')));
-        /**
-         * @var Crawler
-         */
         $crawler = $this->client->followRedirect();
 
         $html = $crawler->filter('.alert')->html();
@@ -228,9 +212,6 @@ final class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $this->assertStringContainsString('ご確認くださいますよう、お願いいたします。', $html);
 
         $form = $this->getForm($crawler);
-        /**
-         * @var Generator
-         */
         $faker = $this->getFaker();
         $form["$field"] = $faker->text(1000);
         $crawler = $client->submit($form);
@@ -300,9 +281,6 @@ final class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $Shippings = $Order->getShippings();
         $shippingId = $Shippings[0]->getId();
 
-        /**
-         * @var Generator
-         */
         $faker = $this->getFaker();
         $adminTest = $this->createMember();
 
@@ -368,9 +346,6 @@ final class OrderPdfControllerTest extends AbstractAdminWebTestCase
             ]
         );
 
-        /**
-         * @var Form
-         */
         $form = $this->getForm($crawler);
         // fields set to empty.
         $form->setValues([

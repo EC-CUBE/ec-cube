@@ -225,8 +225,6 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
 
     /**
      * Set total.
-     *
-     * @return $this
      */
     public function setTotalPrice(string $total_price): static
     {
@@ -244,8 +242,6 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
      * Alias of setTotalPrice.
      *
      * @param string $total
-     *
-     * @return $this
      */
     #[\Override]
     public function setTotal($total): static
@@ -300,8 +296,6 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
      * {@inheritdoc}
      *
      * @param string $total
-     *
-     * @return $this
      */
     #[\Override]
     public function setDeliveryFeeTotal($total): static
@@ -390,8 +384,6 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
      * {@inheritdoc}
      *
      * @param string $total
-     *
-     * @return $this
      */
     #[\Override]
     public function setDiscount($total): static
@@ -404,8 +396,6 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
      * {@inheritdoc}
      *
      * @param string $total
-     *
-     * @return $this
      */
     #[\Override]
     public function setCharge($total): static
@@ -418,8 +408,6 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
      * {@inheritdoc}
      *
      * @param string $total
-     *
-     * @return $this
      *
      * @deprecated
      */
