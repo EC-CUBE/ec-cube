@@ -13,6 +13,7 @@
 
 namespace Eccube\Service;
 
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -28,32 +29,60 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class SiteStructuredDataService
 {
+    use StructuredDataDescriptionTrait;
+
     /**
-     * ロゴに用いるファビコン画像ファイル（user_data 配下）.
+     * ロゴに用いる画像ファイル（帳票 PDF と共通の店舗ロゴ）.
+     *
+     * ファビコン（ICO）は Google Images の対応形式に含まれないため使用しない.
      */
-    private const LOGO_FILE = 'assets/img/common/favicon.ico';
+    private const LOGO_FILE = 'assets/pdf/logo.png';
 
     public function __construct(
         private readonly UrlGeneratorInterface $urlGenerator,
         private readonly Packages $packages,
+        private readonly EccubeConfig $eccubeConfig,
     ) {
     }
 
     /**
-     * サイト共通の JSON-LD 構造（WebSite。author に Organization を内包）を組み立てて返す.
+     * サイト共通の JSON-LD 構造を組み立てて返す.
+     *
+     * WebSite と Organization は入れ子にせず `@graph` で並列のトップレベルノードとして出力し,
+     * `WebSite.publisher` から `@id` で Organization を参照する
+     * （schema.org の `author` は「作品の著者」であり、サイトを発行している組織は `publisher` が適切.
+     * また `@context` を `@graph` の外側に 1 つだけ置くことで重複定義も避ける）.
      *
      * @return array<string, mixed>
      */
     public function createWebSiteJsonLd(BaseInfo $BaseInfo): array
     {
-        $data = [
+        return [
             '@context' => 'https://schema.org',
+            '@graph' => [
+                $this->createWebSiteNode($BaseInfo),
+                $this->createOrganizationJsonLd($BaseInfo),
+            ],
+        ];
+    }
+
+    /**
+     * WebSite ノードを組み立てて返す（`@context` は持たない）.
+     *
+     * @return array<string, mixed>
+     */
+    private function createWebSiteNode(BaseInfo $BaseInfo): array
+    {
+        $siteUrl = $this->generateAbsoluteUrl('homepage');
+
+        $data = [
             '@type' => 'WebSite',
+            '@id' => $siteUrl.'#website',
             'name' => (string) $BaseInfo->getShopName(),
         ];
         $this->addIfNotEmpty($data, 'alternateName', $BaseInfo->getShopNameEng());
-        $data['url'] = $this->generateAbsoluteUrl('homepage');
-        $this->addIfNotEmpty($data, 'description', $BaseInfo->getGoodTraded());
+        $data['url'] = $siteUrl;
+        $this->addIfNotEmpty($data, 'description', $this->normalizeDescription($BaseInfo->getGoodTraded()));
         $data['potentialAction'] = [
             '@type' => 'SearchAction',
             'target' => [
@@ -62,36 +91,43 @@ class SiteStructuredDataService
             ],
             'query-input' => 'required name=search_term_string',
         ];
-        $data['author'] = $this->createOrganizationJsonLd($BaseInfo);
+        $data['publisher'] = ['@id' => $siteUrl.'#organization'];
 
         return $data;
     }
 
     /**
-     * Organization の JSON-LD 構造を組み立てて返す.
+     * Organization の JSON-LD 構造を組み立てて返す（`@context` は持たない）.
      *
      * @return array<string, mixed>
      */
     public function createOrganizationJsonLd(BaseInfo $BaseInfo): array
     {
+        $siteUrl = $this->generateAbsoluteUrl('homepage');
+
         $data = [
-            '@context' => 'https://schema.org',
             '@type' => 'Organization',
-            'url' => $this->generateAbsoluteUrl('homepage'),
+            '@id' => $siteUrl.'#organization',
+            'url' => $siteUrl,
             'logo' => [
                 '@type' => 'ImageObject',
-                'contentUrl' => $this->generateAbsoluteAssetUrl(self::LOGO_FILE, 'user_data'),
+                'contentUrl' => $this->buildLogoUrl(),
             ],
             'name' => (string) $BaseInfo->getShopName(),
         ];
         $this->addIfNotEmpty($data, 'alternateName', $BaseInfo->getShopNameEng());
         $this->addIfNotEmpty($data, 'legalName', $BaseInfo->getCompanyName());
-        $this->addIfNotEmpty($data, 'description', $BaseInfo->getMessage());
-        $this->addIfNotEmpty($data, 'email', $BaseInfo->getEmail01());
+        $this->addIfNotEmpty($data, 'description', $this->normalizeDescription($BaseInfo->getMessage()));
+        // email01 は送信元(From)かつ全送信メールの BCC 先で、送信専用や店舗内部の運用アドレスが
+        // 入る前提の項目なので公開しない。公開して良い連絡先は email02（問い合わせ専用）。
+        $this->addIfNotEmpty($data, 'email', $BaseInfo->getEmail02());
 
+        // phone_number は PhoneNumberType の TruncateHyphenListener と Assert\Type('digit') により
+        // ハイフンなしの数字列（例 0312345678）で保存される。国番号 +81 を前置すると国内トランク
+        // プレフィックスの 0 が残った不正な値（+81-0312345678）になるため、保存値をそのまま出力する。
         $phoneNumber = $BaseInfo->getPhoneNumber();
         if ($phoneNumber !== null && $phoneNumber !== '') {
-            $data['telephone'] = '+81-'.$phoneNumber;
+            $data['telephone'] = $phoneNumber;
         }
 
         $address = $this->buildAddress($BaseInfo);
@@ -142,9 +178,14 @@ class SiteStructuredDataService
      */
     private function buildContactPoint(BaseInfo $BaseInfo, ?string $phoneNumber): ?array
     {
-        $contactPoint = ['@type' => 'ContactPoint'];
+        // 参照先が email02（問い合わせ専用メールアドレス）と contact（お問い合わせフォーム）なので
+        // 用途は問い合わせ窓口で確定している
+        $contactPoint = [
+            '@type' => 'ContactPoint',
+            'contactType' => 'customer support',
+        ];
         if ($phoneNumber !== null && $phoneNumber !== '') {
-            $contactPoint['telephone'] = '+81-'.$phoneNumber;
+            $contactPoint['telephone'] = $phoneNumber;
         }
         $this->addIfNotEmpty($contactPoint, 'email', $BaseInfo->getEmail02());
 
@@ -156,6 +197,23 @@ class SiteStructuredDataService
         $contactPoint['url'] = $this->generateAbsoluteUrl('contact');
 
         return $contactPoint;
+    }
+
+    /**
+     * 店舗ロゴの絶対URLを生成する.
+     *
+     * 参照先は帳票 PDF と同じ店舗ロゴで、優先順も `OrderPdfService` に揃える.
+     * user_data に配置されていればそれを使い、無ければ既定ロゴ（管理画面テンプレート同梱）へフォールバックする.
+     */
+    private function buildLogoUrl(): string
+    {
+        $userDataLogo = $this->eccubeConfig->get('eccube_html_dir').'/user_data/'.self::LOGO_FILE;
+
+        if (file_exists($userDataLogo)) {
+            return $this->generateAbsoluteAssetUrl(self::LOGO_FILE, 'user_data');
+        }
+
+        return $this->generateAbsoluteAssetUrl(self::LOGO_FILE, 'admin');
     }
 
     /**
@@ -173,13 +231,19 @@ class SiteStructuredDataService
      * 構造化データではスキーム込みホストを前置して絶対URLにする
      * （ProductStructuredDataService の画像URLと同じ方針）.
      * asset パッケージに base_urls（CDN 等）が設定されている場合は既に絶対URLなのでそのまま返す.
+     * ただしプロトコル相対URL（`//cdn.example.com/...`）はスキームを持たず、JSON-LD 上は
+     * `@base` の無い相対 IRI として解決先が曖昧になるため、スキームを補って絶対URLにする.
      */
     private function generateAbsoluteAssetUrl(string $path, string $package): string
     {
         $url = $this->packages->getUrl($path, $package);
 
-        if (str_starts_with($url, 'http://') || str_starts_with($url, 'https://') || str_starts_with($url, '//')) {
+        if (str_starts_with($url, 'http://') || str_starts_with($url, 'https://')) {
             return $url;
+        }
+
+        if (str_starts_with($url, '//')) {
+            return $this->urlGenerator->getContext()->getScheme().':'.$url;
         }
 
         return $this->getSchemeAndHttpHost().$url;

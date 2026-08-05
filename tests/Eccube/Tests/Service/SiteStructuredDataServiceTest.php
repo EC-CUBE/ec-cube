@@ -32,24 +32,46 @@ final class SiteStructuredDataServiceTest extends AbstractServiceTestCase
         $this->BaseInfo = static::getContainer()->get(BaseInfoRepository::class)->get();
     }
 
+    /**
+     * WebSite と Organization は @graph で並列のトップレベルノードとして出力する.
+     */
     public function testWebSiteBaseStructure(): void
     {
         $data = $this->service->createWebSiteJsonLd($this->BaseInfo);
 
         $this->assertSame('https://schema.org', $data['@context']);
-        $this->assertSame('WebSite', $data['@type']);
-        $this->assertSame((string) $this->BaseInfo->getShopName(), $data['name']);
-        $this->assertStringStartsWith('http', $data['url']);
-        $this->assertSame('SearchAction', $data['potentialAction']['@type']);
-        $this->assertArrayHasKey('author', $data);
-        $this->assertSame('Organization', $data['author']['@type']);
+        $this->assertCount(2, $data['@graph']);
+
+        [$webSite, $organization] = $data['@graph'];
+
+        $this->assertSame('WebSite', $webSite['@type']);
+        $this->assertSame((string) $this->BaseInfo->getShopName(), $webSite['name']);
+        $this->assertStringStartsWith('http', $webSite['url']);
+        $this->assertSame('SearchAction', $webSite['potentialAction']['@type']);
+        $this->assertSame('Organization', $organization['@type']);
+
+        // @context はトップレベルに 1 つだけ持ち、各ノードは持たない
+        $this->assertArrayNotHasKey('@context', $webSite);
+        $this->assertArrayNotHasKey('@context', $organization);
+    }
+
+    /**
+     * WebSite.publisher は Organization を @id で参照する（author に内包しない）.
+     */
+    public function testWebSitePublisherReferencesOrganizationById(): void
+    {
+        $data = $this->service->createWebSiteJsonLd($this->BaseInfo);
+        [$webSite, $organization] = $data['@graph'];
+
+        $this->assertArrayNotHasKey('author', $webSite);
+        $this->assertSame($organization['@id'], $webSite['publisher']['@id']);
+        $this->assertNotSame($organization['@id'], $webSite['@id']);
     }
 
     public function testOrganizationBaseStructure(): void
     {
         $data = $this->service->createOrganizationJsonLd($this->BaseInfo);
 
-        $this->assertSame('https://schema.org', $data['@context']);
         $this->assertSame('Organization', $data['@type']);
         $this->assertStringStartsWith('http', $data['url']);
         $this->assertSame('ImageObject', $data['logo']['@type']);
@@ -77,8 +99,56 @@ final class SiteStructuredDataServiceTest extends AbstractServiceTestCase
             $contentUrl
         );
 
-        // asset パッケージが解決したパスは保持される
-        $this->assertStringContainsString('/html/user_data/assets/img/common/favicon.ico', $contentUrl);
+        // asset パッケージが解決したパスは保持される。参照先は帳票 PDF と共通の店舗ロゴで、
+        // user_data に配置されていればそれを使い、無ければ管理画面テンプレート同梱の既定ロゴになる
+        $this->assertMatchesRegularExpression(
+            '#(/html/user_data/assets/pdf/logo\.png|/html/template/admin/assets/pdf/logo\.png)#',
+            $contentUrl
+        );
+    }
+
+    /**
+     * telephone は保存値をそのまま出力する（国番号 +81 を前置しない）.
+     *
+     * phone_number は PhoneNumberType の TruncateHyphenListener と Assert\Type('digit') により
+     * ハイフンなしの数字列で保存されるため、+81 を前置すると国内トランクプレフィックスの 0 が残る。
+     */
+    public function testTelephoneIsOutputAsStored(): void
+    {
+        $this->BaseInfo->setPhoneNumber('0312345678');
+
+        $data = $this->service->createOrganizationJsonLd($this->BaseInfo);
+
+        $this->assertSame('0312345678', $data['telephone']);
+        $this->assertSame('0312345678', $data['contactPoint']['telephone']);
+        $this->assertSame('customer support', $data['contactPoint']['contactType']);
+    }
+
+    /**
+     * description は HTML 除去・空白正規化・300 文字丸めを通す（ProductStructuredDataService と同じ扱い）.
+     */
+    public function testDescriptionIsNormalized(): void
+    {
+        $this->BaseInfo->setMessage("<p>店舗からの\nメッセージ</p>".str_repeat('あ', 400));
+
+        $data = $this->service->createOrganizationJsonLd($this->BaseInfo);
+
+        $this->assertStringNotContainsString('<p>', $data['description']);
+        $this->assertStringNotContainsString("\n", $data['description']);
+        $this->assertSame(300, mb_strlen($data['description']));
+    }
+
+    /**
+     * email は email01（送信元・BCC 先）ではなく email02（問い合わせ専用）を出力する.
+     */
+    public function testEmailUsesContactAddressNotSenderAddress(): void
+    {
+        $this->BaseInfo->setEmail01('sender@example.com');
+        $this->BaseInfo->setEmail02('contact@example.com');
+
+        $data = $this->service->createOrganizationJsonLd($this->BaseInfo);
+
+        $this->assertSame('contact@example.com', $data['email']);
     }
 
     public function testEmptyOptionalPropertiesAreOmitted(): void
@@ -87,10 +157,11 @@ final class SiteStructuredDataServiceTest extends AbstractServiceTestCase
         $this->BaseInfo->setGoodTraded(null);
 
         $data = $this->service->createWebSiteJsonLd($this->BaseInfo);
+        [$webSite, $organization] = $data['@graph'];
 
-        $this->assertArrayNotHasKey('alternateName', $data);
-        $this->assertArrayNotHasKey('description', $data);
-        $this->assertArrayNotHasKey('alternateName', $data['author']);
+        $this->assertArrayNotHasKey('alternateName', $webSite);
+        $this->assertArrayNotHasKey('description', $webSite);
+        $this->assertArrayNotHasKey('alternateName', $organization);
     }
 
     public function testPrefNullOmitsAddressRegionWithoutError(): void
