@@ -57,6 +57,26 @@ PR では以下が GitHub Actions で走る。**同じものを手元で先に�
 - このほか **E2E（`e2e-test.yml`）・プラグインテスト（`plugin-test.yml`）・セキュリティスキャン（zaproxy/vaddy）** が走る。重いので CI に任せてよいが、落ちたら該当ジョブのログを読む。
 - **rector は関門になりやすい**（PHP/Symfony/Doctrine の機械的な現代化を強制）。`--dry-run` で出た差分は基本そのまま適用する。
 
+### push 時に走る git フック
+
+CI とは別に、リポジトリの **`.husky/pre-push` が push のたびに rector（全体走査）と `phpstan analyze src/` を実行する**。
+変更ファイルに絞った確認だけで済ませていると、ここで初めて落ちる。実行環境は自動判定で、
+ec-cube コンテナが起動していれば `docker compose exec`、無ければホストの `vendor/bin` を使う
+（`ECCUBE_HOOK_RUNNER=docker|host|skip` で明示指定、`HUSKY=0 git push` でバイパスできる）。
+
+**変更していないファイルでこのフックが落ちたら、まず `vendor/` が `composer.lock` とずれていないか疑う。**
+`composer install` で同期すれば直るケースが 2 つある。
+
+- **依存のバージョンずれ**: 古い base のブランチから 4.4 を取り込んだ直後など、`vendor/` が旧バージョンのまま。
+  例えば Doctrine DBAL 3 系が残っていると、DBAL 4 の API（`createComparator(ComparatorConfig)` 等）を
+  「引数が多い」と誤検出して rector が差分を出す。**この指摘を機械的に適用すると意図した実装を壊す**。
+- **クラスマップの陳腐化**: ファイル移動を含むマージの後、`vendor/composer/autoload_classmap.php` が旧パスを
+  指し続け、rector が自作ルールを解決できず `Expected an existing class name` で即死する。
+  `composer dump-autoload`（または `composer install`）で再生成する。
+
+判断の拠り所は **CI が同じゲートで緑かどうか**。CI は毎回クリーンインストールするため、
+「CI は緑でローカル pre-push だけ赤」なら環境ずれとみなしてよい。
+
 ## よくある間違い
 
 - ❌ `master` や旧バージョンブランチ宛に PR → ✅ base は `4.4`

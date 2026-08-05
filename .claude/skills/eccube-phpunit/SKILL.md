@@ -113,6 +113,7 @@ public static function provideStatuses(): array
 - ❌ 回帰テストを追加して、修正を外すと落ちることを確認せずに完了とする → ✅ 修正を 1 つずつ外してどのテストが落ちるか実測する（落ちないテストはゲートにならない）。
 - ❌ PHP Warning が出ることを回帰の証拠にする → ✅ `phpunit.xml.dist` に `failOnWarning` が無いため Warning では落ちない。戻り値を assert で直接検証する。
 - ❌ 型宣言の省略 → ✅ 引数・戻り値に型を付け、PHPStan level 6 を通す。
+- ❌ ローカルだけ 500 になるコントローラテストを、自分が変更したコードのせいだと決めつける → ✅ `createFormData()` 系のヘルパが**キー自体を送っていない**フィールドがあると、DataMapper が非 nullable な setter に `null` を渡して `TypeError` になることがある。DataMapper は**送信値が現在値と同じならセットをスキップする**ため、その列が NULL の CI 環境では再現せず、値が入っているローカル環境だけで落ちる。まず `$this->client->catchExceptions(false)` にして実際の例外とスタックトレースを見る（例: `dtb_base_info.invoice_registration_number` が非空のときだけ `ShopControllerTest` が 500 になる）。
 
 ## 実行方法
 
