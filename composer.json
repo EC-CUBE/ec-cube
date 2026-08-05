@@ -110,7 +110,7 @@
         "captbaritone/mailcatcher-codeception-module": "^3.0",
         "codeception/codeception": "^5.0",
         "codeception/module-asserts": "^3.0",
-        "codeception/module-phpbrowser": "^3.0",
+        "codeception/module-phpbrowser": "^4.0",
         "codeception/module-rest": "^3.3",
         "codeception/module-webdriver": "^4.0",
         "dama/doctrine-test-bundle": "^8.0",

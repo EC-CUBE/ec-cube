@@ -3,4 +3,9 @@ framework:
     cache:
         pools:
             rate_limiter.cache:
-                adapter: cache.adapter.filesystem
+                # スロットリングのデータストレージを DB で管理する.
+                # アダプタは services.yaml の eccube.rate_limiter.dbal_adapter
+                # (cache.adapter.doctrine_dbal を継承 / dtb_rate_limiter テーブル).
+                # DBAL 接続はアダプタサービス側(index_0)で注入するため, ここで provider は
+                # 指定しない(provider を書くと test の filesystem プールにも漏れて壊れる).
+                adapter: eccube.rate_limiter.dbal_adapter
