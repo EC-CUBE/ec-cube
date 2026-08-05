@@ -142,11 +142,11 @@ vendor/bin/php-cs-fixer fix                     # PSR-12 整形・ライセン�
 
 ```bash
 # ルーティングが意図どおり登録されたか（#[Route] の属性ミスはここで気づく）
-bin/console debug:router | grep <ルート名>
+bin/console debug:router | grep product_detail
 bin/console cache:clear
 
 # 該当コントローラのテストだけを回す
-bin/phpunit tests/Eccube/Tests/Web/<対象>ControllerTest.php
+vendor/bin/phpunit tests/Eccube/Tests/Web/ProductControllerTest.php
 ```
 
 - 実装後の整形・型・静的解析・テストは **AGENTS.md「開発コマンド」** に従って実行する

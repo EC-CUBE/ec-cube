@@ -84,12 +84,12 @@ class ExampleType extends AbstractType
 ## 実行・確認方法
 
 ```bash
-# FormType の構成・オプション・拡張が効いているかを確認する
-bin/console debug:form <FormType のクラス名または短縮名>
+# FormType の構成・オプション・拡張が効いているかを確認する（FQCN でも短縮名でもよい）
+bin/console debug:form BlockType
 bin/console cache:clear
 
 # フォームのテストだけを回す
-bin/phpunit tests/Eccube/Tests/Form/Type/<対象>TypeTest.php
+vendor/bin/phpunit tests/Eccube/Tests/Form/Type/Admin/BlockTypeTest.php
 ```
 
 - 実装後の整形・型・静的解析・テストは **AGENTS.md「開発コマンド」** に従って実行する

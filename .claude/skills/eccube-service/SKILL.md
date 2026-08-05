@@ -100,12 +100,12 @@ vendor/bin/php-cs-fixer fix                     # PSR-12 整形・ライセン�
 ## 実行・確認方法
 
 ```bash
-# サービスが登録され、依存が解決できているかを確認する
-bin/console debug:container <サービス ID の一部>
+# サービスが登録され、依存が解決できているかを確認する（ID の一部で絞り込める）
+bin/console debug:container CartService
 bin/console cache:clear
 
 # 該当サービスのテストだけを回す
-bin/phpunit tests/Eccube/Tests/Service/<対象>ServiceTest.php
+vendor/bin/phpunit tests/Eccube/Tests/Service/CartServiceTest.php
 ```
 
 - 実装後の整形・型・静的解析・テストは **AGENTS.md「開発コマンド」** に従って実行する

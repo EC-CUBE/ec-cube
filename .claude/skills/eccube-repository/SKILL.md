@@ -81,12 +81,13 @@ class ExampleRepository extends AbstractRepository
 ```bash
 # 生成される DQL / SQL を確認する（EXISTS の制約漏れ・JOIN の重複はここで気づく）
 #   → $qb->getQuery()->getDQL() / ->getSQL() をテストで出力して目視する
-bin/phpunit tests/Eccube/Tests/Repository/<対象>RepositoryTest.php
+vendor/bin/phpunit tests/Eccube/Tests/Repository/ProductRepositoryTest.php
 ```
 
 - 実装後の整形・型・静的解析・テストは **AGENTS.md「開発コマンド」** に従って実行する
   （PHP-CS-Fixer / PHPStan level 6 / PHPUnit）。
-- 件数・母集団が絡む変更は、**絞り込み条件を変える前後で件数が一致するか**をテストで固定する。
+- 件数・母集団が絡む変更は、**期待件数、または想定する母集団との整合性**をテストで固定する
+  （絞り込み条件を変えれば件数が変わるのは正常なので、「変更前後で件数が一致すること」を固定してはいけない）。
 - 一覧のページングは Paginator 側で適用されるため、Repository は QueryBuilder を返したままにする。
 
 ---
