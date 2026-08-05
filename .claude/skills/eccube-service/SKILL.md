@@ -101,8 +101,9 @@ vendor/bin/php-cs-fixer fix                     # PSR-12 整形・ライセン�
 ## 実行・確認方法
 
 ```bash
-# サービスが登録され、依存が解決できているかを確認する（ID の一部で絞り込める）
-bin/console debug:container CartService
+# サービスが登録され、依存が解決できているかを確認する
+# （ID の一部でも絞り込めるが、複数一致すると対話で選択を求められるので FQCN が確実）
+bin/console debug:container 'Eccube\Service\CartService'
 bin/console cache:clear
 
 # 該当サービスのテストだけを回す
