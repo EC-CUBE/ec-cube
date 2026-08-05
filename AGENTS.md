@@ -44,7 +44,7 @@ EC-CUBE は日本で広く使われる OSS の EC プラットフォームです
 - **ORM**: Doctrine ORM 3.x / DBAL 4.x（マッピングは **PHP8 属性** `#[ORM\...]`）
 - **テンプレート**: Twig 3.x
 - **データベース**: PostgreSQL 13–18 または MySQL 8.4 LTS
-- **フロントエンド**: Sass (SCSS) / webpack / Bootstrap 5.3 / jQuery 4.x
+- **フロントエンド**: Sass (SCSS) / esbuild / Bootstrap 5.3 / jQuery 4.x
 - **テスト**: PHPUnit 11（`symfony/phpunit-bridge` 経由）/ Playwright（E2E、`e2e/`）
   - ※ `codeception/` は残置（レガシー）。CI の Codeception ジョブは無効化（`if: false`）されており、E2E は Playwright が正。
 - **静的解析**: PHPStan（`phpstan.neon.dist` で level 6）
