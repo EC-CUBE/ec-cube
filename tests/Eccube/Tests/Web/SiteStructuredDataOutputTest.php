@@ -15,9 +15,9 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Web;
 
-use Symfony\Component\HttpFoundation\Request;
 use Eccube\Tests\EccubeTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * サイト共通の構造化データ（WebSite / Organization）の出力ページを検証する.
