@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Web;
 
+use Symfony\Component\HttpFoundation\Request;
 use Eccube\Tests\EccubeTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 
@@ -28,23 +29,21 @@ use PHPUnit\Framework\Attributes\DataProvider;
 final class SiteStructuredDataOutputTest extends EccubeTestCase
 {
     /**
-     * @return array<string, array{0: string, 1: bool}>
+     * @return \Iterator<string, array{string, bool}>
      */
-    public static function provideRoutes(): array
+    public static function provideRoutes(): \Iterator
     {
-        return [
-            'homepage は出力する' => ['/', true],
-            'help_about は出力する' => ['/help/about', true],
-            'product_list は出力しない' => ['/products/list', false],
-            'cart は出力しない' => ['/cart', false],
-            'help_privacy は出力しない' => ['/help/privacy', false],
-        ];
+        yield 'homepage は出力する' => ['/', true];
+        yield 'help_about は出力する' => ['/help/about', true];
+        yield 'product_list は出力しない' => ['/products/list', false];
+        yield 'cart は出力しない' => ['/cart', false];
+        yield 'help_privacy は出力しない' => ['/help/privacy', false];
     }
 
-    #[DataProvider('provideRoutes')]
+    #[DataProvider(methodName: 'provideRoutes')]
     public function testSiteStructuredDataIsOutputOnlyOnTargetPages(string $path, bool $expected): void
     {
-        $this->client->request('GET', $path);
+        $this->client->request(Request::METHOD_GET, $path);
         $response = $this->client->getResponse();
 
         $this->assertTrue($response->isSuccessful(), $path.' が 2xx で応答していない');

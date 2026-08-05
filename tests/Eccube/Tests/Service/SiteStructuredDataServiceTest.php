@@ -133,9 +133,9 @@ final class SiteStructuredDataServiceTest extends AbstractServiceTestCase
 
         $data = $this->service->createOrganizationJsonLd($this->BaseInfo);
 
-        $this->assertStringNotContainsString('<p>', $data['description']);
-        $this->assertStringNotContainsString("\n", $data['description']);
-        $this->assertSame(300, mb_strlen($data['description']));
+        $this->assertStringNotContainsString('<p>', (string) $data['description']);
+        $this->assertStringNotContainsString("\n", (string) $data['description']);
+        $this->assertSame(300, mb_strlen((string) $data['description']));
     }
 
     /**
