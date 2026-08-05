@@ -232,6 +232,26 @@ services:
     Eccube\EventListener\RateLimiterListener:
         arguments: [ !tagged_locator { tag: 'eccube_rate_limiter' } ]
 
+    # スロットリング用キャッシュプール(rate_limiter.cache)のバックエンド.
+    # データストレージをファイルから DB へ変更するためのアダプタテンプレート.
+    # framework 標準の cache.adapter.doctrine_dbal(abstract)を継承し, 位置引数 index_3 の
+    # テーブルオプションだけを上書きする. カラム名は Eccube\Entity\RateLimiter
+    # (dtb_rate_limiter)のマッピングと厳密に一致させている.
+    eccube.rate_limiter.dbal_adapter:
+        parent: cache.adapter.doctrine_dbal
+        abstract: true
+        arguments:
+            # index_0 に DBAL 接続を焼き込む. プール設定側で provider を指定すると
+            # test 環境の filesystem プールにも provider がマージで漏れて TypeError に
+            # なるため, ここで接続を渡す.
+            index_0: '@doctrine.dbal.default_connection'
+            index_3:
+                db_table: 'dtb_rate_limiter'
+                db_id_col: 'cache_key'
+                db_data_col: 'cache_data'
+                db_lifetime_col: 'cache_lifetime'
+                db_time_col: 'cache_time'
+
     Eccube\Security\PasswordHasher\PasswordHasher:
         arguments:
             - '%eccube_auth_magic%'
