@@ -190,6 +190,13 @@ file that was distributed with this source code.
                     }
                 }
             });
+
+            // 入金日・出荷日: 鉛筆アイコン押下で入力欄を表示する(誤操作防止).
+            $(document).on('click', '.date-edit-toggle', function() {
+                var $col = $(this).closest('.col');
+                $col.find('.date-edit-view').addClass('d-none');
+                $col.find('.date-edit-input').removeClass('d-none');
+            });
         });
 
         {# ポイント機能が有効かつ会員の場合のみポイントの割引金額を変更する #}
@@ -301,13 +308,29 @@ file that was distributed with this source code.
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col-3"><i class="fa fa-money fa-fw me-1" aria-hidden="true"></i>{{ 'admin.order.payment_date'|trans }}</div>
-                                            <div class="col">{{ Order.payment_date ? Order.payment_date|date_sec : '' }}</div>
+                                            <div class="col">
+                                                <span class="date-edit-view">
+                                                    {{ Order.payment_date ? Order.payment_date|date_sec : '' }}
+                                                    <a class="btn btn-ec-actionIcon date-edit-toggle" href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.edit'|trans }}"><i class="fa fa-pencil fa-lg text-secondary" aria-hidden="true"></i></a>
+                                                </span>
+                                                <span class="date-edit-input d-none">
+                                                    {{ form_widget(form.payment_date) }}
+                                                    {{ form_errors(form.payment_date) }}
+                                                </span>
+                                            </div>
                                         </div>
                                         {% if not Order.isMultiple %}
                                             <div class="row mb-3">
                                                 <div class="col-3"><i class="fa fa-truck fa-fw me-1" aria-hidden="true"></i>{{ 'admin.order.shipping_date'|trans }}</div>
                                                 <div class="col">
-                                                    {{ Order.Shippings[0].shipping_date|date_sec }}
+                                                    <span class="date-edit-view">
+                                                        {{ Order.Shippings[0].shipping_date|date_sec }}
+                                                        <a class="btn btn-ec-actionIcon date-edit-toggle" href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.edit'|trans }}"><i class="fa fa-pencil fa-lg text-secondary" aria-hidden="true"></i></a>
+                                                    </span>
+                                                    <span class="date-edit-input d-none">
+                                                        {{ form_widget(form.Shipping.shipping_date) }}
+                                                        {{ form_errors(form.Shipping.shipping_date) }}
+                                                    </span>
                                                 </div>
                                             </div>
                                         {% endif %}
@@ -782,6 +805,31 @@ file that was distributed with this source code.
                                                     {% endif %}
                                                 </span>
                                                 {{ form_errors(orderItemForm.product_name) }}
+                                                {# 受注管理用メモ(メモがある商品明細のみアイコン表示・表示専用) #}
+                                                {% if OrderItem.isProduct and OrderItem.order_memo is not empty %}
+                                                    <span class="d-inline-block mt-1" data-bs-toggle="tooltip" data-bs-placement="top"
+                                                          title="{{ 'admin.product.order_memo'|trans }}">
+                                                        <a class="btn btn-ec-actionIcon" data-bs-toggle="modal" data-bs-target="#order_memo_{{ orderItemForm.vars.id }}">
+                                                            <i class="fa fa-sticky-note fa-lg text-secondary" aria-hidden="true"></i>
+                                                        </a>
+                                                    </span>
+                                                    <div class="modal fade" id="order_memo_{{ orderItemForm.vars.id }}" tabindex="-1" role="dialog" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title">{{ 'admin.product.order_memo'|trans }}</h5>
+                                                                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body" style="max-height: 60vh; overflow: auto;">
+                                                                    <p class="mb-0 text-break">{{ OrderItem.order_memo|nl2br }}</p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">{{ 'admin.common.close'|trans }}</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
                                             </td>
                                             <!-- 金額 -->
                                             <td class="align-middle">

@@ -135,7 +135,7 @@ class UcpProfileBuilder
     /**
      * payment_handlers レジストリを組み立てる (寄与が無ければ空オブジェクト {}).
      *
-     * @return array<string, array<string, mixed>>
+     * @return array<string, list<array<string, mixed>>>
      */
     private function buildPaymentHandlers(): array
     {

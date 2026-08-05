@@ -26,6 +26,7 @@ use Eccube\Form\Type\Front\ShoppingShippingType;
 use Eccube\Form\Type\Shopping\CustomerAddressType;
 use Eccube\Form\Type\Shopping\OrderType;
 use Eccube\Repository\BaseInfoRepository;
+use Eccube\Repository\CustomerAddressRepository;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\OrderRepository;
@@ -55,7 +56,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class ShoppingController extends AbstractShoppingController
 {
-    public function __construct(protected CartService $cartService, protected MailService $mailService, protected OrderRepository $orderRepository, protected OrderHelper $orderHelper, protected ContainerInterface $serviceContainer, protected TradeLawRepository $tradeLawRepository, protected RateLimiterFactoryInterface $shoppingConfirmIpLimiter, protected RateLimiterFactoryInterface $shoppingConfirmCustomerLimiter, protected RateLimiterFactoryInterface $shoppingCheckoutIpLimiter, protected RateLimiterFactoryInterface $shoppingCheckoutCustomerLimiter, protected BaseInfoRepository $baseInfoRepository, protected PrefRepository $prefRepository, protected DeliveryRepository $deliveryRepository, protected PaymentRepository $paymentRepository, private readonly PurchaseFlow $cartPurchaseFlow, private readonly AuthenticationUtils $authenticationUtils)
+    public function __construct(protected CartService $cartService, protected MailService $mailService, protected OrderRepository $orderRepository, protected OrderHelper $orderHelper, protected ContainerInterface $serviceContainer, protected TradeLawRepository $tradeLawRepository, protected RateLimiterFactoryInterface $shoppingConfirmIpLimiter, protected RateLimiterFactoryInterface $shoppingConfirmCustomerLimiter, protected RateLimiterFactoryInterface $shoppingCheckoutIpLimiter, protected RateLimiterFactoryInterface $shoppingCheckoutCustomerLimiter, protected BaseInfoRepository $baseInfoRepository, protected PrefRepository $prefRepository, protected DeliveryRepository $deliveryRepository, protected PaymentRepository $paymentRepository, private readonly PurchaseFlow $cartPurchaseFlow, private readonly AuthenticationUtils $authenticationUtils, protected CustomerAddressRepository $customerAddressRepository)
     {
     }
 
@@ -917,7 +918,205 @@ class ShoppingController extends AbstractShoppingController
         return [
             'form' => $form->createView(),
             'shippingId' => $Shipping->getId(),
+            'customerAddressId' => null,
         ];
+    }
+
+    /**
+     * お届け先(会員のお届け先住所)の編集画面.
+     *
+     * 注文手続き中に, 登録済みのお届け先を編集する. 編集後はお届け先選択画面へ戻る.
+     * マイページのお届け先編集と同等の機能を注文手続き画面に提供する.
+     *
+     * 編集した住所が現在のお届け先に適用中の場合は, お届け先にも反映して合計金額を再計算する.
+     *
+     * @return RedirectResponse|array<string, mixed>
+     */
+    #[Route(path: '/shopping/shipping_edit/{id}/{ca_id}', name: 'shopping_shipping_customer_address_edit', requirements: ['id' => '\d+', 'ca_id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: 'Shopping/shipping_edit.twig')]
+    public function shippingEditCustomerAddress(Request $request, Shipping $Shipping, int $ca_id): RedirectResponse|array
+    {
+        // ログイン状態のチェック.
+        if ($this->orderHelper->isLoginRequired()) {
+            return $this->redirectToRoute('shopping_login');
+        }
+
+        // 会員のお届け先住所の編集のため, 会員ログインを必須とする.
+        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            throw new NotFoundHttpException();
+        }
+
+        // 受注の存在チェック
+        $preOrderId = $this->cartService->getPreOrderId();
+        $Order = $this->orderHelper->getPurchaseProcessingOrder($preOrderId);
+        if (!$Order) {
+            return $this->redirectToRoute('shopping_error');
+        }
+
+        // 受注に紐づくShippingかどうかのチェック.
+        if (!$Order->findShipping($Shipping->getId())) {
+            return $this->redirectToRoute('shopping_error');
+        }
+
+        /** @var Customer $Customer */
+        $Customer = $this->getUser();
+
+        // 本人のお届け先住所のみ編集可能とする.
+        $CustomerAddress = $this->customerAddressRepository->findOneBy([
+            'id' => $ca_id,
+            'Customer' => $Customer,
+        ]);
+        if (!$CustomerAddress) {
+            throw new NotFoundHttpException();
+        }
+
+        // フォームは $CustomerAddress を直接バインドするため, handleRequest 後は編集前の値が失われる.
+        // お届け先に適用中の住所かどうかは, ここで判定して退避しておく.
+        $isAppliedToShipping = $Shipping->getShippingMultipleDefaultName() === $CustomerAddress->getShippingMultipleDefaultName();
+
+        $builder = $this->formFactory->createBuilder(ShoppingShippingType::class, $CustomerAddress);
+
+        $event = new EventArgs(
+            [
+                'builder' => $builder,
+                'Order' => $Order,
+                'Shipping' => $Shipping,
+                'CustomerAddress' => $CustomerAddress,
+            ],
+            $request
+        );
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_SHOPPING_SHIPPING_CUSTOMER_ADDRESS_EDIT_INITIALIZE);
+
+        $form = $builder->getForm();
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            log_info('お届け先編集処理開始', ['order_id' => $Order->getId(), 'shipping_id' => $Shipping->getId(), 'customer_address_id' => $ca_id]);
+
+            $this->entityManager->persist($CustomerAddress);
+
+            if ($isAppliedToShipping) {
+                // 編集した住所が現在のお届け先に適用中の場合は, お届け先にも反映する.
+                $Shipping->setFromCustomerAddress($CustomerAddress);
+            }
+
+            // 会員情報変更時にメールを送信
+            if ($this->baseInfoRepository->get()->isOptionMailNotifier()) {
+                // 情報のセット
+                $userData['userAgent'] = $request->headers->get('User-Agent');
+                $userData['ipAddress'] = $request->getClientIp();
+
+                $this->mailService->sendCustomerChangeNotifyMail($Customer, $userData, trans('front.mypage.delivery.notify_title'));
+            }
+
+            $response = null;
+            if ($isAppliedToShipping) {
+                // 送料は都道府県に依存するため, 合計金額を再計算する.
+                $response = $this->executePurchaseFlow($Order);
+            }
+
+            $this->entityManager->flush();
+
+            if ($response) {
+                return $response;
+            }
+
+            $event = new EventArgs(
+                [
+                    'form' => $form,
+                    'Order' => $Order,
+                    'Shipping' => $Shipping,
+                    'CustomerAddress' => $CustomerAddress,
+                ],
+                $request
+            );
+            $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_SHOPPING_SHIPPING_CUSTOMER_ADDRESS_EDIT_COMPLETE);
+
+            log_info('お届け先編集処理完了', ['order_id' => $Order->getId(), 'shipping_id' => $Shipping->getId(), 'customer_address_id' => $ca_id]);
+
+            return $this->redirectToRoute('shopping_shipping', ['id' => $Shipping->getId()]);
+        }
+
+        return [
+            'form' => $form->createView(),
+            'shippingId' => $Shipping->getId(),
+            'customerAddressId' => $ca_id,
+        ];
+    }
+
+    /**
+     * お届け先(会員のお届け先住所)を削除する.
+     *
+     * 注文手続き中に, 登録済みのお届け先を削除する. 削除後はお届け先選択画面へ戻る.
+     *
+     * @throws \Exception
+     */
+    #[Route(path: '/shopping/shipping_delete/{id}/{ca_id}', name: 'shopping_shipping_customer_address_delete', requirements: ['id' => '\d+', 'ca_id' => '\d+'], methods: ['DELETE'])]
+    public function shippingDeleteCustomerAddress(Request $request, Shipping $Shipping, int $ca_id): RedirectResponse
+    {
+        // ログイン状態のチェック.
+        if ($this->orderHelper->isLoginRequired()) {
+            return $this->redirectToRoute('shopping_login');
+        }
+
+        $this->isTokenValid();
+
+        // 会員のお届け先住所の削除のため, 会員ログインを必須とする.
+        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            throw new NotFoundHttpException();
+        }
+
+        // 受注の存在チェック
+        $preOrderId = $this->cartService->getPreOrderId();
+        $Order = $this->orderHelper->getPurchaseProcessingOrder($preOrderId);
+        if (!$Order) {
+            return $this->redirectToRoute('shopping_error');
+        }
+
+        // 受注に紐づくShippingかどうかのチェック.
+        if (!$Order->findShipping($Shipping->getId())) {
+            return $this->redirectToRoute('shopping_error');
+        }
+
+        /** @var Customer $Customer */
+        $Customer = $this->getUser();
+
+        // 本人のお届け先住所のみ削除可能とする.
+        $CustomerAddress = $this->customerAddressRepository->findOneBy([
+            'id' => $ca_id,
+            'Customer' => $Customer,
+        ]);
+        if (!$CustomerAddress) {
+            throw new NotFoundHttpException();
+        }
+
+        log_info('お届け先削除処理開始', ['order_id' => $Order->getId(), 'shipping_id' => $Shipping->getId(), 'customer_address_id' => $ca_id]);
+
+        $this->customerAddressRepository->delete($CustomerAddress);
+
+        $event = new EventArgs(
+            [
+                'Order' => $Order,
+                'Shipping' => $Shipping,
+                'Customer' => $Customer,
+                'CustomerAddress' => $CustomerAddress,
+            ],
+            $request
+        );
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_SHOPPING_SHIPPING_CUSTOMER_ADDRESS_DELETE_COMPLETE);
+
+        // 会員情報変更時にメールを送信
+        if ($this->baseInfoRepository->get()->isOptionMailNotifier()) {
+            // 情報のセット
+            $userData['userAgent'] = $request->headers->get('User-Agent');
+            $userData['ipAddress'] = $request->getClientIp();
+
+            $this->mailService->sendCustomerChangeNotifyMail($Customer, $userData, trans('front.mypage.delivery.notify_title'));
+        }
+
+        log_info('お届け先削除処理完了', ['order_id' => $Order->getId(), 'shipping_id' => $Shipping->getId(), 'customer_address_id' => $ca_id]);
+
+        return $this->redirectToRoute('shopping_shipping', ['id' => $Shipping->getId()]);
     }
 
     /**

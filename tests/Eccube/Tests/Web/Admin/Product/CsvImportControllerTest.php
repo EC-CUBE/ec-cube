@@ -380,6 +380,7 @@ final class CsvImportControllerTest extends AbstractAdminWebTestCase
             '商品説明(詳細)',
             '検索ワード',
             'フリーエリア',
+            '受注管理用メモ',
             '商品削除フラグ',
             '商品画像',
             '商品カテゴリ(ID)',
@@ -924,6 +925,29 @@ final class CsvImportControllerTest extends AbstractAdminWebTestCase
         yield [2999, 'div.alert-success', '/CSVファイルをアップロードしました/u'];
         yield [3000, 'div.alert-success', '/CSVファイルをアップロードしました/u'];
         yield [3001, 'div.text-danger', '/2行目の商品説明\(詳細\)は3000文字以下の文字列を指定してください。/u'];
+    }
+
+    /**
+     * 商品CSVインポートで受注管理用メモ列が取り込まれることを確認する.
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/6821
+     */
+    public function testImportProductWithOrderMemo(): void
+    {
+        $csv = [];
+        $csv[] = ['公開ステータス(ID)', '商品名', '販売種別(ID)', '在庫数無制限フラグ', '販売価格', '受注管理用メモ'];
+        $csv[] = [1, '受注メモCSVテスト', 1, 1, 1000, '梱包時は割れ物注意'];
+        $this->filepath = $this->createCsvFromArray($csv);
+
+        $crawler = $this->scenario();
+        $this->assertMatchesRegularExpression(
+            '/CSVファイルをアップロードしました/u',
+            $crawler->filter('div.alert-success')->text()
+        );
+
+        $Product = $this->productRepo->findOneBy(['name' => '受注メモCSVテスト']);
+        $this->assertInstanceOf(Product::class, $Product);
+        $this->assertSame('梱包時は割れ物注意', $Product->getOrderMemo());
     }
 
     /**
