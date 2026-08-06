@@ -50,13 +50,13 @@ final class SearchCustomersToolTest extends EccubeTestCase
         );
     }
 
-    public function testFiltersByActiveStatus(): void
+    public function testFiltersByRegularStatus(): void
     {
-        $this->createCustomer('mcp-customer-active@example.com');
+        $this->createCustomer('mcp-customer-regular@example.com');
 
-        $result = $this->tool->search(statusIds: [CustomerStatus::ACTIVE], limit: 100);
+        $result = $this->tool->search(statusIds: [CustomerStatus::REGULAR], limit: 100);
 
-        $this->assertGreaterThanOrEqual(1, $result['total'], 'ACTIVE 会員が 1 件以上');
+        $this->assertGreaterThanOrEqual(1, $result['total'], '正会員 (REGULAR) が 1 件以上');
     }
 
     public function testLimitClampedToUpperBound(): void
