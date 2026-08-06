@@ -19,7 +19,6 @@ use Doctrine\ORM\UnitOfWork;
 use Eccube\Entity\Cart;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\Customer;
-use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\CartRepository;
 use Eccube\Repository\OrderRepository;
@@ -38,11 +37,6 @@ class CartService
      * @var Cart[]|null
      */
     protected ?array $carts = null;
-
-    /**
-     * @deprecated
-     */
-    protected ItemHolderInterface $cart;
 
     /**
      * CartService constructor.

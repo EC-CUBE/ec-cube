@@ -52,7 +52,7 @@ PR では以下が GitHub Actions で走る。**同じものを手元で先に�
 | コードスタイル（`php-cs-fixer.yml`） | `php vendor/bin/php-cs-fixer fix --diff --dry-run --allow-risky=yes` | `vendor/bin/php-cs-fixer fix`（自動修正） |
 | 静的解析（`phpstan.yml`） | `vendor/bin/phpstan analyze src/ --error-format=github` | `vendor/bin/phpstan analyse src`（level 6） |
 | リファクタ規約（`rector.yml`） | `vendor/bin/rector process --dry-run --ansi --config=rector.php` | `vendor/bin/rector process`（差分適用） |
-| ユニットテスト（`unit-test.yml`） | `vendor/bin/phpunit`（一部グループは分割実行） | 変更に関係するテストを `bin/phpunit <path>` |
+| ユニットテスト（`unit-test.yml`） | `vendor/bin/phpunit`（一部グループは分割実行） | 変更に関係するテストを `vendor/bin/phpunit <path>` |
 
 - このほか **E2E（`e2e-test.yml`）・プラグインテスト（`plugin-test.yml`）・セキュリティスキャン（zaproxy/vaddy）** が走る。重いので CI に任せてよいが、落ちたら該当ジョブのログを読む。
 - **rector は関門になりやすい**（PHP/Symfony/Doctrine の機械的な現代化を強制）。`--dry-run` で出た差分は基本そのまま適用する。
@@ -85,6 +85,7 @@ ec-cube コンテナが起動していれば `docker compose exec`、無けれ�
 - ❌ 機能追加なのにテスト無し / 既存テストを壊す → ✅ テストを伴わせ、関連テストを実行
 - ❌ マイナー互換を壊す変更（既存シグネチャ・フック・CSV 仕様の変更）を含める → ✅ 互換チェックリストを確認し、壊す場合は別途相談
 - ❌ PR テンプレートの節を空のまま提出 → ✅ 概要・方針・テスト範囲・互換性チェックを埋める
+- ❌ `@deprecated` な public API・定数の削除を `src/` と PHPUnit の grep だけで「呼び出し元なし」と判定 → ✅ `e2e/`（Playwright の globalSetup が実行する `setup-fixtures.php`）と `codeception/`（VAddy スキャンが `codecept -g vaddy` を実行）も走査対象に含め、全ツリー `git grep` で 0 件を確認する
 
 ## 実行・確認方法
 
@@ -95,7 +96,7 @@ ec-cube コンテナが起動していれば `docker compose exec`、無けれ�
 vendor/bin/php-cs-fixer fix --dry-run --diff
 vendor/bin/phpstan analyse src
 vendor/bin/rector process --dry-run --config=rector.php
-bin/phpunit <変更に関係するテスト>
+vendor/bin/phpunit <変更に関係するテスト>
 ```
 
 - CI が落ちたら、まず該当ジョブのログで「どのゲート・どのファイル・どのルール」かを特定し、ローカルで同じコマンドを再現して直す。

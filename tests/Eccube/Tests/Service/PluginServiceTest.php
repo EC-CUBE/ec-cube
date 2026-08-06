@@ -662,6 +662,15 @@ class Block
     private $id;
 
     /**
+     * テスト側から代入するための ORM 非マッピングプロパティ.
+     *
+     * 宣言しないと PHP 8.2 の動的プロパティ生成 (deprecated) になる.
+     *
+     * @var bool|null
+     */
+    public $sample;
+
+    /**
      * @return int
      */
     public function getId()
