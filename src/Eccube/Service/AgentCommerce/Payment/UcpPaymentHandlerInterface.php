@@ -39,9 +39,17 @@ interface UcpPaymentHandlerInterface extends AgentCheckoutPaymentHandlerInterfac
     /**
      * エージェントから渡された支払クレデンシャルを PSP のゲートウェイトークンへ交換する.
      *
+     * UCP は ACP と異なり、再開 complete の入力もこのクレデンシャル経由で届く。追加認証の結果など
+     * **再開に必要な項目を戻り値から落とさない**こと (落とすと REQUIRES_ACTION から復帰できなくなる)。
+     *
+     * 本メソッドは complete の状態機械の**外側** (controller のペイロード解決時) で呼ばれるため、
+     * **例外を投げてはならない**。トークンを解決できない入力もそのまま返し、
+     * {@link AgentCheckoutPaymentHandlerInterface::authorize()} 側で fail-closed に失敗させること
+     * (ここで投げるとビジネス系エラーでなく HTTP 500 になる)。
+     *
      * @param array<string, mixed> $credential payment.instruments[].credential の中立表現 (type/token 等)
      *
-     * @return array<string, mixed> 後続の authorize()/capture() へ渡す中立な支払データ
+     * @return array<string, mixed> authorize() が PSP へ渡す中立な支払データ
      */
     public function exchangePaymentToken(array $credential): array;
 }

@@ -43,16 +43,37 @@ interface AgentCheckoutPaymentHandlerInterface
      * 使って追加認証 (EMV-3DS) を完了させる。追加認証が必要な場合は例外でなく
      * {@link PaymentOutcome} の REQUIRES_ACTION を返す。
      *
-     * @param array<string, mixed> $paymentData 支払トークン等の中立表現 (再開時は authentication_result を含む)
+     * 戻り値のステータスで**続く capture の有無が決まる**。与信のみ成功したときは
+     * {@link PaymentOutcome::authorized()}、与信と売上が 1 度で完結する auto-capture 型 PSP は
+     * {@link PaymentOutcome::completed()} を返すこと (後者では capture が呼ばれない)。
+     *
+     * トークン欠落・不正など**支払データを検証できない場合は例外でなく
+     * {@link PaymentOutcome::failed()} を返す** (fail-closed)。無検証で成功を返してはならない。
+     * PSP 通信の失敗も同様に failed へ写像すること (例外を投げた場合、オーケストレータは最後の砦として
+     * failed に変換するが、その時点では PSP 参照を保持できない)。
+     *
+     * @param array<string, mixed> $paymentData      支払トークン等の中立表現 (再開時は authentication_result を含む)
+     * @param array<string, mixed> $paymentReference 中断前の complete で保持した PSP 参照 (`transaction_id` と metadata)。
+     *                                               初回 complete では空配列。**エージェントの入力ではなくサーバ側の記録**なので、
+     *                                               再開時はこちらの取引を対象にすること (ワンショットトークンの再償還を避ける)
      */
-    public function authorize(Order $order, array $paymentData): PaymentOutcome;
+    public function authorize(Order $order, array $paymentData, array $paymentReference = []): PaymentOutcome;
 
     /**
-     * 売上確定 (キャプチャ) を行う. {@link authorize()} が COMPLETED を返した後にのみ呼ぶ.
+     * 売上確定 (キャプチャ) を行う. {@link authorize()} が AUTHORIZED を返した後にのみ呼ばれる.
      *
-     * @param array<string, mixed> $paymentData 支払トークン等の中立表現
+     * 実 PSP の capture は「authorize が発行した取引に対する操作」であり、支払トークンの再償還
+     * (ACP の Shared Payment Token 等) は**ワンショットで 2 度目が失敗する**のが通例である。
+     * そのため対象取引は $paymentData から導出し直すのではなく、$authorization が持つ
+     * {@link PaymentOutcome::$transactionId} / {@link PaymentOutcome::$metadata} を用いること。
+     *
+     * authorize と同様、PSP 通信の失敗は例外でなく {@link PaymentOutcome::failed()} で返し、
+     * **与信済みの取引識別子を保持する** (与信は PSP 側に残るため、取消・再 capture の照会に要る)。
+     *
+     * @param array<string, mixed> $paymentData   authorize と同じ支払データ (冪等キー等の参照用)
+     * @param PaymentOutcome       $authorization {@link authorize()} が返した与信結果 (transactionId・metadata を含む)
      */
-    public function capture(Order $order, array $paymentData): PaymentOutcome;
+    public function capture(Order $order, array $paymentData, PaymentOutcome $authorization): PaymentOutcome;
 
     /**
      * このハンドラが指定の支払方法 (Payment.method_class 等) を扱えるか.

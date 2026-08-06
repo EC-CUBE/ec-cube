@@ -22,9 +22,11 @@ use Eccube\Repository\Master\CheckoutSessionStatusRepository;
 use Eccube\Service\AgentCommerce\AgentCheckoutPurchaseFlowAdapter;
 use Eccube\Service\AgentCommerce\Exception\AgentCheckoutErrorCode;
 use Eccube\Service\AgentCommerce\Exception\AgentCheckoutException;
+use Eccube\Service\AgentCommerce\Payment\AgentCheckoutPaymentHandlerInterface;
 use Eccube\Service\AgentCommerce\Payment\AgentCheckoutPaymentHandlerRegistry;
 use Eccube\Service\AgentCommerce\Payment\PaymentOutcome;
 use Eccube\Service\AgentCommerce\Payment\PaymentOutcomeStatus;
+use Psr\Log\LoggerInterface;
 
 /**
  * エージェントチェックアウトの complete を「中断 → 再開」する状態機械として実行するオーケストレータ.
@@ -35,6 +37,10 @@ use Eccube\Service\AgentCommerce\Payment\PaymentOutcomeStatus;
  *
  * - 在庫引当の保持/回収 (prepare で物理引当 → REQUIRES_ACTION/PENDING では rollback せず保持、
  *   FAILED/期限切れで rollback)
+ * - capture の呼び出し制御 (authorize が AUTHORIZED を返したときだけ capture を呼ぶ。売上確定済を表す
+ *   COMPLETED に対しては呼ばない = auto-capture 型 PSP での二重売上を防ぐ)
+ * - PSP 参照 (`transaction_id` と metadata) の保持と、再開 complete でのハンドラへの引き渡し
+ * - ハンドラから漏れた例外の FAILED への写像 (500 で状態遷移ごと巻き戻さない最後の砦)
  * - CheckoutSession の正規化ステータス遷移
  * - トランザクション境界 (各 complete 呼び出しを 1 トランザクションで確定。StockReduceProcessor の
  *   悲観ロックに対応するため明示トランザクションで囲む)
@@ -50,6 +56,7 @@ class AgentCheckoutCompletionService
         private readonly AgentCheckoutPaymentHandlerRegistry $paymentHandlerRegistry,
         private readonly CheckoutSessionStatusRepository $statusRepository,
         private readonly CustomerResolverInterface $customerResolver,
+        private readonly LoggerInterface $logger,
         private readonly int $escalationExpireMinutes,
     ) {
     }
@@ -122,15 +129,26 @@ class AgentCheckoutCompletionService
             return $this->commitOrder($session, $order, $member);
         }
 
-        $outcome = $handler->authorize($order, $paymentData);
+        // 再開 complete では、中断時に保持した PSP 参照をハンドラへ渡す。エージェントの入力ではなく
+        // サーバ側の記録なので、ワンショットトークンを再償還せず同じ取引を続行できる。
+        $outcome = $this->authorize($handler, $order, $paymentData, $isResume ? ($session->getPaymentData() ?? []) : []);
 
         switch ($outcome->status) {
-            case PaymentOutcomeStatus::COMPLETED:
-                $capture = $handler->capture($order, $paymentData);
+            case PaymentOutcomeStatus::AUTHORIZED:
+                // 与信のみ成立。capture 前に PSP 参照を payment_data へ残し、capture が失敗しても
+                // どの取引が与信済みかを追跡できるようにする。
+                $this->mergePaymentData($session, $this->paymentReference($outcome));
+                $capture = $this->capture($handler, $order, $paymentData, $outcome);
                 if ($capture->status !== PaymentOutcomeStatus::COMPLETED) {
                     return $this->failOrder($session, $order, $member, $capture);
                 }
-                $this->mergePaymentData($session, $capture->metadata);
+                $this->mergePaymentData($session, $this->paymentReference($capture));
+
+                return $this->commitOrder($session, $order, $member);
+
+            case PaymentOutcomeStatus::COMPLETED:
+                // 与信と売上が 1 度で完結する auto-capture 型 PSP。capture を呼ぶと二重発行になるため呼ばない。
+                $this->mergePaymentData($session, $this->paymentReference($outcome));
 
                 return $this->commitOrder($session, $order, $member);
 
@@ -143,6 +161,45 @@ class AgentCheckoutCompletionService
             case PaymentOutcomeStatus::FAILED:
             default:
                 return $this->failOrder($session, $order, $member, $outcome);
+        }
+    }
+
+    /**
+     * ハンドラの与信を実行する. 例外は FAILED へ写像し、状態機械の外へ出さない.
+     *
+     * ハンドラは PSP 通信の失敗も {@link PaymentOutcome::failed()} で返す契約だが、漏れた例外を
+     * そのまま伝播させるとトランザクションごと巻き戻り、決済失敗が HTTP 500 になって
+     * 在庫の回収 (rollback) もセッションの状態遷移も行われない。ここが最後の砦。
+     *
+     * @param array<string, mixed> $paymentData
+     * @param array<string, mixed> $paymentReference
+     */
+    private function authorize(AgentCheckoutPaymentHandlerInterface $handler, Order $order, array $paymentData, array $paymentReference): PaymentOutcome
+    {
+        try {
+            return $handler->authorize($order, $paymentData, $paymentReference);
+        } catch (\Throwable $e) {
+            $this->logger->error('The agent payment handler threw during authorize.', ['exception' => $e, 'order_no' => $order->getOrderNo()]);
+
+            // 与信が成立したかどうかを判定できないため、参照は保持できない。retryable として ready へ戻す。
+            return PaymentOutcome::failed('payment_handler_error', 'The payment could not be processed.', true);
+        }
+    }
+
+    /**
+     * ハンドラの売上確定を実行する. 例外は FAILED へ写像し、与信の取引識別子を保持する.
+     *
+     * @param array<string, mixed> $paymentData
+     */
+    private function capture(AgentCheckoutPaymentHandlerInterface $handler, Order $order, array $paymentData, PaymentOutcome $authorization): PaymentOutcome
+    {
+        try {
+            return $handler->capture($order, $paymentData, $authorization);
+        } catch (\Throwable $e) {
+            $this->logger->error('The agent payment handler threw during capture.', ['exception' => $e, 'order_no' => $order->getOrderNo(), 'transaction_id' => $authorization->transactionId]);
+
+            // 与信は PSP 側に残る。取消・再 capture の照会ができるよう取引識別子を引き継ぐ。
+            return PaymentOutcome::failed('payment_handler_error', 'The payment could not be captured.', true, $authorization->transactionId, $authorization->metadata);
         }
     }
 
@@ -166,7 +223,7 @@ class AgentCheckoutCompletionService
      */
     private function holdForAction(CheckoutSession $session, PaymentOutcome $outcome, int $statusId): AgentCheckoutCompletionResult
     {
-        $this->mergePaymentData($session, $outcome->metadata);
+        $this->mergePaymentData($session, $this->paymentReference($outcome));
         if ($outcome->actionData !== []) {
             $metadata = $session->getMetadata() ?? [];
             $metadata['payment_action'] = $outcome->actionData;
@@ -186,6 +243,8 @@ class AgentCheckoutCompletionService
     private function failOrder(CheckoutSession $session, Order $order, ?Customer $member, PaymentOutcome $outcome): AgentCheckoutCompletionResult
     {
         $this->purchaseFlowAdapter->rollback($order, $member);
+        // 失敗した取引の PSP 参照も残す (与信済みで capture に失敗した場合の照会に必要)。
+        $this->mergePaymentData($session, $this->paymentReference($outcome));
 
         $statusId = $outcome->retryable ? CheckoutSessionStatus::READY : CheckoutSessionStatus::CANCELED;
         $session->setStatus($this->requireStatus($statusId));
@@ -196,6 +255,24 @@ class AgentCheckoutCompletionService
         );
 
         return new AgentCheckoutCompletionResult($session->getStatus() ?? $this->requireStatus($statusId), null, [$message]);
+    }
+
+    /**
+     * {@link PaymentOutcome} から payment_data へ残す PSP 参照を組み立てる.
+     *
+     * metadata に加えて transactionId を `transaction_id` として保持する。中断 (REQUIRES_ACTION /
+     * PENDING) からの再開・失敗時の照会は、この参照を辿って行う。
+     *
+     * @return array<string, mixed>
+     */
+    private function paymentReference(PaymentOutcome $outcome): array
+    {
+        $reference = $outcome->metadata;
+        if ($outcome->transactionId !== null && $outcome->transactionId !== '') {
+            $reference['transaction_id'] = $outcome->transactionId;
+        }
+
+        return $reference;
     }
 
     /**
