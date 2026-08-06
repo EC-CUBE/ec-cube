@@ -7,9 +7,13 @@ description: EC-CUBE 4.4 のフロントエンドアセット（SCSS / JS バン
 
 ## 対象
 
-- **ソース**: `html/template/{default,admin,install}/assets/scss/**/*.scss`, `html/template/*/assets/js/bundle.js`
+- **ソース**: `html/template/{default,admin}/assets/scss/**/*.scss`（`install` に scss は無い）,
+  `html/template/{default,admin,install}/assets/js/bundle.js`
 - **ビルド定義**: `esbuild.config.mjs`, `package.json`
-- **生成物（すべて git 管理下）**: `html/template/*/assets/css/*.css` / `*.min.css` / `*.map`, `html/bundle/*.bundle.js` / `*.map`, `html/bundle/ace/`
+- **生成物（すべて git 管理下）**: `html/template/{default,admin}/assets/css/` の `style.*` / `app.*` / `bootstrap.*`
+  （`.css` ＋ `.min.css` ＋ 各 `.map`）, `html/bundle/{front,admin,install}.bundle.js` / `*.map`, `html/bundle/ace/`
+- **`css/` に混在する非生成物**: `install/assets/css/dashboard.css` と `admin/assets/css/tempusdominus-bootstrap-4*.css`
+  は対応する scss が無い**手管理ファイル**。再ビルドしても更新されないので、`css/` 配下すべてを生成物と扱わない
 
 ## 基本ルール
 
@@ -83,6 +87,7 @@ git status   # scss と css/*.css *.min.css *.map が両方出ていることを
 
 - ❌ `.scss` だけ変更してコミットする → ✅ 生成物（`css/*.css` `*.min.css` `*.map`）も同じコミットに含める。含めないと実機のスタイルが変わらない
 - ❌ 反映されないので `css/style.css` を直接編集する → ✅ 次のビルドで消える。`scss/` を直して再ビルドする
+- ❌ `css/` 配下すべてを生成物と決めつける → ✅ 対応する `.scss` が無いものは手管理ファイルで、再ビルドしても更新されない。`.map` の有無と scss の実在で判別する
 - ❌ 「E2E が緑だから生成物は最新」と判断する → ✅ E2E のワークフローは自分で `npm run build` するため、コミット済み生成物が古くても緑になる
 - ❌ 部分ファイルを `_` 始まりにしない → ✅ SCSS エントリは自動検出なので、`_` を付けないと単独の CSS として出力され余計な生成物が増える
 - ❌ 生成された `css` に手で `@media` を追記する → ✅ `postcss-sort-media-queries` の並べ替えを通らず、次のビルドで消える

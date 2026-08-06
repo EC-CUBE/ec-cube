@@ -112,6 +112,7 @@ public static function provideStatuses(): array
 - ❌ 回帰テストを追加して修正を外すと落ちることを確認しない／PHP Warning を回帰の証拠にする → ✅ 修正を 1 つずつ外して落ちるテストを実測する。`failOnWarning` は無いので戻り値を assert で検証する。
 - ❌ ローカルだけ 500 になるテストの原因を自分の変更に帰属させる → ✅ `createFormData()` がキーを送らない列で DataMapper が非 nullable setter に `null` を渡す。`catchExceptions(false)` で確認する。
 - ❌ HTML パートの無いメールに `assertEmailHtmlBodyNotContains()` → ✅ `assertNull($Message->getHtmlBody())`（前者は deprecation を出し、必ず通る空振り）。
+- ❌ 依存ライブラリが投げる例外メッセージを全文（末尾の句点まで）アサート → ✅ 版差で変わらない部分だけを含有判定する。上流はマイナー更新で書式を足すことがあり、lock 更新だけで全マトリクスが落ちる。
 
 ## 実行方法
 

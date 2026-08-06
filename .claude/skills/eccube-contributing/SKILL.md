@@ -63,6 +63,9 @@ CI とは別に、リポジトリの **`.husky/pre-push` が push のたびに r
 変更ファイルに絞った確認だけで済ませていると、ここで初めて落ちる。実行環境は自動判定で、
 ec-cube コンテナが起動していれば `docker compose exec`、無ければホストの `vendor/bin` を使う
 （`ECCUBE_HOOK_RUNNER=docker|host|skip` で明示指定、`HUSKY=0 git push` でバイパスできる）。
+`rector.php` は dev の Symfony コンテナ XML を参照するため、fresh clone や `cache:clear` 直後の
+push では**フックが先に `bin/console cache:clear --env=dev` を実行する**（XML が無いと rector が
+全ファイル read error で落ちるため）。初回 push が長いのはこれが理由で、異常ではない。
 
 **変更していないファイルでこのフックが落ちたら、まず `vendor/` が `composer.lock` とずれていないか疑う。**
 `composer install` で同期すれば直るケースが 2 つある。
