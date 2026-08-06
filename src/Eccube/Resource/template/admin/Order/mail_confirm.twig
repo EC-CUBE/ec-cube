@@ -20,12 +20,6 @@ file that was distributed with this source code.
 {% block javascript %}
 <script>
 $(function() {
-    $('#template-change').on('change', function() {
-        $('#mode').val('change');
-        $('#order-mail-form').submit();
-        return false;
-    });
-
     $('#back').on('click', function(e) {
         e.preventDefault();
         $('#mode').val('back');

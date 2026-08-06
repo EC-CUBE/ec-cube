@@ -185,7 +185,8 @@ class ProductController extends AbstractController
 
         $qb = $this->productRepository->getQueryBuilderBySearchDataForAdmin($searchData);
 
-        $sortKey = $searchData['sortkey'];
+        // null を配列オフセットに使うのは PHP 8.5 で非推奨。null は '' として扱われるため挙動は変わらない
+        $sortKey = $searchData['sortkey'] ?? '';
         $paginate_options = ['wrap-queries' => true];
         if (empty($this->productRepository::COLUMNS[$sortKey]) || $sortKey == 'code' || $sortKey == 'status') {
             $paginate_options = [];

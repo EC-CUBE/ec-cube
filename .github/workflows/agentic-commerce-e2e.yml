@@ -113,7 +113,7 @@ jobs:
           PGPASSWORD=password psql -h 127.0.0.1 -U postgres -c 'SELECT VERSION()'
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc  # v2
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240  # v2
         with:
           php-version: ${{ matrix.php }}
           # 追加拡張は指定しない (必要な拡張は setup-php 既定で揃う)。共有レンタルサーバー相当の環境を
@@ -305,7 +305,7 @@ jobs:
           psql -h 127.0.0.1 -U postgres -c "ALTER USER postgres PASSWORD 'password'"
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc  # v2
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240  # v2
         with:
           php-version: ${{ matrix.php }}
           # 追加拡張は指定しない (必要な拡張は setup-php 既定で揃う)。共有レンタルサーバー相当の環境を

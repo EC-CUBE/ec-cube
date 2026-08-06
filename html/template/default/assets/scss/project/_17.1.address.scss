@@ -1,3 +1,5 @@
+@import "../mixins/media";
+
 /*
 住所一覧
 
@@ -58,5 +60,42 @@ Styleguide 17.1
     text-align: right;
     top: 27px;
     padding-right: 10px;
+  }
+}
+
+/*
+住所一覧(お届け先選択)
+
+ラジオボタンでお届け先を選択する一覧です。ご購入手続きの「お届け先の指定」で使用します。
+操作(変更・削除)を持たない行(会員本人の住所)でも列位置が揃うように、セル幅を固定します。
+
+ex [ご購入手続き お届け先の指定](http://demo3.ec-cube.net/shopping/shipping/1)
+
+Styleguide 17.1.1
+
+*/
+.ec-addressList--selectable{
+  .ec-addressList__remove{
+    display: table-cell;
+    width: 1%;
+    white-space: nowrap;
+  }
+  // 操作列が入るため、住所の幅指定(80%)を解除して残り幅を割り当てる。
+  .ec-addressList__address{
+    width: auto;
+  }
+  // 操作を持たない行(会員本人の住所)でも列位置が揃うようセル幅を固定する。
+  .ec-addressList__action{
+    display: table-cell;
+    width: 1%;
+    top: 0;
+    .ec-inlineBtn + .ec-inlineBtn{
+      margin-left: 4px;
+    }
+    // PC 幅では変更・削除を横並びにする。SP 幅では住所の可読性を優先し、
+    // ボタン単位で折り返して縦に積む。
+    @include media_desktop{
+      white-space: nowrap;
+    }
   }
 }

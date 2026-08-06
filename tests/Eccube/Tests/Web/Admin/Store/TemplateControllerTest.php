@@ -19,6 +19,7 @@ use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Template;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\TemplateRepository;
+use Eccube\Tests\EnvOverrideTrait;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Eccube\Util\StringUtil;
 use PHPUnit\Framework\Attributes\Group;
@@ -29,6 +30,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class TemplateControllerTest extends AbstractAdminWebTestCase
 {
+    use EnvOverrideTrait;
+
     protected ?string $dir = null;
 
     protected ?UploadedFile $file = null;
@@ -90,6 +93,28 @@ final class TemplateControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
+     * ECCUBE_TEMPLATE_CODE がプロセス環境変数として設定されている場合、画面表示時に
+     * 警告を表示し、登録ボタンを無効化することを確認する（#6130）。
+     */
+    #[Group(name: 'cache-clear')]
+    public function testDisplayWarningAndDisableButtonWhenEnvOverridden()
+    {
+        $this->forceKeyOverridden('ECCUBE_TEMPLATE_CODE', $this->currentThemeCode(), function (): void {
+            $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_store_template'));
+            $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+            // この画面が扱うキーは1つのみのため, 上書き時は登録ボタンが無効化されている
+            $this->assertGreaterThan(0, $crawler->filter('button[type="submit"][disabled]')->count());
+
+            // 上書きされているキーを名指しした警告が表示されている
+            $this->assertStringContainsString(
+                trans('admin.system.env.ineffective.overridden', ['%keys%' => 'ECCUBE_TEMPLATE_CODE']),
+                (string) $this->client->getResponse()->getContent()
+            );
+        });
+    }
+
+    /**
      * テンプレートの変更
      */
     #[Group(name: 'cache-clear')]
@@ -119,10 +144,9 @@ final class TemplateControllerTest extends AbstractAdminWebTestCase
      * テンプレートの変更（ECCUBE_TEMPLATE_CODEがプロセス環境変数として設定されている場合）
      *
      * Docker などでプロセス環境変数として ECCUBE_TEMPLATE_CODE が設定されている場合、
-     * .env への書き込みは反映されないため警告が表示されることを確認する。
-     *
-     * @group cache-clear
+     * .env への書き込みは反映されないため、保存を拒否しエラーを表示することを確認する。
      */
+    #[Group(name: 'cache-clear')]
     public function testChangeTemplateWithEnvOverride()
     {
         // テンプレートをアップロード
@@ -130,11 +154,9 @@ final class TemplateControllerTest extends AbstractAdminWebTestCase
         $this->verifyUpload();
 
         $Template = $this->templateRepository->findOneBy(['code' => $this->code]);
+        $this->assertInstanceOf(Template::class, $Template);
 
-        // プロセス環境変数として ECCUBE_TEMPLATE_CODE を設定
-        putenv('ECCUBE_TEMPLATE_CODE=default');
-
-        try {
+        $this->forceKeyOverridden('ECCUBE_TEMPLATE_CODE', $this->currentThemeCode(), function () use ($Template): void {
             $session = $this->createSession($this->client);
 
             // テンプレートを選択
@@ -146,13 +168,18 @@ final class TemplateControllerTest extends AbstractAdminWebTestCase
             ]);
             $this->assertTrue($this->client->getResponse()->isRedirection());
 
-            // 警告メッセージが表示されている
-            $warnings = $session->getFlashBag()->get('eccube.admin.warning');
-            $this->assertContains('admin.store.template.env_override_warning', $warnings);
-        } finally {
-            // プロセス環境変数を元に戻す
-            putenv('ECCUBE_TEMPLATE_CODE');
-        }
+            // 環境変数オーバーライド時は保存が拒否され、エラーが表示される
+            $errors = $session->getFlashBag()->get('eccube.admin.error');
+            $this->assertContains('admin.common.save_error', $errors);
+            // 原因となる上書きキー名も併記される（#8）
+            $this->assertContains(
+                trans('admin.system.env.ineffective.overridden', ['%keys%' => 'ECCUBE_TEMPLATE_CODE']),
+                $errors
+            );
+
+            // .env は書き換えられていない
+            $this->assertDoesNotMatchRegularExpression('/ECCUBE_TEMPLATE_CODE='.$Template->getCode().'/', file_get_contents($this->envFile));
+        });
     }
 
     /**
@@ -266,6 +293,18 @@ final class TemplateControllerTest extends AbstractAdminWebTestCase
         $Template = $this->templateRepository->find($id);
         $this->assertNotInstanceOf(Template::class, $Template);
         $this->assertFileDoesNotExist(static::getContainer()->getParameter('kernel.project_dir').'/app/template/'.$code);
+    }
+
+    /**
+     * 現在アプリケーションが使用しているテンプレートコード.
+     *
+     * ECCUBE_TEMPLATE_CODE の上書きを再現する際、実効値と異なる値を注入すると
+     * twig.paths が存在しない app/template/<code> を指し全リクエストが 500 になるため、
+     * 実効値をそのまま注入する（{@see EnvOverrideTrait::forceKeyOverridden()}）.
+     */
+    private function currentThemeCode(): string
+    {
+        return (string) static::getContainer()->getParameter('eccube.theme');
     }
 
     protected function scenarioUpload($uppercase = false)

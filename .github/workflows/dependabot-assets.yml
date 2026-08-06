@@ -1,0 +1,163 @@
+name: Update assets for Dependabot
+
+# Dependabot の npm PR では package.json / package-lock.json だけが更新され、
+# git 管理下のビルド成果物 (html/bundle, html/template/**/assets/css) は再生成されない。
+# EC-CUBE は成果物をコミットして配布するため、依存を更新しても再ビルドしなければ
+# 実際に配信されるバンドル・CSS は古いままになる。
+# このワークフローは dependabot の npm ブランチへの push を受けてビルドし、
+# 差分があれば同じブランチへ追記コミットする。
+#
+# ビルドと push を別ジョブに分けているのは権限境界を切るため。
+# npm ci は依存パッケージのライフサイクルスクリプト (postinstall 等) を実行し、
+# npm run build は更新後の esbuild / sass-embedded のバイナリを実行する。
+# これらを書き込みトークンと同一ジョブに置くと、依存コードが $GITHUB_PATH /
+# $GITHUB_ENV へ書き込んで後続ステップの実行ファイル解決や環境を汚染できるため、
+# トークンを push ステップの env に限定してもフックを無効化しても奪取を防げない
+# ($GITHUB_PATH / $GITHUB_ENV はジョブ単位なのでジョブを跨ぐと引き継がれない)。
+# そのため build ジョブは contents: read だけを持ち、生成物のみを artifact で
+# push ジョブへ渡す。push ジョブは依存パッケージのコードを一切実行しない。
+on:
+  push:
+    branches:
+      - "dependabot/npm_and_yarn/**"
+      # e2e (Playwright) の依存はフロントエンドの成果物に影響しないため除外する。
+      # branches と branches-ignore は併用できないので否定パターンで指定する。
+      - "!dependabot/npm_and_yarn/e2e/**"
+
+# 同一ブランチへの連続 push では最新の run だけを残す。
+# build と push が別ジョブになったことで、その間に dependabot が追加 push すると
+# 古い package-lock.json 由来の成果物をコミットしてしまう窓が広がるため、
+# 追い越された run は取り消して窓を縮める。
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  # artifact で受け渡してコミットするビルド成果物のパス。
+  # upload の path・展開後の検証・git add がずれると、成果物の取りこぼしや
+  # 古いファイルのコミットが黙って起きるため、1 箇所で定義して使い回す。
+  ASSET_PATHS: |-
+    html/bundle
+    html/template/admin/assets/css
+    html/template/default/assets/css
+
+jobs:
+  build:
+    name: Build assets
+    # dependabot 以外による push では動かさない安全弁。
+    # push ジョブは needs でこの skip を引き継ぐ。
+    if: github.actor == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    permissions:
+      # 更新された依存パッケージのコードを実行するジョブなので読み取りのみ。
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          # ブランチ名ではなくトリガとなったコミットを固定してチェックアウトする。
+          # ブランチ名だとチェックアウト時点の先端が解決されるため、build ジョブと
+          # push ジョブが別のコミットを見て、生成物と package-lock.json が
+          # 食い違ったままコミットされうる。
+          ref: ${{ github.sha }}
+          # 認証情報を git config に残さない。このジョブは push しない。
+          persist-credentials: false
+
+      - name: Setup Node
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e  # v6.4.0
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Build assets
+        run: |
+          npm ci
+          npm run build
+
+      - name: Upload built assets
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
+        with:
+          name: dependabot-build-assets
+          # 生成物のディレクトリだけに限定する (.git / .husky や任意のパスを含めない)。
+          # 複数パスを指定すると最小共通祖先の html/ が artifact のルートになるため、
+          # 展開側は path: html で元の配置に戻る。
+          path: ${{ env.ASSET_PATHS }}
+          # 既定値だが、ドットファイルを持ち込まないことが前提の設計なので明示する。
+          include-hidden-files: false
+          if-no-files-found: error
+          retention-days: 1
+
+  push:
+    name: Commit and push assets
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      # このジョブでは npm を実行しないため、依存パッケージのコードはここに到達しない。
+      contents: write  # 再生成した成果物を dependabot のブランチへ push し返すために必要
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          # build ジョブと同じコミットを固定してチェックアウトする (detached HEAD だが、
+          # 後段の push は HEAD:$BRANCH の形なのでブランチ上にいる必要はない)。
+          # この run が dependabot の追加 push に追い越されていた場合、ここで作るコミットは
+          # ブランチ先端の子孫にならないため、push が non-fast-forward で失敗して赤くなる。
+          # GITHUB_TOKEN による push は新しい run を作らない (無限ループ防止として利用している)
+          # 以上、古い成果物を黙ってコミットすると誰も直せないので、失敗させるほうが安全。
+          ref: ${{ github.sha }}
+          # 認証情報を git config に残さない。push する最終ステップでだけ明示的に認証する。
+          persist-credentials: false
+
+      - name: Clear generated bundle directory
+        # html/bundle は全ファイルが生成物 (esbuild のバンドルと ace のコピー) なので、
+        # 展開前に消すことで ace のバージョンアップによるファイル減少も削除としてコミットできる。
+        # 一方 assets/css には tempusdominus-bootstrap-4.css のように対応する .scss を持たない
+        # vendor ファイルがコミットされているため、こちらは消さず上書き展開のみとする。
+        run: rm -rf html/bundle
+
+      - name: Download built assets
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c  # v8
+        with:
+          name: dependabot-build-assets
+          path: html
+
+      - name: Verify downloaded assets
+        # 展開先がずれていると、上で消した html/bundle の削除だけがコミットされてしまう。
+        # 想定した全ディレクトリにファイルが揃っていることを確認してから commit へ進む。
+        run: |
+          mapfile -t asset_dirs <<< "$ASSET_PATHS"
+          for dir in "${asset_dirs[@]}"; do
+            if [ ! -d "$dir" ] || [ -z "$(find "$dir" -type f -print -quit)" ]; then
+              echo "::error::Expected built assets under $dir but found none."
+              exit 1
+            fi
+          done
+
+      - name: Commit regenerated assets
+        # ブランチ名を run スクリプトへ直接展開せず env 経由で渡し、シェルインジェクションを防ぐ。
+        env:
+          BRANCH: ${{ github.ref_name }}
+          # checkout では認証情報を永続化していないので、push するこのステップでだけ渡す。
+          # GITHUB_TOKEN による push は新たな workflow を再トリガーしないため、
+          # 追記コミットがこのワークフロー自身を再起動する無限ループを防げる。
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # このジョブでは npm ci を実行しないので core.hooksPath は .husky/_ を向かないが、
+          # フック経路を塞ぐ歯止めとして無効化しておく (--no-verify と併せた二重の歯止め)。
+          HUSKY: '0'
+        run: |
+          # ace のバージョンアップでファイルが増減する場合があるため、
+          # 追跡外のファイルも拾えるよう add してから差分を判定する。
+          mapfile -t asset_dirs <<< "$ASSET_PATHS"
+          git add -- "${asset_dirs[@]}"
+          if git diff --cached --quiet; then
+            echo "No changes in build assets; skipping commit."
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit --no-verify -m 'build: 依存更新に伴いビルド成果物を再生成'
+          git push --no-verify \
+            "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:$BRANCH"

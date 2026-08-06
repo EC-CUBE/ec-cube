@@ -63,7 +63,7 @@ final class CustomerRepositoryTest extends EccubeTestCase
     public function testGetProvisionalCustomerBySecretKey()
     {
         $this->expected = $this->Customer->getSecretKey();
-        $Status = $this->entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::NONACTIVE);
+        $Status = $this->entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::PROVISIONAL);
         $this->Customer->setStatus($Status);
         $this->entityManager->flush();
 
