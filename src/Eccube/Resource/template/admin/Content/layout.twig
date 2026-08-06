@@ -20,22 +20,22 @@ file that was distributed with this source code.
 {% block javascript %}
     <script>
         // Twig の auto-escape で `<head></head>タグ内` 等が `&lt;` 等の HTML エンティティに
-        // 変換されると, vanilla 化後の `opt.textContent = ...` でリテラル表示されてしまうため,
-        // `|json_encode|raw` を経由して JS 文字列リテラルとして出力する.
+        // 変換されると, `opt.textContent = ...` でリテラル表示されてしまうため,
+        // json_encode_safe で JS 文字列リテラルとして出力する.
         var sections = {
-            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_UNUSED') }} : {{ 'admin.content.layout_section__unused'|trans|json_encode|raw }},
-            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_HEAD') }} : {{ 'admin.content.layout_section__head'|trans|json_encode|raw }},
-            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_BODY_AFTER') }} : {{ 'admin.content.layout_section__body_after'|trans|json_encode|raw }},
-            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_HEADER') }} : {{ 'admin.content.layout_section__header'|trans|json_encode|raw }},
-            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_CONTENTS_TOP') }} : {{ 'admin.content.layout_section__contents_top'|trans|json_encode|raw }},
-            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_SIDE_LEFT') }} : {{ 'admin.content.layout_section__side_left'|trans|json_encode|raw }},
-            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_MAIN_TOP') }} : {{ 'admin.content.layout_section__main_top'|trans|json_encode|raw }},
-            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_MAIN_BOTTOM') }} : {{ 'admin.content.layout_section__main_bottom'|trans|json_encode|raw }},
-            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_SIDE_RIGHT') }} : {{ 'admin.content.layout_section__side_right'|trans|json_encode|raw }},
-            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_CONTENTS_BOTTOM') }} : {{ 'admin.content.layout_section__contents_bottom'|trans|json_encode|raw }},
-            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_FOOTER') }} : {{ 'admin.content.layout_section__footer'|trans|json_encode|raw }},
-            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_DRAWER') }} : {{ 'admin.content.layout_section__drawer'|trans|json_encode|raw }},
-            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_CLOSE_BODY_BEFORE') }} : {{ 'admin.content.layout_section__close_body_before'|trans|json_encode|raw }}
+            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_UNUSED') }} : {{ 'admin.content.layout_section__unused'|trans|json_encode_safe }},
+            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_HEAD') }} : {{ 'admin.content.layout_section__head'|trans|json_encode_safe }},
+            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_BODY_AFTER') }} : {{ 'admin.content.layout_section__body_after'|trans|json_encode_safe }},
+            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_HEADER') }} : {{ 'admin.content.layout_section__header'|trans|json_encode_safe }},
+            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_CONTENTS_TOP') }} : {{ 'admin.content.layout_section__contents_top'|trans|json_encode_safe }},
+            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_SIDE_LEFT') }} : {{ 'admin.content.layout_section__side_left'|trans|json_encode_safe }},
+            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_MAIN_TOP') }} : {{ 'admin.content.layout_section__main_top'|trans|json_encode_safe }},
+            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_MAIN_BOTTOM') }} : {{ 'admin.content.layout_section__main_bottom'|trans|json_encode_safe }},
+            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_SIDE_RIGHT') }} : {{ 'admin.content.layout_section__side_right'|trans|json_encode_safe }},
+            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_CONTENTS_BOTTOM') }} : {{ 'admin.content.layout_section__contents_bottom'|trans|json_encode_safe }},
+            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_FOOTER') }} : {{ 'admin.content.layout_section__footer'|trans|json_encode_safe }},
+            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_DRAWER') }} : {{ 'admin.content.layout_section__drawer'|trans|json_encode_safe }},
+            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_CLOSE_BODY_BEFORE') }} : {{ 'admin.content.layout_section__close_body_before'|trans|json_encode_safe }}
         };
 
         // use for layout_design.js
