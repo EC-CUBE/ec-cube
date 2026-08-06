@@ -32,19 +32,19 @@ class SiteStructuredDataService
     use StructuredDataDescriptionTrait;
 
     /**
-     * ロゴに用いる画像ファイル（帳票 PDF と共通の店舗ロゴ）.
+     * ロゴに用いる画像ファイル（`html/user_data` 基準の構造化データ専用の置き場）.
+     *
+     * 既定では存在しないため、店舗が管理画面のファイル管理から配置したときだけ `logo` を出力する.
+     * 幅・高さともに 112px 以上で、Google Images の対応形式（PNG 等）の画像を置く前提
+     * （要件はコード側で検証せずドキュメントで案内する）.
      *
      * ファビコン（ICO）は Google Images の対応形式に含まれないため使用しない.
+     * 帳票 PDF のロゴ（`assets/pdf/logo.png`）とも共有しない. こちらはインストール時に
+     * 管理画面同梱の 301x38 が配置されるため既定で必ず存在し、共有すると差し替えていない店舗でも
+     * EC-CUBE 既定のロゴが出力されてしまう. また `OrderPdfService` は幅 40mm 固定・高さは
+     * アスペクト比で描画するため、上記の要件を満たす画像を置くと帳票のレイアウトが崩れる.
      */
-    private const LOGO_FILE = 'assets/pdf/logo.png';
-
-    /**
-     * Organization.logo に必要な最小の辺の長さ（px）.
-     *
-     * Google の Organization ドキュメントが幅・高さともに 112px 以上を要求しているため,
-     * これを下回る画像は logo として出力しない（既定の帳票ロゴは 301x38 で要件を満たさない）.
-     */
-    private const LOGO_MIN_SIZE = 112;
+    private const LOGO_FILE = 'assets/img/common/logo.png';
 
     public function __construct(
         private readonly UrlGeneratorInterface $urlGenerator,
@@ -213,43 +213,20 @@ class SiteStructuredDataService
     }
 
     /**
-     * 店舗ロゴの絶対URLを生成する（要件を満たす画像が無ければ null）.
+     * 店舗ロゴの絶対URLを生成する（ファイルが配置されていなければ null）.
      *
-     * 参照先は帳票 PDF と同じ店舗ロゴで、探索順も `OrderPdfService` に揃える.
-     * user_data に配置されていればそれを優先し、無ければ既定ロゴ（管理画面テンプレート同梱）を見る.
-     *
-     * ただし `logo` は任意プロパティであり、**要件を満たさない画像を出力するより省略する方が良い**ため,
-     * Google が求める最小サイズ（112x112）を満たさない画像は採用しない.
-     * 既定の帳票ロゴは 301x38 なので、ロゴを差し替えていない店舗では `logo` を出力しない.
+     * `logo` は任意プロパティなので、未配置の店舗では省略する.
+     * 画像のサイズ・形式はリクエストごとに検証せず、ドキュメントで案内する.
      */
     private function buildLogoUrl(): ?string
     {
-        $candidates = [
-            'user_data' => $this->eccubeConfig->get('eccube_html_dir').'/user_data/'.self::LOGO_FILE,
-            'admin' => $this->eccubeConfig->get('eccube_html_admin_dir').'/'.self::LOGO_FILE,
-        ];
+        $path = $this->eccubeConfig->get('eccube_html_dir').'/user_data/'.self::LOGO_FILE;
 
-        foreach ($candidates as $package => $path) {
-            if (file_exists($path)) {
-                return $this->satisfiesLogoRequirements($path)
-                    ? $this->generateAbsoluteAssetUrl(self::LOGO_FILE, $package)
-                    : null;
-            }
+        if (!file_exists($path)) {
+            return null;
         }
 
-        return null;
-    }
-
-    /**
-     * 画像が Organization.logo の最小サイズ要件を満たすか判定する.
-     */
-    private function satisfiesLogoRequirements(string $path): bool
-    {
-        $size = @getimagesize($path);
-
-        return $size !== false
-            && $size[0] >= self::LOGO_MIN_SIZE
-            && $size[1] >= self::LOGO_MIN_SIZE;
+        return $this->generateAbsoluteAssetUrl(self::LOGO_FILE, 'user_data');
     }
 
     /**

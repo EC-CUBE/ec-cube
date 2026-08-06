@@ -18,9 +18,20 @@ namespace Eccube\Tests\Service;
 use Eccube\Entity\BaseInfo;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Service\SiteStructuredDataService;
+use Symfony\Component\Filesystem\Filesystem;
 
 final class SiteStructuredDataServiceTest extends AbstractServiceTestCase
 {
+    /**
+     * 構造化データ専用のロゴの配置パス（`html/user_data` 基準）.
+     */
+    private const LOGO_FILE = 'assets/img/common/logo.png';
+
+    /**
+     * 配置テスト用の 1x1 PNG.
+     */
+    private const LOGO_PNG_1X1 = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=';
+
     private ?SiteStructuredDataService $service = null;
 
     private ?BaseInfo $BaseInfo = null;
@@ -78,44 +89,75 @@ final class SiteStructuredDataServiceTest extends AbstractServiceTestCase
     }
 
     /**
-     * logo は Google の最小サイズ要件（112x112）を満たす画像だけを出力する.
+     * logo は専用パスに画像が配置されているときだけ出力する.
      *
-     * 参照先は帳票 PDF と共通の店舗ロゴ（`assets/pdf/logo.png`、user_data 優先）。
-     * 既定の帳票ロゴは 301x38 で要件を満たさないため、差し替えていない店舗では logo を出力しない。
-     * 出力する場合は絶対URL（Packages::getUrl() はルート相対パスを返すためホストを前置する）。
+     * 参照先は構造化データ専用の `html/user_data/assets/img/common/logo.png` で、既定では存在しない。
+     * 画像のサイズ・形式はリクエストごとに検証せずドキュメントで案内するため、有無だけで判断する。
      */
-    public function testLogoIsOutputOnlyWhenItSatisfiesSizeRequirements(): void
+    public function testLogoIsOmittedWhenNotPlaced(): void
     {
+        $logoPath = $this->logoPath();
+        if (file_exists($logoPath)) {
+            $this->markTestSkipped('ロゴが配置済みの環境ではスキップする: '.$logoPath);
+        }
+
         $data = $this->service->createOrganizationJsonLd($this->BaseInfo);
 
-        // 実際に参照される画像から期待値を導く（探索順は Service と同じ user_data → admin）
-        $projectDir = static::getContainer()->getParameter('kernel.project_dir');
-        $expectedUrl = null;
-        foreach (['/html/user_data/assets/pdf/logo.png', '/html/template/admin/assets/pdf/logo.png'] as $relative) {
-            $path = $projectDir.$relative;
-            if (file_exists($path)) {
-                $size = @getimagesize($path);
-                $expectedUrl = ($size !== false && $size[0] >= 112 && $size[1] >= 112) ? $relative : null;
-                break;
+        $this->assertArrayNotHasKey('logo', $data);
+    }
+
+    /**
+     * 配置済みの logo は絶対URLで出力する.
+     *
+     * Packages::getUrl() はルート相対パスを返すため、ホストを前置して絶対URLにする。
+     */
+    public function testPlacedLogoIsOutputAsAbsoluteUrl(): void
+    {
+        $created = $this->placeLogo();
+
+        try {
+            $data = $this->service->createOrganizationJsonLd($this->BaseInfo);
+
+            $contentUrl = (string) $data['logo']['contentUrl'];
+            $url = (string) $data['url'];
+
+            $this->assertSame('ImageObject', $data['logo']['@type']);
+            $this->assertMatchesRegularExpression('#^https?://#', $contentUrl);
+            $this->assertStringStartsWith(
+                parse_url($url, PHP_URL_SCHEME).'://'.parse_url($url, PHP_URL_HOST),
+                $contentUrl
+            );
+            $this->assertStringContainsString('/html/user_data/'.self::LOGO_FILE, $contentUrl);
+        } finally {
+            if ($created) {
+                unlink($this->logoPath());
             }
         }
+    }
 
-        if ($expectedUrl === null) {
-            $this->assertArrayNotHasKey('logo', $data, '要件を満たさない画像は logo として出力しない');
-
-            return;
+    /**
+     * テスト用に 1x1 の PNG を配置する（既に配置されている場合はそれを使う）.
+     *
+     * @return bool このテストで作成した場合のみ true（後片付けで削除する対象）
+     */
+    private function placeLogo(): bool
+    {
+        $logoPath = $this->logoPath();
+        if (file_exists($logoPath)) {
+            return false;
         }
 
-        $contentUrl = (string) $data['logo']['contentUrl'];
-        $url = (string) $data['url'];
+        (new Filesystem())->dumpFile($logoPath, (string) base64_decode(self::LOGO_PNG_1X1, true));
 
-        $this->assertSame('ImageObject', $data['logo']['@type']);
-        $this->assertMatchesRegularExpression('#^https?://#', $contentUrl);
-        $this->assertStringStartsWith(
-            parse_url($url, PHP_URL_SCHEME).'://'.parse_url($url, PHP_URL_HOST),
-            $contentUrl
-        );
-        $this->assertStringContainsString($expectedUrl, $contentUrl);
+        return true;
+    }
+
+    /**
+     * ロゴの配置パスを返す.
+     */
+    private function logoPath(): string
+    {
+        return static::getContainer()->getParameter('kernel.project_dir').'/html/user_data/'.self::LOGO_FILE;
     }
 
     /**
