@@ -173,6 +173,9 @@ class OrderItem extends AbstractEntity implements ItemInterface
     #[ORM\Column(name: 'processor_name', type: Types::STRING, nullable: true)]
     private ?string $processor_name = null;
 
+    #[ORM\Column(name: 'order_memo', type: Types::TEXT, nullable: true)]
+    private ?string $order_memo = null;
+
     #[ORM\ManyToOne(targetEntity: Order::class, inversedBy: 'OrderItems')]
     #[ORM\JoinColumn(name: 'order_id', referencedColumnName: 'id')]
     private ?Order $Order = null;
@@ -418,28 +421,6 @@ class OrderItem extends AbstractEntity implements ItemInterface
     }
 
     /**
-     * Set taxRuleId.
-     *
-     * @deprecated 税率設定は受注作成時に決定するため廃止予定
-     */
-    public function setTaxRuleId(?int $taxRuleId = null): OrderItem
-    {
-        $this->tax_rule_id = $taxRuleId;
-
-        return $this;
-    }
-
-    /**
-     * Get taxRuleId.
-     *
-     * @deprecated 税率設定は受注作成時に決定するため廃止予定
-     */
-    public function getTaxRuleId(): ?int
-    {
-        return $this->tax_rule_id;
-    }
-
-    /**
      * Get currencyCode.
      */
     public function getCurrencyCode(): string
@@ -473,6 +454,26 @@ class OrderItem extends AbstractEntity implements ItemInterface
     public function setProcessorName(?string $processorName = null): static
     {
         $this->processor_name = $processorName;
+
+        return $this;
+    }
+
+    /**
+     * Get orderMemo.
+     */
+    public function getOrderMemo(): ?string
+    {
+        return $this->order_memo;
+    }
+
+    /**
+     * Set orderMemo.
+     *
+     * @return $this
+     */
+    public function setOrderMemo(?string $orderMemo = null): static
+    {
+        $this->order_memo = $orderMemo;
 
         return $this;
     }

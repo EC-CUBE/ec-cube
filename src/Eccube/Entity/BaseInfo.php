@@ -74,11 +74,8 @@ class BaseInfo extends AbstractEntity
     #[ORM\Column(name: 'shop_name_eng', type: Types::STRING, length: 255, nullable: true)]
     private ?string $shop_name_eng = null;
 
-    /**
-     * @var \DateTime
-     */
     #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
-    private $update_date;
+    private ?\DateTime $update_date = null;
 
     #[ORM\Column(name: 'good_traded', type: Types::STRING, length: 4000, nullable: true)]
     private ?string $good_traded = null;

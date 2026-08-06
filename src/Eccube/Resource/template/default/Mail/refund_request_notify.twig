@@ -1,0 +1,39 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% autoescape 'safe_textmail' %}
+返品申請を受け付けました。
+
+************************************************
+　返品申請内容
+************************************************
+
+申請日時：{{ RefundRequest.create_date|date_sec }}
+注文番号：{{ RefundRequest.Order.order_no }}
+会員名：{{ RefundRequest.Customer.name01 }} {{ RefundRequest.Customer.name02 }}
+
+商品名：{{ RefundRequest.OrderItem.productName }}
+{% if RefundRequest.OrderItem.ProductClass is not null %}
+{% if RefundRequest.OrderItem.ProductClass.ClassCategory1 is not null %}規格1：{{ RefundRequest.OrderItem.ProductClass.ClassCategory1 }}
+{% endif %}
+{% if RefundRequest.OrderItem.ProductClass.ClassCategory2 is not null %}規格2：{{ RefundRequest.OrderItem.ProductClass.ClassCategory2 }}
+{% endif %}
+{% endif %}
+返品希望数量：{{ RefundRequest.quantity }}
+
+返品理由：
+{{ RefundRequest.reason }}
+
+{% if RefundRequest.RefundRequestFiles is not empty %}
+添付ファイル数：{{ RefundRequest.RefundRequestFiles|length }}件
+{% endif %}
+
+※ このメールは自動送信です。管理画面より返品申請の詳細をご確認ください。
+{% endautoescape %}

@@ -51,16 +51,6 @@ class ProductClass extends AbstractEntity
     }
 
     /**
-     * Is Enable
-     *
-     * @deprecated
-     */
-    public function isEnable(): bool
-    {
-        return $this->getProduct()->isEnable();
-    }
-
-    /**
      * Set price01 IncTax
      */
     public function setPrice01IncTax(?string $price01_inc_tax): ProductClass
@@ -171,17 +161,11 @@ class ProductClass extends AbstractEntity
     #[ORM\Column(name: 'visible', type: Types::BOOLEAN, options: ['default' => true])]
     private ?bool $visible = null;
 
-    /**
-     * @var \DateTime
-     */
     #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
-    private $create_date;
+    private ?\DateTime $create_date = null;
 
-    /**
-     * @var \DateTime
-     */
     #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
-    private $update_date;
+    private ?\DateTime $update_date = null;
 
     #[ORM\Column(name: 'currency_code', type: Types::STRING, nullable: true)]
     private ?string $currency_code = null;

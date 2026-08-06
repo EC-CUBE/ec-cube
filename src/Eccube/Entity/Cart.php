@@ -58,14 +58,12 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
     #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'id')]
     private ?Customer $Customer = null;
 
-    private bool $lock = false;
-
     /**
      * @var Collection<int, CartItem>
      */
     #[ORM\OneToMany(targetEntity: CartItem::class, mappedBy: 'Cart', cascade: ['persist'])]
     #[ORM\OrderBy(['id' => 'ASC'])]
-    private $CartItems;
+    private Collection $CartItems;
 
     #[ORM\Column(name: 'pre_order_id', type: Types::STRING, length: 255, nullable: true)]
     private ?string $pre_order_id = null;
@@ -79,17 +77,11 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
     #[ORM\Column(name: 'sort_no', type: Types::SMALLINT, nullable: true, options: ['unsigned' => true])]
     private ?int $sort_no = null;
 
-    /**
-     * @var \DateTime
-     */
     #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
-    private $create_date;
+    private ?\DateTime $create_date = null;
 
-    /**
-     * @var \DateTime
-     */
     #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
-    private $update_date;
+    private ?\DateTime $update_date = null;
 
     /**
      * @var InvalidItemException[]
@@ -142,24 +134,6 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
     public function setAgentOwned(bool $agentOwned): Cart
     {
         $this->agent_owned = $agentOwned;
-
-        return $this;
-    }
-
-    /**
-     * @deprecated 使用しないので削除予定
-     */
-    public function getLock(): bool
-    {
-        return $this->lock;
-    }
-
-    /**
-     * @deprecated 使用しないので削除予定
-     */
-    public function setLock(bool $lock): Cart
-    {
-        $this->lock = $lock;
 
         return $this;
     }

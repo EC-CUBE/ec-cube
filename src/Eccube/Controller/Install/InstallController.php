@@ -547,8 +547,8 @@ class InstallController extends AbstractController
                 $this->addInfo(trans('install.recommend_extension_disabled', ['%module%' => 'wincache']), 'install');
             }
         } else {
-            if (!extension_loaded('apc')) {
-                $this->addInfo(trans('install.recommend_extension_disabled', ['%module%' => 'apc']), 'install');
+            if (!extension_loaded('apcu')) {
+                $this->addInfo(trans('install.recommend_extension_disabled', ['%module%' => 'apcu']), 'install');
             }
         }
         if (isset($_SERVER['SERVER_SOFTWARE']) && str_contains((string) $_SERVER['SERVER_SOFTWARE'], 'Apache')) {
@@ -1027,7 +1027,10 @@ class InstallController extends AbstractController
         return $version;
     }
 
-    public function convertAdminAllowHosts(string $adminAllowHosts): string
+    /**
+     * admin_allow_hosts は任意入力のため, 未入力の場合は null が渡される.
+     */
+    public function convertAdminAllowHosts(?string $adminAllowHosts): string
     {
         if (empty($adminAllowHosts)) {
             return '[]';

@@ -12,12 +12,12 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.48.0",
-    "@types/node": "^20.0.0",
+    "@types/node": "^26.1.1",
     "@types/pg": "^8.11.0",
     "mysql2": "^3.11.0",
     "pg": "^8.13.0",
-    "tar": "^7.5.16",
-    "typescript": "^5.6.0"
+    "tar": "^7.5.19",
+    "typescript": "^7.0.2"
   },
   "dependencies": {
     "@otplib/preset-default": "^12.0.1"

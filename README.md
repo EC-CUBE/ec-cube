@@ -48,7 +48,7 @@ docker compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose
 ### JavaScript のビルド方法
 
 フロントエンドで使用する JavaScript のライブラリは npm で管理されています。
-JavaScript のライブラリは webpack でバンドル/minifyされます。
+JavaScript のライブラリは esbuild でバンドル/minifyされます。
 バンドルするライブラリを変更する場合は、テンプレートごとに以下の bundle.js を修正し、リビルドしてください。
 - [html/template/admin/assets/js/bundle.js](html/template/admin/assets/js/bundle.js)
 - [html/template/default/assets/js/bundle.js](html/template/default/assets/js/bundle.js)
@@ -59,10 +59,10 @@ npm ci # 初回およびpackage-lock.jsonに変更があったとき
 npm run build # Sass 及び JavaScript のビルド
 ```
 
-JavaScript ライブラリのみをビルドしたい場合は以下でも可能です。
+ファイルの変更を監視して差分ビルドする場合は以下を実行してください。
 
 ```shell
-npx webpack
+npm start
 ```
 
 [`docker compose` を使用している場合](https://doc4.ec-cube.net/quickstart/docker_compose_install)は以下のコマンドを実行してください
@@ -70,10 +70,8 @@ npx webpack
 ``` shell
 # 初回およびpackage-lock.jsonに変更があったとき
 docker compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.nodejs.yml run --rm -T nodejs npm ci
-# Sass のビルド
+# Sass 及び JavaScript のビルド
 docker compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.nodejs.yml run --rm -T nodejs npm run build
-# JavaScript ライブラリのみのビルド
-docker compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.nodejs.yml run --rm -T nodejs npx webpack
 ```
 
 
@@ -137,7 +135,7 @@ Key differentiators:
 | ORM | Doctrine ORM 3.x, DBAL 4.x |
 | Template | Twig 3.x |
 | Database | PostgreSQL 13–18 / MySQL 8.4 LTS |
-| Frontend | Sass, webpack, Bootstrap 5.3, jQuery 4.x |
+| Frontend | Sass, esbuild, Bootstrap 5.3, jQuery 4.x |
 
 ### Quick Start
 

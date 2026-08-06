@@ -77,3 +77,7 @@ form.type.add.quantity: 1以上で入力してください。
 form.type.select.select_is_future_or_now_date: 生年月日が不正な日付です。
 form.type.admin.nottrackingnumberstyle: 送り状番号は半角英数字かハイフンのみを入力してください。
 form.type.float.invalid: 数字と小数点のみ入力できます。
+form_error.refund_request.quantity_exceed: 返品数量は{{ compared_value }}以下で指定してください。
+form_error.refund_request.max_files: ファイルは{{ limit }}件まで添付できます。
+form_error.refund_request.file_size: ファイルサイズが大きすぎます。{{ limit }}以内にしてください。
+form_error.refund_request.file_type: 許可されていないファイル形式です。画像（JPEG, PNG, GIF, WebP）または動画（MP4, MOV, AVI）を添付してください。

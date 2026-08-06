@@ -31,7 +31,9 @@ jobs:
           - 1025:1025
     steps:
       - name: Checkout
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v6
+        with:
+          persist-credentials: false
 
       ## Docker Hub からの pull はタイムアウトで CI が不安定になるため、
       ## DB はコンテナではなく setup アクション (apt) でインストールする
@@ -49,7 +51,7 @@ jobs:
           PGPASSWORD=password psql -h 127.0.0.1 -U postgres -c 'SELECT VERSION()'
 
       - name: Setup PHP
-        uses: nanasess/setup-php@bc11abbf4dd060b7bfd20d03edeeb43417ebe245  # master
+        uses: nanasess/setup-php@3f36b116d024300a7df978629a2bad9afceb2be3  # master
         with:
           php-version: '8.5'
 
@@ -61,7 +63,7 @@ jobs:
           php -m | grep -i redis
 
       - name: setup-chromedriver
-        uses: nanasess/setup-chromedriver@1bb5094b84e4b4809967f1544187c57220f8e2d5  # master
+        uses: nanasess/setup-chromedriver@aa033c43468094ffc3fd28243c9ca1aef66775ff  # master
 
       - name: "VAddy: install"
         working-directory: /tmp
