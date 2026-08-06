@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Web;
 
+use Eccube\Common\Constant;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Order;
 use Eccube\Repository\BaseInfoRepository;
@@ -253,12 +254,11 @@ final class ShoppingControllerWithMultipleNonmemberTest extends AbstractShopping
     public function testAddMultiShippingWithOneAddressTwoItemsTwoQuantities()
     {
         // Product test 1 with type 1
-        $Product1 = $this->createProduct();
+        [$Product1, $Product2] = $this->createProducts(2);
         $ProductClass1 = $Product1->getProductClasses()->first();
         $ProductClass1->setStock('111');
 
         // Product test 2
-        $Product2 = $this->createProduct();
         $ProductClass2 = $Product2->getProductClasses()->first();
         $ProductClass2->setStock('111');
 
@@ -325,12 +325,11 @@ final class ShoppingControllerWithMultipleNonmemberTest extends AbstractShopping
     public function testAddMultiShippingWithTwoAddressesTwoItemsThreeQuantities()
     {
         // Product test 1 with type 1
-        $Product1 = $this->createProduct();
+        [$Product1, $Product2] = $this->createProducts(2);
         $ProductClass1 = $Product1->getProductClasses()->first();
         $ProductClass1->setStock('111');
 
         // Product test 2
-        $Product2 = $this->createProduct();
         $ProductClass2 = $Product2->getProductClasses()->first();
         $ProductClass2->setStock('111');
 
@@ -416,12 +415,11 @@ final class ShoppingControllerWithMultipleNonmemberTest extends AbstractShopping
     public function testAddMultiShippingWithTwoAddressesTwoItemsEachTwoQuantities()
     {
         // Product test 1 with type 1
-        $Product1 = $this->createProduct();
+        [$Product1, $Product2] = $this->createProducts(2);
         $ProductClass1 = $Product1->getProductClasses()->first();
         $ProductClass1->setStock('111');
 
         // Product test 2
-        $Product2 = $this->createProduct();
         $ProductClass2 = $Product2->getProductClasses()->first();
         $ProductClass2->setStock('111');
 
@@ -518,12 +516,11 @@ final class ShoppingControllerWithMultipleNonmemberTest extends AbstractShopping
         $ProductClass->setStock('111');
 
         // Product test 2
-        $Product2 = $this->createProduct();
+        [$Product2, $Product3] = $this->createProducts(2);
         $ProductClass2 = $Product2->getProductClasses()->first();
         $ProductClass2->setStock('111');
 
         // Product test 3
-        $Product3 = $this->createProduct();
         $ProductClass3 = $Product3->getProductClasses()->first();
         $ProductClass3->setStock('111');
 
@@ -615,17 +612,15 @@ final class ShoppingControllerWithMultipleNonmemberTest extends AbstractShopping
     public function testAddMultiShippingWithTwoAddressesThreeItems()
     {
         // Product test 1 with type 1
-        $Product1 = $this->createProduct();
+        [$Product1, $Product2, $Product3] = $this->createProducts(3);
         $ProductClass1 = $Product1->getProductClasses()->first();
         $ProductClass1->setStock('111');
 
         // Product test 2
-        $Product2 = $this->createProduct();
         $ProductClass2 = $Product2->getProductClasses()->first();
         $ProductClass2->setStock('111');
 
         // Product test 3
-        $Product3 = $this->createProduct();
         $ProductClass3 = $Product3->getProductClasses()->first();
         $ProductClass3->setStock('111');
 
@@ -729,17 +724,15 @@ final class ShoppingControllerWithMultipleNonmemberTest extends AbstractShopping
     public function testAddMultiShippingWithThreeAddressesThreeItems()
     {
         // Product test 1 with type 1
-        $Product1 = $this->createProduct();
+        [$Product1, $Product2, $Product3] = $this->createProducts(3);
         $ProductClass1 = $Product1->getProductClasses()->first();
         $ProductClass1->setStock('111');
 
         // Product test 2
-        $Product2 = $this->createProduct();
         $ProductClass2 = $Product2->getProductClasses()->first();
         $ProductClass2->setStock('111');
 
         // Product test 3
-        $Product3 = $this->createProduct();
         $ProductClass3 = $Product3->getProductClasses()->first();
         $ProductClass3->setStock('111');
 
@@ -861,34 +854,10 @@ final class ShoppingControllerWithMultipleNonmemberTest extends AbstractShopping
     }
 
     /**
-     * Test add multi shipping
+     * カートが空の状態で複数配送設定画面へアクセスした場合、エラー画面へリダイレクトされる.
      */
-    public function testAddMultiShippingCartUnlock(): never
+    public function testAddMultiShippingWithoutCart()
     {
-        $this->markTestIncomplete('カートのアンロック対応');
-
-        $this->client->request(Request::METHOD_POST, '/cart/add', ['product_class_id' => 10, 'quantity' => 2]);
-        $this->client->request(Request::METHOD_POST, '/cart/add', ['product_class_id' => 1, 'quantity' => 1]);
-        $this->client->request(Request::METHOD_POST, '/cart/add', ['product_class_id' => 2, 'quantity' => 1]);
-
-        $this->scenarioCartIn();
-
-        // unlock cart
-        $this->app['eccube.service.cart']->unlock();
-
-        $formData = $this->createNonmemberFormData();
-        $this->scenarioInput($formData);
-
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('cart')));
-    }
-
-    /**
-     * Test multi shipping with nonmember
-     */
-    public function testAddMultiShippingWithoutCart(): never
-    {
-        $this->markTestIncomplete('カートのクリア対応');
-
         $this->scenarioCartIn();
         $this->scenarioCartIn();
 
@@ -916,9 +885,15 @@ final class ShoppingControllerWithMultipleNonmemberTest extends AbstractShopping
             ],
         ];
 
-        // clear cart
-        $cartService = $this->app['eccube.service.cart'];
-        $cartService->clear();
+        // カートを空にする. CartService をテストプロセスから直接操作するとセッションが解決できないため,
+        // クライアントのセッションを介して明細を削除する.
+        $this->client->request(
+            Request::METHOD_PUT,
+            $this->generateUrl('cart_handle_item', ['operation' => 'remove', 'productClassId' => 2]),
+            [Constant::TOKEN_NAME => '_dummy']
+        );
+        // 空になったカートを削除させるためカート画面を表示する.
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('cart'));
 
         $this->client->request(
             Request::METHOD_POST,
@@ -926,59 +901,7 @@ final class ShoppingControllerWithMultipleNonmemberTest extends AbstractShopping
             ['form' => $multiForm]
         );
 
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('cart')));
-    }
-
-    /**
-     * Test multi shipping with nonmember
-     */
-    public function testAddMultiShippingShippingUnlock(): never
-    {
-        $this->markTestIncomplete('カートのアンロック対応');
-
-        $client = $this->client;
-
-        $client->request(Request::METHOD_POST, '/cart/add', ['product_class_id' => 1, 'quantity' => 1]);
-        $this->scenarioCartIn($client);
-
-        $this->createNonmemberFormData();
-        $this->scenarioInput($client);
-
-        $crawler = $this->scenarioConfirm($client);
-
-        // お届け先設定画面への遷移前チェック
-        $shipping_edit_change_url = $crawler->filter('a.btn-shipping-edit')->attr('href');
-        $this->scenarioComplete(null, $shipping_edit_change_url, $client);
-
-        // add multi shipping
-        $multiForm = [
-            '_token' => 'dummy',
-            'shipping_multiple' => [
-                [
-                    'shipping' => [
-                        [
-                            'customer_address' => 0,
-                            'quantity' => 1,
-                        ],
-                        [
-                            'customer_address' => 0,
-                            'quantity' => 1,
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        // unlock when shipping
-        $this->app['eccube.service.cart']->unlock();
-
-        $client->request(
-            Request::METHOD_POST,
-            $this->generateUrl('shopping_shipping_multiple'),
-            ['form' => $multiForm]
-        );
-
-        $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('cart')));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_error')));
     }
 
     /**
@@ -1116,17 +1039,15 @@ final class ShoppingControllerWithMultipleNonmemberTest extends AbstractShopping
     public function testAddMultiShippingWithThreeAddressesThreeItemsOnScreen()
     {
         // Product test 1 with type 1
-        $Product1 = $this->createProduct();
+        [$Product1, $Product2, $Product3] = $this->createProducts(3);
         $ProductClass1 = $Product1->getProductClasses()->first();
         $ProductClass1->setStock('111');
 
         // Product test 2
-        $Product2 = $this->createProduct();
         $ProductClass2 = $Product2->getProductClasses()->first();
         $ProductClass2->setStock('111');
 
         // Product test 3
-        $Product3 = $this->createProduct();
         $ProductClass3 = $Product3->getProductClasses()->first();
         $ProductClass3->setStock('111');
 

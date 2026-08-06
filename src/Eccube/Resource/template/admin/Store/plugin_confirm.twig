@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             };
 
-            var requires = {{ requires|json_encode|raw }};
+            var requires = {{ requires|json_encode_safe }};
             requires = requires.map(function(req) {
                 return { 'pluginCode': req.name.replace(/^ec-cube\//, '') };
             });

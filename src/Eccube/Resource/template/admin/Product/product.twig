@@ -720,6 +720,41 @@ file that was distributed with this source code.
                         </div>
 
                     </div>
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-8">
+                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top"
+                                         title="{{ 'tooltip.product.order_memo'|trans }}">
+                                        <span class="card-title">{{ 'admin.product.order_memo__card_title'|trans }}</span>
+                                        <i class="fa fa-question-circle fa-lg ms-1"></i>
+                                    </div>
+                                </div>
+                                <div class="col-4 text-end">
+                                    <a data-bs-toggle="collapse" href="#orderMemo" aria-expanded="false"
+                                       aria-controls="orderMemo">
+                                        <i class="fa fa-angle-up fa-lg"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="collapse show ec-cardCollapse" id="orderMemo">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <span>{{ 'admin.product.order_memo'|trans }}</span>
+                                    </div>
+                                    <div class="col-9">
+                                        <div>
+                                            {{ form_widget(form.order_memo, {attr : { rows : "8"} }) }}
+                                            {{ form_errors(form.order_memo) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
             <div class="c-contentsArea__secondaryCol">

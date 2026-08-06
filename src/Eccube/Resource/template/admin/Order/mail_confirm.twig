@@ -20,12 +20,6 @@ file that was distributed with this source code.
 {% block javascript %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('template-change').addEventListener('change', function() {
-        document.getElementById('mode').value = 'change';
-        document.getElementById('order-mail-form').submit();
-        return false;
-    });
-
     document.getElementById('back').addEventListener('click', function(e) {
         e.preventDefault();
         document.getElementById('mode').value = 'back';

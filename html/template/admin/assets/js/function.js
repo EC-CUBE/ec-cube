@@ -93,6 +93,20 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Laddaのtimeout(2000ms)でボタンが再有効化された後の二重送信を防止する.
+    // 一度submitされたフォームは以降のsubmitをキャンセルする. (Issue #6671)
+    // ページ遷移(登録成功・バリデーションエラー)でJSが再初期化されるため, フラグは自動的にリセットされる.
+    var submittedForms = new WeakSet();
+    document.querySelectorAll('form').forEach(function(form) {
+        form.addEventListener('submit', function(e) {
+            if (submittedForms.has(this)) {
+                e.preventDefault();
+                return;
+            }
+            submittedForms.add(this);
+        });
+    });
+
     // anchorをクリックした時にformを裏で作って指定のメソッドでリクエストを飛ばす
     // Twigには以下のように埋め込む
     // <a href="PATH" {{ csrf_token_for_anchor() }} data-method="(put/delete/postのうちいずれか)" data-confirm="xxxx" data-message="xxxx">

@@ -1,6 +1,6 @@
 {
   "name": "eccube",
-  "version": "4.3.1-p1",
+  "version": "4.4.0-dev",
   "description": "EC-CUBE EC open platform.",
   "main": "index.js",
   "directories": {
@@ -9,8 +9,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "echo \"Error: no clean specified\" && exit 1",
-    "build": "gulp",
-    "start": "gulp start",
+    "build": "node esbuild.config.mjs",
+    "start": "node esbuild.config.mjs --watch",
     "prepare": "husky"
   },
   "repository": {
@@ -29,51 +29,32 @@
     ]
   },
   "dependencies": {
-    "@babel/polyfill": "^7.12.1",
     "@popperjs/core": "^2.11.8",
     "ace-builds": "^1.32.3",
     "bootstrap": "^5.3.8",
     "chart.js": "^4.5.1",
-    "css-loader": "^7.1.2",
-    "file-loader": "^6.2.0",
     "filepond": "^4.30.6",
     "filepond-plugin-file-validate-size": "^2.2.8",
     "filepond-plugin-file-validate-type": "^1.2.8",
     "filepond-plugin-image-preview": "^4.6.12",
     "jquery": "^3.7.1",
-    "jquery-ui": "^1.13.3",
+    "jquery-ui": "^1.14.2",
     "jquery.qrcode": "^1.0.3",
     "ladda": "^2.0.3",
     "qrcode-generator": "^2.0.4",
     "slick-carousel": "^1.8.1",
     "sortablejs": "^1.15.7",
-    "spin.js": "^4.1.1",
-    "style-loader": "^4.0.0",
-    "url-loader": "^4.1.1"
+    "spin.js": "^4.1.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.5",
-    "@babel/preset-env": "^7.26.0",
     "autoprefixer": "^10.4.23",
-    "babel-loader": "^10.1.0",
-    "browser-sync": "^3.0.4",
     "cross-env": "^7.0.2",
-    "gulp": "^5.0.0",
-    "gulp-clean-css": "^4.2.0",
-    "gulp-notify": "^4.0.0",
-    "gulp-plumber": "^1.2.1",
-    "gulp-postcss": "^10.0.0",
-    "gulp-rename": "^1.4.0",
-    "gulp-sass": "^5.1.0",
+    "esbuild": "^0.28.1",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
     "normalize.css": "^8.0.1",
-    "postcss-import": "^16.1.1",
+    "postcss": "^8.5.6",
     "postcss-sort-media-queries": "^5.2.0",
-    "process": "^0.11.10",
-    "sass": "^1.93.3",
-    "webpack": "^5.105.3",
-    "webpack-cli": "^5.1.4",
-    "webpack-stream": "^7.0.0"
+    "sass-embedded": "^1.99.0"
   }
 }

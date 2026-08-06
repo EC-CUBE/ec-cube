@@ -19,14 +19,18 @@ export default function globalSetup() {
         timeout: 120_000,
         env: {
           ...process.env,
-          APP_ENV: process.env.APP_ENV || 'codeception',
+          APP_ENV: process.env.APP_ENV || 'e2e',
         },
         stdio: ['pipe', 'pipe', 'pipe'],
       }
     );
     console.log(output.toString());
   } catch (error: any) {
-    console.error('Fixture setup failed:', error.stderr?.toString() || error.message);
+    // PHP CLI は Fatal error を stdout に書くため、stderr だけだと失敗理由が一切残らない
+    const detail = [error.stdout?.toString(), error.stderr?.toString()]
+      .filter((s?: string) => s && s.trim() !== '')
+      .join('\n');
+    console.error('Fixture setup failed:', detail || error.message);
     // フィクスチャ失敗はテスト実行を止めない（基本データは eccube:fixtures:load で入っている）
     console.warn('Continuing without additional fixtures...');
   }

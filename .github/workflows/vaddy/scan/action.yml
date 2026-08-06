@@ -33,7 +33,7 @@ runs:
           -e APP_ENV=prod \
           -e APP_DEBUG=0 \
           -e DATABASE_URL="postgres://postgres:password@172.17.0.1:5432/eccube_db" \
-          -e DATABASE_SERVER_VERSION=14 \
+          -e DATABASE_SERVER_VERSION=18 \
           -e MAILER_URL="smtp://172.17.0.1:1025" \
           -v ${PWD}/html:/tmp/html \
           --rm -d -p 8080:80 --name eccube ec-cube
@@ -56,9 +56,9 @@ runs:
     - name: "VAddy: crawl"
       shell: bash
       env:
-        APP_ENV: "codeception"
+        APP_ENV: "e2e"
         DATABASE_URL: "postgres://postgres:password@127.0.0.1:5432/eccube_db"
-        DATABASE_SERVER_VERSION: "14"
+        DATABASE_SERVER_VERSION: "18"
         MAILER_URL: "smtp://127.0.0.1:1025"
         BASE_URL: "http://${{ inputs.vaddy-fqdn }}:8080"
         VADDY_PROXY: "${{ inputs.vaddy-proxy }}"

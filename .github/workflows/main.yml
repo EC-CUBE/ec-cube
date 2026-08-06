@@ -34,22 +34,54 @@ jobs:
   e2e-test:
     needs: [ rector, phpstan, php-cs-fixer ]
     uses: ./.github/workflows/e2e-test.yml
+    # PR/push では最新 PHP のみ。全バージョンは weekly-test.yml が週次で回す
+    with:
+      php-versions: "['8.5']"
+  agentic-commerce-e2e:
+    # plugin-test と並列で実行する (同じ needs)。
+    needs: [ unit-test, e2e-test ]
+    # 本体 ↔ eccube-api4 ↔ sample-payment-plugin の結合 E2E。
+    # 依存プラグインは fork の feature/agentic-commerce を既定参照 (org 移行後に別 PR で差し替え)。
+    uses: ./.github/workflows/agentic-commerce-e2e.yml
+  dockerbuild:
+    uses: ./.github/workflows/dockerbuild.yml
+    permissions:
+      contents: read
+      packages: write
   plugin-test:
     needs: [ unit-test, e2e-test ]
     uses: ./.github/workflows/plugin-test.yml
+    with:
+      php-versions: "['8.5']"
   e2e-test-throttling:
     needs: [ plugin-test ]
     uses: ./.github/workflows/e2e-test-throttling.yml
+    with:
+      php-versions: "['8.5']"
 #  deny-test:
 #    needs: [ plugin-test ]
 #    uses: ./.github/workflows/deny-test.yml
   success:
-    needs: [ e2e-test-throttling ]
+    # 全ジョブを直接 needs する。チェーン依存(success←throttling←plugin-test←unit-test)だと
+    # 上流の failure が各ホップで skipped に化けて末端へ届かず、必須チェック success が
+    # skipped=パス扱いとなって赤テストのまま auto-merge されてしまうため(#6840)。
+    needs: [ rector, phpstan, php-cs-fixer, unit-test, e2e-test, plugin-test, e2e-test-throttling, dockerbuild, agentic-commerce-e2e ]
+    # 上流が失敗しても success 自体は必ず実行する(skip させない)
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
+      # skipped は許容(dependabot の coverage 等、正当な skip がある)。
+      # failure / cancelled のみを赤として扱い、auto-merge をブロックする。
+      - name: Check required jobs
+        if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
+        run: echo "::error::required job failed or was cancelled" && exit 1
       - name: success
         run: echo "::notice::success!"
   coverage:
     needs: [ unit-test ]  # PHPUnit coverage only, no need to wait for e2e-test
     if: ${{ github.event.pull_request.user.login != 'dependabot[bot]' }}
+    permissions:
+      contents: read
+      code-quality: write
+    secrets: inherit  # Codecov アップロードに CODECOV_TOKEN が必要
     uses: ./.github/workflows/coverage.yml

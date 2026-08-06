@@ -171,6 +171,8 @@ class ShopMasterType extends AbstractType
             ->add('option_favorite_product', ToggleSwitchType::class)
             // 在庫切れ商品を非表示にする
             ->add('option_nostock_hidden', ToggleSwitchType::class)
+            // CSV出力時に数式評価され得る先頭文字を無害化する
+            ->add('option_sanitize_csv_formulas', ToggleSwitchType::class)
             // 適格請求書発行事業者登録番号
             ->add('invoice_registration_number', TextType::class, [
                 'required' => false,
@@ -184,6 +186,8 @@ class ShopMasterType extends AbstractType
             ->add('option_product_tax_rule', ToggleSwitchType::class)
             // ポイント設定
             ->add('option_point', ToggleSwitchType::class)
+            // クッキーポリシー同意機能
+            ->add('option_cookie_consent', ToggleSwitchType::class)
             ->add('basic_point_rate', NumberType::class, [
                 'required' => false,
                 'constraints' => [
@@ -218,6 +222,9 @@ class ShopMasterType extends AbstractType
                     ]),
                 ],
             ])
+            // エージェントコマース checkout の有効化フラグ (discovery / catalog は常時公開、checkout のみ制御)
+            ->add('acp_checkout_enabled', ToggleSwitchType::class)
+            ->add('ucp_checkout_enabled', ToggleSwitchType::class)
         ;
 
         $builder->add(

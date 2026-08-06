@@ -80,9 +80,16 @@ class ContactController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             switch ($request->get('mode')) {
                 case 'confirm':
+                    $Page = $this->pageRepository->getPageByRoute('contact_confirm');
+
                     return $this->render('Contact/confirm.twig', [
                         'form' => $form->createView(),
-                        'Page' => $this->pageRepository->getPageByRoute('contact_confirm'),
+                        'Page' => $Page,
+                        // contact と contact_confirm は同一パス '/contact' のため, ルータは常に
+                        // contact にマッチする. TwigInitializeListener が _route から引く
+                        // twig グローバル title は「入力ページ」のままになるので,
+                        // title より優先される subtitle で確認ページ名を上書きする.
+                        'subtitle' => $Page->getName(),
                     ]);
 
                 case 'complete':

@@ -1,8 +1,9 @@
 import { test, expect } from '@playwright/test';
+import { ADMIN_ROUTE } from '../config/default.config';
 import path from 'path';
 import fs from 'fs';
 
-const adminRoute = process.env.ECCUBE_ADMIN_ROUTE || 'admin';
+const adminRoute = ADMIN_ROUTE;
 
 // ---------------------------------------------------------------------------
 // News management
@@ -193,6 +194,17 @@ test.describe.serial('Page management', () => {
 
     // Verify default template content via ace editor
     await page.waitForFunction(() => !!(window as any).ace?.edit);
+
+    // Guard against ace failing to resolve mode/theme/worker from html/bundle/ace.
+    // Those requests 404 silently: the editor still works as plain text and the rest
+    // of this spec passes, so assert the theme and mode actually loaded.
+    await expect(page.locator('#editor')).toHaveClass(/ace-tomorrow/);
+    await expect
+      .poll(() =>
+        page.evaluate(() => (window as any).ace.edit('editor').session.getMode().$id),
+      )
+      .toBe('ace/mode/twig');
+
     const defaultContent = await page.evaluate(() => {
       return (window as any).ace.edit('editor').getValue();
     });

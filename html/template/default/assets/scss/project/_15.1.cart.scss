@@ -38,6 +38,14 @@ Styleguide 15.1
       display: inline-block;
     }
   }
+  & &__success{
+    width: 100%;
+    text-align: center;
+    .ec-alert-success {
+      max-width: 80%;
+      display: inline-block;
+    }
+  }
   & &__totalText{
     margin-bottom: 0;
     padding: 16px 0 6px;
@@ -426,6 +434,34 @@ Styleguide 15.1.6
     fill: #fff;
     vertical-align: top;
   }
+  & &__text {
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    position: relative;
+    flex: 1;
+    word-break: break-all;
+  }
+}
+
+.ec-alert-success {
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  background: #5cb85c;
+  margin-bottom: 20px;
+
+  & &__inner {
+    display: inline-block;
+
+    &__item {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  }
+
   & &__text {
     display: inline-block;
     font-size: 16px;

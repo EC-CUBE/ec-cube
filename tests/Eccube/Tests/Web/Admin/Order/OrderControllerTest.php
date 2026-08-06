@@ -65,18 +65,18 @@ final class OrderControllerTest extends AbstractAdminWebTestCase
         $this->deleteAllRows(['dtb_order_item']);
         $this->deleteAllRows(['dtb_shipping']);
         $this->deleteAllRows(['dtb_order']);
-        $Sex = $this->sexRepository->find(1);
-        $Payment = $this->paymentRepository->find(1);
-        $OrderStatus = $this->orderStatusRepository->find(OrderStatus::NEW);
-        for ($i = 0; $i < 10; $i++) {
-            $Customer = $this->createCustomer('user-'.$i.'@example.com');
-            $Customer->setSex($Sex);
-            $Order = $this->createOrder($Customer);
-            $Order->setOrderNo('order_no_'.$i);
-            $Order->setOrderStatus($OrderStatus);
-            $Order->setPayment($Payment);
-            $this->entityManager->flush();
-        }
+        // dtb_customer も CSV と重複する可能性があるため事前に削除する.
+        // ※ CsvFixture::load() は内部で beginTransaction/commit を呼び DAMA の
+        //   savepoint と完全には整合しないため、シナリオ間で email や secret_key の
+        //   UNIQUE 制約が衝突する場合がある. setUp で先に消すことで毎テスト独立した
+        //   状態から CSV を投入する.
+        $this->deleteAllRows(['dtb_customer_address']);
+        $this->deleteAllRows(['dtb_customer']);
+        // Phase (b): order-search シナリオの CSV から Customer / Order / Shipping / OrderItem を一括投入.
+        // 詳細は tests/Eccube/Tests/Fixture/csv/order-search/README.md を参照.
+        // ※ OrderItem の product_id / product_class_id は NULL で、Shipping の delivery_id も NULL.
+        //   これは本テストが商品参照や配送方法を要求しないための簡略化であり、実運用データとは乖離する.
+        $this->loadCsvFixtures('order-search');
         // sqlite では CsvType が生成されないので、ここで作る
         $OrderCsvType = $this->csvTypeRepository->find(3);
         if (!is_object($OrderCsvType)) {
@@ -239,14 +239,9 @@ final class OrderControllerTest extends AbstractAdminWebTestCase
 
     public function testBulkDelete()
     {
-        $orderIds = [];
         $Customer = $this->createCustomer();
-        for ($i = 0; $i < 5; $i++) {
-            $Order = $this->createOrder($Customer);
-            $orderIds[] = $Order->getId();
-        }
-
-        $this->entityManager->flush();
+        $NewOrders = $this->createOrders(array_fill(0, 5, $Customer));
+        $orderIds = array_map(static fn ($o) => $o->getId(), $NewOrders);
 
         $this->client->request(
             Request::METHOD_POST,
@@ -329,11 +324,23 @@ final class OrderControllerTest extends AbstractAdminWebTestCase
     #[DataProvider(methodName: 'dataBulkOrderStatusProvider')]
     public function testBulkOrderStatus($orderStatusId)
     {
-        $this->markTestIncomplete('使用していないルーティングのためスキップ.');
+        // Generator が生成する Order の OrderStatus は既定で PROCESSING のため,
+        // 受注一覧からの一括ステータス更新の起点となる NEW の受注をここで用意する.
+        $OrderStatus = $this->orderStatusRepository->find(OrderStatus::NEW);
+        $this->assertInstanceOf(OrderStatus::class, $OrderStatus);
+        for ($i = 0; $i < 2; $i++) {
+            $Order = $this->createOrder($this->createCustomer('bulk-order-status-'.$i.'@example.com'));
+            $Order->setOrderStatus($OrderStatus);
+        }
+        $this->entityManager->flush();
+
+        $TargetOrderStatus = $this->orderStatusRepository->find($orderStatusId);
+        $this->assertInstanceOf(OrderStatus::class, $TargetOrderStatus);
+
         // case true
         $orderIds = [];
-        $OrderStatus = $this->orderStatusRepository->find(OrderStatus::NEW);
         $Orders = $this->orderRepository->findBy(['OrderStatus' => $OrderStatus], [], 2);
+        $this->assertCount(2, $Orders);
         foreach ($Orders as $Order) {
             $this->assertEquals(null, $Order->getPaymentDate());
             $orderIds[] = $Order->getId();
@@ -357,8 +364,10 @@ final class OrderControllerTest extends AbstractAdminWebTestCase
             }
         }
 
-        $result = $this->orderRepository->findBy(['id' => $orderIds, 'OrderStatus' => $OrderStatus]);
+        // 更新後は対象の OrderStatus へ遷移している (NEW -> PAID は pay, NEW -> DELIVERED は ship).
+        $result = $this->orderRepository->findBy(['id' => $orderIds, 'OrderStatus' => $TargetOrderStatus]);
         if ($orderStatusId == OrderStatus::PAID) {
+            // 入金日は pay 遷移 (workflow.order.transition.pay) でのみ設定される.
             foreach ($result as $Order) {
                 $this->assertInstanceOf(\DateTime::class, $Order->getPaymentDate());
             }
@@ -434,7 +443,18 @@ final class OrderControllerTest extends AbstractAdminWebTestCase
         $orderIds = [];
         $OrderStatusNew = $this->orderStatusRepository->find(OrderStatus::NEW);
         $OrderStatusDelivered = $this->orderStatusRepository->find(OrderStatus::DELIVERED);
+
+        // Generator が生成する Order の OrderStatus は既定で PROCESSING のため,
+        // NEW の受注をここで用意する. 用意しないと findBy が 0 件を返し,
+        // 以降の foreach が回らずアサーションが 1 つも実行されない (空振りで green になる).
+        for ($i = 0; $i < 2; $i++) {
+            $Order = $this->createOrder($this->createCustomer('simple-update-status-'.$i.'@example.com'));
+            $Order->setOrderStatus($OrderStatusNew);
+        }
+        $this->entityManager->flush();
+
         $Orders = $this->orderRepository->findBy(['OrderStatus' => $OrderStatusNew], [], 2);
+        $this->assertCount(2, $Orders, 'NEW の受注が用意されていること');
         foreach ($Orders as $Order) {
             $this->assertEquals(null, $Order->getPaymentDate());
             $orderIds[] = $Order->getId();

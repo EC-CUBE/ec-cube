@@ -128,7 +128,7 @@ final class WithdrawControllerTest extends AbstractWebTestCase
         $this->verify();
 
         $this->assertEmailTextBodyContains($Message, '＜Sanitize&＞', 'テキストメールがサニタイズされている');
-        $this->assertEmailHtmlBodyNotContains($Message, '＜Sanitize&＞', 'HTML part は存在しない');
+        $this->assertNull($Message->getHtmlBody(), 'HTML part は存在しない');
     }
 
     public function testComplete()

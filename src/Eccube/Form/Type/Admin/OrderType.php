@@ -33,6 +33,7 @@ use Eccube\Service\OrderStateMachine;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -165,6 +166,18 @@ class OrderType extends AbstractType
                     new Assert\Length(max: $this->eccubeConfig['eccube_ltext_len']),
                 ],
             ])
+            ->add('payment_date', DateTimeType::class, [
+                'required' => false,
+                'input' => 'datetime',
+                'widget' => 'single_text',
+                'with_seconds' => true,
+                'constraints' => [
+                    new Assert\Range([
+                        'min' => '0003-01-01',
+                        'minMessage' => 'form_error.out_of_range',
+                    ]),
+                ],
+            ])
             ->add('Payment', EntityType::class, [
                 'required' => false,
                 'class' => Payment::class,
@@ -190,6 +203,11 @@ class OrderType extends AbstractType
             ])
             ->add('return_link', HiddenType::class, [
                 'mapped' => false,
+            ])
+            // 二重送信・多重編集による受注明細の破損を検知するため, フォーム描画時点の
+            // 更新日時を保持する. (Issue #6671)
+            ->add('form_update_date', HiddenType::class, [
+                'mapped' => false,
             ]);
 
         $builder
@@ -200,6 +218,7 @@ class OrderType extends AbstractType
                 )));
 
         $builder->addEventListener(FormEvents::POST_SET_DATA, $this->sortOrderItems(...));
+        $builder->addEventListener(FormEvents::POST_SET_DATA, $this->keepFormUpdateDate(...));
         $builder->addEventListener(FormEvents::POST_SET_DATA, $this->addOrderStatusForm(...));
         $builder->addEventListener(FormEvents::POST_SET_DATA, $this->addShippingForm(...));
         $builder->addEventListener(FormEvents::POST_SUBMIT, $this->copyFields(...));
@@ -242,6 +261,26 @@ class OrderType extends AbstractType
 
         $form = $event->getForm();
         $form['OrderItems']->setData($OrderItems);
+    }
+
+    /**
+     * フォーム描画時点の受注の更新日時を hidden フィールドへ保持する.
+     *
+     * 二重送信や多重編集で受注が既に更新されている場合に,
+     * 送信されたインデックスと DB 上の明細順がずれてデータが破損するのを防ぐため,
+     * コントローラ側で描画時点と現在の更新日時を突合する. (Issue #6671)
+     */
+    public function keepFormUpdateDate(FormEvent $event): void
+    {
+        /** @var Order|null $Order */
+        $Order = $event->getData();
+        if (null === $Order || null === $Order->getUpdateDate()) {
+            return;
+        }
+
+        $event->getForm()->get('form_update_date')->setData(
+            $Order->getUpdateDate()->format('Y-m-d H:i:s')
+        );
     }
 
     /**
@@ -413,25 +452,27 @@ class OrderType extends AbstractType
         $OrderItems = $Order->getOrderItems();
 
         // 明細とOrder, Shippingを紐付ける.
-        // 新規の明細のみが対象, 更新時はスキップする.
+        // 紐付けの判定は「id の有無」ではなく「本来 Shipping を持つべき明細なのに未紐付け」で行う.
+        // 未保存の削除でスロットが再利用された既存明細(#6444)は id を持つため, id 判定では
+        // Shipping が設定されず, 追加された商品明細が shipping_id=NULL のまま孤児化してしまう
+        // (納品書・出荷メール・マイページ履歴等から商品が消える). 未紐付けの明細のみ紐付けることで,
+        // 既に特定の Shipping に紐づく明細(複数配送)は移動させずに孤児明細だけを修復する.
         foreach ($OrderItems as $OrderItem) {
-            // 更新時はスキップ
-            if ($OrderItem->getId()) {
-                continue;
+            // 新規明細のみ Order を紐付ける(既存明細は DB 読込時に紐付け済み).
+            if (null === $OrderItem->getId()) {
+                $OrderItem->setOrder($Order);
             }
 
-            $OrderItem->setOrder($Order);
-
-            // 送料明細の紐付けを行う.
+            // 送料明細の紐付けを行う. 未紐付けのものだけが対象.
             // 複数配送の場合は, 常に最初のShippingと紐付ける.
             // Order::getShippingsは氏名でソートされている.
-            if ($OrderItem->isDeliveryFee()) {
+            if ($OrderItem->isDeliveryFee() && null === $OrderItem->getShipping()) {
                 $OrderItem->setShipping($Order->getShippings()->first());
             }
 
-            // 商品明細の紐付けを行う.
-            // 複数配送時は, 明細の追加は行われないためスキップする.
-            if ($OrderItem->isProduct() && !$Order->isMultiple()) {
+            // 商品明細は必ず Shipping に紐づく. 未紐付けのものだけを紐付ける
+            // (既に紐付いている明細は複数配送でも移動させない).
+            if ($OrderItem->isProduct() && null === $OrderItem->getShipping()) {
                 $OrderItem->setShipping($Order->getShippings()->first());
             }
         }

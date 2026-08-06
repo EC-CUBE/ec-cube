@@ -18,6 +18,7 @@ namespace Eccube\Tests\Web\Admin\Product;
 use Eccube\Entity\Category;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 
 final class CategoryControllerTest extends AbstractAdminWebTestCase
@@ -335,12 +336,8 @@ final class CategoryControllerTest extends AbstractAdminWebTestCase
         return $TestCategory;
     }
 
-    public function testMoveSortNoAndShow(): never
+    public function testMoveSortNoAndShow()
     {
-        // FIXME doctrine/doctrine-bundleに起因してテストが通らないため一時的にスキップ
-        // https://github.com/EC-CUBE/ec-cube/issues/4592
-        $this->markTestIncomplete();
-
         // Give
         $Category = $this->categoryRepository->findOneBy(['name' => '親1']);
         $Category2 = $this->categoryRepository->findOneBy(['name' => '親2']);
@@ -374,11 +371,19 @@ final class CategoryControllerTest extends AbstractAdminWebTestCase
             $this->generateUrl('admin_product_product_new')
         );
 
-        $CategoryLast = $this->categoryRepository->findOneBy(['name' => '子2-2']);
-        $categoryNameLastElement = $crawler->filter('.c-directoryTree--register label')->last()->text();
+        // カテゴリツリーは各階層とも sort_no の降順で描画される
+        // (CategoryRepository::getList の orderBy c1..c5 sort_no DESC).
+        // 親1 と 親2 の sort_no を入れ替えたため, 親3(3), 親1(2), 親2(1) の順になる.
+        $this->expected = ['親3', '子3', '孫3', '親1', '子1', '孫1', '親2', '子2-2', '子2-1', '子2-0', '孫2'];
+        $this->actual = $crawler->filter('.c-directoryTree--register label')->each(fn (Crawler $node): string => $node->text());
+        $this->verify();
+
+        // 末尾は最後の親 (親2) 配下の最も深い末尾ノードである 孫2 になる.
+        // 親2 の子も降順で 子2-2, 子2-1, 子2-0 と並び, 子2-0 の子 孫2 が最後に描画される.
+        $CategoryLast = $this->categoryRepository->findOneBy(['name' => '孫2']);
         $this->assertInstanceOf(Category::class, $CategoryLast);
         $this->expected = $CategoryLast->getName();
-        $this->actual = $categoryNameLastElement;
+        $this->actual = $crawler->filter('.c-directoryTree--register label')->last()->text();
         $this->verify();
     }
 }

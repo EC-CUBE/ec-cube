@@ -23,6 +23,20 @@ file that was distributed with this source code.
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // 出荷日: 鉛筆アイコン押下で入力欄を表示する(誤操作防止).
+            document.addEventListener('click', function(e) {
+                var toggle = e.target.closest('.date-edit-toggle');
+                if (!toggle) return;
+                var col = toggle.closest('.col');
+                if (!col) return;
+                col.querySelectorAll('.date-edit-view').forEach(function(el) {
+                    el.classList.add('d-none');
+                });
+                col.querySelectorAll('.date-edit-input').forEach(function(el) {
+                    el.classList.remove('d-none');
+                });
+            });
+
             // 商品追加
             document.querySelectorAll('.addProduct-button').forEach(function(btn) {
                 btn.addEventListener('click', function() {
@@ -499,7 +513,14 @@ file that was distributed with this source code.
                                                 <div class="col">
                                                     {% if shippingForm.vars.value.shipping_date %}
                                                         {# 登録済みの出荷で出荷日が設定されている場合は出荷日を表示する #}
-                                                        <span>{{ shippingForm.vars.value.shipping_date|date_min }}</span>
+                                                        <span class="date-edit-view">
+                                                            {{ shippingForm.vars.value.shipping_date|date_min }}
+                                                            <a class="btn btn-ec-actionIcon date-edit-toggle" href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.edit'|trans }}"><i class="fa fa-pencil fa-lg text-secondary" aria-hidden="true"></i></a>
+                                                        </span>
+                                                        <span class="date-edit-input d-none">
+                                                            {{ form_widget(shippingForm.shipping_date) }}
+                                                            {{ form_errors(shippingForm.shipping_date) }}
+                                                        </span>
                                                     {% elseif shippingForm.vars.value.id %}
                                                         {# 登録済みの出荷で出荷日が設定されていない場合 #}
                                                         <!-- 出荷済にするボタン -->

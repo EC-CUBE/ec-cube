@@ -22,6 +22,7 @@ use Eccube\Entity\Master\RoundingType;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\ProductImage;
+use Eccube\Entity\ProductStock;
 use Eccube\Entity\ProductTag;
 use Eccube\Entity\Tag;
 use Eccube\Entity\TaxRule;
@@ -37,6 +38,7 @@ use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 final class ProductControllerTest extends AbstractAdminWebTestCase
 {
@@ -62,10 +64,10 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
         $this->taxRuleRepository = $this->entityManager->getRepository(TaxRule::class);
         $this->productStatusRepository = $this->entityManager->getRepository(ProductStatus::class);
         $this->productTagRepository = $this->entityManager->getRepository(ProductTag::class);
-        // 検索時, IDの重複を防ぐため事前に10個生成しておく
-        for ($i = 0; $i < 10; $i++) {
-            $this->createProduct();
-        }
+        // Phase (b): 検索時, ID の重複を防ぐため事前に 10 件 Product を投入する.
+        // CSV の id レンジ (6001-9040) は初期データ (id 1, 2) と衝突しないため事前削除不要.
+        // 詳細は tests/Eccube/Tests/Fixture/csv/product-list-mass/README.md を参照.
+        $this->loadCsvFixtures('product-list-mass');
         $this->imageDir = sys_get_temp_dir().'/'.sha1((string) mt_rand());
         $fs = new Filesystem();
         $fs->mkdir($this->imageDir);
@@ -114,6 +116,7 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
             'Tag' => [1],
             'search_word' => $faker->word(),
             'free_area' => $faker->realText,
+            'order_memo' => $faker->realText,
             'Status' => 1,
             'note' => $faker->realText,
             'tags' => [],
@@ -356,10 +359,19 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
         $PreProduct = $this->productRepository->findOneBy(['id' => $Product->getId()]);
         $PreUpdateDate = $PreProduct->getUpdateDate();
         $this->assertInstanceOf(\DateTime::class, $PreUpdateDate);
-        $preTimestamp = $PreUpdateDate->getTimestamp();
 
-        // タイムスタンプが変わっていることを確認するために3秒待って更新
-        sleep(3);
+        // sleep(3) を避けるため update_date を 3 秒前に巻き戻す.
+        // SaveEventSubscriber::preUpdate が Doctrine flush 時に
+        // updateDate を NOW で強制上書きするため、ORM 経由ではなく
+        // DBAL で直接 UPDATE して preUpdate を回避する.
+        $threeSecondsAgo = new \DateTime('-3 seconds');
+        $this->entityManager->getConnection()->update(
+            'dtb_product',
+            ['update_date' => $threeSecondsAgo->format('Y-m-d H:i:s')],
+            ['id' => $Product->getId()]
+        );
+        $this->entityManager->refresh($PreProduct);
+        $preTimestamp = $PreProduct->getUpdateDate()->getTimestamp();
 
         $formData['return_link'] = $this->generateUrl('admin_product_category');
         $this->client->request(
@@ -504,9 +516,9 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
-     * Test search + export product no stock
+     * 在庫なしで絞り込んで CSV 出力するテスト.
      */
-    public function testExportWithFilterNoStock(): never
+    public function testExportWithFilterNoStock(): void
     {
         $testProduct = $this->createProduct('Product with stock 01');
         $this->createProduct('Product with stock 02', 1);
@@ -520,37 +532,27 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
 
         $searchForm['id'] = 'Product with stock';
 
-        /** @var Crawler $crawler */
-        $crawler = $this->client->request(
-            Request::METHOD_POST,
-            $this->generateUrl('admin_product'),
-            ['admin_search_product' => $searchForm]
-        );
+        $crawler = $this->searchProduct($searchForm);
         $this->expected = '検索結果：2件が該当しました';
         $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
         $this->verify('検索結果件数の確認テスト');
 
-        // TODO
-        $this->markTestIncomplete('検索項目(公開・非公開・在庫内)の実装完了後に実施');
-
-        // No stock click button
-        $noStockUrl = $crawler->selectLink('在庫なし')->link()->getUri();
-        $crawler = $this->client->request(Request::METHOD_GET, $noStockUrl);
-        $this->expected = '検索結果 1 件 が該当しました';
+        // 検索フォームの在庫で「在庫なし」に絞り込む.
+        $searchForm['stock'] = [ProductStock::OUT_OF_STOCK];
+        $crawler = $this->searchProduct($searchForm);
+        $this->expected = '検索結果：1件が該当しました';
         $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
-        $this->verify();
+        $this->verify('在庫なしで絞り込んだ検索結果件数の確認テスト');
 
-        $csvExportUrl = $crawler->filter('ul.dropdown-menu')->selectLink('CSVダウンロード')->link()->getUri();
-        $this->client->request(Request::METHOD_GET, $csvExportUrl);
-
-        $content = $this->client->getInternalResponse()->getContent();
-        $this->assertMatchesRegularExpression('/Product with stock 01/', $content);
+        $content = $this->exportProductCsv();
+        $this->assertStringContainsString('Product with stock 01', $content);
+        $this->assertStringNotContainsString('Product with stock 02', $content);
     }
 
     /**
-     * Test search + export product with filter private.
+     * 非公開で絞り込んで CSV 出力するテスト.
      */
-    public function testExportWithFilterPrivate(): never
+    public function testExportWithFilterPrivate(): void
     {
         $testProduct = $this->createProduct('Product with status 01', 0);
         $this->createProduct('Product with status 02', 1);
@@ -562,37 +564,27 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
         $searchForm = $this->createSearchForm();
         $searchForm['id'] = 'Product with status';
 
-        /** @var Crawler $crawler */
-        $crawler = $this->client->request(
-            Request::METHOD_POST,
-            $this->generateUrl('admin_product'),
-            ['admin_search_product' => $searchForm]
-        );
+        $crawler = $this->searchProduct($searchForm);
         $this->expected = '検索結果：2件が該当しました';
         $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
         $this->verify('検索結果件数の確認テスト');
 
-        // TODO
-        $this->markTestIncomplete('検索項目(公開・非公開・在庫内)の実装完了後に実施');
-
-        // private click button
-        $privateUrl = $crawler->selectLink('非公開')->link()->getUri();
-        $crawler = $this->client->request(Request::METHOD_GET, $privateUrl);
-        $this->expected = '検索結果 1 件 が該当しました';
+        // 検索フォームの公開ステータスで「非公開」に絞り込む.
+        $searchForm['status'] = [ProductStatus::DISPLAY_HIDE];
+        $crawler = $this->searchProduct($searchForm);
+        $this->expected = '検索結果：1件が該当しました';
         $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
-        $this->verify();
+        $this->verify('非公開で絞り込んだ検索結果件数の確認テスト');
 
-        $csvExportUrl = $crawler->filter('ul.dropdown-menu')->selectLink('CSVダウンロード')->link()->getUri();
-        $this->client->request(Request::METHOD_GET, $csvExportUrl);
-
-        $content = $this->client->getInternalResponse()->getContent();
-        $this->assertMatchesRegularExpression('/Product with status 01/', $content);
+        $content = $this->exportProductCsv();
+        $this->assertStringContainsString('Product with status 01', $content);
+        $this->assertStringNotContainsString('Product with status 02', $content);
     }
 
     /**
-     * Test search + export product with filter public.
+     * 公開で絞り込んで CSV 出力するテスト.
      */
-    public function testExportWithFilterPublic(): never
+    public function testExportWithFilterPublic(): void
     {
         $this->createProduct('Product with status 01', 0);
         $testProduct02 = $this->createProduct('Product with status 02', 1);
@@ -604,40 +596,28 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
         $searchForm = $this->createSearchForm();
         $searchForm['id'] = 'Product with status';
 
-        /** @var Crawler $crawler */
-        $crawler = $this->client->request(
-            Request::METHOD_POST,
-            $this->generateUrl('admin_product'),
-            ['admin_search_product' => $searchForm]
-        );
+        $crawler = $this->searchProduct($searchForm);
         $this->expected = '検索結果：2件が該当しました';
         $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
         $this->verify('検索結果件数の確認テスト');
 
-        // TODO
-        $this->markTestIncomplete('検索項目(公開・非公開・在庫内)の実装完了後に実施');
-
-        // public click button
-        $privateUrl = $crawler->selectLink('公開')->link()->getUri();
-        $crawler = $this->client->request(Request::METHOD_GET, $privateUrl);
-        $this->expected = '検索結果 1 件 が該当しました';
+        // 検索フォームの公開ステータスで「公開」に絞り込む.
+        $searchForm['status'] = [ProductStatus::DISPLAY_SHOW];
+        $crawler = $this->searchProduct($searchForm);
+        $this->expected = '検索結果：1件が該当しました';
         $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
-        $this->verify();
+        $this->verify('公開で絞り込んだ検索結果件数の確認テスト');
 
-        $csvExportUrl = $crawler->filter('ul.dropdown-menu')->selectLink('CSVダウンロード')->link()->getUri();
-        $this->client->request(Request::METHOD_GET, $csvExportUrl);
-
-        $content = $this->client->getInternalResponse()->getContent();
-        $this->assertMatchesRegularExpression('/[Product with status 01]{1}/', $content);
+        $content = $this->exportProductCsv();
+        $this->assertStringContainsString('Product with status 01', $content);
+        $this->assertStringNotContainsString('Product with status 02', $content);
     }
 
     /**
-     * Test search + export product with all
+     * 公開・非公開を絞り込まずに CSV 出力するテスト.
      */
-    public function testExportWithAll(): never
+    public function testExportWithAll(): void
     {
-        $this->markTestIncomplete('FIXME expectOutputRegex');
-        $this->expectOutputRegex('/[Product with status]{1}[Product with status 02]{2}/');
         $this->createProduct('Product with status 01', 0);
         $testProduct02 = $this->createProduct('Product with status 02', 1);
         $display = $this->productStatusRepository->find(ProductStatus::DISPLAY_HIDE);
@@ -648,28 +628,15 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
         $searchForm = $this->createSearchForm();
         $searchForm['id'] = 'Product with status';
 
-        /** @var Crawler $crawler */
-        $crawler = $this->client->request(
-            Request::METHOD_POST,
-            $this->generateUrl('admin_product'),
-            ['admin_search_product' => $searchForm]
-        );
+        // 公開ステータスを絞り込まない場合は公開・非公開の両方が対象になる.
+        $crawler = $this->searchProduct($searchForm);
         $this->expected = '検索結果：2件が該当しました';
         $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
         $this->verify('検索結果件数の確認テスト');
 
-        // TODO
-        $this->markTestIncomplete('検索項目(公開・非公開・在庫内)の実装完了後に実施');
-
-        // private click button
-        $privateUrl = $crawler->selectLink('非公開')->link()->getUri();
-        $crawler = $this->client->request(Request::METHOD_GET, $privateUrl);
-        $this->expected = '検索結果 1 件 が該当しました';
-        $this->actual = $crawler->filter('div.c-outsideBlock__contents.mb-5 > span')->text();
-        $this->verify();
-
-        $csvExportUrl = $crawler->filter('ul.dropdown-menu')->selectLink('CSVダウンロード')->link()->getUri();
-        $this->client->request(Request::METHOD_GET, $csvExportUrl);
+        $content = $this->exportProductCsv();
+        $this->assertStringContainsString('Product with status 01', $content);
+        $this->assertStringContainsString('Product with status 02', $content);
     }
 
     /**
@@ -677,12 +644,11 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
      */
     public function testExportWithOrderByProduct()
     {
-        $expectedIds = [];
-        for ($i = 1; $i <= 10; $i++) {
-            $productName = 'Product name '.$i;
-            $Product = $this->createProduct($productName, 0);
-            array_unshift($expectedIds, $Product->getId());
-        }
+        $Products = $this->createProducts(10, [
+            'productClassNum' => 0,
+            'nameTemplate' => static fn (int $i): string => 'Product name '.($i + 1),
+        ]);
+        $expectedIds = array_reverse(array_map(static fn ($p) => $p->getId(), $Products));
 
         // 更新日をすべて同一日時に更新
         $qb = $this->entityManager->createQueryBuilder();
@@ -865,19 +831,15 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
     /**
      * Product export test
      */
-    public function testProductExport(): never
+    public function testProductExport(): void
     {
-        $this->markTestIncomplete('FIXME expectOutputRegex');
         $productName = 'test01';
-        $this->expectOutputRegex("/$productName/");
         $this->createProduct($productName);
 
-        $this->client->request(Request::METHOD_POST, $this->generateUrl('admin_product'), ['admin_search_product' => $this->createSearchForm()]);
-        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_product_export'));
+        $this->searchProduct($this->createSearchForm());
+        $content = $this->exportProductCsv();
 
-        $this->expected = 'application/octet-stream';
-        $this->actual = $this->client->getResponse()->headers->get('Content-Type');
-        $this->verify();
+        $this->assertStringContainsString($productName, $content);
     }
 
     /**
@@ -1089,6 +1051,36 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
         ];
     }
 
+    /**
+     * 商品検索を実行し, 検索条件をセッションに保持する.
+     *
+     * @param array<string, mixed> $searchForm
+     */
+    private function searchProduct(array $searchForm): Crawler
+    {
+        return $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product'),
+            ['admin_search_product' => $searchForm]
+        );
+    }
+
+    /**
+     * セッションに保持された検索条件で商品 CSV を出力し, 出力内容を返す.
+     *
+     * admin_product_export は StreamedResponse を返すため, 出力バッファで内容を受け取る.
+     */
+    private function exportProductCsv(): string
+    {
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_product_export'));
+
+        $Response = $this->client->getResponse();
+        $this->assertInstanceOf(StreamedResponse::class, $Response);
+        $this->assertSame('application/octet-stream', $Response->headers->get('Content-Type'));
+
+        return $this->client->getInternalResponse()->getContent();
+    }
+
     private function createSearchForm(): array
     {
         return [
@@ -1259,5 +1251,45 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
             ['description_detail', 'getDescriptionDetail'],
             ['free_area', 'getFreeArea'],
         ];
+    }
+
+    /**
+     * 受注管理用メモが保存できることを確認する.
+     */
+    public function testEditWithOrderMemo(): void
+    {
+        $Product = $this->createProduct(null, 0);
+        $formData = $this->createFormData();
+        $formData['order_memo'] = '梱包時は割れ物注意';
+
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()]),
+            ['admin_product' => $formData]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+        // 保存後の永続化状態を確認するため DB から再読込する
+        $this->entityManager->refresh($Product);
+        $this->assertSame('梱包時は割れ物注意', $Product->getOrderMemo());
+    }
+
+    /**
+     * 受注管理用メモが文字数上限を超えるとバリデーションエラーになることを確認する.
+     */
+    public function testEditWithOrderMemoOverMaxLength(): void
+    {
+        $Product = $this->createProduct(null, 0);
+        $formData = $this->createFormData();
+        $formData['order_memo'] = str_repeat('a', $this->eccubeConfig['eccube_lltext_len'] + 1);
+
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()]),
+            ['admin_product' => $formData]
+        );
+
+        // バリデーションエラーのため再描画され、リダイレクトしない
+        $this->assertFalse($this->client->getResponse()->isRedirection());
     }
 }

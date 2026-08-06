@@ -35,7 +35,7 @@ final class EntryControllerTest extends AbstractWebTestCase
     {
         $faker = $this->getFaker();
         $email = $faker->safeEmail;
-        $password = $faker->lexify('????????????').'a1';
+        $password = $faker->lexify('?????????????').'a1';
         $birth = $faker->dateTimeBetween;
 
         return [
@@ -212,7 +212,7 @@ final class EntryControllerTest extends AbstractWebTestCase
         $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->get();
         $Customer = $this->createCustomer();
         $secret_key = $Customer->getSecretKey();
-        $Status = $this->entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::NONACTIVE);
+        $Status = $this->entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::PROVISIONAL);
         $this->assertInstanceOf(CustomerStatus::class, $Status);
         $Customer->setStatus($Status);
         $this->entityManager->flush();
@@ -235,7 +235,7 @@ final class EntryControllerTest extends AbstractWebTestCase
         $Customer = $this->createCustomer();
         $Customer->setName01('<Sanitize&>');
         $secret_key = $Customer->getSecretKey();
-        $Status = $this->entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::NONACTIVE);
+        $Status = $this->entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::PROVISIONAL);
         $this->assertInstanceOf(CustomerStatus::class, $Status);
         $Customer->setStatus($Status);
         $this->entityManager->flush();

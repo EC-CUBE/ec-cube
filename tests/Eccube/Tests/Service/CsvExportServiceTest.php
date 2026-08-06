@@ -18,6 +18,7 @@ namespace Eccube\Tests\Service;
 use Eccube\Entity\Csv;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\Order;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CsvRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\CsvExportService;
@@ -71,6 +72,26 @@ final class CsvExportServiceTest extends AbstractServiceTestCase
         $this->verify();
     }
 
+    public function testFputcsvEscapesFormulaWhenOptionEnabled(): void
+    {
+        $BaseInfo = static::getContainer()->get(BaseInfoRepository::class)->get();
+        $BaseInfo->setOptionSanitizeCsvFormulas(true);
+        $this->entityManager->flush();
+
+        $this->csvExportService->fputcsv(['=SUM(A1)', 'foo']);
+        $this->assertSame("'=SUM(A1),foo\n", file_get_contents($this->url));
+    }
+
+    public function testFputcsvSkipsEscapeWhenOptionDisabled(): void
+    {
+        $BaseInfo = static::getContainer()->get(BaseInfoRepository::class)->get();
+        $BaseInfo->setOptionSanitizeCsvFormulas(false);
+        $this->entityManager->flush();
+
+        $this->csvExportService->fputcsv(['=SUM(A1)', 'foo']);
+        $this->assertSame("=SUM(A1),foo\n", file_get_contents($this->url));
+    }
+
     public function testExportData()
     {
         $Customer = $this->createCustomer();
@@ -109,7 +130,8 @@ final class CsvExportServiceTest extends AbstractServiceTestCase
         $fp = fopen($this->url, 'r');
         $File = [];
         if ($fp !== false) {
-            while (($data = fgetcsv($fp)) !== false) {
+            // $escape は PHP 8.4 で明示指定が必須（既定値が変わる予告）。現行の既定値を明示する
+            while (($data = fgetcsv($fp, escape: '\\')) !== false) {
                 $File[] = $data;
             }
             fclose($fp);

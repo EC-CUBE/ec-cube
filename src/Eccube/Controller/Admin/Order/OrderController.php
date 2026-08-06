@@ -186,7 +186,8 @@ class OrderController extends AbstractController
 
         $qb = $this->orderRepository->getQueryBuilderBySearchDataForAdmin($searchData);
 
-        $sortKey = $searchData['sortkey'];
+        // null を配列オフセットに使うのは PHP 8.5 で非推奨。null は '' として扱われるため挙動は変わらない
+        $sortKey = $searchData['sortkey'] ?? '';
         $paginate_options = ['wrap-queries' => true];
         if (empty($this->orderRepository::COLUMNS[$sortKey]) || $sortKey == 'order_status') {
             $paginate_options = [];
@@ -298,10 +299,6 @@ class OrderController extends AbstractController
     {
         // タイムアウトを無効にする.
         set_time_limit(0);
-
-        // sql loggerを無効にする.
-        $em = $this->entityManager;
-        $em->getConfiguration()->setSQLLogger();
 
         $response = new StreamedResponse();
         $response->setCallback(function () use ($request, $csvTypeId): void {

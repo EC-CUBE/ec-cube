@@ -15,8 +15,10 @@ namespace Eccube\Service;
 
 use Doctrine\Bundle\DoctrineBundle\Mapping\MappingDriver;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ConnectionException;
 use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\Mapping\Driver\MappingDriverChain;
 use Doctrine\Persistence\Mapping\MappingException as PersistenceMappingException;
@@ -234,9 +236,47 @@ class PluginService
      */
     public function generateProxyAndUpdateSchema(Plugin $plugin, array $config, bool $uninstall = false, bool $saveMode = true): void
     {
-        $this->generateProxyAndCallback(function ($generatedFiles, $proxiesDirectory) use ($saveMode): void {
-            $this->schemaService->updateSchema($generatedFiles, $proxiesDirectory, $saveMode);
+        $conn = $this->entityManager->getConnection();
+        $this->generateProxyAndCallback(function ($generatedFiles, $proxiesDirectory) use ($saveMode, $conn): void {
+            $this->executeDdlWithMySqlWorkaround($conn, function () use ($generatedFiles, $proxiesDirectory, $saveMode): void {
+                $this->schemaService->updateSchema($generatedFiles, $proxiesDirectory, $saveMode);
+            });
         }, $plugin, $config, $uninstall);
+    }
+
+    /**
+     * MySQL では DDL が暗黙的に COMMIT を発行し SAVEPOINT を破壊するため,
+     * DDL 実行前後でトランザクションのネストレベルを退避・復元する.
+     */
+    private function executeDdlWithMySqlWorkaround(Connection $conn, callable $ddlCallback): void
+    {
+        if (!$conn->getDatabasePlatform() instanceof AbstractMySQLPlatform) {
+            $ddlCallback();
+
+            return;
+        }
+
+        $autoCommit = $conn->isAutoCommit();
+        $nestingLevel = $conn->getTransactionNestingLevel();
+
+        // MySQL の DDL は暗黙的に COMMIT を発行するため, 既存のトランザクションを
+        // すべて COMMIT してからDDLを実行する.
+        for ($i = 0; $i < $nestingLevel; $i++) {
+            $conn->commit();
+        }
+
+        // autoCommit=false のままだと DDL 実行時に DBAL が遅延でトランザクションを
+        // 開始し, MySQL の暗黙 COMMIT とずれてしまうため, 一時的に autoCommit=true にする.
+        $conn->setAutoCommit(true);
+        try {
+            $ddlCallback();
+        } finally {
+            $conn->setAutoCommit($autoCommit);
+            // DDL 実行前のネストレベルまでトランザクションを開始し直す.
+            for ($i = 0; $i < $nestingLevel; $i++) {
+                $conn->beginTransaction();
+            }
+        }
     }
 
     /**
@@ -326,12 +366,15 @@ class PluginService
     }
 
     /**
-     * @param array<int, string> $arr
+     * 未作成のディレクトリを表す null も受け取る（install()/update() は例外発生時点で
+     * 変数が未設定のまま渡すため）。
+     *
+     * @param array<int, string|null> $arr
      */
     public function deleteDirs(array $arr): void
     {
         foreach ($arr as $dir) {
-            if (file_exists($dir)) {
+            if (null !== $dir && file_exists($dir)) {
                 $fs = new Filesystem();
                 $fs->remove($dir);
             }
@@ -540,12 +583,15 @@ class PluginService
         $this->unregisterPlugin($plugin);
 
         try {
-            // スキーマを更新する
-            $this->generateProxyAndUpdateSchema($plugin, $config, true);
+            $conn = $this->entityManager->getConnection();
+            $this->executeDdlWithMySqlWorkaround($conn, function () use ($plugin, $config): void {
+                // スキーマを更新する
+                $this->generateProxyAndUpdateSchema($plugin, $config, true);
 
-            // プラグインのネームスペースに含まれるEntityのテーブルを削除する
-            $namespace = 'Plugin\\'.$plugin->getCode().'\\Entity';
-            $this->schemaService->dropTable($namespace);
+                // プラグインのネームスペースに含まれるEntityのテーブルを削除する
+                $namespace = 'Plugin\\'.$plugin->getCode().'\\Entity';
+                $this->schemaService->dropTable($namespace);
+            });
         } catch (PersistenceMappingException) {
             // XXX 削除された Bundle が MappingException をスローする場合があるが実害は無いので無視して進める
         }
@@ -565,8 +611,34 @@ class PluginService
     public function unregisterPlugin(Plugin $p): void
     {
         $em = $this->entityManager;
+        $this->reconcileMySqlTransaction($em->getConnection());
         $em->remove($p);
         $em->flush();
+    }
+
+    /**
+     * MySQL の DDL 暗黙 COMMIT によるトランザクション不整合を解消する.
+     *
+     * composer 経由のプラグイン uninstall などでは, 処理途中の MySQL の DDL が暗黙 COMMIT を
+     * 発行して実接続のトランザクションを終了させる一方, DBAL のネストレベルだけが残ることがある.
+     * この状態で flush() すると内部の commit/rollBack が実接続側で実行され, DBAL 4 では
+     * "There is no active transaction" 例外になる. ネストレベルだけが残り実接続に
+     * トランザクションが無い不整合を検知した場合は, 接続を閉じてネストレベルをリセットする
+     * (実接続は次の操作で再接続される. 暗黙 COMMIT 済みのため失われる未確定の変更は無い).
+     */
+    private function reconcileMySqlTransaction(Connection $conn): void
+    {
+        if (!$conn->getDatabasePlatform() instanceof AbstractMySQLPlatform) {
+            return;
+        }
+        if ($conn->getTransactionNestingLevel() === 0) {
+            return;
+        }
+        /** @var \PDO $nativeConnection */
+        $nativeConnection = $conn->getNativeConnection();
+        if (!$nativeConnection->inTransaction()) {
+            $conn->close();
+        }
     }
 
     /**
@@ -717,7 +789,10 @@ class PluginService
 
             $em->persist($plugin);
 
-            $this->generateProxyAndUpdateSchema($plugin, $meta);
+            $conn = $em->getConnection();
+            $this->executeDdlWithMySqlWorkaround($conn, function () use ($plugin, $meta): void {
+                $this->generateProxyAndUpdateSchema($plugin, $meta);
+            });
 
             if ($plugin->isInitialized()) {
                 $this->callPluginManagerMethod($meta, 'update');

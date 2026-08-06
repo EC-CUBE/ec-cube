@@ -32,6 +32,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -91,7 +92,10 @@ class ShippingType extends AbstractType
                 ],
             ])
             ->add('postal_code', PostalType::class, [
-                'required' => true,
+                'required' => false,
+                'constraints' => [
+                    new Assert\NotBlank(),
+                ],
             ])
             ->add('address', AddressType::class, [
                 'required' => false,
@@ -148,6 +152,18 @@ class ShippingType extends AbstractType
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
+                'constraints' => [
+                    new Assert\Range([
+                        'min' => '0003-01-01',
+                        'minMessage' => 'form_error.out_of_range',
+                    ]),
+                ],
+            ])
+            ->add('shipping_date', DateTimeType::class, [
+                'required' => false,
+                'input' => 'datetime',
+                'widget' => 'single_text',
+                'with_seconds' => true,
                 'constraints' => [
                     new Assert\Range([
                         'min' => '0003-01-01',

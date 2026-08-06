@@ -1,0 +1,3 @@
+id,name,sort_no,discriminator_type
+"1","acp","1","agentprotocol"
+"2","ucp","2","agentprotocol"

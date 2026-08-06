@@ -43,14 +43,10 @@ final class Step4TypeTest extends AbstractTypeTestCase
             ->getForm();
     }
 
-    // DB への接続チェックも行われてしまうので、テストが難しい
-    public function testInvalidData(): never
+    public function testInvalidData(): void
     {
-        // Request に依存しているため WebTest で代替する
-        $this->markTestIncomplete('Can not support of FormInterface::submit()');
-
         $this->form->submit($this->formData);
+
         $this->assertFalse($this->form->isValid());
-        // var_dump($this->form->getErrorsAsString());die();
     }
 }

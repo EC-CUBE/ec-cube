@@ -119,6 +119,12 @@ class ProductType extends AbstractType
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_lltext_len']]),
                 ],
             ])
+            ->add('order_memo', TextareaType::class, [
+                'required' => false,
+                'constraints' => [
+                    new Assert\Length(['max' => $this->eccubeConfig['eccube_lltext_len']]),
+                ],
+            ])
 
             // 右ブロック
             ->add('Status', ProductStatusType::class, [

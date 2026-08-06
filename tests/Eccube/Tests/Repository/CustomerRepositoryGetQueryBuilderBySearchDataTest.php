@@ -70,10 +70,20 @@ final class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTest
             'dtb_order',
         ]);
         $this->removeCustomer();
-        $this->Customer = $this->createCustomer('customer@example.com');
-        $this->Customer1 = $this->createCustomer('customer1@example.com');
-        $this->Customer2 = $this->createCustomer('customer2@example.com');
-        $this->Customer3 = $this->createCustomer('customer3@example.com');
+        // Phase (b): customer-search シナリオの CSV から Customer × 4 件を一括投入.
+        // 詳細は tests/Eccube/Tests/Fixture/csv/customer-search/README.md を参照.
+        $this->loadCsvFixtures('customer-search');
+        $this->Customer = $this->customerRepo->findOneBy(['email' => 'customer@example.com']);
+        $this->Customer1 = $this->customerRepo->findOneBy(['email' => 'customer1@example.com']);
+        $this->Customer2 = $this->customerRepo->findOneBy(['email' => 'customer2@example.com']);
+        $this->Customer3 = $this->customerRepo->findOneBy(['email' => 'customer3@example.com']);
+        // CSV の create_date / update_date は固定値のため、日時範囲検索 (testDateTime) で
+        // 期待件数にヒットしない. テスト実行時の現在時刻に上書きする.
+        $now = new \DateTime();
+        foreach ([$this->Customer, $this->Customer1, $this->Customer2, $this->Customer3] as $Customer) {
+            $Customer->setCreateDate($now)->setUpdateDate($now);
+        }
+        $this->entityManager->flush();
     }
 
     public function removeCustomer()
@@ -99,10 +109,10 @@ final class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTest
 
     public function testMultiWithId()
     {
-        // 検索時, IDの重複を防ぐため事前に5個生成しておく
-        for ($i = 0; $i < 10; $i++) {
-            $this->createCustomer('user-'.$i.'@example.com');
-        }
+        // 検索時, IDの重複を防ぐため事前に 10 個生成しておく
+        $this->createCustomers(10, [
+            'emailTemplate' => static fn (int $i): string => 'user-'.$i.'@example.com',
+        ]);
         $Customer = $this->createCustomer('customer@example.jp');
         $this->expected = $Customer->getId();
         $this->searchData = [
@@ -651,8 +661,8 @@ final class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTest
 
     public function testStatus()
     {
-        $Active = $this->entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::ACTIVE);
-        $NonActive = $this->entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::NONACTIVE);
+        $Active = $this->entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::REGULAR);
+        $NonActive = $this->entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::PROVISIONAL);
         $this->Customer->setStatus($Active);
         $this->Customer1->setStatus($NonActive);
         $this->entityManager->flush();
@@ -669,7 +679,7 @@ final class CustomerRepositoryGetQueryBuilderBySearchDataTest extends EccubeTest
 
     public function testStatusWithNonActive()
     {
-        $NonActive = $this->entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::NONACTIVE);
+        $NonActive = $this->entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::PROVISIONAL);
         $this->Customer->setStatus($NonActive);
         $this->Customer1->setStatus($NonActive);
         $this->entityManager->flush();

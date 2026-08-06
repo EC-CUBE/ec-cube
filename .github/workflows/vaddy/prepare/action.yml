@@ -73,7 +73,7 @@ runs:
       shell: bash
       env:
         DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
-        DATABASE_SERVER_VERSION: 14
+        DATABASE_SERVER_VERSION: 18
       run: |
         composer install --no-scripts --no-dev --no-interaction --optimize-autoloader --no-plugins
         php bin/template_jp.php
@@ -113,7 +113,7 @@ runs:
       env:
         APP_ENV: 'prod'
         DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
-        DATABASE_SERVER_VERSION: 14
+        DATABASE_SERVER_VERSION: 18
         PGPASSWORD: 'password'
       run: |
         bin/console eccube:composer:require "ec-cube/recommend42"
@@ -138,7 +138,7 @@ runs:
     - name: "Codeception: prepare"
       shell: bash
       run: |
-        echo "APP_ENV=codeception" > .env
+        echo "APP_ENV=e2e" > .env
         export DISPLAY=:99
         chromedriver --url-base=/wd/hub --port=9515 &
         echo ">>> Started chrome-driver"

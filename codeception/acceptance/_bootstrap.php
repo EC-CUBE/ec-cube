@@ -12,7 +12,6 @@
  */
 
 use Codeception\Util\Fixtures;
-use Dotenv\Dotenv;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Category;
@@ -39,8 +38,10 @@ $config = parse_ini_file(__DIR__.'/config.ini', true);
  */
 require_once __DIR__.'/../../vendor/autoload.php';
 
-if (file_exists(__DIR__.'/../../.env')) {
-    Dotenv::createUnsafeMutable(__DIR__.'/../../')->load();
+if (file_exists(__DIR__.'/../../.env')
+    || file_exists(__DIR__.'/../../.env.local')
+    || file_exists(__DIR__.'/../../.env.local.php')) {
+    boot_env(__DIR__.'/../../.env', true);
 }
 $kernel = new Kernel('test', false);
 $kernel->boot();
@@ -155,9 +156,9 @@ function createCustomer($container, $email = null, $active = true)
 
     $Customer = $generator->createCustomer($email);
     if ($active) {
-        $Status = $entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::ACTIVE);
+        $Status = $entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::REGULAR);
     } else {
-        $Status = $entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::NONACTIVE);
+        $Status = $entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::PROVISIONAL);
     }
     $Customer->setStatus($Status);
     $entityManager->flush($Customer);

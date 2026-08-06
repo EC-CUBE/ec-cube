@@ -14,12 +14,14 @@
 namespace Eccube\Controller\Admin;
 
 use Eccube\Controller\AbstractController;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Service\CsvImportService;
 use Eccube\Util\StringUtil;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class AbstractCsvImportController extends AbstractController
 {
@@ -27,6 +29,14 @@ class AbstractCsvImportController extends AbstractController
      * アップロードされたCSVファイル名
      */
     protected string $csvFileName;
+
+    protected BaseInfoRepository $baseInfoRepository;
+
+    #[Required]
+    public function setBaseInfoRepository(BaseInfoRepository $baseInfoRepository): void
+    {
+        $this->baseInfoRepository = $baseInfoRepository;
+    }
 
     /**
      * アップロードされたCSVファイルの行ごとの処理
@@ -44,7 +54,7 @@ class AbstractCsvImportController extends AbstractController
         set_time_limit(0);
 
         // アップロードされたCSVファイルを行ごとに取得
-        $data = new CsvImportService($file, $this->eccubeConfig['eccube_csv_import_delimiter'], $this->eccubeConfig['eccube_csv_import_enclosure']);
+        $data = new CsvImportService($file, $this->eccubeConfig['eccube_csv_import_delimiter'], $this->eccubeConfig['eccube_csv_import_enclosure'], '\\', $this->baseInfoRepository->get()->isOptionSanitizeCsvFormulas());
 
         return $data->setHeaderRowNumber(0) ? $data : false;
     }

@@ -74,8 +74,14 @@ class RateLimiterListener implements EventSubscriberInterface
             /** @var RateLimiterFactory $factory */
             $factory = $this->locator->get($limiterId);
             if (in_array('customer', $config['type']) || in_array('user', $config['type'])) {
-                /** @var Customer|Member $User */
+                /** @var Customer|Member|null $User */
                 $User = $this->requestContext->getCurrentUser();
+                // ゲスト購入時など未ログイン経路でも customer / user スコープのレート制限が
+                // 設定された route (例: shopping_shipping_multiple_edit) に到達することがある.
+                // その場合 $User は null となり, getId() で TypeError になるため早期 continue する.
+                if ($User === null) {
+                    continue;
+                }
                 $limiter = $factory->create((string) $User->getId());
                 if (!$limiter->consume()->isAccepted()) {
                     throw new TooManyRequestsHttpException();

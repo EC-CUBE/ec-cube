@@ -15,8 +15,11 @@ declare(strict_types=1);
 
 namespace Eccube\Tests;
 
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
+use Eccube\Doctrine\Common\CsvDataFixtures\Executor\DbalExecutor;
+use Eccube\Doctrine\Common\CsvDataFixtures\Loader as CsvFixtureLoader;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Delivery;
@@ -183,6 +186,57 @@ abstract class EccubeTestCase extends WebTestCase
     }
 
     /**
+     * 複数の Customer をまとめて生成する (高速).
+     *
+     * @return Customer[]
+     */
+    public function createCustomers(int $count, array $options = []): array
+    {
+        return static::getContainer()->get(Generator::class)->createCustomers($count, $options);
+    }
+
+    /**
+     * 複数の Order をまとめて生成する (高速).
+     *
+     * @param Customer[] $customers
+     *
+     * @return Order[]
+     */
+    public function createOrders(array $customers, array $options = []): array
+    {
+        return static::getContainer()->get(Generator::class)->createOrders($customers, $options);
+    }
+
+    /**
+     * 複数の Product をまとめて生成する (高速).
+     *
+     * @return Product[]
+     */
+    public function createProducts(int $count, array $options = []): array
+    {
+        return static::getContainer()->get(Generator::class)->createProducts($count, $options);
+    }
+
+    /**
+     * tests/Eccube/Tests/Fixture/csv/<scenario>/ 配下の CSV をロードする.
+     *
+     * Installer (`eccube:fixtures:load`) で利用されている `CsvFixture` +
+     * `DbalExecutor` をそのまま流用する. シナリオディレクトリ直下に
+     * `definition.yml` を置いて FK 依存順を定義する.
+     *
+     * Faker やマスタの `find()` 呼び出しを伴わないため Generator のバルク
+     * API より更に軽量で、固定値による再現性も高い. ただし CSV と
+     * Doctrine マッピングのズレは CI で検出されない点に注意.
+     */
+    protected function loadCsvFixtures(string $scenario): void
+    {
+        $loader = new CsvFixtureLoader();
+        $loader->loadFromDirectory(__DIR__.'/Fixture/csv/'.$scenario);
+        $executor = new DbalExecutor($this->entityManager);
+        $executor->execute($loader->getFixtures());
+    }
+
+    /**
      * Payment オプジェクトを生成して返す.
      *
      * @param Delivery $Delivery デフォルトで設定する配送オブジェクト
@@ -229,18 +283,24 @@ abstract class EccubeTestCase extends WebTestCase
         $conn = $this->entityManager->getConnection();
 
         // MySQLの場合は参照制約を無効にする.
-        if ('mysql' === $conn->getDatabasePlatform()->getName()) {
-            $conn->query('SET FOREIGN_KEY_CHECKS = 0');
+        $isMySql = $conn->getDatabasePlatform() instanceof AbstractMySQLPlatform;
+        if ($isMySql) {
+            $conn->executeStatement('SET FOREIGN_KEY_CHECKS = 0');
         }
 
-        foreach ($tables as $table) {
-            $sql = 'DELETE FROM '.$table;
-            $stmt = $conn->prepare($sql);
-            $stmt->execute();
-        }
-
-        if ('mysql' === $conn->getDatabasePlatform()->getName()) {
-            $conn->query('SET FOREIGN_KEY_CHECKS = 1');
+        // DELETE が失敗しても FOREIGN_KEY_CHECKS を必ず復元する.
+        // (deleteAllRows() は接続を共有する複数テストから呼ばれるため,
+        //  復元漏れがあると後続テストが制約無効のまま走ってしまう)
+        try {
+            foreach ($tables as $table) {
+                $sql = 'DELETE FROM '.$table;
+                $stmt = $conn->prepare($sql);
+                $stmt->executeStatement();
+            }
+        } finally {
+            if ($isMySql) {
+                $conn->executeStatement('SET FOREIGN_KEY_CHECKS = 1');
+            }
         }
     }
 

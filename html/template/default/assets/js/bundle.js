@@ -1,5 +1,4 @@
-const $ = require('jquery');
-global.$ = global.jQuery = $;
+window.$ = window.jQuery = require('jquery');
 
 require('slick-carousel');
 require('slick-carousel/slick/slick.css');

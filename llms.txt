@@ -1,6 +1,6 @@
 # EC-CUBE
 
-> EC-CUBE is Japan's leading open-source e-commerce platform, powering over 35,000 online stores. Built on Symfony 6.4 and PHP 8.1+, it provides a full-featured, highly customizable solution designed for the Japanese market — including reduced tax rates, point systems, multiple shipping addresses, and a robust plugin architecture.
+> EC-CUBE is Japan's leading open-source e-commerce platform, powering over 35,000 online stores. Built on Symfony 7.4 and PHP 8.2+, it provides a full-featured, highly customizable solution designed for the Japanese market — including reduced tax rates, point systems, multiple shipping addresses, and a robust plugin architecture.
 
 ## Quick Start
 
@@ -20,19 +20,19 @@ docker compose -f docker-compose.yml -f docker-compose.pgsql.yml up -d
 ### Composer
 
 ```bash
-composer create-project ec-cube/ec-cube ec-cube "4.3.x-dev" --keep-vcs
+composer create-project ec-cube/ec-cube ec-cube "4.4.x-dev" --keep-vcs
 cd ec-cube
 bin/console eccube:install
 ```
 
 ## Architecture
 
-- **Framework**: Symfony 6.4 (full-stack)
-- **Language**: PHP 8.1 / 8.2 / 8.3
-- **ORM**: Doctrine ORM 2.x with Doctrine DBAL 3.x
-- **Template Engine**: Twig 3.8
-- **Database**: PostgreSQL 12+ or MySQL 8.4
-- **Frontend**: Sass (SCSS), webpack, jQuery
+- **Framework**: Symfony 7.4 (full-stack)
+- **Language**: PHP 8.2 / 8.3 / 8.4 / 8.5
+- **ORM**: Doctrine ORM 3.x with Doctrine DBAL 4.x
+- **Template Engine**: Twig 3.x
+- **Database**: PostgreSQL 13–18 or MySQL 8.4 LTS
+- **Frontend**: Sass (SCSS), esbuild, Bootstrap 5.3, jQuery 4.x
 - **License**: GPL-2.0 / proprietary dual license
 
 ### Directory Structure

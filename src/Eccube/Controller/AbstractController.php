@@ -149,9 +149,7 @@ class AbstractController extends Controller
 
     public function clearMessage(): void
     {
-        /** @var Session $session */
-        $session = $this->session;
-        $session->getFlashBag()->clear();
+        $this->session->getFlashBag()->clear();
     }
 
     public function deleteMessage(): void
@@ -162,10 +160,7 @@ class AbstractController extends Controller
 
     public function hasMessage(string $type): bool
     {
-        /** @var Session $session */
-        $session = $this->session;
-
-        return $session->getFlashBag()->has($type);
+        return $this->session->getFlashBag()->has($type);
     }
 
     public function addFlashOnce(string $type, string $message): void
@@ -177,32 +172,24 @@ class AbstractController extends Controller
 
     /**
      * {@inheritdoc}
-     *
-     * @param string $message
      */
     #[\Override]
-    protected function addFlash(string $type, $message): void
+    protected function addFlash(string $type, mixed $message): void
     {
         try {
             parent::addFlash($type, $message);
         } catch (\LogicException) {
             // fallback session
-            /** @var Session $session */
-            $session = $this->session;
-            $session->getFlashBag()->add($type, $message);
+            $this->session->getFlashBag()->add($type, $message);
         }
     }
 
     public function setLoginTargetPath(string $targetPath, ?string $namespace = null): void
     {
         if (is_null($namespace)) {
-            /** @var Session $session */
-            $session = $this->session;
-            $session->getFlashBag()->set('eccube.login.target.path', $targetPath);
+            $this->session->getFlashBag()->set('eccube.login.target.path', $targetPath);
         } else {
-            /** @var Session $session */
-            $session = $this->session;
-            $session->getFlashBag()->set('eccube.'.$namespace.'.login.target.path', $targetPath);
+            $this->session->getFlashBag()->set('eccube.'.$namespace.'.login.target.path', $targetPath);
         }
     }
 

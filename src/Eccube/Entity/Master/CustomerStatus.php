@@ -16,45 +16,29 @@ namespace Eccube\Entity\Master;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Repository\Master\CustomerStatusRepository;
 
-if (!class_exists(CustomerStatus::class, false)) {
+/**
+ * CustomerStatus
+ */
+#[ORM\Table(name: 'mtb_customer_status')]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: CustomerStatusRepository::class)]
+#[ORM\Cache(usage: 'NONSTRICT_READ_WRITE')]
+class CustomerStatus extends AbstractMasterEntity
+{
     /**
-     * CustomerStatus
+     * 仮会員.
      */
-    #[ORM\Table(name: 'mtb_customer_status')]
-    #[ORM\InheritanceType('SINGLE_TABLE')]
-    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
-    #[ORM\HasLifecycleCallbacks]
-    #[ORM\Entity(repositoryClass: CustomerStatusRepository::class)]
-    #[ORM\Cache(usage: 'NONSTRICT_READ_WRITE')]
-    class CustomerStatus extends AbstractMasterEntity
-    {
-        /**
-         * 仮会員.
-         *
-         * @deprecated
-         */
-        public const NONACTIVE = 1;
+    public const PROVISIONAL = 1;
 
-        /**
-         * 本会員.
-         *
-         * @deprecated
-         */
-        public const ACTIVE = 2;
+    /**
+     * 本会員
+     */
+    public const REGULAR = 2;
 
-        /**
-         * 仮会員.
-         */
-        public const PROVISIONAL = 1;
-
-        /**
-         * 本会員
-         */
-        public const REGULAR = 2;
-
-        /**
-         * 退会
-         */
-        public const WITHDRAWING = 3;
-    }
+    /**
+     * 退会
+     */
+    public const WITHDRAWING = 3;
 }
