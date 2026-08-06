@@ -55,8 +55,11 @@ class OrderPdfService extends Fpdi
     public const LOGO_Y = 46.0;
     public const LOGO_WIDTH = 40.0;
 
-    /** 店舗情報欄の行送り(mm) */
-    public const SHOP_INFO_LINE_HEIGHT = 3.3;
+    /** 店舗情報欄の先頭行の y 座標(mm) */
+    public const SHOP_INFO_FIRST_Y = 58;
+
+    /** 店舗情報欄の行送り(mm). 4.3 までの行送りに合わせる */
+    public const SHOP_INFO_LINE_HEIGHT = 3;
 
     /**
      * 総合計金額の描画基準 y 座標(mm).
@@ -301,13 +304,6 @@ class OrderPdfService extends Fpdi
         // 基準座標を設定する
         $this->setBasePosition();
 
-        // user_dataにlogo.pngが配置されている場合は優先的に読み込む
-        $logoFile = $this->eccubeConfig->get('eccube_html_dir').'/user_data/assets/pdf/logo.png';
-
-        if (!file_exists($logoFile)) {
-            $logoFile = $this->eccubeConfig->get('eccube_html_admin_dir').'/assets/pdf/logo.png';
-        }
-
         // 店舗情報は基準の x=125 から、上から順に「表示トグルが ON かつ 値が非空」の行だけを詰めて描画する。
         // 非表示・空値の行は座標を空けず後続の行が繰り上がる（#6197）。
         // 表示/非表示は基本設定の order_pdf_visible_* トグルで制御する。
@@ -315,8 +311,7 @@ class OrderPdfService extends Fpdi
         $BaseInfo = $this->baseInfoRepository;
         $x = 125;
         $lineHeight = self::SHOP_INFO_LINE_HEIGHT;
-        // ロゴに重ならない位置から開始する（差し替えロゴが縦長でも重ならないよう実寸から求める）
-        $y = $this->getShopInfoStartY($logoFile, $lineHeight);
+        $y = self::SHOP_INFO_FIRST_Y;
 
         // 店名（太字）
         if ($BaseInfo->isOrderPdfVisibleShopName() && !empty($BaseInfo->getShopName())) {
@@ -379,26 +374,15 @@ class OrderPdfService extends Fpdi
             $y += $lineHeight;
         }
 
-        // ロゴは店舗情報の描画後に重ねる（PDFは後から描いた要素が上になるため、元の重なり順を維持する）
-        $this->Image($logoFile, self::LOGO_X, self::LOGO_Y, self::LOGO_WIDTH);
-    }
+        // user_dataにlogo.pngが配置されている場合は優先的に読み込む
+        $logoFile = $this->eccubeConfig->get('eccube_html_dir').'/user_data/assets/pdf/logo.png';
 
-    /**
-     * 店舗情報欄の描画開始位置（lfText の y 座標）を求める.
-     *
-     * ロゴは幅のみ指定して描画するため高さは画像の縦横比で決まる.
-     * 差し替えロゴが縦長でも文字と重ならないよう、実寸から下端を求めて 1 行分下げた位置を返す.
-     */
-    protected function getShopInfoStartY(string $logoFile, float $lineHeight): float
-    {
-        $logoBottom = self::LOGO_Y;
-        $imageSize = @getimagesize($logoFile);
-        if (false !== $imageSize && $imageSize[0] > 0) {
-            $logoBottom += self::LOGO_WIDTH * $imageSize[1] / $imageSize[0];
+        if (!file_exists($logoFile)) {
+            $logoFile = $this->eccubeConfig->get('eccube_html_admin_dir').'/assets/pdf/logo.png';
         }
 
-        // lfText は baseOffsetY 分ずらして描画するため、その分を戻して紙面上の位置に合わせる
-        return $logoBottom + $lineHeight - $this->baseOffsetY;
+        // ロゴは店舗情報の描画後に重ねる（PDFは後から描いた要素が上になるため、元の重なり順を維持する）
+        $this->Image($logoFile, self::LOGO_X, self::LOGO_Y, self::LOGO_WIDTH);
     }
 
     /**
@@ -694,13 +678,13 @@ class OrderPdfService extends Fpdi
     /**
      * PDFへのテキスト書き込み
      *
-     * @param int|float $x X座標
-     * @param int|float $y Y座標(行送りに小数を使うため float も受ける)
+     * @param int $x X座標
+     * @param int $y Y座標
      * @param string|null $text テキスト
      * @param int $size フォントサイズ
      * @param string $style フォントスタイル
      */
-    protected function lfText(int|float $x, int|float $y, ?string $text, int $size = 0, string $style = ''): void
+    protected function lfText(int $x, int $y, ?string $text, int $size = 0, string $style = ''): void
     {
         // 退避
         $bakFontStyle = $this->FontStyle;

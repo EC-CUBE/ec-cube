@@ -33,6 +33,21 @@ use Eccube\Twig\Extension\TaxExtension;
 final class OrderPdfServiceTest extends AbstractServiceTestCase
 {
     /**
+     * 既定の出力項目（店名（英語表記）・店舗営業時間が OFF）での描画座標.
+     *
+     * 店名 / 〒 / 住所1 / 住所2 / 会社名 / 電話番号 / Email / 登録番号
+     */
+    public function testShopDataRendersDefaultItems(): void
+    {
+        $probe = $this->createProbe();
+        $probe->baseInfoRepository = $this->createBaseInfo();
+
+        $probe->renderShopDataForTest();
+
+        $this->assertSame([54.0, 57.0, 60.0, 63.0, 66.0, 69.0, 72.0, 75.0], $probe->lineYs);
+    }
+
+    /**
      * 出力項目トグルを全て ON にした状態（=行数が最大）でも, 店舗情報欄が
      * ロゴにも総合計金額欄にも重ならないこと.
      */
@@ -118,11 +133,11 @@ final class OrderPdfServiceTest extends AbstractServiceTestCase
     }
 
     /**
-     * 全ての出力項目トグルを ON にし, 全項目へ値を入れた BaseInfo を組み立てる.
+     * 全項目へ値を入れ, 出力項目トグルは既定のままの BaseInfo を組み立てる.
      *
      * dtb_base_info を書き換えると後続テストへ影響するため, 永続化しない実体を使う.
      */
-    private function createBaseInfoWithAllItemsVisible(): BaseInfo
+    private function createBaseInfo(): BaseInfo
     {
         $BaseInfo = new BaseInfo();
         $BaseInfo->setShopName('テスト店舗')
@@ -134,7 +149,17 @@ final class OrderPdfServiceTest extends AbstractServiceTestCase
             ->setPhoneNumber('0000-0000-0000')
             ->setBusinessHour('10:00-19:00')
             ->setEmail01('test@example.com')
-            ->setInvoiceRegistrationNumber('T1234567890123')
+            ->setInvoiceRegistrationNumber('T1234567890123');
+
+        return $BaseInfo;
+    }
+
+    /**
+     * 全ての出力項目トグルを ON にし, 全項目へ値を入れた BaseInfo を組み立てる.
+     */
+    private function createBaseInfoWithAllItemsVisible(): BaseInfo
+    {
+        return $this->createBaseInfo()
             ->setOrderPdfVisibleShopName(true)
             ->setOrderPdfVisibleShopNameEng(true)
             ->setOrderPdfVisibleAddress(true)
@@ -143,8 +168,6 @@ final class OrderPdfServiceTest extends AbstractServiceTestCase
             ->setOrderPdfVisibleBusinessHour(true)
             ->setOrderPdfVisibleEmail(true)
             ->setOrderPdfVisibleInvoiceNumber(true);
-
-        return $BaseInfo;
     }
 
     /**
@@ -188,7 +211,7 @@ final class OrderPdfLayoutProbe extends OrderPdfService
     }
 
     #[\Override]
-    protected function lfText(int|float $x, int|float $y, ?string $text, int $size = 0, string $style = ''): void
+    protected function lfText(int $x, int $y, ?string $text, int $size = 0, string $style = ''): void
     {
         // lfText() は baseOffsetY 分ずらして描画するため, 紙面上の位置へ換算して記録する
         $this->lineYs[] = (float) $y + $this->baseOffsetY;
