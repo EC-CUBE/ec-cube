@@ -97,11 +97,13 @@ file that was distributed with this source code.
 
 {% block javascript %}
 <script>
-$(function() {
+document.addEventListener('DOMContentLoaded', function() {
     var currentStatus = '{{ current_status|default('')|e('js') }}';
+    var messageEl = document.getElementById('cookie-consent-message');
 
-    $('#cookie-consent-save').on('click', function() {
-        var selectedStatus = $('input[name="consent_status"]:checked').val();
+    document.getElementById('cookie-consent-save').addEventListener('click', function() {
+        var checked = document.querySelector('input[name="consent_status"]:checked');
+        var selectedStatus = checked ? checked.value : '';
 
         if (!selectedStatus) {
             showMessage('{{ 'cookie_consent.error.no_selection'|trans }}', 'danger');
@@ -131,15 +133,23 @@ $(function() {
     });
 
     function showMessage(message, type) {
-        var alertClass = 'alert-' + type;
-        $('#cookie-consent-message')
-            .removeClass('alert-success alert-danger alert-warning alert-info')
-            .addClass(alertClass)
-            .text(message)
-            .show();
+        if (!messageEl) {
+            return;
+        }
+
+        messageEl.classList.remove('alert-success', 'alert-danger', 'alert-warning', 'alert-info');
+        messageEl.classList.add('alert-' + type);
+        messageEl.textContent = message;
+        messageEl.style.removeProperty('transition');
+        messageEl.style.removeProperty('opacity');
+        messageEl.style.display = 'block';
 
         setTimeout(function() {
-            $('#cookie-consent-message').fadeOut();
+            messageEl.style.transition = 'opacity 400ms';
+            messageEl.style.opacity = '0';
+            setTimeout(function() {
+                messageEl.style.display = 'none';
+            }, 400);
         }, 3000);
     }
 });
