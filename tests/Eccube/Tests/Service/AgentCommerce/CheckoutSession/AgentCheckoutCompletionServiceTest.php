@@ -208,15 +208,13 @@ final class AgentCheckoutCompletionServiceTest extends EccubeTestCase
      *
      * complete に再入できる非終端ステータスのうち、初回入口の INCOMPLETE を除く 3 経路を網羅する。
      *
-     * @return array<string, array{PaymentOutcome, bool}>
+     * @return \Iterator<string, array{PaymentOutcome, bool}>
      */
-    public static function reentryScenarios(): array
+    public static function reentryScenarios(): \Iterator
     {
-        return [
-            'requires_action からの再開' => [PaymentOutcome::requiresAction(['continue_url' => 'https://example.com/3ds'], [], 'pi_first'), true],
-            'in_progress からの再開' => [PaymentOutcome::pending([], 'pi_first'), true],
-            '与信拒否で ready へ戻った後の再試行' => [PaymentOutcome::failed('card_declined', 'The card was declined.', true, 'pi_first'), false],
-        ];
+        yield 'requires_action からの再開' => [PaymentOutcome::requiresAction(['continue_url' => 'https://example.com/3ds'], [], 'pi_first'), true];
+        yield 'in_progress からの再開' => [PaymentOutcome::pending([], 'pi_first'), true];
+        yield '与信拒否で ready へ戻った後の再試行' => [PaymentOutcome::failed('card_declined', 'The card was declined.', true, 'pi_first'), false];
     }
 
     /**
