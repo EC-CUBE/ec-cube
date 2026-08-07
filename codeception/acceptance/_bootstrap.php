@@ -156,9 +156,9 @@ function createCustomer($container, $email = null, $active = true)
 
     $Customer = $generator->createCustomer($email);
     if ($active) {
-        $Status = $entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::ACTIVE);
+        $Status = $entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::REGULAR);
     } else {
-        $Status = $entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::NONACTIVE);
+        $Status = $entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::PROVISIONAL);
     }
     $Customer->setStatus($Status);
     $entityManager->flush($Customer);

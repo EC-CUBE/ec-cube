@@ -18,6 +18,7 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\AuthorityRole;
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Layout;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Member;
@@ -43,6 +44,13 @@ use Twig\Environment;
 class TwigInitializeListener implements EventSubscriberInterface
 {
     /**
+     * サイト共通の構造化データ（WebSite / Organization）を出力するルート名.
+     *
+     * トップページと「当サイトについて」の 2 ページに限定する.
+     */
+    private const SITE_STRUCTURED_DATA_ROUTES = ['homepage', 'help_about'];
+
+    /**
      * @var bool 初期化済かどうか.
      */
     protected bool $initialized = false;
@@ -64,12 +72,13 @@ class TwigInitializeListener implements EventSubscriberInterface
             return;
         }
 
-        $this->twig->addGlobal('BaseInfo', $this->baseInfoRepository->get());
+        $BaseInfo = $this->baseInfoRepository->get();
+        $this->twig->addGlobal('BaseInfo', $BaseInfo);
 
         if ($this->requestContext->isAdmin()) {
             $this->setAdminGlobals($event);
         } else {
-            $this->setFrontVariables($event);
+            $this->setFrontVariables($event, $BaseInfo);
         }
 
         $this->initialized = true;
@@ -108,8 +117,11 @@ class TwigInitializeListener implements EventSubscriberInterface
     /**
      * @throws NonUniqueResultException
      */
-    public function setFrontVariables(RequestEvent $event): void
+    public function setFrontVariables(RequestEvent $event, ?BaseInfo $BaseInfo = null): void
     {
+        // 呼び出し元（onKernelRequest）が取得済みの BaseInfo を渡す。
+        // 引数は後方互換のため任意にしており、渡されなければここで取得する。
+        $BaseInfo ??= $this->baseInfoRepository->get();
         $request = $event->getRequest();
         /** @var ParameterBag $attributes */
         $attributes = $request->attributes;
@@ -178,7 +190,15 @@ class TwigInitializeListener implements EventSubscriberInterface
         $this->twig->addGlobal('title', $Page->getName());
         $this->twig->addGlobal('isMaintenance', $this->systemService->isMaintenanceMode());
         $this->twig->addGlobal('isDebugMode', env('APP_DEBUG'));
-        $this->twig->addGlobal('site_json_ld', $this->siteStructuredDataService->createWebSiteJsonLd($this->baseInfoRepository->get()));
+        // サイト共通の構造化データ（WebSite / Organization）はトップページと「当サイトについて」にだけ出力する。
+        // Google の Organization ドキュメントが「トップページか組織を説明する単一ページを推奨。
+        // サイトの全ページに含める必要はない」としているため、対象外では組み立て自体を行わない。
+        $this->twig->addGlobal(
+            'site_json_ld',
+            in_array($route, self::SITE_STRUCTURED_DATA_ROUTES, true)
+                ? $this->siteStructuredDataService->createWebSiteJsonLd($BaseInfo)
+                : []
+        );
     }
 
     public function setAdminGlobals(RequestEvent $event): void

@@ -6,13 +6,14 @@
          backupGlobals="false"
          colors="true"
          bootstrap="tests/bootstrap.php"
+         failOnDeprecation="true"
+         displayDetailsOnTestsThatTriggerDeprecations="true"
 >
     <php>
         <ini name="memory_limit" value="-1" />
         <ini name="display_errors" value="1" />
         <ini name="error_reporting" value="-1" />
         <server name="KERNEL_CLASS" value="Eccube\Kernel" />
-        <server name="SYMFONY_DEPRECATIONS_HELPER" value="weak" />
         <server name="APP_ENV" value="test" force="true" />
         <server name="SHELL_VERBOSITY" value="-1" />
     </php>
@@ -23,7 +24,15 @@
         </testsuite>
     </testsuites>
 
-    <source>
+    <!--
+        failOnDeprecation と組み合わせ、Symfony の SYMFONY_DEPRECATIONS_HELPER=max[direct]=0 と
+        同じ範囲だけを CI ゲートにする。
+        - direct   (自コードが PHP/vendor の非推奨 API を呼ぶ) … ゲート対象。修正すべきもの
+        - self     (自コードが自ら trigger_error する @deprecated 予告) … 対象外
+        - indirect (vendor 内部で発生し我々が修正できないもの) … 対象外
+    -->
+    <source ignoreSelfDeprecations="true"
+            ignoreIndirectDeprecations="true">
         <include>
             <directory suffix=".php">src</directory>
         </include>

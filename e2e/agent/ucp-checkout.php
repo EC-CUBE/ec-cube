@@ -140,16 +140,33 @@ $sid = createSession($client, $headers, $createBody);
 $body = completeUcp($client, $headers, $sid, 'e2e-ucp-ok');
 assertTrue(($body['status'] ?? null) === 'completed', 'complete (ok token) => status "completed"');
 
-// (b) escalation: REQUIRES_ACTION は UCP では requires_escalation。ハンドラが実行された証跡。
+// (b) escalation → 再開: REQUIRES_ACTION は UCP では requires_escalation。ACP と異なり認証結果は
+//     credential 経由でしか届かないため、そこへ載せて再開できることまで検証する
+//     (交換で authentication_result を落とすと requires_escalation から永久に復帰できない)。
 $sid = createSession($client, $headers, $createBody);
 $body = completeUcp($client, $headers, $sid, 'e2e-ucp-3ds');
 assertTrue(($body['status'] ?? null) === 'requires_escalation', 'complete (3ds token) => "requires_escalation" (handler ran)');
+$body = completeUcp($client, $headers, $sid, 'e2e-ucp-3ds', ['authentication_result' => ['outcome' => 'authenticated']]);
+assertTrue(($body['status'] ?? null) === 'completed', 'complete (3ds resume w/ authentication_result) => "completed"');
 
 // (c) 拒否: ハンドラが FAILED を返し確定しない (ready_for_complete) + messages[]。
 $sid = createSession($client, $headers, $createBody);
 $body = completeUcp($client, $headers, $sid, 'e2e-ucp-decline');
 assertTrue(($body['status'] ?? null) !== 'completed', 'complete (decline token) => not "completed" (handler rejected)');
 assertTrue(!empty($body['messages']), 'complete (decline token) => business messages[] present');
+
+// (d) 負の入力 (fail-closed): token を伴わない credential。トークン欠落を「どの規約にも一致しない=正常」と
+//     解釈して無与信のまま確定してしまう事故を防ぐ回帰ケース。
+$sid = createSession($client, $headers, $createBody);
+$body = completeUcp($client, $headers, $sid, null);
+assertTrue(($body['status'] ?? null) !== 'completed', 'complete (token 欠落) => not "completed" (fail-closed)');
+assertTrue(!empty($body['messages']), 'complete (token 欠落) => business messages[] present');
+
+// (e) capture 失敗: 与信は成功するが売上確定で失敗する。本体の capture 失敗分岐 (引当 rollback) を通す。
+$sid = createSession($client, $headers, $createBody);
+$body = completeUcp($client, $headers, $sid, 'e2e-ucp-capture-fail');
+assertTrue(($body['status'] ?? null) !== 'completed', 'complete (capture-fail token) => not "completed" (capture rejected)');
+assertTrue(!empty($body['messages']), 'complete (capture-fail token) => business messages[] present');
 
 fwrite(STDOUT, "\n\033[32mPASS\033[0m ({$passed} assertions, session + complete)\n");
 exit(0);
@@ -179,16 +196,23 @@ function createSession(HttpClientInterface $client, array $headers, array $creat
  * complete を呼び、HTTP 200 (2 系統エラーは messages[]) を確認してレスポンス body を返す。
  *
  * @param array<string, string> $headers
+ * @param string|null           $token           支払トークン。null なら credential にトークンを載せない (負の入力)
+ * @param array<string, mixed>  $credentialExtra credential へ追加する項目 (再開時の authentication_result 等)
  *
  * @return array<string, mixed>
  */
-function completeUcp(HttpClientInterface $client, array $headers, string $sessionId, string $token): array
+function completeUcp(HttpClientInterface $client, array $headers, string $sessionId, ?string $token, array $credentialExtra = []): array
 {
+    $credential = ['type' => 'card'] + $credentialExtra;
+    if (null !== $token) {
+        $credential['token'] = $token;
+    }
+
     $res = $client->request('POST', 'ucp/checkout-sessions/'.$sessionId.'/complete', [
         'headers' => $headers + ['Idempotency-Key' => bin2hex(random_bytes(16))],
         'json' => ['payment' => ['instruments' => [[
             'handler_id' => 'dev.ucp.payment.card',
-            'credential' => ['type' => 'card', 'token' => $token],
+            'credential' => $credential,
         ]]]],
     ]);
     $status = $res->getStatusCode();

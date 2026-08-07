@@ -39,9 +39,16 @@ interface AcpPaymentHandlerInterface extends AgentCheckoutPaymentHandlerInterfac
     /**
      * Shared Payment Token (SPT) を PSP の課金可能な参照へ償還する.
      *
+     * 償還は PSP 側で**ワンショット**なのが通例で、2 度目は失敗する。1 決済につき
+     * {@link AgentCheckoutPaymentHandlerInterface::authorize()} の中で 1 度だけ呼び、
+     * capture では償還し直さず与信結果 ({@link PaymentOutcome::$transactionId}) を用いること。
+     *
+     * 本メソッドは authorize の内側からのみ呼ばれるため、支払データを解決できない場合は例外を投げてよい
+     * (authorize がそれを {@link PaymentOutcome::failed()} へ写像する)。
+     *
      * @param array<string, mixed> $paymentData complete リクエストの payment_data (handler_id/instrument/credential 等)
      *
-     * @return array<string, mixed> 後続の authorize()/capture() へ渡す中立な支払データ
+     * @return array<string, mixed> authorize() が PSP へ渡す中立な支払データ
      */
     public function redeemSharedPaymentToken(array $paymentData): array;
 }

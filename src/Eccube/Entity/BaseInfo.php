@@ -170,6 +170,9 @@ class BaseInfo extends AbstractEntity
     #[ORM\Column(name: 'ucp_catalog_requires_auth', type: Types::BOOLEAN, options: ['default' => false])]
     private bool $ucp_catalog_requires_auth = false;
 
+    #[ORM\Column(name: 'mcp_enabled', type: Types::BOOLEAN, options: ['default' => false])]
+    private bool $mcp_enabled = false;
+
     #[ORM\Column(name: 'same_as', type: Types::TEXT, nullable: true)]
     private ?string $same_as = null;
 
@@ -967,6 +970,16 @@ class BaseInfo extends AbstractEntity
     }
 
     /**
+     * Set mcpEnabled.
+     */
+    public function setMcpEnabled(bool $mcpEnabled): BaseInfo
+    {
+        $this->mcp_enabled = $mcpEnabled;
+
+        return $this;
+    }
+
+    /**
      * Get sameAs.
      *
      * 構造化データ（Organization.sameAs）に出力する SNS 等の公式 URL を改行区切りで保持する.
@@ -984,6 +997,14 @@ class BaseInfo extends AbstractEntity
         $this->same_as = $sameAs;
 
         return $this;
+    }
+
+    /**
+     * Get mcpEnabled.
+     */
+    public function isMcpEnabled(): bool
+    {
+        return $this->mcp_enabled;
     }
 
     /**

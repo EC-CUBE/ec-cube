@@ -68,12 +68,13 @@ final class TwigLintValidatorTest extends AbstractTypeTestCase
         $errors = $validator->validate($value, $constraint);
         $this->assertCount(1, $errors);
         $message = $errors[0]->getMessage();
-        $this->assertStringContainsString('Unexpected "}" at line 1.', (string) $message);
+        // twig/twig 3.28.0 以降はメッセージ末尾に ` column N` が付くため、行番号までで判定する
+        $this->assertStringContainsString('Unexpected "}" at line 1', (string) $message);
 
         $value = '{% for product in products %}{% endfo %}';
         $errors = $validator->validate($value, $constraint);
         $this->assertCount(1, $errors);
         $message = $errors[0]->getMessage();
-        $this->assertStringContainsString('Unexpected "endfo" tag (expecting closing tag for the "for" tag defined near line 1) at line 1.', (string) $message);
+        $this->assertStringContainsString('Unexpected "endfo" tag (expecting closing tag for the "for" tag defined near line 1) at line 1', (string) $message);
     }
 }

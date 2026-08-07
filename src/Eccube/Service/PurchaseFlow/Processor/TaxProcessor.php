@@ -120,24 +120,4 @@ class TaxProcessor implements ItemHolderPreprocessor
 
         return $this->entityManager->find(TaxType::class, $TaxType);
     }
-
-    /**
-     * 税表示区分を取得する.
-     *
-     * - 商品: 税抜
-     * - 送料: 税込
-     * - 値引き: 税抜
-     * - 手数料: 税込
-     * - ポイント値引き: 税込
-     *
-     * @param OrderItemType|int $OrderItemType 明細種別
-     *
-     * @deprecated OrderHelper::getTaxDisplayTypeを使用してください
-     *
-     * @return TaxDisplayType 税表示区分
-     */
-    protected function getTaxDisplayType(OrderItemType|int $OrderItemType): TaxDisplayType
-    {
-        return $this->orderHelper->getTaxDisplayType($OrderItemType);
-    }
 }

@@ -1311,6 +1311,9 @@ admin.setting.shop.shop.agent_commerce: "Agent Commerce"
 admin.setting.shop.shop.agent_commerce.description: "Enable checkout via AI agents (ChatGPT / Gemini, etc.). Discovery and catalog are always public; only checkout is controlled here. Checkout is not yet available in Japan, so normally leave these disabled."
 admin.setting.shop.shop.agent_commerce.acp_checkout_enabled: "Enable ACP checkout"
 admin.setting.shop.shop.agent_commerce.ucp_checkout_enabled: "Enable UCP checkout"
+admin.setting.shop.shop.mcp: "MCP Server"
+admin.setting.shop.shop.mcp.description: "Enables the MCP server (^/admin/mcp) that lets AI clients (Claude Desktop, Cursor, etc.) read management data. Read-only. Disabled by default; while disabled the endpoint returns 404. Requires the API plugin (api44) enabled with an OAuth2 token issued."
+admin.setting.shop.shop.mcp_enabled: "Enable MCP server"
 
 #------------------------------------------------------------------------------------
 # Settings：Store Settings：Trade Law Settings
