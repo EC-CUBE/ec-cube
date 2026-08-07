@@ -13,6 +13,9 @@ file that was distributed with this source code.
 
 表示順はドラッグ＆ドロップと ↑↓ で並び替え、hidden の sort_no に JS が連番を振る。
 JS は呼び出し側の block javascript で `@admin/Content/faq_collection_javascript.twig` を include すること。
+
+テンプレートを上書きしてこの partial を include しない場合、FAQ は保存対象から外れる
+（＝編集画面から FAQ を登録できなくなるが、登録済みの FAQ が消えることはない）。
 #}
 {% macro faq_item(faq) %}
     <div class="faq-collection__item sortable-item card border mb-2">
@@ -73,6 +76,12 @@ JS は呼び出し側の block javascript で `@admin/Content/faq_collection_jav
 {% endmacro %}
 
 {% import _self as faqMacro %}
+
+{# FAQ欄を描画したことをサーバへ伝えるセンチネル。
+   これが送信されないと、FormType 側の PRE_SUBMIT が「テンプレート上書きで未描画」と判断して
+   faqs を丸ごと無視する（UI で全行削除したケースと区別するために必要）。
+   呼び出し側から渡さなくても済むよう、親フォームから直接引く。 #}
+{{ form_widget(faqs.parent.faqs_rendered) }}
 
 <p class="text-muted">{{ 'admin.content.faq.display_limit_notice'|trans({'%count%': eccube_config.eccube_max_number_faq_get}) }}</p>
 

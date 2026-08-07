@@ -33,13 +33,13 @@ class FaqRepository extends AbstractRepository
     /**
      * FAQ を登録/保存します.
      *
-     * 表示順が未採番（null）のときは既存の最大値 + 1 を割り当てる（コアの Category と同じ 1 始まり）。
+     * 表示順が未採番（null）のときは、同じ区分・紐付け先の中での最大値 + 1 を割り当てる（1 始まり）。
      */
     #[\Override]
     public function save(AbstractEntity $entity): void
     {
         if ($entity instanceof Faq && $entity->getSortNo() === null) {
-            $entity->setSortNo($this->getMaxSortNo() + 1);
+            $entity->setSortNo($this->getMaxSortNo($entity) + 1);
         }
 
         $em = $this->getEntityManager();
@@ -48,14 +48,26 @@ class FaqRepository extends AbstractRepository
     }
 
     /**
-     * 登録済みFAQの表示順の最大値を返す（未登録なら 0）.
+     * 対象FAQと同じ区分・紐付け先における表示順の最大値を返す（未登録なら 0）.
+     *
+     * sort_no はフロント取得（getCommonFaq / getProductFaq / getCategoryFaq）と同じく
+     * 区分・紐付け先ごとに独立した並び順なので、採番の母集団もそのスコープに合わせる。
      */
-    private function getMaxSortNo(): int
+    private function getMaxSortNo(Faq $Faq): int
     {
-        return (int) $this->createQueryBuilder('f')
-            ->select('COALESCE(MAX(f.sort_no), 0)')
-            ->getQuery()
-            ->getSingleScalarResult();
+        $qb = $this->createQueryBuilder('f')
+            ->select('COALESCE(MAX(f.sort_no), 0)');
+
+        match ($Faq->getFaqType()) {
+            Faq::FAQ_TYPE_PRODUCT => $qb->where('f.Product = :Product')
+                ->setParameter('Product', $Faq->getProduct()),
+            Faq::FAQ_TYPE_CATEGORY => $qb->where('f.Category = :Category')
+                ->setParameter('Category', $Faq->getCategory()),
+            default => $qb->where('f.Product IS NULL')
+                ->andWhere('f.Category IS NULL'),
+        };
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
     }
 
     /**

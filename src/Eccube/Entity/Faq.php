@@ -73,10 +73,13 @@ class Faq extends AbstractEntity implements \Stringable
     private ?string $answer = null;
 
     /**
-     * 表示順. 未採番（null）で保存されたときは FaqRepository::save() が最大値 + 1 を割り当てる。
+     * 表示順.
+     *
+     * カラムは NOT NULL のため、既定値は 0 のままにして `new Faq()` を常に永続化可能に保つ。
+     * フォームから明示的に null が入ったときだけ FaqRepository::save() が最大値 + 1 を採番する。
      */
     #[ORM\Column(name: 'sort_no', type: Types::INTEGER, options: ['default' => 0])]
-    private ?int $sort_no = null;
+    private ?int $sort_no = 0;
 
     #[ORM\Column(name: 'visible', type: Types::BOOLEAN, options: ['default' => true])]
     private bool $visible = true;

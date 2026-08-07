@@ -127,23 +127,62 @@ final class FaqRepositoryTest extends EccubeTestCase
 
     public function testSaveAssignsNextSortNoWhenNotSpecified(): void
     {
-        $Faq = new Faq();
-        $Faq->setQuestion('表示順を指定しないFAQ')
-            ->setAnswer('保存時に最大値 + 1 が採番される')
-            ->setVisible(true);
-        $this->assertNull($Faq->getSortNo());
+        // 別区分（商品ごと）に大きい表示順が存在しても、採番の母集団はサイト共通FAQに限られる。
+        $Product = $this->createProduct();
+        $this->createFaq('product-sort-200', 200, true, $Product);
 
         $expected = 1 + (int) $this->entityManager->createQueryBuilder()
             ->select('COALESCE(MAX(f.sort_no), 0)')
             ->from(Faq::class, 'f')
+            ->where('f.Product IS NULL')
+            ->andWhere('f.Category IS NULL')
             ->getQuery()
             ->getSingleScalarResult();
 
+        $Faq = new Faq();
+        $Faq->setQuestion('表示順を指定しないFAQ')
+            ->setAnswer('保存時に同区分の最大値 + 1 が採番される')
+            ->setVisible(true)
+            ->setSortNo(null);
+
         $this->faqRepository->save($Faq);
 
-        // 0 ではなく既存の最大値 + 1 が入る（コアの Category と同じ 1 始まり）。
+        // 0 ではなく同区分の最大値 + 1 が入る（1 始まり）。商品FAQの 200 には引きずられない。
         $this->assertSame($expected, $Faq->getSortNo());
         $this->assertGreaterThan(0, $Faq->getSortNo());
+    }
+
+    public function testSaveAssignsNextSortNoWithinSameProduct(): void
+    {
+        $Product = $this->createProduct();
+        $Other = $this->createProduct();
+        $this->createFaq('other-product-50', 50, true, $Other);
+        $this->createFaq('product-1', 1, true, $Product);
+
+        $Faq = new Faq();
+        $Faq->setQuestion('同じ商品の中で採番される')
+            ->setAnswer('other-product の 50 は無関係')
+            ->setVisible(true)
+            ->setSortNo(null)
+            ->setProduct($Product);
+
+        $this->faqRepository->save($Faq);
+
+        $this->assertSame(2, $Faq->getSortNo());
+    }
+
+    public function testSaveKeepsDefaultSortNoWhenNotNull(): void
+    {
+        // カラムは NOT NULL のため、new Faq() の既定値は 0 のまま（採番は行われない）。
+        $Faq = new Faq();
+        $this->assertSame(0, $Faq->getSortNo());
+
+        $Faq->setQuestion('表示順を触らないFAQ')
+            ->setAnswer('既定値の 0 のまま保存される')
+            ->setVisible(true);
+        $this->faqRepository->save($Faq);
+
+        $this->assertSame(0, $Faq->getSortNo());
     }
 
     public function testGetCategoryFaqInheritsAncestors(): void

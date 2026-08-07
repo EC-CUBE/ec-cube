@@ -123,6 +123,11 @@ file that was distributed with this source code.
                     {% endfor %}
                 </div>
                 <p class="text-muted">{{ 'admin.content.faq.display_limit_notice'|trans({'%count%': eccube_config.eccube_max_number_faq_get}) }}</p>
+                {# 並び替えができるのは「サイト共通」で絞り込んだときだけなので、
+                   既定表示（すべて）でも気付けるよう一覧の手前に案内を出す #}
+                {% if not sortable %}
+                    <p class="text-muted">{{ 'admin.content.faq.sort_no_notice'|trans }}</p>
+                {% endif %}
                 <div class="card rounded border-0 mb-4">
                     <div class="card-body p-0">
                         <ul class="list-group list-group-flush mb-4{% if sortable %} sortable-container{% endif %}">
@@ -240,8 +245,6 @@ file that was distributed with this source code.
                 </div>
                 {% if sortable %}
                     <p>{{ 'admin.common.drag_and_drop_description'|trans }}</p>
-                {% else %}
-                    <p class="text-muted">{{ 'admin.content.faq.sort_no_notice'|trans }}</p>
                 {% endif %}
             </div>
         </div>

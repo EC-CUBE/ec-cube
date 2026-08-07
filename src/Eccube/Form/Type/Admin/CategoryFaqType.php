@@ -16,20 +16,27 @@ namespace Eccube\Form\Type\Admin;
 use Eccube\Entity\Category;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * カテゴリごとFAQ の専用編集ページ用フォーム。
  *
  * カテゴリ管理画面（ツリー型）とは別に、1 カテゴリの FAQ だけを編集する画面で使う。
- * この画面は常に faqs コレクションを描画するため、未描画による全削除は起きない。
  */
 class CategoryFaqType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            // FAQ 欄が描画されたことを示すセンチネル（ProductType と同じ。詳細はそちらのコメント参照）。
+            ->add('faqs_rendered', HiddenType::class, [
+                'mapped' => false,
+                'data' => '1',
+            ])
             ->add('faqs', CollectionType::class, [
                 'entry_type' => FaqType::class,
                 'entry_options' => ['sortable' => true],
@@ -39,6 +46,14 @@ class CategoryFaqType extends AbstractType
                 'allow_delete' => true,
                 'by_reference' => false,
             ]);
+
+        // FAQ 欄が描画されていないときは faqs に触れない（既存FAQの全削除を防ぐ）。
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event): void {
+            $data = $event->getData();
+            if (!is_array($data) || empty($data['faqs_rendered'])) {
+                $event->getForm()->remove('faqs');
+            }
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -124,6 +124,9 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
             'images' => [],
             'add_images' => [],
             'delete_images' => [],
+            // FAQ 欄を描画したテンプレートからの送信であることを示すセンチネル.
+            // 実際のフォームでは @admin/Content/faq_collection.twig が常に出力する.
+            'faqs_rendered' => '1',
             Constant::TOKEN_NAME => 'dummy',
         ];
     }
@@ -466,6 +469,100 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
         $this->assertCount(1, $Remaining);
         $this->assertSame('発送はいつですか（更新）', $Remaining[0]->getQuestion());
         $this->assertNotInstanceOf(Faq::class, $faqRepository->find($deletedId));
+    }
+
+    /**
+     * FAQ欄を描画していないテンプレートからの保存では、既存の商品ごとFAQが維持されることを検証する.
+     *
+     * app/template/admin/Product/product.twig を上書きして FAQ 欄を落としている店舗を想定。
+     * faqs キーも faqs_rendered も送信されないため、ProductType の PRE_SUBMIT が faqs を
+     * フォームから取り除き、orphanRemoval による全削除を発生させない。
+     */
+    public function testEditKeepsProductFaqWhenCollectionIsNotRendered()
+    {
+        $Product = $this->createProduct(null, 0);
+        $productId = $Product->getId();
+        $faqRepository = $this->entityManager->getRepository(Faq::class);
+
+        $formData = $this->createFormData();
+        $formData['faqs'] = [
+            [
+                'question' => '上書きテンプレートでも残るか',
+                'answer' => '残る',
+                'sort_no' => '1',
+                'visible' => '1',
+            ],
+        ];
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product_product_edit', ['id' => $productId]),
+            ['admin_product' => $formData]
+        );
+        $this->entityManager->clear();
+        $this->assertCount(1, $faqRepository->findBy(['Product' => $productId]));
+
+        // FAQ欄が描画されていない画面からの保存（faqs / faqs_rendered ともに送信されない）
+        $formData = $this->createFormData();
+        unset($formData['faqs_rendered']);
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product_product_edit', ['id' => $productId]),
+            ['admin_product' => $formData]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect(
+            $this->generateUrl('admin_product_product_edit', ['id' => $productId])
+        ));
+
+        $this->entityManager->clear();
+        /** @var Faq[] $Faqs */
+        $Faqs = $faqRepository->findBy(['Product' => $productId]);
+        $this->assertCount(1, $Faqs);
+        $this->assertSame('上書きテンプレートでも残るか', $Faqs[0]->getQuestion());
+    }
+
+    /**
+     * FAQ欄を描画した画面で全行を削除した保存では、商品ごとFAQが全削除されることを検証する.
+     *
+     * JS が行を DOM ごと除去するため、全行削除時も faqs キーは送信されない。
+     * faqs_rendered の有無だけが「未描画」との違いになる。
+     */
+    public function testEditRemovesAllProductFaqWhenAllRowsDeleted()
+    {
+        $Product = $this->createProduct(null, 0);
+        $productId = $Product->getId();
+        $faqRepository = $this->entityManager->getRepository(Faq::class);
+
+        $formData = $this->createFormData();
+        $formData['faqs'] = [
+            [
+                'question' => 'UIで全行削除されるか',
+                'answer' => 'される',
+                'sort_no' => '1',
+                'visible' => '1',
+            ],
+        ];
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product_product_edit', ['id' => $productId]),
+            ['admin_product' => $formData]
+        );
+        $this->entityManager->clear();
+        $this->assertCount(1, $faqRepository->findBy(['Product' => $productId]));
+
+        // 全行を削除した状態での保存（faqs キーは無いが faqs_rendered は送信される）
+        $formData = $this->createFormData();
+        $this->assertSame('1', $formData['faqs_rendered']);
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product_product_edit', ['id' => $productId]),
+            ['admin_product' => $formData]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect(
+            $this->generateUrl('admin_product_product_edit', ['id' => $productId])
+        ));
+
+        $this->entityManager->clear();
+        $this->assertCount(0, $faqRepository->findBy(['Product' => $productId]));
     }
 
     public function testDisplayProduct()
