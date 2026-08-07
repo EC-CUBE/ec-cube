@@ -29,7 +29,7 @@
  * env:
  *   BASE_URL          … 稼働中サーバ (既定 http://127.0.0.1:8000)
  *   AGENT_E2E_TOKEN   … OAuth2 Bearer トークン (acp:checkout)。空ならフェーズ 2 を skip
- *   AGENT_E2E_ITEM_ID … checkout で使う ProductClass id (既定 1)
+ *   AGENT_E2E_ITEM_ID … checkout で使う ProductClass id (既定 2。id=1 は visible=0 の規格)
  *
  * Usage: php e2e/agent/acp-checkout.php
  */
@@ -41,7 +41,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 $baseUrl = rtrim((string) (getenv('BASE_URL') ?: 'http://127.0.0.1:8000'), '/');
 $token = (string) (getenv('AGENT_E2E_TOKEN') ?: '');
-$itemId = (int) (getenv('AGENT_E2E_ITEM_ID') ?: '1');
+$itemId = (int) (getenv('AGENT_E2E_ITEM_ID') ?: '2');
 // complete (決済実行) は決済ハンドラ (#3) が要るため、明示的に許可された時のみ実行する。
 $paymentReady = 'true' === (string) getenv('AGENT_E2E_PAYMENT_READY');
 
@@ -231,6 +231,19 @@ function runCheckout(HttpClientInterface $client, string $token, int $itemId, bo
     $body = completeAcp($client, $auth, $sid, ['handler_id' => 'card_tokenized', 'token' => 'e2e-acp-spt-decline', 'provider' => 'sample_payment']);
     assertTrue(($body['status'] ?? null) !== 'completed', 'complete (decline token) => not "completed" (handler rejected)');
     assertTrue(!empty($body['messages']), 'complete (decline token) => business messages[] present');
+
+    // (d) 負の入力 (fail-closed): token を伴わない complete。トークン欠落を「どの規約にも一致しない=正常」と
+    //     解釈して無与信のまま確定してしまう事故を防ぐ回帰ケース。想定入力だけを試すと原理的に検出できない。
+    $sid = createSession($client, $auth, $createBody);
+    $body = completeAcp($client, $auth, $sid, ['handler_id' => 'card_tokenized', 'provider' => 'sample_payment']);
+    assertTrue(($body['status'] ?? null) !== 'completed', 'complete (token 欠落) => not "completed" (fail-closed)');
+    assertTrue(!empty($body['messages']), 'complete (token 欠落) => business messages[] present');
+
+    // (e) capture 失敗: 与信は成功するが売上確定で失敗する。本体の capture 失敗分岐 (引当 rollback) を通す。
+    $sid = createSession($client, $auth, $createBody);
+    $body = completeAcp($client, $auth, $sid, ['handler_id' => 'card_tokenized', 'token' => 'e2e-acp-spt-capture-fail', 'provider' => 'sample_payment']);
+    assertTrue(($body['status'] ?? null) !== 'completed', 'complete (capture-fail token) => not "completed" (capture rejected)');
+    assertTrue(!empty($body['messages']), 'complete (capture-fail token) => business messages[] present');
 }
 
 /** complete シナリオ用に新規セッションを作成し session id を返す。 */

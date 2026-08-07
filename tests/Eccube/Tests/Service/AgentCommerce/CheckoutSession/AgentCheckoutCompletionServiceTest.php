@@ -33,6 +33,8 @@ use Eccube\Service\AgentCommerce\Payment\AgentCheckoutPaymentHandlerInterface;
 use Eccube\Service\AgentCommerce\Payment\AgentCheckoutPaymentHandlerRegistry;
 use Eccube\Service\AgentCommerce\Payment\PaymentOutcome;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use Psr\Log\NullLogger;
 
 /**
  * Layer 3 (complete 状態機械) tests for AgentCheckoutCompletionService.
@@ -57,7 +59,7 @@ final class AgentCheckoutCompletionServiceTest extends EccubeTestCase
         $stock = $ProductClass->getProductStock();
         $session = $this->createReadySession($ProductClass, 2);
 
-        $handler = $this->stubHandler([PaymentOutcome::completed('auth_1')], PaymentOutcome::completed('cap_1'));
+        $handler = $this->stubHandler([PaymentOutcome::authorized('auth_1')], PaymentOutcome::completed('cap_1'));
         $result = $this->service($handler)->complete($session, []);
 
         $this->assertSame(CheckoutSessionStatus::COMPLETED, $result->status->getId(), 'frictionless で completed へ遷移する');
@@ -75,9 +77,9 @@ final class AgentCheckoutCompletionServiceTest extends EccubeTestCase
         $stock = $ProductClass->getProductStock();
         $session = $this->createReadySession($ProductClass, 2);
 
-        // authorize: 1 回目 REQUIRES_ACTION (3DS challenge) → 2 回目 COMPLETED (再開)。
+        // authorize: 1 回目 REQUIRES_ACTION (3DS challenge) → 2 回目 AUTHORIZED (再開)。
         $handler = $this->stubHandler(
-            [PaymentOutcome::requiresAction(['continue_url' => 'https://example.com/3ds/abc']), PaymentOutcome::completed('auth_2')],
+            [PaymentOutcome::requiresAction(['continue_url' => 'https://example.com/3ds/abc']), PaymentOutcome::authorized('auth_2')],
             PaymentOutcome::completed('cap_1'),
         );
         $service = $this->service($handler);
@@ -101,6 +103,246 @@ final class AgentCheckoutCompletionServiceTest extends EccubeTestCase
 
         $this->entityManager->refresh($stock);
         $this->assertSame(98, (int) $stock->getStock(), '再開確定後も在庫は二重に減らない');
+    }
+
+    public function testAuthorizedOutcomeHandsTransactionReferenceToCapture(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $session = $this->createReadySession($ProductClass, 1);
+
+        $handler = $this->stubHandler(
+            [PaymentOutcome::authorized('pi_auth_1', ['gateway' => 'stub'])],
+            PaymentOutcome::completed('pi_auth_1', ['captured' => true]),
+        );
+        $this->service($handler)->complete($session, ['token' => 'tok_visa']);
+
+        $this->assertCount(1, $handler->capturedAuthorizations, 'AUTHORIZED は capture を 1 度だけ呼ぶ');
+        $this->assertSame('pi_auth_1', $handler->capturedAuthorizations[0]->transactionId, 'capture は authorize が返した取引識別子を受け取る (トークン再償還を不要にする)');
+        $this->assertSame(['gateway' => 'stub'], $handler->capturedAuthorizations[0]->metadata, 'capture は authorize の metadata も受け取る');
+
+        $paymentData = $session->getPaymentData() ?? [];
+        $this->assertSame('pi_auth_1', $paymentData['transaction_id'] ?? null, '取引識別子が payment_data へ永続化される');
+        $this->assertTrue($paymentData['captured'] ?? false, 'capture の metadata も payment_data へマージされる');
+    }
+
+    public function testAutoCaptureGatewayIsNotCapturedTwice(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $stock = $ProductClass->getProductStock();
+        $session = $this->createReadySession($ProductClass, 1);
+
+        // auto-capture 型 PSP: authorize が売上確定まで済ませて COMPLETED を返す。
+        $handler = $this->stubHandler([PaymentOutcome::completed('ch_auto_1', ['gateway' => 'auto'])]);
+        $result = $this->service($handler)->complete($session, []);
+
+        $this->assertSame(CheckoutSessionStatus::COMPLETED, $result->status->getId(), 'auto-capture でも注文は確定する');
+        $this->assertSame(0, $handler->captureCount, 'COMPLETED に対して capture を呼ばない (二重売上を防ぐ)');
+
+        $paymentData = $session->getPaymentData() ?? [];
+        $this->assertSame('ch_auto_1', $paymentData['transaction_id'] ?? null, 'capture を経由しなくても PSP 参照は payment_data へ残る');
+
+        $this->entityManager->refresh($stock);
+        $this->assertInstanceOf(ProductStock::class, $stock);
+        $this->assertSame(99, (int) $stock->getStock(), '在庫は 1 だけ引き当てられる');
+    }
+
+    public function testCaptureFailureRollsBackStockAndKeepsAuthorizationReference(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('10');
+        $stock = $ProductClass->getProductStock();
+        $session = $this->createReadySession($ProductClass, 2);
+
+        $handler = $this->stubHandler(
+            [PaymentOutcome::authorized('pi_auth_2', ['gateway' => 'stub'])],
+            PaymentOutcome::failed('capture_failed', 'Capture was rejected.', true, 'pi_auth_2'),
+        );
+        $result = $this->service($handler)->complete($session, []);
+
+        $this->assertSame(CheckoutSessionStatus::READY, $result->status->getId(), 'capture 失敗 (retryable) は ready に戻す');
+        $this->assertNotInstanceOf(Order::class, $result->order, 'capture 失敗時は注文を確定しない');
+
+        $paymentData = $session->getPaymentData() ?? [];
+        $this->assertSame('pi_auth_2', $paymentData['transaction_id'] ?? null, '与信済みの取引識別子は capture 失敗後も残る (与信取消の照会に必要)');
+
+        $this->entityManager->refresh($stock);
+        $this->assertInstanceOf(ProductStock::class, $stock);
+        $this->assertSame(10, (int) $stock->getStock(), 'capture 失敗で引当をロールバックする');
+    }
+
+    /**
+     * 不変条件: 保持済みの PSP 参照をハンドラへ渡すのは「在庫を引当てたまま中断した」状態
+     * (REQUIRES_ACTION / IN_PROGRESS) からの再開時のみ。ready からの再試行では渡さない.
+     *
+     * ready は在庫を回収済みで、与信拒否でここへ落ちた場合は保持している識別子が死んだ取引を指す。
+     * 渡してしまうと「別カードでの再試行」が拒否済み取引の続行になる。
+     */
+    #[DataProvider(methodName: 'reentryScenarios')]
+    public function testStoredPaymentReferenceReachesHandlerOnlyWhenResumingFromHeldStatus(PaymentOutcome $interrupted, bool $expectsReference): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $session = $this->createReadySession($ProductClass, 1);
+        $handler = $this->stubHandler(
+            [$interrupted, PaymentOutcome::authorized('pi_second')],
+            PaymentOutcome::completed('pi_second'),
+        );
+        $service = $this->service($handler);
+
+        $service->complete($session, ['token' => 'tok_first']);
+        $this->assertSame([], $handler->receivedPaymentReferences[0], '初回 complete には保持済み参照が無い');
+
+        // 中断・失敗のいずれでも参照は payment_data に残る (照会・監査のため)。
+        $this->assertSame('pi_first', ($session->getPaymentData() ?? [])['transaction_id'] ?? null, 'PSP 参照は payment_data に保持される');
+
+        $service->complete($session, ['token' => 'tok_second']);
+        $handedBack = $handler->receivedPaymentReferences[1]['transaction_id'] ?? null;
+
+        if ($expectsReference) {
+            $this->assertSame('pi_first', $handedBack, '中断からの再開では保持済み参照がハンドラへ渡る');
+        } else {
+            $this->assertNull($handedBack, 'ready からの再試行では保持済み参照を渡さない (新規与信としてやり直す)');
+        }
+    }
+
+    /**
+     * 再入シナリオ: [中断/失敗を起こす authorize の戻り値, 再入時に参照が渡るか].
+     *
+     * complete に再入できる非終端ステータスのうち、初回入口の INCOMPLETE を除く 3 経路を網羅する。
+     *
+     * @return \Iterator<string, array{PaymentOutcome, bool}>
+     */
+    public static function reentryScenarios(): \Iterator
+    {
+        yield 'requires_action からの再開' => [PaymentOutcome::requiresAction(['continue_url' => 'https://example.com/3ds'], [], 'pi_first'), true];
+        yield 'in_progress からの再開' => [PaymentOutcome::pending([], 'pi_first'), true];
+        yield '与信拒否で ready へ戻った後の再試行' => [PaymentOutcome::failed('card_declined', 'The card was declined.', true, 'pi_first'), false];
+    }
+
+    /**
+     * capture 失敗 (retryable) で ready へ戻った後の再試行も、新規 authorize から始まる.
+     *
+     * {@link AgentCheckoutPaymentHandlerInterface::capture()} が「与信が残り再 authorize できない
+     * 場合は retryable=false を返せ」と定めている根拠となる挙動。
+     */
+    public function testReadyRetryAfterCaptureFailureStartsFreshAuthorize(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $session = $this->createReadySession($ProductClass, 1);
+
+        $handler = $this->stubHandler(
+            [PaymentOutcome::authorized('pi_auth_retry')],
+            PaymentOutcome::failed('capture_failed', 'Capture was rejected.', true, 'pi_auth_retry'),
+        );
+        $service = $this->service($handler);
+
+        $first = $service->complete($session, ['token' => 'tok_one_shot']);
+        $this->assertSame(CheckoutSessionStatus::READY, $first->status->getId());
+
+        $service->complete($session, ['token' => 'tok_one_shot']);
+
+        $this->assertSame(2, $handler->authorizeCount, 'ready からの再試行は capture の再実行ではなく新規 authorize になる');
+        $this->assertSame([], $handler->receivedPaymentReferences[1], '再試行では与信済みの取引識別子を渡さない');
+    }
+
+    /**
+     * capture が契約 (COMPLETED か FAILED) に反した status を返しても、内容のある ERROR を返す.
+     *
+     * PENDING は errorCode/errorMessage を持たないため、素通しすると messages[] に
+     * 「要素はあるが中身が空」のエラーが載る。
+     */
+    public function testCaptureContractViolationIsReportedWithNonEmptyMessage(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('10');
+        $stock = $ProductClass->getProductStock();
+        $session = $this->createReadySession($ProductClass, 2);
+
+        $handler = $this->stubHandler(
+            [PaymentOutcome::authorized('pi_auth_3')],
+            PaymentOutcome::pending([], 'pi_auth_3'),
+        );
+        $result = $this->service($handler)->complete($session, []);
+
+        $this->assertSame(CheckoutSessionStatus::READY, $result->status->getId(), 'capture の契約違反は失敗として扱う');
+        $this->assertCount(1, $result->messages);
+        $this->assertNotSame('', $result->messages[0]->message, 'エージェントへ空文字のエラーメッセージを返さない');
+
+        $this->entityManager->refresh($stock);
+        $this->assertInstanceOf(ProductStock::class, $stock);
+        $this->assertSame(10, (int) $stock->getStock(), '契約違反でも在庫は回収する (fail-closed)');
+    }
+
+    /**
+     * errorMessage も errorCode も空のまま失敗しても、メッセージ本文は空にならない.
+     */
+    public function testFailureMessageIsNeverEmpty(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $session = $this->createReadySession($ProductClass, 1);
+
+        $handler = $this->stubHandler([PaymentOutcome::failed('', '', true)]);
+        $result = $this->service($handler)->complete($session, []);
+
+        $this->assertCount(1, $result->messages);
+        $this->assertNotSame('', $result->messages[0]->message, 'errorCode / errorMessage が空でも本文を落とさない');
+    }
+
+    public function testResumeHandsStoredPaymentReferenceToHandler(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $session = $this->createReadySession($ProductClass, 1);
+
+        $handler = $this->stubHandler(
+            [
+                PaymentOutcome::requiresAction(['continue_url' => 'https://example.com/3ds'], ['gateway' => 'stub'], 'pi_hold_1'),
+                PaymentOutcome::authorized('pi_hold_1'),
+            ],
+            PaymentOutcome::completed('pi_hold_1'),
+        );
+        $service = $this->service($handler);
+
+        $service->complete($session, ['token' => 'tok_one_shot']);
+        $this->assertSame([], $handler->receivedPaymentReferences[0], '初回 complete では保持済み参照が無い');
+
+        // 再開: エージェントの入力に取引識別子が無くても、中断時に保持した PSP 参照がハンドラへ届く
+        // (ワンショットトークンを再償還せず同じ取引を続行できる)。
+        $service->complete($session, ['authentication_result' => ['outcome' => 'authenticated']]);
+        $resumeReference = $handler->receivedPaymentReferences[1];
+        $this->assertSame('pi_hold_1', $resumeReference['transaction_id'] ?? null, '再開時は中断前の取引識別子がハンドラへ渡る');
+        $this->assertSame('stub', $resumeReference['gateway'] ?? null, '中断時の metadata も引き渡される');
+    }
+
+    public function testHandlerExceptionOnAuthorizeIsMappedToFailureNotFatal(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('10');
+        $stock = $ProductClass->getProductStock();
+        $session = $this->createReadySession($ProductClass, 2);
+
+        // ハンドラは failed を返す契約だが、漏れた例外で状態遷移ごと巻き戻さないことを保証する。
+        $handler = $this->stubHandler([new \RuntimeException('psp connection reset')]);
+        $result = $this->service($handler)->complete($session, []);
+
+        $this->assertSame(CheckoutSessionStatus::READY, $result->status->getId(), 'ハンドラの例外は 500 でなくビジネス系の失敗として扱う');
+        $this->assertNotEmpty($result->messages, 'エージェントには messages[] で返す');
+
+        $this->entityManager->refresh($stock);
+        $this->assertInstanceOf(ProductStock::class, $stock);
+        $this->assertSame(10, (int) $stock->getStock(), '例外時も引当をロールバックする');
+    }
+
+    public function testHandlerExceptionOnCaptureKeepsAuthorizationReference(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('10');
+        $session = $this->createReadySession($ProductClass, 1);
+
+        $handler = $this->stubHandler(
+            [PaymentOutcome::authorized('pi_auth_3', ['gateway' => 'stub'])],
+            new \RuntimeException('psp timeout'),
+        );
+        $result = $this->service($handler)->complete($session, []);
+
+        $this->assertSame(CheckoutSessionStatus::READY, $result->status->getId(), 'capture の例外も retryable な失敗として扱う');
+
+        $paymentData = $session->getPaymentData() ?? [];
+        $this->assertSame('pi_auth_3', $paymentData['transaction_id'] ?? null, '例外で巻き戻さず、与信済み取引の識別子を残す (取消・照会に必要)');
     }
 
     public function testDeclinedRetryableRollsBackStockAndReturnsToReady(): void
@@ -138,7 +380,7 @@ final class AgentCheckoutCompletionServiceTest extends EccubeTestCase
         $stock = $ProductClass->getProductStock();
         $session = $this->createReadySession($ProductClass, 2);
 
-        $handler = $this->stubHandler([PaymentOutcome::completed('auth_1')], PaymentOutcome::completed('cap_1'));
+        $handler = $this->stubHandler([PaymentOutcome::authorized('auth_1')], PaymentOutcome::completed('cap_1'));
         $service = $this->service($handler);
 
         $first = $service->complete($session, []);
@@ -165,9 +407,9 @@ final class AgentCheckoutCompletionServiceTest extends EccubeTestCase
         $stock = $ProductClass->getProductStock();
         $session = $this->createReadySession($ProductClass, 1);
 
-        // authorize: 1 回目 PENDING (非同期) → 2 回目 COMPLETED (IPN/Webhook 受信後の再開)。
+        // authorize: 1 回目 PENDING (非同期) → 2 回目 AUTHORIZED (IPN/Webhook 受信後の再開)。
         $handler = $this->stubHandler(
-            [PaymentOutcome::pending(['psp_ref' => 'pi_123']), PaymentOutcome::completed('auth_2')],
+            [PaymentOutcome::pending(['psp_ref' => 'pi_123']), PaymentOutcome::authorized('auth_2')],
             PaymentOutcome::completed('cap_1'),
         );
         $service = $this->service($handler);
@@ -245,6 +487,7 @@ final class AgentCheckoutCompletionServiceTest extends EccubeTestCase
             new AgentCheckoutPaymentHandlerRegistry($handlers),
             $statusRepository,
             self::getContainer()->get(GuestCustomerResolver::class),
+            new NullLogger(),
             15,
         );
     }
@@ -252,35 +495,52 @@ final class AgentCheckoutCompletionServiceTest extends EccubeTestCase
     /**
      * 設定可能な決済ハンドラスタブ.
      *
-     * @param array<int, PaymentOutcome> $authorizeOutcomes authorize の戻り値 (呼び出し順に消費・末尾を反復)
+     * @param array<int, PaymentOutcome|\Throwable> $authorizeOutcomes authorize の戻り値 (呼び出し順に消費・末尾を反復)。
+     *                                                                 Throwable を混ぜると authorize がそれを投げる
      */
-    private function stubHandler(array $authorizeOutcomes, ?PaymentOutcome $captureOutcome = null): AgentCheckoutPaymentHandlerInterface
+    private function stubHandler(array $authorizeOutcomes, PaymentOutcome|\Throwable|null $captureOutcome = null): AgentCheckoutPaymentHandlerInterface
     {
         return new class($authorizeOutcomes, $captureOutcome) implements AgentCheckoutPaymentHandlerInterface {
             public int $authorizeCount = 0;
 
             public int $captureCount = 0;
 
+            /** @var array<int, PaymentOutcome> capture() が受け取った与信結果 */
+            public array $capturedAuthorizations = [];
+
+            /** @var array<int, array<string, mixed>> authorize() が受け取った PSP 参照 */
+            public array $receivedPaymentReferences = [];
+
             /**
-             * @param array<int, PaymentOutcome> $authorizeOutcomes
+             * @param array<int, PaymentOutcome|\Throwable> $authorizeOutcomes
              */
             public function __construct(
                 private array $authorizeOutcomes,
-                private readonly ?PaymentOutcome $captureOutcome,
+                private readonly PaymentOutcome|\Throwable|null $captureOutcome,
             ) {
             }
 
-            public function authorize(Order $order, array $paymentData): PaymentOutcome
+            public function authorize(Order $order, array $paymentData, array $paymentReference = []): PaymentOutcome
             {
                 $outcome = $this->authorizeOutcomes[$this->authorizeCount] ?? $this->authorizeOutcomes[array_key_last($this->authorizeOutcomes)];
                 ++$this->authorizeCount;
+                $this->receivedPaymentReferences[] = $paymentReference;
+
+                if ($outcome instanceof \Throwable) {
+                    throw $outcome;
+                }
 
                 return $outcome;
             }
 
-            public function capture(Order $order, array $paymentData): PaymentOutcome
+            public function capture(Order $order, array $paymentData, PaymentOutcome $authorization): PaymentOutcome
             {
                 ++$this->captureCount;
+                $this->capturedAuthorizations[] = $authorization;
+
+                if ($this->captureOutcome instanceof \Throwable) {
+                    throw $this->captureOutcome;
+                }
 
                 return $this->captureOutcome ?? PaymentOutcome::completed('cap_'.$this->captureCount);
             }
