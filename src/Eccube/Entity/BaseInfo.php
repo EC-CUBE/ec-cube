@@ -167,6 +167,9 @@ class BaseInfo extends AbstractEntity
     #[ORM\Column(name: 'ucp_catalog_requires_auth', type: Types::BOOLEAN, options: ['default' => false])]
     private bool $ucp_catalog_requires_auth = false;
 
+    #[ORM\Column(name: 'mcp_enabled', type: Types::BOOLEAN, options: ['default' => false])]
+    private bool $mcp_enabled = false;
+
     /**
      * Get id.
      *
@@ -933,5 +936,23 @@ class BaseInfo extends AbstractEntity
     public function isUcpCatalogRequiresAuth(): bool
     {
         return $this->ucp_catalog_requires_auth;
+    }
+
+    /**
+     * Set mcpEnabled.
+     */
+    public function setMcpEnabled(bool $mcpEnabled): BaseInfo
+    {
+        $this->mcp_enabled = $mcpEnabled;
+
+        return $this;
+    }
+
+    /**
+     * Get mcpEnabled.
+     */
+    public function isMcpEnabled(): bool
+    {
+        return $this->mcp_enabled;
     }
 }

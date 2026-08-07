@@ -1,0 +1,91 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+ *
+ * http://www.ec-cube.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Eccube\Tests\Service\Mcp\Tool;
+
+use Eccube\Entity\Master\CustomerStatus;
+use Eccube\Service\Mcp\Tool\SearchCustomersTool;
+use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\Group;
+
+/**
+ * `SearchCustomersTool` の DB 結合テスト。 scope / 検索 / status 絞り込み / allow_list を検証。
+ */
+#[Group('mcp')]
+final class SearchCustomersToolTest extends EccubeTestCase
+{
+    private ?SearchCustomersTool $tool = null;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->tool = static::getContainer()->get(SearchCustomersTool::class);
+    }
+
+    public function testReturnsCustomersWithScope(): void
+    {
+        $customer = $this->createCustomer('mcp-customer-1@example.com');
+
+        // 既存データで緑にならないよう、 作成した会員のメールで絞り込み、 その id が結果に出ることまで確認する。
+        $result = $this->tool->search(keyword: 'mcp-customer-1@example.com', limit: 50);
+
+        $this->assertArrayHasKey('total', $result);
+        $this->assertGreaterThanOrEqual(1, $result['total']);
+        $this->assertContains(
+            $customer->getId(),
+            array_column($result['items'], 'id'),
+            '作成した会員が検索結果に含まれる',
+        );
+    }
+
+    public function testFiltersByRegularStatus(): void
+    {
+        $this->createCustomer('mcp-customer-regular@example.com');
+
+        $result = $this->tool->search(statusIds: [CustomerStatus::REGULAR], limit: 100);
+
+        $this->assertGreaterThanOrEqual(1, $result['total'], '正会員 (REGULAR) が 1 件以上');
+    }
+
+    public function testLimitClampedToUpperBound(): void
+    {
+        $result = $this->tool->search(limit: 500);
+
+        $this->assertSame(200, $result['limit']);
+    }
+
+    public function testItemFieldsAreSubsetOfAllowList(): void
+    {
+        $this->createCustomer('mcp-customer-allow@example.com');
+
+        $result = $this->tool->search(limit: 5);
+        $this->assertNotEmpty($result['items']);
+
+        $allowed = [
+            'id', 'name01', 'name02', 'kana01', 'kana02', 'company_name',
+            'postal_code', 'addr01', 'addr02', 'email', 'phone_number', 'birth',
+            'first_buy_date', 'last_buy_date', 'buy_times', 'buy_total', 'note',
+            'reset_expire', 'point', 'create_date', 'update_date',
+            'CustomerFavoriteProducts', 'CustomerAddresses', 'Orders',
+            'Status', 'Sex', 'Job', 'Country', 'Pref',
+        ];
+
+        foreach ($result['items'] as $item) {
+            foreach (array_keys($item) as $key) {
+                $this->assertContains($key, $allowed, sprintf('出力フィールド "%s" は Customer allow_list 外', $key));
+            }
+        }
+    }
+}

@@ -1,2 +1,14 @@
 monolog:
-    channels: ['front', 'admin', 'cookie_consent']
+    channels: ['front', 'admin', 'mcp', 'cookie_consent']
+    handlers:
+        # MCP 監査ログ: PII を含み得るため site.log と分離した専用ファイルに、 1 レコード 1 JSON で出力する。
+        # fingers_crossed を挟まず info から常時書き出す (監査記録は error 連動で握り潰してはならない)。
+        # 保管日数は ECCUBE_MCP_LOG_RETENTION_DAYS (既定 90)。 ファイルは所有者/グループのみ読める権限にする。
+        mcp:
+            type: rotating_file
+            path: '%kernel.logs_dir%/%kernel.environment%/mcp.log'
+            channels: ['mcp']
+            level: info
+            formatter: eccube.mcp.log.formatter.json
+            max_files: '%env(int:ECCUBE_MCP_LOG_RETENTION_DAYS)%'
+            file_permission: 0640
