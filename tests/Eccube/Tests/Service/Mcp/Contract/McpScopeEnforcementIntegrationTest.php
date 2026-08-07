@@ -1,0 +1,315 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+ *
+ * http://www.ec-cube.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Eccube\Tests\Service\Mcp\Contract;
+
+use Eccube\Tests\EccubeTestCase;
+use Eccube\Tests\Service\Mcp\EnablesMcpTrait;
+use League\Bundle\OAuth2ServerBundle\Entity\AccessToken as AccessTokenEntity;
+use League\Bundle\OAuth2ServerBundle\Entity\Client as ClientEntity;
+use League\Bundle\OAuth2ServerBundle\Entity\Scope as ScopeEntity;
+use League\Bundle\OAuth2ServerBundle\Manager\AccessTokenManagerInterface;
+use League\Bundle\OAuth2ServerBundle\Manager\ClientManagerInterface;
+use League\Bundle\OAuth2ServerBundle\Model\AccessToken as AccessTokenModel;
+use League\Bundle\OAuth2ServerBundle\Model\Client as ClientModel;
+use League\Bundle\OAuth2ServerBundle\Model\ClientInterface;
+use League\Bundle\OAuth2ServerBundle\ValueObject\Grant;
+use League\Bundle\OAuth2ServerBundle\ValueObject\Scope as ScopeValue;
+use League\OAuth2\Server\CryptKey;
+use PHPUnit\Framework\Attributes\Group;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
+/**
+ * scope 強制が「実カーネル → firewall → mcp-bundle → ScopeEnforcingReferenceHandler → Tool」 の経路全体で
+ * 効くことを検証する結合テスト (案 A の核心の回帰テスト)。
+ *
+ * 配線が外れる (McpScopeEnforcementPass 削除 / builder 構造変更 / mcp-bundle 更新) と本テストが落ちる。
+ * scope 付き JWT を自前発行し、 initialize → notifications/initialized → tools/call の handshake を
+ * 実カーネルに流して、 scope 充足は result、 不足は isError:true を確認する。
+ */
+#[Group('mcp')]
+final class McpScopeEnforcementIntegrationTest extends EccubeTestCase
+{
+    use EnablesMcpTrait;
+
+    private const TEST_CLIENT_ID = 'mcp-scope-it-client';
+
+    private ?ClientManagerInterface $clientManager = null;
+    private ?AccessTokenManagerInterface $accessTokenManager = null;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->clientManager = static::getContainer()->get(ClientManagerInterface::class);
+        $this->accessTokenManager = static::getContainer()->get(AccessTokenManagerInterface::class);
+        $this->setMcpEnabled(true);
+    }
+
+    public function testToolCallSucceedsWhenScopeGranted(): void
+    {
+        $jwt = $this->issueScopedJwt(['mcp:product:read']);
+
+        $result = $this->callTool($jwt, 'search_products', ['limit' => 1]);
+
+        $this->assertArrayHasKey('result', $result, (string) json_encode($result));
+        $this->assertNotTrue($result['result']['isError'] ?? false, 'scope 充足の tool は isError にならない');
+        $this->assertArrayHasKey('structuredContent', $result['result']);
+    }
+
+    public function testToolCallDeniedWhenScopeMissing(): void
+    {
+        // product scope のみの token で order tool を呼ぶ
+        $jwt = $this->issueScopedJwt(['mcp:product:read']);
+
+        $result = $this->callTool($jwt, 'search_orders', ['limit' => 1]);
+
+        $this->assertTrue($result['result']['isError'] ?? false, 'scope 不足の tool は isError:true');
+        $text = $result['result']['content'][0]['text'] ?? '';
+        $this->assertStringContainsString('Insufficient scope: mcp:order:read', (string) $text);
+    }
+
+    public function testToolCallDeniedForCustomerScope(): void
+    {
+        // product scope のみの token で customer 領域の tool を呼ぶ → 拒否
+        $jwt = $this->issueScopedJwt(['mcp:product:read']);
+
+        $result = $this->callTool($jwt, 'search_customers', ['limit' => 1]);
+
+        $this->assertTrue($result['result']['isError'] ?? false, 'scope 不足の tool は isError:true');
+        $this->assertStringContainsString('Insufficient scope: mcp:customer:read', (string) ($result['result']['content'][0]['text'] ?? ''));
+    }
+
+    public function testToolCallDeniedForPluginScope(): void
+    {
+        // product scope のみの token で plugin 領域の tool を呼ぶ → 拒否
+        $jwt = $this->issueScopedJwt(['mcp:product:read']);
+
+        $result = $this->callTool($jwt, 'list_plugins', []);
+
+        $this->assertTrue($result['result']['isError'] ?? false, 'scope 不足の tool は isError:true');
+        $this->assertStringContainsString('Insufficient scope: mcp:plugin:read', (string) ($result['result']['content'][0]['text'] ?? ''));
+    }
+
+    public function testFirewallDeniesTokenWithoutAnyMcpScope(): void
+    {
+        // mcp scope を 1 つも持たない token は、 ツール到達前に /admin/mcp の access_control 段で 403。
+        // (Member 認証で ROLE_ADMIN は付くが、 mcp read scope が無いと access_map の mcp ルールで弾く)
+        $jwt = $this->issueScopedJwt([]);
+        $path = '/'.$this->getAdminRoute().'/mcp';
+
+        $this->client->request(Request::METHOD_POST, $path, server: [
+            'CONTENT_TYPE' => 'application/json',
+            'HTTP_ACCEPT' => 'application/json, text/event-stream',
+            'HTTP_AUTHORIZATION' => 'Bearer '.$jwt,
+        ], content: (string) json_encode([
+            'jsonrpc' => '2.0', 'id' => 1, 'method' => 'initialize',
+            'params' => ['protocolVersion' => '2025-03-26', 'clientInfo' => ['name' => 'it', 'version' => '1'], 'capabilities' => []],
+        ]));
+
+        $this->assertSame(
+            Response::HTTP_FORBIDDEN,
+            $this->client->getResponse()->getStatusCode(),
+            (string) $this->client->getResponse()->getContent(),
+        );
+    }
+
+    public function testToolsListFilteredByGrantedScope(): void
+    {
+        // product scope のみの token では、 tools/list に product 系 Tool だけが現れ他領域は隠れる。
+        // (呼び出し拒否とは別に、 一覧の可視性そのものを scope で絞る = 最小権限)
+        $jwt = $this->issueScopedJwt(['mcp:product:read']);
+
+        $names = $this->listToolNames($jwt);
+
+        $this->assertContains('search_products', $names);
+        $this->assertContains('get_product', $names);
+        $this->assertContains('get_product_stock', $names);
+
+        $this->assertNotContains('search_orders', $names);
+        $this->assertNotContains('search_customers', $names);
+        $this->assertNotContains('list_plugins', $names);
+    }
+
+    /**
+     * initialize → notifications/initialized → tools/list を実カーネルに流し、 返った Tool 名の一覧を返す。
+     *
+     * @return list<string>
+     */
+    private function listToolNames(string $jwt): array
+    {
+        $path = '/'.$this->getAdminRoute().'/mcp';
+        $headers = [
+            'CONTENT_TYPE' => 'application/json',
+            'HTTP_ACCEPT' => 'application/json, text/event-stream',
+            'HTTP_AUTHORIZATION' => 'Bearer '.$jwt,
+        ];
+
+        $this->client->request(Request::METHOD_POST, $path, server: $headers, content: (string) json_encode([
+            'jsonrpc' => '2.0', 'id' => 1, 'method' => 'initialize',
+            'params' => ['protocolVersion' => '2025-03-26', 'clientInfo' => ['name' => 'it', 'version' => '1'], 'capabilities' => []],
+        ]));
+        $initResponse = $this->client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $initResponse->getStatusCode(), (string) $initResponse->getContent());
+        $sessionId = $initResponse->headers->get('mcp-session-id');
+        $this->assertNotNull($sessionId, 'initialize で Mcp-Session-Id が返る');
+
+        $headers['HTTP_MCP_SESSION_ID'] = $sessionId;
+        $this->client->request(Request::METHOD_POST, $path, server: $headers, content: (string) json_encode([
+            'jsonrpc' => '2.0', 'method' => 'notifications/initialized',
+        ]));
+
+        $this->client->request(Request::METHOD_POST, $path, server: $headers, content: (string) json_encode([
+            'jsonrpc' => '2.0', 'id' => 2, 'method' => 'tools/list',
+        ]));
+
+        $result = $this->decodeJsonRpc((string) $this->client->getResponse()->getContent());
+        $this->assertArrayHasKey('result', $result);
+        $inner = $result['result'];
+        $this->assertIsArray($inner);
+        $this->assertArrayHasKey('tools', $inner);
+        $tools = $inner['tools'];
+        $this->assertIsArray($tools);
+
+        $names = [];
+        foreach ($tools as $tool) {
+            $this->assertIsArray($tool);
+            $this->assertArrayHasKey('name', $tool);
+            $names[] = (string) $tool['name'];
+        }
+
+        return $names;
+    }
+
+    /**
+     * initialize → notifications/initialized → tools/call の handshake を実カーネルに流し、
+     * tools/call の JSON-RPC レスポンス (デコード済み) を返す。
+     *
+     * @param array<string, mixed> $arguments
+     *
+     * @return array<string, mixed>
+     */
+    private function callTool(string $jwt, string $toolName, array $arguments): array
+    {
+        $path = '/'.$this->getAdminRoute().'/mcp';
+        $headers = [
+            'CONTENT_TYPE' => 'application/json',
+            'HTTP_ACCEPT' => 'application/json, text/event-stream',
+            'HTTP_AUTHORIZATION' => 'Bearer '.$jwt,
+        ];
+
+        $this->client->request(Request::METHOD_POST, $path, server: $headers, content: (string) json_encode([
+            'jsonrpc' => '2.0', 'id' => 1, 'method' => 'initialize',
+            'params' => ['protocolVersion' => '2025-03-26', 'clientInfo' => ['name' => 'it', 'version' => '1'], 'capabilities' => []],
+        ]));
+        $initResponse = $this->client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $initResponse->getStatusCode(), (string) $initResponse->getContent());
+        $sessionId = $initResponse->headers->get('mcp-session-id');
+        $this->assertNotNull($sessionId, 'initialize で Mcp-Session-Id が返る');
+
+        $headers['HTTP_MCP_SESSION_ID'] = $sessionId;
+        $this->client->request(Request::METHOD_POST, $path, server: $headers, content: (string) json_encode([
+            'jsonrpc' => '2.0', 'method' => 'notifications/initialized',
+        ]));
+
+        $this->client->request(Request::METHOD_POST, $path, server: $headers, content: (string) json_encode([
+            'jsonrpc' => '2.0', 'id' => 2, 'method' => 'tools/call',
+            'params' => ['name' => $toolName, 'arguments' => $arguments],
+        ]));
+
+        return $this->decodeJsonRpc((string) $this->client->getResponse()->getContent());
+    }
+
+    /**
+     * JSON または SSE (data: 行) のどちらでも JSON-RPC ボディをデコードする。
+     *
+     * @return array<string, mixed>
+     */
+    private function decodeJsonRpc(string $body): array
+    {
+        foreach (explode("\n", $body) as $line) {
+            $line = str_starts_with($line, 'data: ') ? substr($line, 6) : $line;
+            $line = trim($line);
+            if ('' === $line) {
+                continue;
+            }
+            $decoded = json_decode($line, true);
+            if (\is_array($decoded) && isset($decoded['jsonrpc'])) {
+                return $decoded;
+            }
+        }
+
+        $this->fail('JSON-RPC レスポンスをデコードできなかった: '.$body);
+    }
+
+    /**
+     * 指定 scope を claim に持つ JWT を発行する (revoked-check 用の AccessToken Model も保存)。
+     *
+     * @param list<string> $scopes
+     */
+    private function issueScopedJwt(array $scopes): string
+    {
+        $member = $this->createMember();
+        $client = $this->ensureClient();
+        $identifier = 'mcp-scope-it-'.uniqid();
+        $expiry = new \DateTimeImmutable('+1 hour');
+        $userIdentifier = $member->getUsername();
+
+        // revoked 照合用に Model を保存 (scope は JWT claim 側で表現するので Model は空で可)
+        $this->accessTokenManager->save(new AccessTokenModel($identifier, $expiry, $client, $userIdentifier, []));
+
+        $tokenEntity = new AccessTokenEntity();
+        $tokenEntity->setIdentifier($identifier);
+        $tokenEntity->setExpiryDateTime($expiry);
+        $tokenEntity->setUserIdentifier($userIdentifier);
+        $clientEntity = new ClientEntity();
+        $clientEntity->setIdentifier($client->getIdentifier());
+        $tokenEntity->setClient($clientEntity);
+        foreach ($scopes as $scope) {
+            $scopeEntity = new ScopeEntity();
+            $scopeEntity->setIdentifier($scope);
+            $tokenEntity->addScope($scopeEntity);
+        }
+
+        $privateKeyPath = static::getContainer()->getParameter('kernel.project_dir').'/app/PluginData/Api44/oauth/private.key';
+        \assert(\is_string($privateKeyPath));
+        $tokenEntity->setPrivateKey(new CryptKey($privateKeyPath, null, keyPermissionsCheck: false));
+
+        return $tokenEntity->toString();
+    }
+
+    private function ensureClient(): ClientInterface
+    {
+        $existing = $this->clientManager->find(self::TEST_CLIENT_ID);
+        if (null !== $existing) {
+            return $existing;
+        }
+
+        $client = new ClientModel('MCP scope integration test', self::TEST_CLIENT_ID, null);
+        $client->setScopes(new ScopeValue('mcp:product:read'), new ScopeValue('mcp:order:read'));
+        $client->setGrants(new Grant('authorization_code'), new Grant('refresh_token'));
+        $this->clientManager->save($client);
+
+        return $client;
+    }
+
+    private function getAdminRoute(): string
+    {
+        $route = static::getContainer()->getParameter('eccube_admin_route');
+        \assert(\is_string($route));
+
+        return $route;
+    }
+}

@@ -167,6 +167,9 @@ class BaseInfo extends AbstractEntity
     #[ORM\Column(name: 'ucp_catalog_requires_auth', type: Types::BOOLEAN, options: ['default' => false])]
     private bool $ucp_catalog_requires_auth = false;
 
+    #[ORM\Column(name: 'mcp_enabled', type: Types::BOOLEAN, options: ['default' => false])]
+    private bool $mcp_enabled = false;
+
     // 納品書PDFの店舗情報の出力項目トグル（#6197）。
     // 既定は「現状出力している項目＋インボイス要件の会社名」を ON、新規項目は OFF とし、
     // アップグレード時も既存の納品書の見た目を極力維持する。
@@ -960,6 +963,24 @@ class BaseInfo extends AbstractEntity
     public function isUcpCatalogRequiresAuth(): bool
     {
         return $this->ucp_catalog_requires_auth;
+    }
+
+    /**
+     * Set mcpEnabled.
+     */
+    public function setMcpEnabled(bool $mcpEnabled): BaseInfo
+    {
+        $this->mcp_enabled = $mcpEnabled;
+
+        return $this;
+    }
+
+    /**
+     * Get mcpEnabled.
+     */
+    public function isMcpEnabled(): bool
+    {
+        return $this->mcp_enabled;
     }
 
     /**

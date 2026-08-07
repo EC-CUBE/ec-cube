@@ -1290,6 +1290,9 @@ admin.setting.shop.shop.agent_commerce: "エージェントコマース"
 admin.setting.shop.shop.agent_commerce.description: "AIエージェント (ChatGPT / Gemini 等) 経由のチェックアウトを有効化します。Discovery / カタログは常時公開され、ここでは checkout のみを制御します。checkout は日本未提供のため、通常は無効のままにしてください。"
 admin.setting.shop.shop.agent_commerce.acp_checkout_enabled: "ACP チェックアウトを有効にする"
 admin.setting.shop.shop.agent_commerce.ucp_checkout_enabled: "UCP チェックアウトを有効にする"
+admin.setting.shop.shop.mcp: "MCP サーバ"
+admin.setting.shop.shop.mcp.description: "AI クライアント（Claude Desktop / Cursor 等）が管理データを参照する MCP サーバ（^/admin/mcp）を有効化します。読み取り専用です。既定は無効で、無効の間はエンドポイントを 404 で塞ぎます。利用には API プラグイン（api44）が有効で、OAuth2 トークンを発行済みである必要があります。"
+admin.setting.shop.shop.mcp_enabled: "MCP サーバを有効にする"
 admin.setting.shop.shop.order_pdf: "納品書PDF"
 
 #------------------------------------------------------------------------------------

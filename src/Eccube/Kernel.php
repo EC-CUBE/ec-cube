@@ -17,6 +17,9 @@ use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappi
 use Eccube\Common\EccubeNav;
 use Eccube\Common\EccubeTwigBlock;
 use Eccube\DependencyInjection\Compiler\AutoConfigurationTagPass;
+use Eccube\DependencyInjection\Compiler\McpAuditLoggerChannelLockPass;
+use Eccube\DependencyInjection\Compiler\McpCliCommandPass;
+use Eccube\DependencyInjection\Compiler\McpScopeEnforcementPass;
 use Eccube\DependencyInjection\Compiler\NavCompilerPass;
 use Eccube\DependencyInjection\Compiler\PaymentMethodPass;
 use Eccube\DependencyInjection\Compiler\PluginPass;
@@ -295,6 +298,18 @@ class Kernel extends BaseKernel
         $container->addCompilerPass(new PurchaseFlowPass());
         // StripReportFieldsArgPass は DoctrineOrmMappingsPass の後に実行する必要があるため、優先度を-1000に設定
         $container->addCompilerPass(new StripReportFieldsArgPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, -1000);
+
+        // MCP: 全 Tool 呼び出しの手前で scope を強制する referenceHandler を mcp-bundle の builder に差し込む。
+        // mcp-bundle の McpPass (優先度 0、 builder->setContainer を組む) の後に走らせるため負の優先度で登録する。
+        $container->addCompilerPass(new McpScopeEnforcementPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, -100);
+
+        // MCP: 監査ログ (mcp チャンネル) の autowire alias を削除し、 書き手を McpAuditLogger に縛る。
+        // monolog の LoggerChannelPass (優先度 0) が alias を作った後に走らせるため負の優先度で登録する。
+        $container->addCompilerPass(new McpAuditLoggerChannelLockPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, -100);
+
+        // MCP: 各ツールを eccube:cli:<tool> コマンドとして登録する。 inner ReferenceHandler を定義する
+        // McpScopeEnforcementPass (-100) の後に走らせるため、 それより低い優先度で登録する。
+        $container->addCompilerPass(new McpCliCommandPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, -200);
     }
 
     protected function addEntityExtensionPass(ContainerBuilder $container): void

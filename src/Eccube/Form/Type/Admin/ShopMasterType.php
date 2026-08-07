@@ -225,6 +225,8 @@ class ShopMasterType extends AbstractType
             // エージェントコマース checkout の有効化フラグ (discovery / catalog は常時公開、checkout のみ制御)
             ->add('acp_checkout_enabled', ToggleSwitchType::class)
             ->add('ucp_checkout_enabled', ToggleSwitchType::class)
+            // MCP サーバ機能の有効化フラグ (既定 OFF。 OFF の間は ^/admin/mcp が 404)
+            ->add('mcp_enabled', ToggleSwitchType::class)
             // 納品書PDFの店舗情報出力項目トグル（#6197）。並び順は納品書の描画順にそろえる
             ->add('order_pdf_visible_shop_name', ToggleSwitchType::class)
             ->add('order_pdf_visible_shop_name_eng', ToggleSwitchType::class)

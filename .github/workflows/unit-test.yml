@@ -138,7 +138,7 @@ jobs:
           timeout_minutes: 10
           max_attempts: 2
           retry_on: error
-          command: vendor/bin/phpunit --exclude-group cache-clear --exclude-group cache-clear-install --exclude-group update-schema-doctrine --exclude-group plugin-service
+          command: vendor/bin/phpunit --exclude-group cache-clear --exclude-group cache-clear-install --exclude-group update-schema-doctrine --exclude-group plugin-service --exclude-group mcp
         env:
           APP_ENV: 'test'
           DATABASE_URL: ${{ matrix.database_url }}
@@ -195,3 +195,97 @@ jobs:
           echo "session.save_path=$PWD/var/sessions/test" > php.ini
           echo "memory_limit=512M" >> php.ini
           php -c php.ini vendor/bin/phpunit --group plugin-service
+
+  ## MCP は Api44 (OAuth2 / scope / allow_list) が前提のため、 メインのマトリクスからは
+  ## --exclude-group mcp で外し、 ここで Api44 を導入した専用環境で --group mcp を実走する。
+  ## Api44 は packagist 非公開のため、 eccube-api4 を checkout → mock-package-api で配信して
+  ## eccube:composer:require する (Api44 自身の CI と同じ方式)。
+  mcp:
+    name: PHPUnit (mcp)
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
+
+      ## MCP の scope 認可と /admin/mcp 用 OAuth2 firewall は Api44 の feat/mcp-server-scorp に実装されており、
+      ## eccube-api4 の 4.4 にはまだ無い (このブランチに無いと firewall が prepend されず /admin/mcp が
+      ## ログインへ 302 リダイレクトし、 McpFirewallContractTest 等が 401/200 を得られず失敗する)。
+      ## 当該ブランチが 4.4 にマージされたら ref を '4.4' に戻すこと。
+      - name: Checkout Api44 plugin
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
+        with:
+          repository: 'EC-CUBE/eccube-api4'
+          ref: 'feat/mcp-server-scorp'
+          path: 'eccube-api4'
+
+      - name: Setup PostgreSQL
+        uses: ankane/setup-postgres@6d3ffa1aa7498a42b79e9f9f5838b99971839300  # v1
+        with:
+          postgres-version: '16'
+          user: postgres
+      - name: Configure PostgreSQL
+        run: |
+          for _ in $(seq 1 30); do pg_isready -h 127.0.0.1 && break; sleep 1; done
+          pg_isready -h 127.0.0.1 || { echo 'PostgreSQL did not become ready within 30s'; exit 1; }
+          psql -h 127.0.0.1 -U postgres -c "ALTER USER postgres PASSWORD 'password'"
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc  # v2
+        with:
+          php-version: '8.3'
+          github-token: ''
+          extensions: :xdebug, redis
+      - name: Initialize Composer
+        uses: ./.github/actions/composer
+
+      - name: Generate ECCUBE_AUTH_MAGIC
+        run: echo "ECCUBE_AUTH_MAGIC=$(openssl rand -hex 32)" >> $GITHUB_ENV
+
+      - name: Setup mock-package-api
+        run: |
+          # eccube-api4 自身の CI と同じ形式で固める (.git/.github 等の dotfiles を除外し ./* で固める)。
+          # .git を含めると composer の dist 展開が失敗する (Install of ec-cube/api44 failed)。
+          ( cd eccube-api4 && tar cvzf "$GITHUB_WORKSPACE/Api44.tar.gz" ./* )
+          mkdir -p /tmp/repos
+          cp "$GITHUB_WORKSPACE/Api44.tar.gz" /tmp/repos/Api44.tgz
+          docker run --name package-api -d -v /tmp/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
+
+      - name: Setup EC-CUBE
+        env:
+          APP_ENV: 'test'
+          DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
+          DATABASE_SERVER_VERSION: 16
+          DATABASE_CHARSET: utf8
+          ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
+        run: |
+          bin/console doctrine:database:create
+          bin/console doctrine:schema:create
+          bin/console eccube:fixtures:load
+
+      - name: Install Api44
+        env:
+          APP_ENV: 'test'
+          DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
+          DATABASE_SERVER_VERSION: 16
+          DATABASE_CHARSET: utf8
+          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
+          USE_SELFSIGNED_SSL_CERTIFICATE: '1'
+        run: |
+          bin/console doctrine:query:sql "update dtb_base_info set authentication_key='dummy'"
+          bin/console eccube:composer:require ec-cube/api44
+          bin/console eccube:plugin:enable --code=Api44
+          bin/console doctrine:schema:update --force --dump-sql
+          bin/console cache:clear --no-warmup
+          chmod 600 app/PluginData/Api44/oauth/private.key
+
+      - name: PHPUnit (mcp)
+        env:
+          APP_ENV: 'test'
+          DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
+          DATABASE_SERVER_VERSION: 16
+          DATABASE_CHARSET: utf8
+          MAILER_URL: 'smtp://127.0.0.11025'
+        run: |
+          echo "session.save_path=$PWD/var/sessions/test" > php.ini
+          echo "memory_limit=512M" >> php.ini
+          php -c php.ini vendor/bin/phpunit --group mcp
