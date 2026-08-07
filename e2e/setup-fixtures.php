@@ -318,5 +318,15 @@ if (!$existingMemoOrder) {
     echo "  Order-memo test order already exists\n";
 }
 
+// --- MCP 機能を有効化 (既定 OFF のため、 MCP e2e が /admin/mcp に到達できるようにする) ---
+$BaseInfo = $entityManager->getRepository(\Eccube\Entity\BaseInfo::class)->find(1);
+if ($BaseInfo !== null && !$BaseInfo->isMcpEnabled()) {
+    $BaseInfo->setMcpEnabled(true);
+    $entityManager->flush();
+    echo "  Enabled MCP feature (mcp_enabled)\n";
+} else {
+    echo "  MCP feature already enabled\n";
+}
+
 echo "Fixtures setup complete.\n";
 $kernel->shutdown();
