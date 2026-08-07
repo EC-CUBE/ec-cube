@@ -24,7 +24,21 @@ namespace Eccube\Service\AgentCommerce\Payment;
  */
 enum PaymentOutcomeStatus: string
 {
-    /** 与信/売上が成功し、注文を確定 (commit) してよい. */
+    /**
+     * 与信 (オーソリ) のみ成功し、**売上確定 (capture) が必要**.
+     *
+     * オーケストレータはこの結果を受けてはじめて {@link AgentCheckoutPaymentHandlerInterface::capture()} を呼ぶ。
+     * 与信と売上が 1 度の通信で完結する auto-capture 型 PSP は本ステータスでなく {@link self::COMPLETED}
+     * を返すこと (本ステータスを返すと capture が二重発行される)。
+     */
+    case AUTHORIZED = 'authorized';
+
+    /**
+     * 売上まで確定済で、注文を確定 (commit) してよい.
+     *
+     * capture 済 (または capture 不要な auto-capture 型 PSP) を表す。
+     * **オーケストレータは本ステータスに対して capture を呼ばない**。
+     */
     case COMPLETED = 'completed';
 
     /** 追加対応が必要 (3DS challenge / escalation)。在庫は引当のまま保持し、再開 complete を待つ. */
