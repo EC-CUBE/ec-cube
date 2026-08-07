@@ -70,19 +70,21 @@ final class AgentCheckoutCoreConformanceTest extends TestCase
     }
 
     /**
-     * 決済ハンドラの結果型は「中断→再開」状態機械を表現する 4 値を持つ.
+     * 決済ハンドラの結果型は「中断→再開」状態機械を表現する 5 値を持つ.
      *
-     * COMPLETED / REQUIRES_ACTION (3DS/escalation) / PENDING (非同期) / FAILED。
+     * AUTHORIZED (与信のみ・capture 要) / COMPLETED (売上確定済・capture 不要) /
+     * REQUIRES_ACTION (3DS/escalation) / PENDING (非同期) / FAILED。
      * 追加認証はエラー (FAILED) ではなく REQUIRES_ACTION で表現される点が要。
+     * 与信と売上確定を区別するのは、auto-capture 型 PSP で capture が二重発行されるのを防ぐため。
      */
     public function testPaymentOutcomeCoversStateMachineSignals(): void
     {
         $values = array_map(static fn (PaymentOutcomeStatus $s): string => $s->value, PaymentOutcomeStatus::cases());
 
         $this->assertEqualsCanonicalizing(
-            ['completed', 'requires_action', 'pending', 'failed'],
+            ['authorized', 'completed', 'requires_action', 'pending', 'failed'],
             $values,
-            'MUST: 決済結果型は completed/requires_action/pending/failed の 4 状態を表現できる',
+            'MUST: 決済結果型は authorized/completed/requires_action/pending/failed の 5 状態を表現できる',
         );
     }
 

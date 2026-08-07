@@ -45,7 +45,8 @@ EC-CUBE は日本で広く使われる OSS の EC プラットフォームです
 - **テンプレート**: Twig 3.x
 - **データベース**: PostgreSQL 13–18 または MySQL 8.4 LTS
 - **フロントエンド**: Sass (SCSS) / esbuild / Bootstrap 5.3 / jQuery 4.x
-- **テスト**: PHPUnit 11（`symfony/phpunit-bridge` 経由）/ Playwright（E2E、`e2e/`）
+- **テスト**: PHPUnit 11（`vendor/bin/phpunit` を直接実行）/ Playwright（E2E、`e2e/`）
+  - ※ `symfony/phpunit-bridge` は依存にあるが、その `DeprecationErrorHandler`（`SYMFONY_DEPRECATIONS_HELPER`）は **PHPUnit 10 以上では無効**（bridge の `bootstrap.php` が早期 return する）。非推奨の検出は PHPUnit 11 ネイティブの `failOnDeprecation` で行う（`phpunit.xml.dist`）。
   - ※ `codeception/` は残置（レガシー）。CI の Codeception ジョブは無効化（`if: false`）されており、E2E は Playwright が正。
 - **静的解析**: PHPStan（`phpstan.neon.dist` で level 6）
 - **コードスタイル**: PHP-CS-Fixer（PSR-12）
@@ -108,9 +109,9 @@ bin/console eccube:install
 ### テスト
 
 ```bash
-bin/phpunit                                                      # 全テスト
-bin/phpunit tests/Eccube/Tests/Web/ShoppingControllerTest.php    # 単一ファイル
-bin/phpunit --filter testCompleteWithLogin                       # フィルタ
+vendor/bin/phpunit                                                      # 全テスト
+vendor/bin/phpunit tests/Eccube/Tests/Web/ShoppingControllerTest.php    # 単一ファイル
+vendor/bin/phpunit --filter testCompleteWithLogin                       # フィルタ
 ```
 
 E2E（Playwright、`e2e/` 配下で実行）:

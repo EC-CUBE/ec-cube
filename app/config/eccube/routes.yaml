@@ -4,6 +4,9 @@ controllers:
 customize_controllers:
     resource: ../../../app/Customize/Controller
     type: attribute
+mcp:
+    resource: .
+    type: mcp
 
 #    prefix: /{_locale}
     # prefix: /

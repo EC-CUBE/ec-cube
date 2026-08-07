@@ -58,8 +58,6 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
     #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'id')]
     private ?Customer $Customer = null;
 
-    private bool $lock = false;
-
     /**
      * @var Collection<int, CartItem>
      */
@@ -136,24 +134,6 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
     public function setAgentOwned(bool $agentOwned): Cart
     {
         $this->agent_owned = $agentOwned;
-
-        return $this;
-    }
-
-    /**
-     * @deprecated 使用しないので削除予定
-     */
-    public function getLock(): bool
-    {
-        return $this->lock;
-    }
-
-    /**
-     * @deprecated 使用しないので削除予定
-     */
-    public function setLock(bool $lock): Cart
-    {
-        $this->lock = $lock;
 
         return $this;
     }

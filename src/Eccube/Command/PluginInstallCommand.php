@@ -45,7 +45,10 @@ class PluginInstallCommand extends Command
 
         // アーカイブからインストール
         if ($path) {
-            if ($this->pluginService->install($path, $ifNotExists)) {
+            // PluginService::install() は install(string $path, int $source = 0, bool $notExists = false)
+            // のため、$source を省略すると $ifNotExists が $source に入り --if-not-exists が効かない。
+            // $source は管理画面のアーカイブアップロード (PluginController::install()) と同じ 0 を渡す。
+            if ($this->pluginService->install($path, 0, $ifNotExists)) {
                 $io->success('Installed.');
 
                 return 0;

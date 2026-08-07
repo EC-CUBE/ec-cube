@@ -50,13 +50,13 @@ if ($existingCustomers < $customerNum) {
     for ($i = 0; $i < $needed; $i++) {
         $email = microtime(true).'.'.$faker->safeEmail;
         $Customer = $generator->createCustomer($email);
-        $Status = $entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::ACTIVE);
+        $Status = $entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::REGULAR);
         $Customer->setStatus($Status);
         $entityManager->flush($Customer);
     }
     // 仮会員も1名作成
     $nonActiveCustomer = $generator->createCustomer(microtime(true).'.'.$faker->safeEmail);
-    $nonActiveStatus = $entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::NONACTIVE);
+    $nonActiveStatus = $entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::PROVISIONAL);
     $nonActiveCustomer->setStatus($nonActiveStatus);
     $entityManager->flush($nonActiveCustomer);
     echo "  Created ".($needed + 1)." customers\n";
@@ -140,7 +140,7 @@ $testEmail = 'playwright@test.test';
 $existing = $entityManager->getRepository(Customer::class)->findOneBy(['email' => $testEmail]);
 if (!$existing) {
     $testCustomer = $generator->createCustomer($testEmail);
-    $Status = $entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::ACTIVE);
+    $Status = $entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::REGULAR);
     $testCustomer->setStatus($Status);
     $entityManager->flush($testCustomer);
     echo "  Created test customer: $testEmail\n";
@@ -220,7 +220,7 @@ $refundTestEmail = 'refund-test@test.test';
 $refundCustomer = $entityManager->getRepository(Customer::class)->findOneBy(['email' => $refundTestEmail]);
 if (!$refundCustomer) {
     $refundCustomer = $generator->createCustomer($refundTestEmail);
-    $Status = $entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::ACTIVE);
+    $Status = $entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::REGULAR);
     $refundCustomer->setStatus($Status);
     $entityManager->flush($refundCustomer);
     echo "  Created refund test customer: $refundTestEmail\n";
@@ -316,6 +316,16 @@ if (!$existingMemoOrder) {
     echo "  Created order-memo test order\n";
 } else {
     echo "  Order-memo test order already exists\n";
+}
+
+// --- MCP 機能を有効化 (既定 OFF のため、 MCP e2e が /admin/mcp に到達できるようにする) ---
+$BaseInfo = $entityManager->getRepository(\Eccube\Entity\BaseInfo::class)->find(1);
+if ($BaseInfo !== null && !$BaseInfo->isMcpEnabled()) {
+    $BaseInfo->setMcpEnabled(true);
+    $entityManager->flush();
+    echo "  Enabled MCP feature (mcp_enabled)\n";
+} else {
+    echo "  MCP feature already enabled\n";
 }
 
 echo "Fixtures setup complete.\n";

@@ -425,6 +425,21 @@ file that was distributed with this source code.
                             </div>
                         </div>
                     </div>
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header"><span>{{ 'admin.setting.shop.shop.mcp'|trans }}</span></div>
+                        <div id="ex-shop-mcp" class="card-body">
+                            <p class="text-muted">{{ 'admin.setting.shop.shop.mcp.description'|trans }}</p>
+                            <div class="row mb-3">
+                                <div class="col-3">
+                                    <span>{{ 'admin.setting.shop.shop.mcp_enabled'|trans }}</span>
+                                </div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.mcp_enabled) }}
+                                    {{ form_errors(form.mcp_enabled) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
