@@ -33,6 +33,7 @@ use Eccube\Service\AgentCommerce\Payment\AgentCheckoutPaymentHandlerInterface;
 use Eccube\Service\AgentCommerce\Payment\AgentCheckoutPaymentHandlerRegistry;
 use Eccube\Service\AgentCommerce\Payment\PaymentOutcome;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\Log\NullLogger;
 
 /**
@@ -166,6 +167,124 @@ final class AgentCheckoutCompletionServiceTest extends EccubeTestCase
         $this->entityManager->refresh($stock);
         $this->assertInstanceOf(ProductStock::class, $stock);
         $this->assertSame(10, (int) $stock->getStock(), 'capture 失敗で引当をロールバックする');
+    }
+
+    /**
+     * 不変条件: 保持済みの PSP 参照をハンドラへ渡すのは「在庫を引当てたまま中断した」状態
+     * (REQUIRES_ACTION / IN_PROGRESS) からの再開時のみ。ready からの再試行では渡さない.
+     *
+     * ready は在庫を回収済みで、与信拒否でここへ落ちた場合は保持している識別子が死んだ取引を指す。
+     * 渡してしまうと「別カードでの再試行」が拒否済み取引の続行になる。
+     */
+    #[DataProvider(methodName: 'reentryScenarios')]
+    public function testStoredPaymentReferenceReachesHandlerOnlyWhenResumingFromHeldStatus(PaymentOutcome $interrupted, bool $expectsReference): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $session = $this->createReadySession($ProductClass, 1);
+        $handler = $this->stubHandler(
+            [$interrupted, PaymentOutcome::authorized('pi_second')],
+            PaymentOutcome::completed('pi_second'),
+        );
+        $service = $this->service($handler);
+
+        $service->complete($session, ['token' => 'tok_first']);
+        $this->assertSame([], $handler->receivedPaymentReferences[0], '初回 complete には保持済み参照が無い');
+
+        // 中断・失敗のいずれでも参照は payment_data に残る (照会・監査のため)。
+        $this->assertSame('pi_first', ($session->getPaymentData() ?? [])['transaction_id'] ?? null, 'PSP 参照は payment_data に保持される');
+
+        $service->complete($session, ['token' => 'tok_second']);
+        $handedBack = $handler->receivedPaymentReferences[1]['transaction_id'] ?? null;
+
+        if ($expectsReference) {
+            $this->assertSame('pi_first', $handedBack, '中断からの再開では保持済み参照がハンドラへ渡る');
+        } else {
+            $this->assertNull($handedBack, 'ready からの再試行では保持済み参照を渡さない (新規与信としてやり直す)');
+        }
+    }
+
+    /**
+     * 再入シナリオ: [中断/失敗を起こす authorize の戻り値, 再入時に参照が渡るか].
+     *
+     * complete に再入できる非終端ステータスのうち、初回入口の INCOMPLETE を除く 3 経路を網羅する。
+     *
+     * @return array<string, array{PaymentOutcome, bool}>
+     */
+    public static function reentryScenarios(): array
+    {
+        return [
+            'requires_action からの再開' => [PaymentOutcome::requiresAction(['continue_url' => 'https://example.com/3ds'], [], 'pi_first'), true],
+            'in_progress からの再開' => [PaymentOutcome::pending([], 'pi_first'), true],
+            '与信拒否で ready へ戻った後の再試行' => [PaymentOutcome::failed('card_declined', 'The card was declined.', true, 'pi_first'), false],
+        ];
+    }
+
+    /**
+     * capture 失敗 (retryable) で ready へ戻った後の再試行も、新規 authorize から始まる.
+     *
+     * {@link AgentCheckoutPaymentHandlerInterface::capture()} が「与信が残り再 authorize できない
+     * 場合は retryable=false を返せ」と定めている根拠となる挙動。
+     */
+    public function testReadyRetryAfterCaptureFailureStartsFreshAuthorize(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $session = $this->createReadySession($ProductClass, 1);
+
+        $handler = $this->stubHandler(
+            [PaymentOutcome::authorized('pi_auth_retry')],
+            PaymentOutcome::failed('capture_failed', 'Capture was rejected.', true, 'pi_auth_retry'),
+        );
+        $service = $this->service($handler);
+
+        $first = $service->complete($session, ['token' => 'tok_one_shot']);
+        $this->assertSame(CheckoutSessionStatus::READY, $first->status->getId());
+
+        $service->complete($session, ['token' => 'tok_one_shot']);
+
+        $this->assertSame(2, $handler->authorizeCount, 'ready からの再試行は capture の再実行ではなく新規 authorize になる');
+        $this->assertSame([], $handler->receivedPaymentReferences[1], '再試行では与信済みの取引識別子を渡さない');
+    }
+
+    /**
+     * capture が契約 (COMPLETED か FAILED) に反した status を返しても、内容のある ERROR を返す.
+     *
+     * PENDING は errorCode/errorMessage を持たないため、素通しすると messages[] に
+     * 「要素はあるが中身が空」のエラーが載る。
+     */
+    public function testCaptureContractViolationIsReportedWithNonEmptyMessage(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('10');
+        $stock = $ProductClass->getProductStock();
+        $session = $this->createReadySession($ProductClass, 2);
+
+        $handler = $this->stubHandler(
+            [PaymentOutcome::authorized('pi_auth_3')],
+            PaymentOutcome::pending([], 'pi_auth_3'),
+        );
+        $result = $this->service($handler)->complete($session, []);
+
+        $this->assertSame(CheckoutSessionStatus::READY, $result->status->getId(), 'capture の契約違反は失敗として扱う');
+        $this->assertCount(1, $result->messages);
+        $this->assertNotSame('', $result->messages[0]->message, 'エージェントへ空文字のエラーメッセージを返さない');
+
+        $this->entityManager->refresh($stock);
+        $this->assertInstanceOf(ProductStock::class, $stock);
+        $this->assertSame(10, (int) $stock->getStock(), '契約違反でも在庫は回収する (fail-closed)');
+    }
+
+    /**
+     * errorMessage も errorCode も空のまま失敗しても、メッセージ本文は空にならない.
+     */
+    public function testFailureMessageIsNeverEmpty(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $session = $this->createReadySession($ProductClass, 1);
+
+        $handler = $this->stubHandler([PaymentOutcome::failed('', '', true)]);
+        $result = $this->service($handler)->complete($session, []);
+
+        $this->assertCount(1, $result->messages);
+        $this->assertNotSame('', $result->messages[0]->message, 'errorCode / errorMessage が空でも本文を落とさない');
     }
 
     public function testResumeHandsStoredPaymentReferenceToHandler(): void

@@ -43,9 +43,14 @@ interface UcpPaymentHandlerInterface extends AgentCheckoutPaymentHandlerInterfac
      * **再開に必要な項目を戻り値から落とさない**こと (落とすと REQUIRES_ACTION から復帰できなくなる)。
      *
      * 本メソッドは complete の状態機械の**外側** (controller のペイロード解決時) で呼ばれるため、
-     * **例外を投げてはならない**。トークンを解決できない入力もそのまま返し、
-     * {@link AgentCheckoutPaymentHandlerInterface::authorize()} 側で fail-closed に失敗させること
-     * (ここで投げるとビジネス系エラーでなく HTTP 500 になる)。
+     * {@link \Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutCompletionService} の
+     * authorize/capture 用の砦が効かない。**例外を投げてはならない**。トークンを解決できない入力も
+     * そのまま返し、{@link AgentCheckoutPaymentHandlerInterface::authorize()} 側で fail-closed に
+     * 失敗させること (状態機械へ入れば在庫の回収とセッション遷移が伴う)。
+     *
+     * 契約に反して投げた場合も HTTP 500 にはならない。controller が捕捉してビジネス系エラー
+     * (HTTP 200 + messages[]) へ写像し、セッションを据え置いて再試行を許す。ただしその経路では
+     * 失敗理由をエージェントへ伝えられないため、依存してはならない。
      *
      * @param array<string, mixed> $credential payment.instruments[].credential の中立表現 (type/token 等)
      *

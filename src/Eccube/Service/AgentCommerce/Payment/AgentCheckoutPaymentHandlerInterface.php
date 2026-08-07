@@ -68,7 +68,18 @@ interface AgentCheckoutPaymentHandlerInterface
      * {@link PaymentOutcome::$transactionId} / {@link PaymentOutcome::$metadata} を用いること。
      *
      * authorize と同様、PSP 通信の失敗は例外でなく {@link PaymentOutcome::failed()} で返し、
-     * **与信済みの取引識別子を保持する** (与信は PSP 側に残るため、取消・再 capture の照会に要る)。
+     * **与信済みの取引識別子を保持する** (与信は PSP 側に残るため、取消・照会に要る)。
+     *
+     * **戻り値は COMPLETED か FAILED のみ**。REQUIRES_ACTION / PENDING / AUTHORIZED を返しても
+     * オーケストレータは失敗として扱い在庫を回収する (非同期に確定する PSP は、capture ではなく
+     * authorize の段階で PENDING を返して IN_PROGRESS 状態で待つこと)。
+     *
+     * **capture 失敗後の再試行には capture 単独の入口が無い**。オーケストレータは在庫を回収し、
+     * $retryable に応じて ready (再試行可) / canceled へ遷移させる。ready からの再 complete は
+     * **新規の {@link authorize()} から始まり、保持した PSP 参照は渡されない** (保持は照会・監査用)。
+     * したがって**与信が PSP 側に残り、かつ同じ支払データで再 authorize できない場合
+     * (ACP の Shared Payment Token 等) は `retryable=false` を返す**こと。ready に戻しても
+     * 再試行は必ず失敗し、与信だけが残る。与信の取消は PSP 側の運用に委ねる。
      *
      * @param array<string, mixed> $paymentData   authorize と同じ支払データ (冪等キー等の参照用)
      * @param PaymentOutcome       $authorization {@link authorize()} が返した与信結果 (transactionId・metadata を含む)
@@ -77,6 +88,10 @@ interface AgentCheckoutPaymentHandlerInterface
 
     /**
      * このハンドラが指定の支払方法 (Payment.method_class 等) を扱えるか.
+     *
+     * ハンドラ解決のたびに全ハンドラへ問い合わせるため、**副作用の無い純粋な述語**として実装し、
+     * 例外を投げないこと ({@link getHandlerId()} も同様)。これらは状態機械の外で呼ばれるため
+     * authorize/capture のような例外の砦が無く、投げると HTTP 500 になる。
      */
     public function supports(Order $order): bool;
 }

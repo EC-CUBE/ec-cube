@@ -40,10 +40,39 @@ use Psr\Log\LoggerInterface;
  * - capture の呼び出し制御 (authorize が AUTHORIZED を返したときだけ capture を呼ぶ。売上確定済を表す
  *   COMPLETED に対しては呼ばない = auto-capture 型 PSP での二重売上を防ぐ)
  * - PSP 参照 (`transaction_id` と metadata) の保持と、再開 complete でのハンドラへの引き渡し
- * - ハンドラから漏れた例外の FAILED への写像 (500 で状態遷移ごと巻き戻さない最後の砦)
  * - CheckoutSession の正規化ステータス遷移
  * - トランザクション境界 (各 complete 呼び出しを 1 トランザクションで確定。StockReduceProcessor の
  *   悲観ロックに対応するため明示トランザクションで囲む)
+ *
+ * ## 入口ステータスと再開の扱い
+ *
+ * complete に再入できる非終端ステータスは 4 つある。**保持した PSP 参照をハンドラへ渡すのは
+ * 「在庫を引当てたまま中断した」2 状態からの再開時だけ**である。
+ *
+ * | 入口                | prepare | 保持済み参照 | 意味                                       |
+ * |---------------------|---------|--------------|--------------------------------------------|
+ * | `INCOMPLETE`        | 実行    | 渡さない     | 初回 complete                              |
+ * | `READY`             | 実行    | 渡さない     | 初回、または**失敗後の再試行** (新規与信)  |
+ * | `REQUIRES_ACTION`   | skip    | 渡す         | 追加認証 (3DS) からの再開                  |
+ * | `IN_PROGRESS`       | skip    | 渡す         | 非同期確定からの再開                       |
+ *
+ * READY で参照を渡さないのは、与信拒否で ready に戻った場合に**死んだ取引の識別子**を掴ませないため
+ * (別カードでの再試行が、拒否済み取引の続行になってしまう)。失敗時に保持する参照は照会・監査用であり、
+ * 再試行の入力ではない。
+ *
+ * ## ハンドラ例外の砦 (範囲)
+ *
+ * 漏れた例外を FAILED へ写像し、決済失敗が HTTP 500 になって在庫回収もステータス遷移も
+ * 行われない事態を防ぐ。**対象は {@link authorize()} と {@link capture()} の 2 呼び出しに限る**。
+ * 範囲外は以下のとおり:
+ *
+ * - `supports()` / `getHandlerId()` — ハンドラ解決時に呼ぶ純粋な述語。投げれば 500 になるため
+ *   {@link AgentCheckoutPaymentHandlerInterface} 側で「投げないこと」を契約としている。
+ * - `UcpPaymentHandlerInterface::exchangePaymentToken()` — 状態機械の外 (controller) で呼ばれるため、
+ *   砦も controller 側にある。
+ * - `AgentCheckoutPurchaseFlowAdapter` の prepare/commit/rollback — コア内部の呼び出しであり、
+ *   例外はトランザクションごと巻き戻して伝播させる。**capture 成功後に commit が失敗した場合、
+ *   保持した PSP 参照も巻き戻る**点は既知の制約 (回復には PSP 側の照会が要る)。
  *
  * プロトコル controller (#6776 ACP / #6574 UCP) は本サービスへ委譲し、戻り値
  * {@link AgentCheckoutCompletionResult} を各プロトコルのレスポンスへ変換する。
@@ -129,8 +158,9 @@ class AgentCheckoutCompletionService
             return $this->commitOrder($session, $order, $member);
         }
 
-        // 再開 complete では、中断時に保持した PSP 参照をハンドラへ渡す。エージェントの入力ではなく
-        // サーバ側の記録なので、ワンショットトークンを再償還せず同じ取引を続行できる。
+        // 再開 complete (REQUIRES_ACTION / IN_PROGRESS) でのみ、中断時に保持した PSP 参照を渡す。
+        // エージェントの入力ではなくサーバ側の記録なので、ワンショットトークンを再償還せず同じ取引を
+        // 続行できる。ready からの再試行では渡さない (クラス docblock の表を参照)。
         $outcome = $this->authorize($handler, $order, $paymentData, $isResume ? ($session->getPaymentData() ?? []) : []);
 
         switch ($outcome->status) {
@@ -140,7 +170,7 @@ class AgentCheckoutCompletionService
                 $this->mergePaymentData($session, $this->paymentReference($outcome));
                 $capture = $this->capture($handler, $order, $paymentData, $outcome);
                 if ($capture->status !== PaymentOutcomeStatus::COMPLETED) {
-                    return $this->failOrder($session, $order, $member, $capture);
+                    return $this->failOrder($session, $order, $member, $this->asCaptureFailure($capture, $order));
                 }
                 $this->mergePaymentData($session, $this->paymentReference($capture));
 
@@ -204,6 +234,34 @@ class AgentCheckoutCompletionService
     }
 
     /**
+     * capture の戻り値を「失敗として扱える形」へ正規化する.
+     *
+     * capture の契約は COMPLETED か FAILED のみ ({@link AgentCheckoutPaymentHandlerInterface::capture()})。
+     * PENDING 等をそのまま {@link failOrder()} へ渡すと errorCode / errorMessage が無く、
+     * **中身が空の ERROR メッセージ**がエージェントへ返る。契約違反はログに残し、明示的な失敗へ写像する。
+     */
+    private function asCaptureFailure(PaymentOutcome $capture, Order $order): PaymentOutcome
+    {
+        if ($capture->status === PaymentOutcomeStatus::FAILED) {
+            return $capture;
+        }
+
+        $this->logger->error('The agent payment handler returned an invalid status from capture.', [
+            'order_no' => $order->getOrderNo(),
+            'status' => $capture->status->value,
+            'transaction_id' => $capture->transactionId,
+        ]);
+
+        return PaymentOutcome::failed(
+            'capture_unexpected_status',
+            'The payment could not be captured.',
+            true,
+            $capture->transactionId,
+            $capture->metadata,
+        );
+    }
+
+    /**
      * 注文を確定し completed へ遷移する.
      */
     private function commitOrder(CheckoutSession $session, Order $order, ?Customer $member): AgentCheckoutCompletionResult
@@ -239,22 +297,38 @@ class AgentCheckoutCompletionService
      * 決済失敗時: 引当を rollback し、再試行可否でステータスを分岐する.
      *
      * retryable (card declined 等) は ready に戻して再 complete を許し、unrecoverable は canceled とする。
+     * ready からの再 complete は新規の authorize から始まる (capture 単独の再実行入口は無い)。
      */
     private function failOrder(CheckoutSession $session, Order $order, ?Customer $member, PaymentOutcome $outcome): AgentCheckoutCompletionResult
     {
         $this->purchaseFlowAdapter->rollback($order, $member);
-        // 失敗した取引の PSP 参照も残す (与信済みで capture に失敗した場合の照会に必要)。
+        // 失敗した取引の PSP 参照も残す。**照会・監査のための記録**であり、再試行の入力ではない
+        // (ready からの再試行でハンドラへ渡すと、死んだ取引の続行になる)。
         $this->mergePaymentData($session, $this->paymentReference($outcome));
 
         $statusId = $outcome->retryable ? CheckoutSessionStatus::READY : CheckoutSessionStatus::CANCELED;
         $session->setStatus($this->requireStatus($statusId));
 
-        $message = new AgentCheckoutMessage(
-            AgentCheckoutMessageLevel::ERROR,
-            $outcome->errorMessage !== null && $outcome->errorMessage !== '' ? $outcome->errorMessage : (string) $outcome->errorCode,
-        );
+        $message = new AgentCheckoutMessage(AgentCheckoutMessageLevel::ERROR, $this->errorMessageFor($outcome));
 
         return new AgentCheckoutCompletionResult($session->getStatus() ?? $this->requireStatus($statusId), null, [$message]);
+    }
+
+    /**
+     * エージェントへ返す ERROR メッセージ本文を決める.
+     *
+     * errorMessage → errorCode の順に採用し、双方が空でも**空文字を返さない**。
+     * 空文字だと messages[] に要素はあるのに内容が無い応答になり、エージェントは理由を判別できない。
+     */
+    private function errorMessageFor(PaymentOutcome $outcome): string
+    {
+        foreach ([$outcome->errorMessage, $outcome->errorCode] as $candidate) {
+            if ($candidate !== null && $candidate !== '') {
+                return $candidate;
+            }
+        }
+
+        return 'The payment could not be processed.';
     }
 
     /**

@@ -19,6 +19,10 @@ namespace Eccube\Service\AgentCommerce\Payment;
  * EC-CUBE 通常購入の {@link \Eccube\Service\Payment\PaymentResult} / {@link \Eccube\Service\Payment\PaymentDispatcher}
  * が成否と外部遷移を表現するのと同じ役割を、エージェント向けに Symfony Response 非依存の形で持つ
  * (エージェントは Response を解釈しないため、追加対応に必要なデータは {@link $actionData} に中立な形で載せる)。
+ *
+ * **判定は {@link $status} の照合に一本化する** (`isSuccessful()` 等の述語は持たない)。
+ * オーケストレータは全ステータスを網羅する `match` / `switch` で分岐するため、部分集合を返す述語を
+ * 併置すると判定源が二重化し、「成功」が capture 前を含むのか否かが読み手ごとにぶれる。
  */
 final readonly class PaymentOutcome
 {
@@ -90,26 +94,5 @@ final readonly class PaymentOutcome
     public static function failed(string $errorCode, string $errorMessage = '', bool $retryable = true, ?string $transactionId = null, array $metadata = []): self
     {
         return new self(PaymentOutcomeStatus::FAILED, $transactionId, [], $metadata, $errorCode, $errorMessage, $retryable);
-    }
-
-    /**
-     * 決済が失敗せず前進したか (与信済 or 売上確定済).
-     */
-    public function isSuccessful(): bool
-    {
-        return in_array($this->status, [PaymentOutcomeStatus::AUTHORIZED, PaymentOutcomeStatus::COMPLETED], true);
-    }
-
-    /**
-     * 売上確定 (capture) がこれから必要か.
-     */
-    public function needsCapture(): bool
-    {
-        return $this->status === PaymentOutcomeStatus::AUTHORIZED;
-    }
-
-    public function needsAction(): bool
-    {
-        return $this->status === PaymentOutcomeStatus::REQUIRES_ACTION;
     }
 }
