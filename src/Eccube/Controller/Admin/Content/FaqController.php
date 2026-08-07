@@ -141,6 +141,10 @@ class FaqController extends AbstractController
             }
         } else {
             $Faq = new Faq();
+            // 表示順を空欄で開き、未入力なら FaqRepository::save() の自動採番に任せる。
+            // エンティティの既定値 0（NOT NULL 対策）のままだと入力欄に 0 が入り、
+            // Assert\Range(min: 1) に掛かって登録できない。
+            $Faq->setSortNo(null);
         }
 
         $builder = $this->formFactory

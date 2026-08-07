@@ -100,6 +100,15 @@ final class FaqControllerTest extends AbstractAdminWebTestCase
         $this->assertSame(Faq::FAQ_TYPE_COMMON, $Faq->getFaqType());
     }
 
+    public function testFaqNewRendersEmptySortNo(): void
+    {
+        // 新規登録画面の表示順は空欄で開く。エンティティの既定値 0（NOT NULL 対策）が
+        // そのまま入力欄に出ると、Assert\Range(min: 1) に掛かって登録できなくなる。
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_content_faq_new'));
+
+        $this->assertSame('', $crawler->filter('#admin_faq_sort_no')->attr('value') ?? '');
+    }
+
     public function testFaqCreateWithoutSortNoAssignsNextNumber(): void
     {
         // 表示順を空欄で登録すると 0 ではなく最大値 + 1 が採番される。
