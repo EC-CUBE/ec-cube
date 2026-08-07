@@ -15,6 +15,7 @@ namespace Eccube\Form\Type\Admin;
 
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\OpeningHours;
 use Eccube\Form\EventListener\ConvertKanaListener;
 use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\PhoneNumberType;
@@ -31,6 +32,10 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -318,6 +323,10 @@ class ShopMasterType extends AbstractType
                 ])
                 ->addEventSubscriber(new ConvertKanaListener('CV'))
         );
+
+        // 営業時間の重複はフォームの子キーに紐づけたいので、クラス制約の Callback ではなく
+        // POST_SUBMIT で検証する（詳細は validateOpeningHoursOverlap() のコメント参照）。
+        $builder->addEventListener(FormEvents::POST_SUBMIT, $this->validateOpeningHoursOverlap(...));
     }
 
     /**
@@ -328,9 +337,6 @@ class ShopMasterType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => BaseInfo::class,
-            'constraints' => [
-                new Assert\Callback($this->validateOpeningHoursOverlap(...)),
-            ],
         ]);
     }
 
@@ -364,19 +370,30 @@ class ShopMasterType extends AbstractType
 
     /**
      * 同一曜日を含む営業時間の時間帯が重複していないか検証する.
+     *
+     * エンティティのコレクションではなく**フォームの子**を走査する。画面で中間行を削除すると
+     * 送信キーは歯抜け（0, 2 等）になるが、コレクション側は adder で 0 始まりに詰め直されるため、
+     * コレクションの添字から組み立てた property path は実在しない子を指してしまい、
+     * エラーが該当行に表示されない（あるいは失われる）。
      */
-    public function validateOpeningHoursOverlap(?BaseInfo $BaseInfo, ExecutionContextInterface $context): void
+    public function validateOpeningHoursOverlap(FormEvent $event): void
     {
-        if (!$BaseInfo instanceof BaseInfo) {
+        $form = $event->getForm();
+        if (!$form->has('OpeningHours')) {
             return;
         }
 
-        $list = array_values($BaseInfo->getOpeningHours()->toArray());
-        $count = count($list);
+        /** @var FormInterface[] $children */
+        $children = iterator_to_array($form->get('OpeningHours'));
+        $names = array_keys($children);
+        $count = count($names);
         for ($i = 0; $i < $count; ++$i) {
             for ($j = $i + 1; $j < $count; ++$j) {
-                $a = $list[$i];
-                $b = $list[$j];
+                $a = $children[$names[$i]]->getData();
+                $b = $children[$names[$j]]->getData();
+                if (!$a instanceof OpeningHours || !$b instanceof OpeningHours) {
+                    continue;
+                }
 
                 $daysA = $a->getDayOfWeek() ?? [];
                 $daysB = $b->getDayOfWeek() ?? [];
@@ -396,9 +413,8 @@ class ShopMasterType extends AbstractType
                 // 時間帯が交差する場合はエラー（max(開店) < min(閉店)）
                 // 描画済みのリーフ（closes）にエラーを付け、該当行に表示されるようにする
                 if (max($opensA, $opensB) < min($closesA, $closesB)) {
-                    $context->buildViolation('admin.setting.shop.opening_hours.error.overlap')
-                        ->atPath('OpeningHours['.$j.'].closes')
-                        ->addViolation();
+                    $children[$names[$j]]->get('closes')
+                        ->addError(new FormError(trans('admin.setting.shop.opening_hours.error.overlap')));
                 }
             }
         }

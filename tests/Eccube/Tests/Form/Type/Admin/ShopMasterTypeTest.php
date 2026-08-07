@@ -170,7 +170,7 @@ final class ShopMasterTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testValidOpeningHours()
+    public function testValidOpeningHours(): void
     {
         $this->formData['OpeningHours'] = [
             ['day_of_week' => ['Monday', 'Tuesday'], 'opens' => '09:00', 'closes' => '18:00'],
@@ -179,7 +179,7 @@ final class ShopMasterTypeTest extends AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInValidOpeningHoursOpensAfterCloses()
+    public function testInValidOpeningHoursOpensAfterCloses(): void
     {
         $this->formData['OpeningHours'] = [
             ['day_of_week' => ['PublicHolidays'], 'opens' => '20:00', 'closes' => '15:00'],
@@ -188,7 +188,7 @@ final class ShopMasterTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInValidOpeningHoursMissingDay()
+    public function testInValidOpeningHoursMissingDay(): void
     {
         $this->formData['OpeningHours'] = [
             ['day_of_week' => [], 'opens' => '09:00', 'closes' => '18:00'],
@@ -197,7 +197,7 @@ final class ShopMasterTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInValidOpeningHoursOverlapSameDay()
+    public function testInValidOpeningHoursOverlapSameDay(): void
     {
         $this->formData['OpeningHours'] = [
             ['day_of_week' => ['Saturday'], 'opens' => '10:00', 'closes' => '15:00'],
@@ -207,7 +207,23 @@ final class ShopMasterTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testValidOpeningHoursDifferentDayNoOverlap()
+    /**
+     * 画面で中間行を削除すると送信キーが歯抜け（0, 2 等）になるため、
+     * 重複エラーは詰めた通し番号ではなく実在する子フォームのキーに付く必要がある.
+     */
+    public function testInValidOpeningHoursOverlapAttachesErrorToSubmittedKey(): void
+    {
+        $this->formData['OpeningHours'] = [
+            0 => ['day_of_week' => ['Saturday'], 'opens' => '10:00', 'closes' => '15:00'],
+            2 => ['day_of_week' => ['Saturday'], 'opens' => '14:00', 'closes' => '18:00'],
+        ];
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+        $this->assertCount(1, $this->form->get('OpeningHours')->get('2')->get('closes')->getErrors());
+    }
+
+    public function testValidOpeningHoursDifferentDayNoOverlap(): void
     {
         $this->formData['OpeningHours'] = [
             ['day_of_week' => ['Saturday'], 'opens' => '10:00', 'closes' => '15:00'],
@@ -217,21 +233,21 @@ final class ShopMasterTypeTest extends AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testValidSameAsMultipleUrls()
+    public function testValidSameAsMultipleUrls(): void
     {
         $this->formData['same_as'] = "https://example.com/a\nhttps://example.com/b";
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInValidSameAsContainsNonUrl()
+    public function testInValidSameAsContainsNonUrl(): void
     {
         $this->formData['same_as'] = "https://example.com/a\nnot-a-url";
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInValidSameAsMaxLength()
+    public function testInValidSameAsMaxLength(): void
     {
         // 形式は有効なURLだが最大長を超えるケース（長さ制約のみを検証）
         $this->formData['same_as'] = 'https://example.com/'.str_repeat('a', $this->eccubeConfig['eccube_ltext_len']);
@@ -239,91 +255,91 @@ final class ShopMasterTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testValidNumberOfEmployeesZero()
+    public function testValidNumberOfEmployeesZero(): void
     {
         $this->formData['number_of_employees'] = '0';
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInValidNumberOfEmployeesNegative()
+    public function testInValidNumberOfEmployeesNegative(): void
     {
         $this->formData['number_of_employees'] = '-1';
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testValidNumberOfEmployeesIntMax()
+    public function testValidNumberOfEmployeesIntMax(): void
     {
         $this->formData['number_of_employees'] = '2147483647';
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInValidNumberOfEmployeesOverIntMax()
+    public function testInValidNumberOfEmployeesOverIntMax(): void
     {
         $this->formData['number_of_employees'] = '2147483648';
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testValidCopyrightYearRangeMin()
+    public function testValidCopyrightYearRangeMin(): void
     {
         $this->formData['copyright_year'] = '1900';
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testValidCopyrightYearRangeMax()
+    public function testValidCopyrightYearRangeMax(): void
     {
         $this->formData['copyright_year'] = '9999';
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInValidCopyrightYearBelowMin()
+    public function testInValidCopyrightYearBelowMin(): void
     {
         $this->formData['copyright_year'] = '1899';
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInValidCopyrightYearAboveMax()
+    public function testInValidCopyrightYearAboveMax(): void
     {
         $this->formData['copyright_year'] = '10000';
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testValidFoundingDatePast()
+    public function testValidFoundingDatePast(): void
     {
         $this->formData['founding_date'] = '2000-04-01';
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInValidFoundingDateFuture()
+    public function testInValidFoundingDateFuture(): void
     {
         $this->formData['founding_date'] = (new \DateTime('+1 year'))->format('Y-m-d');
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testValidSiteImageUrl()
+    public function testValidSiteImageUrl(): void
     {
         $this->formData['site_image'] = 'https://example.com/site.png';
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInValidSiteImageNotUrl()
+    public function testInValidSiteImageNotUrl(): void
     {
         $this->formData['site_image'] = 'not-a-url';
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInValidSiteImageMaxLength()
+    public function testInValidSiteImageMaxLength(): void
     {
         // 形式は有効なURLだが最大長を超えるケース（長さ制約のみを検証）
         $this->formData['site_image'] = 'https://example.com/'.str_repeat('a', $this->eccubeConfig['eccube_stext_len']);
