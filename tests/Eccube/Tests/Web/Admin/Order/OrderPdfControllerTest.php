@@ -17,6 +17,7 @@ namespace Eccube\Tests\Web\Admin\Order;
 
 use Eccube\Common\Constant;
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderPdf;
@@ -405,6 +406,78 @@ final class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $this->assertNull($OrderPdf->getNote1());
         $this->assertNull($OrderPdf->getNote2());
         $this->assertNull($OrderPdf->getNote3());
+    }
+
+    /**
+     * 納品書PDFの出力項目トグルを全て ON にした状態でも PDF が生成できること (#6197).
+     *
+     * ここで検証するのは PDF が生成できること（レスポンスが application/pdf であること）のみ.
+     * 店舗情報欄の描画座標（ロゴとの重なり・合計金額欄の侵食）は
+     * {@see \Eccube\Tests\Service\OrderPdfServiceTest} で検証する.
+     */
+    public function testDownloadSuccessWithAllOrderPdfItemsVisible()
+    {
+        $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->find(1);
+        $this->assertInstanceOf(BaseInfo::class, $BaseInfo);
+
+        // EccubeTestCase はトランザクションを張らないため、書き換えた値は後続テストへ残る。
+        // 変更前の値を退避し、アサーション失敗時も finally で必ず戻す。
+        $original = [
+            'shopName' => $BaseInfo->isOrderPdfVisibleShopName(),
+            'shopNameEng' => $BaseInfo->isOrderPdfVisibleShopNameEng(),
+            'address' => $BaseInfo->isOrderPdfVisibleAddress(),
+            'companyNameVisible' => $BaseInfo->isOrderPdfVisibleCompanyName(),
+            'phoneNumber' => $BaseInfo->isOrderPdfVisiblePhoneNumber(),
+            'businessHourVisible' => $BaseInfo->isOrderPdfVisibleBusinessHour(),
+            'email' => $BaseInfo->isOrderPdfVisibleEmail(),
+            'invoiceNumber' => $BaseInfo->isOrderPdfVisibleInvoiceNumber(),
+            'companyName' => $BaseInfo->getCompanyName(),
+            'businessHour' => $BaseInfo->getBusinessHour(),
+        ];
+
+        try {
+            $BaseInfo->setOrderPdfVisibleShopName(true)
+                ->setOrderPdfVisibleShopNameEng(true)
+                ->setOrderPdfVisibleAddress(true)
+                ->setOrderPdfVisibleCompanyName(true)
+                ->setOrderPdfVisiblePhoneNumber(true)
+                ->setOrderPdfVisibleBusinessHour(true)
+                ->setOrderPdfVisibleEmail(true)
+                ->setOrderPdfVisibleInvoiceNumber(true)
+                ->setCompanyName('テスト株式会社')
+                ->setBusinessHour('10:00-19:00');
+            $this->entityManager->flush();
+
+            $Order = $this->createOrderForSearch();
+            $Shippings = $Order->getShippings();
+            $shippingId = $Shippings[0]->getId();
+
+            $client = $this->client;
+            $crawler = $client->request(Request::METHOD_POST, $this->generateUrl('admin_order_export_pdf'),
+                [
+                    '_token' => 'dummy',
+                    'ids' => [$shippingId],
+                ]);
+
+            $form = $this->getForm($crawler);
+            $client->submit($form);
+
+            $this->actual = $client->getResponse()->headers->get('Content-Type');
+            $this->expected = 'application/pdf';
+            $this->verify();
+        } finally {
+            $BaseInfo->setOrderPdfVisibleShopName($original['shopName'])
+                ->setOrderPdfVisibleShopNameEng($original['shopNameEng'])
+                ->setOrderPdfVisibleAddress($original['address'])
+                ->setOrderPdfVisibleCompanyName($original['companyNameVisible'])
+                ->setOrderPdfVisiblePhoneNumber($original['phoneNumber'])
+                ->setOrderPdfVisibleBusinessHour($original['businessHourVisible'])
+                ->setOrderPdfVisibleEmail($original['email'])
+                ->setOrderPdfVisibleInvoiceNumber($original['invoiceNumber'])
+                ->setCompanyName($original['companyName'])
+                ->setBusinessHour($original['businessHour']);
+            $this->entityManager->flush();
+        }
     }
 
     private function getForm(Crawler $crawler): Form
