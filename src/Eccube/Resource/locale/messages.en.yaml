@@ -1314,6 +1314,7 @@ admin.setting.shop.shop.agent_commerce.ucp_checkout_enabled: "Enable UCP checkou
 admin.setting.shop.shop.mcp: "MCP Server"
 admin.setting.shop.shop.mcp.description: "Enables the MCP server (^/admin/mcp) that lets AI clients (Claude Desktop, Cursor, etc.) read management data. Read-only. Disabled by default; while disabled the endpoint returns 404. Requires the API plugin (api44) enabled with an OAuth2 token issued."
 admin.setting.shop.shop.mcp_enabled: "Enable MCP server"
+admin.setting.shop.shop.order_pdf: "Delivery slip PDF"
 
 #------------------------------------------------------------------------------------
 # Settings：Store Settings：Trade Law Settings
@@ -1887,6 +1888,7 @@ tooltip.setting.shop.shop.number_of_employees: The number of employees, output t
 tooltip.setting.shop.shop.copyright_year: The starting year of the copyright notice, output to structured data (WebSite.copyrightYear).
 tooltip.setting.shop.shop.site_image: The absolute URL of the site image, output to structured data (Organization.image).
 tooltip.setting.shop.shop.opening_hours: The opening hours output to structured data (Organization.openingHoursSpecification). Set the days of the week (multiple allowed) and the opening/closing times per row.
+tooltip.setting.shop.shop.order_pdf: Items printed in the shop information area of the delivery slip PDF. Among the items turned ON, only those with a value entered are printed.
 tooltip.setting.shop.shop.option_delivery_fee_free_amount: Shipping charge will be waived if a customer purchases more than this amount.
 tooltip.setting.shop.shop.option_delivery_fee_free_quantity: Shipping charge will be waived if a customer purchases more than this quantity.
 tooltip.setting.shop.shop.option_delivery_fee_by_product: If turned on, you can set shipping charge per product.

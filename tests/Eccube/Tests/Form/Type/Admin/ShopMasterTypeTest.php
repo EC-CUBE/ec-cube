@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Form\Type\Admin;
 
+use Eccube\Entity\BaseInfo;
 use Eccube\Form\Type\Admin\ShopMasterType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use Symfony\Component\Form\FormInterface;
@@ -345,5 +346,27 @@ final class ShopMasterTypeTest extends AbstractTypeTestCase
         $this->formData['site_image'] = 'https://example.com/'.str_repeat('a', $this->eccubeConfig['eccube_stext_len']);
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
+    }
+
+    /**
+     * 納品書PDFの出力項目トグルが BaseInfo にマッピングされること (#6197).
+     * チェックボックスは未チェックをキー欠落で表すため, OFF はキーを送らないことで再現する.
+     */
+    public function testOrderPdfVisibleTogglesMappedToEntity(): void
+    {
+        $BaseInfo = new BaseInfo();
+        $form = $this->formFactory
+            ->createBuilder(ShopMasterType::class, $BaseInfo, ['csrf_protection' => false])
+            ->getForm();
+
+        $formData = $this->formData;
+        // 既定 OFF の店舗営業時間を ON にし, 既定 ON の店名はキーを送らず OFF にする
+        $formData['order_pdf_visible_business_hour'] = '1';
+
+        $form->submit($formData);
+
+        $this->assertTrue($form->isValid());
+        $this->assertFalse($BaseInfo->isOrderPdfVisibleShopName());
+        $this->assertTrue($BaseInfo->isOrderPdfVisibleBusinessHour());
     }
 }

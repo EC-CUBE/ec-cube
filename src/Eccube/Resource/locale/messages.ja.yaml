@@ -1313,6 +1313,7 @@ admin.setting.shop.shop.agent_commerce.ucp_checkout_enabled: "UCP チェック�
 admin.setting.shop.shop.mcp: "MCP サーバ"
 admin.setting.shop.shop.mcp.description: "AI クライアント（Claude Desktop / Cursor 等）が管理データを参照する MCP サーバ（^/admin/mcp）を有効化します。読み取り専用です。既定は無効で、無効の間はエンドポイントを 404 で塞ぎます。利用には API プラグイン（api44）が有効で、OAuth2 トークンを発行済みである必要があります。"
 admin.setting.shop.shop.mcp_enabled: "MCP サーバを有効にする"
+admin.setting.shop.shop.order_pdf: "納品書PDF"
 
 #------------------------------------------------------------------------------------
 # 設定：店舗設定：特定商取引法設定
@@ -1887,6 +1888,7 @@ tooltip.setting.shop.shop.number_of_employees: 構造化データ（Organization
 tooltip.setting.shop.shop.copyright_year: 構造化データ（WebSite.copyrightYear）に出力する著作権表示の開始年です。
 tooltip.setting.shop.shop.site_image: 構造化データ（Organization.image）に出力するサイト代表画像の絶対URLです。
 tooltip.setting.shop.shop.opening_hours: 構造化データ（Organization.openingHoursSpecification）に出力する営業時間です。曜日（複数選択可）と開店・閉店時刻を行ごとに設定できます。
+tooltip.setting.shop.shop.order_pdf: 納品書PDFの店舗情報欄に出力する項目です。ONにした項目のうち、値が入力されているものだけが出力されます。
 tooltip.setting.shop.shop.option_delivery_fee_free_amount: この金額を超える購入があった場合、送料を無料とします。
 tooltip.setting.shop.shop.option_delivery_fee_free_quantity: この個数を超える購入があった場合、送料を無料とします。
 tooltip.setting.shop.shop.option_delivery_fee_by_product: ここをオンにすると、商品ごとに送料を指定できるようになります。
