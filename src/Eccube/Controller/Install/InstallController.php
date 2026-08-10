@@ -80,13 +80,16 @@ class InstallController extends AbstractController
         'cURL',
         'fileinfo',
         'intl',
-        'sodium',
     ];
     /**
      * @var string[]
      */
     protected array $recommendedModules = [
         'hash',
+        // コアは sodium を一切使わない。 一部プラグイン (Web API 等) が要求するため推奨に留める。
+        // composer.json の config.platform で ext-sodium を宣言済みで、 sodium 非搭載環境でも
+        // それらのプラグインを導入できるようにしてあるため、 必須として danger を出すのは矛盾する。
+        'sodium',
     ];
     /**
      * @var string[]
