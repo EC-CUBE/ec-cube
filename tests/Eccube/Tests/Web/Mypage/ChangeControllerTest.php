@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,13 +17,11 @@ namespace Eccube\Tests\Web\Mypage;
 
 use Eccube\Entity\Customer;
 use Eccube\Tests\Web\AbstractWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
-class ChangeControllerTest extends AbstractWebTestCase
+final class ChangeControllerTest extends AbstractWebTestCase
 {
-    /**
-     * @var Customer
-     */
-    protected $Customer;
+    protected ?Customer $Customer = null;
 
     protected function setUp(): void
     {
@@ -33,7 +33,7 @@ class ChangeControllerTest extends AbstractWebTestCase
     {
         $faker = $this->getFaker();
         $email = $faker->safeEmail;
-        $password = $faker->lexify('????????????').'a1';
+        $password = $faker->lexify('?????????????').'a1';
         $birth = $faker->dateTimeBetween;
 
         return [
@@ -77,7 +77,7 @@ class ChangeControllerTest extends AbstractWebTestCase
         $this->loginTo($this->Customer);
 
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('mypage_change')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -89,7 +89,7 @@ class ChangeControllerTest extends AbstractWebTestCase
 
         $form = $this->createFormData();
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('mypage_change'),
             ['entry' => $form]
         );
@@ -111,7 +111,7 @@ class ChangeControllerTest extends AbstractWebTestCase
             'second' => $this->eccubeConfig['eccube_default_password'],
         ];
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('mypage_change'),
             ['entry' => $form]
         );
@@ -124,7 +124,7 @@ class ChangeControllerTest extends AbstractWebTestCase
         $this->loginTo($this->Customer);
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('mypage_change'),
             []
         );
@@ -136,7 +136,7 @@ class ChangeControllerTest extends AbstractWebTestCase
         $this->loginTo($this->Customer);
 
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('mypage_change_complete')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());

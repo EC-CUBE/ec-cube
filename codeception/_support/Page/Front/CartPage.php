@@ -17,11 +17,6 @@ class CartPage extends AbstractFrontPage
 {
     public static $加算ポイント = '//span[contains(text(), "加算ポイント")]/../../dd/span';
 
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     public static function go($I)
     {
         $page = new self($I);
@@ -83,20 +78,14 @@ class CartPage extends AbstractFrontPage
         return $this->tester->grabTextFrom(['css' => 'div.ec-cartRole__error div.ec-alert-warning__text']);
     }
 
-    /**
-     * @return ShoppingPage
-     */
-    public function レジに進む()
+    public function レジに進む(): ShoppingPage
     {
         $this->tester->click(['css' => 'div.ec-cartRole__actions a.ec-blockBtn--action']);
 
         return new ShoppingPage($this->tester);
     }
 
-    /**
-     * @return TopPage
-     */
-    public function お買い物を続ける()
+    public function お買い物を続ける(): TopPage
     {
         $this->tester->click(['css' => 'div.ec-cartRole__actions a.ec-blockBtn--cancel']);
 

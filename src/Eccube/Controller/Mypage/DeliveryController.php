@@ -15,6 +15,7 @@ namespace Eccube\Controller\Mypage;
 
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -22,46 +23,32 @@ use Eccube\Form\Type\Front\CustomerAddressType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerAddressRepository;
 use Eccube\Service\MailService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class DeliveryController extends AbstractController
 {
-    /**
-     * @var BaseInfo
-     */
-    protected $BaseInfo;
-
-    /**
-     * @var CustomerAddressRepository
-     */
-    protected $customerAddressRepository;
-
-    /**
-     * @var MailService
-     */
-    protected $mailService;
+    protected BaseInfo $BaseInfo;
 
     public function __construct(
         BaseInfoRepository $baseInfoRepository,
-        CustomerAddressRepository $customerAddressRepository,
-        MailService $mailService,
+        protected CustomerAddressRepository $customerAddressRepository,
+        protected MailService $mailService,
     ) {
         $this->BaseInfo = $baseInfoRepository->get();
-        $this->customerAddressRepository = $customerAddressRepository;
-        $this->mailService = $mailService;
     }
 
     /**
      * お届け先一覧画面.
      *
-     * @Route("/mypage/delivery", name="mypage_delivery", methods={"GET"})
-     *
-     * @Template("Mypage/delivery.twig")
+     * @return array<string, mixed>
      */
-    public function index(Request $request)
+    #[Route(path: '/mypage/delivery', name: 'mypage_delivery', methods: ['GET'])]
+    #[Template(template: 'Mypage/delivery.twig')]
+    public function index(): array
     {
         $Customer = $this->getUser();
 
@@ -73,13 +60,18 @@ class DeliveryController extends AbstractController
     /**
      * お届け先編集画面.
      *
-     * @Route("/mypage/delivery/new", name="mypage_delivery_new", methods={"GET", "POST"})
-     * @Route("/mypage/delivery/{id}/edit", name="mypage_delivery_edit", requirements={"id" = "\d+"}, methods={"GET", "POST"})
+     * @param string|int|null $id
      *
-     * @Template("Mypage/delivery_edit.twig")
+     * @return RedirectResponse|array<string, mixed>
+     *
+     * @throws \Exception
      */
-    public function edit(Request $request, $id = null)
+    #[Route(path: '/mypage/delivery/new', name: 'mypage_delivery_new', methods: ['GET', 'POST'])]
+    #[Route(path: '/mypage/delivery/{id}/edit', name: 'mypage_delivery_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: 'Mypage/delivery_edit.twig')]
+    public function edit(Request $request, $id = null): RedirectResponse|array
     {
+        /** @var Customer $Customer */
         $Customer = $this->getUser();
 
         // 配送先住所最大値判定
@@ -104,7 +96,7 @@ class DeliveryController extends AbstractController
             }
         }
 
-        $parentPage = $request->get('parent_page', null);
+        $parentPage = $request->get('parent_page');
 
         // 正しい遷移かをチェック
         $allowedParents = [
@@ -161,7 +153,7 @@ class DeliveryController extends AbstractController
             );
             $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_MYPAGE_DELIVERY_EDIT_COMPLETE);
 
-            return $this->redirect($this->generateUrl('mypage_delivery'));
+            return $this->redirectToRoute('mypage_delivery');
         }
 
         return [
@@ -174,12 +166,14 @@ class DeliveryController extends AbstractController
     /**
      * お届け先を削除する.
      *
-     * @Route("/mypage/delivery/{id}/delete", name="mypage_delivery_delete", methods={"DELETE"})
+     * @throws \Exception
      */
-    public function delete(Request $request, $id)
+    #[Route(path: '/mypage/delivery/{id}/delete', name: 'mypage_delivery_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    public function delete(Request $request, int $id): RedirectResponse
     {
         $this->isTokenValid();
 
+        /** @var Customer $Customer */
         $Customer = $this->getUser();
 
         $CustomerAddress = $this->customerAddressRepository->findOneBy(
@@ -216,6 +210,6 @@ class DeliveryController extends AbstractController
 
         log_info('お届け先削除完了', [$CustomerAddress->getId()]);
 
-        return $this->redirect($this->generateUrl('mypage_delivery'));
+        return $this->redirectToRoute('mypage_delivery');
     }
 }

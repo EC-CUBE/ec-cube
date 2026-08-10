@@ -14,29 +14,26 @@
 namespace Eccube\Doctrine\DBAL\Types;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\DateTimeTzType;
+use Doctrine\DBAL\Types\Exception\InvalidFormat;
 
 class UTCDateTimeTzType extends DateTimeTzType
 {
     /**
      * UTCのタイムゾーン
-     *
-     * @var \DateTimeZone
      */
-    protected static $utc;
+    protected static ?\DateTimeZone $utc = null;
 
     /**
      * アプリケーションのタイムゾーン
-     *
-     * @var \DateTimeZone
      */
-    protected static $timezone;
+    protected static ?\DateTimeZone $timezone = null;
 
     /**
      * {@inheritdoc}
      */
-    public function convertToDatabaseValue($value, AbstractPlatform $platform)
+    #[\Override]
+    public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
     {
         if ($value instanceof \DateTime) {
             $value->setTimezone(self::getUtcTimeZone());
@@ -48,7 +45,8 @@ class UTCDateTimeTzType extends DateTimeTzType
     /**
      * {@inheritdoc}
      */
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    #[\Override]
+    public function convertToPHPValue($value, AbstractPlatform $platform): ?\DateTime
     {
         if ($value === null || $value instanceof \DateTime) {
             return $value;
@@ -61,7 +59,7 @@ class UTCDateTimeTzType extends DateTimeTzType
         );
 
         if (!$converted) {
-            throw ConversionException::conversionFailedFormat($value, $this->getName(), $platform->getDateTimeTzFormatString());
+            throw InvalidFormat::new($value, static::class, $platform->getDateTimeTzFormatString());
         }
 
         $converted->setTimezone(self::getTimezone());
@@ -69,10 +67,7 @@ class UTCDateTimeTzType extends DateTimeTzType
         return $converted;
     }
 
-    /**
-     * @return \DateTimeZone
-     */
-    protected static function getUtcTimeZone()
+    protected static function getUtcTimeZone(): \DateTimeZone
     {
         if (is_null(self::$utc)) {
             self::$utc = new \DateTimeZone('UTC');
@@ -81,10 +76,7 @@ class UTCDateTimeTzType extends DateTimeTzType
         return self::$utc;
     }
 
-    /**
-     * @return \DateTimeZone
-     */
-    public static function getTimezone()
+    public static function getTimezone(): \DateTimeZone
     {
         if (is_null(self::$timezone)) {
             throw new \LogicException(sprintf('%s::$timezone is undefined.', self::class));
@@ -93,16 +85,8 @@ class UTCDateTimeTzType extends DateTimeTzType
         return self::$timezone;
     }
 
-    /**
-     * @param string $timezone
-     */
-    public static function setTimeZone($timezone = 'Asia/Tokyo')
+    public static function setTimeZone(string $timezone = 'Asia/Tokyo'): void
     {
         self::$timezone = new \DateTimeZone($timezone);
-    }
-
-    public function requiresSQLCommentHint(AbstractPlatform $platform)
-    {
-        return true;
     }
 }

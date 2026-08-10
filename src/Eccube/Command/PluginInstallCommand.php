@@ -13,27 +13,29 @@
 
 namespace Eccube\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(name: 'eccube:plugin:install', description: 'Install plugin from local.')]
 class PluginInstallCommand extends Command
 {
     use PluginCommandTrait;
-    protected static $defaultName = 'eccube:plugin:install';
 
-    protected function configure()
+    #[\Override]
+    protected function configure(): void
     {
         $this
             ->addOption('path', null, InputOption::VALUE_OPTIONAL, 'path of tar or zip')
             ->addOption('code', null, InputOption::VALUE_OPTIONAL, 'plugin code')
-            ->addOption('if-not-exists', null, InputOption::VALUE_NONE, 'If plugin is already installed, skip install.')
-            ->setDescription('Install plugin from local.');
+            ->addOption('if-not-exists', null, InputOption::VALUE_NONE, 'If plugin is already installed, skip install.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    #[\Override]
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 
@@ -43,7 +45,10 @@ class PluginInstallCommand extends Command
 
         // アーカイブからインストール
         if ($path) {
-            if ($this->pluginService->install($path, $ifNotExists)) {
+            // PluginService::install() は install(string $path, int $source = 0, bool $notExists = false)
+            // のため、$source を省略すると $ifNotExists が $source に入り --if-not-exists が効かない。
+            // $source は管理画面のアーカイブアップロード (PluginController::install()) と同じ 0 を渡す。
+            if ($this->pluginService->install($path, 0, $ifNotExists)) {
                 $io->success('Installed.');
 
                 return 0;

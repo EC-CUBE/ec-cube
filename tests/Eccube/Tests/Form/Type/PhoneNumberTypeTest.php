@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -14,16 +16,16 @@
 namespace Eccube\Tests\Form\Type;
 
 use Eccube\Form\Type\PhoneNumberType;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormInterface;
 
-class PhoneNumberTypeTest extends AbstractTypeTestCase
+final class PhoneNumberTypeTest extends AbstractTypeTestCase
 {
-    /** @var FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = [
+    protected ?array $formData = [
         'phone_number' => '012-345-6789',
     ];
 
@@ -31,70 +33,66 @@ class PhoneNumberTypeTest extends AbstractTypeTestCase
      * getValidTestData
      *
      * 正常系のデータパターンを返す
-     *
-     * @return array
      */
-    public function getValidTestData()
+    public static function getValidTestData(): \Iterator
     {
-        return [
+        yield [
             [
-                'data' => [
-                    'phone_number' => '012-345-6789',
-                ],
+                'phone_number' => '012-345-6789',
             ],
+        ];
+        yield [
             [
-                'data' => [
-                    'phone_number' => '1-345-6789',
-                ],
+                'phone_number' => '1-345-6789',
             ],
+        ];
+        yield [
             [
-                'data' => [
-                    'phone_number' => '012-34-6789',
-                ],
+                'phone_number' => '012-34-6789',
             ],
+        ];
+        yield [
             [
-                'data' => [
-                    'phone_number' => '012-34522-6789',
-                ],
+                'phone_number' => '012-34522-6789',
             ],
+        ];
+        yield [
             [
-                'data' => [
-                    'phone_number' => '01222-345-6789',
-                ],
+                'phone_number' => '01222-345-6789',
             ],
-            // 携帯,PHS
+        ];
+        // 携帯,PHS
+        yield [
             [
-                'data' => [
-                    'phone_number' => '012-3455-6789',
-                ],
+                'phone_number' => '012-3455-6789',
             ],
-            // フリーダイヤル
+        ];
+        // フリーダイヤル
+        yield [
             [
-                'data' => [
-                    'phone_number' => '0122-345-678',
-                ],
+                'phone_number' => '0122-345-678',
             ],
+        ];
+        yield [
             [
-                'data' => [
-                    'phone_number' => '０３-１２３４-５６７８',
-                ],
+                'phone_number' => '０３-１２３４-５６７８',
             ],
+        ];
+        yield [
             [
-                'data' => [
-                    'phone_number' => '０３-12345-12345',
-                ],
+                'phone_number' => '０３-12345-12345',
             ],
-            // 全部空はOK
+        ];
+        // 全部空はOK
+        yield [
             [
-                'data' => [
-                    'phone_number' => '',
-                ],
+                'phone_number' => '',
             ],
-            // max length
+        ];
+        // max length
+        yield [
             [
-                'data' => [
-                    'phone_number' => '01234567891011',
-                ],
+                'phone_number' => '01234567891011',
             ],
         ];
     }
@@ -102,7 +100,6 @@ class PhoneNumberTypeTest extends AbstractTypeTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->form = $this->formFactory->createBuilder(FormType::class, null, ['csrf_protection' => false])
             ->add('phone_number', PhoneNumberType::class, [
                 'required' => false,
@@ -111,8 +108,9 @@ class PhoneNumberTypeTest extends AbstractTypeTestCase
     }
 
     /**
-     * @dataProvider getValidTestData
+     * @param mixed $data
      */
+    #[DataProvider(methodName: 'getValidTestData')]
     public function testValidData($data)
     {
         $this->form->submit($data);

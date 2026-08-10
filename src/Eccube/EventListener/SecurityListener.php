@@ -22,37 +22,17 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Security\Core\Event\AuthenticationFailureEvent;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\Event\LoginFailureEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
 
 class SecurityListener implements EventSubscriberInterface
 {
-    protected $em;
-
-    protected $cartService;
-
-    protected $purchaseFlow;
-
-    protected $requestStack;
-
-    public function __construct(
-        EntityManagerInterface $em,
-        CartService $cartService,
-        PurchaseFlow $cartPurchaseFlow,
-        RequestStack $requestStack,
-    ) {
-        $this->em = $em;
-        $this->cartService = $cartService;
-        $this->purchaseFlow = $cartPurchaseFlow;
-        $this->requestStack = $requestStack;
+    public function __construct(protected EntityManagerInterface $em, protected CartService $cartService, protected PurchaseFlow $purchaseFlow, protected RequestStack $requestStack)
+    {
     }
 
-    /**
-     * @param InteractiveLoginEvent $event
-     */
-    public function onInteractiveLogin(InteractiveLoginEvent $event)
+    public function onInteractiveLogin(InteractiveLoginEvent $event): void
     {
         $user = $event
             ->getAuthenticationToken()
@@ -75,12 +55,17 @@ class SecurityListener implements EventSubscriberInterface
         }
     }
 
-    /**
-     * @param AuthenticationFailureEvent $event
-     */
-    public function onAuthenticationFailure(LoginFailureEvent $event)
+    public function onAuthenticationFailure(LoginFailureEvent $event): void
     {
         $request = $this->requestStack->getCurrentRequest();
+
+        // login_memory はフロントのログインフォーム専用のため, ステートレスなファイアウォール(API 等)では
+        // セッションを使用しない. ステートレスなリクエストでセッションを使用すると
+        // UnexpectedSessionUsageException が発生し, 認証失敗時に 401 ではなく 500 を返してしまう.
+        if ($request->attributes->get('_stateless', false) || !$request->hasSession()) {
+            return;
+        }
+
         $request->getSession()->set('_security.login_memory', (bool) $request->request->get('login_memory', 0));
     }
 
@@ -100,9 +85,10 @@ class SecurityListener implements EventSubscriberInterface
      * * array('eventName' => array('methodName', $priority))
      * * array('eventName' => array(array('methodName1', $priority), array('methodName2'))
      *
-     * @return array The event names to listen to
+     * @return array<string, string> The event names to listen to
      */
-    public static function getSubscribedEvents()
+    #[\Override]
+    public static function getSubscribedEvents(): array
     {
         return [
             SecurityEvents::INTERACTIVE_LOGIN => 'onInteractiveLogin',

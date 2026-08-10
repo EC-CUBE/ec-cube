@@ -13,73 +13,59 @@
 
 namespace Eccube\Controller;
 
+use Eccube\Entity\BaseInfo;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\NonMemberType;
 use Eccube\Form\Validator\Email;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\Master\PrefRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\OrderHelper;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class NonMemberShoppingController extends AbstractShoppingController
 {
-    /**
-     * @var ValidatorInterface
-     */
-    protected $validator;
-
-    /**
-     * @var PrefRepository
-     */
-    protected $prefRepository;
-
-    /**
-     * @var OrderHelper
-     */
-    protected $orderHelper;
-
-    /**
-     * @var CartService
-     */
-    protected $cartService;
+    protected BaseInfo $BaseInfo;
 
     /**
      * NonMemberShoppingController constructor.
-     *
-     * @param ValidatorInterface $validator
-     * @param PrefRepository $prefRepository
-     * @param OrderHelper $orderHelper
-     * @param CartService $cartService
      */
     public function __construct(
-        ValidatorInterface $validator,
-        PrefRepository $prefRepository,
-        OrderHelper $orderHelper,
-        CartService $cartService,
+        protected ValidatorInterface $validator,
+        protected PrefRepository $prefRepository,
+        protected OrderHelper $orderHelper,
+        protected CartService $cartService,
+        BaseInfoRepository $baseInfoRepository,
     ) {
-        $this->validator = $validator;
-        $this->prefRepository = $prefRepository;
-        $this->orderHelper = $orderHelper;
-        $this->cartService = $cartService;
+        $this->BaseInfo = $baseInfoRepository->get();
     }
 
     /**
      * 非会員処理
      *
-     * @Route("/shopping/nonmember", name="shopping_nonmember", methods={"GET", "POST"})
-     *
-     * @Template("Shopping/nonmember.twig")
+     * @return RedirectResponse|Response|array<string, mixed>
      */
-    public function index(Request $request)
+    #[Route(path: '/shopping/nonmember', name: 'shopping_nonmember', methods: ['GET', 'POST'])]
+    #[Template(template: 'Shopping/nonmember.twig')]
+    public function index(Request $request): RedirectResponse|Response|array
     {
         // ログイン済みの場合は, 購入画面へリダイレクト.
         if ($this->isGranted('ROLE_USER')) {
             return $this->redirectToRoute('shopping');
+        }
+
+        // ゲスト購入が無効の場合は, ログイン画面へリダイレクト.
+        if (!$this->BaseInfo->isOptionGuestPurchase()) {
+            return $this->redirectToRoute('shopping_login');
         }
 
         // カートチェック.
@@ -136,9 +122,10 @@ class NonMemberShoppingController extends AbstractShoppingController
     /**
      * お客様情報の変更(非会員)
      *
-     * @Route("/shopping/customer", name="shopping_customer", methods={"POST"})
+     * @throws \Exception
      */
-    public function customer(Request $request)
+    #[Route(path: '/shopping/customer', name: 'shopping_customer', methods: ['POST'])]
+    public function customer(Request $request): JsonResponse|RedirectResponse
     {
         if (!$request->isXmlHttpRequest()) {
             return $this->json(['status' => 'NG'], 400);
@@ -223,11 +210,11 @@ class NonMemberShoppingController extends AbstractShoppingController
     /**
      * 非会員でのお客様情報変更時の入力チェック
      *
-     * @param array $data リクエストパラメータ
+     * @param array<mixed> $data リクエストパラメータ
      *
-     * @return \Symfony\Component\Validator\ConstraintViolationListInterface[]
+     * @return ConstraintViolationListInterface[]
      */
-    protected function customerValidation(array &$data)
+    protected function customerValidation(array &$data): array
     {
         // 入力チェック
         $errors = [];
@@ -291,7 +278,7 @@ class NonMemberShoppingController extends AbstractShoppingController
             $data['customer_phone_number'],
             [
                 new Assert\NotBlank(),
-                new Assert\Type(['type' => 'digit', 'message' => 'form_error.numeric_only']),
+                new Assert\Type(type: 'digit', message: 'form_error.numeric_only'),
                 new Assert\Length(
                     ['max' => $this->eccubeConfig['eccube_tel_len_max']]
                 ),
@@ -302,7 +289,7 @@ class NonMemberShoppingController extends AbstractShoppingController
             $data['customer_postal_code'],
             [
                 new Assert\NotBlank(),
-                new Assert\Type(['type' => 'digit', 'message' => 'form_error.numeric_only']),
+                new Assert\Type(type: 'digit', message: 'form_error.numeric_only'),
                 new Assert\Length(
                     ['max' => $this->eccubeConfig['eccube_postal_code']]
                 ),

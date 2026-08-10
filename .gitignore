@@ -10,6 +10,9 @@ node_modules
 !/app/Plugin/.gitkeep
 /app/PluginData/*
 !/app/PluginData/.gitkeep
+/app/keystore/*
+!/app/keystore/.gitkeep
+!/app/keystore/.htaccess
 /app/template/*
 !/app/template/admin
 !/app/template/default
@@ -24,6 +27,10 @@ node_modules
 !/html/upload/save_image/no_image_product.png
 /html/upload/temp_image/*
 !/html/upload/temp_image/.gitkeep
+/html/upload/refund_request/save/*
+!/html/upload/refund_request/save/.gitkeep
+/html/upload/refund_request/temp/*
+!/html/upload/refund_request/temp/.gitkeep
 /html/template/*
 !/html/template/admin
 !/html/template/default
@@ -38,6 +45,9 @@ node_modules
 .vscode/
 *.php~
 .env
+.env.local
+.env.local.php
+.env.*.local
 .maintenance
 *.neon
 
@@ -45,9 +55,14 @@ node_modules
 .phpunit
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
+/.phpunit.result.cache
 
 ###> friendsofphp/php-cs-fixer ###
 /.php-cs-fixer.cache
 /.php-cs-fixer.*.php
 ###< friendsofphp/php-cs-fixer ###
 screenshots/
+
+###> symfony/flex ###
+/app/config/eccube/reference.php
+###< symfony/flex ###

@@ -17,23 +17,17 @@ use Eccube\Entity\ItemHolderInterface;
 
 class PurchaseFlowResult
 {
-    /** @var ItemHolderInterface */
-    private $itemHolder;
-
     /** @var ProcessResult[] */
-    private $processResults = [];
+    private array $processResults = [];
 
     /**
      * PurchaseFlowResult constructor.
-     *
-     * @param ItemHolderInterface $itemHolder
      */
-    public function __construct(ItemHolderInterface $itemHolder)
+    public function __construct(private readonly ItemHolderInterface $itemHolder)
     {
-        $this->itemHolder = $itemHolder;
     }
 
-    public function addProcessResult(ProcessResult $processResult)
+    public function addProcessResult(ProcessResult $processResult): void
     {
         $this->processResults[] = $processResult;
     }
@@ -41,30 +35,31 @@ class PurchaseFlowResult
     /**
      * @return array|ProcessResult[]
      */
-    public function getErrors()
+    public function getErrors(): array
     {
-        return array_filter($this->processResults, function (ProcessResult $processResult) {
-            return $processResult->isError();
-        });
+        return array_filter($this->processResults, fn (ProcessResult $processResult) => $processResult->isError());
     }
 
     /**
      * @return array|ProcessResult[]
      */
-    public function getWarning()
+    public function getWarning(): array
     {
-        return array_filter($this->processResults, function (ProcessResult $processResult) {
-            return $processResult->isWarning();
-        });
+        return array_filter($this->processResults, fn (ProcessResult $processResult) => $processResult->isWarning());
     }
 
-    public function hasError()
+    public function hasError(): bool
     {
         return !empty($this->getErrors());
     }
 
-    public function hasWarning()
+    public function hasWarning(): bool
     {
         return !empty($this->getWarning());
+    }
+
+    public function getItemHolder(): ItemHolderInterface
+    {
+        return $this->itemHolder;
     }
 }

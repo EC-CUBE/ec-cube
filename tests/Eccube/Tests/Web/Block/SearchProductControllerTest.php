@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -14,12 +16,13 @@
 namespace Eccube\Tests\Web\Block;
 
 use Eccube\Tests\Web\AbstractWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
-class SearchProductControllerTest extends AbstractWebTestCase
+final class SearchProductControllerTest extends AbstractWebTestCase
 {
     public function testRoutingCart()
     {
-        $this->client->request('GET', '/block/search_product');
+        $this->client->request(Request::METHOD_GET, '/block/search_product');
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 }

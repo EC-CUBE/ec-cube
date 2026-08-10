@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -13,35 +15,30 @@
 
 namespace Eccube\Tests\Web\Admin\Setting\System;
 
+use Eccube\Entity\AuthorityRole;
 use Eccube\Entity\Member;
 use Eccube\Repository\MemberRepository;
 use Eccube\Service\TwoFactorAuthService;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use RobThree\Auth\Providers\Qr\QRServerProvider;
 use RobThree\Auth\TwoFactorAuth;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-class TwoFactorAuthControllerTest extends AbstractAdminWebTestCase
+final class TwoFactorAuthControllerTest extends AbstractAdminWebTestCase
 {
-    /**
-     * @var MemberRepository
-     */
-    protected $memberRepository;
+    protected ?MemberRepository $memberRepository = null;
 
-    /**
-     * @var TwoFactorAuthService
-     */
-    protected $twoFactorAuthService;
+    protected ?TwoFactorAuthService $twoFactorAuthService = null;
 
-    /**
-     * @var TwoFactorAuth
-     */
-    protected $tfa;
+    protected ?TwoFactorAuth $tfa = null;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->memberRepository = $this->entityManager->getRepository(Member::class);
         $this->twoFactorAuthService = static::getContainer()->get(TwoFactorAuthService::class);
-        $this->tfa = new TwoFactorAuth();
+        $this->tfa = new TwoFactorAuth(new QRServerProvider());
     }
 
     /**
@@ -66,7 +63,7 @@ class TwoFactorAuthControllerTest extends AbstractAdminWebTestCase
         $this->loginTo($Member);
 
         // 2FA認証画面にアクセス（CSRFトークン取得のため）
-        $crawler = $this->client->request('GET', $this->generateUrl('admin_two_factor_auth'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_two_factor_auth'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         // CSRFトークンを取得
@@ -74,7 +71,7 @@ class TwoFactorAuthControllerTest extends AbstractAdminWebTestCase
 
         // 正しいTOTPコードを生成して送信
         $validCode = $this->tfa->getCode($authKey);
-        $this->client->request('POST', $this->generateUrl('admin_two_factor_auth'), [
+        $this->client->request(Request::METHOD_POST, $this->generateUrl('admin_two_factor_auth'), [
             'admin_two_factor_auth' => [
                 'device_token' => $validCode,
                 '_token' => $token,
@@ -109,7 +106,7 @@ class TwoFactorAuthControllerTest extends AbstractAdminWebTestCase
         $this->loginTo($Member);
 
         // 2FAセットアップ画面にアクセス
-        $crawler = $this->client->request('GET', $this->generateUrl('admin_two_factor_auth_set'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_two_factor_auth_set'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         // フォームから秘密鍵とCSRFトークンを取得
@@ -118,7 +115,7 @@ class TwoFactorAuthControllerTest extends AbstractAdminWebTestCase
 
         // 正しいTOTPコードを生成して送信
         $validCode = $this->tfa->getCode($authKey);
-        $this->client->request('POST', $this->generateUrl('admin_two_factor_auth_set'), [
+        $this->client->request(Request::METHOD_POST, $this->generateUrl('admin_two_factor_auth_set'), [
             'admin_two_factor_auth' => [
                 'device_token' => $validCode,
                 'auth_key' => $authKey,
@@ -159,14 +156,14 @@ class TwoFactorAuthControllerTest extends AbstractAdminWebTestCase
         $this->loginTo($Member);
 
         // 2FA認証画面にアクセス
-        $crawler = $this->client->request('GET', $this->generateUrl('admin_two_factor_auth'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_two_factor_auth'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         // CSRFトークンを取得
         $token = $crawler->filter('input[name="admin_two_factor_auth[_token]"]')->attr('value');
 
         // 間違ったコードを送信
-        $crawler = $this->client->request('POST', $this->generateUrl('admin_two_factor_auth'), [
+        $crawler = $this->client->request(Request::METHOD_POST, $this->generateUrl('admin_two_factor_auth'), [
             'admin_two_factor_auth' => [
                 'device_token' => '000000', // 無効なコード
                 '_token' => $token,
@@ -207,7 +204,7 @@ class TwoFactorAuthControllerTest extends AbstractAdminWebTestCase
         $this->loginTo($Member);
 
         // 2FA未認証状態で設定画面にアクセス
-        $this->client->request('GET', $this->generateUrl('admin_two_factor_auth_set'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_two_factor_auth_set'));
 
         $response = $this->client->getResponse();
 
@@ -215,6 +212,50 @@ class TwoFactorAuthControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue(
             $response->isRedirect($this->generateUrl('admin_two_factor_auth')),
             '2FAキー設定済みユーザーが未認証で設定画面にアクセスした場合、認証画面にリダイレクトされるべき。実際のレスポンス: Status='.$response->getStatusCode().', Location='.$response->headers->get('Location')
+        );
+    }
+
+    /**
+     * 回帰テスト(#6406): 権限管理で "/setting" が拒否URLに設定されていても、
+     * 2段階認証の再設定画面にアクセスできること。
+     *
+     * 修正前は edit ルートが "/setting/system/two_factor_auth/edit" だったため
+     * 拒否URL "/setting" の前方一致で AuthorityVoter に 403 で弾かれていた。
+     */
+    public function testEditIsNotForbiddenWhenSettingUrlIsDenied()
+    {
+        if (!$this->twoFactorAuthService->isEnabled()) {
+            $this->markTestSkipped('2FAが無効のためスキップ');
+        }
+
+        // 2FA設定済みの新規メンバーを作成
+        $Member = $this->createMember();
+        $Member->setTwoFactorAuthEnabled(true);
+        $Member->setTwoFactorAuthKey($this->twoFactorAuthService->createSecret());
+        $this->entityManager->persist($Member);
+
+        // メンバーの権限に対して "/setting" 配下を拒否する権限設定を追加
+        $AuthorityRole = new AuthorityRole();
+        $AuthorityRole
+            ->setDenyUrl('/setting')
+            ->setAuthority($Member->getAuthority())
+            ->setCreator($Member)
+            ->setCreateDate(new \DateTime())
+            ->setUpdateDate(new \DateTime());
+        $this->entityManager->persist($AuthorityRole);
+        $this->entityManager->flush();
+
+        // 新しいMemberでログイン
+        $this->loginTo($Member);
+
+        // 2段階認証の再設定画面にアクセス
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_system_two_factor_auth_edit'));
+
+        // "/setting" 拒否設定下でも 403(アクセス拒否) にならないこと
+        $this->assertNotSame(
+            Response::HTTP_FORBIDDEN,
+            $this->client->getResponse()->getStatusCode(),
+            '"/setting" が拒否URLでも2段階認証の再設定画面はアクセス拒否されないべき'
         );
     }
 }

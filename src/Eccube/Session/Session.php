@@ -22,11 +22,8 @@ use Symfony\Component\HttpFoundation\Session\Storage\MetadataBag;
 
 class Session implements SessionInterface, FlashBagAwareSessionInterface
 {
-    private RequestStack $requestStack;
-
-    public function __construct(RequestStack $requestStack)
+    public function __construct(private readonly RequestStack $requestStack)
     {
-        $this->requestStack = $requestStack;
     }
 
     private function getSession(): SessionInterface
@@ -34,103 +31,132 @@ class Session implements SessionInterface, FlashBagAwareSessionInterface
         return $this->requestStack->getSession();
     }
 
+    #[\Override]
     public function start(): bool
     {
         return $this->getSession()->start();
     }
 
+    #[\Override]
     public function getId(): string
     {
         return $this->getSession()->getId();
     }
 
-    public function setId(string $id)
+    #[\Override]
+    public function setId(string $id): void
     {
         $this->getSession()->setId($id);
     }
 
+    #[\Override]
     public function getName(): string
     {
         return $this->getSession()->getName();
     }
 
-    public function setName(string $name)
+    #[\Override]
+    public function setName(string $name): void
     {
         $this->getSession()->setName($name);
     }
 
+    #[\Override]
     public function invalidate(?int $lifetime = null): bool
     {
         return $this->getSession()->invalidate($lifetime);
     }
 
+    #[\Override]
     public function migrate(bool $destroy = false, ?int $lifetime = null): bool
     {
         return $this->getSession()->migrate($destroy, $lifetime);
     }
 
-    public function save()
+    #[\Override]
+    public function save(): void
     {
         $this->getSession()->save();
     }
 
+    #[\Override]
     public function has(string $name): bool
     {
         return $this->getSession()->has($name);
     }
 
+    #[\Override]
     public function get(string $name, mixed $default = null): mixed
     {
         return $this->getSession()->get($name, $default);
     }
 
-    public function set(string $name, mixed $value)
+    #[\Override]
+    public function set(string $name, mixed $value): void
     {
         $this->getSession()->set($name, $value);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
+    #[\Override]
     public function all(): array
     {
         return $this->getSession()->all();
     }
 
-    public function replace(array $attributes)
+    /**
+     * @param array<string, mixed> $attributes
+     */
+    #[\Override]
+    public function replace(array $attributes): void
     {
         $this->getSession()->replace($attributes);
     }
 
+    #[\Override]
     public function remove(string $name): mixed
     {
         return $this->getSession()->remove($name);
     }
 
-    public function clear()
+    #[\Override]
+    public function clear(): void
     {
         $this->getSession()->clear();
     }
 
+    #[\Override]
     public function isStarted(): bool
     {
         return $this->getSession()->isStarted();
     }
 
-    public function registerBag(SessionBagInterface $bag)
+    #[\Override]
+    public function registerBag(SessionBagInterface $bag): void
     {
         $this->getSession()->registerBag($bag);
     }
 
+    #[\Override]
     public function getBag(string $name): SessionBagInterface
     {
-        return $this->getSession()->getBag();
+        return $this->getSession()->getBag($name);
     }
 
+    #[\Override]
     public function getMetadataBag(): MetadataBag
     {
         return $this->getSession()->getMetadataBag();
     }
 
+    #[\Override]
     public function getFlashBag(): FlashBagInterface
     {
-        return $this->getSession()->getFlashBag();
+        /** @var FlashBagAwareSessionInterface $session */
+        $session = $this->getSession();
+
+        return $session->getFlashBag();
     }
 }

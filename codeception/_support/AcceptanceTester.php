@@ -20,6 +20,8 @@ use Codeception\Step\Assertion;
 use Codeception\Step\Condition;
 use Codeception\Util\Fixtures;
 use Eccube\Common\Constant;
+use Eccube\Entity\ProductClass;
+use Eccube\Entity\ProductStock;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\WebDriverBy;
 use Interactions\DragAndDropBy;
@@ -45,6 +47,7 @@ class AcceptanceTester extends Actor
 {
     use AcceptanceTesterActions;
 
+    #[Override]
     public function getScenario(): Scenario
     {
         return $this->scenario;
@@ -66,7 +69,7 @@ class AcceptanceTester extends Actor
             'password' => $password,
         ]);
 
-        $I->see('ホーム', '.c-contentsArea .c-pageTitle > .c-pageTitle__titles');
+        $I->see('ホーム', '.c-contentsArea .c-pageTitle > .c-pageTitle__titles > .c-pageTitle__title');
     }
 
     public function logoutAsAdmin()
@@ -126,16 +129,16 @@ class AcceptanceTester extends Actor
         $entityManager = Fixtures::get('entityManager');
 
         if (!is_array($stock)) {
-            $pc = $entityManager->getRepository(Eccube\Entity\ProductClass::class)->findOneBy(['Product' => $pid]);
+            $pc = $entityManager->getRepository(ProductClass::class)->findOneBy(['Product' => $pid]);
             $pc->setStock($stock);
             $pc->setStockUnlimited(Constant::DISABLED);
-            $ps = $entityManager->getRepository(Eccube\Entity\ProductStock::class)->findOneBy(['ProductClass' => $pc->getId()]);
+            $ps = $entityManager->getRepository(ProductStock::class)->findOneBy(['ProductClass' => $pc->getId()]);
             $ps->setStock($stock);
             $entityManager->persist($pc);
             $entityManager->persist($ps);
             $entityManager->flush();
         } else {
-            $pcs = $entityManager->getRepository(Eccube\Entity\ProductClass::class)
+            $pcs = $entityManager->getRepository(ProductClass::class)
                 ->createQueryBuilder('o')
                 ->where('o.Product = '.$pid)
                 ->andwhere('o.ClassCategory1 > 0')
@@ -145,7 +148,7 @@ class AcceptanceTester extends Actor
                 $pc->setStock($stock[$key]);
                 $pc->setStockUnlimited(Constant::DISABLED);
                 $pc->setSaleLimit(2);
-                $ps = $entityManager->getRepository(Eccube\Entity\ProductStock::class)->findOneBy(['ProductClass' => $pc->getId()]);
+                $ps = $entityManager->getRepository(ProductStock::class)->findOneBy(['ProductClass' => $pc->getId()]);
                 $ps->setStock($stock[$key]);
                 $entityManager->persist($pc);
                 $entityManager->persist($ps);
@@ -175,19 +178,13 @@ class AcceptanceTester extends Actor
      *
      * @throws FileNotFoundException 指定したパターンにマッチするファイルがない場合
      */
-    public function getLastDownloadFile($fileNameRegex, $retryCount = 3)
+    public function getLastDownloadFile($fileNameRegex, mixed $retryCount = 3): string
     {
         $downloadDir = __DIR__.'/_downloads/';
         $files = scandir($downloadDir);
-        $files = array_map(function ($fileName) use ($downloadDir) {
-            return $downloadDir.$fileName;
-        }, $files);
-        $files = array_filter($files, function ($f) use ($fileNameRegex) {
-            return is_file($f) && preg_match($fileNameRegex, basename($f));
-        });
-        usort($files, function ($l, $r) {
-            return filemtime($l) - filemtime($r);
-        });
+        $files = array_map(fn ($fileName) => $downloadDir.$fileName, $files);
+        $files = array_filter($files, fn ($f) => is_file($f) && preg_match($fileNameRegex, basename((string) $f)));
+        usort($files, fn ($l, $r) => filemtime($l) - filemtime($r));
 
         if (empty($files)) {
             if ($retryCount > 0) {
@@ -259,9 +256,11 @@ class AcceptanceTester extends Actor
     /**
      * AcceptanceTesterActions から移植
      *
-     * @see \Codeception\Module\WebDriver::see()
+     * @see Codeception\Module\WebDriver::see()
+     *
+     * @param mixed|null $selector
      */
-    public function see($text, $selector = null): void
+    public function see(mixed $text, mixed $selector = null): void
     {
         $this->wait(0.1); // XXX 画面遷移直後は selector の参照に失敗するため wait を入れる
         $this->getScenario()->runStep(new Assertion('see', func_get_args()));
@@ -270,9 +269,9 @@ class AcceptanceTester extends Actor
     /**
      * AcceptanceTesterActions から移植
      *
-     * @see \Codeception\Module\WebDriver::seeInField()
+     * @see Codeception\Module\WebDriver::seeInField()
      */
-    public function seeInField($field, $value): void
+    public function seeInField(mixed $field, mixed $value): void
     {
         $this->wait(0.1); // XXX 画面遷移直後は selector の参照に失敗するため wait を入れる
         $this->getScenario()->runStep(new Assertion('seeInField', func_get_args()));
@@ -281,9 +280,11 @@ class AcceptanceTester extends Actor
     /**
      * AcceptanceTesterActions から移植
      *
-     * @see \Codeception\Module\WebDriver::waitForText()
+     * @see Codeception\Module\WebDriver::waitForText()
+     *
+     * @param mixed|null $selector
      */
-    public function waitForText(string $text, int $timeout = 10, $selector = null): void
+    public function waitForText(string $text, int $timeout = 10, mixed $selector = null): void
     {
         $this->wait(0.1); // XXX 画面遷移直後は selector の参照に失敗するため wait を入れる
         $this->getScenario()->runStep(new Action('waitForText', func_get_args()));
@@ -292,9 +293,9 @@ class AcceptanceTester extends Actor
     /**
      * AcceptanceTesterActions から移植
      *
-     * @see \Codeception\Module\WebDriver::amOnPage()
+     * @see Codeception\Module\WebDriver::amOnPage()
      */
-    public function amOnPage($page): void
+    public function amOnPage(mixed $page): void
     {
         $this->wait(1); // XXX WebDriver::amOnPage() の前に wait を入れないと画面遷移しない場合がある
         $this->getScenario()->runStep(new Condition('amOnPage', func_get_args()));
@@ -304,11 +305,11 @@ class AcceptanceTester extends Actor
     /**
      * AcceptanceTesterActions から移植
      *
-     * @param string|array $link
+     * @param mixed|null $context
      *
-     * @see \Codeception\Module\WebDriver::click()
+     * @see Codeception\Module\WebDriver::click()
      */
-    public function click($link, $context = null): void
+    public function click(string|array $link, mixed $context = null): void
     {
         $this->getScenario()->runStep(new Action('click', func_get_args()));
         $this->wait(1); // XXX click 直後は selector の参照に失敗するため wait を入れる

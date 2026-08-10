@@ -17,14 +17,6 @@ class NewsManagePage extends AbstractAdminPage
 {
     public static $登録完了メッセージ = '.c-container .c-contentsArea .alert-success';
 
-    /**
-     * ContentsRegisterPage constructor.
-     */
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     public static function go($I)
     {
         $page = new self($I);

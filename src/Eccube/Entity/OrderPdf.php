@@ -13,329 +13,230 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\OrderPdfRepository;
 
-if (!class_exists(OrderPdf::class)) {
-    /**
-     * OrderPdf
-     *
-     * @ORM\Table(name="dtb_order_pdf")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\OrderPdfRepository")
-     */
-    class OrderPdf extends AbstractEntity
+/**
+ * OrderPdf
+ */
+#[ORM\Table(name: 'dtb_order_pdf')]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: OrderPdfRepository::class)]
+class OrderPdf extends AbstractEntity
+{
+    public mixed $ids;
+    // PDF 出力時に発行日をフォーマット済み文字列で受け取るケースがあるため、意図的に \DateTime|string のユニオン型を維持する。
+    public \DateTime|string $issue_date;
+    public mixed $default;
+
+    #[ORM\Column(name: 'member_id', type: Types::INTEGER, options: ['unsigned' => true])]
+    #[ORM\Id]
+    private ?int $member_id = null;
+
+    #[ORM\Column(name: 'title', type: Types::STRING, nullable: true)]
+    private ?string $title = null;
+
+    #[ORM\Column(name: 'message1', type: Types::STRING, nullable: true)]
+    private ?string $message1 = null;
+
+    #[ORM\Column(name: 'message2', type: Types::STRING, nullable: true)]
+    private ?string $message2 = null;
+
+    #[ORM\Column(name: 'message3', type: Types::STRING, nullable: true)]
+    private ?string $message3 = null;
+
+    #[ORM\Column(name: 'note1', type: Types::STRING, nullable: true)]
+    private ?string $note1 = null;
+
+    #[ORM\Column(name: 'note2', type: Types::STRING, nullable: true)]
+    private ?string $note2 = null;
+
+    #[ORM\Column(name: 'note3', type: Types::STRING, nullable: true)]
+    private ?string $note3 = null;
+
+    #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
+    private ?\DateTime $create_date = null;
+
+    #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
+    private ?\DateTime $update_date = null;
+
+    #[ORM\Column(name: 'visible', type: Types::BOOLEAN, options: ['default' => true])]
+    private bool $visible = true;
+
+    public function getMemberId(): int
     {
-        public $ids;
+        return $this->member_id;
+    }
 
-        public $issue_date;
+    /**
+     * @return $this
+     */
+    public function setMemberId(int $member_id): static
+    {
+        $this->member_id = $member_id;
 
-        public $default;
+        return $this;
+    }
 
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="member_id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         */
-        private $member_id;
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
 
-        /**
-         * @var string
-         *
-         * @ORM\Column(name="title", type="string", nullable=true)
-         */
-        private $title;
+    /**
+     * @return $this
+     */
+    public function setTitle(string $title): static
+    {
+        $this->title = $title;
 
-        /**
-         * @var string
-         *
-         * @ORM\Column(name="message1", type="string", nullable=true)
-         */
-        private $message1;
+        return $this;
+    }
 
-        /**
-         * @var string
-         *
-         * @ORM\Column(name="message2", type="string", nullable=true)
-         */
-        private $message2;
+    public function getMessage1(): ?string
+    {
+        return $this->message1;
+    }
 
-        /**
-         * @var string
-         *
-         * @ORM\Column(name="message3", type="string", nullable=true)
-         */
-        private $message3;
+    /**
+     * @return $this
+     */
+    public function setMessage1(?string $message1): static
+    {
+        $this->message1 = $message1;
 
-        /**
-         * @var string
-         *
-         * @ORM\Column(name="note1", type="string", nullable=true)
-         */
-        private $note1;
+        return $this;
+    }
 
-        /**
-         * @var string
-         *
-         * @ORM\Column(name="note2", type="string", nullable=true)
-         */
-        private $note2;
+    public function getMessage2(): ?string
+    {
+        return $this->message2;
+    }
 
-        /**
-         * @var string
-         *
-         * @ORM\Column(name="note3", type="string", nullable=true)
-         */
-        private $note3;
+    /**
+     * @return $this
+     */
+    public function setMessage2(?string $message2): static
+    {
+        $this->message2 = $message2;
 
-        /**
-         * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
-         */
-        private $create_date;
+        return $this;
+    }
 
-        /**
-         * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
-         */
-        private $update_date;
+    public function getMessage3(): ?string
+    {
+        return $this->message3;
+    }
 
-        /**
-         * @var bool
-         *
-         * @ORM\Column(name="visible", type="boolean", options={"default":true})
-         */
-        private $visible = true;
+    /**
+     * @return $this
+     */
+    public function setMessage3(?string $message3): static
+    {
+        $this->message3 = $message3;
 
-        /**
-         * @return string
-         */
-        public function getMemberId()
-        {
-            return $this->member_id;
-        }
+        return $this;
+    }
 
-        /**
-         * @param $member_id
-         *
-         * @return $this
-         */
-        public function setMemberId($member_id)
-        {
-            $this->member_id = $member_id;
+    public function getNote1(): ?string
+    {
+        return $this->note1;
+    }
 
-            return $this;
-        }
+    /**
+     * @return $this
+     */
+    public function setNote1(?string $note1): static
+    {
+        $this->note1 = $note1;
 
-        /**
-         * @return string
-         */
-        public function getTitle()
-        {
-            return $this->title;
-        }
+        return $this;
+    }
 
-        /**
-         * @param $title
-         *
-         * @return $this
-         */
-        public function setTitle($title)
-        {
-            $this->title = $title;
+    public function getNote2(): ?string
+    {
+        return $this->note2;
+    }
 
-            return $this;
-        }
+    /**
+     * @return $this
+     */
+    public function setNote2(?string $note2): static
+    {
+        $this->note2 = $note2;
 
-        /**
-         * @return string
-         */
-        public function getMessage1()
-        {
-            return $this->message1;
-        }
+        return $this;
+    }
 
-        /**
-         * @param $message1
-         *
-         * @return $this
-         */
-        public function setMessage1($message1)
-        {
-            $this->message1 = $message1;
+    public function getNote3(): ?string
+    {
+        return $this->note3;
+    }
 
-            return $this;
-        }
+    /**
+     * @return $this
+     */
+    public function setNote3(?string $note3): static
+    {
+        $this->note3 = $note3;
 
-        /**
-         * @return string
-         */
-        public function getMessage2()
-        {
-            return $this->message2;
-        }
+        return $this;
+    }
 
-        /**
-         * @param $message2
-         *
-         * @return $this
-         */
-        public function setMessage2($message2)
-        {
-            $this->message2 = $message2;
+    /**
+     * @return \DateTime
+     */
+    public function getCreateDate(): ?\DateTime
+    {
+        return $this->create_date;
+    }
 
-            return $this;
-        }
+    /**
+     * @return $this
+     */
+    public function setCreateDate(\DateTime $create_date): static
+    {
+        $this->create_date = $create_date;
 
-        /**
-         * @return string
-         */
-        public function getMessage3()
-        {
-            return $this->message3;
-        }
+        return $this;
+    }
 
-        /**
-         * @param $message3
-         *
-         * @return $this
-         */
-        public function setMessage3($message3)
-        {
-            $this->message3 = $message3;
+    /**
+     * @return \DateTime
+     */
+    public function getUpdateDate(): ?\DateTime
+    {
+        return $this->update_date;
+    }
 
-            return $this;
-        }
+    /**
+     * @return $this
+     */
+    public function setUpdateDate(\DateTime $update_date): static
+    {
+        $this->update_date = $update_date;
 
-        /**
-         * @return string
-         */
-        public function getNote1()
-        {
-            return $this->note1;
-        }
+        return $this;
+    }
 
-        /**
-         * @param $note1
-         *
-         * @return $this
-         */
-        public function setNote1($note1)
-        {
-            $this->note1 = $note1;
+    /**
+     * Set visible
+     */
+    public function setVisible(bool $visible): OrderPdf
+    {
+        $this->visible = $visible;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * @return string
-         */
-        public function getNote2()
-        {
-            return $this->note2;
-        }
-
-        /**
-         * @param $note2
-         *
-         * @return $this
-         */
-        public function setNote2($note2)
-        {
-            $this->note2 = $note2;
-
-            return $this;
-        }
-
-        /**
-         * @return string
-         */
-        public function getNote3()
-        {
-            return $this->note3;
-        }
-
-        /**
-         * @param $note3
-         *
-         * @return $this
-         */
-        public function setNote3($note3)
-        {
-            $this->note3 = $note3;
-
-            return $this;
-        }
-
-        /**
-         * @return \DateTime
-         */
-        public function getCreateDate()
-        {
-            return $this->create_date;
-        }
-
-        /**
-         * @param $create_date
-         *
-         * @return $this
-         */
-        public function setCreateDate($create_date)
-        {
-            $this->create_date = $create_date;
-
-            return $this;
-        }
-
-        /**
-         * @return \DateTime
-         */
-        public function getUpdateDate()
-        {
-            return $this->update_date;
-        }
-
-        /**
-         * @param $update_date
-         *
-         * @return $this
-         */
-        public function setUpdateDate($update_date)
-        {
-            $this->update_date = $update_date;
-
-            return $this;
-        }
-
-        /**
-         * Set visible
-         *
-         * @param bool $visible
-         *
-         * @return Delivery
-         */
-        public function setVisible($visible)
-        {
-            $this->visible = $visible;
-
-            return $this;
-        }
-
-        /**
-         * Is the visibility visible?
-         *
-         * @return bool
-         */
-        public function isVisible()
-        {
-            return $this->visible;
-        }
+    /**
+     * Is the visibility visible?
+     */
+    public function isVisible(): bool
+    {
+        return $this->visible;
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,17 +17,16 @@ namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
 use Eccube\Entity\TaxRule;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-class TaxRuleControllerTest extends AbstractAdminWebTestCase
+final class TaxRuleControllerTest extends AbstractAdminWebTestCase
 {
-    /**
-     * @return TaxRule
-     */
-    public function createTaxRule()
+    public function createTaxRule(): TaxRule
     {
         $faker = $this->getFaker();
         $TargetTaxRule = $this->entityManager->getRepository(TaxRule::class)->newTaxRule();
-        $TargetTaxRule->setTaxRate($faker->randomNumber(2));
+        $TargetTaxRule->setTaxRate((string) $faker->randomNumber(2));
         $now = new \DateTime();
         $TargetTaxRule->setApplyDate($now);
         $this->entityManager->persist($TargetTaxRule);
@@ -37,7 +38,7 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
     public function testRoutingAdminBasisTaxIndex()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_setting_shop_tax')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -48,13 +49,13 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
         $redirectUrl = $this->generateUrl('admin_setting_shop_tax');
 
         $this->client->request(
-            'DELETE',
+            Request::METHOD_DELETE,
             $this->generateUrl('admin_setting_shop_tax_delete', ['id' => 1])
         );
 
         $actual = $this->client->getResponse()->isRedirect($redirectUrl);
 
-        $this->assertSame(true, $actual);
+        $this->assertTrue($actual);
     }
 
     public function testEdit()
@@ -64,13 +65,13 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
         $now = new \DateTime();
         $form = [
             '_token' => 'dummy',
-            'tax_rate' => 10,
+            'tax_rate' => '10',
             'rounding_type' => random_int(1, 3),
             'apply_date' => $now->format('Y').'-'.$now->format('m').'-'.$now->format('d').'T'.$now->format('H').':'.$now->format('i'),
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop_tax'),
             [
                 'tax_rule' => $form,
@@ -95,12 +96,12 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
         $redirectUrl = $this->generateUrl('admin_setting_shop_tax');
 
         $this->client->request(
-            'DELETE',
+            Request::METHOD_DELETE,
             $this->generateUrl('admin_setting_shop_tax_delete', ['id' => $TaxRule->getId()])
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
-        $this->assertNull($this->entityManager->getRepository(TaxRule::class)->find($taxRuleId));
+        $this->assertNotInstanceOf(TaxRule::class, $this->entityManager->getRepository(TaxRule::class)->find($taxRuleId));
     }
 
     public function testTaxDeleteFail()
@@ -108,10 +109,10 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
         $tid = 99999;
 
         $this->client->request(
-            'DELETE',
+            Request::METHOD_DELETE,
             $this->generateUrl('admin_setting_shop_tax_delete', ['id' => $tid])
         );
-        $this->assertSame(404, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 
     public function testEditWithTime()
@@ -121,13 +122,13 @@ class TaxRuleControllerTest extends AbstractAdminWebTestCase
         $now = new \DateTime();
         $form = [
             '_token' => 'dummy',
-            'tax_rate' => 10,
+            'tax_rate' => '10',
             'rounding_type' => random_int(1, 3),
             'apply_date' => $now->format('Y').'-'.$now->format('m').'-'.$now->format('d').'T23:01',
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop_tax'),
             [
                 'tax_rule' => $form,

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -16,36 +18,26 @@ namespace Eccube\Tests\Repository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Entity\Category;
 use Eccube\Entity\Master\ProductStatus;
+use Eccube\Entity\Product;
 use Eccube\Entity\ProductStock;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\Master\ProductStatusRepository;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * ProductRepository#getQueryBuilderBySearchDataAdmin test cases.
  *
  * @author Kentaro Ohkouchi
  */
-class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProductRepositoryTestCase
+final class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProductRepositoryTestCase
 {
-    /**
-     * @var array
-     */
-    protected $Results;
+    protected ?array $Results = null;
 
-    /**
-     * @var array
-     */
-    protected $searchData;
+    protected ?array $searchData = null;
 
-    /**
-     * @var ProductStatusRepository
-     */
-    protected $productStatusRepository;
+    protected ?ProductStatusRepository $productStatusRepository = null;
 
-    /**
-     * @var CategoryRepository
-     */
-    protected $categoryRepository;
+    protected ?CategoryRepository $categoryRepository = null;
 
     /**
      * {@inheritdoc}
@@ -53,7 +45,6 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->productStatusRepository = $this->entityManager->getRepository(ProductStatus::class);
         $this->categoryRepository = $this->entityManager->getRepository(Category::class);
     }
@@ -68,6 +59,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
     public function testId()
     {
         $Product = $this->productRepository->findOneBy(['name' => '商品-2']);
+        $this->assertInstanceOf(Product::class, $Product);
         $id = $Product->getId();
 
         $this->searchData = [
@@ -131,6 +123,8 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
     {
         $Product = $this->productRepository->findOneBy(['name' => '商品-1']);
         $ProductStatus = $this->productStatusRepository->find(ProductStatus::DISPLAY_HIDE);
+        $this->assertInstanceOf(Product::class, $Product);
+        $this->assertInstanceOf(ProductStatus::class, $ProductStatus);
         $Product->setStatus($ProductStatus);
         $this->entityManager->flush();
 
@@ -149,6 +143,8 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
     {
         $Product = $this->productRepository->findOneBy(['name' => '商品-1']);
         $ProductStatus = $this->productStatusRepository->find(ProductStatus::DISPLAY_HIDE);
+        $this->assertInstanceOf(Product::class, $Product);
+        $this->assertInstanceOf(ProductStatus::class, $ProductStatus);
         $Product->setStatus($ProductStatus);
         $this->entityManager->flush();
 
@@ -171,7 +167,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
             foreach ($Product->getProductClasses() as $ProductClass) {
                 $ProductClass
                     ->setStockUnlimited(false)
-                    ->setStock($faker->numberBetween(1, 999));
+                    ->setStock((string) $faker->numberBetween(1, 999));
             }
         }
         $this->entityManager->flush();
@@ -181,7 +177,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
         foreach ($Product->getProductClasses() as $ProductClass) {
             $ProductClass
                 ->setStockUnlimited(false)
-                ->setStock(0);
+                ->setStock('0');
         }
         $this->entityManager->flush();
 
@@ -204,7 +200,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
             foreach ($Product->getProductClasses() as $ProductClass) {
                 $ProductClass
                     ->setStockUnlimited(false)
-                    ->setStock(0);
+                    ->setStock('0');
             }
         }
         $this->entityManager->flush();
@@ -214,7 +210,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
         foreach ($Product->getProductClasses() as $ProductClass) {
             $ProductClass
                 ->setStockUnlimited(true)
-                ->setStock(0);
+                ->setStock('0');
         }
         $this->entityManager->flush();
 
@@ -228,13 +224,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
         $this->verify();
     }
 
-    /**
-     * @dataProvider dataFormDateProvider
-     *
-     * @param string $formName
-     * @param string $time
-     * @param int $expected
-     */
+    #[DataProvider(methodName: 'dataFormDateProvider')]
     public function testDate(string $formName, string $time, int $expected)
     {
         $this->searchData = [
@@ -255,30 +245,20 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
      * - today: 今日の00:00:00
      * - tomorrow: 明日の00:00:00
      * - yesterday: 昨日の00:00:00
-     *
-     * @return array
      */
-    public function dataFormDateProvider()
+    public static function dataFormDateProvider(): \Iterator
     {
-        return [
-            ['create_date_start', 'today', 3],
-            ['create_date_start', 'tomorrow', 0],
-            ['update_date_start', 'today', 3],
-            ['update_date_start', 'tomorrow', 0],
-            ['create_date_end', 'today', 3],
-            ['create_date_end', 'yesterday', 0],
-            ['update_date_end', 'today', 3],
-            ['update_date_end', 'yesterday', 0],
-        ];
+        yield ['create_date_start', 'today', 3];
+        yield ['create_date_start', 'tomorrow', 0];
+        yield ['update_date_start', 'today', 3];
+        yield ['update_date_start', 'tomorrow', 0];
+        yield ['create_date_end', 'today', 3];
+        yield ['create_date_end', 'yesterday', 0];
+        yield ['update_date_end', 'today', 3];
+        yield ['update_date_end', 'yesterday', 0];
     }
 
-    /**
-     * @dataProvider dataFormDateTimeProvider
-     *
-     * @param string $formName
-     * @param string $time
-     * @param int $expected
-     */
+    #[DataProvider(methodName: 'dataFormDateTimeProvider')]
     public function testDateTime(string $formName, string $time, int $expected)
     {
         $this->searchData = [
@@ -294,21 +274,17 @@ class ProductRepositoryGetQueryBuilderBySearchDataAdminTest extends AbstractProd
 
     /**
      * Data provider datetime form test.
-     *
-     * @return array
      */
-    public function dataFormDateTimeProvider()
+    public static function dataFormDateTimeProvider(): \Iterator
     {
-        return [
-            ['create_datetime_start', '- 1 hour', 3],
-            ['create_datetime_start', '+ 1 hour', 0],
-            ['update_datetime_start', '- 1 hour', 3],
-            ['update_datetime_start', '+ 1 hour', 0],
-            ['create_datetime_end', '+ 1 hour', 3],
-            ['create_datetime_end', '- 1 hour', 0],
-            ['update_datetime_end', '+ 1 hour', 3],
-            ['update_datetime_end', '- 1 hour', 0],
-        ];
+        yield ['create_datetime_start', '- 1 hour', 3];
+        yield ['create_datetime_start', '+ 1 hour', 0];
+        yield ['update_datetime_start', '- 1 hour', 3];
+        yield ['update_datetime_start', '+ 1 hour', 0];
+        yield ['create_datetime_end', '+ 1 hour', 3];
+        yield ['create_datetime_end', '- 1 hour', 0];
+        yield ['update_datetime_end', '+ 1 hour', 3];
+        yield ['update_datetime_end', '- 1 hour', 0];
     }
 
     public function testCategory()

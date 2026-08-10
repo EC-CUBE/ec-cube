@@ -26,56 +26,23 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class TwoFactorAuthListener implements EventSubscriberInterface
 {
     /**
-     * @var array 2段階認証のチェックを除外するroute
+     * @var array<string> 2段階認証のチェックを除外するroute
      */
     public const ROUTE_EXCLUDE = ['admin_two_factor_auth'];
 
     /**
-     * @var array 2段階認証キー未設定時のみ除外するroute
+     * @var array<string> 2段階認証キー未設定時のみ除外するroute
      */
     public const ROUTE_EXCLUDE_WHEN_NOT_CONFIGURED = ['admin_two_factor_auth_set'];
 
     /**
-     * @var EccubeConfig
+     * @param Context $requestContext,
      */
-    protected $eccubeConfig;
-
-    /**
-     * @var Context
-     */
-    protected $requestContext;
-
-    /**
-     * @var UrlGeneratorInterface
-     */
-    protected $router;
-
-    /**
-     * @var TwoFactorAuthService
-     */
-    protected $twoFactorAuthService;
-
-    /**
-     * @param EccubeConfig $eccubeConfig
-     * @param Context $context,
-     * @param UrlGeneratorInterface $router
-     */
-    public function __construct(
-        EccubeConfig $eccubeConfig,
-        Context $requestContext,
-        UrlGeneratorInterface $router,
-        TwoFactorAuthService $twoFactorAuthService,
-    ) {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->requestContext = $requestContext;
-        $this->router = $router;
-        $this->twoFactorAuthService = $twoFactorAuthService;
+    public function __construct(protected EccubeConfig $eccubeConfig, protected Context $requestContext, protected UrlGeneratorInterface $router, protected TwoFactorAuthService $twoFactorAuthService)
+    {
     }
 
-    /**
-     * @param ControllerArgumentsEvent $event
-     */
-    public function onKernelController(ControllerArgumentsEvent $event)
+    public function onKernelController(ControllerArgumentsEvent $event): void
     {
         if (!$event->isMainRequest()) {
             return;
@@ -118,16 +85,15 @@ class TwoFactorAuthListener implements EventSubscriberInterface
             else {
                 $url = $this->router->generate('admin_two_factor_auth_set', [], UrlGeneratorInterface::ABSOLUTE_PATH);
             }
-            $event->setController(function () use ($url) {
-                return new RedirectResponse($url, $status = 302);
-            });
+            $event->setController(fn () => new RedirectResponse($url, $status = 302));
         }
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string>>
      */
-    public static function getSubscribedEvents()
+    #[\Override]
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::CONTROLLER_ARGUMENTS => ['onKernelController', 7],

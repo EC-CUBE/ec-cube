@@ -13,33 +13,38 @@
 
 namespace Eccube\Form\Type\Shopping;
 
+use Eccube\Entity\OrderItem;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class OrderItemType extends AbstractType
 {
-    public function __construct()
+    /**
+     * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
+     */
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-    }
-
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(
             [
-                'data_class' => \Eccube\Entity\OrderItem::class,
+                'data_class' => OrderItem::class,
             ]
         );
     }
 
-    public function getBlockPrefix()
+    #[\Override]
+    public function getBlockPrefix(): string
     {
         return '_shopping_order_item';
     }

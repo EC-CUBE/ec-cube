@@ -58,9 +58,6 @@ class EA08SysteminfoCest
         $I->see('User Agent', '#server_info_box__body_inner > div:nth-child(6) > div:first-child');
         if ($config['eccube_phpinfo_enabled'] == 1) {
             $I->see('PHP情報', '#php_info_box__header > div > span');
-        }
-
-        if ($config['eccube_phpinfo_enabled'] == 1) {
             $I->expect('session.save_path をチェックします');
             $I->amOnPage('/'.$config['eccube_admin_route'].'/setting/system/system/phpinfo');
             $I->scrollTo('a[name=module_session]');
@@ -484,7 +481,7 @@ class EA08SysteminfoCest
         $I->wait(1); // XXX 画面遷移直後は selector の参照に失敗するため wait を入れる
         $I->waitForElement(['css' => '.c-contentsArea .log-viewer']);
         $logs = $I->grabTextFrom(['css' => '.c-contentsArea .log-viewer']);
-        $I->assertLessThanOrEqual(10, count(explode("\n", $logs)), 'ログ件数を確認');
+        $I->assertLessThanOrEqual(10, count(explode("\n", (string) $logs)), 'ログ件数を確認');
         $I->seeInField(['id' => 'admin_system_log_line_max'], '10');
     }
 

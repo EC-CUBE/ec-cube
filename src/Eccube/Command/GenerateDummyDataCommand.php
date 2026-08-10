@@ -19,48 +19,24 @@ use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Tests\Fixture\Generator;
 use Faker\Factory as Faker;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'eccube:fixtures:generate', description: 'Dummy data generator')]
 class GenerateDummyDataCommand extends Command
 {
-    protected static $defaultName = 'eccube:fixtures:generate';
-
-    /**
-     * @var Generator
-     */
-    protected $generator;
-
-    /**
-     * @var EntityManager
-     */
-    protected $entityManager;
-
-    /**
-     * @var DeliveryRepository
-     */
-    protected $deliveryRepository;
-
-    /**
-     * @var ProductRepository
-     */
-    protected $productRepository;
-
-    public function __construct(?Generator $generator = null, ?EntityManagerInterface $entityManager = null, ?DeliveryRepository $deliveryRepository = null, ?ProductRepository $productRepository = null)
+    public function __construct(protected ?Generator $generator = null, protected ?EntityManagerInterface $entityManager = null, protected ?DeliveryRepository $deliveryRepository = null, protected ?ProductRepository $productRepository = null)
     {
         parent::__construct();
-        $this->generator = $generator;
-        $this->entityManager = $entityManager;
-        $this->deliveryRepository = $deliveryRepository;
-        $this->productRepository = $productRepository;
     }
 
-    protected function configure()
+    #[\Override]
+    protected function configure(): void
     {
         $this
-            ->setDescription('Dummy data generator')
             ->addOption('with-locale', null, InputOption::VALUE_REQUIRED, 'Set to the locale.', 'ja_JP')
             ->addOption('without-image', null, InputOption::VALUE_NONE, 'Do not generate images.')
             ->addOption('products', null, InputOption::VALUE_REQUIRED, 'Number of Products.', 100)
@@ -81,16 +57,14 @@ EOF
             );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    #[\Override]
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $locale = $input->getOption('with-locale');
         $notImage = $input->getOption('without-image');
         $numberOfProducts = $input->getOption('products');
         $numberOfOrder = $input->getOption('orders');
         $numberOfCustomer = $input->getOption('customers');
-
-        // SQL Loggerを無効化してパフォーマンス向上
-        $this->entityManager->getConnection()->getConfiguration()->setSQLLogger(null);
 
         // バッチサイズ（何件ごとにflushするか）
         $batchSize = 100;

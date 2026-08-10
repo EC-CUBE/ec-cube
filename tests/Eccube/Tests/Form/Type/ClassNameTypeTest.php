@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -16,20 +18,18 @@ namespace Eccube\Tests\Form\Type;
 use Eccube\Form\Type\Admin\ClassNameType;
 use Symfony\Component\Form\FormInterface;
 
-class ClassNameTypeTest extends AbstractTypeTestCase
+final class ClassNameTypeTest extends AbstractTypeTestCase
 {
-    /** @var FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = [
+    protected ?array $formData = [
         'name' => '形状',
     ];
 
     protected function setUp(): void
     {
         parent::setUp();
-
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
             ->createBuilder(ClassNameType::class, null, [

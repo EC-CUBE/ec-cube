@@ -13,208 +13,138 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Entity\Master\Authority;
+use Eccube\Repository\AuthorityRoleRepository;
 
-if (!class_exists(AuthorityRole::class)) {
+/**
+ * AuthorityRole
+ */
+#[ORM\Table(name: 'dtb_authority_role')]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: AuthorityRoleRepository::class)]
+class AuthorityRole extends AbstractEntity
+{
+    #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    private ?int $id = null;
+
+    #[ORM\Column(name: 'deny_url', type: Types::STRING, length: 4000)]
+    private ?string $deny_url = null;
+
+    #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
+    private ?\DateTime $create_date = null;
+
+    #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
+    private ?\DateTime $update_date = null;
+
+    #[ORM\ManyToOne(targetEntity: Authority::class)]
+    #[ORM\JoinColumn(name: 'authority_id', referencedColumnName: 'id')]
+    private ?Authority $Authority = null;
+
+    #[ORM\ManyToOne(targetEntity: Member::class)]
+    #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
+    private ?Member $Creator = null;
+
     /**
-     * AuthorityRole
-     *
-     * @ORM\Table(name="dtb_authority_role")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\AuthorityRoleRepository")
+     * Get id.
      */
-    class AuthorityRole extends AbstractEntity
+    public function getId(): ?int
     {
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
-         */
-        private $id;
+        return $this->id;
+    }
 
-        /**
-         * @var string
-         *
-         * @ORM\Column(name="deny_url", type="string", length=4000)
-         */
-        private $deny_url;
+    /**
+     * Set denyUrl.
+     */
+    public function setDenyUrl(?string $denyUrl): AuthorityRole
+    {
+        $this->deny_url = $denyUrl;
 
-        /**
-         * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
-         */
-        private $create_date;
+        return $this;
+    }
 
-        /**
-         * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
-         */
-        private $update_date;
+    /**
+     * Get denyUrl.
+     */
+    public function getDenyUrl(): ?string
+    {
+        return $this->deny_url;
+    }
 
-        /**
-         * @var Master\Authority
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Authority")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="authority_id", referencedColumnName="id")
-         * })
-         */
-        private $Authority;
+    /**
+     * Set createDate.
+     */
+    public function setCreateDate(\DateTime $createDate): AuthorityRole
+    {
+        $this->create_date = $createDate;
 
-        /**
-         * @var Member
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
-         * })
-         */
-        private $Creator;
+        return $this;
+    }
 
-        /**
-         * Get id.
-         *
-         * @return int
-         */
-        public function getId()
-        {
-            return $this->id;
-        }
+    /**
+     * Get createDate.
+     */
+    public function getCreateDate(): ?\DateTime
+    {
+        return $this->create_date;
+    }
 
-        /**
-         * Set denyUrl.
-         *
-         * @param string $denyUrl
-         *
-         * @return AuthorityRole
-         */
-        public function setDenyUrl($denyUrl)
-        {
-            $this->deny_url = $denyUrl;
+    /**
+     * Set updateDate.
+     */
+    public function setUpdateDate(\DateTime $updateDate): AuthorityRole
+    {
+        $this->update_date = $updateDate;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get denyUrl.
-         *
-         * @return string
-         */
-        public function getDenyUrl()
-        {
-            return $this->deny_url;
-        }
+    /**
+     * Get updateDate.
+     */
+    public function getUpdateDate(): ?\DateTime
+    {
+        return $this->update_date;
+    }
 
-        /**
-         * Set createDate.
-         *
-         * @param \DateTime $createDate
-         *
-         * @return AuthorityRole
-         */
-        public function setCreateDate($createDate)
-        {
-            $this->create_date = $createDate;
+    /**
+     * Set authority.
+     */
+    public function setAuthority(?Authority $authority = null): AuthorityRole
+    {
+        $this->Authority = $authority;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get createDate.
-         *
-         * @return \DateTime
-         */
-        public function getCreateDate()
-        {
-            return $this->create_date;
-        }
+    /**
+     * Get authority.
+     */
+    public function getAuthority(): ?Authority
+    {
+        return $this->Authority;
+    }
 
-        /**
-         * Set updateDate.
-         *
-         * @param \DateTime $updateDate
-         *
-         * @return AuthorityRole
-         */
-        public function setUpdateDate($updateDate)
-        {
-            $this->update_date = $updateDate;
+    /**
+     * Set creator.
+     */
+    public function setCreator(?Member $creator = null): AuthorityRole
+    {
+        $this->Creator = $creator;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get updateDate.
-         *
-         * @return \DateTime
-         */
-        public function getUpdateDate()
-        {
-            return $this->update_date;
-        }
-
-        /**
-         * Set authority.
-         *
-         * @param Master\Authority|null $authority
-         *
-         * @return AuthorityRole
-         */
-        public function setAuthority(?Master\Authority $authority = null)
-        {
-            $this->Authority = $authority;
-
-            return $this;
-        }
-
-        /**
-         * Get authority.
-         *
-         * @return Master\Authority|null
-         */
-        public function getAuthority()
-        {
-            return $this->Authority;
-        }
-
-        /**
-         * Set creator.
-         *
-         * @param Member|null $creator
-         *
-         * @return AuthorityRole
-         */
-        public function setCreator(?Member $creator = null)
-        {
-            $this->Creator = $creator;
-
-            return $this;
-        }
-
-        /**
-         * Get creator.
-         *
-         * @return Member|null
-         */
-        public function getCreator()
-        {
-            return $this->Creator;
-        }
+    /**
+     * Get creator.
+     */
+    public function getCreator(): ?Member
+    {
+        return $this->Creator;
     }
 }

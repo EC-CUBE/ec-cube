@@ -1,34 +1,137 @@
 version: 2
 updates:
+  # ------------------------------------------------------------------
+  # PHP (composer)
+  # ------------------------------------------------------------------
   - package-ecosystem: "composer"
     directory: "/"
     schedule:
       interval: "weekly"
+      day: "monday"
+      time: "07:00"
+      timezone: "Asia/Tokyo"
+    cooldown:
+      default-days: 5
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: "chore(deps)"
+      prefix-development: "chore(deps-dev)"
     allow:
       - dependency-type: "all"
     ignore:
-      - dependency-name: "twig/twig"
-        versions: [ ">=3.8.0" ]
-      - dependency-name: "robthree/twofactorauth"
-        versions: [ ">=2.0.0" ]
-      - dependency-name: "doctrine/lexer"
-        versions: [ ">=3.0.0" ]
-      - dependency-name: "psr/log"
-        versions: [ ">=3.0.0" ]
+      # Symfony のメジャーバージョンアップは除外
+      - dependency-name: "symfony/*"
+        update-types: [ "version-update:semver-major" ]
+    # 所属グループは記載順ではなくパターンの具体性 (specificity) スコアで決まる。
+    # dependabot-core の PatternSpecificityCalculator が算出し、スコアが高い方が勝つ。
+    #   patterns 未指定 = 500 / "doctrine/*" = 95 / "symfony/*" = 94 / "*" = 1
+    # このため require-dev の symfony/* (browser-kit, phpunit-bridge) は symfony ではなく
+    # php-dev-tools に入る。phpunit-bridge は Symfony 本体とバージョン系列が揃わない
+    # (本体 7.4 系に対し 8.x) ため、これは意図した挙動。
+    # なお GitHub のドキュメントは "first group it matches" と記述しているが、
+    # 実装は 2026-05-19 に specificity 判定が常時有効化されており乖離している。
+    # https://github.com/dependabot/dependabot-core/issues/14576
+    # どのグループにもマッチしない更新 (= major) は、従来どおり個別の PR になる。
+    groups:
+      # require-dev。CI が通れば実質そのままマージできる
+      php-dev-tools:
+        dependency-type: "development"
+        update-types: [ "minor", "patch" ]
+      # Symfony は同時リリースでバージョンが揃うため 1 本にまとめる
+      symfony:
+        patterns: [ "symfony/*" ]
+        update-types: [ "minor", "patch" ]
+      doctrine:
+        patterns: [ "doctrine/*" ]
+        update-types: [ "minor", "patch" ]
+      # 上記以外。patterns が "*" (スコア 1) のため symfony/doctrine には競り負けるが、
+      # exclude-patterns で contains? の時点から明示的に外しておく
+      php-production:
+        patterns: [ "*" ]
+        exclude-patterns: [ "symfony/*", "doctrine/*" ]
+        update-types: [ "minor", "patch" ]
 
-  # GitHub アクションの依存関係を維持する
+  # ------------------------------------------------------------------
+  # GitHub Actions
+  # ------------------------------------------------------------------
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
+      day: "monday"
+      time: "07:00"
+      timezone: "Asia/Tokyo"
+    cooldown:
+      default-days: 5
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(deps)"
+    groups:
+      github-actions:
+        patterns: [ "*" ]
+        update-types: [ "minor", "patch" ]
 
-  # npm の依存関係を維持する
+  # ------------------------------------------------------------------
+  # npm (ルート: 管理画面・店頭アセット)
+  # ------------------------------------------------------------------
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"
+      day: "monday"
+      time: "07:00"
+      timezone: "Asia/Tokyo"
+    cooldown:
+      default-days: 5
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(deps)"
+      prefix-development: "chore(deps-dev)"
     allow:
       - dependency-type: "all"
-    ignore:
-      - dependency-name: "sort-css-media-queries"
-        versions: [ ">=2.4.0" ]
+    groups:
+      # 画面に描画されるライブラリ。目視確認が要るのはこの 1 本だけにする
+      npm-frontend:
+        patterns:
+          - "@popperjs/core"
+          - "ace-builds"
+          - "bootstrap"
+          - "chart.js"
+          - "filepond"
+          - "filepond-plugin-*"
+          - "jquery"
+          - "jquery-ui"
+          - "jquery.qrcode"
+          - "ladda"
+          - "normalize.css"
+          - "slick-carousel"
+          - "spin.js"
+        update-types: [ "minor", "patch" ]
+      # ビルドツールと間接依存 (package-lock.json のみの更新)
+      npm-build:
+        patterns: [ "*" ]
+        update-types: [ "minor", "patch" ]
+
+  # ------------------------------------------------------------------
+  # npm (E2E: Playwright)
+  # ------------------------------------------------------------------
+  - package-ecosystem: "npm"
+    directory: "/e2e"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "07:00"
+      timezone: "Asia/Tokyo"
+    cooldown:
+      default-days: 5
+    open-pull-requests-limit: 3
+    commit-message:
+      prefix: "chore(deps)"
+      prefix-development: "chore(deps-dev)"
+    allow:
+      - dependency-type: "all"
+    groups:
+      # グループ名に数字は使えないため "e2e" ではなく "playwright"
+      playwright:
+        patterns: [ "*" ]
+        update-types: [ "minor", "patch" ]

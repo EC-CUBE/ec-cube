@@ -19,6 +19,7 @@ use Eccube\Entity\Master\Work;
 use Eccube\Entity\Member;
 use Eccube\Form\Type\RepeatedPasswordType;
 use Eccube\Form\Type\ToggleSwitchType;
+use Eccube\Form\Validator\PasswordBlocklist;
 use Eccube\Repository\MemberRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -34,34 +35,39 @@ use Symfony\Component\Validator\Constraints as Assert;
 class MemberType extends AbstractType
 {
     /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
-     * @var MemberRepository
-     */
-    protected $memberRepository;
-
-    /**
      * MemberType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
-     * @param MemberRepository $memberRepository
      */
-    public function __construct(
-        EccubeConfig $eccubeConfig,
-        MemberRepository $memberRepository,
-    ) {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->memberRepository = $memberRepository;
+    public function __construct(protected EccubeConfig $eccubeConfig, protected MemberRepository $memberRepository)
+    {
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        // RepeatedPasswordType の options.constraints を上書きするため,
+        // 長さ・パターンに加えてブロックリスト・漏洩チェックもここで明示的に付与する.
+        $passwordConstraints = [
+            new Assert\NotBlank(),
+            new Assert\Length([
+                'min' => $this->eccubeConfig['eccube_password_min_len'],
+                'max' => $this->eccubeConfig['eccube_password_max_len'],
+            ]),
+            new Assert\Regex([
+                'pattern' => $this->eccubeConfig['eccube_password_pattern'],
+                'message' => 'form_error.password_pattern_invalid',
+            ]),
+            new PasswordBlocklist(),
+        ];
+        // NIST SP 800-63B-4 対応の漏洩パスワードチェック. 閉域網等では config で無効化できる.
+        if ($this->eccubeConfig['eccube_password_compromised_check']) {
+            $passwordConstraints[] = new Assert\NotCompromisedPassword(['skipOnError' => true]);
+        }
+
         $builder
             ->add('name', TextType::class, [
                 'constraints' => [
@@ -78,17 +84,7 @@ class MemberType extends AbstractType
             ])
             ->add('plain_password', RepeatedPasswordType::class, [
                 'options' => [
-                    'constraints' => [
-                        new Assert\Length([
-                            'min' => $this->eccubeConfig['eccube_password_min_len'],
-                            'max' => $this->eccubeConfig['eccube_password_max_len'],
-                        ]),
-                        new Assert\Regex([
-                            'pattern' => $this->eccubeConfig['eccube_password_pattern'],
-                            'message' => 'form_error.password_pattern_invalid',
-                        ]),
-                        new Assert\NotBlank(),
-                    ],
+                    'constraints' => $passwordConstraints,
                 ],
             ])
             ->add('Authority', EntityType::class, [
@@ -116,7 +112,7 @@ class MemberType extends AbstractType
             ]);
 
         // login idの入力は新規登録時のみとし、編集時はdisabledにする
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
             $form = $event->getForm();
             $data = $event->getData();
 
@@ -148,7 +144,7 @@ class MemberType extends AbstractType
             $form->add('login_id', TextType::class, $options);
         });
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             /** @var Member $Member */
             $Member = $event->getData();
 
@@ -176,7 +172,8 @@ class MemberType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Member::class,
@@ -186,7 +183,8 @@ class MemberType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    #[\Override]
+    public function getBlockPrefix(): string
     {
         return 'admin_member';
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -13,10 +15,14 @@
 
 namespace Eccube\Tests\Web\Install;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\Constant;
 use Eccube\Controller\Install\InstallController;
+use Eccube\Session\Session as EccubeSession;
 use Eccube\Tests\Web\AbstractWebTestCase;
 use Eccube\Util\CacheUtil;
+use PHPUnit\Framework\Attributes\Group;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,70 +31,43 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-/**
- * @group cache-clear-install
- */
-class InstallControllerTest extends AbstractWebTestCase
+#[Group('cache-clear-install')]
+final class InstallControllerTest extends AbstractWebTestCase
 {
-    /**
-     * @var InstallController
-     */
-    protected $controller;
+    protected ?InstallController $controller = null;
 
-    /**
-     * @var Request
-     */
-    protected $request;
+    protected ?string $envFile = null;
 
-    /**
-     * @var string
-     */
-    protected $envFile;
+    protected ?string $envFileBackup = null;
 
-    /**
-     * @var string
-     */
-    protected $envFileBackup;
-
-    /**
-     * @var Session
-     */
-    protected $session;
+    protected ?EccubeSession $session = null;
 
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->envFile = static::getContainer()->getParameter('kernel.project_dir').'/.env';
         $this->envFileBackup = $this->envFile.'.'.date('YmdHis');
         if (file_exists($this->envFile)) {
             rename($this->envFile, $this->envFileBackup);
         }
-
         $favicon = static::getContainer()->getParameter('eccube_html_dir').'/user_data/assets/img/common/favicon.ico';
         if (file_exists($favicon)) {
             unlink($favicon);
         }
-
-        $formFactory = static::getContainer()->get('form.factory');
+        $formFactory = static::getContainer()->get(FormFactoryInterface::class);
         $passwordHasher = static::getContainer()->get(UserPasswordHasherInterface::class);
         $cacheUtil = static::getContainer()->get(CacheUtil::class);
-
         $request = new Request();
         $request->setSession(new Session(new MockArraySessionStorage()));
         $requestStack = new RequestStack();
         $requestStack->push($request);
-        $this->session = new \Eccube\Session\Session($requestStack);
+        $this->session = new EccubeSession($requestStack);
         $this->controller = new InstallController($passwordHasher, $cacheUtil);
         $this->controller->setFormFactory($formFactory);
         $this->controller->setSession($this->session);
-
         $reflectionClass = new \ReflectionClass($this->controller);
         $propContainer = $reflectionClass->getProperty('container');
-        $propContainer->setAccessible(true);
         $propContainer->setValue($this->controller, self::getContainer());
-
-        $this->request = $this->createMock(Request::class);
     }
 
     protected function tearDown(): void
@@ -101,19 +80,19 @@ class InstallControllerTest extends AbstractWebTestCase
 
     public function testIndex()
     {
-        $this->assertInstanceOf(RedirectResponse::class, $this->controller->index($this->request));
+        $this->assertInstanceOf(RedirectResponse::class, $this->controller->index());
     }
 
     public function testStep1()
     {
-        $this->actual = $this->controller->step1($this->request);
+        $this->actual = $this->controller->step1($this->createStub(Request::class));
         $this->assertTrue(is_array($this->actual));
         $this->assertInstanceOf(FormView::class, $this->actual['form']);
     }
 
     public function testStep2()
     {
-        $this->actual = $this->controller->step2($this->request);
+        $this->actual = $this->controller->step2();
         $this->assertArrayHasKey('noWritePermissions', $this->actual);
 
         $this->assertFileExists(static::getContainer()->getParameter('eccube_html_dir').'/user_data/assets/img/common/favicon.ico');
@@ -122,8 +101,8 @@ class InstallControllerTest extends AbstractWebTestCase
 
     public function testStep3()
     {
-        $entityManager = static::getContainer()->get('doctrine')->getManager();
-        $this->actual = $this->controller->step3($this->request, $entityManager);
+        $entityManager = static::getContainer()->get(EntityManagerInterface::class);
+        $this->actual = $this->controller->step3($this->createStub(Request::class), $entityManager);
         $this->assertTrue(is_array($this->actual));
         $this->assertInstanceOf(FormView::class, $this->actual['form']);
         $this->assertInstanceOf(Request::class, $this->actual['request']);
@@ -131,7 +110,7 @@ class InstallControllerTest extends AbstractWebTestCase
 
     public function testStep4()
     {
-        $this->actual = $this->controller->step4($this->request);
+        $this->actual = $this->controller->step4($this->createStub(Request::class));
         $this->assertTrue(is_array($this->actual));
         $this->assertInstanceOf(FormView::class, $this->actual['form']);
     }
@@ -143,7 +122,7 @@ class InstallControllerTest extends AbstractWebTestCase
                 'authmagic' => 'secret',
                 'admin_allow_hosts' => "127.0.0.1\r\n192.168.0.1",
             ]);
-        $this->actual = $this->controller->complete($this->request);
+        $this->actual = $this->controller->complete($this->createStub(Request::class));
         $this->assertArrayHasKey('admin_url', $this->actual);
     }
 

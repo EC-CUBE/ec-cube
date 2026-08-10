@@ -14,10 +14,14 @@
 namespace Eccube\Form\Type\Admin;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Form\Validator\PasswordBlocklist;
+use Eccube\Util\PasswordNormalizer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -25,25 +29,51 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ChangePasswordType extends AbstractType
 {
     /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
      * ChangePasswordType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
-    public function __construct(EccubeConfig $eccubeConfig)
+    public function __construct(protected EccubeConfig $eccubeConfig)
     {
-        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $changePasswordConstraints = [
+            new Assert\NotBlank(),
+            new Assert\Length([
+                'min' => $this->eccubeConfig['eccube_password_min_len'],
+                'max' => $this->eccubeConfig['eccube_password_max_len'],
+            ]),
+            new Assert\Regex([
+                'pattern' => $this->eccubeConfig['eccube_password_pattern'],
+                'message' => 'form_error.password_pattern_invalid',
+            ]),
+            new PasswordBlocklist(),
+        ];
+        // NIST SP 800-63B-4 対応の漏洩パスワードチェック. 閉域網等では config で無効化できる.
+        if ($this->eccubeConfig['eccube_password_compromised_check']) {
+            $changePasswordConstraints[] = new Assert\NotCompromisedPassword(['skipOnError' => true]);
+        }
+
+        // 検証と保存を同一の正規化済み値で行うため, 検証前(PRE_SUBMIT)に新パスワードを NFKC 正規化する.
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event): void {
+            $data = $event->getData();
+            if (!is_array($data) || !isset($data['change_password']) || !is_array($data['change_password'])) {
+                return;
+            }
+            foreach (['first', 'second'] as $key) {
+                if (isset($data['change_password'][$key]) && is_string($data['change_password'][$key])) {
+                    $data['change_password'][$key] = PasswordNormalizer::normalize($data['change_password'][$key]);
+                }
+            }
+            $event->setData($data);
+        });
+
         $builder
             ->add('current_password', PasswordType::class, [
                 'label' => 'changepassword.label.current_pass',
@@ -59,17 +89,7 @@ class ChangePasswordType extends AbstractType
                 'second_options' => [
                     'label' => 'changepassword.label.verify_pass',
                 ],
-                'constraints' => [
-                    new Assert\NotBlank(),
-                    new Assert\Length([
-                        'min' => $this->eccubeConfig['eccube_password_min_len'],
-                        'max' => $this->eccubeConfig['eccube_password_max_len'],
-                    ]),
-                    new Assert\Regex([
-                        'pattern' => $this->eccubeConfig['eccube_password_pattern'],
-                        'message' => 'form_error.password_pattern_invalid',
-                    ]),
-                ],
+                'constraints' => $changePasswordConstraints,
             ])
         ;
     }
@@ -77,14 +97,16 @@ class ChangePasswordType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    #[\Override]
+    public function getBlockPrefix(): string
     {
         return 'admin_change_password';
     }

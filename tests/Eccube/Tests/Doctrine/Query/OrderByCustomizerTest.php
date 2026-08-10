@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,60 +20,53 @@ use Eccube\Doctrine\Query\OrderByClause;
 use Eccube\Doctrine\Query\OrderByCustomizer;
 use Eccube\Tests\EccubeTestCase;
 
-class OrderByCustomizerTest extends EccubeTestCase
+final class OrderByCustomizerTest extends EccubeTestCase
 {
     public function testCustomizeNop()
     {
         $builder = $this->createQueryBuilder();
-        $customizer = new OrderByCustomizerTest_Customizer(function () { return []; });
+        $customizer = new OrderByCustomizerTest_Customizer(fn () => []);
         $customizer->customize($builder, null, '');
 
-        self::assertSame('SELECT p FROM Product p', $builder->getDQL());
+        $this->assertSame('SELECT p FROM Product p', $builder->getDQL());
     }
 
     public function testCustomizeNopShouldNotOverride()
     {
         $builder = $this->createQueryBuilder()
             ->orderBy('name', 'desc');
-        $customizer = new OrderByCustomizerTest_Customizer(function () { return []; });
+        $customizer = new OrderByCustomizerTest_Customizer(fn () => []);
         $customizer->customize($builder, null, '');
 
-        self::assertSame('SELECT p FROM Product p ORDER BY name desc', $builder->getDQL());
+        $this->assertSame('SELECT p FROM Product p ORDER BY name desc', $builder->getDQL());
     }
 
     public function testCustomizeOverride()
     {
         $builder = $this->createQueryBuilder()
             ->orderBy('name', 'desc');
-        $customizer = new OrderByCustomizerTest_Customizer(function () {
-            return [
-                new OrderByClause('productId'),
-            ];
-        });
+        $customizer = new OrderByCustomizerTest_Customizer(fn () => [
+            new OrderByClause('productId'),
+        ]);
         $customizer->customize($builder, null, '');
 
-        self::assertSame('SELECT p FROM Product p ORDER BY productId asc', $builder->getDQL());
+        $this->assertSame('SELECT p FROM Product p ORDER BY productId asc', $builder->getDQL());
     }
 
     public function testCustomizeOverrideWithMultiClause()
     {
         $builder = $this->createQueryBuilder()
             ->orderBy('name', 'desc');
-        $customizer = new OrderByCustomizerTest_Customizer(function () {
-            return [
-                new OrderByClause('productId'),
-                new OrderByClause('name', 'desc'),
-            ];
-        });
+        $customizer = new OrderByCustomizerTest_Customizer(fn () => [
+            new OrderByClause('productId'),
+            new OrderByClause('name', 'desc'),
+        ]);
         $customizer->customize($builder, null, '');
 
-        self::assertSame('SELECT p FROM Product p ORDER BY productId asc, name desc', $builder->getDQL());
+        $this->assertSame('SELECT p FROM Product p ORDER BY productId asc, name desc', $builder->getDQL());
     }
 
-    /**
-     * @return QueryBuilder
-     */
-    private function createQueryBuilder()
+    private function createQueryBuilder(): QueryBuilder
     {
         return $this->entityManager->createQueryBuilder()
             ->select('p')
@@ -97,12 +92,11 @@ class OrderByCustomizerTest_Customizer extends OrderByCustomizer
     }
 
     /**
-     * @param array $params
      * @param $queryKey
      *
      * @return OrderByClause[]
      */
-    public function createStatements($params, $queryKey)
+    public function createStatements(array $params, $queryKey): array
     {
         $callback = $this->closure;
 
@@ -111,10 +105,8 @@ class OrderByCustomizerTest_Customizer extends OrderByCustomizer
 
     /**
      * カスタマイズ対象のキーを返します。
-     *
-     * @return string
      */
-    public function getQueryKey()
+    public function getQueryKey(): string
     {
         return '';
     }

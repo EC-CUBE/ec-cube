@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -14,8 +16,9 @@
 namespace Eccube\Tests\Web;
 
 use Eccube\Entity\Page;
+use Symfony\Component\HttpFoundation\Request;
 
-class UserDataControllerTest extends AbstractWebTestCase
+final class UserDataControllerTest extends AbstractWebTestCase
 {
     protected $userDataDir;
 
@@ -27,9 +30,7 @@ class UserDataControllerTest extends AbstractWebTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->userDataDir = $this->eccubeConfig->get('eccube_theme_user_data_dir');
-
         $page = new Page();
         $page->setUrl($this->fileName)
             ->setFileName($this->fileName)
@@ -43,7 +44,6 @@ class UserDataControllerTest extends AbstractWebTestCase
         if (file_exists($this->userDataDir.'/'.$this->fileName.'.twig')) {
             unlink($this->userDataDir.'/'.$this->fileName.'.twig');
         }
-
         parent::tearDown();
     }
 
@@ -55,7 +55,7 @@ class UserDataControllerTest extends AbstractWebTestCase
         );
 
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             '/user_data/'.$this->fileName
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -68,7 +68,7 @@ class UserDataControllerTest extends AbstractWebTestCase
     public function testIndexWithNotFound()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             '/user_data/aaa'
         );
         $this->expected = 404;

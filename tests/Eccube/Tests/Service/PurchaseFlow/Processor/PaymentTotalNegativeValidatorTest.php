@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,7 +20,7 @@ use Eccube\Service\PurchaseFlow\Processor\PaymentTotalNegativeValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
-class PaymentTotalNegativeValidatorTest extends EccubeTestCase
+final class PaymentTotalNegativeValidatorTest extends EccubeTestCase
 {
     public function testPositiveValidate()
     {
@@ -28,7 +30,7 @@ class PaymentTotalNegativeValidatorTest extends EccubeTestCase
         $cart->setTotal(100);
 
         $result = $validator->execute($cart, new PurchaseContext());
-        self::assertTrue($result->isSuccess());
+        $this->assertTrue($result->isSuccess());
     }
 
     public function testNegativeValidate()
@@ -39,13 +41,10 @@ class PaymentTotalNegativeValidatorTest extends EccubeTestCase
         $cart->setTotal(-100);
 
         $result = $validator->execute($cart, new PurchaseContext());
-        self::assertTrue($result->isError());
+        $this->assertTrue($result->isError());
     }
 
-    /**
-     * @return PaymentTotalNegativeValidator
-     */
-    private function newValidator()
+    private function newValidator(): PaymentTotalNegativeValidator
     {
         return static::getContainer()->get(PaymentTotalNegativeValidator::class);
     }

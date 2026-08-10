@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -28,15 +30,9 @@ use Eccube\Tests\EccubeTestCase;
  */
 abstract class AbstractProductRepositoryTestCase extends EccubeTestCase
 {
-    /**
-     * @var ProductRepository
-     */
-    protected $productRepository;
+    protected ?ProductRepository $productRepository = null;
 
-    /**
-     * @var TagRepository
-     */
-    protected $tagRepository;
+    protected ?TagRepository $tagRepository = null;
 
     /**
      * {@inheritdoc}
@@ -44,10 +40,8 @@ abstract class AbstractProductRepositoryTestCase extends EccubeTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->productRepository = $this->entityManager->getRepository(Product::class);
         $this->tagRepository = $this->entityManager->getRepository(Tag::class);
-
         $tables = [
             'dtb_product_image',
             'dtb_product_stock',
@@ -56,9 +50,10 @@ abstract class AbstractProductRepositoryTestCase extends EccubeTestCase
             'dtb_product',
         ];
         $this->deleteAllRows($tables);
-        for ($i = 0; $i < 3; $i++) {
-            $this->createProduct('商品-'.$i);
-        }
+        $this->createProducts(3, [
+            'nameTemplate' => fn (int $i): string => '商品-'.$i,
+            'withCategoriesAndTags' => true,
+        ]);
     }
 
     /**
@@ -80,9 +75,6 @@ abstract class AbstractProductRepositoryTestCase extends EccubeTestCase
 
     /**
      * 商品にタグをつける
-     *
-     * @param Product $Product
-     * @param array $tagIds
      */
     protected function setProductTags(Product $Product, array $tagIds)
     {

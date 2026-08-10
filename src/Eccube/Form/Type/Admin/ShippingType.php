@@ -32,9 +32,11 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
@@ -44,50 +46,27 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class ShippingType extends AbstractType
 {
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
-     * @var DeliveryRepository
-     */
-    protected $deliveryRepository;
-
-    /**
-     * @var DeliveryTimeRepository
-     */
-    protected $deliveryTimeRepository;
-
-    /**
-     * @var BaseInfo
-     */
-    protected $BaseInfo;
+    protected BaseInfo $BaseInfo;
 
     /**
      * ShippingType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
-     * @param DeliveryRepository $deliveryRepository
-     * @param DeliveryTimeRepository $deliveryTimeRepository
-     * @param BaseInfoRepository $baseInfoRepository
      */
     public function __construct(
-        EccubeConfig $eccubeConfig,
-        DeliveryRepository $deliveryRepository,
-        DeliveryTimeRepository $deliveryTimeRepository,
+        protected EccubeConfig $eccubeConfig,
+        protected DeliveryRepository $deliveryRepository,
+        protected DeliveryTimeRepository $deliveryTimeRepository,
         BaseInfoRepository $baseInfoRepository,
     ) {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->deliveryRepository = $deliveryRepository;
-        $this->deliveryTimeRepository = $deliveryTimeRepository;
         $this->BaseInfo = $baseInfoRepository->get();
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('name', NameType::class, [
@@ -109,13 +88,14 @@ class ShippingType extends AbstractType
             ->add('company_name', TextType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('postal_code', PostalType::class, [
-                'required' => true,
+                'required' => false,
+                'constraints' => [
+                    new Assert\NotBlank(),
+                ],
             ])
             ->add('address', AddressType::class, [
                 'required' => false,
@@ -128,9 +108,7 @@ class ShippingType extends AbstractType
                 'addr01_options' => [
                     'constraints' => [
                         new Assert\NotBlank(),
-                        new Assert\Length([
-                            'max' => $this->eccubeConfig['eccube_mtext_len'],
-                        ]),
+                        new Assert\Length(max: $this->eccubeConfig['eccube_mtext_len']),
                     ],
                     'attr' => [
                         'class' => 'p-locality p-street-address',
@@ -141,9 +119,7 @@ class ShippingType extends AbstractType
                     'required' => false,
                     'constraints' => [
                         new Assert\NotBlank(),
-                        new Assert\Length([
-                            'max' => $this->eccubeConfig['eccube_mtext_len'],
-                        ]),
+                        new Assert\Length(max: $this->eccubeConfig['eccube_mtext_len']),
                     ],
                     'attr' => [
                         'class' => 'p-extended-address',
@@ -160,16 +136,12 @@ class ShippingType extends AbstractType
             ->add('Delivery', EntityType::class, [
                 'required' => false,
                 'class' => Delivery::class,
-                'choice_label' => function (Delivery $Delivery) {
-                    return $Delivery->isVisible()
-                        ? $Delivery->getServiceName()
-                        : $Delivery->getServiceName().trans('admin.common.hidden_label');
-                },
-                'query_builder' => function ($er) {
-                    return $er->createQueryBuilder('d')
-                        ->orderBy('d.visible', 'DESC') // 非表示は下に配置
-                        ->addOrderBy('d.sort_no', 'ASC');
-                },
+                'choice_label' => fn (Delivery $Delivery) => $Delivery->isVisible()
+                    ? $Delivery->getServiceName()
+                    : $Delivery->getServiceName().trans('admin.common.hidden_label'),
+                'query_builder' => fn ($er) => $er->createQueryBuilder('d')
+                    ->orderBy('d.visible', 'DESC') // 非表示は下に配置
+                    ->addOrderBy('d.sort_no', 'ASC'),
                 'placeholder' => false,
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -187,24 +159,32 @@ class ShippingType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('shipping_date', DateTimeType::class, [
+                'required' => false,
+                'input' => 'datetime',
+                'widget' => 'single_text',
+                'with_seconds' => true,
+                'constraints' => [
+                    new Assert\Range([
+                        'min' => '0003-01-01',
+                        'minMessage' => 'form_error.out_of_range',
+                    ]),
+                ],
+            ])
             ->add('tracking_number', TextType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_mtext_len'],
-                    ]),
-                    new Assert\Regex([
-                        'pattern' => '/^[0-9a-zA-Z-]+$/u',
-                        'message' => 'form_error.graph_and_hyphen_only',
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_mtext_len']),
+                    new Assert\Regex(
+                        pattern: '/^[0-9a-zA-Z-]+$/u',
+                        message: 'form_error.graph_and_hyphen_only'
+                    ),
                 ],
             ])
             ->add('note', TextareaType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_ltext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_ltext_len']),
                 ],
             ])
             ->add('OrderItems', CollectionType::class, [
@@ -222,10 +202,10 @@ class ShippingType extends AbstractType
                 'required' => false,
                 'data' => true,
             ])
-            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
-                /** @var Shipping $data */
+            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event): void {
+                /** @var Shipping|null $data */
                 $data = $event->getData();
-                /** @var \Symfony\Component\Form\Form $form */
+                /** @var Form $form */
                 $form = $event->getForm();
 
                 if (!$data) {
@@ -242,11 +222,9 @@ class ShippingType extends AbstractType
                 // お届け時間を配送業者で絞り込み
                 $form->add('DeliveryTime', EntityType::class, [
                     'class' => DeliveryTime::class,
-                    'choice_label' => function (DeliveryTime $DeliveryTime) {
-                        return $DeliveryTime->isVisible()
-                            ? $DeliveryTime->getDeliveryTime()
-                            : $DeliveryTime->getDeliveryTime().trans('admin.common.hidden_label');
-                    },
+                    'choice_label' => fn (DeliveryTime $DeliveryTime) => $DeliveryTime->isVisible()
+                        ? $DeliveryTime->getDeliveryTime()
+                        : $DeliveryTime->getDeliveryTime().trans('admin.common.hidden_label'),
                     'placeholder' => 'common.select__unspecified',
                     'required' => false,
                     'data' => $DeliveryTime,
@@ -266,7 +244,7 @@ class ShippingType extends AbstractType
                     'mapped' => false,
                 ]);
             })
-            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event): void {
                 $data = $event->getData();
                 $form = $event->getForm();
 
@@ -299,7 +277,7 @@ class ShippingType extends AbstractType
                     'mapped' => false,
                 ]);
             })
-            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
                 $form = $event->getForm();
                 $Shipping = $event->getData();
                 $Delivery = $Shipping->getDelivery();
@@ -313,7 +291,7 @@ class ShippingType extends AbstractType
                     $Shipping->setTimeId(null);
                 }
             })
-            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
                 // 出荷編集画面のみバリデーションをする。
                 if ($event->getForm()->getParent()->getName() != 'shippings') {
                     return;
@@ -341,7 +319,8 @@ class ShippingType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Shipping::class,
@@ -351,7 +330,8 @@ class ShippingType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    #[\Override]
+    public function getBlockPrefix(): string
     {
         return 'shipping';
     }

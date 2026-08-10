@@ -3,7 +3,7 @@
   "zestVersion": "0.6",
   "generatedBy": "Sequence Script Template",
   "title": "admin_create_customer",
-  "description": "An example empty sequence script. Add requests to populate the sequence.",
+  "description": "Admin login -> create customer -> shopping flow (CI stable)",
   "prefix": "",
   "type": "Active",
   "parameters": {
@@ -28,7 +28,7 @@
           "elementType": "ZestAssertion"
         }
       ],
-      "followRedirects": false,
+      "followRedirects": true,
       "timestamp": 1655292281770,
       "cookies": [],
       "index": 1,
@@ -69,6 +69,36 @@
       "enabled": true,
       "elementType": "ZestRequest"
     },
+
+    {
+      "comment": "VERIFY admin session is established (must be 200).",
+      "index": 4,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "url": "https://ec-cube/admin/",
+      "data": "",
+      "method": "GET",
+      "headers": "Upgrade-Insecure-Requests: 1\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": true,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 5,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+
     {
       "url": "https://ec-cube/admin/customer/new",
       "data": "",
@@ -84,10 +114,10 @@
           "elementType": "ZestAssertion"
         }
       ],
-      "followRedirects": false,
+      "followRedirects": true,
       "timestamp": 1655292294336,
       "cookies": [],
-      "index": 4,
+      "index": 6,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -98,7 +128,7 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf2",
-      "index": 5,
+      "index": 7,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
@@ -120,10 +150,26 @@
       "followRedirects": false,
       "timestamp": 1655292348003,
       "cookies": [],
-      "index": 6,
+      "index": 8,
       "enabled": true,
       "elementType": "ZestRequest"
     },
+    {
+      "comment": "Extract customer-id from Location header (e.g. Location: /admin/customer/11/edit)",
+      "index": 9,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "prefix": "Location: /admin/customer/",
+      "postfix": "/edit",
+      "location": "HEAD",
+      "variableName": "customer-id",
+      "index": 10,
+      "enabled": true,
+      "elementType": "ZestAssignStringDelimiters"
+    },
+
     {
       "fieldDefinition": {
         "formIndex": 1,
@@ -131,7 +177,7 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf4",
-      "index": 7,
+      "index": 11,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
@@ -153,7 +199,7 @@
       "followRedirects": false,
       "timestamp": 1655292827696,
       "cookies": [],
-      "index": 8,
+      "index": 12,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -164,16 +210,22 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf3",
-      "index": 9,
+      "index": 13,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
+    },
+    {
+      "comment": "REMOVE hard-coded ECCUBE-CSRF-TOKEN header (must not be fixed).",
+      "index": 14,
+      "enabled": true,
+      "elementType": "ZestComment"
     },
     {
       "url": "https://ec-cube/products/add_cart/1",
       "urlToken": "https://ec-cube/products/add_cart/1",
       "data": "classcategory_id1=1&classcategory_id2=4&quantity=1&product_id=1&ProductClass=10&_token={{csrf3}}",
       "method": "POST",
-      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 130\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nECCUBE-CSRF-TOKEN: FGJmL1gn-JpOEpsDHU7NVBdcbsP9VvR99-28Lek47NA\r\nContent-Type: application/x-www-form-urlencoded; charset=UTF-8\r\nX-Requested-With: XMLHttpRequest\r\nsec-ch-ua-platform: \"Linux\"\r\nOrigin: https://ec-cube\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: cors\r\nSec-Fetch-Dest: empty\r\n",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 130\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nContent-Type: application/x-www-form-urlencoded; charset=UTF-8\r\nX-Requested-With: XMLHttpRequest\r\nsec-ch-ua-platform: \"Linux\"\r\nOrigin: https://ec-cube\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: cors\r\nSec-Fetch-Dest: empty\r\n",
       "assertions": [
         {
           "rootExpression": {
@@ -187,7 +239,7 @@
       "followRedirects": false,
       "timestamp": 1655292834165,
       "cookies": [],
-      "index": 10,
+      "index": 15,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -195,7 +247,7 @@
       "url": "https://ec-cube/block/cart",
       "data": "",
       "method": "GET",
-      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nX-Requested-With: XMLHttpRequest\r\nsec-ch-ua-mobile: ?0\r\nECCUBE-CSRF-TOKEN: FGJmL1gn-JpOEpsDHU7NVBdcbsP9VvR99-28Lek47NA\r\nsec-ch-ua-platform: \"Linux\"\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: cors\r\nSec-Fetch-Dest: empty\r\n",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nX-Requested-With: XMLHttpRequest\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: cors\r\nSec-Fetch-Dest: empty\r\n",
       "assertions": [
         {
           "rootExpression": {
@@ -209,10 +261,11 @@
       "followRedirects": false,
       "timestamp": 1655292834230,
       "cookies": [],
-      "index": 11,
+      "index": 16,
       "enabled": true,
       "elementType": "ZestRequest"
     },
+
     {
       "url": "https://ec-cube/cart",
       "data": "",
@@ -231,7 +284,7 @@
       "followRedirects": false,
       "timestamp": 1655292835773,
       "cookies": [],
-      "index": 12,
+      "index": 17,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -240,7 +293,7 @@
       "postfix": "\">レジに進む</a>",
       "location": "BODY",
       "variableName": "cart-id",
-      "index": 13,
+      "index": 18,
       "enabled": true,
       "elementType": "ZestAssignStringDelimiters"
     },
@@ -262,7 +315,7 @@
       "followRedirects": false,
       "timestamp": 1655292837943,
       "cookies": [],
-      "index": 14,
+      "index": 19,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -284,7 +337,7 @@
       "followRedirects": false,
       "timestamp": 1655292837977,
       "cookies": [],
-      "index": 15,
+      "index": 20,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -306,7 +359,7 @@
       "followRedirects": false,
       "timestamp": 1655292838003,
       "cookies": [],
-      "index": 16,
+      "index": 21,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -317,7 +370,7 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf5",
-      "index": 17,
+      "index": 22,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
@@ -339,7 +392,7 @@
       "followRedirects": false,
       "timestamp": 1655292848088,
       "cookies": [],
-      "index": 18,
+      "index": 23,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -361,7 +414,7 @@
       "followRedirects": false,
       "timestamp": 1655292848126,
       "cookies": [],
-      "index": 19,
+      "index": 24,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -372,7 +425,7 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf6",
-      "index": 20,
+      "index": 25,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
@@ -395,7 +448,7 @@
       "followRedirects": false,
       "timestamp": 1655292852169,
       "cookies": [],
-      "index": 21,
+      "index": 26,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -406,7 +459,7 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf7",
-      "index": 22,
+      "index": 27,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
@@ -429,7 +482,7 @@
       "followRedirects": false,
       "timestamp": 1655292854223,
       "cookies": [],
-      "index": 23,
+      "index": 28,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -451,7 +504,7 @@
       "followRedirects": false,
       "timestamp": 1655292854439,
       "cookies": [],
-      "index": 24,
+      "index": 29,
       "enabled": true,
       "elementType": "ZestRequest"
     }

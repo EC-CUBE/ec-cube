@@ -15,6 +15,8 @@ namespace Eccube\Form\Type\Install;
 
 use Eccube\Common\EccubeConfig;
 use Eccube\Form\Validator\Email;
+use Eccube\Form\Validator\PasswordBlocklist;
+use Eccube\Util\PasswordNormalizer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -23,33 +25,53 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class Step3Type extends AbstractType
 {
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
-     * @var ValidatorInterface
-     */
-    protected $validator;
-
-    public function __construct(ValidatorInterface $validator, EccubeConfig $eccubeConfig)
+    public function __construct(protected ValidatorInterface $validator, protected EccubeConfig $eccubeConfig)
     {
-        $this->validator = $validator;
-        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
+     *
+     * @throws \Exception
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $loginPassConstraints = [
+            new Assert\NotBlank(),
+            new Assert\Length([
+                'min' => $this->eccubeConfig['eccube_password_min_len'],
+                'max' => $this->eccubeConfig['eccube_password_max_len'],
+            ]),
+            new Assert\Regex([
+                'pattern' => $this->eccubeConfig['eccube_password_pattern'],
+                'message' => 'form_error.password_pattern_invalid',
+            ]),
+            new PasswordBlocklist(),
+        ];
+        // NIST SP 800-63B-4 対応の漏洩パスワードチェック. 閉域網等では config で無効化できる.
+        if ($this->eccubeConfig['eccube_password_compromised_check']) {
+            $loginPassConstraints[] = new Assert\NotCompromisedPassword(['skipOnError' => true]);
+        }
+
+        // 検証と保存を同一の正規化済み値で行うため, 検証前(PRE_SUBMIT)に login_pass を NFKC 正規化する.
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event): void {
+            $data = $event->getData();
+            if (is_array($data) && isset($data['login_pass']) && is_string($data['login_pass'])) {
+                $data['login_pass'] = PasswordNormalizer::normalize($data['login_pass']);
+                $event->setData($data);
+            }
+        });
+
         $builder
             ->add('shop_name', TextType::class, [
                 'label' => trans('install.shop_name'),
@@ -89,17 +111,7 @@ class Step3Type extends AbstractType
                     '%min%' => $this->eccubeConfig['eccube_password_min_len'],
                     '%max%' => $this->eccubeConfig['eccube_password_max_len'],
                 ]),
-                'constraints' => [
-                    new Assert\NotBlank(),
-                    new Assert\Length([
-                        'min' => $this->eccubeConfig['eccube_password_min_len'],
-                        'max' => $this->eccubeConfig['eccube_password_max_len'],
-                    ]),
-                    new Assert\Regex([
-                        'pattern' => $this->eccubeConfig['eccube_password_pattern'],
-                        'message' => 'form_error.password_pattern_invalid',
-                    ]),
-                ],
+                'constraints' => $loginPassConstraints,
             ])
             ->add('admin_dir', TextType::class, [
                 'label' => trans('install.directory_name', [
@@ -140,7 +152,7 @@ class Step3Type extends AbstractType
                 'label' => trans('install.smtp_password'),
                 'required' => false,
             ])
-            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function ($event): void {
                 $form = $event->getForm();
                 $data = $form->getData();
 
@@ -165,7 +177,8 @@ class Step3Type extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    #[\Override]
+    public function getBlockPrefix(): string
     {
         return 'install_step3';
     }

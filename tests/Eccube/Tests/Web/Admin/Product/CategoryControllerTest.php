@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -16,18 +18,16 @@ namespace Eccube\Tests\Web\Admin\Product;
 use Eccube\Entity\Category;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\HttpFoundation\Request;
 
-class CategoryControllerTest extends AbstractAdminWebTestCase
+final class CategoryControllerTest extends AbstractAdminWebTestCase
 {
-    /**
-     * @var CategoryRepository
-     */
-    protected $categoryRepository;
+    protected ?CategoryRepository $categoryRepository = null;
 
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->remove();
         $this->createCategories();
         $this->client->disableReboot();
@@ -121,7 +121,7 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
 
     public function testRoutingAdminProductCategory()
     {
-        $this->client->request('GET',
+        $this->client->request(Request::METHOD_GET,
             $this->generateUrl('admin_product_category')
         );
 
@@ -136,7 +136,7 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_product_category'),
             ['admin_category' => $params]
         );
@@ -156,7 +156,7 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_product_category'),
             $params
         );
@@ -181,7 +181,7 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_product_category_show', ['parent_id' => $Parent->getId()]),
             $params
         );
@@ -198,8 +198,9 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
             'name' => 'テストカテゴリ',
         ];
         $Parent = $this->categoryRepository->findOneBy(['name' => '子1']);
+        $this->assertInstanceOf(Category::class, $Parent);
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_product_category_show', ['parent_id' => $Parent->getId()]),
             ['admin_category' => $params]
         );
@@ -225,7 +226,7 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
             ->getId();
 
         // main
-        $this->client->request('GET',
+        $this->client->request(Request::METHOD_GET,
             $this->generateUrl('admin_product_category_show',
                 ['parent_id' => $test_parent_category_id])
         );
@@ -246,7 +247,7 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
             ->getId();
 
         // main
-        $this->client->request('GET',
+        $this->client->request(Request::METHOD_GET,
             $this->generateUrl('admin_product_category_edit',
                 ['id' => $test_category_id])
         );
@@ -268,7 +269,7 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
 
         // main
         $redirectUrl = $this->generateUrl('admin_product_category');
-        $this->client->request('DELETE',
+        $this->client->request(Request::METHOD_DELETE,
             $this->generateUrl('admin_product_category_delete',
                 ['id' => $test_category_id]),
             ['_token' => 'dummy']
@@ -280,9 +281,10 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
     public function testMoveSortNo()
     {
         $Category = $this->categoryRepository->findOneBy(['name' => '子1']);
+        $this->assertInstanceOf(Category::class, $Category);
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_product_category_sort_no_move'),
             [$Category->getId() => 10],
             [],
@@ -297,13 +299,14 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
 
         $this->entityManager->refresh($MovedCategory); // Refresh しないとリクエストの値(string)が入ってしまう
         $this->expected = 10;
+        $this->assertInstanceOf(Category::class, $MovedCategory);
         $this->actual = $MovedCategory->getSortNo();
         $this->verify();
     }
 
     public function testExport()
     {
-        $this->client->request('GET',
+        $this->client->request(Request::METHOD_GET,
             $this->generateUrl('admin_product_category_export')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -335,13 +338,11 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
 
     public function testMoveSortNoAndShow()
     {
-        // FIXME doctrine/doctrine-bundleに起因してテストが通らないため一時的にスキップ
-        // https://github.com/EC-CUBE/ec-cube/issues/4592
-        $this->markTestIncomplete();
-
         // Give
         $Category = $this->categoryRepository->findOneBy(['name' => '親1']);
         $Category2 = $this->categoryRepository->findOneBy(['name' => '親2']);
+        $this->assertInstanceOf(Category::class, $Category);
+        $this->assertInstanceOf(Category::class, $Category2);
         $newSortNos = [
             $Category->getId() => $Category2->getSortNo(),
             $Category2->getId() => $Category->getSortNo(),
@@ -349,7 +350,7 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
 
         // When
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_product_category_sort_no_move'),
             $newSortNos,
             [],
@@ -366,14 +367,23 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
         $this->actual = $Category->getSortNo();
         $this->verify();
 
-        $crawler = $this->client->request('GET',
+        $crawler = $this->client->request(Request::METHOD_GET,
             $this->generateUrl('admin_product_product_new')
         );
 
-        $CategoryLast = $this->categoryRepository->findOneBy(['name' => '子2-2']);
-        $categoryNameLastElement = $crawler->filter('.c-directoryTree--register label')->last()->text();
+        // カテゴリツリーは各階層とも sort_no の降順で描画される
+        // (CategoryRepository::getList の orderBy c1..c5 sort_no DESC).
+        // 親1 と 親2 の sort_no を入れ替えたため, 親3(3), 親1(2), 親2(1) の順になる.
+        $this->expected = ['親3', '子3', '孫3', '親1', '子1', '孫1', '親2', '子2-2', '子2-1', '子2-0', '孫2'];
+        $this->actual = $crawler->filter('.c-directoryTree--register label')->each(fn (Crawler $node): string => $node->text());
+        $this->verify();
+
+        // 末尾は最後の親 (親2) 配下の最も深い末尾ノードである 孫2 になる.
+        // 親2 の子も降順で 子2-2, 子2-1, 子2-0 と並び, 子2-0 の子 孫2 が最後に描画される.
+        $CategoryLast = $this->categoryRepository->findOneBy(['name' => '孫2']);
+        $this->assertInstanceOf(Category::class, $CategoryLast);
         $this->expected = $CategoryLast->getName();
-        $this->actual = $categoryNameLastElement;
+        $this->actual = $crawler->filter('.c-directoryTree--register label')->last()->text();
         $this->verify();
     }
 }

@@ -17,14 +17,6 @@ class PageEditPage extends AbstractAdminPageStyleGuide
 {
     public static $登録完了メッセージ = ['xpath' => "//div[@class='alert alert-success alert-dismissible fade show m-3']"];
 
-    /**
-     * PageNewPage constructor.
-     */
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     public static function at($I)
     {
         $page = new self($I);
@@ -57,8 +49,8 @@ class PageEditPage extends AbstractAdminPageStyleGuide
 
     public function 入力_内容($value)
     {
-        $value = preg_replace('/\n/', '\n', $value);
-        $value = preg_replace("/([^\\\])'/", "$1\\'", $value);
+        $value = preg_replace('/\n/', '\n', (string) $value);
+        $value = preg_replace("/([^\\\])'/", "$1\\'", (string) $value);
         $this->tester->executeJS("ace.edit('editor').setValue('$value')");
 
         return $this;

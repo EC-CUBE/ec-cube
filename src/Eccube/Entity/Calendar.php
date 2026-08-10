@@ -13,182 +13,127 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\CalendarRepository;
 
-if (!class_exists(Calendar::class)) {
+/**
+ * Calendar
+ */
+#[ORM\Table(name: 'dtb_calendar')]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: CalendarRepository::class)]
+class Calendar extends AbstractEntity
+{
     /**
-     * Calendar
-     *
-     * @ORM\Table(name="dtb_calendar")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\CalendarRepository")
+     * @var int
      */
-    class Calendar extends AbstractEntity
+    public const DEFAULT_CALENDAR_ID = 1;
+
+    /**
+     * is default
+     */
+    public function isDefaultCalendar(): bool
     {
-        /**
-         * @var int
-         */
-        public const DEFAULT_CALENDAR_ID = 1;
+        return self::DEFAULT_CALENDAR_ID === $this->getId();
+    }
 
-        /**
-         * is default
-         *
-         * @return bool
-         */
-        public function isDefaultCalendar()
-        {
-            return self::DEFAULT_CALENDAR_ID === $this->getId();
-        }
+    #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    private ?int $id = null;
 
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
-         */
-        private $id;
+    #[ORM\Column(name: 'title', type: Types::STRING, length: 255, nullable: true)]
+    private ?string $title = null;
 
-        /**
-         * @var string
-         *
-         * @ORM\Column(name="title", type="string", length=255, nullable=true)
-         */
-        private $title;
+    #[ORM\Column(name: 'holiday', type: Types::DATETIMETZ_MUTABLE)]
+    private ?\DateTime $holiday = null;
 
-        /**
-         * @var \DateTime
-         *
-         * @ORM\Column(name="holiday", type="datetimetz")
-         */
-        private $holiday;
+    #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
+    private ?\DateTime $create_date = null;
 
-        /**
-         * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
-         */
-        private $create_date;
+    #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
+    private ?\DateTime $update_date = null;
 
-        /**
-         * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
-         */
-        private $update_date;
+    /**
+     * Get id.
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
-        /**
-         * Get id.
-         *
-         * @return int
-         */
-        public function getId()
-        {
-            return $this->id;
-        }
+    /**
+     * Set title.
+     */
+    public function setTitle(string $title): Calendar
+    {
+        $this->title = $title;
 
-        /**
-         * Set title.
-         *
-         * @param string $title
-         *
-         * @return Calendar
-         */
-        public function setTitle($title)
-        {
-            $this->title = $title;
+        return $this;
+    }
 
-            return $this;
-        }
+    /**
+     * Get title.
+     */
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
 
-        /**
-         * Get title.
-         *
-         * @return string
-         */
-        public function getTitle()
-        {
-            return $this->title;
-        }
+    /**
+     * Set holiday.
+     */
+    public function setHoliday(\DateTime $holiday): Calendar
+    {
+        $this->holiday = $holiday;
 
-        /**
-         * Set holiday.
-         *
-         * @param \DateTime $holiday
-         *
-         * @return Calendar
-         */
-        public function setHoliday($holiday)
-        {
-            $this->holiday = $holiday;
+        return $this;
+    }
 
-            return $this;
-        }
+    /**
+     * Get holiday.
+     */
+    public function getHoliday(): ?\DateTime
+    {
+        return $this->holiday;
+    }
 
-        /**
-         * Get holiday.
-         *
-         * @return \DateTime
-         */
-        public function getHoliday()
-        {
-            return $this->holiday;
-        }
+    /**
+     * Set createDate.
+     */
+    public function setCreateDate(\DateTime $createDate): Calendar
+    {
+        $this->create_date = $createDate;
 
-        /**
-         * Set createDate.
-         *
-         * @param \DateTime $createDate
-         *
-         * @return Calendar
-         */
-        public function setCreateDate($createDate)
-        {
-            $this->create_date = $createDate;
+        return $this;
+    }
 
-            return $this;
-        }
+    /**
+     * Get createDate.
+     */
+    public function getCreateDate(): ?\DateTime
+    {
+        return $this->create_date;
+    }
 
-        /**
-         * Get createDate.
-         *
-         * @return \DateTime
-         */
-        public function getCreateDate()
-        {
-            return $this->create_date;
-        }
+    /**
+     * Set updateDate.
+     */
+    public function setUpdateDate(\DateTime $updateDate): Calendar
+    {
+        $this->update_date = $updateDate;
 
-        /**
-         * Set updateDate.
-         *
-         * @param \DateTime $updateDate
-         *
-         * @return Calendar
-         */
-        public function setUpdateDate($updateDate)
-        {
-            $this->update_date = $updateDate;
+        return $this;
+    }
 
-            return $this;
-        }
-
-        /**
-         * Get updateDate.
-         *
-         * @return \DateTime
-         */
-        public function getUpdateDate()
-        {
-            return $this->update_date;
-        }
+    /**
+     * Get updateDate.
+     */
+    public function getUpdateDate(): ?\DateTime
+    {
+        return $this->update_date;
     }
 }

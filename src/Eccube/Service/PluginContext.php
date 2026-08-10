@@ -21,47 +21,49 @@ class PluginContext
     private const MODE_INSTALL = 'install';
     private const MODE_UNINSTALL = 'uninstall';
 
-    private $mode;
+    private ?string $mode = null;
 
-    private $code;
-
-    private $composerJson;
+    private ?string $code = null;
 
     /**
-     * @var EccubeConfig
+     * @var array<string, mixed>|null
      */
-    private $eccubeConfig;
+    private ?array $composerJson = null;
 
-    public function __construct(EccubeConfig $eccubeConfig)
+    public function __construct(private readonly EccubeConfig $eccubeConfig)
     {
-        $this->eccubeConfig = $eccubeConfig;
     }
 
-    public function isInstall()
+    public function isInstall(): bool
     {
         return $this->mode === self::MODE_INSTALL;
     }
 
-    public function isUninstall()
+    public function isUninstall(): bool
     {
         return $this->mode === self::MODE_UNINSTALL;
     }
 
-    public function setInstall()
+    public function setInstall(): string
     {
         return $this->mode = self::MODE_INSTALL;
     }
 
-    public function setUninstall()
+    public function setUninstall(): string
     {
         return $this->mode = self::MODE_UNINSTALL;
     }
 
-    public function setCode(string $code)
+    public function setCode(string $code): void
     {
         $this->code = $code;
     }
 
+    /**
+     * @return array<string, mixed>
+     *
+     * @throws PluginException
+     */
     public function getComposerJson(): array
     {
         if ($this->composerJson) {
@@ -74,13 +76,15 @@ class PluginContext
             throw new PluginException("{$composerJsonPath} not found.");
         }
         $this->composerJson = json_decode(file_get_contents($composerJsonPath), true);
-        if ($this->composerJson === null) {
-            throw new PluginException("Invalid json format. [{$composerJsonPath}]");
-        }
 
         return $this->composerJson;
     }
 
+    /**
+     * @return array<string, string>
+     *
+     * @throws PluginException
+     */
     public function getExtraEntityNamespaces(): array
     {
         $json = $this->getComposerJson();

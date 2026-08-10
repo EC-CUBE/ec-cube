@@ -16,44 +16,27 @@ namespace Eccube\Controller\Admin\Setting\System;
 use Eccube\Common\Constant;
 use Eccube\Common\EccubeConfig;
 use Eccube\Service\SystemService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class SystemController
 {
     /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
-     * @var SystemService
-     */
-    protected $systemService;
-
-    /**
      * SystemController constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
-     * @param SystemService $systemService
      */
-    public function __construct(
-        EccubeConfig $eccubeConfig,
-        SystemService $systemService,
-    ) {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->systemService = $systemService;
+    public function __construct(protected EccubeConfig $eccubeConfig, protected SystemService $systemService)
+    {
     }
 
     /**
-     * @Route("/%eccube_admin_route%/setting/system/system", name="admin_setting_system_system", methods={"GET"})
-     *
-     * @Template("@admin/Setting/System/system.twig")
+     * @return array<string, mixed>
      */
-    public function index(Request $request)
+    #[Route(path: '/%eccube_admin_route%/setting/system/system', name: 'admin_setting_system_system', methods: ['GET'])]
+    #[Template(template: '@admin/Setting/System/system.twig')]
+    public function index(Request $request): array
     {
         $info = [];
         $info[] = ['title' => trans('admin.setting.system.system.eccube'), 'value' => Constant::VERSION];
@@ -71,10 +54,8 @@ class SystemController
         ];
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/setting/system/system/phpinfo", name="admin_setting_system_system_phpinfo", methods={"GET"})
-     */
-    public function phpinfo(Request $request)
+    #[Route(path: '/%eccube_admin_route%/setting/system/system/phpinfo', name: 'admin_setting_system_system_phpinfo', methods: ['GET'])]
+    public function phpinfo(Request $request): Response
     {
         if (!$this->eccubeConfig->get('eccube_phpinfo_enabled')) {
             throw new AccessDeniedHttpException();

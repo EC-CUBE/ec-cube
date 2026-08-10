@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -13,9 +15,9 @@
 
 namespace Eccube\Tests\DependencyInjection\Compiler;
 
-use Eccube\Annotation\CartFlow;
-use Eccube\Annotation\OrderFlow;
-use Eccube\Annotation\ShoppingFlow;
+use Eccube\Attribute\CartFlow;
+use Eccube\Attribute\OrderFlow;
+use Eccube\Attribute\ShoppingFlow;
 use Eccube\DependencyInjection\Compiler\PurchaseFlowPass;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\ItemInterface;
@@ -25,13 +27,15 @@ use Eccube\Service\PurchaseFlow\ItemHolderPreprocessor;
 use Eccube\Service\PurchaseFlow\ItemHolderValidator;
 use Eccube\Service\PurchaseFlow\ItemPreprocessor;
 use Eccube\Service\PurchaseFlow\ItemValidator;
+use Eccube\Service\PurchaseFlow\ProcessResult;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\PurchaseFlow\PurchaseProcessor;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class PurchaseFlowPassTest extends EccubeTestCase
+final class PurchaseFlowPassTest extends EccubeTestCase
 {
     public static $called = false;
 
@@ -42,14 +46,13 @@ class PurchaseFlowPassTest extends EccubeTestCase
     }
 
     /**
-     * @dataProvider dataProcessorProvider
-     *
      * @param $class
      * @param $id
      * @param $tagName
      *
      * @throws \Exception
      */
+    #[DataProvider(methodName: 'dataProcessorProvider')]
     public function testProcess($class, $id, $tagName)
     {
         $Customer = $this->createCustomer();
@@ -66,23 +69,21 @@ class PurchaseFlowPassTest extends EccubeTestCase
         $purchaseFlow->validate($Order, new PurchaseContext());
         $purchaseFlow->prepare($Order, new PurchaseContext());
 
-        self::assertTrue(PurchaseFlowPassTest::$called);
+        $this->assertTrue(PurchaseFlowPassTest::$called);
     }
 
-    public function dataProcessorProvider()
+    public static function dataProcessorProvider(): \Iterator
     {
-        return [
-            [PurchaseFlowPassTest_CartFlow::class, 'eccube.purchase.flow.cart', PurchaseFlowPass::ITEM_HOLDER_VALIDATOR_TAG],
-            [PurchaseFlowPassTest_ShoppingFlow::class, 'eccube.purchase.flow.shopping', PurchaseFlowPass::ITEM_HOLDER_VALIDATOR_TAG],
-            [PurchaseFlowPassTest_OrderFlow::class, 'eccube.purchase.flow.order', PurchaseFlowPass::ITEM_HOLDER_VALIDATOR_TAG],
-            [PurchaseFlowPassTest_ItemPreprocessor::class, 'eccube.purchase.flow.cart', PurchaseFlowPass::ITEM_PREPROCESSOR_TAG],
-            [PurchaseFlowPassTest_ItemValidator::class, 'eccube.purchase.flow.cart', PurchaseFlowPass::ITEM_VALIDATOR_TAG],
-            [PurchaseFlowPassTest_ItemHolderPreprocessor::class, 'eccube.purchase.flow.cart', PurchaseFlowPass::ITEM_HOLDER_PREPROCESSOR_TAG],
-            [PurchaseFlowPassTest_ItemHolderValidator::class, 'eccube.purchase.flow.cart', PurchaseFlowPass::ITEM_HOLDER_VALIDATOR_TAG],
-            [PurchaseFlowPassTest_ItemHolderPostValidator::class, 'eccube.purchase.flow.cart', PurchaseFlowPass::ITEM_HOLDER_POST_VALIDATOR_TAG],
-            [PurchaseFlowPassTest_DiscountProcessor::class, 'eccube.purchase.flow.cart', PurchaseFlowPass::DISCOUNT_PROCESSOR_TAG],
-            [PurchaseFlowPassTest_PurchaseProcessor::class, 'eccube.purchase.flow.cart', PurchaseFlowPass::PURCHASE_PROCESSOR_TAG],
-        ];
+        yield [PurchaseFlowPassTest_CartFlow::class, 'eccube.purchase.flow.cart', PurchaseFlowPass::ITEM_HOLDER_VALIDATOR_TAG];
+        yield [PurchaseFlowPassTest_ShoppingFlow::class, 'eccube.purchase.flow.shopping', PurchaseFlowPass::ITEM_HOLDER_VALIDATOR_TAG];
+        yield [PurchaseFlowPassTest_OrderFlow::class, 'eccube.purchase.flow.order', PurchaseFlowPass::ITEM_HOLDER_VALIDATOR_TAG];
+        yield [PurchaseFlowPassTest_ItemPreprocessor::class, 'eccube.purchase.flow.cart', PurchaseFlowPass::ITEM_PREPROCESSOR_TAG];
+        yield [PurchaseFlowPassTest_ItemValidator::class, 'eccube.purchase.flow.cart', PurchaseFlowPass::ITEM_VALIDATOR_TAG];
+        yield [PurchaseFlowPassTest_ItemHolderPreprocessor::class, 'eccube.purchase.flow.cart', PurchaseFlowPass::ITEM_HOLDER_PREPROCESSOR_TAG];
+        yield [PurchaseFlowPassTest_ItemHolderValidator::class, 'eccube.purchase.flow.cart', PurchaseFlowPass::ITEM_HOLDER_VALIDATOR_TAG];
+        yield [PurchaseFlowPassTest_ItemHolderPostValidator::class, 'eccube.purchase.flow.cart', PurchaseFlowPass::ITEM_HOLDER_POST_VALIDATOR_TAG];
+        yield [PurchaseFlowPassTest_DiscountProcessor::class, 'eccube.purchase.flow.cart', PurchaseFlowPass::DISCOUNT_PROCESSOR_TAG];
+        yield [PurchaseFlowPassTest_PurchaseProcessor::class, 'eccube.purchase.flow.cart', PurchaseFlowPass::PURCHASE_PROCESSOR_TAG];
     }
 
     public function createContainer()
@@ -101,12 +102,11 @@ class PurchaseFlowPassTest extends EccubeTestCase
 
 /**
  * Class PurchaseFlowPassTest_CartFlow
- *
- * @CartFlow
  */
+#[CartFlow]
 class PurchaseFlowPassTest_CartFlow extends ItemHolderValidator
 {
-    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         PurchaseFlowPassTest::$called = true;
     }
@@ -114,12 +114,11 @@ class PurchaseFlowPassTest_CartFlow extends ItemHolderValidator
 
 /**
  * Class PurchaseFlowPassTest_ShoppingFlow
- *
- * @ShoppingFlow
  */
+#[ShoppingFlow]
 class PurchaseFlowPassTest_ShoppingFlow extends ItemHolderValidator
 {
-    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         PurchaseFlowPassTest::$called = true;
     }
@@ -127,12 +126,11 @@ class PurchaseFlowPassTest_ShoppingFlow extends ItemHolderValidator
 
 /**
  * Class PurchaseFlowPassTest_OrderFlow
- *
- * @OrderFlow
  */
+#[OrderFlow]
 class PurchaseFlowPassTest_OrderFlow extends ItemHolderValidator
 {
-    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         PurchaseFlowPassTest::$called = true;
     }
@@ -140,12 +138,11 @@ class PurchaseFlowPassTest_OrderFlow extends ItemHolderValidator
 
 /**
  * Class PurchaseFlowPassTest_ItemPreprocessor
- *
- * @CartFlow
  */
+#[CartFlow]
 class PurchaseFlowPassTest_ItemPreprocessor implements ItemPreprocessor
 {
-    public function process(ItemInterface $item, PurchaseContext $context)
+    public function process(ItemInterface $item, PurchaseContext $context): void
     {
         PurchaseFlowPassTest::$called = true;
     }
@@ -153,12 +150,11 @@ class PurchaseFlowPassTest_ItemPreprocessor implements ItemPreprocessor
 
 /**
  * Class PurchaseFlowPassTest_ItemValidator
- *
- * @CartFlow
  */
+#[CartFlow]
 class PurchaseFlowPassTest_ItemValidator extends ItemValidator
 {
-    protected function validate(ItemInterface $item, PurchaseContext $context)
+    protected function validate(ItemInterface $item, PurchaseContext $context): void
     {
         PurchaseFlowPassTest::$called = true;
     }
@@ -166,12 +162,11 @@ class PurchaseFlowPassTest_ItemValidator extends ItemValidator
 
 /**
  * Class PurchaseFlowPassTest_ItemHolderPreprocessor
- *
- * @CartFlow
  */
+#[CartFlow]
 class PurchaseFlowPassTest_ItemHolderPreprocessor implements ItemHolderPreprocessor
 {
-    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         PurchaseFlowPassTest::$called = true;
     }
@@ -179,12 +174,11 @@ class PurchaseFlowPassTest_ItemHolderPreprocessor implements ItemHolderPreproces
 
 /**
  * Class PurchaseFlowPassTest_ItemHolderValidator
- *
- * @CartFlow
  */
+#[CartFlow]
 class PurchaseFlowPassTest_ItemHolderValidator extends ItemHolderValidator
 {
-    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         PurchaseFlowPassTest::$called = true;
     }
@@ -192,12 +186,11 @@ class PurchaseFlowPassTest_ItemHolderValidator extends ItemHolderValidator
 
 /**
  * Class PurchaseFlowPassTest_ItemHolderPostValidator
- *
- * @CartFlow
  */
+#[CartFlow]
 class PurchaseFlowPassTest_ItemHolderPostValidator extends ItemHolderPostValidator
 {
-    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         PurchaseFlowPassTest::$called = true;
     }
@@ -205,17 +198,16 @@ class PurchaseFlowPassTest_ItemHolderPostValidator extends ItemHolderPostValidat
 
 /**
  * Class PurchaseFlowPassTest_DiscountProcessor
- *
- * @CartFlow
  */
+#[CartFlow]
 class PurchaseFlowPassTest_DiscountProcessor implements DiscountProcessor
 {
-    public function removeDiscountItem(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function removeDiscountItem(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         PurchaseFlowPassTest::$called = true;
     }
 
-    public function addDiscountItem(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function addDiscountItem(ItemHolderInterface $itemHolder, PurchaseContext $context): ?ProcessResult
     {
         PurchaseFlowPassTest::$called = true;
 
@@ -225,22 +217,21 @@ class PurchaseFlowPassTest_DiscountProcessor implements DiscountProcessor
 
 /**
  * Class PurchaseFlowPassTest_PurchaseProcessor
- *
- * @CartFlow
  */
+#[CartFlow]
 class PurchaseFlowPassTest_PurchaseProcessor implements PurchaseProcessor
 {
-    public function prepare(ItemHolderInterface $target, PurchaseContext $context)
+    public function prepare(ItemHolderInterface $target, PurchaseContext $context): void
     {
         PurchaseFlowPassTest::$called = true;
     }
 
-    public function commit(ItemHolderInterface $target, PurchaseContext $context)
+    public function commit(ItemHolderInterface $target, PurchaseContext $context): void
     {
         PurchaseFlowPassTest::$called = true;
     }
 
-    public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         PurchaseFlowPassTest::$called = true;
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,45 +20,38 @@ use Eccube\Doctrine\Query\JoinClause;
 use Eccube\Doctrine\Query\JoinCustomizer;
 use Eccube\Tests\EccubeTestCase;
 
-class JoinCustomizerTest extends EccubeTestCase
+final class JoinCustomizerTest extends EccubeTestCase
 {
     public function testCustomize()
     {
         $builder = $this->createQueryBuilder();
-        $customizer = new JoinCustomizerTest_Customizer(function () { return []; });
+        $customizer = new JoinCustomizerTest_Customizer(fn () => []);
         $customizer->customize($builder, null, '');
-        self::assertSame($builder->getDQL(), 'SELECT p FROM Product p');
+        $this->assertSame('SELECT p FROM Product p', $builder->getDQL());
     }
 
     public function testCustomizeInnerJoin()
     {
         $builder = $this->createQueryBuilder();
-        $customizer = new JoinCustomizerTest_Customizer(function () {
-            return [
-                JoinClause::innerJoin('p.ProductCategories', 'pct'),
-            ];
-        });
+        $customizer = new JoinCustomizerTest_Customizer(fn () => [
+            JoinClause::innerJoin('p.ProductCategories', 'pct'),
+        ]);
         $customizer->customize($builder, null, '');
-        self::assertSame($builder->getDQL(), 'SELECT p FROM Product p INNER JOIN p.ProductCategories pct');
+        $this->assertSame('SELECT p FROM Product p INNER JOIN p.ProductCategories pct', $builder->getDQL());
     }
 
     public function testCustomizeMultiInnerJoin()
     {
         $builder = $this->createQueryBuilder();
-        $customizer = new JoinCustomizerTest_Customizer(function () {
-            return [
-                JoinClause::innerJoin('p.ProductCategories', 'pct'),
-                JoinClause::innerJoin('pct.Category', 'c'),
-            ];
-        });
+        $customizer = new JoinCustomizerTest_Customizer(fn () => [
+            JoinClause::innerJoin('p.ProductCategories', 'pct'),
+            JoinClause::innerJoin('pct.Category', 'c'),
+        ]);
         $customizer->customize($builder, null, '');
-        self::assertSame($builder->getDQL(), 'SELECT p FROM Product p INNER JOIN p.ProductCategories pct INNER JOIN pct.Category c');
+        $this->assertSame('SELECT p FROM Product p INNER JOIN p.ProductCategories pct INNER JOIN pct.Category c', $builder->getDQL());
     }
 
-    /**
-     * @return QueryBuilder
-     */
-    private function createQueryBuilder()
+    private function createQueryBuilder(): QueryBuilder
     {
         return $this->entityManager->createQueryBuilder()
             ->select('p')
@@ -66,20 +61,16 @@ class JoinCustomizerTest extends EccubeTestCase
 
 class JoinCustomizerTest_Customizer extends JoinCustomizer
 {
-    private $callback;
-
-    public function __construct($callback)
+    public function __construct(private $callback)
     {
-        $this->callback = $callback;
     }
 
     /**
-     * @param array $params
      * @param $queryKey
      *
      * @return JoinClause[]
      */
-    public function createStatements($params, $queryKey)
+    public function createStatements(array $params, $queryKey): array
     {
         $callback = $this->callback;
 
@@ -88,10 +79,8 @@ class JoinCustomizerTest_Customizer extends JoinCustomizer
 
     /**
      * カスタマイズ対象のキーを返します。
-     *
-     * @return string
      */
-    public function getQueryKey()
+    public function getQueryKey(): string
     {
         return '';
     }

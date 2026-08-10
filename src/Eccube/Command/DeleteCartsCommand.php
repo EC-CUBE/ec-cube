@@ -16,67 +16,41 @@ namespace Eccube\Command;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Repository\CartRepository;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(name: 'eccube:delete-carts', description: 'Delete Carts from the database')]
 class DeleteCartsCommand extends Command
 {
-    protected static $defaultName = 'eccube:delete-carts';
+    protected SymfonyStyle $io;
 
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
+    protected string $locale;
 
-    /**
-     * @var SymfonyStyle
-     */
-    protected $io;
+    protected \DateTimeZone $timezone;
 
-    /**
-     * @var string
-     */
-    protected $locale;
+    protected \IntlDateFormatter $formatter;
 
-    /**
-     * @var \DateTimeZone
-     */
-    protected $timezone;
-
-    /**
-     * @var \IntlDateFormatter
-     */
-    protected $formatter;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-    /**
-     * @var CartRepository
-     */
-    private $cartRepository;
-
-    public function __construct(EccubeConfig $eccubeConfig, EntityManagerInterface $entityManager, CartRepository $cartRepository)
+    public function __construct(protected EccubeConfig $eccubeConfig, protected EntityManagerInterface $entityManager, private readonly CartRepository $cartRepository)
     {
         parent::__construct();
-
-        $this->eccubeConfig = $eccubeConfig;
-        $this->entityManager = $entityManager;
-        $this->cartRepository = $cartRepository;
     }
 
-    protected function configure()
+    #[\Override]
+    protected function configure(): void
     {
         $this
-            ->setDescription('Delete Carts from the database')
             ->addArgument('date', InputArgument::REQUIRED, 'Deletes carts before the specified date');
     }
 
-    protected function interact(InputInterface $input, OutputInterface $output)
+    /**
+     * @throws \Exception
+     */
+    #[\Override]
+    protected function interact(InputInterface $input, OutputInterface $output): void
     {
         if (null !== $input->getArgument('date')) {
             return;
@@ -102,7 +76,11 @@ class DeleteCartsCommand extends Command
         $input->setArgument('date', $dateStr);
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    /**
+     * @throws \Exception
+     */
+    #[\Override]
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
         $this->locale = $this->eccubeConfig->get('locale');
@@ -110,7 +88,8 @@ class DeleteCartsCommand extends Command
         $this->formatter = $this->createIntlFormatter();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    #[\Override]
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $dateStr = $input->getArgument('date');
         $timestamp = $this->formatter->parse($dateStr);
@@ -123,7 +102,7 @@ class DeleteCartsCommand extends Command
         return 0;
     }
 
-    protected function deleteCarts(\DateTime $dateTime)
+    protected function deleteCarts(\DateTime $dateTime): void
     {
         try {
             $this->entityManager->beginTransaction();
@@ -139,13 +118,13 @@ class DeleteCartsCommand extends Command
             $this->entityManager->commit();
 
             $this->io->comment("Deleted {$deleteRows} carts.");
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $this->io->error('Failed delete carts. Rollbacked.');
             $this->entityManager->rollback();
         }
     }
 
-    protected function createIntlFormatter()
+    protected function createIntlFormatter(): ?\IntlDateFormatter
     {
         return \IntlDateFormatter::create(
             $this->locale,

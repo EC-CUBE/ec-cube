@@ -26,26 +26,18 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
  */
 class AddPointProcessor extends ItemHolderPostValidator
 {
-    /**
-     * @var BaseInfo
-     */
-    protected $BaseInfo;
+    protected BaseInfo $BaseInfo;
 
     /**
      * AddPointProcessor constructor.
-     *
-     * @param BaseInfoRepository $baseInfoRepository
      */
     public function __construct(BaseInfoRepository $baseInfoRepository)
     {
         $this->BaseInfo = $baseInfoRepository->get();
     }
 
-    /**
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
-     */
-    public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    #[\Override]
+    public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         if (!$this->supports($itemHolder)) {
             return;
@@ -58,40 +50,39 @@ class AddPointProcessor extends ItemHolderPostValidator
 
     /**
      * 付与ポイントを計算.
-     *
-     * @param ItemHolderInterface $itemHolder
-     *
-     * @return int
      */
-    private function calculateAddPoint(ItemHolderInterface $itemHolder)
+    private function calculateAddPoint(ItemHolderInterface $itemHolder): string
     {
         $basicPointRate = $this->BaseInfo->getBasicPointRate();
 
         // 明細ごとのポイントを集計
         $totalPoint = array_reduce($itemHolder->getItems()->toArray(),
             function ($carry, ItemInterface $item) use ($basicPointRate) {
-                $pointRate = $item->getPointRate() ? $item->getPointRate() : null;
+                $pointRate = $item->getPointRate() ?: null;
 
                 if ($pointRate === null) {
                     $pointRate = $basicPointRate;
                 }
 
                 // TODO: ポイントは税抜き分しか割引されない、ポイント明細は税抜きのままでいいのか？
-                $point = 0;
+                $point = '0';
                 if ($item->isPoint()) {
-                    $point = round($item->getPrice() * ($pointRate / 100)) * $item->getQuantity();
+                    $pointCalc = bcmul(bcmul((string) $item->getPrice(), bcdiv($pointRate, '100', 2), 2), $item->getQuantity(), 2);
+                    $point = (string) round((float) $pointCalc);
                 // Only calc point on product
                 } elseif ($item->isProduct()) {
                     // ポイント = 単価 * ポイント付与率 * 数量
-                    $point = round($item->getPrice() * ($pointRate / 100)) * $item->getQuantity();
+                    $pointCalc = bcmul(bcmul((string) $item->getPrice(), bcdiv($pointRate, '100', 2), 2), $item->getQuantity(), 2);
+                    $point = (string) round((float) $pointCalc);
                 } elseif ($item->isDiscount()) {
-                    $point = round($item->getPrice() * ($pointRate / 100)) * $item->getQuantity();
+                    $pointCalc = bcmul(bcmul((string) $item->getPrice(), bcdiv($pointRate, '100', 2), 2), $item->getQuantity(), 2);
+                    $point = (string) round((float) $pointCalc);
                 }
 
-                return $carry + $point;
-            }, 0);
+                return bcadd($carry, $point);
+            }, '0');
 
-        return $totalPoint < 0 ? 0 : $totalPoint;
+        return bccomp($totalPoint, '0') < 0 ? '0' : $totalPoint;
     }
 
     /**
@@ -102,12 +93,8 @@ class AddPointProcessor extends ItemHolderPostValidator
      * - ポイント設定が有効であること.
      * - $itemHolderがOrderエンティティであること.
      * - 会員のOrderであること.
-     *
-     * @param ItemHolderInterface $itemHolder
-     *
-     * @return bool
      */
-    private function supports(ItemHolderInterface $itemHolder)
+    private function supports(ItemHolderInterface $itemHolder): bool
     {
         if (!$this->BaseInfo->isOptionPoint()) {
             return false;

@@ -14,42 +14,35 @@
 namespace Eccube\Entity\Master;
 
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\Master\RoundingTypeRepository;
 
-if (!class_exists(RoundingType::class, false)) {
+/**
+ * RoundingType
+ */
+#[ORM\Table(name: 'mtb_rounding_type')]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: RoundingTypeRepository::class)]
+#[ORM\Cache(usage: 'NONSTRICT_READ_WRITE')]
+class RoundingType extends AbstractMasterEntity
+{
     /**
-     * RoundingType
+     * 四捨五入.
      *
-     * @ORM\Table(name="mtb_rounding_type")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\Master\RoundingTypeRepository")
-     *
-     * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
+     * @var int
      */
-    class RoundingType extends AbstractMasterEntity
-    {
-        /**
-         * 四捨五入.
-         *
-         * @var int
-         */
-        public const ROUND = 1;
-        /**
-         * 切り捨て.
-         *
-         * @var int
-         */
-        public const FLOOR = 2;
-        /**
-         * 切り上げ.
-         *
-         * @var int
-         */
-        public const CEIL = 3;
-    }
+    public const ROUND = 1;
+    /**
+     * 切り捨て.
+     *
+     * @var int
+     */
+    public const FLOOR = 2;
+    /**
+     * 切り上げ.
+     *
+     * @var int
+     */
+    public const CEIL = 3;
 }

@@ -13,164 +13,107 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\PaymentOptionRepository;
 
-if (!class_exists(PaymentOption::class)) {
+/**
+ * PaymentOption
+ */
+#[ORM\Table(name: 'dtb_payment_option')]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: PaymentOptionRepository::class)]
+class PaymentOption extends AbstractEntity
+{
+    #[ORM\Column(name: 'delivery_id', type: Types::INTEGER, options: ['unsigned' => true])]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'NONE')]
+    private ?int $delivery_id = null;
+
+    #[ORM\Column(name: 'payment_id', type: Types::INTEGER, options: ['unsigned' => true])]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'NONE')]
+    private ?int $payment_id = null;
+
+    #[ORM\ManyToOne(targetEntity: Delivery::class, inversedBy: 'PaymentOptions')]
+    #[ORM\JoinColumn(name: 'delivery_id', referencedColumnName: 'id')]
+    private ?Delivery $Delivery = null;
+
+    #[ORM\ManyToOne(targetEntity: Payment::class, inversedBy: 'PaymentOptions')]
+    #[ORM\JoinColumn(name: 'payment_id', referencedColumnName: 'id')]
+    private ?Payment $Payment = null;
+
     /**
-     * PaymentOption
-     *
-     * @ORM\Table(name="dtb_payment_option")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\PaymentOptionRepository")
+     * Set deliveryId.
      */
-    class PaymentOption extends AbstractEntity
+    public function setDeliveryId(int $deliveryId): PaymentOption
     {
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="delivery_id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="NONE")
-         */
-        private $delivery_id;
+        $this->delivery_id = $deliveryId;
 
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="payment_id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="NONE")
-         */
-        private $payment_id;
+        return $this;
+    }
 
-        /**
-         * @var Delivery
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Delivery", inversedBy="PaymentOptions")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="delivery_id", referencedColumnName="id")
-         * })
-         */
-        private $Delivery;
+    /**
+     * Get deliveryId.
+     */
+    public function getDeliveryId(): int
+    {
+        return $this->delivery_id;
+    }
 
-        /**
-         * @var Payment
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Payment", inversedBy="PaymentOptions")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="payment_id", referencedColumnName="id")
-         * })
-         */
-        private $Payment;
+    /**
+     * Set paymentId.
+     */
+    public function setPaymentId(int $paymentId): PaymentOption
+    {
+        $this->payment_id = $paymentId;
 
-        /**
-         * Set deliveryId.
-         *
-         * @param int $deliveryId
-         *
-         * @return PaymentOption
-         */
-        public function setDeliveryId($deliveryId)
-        {
-            $this->delivery_id = $deliveryId;
+        return $this;
+    }
 
-            return $this;
-        }
+    /**
+     * Get paymentId.
+     */
+    public function getPaymentId(): int
+    {
+        return $this->payment_id;
+    }
 
-        /**
-         * Get deliveryId.
-         *
-         * @return int
-         */
-        public function getDeliveryId()
-        {
-            return $this->delivery_id;
-        }
+    /**
+     * Set delivery.
+     */
+    public function setDelivery(?Delivery $delivery = null): PaymentOption
+    {
+        $this->Delivery = $delivery;
 
-        /**
-         * Set paymentId.
-         *
-         * @param int $paymentId
-         *
-         * @return PaymentOption
-         */
-        public function setPaymentId($paymentId)
-        {
-            $this->payment_id = $paymentId;
+        return $this;
+    }
 
-            return $this;
-        }
+    /**
+     * Get delivery.
+     */
+    public function getDelivery(): ?Delivery
+    {
+        return $this->Delivery;
+    }
 
-        /**
-         * Get paymentId.
-         *
-         * @return int
-         */
-        public function getPaymentId()
-        {
-            return $this->payment_id;
-        }
+    /**
+     * Set payment.
+     */
+    public function setPayment(?Payment $payment = null): PaymentOption
+    {
+        $this->Payment = $payment;
 
-        /**
-         * Set delivery.
-         *
-         * @param Delivery|null $delivery
-         *
-         * @return PaymentOption
-         */
-        public function setDelivery(?Delivery $delivery = null)
-        {
-            $this->Delivery = $delivery;
+        return $this;
+    }
 
-            return $this;
-        }
-
-        /**
-         * Get delivery.
-         *
-         * @return Delivery|null
-         */
-        public function getDelivery()
-        {
-            return $this->Delivery;
-        }
-
-        /**
-         * Set payment.
-         *
-         * @param Payment|null $payment
-         *
-         * @return PaymentOption
-         */
-        public function setPayment(?Payment $payment = null)
-        {
-            $this->Payment = $payment;
-
-            return $this;
-        }
-
-        /**
-         * Get payment.
-         *
-         * @return Payment|null
-         */
-        public function getPayment()
-        {
-            return $this->Payment;
-        }
+    /**
+     * Get payment.
+     */
+    public function getPayment(): ?Payment
+    {
+        return $this->Payment;
     }
 }

@@ -19,38 +19,16 @@ use Eccube\Request\Context;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Twig\Environment;
+use Twig\Loader\ChainLoader;
+use Twig\Loader\FilesystemLoader;
 
 class MobileTemplatePathListener implements EventSubscriberInterface
 {
-    /**
-     * @var Context
-     */
-    protected $context;
-
-    /**
-     * @var Environment
-     */
-    protected $twig;
-
-    /**
-     * @var MobileDetect
-     */
-    protected $detector;
-
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    public function __construct(Context $context, Environment $twig, MobileDetect $detector, EccubeConfig $eccubeConfig)
+    public function __construct(protected Context $context, protected Environment $twig, protected MobileDetect $detector, protected EccubeConfig $eccubeConfig)
     {
-        $this->context = $context;
-        $this->twig = $twig;
-        $this->detector = $detector;
-        $this->eccubeConfig = $eccubeConfig;
     }
 
-    public function onKernelRequest(RequestEvent $event)
+    public function onKernelRequest(RequestEvent $event): void
     {
         if (!$event->isMainRequest()) {
             return;
@@ -75,15 +53,19 @@ class MobileTemplatePathListener implements EventSubscriberInterface
             ];
         }
 
-        $loader = new \Twig\Loader\ChainLoader([
-            new \Twig\Loader\FilesystemLoader($paths),
+        $loader = new ChainLoader([
+            new FilesystemLoader($paths),
             $this->twig->getLoader(),
         ]);
 
         $this->twig->setLoader($loader);
     }
 
-    public static function getSubscribedEvents()
+    /**
+     * @return array<string, array<string|int>>
+     */
+    #[\Override]
+    public static function getSubscribedEvents(): array
     {
         return [
             'kernel.request' => ['onKernelRequest', 512],

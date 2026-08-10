@@ -17,11 +17,6 @@ class LayoutManagePage extends AbstractAdminPageStyleGuide
 {
     public static $登録完了メッセージ = ['css' => '.c-contentsArea .alert'];
 
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     public static function go($I)
     {
         $page = new self($I);

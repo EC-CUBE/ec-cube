@@ -20,7 +20,8 @@ use Psr\Container\ContainerInterface;
 
 class PluginManager extends AbstractPluginManager
 {
-    public function install(array $config, ContainerInterface $container)
+    #[\Override]
+    public function install(array $config, ContainerInterface $container): void
     {
         echo '*******************************************'.PHP_EOL;
         echo 'Install Emperor 1.0.0'.PHP_EOL;
@@ -31,10 +32,11 @@ class PluginManager extends AbstractPluginManager
         $foo->id = 1;
         $foo->name = 'Emperor 1.0.0';
         $entityManager->persist($foo);
-        $entityManager->flush($foo);
+        $entityManager->flush();
     }
 
-    public function enable(array $config, ContainerInterface $container)
+    #[\Override]
+    public function enable(array $config, ContainerInterface $container): void
     {
         echo '*******************************************'.PHP_EOL;
         echo 'Enable Emperor 1.0.0'.PHP_EOL;
@@ -43,7 +45,8 @@ class PluginManager extends AbstractPluginManager
         $entityManager->find(Foo::class, 1);
     }
 
-    public function disable(array $config, ContainerInterface $container)
+    #[\Override]
+    public function disable(array $config, ContainerInterface $container): void
     {
         echo '*******************************************'.PHP_EOL;
         echo 'Disable Emperor 1.0.0'.PHP_EOL;
@@ -52,7 +55,8 @@ class PluginManager extends AbstractPluginManager
         $entityManager->find(Foo::class, 1);
     }
 
-    public function update(array $config, ContainerInterface $container)
+    #[\Override]
+    public function update(array $config, ContainerInterface $container): void
     {
         echo '*******************************************'.PHP_EOL;
         echo 'Update Emperor 1.0.0'.PHP_EOL;
@@ -61,7 +65,8 @@ class PluginManager extends AbstractPluginManager
         $entityManager->find(Foo::class, 1);
     }
 
-    public function uninstall(array $config, ContainerInterface $container)
+    #[\Override]
+    public function uninstall(array $config, ContainerInterface $container): void
     {
         echo '*******************************************'.PHP_EOL;
         echo 'Uninstall Emperor 1.0.0'.PHP_EOL;

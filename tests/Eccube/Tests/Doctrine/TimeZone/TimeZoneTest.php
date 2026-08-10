@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,12 +19,9 @@ use Eccube\Entity\Product;
 use Eccube\Repository\ProductRepository;
 use Eccube\Tests\EccubeTestCase;
 
-class TimeZoneTest extends EccubeTestCase
+final class TimeZoneTest extends EccubeTestCase
 {
-    /**
-     * @var ProductRepository
-     */
-    protected $productRepository;
+    protected ?ProductRepository $productRepository = null;
 
     /**
      * {@inheritdoc}
@@ -32,9 +31,7 @@ class TimeZoneTest extends EccubeTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->productRepository = $this->entityManager->getRepository(Product::class);
-
         // 2000-01-01 00:00:00 +09 (jst)
         // 1999-12-31 15:00:00 +00 (utc)
         // の日時データを登録
@@ -51,8 +48,7 @@ class TimeZoneTest extends EccubeTestCase
                 '1999-12-31 15:00:00',
                 '1999-12-31 15:00:00',
                 'product');";
-
-        $this->entityManager->getConnection()->exec($sql);
+        $this->entityManager->getConnection()->executeStatement($sql);
     }
 
     public function testOrmFind()
@@ -61,6 +57,7 @@ class TimeZoneTest extends EccubeTestCase
 
         // jstに変換されて取得されるはず.
         $expected = '2000-01-01 00:00:00';
+        $this->assertInstanceOf(Product::class, $product);
         $actual = $product->getCreateDate()->format('Y-m-d H:i:s');
 
         $this->assertSame($expected, $actual);
@@ -95,13 +92,14 @@ class TimeZoneTest extends EccubeTestCase
         // jstに変換されて取得できるはず
         $product = $this->productRepository->find($id);
         $expected = '2000-01-01 00:00:00';
+        $this->assertInstanceOf(Product::class, $product);
         $actual = $product->getCreateDate()->format('Y-m-d H:i:s');
 
         $this->assertSame($expected, $actual);
 
         $sql = 'select id, create_date from dtb_product where id = ?';
         $stmt = $this->entityManager->getConnection()->executeQuery($sql, [$id]);
-        $product = $stmt->fetch();
+        $product = $stmt->fetchAssociative();
 
         // utcで登録されているはず
         $expected = '1999-12-31 15:00:00';
@@ -114,7 +112,7 @@ class TimeZoneTest extends EccubeTestCase
     {
         $sql = 'select create_date from dtb_product where id = 999';
         $stmt = $this->entityManager->getConnection()->executeQuery($sql);
-        $product = $stmt->fetch();
+        $product = $stmt->fetchAssociative();
 
         // dbalでselectした場合, utc時刻をそのまま取得
         $expected = '1999-12-31 15:00:00';
@@ -150,7 +148,7 @@ class TimeZoneTest extends EccubeTestCase
 
         $sql = 'select id, create_date from dtb_product where id = 9999';
         $stmt = $this->entityManager->getConnection()->executeQuery($sql);
-        $product = $stmt->fetch();
+        $product = $stmt->fetchAssociative();
 
         // utcに変換されて登録されている
         $expected = '1999-12-31 15:00:00';

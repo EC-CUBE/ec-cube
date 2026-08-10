@@ -18,56 +18,42 @@ use Eccube\Entity\Master\DeviceType;
 use Eccube\Form\Type\Admin\TemplateType;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\TemplateRepository;
+use Eccube\Service\EnvFileService;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class TemplateController extends AbstractController
 {
     /**
-     * @var TemplateRepository
+     * この画面が .env へ書き込む環境変数キー（OS 環境変数によるオーバーライド判定に使用）.
      */
-    protected $templateRepository;
-
-    /**
-     * @var DeviceTypeRepository
-     */
-    protected $deviceTypeRepository;
+    private const ENV_KEYS = ['ECCUBE_TEMPLATE_CODE'];
 
     /**
      * TemplateController constructor.
-     *
-     * @param TemplateRepository $templateRepository
-     * @param DeviceTypeRepository $deviceTypeRepository
      */
-    public function __construct(
-        TemplateRepository $templateRepository,
-        DeviceTypeRepository $deviceTypeRepository,
-    ) {
-        $this->templateRepository = $templateRepository;
-        $this->deviceTypeRepository = $deviceTypeRepository;
+    public function __construct(protected TemplateRepository $templateRepository, protected DeviceTypeRepository $deviceTypeRepository, private readonly CacheUtil $cacheUtil, private readonly EnvFileService $envFileService)
+    {
     }
 
     /**
      * テンプレート一覧画面
      *
-     * @Route("/%eccube_admin_route%/store/template", name="admin_store_template", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Store/template.twig")
-     *
-     * @param Request $request
-     *
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return array<string, mixed>|RedirectResponse
      */
-    public function index(Request $request, CacheUtil $cacheUtil)
+    #[Route(path: '/%eccube_admin_route%/store/template', name: 'admin_store_template', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Store/template.twig')]
+    public function index(Request $request): array|RedirectResponse
     {
         $DeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_PC);
 
@@ -79,10 +65,28 @@ class TemplateController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // .env への書き込みが反映されない状況では保存を拒否する
+            //   - .env が存在しない / 書き込み不可
+            //   - .env.local.php（dump-env の最適化済みスナップショット）が .env より優先される
+            //   - ECCUBE_TEMPLATE_CODE が OS 環境変数やカスケードファイルで .env を上書きしている
+            $ineffectiveReasons = $this->envFileService->getIneffectiveReasons();
+            $overriddenKeys = $this->envFileService->getOverriddenKeys(self::ENV_KEYS);
+            if ([] !== $ineffectiveReasons || [] !== $overriddenKeys) {
+                $this->addError('admin.common.save_error', 'admin');
+                foreach ($ineffectiveReasons as $reason) {
+                    $this->addError('admin.system.env.ineffective.'.$reason, 'admin');
+                }
+                if ([] !== $overriddenKeys) {
+                    $this->addError(trans('admin.system.env.ineffective.overridden', ['%keys%' => implode(', ', $overriddenKeys)]), 'admin');
+                }
+
+                return $this->redirectToRoute('admin_store_template');
+            }
+
             $Template = $this->templateRepository->find($form['selected']->getData());
 
             $envFile = $this->getParameter('kernel.project_dir').'/.env';
-            $env = file_exists($envFile) ? file_get_contents($envFile) : '';
+            $env = file_get_contents($envFile);
 
             $env = StringUtil::replaceOrAddEnv($env, [
                 'ECCUBE_TEMPLATE_CODE' => $Template->getCode(),
@@ -92,28 +96,36 @@ class TemplateController extends AbstractController
 
             $this->addSuccess('admin.common.save_complete', 'admin');
 
-            $cacheUtil->clearCache();
+            $this->cacheUtil->clearCache();
 
             return $this->redirectToRoute('admin_store_template');
+        }
+
+        // .env への書き込みが反映されない状況では警告を出し、登録ボタンを無効化する。
+        $ineffectiveReasons = $this->envFileService->getIneffectiveReasons();
+        foreach ($ineffectiveReasons as $reason) {
+            $this->addWarning('admin.system.env.ineffective.'.$reason, 'admin');
+        }
+
+        // 対象キー（ECCUBE_TEMPLATE_CODE）が上書きされている場合は名指しで警告する。
+        $overriddenKeys = $this->envFileService->getOverriddenKeys(self::ENV_KEYS);
+        if ([] !== $overriddenKeys) {
+            $this->addWarning(trans('admin.system.env.ineffective.overridden', ['%keys%' => implode(', ', $overriddenKeys)]), 'admin');
         }
 
         return [
             'form' => $form->createView(),
             'Templates' => $Templates,
+            // この画面が扱うキーは 1 つのみのため, 上書きされていれば実質全滅として無効化する。
+            'envWritable' => [] === $ineffectiveReasons && [] === $overriddenKeys,
         ];
     }
 
     /**
      * テンプレート一覧からのダウンロード
-     *
-     * @Route("/%eccube_admin_route%/store/template/{id}/download", name="admin_store_template_download", requirements={"id" = "\d+"}, methods={"GET"})
-     *
-     * @param Request $request
-     * @param \Eccube\Entity\Template $Template
-     *
-     * @return BinaryFileResponse
      */
-    public function download(Request $request, \Eccube\Entity\Template $Template)
+    #[Route(path: '/%eccube_admin_route%/store/template/{id}/download', name: 'admin_store_template_download', requirements: ['id' => '\d+'], methods: ['GET'])]
+    public function download(\Eccube\Entity\Template $Template): BinaryFileResponse
     {
         // 該当テンプレートのディレクトリ
         $templateCode = $Template->getCode();
@@ -153,7 +165,7 @@ class TemplateController extends AbstractController
             $tmpDir,
             $tarFile,
             $tarGzFile
-        ) {
+        ): void {
             log_debug('remove temp file: '.$tmpDir);
             log_debug('remove temp file: '.$tarFile);
             log_debug('remove temp file: '.$tarGzFile);
@@ -169,10 +181,8 @@ class TemplateController extends AbstractController
         return $response;
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/store/template/{id}/delete", name="admin_store_template_delete", requirements={"id" = "\d+"}, methods={"DELETE"})
-     */
-    public function delete(Request $request, \Eccube\Entity\Template $Template)
+    #[Route(path: '/%eccube_admin_route%/store/template/{id}/delete', name: 'admin_store_template_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    public function delete(\Eccube\Entity\Template $Template): RedirectResponse
     {
         $this->isTokenValid();
 
@@ -211,15 +221,11 @@ class TemplateController extends AbstractController
     /**
      * テンプレートの追加画面.
      *
-     * @Route("/%eccube_admin_route%/store/template/install", name="admin_store_template_install", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Store/template_add.twig")
-     *
-     * @param Request $request
-     *
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return array<string, mixed>|RedirectResponse
      */
-    public function install(Request $request)
+    #[Route(path: '/%eccube_admin_route%/store/template/install', name: 'admin_store_template_install', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Store/template_add.twig')]
+    public function install(Request $request): array|RedirectResponse
     {
         $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');
 
@@ -231,10 +237,8 @@ class TemplateController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var \Eccube\Entity\Template $Template */
             $Template = $form->getData();
-
             $TemplateExists = $this->templateRepository->findByCode($Template->getCode());
-
-            // テンプレートコードの重複チェック.
+            // テンプレートコードの重複チェック.s
             if ($TemplateExists) {
                 $form['code']->addError(new FormError(trans('admin.store.template.template_code_already_exists')));
 
@@ -263,7 +267,7 @@ class TemplateController extends AbstractController
 
             // 一時ディレクトリへ解凍する.
             try {
-                if (strtolower($formFile->getClientOriginalExtension()) === 'zip') {
+                if (strtolower((string) $formFile->getClientOriginalExtension()) === 'zip') {
                     $zip = new \ZipArchive();
                     $zip->open($tmpDir.'/'.$archive);
                     $zip->extractTo($tmpDir);
@@ -272,7 +276,7 @@ class TemplateController extends AbstractController
                     $phar = new \PharData($tmpDir.'/'.$archive);
                     $phar->extractTo($tmpDir, null, true);
                 }
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 $form['file']->addError(new FormError(trans('admin.common.upload_error')));
 
                 return [

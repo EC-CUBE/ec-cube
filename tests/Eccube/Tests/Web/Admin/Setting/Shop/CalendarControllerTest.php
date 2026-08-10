@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -16,13 +18,12 @@ namespace Eccube\Tests\Web\Admin\Setting\Shop;
 use Eccube\Entity\Calendar;
 use Eccube\Repository\CalendarRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-class CalendarControllerTest extends AbstractAdminWebTestCase
+final class CalendarControllerTest extends AbstractAdminWebTestCase
 {
-    /**
-     * @var CalendarRepository
-     */
-    protected $calendarRepository;
+    protected ?CalendarRepository $calendarRepository = null;
 
     /**
      * {@inheritdoc}
@@ -30,14 +31,10 @@ class CalendarControllerTest extends AbstractAdminWebTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->calendarRepository = $this->entityManager->getRepository(Calendar::class);
     }
 
-    /**
-     * @return Calendar
-     */
-    public function createCalendar()
+    public function createCalendar(): Calendar
     {
         $TargetCalendar = new Calendar();
         $TargetCalendar->setTitle('春分の日')
@@ -51,7 +48,7 @@ class CalendarControllerTest extends AbstractAdminWebTestCase
     public function testRouting()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_setting_shop_calendar_new')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -60,7 +57,7 @@ class CalendarControllerTest extends AbstractAdminWebTestCase
     public function testRoutingNew()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_setting_shop_calendar')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -74,12 +71,12 @@ class CalendarControllerTest extends AbstractAdminWebTestCase
         $redirectUrl = $this->generateUrl('admin_setting_shop_calendar');
 
         $this->client->request(
-            'DELETE',
+            Request::METHOD_DELETE,
             $this->generateUrl('admin_setting_shop_calendar_delete', ['id' => $id])
         );
 
         $actual = $this->client->getResponse()->isRedirect($redirectUrl);
-        $this->assertSame(true, $actual);
+        $this->assertTrue($actual);
     }
 
     public function testDeleteFailNotFound()
@@ -87,10 +84,10 @@ class CalendarControllerTest extends AbstractAdminWebTestCase
         $id = 99999;
 
         $this->client->request(
-            'DELETE',
+            Request::METHOD_DELETE,
             $this->generateUrl('admin_setting_shop_calendar_delete', ['id' => $id])
         );
-        $this->assertSame(404, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 
     public function testEditSuccess()
@@ -105,7 +102,7 @@ class CalendarControllerTest extends AbstractAdminWebTestCase
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop_calendar'),
             [
                 'calendar' => $form,
@@ -116,11 +113,14 @@ class CalendarControllerTest extends AbstractAdminWebTestCase
 
         $Calendar = $this->calendarRepository->find($id);
         $this->expected = $form['title'];
+        $this->assertInstanceOf(Calendar::class, $Calendar);
         $this->actual = $Calendar->getTitle();
         $this->verify();
 
         $this->expected = $form['holiday'];
+        $this->assertInstanceOf(Calendar::class, $Calendar);
         $holiday = $Calendar->getHoliday();
+        $this->assertInstanceOf(\DateTime::class, $holiday);
         $holiday->setTimezone(new \DateTimeZone('Asia/Tokyo'));
         $this->actual = $holiday->format('Y-n-j');
         $this->verify();
@@ -137,7 +137,7 @@ class CalendarControllerTest extends AbstractAdminWebTestCase
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop_calendar'),
             [
                 'calendar' => $form,
@@ -147,11 +147,14 @@ class CalendarControllerTest extends AbstractAdminWebTestCase
         $Calendar = $this->calendarRepository->find($id + 1);
 
         $this->expected = $form['title'];
+        $this->assertInstanceOf(Calendar::class, $Calendar);
         $this->actual = $Calendar->getTitle();
         $this->verify();
 
         $this->expected = $form['holiday'];
+        $this->assertInstanceOf(Calendar::class, $Calendar);
         $holiday = $Calendar->getHoliday();
+        $this->assertInstanceOf(\DateTime::class, $holiday);
         $holiday->setTimezone(new \DateTimeZone('Asia/Tokyo'));
         $this->actual = $holiday->format('Y-n-j');
         $this->verify();

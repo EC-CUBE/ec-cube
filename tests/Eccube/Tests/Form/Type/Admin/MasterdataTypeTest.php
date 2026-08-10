@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,16 +17,18 @@ namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Form\Type\Admin\MasterdataType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use Symfony\Component\Form\FormInterface;
 
-class MasterdataTypeTest extends AbstractTypeTestCase
+final class MasterdataTypeTest extends AbstractTypeTestCase
 {
+    protected ?FormInterface $form = null;
+
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = [];
+    protected ?array $formData = null;
 
     protected function setUp(): void
     {
         parent::setUp();
-
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
             ->createBuilder(MasterdataType::class, null, [

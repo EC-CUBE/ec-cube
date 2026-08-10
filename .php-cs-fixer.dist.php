@@ -25,17 +25,33 @@ $rules = [
     'increment_style' => false,
     'yoda_style' => false,
     'header_comment' => ['header' => $header],
+    'phpdoc_add_missing_param_annotation' => true,
+    'phpdoc_param_order' => true,
+    'phpdoc_to_comment' => false, // /** @var */ を変換してしまうため
+    'phpdoc_trim' => true,
+    'global_namespace_import' => [
+        'import_classes' => false,
+        'import_constants' => false,
+        'import_functions' => false,
+    ],
+    // PHPDocの型をネイティブ型へ
+    'phpdoc_to_param_type'   => true,
+    'phpdoc_to_return_type'  => true,
+    'phpdoc_to_property_type' => true,
 ];
 
 $finder = \PhpCsFixer\Finder::create()
-    ->in(__DIR__.'/src')
-    ->in(__DIR__.'/tests')
-    ->in(__DIR__.'/app')
-    ->in(__DIR__.'/codeception')
+    ->in(__DIR__ . '/src')
+    ->in(__DIR__ . '/tests')
+    ->in(__DIR__ . '/app')
+    ->in(__DIR__ . '/codeception')
     ->name('*.php')
+    ->notName('reference.php')
 ;
 $config = new \PhpCsFixer\Config();
 return $config
     ->setRules($rules)
     ->setFinder($finder)
+    ->setRiskyAllowed(true)
+    ->setUnsupportedPhpVersionAllowed(true)
     ;

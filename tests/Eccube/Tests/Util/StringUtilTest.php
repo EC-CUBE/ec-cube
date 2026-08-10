@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,6 +17,8 @@ namespace Eccube\Tests\Util;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Util\StringUtil;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -22,7 +26,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @author Kentaro Ohkouchi
  */
-class StringUtilTest extends TestCase
+final class StringUtilTest extends TestCase
 {
     private $actual;
     private $expected;
@@ -38,7 +42,7 @@ class StringUtilTest extends TestCase
         $this->actual = strlen($result);
         // デフォルトは16桁
         $this->assertSame($this->expected, $this->actual);
-        $this->assertTrue(preg_match('/[A-Za-z0-9]{16}/', $result) === 1);
+        $this->assertMatchesRegularExpression('/[A-Za-z0-9]{16}/', $result);
     }
 
     public function testRandomWithParams()
@@ -48,7 +52,7 @@ class StringUtilTest extends TestCase
         $this->actual = strlen($result);
 
         $this->assertSame($this->expected, $this->actual);
-        $this->assertTrue(preg_match('/[A-Za-z0-9]{'.$this->expected.'}/', $result) === 1);
+        $this->assertMatchesRegularExpression('/[A-Za-z0-9]{'.$this->expected.'}/', $result);
     }
 
     public function testRandomException()
@@ -61,7 +65,7 @@ class StringUtilTest extends TestCase
         } catch (\RuntimeException $e) {
             $this->actual = $e->getMessage();
         }
-        $this->assertEquals($this->expected, $this->actual);
+        $this->assertSame($this->expected, $this->actual);
     }
 
     public function testQuickRandom()
@@ -71,7 +75,7 @@ class StringUtilTest extends TestCase
         $this->actual = strlen($result);
         // デフォルトは16桁
         $this->assertSame($this->expected, $this->actual);
-        $this->assertTrue(preg_match('/[A-Za-z0-9]{16}/', $result) === 1);
+        $this->assertMatchesRegularExpression('/[A-Za-z0-9]{16}/', $result);
     }
 
     public function testQuickRandomWithParams()
@@ -81,7 +85,7 @@ class StringUtilTest extends TestCase
         $this->actual = strlen($result);
 
         $this->assertSame($this->expected, $this->actual);
-        $this->assertTrue(preg_match('/[A-Za-z0-9]{'.$this->expected.'}/', $result) === 1);
+        $this->assertMatchesRegularExpression('/[A-Za-z0-9]{'.$this->expected.'}/', $result);
     }
 
     public function testConvertLineFeed()
@@ -94,11 +98,11 @@ class StringUtilTest extends TestCase
 
         $param = "aaaa\r";
         $this->actual = StringUtil::convertLineFeed($param);
-        $this->assertEquals($this->expected, $this->actual);
+        $this->assertSame($this->expected, $this->actual);
 
         $param = "aaaa\n";
         $this->actual = StringUtil::convertLineFeed($param);
-        $this->assertEquals($this->expected, $this->actual);
+        $this->assertSame($this->expected, $this->actual);
     }
 
     public function testConvertLineFeedWithCrlf()
@@ -112,11 +116,11 @@ class StringUtilTest extends TestCase
 
         $param = "aaaa\r";
         $this->actual = StringUtil::convertLineFeed($param, $lf);
-        $this->assertEquals($this->expected, $this->actual);
+        $this->assertSame($this->expected, $this->actual);
 
         $param = "aaaa\r\n";
         $this->actual = StringUtil::convertLineFeed($param, $lf);
-        $this->assertEquals($this->expected, $this->actual);
+        $this->assertSame($this->expected, $this->actual);
     }
 
     public function testConvertLineFeedWithMultiline()
@@ -130,11 +134,11 @@ class StringUtilTest extends TestCase
 
         $param = "aaaa\rbbbb\rcccc\r";
         $this->actual = StringUtil::convertLineFeed($param, $lf);
-        $this->assertEquals($this->expected, $this->actual);
+        $this->assertSame($this->expected, $this->actual);
 
         $param = "aaaa\r\nbbbb\r\ncccc\r\n";
         $this->actual = StringUtil::convertLineFeed($param, $lf);
-        $this->assertEquals($this->expected, $this->actual);
+        $this->assertSame($this->expected, $this->actual);
     }
 
     public function testConvertLineFeedWithEmpty()
@@ -303,7 +307,7 @@ class StringUtilTest extends TestCase
         // $greedy = true のテスト
         $text = '　a　';
         $this->actual = StringUtil::isBlank($text);
-        $this->assertFalse($this->actual, true);
+        $this->assertFalse($this->actual);
 
         // $greedy = true のテスト
         $text = "　\n\t　";
@@ -336,10 +340,9 @@ class StringUtilTest extends TestCase
     }
 
     /**
-     * @group legacy
-     *
      * @expectedDeprecation \Eccube\Util\StringUtil::isBlank() の第一引数は文字型、数値を使用してください
      */
+    #[Group(name: 'legacy')]
     public function testIsBlankWithObject()
     {
         $text = new \stdClass();
@@ -349,10 +352,9 @@ class StringUtilTest extends TestCase
     }
 
     /**
-     * @group legacy
-     *
      * @expectedDeprecation \Eccube\Util\StringUtil::isBlank() の第一引数は文字型、数値を使用してください
      */
+    #[Group(name: 'legacy')]
     public function testIsBlankWithArray()
     {
         $text = [];
@@ -362,10 +364,9 @@ class StringUtilTest extends TestCase
     }
 
     /**
-     * @group legacy
-     *
      * @expectedDeprecation \Eccube\Util\StringUtil::isBlank() の第一引数は文字型、数値を使用してください
      */
+    #[Group(name: 'legacy')]
     public function testIsBlankWithArrayGreedy()
     {
         // $greedy = true のテスト
@@ -376,10 +377,9 @@ class StringUtilTest extends TestCase
     }
 
     /**
-     * @group legacy
-     *
      * @expectedDeprecation \Eccube\Util\StringUtil::isBlank() の第一引数は文字型、数値を使用してください
      */
+    #[Group(name: 'legacy')]
     public function testIsBlankWithArrayGreedy2()
     {
         // $greedy = true のテスト
@@ -390,10 +390,9 @@ class StringUtilTest extends TestCase
     }
 
     /**
-     * @group legacy
-     *
      * @expectedDeprecation \Eccube\Util\StringUtil::isBlank() の第一引数は文字型、数値を使用してください
      */
+    #[Group(name: 'legacy')]
     public function testIsBlankWithArrayGreedy3()
     {
         // $greedy = true のテスト
@@ -404,10 +403,9 @@ class StringUtilTest extends TestCase
     }
 
     /**
-     * @group legacy
-     *
      * @expectedDeprecation  \Eccube\Util\StringUtil::isBlank() の第一引数は文字型、数値を使用してください
      */
+    #[Group(name: 'legacy')]
     public function testIsNotBlankWithArray()
     {
         $text = [];
@@ -417,10 +415,9 @@ class StringUtilTest extends TestCase
     }
 
     /**
-     * @group legacy
-     *
      * @expectedDeprecation \Eccube\Util\StringUtil::isBlank() の第一引数は文字型、数値を使用してください
      */
+    #[Group(name: 'legacy')]
     public function testIsBlankWithArrayCollectionEmpty()
     {
         $value = new ArrayCollection();
@@ -430,10 +427,9 @@ class StringUtilTest extends TestCase
     }
 
     /**
-     * @group legacy
-     *
      * @expectedDeprecation \Eccube\Util\StringUtil::isBlank() の第一引数は文字型、数値を使用してください
      */
+    #[Group(name: 'legacy')]
     public function testIsBlankWithArrayCollectionNotEmpty()
     {
         $value = new ArrayCollection(['a']);
@@ -494,37 +490,38 @@ class StringUtilTest extends TestCase
         $text = 0;
         $this->expected = 0;
         $this->actual = StringUtil::trimAll($text);
-        $this->assertTrue($this->expected === $this->actual);
+        $this->assertSame($this->expected, $this->actual);
 
         $text = '0';
         $this->expected = '0';
         $this->actual = StringUtil::trimAll($text);
-        $this->assertTrue($this->expected === $this->actual);
+        $this->assertSame($this->expected, $this->actual);
 
         $text = " 0\n0\r\n\t";
         $this->expected = "0\n0";
         $this->actual = StringUtil::trimAll($text);
-        $this->assertTrue($this->expected === $this->actual);
+        $this->assertSame($this->expected, $this->actual);
     }
 
     /**
-     * @dataProvider replaceOrAddEnvProvider
+     * @param mixed $env
+     * @param mixed $replacement
+     * @param mixed $expected
      */
+    #[DataProvider(methodName: 'replaceOrAddEnvProvider')]
     public function testReplaceOrAddEnv($env, $replacement, $expected)
     {
-        self::assertEquals($expected, StringUtil::replaceOrAddEnv($env, $replacement));
+        $this->assertEquals($expected, StringUtil::replaceOrAddEnv($env, $replacement));
     }
 
-    public function replaceOrAddEnvProvider()
+    public static function replaceOrAddEnvProvider(): \Iterator
     {
-        return [
-            ['HOGE=HOGE', ['HOGE' => 'BAR'], 'HOGE=BAR'],
-            ['HOGE=HOGE', ['FOO' => 'BAR'], 'HOGE=HOGE'.PHP_EOL.'FOO=BAR'],
-            ['HOGE_HOGE=HOGE', ['HOGE' => 'BAR'], 'HOGE_HOGE=HOGE'.PHP_EOL.'HOGE=BAR'],
-            ['#HOGE=HOGE', ['HOGE' => 'BAR'], '#HOGE=HOGE'.PHP_EOL.'HOGE=BAR'],
-            ['HOGE=HOGE'.PHP_EOL.'FOO=FOO', ['HOGE' => 'BAR'], 'HOGE=BAR'.PHP_EOL.'FOO=FOO'],
-            ['HOGE=HOGE'.PHP_EOL.'FOO=FOO', ['FOO' => 'BAR'], 'HOGE=HOGE'.PHP_EOL.'FOO=BAR'],
-            ['HOGE=HOGE'.PHP_EOL.'FOO=FOO', ['HOGE' => 'hoge', 'FOO' => 'foo'], 'HOGE=hoge'.PHP_EOL.'FOO=foo'],
-        ];
+        yield ['HOGE=HOGE', ['HOGE' => 'BAR'], 'HOGE=BAR'];
+        yield ['HOGE=HOGE', ['FOO' => 'BAR'], 'HOGE=HOGE'.PHP_EOL.'FOO=BAR'];
+        yield ['HOGE_HOGE=HOGE', ['HOGE' => 'BAR'], 'HOGE_HOGE=HOGE'.PHP_EOL.'HOGE=BAR'];
+        yield ['#HOGE=HOGE', ['HOGE' => 'BAR'], '#HOGE=HOGE'.PHP_EOL.'HOGE=BAR'];
+        yield ['HOGE=HOGE'.PHP_EOL.'FOO=FOO', ['HOGE' => 'BAR'], 'HOGE=BAR'.PHP_EOL.'FOO=FOO'];
+        yield ['HOGE=HOGE'.PHP_EOL.'FOO=FOO', ['FOO' => 'BAR'], 'HOGE=HOGE'.PHP_EOL.'FOO=BAR'];
+        yield ['HOGE=HOGE'.PHP_EOL.'FOO=FOO', ['HOGE' => 'hoge', 'FOO' => 'foo'], 'HOGE=hoge'.PHP_EOL.'FOO=foo'];
     }
 }

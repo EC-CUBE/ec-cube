@@ -288,9 +288,7 @@ class EA03ProductCest
         $I->wantTo('EA0310-UC02-T02 一覧からの規格編集 規格あり 規格登録');
 
         $findProducts = Fixtures::get('findProducts');
-        $Products = array_filter($findProducts(), function ($Product) {
-            return $Product->hasProductClass();
-        });
+        $Products = array_filter($findProducts(), fn ($Product) => $Product->hasProductClass());
         $Product = array_pop($Products);
         ProductManagePage::go($I)
             ->検索($Product->getName())
@@ -322,9 +320,7 @@ class EA03ProductCest
         $I->wantTo('EA0302-UC05-T02 商品の複製');
 
         $findProducts = Fixtures::get('findProducts');
-        $Products = array_filter($findProducts(), function ($Product) {
-            return $Product->hasProductClass();
-        });
+        $Products = array_filter($findProducts(), fn ($Product) => $Product->hasProductClass());
         $Product = array_pop($Products);
         ProductManagePage::go($I)
             ->検索($Product->getName())
@@ -381,9 +377,7 @@ class EA03ProductCest
         $I->wantTo('EA0310-UC02-T01 一覧からの規格編集 規格あり');
 
         $findProducts = Fixtures::get('findProducts');
-        $Products = array_filter($findProducts(), function ($Product) {
-            return $Product->hasProductClass();
-        });
+        $Products = array_filter($findProducts(), fn ($Product) => $Product->hasProductClass());
         $Product = array_pop($Products);
         ProductManagePage::go($I)
             ->検索($Product->getName())
@@ -1164,9 +1158,7 @@ class EA03ProductCest
         $I->getScenario()->incomplete('ローカルで通るが何故か GitHub Actions でエラーになるためスキップ');
 
         $findProducts = Fixtures::get('findProducts');
-        $Products = array_filter($findProducts(), function ($Product) {
-            return $Product->hasProductClass();
-        });
+        $Products = array_filter($findProducts(), fn ($Product) => $Product->hasProductClass());
         $Product = array_pop($Products);
 
         // 先頭のproductClass要素に対してStockを登録する

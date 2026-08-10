@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -13,6 +15,7 @@
 
 namespace Eccube\Tests\Util;
 
+use Eccube\Entity\Master\Pref;
 use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\Master\PrefType;
 use Eccube\Form\Type\Master\SexType;
@@ -23,14 +26,11 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormFactoryInterface;
 
-class FormUtilTest extends EccubeTestCase
+final class FormUtilTest extends EccubeTestCase
 {
     protected $form;
 
-    /**
-     * @var FormFactoryInterface
-     */
-    protected $formFactory;
+    protected ?FormFactoryInterface $formFactory = null;
 
     protected $formData = [
         'pref' => '28',
@@ -41,7 +41,7 @@ class FormUtilTest extends EccubeTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->formFactory = static::getContainer()->get('form.factory');
+        $this->formFactory = static::getContainer()->get(FormFactoryInterface::class);
         $this->form = $this->formFactory
             ->createBuilder(
                 FormType::class,
@@ -81,7 +81,7 @@ class FormUtilTest extends EccubeTestCase
         $this->assertTrue($this->form->isSubmitted());
 
         // prefはPrefエンティティに変換されている.
-        $this->assertInstanceOf(\Eccube\Entity\Master\Pref::class, $data['pref']);
+        $this->assertInstanceOf(Pref::class, $data['pref']);
         $this->assertSame(28, $data['pref']->getId());
         $this->assertSame('兵庫県', $data['pref']->getName());
 

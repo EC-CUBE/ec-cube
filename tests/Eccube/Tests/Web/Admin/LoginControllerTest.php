@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -14,17 +16,21 @@
 namespace Eccube\Tests\Web\Admin;
 
 use Eccube\Tests\Web\AbstractWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class LoginControllerTest extends AbstractWebTestCase
+final class LoginControllerTest extends AbstractWebTestCase
 {
     public function testRoutingAdminLogin()
     {
-        $this->client->request('GET', $this->generateUrl('admin_login'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_login'));
 
         // ログイン
         $this->assertSame(
-            200,
-            $this->client->getResponse()->getStatusCode()
+            Response::HTTP_OK,
+            $this->client->getResponse()->getStatusCode(),
+            (string) $this->client->getResponse()->getContent()
         );
     }
 
@@ -32,7 +38,7 @@ class LoginControllerTest extends AbstractWebTestCase
     {
         // see https://stackoverflow.com/a/38661340/4956633
         $this->client->request(
-            'POST', $this->generateUrl('admin_login'),
+            Request::METHOD_POST, $this->generateUrl('admin_login'),
             [
                 'login_id' => 'admin',
                 'password' => 'password',
@@ -40,17 +46,21 @@ class LoginControllerTest extends AbstractWebTestCase
             ]
         );
 
-        $this->assertNotNull(static::getContainer()->get('security.token_storage')->getToken(), 'ログインしているかどうか');
+        $this->assertNotNull(static::getContainer()->get(TokenStorageInterface::class)->getToken(), 'ログインしているかどうか');
     }
 
-    public function testRoutingAdminLoginÃ�グインしていない場合は302エラーがかえる()
+    /**
+     * 管理画面: 未ログイン時は 302 でログイン画面にリダイレクトされる
+     */
+    public function testRoutingAdminLoginNotLoggedInReturns302()
     {
-        $this->client->request('GET', $this->generateUrl('admin_homepage'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_homepage'));
 
         // ログイン
         $this->assertSame(
-            302,
-            $this->client->getResponse()->getStatusCode()
+            Response::HTTP_FOUND,
+            $this->client->getResponse()->getStatusCode(),
+            (string) $this->client->getResponse()->getContent()
         );
     }
 }

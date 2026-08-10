@@ -14,8 +14,86 @@
   },
   "statements": [
     {
-      "comment": "おすすめ商品追加 アイスサンド",
+      "url": "https://ec-cube/admin/login",
+      "data": "",
+      "method": "GET",
+      "headers": "Upgrade-Insecure-Requests: 1\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": true,
+      "timestamp": 0,
+      "cookies": [],
       "index": 1,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "fieldDefinition": {
+        "formIndex": 0,
+        "fieldName": "_csrf_token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "csrf_login",
+      "index": 2,
+      "enabled": true,
+      "elementType": "ZestAssignFieldValue"
+    },
+    {
+      "url": "https://ec-cube/admin/login",
+      "urlToken": "https://ec-cube/admin/login",
+      "data": "_csrf_token={{csrf_login}}&login_id=admin&password=password",
+      "method": "POST",
+      "headers": "Content-Type: application/x-www-form-urlencoded\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 302,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 3,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "https://ec-cube/admin/",
+      "data": "",
+      "method": "GET",
+      "headers": "Upgrade-Insecure-Requests: 1\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": true,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 4,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "comment": "おすすめ商品追加 アイスサンド",
+      "index": 5,
       "enabled": true,
       "elementType": "ZestComment"
     },
@@ -37,7 +115,7 @@
       "followRedirects": false,
       "timestamp": 1675070592324,
       "cookies": [],
-      "index": 2,
+      "index": 6,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -59,7 +137,7 @@
       "followRedirects": false,
       "timestamp": 1675070599842,
       "cookies": [],
-      "index": 3,
+      "index": 7,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -70,7 +148,7 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf1",
-      "index": 4,
+      "index": 8,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
@@ -92,7 +170,7 @@
       "followRedirects": false,
       "timestamp": 1675070607432,
       "cookies": [],
-      "index": 5,
+      "index": 9,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -114,13 +192,13 @@
       "followRedirects": false,
       "timestamp": 1675070614004,
       "cookies": [],
-      "index": 6,
+      "index": 10,
       "enabled": true,
       "elementType": "ZestRequest"
     },
     {
       "comment": "おすすめ商品一覧ソート",
-      "index": 7,
+      "index": 11,
       "enabled": true,
       "elementType": "ZestComment"
     },
@@ -142,7 +220,7 @@
       "followRedirects": false,
       "timestamp": 1675070599842,
       "cookies": [],
-      "index": 8,
+      "index": 12,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -153,7 +231,7 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf2",
-      "index": 9,
+      "index": 13,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
@@ -175,7 +253,7 @@
       "followRedirects": false,
       "timestamp": 1675070607432,
       "cookies": [],
-      "index": 10,
+      "index": 14,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -197,13 +275,13 @@
       "followRedirects": false,
       "timestamp": 1675070614004,
       "cookies": [],
-      "index": 11,
+      "index": 15,
       "enabled": true,
       "elementType": "ZestRequest"
     },
     {
       "comment": "おすすめ商品ソート アイスサンド",
-      "index": 12,
+      "index": 16,
       "enabled": true,
       "elementType": "ZestComment"
     },
@@ -225,7 +303,7 @@
       "followRedirects": false,
       "timestamp": 1675070614823,
       "cookies": [],
-      "index": 13,
+      "index": 17,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -234,7 +312,7 @@
       "postfix": "/delete\"",
       "location": "BODY",
       "variableName": "recommend-id-a",
-      "index": 14,
+      "index": 18,
       "enabled": true,
       "elementType": "ZestAssignRegexDelimiters"
     },
@@ -243,13 +321,13 @@
       "operandB": "1",
       "operation": "subtract",
       "variableName": "recommend-id-b",
-      "index": 15,
+      "index": 19,
       "enabled": true,
       "elementType": "ZestAssignCalc"
     },
     {
       "message": "recommend-id-b: {{recommend-id-b}}",
-      "index": 16,
+      "index": 20,
       "enabled": false,
       "elementType": "ZestActionPrint"
     },
@@ -258,7 +336,7 @@
       "postfix": "' data-method=\"delete\">",
       "location": "BODY",
       "variableName": "recommend-delete-token",
-      "index": 17,
+      "index": 21,
       "enabled": true,
       "elementType": "ZestAssignRegexDelimiters"
     },
@@ -280,13 +358,13 @@
       "followRedirects": false,
       "timestamp": 1675072813504,
       "cookies": [],
-      "index": 18,
+      "index": 22,
       "enabled": true,
       "elementType": "ZestRequest"
     },
     {
       "comment": "おすすめ商品編集",
-      "index": 19,
+      "index": 23,
       "enabled": true,
       "elementType": "ZestComment"
     },
@@ -308,7 +386,7 @@
       "followRedirects": false,
       "timestamp": 1675075017647,
       "cookies": [],
-      "index": 20,
+      "index": 24,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -319,7 +397,7 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf3",
-      "index": 21,
+      "index": 25,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
@@ -341,13 +419,13 @@
       "followRedirects": false,
       "timestamp": 1675075020783,
       "cookies": [],
-      "index": 22,
+      "index": 26,
       "enabled": true,
       "elementType": "ZestRequest"
     },
     {
       "comment": "おすすめ商品削除",
-      "index": 23,
+      "index": 27,
       "enabled": true,
       "elementType": "ZestComment"
     },
@@ -369,7 +447,7 @@
       "followRedirects": false,
       "timestamp": 1675071010966,
       "cookies": [],
-      "index": 24,
+      "index": 28,
       "enabled": true,
       "elementType": "ZestRequest"
     }

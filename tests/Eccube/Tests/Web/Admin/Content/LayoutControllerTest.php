@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -22,28 +24,18 @@ use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\PageLayoutRepository;
 use Eccube\Repository\PageRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-class LayoutControllerTest extends AbstractAdminWebTestCase
+final class LayoutControllerTest extends AbstractAdminWebTestCase
 {
-    /**
-     * @var PageLayoutRepository
-     */
-    private $PageLayoutRepo;
+    private ?PageLayoutRepository $PageLayoutRepo = null;
 
-    /**
-     * @var LayoutRepository
-     */
-    protected $layoutRepository;
+    protected ?LayoutRepository $layoutRepository = null;
 
-    /**
-     * @var DeviceTypeRepository
-     */
-    protected $deviceTypeRepository;
+    protected ?DeviceTypeRepository $deviceTypeRepository = null;
 
-    /**
-     * @var PageRepository
-     */
-    protected $pageRepository;
+    protected ?PageRepository $pageRepository = null;
 
     /**
      * {@inheritdoc}
@@ -59,14 +51,14 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
 
     public function testIndex()
     {
-        $this->client->request('GET', $this->generateUrl('admin_content_layout'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_content_layout'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testIndexWithPost()
     {
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl(
                 'admin_content_layout_edit',
                 ['id' => 1]
@@ -95,7 +87,7 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
     public function testIndexWithNew()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl(
                 'admin_content_layout_new'
             )
@@ -106,7 +98,7 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
     public function testIndexWithPostPreview()
     {
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl(
                 'admin_content_layout_preview',
                 ['id' => 1]
@@ -139,13 +131,14 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
 
         $Layout = new Layout();
         $Layout->setName('Layout for unit test');
+        $this->assertInstanceOf(DeviceType::class, $PcDeviceType);
         $Layout->setDeviceType($PcDeviceType);
         $this->layoutRepository->save($Layout);
 
         $this->entityManager->flush();
 
         $this->client->request(
-            'DELETE',
+            Request::METHOD_DELETE,
             $this->generateUrl('admin_content_layout_delete', ['id' => $Layout->getId()])
         );
         $crawler = $this->client->followRedirect();
@@ -157,18 +150,19 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
         $PcDeviceType = $this->deviceTypeRepository->find(DeviceType::DEVICE_TYPE_PC);
         $Layout = new Layout();
         $Layout->setName('Layout for unit test');
+        $this->assertInstanceOf(DeviceType::class, $PcDeviceType);
         $Layout->setDeviceType($PcDeviceType);
         $this->layoutRepository->save($Layout);
         $this->entityManager->flush();
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_content_layout_delete', ['id' => $Layout->getId()])
         );
-        $this->assertSame(405, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_METHOD_NOT_ALLOWED, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
 
         $this->client->request(
-            'DELETE',
+            Request::METHOD_DELETE,
             $this->generateUrl('admin_content_layout_delete', ['id' => 999999])
         );
         $this->assertTrue($this->client->getResponse()->isNotFound());
@@ -180,6 +174,7 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
 
         $Layout = new Layout();
         $Layout->setName('Layout for unit test');
+        $this->assertInstanceOf(DeviceType::class, $PcDeviceType);
         $Layout->setDeviceType($PcDeviceType);
         $this->layoutRepository->save($Layout);
         $this->entityManager->flush();
@@ -203,7 +198,7 @@ class LayoutControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->flush();
 
         $this->client->request(
-            'DELETE',
+            Request::METHOD_DELETE,
             $this->generateUrl('admin_content_layout_delete', ['id' => $Layout->getId()])
         );
         $crawler = $this->client->followRedirect();

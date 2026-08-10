@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,15 +17,15 @@ namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Form\Type\Admin\OrderItemType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Form\FormInterface;
 
-class OrderItemTypeTest extends AbstractTypeTestCase
+final class OrderItemTypeTest extends AbstractTypeTestCase
 {
-    /** @var FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = [
+    protected ?array $formData = [
         'ProductClass' => '1',
         'price' => '10000',
         'quantity' => '10000',
@@ -35,14 +37,12 @@ class OrderItemTypeTest extends AbstractTypeTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
             ->createBuilder(OrderItemType::class, null, [
                 'csrf_protection' => false,
             ])
             ->getForm();
-
         $Product = $this->createProduct();
         $ProductClass = $Product->getProductClasses()->first();
         $this->formData['ProductClass'] = $ProductClass->getId();
@@ -106,19 +106,40 @@ class OrderItemTypeTest extends AbstractTypeTestCase
 
     public function testInvalidQuantityNotNumeric()
     {
-        $this->markTestIncomplete('testInvalidQuantity_NotNumeric is not implemented.');
         $this->formData['quantity'] = 'abcde';
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidQuantityHasMinus()
+    /**
+     * 個数のマイナス値を許容しない明細種別の検証.
+     *
+     * 商品明細(PRODUCT)は「金額 -> 正, 個数 -> 正負」が仕様であり、
+     * 個数のマイナス値が valid となるため対象外とする。
+     * 値引き(DISCOUNT)・送料(DELIVERY_FEE)・手数料(CHARGE)のみ個数の符号が検証される。
+     *
+     * @see OrderItemType::buildForm() の POST_SUBMIT リスナ
+     */
+    #[DataProvider(methodName: 'getQuantitySignValidatedOrderItemTypes')]
+    public function testInvalidQuantityHasMinus(int $orderItemType, string $price)
     {
-        $this->markTestIncomplete('testInvalidQuantity_HasMinus is not implemented.');
+        $this->formData['order_item_type'] = $orderItemType;
+        // 値引き明細は金額 -> 負が要求されるため、個数のみを検証対象とするよう明細種別ごとに妥当な金額を与える
+        $this->formData['price'] = $price;
         $this->formData['quantity'] = '-123456';
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
+    }
+
+    /**
+     * @return \Iterator<string, array{int, string}>
+     */
+    public static function getQuantitySignValidatedOrderItemTypes(): \Iterator
+    {
+        yield 'discount' => [\Eccube\Entity\Master\OrderItemType::DISCOUNT, '-10000'];
+        yield 'delivery_fee' => [\Eccube\Entity\Master\OrderItemType::DELIVERY_FEE, '10000'];
+        yield 'charge' => [\Eccube\Entity\Master\OrderItemType::CHARGE, '10000'];
     }
 }

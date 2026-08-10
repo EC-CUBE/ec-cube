@@ -14,6 +14,7 @@
 namespace Eccube\Util;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Random\RandomException;
 
 class StringUtil
 {
@@ -42,25 +43,17 @@ class StringUtil
      *
      * Generate a more truly "random" alpha-numeric string.
      *
-     * @param  int $length
-     *
-     * @return string
-     *
      * @throws \RuntimeException
      */
-    public static function random($length = 16)
+    public static function random(int $length = 16): string
     {
-        if (function_exists('openssl_random_pseudo_bytes')) {
-            $bytes = openssl_random_pseudo_bytes($length * 2);
-
-            if ($bytes === false) {
-                throw new \RuntimeException('Unable to generate random string.');
-            }
-
-            return substr(str_replace(['/', '+', '='], '', base64_encode($bytes)), 0, $length);
+        try {
+            $bytes = random_bytes($length * 2);
+        } catch (RandomException) {
+            return static::quickRandom($length);
         }
 
-        return static::quickRandom($length);
+        return substr(str_replace(['/', '+', '='], '', base64_encode($bytes)), 0, $length);
     }
 
     /**
@@ -89,12 +82,8 @@ class StringUtil
      * Generate a "random" alpha-numeric string.
      *
      * Should not be considered sufficient for cryptography, etc.
-     *
-     * @param  int $length
-     *
-     * @return string
      */
-    public static function quickRandom($length = 16)
+    public static function quickRandom(int $length = 16): string
     {
         $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
@@ -103,13 +92,8 @@ class StringUtil
 
     /**
      * 改行コードの変換
-     *
-     * @param $value
-     * @param string $lf
-     *
-     * @return string
      */
-    public static function convertLineFeed($value, $lf = "\n")
+    public static function convertLineFeed(?string $value, string $lf = "\n"): string
     {
         if (empty($value)) {
             return '';
@@ -121,11 +105,9 @@ class StringUtil
     /**
      * 文字コードの判定
      *
-     * @param string $value
-     *
-     * @return string
+     * @param string[] $encoding
      */
-    public static function characterEncoding($value, $encoding = ['UTF-8', 'SJIS', 'EUC-JP', 'ASCII', 'JIS', 'sjis-win'])
+    public static function characterEncoding(string $value, array $encoding = ['UTF-8', 'SJIS', 'EUC-JP', 'ASCII', 'JIS', 'sjis-win']): ?string
     {
         foreach ($encoding as $encode) {
             if (mb_check_encoding($value, $encode)) {
@@ -139,14 +121,8 @@ class StringUtil
     /**
      * 指定した文字列以上ある場合、「...」を付加する
      * lengthに7を指定すると、「1234567890」は「1234567...」と「...」を付与して出力される
-     *
-     * @param string $value
-     * @param int $length
-     * @param string $end
-     *
-     * @return string
      */
-    public static function ellipsis($value, $length = 100, $end = '...')
+    public static function ellipsis(string $value, int $length = 100, string $end = '...'): string
     {
         if (mb_strlen($value) <= $length) {
             return $value;
@@ -157,19 +133,15 @@ class StringUtil
 
     /**
      * 現在からの経過時間を書式化する.
-     *
-     * @param $date
-     *
-     * @return string
      */
-    public static function timeAgo($date)
+    public static function timeAgo(string|\DateTimeInterface|null $date): string
     {
         if (empty($date)) {
             return '';
         }
 
         $now = new \DateTime();
-        if (!($date instanceof \DateTime)) {
+        if (!$date instanceof \DateTime) {
             $date = new \DateTime($date);
         }
         $diff = $date->diff($now, true);
@@ -216,12 +188,12 @@ class StringUtil
      * 引数 $greedy が true の場合は, 全角スペース, ネストした空の配列も
      * 空白と判断する.
      *
-     * @param mixed $value チェック対象の変数. 文字型以外も使用できるが、非推奨.
+     * @param string|int|float|array<mixed>|object|null $value チェック対象の変数. 文字型以外も使用できるが、非推奨.
      * @param bool $greedy '貧欲'にチェックを行う場合 true, デフォルト false
      *
      * @return bool $value が空白と判断された場合 true
      */
-    public static function isBlank($value, $greedy = false)
+    public static function isBlank(string|int|float|array|object|null $value, bool $greedy = false): bool
     {
         $deprecated = '\Eccube\Util\StringUtil::isBlank() の第一引数は文字型、数値を使用してください';
         // テストカバレッジを上げるために return の前で trigger_error をスローしている
@@ -231,11 +203,10 @@ class StringUtil
                     @trigger_error($deprecated, E_USER_DEPRECATED);
 
                     return true;
-                } else {
-                    @trigger_error($deprecated, E_USER_DEPRECATED);
-
-                    return false;
                 }
+                @trigger_error($deprecated, E_USER_DEPRECATED);
+
+                return false;
             }
             @trigger_error($deprecated, E_USER_DEPRECATED);
 
@@ -260,15 +231,14 @@ class StringUtil
                 @trigger_error($deprecated, E_USER_DEPRECATED);
 
                 return $array_result;
-            } else {
-                @trigger_error($deprecated, E_USER_DEPRECATED);
-
-                return empty($value);
             }
+            @trigger_error($deprecated, E_USER_DEPRECATED);
+
+            return empty($value);
         }
 
         if ($greedy) {
-            $value = preg_replace('/　/', '', $value);
+            $value = preg_replace('/　/', '', (string) $value);
         }
 
         $value = trim($value ?? '');
@@ -279,24 +249,15 @@ class StringUtil
         return true;
     }
 
-    /**
-     * @param $value
-     *
-     * @return bool
-     */
-    public static function isNotBlank($value, $greedy = false)
+    public static function isNotBlank(mixed $value, bool $greedy = false): bool
     {
         return !self::isBlank($value, $greedy);
     }
 
     /**
      * 両端にある全角スペース、半角スペースを取り除く
-     *
-     * @param $value
-     *
-     * @return string
      */
-    public static function trimAll($value)
+    public static function trimAll(mixed $value): string|int|null
     {
         if ($value === '') {
             return '';
@@ -308,23 +269,20 @@ class StringUtil
             return null;
         }
 
-        return preg_replace('/(^\s+)|(\s+$)/u', '', $value);
+        return preg_replace('/(^\s+)|(\s+$)/u', '', (string) $value);
     }
 
     /**
      * envファイルのコンテンツを更新または追加する.
      *
-     * @param string $env
-     * @param array $replacement
-     *
-     * @return string
+     * @param array<mixed> $replacement
      */
-    public static function replaceOrAddEnv($env, array $replacement)
+    public static function replaceOrAddEnv(string $env, array $replacement): string
     {
         foreach ($replacement as $key => $value) {
             $pattern = '/^('.$key.')=(.*)/m';
-            if (preg_match($pattern, $env)) {
-                $env = preg_replace($pattern, '$1='.$value, $env);
+            if (preg_match($pattern, (string) $env)) {
+                $env = preg_replace($pattern, '$1='.$value, (string) $env);
                 if ('\\' === DIRECTORY_SEPARATOR) {
                     // The m modifier of the preg functions converts the end-of-line to '\n'
                     $env = self::convertLineFeed($env, "\r\n");

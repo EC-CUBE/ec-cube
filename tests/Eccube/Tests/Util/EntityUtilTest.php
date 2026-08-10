@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -23,7 +25,7 @@ use Eccube\Util\EntityUtil;
  *
  * @author Kentaro Ohkouchi
  */
-class EntityUtilTest extends EccubeTestCase
+final class EntityUtilTest extends EccubeTestCase
 {
     protected function setUp(): void
     {

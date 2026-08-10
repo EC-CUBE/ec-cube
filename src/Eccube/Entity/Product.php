@@ -14,1075 +14,958 @@
 namespace Eccube\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Entity\Master\ProductStatus;
+use Eccube\Repository\ProductRepository;
 
-if (!class_exists(Product::class)) {
+/**
+ * Product
+ */
+#[ORM\Table(name: 'dtb_product')]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: ProductRepository::class)]
+class Product extends AbstractEntity implements \Stringable
+{
+    private bool $_calc = false;
     /**
-     * Product
-     *
-     * @ORM\Table(name="dtb_product")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\ProductRepository")
+     * @var array<int, bool>
      */
-    class Product extends AbstractEntity
+    private array $stockFinds = [];
+    /**
+     * @var array<int, string|null>
+     */
+    private array $stocks = [];
+    /**
+     * @var array<int, bool>
+     */
+    private array $stockUnlimiteds = [];
+    /**
+     * @var array<int, string|null>
+     */
+    private array $price01 = [];
+    /**
+     * @var array<int, string|null>
+     */
+    private array $price02 = [];
+    /**
+     * @var array<int, string|null>
+     */
+    private array $price01IncTaxs = [];
+    /**
+     * @var array<int, string|null>
+     */
+    private array $price02IncTaxs = [];
+    /**
+     * @var array<int, string|null>
+     */
+    private array $codes = [];
+    /**
+     * @var array<string|int, string|null>
+     */
+    private array $classCategories1 = [];
+    /**
+     * @var array<string|int, string|null>
+     */
+    private array $classCategories2 = [];
+    private ?string $className1 = null;
+    private ?string $className2 = null;
+
+    #[\Override]
+    public function __toString(): string
     {
-        private $_calc = false;
-        private $stockFinds = [];
-        private $stocks = [];
-        private $stockUnlimiteds = [];
-        private $price01 = [];
-        private $price02 = [];
-        private $price01IncTaxs = [];
-        private $price02IncTaxs = [];
-        private $codes = [];
-        private $classCategories1 = [];
-        private $classCategories2 = [];
-        private $className1;
-        private $className2;
+        return $this->getName();
+    }
 
-        /**
-         * @return string
-         */
-        public function __toString()
-        {
-            return (string) $this->getName();
-        }
-
-        public function _calc()
-        {
-            if (!$this->_calc) {
-                $i = 0;
-                foreach ($this->getProductClasses() as $ProductClass) {
-                    /** @var ProductClass $ProductClass */
-                    // stock_find
-                    if ($ProductClass->isVisible() == false) {
-                        continue;
-                    }
-                    $ClassCategory1 = $ProductClass->getClassCategory1();
-                    $ClassCategory2 = $ProductClass->getClassCategory2();
-                    if ($ClassCategory1 && !$ClassCategory1->isVisible()) {
-                        continue;
-                    }
-                    if ($ClassCategory2 && !$ClassCategory2->isVisible()) {
-                        continue;
-                    }
-
-                    // stock_find
-                    $this->stockFinds[] = $ProductClass->getStockFind();
-
-                    // stock
-                    $this->stocks[] = $ProductClass->getStock();
-
-                    // stock_unlimited
-                    $this->stockUnlimiteds[] = $ProductClass->isStockUnlimited();
-
-                    // price01
-                    if (!is_null($ProductClass->getPrice01())) {
-                        $this->price01[] = $ProductClass->getPrice01();
-                        // price01IncTax
-                        $this->price01IncTaxs[] = $ProductClass->getPrice01IncTax();
-                    }
-
-                    // price02
-                    $this->price02[] = $ProductClass->getPrice02();
-
-                    // price02IncTax
-                    $this->price02IncTaxs[] = $ProductClass->getPrice02IncTax();
-
-                    // product_code
-                    $this->codes[] = $ProductClass->getCode();
-
-                    if ($i === 0) {
-                        if ($ProductClass->getClassCategory1() && $ProductClass->getClassCategory1()->getId()) {
-                            $this->className1 = $ProductClass->getClassCategory1()->getClassName()->getName();
-                        }
-                        if ($ProductClass->getClassCategory2() && $ProductClass->getClassCategory2()->getId()) {
-                            $this->className2 = $ProductClass->getClassCategory2()->getClassName()->getName();
-                        }
-                    }
-                    if ($ProductClass->getClassCategory1()) {
-                        $classCategoryId1 = $ProductClass->getClassCategory1()->getId();
-                        if (!empty($classCategoryId1)) {
-                            if ($ProductClass->getClassCategory2()) {
-                                $this->classCategories1[$ProductClass->getClassCategory1()->getId()] = $ProductClass->getClassCategory1()->getName();
-                                $this->classCategories2[$ProductClass->getClassCategory1()->getId()][$ProductClass->getClassCategory2()->getId()] = $ProductClass->getClassCategory2()->getName();
-                            } else {
-                                $this->classCategories1[$ProductClass->getClassCategory1()->getId()] = $ProductClass->getClassCategory1()->getName().($ProductClass->getStockFind() ? '' : trans('front.product.out_of_stock_label'));
-                            }
-                        }
-                    }
-                    $i++;
-                }
-                $this->_calc = true;
-            }
-        }
-
-        /**
-         * Is Enable
-         *
-         * @return bool
-         *
-         * @deprecated
-         */
-        public function isEnable()
-        {
-            return $this->getStatus()->getId() === Master\ProductStatus::DISPLAY_SHOW ? true : false;
-        }
-
-        /**
-         * Get ClassName1
-         *
-         * @return string
-         */
-        public function getClassName1()
-        {
-            $this->_calc();
-
-            return $this->className1;
-        }
-
-        /**
-         * Get ClassName2
-         *
-         * @return string
-         */
-        public function getClassName2()
-        {
-            $this->_calc();
-
-            return $this->className2;
-        }
-
-        /**
-         * Get getClassCategories1
-         *
-         * @return array
-         */
-        public function getClassCategories1()
-        {
-            $this->_calc();
-
-            return $this->classCategories1;
-        }
-
-        public function getClassCategories1AsFlip()
-        {
-            return array_flip($this->getClassCategories1());
-        }
-
-        /**
-         * Get getClassCategories2
-         *
-         * @return array
-         */
-        public function getClassCategories2($class_category1)
-        {
-            $this->_calc();
-
-            return isset($this->classCategories2[$class_category1]) ? $this->classCategories2[$class_category1] : [];
-        }
-
-        public function getClassCategories2AsFlip($class_category1)
-        {
-            return array_flip($this->getClassCategories2($class_category1));
-        }
-
-        /**
-         * Get StockFind
-         *
-         * @return bool
-         */
-        public function getStockFind()
-        {
-            $this->_calc();
-
-            return count($this->stockFinds)
-                ? max($this->stockFinds)
-                : null;
-        }
-
-        /**
-         * Get Stock min
-         *
-         * @return int
-         */
-        public function getStockMin()
-        {
-            $this->_calc();
-
-            return count($this->stocks)
-                ? min($this->stocks)
-                : null;
-        }
-
-        /**
-         * Get Stock max
-         *
-         * @return int
-         */
-        public function getStockMax()
-        {
-            $this->_calc();
-
-            return count($this->stocks)
-                ? max($this->stocks)
-                : null;
-        }
-
-        /**
-         * Get StockUnlimited min
-         *
-         * @return int
-         */
-        public function getStockUnlimitedMin()
-        {
-            $this->_calc();
-
-            return count($this->stockUnlimiteds)
-                ? min($this->stockUnlimiteds)
-                : null;
-        }
-
-        /**
-         * Get StockUnlimited max
-         *
-         * @return int
-         */
-        public function getStockUnlimitedMax()
-        {
-            $this->_calc();
-
-            return count($this->stockUnlimiteds)
-                ? max($this->stockUnlimiteds)
-                : null;
-        }
-
-        /**
-         * Get Price01 min
-         *
-         * @return int
-         */
-        public function getPrice01Min()
-        {
-            $this->_calc();
-
-            if (count($this->price01) == 0) {
-                return null;
-            }
-
-            return min($this->price01);
-        }
-
-        /**
-         * Get Price01 max
-         *
-         * @return int
-         */
-        public function getPrice01Max()
-        {
-            $this->_calc();
-
-            if (count($this->price01) == 0) {
-                return null;
-            }
-
-            return max($this->price01);
-        }
-
-        /**
-         * Get Price02 min
-         *
-         * @return int
-         */
-        public function getPrice02Min()
-        {
-            $this->_calc();
-
-            return count($this->price02)
-                ? min($this->price02)
-                : null;
-        }
-
-        /**
-         * Get Price02 max
-         *
-         * @return int
-         */
-        public function getPrice02Max()
-        {
-            $this->_calc();
-
-            return count($this->price02)
-                ? max($this->price02)
-                : null;
-        }
-
-        /**
-         * Get Price01IncTax min
-         *
-         * @return int
-         */
-        public function getPrice01IncTaxMin()
-        {
-            $this->_calc();
-
-            return count($this->price01IncTaxs)
-                ? min($this->price01IncTaxs)
-                : null;
-        }
-
-        /**
-         * Get Price01IncTax max
-         *
-         * @return int
-         */
-        public function getPrice01IncTaxMax()
-        {
-            $this->_calc();
-
-            return count($this->price01IncTaxs)
-                ? max($this->price01IncTaxs)
-                : null;
-        }
-
-        /**
-         * Get Price02IncTax min
-         *
-         * @return int
-         */
-        public function getPrice02IncTaxMin()
-        {
-            $this->_calc();
-
-            return count($this->price02IncTaxs)
-                ? min($this->price02IncTaxs)
-                : null;
-        }
-
-        /**
-         * Get Price02IncTax max
-         *
-         * @return int
-         */
-        public function getPrice02IncTaxMax()
-        {
-            $this->_calc();
-
-            return count($this->price02IncTaxs)
-                ? max($this->price02IncTaxs)
-                : null;
-        }
-
-        /**
-         * Get Product_code min
-         *
-         * @return int
-         */
-        public function getCodeMin()
-        {
-            $this->_calc();
-
-            $codes = [];
-            foreach ($this->codes as $code) {
-                if (!is_null($code)) {
-                    $codes[] = $code;
-                }
-            }
-
-            return count($codes) ? min($codes) : null;
-        }
-
-        /**
-         * Get Product_code max
-         *
-         * @return int
-         */
-        public function getCodeMax()
-        {
-            $this->_calc();
-
-            $codes = [];
-            foreach ($this->codes as $code) {
-                if (!is_null($code)) {
-                    $codes[] = $code;
-                }
-            }
-
-            return count($codes) ? max($codes) : null;
-        }
-
-        public function getMainListImage()
-        {
-            $ProductImages = $this->getProductImage();
-
-            return $ProductImages->isEmpty() ? null : $ProductImages[0];
-        }
-
-        public function getMainFileName()
-        {
-            if (count($this->ProductImage) > 0) {
-                return $this->ProductImage[0];
-            } else {
-                return null;
-            }
-        }
-
-        public function hasProductClass()
-        {
-            foreach ($this->ProductClasses as $ProductClass) {
-                if (!$ProductClass->isVisible()) {
+    public function _calc(): void
+    {
+        if (!$this->_calc) {
+            $i = 0;
+            foreach ($this->getProductClasses() as $ProductClass) {
+                /** @var ProductClass $ProductClass */
+                // stock_find
+                if ($ProductClass->isVisible() == false) {
                     continue;
                 }
-                if (!is_null($ProductClass->getClassCategory1())) {
-                    return true;
+                $ClassCategory1 = $ProductClass->getClassCategory1();
+                $ClassCategory2 = $ProductClass->getClassCategory2();
+                if ($ClassCategory1 && !$ClassCategory1->isVisible()) {
+                    continue;
                 }
+                if ($ClassCategory2 && !$ClassCategory2->isVisible()) {
+                    continue;
+                }
+
+                // stock_find
+                $this->stockFinds[] = $ProductClass->getStockFind();
+
+                // stock
+                $this->stocks[] = $ProductClass->getStock();
+
+                // stock_unlimited
+                $this->stockUnlimiteds[] = $ProductClass->isStockUnlimited();
+
+                // price01
+                if (!is_null($ProductClass->getPrice01())) {
+                    $this->price01[] = $ProductClass->getPrice01();
+                    // price01IncTax
+                    $this->price01IncTaxs[] = $ProductClass->getPrice01IncTax();
+                }
+
+                // price02
+                $this->price02[] = $ProductClass->getPrice02();
+
+                // price02IncTax
+                $this->price02IncTaxs[] = $ProductClass->getPrice02IncTax();
+
+                // product_code
+                $this->codes[] = $ProductClass->getCode();
+
+                if ($i === 0) {
+                    if ($ProductClass->getClassCategory1() && $ProductClass->getClassCategory1()->getId()) {
+                        $this->className1 = $ProductClass->getClassCategory1()->getClassName()->getName();
+                    }
+                    if ($ProductClass->getClassCategory2() && $ProductClass->getClassCategory2()->getId()) {
+                        $this->className2 = $ProductClass->getClassCategory2()->getClassName()->getName();
+                    }
+                }
+                if ($ProductClass->getClassCategory1()) {
+                    $classCategoryId1 = $ProductClass->getClassCategory1()->getId();
+                    if (!empty($classCategoryId1)) {
+                        if ($ProductClass->getClassCategory2()) {
+                            $this->classCategories1[$ProductClass->getClassCategory1()->getId()] = $ProductClass->getClassCategory1()->getName();
+                            $this->classCategories2[$ProductClass->getClassCategory1()->getId()][$ProductClass->getClassCategory2()->getId()] = $ProductClass->getClassCategory2()->getName();
+                        } else {
+                            $this->classCategories1[$ProductClass->getClassCategory1()->getId()] = $ProductClass->getClassCategory1()->getName().($ProductClass->getStockFind() ? '' : trans('front.product.out_of_stock_label'));
+                        }
+                    }
+                }
+                $i++;
             }
+            $this->_calc = true;
+        }
+    }
 
-            return false;
+    /**
+     * Get ClassName1
+     */
+    public function getClassName1(): ?string
+    {
+        $this->_calc();
+
+        return $this->className1;
+    }
+
+    /**
+     * Get ClassName2
+     */
+    public function getClassName2(): ?string
+    {
+        $this->_calc();
+
+        return $this->className2;
+    }
+
+    /**
+     * Get getClassCategories1
+     *
+     * @return array<int, string|null>
+     */
+    public function getClassCategories1(): array
+    {
+        $this->_calc();
+
+        return $this->classCategories1;
+    }
+
+    /**
+     * @return array<string, int>
+     */
+    public function getClassCategories1AsFlip(): array
+    {
+        return array_flip($this->getClassCategories1());
+    }
+
+    /**
+     * Get getClassCategories2
+     *
+     * @return array<int, string|null>
+     */
+    public function getClassCategories2(string $class_category1): array
+    {
+        $this->_calc();
+
+        return $this->classCategories2[$class_category1] ?? [];
+    }
+
+    /**
+     * @return array<string, int>
+     */
+    public function getClassCategories2AsFlip(string $class_category1): array
+    {
+        $categories = $this->getClassCategories2($class_category1);
+        // null値を除外してからarray_flipを実行
+        $filteredCategories = array_filter($categories, fn ($value) => $value !== null);
+
+        return array_flip($filteredCategories);
+    }
+
+    /**
+     * Get StockFind
+     */
+    public function getStockFind(): ?bool
+    {
+        $this->_calc();
+
+        return count($this->stockFinds)
+            ? max($this->stockFinds)
+            : null;
+    }
+
+    /**
+     * Get Stock min
+     */
+    public function getStockMin(): ?string
+    {
+        $this->_calc();
+
+        return count($this->stocks)
+            ? min($this->stocks)
+            : null;
+    }
+
+    /**
+     * Get Stock max
+     */
+    public function getStockMax(): ?string
+    {
+        $this->_calc();
+
+        return count($this->stocks)
+            ? max($this->stocks)
+            : null;
+    }
+
+    /**
+     * Get StockUnlimited min
+     */
+    public function getStockUnlimitedMin(): ?bool
+    {
+        $this->_calc();
+
+        return count($this->stockUnlimiteds)
+            ? min($this->stockUnlimiteds)
+            : null;
+    }
+
+    /**
+     * Get StockUnlimited max
+     */
+    public function getStockUnlimitedMax(): ?bool
+    {
+        $this->_calc();
+
+        return count($this->stockUnlimiteds)
+            ? max($this->stockUnlimiteds)
+            : null;
+    }
+
+    /**
+     * Get Price01 min
+     */
+    public function getPrice01Min(): ?string
+    {
+        $this->_calc();
+
+        if (count($this->price01) == 0) {
+            return null;
         }
 
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
-         */
-        private $id;
+        return min($this->price01);
+    }
 
-        /**
-         * @var string
-         *
-         * @ORM\Column(name="name", type="string", length=255)
-         */
-        private $name;
+    /**
+     * Get Price01 max
+     */
+    public function getPrice01Max(): ?string
+    {
+        $this->_calc();
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="note", type="text", nullable=true)
-         */
-        private $note;
-
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="description_list", type="text", nullable=true)
-         */
-        private $description_list;
-
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="description_detail", type="text", nullable=true)
-         */
-        private $description_detail;
-
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="search_word", type="text", nullable=true)
-         */
-        private $search_word;
-
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="free_area", type="text", nullable=true)
-         */
-        private $free_area;
-
-        /**
-         * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
-         */
-        private $create_date;
-
-        /**
-         * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
-         */
-        private $update_date;
-
-        /**
-         * @var \Doctrine\Common\Collections\Collection
-         *
-         * @ORM\OneToMany(targetEntity="Eccube\Entity\ProductCategory", mappedBy="Product", cascade={"persist","remove"})
-         */
-        private $ProductCategories;
-
-        /**
-         * @var \Doctrine\Common\Collections\Collection
-         *
-         * @ORM\OneToMany(targetEntity="Eccube\Entity\ProductClass", mappedBy="Product", cascade={"persist","remove"})
-         */
-        private $ProductClasses;
-
-        /**
-         * @var \Doctrine\Common\Collections\Collection
-         *
-         * @ORM\OneToMany(targetEntity="Eccube\Entity\ProductImage", mappedBy="Product", cascade={"remove"})
-         *
-         * @ORM\OrderBy({
-         *     "sort_no"="ASC"
-         * })
-         */
-        private $ProductImage;
-
-        /**
-         * @var \Doctrine\Common\Collections\Collection
-         *
-         * @ORM\OneToMany(targetEntity="Eccube\Entity\ProductTag", mappedBy="Product", cascade={"remove"})
-         */
-        private $ProductTag;
-
-        /**
-         * @var \Doctrine\Common\Collections\Collection
-         *
-         * @ORM\OneToMany(targetEntity="Eccube\Entity\CustomerFavoriteProduct", mappedBy="Product")
-         */
-        private $CustomerFavoriteProducts;
-
-        /**
-         * @var Member
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
-         * })
-         */
-        private $Creator;
-
-        /**
-         * @var Master\ProductStatus
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\ProductStatus")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="product_status_id", referencedColumnName="id")
-         * })
-         */
-        private $Status;
-
-        /**
-         * Constructor
-         */
-        public function __construct()
-        {
-            $this->ProductCategories = new ArrayCollection();
-            $this->ProductClasses = new ArrayCollection();
-            $this->ProductImage = new ArrayCollection();
-            $this->ProductTag = new ArrayCollection();
-            $this->CustomerFavoriteProducts = new ArrayCollection();
+        if (count($this->price01) == 0) {
+            return null;
         }
 
-        public function __clone()
-        {
-            $this->id = null;
-        }
+        return max($this->price01);
+    }
 
-        public function copy()
-        {
-            // コピー対象外
-            $this->CustomerFavoriteProducts = new ArrayCollection();
+    /**
+     * Get Price02 min
+     */
+    public function getPrice02Min(): ?string
+    {
+        $this->_calc();
 
-            $Categories = $this->getProductCategories();
-            $this->ProductCategories = new ArrayCollection();
-            foreach ($Categories as $Category) {
-                $CopyCategory = clone $Category;
-                $this->addProductCategory($CopyCategory);
-                $CopyCategory->setProduct($this);
+        return count($this->price02)
+            ? min($this->price02)
+            : null;
+    }
+
+    /**
+     * Get Price02 max
+     */
+    public function getPrice02Max(): ?string
+    {
+        $this->_calc();
+
+        return count($this->price02)
+            ? max($this->price02)
+            : null;
+    }
+
+    /**
+     * Get Price01IncTax min
+     */
+    public function getPrice01IncTaxMin(): ?string
+    {
+        $this->_calc();
+
+        return count($this->price01IncTaxs)
+            ? min($this->price01IncTaxs)
+            : null;
+    }
+
+    /**
+     * Get Price01IncTax max
+     */
+    public function getPrice01IncTaxMax(): ?string
+    {
+        $this->_calc();
+
+        return count($this->price01IncTaxs)
+            ? max($this->price01IncTaxs)
+            : null;
+    }
+
+    /**
+     * Get Price02IncTax min
+     */
+    public function getPrice02IncTaxMin(): ?string
+    {
+        $this->_calc();
+
+        return count($this->price02IncTaxs)
+            ? min($this->price02IncTaxs)
+            : null;
+    }
+
+    /**
+     * Get Price02IncTax max
+     */
+    public function getPrice02IncTaxMax(): ?string
+    {
+        $this->_calc();
+
+        return count($this->price02IncTaxs)
+            ? max($this->price02IncTaxs)
+            : null;
+    }
+
+    /**
+     * Get Product_code min
+     */
+    public function getCodeMin(): ?string
+    {
+        $this->_calc();
+
+        $codes = [];
+        foreach ($this->codes as $code) {
+            if (!is_null($code)) {
+                $codes[] = $code;
             }
+        }
 
-            $Classes = $this->getProductClasses();
-            $this->ProductClasses = new ArrayCollection();
-            foreach ($Classes as $Class) {
-                $CopyClass = clone $Class;
-                $this->addProductClass($CopyClass);
-                $CopyClass->setProduct($this);
+        return count($codes) ? min($codes) : null;
+    }
+
+    /**
+     * Get Product_code max
+     */
+    public function getCodeMax(): ?string
+    {
+        $this->_calc();
+
+        $codes = [];
+        foreach ($this->codes as $code) {
+            if (!is_null($code)) {
+                $codes[] = $code;
             }
+        }
 
-            $Images = $this->getProductImage();
-            $this->ProductImage = new ArrayCollection();
-            foreach ($Images as $Image) {
-                $CloneImage = clone $Image;
-                $this->addProductImage($CloneImage);
-                $CloneImage->setProduct($this);
+        return count($codes) ? max($codes) : null;
+    }
+
+    public function getMainListImage(): ?ProductImage
+    {
+        $ProductImages = $this->getProductImage();
+
+        return $ProductImages->isEmpty() ? null : $ProductImages[0];
+    }
+
+    public function getMainFileName(): ?ProductImage
+    {
+        if (count($this->ProductImage) > 0) {
+            return $this->ProductImage[0];
+        }
+
+        return null;
+    }
+
+    public function hasProductClass(): bool
+    {
+        foreach ($this->ProductClasses as $ProductClass) {
+            if (!$ProductClass->isVisible()) {
+                continue;
             }
-
-            $Tags = $this->getProductTag();
-            $this->ProductTag = new ArrayCollection();
-            foreach ($Tags as $Tag) {
-                $CloneTag = clone $Tag;
-                $this->addProductTag($CloneTag);
-                $CloneTag->setProduct($this);
+            if (!is_null($ProductClass->getClassCategory1())) {
+                return true;
             }
-
-            return $this;
         }
 
-        /**
-         * Get id.
-         *
-         * @return int
-         */
-        public function getId()
-        {
-            return $this->id;
+        return false;
+    }
+
+    #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    private ?int $id = null;
+
+    #[ORM\Column(name: 'name', type: Types::STRING, length: 255)]
+    private ?string $name = null;
+
+    #[ORM\Column(name: 'note', type: Types::TEXT, nullable: true)]
+    private ?string $note = null;
+
+    #[ORM\Column(name: 'description_list', type: Types::TEXT, nullable: true)]
+    private ?string $description_list = null;
+
+    #[ORM\Column(name: 'description_detail', type: Types::TEXT, nullable: true)]
+    private ?string $description_detail = null;
+
+    #[ORM\Column(name: 'search_word', type: Types::TEXT, nullable: true)]
+    private ?string $search_word = null;
+
+    #[ORM\Column(name: 'free_area', type: Types::TEXT, nullable: true)]
+    private ?string $free_area = null;
+
+    #[ORM\Column(name: 'refund_allowed', type: Types::BOOLEAN, options: ['default' => true])]
+    private bool $refund_allowed = true;
+
+    #[ORM\Column(name: 'order_memo', type: Types::TEXT, nullable: true)]
+    private ?string $order_memo = null;
+
+    #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
+    private ?\DateTime $create_date = null;
+
+    #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
+    private ?\DateTime $update_date = null;
+
+    /**
+     * @var Collection<int, ProductCategory>
+     */
+    #[ORM\OneToMany(targetEntity: ProductCategory::class, mappedBy: 'Product', cascade: ['persist', 'remove'])]
+    private Collection $ProductCategories;
+
+    /**
+     * @var Collection<int, ProductClass>
+     */
+    #[ORM\OneToMany(targetEntity: ProductClass::class, mappedBy: 'Product', cascade: ['persist', 'remove'])]
+    private Collection $ProductClasses;
+
+    /**
+     * @var Collection<int, ProductImage>
+     */
+    #[ORM\OneToMany(targetEntity: ProductImage::class, mappedBy: 'Product', cascade: ['remove'])]
+    #[ORM\OrderBy(['sort_no' => 'ASC'])]
+    private Collection $ProductImage;
+
+    /**
+     * @var Collection<int, ProductTag>
+     */
+    #[ORM\OneToMany(targetEntity: ProductTag::class, mappedBy: 'Product', cascade: ['remove'])]
+    private Collection $ProductTag;
+
+    /**
+     * @var Collection<int, CustomerFavoriteProduct>
+     */
+    #[ORM\OneToMany(targetEntity: CustomerFavoriteProduct::class, mappedBy: 'Product')]
+    private Collection $CustomerFavoriteProducts;
+
+    #[ORM\ManyToOne(targetEntity: Member::class)]
+    #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
+    private ?Member $Creator = null;
+
+    #[ORM\ManyToOne(targetEntity: ProductStatus::class)]
+    #[ORM\JoinColumn(name: 'product_status_id', referencedColumnName: 'id')]
+    private ?ProductStatus $Status = null;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->ProductCategories = new ArrayCollection();
+        $this->ProductClasses = new ArrayCollection();
+        $this->ProductImage = new ArrayCollection();
+        $this->ProductTag = new ArrayCollection();
+        $this->CustomerFavoriteProducts = new ArrayCollection();
+    }
+
+    public function __clone()
+    {
+        $this->id = null;
+    }
+
+    /**
+     * Productエンティティのコピーを作成する.
+     *
+     * コピー元のProductを受け取り,
+     * 関連エンティティも再帰的にコピーする.
+     */
+    public function copy(Product $Product): Product
+    {
+        // コピー対象外
+        $this->CustomerFavoriteProducts = new ArrayCollection();
+
+        $Categories = $Product->getProductCategories();
+        $this->ProductCategories = new ArrayCollection();
+        foreach ($Categories as $Category) {
+            $CopyCategory = clone $Category;
+            $CopyCategory->setProductId($this->getId());
+            $this->addProductCategory($CopyCategory);
+            $CopyCategory->setProduct($this);
         }
 
-        /**
-         * Set name.
-         *
-         * @param string $name
-         *
-         * @return Product
-         */
-        public function setName($name)
-        {
-            $this->name = $name;
-
-            return $this;
+        $Classes = $Product->getProductClasses();
+        $this->ProductClasses = new ArrayCollection();
+        foreach ($Classes as $Class) {
+            $CopyClass = new ProductClass();
+            $CopyClass->copyProperties($Class, ['id', 'product_id']);
+            $this->addProductClass($CopyClass);
+            $CopyClass->setProduct($this);
         }
 
-        /**
-         * Get name.
-         *
-         * @return string
-         */
-        public function getName()
-        {
-            return $this->name;
+        $Images = $Product->getProductImage();
+        $this->ProductImage = new ArrayCollection();
+        foreach ($Images as $Image) {
+            $CloneImage = clone $Image;
+            $this->addProductImage($CloneImage);
+            $CloneImage->setProduct($this);
         }
 
-        /**
-         * Set note.
-         *
-         * @param string|null $note
-         *
-         * @return Product
-         */
-        public function setNote($note = null)
-        {
-            $this->note = $note;
-
-            return $this;
+        $Tags = $Product->getProductTag();
+        $this->ProductTag = new ArrayCollection();
+        foreach ($Tags as $Tag) {
+            $CloneTag = clone $Tag;
+            $this->addProductTag($CloneTag);
+            $CloneTag->setProduct($this);
         }
 
-        /**
-         * Get note.
-         *
-         * @return string|null
-         */
-        public function getNote()
-        {
-            return $this->note;
+        return $this;
+    }
+
+    /**
+     * Get id.
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set name.
+     */
+    public function setName(string $name): Product
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name.
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set note.
+     */
+    public function setNote(?string $note = null): Product
+    {
+        $this->note = $note;
+
+        return $this;
+    }
+
+    /**
+     * Get note.
+     */
+    public function getNote(): ?string
+    {
+        return $this->note;
+    }
+
+    /**
+     * Set descriptionList.
+     */
+    public function setDescriptionList(?string $descriptionList = null): Product
+    {
+        $this->description_list = $descriptionList;
+
+        return $this;
+    }
+
+    /**
+     * Get descriptionList.
+     */
+    public function getDescriptionList(): ?string
+    {
+        return $this->description_list;
+    }
+
+    /**
+     * Set descriptionDetail.
+     */
+    public function setDescriptionDetail(?string $descriptionDetail = null): Product
+    {
+        $this->description_detail = $descriptionDetail;
+
+        return $this;
+    }
+
+    /**
+     * Get descriptionDetail.
+     */
+    public function getDescriptionDetail(): ?string
+    {
+        return $this->description_detail;
+    }
+
+    /**
+     * Set searchWord.
+     */
+    public function setSearchWord(?string $searchWord = null): Product
+    {
+        $this->search_word = $searchWord;
+
+        return $this;
+    }
+
+    /**
+     * Get searchWord.
+     */
+    public function getSearchWord(): ?string
+    {
+        return $this->search_word;
+    }
+
+    /**
+     * Set freeArea.
+     */
+    public function setFreeArea(?string $freeArea = null): Product
+    {
+        $this->free_area = $freeArea;
+
+        return $this;
+    }
+
+    /**
+     * Get freeArea.
+     */
+    public function getFreeArea(): ?string
+    {
+        return $this->free_area;
+    }
+
+    /**
+     * 返品申請を許可するかどうかを設定する.
+     */
+    public function setRefundAllowed(bool $refundAllowed): Product
+    {
+        $this->refund_allowed = $refundAllowed;
+
+        return $this;
+    }
+
+    /**
+     * 返品申請を許可するかどうかを取得する.
+     */
+    public function isRefundAllowed(): bool
+    {
+        return $this->refund_allowed;
+    }
+
+    /**
+     * Set orderMemo.
+     */
+    public function setOrderMemo(?string $orderMemo = null): Product
+    {
+        $this->order_memo = $orderMemo;
+
+        return $this;
+    }
+
+    /**
+     * Get orderMemo.
+     */
+    public function getOrderMemo(): ?string
+    {
+        return $this->order_memo;
+    }
+
+    /**
+     * Set createDate.
+     */
+    public function setCreateDate(\DateTime $createDate): Product
+    {
+        $this->create_date = $createDate;
+
+        return $this;
+    }
+
+    /**
+     * Get createDate.
+     */
+    public function getCreateDate(): ?\DateTime
+    {
+        return $this->create_date;
+    }
+
+    /**
+     * Set updateDate.
+     */
+    public function setUpdateDate(\DateTime $updateDate): Product
+    {
+        $this->update_date = $updateDate;
+
+        return $this;
+    }
+
+    /**
+     * Get updateDate.
+     */
+    public function getUpdateDate(): ?\DateTime
+    {
+        return $this->update_date;
+    }
+
+    /**
+     * Add productCategory.
+     */
+    public function addProductCategory(ProductCategory $productCategory): Product
+    {
+        $this->ProductCategories[] = $productCategory;
+
+        return $this;
+    }
+
+    /**
+     * Remove productCategory.
+     *
+     * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeProductCategory(ProductCategory $productCategory): bool
+    {
+        return $this->ProductCategories->removeElement($productCategory);
+    }
+
+    /**
+     * Get productCategories.
+     *
+     * @return Collection<int, ProductCategory>
+     */
+    public function getProductCategories(): Collection
+    {
+        return $this->ProductCategories;
+    }
+
+    /**
+     * Add productClass.
+     */
+    public function addProductClass(ProductClass $productClass): Product
+    {
+        $this->ProductClasses[] = $productClass;
+
+        return $this;
+    }
+
+    /**
+     * Remove productClass.
+     *
+     * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeProductClass(ProductClass $productClass): bool
+    {
+        return $this->ProductClasses->removeElement($productClass);
+    }
+
+    /**
+     * Get productClasses.
+     *
+     * @return Collection<int, ProductClass>
+     */
+    public function getProductClasses(): ?Collection
+    {
+        return $this->ProductClasses;
+    }
+
+    /**
+     * Add productImage.
+     */
+    public function addProductImage(ProductImage $productImage): Product
+    {
+        $this->ProductImage[] = $productImage;
+
+        return $this;
+    }
+
+    /**
+     * Remove productImage.
+     *
+     * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeProductImage(ProductImage $productImage): bool
+    {
+        return $this->ProductImage->removeElement($productImage);
+    }
+
+    /**
+     * Get productImage.
+     *
+     * @return Collection<int, ProductImage>
+     */
+    public function getProductImage(): Collection
+    {
+        return $this->ProductImage;
+    }
+
+    /**
+     * Add productTag.
+     */
+    public function addProductTag(ProductTag $productTag): Product
+    {
+        $this->ProductTag[] = $productTag;
+
+        return $this;
+    }
+
+    /**
+     * Remove productTag.
+     *
+     * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeProductTag(ProductTag $productTag): bool
+    {
+        return $this->ProductTag->removeElement($productTag);
+    }
+
+    /**
+     * Get productTag.
+     *
+     * @return Collection<int, ProductTag>
+     */
+    public function getProductTag(): Collection
+    {
+        return $this->ProductTag;
+    }
+
+    /**
+     * Get Tag
+     * フロント側タグsort_no順の配列を作成する
+     *
+     * @return Tag[]
+     */
+    public function getTags(): array
+    {
+        $tags = [];
+
+        foreach ($this->getProductTag() as $productTag) {
+            $tags[] = $productTag->getTag();
         }
 
-        /**
-         * Set descriptionList.
-         *
-         * @param string|null $descriptionList
-         *
-         * @return Product
-         */
-        public function setDescriptionList($descriptionList = null)
-        {
-            $this->description_list = $descriptionList;
+        usort($tags, fn (Tag $tag1, Tag $tag2) => $tag1->getSortNo() <=> $tag2->getSortNo());
 
-            return $this;
-        }
+        return $tags;
+    }
 
-        /**
-         * Get descriptionList.
-         *
-         * @return string|null
-         */
-        public function getDescriptionList()
-        {
-            return $this->description_list;
-        }
+    /**
+     * Add customerFavoriteProduct.
+     */
+    public function addCustomerFavoriteProduct(CustomerFavoriteProduct $customerFavoriteProduct): Product
+    {
+        $this->CustomerFavoriteProducts[] = $customerFavoriteProduct;
 
-        /**
-         * Set descriptionDetail.
-         *
-         * @param string|null $descriptionDetail
-         *
-         * @return Product
-         */
-        public function setDescriptionDetail($descriptionDetail = null)
-        {
-            $this->description_detail = $descriptionDetail;
+        return $this;
+    }
 
-            return $this;
-        }
+    /**
+     * Remove customerFavoriteProduct.
+     *
+     * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeCustomerFavoriteProduct(CustomerFavoriteProduct $customerFavoriteProduct): bool
+    {
+        return $this->CustomerFavoriteProducts->removeElement($customerFavoriteProduct);
+    }
 
-        /**
-         * Get descriptionDetail.
-         *
-         * @return string|null
-         */
-        public function getDescriptionDetail()
-        {
-            return $this->description_detail;
-        }
+    /**
+     * Get customerFavoriteProducts.
+     *
+     * @return Collection<int, CustomerFavoriteProduct>
+     */
+    public function getCustomerFavoriteProducts(): Collection
+    {
+        return $this->CustomerFavoriteProducts;
+    }
 
-        /**
-         * Set searchWord.
-         *
-         * @param string|null $searchWord
-         *
-         * @return Product
-         */
-        public function setSearchWord($searchWord = null)
-        {
-            $this->search_word = $searchWord;
+    /**
+     * Set creator.
+     */
+    public function setCreator(?Member $creator = null): Product
+    {
+        $this->Creator = $creator;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get searchWord.
-         *
-         * @return string|null
-         */
-        public function getSearchWord()
-        {
-            return $this->search_word;
-        }
+    /**
+     * Get creator.
+     */
+    public function getCreator(): ?Member
+    {
+        return $this->Creator;
+    }
 
-        /**
-         * Set freeArea.
-         *
-         * @param string|null $freeArea
-         *
-         * @return Product
-         */
-        public function setFreeArea($freeArea = null)
-        {
-            $this->free_area = $freeArea;
+    /**
+     * Set status.
+     */
+    public function setStatus(?ProductStatus $status = null): Product
+    {
+        $this->Status = $status;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get freeArea.
-         *
-         * @return string|null
-         */
-        public function getFreeArea()
-        {
-            return $this->free_area;
-        }
-
-        /**
-         * Set createDate.
-         *
-         * @param \DateTime $createDate
-         *
-         * @return Product
-         */
-        public function setCreateDate($createDate)
-        {
-            $this->create_date = $createDate;
-
-            return $this;
-        }
-
-        /**
-         * Get createDate.
-         *
-         * @return \DateTime
-         */
-        public function getCreateDate()
-        {
-            return $this->create_date;
-        }
-
-        /**
-         * Set updateDate.
-         *
-         * @param \DateTime $updateDate
-         *
-         * @return Product
-         */
-        public function setUpdateDate($updateDate)
-        {
-            $this->update_date = $updateDate;
-
-            return $this;
-        }
-
-        /**
-         * Get updateDate.
-         *
-         * @return \DateTime
-         */
-        public function getUpdateDate()
-        {
-            return $this->update_date;
-        }
-
-        /**
-         * Add productCategory.
-         *
-         * @param ProductCategory $productCategory
-         *
-         * @return Product
-         */
-        public function addProductCategory(ProductCategory $productCategory)
-        {
-            $this->ProductCategories[] = $productCategory;
-
-            return $this;
-        }
-
-        /**
-         * Remove productCategory.
-         *
-         * @param ProductCategory $productCategory
-         *
-         * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
-         */
-        public function removeProductCategory(ProductCategory $productCategory)
-        {
-            return $this->ProductCategories->removeElement($productCategory);
-        }
-
-        /**
-         * Get productCategories.
-         *
-         * @return \Doctrine\Common\Collections\Collection
-         */
-        public function getProductCategories()
-        {
-            return $this->ProductCategories;
-        }
-
-        /**
-         * Add productClass.
-         *
-         * @param ProductClass $productClass
-         *
-         * @return Product
-         */
-        public function addProductClass(ProductClass $productClass)
-        {
-            $this->ProductClasses[] = $productClass;
-
-            return $this;
-        }
-
-        /**
-         * Remove productClass.
-         *
-         * @param ProductClass $productClass
-         *
-         * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
-         */
-        public function removeProductClass(ProductClass $productClass)
-        {
-            return $this->ProductClasses->removeElement($productClass);
-        }
-
-        /**
-         * Get productClasses.
-         *
-         * @return \Doctrine\Common\Collections\Collection
-         */
-        public function getProductClasses()
-        {
-            return $this->ProductClasses;
-        }
-
-        /**
-         * Add productImage.
-         *
-         * @param ProductImage $productImage
-         *
-         * @return Product
-         */
-        public function addProductImage(ProductImage $productImage)
-        {
-            $this->ProductImage[] = $productImage;
-
-            return $this;
-        }
-
-        /**
-         * Remove productImage.
-         *
-         * @param ProductImage $productImage
-         *
-         * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
-         */
-        public function removeProductImage(ProductImage $productImage)
-        {
-            return $this->ProductImage->removeElement($productImage);
-        }
-
-        /**
-         * Get productImage.
-         *
-         * @return \Doctrine\Common\Collections\Collection
-         */
-        public function getProductImage()
-        {
-            return $this->ProductImage;
-        }
-
-        /**
-         * Add productTag.
-         *
-         * @param ProductTag $productTag
-         *
-         * @return Product
-         */
-        public function addProductTag(ProductTag $productTag)
-        {
-            $this->ProductTag[] = $productTag;
-
-            return $this;
-        }
-
-        /**
-         * Remove productTag.
-         *
-         * @param ProductTag $productTag
-         *
-         * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
-         */
-        public function removeProductTag(ProductTag $productTag)
-        {
-            return $this->ProductTag->removeElement($productTag);
-        }
-
-        /**
-         * Get productTag.
-         *
-         * @return \Doctrine\Common\Collections\Collection
-         */
-        public function getProductTag()
-        {
-            return $this->ProductTag;
-        }
-
-        /**
-         * Get Tag
-         * フロント側タグsort_no順の配列を作成する
-         *
-         * @return []Tag
-         */
-        public function getTags()
-        {
-            $tags = [];
-
-            foreach ($this->getProductTag() as $productTag) {
-                $tags[] = $productTag->getTag();
-            }
-
-            usort($tags, function (Tag $tag1, Tag $tag2) {
-                return $tag1->getSortNo() <=> $tag2->getSortNo();
-            });
-
-            return $tags;
-        }
-
-        /**
-         * Add customerFavoriteProduct.
-         *
-         * @param CustomerFavoriteProduct $customerFavoriteProduct
-         *
-         * @return Product
-         */
-        public function addCustomerFavoriteProduct(CustomerFavoriteProduct $customerFavoriteProduct)
-        {
-            $this->CustomerFavoriteProducts[] = $customerFavoriteProduct;
-
-            return $this;
-        }
-
-        /**
-         * Remove customerFavoriteProduct.
-         *
-         * @param CustomerFavoriteProduct $customerFavoriteProduct
-         *
-         * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
-         */
-        public function removeCustomerFavoriteProduct(CustomerFavoriteProduct $customerFavoriteProduct)
-        {
-            return $this->CustomerFavoriteProducts->removeElement($customerFavoriteProduct);
-        }
-
-        /**
-         * Get customerFavoriteProducts.
-         *
-         * @return \Doctrine\Common\Collections\Collection
-         */
-        public function getCustomerFavoriteProducts()
-        {
-            return $this->CustomerFavoriteProducts;
-        }
-
-        /**
-         * Set creator.
-         *
-         * @param Member|null $creator
-         *
-         * @return Product
-         */
-        public function setCreator(?Member $creator = null)
-        {
-            $this->Creator = $creator;
-
-            return $this;
-        }
-
-        /**
-         * Get creator.
-         *
-         * @return Member|null
-         */
-        public function getCreator()
-        {
-            return $this->Creator;
-        }
-
-        /**
-         * Set status.
-         *
-         * @param Master\ProductStatus|null $status
-         *
-         * @return Product
-         */
-        public function setStatus(?Master\ProductStatus $status = null)
-        {
-            $this->Status = $status;
-
-            return $this;
-        }
-
-        /**
-         * Get status.
-         *
-         * @return Master\ProductStatus|null
-         */
-        public function getStatus()
-        {
-            return $this->Status;
-        }
+    /**
+     * Get status.
+     */
+    public function getStatus(): ?ProductStatus
+    {
+        return $this->Status;
     }
 }

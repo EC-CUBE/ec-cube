@@ -8,9 +8,16 @@ parameters:
     env(ECCUBE_LOCALE): 'ja'
     env(ECCUBE_TIMEZONE): 'Asia/Tokyo'
     env(ECCUBE_CURRENCY): 'JPY'
+    env(ECCUBE_MCP_ALLOWED_ORIGINS): ''
+    # MCP 監査ログ (mcp.log) の保管日数 (rotating_file の世代数)。 設計 §4.2
+    env(ECCUBE_MCP_LOG_RETENTION_DAYS): '90'
     locale: '%env(ECCUBE_LOCALE)%'
     timezone: '%env(ECCUBE_TIMEZONE)%'
     currency: '%env(ECCUBE_CURRENCY)%'
+    # Agent Commerce (#6794): 未設定時は空文字を既定とする (string 型注入で null TypeError を避ける)
+    env(ECCUBE_AGENT_COMMERCE_UCP_SIGNING_KEY): ''
+    env(ECCUBE_AGENT_COMMERCE_ACP_FEED_BASE_URL): ''
+    env(ECCUBE_AGENT_COMMERCE_ACP_FEED_API_KEY): ''
 
 services:
     # default configuration for services in *this* file
@@ -28,6 +35,11 @@ services:
           $shoppingPurchaseFlow: '@eccube.purchase.flow.shopping'
           $orderPurchaseFlow: '@eccube.purchase.flow.order'
           $_orderStateMachine: '@state_machine.order'
+          # MCP サーバ用 (path prefix と Origin 許可リスト)
+          $eccubeAdminRoute: '%eccube_admin_route%'
+          $mcpAllowedOriginsCsv: '%env(ECCUBE_MCP_ALLOWED_ORIGINS)%'
+          # 許可リスト未設定時、 dev/test は Origin 検証を skip し prod は検証不能な Origin を拒否する
+          $skipUnvalidatedOrigin: '%kernel.debug%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -35,7 +47,9 @@ services:
         resource: '../../../src/Eccube/*'
         # you can exclude directories or files
         # but if a service is unused, it's removed anyway
-        exclude: '../../../src/Eccube/{Annotation,Common,Entity,Exception,Log,Plugin,ServiceProvider,Resource,Doctrine/ORM/tools/}'
+        # EccubeCliToolCommand は McpCliCommandPass がツールごとに定義を生成するため、 glob からは除外する
+        # (scalar 引数 $toolName を持ち autowire できず、 名前なしの console.command 自動登録も壊れるため)。
+        exclude: '../../../src/Eccube/{Annotation,Common,Entity,Exception,Log,Plugin,ServiceProvider,Resource,Doctrine/ORM/tools/,Rector,Command/EccubeCliToolCommand.php}'
 
     Eccube\Common\EccubeConfig:
         public: true
@@ -53,6 +67,10 @@ services:
     Eccube\Service\SystemService:
         lazy: true
         public: true
+
+    Eccube\Service\EnvFileService:
+        arguments:
+            $projectDir: '%kernel.project_dir%'
 
     Eccube\Service\Composer\ComposerProcessService:
         lazy: true
@@ -95,9 +113,18 @@ services:
         bind:
           $blockTemplates: '%eccube_twig_block_templates%'
 
-    Plugin\:
-        resource: '../../../app/Plugin/*'
-        exclude: '../../../app/Plugin/*/{Entity,Resource,ServiceProvider,Tests,Codeception,DoctrineMigrations}'
+    # Plugin\ の自動登録は services.php で定義する (#6915)。
+    # プラグインが同梱する非 PSR-4 ライブラリ (例: phpseclib) を動的に exclude するため,
+    # 静的な YAML では表現できず, ネストした composer.json を検出する PHP 設定へ移した。
+
+    # PurchaseFlow / OrderStateMachine の名前付き引数をコンテナ全体で解決するための別名。
+    # 上記 _defaults の bind はこのファイル内のサービスにのみ適用されるため, services.php で
+    # 登録するプラグインのサービス (例: 決済プラグインの Payment Method) からも解決できるよう,
+    # 名前付きオートワイヤリング別名として明示的に定義する。
+    Eccube\Service\PurchaseFlow\PurchaseFlow $cartPurchaseFlow: '@eccube.purchase.flow.cart'
+    Eccube\Service\PurchaseFlow\PurchaseFlow $shoppingPurchaseFlow: '@eccube.purchase.flow.shopping'
+    Eccube\Service\PurchaseFlow\PurchaseFlow $orderPurchaseFlow: '@eccube.purchase.flow.order'
+    Symfony\Component\Workflow\WorkflowInterface $_orderStateMachine: '@state_machine.order'
 
     Customize\:
         resource: '../../../app/Customize/*'
@@ -200,18 +227,6 @@ services:
         # autoconfigureはfalseにし, CompilerPassで追加する.
         autoconfigure: false
 
-    native_file_session_handler:
-        class: Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler
-        arguments:
-            - '%session.save_path%'
-
-    Eccube\Session\Storage\Handler\SameSiteNoneCompatSessionHandler:
-        arguments:
-            - '@native_file_session_handler'
-
-    Eccube\DependencyInjection\Facade\AnnotationReaderFacade:
-        public: true
-
     Detection\MobileDetect:
         tags:
           - { name: mobile_detect.mobile_detector.default }
@@ -226,6 +241,52 @@ services:
 
     Eccube\EventListener\RateLimiterListener:
         arguments: [ !tagged_locator { tag: 'eccube_rate_limiter' } ]
+
+    # MCP: Api44 (ec-cube/api44) の allow_list (`eccube.api.allow_list` タグ) を集約する
+    Eccube\Service\Mcp\AllowListResolver:
+        arguments:
+            $allowLists: !tagged_iterator eccube.api.allow_list
+
+    # MCP: scope 強制層。 $inner (本物の Tool 実行器) は McpScopeEnforcementPass が構築する
+    Eccube\Service\Mcp\ScopeEnforcingReferenceHandler:
+        arguments:
+            $inner: '@eccube.mcp.reference_handler.inner'
+
+    # MCP: tools/list を現トークンの scope で絞る (呼べない Tool を一覧から隠す = 最小権限)。
+    # call 時の fail-closed 拒否は ScopeEnforcingReferenceHandler が担う二重防御。
+    Eccube\Service\Mcp\ScopeFilteringRegistry:
+        decorates: mcp.registry
+        arguments:
+            $inner: '@.inner'
+
+    # MCP: 監査ログとして記録するため、唯一の書き手として設定します。
+    Eccube\Service\Mcp\McpAuditLogger:
+        arguments:
+            $mcpLogger: '@monolog.logger.mcp'
+
+    # MCP: 監査ログ (mcp.log) は 1 レコード 1 JSON で出力する (機械可読・設計 §4.2)
+    eccube.mcp.log.formatter.json:
+        class: Monolog\Formatter\JsonFormatter
+
+    # スロットリング用キャッシュプール(rate_limiter.cache)のバックエンド.
+    # データストレージをファイルから DB へ変更するためのアダプタテンプレート.
+    # framework 標準の cache.adapter.doctrine_dbal(abstract)を継承し, 位置引数 index_3 の
+    # テーブルオプションだけを上書きする. カラム名は Eccube\Entity\RateLimiter
+    # (dtb_rate_limiter)のマッピングと厳密に一致させている.
+    eccube.rate_limiter.dbal_adapter:
+        parent: cache.adapter.doctrine_dbal
+        abstract: true
+        arguments:
+            # index_0 に DBAL 接続を焼き込む. プール設定側で provider を指定すると
+            # test 環境の filesystem プールにも provider がマージで漏れて TypeError に
+            # なるため, ここで接続を渡す.
+            index_0: '@doctrine.dbal.default_connection'
+            index_3:
+                db_table: 'dtb_rate_limiter'
+                db_id_col: 'cache_key'
+                db_data_col: 'cache_data'
+                db_lifetime_col: 'cache_lifetime'
+                db_time_col: 'cache_time'
 
     Eccube\Security\PasswordHasher\PasswordHasher:
         arguments:
@@ -249,3 +310,112 @@ services:
     eccube.asset.user_data_version_strategy:
         alias: Eccube\Asset\FilemtimeVersionStrategy
         public: true
+
+    Eccube\Doctrine\EventSubscriber\InitSubscriber:
+        autoconfigure: false
+        tags:
+            # 初期化 SQL (SET TIME ZONE 等) は物理接続へ 1 回だけ発行したいので,
+            # dama/doctrine-test-bundle の StaticDriver (priority: 100) より内側 (実ドライバ直上) に
+            # 配置する (DBAL 3 の postConnect イベント相当の挙動)。priority が高いほど内側になる。
+            - { name: doctrine.middleware, priority: 200 }
+
+    Eccube\Doctrine\EventSubscriber\InitDriver:
+        autowire: false
+        autoconfigure: false
+
+    # Agent Commerce (ACP / UCP) 共通基盤
+    Eccube\Service\AgentCommerce\Security\FilesystemKeyStore:
+        arguments:
+            $projectDir: '%kernel.project_dir%'
+            $envPathOverrides:
+                ucp_signing: '%env(default::string:ECCUBE_AGENT_COMMERCE_UCP_SIGNING_KEY)%'
+                # ACP Webhook (Merchant-Signature) の共有シークレット保管先 (#6776、outbound 送出は後続 PR)。
+                acp_webhook: '%env(default::string:ECCUBE_AGENT_COMMERCE_ACP_WEBHOOK_SECRET)%'
+
+    Eccube\Service\AgentCommerce\Security\KeyStoreInterface:
+        alias: Eccube\Service\AgentCommerce\Security\FilesystemKeyStore
+
+    Eccube\Service\AgentCommerce\Security\AgentCommerceMessageSignerInterface:
+        alias: Eccube\Service\AgentCommerce\Security\UcpMessageSigner
+
+    # Agent Commerce CheckoutSession 中核 (#6777 Phase 1b)
+    Eccube\Service\AgentCommerce\Fulfillment\FulfillmentOptionMapperInterface:
+        alias: Eccube\Service\AgentCommerce\Fulfillment\StandardFulfillmentOptionMapper
+
+    # 標準はゲスト購入 (会員解決なし)。会員 ID 連携は eccube-api4#189 landing 後に差し替える。
+    Eccube\Service\AgentCommerce\CheckoutSession\CustomerResolverInterface:
+        alias: Eccube\Service\AgentCommerce\CheckoutSession\GuestCustomerResolver
+
+    # OAuth2 トークン検証。リソースサーバー (eccube-api4#188) 未導入時は handler が null となり 503 を返す。
+    Eccube\Service\AgentCommerce\Security\AgentCommerceOAuth2Authenticator:
+        arguments:
+            $accessTokenHandler: '@?Symfony\Component\Security\Http\AccessToken\AccessTokenHandlerInterface'
+
+    # Agent Commerce 決済ハンドラレジストリ (#6574 UCP / #6776 ACP)
+    # 具象ハンドラ (決済プラグイン) は agent_commerce.payment_handler タグで寄与する。
+    # タグ付けは Kernel::build() の registerForAutoconfiguration で行う (PaymentMethodInterface と同様)。
+    # services.yaml の _instanceof はファイルスコープのため、Plugin\ glob (services.php・#6915) で
+    # 登録される決済プラグインの具象ハンドラには届かない。
+    Eccube\Service\AgentCommerce\Payment\AgentCheckoutPaymentHandlerRegistry:
+        arguments:
+            $handlers: !tagged_iterator agent_commerce.payment_handler
+
+    # エージェント注文の支払方法解決 (handler_id 駆動・sort_no 非依存)。
+    # 店舗ごとに選択ロジックを変える場合は app/Customize で実装しエイリアスを差し替える。
+    Eccube\Service\AgentCommerce\Payment\AgentPaymentMethodResolverInterface:
+        alias: Eccube\Service\AgentCommerce\Payment\DefaultAgentPaymentMethodResolver
+
+    # complete 状態機械オーケストレータ。在庫確保期限は eccube.yaml の設定値を注入。
+    Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutCompletionService:
+        arguments:
+            $escalationExpireMinutes: '%eccube_agent_checkout_escalation_expire%'
+
+    # 冪等性記録は DB 一意制約 (dtb_agent_checkout_idempotency) で管理する (EM/Repository は autowire)。
+
+    # UCP インバウンド署名検証 (RFC 9421・api4 非依存)。許可ドメイン/必須化は運用で設定する。
+    Eccube\Service\AgentCommerce\Ucp\Signature\UcpRequestSignatureVerifier:
+        arguments:
+            $allowedDomains: []
+
+    Eccube\Service\AgentCommerce\Ucp\Signature\UcpSignatureSubscriber:
+        arguments:
+            $requireSignature: false
+
+    # Agent Commerce: Product Feed / Catalog 共通基盤 (#6794)
+    Eccube\Service\AgentCommerce\Catalog\ProductReferenceResolverInterface:
+        alias: Eccube\Service\AgentCommerce\Catalog\ProductReferenceResolver
+
+    Eccube\Service\AgentCommerce\Catalog\CatalogProviderInterface:
+        alias: Eccube\Service\AgentCommerce\Catalog\CatalogProvider
+
+    # Agent Commerce: ACP Product Feed (push) (#6794)
+    Eccube\Service\AgentCommerce\Catalog\Acp\AcpFeedValidator:
+        arguments:
+            $schemaPath: '%kernel.project_dir%/src/Eccube/Resource/AgentCommerce/Acp/schema.feed.json'
+
+    Eccube\Service\AgentCommerce\Catalog\Acp\AcpFeedClient:
+        arguments:
+            $baseUrl: '%env(ECCUBE_AGENT_COMMERCE_ACP_FEED_BASE_URL)%'
+            $apiKey: '%env(ECCUBE_AGENT_COMMERCE_ACP_FEED_API_KEY)%'
+
+    Eccube\Service\AgentCommerce\Catalog\Acp\AcpFeedClientInterface:
+        alias: Eccube\Service\AgentCommerce\Catalog\Acp\AcpFeedClient
+
+    # Agent Commerce: UCP Catalog (pull / REST) (#6794)
+    Eccube\Service\AgentCommerce\Catalog\Ucp\UcpCatalogCache:
+        arguments:
+            $cacheDir: '%kernel.cache_dir%'
+
+    # Agent Commerce: UCP Discovery (/.well-known/ucp) (#6794 / #6777)
+    # payment_handlers は決済ハンドラプラグインが tagged service で寄与する (既定は空 {}).
+    Eccube\Service\AgentCommerce\Discovery\EmptyPaymentHandlerRegistry:
+        arguments:
+            $registries: !tagged_iterator eccube.agent_commerce.payment_handler_registry
+
+    Eccube\Service\AgentCommerce\Discovery\PaymentHandlerRegistryInterface:
+        alias: Eccube\Service\AgentCommerce\Discovery\EmptyPaymentHandlerRegistry
+
+    # 登録済み UCP 決済ハンドラ (agent_commerce.payment_handler) から payment_handlers を自動広告する。
+    # プラグインは UCP ハンドラを 1 つ登録するだけで discovery にも載る (ゼロ設定)。
+    Eccube\Service\AgentCommerce\Discovery\UcpPaymentHandlerDiscoveryRegistry:
+        tags: ['eccube.agent_commerce.payment_handler_registry']

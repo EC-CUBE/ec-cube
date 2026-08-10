@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -14,18 +16,17 @@
 namespace Eccube\Tests\Web\Admin\Content;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
-class MaintenanceControllerTest extends AbstractAdminWebTestCase
+final class MaintenanceControllerTest extends AbstractAdminWebTestCase
 {
     private $maintenance_file_path;
 
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->maintenance_file_path
             = static::getContainer()->getParameter('eccube_content_maintenance_file_path');
-
         if (file_exists($this->maintenance_file_path)) {
             unlink($this->maintenance_file_path);
         }
@@ -34,7 +35,6 @@ class MaintenanceControllerTest extends AbstractAdminWebTestCase
     protected function tearDown(): void
     {
         parent::tearDown();
-
         if (isset($this->maintenance_file_path) && file_exists($this->maintenance_file_path)) {
             unlink($this->maintenance_file_path);
         }
@@ -42,20 +42,20 @@ class MaintenanceControllerTest extends AbstractAdminWebTestCase
 
     public function testIndex()
     {
-        $crawler = $this->client->request('GET',
+        $crawler = $this->client->request(Request::METHOD_GET,
             $this->generateUrl('admin_content_maintenance')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertFalse(file_exists($this->maintenance_file_path));
+        $this->assertFileDoesNotExist($this->maintenance_file_path);
         $this->assertSame('有効にする', $crawler->filter('button.btn-ec-conversion')->text());
 
         touch($this->maintenance_file_path);
 
-        $crawler = $this->client->request('GET',
+        $crawler = $this->client->request(Request::METHOD_GET,
             $this->generateUrl('admin_content_maintenance')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertTrue(file_exists($this->maintenance_file_path));
+        $this->assertFileExists($this->maintenance_file_path);
         $this->assertSame('無効にする', $crawler->filter('button.btn-ec-conversion')->text());
     }
 
@@ -63,14 +63,14 @@ class MaintenanceControllerTest extends AbstractAdminWebTestCase
     {
         touch($this->maintenance_file_path);
 
-        $crawler = $this->client->request('GET',
+        $crawler = $this->client->request(Request::METHOD_GET,
             $this->generateUrl('admin_content_maintenance')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertTrue(file_exists($this->maintenance_file_path));
+        $this->assertFileExists($this->maintenance_file_path);
         $this->assertSame('無効にする', $crawler->filter('button.btn-ec-conversion')->text());
 
-        $crawler = $this->client->request('POST',
+        $crawler = $this->client->request(Request::METHOD_POST,
             $this->generateUrl('admin_disable_maintenance', ['mode' => 'manual']),
             [],
             [],
@@ -81,11 +81,11 @@ class MaintenanceControllerTest extends AbstractAdminWebTestCase
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $crawler = $this->client->request('GET',
+        $crawler = $this->client->request(Request::METHOD_GET,
             $this->generateUrl('admin_content_maintenance')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertFalse(file_exists($this->maintenance_file_path));
+        $this->assertFileDoesNotExist($this->maintenance_file_path);
         $this->assertSame('有効にする', $crawler->filter('button.btn-ec-conversion')->text());
     }
 }

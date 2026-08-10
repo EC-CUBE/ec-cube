@@ -17,11 +17,6 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
 {
     public const 完了メッセージ = '#page_admin_store_plugin > div.c-container > div.c-contentsArea > div.alert:not(.alert-primary).alert-dismissible.fade.show.m-3 > span';
 
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     public static function at($I)
     {
         $page = new self($I);
@@ -31,11 +26,8 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
 
     /**
      * @param $pluginCode
-     * @param string $message
-     *
-     * @return PluginManagePage
      */
-    public function ストアプラグイン_有効化($pluginCode, $message = '有効にしました。')
+    public function ストアプラグイン_有効化($pluginCode, string $message = '有効にしました。'): PluginManagePage
     {
         $this->ページ遷移を伴うクリック(function () use ($pluginCode) {
             $this->ストアプラグイン_ボタンクリック($pluginCode, '有効化');
@@ -47,11 +39,8 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
 
     /**
      * @param $pluginCode
-     * @param string $message
-     *
-     * @return PluginManagePage
      */
-    public function ストアプラグイン_無効化($pluginCode, $message = '無効にしました。')
+    public function ストアプラグイン_無効化($pluginCode, string $message = '無効にしました。'): PluginManagePage
     {
         $this->ページ遷移を伴うクリック(function () use ($pluginCode) {
             $this->ストアプラグイン_ボタンクリック($pluginCode, '無効化');
@@ -63,13 +52,10 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
 
     /**
      * @param $pluginCode
-     * @param string $message
-     *
-     * @return PluginManagePage
      *
      * @throws \Exception
      */
-    public function ストアプラグイン_削除($pluginCode, $message = '削除が完了しました。')
+    public function ストアプラグイン_削除($pluginCode, string $message = '削除が完了しました。'): PluginManagePage
     {
         $this->ストアプラグイン_ボタンクリック($pluginCode, '削除');
         $this->tester->waitForElementVisible(['id' => 'officialPluginDeleteButton'], 60);
@@ -82,10 +68,8 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
 
     /**
      * @param $pluginCode
-     *
-     * @return PluginStoreUpgradePage
      */
-    public function ストアプラグイン_アップデート($pluginCode)
+    public function ストアプラグイン_アップデート($pluginCode): PluginStoreUpgradePage
     {
         echo $this->tester->grabTextFrom(['xpath' => '//*[@id="page_admin_store_plugin"]']);
         $this->tester->click(['xpath' => $this->ストアプラグイン_セレクタ($pluginCode).'/../../td[5]/a']);
@@ -197,7 +181,7 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
         for ($attempt = 1; $attempt <= $maxRetries; $attempt++) {
             try {
                 $this->tester->executeJS('window.__eccubeNavMarker = true');
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 // マーカー設定失敗 = 前回のクリックでページ遷移中
                 break;
             }
@@ -205,9 +189,7 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
             // function.js の click ハンドラが DOMContentLoaded 後にバインドされるため、
             // ページの全リソース読み込み完了を待ってからクリックする
             $this->tester->executeInSelenium(function ($webDriver) {
-                $webDriver->wait(10)->until(function ($driver) {
-                    return $driver->executeScript('return document.readyState') === 'complete';
-                });
+                $webDriver->wait(10)->until(fn ($driver) => $driver->executeScript('return document.readyState') === 'complete');
             });
 
             $clickAction();
@@ -220,7 +202,7 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
                 $formSubmitted = (bool) $this->tester->executeJS(
                     "return document.querySelector('a[token-for-anchor][style*=\"pointer-events\"]') !== null"
                 );
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 // JS 実行失敗 = ページ遷移中
                 break;
             }
@@ -238,7 +220,7 @@ class PluginManagePage extends AbstractAdminPageStyleGuide
                             $navigated = true;
                             break;
                         }
-                    } catch (\Exception $e) {
+                    } catch (\Exception) {
                         $navigated = true; // JS 実行エラー = ページ遷移中
                         break;
                     }

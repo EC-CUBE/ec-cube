@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -16,7 +18,7 @@ namespace Eccube\Tests\Stream\Filter;
 use Eccube\Stream\Filter\ConvertLineFeedFilter;
 use PHPUnit\Framework\TestCase;
 
-class ConvertLineFeedFilterTest extends TestCase
+final class ConvertLineFeedFilterTest extends TestCase
 {
     private const FILTER_NAME = 'convert_linefeed_filter';
 
@@ -49,6 +51,6 @@ class ConvertLineFeedFilterTest extends TestCase
         $expected = "あいうえお\n"
             ."かきくけこ\n"
             ."さしすせそ\n";
-        self::assertSame($expected, $actual);
+        $this->assertSame($expected, $actual);
     }
 }

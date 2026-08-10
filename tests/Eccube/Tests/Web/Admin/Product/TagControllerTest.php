@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -16,14 +18,13 @@ namespace Eccube\Tests\Web\Admin\Product;
 use Eccube\Entity\Tag;
 use Eccube\Repository\TagRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class TagControllerTest extends AbstractAdminWebTestCase
+final class TagControllerTest extends AbstractAdminWebTestCase
 {
-    /**
-     * @var TagRepository
-     */
-    private $TagRepo;
+    private ?TagRepository $TagRepo = null;
 
     protected function setUp(): void
     {
@@ -33,7 +34,7 @@ class TagControllerTest extends AbstractAdminWebTestCase
 
     public function testRouting()
     {
-        $this->client->request('GET', $this->generateUrl('admin_product_tag'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_product_tag'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -46,7 +47,7 @@ class TagControllerTest extends AbstractAdminWebTestCase
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_product_tag_sort_no_move'),
             $idAndSortNo,
             [],
@@ -58,7 +59,8 @@ class TagControllerTest extends AbstractAdminWebTestCase
 
         $this->expected = 6;
         $Tag = $this->TagRepo->find(3);
-        $this->entityManager->refresh($Tag); // Refresh しないとリクエストの値(string)が入ってしまう
+        $this->entityManager->refresh($Tag);
+        $this->assertInstanceOf(Tag::class, $Tag); // Refresh しないとリクエストの値(string)が入ってしまう
         $this->actual = $Tag->getSortNo();
         $this->verify();
     }
@@ -66,9 +68,8 @@ class TagControllerTest extends AbstractAdminWebTestCase
     /**
      * @param $isSuccess
      * @param $expected
-     *
-     * @dataProvider dataSubmitProvider
      */
+    #[DataProvider(methodName: 'dataSubmitProvider')]
     public function testAddNew($isSuccess, $expected)
     {
         $formData = $this->createFormData();
@@ -76,7 +77,7 @@ class TagControllerTest extends AbstractAdminWebTestCase
             $formData['method'] = '';
         }
 
-        $this->client->request('POST',
+        $this->client->request(Request::METHOD_POST,
             $this->generateUrl('admin_product_tag'),
             [
                 'admin_product_tag' => $formData,
@@ -93,8 +94,9 @@ class TagControllerTest extends AbstractAdminWebTestCase
         $formData = $this->createFormData();
 
         $Item = $this->TagRepo->find(1);
+        $this->assertInstanceOf(Tag::class, $Item);
 
-        $this->client->request('POST',
+        $this->client->request(Request::METHOD_POST,
             $this->generateUrl('admin_product_tag'),
             [
                 'tag_'.$Item->getId() => $formData,
@@ -111,8 +113,9 @@ class TagControllerTest extends AbstractAdminWebTestCase
     public function testEditInvalid()
     {
         $Item = $this->TagRepo->find(1);
+        $this->assertInstanceOf(Tag::class, $Item);
 
-        $crawler = $this->client->request('POST',
+        $crawler = $this->client->request(Request::METHOD_POST,
             $this->generateUrl('admin_product_tag'),
             [
                 'tag_'.$Item->getId() => [
@@ -135,24 +138,24 @@ class TagControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->flush();
 
         $TagId = $Item->getId();
-        $this->client->request('DELETE',
+        $this->client->request(Request::METHOD_DELETE,
             $this->generateUrl('admin_product_tag_delete', ['id' => $TagId])
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirection());
 
         $Item = $this->TagRepo->find($TagId);
-        $this->assertNull($Item);
+        $this->assertNotInstanceOf(Tag::class, $Item);
     }
 
     public function testDeleteFailNotFound()
     {
         $tagId = 9999;
         $this->client->request(
-            'DELETE',
+            Request::METHOD_DELETE,
             $this->generateUrl('admin_product_tag_delete', ['id' => $tagId])
         );
-        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 
     public function createFormData()
@@ -163,11 +166,9 @@ class TagControllerTest extends AbstractAdminWebTestCase
         ];
     }
 
-    public function dataSubmitProvider()
+    public static function dataSubmitProvider(): \Iterator
     {
-        return [
-            [false, false],
-            [true, true],
-        ];
+        yield [false, false];
+        yield [true, true];
     }
 }

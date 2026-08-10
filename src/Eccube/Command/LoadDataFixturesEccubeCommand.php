@@ -14,39 +14,31 @@
 namespace Eccube\Command;
 
 use Doctrine\Bundle\DoctrineBundle\Command\DoctrineCommand;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\Persistence\ManagerRegistry;
 use Eccube\Common\EccubeConfig;
+use Eccube\Doctrine\Common\CsvDataFixtures\Executor\DbalExecutor;
+use Eccube\Doctrine\Common\CsvDataFixtures\Loader;
 use Eccube\Entity\Member;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
+#[AsCommand(name: 'eccube:fixtures:load', description: 'Load data fixtures to your database.')]
 class LoadDataFixturesEccubeCommand extends DoctrineCommand
 {
-    protected static $defaultName = 'eccube:fixtures:load';
-
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
-     * @var UserPasswordHasherInterface
-     */
-    protected $passwordHasher;
-
-    public function __construct(ManagerRegistry $registry, EccubeConfig $eccubeConfig, UserPasswordHasherInterface $passwordHasher)
+    public function __construct(ManagerRegistry $registry, protected EccubeConfig $eccubeConfig, protected UserPasswordHasherInterface $passwordHasher)
     {
         parent::__construct($registry);
-        $this->eccubeConfig = $eccubeConfig;
-        $this->passwordHasher = $passwordHasher;
     }
 
-    protected function configure()
+    #[\Override]
+    protected function configure(): void
     {
         $this
-            ->setDescription('Load data fixtures to your database.')
             ->setHelp(<<<EOF
 The <info>%command.name%</info> command loads data fixtures from EC-CUBE.
 
@@ -55,19 +47,20 @@ EOF
             );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    #[\Override]
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $em = $this->getEntityManager(null);
+        $em = $this->getEntityManager($this->getDoctrine()->getDefaultManagerName());
 
         // for full locale code cases
         $locale = env('ECCUBE_LOCALE', 'ja_JP');
         $locale = str_replace('_', '-', $locale);
         $locales = \Locale::parseLocale($locale);
-        $localeDir = is_null($locales) ? 'ja' : $locales['language'];
+        $localeDir = empty($locales) ? 'ja' : $locales['language'];
 
-        $loader = new \Eccube\Doctrine\Common\CsvDataFixtures\Loader();
+        $loader = new Loader();
         $loader->loadFromDirectory(__DIR__.'/../Resource/doctrine/import_csv/'.$localeDir);
-        $executer = new \Eccube\Doctrine\Common\CsvDataFixtures\Executor\DbalExecutor($em);
+        $executer = new DbalExecutor($em);
         $fixtures = $loader->getFixtures();
         $executer->execute($fixtures);
 
@@ -77,7 +70,7 @@ EOF
         $password = $this->passwordHasher->hashPassword(new Member(), $login_password);
 
         $conn = $em->getConnection();
-        $member_id = ('postgresql' === $conn->getDatabasePlatform()->getName())
+        $member_id = ($conn->getDatabasePlatform() instanceof PostgreSQLPlatform)
             ? $conn->fetchOne("select nextval('dtb_member_id_seq')")
             : null;
 
@@ -96,14 +89,14 @@ EOF
             'department' => 'EC-CUBE SHOP',
             'discriminator_type' => 'member',
         ], [
-            'update_date' => \Doctrine\DBAL\Types\Types::DATETIMETZ_MUTABLE,
-            'create_date' => \Doctrine\DBAL\Types\Types::DATETIMETZ_MUTABLE,
+            'update_date' => Types::DATETIMETZ_MUTABLE,
+            'create_date' => Types::DATETIMETZ_MUTABLE,
         ]);
 
         $shop_name = env('ECCUBE_SHOP_NAME', 'EC-CUBE SHOP');
         $admin_mail = env('ECCUBE_ADMIN_MAIL', 'admin@example.com');
 
-        $id = ('postgresql' === $conn->getDatabasePlatform()->getName())
+        $id = ($conn->getDatabasePlatform() instanceof PostgreSQLPlatform)
             ? $conn->fetchOne("select nextval('dtb_base_info_id_seq')")
             : null;
 
@@ -118,7 +111,7 @@ EOF
             'discriminator_type' => 'baseinfo',
             'option_mail_notifier' => true,
         ], [
-            'update_date' => \Doctrine\DBAL\Types\Types::DATETIMETZ_MUTABLE,
+            'update_date' => Types::DATETIMETZ_MUTABLE,
         ]);
 
         $faviconPath = '/assets/img/common/favicon.ico';

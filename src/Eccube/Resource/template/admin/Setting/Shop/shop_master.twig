@@ -33,11 +33,22 @@ file that was distributed with this source code.
                     <div class="card rounded border-0 mb-4">
                         <div class="card-header"><span>{{ 'admin.setting.shop.shop.base_info'|trans }}</span></div>
                         <div id="ex-shop-basic" class="card-body">
+                            <div class="row mb-2">
+                                <div class="col-3"></div>
+                                <div class="col"></div>
+                                <div class="col-2">
+                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.shop.shop.order_pdf'|trans }}"><span class="text-muted">{{ 'admin.setting.shop.shop.order_pdf'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i></div>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col-3"><span>{{ 'admin.common.company_name'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.company_name) }}
                                     {{ form_errors(form.company_name) }}
+                                </div>
+                                <div class="col-2">
+                                    {{ form_widget(form.order_pdf_visible_company_name) }}
+                                    {{ form_errors(form.order_pdf_visible_company_name) }}
                                 </div>
                             </div>
                             <div class="row">
@@ -46,12 +57,17 @@ file that was distributed with this source code.
                                     {{ form_widget(form.company_kana) }}
                                     {{ form_errors(form.company_kana) }}
                                 </div>
+                                <div class="col-2"></div>
                             </div>
                             <div class="row">
                                 <div class="col-3"><span>{{ 'admin.setting.shop.shop.shop_name'|trans }}</span><span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.shop_name) }}
                                     {{ form_errors(form.shop_name) }}
+                                </div>
+                                <div class="col-2">
+                                    {{ form_widget(form.order_pdf_visible_shop_name) }}
+                                    {{ form_errors(form.order_pdf_visible_shop_name) }}
                                 </div>
                             </div>
                             <div class="row">
@@ -60,12 +76,17 @@ file that was distributed with this source code.
                                     {{ form_widget(form.shop_kana) }}
                                     {{ form_errors(form.shop_kana) }}
                                 </div>
+                                <div class="col-2"></div>
                             </div>
                             <div class="row">
                                 <div class="col-3"><span>{{ 'admin.setting.shop.shop.shop_name_en'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.shop_name_eng) }}
                                     {{ form_errors(form.shop_name_eng) }}
+                                </div>
+                                <div class="col-2">
+                                    {{ form_widget(form.order_pdf_visible_shop_name_eng) }}
+                                    {{ form_errors(form.order_pdf_visible_shop_name_eng) }}
                                 </div>
                             </div>
                             <div class="row">
@@ -97,6 +118,11 @@ file that was distributed with this source code.
                                         {{ form_errors(form.address.addr02) }}
                                     </div>
                                 </div>
+                                {# 郵便番号・都道府県・住所1・住所2 をまとめて1つのトグルで制御するため、住所ブロックの先頭行に揃えて配置する #}
+                                <div class="col-2">
+                                    {{ form_widget(form.order_pdf_visible_address) }}
+                                    {{ form_errors(form.order_pdf_visible_address) }}
+                                </div>
                             </div>
                             <div class="row mb-2">
                                 <div class="col-3"><span>{{ 'admin.common.phone_number'|trans }}</span></div>
@@ -104,12 +130,20 @@ file that was distributed with this source code.
                                     {{ form_widget(form.phone_number) }}
                                     {{ form_errors(form.phone_number) }}
                                 </div>
+                                <div class="col-2">
+                                    {{ form_widget(form.order_pdf_visible_phone_number) }}
+                                    {{ form_errors(form.order_pdf_visible_phone_number) }}
+                                </div>
                             </div>
                             <div class="row mb-3">
                                 <div class="col-3"><span>{{ 'admin.setting.shop.shop.business_hour'|trans }}</span></div>
                                 <div class="col mb-2">
                                     {{ form_widget(form.business_hour) }}
                                     {{ form_errors(form.business_hour) }}
+                                </div>
+                                <div class="col-2">
+                                    {{ form_widget(form.order_pdf_visible_business_hour) }}
+                                    {{ form_errors(form.order_pdf_visible_business_hour) }}
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -121,6 +155,10 @@ file that was distributed with this source code.
                                     {{ form_widget(form.email01) }}
                                     {{ form_errors(form.email01) }}
                                 </div>
+                                <div class="col-2">
+                                    {{ form_widget(form.order_pdf_visible_email) }}
+                                    {{ form_errors(form.order_pdf_visible_email) }}
+                                </div>
                             </div>
                             <div class="row mb-3">
                                 <div class="col-3">
@@ -131,6 +169,7 @@ file that was distributed with this source code.
                                     {{ form_widget(form.email03) }}
                                     {{ form_errors(form.email03) }}
                                 </div>
+                                <div class="col-2"></div>
                             </div>
                             <div class="row mb-3">
                                 <div class="col-3">
@@ -141,6 +180,7 @@ file that was distributed with this source code.
                                     {{ form_widget(form.email04) }}
                                     {{ form_errors(form.email04) }}
                                 </div>
+                                <div class="col-2"></div>
                             </div>
                             <div class="row mb-3">
                                 <div class="col-3">
@@ -151,6 +191,7 @@ file that was distributed with this source code.
                                     {{ form_widget(form.email02) }}
                                     {{ form_errors(form.email02) }}
                                 </div>
+                                <div class="col-2"></div>
                             </div>
                             <div class="row">
                                 <div class="col-3">
@@ -160,6 +201,7 @@ file that was distributed with this source code.
                                     {{ form_widget(form.good_traded) }}
                                     {{ form_errors(form.good_traded) }}
                                 </div>
+                                <div class="col-2"></div>
                             </div>
                             <div class="row">
                                 <div class="col-3">
@@ -169,6 +211,7 @@ file that was distributed with this source code.
                                     {{ form_widget(form.message) }}
                                     {{ form_errors(form.message) }}
                                 </div>
+                                <div class="col-2"></div>
                             </div>
                             {# エンティティ拡張の自動出力 #}
                             {% for f in form|filter(f => f.vars.eccube_form_options.auto_render) %}
@@ -182,6 +225,7 @@ file that was distributed with this source code.
                                             {{ form_widget(f) }}
                                             {{ form_errors(f) }}
                                         </div>
+                                        <div class="col-2"></div>
                                     </div>
                                 {% endif %}
                             {% endfor %}
@@ -269,6 +313,15 @@ file that was distributed with this source code.
                                     {{ form_errors(form.option_mail_notifier) }}
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.shop.shop.option_guest_purchase'|trans }}"><span>{{ 'admin.setting.shop.shop.option_guest_purchase'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i></div>
+                                </div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.option_guest_purchase) }}
+                                    {{ form_errors(form.option_guest_purchase) }}
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="card rounded border-0 mb-4">
@@ -284,8 +337,29 @@ file that was distributed with this source code.
                         </div>
                     </div>
                     <div class="card rounded border-0 mb-4">
+                        <div class="card-header"><span>{{ 'admin.setting.shop.shop.option_csv'|trans }}</span></div>
+                        <div id="ex-shop-csv" class="card-body">
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.shop.shop.option_sanitize_csv_formulas'|trans }}"><span>{{ 'admin.setting.shop.shop.option_sanitize_csv_formulas'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i></div>
+                                </div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.option_sanitize_csv_formulas) }}
+                                    {{ form_errors(form.option_sanitize_csv_formulas) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card rounded border-0 mb-4">
                         <div class="card-header"><span>{{ 'admin.setting.shop.shop.option_tax'|trans }}</span></div>
                         <div id="ex-shop-tax" class="card-body">
+                            <div class="row mb-2">
+                                <div class="col-3"></div>
+                                <div class="col"></div>
+                                <div class="col-2">
+                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.shop.shop.order_pdf'|trans }}"><span class="text-muted">{{ 'admin.setting.shop.shop.order_pdf'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i></div>
+                                </div>
+                            </div>
                              <div class="row">
                                 <div class="col-3">
                                     <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.shop.shop.option_invoice_registration_number'|trans }}"><span>{{ 'admin.setting.shop.shop.option_invoice_registration_number'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i></div>
@@ -293,6 +367,10 @@ file that was distributed with this source code.
                                 <div class="col mb-2">
                                     {{ form_widget(form.invoice_registration_number) }}
                                     {{ form_errors(form.invoice_registration_number) }}
+                                </div>
+                                <div class="col-2">
+                                    {{ form_widget(form.order_pdf_visible_invoice_number) }}
+                                    {{ form_errors(form.order_pdf_visible_invoice_number) }}
                                 </div>
                             </div>
                             <div class="row">
@@ -303,6 +381,7 @@ file that was distributed with this source code.
                                     {{ form_widget(form.option_product_tax_rule) }}
                                     {{ form_errors(form.option_product_tax_rule) }}
                                 </div>
+                                <div class="col-2"></div>
                             </div>
                         </div>
                     </div>
@@ -360,6 +439,59 @@ file that was distributed with this source code.
                                 <div class="col mb-2">
                                     {{ form_widget(form.ga_id, { attr : { placeholder : 'admin.common.ga.tracking_id' }} ) }}
                                     {{ form_errors(form.ga_id) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header"><span>{{ 'admin.setting.shop.shop.option_cookie_consent_section'|trans }}</span></div>
+                        <div id="ex-shop-cookie-consent" class="card-body">
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-tooltip="true" data-placement="top" title="{{ 'tooltip.setting.shop.shop.option_cookie_consent'|trans }}"><span>{{ 'admin.setting.shop.shop.option_cookie_consent'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i></div>
+                                </div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.option_cookie_consent) }}
+                                    {{ form_errors(form.option_cookie_consent) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header"><span>{{ 'admin.setting.shop.shop.agent_commerce'|trans }}</span></div>
+                        <div id="ex-shop-agent-commerce" class="card-body">
+                            <p class="text-muted">{{ 'admin.setting.shop.shop.agent_commerce.description'|trans }}</p>
+                            <div class="row mb-3">
+                                <div class="col-3">
+                                    <span>{{ 'admin.setting.shop.shop.agent_commerce.acp_checkout_enabled'|trans }}</span>
+                                </div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.acp_checkout_enabled) }}
+                                    {{ form_errors(form.acp_checkout_enabled) }}
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-3">
+                                    <span>{{ 'admin.setting.shop.shop.agent_commerce.ucp_checkout_enabled'|trans }}</span>
+                                </div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.ucp_checkout_enabled) }}
+                                    {{ form_errors(form.ucp_checkout_enabled) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header"><span>{{ 'admin.setting.shop.shop.mcp'|trans }}</span></div>
+                        <div id="ex-shop-mcp" class="card-body">
+                            <p class="text-muted">{{ 'admin.setting.shop.shop.mcp.description'|trans }}</p>
+                            <div class="row mb-3">
+                                <div class="col-3">
+                                    <span>{{ 'admin.setting.shop.shop.mcp_enabled'|trans }}</span>
+                                </div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.mcp_enabled) }}
+                                    {{ form_errors(form.mcp_enabled) }}
                                 </div>
                             </div>
                         </div>

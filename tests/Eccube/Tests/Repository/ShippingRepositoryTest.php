@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -29,6 +31,7 @@ use Eccube\Repository\MemberRepository;
 use Eccube\Repository\ShippingRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
+use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Tests\EccubeTestCase;
 
 /**
@@ -36,52 +39,28 @@ use Eccube\Tests\EccubeTestCase;
  *
  * @author Kentaro Ohkouchi
  */
-class ShippingRepositoryTest extends EccubeTestCase
+final class ShippingRepositoryTest extends EccubeTestCase
 {
-    /**
-     * @var Customer
-     */
-    protected $Customer;
+    protected ?Customer $Customer = null;
 
-    /**
-     * @var Order
-     */
-    protected $Order;
+    protected ?Order $Order = null;
 
-    /**
-     * @var Product
-     */
-    protected $Product;
+    protected ?Product $Product = null;
 
-    /**
-     * @var ProductClass
-     */
-    protected $ProductClass;
+    protected ?ProductClass $ProductClass = null;
 
     /**
      * @var Shipping[]
      */
-    protected $Shippings;
+    protected ?array $Shippings = null;
 
-    /**
-     * @var Member
-     */
-    protected $Member;
+    protected ?Member $Member = null;
 
-    /**
-     * @var MemberRepository
-     */
-    protected $memberRepository;
+    protected ?MemberRepository $memberRepository = null;
 
-    /**
-     * @var TaxRuleRepository
-     */
-    protected $taxRuleRepository;
+    protected ?TaxRuleRepository $taxRuleRepository = null;
 
-    /**
-     * @var ShippingRepository
-     */
-    protected $shippingRepository;
+    protected ?ShippingRepository $shippingRepository = null;
 
     /**
      * {@inheritdoc}
@@ -91,11 +70,9 @@ class ShippingRepositoryTest extends EccubeTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->memberRepository = $this->entityManager->getRepository(Member::class);
         $this->taxRuleRepository = $this->entityManager->getRepository(TaxRule::class);
         $this->shippingRepository = $this->entityManager->getRepository(Shipping::class);
-
         $faker = $this->getFaker();
         $this->Member = $this->memberRepository->find(2);
         $this->Customer = $this->createCustomer();
@@ -105,11 +82,9 @@ class ShippingRepositoryTest extends EccubeTestCase
         $ProductClasses = $this->Product->getProductClasses();
         $this->ProductClass = $ProductClasses[0];
         $quantity = 3;
-
         $TaxDisplayType = $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::EXCLUDED);
         $TaxType = $this->entityManager->find(TaxType::class, TaxType::TAXATION);
         $ProductOrderItemType = $this->entityManager->find(OrderItemType::class, OrderItemType::PRODUCT);
-
         // 1個ずつ別のお届け先に届ける
         for ($i = 0; $i < $quantity; $i++) {
             $Shipping = new Shipping();
@@ -140,8 +115,7 @@ class ShippingRepositoryTest extends EccubeTestCase
             $this->entityManager->persist($OrderItem);
             $this->Shippings[$i] = $Shipping;
         }
-
-        $purchaseFlow = static::getContainer()->get('eccube.purchase.flow.order');
+        $purchaseFlow = static::getContainer()->get(PurchaseFlow::class);
         $purchaseFlow->validate($this->Order, new PurchaseContext($this->Order));
         $this->entityManager->flush();
     }

@@ -13,26 +13,19 @@
 
 namespace Eccube\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\Routing\Attribute\Route;
 
 class HelpController extends AbstractController
 {
     /**
-     * HelpController constructor.
-     */
-    public function __construct()
-    {
-    }
-
-    /**
      * ご利用ガイド.
      *
-     * @Route("/guide", name="help_guide", methods={"GET"})
-     *
-     * @Template("Help/guide.twig")
+     * @return array<empty>
      */
-    public function guide()
+    #[Route(path: '/help/guide', name: 'help_guide', methods: ['GET'])]
+    #[Template(template: 'Help/guide.twig')]
+    public function guide(): array
     {
         return [];
     }
@@ -40,11 +33,11 @@ class HelpController extends AbstractController
     /**
      * 当サイトについて.
      *
-     * @Route("/help/about", name="help_about", methods={"GET"})
-     *
-     * @Template("Help/about.twig")
+     * @return array<empty>
      */
-    public function about()
+    #[Route(path: '/help/about', name: 'help_about', methods: ['GET'])]
+    #[Template(template: 'Help/about.twig')]
+    public function about(): array
     {
         return [];
     }
@@ -52,11 +45,11 @@ class HelpController extends AbstractController
     /**
      * プライバシーポリシー.
      *
-     * @Route("/help/privacy", name="help_privacy", methods={"GET"})
-     *
-     * @Template("Help/privacy.twig")
+     * @return array<empty>
      */
-    public function privacy()
+    #[Route(path: '/help/privacy', name: 'help_privacy', methods: ['GET'])]
+    #[Template(template: 'Help/privacy.twig')]
+    public function privacy(): array
     {
         return [];
     }
@@ -64,11 +57,11 @@ class HelpController extends AbstractController
     /**
      * 利用規約.
      *
-     * @Route("/help/agreement", name="help_agreement", methods={"GET"})
-     *
-     * @Template("Help/agreement.twig")
+     * @return array<empty>
      */
-    public function agreement()
+    #[Route(path: '/help/agreement', name: 'help_agreement', methods: ['GET'])]
+    #[Template(template: 'Help/agreement.twig')]
+    public function agreement(): array
     {
         return [];
     }

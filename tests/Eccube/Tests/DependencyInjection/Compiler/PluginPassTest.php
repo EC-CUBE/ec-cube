@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,12 +19,9 @@ use Eccube\DependencyInjection\Compiler\PluginPass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class PluginPassTest extends TestCase
+final class PluginPassTest extends TestCase
 {
-    /**
-     * @var ContainerBuilder
-     */
-    private $containerBuilder;
+    private ?ContainerBuilder $containerBuilder = null;
 
     protected function setUp(): void
     {
@@ -43,10 +42,10 @@ class PluginPassTest extends TestCase
         $this->containerBuilder->compile();
 
         $def = $this->containerBuilder->getDefinition(\Plugin\Sample\TestClass::class);
-        self::assertTrue($def->hasTag('test_tag'));
+        $this->assertTrue($def->hasTag('test_tag'));
 
         $def = $this->containerBuilder->getDefinition(\Plugin\SamplePayment\TestClass::class);
-        self::assertTrue($def->hasTag('test_tag'));
+        $this->assertTrue($def->hasTag('test_tag'));
     }
 
     public function testSampleDisabled()
@@ -57,9 +56,9 @@ class PluginPassTest extends TestCase
 
         $def = $this->containerBuilder->getDefinition(\Plugin\Sample\TestClass::class);
 
-        self::assertFalse($def->hasTag('test_tag'), 'Sampleはタグが外れる');
+        $this->assertFalse($def->hasTag('test_tag'), 'Sampleはタグが外れる');
         $def = $this->containerBuilder->getDefinition(\Plugin\SamplePayment\TestClass::class);
-        self::assertTrue($def->hasTag('test_tag'), 'SamplePaymentは残っているはず');
+        $this->assertTrue($def->hasTag('test_tag'), 'SamplePaymentは残っているはず');
     }
 }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,7 +20,7 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseException;
 use Eccube\Tests\EccubeTestCase;
 
-class CustomerPurchaseInfoProcessorTest extends EccubeTestCase
+final class CustomerPurchaseInfoProcessorTest extends EccubeTestCase
 {
     /**
      * @throws PurchaseException
@@ -33,9 +35,9 @@ class CustomerPurchaseInfoProcessorTest extends EccubeTestCase
         $processor = new CustomerPurchaseInfoProcessor();
         $processor->commit($Order, new PurchaseContext(null, $Customer));
 
-        self::assertNotNull($Customer->getFirstBuyDate());
-        self::assertGreaterThan($OriginCustomer->getLastBuyDate(), $Customer->getLastBuyDate());
-        self::assertGreaterThan($OriginCustomer->getBuyTimes(), $Customer->getBuyTimes());
-        self::assertGreaterThan($OriginCustomer->getBuyTotal(), $Customer->getBuyTotal());
+        $this->assertInstanceOf(\DateTime::class, $Customer->getFirstBuyDate());
+        $this->assertGreaterThan($OriginCustomer->getLastBuyDate(), $Customer->getLastBuyDate());
+        $this->assertGreaterThan($OriginCustomer->getBuyTimes(), $Customer->getBuyTimes());
+        $this->assertGreaterThan($OriginCustomer->getBuyTotal(), $Customer->getBuyTotal());
     }
 }

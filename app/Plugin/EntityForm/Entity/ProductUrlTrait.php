@@ -14,18 +14,17 @@
 namespace Plugin\EntityForm\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Eccube\Annotation\EntityExtension;
+use Eccube\Attribute\EntityExtension;
+use Eccube\Entity\Product;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @EntityExtension("Eccube\Entity\Product")
- */
+#[EntityExtension(Product::class)]
 trait ProductUrlTrait
 {
     /**
-     * @ORM\Column(type="string", nullable=true, options={ "eccube_form_options": { "auto_render": true, "form_theme": "EntityForm/Form/product_url.twig" } })
-     *
-     * @Assert\Url(message="外部の商品ページURLを入力してください。")
+     * @var string|null
      */
+    #[ORM\Column(name: 'url', type: 'string', length: 4000, nullable: true, options: ['eccube_form_options' => ['auto_render' => true, 'form_theme' => 'EntityForm/Form/product_url.twig']])]
+    #[Assert\Url(message: '外部の商品ページURLを入力してください。')]
     public $url;
 }

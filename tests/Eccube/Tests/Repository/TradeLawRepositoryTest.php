@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,12 +19,9 @@ use Eccube\Entity\TradeLaw;
 use Eccube\Repository\TradeLawRepository;
 use Eccube\Tests\EccubeTestCase;
 
-class TradeLawRepositoryTest extends EccubeTestCase
+final class TradeLawRepositoryTest extends EccubeTestCase
 {
-    /**
-     * @var TradeLawRepository
-     */
-    private $tradeLawRepository;
+    private ?TradeLawRepository $tradeLawRepository = null;
 
     protected function setUp(): void
     {
@@ -35,7 +34,7 @@ class TradeLawRepositoryTest extends EccubeTestCase
         $initialTradeLawRows = $this->tradeLawRepository->findBy([], ['sortNo' => 'ASC']);
 
         // Check initial row count equals 15.
-        $this->assertSame(15, count($initialTradeLawRows));
+        $this->assertCount(15, $initialTradeLawRows);
 
         $notFoundNames = [
             1 => '販売業者', 2 => '代表責任者', 3 => '所在地', 4 => '電話番号', 5 => 'メールアドレス', 6 => 'URL', 7 => '商品代金以外の必要料金',

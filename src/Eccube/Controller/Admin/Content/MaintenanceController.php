@@ -15,32 +15,28 @@ namespace Eccube\Controller\Admin\Content;
 
 use Eccube\Controller\AbstractController;
 use Eccube\Service\SystemService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class MaintenanceController extends AbstractController
 {
-    /**
-     * @var SystemService
-     */
-    protected $systemService;
-
-    public function __construct(SystemService $systemService)
+    public function __construct(protected SystemService $systemService)
     {
-        $this->systemService = $systemService;
     }
 
     /**
      * メンテナンス管理ページを表示
      *
-     * @Route("/%eccube_admin_route%/content/maintenance", name="admin_content_maintenance", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Content/maintenance.twig")
+     * @return RedirectResponse|array<string, mixed>
      */
-    public function index(Request $request)
+    #[Route(path: '/%eccube_admin_route%/content/maintenance', name: 'admin_content_maintenance', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Content/maintenance.twig')]
+    public function index(Request $request): RedirectResponse|array
     {
         $isMaintenance = $this->systemService->isMaintenanceMode();
 
@@ -79,9 +75,12 @@ class MaintenanceController extends AbstractController
      * キャッシュ管理やプラグインのインストール等の操作時にajax経由で解除する
      * 権限管理設定でアクセス不可になるのを避けるため、ルーティングは/admin/disable_maintenanceで設定しています
      *
-     * @Route("/%eccube_admin_route%/disable_maintenance/{mode}", requirements={"mode": "manual|auto_maintenance|auto_maintenance_update"}, name="admin_disable_maintenance", methods={"POST"})
+     * @param string $mode
+     *
+     * @throws BadRequestHttpException
      */
-    public function disableMaintenance(Request $request, $mode, SystemService $systemService)
+    #[Route(path: '/%eccube_admin_route%/disable_maintenance/{mode}', name: 'admin_disable_maintenance', requirements: ['mode' => 'manual|auto_maintenance|auto_maintenance_update'], methods: ['POST'])]
+    public function disableMaintenance(Request $request, $mode): JsonResponse
     {
         $this->isTokenValid();
 
@@ -99,7 +98,7 @@ class MaintenanceController extends AbstractController
                 'auto_maintenance' => SystemService::AUTO_MAINTENANCE,
                 'auto_maintenance_update' => SystemService::AUTO_MAINTENANCE_UPDATE,
             ];
-            $systemService->disableMaintenance($maintenanceMode[$mode]);
+            $this->systemService->disableMaintenance($maintenanceMode[$mode]);
         }
 
         return $this->json(['success' => true]);

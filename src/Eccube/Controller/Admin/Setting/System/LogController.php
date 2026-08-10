@@ -17,21 +17,20 @@ use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\LogType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class LogController extends AbstractController
 {
     /**
-     * @Route("/%eccube_admin_route%/setting/system/log", name="admin_setting_system_log", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Setting/System/log.twig")
-     *
-     * @return array|Symfony\Component\HttpFoundation\StreamedResponse
+     * @return array<string, mixed>|StreamedResponse
      */
-    public function index(Request $request)
+    #[Route(path: '/%eccube_admin_route%/setting/system/log', name: 'admin_setting_system_log', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Setting/System/log.twig')]
+    public function index(Request $request): array|StreamedResponse
     {
         $formData = [];
         // default
@@ -70,14 +69,19 @@ class LogController extends AbstractController
         }
         $logDir = $this->getParameter('kernel.logs_dir').DIRECTORY_SEPARATOR.$this->getParameter('kernel.environment');
         $logFile = $logDir.'/'.$formData['files'];
-
+        /** @var Form $form */
         if ($form->getClickedButton() && $form->getClickedButton()->getName() === 'download' && $form->isValid()) {
+            $fileSizeLogFile = filesize($logFile);
+            if ($fileSizeLogFile === false) {
+                throw new \Exception('ファイルサイズの取得に失敗しました。');
+            }
+
             $bufferSize = 1024 * 50;
             $response = new StreamedResponse();
-            $response->headers->set('Content-Length', filesize($logFile));
+            $response->headers->set('Content-Length', (string) $fileSizeLogFile);
             $response->headers->set('Content-Disposition', 'attachment; filename='.basename($logFile));
             $response->headers->set('Content-Type', 'application/octet-stream');
-            $response->setCallback(function () use ($logFile, $bufferSize) {
+            $response->setCallback(function () use ($logFile, $bufferSize): void {
                 if ($fh = fopen($logFile, 'r')) {
                     while (!feof($fh)) {
                         echo fread($fh, $bufferSize);
@@ -86,23 +90,22 @@ class LogController extends AbstractController
             });
 
             return $response;
-        } else {
-            return [
-                'form' => $form->createView(),
-                'log' => $this->parseLogFile($logFile, $formData),
-            ];
         }
+
+        return [
+            'form' => $form->createView(),
+            'log' => $this->parseLogFile($logFile, $formData),
+        ];
     }
 
     /**
      * parse log file
      *
-     * @param string $logFile
-     * @param $formData
+     * @param array<string, string> $formData
      *
-     * @return array
+     * @return array<int, mixed>
      */
-    private function parseLogFile($logFile, $formData)
+    private function parseLogFile(string $logFile, array $formData): array
     {
         $log = [];
 
@@ -145,14 +148,14 @@ class LogController extends AbstractController
 
             // 最小レベルフィルタを適用
             if ($minLevelThreshold !== null) {
-                $lineLevel = isset($levelHierarchy[$level]) ? $levelHierarchy[$level] : 0;
+                $lineLevel = $levelHierarchy[$level] ?? 0;
                 if ($lineLevel < $minLevelThreshold) {
                     continue;
                 }
             }
 
             // キーワードフィルタを適用
-            if ($keyword !== null && mb_strpos(mb_strtolower($line), $keyword) === false) {
+            if ($keyword !== null && mb_strpos(mb_strtolower((string) $line), $keyword) === false) {
                 continue;
             }
 
@@ -169,11 +172,9 @@ class LogController extends AbstractController
     /**
      * ログ行からログレベルを抽出
      *
-     * @param string $line
-     *
      * @return string ログレベル（DEBUG, INFO等）、見つからない場合は空文字列
      */
-    private function extractLogLevel($line)
+    private function extractLogLevel(string $line): string
     {
         // Monologフォーマットにマッチする正規表現
         // 例: [2025-01-10 14:23:45] admin.ERROR

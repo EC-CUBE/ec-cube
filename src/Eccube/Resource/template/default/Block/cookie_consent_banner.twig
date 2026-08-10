@@ -1,0 +1,43 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{#
+クッキー同意バナー。
+
+キャッシュ／CDN 安全性のため、HTML は常にレンダリングし、表示/非表示は JS が同意 Cookie を読んで制御する
+（cookie_consent.js）。初期状態は非表示とし、同意状態が未設定のときだけ JS が表示する。
+#}
+<div class="ec-cookieConsentBanner" id="cookie-consent-banner" style="display: none;">
+    <div class="ec-cookieConsentBanner__inner">
+        <button type="button" class="ec-cookieConsentBanner__close" id="cookie-consent-close" aria-label="{{ 'cookie_consent.banner.close'|trans }}">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+        <div class="ec-cookieConsentBanner__content">
+            <div>
+                <p class="ec-cookieConsentBanner__message">
+                    🍪 {{ 'cookie_consent.banner.message'|trans }}
+                </p>
+                <p class="ec-cookieConsentBanner__link">
+                    <a href="{{ url('help_cookie_policy') }}" target="_blank" rel="noopener">
+                        {{ 'cookie_consent.banner.detail_link'|trans }} →
+                    </a>
+                </p>
+            </div>
+        </div>
+        <div class="ec-cookieConsentBanner__actions">
+            <button type="button" class="ec-cookieConsentBanner__btnAccept" id="cookie-consent-accept" data-consent="accepted">
+                ✓ {{ 'cookie_consent.banner.accept'|trans }}
+            </button>
+            <button type="button" class="ec-cookieConsentBanner__btnReject" id="cookie-consent-reject" data-consent="rejected">
+                {{ 'cookie_consent.banner.reject'|trans }}
+            </button>
+        </div>
+    </div>
+</div>

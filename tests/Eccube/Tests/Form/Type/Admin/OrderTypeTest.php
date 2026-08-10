@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,14 +19,14 @@ use Eccube\Form\Type\Admin\OrderType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
-class OrderTypeTest extends AbstractTypeTestCase
+final class OrderTypeTest extends AbstractTypeTestCase
 {
-    /** @var FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = [
+    protected ?array $formData = [
         'name' => [
             'name01' => 'たかはし',
             'name02' => 'しんいち',
@@ -70,7 +72,6 @@ class OrderTypeTest extends AbstractTypeTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
         // CSRF tokenを無効にしてFormを作成
         // 会員管理会員登録・編集
         $this->form = $this->formFactory
@@ -78,7 +79,7 @@ class OrderTypeTest extends AbstractTypeTestCase
                 'csrf_protection' => false,
             ])
             ->getForm();
-        static::getContainer()->get('request_stack')->push(new Request());
+        static::getContainer()->get(RequestStack::class)->push(new Request());
     }
 
     public function testInValidData()
@@ -179,6 +180,21 @@ class OrderTypeTest extends AbstractTypeTestCase
         $this->formData['postal_code'] = '012345678';
         $this->form->submit($this->formData);
         $this->assertFalse($this->form['postal_code']->isValid());
+    }
+
+    public function testInvalidShippingPostalCodeBlank(): void
+    {
+        $this->formData['Shipping']['postal_code'] = '';
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form['Shipping']['postal_code']->isValid());
+    }
+
+    public function testShippingPostalCodeIsNotRequired(): void
+    {
+        // 管理画面の受注登録は required=false + NotBlank でサーバ側バリデーションに統一している.
+        // 出荷先の郵便番号だけ HTML の required 属性が出力されないことを確認する (#6054)
+        $view = $this->form->createView();
+        $this->assertFalse($view['Shipping']['postal_code']->vars['required']);
     }
 
     public function testInValidUsePointHasMinus()

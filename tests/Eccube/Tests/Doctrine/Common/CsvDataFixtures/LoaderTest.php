@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -19,17 +21,11 @@ use Eccube\Tests\EccubeTestCase;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 
-class LoaderTest extends EccubeTestCase
+final class LoaderTest extends EccubeTestCase
 {
-    /**
-     * @var string
-     */
-    protected $dir;
+    protected ?string $dir = null;
 
-    /**
-     * @var Loader
-     */
-    protected $loader;
+    protected ?Loader $loader = null;
 
     /**
      * {@inheritdoc}

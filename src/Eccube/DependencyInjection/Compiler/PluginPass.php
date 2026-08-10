@@ -28,10 +28,9 @@ class PluginPass implements CompilerPassInterface
      * プラグインが作成しているEventListener等の拡張機構が呼び出されないようにする.
      *
      * サービスタグが収集されるタイミング(一般的にPassConfig::TYPE_BEFORE_OPTIMIZATIONの0)より先に実行される必要があります.
-     *
-     * @param ContainerBuilder $container
      */
-    public function process(ContainerBuilder $container)
+    #[\Override]
+    public function process(ContainerBuilder $container): void
     {
         // 無効状態のプラグインコード一覧を取得.
         // 無効なプラグインの一覧はEccubeExtensionで定義している.
@@ -53,7 +52,7 @@ class PluginPass implements CompilerPassInterface
             foreach ($plugins as $plugin) {
                 $namespace = 'Plugin\\'.$plugin.'\\';
 
-                if (false !== \strpos($class, $namespace)) {
+                if (str_contains($class, $namespace)) {
                     foreach ($definition->getTags() as $tag => $attr) {
                         // PluginManagerからレポジトリを取得する場合があるため,
                         // doctrine.repository_serviceタグはスキップする.

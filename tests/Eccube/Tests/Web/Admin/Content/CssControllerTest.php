@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,20 +17,15 @@ namespace Eccube\Tests\Web\Admin\Content;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\Request;
 
-class CssControllerTest extends AbstractAdminWebTestCase
+final class CssControllerTest extends AbstractAdminWebTestCase
 {
     public const CSS_FILE = 'customize.css';
 
-    /**
-     * @var string
-     */
-    private $dir;
+    private ?string $dir = null;
 
-    /**
-     * @var string
-     */
-    private $contents;
+    private ?string $contents = null;
 
     protected function setUp(): void
     {
@@ -49,7 +46,7 @@ class CssControllerTest extends AbstractAdminWebTestCase
 
     public function testRoutingAdminContentCssIndex()
     {
-        $this->client->request('GET', $this->generateUrl('admin_content_css'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_content_css'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -61,7 +58,7 @@ class CssControllerTest extends AbstractAdminWebTestCase
 }
 __CSS_CONTENTS__;
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_content_css'),
             ['form' => [
                 'css' => $css,
@@ -89,7 +86,7 @@ __CSS_CONTENTS__;
 }
 __CSS_CONTENTS__;
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_content_css'),
             ['form' => [
                 'css' => $css,
@@ -114,7 +111,7 @@ __CSS_CONTENTS__;
 }
 __CSS_CONTENTS__;
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_content_css'),
             ['form' => [
                 'css' => $css,

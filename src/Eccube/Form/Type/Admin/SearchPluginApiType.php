@@ -25,8 +25,11 @@ class SearchPluginApiType extends AbstractType
 {
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $category = $options['category'];
         // Todo: constant for the API key
@@ -70,16 +73,15 @@ class SearchPluginApiType extends AbstractType
             'required' => false,
             'placeholder' => null,
             'class' => PageMax::class,
-            'choice_label' => function (PageMax $pageMax) {
-                return trans('admin.common.count', ['%count%' => $pageMax->getName()]);
-            },
+            'choice_label' => fn (PageMax $pageMax) => trans('admin.common.count', ['%count%' => $pageMax->getName()]),
         ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'category' => [],
@@ -89,7 +91,8 @@ class SearchPluginApiType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    #[\Override]
+    public function getBlockPrefix(): string
     {
         return 'search_plugin';
     }

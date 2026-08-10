@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -13,7 +15,8 @@
 
 namespace Eccube\Tests\Service;
 
-use Eccube\Annotation\EntityExtension;
+use Eccube\Attribute\EntityExtension;
+use Eccube\Entity\Product;
 use Eccube\Service\EntityProxyService;
 use Eccube\Tests\EccubeTestCase;
 use PhpCsFixer\Tokenizer\CT;
@@ -22,17 +25,11 @@ use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
-class EntityProxyServiceTest extends EccubeTestCase
+final class EntityProxyServiceTest extends EccubeTestCase
 {
-    /**
-     * @var string
-     */
-    private $tempOutputDir;
+    private ?string $tempOutputDir = null;
 
-    /**
-     * @var EntityProxyService
-     */
-    protected $entityProxyService;
+    protected ?EntityProxyService $entityProxyService = null;
 
     /**
      * {@inheritdoc}
@@ -40,9 +37,7 @@ class EntityProxyServiceTest extends EccubeTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->entityProxyService = static::getContainer()->get(EntityProxyService::class);
-
         $this->tempOutputDir = tempnam(sys_get_temp_dir(), 'ProxyGeneratorTest');
         unlink($this->tempOutputDir);
         mkdir($this->tempOutputDir);
@@ -58,7 +53,6 @@ class EntityProxyServiceTest extends EccubeTestCase
             ->files();
         $f = new Filesystem();
         $f->remove($files);
-
         parent::tearDown();
     }
 
@@ -67,7 +61,7 @@ class EntityProxyServiceTest extends EccubeTestCase
         $this->entityProxyService->generate([__DIR__], [], $this->tempOutputDir);
 
         $generatedFile = $this->tempOutputDir.'/src/Eccube/Entity/Product.php';
-        self::assertTrue(file_exists($generatedFile));
+        $this->assertFileExists($generatedFile);
 
         // Traitのuse句があるかどうか
         $tokens = Tokens::fromCode(file_get_contents($generatedFile));
@@ -82,28 +76,24 @@ class EntityProxyServiceTest extends EccubeTestCase
             [T_NS_SEPARATOR],
             [T_STRING, 'EntityProxyServiceTest_ProductTrait'],
         ]);
-        self::assertNotNull($sequence);
+        $this->assertNotNull($sequence);
     }
 
     public function testGenerateFromOriginalFile()
     {
-        $this->markTestIncomplete();
-
-        $findSequence = static function (Tokens $tokens) {
-            return $tokens->findSequence([
-                [T_PRIVATE, 'private'],
-                [T_VARIABLE, '$hoge'],
-            ]);
-        };
+        $findSequence = (static fn (Tokens $tokens) => $tokens->findSequence([
+            [T_PRIVATE, 'private'],
+            [T_VARIABLE, '$hoge'],
+        ]));
 
         $this->entityProxyService->generate([__DIR__], [], $this->tempOutputDir);
 
         $generatedFile = $this->tempOutputDir.'/src/Eccube/Entity/Product.php';
-        self::assertTrue(file_exists($generatedFile));
+        $this->assertFileExists($generatedFile);
 
         $tokens = Tokens::fromCode(file_get_contents($generatedFile));
         // private $hoge;がないことを確認
-        self::assertNull($findSequence($tokens));
+        $this->assertNull($findSequence($tokens));
 
         // private $hoge;を挿入
         $additionalVariableTokens = [
@@ -122,7 +112,7 @@ class EntityProxyServiceTest extends EccubeTestCase
         $newTokens = Tokens::fromCode($newCode);
 
         // private $hoge;が存在することを確認
-        self::assertNotNull($findSequence($newTokens));
+        $this->assertNotNull($findSequence($newTokens));
 
         // 再生成する
         file_put_contents($generatedFile, $newCode);
@@ -130,7 +120,7 @@ class EntityProxyServiceTest extends EccubeTestCase
         $regeneratedTokens = Tokens::fromCode(file_get_contents($generatedFile));
 
         // private $hoge;が存在しないことを確認
-        self::assertNull($findSequence($regeneratedTokens));
+        $this->assertNull($findSequence($regeneratedTokens));
     }
 
     public function testGenerateExcluded()
@@ -138,7 +128,7 @@ class EntityProxyServiceTest extends EccubeTestCase
         $this->entityProxyService->generate([__DIR__], [], $this->tempOutputDir);
 
         $generatedFile = $this->tempOutputDir.'/src/Eccube/Entity/Product.php';
-        self::assertTrue(file_exists($generatedFile));
+        $this->assertFileExists($generatedFile);
 
         $tokens = Tokens::fromCode(file_get_contents($generatedFile));
         $traitTokens = [
@@ -153,12 +143,12 @@ class EntityProxyServiceTest extends EccubeTestCase
             [T_STRING, 'EntityProxyServiceTest_ProductTrait'],
         ];
 
-        self::assertNotNull($tokens->findSequence($traitTokens), 'Traitはあるはず');
+        $this->assertNotNull($tokens->findSequence($traitTokens), 'Traitはあるはず');
 
         // 除外して生成
         $this->entityProxyService->generate([], [__DIR__], $this->tempOutputDir);
         $tokens = Tokens::fromCode(file_get_contents($generatedFile));
-        self::assertNull($tokens->findSequence($traitTokens), 'Traitが外されているはず');
+        $this->assertNull($tokens->findSequence($traitTokens), 'Traitが外されているはず');
     }
 
     public function testAddTrait()
@@ -171,7 +161,6 @@ class EntityProxyServiceTest_Entity extends \\Eccube\\Entity\\AbstractEntity
 EOT
         );
         $method = new \ReflectionMethod(EntityProxyService::class, 'addTrait');
-        $method->setAccessible(true);
         $method->invoke($this->entityProxyService, $entityTokens, '\\Eccube\\Tests\\Service\\EntityProxyServiceTest_Trait');
 
         $traitTokens = [
@@ -186,7 +175,7 @@ EOT
             [T_STRING, 'EntityProxyServiceTest_Trait'],
         ];
 
-        self::assertNotNull($entityTokens->findSequence($traitTokens), 'Traitはあるはず');
+        $this->assertNotNull($entityTokens->findSequence($traitTokens), 'Traitはあるはず');
     }
 
     public function testAddMoreTrait()
@@ -200,7 +189,6 @@ class EntityProxyServiceTest_Entity extends \\Eccube\\Entity\\AbstractEntity
 EOT
         );
         $method = new \ReflectionMethod(EntityProxyService::class, 'addTrait');
-        $method->setAccessible(true);
         $method->invoke($this->entityProxyService, $entityTokens, '\\Eccube\\Tests\\Service\\EntityProxyServiceTest_ExTrait');
 
         $traitTokens = [
@@ -224,7 +212,7 @@ EOT
             [T_STRING, 'EntityProxyServiceTest_ExTrait'],
         ];
 
-        self::assertNotNull($entityTokens->findSequence($traitTokens), 'Traitはあるはず');
+        $this->assertNotNull($entityTokens->findSequence($traitTokens), 'Traitはあるはず');
     }
 
     public function testRemoveTrait()
@@ -238,7 +226,6 @@ class EntityProxyServiceTest_Entity extends \\Eccube\\Entity\\AbstractEntity
 EOT
         );
         $method = new \ReflectionMethod(EntityProxyService::class, 'removeTrait');
-        $method->setAccessible(true);
         $method->invoke($this->entityProxyService, $entityTokens, '\\Eccube\\Tests\\Service\\EntityProxyServiceTest_ExTrait');
 
         $traitTokens = [
@@ -254,7 +241,7 @@ EOT
             ';',
         ];
 
-        self::assertNotNull($entityTokens->findSequence($traitTokens), 'Traitが削除されているはず');
+        $this->assertNotNull($entityTokens->findSequence($traitTokens), 'Traitが削除されているはず');
     }
 
     public function testRemoveLastTrait()
@@ -268,10 +255,9 @@ class EntityProxyServiceTest_Entity extends \\Eccube\\Entity\\AbstractEntity
 EOT
         );
         $method = new \ReflectionMethod(EntityProxyService::class, 'removeTrait');
-        $method->setAccessible(true);
         $method->invoke($this->entityProxyService, $entityTokens, '\\Eccube\\Tests\\Service\\EntityProxyServiceTest_Trait');
 
-        self::assertNull($entityTokens->getNextTokenOfKind(0, [CT::T_USE_TRAIT]), 'Traitのuse句が削除されているはず');
+        $this->assertNull($entityTokens->getNextTokenOfKind(0, [CT::T_USE_TRAIT]), 'Traitのuse句が削除されているはず');
     }
 
     public function testRemoveTraitWhenImportedTrait()
@@ -288,7 +274,6 @@ class EntityProxyServiceTest_Entity extends \\Eccube\\Entity\\AbstractEntity
 EOT
         );
         $method = new \ReflectionMethod(EntityProxyService::class, 'removeTrait');
-        $method->setAccessible(true);
         $method->invoke($this->entityProxyService, $entityTokens, '\\Eccube\\Tests\\Service\\EntityProxyServiceTest_Trait');
 
         $traitTokens = [
@@ -297,13 +282,11 @@ EOT
             ';',
         ];
 
-        self::assertNotNull($entityTokens->findSequence($traitTokens), 'PointTraitが残るはず');
+        $this->assertNotNull($entityTokens->findSequence($traitTokens), 'PointTraitが残るはず');
     }
 }
 
-/**
- * @EntityExtension("Eccube\Entity\Product")
- */
+#[EntityExtension(Product::class)]
 trait EntityProxyServiceTest_ProductTrait
 {
     public $testProperty;

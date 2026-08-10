@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -13,24 +15,25 @@
 
 namespace Eccube\Tests\Form\Type\Admin;
 
+use Eccube\Entity\Master\Authority;
+use Eccube\Entity\Master\Work;
 use Eccube\Entity\Member;
 use Eccube\Form\Type\Admin\MemberType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use Symfony\Component\Form\FormInterface;
 
-class MemberTypeTest extends AbstractTypeTestCase
+final class MemberTypeTest extends AbstractTypeTestCase
 {
-    /** @var FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = [
+    protected ?array $formData = [
         'name' => 'タカハシ',
         'department' => 'EC-CUBE事業部',
         'login_id' => 'takahashi',
         'plain_password' => [
-            'first' => 'password1234',
-            'second' => 'password1234',
+            'first' => 'password1234abc',
+            'second' => 'password1234abc',
         ],
         'Authority' => 1,
         'Work' => 1,
@@ -39,7 +42,6 @@ class MemberTypeTest extends AbstractTypeTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
             ->createBuilder(MemberType::class, new Member(), [
@@ -146,6 +148,19 @@ class MemberTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
+    /**
+     * MemberType は RepeatedPasswordType の制約を上書きするため,
+     * ブロックリスト制約が引き継がれていることを検証する(退行防止).
+     */
+    public function testInvalidPasswordBlocklisted(): void
+    {
+        $this->formData['plain_password']['first'] = 'passwordpassword';
+        $this->formData['plain_password']['second'] = 'passwordpassword';
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
     public function testInvalidAuthorityNotBlank()
     {
         $this->formData['Authority'] = null;
@@ -156,8 +171,9 @@ class MemberTypeTest extends AbstractTypeTestCase
 
     public function testInvalidAuthorityInvalid()
     {
-        $Authority = $this->entityManager->getRepository(\Eccube\Entity\Master\Authority::class)
+        $Authority = $this->entityManager->getRepository(Authority::class)
             ->findOneBy([], ['id' => 'DESC']);
+        $this->assertInstanceOf(Authority::class, $Authority);
         $id = $Authority->getId() + 1;
 
         $this->formData['Authority'] = $id;
@@ -176,8 +192,9 @@ class MemberTypeTest extends AbstractTypeTestCase
 
     public function testInvalidWorkInvalid()
     {
-        $Work = $this->entityManager->getRepository(\Eccube\Entity\Master\Work::class)
+        $Work = $this->entityManager->getRepository(Work::class)
             ->findOneBy([], ['id' => 'DESC']);
+        $this->assertInstanceOf(Work::class, $Work);
         $id = $Work->getId() + 1;
 
         $this->formData['Work'] = $id;

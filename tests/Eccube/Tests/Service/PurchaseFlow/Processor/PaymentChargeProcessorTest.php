@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -20,7 +22,7 @@ use Eccube\Service\PurchaseFlow\Processor\PaymentChargePreprocessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
-class PaymentChargePreprocessorTest extends EccubeTestCase
+final class PaymentChargeProcessorTest extends EccubeTestCase
 {
     public function testProcess()
     {
@@ -35,7 +37,7 @@ class PaymentChargePreprocessorTest extends EccubeTestCase
             }
         }
         $processor->process($Order, new PurchaseContext());
-        self::assertNotEmpty($this->getChargesItems($Order));
+        $this->assertNotEmpty($this->getChargesItems($Order));
     }
 
     /**
@@ -64,14 +66,12 @@ class PaymentChargePreprocessorTest extends EccubeTestCase
         $processor->process($Order, new PurchaseContext());
 
         $ChargeItems = $this->getChargesItems($Order);
-        self::assertCount(1, $ChargeItems);
-        self::assertSame($ChargeItem, array_shift($ChargeItems));
+        $this->assertCount(1, $ChargeItems);
+        $this->assertSame($ChargeItem, array_shift($ChargeItems));
     }
 
     private function getChargesItems(Order $Order)
     {
-        return array_filter($Order->getOrderItems()->toArray(), function ($OrderItem) {
-            return $OrderItem->isCharge();
-        });
+        return array_filter($Order->getOrderItems()->toArray(), fn ($OrderItem) => $OrderItem->isCharge());
     }
 }

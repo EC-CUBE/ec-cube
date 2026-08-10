@@ -16,40 +16,21 @@ namespace Eccube\Controller\Block;
 use Eccube\Controller\AbstractController;
 use Eccube\Repository\Master\ProductListOrderByRepository;
 use Eccube\Repository\ProductRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\Routing\Attribute\Route;
 
 class AutoNewItemController extends AbstractController
 {
-    /**
-     * @var ProductRepository
-     */
-    private $productRepository;
-
-    /**
-     * @var ProductListOrderByRepository
-     */
-    private $productListOrderByRepository;
-
-    public function __construct(
-        ProductRepository $productRepository,
-        ProductListOrderByRepository $productListOrderByRepository,
-    ) {
-        $this->productRepository = $productRepository;
-        $this->productListOrderByRepository = $productListOrderByRepository;
+    public function __construct(private readonly ProductRepository $productRepository, private readonly ProductListOrderByRepository $productListOrderByRepository)
+    {
     }
 
     /**
-     * @Route("/block/auto_new_item", name="block_auto_new_item", methods={"GET"})
-     *
-     * @Template("Block/auto_new_item.twig")
-     *
-     * @param Request $request
-     *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function index(Request $request)
+    #[Route(path: '/block/auto_new_item', name: 'block_auto_new_item', methods: ['GET'])]
+    #[Template(template: 'Block/auto_new_item.twig')]
+    public function index(): array
     {
         $qb = $this->productRepository->getQueryBuilderBySearchData([
             'orderby' => $this->productListOrderByRepository->find($this->eccubeConfig['eccube_product_order_newer']),

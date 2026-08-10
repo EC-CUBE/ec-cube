@@ -20,57 +20,45 @@ use Twig\TwigFunction;
 
 class CartServiceExtension extends AbstractExtension
 {
-    /**
-     * @var CartService
-     */
-    protected $cartService;
-
-    public function __construct(CartService $cartService)
+    public function __construct(protected CartService $cartService)
     {
-        $this->cartService = $cartService;
     }
 
-    public function getFunctions()
+    #[\Override]
+    public function getFunctions(): array
     {
         return [
-            new TwigFunction('get_cart', [$this, 'get_cart'], ['is_safe' => ['all']]),
-            new TwigFunction('get_all_carts', [$this, 'get_all_carts'], ['is_safe' => ['all']]),
-            new TwigFunction('get_carts_total_price', [$this, 'get_carts_total_price'], ['is_safe' => ['all']]),
-            new TwigFunction('get_carts_total_quantity', [$this, 'get_carts_total_quantity'], ['is_safe' => ['all']]),
+            new TwigFunction('get_cart', $this->get_cart(...), ['is_safe' => ['all']]),
+            new TwigFunction('get_all_carts', $this->get_all_carts(...), ['is_safe' => ['all']]),
+            new TwigFunction('get_carts_total_price', $this->get_carts_total_price(...), ['is_safe' => ['all']]),
+            new TwigFunction('get_carts_total_quantity', $this->get_carts_total_quantity(...), ['is_safe' => ['all']]),
         ];
     }
 
-    public function get_cart()
+    public function get_cart(): ?Cart
     {
         return $this->cartService->getCart();
     }
 
-    public function get_all_carts()
+    /**
+     * @return Cart[]
+     */
+    public function get_all_carts(): array
     {
         return $this->cartService->getCarts();
     }
 
-    public function get_carts_total_price()
+    public function get_carts_total_price(): string
     {
         $Carts = $this->cartService->getCarts();
-        $totalPrice = array_reduce($Carts, function ($total, Cart $Cart) {
-            $total += $Cart->getTotalPrice();
 
-            return $total;
-        }, 0);
-
-        return $totalPrice;
+        return array_reduce($Carts, fn (string $total, Cart $Cart) => bcadd($total, $Cart->getTotalPrice()), '0');
     }
 
-    public function get_carts_total_quantity()
+    public function get_carts_total_quantity(): string
     {
         $Carts = $this->cartService->getCarts();
-        $totalQuantity = array_reduce($Carts, function ($total, Cart $Cart) {
-            $total += $Cart->getTotalQuantity();
 
-            return $total;
-        }, 0);
-
-        return $totalQuantity;
+        return array_reduce($Carts, fn ($total, Cart $Cart) => bcadd($total, $Cart->getTotalQuantity()), '0');
     }
 }

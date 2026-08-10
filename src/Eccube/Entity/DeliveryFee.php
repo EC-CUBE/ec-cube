@@ -13,146 +13,99 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Entity\Master\Pref;
+use Eccube\Repository\DeliveryFeeRepository;
 
-if (!class_exists(DeliveryFee::class)) {
+/**
+ * DeliveryFee
+ */
+#[ORM\Table(name: 'dtb_delivery_fee')]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: DeliveryFeeRepository::class)]
+class DeliveryFee extends AbstractEntity
+{
+    #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    private ?int $id = null;
+
+    #[ORM\Column(name: 'fee', type: Types::DECIMAL, precision: 12, scale: 2, options: ['unsigned' => true])]
+    private ?string $fee = null;
+
+    #[ORM\ManyToOne(targetEntity: Delivery::class, inversedBy: 'DeliveryFees')]
+    #[ORM\JoinColumn(name: 'delivery_id', referencedColumnName: 'id', nullable: false)]
+    // @phpstan-ignore doctrine.associationType (Formでの初期化時にnullが必要なためnullableとしている)
+    private ?Delivery $Delivery = null;
+
+    #[ORM\ManyToOne(targetEntity: Pref::class)]
+    #[ORM\JoinColumn(name: 'pref_id', referencedColumnName: 'id')]
+    private ?Pref $Pref = null;
+
     /**
-     * DeliveryFee
+     * Get id.
      *
-     * @ORM\Table(name="dtb_delivery_fee")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\DeliveryFeeRepository")
+     * @return int
      */
-    class DeliveryFee extends AbstractEntity
+    public function getId(): ?int
     {
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
-         */
-        private $id;
+        return $this->id;
+    }
 
-        /**
-         * @var string
-         *
-         * @ORM\Column(name="fee", type="decimal", precision=12, scale=2, options={"unsigned":true})
-         */
-        private $fee;
+    /**
+     * Set fee.
+     */
+    public function setFee(string $fee): DeliveryFee
+    {
+        $this->fee = $fee;
 
-        /**
-         * @var Delivery
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Delivery", inversedBy="DeliveryFees")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="delivery_id", referencedColumnName="id")
-         * })
-         */
-        private $Delivery;
+        return $this;
+    }
 
-        /**
-         * @var Master\Pref
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Pref")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="pref_id", referencedColumnName="id")
-         * })
-         */
-        private $Pref;
+    /**
+     * Get fee.
+     */
+    public function getFee(): ?string
+    {
+        return $this->fee;
+    }
 
-        /**
-         * Get id.
-         *
-         * @return int
-         */
-        public function getId()
-        {
-            return $this->id;
-        }
+    /**
+     * Set delivery.
+     */
+    public function setDelivery(?Delivery $delivery = null): DeliveryFee
+    {
+        $this->Delivery = $delivery;
 
-        /**
-         * Set fee.
-         *
-         * @param string $fee
-         *
-         * @return DeliveryFee
-         */
-        public function setFee($fee)
-        {
-            $this->fee = $fee;
+        return $this;
+    }
 
-            return $this;
-        }
+    /**
+     * Get delivery.
+     */
+    public function getDelivery(): ?Delivery
+    {
+        return $this->Delivery;
+    }
 
-        /**
-         * Get fee.
-         *
-         * @return string
-         */
-        public function getFee()
-        {
-            return $this->fee;
-        }
+    /**
+     * Set pref.
+     */
+    public function setPref(?Pref $pref = null): DeliveryFee
+    {
+        $this->Pref = $pref;
 
-        /**
-         * Set delivery.
-         *
-         * @param Delivery|null $delivery
-         *
-         * @return DeliveryFee
-         */
-        public function setDelivery(?Delivery $delivery = null)
-        {
-            $this->Delivery = $delivery;
+        return $this;
+    }
 
-            return $this;
-        }
-
-        /**
-         * Get delivery.
-         *
-         * @return Delivery|null
-         */
-        public function getDelivery()
-        {
-            return $this->Delivery;
-        }
-
-        /**
-         * Set pref.
-         *
-         * @param Master\Pref|null $pref
-         *
-         * @return DeliveryFee
-         */
-        public function setPref(?Master\Pref $pref = null)
-        {
-            $this->Pref = $pref;
-
-            return $this;
-        }
-
-        /**
-         * Get pref.
-         *
-         * @return Master\Pref|null
-         */
-        public function getPref()
-        {
-            return $this->Pref;
-        }
+    /**
+     * Get pref.
+     */
+    public function getPref(): ?Pref
+    {
+        return $this->Pref;
     }
 }

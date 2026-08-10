@@ -15,20 +15,14 @@ namespace Page\Admin;
 
 class SystemMemberEditPage extends AbstractAdminPageStyleGuide
 {
-    /**
-     * @param \AcceptanceTester $I
-     */
-    public static function go_new($I)
+    public static function go_new(\AcceptanceTester $I)
     {
         $page = new self($I);
 
         return $page->goPage('/setting/system/member/new', 'メンバー登録システム設定');
     }
 
-    /**
-     * @param \AcceptanceTester $I
-     */
-    public static function at($I)
+    public static function at(\AcceptanceTester $I)
     {
         $page = new self($I);
         $page->atPage('メンバー登録システム設定');

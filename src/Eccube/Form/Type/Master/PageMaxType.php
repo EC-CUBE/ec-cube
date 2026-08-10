@@ -13,7 +13,6 @@
 
 namespace Eccube\Form\Type\Master;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\Master\PageMax;
 use Eccube\Form\Type\MasterType;
 use Symfony\Component\Form\AbstractType;
@@ -24,27 +23,22 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PageMaxType extends AbstractType
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
-
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
             $options = $event->getForm()->getConfig()->getOptions();
             if (!$event->getData()) {
                 $data = current($options['choice_loader']->loadChoiceList()->getChoices());
                 $event->setData($data);
             }
         });
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event): void {
             $options = $event->getForm()->getConfig()->getOptions();
             $values = $options['choice_loader']->loadChoiceList()->getValues();
             if (!in_array($event->getData(), $values)) {
@@ -57,7 +51,8 @@ class PageMaxType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'class' => PageMax::class,
@@ -67,7 +62,8 @@ class PageMaxType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    #[\Override]
+    public function getBlockPrefix(): string
     {
         return 'page_max';
     }
@@ -75,7 +71,8 @@ class PageMaxType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    #[\Override]
+    public function getParent(): ?string
     {
         return MasterType::class;
     }

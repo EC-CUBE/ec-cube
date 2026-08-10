@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,24 +19,25 @@ use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Entity\MailHistory;
 use Eccube\Entity\MailTemplate;
+use Eccube\Entity\Member;
 use Eccube\Entity\Order;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mime\Email;
 
-class MailControllerTest extends AbstractAdminWebTestCase
+final class MailControllerTest extends AbstractAdminWebTestCase
 {
     use MailerAssertionsTrait;
 
-    /**
-     * @var Customer
-     */
-    protected $Customer;
+    protected ?Customer $Customer = null;
 
-    /**
-     * @var Order
-     */
-    protected $Order;
+    protected ?Order $Order = null;
+
+    protected ?Member $Member = null;
+
+    /** @var array<int, MailHistory>|null */
+    protected ?array $MailHistories = null;
 
     protected function setUp(): void
     {
@@ -43,14 +46,14 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $this->Member = $this->createMember();
         $this->Customer = $this->createCustomer();
         $this->Order = $this->createOrder($this->Customer);
-
         $MailTemplate = new MailTemplate();
         $MailTemplate
-            ->setName($faker->word)
-            ->setMailSubject($faker->word)
+            ->setName($faker->word())
+            ->setMailSubject($faker->word())
             ->setCreator($this->Member);
         $this->entityManager->persist($MailTemplate);
         $this->entityManager->flush();
+        $this->MailHistories = [];
         for ($i = 0; $i < 3; $i++) {
             $this->MailHistories[$i] = new MailHistory();
             $this->MailHistories[$i]
@@ -71,7 +74,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
 
         return [
             'template' => 1,
-            'mail_subject' => $faker->word,
+            'mail_subject' => $faker->word(),
             'tpl_data' => $faker->realText(),
             '_token' => 'dummy',
         ];
@@ -80,7 +83,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
     public function testIndex()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_order_mail', ['id' => $this->Order->getId()])
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -90,7 +93,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
     {
         $form = $this->createFormData();
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_mail', ['id' => $this->Order->getId()]),
             [
                 'mail' => $form,
@@ -104,7 +107,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
     {
         $form = $this->createFormData();
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_mail', ['id' => $this->Order->getId()]),
             [
                 'admin_order_mail' => $form,
@@ -118,6 +121,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
         $Message = $this->getMailerMessage(0);
 
         $BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
+        $this->assertInstanceOf(BaseInfo::class, $BaseInfo);
         $this->expected = '['.$BaseInfo->getShopName().'] '.$form['mail_subject'];
         $this->actual = $Message->getSubject();
         $this->verify();
@@ -125,16 +129,14 @@ class MailControllerTest extends AbstractAdminWebTestCase
 
     /**
      * メールテンプレートを選択する
-     *
-     * @return void
      */
-    public function testSelectMailTemplate()
+    public function testSelectMailTemplate(): void
     {
         $form = $this->createFormData();
         // 注文完了メール
         $form['template'] = 1;
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_mail', ['id' => $this->Order->getId()]),
             [
                 'admin_order_mail' => $form,
@@ -151,7 +153,7 @@ class MailControllerTest extends AbstractAdminWebTestCase
         // 会員仮登録完了メール
         $form['template'] = 2;
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_mail', ['id' => $this->Order->getId()]),
             [
                 'admin_order_mail' => $form,

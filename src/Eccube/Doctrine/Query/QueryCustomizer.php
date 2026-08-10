@@ -23,18 +23,12 @@ interface QueryCustomizer
     /**
      * クエリをカスタマイズします。
      *
-     * @param QueryBuilder $builder
-     * @param array $params
-     * @param string $queryKey
-     *
-     * @return void
+     * @param array<mixed> $params
      */
-    public function customize(QueryBuilder $builder, $params, $queryKey);
+    public function customize(QueryBuilder $builder, array $params, string $queryKey): void;
 
     /**
      * カスタマイズ対象のキーを返します。
-     *
-     * @return string
      */
-    public function getQueryKey();
+    public function getQueryKey(): string;
 }

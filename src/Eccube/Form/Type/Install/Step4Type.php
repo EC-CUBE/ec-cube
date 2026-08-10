@@ -13,6 +13,8 @@
 
 namespace Eccube\Form\Type\Install;
 
+use Doctrine\DBAL\Configuration;
+use Doctrine\DBAL\DriverManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -22,30 +24,26 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Context\ExecutionContext;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class Step4Type extends AbstractType
 {
     /**
-     * @var RequestStack
-     */
-    protected $requestStack;
-
-    /**
      * Step4Type constructor.
-     *
-     * @param RequestStack $requestStack
      */
-    public function __construct(
-        RequestStack $requestStack,
-    ) {
-        $this->requestStack = $requestStack;
+    public function __construct(protected RequestStack $requestStack)
+    {
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
+     *
+     * @throws \Exception
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $database = [];
         if (extension_loaded('pdo_pgsql')) {
@@ -79,13 +77,13 @@ class Step4Type extends AbstractType
             ->add('database_name', TextType::class, [
                 'label' => trans('install.database_name'),
                 'constraints' => [
-                    new Assert\Callback([$this, 'validate']),
+                    new Assert\Callback($this->validate(...)),
                 ],
             ])
             ->add('database_user', TextType::class, [
                 'label' => trans('install.database_user'),
                 'constraints' => [
-                    new Assert\Callback([$this, 'validate']),
+                    new Assert\Callback($this->validate(...)),
                 ],
             ])
             ->add('database_password', PasswordType::class, [
@@ -93,7 +91,7 @@ class Step4Type extends AbstractType
                 'required' => false,
                 'purify_html' => false,
             ])
-            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function ($event): void {
                 $form = $event->getForm();
                 $data = $form->getData();
 
@@ -102,7 +100,7 @@ class Step4Type extends AbstractType
                     return;
                 }
                 try {
-                    $config = new \Doctrine\DBAL\Configuration();
+                    $config = new Configuration();
                     $connectionParams = [
                         'dbname' => $data['database_name'],
                         'user' => $data['database_user'],
@@ -111,12 +109,10 @@ class Step4Type extends AbstractType
                         'driver' => $data['database'],
                         'port' => $data['database_port'],
                     ];
-                    $conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
-                    $conn->connect();
-
                     // todo MySQL, PostgreSQLのバージョンチェックも欲しい.DBALで接続すればエラーになる？
-                    $conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
-                    $conn->connect();
+                    $conn = DriverManager::getConnection($connectionParams, $config);
+                    // DBAL 4 では connect() が protected のため, 実クエリ発行で接続検証する.
+                    $conn->executeQuery('SELECT 1');
                 } catch (\Exception $e) {
                     $form['database']->addError(new FormError(trans('install.database_connection_error').$e->getMessage()));
                 }
@@ -126,16 +122,21 @@ class Step4Type extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    #[\Override]
+    public function getBlockPrefix(): string
     {
         return 'install_step4';
     }
 
-    public function validate($data, ExecutionContext $context, $param = null)
+    /**
+     * Assert\Callback から各フィールドの値が渡されるため, $data はスカラー値となる.
+     */
+    public function validate(mixed $data, ExecutionContextInterface $context, mixed $param = null): void
     {
-        $parameters = $this->requestStack->getCurrentRequest()->get('install_step4');
-        if ($parameters['database'] != 'pdo_sqlite') {
-            $context->getValidator()->validate($data, [
+        $parameters = $this->requestStack->getCurrentRequest()?->get('install_step4');
+        if (($parameters['database'] ?? null) !== 'pdo_sqlite') {
+            // inContext() を経由しないと違反が現在のコンテキストに追加されない.
+            $context->getValidator()->inContext($context)->validate($data, [
                 new Assert\NotBlank(),
             ]);
         }

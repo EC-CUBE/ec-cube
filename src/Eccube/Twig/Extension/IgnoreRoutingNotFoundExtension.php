@@ -27,22 +27,19 @@ use Twig\TwigFunction;
  */
 class IgnoreRoutingNotFoundExtension extends AbstractExtension
 {
-    /** @var UrlGeneratorInterface */
-    private $generator;
-
-    public function __construct(UrlGeneratorInterface $generator)
+    public function __construct(private readonly UrlGeneratorInterface $generator)
     {
-        $this->generator = $generator;
     }
 
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('url', [$this, 'getUrl'], ['is_safe_callback' => [$this, 'isUrlGenerationSafe']]),
-            new TwigFunction('path', [$this, 'getPath'], ['is_safe_callback' => [$this, 'isUrlGenerationSafe']]),
+            new TwigFunction('url', $this->getUrl(...), ['is_safe_callback' => $this->isUrlGenerationSafe(...)]),
+            new TwigFunction('path', $this->getPath(...), ['is_safe_callback' => $this->isUrlGenerationSafe(...)]),
         ];
     }
 
@@ -51,13 +48,11 @@ class IgnoreRoutingNotFoundExtension extends AbstractExtension
      * \Symfony\Bridge\Twig\Extension\RoutingExtension::getPath の処理を拡張し、
      * RouteNotFoundException 発生時に 文字列 "/404?bind={bind}" を返します。
      *
-     * @param string $name
-     * @param array $parameters
-     * @param bool $relative
+     * @param array<string, mixed> $parameters
      *
-     * @return string
+     * @throws RouteNotFoundException
      */
-    public function getPath($name, $parameters = [], $relative = false)
+    public function getPath(string $name, array $parameters = [], bool $relative = false): string
     {
         try {
             return $this->generator->generate($name, $parameters, $relative ? UrlGeneratorInterface::RELATIVE_PATH : UrlGeneratorInterface::ABSOLUTE_PATH);
@@ -73,13 +68,11 @@ class IgnoreRoutingNotFoundExtension extends AbstractExtension
      * \Symfony\Bridge\Twig\Extension\RoutingExtension::getUrl の処理を拡張し、
      * RouteNotFoundException 発生時に 文字列 "/404?bind={bind}" を返します。
      *
-     * @param string $name
-     * @param array $parameters
-     * @param bool $schemeRelative
+     * @param array<string, mixed> $parameters
      *
-     * @return string
+     * @throws RouteNotFoundException
      */
-    public function getUrl($name, $parameters = [], $schemeRelative = false)
+    public function getUrl(string $name, array $parameters = [], bool $schemeRelative = false): string
     {
         try {
             return $this->generator->generate($name, $parameters, $schemeRelative ? UrlGeneratorInterface::NETWORK_PATH : UrlGeneratorInterface::ABSOLUTE_URL);
@@ -91,9 +84,9 @@ class IgnoreRoutingNotFoundExtension extends AbstractExtension
     }
 
     /**
-     * @param Node $argsNode The arguments of the path/url function
+     * @param Node<mixed> $argsNode The arguments of the path/url function
      *
-     * @return array An array with the contexts the URL is safe
+     * @return array<int, mixed> An array with the contexts the URL is safe
      *
      * @see \Symfony\Bridge\Twig\Extension\RoutingExtension
      */
@@ -101,11 +94,11 @@ class IgnoreRoutingNotFoundExtension extends AbstractExtension
     {
         // support named arguments
         $paramsNode = $argsNode->hasNode('parameters') ? $argsNode->getNode('parameters') : (
-            $argsNode->hasNode(1) ? $argsNode->getNode(1) : null
+            $argsNode->hasNode('1') ? $argsNode->getNode('1') : null
         );
 
         if (null === $paramsNode || $paramsNode instanceof ArrayExpression && \count($paramsNode) <= 2
-            && (!$paramsNode->hasNode(1) || $paramsNode->getNode(1) instanceof ConstantExpression)
+            && (!$paramsNode->hasNode('1') || $paramsNode->getNode('1') instanceof ConstantExpression)
         ) {
             return ['html'];
         }

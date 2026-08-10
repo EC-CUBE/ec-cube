@@ -22,10 +22,7 @@ use Facebook\WebDriver\WebDriver;
 
 class DragAndDropBy extends WebDriverActions
 {
-    /**
-     * @param RemoteWebElement $source
-     */
-    public function __construct(WebDriver $driver, $source, $x_offset, $y_offset)
+    public function __construct(WebDriver $driver, RemoteWebElement $source, mixed $x_offset, mixed $y_offset)
     {
         parent::__construct($driver);
         $this->action->addAction(
@@ -41,7 +38,7 @@ class DragAndDropBy extends WebDriverActions
             new WaitAction(1)
         );
         $this->action->addAction(
-            new WebDriverButtonReleaseAction($this->mouse, null)
+            new WebDriverButtonReleaseAction($this->mouse)
         );
         $this->action->addAction(
             new WaitAction(1)

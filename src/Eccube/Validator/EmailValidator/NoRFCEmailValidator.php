@@ -26,11 +26,9 @@ class NoRFCEmailValidator extends EmailValidator
 {
     /**
      * @param $email
-     * @param EmailValidation|null $emailValidation
-     *
-     * @return bool
      */
-    public function isValid($email, ?EmailValidation $emailValidation = null)
+    #[\Override]
+    public function isValid($email, ?EmailValidation $emailValidation = null): bool
     {
         $wsp = '[\x20\x09]';
         $vchar = '[\x21-\x7e]';

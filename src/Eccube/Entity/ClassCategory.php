@@ -13,309 +13,208 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\ClassCategoryRepository;
 
-if (!class_exists(ClassCategory::class)) {
-    /**
-     * ClassCategory
-     *
-     * @ORM\Table(name="dtb_class_category")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\ClassCategoryRepository")
-     */
-    class ClassCategory extends AbstractEntity
+/**
+ * ClassCategory
+ */
+#[ORM\Table(name: 'dtb_class_category')]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: ClassCategoryRepository::class)]
+class ClassCategory extends AbstractEntity implements \Stringable
+{
+    #[\Override]
+    public function __toString(): string
     {
-        /**
-         * @return string
-         */
-        public function __toString()
-        {
-            return (string) $this->getName();
-        }
+        return $this->getName();
+    }
 
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
-         */
-        private $id;
+    #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    private ?int $id = null;
 
-        /**
-         * @var string
-         *
-         * @ORM\Column(name="backend_name", type="string", length=255, nullable=true)
-         */
-        private $backend_name;
+    #[ORM\Column(name: 'backend_name', type: Types::STRING, length: 255, nullable: true)]
+    private ?string $backend_name = null;
 
-        /**
-         * @var string
-         *
-         * @ORM\Column(name="name", type="string", length=255)
-         */
-        private $name;
+    #[ORM\Column(name: 'name', type: Types::STRING, length: 255)]
+    private ?string $name = null;
 
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="sort_no", type="integer", options={"unsigned":true})
-         */
-        private $sort_no;
+    #[ORM\Column(name: 'sort_no', type: Types::INTEGER, options: ['unsigned' => true])]
+    private ?int $sort_no = null;
 
-        /**
-         * @var bool
-         *
-         * @ORM\Column(name="visible", type="boolean", options={"default":true})
-         */
-        private $visible;
+    #[ORM\Column(name: 'visible', type: Types::BOOLEAN, options: ['default' => true])]
+    private ?bool $visible = null;
 
-        /**
-         * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
-         */
-        private $create_date;
+    #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
+    private ?\DateTime $create_date = null;
 
-        /**
-         * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
-         */
-        private $update_date;
+    #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
+    private ?\DateTime $update_date = null;
 
-        /**
-         * @var ClassName
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\ClassName", inversedBy="ClassCategories")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="class_name_id", referencedColumnName="id")
-         * })
-         */
-        private $ClassName;
+    #[ORM\ManyToOne(targetEntity: ClassName::class, inversedBy: 'ClassCategories')]
+    #[ORM\JoinColumn(name: 'class_name_id', referencedColumnName: 'id')]
+    private ?ClassName $ClassName = null;
 
-        /**
-         * @var Member
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
-         * })
-         */
-        private $Creator;
+    #[ORM\ManyToOne(targetEntity: Member::class)]
+    #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
+    private ?Member $Creator = null;
 
-        /**
-         * Get id.
-         *
-         * @return int
-         */
-        public function getId()
-        {
-            return $this->id;
-        }
+    /**
+     * Get id.
+     *
+     * @return int
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
-        /**
-         * Set backend_name.
-         *
-         * @param string $backendName
-         *
-         * @return ClassCategory
-         */
-        public function setBackendName($backendName)
-        {
-            $this->backend_name = $backendName;
+    /**
+     * Set backend_name.
+     */
+    public function setBackendName(?string $backendName): ClassCategory
+    {
+        $this->backend_name = $backendName;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get backend_name.
-         *
-         * @return string
-         */
-        public function getBackendName()
-        {
-            return $this->backend_name;
-        }
+    /**
+     * Get backend_name.
+     */
+    public function getBackendName(): ?string
+    {
+        return $this->backend_name;
+    }
 
-        /**
-         * Set name.
-         *
-         * @param string $name
-         *
-         * @return ClassCategory
-         */
-        public function setName($name)
-        {
-            $this->name = $name;
+    /**
+     * Set name.
+     */
+    public function setName(?string $name): ClassCategory
+    {
+        $this->name = $name;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get name.
-         *
-         * @return string
-         */
-        public function getName()
-        {
-            return $this->name;
-        }
+    /**
+     * Get name.
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
 
-        /**
-         * Set sortNo.
-         *
-         * @param int $sortNo
-         *
-         * @return ClassCategory
-         */
-        public function setSortNo($sortNo)
-        {
-            $this->sort_no = $sortNo;
+    /**
+     * Set sortNo.
+     */
+    public function setSortNo(int $sortNo): ClassCategory
+    {
+        $this->sort_no = $sortNo;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get sortNo.
-         *
-         * @return int
-         */
-        public function getSortNo()
-        {
-            return $this->sort_no;
-        }
+    /**
+     * Get sortNo.
+     */
+    public function getSortNo(): int
+    {
+        return $this->sort_no;
+    }
 
-        /**
-         * Set createDate.
-         *
-         * @param \DateTime $createDate
-         *
-         * @return ClassCategory
-         */
-        public function setCreateDate($createDate)
-        {
-            $this->create_date = $createDate;
+    /**
+     * Set createDate.
+     */
+    public function setCreateDate(\DateTime $createDate): ClassCategory
+    {
+        $this->create_date = $createDate;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get createDate.
-         *
-         * @return \DateTime
-         */
-        public function getCreateDate()
-        {
-            return $this->create_date;
-        }
+    /**
+     * Get createDate.
+     */
+    public function getCreateDate(): ?\DateTime
+    {
+        return $this->create_date;
+    }
 
-        /**
-         * Set updateDate.
-         *
-         * @param \DateTime $updateDate
-         *
-         * @return ClassCategory
-         */
-        public function setUpdateDate($updateDate)
-        {
-            $this->update_date = $updateDate;
+    /**
+     * Set updateDate.
+     */
+    public function setUpdateDate(\DateTime $updateDate): ClassCategory
+    {
+        $this->update_date = $updateDate;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get updateDate.
-         *
-         * @return \DateTime
-         */
-        public function getUpdateDate()
-        {
-            return $this->update_date;
-        }
+    /**
+     * Get updateDate.
+     */
+    public function getUpdateDate(): ?\DateTime
+    {
+        return $this->update_date;
+    }
 
-        /**
-         * Set className.
-         *
-         * @param ClassName|null $className
-         *
-         * @return ClassCategory
-         */
-        public function setClassName(?ClassName $className = null)
-        {
-            $this->ClassName = $className;
+    /**
+     * Set className.
+     */
+    public function setClassName(?ClassName $className = null): ClassCategory
+    {
+        $this->ClassName = $className;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get className.
-         *
-         * @return ClassName|null
-         */
-        public function getClassName()
-        {
-            return $this->ClassName;
-        }
+    /**
+     * Get className.
+     */
+    public function getClassName(): ?ClassName
+    {
+        return $this->ClassName;
+    }
 
-        /**
-         * Set creator.
-         *
-         * @param Member|null $creator
-         *
-         * @return ClassCategory
-         */
-        public function setCreator(?Member $creator = null)
-        {
-            $this->Creator = $creator;
+    /**
+     * Set creator.
+     */
+    public function setCreator(?Member $creator = null): ClassCategory
+    {
+        $this->Creator = $creator;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get creator.
-         *
-         * @return Member|null
-         */
-        public function getCreator()
-        {
-            return $this->Creator;
-        }
+    /**
+     * Get creator.
+     */
+    public function getCreator(): ?Member
+    {
+        return $this->Creator;
+    }
 
-        /**
-         * Set visible
-         *
-         * @param bool $visible
-         *
-         * @return ClassCategory
-         */
-        public function setVisible($visible)
-        {
-            $this->visible = $visible;
+    /**
+     * Set visible
+     */
+    public function setVisible(bool $visible): ClassCategory
+    {
+        $this->visible = $visible;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Is the visibility visible?
-         *
-         * @return bool
-         */
-        public function isVisible()
-        {
-            return $this->visible;
-        }
+    /**
+     * Is the visibility visible?
+     */
+    public function isVisible(): bool
+    {
+        return $this->visible;
     }
 }

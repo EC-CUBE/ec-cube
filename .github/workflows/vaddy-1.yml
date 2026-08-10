@@ -23,15 +23,6 @@ jobs:
           - vaddy_project: 'FRONT'
             command1: '-x admin -x plugin'
     services:
-      postgres:
-        image: postgres:14
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
-        ports:
-          - 5432:5432
-        # needed because the postgres container does not provide a healthcheck
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
       mailcatcher:
         image: schickling/mailcatcher
         ports:
@@ -39,15 +30,39 @@ jobs:
           - 1025:1025
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v6
+        with:
+          persist-credentials: false
+
+      ## Docker Hub からの pull はタイムアウトで CI が不安定になるため、
+      ## DB はコンテナではなく setup アクション (apt) でインストールする
+      - name: Setup PostgreSQL
+        uses: ankane/setup-postgres@6d3ffa1aa7498a42b79e9f9f5838b99971839300  # v1
+        with:
+          postgres-version: '18'
+          user: postgres
+      - name: Configure PostgreSQL
+        run: |
+          for _ in $(seq 1 30); do pg_isready -h 127.0.0.1 && break; sleep 1; done
+          pg_isready -h 127.0.0.1 || { echo 'PostgreSQL did not become ready within 30s'; exit 1; }
+          psql -h 127.0.0.1 -U postgres -c "ALTER USER postgres PASSWORD 'password'"
+          ## DATABASE_URL と同一経路 (TCP/postgres/password) で接続できることを検証
+          PGPASSWORD=password psql -h 127.0.0.1 -U postgres -c 'SELECT VERSION()'
 
       - name: Setup PHP
-        uses: nanasess/setup-php@bc11abbf4dd060b7bfd20d03edeeb43417ebe245  # master
+        uses: nanasess/setup-php@3f36b116d024300a7df978629a2bad9afceb2be3  # master
         with:
-          php-version: '8.1'
+          php-version: '8.5'
+
+      - name: Install ext-redis 6.1+
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y php8.4-redis
+          sudo phpenmod -s cli redis
+          php -m | grep -i redis
 
       - name: setup-chromedriver
-        uses: nanasess/setup-chromedriver@fc3dc5897c11410827ed268ab625038ee63dc6fe  # master
+        uses: nanasess/setup-chromedriver@aa033c43468094ffc3fd28243c9ca1aef66775ff  # master
 
       - name: "VAddy: install"
         working-directory: /tmp
@@ -71,7 +86,7 @@ jobs:
       - name: "EC-CUBE: setup"
         env:
           DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
-          DATABASE_SERVER_VERSION: 14
+          DATABASE_SERVER_VERSION: 18
         run: |
           php bin/template_jp.php
           rm -rf app/Plugin/*
@@ -102,7 +117,7 @@ jobs:
         env:
           APP_ENV: 'prod'
           DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
-          DATABASE_SERVER_VERSION: 14
+          DATABASE_SERVER_VERSION: 18
         run: |
           bin/console eccube:composer:require "ec-cube/recommend4"
           bin/console eccube:composer:require "ec-cube/coupon4"
@@ -118,7 +133,7 @@ jobs:
       - name: Pre Install Plugins
         env:
           DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
-          DATABASE_SERVER_VERSION: 14
+          DATABASE_SERVER_VERSION: 18
           PGPASSWORD: 'password'
         run: |
           psql eccube_db -h 127.0.0.1 -U postgres -c "select id,name,code,0 as enabled,version,source,0 as initialized,'2021-08-13 00:00:00' as create_date,'2021-08-13 00:00:00' as update_date,discriminator_type from dtb_plugin;" -A -F, --pset footer > src/Eccube/Resource/doctrine/import_csv/ja/dtb_plugin.csv
@@ -132,7 +147,7 @@ jobs:
         run: docker build -t ec-cube --build-arg SKIP_INSTALL_SCRIPT_ON_DOCKER_BUILD=true .
       - name: "Codeception: prepare"
         run: |
-          echo "APP_ENV=codeception" > .env
+          echo "APP_ENV=e2e" > .env
           export DISPLAY=:99
           chromedriver --url-base=/wd/hub --port=9515 &
           echo ">>> Started chrome-driver"
@@ -165,7 +180,7 @@ jobs:
             -e APP_ENV=dev \
             -e APP_DEBUG=1 \
             -e DATABASE_URL="postgres://postgres:password@172.17.0.1:5432/eccube_db" \
-            -e DATABASE_SERVER_VERSION=14 \
+            -e DATABASE_SERVER_VERSION=18 \
             -e MAILER_URL="smtp://172.17.0.1:1025" \
             -v ${PWD}/html:/tmp/html \
             --rm -d -p 8080:80 --name eccube ec-cube
@@ -182,9 +197,9 @@ jobs:
 
       - name: "VAddy: crawl"
         env:
-          APP_ENV: "codeception"
+          APP_ENV: "e2e"
           DATABASE_URL: "postgres://postgres:password@127.0.0.1:5432/eccube_db"
-          DATABASE_SERVER_VERSION: "14"
+          DATABASE_SERVER_VERSION: "18"
           MAILER_URL: "smtp://127.0.0.1:1025"
           BASE_URL: "http://${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}:8080"
           VADDY_PROXY: "${{ secrets.VADDY_PROXY }}"
@@ -197,7 +212,7 @@ jobs:
           vendor/bin/codecept -vvv run acceptance --env chrome,local,vaddy VaddyCest:commit
 
       - name: Upload report
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
         with:
           name: crawl-reports-${{ matrix.vaddy_project }}-command1
           path: codeception/_output/**/*
@@ -230,7 +245,7 @@ jobs:
             -e APP_ENV=dev \
             -e APP_DEBUG=1 \
             -e DATABASE_URL="postgres://postgres:password@172.17.0.1:5432/eccube_db" \
-            -e DATABASE_SERVER_VERSION=14 \
+            -e DATABASE_SERVER_VERSION=18 \
             -e MAILER_URL="smtp://172.17.0.1:1025" \
             -v ${PWD}/html:/tmp/html \
             --rm -d -p 8080:80 --name eccube ec-cube
@@ -249,9 +264,9 @@ jobs:
       - name: "VAddy: crawl"
         if: ${{ matrix.command2 != '' && success() }}
         env:
-          APP_ENV: "codeception"
+          APP_ENV: "e2e"
           DATABASE_URL: "postgres://postgres:password@127.0.0.1:5432/eccube_db"
-          DATABASE_SERVER_VERSION: "14"
+          DATABASE_SERVER_VERSION: "18"
           MAILER_URL: "smtp://127.0.0.1:1025"
           BASE_URL: "http://${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}:8080"
           VADDY_PROXY: "${{ secrets.VADDY_PROXY }}"
@@ -265,7 +280,7 @@ jobs:
 
       - name: Upload report
         if: ${{ matrix.command2 != '' && success() }}
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
         with:
           name: crawl-reports-${{ matrix.vaddy_project }}-command2
           path: codeception/_output/**/*
@@ -299,7 +314,7 @@ jobs:
             -e APP_ENV=dev \
             -e APP_DEBUG=1 \
             -e DATABASE_URL="postgres://postgres:password@172.17.0.1:5432/eccube_db" \
-            -e DATABASE_SERVER_VERSION=14 \
+            -e DATABASE_SERVER_VERSION=18 \
             -e MAILER_URL="smtp://172.17.0.1:1025" \
             -v ${PWD}/html:/tmp/html \
             --rm -d -p 8080:80 --name eccube ec-cube
@@ -318,9 +333,9 @@ jobs:
       - name: "VAddy: crawl"
         if: ${{ matrix.command3 != '' && success() }}
         env:
-          APP_ENV: "codeception"
+          APP_ENV: "e2e"
           DATABASE_URL: "postgres://postgres:password@127.0.0.1:5432/eccube_db"
-          DATABASE_SERVER_VERSION: "14"
+          DATABASE_SERVER_VERSION: "18"
           MAILER_URL: "smtp://127.0.0.1:1025"
           BASE_URL: "http://${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}:8080"
           VADDY_PROXY: "${{ secrets.VADDY_PROXY }}"
@@ -334,7 +349,7 @@ jobs:
 
       - name: Upload report
         if: ${{ matrix.command3 != '' && success() }}
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
         with:
           name: crawl-reports-${{ matrix.vaddy_project }}-command3
           path: codeception/_output/**/*
@@ -368,7 +383,7 @@ jobs:
             -e APP_ENV=dev \
             -e APP_DEBUG=1 \
             -e DATABASE_URL="postgres://postgres:password@172.17.0.1:5432/eccube_db" \
-            -e DATABASE_SERVER_VERSION=14 \
+            -e DATABASE_SERVER_VERSION=18 \
             -e MAILER_URL="smtp://172.17.0.1:1025" \
             -v ${PWD}/html:/tmp/html \
             --rm -d -p 8080:80 --name eccube ec-cube
@@ -387,9 +402,9 @@ jobs:
       - name: "VAddy: crawl"
         if: ${{ matrix.command4 != '' && success() }}
         env:
-          APP_ENV: "codeception"
+          APP_ENV: "e2e"
           DATABASE_URL: "postgres://postgres:password@127.0.0.1:5432/eccube_db"
-          DATABASE_SERVER_VERSION: "14"
+          DATABASE_SERVER_VERSION: "18"
           MAILER_URL: "smtp://127.0.0.1:1025"
           BASE_URL: "http://${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}:8080"
           VADDY_PROXY: "${{ secrets.VADDY_PROXY }}"
@@ -403,7 +418,7 @@ jobs:
 
       - name: Upload report
         if: ${{ matrix.command4 != '' && success() }}
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
         with:
           name: crawl-reports-${{ matrix.vaddy_project }}-command4
           path: codeception/_output/**/*
@@ -437,7 +452,7 @@ jobs:
             -e APP_ENV=dev \
             -e APP_DEBUG=1 \
             -e DATABASE_URL="postgres://postgres:password@172.17.0.1:5432/eccube_db" \
-            -e DATABASE_SERVER_VERSION=14 \
+            -e DATABASE_SERVER_VERSION=18 \
             -e MAILER_URL="smtp://172.17.0.1:1025" \
             -v ${PWD}/html:/tmp/html \
             --rm -d -p 8080:80 --name eccube ec-cube
@@ -456,9 +471,9 @@ jobs:
       - name: "VAddy: crawl"
         if: ${{ matrix.command5 != '' && success() }}
         env:
-          APP_ENV: "codeception"
+          APP_ENV: "e2e"
           DATABASE_URL: "postgres://postgres:password@127.0.0.1:5432/eccube_db"
-          DATABASE_SERVER_VERSION: "14"
+          DATABASE_SERVER_VERSION: "18"
           MAILER_URL: "smtp://127.0.0.1:1025"
           BASE_URL: "http://${{ secrets[format('{0}{1}', 'VADDY_FQDN_', matrix.vaddy_project)] }}:8080"
           VADDY_PROXY: "${{ secrets.VADDY_PROXY }}"
@@ -472,7 +487,7 @@ jobs:
 
       - name: Upload report
         if: ${{ matrix.command5 != '' && success() }}
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
         with:
           name: crawl-reports-${{ matrix.vaddy_project }}-command5
           path: codeception/_output/**/*

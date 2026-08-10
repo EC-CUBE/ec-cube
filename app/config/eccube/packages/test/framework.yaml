@@ -1,4 +1,5 @@
 framework:
+    secret: 'test_secret_key_for_phpunit'
     test: ~
     session:
         storage_factory_id: session.storage.factory.mock_file

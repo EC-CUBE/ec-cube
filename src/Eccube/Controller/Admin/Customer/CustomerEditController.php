@@ -24,58 +24,35 @@ use Eccube\Repository\Master\PageMaxRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Util\StringUtil;
 use Knp\Component\Pager\PaginatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class CustomerEditController extends AbstractController
 {
-    /**
-     * @var CustomerRepository
-     */
-    protected $customerRepository;
-
-    /**
-     * @var UserPasswordHasherInterface
-     */
-    protected $passwordHasher;
-
-    /**
-     * @var OrderRepository
-     */
-    protected $orderRepository;
-
-    /**
-     * @var PageMaxRepository
-     */
-    protected $pageMaxRepository;
-
-    public function __construct(
-        CustomerRepository $customerRepository,
-        UserPasswordHasherInterface $passwordHasher,
-        OrderRepository $orderRepository,
-        PageMaxRepository $pageMaxRepository,
-    ) {
-        $this->customerRepository = $customerRepository;
-        $this->orderRepository = $orderRepository;
-        $this->passwordHasher = $passwordHasher;
-        $this->pageMaxRepository = $pageMaxRepository;
+    public function __construct(protected CustomerRepository $customerRepository, protected UserPasswordHasherInterface $passwordHasher, protected OrderRepository $orderRepository, protected PageMaxRepository $pageMaxRepository, private readonly PaginatorInterface $paginator)
+    {
     }
 
     /**
-     * @Route("/%eccube_admin_route%/customer/new", name="admin_customer_new", methods={"GET", "POST"})
-     * @Route("/%eccube_admin_route%/customer/{id}/edit", requirements={"id" = "\d+"}, name="admin_customer_edit", methods={"GET", "POST"})
+     * @param string|null $id
      *
-     * @Template("@admin/Customer/edit.twig")
+     * @return RedirectResponse|array<string, mixed>
+     *
+     * @throws NotFoundHttpException
      */
-    public function index(Request $request, PaginatorInterface $paginator, $id = null)
+    #[Route(path: '/%eccube_admin_route%/customer/new', name: 'admin_customer_new', methods: ['GET', 'POST'])]
+    #[Route(path: '/%eccube_admin_route%/customer/{id}/edit', name: 'admin_customer_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Customer/edit.twig')]
+    public function index(Request $request, $id = null): RedirectResponse|array
     {
         $this->entityManager->getFilters()->enable('incomplete_order_status_hidden');
         // 編集
         if ($id) {
-            /** @var Customer $Customer */
+            /** @var Customer|null $Customer */
             $Customer = $this->customerRepository
                 ->find($id);
 
@@ -127,7 +104,7 @@ class CustomerEditController extends AbstractController
         $qb = $this->orderRepository->getQueryBuilderByCustomer($Customer);
         $pagination = [];
         if (!is_null($Customer->getId())) {
-            $pagination = $paginator->paginate(
+            $pagination = $this->paginator->paginate(
                 $qb,
                 $page_no > 0 ? $page_no : 1,
                 $page_count

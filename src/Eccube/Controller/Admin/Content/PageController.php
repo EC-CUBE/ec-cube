@@ -24,52 +24,28 @@ use Eccube\Repository\PageLayoutRepository;
 use Eccube\Repository\PageRepository;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
 
 class PageController extends AbstractController
 {
     /**
-     * @var PageRepository
-     */
-    protected $pageRepository;
-
-    /**
-     * @var PageLayoutRepository
-     */
-    protected $pageLayoutRepository;
-
-    /**
-     * @var DeviceTypeRepository
-     */
-    protected $deviceTypeRepository;
-
-    /**
      * PageController constructor.
-     *
-     * @param PageRepository $pageRepository
-     * @param DeviceTypeRepository $deviceTypeRepository
      */
-    public function __construct(
-        PageRepository $pageRepository,
-        PageLayoutRepository $pageLayoutRepository,
-        DeviceTypeRepository $deviceTypeRepository,
-    ) {
-        $this->pageRepository = $pageRepository;
-        $this->pageLayoutRepository = $pageLayoutRepository;
-        $this->deviceTypeRepository = $deviceTypeRepository;
+    public function __construct(protected PageRepository $pageRepository, protected PageLayoutRepository $pageLayoutRepository, protected DeviceTypeRepository $deviceTypeRepository, private readonly Environment $twig, private readonly CacheUtil $cacheUtil)
+    {
     }
 
     /**
-     * @Route("/%eccube_admin_route%/content/page", name="admin_content_page", methods={"GET"})
-     *
-     * @Template("@admin/Content/page.twig")
+     * @return array<string, mixed>
      */
-    public function index(Request $request, RouterInterface $router)
+    #[Route(path: '/%eccube_admin_route%/content/page', name: 'admin_content_page', methods: ['GET'])]
+    #[Template(template: '@admin/Content/page.twig')]
+    public function index(Request $request): array
     {
         $Pages = $this->pageRepository->getPageList();
 
@@ -83,17 +59,19 @@ class PageController extends AbstractController
 
         return [
             'Pages' => $Pages,
-            'router' => $router,
+            'router' => $this->router,
         ];
     }
 
     /**
-     * @Route("/%eccube_admin_route%/content/page/new", name="admin_content_page_new", methods={"GET", "POST"})
-     * @Route("/%eccube_admin_route%/content/page/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_page_edit", methods={"GET", "POST"})
+     * @param string|null $id
      *
-     * @Template("@admin/Content/page_edit.twig")
+     * @return RedirectResponse|array<string, mixed>
      */
-    public function edit(Request $request, Environment $twig, RouterInterface $router, CacheUtil $cacheUtil, $id = null)
+    #[Route(path: '/%eccube_admin_route%/content/page/new', name: 'admin_content_page_new', methods: ['GET', 'POST'])]
+    #[Route(path: '/%eccube_admin_route%/content/page/{id}/edit', name: 'admin_content_page_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Content/page_edit.twig')]
+    public function edit(Request $request, $id = null): RedirectResponse|array
     {
         $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');
 
@@ -130,7 +108,7 @@ class PageController extends AbstractController
                 $namespace = '';
             }
             // テンプレートファイルの取得
-            $source = $twig->getLoader()
+            $source = $this->twig->getLoader()
                 ->getSourceContext($namespace.$Page->getFileName().'.twig')
                 ->getCode();
 
@@ -138,7 +116,7 @@ class PageController extends AbstractController
 
             $fileName = $Page->getFileName();
         } elseif ($request->getMethod() === 'GET' && !$form->isSubmitted()) {
-            $source = $twig->getLoader()
+            $source = $this->twig->getLoader()
                 ->getSourceContext('@admin/empty_page.twig')
                 ->getCode();
             $form->get('tpl_data')->setData($source);
@@ -229,8 +207,8 @@ class PageController extends AbstractController
             $this->addSuccess('admin.common.save_complete', 'admin');
 
             // キャッシュの削除
-            $cacheUtil->clearTwigCache();
-            $cacheUtil->clearDoctrineCache();
+            $this->cacheUtil->clearTwigCache();
+            $this->cacheUtil->clearDoctrineCache();
 
             return $this->redirectToRoute('admin_content_page_edit', ['id' => $Page->getId()]);
         }
@@ -240,7 +218,7 @@ class PageController extends AbstractController
             $url = '';
         } else {
             $templatePath = $this->getParameter('eccube_theme_front_dir');
-            $url = $router->getRouteCollection()->get($PrevPage->getUrl())->getPath();
+            $url = $this->router->getRouteCollection()->get($PrevPage->getUrl())->getPath();
         }
         $projectDir = $this->getParameter('kernel.project_dir');
         $templatePath = str_replace($projectDir.'/', '', $templatePath);
@@ -256,9 +234,10 @@ class PageController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/content/page/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_page_delete", methods={"DELETE"})
+     * @param string|null $id
      */
-    public function delete(Request $request, CacheUtil $cacheUtil, $id = null)
+    #[Route(path: '/%eccube_admin_route%/content/page/{id}/delete', name: 'admin_content_page_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    public function delete(Request $request, $id = null): RedirectResponse
     {
         $this->isTokenValid();
 
@@ -295,8 +274,8 @@ class PageController extends AbstractController
             $this->addSuccess('admin.common.delete_complete', 'admin');
 
             // キャッシュの削除
-            $cacheUtil->clearTwigCache();
-            $cacheUtil->clearDoctrineCache();
+            $this->cacheUtil->clearTwigCache();
+            $this->cacheUtil->clearDoctrineCache();
         }
 
         return $this->redirectToRoute('admin_content_page');

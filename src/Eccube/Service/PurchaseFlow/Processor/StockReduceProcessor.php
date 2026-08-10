@@ -15,6 +15,8 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\PessimisticLockException;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Order;
 use Eccube\Entity\ProductStock;
@@ -28,50 +30,41 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 class StockReduceProcessor extends AbstractPurchaseProcessor
 {
     /**
-     * @var ProductStockRepository
-     */
-    protected $productStockRepository;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
      * StockReduceProcessor constructor.
-     *
-     * @param ProductStockRepository $productStockRepository
-     * @param EntityManagerInterface $entityManager
      */
-    public function __construct(ProductStockRepository $productStockRepository, EntityManagerInterface $entityManager)
+    public function __construct(protected ProductStockRepository $productStockRepository, protected EntityManagerInterface $entityManager)
     {
-        $this->productStockRepository = $productStockRepository;
-        $this->entityManager = $entityManager;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function prepare(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    #[\Override]
+    public function prepare(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         // 在庫を減らす
-        $this->eachProductOrderItems($itemHolder, function ($currentStock, $itemQuantity) {
-            return $currentStock - $itemQuantity;
-        });
+        $this->eachProductOrderItems($itemHolder, fn ($currentStock, $itemQuantity) => bcsub((string) $currentStock, (string) $itemQuantity));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    #[\Override]
+    public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         // 在庫を戻す
-        $this->eachProductOrderItems($itemHolder, function ($currentStock, $itemQuantity) {
-            return $currentStock + $itemQuantity;
-        });
+        $this->eachProductOrderItems($itemHolder, fn ($currentStock, $itemQuantity) => bcadd((string) $currentStock, (string) $itemQuantity));
     }
 
-    private function eachProductOrderItems(ItemHolderInterface $itemHolder, callable $callback)
+    /**
+     * @param ItemHolderInterface $itemHolder 受注 or カート
+     * @param callable $callback 在庫数を計算するコールバック関数
+     *
+     * @throws ShoppingException 在庫切れの場合
+     * @throws OptimisticLockException
+     * @throws PessimisticLockException
+     */
+    private function eachProductOrderItems(ItemHolderInterface $itemHolder, callable $callback): void
     {
         // Order以外の場合は何もしない
         if (!$itemHolder instanceof Order) {
@@ -82,7 +75,7 @@ class StockReduceProcessor extends AbstractPurchaseProcessor
             // 在庫が無制限かチェックし、制限ありなら在庫数をチェック
             if (!$item->getProductClass()->isStockUnlimited()) {
                 // 在庫チェックあり
-                /* @var ProductStock $productStock */
+                /** @var ProductStock $productStock */
                 $productStock = $item->getProductClass()->getProductStock();
                 if ($productStock->getProductClassId() === null) {
                     // 在庫に対してロックを実行

@@ -25,20 +25,20 @@ use Symfony\Component\Yaml\Yaml;
 class Loader
 {
     /**
-     * @var CsvFixture[]
+     * @var CsvFixture[]|FixtureInterface[]
      */
-    protected $fixtures;
+    protected array $fixtures;
 
     /**
      * Load fixtures from directory.
      *
      * 同一階層に, Fixture のロード順を定義した definition.yml が必要.
      *
-     * @param string $dir
+     * @return array<mixed> fixtures.
      *
-     * @return array fixtures.
+     * @throws \InvalidArgumentException|\Exception
      */
-    public function loadFromDirectory($dir)
+    public function loadFromDirectory(string $dir): array
     {
         if (!dir($dir)) {
             throw new \InvalidArgumentException(sprintf('"%s" does not exist', $dir));
@@ -75,9 +75,9 @@ class Loader
                         return -1;
                     } elseif ($a_sortNo > $b_sortNo) {
                         return 1;
-                    } else {
-                        return 0;
                     }
+
+                    return 0;
                 }
             )
             ->files();
@@ -90,9 +90,9 @@ class Loader
      *
      * @param \Iterator $Iterator Iterator of \SplFileInfo
      *
-     * @return array fixtures.
+     * @return array<int, CsvFixture> fixtures.
      */
-    public function loadFromIterator(\Iterator $Iterator)
+    public function loadFromIterator(\Iterator $Iterator): array
     {
         $fixtures = [];
         foreach ($Iterator as $fixture) {
@@ -105,12 +105,15 @@ class Loader
         return $fixtures;
     }
 
-    public function getFixtures()
+    /**
+     * @return FixtureInterface[]|CsvFixture[]
+     */
+    public function getFixtures(): array
     {
         return $this->fixtures;
     }
 
-    public function addFixture(FixtureInterface $fixture)
+    public function addFixture(FixtureInterface $fixture): void
     {
         $this->fixtures[] = $fixture;
     }

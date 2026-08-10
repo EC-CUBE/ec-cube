@@ -15,6 +15,7 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Order;
+use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\ItemHolderPostValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 
@@ -23,7 +24,14 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
  */
 class TaxRateChangeValidator extends ItemHolderPostValidator
 {
-    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    /**
+     * @param ItemHolderInterface $itemHolder 受注 or カート
+     * @param PurchaseContext $context 購入フローのコンテキスト
+     *
+     * @throws InvalidItemException 税率が変更された場合
+     */
+    #[\Override]
+    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         if (!$itemHolder instanceof Order) {
             return;

@@ -21,95 +21,53 @@ use Eccube\Entity\MailHistory;
 use Eccube\Entity\MailTemplate;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
+use Eccube\Entity\RefundRequest;
 use Eccube\Entity\Shipping;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\MailHistoryRepository;
 use Eccube\Repository\MailTemplateRepository;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
+use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
 class MailService
 {
-    /**
-     * @var MailerInterface
-     */
-    protected $mailer;
-
-    /**
-     * @var MailTemplateRepository
-     */
-    protected $mailTemplateRepository;
-
-    /**
-     * @var MailHistoryRepository
-     */
-    protected $mailHistoryRepository;
-
-    /**
-     * @var EventDispatcher
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @var BaseInfo
-     */
-    protected $BaseInfo;
-
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
-     * @var \Twig\Environment
-     */
-    protected $twig;
+    protected BaseInfo $BaseInfo;
 
     /**
      * MailService constructor.
-     *
-     * @param MailerInterface $mailer
-     * @param MailTemplateRepository $mailTemplateRepository
-     * @param MailHistoryRepository $mailHistoryRepository
-     * @param BaseInfoRepository $baseInfoRepository
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param \Twig\Environment $twig
-     * @param EccubeConfig $eccubeConfig
      */
     public function __construct(
-        MailerInterface $mailer,
-        MailTemplateRepository $mailTemplateRepository,
-        MailHistoryRepository $mailHistoryRepository,
+        protected MailerInterface $mailer,
+        protected MailTemplateRepository $mailTemplateRepository,
+        protected MailHistoryRepository $mailHistoryRepository,
         BaseInfoRepository $baseInfoRepository,
-        EventDispatcherInterface $eventDispatcher,
-        \Twig\Environment $twig,
-        EccubeConfig $eccubeConfig,
+        protected EventDispatcherInterface $eventDispatcher,
+        protected Environment $twig,
+        protected EccubeConfig $eccubeConfig,
     ) {
-        $this->mailer = $mailer;
-        $this->mailTemplateRepository = $mailTemplateRepository;
-        $this->mailHistoryRepository = $mailHistoryRepository;
         $this->BaseInfo = $baseInfoRepository->get();
-        $this->eventDispatcher = $eventDispatcher;
-        $this->eccubeConfig = $eccubeConfig;
-        $this->twig = $twig;
     }
 
     /**
      * Send customer confirm mail.
      *
-     * @param $Customer 会員情報
+     * @param Customer $Customer 会員情報
      * @param string $activateUrl アクティベート用url
+     *
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
-    public function sendCustomerConfirmMail(Customer $Customer, $activateUrl)
+    public function sendCustomerConfirmMail(Customer $Customer, string $activateUrl): void
     {
         log_info('仮会員登録メール送信開始');
 
@@ -151,8 +109,7 @@ class MailService
                 'Customer' => $Customer,
                 'BaseInfo' => $this->BaseInfo,
                 'activateUrl' => $activateUrl,
-            ],
-            null
+            ]
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_CUSTOMER_CONFIRM);
 
@@ -167,9 +124,13 @@ class MailService
     /**
      * Send customer complete mail.
      *
-     * @param $Customer 会員情報
+     * @param Customer $Customer 会員情報
+     *
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
-    public function sendCustomerCompleteMail(Customer $Customer)
+    public function sendCustomerCompleteMail(Customer $Customer): void
     {
         log_info('会員登録完了メール送信開始');
 
@@ -208,8 +169,7 @@ class MailService
                 'message' => $message,
                 'Customer' => $Customer,
                 'BaseInfo' => $this->BaseInfo,
-            ],
-            null
+            ]
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_CUSTOMER_COMPLETE);
 
@@ -226,8 +186,12 @@ class MailService
      *
      * @param $Customer Customer
      * @param $email string
+     *
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
-    public function sendCustomerWithdrawMail(Customer $Customer, string $email)
+    public function sendCustomerWithdrawMail(Customer $Customer, string $email): void
     {
         log_info('退会手続き完了メール送信開始');
 
@@ -267,8 +231,7 @@ class MailService
                 'Customer' => $Customer,
                 'BaseInfo' => $this->BaseInfo,
                 'email' => $email,
-            ],
-            null
+            ]
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_CUSTOMER_WITHDRAW);
 
@@ -283,9 +246,13 @@ class MailService
     /**
      * Send contact mail.
      *
-     * @param $formData お問い合わせ内容
+     * @param array<string, string> $formData お問い合わせ内容
+     *
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
-    public function sendContactMail($formData)
+    public function sendContactMail(array $formData): void
     {
         log_info('お問い合わせ受付メール送信開始');
 
@@ -325,8 +292,7 @@ class MailService
                 'message' => $message,
                 'formData' => $formData,
                 'BaseInfo' => $this->BaseInfo,
-            ],
-            null
+            ]
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_CONTACT);
 
@@ -342,10 +308,8 @@ class MailService
      * Send order mail.
      *
      * @param Order $Order 受注情報
-     *
-     * @return Email
      */
-    public function sendOrderMail(Order $Order)
+    public function sendOrderMail(Order $Order): Email
     {
         log_info('受注メール送信開始');
 
@@ -383,8 +347,7 @@ class MailService
                 'Order' => $Order,
                 'MailTemplate' => $MailTemplate,
                 'BaseInfo' => $this->BaseInfo,
-            ],
-            null
+            ]
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_ORDER);
 
@@ -416,10 +379,14 @@ class MailService
     /**
      * Send admin customer confirm mail.
      *
-     * @param $Customer 会員情報
+     * @param Customer $Customer 会員情報
      * @param string $activateUrl アクティベート用url
+     *
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
-    public function sendAdminCustomerConfirmMail(Customer $Customer, $activateUrl)
+    public function sendAdminCustomerConfirmMail(Customer $Customer, string $activateUrl): void
     {
         log_info('仮会員登録再送メール送信開始');
 
@@ -462,8 +429,7 @@ class MailService
                 'Customer' => $Customer,
                 'BaseInfo' => $this->BaseInfo,
                 'activateUrl' => $activateUrl,
-            ],
-            null
+            ]
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_ADMIN_CUSTOMER_CONFIRM);
 
@@ -480,15 +446,14 @@ class MailService
      * Send admin order mail.
      *
      * @param Order $Order 受注情報
-     * @param $formData 入力内容
+     * @param array<string, string> $formData 入力内容
      *
-     * @return Email
-     *
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
+     * @throws LoaderError  When the template cannot be found
+     * @throws SyntaxError  When an error occurred during compilation
+     * @throws RuntimeError When an error occurred during rendering
+     * @throws TransportExceptionInterface
      */
-    public function sendAdminOrderMail(Order $Order, $formData)
+    public function sendAdminOrderMail(Order $Order, array $formData): Email
     {
         log_info('受注管理通知メール送信開始');
 
@@ -507,8 +472,7 @@ class MailService
                 'Order' => $Order,
                 'formData' => $formData,
                 'BaseInfo' => $this->BaseInfo,
-            ],
-            null
+            ]
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_ADMIN_ORDER);
 
@@ -525,10 +489,13 @@ class MailService
     /**
      * Send password reset notification mail.
      *
-     * @param $Customer 会員情報
-     * @param string $reset_url
+     * @param Customer $Customer 会員情報
+     *
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
-    public function sendPasswordResetNotificationMail(Customer $Customer, $reset_url)
+    public function sendPasswordResetNotificationMail(Customer $Customer, string $reset_url): void
     {
         log_info('パスワード再発行メール送信開始');
 
@@ -571,8 +538,7 @@ class MailService
                 'Customer' => $Customer,
                 'BaseInfo' => $this->BaseInfo,
                 'resetUrl' => $reset_url,
-            ],
-            null
+            ]
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_PASSWORD_RESET);
 
@@ -587,10 +553,13 @@ class MailService
     /**
      * Send password reset notification mail.
      *
-     * @param $Customer 会員情報
-     * @param string $password
+     * @param Customer $Customer 会員情報
+     *
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
-    public function sendPasswordResetCompleteMail(Customer $Customer, $password)
+    public function sendPasswordResetCompleteMail(Customer $Customer, string $password): void
     {
         log_info('パスワード変更完了メール送信開始');
 
@@ -632,8 +601,7 @@ class MailService
                 'Customer' => $Customer,
                 'BaseInfo' => $this->BaseInfo,
                 'password' => $password,
-            ],
-            null
+            ]
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_PASSWORD_RESET_COMPLETE);
 
@@ -649,11 +617,11 @@ class MailService
      * 発送通知メールを送信する.
      * 発送通知メールは受注ごとに送られる
      *
-     * @param Shipping $Shipping
-     *
-     * @throws \Twig_Error
+     * @throws LoaderError  When the template cannot be found
+     * @throws SyntaxError  When an error occurred during compilation
+     * @throws RuntimeError When an error occurred during rendering
      */
-    public function sendShippingNotifyMail(Shipping $Shipping)
+    public function sendShippingNotifyMail(Shipping $Shipping): void
     {
         log_info('出荷通知メール送信処理開始', ['id' => $Shipping->getId()]);
 
@@ -690,8 +658,7 @@ class MailService
                 'Order' => $Order,
                 'MailTemplate' => $MailTemplate,
                 'BaseInfo' => $this->BaseInfo,
-            ],
-            null
+            ]
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_SHIPPING_NOTIFY);
 
@@ -719,20 +686,15 @@ class MailService
     }
 
     /**
-     * @param Shipping $Shipping
-     * @param Order $Order
-     * @param string|null $templateName
-     * @param bool $is_html
-     *
-     * @return string
-     *
-     * @throws \Twig_Error
+     * @throws LoaderError  When the template cannot be found
+     * @throws SyntaxError  When an error occurred during compilation
+     * @throws RuntimeError When an error occurred during rendering
      */
-    public function getShippingNotifyMailBody(Shipping $Shipping, Order $Order, $templateName = null, $is_html = false)
+    public function getShippingNotifyMailBody(Shipping $Shipping, Order $Order, ?string $templateName = null, bool $is_html = false): string
     {
-        $ShippingItems = array_filter($Shipping->getOrderItems()->toArray(), function (OrderItem $OrderItem) use ($Order) {
-            return $OrderItem->getOrderId() === $Order->getId();
-        });
+        /** @var OrderItem[] $OrderItems */
+        $OrderItems = $Shipping->getOrderItems()->toArray();
+        $ShippingItems = array_filter($OrderItems, fn (OrderItem $OrderItem) => $OrderItem->getOrderId() === $Order->getId());
 
         if (is_null($templateName)) {
             /** @var MailTemplate $MailTemplate */
@@ -757,21 +719,14 @@ class MailService
     /**
      * 会員情報変更時にメール通知
      *
-     * @param Customer $Customer
-     * @param array $userData
-     *  - userAgent
-     *  - ipAddress
-     *  - preEmail
-     * @param string $eventName
-     *
-     * @return void
+     * @param array{userAgent: string, ipAddress: string, preEmail: string|null}|array{userAgent:string|null,ipAddress:string|null} $userData
      *
      * @throws LoaderError
      * @throws NonUniqueResultException
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    public function sendCustomerChangeNotifyMail(Customer $Customer, array $userData, string $eventName)
+    public function sendCustomerChangeNotifyMail(Customer $Customer, array $userData, string $eventName): void
     {
         log_info('会員情報変更通知メール送信処理開始');
         log_info($eventName);
@@ -826,8 +781,7 @@ class MailService
                 'MailTemplate' => $MailTemplate,
                 'userData' => $userData,
                 'eventName' => $eventName,
-            ],
-            null
+            ]
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_CUSTOMER_CHANGE_NOTIFY);
 
@@ -859,7 +813,7 @@ class MailService
      *
      * @return string|null  存在する場合はファイル名を返す
      */
-    public function getHtmlTemplate($templateName)
+    public function getHtmlTemplate(string $templateName): ?string
     {
         // メールテンプレート名からHTMLメール用テンプレート名を生成
         $fileName = explode('.', $templateName);
@@ -869,19 +823,15 @@ class MailService
         // HTMLメール用テンプレートの存在チェック
         if ($this->twig->getLoader()->exists($htmlFileName)) {
             return $htmlFileName;
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     /**
      * RFC違反のメールの local part を "" で囲む.
      *
      * パラメータ eccube_rfc_email_check == true の場合は変換しない
-     *
-     * @param string $email
-     *
-     * @return Address
      */
     public function convertRFCViolatingEmail(string $email): Address
     {
@@ -902,14 +852,72 @@ class MailService
         $domain = $dot_atom;
         $addr_spec = "{$local_part}[@]$domain";
 
-        $dot_atom_loose = "$atext+(?:[.]|$atext)*";
-        $local_part_loose = "(?:$dot_atom_loose|$quoted_string)";
-
         $regexp = "/\A{$addr_spec}\z/";
         if (!preg_match($regexp, $email)) {
             $email = preg_replace('/^(.*)@(.*)$/', '"$1"@$2', $email);
         }
 
         return new Address($email);
+    }
+
+    /**
+     * 管理者へ返品申請の通知メールを送信する.
+     */
+    public function sendRefundRequestNotifyMail(RefundRequest $RefundRequest): void
+    {
+        log_info('返品申請通知メール送信開始', ['id' => $RefundRequest->getId()]);
+
+        $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['eccube_refund_request_notify_mail_template_id']);
+
+        $body = $this->twig->render($MailTemplate->getFileName(), [
+            'RefundRequest' => $RefundRequest,
+        ]);
+
+        $message = (new Email())
+            ->subject('['.$this->BaseInfo->getShopName().'] '.$MailTemplate->getMailSubject())
+            ->from(new Address($this->BaseInfo->getEmail01(), $this->BaseInfo->getShopName()))
+            ->to($this->BaseInfo->getEmail01())
+            ->replyTo($this->BaseInfo->getEmail03())
+            ->returnPath($this->BaseInfo->getEmail04());
+
+        $htmlFileName = $this->getHtmlTemplate($MailTemplate->getFileName());
+        if (!is_null($htmlFileName)) {
+            $htmlBody = $this->twig->render($htmlFileName, [
+                'RefundRequest' => $RefundRequest,
+            ]);
+            $message
+                ->text($body)
+                ->html($htmlBody);
+        } else {
+            $message->text($body);
+        }
+
+        $event = new EventArgs(
+            [
+                'message' => $message,
+                'RefundRequest' => $RefundRequest,
+                'MailTemplate' => $MailTemplate,
+                'BaseInfo' => $this->BaseInfo,
+            ]
+        );
+        $this->eventDispatcher->dispatch($event, EccubeEvents::MAIL_REFUND_REQUEST);
+
+        $message = $event->getArgument('message');
+
+        try {
+            $this->mailer->send($message);
+
+            $MailHistory = new MailHistory();
+            $MailHistory->setMailSubject($message->getSubject())
+                ->setMailBody($message->getTextBody())
+                ->setOrder($RefundRequest->getOrder())
+                ->setSendDate(new \DateTime());
+            $this->mailHistoryRepository->save($MailHistory);
+        } catch (TransportExceptionInterface $e) {
+            log_error('返品申請通知メールの送信に失敗しました。', [
+                'RefundRequest' => $RefundRequest->getId(),
+                'error' => $e->getMessage(),
+            ]);
+        }
     }
 }

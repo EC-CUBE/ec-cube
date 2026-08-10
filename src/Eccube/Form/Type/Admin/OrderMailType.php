@@ -26,34 +26,26 @@ use Symfony\Component\Validator\Constraints as Assert;
 class OrderMailType extends AbstractType
 {
     /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
      * MailType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
-    public function __construct(
-        EccubeConfig $eccubeConfig,
-    ) {
-        $this->eccubeConfig = $eccubeConfig;
+    public function __construct(protected EccubeConfig $eccubeConfig)
+    {
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('template', MailTemplateType::class, [
                 'required' => false,
                 'mapped' => false,
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('mt')
-                        ->orderBy('mt.id', 'ASC');
-                },
+                'query_builder' => fn (EntityRepository $er) => $er->createQueryBuilder('mt')
+                    ->orderBy('mt.id', 'ASC'),
             ])
             ->add('mail_subject', TextType::class, [
                 'required' => true,
@@ -75,7 +67,8 @@ class OrderMailType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    #[\Override]
+    public function getBlockPrefix(): string
     {
         return 'admin_order_mail';
     }

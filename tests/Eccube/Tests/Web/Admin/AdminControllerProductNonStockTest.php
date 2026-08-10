@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -13,24 +15,22 @@
 
 namespace Eccube\Tests\Web\Admin;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Client;
 
 /**
  * Class AdminControllerProductNonStockTest.
  */
-class AdminControllerProductNonStockTest extends AbstractAdminWebTestCase
+final class AdminControllerProductNonStockTest extends AbstractAdminWebTestCase
 {
-    /**
-     * @var string
-     */
-    protected $target = '#shop-statistical';
+    protected ?string $target = '#shop-statistical';
 
     /**
      * test redirect when click
      */
     public function testAdminNonStockRedirect()
     {
-        $this->client->request('GET', $this->generateUrl('admin_homepage_nonstock'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_homepage_nonstock'));
         $this->assertTrue($this->client->getResponse()->isRedirect());
     }
 
@@ -41,7 +41,7 @@ class AdminControllerProductNonStockTest extends AbstractAdminWebTestCase
     {
         /* @var Client $client */
         $client = $this->client;
-        $crawler = $client->request('GET', $this->generateUrl('admin_homepage'));
+        $crawler = $client->request(Request::METHOD_GET, $this->generateUrl('admin_homepage'));
         $this->assertTrue($client->getResponse()->isSuccessful());
 
         $this->assertStringContainsString('在庫切れ商品', $crawler->filter($this->target)->html());
@@ -56,7 +56,7 @@ class AdminControllerProductNonStockTest extends AbstractAdminWebTestCase
     {
         /* @var Client $client */
         $client = $this->client;
-        $crawler = $client->request('GET', $this->generateUrl('admin_homepage'));
+        $crawler = $client->request(Request::METHOD_GET, $this->generateUrl('admin_homepage'));
         $this->assertTrue($client->getResponse()->isSuccessful());
 
         $this->assertStringContainsString('在庫切れ商品', $crawler->filter($this->target)->html());
@@ -64,7 +64,7 @@ class AdminControllerProductNonStockTest extends AbstractAdminWebTestCase
         $section = trim($crawler->filter($this->target.' .card-body .d-block:nth-child(1) span.h4')->text());
         $this->expected = $showNumber = (int) preg_replace('/\D/', '', $section);
 
-        $client->request('GET', $this->generateUrl('admin_homepage_nonstock'));
+        $client->request(Request::METHOD_GET, $this->generateUrl('admin_homepage_nonstock'));
 
         $crawler = $client->followRedirect();
         $this->actual = $crawler->filter('.table-sm > tbody > tr')->count();

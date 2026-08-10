@@ -15,12 +15,13 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Order;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\ProductStock;
 use Eccube\Repository\ProductClassRepository;
+use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\ItemHolderValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
-use Eccube\Service\PurchaseFlow\PurchaseException;
 use Eccube\Service\PurchaseFlow\PurchaseProcessor;
 
 /**
@@ -29,33 +30,25 @@ use Eccube\Service\PurchaseFlow\PurchaseProcessor;
 class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcessor
 {
     /**
-     * @var ProductClassRepository
-     */
-    protected $productClassRepository;
-
-    /**
      * StockProcessor constructor.
-     *
-     * @param ProductClassRepository $productClassRepository
      */
-    public function __construct(ProductClassRepository $productClassRepository)
+    public function __construct(protected ProductClassRepository $productClassRepository)
     {
-        $this->productClassRepository = $productClassRepository;
     }
 
     /**
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
-     *
-     * @throws \Eccube\Service\PurchaseFlow\InvalidItemException
+     * @throws InvalidItemException
      */
-    public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    #[\Override]
+    public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         if (is_null($context->getOriginHolder())) {
             return;
         }
 
+        /** @var Order $From */
         $From = $context->getOriginHolder();
+        /** @var Order $To */
         $To = $itemHolder;
         $diff = $this->getDiffOfQuantities($From, $To);
 
@@ -68,34 +61,33 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
 
             $stock = $ProductClass->getStock();
             $Items = $To->getProductOrderItems();
-            $Items = array_filter($Items, function ($Item) use ($id) {
-                return $Item->getProductClass()->getId() == $id;
-            });
-            $toQuantity = array_reduce($Items, function ($quantity, $Item) {
-                return $quantity += $Item->getQuantity();
-            }, 0);
+            $Items = array_filter($Items, fn ($Item) => $Item->getProductClass()->getId() == $id);
+            $toQuantity = array_reduce($Items, fn ($quantity, $Item) => $quantity = bcadd((string) $quantity, $Item->getQuantity()), 0);
 
             // ステータスをキャンセルに変更した場合
             if ($To->getOrderStatus() && $To->getOrderStatus()->getId() == OrderStatus::CANCEL
                 && $From->getOrderStatus() && $From->getOrderStatus()->getId() != OrderStatus::CANCEL) {
-                if ($stock + $toQuantity < 0) {
+                if (bcadd((string) $stock, (string) $toQuantity) < 0) {
                     $this->throwInvalidItemException(trans('purchase_flow.over_stock', ['%name%' => $ProductClass->formattedProductName()]));
                 }
             // ステータスをキャンセルから対応中に変更した場合
             } elseif ($To->getOrderStatus() && $To->getOrderStatus()->getId() == OrderStatus::IN_PROGRESS
                 && $From->getOrderStatus() && $From->getOrderStatus()->getId() == OrderStatus::CANCEL) {
-                if ($stock - $toQuantity < 0) {
+                if (bcsub((string) $stock, (string) $toQuantity) < 0) {
                     $this->throwInvalidItemException(trans('purchase_flow.over_stock', ['%name%' => $ProductClass->formattedProductName()]));
                 }
             } else {
-                if ($stock - $quantity < 0) {
+                if (bcsub((string) $stock, (string) $quantity) < 0) {
                     $this->throwInvalidItemException(trans('purchase_flow.over_stock', ['%name%' => $ProductClass->formattedProductName()]));
                 }
             }
         }
     }
 
-    protected function getDiffOfQuantities(ItemHolderInterface $From, ItemHolderInterface $To)
+    /**
+     * @return array<int, string> 商品クラスIDをキーとした商品の数量の差分
+     */
+    protected function getDiffOfQuantities(ItemHolderInterface $From, ItemHolderInterface $To): array
     {
         $FromItems = $this->getQuantityByProductClass($From);
         $ToItems = $this->getQuantityByProductClass($To);
@@ -107,11 +99,11 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
             if (isset($FromItems[$id]) && isset($ToItems[$id])) {
                 // 2 -> 3 = +1
                 // 2 -> 1 = -1
-                $diff[$id] = $ToItems[$id] - $FromItems[$id];
+                $diff[$id] = bcsub($ToItems[$id], $FromItems[$id], 0);
             } // 削除された明細
             elseif (isset($FromItems[$id]) && empty($ToItems[$id])) {
                 // 2 -> 0 = -2
-                $diff[$id] = $FromItems[$id] * -1;
+                $diff[$id] = bcmul($FromItems[$id], '-1', 0);
             } // 追加された明細
             elseif (!isset($FromItems[$id]) && isset($ToItems[$id])) {
                 // 0 -> 2 = +2
@@ -122,14 +114,19 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
         return $diff;
     }
 
-    protected function getQuantityByProductClass(ItemHolderInterface $ItemHolder)
+    /**
+     * @param ItemHolderInterface $ItemHolder 受注 or カート
+     *
+     * @return array<int, string> 商品クラスIDをキーとした商品の数量
+     */
+    protected function getQuantityByProductClass(ItemHolderInterface $ItemHolder): array
     {
         $ItemsByProductClass = [];
         foreach ($ItemHolder->getItems() as $Item) {
             if ($Item->isProduct()) {
                 $id = $Item->getProductClass()->getId();
                 if (isset($ItemsByProductClass[$id])) {
-                    $ItemsByProductClass[$id] += $Item->getQuantity();
+                    $ItemsByProductClass[$id] = bcadd($ItemsByProductClass[$id], $Item->getQuantity(), 0);
                 } else {
                     $ItemsByProductClass[$id] = $Item->getQuantity();
                 }
@@ -142,12 +139,11 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
     /**
      * 受注の仮確定処理を行います。
      *
-     * @param ItemHolderInterface $target
-     * @param PurchaseContext $context
-     *
-     * @throws PurchaseException
+     * @param ItemHolderInterface $target 受注 or カート
+     * @param PurchaseContext $context 購入フローのコンテキスト
      */
-    public function prepare(ItemHolderInterface $target, PurchaseContext $context)
+    #[\Override]
+    public function prepare(ItemHolderInterface $target, PurchaseContext $context): void
     {
         if (is_null($context->getOriginHolder())) {
             return;
@@ -162,7 +158,7 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
                 continue;
             }
 
-            $stock = $ProductClass->getStock() - $quantity;
+            $stock = $ProductClass->getStock() !== null ? bcsub((string) $ProductClass->getStock(), $quantity) : null;
             $ProductStock = $ProductClass->getProductStock();
             if (!$ProductStock) {
                 $ProductStock = new ProductStock();
@@ -177,22 +173,22 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
     /**
      * 受注の確定処理を行います。
      *
-     * @param ItemHolderInterface $target
-     * @param PurchaseContext $context
-     *
-     * @throws PurchaseException
+     * @param ItemHolderInterface $target 受注 or カート
+     * @param PurchaseContext $context 購入フローのコンテキスト
      */
-    public function commit(ItemHolderInterface $target, PurchaseContext $context)
+    #[\Override]
+    public function commit(ItemHolderInterface $target, PurchaseContext $context): void
     {
     }
 
     /**
      * 仮確定した受注データの取り消し処理を行います。
      *
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
+     * @param ItemHolderInterface $itemHolder 受注 or カート
+     * @param PurchaseContext $context 購入フローのコンテキスト
      */
-    public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    #[\Override]
+    public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
     }
 }

@@ -51,10 +51,10 @@ class EA02AuthenticationCest
         $loginText = $I->grabTextFrom(['css' => '#page_admin_homepage div.popover .popover-body > p']);
 
         // Format Y/m/d only
-        $lastLogin = preg_replace('/.*(\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}).*/s', '$1', $loginText);
+        $lastLogin = preg_replace('/.*(\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}).*/s', '$1', (string) $loginText);
         // 表示されるログイン日時では秒数がわからないため、タイミングによっては1分ちょっと変わる
         $now = new DateTime();
-        $I->assertTrue((strtotime($now->format('Y/m/d')) - strtotime($lastLogin)) < 70, '最終ログイン日時が正しい');
+        $I->assertTrue((strtotime($now->format('Y/m/d')) - strtotime((string) $lastLogin)) < 70, '最終ログイン日時が正しい');
     }
 
     public function authentication_パスワード変更(AcceptanceTester $I)

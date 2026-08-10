@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,23 +23,19 @@ use Eccube\Service\PurchaseFlow\ProcessResult;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
-class PointRateProcessorTest extends EccubeTestCase
+final class PointRateProcessorTest extends EccubeTestCase
 {
-    /** @var PointRateProcessor */
-    private $processor;
+    private ?PointRateProcessor $processor = null;
 
-    /** @var BaseInfo */
-    private $BaseInfo;
+    private ?BaseInfo $BaseInfo = null;
 
-    /** @var Order */
-    private $Order;
+    private ?Order $Order = null;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->processor = static::getContainer()->get(PointRateProcessor::class);
         $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
-
         $this->Order = $this->createOrder($this->createCustomer());
         foreach ($this->Order->getOrderItems() as $OrderItem) {
             $OrderItem->setPointRate(null);
@@ -56,7 +54,7 @@ class PointRateProcessorTest extends EccubeTestCase
     public function testExecuteProductPointRate()
     {
         $baseRate = $this->BaseInfo->getBasicPointRate();
-        $productPointRate = $baseRate + 1;
+        $productPointRate = bcadd($baseRate, '1');
 
         foreach ($this->Order->getProductOrderItems() as $OrderItem) {
             $OrderItem->getProductClass()->setPointRate($productPointRate);
@@ -66,9 +64,9 @@ class PointRateProcessorTest extends EccubeTestCase
 
         foreach ($this->Order->getOrderItems() as $OrderItem) {
             if ($OrderItem->isProduct()) {
-                $this->assertSame($OrderItem->getPointRate(), $productPointRate);
+                $this->assertSame($productPointRate, $OrderItem->getPointRate());
             } else {
-                $this->assertSame($OrderItem->getPointRate(), $baseRate);
+                $this->assertSame($baseRate, $OrderItem->getPointRate());
             }
         }
     }

@@ -17,6 +17,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\CartItem;
+use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Form\DataTransformer\EntityToIdTransformer;
 use Eccube\Repository\ProductClassRepository;
@@ -31,44 +32,28 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Context\ExecutionContext;
 
 class AddCartType extends AbstractType
 {
-    /**
-     * @var EccubeConfig
-     */
-    protected $config;
+    protected EntityManager $em;
 
-    /**
-     * @var EntityManager
-     */
-    protected $em;
+    protected Product $Product;
 
-    /**
-     * @var \Eccube\Entity\Product
-     */
-    protected $Product;
+    protected ProductClassRepository $productClassRepository;
 
-    /**
-     * @var ProductClassRepository
-     */
-    protected $productClassRepository;
-
-    protected $doctrine;
-
-    public function __construct(ManagerRegistry $doctrine, EccubeConfig $config)
+    public function __construct(protected ManagerRegistry $doctrine, protected EccubeConfig $config)
     {
-        $this->doctrine = $doctrine;
-        $this->config = $config;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        /** @var \Eccube\Entity\Product $Product */
+        /** @var Product $Product */
         $Product = $options['product'];
         $this->Product = $Product;
         $ProductClasses = $Product->getProductClasses();
@@ -109,7 +94,7 @@ class AddCartType extends AbstractType
                         new Assert\Regex(['pattern' => '/^\d+$/']),
                     ],
                 ]);
-            if ($Product && $Product->getProductClasses()) {
+            if ($Product->getProductClasses()) {
                 if (!is_null($Product->getClassName1())) {
                     $builder->add('classcategory_id1', ChoiceType::class, [
                         'label' => $Product->getClassName1(),
@@ -126,7 +111,7 @@ class AddCartType extends AbstractType
                 }
             }
 
-            $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($Product) {
+            $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($Product): void {
                 $data = $event->getData();
                 $form = $event->getForm();
                 if (isset($data['classcategory_id1']) && !is_null($Product->getClassName2())) {
@@ -140,7 +125,7 @@ class AddCartType extends AbstractType
                 }
             });
 
-            $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
                 /** @var CartItem $CartItem */
                 $CartItem = $event->getData();
                 $ProductClass = $CartItem->getProductClass();
@@ -157,22 +142,25 @@ class AddCartType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired('product');
         $resolver->setDefaults([
             'data_class' => CartItem::class,
             'id_add_product_id' => true,
             'constraints' => [
-                // FIXME new Assert\Callback(array($this, 'validate')),
             ],
         ]);
     }
 
-    /*
+    /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function finishView(FormView $view, FormInterface $form, array $options)
+    #[\Override]
+    public function finishView(FormView $view, FormInterface $form, array $options): void
     {
         if ($options['id_add_product_id']) {
             foreach ($view->vars['form']->children as $child) {
@@ -184,40 +172,9 @@ class AddCartType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    #[\Override]
+    public function getBlockPrefix(): string
     {
         return 'add_cart';
-    }
-
-    /**
-     * validate
-     *
-     * @param type $data
-     * @param ExecutionContext $context
-     */
-    public function validate($data, ExecutionContext $context)
-    {
-        $context->getValidator()->validate($data['product_class_id'], [
-            new Assert\NotBlank(),
-        ], '[product_class_id]');
-        if ($this->Product->getClassName1()) {
-            $context->validateValue($data['classcategory_id1'], [
-                new Assert\NotBlank(),
-                new Assert\NotEqualTo([
-                    'value' => '__unselected',
-                    'message' => 'form_error.not_selected',
-                ]),
-            ], '[classcategory_id1]');
-        }
-        // 商品規格2初期状態(未選択)の場合の返却値は「NULL」で「__unselected」ではない
-        if ($this->Product->getClassName2()) {
-            $context->getValidator()->validate($data['classcategory_id2'], [
-                new Assert\NotBlank(),
-                new Assert\NotEqualTo([
-                    'value' => '__unselected',
-                    'message' => 'form_error.not_selected',
-                ]),
-            ], '[classcategory_id2]');
-        }
     }
 }

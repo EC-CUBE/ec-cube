@@ -14,10 +14,11 @@
 namespace Eccube\Twig\Extension;
 
 use Twig\Environment;
-use Twig\Error\LoaderError;
 use Twig\Extension\AbstractExtension;
+use Twig\Extension\CoreExtension;
 use Twig\Extension\SandboxExtension;
 use Twig\Sandbox\SecurityError;
+use Twig\TemplateWrapper;
 use Twig\TwigFunction;
 
 /**
@@ -28,10 +29,11 @@ class IgnoreTwigSandboxErrorExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('include', [$this, 'twig_include'], ['needs_environment' => true, 'needs_context' => true, 'is_safe' => ['all']]),
+            new TwigFunction('include', $this->twig_include(...), ['needs_environment' => true, 'needs_context' => true, 'is_safe' => ['all']]),
         ];
     }
 
@@ -40,40 +42,35 @@ class IgnoreTwigSandboxErrorExtension extends AbstractExtension
      * app_env = devの場合、エラーを表示する
      * app_env = prodの場合、エラーを表示しない
      *
-     * @param Environment $env
-     * @param $context
-     * @param $template
-     * @param $variables
-     * @param $withContext
-     * @param $ignoreMissing
-     * @param $sandboxed
+     * CoreExtension::include() を使用してSandbox SecurityErrorを捕捉し、
+     * 環境に応じて適切に処理します。
      *
-     * @return string|null
+     * @param array<mixed> $context
+     * @param array<mixed>|string|TemplateWrapper $template
+     * @param array<mixed> $variables
      *
-     * @throws LoaderError
      * @throws SecurityError
      */
-    public function twig_include(Environment $env, $context, $template, $variables = [], $withContext = true, $ignoreMissing = false, $sandboxed = false)
+    public function twig_include(Environment $env, array $context, array|string|TemplateWrapper $template, array $variables = [], bool $withContext = true, bool $ignoreMissing = false, bool $sandboxed = false): ?string
     {
         try {
-            return \twig_include($env, $context, $template, $variables, $withContext, $ignoreMissing, $sandboxed);
+            return CoreExtension::include($env, $context, $template, $variables, $withContext, $ignoreMissing, $sandboxed);
         } catch (SecurityError $e) {
             // devではエラー画面が表示されるようにする
             $appEnv = env('APP_ENV');
             if ($appEnv === 'dev') {
                 throw $e;
-            } else {
-                // ログ出力
-                log_warning($e->getMessage(), ['exception' => $e]);
-
-                // 例外がスローされた場合、sandboxが効いた状態になってしまうため追加
-                $sandbox = $env->getExtension(SandboxExtension::class);
-                if (!$sandbox->isSandboxedGlobally()) {
-                    $sandbox->disableSandbox();
-                }
-
-                return null;
             }
+            // ログ出力
+            log_warning($e->getMessage(), ['exception' => $e]);
+
+            // 例外がスローされた場合、sandboxが効いた状態になってしまうため追加
+            $sandbox = $env->getExtension(SandboxExtension::class);
+            if (!$sandbox->isSandboxedGlobally()) {
+                $sandbox->disableSandbox();
+            }
+
+            return null;
         }
     }
 }

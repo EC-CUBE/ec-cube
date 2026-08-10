@@ -13,25 +13,20 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 trait PointRateTrait
 {
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="point_rate", type="decimal", precision=10, scale=0, options={"unsigned":true}, nullable=true)
-     */
-    private $point_rate;
+    #[ORM\Column(name: 'point_rate', type: Types::DECIMAL, precision: 10, scale: 0, options: ['unsigned' => true], nullable: true)]
+    private ?string $point_rate = null;
 
     /**
      * Set pointRate
      *
-     * @param string $pointRate
-     *
-     * @return OrderItem
+     * @return $this
      */
-    public function setPointRate($pointRate)
+    public function setPointRate(?string $pointRate): static
     {
         $this->point_rate = $pointRate;
 
@@ -40,10 +35,8 @@ trait PointRateTrait
 
     /**
      * Get pointRate
-     *
-     * @return string
      */
-    public function getPointRate()
+    public function getPointRate(): ?string
     {
         return $this->point_rate;
     }

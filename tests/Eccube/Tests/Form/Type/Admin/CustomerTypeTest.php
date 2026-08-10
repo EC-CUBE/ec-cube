@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,13 +19,12 @@ use Eccube\Form\Type\Admin\CustomerType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use Symfony\Component\Form\FormInterface;
 
-class CustomerTypeTest extends AbstractTypeTestCase
+final class CustomerTypeTest extends AbstractTypeTestCase
 {
-    /** @var FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = [
+    protected ?array $formData = [
         'name' => [
             'name01' => 'たかはし',
             'name02' => 'しんいち',
@@ -45,8 +46,8 @@ class CustomerTypeTest extends AbstractTypeTestCase
         'job' => 1,
         'birth' => '1983-2-14',
         'plain_password' => [
-            'first' => 'password1234',
-            'second' => 'password1234',
+            'first' => 'password1234abc',
+            'second' => 'password1234abc',
         ],
         'status' => 1,
         'note' => 'note',
@@ -56,7 +57,6 @@ class CustomerTypeTest extends AbstractTypeTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
         // CSRF tokenを無効にしてFormを作成
         // 会員管理会員登録・編集
         $this->form = $this->formFactory
@@ -249,9 +249,40 @@ class CustomerTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidPasswordAlphabetOnly()
+    /**
+     * NIST SP 800-63B-4 では文字種の複雑さを求めないため, 英字のみでも有効.
+     */
+    public function testValidPasswordAlphabetOnly()
     {
-        $password = str_repeat('a', $this->eccubeConfig['eccube_password_max_len']);
+        $password = str_repeat('a', $this->eccubeConfig['eccube_password_min_len']);
+
+        $this->formData['plain_password']['first'] = $password;
+        $this->formData['plain_password']['second'] = $password;
+        $this->form->submit($this->formData);
+
+        $this->assertTrue($this->form->isValid());
+    }
+
+    /**
+     * 数字のみでも有効.
+     */
+    public function testValidPasswordNumericOnly()
+    {
+        $password = '987654321098765';
+
+        $this->formData['plain_password']['first'] = $password;
+        $this->formData['plain_password']['second'] = $password;
+        $this->form->submit($this->formData);
+
+        $this->assertTrue($this->form->isValid());
+    }
+
+    /**
+     * ブロックリストに掲載されたパスワードは不可.
+     */
+    public function testInvalidPasswordBlocklisted()
+    {
+        $password = 'passwordpassword';
 
         $this->formData['plain_password']['first'] = $password;
         $this->formData['plain_password']['second'] = $password;
@@ -260,9 +291,12 @@ class CustomerTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidPasswordNumericOnly()
+    /**
+     * 制御文字(改行)を含む場合は不可.
+     */
+    public function testInvalidPasswordControlCharacter()
     {
-        $password = str_repeat('1', $this->eccubeConfig['eccube_password_max_len']);
+        $password = "abcdefghijklmno\nabc";
 
         $this->formData['plain_password']['first'] = $password;
         $this->formData['plain_password']['second'] = $password;
@@ -277,7 +311,7 @@ class CustomerTypeTest extends AbstractTypeTestCase
         $this->formData['plain_password']['second'] = $this->formData['email'];
 
         $this->form->submit($this->formData);
-        $this->assertEquals(trans('common.password_eq_email'), $this->form->getErrors(true)[0]->getMessage());
+        $this->assertSame(trans('common.password_eq_email'), $this->form->getErrors(true)[0]->getMessage());
     }
 
     public function testInvalidStatusBlank()

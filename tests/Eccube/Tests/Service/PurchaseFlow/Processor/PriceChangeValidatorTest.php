@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -20,27 +22,15 @@ use Eccube\Service\PurchaseFlow\Processor\PriceChangeValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
-class PriceChangeValidatorTest extends EccubeTestCase
+final class PriceChangeValidatorTest extends EccubeTestCase
 {
-    /**
-     * @var PriceChangeValidator
-     */
-    protected $validator;
+    protected ?PriceChangeValidator $validator = null;
 
-    /**
-     * @var CartItem
-     */
-    protected $cartItem;
+    protected ?CartItem $cartItem = null;
 
-    /**
-     * @var Product
-     */
-    protected $Product;
+    protected ?Product $Product = null;
 
-    /**
-     * @var ProductClass
-     */
-    protected $ProductClass;
+    protected ?ProductClass $ProductClass = null;
 
     /**
      * {@inheritdoc}
@@ -48,7 +38,6 @@ class PriceChangeValidatorTest extends EccubeTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->Product = $this->createProduct('テスト商品', 1);
         $this->ProductClass = $this->Product->getProductClasses()[0];
         $this->validator = static::getContainer()->get(PriceChangeValidator::class);
@@ -58,24 +47,24 @@ class PriceChangeValidatorTest extends EccubeTestCase
 
     public function testInstance()
     {
-        self::assertInstanceOf(PriceChangeValidator::class, $this->validator);
-        self::assertSame($this->ProductClass, $this->cartItem->getProductClass());
+        $this->assertInstanceOf(PriceChangeValidator::class, $this->validator);
+        $this->assertSame($this->ProductClass, $this->cartItem->getProductClass());
     }
 
     public function testNoChange()
     {
-        $this->ProductClass->setPrice02(100);
+        $this->ProductClass->setPrice02('100');
         $this->cartItem->setPrice($this->ProductClass->getPrice02IncTax());
         $result = $this->validator->execute($this->cartItem, new PurchaseContext());
-        self::assertTrue($result->isSuccess());
+        $this->assertTrue($result->isSuccess());
     }
 
     public function testChange()
     {
-        $this->ProductClass->setPrice02(100);
-        $this->cartItem->setPrice(50);
+        $this->ProductClass->setPrice02('100');
+        $this->cartItem->setPrice('50');
         $result = $this->validator->execute($this->cartItem, new PurchaseContext());
-        self::assertTrue($result->isWarning());
-        self::assertSame($this->ProductClass->getPrice02IncTax(), $this->cartItem->getPrice());
+        $this->assertTrue($result->isWarning());
+        $this->assertSame($this->ProductClass->getPrice02IncTax(), $this->cartItem->getPrice());
     }
 }

@@ -9,24 +9,38 @@ jobs:
       contents: write
     name: Deploy
     runs-on: ubuntu-24.04
-    services:
-      postgres:
-        image: postgres:14
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
-        ports:
-          - 5432:5432
-        # needed because the postgres container does not provide a healthcheck
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v6
+        with:
+          persist-credentials: false
+
+      ## Docker Hub からの pull はタイムアウトで CI が不安定になるため、
+      ## DB はコンテナではなく setup アクション (apt) でインストールする
+      - name: Setup PostgreSQL
+        uses: ankane/setup-postgres@6d3ffa1aa7498a42b79e9f9f5838b99971839300  # v1
+        with:
+          postgres-version: '18'
+          user: postgres
+      - name: Configure PostgreSQL
+        run: |
+          for _ in $(seq 1 30); do pg_isready -h 127.0.0.1 && break; sleep 1; done
+          pg_isready -h 127.0.0.1 || { echo 'PostgreSQL did not become ready within 30s'; exit 1; }
+          psql -h 127.0.0.1 -U postgres -c "ALTER USER postgres PASSWORD 'password'"
+          ## DATABASE_URL と同一経路 (TCP/postgres/password) で接続できることを検証
+          PGPASSWORD=password psql -h 127.0.0.1 -U postgres -c 'SELECT VERSION()'
 
       - name: Setup PHP
-        uses: nanasess/setup-php@bc11abbf4dd060b7bfd20d03edeeb43417ebe245  # master
+        uses: nanasess/setup-php@3f36b116d024300a7df978629a2bad9afceb2be3  # master
         with:
-          php-version: '8.1'
+          php-version: '8.5'
+
+      - name: Install ext-redis 6.1+
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y php8.4-redis
+          sudo phpenmod -s cli redis
+          php -m | grep -i redis
 
       - name: Install to Composer
         run: composer install --no-scripts --no-dev --no-interaction --optimize-autoloader
@@ -38,7 +52,7 @@ jobs:
         env:
           APP_ENV: 'prod'
           DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
-          DATABASE_SERVER_VERSION: 14
+          DATABASE_SERVER_VERSION: 18
         run: |
           rm -rf $GITHUB_WORKSPACE/app/Plugin/*
           echo "APP_ENV=${APP_ENV}" > .env
@@ -50,7 +64,7 @@ jobs:
         env:
           APP_ENV: 'prod'
           DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
-          DATABASE_SERVER_VERSION: 14
+          DATABASE_SERVER_VERSION: 18
         run: |
            bin/console eccube:composer:require "ec-cube/recommend42"
            bin/console eccube:composer:require "ec-cube/coupon42"
@@ -62,7 +76,7 @@ jobs:
            bin/console eccube:composer:require "ec-cube/api42"
 
       - name: revert to config platform.php
-        run: composer config platform.php 8.1.0
+        run: composer config platform.php 8.4.0
 
       - name: Pre Install Plugins
         env:
@@ -76,7 +90,7 @@ jobs:
         run: ${{ github.event.repository.name }}/package.sh
 
       - name: Upload binaries to release of TGZ
-        uses: svenstaro/upload-release-action@9f7ceffe1410bbe7e95b7902af89c91da4d1dc0a  # 2.11.4
+        uses: svenstaro/upload-release-action@29e53e917877a24fad85510ded594ab3c9ca12de  # 2.11.5
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{ runner.workspace }}/eccube-${{ github.event.release.tag_name }}.tar.gz
@@ -84,7 +98,7 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
       - name: Upload binaries to release of ZIP
-        uses: svenstaro/upload-release-action@9f7ceffe1410bbe7e95b7902af89c91da4d1dc0a  # 2.11.4
+        uses: svenstaro/upload-release-action@29e53e917877a24fad85510ded594ab3c9ca12de  # 2.11.5
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{ runner.workspace }}/eccube-${{ github.event.release.tag_name }}.zip
@@ -92,7 +106,7 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
       - name: Upload binaries to release of TGZ md5 checksum
-        uses: svenstaro/upload-release-action@9f7ceffe1410bbe7e95b7902af89c91da4d1dc0a  # 2.11.4
+        uses: svenstaro/upload-release-action@29e53e917877a24fad85510ded594ab3c9ca12de  # 2.11.5
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{ runner.workspace }}/eccube-${{ github.event.release.tag_name }}.tar.gz.checksum.md5
@@ -100,7 +114,7 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
       - name: Upload binaries to release of TGZ sha1 checksum
-        uses: svenstaro/upload-release-action@9f7ceffe1410bbe7e95b7902af89c91da4d1dc0a  # 2.11.4
+        uses: svenstaro/upload-release-action@29e53e917877a24fad85510ded594ab3c9ca12de  # 2.11.5
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{ runner.workspace }}/eccube-${{ github.event.release.tag_name }}.tar.gz.checksum.sha1
@@ -108,7 +122,7 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
       - name: Upload binaries to release of TGZ sha256 checksum
-        uses: svenstaro/upload-release-action@9f7ceffe1410bbe7e95b7902af89c91da4d1dc0a  # 2.11.4
+        uses: svenstaro/upload-release-action@29e53e917877a24fad85510ded594ab3c9ca12de  # 2.11.5
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{ runner.workspace }}/eccube-${{ github.event.release.tag_name }}.tar.gz.checksum.sha256
@@ -116,7 +130,7 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
       - name: Upload binaries to release of ZIP md5 checksum
-        uses: svenstaro/upload-release-action@9f7ceffe1410bbe7e95b7902af89c91da4d1dc0a  # 2.11.4
+        uses: svenstaro/upload-release-action@29e53e917877a24fad85510ded594ab3c9ca12de  # 2.11.5
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{ runner.workspace }}/eccube-${{ github.event.release.tag_name }}.zip.checksum.md5
@@ -124,7 +138,7 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
       - name: Upload binaries to release of ZIP sha1 checksum
-        uses: svenstaro/upload-release-action@9f7ceffe1410bbe7e95b7902af89c91da4d1dc0a  # 2.11.4
+        uses: svenstaro/upload-release-action@29e53e917877a24fad85510ded594ab3c9ca12de  # 2.11.5
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{ runner.workspace }}/eccube-${{ github.event.release.tag_name }}.zip.checksum.sha1
@@ -132,7 +146,7 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
       - name: Upload binaries to release of ZIP sha256 checksum
-        uses: svenstaro/upload-release-action@9f7ceffe1410bbe7e95b7902af89c91da4d1dc0a  # 2.11.4
+        uses: svenstaro/upload-release-action@29e53e917877a24fad85510ded594ab3c9ca12de  # 2.11.5
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{ runner.workspace }}/eccube-${{ github.event.release.tag_name }}.zip.checksum.sha256

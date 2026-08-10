@@ -1,0 +1,5 @@
+# CsvFixture\Loader のロード順定義 (FK 依存に沿って並べる)
+- dtb_customer.csv
+- dtb_order.csv
+- dtb_shipping.csv
+- dtb_order_item.csv

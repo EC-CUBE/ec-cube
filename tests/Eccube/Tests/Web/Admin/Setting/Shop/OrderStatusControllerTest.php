@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -20,23 +22,15 @@ use Eccube\Repository\Master\CustomerOrderStatusRepository;
 use Eccube\Repository\Master\OrderStatusColorRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
-class OrderStatusControllerTest extends AbstractAdminWebTestCase
+final class OrderStatusControllerTest extends AbstractAdminWebTestCase
 {
-    /**
-     * @var OrderStatusRepository
-     */
-    private $orderStatusRepository;
+    private ?OrderStatusRepository $orderStatusRepository = null;
 
-    /**
-     * @var OrderStatusColorRepository
-     */
-    private $orderStatusColorRepository;
+    private ?OrderStatusColorRepository $orderStatusColorRepository = null;
 
-    /**
-     * @var CustomerOrderStatusRepository
-     */
-    private $customerOrderStatusRepository;
+    private ?CustomerOrderStatusRepository $customerOrderStatusRepository = null;
 
     protected function setUp(): void
     {
@@ -48,7 +42,7 @@ class OrderStatusControllerTest extends AbstractAdminWebTestCase
 
     public function testRouting()
     {
-        $this->client->request('GET', $this->generateUrl('admin_setting_shop_order_status'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_shop_order_status'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -59,9 +53,9 @@ class OrderStatusControllerTest extends AbstractAdminWebTestCase
         $formData['OrderStatuses'][0]['customer_order_status_name'] = 'テスト名称(マイページ)';
         $formData['OrderStatuses'][0]['color'] = 'テスト色';
 
-        $this->client->request('GET', $this->generateUrl('admin_setting_shop_order_status'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_shop_order_status'));
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop_order_status'),
             ['form' => $formData]
         );
@@ -71,9 +65,12 @@ class OrderStatusControllerTest extends AbstractAdminWebTestCase
         $OrderStatus = $this->orderStatusRepository->findOneBy([], ['sort_no' => 'ASC']);
         $CustomerOrderStatus = $this->customerOrderStatusRepository->findOneBy([], ['sort_no' => 'ASC']);
         $OrderStatusColor = $this->orderStatusColorRepository->findOneBy([], ['sort_no' => 'ASC']);
+        $this->assertInstanceOf(OrderStatus::class, $OrderStatus);
 
         $this->assertSame('テスト名称(受注管理)', $OrderStatus->getName());
+        $this->assertInstanceOf(CustomerOrderStatus::class, $CustomerOrderStatus);
         $this->assertSame('テスト名称(マイページ)', $CustomerOrderStatus->getName());
+        $this->assertInstanceOf(OrderStatusColor::class, $OrderStatusColor);
         $this->assertSame('テスト色', $OrderStatusColor->getName());
     }
 
@@ -84,9 +81,9 @@ class OrderStatusControllerTest extends AbstractAdminWebTestCase
         $formData['OrderStatuses'][0]['customer_order_status_name'] = '';
         $formData['OrderStatuses'][0]['color'] = '';
 
-        $this->client->request('GET', $this->generateUrl('admin_setting_shop_order_status'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_shop_order_status'));
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop_order_status'),
             ['form' => $formData]
         );

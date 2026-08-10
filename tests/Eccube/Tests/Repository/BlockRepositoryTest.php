@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -23,17 +25,11 @@ use Eccube\Tests\EccubeTestCase;
  *
  * @author Kentaro Ohkouchi
  */
-class BlockRepositoryTest extends EccubeTestCase
+final class BlockRepositoryTest extends EccubeTestCase
 {
-    /**
-     * @var  DeviceType
-     */
-    protected $DeviceType;
+    protected ?DeviceType $DeviceType = null;
 
-    /**
-     * @var  BlockRepository
-     */
-    protected $blockRepository;
+    protected ?BlockRepository $blockRepository = null;
 
     /**
      * {@inheritdoc}
@@ -45,7 +41,6 @@ class BlockRepositoryTest extends EccubeTestCase
         $this->removeBlock();
         $this->DeviceType = $this->entityManager->getRepository(DeviceType::class)
             ->find(DeviceType::DEVICE_TYPE_PC);
-
         for ($i = 0; $i < 10; $i++) {
             $Block = new Block();
             $Block

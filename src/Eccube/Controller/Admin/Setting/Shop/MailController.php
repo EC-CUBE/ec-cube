@@ -21,12 +21,14 @@ use Eccube\Form\Type\Admin\MailType;
 use Eccube\Repository\MailTemplateRepository;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
+use Twig\Error\LoaderError;
 
 /**
  * Class MailController
@@ -34,29 +36,23 @@ use Twig\Environment;
 class MailController extends AbstractController
 {
     /**
-     * @var MailTemplateRepository
-     */
-    protected $mailTemplateRepository;
-
-    /**
      * MailController constructor.
-     *
-     * @param MailTemplateRepository $mailTemplateRepository
      */
-    public function __construct(MailTemplateRepository $mailTemplateRepository)
+    public function __construct(protected MailTemplateRepository $mailTemplateRepository, private readonly Environment $twig, private readonly CacheUtil $cacheUtil)
     {
-        $this->mailTemplateRepository = $mailTemplateRepository;
     }
 
     /**
-     * @Route("/%eccube_admin_route%/setting/shop/mail", name="admin_setting_shop_mail", methods={"GET", "POST"})
-     * @Route("/%eccube_admin_route%/setting/shop/mail/{id}", requirements={"id" = "\d+"}, name="admin_setting_shop_mail_edit", methods={"GET", "POST"})
+     * @return RedirectResponse|array<string, mixed>
      *
-     * @Template("@admin/Setting/Shop/mail.twig")
+     * @throws LoaderError
      */
-    public function index(Request $request, Environment $twig, CacheUtil $cacheUtil, ?MailTemplate $Mail = null)
+    #[Route(path: '/%eccube_admin_route%/setting/shop/mail', name: 'admin_setting_shop_mail', methods: ['GET', 'POST'])]
+    #[Route(path: '/%eccube_admin_route%/setting/shop/mail/{id}', name: 'admin_setting_shop_mail_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Setting/Shop/mail.twig')]
+    public function index(Request $request, ?MailTemplate $Mail = null): RedirectResponse|array
     {
-        $Mail = $Mail ?? new MailTemplate();
+        $Mail ??= new MailTemplate();
         $builder = $this->formFactory
             ->createBuilder(MailType::class, $Mail);
 
@@ -76,7 +72,7 @@ class MailController extends AbstractController
             $form['template']->setData($Mail);
 
             // テンプレートファイルの取得
-            $source = $twig->getLoader()
+            $source = $this->twig->getLoader()
                 ->getSourceContext($Mail->getFileName())
                 ->getCode();
 
@@ -84,8 +80,8 @@ class MailController extends AbstractController
 
             $htmlFileName = $this->getHtmlFileName($Mail->getFileName());
 
-            if ($twig->getLoader()->exists($htmlFileName)) {
-                $source = $twig->getLoader()
+            if ($this->twig->getLoader()->exists($htmlFileName)) {
+                $source = $this->twig->getLoader()
                     ->getSourceContext($htmlFileName)
                     ->getCode();
 
@@ -140,7 +136,7 @@ class MailController extends AbstractController
                 $this->addSuccess('admin.common.save_complete', 'admin');
 
                 // キャッシュの削除
-                $cacheUtil->clearTwigCache();
+                $this->cacheUtil->clearTwigCache();
 
                 return $this->redirectToRoute('admin_setting_shop_mail_edit', ['id' => $Mail->getId()]);
             }
@@ -154,11 +150,11 @@ class MailController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/setting/shop/mail/preview", name="admin_setting_shop_mail_preview", methods={"POST"})
-     *
-     * @Template("@admin/Setting/Shop/mail_view.twig")
+     * @return array<string, mixed>
      */
-    public function preview(Request $request)
+    #[Route(path: '/%eccube_admin_route%/setting/shop/mail/preview', name: 'admin_setting_shop_mail_preview', methods: ['POST'])]
+    #[Template(template: '@admin/Setting/Shop/mail_view.twig')]
+    public function preview(Request $request): array
     {
         if (!$request->isXmlHttpRequest() || !$this->isTokenValid()) {
             throw new BadRequestHttpException();
@@ -179,10 +175,8 @@ class MailController extends AbstractController
         ];
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/setting/shop/mail/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_shop_mail_delete", methods={"DELETE"})
-     */
-    public function delete(Request $request, MailTemplate $Mail)
+    #[Route(path: '/%eccube_admin_route%/setting/shop/mail/{id}/delete', name: 'admin_setting_shop_mail_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    public function delete(MailTemplate $Mail): RedirectResponse
     {
         $this->isTokenValid();
 
@@ -215,12 +209,8 @@ class MailController extends AbstractController
 
     /**
      * HTML用テンプレート名を取得する
-     *
-     * @param  string $fileName
-     *
-     * @return string
      */
-    protected function getHtmlFileName($fileName)
+    protected function getHtmlFileName(string $fileName): string
     {
         // HTMLテンプレートファイルの取得
         $targetTemplate = pathinfo($fileName);
@@ -231,12 +221,8 @@ class MailController extends AbstractController
 
     /**
      * テンプレートディレクトリ配下のパスかどうかを検証する
-     *
-     * @param $path
-     *
-     * @return bool
      */
-    protected function validateFilePath($path)
+    protected function validateFilePath(string $path): bool
     {
         $templatePath = realpath($this->getParameter('eccube_theme_front_dir'));
         $path = realpath($path);

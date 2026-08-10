@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -13,48 +15,47 @@
 
 namespace Eccube\Tests\Web;
 
-use Eccube\Entity;
+use Eccube\Entity\Customer;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class AuthenticationHandlerTest extends AbstractWebTestCase
 {
-    /** @var Entity\Customer */
-    private $Customer;
+    private ?Customer $Customer = null;
 
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->Customer = $this->createCustomer();
     }
 
     public function testAuthenticationSuccessHandler()
     {
-        $this->client->request('POST', $this->generateUrl('mypage_login'), [
+        $this->client->request(Request::METHOD_POST, $this->generateUrl('mypage_login'), [
             '_csrf_token' => 'dummy',
             '_target_path' => $this->generateUrl('shopping'),
             '_failure_path' => $this->generateUrl('shopping_login'),
             'login_email' => $this->Customer->getEmail(),
             'login_pass' => 'password',
         ]);
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping', [], UrlGeneratorInterface::ABSOLUTE_URL)));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping', [], UrlGeneratorInterface::ABSOLUTE_PATH)));
     }
 
     public function testAuthenticationFailureHandler()
     {
-        $this->client->request('POST', $this->generateUrl('mypage_login'), [
+        $this->client->request(Request::METHOD_POST, $this->generateUrl('mypage_login'), [
             '_csrf_token' => 'dummy',
             '_target_path' => $this->generateUrl('shopping'),
             '_failure_path' => $this->generateUrl('shopping_login'),
             'login_email' => $this->Customer->getEmail(),
             'login_pass' => 'foo',
         ]);
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_login', [], UrlGeneratorInterface::ABSOLUTE_URL)));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_login', [], UrlGeneratorInterface::ABSOLUTE_PATH)));
     }
 
     public function testAuthenticationSuccessHandlerWithInvalidPath()
     {
-        $this->client->request('POST', $this->generateUrl('mypage_login'), [
+        $this->client->request(Request::METHOD_POST, $this->generateUrl('mypage_login'), [
             '_csrf_token' => 'dummy',
             '_target_path' => 'http://example.com/bar',
             '_failure_path' => $this->generateUrl('shopping_login'),
@@ -62,12 +63,12 @@ final class AuthenticationHandlerTest extends AbstractWebTestCase
             'login_pass' => 'password',
         ]);
 
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL)), 'アプリケーション外部のURLが指定された場合は homepage へリダイレクトする');
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_PATH)), 'アプリケーション外部のURLが指定された場合は homepage へリダイレクトする');
     }
 
     public function testAuthenticationFailureHandlerWithInvalidPath()
     {
-        $this->client->request('POST', $this->generateUrl('mypage_login'), [
+        $this->client->request(Request::METHOD_POST, $this->generateUrl('mypage_login'), [
             '_csrf_token' => 'dummy',
             '_target_path' => $this->generateUrl('shopping'),
             '_failure_path' => 'http://example.com/baz',
@@ -75,6 +76,6 @@ final class AuthenticationHandlerTest extends AbstractWebTestCase
             'login_pass' => 'quux',
         ]);
 
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_URL)), 'アプリケーション外部のURLが指定された場合は homepage へリダイレクトする');
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('homepage', [], UrlGeneratorInterface::ABSOLUTE_PATH)), 'アプリケーション外部のURLが指定された場合は homepage へリダイレクトする');
     }
 }

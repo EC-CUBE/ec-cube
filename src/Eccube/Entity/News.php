@@ -13,333 +13,221 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\NewsRepository;
 
-if (!class_exists(News::class)) {
-    /**
-     * News
-     *
-     * @ORM\Table(name="dtb_news")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\NewsRepository")
-     *
-     * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
-     */
-    class News extends AbstractEntity
+/**
+ * News
+ */
+#[ORM\Table(name: 'dtb_news')]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: NewsRepository::class)]
+#[ORM\Cache(usage: 'NONSTRICT_READ_WRITE')]
+class News extends AbstractEntity implements \Stringable
+{
+    #[\Override]
+    public function __toString(): string
     {
-        /**
-         * @return string
-         */
-        public function __toString()
-        {
-            return (string) $this->getTitle();
-        }
+        return $this->getTitle();
+    }
 
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
-         */
-        private $id;
+    #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    private ?int $id = null;
 
-        /**
-         * @var \DateTime|null
-         *
-         * @ORM\Column(name="publish_date", type="datetimetz", nullable=true)
-         */
-        private $publish_date;
+    #[ORM\Column(name: 'publish_date', type: Types::DATETIMETZ_MUTABLE, nullable: true)]
+    private ?\DateTime $publish_date = null;
 
-        /**
-         * @var string
-         *
-         * @ORM\Column(name="title", type="string", length=255)
-         */
-        private $title;
+    #[ORM\Column(name: 'title', type: Types::STRING, length: 255)]
+    private ?string $title = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="description", type="text", nullable=true)
-         */
-        private $description;
+    #[ORM\Column(name: 'description', type: Types::TEXT, nullable: true)]
+    private ?string $description = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="url", type="string", length=4000, nullable=true)
-         */
-        private $url;
+    #[ORM\Column(name: 'url', type: Types::STRING, length: 4000, nullable: true)]
+    private ?string $url = null;
 
-        /**
-         * @var bool
-         *
-         * @ORM\Column(name="link_method", type="boolean", options={"default":false})
-         */
-        private $link_method = false;
+    #[ORM\Column(name: 'link_method', type: Types::BOOLEAN, options: ['default' => false])]
+    private bool $link_method = false;
 
-        /**
-         * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
-         */
-        private $create_date;
+    #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
+    private ?\DateTime $create_date = null;
 
-        /**
-         * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
-         */
-        private $update_date;
+    #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
+    private ?\DateTime $update_date = null;
 
-        /**
-         * @var bool
-         *
-         * @ORM\Column(name="visible", type="boolean", options={"default":true})
-         */
-        private $visible;
+    #[ORM\Column(name: 'visible', type: Types::BOOLEAN, options: ['default' => true])]
+    private ?bool $visible = null;
 
-        /**
-         * @var Member
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
-         * })
-         */
-        private $Creator;
+    #[ORM\ManyToOne(targetEntity: Member::class)]
+    #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
+    private ?Member $Creator = null;
 
-        /**
-         * Get id.
-         *
-         * @return int
-         */
-        public function getId()
-        {
-            return $this->id;
-        }
+    /**
+     * Get id.
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
-        /**
-         * Set publishDate.
-         *
-         * @param \DateTime|null $publishDate
-         *
-         * @return News
-         */
-        public function setPublishDate($publishDate = null)
-        {
-            $this->publish_date = $publishDate;
+    /**
+     * Set publishDate.
+     */
+    public function setPublishDate(?\DateTime $publishDate = null): News
+    {
+        $this->publish_date = $publishDate;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get publishDate.
-         *
-         * @return \DateTime|null
-         */
-        public function getPublishDate()
-        {
-            return $this->publish_date;
-        }
+    /**
+     * Get publishDate.
+     */
+    public function getPublishDate(): ?\DateTime
+    {
+        return $this->publish_date;
+    }
 
-        /**
-         * Set title.
-         *
-         * @param string $title
-         *
-         * @return News
-         */
-        public function setTitle($title)
-        {
-            $this->title = $title;
+    /**
+     * Set title.
+     */
+    public function setTitle(string $title): News
+    {
+        $this->title = $title;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get title.
-         *
-         * @return string
-         */
-        public function getTitle()
-        {
-            return $this->title;
-        }
+    /**
+     * Get title.
+     */
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
 
-        /**
-         * Set description.
-         *
-         * @param string|null $description
-         *
-         * @return News
-         */
-        public function setDescription($description = null)
-        {
-            $this->description = $description;
+    /**
+     * Set description.
+     */
+    public function setDescription(?string $description = null): News
+    {
+        $this->description = $description;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get description.
-         *
-         * @return string|null
-         */
-        public function getDescription()
-        {
-            return $this->description;
-        }
+    /**
+     * Get description.
+     */
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
 
-        /**
-         * Set url.
-         *
-         * @param string|null $url
-         *
-         * @return News
-         */
-        public function setUrl($url = null)
-        {
-            $this->url = $url;
+    /**
+     * Set url.
+     */
+    public function setUrl(?string $url = null): News
+    {
+        $this->url = $url;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get url.
-         *
-         * @return string|null
-         */
-        public function getUrl()
-        {
-            return $this->url;
-        }
+    /**
+     * Get url.
+     */
+    public function getUrl(): ?string
+    {
+        return $this->url;
+    }
 
-        /**
-         * Set linkMethod.
-         *
-         * @param bool $linkMethod
-         *
-         * @return News
-         */
-        public function setLinkMethod($linkMethod)
-        {
-            $this->link_method = $linkMethod;
+    /**
+     * Set linkMethod.
+     */
+    public function setLinkMethod(bool $linkMethod): News
+    {
+        $this->link_method = $linkMethod;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get linkMethod.
-         *
-         * @return bool
-         */
-        public function isLinkMethod()
-        {
-            return $this->link_method;
-        }
+    /**
+     * Get linkMethod.
+     */
+    public function isLinkMethod(): bool
+    {
+        return $this->link_method;
+    }
 
-        /**
-         * Set createDate.
-         *
-         * @param \DateTime $createDate
-         *
-         * @return News
-         */
-        public function setCreateDate($createDate)
-        {
-            $this->create_date = $createDate;
+    /**
+     * Set createDate.
+     */
+    public function setCreateDate(\DateTime $createDate): News
+    {
+        $this->create_date = $createDate;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get createDate.
-         *
-         * @return \DateTime
-         */
-        public function getCreateDate()
-        {
-            return $this->create_date;
-        }
+    /**
+     * Get createDate.
+     */
+    public function getCreateDate(): ?\DateTime
+    {
+        return $this->create_date;
+    }
 
-        /**
-         * Set updateDate.
-         *
-         * @param \DateTime $updateDate
-         *
-         * @return News
-         */
-        public function setUpdateDate($updateDate)
-        {
-            $this->update_date = $updateDate;
+    /**
+     * Set updateDate.
+     */
+    public function setUpdateDate(\DateTime $updateDate): News
+    {
+        $this->update_date = $updateDate;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get updateDate.
-         *
-         * @return \DateTime
-         */
-        public function getUpdateDate()
-        {
-            return $this->update_date;
-        }
+    /**
+     * Get updateDate.
+     */
+    public function getUpdateDate(): ?\DateTime
+    {
+        return $this->update_date;
+    }
 
-        /**
-         * @return int
-         */
-        public function isVisible()
-        {
-            return $this->visible;
-        }
+    public function isVisible(): bool
+    {
+        return $this->visible;
+    }
 
-        /**
-         * @param bool $visible
-         *
-         * @return News
-         */
-        public function setVisible($visible)
-        {
-            $this->visible = $visible;
+    public function setVisible(bool $visible): News
+    {
+        $this->visible = $visible;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Set creator.
-         *
-         * @param Member|null $creator
-         *
-         * @return News
-         */
-        public function setCreator(?Member $creator = null)
-        {
-            $this->Creator = $creator;
+    /**
+     * Set creator.
+     */
+    public function setCreator(?Member $creator = null): News
+    {
+        $this->Creator = $creator;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get creator.
-         *
-         * @return Member|null
-         */
-        public function getCreator()
-        {
-            return $this->Creator;
-        }
+    /**
+     * Get creator.
+     */
+    public function getCreator(): ?Member
+    {
+        return $this->Creator;
     }
 }

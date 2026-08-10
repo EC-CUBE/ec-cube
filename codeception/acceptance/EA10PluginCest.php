@@ -13,6 +13,7 @@
 
 use Codeception\Util\FileSystem;
 use Codeception\Util\Fixtures;
+use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManager;
 use Eccube\Common\EccubeConfig;
@@ -22,11 +23,12 @@ use Page\Admin\CacheManagePage;
 use Page\Admin\PluginLocalInstallPage;
 use Page\Admin\PluginManagePage;
 use Page\Admin\PluginSearchPage;
+use Plugin\Emperor\Entity\Cart2Trait;
+use Plugin\Horizon\Entity\CartTrait;
 
 class EA10PluginCest
 {
-    /** @var EccubeConfig */
-    private $config;
+    private EccubeConfig $config;
 
     public function _before(AcceptanceTester $I)
     {
@@ -482,20 +484,13 @@ class EA10PluginCest
 
 abstract class Abstract_Plugin
 {
-    /** @var AcceptanceTester */
-    protected $I;
+    protected EntityManager $em;
 
-    /** @var EntityManager */
-    protected $em;
+    protected Connection $conn;
 
-    /** @var Connection */
-    protected $conn;
+    protected PluginRepository $pluginRepository;
 
-    /** @var PluginRepository */
-    protected $pluginRepository;
-
-    /** @var EccubeConfig */
-    protected $config;
+    protected EccubeConfig $config;
 
     protected $initialized = false;
 
@@ -509,9 +504,8 @@ abstract class Abstract_Plugin
 
     protected $traits = [];
 
-    public function __construct(AcceptanceTester $I)
+    public function __construct(protected AcceptanceTester $I)
     {
-        $this->I = $I;
         $this->em = Fixtures::get('entityManager');
         $this->conn = $this->em->getConnection();
         $this->pluginRepository = $this->em->getRepository(Plugin::class);
@@ -537,7 +531,7 @@ abstract class Abstract_Plugin
     public function columnExists()
     {
         foreach ($this->columns as $column) {
-            list($tableName, $columnName) = explode('.', $column);
+            [$tableName, $columnName] = explode('.', (string) $column);
             $exists = $this->conn->executeQuery("SELECT count(*) AS count FROM information_schema.columns WHERE table_name = '{$tableName}' AND column_name = '{$columnName}';")->fetch()['count'] == 1;
             $this->I->assertTrue($exists, 'カラムがあるはず '.$column);
         }
@@ -546,7 +540,7 @@ abstract class Abstract_Plugin
     public function columnNotExists()
     {
         foreach ($this->columns as $column) {
-            list($tableName, $columnName) = explode('.', $column);
+            [$tableName, $columnName] = explode('.', (string) $column);
             $exists = $this->conn->executeQuery("SELECT count(*) AS count FROM information_schema.columns WHERE table_name = '{$tableName}' AND column_name = '{$columnName}';")->fetch()['count'] == 1;
             $this->I->assertFalse($exists, 'カラムがないはず '.$column);
         }
@@ -609,26 +603,20 @@ abstract class Abstract_Plugin
 
 class Store_Plugin extends Abstract_Plugin
 {
-    /** @var PluginManagePage */
-    protected $ManagePage;
+    protected ?PluginManagePage $ManagePage = null;
 
-    /** @var Plugin */
-    protected $Plugin;
+    protected ?Plugin $Plugin = null;
 
-    protected $code;
+    protected ?Store_Plugin $dependency = null;
 
-    /** @var Store_Plugin */
-    protected $dependency;
-
-    public function __construct(AcceptanceTester $I, $code, ?Store_Plugin $dependency = null)
+    public function __construct(AcceptanceTester $I, protected $code, ?Store_Plugin $dependency = null)
     {
         parent::__construct($I);
-        $this->code = $code;
         $this->publishPlugin($this->code.'-1.0.0.tgz');
         if ($dependency) {
             $this->dependency = $dependency;
             $this->ManagePage = $dependency->ManagePage;
-            $this->Plugin = $this->pluginRepository->findByCode($code);
+            $this->Plugin = $this->pluginRepository->findByCode($this->code);
         }
     }
 
@@ -642,6 +630,13 @@ class Store_Plugin extends Abstract_Plugin
             ->インストール();
 
         $this->検証();
+
+        // ブラウザ経由でインストールされたデータを取得するため、トランザクションをコミット/再開始
+        StaticDriver::commit();
+        StaticDriver::beginTransaction();
+
+        // EntityManagerをクリアして、データベースから最新のデータを取得
+        $this->em->clear();
 
         $this->Plugin = $this->pluginRepository->findByCode($this->code);
         $this->I->assertFalse($this->Plugin->isInitialized(), '初期化されていない');
@@ -664,7 +659,8 @@ class Store_Plugin extends Abstract_Plugin
 
         $this->検証();
 
-        $this->em->refresh($this->Plugin);
+        $this->em->clear();
+        $this->Plugin = $this->pluginRepository->findByCode($this->code);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
         $this->I->assertTrue($this->Plugin->isEnabled(), '有効化されている');
 
@@ -680,7 +676,8 @@ class Store_Plugin extends Abstract_Plugin
 
         $this->検証();
 
-        $this->em->refresh($this->Plugin);
+        $this->em->clear();
+        $this->Plugin = $this->pluginRepository->findByCode($this->code);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
         $this->I->assertTrue($this->Plugin->isEnabled(), '有効化されている');
 
@@ -695,7 +692,8 @@ class Store_Plugin extends Abstract_Plugin
 
         $this->検証();
 
-        $this->em->refresh($this->Plugin);
+        $this->em->clear();
+        $this->Plugin = $this->pluginRepository->findByCode($this->code);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
         $this->I->assertFalse($this->Plugin->isEnabled(), '無効化されている');
 
@@ -710,7 +708,8 @@ class Store_Plugin extends Abstract_Plugin
 
         $this->検証();
 
-        $this->em->refresh($this->Plugin);
+        $this->em->clear();
+        $this->Plugin = $this->pluginRepository->findByCode($this->code);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
         $this->I->assertFalse($this->Plugin->isEnabled(), '無効化されている');
 
@@ -726,7 +725,8 @@ class Store_Plugin extends Abstract_Plugin
 
         $this->検証();
 
-        $this->em->refresh($this->Plugin);
+        // 削除後はエンティティが管理されていないため、refreshではなくclearしてから再取得
+        $this->em->clear();
         $this->Plugin = $this->pluginRepository->findByCode($this->code);
         $this->I->assertNull($this->Plugin, '削除されている');
 
@@ -745,7 +745,8 @@ class Store_Plugin extends Abstract_Plugin
 
         $this->検証();
 
-        $this->em->refresh($this->Plugin);
+        $this->em->clear();
+        $this->Plugin = $this->pluginRepository->findByCode($this->code);
         $this->I->assertEquals($this->initialized, $this->Plugin->isInitialized(), '初期化');
         $this->I->assertEquals($this->enabled, $this->Plugin->isEnabled(), '有効/無効');
 
@@ -761,19 +762,13 @@ class Store_Plugin extends Abstract_Plugin
 
 class Local_Plugin extends Abstract_Plugin
 {
-    /** @var PluginManagePage */
-    private $ManagePage;
+    private ?PluginManagePage $ManagePage = null;
 
-    /** @var Plugin */
-    private $Plugin;
+    private ?Plugin $Plugin = null;
 
-    /** @var string */
-    private $code;
-
-    public function __construct(AcceptanceTester $I, $code)
+    public function __construct(AcceptanceTester $I, private readonly string $code)
     {
         parent::__construct($I);
-        $this->code = $code;
     }
 
     public function インストール()
@@ -787,6 +782,13 @@ class Local_Plugin extends Abstract_Plugin
         $this->initialized = true;
 
         $this->検証();
+
+        // ブラウザ経由でインストールされたデータを取得するため、トランザクションをコミット/再開始
+        StaticDriver::commit();
+        StaticDriver::beginTransaction();
+
+        // EntityManagerをクリアして、データベースから最新のデータを取得
+        $this->em->clear();
 
         $this->Plugin = $this->pluginRepository->findByCode($this->code);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されていない');
@@ -803,7 +805,8 @@ class Local_Plugin extends Abstract_Plugin
 
         $this->検証();
 
-        $this->em->refresh($this->Plugin);
+        $this->em->clear();
+        $this->Plugin = $this->pluginRepository->findByCode($this->code);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
         $this->I->assertTrue($this->Plugin->isEnabled(), '有効化されている');
 
@@ -818,7 +821,8 @@ class Local_Plugin extends Abstract_Plugin
 
         $this->検証();
 
-        $this->em->refresh($this->Plugin);
+        $this->em->clear();
+        $this->Plugin = $this->pluginRepository->findByCode($this->code);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
         $this->I->assertFalse($this->Plugin->isEnabled(), '無効化されている');
 
@@ -836,7 +840,8 @@ class Local_Plugin extends Abstract_Plugin
 
         $this->検証();
 
-        $this->em->refresh($this->Plugin);
+        // 削除後はエンティティが管理されていないため、refreshではなくclearしてから再取得
+        $this->em->clear();
         $this->Plugin = $this->pluginRepository->findByCode($this->code);
         $this->I->assertNull($this->Plugin, '削除されている');
 
@@ -849,7 +854,8 @@ class Local_Plugin extends Abstract_Plugin
 
         $this->検証();
 
-        $this->em->refresh($this->Plugin);
+        $this->em->clear();
+        $this->Plugin = $this->pluginRepository->findByCode($this->code);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されている');
         $this->I->assertEquals($this->enabled, $this->Plugin->isEnabled(), '有効/無効');
 
@@ -865,9 +871,10 @@ class Horizon_Local extends Local_Plugin
         $this->tables[] = 'dtb_dash';
         $this->columns[] = 'dtb_cart.is_horizon';
         $this->columns[] = 'dtb_cart.dash_id';
-        $this->traits[\Plugin\Horizon\Entity\CartTrait::class] = 'src/Eccube/Entity/Cart';
+        $this->traits[CartTrait::class] = 'src/Eccube/Entity/Cart';
     }
 
+    #[Override]
     public function アップデート()
     {
         // アップデートで新たしいカラムが追加される
@@ -890,9 +897,10 @@ class Horizon_Store extends Store_Plugin
         $this->tables[] = 'dtb_dash';
         $this->columns[] = 'dtb_cart.is_horizon';
         $this->columns[] = 'dtb_cart.dash_id';
-        $this->traits[\Plugin\Horizon\Entity\CartTrait::class] = 'src/Eccube/Entity/Cart';
+        $this->traits[CartTrait::class] = 'src/Eccube/Entity/Cart';
     }
 
+    #[Override]
     public function アップデート()
     {
         // アップデートで新たしいカラムが追加される
@@ -912,7 +920,8 @@ class Horizon_Store extends Store_Plugin
 
         $this->検証();
 
-        $this->em->refresh($this->Plugin);
+        $this->em->clear();
+        $this->Plugin = $this->pluginRepository->findByCode($this->code);
         $this->I->assertTrue($this->Plugin->isInitialized(), '初期化されているはず');
         $this->I->assertTrue($this->Plugin->isEnabled(), '有効化されているはず');
 
@@ -925,7 +934,7 @@ class Horizon_Store extends Store_Plugin
 
         $this->検証();
 
-        $this->em->refresh($this->Plugin);
+        $this->em->clear();
         $this->Plugin = $this->pluginRepository->findByCode($this->code);
         $this->I->assertNotNull($this->Plugin, '削除されていない');
 
@@ -948,11 +957,12 @@ class Emperor_Store extends Store_Plugin
         return new self($I, $dependency);
     }
 
+    #[Override]
     public function アップデート()
     {
         $this->tables = ['dtb_bar'];
         $this->columns = ['dtb_cart.bar_id'];
-        $this->traits[\Plugin\Emperor\Entity\Cart2Trait::class] = 'src/Eccube/Entity/Cart';
+        $this->traits[Cart2Trait::class] = 'src/Eccube/Entity/Cart';
 
         return parent::アップデート();
     }
@@ -963,7 +973,8 @@ class Emperor_Store extends Store_Plugin
 
         $this->検証();
 
-        $this->em->refresh($this->Plugin);
+        $this->em->clear();
+        $this->Plugin = $this->pluginRepository->findByCode($this->code);
         $this->I->assertFalse($this->Plugin->isInitialized(), '初期化されていないはず');
         $this->I->assertFalse($this->Plugin->isEnabled(), '有効化されていないはず');
 
@@ -1042,6 +1053,7 @@ class Bundle_Store extends Store_Plugin
         $this->tables[] = 'oauth2_authorization_code';
     }
 
+    #[Override]
     public function 有効化()
     {
         parent::有効化();
@@ -1049,6 +1061,7 @@ class Bundle_Store extends Store_Plugin
         return $this;
     }
 
+    #[Override]
     public function 無効化()
     {
         parent::無効化();

@@ -21,14 +21,16 @@ use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\PaymentRegisterType;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Service\Payment\Method\Cash;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 /**
  * Class PaymentController
@@ -36,26 +38,18 @@ use Symfony\Component\Routing\Annotation\Route;
 class PaymentController extends AbstractController
 {
     /**
-     * @var PaymentRepository
-     */
-    protected $paymentRepository;
-
-    /**
      * PaymentController constructor.
-     *
-     * @param PaymentRepository $paymentRepository
      */
-    public function __construct(PaymentRepository $paymentRepository)
+    public function __construct(protected PaymentRepository $paymentRepository)
     {
-        $this->paymentRepository = $paymentRepository;
     }
 
     /**
-     * @Route("/%eccube_admin_route%/setting/shop/payment", name="admin_setting_shop_payment", methods={"GET"})
-     *
-     * @Template("@admin/Setting/Shop/payment.twig")
+     * @return array<string, mixed>
      */
-    public function index(Request $request)
+    #[Route(path: '/%eccube_admin_route%/setting/shop/payment', name: 'admin_setting_shop_payment', methods: ['GET'])]
+    #[Template(template: '@admin/Setting/Shop/payment.twig')]
+    public function index(Request $request): array
     {
         $Payments = $this->paymentRepository
             ->findBy(
@@ -77,12 +71,12 @@ class PaymentController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/setting/shop/payment/new", name="admin_setting_shop_payment_new", methods={"GET", "POST"})
-     * @Route("/%eccube_admin_route%/setting/shop/payment/{id}/edit", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_edit", methods={"GET", "POST"})
-     *
-     * @Template("@admin/Setting/Shop/payment_edit.twig")
+     * @return RedirectResponse|array<string, mixed>
      */
-    public function edit(Request $request, ?Payment $Payment = null)
+    #[Route(path: '/%eccube_admin_route%/setting/shop/payment/new', name: 'admin_setting_shop_payment_new', methods: ['GET', 'POST'])]
+    #[Route(path: '/%eccube_admin_route%/setting/shop/payment/{id}/edit', name: 'admin_setting_shop_payment_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Setting/Shop/payment_edit.twig')]
+    public function edit(Request $request, ?Payment $Payment = null): RedirectResponse|array
     {
         if (is_null($Payment)) {
             $Payment = $this->paymentRepository->findOneBy([], ['sort_no' => 'DESC']);
@@ -125,7 +119,7 @@ class PaymentController extends AbstractController
             // ファイルアップロード
             $file = $form['payment_image']->getData();
             $fs = new Filesystem();
-            if ($file && strpos($file, '..') === false && $fs->exists($this->getParameter('eccube_temp_image_dir').'/'.$file)) {
+            if ($file && !str_contains((string) $file, '..') && $fs->exists($this->getParameter('eccube_temp_image_dir').'/'.$file)) {
                 $fs->rename(
                     $this->getParameter('eccube_temp_image_dir').'/'.$file,
                     $this->getParameter('eccube_save_image_dir').'/'.$file
@@ -166,9 +160,10 @@ class PaymentController extends AbstractController
      *
      * @see https://pqina.nl/filepond/docs/api/server/#process
      *
-     * @Route("/%eccube_admin_route%/setting/shop/payment/image/process", name="admin_payment_image_process", methods={"POST"})
+     * @throws BadRequestHttpException|UnsupportedMediaTypeHttpException
      */
-    public function imageProcess(Request $request)
+    #[Route(path: '/%eccube_admin_route%/setting/shop/payment/image/process', name: 'admin_payment_image_process', methods: ['POST'])]
+    public function imageProcess(Request $request): Response
     {
         if (!$request->isXmlHttpRequest() || !$this->isTokenValid()) {
             throw new BadRequestHttpException();
@@ -184,13 +179,13 @@ class PaymentController extends AbstractController
 
             // ファイルフォーマット検証
             $mimeType = $image->getMimeType();
-            if (0 !== strpos($mimeType, 'image')) {
+            if (!str_starts_with((string) $mimeType, 'image')) {
                 throw new UnsupportedMediaTypeHttpException();
             }
 
             // 拡張子
             $extension = $image->getClientOriginalExtension();
-            if (!in_array(strtolower($extension), $allowExtensions)) {
+            if (!in_array(strtolower((string) $extension), $allowExtensions)) {
                 throw new UnsupportedMediaTypeHttpException();
             }
 
@@ -215,9 +210,10 @@ class PaymentController extends AbstractController
      *
      * @see https://pqina.nl/filepond/docs/api/server/#load
      *
-     * @Route("/%eccube_admin_route%/setting/shop/payment/image/load", name="admin_payment_image_load", methods={"GET"})
+     * @throws BadRequestHttpException|NotFoundHttpException
      */
-    public function imageLoad(Request $request)
+    #[Route(path: '/%eccube_admin_route%/setting/shop/payment/image/load', name: 'admin_payment_image_load', methods: ['GET'])]
+    public function imageLoad(Request $request): BinaryFileResponse
     {
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();
@@ -247,16 +243,17 @@ class PaymentController extends AbstractController
      *
      * @see https://pqina.nl/filepond/docs/api/server/#revert
      *
-     * @Route("/%eccube_admin_route%/setting/shop/payment/image/revert", name="admin_payment_image_revert", methods={"DELETE"})
+     * @throws BadRequestHttpException|NotFoundHttpException
      */
-    public function imageRevert(Request $request)
+    #[Route(path: '/%eccube_admin_route%/setting/shop/payment/image/revert', name: 'admin_payment_image_revert', methods: ['DELETE'])]
+    public function imageRevert(Request $request): Response
     {
         if (!$request->isXmlHttpRequest() || !$this->isTokenValid()) {
             throw new BadRequestHttpException();
         }
 
         $tempFile = $this->eccubeConfig['eccube_temp_image_dir'].'/'.$request->getContent();
-        if (is_file($tempFile) && stripos(realpath($tempFile), $this->eccubeConfig['eccube_temp_image_dir']) === 0) {
+        if (is_file($tempFile) && stripos(realpath($tempFile), (string) $this->eccubeConfig['eccube_temp_image_dir']) === 0) {
             $fs = new Filesystem();
             $fs->remove($tempFile);
 
@@ -266,15 +263,8 @@ class PaymentController extends AbstractController
         throw new NotFoundHttpException();
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/setting/shop/payment/{id}/delete", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_delete", methods={"DELETE"})
-     *
-     * @param Request $request
-     * @param Payment $TargetPayment
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function delete(Request $request, Payment $TargetPayment)
+    #[Route(path: '/%eccube_admin_route%/setting/shop/payment/{id}/delete', name: 'admin_setting_shop_payment_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    public function delete(Request $request, Payment $TargetPayment): RedirectResponse
     {
         $this->isTokenValid();
 
@@ -297,7 +287,7 @@ class PaymentController extends AbstractController
             $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SHOP_PAYMENT_DELETE_COMPLETE);
 
             $this->addSuccess('admin.common.delete_complete', 'admin');
-        } catch (ForeignKeyConstraintViolationException $e) {
+        } catch (ForeignKeyConstraintViolationException) {
             $this->entityManager->rollback();
 
             $message = trans('admin.common.delete_error_foreign_key', ['%name%' => $TargetPayment->getMethod()]);
@@ -307,10 +297,8 @@ class PaymentController extends AbstractController
         return $this->redirectToRoute('admin_setting_shop_payment');
     }
 
-    /**
-     * @Route("/%eccube_admin_route%/setting/shop/payment/{id}/visible", requirements={"id" = "\d+"}, name="admin_setting_shop_payment_visible", methods={"PUT"})
-     */
-    public function visible(Payment $Payment)
+    #[Route(path: '/%eccube_admin_route%/setting/shop/payment/{id}/visible', name: 'admin_setting_shop_payment_visible', requirements: ['id' => '\d+'], methods: ['PUT'])]
+    public function visible(Payment $Payment): RedirectResponse
     {
         $this->isTokenValid();
 
@@ -328,13 +316,10 @@ class PaymentController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/setting/shop/payment/sort_no/move", name="admin_setting_shop_payment_sort_no_move", methods={"POST"})
-     *
-     * @param Request $request
-     *
-     * @return Response
+     * @throws BadRequestHttpException
      */
-    public function moveSortNo(Request $request)
+    #[Route(path: '/%eccube_admin_route%/setting/shop/payment/sort_no/move', name: 'admin_setting_shop_payment_sort_no_move', methods: ['POST'])]
+    public function moveSortNo(Request $request): Response
     {
         if (!$request->isXmlHttpRequest()) {
             throw new BadRequestHttpException();

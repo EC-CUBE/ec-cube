@@ -13,482 +13,380 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
+use Eccube\Repository\CategoryRepository;
 
-if (!class_exists(Category::class)) {
-    /**
-     * Category
-     *
-     * @ORM\Table(name="dtb_category")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\CategoryRepository")
-     */
-    class Category extends AbstractEntity
+/**
+ * Category
+ */
+#[ORM\Table(name: 'dtb_category')]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: CategoryRepository::class)]
+class Category extends AbstractEntity implements \Stringable
+{
+    #[\Override]
+    public function __toString(): string
     {
-        /**
-         * @return string
-         */
-        public function __toString()
-        {
-            return (string) $this->getName();
+        return $this->getName();
+    }
+
+    public function countBranches(): int
+    {
+        $count = 1;
+
+        foreach ($this->getChildren() as $Child) {
+            $count += $Child->countBranches();
         }
 
-        /**
-         * @return int
-         */
-        public function countBranches()
-        {
-            $count = 1;
+        return $count;
+    }
 
-            foreach ($this->getChildren() as $Child) {
-                $count += $Child->countBranches();
+    public function calcChildrenSortNo(EntityManager $em, int $sortNo): Category
+    {
+        $this->setSortNo($this->getSortNo() + $sortNo);
+        $em->persist($this);
+
+        foreach ($this->getChildren() as $Child) {
+            $Child->calcChildrenSortNo($em, $sortNo);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return array<mixed>
+     */
+    public function getParents(): array
+    {
+        $path = $this->getPath();
+        array_pop($path);
+
+        return $path;
+    }
+
+    /**
+     * @return array<mixed>
+     */
+    public function getPath(): array
+    {
+        $path = [];
+        $Category = $this;
+
+        $max = 10;
+        while ($max--) {
+            $path[] = $Category;
+
+            $Category = $Category->getParent();
+            if (!$Category || !$Category->getId()) {
+                break;
             }
-
-            return $count;
         }
 
-        /**
-         * @param  \Doctrine\ORM\EntityManager $em
-         * @param  int                     $sortNo
-         *
-         * @return Category
-         */
-        public function calcChildrenSortNo(\Doctrine\ORM\EntityManager $em, $sortNo)
-        {
-            $this->setSortNo($this->getSortNo() + $sortNo);
-            $em->persist($this);
+        return array_reverse($path);
+    }
 
-            foreach ($this->getChildren() as $Child) {
-                $Child->calcChildrenSortNo($em, $sortNo);
+    public function getNameWithLevel(): string
+    {
+        return str_repeat('　', $this->getHierarchy() - 1).$this->getName();
+    }
+
+    /**
+     * @return array<int, mixed>
+     */
+    public function getDescendants(): array
+    {
+        $DescendantCategories = [];
+
+        $ChildCategories = $this->getChildren();
+        foreach ($ChildCategories as $ChildCategory) {
+            $DescendantCategories[$ChildCategory->getId()] = $ChildCategory;
+            $DescendantCategories2 = $ChildCategory->getDescendants();
+            foreach ($DescendantCategories2 as $DescendantCategory) {
+                $DescendantCategories[$DescendantCategory->getId()] = $DescendantCategory;
             }
-
-            return $this;
         }
 
-        public function getParents()
-        {
-            $path = $this->getPath();
-            array_pop($path);
+        return $DescendantCategories;
+    }
 
-            return $path;
-        }
+    /**
+     * @return Category[]|mixed[]
+     */
+    public function getSelfAndDescendants(): array
+    {
+        return array_merge([$this], $this->getDescendants());
+    }
 
-        public function getPath()
-        {
-            $path = [];
-            $Category = $this;
+    /**
+     * カテゴリに紐づく商品があるかどうかを調べる.
+     *
+     * ProductCategoriesはExtra Lazyのため, lengthやcountで評価した際にはCOUNTのSQLが発行されるが,
+     * COUNT自体が重いので, LIMIT 1で取得し存在チェックを行う.
+     *
+     * @see http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/working-with-associations.html#filtering-collections
+     */
+    public function hasProductCategories(): bool
+    {
+        $criteria = Criteria::create()
+        ->orderBy(['category_id' => Criteria::ASC])
+        ->setFirstResult(0)
+        ->setMaxResults(1);
 
-            $max = 10;
-            while ($max--) {
-                $path[] = $Category;
+        /** @var PersistentCollection <int,ProductCategory> */
+        $ProductCategories = $this->ProductCategories;
 
-                $Category = $Category->getParent();
-                if (!$Category || !$Category->getId()) {
-                    break;
-                }
-            }
+        return $ProductCategories->matching($criteria)->count() > 0;
+    }
 
-            return array_reverse($path);
-        }
+    #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    private ?int $id = null;
 
-        public function getNameWithLevel()
-        {
-            return str_repeat('　', $this->getHierarchy() - 1).$this->getName();
-        }
+    #[ORM\Column(name: 'category_name', type: Types::STRING, length: 255)]
+    private ?string $name = null;
 
-        public function getDescendants()
-        {
-            $DescendantCategories = [];
+    #[ORM\Column(name: 'hierarchy', type: Types::INTEGER, options: ['unsigned' => true])]
+    private ?int $hierarchy = null;
 
-            $ChildCategories = $this->getChildren();
-            foreach ($ChildCategories as $ChildCategory) {
-                $DescendantCategories[$ChildCategory->getId()] = $ChildCategory;
-                $DescendantCategories2 = $ChildCategory->getDescendants();
-                foreach ($DescendantCategories2 as $DescendantCategory) {
-                    $DescendantCategories[$DescendantCategory->getId()] = $DescendantCategory;
-                }
-            }
+    #[ORM\Column(name: 'sort_no', type: Types::INTEGER)]
+    private ?int $sort_no = null;
 
-            return $DescendantCategories;
-        }
+    #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
+    private ?\DateTime $create_date = null;
 
-        public function getSelfAndDescendants()
-        {
-            return array_merge([$this], $this->getDescendants());
-        }
+    #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
+    private ?\DateTime $update_date = null;
 
-        /**
-         * カテゴリに紐づく商品があるかどうかを調べる.
-         *
-         * ProductCategoriesはExtra Lazyのため, lengthやcountで評価した際にはCOUNTのSQLが発行されるが,
-         * COUNT自体が重いので, LIMIT 1で取得し存在チェックを行う.
-         *
-         * @see http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/working-with-associations.html#filtering-collections
-         *
-         * @return bool
-         */
-        public function hasProductCategories()
-        {
-            $criteria = Criteria::create()
-            ->orderBy(['category_id' => Criteria::ASC])
-            ->setFirstResult(0)
-            ->setMaxResults(1);
+    /**
+     * @var Collection<int, ProductCategory>
+     */
+    #[ORM\OneToMany(targetEntity: ProductCategory::class, mappedBy: 'Category', fetch: 'EXTRA_LAZY')]
+    private Collection $ProductCategories;
 
-            return $this->ProductCategories->matching($criteria)->count() > 0;
-        }
+    /**
+     * @var Collection<int, Category>
+     */
+    #[ORM\OneToMany(targetEntity: Category::class, mappedBy: 'Parent')]
+    #[ORM\OrderBy(['sort_no' => 'DESC'])]
+    private Collection $Children;
 
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
-         */
-        private $id;
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'Children')]
+    #[ORM\JoinColumn(name: 'parent_category_id', referencedColumnName: 'id')]
+    private ?Category $Parent = null;
 
-        /**
-         * @var string
-         *
-         * @ORM\Column(name="category_name", type="string", length=255)
-         */
-        private $name;
+    #[ORM\ManyToOne(targetEntity: Member::class)]
+    #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
+    private ?Member $Creator = null;
 
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="hierarchy", type="integer", options={"unsigned":true})
-         */
-        private $hierarchy;
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->ProductCategories = new ArrayCollection();
+        $this->Children = new ArrayCollection();
+    }
 
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="sort_no", type="integer")
-         */
-        private $sort_no;
+    /**
+     * Get id.
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
-        /**
-         * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
-         */
-        private $create_date;
+    /**
+     * Set name.
+     */
+    public function setName(string $name): Category
+    {
+        $this->name = $name;
 
-        /**
-         * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
-         */
-        private $update_date;
+        return $this;
+    }
 
-        /**
-         * @var \Doctrine\Common\Collections\Collection
-         *
-         * @ORM\OneToMany(targetEntity="Eccube\Entity\ProductCategory", mappedBy="Category", fetch="EXTRA_LAZY")
-         */
-        private $ProductCategories;
+    /**
+     * Get name.
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
 
-        /**
-         * @var \Doctrine\Common\Collections\Collection
-         *
-         * @ORM\OneToMany(targetEntity="Eccube\Entity\Category", mappedBy="Parent")
-         *
-         * @ORM\OrderBy({
-         *     "sort_no"="DESC"
-         * })
-         */
-        private $Children;
+    /**
+     * Set hierarchy.
+     */
+    public function setHierarchy(int $hierarchy): Category
+    {
+        $this->hierarchy = $hierarchy;
 
-        /**
-         * @var Category
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Category", inversedBy="Children")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="parent_category_id", referencedColumnName="id")
-         * })
-         */
-        private $Parent;
+        return $this;
+    }
 
-        /**
-         * @var Member
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
-         * })
-         */
-        private $Creator;
+    /**
+     * Get hierarchy.
+     */
+    public function getHierarchy(): int
+    {
+        return $this->hierarchy;
+    }
 
-        /**
-         * Constructor
-         */
-        public function __construct()
-        {
-            $this->ProductCategories = new \Doctrine\Common\Collections\ArrayCollection();
-            $this->Children = new \Doctrine\Common\Collections\ArrayCollection();
-        }
+    /**
+     * Set sortNo.
+     */
+    public function setSortNo(int $sortNo): Category
+    {
+        $this->sort_no = $sortNo;
 
-        /**
-         * Get id.
-         *
-         * @return int
-         */
-        public function getId()
-        {
-            return $this->id;
-        }
+        return $this;
+    }
 
-        /**
-         * Set name.
-         *
-         * @param string $name
-         *
-         * @return Category
-         */
-        public function setName($name)
-        {
-            $this->name = $name;
+    /**
+     * Get sortNo.
+     */
+    public function getSortNo(): int
+    {
+        return $this->sort_no;
+    }
 
-            return $this;
-        }
+    /**
+     * Set createDate.
+     */
+    public function setCreateDate(\DateTime $createDate): Category
+    {
+        $this->create_date = $createDate;
 
-        /**
-         * Get name.
-         *
-         * @return string
-         */
-        public function getName()
-        {
-            return $this->name;
-        }
+        return $this;
+    }
 
-        /**
-         * Set hierarchy.
-         *
-         * @param int $hierarchy
-         *
-         * @return Category
-         */
-        public function setHierarchy($hierarchy)
-        {
-            $this->hierarchy = $hierarchy;
+    /**
+     * Get createDate.
+     */
+    public function getCreateDate(): ?\DateTime
+    {
+        return $this->create_date;
+    }
 
-            return $this;
-        }
+    /**
+     * Set updateDate.
+     */
+    public function setUpdateDate(\DateTime $updateDate): Category
+    {
+        $this->update_date = $updateDate;
 
-        /**
-         * Get hierarchy.
-         *
-         * @return int
-         */
-        public function getHierarchy()
-        {
-            return $this->hierarchy;
-        }
+        return $this;
+    }
 
-        /**
-         * Set sortNo.
-         *
-         * @param int $sortNo
-         *
-         * @return Category
-         */
-        public function setSortNo($sortNo)
-        {
-            $this->sort_no = $sortNo;
+    /**
+     * Get updateDate.
+     */
+    public function getUpdateDate(): ?\DateTime
+    {
+        return $this->update_date;
+    }
 
-            return $this;
-        }
+    /**
+     * Add productCategory.
+     */
+    public function addProductCategory(ProductCategory $productCategory): Category
+    {
+        $this->ProductCategories[] = $productCategory;
 
-        /**
-         * Get sortNo.
-         *
-         * @return int
-         */
-        public function getSortNo()
-        {
-            return $this->sort_no;
-        }
+        return $this;
+    }
 
-        /**
-         * Set createDate.
-         *
-         * @param \DateTime $createDate
-         *
-         * @return Category
-         */
-        public function setCreateDate($createDate)
-        {
-            $this->create_date = $createDate;
+    /**
+     * Remove productCategory.
+     *
+     * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeProductCategory(ProductCategory $productCategory): bool
+    {
+        return $this->ProductCategories->removeElement($productCategory);
+    }
 
-            return $this;
-        }
+    /**
+     * Get productCategories.
+     *
+     * @return Collection<int, ProductCategory>
+     */
+    public function getProductCategories(): Collection
+    {
+        return $this->ProductCategories;
+    }
 
-        /**
-         * Get createDate.
-         *
-         * @return \DateTime
-         */
-        public function getCreateDate()
-        {
-            return $this->create_date;
-        }
+    /**
+     * Add child.
+     */
+    public function addChild(Category $child): Category
+    {
+        $this->Children[] = $child;
 
-        /**
-         * Set updateDate.
-         *
-         * @param \DateTime $updateDate
-         *
-         * @return Category
-         */
-        public function setUpdateDate($updateDate)
-        {
-            $this->update_date = $updateDate;
+        return $this;
+    }
 
-            return $this;
-        }
+    /**
+     * Remove child.
+     *
+     * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeChild(Category $child): bool
+    {
+        return $this->Children->removeElement($child);
+    }
 
-        /**
-         * Get updateDate.
-         *
-         * @return \DateTime
-         */
-        public function getUpdateDate()
-        {
-            return $this->update_date;
-        }
+    /**
+     * Get children.
+     *
+     * @return Collection<int, Category>
+     */
+    public function getChildren(): Collection
+    {
+        return $this->Children;
+    }
 
-        /**
-         * Add productCategory.
-         *
-         * @param ProductCategory $productCategory
-         *
-         * @return Category
-         */
-        public function addProductCategory(ProductCategory $productCategory)
-        {
-            $this->ProductCategories[] = $productCategory;
+    /**
+     * Set parent.
+     */
+    public function setParent(?Category $parent = null): Category
+    {
+        $this->Parent = $parent;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Remove productCategory.
-         *
-         * @param ProductCategory $productCategory
-         *
-         * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
-         */
-        public function removeProductCategory(ProductCategory $productCategory)
-        {
-            return $this->ProductCategories->removeElement($productCategory);
-        }
+    /**
+     * Get parent.
+     */
+    public function getParent(): ?Category
+    {
+        return $this->Parent;
+    }
 
-        /**
-         * Get productCategories.
-         *
-         * @return \Doctrine\Common\Collections\Collection
-         */
-        public function getProductCategories()
-        {
-            return $this->ProductCategories;
-        }
+    /**
+     * Set creator.
+     */
+    public function setCreator(?Member $creator = null): Category
+    {
+        $this->Creator = $creator;
 
-        /**
-         * Add child.
-         *
-         * @param Category $child
-         *
-         * @return Category
-         */
-        public function addChild(Category $child)
-        {
-            $this->Children[] = $child;
+        return $this;
+    }
 
-            return $this;
-        }
-
-        /**
-         * Remove child.
-         *
-         * @param Category $child
-         *
-         * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
-         */
-        public function removeChild(Category $child)
-        {
-            return $this->Children->removeElement($child);
-        }
-
-        /**
-         * Get children.
-         *
-         * @return \Doctrine\Common\Collections\Collection
-         */
-        public function getChildren()
-        {
-            return $this->Children;
-        }
-
-        /**
-         * Set parent.
-         *
-         * @param Category|null $parent
-         *
-         * @return Category
-         */
-        public function setParent(?Category $parent = null)
-        {
-            $this->Parent = $parent;
-
-            return $this;
-        }
-
-        /**
-         * Get parent.
-         *
-         * @return Category|null
-         */
-        public function getParent()
-        {
-            return $this->Parent;
-        }
-
-        /**
-         * Set creator.
-         *
-         * @param Member|null $creator
-         *
-         * @return Category
-         */
-        public function setCreator(?Member $creator = null)
-        {
-            $this->Creator = $creator;
-
-            return $this;
-        }
-
-        /**
-         * Get creator.
-         *
-         * @return Member|null
-         */
-        public function getCreator()
-        {
-            return $this->Creator;
-        }
+    /**
+     * Get creator.
+     */
+    public function getCreator(): ?Member
+    {
+        return $this->Creator;
     }
 }

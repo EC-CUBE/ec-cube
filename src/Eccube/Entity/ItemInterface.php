@@ -13,6 +13,8 @@
 
 namespace Eccube\Entity;
 
+use Eccube\Entity\Master\OrderItemType;
+
 interface ItemInterface
 {
     /**
@@ -20,62 +22,64 @@ interface ItemInterface
      *
      * @return bool 商品明細の場合 true
      */
-    public function isProduct();
+    public function isProduct(): bool;
 
     /**
      * 送料明細かどうか.
      *
      * @return bool 送料明細の場合 true
      */
-    public function isDeliveryFee();
+    public function isDeliveryFee(): bool;
 
     /**
      * 手数料明細かどうか.
      *
      * @return bool 手数料明細の場合 true
      */
-    public function isCharge();
+    public function isCharge(): bool;
 
     /**
      * 値引き明細かどうか.
      *
      * @return bool 値引き明細の場合 true
      */
-    public function isDiscount();
+    public function isDiscount(): bool;
 
     /**
      * ポイント明細かどうか.
      *
      * @return bool ポイント明細の場合 true
      */
-    public function isPoint();
+    public function isPoint(): bool;
 
     /**
      * 税額明細かどうか.
      *
      * @return bool 税額明細の場合 true
      */
-    public function isTax();
+    public function isTax(): bool;
 
-    public function getOrderItemType();
+    public function getOrderItemType(): ?OrderItemType;
 
-    /**
-     * @return ?ProductClass
-     */
-    public function getProductClass();
+    public function getProductClass(): ?ProductClass;
 
-    /**
-     * @return string
-     */
-    public function getPrice();
+    public function getPrice(): ?string;
+
+    public function getQuantity(): string;
 
     /**
-     * @return string
+     * @return $this
      */
-    public function getQuantity();
+    public function setQuantity(string $quantity): static;
+
+    public function getId(): ?int;
+
+    public function getPointRate(): ?string;
 
     /**
-     * @param string $quantity
+     * @return $this
      */
-    public function setQuantity($quantity);
+    public function setPrice(?string $price): static;
+
+    public function getPriceIncTax(): string;
 }

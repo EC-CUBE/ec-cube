@@ -13,34 +13,43 @@
 
 namespace Eccube\DependencyInjection;
 
-use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Configuration as DoctrineBundleConfiguration;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Tools\DsnParser;
+use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class EccubeExtension extends Extension implements PrependExtensionInterface
 {
     /**
      * Loads a specific configuration.
      *
+     * @param array<mixed> $configs
+     *
      * @throws \InvalidArgumentException When provided tag is not defined in this extension
      */
-    public function load(array $configs, ContainerBuilder $container)
+    #[\Override]
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = new Configuration();
         $this->processConfiguration($configuration, $configs);
     }
 
+    #[\Override]
     public function getAlias(): string
     {
         return 'eccube';
     }
 
-    public function getConfiguration(array $config, ContainerBuilder $container)
+    /**
+     * @param array<mixed> $config
+     */
+    #[\Override]
+    public function getConfiguration(array $config, ContainerBuilder $container): ?ConfigurationInterface
     {
         return parent::getConfiguration($config, $container);
     }
@@ -48,7 +57,8 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
     /**
      * Allow an extension to prepend the extension configurations.
      */
-    public function prepend(ContainerBuilder $container)
+    #[\Override]
+    public function prepend(ContainerBuilder $container): void
     {
         // FrameworkBundleの設定を動的に変更する.
         $this->configureFramework($container);
@@ -57,7 +67,7 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
         $this->configurePlugins($container);
     }
 
-    protected function configureFramework(ContainerBuilder $container)
+    protected function configureFramework(ContainerBuilder $container): void
     {
         $forceSSL = $container->resolveEnvPlaceholders('%env(ECCUBE_FORCE_SSL)%', true);
         // envから取得した内容が文字列のため, booleanに変換
@@ -119,7 +129,10 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
         $container->setParameter('eccube_rate_limiter_configs', $rateLimiterConfigs);
     }
 
-    protected function configurePlugins(ContainerBuilder $container)
+    /**
+     * @throws \Doctrine\DBAL\Exception
+     */
+    protected function configurePlugins(ContainerBuilder $container): void
     {
         $pluginDir = $container->getParameter('kernel.project_dir').'/app/Plugin';
         $pluginDirs = $this->getPluginDirectories($pluginDir);
@@ -129,31 +142,43 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
         // DB接続後, 有効無効の判定を行う.
         $container->setParameter('eccube.plugins.disabled', $pluginDirs);
 
-        // doctrine.yml, または他のprependで差し込まれたdoctrineの設定値を取得する.
-        $configs = $container->getExtensionConfig('doctrine');
-
-        // $configsは, env変数(%env(xxx)%)やパラメータ変数(%xxx.xxx%)がまだ解決されていないため, resolveEnvPlaceholders()で解決する
-        // @see https://github.com/symfony/symfony/issues/22456
-        $configs = $container->resolveEnvPlaceholders($configs, true);
-
-        // doctrine bundleのconfigurationで設定値を正規化する.
-        $configuration = new DoctrineBundleConfiguration($container->getParameter('kernel.debug'));
-        $config = $this->processConfiguration($configuration, $configs);
-
-        // prependのタイミングではコンテナのインスタンスは利用できない.
+        // prependのタイミングではコンテナのインスタンスは利用できないため,
         // 直接dbalのconnectionを生成し, dbアクセスを行う.
-        $params = $config['dbal']['connections'][$config['dbal']['default_connection']];
-        // ContainerInterface::resolveEnvPlaceholders() で取得した DATABASE_URL は
-        // % がエスケープされているため、環境変数から取得し直す
-        $params['url'] = env('DATABASE_URL');
+        //
+        // DBAL 4 では DriverManager::getConnection() が 'url' パラメータを解析しなくなった
+        // (DBAL 3 までは url から driver/host/dbname 等を導出していた). url を渡しても無視され,
+        // doctrine.yaml の既定 driver (pdo_sqlite) のまま実 DB とは別の接続が張られてしまい,
+        // dtb_plugin を読めず「全プラグインが無効」と誤判定される. そのため DsnParser で
+        // DATABASE_URL を明示的に driver/host/dbname 等へ展開してから接続する.
+        // スキームマップは DoctrineBundle\ConnectionFactory::DEFAULT_SCHEME_MAP に合わせる.
+        $databaseUrl = (string) env('DATABASE_URL');
+        if ($databaseUrl === '') {
+            // DATABASE_URL 未設定 (インストール前や DB を要しない cache:warmup 等) では
+            // 有効プラグインを判定できない. DsnParser は空文字を driver 無しで解析するため,
+            // そのまま getConnection() に渡すと DriverRequired 例外で warmup が落ちる.
+            // ファイル設置のみ = 全プラグイン無効として早期 return する (従来の挙動を踏襲).
+            return;
+        }
+        $dsnParser = new DsnParser([
+            'db2' => 'ibm_db2',
+            'mssql' => 'pdo_sqlsrv',
+            'mysql' => 'pdo_mysql',
+            'mysql2' => 'pdo_mysql',
+            'postgres' => 'pdo_pgsql',
+            'postgresql' => 'pdo_pgsql',
+            'pgsql' => 'pdo_pgsql',
+            'sqlite' => 'pdo_sqlite',
+            'sqlite3' => 'pdo_sqlite',
+        ]);
+        $params = $dsnParser->parse($databaseUrl);
         $conn = DriverManager::getConnection($params);
 
         if (!$this->isConnected($conn)) {
             return;
         }
 
-        $stmt = $conn->query('select * from dtb_plugin');
-        $plugins = $stmt->fetchAll();
+        $stmt = $conn->executeQuery('select * from dtb_plugin');
+        $plugins = $stmt->fetchAllAssociative();
 
         $enabled = [];
         foreach ($plugins as $plugin) {
@@ -179,9 +204,9 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
     }
 
     /**
-     * @param string $pluginDir
+     * @param string[] $enabled
      */
-    protected function configureTwigPaths(ContainerBuilder $container, $enabled, $pluginDir)
+    protected function configureTwigPaths(ContainerBuilder $container, array $enabled, string $pluginDir): void
     {
         $paths = [];
         $projectDir = $container->getParameter('kernel.project_dir');
@@ -207,9 +232,9 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
     }
 
     /**
-     * @param string $pluginDir
+     * @param string[] $enabled
      */
-    protected function configureTranslations(ContainerBuilder $container, $enabled, $pluginDir)
+    protected function configureTranslations(ContainerBuilder $container, array $enabled, string $pluginDir): void
     {
         $paths = [];
 
@@ -229,25 +254,26 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
         }
     }
 
-    protected function isConnected(Connection $conn)
+    /**
+     * @throws \Doctrine\DBAL\Exception
+     */
+    protected function isConnected(Connection $conn): bool
     {
         try {
-            if (!$conn->executeQuery('select 1')) {
-                return false;
-            }
-        } catch (\Exception $e) {
+            $conn->executeQuery('select 1');
+        } catch (\Exception) {
             return false;
         }
 
-        $tableNames = $conn->getSchemaManager()->listTableNames();
+        $tableNames = $conn->createSchemaManager()->listTableNames();
 
         return in_array('dtb_plugin', $tableNames);
     }
 
     /**
-     * @param string $pluginDir
+     * @return array<int, string>
      */
-    protected function getPluginDirectories($pluginDir)
+    protected function getPluginDirectories(string $pluginDir): array
     {
         $finder = (new Finder())
             ->in($pluginDir)

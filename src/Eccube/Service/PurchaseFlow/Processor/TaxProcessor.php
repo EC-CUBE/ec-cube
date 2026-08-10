@@ -14,6 +14,7 @@
 namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NoResultException;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\TaxDisplayType;
@@ -28,52 +29,20 @@ use Eccube\Service\TaxRuleService;
 class TaxProcessor implements ItemHolderPreprocessor
 {
     /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
-     * @var TaxRuleRepository
-     */
-    protected $taxRuleRepository;
-
-    /**
-     * @var TaxRuleService
-     */
-    protected $taxRuleService;
-
-    /**
-     * @var OrderHelper
-     */
-    protected $orderHelper;
-
-    /**
      * TaxProcessor constructor.
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param TaxRuleRepository $taxRuleRepository
-     * @param TaxRuleService $taxRuleService
-     * @param OrderHelper $orderHelper
      */
-    public function __construct(
-        EntityManagerInterface $entityManager,
-        TaxRuleRepository $taxRuleRepository,
-        TaxRuleService $taxRuleService,
-        OrderHelper $orderHelper,
-    ) {
-        $this->entityManager = $entityManager;
-        $this->taxRuleRepository = $taxRuleRepository;
-        $this->taxRuleService = $taxRuleService;
-        $this->orderHelper = $orderHelper;
+    public function __construct(protected EntityManagerInterface $entityManager, protected TaxRuleRepository $taxRuleRepository, protected TaxRuleService $taxRuleService, protected OrderHelper $orderHelper)
+    {
     }
 
     /**
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
+     * @param ItemHolderInterface $itemHolder 受注 or カート
+     * @param PurchaseContext $context 購入フローのコンテキスト
      *
-     * @throws \Doctrine\ORM\NoResultException
+     * @throws NoResultException
      */
-    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    #[\Override]
+    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         if (!$itemHolder instanceof Order) {
             return;
@@ -91,10 +60,10 @@ class TaxProcessor implements ItemHolderPreprocessor
             }
 
             // 税区分: 非課税, 不課税
-            if ($item->getTaxType()->getId() != TaxType::TAXATION) {
+            if ($item->getTaxType() && $item->getTaxType()->getId() != TaxType::TAXATION) {
                 $item->setTax('0');
                 $item->setTaxRate('0');
-                $item->setRoundingType(null);
+                $item->setRoundingType();
 
                 continue;
             }
@@ -135,11 +104,11 @@ class TaxProcessor implements ItemHolderPreprocessor
      * - 手数料: 課税
      * - ポイント値引き: 不課税
      *
-     * @param $OrderItemType
+     * @param OrderItemType|int $OrderItemType 明細種別
      *
-     * @return TaxType
+     * @return TaxType 税区分
      */
-    protected function getTaxType($OrderItemType)
+    protected function getTaxType(OrderItemType|int $OrderItemType): TaxType
     {
         if ($OrderItemType instanceof OrderItemType) {
             $OrderItemType = $OrderItemType->getId();
@@ -150,25 +119,5 @@ class TaxProcessor implements ItemHolderPreprocessor
             : TaxType::TAXATION;
 
         return $this->entityManager->find(TaxType::class, $TaxType);
-    }
-
-    /**
-     * 税表示区分を取得する.
-     *
-     * - 商品: 税抜
-     * - 送料: 税込
-     * - 値引き: 税抜
-     * - 手数料: 税込
-     * - ポイント値引き: 税込
-     *
-     * @param $OrderItemType
-     *
-     * @deprecated OrderHelper::getTaxDisplayTypeを使用してください
-     *
-     * @return TaxDisplayType
-     */
-    protected function getTaxDisplayType($OrderItemType)
-    {
-        return $this->orderHelper->getTaxDisplayType($OrderItemType);
     }
 }

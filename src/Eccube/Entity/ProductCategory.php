@@ -13,164 +13,107 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\ProductCategoryRepository;
 
-if (!class_exists(ProductCategory::class)) {
+/**
+ * ProductCategory
+ */
+#[ORM\Table(name: 'dtb_product_category')]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: ProductCategoryRepository::class)]
+class ProductCategory extends AbstractEntity
+{
+    #[ORM\Column(name: 'product_id', type: Types::INTEGER, options: ['unsigned' => true])]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'NONE')]
+    private ?int $product_id = null;
+
+    #[ORM\Column(name: 'category_id', type: Types::INTEGER, options: ['unsigned' => true])]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'NONE')]
+    private ?int $category_id = null;
+
+    #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'ProductCategories')]
+    #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id')]
+    private ?Product $Product = null;
+
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'ProductCategories')]
+    #[ORM\JoinColumn(name: 'category_id', referencedColumnName: 'id')]
+    private ?Category $Category = null;
+
     /**
-     * ProductCategory
-     *
-     * @ORM\Table(name="dtb_product_category")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\ProductCategoryRepository")
+     * Set productId.
      */
-    class ProductCategory extends AbstractEntity
+    public function setProductId(int $productId): ProductCategory
     {
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="product_id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="NONE")
-         */
-        private $product_id;
+        $this->product_id = $productId;
 
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="category_id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="NONE")
-         */
-        private $category_id;
+        return $this;
+    }
 
-        /**
-         * @var Product
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Product", inversedBy="ProductCategories")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="product_id", referencedColumnName="id")
-         * })
-         */
-        private $Product;
+    /**
+     * Get productId.
+     */
+    public function getProductId(): int
+    {
+        return $this->product_id;
+    }
 
-        /**
-         * @var Category
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Category", inversedBy="ProductCategories")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="category_id", referencedColumnName="id")
-         * })
-         */
-        private $Category;
+    /**
+     * Set categoryId.
+     */
+    public function setCategoryId(int $categoryId): ProductCategory
+    {
+        $this->category_id = $categoryId;
 
-        /**
-         * Set productId.
-         *
-         * @param int $productId
-         *
-         * @return ProductCategory
-         */
-        public function setProductId($productId)
-        {
-            $this->product_id = $productId;
+        return $this;
+    }
 
-            return $this;
-        }
+    /**
+     * Get categoryId.
+     */
+    public function getCategoryId(): int
+    {
+        return $this->category_id;
+    }
 
-        /**
-         * Get productId.
-         *
-         * @return int
-         */
-        public function getProductId()
-        {
-            return $this->product_id;
-        }
+    /**
+     * Set product.
+     */
+    public function setProduct(?Product $product = null): ProductCategory
+    {
+        $this->Product = $product;
 
-        /**
-         * Set categoryId.
-         *
-         * @param int $categoryId
-         *
-         * @return ProductCategory
-         */
-        public function setCategoryId($categoryId)
-        {
-            $this->category_id = $categoryId;
+        return $this;
+    }
 
-            return $this;
-        }
+    /**
+     * Get product.
+     */
+    public function getProduct(): ?Product
+    {
+        return $this->Product;
+    }
 
-        /**
-         * Get categoryId.
-         *
-         * @return int
-         */
-        public function getCategoryId()
-        {
-            return $this->category_id;
-        }
+    /**
+     * Set category.
+     */
+    public function setCategory(?Category $category = null): ProductCategory
+    {
+        $this->Category = $category;
 
-        /**
-         * Set product.
-         *
-         * @param Product|null $product
-         *
-         * @return ProductCategory
-         */
-        public function setProduct(?Product $product = null)
-        {
-            $this->Product = $product;
+        return $this;
+    }
 
-            return $this;
-        }
-
-        /**
-         * Get product.
-         *
-         * @return Product|null
-         */
-        public function getProduct()
-        {
-            return $this->Product;
-        }
-
-        /**
-         * Set category.
-         *
-         * @param Category|null $category
-         *
-         * @return ProductCategory
-         */
-        public function setCategory(?Category $category = null)
-        {
-            $this->Category = $category;
-
-            return $this;
-        }
-
-        /**
-         * Get category.
-         *
-         * @return Category|null
-         */
-        public function getCategory()
-        {
-            return $this->Category;
-        }
+    /**
+     * Get category.
+     */
+    public function getCategory(): ?Category
+    {
+        return $this->Category;
     }
 }

@@ -13,224 +13,155 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Entity\Master\DeviceType;
+use Eccube\Repository\TemplateRepository;
 
-if (!class_exists(Template::class)) {
+/**
+ * Template
+ */
+#[ORM\Table(name: 'dtb_template')]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: TemplateRepository::class)]
+class Template extends AbstractEntity implements \Stringable
+{
     /**
-     * Template
-     *
-     * @ORM\Table(name="dtb_template")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\TemplateRepository")
+     *  初期テンプレートコード
      */
-    class Template extends AbstractEntity
+    public const DEFAULT_TEMPLATE_CODE = 'default';
+
+    public function isDefaultTemplate(): bool
     {
-        /**
-         *  初期テンプレートコード
-         */
-        public const DEFAULT_TEMPLATE_CODE = 'default';
+        return self::DEFAULT_TEMPLATE_CODE === $this->getCode();
+    }
 
-        /**
-         * @return bool
-         */
-        public function isDefaultTemplate()
-        {
-            return self::DEFAULT_TEMPLATE_CODE === $this->getCode();
-        }
+    #[\Override]
+    public function __toString(): string
+    {
+        return $this->getName();
+    }
 
-        /**
-         * @return string
-         */
-        public function __toString()
-        {
-            return (string) $this->getName();
-        }
+    #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    private ?int $id = null;
 
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
-         */
-        private $id;
+    #[ORM\Column(name: 'template_code', type: Types::STRING, length: 255)]
+    private ?string $code = null;
 
-        /**
-         * @var string
-         *
-         * @ORM\Column(name="template_code", type="string", length=255)
-         */
-        private $code;
+    #[ORM\Column(name: 'template_name', type: Types::STRING, length: 255)]
+    private ?string $name = null;
 
-        /**
-         * @var string
-         *
-         * @ORM\Column(name="template_name", type="string", length=255)
-         */
-        private $name;
+    #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
+    private ?\DateTime $create_date = null;
 
-        /**
-         * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
-         */
-        private $create_date;
+    #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
+    private ?\DateTime $update_date = null;
 
-        /**
-         * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
-         */
-        private $update_date;
+    #[ORM\ManyToOne(targetEntity: DeviceType::class)]
+    #[ORM\JoinColumn(name: 'device_type_id', referencedColumnName: 'id')]
+    private ?DeviceType $DeviceType = null;
 
-        /**
-         * @var Master\DeviceType
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\DeviceType")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="device_type_id", referencedColumnName="id")
-         * })
-         */
-        private $DeviceType;
+    /**
+     * Get id.
+     *
+     * @return int
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
-        /**
-         * Get id.
-         *
-         * @return int
-         */
-        public function getId()
-        {
-            return $this->id;
-        }
+    /**
+     * Set code.
+     */
+    public function setCode(string $code): Template
+    {
+        $this->code = $code;
 
-        /**
-         * Set code.
-         *
-         * @param string $code
-         *
-         * @return Template
-         */
-        public function setCode($code)
-        {
-            $this->code = $code;
+        return $this;
+    }
 
-            return $this;
-        }
+    /**
+     * Get code.
+     */
+    public function getCode(): string
+    {
+        return $this->code;
+    }
 
-        /**
-         * Get code.
-         *
-         * @return string
-         */
-        public function getCode()
-        {
-            return $this->code;
-        }
+    /**
+     * Set name.
+     */
+    public function setName(string $name): Template
+    {
+        $this->name = $name;
 
-        /**
-         * Set name.
-         *
-         * @param string $name
-         *
-         * @return Template
-         */
-        public function setName($name)
-        {
-            $this->name = $name;
+        return $this;
+    }
 
-            return $this;
-        }
+    /**
+     * Get name.
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
 
-        /**
-         * Get name.
-         *
-         * @return string
-         */
-        public function getName()
-        {
-            return $this->name;
-        }
+    /**
+     * Set createDate.
+     */
+    public function setCreateDate(\DateTime $createDate): Template
+    {
+        $this->create_date = $createDate;
 
-        /**
-         * Set createDate.
-         *
-         * @param \DateTime $createDate
-         *
-         * @return Template
-         */
-        public function setCreateDate($createDate)
-        {
-            $this->create_date = $createDate;
+        return $this;
+    }
 
-            return $this;
-        }
+    /**
+     * Get createDate.
+     */
+    public function getCreateDate(): ?\DateTime
+    {
+        return $this->create_date;
+    }
 
-        /**
-         * Get createDate.
-         *
-         * @return \DateTime
-         */
-        public function getCreateDate()
-        {
-            return $this->create_date;
-        }
+    /**
+     * Set updateDate.
+     */
+    public function setUpdateDate(\DateTime $updateDate): Template
+    {
+        $this->update_date = $updateDate;
 
-        /**
-         * Set updateDate.
-         *
-         * @param \DateTime $updateDate
-         *
-         * @return Template
-         */
-        public function setUpdateDate($updateDate)
-        {
-            $this->update_date = $updateDate;
+        return $this;
+    }
 
-            return $this;
-        }
+    /**
+     * Get updateDate.
+     */
+    public function getUpdateDate(): ?\DateTime
+    {
+        return $this->update_date;
+    }
 
-        /**
-         * Get updateDate.
-         *
-         * @return \DateTime
-         */
-        public function getUpdateDate()
-        {
-            return $this->update_date;
-        }
+    /**
+     * Set deviceType.
+     */
+    public function setDeviceType(?DeviceType $deviceType = null): Template
+    {
+        $this->DeviceType = $deviceType;
 
-        /**
-         * Set deviceType.
-         *
-         * @param Master\DeviceType|null $deviceType
-         *
-         * @return Template
-         */
-        public function setDeviceType(?Master\DeviceType $deviceType = null)
-        {
-            $this->DeviceType = $deviceType;
+        return $this;
+    }
 
-            return $this;
-        }
-
-        /**
-         * Get deviceType.
-         *
-         * @return Master\DeviceType|null
-         */
-        public function getDeviceType()
-        {
-            return $this->DeviceType;
-        }
+    /**
+     * Get deviceType.
+     */
+    public function getDeviceType(): ?DeviceType
+    {
+        return $this->DeviceType;
     }
 }

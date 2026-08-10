@@ -17,6 +17,8 @@ use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\ORM\QueryBuilder;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\Customer;
+use Eccube\Entity\ExportCsvRow;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -28,70 +30,31 @@ use Eccube\Repository\Master\SexRepository;
 use Eccube\Service\CsvExportService;
 use Eccube\Service\MailService;
 use Eccube\Util\FormUtil;
+use Eccube\Util\StringUtil;
 use Knp\Component\Pager\PaginatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CustomerController extends AbstractController
 {
-    /**
-     * @var CsvExportService
-     */
-    protected $csvExportService;
-
-    /**
-     * @var MailService
-     */
-    protected $mailService;
-
-    /**
-     * @var PrefRepository
-     */
-    protected $prefRepository;
-
-    /**
-     * @var SexRepository
-     */
-    protected $sexRepository;
-
-    /**
-     * @var PageMaxRepository
-     */
-    protected $pageMaxRepository;
-
-    /**
-     * @var CustomerRepository
-     */
-    protected $customerRepository;
-
-    public function __construct(
-        PageMaxRepository $pageMaxRepository,
-        CustomerRepository $customerRepository,
-        SexRepository $sexRepository,
-        PrefRepository $prefRepository,
-        MailService $mailService,
-        CsvExportService $csvExportService,
-    ) {
-        $this->pageMaxRepository = $pageMaxRepository;
-        $this->customerRepository = $customerRepository;
-        $this->sexRepository = $sexRepository;
-        $this->prefRepository = $prefRepository;
-        $this->mailService = $mailService;
-        $this->csvExportService = $csvExportService;
+    public function __construct(protected PageMaxRepository $pageMaxRepository, protected CustomerRepository $customerRepository, protected SexRepository $sexRepository, protected PrefRepository $prefRepository, protected MailService $mailService, protected CsvExportService $csvExportService, private readonly PaginatorInterface $paginator)
+    {
     }
 
     /**
-     * @Route("/%eccube_admin_route%/customer", name="admin_customer", methods={"GET", "POST"})
-     * @Route("/%eccube_admin_route%/customer/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_customer_page", methods={"GET", "POST"})
+     * @param string|null $page_no
      *
-     * @Template("@admin/Customer/index.twig")
+     * @return array<string, mixed>
      */
-    public function index(Request $request, PaginatorInterface $paginator, $page_no = null)
+    #[Route(path: '/%eccube_admin_route%/customer', name: 'admin_customer', methods: ['GET', 'POST'])]
+    #[Route(path: '/%eccube_admin_route%/customer/page/{page_no}', name: 'admin_customer_page', requirements: ['page_no' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Customer/index.twig')]
+    public function index(Request $request, $page_no = null): array
     {
         $session = $this->session;
         $builder = $this->formFactory->createBuilder(SearchCustomerType::class);
@@ -169,12 +132,30 @@ class CustomerController extends AbstractController
         $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_CUSTOMER_INDEX_SEARCH);
         $paginate_options = $event->getArgument('paginate_options');
 
-        $pagination = $paginator->paginate(
-            $qb,
-            $page_no,
-            $pageCount,
-            $paginate_options
-        );
+        // JOIN必要な検索条件がない場合はカスタムカウントを使用
+        $useCustomCount = !(isset($searchData['buy_product_name']) && StringUtil::isNotBlank($searchData['buy_product_name']));
+
+        if ($useCustomCount) {
+            // カスタムカウントを使用して高速化
+            $count = $this->customerRepository->countBySearchData($searchData);
+            $query = $qb->getQuery();
+            $query->setHint('knp_paginator.count', $count);
+
+            $pagination = $this->paginator->paginate(
+                $query,
+                $page_no,
+                $pageCount,
+                $paginate_options
+            );
+        } else {
+            // JOIN必要な検索条件がある場合は従来通り
+            $pagination = $this->paginator->paginate(
+                $qb,
+                $page_no,
+                $pageCount,
+                $paginate_options
+            );
+        }
 
         return [
             'searchForm' => $searchForm->createView(),
@@ -187,9 +168,12 @@ class CustomerController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/customer/{id}/resend", requirements={"id" = "\d+"}, name="admin_customer_resend", methods={"GET"})
+     * @param string $id
+     *
+     * @throws NotFoundHttpException
      */
-    public function resend(Request $request, $id)
+    #[Route(path: '/%eccube_admin_route%/customer/{id}/resend', name: 'admin_customer_resend', requirements: ['id' => '\d+'], methods: ['GET'])]
+    public function resend(Request $request, $id): RedirectResponse
     {
         $this->isTokenValid();
 
@@ -228,16 +212,17 @@ class CustomerController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/customer/{id}/delete", requirements={"id" = "\d+"}, name="admin_customer_delete", methods={"DELETE"})
+     * @param string $id
      */
-    public function delete(Request $request, $id, TranslatorInterface $translator)
+    #[Route(path: '/%eccube_admin_route%/customer/{id}/delete', name: 'admin_customer_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    public function delete(Request $request, $id): RedirectResponse
     {
         $this->isTokenValid();
 
         log_info('会員削除開始', [$id]);
 
         $page_no = intval($this->session->get('eccube.admin.customer.search.page_no'));
-        $page_no = $page_no ? $page_no : Constant::ENABLED;
+        $page_no = $page_no ?: Constant::ENABLED;
 
         $Customer = $this->customerRepository
             ->find($id);
@@ -276,24 +261,15 @@ class CustomerController extends AbstractController
 
     /**
      * 会員CSVの出力.
-     *
-     * @Route("/%eccube_admin_route%/customer/export", name="admin_customer_export", methods={"GET"})
-     *
-     * @param Request $request
-     *
-     * @return StreamedResponse
      */
-    public function export(Request $request)
+    #[Route(path: '/%eccube_admin_route%/customer/export', name: 'admin_customer_export', methods: ['GET'])]
+    public function export(Request $request): StreamedResponse
     {
         // タイムアウトを無効にする.
         set_time_limit(0);
 
-        // sql loggerを無効にする.
-        $em = $this->entityManager;
-        $em->getConfiguration()->setSQLLogger(null);
-
         $response = new StreamedResponse();
-        $response->setCallback(function () use ($request) {
+        $response->setCallback(function () use ($request): void {
             // CSV種別を元に初期化.
             $this->csvExportService->initCsvType(CsvType::CSV_TYPE_CUSTOMER);
 
@@ -306,13 +282,13 @@ class CustomerController extends AbstractController
 
             // データ行の出力.
             $this->csvExportService->setExportQueryBuilder($qb);
-            $this->csvExportService->exportData(function ($entity, $csvService) use ($request) {
+            $this->csvExportService->exportData(function ($entity, $csvService) use ($request): void {
                 $Csvs = $csvService->getCsvs();
 
-                /** @var \Eccube\Entity\Customer $Customer */
+                /** @var Customer $Customer */
                 $Customer = $entity;
 
-                $ExportCsvRow = new \Eccube\Entity\ExportCsvRow();
+                $ExportCsvRow = new ExportCsvRow();
 
                 // CSV出力項目と合致するデータを取得.
                 foreach ($Csvs as $Csv) {

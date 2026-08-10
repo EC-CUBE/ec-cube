@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -18,17 +20,17 @@ use Eccube\Entity\Order;
 use Eccube\Service\PurchaseFlow\Processor\OrderNoProcessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-class OrderNoProcessorTest extends EccubeTestCase
+final class OrderNoProcessorTest extends EccubeTestCase
 {
     /**
-     * @dataProvider processDataProvider
-     *
      * @param $orderNoFormat
      * @param $expected
      *
      * @throws \ReflectionException
      */
+    #[DataProvider(methodName: 'processDataProvider')]
     public function testProcess($orderNoFormat, $expected)
     {
         $Order = new Order();
@@ -36,7 +38,6 @@ class OrderNoProcessorTest extends EccubeTestCase
         // order_idを123に固定
         $rc = new \ReflectionClass(Order::class);
         $prop = $rc->getProperty('id');
-        $prop->setAccessible(true);
         $prop->setValue($Order, 123);
 
         $config = $this->createMock(EccubeConfig::class);
@@ -46,42 +47,40 @@ class OrderNoProcessorTest extends EccubeTestCase
 
         $processor->process($Order, new PurchaseContext());
 
-        self::assertMatchesRegularExpression($expected, (string) $Order->getOrderNo());
+        $this->assertMatchesRegularExpression($expected, (string) $Order->getOrderNo());
     }
 
-    public function processDataProvider()
+    public static function processDataProvider(): \Iterator
     {
-        return [
-            ['', '/^123$/'],
-            ['{yyyy}', '/^'.(new \DateTime('now', new \DateTimeZone('Asia/Tokyo')))->format('Y').'$/'],
-            ['{yy}', '/^'.(new \DateTime('now', new \DateTimeZone('Asia/Tokyo')))->format('y').'$/'],
-            ['{mm}', '/^'.(new \DateTime('now', new \DateTimeZone('Asia/Tokyo')))->format('m').'$/'],
-            ['{dd}', '/^'.(new \DateTime('now', new \DateTimeZone('Asia/Tokyo')))->format('d').'$/'],
-            ['{id}', '/^123$/'],
-            ['{id,0}', '/^123$/'],
-            ['{id,1}', '/^123$/'],
-            ['{id,2}', '/^123$/'],
-            ['{id,4}', '/^0123$/'],
-            ['{id,10}', '/^0000000123$/'],
-            ['{random}', '/^123$/'],
-            ['{random,1}', '/^\d{1}$/'],
-            ['{random,10}', '/^\d{10}$/'],
-            ['{random_alnum}', '/^123$/'],
-            ['{random_alnum,1}', '/^[[:alnum:]]{1}$/'],
-            ['{random_alnum,10}', '/^[[:alnum:]]{10}$/'],
-            ['{random_alpha,10}', '/^[[:alpha:]]{10}$/'],
-            ['order_no', '/order_no/'],
-            ['{hoge}', '/123/'],
-            ['ORDER_{yy}_{mm}_{dd}_{id,5}_{random,5}_{random_alnum,10}',
-                '/^'.
-                'ORDER_'.
-                (new \DateTime('now', new \DateTimeZone('Asia/Tokyo')))->format('y').'_'.
-                (new \DateTime('now', new \DateTimeZone('Asia/Tokyo')))->format('m').'_'.
-                (new \DateTime('now', new \DateTimeZone('Asia/Tokyo')))->format('d').'_'.
-                '00123_'.
-                '\d{5}_'.
-                '[[:alnum:]]{10}'.
-                '$/', ],
-        ];
+        yield ['', '/^123$/'];
+        yield ['{yyyy}', '/^'.(new \DateTime('now', new \DateTimeZone('Asia/Tokyo')))->format('Y').'$/'];
+        yield ['{yy}', '/^'.(new \DateTime('now', new \DateTimeZone('Asia/Tokyo')))->format('y').'$/'];
+        yield ['{mm}', '/^'.(new \DateTime('now', new \DateTimeZone('Asia/Tokyo')))->format('m').'$/'];
+        yield ['{dd}', '/^'.(new \DateTime('now', new \DateTimeZone('Asia/Tokyo')))->format('d').'$/'];
+        yield ['{id}', '/^123$/'];
+        yield ['{id,0}', '/^123$/'];
+        yield ['{id,1}', '/^123$/'];
+        yield ['{id,2}', '/^123$/'];
+        yield ['{id,4}', '/^0123$/'];
+        yield ['{id,10}', '/^0000000123$/'];
+        yield ['{random}', '/^123$/'];
+        yield ['{random,1}', '/^\d{1}$/'];
+        yield ['{random,10}', '/^\d{10}$/'];
+        yield ['{random_alnum}', '/^123$/'];
+        yield ['{random_alnum,1}', '/^[[:alnum:]]{1}$/'];
+        yield ['{random_alnum,10}', '/^[[:alnum:]]{10}$/'];
+        yield ['{random_alpha,10}', '/^[[:alpha:]]{10}$/'];
+        yield ['order_no', '/order_no/'];
+        yield ['{hoge}', '/123/'];
+        yield ['ORDER_{yy}_{mm}_{dd}_{id,5}_{random,5}_{random_alnum,10}',
+            '/^'.
+            'ORDER_'.
+            (new \DateTime('now', new \DateTimeZone('Asia/Tokyo')))->format('y').'_'.
+            (new \DateTime('now', new \DateTimeZone('Asia/Tokyo')))->format('m').'_'.
+            (new \DateTime('now', new \DateTimeZone('Asia/Tokyo')))->format('d').'_'.
+            '00123_'.
+            '\d{5}_'.
+            '[[:alnum:]]{10}'.
+            '$/', ];
     }
 }

@@ -14,15 +14,17 @@
 namespace Eccube\Controller\Admin\Setting\Shop;
 
 use Eccube\Controller\AbstractController;
+use Eccube\Entity\Csv;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Repository\CsvRepository;
 use Eccube\Repository\Master\CsvTypeRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -31,38 +33,18 @@ use Symfony\Component\Validator\Constraints as Assert;
 class CsvController extends AbstractController
 {
     /**
-     * @var CsvRepository
-     */
-    protected $csvRepository;
-
-    /**
-     * @var CsvTypeRepository
-     */
-    protected $csvTypeRepository;
-
-    /**
      * CsvController constructor.
-     *
-     * @param CsvRepository $csvRepository
-     * @param CsvTypeRepository $csvTypeRepository
      */
-    public function __construct(CsvRepository $csvRepository, CsvTypeRepository $csvTypeRepository)
+    public function __construct(protected CsvRepository $csvRepository, protected CsvTypeRepository $csvTypeRepository)
     {
-        $this->csvRepository = $csvRepository;
-        $this->csvTypeRepository = $csvTypeRepository;
     }
 
     /**
-     * @Route("/%eccube_admin_route%/setting/shop/csv/{id}",
-     *     requirements={"id" = "\d+"},
-     *     defaults={"id" = CsvType::CSV_TYPE_ORDER},
-     *     name="admin_setting_shop_csv",
-     *     methods={"GET", "POST"}
-     * )
-     *
-     * @Template("@admin/Setting/Shop/csv.twig")
+     * @return RedirectResponse|array<string, mixed>
      */
-    public function index(Request $request, CsvType $CsvType)
+    #[Route(path: '/%eccube_admin_route%/setting/shop/csv/{id}', name: 'admin_setting_shop_csv', requirements: ['id' => '\d+'], defaults: ['id' => CsvType::CSV_TYPE_ORDER], methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Setting/Shop/csv.twig')]
+    public function index(Request $request, CsvType $CsvType): RedirectResponse|array
     {
         $builder = $this->createFormBuilder();
 
@@ -88,7 +70,7 @@ class CsvController extends AbstractController
             'csv_not_output',
             EntityType::class,
             [
-                'class' => \Eccube\Entity\Csv::class,
+                'class' => Csv::class,
                 'choice_label' => 'disp_name',
                 'required' => false,
                 'expanded' => false,
@@ -106,7 +88,7 @@ class CsvController extends AbstractController
             'csv_output',
             EntityType::class,
             [
-                'class' => \Eccube\Entity\Csv::class,
+                'class' => Csv::class,
                 'choice_label' => 'disp_name',
                 'required' => false,
                 'expanded' => false,

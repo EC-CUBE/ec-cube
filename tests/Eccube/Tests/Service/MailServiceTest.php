@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -16,43 +18,31 @@ namespace Eccube\Tests\Service;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\Pref;
+use Eccube\Entity\Order;
 use Eccube\Event\EccubeEvents;
 use Eccube\Service\MailService;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
+use Twig\Environment;
 
 /**
  * MailService test cases.
  */
-class MailServiceTest extends AbstractServiceTestCase
+final class MailServiceTest extends AbstractServiceTestCase
 {
     use MailerAssertionsTrait;
 
-    /**
-     * @var Customer
-     */
-    protected $Customer;
+    protected ?Customer $Customer = null;
 
-    /**
-     * @var Order
-     */
-    protected $Order;
-    /**
-     * @var BaseInfo
-     */
-    protected $BaseInfo;
+    protected ?Order $Order = null;
+    protected ?BaseInfo $BaseInfo = null;
 
-    /**
-     * @var MailService
-     */
-    protected $mailService;
+    protected ?MailService $mailService = null;
 
-    /**
-     * @var OrderRepository
-     */
-    protected $orderRepository;
+    protected ?OrderRepository $orderRepository = null;
 
     /**
      * {@inheritdoc}
@@ -64,10 +54,9 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->Order = $this->createOrder($this->Customer);
         $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
         $this->mailService = static::getContainer()->get(MailService::class);
-
         $request = Request::createFromGlobals();
-        static::getContainer()->get('request_stack')->push($request);
-        $twig = static::getContainer()->get('twig');
+        static::getContainer()->get(RequestStack::class)->push($request);
+        $twig = static::getContainer()->get(Environment::class);
         $twig->addGlobal('BaseInfo', $this->BaseInfo);
     }
 
@@ -155,7 +144,7 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->verify();
 
         $this->assertEmailTextBodyContains($Message, '退会手続きが完了いたしました');
-        $this->assertEmailHtmlBodyNotContains($Message, '退会手続きが完了いたしました', 'HTML part は存在しない');
+        $this->assertNull($Message->getHtmlBody(), 'HTML part は存在しない');
     }
 
     public function testSendContactMail()
@@ -309,7 +298,7 @@ class MailServiceTest extends AbstractServiceTestCase
         $Message = $this->getMailerMessage(0);
 
         $this->assertEmailTextBodyContains($Message, $url, 'URLは'.$url.'ではありません');
-        $this->assertEmailHtmlBodyNotContains($Message, $url, 'HTML part は存在しない');
+        $this->assertNull($Message->getHtmlBody(), 'HTML part は存在しない');
 
         $this->expected = '['.$this->BaseInfo->getShopName().'] パスワード変更のご確認';
         $this->actual = $Message->getSubject();
@@ -346,7 +335,7 @@ class MailServiceTest extends AbstractServiceTestCase
         $this->verify();
 
         $this->assertEmailTextBodyContains($Message, 'パスワードを変更いたしました。');
-        $this->assertEmailHtmlBodyNotContains($Message, 'パスワードを変更いたしました。', 'HTML part は存在しない');
+        $this->assertNull($Message->getHtmlBody(), 'HTML part は存在しない');
     }
 
     public function testConvertRFCViolatingEmail()
@@ -489,7 +478,10 @@ class MailServiceTest extends AbstractServiceTestCase
         $Shipping = $Order->getShippings()->first();
 
         $hookEmail = 'hook-test@example.com';
-        $eventDispatcher = static::getContainer()->get('event_dispatcher');
+        // SymfonyのFrameworkBundleが内部で登録するサービスだが、
+        // クラス名のエイリアスが標準では存在しないため、文字列サービスIDのまま使用
+        $serviceId = 'event_dispatcher';
+        $eventDispatcher = static::getContainer()->get($serviceId);
         $eventDispatcher->addListener(EccubeEvents::MAIL_SHIPPING_NOTIFY, function ($event) use ($hookEmail) {
             /** @var Email $message */
             $message = $event->getArgument('message');
@@ -516,7 +508,10 @@ class MailServiceTest extends AbstractServiceTestCase
         $eventName = 'テスト';
 
         $hookEmail = 'hook-test@example.com';
-        $eventDispatcher = static::getContainer()->get('event_dispatcher');
+        // SymfonyのFrameworkBundleが内部で登録するサービスだが、
+        // クラス名のエイリアスが標準では存在しないため、文字列サービスIDのまま使用
+        $serviceId = 'event_dispatcher';
+        $eventDispatcher = static::getContainer()->get($serviceId);
         $eventDispatcher->addListener(EccubeEvents::MAIL_CUSTOMER_CHANGE_NOTIFY, function ($event) use ($hookEmail) {
             /** @var Email $message */
             $message = $event->getArgument('message');

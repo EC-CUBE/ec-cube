@@ -13,177 +13,116 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Repository\CustomerFavoriteProductRepository;
 
-if (!class_exists(CustomerFavoriteProduct::class)) {
+/**
+ * CustomerFavoriteProduct
+ */
+#[ORM\Table(name: 'dtb_customer_favorite_product')]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: CustomerFavoriteProductRepository::class)]
+class CustomerFavoriteProduct extends AbstractEntity
+{
+    #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    private ?int $id = null;
+
+    #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
+    private ?\DateTime $create_date = null;
+
+    #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
+    private ?\DateTime $update_date = null;
+
+    #[ORM\ManyToOne(targetEntity: Customer::class, inversedBy: 'CustomerFavoriteProducts')]
+    #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'id')]
+    private ?Customer $Customer = null;
+
+    #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'CustomerFavoriteProducts')]
+    #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id')]
+    private ?Product $Product = null;
+
     /**
-     * CustomerFavoriteProduct
-     *
-     * @ORM\Table(name="dtb_customer_favorite_product")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\CustomerFavoriteProductRepository")
+     * Get id.
      */
-    class CustomerFavoriteProduct extends AbstractEntity
+    public function getId(): ?int
     {
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
-         */
-        private $id;
+        return $this->id;
+    }
 
-        /**
-         * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
-         */
-        private $create_date;
+    /**
+     * Set createDate.
+     */
+    public function setCreateDate(\DateTime $createDate): CustomerFavoriteProduct
+    {
+        $this->create_date = $createDate;
 
-        /**
-         * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
-         */
-        private $update_date;
+        return $this;
+    }
 
-        /**
-         * @var Customer
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Customer", inversedBy="CustomerFavoriteProducts")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
-         * })
-         */
-        private $Customer;
+    /**
+     * Get createDate.
+     */
+    public function getCreateDate(): ?\DateTime
+    {
+        return $this->create_date;
+    }
 
-        /**
-         * @var Product
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Product", inversedBy="CustomerFavoriteProducts")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="product_id", referencedColumnName="id")
-         * })
-         */
-        private $Product;
+    /**
+     * Set updateDate.
+     */
+    public function setUpdateDate(\DateTime $updateDate): CustomerFavoriteProduct
+    {
+        $this->update_date = $updateDate;
 
-        /**
-         * Get id.
-         *
-         * @return int
-         */
-        public function getId()
-        {
-            return $this->id;
-        }
+        return $this;
+    }
 
-        /**
-         * Set createDate.
-         *
-         * @param \DateTime $createDate
-         *
-         * @return CustomerFavoriteProduct
-         */
-        public function setCreateDate($createDate)
-        {
-            $this->create_date = $createDate;
+    /**
+     * Get updateDate.
+     */
+    public function getUpdateDate(): ?\DateTime
+    {
+        return $this->update_date;
+    }
 
-            return $this;
-        }
+    /**
+     * Set customer.
+     */
+    public function setCustomer(?Customer $customer = null): CustomerFavoriteProduct
+    {
+        $this->Customer = $customer;
 
-        /**
-         * Get createDate.
-         *
-         * @return \DateTime
-         */
-        public function getCreateDate()
-        {
-            return $this->create_date;
-        }
+        return $this;
+    }
 
-        /**
-         * Set updateDate.
-         *
-         * @param \DateTime $updateDate
-         *
-         * @return CustomerFavoriteProduct
-         */
-        public function setUpdateDate($updateDate)
-        {
-            $this->update_date = $updateDate;
+    /**
+     * Get customer.
+     */
+    public function getCustomer(): ?Customer
+    {
+        return $this->Customer;
+    }
 
-            return $this;
-        }
+    /**
+     * Set product.
+     */
+    public function setProduct(?Product $product = null): CustomerFavoriteProduct
+    {
+        $this->Product = $product;
 
-        /**
-         * Get updateDate.
-         *
-         * @return \DateTime
-         */
-        public function getUpdateDate()
-        {
-            return $this->update_date;
-        }
+        return $this;
+    }
 
-        /**
-         * Set customer.
-         *
-         * @param Customer|null $customer
-         *
-         * @return CustomerFavoriteProduct
-         */
-        public function setCustomer(?Customer $customer = null)
-        {
-            $this->Customer = $customer;
-
-            return $this;
-        }
-
-        /**
-         * Get customer.
-         *
-         * @return Customer|null
-         */
-        public function getCustomer()
-        {
-            return $this->Customer;
-        }
-
-        /**
-         * Set product.
-         *
-         * @param Product|null $product
-         *
-         * @return CustomerFavoriteProduct
-         */
-        public function setProduct(?Product $product = null)
-        {
-            $this->Product = $product;
-
-            return $this;
-        }
-
-        /**
-         * Get product.
-         *
-         * @return Product|null
-         */
-        public function getProduct()
-        {
-            return $this->Product;
-        }
+    /**
+     * Get product.
+     */
+    public function getProduct(): ?Product
+    {
+        return $this->Product;
     }
 }

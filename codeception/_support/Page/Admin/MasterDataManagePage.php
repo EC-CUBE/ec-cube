@@ -17,16 +17,7 @@ class MasterDataManagePage extends AbstractAdminPageStyleGuide
 {
     public static $URL = '/setting/system/masterdata';
 
-    /** @var \AcceptanceTester */
-    protected $tester;
-
-    /**
-     * ProductListPage constructor.
-     */
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
+    protected \AcceptanceTester $tester;
 
     public static function go(\AcceptanceTester $I)
     {

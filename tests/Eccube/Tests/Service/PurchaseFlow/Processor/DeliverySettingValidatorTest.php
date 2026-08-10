@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,27 +23,15 @@ use Eccube\Service\PurchaseFlow\Processor\DeliverySettingValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
-class DeliverySettingValidatorTest extends EccubeTestCase
+final class DeliverySettingValidatorTest extends EccubeTestCase
 {
-    /**
-     * @var DeliverySettingValidator
-     */
-    protected $validator;
+    protected ?DeliverySettingValidator $validator = null;
 
-    /**
-     * @var CartItem
-     */
-    protected $cartItem;
+    protected ?CartItem $cartItem = null;
 
-    /**
-     * @var Product
-     */
-    protected $Product;
+    protected ?Product $Product = null;
 
-    /**
-     * @var ProductClass
-     */
-    protected $ProductClass;
+    protected ?ProductClass $ProductClass = null;
 
     /**
      * {@inheritdoc}
@@ -49,7 +39,6 @@ class DeliverySettingValidatorTest extends EccubeTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->Product = $this->createProduct('テスト商品', 1);
         $this->ProductClass = $this->Product->getProductClasses()[0];
         $this->validator = static::getContainer()->get(DeliverySettingValidator::class);
@@ -59,7 +48,7 @@ class DeliverySettingValidatorTest extends EccubeTestCase
 
     public function testInstance()
     {
-        self::assertInstanceOf(DeliverySettingValidator::class, $this->validator);
+        $this->assertInstanceOf(DeliverySettingValidator::class, $this->validator);
     }
 
     /**
@@ -69,7 +58,7 @@ class DeliverySettingValidatorTest extends EccubeTestCase
     {
         $result = $this->validator->execute($this->cartItem, new PurchaseContext());
 
-        self::assertFalse($result->isError());
+        $this->assertFalse($result->isError());
     }
 
     /**
@@ -83,6 +72,6 @@ class DeliverySettingValidatorTest extends EccubeTestCase
 
         $this->validator->execute($this->cartItem, new PurchaseContext());
 
-        self::assertSame(0, $this->cartItem->getQuantity());
+        $this->assertSame('0', $this->cartItem->getQuantity());
     }
 }

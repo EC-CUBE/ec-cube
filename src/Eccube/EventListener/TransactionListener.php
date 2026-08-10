@@ -29,41 +29,26 @@ use Symfony\Component\HttpKernel\KernelEvents;
 class TransactionListener implements EventSubscriberInterface
 {
     /**
-     * @var EntityManagerInterface
-     */
-    protected $em;
-
-    /**
-     * @var bool
-     */
-    protected $isEnabled = true;
-
-    /**
      * TransactionListener constructor.
      *
      * @param EntityManager $em
-     * @param bool $isEnabled
      */
-    public function __construct(EntityManagerInterface $em, $isEnabled = true)
+    public function __construct(protected EntityManagerInterface $em, protected bool $isEnabled = true)
     {
-        $this->em = $em;
-        $this->isEnabled = $isEnabled;
     }
 
     /**
      * Disable transaction listener.
      */
-    public function disable()
+    public function disable(): void
     {
         $this->isEnabled = false;
     }
 
     /**
      * Kernel request listener callback.
-     *
-     * @param RequestEvent $event
      */
-    public function onKernelRequest(RequestEvent $event)
+    public function onKernelRequest(RequestEvent $event): void
     {
         if (!$this->isEnabled) {
             log_debug('Transaction Listener is disabled.');
@@ -77,8 +62,14 @@ class TransactionListener implements EventSubscriberInterface
 
         /** @var Connection $Connection */
         $Connection = $this->em->getConnection();
+        // DBAL 4 では Connection::connect() が protected になったため, 接続の明示確立には
+        // getNativeConnection() を用いる。autoCommit を false にする前に接続しておくことが重要で,
+        // 先に autoCommit=false にすると DBAL 4 が connect() 時に暗黙のトランザクションを開始し
+        // (Connection::connect 内の `if ($this->autoCommit === false) { $this->beginTransaction(); }`),
+        // 後続の beginTransaction がネストして onKernelTerminate の commit でリクエスト全体の
+        // トランザクションが確定されず, 書き込みが永続化されなくなる。
         if (!$Connection->isConnected()) {
-            $Connection->connect();
+            $Connection->getNativeConnection();
         }
         $Connection->setAutoCommit(false);
         $Connection->setTransactionIsolation(TransactionIsolationLevel::READ_COMMITTED);
@@ -88,10 +79,8 @@ class TransactionListener implements EventSubscriberInterface
 
     /**
      * Kernel exception listener callback.
-     *
-     * @param ExceptionEvent $event
      */
-    public function onKernelException(ExceptionEvent $event)
+    public function onKernelException(ExceptionEvent $event): void
     {
         if (!$this->isEnabled) {
             log_debug('Transaction Listener is disabled.');
@@ -103,7 +92,9 @@ class TransactionListener implements EventSubscriberInterface
             return;
         }
 
-        if ($this->em->getConnection()->getNativeConnection()->inTransaction()) {
+        /** @var \PDO $nativeConnection */
+        $nativeConnection = $this->em->getConnection()->getNativeConnection();
+        if ($nativeConnection->inTransaction()) {
             if ($this->em->getConnection()->isRollbackOnly()) {
                 $this->em->rollback();
             }
@@ -115,17 +106,19 @@ class TransactionListener implements EventSubscriberInterface
 
     /**
      *  Kernel terminate listener callback.
-     *
-     * @param PostResponseEvent $event
      */
-    public function onKernelTerminate(TerminateEvent $event)
+    public function onKernelTerminate(TerminateEvent $event): void
     {
         if (!$this->isEnabled) {
             log_debug('Transaction Listener is disabled.');
 
             return;
         }
-        if ($this->em->getConnection()->getNativeConnection()->inTransaction()) {
+
+        /** @var \PDO $nativeConnection */
+        $nativeConnection = $this->em->getConnection()->getNativeConnection();
+
+        if ($nativeConnection->inTransaction()) {
             if ($this->em->getConnection()->isRollbackOnly()) {
                 $this->em->rollback();
                 log_debug('Rollback executed.');
@@ -141,9 +134,10 @@ class TransactionListener implements EventSubscriberInterface
     /**
      * Return the events to subscribe to.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    public static function getSubscribedEvents()
+    #[\Override]
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::REQUEST => 'onKernelRequest',

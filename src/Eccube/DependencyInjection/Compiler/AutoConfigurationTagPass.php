@@ -31,7 +31,8 @@ use Symfony\Component\DependencyInjection\Definition;
  */
 class AutoConfigurationTagPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    #[\Override]
+    public function process(ContainerBuilder $container): void
     {
         foreach ($container->getDefinitions() as $id => $definition) {
             $this->configureDoctrineEventSubscriberTag($definition);
@@ -40,7 +41,7 @@ class AutoConfigurationTagPass implements CompilerPassInterface
         }
     }
 
-    protected function configureDoctrineEventSubscriberTag(Definition $definition)
+    protected function configureDoctrineEventSubscriberTag(Definition $definition): void
     {
         $class = $definition->getClass();
         if (!is_subclass_of($class, EventSubscriber::class)) {
@@ -54,9 +55,9 @@ class AutoConfigurationTagPass implements CompilerPassInterface
         $definition->addTag('doctrine.event_subscriber');
     }
 
-    protected function configureRateLimiterTag($id, Definition $definition)
+    protected function configureRateLimiterTag(string|int $id, Definition $definition): void
     {
-        if (\str_starts_with($id, 'limiter')
+        if (\str_starts_with((string) $id, 'limiter')
             && $definition instanceof ChildDefinition
             && $definition->getParent() === 'limiter'
             && !$definition->hasTag('eccube_rate_limiter')) {
@@ -64,10 +65,10 @@ class AutoConfigurationTagPass implements CompilerPassInterface
         }
     }
 
-    protected function configurePaymentMethodTag($id, Definition $definition)
+    protected function configurePaymentMethodTag(string $id, Definition $definition): void
     {
         $class = $definition->getClass();
-        if (is_subclass_of($class, PaymentMethodInterface::class) && !$definition->isAbstract()) {
+        if (is_subclass_of((string) $class, PaymentMethodInterface::class) && !$definition->isAbstract()) {
             $definition->addTag('eccube_payment_method');
         }
     }

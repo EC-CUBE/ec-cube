@@ -13,236 +13,162 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\Master\LoginHistoryStatus;
+use Eccube\Repository\LoginHistoryRepository;
 
-if (!class_exists(LoginHistory::class)) {
+/**
+ * LoginHistory
+ */
+#[ORM\Table(name: 'dtb_login_history')]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: LoginHistoryRepository::class)]
+class LoginHistory extends AbstractEntity
+{
+    #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    private ?int $id = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $user_name = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $client_ip = null;
+
+    #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
+    private ?\DateTime $create_date = null;
+
+    #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
+    private ?\DateTime $update_date = null;
+
+    #[ORM\ManyToOne(targetEntity: LoginHistoryStatus::class)]
+    #[ORM\JoinColumn(name: 'login_history_status_id', referencedColumnName: 'id', nullable: false)]
+    // @phpstan-ignore doctrine.associationType (Formでの初期化時にnullが必要なためnullableとしている)
+    private ?LoginHistoryStatus $Status = null;
+
+    #[ORM\ManyToOne(targetEntity: Member::class)]
+    #[ORM\JoinColumn(name: 'member_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    private ?Member $LoginUser = null;
+
     /**
-     * LoginHistory
+     * Get id
      *
-     * @ORM\Table(name="dtb_login_history")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\LoginHistoryRepository")
+     * @return int
      */
-    class LoginHistory extends AbstractEntity
+    public function getId(): ?int
     {
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
-         */
-        private $id;
+        return $this->id;
+    }
 
-        /**
-         * @var string
-         *
-         * @ORM\Column(type="text",nullable=true)
-         */
-        private $user_name;
+    /**
+     * Set user_name
+     */
+    public function setUserName(string $userName): LoginHistory
+    {
+        $this->user_name = $userName;
 
-        /**
-         * @var string
-         *
-         * @ORM\Column(type="text",nullable=true)
-         */
-        private $client_ip;
+        return $this;
+    }
 
-        /**
-         * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
-         */
-        private $create_date;
+    /**
+     * Get user_name
+     */
+    public function getUserName(): string
+    {
+        return $this->user_name;
+    }
 
-        /**
-         * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
-         */
-        private $update_date;
+    public function setStatus(LoginHistoryStatus $Status): LoginHistory
+    {
+        $this->Status = $Status;
 
-        /**
-         * @var LoginHistoryStatus
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\LoginHistoryStatus")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="login_history_status_id", referencedColumnName="id", nullable=false)
-         * })
-         */
-        private $Status;
+        return $this;
+    }
 
-        /**
-         * @var Member
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="member_id", referencedColumnName="id", onDelete="SET NULL")
-         * })
-         */
-        private $LoginUser;
+    public function getStatus(): LoginHistoryStatus
+    {
+        return $this->Status;
+    }
 
-        /**
-         * Get id
-         *
-         * @return int
-         */
-        public function getId()
-        {
-            return $this->id;
-        }
+    /**
+     * Set client_ip
+     */
+    public function setClientIp(string $clientIp): LoginHistory
+    {
+        $this->client_ip = $clientIp;
 
-        /**
-         * Set user_name
-         *
-         * @param string $userName
-         *
-         * @return LoginHistory
-         */
-        public function setUserName($userName)
-        {
-            $this->user_name = $userName;
+        return $this;
+    }
 
-            return $this;
-        }
+    /**
+     * Get client_ip
+     */
+    public function getClientIp(): string
+    {
+        return $this->client_ip;
+    }
 
-        /**
-         * Get user_name
-         *
-         * @return string
-         */
-        public function getUserName()
-        {
-            return $this->user_name;
-        }
+    /**
+     * Set create_date
+     */
+    public function setCreateDate(\DateTime $createDate): LoginHistory
+    {
+        $this->create_date = $createDate;
 
-        /**
-         * @param LoginHistoryStatus $Status
-         *
-         * @return LoginHistory
-         */
-        public function setStatus($Status)
-        {
-            $this->Status = $Status;
+        return $this;
+    }
 
-            return $this;
-        }
+    /**
+     * Get create_date
+     *
+     * @return \DateTime
+     */
+    public function getCreateDate(): ?\DateTime
+    {
+        return $this->create_date;
+    }
 
-        /**
-         * @return LoginHistoryStatus
-         */
-        public function getStatus()
-        {
-            return $this->Status;
-        }
+    /**
+     * Set update_date
+     */
+    public function setUpdateDate(\DateTime $updateDate): LoginHistory
+    {
+        $this->update_date = $updateDate;
 
-        /**
-         * Set client_ip
-         *
-         * @param string $clientIp
-         *
-         * @return LoginHistory
-         */
-        public function setClientIp($clientIp)
-        {
-            $this->client_ip = $clientIp;
+        return $this;
+    }
 
-            return $this;
-        }
+    /**
+     * Get update_date
+     *
+     * @return \DateTime
+     */
+    public function getUpdateDate(): ?\DateTime
+    {
+        return $this->update_date;
+    }
 
-        /**
-         * Get client_ip
-         *
-         * @return string
-         */
-        public function getClientIp()
-        {
-            return $this->client_ip;
-        }
+    /**
+     * Set LoginUser
+     *
+     * @param Member $loginUser
+     */
+    public function setLoginUser(?Member $loginUser = null): LoginHistory
+    {
+        $this->LoginUser = $loginUser;
 
-        /**
-         * Set create_date
-         *
-         * @param \DateTime $createDate
-         *
-         * @return LoginHistory
-         */
-        public function setCreateDate($createDate)
-        {
-            $this->create_date = $createDate;
+        return $this;
+    }
 
-            return $this;
-        }
-
-        /**
-         * Get create_date
-         *
-         * @return \DateTime
-         */
-        public function getCreateDate()
-        {
-            return $this->create_date;
-        }
-
-        /**
-         * Set update_date
-         *
-         * @param \DateTime $updateDate
-         *
-         * @return LoginHistory
-         */
-        public function setUpdateDate($updateDate)
-        {
-            $this->update_date = $updateDate;
-
-            return $this;
-        }
-
-        /**
-         * Get update_date
-         *
-         * @return \DateTime
-         */
-        public function getUpdateDate()
-        {
-            return $this->update_date;
-        }
-
-        /**
-         * Set LoginUser
-         *
-         * @param Member $loginUser
-         *
-         * @return LoginHistory
-         */
-        public function setLoginUser(?Member $loginUser = null)
-        {
-            $this->LoginUser = $loginUser;
-
-            return $this;
-        }
-
-        /**
-         * Get LoginUser
-         *
-         * @return Member
-         */
-        public function getLoginUser()
-        {
-            return $this->LoginUser;
-        }
+    /**
+     * Get LoginUser
+     */
+    public function getLoginUser(): Member
+    {
+        return $this->LoginUser;
     }
 }

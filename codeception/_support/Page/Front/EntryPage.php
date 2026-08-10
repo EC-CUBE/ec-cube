@@ -17,18 +17,11 @@ class EntryPage extends AbstractFrontPage
 {
     private $formData = [];
 
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     /**
      * @param $I
      * @param $id
-     *
-     * @return EntryPage
      */
-    public static function go($I)
+    public static function go($I): EntryPage
     {
         $page = new self($I);
         $page->goPage('/entry');

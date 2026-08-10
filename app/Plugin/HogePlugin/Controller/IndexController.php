@@ -13,17 +13,14 @@
 
 namespace Plugin\HogePlugin\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class IndexController
 {
-    /**
-     * @Route("/hogeplugin/hello")
-     *
-     * @Template("HogePlugin/Resource/template/index.twig")
-     */
+    #[Route(path: '/hogeplugin/hello')]
+    #[Template('HogePlugin/Resource/template/index.twig')]
     public function index(Request $request)
     {
         dump($request);

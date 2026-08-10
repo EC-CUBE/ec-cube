@@ -13,514 +13,370 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Entity\Master\SaleType;
+use Eccube\Repository\DeliveryRepository;
 
-if (!class_exists(Delivery::class)) {
-    /**
-     * Delivery
-     *
-     * @ORM\Table(name="dtb_delivery")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\DeliveryRepository")
-     */
-    class Delivery extends AbstractEntity
+/**
+ * Delivery
+ */
+#[ORM\Table(name: 'dtb_delivery')]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: DeliveryRepository::class)]
+class Delivery extends AbstractEntity implements \Stringable
+{
+    #[\Override]
+    public function __toString(): string
     {
-        /**
-         * @return string
-         */
-        public function __toString()
-        {
-            return (string) $this->name;
-        }
+        return (string) $this->name;
+    }
 
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
-         */
-        private $id;
+    #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    private ?int $id = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="name", type="string", length=255, nullable=true)
-         */
-        private $name;
+    #[ORM\Column(name: 'name', type: Types::STRING, length: 255, nullable: true)]
+    private ?string $name = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="service_name", type="string", length=255, nullable=true)
-         */
-        private $service_name;
+    #[ORM\Column(name: 'service_name', type: Types::STRING, length: 255, nullable: true)]
+    private ?string $service_name = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="description", type="string", length=4000, nullable=true)
-         */
-        private $description;
+    #[ORM\Column(name: 'description', type: Types::STRING, length: 4000, nullable: true)]
+    private ?string $description = null;
 
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="confirm_url", type="string", length=4000, nullable=true)
-         */
-        private $confirm_url;
+    #[ORM\Column(name: 'confirm_url', type: Types::STRING, length: 4000, nullable: true)]
+    private ?string $confirm_url = null;
 
-        /**
-         * @var int|null
-         *
-         * @ORM\Column(name="sort_no", type="integer", nullable=true, options={"unsigned":true})
-         */
-        private $sort_no;
+    #[ORM\Column(name: 'sort_no', type: Types::INTEGER, nullable: true, options: ['unsigned' => true])]
+    private ?int $sort_no = null;
 
-        /**
-         * @var bool
-         *
-         * @ORM\Column(name="visible", type="boolean", options={"default":true})
-         */
-        private $visible = true;
+    #[ORM\Column(name: 'visible', type: Types::BOOLEAN, options: ['default' => true])]
+    private bool $visible = true;
 
-        /**
-         * @var \DateTime
-         *
-         * @ORM\Column(name="create_date", type="datetimetz")
-         */
-        private $create_date;
+    #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
+    private ?\DateTime $create_date = null;
 
-        /**
-         * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
-         */
-        private $update_date;
+    #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
+    private ?\DateTime $update_date = null;
 
-        /**
-         * @var \Doctrine\Common\Collections\Collection
-         *
-         * @ORM\OneToMany(targetEntity="Eccube\Entity\PaymentOption", mappedBy="Delivery", cascade={"persist","remove"})
-         */
-        private $PaymentOptions;
+    /**
+     * @var Collection<int, PaymentOption>
+     */
+    #[ORM\OneToMany(targetEntity: PaymentOption::class, mappedBy: 'Delivery', cascade: ['persist', 'remove'])]
+    private Collection $PaymentOptions;
 
-        /**
-         * @var \Doctrine\Common\Collections\Collection
-         *
-         * @ORM\OneToMany(targetEntity="Eccube\Entity\DeliveryFee", mappedBy="Delivery", cascade={"persist","remove"})
-         */
-        private $DeliveryFees;
+    /**
+     * @var Collection<int, DeliveryFee>
+     */
+    #[ORM\OneToMany(targetEntity: DeliveryFee::class, mappedBy: 'Delivery', cascade: ['persist', 'remove'])]
+    private Collection $DeliveryFees;
 
-        /**
-         * @var \Doctrine\Common\Collections\Collection
-         *
-         * @ORM\OneToMany(targetEntity="Eccube\Entity\DeliveryTime", mappedBy="Delivery", cascade={"persist","remove"})
-         *
-         * @ORM\OrderBy({
-         *     "sort_no"="ASC"
-         * })
-         */
-        private $DeliveryTimes;
+    /**
+     * @var Collection<int, DeliveryTime>
+     */
+    #[ORM\OneToMany(targetEntity: DeliveryTime::class, mappedBy: 'Delivery', cascade: ['persist', 'remove'])]
+    #[ORM\OrderBy(['sort_no' => 'ASC'])]
+    private Collection $DeliveryTimes;
 
-        /**
-         * @var Member
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Member")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="creator_id", referencedColumnName="id")
-         * })
-         */
-        private $Creator;
+    #[ORM\ManyToOne(targetEntity: Member::class)]
+    #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
+    private ?Member $Creator = null;
 
-        /**
-         * @var Master\SaleType
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\SaleType")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="sale_type_id", referencedColumnName="id")
-         * })
-         */
-        private $SaleType;
+    #[ORM\ManyToOne(targetEntity: SaleType::class)]
+    #[ORM\JoinColumn(name: 'sale_type_id', referencedColumnName: 'id')]
+    private ?SaleType $SaleType = null;
 
-        /**
-         * Constructor
-         */
-        public function __construct()
-        {
-            $this->PaymentOptions = new \Doctrine\Common\Collections\ArrayCollection();
-            $this->DeliveryFees = new \Doctrine\Common\Collections\ArrayCollection();
-            $this->DeliveryTimes = new \Doctrine\Common\Collections\ArrayCollection();
-        }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->PaymentOptions = new ArrayCollection();
+        $this->DeliveryFees = new ArrayCollection();
+        $this->DeliveryTimes = new ArrayCollection();
+    }
 
-        /**
-         * Get id.
-         *
-         * @return int
-         */
-        public function getId()
-        {
-            return $this->id;
-        }
+    /**
+     * Get id.
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
-        /**
-         * Set name.
-         *
-         * @param string|null $name
-         *
-         * @return Delivery
-         */
-        public function setName($name = null)
-        {
-            $this->name = $name;
+    /**
+     * Set name.
+     */
+    public function setName(?string $name = null): Delivery
+    {
+        $this->name = $name;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get name.
-         *
-         * @return string|null
-         */
-        public function getName()
-        {
-            return $this->name;
-        }
+    /**
+     * Get name.
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
 
-        /**
-         * Set serviceName.
-         *
-         * @param string|null $serviceName
-         *
-         * @return Delivery
-         */
-        public function setServiceName($serviceName = null)
-        {
-            $this->service_name = $serviceName;
+    /**
+     * Set serviceName.
+     */
+    public function setServiceName(?string $serviceName = null): Delivery
+    {
+        $this->service_name = $serviceName;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get serviceName.
-         *
-         * @return string|null
-         */
-        public function getServiceName()
-        {
-            return $this->service_name;
-        }
+    /**
+     * Get serviceName.
+     */
+    public function getServiceName(): ?string
+    {
+        return $this->service_name;
+    }
 
-        /**
-         * Set description.
-         *
-         * @param string|null $description
-         *
-         * @return Delivery
-         */
-        public function setDescription($description = null)
-        {
-            $this->description = $description;
+    /**
+     * Set description.
+     */
+    public function setDescription(?string $description = null): Delivery
+    {
+        $this->description = $description;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get description.
-         *
-         * @return string|null
-         */
-        public function getDescription()
-        {
-            return $this->description;
-        }
+    /**
+     * Get description.
+     */
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
 
-        /**
-         * Set confirmUrl.
-         *
-         * @param string|null $confirmUrl
-         *
-         * @return Delivery
-         */
-        public function setConfirmUrl($confirmUrl = null)
-        {
-            $this->confirm_url = $confirmUrl;
+    /**
+     * Set confirmUrl.
+     */
+    public function setConfirmUrl(?string $confirmUrl = null): Delivery
+    {
+        $this->confirm_url = $confirmUrl;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get confirmUrl.
-         *
-         * @return string|null
-         */
-        public function getConfirmUrl()
-        {
-            return $this->confirm_url;
-        }
+    /**
+     * Get confirmUrl.
+     */
+    public function getConfirmUrl(): ?string
+    {
+        return $this->confirm_url;
+    }
 
-        /**
-         * Set sortNo.
-         *
-         * @param int|null $sortNo
-         *
-         * @return Delivery
-         */
-        public function setSortNo($sortNo = null)
-        {
-            $this->sort_no = $sortNo;
+    /**
+     * Set sortNo.
+     */
+    public function setSortNo(?int $sortNo = null): Delivery
+    {
+        $this->sort_no = $sortNo;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get sortNo.
-         *
-         * @return int|null
-         */
-        public function getSortNo()
-        {
-            return $this->sort_no;
-        }
+    /**
+     * Get sortNo.
+     */
+    public function getSortNo(): ?int
+    {
+        return $this->sort_no;
+    }
 
-        /**
-         * Set createDate.
-         *
-         * @param \DateTime $createDate
-         *
-         * @return Delivery
-         */
-        public function setCreateDate($createDate)
-        {
-            $this->create_date = $createDate;
+    /**
+     * Set createDate.
+     */
+    public function setCreateDate(\DateTime $createDate): Delivery
+    {
+        $this->create_date = $createDate;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get createDate.
-         *
-         * @return \DateTime
-         */
-        public function getCreateDate()
-        {
-            return $this->create_date;
-        }
+    /**
+     * Get createDate.
+     */
+    public function getCreateDate(): ?\DateTime
+    {
+        return $this->create_date;
+    }
 
-        /**
-         * Set updateDate.
-         *
-         * @param \DateTime $updateDate
-         *
-         * @return Delivery
-         */
-        public function setUpdateDate($updateDate)
-        {
-            $this->update_date = $updateDate;
+    /**
+     * Set updateDate.
+     */
+    public function setUpdateDate(\DateTime $updateDate): Delivery
+    {
+        $this->update_date = $updateDate;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get updateDate.
-         *
-         * @return \DateTime
-         */
-        public function getUpdateDate()
-        {
-            return $this->update_date;
-        }
+    /**
+     * Get updateDate.
+     */
+    public function getUpdateDate(): ?\DateTime
+    {
+        return $this->update_date;
+    }
 
-        /**
-         * Add paymentOption.
-         *
-         * @param PaymentOption $paymentOption
-         *
-         * @return Delivery
-         */
-        public function addPaymentOption(PaymentOption $paymentOption)
-        {
-            $this->PaymentOptions[] = $paymentOption;
+    /**
+     * Add paymentOption.
+     */
+    public function addPaymentOption(PaymentOption $paymentOption): Delivery
+    {
+        $this->PaymentOptions[] = $paymentOption;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Remove paymentOption.
-         *
-         * @param PaymentOption $paymentOption
-         *
-         * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
-         */
-        public function removePaymentOption(PaymentOption $paymentOption)
-        {
-            return $this->PaymentOptions->removeElement($paymentOption);
-        }
+    /**
+     * Remove paymentOption.
+     *
+     * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removePaymentOption(PaymentOption $paymentOption): bool
+    {
+        return $this->PaymentOptions->removeElement($paymentOption);
+    }
 
-        /**
-         * Get paymentOptions.
-         *
-         * @return \Doctrine\Common\Collections\Collection
-         */
-        public function getPaymentOptions()
-        {
-            return $this->PaymentOptions;
-        }
+    /**
+     * Get paymentOptions.
+     *
+     * @return Collection<int, PaymentOption>
+     */
+    public function getPaymentOptions(): Collection
+    {
+        return $this->PaymentOptions;
+    }
 
-        /**
-         * Add deliveryFee.
-         *
-         * @param DeliveryFee $deliveryFee
-         *
-         * @return Delivery
-         */
-        public function addDeliveryFee(DeliveryFee $deliveryFee)
-        {
-            $this->DeliveryFees[] = $deliveryFee;
+    /**
+     * Add deliveryFee.
+     */
+    public function addDeliveryFee(DeliveryFee $deliveryFee): Delivery
+    {
+        $this->DeliveryFees[] = $deliveryFee;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Remove deliveryFee.
-         *
-         * @param DeliveryFee $deliveryFee
-         *
-         * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
-         */
-        public function removeDeliveryFee(DeliveryFee $deliveryFee)
-        {
-            return $this->DeliveryFees->removeElement($deliveryFee);
-        }
+    /**
+     * Remove deliveryFee.
+     *
+     * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeDeliveryFee(DeliveryFee $deliveryFee): bool
+    {
+        return $this->DeliveryFees->removeElement($deliveryFee);
+    }
 
-        /**
-         * Get deliveryFees.
-         *
-         * @return \Doctrine\Common\Collections\Collection
-         */
-        public function getDeliveryFees()
-        {
-            return $this->DeliveryFees;
-        }
+    /**
+     * Get deliveryFees.
+     *
+     * @return Collection<int, DeliveryFee>
+     */
+    public function getDeliveryFees(): Collection
+    {
+        return $this->DeliveryFees;
+    }
 
-        /**
-         * Add deliveryTime.
-         *
-         * @param DeliveryTime $deliveryTime
-         *
-         * @return Delivery
-         */
-        public function addDeliveryTime(DeliveryTime $deliveryTime)
-        {
-            $this->DeliveryTimes[] = $deliveryTime;
+    /**
+     * Add deliveryTime.
+     */
+    public function addDeliveryTime(DeliveryTime $deliveryTime): Delivery
+    {
+        $this->DeliveryTimes[] = $deliveryTime;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Remove deliveryTime.
-         *
-         * @param DeliveryTime $deliveryTime
-         *
-         * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
-         */
-        public function removeDeliveryTime(DeliveryTime $deliveryTime)
-        {
-            return $this->DeliveryTimes->removeElement($deliveryTime);
-        }
+    /**
+     * Remove deliveryTime.
+     *
+     * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeDeliveryTime(DeliveryTime $deliveryTime): bool
+    {
+        return $this->DeliveryTimes->removeElement($deliveryTime);
+    }
 
-        /**
-         * Get deliveryTimes.
-         *
-         * @return \Doctrine\Common\Collections\Collection
-         */
-        public function getDeliveryTimes()
-        {
-            return $this->DeliveryTimes;
-        }
+    /**
+     * Get deliveryTimes.
+     *
+     * @return Collection<int, DeliveryTime>
+     */
+    public function getDeliveryTimes(): Collection
+    {
+        return $this->DeliveryTimes;
+    }
 
-        /**
-         * Set creator.
-         *
-         * @param Member|null $creator
-         *
-         * @return Delivery
-         */
-        public function setCreator(?Member $creator = null)
-        {
-            $this->Creator = $creator;
+    /**
+     * Set creator.
+     */
+    public function setCreator(?Member $creator = null): Delivery
+    {
+        $this->Creator = $creator;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get creator.
-         *
-         * @return Member|null
-         */
-        public function getCreator()
-        {
-            return $this->Creator;
-        }
+    /**
+     * Get creator.
+     */
+    public function getCreator(): ?Member
+    {
+        return $this->Creator;
+    }
 
-        /**
-         * Set saleType.
-         *
-         * @param Master\SaleType|null $saleType
-         *
-         * @return Delivery
-         */
-        public function setSaleType(?Master\SaleType $saleType = null)
-        {
-            $this->SaleType = $saleType;
+    /**
+     * Set saleType.
+     */
+    public function setSaleType(?SaleType $saleType = null): Delivery
+    {
+        $this->SaleType = $saleType;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Get saleType.
-         *
-         * @return Master\SaleType|null
-         */
-        public function getSaleType()
-        {
-            return $this->SaleType;
-        }
+    /**
+     * Get saleType.
+     */
+    public function getSaleType(): ?SaleType
+    {
+        return $this->SaleType;
+    }
 
-        /**
-         * Set visible
-         *
-         * @param bool $visible
-         *
-         * @return Delivery
-         */
-        public function setVisible($visible)
-        {
-            $this->visible = $visible;
+    /**
+     * Set visible
+     */
+    public function setVisible(bool $visible): Delivery
+    {
+        $this->visible = $visible;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        /**
-         * Is the visibility visible?
-         *
-         * @return bool
-         */
-        public function isVisible()
-        {
-            return $this->visible;
-        }
+    /**
+     * Is the visibility visible?
+     */
+    public function isVisible(): bool
+    {
+        return $this->visible;
     }
 }

@@ -13,1177 +13,1117 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Entity\Master\Country;
+use Eccube\Entity\Master\Pref;
+use Eccube\Repository\BaseInfoRepository;
 
-if (!class_exists(BaseInfo::class)) {
+#[ORM\Table(name: 'dtb_base_info')]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: BaseInfoRepository::class)]
+#[ORM\Cache(usage: 'NONSTRICT_READ_WRITE')]
+class BaseInfo extends AbstractEntity
+{
+    #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    private ?int $id = null;
+
+    #[ORM\Column(name: 'company_name', type: Types::STRING, length: 255, nullable: true)]
+    private ?string $company_name = null;
+
+    #[ORM\Column(name: 'company_kana', type: Types::STRING, length: 255, nullable: true)]
+    private ?string $company_kana = null;
+
+    #[ORM\Column(name: 'postal_code', type: Types::STRING, length: 8, nullable: true)]
+    private ?string $postal_code = null;
+
+    #[ORM\Column(name: 'addr01', type: Types::STRING, length: 255, nullable: true)]
+    private ?string $addr01 = null;
+
+    #[ORM\Column(name: 'addr02', type: Types::STRING, length: 255, nullable: true)]
+    private ?string $addr02 = null;
+
+    #[ORM\Column(name: 'phone_number', type: Types::STRING, length: 14, nullable: true)]
+    private ?string $phone_number = null;
+
+    #[ORM\Column(name: 'business_hour', type: Types::STRING, length: 255, nullable: true)]
+    private ?string $business_hour = null;
+
+    #[ORM\Column(name: 'email01', type: Types::STRING, length: 255, nullable: true)]
+    private ?string $email01 = null;
+
+    #[ORM\Column(name: 'email02', type: Types::STRING, length: 255, nullable: true)]
+    private ?string $email02 = null;
+
+    #[ORM\Column(name: 'email03', type: Types::STRING, length: 255, nullable: true)]
+    private ?string $email03 = null;
+
+    #[ORM\Column(name: 'email04', type: Types::STRING, length: 255, nullable: true)]
+    private ?string $email04 = null;
+
+    #[ORM\Column(name: 'shop_name', type: Types::STRING, length: 255, nullable: true)]
+    private ?string $shop_name = null;
+
+    #[ORM\Column(name: 'shop_kana', type: Types::STRING, length: 255, nullable: true)]
+    private ?string $shop_kana = null;
+
+    #[ORM\Column(name: 'shop_name_eng', type: Types::STRING, length: 255, nullable: true)]
+    private ?string $shop_name_eng = null;
+
+    #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
+    private ?\DateTime $update_date = null;
+
+    #[ORM\Column(name: 'good_traded', type: Types::STRING, length: 4000, nullable: true)]
+    private ?string $good_traded = null;
+
+    #[ORM\Column(name: 'message', type: Types::STRING, length: 4000, nullable: true)]
+    private ?string $message = null;
+
+    #[ORM\Column(name: 'delivery_free_amount', type: Types::DECIMAL, precision: 12, scale: 2, nullable: true, options: ['unsigned' => true])]
+    private ?string $delivery_free_amount = null;
+
+    #[ORM\Column(name: 'delivery_free_quantity', type: Types::INTEGER, nullable: true, options: ['unsigned' => true])]
+    private ?int $delivery_free_quantity = null;
+
+    #[ORM\Column(name: 'option_mypage_order_status_display', type: Types::BOOLEAN, options: ['default' => true])]
+    private bool $option_mypage_order_status_display = true;
+
+    #[ORM\Column(name: 'option_nostock_hidden', type: Types::BOOLEAN, options: ['default' => false])]
+    private bool $option_nostock_hidden = false;
+
+    #[ORM\Column(name: 'option_favorite_product', type: Types::BOOLEAN, options: ['default' => true])]
+    private bool $option_favorite_product = true;
+
+    #[ORM\Column(name: 'option_product_delivery_fee', type: Types::BOOLEAN, options: ['default' => false])]
+    private bool $option_product_delivery_fee = false;
+
+    // クッキーポリシー同意機能はオプトイン（既定 OFF）。新規・アップグレードとも OFF で、
+    // 店舗が管理画面「店舗基本情報」で ON にするまでバナー・同意連動は一切動作しない（後方互換）。
+    #[ORM\Column(name: 'option_cookie_consent', type: Types::BOOLEAN, options: ['default' => false])]
+    private bool $option_cookie_consent = false;
+
+    #[ORM\Column(name: 'invoice_registration_number', type: Types::STRING, length: 255, nullable: true)]
+    private ?string $invoice_registration_number = null;
+
+    #[ORM\Column(name: 'option_product_tax_rule', type: Types::BOOLEAN, options: ['default' => false])]
+    private bool $option_product_tax_rule = false;
+
+    #[ORM\Column(name: 'option_customer_activate', type: Types::BOOLEAN, options: ['default' => true])]
+    private bool $option_customer_activate = true;
+
+    #[ORM\Column(name: 'option_remember_me', type: Types::BOOLEAN, options: ['default' => true])]
+    private bool $option_remember_me = true;
+
+    #[ORM\Column(name: 'option_mail_notifier', type: Types::BOOLEAN, options: ['default' => false])]
+    private bool $option_mail_notifier = false;
+
+    #[ORM\Column(name: 'option_sanitize_csv_formulas', type: Types::BOOLEAN, options: ['default' => true])]
+    private bool $option_sanitize_csv_formulas = true;
+
+    #[ORM\Column(name: 'authentication_key', type: Types::STRING, length: 255, nullable: true)]
+    private ?string $authentication_key = null;
+
+    #[ORM\Column(name: 'option_guest_purchase', type: Types::BOOLEAN, options: ['default' => true])]
+    private bool $option_guest_purchase = true;
+
     /**
-     * BaseInfo
-     *
-     * @ORM\Table(name="dtb_base_info")
-     *
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     *
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     *
-     * @ORM\HasLifecycleCallbacks()
-     *
-     * @ORM\Entity(repositoryClass="Eccube\Repository\BaseInfoRepository")
-     *
-     * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
+     * @deprecated 使用していないため、削除予定
      */
-    class BaseInfo extends AbstractEntity
+    #[ORM\Column(name: 'php_path', type: Types::STRING, length: 255, nullable: true)]
+    private ?string $php_path = null;
+
+    #[ORM\Column(name: 'option_point', type: Types::BOOLEAN, options: ['default' => true])]
+    private bool $option_point = true;
+
+    #[ORM\Column(name: 'basic_point_rate', type: Types::DECIMAL, precision: 10, scale: 0, options: ['unsigned' => true, 'default' => 1], nullable: true)]
+    private ?string $basic_point_rate = '1';
+
+    #[ORM\Column(name: 'point_conversion_rate', type: Types::DECIMAL, precision: 10, scale: 0, options: ['unsigned' => true, 'default' => 1], nullable: true)]
+    private ?string $point_conversion_rate = '1';
+
+    #[ORM\ManyToOne(targetEntity: Country::class)]
+    #[ORM\Cache(usage: 'NONSTRICT_READ_WRITE')]
+    #[ORM\JoinColumn(name: 'country_id', referencedColumnName: 'id')]
+    private ?Country $Country = null;
+
+    #[ORM\ManyToOne(targetEntity: Pref::class)]
+    #[ORM\Cache(usage: 'NONSTRICT_READ_WRITE')]
+    #[ORM\JoinColumn(name: 'pref_id', referencedColumnName: 'id')]
+    private ?Pref $Pref = null;
+
+    #[ORM\Column(name: 'ga_id', type: Types::STRING, length: 255, nullable: true)]
+    private ?string $gaId = null;
+
+    #[ORM\Column(name: 'acp_checkout_enabled', type: Types::BOOLEAN, options: ['default' => false])]
+    private bool $acp_checkout_enabled = false;
+
+    #[ORM\Column(name: 'ucp_checkout_enabled', type: Types::BOOLEAN, options: ['default' => false])]
+    private bool $ucp_checkout_enabled = false;
+
+    #[ORM\Column(name: 'ucp_catalog_requires_auth', type: Types::BOOLEAN, options: ['default' => false])]
+    private bool $ucp_catalog_requires_auth = false;
+
+    #[ORM\Column(name: 'mcp_enabled', type: Types::BOOLEAN, options: ['default' => false])]
+    private bool $mcp_enabled = false;
+
+    // 納品書PDFの店舗情報の出力項目トグル（#6197）。
+    // 既定は「現状出力している項目＋インボイス要件の会社名」を ON、新規項目は OFF とし、
+    // アップグレード時も既存の納品書の見た目を極力維持する。
+    #[ORM\Column(name: 'order_pdf_visible_shop_name', type: Types::BOOLEAN, options: ['default' => true])]
+    private bool $order_pdf_visible_shop_name = true;
+
+    #[ORM\Column(name: 'order_pdf_visible_shop_name_eng', type: Types::BOOLEAN, options: ['default' => false])]
+    private bool $order_pdf_visible_shop_name_eng = false;
+
+    #[ORM\Column(name: 'order_pdf_visible_address', type: Types::BOOLEAN, options: ['default' => true])]
+    private bool $order_pdf_visible_address = true;
+
+    #[ORM\Column(name: 'order_pdf_visible_company_name', type: Types::BOOLEAN, options: ['default' => true])]
+    private bool $order_pdf_visible_company_name = true;
+
+    #[ORM\Column(name: 'order_pdf_visible_phone_number', type: Types::BOOLEAN, options: ['default' => true])]
+    private bool $order_pdf_visible_phone_number = true;
+
+    #[ORM\Column(name: 'order_pdf_visible_business_hour', type: Types::BOOLEAN, options: ['default' => false])]
+    private bool $order_pdf_visible_business_hour = false;
+
+    #[ORM\Column(name: 'order_pdf_visible_email', type: Types::BOOLEAN, options: ['default' => true])]
+    private bool $order_pdf_visible_email = true;
+
+    #[ORM\Column(name: 'order_pdf_visible_invoice_number', type: Types::BOOLEAN, options: ['default' => true])]
+    private bool $order_pdf_visible_invoice_number = true;
+
+    /**
+     * Get id.
+     *
+     * @return int
+     */
+    public function getId(): ?int
     {
-        /**
-         * @var int
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         *
-         * @ORM\Id
-         *
-         * @ORM\GeneratedValue(strategy="IDENTITY")
-         */
-        private $id;
-
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="company_name", type="string", length=255, nullable=true)
-         */
-        private $company_name;
-
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="company_kana", type="string", length=255, nullable=true)
-         */
-        private $company_kana;
-
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="postal_code", type="string", length=8, nullable=true)
-         */
-        private $postal_code;
-
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="addr01", type="string", length=255, nullable=true)
-         */
-        private $addr01;
-
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="addr02", type="string", length=255, nullable=true)
-         */
-        private $addr02;
-
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="phone_number", type="string", length=14, nullable=true)
-         */
-        private $phone_number;
-
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="business_hour", type="string", length=255, nullable=true)
-         */
-        private $business_hour;
-
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="email01", type="string", length=255, nullable=true)
-         */
-        private $email01;
-
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="email02", type="string", length=255, nullable=true)
-         */
-        private $email02;
-
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="email03", type="string", length=255, nullable=true)
-         */
-        private $email03;
-
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="email04", type="string", length=255, nullable=true)
-         */
-        private $email04;
-
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="shop_name", type="string", length=255, nullable=true)
-         */
-        private $shop_name;
-
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="shop_kana", type="string", length=255, nullable=true)
-         */
-        private $shop_kana;
-
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="shop_name_eng", type="string", length=255, nullable=true)
-         */
-        private $shop_name_eng;
-
-        /**
-         * @var \DateTime
-         *
-         * @ORM\Column(name="update_date", type="datetimetz")
-         */
-        private $update_date;
-
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="good_traded", type="string", length=4000, nullable=true)
-         */
-        private $good_traded;
-
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="message", type="string", length=4000, nullable=true)
-         */
-        private $message;
-
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="delivery_free_amount", type="decimal", precision=12, scale=2, nullable=true, options={"unsigned":true})
-         */
-        private $delivery_free_amount;
-
-        /**
-         * @var int|null
-         *
-         * @ORM\Column(name="delivery_free_quantity", type="integer", nullable=true, options={"unsigned":true})
-         */
-        private $delivery_free_quantity;
-
-        /**
-         * @var bool
-         *
-         * @ORM\Column(name="option_mypage_order_status_display", type="boolean", options={"default":true})
-         */
-        private $option_mypage_order_status_display = true;
-
-        /**
-         * @var bool
-         *
-         * @ORM\Column(name="option_nostock_hidden", type="boolean", options={"default":false})
-         */
-        private $option_nostock_hidden = false;
-
-        /**
-         * @var bool
-         *
-         * @ORM\Column(name="option_favorite_product", type="boolean", options={"default":true})
-         */
-        private $option_favorite_product = true;
-
-        /**
-         * @var bool
-         *
-         * @ORM\Column(name="option_product_delivery_fee", type="boolean", options={"default":false})
-         */
-        private $option_product_delivery_fee = false;
-
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="invoice_registration_number", type="string", length=255, nullable=true)
-         */
-        private $invoice_registration_number;
-
-        /**
-         * @var bool
-         *
-         * @ORM\Column(name="option_product_tax_rule", type="boolean", options={"default":false})
-         */
-        private $option_product_tax_rule = false;
-
-        /**
-         * @var bool
-         *
-         * @ORM\Column(name="option_customer_activate", type="boolean", options={"default":true})
-         */
-        private $option_customer_activate = true;
-
-        /**
-         * @var bool
-         *
-         * @ORM\Column(name="option_remember_me", type="boolean", options={"default":true})
-         */
-        private $option_remember_me = true;
-
-        /**
-         * @var bool
-         *
-         * @ORM\Column(name="option_mail_notifier", type="boolean", options={"default":false})
-         */
-        private $option_mail_notifier = false;
-
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="authentication_key", type="string", length=255, nullable=true)
-         */
-        private $authentication_key;
-
-        /**
-         * @var string|null
-         *
-         * @deprecated 使用していないため、削除予定
-         *
-         * @ORM\Column(name="php_path", type="string", length=255, nullable=true)
-         */
-        private $php_path;
-
-        /**
-         * @var bool
-         *
-         * @ORM\Column(name="option_point", type="boolean", options={"default":true})
-         */
-        private $option_point = true;
-
-        /**
-         * @var string
-         *
-         * @ORM\Column(name="basic_point_rate", type="decimal", precision=10, scale=0, options={"unsigned":true, "default":1}, nullable=true)
-         */
-        private $basic_point_rate = '1';
-
-        /**
-         * @var string
-         *
-         * @ORM\Column(name="point_conversion_rate", type="decimal", precision=10, scale=0, options={"unsigned":true, "default":1}, nullable=true)
-         */
-        private $point_conversion_rate = '1';
-
-        /**
-         * @var Master\Country
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Country")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="country_id", referencedColumnName="id")
-         * })
-         *
-         * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
-         */
-        private $Country;
-
-        /**
-         * @var Master\Pref
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\Pref")
-         *
-         * @ORM\JoinColumns({
-         *
-         *   @ORM\JoinColumn(name="pref_id", referencedColumnName="id")
-         * })
-         *
-         * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
-         */
-        private $Pref;
-
-        /**
-         * @var string|null
-         *
-         * @ORM\Column(name="ga_id", type="string", length=255, nullable=true)
-         */
-        private $gaId;
-
-        /**
-         * Get id.
-         *
-         * @return int
-         */
-        public function getId()
-        {
-            return $this->id;
-        }
-
-        /**
-         * Set companyName.
-         *
-         * @param string|null $companyName
-         *
-         * @return BaseInfo
-         */
-        public function setCompanyName($companyName = null)
-        {
-            $this->company_name = $companyName;
-
-            return $this;
-        }
-
-        /**
-         * Get companyName.
-         *
-         * @return string|null
-         */
-        public function getCompanyName()
-        {
-            return $this->company_name;
-        }
-
-        /**
-         * Set companyKana.
-         *
-         * @param string|null $companyKana
-         *
-         * @return BaseInfo
-         */
-        public function setCompanyKana($companyKana = null)
-        {
-            $this->company_kana = $companyKana;
-
-            return $this;
-        }
-
-        /**
-         * Get companyKana.
-         *
-         * @return string|null
-         */
-        public function getCompanyKana()
-        {
-            return $this->company_kana;
-        }
-
-        /**
-         * Set postal_code.
-         *
-         * @param string|null $postal_code
-         *
-         * @return BaseInfo
-         */
-        public function setPostalCode($postal_code = null)
-        {
-            $this->postal_code = $postal_code;
-
-            return $this;
-        }
-
-        /**
-         * Get postal_code.
-         *
-         * @return string|null
-         */
-        public function getPostalCode()
-        {
-            return $this->postal_code;
-        }
-
-        /**
-         * Set addr01.
-         *
-         * @param string|null $addr01
-         *
-         * @return BaseInfo
-         */
-        public function setAddr01($addr01 = null)
-        {
-            $this->addr01 = $addr01;
-
-            return $this;
-        }
-
-        /**
-         * Get addr01.
-         *
-         * @return string|null
-         */
-        public function getAddr01()
-        {
-            return $this->addr01;
-        }
-
-        /**
-         * Set addr02.
-         *
-         * @param string|null $addr02
-         *
-         * @return BaseInfo
-         */
-        public function setAddr02($addr02 = null)
-        {
-            $this->addr02 = $addr02;
-
-            return $this;
-        }
-
-        /**
-         * Get addr02.
-         *
-         * @return string|null
-         */
-        public function getAddr02()
-        {
-            return $this->addr02;
-        }
-
-        /**
-         * Set phone_number.
-         *
-         * @param string|null $phone_number
-         *
-         * @return BaseInfo
-         */
-        public function setPhoneNumber($phone_number = null)
-        {
-            $this->phone_number = $phone_number;
-
-            return $this;
-        }
-
-        /**
-         * Get phone_number.
-         *
-         * @return string|null
-         */
-        public function getPhoneNumber()
-        {
-            return $this->phone_number;
-        }
-
-        /**
-         * Set businessHour.
-         *
-         * @param string|null $businessHour
-         *
-         * @return BaseInfo
-         */
-        public function setBusinessHour($businessHour = null)
-        {
-            $this->business_hour = $businessHour;
-
-            return $this;
-        }
-
-        /**
-         * Get businessHour.
-         *
-         * @return string|null
-         */
-        public function getBusinessHour()
-        {
-            return $this->business_hour;
-        }
-
-        /**
-         * Set email01.
-         *
-         * @param string|null $email01
-         *
-         * @return BaseInfo
-         */
-        public function setEmail01($email01 = null)
-        {
-            $this->email01 = $email01;
-
-            return $this;
-        }
-
-        /**
-         * Get email01.
-         *
-         * @return string|null
-         */
-        public function getEmail01()
-        {
-            return $this->email01;
-        }
-
-        /**
-         * Set email02.
-         *
-         * @param string|null $email02
-         *
-         * @return BaseInfo
-         */
-        public function setEmail02($email02 = null)
-        {
-            $this->email02 = $email02;
-
-            return $this;
-        }
-
-        /**
-         * Get email02.
-         *
-         * @return string|null
-         */
-        public function getEmail02()
-        {
-            return $this->email02;
-        }
-
-        /**
-         * Set email03.
-         *
-         * @param string|null $email03
-         *
-         * @return BaseInfo
-         */
-        public function setEmail03($email03 = null)
-        {
-            $this->email03 = $email03;
-
-            return $this;
-        }
-
-        /**
-         * Get email03.
-         *
-         * @return string|null
-         */
-        public function getEmail03()
-        {
-            return $this->email03;
-        }
-
-        /**
-         * Set email04.
-         *
-         * @param string|null $email04
-         *
-         * @return BaseInfo
-         */
-        public function setEmail04($email04 = null)
-        {
-            $this->email04 = $email04;
-
-            return $this;
-        }
-
-        /**
-         * Get email04.
-         *
-         * @return string|null
-         */
-        public function getEmail04()
-        {
-            return $this->email04;
-        }
-
-        /**
-         * Set shopName.
-         *
-         * @param string|null $shopName
-         *
-         * @return BaseInfo
-         */
-        public function setShopName($shopName = null)
-        {
-            $this->shop_name = $shopName;
-
-            return $this;
-        }
-
-        /**
-         * Get shopName.
-         *
-         * @return string|null
-         */
-        public function getShopName()
-        {
-            return $this->shop_name;
-        }
-
-        /**
-         * Set shopKana.
-         *
-         * @param string|null $shopKana
-         *
-         * @return BaseInfo
-         */
-        public function setShopKana($shopKana = null)
-        {
-            $this->shop_kana = $shopKana;
-
-            return $this;
-        }
-
-        /**
-         * Get shopKana.
-         *
-         * @return string|null
-         */
-        public function getShopKana()
-        {
-            return $this->shop_kana;
-        }
-
-        /**
-         * Set shopNameEng.
-         *
-         * @param string|null $shopNameEng
-         *
-         * @return BaseInfo
-         */
-        public function setShopNameEng($shopNameEng = null)
-        {
-            $this->shop_name_eng = $shopNameEng;
-
-            return $this;
-        }
-
-        /**
-         * Get shopNameEng.
-         *
-         * @return string|null
-         */
-        public function getShopNameEng()
-        {
-            return $this->shop_name_eng;
-        }
-
-        /**
-         * Set updateDate.
-         *
-         * @param \DateTime $updateDate
-         *
-         * @return BaseInfo
-         */
-        public function setUpdateDate($updateDate)
-        {
-            $this->update_date = $updateDate;
-
-            return $this;
-        }
-
-        /**
-         * Get updateDate.
-         *
-         * @return \DateTime
-         */
-        public function getUpdateDate()
-        {
-            return $this->update_date;
-        }
-
-        /**
-         * Set goodTraded.
-         *
-         * @param string|null $goodTraded
-         *
-         * @return BaseInfo
-         */
-        public function setGoodTraded($goodTraded = null)
-        {
-            $this->good_traded = $goodTraded;
-
-            return $this;
-        }
-
-        /**
-         * Get goodTraded.
-         *
-         * @return string|null
-         */
-        public function getGoodTraded()
-        {
-            return $this->good_traded;
-        }
-
-        /**
-         * Set message.
-         *
-         * @param string|null $message
-         *
-         * @return BaseInfo
-         */
-        public function setMessage($message = null)
-        {
-            $this->message = $message;
-
-            return $this;
-        }
-
-        /**
-         * Get message.
-         *
-         * @return string|null
-         */
-        public function getMessage()
-        {
-            return $this->message;
-        }
-
-        /**
-         * Set deliveryFreeAmount.
-         *
-         * @param string|null $deliveryFreeAmount
-         *
-         * @return BaseInfo
-         */
-        public function setDeliveryFreeAmount($deliveryFreeAmount = null)
-        {
-            $this->delivery_free_amount = $deliveryFreeAmount;
-
-            return $this;
-        }
-
-        /**
-         * Get deliveryFreeAmount.
-         *
-         * @return string|null
-         */
-        public function getDeliveryFreeAmount()
-        {
-            return $this->delivery_free_amount;
-        }
-
-        /**
-         * Set deliveryFreeQuantity.
-         *
-         * @param int|null $deliveryFreeQuantity
-         *
-         * @return BaseInfo
-         */
-        public function setDeliveryFreeQuantity($deliveryFreeQuantity = null)
-        {
-            $this->delivery_free_quantity = $deliveryFreeQuantity;
-
-            return $this;
-        }
-
-        /**
-         * Get deliveryFreeQuantity.
-         *
-         * @return int|null
-         */
-        public function getDeliveryFreeQuantity()
-        {
-            return $this->delivery_free_quantity;
-        }
-
-        /**
-         * Set optionMypageOrderStatusDisplay.
-         *
-         * @param bool $optionMypageOrderStatusDisplay
-         *
-         * @return BaseInfo
-         */
-        public function setOptionMypageOrderStatusDisplay($optionMypageOrderStatusDisplay)
-        {
-            $this->option_mypage_order_status_display = $optionMypageOrderStatusDisplay;
-
-            return $this;
-        }
-
-        /**
-         * Get optionMypageOrderStatusDisplay.
-         *
-         * @return bool
-         */
-        public function isOptionMypageOrderStatusDisplay()
-        {
-            return $this->option_mypage_order_status_display;
-        }
-
-        /**
-         * Set optionNostockHidden.
-         *
-         * @param int $optionNostockHidden
-         *
-         * @return BaseInfo
-         */
-        public function setOptionNostockHidden($optionNostockHidden)
-        {
-            $this->option_nostock_hidden = $optionNostockHidden;
-
-            return $this;
-        }
-
-        /**
-         * Get optionNostockHidden.
-         *
-         * @return bool
-         */
-        public function isOptionNostockHidden()
-        {
-            return $this->option_nostock_hidden;
-        }
-
-        /**
-         * Set optionFavoriteProduct.
-         *
-         * @param bool $optionFavoriteProduct
-         *
-         * @return BaseInfo
-         */
-        public function setOptionFavoriteProduct($optionFavoriteProduct)
-        {
-            $this->option_favorite_product = $optionFavoriteProduct;
-
-            return $this;
-        }
-
-        /**
-         * Get optionFavoriteProduct.
-         *
-         * @return bool
-         */
-        public function isOptionFavoriteProduct()
-        {
-            return $this->option_favorite_product;
-        }
-
-        /**
-         * Set optionProductDeliveryFee.
-         *
-         * @param bool $optionProductDeliveryFee
-         *
-         * @return BaseInfo
-         */
-        public function setOptionProductDeliveryFee($optionProductDeliveryFee)
-        {
-            $this->option_product_delivery_fee = $optionProductDeliveryFee;
-
-            return $this;
-        }
-
-        /**
-         * Get optionProductDeliveryFee.
-         *
-         * @return bool
-         */
-        public function isOptionProductDeliveryFee()
-        {
-            return $this->option_product_delivery_fee;
-        }
-
-        /**
-         * Set invoiceRegistrationNumber.
-         *
-         * @param string $invoiceRegistrationNumber
-         *
-         * @return BaseInfo
-         */
-        public function setInvoiceRegistrationNumber($invoiceRegistrationNumber)
-        {
-            $this->invoice_registration_number = $invoiceRegistrationNumber;
-
-            return $this;
-        }
-
-        /**
-         * Get invoiceRegistrationNumber.
-         *
-         * @return string|null
-         */
-        public function getInvoiceRegistrationNumber()
-        {
-            return $this->invoice_registration_number;
-        }
-
-        /**
-         * Set optionProductTaxRule.
-         *
-         * @param bool $optionProductTaxRule
-         *
-         * @return BaseInfo
-         */
-        public function setOptionProductTaxRule($optionProductTaxRule)
-        {
-            $this->option_product_tax_rule = $optionProductTaxRule;
-
-            return $this;
-        }
-
-        /**
-         * Get optionProductTaxRule.
-         *
-         * @return bool
-         */
-        public function isOptionProductTaxRule()
-        {
-            return $this->option_product_tax_rule;
-        }
-
-        /**
-         * Set optionCustomerActivate.
-         *
-         * @param bool $optionCustomerActivate
-         *
-         * @return BaseInfo
-         */
-        public function setOptionCustomerActivate($optionCustomerActivate)
-        {
-            $this->option_customer_activate = $optionCustomerActivate;
-
-            return $this;
-        }
-
-        /**
-         * Get optionCustomerActivate.
-         *
-         * @return bool
-         */
-        public function isOptionCustomerActivate()
-        {
-            return $this->option_customer_activate;
-        }
-
-        /**
-         * Set optionRememberMe.
-         *
-         * @param bool $optionRememberMe
-         *
-         * @return BaseInfo
-         */
-        public function setOptionRememberMe($optionRememberMe)
-        {
-            $this->option_remember_me = $optionRememberMe;
-
-            return $this;
-        }
-
-        /**
-         * Get optionRememberMe.
-         *
-         * @return bool
-         */
-        public function isOptionRememberMe()
-        {
-            return $this->option_remember_me;
-        }
-
-        /**
-         * Set optionMailNotifier.
-         *
-         * @param bool $optionRememberMe
-         *
-         * @return BaseInfo
-         */
-        public function setOptionMailNotifier($optionRememberMe)
-        {
-            $this->option_mail_notifier = $optionRememberMe;
-
-            return $this;
-        }
-
-        /**
-         * Get optionRememberMe.
-         *
-         * @return bool
-         */
-        public function isOptionMailNotifier()
-        {
-            return $this->option_mail_notifier;
-        }
-
-        /**
-         * Set authenticationKey.
-         *
-         * @param string|null $authenticationKey
-         *
-         * @return BaseInfo
-         */
-        public function setAuthenticationKey($authenticationKey = null)
-        {
-            $this->authentication_key = $authenticationKey;
-
-            return $this;
-        }
-
-        /**
-         * Get authenticationKey.
-         *
-         * @return string|null
-         */
-        public function getAuthenticationKey()
-        {
-            return $this->authentication_key;
-        }
-
-        /**
-         * Set country.
-         *
-         * @param Master\Country|null $country
-         *
-         * @return BaseInfo
-         */
-        public function setCountry(?Master\Country $country = null)
-        {
-            $this->Country = $country;
-
-            return $this;
-        }
-
-        /**
-         * Get country.
-         *
-         * @return Master\Country|null
-         */
-        public function getCountry()
-        {
-            return $this->Country;
-        }
-
-        /**
-         * Set pref.
-         *
-         * @param Master\Pref|null $pref
-         *
-         * @return BaseInfo
-         */
-        public function setPref(?Master\Pref $pref = null)
-        {
-            $this->Pref = $pref;
-
-            return $this;
-        }
-
-        /**
-         * Get pref.
-         *
-         * @return Master\Pref|null
-         */
-        public function getPref()
-        {
-            return $this->Pref;
-        }
-
-        /**
-         * Set optionPoint
-         *
-         * @param bool $optionPoint
-         *
-         * @return BaseInfo
-         */
-        public function setOptionPoint($optionPoint)
-        {
-            $this->option_point = $optionPoint;
-
-            return $this;
-        }
-
-        /**
-         * Get optionPoint
-         *
-         * @return bool
-         */
-        public function isOptionPoint()
-        {
-            return $this->option_point;
-        }
-
-        /**
-         * Set pointConversionRate
-         *
-         * @param string $pointConversionRate
-         *
-         * @return BaseInfo
-         */
-        public function setPointConversionRate($pointConversionRate)
-        {
-            $this->point_conversion_rate = $pointConversionRate;
-
-            return $this;
-        }
-
-        /**
-         * Get pointConversionRate
-         *
-         * @return string
-         */
-        public function getPointConversionRate()
-        {
-            return $this->point_conversion_rate;
-        }
-
-        /**
-         * Set basicPointRate
-         *
-         * @param string $basicPointRate
-         *
-         * @return BaseInfo
-         */
-        public function setBasicPointRate($basicPointRate)
-        {
-            $this->basic_point_rate = $basicPointRate;
-
-            return $this;
-        }
-
-        /**
-         * Get basicPointRate
-         *
-         * @return string
-         */
-        public function getBasicPointRate()
-        {
-            return $this->basic_point_rate;
-        }
-
-        /**
-         * @return string|null
-         *
-         * @deprecated 使用していないため、削除予定
-         */
-        public function getPhpPath()
-        {
-            return $this->php_path;
-        }
-
-        /**
-         * @param string|null $php_path
-         *
-         * @deprecated 使用していないため、削除予定
-         *
-         * @return $this
-         */
-        public function setPhpPath($php_path)
-        {
-            $this->php_path = $php_path;
-
-            return $this;
-        }
-
-        /**
-         * Set gaId.
-         *
-         * @param string|null $gaId
-         *
-         * @return BaseInfo
-         */
-        public function setGaId($gaId = null)
-        {
-            $this->gaId = $gaId;
-
-            return $this;
-        }
-
-        /**
-         * Get gaId.
-         *
-         * @return string|null
-         */
-        public function getGaId()
-        {
-            return $this->gaId;
-        }
+        return $this->id;
+    }
+
+    /**
+     * Set companyName.
+     */
+    public function setCompanyName(?string $companyName = null): BaseInfo
+    {
+        $this->company_name = $companyName;
+
+        return $this;
+    }
+
+    /**
+     * Get companyName.
+     */
+    public function getCompanyName(): ?string
+    {
+        return $this->company_name;
+    }
+
+    /**
+     * Set companyKana.
+     */
+    public function setCompanyKana(?string $companyKana = null): BaseInfo
+    {
+        $this->company_kana = $companyKana;
+
+        return $this;
+    }
+
+    /**
+     * Get companyKana.
+     */
+    public function getCompanyKana(): ?string
+    {
+        return $this->company_kana;
+    }
+
+    /**
+     * Set postal_code.
+     */
+    public function setPostalCode(?string $postal_code = null): BaseInfo
+    {
+        $this->postal_code = $postal_code;
+
+        return $this;
+    }
+
+    /**
+     * Get postal_code.
+     */
+    public function getPostalCode(): ?string
+    {
+        return $this->postal_code;
+    }
+
+    /**
+     * Set addr01.
+     */
+    public function setAddr01(?string $addr01 = null): BaseInfo
+    {
+        $this->addr01 = $addr01;
+
+        return $this;
+    }
+
+    /**
+     * Get addr01.
+     */
+    public function getAddr01(): ?string
+    {
+        return $this->addr01;
+    }
+
+    /**
+     * Set addr02.
+     */
+    public function setAddr02(?string $addr02 = null): BaseInfo
+    {
+        $this->addr02 = $addr02;
+
+        return $this;
+    }
+
+    /**
+     * Get addr02.
+     */
+    public function getAddr02(): ?string
+    {
+        return $this->addr02;
+    }
+
+    /**
+     * Set phone_number.
+     */
+    public function setPhoneNumber(?string $phone_number = null): BaseInfo
+    {
+        $this->phone_number = $phone_number;
+
+        return $this;
+    }
+
+    /**
+     * Get phone_number.
+     */
+    public function getPhoneNumber(): ?string
+    {
+        return $this->phone_number;
+    }
+
+    /**
+     * Set businessHour.
+     */
+    public function setBusinessHour(?string $businessHour = null): BaseInfo
+    {
+        $this->business_hour = $businessHour;
+
+        return $this;
+    }
+
+    /**
+     * Get businessHour.
+     */
+    public function getBusinessHour(): ?string
+    {
+        return $this->business_hour;
+    }
+
+    /**
+     * Set email01.
+     */
+    public function setEmail01(?string $email01 = null): BaseInfo
+    {
+        $this->email01 = $email01;
+
+        return $this;
+    }
+
+    /**
+     * Get email01.
+     */
+    public function getEmail01(): ?string
+    {
+        return $this->email01;
+    }
+
+    /**
+     * Set email02.
+     */
+    public function setEmail02(?string $email02 = null): BaseInfo
+    {
+        $this->email02 = $email02;
+
+        return $this;
+    }
+
+    /**
+     * Get email02.
+     */
+    public function getEmail02(): ?string
+    {
+        return $this->email02;
+    }
+
+    /**
+     * Set email03.
+     */
+    public function setEmail03(?string $email03 = null): BaseInfo
+    {
+        $this->email03 = $email03;
+
+        return $this;
+    }
+
+    /**
+     * Get email03.
+     */
+    public function getEmail03(): ?string
+    {
+        return $this->email03;
+    }
+
+    /**
+     * Set email04.
+     */
+    public function setEmail04(?string $email04 = null): BaseInfo
+    {
+        $this->email04 = $email04;
+
+        return $this;
+    }
+
+    /**
+     * Get email04.
+     */
+    public function getEmail04(): ?string
+    {
+        return $this->email04;
+    }
+
+    /**
+     * Set shopName.
+     */
+    public function setShopName(?string $shopName = null): BaseInfo
+    {
+        $this->shop_name = $shopName;
+
+        return $this;
+    }
+
+    /**
+     * Get shopName.
+     */
+    public function getShopName(): ?string
+    {
+        return $this->shop_name;
+    }
+
+    /**
+     * Set shopKana.
+     */
+    public function setShopKana(?string $shopKana = null): BaseInfo
+    {
+        $this->shop_kana = $shopKana;
+
+        return $this;
+    }
+
+    /**
+     * Get shopKana.
+     */
+    public function getShopKana(): ?string
+    {
+        return $this->shop_kana;
+    }
+
+    /**
+     * Set shopNameEng.
+     */
+    public function setShopNameEng(?string $shopNameEng = null): BaseInfo
+    {
+        $this->shop_name_eng = $shopNameEng;
+
+        return $this;
+    }
+
+    /**
+     * Get shopNameEng.
+     */
+    public function getShopNameEng(): ?string
+    {
+        return $this->shop_name_eng;
+    }
+
+    /**
+     * Set updateDate.
+     */
+    public function setUpdateDate(\DateTime $updateDate): BaseInfo
+    {
+        $this->update_date = $updateDate;
+
+        return $this;
+    }
+
+    /**
+     * Get updateDate.
+     */
+    public function getUpdateDate(): ?\DateTime
+    {
+        return $this->update_date;
+    }
+
+    /**
+     * Set goodTraded.
+     */
+    public function setGoodTraded(?string $goodTraded = null): BaseInfo
+    {
+        $this->good_traded = $goodTraded;
+
+        return $this;
+    }
+
+    /**
+     * Get goodTraded.
+     */
+    public function getGoodTraded(): ?string
+    {
+        return $this->good_traded;
+    }
+
+    /**
+     * Set message.
+     */
+    public function setMessage(?string $message = null): BaseInfo
+    {
+        $this->message = $message;
+
+        return $this;
+    }
+
+    /**
+     * Get message.
+     */
+    public function getMessage(): ?string
+    {
+        return $this->message;
+    }
+
+    /**
+     * Set deliveryFreeAmount.
+     */
+    public function setDeliveryFreeAmount(?string $deliveryFreeAmount = null): BaseInfo
+    {
+        $this->delivery_free_amount = $deliveryFreeAmount;
+
+        return $this;
+    }
+
+    /**
+     * Get deliveryFreeAmount.
+     */
+    public function getDeliveryFreeAmount(): ?string
+    {
+        return $this->delivery_free_amount;
+    }
+
+    /**
+     * Set deliveryFreeQuantity.
+     */
+    public function setDeliveryFreeQuantity(?int $deliveryFreeQuantity = null): BaseInfo
+    {
+        $this->delivery_free_quantity = $deliveryFreeQuantity;
+
+        return $this;
+    }
+
+    /**
+     * Get deliveryFreeQuantity.
+     */
+    public function getDeliveryFreeQuantity(): ?int
+    {
+        return $this->delivery_free_quantity;
+    }
+
+    /**
+     * Set optionMypageOrderStatusDisplay.
+     */
+    public function setOptionMypageOrderStatusDisplay(bool $optionMypageOrderStatusDisplay): BaseInfo
+    {
+        $this->option_mypage_order_status_display = $optionMypageOrderStatusDisplay;
+
+        return $this;
+    }
+
+    /**
+     * Get optionMypageOrderStatusDisplay.
+     */
+    public function isOptionMypageOrderStatusDisplay(): bool
+    {
+        return $this->option_mypage_order_status_display;
+    }
+
+    /**
+     * Set optionNostockHidden.
+     */
+    public function setOptionNostockHidden(bool $optionNostockHidden): BaseInfo
+    {
+        $this->option_nostock_hidden = $optionNostockHidden;
+
+        return $this;
+    }
+
+    /**
+     * Get optionNostockHidden.
+     */
+    public function isOptionNostockHidden(): bool
+    {
+        return $this->option_nostock_hidden;
+    }
+
+    /**
+     * Set optionFavoriteProduct.
+     */
+    public function setOptionFavoriteProduct(bool $optionFavoriteProduct): BaseInfo
+    {
+        $this->option_favorite_product = $optionFavoriteProduct;
+
+        return $this;
+    }
+
+    /**
+     * Get optionFavoriteProduct.
+     */
+    public function isOptionFavoriteProduct(): bool
+    {
+        return $this->option_favorite_product;
+    }
+
+    /**
+     * Set optionProductDeliveryFee.
+     */
+    public function setOptionProductDeliveryFee(bool $optionProductDeliveryFee): BaseInfo
+    {
+        $this->option_product_delivery_fee = $optionProductDeliveryFee;
+
+        return $this;
+    }
+
+    /**
+     * Get optionProductDeliveryFee.
+     */
+    public function isOptionProductDeliveryFee(): bool
+    {
+        return $this->option_product_delivery_fee;
+    }
+
+    /**
+     * Set optionCookieConsent.
+     */
+    public function setOptionCookieConsent(bool $optionCookieConsent): BaseInfo
+    {
+        $this->option_cookie_consent = $optionCookieConsent;
+
+        return $this;
+    }
+
+    /**
+     * Get optionCookieConsent.
+     */
+    public function isOptionCookieConsent(): bool
+    {
+        return $this->option_cookie_consent;
+    }
+
+    /**
+     * Set invoiceRegistrationNumber.
+     */
+    public function setInvoiceRegistrationNumber(string $invoiceRegistrationNumber): BaseInfo
+    {
+        $this->invoice_registration_number = $invoiceRegistrationNumber;
+
+        return $this;
+    }
+
+    /**
+     * Get invoiceRegistrationNumber.
+     */
+    public function getInvoiceRegistrationNumber(): ?string
+    {
+        return $this->invoice_registration_number;
+    }
+
+    /**
+     * Set optionProductTaxRule.
+     */
+    public function setOptionProductTaxRule(bool $optionProductTaxRule): BaseInfo
+    {
+        $this->option_product_tax_rule = $optionProductTaxRule;
+
+        return $this;
+    }
+
+    /**
+     * Get optionProductTaxRule.
+     */
+    public function isOptionProductTaxRule(): bool
+    {
+        return $this->option_product_tax_rule;
+    }
+
+    /**
+     * Set optionCustomerActivate.
+     */
+    public function setOptionCustomerActivate(bool $optionCustomerActivate): BaseInfo
+    {
+        $this->option_customer_activate = $optionCustomerActivate;
+
+        return $this;
+    }
+
+    /**
+     * Get optionCustomerActivate.
+     */
+    public function isOptionCustomerActivate(): bool
+    {
+        return $this->option_customer_activate;
+    }
+
+    /**
+     * Set optionGuestPurchase.
+     */
+    public function setOptionGuestPurchase(bool $optionGuestPurchase): BaseInfo
+    {
+        $this->option_guest_purchase = $optionGuestPurchase;
+
+        return $this;
+    }
+
+    /**
+     * Get optionGuestPurchase.
+     */
+    public function isOptionGuestPurchase(): bool
+    {
+        return $this->option_guest_purchase;
+    }
+
+    /**
+     * Set optionRememberMe.
+     */
+    public function setOptionRememberMe(bool $optionRememberMe): BaseInfo
+    {
+        $this->option_remember_me = $optionRememberMe;
+
+        return $this;
+    }
+
+    /**
+     * Get optionRememberMe.
+     */
+    public function isOptionRememberMe(): bool
+    {
+        return $this->option_remember_me;
+    }
+
+    /**
+     * Set optionMailNotifier.
+     */
+    public function setOptionMailNotifier(bool $optionRememberMe): BaseInfo
+    {
+        $this->option_mail_notifier = $optionRememberMe;
+
+        return $this;
+    }
+
+    /**
+     * Get optionRememberMe.
+     */
+    public function isOptionMailNotifier(): bool
+    {
+        return $this->option_mail_notifier;
+    }
+
+    /**
+     * Set optionSanitizeCsvFormulas.
+     */
+    public function setOptionSanitizeCsvFormulas(bool $optionSanitizeCsvFormulas): BaseInfo
+    {
+        $this->option_sanitize_csv_formulas = $optionSanitizeCsvFormulas;
+
+        return $this;
+    }
+
+    /**
+     * Get optionSanitizeCsvFormulas.
+     */
+    public function isOptionSanitizeCsvFormulas(): bool
+    {
+        return $this->option_sanitize_csv_formulas;
+    }
+
+    /**
+     * Set authenticationKey.
+     */
+    public function setAuthenticationKey(?string $authenticationKey = null): BaseInfo
+    {
+        $this->authentication_key = $authenticationKey;
+
+        return $this;
+    }
+
+    /**
+     * Get authenticationKey.
+     */
+    public function getAuthenticationKey(): ?string
+    {
+        return $this->authentication_key;
+    }
+
+    /**
+     * Set country.
+     */
+    public function setCountry(?Country $country = null): BaseInfo
+    {
+        $this->Country = $country;
+
+        return $this;
+    }
+
+    /**
+     * Get country.
+     */
+    public function getCountry(): ?Country
+    {
+        return $this->Country;
+    }
+
+    /**
+     * Set pref.
+     */
+    public function setPref(?Pref $pref = null): BaseInfo
+    {
+        $this->Pref = $pref;
+
+        return $this;
+    }
+
+    /**
+     * Get pref.
+     */
+    public function getPref(): ?Pref
+    {
+        return $this->Pref;
+    }
+
+    /**
+     * Set optionPoint
+     */
+    public function setOptionPoint(bool $optionPoint): BaseInfo
+    {
+        $this->option_point = $optionPoint;
+
+        return $this;
+    }
+
+    /**
+     * Get optionPoint
+     */
+    public function isOptionPoint(): bool
+    {
+        return $this->option_point;
+    }
+
+    /**
+     * Set pointConversionRate
+     */
+    public function setPointConversionRate(?string $pointConversionRate): BaseInfo
+    {
+        $this->point_conversion_rate = $pointConversionRate;
+
+        return $this;
+    }
+
+    /**
+     * Get pointConversionRate
+     */
+    public function getPointConversionRate(): ?string
+    {
+        return $this->point_conversion_rate;
+    }
+
+    /**
+     * Set basicPointRate
+     */
+    public function setBasicPointRate(?string $basicPointRate): BaseInfo
+    {
+        $this->basic_point_rate = $basicPointRate;
+
+        return $this;
+    }
+
+    /**
+     * Get basicPointRate
+     */
+    public function getBasicPointRate(): string
+    {
+        return $this->basic_point_rate;
+    }
+
+    /**
+     * @deprecated 使用していないため、削除予定
+     */
+    public function getPhpPath(): ?string
+    {
+        return $this->php_path;
+    }
+
+    /**
+     * @deprecated 使用していないため、削除予定
+     *
+     * @return $this
+     */
+    public function setPhpPath(?string $php_path): static
+    {
+        $this->php_path = $php_path;
+
+        return $this;
+    }
+
+    /**
+     * Set gaId.
+     */
+    public function setGaId(?string $gaId = null): BaseInfo
+    {
+        $this->gaId = $gaId;
+
+        return $this;
+    }
+
+    /**
+     * Get gaId.
+     */
+    public function getGaId(): ?string
+    {
+        return $this->gaId;
+    }
+
+    /**
+     * Set acpCheckoutEnabled.
+     */
+    public function setAcpCheckoutEnabled(bool $acpCheckoutEnabled): BaseInfo
+    {
+        $this->acp_checkout_enabled = $acpCheckoutEnabled;
+
+        return $this;
+    }
+
+    /**
+     * Get acpCheckoutEnabled.
+     */
+    public function isAcpCheckoutEnabled(): bool
+    {
+        return $this->acp_checkout_enabled;
+    }
+
+    /**
+     * Set ucpCheckoutEnabled.
+     */
+    public function setUcpCheckoutEnabled(bool $ucpCheckoutEnabled): BaseInfo
+    {
+        $this->ucp_checkout_enabled = $ucpCheckoutEnabled;
+
+        return $this;
+    }
+
+    /**
+     * Get ucpCheckoutEnabled.
+     */
+    public function isUcpCheckoutEnabled(): bool
+    {
+        return $this->ucp_checkout_enabled;
+    }
+
+    /**
+     * Set ucpCatalogRequiresAuth.
+     */
+    public function setUcpCatalogRequiresAuth(bool $ucpCatalogRequiresAuth): BaseInfo
+    {
+        $this->ucp_catalog_requires_auth = $ucpCatalogRequiresAuth;
+
+        return $this;
+    }
+
+    /**
+     * Get ucpCatalogRequiresAuth.
+     */
+    public function isUcpCatalogRequiresAuth(): bool
+    {
+        return $this->ucp_catalog_requires_auth;
+    }
+
+    /**
+     * Set mcpEnabled.
+     */
+    public function setMcpEnabled(bool $mcpEnabled): BaseInfo
+    {
+        $this->mcp_enabled = $mcpEnabled;
+
+        return $this;
+    }
+
+    /**
+     * Get mcpEnabled.
+     */
+    public function isMcpEnabled(): bool
+    {
+        return $this->mcp_enabled;
+    }
+
+    /**
+     * Set orderPdfVisibleShopName.
+     */
+    public function setOrderPdfVisibleShopName(bool $orderPdfVisibleShopName): BaseInfo
+    {
+        $this->order_pdf_visible_shop_name = $orderPdfVisibleShopName;
+
+        return $this;
+    }
+
+    /**
+     * Get orderPdfVisibleShopName.
+     */
+    public function isOrderPdfVisibleShopName(): bool
+    {
+        return $this->order_pdf_visible_shop_name;
+    }
+
+    /**
+     * Set orderPdfVisibleShopNameEng.
+     */
+    public function setOrderPdfVisibleShopNameEng(bool $orderPdfVisibleShopNameEng): BaseInfo
+    {
+        $this->order_pdf_visible_shop_name_eng = $orderPdfVisibleShopNameEng;
+
+        return $this;
+    }
+
+    /**
+     * Get orderPdfVisibleShopNameEng.
+     */
+    public function isOrderPdfVisibleShopNameEng(): bool
+    {
+        return $this->order_pdf_visible_shop_name_eng;
+    }
+
+    /**
+     * Set orderPdfVisibleAddress.
+     */
+    public function setOrderPdfVisibleAddress(bool $orderPdfVisibleAddress): BaseInfo
+    {
+        $this->order_pdf_visible_address = $orderPdfVisibleAddress;
+
+        return $this;
+    }
+
+    /**
+     * Get orderPdfVisibleAddress.
+     */
+    public function isOrderPdfVisibleAddress(): bool
+    {
+        return $this->order_pdf_visible_address;
+    }
+
+    /**
+     * Set orderPdfVisibleCompanyName.
+     */
+    public function setOrderPdfVisibleCompanyName(bool $orderPdfVisibleCompanyName): BaseInfo
+    {
+        $this->order_pdf_visible_company_name = $orderPdfVisibleCompanyName;
+
+        return $this;
+    }
+
+    /**
+     * Get orderPdfVisibleCompanyName.
+     */
+    public function isOrderPdfVisibleCompanyName(): bool
+    {
+        return $this->order_pdf_visible_company_name;
+    }
+
+    /**
+     * Set orderPdfVisiblePhoneNumber.
+     */
+    public function setOrderPdfVisiblePhoneNumber(bool $orderPdfVisiblePhoneNumber): BaseInfo
+    {
+        $this->order_pdf_visible_phone_number = $orderPdfVisiblePhoneNumber;
+
+        return $this;
+    }
+
+    /**
+     * Get orderPdfVisiblePhoneNumber.
+     */
+    public function isOrderPdfVisiblePhoneNumber(): bool
+    {
+        return $this->order_pdf_visible_phone_number;
+    }
+
+    /**
+     * Set orderPdfVisibleBusinessHour.
+     */
+    public function setOrderPdfVisibleBusinessHour(bool $orderPdfVisibleBusinessHour): BaseInfo
+    {
+        $this->order_pdf_visible_business_hour = $orderPdfVisibleBusinessHour;
+
+        return $this;
+    }
+
+    /**
+     * Get orderPdfVisibleBusinessHour.
+     */
+    public function isOrderPdfVisibleBusinessHour(): bool
+    {
+        return $this->order_pdf_visible_business_hour;
+    }
+
+    /**
+     * Set orderPdfVisibleEmail.
+     */
+    public function setOrderPdfVisibleEmail(bool $orderPdfVisibleEmail): BaseInfo
+    {
+        $this->order_pdf_visible_email = $orderPdfVisibleEmail;
+
+        return $this;
+    }
+
+    /**
+     * Get orderPdfVisibleEmail.
+     */
+    public function isOrderPdfVisibleEmail(): bool
+    {
+        return $this->order_pdf_visible_email;
+    }
+
+    /**
+     * Set orderPdfVisibleInvoiceNumber.
+     */
+    public function setOrderPdfVisibleInvoiceNumber(bool $orderPdfVisibleInvoiceNumber): BaseInfo
+    {
+        $this->order_pdf_visible_invoice_number = $orderPdfVisibleInvoiceNumber;
+
+        return $this;
+    }
+
+    /**
+     * Get orderPdfVisibleInvoiceNumber.
+     */
+    public function isOrderPdfVisibleInvoiceNumber(): bool
+    {
+        return $this->order_pdf_visible_invoice_number;
     }
 }

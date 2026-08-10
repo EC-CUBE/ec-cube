@@ -29,8 +29,11 @@ class DeliveryTimeType extends AbstractType
 {
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('delivery_time', TextType::class, [
@@ -55,34 +58,32 @@ class DeliveryTimeType extends AbstractType
                 'expanded' => false,
             ])
         ;
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             /** @var DeliveryTime $DeliveryTime */
             $DeliveryTime = $event->getData();
-            if (null === $DeliveryTime->isVisible()) {
-                $DeliveryTime->setVisible(true);
-            }
+            $DeliveryTime->setVisible(true);
         });
     }
 
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => DeliveryTime::class,
-            'query_builder' => function (EntityRepository $er) {
-                return $er
-                    ->createQueryBuilder('dt')
-                    ->orderBy('dt.sort_no', 'ASC');
-            },
+            'query_builder' => fn (EntityRepository $er) => $er
+                ->createQueryBuilder('dt')
+                ->orderBy('dt.sort_no', 'ASC'),
         ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    #[\Override]
+    public function getBlockPrefix(): string
     {
         return 'delivery_time';
     }

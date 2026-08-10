@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,60 +19,42 @@ use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Template;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\TemplateRepository;
+use Eccube\Tests\EnvOverrideTrait;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Eccube\Util\StringUtil;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Request;
 
-class TemplateControllerTest extends AbstractAdminWebTestCase
+final class TemplateControllerTest extends AbstractAdminWebTestCase
 {
-    /**
-     * @var string
-     */
-    protected $dir;
+    use EnvOverrideTrait;
 
-    /**
-     * @var UploadedFile
-     */
-    protected $file;
+    protected ?string $dir = null;
 
-    /**
-     * @var string
-     */
-    protected $code;
+    protected ?UploadedFile $file = null;
 
-    /**
-     * @var TemplateRepository
-     */
-    protected $templateRepository;
+    protected ?string $code = null;
 
-    /**
-     * @var DeviceTypeRepository
-     */
-    protected $deviceTypeRepository;
+    protected ?TemplateRepository $templateRepository = null;
 
-    /**
-     * @var string
-     */
-    protected $envFile;
+    protected ?DeviceTypeRepository $deviceTypeRepository = null;
 
-    /**
-     * @var string
-     */
-    protected $env;
+    protected ?string $envFile = null;
+
+    protected ?string $env = null;
 
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->templateRepository = $this->entityManager->getRepository(Template::class);
         $this->deviceTypeRepository = $this->entityManager->getRepository(DeviceType::class);
-
         $this->dir = \tempnam(\sys_get_temp_dir(), 'TemplateControllerTest');
         $fs = new Filesystem();
         $fs->remove($this->dir);
         $fs->mkdir($this->dir);
-
         $file = $this->dir.'/template.zip';
         $zip = new \ZipArchive();
         $zip->open($file, \ZipArchive::CREATE);
@@ -78,9 +62,7 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
         $zip->addEmptyDir('html');
         $zip->close();
         $this->file = new UploadedFile($file, 'dummy.zip', 'application/zip');
-
         $this->code = StringUtil::random(6);
-
         $this->envFile = static::getContainer()->getParameter('kernel.project_dir').'/.env';
         if (file_exists($this->envFile)) {
             $this->env = file_get_contents($this->envFile);
@@ -91,16 +73,13 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
     {
         $fs = new Filesystem();
         $fs->remove($this->dir);
-
         $templatePath = static::getContainer()->getParameter('kernel.project_dir').'/app/template/'.$this->code;
         if ($fs->exists($templatePath)) {
             $fs->remove($templatePath);
         }
-
         if ($this->env) {
             file_put_contents($this->envFile, $this->env);
         }
-
         parent::tearDown();
     }
 
@@ -109,15 +88,36 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
      */
     public function testDisplayList()
     {
-        $this->client->request('GET', $this->generateUrl('admin_store_template'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_store_template'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     /**
-     * テンプレートの変更
-     *
-     * @group cache-clear
+     * ECCUBE_TEMPLATE_CODE がプロセス環境変数として設定されている場合、画面表示時に
+     * 警告を表示し、登録ボタンを無効化することを確認する（#6130）。
      */
+    #[Group(name: 'cache-clear')]
+    public function testDisplayWarningAndDisableButtonWhenEnvOverridden()
+    {
+        $this->forceKeyOverridden('ECCUBE_TEMPLATE_CODE', $this->currentThemeCode(), function (): void {
+            $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_store_template'));
+            $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+            // この画面が扱うキーは1つのみのため, 上書き時は登録ボタンが無効化されている
+            $this->assertGreaterThan(0, $crawler->filter('button[type="submit"][disabled]')->count());
+
+            // 上書きされているキーを名指しした警告が表示されている
+            $this->assertStringContainsString(
+                trans('admin.system.env.ineffective.overridden', ['%keys%' => 'ECCUBE_TEMPLATE_CODE']),
+                (string) $this->client->getResponse()->getContent()
+            );
+        });
+    }
+
+    /**
+     * テンプレートの変更
+     */
+    #[Group(name: 'cache-clear')]
     public function testChangeTemplate()
     {
         // テンプレートをアップロード
@@ -125,9 +125,10 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
         $this->verifyUpload();
 
         $Template = $this->templateRepository->findOneBy(['code' => $this->code]);
+        $this->assertInstanceOf(Template::class, $Template);
 
         // テンプレートを選択
-        $this->client->request('POST', $this->generateUrl('admin_store_template'), [
+        $this->client->request(Request::METHOD_POST, $this->generateUrl('admin_store_template'), [
             'form' => [
                 '_token' => 'dummy',
                 'selected' => $Template->getId(),
@@ -136,7 +137,49 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirection());
 
         // .envが更新されている
-        self::assertMatchesRegularExpression('/ECCUBE_TEMPLATE_CODE='.$Template->getCode().'/', file_get_contents($this->envFile));
+        $this->assertMatchesRegularExpression('/ECCUBE_TEMPLATE_CODE='.$Template->getCode().'/', file_get_contents($this->envFile));
+    }
+
+    /**
+     * テンプレートの変更（ECCUBE_TEMPLATE_CODEがプロセス環境変数として設定されている場合）
+     *
+     * Docker などでプロセス環境変数として ECCUBE_TEMPLATE_CODE が設定されている場合、
+     * .env への書き込みは反映されないため、保存を拒否しエラーを表示することを確認する。
+     */
+    #[Group(name: 'cache-clear')]
+    public function testChangeTemplateWithEnvOverride()
+    {
+        // テンプレートをアップロード
+        $this->scenarioUpload();
+        $this->verifyUpload();
+
+        $Template = $this->templateRepository->findOneBy(['code' => $this->code]);
+        $this->assertInstanceOf(Template::class, $Template);
+
+        $this->forceKeyOverridden('ECCUBE_TEMPLATE_CODE', $this->currentThemeCode(), function () use ($Template): void {
+            $session = $this->createSession($this->client);
+
+            // テンプレートを選択
+            $this->client->request(Request::METHOD_POST, $this->generateUrl('admin_store_template'), [
+                'form' => [
+                    '_token' => 'dummy',
+                    'selected' => $Template->getId(),
+                ],
+            ]);
+            $this->assertTrue($this->client->getResponse()->isRedirection());
+
+            // 環境変数オーバーライド時は保存が拒否され、エラーが表示される
+            $errors = $session->getFlashBag()->get('eccube.admin.error');
+            $this->assertContains('admin.common.save_error', $errors);
+            // 原因となる上書きキー名も併記される（#8）
+            $this->assertContains(
+                trans('admin.system.env.ineffective.overridden', ['%keys%' => 'ECCUBE_TEMPLATE_CODE']),
+                $errors
+            );
+
+            // .env は書き換えられていない
+            $this->assertDoesNotMatchRegularExpression('/ECCUBE_TEMPLATE_CODE='.$Template->getCode().'/', file_get_contents($this->envFile));
+        });
     }
 
     /**
@@ -144,7 +187,7 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
      */
     public function testDiaplayUpload()
     {
-        $this->client->request('GET', $this->generateUrl('admin_store_template_install'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_store_template_install'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -173,17 +216,56 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
      */
     public function testDownload()
     {
-        $this->markTestIncomplete("See: \Eccube\Controller\Admin\Store\TemplateController::L151");
-
         // テンプレートをアップロード
         $this->scenarioUpload();
         $this->verifyUpload();
 
         $Template = $this->templateRepository->findOneBy(['code' => $this->code]);
+        $this->assertInstanceOf(Template::class, $Template);
 
-        // XXX failed to open stream: No such file or directoryが発生する
-        $this->client->request('GET',
-            $this->generateUrl('admin_store_template_download', ['id' => $Template->getId()]));
+        // NOTE: BrowserKit の HttpKernelBrowser::doRequest() は handle() の直後に
+        // terminate() を呼び, その後 filterResponse() で sendContent() する.
+        // TemplateController::download() は kernel.terminate で一時ファイルを削除するため,
+        // $this->client->request() 経由だと BinaryFileResponse の読み出し前に
+        // ファイルが消えてしまう (実際のリクエストでは送信後に terminate されるため問題ない).
+        // そのため, ここではカーネルを直接 handle して検証し, 最後に terminate する.
+        $kernel = $this->client->getKernel();
+        $cookies = [];
+        foreach ($this->client->getCookieJar()->all() as $cookie) {
+            $cookies[$cookie->getName()] = $cookie->getValue();
+        }
+        $request = Request::create(
+            $this->generateUrl('admin_store_template_download', ['id' => $Template->getId()]),
+            Request::METHOD_GET,
+            [],
+            $cookies
+        );
+        $response = $kernel->handle($request);
+
+        try {
+            $this->assertInstanceOf(BinaryFileResponse::class, $response);
+            $this->assertTrue($response->isSuccessful());
+            $this->assertSame(
+                'attachment; filename='.$this->code.'.tar.gz',
+                $response->headers->get('content-disposition')
+            );
+
+            // terminate 前は一時ファイルが存在し, tar.gz として読み出せる.
+            $tarGzFile = $response->getFile()->getPathname();
+            $this->assertFileExists($tarGzFile);
+            // tar.gz として読み出せ, app ディレクトリを含むこと.
+            // アップロードした zip は app/html とも空ディレクトリで,
+            // PharData::buildFromDirectory は空ディレクトリを含めないため,
+            // app は download() 側の addEmptyDir で補われる.
+            // @see https://github.com/EC-CUBE/ec-cube/issues/742
+            $phar = new \PharData($tarGzFile);
+            $this->assertArrayHasKey('app', $phar);
+        } finally {
+            // kernel.terminate のリスナが一時ファイルを削除する.
+            $kernel->terminate($request, $response);
+        }
+
+        $this->assertFileDoesNotExist($tarGzFile);
     }
 
     /**
@@ -196,19 +278,33 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
         $this->verifyUpload();
 
         $Template = $this->templateRepository->findOneBy(['code' => $this->code]);
+        $this->assertInstanceOf(Template::class, $Template);
 
         $id = $Template->getId();
+        $this->assertInstanceOf(Template::class, $Template);
         $code = $Template->getCode();
 
         // 削除
-        $this->client->request('DELETE',
+        $this->client->request(Request::METHOD_DELETE,
             $this->generateUrl('admin_store_template_delete', ['id' => $Template->getId()]));
 
         $this->assertTrue($this->client->getResponse()->isRedirection());
 
         $Template = $this->templateRepository->find($id);
-        self::assertNull($Template);
-        self::assertFalse(file_exists(static::getContainer()->getParameter('kernel.project_dir').'/app/template/'.$code));
+        $this->assertNotInstanceOf(Template::class, $Template);
+        $this->assertFileDoesNotExist(static::getContainer()->getParameter('kernel.project_dir').'/app/template/'.$code);
+    }
+
+    /**
+     * 現在アプリケーションが使用しているテンプレートコード.
+     *
+     * ECCUBE_TEMPLATE_CODE の上書きを再現する際、実効値と異なる値を注入すると
+     * twig.paths が存在しない app/template/<code> を指し全リクエストが 500 になるため、
+     * 実効値をそのまま注入する（{@see EnvOverrideTrait::forceKeyOverridden()}）.
+     */
+    private function currentThemeCode(): string
+    {
+        return (string) static::getContainer()->getParameter('eccube.theme');
     }
 
     protected function scenarioUpload($uppercase = false)
@@ -217,7 +313,7 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
         $fileData = $this->createFileData($uppercase);
 
         return $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_store_template_install'),
             [
                 'admin_template' => $formData,
@@ -230,7 +326,7 @@ class TemplateControllerTest extends AbstractAdminWebTestCase
     protected function verifyUpload()
     {
         $Template = $this->templateRepository->findOneBy(['code' => $this->code]);
-        self::assertInstanceOf(Template::class, $Template);
+        $this->assertInstanceOf(Template::class, $Template);
     }
 
     protected function createFormData()

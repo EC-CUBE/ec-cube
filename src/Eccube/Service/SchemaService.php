@@ -13,11 +13,15 @@
 
 namespace Eccube\Service;
 
-use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Bundle\DoctrineBundle\Mapping\MappingDriver;
+use Doctrine\DBAL\Schema\ComparatorConfig;
+use Doctrine\DBAL\Schema\SchemaDiff;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 use Doctrine\ORM\Tools\SchemaTool;
-use Eccube\Doctrine\ORM\Mapping\Driver\NopAnnotationDriver;
-use Eccube\Doctrine\ORM\Mapping\Driver\ReloadSafeAnnotationDriver;
+use Doctrine\Persistence\Mapping\Driver\MappingDriverChain;
+use Eccube\Doctrine\ORM\Mapping\Driver\NopAttributeDriver;
+use Eccube\Doctrine\ORM\Mapping\Driver\ReloadSafeAttributeDriver;
 use Eccube\Util\StringUtil;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -25,24 +29,10 @@ use Symfony\Component\Finder\Finder;
 class SchemaService
 {
     /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-    /**
-     * @var PluginContext
-     */
-    private $pluginContext;
-
-    /**
      * SchemaService constructor.
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param PluginContext $pluginContext
      */
-    public function __construct(EntityManagerInterface $entityManager, PluginContext $pluginContext)
+    public function __construct(protected EntityManagerInterface $entityManager, private readonly PluginContext $pluginContext)
     {
-        $this->entityManager = $entityManager;
-        $this->pluginContext = $pluginContext;
     }
 
     /**
@@ -52,12 +42,11 @@ class SchemaService
      * Metadata を出力する一時ディレクトリを指定しない場合は内部で生成し, コールバック関数実行後に削除されます.
      *
      * @param callable $callback Metadata を生成した後に実行されるコールバック関数
-     * @param array $generatedFiles Proxy ファイルパスの配列
+     * @param array<mixed> $generatedFiles Proxy ファイルパスの配列
      * @param string $proxiesDirectory Proxy ファイルを格納したディレクトリ
-     * @param bool $saveMode UpdateSchema を即時実行する場合 true
      * @param string $outputDir Metadata の出力先ディレクトリ
      */
-    public function executeCallback(callable $callback, $generatedFiles, $proxiesDirectory, $outputDir = null)
+    public function executeCallback(callable $callback, array $generatedFiles, string $proxiesDirectory, ?string $outputDir = null): void
     {
         $createOutputDir = false;
         if (is_null($outputDir)) {
@@ -67,27 +56,39 @@ class SchemaService
         }
 
         try {
-            $chain = $this->entityManager->getConfiguration()->getMetadataDriverImpl()->getDriver();
-            $drivers = $chain->getDrivers();
+            $driver = $this->entityManager->getConfiguration()->getMetadataDriverImpl();
+
+            // DoctrineBundleのMappingDriverラッパーをアンラップ
+            if ($driver instanceof MappingDriver) {
+                $driver = $driver->getDriver();
+            }
+
+            if (!$driver instanceof MappingDriverChain) {
+                trigger_error('MappingDriverChain のインスタンスが必要です', E_USER_WARNING);
+
+                return;
+            }
+
+            $drivers = $driver->getDrivers();
             foreach ($drivers as $namespace => $oldDriver) {
-                if ('Eccube\Entity' === $namespace || preg_match('/^Plugin\\\\.*\\\\Entity$/', $namespace)) {
-                    // Setup to AnnotationDriver
-                    $newDriver = new ReloadSafeAnnotationDriver(
-                        new AnnotationReader(),
-                        $oldDriver->getPaths()
-                    );
+                if ('Eccube\Entity' === $namespace || 'Customize\Entity' === $namespace || preg_match('/^Plugin\\\\.*\\\\Entity$/', $namespace)) {
+                    // Setup to AttributeDriver
+                    if (!$oldDriver instanceof AttributeDriver) {
+                        continue;
+                    }
+                    $newDriver = new ReloadSafeAttributeDriver($oldDriver->getPaths());
                     $newDriver->setFileExtension($oldDriver->getFileExtension());
                     $newDriver->addExcludePaths($oldDriver->getExcludePaths());
                     $newDriver->setTraitProxiesDirectory($proxiesDirectory);
                     $newDriver->setNewProxyFiles($generatedFiles);
                     $newDriver->setOutputDir($outputDir);
-                    $chain->addDriver($newDriver, $namespace);
+                    $driver->addDriver($newDriver, $namespace);
                 }
 
                 if ($this->pluginContext->isUninstall()) {
                     foreach ($this->pluginContext->getExtraEntityNamespaces() as $extraEntityNamespace) {
                         if ($extraEntityNamespace === $namespace) {
-                            $chain->addDriver(new NopAnnotationDriver(new AnnotationReader()), $namespace);
+                            $driver->addDriver(new NopAttributeDriver([]), $namespace);
                         }
                     }
                 }
@@ -111,31 +112,82 @@ class SchemaService
     /**
      * Doctrine Metadata を生成して UpdateSchema を実行する.
      *
-     * @param array $generatedFiles Proxy ファイルパスの配列
+     * @param array<mixed> $generatedFiles Proxy ファイルパスの配列
      * @param string $proxiesDirectory Proxy ファイルを格納したディレクトリ
      * @param bool $saveMode UpdateSchema を即時実行する場合 true
      */
-    public function updateSchema($generatedFiles, $proxiesDirectory, $saveMode = false)
+    public function updateSchema(array $generatedFiles, string $proxiesDirectory, bool $saveMode = false): void
     {
-        $this->executeCallback(function (SchemaTool $tool, array $metaData) use ($saveMode) {
-            $tool->updateSchema($metaData, $saveMode);
+        $this->executeCallback(function (SchemaTool $tool, array $metaData) use ($saveMode): void {
+            if (!$saveMode) {
+                $tool->updateSchema($metaData);
+
+                return;
+            }
+
+            // ORM 3 で SchemaTool::updateSchema() の $saveMode 引数 (追加系のみ適用) が廃止されたため,
+            // スキーマ差分から「テーブル / シーケンスの削除」だけを除外して適用し, 従来の saveMode 相当の
+            // 挙動を再現する。プラグインの Entity テーブル削除は uninstall 時に dropTable() で明示的に
+            // 行うため, スキーマ更新で他プラグインが参照を残すテーブルを巻き込んで DROP してはならない
+            // (例: dtb_cart の FK が依存する dtb_foo を DROP しようとして
+            // "cannot drop table dtb_foo because other objects depend on it" になる)。
+            // なお列追加に伴う SQLite のテーブル再作成 (内部的な DROP/RENAME) は alteredTables 側で
+            // SQL 生成されるため, ここで除外する droppedTables / droppedSequences には含まれない。
+            $connection = $this->entityManager->getConnection();
+            $schemaManager = $connection->createSchemaManager();
+
+            $toSchema = $tool->getSchemaFromMetadata($metaData);
+            // schemaAssetsFilter が未設定の EC-CUBE では SchemaTool::getUpdateSchemaSql() の
+            // 比較元 (createSchemaForComparison) は introspectSchema() と等価。
+            $fromSchema = $schemaManager->introspectSchema();
+            $comparator = $schemaManager->createComparator(
+                (new ComparatorConfig())->withReportModifiedIndexes(false)
+            );
+            $schemaDiff = $comparator->compareSchemas($fromSchema, $toSchema);
+
+            $additiveDiff = new SchemaDiff(
+                $schemaDiff->getCreatedSchemas(),
+                $schemaDiff->getDroppedSchemas(),
+                $schemaDiff->getCreatedTables(),
+                $schemaDiff->getAlteredTables(),
+                [],
+                $schemaDiff->getCreatedSequences(),
+                $schemaDiff->getAlteredSequences(),
+                [],
+            );
+
+            foreach ($connection->getDatabasePlatform()->getAlterSchemaSQL($additiveDiff) as $sql) {
+                $connection->executeStatement($sql);
+            }
         }, $generatedFiles, $proxiesDirectory);
     }
 
     /**
      * ネームスペースに含まれるEntityのテーブルを削除する
      *
-     * @param $targetNamespace string 削除対象のネームスペース
+     * @param  string $targetNamespace 削除対象のネームスペース
      */
-    public function dropTable($targetNamespace)
+    public function dropTable(string $targetNamespace): void
     {
-        $chain = $this->entityManager->getConfiguration()->getMetadataDriverImpl()->getDriver();
-        $drivers = $chain->getDrivers();
+        $driver = $this->entityManager->getConfiguration()->getMetadataDriverImpl();
+
+        // DoctrineBundleのMappingDriverラッパーをアンラップ
+        if ($driver instanceof MappingDriver) {
+            $driver = $driver->getDriver();
+        }
+
+        if (!$driver instanceof MappingDriverChain) {
+            trigger_error('MappingDriverChain のインスタンスが必要です', E_USER_WARNING);
+
+            return;
+        }
+
+        $drivers = $driver->getDrivers();
 
         $dropMetas = [];
-        foreach ($drivers as $namespace => $driver) {
+        foreach ($drivers as $namespace => $currentDriver) {
             if ($targetNamespace === $namespace) {
-                $allClassNames = $driver->getAllClassNames();
+                $allClassNames = $currentDriver->getAllClassNames();
 
                 foreach ($allClassNames as $className) {
                     $dropMetas[] = $this->entityManager->getMetadataFactory()->getMetadataFor($className);

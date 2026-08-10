@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -13,6 +15,7 @@
 
 namespace Eccube\Tests\Repository;
 
+use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Eccube\Entity\Master\Work;
 use Eccube\Entity\Member;
 use Eccube\Repository\MemberRepository;
@@ -24,15 +27,12 @@ use Eccube\Tests\EccubeTestCase;
  *
  * @author Kentaro Ohkouchi
  */
-class MemberRepositoryTest extends EccubeTestCase
+final class MemberRepositoryTest extends EccubeTestCase
 {
-    /** @var Member */
-    protected $Member;
-    /** @var MemberRepository */
-    protected $memberRepo;
+    protected ?Member $Member = null;
+    protected ?MemberRepository $memberRepo = null;
 
-    /** @var PasswordHasher */
-    protected $passwordHasher;
+    protected ?PasswordHasher $passwordHasher = null;
 
     protected function setUp(): void
     {
@@ -42,7 +42,6 @@ class MemberRepositoryTest extends EccubeTestCase
         $this->Member = $this->memberRepo->find(1);
         $Work = $this->entityManager->getRepository(Work::class)
             ->find(Work::ACTIVE);
-
         for ($i = 0; $i < 3; $i++) {
             $Member = new Member();
             $password = 'password';
@@ -95,7 +94,7 @@ class MemberRepositoryTest extends EccubeTestCase
         $this->verify();
     }
 
-    public function testDownWithException()
+    public function testDownWithException(): never
     {
         $this->expectException(\Exception::class);
         $this->Member->setSortNo(0);
@@ -118,6 +117,7 @@ class MemberRepositoryTest extends EccubeTestCase
 
         // verify
         $member = $this->memberRepo->findOneBy(['login_id' => 'member-100']);
+        $this->assertInstanceOf(Member::class, $member);
         $this->actual = $member->getPassword();
         $this->expected = $Member->getPassword();
         $this->verify();
@@ -152,12 +152,12 @@ class MemberRepositoryTest extends EccubeTestCase
         $this->memberRepo->delete($Member);
 
         $Member = $this->memberRepo->find($id);
-        $this->assertNull($Member);
+        $this->assertNotInstanceOf(Member::class, $Member);
     }
 
     public function testDeleteWithException()
     {
-        if ($this->entityManager->getConnection()->getDatabasePlatform()->getName() == 'sqlite') {
+        if ($this->entityManager->getConnection()->getDatabasePlatform() instanceof SQLitePlatform) {
             $this->markTestSkipped('Can not support for sqlite3');
         }
 
@@ -183,6 +183,6 @@ class MemberRepositoryTest extends EccubeTestCase
 
         // 削除できることを確認
         $this->memberRepo->delete($Member1);
-        self::assertNull($Member1->getId());
+        $this->assertNull($Member1->getId());
     }
 }

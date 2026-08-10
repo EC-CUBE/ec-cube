@@ -24,24 +24,19 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class OrderStatusType extends AbstractType
 {
     /**
-     * @var OrderRepository
-     */
-    protected $orderRepository;
-
-    /**
      * OrderStatusType constructor.
-     *
-     * @param OrderRepository $orderRepository
      */
-    public function __construct(OrderRepository $orderRepository)
+    public function __construct(protected OrderRepository $orderRepository)
     {
-        $this->orderRepository = $orderRepository;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    #[\Override]
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         /** @var OrderStatus[] $OrderStatuses */
         $OrderStatuses = $options['choice_loader']->loadChoiceList()->getChoices();
@@ -61,7 +56,8 @@ class OrderStatusType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'class' => OrderStatus::class,
@@ -71,7 +67,8 @@ class OrderStatusType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    #[\Override]
+    public function getBlockPrefix(): string
     {
         return 'order_status';
     }
@@ -79,7 +76,8 @@ class OrderStatusType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    #[\Override]
+    public function getParent(): string
     {
         return MasterType::class;
     }

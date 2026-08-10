@@ -17,49 +17,32 @@ use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Order;
 use Eccube\Service\CartService;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
-use Eccube\Service\PurchaseFlow\PurchaseException;
 use Eccube\Service\PurchaseFlow\PurchaseProcessor;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class PreOrderIdValidator implements PurchaseProcessor
 {
     /**
-     * @var CartService
-     */
-    private $cartService;
-
-    /**
      * PreOrderIdValidator constructor.
-     *
-     * @param CartService $cartService
      */
-    public function __construct(CartService $cartService)
+    public function __construct(private readonly CartService $cartService)
     {
-        $this->cartService = $cartService;
     }
 
     /**
      * 受注の仮確定処理を行います。
-     *
-     * @param ItemHolderInterface $target
-     * @param PurchaseContext $context
-     *
-     * @throws PurchaseException
      */
-    public function prepare(ItemHolderInterface $target, PurchaseContext $context)
+    #[\Override]
+    public function prepare(ItemHolderInterface $target, PurchaseContext $context): void
     {
         // 処理なし
     }
 
     /**
      * 受注の確定処理を行います。
-     *
-     * @param ItemHolderInterface $target
-     * @param PurchaseContext $context
-     *
-     * @throws PurchaseException
      */
-    public function commit(ItemHolderInterface $target, PurchaseContext $context)
+    #[\Override]
+    public function commit(ItemHolderInterface $target, PurchaseContext $context): void
     {
         // 処理なし
     }
@@ -70,13 +53,24 @@ class PreOrderIdValidator implements PurchaseProcessor
      * 別のorder_idが渡されてきた場合に処理が継続されないようにするため、
      * orderのpre_order_idがsessionのpre_order_idと一致するか確認する
      *
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
+     * @param ItemHolderInterface $itemHolder 受注 or カート
+     * @param PurchaseContext $context 購入フローのコンテキスト
+     *
+     * @throws BadRequestHttpException pre_order_idが一致しない場合 OR Cartがない場合 OR $itemHolderが受注でない場合
      */
-    public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    #[\Override]
+    public function rollback(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         // $itemHolderが受注の場合のみチェック
         if (!$itemHolder instanceof Order) {
+            return;
+        }
+
+        // エージェントコマース (ACP/UCP) の受注はセッションを持たない。操作中カートと受注の
+        // 紐付け・越境防止は CheckoutSession (推測不能な session_id + protocol 照合 +
+        // cart/order の pre_order_id 整合) が controller 層で担保するため、session 依存の
+        // 本チェックは適用外とする。
+        if ($itemHolder->getAgentProtocol() !== null) {
             return;
         }
 

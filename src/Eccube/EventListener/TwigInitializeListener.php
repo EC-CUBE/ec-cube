@@ -14,9 +14,11 @@
 namespace Eccube\EventListener;
 
 use Detection\MobileDetect;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\AuthorityRole;
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Layout;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Member;
@@ -30,8 +32,10 @@ use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\PageLayoutRepository;
 use Eccube\Repository\PageRepository;
 use Eccube\Request\Context;
+use Eccube\Service\SiteStructuredDataService;
 use Eccube\Service\SystemService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -40,141 +44,91 @@ use Twig\Environment;
 class TwigInitializeListener implements EventSubscriberInterface
 {
     /**
+     * サイト共通の構造化データ（WebSite / Organization）を出力するルート名.
+     *
+     * トップページと「当サイトについて」の 2 ページに限定する.
+     */
+    private const SITE_STRUCTURED_DATA_ROUTES = ['homepage', 'help_about'];
+
+    /**
      * @var bool 初期化済かどうか.
      */
-    protected $initialized = false;
-
-    /**
-     * @var Environment
-     */
-    protected $twig;
-
-    /**
-     * @var BaseInfoRepository
-     */
-    protected $baseInfoRepository;
-
-    /**
-     * @var DeviceTypeRepository
-     */
-    protected $deviceTypeRepository;
-
-    /**
-     * @var PageRepository
-     */
-    protected $pageRepository;
-
-    /**
-     * @var PageLayoutRepository
-     */
-    protected $pageLayoutRepository;
-
-    /**
-     * @var BlockPositionRepository
-     */
-    protected $blockPositionRepository;
-
-    /**
-     * @var Context
-     */
-    protected $requestContext;
-
-    /**
-     * @var AuthorityRoleRepository
-     */
-    private $authorityRoleRepository;
-
-    /**
-     * @var EccubeConfig
-     */
-    private $eccubeConfig;
-
-    /**
-     * @var MobileDetect
-     */
-    private $mobileDetector;
-
-    /**
-     * @var UrlGeneratorInterface
-     */
-    private $router;
-
-    /**
-     * @var LayoutRepository
-     */
-    private $layoutRepository;
-
-    /**
-     * @var SystemService
-     */
-    protected $systemService;
+    protected bool $initialized = false;
 
     /**
      * TwigInitializeListener constructor.
      */
-    public function __construct(
-        Environment $twig,
-        BaseInfoRepository $baseInfoRepository,
-        PageRepository $pageRepository,
-        PageLayoutRepository $pageLayoutRepository,
-        BlockPositionRepository $blockPositionRepository,
-        DeviceTypeRepository $deviceTypeRepository,
-        AuthorityRoleRepository $authorityRoleRepository,
-        EccubeConfig $eccubeConfig,
-        Context $context,
-        MobileDetect $mobileDetector,
-        UrlGeneratorInterface $router,
-        LayoutRepository $layoutRepository,
-        SystemService $systemService,
-    ) {
-        $this->twig = $twig;
-        $this->baseInfoRepository = $baseInfoRepository;
-        $this->pageRepository = $pageRepository;
-        $this->pageLayoutRepository = $pageLayoutRepository;
-        $this->blockPositionRepository = $blockPositionRepository;
-        $this->deviceTypeRepository = $deviceTypeRepository;
-        $this->authorityRoleRepository = $authorityRoleRepository;
-        $this->eccubeConfig = $eccubeConfig;
-        $this->requestContext = $context;
-        $this->mobileDetector = $mobileDetector;
-        $this->router = $router;
-        $this->layoutRepository = $layoutRepository;
-        $this->systemService = $systemService;
+    public function __construct(protected Environment $twig, protected BaseInfoRepository $baseInfoRepository, protected PageRepository $pageRepository, protected PageLayoutRepository $pageLayoutRepository, protected BlockPositionRepository $blockPositionRepository, protected DeviceTypeRepository $deviceTypeRepository, private readonly AuthorityRoleRepository $authorityRoleRepository, private EccubeConfig $eccubeConfig, protected Context $requestContext, private readonly MobileDetect $mobileDetector, private readonly UrlGeneratorInterface $router, private readonly LayoutRepository $layoutRepository, protected SystemService $systemService, private readonly SiteStructuredDataService $siteStructuredDataService)
+    {
     }
 
     /**
      * @throws NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
-    public function onKernelRequest(RequestEvent $event)
+    public function onKernelRequest(RequestEvent $event): void
     {
         if ($this->initialized) {
             return;
         }
 
-        $this->twig->addGlobal('BaseInfo', $this->baseInfoRepository->get());
+        $BaseInfo = $this->baseInfoRepository->get();
+        $this->twig->addGlobal('BaseInfo', $BaseInfo);
 
         if ($this->requestContext->isAdmin()) {
             $this->setAdminGlobals($event);
         } else {
-            $this->setFrontVariables($event);
+            $this->setFrontVariables($event, $BaseInfo);
         }
 
         $this->initialized = true;
     }
 
     /**
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * セッションストレージが読み込まれた後に、フロント表示用 Twig グローバルをセットする.
+     * （onKernelRequest priority 6 より後に実行するため -20 で登録）
      */
-    public function setFrontVariables(RequestEvent $event)
+    public function setIsAdminLoggedInOnFrontGlobal(RequestEvent $event): void
     {
+        if (!$event->isMainRequest()) {
+            return;
+        }
+
+        if ($this->requestContext->isAdmin()) {
+            return;
+        }
+
         $request = $event->getRequest();
-        /** @var \Symfony\Component\HttpFoundation\ParameterBag $attributes */
+        // セッション Cookie が無いリクエストでは触れない（Session::has() がセッション開始を引き起こすのを避ける）
+        if (!$request->hasPreviousSession()) {
+            $this->twig->addGlobal('isAdminLoggedInOnFront', false);
+
+            return;
+        }
+
+        $session = $request->getSession();
+        if (!$session->isStarted()) {
+            $session->start();
+        }
+
+        $this->twig->addGlobal('isAdminLoggedInOnFront', $session->has('_security_admin'));
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     */
+    public function setFrontVariables(RequestEvent $event, ?BaseInfo $BaseInfo = null): void
+    {
+        // 呼び出し元（onKernelRequest）が取得済みの BaseInfo を渡す。
+        // 引数は後方互換のため任意にしており、渡されなければここで取得する。
+        $BaseInfo ??= $this->baseInfoRepository->get();
+        $request = $event->getRequest();
+        /** @var ParameterBag $attributes */
         $attributes = $request->attributes;
         $route = $attributes->get('_route');
         if ($route == 'user_data') {
             $routeParams = $attributes->get('_route_params', []);
-            $route = isset($routeParams['route']) ? $routeParams['route'] : $attributes->get('route', '');
+            $route = $routeParams['route'] ?? $attributes->get('route', '');
         }
 
         $type = DeviceType::DEVICE_TYPE_PC;
@@ -236,9 +190,18 @@ class TwigInitializeListener implements EventSubscriberInterface
         $this->twig->addGlobal('title', $Page->getName());
         $this->twig->addGlobal('isMaintenance', $this->systemService->isMaintenanceMode());
         $this->twig->addGlobal('isDebugMode', env('APP_DEBUG'));
+        // サイト共通の構造化データ（WebSite / Organization）はトップページと「当サイトについて」にだけ出力する。
+        // Google の Organization ドキュメントが「トップページか組織を説明する単一ページを推奨。
+        // サイトの全ページに含める必要はない」としているため、対象外では組み立て自体を行わない。
+        $this->twig->addGlobal(
+            'site_json_ld',
+            in_array($route, self::SITE_STRUCTURED_DATA_ROUTES, true)
+                ? $this->siteStructuredDataService->createWebSiteJsonLd($BaseInfo)
+                : []
+        );
     }
 
-    public function setAdminGlobals(RequestEvent $event)
+    public function setAdminGlobals(RequestEvent $event): void
     {
         // メニュー表示用配列.
         $menus = [];
@@ -261,13 +224,12 @@ class TwigInitializeListener implements EventSubscriberInterface
     /**
      * URLに対する権限有無チェックして表示するNavを返す
      *
-     * @param array $parentNav
+     * @param array<string, array<string, mixed>> $parentNav
      * @param AuthorityRole[] $AuthorityRoles
-     * @param string $baseUrl
      *
-     * @return array
+     * @return array<string, array<string, mixed>>
      */
-    private function getDisplayEccubeNav($parentNav, $AuthorityRoles, $baseUrl)
+    private function getDisplayEccubeNav(array $parentNav, array $AuthorityRoles, string $baseUrl): array
     {
         $restrictUrls = $this->eccubeConfig['eccube_restrict_file_upload_urls'];
 
@@ -305,12 +267,15 @@ class TwigInitializeListener implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    #[\Override]
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::REQUEST => [
                 // SecurityServiceProviderで、認証処理が完了した後に実行.
                 ['onKernelRequest', 6],
+                // Security / Session より後（高い priority が先に実行される）
+                ['setIsAdminLoggedInOnFrontGlobal', -20],
             ],
         ];
     }

@@ -17,14 +17,6 @@ class BlockEditPage extends AbstractAdminPageStyleGuide
 {
     public static $登録完了メッセージ = 'body > div.c-container > div.c-contentsArea > div.alert.alert-success.alert-dismissible.fade.show.m-3 > span';
 
-    /**
-     * BlockEditPage constructor.
-     */
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     public static function at($I)
     {
         $page = new self($I);
@@ -50,7 +42,7 @@ class BlockEditPage extends AbstractAdminPageStyleGuide
 
     public function 入力_データ($value)
     {
-        $value = preg_replace("/([^\\\])'/", "$1\\'", $value);
+        $value = preg_replace("/([^\\\])'/", "$1\\'", (string) $value);
         $this->tester->executeJS("ace.edit('editor').setValue('$value')");
 
         return $this;

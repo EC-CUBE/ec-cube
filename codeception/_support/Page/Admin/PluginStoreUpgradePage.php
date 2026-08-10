@@ -15,11 +15,6 @@ namespace Page\Admin;
 
 class PluginStoreUpgradePage extends AbstractAdminPageStyleGuide
 {
-    public function __construct(\AcceptanceTester $I)
-    {
-        parent::__construct($I);
-    }
-
     public static function at($I)
     {
         $page = new self($I);
@@ -28,11 +23,9 @@ class PluginStoreUpgradePage extends AbstractAdminPageStyleGuide
     }
 
     /**
-     * @return PluginManagePage
-     *
      * @throws \Exception
      */
-    public function アップデート()
+    public function アップデート(): PluginManagePage
     {
         $this->tester->click(['css' => '#plugin-list > div.card-body > div:nth-child(2) > div > button.btn.btn-primary']);
         $this->tester->waitForElementVisible(['id' => 'installBtn']);

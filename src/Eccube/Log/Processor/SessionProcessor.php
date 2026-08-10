@@ -14,34 +14,27 @@
 namespace Eccube\Log\Processor;
 
 use Eccube\Session\Session;
+use Monolog\LogRecord;
 use Symfony\Component\HttpFoundation\Exception\SessionNotFoundException;
 
 class SessionProcessor
 {
-    /**
-     * @var Session
-     */
-    protected $session;
-
-    public function __construct(Session $session)
+    public function __construct(protected Session $session)
     {
-        $this->session = $session;
     }
 
-    public function __invoke(array $records)
+    public function __invoke(LogRecord $record): LogRecord
     {
-        $records['extra']['session_id'] = 'N/A';
+        $sessionId = 'N/A';
 
         try {
-            if (!$this->session->isStarted()) {
-                return $records;
+            if ($this->session->isStarted()) {
+                $sessionId = substr(sha1($this->session->getId()), 0, 8);
             }
-        } catch (SessionNotFoundException $e) {
-            return $records;
+        } catch (SessionNotFoundException) {
+            // Keep default 'N/A'
         }
 
-        $records['extra']['session_id'] = substr(sha1($this->session->getId()), 0, 8);
-
-        return $records;
+        return $record->with(extra: array_merge($record->extra, ['session_id' => $sessionId]));
     }
 }

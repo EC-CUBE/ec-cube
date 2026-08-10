@@ -13,22 +13,27 @@
 
 namespace Eccube\Service;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\AbstractEntity;
 use Eccube\Entity\Csv;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Form\Type\Admin\SearchCustomerType;
 use Eccube\Form\Type\Admin\SearchOrderType;
 use Eccube\Form\Type\Admin\SearchProductType;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CsvRepository;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\Master\CsvTypeRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Repository\ShippingRepository;
+use Eccube\Util\CsvFormulaGuard;
 use Eccube\Util\FormUtil;
+use Knp\Component\Pager\Pagination\AbstractPagination;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,199 +41,85 @@ use Symfony\Component\HttpFoundation\Request;
 class CsvExportService
 {
     /**
-     * @var resource
+     * @var resource|null
      */
     protected $fp;
 
-    /**
-     * @var bool
-     */
-    protected $closed = false;
+    protected bool $closed = false;
+
+    protected ?\Closure $convertEncodingCallBack = null;
 
     /**
-     * @var \Closure
+     * 数式インジェクション対策の有効/無効. 1 回の出力中に設定が切り替わっても
+     * 同一 CSV 内でエスケープが混在しないよう, 出力開始時に 1 度だけ解決して保持する.
      */
-    protected $convertEncodingCallBack;
+    protected ?bool $sanitizeFormulas = null;
+
+    protected ?QueryBuilder $qb = null;
+
+    protected ?CsvType $CsvType = null;
 
     /**
-     * @var EntityManagerInterface
+     * @var Csv[]|null
      */
-    protected $entityManager;
-
-    /**
-     * @var QueryBuilder;
-     */
-    protected $qb;
-
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
-     * @var CsvType
-     */
-    protected $CsvType;
-
-    /**
-     * @var Csv[]
-     */
-    protected $Csvs;
-
-    /**
-     * @var CsvRepository
-     */
-    protected $csvRepository;
-
-    /**
-     * @var CsvTypeRepository
-     */
-    protected $csvTypeRepository;
-
-    /**
-     * @var OrderRepository
-     */
-    protected $orderRepository;
-
-    /**
-     * @var ShippingRepository
-     */
-    protected $shippingRepository;
-
-    /**
-     * @var CustomerRepository
-     */
-    protected $customerRepository;
-
-    /**
-     * @var ProductRepository
-     */
-    protected $productRepository;
-
-    /**
-     * @var FormFactoryInterface
-     */
-    protected $formFactory;
-
-    /** @var PaginatorInterface */
-    protected $paginator;
+    protected ?array $Csvs = null;
 
     /**
      * CsvExportService constructor.
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param CsvRepository $csvRepository
-     * @param CsvTypeRepository $csvTypeRepository
-     * @param OrderRepository $orderRepository
-     * @param ShippingRepository $shippingRepository
-     * @param CustomerRepository $customerRepository
-     * @param ProductRepository $productRepository
-     * @param EccubeConfig $eccubeConfig
-     * @param FormFactoryInterface $formFactory
-     * @param PaginatorInterface $paginator
      */
-    public function __construct(
-        EntityManagerInterface $entityManager,
-        CsvRepository $csvRepository,
-        CsvTypeRepository $csvTypeRepository,
-        OrderRepository $orderRepository,
-        ShippingRepository $shippingRepository,
-        CustomerRepository $customerRepository,
-        ProductRepository $productRepository,
-        EccubeConfig $eccubeConfig,
-        FormFactoryInterface $formFactory,
-        PaginatorInterface $paginator,
-    ) {
-        $this->entityManager = $entityManager;
-        $this->csvRepository = $csvRepository;
-        $this->csvTypeRepository = $csvTypeRepository;
-        $this->orderRepository = $orderRepository;
-        $this->shippingRepository = $shippingRepository;
-        $this->customerRepository = $customerRepository;
-        $this->eccubeConfig = $eccubeConfig;
-        $this->productRepository = $productRepository;
-        $this->formFactory = $formFactory;
-        $this->paginator = $paginator;
+    public function __construct(protected ?EntityManagerInterface $entityManager, protected CsvRepository $csvRepository, protected CsvTypeRepository $csvTypeRepository, protected OrderRepository $orderRepository, protected ShippingRepository $shippingRepository, protected CustomerRepository $customerRepository, protected ProductRepository $productRepository, protected EccubeConfig $eccubeConfig, protected FormFactoryInterface $formFactory, protected PaginatorInterface $paginator, protected BaseInfoRepository $baseInfoRepository)
+    {
     }
 
-    /**
-     * @param $config
-     */
-    public function setConfig($config)
+    public function setConfig(EccubeConfig $config): void
     {
         $this->eccubeConfig = $config;
     }
 
-    /**
-     * @param CsvRepository $csvRepository
-     */
-    public function setCsvRepository(CsvRepository $csvRepository)
+    public function setCsvRepository(CsvRepository $csvRepository): void
     {
         $this->csvRepository = $csvRepository;
     }
 
-    /**
-     * @param CsvTypeRepository $csvTypeRepository
-     */
-    public function setCsvTypeRepository(CsvTypeRepository $csvTypeRepository)
+    public function setCsvTypeRepository(CsvTypeRepository $csvTypeRepository): void
     {
         $this->csvTypeRepository = $csvTypeRepository;
     }
 
-    /**
-     * @param OrderRepository $orderRepository
-     */
-    public function setOrderRepository(OrderRepository $orderRepository)
+    public function setOrderRepository(OrderRepository $orderRepository): void
     {
         $this->orderRepository = $orderRepository;
     }
 
-    /**
-     * @param CustomerRepository $customerRepository
-     */
-    public function setCustomerRepository(CustomerRepository $customerRepository)
+    public function setCustomerRepository(CustomerRepository $customerRepository): void
     {
         $this->customerRepository = $customerRepository;
     }
 
-    /**
-     * @param ProductRepository $productRepository
-     */
-    public function setProductRepository(ProductRepository $productRepository)
+    public function setProductRepository(ProductRepository $productRepository): void
     {
         $this->productRepository = $productRepository;
     }
 
-    /**
-     * @param EntityManagerInterface $entityManager
-     */
-    public function setEntityManager(EntityManagerInterface $entityManager)
+    public function setEntityManager(EntityManagerInterface $entityManager): void
     {
         $this->entityManager = $entityManager;
     }
 
-    /**
-     * @return EntityManagerInterface
-     */
-    public function getEntityManager()
+    public function getEntityManager(): EntityManagerInterface
     {
         return $this->entityManager;
     }
 
-    /**
-     * @param QueryBuilder $qb
-     */
-    public function setExportQueryBuilder(QueryBuilder $qb)
+    public function setExportQueryBuilder(QueryBuilder $qb): void
     {
         $this->qb = $qb;
     }
 
     /**
      * Csv種別からServiceの初期化を行う.
-     *
-     * @param $CsvType|integer
      */
-    public function initCsvType($CsvType)
+    public function initCsvType(CsvType|int $CsvType): void
     {
         if ($CsvType instanceof CsvType) {
             $this->CsvType = $CsvType;
@@ -249,7 +140,7 @@ class CsvExportService
     /**
      * @return Csv[]
      */
-    public function getCsvs()
+    public function getCsvs(): array
     {
         return $this->Csvs;
     }
@@ -258,11 +149,13 @@ class CsvExportService
      * ヘッダ行を出力する.
      * このメソッドを使う場合は, 事前にinitCsvType($CsvType)で初期化しておく必要がある.
      */
-    public function exportHeader()
+    public function exportHeader(): void
     {
         if (is_null($this->CsvType) || is_null($this->Csvs)) {
             throw new \LogicException('init csv type incomplete.');
         }
+
+        $this->sanitizeFormulas = $this->baseInfoRepository->get()->isOptionSanitizeCsvFormulas();
 
         $row = [];
         foreach ($this->Csvs as $Csv) {
@@ -277,20 +170,21 @@ class CsvExportService
     /**
      * クエリビルダにもとづいてデータ行を出力する.
      * このメソッドを使う場合は, 事前にsetExportQueryBuilder($qb)で出力対象のクエリビルダをわたしておく必要がある.
-     *
-     * @param \Closure $closure
      */
-    public function exportData(\Closure $closure)
+    public function exportData(\Closure $closure): void
     {
         if (is_null($this->qb) || is_null($this->entityManager)) {
             throw new \LogicException('query builder not set.');
         }
+
+        $this->sanitizeFormulas = $this->baseInfoRepository->get()->isOptionSanitizeCsvFormulas();
 
         $this->fopen();
 
         $page = 1;
         $limit = 100;
         while ($results = $this->paginator->paginate($this->qb, $page, $limit)) {
+            /** @var AbstractPagination<int, mixed> $results */
             if (!$results->valid()) {
                 break;
             }
@@ -309,13 +203,8 @@ class CsvExportService
 
     /**
      * CSV出力項目と比較し, 合致するデータを返す.
-     *
-     * @param Csv $Csv
-     * @param $entity
-     *
-     * @return string|null
      */
-    public function getData(Csv $Csv, $entity)
+    public function getData(Csv $Csv, AbstractEntity $entity): ?string
     {
         // エンティティ名が一致するかどうかチェック.
         $csvEntityName = str_replace('\\\\', '\\', $Csv->getEntityName());
@@ -333,9 +222,9 @@ class CsvExportService
         $data = $entity->offsetGet($Csv->getFieldName());
 
         // one to one の場合は, dtb_csv.reference_field_name, 合致する結果を取得する.
-        if ($data instanceof \Eccube\Entity\AbstractEntity) {
+        if ($data instanceof AbstractEntity) {
             return $data->offsetGet($Csv->getReferenceFieldName());
-        } elseif ($data instanceof \Doctrine\Common\Collections\Collection) {
+        } elseif ($data instanceof Collection) {
             // one to manyの場合は, カンマ区切りに変換する.
             $array = [];
             foreach ($data as $elem) {
@@ -349,29 +238,25 @@ class CsvExportService
         } elseif (is_bool($data)) {
             // booleanの場合は文字列に変換する.
             return $data ? '1' : '0';
-        } else {
-            // スカラ値の場合はそのまま.
-            return $data;
         }
+
+        // スカラ値の場合はそのまま.
+        return $data;
     }
 
     /**
      * 文字エンコーディングの変換を行うコールバック関数を返す.
-     *
-     * @return \Closure
      */
-    public function getConvertEncodingCallback()
+    public function getConvertEncodingCallback(): \Closure
     {
         $config = $this->eccubeConfig;
 
-        return function ($value) use ($config) {
-            return mb_convert_encoding(
-                (string) $value, $config['eccube_csv_export_encoding'], 'UTF-8'
-            );
-        };
+        return fn ($value) => mb_convert_encoding(
+            (string) $value, $config['eccube_csv_export_encoding'], 'UTF-8'
+        );
     }
 
-    public function fopen()
+    public function fopen(): void
     {
         if (is_null($this->fp) || $this->closed) {
             $this->fp = fopen('php://output', 'w');
@@ -379,33 +264,37 @@ class CsvExportService
     }
 
     /**
-     * @param $row
+     * @param array<int, string|int> $row
      */
-    public function fputcsv($row)
+    public function fputcsv(array $row): void
     {
         if (is_null($this->convertEncodingCallBack)) {
             $this->convertEncodingCallBack = $this->getConvertEncodingCallback();
         }
 
+        // 出力開始時(exportHeader/exportData)に解決済み. 単体で fputcsv だけ呼ぶ場合は都度解決する.
+        $sanitizeFormulas = $this->sanitizeFormulas ?? $this->baseInfoRepository->get()->isOptionSanitizeCsvFormulas();
+        if ($sanitizeFormulas) {
+            $row = array_map(CsvFormulaGuard::escape(...), $row);
+        }
+
         fputcsv($this->fp, array_map($this->convertEncodingCallBack, $row), $this->eccubeConfig['eccube_csv_export_separator'], '"', '\\');
     }
 
-    public function fclose()
+    public function fclose(): void
     {
         if (!$this->closed) {
             fclose($this->fp);
             $this->closed = true;
         }
+        // 次回の出力に前回の設定を持ち越さない.
+        $this->sanitizeFormulas = null;
     }
 
     /**
      * 受注検索用のクエリビルダを返す.
-     *
-     * @param Request $request
-     *
-     * @return QueryBuilder
      */
-    public function getOrderQueryBuilder(Request $request)
+    public function getOrderQueryBuilder(Request $request): QueryBuilder
     {
         $session = $request->getSession();
         $builder = $this->formFactory
@@ -424,12 +313,8 @@ class CsvExportService
 
     /**
      * 会員検索用のクエリビルダを返す.
-     *
-     * @param Request $request
-     *
-     * @return QueryBuilder
      */
-    public function getCustomerQueryBuilder(Request $request)
+    public function getCustomerQueryBuilder(Request $request): QueryBuilder
     {
         $session = $request->getSession();
         $builder = $this->formFactory
@@ -448,12 +333,8 @@ class CsvExportService
 
     /**
      * 商品検索用のクエリビルダを返す.
-     *
-     * @param Request $request
-     *
-     * @return QueryBuilder
      */
-    public function getProductQueryBuilder(Request $request)
+    public function getProductQueryBuilder(Request $request): QueryBuilder
     {
         $session = $request->getSession();
         $builder = $this->formFactory

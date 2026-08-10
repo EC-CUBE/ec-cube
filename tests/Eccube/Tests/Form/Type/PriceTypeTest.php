@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -14,31 +16,25 @@
 namespace Eccube\Tests\Form\Type;
 
 use Eccube\Form\Type\PriceType;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormInterface;
 
-class PriceTypeTest extends AbstractTypeTestCase
+final class PriceTypeTest extends AbstractTypeTestCase
 {
-    /**
-     * @var FormInterface
-     */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /**
      * getValidTestData
      *
      * 正常系のデータパターンを返す
-     *
-     * @return array
      */
-    public function getValidTestData()
+    public static function getValidTestData(): \Iterator
     {
-        return [
-            ['data' => 0],
-            ['data' => 1],
-            ['data' => '0'],
-            ['data' => '1'],
-        ];
+        yield [0];
+        yield [1];
+        yield ['0'];
+        yield ['1'];
     }
 
     protected function setUp(): void
@@ -50,8 +46,9 @@ class PriceTypeTest extends AbstractTypeTestCase
     }
 
     /**
-     * @dataProvider getValidTestData
+     * @param mixed $data
      */
+    #[DataProvider(methodName: 'getValidTestData')]
     public function testValidData($data)
     {
         $this->form->submit($data);
