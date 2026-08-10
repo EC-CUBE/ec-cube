@@ -98,12 +98,12 @@ final readonly class InMemoryUcpPaymentHandler implements UcpPaymentHandlerInter
         return ['gateway_token' => 'tok_test', 'source' => $credential];
     }
 
-    public function authorize(Order $order, array $paymentData): PaymentOutcome
+    public function authorize(Order $order, array $paymentData, array $paymentReference = []): PaymentOutcome
     {
         return PaymentOutcome::completed();
     }
 
-    public function capture(Order $order, array $paymentData): PaymentOutcome
+    public function capture(Order $order, array $paymentData, PaymentOutcome $authorization): PaymentOutcome
     {
         return PaymentOutcome::completed();
     }
@@ -119,12 +119,12 @@ final readonly class InMemoryUcpPaymentHandler implements UcpPaymentHandlerInter
  */
 final readonly class InMemoryNonUcpPaymentHandler implements AgentCheckoutPaymentHandlerInterface
 {
-    public function authorize(Order $order, array $paymentData): PaymentOutcome
+    public function authorize(Order $order, array $paymentData, array $paymentReference = []): PaymentOutcome
     {
         return PaymentOutcome::completed();
     }
 
-    public function capture(Order $order, array $paymentData): PaymentOutcome
+    public function capture(Order $order, array $paymentData, PaymentOutcome $authorization): PaymentOutcome
     {
         return PaymentOutcome::completed();
     }

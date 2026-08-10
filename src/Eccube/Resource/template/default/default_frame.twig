@@ -187,5 +187,8 @@ file that was distributed with this source code.
     {{ include('snippet.twig', { snippets: plugin_snippets }) }}
 {% endif %}
     <script src="{{ asset('assets/js/customize.js', 'user_data') }}"></script>
+{% if site_json_ld is defined and site_json_ld %}
+<script type="application/ld+json">{{ site_json_ld|json_ld }}</script>
+{% endif %}
 </body>
 </html>

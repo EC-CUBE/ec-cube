@@ -1294,6 +1294,7 @@ admin.setting.shop.shop.agent_commerce.ucp_checkout_enabled: "Enable UCP checkou
 admin.setting.shop.shop.mcp: "MCP Server"
 admin.setting.shop.shop.mcp.description: "Enables the MCP server (^/admin/mcp) that lets AI clients (Claude Desktop, Cursor, etc.) read management data. Read-only. Disabled by default; while disabled the endpoint returns 404. Requires the API plugin (api44) enabled with an OAuth2 token issued."
 admin.setting.shop.shop.mcp_enabled: "Enable MCP server"
+admin.setting.shop.shop.order_pdf: "Delivery slip PDF"
 
 #------------------------------------------------------------------------------------
 # Settings：Store Settings：Trade Law Settings
@@ -1861,6 +1862,7 @@ tooltip.setting.shop.shop.email_reply_to: This is the email address by which you
 tooltip.setting.shop.shop.email_return_path: This is the email address by which you will receive a notice when a transmission error occurs in sending emails from your store.
 tooltip.setting.shop.shop.good_traded: Brief descriptions of your products.
 tooltip.setting.shop.shop.message: This will be displayed on storefront. The placement varies according to the design templates.
+tooltip.setting.shop.shop.order_pdf: Items printed in the shop information area of the delivery slip PDF. Among the items turned ON, only those with a value entered are printed.
 tooltip.setting.shop.shop.option_delivery_fee_free_amount: Shipping charge will be waived if a customer purchases more than this amount.
 tooltip.setting.shop.shop.option_delivery_fee_free_quantity: Shipping charge will be waived if a customer purchases more than this quantity.
 tooltip.setting.shop.shop.option_delivery_fee_by_product: If turned on, you can set shipping charge per product.
