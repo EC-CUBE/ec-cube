@@ -17,7 +17,6 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\CheckoutSession;
 use Eccube\Entity\Master\AgentProtocol;
 use Eccube\Entity\Master\CheckoutSessionStatus;
-use Eccube\Entity\Order;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CheckoutSessionRepository;
 use Eccube\Repository\Master\AgentProtocolRepository;

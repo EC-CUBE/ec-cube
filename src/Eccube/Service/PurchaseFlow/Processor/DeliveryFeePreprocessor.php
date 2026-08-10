@@ -23,7 +23,6 @@ use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
-use Eccube\Entity\Shipping;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\DeliveryFeeRepository;
 use Eccube\Repository\TaxRuleRepository;

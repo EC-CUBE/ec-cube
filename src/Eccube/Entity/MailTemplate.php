@@ -184,9 +184,6 @@ class MailTemplate extends AbstractEntity implements \Stringable
         return $this->deletable;
     }
 
-    /**
-     * @return $this
-     */
     public function setDeletable(bool $deletable): static
     {
         $this->deletable = $deletable;

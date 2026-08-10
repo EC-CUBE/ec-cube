@@ -804,9 +804,9 @@ class OrderPdfService extends Fpdi
         $result = $this->getMargins();
 
         // 基準座標を指定する
-        $actualX = is_null($x) ? $result['left'] : $x;
+        $actualX = $x ?? $result['left'];
         $this->SetX($actualX);
-        $actualY = is_null($y) ? $result['top'] : $y;
+        $actualY = $y ?? $result['top'];
         $this->SetY($actualY);
     }
 

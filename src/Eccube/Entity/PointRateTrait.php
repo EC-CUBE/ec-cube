@@ -23,8 +23,6 @@ trait PointRateTrait
 
     /**
      * Set pointRate
-     *
-     * @return $this
      */
     public function setPointRate(?string $pointRate): static
     {

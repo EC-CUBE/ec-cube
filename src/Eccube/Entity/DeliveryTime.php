@@ -105,8 +105,6 @@ class DeliveryTime extends AbstractEntity implements \Stringable
 
     /**
      * Set sort_no.
-     *
-     * @return $this
      */
     public function setSortNo(int $sort_no): static
     {
