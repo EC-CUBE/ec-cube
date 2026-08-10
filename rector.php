@@ -73,14 +73,30 @@ return RectorConfig::configure()
                    __DIR__.'/codeception/_support/Page/Admin/OrderManagePage.php',
                    __DIR__.'/codeception/acceptance/EF06OtherCest.php',
                ],
+               // ContainerGetNameToTypeInTestsRector は $container->get('service.id') の文字列サービスIDを
+               // get(Type::class) へ変換する。クラス名のエイリアスを持たない private サービス
+               // (例: 'doctrine.debug_data_holder', 'event_dispatcher', 'twig', 'session.factory') では
+               // ServiceNotFoundException になるため, それらはサービスIDを変数へ代入して get($serviceId) の
+               // 形にし変換対象から外すこと (ルールは無効化せず変数経由で回避する)。
+               // 既存例: AbstractWebTestCase / MailServiceTest / CartServiceTest / TwigExtensionPass
+               //
                // shopping/order の各購入フローは同じ PurchaseFlow 型の別サービスであり、
                // 型解決(get(PurchaseFlow::class))に置き換えると両者の区別が失われテストが無意味化する
                ContainerGetNameToTypeInTestsRector::class => [
                    __DIR__.'/tests/Eccube/Tests/Service/PurchaseFlow/OrderMemoFlowTest.php',
+                   // private / チャネル別ロガー ('security.firewall.map' / 'monolog.logger.mcp') も
+                   // 型でなく文字列 ID で取得するため FQCN 変換を除外する
+                   __DIR__.'/tests/Eccube/Tests/Service/Mcp/Contract/Api44LifecycleContractTest.php',
+                   __DIR__.'/tests/Eccube/Tests/Service/Mcp/Contract/McpAuditLogIsolationContractTest.php',
                ],
                // 8.3以上で対応可能
                AddTypeToConstRector::class, // [BC]定数に型を追加する PHP 8.3 以降で有効
                RenameMethodRector::class, //addがaddCommandに変換されてしまうため一旦スキップ
+               // EccubeCliToolCommand の description は runtime (ツールの description) で組み立てるため、
+               // #[AsCommand(description:)] へ移せない (属性は定数式のみ)。 このルールをスキップする。
+               CommandConfigureToAttributeRector::class => [
+                   __DIR__.'/src/Eccube/Command/EccubeCliToolCommand.php',
+               ],
            ])
            // 個別にルールを追加する場合はここに記述
            ->withRules([
@@ -90,13 +106,6 @@ return RectorConfig::configure()
                EventSubscriberInterfaceToAttributeRector::class, // Doctrine EventSubscriberをAsDoctrineListenerアトリビュートに変換する
                AttributeArgumentsOrderRector::class, // すべての Attribute の引数をコンストラクタ引数順序に統一する
                NormalizePhpDocArrayGenericSpacingRector::class, // PHPDoc の配列ジェネリクス表記のカンマ後のスペースを統一する
-               // $container->get('service.id') の文字列サービスIDを get(Type::class) へ変換する。
-               // クラス名のエイリアスを持たない private サービス (例: 'doctrine.debug_data_holder',
-               // 'event_dispatcher', 'twig', 'session.factory') では ServiceNotFoundException に
-               // なるため, それらはサービスIDを変数へ代入して get($serviceId) の形にし変換対象から
-               // 外すこと (ルールは無効化せず変数経由で回避する)。
-               // 既存例: AbstractWebTestCase / MailServiceTest / CartServiceTest / TwigExtensionPass
-               ContainerGetNameToTypeInTestsRector::class,
            ])
            // よく使われるルールセットを有効化
            ->withSets([

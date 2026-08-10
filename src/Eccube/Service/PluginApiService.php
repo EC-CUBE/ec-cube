@@ -273,7 +273,7 @@ class PluginApiService
         $info = curl_getinfo($curl);
         $message = curl_error($curl);
         $info['message'] = $message;
-        curl_close($curl);
+        // curl_close() は PHP 8.0 以降なにもせず、8.5 で非推奨になったため呼び出さない
 
         log_info('http get_info', $info);
 

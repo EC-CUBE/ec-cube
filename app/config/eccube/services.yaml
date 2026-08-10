@@ -8,6 +8,9 @@ parameters:
     env(ECCUBE_LOCALE): 'ja'
     env(ECCUBE_TIMEZONE): 'Asia/Tokyo'
     env(ECCUBE_CURRENCY): 'JPY'
+    env(ECCUBE_MCP_ALLOWED_ORIGINS): ''
+    # MCP 監査ログ (mcp.log) の保管日数 (rotating_file の世代数)。 設計 §4.2
+    env(ECCUBE_MCP_LOG_RETENTION_DAYS): '90'
     locale: '%env(ECCUBE_LOCALE)%'
     timezone: '%env(ECCUBE_TIMEZONE)%'
     currency: '%env(ECCUBE_CURRENCY)%'
@@ -32,6 +35,11 @@ services:
           $shoppingPurchaseFlow: '@eccube.purchase.flow.shopping'
           $orderPurchaseFlow: '@eccube.purchase.flow.order'
           $_orderStateMachine: '@state_machine.order'
+          # MCP サーバ用 (path prefix と Origin 許可リスト)
+          $eccubeAdminRoute: '%eccube_admin_route%'
+          $mcpAllowedOriginsCsv: '%env(ECCUBE_MCP_ALLOWED_ORIGINS)%'
+          # 許可リスト未設定時、 dev/test は Origin 検証を skip し prod は検証不能な Origin を拒否する
+          $skipUnvalidatedOrigin: '%kernel.debug%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -39,7 +47,9 @@ services:
         resource: '../../../src/Eccube/*'
         # you can exclude directories or files
         # but if a service is unused, it's removed anyway
-        exclude: '../../../src/Eccube/{Annotation,Common,Entity,Exception,Log,Plugin,ServiceProvider,Resource,Doctrine/ORM/tools/}'
+        # EccubeCliToolCommand は McpCliCommandPass がツールごとに定義を生成するため、 glob からは除外する
+        # (scalar 引数 $toolName を持ち autowire できず、 名前なしの console.command 自動登録も壊れるため)。
+        exclude: '../../../src/Eccube/{Annotation,Common,Entity,Exception,Log,Plugin,ServiceProvider,Resource,Doctrine/ORM/tools/,Rector,Command/EccubeCliToolCommand.php}'
 
     Eccube\Common\EccubeConfig:
         public: true
@@ -231,6 +241,52 @@ services:
 
     Eccube\EventListener\RateLimiterListener:
         arguments: [ !tagged_locator { tag: 'eccube_rate_limiter' } ]
+
+    # MCP: Api44 (ec-cube/api44) の allow_list (`eccube.api.allow_list` タグ) を集約する
+    Eccube\Service\Mcp\AllowListResolver:
+        arguments:
+            $allowLists: !tagged_iterator eccube.api.allow_list
+
+    # MCP: scope 強制層。 $inner (本物の Tool 実行器) は McpScopeEnforcementPass が構築する
+    Eccube\Service\Mcp\ScopeEnforcingReferenceHandler:
+        arguments:
+            $inner: '@eccube.mcp.reference_handler.inner'
+
+    # MCP: tools/list を現トークンの scope で絞る (呼べない Tool を一覧から隠す = 最小権限)。
+    # call 時の fail-closed 拒否は ScopeEnforcingReferenceHandler が担う二重防御。
+    Eccube\Service\Mcp\ScopeFilteringRegistry:
+        decorates: mcp.registry
+        arguments:
+            $inner: '@.inner'
+
+    # MCP: 監査ログとして記録するため、唯一の書き手として設定します。
+    Eccube\Service\Mcp\McpAuditLogger:
+        arguments:
+            $mcpLogger: '@monolog.logger.mcp'
+
+    # MCP: 監査ログ (mcp.log) は 1 レコード 1 JSON で出力する (機械可読・設計 §4.2)
+    eccube.mcp.log.formatter.json:
+        class: Monolog\Formatter\JsonFormatter
+
+    # スロットリング用キャッシュプール(rate_limiter.cache)のバックエンド.
+    # データストレージをファイルから DB へ変更するためのアダプタテンプレート.
+    # framework 標準の cache.adapter.doctrine_dbal(abstract)を継承し, 位置引数 index_3 の
+    # テーブルオプションだけを上書きする. カラム名は Eccube\Entity\RateLimiter
+    # (dtb_rate_limiter)のマッピングと厳密に一致させている.
+    eccube.rate_limiter.dbal_adapter:
+        parent: cache.adapter.doctrine_dbal
+        abstract: true
+        arguments:
+            # index_0 に DBAL 接続を焼き込む. プール設定側で provider を指定すると
+            # test 環境の filesystem プールにも provider がマージで漏れて TypeError に
+            # なるため, ここで接続を渡す.
+            index_0: '@doctrine.dbal.default_connection'
+            index_3:
+                db_table: 'dtb_rate_limiter'
+                db_id_col: 'cache_key'
+                db_data_col: 'cache_data'
+                db_lifetime_col: 'cache_lifetime'
+                db_time_col: 'cache_time'
 
     Eccube\Security\PasswordHasher\PasswordHasher:
         arguments:

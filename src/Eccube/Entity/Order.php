@@ -326,7 +326,9 @@ class Order extends AbstractEntity implements PurchaseInterface, ItemHolderInter
         $orderItemArray = [];
         /** @var OrderItem $ProductOrderItem */
         foreach ($ProductOrderItems as $ProductOrderItem) {
-            $productClassId = $ProductOrderItem->getProductClass()->getId();
+            // 未永続の明細では ID が null になるため、配列キーとして使えるよう文字列化する
+            // (null をキーに使うのは PHP 8.5 で非推奨。null は '' として扱われるため挙動は変わらない)
+            $productClassId = (string) $ProductOrderItem->getProductClass()->getId();
             if (array_key_exists($productClassId, $orderItemArray)) {
                 // 同じ規格の商品がある場合は個数をまとめる
                 $OrderItem = $orderItemArray[$productClassId];
@@ -341,18 +343,6 @@ class Order extends AbstractEntity implements PurchaseInterface, ItemHolderInter
         }
 
         return array_values($orderItemArray);
-    }
-
-    /**
-     * 合計金額を計算
-     *
-     * @deprecated
-     */
-    public function getTotalPrice(): string
-    {
-        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
-
-        return $this->getPaymentTotal();
     }
 
     #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]

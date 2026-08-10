@@ -130,7 +130,8 @@ final class CsvExportServiceTest extends AbstractServiceTestCase
         $fp = fopen($this->url, 'r');
         $File = [];
         if ($fp !== false) {
-            while (($data = fgetcsv($fp)) !== false) {
+            // $escape は PHP 8.4 で明示指定が必須（既定値が変わる予告）。現行の既定値を明示する
+            while (($data = fgetcsv($fp, escape: '\\')) !== false) {
                 $File[] = $data;
             }
             fclose($fp);
