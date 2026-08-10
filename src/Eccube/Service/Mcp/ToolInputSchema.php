@@ -36,9 +36,13 @@ final readonly class ToolInputSchema
     public function __construct(Tool $tool)
     {
         // sdk は引数なしツールの properties を空配列でなく \stdClass に正規化する (Tool::normalizeSchemaProperties)。
-        // inputSchema の PHPDoc は properties: array と宣言するが実体は array|\stdClass なので、 その型で受けて配列化する。
-        /** @var array<string, mixed>|\stdClass $rawProperties */
-        $rawProperties = $tool->inputSchema['properties'] ?? [];
+        // inputSchema の PHPDoc は properties を必須・非 nullable の array と宣言するが実体は
+        // array|\stdClass であり、 キー自体も存在しないことがある。 宣言どおりの array shape のまま扱うと
+        // 下の正規化が「常に成立する冗長なコード」と解析されてしまうため、 素の配列として受け直す。
+        /** @var array<string, mixed> $inputSchema */
+        $inputSchema = $tool->inputSchema;
+
+        $rawProperties = $inputSchema['properties'] ?? [];
         $this->properties = \is_array($rawProperties) ? $rawProperties : [];
 
         // required は上記の正規化対象外で常に配列 (SDK は required の型を変換しない)。
