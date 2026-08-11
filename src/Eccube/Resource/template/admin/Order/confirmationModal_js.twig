@@ -1,85 +1,124 @@
 <script>
-    $(function() {
+    document.addEventListener('DOMContentLoaded', function() {
         var updater;
+
         // モーダルの表示を制御
-        $('#bulkSendMail, .confirmationModal').on('click', function (e) {
-            var modal = $('#sentUpdateModal');
-            var bootstrapModal = new bootstrap.Modal(modal.get(0));
-            bootstrapModal.show();
-            var eventTarget = $(e.currentTarget);
-            var type = eventTarget.data('type');
-            switch (type) {
-                case 'mail':
-                    updater = eventTarget.data('bulk-update') ? new BulkSendMail(modal, eventTarget) : new SimpleSendMail(modal, eventTarget);
-                    $('#notificationMail').attr('type', 'hidden');
-                    $('.notificationMail').hide();
-                    $('#viewEmail').removeClass('collapsed').addClass('collapsed');
-                    ;
-                    break;
-                default:
-                case 'status':
-                    updater = new SimpleStatusUpdate(modal, eventTarget); // bulk-update is always false
-                    $('#notificationMail').attr('type', 'checkbox');
-                    $('.notificationMail').show();
-                    $('#viewEmail').removeClass('collapsed').addClass('collapsed');
-            }
-            $.ajax(updater.getPreviewUrl()).done(function (res) {
-                $('#viewEmail').html(res);
-            });
-            $('.modal-title', modal).text(updater.modalTitle);
-            $('.modal-body > p.modal-message', modal).text(updater.modalMessage);
-            $('#bulkChange')
-                .attr({
-                    'data-bulk-update': eventTarget.data('bulk-update'),
-                    'data-type': eventTarget.data('type'),
-                    'data-update-status-url': eventTarget.data('update-status-url'),
-                    'data-notify-mail-url': eventTarget.data('notify-mail-url'),
-                    'data-update-status-id': eventTarget.data('update-status-id')
-                })
-                .text(updater.modalButton);
-        });
-        // プログレスバーの表示を制御
-        $('#bulkChange, .progressModal').on('click', function (e) {
-            //alert(1119);
-            var eventTarget = $(e.currentTarget);
-            var type = eventTarget.data('type');
-            if (type == 'status' && eventTarget.data('bulk-update') && $('#option_bulk_status').val() === '') {
-                alert('対応状況を選択してください');
-                return;
-            }
-            var modal = $('#sentUpdateModal');
-            var bootstrapModal = new bootstrap.Modal(modal.get(0));
-            bootstrapModal.show();
-            switch (type) {
-                case 'mail':
-                    updater = eventTarget.data('bulk-update') ? new BulkSendMail(modal, eventTarget) : new SimpleSendMail(modal, eventTarget);
-                    break;
-                default:
-                case 'status':
-                    if (eventTarget.data('bulk-update')) {
-                        updater = new BulkStatusUpdate(modal, eventTarget);
-                    } else {
+        document.querySelectorAll('#bulkSendMail, .confirmationModal').forEach(function(el) {
+            el.addEventListener('click', function(e) {
+                var modal = document.getElementById('sentUpdateModal');
+                var bootstrapModal = new bootstrap.Modal(modal);
+                bootstrapModal.show();
+                var eventTarget = e.currentTarget;
+                var type = eventTarget.dataset.type;
+                var isBulk = eventTarget.dataset.bulkUpdate === 'true';
+                switch (type) {
+                    case 'mail':
+                        updater = isBulk ? new BulkSendMail(modal, eventTarget) : new SimpleSendMail(modal, eventTarget);
+                        document.getElementById('notificationMail').type = 'hidden';
+                        document.querySelectorAll('.notificationMail').forEach(function(n) { n.style.display = 'none'; });
+                        var ve = document.getElementById('viewEmail');
+                        ve.classList.remove('collapsed');
+                        ve.classList.add('collapsed');
+                        break;
+                    default:
+                    case 'status':
                         updater = new SimpleStatusUpdate(modal, eventTarget);
-                    }
-            }
-            $('.modal-title', modal).text(updater.modalTitle);
-            $('.modal-body > p.modal-message', modal).text("{{ 'admin.order.bulk_action__in_progress_message'|trans }}");
-            $('button', modal).hide();
-            $('#bulk-options').hide();
-            $('.progress', modal).show();
-            updater.totalCount = updater.getTotalCount();
-            var progress = new $.Deferred();
-            progress.progress(function () {
-                updater.progress(this, progress);
-            }).fail(function () {
-                updater.fail(this);
-            }).always(function () {
-                updater.always(this);
+                        document.getElementById('notificationMail').type = 'checkbox';
+                        document.querySelectorAll('.notificationMail').forEach(function(n) { n.style.display = ''; });
+                        var ve2 = document.getElementById('viewEmail');
+                        ve2.classList.remove('collapsed');
+                        ve2.classList.add('collapsed');
+                }
+                var previewUrl = updater.getPreviewUrl();
+                if (previewUrl) {
+                    window.eccubeFetch(previewUrl).then(function(r) { return r.text(); }).then(function(res) {
+                        document.getElementById('viewEmail').innerHTML = res;
+                    });
+                }
+                modal.querySelector('.modal-title').textContent = updater.modalTitle;
+                modal.querySelector('.modal-body > p.modal-message').textContent = updater.modalMessage;
+                var bulkChange = document.getElementById('bulkChange');
+                bulkChange.dataset.bulkUpdate = eventTarget.dataset.bulkUpdate || '';
+                bulkChange.dataset.type = eventTarget.dataset.type || '';
+                bulkChange.dataset.updateStatusUrl = eventTarget.dataset.updateStatusUrl || '';
+                bulkChange.dataset.notifyMailUrl = eventTarget.dataset.notifyMailUrl || '';
+                bulkChange.dataset.updateStatusId = eventTarget.dataset.updateStatusId || '';
+                bulkChange.textContent = updater.modalButton;
             });
-            updater.getPromises(progress);
         });
 
+        // プログレスバーの表示を制御
+        document.querySelectorAll('#bulkChange, .progressModal').forEach(function(el) {
+            el.addEventListener('click', function(e) {
+                var eventTarget = e.currentTarget;
+                var type = eventTarget.dataset.type;
+                var isBulk = eventTarget.dataset.bulkUpdate === 'true';
+                if (type == 'status' && isBulk && document.getElementById('option_bulk_status').value === '') {
+                    alert('対応状況を選択してください');
+                    return;
+                }
+                var modal = document.getElementById('sentUpdateModal');
+                var bootstrapModal = new bootstrap.Modal(modal);
+                bootstrapModal.show();
+                switch (type) {
+                    case 'mail':
+                        updater = isBulk ? new BulkSendMail(modal, eventTarget) : new SimpleSendMail(modal, eventTarget);
+                        break;
+                    default:
+                    case 'status':
+                        updater = isBulk ? new BulkStatusUpdate(modal, eventTarget) : new SimpleStatusUpdate(modal, eventTarget);
+                }
+                modal.querySelector('.modal-title').textContent = updater.modalTitle;
+                modal.querySelector('.modal-body > p.modal-message').textContent = "{{ 'admin.order.bulk_action__in_progress_message'|trans }}";
+                modal.querySelectorAll('button').forEach(function(b) { b.style.display = 'none'; });
+                document.getElementById('bulk-options').style.display = 'none';
+                modal.querySelector('.progress').style.display = '';
+                updater.totalCount = updater.getTotalCount();
+                var progress = new ProgressDeferred();
+                progress.onProgress(function (result) {
+                    updater.progress(result, progress);
+                }).onFail(function (result) {
+                    updater.fail(result);
+                }).onAlways(function (result) {
+                    updater.always(result);
+                });
+                updater.getPromises(progress);
+            });
+        });
     });
+
+    /*
+     * jQuery $.Deferred の progress/fail/always を最低限模倣する軽量実装
+     */
+    function ProgressDeferred() {
+        this._progressFns = [];
+        this._failFns = [];
+        this._alwaysFns = [];
+        this._state = 'pending';
+        this._lastData = null;
+    }
+    ProgressDeferred.prototype = {
+        onProgress: function (fn) { this._progressFns.push(fn); return this; },
+        onFail: function (fn) { this._failFns.push(fn); return this; },
+        onAlways: function (fn) { this._alwaysFns.push(fn); return this; },
+        notifyWith: function (data) {
+            this._lastData = data;
+            this._progressFns.forEach(function (fn) { fn(data); });
+        },
+        resolve: function () {
+            if (this._state !== 'pending') return;
+            this._state = 'resolved';
+            var data = this._lastData;
+            this._alwaysFns.forEach(function (fn) { fn(data); });
+        },
+        reject: function () {
+            if (this._state !== 'pending') return;
+            this._state = 'rejected';
+            var data = this._lastData;
+            this._failFns.forEach(function (fn) { fn(data); });
+            this._alwaysFns.forEach(function (fn) { fn(data); });
+        }
+    };
 
     /*
      * Super class
@@ -101,41 +140,62 @@
             return 1;
         },
         progress: function (result, progress) {
-            $('.progress-bar', this.modal).css('width', (++this.currentCount / this.totalCount * 100) + '%');
-            if (result['message']) {
-                $('<li><span class="badge bg-warning">NOTICE</span> </li>')
-                    .append($('<span></span>').text(result['message']))
-                    .appendTo('#bulkErrors');
+            this.modal.querySelector('.progress-bar').style.width = (++this.currentCount / this.totalCount * 100) + '%';
+            if (result && result['message']) {
+                var li = document.createElement('li');
+                li.innerHTML = '<span class="badge bg-warning">NOTICE</span> ';
+                var span = document.createElement('span');
+                span.textContent = result['message'];
+                li.appendChild(span);
+                document.getElementById('bulkErrors').appendChild(li);
             }
             if (this.currentCount >= this.totalCount) {
                 progress.resolve();
             }
         },
         fail: function (result) {
-            $('<li><span class="badge bg-danger">ERROR</span> </li>')
-                .append($('<span></span>').text("{{ 'admin.common.system_error'|trans }}"))
-                .appendTo('#bulkErrors');
+            var li = document.createElement('li');
+            li.innerHTML = '<span class="badge bg-danger">ERROR</span> ';
+            var span = document.createElement('span');
+            span.textContent = "{{ 'admin.common.system_error'|trans }}";
+            li.appendChild(span);
+            document.getElementById('bulkErrors').appendChild(li);
         },
         always: function (result) {
-            $('.progress', this.modal).hide();
-            $('.modal-body > p.modal-message', this.modal).text("{{ 'admin.order.bulk_action__complete_message'|trans }}");
-            $('#bulkChangeComplete').show();
+            this.modal.querySelector('.progress').style.display = 'none';
+            this.modal.querySelector('.modal-body > p.modal-message').textContent = "{{ 'admin.order.bulk_action__complete_message'|trans }}";
+            document.getElementById('bulkChangeComplete').style.display = '';
         },
         getPromises: function (progress, url, data) {
             if (data == undefined) {
-                data = {'notificationMail': $('input#notificationMail:checked').val()};
+                var checked = document.querySelector('input#notificationMail:checked');
+                data = {'notificationMail': checked ? checked.value : ''};
             }
-            return $.ajax({
-                'url': url,
-                'type': 'PUT',
-                'data': data
-            })
-                .fail(function () {
-                    progress.reject();
-                    ConfirmationModal.prototype.fail.call(this);
+            var body = new URLSearchParams();
+            for (var key in data) {
+                if (data.hasOwnProperty(key) && data[key] !== undefined && data[key] !== null) {
+                    body.append(key, data[key]);
+                }
+            }
+            var self = this;
+            return window.eccubeFetch(url, { method: 'PUT', body: body })
+                .then(function (response) {
+                    return response.text().then(function (text) {
+                        var json = null;
+                        try { json = text ? JSON.parse(text) : null; } catch (e) {}
+                        if (!response.ok) {
+                            throw { response: response, body: json };
+                        }
+                        return json;
+                    });
                 })
-                .always(function (data) {
+                .then(function (data) {
                     progress.notifyWith(data);
+                    return data;
+                }).catch(function (err) {
+                    // 失敗しても進捗カウンタは進める. でないと resolve に到達せずモーダルがハングする.
+                    progress.notifyWith(null);
+                    ConfirmationModal.prototype.fail.call(self, err);
                 });
         }
     };
@@ -146,7 +206,6 @@
         ConfirmationModal.call(this, modal);
         this.eventTarget = eventTarget;
     }
-    // extend super class
     BulkStatusUpdate.prototype = Object.create(ConfirmationModal.prototype, {
         constructor: {
             value: ConfirmationModal
@@ -156,31 +215,30 @@
         },
         getTotalCount: {
             value: function () {
-                return $('input[data-id]:checked').length;
+                return document.querySelectorAll('input[data-id]:checked').length;
             }
         },
         getPromises: {
             value: function (progress) {
                 var statuses = [];
-                $('input[data-id]:checked').each(function () {
+                document.querySelectorAll('input[data-id]:checked').forEach(function (input) {
                     statuses.push({
-                        'url': $(this).data('update-status-url'),
-                        'data': {'order_status': $('#option_bulk_status').val()}
+                        'url': input.dataset.updateStatusUrl,
+                        'data': {'order_status': document.getElementById('option_bulk_status').value}
                     });
                 });
+                var self = this;
                 // ポイントや在庫の加算・減算は非同期で実行できないため、同期処理で実行
                 var callback = function () {
                     var status = statuses.shift();
-                    var url = status.url;
-                    var data = status.data;
-
-                    ConfirmationModal.prototype.getPromises.call(this, progress, url, data)
-                        .done(function () {
+                    if (!status) return;
+                    ConfirmationModal.prototype.getPromises.call(self, progress, status.url, status.data)
+                        .then(function () {
                             if (statuses.length) {
                                 callback();
                             }
-                        })
-                }
+                        });
+                };
                 callback();
             }
         }
@@ -193,19 +251,18 @@
         this.eventTarget = eventTarget;
         this.notifierCompleteMessage = '';
     }
-    // extend super class
     SimpleStatusUpdate.prototype = Object.create(ConfirmationModal.prototype, {
         constructor: {
             value: ConfirmationModal
         },
         getPreviewUrl: {
             value: function () {
-                return this.eventTarget.data('preview-notify-mail-url');
+                return this.eventTarget.dataset.previewNotifyMailUrl;
             }
         },
         progress: {
             value: function (result, progress) {
-                if (result.mail) {
+                if (result && result.mail) {
                     this.mailCount++;
                     this.notifierCompleteMessage = '{{ 'admin.order.shipping_mail_send__complete_message'|trans }}'.replace(/%count%/, this.mailCount);
                 }
@@ -215,15 +272,16 @@
         always: {
             value: function (result) {
                 ConfirmationModal.prototype.always.call(this, result);
-                $('.modal-body > p.modal-message', this.modal).text("{{ 'admin.order.bulk_action__complete_message'|trans }}" + this.notifierCompleteMessage);
+                this.modal.querySelector('.modal-body > p.modal-message').textContent = "{{ 'admin.order.bulk_action__complete_message'|trans }}" + this.notifierCompleteMessage;
             }
         },
         getPromises: {
             value: function (progress) {
-                var url = this.eventTarget.data('update-status-url');
+                var url = this.eventTarget.dataset.updateStatusUrl;
+                var checked = document.querySelector('input#notificationMail:checked');
                 var data = {
-                    'order_status': this.eventTarget.data('update-status-id'),
-                    'notificationMail': $('input#notificationMail:checked').val()
+                    'order_status': this.eventTarget.dataset.updateStatusId,
+                    'notificationMail': checked ? checked.value : ''
                 };
                 return ConfirmationModal.prototype.getPromises.call(this, progress, url, data);
             }
@@ -235,7 +293,6 @@
     function BulkSendMail(modal) {
         SimpleStatusUpdate.call(this, modal);
     }
-    // extend BulkUpdate
     BulkSendMail.prototype = Object.create(SimpleStatusUpdate.prototype, {
         constructor: {
             value: SimpleStatusUpdate
@@ -251,20 +308,34 @@
         },
         getPreviewUrl: {
             value: function () {
-                return $('input[data-preview-notify-mail-url]:checked').data('preview-notify-mail-url');
+                var checked = document.querySelector('input[data-preview-notify-mail-url]:checked');
+                return checked ? checked.dataset.previewNotifyMailUrl : null;
             }
         },
         getTotalCount: {
             value: function () {
-                return $('input[data-preview-notify-mail-url]:checked').length;
+                return document.querySelectorAll('input[data-preview-notify-mail-url]:checked').length;
             }
         },
         getPromises: {
             value: function (progress) {
-                return $('input[data-notify-mail-url]:checked').map(function () {
-                    var url = $(this).data('notify-mail-url');
-                    return ConfirmationModal.prototype.getPromises.call(this, progress, url);
+                var urls = [];
+                document.querySelectorAll('input[data-notify-mail-url]:checked').forEach(function (input) {
+                    urls.push(input.dataset.notifyMailUrl);
                 });
+                var self = this;
+                // メール送信は SMTP の同時接続を避けるため, BulkStatusUpdate と同様に順次実行する
+                var callback = function () {
+                    var url = urls.shift();
+                    if (!url) return;
+                    ConfirmationModal.prototype.getPromises.call(self, progress, url)
+                        .then(function () {
+                            if (urls.length) {
+                                callback();
+                            }
+                        });
+                };
+                callback();
             }
         }
     });
@@ -274,7 +345,6 @@
     function SimpleSendMail(modal, relatedTarget) {
         SimpleStatusUpdate.call(this, modal, relatedTarget);
     }
-    // extends SimpleUpdate
     SimpleSendMail.prototype = Object.create(SimpleStatusUpdate.prototype, {
         constructor: {
             value: SimpleStatusUpdate
@@ -290,7 +360,7 @@
         },
         getPromises: {
             value: function (progress) {
-                var url = this.eventTarget.data('notify-mail-url');
+                var url = this.eventTarget.dataset.notifyMailUrl;
                 return ConfirmationModal.prototype.getPromises.call(this, progress, url);
             }
         }

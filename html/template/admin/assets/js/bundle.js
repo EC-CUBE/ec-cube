@@ -17,7 +17,8 @@ const acePath = new URL('ace/', bundleSrc).href;
 // ace/snippets/foo が ace/foo.js に解決されて逆に壊れる (未設定なら basePath へフォールバックする)。
 ['basePath', 'modePath', 'themePath', 'workerPath'].forEach((key) => window.ace.config.set(key, acePath));
 
-require('jquery.qrcode');
+const qrcode = require('qrcode-generator');
+global.qrcode = qrcode;
 
 require('jquery-ui/themes/base/all.css');
 // jQuery UI の各モジュールは UMD の AMD 分岐で内部依存を解決しているが、
@@ -35,6 +36,9 @@ require('jquery-ui/ui/widgets/sortable');
 require('jquery-ui/ui/keycode');
 require('jquery-ui/ui/unique-id');
 require('jquery-ui/ui/widgets/tooltip');
+
+const SortableModule = require('sortablejs');
+global.Sortable = SortableModule.Sortable || SortableModule.default || SortableModule;
 
 const {
     Chart,

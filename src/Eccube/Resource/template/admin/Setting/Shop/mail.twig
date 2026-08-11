@@ -19,30 +19,35 @@ file that was distributed with this source code.
 
 {% block stylesheet %}
     <style>
-        .ui-resizable-se {
-            right: -3px;
-            bottom: -3px;
+        #editor, #html_editor {
+            resize: vertical;
+            overflow: auto;
+            min-height: 200px;
         }
     </style>
 {% endblock %}
 
 {% block javascript %}
     <script>
-        $(function() {
-
-            $(window).on('pageshow', function() {
-                var tmp_select =  $('#mail_template[name="mail[template]"] option[selected]').val();
-                $('#mail_template[name="mail[template]"]').val(tmp_select);
+        document.addEventListener('DOMContentLoaded', function() {
+            window.addEventListener('pageshow', function() {
+                var sel = document.querySelector('#mail_template[name="mail[template]"]');
+                if (!sel) return;
+                var selected = sel.querySelector('option[selected]');
+                if (selected) sel.value = selected.value;
             });
 
-            $('#mail_template').on('change', function() {
-                var id = $(this).val()
-                if (id) {
-                    location.href = '{{ url('admin_setting_shop_mail') }}/' + id;
-                } else {
-                    location.href = '{{ url('admin_setting_shop_mail') }}';
-                }
-            });
+            var mailTemplate = document.getElementById('mail_template');
+            if (mailTemplate) {
+                mailTemplate.addEventListener('change', function() {
+                    var id = this.value;
+                    if (id) {
+                        location.href = '{{ url('admin_setting_shop_mail') }}/' + id;
+                    } else {
+                        location.href = '{{ url('admin_setting_shop_mail') }}';
+                    }
+                });
+            }
 
             ace.require('ace/ext/language_tools');
             var editor = ace.edit('editor');
@@ -67,54 +72,69 @@ file that was distributed with this source code.
                 showInvisibles: true
             });
 
-            $("#editor").resizable({
-                resize: function (event, ui) {
-                    editor.resize();
-                }
-            });
+            // CSS resize: vertical で発生するサイズ変更を Ace に通知
+            if (typeof ResizeObserver !== 'undefined') {
+                var editorEl = document.getElementById('editor');
+                var htmlEditorEl = document.getElementById('html_editor');
+                var resizeObserver = new ResizeObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.target === editorEl) editor.resize();
+                        if (entry.target === htmlEditorEl) html_editor.resize();
+                    });
+                });
+                if (editorEl) resizeObserver.observe(editorEl);
+                if (htmlEditorEl) resizeObserver.observe(htmlEditorEl);
+            }
 
-            $("#html_editor").resizable({
-                resize: function (event, ui) {
-                    editor.resize();
-                }
-            });
+            var form1 = document.getElementById('form1');
+            if (form1) {
+                form1.addEventListener('submit', function() {
+                    var tpl = document.getElementById('mail_tpl_data');
+                    if (tpl) tpl.value = editor.getValue();
+                    var htmlTpl = document.getElementById('mail_html_tpl_data');
+                    if (htmlTpl) htmlTpl.value = html_editor.getValue();
+                });
+            }
 
-            $('#form1').on('submit', function() {
-                $('#mail_tpl_data').val(editor.getValue());
-                $('#mail_html_tpl_data').val(html_editor.getValue());
-            });
+            var htmlPreviewModal = document.getElementById('htmlPreviewModal');
+            if (htmlPreviewModal) {
+                htmlPreviewModal.addEventListener('show.bs.modal', function() {
+                    var view = document.getElementById('viewEmail');
+                    if (view) view.innerHTML = '';
 
-            // HTMLメールモーダル表示
-            $('#htmlPreviewModal').on('show.bs.modal', function (event) {
-                var html = $('#viewEmail');
-                html.children().remove();
+                    var body = new URLSearchParams();
+                    body.append('html_body', html_editor.getValue());
 
-                // HTMLを読み込んでモーダルに表示
-                $.ajax({
-                    type: 'POST',
-                    dataType: 'html',
-                    data: {
-                        'html_body' : html_editor.getValue(),
-                    },
-                    url: '{{ url('admin_setting_shop_mail_preview') }}',
-                    success: function(data) {
-                        // モーダルに結果を書き出し.
-                        $('#viewEmail').html(data);
-                    },
-                    error: function() {
+                    window.eccubeFetch('{{ url('admin_setting_shop_mail_preview') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+                            'Accept': 'text/html'
+                        },
+                        body: body
+                    }).then(function(res) {
+                        if (!res.ok) throw new Error('HTTP ' + res.status);
+                        return res.text();
+                    }).then(function(data) {
+                        var v = document.getElementById('viewEmail');
+                        if (v) v.innerHTML = data;
+                    }).catch(function() {
                         alert('preview html mail failed.');
+                    });
+                });
+            }
+
+            document.querySelectorAll('a[data-bs-toggle="tab"]').forEach(function(tab) {
+                tab.addEventListener('shown.bs.tab', function(e) {
+                    var id = e.target.id;
+                    var btn = document.getElementById('preview_button');
+                    if (!btn) return;
+                    if (id == 'menu__{{ form.html_tpl_data.vars.id }}') {
+                        btn.setAttribute('style', 'display:blocked;');
+                    } else {
+                        btn.setAttribute('style', 'display:none;');
                     }
                 });
-            });
-
-            $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
-                var activated_tab = e.target;
-                var id = $(activated_tab).attr('id');
-                if (id == 'menu__{{ form.html_tpl_data.vars.id }}') {
-                    $('#preview_button').attr('style', 'display:blocked;');
-                } else {
-                    $('#preview_button').attr('style', 'display:none;');
-                }
             });
         });
     </script>

@@ -89,6 +89,19 @@ file that was distributed with this source code.
             height: 0;
         }
 
+        .item_visual {
+            /* 旧 Slick の構造 (.slick-list / .slick-track) が確保していた main visual 下の余白を復元 */
+            margin-bottom: 30px;
+        }
+
+        .item_visual .slide-item {
+            display: none;
+        }
+
+        .item_visual .slide-item.is-active {
+            display: block;
+        }
+
     </style>
 {% endblock %}
 
@@ -98,154 +111,197 @@ file that was distributed with this source code.
 
         // 規格2に選択肢を割り当てる。
         function fnSetClassCategories(form, classcat_id2_selected) {
-            var $form = $(form);
-            var product_id = $form.find('input[name=product_id]').val();
-            var $sele1 = $form.find('select[name=classcategory_id1]');
-            var $sele2 = $form.find('select[name=classcategory_id2]');
-            eccube.setClassCategories($form, product_id, $sele1, $sele2, classcat_id2_selected);
+            var formEl = form && form.jquery ? form[0] : form;
+            var productIdInput = formEl.querySelector('input[name=product_id]');
+            var product_id = productIdInput ? productIdInput.value : null;
+            var sele1 = formEl.querySelector('select[name=classcategory_id1]');
+            var sele2 = formEl.querySelector('select[name=classcategory_id2]');
+            eccube.setClassCategories(formEl, product_id, sele1, sele2, classcat_id2_selected);
         }
 
         {% if form.classcategory_id2 is defined %}
         fnSetClassCategories(
-            $('#form1'), {{ form.classcategory_id2.vars.value|json_encode_safe }}
+            document.getElementById('form1'), {{ form.classcategory_id2.vars.value|json_encode_safe }}
         );
         {% elseif form.classcategory_id1 is defined %}
-        eccube.checkStock($('#form1'), {{ Product.id }}, {{ form.classcategory_id1.vars.value|json_encode_safe }}, null);
+        eccube.checkStock(document.getElementById('form1'), {{ Product.id }}, {{ form.classcategory_id1.vars.value|json_encode_safe }}, null);
         {% endif %}
     </script>
     <script>
-        $(function() {
+        document.addEventListener('DOMContentLoaded', function() {
             // bfcache無効化
-            $(window).bind('pageshow', function(event) {
-                if (event.originalEvent.persisted) {
-                    location.reload(true);
+            window.addEventListener('pageshow', function(event) {
+                if (event.persisted) {
+                    location.reload();
                 }
             });
 
-            // Core Web Vital の Cumulative Layout Shift(CLS)対策のため
-            // img タグに width, height が付与されている.
-            // 630px 未満の画面サイズでは縦横比が壊れるための対策
-            // see https://github.com/EC-CUBE/ec-cube/pull/5023
-            $('.ec-grid2__cell').hide();
-            var removeSize = function () {
-                $('.slide-item').height('');
-                $('.slide-item img')
-                    .removeAttr('width')
-                    .removeAttr('height')
-                    .removeAttr('style');
-            };
-            var slickInitial = function(slick) {
-                $('.ec-grid2__cell').fadeIn(1500);
-                var baseHeight = $(slick.target).height();
-                var baseWidth = $(slick.target).width();
-                var rate = baseWidth / baseHeight;
+            // 商品画像ギャラリー
+            // Core Web Vital の Cumulative Layout Shift(CLS)対策として、
+            // 画像には width/height 属性を付与してある（これは slick を外した後もそのまま有効）
+            var visual = document.querySelector('.item_visual');
+            if (visual) {
+                var slides = visual.querySelectorAll('.slide-item');
+                var thumbs = document.querySelectorAll('.slideThumb');
+                if (slides.length > 0) {
+                    slides[0].classList.add('is-active');
+                }
 
-                $('.slide-item').height(baseHeight * rate); // 余白を削除する
-                // transform を使用することでCLSの影響を受けないようにする
-                $('.slide-item img')
-                    .css(
-                        {
-                            'transform-origin': 'top left',
-                            'transform': 'scaleY(' + rate + ')',
-                            'transition': 'transform .1s'
+                function selectSlide(index) {
+                    if (index < 0 || index >= slides.length) return;
+                    slides.forEach(function(slide, i) {
+                        slide.classList.toggle('is-active', i === index);
+                    });
+                    thumbs.forEach(function(thumb, i) {
+                        if (i === index) {
+                            thumb.setAttribute('aria-current', 'true');
+                        } else {
+                            thumb.removeAttribute('aria-current');
                         }
-                    );
-                // 正しいサイズに近くなったら属性を解除する
-                setTimeout(removeSize, 500);
-            };
-            $('.item_visual').on('init', slickInitial);
-            // リサイズ時は CLS の影響を受けないため属性を解除する
-            $(window).resize(removeSize);
-            $('.item_visual').slick({
-                dots: false,
-                arrows: false,
-                responsive: [{
-                    breakpoint: 768,
-                    settings: {
-                        dots: true
-                    }
-                }]
-            });
+                    });
+                }
 
-            $('.slideThumb').on('click', function() {
-                var index = $(this).attr('data-index');
-                $('.item_visual').slick('slickGoTo', index, false);
-            })
+                thumbs.forEach(function(thumb, idx) {
+                    // Slick が提供していたキーボード操作を vanilla 実装でも担保する.
+                    thumb.setAttribute('role', 'button');
+                    thumb.setAttribute('tabindex', '0');
+                    if (idx === 0) {
+                        thumb.setAttribute('aria-current', 'true');
+                    }
+                    thumb.addEventListener('click', function() {
+                        var index = parseInt(thumb.getAttribute('data-index'), 10);
+                        if (Number.isNaN(index)) return;
+                        selectSlide(index);
+                    });
+                    thumb.addEventListener('keydown', function(e) {
+                        var key = e.key;
+                        var index = parseInt(thumb.getAttribute('data-index'), 10);
+                        if (Number.isNaN(index)) return;
+                        if (key === 'Enter' || key === ' ' || key === 'Spacebar') {
+                            e.preventDefault();
+                            selectSlide(index);
+                        } else if (key === 'ArrowRight' || key === 'ArrowDown') {
+                            e.preventDefault();
+                            var next = (index + 1) % slides.length;
+                            selectSlide(next);
+                            if (thumbs[next]) thumbs[next].focus();
+                        } else if (key === 'ArrowLeft' || key === 'ArrowUp') {
+                            e.preventDefault();
+                            var prev = (index - 1 + slides.length) % slides.length;
+                            selectSlide(prev);
+                            if (thumbs[prev]) thumbs[prev].focus();
+                        }
+                    });
+                });
+            }
         });
     </script>
     <script>
-        $(function() {
-            $('.add-cart').on('click', function(event) {
-                {% if form.classcategory_id1 is defined %}
-                // 規格1フォームの必須チェック
-                if ($('#classcategory_id1').val() == '__unselected' || $('#classcategory_id1').val() == '') {
-                    $('#classcategory_id1')[0].setCustomValidity('{{ 'front.product.product_class_unselected'|trans }}');
-                    return true;
-                } else {
-                    $('#classcategory_id1')[0].setCustomValidity('');
-                }
-                {% endif %}
-
-                {% if form.classcategory_id2 is defined %}
-                // 規格2フォームの必須チェック
-                if ($('#classcategory_id2').val() == '__unselected' || $('#classcategory_id2').val() == '') {
-                    $('#classcategory_id2')[0].setCustomValidity('{{ 'front.product.product_class_unselected'|trans }}');
-                    return true;
-                } else {
-                    $('#classcategory_id2')[0].setCustomValidity('');
-                }
-                {% endif %}
-
-                // 個数フォームのチェック
-                if ($('#quantity').val() < 1) {
-                    $('#quantity')[0].setCustomValidity('{{ 'front.product.invalid_quantity'|trans }}');
-                    return true;
-                } else {
-                    $('#quantity')[0].setCustomValidity('');
-                }
-
-                event.preventDefault();
-                $form = $('#form1');
-                $.ajax({
-                    url: $form.attr('action'),
-                    type: $form.attr('method'),
-                    data: $form.serialize(),
-                    dataType: 'json',
-                    beforeSend: function(xhr, settings) {
-                        // Buttonを無効にする
-                        $('.add-cart').prop('disabled', true);
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.add-cart').forEach(function(btn) {
+                btn.addEventListener('click', function(event) {
+                    {% if form.classcategory_id1 is defined %}
+                    // 規格1フォームの必須チェック
+                    var cat1 = document.getElementById('classcategory_id1');
+                    if (cat1 && (cat1.value == '__unselected' || cat1.value == '')) {
+                        cat1.setCustomValidity('{{ 'front.product.product_class_unselected'|trans }}');
+                        return true;
+                    } else if (cat1) {
+                        cat1.setCustomValidity('');
                     }
-                }).done(function(data) {
-                    // レスポンス内のメッセージをalertで表示
-                    $.each(data.messages, function() {
-                        $('#ec-modal-header').text(this);
-                    });
+                    {% endif %}
 
-                    $('.ec-modal').show()
+                    {% if form.classcategory_id2 is defined %}
+                    // 規格2フォームの必須チェック
+                    var cat2 = document.getElementById('classcategory_id2');
+                    if (cat2 && (cat2.value == '__unselected' || cat2.value == '')) {
+                        cat2.setCustomValidity('{{ 'front.product.product_class_unselected'|trans }}');
+                        return true;
+                    } else if (cat2) {
+                        cat2.setCustomValidity('');
+                    }
+                    {% endif %}
 
-                    // カートブロックを更新する
-                    $.ajax({
-                        url: "{{ url('block_cart') }}",
-                        type: 'GET',
-                        dataType: 'html'
-                    }).done(function(html) {
-                        $('.ec-headerRole__cart').html(html);
+                    // 個数フォームのチェック
+                    var quantity = document.getElementById('quantity');
+                    if (quantity && Number(quantity.value) < 1) {
+                        quantity.setCustomValidity('{{ 'front.product.invalid_quantity'|trans }}');
+                        return true;
+                    } else if (quantity) {
+                        quantity.setCustomValidity('');
+                    }
+
+                    event.preventDefault();
+
+                    var form = document.getElementById('form1');
+                    if (!form) {
+                        return;
+                    }
+                    var addCartButtons = document.querySelectorAll('.add-cart');
+                    addCartButtons.forEach(function(b) { b.disabled = true; });
+
+                    var csrfMeta = document.querySelector('meta[name="eccube-csrf-token"]');
+                    var csrfToken = csrfMeta ? csrfMeta.content : '';
+
+                    fetch(form.getAttribute('action'), {
+                        method: (form.getAttribute('method') || 'POST').toUpperCase(),
+                        headers: {
+                            'Accept': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'ECCUBE-CSRF-TOKEN': csrfToken
+                        },
+                        body: new FormData(form)
+                    }).then(function(response) {
+                        if (!response.ok) {
+                            throw new Error('http error');
+                        }
+                        return response.json();
+                    }).then(function(data) {
+                        var modalHeader = document.getElementById('ec-modal-header');
+                        if (modalHeader && data.messages) {
+                            data.messages.forEach(function(msg) {
+                                modalHeader.textContent = msg;
+                            });
+                        }
+                        var modal = document.querySelector('.ec-modal');
+                        if (modal) {
+                            modal.style.display = 'block';
+                        }
+
+                        // カートブロックを更新する
+                        return fetch('{{ url('block_cart') }}', {
+                            headers: {
+                                'Accept': 'text/html',
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'ECCUBE-CSRF-TOKEN': csrfToken
+                            }
+                        }).then(function(r) { return r.text(); }).then(function(html) {
+                            var cart = document.querySelector('.ec-headerRole__cart');
+                            if (cart) {
+                                cart.innerHTML = html;
+                            }
+                        });
+                    }).catch(function() {
+                        alert('{{ 'front.product.add_cart_error'|trans }}');
+                    }).finally(function() {
+                        addCartButtons.forEach(function(b) { b.disabled = false; });
                     });
-                }).fail(function(data) {
-                    alert('{{ 'front.product.add_cart_error'|trans }}');
-                }).always(function(data) {
-                    // Buttonを有効にする
-                    $('.add-cart').prop('disabled', false);
                 });
             });
-        });
 
-        $('.ec-modal-wrap').on('click', function(e) {
-            // モーダル内の処理は外側にバブリングさせない
-            e.stopPropagation();
-        });
-        $('.ec-modal-overlay, .ec-modal, .ec-modal-close, .ec-inlineBtn--cancel').on('click', function() {
-            $('.ec-modal').hide()
+            document.querySelectorAll('.ec-modal-wrap').forEach(function(wrap) {
+                // モーダル内の処理は外側にバブリングさせない
+                wrap.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            });
+            document.querySelectorAll('.ec-modal-overlay, .ec-modal, .ec-modal-close, .ec-inlineBtn--cancel').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    document.querySelectorAll('.ec-modal').forEach(function(m) {
+                        m.style.display = 'none';
+                    });
+                });
+            });
         });
     </script>
     {% if product_json_ld is defined and product_json_ld %}

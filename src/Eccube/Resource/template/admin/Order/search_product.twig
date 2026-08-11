@@ -18,121 +18,90 @@ file that was distributed with this source code.
 
     // 規格1が選択された際に, 規格2のプルダウンリストを設定する,
     function fnSetClassCategory2(select, product_id) {
-        // 規格1の要素を取得
-        var $sele1 = $(select);
-        // 規格2の要素を取得
-        var $sele2 = $sele1.parents(".align-middle").find('select[name=classcategory_id2]');
+        var sele1 = select;
+        var sele2 = sele1.closest('.align-middle').querySelector('select[name=classcategory_id2]');
+        var classcat_id1 = sele1.value ? sele1.value : '';
 
-        // 規格1の選択肢
-        var classcat_id1 = $sele1.val() ? $sele1.val() : '';
-
-        // 規格2がある場合は選択肢を書き換える
-        if ($sele2 && $sele2.length) {
-            // 規格2の選択肢をクリア
-            $sele2.children().remove();
+        if (sele2) {
+            sele2.innerHTML = '';
             var classcat2 = productsClassCategories[product_id][classcat_id1];
-
-            // 規格2の要素を設定
             for (var key in classcat2) {
                 if (classcat2.hasOwnProperty(key)) {
                     var id = classcat2[key].classcategory_id2;
                     var name = classcat2[key].name;
-                    var option = $('<option />').val(id ? id : '').text(name);
-                    $sele2.append(option);
+                    var option = document.createElement('option');
+                    option.value = id ? id : '';
+                    option.textContent = name;
+                    sele2.appendChild(option);
                 }
             }
         }
     }
 
     // 受注明細行を追加する.
-    function fnAddOrderItem($row, product_id, type, product_name) {
-        // 規格1の要素を取得
-        var $sele1 = $row.find('select[name=classcategory_id1]');
-        // 規格2の要素を取得
-        var $sele2 = $row.find('select[name=classcategory_id2]');
+    function fnAddOrderItem(row, product_id, type, product_name) {
+        var sele1 = row.querySelector('select[name=classcategory_id1]');
+        var sele2 = row.querySelector('select[name=classcategory_id2]');
 
         var product_class_id = null;
         var price = 0;
         var quantity = 1;
 
-        // 規格なし商品の場合
-        if (!$sele1.length && !$sele2.length) {
+        if (!sele1 && !sele2) {
             var product = productsClassCategories[product_id]['__unselected2']['#'];
             product_class_id = product['product_class_id'];
             price = product['price02'];
-            // 規格が登録されている商品の場合
-        } else if ($sele1.length) {
-            if ($sele2.length) {
-                var class_category_id1 = $sele1.val();
-                var class_cateogry_id2 = $sele2.val();
+        } else if (sele1) {
+            if (sele2) {
+                var class_category_id1 = sele1.value;
+                var class_cateogry_id2 = sele2.value;
                 if (class_category_id1 == '__unselected' || !class_cateogry_id2) {
                     alert('{{'admin.product.unselected_class'|trans}}');
                     return;
                 }
                 var product = productsClassCategories[product_id][class_category_id1]['#' + class_cateogry_id2];
-
                 product_class_id = product['product_class_id'];
                 price = product['price02'];
             } else {
-                var class_category_id1 = $sele1.val();
+                var class_category_id1 = sele1.value;
                 if (class_category_id1 == '__unselected') {
                     alert('{{ 'admin.product.unselected_class'|trans }}');
                     return;
                 }
                 var product = productsClassCategories[product_id][class_category_id1]['#'];
-
                 product_class_id = product['product_class_id'];
                 price = product['price02'];
             }
         }
 
-        // 既存の受注明細のポイント付与率を取得する. 取得できない場合は店舗基本情報の付与率を設定する.
-        var point_rate = $('input[type=hidden][id$=point_rate]').first().val();
+        var pointRateInput = document.querySelector('input[type=hidden][id$=point_rate]');
+        var point_rate = pointRateInput ? pointRateInput.value : undefined;
         if (point_rate === undefined) {
             point_rate = '{{ BaseInfo.basic_point_rate }}';
         }
 
-        var prototype = $collectionHolder.data('prototype');
+        var prototype = $collectionHolder.dataset.prototype;
         index++;
         var newForm = prototype.replace(/__name__/g, index);
-        $collectionHolder.children('tbody').append(newForm);
-        var $lastRow = $collectionHolder.children('tbody').children('tr').last();
+        $collectionHolder.querySelector('tbody').insertAdjacentHTML('beforeend', newForm);
+        var lastRow = $collectionHolder.querySelector('tbody tr:last-child');
 
-        $($lastRow).find(formIdPrefix + index + '_ProductClass').val(product_class_id);
-        $($lastRow).find(formIdPrefix + index + '_price').val(price);
-        $($lastRow).find(formIdPrefix + index + '_quantity').val(quantity);
-        $($lastRow).find(formIdPrefix + index + '_order_item_type').val(type);
-        $($lastRow).find(formIdPrefix + index + '_product_name').val(product_name);
-        $($lastRow).find(formIdPrefix + index + '_point_rate').val(point_rate);
+        lastRow.querySelector(formIdPrefix + index + '_ProductClass').value = product_class_id;
+        lastRow.querySelector(formIdPrefix + index + '_price').value = price;
+        lastRow.querySelector(formIdPrefix + index + '_quantity').value = quantity;
+        lastRow.querySelector(formIdPrefix + index + '_order_item_type').value = type;
+        lastRow.querySelector(formIdPrefix + index + '_product_name').value = product_name;
+        lastRow.querySelector(formIdPrefix + index + '_point_rate').value = point_rate;
 
-        // モーダル閉じる.
-        $('#searchProductModal').modal('hide');
-
-        // 再計算のためsubmit.
-        $('#form1').submit();
+        bootstrap.Modal.getInstance(document.getElementById('addProduct'))?.hide();
+        document.getElementById('form1').submit();
 
         return false;
     }
 
-    // 商品検索
-    $('#product_pagination a').on('click', function(event) {
-        if (!$(this).parent().is('.active')) {
-            var list = $('#searchProductModalList');
-            list.children().remove();
-
-            $.ajax({
-                url: $(this).attr('href'),
-                type: 'GET',
-                dataType: 'html'
-            }).done(function(data) {
-                $('#searchProductModalList').html(data);
-            }).fail(function(data) {
-                alert('search product failed.');
-            });
-        }
-
-        event.preventDefault();
-    });
+    // ページネーション (#searchProductModalList の click) は親テンプレ (edit.twig / shipping.twig)
+    // の document delegate で処理する. ここで直バインドすると innerHTML 差替え後にハンドラが
+    // 失われるためバインドしない.
 </script>
 
 
@@ -183,7 +152,7 @@ file that was distributed with this source code.
                 </td>
                 {% if Product.stock_find %}
                     <td class="align-middle pe-3 text-end">
-                        <button type="button" class="btn btn-ec-actionIcon" onclick="fnAddOrderItem($(this).parent().parent(), {{ Product.id }}, {{ constant('Eccube\\Entity\\Master\\OrderItemType::PRODUCT') }}, '{{ Product.name|escape('js') }}')" name="mode" value="modal">
+                        <button type="button" class="btn btn-ec-actionIcon" onclick="fnAddOrderItem(this.closest('tr'), {{ Product.id }}, {{ constant('Eccube\\Entity\\Master\\OrderItemType::PRODUCT') }}, '{{ Product.name|escape('js') }}')" name="mode" value="modal">
                             <i class="fa fa-plus fa-lg fw-bold text-secondary"></i>
                         </button>
                     </td>

@@ -87,17 +87,81 @@ file that was distributed with this source code.
             width: 0;
             height: 0;
         }
+
+        .main_visual .item {
+            display: none;
+        }
+
+        .main_visual .item.is-active {
+            display: block;
+        }
     </style>
 {% endblock %}
 
 {% block javascript %}
     <script>
-        $(function() {
-            $('.main_visual').slick({
-                dots: true,
-                arrows: false,
-                autoplay: true,
-                speed: 300
+        document.addEventListener('DOMContentLoaded', function() {
+            var root = document.querySelector('.main_visual');
+            if (!root) {
+                return;
+            }
+            var slides = root.querySelectorAll('.item');
+            if (slides.length === 0) {
+                return;
+            }
+            slides[0].classList.add('is-active');
+            if (slides.length === 1) {
+                return;
+            }
+
+            var dots = document.createElement('ul');
+            dots.className = 'slick-dots';
+            slides.forEach(function(_, i) {
+                var li = document.createElement('li');
+                if (i === 0) {
+                    li.classList.add('slick-active');
+                }
+                var btn = document.createElement('button');
+                btn.type = 'button';
+                btn.addEventListener('click', function() {
+                    go(i);
+                });
+                li.appendChild(btn);
+                dots.appendChild(li);
+            });
+            root.appendChild(dots);
+
+            var current = 0;
+            function go(newIdx) {
+                slides[current].classList.remove('is-active');
+                dots.children[current].classList.remove('slick-active');
+                current = newIdx;
+                slides[current].classList.add('is-active');
+                dots.children[current].classList.add('slick-active');
+            }
+
+            var SLIDE_INTERVAL = 3000;
+            var timer = null;
+            function startTimer() {
+                if (timer) return;
+                timer = setInterval(function() {
+                    go((current + 1) % slides.length);
+                }, SLIDE_INTERVAL);
+            }
+            function stopTimer() {
+                if (!timer) return;
+                clearInterval(timer);
+                timer = null;
+            }
+            startTimer();
+
+            // タブが非表示のときはスライダを停止して無駄な処理を抑える.
+            document.addEventListener('visibilitychange', function() {
+                if (document.hidden) {
+                    stopTimer();
+                } else {
+                    startTimer();
+                }
             });
         });
     </script>
@@ -106,9 +170,9 @@ file that was distributed with this source code.
 {% block main %}
     <div class="ec-sliderRole">
         <div class="main_visual">
-            <div class="item slick-slide"><img src="{{ asset('assets/img/top/img_hero_pc01.jpg') }}"></div>
-            <div class="item slick-slide"><img src="{{ asset('assets/img/top/img_hero_pc02.jpg') }}"></div>
-            <div class="item slick-slide"><img src="{{ asset('assets/img/top/img_hero_pc03.jpg') }}"></div>
+            <div class="item"><img src="{{ asset('assets/img/top/img_hero_pc01.jpg') }}"></div>
+            <div class="item"><img src="{{ asset('assets/img/top/img_hero_pc02.jpg') }}"></div>
+            <div class="item"><img src="{{ asset('assets/img/top/img_hero_pc03.jpg') }}"></div>
         </div>
     </div>
 {% endblock %}

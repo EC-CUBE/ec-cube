@@ -15,7 +15,7 @@ file that was distributed with this source code.
 
 {% block javascript %}
     <script>
-        $(function() {
+        document.addEventListener('DOMContentLoaded', function() {
             var options = {
                 layout: {
                     padding: {
@@ -52,12 +52,27 @@ file that was distributed with this source code.
             var priceBackgroundColor = 'rgba(58, 115, 188, 1)';
             var priceBorderColor = 'rgba(255, 255, 255, 0)';
 
-            $.ajax({
-                url: '{{ url('admin_homepage_sale') }}',
-                type: 'GET',
-                dataType: 'json'
-            }).done(function(datas) {
+            var csrfMeta = document.querySelector('meta[name="eccube-csrf-token"]');
+            var csrfToken = csrfMeta ? csrfMeta.content : '';
 
+            var hideLoading = function() {
+                var loading = document.getElementById('loading');
+                if (loading) loading.style.display = 'none';
+            };
+
+            fetch('{{ url('admin_homepage_sale') }}', {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'ECCUBE-CSRF-TOKEN': csrfToken
+                }
+            }).then(function(response) {
+                if (!response.ok) {
+                    throw new Error('http error');
+                }
+                return response.json();
+            }).then(function(datas) {
                 for (var i = 0; i < datas.length; i++) {
                     var data = datas[i];
 
@@ -72,9 +87,11 @@ file that was distributed with this source code.
                         priceBorderColors.push(priceBorderColor);
                     });
 
-                    var ctx = $('#chart-' + i)[0].getContext('2d');
+                    var canvas = document.getElementById('chart-' + i);
+                    if (!canvas) continue;
+                    var ctx = canvas.getContext('2d');
                     ctx.canvas.height = 100;
-                    var chart = new Chart(ctx, {
+                    new Chart(ctx, {
                         type: 'bar',
                         data: {
                             labels: labels,
@@ -93,13 +110,12 @@ file that was distributed with this source code.
                         options: options
                     });
                 }
-            }).fail(function(data) {
-            }).always(function() {
-                $('#loading').hide();
+            }).catch(function() {
+                // fail 相当: 何もしない（always 相当を finally で）
+            }).finally(function() {
+                hideLoading();
             });
-
         });
-
     </script>
 {% endblock javascript %}
 

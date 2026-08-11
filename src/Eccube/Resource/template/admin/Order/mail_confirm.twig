@@ -19,11 +19,11 @@ file that was distributed with this source code.
 
 {% block javascript %}
 <script>
-$(function() {
-    $('#back').on('click', function(e) {
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('back').addEventListener('click', function(e) {
         e.preventDefault();
-        $('#mode').val('back');
-        $('#order-mail-form').submit();
+        document.getElementById('mode').value = 'back';
+        document.getElementById('order-mail-form').submit();
         return false;
     });
 });

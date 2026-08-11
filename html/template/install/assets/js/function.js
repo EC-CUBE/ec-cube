@@ -1,100 +1,115 @@
 /*!
- * function.js for EC-CUBE admin
+ * function.js for EC-CUBE install
  */
 
-jQuery(document).ready(function($){
+document.addEventListener('DOMContentLoaded', function() {
 
-/*
- * Brake point Check
- */
-
-
-	$(window).on('load , resize', function(){
-		if(window.innerWidth < 768){
-			$('body').addClass('sp_view');
-			$('body').removeClass('md_view');
-			$('body').removeClass('pc_view');
-			$('#wrapper').removeClass('sidebar-open'); // for Drawer menu
-		} else if (window.innerWidth < 992) {
-			$('body').removeClass('sp_view');
-			$('body').addClass('md_view');
-			$('body').removeClass('pc_view');
-			$('#wrapper').addClass('sidebar-open'); // for Drawer menu
-		} else {
-			$('body').removeClass('sp_view');
-			$('body').removeClass('md_view');
-			$('body').addClass('pc_view');
-			$('#wrapper').addClass('sidebar-open'); // for Drawer menu
-//			$(window).on('scroll',fix_scroll);
-		}
-		return false;
-	});
-
-
-
-/////////// accordion
-
-	$(".accordion .toggle").click(function(){
-		if($("+.accpanel",this).css("display")=="none"){
-			$(this).addClass("active");
-			$("+.accpanel",this).slideDown(300);
-		}else{
-			$(this).removeClass("active");
-			$("+.accpanel",this).slideUp(300);
-		}
-        return false;
-	});
-
-
-/////////// dropdownの中をクリックしても閉じないようにする
-
-    $(".dropdown-menu").click(function(e) {
-        e.stopPropagation();
-    });
-
-/////////// database choice
-	var hideParameters = function() {
-		$(".required").hide();
-		$("#install_step4_database_host, "
-		  + "#install_step4_database_port, "
-		  + "#install_step4_database_name, "
-		  + "#install_step4_database_user, "
-		  + "#install_step4_database_password").attr("disabled", "disabled");
-	}
-	,
-	showParameters = function() {
-		$(".required").show();
-		$("#install_step4_database_host, "
-		  + "#install_step4_database_port, "
-		  + "#install_step4_database_name, "
-		  + "#install_step4_database_user, "
-		  + "#install_step4_database_password").removeAttr("disabled");
-	};
-	var database = $("#install_step4_database").val();
-	if (database == 'pdo_sqlite') {
-		hideParameters();
-	} else {
-		showParameters();
-	}
-	$("#install_step4_database").change(function() {
-		var database = $(this).val();
-		if (database == 'pdo_sqlite') {
-			hideParameters();
-		} else {
-			showParameters();
-		}
-	});
-
-/////////// 特定の条件下でのみ入力を許可する
-    // ロードバランサー、プロキシ設定
-    $("[name*='[trusted_proxies_connection_only]']").change(function() {
-        if ($(this).prop("checked")) {
-            $("[name*='[trusted_proxies]']").prop("readonly", "readonly");
+    /*
+     * Brake point Check
+     */
+    function applyBreakpoint() {
+        if (window.innerWidth < 768) {
+            document.body.classList.add('sp_view');
+            document.body.classList.remove('md_view', 'pc_view');
+            var wrapper = document.getElementById('wrapper');
+            if (wrapper) wrapper.classList.remove('sidebar-open');
+        } else if (window.innerWidth < 992) {
+            document.body.classList.remove('sp_view', 'pc_view');
+            document.body.classList.add('md_view');
+            var wrapper = document.getElementById('wrapper');
+            if (wrapper) wrapper.classList.add('sidebar-open');
         } else {
-            $("[name*='[trusted_proxies]']").prop("readonly", null);
+            document.body.classList.remove('sp_view', 'md_view');
+            document.body.classList.add('pc_view');
+            var wrapper = document.getElementById('wrapper');
+            if (wrapper) wrapper.classList.add('sidebar-open');
         }
+    }
+    window.addEventListener('load', applyBreakpoint);
+    window.addEventListener('resize', applyBreakpoint);
+
+    /////////// accordion
+    document.querySelectorAll('.accordion .toggle').forEach(function(toggle) {
+        toggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            var panel = this.nextElementSibling;
+            while (panel && !panel.classList.contains('accpanel')) {
+                panel = panel.nextElementSibling;
+            }
+            if (!panel) return;
+            if (panel.style.display === 'none' || panel.style.display === '') {
+                this.classList.add('active');
+                panel.style.display = 'block';
+            } else {
+                this.classList.remove('active');
+                panel.style.display = 'none';
+            }
+        });
     });
 
+    /////////// dropdownの中をクリックしても閉じないようにする
+    document.querySelectorAll('.dropdown-menu').forEach(function(menu) {
+        menu.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    });
 
+    /////////// database choice
+    var hideParameters = function() {
+        document.querySelectorAll('.required').forEach(function(el) { el.style.display = 'none'; });
+        [
+            '#install_step4_database_host',
+            '#install_step4_database_port',
+            '#install_step4_database_name',
+            '#install_step4_database_user',
+            '#install_step4_database_password'
+        ].forEach(function(sel) {
+            var el = document.querySelector(sel);
+            if (el) el.setAttribute('disabled', 'disabled');
+        });
+    };
 
+    var showParameters = function() {
+        document.querySelectorAll('.required').forEach(function(el) { el.style.display = ''; });
+        [
+            '#install_step4_database_host',
+            '#install_step4_database_port',
+            '#install_step4_database_name',
+            '#install_step4_database_user',
+            '#install_step4_database_password'
+        ].forEach(function(sel) {
+            var el = document.querySelector(sel);
+            if (el) el.removeAttribute('disabled');
+        });
+    };
+
+    var dbSelect = document.getElementById('install_step4_database');
+    if (dbSelect) {
+        if (dbSelect.value === 'pdo_sqlite') {
+            hideParameters();
+        } else {
+            showParameters();
+        }
+        dbSelect.addEventListener('change', function() {
+            if (this.value === 'pdo_sqlite') {
+                hideParameters();
+            } else {
+                showParameters();
+            }
+        });
+    }
+
+    /////////// 特定の条件下でのみ入力を許可する
+    // ロードバランサー、プロキシ設定
+    document.querySelectorAll("[name*='[trusted_proxies_connection_only]']").forEach(function(el) {
+        el.addEventListener('change', function() {
+            document.querySelectorAll("[name*='[trusted_proxies]']").forEach(function(input) {
+                if (el.checked) {
+                    input.setAttribute('readonly', 'readonly');
+                } else {
+                    input.removeAttribute('readonly');
+                }
+            });
+        });
+    });
 });

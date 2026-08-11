@@ -38,12 +38,14 @@ file that was distributed with this source code.
     <script src="{{ asset('front.bundle.js', 'bundle') }}"></script>
     {% block stylesheet %}{% endblock %}
     <script>
-        $(function() {
-            $.ajaxSetup({
-                'headers': {
-                    'ECCUBE-CSRF-TOKEN': $('meta[name="eccube-csrf-token"]').attr('content')
-                }
-            });
+        document.addEventListener('DOMContentLoaded', function() {
+            var csrfToken = document.querySelector('meta[name="eccube-csrf-token"]').content;
+            $.ajaxSetup({ headers: { 'ECCUBE-CSRF-TOKEN': csrfToken } });
+            window.eccubeFetch = function(url, options) {
+                options = options || {};
+                options.headers = Object.assign({ 'ECCUBE-CSRF-TOKEN': csrfToken, 'X-Requested-With': 'XMLHttpRequest' }, options.headers || {});
+                return fetch(url, options);
+            };
         });
     </script>
     {# Layout: HEAD #}

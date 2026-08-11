@@ -20,8 +20,7 @@ file that was distributed with this source code.
 {% block javascript %}
     <script src="{{ asset('assets/js/vendor/spin.min.js', 'admin') }}"></script>
     <script>
-        $(function() {
-
+        document.addEventListener('DOMContentLoaded', function() {
             var opts = {
                 lines: 13,
                 length: 30,
@@ -40,24 +39,34 @@ file that was distributed with this source code.
                 top: top
             };
 
-            ImageSpinner = new Spinner(opts).spin(document.getElementById('spinner'));
-            ImageSpinner.stop();
+            window.ImageSpinner = new Spinner(opts).spin(document.getElementById('spinner'));
+            window.ImageSpinner.stop();
 
-            $('#upload-form').submit(function() {
-                $('#upload-button').attr('disabled', 'disabled');
-                $('#download-button').attr('disabled', 'disabled');
-                ImageSpinner.spin(document.getElementById('spinner'));
-            });
+            var uploadForm = document.getElementById('upload-form');
+            if (uploadForm) {
+                uploadForm.addEventListener('submit', function() {
+                    var uploadBtn = document.getElementById('upload-button');
+                    if (uploadBtn) uploadBtn.disabled = true;
+                    var downloadBtn = document.getElementById('download-button');
+                    if (downloadBtn) downloadBtn.disabled = true;
+                    window.ImageSpinner.spin(document.getElementById('spinner'));
+                });
+            }
 
-            $('#file-select').click(function() {
-                $('#admin_csv_import_import_file').click();
-                $('#admin_csv_import_import_file').on('change', function() {
-                    var files = $(this).prop('files');
-                    if (files.length) {
-                        $('#admin_csv_import_import_file_name').text(files[0].name);
+            var fileSelect = document.getElementById('file-select');
+            var importFile = document.getElementById('admin_csv_import_import_file');
+            if (fileSelect && importFile) {
+                fileSelect.addEventListener('click', function() {
+                    importFile.click();
+                });
+                importFile.addEventListener('change', function() {
+                    var files = importFile.files;
+                    if (files && files.length) {
+                        var nameEl = document.getElementById('admin_csv_import_import_file_name');
+                        if (nameEl) nameEl.textContent = files[0].name;
                     }
                 });
-            });
+            }
         });
     </script>
 {% endblock javascript %}

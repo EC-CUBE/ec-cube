@@ -14,208 +14,258 @@ file that was distributed with this source code.
 
 {% block script %}
     <script>
-     $(function() {
-         var is_sqlite = {% if is_sqlite %}true{% else %}false{% endif %};
-         var plugin_content = $('#plugins').children().remove();
+    document.addEventListener('DOMContentLoaded', function() {
+        var is_sqlite = {% if is_sqlite %}true{% else %}false{% endif %};
+        var csrfToken = '{{ token }}';
 
-         var modal = $('#PluginProgressModal');
-         var bootstrapModal = new bootstrap.Modal(modal.get(0));
-         // 表示アニメーションの完了を記録する。show() の途中で hide() を呼ぶと
-         // bootstrap が hide を無視し、モーダルが表示されたまま残ることがあるため。
-         var modalShown = false;
-         modal.on('shown.bs.modal', function () { modalShown = true; });
-         bootstrapModal.show();
-         var progress = $('div.progress', modal).show();
-         var progress_message = $('#progress_message');
-         modal.find('.modal-footer').hide();
-         progress_message.text('システム要件をチェックしています。しばらくお待ちください...');
+        // #plugins の中身（<tr> テンプレート行）をテンプレートとして取得・退避
+        var pluginsTable = document.getElementById('plugins');
+        var templateRow = pluginsTable ? pluginsTable.firstElementChild : null;
+        if (templateRow) {
+            templateRow.remove();
+        }
 
-         $.ajaxSetup({
-             'headers': {
-                 'ECCUBE-CSRF-TOKEN': '{{ token }}'
-             }
-         });
+        var modal = document.getElementById('PluginProgressModal');
+        var bootstrapModal = new bootstrap.Modal(modal);
+        // 表示アニメーションの完了を記録する。show() の途中で hide() を呼ぶと
+        // bootstrap が hide を無視し、モーダルが表示されたまま残ることがあるため。
+        var modalShown = false;
+        modal.addEventListener('shown.bs.modal', function() { modalShown = true; });
+        bootstrapModal.show();
+        var progress = modal.querySelector('div.progress');
+        if (progress) progress.style.display = '';
+        var progressMessage = document.getElementById('progress_message');
+        var modalFooter = modal.querySelector('.modal-footer');
+        if (modalFooter) modalFooter.style.display = 'none';
+        if (progressMessage) progressMessage.textContent = 'システム要件をチェックしています。しばらくお待ちください...';
 
-         $.ajax({
-             url: '{{ url("install_plugin_check_api") }}',
-             type: 'put'
-         }).always(function () {
-             progress_message.text('プラグインを読み込んでいます。しばらくお待ちください...');
-             $.get({ url: '{{ url('install_plugins') }}' },
-                   function (data) {
-                       $('#plugins').children().remove();
-                       if (data.length === 0) {
-                           $('#plugins_switch').hide();
-                           return;
-                       }
-                       data.forEach(function (plugin) {
-                           var pluginCode = encodeURIComponent(plugin.code);
-                           var content = $(plugin_content).clone();
-                           var url = '{{ url('install_plugin_enable', { 'code': '__code__' }) }}';
-                           content.find('.c-toggleSwitch').data('url', url.replace(/__code__/, pluginCode));
-                           content.find('.plugin_name').text(plugin.name);
-                           content.find('input[type=checkbox]').attr('id', pluginCode);
-                           content.find('label').attr('for', pluginCode);
-                           if (plugin.enabled) {
-                               content.find('input[type=checkbox]')
-                                      .prop('checked', true);
-                               content.find('.c-toggleSwitch__label > span').text('有効');
-                           } else {
-                               content.find('input[type=checkbox]')
-                                      .prop('checked', false);
-                               content.find('.c-toggleSwitch__label > span').text('無効');
-                           }
-                           if (is_sqlite && ['Api42'].includes(plugin.code)) {
-                               content.find('.c-toggleSwitch').text('SQLite3 には対応していません');
-                           }
-                           content.appendTo('#plugins');
-                       });
-                   }
-             ).then(function () {
-                 $('#plugins_switch').find('.c-toggleSwitch').each(function () {
-                     var $toggleSwitch = $(this);
-                     $toggleSwitch.find('input[type=checkbox]').on('change', function () {
-                         var $checkbox = $(this);
-                         var status = $checkbox.prop('checked');
-                         $toggleSwitch.find('.c-toggleSwitch__label > span').text(status ? '有効' : '無効');
-                         var statusText = $toggleSwitch.find('.c-toggleSwitch__label > span').text();
-                         bootstrapModal.show();
-                         progress.show();
-                         modal.find('.modal-footer').hide();
-                         progress_message.text('プラグインを' + statusText + '化しています...');
-                         $.ajax(
-                             {
-                                 url: $toggleSwitch.data('url'),
-                                 type: 'put'
-                             }
-                         ).done(function(data, textStatus, jqXHR) {
-                             progress.hide();
-                             bootstrapModal.hide();
-                         }).fail(function(jqXHR, textStatus, errorThrown) {
-                             modal.find('.modal-footer').show();
-                             $checkbox.prop('checked', !status);
-                             $toggleSwitch.find('.c-toggleSwitch__label > span').text(!status ? '有効' : '無効');
-                             bootstrapModal.hide();
-                             console.log(jqXHR);
-                             console.log(textStatus);
-                             console.log(errorThrown);
-                             if (jqXHR.status == 404) {
-                                 progress_message.text('一定時間経過したため' + statusText + '化ができません。管理画面にログインし、オーナーズストア→プラグイン→プラグイン一覧から再度お試しください。');
-                             } else {
-                                 progress_message.text(statusText + '化に失敗しました。');
-                             }
-                         });
-                     });
-                 });
-             }).always(function () {
-                 // モーダルをクローズ
-                 progress.hide();
-                 // 処理が一瞬で終わると show アニメーションの途中で hide を呼ぶ
-                 // ことになり、bootstrap がこれを無視してモーダルが残る。表示が
-                 // 完了してから閉じることで、モーダルが残ってボタンを押せなくなる
-                 // のを防ぐ。
-                 if (modalShown) {
-                     bootstrapModal.hide();
-                 } else {
-                     modal.one('shown.bs.modal', function () {
-                         bootstrapModal.hide();
-                     });
-                 }
+        function apiFetch(url, options) {
+            options = options || {};
+            options.headers = Object.assign({
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'ECCUBE-CSRF-TOKEN': csrfToken
+            }, options.headers || {});
+            return fetch(url, options);
+        }
 
-                 enableGoToAdminPage();
-             });
-         });
-     });
+        // 1. プラグイン一覧取得前に API チェック
+        apiFetch('{{ url("install_plugin_check_api") }}', { method: 'PUT' })
+            .catch(function(err) { console.warn('install_plugin_check_api failed:', err); })
+            .finally(function() {
+                if (progressMessage) {
+                    progressMessage.textContent = 'プラグインを読み込んでいます。しばらくお待ちください...';
+                }
 
-     /**
-      * 管理画面へのボタンを有効化する.
-      *
-      * install_plugin_redirect はトランザクションファイルの検証を
-      * ECCUBE-CSRF-TOKEN ヘッダで行うため, 通常のリンク遷移では実行できない.
-      * クリック時に fetch でリクエストしてから, 自前で管理画面へ遷移する.
-      * href には管理画面の URL を設定しておき, JS が動作しない場合や
-      * 別タブで開かれた場合でも遷移できるようにする.
-      */
-     function enableGoToAdminPage() {
-         var adminUrl = '{{ admin_url|e('js') }}';
-         var redirectUrl = '{{ url('install_plugin_redirect')|e('js') }}';
-         var token = '{{ token|e('js') }}';
+                // 2. プラグイン一覧取得
+                apiFetch('{{ url('install_plugins') }}', { method: 'GET' })
+                    .then(function(response) {
+                        if (!response.ok) {
+                            throw new Error('http error');
+                        }
+                        return response.json();
+                    })
+                    .then(function(data) {
+                        // 既存の children をクリア
+                        while (pluginsTable.firstChild) {
+                            pluginsTable.removeChild(pluginsTable.firstChild);
+                        }
+                        if (!data || data.length === 0) {
+                            var pluginsSwitch = document.getElementById('plugins_switch');
+                            if (pluginsSwitch) pluginsSwitch.style.display = 'none';
+                            return;
+                        }
 
-         var button = document.getElementById('go_to_admin_page');
-         button.classList.remove('disabled');
-         button.removeAttribute('tabindex');
-         button.href = adminUrl;
+                        data.forEach(function(plugin) {
+                            var pluginCode = encodeURIComponent(plugin.code);
+                            var content = templateRow.cloneNode(true);
+                            var enableUrlTemplate = '{{ url('install_plugin_enable', { 'code': '__code__' }) }}';
 
-         button.addEventListener('click', function (event) {
-             event.preventDefault();
+                            var toggleSwitch = content.querySelector('.c-toggleSwitch');
+                            if (toggleSwitch) {
+                                toggleSwitch.dataset.url = enableUrlTemplate.replace(/__code__/, pluginCode);
+                            }
+                            var nameEl = content.querySelector('.plugin_name');
+                            if (nameEl) nameEl.textContent = plugin.name;
+                            var checkbox = content.querySelector('input[type=checkbox]');
+                            if (checkbox) checkbox.setAttribute('id', pluginCode);
+                            var label = content.querySelector('label');
+                            if (label) label.setAttribute('for', pluginCode);
 
-             // redirect: 'manual' でリダイレクトを追跡しない.
-             // トランザクションファイルの削除だけを行わせ, 遷移は自前で行う.
-             fetch(redirectUrl, {
-                 headers: {
-                     'X-Requested-With': 'XMLHttpRequest',
-                     'ECCUBE-CSRF-TOKEN': token
-                 },
-                 credentials: 'same-origin',
-                 redirect: 'manual'
-             }).catch(function (error) {
-                 console.log(error);
-             }).then(function () {
-                 return waitForAdminPage(adminUrl, 20, 500);
-             }).then(function (ready) {
-                 if (ready) {
-                     window.location.href = adminUrl;
-                     return;
-                 }
-                 // 管理画面がまだ応答しない場合は遷移せず, 再試行を促す.
-                 // ボタンは有効なままなので, 再度クリックできる.
-                 var modalEl = document.getElementById('PluginProgressModal');
-                 var messageEl = document.getElementById('progress_message');
-                 if (messageEl) {
-                     messageEl.textContent = '管理画面の準備に時間がかかっています。しばらくしてから「管理画面を表示」を再度クリックしてください。';
-                 }
-                 var footer = modalEl ? modalEl.querySelector('.modal-footer') : null;
-                 if (footer) {
-                     footer.style.display = '';
-                 }
-                 if (modalEl) {
-                     bootstrap.Modal.getOrCreateInstance(modalEl).show();
-                 }
-             });
-         });
-     }
+                            var statusLabel = content.querySelector('.c-toggleSwitch__label > span');
+                            if (plugin.enabled) {
+                                if (checkbox) checkbox.checked = true;
+                                if (statusLabel) statusLabel.textContent = '有効';
+                            } else {
+                                if (checkbox) checkbox.checked = false;
+                                if (statusLabel) statusLabel.textContent = '無効';
+                            }
+                            if (is_sqlite && ['Api42'].includes(plugin.code) && toggleSwitch) {
+                                toggleSwitch.textContent = 'SQLite3 には対応していません';
+                            }
+                            pluginsTable.appendChild(content);
+                        });
+                    })
+                    .then(function() {
+                        // 3. 各トグルスイッチに change ハンドラを付与
+                        var pluginsSwitch = document.getElementById('plugins_switch');
+                        if (!pluginsSwitch) return;
+                        pluginsSwitch.querySelectorAll('.c-toggleSwitch').forEach(function(toggleSwitch) {
+                            var checkbox = toggleSwitch.querySelector('input[type=checkbox]');
+                            if (!checkbox) return;
+                            checkbox.addEventListener('change', function() {
+                                var status = checkbox.checked;
+                                var statusSpan = toggleSwitch.querySelector('.c-toggleSwitch__label > span');
+                                if (statusSpan) statusSpan.textContent = status ? '有効' : '無効';
+                                var statusText = statusSpan ? statusSpan.textContent : '';
 
-     /**
-      * 管理画面が応答するようになるまで待つ.
-      *
-      * CacheUtil::clearCache() はキャッシュ削除を予約するだけで, 実際の
-      * cache:clear は kernel.terminate (レスポンス送信後) に実行される.
-      * install_plugin_redirect もキャッシュ削除を予約するため, レスポンス直後に
-      * 遷移すると削除中のリクエストとなり 500 になることがある.
-      * 応答を確認してから遷移することでこれを避ける.
-      */
-     function waitForAdminPage(url, retries, interval) {
-         return fetch(url, { credentials: 'same-origin' })
-             .then(function (response) {
-                 return response.ok;
-             })
-             .catch(function () {
-                 return false;
-             })
-             .then(function (ready) {
-                 if (ready) {
-                     return true;
-                 }
-                 if (retries <= 0) {
-                     return false;
-                 }
-                 return new Promise(function (resolve) {
-                     setTimeout(resolve, interval);
-                 }).then(function () {
-                     return waitForAdminPage(url, retries - 1, interval);
-                 });
-             });
-     }
+                                bootstrapModal.show();
+                                if (progress) progress.style.display = '';
+                                if (modalFooter) modalFooter.style.display = 'none';
+                                if (progressMessage) progressMessage.textContent = 'プラグインを' + statusText + '化しています...';
+
+                                apiFetch(toggleSwitch.dataset.url, { method: 'PUT' })
+                                    .then(function(response) {
+                                        if (!response.ok) {
+                                            // 非 2xx は fail 扱い. response をエラーとして throw
+                                            var err = new Error('http error');
+                                            err.status = response.status;
+                                            throw err;
+                                        }
+                                        if (progress) progress.style.display = 'none';
+                                        bootstrapModal.hide();
+                                    })
+                                    .catch(function(err) {
+                                        // 失敗時はモーダルを開いたままエラー文言を表示し,
+                                        // ユーザがフッターの閉じるボタンで手動で閉じる導線にする.
+                                        if (progress) progress.style.display = 'none';
+                                        if (modalFooter) modalFooter.style.display = '';
+                                        checkbox.checked = !status;
+                                        if (statusSpan) statusSpan.textContent = !status ? '有効' : '無効';
+                                        console.log(err);
+                                        if (progressMessage) {
+                                            if (err && err.status == 404) {
+                                                progressMessage.textContent = '一定時間経過したため' + statusText + '化ができません。管理画面にログインし、オーナーズストア→プラグイン→プラグイン一覧から再度お試しください。';
+                                            } else {
+                                                progressMessage.textContent = statusText + '化に失敗しました。';
+                                            }
+                                        }
+                                    });
+                            });
+                        });
+                    })
+                    .catch(function(err) {
+                        console.log(err);
+                    })
+                    .finally(function() {
+                        // モーダルをクローズ
+                        if (progress) progress.style.display = 'none';
+                        // 処理が一瞬で終わると show アニメーションの途中で hide を呼ぶ
+                        // ことになり、bootstrap がこれを無視してモーダルが残る。表示が
+                        // 完了してから閉じることで、モーダルが残ってボタンを押せなくなる
+                        // のを防ぐ。
+                        if (modalShown) {
+                            bootstrapModal.hide();
+                        } else {
+                            modal.addEventListener('shown.bs.modal', function() {
+                                bootstrapModal.hide();
+                            }, { once: true });
+                        }
+
+                        enableGoToAdminPage();
+                    });
+            });
+    });
+
+    /**
+     * 管理画面へのボタンを有効化する.
+     *
+     * install_plugin_redirect はトランザクションファイルの検証を
+     * ECCUBE-CSRF-TOKEN ヘッダで行うため, 通常のリンク遷移では実行できない.
+     * クリック時に fetch でリクエストしてから, 自前で管理画面へ遷移する.
+     * href には管理画面の URL を設定しておき, JS が動作しない場合や
+     * 別タブで開かれた場合でも遷移できるようにする.
+     */
+    function enableGoToAdminPage() {
+        var adminUrl = '{{ admin_url|e('js') }}';
+        var redirectUrl = '{{ url('install_plugin_redirect')|e('js') }}';
+        var token = '{{ token|e('js') }}';
+
+        var button = document.getElementById('go_to_admin_page');
+        button.classList.remove('disabled');
+        button.removeAttribute('tabindex');
+        button.href = adminUrl;
+
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+
+            // redirect: 'manual' でリダイレクトを追跡しない.
+            // トランザクションファイルの削除だけを行わせ, 遷移は自前で行う.
+            fetch(redirectUrl, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'ECCUBE-CSRF-TOKEN': token
+                },
+                credentials: 'same-origin',
+                redirect: 'manual'
+            }).catch(function(error) {
+                console.log(error);
+            }).then(function() {
+                return waitForAdminPage(adminUrl, 20, 500);
+            }).then(function(ready) {
+                if (ready) {
+                    window.location.href = adminUrl;
+                    return;
+                }
+                // 管理画面がまだ応答しない場合は遷移せず, 再試行を促す.
+                // ボタンは有効なままなので, 再度クリックできる.
+                var modalEl = document.getElementById('PluginProgressModal');
+                var messageEl = document.getElementById('progress_message');
+                if (messageEl) {
+                    messageEl.textContent = '管理画面の準備に時間がかかっています。しばらくしてから「管理画面を表示」を再度クリックしてください。';
+                }
+                var footer = modalEl ? modalEl.querySelector('.modal-footer') : null;
+                if (footer) {
+                    footer.style.display = '';
+                }
+                if (modalEl) {
+                    bootstrap.Modal.getOrCreateInstance(modalEl).show();
+                }
+            });
+        });
+    }
+
+    /**
+     * 管理画面が応答するようになるまで待つ.
+     *
+     * CacheUtil::clearCache() はキャッシュ削除を予約するだけで, 実際の
+     * cache:clear は kernel.terminate (レスポンス送信後) に実行される.
+     * install_plugin_redirect もキャッシュ削除を予約するため, レスポンス直後に
+     * 遷移すると削除中のリクエストとなり 500 になることがある.
+     * 応答を確認してから遷移することでこれを避ける.
+     */
+    function waitForAdminPage(url, retries, interval) {
+        return fetch(url, { credentials: 'same-origin' })
+            .then(function(response) {
+                return response.ok;
+            })
+            .catch(function() {
+                return false;
+            })
+            .then(function(ready) {
+                if (ready) {
+                    return true;
+                }
+                if (retries <= 0) {
+                    return false;
+                }
+                return new Promise(function(resolve) {
+                    setTimeout(resolve, interval);
+                }).then(function() {
+                    return waitForAdminPage(url, retries - 1, interval);
+                });
+            });
+    }
     </script>
 {% endblock %}
 

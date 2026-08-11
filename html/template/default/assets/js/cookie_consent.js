@@ -13,12 +13,12 @@
 ====================================================================
 Module: CookieConsent
 役割: クッキー同意バナーの動作制御 ＋ 同意状態の公開フック
-依存: jQuery, Symfony CSRF Token
+依存: Symfony CSRF Token
 利用: 全フロントページ（default_frame.twig、機能 ON のときのみ読み込み）
 
 公開 API（コア標準 GA・店舗・プラグインが連動に利用する拡張点）:
   - window.ECCUBE.cookieConsent.getStatus()        現在の同意状態を返す（'accepted'|'rejected'|null）
-  - window.ECCUBE.cookieConsent.saveConsentStatus(...) 同意状態をサーバへ保存（Ajax）
+  - window.ECCUBE.cookieConsent.saveConsentStatus(...) 同意状態をサーバへ保存（fetch）
   - document の 'eccube:cookie-consent:changed' イベント（detail: { status }）を同意確定時に発火
 
 注意:
@@ -27,7 +27,7 @@ Module: CookieConsent
     （本モジュールから loadGoogleAnalytics() を直接呼び出さない）。
 ====================================================================
 */
-(function($) {
+(function() {
     'use strict';
 
     // EC-CUBE名前空間の初期化
@@ -38,6 +38,7 @@ Module: CookieConsent
 
     var COOKIE_NAME = 'eccube_cookie_consent';
     var CHANGED_EVENT = 'eccube:cookie-consent:changed';
+    var FADE_OUT_DURATION = 300;
 
     /**
      * CSRFトークン取得
@@ -65,18 +66,30 @@ Module: CookieConsent
     window.ECCUBE.cookieConsent.getStatus = getStatus;
 
     /**
-     * バナー非表示
+     * バナー非表示（フェードアウト後に display: none）
      */
     function hideBanner() {
-        $('#cookie-consent-banner').fadeOut(300);
+        var banner = document.getElementById('cookie-consent-banner');
+        if (!banner) {
+            return;
+        }
+
+        banner.style.transition = 'opacity ' + FADE_OUT_DURATION + 'ms';
+        banner.style.opacity = '0';
+        setTimeout(function() {
+            banner.style.display = 'none';
+            banner.style.removeProperty('opacity');
+            banner.style.removeProperty('transition');
+        }, FADE_OUT_DURATION);
     }
 
     /**
      * バナー表示（同意状態が未設定のときのみ）
      */
     function showBannerIfNeeded() {
-        if (getStatus() === null) {
-            $('#cookie-consent-banner').show();
+        var banner = document.getElementById('cookie-consent-banner');
+        if (banner && getStatus() === null) {
+            banner.style.display = 'block';
         }
     }
 
@@ -91,79 +104,125 @@ Module: CookieConsent
     }
 
     /**
-     * クッキー同意状態を保存（Ajax）。グローバル関数として公開。
+     * クッキー同意状態を保存（fetch）。グローバル関数として公開。
      *
      * Cookie の書き込みはサーバ側（Set-Cookie）に一本化し、JS では書き込まない。
      *
      * @param {string} status - 'accepted' または 'rejected'
      * @param {string} source - 'popup' または 'settings_page'
      * @param {string|null} previousStatus - 以前の同意状態
-     * @param {function} onSuccess - 成功時のコールバック
+     * @param {function} onSuccess - 成功時のコールバック（引数: サーバのレスポンス JSON）
      * @param {function} onError - エラー時のコールバック
+     *                             （引数: { success: false, status?: number, message: string }。
+     *                              message はサーバが文言を返さない場合は空文字）
      */
     window.ECCUBE.cookieConsent.saveConsentStatus = function(status, source, previousStatus, onSuccess, onError) {
         var config = window.ECCUBE && window.ECCUBE.config && window.ECCUBE.config.cookieConsent;
         var updateUrl = (config && config.updateUrl) || '/cookie-consent/update';
 
-        $.ajax({
-            url: updateUrl,
-            type: 'POST',
-            data: {
-                consent_status: status,
-                source: source,
-                previous_status: previousStatus || null,
-                _token: getCsrfToken()
-            },
-            dataType: 'json'
-        })
-        .done(function(response) {
-            if (response.success) {
-                // 同意状態の確定をアプリ全体へ通知（公開フック）。
-                // GA 等のローダーはこのイベントを購読してリロードなしで読み込みを開始する。
-                dispatchChanged(status);
+        var body = new URLSearchParams();
+        body.append('consent_status', status);
+        body.append('source', source);
+        body.append('previous_status', previousStatus || '');
+        body.append('_token', getCsrfToken());
 
-                if (onSuccess) {
-                    onSuccess(response);
-                }
-            } else {
-                console.error('Cookie consent save failed:', response.message);
-                if (onError) {
-                    onError(response);
-                }
-            }
+        fetch(updateUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: body.toString(),
+            credentials: 'same-origin'
         })
-        .fail(function(xhr, ajaxStatus, error) {
-            console.error('Cookie consent save error:', error);
-            if (onError) {
-                onError({ success: false, message: error });
+        .then(function(res) {
+            // バリデーションエラー(400)はサーバが JSON で message を返すため本文を読む。
+            // 403 / 500 は HTML が返り parse に失敗するので、原因を握り潰さずログに残す。
+            return res.json().then(
+                function(json) {
+                    return { res: res, json: json };
+                },
+                function(parseError) {
+                    console.error('Cookie consent save: invalid JSON response', res.status, parseError);
+
+                    return { res: res, json: null };
+                }
+            );
+        })
+        .then(
+            function(result) {
+                if (result.res.ok && result.json && result.json.success) {
+                    // 同意状態の確定をアプリ全体へ通知（公開フック）。
+                    // GA 等のローダーはこのイベントを購読してリロードなしで読み込みを開始する。
+                    dispatchChanged(status);
+
+                    if (onSuccess) {
+                        onSuccess(result.json);
+                    }
+
+                    return;
+                }
+
+                // message はサーバ由来の文言があるときだけ渡す。
+                // 空のときは呼び出し側のローカライズ済み文言にフォールバックさせる。
+                var message = (result.json && result.json.message) || '';
+                console.error('Cookie consent save failed:', result.res.status, message);
+                if (onError) {
+                    onError({ success: false, status: result.res.status, message: message });
+                }
+            },
+            // 第 2 引数で受けることで、onSuccess 内の例外を保存失敗として扱わない
+            function(error) {
+                console.error('Cookie consent save error:', error);
+                if (onError) {
+                    onError({ success: false, message: error && error.message ? error.message : String(error) });
+                }
             }
-        });
+        );
     };
 
     /**
      * DOM Ready - バナーの表示制御とイベントハンドラー
      */
-    $(function() {
+    function init() {
         // 同意状態が未設定のときだけバナーを表示（キャッシュ安全：表示判定はクライアント側）
         showBannerIfNeeded();
 
         // 閉じるボタン（×）クリック時（Cookie は設定しない＝次回再表示）
-        $('#cookie-consent-close').on('click', function() {
-            hideBanner();
-        });
+        var closeButton = document.getElementById('cookie-consent-close');
+        if (closeButton) {
+            closeButton.addEventListener('click', function() {
+                hideBanner();
+            });
+        }
 
         // 同意ボタンクリック時
-        $('#cookie-consent-accept').on('click', function() {
-            window.ECCUBE.cookieConsent.saveConsentStatus('accepted', 'popup', null, function() {
-                hideBanner();
+        var acceptButton = document.getElementById('cookie-consent-accept');
+        if (acceptButton) {
+            acceptButton.addEventListener('click', function() {
+                window.ECCUBE.cookieConsent.saveConsentStatus('accepted', 'popup', null, function() {
+                    hideBanner();
+                });
             });
-        });
+        }
 
         // 拒否ボタンクリック時
-        $('#cookie-consent-reject').on('click', function() {
-            window.ECCUBE.cookieConsent.saveConsentStatus('rejected', 'popup', null, function() {
-                hideBanner();
+        var rejectButton = document.getElementById('cookie-consent-reject');
+        if (rejectButton) {
+            rejectButton.addEventListener('click', function() {
+                window.ECCUBE.cookieConsent.saveConsentStatus('rejected', 'popup', null, function() {
+                    hideBanner();
+                });
             });
-        });
-    });
-})(jQuery);
+        }
+    }
+
+    // 本スクリプトは </body> 直前で読み込まれるが、遅延読み込み等で
+    // DOMContentLoaded 後に評価される場合もあるため両方に対応する。
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();

@@ -41,7 +41,9 @@
     "jquery-ui": "^1.14.2",
     "jquery.qrcode": "^1.0.3",
     "ladda": "^2.0.3",
+    "qrcode-generator": "^2.0.4",
     "slick-carousel": "^1.8.1",
+    "sortablejs": "^1.15.7",
     "spin.js": "^4.1.1"
   },
   "devDependencies": {

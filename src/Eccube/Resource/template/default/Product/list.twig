@@ -20,79 +20,116 @@ file that was distributed with this source code.
             {% endfor %}
         };
 
-        $(function() {
+        document.addEventListener('DOMContentLoaded', function() {
+            var form1 = document.getElementById('form1');
+            var dispNumberInput = document.getElementById('disp_number');
+            var orderbyInput = document.getElementById('orderby');
+            var pagenoInput = document.getElementById('pageno');
 
             // 表示件数を変更
-            $('.disp-number').change(function() {
-                var dispNumber = $(this).val();
-                $('#disp_number').val(dispNumber);
-                $('#pageno').val(1);
-                $("#form1").submit();
+            document.querySelectorAll('.disp-number').forEach(function(select) {
+                select.addEventListener('change', function() {
+                    if (dispNumberInput) dispNumberInput.value = select.value;
+                    if (pagenoInput) pagenoInput.value = 1;
+                    if (form1) form1.submit();
+                });
             });
 
             // 並び順を変更
-            $('.order-by').change(function() {
-                var orderBy = $(this).val();
-                $('#orderby').val(orderBy);
-                $('#pageno').val(1);
-                $("#form1").submit();
-            });
-
-            $('.add-cart').on('click', function(e) {
-                var $form = $(this).parents('li').find('form');
-
-                // 個数フォームのチェック
-                var $quantity = $form.parent().find('.quantity');
-                if ($quantity.val() < 1) {
-                    $quantity[0].setCustomValidity('{{ 'front.product.invalid_quantity'|trans }}');
-                    setTimeout(function() {
-                        loadingOverlay('hide');
-                    }, 100);
-                    return true;
-                } else {
-                    $quantity[0].setCustomValidity('');
-                }
-                e.preventDefault();
-                $.ajax({
-                    url: $form.attr('action'),
-                    type: $form.attr('method'),
-                    data: $form.serialize(),
-                    dataType: 'json',
-                    beforeSend: function(xhr, settings) {
-                        // Buttonを無効にする
-                        $('.add-cart').prop('disabled', true);
-                    }
-                }).done(function(data) {
-                    // レスポンス内のメッセージをalertで表示
-                    $.each(data.messages, function() {
-                        $('#ec-modal-header').text(this);
-                    });
-
-                    $('.ec-modal').show()
-
-                    // カートブロックを更新する
-                    $.ajax({
-                        url: '{{ url('block_cart') }}',
-                        type: 'GET',
-                        dataType: 'html'
-                    }).done(function(html) {
-                        $('.ec-headerRole__cart').html(html);
-                    });
-                }).fail(function(data) {
-                    alert('{{ 'front.product.add_cart_error'|trans }}');
-                }).always(function(data) {
-                    // Buttonを有効にする
-                    $('.add-cart').prop('disabled', false);
+            document.querySelectorAll('.order-by').forEach(function(select) {
+                select.addEventListener('change', function() {
+                    if (orderbyInput) orderbyInput.value = select.value;
+                    if (pagenoInput) pagenoInput.value = 1;
+                    if (form1) form1.submit();
                 });
             });
-        });
 
-        $('.ec-modal-wrap').on('click', function(e) {
-            // モーダル内の処理は外側にバブリングさせない
-            e.stopPropagation();
-        });
-        $('.ec-modal-overlay, .ec-modal, .ec-modal-close, .ec-inlineBtn--cancel').on('click', function() {
-            $('.ec-modal').hide()
+            document.querySelectorAll('.add-cart').forEach(function(btn) {
+                btn.addEventListener('click', function(e) {
+                    var li = btn.closest('li');
+                    var form = li ? li.querySelector('form') : null;
+                    if (!form) {
+                        return;
+                    }
+
+                    // 個数フォームのチェック
+                    var quantity = form.parentElement ? form.parentElement.querySelector('.quantity') : null;
+                    if (quantity && Number(quantity.value) < 1) {
+                        quantity.setCustomValidity('{{ 'front.product.invalid_quantity'|trans }}');
+                        setTimeout(function() {
+                            loadingOverlay('hide');
+                        }, 100);
+                        return true;
+                    } else if (quantity) {
+                        quantity.setCustomValidity('');
+                    }
+                    e.preventDefault();
+
+                    var addCartButtons = document.querySelectorAll('.add-cart');
+                    addCartButtons.forEach(function(b) { b.disabled = true; });
+
+                    var csrfMeta = document.querySelector('meta[name="eccube-csrf-token"]');
+                    var csrfToken = csrfMeta ? csrfMeta.content : '';
+
+                    fetch(form.getAttribute('action'), {
+                        method: (form.getAttribute('method') || 'POST').toUpperCase(),
+                        headers: {
+                            'Accept': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'ECCUBE-CSRF-TOKEN': csrfToken
+                        },
+                        body: new FormData(form)
+                    }).then(function(response) {
+                        if (!response.ok) {
+                            throw new Error('http error');
+                        }
+                        return response.json();
+                    }).then(function(data) {
+                        var modalHeader = document.getElementById('ec-modal-header');
+                        if (modalHeader && data.messages) {
+                            data.messages.forEach(function(msg) {
+                                modalHeader.textContent = msg;
+                            });
+                        }
+                        var modal = document.querySelector('.ec-modal');
+                        if (modal) {
+                            modal.style.display = 'block';
+                        }
+
+                        // カートブロックを更新する
+                        return fetch('{{ url('block_cart') }}', {
+                            headers: {
+                                'Accept': 'text/html',
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'ECCUBE-CSRF-TOKEN': csrfToken
+                            }
+                        }).then(function(r) { return r.text(); }).then(function(html) {
+                            var cart = document.querySelector('.ec-headerRole__cart');
+                            if (cart) {
+                                cart.innerHTML = html;
+                            }
+                        });
+                    }).catch(function() {
+                        alert('{{ 'front.product.add_cart_error'|trans }}');
+                    }).finally(function() {
+                        addCartButtons.forEach(function(b) { b.disabled = false; });
+                    });
+                });
+            });
+
+            document.querySelectorAll('.ec-modal-wrap').forEach(function(wrap) {
+                // モーダル内の処理は外側にバブリングさせない
+                wrap.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            });
+            document.querySelectorAll('.ec-modal-overlay, .ec-modal, .ec-modal-close, .ec-inlineBtn--cancel').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    document.querySelectorAll('.ec-modal').forEach(function(m) {
+                        m.style.display = 'none';
+                    });
+                });
+            });
         });
     </script>
 {% endblock %}

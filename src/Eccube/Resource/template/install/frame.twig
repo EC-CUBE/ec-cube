@@ -55,20 +55,29 @@ file that was distributed with this source code.
 </div>
 <script src="{{ asset('assets/js/function.js', 'install') }}"></script>
 <script>
-$(function() {
+document.addEventListener('DOMContentLoaded', function() {
     /*
      * for svg icon
      */
-    $.ajax({
-        type: 'GET',
-        url: "{{ asset('assets/img/svg.html', 'install') }}",
-        dataType: 'html',
-        success: function(data){
-            $('body').prepend(data);
-        },
-        error: function() {
-            console.log('error');
+    fetch("{{ asset('assets/img/svg.html', 'install') }}", {
+        method: 'GET',
+        headers: { 'Accept': 'text/html' }
+    }).then(function(response) {
+        if (!response.ok) {
+            throw new Error('http error');
         }
+        return response.text();
+    }).then(function(data) {
+        var wrapper = document.createElement('div');
+        wrapper.innerHTML = data;
+        // fragment 化して body 先頭へ挿入
+        var fragment = document.createDocumentFragment();
+        while (wrapper.firstChild) {
+            fragment.appendChild(wrapper.firstChild);
+        }
+        document.body.insertBefore(fragment, document.body.firstChild);
+    }).catch(function() {
+        console.log('error');
     });
 });
 </script>

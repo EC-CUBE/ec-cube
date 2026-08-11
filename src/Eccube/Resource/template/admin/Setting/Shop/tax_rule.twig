@@ -35,16 +35,20 @@ file that was distributed with this source code.
 
 {% block javascript %}
     <script type="text/javascript">
-        $(function() {
-            $('.tax_rule_list_item td.action a.edit-button').click(function() {
-                var id = $(this).data('id');
-                var tr = $('#ex-tax_rule-' + id);
-                $(tr).find('.list').hide();
-                $(tr).find('.edit').show();
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.tax_rule_list_item td.action a.edit-button').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var id = this.dataset.id;
+                    var tr = document.getElementById('ex-tax_rule-' + id);
+                    tr.querySelectorAll('.list').forEach(function(el) { el.style.display = 'none'; });
+                    tr.querySelectorAll('.edit').forEach(function(el) { el.style.display = 'block'; });
+                });
             });
 
-            $('.tax_rule_list_item .cancel').click(function() {
-                location.href = '{{ url('admin_setting_shop_tax') }}';
+            document.querySelectorAll('.tax_rule_list_item .cancel').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    location.href = '{{ url('admin_setting_shop_tax') }}';
+                });
             });
         });
     </script>

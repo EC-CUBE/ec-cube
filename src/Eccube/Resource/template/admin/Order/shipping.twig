@@ -22,131 +22,168 @@ file that was distributed with this source code.
     <script src="//yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
 
     <script>
-        // 出荷日: 鉛筆アイコン押下で入力欄を表示する(誤操作防止).
-        $(document).on('click', '.date-edit-toggle', function() {
-            var $col = $(this).closest('.col');
-            $col.find('.date-edit-view').addClass('d-none');
-            $col.find('.date-edit-input').removeClass('d-none');
-        });
-
-        // 商品追加
-        $('.addProduct-button').on('click', function() {
-            var no = $(this).data('shipping-no');
-            $collectionHolder = $('#table-form-field_' + no);
-            index = $collectionHolder.find('tbody > tr').length;
-            formIdPrefix = '#form_shippings_' + no + '_OrderItems_';
-        })
-
-        // その他明細追加
-        $('.addOtherProduct-button').on('click', function() {
-            var no = $(this).data('shipping-no');
-            $collectionHolder = $('#table-form-field_' + no);
-            index = $collectionHolder.find('tbody > tr').length;
-            formIdPrefix = '#form_shippings_' + no + '_OrderItems_';
-        })
-
-        // 商品検索
-        $('#searchProductModalButton').on('click', function() {
-            var list = $('#searchProductModalList');
-            list.children().remove();
-
-            $.ajax({
-                url: '{{ url('admin_order_search_product') }}',
-                type: 'POST',
-                dataType: 'html',
-                data: {
-                    'id': $('#admin_search_product_id').val(),
-                    'category_id': $('#admin_search_product_category_id').val()
-                }
-            }).done(function(data) {
-                $('#searchProductModalList').html(data);
-            }).fail(function(data) {
-                alert('search product failed.');
+        document.addEventListener('DOMContentLoaded', function() {
+            // 出荷日: 鉛筆アイコン押下で入力欄を表示する(誤操作防止).
+            document.addEventListener('click', function(e) {
+                var toggle = e.target.closest('.date-edit-toggle');
+                if (!toggle) return;
+                var col = toggle.closest('.col');
+                if (!col) return;
+                col.querySelectorAll('.date-edit-view').forEach(function(el) {
+                    el.classList.add('d-none');
+                });
+                col.querySelectorAll('.date-edit-input').forEach(function(el) {
+                    el.classList.remove('d-none');
+                });
             });
-        });
 
-        // その他明細
-        $('#addOrderItemType').on('show.bs.modal', function(e) {
-            var list = $('#searchOrderItemTypeList');
-            list.children().remove();
-
-            $.ajax({
-                url: '{{ url('admin_order_search_order_item_type') }}',
-                type: 'POST',
-                dataType: 'html'
-            }).done(function(data) {
-                $('#searchOrderItemTypeList').html(data);
-            }).fail(function(data) {
-                alert('search order item type failed.');
+            // 商品追加
+            document.querySelectorAll('.addProduct-button').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var no = this.dataset.shippingNo;
+                    $collectionHolder = document.getElementById('table-form-field_' + no);
+                    index = $collectionHolder.querySelectorAll('tbody > tr').length;
+                    formIdPrefix = '#form_shippings_' + no + '_OrderItems_';
+                });
             });
-        });
 
-        $(document).on('click', '.delete', function(e) {
-            // 商品削除
-            $(this).parents('tr').remove();
-            $("#form1").submit();
+            // その他明細追加
+            document.querySelectorAll('.addOtherProduct-button').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var no = this.dataset.shippingNo;
+                    $collectionHolder = document.getElementById('table-form-field_' + no);
+                    index = $collectionHolder.querySelectorAll('tbody > tr').length;
+                    formIdPrefix = '#form_shippings_' + no + '_OrderItems_';
+                });
+            });
 
-            return false;
-        });
-
-        $(document).on('click', '.delete-shipping', function(e) {
-            // お届け先削除
-            $(this).parents('div.card').remove();
-            $("#form1").submit();
-
-            return false;
-        });
-
-        {# TODO: 商品削除時に更新が走って画面上に行ってしまう。 #}
-        // 計算結果の更新が押されたらページ内リンクさせる
-        // $('.btn').click(function() {
-        //     var data = $(this).data();
-        //     if (data.link) {
-        //         $('#form1').attr('action', '#' + data.link).submit();
-        //         return false;
-        //     }
-        // });
-
-        // 配送業者選択時にお届け時間を設定
-        var times = {{ shippingDeliveryTimes|raw }};
-
-        $("select[id$='_Delivery']").on('change', function() {
-            var deliveryId = $(this).val();
-            var $shippingDeliveryTime = $(this).parents('.card-body').find("select[id$='_DeliveryTime']");
-            $shippingDeliveryTime.find('option').remove();
-            $shippingDeliveryTime.append($('<option></option>').val('').text('{{ 'admin.common.select__unspecified'|trans }}'));
-            if (typeof(times[deliveryId]) !== 'undefined') {
-                for (var timeId in times[deliveryId]) {
-                    timeValue = times[deliveryId][timeId];
-                    $shippingDeliveryTime.append($('<option></option>')
-                        .val(timeId)
-                        .text(timeValue));
-                }
+            // innerHTML ではなく createContextualFragment で <script> を実行しながら挿入するヘルパー
+            function setHtmlWithScripts(container, html) {
+                container.innerHTML = '';
+                container.appendChild(document.createRange().createContextualFragment(html));
             }
+
+            // 商品検索 (テンプレ条件で非表示の場合があるため null ガード)
+            var searchProductModalButton = document.getElementById('searchProductModalButton');
+            if (searchProductModalButton) {
+                searchProductModalButton.addEventListener('click', function() {
+                    document.getElementById('searchProductModalList').innerHTML = '';
+                    window.eccubeFetch('{{ url('admin_order_search_product') }}', {
+                        method: 'POST',
+                        body: new URLSearchParams({
+                            'id': document.getElementById('admin_search_product_id').value,
+                            'category_id': document.getElementById('admin_search_product_category_id').value
+                        })
+                    }).then(function(response) { return response.text(); })
+                    .then(function(data) {
+                        setHtmlWithScripts(document.getElementById('searchProductModalList'), data);
+                    }).catch(function() {
+                        alert('search product failed.');
+                    });
+                });
+            }
+
+            // 商品検索ページング (動的に追加される要素のため delegate)
+            document.addEventListener('click', function(e) {
+                var target = e.target.closest('#searchProductModalList ul.pagination li.page-item a.page-link');
+                if (!target) return;
+                e.preventDefault();
+                document.getElementById('searchProductModalList').innerHTML = '';
+                window.eccubeFetch(target.getAttribute('href'))
+                    .then(function(response) { return response.text(); })
+                    .then(function(data) {
+                        setHtmlWithScripts(document.getElementById('searchProductModalList'), data);
+                    }).catch(function() {
+                        alert('search product failed.');
+                    });
+            });
+
+            // その他明細
+            var addOrderItemTypeModal = document.getElementById('addOrderItemType');
+            if (addOrderItemTypeModal) {
+                addOrderItemTypeModal.addEventListener('show.bs.modal', function() {
+                    document.getElementById('searchOrderItemTypeList').innerHTML = '';
+                    window.eccubeFetch('{{ url('admin_order_search_order_item_type') }}', {
+                        method: 'POST'
+                    }).then(function(response) { return response.text(); })
+                    .then(function(data) {
+                        setHtmlWithScripts(document.getElementById('searchOrderItemTypeList'), data);
+                    }).catch(function() {
+                        alert('search order item type failed.');
+                    });
+                });
+            }
+
+            // 商品削除 (動的に追加される .delete のため delegate)
+            document.addEventListener('click', function(e) {
+                var target = e.target.closest('.delete');
+                if (!target) return;
+                e.preventDefault();
+                var tr = target.closest('tr');
+                if (tr) tr.remove();
+                document.getElementById('form1').submit();
+                return false;
+            });
+
+            // お届け先削除 (動的の場合に備え delegate)
+            document.addEventListener('click', function(e) {
+                var target = e.target.closest('.delete-shipping');
+                if (!target) return;
+                e.preventDefault();
+                var card = target.closest('div.card');
+                if (card) card.remove();
+                document.getElementById('form1').submit();
+                return false;
+            });
+
+            // 配送業者選択時にお届け時間を設定
+            var times = {{ shippingDeliveryTimes|raw }};
+            document.querySelectorAll("select[id$='_Delivery']").forEach(function(select) {
+                select.addEventListener('change', function() {
+                    var deliveryId = this.value;
+                    var shippingDeliveryTime = this.closest('.card-body').querySelector("select[id$='_DeliveryTime']");
+                    shippingDeliveryTime.innerHTML = '';
+                    var defaultOption = document.createElement('option');
+                    defaultOption.value = '';
+                    defaultOption.textContent = '{{ 'admin.common.select__unspecified'|trans }}';
+                    shippingDeliveryTime.appendChild(defaultOption);
+                    if (typeof(times[deliveryId]) !== 'undefined') {
+                        for (var timeId in times[deliveryId]) {
+                            var option = document.createElement('option');
+                            option.value = timeId;
+                            option.textContent = times[deliveryId][timeId];
+                            shippingDeliveryTime.appendChild(option);
+                        }
+                    }
+                });
+            });
+
+            document.getElementById('addShipping').addEventListener('click', function() {
+                document.getElementById('form_add_shipping').value = '1';
+                document.getElementById('form1').submit();
+                return false;
+            });
+
+            // 完了ボタン
+            document.getElementById('bulkChangeComplete').addEventListener('click', function() {
+                location.href = '{{ url('admin_shipping_edit', { 'id': Order.id }) }}';
+            });
+
+            // PDF出力(単一)
+            document.querySelectorAll('.pdf-print').forEach(function(el) {
+                el.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.open(this.href, 'newwin', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=700, height=700');
+                });
+            });
+
+            // モーダル注意文言の削除
+            document.getElementById('bulkChange').addEventListener('click', function() {
+                document.querySelectorAll('.warning-message').forEach(function(el) {
+                    el.style.display = 'none';
+                });
+            });
         });
-
-        $('#addShipping').on('click', function() {
-            $('#form_add_shipping').val("1");
-            $("#form1").submit();
-
-            return false;
-        })
-
-        // 完了ボタン
-        $('#bulkChangeComplete').on('click', function() {
-            location.href = '{{ url('admin_shipping_edit', { 'id': Order.id }) }}';
-        });
-
-        // PDF出力(単一)
-        $('.pdf-print').click(function() {
-            window.open(this.href, 'newwin', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=700, height=700');
-            return false;
-        });
-
-        // モーダル注意文言の削除
-        $('#bulkChange').on('click', function() {
-            $('.warning-message').css('display', 'none');
-        })
     </script>
 
     {{ include('@admin/Order/confirmationModal_js.twig') }}

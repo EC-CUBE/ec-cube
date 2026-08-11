@@ -19,9 +19,13 @@ file that was distributed with this source code.
 
 {% block javascript %}
     <script>
-        $(function () {
-            $('#form1').on('submit', function () {
-                $('#form_selected').val($('input[name=template]:checked').val());
+        document.addEventListener('DOMContentLoaded', function() {
+            var form = document.getElementById('form1');
+            if (!form) return;
+            form.addEventListener('submit', function() {
+                var selectedEl = document.getElementById('form_selected');
+                var checked = document.querySelector('input[name=template]:checked');
+                if (selectedEl && checked) selectedEl.value = checked.value;
             });
         });
     </script>

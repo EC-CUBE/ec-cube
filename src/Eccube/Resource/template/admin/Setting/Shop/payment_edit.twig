@@ -19,11 +19,12 @@ file that was distributed with this source code.
 
 {% block javascript %}
     <script>
-        $(document).on('drop dragover', function(e) {
-            e.preventDefault();
-        });
+        document.addEventListener('drop', function(e) { e.preventDefault(); });
+        document.addEventListener('dragover', function(e) { e.preventDefault(); });
 
-        $(function() {
+        document.addEventListener('DOMContentLoaded', function() {
+            var csrfMeta = document.querySelector('meta[name="eccube-csrf-token"]');
+            var csrfToken = csrfMeta ? csrfMeta.getAttribute('content') : '';
             // ファイルアップロード
             // see https://pqina.nl/filepond/
             var inputFileElement = document.querySelector('input[type=file]');
@@ -35,7 +36,7 @@ file that was distributed with this source code.
                     process: {
                         url: '{{ path('admin_payment_image_process') }}',
                         headers: {
-                            'ECCUBE-CSRF-TOKEN': $('meta[name="eccube-csrf-token"]').attr('content'),
+                            'ECCUBE-CSRF-TOKEN': csrfToken,
                             'X-Requested-With': 'XMLHttpRequest'
                         }
                     },
@@ -48,7 +49,7 @@ file that was distributed with this source code.
                     revert: {
                         url: '{{ path('admin_payment_image_revert') }}',
                         headers: {
-                            'ECCUBE-CSRF-TOKEN': $('meta[name="eccube-csrf-token"]').attr('content'),
+                            'ECCUBE-CSRF-TOKEN': csrfToken,
                             'X-Requested-With': 'XMLHttpRequest'
                         }
                     }
@@ -80,20 +81,26 @@ file that was distributed with this source code.
                 ]
             });
             pond.on('initfile', function() {
-                $('#product_image_error').hide();
+                var el = document.getElementById('payment_image_error');
+                if (el) el.style.display = 'none';
             });
             pond.on('error', function(error, file) {
                 var message = '{{ 'admin.common.upload_error'|trans }}';
                 if (error.main !== undefined) {
                     message = `${error.main}: ${error.sub}`;
                 }
-                $('#payment_image_error')
-                    .show()
-                    .find('.form-error-message').text(message);
+                var errEl = document.getElementById('payment_image_error');
+                if (errEl) {
+                    // Bootstrap 5 の .invalid-feedback は CSS で display: none のため
+                    // 空文字 ('') では display: none が残る. 明示的に block を指定する.
+                    errEl.style.display = 'block';
+                    var msgEl = errEl.querySelector('.form-error-message');
+                    if (msgEl) msgEl.textContent = message;
+                }
 
                 // エラーメッセージが表示されてからプレビューエリアのエラーメッセージを非表示にする
                 setTimeout(function() {
-                    $('.filepond--file-status').hide();
+                    document.querySelectorAll('.filepond--file-status').forEach(function(el) { el.style.display = 'none'; });
                 }, 300);
             });
 
@@ -102,7 +109,8 @@ file that was distributed with this source code.
                 if (error) {
                     console.log(error);
                 } else {
-                    $('#{{ form.payment_image.vars.id }}').val(file.serverId);
+                    var el = document.getElementById('{{ form.payment_image.vars.id }}');
+                    if (el) el.value = file.serverId;
                 }
             });
             // 画像が削除されたら payment_image のファイル名を削除する
@@ -110,7 +118,8 @@ file that was distributed with this source code.
                 if (error) {
                     console.log(error);
                 } else {
-                    $('#{{ form.payment_image.vars.id }}').val('');
+                    var el = document.getElementById('{{ form.payment_image.vars.id }}');
+                    if (el) el.value = '';
                 }
             });
         });

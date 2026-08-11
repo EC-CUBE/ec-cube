@@ -17,9 +17,11 @@
 
 {% block stylesheet %}
     <style>
-        .ui-resizable-se {
-            right: -3px;
-            bottom: -3px;
+        /* ネイティブの resize handle が見えるように overflow を制限 */
+        #editor {
+            resize: vertical;
+            overflow: hidden;
+            min-height: 200px;
         }
     </style>
 {% endblock %}
@@ -38,33 +40,41 @@
             showInvisibles: true
         });
 
-        $("#editor").resizable({
-            resize: function (event, ui) {
+        var editorEl = document.getElementById('editor');
+        if (editorEl && typeof ResizeObserver !== 'undefined') {
+            var resizeObserver = new ResizeObserver(function() {
                 editor.resize();
-            }
-        });
+            });
+            resizeObserver.observe(editorEl);
+        }
 
-        var $save_button = $('#save-button');
-        editor.getSession().on("changeAnnotation", function(){
+        var saveButton = document.getElementById('save-button');
+        editor.getSession().on('changeAnnotation', function() {
             var annot = editor.getSession().getAnnotations();
-            for (var key in annot){
+            for (var key in annot) {
                 if (annot.hasOwnProperty(key)) {
                     console.log(annot[key]);
                     if (annot[key].type && annot[key].type == 'error') {
-                        $save_button.prop('disabled', true);
+                        if (saveButton) saveButton.disabled = true;
                         break;
                     } else {
-                        $save_button.prop('disabled', false);
+                        if (saveButton) saveButton.disabled = false;
                     }
                 }
             }
             if (typeof(annot) == 'object' && annot.length < 1) {
-                $save_button.prop('disabled', false);
+                if (saveButton) saveButton.disabled = false;
             }
         });
-        $('#content_css_form').on('submit', function(elem) {
-            $('#form_css').val(editor.getValue());
-        });
+        var cssForm = document.getElementById('content_css_form');
+        if (cssForm) {
+            cssForm.addEventListener('submit', function() {
+                var hidden = document.getElementById('form_css');
+                if (hidden) {
+                    hidden.value = editor.getValue();
+                }
+            });
+        }
     </script>
 {% endblock %}
 {% block main %}

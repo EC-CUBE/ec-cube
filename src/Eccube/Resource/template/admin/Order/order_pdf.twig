@@ -38,13 +38,10 @@ file that was distributed with this source code.
 
 {% block javascript %}
     <script type="text/javascript">
-        $(function() {
-            var close = $('#windowclose');
-
-            $('.btn-ec-regular').on('click', function() {
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelector('.btn-ec-regular').addEventListener('click', function() {
                 window.open('about:blank', '_self').close();
             });
-
         });
 
         Ladda.bind('button[type="submit"]', {timeout: 3000});

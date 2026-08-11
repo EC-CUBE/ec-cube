@@ -19,20 +19,23 @@ file that was distributed with this source code.
 
 {% block javascript %}
     <script>
+        // Twig の auto-escape で `<head></head>タグ内` 等が `&lt;` 等の HTML エンティティに
+        // 変換されると, `opt.textContent = ...` でリテラル表示されてしまうため,
+        // json_encode_safe で JS 文字列リテラルとして出力する.
         var sections = {
-            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_UNUSED') }} : '{{ 'admin.content.layout_section__unused'|trans }}',
-            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_HEAD') }} : '{{ 'admin.content.layout_section__head'|trans }}',
-            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_BODY_AFTER') }} : '{{ 'admin.content.layout_section__body_after'|trans }}',
-            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_HEADER') }} : '{{ 'admin.content.layout_section__header'|trans }}',
-            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_CONTENTS_TOP') }} : '{{ 'admin.content.layout_section__contents_top'|trans }}',
-            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_SIDE_LEFT') }} : '{{ 'admin.content.layout_section__side_left'|trans }}',
-            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_MAIN_TOP') }} : '{{ 'admin.content.layout_section__main_top'|trans }}',
-            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_MAIN_BOTTOM') }} : '{{ 'admin.content.layout_section__main_bottom'|trans }}',
-            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_SIDE_RIGHT') }} : '{{ 'admin.content.layout_section__side_right'|trans }}',
-            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_CONTENTS_BOTTOM') }} : '{{ 'admin.content.layout_section__contents_bottom'|trans }}',
-            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_FOOTER') }} : '{{ 'admin.content.layout_section__footer'|trans }}',
-            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_DRAWER') }} : '{{ 'admin.content.layout_section__drawer'|trans }}',
-            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_CLOSE_BODY_BEFORE') }} : '{{ 'admin.content.layout_section__close_body_before'|trans }}'
+            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_UNUSED') }} : {{ 'admin.content.layout_section__unused'|trans|json_encode_safe }},
+            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_HEAD') }} : {{ 'admin.content.layout_section__head'|trans|json_encode_safe }},
+            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_BODY_AFTER') }} : {{ 'admin.content.layout_section__body_after'|trans|json_encode_safe }},
+            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_HEADER') }} : {{ 'admin.content.layout_section__header'|trans|json_encode_safe }},
+            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_CONTENTS_TOP') }} : {{ 'admin.content.layout_section__contents_top'|trans|json_encode_safe }},
+            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_SIDE_LEFT') }} : {{ 'admin.content.layout_section__side_left'|trans|json_encode_safe }},
+            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_MAIN_TOP') }} : {{ 'admin.content.layout_section__main_top'|trans|json_encode_safe }},
+            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_MAIN_BOTTOM') }} : {{ 'admin.content.layout_section__main_bottom'|trans|json_encode_safe }},
+            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_SIDE_RIGHT') }} : {{ 'admin.content.layout_section__side_right'|trans|json_encode_safe }},
+            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_CONTENTS_BOTTOM') }} : {{ 'admin.content.layout_section__contents_bottom'|trans|json_encode_safe }},
+            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_FOOTER') }} : {{ 'admin.content.layout_section__footer'|trans|json_encode_safe }},
+            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_DRAWER') }} : {{ 'admin.content.layout_section__drawer'|trans|json_encode_safe }},
+            {{ constant('Eccube\\Entity\\Layout::TARGET_ID_CLOSE_BODY_BEFORE') }} : {{ 'admin.content.layout_section__close_body_before'|trans|json_encode_safe }}
         };
 
         // use for layout_design.js
@@ -42,87 +45,159 @@ file that was distributed with this source code.
     </script>
     <script src="{{ asset('assets/js/layout_design.js', 'admin') }}"></script>
     <script>
-        $(function(){
-            $('.block-context-menu').popover({
-                placement: 'bottom',
-                html: true,
-                container: 'body',
-                content: function () {
-                    return $('#context-menu').html();
+        document.addEventListener('DOMContentLoaded', function() {
+            var contextMenuHtml = (document.getElementById('context-menu') || {}).innerHTML || '';
+
+            function siblingMatching(el, direction, selector) {
+                // prev: previousElementSibling, next: nextElementSibling を selector で絞り込む
+                var walker = direction === 'prev' ? el.previousElementSibling : el.nextElementSibling;
+                while (walker) {
+                    if (walker.matches && walker.matches(selector)) return walker;
+                    walker = direction === 'prev' ? walker.previousElementSibling : walker.nextElementSibling;
                 }
-            }).on('shown.bs.popover', function () {
-                $('.block-context-menu').not(this).popover('hide');
-                var $menu = $(this);
-                var $block = $menu.closest('[id^="detail_box__layout_item"]');
-                var block = {
-                    'menu': $menu,
-                    'current': $block,
-                    'prev': $block.prev('[id^="detail_box__layout_item"]'),
-                    'next': $block.next('[id^="detail_box__layout_item"]')
-                };
-                $('.context-moveup').on('click', block, function() {
-                    if (block.prev.length) {
-                        block.current.insertBefore(block.prev);
-                        block.menu.popover('hide');
-                        window.updateUpDown($block.parent('.ui-sortable').first());
-                    }
+                return null;
+            }
+
+            function hideOtherPopovers(currentEl) {
+                document.querySelectorAll('.block-context-menu').forEach(function(el) {
+                    if (el === currentEl) return;
+                    var instance = bootstrap.Popover.getInstance(el);
+                    if (instance) instance.hide();
                 });
-                $('.context-movedown').on('click', block, function() {
-                    if (block.next.length) {
-                        block.current.insertAfter(block.next);
-                        block.menu.popover('hide');
-                        window.updateUpDown($block.parent('.ui-sortable').first());
-                    }
-                });
-                $('.context-movesection').off('click').on('click', block, function() {
-                    var bootstrapModal = new bootstrap.Modal($('#clickStreamConfirm').get(0));
-                    bootstrapModal.show();
-                    $('#target-block').val($(block.current).attr('id'));
-                    block.menu.popover('hide');
-                });
-                $('#clickStreamConfirm').off('show.bs.modal').on('show.bs.modal', function(event) {
-                    $('#move-section').children('option').remove();
+            }
+
+            function bindContextMenuHandlers(popoverTarget, block) {
+                // BS5 が popover 表示時にトリガへ付与する aria-describedby から対象 popover を特定する.
+                // `.popover .list-group` の最後を拾う方法は他 popover の閉鎖アニメ中に
+                // 別 popover の DOM が混入し誤った要素にハンドラを付ける恐れがあるため避ける.
+                var popoverId = popoverTarget.getAttribute('aria-describedby');
+                var popoverEl = popoverId ? document.getElementById(popoverId) : null;
+                var openMenu = popoverEl ? popoverEl.querySelector('.list-group') : null;
+                if (!openMenu) return;
+
+                var moveupBtn = openMenu.querySelector('.context-moveup');
+                if (moveupBtn) {
+                    moveupBtn.addEventListener('click', function() {
+                        if (block.prev) {
+                            block.prev.parentNode.insertBefore(block.current, block.prev);
+                            var instance = bootstrap.Popover.getInstance(popoverTarget);
+                            if (instance) instance.hide();
+                            var sortable = block.current.closest('.ui-sortable');
+                            if (sortable) window.updateUpDown(sortable);
+                        }
+                    });
+                }
+
+                var movedownBtn = openMenu.querySelector('.context-movedown');
+                if (movedownBtn) {
+                    movedownBtn.addEventListener('click', function() {
+                        if (block.next) {
+                            // insertAfter 相当: next の次の兄弟の前に挿入
+                            block.next.parentNode.insertBefore(block.current, block.next.nextSibling);
+                            var instance = bootstrap.Popover.getInstance(popoverTarget);
+                            if (instance) instance.hide();
+                            var sortable = block.current.closest('.ui-sortable');
+                            if (sortable) window.updateUpDown(sortable);
+                        }
+                    });
+                }
+
+                var movesectionBtn = openMenu.querySelector('.context-movesection');
+                if (movesectionBtn) {
+                    movesectionBtn.addEventListener('click', function() {
+                        var modalEl = document.getElementById('clickStreamConfirm');
+                        if (!modalEl) return;
+                        var bootstrapModal = new bootstrap.Modal(modalEl);
+                        bootstrapModal.show();
+                        var targetBlockInput = document.getElementById('target-block');
+                        if (targetBlockInput) targetBlockInput.value = block.current.id;
+                        var instance = bootstrap.Popover.getInstance(popoverTarget);
+                        if (instance) instance.hide();
+                    });
+                }
+
+                var previewBtn = openMenu.querySelector('.context-preview');
+                if (previewBtn) {
+                    previewBtn.addEventListener('click', function() {
+                        var modalEl = document.getElementById('codePreview');
+                        if (!modalEl) return;
+                        // 現在のブロックを modal に紐づけるため dataset に保持
+                        modalEl.dataset.currentBlockId = block.current.id;
+                        var bootstrapModal = new bootstrap.Modal(modalEl);
+                        bootstrapModal.show();
+                        var instance = bootstrap.Popover.getInstance(popoverTarget);
+                        if (instance) instance.hide();
+                    });
+                }
+            }
+
+            // clickStreamConfirm の show イベントで select オプションを再構築
+            var clickStreamConfirm = document.getElementById('clickStreamConfirm');
+            if (clickStreamConfirm) {
+                clickStreamConfirm.addEventListener('show.bs.modal', function() {
+                    var select = document.getElementById('move-section');
+                    if (!select) return;
+                    select.querySelectorAll('option').forEach(function(opt) { opt.remove(); });
                     for (var target_id in sections) {
-                        $('#move-section').append('<option value="' + target_id + '">' + sections[target_id] + '</option>');
+                        var opt = document.createElement('option');
+                        opt.value = target_id;
+                        opt.textContent = sections[target_id];
+                        select.appendChild(opt);
                     }
                 });
-                $('#move-to-section').on('click', function() {
-                    var $position = $('#position_' + $('#move-section').val());
-                    var $target = $('#' + $('#target-block').val());
-                    var $parent = $target.parent();
+            }
 
-                    $position.append($target);
-                    window.updateUpDown($position);
-                    window.updateUpDown($parent);
+            var moveToSection = document.getElementById('move-to-section');
+            if (moveToSection) {
+                moveToSection.addEventListener('click', function() {
+                    var sectionVal = (document.getElementById('move-section') || {}).value;
+                    var targetBlockId = (document.getElementById('target-block') || {}).value;
+                    var position = document.getElementById('position_' + sectionVal);
+                    var target = document.getElementById(targetBlockId);
+                    if (!position || !target) return;
+                    var parent = target.parentNode;
 
-                    if ($position.children('.block').length > 0) {
-                        // hide placeholder
-                        $position.children('.target-placeholder').remove();
+                    position.appendChild(target);
+                    window.updateUpDown(position);
+                    if (parent) window.updateUpDown(parent);
+
+                    if (position.querySelectorAll(':scope > .block').length > 0) {
+                        position.querySelectorAll(':scope > .target-placeholder').forEach(function(ph) { ph.remove(); });
                     }
-                    if ($parent.children('.block').length <= 0) {
-                        // show placeholder
-                        $parent.append($('#target-placeholder').html());
+                    if (parent && parent.querySelectorAll(':scope > .block').length <= 0) {
+                        var tpl = document.getElementById('target-placeholder');
+                        if (tpl) parent.insertAdjacentHTML('beforeend', tpl.innerHTML);
                     }
                 });
+            }
 
-                $('.context-preview').off('click').on('click', block, function() {
-                    var bootstrapModal = new bootstrap.Modal($('#codePreview').get(0));
-                    bootstrapModal.show();
-                    block.menu.popover('hide');
-                });
+            // codePreview モーダルの show イベントで AceEditor 初期化＋ソース取得
+            var codePreview = document.getElementById('codePreview');
+            if (codePreview) {
+                codePreview.addEventListener('show.bs.modal', function() {
+                    var currentId = codePreview.dataset.currentBlockId;
+                    if (!currentId) return;
+                    var current = document.getElementById(currentId);
+                    if (!current) return;
+                    var match = current.id.match(/^detail_box__layout_item--([0-9]+)/);
+                    if (!match) return;
+                    var blockId = match[1];
+                    var blockEdit = codePreview.querySelector('#block-edit');
+                    if (blockEdit) {
+                        // 初回オープン時に元の onclick テンプレートを退避し,
+                        // 2 回目以降は常にそこから組み立て直す (前回置換した ID で固定化されるのを防ぐ).
+                        if (!blockEdit.dataset.onclickTemplate) {
+                            blockEdit.dataset.onclickTemplate = blockEdit.getAttribute('onclick') || '';
+                        }
+                        var onclick = blockEdit.dataset.onclickTemplate
+                            .replace(/{{ constant('Eccube\\Controller\\Admin\\Content\\LayoutController::DUMMY_BLOCK_ID') }}/, blockId);
+                        blockEdit.setAttribute('onclick', onclick);
+                    }
 
-                $('#codePreview').off('show.bs.modal').on('show.bs.modal', block, function(event) {
-                    var attr_id = block.current.attr('id').match(/^detail_box__layout_item--([0-9]+)/);
-                    var block_id = attr_id[1];
-                    var $modal = $(this);
-                    var $block_edit = $modal.find('#block-edit');
-                    var onclick = $block_edit.attr('onclick').replace(/{{ constant('Eccube\\Controller\\Admin\\Content\\LayoutController::DUMMY_BLOCK_ID') }}/, block_id);
-                    $block_edit.attr('onclick', onclick);
-
-                    ace.require("ace/ext/language_tools");
-                    var editor = ace.edit("block-source-code");
-                    editor.session.setMode("ace/mode/twig");
-                    editor.setTheme("ace/theme/tomorrow");
+                    ace.require('ace/ext/language_tools');
+                    var editor = ace.edit('block-source-code');
+                    editor.session.setMode('ace/mode/twig');
+                    editor.setTheme('ace/theme/tomorrow');
                     editor.setOptions({
                         readOnly: true,
                         autoScrollEditorIntoView: true,
@@ -130,48 +205,89 @@ file that was distributed with this source code.
                         maxLines: 20
                     });
 
-                    $.ajax({
-                        url: '{{ url('admin_content_layout_view_block') }}',
-                        type: 'GET',
-                        data: {
-                            id: block_id
+                    var csrfMeta = document.querySelector('meta[name="eccube-csrf-token"]');
+                    var csrfToken = csrfMeta ? csrfMeta.content : '';
+                    var url = '{{ url('admin_content_layout_view_block') }}' + '?id=' + encodeURIComponent(blockId);
+                    fetch(url, {
+                        method: 'GET',
+                        headers: {
+                            'Accept': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'ECCUBE-CSRF-TOKEN': csrfToken
                         }
-                    }).done(function(json, statusText, jqXHR) {
+                    }).then(function(response) {
+                        if (!response.ok) {
+                            throw new Error(response.statusText || 'http error');
+                        }
+                        return response.json();
+                    }).then(function(json) {
                         editor.setValue(json.source);
                         editor.gotoLine(1);
                         editor.scrollToLine(1);
-                    }).fail(function(jqXHR, statusText, errorThrown) {
-                        editor.setValue(statusText + ' ' + errorThrown);
+                    }).catch(function(err) {
+                        editor.setValue(err && err.message ? err.message : 'error');
                     });
+                });
+            }
+
+            // Popover 初期化
+            document.querySelectorAll('.block-context-menu').forEach(function(target) {
+                var popover = new bootstrap.Popover(target, {
+                    placement: 'bottom',
+                    html: true,
+                    container: 'body',
+                    content: function() { return contextMenuHtml; }
+                });
+                target.addEventListener('shown.bs.popover', function() {
+                    hideOtherPopovers(target);
+                    var blockEl = target.closest('[id^="detail_box__layout_item"]');
+                    if (!blockEl) return;
+                    var block = {
+                        current: blockEl,
+                        prev: siblingMatching(blockEl, 'prev', '[id^="detail_box__layout_item"]'),
+                        next: siblingMatching(blockEl, 'next', '[id^="detail_box__layout_item"]')
+                    };
+                    bindContextMenuHandlers(target, block);
                 });
             });
         });
     </script>
     <script>
-        // プレビューボタンクリック時
-        {% if Layout.id -%}
-        $('#preview-button').on('click', function(){
-            var page_id = $('#{{ form.Page.vars.id }}').val();
-            if (!page_id) {
-                alert("{{ 'admin.content.layout_preview_select_page'|trans }}");
-                return false;
+        document.addEventListener('DOMContentLoaded', function() {
+            // プレビューボタンクリック時
+            {% if Layout.id -%}
+            var previewButton = document.getElementById('preview-button');
+            var form1 = document.getElementById('form1');
+            if (previewButton && form1) {
+                previewButton.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    var pageSelect = document.getElementById('{{ form.Page.vars.id }}');
+                    var page_id = pageSelect ? pageSelect.value : '';
+                    if (!page_id) {
+                        alert("{{ 'admin.content.layout_preview_select_page'|trans }}");
+                        return false;
+                    }
+
+                    form1.setAttribute('action', "{{ url('admin_content_layout_preview', {id: Layout.id}) }}");
+                    form1.setAttribute('target', '_blank');
+                    form1.submit();
+
+                    // submit後に元に戻す
+                    form1.setAttribute('action', "{{ url('admin_content_layout_edit', {id: Layout.id}) }}");
+                    form1.setAttribute('target', '_self');
+
+                    return false;
+                });
             }
+            {% endif %}
 
-            $('#form1').attr('action', "{{ url('admin_content_layout_preview', {id: Layout.id}) }}");
-            $('#form1').attr('target', '_blank');
-            $('#form1').submit();
-
-            // submit後に元に戻す
-            $('#form1').attr('action', "{{ url('admin_content_layout_edit', {id: Layout.id}) }}");
-            $('#form1').attr('target', '_self');
-
-            return false;
-        });
-        {% endif %}
-
-        // searchWordの実行
-        $('#search-block').on('input', function () {
-            searchWord($(this).val(), $('#unused-block .sort'));
+            // searchWordの実行
+            var searchBlock = document.getElementById('search-block');
+            if (searchBlock) {
+                searchBlock.addEventListener('input', function() {
+                    searchWord(searchBlock.value, document.querySelectorAll('#unused-block .sort'));
+                });
+            }
         });
     </script>
 {% endblock javascript %}

@@ -48,61 +48,93 @@ file that was distributed with this source code.
         xhr.send();
     }
 
-    $('#captcha').on('show.bs.modal', function() {
-        refreshCaptchaImage();
-    });
-
-    function tryGenerateApiKey(){
-        $.ajax({
-            type: 'POST',
-            url: "{{ eccube_config.eccube_package_api_url }}/api_key",
-            dataType: 'json',
-            cache: false,
-            data: {
-                "captcha_id": $('#captcha_id').val(),
-                "captcha": $('#captcha_text').val(),
-                "eccube_url": '{{ eccubeUrl }}',
-                "eccube_version": "{{ constant('Eccube\\Common\\Constant::VERSION') }}",
-                "eccube_shop_name": "{{ eccubeShopName|escape('js') }}"
-            }
-        }).done(function(data) {
-            $('#captcha').modal('hide');
-            $('#admin_authentication_authentication_key').val(data.api_key);
-            $('#form').submit();
-        }).fail(function(res) {
-            if (res.status == 400) {
-                $('#captcha_error').show();
+    document.addEventListener('DOMContentLoaded', function() {
+        var captchaModal = document.getElementById('captcha');
+        if (captchaModal) {
+            captchaModal.addEventListener('show.bs.modal', function() {
                 refreshCaptchaImage();
-            } else {
-                alert('{{ 'admin.common.system_error'|trans }}');
-            }
-        });
-    }
-
-    $("#captcha_text").on("keydown", function(e) {
-        if ((e.which && e.which === 13) || (e.keyCode && e.keyCode === 13)) {
-            tryGenerateApiKey();
-            $(this).val('');
-            return false;
+            });
         }
-    });
 
-    $('#generate_key').on('click', function() {
-        tryGenerateApiKey();
-        $("#captcha_text").val('');
-        return false;
-    });
-    $('#captcha-refresh').on('click', refreshCaptchaImage);
+        function tryGenerateApiKey() {
+            var body = new URLSearchParams();
+            body.append('captcha_id', document.getElementById('captcha_id').value);
+            body.append('captcha', document.getElementById('captcha_text').value);
+            body.append('eccube_url', '{{ eccubeUrl }}');
+            body.append('eccube_version', "{{ constant('Eccube\\Common\\Constant::VERSION') }}");
+            body.append('eccube_shop_name', "{{ eccubeShopName|escape('js') }}");
 
-    // 注意喚起モーダルで「発行手続きへ進む」を押したら、閉じてからCAPTCHAモーダルを開く
-    // フェードアウト中もボタンは押せるため、連打でハンドラが積み重ならないよう
-    // 専用の名前空間 (.proceed) で登録前に解除しておく
-    $('#proceed_to_captcha').on('click', function() {
-        var $confirm = $('#authentication_key_confirm');
-        $confirm.off('hidden.bs.modal.proceed').one('hidden.bs.modal.proceed', function() {
-            $('#captcha').modal('show');
-        });
-        $confirm.modal('hide');
+            fetch("{{ eccube_config.eccube_package_api_url }}/api_key", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: body.toString(),
+                cache: 'no-cache'
+            }).then(function(res) {
+                if (res.ok) {
+                    return res.json().then(function(data) {
+                        bootstrap.Modal.getInstance(document.getElementById('captcha'))?.hide();
+                        document.getElementById('admin_authentication_authentication_key').value = data.api_key;
+                        document.getElementById('form').submit();
+                    });
+                }
+                if (res.status === 400) {
+                    document.getElementById('captcha_error').style.display = '';
+                    refreshCaptchaImage();
+                } else {
+                    alert('{{ 'admin.common.system_error'|trans }}');
+                }
+            }).catch(function() {
+                alert('{{ 'admin.common.system_error'|trans }}');
+            });
+        }
+
+        var captchaText = document.getElementById('captcha_text');
+        if (captchaText) {
+            captchaText.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.keyCode === 13) {
+                    tryGenerateApiKey();
+                    this.value = '';
+                    e.preventDefault();
+                    return false;
+                }
+            });
+        }
+
+        var generateBtn = document.getElementById('generate_key');
+        if (generateBtn) {
+            generateBtn.addEventListener('click', function() {
+                tryGenerateApiKey();
+                if (captchaText) captchaText.value = '';
+                return false;
+            });
+        }
+
+        var refreshBtn = document.getElementById('captcha-refresh');
+        if (refreshBtn) refreshBtn.addEventListener('click', refreshCaptchaImage);
+
+        // 注意喚起モーダルで「発行手続きへ進む」を押したら、閉じてからCAPTCHAモーダルを開く
+        // フェードアウト中もボタンは押せるため、連打でハンドラが積み重ならないよう
+        // 登録前に同じハンドラを解除しておく
+        var proceedBtn = document.getElementById('proceed_to_captcha');
+        if (proceedBtn) {
+            var showCaptchaModal = function() {
+                if (captchaModal) {
+                    bootstrap.Modal.getOrCreateInstance(captchaModal).show();
+                }
+            };
+            proceedBtn.addEventListener('click', function() {
+                var confirmModal = document.getElementById('authentication_key_confirm');
+                if (!confirmModal) {
+                    return;
+                }
+                confirmModal.removeEventListener('hidden.bs.modal', showCaptchaModal);
+                confirmModal.addEventListener('hidden.bs.modal', showCaptchaModal, { once: true });
+                bootstrap.Modal.getOrCreateInstance(confirmModal).hide();
+            });
+        }
     });
 </script>
 {% endblock %}

@@ -25,9 +25,13 @@ file that was distributed with this source code.
 
 {% block javascript %}
     <script>
-        // searchWordの実行
-        $('#search-block').on('input', function() {
-            searchWord($(this).val(), $(".list-group li"));
+        document.addEventListener('DOMContentLoaded', function() {
+            var searchBlock = document.getElementById('search-block');
+            if (searchBlock) {
+                searchBlock.addEventListener('input', function() {
+                    searchWord(searchBlock.value, document.querySelectorAll('.list-group li'));
+                });
+            }
         });
     </script>
 {% endblock javascript %}

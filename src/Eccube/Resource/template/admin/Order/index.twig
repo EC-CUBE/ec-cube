@@ -17,125 +17,138 @@ file that was distributed with this source code.
 {% form_theme searchForm '@admin/Form/bootstrap_4_layout.html.twig' %}
 {% block javascript %}
     <script>
-        $(function() {
+        document.addEventListener('DOMContentLoaded', function() {
             toggleBtnBulk('input[id^="check_"]', '.btn-bulk-wrapper');
-            $('input[id^="check_"]').on('change', function() {
-                $('#toggle_check_all').prop('checked', false);
-                toggleBtnBulk('input[id^="check_"]', '.btn-bulk-wrapper');
+            document.querySelectorAll('input[id^="check_"]').forEach(function(el) {
+                el.addEventListener('change', function() {
+                    document.getElementById('toggle_check_all').checked = false;
+                    toggleBtnBulk('input[id^="check_"]', '.btn-bulk-wrapper');
+                });
             });
 
             // 登録チェックボックス
-            $('#toggle_check_all').on('change', function() {
-                var checked = $(this).prop('checked');
-                if (checked) {
-                    $('input[id^="check_"]').prop('checked', true);
-                } else {
-                    $('input[id^="check_"]').prop('checked', false);
-                }
+            document.getElementById('toggle_check_all').addEventListener('change', function() {
+                var checked = this.checked;
+                document.querySelectorAll('input[id^="check_"]').forEach(function(el) {
+                    el.checked = checked;
+                });
                 toggleBtnBulk('input[id^="check_"]', '.btn-bulk-wrapper');
             });
 
-            $('#btn_bulk_delete').on('click', function(event) {
+            document.getElementById('btn_bulk_delete').addEventListener('click', function(event) {
                 event.preventDefault();
-                $('#form_bulk').attr('action', "{{ url('admin_order_bulk_delete') }}").submit();
+                var form = document.getElementById('form_bulk');
+                form.action = "{{ url('admin_order_bulk_delete') }}";
+                form.submit();
                 return false;
             });
 
             // PDF出力(複数)
-            $('#bulkExportPdf').on('click', function(event) {
+            document.getElementById('bulkExportPdf').addEventListener('click', function(event) {
                 window.open('', 'newwin', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=700, height=700');
-                $('#form_bulk').attr('action', "{{ url('admin_order_export_pdf') }}");
-                $('#form_bulk').attr('target', 'newwin');
-                $('#form_bulk').submit();
+                var form = document.getElementById('form_bulk');
+                form.action = "{{ url('admin_order_export_pdf') }}";
+                form.target = 'newwin';
+                form.submit();
                 return false;
             });
 
             // PDF出力(単一)
-            $('.pdf-print').click(function() {
-                window.open(this.href, 'newwin', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=700, height=700');
-                return false;
+            document.querySelectorAll('.pdf-print').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    window.open(this.href, 'newwin', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=700, height=700');
+                    return false;
+                });
             });
 
             // 送り状番号
             var updateTrackingNumber = function(id, url, tracking_number, callback) {
-                $.ajax({
-                    type: 'PUT',
-                    url: url,
-                    data: {'tracking_number': tracking_number}
-                }).done(function(data, textStatus, jqXHR) {
+                window.eccubeFetch(url, {
+                    method: 'PUT',
+                    body: new URLSearchParams({'tracking_number': tracking_number})
+                }).then(function(response) {
+                    if (!response.ok) {
+                        return response.json().then(function(body) { return Promise.reject(body); });
+                    }
+                    return response.json();
+                }).then(function(data) {
                     if (data['status'] == 'OK') {
-                        $('#tracking_number_' + id).val(data['tracking_number']);
+                        document.getElementById('tracking_number_' + id).value = data['tracking_number'];
                         if (typeof callback == 'function') {
                             callback();
                         }
                     } else {
                         alert('Update failed.');
                     }
-                    return true;
-                }).fail(function(jqXHR, textStatus, errorThrown) {
-                    var response = JSON.parse(jqXHR.responseText);
+                }).catch(function(body) {
                     var messages = '';
-                    for (var i = 0; i < response.messages.length; i++) {
-                        messages += response.messages[i] + "\n";
+                    if (body && Array.isArray(body.messages)) {
+                        for (var i = 0; i < body.messages.length; i++) {
+                            messages += body.messages[i] + "\n";
+                        }
                     }
-                    alert(messages);
-                    return false;
+                    alert(messages || 'Update failed.');
                 });
             };
 
-            $('button.update_tracking_number').prop('disabled', true);
+            document.querySelectorAll('button.update_tracking_number').forEach(function(btn) {
+                btn.disabled = true;
+            });
+
             // フォームに変更があったら更新ボタンを有効にする
-            $('input.update_tracking_number').on('keyup', function(event) {
-                var $tracking_number = $(this);
-                var $button = $("button[data-target='#" + $tracking_number.attr('id') + "']");
-                $button.prop('disabled', false);
-                $button.children('i')
-                    .removeClass('text-secondary')
-                    .addClass('text-success');
-            });
-            // enter キーで更新し、次のフォームへフォーカスを移動する
-            $('input.update_tracking_number').on('keypress', function(event) {
-                var $tracking_number = $(this);
-                var $button = $("button[data-target='#" + $tracking_number.attr('id') + "']");
+            document.querySelectorAll('input.update_tracking_number').forEach(function(input) {
+                input.addEventListener('keyup', function() {
+                    var button = document.querySelector("button[data-target='#" + this.id + "']");
+                    button.disabled = false;
+                    button.querySelector('i').classList.remove('text-secondary');
+                    button.querySelector('i').classList.add('text-success');
+                });
 
-                var code = event.which ? event.which : event.keyCode;
-
-                if (code == 13) { // on press to enter
-                    var index = $('input.update_tracking_number').index(this);
-                    var callback = function() {
-                        $button.prop('disabled', true);
-                        $button.children('i')
-                            .removeClass('text-success')
-                            .addClass('text-secondary');
-                        $('input.update_tracking_number:gt(' + index + '):first').focus();
-                    };
-                    updateTrackingNumber($tracking_number.data('shipping_id'), $tracking_number.data('url'), $tracking_number.val(), callback);
-                    event.preventDefault();
-                }
+                // enter キーで更新し、次のフォームへフォーカスを移動する
+                input.addEventListener('keypress', function(event) {
+                    var button = document.querySelector("button[data-target='#" + this.id + "']");
+                    var code = event.which ? event.which : event.keyCode;
+                    if (code == 13) {
+                        var inputs = Array.from(document.querySelectorAll('input.update_tracking_number'));
+                        var index = inputs.indexOf(this);
+                        var self = this;
+                        var callback = function() {
+                            button.disabled = true;
+                            button.querySelector('i').classList.remove('text-success');
+                            button.querySelector('i').classList.add('text-secondary');
+                            if (inputs[index + 1]) {
+                                inputs[index + 1].focus();
+                            }
+                        };
+                        updateTrackingNumber(self.dataset.shipping_id, self.dataset.url, self.value, callback);
+                        event.preventDefault();
+                    }
+                });
             });
+
             // 更新ボタンの制御
-            $('button.update_tracking_number').on('click', function(event) {
-                event.preventDefault();
-                var $button = $(this);
-                var $target = $($(this).data('target'));
-                var tracking_number = $target.val();
-                var callback = function() {
-                    $button.prop('disabled', true);
-                    $button.children('i')
-                        .removeClass('text-success')
-                        .addClass('text-secondary');
-                };
+            document.querySelectorAll('button.update_tracking_number').forEach(function(button) {
+                button.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    var targetId = this.dataset.target.replace('#', '');
+                    var target = document.getElementById(targetId);
+                    var tracking_number = target.value;
+                    var btn = this;
+                    var callback = function() {
+                        btn.disabled = true;
+                        btn.querySelector('i').classList.remove('text-success');
+                        btn.querySelector('i').classList.add('text-secondary');
+                    };
+                    updateTrackingNumber(target.dataset.shipping_id, target.dataset.url, tracking_number, callback);
+                });
+            });
 
-        updateTrackingNumber($target.data('shipping_id'), $target.data('url'), tracking_number, callback);
-    });
-
-    // 完了ボタン
-    $('#bulkChangeComplete').on('click', function() {
-        location.href = '{{ url('admin_order', { 'resume': 1 }) }}';
-    });
-
-});
-</script>
+            // 完了ボタン
+            document.getElementById('bulkChangeComplete').addEventListener('click', function() {
+                location.href = '{{ url('admin_order', { 'resume': 1 }) }}';
+            });
+        });
+    </script>
 
 {{ include('@admin/Order/confirmationModal_js.twig') }}
 {% endblock javascript %}

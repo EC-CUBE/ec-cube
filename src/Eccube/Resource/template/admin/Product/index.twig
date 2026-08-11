@@ -18,125 +18,166 @@ file that was distributed with this source code.
 {% form_theme searchForm '@admin/Form/bootstrap_4_layout.html.twig' %}
 {% block javascript %}
     <script>
-        $(function() {
-            $('#bulkDelete').on('click', function() {
+        document.addEventListener('DOMContentLoaded', function() {
+            var bulkDeleteBtn = document.getElementById('bulkDelete');
+            if (bulkDeleteBtn) {
+                bulkDeleteBtn.addEventListener('click', function() {
+                    var modal = document.getElementById('bulkDeleteModal');
 
-                var modal = $('#bulkDeleteModal');
+                    // 削除中のUI変更処理
+                    modal.querySelectorAll('button').forEach(function(b) { b.setAttribute('disabled', 'disabled'); });
+                    var msgP = modal.querySelector('.modal-body p');
+                    if (msgP) msgP.textContent = "{{ 'admin.product.permanently_delete__in_progress'|trans }}";
+                    var progressEl = modal.querySelector('.progress');
+                    if (progressEl) progressEl.style.display = '';
+                    var progressBar = modal.querySelector('.progress-bar');
 
-                // 削除中のUI変更処理
-                modal.find('button').attr('disabled', 'disabled');
-                $('.modal-body p', modal).text("{{ 'admin.product.permanently_delete__in_progress'|trans }}");
-                $('.progress', modal).show();
+                    var checkedList = Array.from(document.querySelectorAll('input[type=checkbox][data-delete-url]:checked'));
+                    var totalCount = checkedList.length;
+                    var currentCount = 0;
 
-                var checkedList = $('input[type=checkbox][data-delete-url]:checked');
-                var totalCount = checkedList.length;
-                var currentCount = 0;
+                    var promises = checkedList.map(function(cb) {
+                        var body = new URLSearchParams();
+                        body.append('_token', cb.getAttribute('token-for-anchor') || '');
+                        return window.eccubeFetch(cb.dataset.deleteUrl, {
+                            method: 'DELETE',
+                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                            body: body.toString()
+                        }).then(function(res) {
+                            return res.json().then(function(data) { return { ok: res.ok, data: data }; });
+                        }).catch(function() {
+                            return { ok: false, data: null };
+                        }).finally(function() {
+                            currentCount++;
+                            if (progressBar) progressBar.style.width = (currentCount / totalCount * 100) + '%';
+                        });
+                    });
 
-                var promises = checkedList.map(function() {
-                    return $.ajax({
-                        'url': $(this).data('delete-url'),
-                        'type': 'delete',
-                        'data': {'_token': $(this).attr('token-for-anchor')}
-                    }).always(function() {
-                        $('.progress-bar', modal).css('width', (++currentCount / totalCount * 100) + '%');
+                    var addError = function(errorMessage) {
+                        var li = document.createElement('li');
+                        var badge = document.createElement('span');
+                        badge.className = 'badge bg-danger';
+                        badge.textContent = 'ERROR';
+                        li.appendChild(badge);
+                        li.appendChild(document.createTextNode(' '));
+                        var msg = document.createElement('span');
+                        msg.textContent = errorMessage;
+                        li.appendChild(msg);
+                        document.getElementById('bulkErrors').appendChild(li);
+                    };
+
+                    Promise.all(promises).then(function(results) {
+                        results.filter(function(r) { return !r.ok || (r.data && r.data.success === false); })
+                            .forEach(function(r) {
+                                if (r.data && r.data.message) {
+                                    addError(r.data.message);
+                                } else if (!r.ok) {
+                                    addError("{{ 'admin.product.permanently_delete__system_error'|trans }}");
+                                }
+                            });
+                    }).catch(function() {
+                        addError("{{ 'admin.product.permanently_delete__system_error'|trans }}");
+                    }).finally(function() {
+                        if (progressEl) progressEl.style.display = 'none';
+                        if (msgP) msgP.textContent = "{{ 'admin.product.permanently_delete__complete_message'|trans }}";
+                        modal.querySelectorAll('button').forEach(function(b) {
+                            b.removeAttribute('disabled');
+                            b.style.display = (b.style.display === 'none' ? '' : 'none');
+                        });
+                    });
+                });
+            }
+
+            var bulkDeleteDone = document.getElementById('bulkDeleteDone');
+            if (bulkDeleteDone) {
+                bulkDeleteDone.addEventListener('click', function() {
+                    location.reload();
+                });
+            }
+
+            toggleBtnBulk('input[id^="check_"]', '#btn_bulk');
+            document.querySelectorAll('input[id^="check_"]').forEach(function(cb) {
+                cb.addEventListener('change', function() {
+                    var checkAll = document.getElementById('trigger_check_all');
+                    if (checkAll) checkAll.checked = false;
+                    toggleBtnBulk('input[id^="check_"]', '#btn_bulk');
+                });
+            });
+
+            var triggerAll = document.getElementById('trigger_check_all');
+            if (triggerAll) {
+                triggerAll.addEventListener('change', function() {
+                    var checked = this.checked;
+                    document.querySelectorAll('input[id^="check_"]').forEach(function(cb) { cb.checked = checked; });
+                    toggleBtnBulk('input[id^="check_"]', '#btn_bulk');
+                });
+            }
+
+            var formBulk = document.getElementById('form_bulk');
+            if (formBulk) {
+                formBulk.querySelectorAll('.action-submit').forEach(function(btn) {
+                    btn.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        var form = this.closest('form');
+                        if (!form.querySelectorAll('input[type=checkbox][name^="ids"]:checked').length) {
+                            {# TODO: should use modal instead of alert #}
+                            alert('please check');
+                            return false;
+                        }
+                        var hidden = document.createElement('input');
+                        hidden.type = 'hidden';
+                        hidden.name = '{{ constant('Eccube\\Common\\Constant::TOKEN_NAME') }}';
+                        hidden.value = this.getAttribute('token-for-anchor') || '';
+                        form.appendChild(hidden);
+                        form.setAttribute('action', this.dataset.action);
+                        form.submit();
+                        return false;
                     });
                 });
 
-                var addError = function(errorMessage) {
-                    $('<li><span class="badge bg-danger">ERROR</span> </li>')
-                        .append($('<span></span>').text(errorMessage))
-                        .appendTo('#bulkErrors');
-                };
+                var dataClass = {};
+                var modalClass = document.getElementById('productClassesModal');
 
-                $.when.apply($, promises)
-                    .done(function() {
-                        // 削除できなかった場合はエラーメッセージを表示
-                        var args = promises.length === 1 ? [arguments[0]] : [].slice.call(arguments).map(function(result) {
-                            return result[0];
-                        });
-                        args.filter(function(result) {
-                            return result.success === false;
-                        }).forEach(function(result) {
-                            addError(result.message);
-                        });
-                    })
-                    .fail(function() {
-                        // システムエラー
-                        addError("{{ 'admin.product.permanently_delete__system_error'|trans }}");
-                    })
-                    .always(function() {
-                        $('.progress', modal).hide();
-                        $('.modal-body p', modal).text("{{ 'admin.product.permanently_delete__complete_message'|trans }}");
-                        modal.find('button').removeAttr('disabled').toggle();
-                    })
-            });
+                formBulk.addEventListener('click', function(e) {
+                    var btnClass = e.target.closest('table.table button[data-class-url]');
+                    if (!btnClass || !formBulk.contains(btnClass)) return;
+                    btnClass.setAttribute('disabled', 'disabled');
+                    var productId = btnClass.dataset.productId;
 
-            $('#bulkDeleteDone').on('click', function() {
-                location.reload(true);
-            });
+                    if (dataClass[productId] !== undefined) {
+                        renderClass(dataClass[productId], btnClass);
+                        return;
+                    }
 
-            toggleBtnBulk('input[id^="check_"]', '#btn_bulk');
-            $('input[id^="check_"]').on('change', function() {
-                $('#trigger_check_all').prop('checked', false);
-                toggleBtnBulk('input[id^="check_"]', '#btn_bulk');
-            });
-
-            $('#trigger_check_all').on('change', function() {
-                var checked = $(this).prop('checked');
-                if (checked) {
-                    $('input[id^="check_"]').prop('checked', true);
-                } else {
-                    $('input[id^="check_"]').prop('checked', false);
-                }
-                toggleBtnBulk('input[id^="check_"]', '#btn_bulk');
-            });
-
-            $('#form_bulk').find('.action-submit').on('click', function(event) {
-                event.preventDefault();
-                var form = $(this).closest('form');
-                if (!form.find('input:checkbox[name^="ids"]:checked').length) {
-                    {# TODO: should use modal instead of alert #}
-                    alert('please check');
-                    return false;
-                }
-
-                $('<input />').attr('type', 'hidden').attr('name', '{{ constant('Eccube\\Common\\Constant::TOKEN_NAME') }}')
-                    .val($(this).attr('token-for-anchor'))
-                    .appendTo(form);
-                form.attr('action', $(this).data('action')).submit();
-                return false;
-            });
-
-            var dataClass = [];
-            var modalClass = $('#productClassesModal');
-            $('form#form_bulk').on('click', 'table.table button[data-class-url]', function() {
-                var btnClass = $(this);
-                btnClass.attr('disabled', true);
-                var productId = btnClass.data('product-id');
-
-                if (dataClass[productId] != undefined) {
-                    renderClass(dataClass[productId], btnClass);
-                    return;
-                }
-
-                $.ajax({
-                    url: btnClass.data('class-load'),
-                    type: 'GET',
-                }).done(function(data) {
-                    dataClass[productId] = data;
-                    renderClass(dataClass[productId], btnClass);
-                }).fail(function() {
-                    alert('Failed');
+                    window.eccubeFetch(btnClass.dataset.classLoad, {
+                        method: 'GET',
+                        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                    }).then(function(res) {
+                        if (!res.ok) throw new Error('failed');
+                        return res.text();
+                    }).then(function(data) {
+                        dataClass[productId] = data;
+                        renderClass(data, btnClass);
+                    }).catch(function() {
+                        alert('Failed');
+                        btnClass.removeAttribute('disabled');
+                    });
                 });
-            });
 
-            // Append html and show popup
-            function renderClass(data, btnClass) {
-                $('div.modal-body', modalClass).html(data);
-                $('h5.modal-title', modalClass).text(btnClass.data('message'));
-                $('a.btn-ec-conversion', modalClass).attr('href', btnClass.data('class-url'));
-                modalClass.modal('show');
-                btnClass.attr('disabled', false);
+                function renderClass(data, btnClass) {
+                    if (!modalClass) return;
+                    var body = modalClass.querySelector('div.modal-body');
+                    if (body) {
+                        body.innerHTML = '';
+                        body.appendChild(document.createRange().createContextualFragment(data));
+                    }
+                    var title = modalClass.querySelector('h5.modal-title');
+                    if (title) title.textContent = btnClass.dataset.message;
+                    var convAnchor = modalClass.querySelector('a.btn-ec-conversion');
+                    if (convAnchor) convAnchor.setAttribute('href', btnClass.dataset.classUrl);
+                    bootstrap.Modal.getOrCreateInstance(modalClass).show();
+                    btnClass.removeAttribute('disabled');
+                }
             }
         });
     </script>
