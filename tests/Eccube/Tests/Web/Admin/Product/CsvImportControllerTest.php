@@ -454,6 +454,68 @@ final class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->assertEquals($beforeProduct->getDescriptionDetail(), $afterProduct->getDescriptionDetail());
     }
 
+    /**
+     * 既存商品の更新時, カンマ区切りの在庫数が数値として保存されることを確認する.
+     */
+    public function testCsvImportWithExistsProductsStockWithComma(): void
+    {
+        $Product = $this->createProduct('カンマ在庫商品', 1);
+        /** @var ProductClass $ProductClass */
+        $ProductClass = $Product->getProductClasses()->first();
+
+        $csv = [[
+            '商品ID',
+            '公開ステータス(ID)',
+            '商品名',
+            '販売種別(ID)',
+            '規格分類1(ID)',
+            '規格分類2(ID)',
+            '発送日目安(ID)',
+            '商品コード',
+            '在庫数',
+            '在庫数無制限フラグ',
+            '販売制限数',
+            '通常価格',
+            '販売価格',
+            '送料',
+        ]];
+        $csv[] = [
+            $Product->getId(),
+            $Product->getStatus()->getId(),
+            $Product->getName(),
+            $ProductClass->getSaleType()->getId(),
+            $ProductClass->getClassCategory1() == null ? null : $ProductClass->getClassCategory1()->getId(),
+            $ProductClass->getClassCategory2() == null ? null : $ProductClass->getClassCategory2()->getId(),
+            $ProductClass->getDeliveryDuration() == null ? null : $ProductClass->getDeliveryDuration()->getId(),
+            $ProductClass->getCode(),
+            '1,000',
+            0,
+            $ProductClass->getSaleLimit(),
+            (int) $ProductClass->getPrice01(),
+            (int) $ProductClass->getPrice02(),
+            $ProductClass->getDeliveryFee(),
+        ];
+
+        $this->filepath = $this->createCsvFromArray($csv);
+        $crawler = $this->scenario();
+
+        $this->assertMatchesRegularExpression(
+            '/CSVファイルをアップロードしました/u',
+            $crawler->filter('div.alert-success')->text()
+        );
+
+        $this->entityManager->refresh($ProductClass);
+        $this->entityManager->refresh($ProductClass->getProductStock());
+
+        $this->expected = 1000;
+        $this->actual = (int) $ProductClass->getStock();
+        $this->verify('カンマ区切りの在庫数は数値として保存される');
+
+        $this->expected = 1000;
+        $this->actual = (int) $ProductClass->getProductStock()->getStock();
+        $this->verify('在庫テーブルにも数値として反映される');
+    }
+
     // ======================================================================
     // CATEGORY Import Test
     // ======================================================================
