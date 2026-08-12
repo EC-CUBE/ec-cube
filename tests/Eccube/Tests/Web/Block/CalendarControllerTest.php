@@ -159,7 +159,7 @@ final class CalendarControllerTest extends AbstractWebTestCase
         yield '月初が日曜で28日まで・今日は平日' => ['2026-02-04'];
     }
 
-    public function testTodayStyle()
+    public function testTodayStyle(): void
     {
         // 「今日」の判定は CalendarController が Carbon::now() で行うため, 期待値も Carbon に合わせる.
         // new \DateTime() だと Carbon::setTestNow() で時刻を固定したときに実時刻とずれて破綻する.
