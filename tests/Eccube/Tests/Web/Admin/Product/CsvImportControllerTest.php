@@ -23,8 +23,8 @@ use Eccube\Entity\ProductClass;
 use Eccube\Entity\ProductImage;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\ProductRepository;
+use Eccube\Tests\Fixture\Generator;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
-use Faker\Generator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\DomCrawler\Crawler;
@@ -775,7 +775,6 @@ final class CsvImportControllerTest extends AbstractAdminWebTestCase
     {
         $Products = $this->productRepo->findAll();
         $this->expected = count($Products) + 1;
-        /** @var Generator $faker */
         $faker = $this->getFaker();
         // 1 product case stock_unlimited = true
         $csv[] = ['公開ステータス(ID)', '商品名', '販売種別(ID)', '在庫数無制限フラグ', '販売価格'];
@@ -836,7 +835,6 @@ final class CsvImportControllerTest extends AbstractAdminWebTestCase
     #[DataProvider(methodName: 'dataStatusProvider')]
     public function testImportProductWithPublicIdIsIncorrect($status, $expectedMessage)
     {
-        /** @var Generator $faker */
         $faker = $this->getFaker();
         // 1 product
         $csv[] = ['公開ステータス(ID)', '商品名', '販売種別(ID)', '在庫数無制限フラグ', '販売価格'];
@@ -1068,7 +1066,6 @@ final class CsvImportControllerTest extends AbstractAdminWebTestCase
         $ProductClass = $Product->getProductClasses()->filter(
             fn (ProductClass $ProductClass) => $ProductClass->getClassCategory1() !== null
         )[0];
-        /** @var Generator $faker */
         $faker = $this->getFaker();
         $csv[] = ['商品ID', '公開ステータス(ID)', '商品名', '販売種別(ID)', '在庫数無制限フラグ', '販売価格', '規格分類1(ID)', '規格分類2(ID)', '商品規格表示フラグ'];
         $csv[] = [$Product->getId(),
@@ -1099,7 +1096,6 @@ final class CsvImportControllerTest extends AbstractAdminWebTestCase
         $ProductClass = $Product->getProductClasses()->filter(
             fn (ProductClass $ProductClass) => $ProductClass->getClassCategory1() !== null
         )[0];
-        /** @var Generator $faker */
         $faker = $this->getFaker();
         $csv[] = ['商品ID', '公開ステータス(ID)', '商品名', '販売種別(ID)', '在庫数無制限フラグ', '販売価格', '規格分類1(ID)', '規格分類2(ID)', '商品規格表示フラグ'];
         $csv[] = [$Product->getId(),
@@ -1128,8 +1124,8 @@ final class CsvImportControllerTest extends AbstractAdminWebTestCase
      */
     public function testDeleteImage()
     {
-        /** @var \Eccube\Tests\Fixture\Generator $generator */
-        $generator = static::getContainer()->get(\Eccube\Tests\Fixture\Generator::class);
+        /** @var Generator $generator */
+        $generator = static::getContainer()->get(Generator::class);
         $Product1 = $generator->createProduct(null, 0, true);
         $Product2 = $generator->createProduct(null, 0, true);
 

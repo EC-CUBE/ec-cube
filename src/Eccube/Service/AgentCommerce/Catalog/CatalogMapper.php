@@ -148,7 +148,6 @@ class CatalogMapper
             availabilityStatus: $this->resolveAvailabilityStatus($productClass),
             sku: $productClass->getCode(),
             listPriceMinorUnits: $listPriceMinor,
-            description: null,
             url: $productId !== null ? $this->generateProductUrl($productId) : null,
             options: $this->mapOptions($productClass),
             barcodes: $this->mapBarcodes(),

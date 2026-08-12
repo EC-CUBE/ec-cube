@@ -72,6 +72,11 @@ return RectorConfig::configure()
                    __DIR__.'/codeception/_support/Page/Admin/CustomerManagePage.php',
                    __DIR__.'/codeception/_support/Page/Admin/OrderManagePage.php',
                    __DIR__.'/codeception/acceptance/EF06OtherCest.php',
+                   // scandir() / explode() の戻り値要素はバージョンによって string と推論されたり
+                   // されなかったりし、 キャストを外すと NullToStrictStringFuncCallArgRector が
+                   // 付け直す往復になるため、 こちらもキャストを維持する
+                   __DIR__.'/codeception/_support/Helper/Acceptance.php',
+                   __DIR__.'/src/Eccube/Service/Composer/OutputParser.php',
                ],
                // ContainerGetNameToTypeInTestsRector は $container->get('service.id') の文字列サービスIDを
                // get(Type::class) へ変換する。クラス名のエイリアスを持たない private サービス

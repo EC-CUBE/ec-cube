@@ -22,8 +22,6 @@ use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Layout;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Member;
-use Eccube\Entity\Page;
-use Eccube\Entity\PageLayout;
 use Eccube\Repository\AuthorityRoleRepository;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\BlockPositionRepository;
@@ -35,7 +33,6 @@ use Eccube\Request\Context;
 use Eccube\Service\SiteStructuredDataService;
 use Eccube\Service\SystemService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -123,7 +120,6 @@ class TwigInitializeListener implements EventSubscriberInterface
         // 引数は後方互換のため任意にしており、渡されなければここで取得する。
         $BaseInfo ??= $this->baseInfoRepository->get();
         $request = $event->getRequest();
-        /** @var ParameterBag $attributes */
         $attributes = $request->attributes;
         $route = $attributes->get('_route');
         if ($route == 'user_data') {
@@ -137,10 +133,8 @@ class TwigInitializeListener implements EventSubscriberInterface
         }
 
         // URLからPageを取得
-        /** @var Page $Page */
         $Page = $this->pageRepository->getPageByRoute($route);
 
-        /** @var PageLayout[] $PageLayouts */
         $PageLayouts = $Page->getPageLayouts();
 
         // Pageに紐づくLayoutからDeviceTypeが一致するLayoutを探す
