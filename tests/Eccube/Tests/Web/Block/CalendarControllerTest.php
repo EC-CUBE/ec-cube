@@ -163,10 +163,10 @@ final class CalendarControllerTest extends AbstractWebTestCase
 
     public function testTodayStyle()
     {
-        $today = new \DateTime();
-
+        // 「今日」の判定は CalendarController が Carbon::now() で行うため, 期待値も Carbon に合わせる.
+        // new \DateTime() だと Carbon::setTestNow() で時刻を固定したときに実時刻とずれて破綻する.
         $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('block_calendar'));
-        $this->expected = $today->format('j');
+        $this->expected = Carbon::now()->format('j');
         $this->actual = $crawler->filter('#today')->text();
         $this->verify();
     }
