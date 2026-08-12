@@ -14205,11 +14205,11 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.1.44",
+            "version": "2.2.8",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/4a88c083c668b2c364a425c9b3171b2d9ea5d218",
-                "reference": "4a88c083c668b2c364a425c9b3171b2d9ea5d218",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/e285254e60f33c21902efef4a926ca0987c06804",
+                "reference": "e285254e60f33c21902efef4a926ca0987c06804",
                 "shasum": ""
             },
             "require": {
@@ -14231,6 +14231,17 @@
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ondřej Mirtes"
+                },
+                {
+                    "name": "Markus Staab"
+                },
+                {
+                    "name": "Vincent Langlet"
+                }
             ],
             "description": "PHPStan - PHP Static Analysis Tool",
             "keywords": [
@@ -14254,25 +14265,25 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-03-25T17:34:21+00:00"
+            "time": "2026-08-04T22:21:45+00:00"
         },
         {
             "name": "phpstan/phpstan-doctrine",
-            "version": "2.0.20",
+            "version": "2.0.28",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan-doctrine.git",
-                "reference": "72f4f7a02d6c98d9101e8616e0488bc0a785196d"
+                "reference": "b4623954d5ffee6311e4ddbaef65c074ae0f781a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan-doctrine/zipball/72f4f7a02d6c98d9101e8616e0488bc0a785196d",
-                "reference": "72f4f7a02d6c98d9101e8616e0488bc0a785196d",
+                "url": "https://api.github.com/repos/phpstan/phpstan-doctrine/zipball/b4623954d5ffee6311e4ddbaef65c074ae0f781a",
+                "reference": "b4623954d5ffee6311e4ddbaef65c074ae0f781a",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.4 || ^8.0",
-                "phpstan/phpstan": "^2.1.34"
+                "phpstan/phpstan": "^2.2.2"
             },
             "conflict": {
                 "doctrine/collections": "<1.0",
@@ -14301,6 +14312,7 @@
                 "phpstan/phpstan-strict-rules": "^2.0",
                 "phpunit/phpunit": "^9.6.20",
                 "ramsey/uuid": "^4.2",
+                "shipmonk/name-collision-detector": "^2.1",
                 "symfony/cache": "^5.4",
                 "symfony/uid": "^5.4 || ^6.4 || ^7.3"
             },
@@ -14328,9 +14340,9 @@
             ],
             "support": {
                 "issues": "https://github.com/phpstan/phpstan-doctrine/issues",
-                "source": "https://github.com/phpstan/phpstan-doctrine/tree/2.0.20"
+                "source": "https://github.com/phpstan/phpstan-doctrine/tree/2.0.28"
             },
-            "time": "2026-03-13T13:44:51+00:00"
+            "time": "2026-07-13T08:43:43+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -14854,21 +14866,21 @@
         },
         {
             "name": "rector/rector",
-            "version": "2.3.9",
+            "version": "2.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rectorphp/rector.git",
-                "reference": "917842143fd9f5331a2adefc214b8d7143bd32c4"
+                "reference": "b8e68f058bca43e01a2e1caa51ef022d6551ed95"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rectorphp/rector/zipball/917842143fd9f5331a2adefc214b8d7143bd32c4",
-                "reference": "917842143fd9f5331a2adefc214b8d7143bd32c4",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/b8e68f058bca43e01a2e1caa51ef022d6551ed95",
+                "reference": "b8e68f058bca43e01a2e1caa51ef022d6551ed95",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.4|^8.0",
-                "phpstan/phpstan": "^2.1.40"
+                "phpstan/phpstan": "^2.2.6"
             },
             "conflict": {
                 "rector/rector-doctrine": "*",
@@ -14902,7 +14914,7 @@
             ],
             "support": {
                 "issues": "https://github.com/rectorphp/rector/issues",
-                "source": "https://github.com/rectorphp/rector/tree/2.3.9"
+                "source": "https://github.com/rectorphp/rector/tree/2.6.1"
             },
             "funding": [
                 {
@@ -14910,7 +14922,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-03-16T09:43:55+00:00"
+            "time": "2026-08-03T17:30:34+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -15958,16 +15970,16 @@
         },
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v8.1.1",
+            "version": "v8.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
-                "reference": "3e1c9a9167e07474ec115555b632f0ffadb0f94d"
+                "reference": "b0a06b7a231c7a077c78d74b2401b1e11b7b65f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/3e1c9a9167e07474ec115555b632f0ffadb0f94d",
-                "reference": "3e1c9a9167e07474ec115555b632f0ffadb0f94d",
+                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/b0a06b7a231c7a077c78d74b2401b1e11b7b65f8",
+                "reference": "b0a06b7a231c7a077c78d74b2401b1e11b7b65f8",
                 "shasum": ""
             },
             "require": {
@@ -16019,7 +16031,7 @@
                 "testing"
             ],
             "support": {
-                "source": "https://github.com/symfony/phpunit-bridge/tree/v8.1.1"
+                "source": "https://github.com/symfony/phpunit-bridge/tree/v8.1.2"
             },
             "funding": [
                 {
@@ -16039,20 +16051,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-06-09T10:54:51+00:00"
+            "time": "2026-07-23T06:03:08+00:00"
         },
         {
             "name": "symfony/polyfill-iconv",
-            "version": "v1.33.0",
+            "version": "v1.37.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-iconv.git",
-                "reference": "5f3b930437ae03ae5dff61269024d8ea1b3774aa"
+                "reference": "2c5729fd241b4b22f6e4b436bc3354a4f262df57"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-iconv/zipball/5f3b930437ae03ae5dff61269024d8ea1b3774aa",
-                "reference": "5f3b930437ae03ae5dff61269024d8ea1b3774aa",
+                "url": "https://api.github.com/repos/symfony/polyfill-iconv/zipball/2c5729fd241b4b22f6e4b436bc3354a4f262df57",
+                "reference": "2c5729fd241b4b22f6e4b436bc3354a4f262df57",
                 "shasum": ""
             },
             "require": {
@@ -16103,7 +16115,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-iconv/tree/v1.33.0"
+                "source": "https://github.com/symfony/polyfill-iconv/tree/v1.37.0"
             },
             "funding": [
                 {
@@ -16123,7 +16135,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-17T14:58:18+00:00"
+            "time": "2026-04-10T16:19:22+00:00"
         },
         {
             "name": "theseer/tokenizer",
