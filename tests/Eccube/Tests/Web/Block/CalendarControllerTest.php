@@ -99,7 +99,7 @@ final class CalendarControllerTest extends AbstractWebTestCase
         $this->verify();
     }
 
-    #[DataProvider('provideTodayForWeekendHolidaysStyle')]
+    #[DataProvider(methodName: 'provideTodayForWeekendHolidaysStyle')]
     public function testWeekendHolidaysStyle(string $today): void
     {
         Carbon::setTestNow($today);
@@ -146,19 +146,17 @@ final class CalendarControllerTest extends AbstractWebTestCase
     /**
      * 月初の曜日と, 今日が土日と重なるかの組み合わせを網羅する.
      *
-     * @return array<string, array{string}>
+     * @return \Iterator<string, array{string}>
      */
-    public static function provideTodayForWeekendHolidaysStyle(): array
+    public static function provideTodayForWeekendHolidaysStyle(): \Iterator
     {
-        return [
-            '月初が日曜・今日は平日' => ['2025-06-03'],
-            '月初が日曜・今日が第一日曜(月初と同日)' => ['2025-06-01'],
-            '月初が日曜・今日が第一土曜' => ['2025-06-07'],
-            '月初が土曜・今日が第一土曜(月初と同日)' => ['2025-11-01'],
-            '月初が土曜・今日が第一日曜' => ['2025-11-02'],
-            '月初が水曜・今日は平日' => ['2025-10-15'],
-            '月初が日曜で28日まで・今日は平日' => ['2026-02-04'],
-        ];
+        yield '月初が日曜・今日は平日' => ['2025-06-03'];
+        yield '月初が日曜・今日が第一日曜(月初と同日)' => ['2025-06-01'];
+        yield '月初が日曜・今日が第一土曜' => ['2025-06-07'];
+        yield '月初が土曜・今日が第一土曜(月初と同日)' => ['2025-11-01'];
+        yield '月初が土曜・今日が第一日曜' => ['2025-11-02'];
+        yield '月初が水曜・今日は平日' => ['2025-10-15'];
+        yield '月初が日曜で28日まで・今日は平日' => ['2026-02-04'];
     }
 
     public function testTodayStyle()
