@@ -150,7 +150,10 @@ jobs:
   # ダイジェストをマニフェストリストに束ねてタグを付ける。
   # 単一プラットフォーム (CI) でも同じ経路を通り、 結果は従来と同じタグになる。
   merge:
-    name: merge ${{ matrix.php }}
+    # name で matrix を参照しない。 job レベルの if が false のとき matrix は展開されず、
+    # 参照していると checks 一覧に `merge ${{ matrix.php }}` がそのまま表示されるため。
+    # 参照しない場合は GitHub が matrix 値を後置し、 展開時は `merge (8.2)` になる。
+    name: merge
     needs: dockerbuild
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-24.04
