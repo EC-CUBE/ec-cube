@@ -287,6 +287,93 @@ final class OrderControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
+     * ソートしてから受注CSVをダウンロードしてもエラーにならないことのテスト.
+     *
+     * 受注検索のクエリは Shipping を fetch join しているため, Shipping 側の列でソートすると
+     * LimitSubqueryWalker が例外を投げ, CSV が最後まで出力されなかった.
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/6713
+     */
+    #[DataProvider(methodName: 'dataSortKeyProvider')]
+    public function testExportOrderWithSortKey(string $sortKey): void
+    {
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_order'),
+            [
+                'admin_search_order' => [
+                    '_token' => 'dummy',
+                    'email' => 'user-',
+                    'sortkey' => $sortKey,
+                    'sorttype' => 'a',
+                ],
+            ]
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $this->client->request(
+            Request::METHOD_GET,
+            $this->generateUrl('admin_order_export_order')
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        // ヘッダ行だけでなくデータ行が出力されていること.
+        $content = $this->client->getInternalResponse()->getContent();
+        $this->assertMatchesRegularExpression('/user-[0-9]@example.com/', $content);
+    }
+
+    /**
+     * 配送CSVも同じクエリビルダを使うため, 同様にソート後もエラーにならないこと.
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/6713
+     */
+    #[DataProvider(methodName: 'dataSortKeyProvider')]
+    public function testExportShippingWithSortKey(string $sortKey): void
+    {
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_order'),
+            [
+                'admin_search_order' => [
+                    '_token' => 'dummy',
+                    'email' => 'user-',
+                    'sortkey' => $sortKey,
+                    'sorttype' => 'a',
+                ],
+            ]
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $this->client->request(
+            Request::METHOD_GET,
+            $this->generateUrl('admin_order_export_shipping')
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $content = $this->client->getInternalResponse()->getContent();
+        $this->assertMatchesRegularExpression('/user-[0-9]@example.com/', $content);
+    }
+
+    /**
+     * @return \Iterator<int<0, max>, array{string}>
+     */
+    public static function dataSortKeyProvider(): \Iterator
+    {
+        // Shipping (to-many) の列。#6713 で報告されたエラーになる3キー。
+        yield ['shipping_status'];
+        yield ['tracking_number'];
+        yield ['delivery'];
+        // association (o.OrderStatus) のため wrap-queries の対象外。従来どおり動くこと。
+        yield ['order_status'];
+        // Order (to-one) の列。従来どおり動くこと。
+        yield ['purchase_price'];
+        // ソート未指定。
+        yield [''];
+    }
+
+    /**
      * Test for issue 1995
      *
      * @see https://github.com/EC-CUBE/ec-cube/issues/1995

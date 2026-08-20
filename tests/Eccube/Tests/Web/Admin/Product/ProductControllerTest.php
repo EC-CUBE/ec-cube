@@ -1051,6 +1051,48 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
+     * ソートしてから商品CSVをダウンロードしてもエラーにならないことのテスト.
+     *
+     * 商品検索のクエリは ProductClass を to-many で join しているため, ProductClass 側の列
+     * (pc.code, pc.stock) でソートすると LimitSubqueryWalker が例外を投げ,
+     * CSV が最後まで出力されなかった.
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/6713
+     */
+    #[DataProvider(methodName: 'dataProductSortKeyProvider')]
+    public function testExportProductWithSortKey(string $sortKey): void
+    {
+        $searchForm = $this->createSearchForm();
+        $searchForm['sortkey'] = $sortKey;
+        $searchForm['sorttype'] = 'a';
+        $this->searchProduct($searchForm);
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $content = $this->exportProductCsv();
+
+        // ヘッダ行だけでなくデータ行が出力されていること.
+        $lines = preg_split('/\R/', trim($content)) ?: [];
+        $this->assertGreaterThan(1, count($lines));
+    }
+
+    /**
+     * @return \Iterator<int<0, max>, array{string}>
+     */
+    public static function dataProductSortKeyProvider(): \Iterator
+    {
+        // ProductClass (to-many) の列。修正前はエラーになる2キー。
+        yield ['product_code'];
+        yield ['stock'];
+        // association (p.Status) のため wrap-queries の対象外。従来どおり動くこと。
+        yield ['status'];
+        // Product (to-one) の列。従来どおり動くこと。
+        yield ['product_id'];
+        yield ['name'];
+        // ソート未指定。
+        yield [''];
+    }
+
+    /**
      * 商品検索を実行し, 検索条件をセッションに保持する.
      *
      * @param array<string, mixed> $searchForm

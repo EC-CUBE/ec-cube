@@ -185,12 +185,7 @@ class ProductController extends AbstractController
 
         $qb = $this->productRepository->getQueryBuilderBySearchDataForAdmin($searchData);
 
-        // null を配列オフセットに使うのは PHP 8.5 で非推奨。null は '' として扱われるため挙動は変わらない
-        $sortKey = $searchData['sortkey'] ?? '';
-        $paginate_options = ['wrap-queries' => true];
-        if (empty($this->productRepository::COLUMNS[$sortKey]) || $sortKey == 'code' || $sortKey == 'status') {
-            $paginate_options = [];
-        }
+        $paginate_options = $this->createPaginateOptions($searchData['sortkey'] ?? null);
 
         $event = new EventArgs(
             [
@@ -935,8 +930,15 @@ class ProductController extends AbstractController
         // タイムアウトを無効にする.
         set_time_limit(0);
 
+        // 一覧画面と同じ paginate オプションを使う.
+        // sortkey は HiddenType なので, セッションに入っている値をそのまま参照できる.
+        $viewData = $this->session->get('eccube.admin.product.search', []);
+        $sortKey = is_string($viewData['sortkey'] ?? null) ? $viewData['sortkey'] : '';
+        $paginate_options = $this->createPaginateOptions($sortKey);
+        $sortsByProductClass = str_starts_with($this->productRepository::COLUMNS[$sortKey] ?? '', 'pc.');
+
         $response = new StreamedResponse();
-        $response->setCallback(function () use ($request): void {
+        $response->setCallback(function () use ($request, $paginate_options, $sortsByProductClass): void {
             // CSV種別を元に初期化.
             $this->csvExportService->initCsvType(CsvType::CSV_TYPE_PRODUCT);
 
@@ -963,7 +965,10 @@ class ProductController extends AbstractController
             // http://uedatakeshi.blogspot.jp/2010/04/distinct-oeder-by-postgresmysql.html
             $qb->resetDQLPart('select');
 
-            if ($isOutOfStock) {
+            // ProductClass の列でソートしている場合は pc も select する.
+            // DISTINCT と併用するため, ORDER BY の対象が select 句に無いと
+            // PostgreSQL が「ORDER BY expressions must appear in select list」で拒否する.
+            if ($isOutOfStock || $sortsByProductClass) {
                 $qb->select('p, pc')
                     ->distinct();
             } else {
@@ -1012,7 +1017,7 @@ class ProductController extends AbstractController
                     // 出力.
                     $csvService->fputcsv($ExportCsvRow->getRow());
                 }
-            });
+            }, $paginate_options);
         });
 
         $now = new \DateTime();
@@ -1023,6 +1028,28 @@ class ProductController extends AbstractController
         log_info('商品CSV出力ファイル名', [$filename]);
 
         return $response;
+    }
+
+    /**
+     * 商品一覧・商品CSVで共通の paginate オプションを組み立てる.
+     *
+     * 商品検索のクエリは ProductClass を to-many で join しているため, ProductClass 側の列
+     * (pc.code, pc.stock) でソートすると LimitSubqueryWalker が例外を投げる.
+     * wrap-queries を有効にするとサブクエリで包まれ, ソートを保ったまま解消できる.
+     * status は association (p.Status) をソート対象にするため, 従来どおり対象外とする.
+     *
+     * @return array<string, mixed>
+     */
+    private function createPaginateOptions(mixed $sortKey): array
+    {
+        // セッション由来の値も渡るため, 文字列以外は未指定として扱う.
+        $sortKey = is_string($sortKey) ? $sortKey : '';
+
+        if (empty($this->productRepository::COLUMNS[$sortKey]) || $sortKey === 'code' || $sortKey === 'status') {
+            return [];
+        }
+
+        return ['wrap-queries' => true];
     }
 
     /**
