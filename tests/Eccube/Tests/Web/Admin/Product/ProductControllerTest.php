@@ -1108,10 +1108,12 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
      */
     public function testExportProductKeepsSortOrder(): void
     {
-        // 商品コードの昇順が商品IDの昇順と一致しないよう, 逆順に登録する.
+        // ソート未指定時の既定は p.update_date DESC, p.id DESC なので, 登録順を b, c, a にして
+        // 既定の並び (a, c, b) が昇順 (a, b, c) とも降順 (c, b, a) とも一致しないようにする.
+        // 一致していると, ソートが効かなくてもその向きのアサートが通ってしまう.
         // 規格を登録すると 規格なし既定の ProductClass は非表示になるが, CSV には出力される.
         $prefix = 'Product for sort order '.uniqid();
-        foreach (['c', 'b', 'a'] as $code) {
+        foreach (['b', 'c', 'a'] as $code) {
             $Product = $this->createProduct($prefix.' '.$code, 1);
             $no = 1;
             foreach ($Product->getProductClasses() as $ProductClass) {
