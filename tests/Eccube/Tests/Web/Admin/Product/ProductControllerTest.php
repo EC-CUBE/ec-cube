@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace Eccube\Tests\Web\Admin\Product;
 
 use Eccube\Common\Constant;
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\Master\RoundingType;
@@ -1068,11 +1069,8 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
         $this->searchProduct($searchForm);
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $content = $this->exportProductCsv();
-
         // ヘッダ行だけでなくデータ行が出力されていること.
-        $lines = preg_split('/\R/', trim($content)) ?: [];
-        $this->assertGreaterThan(1, count($lines));
+        $this->assertGreaterThan(0, $this->countCsvRows($this->exportProductCsv()));
     }
 
     /**
@@ -1102,6 +1100,57 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
+     * ソートが商品CSVの並び順に反映されることのテスト.
+     *
+     * ソートを保ったまま LimitSubqueryWalker の例外を解消するのが目的なので,
+     * エラーにならないことだけでなく並び順そのものを担保する.
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/6713
+     */
+    public function testExportProductKeepsSortOrder(): void
+    {
+        // 商品コードの昇順が商品IDの昇順と一致しないよう, 逆順に登録する.
+        // 規格を登録すると 規格なし既定の ProductClass は非表示になるが, CSV には出力される.
+        $prefix = 'Product for sort order '.uniqid();
+        foreach (['c', 'b', 'a'] as $code) {
+            $Product = $this->createProduct($prefix.' '.$code, 1);
+            $no = 1;
+            foreach ($Product->getProductClasses() as $ProductClass) {
+                $ProductClass->setCode($code.$no++);
+            }
+        }
+        $this->entityManager->flush();
+
+        $searchForm = $this->createSearchForm();
+        $searchForm['id'] = $prefix;
+        $searchForm['sortkey'] = 'product_code';
+
+        $searchForm['sorttype'] = 'a';
+        $this->searchProduct($searchForm);
+        $this->assertSame(['a1', 'a2', 'b1', 'b2', 'c1', 'c2'], $this->extractProductCodes($this->exportProductCsv()));
+
+        $searchForm['sorttype'] = 'd';
+        $this->searchProduct($searchForm);
+        $this->assertSame(['c1', 'c2', 'b1', 'b2', 'a1', 'a2'], $this->extractProductCodes($this->exportProductCsv()));
+    }
+
+    /**
+     * CSV から商品コード列の値を出力順に取り出す.
+     *
+     * @return array<int, string>
+     */
+    private function extractProductCodes(string $csv): array
+    {
+        $records = $this->parseCsv($csv);
+        $header = array_shift($records);
+        $this->assertIsArray($header);
+        $index = array_search('商品コード', $header, true);
+        $this->assertIsInt($index);
+
+        return array_map(fn (array $row): string => (string) $row[$index], $records);
+    }
+
+    /**
      * ソートしてから商品CSVを出力し, ヘッダ行を除いたレコード数を返す.
      *
      * @param array<string, mixed> $searchForm
@@ -1113,24 +1162,47 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
         $this->searchProduct($searchForm);
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $csv = $this->exportProductCsv();
+        return $this->countCsvRows($this->exportProductCsv());
+    }
 
-        // 項目の値に改行が含まれるため, 改行の数ではなく fgetcsv でレコード単位に数える.
+    /**
+     * CSV のレコード数を返す（ヘッダ行を除く）.
+     */
+    private function countCsvRows(string $csv): int
+    {
+        return count($this->parseCsv($csv)) - 1;
+    }
+
+    /**
+     * CSV をレコード単位にパースする（ヘッダ行を含む）.
+     *
+     * 項目の値に改行が含まれるため, 行数は改行では数えられない.
+     * 出力は eccube_csv_export_encoding のエンコーディングなので UTF-8 に戻してから読む
+     * (SJIS は 2 バイト目に 0x5C を含む文字があり, escape と誤認して行が結合される).
+     * escape は PHP 8.4 以降の既定値に合わせて '' を明示する
+     * (省略すると deprecation。'\\' はデータ中のバックスラッシュで行が結合される).
+     *
+     * @return array<int, array<int, string|null>>
+     */
+    private function parseCsv(string $csv): array
+    {
+        $eccubeConfig = static::getContainer()->get(EccubeConfig::class);
+        $csv = (string) mb_convert_encoding($csv, 'UTF-8', $eccubeConfig->get('eccube_csv_export_encoding'));
+
         $fp = fopen('php://memory', 'r+');
         $this->assertNotFalse($fp);
         fwrite($fp, $csv);
         rewind($fp);
-        fgetcsv($fp); // ヘッダ行.
 
-        $rows = 0;
-        while (($row = fgetcsv($fp)) !== false) {
+        $records = [];
+        while (($row = fgetcsv($fp, null, $eccubeConfig->get('eccube_csv_export_separator'), '"', '')) !== false) {
             if ($row !== [null]) {
-                ++$rows;
+                $records[] = $row;
             }
         }
         fclose($fp);
 
-        return $rows;
+        return $records;
     }
 
     /**
