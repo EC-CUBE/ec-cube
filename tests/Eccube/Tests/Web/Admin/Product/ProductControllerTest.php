@@ -16,7 +16,6 @@ declare(strict_types=1);
 namespace Eccube\Tests\Web\Admin\Product;
 
 use Eccube\Common\Constant;
-use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\Master\RoundingType;
@@ -1127,19 +1126,23 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
 
         $searchForm['sorttype'] = 'a';
         $this->searchProduct($searchForm);
-        $this->assertSame(['a1', 'a2', 'b1', 'b2', 'c1', 'c2'], $this->extractProductCodes($this->exportProductCsv()));
+        $this->assertSame(['a', 'a', 'b', 'b', 'c', 'c'], $this->extractSortedProductGroups($this->exportProductCsv()));
 
         $searchForm['sorttype'] = 'd';
         $this->searchProduct($searchForm);
-        $this->assertSame(['c1', 'c2', 'b1', 'b2', 'a1', 'a2'], $this->extractProductCodes($this->exportProductCsv()));
+        $this->assertSame(['c', 'c', 'b', 'b', 'a', 'a'], $this->extractSortedProductGroups($this->exportProductCsv()));
     }
 
     /**
-     * CSV から商品コード列の値を出力順に取り出す.
+     * CSV から商品コードの先頭 1 文字を出力順に取り出す.
+     *
+     * 商品コードは `<商品を表す 1 文字><規格ごとの連番>` で登録する.
+     * 商品内の行順は `Product::$ProductClasses` の取得順（`#[ORM\OrderBy]` が無く DB 依存）
+     * に左右されるため, 商品間の並びだけを見るよう連番を落として比較する.
      *
      * @return array<int, string>
      */
-    private function extractProductCodes(string $csv): array
+    private function extractSortedProductGroups(string $csv): array
     {
         $records = $this->parseCsv($csv);
         $header = array_shift($records);
@@ -1147,7 +1150,7 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
         $index = array_search('商品コード', $header, true);
         $this->assertIsInt($index);
 
-        return array_map(fn (array $row): string => (string) $row[$index], $records);
+        return array_map(fn (array $row): string => substr((string) $row[$index], 0, 1), $records);
     }
 
     /**
@@ -1163,46 +1166,6 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         return $this->countCsvRows($this->exportProductCsv());
-    }
-
-    /**
-     * CSV のレコード数を返す（ヘッダ行を除く）.
-     */
-    private function countCsvRows(string $csv): int
-    {
-        return count($this->parseCsv($csv)) - 1;
-    }
-
-    /**
-     * CSV をレコード単位にパースする（ヘッダ行を含む）.
-     *
-     * 項目の値に改行が含まれるため, 行数は改行では数えられない.
-     * 出力は eccube_csv_export_encoding のエンコーディングなので UTF-8 に戻してから読む
-     * (SJIS は 2 バイト目に 0x5C を含む文字があり, escape と誤認して行が結合される).
-     * escape は PHP 8.4 以降の既定値に合わせて '' を明示する
-     * (省略すると deprecation。'\\' はデータ中のバックスラッシュで行が結合される).
-     *
-     * @return array<int, array<int, string|null>>
-     */
-    private function parseCsv(string $csv): array
-    {
-        $eccubeConfig = static::getContainer()->get(EccubeConfig::class);
-        $csv = (string) mb_convert_encoding($csv, 'UTF-8', $eccubeConfig->get('eccube_csv_export_encoding'));
-
-        $fp = fopen('php://memory', 'r+');
-        $this->assertNotFalse($fp);
-        fwrite($fp, $csv);
-        rewind($fp);
-
-        $records = [];
-        while (($row = fgetcsv($fp, null, $eccubeConfig->get('eccube_csv_export_separator'), '"', '')) !== false) {
-            if ($row !== [null]) {
-                $records[] = $row;
-            }
-        }
-        fclose($fp);
-
-        return $records;
     }
 
     /**

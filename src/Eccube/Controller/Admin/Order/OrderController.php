@@ -378,7 +378,7 @@ class OrderController extends AbstractController
     /**
      * 受注一覧・受注CSV・配送CSVで共通の paginate オプションを組み立てる.
      *
-     * 受注検索のクエリは Shipping / OrderItem を fetch join しているため, to-many 側の列
+     * 受注検索のクエリは Shipping を fetch join しているため (OrderItem は join のみ), to-many 側の列
      * (s.shipping_date, s.tracking_number, s.name01 等) でソートすると LimitSubqueryWalker が例外を投げる.
      * wrap-queries を有効にするとサブクエリで包まれ, ソートを保ったまま解消できる.
      * order_status は association (o.OrderStatus) をソート対象にするため, 従来どおり対象外とする.

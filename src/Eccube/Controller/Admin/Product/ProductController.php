@@ -967,6 +967,9 @@ class ProductController extends AbstractController
             // http://uedatakeshi.blogspot.jp/2010/04/distinct-oeder-by-postgresmysql.html
             $qb->resetDQLPart('select');
 
+            // stock_status は SearchProductType に無く, コアからは設定されない
+            // (管理画面の在庫切れ絞り込みは別キーの stock を使う). プラグイン等が
+            // セッションへ入れたときだけ通る経路なので, 従来の形を維持する.
             if ($isOutOfStock) {
                 $qb->select('p, pc')
                     ->distinct();
