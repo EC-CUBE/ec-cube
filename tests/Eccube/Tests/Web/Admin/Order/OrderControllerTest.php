@@ -39,6 +39,11 @@ final class OrderControllerTest extends AbstractAdminWebTestCase
 {
     use MailerAssertionsTrait;
 
+    /**
+     * Shipping (to-many) の列をソート対象にするキー.
+     */
+    private const TO_MANY_SORT_KEYS = ['shipping_status', 'tracking_number', 'delivery'];
+
     protected ?OrderStatusRepository $orderStatusRepository = null;
 
     protected ?PaymentRepository $paymentRepository = null;
@@ -354,6 +359,88 @@ final class OrderControllerTest extends AbstractAdminWebTestCase
 
         $content = $this->client->getInternalResponse()->getContent();
         $this->assertMatchesRegularExpression('/user-[0-9]@example.com/', $content);
+    }
+
+    /**
+     * ソートの有無で受注CSVの行数が変わらないことのテスト.
+     *
+     * to-many の関連を select 句に載せると, 関連側の絞り込み条件でコレクションが部分初期化され,
+     * ソートしたときだけ出力行数が減ることがある. 行数で担保して出力内容の変化を検知する.
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/6713
+     */
+    public function testExportOrderRowCountIsNotAffectedBySort(): void
+    {
+        $expected = $this->countExportedRows('admin_order_export_order', '');
+        $this->assertGreaterThan(0, $expected);
+
+        foreach (self::TO_MANY_SORT_KEYS as $sortKey) {
+            $this->assertSame($expected, $this->countExportedRows('admin_order_export_order', $sortKey), $sortKey);
+        }
+    }
+
+    /**
+     * ソートの有無で配送CSVの行数が変わらないことのテスト.
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/6713
+     */
+    public function testExportShippingRowCountIsNotAffectedBySort(): void
+    {
+        $expected = $this->countExportedRows('admin_order_export_shipping', '');
+        $this->assertGreaterThan(0, $expected);
+
+        foreach (self::TO_MANY_SORT_KEYS as $sortKey) {
+            $this->assertSame($expected, $this->countExportedRows('admin_order_export_shipping', $sortKey), $sortKey);
+        }
+    }
+
+    /**
+     * ソートしてから CSV を出力し, ヘッダ行を除いたレコード数を返す.
+     */
+    private function countExportedRows(string $route, string $sortKey): int
+    {
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_order'),
+            [
+                'admin_search_order' => [
+                    '_token' => 'dummy',
+                    'email' => 'user-',
+                    'sortkey' => $sortKey,
+                    'sorttype' => 'a',
+                ],
+            ]
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $this->client->request(Request::METHOD_GET, $this->generateUrl($route));
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        return $this->countCsvRows($this->client->getInternalResponse()->getContent());
+    }
+
+    /**
+     * CSV のレコード数を返す.
+     *
+     * 項目の値に改行が含まれるため, 改行の数ではなく fgetcsv でレコード単位に数える.
+     */
+    private function countCsvRows(string $csv): int
+    {
+        $fp = fopen('php://memory', 'r+');
+        $this->assertNotFalse($fp);
+        fwrite($fp, $csv);
+        rewind($fp);
+        fgetcsv($fp); // ヘッダ行.
+
+        $rows = 0;
+        while (($row = fgetcsv($fp)) !== false) {
+            if ($row !== [null]) {
+                ++$rows;
+            }
+        }
+        fclose($fp);
+
+        return $rows;
     }
 
     /**

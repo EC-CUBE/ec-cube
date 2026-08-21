@@ -185,7 +185,7 @@ class ProductController extends AbstractController
 
         $qb = $this->productRepository->getQueryBuilderBySearchDataForAdmin($searchData);
 
-        $paginate_options = $this->createPaginateOptions($searchData['sortkey'] ?? null);
+        $paginate_options = $this->createPaginateOptions($this->extractSortKey($searchData));
 
         $event = new EventArgs(
             [
@@ -932,13 +932,15 @@ class ProductController extends AbstractController
 
         // 一覧画面と同じ paginate オプションを使う.
         // sortkey は HiddenType なので, セッションに入っている値をそのまま参照できる.
-        $viewData = $this->session->get('eccube.admin.product.search', []);
-        $sortKey = is_string($viewData['sortkey'] ?? null) ? $viewData['sortkey'] : '';
+        $sortKey = $this->extractSortKey($this->session->get('eccube.admin.product.search', []));
         $paginate_options = $this->createPaginateOptions($sortKey);
-        $sortsByProductClass = str_starts_with($this->productRepository::COLUMNS[$sortKey] ?? '', 'pc.');
+
+        // ProductClass の列でソートしている場合は, その列を select 句に載せる必要がある.
+        $sortColumn = $this->productRepository::COLUMNS[$sortKey] ?? '';
+        $hiddenSortColumn = str_starts_with($sortColumn, 'pc.') ? $sortColumn : null;
 
         $response = new StreamedResponse();
-        $response->setCallback(function () use ($request, $paginate_options, $sortsByProductClass): void {
+        $response->setCallback(function () use ($request, $paginate_options, $hiddenSortColumn): void {
             // CSV種別を元に初期化.
             $this->csvExportService->initCsvType(CsvType::CSV_TYPE_PRODUCT);
 
@@ -965,15 +967,21 @@ class ProductController extends AbstractController
             // http://uedatakeshi.blogspot.jp/2010/04/distinct-oeder-by-postgresmysql.html
             $qb->resetDQLPart('select');
 
-            // ProductClass の列でソートしている場合は pc も select する.
-            // DISTINCT と併用するため, ORDER BY の対象が select 句に無いと
-            // PostgreSQL が「ORDER BY expressions must appear in select list」で拒否する.
-            if ($isOutOfStock || $sortsByProductClass) {
+            if ($isOutOfStock) {
                 $qb->select('p, pc')
                     ->distinct();
             } else {
                 $qb->select('p')
                     ->distinct();
+
+                // ProductClass の列でソートしている場合は, その列を HIDDEN で select 句に載せる.
+                // DISTINCT と併用するため, ORDER BY の対象が select 句に無いと
+                // PostgreSQL が「ORDER BY expressions must appear in select list」で拒否する.
+                // pc を fetch join すると ProductClasses が pc.visible の条件で部分初期化され,
+                // 非表示の規格の行が出力から落ちてしまうため, HIDDEN で取得対象には含めない.
+                if ($hiddenSortColumn !== null) {
+                    $qb->addSelect($hiddenSortColumn.' AS HIDDEN sort_key_value');
+                }
             }
             // データ行の出力.
             $this->csvExportService->setExportQueryBuilder($qb);
@@ -1031,6 +1039,19 @@ class ProductController extends AbstractController
     }
 
     /**
+     * 検索条件からソートキーを取り出す.
+     *
+     * セッション由来の値も渡るため, 文字列以外は未指定として扱う.
+     * (null をそのまま配列オフセットに使うのは PHP 8.5 で非推奨)
+     */
+    private function extractSortKey(mixed $searchData): string
+    {
+        $sortKey = is_array($searchData) ? $searchData['sortkey'] ?? null : null;
+
+        return is_string($sortKey) ? $sortKey : '';
+    }
+
+    /**
      * 商品一覧・商品CSVで共通の paginate オプションを組み立てる.
      *
      * 商品検索のクエリは ProductClass を to-many で join しているため, ProductClass 側の列
@@ -1040,12 +1061,9 @@ class ProductController extends AbstractController
      *
      * @return array<string, mixed>
      */
-    private function createPaginateOptions(mixed $sortKey): array
+    private function createPaginateOptions(string $sortKey): array
     {
-        // セッション由来の値も渡るため, 文字列以外は未指定として扱う.
-        $sortKey = is_string($sortKey) ? $sortKey : '';
-
-        if (empty($this->productRepository::COLUMNS[$sortKey]) || $sortKey === 'code' || $sortKey === 'status') {
+        if (empty($this->productRepository::COLUMNS[$sortKey]) || $sortKey === 'status') {
             return [];
         }
 

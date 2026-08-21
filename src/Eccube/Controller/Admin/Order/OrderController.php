@@ -185,7 +185,7 @@ class OrderController extends AbstractController
 
         $qb = $this->orderRepository->getQueryBuilderBySearchDataForAdmin($searchData);
 
-        $paginate_options = $this->createPaginateOptions($searchData['sortkey'] ?? null);
+        $paginate_options = $this->createPaginateOptions($this->extractSortKey($searchData));
 
         $event = new EventArgs(
             [
@@ -296,8 +296,8 @@ class OrderController extends AbstractController
 
         // 一覧画面と同じ paginate オプションを使う.
         // sortkey は HiddenType なので, セッションに入っている値をそのまま参照できる.
-        $viewData = $this->session->get('eccube.admin.order.search', []);
-        $paginate_options = $this->createPaginateOptions($viewData['sortkey'] ?? null);
+        $sortKey = $this->extractSortKey($this->session->get('eccube.admin.order.search', []));
+        $paginate_options = $this->createPaginateOptions($sortKey);
 
         $response = new StreamedResponse();
         $response->setCallback(function () use ($request, $csvTypeId, $paginate_options): void {
@@ -363,6 +363,19 @@ class OrderController extends AbstractController
     }
 
     /**
+     * 検索条件からソートキーを取り出す.
+     *
+     * セッション由来の値も渡るため, 文字列以外は未指定として扱う.
+     * (null をそのまま配列オフセットに使うのは PHP 8.5 で非推奨)
+     */
+    private function extractSortKey(mixed $searchData): string
+    {
+        $sortKey = is_array($searchData) ? $searchData['sortkey'] ?? null : null;
+
+        return is_string($sortKey) ? $sortKey : '';
+    }
+
+    /**
      * 受注一覧・受注CSV・配送CSVで共通の paginate オプションを組み立てる.
      *
      * 受注検索のクエリは Shipping / OrderItem を fetch join しているため, to-many 側の列
@@ -372,12 +385,8 @@ class OrderController extends AbstractController
      *
      * @return array<string, mixed>
      */
-    private function createPaginateOptions(mixed $sortKey): array
+    private function createPaginateOptions(string $sortKey): array
     {
-        // セッション由来の値も渡るため, 文字列以外は未指定として扱う.
-        // (null をそのまま配列オフセットに使うのは PHP 8.5 で非推奨)
-        $sortKey = is_string($sortKey) ? $sortKey : '';
-
         if (empty($this->orderRepository::COLUMNS[$sortKey]) || $sortKey === 'order_status') {
             return [];
         }

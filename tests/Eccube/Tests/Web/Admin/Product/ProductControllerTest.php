@@ -1076,6 +1076,64 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
+     * ソートの有無で商品CSVの行数が変わらないことのテスト.
+     *
+     * ProductClass を select 句に載せると pc.visible の条件でコレクションが部分初期化され,
+     * ソートしたときだけ非表示の規格の行が落ちることがある. 行数で担保して検知する.
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/6713
+     */
+    public function testExportProductRowCountIsNotAffectedBySort(): void
+    {
+        // 規格を 2 件登録した商品. 規格を登録すると 規格なし既定の ProductClass は非表示になるが,
+        // ソートしない CSV には 3 行とも出力される.
+        $productName = 'Product for csv sort '.uniqid();
+        $Product = $this->createProduct($productName, 2);
+
+        $searchForm = $this->createSearchForm();
+        $searchForm['id'] = $productName;
+
+        $expected = $this->countExportedRows($searchForm, '');
+        $this->assertSame(count($Product->getProductClasses()), $expected);
+
+        foreach (['product_code', 'stock'] as $sortKey) {
+            $this->assertSame($expected, $this->countExportedRows($searchForm, $sortKey), $sortKey);
+        }
+    }
+
+    /**
+     * ソートしてから商品CSVを出力し, ヘッダ行を除いたレコード数を返す.
+     *
+     * @param array<string, mixed> $searchForm
+     */
+    private function countExportedRows(array $searchForm, string $sortKey): int
+    {
+        $searchForm['sortkey'] = $sortKey;
+        $searchForm['sorttype'] = 'a';
+        $this->searchProduct($searchForm);
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $csv = $this->exportProductCsv();
+
+        // 項目の値に改行が含まれるため, 改行の数ではなく fgetcsv でレコード単位に数える.
+        $fp = fopen('php://memory', 'r+');
+        $this->assertNotFalse($fp);
+        fwrite($fp, $csv);
+        rewind($fp);
+        fgetcsv($fp); // ヘッダ行.
+
+        $rows = 0;
+        while (($row = fgetcsv($fp)) !== false) {
+            if ($row !== [null]) {
+                ++$rows;
+            }
+        }
+        fclose($fp);
+
+        return $rows;
+    }
+
+    /**
      * @return \Iterator<int<0, max>, array{string}>
      */
     public static function dataProductSortKeyProvider(): \Iterator
