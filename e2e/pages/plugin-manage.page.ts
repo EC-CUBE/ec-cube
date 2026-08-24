@@ -45,7 +45,13 @@ export class PluginManagePage {
       // 「既に有効です。」ではなく 405 (Method Not Allowed) になり原因が分からない失敗になる。
       await this.page.reload();
       await this.page.waitForLoadState('load');
-      await this.storePluginRow(code).locator('a[href*="/enable"]').click();
+      const reloaded = this.storePluginRow(code).locator('a[href*="/enable"]');
+      // リロードしてもリンクが無い＝既に有効で、画面がその操作を提供していない。
+      // 「既に有効です。」を出すには古い画面の有効化リンクが必要なので、
+      // マルチタブのテストが元タブを操作できていない可能性が高い。
+      await expect(reloaded, `${code} の有効化リンクが無い（既に有効な状態を画面から有効化はできない）`)
+        .toHaveCount(1);
+      await reloaded.click();
     }
     await this.page.waitForLoadState('load');
     await expect(this.page.locator(PluginManagePage.ALERT_SELECTOR).first()).toContainText(expectedMessage, { timeout: 30_000 });
@@ -62,7 +68,10 @@ export class PluginManagePage {
       // 無効化リンクが無い場合はリロードして取り直す（enable 側と同じ理由で goto は使わない）
       await this.page.reload();
       await this.page.waitForLoadState('load');
-      await this.storePluginRow(code).locator('a[href*="/disable"]').click();
+      const reloaded = this.storePluginRow(code).locator('a[href*="/disable"]');
+      await expect(reloaded, `${code} の無効化リンクが無い（既に無効な状態を画面から無効化はできない）`)
+        .toHaveCount(1);
+      await reloaded.click();
     }
     await this.page.waitForLoadState('load');
     await expect(this.page.locator(PluginManagePage.ALERT_SELECTOR).first()).toContainText(expectedMessage, { timeout: 30_000 });
