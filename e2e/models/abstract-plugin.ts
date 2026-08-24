@@ -65,12 +65,25 @@ export abstract class AbstractPlugin {
     await newPage.goto(this.page.url());
     await newPage.waitForLoadState('load');
     const oldPage = this.page;
-    this.page = newPage;
+    await this.タブを切り替え(newPage);
+
     return oldPage;
   }
 
   async タブを切り替え(targetPage: Page): Promise<void> {
     this.page = targetPage;
     await this.page.bringToFront();
+    await this.ページオブジェクトを貼り替え();
+  }
+
+  /**
+   * 保持しているページオブジェクトを現在のタブへ貼り替える。
+   *
+   * ページオブジェクトは生成時の Page を持ち続けるため、`this.page` だけ差し替えても
+   * 操作先は元のタブに残る（マルチタブの競合テストが「別タブで操作したつもりで
+   * 同じタブを操作する」ことになり、成立しない）。タブを持つサブクラスで実装する。
+   */
+  protected async ページオブジェクトを貼り替え(): Promise<void> {
+    // 既定では保持するページオブジェクトが無いので何もしない
   }
 }

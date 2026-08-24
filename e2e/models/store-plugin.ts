@@ -33,6 +33,11 @@ export class StorePlugin extends AbstractPlugin {
     }
   }
 
+  protected async ページオブジェクトを貼り替え(): Promise<void> {
+    // managePage は生成時のタブを保持するので、タブ切り替え時に現在のタブへ貼り替える
+    this.managePage = await PluginManagePage.at(this.page);
+  }
+
   async インストール(errorMessage?: string): Promise<this> {
     const searchPage = await PluginSearchPage.go(this.page, this.config.adminRoute);
     const confirmPage = await searchPage.入手する(this.code);
