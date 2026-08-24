@@ -808,13 +808,33 @@ test.describe('Admin Product (EA03)', () => {
     // 規格を「無効化 → 再度有効化」すると dtb_product_stock が二重に登録され、
     // 在庫数がズレる不具合の回帰テスト（修正は #6029）。
     // 重複は画面に出ないので DB を直接見る。
-    // 元の商品を壊さないよう複製してから操作する（EA0310-UC02-T01 と同じ手順）。
+    // 元の商品を壊さないよう複製してから操作する。
+    // 複製元は DB から決める。商品名で検索して先頭行を複製すると、
+    // 直前の EA0310-UC02-T01 が同じ商品を複製して規格を初期化しているため、
+    // 検索結果の並び順によっては「規格を持たない複製」を掴んで成立しない。
+    const [base] = await db.fetchAll(
+      `SELECT p.id, p.name
+         FROM dtb_product p
+         JOIN dtb_product_class pc ON pc.product_id = p.id
+        WHERE pc.class_category_id1 IS NOT NULL
+          AND pc.visible = true
+        GROUP BY p.id, p.name
+        ORDER BY p.id
+        LIMIT 1`
+    );
+    expect(base, '規格を持つ商品がフィクスチャに存在する').toBeTruthy();
+    const baseProductId = String(base.id);
+
     await goProductList(page);
-    await searchProduct(page, '彩のジェラートCUBE');
+    await searchProduct(page, String(base.name));
     await expect(page.locator(searchResultMsg)).toContainText(/検索結果：\d+件が該当しました/);
 
-    await page.locator('#form_bulk table tbody tr:first-child td.align-middle.pe-3 div div:nth-child(2) a[data-bs-toggle="modal"]').click();
-    await page.locator('.modal.show a.btn-ec-conversion').click();
+    // 先頭行ではなく商品 ID で行を特定して複製する
+    // （複製ボタンの title は <a> ではなくラッパの div に付いているので data-bs-target で取る）
+    const copyModal = page.locator(`#confirmModal-${baseProductId}`);
+    await page.locator(`#ex-product-${baseProductId} a[data-bs-target="#confirmModal-${baseProductId}"]`).click();
+    await expect(copyModal).toBeVisible();
+    await copyModal.locator(`a[href$="/product/product/${baseProductId}/copy"]`).click();
     await page.waitForLoadState('load');
     await expect(page.locator('.alert-success')).toContainText('商品を複製しました');
 
