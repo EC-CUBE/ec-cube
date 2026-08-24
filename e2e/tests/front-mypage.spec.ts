@@ -1,6 +1,9 @@
 import { test, expect, Page } from '@playwright/test';
 import { ADMIN_PASSWORD, ADMIN_ROUTE, ADMIN_USER, CUSTOMER_PASSWORD, VALID_PASSWORD } from '../config/default.config';
 
+/** お届け先が上限数に達している専用会員 (e2e/setup-fixtures.php が作成する)。 */
+const addressMaxTestEmail = 'addr-max-test@test.test';
+
 /**
  * Helper: Login as the test customer via /mypage/login.
  */
@@ -455,9 +458,27 @@ test.describe('Front Mypage (EF05)', () => {
     await expect(page.locator('#page_mypage_delivery')).toContainText('お届け先は登録されていません');
   });
 
-  test.skip('EF0506-UC03-T02 Mypage お届け先上限確認', async ({ page }) => {
-    // This test requires creating 20 addresses programmatically.
-    // Skipped as per instructions (requires 20+ addresses).
+  test('EF0506-UC03-T02 Mypage お届け先上限確認', async ({ page }) => {
+    // お届け先が上限数に達している専用会員でログインする。
+    // 共有会員 playwright@test.test に上限数まで足すと、直前の EF0506-UC03-T01 が
+    // 「お届け先は登録されていません」を前提にしているため壊れる。
+    // 会員とお届け先は e2e/setup-fixtures.php が eccube_deliv_addr_max 件ぶん用意する。
+    await loginAs(page, addressMaxTestEmail, CUSTOMER_PASSWORD);
+
+    await page.goto('/mypage/delivery');
+    await page.waitForLoadState('load');
+
+    // 上限に達しているので「お届け先を追加する」リンクは出ず、エラーメッセージに置き換わる。
+    // 上限値 (eccube_deliv_addr_max) はテスト側に固定値で持たない。
+    const actions = page.locator('.ec-addressRole__actions');
+    await expect(actions.locator('span.ec-errorMessage'))
+      .toContainText(/お届け先登録の上限の\d+件に達しています/);
+    await expect(actions.locator('a[href$="/mypage/delivery/new"]')).toHaveCount(0);
+
+    // 上限に達した状態で追加画面へ直接アクセスしても入力させない
+    // (Eccube\Controller\Mypage\DeliveryController::edit が NotFoundHttpException を投げる)
+    const response = await page.goto('/mypage/delivery/new');
+    expect(response?.status()).toBe(404);
   });
 
   test('EF0507-UC03-T01 Mypage 退会手続き 未実施', async ({ page }) => {
