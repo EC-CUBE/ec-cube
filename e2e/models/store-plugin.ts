@@ -4,14 +4,12 @@ import { type PluginTestConfig } from '../fixtures/plugin-test';
 import { compressPlugin } from '../helpers/tar-helper';
 import { AbstractPlugin } from './abstract-plugin';
 import { PluginSearchPage } from '../pages/plugin-search.page';
-import { PluginManagePage } from '../pages/plugin-manage.page';
 
 /**
  * ストアプラグインの操作チェーン。
  * Codeception の Store_Plugin に相当。
  */
 export class StorePlugin extends AbstractPlugin {
-  protected managePage!: PluginManagePage;
   protected code: string;
   protected dependency?: StorePlugin;
 
@@ -31,11 +29,6 @@ export class StorePlugin extends AbstractPlugin {
     if (this.dependency) {
       this.managePage = this.dependency.managePage;
     }
-  }
-
-  protected async ページオブジェクトを貼り替え(): Promise<void> {
-    // managePage は生成時のタブを保持するので、タブ切り替え時に現在のタブへ貼り替える
-    this.managePage = await PluginManagePage.at(this.page);
   }
 
   async インストール(errorMessage?: string): Promise<this> {
