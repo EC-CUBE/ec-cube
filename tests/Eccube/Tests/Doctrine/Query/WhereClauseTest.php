@@ -16,7 +16,6 @@ declare(strict_types=1);
 namespace Eccube\Tests\Doctrine\Query;
 
 use Doctrine\ORM\Query\Parameter;
-use Doctrine\ORM\QueryBuilder;
 use Eccube\Doctrine\Query\WhereClause;
 use Eccube\Tests\EccubeTestCase;
 
@@ -189,7 +188,6 @@ final class WhereClauseTest extends EccubeTestCase
 
     private function asString(WhereClause $clause)
     {
-        /** @var QueryBuilder $builder */
         $builder = $this->entityManager->createQueryBuilder();
         $clause->build($builder);
 
@@ -198,7 +196,6 @@ final class WhereClauseTest extends EccubeTestCase
 
     private function getParams(WhereClause $clause)
     {
-        /** @var QueryBuilder $builder */
         $builder = $this->entityManager->createQueryBuilder();
         $clause->build($builder);
 

@@ -72,7 +72,19 @@ return RectorConfig::configure()
                    __DIR__.'/codeception/_support/Page/Admin/CustomerManagePage.php',
                    __DIR__.'/codeception/_support/Page/Admin/OrderManagePage.php',
                    __DIR__.'/codeception/acceptance/EF06OtherCest.php',
+                   // scandir() / explode() の戻り値要素はバージョンによって string と推論されたり
+                   // されなかったりし、 キャストを外すと NullToStrictStringFuncCallArgRector が
+                   // 付け直す往復になるため、 こちらもキャストを維持する
+                   __DIR__.'/codeception/_support/Helper/Acceptance.php',
+                   __DIR__.'/src/Eccube/Service/Composer/OutputParser.php',
                ],
+               // ContainerGetNameToTypeInTestsRector は $container->get('service.id') の文字列サービスIDを
+               // get(Type::class) へ変換する。クラス名のエイリアスを持たない private サービス
+               // (例: 'doctrine.debug_data_holder', 'event_dispatcher', 'twig', 'session.factory') では
+               // ServiceNotFoundException になるため, それらはサービスIDを変数へ代入して get($serviceId) の
+               // 形にし変換対象から外すこと (ルールは無効化せず変数経由で回避する)。
+               // 既存例: AbstractWebTestCase / MailServiceTest / CartServiceTest / TwigExtensionPass
+               //
                // shopping/order の各購入フローは同じ PurchaseFlow 型の別サービスであり、
                // 型解決(get(PurchaseFlow::class))に置き換えると両者の区別が失われテストが無意味化する
                ContainerGetNameToTypeInTestsRector::class => [
@@ -99,13 +111,6 @@ return RectorConfig::configure()
                EventSubscriberInterfaceToAttributeRector::class, // Doctrine EventSubscriberをAsDoctrineListenerアトリビュートに変換する
                AttributeArgumentsOrderRector::class, // すべての Attribute の引数をコンストラクタ引数順序に統一する
                NormalizePhpDocArrayGenericSpacingRector::class, // PHPDoc の配列ジェネリクス表記のカンマ後のスペースを統一する
-               // $container->get('service.id') の文字列サービスIDを get(Type::class) へ変換する。
-               // クラス名のエイリアスを持たない private サービス (例: 'doctrine.debug_data_holder',
-               // 'event_dispatcher', 'twig', 'session.factory') では ServiceNotFoundException に
-               // なるため, それらはサービスIDを変数へ代入して get($serviceId) の形にし変換対象から
-               // 外すこと (ルールは無効化せず変数経由で回避する)。
-               // 既存例: AbstractWebTestCase / MailServiceTest / CartServiceTest / TwigExtensionPass
-               ContainerGetNameToTypeInTestsRector::class,
            ])
            // よく使われるルールセットを有効化
            ->withSets([

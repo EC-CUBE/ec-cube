@@ -400,8 +400,6 @@ class ProductClass extends AbstractEntity
 
     /**
      * Set currencyCode.
-     *
-     * @return $this
      */
     public function setCurrencyCode(?string $currencyCode = null): static
     {

@@ -13,7 +13,6 @@
 
 namespace Eccube\Command;
 
-use Eccube\Entity\Plugin;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -40,7 +39,6 @@ class PluginSchemaUpdateCommand extends Command
 
         $code = $input->getArgument('code');
 
-        /** @var Plugin|null $Plugin */
         $Plugin = $this->pluginRepository->findByCode($code);
         if (!$Plugin) {
             $io->error("No such plugin `{$code}`.");

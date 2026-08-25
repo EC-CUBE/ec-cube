@@ -64,11 +64,11 @@ jobs:
       # docker-container ドライバのビルダーを用意する。 各アーキはネイティブランナーで
       # ビルドするため QEMU (docker/setup-qemu-action) は不要。
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f  # v3
+        uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c  # v4.2.0
 
       - name: Login to GitHub Container Registry
         if: github.event_name != 'pull_request'
-        uses: docker/login-action@371161bbe7024a29a25c5e19bfcbc0804fe9ad2c  # v4
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f  # v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -150,7 +150,10 @@ jobs:
   # ダイジェストをマニフェストリストに束ねてタグを付ける。
   # 単一プラットフォーム (CI) でも同じ経路を通り、 結果は従来と同じタグになる。
   merge:
-    name: merge ${{ matrix.php }}
+    # name で matrix を参照しない。 job レベルの if が false のとき matrix は展開されず、
+    # 参照していると checks 一覧に `merge ${{ matrix.php }}` がそのまま表示されるため。
+    # 参照しない場合は GitHub が matrix 値を後置し、 展開時は `merge (8.2)` になる。
+    name: merge
     needs: dockerbuild
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-24.04
@@ -174,7 +177,7 @@ jobs:
           merge-multiple: true
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@371161bbe7024a29a25c5e19bfcbc0804fe9ad2c  # v4
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f  # v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}

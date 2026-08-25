@@ -205,14 +205,14 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v6
 
       ## MCP の scope 認可と /admin/mcp 用 OAuth2 firewall は Api44 の feat/mcp-server-scorp に実装されており、
       ## eccube-api4 の 4.4 にはまだ無い (このブランチに無いと firewall が prepend されず /admin/mcp が
       ## ログインへ 302 リダイレクトし、 McpFirewallContractTest 等が 401/200 を得られず失敗する)。
       ## 当該ブランチが 4.4 にマージされたら ref を '4.4' に戻すこと。
       - name: Checkout Api44 plugin
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v6
         with:
           repository: 'EC-CUBE/eccube-api4'
           ref: 'feat/mcp-server-scorp'
@@ -230,7 +230,7 @@ jobs:
           psql -h 127.0.0.1 -U postgres -c "ALTER USER postgres PASSWORD 'password'"
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc  # v2
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240  # v2
         with:
           php-version: '8.3'
           github-token: ''

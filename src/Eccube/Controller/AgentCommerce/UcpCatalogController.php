@@ -16,7 +16,6 @@ namespace Eccube\Controller\AgentCommerce;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\Product;
-use Eccube\Entity\ProductClass;
 use Eccube\Repository\ProductRepository;
 use Eccube\Service\AgentCommerce\Catalog\AgentCatalogItemDto;
 use Eccube\Service\AgentCommerce\Catalog\CatalogMapper;
