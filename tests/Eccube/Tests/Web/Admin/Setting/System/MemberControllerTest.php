@@ -203,7 +203,7 @@ final class MemberControllerTest extends AbstractAdminWebTestCase
         $this->assertSame($Member->getLoginId(), $loginId);
     }
 
-    public function testMemberEditSubmitWithTwoFactorAuthReset()
+    public function testMemberEditSubmitWithTwoFactorAuthReset(): void
     {
         // before
         $formData = $this->createFormData();
@@ -236,7 +236,7 @@ final class MemberControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($Member->isTwoFactorAuthEnabled());
     }
 
-    public function testMemberEditSubmitKeepsTwoFactorAuthKeyWithoutReset()
+    public function testMemberEditSubmitKeepsTwoFactorAuthKeyWithoutReset(): void
     {
         // before
         $formData = $this->createFormData();
