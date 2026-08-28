@@ -253,8 +253,7 @@ class OrderPdfService
     /**
      * 描画器を組み立てる.
      *
-     * テンプレート PDF・ロゴ・フォント定義はいずれもファイルから読むため,
-     * 読み込みを許可するディレクトリを明示する（tc-lib-pdf は既定で全て拒否する）.
+     * 差し替え点として protected にしてある（プラグインが独自の描画器を返せる）.
      */
     protected function createPdfWriter(): PdfWriter
     {

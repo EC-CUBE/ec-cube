@@ -14,10 +14,10 @@
 namespace Eccube\Service\Pdf;
 
 /**
- * tc-lib-pdf の上に「カーソルを持つ帳票描画」を載せる薄い書き込み器.
+ * FPDF の上に「カーソルを持つ帳票描画」を載せる薄い書き込み器.
  *
  * 帳票は「現在位置から幅と高さを指定してセルを置き, カーソルが右か下へ進む」という
- * 組み方で作られている. tc-lib-pdf はページ内の絶対座標で描く API しか持たないため,
+ * 組み方で作られている. {@see FpdfEngine} はページ内の絶対座標で描く API しか持たないため,
  * その間を埋めるのがこのクラスの役割.
  *
  * 単位は mm, 用紙は A4 縦, 原点は左上（下方向が y の正）で固定する.
@@ -47,7 +47,7 @@ class PdfWriter
     /** 用紙下端から自動改ページ位置までの距離(mm) */
     private const PAGE_BREAK_MARGIN = 20.0;
 
-    /** セルの罫線の向き. tc-lib-pdf のスタイル配列のキーに対応する */
+    /** セルの罫線の向き. {@see borderSides()} が返す配列の要素に使う */
     private const BORDER_TOP = 0;
     private const BORDER_RIGHT = 1;
     private const BORDER_BOTTOM = 2;
@@ -477,8 +477,21 @@ class PdfWriter
             return;
         }
 
+        // 形式は拡張子ではなく中身から決める。FPDF は $type 省略時に拡張子で解析器を選び,
+        // 中身と食い違うと Error で PDF 全体が落ちる（4.3 までの TCPDF は中身で判定していた）。
+        $type = match ($size[2]) {
+            IMAGETYPE_PNG => 'png',
+            IMAGETYPE_JPEG => 'jpg',
+            IMAGETYPE_GIF => 'gif',
+            default => null,
+        };
+        if ($type === null) {
+            // FPDF が解析できない形式。ロゴを描かないだけにして帳票自体は出す
+            return;
+        }
+
         $height = $width * $size[1] / $size[0];
-        $this->addContent($this->engine->getSetImage($file, $x, $y, $width, $height));
+        $this->addContent($this->engine->getSetImage($file, $x, $y, $width, $height, $type));
     }
 
     /**

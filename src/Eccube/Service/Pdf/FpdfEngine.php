@@ -239,10 +239,10 @@ class FpdfEngine extends Fpdi
      * PNG/JPEG の解析・アルファの分離・XObject の登録は FPDF に任せ,
      * ページへ直接書かれる命令だけを取り出す.
      */
-    public function getSetImage(string $file, float $x, float $y, float $width, float $height): string
+    public function getSetImage(string $file, float $x, float $y, float $width, float $height, string $type = ''): string
     {
-        return $this->capture(function () use ($file, $x, $y, $width, $height): void {
-            $this->Image($file, $x, $y, $width, $height);
+        return $this->capture(function () use ($file, $x, $y, $width, $height, $type): void {
+            $this->Image($file, $x, $y, $width, $height, $type);
         });
     }
 

@@ -65,7 +65,14 @@ final class OrderPdfBaselineDumpTest extends AbstractServiceTestCase
     }
 
     /**
-     * 出力パターン定義. 実コードの分岐（README の「網羅すべき出力パターン」）に対応する.
+     * 出力パターン定義.
+     *
+     * 描画コードの分岐を一通り通すために選んである。網羅の基準は次の 4 つ:
+     *
+     * 1. 店舗情報の表示・非表示（`BaseInfo` のフラグと値の有無の組み合わせ）
+     * 2. 明細の形（規格の段数・軽減税率・送料/手数料の明細・複数出荷・改ページ）
+     * 3. 折り返しと字幅（長い商品名・欧文タイトル・Latin-1・備考の最大長）
+     * 4. 外部ファイル（user_data のロゴを読むか, 管理画面既定へ落ちるか）
      *
      * @return array<string, array<string, mixed>>
      */
@@ -135,14 +142,28 @@ final class OrderPdfBaselineDumpTest extends AbstractServiceTestCase
      *
      * @return callable(): void 復元処理
      */
+    /**
+     * user_data のロゴを判別可能な画像へ差し替え, 後始末の関数を返す.
+     *
+     * 読み込み先は `eccube_html_dir` から組み立てられる固定パスで差し替えられないため,
+     * 実ファイルを退避して上書きする。復元は finally で行うが, プロセスが強制終了すると
+     * `.baseline-bak` が残るので, 次回の呼び出し時に戻してから始める。
+     */
     private function hideUserLogo(): callable
     {
         $config = static::getContainer()->get(EccubeConfig::class);
         $logo = $config->get('eccube_html_dir').'/user_data/assets/pdf/logo.png';
+        $backup = $logo.'.baseline-bak';
+
+        // 前回が強制終了していると退避したまま残る。先に戻してから始める
+        if (file_exists($backup)) {
+            @unlink($logo);
+            rename($backup, $logo);
+        }
+
         if (!file_exists($logo)) {
             return static function (): void {};
         }
-        $backup = $logo.'.baseline-bak';
         rename($logo, $backup);
 
         // user_data と管理画面既定のロゴは既定で同一ファイルのため, 退避しただけでは
