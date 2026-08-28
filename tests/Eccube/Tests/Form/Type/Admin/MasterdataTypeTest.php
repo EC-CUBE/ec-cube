@@ -17,9 +17,12 @@ namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Form\Type\Admin\MasterdataType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use Symfony\Component\Form\FormInterface;
 
 final class MasterdataTypeTest extends AbstractTypeTestCase
 {
+    protected ?FormInterface $form = null;
+
     /** @var array デフォルト値（正常系）を設定 */
     protected ?array $formData = null;
 

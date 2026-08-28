@@ -15,8 +15,12 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Web\AgentCommerce;
 
+use Eccube\Entity\Order;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\BaseInfoRepository;
+use Eccube\Service\AgentCommerce\Payment\AgentCheckoutPaymentHandlerRegistry;
+use Eccube\Service\AgentCommerce\Payment\PaymentOutcome;
+use Eccube\Service\AgentCommerce\Payment\UcpPaymentHandlerInterface;
 use Eccube\Tests\EccubeTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,6 +36,9 @@ use Symfony\Component\HttpFoundation\Response;
  */
 final class UcpCheckoutControllerTest extends EccubeTestCase
 {
+    /** 契約違反ハンドラの handler_id (匿名クラスから参照するため public)。 */
+    public const THROWING_HANDLER_ID = 'test.ucp.throwing';
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -132,6 +139,69 @@ final class UcpCheckoutControllerTest extends EccubeTestCase
         $this->assertArrayHasKey('order', $completed, 'complete 後は order を含む (MUST)');
         $this->assertNotEmpty($completed['order']['id']);
         $this->assertNotEmpty($completed['order']['permalink_url'], 'order.permalink_url は必須');
+    }
+
+    /**
+     * exchangePaymentToken() が契約に反して例外を投げても HTTP 500 にせずビジネス系エラーへ写像する.
+     *
+     * 本メソッドは complete の状態機械の**外側** (controller のペイロード解決時) で呼ばれるため、
+     * {@link \Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutCompletionService} が
+     * authorize/capture に対して持つ例外の砦が効かない。
+     */
+    public function testPaymentTokenExchangeExceptionIsMappedToBusinessError(): void
+    {
+        // 決済ハンドラのレジストリを差し替えるため、リクエスト毎の kernel 再起動を止める。
+        $this->client->disableReboot();
+        self::getContainer()->set(
+            AgentCheckoutPaymentHandlerRegistry::class,
+            new AgentCheckoutPaymentHandlerRegistry([$this->throwingUcpHandler()]),
+        );
+
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $created = $this->postJson('/ucp/checkout-sessions', $this->createPayload((int) $ProductClass->getId()));
+
+        $completed = $this->postJson('/ucp/checkout-sessions/'.$created['id'].'/complete', [
+            'payment' => ['instruments' => [['handler_id' => self::THROWING_HANDLER_ID, 'credential' => ['token' => 'tok_broken']]]],
+        ]);
+
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), 'ハンドラの例外を HTTP 500 にしない');
+        $this->assertNotSame('completed', $completed['status'], '支払データを解決できないセッションは確定しない');
+        $this->assertNotEmpty($completed['messages'] ?? [], 'ビジネス系エラーとして messages[] を返す');
+        $this->assertNotSame('', $completed['messages'][0]['content'] ?? '', 'メッセージ本文が空でない');
+        $this->assertSame('error', $completed['messages'][0]['type'] ?? null);
+    }
+
+    /**
+     * exchangePaymentToken() で例外を投げる UCP 決済ハンドラ (契約違反のシミュレート).
+     */
+    private function throwingUcpHandler(): UcpPaymentHandlerInterface
+    {
+        return new class implements UcpPaymentHandlerInterface {
+            public function getHandlerId(): string
+            {
+                return UcpCheckoutControllerTest::THROWING_HANDLER_ID;
+            }
+
+            public function exchangePaymentToken(array $credential): array
+            {
+                throw new \RuntimeException('PSP tokenization endpoint is unreachable.');
+            }
+
+            public function authorize(Order $order, array $paymentData, array $paymentReference = []): PaymentOutcome
+            {
+                return PaymentOutcome::completed('should_not_be_reached');
+            }
+
+            public function capture(Order $order, array $paymentData, PaymentOutcome $authorization): PaymentOutcome
+            {
+                return PaymentOutcome::completed('should_not_be_reached');
+            }
+
+            public function supports(Order $order): bool
+            {
+                return true;
+            }
+        };
     }
 
     public function testCreateWithoutAddressIsIncomplete(): void

@@ -17,7 +17,6 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\CheckoutSession;
 use Eccube\Entity\Master\AgentProtocol;
 use Eccube\Entity\Master\CheckoutSessionStatus;
-use Eccube\Entity\Order;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CheckoutSessionRepository;
 use Eccube\Repository\Master\AgentProtocolRepository;
@@ -27,6 +26,8 @@ use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutAddress;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutCompletionResult;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutCompletionService;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutLineItem;
+use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutMessage;
+use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutMessageLevel;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutRequest;
 use Eccube\Service\AgentCommerce\CheckoutSession\CustomerResolverInterface;
 use Eccube\Service\AgentCommerce\Exception\AgentCheckoutErrorCode;
@@ -165,6 +166,13 @@ class UcpCheckoutController extends AbstractController
                 // UCP は payment.instruments[].handler_id で決済ハンドラを解決し、クレデンシャルを
                 // ゲートウェイトークンへ交換する。交換後の中立データを状態機械へ渡す。
                 $paymentData = $this->resolvePaymentData($payload);
+                if ($paymentData === null) {
+                    // ハンドラが契約に反して例外を投げた。状態機械は未実行 = 在庫引当もステータス遷移も
+                    // 起きていないため、セッションを据え置いたままビジネス系エラーで返し再試行を許す。
+                    return ['status' => 200, 'body' => $this->mapper->buildResponseFromOrder($session, $order, $this->messageMapper->toUcpMessages([
+                        new AgentCheckoutMessage(AgentCheckoutMessageLevel::ERROR, 'The payment credential could not be processed.'),
+                    ]))];
+                }
                 // complete は「中断→再開」状態機械 (#6777)。追加認証 (3DS/escalation) は
                 // エラーでなく requires_action 等の中間状態として返る。在庫引当の保持/回収・
                 // トランザクション境界・与信→売上→確定の順序は CompletionService が担う。
@@ -247,11 +255,20 @@ class UcpCheckoutController extends AbstractController
      * 与信/売上 (authorize/capture) は状態機械 (CompletionService) が実行するため、ここでは交換のみ行う。
      * ハンドラ未登録 (代引・無償等) の場合は空配列を返し、状態機械が与信不要として確定する。
      *
+     * `exchangePaymentToken()` は状態機械の**外側**の呼び出しなので、CompletionService が
+     * authorize/capture に対して持つ例外の砦が効かない。契約上ハンドラは投げてはならない
+     * ({@link \Eccube\Service\AgentCommerce\Payment\UcpPaymentHandlerInterface::exchangePaymentToken()})
+     * が、破られたときに HTTP 500 を返さないようここで捕捉し、呼び出し側がビジネス系エラーへ
+     * 写像できるよう null を返す。
+     *
+     * 捕捉対象はハンドラ呼び出しに限る。handler_id の重複登録 ({@link AgentCheckoutPaymentHandlerRegistry}
+     * が投げる `\RuntimeException`) はデプロイ不備であり、ビジネス系エラーに丸めず伝播させる。
+     *
      * @param array<string, mixed> $payload
      *
-     * @return array<string, mixed>
+     * @return array<string, mixed>|null 交換後の支払データ。ハンドラが例外を投げた場合は null
      */
-    private function resolvePaymentData(array $payload): array
+    private function resolvePaymentData(array $payload): ?array
     {
         $handlerId = $this->extractHandlerId($payload);
         if ($handlerId === null) {
@@ -266,7 +283,13 @@ class UcpCheckoutController extends AbstractController
         $instrument = $payload['payment']['instruments'][0] ?? [];
         $credential = is_array($instrument['credential'] ?? null) ? $instrument['credential'] : [];
 
-        return $handler->exchangePaymentToken($credential);
+        try {
+            return $handler->exchangePaymentToken($credential);
+        } catch (\Throwable $e) {
+            log_error('The UCP payment handler threw during exchangePaymentToken.', ['exception' => $e, 'handler_id' => $handlerId]);
+
+            return null;
+        }
     }
 
     /**

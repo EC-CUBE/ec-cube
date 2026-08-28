@@ -13,7 +13,6 @@
 
 namespace Eccube\Service;
 
-use Eccube\Entity\Category;
 use Eccube\Entity\Product;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -29,6 +28,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class ProductStructuredDataService
 {
+    use StructuredDataDescriptionTrait;
+
     /**
      * 画像が無い場合のフォールバック画像ファイル名.
      */
@@ -124,15 +125,8 @@ class ProductStructuredDataService
         if ($description === null || $description === '') {
             $description = $Product->getDescriptionDetail();
         }
-        if ($description === null || $description === '') {
-            return '';
-        }
 
-        $description = strip_tags($description);
-        $description = preg_replace('/\s+/u', ' ', $description) ?? $description;
-        $description = trim($description);
-
-        return mb_substr($description, 0, 300);
+        return $this->normalizeDescription($description);
     }
 
     /**

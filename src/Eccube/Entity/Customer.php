@@ -423,9 +423,6 @@ class Customer extends AbstractEntity implements UserInterface, PasswordAuthenti
         return $this->birth;
     }
 
-    /**
-     * @return $this
-     */
     public function setPlainPassword(?string $password): static
     {
         // NIST SP 800-63B-4 に従い, 保存時とログイン照合時で表記ゆれを統一するため NFKC 正規化する.

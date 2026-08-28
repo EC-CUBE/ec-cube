@@ -144,7 +144,7 @@ final class MailServiceTest extends AbstractServiceTestCase
         $this->verify();
 
         $this->assertEmailTextBodyContains($Message, '退会手続きが完了いたしました');
-        $this->assertEmailHtmlBodyNotContains($Message, '退会手続きが完了いたしました', 'HTML part は存在しない');
+        $this->assertNull($Message->getHtmlBody(), 'HTML part は存在しない');
     }
 
     public function testSendContactMail()
@@ -298,7 +298,7 @@ final class MailServiceTest extends AbstractServiceTestCase
         $Message = $this->getMailerMessage(0);
 
         $this->assertEmailTextBodyContains($Message, $url, 'URLは'.$url.'ではありません');
-        $this->assertEmailHtmlBodyNotContains($Message, $url, 'HTML part は存在しない');
+        $this->assertNull($Message->getHtmlBody(), 'HTML part は存在しない');
 
         $this->expected = '['.$this->BaseInfo->getShopName().'] パスワード変更のご確認';
         $this->actual = $Message->getSubject();
@@ -335,7 +335,7 @@ final class MailServiceTest extends AbstractServiceTestCase
         $this->verify();
 
         $this->assertEmailTextBodyContains($Message, 'パスワードを変更いたしました。');
-        $this->assertEmailHtmlBodyNotContains($Message, 'パスワードを変更いたしました。', 'HTML part は存在しない');
+        $this->assertNull($Message->getHtmlBody(), 'HTML part は存在しない');
     }
 
     public function testConvertRFCViolatingEmail()

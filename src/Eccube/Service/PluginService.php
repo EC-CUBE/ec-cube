@@ -154,7 +154,6 @@ class PluginService
             $requires = $this->getPluginRequired($config);
             $notInstalledOrDisabled = array_filter($requires, function ($req) {
                 $code = preg_replace('/^ec-cube\//i', '', (string) $req['name']);
-                /** @var Plugin|null $DependPlugin */
                 $DependPlugin = $this->pluginRepository->findByCode($code);
 
                 return $DependPlugin ? $DependPlugin->isEnabled() == false : true;
@@ -199,7 +198,6 @@ class PluginService
     public function postInstall(array $config, string|int $source): void
     {
         try {
-            /** @var Plugin|null $Plugin */
             $Plugin = $this->pluginRepository->findByCode($config['code']);
 
             if (!$Plugin) {
@@ -366,12 +364,15 @@ class PluginService
     }
 
     /**
-     * @param array<int, string> $arr
+     * 未作成のディレクトリを表す null も受け取る（install()/update() は例外発生時点で
+     * 変数が未設定のまま渡すため）。
+     *
+     * @param array<int, string|null> $arr
      */
     public function deleteDirs(array $arr): void
     {
         foreach ($arr as $dir) {
-            if (file_exists($dir)) {
+            if (null !== $dir && file_exists($dir)) {
                 $fs = new Filesystem();
                 $fs->remove($dir);
             }
@@ -707,7 +708,7 @@ class PluginService
 
             $this->callPluginManagerMethod($config, $enable ? 'enable' : 'disable');
 
-            $plugin->setEnabled($enable ? true : false);
+            $plugin->setEnabled($enable);
             $em->persist($plugin);
 
             // Proxyだけ再生成してスキーマは更新しない
@@ -973,8 +974,6 @@ class PluginService
      * Plugin is exist check
      *
      * @param array<int, array<string, mixed>> $plugins get from api（各行に product_code を含む）
-     *
-     * @return false|int|string
      */
     public function checkPluginExist(array $plugins, string $pluginCode): false|int|string
     {

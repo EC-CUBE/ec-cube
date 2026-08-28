@@ -94,7 +94,7 @@ jobs:
           php -i | grep register_argc_argv
 
       - name: Setup Node.js
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e  # v6.4.0
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020  # v7.0.0
         with:
           node-version: 20
 
@@ -227,6 +227,149 @@ jobs:
           name: playwright-${{ matrix.suite }}-logs
           path: var/log/
 
+  ## MCP の Playwright E2E。 トークン発行 UI → Bearer で /admin/mcp にツール呼び出し、 の経路を通す。
+  ## MCP は Api44 (OAuth2 / scope / firewall) 前提のため、 メインの playwright マトリクスとは別に、
+  ## Api44 を導入した専用環境で mcp.spec.ts を実走する (Api44 導入手順は unit-test.yml の mcp ジョブと同じ)。
+  ## 環境は既存 playwright ジョブと同じ混成 (.env=e2e / スキーマ・fixtures・Api44 導入は --env=dev)。
+  ## ブラウザ経由の admin ログインが通る実績のある構成に合わせる。
+  mcp:
+    name: Playwright (mcp)
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v6
+
+      ## MCP の scope 認可と /admin/mcp 用 OAuth2 firewall は Api44 の feat/mcp-server-scorp に実装されており、
+      ## eccube-api4 の 4.4 にはまだ無い。 当該ブランチが 4.4 にマージされたら ref を '4.4' に戻すこと。
+      - name: Checkout Api44 plugin
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v6
+        with:
+          repository: 'EC-CUBE/eccube-api4'
+          ref: 'feat/mcp-server-scorp'
+          path: 'eccube-api4'
+
+      - name: Setup PostgreSQL
+        uses: ankane/setup-postgres@6d3ffa1aa7498a42b79e9f9f5838b99971839300  # v1
+        with:
+          postgres-version: '16'
+          user: postgres
+      - name: Configure PostgreSQL
+        run: |
+          for _ in $(seq 1 30); do pg_isready -h 127.0.0.1 && break; sleep 1; done
+          pg_isready -h 127.0.0.1 || { echo 'PostgreSQL did not become ready within 30s'; exit 1; }
+          psql -h 127.0.0.1 -U postgres -c "ALTER USER postgres PASSWORD 'password'"
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240  # v2
+        with:
+          php-version: '8.3'
+          github-token: ''
+          extensions: :xdebug, redis
+
+      - name: Setup Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020  # v4
+        with:
+          node-version: 20
+
+      - name: Initialize Composer
+        uses: ./.github/actions/composer
+
+      - name: Generate ECCUBE_AUTH_MAGIC
+        run: echo "ECCUBE_AUTH_MAGIC=$(openssl rand -hex 32)" >> "$GITHUB_ENV"
+
+      - name: Build Sass and JavaScript
+        run: |
+          npm ci
+          npm run build
+
+      - name: Setup mock-package-api
+        run: |
+          ( cd eccube-api4 && tar cvzf "$GITHUB_WORKSPACE/Api44.tar.gz" ./* )
+          mkdir -p /tmp/repos
+          cp "$GITHUB_WORKSPACE/Api44.tar.gz" /tmp/repos/Api44.tgz
+          docker run --name package-api -d -v /tmp/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
+
+      # 既存 playwright ジョブと同じ混成: .env は e2e、 スキーマ/fixtures/Api44 導入は
+      # --env=dev で流す (ブラウザ経由 admin ログインが通る実績のある構成)。
+      - name: Setup EC-CUBE
+        env:
+          APP_ENV: 'e2e'
+          DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
+          DATABASE_SERVER_VERSION: 16
+          ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
+        run: |
+          echo "APP_ENV=${APP_ENV}" > .env
+          echo "TRUSTED_HOSTS=127.0.0.1,localhost" >> .env
+          echo "ECCUBE_AUTH_MAGIC=${ECCUBE_AUTH_MAGIC}" >> .env
+          bin/console doctrine:database:create --env=dev
+          bin/console doctrine:schema:create --env=dev
+          bin/console eccube:fixtures:load --env=dev
+
+      - name: Install Api44
+        env:
+          APP_ENV: 'dev'
+          DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
+          DATABASE_SERVER_VERSION: 16
+          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
+          USE_SELFSIGNED_SSL_CERTIFICATE: '1'
+        run: |
+          bin/console doctrine:query:sql "update dtb_base_info set authentication_key='dummy'" --env=dev
+          bin/console eccube:composer:require ec-cube/api44 --env=dev
+          bin/console eccube:plugin:enable --code=Api44 --env=dev
+          bin/console doctrine:schema:update --force --dump-sql --env=dev
+          bin/console cache:clear --no-warmup --env=dev
+          chmod 600 app/PluginData/Api44/oauth/private.key
+
+      - name: Install Playwright dependencies
+        working-directory: e2e
+        run: npm ci
+
+      - name: Install Playwright browsers
+        working-directory: e2e
+        run: npx playwright install --with-deps chromium
+
+      - name: Start PHP Development Server
+        env:
+          APP_ENV: 'e2e'
+          DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
+          DATABASE_SERVER_VERSION: 16
+          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
+          ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
+        run: php -S 127.0.0.1:8000 codeception/router.php &
+
+      - name: Run Playwright tests
+        working-directory: e2e
+        env:
+          BASE_URL: 'http://127.0.0.1:8000'
+          DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
+          ECCUBE_ADMIN_ROUTE: 'admin'
+          ADMIN_USER: 'admin'
+          ADMIN_PASSWORD: 'password'
+          APP_ENV: 'e2e'
+          CI: 'true'
+        run: npx playwright test --project=setup --project=mcp-tests mcp.spec.ts
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
+        with:
+          name: playwright-mcp-report
+          path: e2e/playwright-report/
+
+      - name: Upload ScreenShots
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
+        with:
+          name: playwright-mcp-results
+          path: e2e/test-results/
+
+      - name: Upload logs
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
+        with:
+          name: playwright-mcp-logs
+          path: var/log/
+
   ## Web インストーラは「EC-CUBE が未インストールであること」が前提のため、
   ## playwright ジョブ (.env を作成し schema:create 済み) とは同居できず別ジョブにする。
   ## playwright ジョブとの違い:
@@ -247,7 +390,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v6
         with:
           ## 後続の Composer/npm/build でリポジトリ内のコードを実行するため、
           ## GitHub トークンを .git/config に残さない (このジョブは push しない)。
@@ -273,7 +416,7 @@ jobs:
           extensions: redis
 
       - name: Setup Node.js
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e  # v6.4.0
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020  # v7.0.0
         with:
           node-version: 20
 
@@ -281,7 +424,7 @@ jobs:
         uses: ./.github/actions/composer
 
       - name: Cache npm dependencies
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae  # v5
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v5
         with:
           path: ~/.npm
           key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
@@ -289,7 +432,7 @@ jobs:
             ${{ runner.os }}-npm-
 
       - name: Cache build artifacts
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae  # v5
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v5
         id: build-cache
         with:
           path: |
@@ -312,7 +455,7 @@ jobs:
 
       - name: Cache Playwright browsers
         id: playwright-cache
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae  # v5
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v5
         with:
           path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ hashFiles('e2e/package-lock.json') }}

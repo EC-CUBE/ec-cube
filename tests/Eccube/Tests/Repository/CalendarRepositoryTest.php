@@ -56,7 +56,6 @@ final class CalendarRepositoryTest extends EccubeTestCase
      */
     public function createCalendar(string $title = 'title', ?\DateTime $holiday = null): Calendar
     {
-        /** @var Calendar $Calendar */
         $Calendar = new Calendar();
         if (is_null($holiday)) {
             $holiday = $this->DateTimeNow;

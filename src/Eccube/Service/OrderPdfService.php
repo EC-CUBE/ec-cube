@@ -50,6 +50,25 @@ class OrderPdfService extends Fpdi
     /** FONT 明朝 */
     public const FONT_SJIS = 'kozminproregular';
 
+    /** ロゴ画像の描画位置(x, y)と幅(mm). 高さは画像の縦横比で決まる */
+    public const LOGO_X = 124.0;
+    public const LOGO_Y = 46.0;
+    public const LOGO_WIDTH = 40.0;
+
+    /** 店舗情報欄の先頭行の y 座標(mm) */
+    public const SHOP_INFO_FIRST_Y = 58;
+
+    /** 店舗情報欄の行送り(mm). 4.3 までの行送りに合わせる */
+    public const SHOP_INFO_LINE_HEIGHT = 3;
+
+    /**
+     * 総合計金額の描画基準 y 座標(mm).
+     *
+     * この位置から空セル(高さ7mm)を挟んで金額セルを描画するため, 金額の実描画は 102.5mm 以降になる.
+     * 店舗情報欄はこの基準位置より上に収める（安全側のマージンを含む下限）.
+     */
+    public const PAYMENT_TOTAL_BASE_Y = 95.5;
+
     // ====================================
     // 変数宣言
     // ====================================
@@ -285,34 +304,74 @@ class OrderPdfService extends Fpdi
         // 基準座標を設定する
         $this->setBasePosition();
 
-        // ショップ名
-        $this->lfText(125, 58, $this->baseInfoRepository->getShopName(), 8, 'B');
+        // 店舗情報は基準の x=125 から、上から順に「表示トグルが ON かつ 値が非空」の行だけを詰めて描画する。
+        // 非表示・空値の行は座標を空けず後続の行が繰り上がる（#6197）。
+        // 表示/非表示は基本設定の order_pdf_visible_* トグルで制御する。
+        // プロパティ名に反して $baseInfoRepository の実体は BaseInfo エンティティ（コンストラクタで get() 済み）
+        $BaseInfo = $this->baseInfoRepository;
+        $x = 125;
+        $lineHeight = self::SHOP_INFO_LINE_HEIGHT;
+        $y = self::SHOP_INFO_FIRST_Y;
 
-        // 郵便番号
-        $postalCode = $this->baseInfoRepository->getPostalCode();
-        if (!empty($postalCode)) {
-            $this->lfText(121, 63, "\u{3012}".' '.mb_substr($postalCode, 0, 3).' - '.mb_substr($postalCode, 3, 4), 8);
+        // 店名（太字）
+        if ($BaseInfo->isOrderPdfVisibleShopName() && !empty($BaseInfo->getShopName())) {
+            $this->lfText($x, $y, $BaseInfo->getShopName(), 8, 'B');
+            $y += $lineHeight;
         }
 
-        // 都道府県+所在地
-        $text = $this->baseInfoRepository->getPref().$this->baseInfoRepository->getAddr01();
-        $this->lfText(125, 66, $text, 8);
-        $this->lfText(125, 69, $this->baseInfoRepository->getAddr02(), 8);
+        // 店名（英語表記）
+        if ($BaseInfo->isOrderPdfVisibleShopNameEng() && !empty($BaseInfo->getShopNameEng())) {
+            $this->lfText($x, $y, $BaseInfo->getShopNameEng(), 8);
+            $y += $lineHeight;
+        }
+
+        // 郵便番号・住所（〒 / 都道府県+addr01 / addr02 の最大3行を1トグルで制御。各行は空ならスキップ）
+        if ($BaseInfo->isOrderPdfVisibleAddress()) {
+            $postalCode = $BaseInfo->getPostalCode();
+            if (!empty($postalCode)) {
+                // 郵便マーク(〒)分だけ左に寄せる
+                $this->lfText($x - 4, $y, "\u{3012}".' '.mb_substr($postalCode, 0, 3).' - '.mb_substr($postalCode, 3, 4), 8);
+                $y += $lineHeight;
+            }
+            $address1 = $BaseInfo->getPref().$BaseInfo->getAddr01();
+            if (!empty($address1)) {
+                $this->lfText($x, $y, $address1, 8);
+                $y += $lineHeight;
+            }
+            if (!empty($BaseInfo->getAddr02())) {
+                $this->lfText($x, $y, $BaseInfo->getAddr02(), 8);
+                $y += $lineHeight;
+            }
+        }
+
+        // 会社名
+        if ($BaseInfo->isOrderPdfVisibleCompanyName() && !empty($BaseInfo->getCompanyName())) {
+            $this->lfText($x, $y, $BaseInfo->getCompanyName(), 8);
+            $y += $lineHeight;
+        }
 
         // 電話番号
-        $text = 'TEL: '.$this->baseInfoRepository->getPhoneNumber();
-        $this->lfText(125, 72, $text, 8); // TEL・FAX
+        if ($BaseInfo->isOrderPdfVisiblePhoneNumber() && !empty($BaseInfo->getPhoneNumber())) {
+            $this->lfText($x, $y, 'TEL: '.$BaseInfo->getPhoneNumber(), 8);
+            $y += $lineHeight;
+        }
+
+        // 店舗営業時間
+        if ($BaseInfo->isOrderPdfVisibleBusinessHour() && !empty($BaseInfo->getBusinessHour())) {
+            $this->lfText($x, $y, $BaseInfo->getBusinessHour(), 8);
+            $y += $lineHeight;
+        }
 
         // メールアドレス
-        if (strlen((string) $this->baseInfoRepository->getEmail01()) > 0) {
-            $text = 'Email: '.$this->baseInfoRepository->getEmail01();
-            $this->lfText(125, 75, $text, 8); // Email
+        if ($BaseInfo->isOrderPdfVisibleEmail() && strlen((string) $BaseInfo->getEmail01()) > 0) {
+            $this->lfText($x, $y, 'Email: '.$BaseInfo->getEmail01(), 8);
+            $y += $lineHeight;
         }
 
         // インボイス登録番号
-        if (!empty($this->baseInfoRepository->getInvoiceRegistrationNumber())) {
-            $text = '登録番号: '.$this->baseInfoRepository->getInvoiceRegistrationNumber();
-            $this->lfText(125, 79, $text, 8);
+        if ($BaseInfo->isOrderPdfVisibleInvoiceNumber() && !empty($BaseInfo->getInvoiceRegistrationNumber())) {
+            $this->lfText($x, $y, '登録番号: '.$BaseInfo->getInvoiceRegistrationNumber(), 8);
+            $y += $lineHeight;
         }
 
         // user_dataにlogo.pngが配置されている場合は優先的に読み込む
@@ -322,7 +381,8 @@ class OrderPdfService extends Fpdi
             $logoFile = $this->eccubeConfig->get('eccube_html_admin_dir').'/assets/pdf/logo.png';
         }
 
-        $this->Image($logoFile, 124, 46, 40);
+        // ロゴは店舗情報の描画後に重ねる（PDFは後から描いた要素が上になるため、元の重なり順を維持する）
+        $this->Image($logoFile, self::LOGO_X, self::LOGO_Y, self::LOGO_WIDTH);
     }
 
     /**
@@ -451,7 +511,7 @@ class OrderPdfService extends Fpdi
             $this->SetFont(self::FONT_SJIS, 'B', 15);
             $paymentTotalText = $this->eccubeExtension->getPriceFilter($Order->getPaymentTotal());
 
-            $this->setBasePosition(120, 95.5);
+            $this->setBasePosition(120, self::PAYMENT_TOTAL_BASE_Y);
             $this->Cell(5, 7, '', 0, 0, '', false, '');
             $this->Cell(67, 8, $paymentTotalText, 0, 2, 'R', false, '');
             $this->Cell(0, 45, '', 0, 2, '', false, '');
@@ -744,9 +804,9 @@ class OrderPdfService extends Fpdi
         $result = $this->getMargins();
 
         // 基準座標を指定する
-        $actualX = is_null($x) ? $result['left'] : $x;
+        $actualX = $x ?? $result['left'];
         $this->SetX($actualX);
-        $actualY = is_null($y) ? $result['top'] : $y;
+        $actualY = $y ?? $result['top'];
         $this->SetY($actualY);
     }
 

@@ -24,7 +24,6 @@ use Eccube\Entity\Plugin;
 use Eccube\Exception\PluginException;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\PluginService;
-use Faker\Generator;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -662,6 +661,15 @@ class Block
     private $id;
 
     /**
+     * テスト側から代入するための ORM 非マッピングプロパティ.
+     *
+     * 宣言しないと PHP 8.2 の動的プロパティ生成 (deprecated) になる.
+     *
+     * @var bool|null
+     */
+    public $sample;
+
+    /**
      * @return int
      */
     public function getId()
@@ -749,7 +757,6 @@ EOD;
      */
     private function createComposerJsonFile($config): array
     {
-        /** @var Generator $faker */
         $faker = $this->getFaker();
 
         return [

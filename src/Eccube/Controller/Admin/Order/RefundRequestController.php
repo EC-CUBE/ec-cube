@@ -237,7 +237,8 @@ class RefundRequestController extends AbstractController
                 trans('admin.order.refund_request.create_date'),
                 trans('admin.order.refund_request.update_date'),
             ];
-            fputcsv($out, $header);
+            // PHP 8.4 で $escape 省略が非推奨. 既存の出力を変えないようコア既定（'\\'）を明示する
+            fputcsv($out, $header, escape: '\\');
 
             $sanitize = static function (mixed $value): string {
                 $value = (string) ($value ?? '');
@@ -257,7 +258,7 @@ class RefundRequestController extends AbstractController
                     $sanitize($RefundRequest->getCreateDate()?->format('Y-m-d H:i:s')),
                     $sanitize($RefundRequest->getUpdateDate()?->format('Y-m-d H:i:s')),
                 ];
-                fputcsv($out, $row);
+                fputcsv($out, $row, escape: '\\');
                 $this->entityManager->detach($RefundRequest);
             }
 

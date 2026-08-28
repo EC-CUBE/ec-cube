@@ -27,11 +27,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class RefundRequestControllerTest extends AbstractAdminWebTestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
     public function testIndex(): void
     {
         $this->client->request(
@@ -236,7 +231,7 @@ final class RefundRequestControllerTest extends AbstractAdminWebTestCase
         $lines = array_filter(explode("\n", $content), fn ($line) => $line !== '');
         $this->assertGreaterThanOrEqual(1, count($lines));
 
-        $header = str_getcsv($lines[0]);
+        $header = str_getcsv($lines[0], escape: '\\');
         $this->assertCount(9, $header);
     }
 
