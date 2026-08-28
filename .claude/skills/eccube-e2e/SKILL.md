@@ -41,6 +41,7 @@ description: EC-CUBE 4.4 の E2E テスト（Playwright・`e2e/` 配下）を実
 - ❌ テスト境界で管理者セッションが切れて 401 → ✅ `ensureAdminLoggedIn()` 等で再ログインしてから操作（`admin-basicinfo.spec.ts` 修正例）。
 - ❌ retry でプラグイン/データが残留し「既にインストール済み」で再失敗 → ✅ `beforeEach`/`afterEach` で cleanup（無効化→削除→ディレクトリ削除。`plugin-misc.spec.ts` 修正例）。
 - ❌ パスワードを見た目の文字数で作る → ✅ NFKC 正規化後で 15 文字以上か数える（min15。`[...str.normalize('NFKC')].length` で確認。#6488）。
+- ❌ 更新直後の値を、それを表示する任意の画面から読んで検証する → ✅ **`APP_ENV=e2e` は Doctrine の結果キャッシュが有効**（dev/test は `result_cache_driver: ~` で無効）。`enableResultCache` を使う画面は最大 10 秒前の値を返すので、キャッシュしない画面から読む（#7016 の在庫は商品編集画面ではなく商品一覧）。
 - ❌ 在庫を戻す受注ステータス遷移を PHPUnit の Web テストで書く → ✅ 悲観ロックが `TransactionRequiredException` になるため E2E で書く（test 環境は `TransactionListener` 無効・e2e は有効。#7016）。
 - ❌ 新規 `admin-*`/`front-*` spec を作ったのに CI で実行されない → ✅ `.github/workflows/e2e-test.yml` の `suite:` 配列にファイル名（接尾辞 `.spec.ts` 抜き）を追加する。
 

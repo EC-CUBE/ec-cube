@@ -61,24 +61,26 @@ async function createOrderViaUI(page: import('@playwright/test').Page, name01: s
 }
 
 /**
- * 商品一覧から規格なし商品の編集画面へ入り, 在庫数を読む.
+ * 商品一覧から規格なし商品の在庫数を読む.
  *
- * 受注のキャンセルで在庫が戻ることを確認するために使う.
+ * 商品編集画面ではなく一覧から読むのは, 編集画面が使う
+ * ProductRepository::findWithSortedClassCategories() が結果キャッシュ
+ * (eccube_result_cache_lifetime_short = 10 秒) を有効にしており,
+ * 直前の在庫更新が最大 10 秒間反映されないため。一覧の検索クエリはキャッシュしない。
  */
 async function getProductStock(page: import('@playwright/test').Page, productName: string): Promise<number> {
   await page.goto(`/${adminRoute}/product`);
-  await page.waitForLoadState('load');
   await page.locator('#admin_search_product_id').fill(productName);
   await page.locator('#search_form .c-outsideBlock__contents button').click();
-  await page.waitForLoadState('load');
 
-  await page.locator('#form_bulk table tbody tr:first-child td:nth-child(4) a').click();
-  await page.waitForLoadState('load');
+  // 検索が反映されるまで待つ。行は商品名で特定し, 位置に依存しない。
+  const row = page.locator('#form_bulk table tbody tr').filter({ hasText: productName });
+  await expect(row).toHaveCount(1);
 
-  const stock = page.locator('#admin_product_class_stock');
-  await expect(stock).toBeVisible();
+  // 列: チェックボックス / 商品ID / 画像 / 商品名 / 商品コード / 販売価格 / 在庫数
+  const stock = (await row.locator('td').nth(6).innerText()).trim();
 
-  return Number(await stock.inputValue());
+  return Number(stock);
 }
 
 test.describe('Admin Order (EA04)', () => {
@@ -470,16 +472,18 @@ test.describe('Admin Order (EA04)', () => {
     const ordererName = `取消${Date.now().toString(36)}`;
     await createOrderViaUI(page, ordererName, '太郎');
 
-    // 受注登録で在庫が減る
+    // 受注登録で在庫が 1 減る
     const stockAfterOrder = await getProductStock(page, productName);
-    expect(stockAfterOrder).toBeLessThan(stockBeforeOrder);
+    expect(stockAfterOrder).toBe(stockBeforeOrder - 1);
 
     // 受注編集画面でステータスを注文取消しへ変更する（workflow の cancel 遷移）
     await goOrderList(page);
     await searchOrder(page, ordererName);
-    await expect(page.locator(searchResultMsg)).not.toContainText('検索結果：0件が該当しました');
-    await page.locator('#search_result tbody tr:first-child a.action-edit').click();
-    await page.waitForLoadState('load');
+    // 検索が反映されるまで待つ。行は受注者名で特定し, 位置に依存しない。
+    const orderRow = page.locator('#search_result > tbody > tr').filter({ hasText: ordererName });
+    await expect(orderRow).toHaveCount(1);
+    await orderRow.locator('a.action-edit').click();
+    await expect(page.locator('#order_name_name01')).toHaveValue(ordererName);
 
     await page.locator('#order_OrderStatus').selectOption({ label: '注文取消し' });
     await page.locator('#form1 button[value="register"]').click();
