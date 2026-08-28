@@ -465,7 +465,10 @@ test.describe('Admin Order (EA04)', () => {
     const productName = 'チェリーアイスサンド';
     const stockBeforeOrder = await getProductStock(page, productName);
 
-    await createOrderViaUI(page, 'キャンセルテスト', '太郎');
+    // 再試行で前回の受注が残ると先頭行が別の受注になるため, 受注者名を実行ごとに一意化する。
+    // 氏名は 16 文字以下の制約があるため, ミリ秒を 36 進数にして桁を詰める（2 + 8 文字）。
+    const ordererName = `取消${Date.now().toString(36)}`;
+    await createOrderViaUI(page, ordererName, '太郎');
 
     // 受注登録で在庫が減る
     const stockAfterOrder = await getProductStock(page, productName);
@@ -473,7 +476,7 @@ test.describe('Admin Order (EA04)', () => {
 
     // 受注編集画面でステータスを注文取消しへ変更する（workflow の cancel 遷移）
     await goOrderList(page);
-    await searchOrder(page, 'キャンセルテスト');
+    await searchOrder(page, ordererName);
     await expect(page.locator(searchResultMsg)).not.toContainText('検索結果：0件が該当しました');
     await page.locator('#search_result tbody tr:first-child a.action-edit').click();
     await page.waitForLoadState('load');
@@ -488,7 +491,7 @@ test.describe('Admin Order (EA04)', () => {
 
     // rollbackStock が走り在庫が戻る
     const stockAfterCancel = await getProductStock(page, productName);
-    expect(stockAfterCancel).toBeGreaterThan(stockAfterOrder);
+    expect(stockAfterCancel).toBe(stockBeforeOrder);
   });
 
   test('order_一括メール通知 (EA0402-UC02-T01)', async ({ page }) => {
