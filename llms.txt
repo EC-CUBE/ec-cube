@@ -71,7 +71,7 @@ EC-CUBE is purpose-built for Japanese e-commerce and includes features that most
 - **Product Classes**: Matrix-style product variations (e.g., size × color) with per-variation pricing and stock
 - **Delivery Management**: Flexible delivery fee calculation by region and shipping method
 - **Payment Integration**: Pluggable payment gateway architecture
-- **PDF Generation**: Built-in order PDF / delivery slip generation via TCPDF
+- **PDF Generation**: Built-in order PDF / delivery slip generation via FPDF + FPDI
 - **Two-Factor Authentication**: TOTP-based 2FA for admin accounts
 - **Mail Templates**: Twig-based customizable email templates
 - **CSV Import/Export**: Bulk product, order, and customer data management

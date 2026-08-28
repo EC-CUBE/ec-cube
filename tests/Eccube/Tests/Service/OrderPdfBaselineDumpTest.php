@@ -32,7 +32,7 @@ use Eccube\Twig\Extension\TaxExtension;
  * PDF エンジン差し替えの前後で出力を機械比較するための基準を作る。
  * 通常の CI では意味を持たないため, 明示的に --filter で呼び出して使う。
  *
- * @see temp/tcpdf-modernize/README.md
+ * 使い方と比較手順は本クラスの各テストの docblock に記す（移行の経緯は #7083）。
  */
 final class OrderPdfBaselineDumpTest extends AbstractServiceTestCase
 {
@@ -254,7 +254,7 @@ final class OrderPdfBaselineDumpTest extends AbstractServiceTestCase
 
             $productName = match (true) {
                 $longName => sprintf('非常に長い商品名のサンプル%02d 折り返し確認用のダミーテキストをここに詰めています', $i),
-                // 欧文字幅表(U+0020..U+007E)の外側。TCPDF は cw を持つが案E では DW=1000 になる
+                // 欧文字幅表(U+0020..U+007E)の外側。TCPDF は cw を持つが本実装では DW=1000 になる
                 $latin1 => sprintf('Café Crème Brûlée Größe ×%d ½ Ø £ ¥ § © ® ± µ ¿ Æ Þ ß æ ÷ ø ÿ', $i),
                 default => sprintf('サンプル商品%02d', $i),
             };
