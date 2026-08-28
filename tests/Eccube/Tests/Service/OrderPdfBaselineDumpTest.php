@@ -90,6 +90,10 @@ final class OrderPdfBaselineDumpTest extends AbstractServiceTestCase
             '14-title-ascii-short' => ['baseInfo' => 'allVisible', 'title' => 'INVOICE'],
             // 欧文字幅表(U+0020..U+007E)の外側。折り返しと整列に差が出るか
             '15-latin1' => ['baseInfo' => 'allVisible', 'latin1' => true],
+            // 16-17: 備考が最大長 (eccube_stext_len 255 x 3 行) のとき紙面からあふれないか。
+            // 表が下端まで伸びるほど備考の開始位置が下がるので, 明細数を変えて 2 通り見る
+            '16-long-note' => ['baseInfo' => 'allVisible', 'longNote' => true],
+            '17-long-note-tall-table' => ['baseInfo' => 'allVisible', 'products' => 12, 'longNote' => true],
         ];
     }
 
@@ -107,7 +111,8 @@ final class OrderPdfBaselineDumpTest extends AbstractServiceTestCase
             $pdf = $this->makePdf(
                 $Shipping,
                 $this->baseInfo((string) ($spec['baseInfo'] ?? 'allVisible')),
-                (string) ($spec['title'] ?? '納品書')
+                (string) ($spec['title'] ?? '納品書'),
+                (bool) ($spec['longNote'] ?? false)
             );
         } finally {
             if ($restore !== null) {
@@ -327,7 +332,7 @@ final class OrderPdfBaselineDumpTest extends AbstractServiceTestCase
         }
     }
 
-    private function makePdf(Shipping $Shipping, BaseInfo $BaseInfo, string $title = '納品書'): string
+    private function makePdf(Shipping $Shipping, BaseInfo $BaseInfo, string $title = '納品書', bool $longNote = false): string
     {
         $container = static::getContainer();
 
@@ -350,9 +355,9 @@ final class OrderPdfBaselineDumpTest extends AbstractServiceTestCase
             'message1' => 'この度はお買い上げいただきありがとうございます。',
             'message2' => '内容にご不明な点がございましたらご連絡ください。',
             'message3' => '今後ともよろしくお願いいたします。',
-            'note1' => '備考1',
-            'note2' => '備考2',
-            'note3' => '備考3',
+            'note1' => $longNote ? '1'.str_repeat('あ', 253).'X' : '備考1',
+            'note2' => $longNote ? '2'.str_repeat('い', 253).'Y' : '備考2',
+            'note3' => $longNote ? '3'.str_repeat('う', 253).'Z' : '備考3',
             'default' => false,
         ]);
 

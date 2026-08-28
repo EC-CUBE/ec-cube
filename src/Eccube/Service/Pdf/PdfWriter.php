@@ -340,6 +340,9 @@ class PdfWriter
         $width = $this->resolveWidth($width);
         $height = max($height, $this->minCellHeight());
 
+        // TCPDF の Cell() と同じく, 収まらなければ描画前に改ページする
+        $this->checkPageBreak($height);
+
         $this->addDecoration($this->cellDecorationOps($this->x, $this->y, $width, $height, $border, $fill));
         if ($text !== '') {
             $this->addContent($this->textOps($text, $this->x, $this->y, $height, $width, $align));
@@ -376,6 +379,18 @@ class PdfWriter
         $paddingTop = in_array(self::BORDER_TOP, $this->borderSides($border), true) ? ($this->lineWidth / 2) : 0.0;
         $cellHeight = max($height, $paddingTop + (count($lines) * $lineHeight));
 
+        // 収まらないときだけ改ページする。罫線も塗りも無いセルは TCPDF の MultiCell() と
+        // 同じく行単位で送る。装飾があるセルは矩形をまとめて描くため行では割れないので,
+        // セルごと次ページへ送る（setFancyTable が事前に改ページするため実際には起きない）。
+        $decorated = $fill || $this->borderSides($border) !== [];
+        if (!$decorated && ($this->y + $cellHeight) > $this->getPageBreakTrigger()) {
+            $this->writeLinesWithPageBreak($lines, $width, $lineHeight, $align, $lineBreak);
+
+            return;
+        }
+
+        $this->checkPageBreak($cellHeight);
+
         $originX = $this->x;
         $originY = $this->y;
 
@@ -389,6 +404,36 @@ class PdfWriter
 
         $this->lastCellHeight = $cellHeight;
         $this->advanceCursor($originX, $originY, $width, $cellHeight, $lineBreak);
+    }
+
+    /**
+     * 装飾の無い折り返しセルを 1 行ずつ描き, 収まらない行の前で改ページする.
+     *
+     * TCPDF の MultiCell() と同じ分割位置になる.
+     *
+     * @param string[] $lines
+     */
+    private function writeLinesWithPageBreak(array $lines, float $width, float $lineHeight, string $align, int $lineBreak): void
+    {
+        $originX = $this->x;
+        $height = 0.0;
+
+        foreach ($lines as $line) {
+            if ($this->checkPageBreak($lineHeight)) {
+                // 改ページしたら, その行がこのセルの新しい起点になる
+                $this->x = $originX;
+                $height = 0.0;
+            }
+            if ($line !== '') {
+                $this->addContent($this->textOps($line, $this->x, $this->y, $lineHeight, $width, $align));
+            }
+            $this->y += $lineHeight;
+            $height += $lineHeight;
+        }
+
+        $this->lastCellHeight = $height;
+        // ここまでで y は最終行の下端。advanceCursor に渡す起点へ戻して共通処理に合わせる
+        $this->advanceCursor($originX, $this->y - $height, $width, $height, $lineBreak);
     }
 
     /**

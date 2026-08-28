@@ -81,6 +81,7 @@ class InstallController extends AbstractController
         'fileinfo',
         'intl',
         'sodium',
+        'gd',
     ];
     /**
      * @var string[]
