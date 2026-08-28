@@ -587,7 +587,7 @@ class OrderController extends AbstractController
             ]);
         }
 
-        // TCPDF::Outputを実行するとプロパティが初期化されるため、ファイル名を事前に取得しておく
+        // PDF を出力するとページ数が確定した状態を失うため、ファイル名を事前に取得しておく
         $pdfFileName = $this->orderPdfService->getPdfFileName();
 
         // ダウンロードする

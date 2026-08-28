@@ -21,20 +21,15 @@ use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\OrderPdfRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\ShippingRepository;
+use Eccube\Service\Pdf\PdfWriter;
 use Eccube\Twig\Extension\EccubeExtension;
 use Eccube\Twig\Extension\TaxExtension;
-use setasign\Fpdi\PdfParser\CrossReference\CrossReferenceException;
-use setasign\Fpdi\PdfParser\Filter\FilterException;
-use setasign\Fpdi\PdfParser\PdfParserException;
-use setasign\Fpdi\PdfParser\Type\PdfTypeException;
-use setasign\Fpdi\PdfReader\PdfReaderException;
-use setasign\Fpdi\Tcpdf\Fpdi;
 
 /**
  * Class OrderPdfService.
  * Do export pdf function.
  */
-class OrderPdfService extends Fpdi
+class OrderPdfService
 {
     protected OrderPdfRepository $orderPdfRepository;
 
@@ -74,6 +69,8 @@ class OrderPdfService extends Fpdi
     // ====================================
     public BaseInfo $baseInfoRepository;
 
+    protected PdfWriter $pdfWriter;
+
     /** 購入詳細情報 ラベル配列
      * @var array<int, string>
      */
@@ -90,11 +87,11 @@ class OrderPdfService extends Fpdi
     // --------------------------------------
     // Font情報のバックアップデータ
     /** @var string フォント名 */
-    protected string $bakFontFamily;
+    protected string $bakFontFamily = '';
     /** @var string フォントスタイル */
-    protected string $bakFontStyle;
-    /** @var string|float|null フォントサイズ */
-    protected string|float|null $bakFontSize = null;
+    protected string $bakFontStyle = '';
+    /** @var float フォントサイズ(pt) */
+    protected float $bakFontSize = 0.0;
     // --------------------------------------
     // lfTextのoffset
     protected int $baseOffsetX = 0;
@@ -115,7 +112,7 @@ class OrderPdfService extends Fpdi
     {
         $this->baseInfoRepository = $baseInfoRepository->get();
 
-        parent::__construct();
+        $this->pdfWriter = $this->createPdfWriter();
 
         // 購入詳細情報の設定を行う
         // 動的に入れ替えることはない
@@ -126,18 +123,10 @@ class OrderPdfService extends Fpdi
         $this->widthCell = [110.3, 12, 21.7, 24.5];
 
         // Fontの設定しておかないと文字化けを起こす
-        $this->SetFont(self::FONT_SJIS);
+        $this->pdfWriter->setFont(self::FONT_SJIS, '', 12);
 
         // PDFの余白(上左右)を設定
-        $this->SetMargins(15, 20);
-
-        // ヘッダーの出力を無効化
-        $this->setPrintHeader(false);
-
-        // フッターの出力を無効化
-        $this->setPrintFooter(true);
-        $this->setFooterMargin();
-        $this->setFooterFont([self::FONT_SJIS, '', 8]);
+        $this->pdfWriter->setMargins(15, 20);
     }
 
     /**
@@ -164,12 +153,6 @@ class OrderPdfService extends Fpdi
      *  note1: 備考1行目
      *  note2: 備考2行目
      *  note3: 備考3行目
-     *
-     * @throws CrossReferenceException
-     * @throws FilterException
-     * @throws PdfParserException
-     * @throws PdfReaderException
-     * @throws PdfTypeException
      */
     public function makePdf(array $formData): bool
     {
@@ -182,6 +165,9 @@ class OrderPdfService extends Fpdi
         if (!$formData['ids']) {
             return false;
         }
+
+        // フッタは全ページ共通で発行日を右寄せで出す
+        $this->pdfWriter->setFooter($this->issueDate, [self::FONT_SJIS, '', 8]);
 
         // 出荷番号をStringからarrayに変換
         $ids = explode(',', (string) $formData['ids']);
@@ -205,7 +191,7 @@ class OrderPdfService extends Fpdi
             } else {
                 $userPath = $this->eccubeConfig->get('eccube_html_admin_dir').'/assets/pdf/nouhinsyo.pdf';
             }
-            $this->setSourceFile($userPath);
+            $this->pdfWriter->setTemplateFile($userPath);
 
             // PDFにページを追加する
             $this->addPdfPage();
@@ -242,7 +228,7 @@ class OrderPdfService extends Fpdi
      */
     public function outputPdf(): string
     {
-        return $this->Output($this->getPdfFileName(), 'S');
+        return $this->pdfWriter->output();
     }
 
     /**
@@ -257,7 +243,7 @@ class OrderPdfService extends Fpdi
             return $this->downloadFileName;
         }
         $this->downloadFileName = self::DEFAULT_PDF_FILE_NAME;
-        if ($this->PageNo() == 1) {
+        if ($this->pdfWriter->getPageCount() == 1) {
             $this->downloadFileName = 'nouhinsyo-No'.$this->lastOrderId.'.pdf';
         }
 
@@ -265,34 +251,22 @@ class OrderPdfService extends Fpdi
     }
 
     /**
-     * フッターに発行日を出力する.
+     * 描画器を組み立てる.
+     *
+     * テンプレート PDF・ロゴ・フォント定義はいずれもファイルから読むため,
+     * 読み込みを許可するディレクトリを明示する（tc-lib-pdf は既定で全て拒否する）.
      */
-    #[\Override]
-    public function Footer(): void
+    protected function createPdfWriter(): PdfWriter
     {
-        $this->Cell(0, 0, $this->issueDate, 0, 0, 'R');
+        return new PdfWriter();
     }
 
     /**
      * 作成するPDFのテンプレートファイルを指定する.
-     *
-     * @throws CrossReferenceException
-     * @throws FilterException
-     * @throws PdfParserException
-     * @throws PdfTypeException
-     * @throws PdfReaderException
      */
     protected function addPdfPage(): void
     {
-        // ページを追加
-        $this->AddPage();
-
-        // テンプレートに使うテンプレートファイルのページ番号を取得
-        $tplIdx = $this->importPage(1);
-
-        // テンプレートに使うテンプレートファイルのページ番号を指定
-        $this->useTemplate($tplIdx, 0, 0, null, null, true);
-        $this->setPageMark();
+        $this->pdfWriter->addPage();
     }
 
     /**
@@ -374,6 +348,15 @@ class OrderPdfService extends Fpdi
             $y += $lineHeight;
         }
 
+        // ロゴは店舗情報の描画後に重ねる（PDFは後から描いた要素が上になるため、元の重なり順を維持する）
+        $this->renderLogo();
+    }
+
+    /**
+     * ロゴ画像を描画する.
+     */
+    protected function renderLogo(): void
+    {
         // user_dataにlogo.pngが配置されている場合は優先的に読み込む
         $logoFile = $this->eccubeConfig->get('eccube_html_dir').'/user_data/assets/pdf/logo.png';
 
@@ -381,8 +364,7 @@ class OrderPdfService extends Fpdi
             $logoFile = $this->eccubeConfig->get('eccube_html_admin_dir').'/assets/pdf/logo.png';
         }
 
-        // ロゴは店舗情報の描画後に重ねる（PDFは後から描いた要素が上になるため、元の重なり順を維持する）
-        $this->Image($logoFile, self::LOGO_X, self::LOGO_Y, self::LOGO_WIDTH);
+        $this->pdfWriter->image($logoFile, self::LOGO_X, self::LOGO_Y, self::LOGO_WIDTH);
     }
 
     /**
@@ -407,21 +389,21 @@ class OrderPdfService extends Fpdi
         // フォント情報のバックアップ
         $this->backupFont();
 
-        $this->Cell(0, 10, '', 0, 1, 'C', false, '');
+        $this->pdfWriter->cell(0, 10, '', 0, 1, 'C');
 
         // 行頭近くの場合、表示崩れがあるためもう一個字下げする
-        if (270 <= $this->GetY()) {
-            $this->Cell(0, 10, '', 0, 1, 'C', false, '');
+        if (270 <= $this->pdfWriter->getY()) {
+            $this->pdfWriter->cell(0, 10, '', 0, 1, 'C');
         }
-        $this->SetFont(self::FONT_GOTHIC, 'B', 9);
-        $this->MultiCell(0, 6, '＜ 備考 ＞', 'T', 'L', false, 0);
+        $this->pdfWriter->setFont(self::FONT_GOTHIC, 'B', 9);
+        $this->pdfWriter->multiCell(0, 6, '＜ 備考 ＞', 'T', 'L', false, 0);
 
-        $this->SetFont(self::FONT_SJIS, '', 8);
+        $this->pdfWriter->setFont(self::FONT_SJIS, '', 8);
 
-        $this->Ln();
+        $this->pdfWriter->newLine();
         // rtrimを行う
         $text = preg_replace('/\s+$/us', '', $formData['note1']."\n".$formData['note2']."\n".$formData['note3']);
-        $this->MultiCell(0, 4, $text, '', 'L', false, 0);
+        $this->pdfWriter->multiCell(0, 4, (string) $text, '', 'L', false, 0);
 
         // フォント情報の復元
         $this->restoreFont();
@@ -439,10 +421,10 @@ class OrderPdfService extends Fpdi
         $this->backupFont();
 
         // 文書タイトル（納品書・請求書）
-        $this->SetFont(self::FONT_GOTHIC, '', 15);
-        $this->Cell(0, 10, $title, 0, 2, 'C', false, '');
-        $this->Cell(0, 66, '', 0, 2, 'R', false, '');
-        $this->Cell(5, 0, '', 0, 0, 'R', false, '');
+        $this->pdfWriter->setFont(self::FONT_GOTHIC, '', 15);
+        $this->pdfWriter->cell(0, 10, $title, 0, 2, 'C');
+        $this->pdfWriter->cell(0, 66, '', 0, 2, 'R');
+        $this->pdfWriter->cell(5, 0, '', 0, 0, 'R');
 
         // フォント情報の復元
         $this->restoreFont();
@@ -473,7 +455,6 @@ class OrderPdfService extends Fpdi
         }
 
         // 購入者都道府県+住所1
-        // $text = $Order->getPref().$Order->getAddr01();
         $text = $Shipping->getPref().$Shipping->getAddr01();
         $this->lfText(27, 47, $text, 10);
         $this->lfText(27, 51, $Shipping->getAddr02(), 10); // 購入者住所2
@@ -494,7 +475,7 @@ class OrderPdfService extends Fpdi
         // =========================================
         // お買い上げ明細部
         // =========================================
-        $this->SetFont(self::FONT_SJIS, '', 10);
+        $this->pdfWriter->setFont(self::FONT_SJIS, '', 10);
 
         // ご注文日
         $orderDate = $Order->getCreateDate()->format('Y/m/d H:i');
@@ -508,13 +489,13 @@ class OrderPdfService extends Fpdi
 
         // 総合計金額
         if (!$Order->isMultiple()) {
-            $this->SetFont(self::FONT_SJIS, 'B', 15);
+            $this->pdfWriter->setFont(self::FONT_SJIS, 'B', 15);
             $paymentTotalText = $this->eccubeExtension->getPriceFilter($Order->getPaymentTotal());
 
             $this->setBasePosition(120, self::PAYMENT_TOTAL_BASE_Y);
-            $this->Cell(5, 7, '', 0, 0, '', false, '');
-            $this->Cell(67, 8, $paymentTotalText, 0, 2, 'R', false, '');
-            $this->Cell(0, 45, '', 0, 2, '', false, '');
+            $this->pdfWriter->cell(5, 7, '', 0, 0, '');
+            $this->pdfWriter->cell(67, 8, $paymentTotalText, 0, 2, 'R');
+            $this->pdfWriter->cell(0, 45, '', 0, 2, '');
         }
 
         // フォント情報の復元
@@ -654,23 +635,23 @@ class OrderPdfService extends Fpdi
 
         // インボイス対応
         $this->backupFont();
-        $this->SetLineWidth(.3);
-        $this->SetFont(self::FONT_SJIS, '', 6);
+        $this->pdfWriter->setLineWidth(.3);
+        $this->pdfWriter->setFont(self::FONT_SJIS, '', 6);
 
-        $this->Cell(0, 0, '', 0, 1, 'C', false, '');
+        $this->pdfWriter->cell(0, 0, '', 0, 1, 'C');
         // 行頭近くの場合、表示崩れがあるためもう一個字下げする
-        if (270 <= $this->GetY()) {
-            $this->Cell(0, 0, '', 0, 1, 'C', false, '');
+        if (270 <= $this->pdfWriter->getY()) {
+            $this->pdfWriter->cell(0, 0, '', 0, 1, 'C');
         }
         $width = array_reduce($this->widthCell, fn (float $n, float $w) => $n + $w, 0.0);
-        $this->SetX(20);
+        $this->pdfWriter->setX(20);
         $message = '';
         foreach ($Order->getTotalByTaxRate() as $rate => $total) {
             $message .= '('.$rate.'%対象: ';
             $message .= $this->eccubeExtension->getPriceFilter($total);
             $message .= ' 内消費税: '.$this->eccubeExtension->getPriceFilter($Order->getTaxByTaxRate()[$rate]).')'.PHP_EOL;
         }
-        $this->MultiCell($width, 4, $message, 0, 'R', false, 1);
+        $this->pdfWriter->multiCell($width, 4, $message, 0, 'R', false, 1);
 
         $this->restoreFont();
     }
@@ -687,14 +668,14 @@ class OrderPdfService extends Fpdi
     protected function lfText(int $x, int $y, ?string $text, int $size = 0, string $style = ''): void
     {
         // 退避
-        $bakFontStyle = $this->FontStyle;
-        $bakFontSize = $this->FontSizePt;
+        $bakFontStyle = $this->pdfWriter->getFontStyle();
+        $bakFontSize = $this->pdfWriter->getFontSizePt();
 
-        $this->SetFont('', $style, $size);
-        $this->Text($x + $this->baseOffsetX, $y + $this->baseOffsetY, $text ?? '');
+        $this->pdfWriter->setFont(null, $style, $size);
+        $this->pdfWriter->text($x + $this->baseOffsetX, $y + $this->baseOffsetY, $text ?? '');
 
         // 復元
-        $this->SetFont('', $bakFontStyle, $bakFontSize);
+        $this->pdfWriter->setFont(null, $bakFontStyle, $bakFontSize);
     }
 
     /**
@@ -702,7 +683,7 @@ class OrderPdfService extends Fpdi
      *
      * @param array<int, string> $header 出力するラベル名一覧
      * @param array<int, array<int, string>> $data 出力するデータ
-     * @param array<int, int> $w 出力するセル幅一覧
+     * @param array<int, float|int> $w 出力するセル幅一覧
      */
     protected function setFancyTable(array $header, array $data, array $w): void
     {
@@ -713,30 +694,29 @@ class OrderPdfService extends Fpdi
         $this->setBasePosition(0, 149);
 
         // Colors, line width and bold font
-        $this->SetFillColor(216, 216, 216);
-        $this->SetTextColor(0);
-        $this->SetDrawColor(0, 0, 0);
-        $this->SetLineWidth(.3);
-        $this->SetFont(self::FONT_SJIS, 'B', 8);
-        $this->SetFont('', 'B');
+        $this->pdfWriter->setFillColor(216, 216, 216);
+        $this->pdfWriter->setTextColor(0, 0, 0);
+        $this->pdfWriter->setDrawColor(0, 0, 0);
+        $this->pdfWriter->setLineWidth(.3);
+        $this->pdfWriter->setFont(self::FONT_SJIS, 'B', 8);
 
         // Header
-        $this->Cell(5, 7, '', 0, 0, '', false, '');
+        $this->pdfWriter->cell(5, 7, '', 0, 0, '');
         $count = count($header);
         for ($i = 0; $i < $count; ++$i) {
-            $this->Cell($w[$i], 7, $header[$i], 1, 0, 'C', true);
+            $this->pdfWriter->cell((float) $w[$i], 7, $header[$i], 1, 0, 'C', true);
         }
-        $this->Ln();
+        $this->pdfWriter->newLine();
 
         // Color and font restoration
-        $this->SetFillColor(235, 235, 235);
-        $this->SetTextColor(0);
-        $this->SetFont('');
+        $this->pdfWriter->setFillColor(235, 235, 235);
+        $this->pdfWriter->setTextColor(0, 0, 0);
+        $this->pdfWriter->setFont(null, '');
         // Data
-        $fill = 0;
-        $writeRow = function ($row, $cellHeight, $fill, $isBorder) use ($w) {
+        $fill = false;
+        $writeRow = function (array $row, float $cellHeight, bool $fill, bool $isBorder) use ($w): float {
             $i = 0;
-            $h = 0;
+            $h = 0.0;
             foreach ($row as $col) {
                 // 列の処理
                 // TODO: 汎用的ではない処理。この指定は呼び出し元で行うようにしたい。
@@ -752,8 +732,8 @@ class OrderPdfService extends Fpdi
                 // (0: 右へ移動(既定)/1: 次の行へ移動/2: 下へ移動)
                 $ln = ($i == (count($row) - 1)) ? 1 : 0;
 
-                $this->MultiCell(
-                    $w[$i], // セル幅
+                $this->pdfWriter->multiCell(
+                    (float) $w[$i], // セル幅
                     $cellHeight, // セルの最小の高さ
                     !$isBorder ? $col : '', // 文字列
                     $isBorder ? 1 : 0, // 境界線の描画方法を指定
@@ -761,7 +741,7 @@ class OrderPdfService extends Fpdi
                     $fill, // 背景の塗つぶし指定
                     $ln // 出力後のカーソルの移動方法
                 );
-                $h = $this->getLastH();
+                $h = $this->pdfWriter->getLastCellHeight();
                 $i++;
             }
 
@@ -770,26 +750,26 @@ class OrderPdfService extends Fpdi
 
         foreach ($data as $row) {
             // 行の処理
-            $h = 4;
-            $this->Cell(5, $h, '', 0, 0, '', false, '');
-            if ((277 - $this->getY()) < ($h * 4)) {
-                $this->checkPageBreak($this->PageBreakTrigger + 1);
+            $h = 4.0;
+            $this->pdfWriter->cell(5, $h, '', 0, 0, '');
+            if ((277 - $this->pdfWriter->getY()) < ($h * 4)) {
+                $this->pdfWriter->checkPageBreak($this->pdfWriter->getPageBreakTrigger() + 1);
             }
 
-            $x = $this->getX();
-            $y = $this->getY();
+            $x = $this->pdfWriter->getX();
+            $y = $this->pdfWriter->getY();
             // 1度目は文字だけ出力し、行の高さ最大を取得
             $h = $writeRow($row, $h, $fill, false);
-            $this->setXY($x, $y);
+            $this->pdfWriter->setXY($x, $y);
             // 2度目に最大の高さに合わせて、境界線を描画
             $writeRow($row, $h, $fill, true);
 
             $fill = !$fill;
         }
-        $h = 4;
-        $this->Cell(5, $h, '', 0, 0, '', false, '');
-        $this->Cell(array_sum($w), 0, '', 'T');
-        $this->SetFillColor(255);
+        $h = 4.0;
+        $this->pdfWriter->cell(5, $h, '', 0, 0, '');
+        $this->pdfWriter->cell((float) array_sum($w), 0, '', 'T');
+        $this->pdfWriter->setFillColor(255, 255, 255);
 
         // フォント情報の復元
         $this->restoreFont();
@@ -797,17 +777,18 @@ class OrderPdfService extends Fpdi
 
     /**
      * 基準座標を設定する.
+     *
+     * 注意: y の設定は x を左余白へ戻す。よって引数の $x は結果に残らない
+     * （4.3 までの TCPDF でも同じ挙動で、この順序に依存した座標で組まれている）。
      */
     protected function setBasePosition(int|float|null $x = null, int|float|null $y = null): void
     {
         // 現在のマージンを取得する
-        $result = $this->getMargins();
+        $result = $this->pdfWriter->getMargins();
 
         // 基準座標を指定する
-        $actualX = $x ?? $result['left'];
-        $this->SetX($actualX);
-        $actualY = $y ?? $result['top'];
-        $this->SetY($actualY);
+        $this->pdfWriter->setX((float) ($x ?? $result['left']));
+        $this->pdfWriter->setY((float) ($y ?? $result['top']));
     }
 
     /**
@@ -816,9 +797,9 @@ class OrderPdfService extends Fpdi
     protected function backupFont(): void
     {
         // フォント情報のバックアップ
-        $this->bakFontFamily = $this->FontFamily;
-        $this->bakFontStyle = $this->FontStyle;
-        $this->bakFontSize = $this->FontSizePt;
+        $this->bakFontFamily = $this->pdfWriter->getFontFamily();
+        $this->bakFontStyle = $this->pdfWriter->getFontStyle();
+        $this->bakFontSize = $this->pdfWriter->getFontSizePt();
     }
 
     /**
@@ -826,6 +807,6 @@ class OrderPdfService extends Fpdi
      */
     protected function restoreFont(): void
     {
-        $this->SetFont($this->bakFontFamily, $this->bakFontStyle, $this->bakFontSize);
+        $this->pdfWriter->setFont($this->bakFontFamily, $this->bakFontStyle, $this->bakFontSize);
     }
 }

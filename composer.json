@@ -56,7 +56,8 @@
         "psr/log": "~2.0",
         "psr/simple-cache": "^3.0",
         "robthree/twofactorauth": "^3.0",
-        "setasign/fpdi": "^2.2",
+        "setasign/fpdf": "^1.8.6",
+        "setasign/fpdi": "^2.6",
         "softcreatr/jsonpath": "^0.8",
         "symfony/asset": "^7.4",
         "symfony/cache": "^7.4",
@@ -102,7 +103,6 @@
         "symfony/web-profiler-bundle": "^7.4",
         "symfony/workflow": "^7.4",
         "symfony/yaml": "^7.4",
-        "tecnickcom/tcpdf": "^6.2",
         "twig/extra-bundle": "^3.21",
         "twig/intl-extra": "^3.21",
         "twig/twig": "^3.21"
