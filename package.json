@@ -53,6 +53,6 @@
     "normalize.css": "^8.0.1",
     "postcss": "^8.5.26",
     "postcss-sort-media-queries": "^5.2.0",
-    "sass-embedded": "^1.102.0"
+    "sass-embedded": "^1.103.1"
   }
 }
