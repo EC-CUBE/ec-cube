@@ -18,19 +18,15 @@ use Eccube\Rector\CodingStyle\NormalizePhpDocArrayGenericSpacingRector;
 use Rector\Arguments\Rector\ClassMethod\ArgumentAdderRector;
 use Rector\Config\RectorConfig;
 use Rector\DeadCode\Rector\Cast\RecastingRemovalRector;
-use Rector\Doctrine\Bundle210\Rector\Class_\EventSubscriberInterfaceToAttributeRector;
 use Rector\Doctrine\Set\DoctrineSetList;
 use Rector\Php83\Rector\ClassConst\AddTypeToConstRector;
-use Rector\PHPUnit\PHPUnit100\Rector\Class_\StaticDataProviderClassMethodRector;
 use Rector\PHPUnit\Set\PHPUnitSetList;
 use Rector\Renaming\Rector\MethodCall\RenameMethodRector;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
-use Rector\Symfony\CodeQuality\Rector\Class_\ControllerMethodInjectionToConstructorRector;
 use Rector\Symfony\Set\SymfonySetList;
 use Rector\Symfony\Symfony34\Rector\Closure\ContainerGetNameToTypeInTestsRector;
 use Rector\Symfony\Symfony61\Rector\Class_\CommandConfigureToAttributeRector;
-use Rector\Symfony\Symfony61\Rector\Class_\CommandPropertyToAttributeRector;
 use Rector\ValueObject\PhpVersion;
 
 // この設定ファイルは Rector の CLI 実行専用。
@@ -60,10 +56,6 @@ return RectorConfig::configure()
                // Codeception 自動生成ファイル (codecept build で再生成されるため Rector の指摘は意味なし)
                __DIR__.'/codeception/_support/_generated',
                // 特定のルールを除外する場合
-               // 親の $entityManager 再宣言と step5 の接続専用 EM の取り違えを防ぐため
-               ControllerMethodInjectionToConstructorRector::class => [
-                   __DIR__.'/src/Eccube/Controller/Install/InstallController.php',
-               ],
                // Codeception の grabMultiple() 等は戻り値の要素が null になり得るため、
                // NullToStrictStringFuncCallArgRector が追加する (string) キャストを
                // RecastingRemovalRector が除去しないようにスキップする
@@ -109,10 +101,10 @@ return RectorConfig::configure()
            ])
            // 個別にルールを追加する場合はここに記述
            ->withRules([
-               CommandConfigureToAttributeRector::class, // Symfonyコマンドのconfigureメソッドをアトリビュートに変換する
-               CommandPropertyToAttributeRector::class, // Symfonyコマンドのプロパティをアトリビュートに変換する,
-               StaticDataProviderClassMethodRector::class, // PHPUnitのデータプロバイダを静的メソッドに変換する
-               EventSubscriberInterfaceToAttributeRector::class, // Doctrine EventSubscriberをAsDoctrineListenerアトリビュートに変換する
+               // 以下は composer-based セットに含まれるため withRules() では指定しない
+               // (二重登録になり rector 2.6.2 以降は警告が出る):
+               //   CommandConfigureToAttributeRector / CommandPropertyToAttributeRector
+               //   StaticDataProviderClassMethodRector / EventSubscriberInterfaceToAttributeRector
                AttributeArgumentsOrderRector::class, // すべての Attribute の引数をコンストラクタ引数順序に統一する
                NormalizePhpDocArrayGenericSpacingRector::class, // PHPDoc の配列ジェネリクス表記のカンマ後のスペースを統一する
            ])
