@@ -48,10 +48,10 @@ class PluginSchemaUpdateCommand extends Command
 
         $config = $this->pluginService->readConfig($this->pluginService->calcPluginDir($code));
         $this->pluginService->generateProxyAndUpdateSchema($Plugin, $config);
-        $this->clearCache($io);
+        $cacheCleared = $this->clearCache($io);
 
         $io->success('Schema Updated.');
 
-        return 0;
+        return $cacheCleared ? 0 : self::EXIT_MANUAL_ACTION_REQUIRED;
     }
 }
