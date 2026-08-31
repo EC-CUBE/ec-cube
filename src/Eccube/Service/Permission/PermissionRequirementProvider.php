@@ -33,7 +33,33 @@ class PermissionRequirementProvider
      */
     public function requirements(): array
     {
-        return [...$this->webLane(), ...$this->sshLane()];
+        $requirements = [];
+        foreach ([...$this->webLane(), ...$this->sshLane()] as $requirement) {
+            $registered = $requirements[$requirement->path] ?? null;
+            $requirements[$requirement->path] = $registered instanceof PermissionRequirement
+                ? $this->merge($registered, $requirement)
+                : $requirement;
+        }
+
+        return array_values($requirements);
+    }
+
+    /**
+     * 同じパスが複数の役割を持つ場合 (メンテナンスファイルの生成先が var/ を指す場合等) に 1 件へまとめる.
+     *
+     * レーンと表示名は先に定義したものを採用し, 注意書きは両方を残す. 一方でも必須なら必須として扱う.
+     */
+    private function merge(PermissionRequirement $registered, PermissionRequirement $duplicated): PermissionRequirement
+    {
+        $notes = array_filter([$registered->note, $duplicated->note]);
+
+        return new PermissionRequirement(
+            $registered->path,
+            $registered->lane,
+            $registered->label,
+            $registered->optional && $duplicated->optional,
+            $notes === [] ? null : implode(' ', $notes),
+        );
     }
 
     /**
@@ -103,7 +129,11 @@ class PermissionRequirementProvider
     private function create(string $path, WriteLane $lane, bool $optional = false, ?string $note = null): PermissionRequirement
     {
         $projectDir = $this->path('kernel.project_dir');
-        $label = str_starts_with($path, $projectDir.'/') ? substr($path, strlen($projectDir) + 1) : $path;
+        $label = match (true) {
+            $path === $projectDir => '.',
+            str_starts_with($path, $projectDir.'/') => substr($path, strlen($projectDir) + 1),
+            default => $path,
+        };
 
         return new PermissionRequirement($path, $lane, $label, $optional, $note);
     }

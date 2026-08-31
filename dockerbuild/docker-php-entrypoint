@@ -1,11 +1,66 @@
 #!/bin/sh
 set -e
 
-if [ -n "${USER_ID}" ]; then
-    usermod -u ${USER_ID} -o www-data
-fi
-if [ -n "${GROUP_ID}" ]; then
-    groupmod -g ${GROUP_ID} www-data
+# ECCUBE_PERMISSION_LANES=1 のとき, Web サーバー (www-data) と CLI ユーザーを別のユーザーに分ける。
+# 未設定時は従来どおり www-data をホストユーザーへ合わせる (開発時のパーミッションエラーを避けるため)。
+PERMISSION_LANES="${ECCUBE_PERMISSION_LANES:-}"
+
+# レーン W: リクエスト処理中に Web サーバーが書き込むディレクトリ。
+# CLI ユーザー所有 + www-data グループ + setgid とし, 双方から書き込めるようにする。
+LANE_W_DIRS="var html/upload/save_image html/upload/temp_image html/upload/refund_request/save html/upload/refund_request/temp app/keystore"
+
+setup_split_users() {
+    # UID / GID はシェルが export しないことが多いため, 未指定なら
+    # bind mount されたファイルの所有者からホストユーザーを推定する。
+    cli_uid="${USER_ID:-$(stat -c %u "${APACHE_DOCUMENT_ROOT}/composer.json" 2>/dev/null || echo '')}"
+    cli_gid="${GROUP_ID:-$(stat -c %g "${APACHE_DOCUMENT_ROOT}/composer.json" 2>/dev/null || echo '')}"
+    # bind mount していない場合は www-data(33) や root(0) しか分からないため既定値へフォールバックする
+    case "${cli_uid}" in '' | 0 | 33) cli_uid=1000 ;; esac
+    case "${cli_gid}" in '' | 0 | 33) cli_gid=1000 ;; esac
+
+    if ! getent group "${cli_gid}" > /dev/null; then
+        groupadd -o -g "${cli_gid}" eccube
+    fi
+    if ! getent passwd "${cli_uid}" > /dev/null; then
+        useradd -o -u "${cli_uid}" -g "${cli_gid}" -m -d /home/eccube -s /bin/bash eccube
+    fi
+    cli_user="$(getent passwd "${cli_uid}" | cut -d: -f1)"
+
+    # レーン W をグループ経由で共有するため, CLI ユーザーを www-data グループへ入れる
+    usermod -aG www-data "${cli_user}"
+}
+
+apply_permission_lanes() {
+    # レーン S: CLI ユーザー所有. www-data は読み取りのみ.
+    # 初回起動時の composer install や installer-scripts は root で動くため, 毎回適用する
+    # (var はレーン W で扱い, node_modules は nodejs コンテナの管理下のため対象外).
+    find "${APACHE_DOCUMENT_ROOT}" -maxdepth 1 -mindepth 1 \
+        ! -name node_modules ! -name var \
+        -exec chown -R "${cli_uid}:${cli_gid}" {} +
+    chown "${cli_uid}:${cli_gid}" "${APACHE_DOCUMENT_ROOT}"
+
+    # レーン W: setgid でグループを継承させ, Web サーバーと CLI の双方から書き込めるようにする.
+    # Web サーバーが作成したファイルには触れない. 所有者を書き換えると Web サーバーの実行ユーザーを
+    # 判定する材料が失われ, パーミッションを揃えるとセッションファイルの 0600 まで緩めてしまうため.
+    # ファイルのパーミッションも変更しない. bind mount 越しに git 管理下の実行ビットが落ちるため
+    # (html/upload/save_image の同梱画像は 100755 で登録されている).
+    for dir in ${LANE_W_DIRS}; do
+        target="${APACHE_DOCUMENT_ROOT}/${dir}"
+        mkdir -p "${target}"
+        find "${target}" ! -user www-data -exec chown "${cli_uid}:www-data" {} +
+        find "${target}" -type d -exec chmod 2775 {} +
+    done
+}
+
+if [ "${PERMISSION_LANES}" = "1" ]; then
+    setup_split_users
+else
+    if [ -n "${USER_ID}" ]; then
+        usermod -u ${USER_ID} -o www-data
+    fi
+    if [ -n "${GROUP_ID}" ]; then
+        groupmod -g ${GROUP_ID} www-data
+    fi
 fi
 
 if [ ! -d /var/www/html/vendor/bin ]; then
@@ -15,7 +70,9 @@ if [ ! -d /var/www/html/vendor/bin ]; then
         --no-plugins \
         -d ${APACHE_DOCUMENT_ROOT}
     composer dumpautoload -o --apcu
-    chown -R www-data: vendor
+    if [ "${PERMISSION_LANES}" != "1" ]; then
+        chown -R www-data: vendor
+    fi
 fi
 
 bin/console doctrine:query:sql 'select * from dtb_base_info' > /dev/null 2>&1 || (
@@ -38,11 +95,17 @@ bin/console doctrine:query:sql 'select * from dtb_base_info' > /dev/null 2>&1 ||
             ;;
     esac
     composer run-script auto-scripts
-    find ${APACHE_DOCUMENT_ROOT} \( -path ${APACHE_DOCUMENT_ROOT}/vendor -prune \) -or -print0 \
-        | xargs -0 chown www-data:www-data
-    find ${APACHE_DOCUMENT_ROOT} \( -path ${APACHE_DOCUMENT_ROOT}/vendor -prune \) -or \( -type d -print0 \) \
-      | xargs -0 chmod g+s
+    if [ "${PERMISSION_LANES}" != "1" ]; then
+        find ${APACHE_DOCUMENT_ROOT} \( -path ${APACHE_DOCUMENT_ROOT}/vendor -prune \) -or -print0 \
+            | xargs -0 chown www-data:www-data
+        find ${APACHE_DOCUMENT_ROOT} \( -path ${APACHE_DOCUMENT_ROOT}/vendor -prune \) -or \( -type d -print0 \) \
+          | xargs -0 chmod g+s
+    fi
 )
+
+if [ "${PERMISSION_LANES}" = "1" ]; then
+    apply_permission_lanes
+fi
 
 echo "PassEnv APP_ENV APP_DEBUG TRUSTED_PROXIES TRUSTED_HOSTS" > /etc/apache2/conf-enabled/eccube_env.conf
 

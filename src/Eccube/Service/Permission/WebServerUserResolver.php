@@ -95,17 +95,19 @@ class WebServerUserResolver
             return null;
         }
 
-        $finder = Finder::create()->files()->in($dir)->depth(0)->name($pattern);
+        // 過去の運用ミスで所有者が異なるファイルが残っている場合に備え, 最も新しいものを採用する
+        $finder = Finder::create()->files()->in($dir)->depth(0)->name($pattern)->sortByModifiedTime();
 
+        $identity = null;
         foreach ($finder as $file) {
             $ownership = PathOwnership::of($file->getPathname());
             if (!$ownership->exists) {
                 continue;
             }
 
-            return new UserIdentity($ownership->uid, $ownership->gid, $file->getPathname());
+            $identity = new UserIdentity($ownership->uid, $ownership->gid, $file->getPathname());
         }
 
-        return null;
+        return $identity;
     }
 }
