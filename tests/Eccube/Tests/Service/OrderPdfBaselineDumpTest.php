@@ -140,14 +140,11 @@ final class OrderPdfBaselineDumpTest extends AbstractServiceTestCase
     /**
      * user_data のロゴを一時的に退避し, 管理画面既定へフォールバックさせる.
      *
-     * @return callable(): void 復元処理
-     */
-    /**
-     * user_data のロゴを判別可能な画像へ差し替え, 後始末の関数を返す.
-     *
      * 読み込み先は `eccube_html_dir` から組み立てられる固定パスで差し替えられないため,
-     * 実ファイルを退避して上書きする。復元は finally で行うが, プロセスが強制終了すると
+     * 実ファイルを退避する。復元は finally で行うが, プロセスが強制終了すると
      * `.baseline-bak` が残るので, 次回の呼び出し時に戻してから始める。
+     *
+     * @return callable(): void 復元処理
      */
     private function hideUserLogo(): callable
     {
