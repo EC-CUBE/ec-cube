@@ -15,10 +15,9 @@ namespace Eccube\Twig\Extension;
 
 use Eccube\Common\Constant;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFunction;
+use Twig\Attribute\AsTwigFunction;
 
-class CsrfExtension extends AbstractExtension
+class CsrfExtension
 {
     /**
      * CsrfExtension constructor.
@@ -27,17 +26,7 @@ class CsrfExtension extends AbstractExtension
     {
     }
 
-    /**
-     * @return array<int, TwigFunction>
-     */
-    #[\Override]
-    public function getFunctions(): array
-    {
-        return [
-            new TwigFunction('csrf_token_for_anchor', $this->getCsrfTokenForAnchor(...), ['is_safe' => ['all']]),
-        ];
-    }
-
+    #[AsTwigFunction(name: 'csrf_token_for_anchor', isSafe: ['all'])]
     public function getCsrfTokenForAnchor(): string
     {
         $token = $this->tokenManager->getToken(Constant::TOKEN_NAME)->getValue();
