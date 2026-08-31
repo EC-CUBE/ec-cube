@@ -1,0 +1,126 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+ *
+ * http://www.ec-cube.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Eccube\Service\Permission;
+
+/**
+ * 権限レーンの期待値と, 実際の所有者・パーミッションを突き合わせる.
+ */
+class PermissionDiagnostic
+{
+    public function __construct(
+        private readonly PermissionRequirementProvider $requirementProvider,
+        private readonly WebServerUserResolver $webServerUserResolver,
+    ) {
+    }
+
+    public function run(): DiagnosticReport
+    {
+        $webServer = $this->webServerUserResolver->resolve();
+        $cli = $this->webServerUserResolver->currentUser();
+
+        $findings = [];
+        foreach ($this->requirementProvider->requirements() as $requirement) {
+            $findings[] = $this->evaluate($requirement, PathOwnership::of($requirement->path), $webServer, $cli);
+        }
+
+        return new DiagnosticReport($findings, $webServer, $cli);
+    }
+
+    /**
+     * 1 件を判定する. ファイルシステムには触れず, 渡された所有者情報だけで判断する.
+     */
+    public function evaluate(
+        PermissionRequirement $requirement,
+        PathOwnership $ownership,
+        ?UserIdentity $webServer,
+        UserIdentity $cli,
+    ): PermissionFinding {
+        if (!$ownership->exists) {
+            if ($requirement->optional) {
+                return new PermissionFinding($requirement, $ownership, FindingSeverity::OK, '未作成 (必要になった時点で生成されます)');
+            }
+
+            return new PermissionFinding($requirement, $ownership, FindingSeverity::NG, '存在しません', '作成してください.');
+        }
+
+        if (!$webServer instanceof UserIdentity) {
+            return new PermissionFinding(
+                $requirement,
+                $ownership,
+                FindingSeverity::WARN,
+                'Web サーバーの実行ユーザーを特定できないため判定できません'
+            );
+        }
+
+        return $requirement->lane === WriteLane::WEB
+            ? $this->evaluateWebLane($requirement, $ownership, $webServer)
+            : $this->evaluateSshLane($requirement, $ownership, $webServer, $cli);
+    }
+
+    private function evaluateWebLane(PermissionRequirement $requirement, PathOwnership $ownership, UserIdentity $webServer): PermissionFinding
+    {
+        if (!$ownership->isWritableBy($webServer)) {
+            return new PermissionFinding(
+                $requirement,
+                $ownership,
+                FindingSeverity::NG,
+                'Web サーバーから書き込めません',
+                sprintf('リクエスト処理中に書き込みが発生します. 所有者を uid=%d gid=%d へ変更するか, 書き込み権限を付与してください.', $webServer->uid, $webServer->gid)
+            );
+        }
+
+        return new PermissionFinding($requirement, $ownership, FindingSeverity::OK, 'Web サーバーから書き込めます');
+    }
+
+    private function evaluateSshLane(
+        PermissionRequirement $requirement,
+        PathOwnership $ownership,
+        UserIdentity $webServer,
+        UserIdentity $cli,
+    ): PermissionFinding {
+        if ($ownership->isWritableBy($webServer)) {
+            return new PermissionFinding(
+                $requirement,
+                $ownership,
+                FindingSeverity::NG,
+                'Web サーバーから書き込み可能です (想定: 読み取りのみ)',
+                'CLI (SSH ログインユーザー) からのみ書き込める権限へ変更してください.'
+            );
+        }
+
+        if (!$ownership->isReadableBy($webServer)) {
+            return new PermissionFinding(
+                $requirement,
+                $ownership,
+                FindingSeverity::NG,
+                'Web サーバーから読み取れません',
+                'このレーンは読み取り権限が必要です.'
+            );
+        }
+
+        if (!$ownership->isWritableBy($cli)) {
+            return new PermissionFinding(
+                $requirement,
+                $ownership,
+                FindingSeverity::WARN,
+                'Web サーバーは読み取りのみですが, 診断の実行ユーザーからも書き込めません',
+                'このパスを書き換える CLI コマンドは, 書き込み権限を持つユーザーで実行してください.'
+            );
+        }
+
+        return new PermissionFinding($requirement, $ownership, FindingSeverity::OK, 'Web サーバーは読み取りのみです');
+    }
+}
