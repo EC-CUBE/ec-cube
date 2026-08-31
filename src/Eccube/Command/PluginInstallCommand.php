@@ -51,7 +51,7 @@ class PluginInstallCommand extends Command
             if ($this->pluginService->install($path, 0, $ifNotExists)) {
                 $io->success('Installed.');
 
-                return 0;
+                return Command::SUCCESS;
             }
         }
 
@@ -61,11 +61,11 @@ class PluginInstallCommand extends Command
             $this->clearCache($io);
             $io->success('Installed.');
 
-            return 0;
+            return Command::SUCCESS;
         }
 
         $io->error('path or code is required.');
 
-        return 1;
+        return Command::FAILURE;
     }
 }

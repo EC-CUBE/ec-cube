@@ -25,7 +25,18 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand(name: 'eccube:fixtures:generate', description: 'Dummy data generator')]
+#[AsCommand(name: 'eccube:fixtures:generate', description: 'Dummy data generator', help: <<<'TXT'
+The <info>%command.name%</info> command generate of dummy data.
+
+  <info>php %command.full_name%</info>
+
+Generate of dummy data with images.
+
+  <info>php %command.full_name% --without-image</info>
+
+Generate of dummy data without images, use for options to faster.
+;
+TXT)]
 class GenerateDummyDataCommand extends Command
 {
     public function __construct(protected ?Generator $generator = null, protected ?EntityManagerInterface $entityManager = null, protected ?DeliveryRepository $deliveryRepository = null, protected ?ProductRepository $productRepository = null)
@@ -41,20 +52,7 @@ class GenerateDummyDataCommand extends Command
             ->addOption('without-image', null, InputOption::VALUE_NONE, 'Do not generate images.')
             ->addOption('products', null, InputOption::VALUE_REQUIRED, 'Number of Products.', 100)
             ->addOption('orders', null, InputOption::VALUE_REQUIRED, 'Number of Orders.', 10)
-            ->addOption('customers', null, InputOption::VALUE_REQUIRED, 'Number of Customers.', 100)
-            ->setHelp(<<<EOF
-The <info>%command.name%</info> command generate of dummy data.
-
-  <info>php %command.full_name%</info>
-
-Generate of dummy data with images.
-
-  <info>php %command.full_name% --without-image</info>
-
-Generate of dummy data without images, use for options to faster.
-;
-EOF
-            );
+            ->addOption('customers', null, InputOption::VALUE_REQUIRED, 'Number of Customers.', 100);
     }
 
     #[\Override]
@@ -186,6 +184,6 @@ EOF
         $output->writeln('');
         $output->writeln(sprintf('%s <info>success</info>', 'eccube:fixtures:generate'));
 
-        return 0;
+        return Command::SUCCESS;
     }
 }
