@@ -42,6 +42,16 @@ final class PermissionDiagnosticTest extends TestCase
         $this->assertSame(FindingSeverity::OK, $finding->severity);
     }
 
+    public function testWebLaneWarnsWhenWorldWritable(): void
+    {
+        // umask(0000) の影響でアプリケーションが 0777 で作成したディレクトリ.
+        // Web サーバーからは書けるが, 任意のローカルユーザーからも書ける
+        $finding = $this->evaluate(WriteLane::WEB, self::WEB_UID, self::WEB_UID, 0777);
+
+        $this->assertSame(FindingSeverity::WARN, $finding->severity);
+        $this->assertStringContainsString('umask(0000)', (string) $finding->hint);
+    }
+
     public function testWebLaneIsNgWhenWebServerCannotWrite(): void
     {
         // SSH ユーザー所有 0755 は Web サーバーから書き込めない

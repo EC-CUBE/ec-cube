@@ -5,27 +5,37 @@ version: '3'
 #   docker compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.permission-lanes.yml up -d --wait
 #
 # 分離モードでは www-data は uid 33 のままとなり、CLI 用に別ユーザー (eccube) を作成する。
-# CLI はそのユーザーで実行する。
-#
-#   docker compose exec -u eccube ec-cube bin/console eccube:doctor:permissions
+# 共有グループは作らない。セキュリティポリシーで共有グループを作成できない環境があるため。
 #
 # 書き込み先は 2 つのレーンに分かれる。
 #
 #   レーン W (Web サーバーが書き込む)   var, html/upload/**, app/keystore
-#     → CLI ユーザー所有 + www-data グループ + setgid 付き 2775。両者が書き込める
+#     → www-data 所有。CLI から書き込む必要がある場合は Web サーバーのユーザーで実行する
 #   レーン S (CLI へ移せる)             上記以外 (app/template, html/user_data, app/Plugin, vendor, .env 等)
 #     → CLI ユーザー所有。www-data は読み取りのみ
+#
+# CLI の実行ユーザーは操作対象のレーンで決まる。
+#
+#   レーン S を触る   docker compose exec -u eccube   ec-cube bin/console ...
+#   レーン W を触る   docker compose exec -u www-data ec-cube bin/console cache:clear
+#                     (本番では sudo -u www-data bin/console cache:clear に相当する)
 #
 # 分離すると、レーン S へ書き込む管理画面の機能は動作しなくなる。
 # (プラグインの導入・有効化、ページ/ブロック/メールテンプレートの編集、CSS/JS の編集、
 #  ファイル管理、テンプレートのアップロード)
 # CLI 側の代替導線は整備中のため、日常の開発では本ファイルを重ねないこと。
 #
-# 既定モードと分離モードを切り替えるときは var ボリュームを作り直すこと。
-# var 配下には旧 www-data の uid で作成されたディレクトリが残り、切り替え後の Web サーバーから
+# 既定モードと分離モードを切り替えるときは、レーン W のボリュームを作り直すこと。
+# 切り替え前の www-data の uid で作成されたディレクトリが残り、切り替え後の Web サーバーから
 # 書き込めなくなる (例: var/cache/{env}/mcp-sessions)。
 #
-#   docker compose ... down && docker volume rm <プロジェクト名>_var
+#   docker compose ... down -v
+#
+# レーン W のディレクトリ (html/upload/**、app/keystore) はホスト側でも www-data の uid 所有になる。
+# 既定モードへ戻すときは所有者を元に戻すこと。
+#
+#   sudo chown -R $(id -u):$(id -g) html/upload app/keystore
+
 services:
   ec-cube:
     environment:

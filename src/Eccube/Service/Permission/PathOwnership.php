@@ -56,6 +56,14 @@ final readonly class PathOwnership
         return $this->isAllowedFor($user, 0004, 0400, 0040);
     }
 
+    /**
+     * 所有者・グループに関係なく, 任意のローカルユーザーから書き込めるか.
+     */
+    public function isWorldWritable(): bool
+    {
+        return $this->exists && ($this->permissions & 0002) !== 0;
+    }
+
     public function permissionsString(): string
     {
         return sprintf('%04o', $this->permissions);

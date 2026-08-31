@@ -81,6 +81,13 @@ final class PathOwnershipTest extends TestCase
         yield 'no read bit for other' => [1000, 1000, 0770, 33, 33, false];
     }
 
+    public function testIsWorldWritable(): void
+    {
+        $this->assertTrue((new PathOwnership('/path', true, 33, 33, 0777, true))->isWorldWritable());
+        $this->assertFalse((new PathOwnership('/path', true, 33, 33, 0775, true))->isWorldWritable());
+        $this->assertFalse((new PathOwnership('/path', false, -1, -1, 0, false))->isWorldWritable());
+    }
+
     public function testNotExistsIsNeitherWritableNorReadable(): void
     {
         $ownership = new PathOwnership('/path', false, -1, -1, 0, false);

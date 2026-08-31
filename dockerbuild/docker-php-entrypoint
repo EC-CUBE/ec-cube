@@ -5,9 +5,10 @@ set -e
 # 未設定時は従来どおり www-data をホストユーザーへ合わせる (開発時のパーミッションエラーを避けるため)。
 PERMISSION_LANES="${ECCUBE_PERMISSION_LANES:-}"
 
-# レーン W: リクエスト処理中に Web サーバーが書き込むディレクトリ。
-# CLI ユーザー所有 + www-data グループ + setgid とし, 双方から書き込めるようにする。
-LANE_W_DIRS="var html/upload/save_image html/upload/temp_image html/upload/refund_request/save html/upload/refund_request/temp app/keystore"
+# レーン W: リクエスト処理中に Web サーバーが書き込むディレクトリ。www-data 所有とする。
+# CLI から書き込む必要がある場合は Web サーバーのユーザーで実行する (本番では sudo -u www-data)。
+# 共有グループは作らない。セキュリティポリシーで共有グループを作成できない環境があるため。
+LANE_W_DIRS="html/upload html/upload/save_image html/upload/temp_image html/upload/refund_request html/upload/refund_request/save html/upload/refund_request/temp app/keystore"
 
 setup_split_users() {
     # UID / GID はシェルが export しないことが多いため, 未指定なら
@@ -24,10 +25,6 @@ setup_split_users() {
     if ! getent passwd "${cli_uid}" > /dev/null; then
         useradd -o -u "${cli_uid}" -g "${cli_gid}" -m -d /home/eccube -s /bin/bash eccube
     fi
-    cli_user="$(getent passwd "${cli_uid}" | cut -d: -f1)"
-
-    # レーン W をグループ経由で共有するため, CLI ユーザーを www-data グループへ入れる
-    usermod -aG www-data "${cli_user}"
 }
 
 apply_permission_lanes() {
@@ -39,17 +36,19 @@ apply_permission_lanes() {
         -exec chown -R "${cli_uid}:${cli_gid}" {} +
     chown "${cli_uid}:${cli_gid}" "${APACHE_DOCUMENT_ROOT}"
 
-    # レーン W: setgid でグループを継承させ, Web サーバーと CLI の双方から書き込めるようにする.
-    # Web サーバーが作成したファイルには触れない. 所有者を書き換えると Web サーバーの実行ユーザーを
-    # 判定する材料が失われ, パーミッションを揃えるとセッションファイルの 0600 まで緩めてしまうため.
-    # ファイルのパーミッションも変更しない. bind mount 越しに git 管理下の実行ビットが落ちるため
-    # (html/upload/save_image の同梱画像は 100755 で登録されている).
+    # レーン W: ディレクトリだけを Web サーバー所有にする.
+    # 配布物 (html/upload/refund_request/.htaccess や既定画像) は CLI ユーザー所有のまま残す.
+    # 配下ごと chown すると, 本番の姿 (デプロイしたファイルは SSH ユーザー所有・Web は読み取りのみ) と
+    # ずれるうえ, bind mount 越しにホスト側の作業ツリーの所有者まで書き換えてしまうため.
     for dir in ${LANE_W_DIRS}; do
         target="${APACHE_DOCUMENT_ROOT}/${dir}"
         mkdir -p "${target}"
-        find "${target}" ! -user www-data -exec chown "${cli_uid}:www-data" {} +
-        find "${target}" -type d -exec chmod 2775 {} +
+        chown www-data:www-data "${target}"
     done
+
+    # var は名前付きボリュームで配布物を含まないため配下ごと Web サーバー所有にする.
+    # パーミッションは変更しない. 変更するとセッションファイルの 0600 を緩めてしまうため.
+    chown -R www-data:www-data "${APACHE_DOCUMENT_ROOT}/var"
 }
 
 if [ "${PERMISSION_LANES}" = "1" ]; then
