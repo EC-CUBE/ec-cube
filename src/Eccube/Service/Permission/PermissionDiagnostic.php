@@ -88,8 +88,9 @@ class PermissionDiagnostic
                 $ownership,
                 FindingSeverity::WARN,
                 'Web サーバーから書き込めますが, 任意のローカルユーザーからも書き込めます',
-                'EC-CUBE は index.php と bin/console で umask(0000) を設定するため, アプリケーションが作成したディレクトリは 0777 になります. '
-                .'同一サーバーの他ユーザーから書き換えられるため, 共有サーバーでは所有者を Web サーバーに限定してください.'
+                'bin/console が umask(0000) を設定するため, CLI が作成したディレクトリは 0777 になります '
+                .'(dev では index.php も umask(0000) を設定するため Web からの作成も同様です). '
+                .'同一サーバーの他ユーザーから書き換えられます.'
             );
         }
 
