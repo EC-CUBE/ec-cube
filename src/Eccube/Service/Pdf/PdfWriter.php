@@ -482,11 +482,13 @@ class PdfWriter
         $type = match ($size[2]) {
             IMAGETYPE_PNG => 'png',
             IMAGETYPE_JPEG => 'jpg',
-            IMAGETYPE_GIF => 'gif',
+            // GIF の解析だけ FPDF が GD へ委譲する（_parsegif が imagecreatefromgif を呼び,
+            // 無ければ Error で PDF 全体が落ちる）。ext-gd は推奨止まりなので自前で弾く
+            IMAGETYPE_GIF => \function_exists('imagecreatefromgif') ? 'gif' : null,
             default => null,
         };
         if ($type === null) {
-            // FPDF が解析できない形式。ロゴを描かないだけにして帳票自体は出す
+            // FPDF が解析できない形式, または GD 不在の GIF。ロゴを描かないだけにして帳票自体は出す
             return;
         }
 
