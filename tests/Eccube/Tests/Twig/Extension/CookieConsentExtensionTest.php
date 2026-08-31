@@ -32,8 +32,7 @@ final class CookieConsentExtensionTest extends EccubeTestCase
         if ($cookieValue !== null) {
             $request->cookies->set(CookieConsentService::COOKIE_NAME, $cookieValue);
         }
-        $requestStack = new RequestStack();
-        $requestStack->push($request);
+        $requestStack = new RequestStack([$request]);
 
         return new CookieConsentExtension(new CookieConsentService(), $requestStack);
     }

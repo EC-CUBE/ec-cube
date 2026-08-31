@@ -1264,8 +1264,7 @@ class Order extends AbstractEntity implements PurchaseInterface, ItemHolderInter
      */
     public function getShippings(): Collection
     {
-        $criteria = Criteria::create()
-            ->orderBy(['name01' => Criteria::ASC, 'name02' => Criteria::ASC, 'id' => Criteria::ASC]);
+        $criteria = Criteria::create()->orderBy(['name01' => \Doctrine\Common\Collections\Order::Ascending, 'name02' => \Doctrine\Common\Collections\Order::Ascending, 'id' => \Doctrine\Common\Collections\Order::Ascending]);
 
         /** @var PersistentCollection<int,Shipping> $Shippings */
         $Shippings = $this->Shippings;

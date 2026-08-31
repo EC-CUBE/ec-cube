@@ -59,8 +59,7 @@ final class InstallControllerTest extends AbstractWebTestCase
         $cacheUtil = static::getContainer()->get(CacheUtil::class);
         $request = new Request();
         $request->setSession(new Session(new MockArraySessionStorage()));
-        $requestStack = new RequestStack();
-        $requestStack->push($request);
+        $requestStack = new RequestStack([$request]);
         $this->session = new EccubeSession($requestStack);
         $this->controller = new InstallController($passwordHasher, $cacheUtil);
         $this->controller->setFormFactory($formFactory);
