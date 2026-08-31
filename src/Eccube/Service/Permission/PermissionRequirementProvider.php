@@ -81,7 +81,13 @@ class PermissionRequirementProvider
             $this->create($this->path('eccube_temp_image_dir'), WriteLane::WEB),
             $this->create($this->path('eccube_save_refund_request_file_dir'), WriteLane::WEB),
             $this->create($this->path('eccube_temp_refund_request_file_dir'), WriteLane::WEB),
-            $this->create($projectDir.'/app/keystore', WriteLane::WEB, true, 'エージェントコマースの鍵を保存する. 未使用であれば作成されない.'),
+            $this->create(
+                $projectDir.'/app/keystore',
+                WriteLane::WEB,
+                true,
+                '秘密鍵の格納先. CLI で事前に配置し Web サーバーからは読み取りのみとするのが望ましい. '
+                .'実行時に鍵を生成する機能を使う場合のみ Web サーバーの書き込み権限が必要になる.'
+            ),
             $this->create(
                 dirname($this->path('eccube_content_maintenance_file_path')),
                 WriteLane::WEB,

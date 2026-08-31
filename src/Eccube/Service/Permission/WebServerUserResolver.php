@@ -17,6 +17,7 @@ namespace Eccube\Service\Permission;
 
 use Eccube\Common\EccubeConfig;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * Web サーバーの実行ユーザーを実測する.
@@ -98,6 +99,20 @@ class WebServerUserResolver
         // 過去の運用ミスで所有者が異なるファイルが残っている場合に備え, 最も新しいものを採用する
         $finder = Finder::create()->files()->in($dir)->depth(0)->name($pattern)->sortByModifiedTime();
 
+        try {
+            return $this->identityFromFinder($finder);
+        } catch (\UnexpectedValueException) {
+            // Web サーバー専用に絞ったディレクトリ (var/sessions を 0700 にする等) は一覧できない.
+            // 判定材料にできないだけなので, 次の候補へ移る
+            return null;
+        }
+    }
+
+    /**
+     * @param Finder<SplFileInfo> $finder
+     */
+    private function identityFromFinder(Finder $finder): ?UserIdentity
+    {
         $identity = null;
         foreach ($finder as $file) {
             $ownership = PathOwnership::of($file->getPathname());

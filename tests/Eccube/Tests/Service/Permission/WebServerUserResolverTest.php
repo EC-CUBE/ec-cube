@@ -86,6 +86,29 @@ final class WebServerUserResolverTest extends TestCase
         $this->assertStringContainsString('uploaded.jpg', (string) $identity->source);
     }
 
+    public function testUnreadableDirectoryFallsBackToTheNextCandidate(): void
+    {
+        if (getmyuid() === 0) {
+            // root はパーミッションビットを無視するため, この検証は成立しない
+            $this->markTestSkipped('root では読み取り不可のディレクトリを再現できません.');
+        }
+
+        // Web サーバー専用に絞った var/sessions (0700 等) は一覧できない。
+        // 例外にせず次の候補へ移ることを確認する
+        $this->fs->dumpFile($this->projectDir.'/var/sessions/prod/sess_0123456789', '');
+        $this->fs->chmod($this->projectDir.'/var/sessions/prod', 0000);
+        $this->fs->dumpFile($this->projectDir.'/html/upload/temp_image/uploaded.jpg', '');
+
+        try {
+            $identity = $this->resolver()->resolve();
+        } finally {
+            $this->fs->chmod($this->projectDir.'/var/sessions/prod', 0755);
+        }
+
+        $this->assertInstanceOf(UserIdentity::class, $identity);
+        $this->assertStringContainsString('uploaded.jpg', $identity->source);
+    }
+
     public function testCurrentUserIsResolvedFromTheProcess(): void
     {
         $cli = $this->resolver()->currentUser();
