@@ -48,19 +48,13 @@ class Step3Type extends AbstractType
     {
         $loginPassConstraints = [
             new Assert\NotBlank(),
-            new Assert\Length([
-                'min' => $this->eccubeConfig['eccube_password_min_len'],
-                'max' => $this->eccubeConfig['eccube_password_max_len'],
-            ]),
-            new Assert\Regex([
-                'pattern' => $this->eccubeConfig['eccube_password_pattern'],
-                'message' => 'form_error.password_pattern_invalid',
-            ]),
+            new Assert\Length(min: $this->eccubeConfig['eccube_password_min_len'], max: $this->eccubeConfig['eccube_password_max_len']),
+            new Assert\Regex(pattern: $this->eccubeConfig['eccube_password_pattern'], message: 'form_error.password_pattern_invalid'),
             new PasswordBlocklist(),
         ];
         // NIST SP 800-63B-4 対応の漏洩パスワードチェック. 閉域網等では config で無効化できる.
         if ($this->eccubeConfig['eccube_password_compromised_check']) {
-            $loginPassConstraints[] = new Assert\NotCompromisedPassword(['skipOnError' => true]);
+            $loginPassConstraints[] = new Assert\NotCompromisedPassword(skipOnError: true);
         }
 
         // 検証と保存を同一の正規化済み値で行うため, 検証前(PRE_SUBMIT)に login_pass を NFKC 正規化する.
@@ -77,9 +71,7 @@ class Step3Type extends AbstractType
                 'label' => trans('install.shop_name'),
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('email', EmailType::class, [
@@ -96,14 +88,8 @@ class Step3Type extends AbstractType
                 ]),
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length([
-                        'min' => $this->eccubeConfig['eccube_id_min_len'],
-                        'max' => $this->eccubeConfig['eccube_id_max_len'],
-                    ]),
-                    new Assert\Regex([
-                        'pattern' => '/^[[:graph:][:space:]]+$/i',
-                        'message' => 'form_error.graph_only',
-                    ]),
+                    new Assert\Length(min: $this->eccubeConfig['eccube_id_min_len'], max: $this->eccubeConfig['eccube_id_max_len']),
+                    new Assert\Regex(pattern: '/^[[:graph:][:space:]]+$/i', message: 'form_error.graph_only'),
                 ],
             ])
             ->add('login_pass', PasswordType::class, [
@@ -120,12 +106,9 @@ class Step3Type extends AbstractType
                 ]),
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length([
-                        'min' => $this->eccubeConfig['eccube_id_min_len'],
-                        'max' => $this->eccubeConfig['eccube_id_max_len'],
-                    ]),
-                    new Assert\Regex(['pattern' => '/\A\w+\z/']),
-                    new Assert\NotEqualTo(['value' => 'admin', 'message' => 'form_error.admin_is_not_available']),
+                    new Assert\Length(min: $this->eccubeConfig['eccube_id_min_len'], max: $this->eccubeConfig['eccube_id_max_len']),
+                    new Assert\Regex(pattern: '/\A\w+\z/'),
+                    new Assert\NotEqualTo(value: 'admin', message: 'form_error.admin_is_not_available'),
                 ],
             ])
             ->add('admin_force_ssl', CheckboxType::class, [

@@ -53,18 +53,13 @@ class ProductClassType extends AbstractType
             ->add('code', TextType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('stock', NumberType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Regex([
-                        'pattern' => "/^\d+$/u",
-                        'message' => 'form_error.numeric_only',
-                    ]),
+                    new Assert\Regex(pattern: "/^\d+$/u", message: 'form_error.numeric_only'),
                 ],
             ])
             ->add('stock_unlimited', CheckboxType::class, [
@@ -75,16 +70,9 @@ class ProductClassType extends AbstractType
             ->add('sale_limit', NumberType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => 10,
-                    ]),
-                    new Assert\GreaterThanOrEqual([
-                        'value' => 1,
-                    ]),
-                    new Assert\Regex([
-                        'pattern' => "/^\d+$/u",
-                        'message' => 'form_error.numeric_only',
-                    ]),
+                    new Assert\Length(max: 10),
+                    new Assert\GreaterThanOrEqual(value: 1),
+                    new Assert\Regex(pattern: "/^\d+$/u", message: 'form_error.numeric_only'),
                 ],
             ])
             ->add('price01', PriceType::class, [
@@ -95,11 +83,8 @@ class ProductClassType extends AbstractType
             ->add('tax_rate', TextType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Range(['min' => 0, 'max' => 100]),
-                    new Assert\Regex([
-                        'pattern' => "/^\d+(\.\d+)?$/",
-                        'message' => 'form_error.float_only',
-                    ]),
+                    new Assert\Range(min: 0, max: 100),
+                    new Assert\Regex(pattern: "/^\d+(\.\d+)?$/", message: 'form_error.float_only'),
                 ],
             ])
             ->add('delivery_fee', PriceType::class, [

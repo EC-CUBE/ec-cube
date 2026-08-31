@@ -101,7 +101,7 @@ class AddressType extends AbstractType
             'pref_options' => ['constraints' => [], 'attr' => ['class' => 'p-region-id']],
             'addr01_options' => [
                 'constraints' => [
-                    new Assert\Length(['max' => $this->config['eccube_address1_len']]),
+                    new Assert\Length(max: $this->config['eccube_address1_len']),
                 ],
                 'attr' => [
                     'class' => 'p-locality p-street-address',
@@ -110,7 +110,7 @@ class AddressType extends AbstractType
             ],
             'addr02_options' => [
                 'constraints' => [
-                    new Assert\Length(['max' => $this->config['eccube_address2_len']]),
+                    new Assert\Length(max: $this->config['eccube_address2_len']),
                 ],
                 'attr' => [
                     'class' => 'p-extended-address',
@@ -124,11 +124,5 @@ class AddressType extends AbstractType
             'inherit_data' => true,
             'trim' => true,
         ]);
-    }
-
-    #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'address';
     }
 }

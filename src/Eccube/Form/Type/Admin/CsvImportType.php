@@ -51,9 +51,7 @@ class CsvImportType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\File([
-                        'maxSize' => $this->csvMaxSize.'M',
-                    ]),
+                    new Assert\File(maxSize: $this->csvMaxSize.'M'),
                 ],
             ])
             ->add('is_split_csv', CheckboxType::class, [

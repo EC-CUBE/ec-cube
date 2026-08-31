@@ -44,21 +44,21 @@ class SearchLoginHistoryType extends AbstractType
                 'label' => 'admin.setting.system.login_history.multi_search_label',
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('user_name', TextType::class, [
                 'label' => 'admin.setting.system.login_history.user_name',
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('client_ip', TextType::class, [
                 'label' => 'admin.setting.system.login_history.client_ip',
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('Status', LoginHistoryStatusType::class, [
@@ -73,10 +73,7 @@ class SearchLoginHistoryType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'constraints' => [
-                    new Assert\Range([
-                        'min' => '0003-01-01',
-                        'minMessage' => 'form_error.out_of_range',
-                    ]),
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
                 ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
@@ -90,10 +87,7 @@ class SearchLoginHistoryType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'constraints' => [
-                    new Assert\Range([
-                        'min' => '0003-01-01',
-                        'minMessage' => 'form_error.out_of_range',
-                    ]),
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
                 ],
                 'attr' => [
                     'class' => 'datetimepicker-input',

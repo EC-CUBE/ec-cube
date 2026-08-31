@@ -51,13 +51,4 @@ class ForgotType extends AbstractType
             ],
         ]);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'forgot';
-    }
 }

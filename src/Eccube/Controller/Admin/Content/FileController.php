@@ -158,16 +158,8 @@ class FileController extends AbstractController
             ->add('create_file', TextType::class, [
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Regex([
-                        'pattern' => '/[^[:alnum:]_.\\-]/',
-                        'match' => false,
-                        'message' => 'admin.content.file.folder_name_symbol_error',
-                    ]),
-                    new Assert\Regex([
-                        'pattern' => "/^\.(.*)$/",
-                        'match' => false,
-                        'message' => 'admin.content.file.folder_name_period_error',
-                    ]),
+                    new Assert\Regex(pattern: '/[^[:alnum:]_.\\-]/', match: false, message: 'admin.content.file.folder_name_symbol_error'),
+                    new Assert\Regex(pattern: "/^\.(.*)$/", match: false, message: 'admin.content.file.folder_name_period_error'),
                 ],
             ])
             ->getForm();
@@ -273,9 +265,7 @@ class FileController extends AbstractController
             ->add('file', FileType::class, [
                 'multiple' => true,
                 'constraints' => [
-                    new Assert\NotBlank([
-                        'message' => 'admin.common.file_select_empty',
-                    ]),
+                    new Assert\NotBlank(message: 'admin.common.file_select_empty'),
                 ],
             ])
             ->add('create_file', TextType::class)

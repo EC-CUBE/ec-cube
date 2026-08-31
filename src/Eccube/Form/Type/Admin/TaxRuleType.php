@@ -48,11 +48,8 @@ class TaxRuleType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Range(['min' => 0]),
-                    new Assert\Regex([
-                        'pattern' => "/^\d+(\.\d+)?$/u",
-                        'message' => 'form_error.float_only',
-                    ]),
+                    new Assert\Range(min: 0),
+                    new Assert\Regex(pattern: "/^\d+(\.\d+)?$/u", message: 'form_error.float_only'),
                 ],
             ])
             ->add('rounding_type', RoundingTypeType::class, [
@@ -103,14 +100,5 @@ class TaxRuleType extends AbstractType
         $resolver->setDefaults([
             'data_class' => TaxRule::class,
         ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'tax_rule';
     }
 }

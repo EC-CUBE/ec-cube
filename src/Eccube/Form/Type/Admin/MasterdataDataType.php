@@ -46,13 +46,8 @@ class MasterdataDataType extends AbstractType
             ->add('id', TextType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_int_len'],
-                    ]),
-                    new Assert\Regex([
-                        'pattern' => '/^\d+$/u',
-                        'message' => 'form_error.numeric_only',
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_int_len']),
+                    new Assert\Regex(pattern: '/^\d+$/u', message: 'form_error.numeric_only'),
                 ],
             ])
             ->add('name', TextType::class, [
