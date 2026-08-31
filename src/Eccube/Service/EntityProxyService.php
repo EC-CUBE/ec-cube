@@ -46,9 +46,7 @@ class EntityProxyService
      */
     public function generate(array $includesDirs, array $excludeDirs, string $outputDir, ?OutputInterface $output = null): array
     {
-        if (is_null($output)) {
-            $output = new ConsoleOutput();
-        }
+        $output ??= new ConsoleOutput();
 
         $generatedFiles = [];
 

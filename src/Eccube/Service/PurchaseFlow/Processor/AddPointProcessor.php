@@ -60,9 +60,7 @@ class AddPointProcessor extends ItemHolderPostValidator
             function ($carry, ItemInterface $item) use ($basicPointRate) {
                 $pointRate = $item->getPointRate() ?: null;
 
-                if ($pointRate === null) {
-                    $pointRate = $basicPointRate;
-                }
+                $pointRate ??= $basicPointRate;
 
                 // TODO: ポイントは税抜き分しか割引されない、ポイント明細は税抜きのままでいいのか？
                 $point = '0';

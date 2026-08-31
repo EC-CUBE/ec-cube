@@ -53,9 +53,7 @@ class NameType extends AbstractType
             ], $options['firstname_options']['constraints']);
         }
 
-        if (!isset($options['options']['error_bubbling'])) {
-            $options['options']['error_bubbling'] = $options['error_bubbling'];
-        }
+        $options['options']['error_bubbling'] ??= $options['error_bubbling'];
 
         if (empty($options['lastname_name'])) {
             $options['lastname_name'] = $builder->getName().'01';

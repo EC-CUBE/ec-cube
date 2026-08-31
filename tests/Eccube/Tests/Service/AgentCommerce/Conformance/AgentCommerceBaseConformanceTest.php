@@ -18,6 +18,7 @@ namespace Eccube\Tests\Service\AgentCommerce\Conformance;
 use Eccube\Service\AgentCommerce\MinorUnitConverter;
 use Eccube\Service\AgentCommerce\Security\KeyStoreInterface;
 use Eccube\Service\AgentCommerce\Security\UcpMessageSigner;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -89,6 +90,7 @@ final class AgentCommerceBaseConformanceTest extends TestCase
      * business errors as HTTP 200 + messages[]) is enforced at the controller
      * layer, which is out of scope for the common base.
      */
+    #[DoesNotPerformAssertions]
     public function testTwoTierErrorModelIsDeferredToControllerLayer(): void
     {
         self::markTestIncomplete('Two-tier error model (HTTP errors vs messages[]) is verified in the ACP/UCP checkout controller tracks, not in the common base.');

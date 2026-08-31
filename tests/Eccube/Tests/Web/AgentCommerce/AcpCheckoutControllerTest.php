@@ -69,10 +69,7 @@ final class AcpCheckoutControllerTest extends EccubeTestCase
         if ($auth) {
             $headers['HTTP_AUTHORIZATION'] = 'Bearer '.self::TOKEN;
         }
-        // Idempotency-Key は POST で必須。明示指定が無ければ一意キーを自動付与する。
-        if (!isset($server['HTTP_Idempotency-Key'])) {
-            $server['HTTP_Idempotency-Key'] = 'idem-'.bin2hex(random_bytes(8));
-        }
+        $server['HTTP_Idempotency-Key'] ??= 'idem-'.bin2hex(random_bytes(8));
 
         $this->client->request(Request::METHOD_POST, $uri, [], [], array_merge($headers, $server), (string) json_encode($body));
 

@@ -659,9 +659,7 @@ class PluginService
      */
     private function regenerateProxy(Plugin $plugin, bool $temporary, ?string $outputDir = null, bool $uninstall = false): array
     {
-        if (is_null($outputDir)) {
-            $outputDir = $this->projectRoot.'/app/proxy/entity';
-        }
+        $outputDir ??= $this->projectRoot.'/app/proxy/entity';
         @mkdir($outputDir);
 
         if ($temporary) {

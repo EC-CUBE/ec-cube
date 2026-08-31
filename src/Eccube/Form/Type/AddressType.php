@@ -61,9 +61,7 @@ class AddressType extends AbstractType
             ], $options['addr02_options']['constraints']);
         }
 
-        if (!isset($options['options']['error_bubbling'])) {
-            $options['options']['error_bubbling'] = $options['error_bubbling'];
-        }
+        $options['options']['error_bubbling'] ??= $options['error_bubbling'];
 
         $builder
             ->add($options['pref_name'], PrefType::class, array_merge_recursive($options['options'], $options['pref_options']))

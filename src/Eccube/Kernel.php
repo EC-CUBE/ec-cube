@@ -368,7 +368,7 @@ class Kernel extends BaseKernel
     {
         // see https://github.com/EC-CUBE/ec-cube/issues/4727
         // キャッシュクリアなど、コード内でコマンドを利用している場合に2回実行されてしまう
-        if (true === $this->booted) {
+        if ($this->booted) {
             return;
         }
 
