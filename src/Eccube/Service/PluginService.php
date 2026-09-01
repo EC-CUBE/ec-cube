@@ -55,11 +55,6 @@ class PluginService
     private readonly string $projectRoot;
 
     /**
-     * @var string %kernel.environment%
-     */
-    private readonly string $environment;
-
-    /**
      * PluginService constructor.
      */
     public function __construct(
@@ -75,7 +70,6 @@ class PluginService
         private readonly PluginContext $pluginContext,
     ) {
         $this->projectRoot = $this->eccubeConfig->get('kernel.project_dir');
-        $this->environment = $this->eccubeConfig->get('kernel.environment');
     }
 
     /**
@@ -352,11 +346,12 @@ class PluginService
      */
     public function createTempDir(): string
     {
-        $tempDir = $this->projectRoot.'/var/cache/'.$this->environment.'/Plugin';
-        @mkdir($tempDir);
+        // アーカイブの展開先はリクエスト処理中にも作られるため, ランタイムディレクトリへ置く.
+        $tempDir = $this->eccubeConfig->get('eccube_runtime_dir').'/Plugin';
+        @mkdir($tempDir, 0755, true);
         $d = ($tempDir.'/'.sha1(StringUtil::random(16)));
 
-        if (!mkdir($d, 0777)) {
+        if (!mkdir($d, 0755)) {
             throw new PluginException(trans('admin.store.plugin.mkdir.error', ['%dir_name%' => $d]));
         }
 

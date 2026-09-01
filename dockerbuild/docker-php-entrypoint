@@ -10,6 +10,12 @@ PERMISSION_LANES="${ECCUBE_PERMISSION_LANES:-}"
 # 共有グループは作らない。セキュリティポリシーで共有グループを作成できない環境があるため。
 LANE_W_DIRS="html/upload html/upload/save_image html/upload/temp_image html/upload/refund_request html/upload/refund_request/save html/upload/refund_request/temp app/keystore"
 
+# var 配下のレーン分け。
+# var/runtime (実行時キャッシュ)・var/sessions・var/log はリクエスト処理中に書き込まれる。
+# var/build (コンパイル済みコンテナ・テンプレート)・var/cache は eccube:cache:build が生成する。
+LANE_W_VAR_DIRS="var/runtime var/sessions var/log"
+LANE_S_VAR_DIRS="var/build var/cache"
+
 setup_split_users() {
     # UID / GID はシェルが export しないことが多いため, 未指定なら
     # bind mount されたファイルの所有者からホストユーザーを推定する。
@@ -46,9 +52,20 @@ apply_permission_lanes() {
         chown www-data:www-data "${target}"
     done
 
-    # var は名前付きボリュームで配布物を含まないため配下ごと Web サーバー所有にする.
+    # var は名前付きボリュームで配布物を含まないため, 配下をレーンごとに所有者を分ける.
     # パーミッションは変更しない. 変更するとセッションファイルの 0600 を緩めてしまうため.
-    chown -R www-data:www-data "${APACHE_DOCUMENT_ROOT}/var"
+    # var 自体は CLI ユーザー所有にする (eccube:cache:build が var/build を作り直せるように).
+    chown "${cli_uid}:${cli_gid}" "${APACHE_DOCUMENT_ROOT}/var"
+    for dir in ${LANE_S_VAR_DIRS}; do
+        target="${APACHE_DOCUMENT_ROOT}/${dir}"
+        mkdir -p "${target}"
+        chown -R "${cli_uid}:${cli_gid}" "${target}"
+    done
+    for dir in ${LANE_W_VAR_DIRS}; do
+        target="${APACHE_DOCUMENT_ROOT}/${dir}"
+        mkdir -p "${target}"
+        chown -R www-data:www-data "${target}"
+    done
 }
 
 if [ "${PERMISSION_LANES}" = "1" ]; then

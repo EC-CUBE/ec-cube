@@ -3,4 +3,7 @@ web_profiler:
     intercept_redirects: false
 
 framework:
-    profiler: { only_exceptions: false }
+    profiler:
+        only_exceptions: false
+        # プロファイラはリクエスト処理中に書き込まれるため, ランタイムディレクトリへ置く.
+        dsn: 'file:%eccube_runtime_dir%/profiler'

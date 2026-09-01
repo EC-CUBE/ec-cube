@@ -39,6 +39,35 @@ function boot_env(string $path, bool $overrideExistingVars = false): void
 }
 
 /**
+ * ECCUBE_UMASK が設定されている場合に umask を適用する.
+ *
+ * umask はコンテナを生成するより前に決める必要があるため, コンテナのパラメータではなく
+ * 環境変数から読み込む (app/config/eccube/packages/eccube.yaml の eccube_umask で既定値を宣言している).
+ *
+ * 未設定の場合は OS / PHP-FPM の既定 umask に従う. Web サーバーと CLI が別ユーザーで,
+ * かつ双方が同じファイルへ書き込む必要がある環境では '0000' を設定すると, 生成される
+ * ディレクトリが 0777, ファイルが 0666 になり相互に書き込めるようになる (4.3 以前の既定).
+ * ただし同一サーバーの他ユーザーからも書き換え可能になるため, 権限を分離できる環境では
+ * 設定しないこと.
+ *
+ * 値は 8 進数表記の文字列 (例: '0022', '0000'). 解釈できない値は無視する.
+ */
+function apply_umask(): void
+{
+    $value = env('ECCUBE_UMASK');
+    if ($value === null || $value === '') {
+        return;
+    }
+
+    $value = (string) $value;
+    if (!preg_match('/\A0?[0-7]{1,4}\z/', $value)) {
+        return;
+    }
+
+    umask((int) octdec($value));
+}
+
+/**
  * Gets the value of an environment variable. Supports boolean, null and empty values.
  *
  * Symfony Dotenv は putenv() をデフォルトで使用しないため（スレッドセーフではないため）、

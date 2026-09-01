@@ -36,7 +36,55 @@ class PermissionDiagnostic
             $findings[] = $this->evaluate($requirement, PathOwnership::of($requirement->path), $webServer, $cli);
         }
 
+        $warmupFallback = $this->detectWarmupFallback();
+        if ($warmupFallback instanceof PermissionFinding) {
+            $findings[] = $warmupFallback;
+        }
+
         return new DiagnosticReport($findings, $webServer, $cli);
+    }
+
+    /**
+     * 事前コンパイル漏れのテンプレートがリクエスト処理中にコンパイルされていないか調べる.
+     */
+    private function detectWarmupFallback(): ?PermissionFinding
+    {
+        $requirement = $this->requirementProvider->warmupFallbackRequirement();
+        if (!$requirement instanceof PermissionRequirement || !is_dir($requirement->path)) {
+            return null;
+        }
+
+        if (!$this->hasCompiledTemplate($requirement->path)) {
+            return null;
+        }
+
+        return new PermissionFinding(
+            $requirement,
+            PathOwnership::of($requirement->path),
+            FindingSeverity::WARN,
+            '事前コンパイルされていないテンプレートがリクエスト処理中にコンパイルされています',
+            'bin/console eccube:cache:build を実行してください. '
+            .'ビルドディレクトリを読み取り専用で運用する場合, ここに生成物が増え続けます.'
+        );
+    }
+
+    private function hasCompiledTemplate(string $dir): bool
+    {
+        try {
+            $iterator = new \RecursiveIteratorIterator(
+                new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS)
+            );
+            foreach ($iterator as $file) {
+                if ($file instanceof \SplFileInfo && $file->isFile() && $file->getExtension() === 'php') {
+                    return true;
+                }
+            }
+        } catch (\UnexpectedValueException) {
+            // 読み取りできないディレクトリは判定不能として扱う.
+            return false;
+        }
+
+        return false;
     }
 
     /**
@@ -88,9 +136,9 @@ class PermissionDiagnostic
                 $ownership,
                 FindingSeverity::WARN,
                 'Web サーバーから書き込めますが, 任意のローカルユーザーからも書き込めます',
-                'bin/console が umask(0000) を設定するため, CLI が作成したディレクトリは 0777 になります '
-                .'(dev では index.php も umask(0000) を設定するため Web からの作成も同様です). '
-                .'同一サーバーの他ユーザーから書き換えられます.'
+                'ECCUBE_UMASK に 0000 を設定していると, アプリケーションが作成するディレクトリは 0777, '
+                .'ファイルは 0666 になります. 同一サーバーの他ユーザーから書き換えられるため, '
+                .'権限を分離できる環境では ECCUBE_UMASK を空にしてください.'
             );
         }
 

@@ -17,6 +17,7 @@ use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappi
 use Eccube\Common\EccubeNav;
 use Eccube\Common\EccubeTwigBlock;
 use Eccube\DependencyInjection\Compiler\AutoConfigurationTagPass;
+use Eccube\DependencyInjection\Compiler\BuildDirCacheWarmerPass;
 use Eccube\DependencyInjection\Compiler\McpAuditLoggerChannelLockPass;
 use Eccube\DependencyInjection\Compiler\McpCliCommandPass;
 use Eccube\DependencyInjection\Compiler\McpScopeEnforcementPass;
@@ -25,6 +26,7 @@ use Eccube\DependencyInjection\Compiler\PaymentMethodPass;
 use Eccube\DependencyInjection\Compiler\PluginPass;
 use Eccube\DependencyInjection\Compiler\PurchaseFlowPass;
 use Eccube\DependencyInjection\Compiler\QueryCustomizerPass;
+use Eccube\DependencyInjection\Compiler\RuntimeCacheDirPass;
 use Eccube\DependencyInjection\Compiler\StripAutoMappedEntityPathsPass;
 use Eccube\DependencyInjection\Compiler\StripReportFieldsArgPass;
 use Eccube\DependencyInjection\Compiler\TwigBlockPass;
@@ -70,10 +72,51 @@ class Kernel extends BaseKernel
         $this->loadEntityProxies();
     }
 
+    /**
+     * ビルド時にのみ書き込まれるディレクトリ.
+     *
+     * getBuildDir() と別パスであることが, twig の 3 層キャッシュ
+     * (readonly_cache + runtime_cache) が有効になる条件のため, 統合してはならない.
+     * see TwigExtension::load() の `$cacheDir === $buildDir` 判定.
+     */
     #[\Override]
     public function getCacheDir(): string
     {
         return $this->getProjectDir().'/var/cache/'.$this->environment;
+    }
+
+    /**
+     * コンパイル済みコンテナ・ルーティング・メタデータ・twig(prod) の出力先.
+     *
+     * getCacheDir() と分離することで, Web サーバーからは読み取り専用で運用できる.
+     * 生成は eccube:cache:build (CLI) が行う.
+     */
+    #[\Override]
+    public function getBuildDir(): string
+    {
+        return $this->getProjectDir().'/var/build/'.$this->environment;
+    }
+
+    /**
+     * リクエスト処理中に Web サーバーが書き込むディレクトリ.
+     *
+     * cache pool・翻訳・htmlpurifier・twig のランタイムキャッシュ等,
+     * 実行時に生成されるものはすべてここへ集約する.
+     * getCacheDir() / getBuildDir() を Web サーバーから書けない構成にするための受け皿.
+     */
+    public function getRuntimeDir(): string
+    {
+        return $this->getProjectDir().'/var/runtime/'.$this->environment;
+    }
+
+    /**
+     * HttpCache のストア (share_dir/http_cache) はリクエスト処理中に書き込まれるため,
+     * ランタイムディレクトリへ向ける.
+     */
+    #[\Override]
+    public function getShareDir(): ?string
+    {
+        return $this->getRuntimeDir();
     }
 
     #[\Override]
@@ -252,6 +295,12 @@ class Kernel extends BaseKernel
 
         // twigのurl,path関数を差し替え
         $container->addCompilerPass(new TwigExtensionPass());
+
+        // リクエスト処理中に書き込まれるキャッシュを %eccube_runtime_dir% へ寄せる.
+        $container->addCompilerPass(new RuntimeCacheDirPass());
+
+        // 自動 warmup をビルドディレクトリへ書くものだけに絞る.
+        $container->addCompilerPass(new BuildDirCacheWarmerPass());
 
         // クエリカスタマイズの拡張.
         $container->registerForAutoconfiguration(QueryCustomizer::class)

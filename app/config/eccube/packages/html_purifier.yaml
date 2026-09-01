@@ -1,0 +1,8 @@
+exercise_html_purifier:
+    # HTMLPurifier のシリアライザキャッシュはリクエスト処理中に生成されるため,
+    # ランタイムディレクトリへ置く (既定は %kernel.cache_dir%/htmlpurifier).
+    #
+    # HTMLPurifier は Cache.SerializerPermissions で明示的に chmod するため umask の影響を受けず,
+    # 先に生成したユーザー以外は書き込めない. kernel.cache_dir を CLI ユーザー所有にすると
+    # Web サーバーから Permission denied になるため, 分離が必須となる.
+    default_cache_serializer_path: '%eccube_runtime_dir%/htmlpurifier'

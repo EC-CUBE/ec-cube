@@ -156,9 +156,14 @@ npm run build   # Build Sass and JavaScript
 
 ### Cache Management
 
+EC-CUBE splits generated files into three directories: `var/build/{env}` (compiled container,
+routing, metadata, precompiled templates) and `var/cache/{env}` are produced by the CLI, while
+`var/runtime/{env}` (cache pools, translations, HTMLPurifier, Twig fallback) is written at request time.
+
 ```bash
-bin/console cache:clear
-bin/console cache:warmup
+bin/console eccube:cache:build      # Rebuild var/build (includes template precompilation)
+bin/console cache:pool:clear --all  # Clear the runtime cache pools
+bin/console cache:clear             # Clear everything (needs write access to build and cache)
 ```
 
 ## Community

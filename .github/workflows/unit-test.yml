@@ -191,7 +191,7 @@ jobs:
         run: |
           rm -r app/Plugin/*
           git checkout app/Plugin
-          rm -r var/cache
+          rm -rf var/cache var/build var/runtime
           echo "session.save_path=$PWD/var/sessions/test" > php.ini
           echo "memory_limit=512M" >> php.ini
           php -c php.ini vendor/bin/phpunit --group plugin-service

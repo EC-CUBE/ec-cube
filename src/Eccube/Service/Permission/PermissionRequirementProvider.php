@@ -45,6 +45,29 @@ class PermissionRequirementProvider
     }
 
     /**
+     * 事前コンパイルされなかったテンプレートのフォールバック先.
+     *
+     * prod では twig が [build_dir/twig (読み取り専用), runtime_dir/twig] の 2 層構成になり,
+     * build 側に無いテンプレートだけがリクエスト処理中に runtime 側へコンパイルされる.
+     * ここに生成物があれば eccube:cache:build の warmup 漏れを意味する.
+     *
+     * dev は auto_reload が有効で 2 層構成にならず, runtime 側が通常の出力先になるため対象外.
+     */
+    public function warmupFallbackRequirement(): ?PermissionRequirement
+    {
+        if ($this->eccubeConfig->get('kernel.debug')) {
+            return null;
+        }
+
+        return $this->create(
+            $this->path('eccube_runtime_dir').'/twig',
+            WriteLane::WEB,
+            true,
+            'ビルドディレクトリに無いテンプレートのフォールバック先.'
+        );
+    }
+
+    /**
      * 同じパスが複数の役割を持つ場合 (メンテナンスファイルの生成先が var/ を指す場合等) に 1 件へまとめる.
      *
      * レーンと表示名は先に定義したものを採用し, 注意書きは両方を残す. 一方でも必須なら必須として扱う.
@@ -74,7 +97,7 @@ class PermissionRequirementProvider
 
         return [
             $this->create($projectDir.'/var', WriteLane::WEB, true),
-            $this->create($this->path('kernel.cache_dir'), WriteLane::WEB, true),
+            $this->create($this->path('eccube_runtime_dir'), WriteLane::WEB, true),
             $this->create($this->path('kernel.logs_dir'), WriteLane::WEB, true),
             $this->create($projectDir.'/var/sessions/'.$env, WriteLane::WEB, true),
             $this->create($this->path('eccube_save_image_dir'), WriteLane::WEB),
@@ -128,6 +151,19 @@ class PermissionRequirementProvider
             $this->create($projectDir.'/vendor', WriteLane::SSH),
             $this->create($projectDir.'/composer.json', WriteLane::SSH),
             $this->create($projectDir.'/composer.lock', WriteLane::SSH),
+            $this->create(
+                $this->path('kernel.build_dir'),
+                WriteLane::SSH,
+                true,
+                'コンパイル済みコンテナ・ルーティング・事前コンパイル済みテンプレートの出力先. '
+                .'生成は bin/console eccube:cache:build で行う.'
+            ),
+            $this->create(
+                $this->path('kernel.cache_dir'),
+                WriteLane::SSH,
+                true,
+                'ビルド時にのみ使用する. 実行時のキャッシュは eccube_runtime_dir 側に生成される.'
+            ),
             $this->create($projectDir.'/.env', WriteLane::SSH, true),
         ];
     }

@@ -404,7 +404,7 @@ services:
     # Agent Commerce: UCP Catalog (pull / REST) (#6794)
     Eccube\Service\AgentCommerce\Catalog\Ucp\UcpCatalogCache:
         arguments:
-            $cacheDir: '%kernel.cache_dir%'
+            $cacheDir: '%eccube_runtime_dir%'
 
     # Agent Commerce: UCP Discovery (/.well-known/ucp) (#6794 / #6777)
     # payment_handlers は決済ハンドラプラグインが tagged service で寄与する (既定は空 {}).

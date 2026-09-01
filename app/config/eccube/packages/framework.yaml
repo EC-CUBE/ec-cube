@@ -3,6 +3,9 @@ framework:
     default_locale: '%locale%'
     translator:
       fallback: ['%locale%']
+      # 翻訳カタログはリクエスト処理中にも生成されるため, ランタイムディレクトリへ置く.
+      # (既定は %kernel.cache_dir%/translations)
+      cache_dir: '%eccube_runtime_dir%/translations'
     csrf_protection: { enabled: true }
     http_method_override: true
     trusted_hosts: ~
@@ -52,6 +55,9 @@ framework:
         # to avoid collisions when multiple apps share the same cache backend (e.g. a Redis server)
         # See https://symfony.com/doc/current/reference/configuration/framework.html#prefix-seed
         prefix_seed: ec-cube
+        # cache pool はリクエスト処理中に書き込まれるため, ランタイムディレクトリへ置く.
+        # cache.system 側は設定できないため RuntimeCacheDirPass で差し替える.
+        directory: '%eccube_runtime_dir%/pools/app'
     # Lock factory. flock store works on shared hosting without external infra.
     # Used by Agent Commerce (UCP Catalog) cache stampede prevention.
     lock: flock
