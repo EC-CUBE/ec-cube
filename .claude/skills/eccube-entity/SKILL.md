@@ -17,10 +17,12 @@ description: EC-CUBE 4.4 の Doctrine エンティティを実装・改修する
 - プロパティ・getter / setter に型宣言を付ける。setter は `$this` を返す（fluent）。
   nullable は DB カラムの nullable と一致させる。
 
-## プロキシ拡張に対応するクラスラッパ
+## エンティティの骨格
 
-コアのエンティティは、プラグイン/カスタマイズによる trait 追加（プロキシ生成）に対応するため
-`if (!class_exists(X::class)) { ... }` で囲う。
+**`if (!class_exists(X::class)) { ... }` のクラスラッパは書かない。** プラグイン/カスタマイズによる
+trait 追加は、プロキシ生成（`app/proxy/entity` / `bin/console eccube:generate:proxies`）が担う。
+ラッパはその前段で使われていた名残で、`src/Eccube/Entity` からも `app/Customize/Entity` からも
+撤去済み（現在 0 件）。`EntityProxyService` はプロキシ生成時にこのブロックを除去する側に回っている。
 
 ```php
 namespace Eccube\Entity;
@@ -29,35 +31,33 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Repository\ExampleRepository;
 
-if (!class_exists(Example::class)) {
-    #[ORM\Table(name: 'dtb_example')]
-    #[ORM\Index(columns: ['create_date'], name: 'dtb_example_create_date_idx')]
-    #[ORM\HasLifecycleCallbacks]
-    #[ORM\Entity(repositoryClass: ExampleRepository::class)]
-    class Example extends AbstractEntity
+#[ORM\Table(name: 'dtb_example')]
+#[ORM\Index(columns: ['create_date'], name: 'dtb_example_create_date_idx')]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: ExampleRepository::class)]
+class Example extends AbstractEntity
+{
+    #[ORM\Id]
+    #[ORM\Column(type: Types::INTEGER, options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    private ?int $id = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $name = null;
+
+    // getId() の戻り値が ?int（nullable）なのは、IDENTITY 採番のため
+    // 永続化（flush）されるまで ID が未採番（null）だから。意図的な nullable で、
+    // 「まだ DB に保存されていない新規エンティティ」を表現できる。
+    public function getId(): ?int
     {
-        #[ORM\Id]
-        #[ORM\Column(type: Types::INTEGER, options: ['unsigned' => true])]
-        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-        private ?int $id = null;
+        return $this->id;
+    }
 
-        #[ORM\Column(length: 255, nullable: true)]
-        private ?string $name = null;
+    public function setName(?string $name): self
+    {
+        $this->name = $name;
 
-        // getId() の戻り値が ?int（nullable）なのは、IDENTITY 採番のため
-        // 永続化（flush）されるまで ID が未採番（null）だから。意図的な nullable で、
-        // 「まだ DB に保存されていない新規エンティティ」を表現できる。
-        public function getId(): ?int
-        {
-            return $this->id;
-        }
-
-        public function setName(?string $name): self
-        {
-            $this->name = $name;
-
-            return $this;
-        }
+        return $this;
     }
 }
 ```
@@ -103,7 +103,6 @@ if (!class_exists(Example::class)) {
 - ❌ XML / アノテーションでマッピング → ✅ PHP8 属性
 - ❌ カラムを足したので ALTER マイグレーションを書く → ✅ 属性を足すだけ（`schema:update` が反映）。マイグレーションは INSERT・型変更等に限る
 - ❌ 在庫引当・採番・ポイント付与などの受注処理をエンティティに書く → ✅ PurchaseFlow / Service へ。エンティティは自身の状態から導く計算/判定まで
-- ❌ `class_exists` ラッパなしでコアエンティティを定義 → ✅ プロキシ拡張に対応するラッパで囲う
 - ❌ プロパティ/戻り値の型宣言省略 → ✅ 型を付け、PHPStan level 6 を通す
 - ❌ 金額 getter（`Order::getTotal()`・`OrderItem::getTotalPrice()` 等）の戻り値を int/float 扱い → ✅ DECIMAL は `?string`（getter は `string`）。型宣言・代入もこれに合わせる
 - ❌ 金額を float で四則演算（丸め誤差）→ ✅ `bcmath`（`bcadd` / `bcmul` / `bccomp`、スケール 2）で計算する
