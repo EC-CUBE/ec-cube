@@ -65,13 +65,4 @@ class ShippingMultipleType extends AbstractType
                     ]);
             });
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'shipping_multiple';
-    }
 }

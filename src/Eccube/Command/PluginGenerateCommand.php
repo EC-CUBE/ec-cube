@@ -113,7 +113,7 @@ class PluginGenerateCommand extends Command
 
         $this->io->success(sprintf('Plugin was successfully created: %s %s %s', $name, $code, $version));
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     public function validateCode(mixed $code): string

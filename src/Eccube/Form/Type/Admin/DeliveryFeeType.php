@@ -46,13 +46,4 @@ class DeliveryFeeType extends AbstractType
             'data_class' => DeliveryFee::class,
         ]);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'delivery_fee';
-    }
 }

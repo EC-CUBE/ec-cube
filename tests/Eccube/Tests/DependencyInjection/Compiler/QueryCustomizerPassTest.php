@@ -34,7 +34,7 @@ final class QueryCustomizerPassTest extends TestCase
             ->addTag(QueryCustomizerPass::QUERY_CUSTOMIZER_TAG);
 
         $container->addCompilerPass(new QueryCustomizerPass());
-        $container->compile();
+        $container->compile(true);
 
         // Queriesにカスタマイザが追加されていることを確認
         $queries = $container->get(Queries::class);

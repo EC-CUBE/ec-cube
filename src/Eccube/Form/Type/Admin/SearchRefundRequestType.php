@@ -42,7 +42,7 @@ class SearchRefundRequestType extends AbstractType
                 'label' => 'admin.order.refund_request.multi_search_label',
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('status', RefundRequestStatusType::class, [

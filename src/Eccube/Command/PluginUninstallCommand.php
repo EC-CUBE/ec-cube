@@ -44,14 +44,14 @@ class PluginUninstallCommand extends Command
         if (empty($code)) {
             $io->error('code is required.');
 
-            return 1;
+            return Command::FAILURE;
         }
 
         $plugin = $this->pluginRepository->findByCode($code);
         if (is_null($plugin)) {
             $io->error("Plugin `$code` is not installed.");
 
-            return 1;
+            return Command::FAILURE;
         }
 
         $this->pluginService->uninstall($plugin, $uninstallForce);
@@ -59,6 +59,6 @@ class PluginUninstallCommand extends Command
 
         $io->success('Uninstalled.');
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

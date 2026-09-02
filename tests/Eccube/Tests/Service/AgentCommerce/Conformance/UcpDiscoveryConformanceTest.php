@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace Eccube\Tests\Service\AgentCommerce\Conformance;
 
 use Eccube\Service\AgentCommerce\Discovery\UcpProfileBuilder;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -97,6 +98,7 @@ final class UcpDiscoveryConformanceTest extends TestCase
      *
      * @see https://github.com/Universal-Commerce-Protocol/ucp/blob/main/docs/specification/overview.md#L360
      */
+    #[DoesNotPerformAssertions]
     public function testServicesAndPaymentHandlersRegistriesArePresentEvenWhenEmpty(): void
     {
         self::markTestIncomplete('MUST: services と payment_handlers MUST be present even when empty. profile 全体の組み立ては UcpProfileBuilder のコンテナ依存 (BaseInfo/UrlGenerator) を要するため、空オブジェクト保証はコンテナ駆動の discovery Web テスト (Layer 3\') で検証する。');
@@ -126,6 +128,7 @@ final class UcpDiscoveryConformanceTest extends TestCase
      *
      * @see https://github.com/Universal-Commerce-Protocol/ucp/blob/main/docs/specification/overview.md#L1090
      */
+    #[DoesNotPerformAssertions]
     public function testProfileDeliveryHttpsNoRedirectAndCacheControlAreVerifiedAtWebLayer(): void
     {
         self::markTestIncomplete('MUST: profile served over HTTPS, MUST NOT use 3xx redirects, Cache-Control MUST be "public, max-age>=60" (not private/no-store/no-cache). これらの配信ヘッダ要件は discovery コントローラの Web テスト (Layer 3\') で検証する。');

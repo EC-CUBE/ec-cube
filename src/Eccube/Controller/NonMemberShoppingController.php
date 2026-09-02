@@ -223,10 +223,8 @@ class NonMemberShoppingController extends AbstractShoppingController
             $data['customer_name01'],
             [
                 new Assert\NotBlank(),
-                new Assert\Length(['max' => $this->eccubeConfig['eccube_name_len']]),
-                new Assert\Regex(
-                    ['pattern' => '/^[^\s ]+$/u', 'message' => 'form_error.not_contain_spaces']
-                ),
+                new Assert\Length(max: $this->eccubeConfig['eccube_name_len']),
+                new Assert\Regex(pattern: '/^[^\s ]+$/u', message: 'form_error.not_contain_spaces'),
             ]
         );
 
@@ -234,10 +232,8 @@ class NonMemberShoppingController extends AbstractShoppingController
             $data['customer_name02'],
             [
                 new Assert\NotBlank(),
-                new Assert\Length(['max' => $this->eccubeConfig['eccube_name_len']]),
-                new Assert\Regex(
-                    ['pattern' => '/^[^\s ]+$/u', 'message' => 'form_error.not_contain_spaces']
-                ),
+                new Assert\Length(max: $this->eccubeConfig['eccube_name_len']),
+                new Assert\Regex(pattern: '/^[^\s ]+$/u', message: 'form_error.not_contain_spaces'),
             ]
         );
 
@@ -250,8 +246,8 @@ class NonMemberShoppingController extends AbstractShoppingController
             $data['customer_kana01'],
             [
                 new Assert\NotBlank(),
-                new Assert\Length(['max' => $this->eccubeConfig['eccube_kana_len']]),
-                new Assert\Regex(['pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u']),
+                new Assert\Length(max: $this->eccubeConfig['eccube_kana_len']),
+                new Assert\Regex(pattern: '/^[ァ-ヶｦ-ﾟー]+$/u'),
             ]
         );
         if (is_string($data['customer_kana02'])) {
@@ -263,14 +259,14 @@ class NonMemberShoppingController extends AbstractShoppingController
             $data['customer_kana02'],
             [
                 new Assert\NotBlank(),
-                new Assert\Length(['max' => $this->eccubeConfig['eccube_kana_len']]),
-                new Assert\Regex(['pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u']),
+                new Assert\Length(max: $this->eccubeConfig['eccube_kana_len']),
+                new Assert\Regex(pattern: '/^[ァ-ヶｦ-ﾟー]+$/u'),
             ]);
 
         $errors[] = $this->validator->validate(
             $data['customer_company_name'],
             [
-                new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
+                new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
             ]
         );
 
@@ -280,7 +276,7 @@ class NonMemberShoppingController extends AbstractShoppingController
                 new Assert\NotBlank(),
                 new Assert\Type(type: 'digit', message: 'form_error.numeric_only'),
                 new Assert\Length(
-                    ['max' => $this->eccubeConfig['eccube_tel_len_max']]
+                    max: $this->eccubeConfig['eccube_tel_len_max']
                 ),
             ]
         );
@@ -291,7 +287,7 @@ class NonMemberShoppingController extends AbstractShoppingController
                 new Assert\NotBlank(),
                 new Assert\Type(type: 'digit', message: 'form_error.numeric_only'),
                 new Assert\Length(
-                    ['max' => $this->eccubeConfig['eccube_postal_code']]
+                    max: $this->eccubeConfig['eccube_postal_code']
                 ),
             ]
         );
@@ -300,7 +296,7 @@ class NonMemberShoppingController extends AbstractShoppingController
             $data['customer_addr01'],
             [
                 new Assert\NotBlank(),
-                new Assert\Length(['max' => $this->eccubeConfig['eccube_address1_len']]),
+                new Assert\Length(max: $this->eccubeConfig['eccube_address1_len']),
             ]
         );
 
@@ -308,7 +304,7 @@ class NonMemberShoppingController extends AbstractShoppingController
             $data['customer_addr02'],
             [
                 new Assert\NotBlank(),
-                new Assert\Length(['max' => $this->eccubeConfig['eccube_address2_len']]),
+                new Assert\Length(max: $this->eccubeConfig['eccube_address2_len']),
             ]
         );
 

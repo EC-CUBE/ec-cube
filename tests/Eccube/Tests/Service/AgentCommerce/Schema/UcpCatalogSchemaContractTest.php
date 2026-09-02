@@ -22,6 +22,7 @@ use Eccube\Service\AgentCommerce\Catalog\AgentCatalogVariantDto;
 use Eccube\Service\AgentCommerce\Catalog\AvailabilityStatus;
 use Eccube\Service\AgentCommerce\Catalog\Ucp\UcpCatalogProductSerializer;
 use Eccube\Service\AgentCommerce\Catalog\Ucp\UcpCatalogResponseBuilder;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -76,6 +77,7 @@ final class UcpCatalogSchemaContractTest extends TestCase
         );
     }
 
+    #[DoesNotPerformAssertions]
     public function testLookupResponseMatchesUcpSchema(): void
     {
         // lookup_response の variants は lookup_variant を要求し、これは input_correlation[]

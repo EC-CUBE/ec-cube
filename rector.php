@@ -15,22 +15,18 @@ declare(strict_types=1);
 
 use Eccube\Rector\CodingStyle\AttributeArgumentsOrderRector;
 use Eccube\Rector\CodingStyle\NormalizePhpDocArrayGenericSpacingRector;
-use Rector\Caching\ValueObject\Storage\FileCacheStorage;
+use Rector\Arguments\Rector\ClassMethod\ArgumentAdderRector;
 use Rector\Config\RectorConfig;
 use Rector\DeadCode\Rector\Cast\RecastingRemovalRector;
-use Rector\Doctrine\Bundle210\Rector\Class_\EventSubscriberInterfaceToAttributeRector;
 use Rector\Doctrine\Set\DoctrineSetList;
 use Rector\Php83\Rector\ClassConst\AddTypeToConstRector;
-use Rector\PHPUnit\PHPUnit100\Rector\Class_\StaticDataProviderClassMethodRector;
 use Rector\PHPUnit\Set\PHPUnitSetList;
 use Rector\Renaming\Rector\MethodCall\RenameMethodRector;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
-use Rector\Symfony\CodeQuality\Rector\Class_\ControllerMethodInjectionToConstructorRector;
 use Rector\Symfony\Set\SymfonySetList;
 use Rector\Symfony\Symfony34\Rector\Closure\ContainerGetNameToTypeInTestsRector;
 use Rector\Symfony\Symfony61\Rector\Class_\CommandConfigureToAttributeRector;
-use Rector\Symfony\Symfony61\Rector\Class_\CommandPropertyToAttributeRector;
 use Rector\ValueObject\PhpVersion;
 
 // この設定ファイルは Rector の CLI 実行専用。
@@ -56,14 +52,10 @@ return RectorConfig::configure()
            // スキップするパスやルールを指定
            ->withSkip([
                // 特定のファイルやディレクトリを除外する場合
-               __DIR__ . '/rector',
+               __DIR__.'/rector',
                // Codeception 自動生成ファイル (codecept build で再生成されるため Rector の指摘は意味なし)
-               __DIR__ . '/codeception/_support/_generated',
+               __DIR__.'/codeception/_support/_generated',
                // 特定のルールを除外する場合
-               // 親の $entityManager 再宣言と step5 の接続専用 EM の取り違えを防ぐため
-               ControllerMethodInjectionToConstructorRector::class => [
-                   __DIR__.'/src/Eccube/Controller/Install/InstallController.php',
-               ],
                // Codeception の grabMultiple() 等は戻り値の要素が null になり得るため、
                // NullToStrictStringFuncCallArgRector が追加する (string) キャストを
                // RecastingRemovalRector が除去しないようにスキップする
@@ -96,7 +88,11 @@ return RectorConfig::configure()
                ],
                // 8.3以上で対応可能
                AddTypeToConstRector::class, // [BC]定数に型を追加する PHP 8.3 以降で有効
-               RenameMethodRector::class, //addがaddCommandに変換されてしまうため一旦スキップ
+               RenameMethodRector::class, // addがaddCommandに変換されてしまうため一旦スキップ
+               // composer-based セットの設定では ContainerBuilder::addCompilerPass() に
+               // 第 2 引数 0 (int) を足すが, シグネチャは string $type なので TypeError になる。
+               // (例: addCompilerPass(new PluginPass(), 0, 0))
+               ArgumentAdderRector::class,
                // EccubeCliToolCommand の description は runtime (ツールの description) で組み立てるため、
                // #[AsCommand(description:)] へ移せない (属性は定数式のみ)。 このルールをスキップする。
                CommandConfigureToAttributeRector::class => [
@@ -105,10 +101,10 @@ return RectorConfig::configure()
            ])
            // 個別にルールを追加する場合はここに記述
            ->withRules([
-               CommandConfigureToAttributeRector::class, // Symfonyコマンドのconfigureメソッドをアトリビュートに変換する
-               CommandPropertyToAttributeRector::class, // Symfonyコマンドのプロパティをアトリビュートに変換する,
-               StaticDataProviderClassMethodRector::class, // PHPUnitのデータプロバイダを静的メソッドに変換する
-               EventSubscriberInterfaceToAttributeRector::class, // Doctrine EventSubscriberをAsDoctrineListenerアトリビュートに変換する
+               // 以下は composer-based セットに含まれるため withRules() では指定しない
+               // (二重登録になり rector 2.6.2 以降は警告が出る):
+               //   CommandConfigureToAttributeRector / CommandPropertyToAttributeRector
+               //   StaticDataProviderClassMethodRector / EventSubscriberInterfaceToAttributeRector
                AttributeArgumentsOrderRector::class, // すべての Attribute の引数をコンストラクタ引数順序に統一する
                NormalizePhpDocArrayGenericSpacingRector::class, // PHPDoc の配列ジェネリクス表記のカンマ後のスペースを統一する
            ])
@@ -116,20 +112,24 @@ return RectorConfig::configure()
            ->withSets([
                SetList::DEAD_CODE,
                LevelSetList::UP_TO_PHP_84, // PHPバージョンに合わせる
-               SymfonySetList::SYMFONY_74, // Symfonyのバージョンに合わせる (EC-CUBEのバージョンによって調整が必要)
+               // 各ルールが composer.json / installed.json を自分で見て,
+               // インストール済みバージョンに合うものだけ実行する。
+               // rector 2.6.2 でバージョン別のセット定数 (SYMFONY_74 等) は撤去された。
+               SymfonySetList::COMPOSER_BASED,
                SymfonySetList::SYMFONY_CODE_QUALITY,
                SymfonySetList::SYMFONY_CONSTRUCTOR_INJECTION,
                DoctrineSetList::DOCTRINE_CODE_QUALITY,
-               DoctrineSetList::DOCTRINE_DBAL_30, // Doctrine DBALのバージョンに合わせる
+               DoctrineSetList::COMPOSER_BASED,
                DoctrineSetList::ANNOTATIONS_TO_ATTRIBUTES, // Doctrine Annotations を Attributes に変換
                PHPUnitSetList::PHPUNIT_CODE_QUALITY,
-               PHPUnitSetList::PHPUNIT_110, // PHPUnitのバージョンに合わせる
+               PHPUnitSetList::COMPOSER_BASED,
            ])
            // Symfony のコンテナ XML（EC-CUBE の構成に合わせて調整が必要な場合があります）
            ->withSymfonyContainerXml(__DIR__.'/var/cache/dev/Eccube_KernelDevDebugContainer.xml')
            // オプション: キャッシュ設定 (パフォーマンス向上のために推奨)
            ->withCache(
-               cacheClass: FileCacheStorage::class,
+               // cacheClass は既定が FileCacheStorage で, rector 2.6.3 では
+               // 指定しても無視される (MemoryCacheStorage が撤去された) ため渡さない。
                cacheDirectory: './var/rector_cache'
            )
            // オプション: import文の整理

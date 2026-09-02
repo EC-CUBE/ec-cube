@@ -50,14 +50,14 @@ class MailType extends AbstractType
             ->add('name', TextType::class, [
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('mail_subject', TextType::class, [
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('tpl_data', TextareaType::class, [
@@ -85,8 +85,8 @@ class MailType extends AbstractType
                 $form->add('file_name', TextType::class, [
                     'constraints' => [
                         new Assert\NotBlank(),
-                        new Assert\Regex(['pattern' => '/^[0-9a-z_-]+$/']),
-                        new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
+                        new Assert\Regex(pattern: '/^[0-9a-z_-]+$/'),
+                        new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                     ],
                 ]);
             }
@@ -116,14 +116,5 @@ class MailType extends AbstractType
         $resolver->setDefaults([
             'data_class' => MailTemplate::class,
         ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'mail';
     }
 }

@@ -130,9 +130,7 @@ class AdminController extends AbstractController
 
         // 受注ステータスの一覧.
         $Criteria = new Criteria();
-        $Criteria
-            ->where($Criteria::expr()->notIn('id', $excludes))
-            ->orderBy(['sort_no' => 'ASC']);
+        $Criteria->where($Criteria::expr()->notIn('id', $excludes))->orderBy(['sort_no' => \Doctrine\Common\Collections\Order::Ascending]);
         $OrderStatuses = $this->orderStatusRepository->matching($Criteria);
 
         /**

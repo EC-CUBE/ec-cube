@@ -53,9 +53,7 @@ class NameType extends AbstractType
             ], $options['firstname_options']['constraints']);
         }
 
-        if (!isset($options['options']['error_bubbling'])) {
-            $options['options']['error_bubbling'] = $options['error_bubbling'];
-        }
+        $options['options']['error_bubbling'] ??= $options['error_bubbling'];
 
         if (empty($options['lastname_name'])) {
             $options['lastname_name'] = $builder->getName().'01';
@@ -99,13 +97,8 @@ class NameType extends AbstractType
                     'placeholder' => 'common.last_name',
                 ],
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_name_len'],
-                    ]),
-                    new Assert\Regex([
-                        'pattern' => '/^[^\s ]+$/u',
-                        'message' => 'form_error.not_contain_spaces',
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_name_len']),
+                    new Assert\Regex(pattern: '/^[^\s ]+$/u', message: 'form_error.not_contain_spaces'),
                 ],
             ],
             'firstname_options' => [
@@ -113,13 +106,8 @@ class NameType extends AbstractType
                     'placeholder' => 'common.first_name',
                 ],
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_name_len'],
-                    ]),
-                    new Assert\Regex([
-                        'pattern' => '/^[^\s ]+$/u',
-                        'message' => 'form_error.not_contain_spaces',
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_name_len']),
+                    new Assert\Regex(pattern: '/^[^\s ]+$/u', message: 'form_error.not_contain_spaces'),
                 ],
             ],
             'lastname_name' => '',
@@ -128,14 +116,5 @@ class NameType extends AbstractType
             'inherit_data' => true,
             'trim' => true,
         ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'name';
     }
 }

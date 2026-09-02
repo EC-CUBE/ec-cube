@@ -47,24 +47,21 @@ class NewsType extends AbstractType
                 'with_seconds' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Range([
-                        'min' => '0003-01-01',
-                        'minMessage' => 'form_error.out_of_range',
-                    ]),
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
                 ],
             ])
             ->add('title', TextType::class, [
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(['max' => $this->eccubeConfig['eccube_mtext_len']]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_mtext_len']),
                 ],
             ])
             ->add('url', TextType::class, [
                 'required' => false,
                 'constraints' => [
                     new Assert\Url(),
-                    new Assert\Length(['max' => $this->eccubeConfig['eccube_mtext_len']]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_mtext_len']),
                 ],
             ])
             ->add('link_method', CheckboxType::class, [
@@ -79,7 +76,7 @@ class NewsType extends AbstractType
                     'rows' => 8,
                 ],
                 'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['eccube_ltext_len']]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_ltext_len']),
                 ],
             ])
             ->add('visible', ChoiceType::class, [

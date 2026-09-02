@@ -39,7 +39,7 @@ final class PluginPassTest extends TestCase
     {
         $this->containerBuilder->setParameter('eccube.plugins.disabled', []);
         $this->containerBuilder->addCompilerPass(new PluginPass());
-        $this->containerBuilder->compile();
+        $this->containerBuilder->compile(false);
 
         $def = $this->containerBuilder->getDefinition(\Plugin\Sample\TestClass::class);
         $this->assertTrue($def->hasTag('test_tag'));
@@ -52,7 +52,7 @@ final class PluginPassTest extends TestCase
     {
         $this->containerBuilder->setParameter('eccube.plugins.disabled', ['Sample']);
         $this->containerBuilder->addCompilerPass(new PluginPass());
-        $this->containerBuilder->compile();
+        $this->containerBuilder->compile(false);
 
         $def = $this->containerBuilder->getDefinition(\Plugin\Sample\TestClass::class);
 

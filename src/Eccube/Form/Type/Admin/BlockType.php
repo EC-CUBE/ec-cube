@@ -53,24 +53,16 @@ class BlockType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('file_name', TextType::class, [
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
-                    new Assert\Regex([
-                        'pattern' => '/^[0-9a-zA-Z\/_]+$/',
-                    ]),
-                    new Assert\Regex([
-                        'pattern' => '/^(?!.*\/\/).+$/',
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
+                    new Assert\Regex(pattern: '/^[0-9a-zA-Z\/_]+$/'),
+                    new Assert\Regex(pattern: '/^(?!.*\/\/).+$/'),
                 ],
             ])
             ->add('block_html', TextareaType::class, [
@@ -123,14 +115,5 @@ class BlockType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Block::class,
         ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'block';
     }
 }

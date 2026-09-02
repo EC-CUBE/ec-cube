@@ -285,10 +285,7 @@ class InstallController extends AbstractController
             $mailerUrl = $this->getParameter('eccube_mailer_dsn');
             $sessionData = array_merge($sessionData, $this->extractMailerUrl($mailerUrl));
         } else {
-            // 初期値設定
-            if (!isset($sessionData['admin_allow_hosts'])) {
-                $sessionData['admin_allow_hosts'] = '';
-            }
+            $sessionData['admin_allow_hosts'] ??= '';
             if (!isset($sessionData['smtp_host'])) {
                 $sessionData = array_merge($sessionData, $this->extractMailerUrl('smtp://localhost:25'));
             }
@@ -463,7 +460,7 @@ class InstallController extends AbstractController
         $forceSSL = isset($sessionData['admin_force_ssl']) && (bool) $sessionData['admin_force_ssl'];
         if ($forceSSL === false) {
             $forceSSL = '0';
-        } elseif ($forceSSL === true) {
+        } elseif ($forceSSL) {
             $forceSSL = '1';
         }
         $env = file_get_contents(__DIR__.'/../../../../.env.dist');
@@ -788,9 +785,7 @@ class InstallController extends AbstractController
             $options['smtp_host'] = 'smtp.gmail.com';
             $options['transport'] = 'smtp';
         }
-        if (!isset($options['smtp_port'])) {
-            $options['smtp_port'] = 'ssl' === $options['encryption'] ? 465 : 25;
-        }
+        $options['smtp_port'] ??= 'ssl' === $options['encryption'] ? 465 : 25;
         if (isset($options['smtp_username']) && !isset($options['auth_mode'])) {
             $options['auth_mode'] = 'plain';
         }

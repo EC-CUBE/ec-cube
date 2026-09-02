@@ -268,9 +268,7 @@ class CsvExportService
      */
     public function fputcsv(array $row): void
     {
-        if (is_null($this->convertEncodingCallBack)) {
-            $this->convertEncodingCallBack = $this->getConvertEncodingCallback();
-        }
+        $this->convertEncodingCallBack ??= $this->getConvertEncodingCallback();
 
         // 出力開始時(exportHeader/exportData)に解決済み. 単体で fputcsv だけ呼ぶ場合は都度解決する.
         $sanitizeFormulas = $this->sanitizeFormulas ?? $this->baseInfoRepository->get()->isOptionSanitizeCsvFormulas();

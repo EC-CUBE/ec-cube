@@ -41,18 +41,14 @@ class TradeLawType extends AbstractType
             ->add('name', TextType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('description', TextareaType::class, [
                 'required' => false,
                 'purify_html' => true,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => 4000,
-                    ]),
+                    new Assert\Length(max: 4000),
                 ],
             ])
             ->add('displayOrderScreen', ToggleSwitchType::class, [
