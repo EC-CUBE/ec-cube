@@ -52,7 +52,7 @@
     "lint-staged": "^16.2.7",
     "normalize.css": "^8.0.1",
     "postcss": "^8.5.26",
-    "postcss-sort-media-queries": "^5.2.0",
+    "postcss-sort-media-queries": "^6.7.1",
     "sass-embedded": "^1.103.1"
   }
 }
