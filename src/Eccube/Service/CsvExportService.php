@@ -170,8 +170,10 @@ class CsvExportService
     /**
      * クエリビルダにもとづいてデータ行を出力する.
      * このメソッドを使う場合は, 事前にsetExportQueryBuilder($qb)で出力対象のクエリビルダをわたしておく必要がある.
+     *
+     * @param array<string, mixed> $paginateOptions KnpPaginator に渡すオプション. 一覧画面と同じ値をわたす.
      */
-    public function exportData(\Closure $closure): void
+    public function exportData(\Closure $closure, array $paginateOptions = []): void
     {
         if (is_null($this->qb) || is_null($this->entityManager)) {
             throw new \LogicException('query builder not set.');
@@ -183,7 +185,7 @@ class CsvExportService
 
         $page = 1;
         $limit = 100;
-        while ($results = $this->paginator->paginate($this->qb, $page, $limit)) {
+        while ($results = $this->paginator->paginate($this->qb, $page, $limit, $paginateOptions)) {
             /** @var AbstractPagination<int, mixed> $results */
             if (!$results->valid()) {
                 break;

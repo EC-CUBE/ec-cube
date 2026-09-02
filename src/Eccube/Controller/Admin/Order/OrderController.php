@@ -185,12 +185,7 @@ class OrderController extends AbstractController
 
         $qb = $this->orderRepository->getQueryBuilderBySearchDataForAdmin($searchData);
 
-        // null を配列オフセットに使うのは PHP 8.5 で非推奨。null は '' として扱われるため挙動は変わらない
-        $sortKey = $searchData['sortkey'] ?? '';
-        $paginate_options = ['wrap-queries' => true];
-        if (empty($this->orderRepository::COLUMNS[$sortKey]) || $sortKey == 'order_status') {
-            $paginate_options = [];
-        }
+        $paginate_options = $this->createPaginateOptions($this->extractSortKey($searchData));
 
         $event = new EventArgs(
             [
@@ -299,8 +294,13 @@ class OrderController extends AbstractController
         // タイムアウトを無効にする.
         set_time_limit(0);
 
+        // 一覧画面と同じ paginate オプションを使う.
+        // sortkey は HiddenType なので, セッションに入っている値をそのまま参照できる.
+        $sortKey = $this->extractSortKey($this->session->get('eccube.admin.order.search', []));
+        $paginate_options = $this->createPaginateOptions($sortKey);
+
         $response = new StreamedResponse();
-        $response->setCallback(function () use ($request, $csvTypeId): void {
+        $response->setCallback(function () use ($request, $csvTypeId, $paginate_options): void {
             // CSV種別を元に初期化.
             $this->csvExportService->initCsvType($csvTypeId);
 
@@ -353,13 +353,45 @@ class OrderController extends AbstractController
                     // 出力.
                     $csvService->fputcsv($ExportCsvRow->getRow());
                 }
-            });
+            }, $paginate_options);
         });
 
         $response->headers->set('Content-Type', 'application/octet-stream');
         $response->headers->set('Content-Disposition', 'attachment; filename='.$fileName);
 
         return $response;
+    }
+
+    /**
+     * 検索条件からソートキーを取り出す.
+     *
+     * セッション由来の値も渡るため, 文字列以外は未指定として扱う.
+     * (null をそのまま配列オフセットに使うのは PHP 8.5 で非推奨)
+     */
+    private function extractSortKey(mixed $searchData): string
+    {
+        $sortKey = is_array($searchData) ? $searchData['sortkey'] ?? null : null;
+
+        return is_string($sortKey) ? $sortKey : '';
+    }
+
+    /**
+     * 受注一覧・受注CSV・配送CSVで共通の paginate オプションを組み立てる.
+     *
+     * 受注検索のクエリは Shipping を fetch join しているため (OrderItem は join のみ), to-many 側の列
+     * (s.shipping_date, s.tracking_number, s.name01 等) でソートすると LimitSubqueryWalker が例外を投げる.
+     * wrap-queries を有効にするとサブクエリで包まれ, ソートを保ったまま解消できる.
+     * order_status は association (o.OrderStatus) をソート対象にするため, 従来どおり対象外とする.
+     *
+     * @return array<string, mixed>
+     */
+    private function createPaginateOptions(string $sortKey): array
+    {
+        if (empty($this->orderRepository::COLUMNS[$sortKey]) || $sortKey === 'order_status') {
+            return [];
+        }
+
+        return ['wrap-queries' => true];
     }
 
     /**
