@@ -164,7 +164,7 @@ HTML メールを足したいときは **同じディレクトリに `*.html.twi
 - ❌ プレーンテキストメール twig を素で書く / 通常の HTML エスケープをかける → ✅ `{% autoescape 'safe_textmail' %}` で囲む
 - ❌ HTML メール用に送信メソッドへ分岐を足す → ✅ 同名 `*.html.twig` を置けば `getHtmlTemplate()` が自動で multipart 化する
 - ❌ 送信失敗で例外を投げて受注処理を止める → ✅ `TransportExceptionInterface` を catch して `log_critical` で記録（既存の方針に合わせる）
-- ❌ `MailService` 内で `flush()` する／会員系メールを `MailHistory` に残そうとする → ✅ `save()`（persist）まで、`flush()` は呼び出し側。関連は `Order` のみで会員に紐づく口は無い
+- ❌ `MailService` 内で `flush()` する／会員系メールを `MailHistory` に残す → ✅ persist まで（`flush()` は呼び出し側）。関連は `Order` と `Creator`(Member) のみ
 - ❌ コアの `Resource/template/default/Mail/*.twig` を直接書き換える → ✅ `app/template/<コード>/Mail/` で上書きする
 - ❌ 送信前のイベント dispatch を省く → ✅ プラグインの差し替え口として `EccubeEvents::MAIL_*` を必ず発火する
 
