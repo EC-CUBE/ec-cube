@@ -81,14 +81,13 @@ class InstallController extends AbstractController
         'fileinfo',
         'intl',
         'sodium',
+        'gd',
     ];
     /**
      * @var string[]
      */
     protected array $recommendedModules = [
         'hash',
-        // 納品書 PDF の GIF ロゴを描くときだけ使う. 無い場合はロゴを省いて出力する
-        'gd',
     ];
     /**
      * @var string[]

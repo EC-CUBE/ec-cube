@@ -15,6 +15,7 @@
         "php": "^8.2",
         "ext-curl": "*",
         "ext-filter": "*",
+        "ext-gd": "*",
         "ext-intl": "*",
         "ext-json": "*",
         "ext-mbstring": "*",
