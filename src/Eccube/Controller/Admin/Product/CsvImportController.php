@@ -686,7 +686,6 @@ class CsvImportController extends AbstractCsvImportController
                     $this->entityManager->getConnection()->beginTransaction();
                     // CSVファイルの登録処理
                     foreach ($data as $row) {
-                        /** @var Category $Category */
                         $Category = new Category();
                         if (isset($row[$headerByKey['id']]) && strlen($row[$headerByKey['id']]) > 0) {
                             if (!preg_match('/^\d+$/', $row[$headerByKey['id']])) {
@@ -844,7 +843,6 @@ class CsvImportController extends AbstractCsvImportController
                     // CSVファイルの登録処理
                     foreach ($data as $row) {
                         // dump($row,$headerByKey);exit;
-                        /** @var ClassName $ClassName */
                         $ClassName = new ClassName();
                         if (isset($row[$headerByKey['id']]) && strlen($row[$headerByKey['id']]) > 0) {
                             if (!preg_match('/^\d+$/', $row[$headerByKey['id']])) {
@@ -958,7 +956,6 @@ class CsvImportController extends AbstractCsvImportController
                     // CSVファイルの登録処理
                     foreach ($data as $row) {
                         // dump($row,$headerByKey);exit;
-                        /** @var ClassCategory $ClassCategory */
                         $ClassCategory = new ClassCategory();
 
                         if (isset($row[$headerByKey['id']]) && strlen($row[$headerByKey['id']]) > 0) {
@@ -1526,7 +1523,7 @@ class CsvImportController extends AbstractCsvImportController
             } else {
                 $stock = str_replace(',', '', (string) $row[$headerByKey['stock']]);
                 if (preg_match('/^\d+$/', $stock) && $stock >= 0) {
-                    $ProductClass->setStock($row[$headerByKey['stock']]);
+                    $ProductClass->setStock($stock);
                 } else {
                     $message = trans('admin.common.csv_invalid_greater_than_zero', ['%line%' => $line, '%name%' => $headerByKey['stock']]);
                     $this->addErrors($message);

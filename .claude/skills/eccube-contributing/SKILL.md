@@ -88,7 +88,7 @@ push では**フックが先に `bin/console cache:clear --env=dev` を実行す
 - ❌ 機能追加なのにテスト無し / 既存テストを壊す → ✅ テストを伴わせ、関連テストを実行
 - ❌ マイナー互換を壊す変更（既存シグネチャ・フック・CSV 仕様の変更）を含める → ✅ 互換チェックリストを確認し、壊す場合は別途相談
 - ❌ PR テンプレートの節を空のまま提出 → ✅ 概要・方針・テスト範囲・互換性チェックを埋める
-- ❌ `@deprecated` な public API・定数の削除を `src/` と PHPUnit の grep だけで「呼び出し元なし」と判定 → ✅ `e2e/`（Playwright の globalSetup が実行する `setup-fixtures.php`）と `codeception/`（VAddy スキャンが `codecept -g vaddy` を実行）も走査対象に含め、全ツリー `git grep` で 0 件を確認する
+- ❌ `@deprecated` の削除可否を `src/` と PHPUnit の grep だけで判定 → ✅ `e2e/` と `codeception/` も実行される。全ツリー `git grep` で 0 件を確認する
 
 ## 実行・確認方法
 

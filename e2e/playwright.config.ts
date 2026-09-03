@@ -65,6 +65,15 @@ export default defineConfig({
       },
     },
     {
+      name: 'mcp-tests',
+      testMatch: /mcp\.spec\.ts/,
+      dependencies: ['setup'],
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: path.join(__dirname, '.auth', 'admin.json'),
+      },
+    },
+    {
       name: 'install-tests',
       testMatch: /install-.*\.spec\.ts/,
       // The installer runs before EC-CUBE is installed: there is no admin

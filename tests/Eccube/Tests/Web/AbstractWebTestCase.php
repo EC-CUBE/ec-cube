@@ -25,16 +25,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 abstract class AbstractWebTestCase extends EccubeTestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-    }
-
     /**
      * @deprecated AbstractWebTestCase::loginTo() を使用してください.
      *

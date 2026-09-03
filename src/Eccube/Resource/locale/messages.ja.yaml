@@ -1290,6 +1290,10 @@ admin.setting.shop.shop.agent_commerce: "エージェントコマース"
 admin.setting.shop.shop.agent_commerce.description: "AIエージェント (ChatGPT / Gemini 等) 経由のチェックアウトを有効化します。Discovery / カタログは常時公開され、ここでは checkout のみを制御します。checkout は日本未提供のため、通常は無効のままにしてください。"
 admin.setting.shop.shop.agent_commerce.acp_checkout_enabled: "ACP チェックアウトを有効にする"
 admin.setting.shop.shop.agent_commerce.ucp_checkout_enabled: "UCP チェックアウトを有効にする"
+admin.setting.shop.shop.mcp: "MCP サーバ"
+admin.setting.shop.shop.mcp.description: "AI クライアント（Claude Desktop / Cursor 等）が管理データを参照する MCP サーバ（^/admin/mcp）を有効化します。読み取り専用です。既定は無効で、無効の間はエンドポイントを 404 で塞ぎます。利用には API プラグイン（api44）が有効で、OAuth2 トークンを発行済みである必要があります。"
+admin.setting.shop.shop.mcp_enabled: "MCP サーバを有効にする"
+admin.setting.shop.shop.order_pdf: "納品書PDF"
 
 #------------------------------------------------------------------------------------
 # 設定：店舗設定：特定商取引法設定
@@ -1858,6 +1862,7 @@ tooltip.setting.shop.shop.email_reply_to: 返信メールを受け付けるメ�
 tooltip.setting.shop.shop.email_return_path: 店舗からメールを送信しエラーが生じた場合に、その通知を受信するメールアドレスです。
 tooltip.setting.shop.shop.good_traded: 店舗が取り扱う商品についての簡単な説明文です。
 tooltip.setting.shop.shop.message: フロント側に表示されます。表示位置はデザインテンプレートによって異なります。
+tooltip.setting.shop.shop.order_pdf: 納品書PDFの店舗情報欄に出力する項目です。ONにした項目のうち、値が入力されているものだけが出力されます。
 tooltip.setting.shop.shop.option_delivery_fee_free_amount: この金額を超える購入があった場合、送料を無料とします。
 tooltip.setting.shop.shop.option_delivery_fee_free_quantity: この個数を超える購入があった場合、送料を無料とします。
 tooltip.setting.shop.shop.option_delivery_fee_by_product: ここをオンにすると、商品ごとに送料を指定できるようになります。
