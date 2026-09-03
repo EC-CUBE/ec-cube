@@ -4,14 +4,12 @@ import { type PluginTestConfig } from '../fixtures/plugin-test';
 import { compressPlugin } from '../helpers/tar-helper';
 import { AbstractPlugin } from './abstract-plugin';
 import { PluginSearchPage } from '../pages/plugin-search.page';
-import { PluginManagePage } from '../pages/plugin-manage.page';
 
 /**
  * ストアプラグインの操作チェーン。
  * Codeception の Store_Plugin に相当。
  */
 export class StorePlugin extends AbstractPlugin {
-  protected managePage!: PluginManagePage;
   protected code: string;
   protected dependency?: StorePlugin;
 
