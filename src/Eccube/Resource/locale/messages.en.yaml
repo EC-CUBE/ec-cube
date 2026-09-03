@@ -1417,6 +1417,7 @@ admin.setting.system.member.work: Status
 admin.setting.system.member.two_factor_auth_enabled: Two-factor auth
 admin.setting.system.member.two_factor_auth_completed: Two-factor authentication settings are complete.
 admin.setting.system.member.two_factor_auth_incompleted: Two-factor authentication settings are incomplete. Please log in as this user to complete the settings.
+admin.setting.system.member.two_factor_auth_reset: Reset Two-factor auth
 admin.setting.system.member.delete__confirm_title: Delete a user
 admin.setting.system.member.delete__confirm_message: Are you sure to delete this user?
 admin.setting.system.member.work_can_not_change: You are not allowed to change to ''Inactive''.
@@ -1897,6 +1898,7 @@ tooltip.setting.shop.calendar_setting: "You can set regular holidays for display
 tooltip.setting.system.member.authority: You can select the authorization you have set under Authorization.
 tooltip.setting.system.member.work: You can set customers to inactive temporarily. If they are no longer necessary, please delete from All Customers.
 tooltip.setting.system.member.two_factor_auth_enabled: If enabled, you must log in using two-factor authentication. You will be able to login after setting up two-factor authentication.
+tooltip.setting.system.member.two_factor_auth_reset: Checking this box will reset the two-factor authentication for this member. If you reset it, the code currently stored in the authentication app will no longer be usable and will no longer be registered. If you are unable to use your authentication app some reasons, reset it and re-register on a new device.
 tooltip.setting.system.two_factor_auth.qr_code: Please read the QR code with the two-factor authentication app.
 tooltip.setting.system.security.admin_url: Set the URL to sign in to the Admin Console. Please specify a URL which is hardly guessed.
 tooltip.setting.system.security.front_ip_limit: Restricting IP addresses which are allowed to sign in to the Front Screen.
