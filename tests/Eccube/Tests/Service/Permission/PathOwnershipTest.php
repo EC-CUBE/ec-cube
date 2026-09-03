@@ -19,6 +19,7 @@ use Eccube\Service\Permission\PathOwnership;
 use Eccube\Service\Permission\UserIdentity;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * uid / gid / パーミッションビットからの書き込み・読み取り可否の推定を検証する.
@@ -133,7 +134,7 @@ final class PathOwnershipTest extends TestCase
             new PathOwnership('/project', true, 1000, 1000, 0711, true),
         ]);
 
-        $this->assertNull($ownership->unreachableAncestorFor(new UserIdentity(33, 33, 'test')));
+        $this->assertNotInstanceOf(PathOwnership::class, $ownership->unreachableAncestorFor(new UserIdentity(33, 33, 'test')));
     }
 
     public function testAncestorThatCannotBeStattedIsUnknown(): void
@@ -145,7 +146,30 @@ final class PathOwnershipTest extends TestCase
         ]);
 
         $this->assertTrue($ownership->hasUnknownAncestor());
-        $this->assertNull($ownership->unreachableAncestorFor(new UserIdentity(33, 33, 'test')));
+        $this->assertNotInstanceOf(PathOwnership::class, $ownership->unreachableAncestorFor(new UserIdentity(33, 33, 'test')));
+    }
+
+    public function testAncestorsIncludeTheResolvedPathOfASymlink(): void
+    {
+        // stat() はリンクを解決するため, 対象自身の権限はリンク先のものになる.
+        // リンク先の親を通り抜けられなければ到達できない
+        $root = sys_get_temp_dir().'/eccube-path-'.bin2hex(random_bytes(6));
+        $fs = new Filesystem();
+        $fs->mkdir($root.'/physical/target', 0755);
+        $fs->chmod($root.'/physical', 0700);
+        symlink($root.'/physical/target', $root.'/visible');
+
+        try {
+            $ownership = PathOwnership::of($root.'/visible');
+            $paths = array_map(static fn (PathOwnership $ancestor): string => $ancestor->path, $ownership->ancestors);
+
+            $this->assertContains($root, $paths, '論理パスの祖先を評価すること');
+            $this->assertContains($root.'/physical', $paths, 'リンク解決後の物理パスの祖先を評価すること');
+            $this->assertSame($root.'/physical', $ownership->unreachableAncestorFor(new UserIdentity(33, 33, 'test'))?->path);
+        } finally {
+            $fs->chmod($root.'/physical', 0755);
+            $fs->remove($root);
+        }
     }
 
     public function testOfCollectsAncestorsFromTheRoot(): void

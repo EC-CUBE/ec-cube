@@ -72,7 +72,9 @@ final readonly class PathOwnership
     }
 
     /**
-     * 到達を妨げている最も浅い祖先ディレクトリ. すべて通り抜けられる場合は null.
+     * 到達を妨げている祖先ディレクトリ. すべて通り抜けられる場合は null.
+     *
+     * 論理パスの祖先, 解決後の物理パスの祖先の順に, それぞれ浅い方から探す.
      */
     public function unreachableAncestorFor(UserIdentity $user): ?self
     {
@@ -138,11 +140,39 @@ final readonly class PathOwnership
     }
 
     /**
-     * ルート (/) から親ディレクトリまでを浅い順に返す.
+     * 通り抜ける必要がある祖先ディレクトリ.
+     *
+     * stat() はシンボリックリンクを解決するため, リンクを含むパスへ到達するには
+     * 論理パスの祖先 (リンク自体へ辿り着くまで) と, 解決後の物理パスの祖先の両方が必要になる.
+     * それぞれ浅い順に並べ, 重複は取り除く.
      *
      * @return list<string>
      */
     private static function ancestorPaths(string $path): array
+    {
+        $paths = self::parentPaths($path);
+
+        // open_basedir の制限下では警告が発生するため抑制する
+        $resolved = @realpath($path);
+        if ($resolved === false || $resolved === $path) {
+            return $paths;
+        }
+
+        foreach (self::parentPaths($resolved) as $parent) {
+            if (!in_array($parent, $paths, true)) {
+                $paths[] = $parent;
+            }
+        }
+
+        return $paths;
+    }
+
+    /**
+     * ルート (/) から親ディレクトリまでを浅い順に返す.
+     *
+     * @return list<string>
+     */
+    private static function parentPaths(string $path): array
     {
         $paths = [];
         $current = dirname($path);
