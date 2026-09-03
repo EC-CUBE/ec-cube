@@ -97,7 +97,7 @@ public function onTemplateCart(TemplateEvent $event): void
 - ❌ 上書きを `app/template/` 直下に置く / `@admin` 名前空間を付け忘れる → ✅ 正しいサブディレクトリ・名前空間に置く
 - ❌ **管理画面テンプレートだから安全**と油断して `|raw` する → ✅ admin 配下も XSS シンク（過去の XSS 修正は管理画面テンプレートに多い）。DB/入力由来の値は admin でも必ずエスケープする
 - ❌ テンプレートイベントにエンティティ永続化など業務処理を書く → ✅ 見た目調整のみ。業務は対応するコントローライベントへ
-- ❌ inline `<script>`（JSON-LD `application/ld+json` 等）に動的値を文字列直書き／素の `json_encode` で埋める → ✅ 商品名・説明中の `</script>` や `"` で XSS・JSON 破壊になる。`json_encode($data, JSON_UNESCAPED_SLASHES｜JSON_HEX_TAG｜JSON_HEX_AMP｜JSON_HEX_APOS｜JSON_HEX_QUOT)` で `<`/`>`/`&` をエスケープする
+- ❌ inline `<script>` に素の `json_encode` で埋める → ✅ `</script>` で XSS。`|json_encode_safe`（JSON-LD は `|json_ld`）を使う。属性値には不可
 
 ## 実行・確認方法
 
