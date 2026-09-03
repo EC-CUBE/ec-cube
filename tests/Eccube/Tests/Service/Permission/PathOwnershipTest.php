@@ -81,14 +81,81 @@ final class PathOwnershipTest extends TestCase
      */
     public static function readableCases(): iterable
     {
-        yield 'owner with read bit' => [1000, 1000, 0400, 1000, 1000, true];
-        yield 'group with read bit' => [1000, 33, 0040, 33, 33, true];
-        yield 'other with read bit' => [1000, 1000, 0004, 33, 33, true];
+        yield 'owner with read bit' => [1000, 1000, 0500, 1000, 1000, true];
+        yield 'group with read bit' => [1000, 33, 0050, 33, 33, true];
+        yield 'other with read bit' => [1000, 1000, 0005, 33, 33, true];
         yield 'no read bit for other' => [1000, 1000, 0770, 33, 33, false];
 
         // 書き込みと同じく, 一致したクラスのビットだけで決まる
         yield 'owner class is used even when other is permissive' => [1000, 1000, 0004, 1000, 1000, false];
         yield 'group class is used even when other is permissive' => [1000, 33, 0004, 33, 33, false];
+    }
+
+    public function testDirectoryRequiresTheExecuteBit(): void
+    {
+        // エントリの作成・削除には w に加えて x が, 配下のファイルを開くには x が必要になる
+        $dir = new PathOwnership('/path', true, 1000, 1000, 0600, true);
+        $user = new UserIdentity(1000, 1000, 'test');
+
+        $this->assertFalse($dir->isWritableBy($user));
+        $this->assertFalse($dir->isReadableBy($user));
+        $this->assertFalse($dir->isTraversableBy($user));
+    }
+
+    public function testFileDoesNotRequireTheExecuteBit(): void
+    {
+        $file = new PathOwnership('/path/.env', true, 1000, 1000, 0600, false);
+        $user = new UserIdentity(1000, 1000, 'test');
+
+        $this->assertTrue($file->isWritableBy($user));
+        $this->assertTrue($file->isReadableBy($user));
+    }
+
+    public function testUnreachableAncestorIsTheShallowestOne(): void
+    {
+        $webServer = new UserIdentity(33, 33, 'test');
+        $ownership = new PathOwnership('/project/html/upload/temp_image', true, 33, 33, 0755, true, [
+            new PathOwnership('/', true, 0, 0, 0755, true),
+            new PathOwnership('/project', true, 1000, 1000, 0711, true),
+            new PathOwnership('/project/html', true, 1000, 1000, 0700, true),
+            new PathOwnership('/project/html/upload', true, 1000, 1000, 0700, true),
+        ]);
+
+        // 対象自身は Web サーバー所有 0755 でも, 祖先を通り抜けられなければ到達できない
+        $this->assertSame('/project/html', $ownership->unreachableAncestorFor($webServer)?->path);
+        $this->assertFalse($ownership->hasUnknownAncestor());
+    }
+
+    public function testReachableAncestorsReturnNull(): void
+    {
+        $ownership = new PathOwnership('/project/var', true, 33, 33, 0755, true, [
+            new PathOwnership('/', true, 0, 0, 0755, true),
+            new PathOwnership('/project', true, 1000, 1000, 0711, true),
+        ]);
+
+        $this->assertNull($ownership->unreachableAncestorFor(new UserIdentity(33, 33, 'test')));
+    }
+
+    public function testAncestorThatCannotBeStattedIsUnknown(): void
+    {
+        // open_basedir 等で参照できない祖先は, 通り抜けられないと断定しない
+        $ownership = new PathOwnership('/project/var', true, 33, 33, 0755, true, [
+            new PathOwnership('/', false, -1, -1, 0, false),
+            new PathOwnership('/project', true, 1000, 1000, 0711, true),
+        ]);
+
+        $this->assertTrue($ownership->hasUnknownAncestor());
+        $this->assertNull($ownership->unreachableAncestorFor(new UserIdentity(33, 33, 'test')));
+    }
+
+    public function testOfCollectsAncestorsFromTheRoot(): void
+    {
+        $ownership = PathOwnership::of(__FILE__);
+
+        $this->assertNotSame([], $ownership->ancestors);
+        $this->assertSame('/', $ownership->ancestors[0]->path);
+        $this->assertSame(__DIR__, $ownership->ancestors[array_key_last($ownership->ancestors)]->path);
+        $this->assertTrue($ownership->ancestors[0]->isDir);
     }
 
     public function testIsWorldWritable(): void

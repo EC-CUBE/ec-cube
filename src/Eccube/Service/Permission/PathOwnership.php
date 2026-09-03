@@ -22,15 +22,15 @@ namespace Eccube\Service\Permission;
  * is_writable() が返すのは実行ユーザー (CLI 実行なら SSH ユーザー) から見た可否だけで,
  * Web サーバーから書けるかどうかは分からないため, パーミッションビットから推定する.
  *
- * 判定は対象パス自身のビットだけで行う. 次のものは見ていないため, 結果はあくまで推定として扱うこと.
- *
- * - 補助グループ・ACL・SELinux
- * - ディレクトリの実行 (x) ビット. エントリの作成・削除には w に加えて x が,
- *   配下のファイルを開くには x が必要になる
- * - 祖先ディレクトリの到達性. 親が 0700 なら, 子の所有者やビットに関わらず到達できない
+ * ディレクトリはエントリの作成・削除に w と x が, 配下のファイルを開くのに x が必要になるため,
+ * 自身のビットに加えて祖先ディレクトリの x も評価する.
+ * 補助グループ・ACL・SELinux までは判定できないため, 結果はあくまで推定として扱うこと.
  */
 final readonly class PathOwnership
 {
+    /**
+     * @param list<self> $ancestors 祖先ディレクトリ. ルート (/) から親ディレクトリまでを浅い順に並べる
+     */
     public function __construct(
         public string $path,
         public bool $exists,
@@ -38,28 +38,67 @@ final readonly class PathOwnership
         public int $gid,
         public int $permissions,
         public bool $isDir,
+        public array $ancestors = [],
     ) {
     }
 
     public static function of(string $path): self
     {
-        $stat = file_exists($path) ? stat($path) : false;
+        $ancestors = array_map(static fn (string $ancestor): self => self::statOf($ancestor), self::ancestorPaths($path));
 
-        if ($stat === false) {
-            return new self($path, false, -1, -1, 0, false);
-        }
-
-        return new self($path, true, $stat['uid'], $stat['gid'], $stat['mode'] & 07777, is_dir($path));
+        return self::statOf($path, $ancestors);
     }
 
     public function isWritableBy(UserIdentity $user): bool
     {
-        return $this->isAllowedFor($user, 0002, 0200, 0020);
+        // ディレクトリはエントリの作成・削除に x も必要
+        return $this->isAllowedFor($user, 0002, 0200, 0020)
+            && (!$this->isDir || $this->isTraversableBy($user));
     }
 
     public function isReadableBy(UserIdentity $user): bool
     {
-        return $this->isAllowedFor($user, 0004, 0400, 0040);
+        // ディレクトリは配下のファイルを開くために x も必要
+        return $this->isAllowedFor($user, 0004, 0400, 0040)
+            && (!$this->isDir || $this->isTraversableBy($user));
+    }
+
+    /**
+     * ディレクトリを通り抜けて配下へ到達できるか.
+     */
+    public function isTraversableBy(UserIdentity $user): bool
+    {
+        return $this->isAllowedFor($user, 0001, 0100, 0010);
+    }
+
+    /**
+     * 到達を妨げている最も浅い祖先ディレクトリ. すべて通り抜けられる場合は null.
+     */
+    public function unreachableAncestorFor(UserIdentity $user): ?self
+    {
+        foreach ($this->ancestors as $ancestor) {
+            if ($ancestor->exists && !$ancestor->isTraversableBy($user)) {
+                return $ancestor;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * 権限を確認できなかった祖先ディレクトリがあるか.
+     *
+     * open_basedir で上位ディレクトリを参照できない場合に発生する.
+     */
+    public function hasUnknownAncestor(): bool
+    {
+        foreach ($this->ancestors as $ancestor) {
+            if (!$ancestor->exists) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -73,6 +112,52 @@ final readonly class PathOwnership
     public function permissionsString(): string
     {
         return sprintf('%04o', $this->permissions);
+    }
+
+    /**
+     * @param list<self> $ancestors
+     */
+    private static function statOf(string $path, array $ancestors = []): self
+    {
+        // open_basedir の制限下では警告が発生するため抑制する. 参照できないことは exists=false で表す
+        $stat = @stat($path);
+
+        if ($stat === false) {
+            return new self($path, false, -1, -1, 0, false, $ancestors);
+        }
+
+        return new self(
+            $path,
+            true,
+            $stat['uid'],
+            $stat['gid'],
+            $stat['mode'] & 07777,
+            ($stat['mode'] & 0170000) === 0040000,
+            $ancestors
+        );
+    }
+
+    /**
+     * ルート (/) から親ディレクトリまでを浅い順に返す.
+     *
+     * @return list<string>
+     */
+    private static function ancestorPaths(string $path): array
+    {
+        $paths = [];
+        $current = dirname($path);
+
+        while (true) {
+            $paths[] = $current;
+            $parent = dirname($current);
+            if ($parent === $current) {
+                break;
+            }
+
+            $current = $parent;
+        }
+
+        return array_reverse($paths);
     }
 
     /**

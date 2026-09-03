@@ -115,6 +115,52 @@ final class PermissionDiagnosticTest extends TestCase
         $this->assertSame(FindingSeverity::OK, $finding->severity);
     }
 
+    public function testUnreachablePathIsNg(): void
+    {
+        // 対象自身は Web サーバー所有 0755 でも, 親が 0700 なら到達できない
+        $requirement = new PermissionRequirement('/project/html/upload/temp_image', WriteLane::WEB, 'html/upload/temp_image');
+        $finding = $this->diagnostic()->evaluate(
+            $requirement,
+            new PathOwnership('/project/html/upload/temp_image', true, self::WEB_UID, self::WEB_UID, 0755, true, [
+                new PathOwnership('/project', true, self::SSH_UID, self::SSH_UID, 0755, true),
+                new PathOwnership('/project/html', true, self::SSH_UID, self::SSH_UID, 0755, true),
+                new PathOwnership('/project/html/upload', true, self::SSH_UID, self::SSH_UID, 0700, true),
+            ]),
+            $this->webServer(),
+            $this->cli()
+        );
+
+        $this->assertSame(FindingSeverity::NG, $finding->severity);
+        $this->assertSame('Web サーバーから到達できません', $finding->message);
+        $this->assertStringContainsString('/project/html/upload', (string) $finding->hint);
+    }
+
+    public function testUnknownAncestorIsWarn(): void
+    {
+        $requirement = new PermissionRequirement('/project/var', WriteLane::WEB, 'var');
+        $finding = $this->diagnostic()->evaluate(
+            $requirement,
+            new PathOwnership('/project/var', true, self::WEB_UID, self::WEB_UID, 0755, true, [
+                new PathOwnership('/', false, -1, -1, 0, false),
+            ]),
+            $this->webServer(),
+            $this->cli()
+        );
+
+        $this->assertSame(FindingSeverity::WARN, $finding->severity);
+        $this->assertStringContainsString('open_basedir', (string) $finding->hint);
+    }
+
+    public function testDirectoryWithoutExecuteBitIsNg(): void
+    {
+        // レーン S の 0644 は一覧できても配下のファイルを開けない
+        $finding = $this->evaluate(WriteLane::SSH, self::SSH_UID, self::SSH_UID, 0644);
+
+        $this->assertSame(FindingSeverity::NG, $finding->severity);
+        $this->assertSame('Web サーバーから読み取れません', $finding->message);
+        $this->assertStringContainsString('実行 (x) 権限', (string) $finding->hint);
+    }
+
     public function testMissingOptionalPathIsOk(): void
     {
         $requirement = new PermissionRequirement('/path', WriteLane::WEB, 'var/cache/prod', true);
