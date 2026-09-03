@@ -372,6 +372,10 @@ class PdfWriter
      *
      * セルの高さは「指定した最小高さ」と「行数 x 行送り」の大きい方になる.
      *
+     * ただし罫線も塗りも無いセルが紙面に収まらないときは行単位で次ページへ送るため,
+     * {@see getLastCellHeight()} は送られた側の行数ぶんだけを返し, 最小高さを下回ることがある.
+     * TCPDF の MultiCell() も収まらない分を次ページへ持ち越すので最小高さは保たない.
+     *
      * @param float $width セル幅. 0 以下なら右余白まで広げる
      * @param float $height セルの最小高さ
      * @param int|string $border 罫線. {@see cell()} と同じ
