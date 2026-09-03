@@ -105,15 +105,15 @@ public static function provideStatuses(): array
 ## よくある間違い
 
 - ❌ `@dataProvider` アノテーション → ✅ `#[DataProvider]` 属性（PHPUnit 11）。
-- ❌ `new Client()` など HTTP クライアントの自前生成 → ✅ 親クラスの `$this->client`。
-- ❌ URL の文字列直書き（`'/products/list'`）→ ✅ `$this->generateUrl('product_list')`。
-- ❌ Entity の手組み → ✅ `createXxx()` フィクスチャヘルパ。
+- ❌ HTTP クライアント・URL・Entity を自前で用意する → ✅ 親クラスの `$this->client`、`$this->generateUrl('route_name')`、`createXxx()` フィクスチャヘルパを使う。
 - ❌ 支払方法のテストで `find(1)` 等の ID 前提 → ✅ `Generator::createPayment()` で sort_no・利用条件を明示し `assertSame()` で固定する。
 - ❌ ステータス値のハードコーディング（`if ($status == 1)`）→ ✅ 定数（例: `OrderStatus::NEW`）を使う。
 - ❌ 回帰テストがゲートになるか確かめない → ✅ 修正を外して落ちるか実測する。`failOnWarning` が無いので Warning では落ちず、戻り値を assert する。
 - ❌ 型宣言の省略 → ✅ 引数・戻り値に型を付け、PHPStan level 6 を通す。
 - ❌ テストのプロパティを未宣言で代入／非 nullable で宣言 → ✅ nullable で宣言する。未宣言は deprecation、非 nullable は `cleanUpProperties()` の null 代入で `TypeError`。
+- ❌ ローカルだけ 500 のテストを自分の変更のせいにする → ✅ `createFormData()` が送らない列で非 nullable setter に `null` が渡るのが原因。`catchExceptions(false)` で確認
 - ❌ HTML パートを持たないメールに `assertEmailHtmlBodyNotContains()` → ✅ `assertNull($Message->getHtmlBody())`。前者は必ず通る空振りになる。
+- ❌ 依存ライブラリの例外メッセージを全文アサート → ✅ 版差で変わらない部分だけ含有判定する。上流はマイナー更新で書式を足すので、lock 更新だけで全マトリクスが落ちる。
 
 ## 実行方法
 
