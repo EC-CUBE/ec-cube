@@ -110,8 +110,6 @@ bin/console cache:clear
 vendor/bin/phpunit tests/Eccube/Tests/Service/CartServiceTest.php
 ```
 
-- 実装後の整形・型・静的解析・テストは **AGENTS.md「開発コマンド」** に従って実行する
-  （PHP-CS-Fixer / PHPStan level 6 / PHPUnit）。
 - デコレーション・差し替えをした場合は `debug:container` の出力で解決先が意図どおりか確認する。
 
 ---

@@ -149,8 +149,6 @@ bin/console cache:clear
 vendor/bin/phpunit tests/Eccube/Tests/Web/ProductControllerTest.php
 ```
 
-- 実装後の整形・型・静的解析・テストは **AGENTS.md「開発コマンド」** に従って実行する
-  （PHP-CS-Fixer / PHPStan level 6 / PHPUnit）。
 - 認可の入り口は `security.yaml` だけでは追えない（`access_control` は `EccubeExtension` が動的注入する）。
   新規の管理アクションは Skill `eccube-security` の「アクセス制御モデル」を確認する。
 
