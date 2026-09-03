@@ -19,6 +19,7 @@ use Eccube\Service\Permission\DiagnosticReport;
 use Eccube\Service\Permission\FindingSeverity;
 use Eccube\Service\Permission\PermissionDiagnostic;
 use Eccube\Service\Permission\PermissionFinding;
+use Eccube\Service\Permission\UserIdentity;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -94,10 +95,19 @@ final class DoctorPermissionsCommand extends Command
             ));
         }
 
-        $io->text(sprintf('診断の実行ユーザー: uid=%d gid=%d', $report->cli->uid, $report->cli->gid));
+        if ($report->cli instanceof UserIdentity) {
+            $io->text(sprintf('診断の実行ユーザー: uid=%d gid=%d', $report->cli->uid, $report->cli->gid));
+        } else {
+            $io->warning([
+                '診断の実行ユーザーを特定できませんでした.',
+                'ext-posix が無効なため, 実効 uid / gid を取得できません.',
+                'レーン S を CLI から書き換えられるかどうかは判定していません.',
+            ]);
+        }
+
         $io->newLine();
 
-        if ($report->webServer !== null && $report->webServer->uid === $report->cli->uid) {
+        if ($report->webServer !== null && $report->cli instanceof UserIdentity && $report->webServer->uid === $report->cli->uid) {
             $io->note([
                 'Web サーバーと診断の実行ユーザーが同じ uid です.',
                 '共有ホスティング (suexec 等) で同一ユーザーとして動作している場合, 権限によるレーンの分離はできません.',

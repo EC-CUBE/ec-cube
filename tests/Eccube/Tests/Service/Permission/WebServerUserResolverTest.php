@@ -26,6 +26,9 @@ use Symfony\Component\Filesystem\Filesystem;
  *
  * テストが生成するファイルの所有者は診断の実行ユーザーと同じになるため,
  * 「Web サーバーでのみ生成されるもの」と「CLI でも生成されるもの」の扱いの違いを検証できる.
+ *
+ * ext-posix が無効な環境では実効 uid / gid を取得できず currentUser() が null を返すため,
+ * 実効ユーザーに依存する検証はスキップする.
  */
 final class WebServerUserResolverTest extends TestCase
 {
@@ -35,6 +38,10 @@ final class WebServerUserResolverTest extends TestCase
 
     protected function setUp(): void
     {
+        if (!function_exists('posix_geteuid')) {
+            self::markTestSkipped('ext-posix が無効な環境では実効 uid / gid を検証できません.');
+        }
+
         parent::setUp();
         $this->fs = new Filesystem();
         $this->projectDir = sys_get_temp_dir().'/eccube-permission-'.bin2hex(random_bytes(6));
@@ -60,7 +67,7 @@ final class WebServerUserResolverTest extends TestCase
         $identity = $this->resolver()->resolve();
 
         $this->assertInstanceOf(UserIdentity::class, $identity);
-        $this->assertSame(getmyuid(), $identity->uid);
+        $this->assertSame(posix_geteuid(), $identity->uid);
         $this->assertStringContainsString('sess_0123456789', $identity->source);
     }
 
@@ -88,7 +95,7 @@ final class WebServerUserResolverTest extends TestCase
 
     public function testUnreadableDirectoryFallsBackToTheNextCandidate(): void
     {
-        if (getmyuid() === 0) {
+        if (posix_geteuid() === 0) {
             // root はパーミッションビットを無視するため, この検証は成立しない
             $this->markTestSkipped('root では読み取り不可のディレクトリを再現できません.');
         }
@@ -109,12 +116,17 @@ final class WebServerUserResolverTest extends TestCase
         $this->assertStringContainsString('uploaded.jpg', $identity->source);
     }
 
-    public function testCurrentUserIsResolvedFromTheProcess(): void
+    public function testCurrentUserIsTheEffectiveUserOfTheProcess(): void
     {
+        // getmyuid() はスクリプトファイルの所有者を返すため契約にできない.
+        // プロセスが生成したファイルの所有者 (= 実効 uid) と一致することを確認する
+        $this->fs->dumpFile($this->projectDir.'/var/created-by-this-process', '');
+
         $cli = $this->resolver()->currentUser();
 
-        $this->assertSame(getmyuid(), $cli->uid);
-        $this->assertSame(getmygid(), $cli->gid);
+        $this->assertInstanceOf(UserIdentity::class, $cli);
+        $this->assertSame(fileowner($this->projectDir.'/var/created-by-this-process'), $cli->uid);
+        $this->assertSame(posix_getegid(), $cli->gid);
     }
 
     private function resolver(): WebServerUserResolver

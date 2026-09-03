@@ -41,12 +41,15 @@ class PermissionDiagnostic
 
     /**
      * 1 件を判定する. ファイルシステムには触れず, 渡された所有者情報だけで判断する.
+     *
+     * @param UserIdentity|null $webServer Web サーバーの実行ユーザー. 特定できなかった場合は null
+     * @param UserIdentity|null $cli       診断の実行ユーザー. 特定できなかった場合は null
      */
     public function evaluate(
         PermissionRequirement $requirement,
         PathOwnership $ownership,
         ?UserIdentity $webServer,
-        UserIdentity $cli,
+        ?UserIdentity $cli,
     ): PermissionFinding {
         if (!$ownership->exists) {
             if ($requirement->optional) {
@@ -54,6 +57,19 @@ class PermissionDiagnostic
             }
 
             return new PermissionFinding($requirement, $ownership, FindingSeverity::NG, '存在しません', '作成してください.');
+        }
+
+        // 任意のローカルユーザーから書ける時点でレーン S の前提が崩れているため,
+        // Web サーバーの uid を特定できていなくても NG と判定できる
+        if ($requirement->lane === WriteLane::SSH && $ownership->isWorldWritable()) {
+            return new PermissionFinding(
+                $requirement,
+                $ownership,
+                FindingSeverity::NG,
+                '任意のローカルユーザーから書き込めます (想定: 読み取りのみ)',
+                'bin/console が umask(0000) を設定するため, CLI が作成したディレクトリは 0777 になります. '
+                .'other の書き込み権限を外してください.'
+            );
         }
 
         if (!$webServer instanceof UserIdentity) {
@@ -101,7 +117,7 @@ class PermissionDiagnostic
         PermissionRequirement $requirement,
         PathOwnership $ownership,
         UserIdentity $webServer,
-        UserIdentity $cli,
+        ?UserIdentity $cli,
     ): PermissionFinding {
         if ($ownership->isWritableBy($webServer)) {
             return new PermissionFinding(
@@ -123,7 +139,8 @@ class PermissionDiagnostic
             );
         }
 
-        if (!$ownership->isWritableBy($cli)) {
+        // CLI の実行ユーザーを特定できない環境では, CLI 側の書き込み可否は判定しない
+        if ($cli instanceof UserIdentity && !$ownership->isWritableBy($cli)) {
             return new PermissionFinding(
                 $requirement,
                 $ownership,

@@ -28,6 +28,7 @@ use Symfony\Component\Finder\SplFileInfo;
  * - Web サーバーでのみ生成されるもの: 所有者をそのまま採用する
  * - bin/console でも生成されるもの (ログ): 診断の実行ユーザーと異なる場合のみ採用する.
  *   同じ uid だった場合は「Web サーバーが同一ユーザー」なのか「CLI が書いたファイル」なのか区別できないため.
+ *   診断の実行ユーザーを特定できない環境では区別できないため, 判定材料にしない.
  *
  * 配布物を含むディレクトリ (html/upload/save_image) は, 同梱画像の所有者を拾ってしまうため判定に使わない.
  */
@@ -47,7 +48,7 @@ class WebServerUserResolver
                 continue;
             }
 
-            if (!$webServerOnly && $identity->uid === $cli->uid) {
+            if (!$webServerOnly && (!$cli instanceof UserIdentity || $identity->uid === $cli->uid)) {
                 continue;
             }
 
@@ -58,14 +59,20 @@ class WebServerUserResolver
     }
 
     /**
-     * 診断を実行しているユーザー.
+     * 診断を実行しているプロセスの実効ユーザー. 特定できない場合は null.
+     *
+     * getmyuid() / getmygid() は実行プロセスではなくスクリプトファイルの所有者を返すため使わない.
+     * sudo -u www-data bin/console のように所有者と実行ユーザーが異なる場合に誤判定となる.
+     * ext-posix は composer.json の require に含まれず, disable_functions で無効化されることもあるため,
+     * 取得できない場合は判定不能として扱う.
      */
-    public function currentUser(): UserIdentity
+    public function currentUser(): ?UserIdentity
     {
-        $uid = getmyuid();
-        $gid = getmygid();
+        if (!function_exists('posix_geteuid') || !function_exists('posix_getegid')) {
+            return null;
+        }
 
-        return new UserIdentity($uid === false ? -1 : $uid, $gid === false ? -1 : $gid, 'getmyuid()');
+        return new UserIdentity(posix_geteuid(), posix_getegid(), 'posix_geteuid()');
     }
 
     /**

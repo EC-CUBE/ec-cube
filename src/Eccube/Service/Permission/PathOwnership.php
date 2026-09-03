@@ -21,7 +21,13 @@ namespace Eccube\Service\Permission;
  * 指定ユーザーから書き込めるかどうかは is_writable() では判定できない.
  * is_writable() が返すのは実行ユーザー (CLI 実行なら SSH ユーザー) から見た可否だけで,
  * Web サーバーから書けるかどうかは分からないため, パーミッションビットから推定する.
- * 補助グループ・ACL・SELinux までは判定できないため, 結果はあくまで推定として扱うこと.
+ *
+ * 判定は対象パス自身のビットだけで行う. 次のものは見ていないため, 結果はあくまで推定として扱うこと.
+ *
+ * - 補助グループ・ACL・SELinux
+ * - ディレクトリの実行 (x) ビット. エントリの作成・削除には w に加えて x が,
+ *   配下のファイルを開くには x が必要になる
+ * - 祖先ディレクトリの到達性. 親が 0700 なら, 子の所有者やビットに関わらず到達できない
  */
 final readonly class PathOwnership
 {
@@ -85,14 +91,14 @@ final readonly class PathOwnership
             return true;
         }
 
-        if (($this->permissions & $otherBit) !== 0) {
-            return true;
-        }
+        // POSIX は owner / group / other のうち 1 つのクラスだけを見る.
+        // 所有者が一致すれば, other が緩くても owner のビットで可否が決まる
+        $bit = match (true) {
+            $user->uid === $this->uid => $ownerBit,
+            $user->gid === $this->gid => $groupBit,
+            default => $otherBit,
+        };
 
-        if ($user->uid === $this->uid && ($this->permissions & $ownerBit) !== 0) {
-            return true;
-        }
-
-        return $user->gid === $this->gid && ($this->permissions & $groupBit) !== 0;
+        return ($this->permissions & $bit) !== 0;
     }
 }

@@ -53,6 +53,12 @@ final class PathOwnershipTest extends TestCase
         yield 'other with write bit' => [1000, 1000, 0007, 33, 33, true];
         yield 'other without write bit' => [1000, 1000, 0005, 33, 33, false];
 
+        // POSIX は owner / group / other のうち 1 つのクラスだけを見る.
+        // other が緩くても, 一致したクラスのビットで可否が決まる
+        yield 'owner class is used even when other is permissive' => [1000, 1000, 0006, 1000, 1000, false];
+        yield 'group class is used even when other is permissive' => [1000, 33, 0006, 33, 33, false];
+        yield 'owner class is used even when group is permissive' => [1000, 33, 0070, 1000, 33, false];
+
         // レーン S で守りたい形: SSH ユーザー所有 0755 は Web サーバーから書けない
         yield 'ssh owned 0755 is not writable by web server' => [1000, 1000, 0755, 33, 33, false];
         // group 書き込みを付けると Web サーバーから書けてしまう
@@ -79,6 +85,10 @@ final class PathOwnershipTest extends TestCase
         yield 'group with read bit' => [1000, 33, 0040, 33, 33, true];
         yield 'other with read bit' => [1000, 1000, 0004, 33, 33, true];
         yield 'no read bit for other' => [1000, 1000, 0770, 33, 33, false];
+
+        // 書き込みと同じく, 一致したクラスのビットだけで決まる
+        yield 'owner class is used even when other is permissive' => [1000, 1000, 0004, 1000, 1000, false];
+        yield 'group class is used even when other is permissive' => [1000, 33, 0004, 33, 33, false];
     }
 
     public function testIsWorldWritable(): void
