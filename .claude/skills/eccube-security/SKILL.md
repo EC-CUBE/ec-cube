@@ -105,7 +105,7 @@ if ($this->isGranted('IS_AUTHENTICATED_FULLY')) { ... }
 
 - ❌ 管理アクションを `%eccube_admin_route%` 配下**以外**に置く → ✅ 配下に置き admin firewall の保護下にする
 - ❌ フォームを介さない POST/DELETE/Ajax で CSRF 未検証 → ✅ `$this->isTokenValid()` を呼ぶ（GET 以外）
-- ❌ Ajax 専用アクションで XHR 以外（直アクセス等）も受け付ける → ✅ CSRF 検証に加え **`$request->isXmlHttpRequest()`** を併用し XHR 由来に限定する（コア例: `NonMemberShoppingController` / `Admin/Content/MaintenanceController`）
+- ❌ Ajax 専用アクションで XHR 以外も受け付ける → ✅ CSRF 検証に加え **`$request->isXmlHttpRequest()`** を併用し XHR に限定する
 - ❌ フロントで `{id}` から取得したエンティティを所有権チェックせず編集/削除（**IDOR**）
   → ✅ `$this->getUser()` と突き合わせ、他人のリソースなら `AccessDeniedHttpException`
 - ❌ パスワード変更・退会など重要操作を `IS_AUTHENTICATED_REMEMBERED` で許可
@@ -113,8 +113,8 @@ if ($this->isGranted('IS_AUTHENTICATED_FULLY')) { ... }
 - ❌ 独自 Voter で「対象外」を `ACCESS_DENIED` で返す → ✅ 対象外は `ACCESS_ABSTAIN`（unanimous 戦略で誤拒否を防ぐ）
 - ❌ 自前でパスワードをハッシュ/平文比較 → ✅ `PasswordHasher` 経由に統一
 - ❌ ユーザー入力を Twig で `|raw` 出力 → ✅ エスケープを効かせる（Skill `eccube-twig-template`）
-- ❌ アップロード/ファイル操作を伴う管理ルートを新設したが `eccube_restrict_file_upload` の遮断対象を考慮しない → ✅ コアは `eccube_restrict_file_upload === '1'` のとき `eccube_restrict_file_upload_urls` のルートを `RestrictFileUploadListener` で遮断する。新規ルートを遮断対象に含めるべきか検討する
-- ❌ ユーザー指定のファイル名/パスをそのまま読み書き・配信（**ディレクトリトラバーサル**）→ ✅ `..` を拒否し `realpath()` で解決、許可ベースディレクトリ内かを `str_starts_with(realpath($target), realpath($baseDir))` で検証する（コアの `FileController::checkDir()` が手本。基準は `html/user_data` 等の jail ディレクトリ）
+- ❌ ファイル操作を伴う管理ルートを新設して `eccube_restrict_file_upload` を考慮しない → ✅ 遮断対象（`eccube_restrict_file_upload_urls`）に含めるべきか検討する
+- ❌ ユーザー指定のパスをそのまま読み書き（**ディレクトリトラバーサル**）→ ✅ `..` を拒否し `realpath()` で解決、許可ベース配下かを検証する（`FileController::checkDir()` が手本）
 
 ## 実行・確認方法
 

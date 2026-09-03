@@ -30,7 +30,6 @@ use Eccube\Entity\Shipping;
 use Eccube\Entity\TaxRule;
 use Eccube\Service\TaxRuleService;
 use Eccube\Tests\EccubeTestCase;
-use Eccube\Tests\Fixture\Generator;
 use PHPUnit\Framework\Attributes\Group;
 
 /**
@@ -125,28 +124,6 @@ final class OrderTest extends EccubeTestCase
     {
         $this->expected = [$this->entityManager->getRepository(SaleType::class)->find(1)];
         $this->actual = $this->Order->getSaleTypes();
-        $this->verify();
-    }
-
-    #[Group(name: 'decimal')]
-    public function testGetTotalPrice()
-    {
-        $faker = $this->getFaker();
-        /** @var Order $Order */
-        $Order = static::getContainer()->get(Generator::class)->createOrder(
-            $this->Customer,
-            [],
-            null,
-            $faker->randomNumber(5),
-            $faker->randomNumber(5)
-        );
-        // 元の計算式: $Order->getSubTotal() + $Order->getCharge() + $Order->getDeliveryFeeTotal() - $Order->getDiscount();
-        $this->expected = bcadd(
-            bcadd(bcadd($Order->getSubTotal(), $Order->getCharge(), 2), $Order->getDeliveryFeeTotal(), 2),
-            bcsub('0', $Order->getDiscount(), 2),
-            2
-        );
-        $this->actual = $Order->getTotalPrice();
         $this->verify();
     }
 

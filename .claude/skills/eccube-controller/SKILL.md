@@ -131,13 +131,12 @@ vendor/bin/php-cs-fixer fix                     # PSR-12 整形・ライセン�
 - ❌ アクション内で `$em->persist()`/`$em->flush()` を直書きして業務処理 → ✅ Service のメソッドに集約
 - ❌ 複数アクションに同じ処理をコピペ → ✅ Service の 1 メソッドに共通化
 - ❌ 具象クラス型ヒントで密結合 → ✅ インターフェース型ヒント＋コンストラクタ DI
-- ❌ 削除/Ajax 等の状態変更でトークン未検証 → ✅ `$this->isTokenValid()` を呼ぶ（GET 以外）
-- ❌ `$this->isTokenValid();`（戻り値を捨てた bare 呼び出し）を「CSRF 未検証」と誤読 → ✅ 無効時は `AccessDeniedHttpException` を投げ戻り値は常に true。bare 呼び出しで検証は成立し、`if (!isTokenValid())` の false 分岐はデッドコード
-- ❌ `#[Template]` 付きアクションの「エラー時に再描画される」を前提にレビュー判断 → ✅ `#[Template]` は配列を返したときのみ engage。Response/Redirect を返すパス（例: フォーム失敗で `redirectToRoute`）では描画されない
+- ❌ 削除/Ajax 等の状態変更でトークン未検証 → ✅ `$this->isTokenValid()` を呼ぶ（GET 以外）。戻り値を捨てた bare 呼び出しでも無効時は例外なので検証は成立し、false 分岐はデッドコード
+- ❌ `#[Template]` 付きアクションが常に再描画されると前提する → ✅ engage するのは配列を返したときだけ。Response/Redirect を返すパスでは描画されない
 - ❌ 管理アクションを `%eccube_admin_route%` 配下以外に置く → ✅ admin ファイアウォール配下に置く
-- ❌ 同一アクションで `executePurchaseFlow()` を複数回呼ぶとき 2 回目以降の `FlowResult` を無視する → ✅ 毎回 `hasError()`/`hasWarning()` の分岐を 1 回目と同じに揃える（共通化可）
-- ❌ 配列が来る可能性のあるリクエスト値を `getString()` でスカラーに強制する → ✅ `InputBag` は非スカラーで例外を投げるため強制できない。`all()` で受けて型を検査する
-- ❌ 削除アクションで外部キー違反だけを狙って個別の例外型を catch する → ✅ コアは `catch (\Exception)` で受けて `trans('admin.common.delete_error_foreign_key')` を返す形に統一している（`CategoryController` ほか 10 以上のコントローラ）。例外型を絞る実装は「動作としては正しいがコア非準拠」なので、揃えるかどうかは受入基準で判断する
+- ❌ `executePurchaseFlow()` を複数回呼んで 2 回目以降の `FlowResult` を無視する → ✅ 毎回 `hasError()`/`hasWarning()` を同じに分岐させる
+- ❌ 配列が来うるリクエスト値を `getString()` でスカラーに強制する → ✅ `InputBag` は非スカラーで例外を投げるので強制できない。`all()` で受けて型を検査する
+- ❌ 削除で外部キー違反だけを狙って個別の例外型を catch する → ✅ コアは `catch (\Exception)` ＋ `delete_error_foreign_key` に統一。絞る実装は「正しいがコア非準拠」で、揃えるかは受入基準で判断
 
 ## 実行・確認方法
 

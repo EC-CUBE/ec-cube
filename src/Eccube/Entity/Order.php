@@ -280,7 +280,7 @@ class Order extends AbstractEntity implements PurchaseInterface, ItemHolderInter
             }
         }
 
-        return count($Shippings) > 1 ? true : false;
+        return count($Shippings) > 1;
     }
 
     /**
@@ -326,7 +326,9 @@ class Order extends AbstractEntity implements PurchaseInterface, ItemHolderInter
         $orderItemArray = [];
         /** @var OrderItem $ProductOrderItem */
         foreach ($ProductOrderItems as $ProductOrderItem) {
-            $productClassId = $ProductOrderItem->getProductClass()->getId();
+            // 未永続の明細では ID が null になるため、配列キーとして使えるよう文字列化する
+            // (null をキーに使うのは PHP 8.5 で非推奨。null は '' として扱われるため挙動は変わらない)
+            $productClassId = (string) $ProductOrderItem->getProductClass()->getId();
             if (array_key_exists($productClassId, $orderItemArray)) {
                 // 同じ規格の商品がある場合は個数をまとめる
                 $OrderItem = $orderItemArray[$productClassId];
@@ -341,18 +343,6 @@ class Order extends AbstractEntity implements PurchaseInterface, ItemHolderInter
         }
 
         return array_values($orderItemArray);
-    }
-
-    /**
-     * 合計金額を計算
-     *
-     * @deprecated
-     */
-    public function getTotalPrice(): string
-    {
-        @trigger_error('The '.__METHOD__.' method is deprecated.', E_USER_DEPRECATED);
-
-        return $this->getPaymentTotal();
     }
 
     #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
@@ -409,7 +399,7 @@ class Order extends AbstractEntity implements PurchaseInterface, ItemHolderInter
     private ?string $discount = '0';
 
     #[ORM\Column(name: 'delivery_fee_total', type: Types::DECIMAL, precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
-    private ?string $delivery_fee_total = '0';
+    private ?string $delivery_fee_total;
 
     #[ORM\Column(name: 'charge', type: Types::DECIMAL, precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
     private ?string $charge = '0';
@@ -904,8 +894,6 @@ class Order extends AbstractEntity implements PurchaseInterface, ItemHolderInter
      * Set deliveryFeeTotal.
      *
      * @param string $deliveryFeeTotal
-     *
-     * @return $this
      */
     #[\Override]
     public function setDeliveryFeeTotal($deliveryFeeTotal): static
@@ -928,8 +916,6 @@ class Order extends AbstractEntity implements PurchaseInterface, ItemHolderInter
      * Set charge.
      *
      * @param string $charge
-     *
-     * @return $this
      */
     #[\Override]
     public function setCharge($charge): static
@@ -951,8 +937,6 @@ class Order extends AbstractEntity implements PurchaseInterface, ItemHolderInter
      * Set tax.
      *
      * @param string $tax
-     *
-     * @return $this
      *
      * @deprecated 明細ごとに集計した税額と差異が発生する場合があるため非推奨
      */
@@ -1132,8 +1116,6 @@ class Order extends AbstractEntity implements PurchaseInterface, ItemHolderInter
 
     /**
      * Set currencyCode.
-     *
-     * @return $this
      */
     public function setCurrencyCode(?string $currencyCode = null): static
     {
@@ -1147,9 +1129,6 @@ class Order extends AbstractEntity implements PurchaseInterface, ItemHolderInter
         return $this->complete_message;
     }
 
-    /**
-     * @return $this
-     */
     public function setCompleteMessage(?string $complete_message = null): static
     {
         $this->complete_message = $complete_message;
@@ -1157,9 +1136,6 @@ class Order extends AbstractEntity implements PurchaseInterface, ItemHolderInter
         return $this;
     }
 
-    /**
-     * @return $this
-     */
     public function appendCompleteMessage(?string $complete_message = null): static
     {
         $this->complete_message .= $complete_message;

@@ -4,21 +4,21 @@ name: Agentic Commerce E2E
 ## 結合を検証する E2E。Job A スモーク + Job B checkout (OAuth2 認証 + create/update/complete)。
 ##
 ## 通常 CI (main.yml) から workflow_call で呼び出され、push/PR で自動実行される。
-## workflow_dispatch では fork ブランチや run_payment を手動指定できる。
-## 自動実行時は fork の feature/agentic-commerce ブランチ・run_payment=true を既定にする。
-## (プラグインの EC-CUBE org 移行後、参照 URL/ブランチは別 PR で org 参照へ差し替える。)
+## workflow_dispatch では参照ブランチや run_payment を手動指定できる。
+## 自動実行時は EC-CUBE org の 4.4 ブランチ・run_payment=true を既定にする
+## (eccube-api4#191 / sample-payment-plugin#54 が 4.4 へマージ済み)。
 
 on:
   workflow_dispatch:
     inputs:
       api4_ref:
-        description: 'eccube-api4 (nanasess fork) のブランチ'
+        description: 'EC-CUBE/eccube-api4 のブランチ'
         type: string
-        default: 'feature/agentic-commerce'
+        default: '4.4'
       sample_ref:
-        description: 'sample-payment-plugin (nanasess fork) のブランチ'
+        description: 'EC-CUBE/sample-payment-plugin のブランチ'
         type: string
-        default: 'feature/agentic-commerce'
+        default: '4.4'
       run_payment:
         description: 'complete (決済実行) まで通す'
         type: boolean
@@ -28,11 +28,11 @@ on:
       api4_ref:
         type: string
         required: false
-        default: 'feature/agentic-commerce'
+        default: '4.4'
       sample_ref:
         type: string
         required: false
-        default: 'feature/agentic-commerce'
+        default: '4.4'
       run_payment:
         type: boolean
         required: false
@@ -42,9 +42,9 @@ permissions:
   contents: read
 
 env:
-  ## VCS リポジトリ (Packagist 未公開の開発期間は fork を VCS 経由で引く)
-  API44_VCS: 'https://github.com/nanasess/eccube-api4.git'
-  SAMPLEPAYMENT44_VCS: 'https://github.com/nanasess/sample-payment-plugin.git'
+  ## リポジトリ (Packagist 未公開の開発期間は 4.4 ブランチを clone して引く)
+  API44_VCS: 'https://github.com/EC-CUBE/eccube-api4.git'
+  SAMPLEPAYMENT44_VCS: 'https://github.com/EC-CUBE/sample-payment-plugin.git'
 
 jobs:
   ## ───────────────────────────────────────────────────────────────────────
@@ -78,7 +78,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v6
         with:
           persist-credentials: false
 
@@ -113,7 +113,7 @@ jobs:
           PGPASSWORD=password psql -h 127.0.0.1 -U postgres -c 'SELECT VERSION()'
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc  # v2
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240  # v2
         with:
           php-version: ${{ matrix.php }}
           # 追加拡張は指定しない (必要な拡張は setup-php 既定で揃う)。共有レンタルサーバー相当の環境を
@@ -142,14 +142,15 @@ jobs:
           bin/console eccube:fixtures:load --env=dev
 
       ## ── 結合の核心: 本体に api44 と samplepayment44 を共存インストール ──
-      ## fork のデフォルトブランチが旧名 (ec-cube/api・ec-cube/SamplePayment) のため、composer の
-      ## VCS ドライバはデフォルトブランチから決まる名前で repo をキーする → 新名 (api44/samplepayment44)
-      ## の feature ブランチが名前不一致でスキップされ "not found" になる。これを避けるため、
-      ## 対象ブランチを clone して **path リポジトリ**として参照する (clone 先 composer.json の名前で解決)。
+      ## 両リポジトリのデフォルトブランチは 4.2 系で、composer 名も旧名 (ec-cube/api42・
+      ## ec-cube/samplepayment42)。composer の VCS ドライバはデフォルトブランチから決まる名前で
+      ## repo をキーするため、新名 (api44/samplepayment44) の 4.4 ブランチが名前不一致で
+      ## スキップされ "not found" になる。これを避けるため、対象ブランチを clone して
+      ## **path リポジトリ**として参照する (clone 先 composer.json の名前で解決)。
       - name: Clone plugins & register path repositories
         env:
-          API4_REF: ${{ inputs.api4_ref || 'feature/agentic-commerce' }}
-          SAMPLE_REF: ${{ inputs.sample_ref || 'feature/agentic-commerce' }}
+          API4_REF: ${{ inputs.api4_ref || '4.4' }}
+          SAMPLE_REF: ${{ inputs.sample_ref || '4.4' }}
         run: |
           git clone --depth 1 --branch "${API4_REF}" "${API44_VCS}" "${RUNNER_TEMP}/api44"
           git clone --depth 1 --branch "${SAMPLE_REF}" "${SAMPLEPAYMENT44_VCS}" "${RUNNER_TEMP}/samplepayment44"
@@ -290,7 +291,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10  # v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v6
         with:
           persist-credentials: false
 
@@ -305,7 +306,7 @@ jobs:
           psql -h 127.0.0.1 -U postgres -c "ALTER USER postgres PASSWORD 'password'"
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc  # v2
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240  # v2
         with:
           php-version: ${{ matrix.php }}
           # 追加拡張は指定しない (必要な拡張は setup-php 既定で揃う)。共有レンタルサーバー相当の環境を
@@ -327,9 +328,9 @@ jobs:
           DATABASE_CHARSET: ${{ matrix.database_charset }}
           ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
           ## untrusted な可能性のある dispatch 入力は env 経由で受ける
-          API4_REF: ${{ inputs.api4_ref || 'feature/agentic-commerce' }}
-          SAMPLE_REF: ${{ inputs.sample_ref || 'feature/agentic-commerce' }}
-          ## 公開フォークの VCS 解決に GitHub トークンを渡す (レート制限回避)
+          API4_REF: ${{ inputs.api4_ref || '4.4' }}
+          SAMPLE_REF: ${{ inputs.sample_ref || '4.4' }}
+          ## 依存パッケージの dist 取得に GitHub トークンを渡す (レート制限回避)
           COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.GITHUB_TOKEN }}"}}'
         run: |
           echo "APP_ENV=${APP_ENV}" > .env
@@ -339,7 +340,7 @@ jobs:
           bin/console doctrine:database:create --env=dev
           bin/console doctrine:schema:create --env=dev
           bin/console eccube:fixtures:load --env=dev
-          ## fork デフォルトブランチの旧名問題を避けるため path リポジトリで取り込む (Job A と同方針)
+          ## デフォルトブランチ (4.2 系) の旧名問題を避けるため path リポジトリで取り込む (Job A と同方針)
           git clone --depth 1 --branch "${API4_REF}" "${API44_VCS}" "${RUNNER_TEMP}/api44"
           git clone --depth 1 --branch "${SAMPLE_REF}" "${SAMPLEPAYMENT44_VCS}" "${RUNNER_TEMP}/samplepayment44"
           ## api44 は extra.id を持たないため path インストール用にダミー id を注入 (Job A と同方針)

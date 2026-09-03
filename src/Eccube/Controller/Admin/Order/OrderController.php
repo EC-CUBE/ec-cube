@@ -52,7 +52,6 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintViolationInterface;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class OrderController extends AbstractController
@@ -186,7 +185,8 @@ class OrderController extends AbstractController
 
         $qb = $this->orderRepository->getQueryBuilderBySearchDataForAdmin($searchData);
 
-        $sortKey = $searchData['sortkey'];
+        // null を配列オフセットに使うのは PHP 8.5 で非推奨。null は '' として扱われるため挙動は変わらない
+        $sortKey = $searchData['sortkey'] ?? '';
         $paginate_options = ['wrap-queries' => true];
         if (empty($this->orderRepository::COLUMNS[$sortKey]) || $sortKey == 'order_status') {
             $paginate_options = [];
@@ -468,7 +468,6 @@ class OrderController extends AbstractController
         $trackingNumber = $request->get('tracking_number') ?? '';
         $trackingNumber = mb_convert_kana((string) $trackingNumber, 'a', 'utf-8');
 
-        /** @var ConstraintViolationListInterface $errors */
         $errors = $this->validator->validate(
             $trackingNumber,
             [

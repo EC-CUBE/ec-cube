@@ -44,8 +44,9 @@ EC-CUBE は日本で広く使われる OSS の EC プラットフォームです
 - **ORM**: Doctrine ORM 3.x / DBAL 4.x（マッピングは **PHP8 属性** `#[ORM\...]`）
 - **テンプレート**: Twig 3.x
 - **データベース**: PostgreSQL 13–18 または MySQL 8.4 LTS
-- **フロントエンド**: Sass (SCSS) / webpack / Bootstrap 5.3 / jQuery 4.x
-- **テスト**: PHPUnit 11（`symfony/phpunit-bridge` 経由）/ Playwright（E2E、`e2e/`）
+- **フロントエンド**: Sass (SCSS) / esbuild / Bootstrap 5.3 / jQuery 4.x
+- **テスト**: PHPUnit 11（`vendor/bin/phpunit` を直接実行）/ Playwright（E2E、`e2e/`）
+  - ※ `symfony/phpunit-bridge` は依存にあるが、その `DeprecationErrorHandler`（`SYMFONY_DEPRECATIONS_HELPER`）は **PHPUnit 10 以上では無効**（bridge の `bootstrap.php` が早期 return する）。非推奨の検出は PHPUnit 11 ネイティブの `failOnDeprecation` で行う（`phpunit.xml.dist`）。
   - ※ `codeception/` は残置（レガシー）。CI の Codeception ジョブは無効化（`if: false`）されており、E2E は Playwright が正。
 - **静的解析**: PHPStan（`phpstan.neon.dist` で level 6）
 - **コードスタイル**: PHP-CS-Fixer（PSR-12）
@@ -108,9 +109,9 @@ bin/console eccube:install
 ### テスト
 
 ```bash
-bin/phpunit                                                      # 全テスト
-bin/phpunit tests/Eccube/Tests/Web/ShoppingControllerTest.php    # 単一ファイル
-bin/phpunit --filter testCompleteWithLogin                       # フィルタ
+vendor/bin/phpunit                                                      # 全テスト
+vendor/bin/phpunit tests/Eccube/Tests/Web/ShoppingControllerTest.php    # 単一ファイル
+vendor/bin/phpunit --filter testCompleteWithLogin                       # フィルタ
 ```
 
 E2E（Playwright、`e2e/` 配下で実行）:
@@ -267,10 +268,16 @@ frontmatter の `description` がトリガ条件で、該当レイヤを触る�
 - **上限**: 1 Skill あたり 10 項・1 項 120 字程度に収める。超えたら**追記ではなく既存項への統合か削除**を選ぶ。
 - **頻度順**: 踏まれやすいものを上に置く。読み手の注意は前方に効くため、頻度順でないリストは下位が実質死ぬ。
 
-この歯止めは**追記するときに適用する**。本規則の導入時点で上限を超えている Skill
-（項数: `eccube-mail` 11 / `eccube-purchase-flow` 12、字数: `eccube-controller` `eccube-csv` `eccube-e2e`
-`eccube-entity` `eccube-phpunit` `eccube-purchase-flow` `eccube-security` `eccube-twig-template`）は、
-次にその節へ手を入れるときに統合・短縮する。既存の超過を理由に新規追記の歯止めを緩めない。
+この歯止めは**追記するときに適用する**。本規則の導入時点で超過していた Skill
+（項数 2 件・字数 8 件）は統合・短縮済みで、現在はすべて 10 項以内に収まっている。
+超過の有無は次で確認できる。
+
+```bash
+for f in .claude/skills/eccube-*/SKILL.md; do
+  sed -n '/よくある間違い/,/^## /p' "$f" | grep -E '^- ' \
+    | awk -v s="$(basename "$(dirname "$f")")" '{n++; if (length>m) m=length} END {if (n) printf "%-28s 項数=%-3s 最長=%s\n", s, n, m}'
+done
+```
 
 ## 主要エンティティ
 

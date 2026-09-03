@@ -20,7 +20,6 @@ use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\CacheClearer\Psr6CacheClearer;
 use Symfony\Component\HttpKernel\Event\TerminateEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -137,68 +136,6 @@ class CacheUtil implements EventSubscriberInterface
         $cacheDir = $this->kernel->getCacheDir().'/twig';
         $fs = new Filesystem();
         $fs->remove($cacheDir);
-    }
-
-    /**
-     * キャッシュを削除する.
-     *
-     * doctrine, profiler, twig によって生成されたキャッシュディレクトリを削除する.
-     * キャッシュは $app['config']['root_dir'].'/app/cache' に生成されます.
-     *
-     * @param Application|array{config: array{root_dir: string}} $app
-     * @param bool $isAll .gitkeep を残してすべてのファイル・ディレクトリを削除する場合 true, 各ディレクトリのみを削除する場合 false
-     * @param bool $isTwig Twigキャッシュファイルのみ削除する場合 true
-     *
-     * @return bool 削除に成功した場合 true
-     *
-     * @deprecated CacheUtil::clearCacheを利用すること
-     */
-    public static function clear(Application|array $app, bool $isAll, bool $isTwig = false): bool
-    {
-        $cacheDir = $app['config']['root_dir'].'/app/cache';
-
-        $filesystem = new Filesystem();
-        $finder = Finder::create()->notName('.gitkeep')->files();
-        if ($isAll) {
-            $finder = $finder->in($cacheDir);
-            $filesystem->remove($finder);
-        } elseif ($isTwig) {
-            if (is_dir($cacheDir.'/twig')) {
-                $finder = $finder->in($cacheDir.'/twig');
-                $filesystem->remove($finder);
-            }
-        } else {
-            if (is_dir($cacheDir.'/doctrine')) {
-                $finder = $finder->in($cacheDir.'/doctrine');
-                $filesystem->remove($finder);
-            }
-            if (is_dir($cacheDir.'/profiler')) {
-                $finder = $finder->in($cacheDir.'/profiler');
-                $filesystem->remove($finder);
-            }
-            if (is_dir($cacheDir.'/twig')) {
-                $finder = $finder->in($cacheDir.'/twig');
-                $filesystem->remove($finder);
-            }
-            if (is_dir($cacheDir.'/translator')) {
-                $finder = $finder->in($cacheDir.'/translator');
-                $filesystem->remove($finder);
-            }
-        }
-
-        if (function_exists('opcache_reset')) {
-            opcache_reset();
-        }
-
-        if (function_exists('apcu_clear_cache')) {
-            apcu_clear_cache();
-        }
-
-        if (function_exists('wincache_ucache_clear')) {
-            wincache_ucache_clear();
-        }
-
-        return true;
     }
 
     /**

@@ -58,8 +58,6 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
     #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'id')]
     private ?Customer $Customer = null;
 
-    private bool $lock = false;
-
     /**
      * @var Collection<int, CartItem>
      */
@@ -140,24 +138,6 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
         return $this;
     }
 
-    /**
-     * @deprecated 使用しないので削除予定
-     */
-    public function getLock(): bool
-    {
-        return $this->lock;
-    }
-
-    /**
-     * @deprecated 使用しないので削除予定
-     */
-    public function setLock(bool $lock): Cart
-    {
-        $this->lock = $lock;
-
-        return $this;
-    }
-
     public function getPreOrderId(): ?string
     {
         return $this->pre_order_id;
@@ -225,8 +205,6 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
 
     /**
      * Set total.
-     *
-     * @return $this
      */
     public function setTotalPrice(string $total_price): static
     {
@@ -244,8 +222,6 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
      * Alias of setTotalPrice.
      *
      * @param string $total
-     *
-     * @return $this
      */
     #[\Override]
     public function setTotal($total): static
@@ -300,8 +276,6 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
      * {@inheritdoc}
      *
      * @param string $total
-     *
-     * @return $this
      */
     #[\Override]
     public function setDeliveryFeeTotal($total): static
@@ -390,8 +364,6 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
      * {@inheritdoc}
      *
      * @param string $total
-     *
-     * @return $this
      */
     #[\Override]
     public function setDiscount($total): static
@@ -404,8 +376,6 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
      * {@inheritdoc}
      *
      * @param string $total
-     *
-     * @return $this
      */
     #[\Override]
     public function setCharge($total): static
@@ -418,8 +388,6 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
      * {@inheritdoc}
      *
      * @param string $total
-     *
-     * @return $this
      *
      * @deprecated
      */

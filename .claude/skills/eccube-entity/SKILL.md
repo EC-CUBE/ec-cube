@@ -18,10 +18,12 @@ description: EC-CUBE 4.4 の Doctrine エンティティを実装・改修する
 - プロパティ・getter / setter に型宣言を付ける。setter は `$this` を返す（fluent）。
   nullable は DB カラムの nullable と一致させる。
 
-## プロキシ拡張に対応するクラスラッパ
+## エンティティの骨格
 
-コアのエンティティは、プラグイン/カスタマイズによる trait 追加（プロキシ生成）に対応するため
-`if (!class_exists(X::class)) { ... }` で囲う。
+**`if (!class_exists(X::class)) { ... }` のクラスラッパは書かない。** プラグイン/カスタマイズによる
+trait 追加は、プロキシ生成（`app/proxy/entity` / `bin/console eccube:generate:proxies`）が担う。
+ラッパはその前段で使われていた名残で、`src/Eccube/Entity` からも `app/Customize/Entity` からも
+撤去済み（現在 0 件）。`EntityProxyService` はプロキシ生成時にこのブロックを除去する側に回っている。
 
 ```php
 namespace Eccube\Entity;
@@ -30,35 +32,33 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Repository\ExampleRepository;
 
-if (!class_exists(Example::class)) {
-    #[ORM\Table(name: 'dtb_example')]
-    #[ORM\Index(columns: ['create_date'], name: 'dtb_example_create_date_idx')]
-    #[ORM\HasLifecycleCallbacks]
-    #[ORM\Entity(repositoryClass: ExampleRepository::class)]
-    class Example extends AbstractEntity
+#[ORM\Table(name: 'dtb_example')]
+#[ORM\Index(columns: ['create_date'], name: 'dtb_example_create_date_idx')]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: ExampleRepository::class)]
+class Example extends AbstractEntity
+{
+    #[ORM\Id]
+    #[ORM\Column(type: Types::INTEGER, options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    private ?int $id = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $name = null;
+
+    // getId() の戻り値が ?int（nullable）なのは、IDENTITY 採番のため
+    // 永続化（flush）されるまで ID が未採番（null）だから。意図的な nullable で、
+    // 「まだ DB に保存されていない新規エンティティ」を表現できる。
+    public function getId(): ?int
     {
-        #[ORM\Id]
-        #[ORM\Column(type: Types::INTEGER, options: ['unsigned' => true])]
-        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-        private ?int $id = null;
+        return $this->id;
+    }
 
-        #[ORM\Column(length: 255, nullable: true)]
-        private ?string $name = null;
+    public function setName(?string $name): self
+    {
+        $this->name = $name;
 
-        // getId() の戻り値が ?int（nullable）なのは、IDENTITY 採番のため
-        // 永続化（flush）されるまで ID が未採番（null）だから。意図的な nullable で、
-        // 「まだ DB に保存されていない新規エンティティ」を表現できる。
-        public function getId(): ?int
-        {
-            return $this->id;
-        }
-
-        public function setName(?string $name): self
-        {
-            $this->name = $name;
-
-            return $this;
-        }
+        return $this;
     }
 }
 ```
@@ -104,14 +104,12 @@ if (!class_exists(Example::class)) {
 - ❌ XML / アノテーションでマッピング → ✅ PHP8 属性
 - ❌ カラムを足したので ALTER マイグレーションを書く → ✅ 属性を足すだけ（`schema:update` が反映）。マイグレーションは INSERT・型変更等に限る
 - ❌ 在庫引当・採番・ポイント付与などの受注処理をエンティティに書く → ✅ PurchaseFlow / Service へ。エンティティは自身の状態から導く計算/判定まで
-- ❌ `class_exists` ラッパなしでコアエンティティを定義 → ✅ プロキシ拡張に対応するラッパで囲う
 - ❌ プロパティ/戻り値の型宣言省略 → ✅ 型を付け、PHPStan level 6 を通す
-- ❌ 金額 getter（`Order::getTotal()`・`OrderItem::getTotalPrice()` 等）の戻り値を int/float 扱い → ✅ DECIMAL は `?string`（getter は `string`）。型宣言・代入もこれに合わせる
-- ❌ 金額を float で四則演算（丸め誤差）→ ✅ `bcmath`（`bcadd` / `bcmul` / `bccomp`、スケール 2）で計算する
-- ❌ `create_date` / `update_date` を自前の `#[ORM\PrePersist]`（＋`#[ORM\HasLifecycleCallbacks]`）でセット → ✅ コアの `SaveEventSubscriber`（グローバル Doctrine prePersist/preUpdate）が `method_exists` で `setCreateDate`/`setUpdateDate`/`setCreator` を自動セットする（`src/Eccube/Doctrine/EventSubscriber/SaveEventSubscriber.php`）。setter さえ生やせばよく、自前 PrePersist は二重実装になるので書かない
-- ❌ 他エンティティ（特にコアの `Product`/`Customer` 等、自分で制御できない親）への関連で親削除時の挙動を未決定 → ✅ FK は既定で削除を止める（RESTRICT 相当）。未指定だと**退会・商品削除が FK 違反で失敗**したり孤児化する。`onDelete`（`SET NULL`／`CASCADE`）を指定するか、Service・プラグイン disable 等で後始末する（コアは `onDelete` を限定使用し[95 JoinColumn 中 2 件]、多くは Service 側で関連を整理している）
+- ❌ 金額を int/float で扱う → ✅ DECIMAL は `?string`（getter は `string`）。型宣言・代入も合わせ、四則演算は `bcmath`（`bcadd` / `bcmul` / `bccomp`、スケール 2）で行う
+- ❌ `create_date` / `update_date` を自前の `#[ORM\PrePersist]` でセット → ✅ コアの `SaveEventSubscriber` が setter を検出して自動セットするので二重実装になる
+- ❌ 他エンティティへの関連で親削除時の挙動を未決定 → ✅ FK は既定で削除を止めるので、未指定だと親の削除が FK 違反で失敗する。`onDelete` を指定するか Service 側で後始末する（コアは大半が後者）
 - ❌ `@deprecated` なゲッタを未使用と判断して削除する → ✅ CSV 出力項目（`dtb_csv`）のアクセサとして現役のことがあり、削除は仕様変更になる。先に CSV 定義と照合する
-- ❌ トレイト拡張・プロキシ絡みの不具合を「手元で再現しないから誤検知」と判断する → ✅ `TraitProxyAttributeDriver` は対象 FQCN が**まだ宣言されていないときだけ** `app/proxy/entity` の生成物を `require_once` する（同一 FQCN を二重宣言して `Cannot redeclare class` になるのを避けるため）。まっさらな状態では修正の有無にかかわらずトレイト由来の列が出るので、不具合はクラスとメタデータがロード済みのときだけ顕在化する。再現するには `getMetadataFor()` などで対象を先にロードした状態を作り、検証のたびに `app/proxy/entity` を消してから試す
+- ❌ トレイト拡張・プロキシ絡みの不具合を「手元で再現しないから誤検知」と判断する → ✅ 対象クラスが未宣言のときだけプロキシが `require` されるので、まっさらな状態では修正の有無によらず列が出る。先にロードした状態を作って試す
 
 ## 実行・確認方法
 

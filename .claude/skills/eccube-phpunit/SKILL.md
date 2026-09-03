@@ -6,7 +6,7 @@ description: EC-CUBE 4.4 の PHPUnit テストを実装・修正するときの�
 # PHPUnit テスト規約（EC-CUBE 4.4）
 
 **対象**: `tests/Eccube/Tests/**/*Test.php`
-**前提**: PHPUnit 11（`symfony/phpunit-bridge` 経由）/ PHP 8.2+ / Symfony 7.4
+**前提**: PHPUnit 11（`vendor/bin/phpunit` を直接実行）/ PHP 8.2+ / Symfony 7.4
 
 ## 基本ルール
 
@@ -108,21 +108,22 @@ public static function provideStatuses(): array
 - ❌ `new Client()` など HTTP クライアントの自前生成 → ✅ 親クラスの `$this->client`。
 - ❌ URL の文字列直書き（`'/products/list'`）→ ✅ `$this->generateUrl('product_list')`。
 - ❌ Entity の手組み → ✅ `createXxx()` フィクスチャヘルパ。
-- ❌ 支払方法のデフォルト/再選択テストで `find(1)` 等の ID 前提 → ✅ `Generator::createPayment()` で sort_no・利用条件を明示し `assertSame()` で再選択先を固定（フィクスチャ並び変更で偽陽性になり得る）。
+- ❌ 支払方法のテストで `find(1)` 等の ID 前提 → ✅ `Generator::createPayment()` で sort_no・利用条件を明示し `assertSame()` で固定する。
 - ❌ ステータス値のハードコーディング（`if ($status == 1)`）→ ✅ 定数（例: `OrderStatus::NEW`）を使う。
-- ❌ 回帰テストを追加して、修正を外すと落ちることを確認せずに完了とする → ✅ 修正を 1 つずつ外してどのテストが落ちるか実測する（落ちないテストはゲートにならない）。
-- ❌ PHP Warning が出ることを回帰の証拠にする → ✅ `phpunit.xml.dist` に `failOnWarning` が無いため Warning では落ちない。戻り値を assert で直接検証する。
+- ❌ 回帰テストがゲートになるか確かめない → ✅ 修正を外して落ちるか実測する。`failOnWarning` が無いので Warning では落ちず、戻り値を assert する。
 - ❌ 型宣言の省略 → ✅ 引数・戻り値に型を付け、PHPStan level 6 を通す。
+- ❌ テストのプロパティを未宣言で代入／非 nullable で宣言 → ✅ nullable で宣言する。未宣言は deprecation、非 nullable は `cleanUpProperties()` の null 代入で `TypeError`。
+- ❌ HTML パートを持たないメールに `assertEmailHtmlBodyNotContains()` → ✅ `assertNull($Message->getHtmlBody())`。前者は必ず通る空振りになる。
 
 ## 実行方法
 
 ```bash
 # 全テスト
-bin/phpunit
+vendor/bin/phpunit
 
 # 単一ファイル
-bin/phpunit tests/Eccube/Tests/Web/ProductControllerTest.php
+vendor/bin/phpunit tests/Eccube/Tests/Web/ProductControllerTest.php
 
 # フィルタ
-bin/phpunit --filter testRouting
+vendor/bin/phpunit --filter testRouting
 ```

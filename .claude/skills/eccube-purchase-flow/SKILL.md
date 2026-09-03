@@ -228,19 +228,16 @@ class SaleLimitOneValidator extends ItemValidator
 
 ## よくある間違い
 
-- ❌ 在庫引当・採番・ポイント付与・送料/値引き計算をコントローラや汎用 Service に直書き → ✅ 該当 Processor/Validator を拡張する
-- ❌ 検証なのに ItemHolderPreprocessor、明細付与なのに Validator、と取り違える → ✅ パイプライン表で役割に合うコンポーネントを選ぶ
-- ❌ abstract 基底の `execute()` を override / 自前で try-catch → ✅ `validate()`（protected）だけ override。`execute()` は `final`
-- ❌ `ProcessResult` を `new` する / `addError()` を探す → ✅ 例外（`throwInvalidItemException` / `InvalidItemException`）を投げ、基底に変換させる
-- ❌ ItemValidator で「購入を止めたい」のに止まらない → ✅ ItemValidator は**常に warning**。中断したい検証は `ItemHolderValidator`/`PostValidator` で warning なしの error にする
+- ❌ 受注処理をコントローラや汎用 Service に直書きする／検証と明細付与でコンポーネントを取り違える → ✅ パイプライン表で役割に合う Processor / Validator を選び、そこを拡張する
+- ❌ `final` な `execute()` の override・自前 try-catch・`ProcessResult` の `new` → ✅ `validate()` だけ override し `InvalidItemException` を投げる
+- ❌ ItemValidator で購入を止めようとする → ✅ ItemValidator は**常に warning**。中断したい検証は `ItemHolderValidator` / `PostValidator` の error にする
 - ❌ Preprocessor で明細を追加しっぱなし（再実行で多重化） → ✅ `setProcessorName(self::class)` で印を付け、毎回削除→再追加で冪等にする
 - ❌ 値引きで合計金額を超える明細を作る → ✅ 利用可能額まで丸めるかスキップし `ProcessResult::warn()` を返す
 - ❌ 金額を float / `+`・`*` で計算 → ✅ `bcadd`/`bcsub`/`bcmul`/`bccomp` を使う
 - ❌ `Cart` でも `getShippings()` / `getCustomer()` を呼ぶ → ✅ `instanceof Order` でガード（Cart には Shipping もポイントも無い）
 - ❌ PurchaseProcessor の `rollback()` を実装し忘れる → ✅ `prepare()` の逆操作（在庫戻し等）を必ず実装する
-- ❌ 属性方式で実行順を制御しようとする → ✅ 順序が要るなら YAML タグの `priority`（降順）で指定する
-- ❌ (A) YAML タグと (B) 属性を両方付ける → ✅ どちらか一方。コアは YAML、プラグイン/Customize は属性が定石
-- ❌ 送料無料を商品単位の性質として扱う（商品詳細に「この商品は送料無料」と出す、構造化データに `shippingRate: 0` を出す等）→ ✅ `DeliveryFeeFreePreprocessor` は `BaseInfo::getDeliveryFreeAmount()` を `$itemHolder->getTotal()` と、`getDeliveryFreeQuantity()` を `getQuantity()` と比較する **カート全体の合計に対する条件**。カートが確定していない商品ページでは判定できないので、出せない値は出さない
+- ❌ 属性で実行順を制御する／YAML タグと属性を両方付ける → ✅ 順序は YAML タグの `priority`（降順）。登録はどちらか一方（既定はコア=YAML / プラグイン=属性、順序が要るならプラグインも YAML）
+- ❌ 送料無料を商品単位の性質として扱う → ✅ `DeliveryFeeFreePreprocessor` はカート合計と `BaseInfo` の閾値を比べる**カート全体の条件**。確定前の商品ページでは判定できないので出さない
 
 ## 実行・確認方法
 

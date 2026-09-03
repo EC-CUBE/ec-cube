@@ -96,7 +96,7 @@ vendor/bin/php-cs-fixer fix                     # PSR-12 整形・ライセン�
 - ❌ `Request` を Service に渡す → ✅ 必要な値だけを引数で渡す
 - ❌ ループ内で毎回 `flush()` → ✅ まとめて `flush()`（トランザクション境界を意識）
 - ❌ `flush()` を確定として扱う → ✅ `TransactionListener` が 1 リクエスト＝1 トランザクションで包み、コミットは `kernel.terminate`。`flush` は SQL 発行のみ
-- ❌ `if` の下にあるロックを「条件付きだからほとんど通らない／デッドコード」と読む → ✅ 条件に使っているプロパティが**永続化されているか**を確かめる。`StockReduceProcessor` の悲観ロック（`EntityManager::lock(..., PESSIMISTIC_WRITE)`）は `if ($productStock->getProductClassId() === null)` の下にあるが、`ProductStock::$product_class_id` は `#[ORM\Column]` を持たない**非永続（transient）プロパティ**で、DB 列の `product_class_id` は `OneToOne` の `JoinColumn` 側にある。つまり DB から読み込んだ直後は常に `null` で、**ロックは毎回実行される**
+- ❌ `if` の下のロックを「条件付きだからほぼ通らない」と読む → ✅ 条件に使うプロパティが永続化されているか確かめる。非永続（transient）なら DB 読み込み直後は常に `null` で、その分岐は毎回実行される
 
 ## 実行・確認方法
 

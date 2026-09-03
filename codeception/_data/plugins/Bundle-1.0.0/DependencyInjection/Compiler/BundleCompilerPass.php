@@ -13,6 +13,7 @@
 
 namespace Plugin\Bundle\DependencyInjection\Compiler;
 
+use League\Bundle\OAuth2ServerBundle\EventListener\AddClientDefaultScopesListener;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -22,8 +23,8 @@ class BundleCompilerPass implements CompilerPassInterface
     {
         $plugins = $container->getParameter('eccube.plugins.enabled');
         if (!in_array('Bundle', $plugins)) {
-            if ($container->hasDefinition('League\Bundle\OAuth2ServerBundle\EventListener\AddClientDefaultScopesListener')) {
-                $def = $container->getDefinition('League\Bundle\OAuth2ServerBundle\EventListener\AddClientDefaultScopesListener');
+            if ($container->hasDefinition(AddClientDefaultScopesListener::class)) {
+                $def = $container->getDefinition(AddClientDefaultScopesListener::class);
                 $def->clearTags();
             }
         }
