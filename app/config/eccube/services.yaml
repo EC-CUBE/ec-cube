@@ -303,6 +303,11 @@ services:
         arguments:
             $container: !tagged_locator { tag: 'cache.pool.clearer' }
 
+    # cache:clear で %eccube_runtime_dir%/pools を削除する (kernel.cache_clearer は autoconfigure で付与).
+    Eccube\Util\RuntimeCachePoolClearer:
+        arguments:
+            $runtimeDir: '%eccube_runtime_dir%'
+
     Eccube\Asset\FilemtimeVersionStrategy:
         arguments:
             - '%eccube_html_dir%/user_data'
