@@ -754,6 +754,19 @@ class OrderPdfService
             if ((277 - $this->pdfWriter->getY()) < ($h * 4)) {
                 $this->pdfWriter->checkPageBreak($this->pdfWriter->getPageBreakTrigger() + 1);
             }
+            // 上の判定が確保するのは 4 行ぶん(16mm)だけなので, それを超えて折り返す明細は
+            // ここで高さを測って一度だけ送る。1 度目の描画に測定を兼ねさせると, その途中で
+            // 改ページが起きて直後の setXY() が旧ページの座標を新ページへ適用してしまう
+            // （文字は分割されて送られる一方, 罫線だけが新ページの下端に取り残される）
+            $rowHeight = $h;
+            $i = 0;
+            foreach ($row as $col) {
+                $rowHeight = max($rowHeight, $this->pdfWriter->measureMultiCellHeight((float) $w[$i], $h, $col));
+                ++$i;
+            }
+            if ($rowHeight > ($h * 4)) {
+                $this->pdfWriter->checkPageBreak($rowHeight);
+            }
 
             $x = $this->pdfWriter->getX();
             $y = $this->pdfWriter->getY();

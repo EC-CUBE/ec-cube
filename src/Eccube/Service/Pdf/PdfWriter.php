@@ -353,6 +353,21 @@ class PdfWriter
     }
 
     /**
+     * 折り返しのあるセルの高さを, 描画も改ページもせずに測る.
+     *
+     * 描画を兼ねて高さを測ると, その途中で自動改ページが起きたときに
+     * 呼び出し側が退避した座標を使えなくなる. 先に高さだけ知りたい場合はこちらを使う.
+     *
+     * @param float $width セル幅. 0 以下なら右余白まで広げる
+     * @param float $height セルの最小高さ
+     * @param int|string $border 罫線. {@see cell()} と同じ
+     */
+    public function measureMultiCellHeight(float $width, float $height, string $text, int|string $border = 0): float
+    {
+        return $this->layoutMultiCell($this->resolveWidth($width), $height, $text, $border)[2];
+    }
+
+    /**
      * 折り返しのあるセルを描画し, カーソルを進める.
      *
      * セルの高さは「指定した最小高さ」と「行数 x 行送り」の大きい方になる.
@@ -374,10 +389,7 @@ class PdfWriter
     ): void {
         $width = $this->resolveWidth($width);
         $lineHeight = $this->minCellHeight();
-        $lines = $this->splitLines($text, $width - (2 * self::CELL_PADDING_X));
-        // 上罫線と文字が重ならないよう, 罫線がある側は線幅の半分だけ内側へ寄せる
-        $paddingTop = in_array(self::BORDER_TOP, $this->borderSides($border), true) ? ($this->lineWidth / 2) : 0.0;
-        $cellHeight = max($height, $paddingTop + (count($lines) * $lineHeight));
+        [$lines, $paddingTop, $cellHeight] = $this->layoutMultiCell($width, $height, $text, $border);
 
         // 収まらないときだけ改ページする。罫線も塗りも無いセルは TCPDF の MultiCell() と
         // 同じく行単位で送る。装飾があるセルは矩形をまとめて描くため行では割れないので,
@@ -612,6 +624,22 @@ class PdfWriter
         }
 
         return $ops;
+    }
+
+    /**
+     * 折り返しセルの行・上パディング・高さを求める.
+     *
+     * @param float $width 解決済みのセル幅
+     *
+     * @return array{0: string[], 1: float, 2: float} 行・上パディング・セル高さ
+     */
+    private function layoutMultiCell(float $width, float $height, string $text, int|string $border): array
+    {
+        $lines = $this->splitLines($text, $width - (2 * self::CELL_PADDING_X));
+        // 上罫線と文字が重ならないよう, 罫線がある側は線幅の半分だけ内側へ寄せる
+        $paddingTop = in_array(self::BORDER_TOP, $this->borderSides($border), true) ? ($this->lineWidth / 2) : 0.0;
+
+        return [$lines, $paddingTop, max($height, $paddingTop + (count($lines) * $this->minCellHeight()))];
     }
 
     /**

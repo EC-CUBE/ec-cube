@@ -178,6 +178,54 @@ final class PdfWriterTest extends TestCase
     }
 
     /**
+     * 折り返しセルの高さを, 描画も改ページもせずに測れること.
+     *
+     * 納品書の明細表は行の高さを先に測ってから改ページする. 測定が描画を兼ねると
+     * その途中で自動改ページが起き, 退避しておいた座標が使えなくなる（文字は分割されて
+     * 送られる一方, 罫線だけが新しいページの下端に取り残される）.
+     */
+    public function testMeasureMultiCellHeightNeitherDrawsNorBreaksPage(): void
+    {
+        $writer = $this->createWriter();
+        $writer->setTemplateFile(self::projectDir().'/html/template/admin/assets/pdf/nouhinsyo.pdf');
+        $writer->setMargins(15, 20);
+        $writer->setFont('kozminproregular', '', 8);
+        $writer->addPage();
+        $lineHeight = $writer->getFontSize() * PdfWriter::CELL_HEIGHT_RATIO;
+
+        // 明細表の事前判定が確保する 4 行ぶん(16mm)しか残っていない位置に置く
+        $writer->setXY(15, $writer->getPageBreakTrigger() - 16.0);
+        $pageCount = $writer->getPageCount();
+        $y = $writer->getY();
+
+        // 商品名列は 110.3mm 幅・8pt なので 1 行あたり約 38 全角文字
+        $height = $writer->measureMultiCellHeight(110.3, 4.0, str_repeat('あ', 38 * 5));
+
+        $this->assertGreaterThan(4 * $lineHeight, $height, '5 行に折り返すので 16mm を超える');
+        $this->assertSame($pageCount, $writer->getPageCount(), '測定で改ページしてはいけない');
+        $this->assertSame($y, $writer->getY(), '測定でカーソルが動いてはいけない');
+    }
+
+    /**
+     * 測定した高さが multiCell() が実際に使うセル高さと一致すること.
+     */
+    public function testMeasureMultiCellHeightMatchesRenderedHeight(): void
+    {
+        $writer = $this->createWriter();
+        $writer->setMargins(15, 20);
+        $writer->setFont('kozminproregular', '', 8);
+        $writer->addPage();
+
+        foreach (['1行', "1行目\n2行目\n3行目", str_repeat('あ', 60)] as $text) {
+            $measured = $writer->measureMultiCellHeight(30, 4.0, $text);
+            $writer->setXY(15, 20);
+            $writer->multiCell(30, 4.0, $text, 0, 'L', false, 1);
+
+            $this->assertEqualsWithDelta($measured, $writer->getLastCellHeight(), 0.001, $text);
+        }
+    }
+
+    /**
      * セル上端から文字ベースラインまでの距離(mm).
      */
     private function baselineOffset(float $cellHeight, float $fontSizePt): float
