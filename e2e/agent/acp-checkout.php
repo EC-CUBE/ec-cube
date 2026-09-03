@@ -23,8 +23,8 @@
  *   1. discovery スモーク   … 常に実行 (api4/決済ハンドラ非依存)。/.well-known/{ucp,acp.json} の生存と形状。
  *   2. checkout フロー      … AGENT_E2E_TOKEN がある時のみ。create→update→get→complete。
  *
- * AGENT_E2E_TOKEN が空 (api4#188 の client_credentials/scope 未 landing) のときは
- * フェーズ 1 のみ実行して正常終了する (= CI を赤にしない skip ゲート)。
+ * AGENT_E2E_TOKEN が空のときはフェーズ 1 のみ実行して正常終了する
+ * (discovery だけ確認したいローカル実行向けの skip ゲート。CI は /token で実トークンを発行するため常に通す)。
  *
  * env:
  *   BASE_URL          … 稼働中サーバ (既定 http://127.0.0.1:8000)
@@ -115,7 +115,7 @@ try {
 // フェーズ 2: checkout フロー (AGENT_E2E_TOKEN がある時のみ)
 // ─────────────────────────────────────────────────────────────────────────
 if ('' === $token) {
-    fwrite(STDOUT, "\n\033[33m⏸ Phase 2 (checkout) skipped:\033[0m AGENT_E2E_TOKEN 未設定 (api4#188 + 決済ハンドラ landing 待ち)\n");
+    fwrite(STDOUT, "\n\033[33m⏸ Phase 2 (checkout) skipped:\033[0m AGENT_E2E_TOKEN 未設定 (Api44 で client_credentials トークンを発行して渡す)\n");
     fwrite(STDOUT, "\n\033[32mPASS\033[0m ({$passed} assertions, discovery-only)\n");
     exit(0);
 }
@@ -152,9 +152,9 @@ function containsKey(mixed $data, string $key): bool
 /**
  * ACP checkout 5 エンドポイントを順に叩く (create→update→get→complete)。
  *
- * TODO(api4#188 + 決済ハンドラ): トークン発行が有効化されたら payload を
- * {@link \Eccube\Service\AgentCommerce\Acp\AcpCheckoutSessionMapper} の契約に対して
+ * TODO: payload を {@link \Eccube\Service\AgentCommerce\Acp\AcpCheckoutSessionMapper} の契約に対して
  * 実データで突き合わせる (本関数の payload は ACP 2026-04-17 spec ベースの暫定形)。
+ * トークン発行側の前提 (client_credentials + scope) は eccube-api4 4.4 で解消済み。
  */
 function runCheckout(HttpClientInterface $client, string $token, int $itemId, bool $paymentReady): void
 {
@@ -202,10 +202,10 @@ function runCheckout(HttpClientInterface $client, string $token, int $itemId, bo
     assertTrue(($res->toArray(false)['id'] ?? null) === $sessionId, 'get returns the same session id');
 
     // 4. complete (POST /acp/checkout_sessions/{id}/complete)
-    // 決済実行は sample-payment 決済ハンドラ (#3) が前提のため、許可された時のみ実行する。
+    // 決済実行は SamplePayment44 の ACP 決済ハンドラが前提のため、許可された時のみ実行する。
     // 各シナリオは状態が確定するため新規セッションで実行する。
     if (!$paymentReady) {
-        fwrite(STDOUT, "  \033[33m⏸\033[0m complete skipped: AGENT_E2E_PAYMENT_READY!=true (#3 決済ハンドラ待ち)\n");
+        fwrite(STDOUT, "  \033[33m⏸\033[0m complete skipped: AGENT_E2E_PAYMENT_READY!=true\n");
 
         return;
     }

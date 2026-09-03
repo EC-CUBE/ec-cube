@@ -238,6 +238,8 @@ class PluginController extends AbstractController
             }
             $this->addError(trans('admin.store.plugin.already.enabled', ['%plugin_name%' => $Plugin->getName()]), 'admin');
 
+            $this->addFlash('eccube.admin.disable_maintenance', '');
+
             return $this->redirectToRoute('admin_store_plugin');
         }
         // ストアからインストールしたプラグインは依存プラグインが有効化されているかを確認
@@ -346,6 +348,8 @@ class PluginController extends AbstractController
                 return $this->json(['success' => true, 'log' => $log]);
             }
             $this->addError(trans('admin.store.plugin.already.disabled', ['%plugin_name%' => $Plugin->getName()]), 'admin');
+
+            $this->addFlash('eccube.admin.disable_maintenance', '');
 
             return $this->redirectToRoute('admin_store_plugin');
         }
