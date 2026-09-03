@@ -70,10 +70,20 @@ final class PermissionDiagnosticTest extends TestCase
 
     public function testSshLaneIsNgWhenWebServerCanWrite(): void
     {
-        // other に書き込みビットがあると Web サーバーから書けてしまう
-        $finding = $this->evaluate(WriteLane::SSH, self::SSH_UID, self::SSH_UID, 0757);
+        // Web サーバーと共有するグループに書き込みビットがあると書けてしまう
+        $finding = $this->evaluate(WriteLane::SSH, self::SSH_UID, self::WEB_UID, 0775);
 
         $this->assertSame(FindingSeverity::NG, $finding->severity);
+        $this->assertSame('Web サーバーから書き込み可能です (想定: 読み取りのみ)', $finding->message);
+    }
+
+    public function testSshLaneIsNgWhenWorldWritable(): void
+    {
+        // umask(0000) の影響で CLI が 0777 で作成したディレクトリ
+        $finding = $this->evaluate(WriteLane::SSH, self::SSH_UID, self::SSH_UID, 0777);
+
+        $this->assertSame(FindingSeverity::NG, $finding->severity);
+        $this->assertSame('任意のローカルユーザーから書き込めます (想定: 読み取りのみ)', $finding->message);
     }
 
     public function testSshLaneIsNgWhenWebServerCannotRead(): void
@@ -89,6 +99,66 @@ final class PermissionDiagnosticTest extends TestCase
         $finding = $this->evaluate(WriteLane::SSH, 1001, 1001, 0755);
 
         $this->assertSame(FindingSeverity::WARN, $finding->severity);
+    }
+
+    public function testSshLaneSkipsTheCliCheckWhenCurrentUserIsUnknown(): void
+    {
+        // ext-posix が無効で実行ユーザーを特定できない場合, CLI 側の書き込み可否は判定しない
+        $requirement = new PermissionRequirement('/path', WriteLane::SSH, 'app/template');
+        $finding = $this->diagnostic()->evaluate(
+            $requirement,
+            new PathOwnership('/path', true, 1001, 1001, 0755, true),
+            $this->webServer(),
+            null
+        );
+
+        $this->assertSame(FindingSeverity::OK, $finding->severity);
+    }
+
+    public function testUnreachablePathIsNg(): void
+    {
+        // 対象自身は Web サーバー所有 0755 でも, 親が 0700 なら到達できない
+        $requirement = new PermissionRequirement('/project/html/upload/temp_image', WriteLane::WEB, 'html/upload/temp_image');
+        $finding = $this->diagnostic()->evaluate(
+            $requirement,
+            new PathOwnership('/project/html/upload/temp_image', true, self::WEB_UID, self::WEB_UID, 0755, true, [
+                new PathOwnership('/project', true, self::SSH_UID, self::SSH_UID, 0755, true),
+                new PathOwnership('/project/html', true, self::SSH_UID, self::SSH_UID, 0755, true),
+                new PathOwnership('/project/html/upload', true, self::SSH_UID, self::SSH_UID, 0700, true),
+            ]),
+            $this->webServer(),
+            $this->cli()
+        );
+
+        $this->assertSame(FindingSeverity::NG, $finding->severity);
+        $this->assertSame('Web サーバーから到達できません', $finding->message);
+        $this->assertStringContainsString('/project/html/upload', (string) $finding->hint);
+    }
+
+    public function testUnknownAncestorIsWarn(): void
+    {
+        $requirement = new PermissionRequirement('/project/var', WriteLane::WEB, 'var');
+        $finding = $this->diagnostic()->evaluate(
+            $requirement,
+            new PathOwnership('/project/var', true, self::WEB_UID, self::WEB_UID, 0755, true, [
+                new PathOwnership('/', false, -1, -1, 0, false),
+            ]),
+            $this->webServer(),
+            $this->cli()
+        );
+
+        $this->assertSame(FindingSeverity::WARN, $finding->severity);
+        $this->assertStringContainsString('open_basedir', (string) $finding->hint);
+    }
+
+    public function testDirectoryWithoutExecuteBitIsNg(): void
+    {
+        // レーン S の 0644 は一覧できても配下のファイルを開けない
+        $finding = $this->evaluate(WriteLane::SSH, self::SSH_UID, self::SSH_UID, 0644);
+
+        $this->assertSame(FindingSeverity::NG, $finding->severity);
+        $this->assertSame('Web サーバーから読み取れません', $finding->message);
+        $this->assertStringContainsString('実行 (x) 権限', (string) $finding->hint);
     }
 
     public function testMissingOptionalPathIsOk(): void
@@ -122,13 +192,27 @@ final class PermissionDiagnosticTest extends TestCase
         $requirement = new PermissionRequirement('/path', WriteLane::SSH, 'app/template');
         $finding = $this->diagnostic()->evaluate(
             $requirement,
+            new PathOwnership('/path', true, self::SSH_UID, self::SSH_UID, 0750, true),
+            null,
+            $this->cli()
+        );
+
+        // Web サーバーの uid が分からなければ, 読み取れるかどうかも書けるかどうかも判定できない
+        $this->assertSame(FindingSeverity::WARN, $finding->severity);
+    }
+
+    public function testWorldWritableSshLaneIsNgEvenWhenWebServerUserIsUnknown(): void
+    {
+        $requirement = new PermissionRequirement('/path', WriteLane::SSH, 'app/template');
+        $finding = $this->diagnostic()->evaluate(
+            $requirement,
             new PathOwnership('/path', true, self::SSH_UID, self::SSH_UID, 0777, true),
             null,
             $this->cli()
         );
 
-        // 0777 は誰でも書けるが, Web サーバーの uid が分からない以上 NG とは断定しない
-        $this->assertSame(FindingSeverity::WARN, $finding->severity);
+        // 任意のローカルユーザーから書ける以上, Web サーバーの uid を問わずレーン S の前提が崩れている
+        $this->assertSame(FindingSeverity::NG, $finding->severity);
     }
 
     private function evaluate(WriteLane $lane, int $ownerUid, int $ownerGid, int $permissions): PermissionFinding
@@ -158,6 +242,6 @@ final class PermissionDiagnosticTest extends TestCase
 
     private function cli(): UserIdentity
     {
-        return new UserIdentity(self::SSH_UID, self::SSH_UID, 'getmyuid()');
+        return new UserIdentity(self::SSH_UID, self::SSH_UID, 'posix_geteuid()');
     }
 }

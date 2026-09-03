@@ -23,12 +23,12 @@ final readonly class DiagnosticReport
     /**
      * @param list<PermissionFinding> $findings
      * @param UserIdentity|null       $webServer Web サーバーの実行ユーザー. 特定できなかった場合は null
-     * @param UserIdentity            $cli       診断を実行したユーザー
+     * @param UserIdentity|null       $cli       診断を実行したユーザー. 特定できなかった場合は null
      */
     public function __construct(
         public array $findings,
         public ?UserIdentity $webServer,
-        public UserIdentity $cli,
+        public ?UserIdentity $cli,
     ) {
     }
 
@@ -49,7 +49,7 @@ final readonly class DiagnosticReport
     {
         return [
             'web_server' => $this->webServer?->toArray(),
-            'cli' => $this->cli->toArray(),
+            'cli' => $this->cli?->toArray(),
             'summary' => [
                 'ok' => $this->countBy(FindingSeverity::OK),
                 'warn' => $this->countBy(FindingSeverity::WARN),

@@ -93,11 +93,32 @@ final class DoctorPermissionsCommandTest extends TestCase
 
     public function testUnknownWebServerUserIsReported(): void
     {
-        $report = new DiagnosticReport([], null, new UserIdentity(1000, 1000, 'getmyuid()'));
+        $report = new DiagnosticReport([], null, new UserIdentity(1000, 1000, 'posix_geteuid()'));
         $tester = $this->tester($report);
         $tester->execute([], ['decorated' => false]);
 
         $this->assertStringContainsString('特定できませんでした', $tester->getDisplay());
+    }
+
+    public function testUnknownCliUserIsReported(): void
+    {
+        $report = new DiagnosticReport([], new UserIdentity(33, 33, 'var/sessions/prod/sess_test'), null);
+        $tester = $this->tester($report);
+        $tester->execute([], ['decorated' => false]);
+
+        $this->assertStringContainsString('診断の実行ユーザーを特定できませんでした', $tester->getDisplay());
+    }
+
+    public function testUnknownCliUserIsNullInJson(): void
+    {
+        $report = new DiagnosticReport([], new UserIdentity(33, 33, 'var/sessions/prod/sess_test'), null);
+        $tester = $this->tester($report);
+        $tester->execute(['--format' => 'json']);
+
+        /** @var array<string, mixed> $decoded */
+        $decoded = json_decode($tester->getDisplay(), true, 512, JSON_THROW_ON_ERROR);
+
+        $this->assertNull($decoded['cli']);
     }
 
     private function tester(DiagnosticReport $report): CommandTester
@@ -122,7 +143,7 @@ final class DoctorPermissionsCommandTest extends TestCase
         return new DiagnosticReport(
             [$finding],
             new UserIdentity(33, 33, 'var/sessions/prod/sess_test'),
-            new UserIdentity(1000, 1000, 'getmyuid()')
+            new UserIdentity(1000, 1000, 'posix_geteuid()')
         );
     }
 }

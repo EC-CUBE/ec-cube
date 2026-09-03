@@ -19,6 +19,7 @@ use Eccube\Service\Permission\PathOwnership;
 use Eccube\Service\Permission\UserIdentity;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * uid / gid / パーミッションビットからの書き込み・読み取り可否の推定を検証する.
@@ -53,6 +54,12 @@ final class PathOwnershipTest extends TestCase
         yield 'other with write bit' => [1000, 1000, 0007, 33, 33, true];
         yield 'other without write bit' => [1000, 1000, 0005, 33, 33, false];
 
+        // POSIX は owner / group / other のうち 1 つのクラスだけを見る.
+        // other が緩くても, 一致したクラスのビットで可否が決まる
+        yield 'owner class is used even when other is permissive' => [1000, 1000, 0006, 1000, 1000, false];
+        yield 'group class is used even when other is permissive' => [1000, 33, 0006, 33, 33, false];
+        yield 'owner class is used even when group is permissive' => [1000, 33, 0070, 1000, 33, false];
+
         // レーン S で守りたい形: SSH ユーザー所有 0755 は Web サーバーから書けない
         yield 'ssh owned 0755 is not writable by web server' => [1000, 1000, 0755, 33, 33, false];
         // group 書き込みを付けると Web サーバーから書けてしまう
@@ -75,10 +82,104 @@ final class PathOwnershipTest extends TestCase
      */
     public static function readableCases(): iterable
     {
-        yield 'owner with read bit' => [1000, 1000, 0400, 1000, 1000, true];
-        yield 'group with read bit' => [1000, 33, 0040, 33, 33, true];
-        yield 'other with read bit' => [1000, 1000, 0004, 33, 33, true];
+        yield 'owner with read bit' => [1000, 1000, 0500, 1000, 1000, true];
+        yield 'group with read bit' => [1000, 33, 0050, 33, 33, true];
+        yield 'other with read bit' => [1000, 1000, 0005, 33, 33, true];
         yield 'no read bit for other' => [1000, 1000, 0770, 33, 33, false];
+
+        // 書き込みと同じく, 一致したクラスのビットだけで決まる
+        yield 'owner class is used even when other is permissive' => [1000, 1000, 0004, 1000, 1000, false];
+        yield 'group class is used even when other is permissive' => [1000, 33, 0004, 33, 33, false];
+    }
+
+    public function testDirectoryRequiresTheExecuteBit(): void
+    {
+        // エントリの作成・削除には w に加えて x が, 配下のファイルを開くには x が必要になる
+        $dir = new PathOwnership('/path', true, 1000, 1000, 0600, true);
+        $user = new UserIdentity(1000, 1000, 'test');
+
+        $this->assertFalse($dir->isWritableBy($user));
+        $this->assertFalse($dir->isReadableBy($user));
+        $this->assertFalse($dir->isTraversableBy($user));
+    }
+
+    public function testFileDoesNotRequireTheExecuteBit(): void
+    {
+        $file = new PathOwnership('/path/.env', true, 1000, 1000, 0600, false);
+        $user = new UserIdentity(1000, 1000, 'test');
+
+        $this->assertTrue($file->isWritableBy($user));
+        $this->assertTrue($file->isReadableBy($user));
+    }
+
+    public function testUnreachableAncestorIsTheShallowestOne(): void
+    {
+        $webServer = new UserIdentity(33, 33, 'test');
+        $ownership = new PathOwnership('/project/html/upload/temp_image', true, 33, 33, 0755, true, [
+            new PathOwnership('/', true, 0, 0, 0755, true),
+            new PathOwnership('/project', true, 1000, 1000, 0711, true),
+            new PathOwnership('/project/html', true, 1000, 1000, 0700, true),
+            new PathOwnership('/project/html/upload', true, 1000, 1000, 0700, true),
+        ]);
+
+        // 対象自身は Web サーバー所有 0755 でも, 祖先を通り抜けられなければ到達できない
+        $this->assertSame('/project/html', $ownership->unreachableAncestorFor($webServer)?->path);
+        $this->assertFalse($ownership->hasUnknownAncestor());
+    }
+
+    public function testReachableAncestorsReturnNull(): void
+    {
+        $ownership = new PathOwnership('/project/var', true, 33, 33, 0755, true, [
+            new PathOwnership('/', true, 0, 0, 0755, true),
+            new PathOwnership('/project', true, 1000, 1000, 0711, true),
+        ]);
+
+        $this->assertNotInstanceOf(PathOwnership::class, $ownership->unreachableAncestorFor(new UserIdentity(33, 33, 'test')));
+    }
+
+    public function testAncestorThatCannotBeStattedIsUnknown(): void
+    {
+        // open_basedir 等で参照できない祖先は, 通り抜けられないと断定しない
+        $ownership = new PathOwnership('/project/var', true, 33, 33, 0755, true, [
+            new PathOwnership('/', false, -1, -1, 0, false),
+            new PathOwnership('/project', true, 1000, 1000, 0711, true),
+        ]);
+
+        $this->assertTrue($ownership->hasUnknownAncestor());
+        $this->assertNotInstanceOf(PathOwnership::class, $ownership->unreachableAncestorFor(new UserIdentity(33, 33, 'test')));
+    }
+
+    public function testAncestorsIncludeTheResolvedPathOfASymlink(): void
+    {
+        // stat() はリンクを解決するため, 対象自身の権限はリンク先のものになる.
+        // リンク先の親を通り抜けられなければ到達できない
+        $root = sys_get_temp_dir().'/eccube-path-'.bin2hex(random_bytes(6));
+        $fs = new Filesystem();
+        $fs->mkdir($root.'/physical/target', 0755);
+        $fs->chmod($root.'/physical', 0700);
+        symlink($root.'/physical/target', $root.'/visible');
+
+        try {
+            $ownership = PathOwnership::of($root.'/visible');
+            $paths = array_map(static fn (PathOwnership $ancestor): string => $ancestor->path, $ownership->ancestors);
+
+            $this->assertContains($root, $paths, '論理パスの祖先を評価すること');
+            $this->assertContains($root.'/physical', $paths, 'リンク解決後の物理パスの祖先を評価すること');
+            $this->assertSame($root.'/physical', $ownership->unreachableAncestorFor(new UserIdentity(33, 33, 'test'))?->path);
+        } finally {
+            $fs->chmod($root.'/physical', 0755);
+            $fs->remove($root);
+        }
+    }
+
+    public function testOfCollectsAncestorsFromTheRoot(): void
+    {
+        $ownership = PathOwnership::of(__FILE__);
+
+        $this->assertNotSame([], $ownership->ancestors);
+        $this->assertSame('/', $ownership->ancestors[0]->path);
+        $this->assertSame(__DIR__, $ownership->ancestors[array_key_last($ownership->ancestors)]->path);
+        $this->assertTrue($ownership->ancestors[0]->isDir);
     }
 
     public function testIsWorldWritable(): void

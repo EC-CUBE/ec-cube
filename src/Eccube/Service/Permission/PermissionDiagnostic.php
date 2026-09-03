@@ -89,12 +89,15 @@ class PermissionDiagnostic
 
     /**
      * 1 件を判定する. ファイルシステムには触れず, 渡された所有者情報だけで判断する.
+     *
+     * @param UserIdentity|null $webServer Web サーバーの実行ユーザー. 特定できなかった場合は null
+     * @param UserIdentity|null $cli       診断の実行ユーザー. 特定できなかった場合は null
      */
     public function evaluate(
         PermissionRequirement $requirement,
         PathOwnership $ownership,
         ?UserIdentity $webServer,
-        UserIdentity $cli,
+        ?UserIdentity $cli,
     ): PermissionFinding {
         if (!$ownership->exists) {
             if ($requirement->optional) {
@@ -102,6 +105,19 @@ class PermissionDiagnostic
             }
 
             return new PermissionFinding($requirement, $ownership, FindingSeverity::NG, '存在しません', '作成してください.');
+        }
+
+        // 任意のローカルユーザーから書ける時点でレーン S の前提が崩れているため,
+        // Web サーバーの uid を特定できていなくても NG と判定できる
+        if ($requirement->lane === WriteLane::SSH && $ownership->isWorldWritable()) {
+            return new PermissionFinding(
+                $requirement,
+                $ownership,
+                FindingSeverity::NG,
+                '任意のローカルユーザーから書き込めます (想定: 読み取りのみ)',
+                'bin/console が umask(0000) を設定するため, CLI が作成したディレクトリは 0777 になります. '
+                .'other の書き込み権限を外してください.'
+            );
         }
 
         if (!$webServer instanceof UserIdentity) {
@@ -113,6 +129,36 @@ class PermissionDiagnostic
             );
         }
 
+        if ($ownership->hasUnknownAncestor()) {
+            return new PermissionFinding(
+                $requirement,
+                $ownership,
+                FindingSeverity::WARN,
+                '祖先ディレクトリの権限を確認できないため到達可否を判定できません',
+                'open_basedir 等で上位ディレクトリを参照できません.'
+            );
+        }
+
+        // 診断の実行ユーザーは対象パスを stat できている以上, 祖先も通り抜けられている.
+        // 判定が必要なのは Web サーバーだけ
+        $unreachable = $ownership->unreachableAncestorFor($webServer);
+        if ($unreachable instanceof PathOwnership) {
+            return new PermissionFinding(
+                $requirement,
+                $ownership,
+                FindingSeverity::NG,
+                'Web サーバーから到達できません',
+                sprintf(
+                    '祖先ディレクトリ %s (uid=%d gid=%d %s) に実行権限がないため, 配下へ到達できません. '
+                    .'実行権限を付与するか, 所有者を変更してください.',
+                    $unreachable->path,
+                    $unreachable->uid,
+                    $unreachable->gid,
+                    $unreachable->permissionsString()
+                )
+            );
+        }
+
         return $requirement->lane === WriteLane::WEB
             ? $this->evaluateWebLane($requirement, $ownership, $webServer)
             : $this->evaluateSshLane($requirement, $ownership, $webServer, $cli);
@@ -121,13 +167,12 @@ class PermissionDiagnostic
     private function evaluateWebLane(PermissionRequirement $requirement, PathOwnership $ownership, UserIdentity $webServer): PermissionFinding
     {
         if (!$ownership->isWritableBy($webServer)) {
-            return new PermissionFinding(
-                $requirement,
-                $ownership,
-                FindingSeverity::NG,
-                'Web サーバーから書き込めません',
-                sprintf('リクエスト処理中に書き込みが発生します. 所有者を uid=%d gid=%d へ変更するか, 書き込み権限を付与してください.', $webServer->uid, $webServer->gid)
-            );
+            $hint = sprintf('リクエスト処理中に書き込みが発生します. 所有者を uid=%d gid=%d へ変更するか, 書き込み権限を付与してください.', $webServer->uid, $webServer->gid);
+            if ($ownership->isDir) {
+                $hint .= ' ディレクトリはエントリの作成・削除に実行 (x) 権限も必要です.';
+            }
+
+            return new PermissionFinding($requirement, $ownership, FindingSeverity::NG, 'Web サーバーから書き込めません', $hint);
         }
 
         if ($ownership->isWorldWritable()) {
@@ -149,7 +194,7 @@ class PermissionDiagnostic
         PermissionRequirement $requirement,
         PathOwnership $ownership,
         UserIdentity $webServer,
-        UserIdentity $cli,
+        ?UserIdentity $cli,
     ): PermissionFinding {
         if ($ownership->isWritableBy($webServer)) {
             return new PermissionFinding(
@@ -162,16 +207,16 @@ class PermissionDiagnostic
         }
 
         if (!$ownership->isReadableBy($webServer)) {
-            return new PermissionFinding(
-                $requirement,
-                $ownership,
-                FindingSeverity::NG,
-                'Web サーバーから読み取れません',
-                'このレーンは読み取り権限が必要です.'
-            );
+            $hint = 'このレーンは読み取り権限が必要です.';
+            if ($ownership->isDir) {
+                $hint .= ' ディレクトリは配下のファイルを開くために実行 (x) 権限も必要です.';
+            }
+
+            return new PermissionFinding($requirement, $ownership, FindingSeverity::NG, 'Web サーバーから読み取れません', $hint);
         }
 
-        if (!$ownership->isWritableBy($cli)) {
+        // CLI の実行ユーザーを特定できない環境では, CLI 側の書き込み可否は判定しない
+        if ($cli instanceof UserIdentity && !$ownership->isWritableBy($cli)) {
             return new PermissionFinding(
                 $requirement,
                 $ownership,
