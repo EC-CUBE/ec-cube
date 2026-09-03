@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AgentCommerce Security — 仕様</title>
+<style>
+ /* 最小限のスタイル。§8.2 の静的サイト側で共通 CSS を上書きできるよう、
+    装飾はクラス指定に寄せ、過度なインライン装飾は避ける。 */
+ body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.7;max-width:960px;margin:0 auto;padding:2rem;color:#222}
+ h1,h2{border-bottom:1px solid #ddd;padding-bottom:.3rem}
+ h1{margin-bottom:.2rem}
+ .nav{font-size:.9rem;color:#555;margin:.2rem 0 1.5rem}
+ table{border-collapse:collapse;width:100%;margin:1rem 0}
+ th,td{border:1px solid #ccc;padding:.4rem .6rem;text-align:left;vertical-align:top}
+ th{background:#f4f4f4}
+ code{background:#f4f4f4;padding:.1rem .3rem;border-radius:3px;font-size:.92em}
+ .flow{background:#f9f9f9;border:1px solid #ddd;padding:1rem;white-space:pre;overflow-x:auto;font-family:ui-monospace,monospace;font-size:.88rem;line-height:1.5}
+ .note{background:#fff8e1;border-left:4px solid #f0c040;padding:.6rem 1rem;margin:1rem 0}
+ .dev-only{font-size:.75rem;color:#888;font-weight:normal;margin-left:.5rem}
+ .badge{display:inline-block;background:#eef;border:1px solid #ccd;border-radius:3px;padding:0 .4rem;font-size:.8rem}
+</style>
+</head>
+<body>
+
+<h1>AgentCommerce Security — 認証と署名</h1>
+<p class="nav">
+ 親: <a href="../README.html">AgentCommerce README</a>
+ ／ 索引: <a href="./README.md">README.md</a>
+</p>
+
+<section data-section="overview" data-customer="true">
+ <h2>概要</h2>
+ <p>エージェントコマースの<strong>インバウンド認証（OAuth2）・scope 照合・メッセージ署名（RFC 9421）・署名鍵の管理</strong>を担うサブドメインです。
+ エージェントはブラウザセッション（form_login）を持たないため、認証は OAuth2 アクセストークン、
+ 応答の真正性は HTTP Message Signatures で担保します。公開鍵は discovery の <code>signing_keys[]</code>（JWK）として広告されます。</p>
+</section>
+
+<section data-section="auth" data-customer="true">
+ <h2>認証・scope</h2>
+ <table>
+  <tr><th>クラス</th><th>役割</th></tr>
+  <tr><td><code>AgentCommerceOAuth2Authenticator</code></td><td>インバウンド OAuth2 トークン検証 + scope×protocol 照合。トークン検証は Symfony 標準の <code>AccessTokenHandlerInterface</code> 経由（実体は eccube-api4 が提供）。</td></tr>
+  <tr><td><code>AgentCommerceScopeRegistry</code></td><td>scope を <code>"&lt;protocol&gt;:&lt;capability&gt;"</code> 形式（例 <code>"ucp:checkout"</code>）に正準化。protocol 越境を許可しない。</td></tr>
+ </table>
+</section>
+
+<section data-section="signing" data-customer="true">
+ <h2>メッセージ署名・鍵ストア</h2>
+ <table>
+  <tr><th>クラス</th><th>役割</th></tr>
+  <tr><td><code>AgentCommerceMessageSignerInterface</code></td><td>メッセージ署名・検証の抽象。アルゴリズムはプロトコルごとに差し替え可能。</td></tr>
+  <tr><td><code>UcpMessageSigner</code></td><td>UCP の RFC 9421 実装。EC P-256 / ES256、署名は raw R‖S（IEEE P1363, 64byte）。公開鍵を EC JWK として広告。</td></tr>
+  <tr><td><code>KeyStoreInterface</code></td><td>署名鍵の永続化抽象（<code>app/Customize</code> で DB 保管・Vault 連携等に差し替え可能）。</td></tr>
+  <tr><td><code>FilesystemKeyStore</code></td><td>標準実装。既定パス <code>{projectDir}/app/keystore/agent-commerce/{purpose}.key</code>。鍵ファイルは 0600、ディレクトリは 0700。</td></tr>
+ </table>
+</section>
+
+<section data-section="notes" data-customer="false">
+ <h2>注意点<span class="dev-only">開発者向け</span></h2>
+ <ul>
+  <li>OAuth2 の実体（リソースサーバー）は eccube-api4 が提供する想定（[EC-CUBE/eccube-api4#188]）。<strong>eccube-api4 未導入時は handler が null となり 503（ServiceUnavailable）を返す</strong>機能フラグのようなフォールバック。firewall への配線は checkout エンドポイントを持つ #6776/#6574 で行う。</li>
+  <li>付与 scope は <code>UserBadge</code> の attributes に handler が載せる前提（<code>scopes</code>: array もしくは <code>scope</code>: 空白区切り string）。</li>
+  <li><code>signing_keys[]</code> には EC <strong>公開鍵</strong> JWK のみを出す（秘密鍵パラメータ非混入）。秘密鍵が鍵ストアに無ければ生成して永続化する。<code>kid</code> は RFC 7638 の JWK Thumbprint。</li>
+  <li><code>UcpMessageSigner</code> は grace period の<strong>旧公開鍵（<code>gracePublicKeyPems</code>）を verify と <code>signing_keys[]</code> 広告の両方に含める</strong>ことで無停止の鍵ローテーションを可能にする。verify は現用＋旧鍵を順に試し、署名長不正等の例外は捕捉して破棄し、次の鍵を試す。</li>
+  <li><code>FilesystemKeyStore::write()</code> は書き込みの間だけ <code>umask(0077)</code> に切り替える。<code>file_put_contents</code> の作成直後～<code>chmod(0600)</code> までの間に秘密鍵が group/other から読める<strong>競合ウィンドウを塞ぐ</strong>ためで、単なる 0600 設定ではない。</li>
+  <li><code>purpose</code> は既定パスへ直接連結されるため <code>[a-z0-9_-]</code> のみに制限し、<strong>パストラバーサル（<code>../</code> 等）を防ぐ</strong>（違反時 <code>InvalidArgumentException</code>）。</li>
+ </ul>
+</section>
+
+</body>
+</html>

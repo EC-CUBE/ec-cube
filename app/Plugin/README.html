@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>app/Plugin — プラグイン設置先 仕様</title>
+<style>
+ /* 最小限のスタイル。§8.2 の静的サイト側で共通 CSS を上書きできるよう、
+    装飾はクラス指定に寄せ、過度なインライン装飾は避ける。 */
+ body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.7;max-width:960px;margin:0 auto;padding:2rem;color:#222}
+ h1,h2{border-bottom:1px solid #ddd;padding-bottom:.3rem}
+ h1{margin-bottom:.2rem}
+ .nav{font-size:.9rem;color:#555;margin:.2rem 0 1.5rem}
+ table{border-collapse:collapse;width:100%;margin:1rem 0}
+ th,td{border:1px solid #ccc;padding:.4rem .6rem;text-align:left;vertical-align:top}
+ th{background:#f4f4f4}
+ code{background:#f4f4f4;padding:.1rem .3rem;border-radius:3px;font-size:.92em}
+ .flow{background:#f9f9f9;border:1px solid #ddd;padding:1rem;white-space:pre;overflow-x:auto;font-family:ui-monospace,monospace;font-size:.88rem;line-height:1.5}
+ .note{background:#fff8e1;border-left:4px solid #f0c040;padding:.6rem 1rem;margin:1rem 0}
+ .dev-only{font-size:.75rem;color:#888;font-weight:normal;margin-left:.5rem}
+ .badge{display:inline-block;background:#eef;border:1px solid #ccd;border-radius:3px;padding:0 .4rem;font-size:.8rem}
+</style>
+</head>
+<body>
+
+<h1>app/Plugin — プラグイン設置先</h1>
+<p class="nav">
+ 索引: <a href="./README.md">README.md</a>
+ ／ 実装規約（AI・開発者向け）: <a href="../../.claude/skills/plugin/SKILL.md">plugin/SKILL.md</a>
+</p>
+
+<section data-section="overview" data-customer="true">
+ <h2>概要</h2>
+ <p><code>app/Plugin/</code> は、<strong>インストール済みプラグインが置かれる場所</strong>です。
+ プラグイン 1 個が <code>app/Plugin/{PluginCode}/</code> の 1 ディレクトリに対応し、PSR-4 で
+ <strong><code>Plugin\{PluginCode}\</code> ＝ <code>app/Plugin/{PluginCode}/</code></strong> にマッピングされます。</p>
+
+ <p>プラグインは <code>eccube:plugin:install</code>（コンソール）や管理画面から導入され、その結果としてここへ展開されます。
+ したがって<strong>中身は環境ごとに異なります</strong>（何が置かれるかはインストール状況次第）。</p>
+
+ <div class="note"><strong>Git 管理: 中身は <code>.gitkeep</code> を除き <code>.gitignore</code> 済み</strong>（<code>/app/Plugin/*</code>）。
+ 素の状態では空で、実運用のプラグインは環境依存のためコミットされません。
+ 例外として、リポジトリには <strong>PHPUnit のテスト用サンプルプラグイン</strong>（<code>HogePlugin</code>・<code>EntityExtension</code>・
+ <code>MigrationSample</code> 等）が明示追跡でコミットされています。これらは<strong>テストの検証材料</strong>であり、実運用の雛形ではありません。</div>
+</section>
+
+<section data-section="lifecycle" data-customer="true">
+ <h2>ライフサイクル（ここに置かれるまで／消えるまで）</h2>
+ <p>このディレクトリの内容は、プラグインのライフサイクル操作によって出入りします。状態は <code>dtb_plugin</code> テーブルが持ちます。</p>
+ <div class="flow">install    … Composer 経由で取得し app/Plugin/{code}/ に展開（直後は enabled=false）
+enable     … 有効化。マイグレーション適用・プロキシ再生成が走る
+disable    … 無効化（ファイルは残る）
+update     … 差分適用（PluginManager::update）
+uninstall  … 取り外し。app/Plugin/{code}/ ごと削除され得る</div>
+ <div class="note"><strong>開発時の事故防止</strong>: <code>app/Plugin/{code}/</code> 直下で直接開発すると、
+ uninstall のテストをした瞬間にソースごと消えます。実開発は別ディレクトリで行い、シンボリックリンクで配置するのが安全
+ （詳細は <a href="../../.claude/skills/plugin/SKILL.md">plugin/SKILL.md</a>）。</div>
+</section>
+
+<section data-section="structure" data-customer="false">
+ <h2>プラグインの構成<span class="dev-only">開発者向け</span></h2>
+ <p>1 つのプラグインが持つ最小構成と、主な拡張点の置き場所です。<strong>実装の書き方は
+ <a href="../../.claude/skills/plugin/SKILL.md">plugin/SKILL.md</a> が正典</strong>。ここでは配置だけ示します。</p>
+ <div class="flow">app/Plugin/{PluginCode}/
+  ├── composer.json                 # 必須（version と extra.code が必須）
+  ├── PluginManager.php             # 任意（ライフサイクル処理が要るときだけ）
+  ├── Controller/                   # #[Route] でルーティング
+  ├── Entity/*Trait.php             # #[EntityExtension(Target::class)] でコア拡張
+  ├── Form/Extension/               # AbstractTypeExtension で既存フォーム拡張
+  ├── Repository/  Service/  EventListener/
+  ├── DoctrineMigrations/Version*   # プラグイン専用（migration_{code} で管理）
+  └── Resource/template/            # プラグインの Twig</div>
+ <table>
+  <tr><th>制約</th><th>内容</th></tr>
+  <tr><td>PluginCode</td><td><code>^\w+$</code>（英数字・アンダースコアのみ。<code>-</code> 不可）。ディレクトリ名・名前空間・クラス名に使われる</td></tr>
+  <tr><td>composer.json</td><td><code>version</code> と <code>extra.code</code> が必須。<code>extra.code</code> が無いと install で失敗</td></tr>
+  <tr><td>雛形生成</td><td>手書きせず <code>bin/console eccube:plugin:generate &lt;name&gt; &lt;code&gt; &lt;ver&gt;</code> で骨組みを作る</td></tr>
+ </table>
+</section>
+
+<section data-section="notes" data-customer="false">
+ <h2>注意点<span class="dev-only">開発者向け</span></h2>
+ <ul>
+  <li><strong>名前空間を混同しない</strong>: プラグインは <code>Plugin\{Code}\</code>（独立名前空間）。プロジェクト固有の 1 回限りの改変は <code>Customize\</code>（<a href="../Customize/README.md">app/Customize/</a>）。</li>
+  <li>install しただけでは動かない。<code>eccube:plugin:enable --code=...</code> で有効化する。</li>
+  <li>エンティティ拡張トレイトを足したら <code>bin/console eccube:generate:proxies</code> でプロキシ再生成（enable/disable/uninstall 時はコアが自動再生成）。</li>
+  <li>プラグインのマイグレーションは <code>migration_{code}</code> テーブルで管理され、コアの <code>app/DoctrineMigrations/</code> とは<strong>別系統</strong>（正確には <code>migration_</code>＋コードの小文字化。<code>src/Eccube/Plugin/AbstractPluginManager.php:27,55</code>）。</li>
+  <li><strong>enable/disable とロードの非対称に注意</strong>: <code>Resource/config/services.(php|yaml)</code> は<strong>物理的に存在する全プラグイン</strong>が glob で無条件ロードされる（<code>src/Eccube/Kernel.php:180-182</code>）が、<strong>ルーティングは有効プラグインのみ</strong>（<code>eccube.plugins.enabled</code>）読み込まれる（同 <code>:215-227</code>）。disable してもディレクトリが残る限りサービス定義はコンテナに載る（消えるのはルートだけ）。完全に外すには uninstall（ディレクトリ削除）が要る。</li>
+ </ul>
+</section>
+
+</body>
+</html>

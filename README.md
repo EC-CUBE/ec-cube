@@ -16,6 +16,7 @@
 + 本体開発にあたって不明点などあれば[Issue](https://github.com/EC-CUBE/ec-cube/wiki/Issues%E3%81%AE%E5%88%A9%E7%94%A8%E6%96%B9%E6%B3%95)をご利用下さい。
 + EC-CUBE 3系の保守については、 [EC-CUBE/ec-cube3](https://github.com/EC-CUBE/ec-cube3/)にて開発を行っております。
 + EC-CUBE 2系の保守については、 [EC-CUBE/ec-cube2](https://github.com/EC-CUBE/ec-cube2/)にて開発を行っております。
++ コード近接の仕様書（各機能ディレクトリの `README.html`）の入口は [`README.html`（仕様書ポータル）](README.html) です。ビルド不要でブラウザで開けます。
 
 ## インストール
 
@@ -52,7 +53,7 @@ JavaScript のライブラリは esbuild でバンドル/minifyされます。
 バンドルするライブラリを変更する場合は、テンプレートごとに以下の bundle.js を修正し、リビルドしてください。
 - [html/template/admin/assets/js/bundle.js](html/template/admin/assets/js/bundle.js)
 - [html/template/default/assets/js/bundle.js](html/template/default/assets/js/bundle.js)
-- [html/template/install/assets/js/bundle.js](html/template/default/install/js/bundle.js)
+- [html/template/install/assets/js/bundle.js](html/template/install/assets/js/bundle.js)
 
 ```shell
 npm ci # 初回およびpackage-lock.jsonに変更があったとき

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Controller — 仕様</title>
+<style>
+ /* 最小限のスタイル。§8.2 の静的サイト側で共通 CSS を上書きできるよう、
+    装飾はクラス指定に寄せ、過度なインライン装飾は避ける。 */
+ body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.7;max-width:960px;margin:0 auto;padding:2rem;color:#222}
+ h1,h2{border-bottom:1px solid #ddd;padding-bottom:.3rem}
+ h1{margin-bottom:.2rem}
+ .nav{font-size:.9rem;color:#555;margin:.2rem 0 1.5rem}
+ table{border-collapse:collapse;width:100%;margin:1rem 0}
+ th,td{border:1px solid #ccc;padding:.4rem .6rem;text-align:left;vertical-align:top}
+ th{background:#f4f4f4}
+ code{background:#f4f4f4;padding:.1rem .3rem;border-radius:3px;font-size:.92em}
+ .flow{background:#f9f9f9;border:1px solid #ddd;padding:1rem;white-space:pre;overflow-x:auto;font-family:ui-monospace,monospace;font-size:.88rem;line-height:1.5}
+ .note{background:#fff8e1;border-left:4px solid #f0c040;padding:.6rem 1rem;margin:1rem 0}
+ .dev-only{font-size:.75rem;color:#888;font-weight:normal;margin-left:.5rem}
+ .badge{display:inline-block;background:#eef;border:1px solid #ccd;border-radius:3px;padding:0 .4rem;font-size:.8rem}
+</style>
+</head>
+<body>
+
+<h1>Controller — HTTP 入出力層</h1>
+<p class="nav">
+ 索引: <a href="./README.md">README.md</a>
+ ／ 実装規約（AI・開発者向け）: <a href="../../../.claude/skills/controller/SKILL.md">controller/SKILL.md</a>
+</p>
+
+<section data-section="overview" data-customer="true">
+ <h2>概要</h2>
+ <p><code>src/Eccube/Controller/</code> は、EC-CUBE の <strong>HTTP リクエストを受け取り、レスポンスを返す入口</strong>です。
+ URL（ルーティング）ごとに 1 つのアクション（メソッド）が対応し、店頭（フロント）と管理画面の両方の画面・API を提供します。</p>
+
+ <p>コントローラの仕事は「HTTP の入出力変換」に徹することです。実際の業務処理（金額計算・在庫引当・メール送信など）は
+ <strong>Service や受注処理パイプライン（PurchaseFlow）へ委譲</strong>し、コントローラ自身は薄く保ちます。</p>
+</section>
+
+<section data-section="classification" data-customer="true">
+ <h2>主要な役割・分類</h2>
+ <p>ディレクトリは「誰が使う画面か」で大きく分かれます。</p>
+ <table>
+  <tr><th>場所</th><th>役割</th></tr>
+  <tr><td>直下（<code>CartController</code> / <code>ShoppingController</code> / <code>ProductController</code> / <code>EntryController</code> 等）</td><td>店頭（一般利用者向け）の画面。商品閲覧・カート・購入手続き・会員登録・お問い合わせなど。</td></tr>
+  <tr><td><code>Mypage/</code></td><td>会員（ログイン済み <code>Customer</code>）向けのマイページ。注文履歴・お気に入り・会員情報変更など。</td></tr>
+  <tr><td><code>Admin/</code></td><td>管理画面。受注・商品・会員・コンテンツ・設定・店舗管理など機能単位でサブディレクトリに分割。</td></tr>
+  <tr><td><code>Block/</code></td><td>ブロック（画面部品）の描画コントローラ。</td></tr>
+  <tr><td><code>Install/</code></td><td>初期インストール用ウィザード。</td></tr>
+  <tr><td><code>AgentCommerce/</code></td><td>エージェントコマース（外部エージェント連携）向けのエンドポイント。</td></tr>
+ </table>
+ <p>共通の基底として <code>AbstractController</code>（フラッシュメッセージ・CSRF 検証・リダイレクトのヘルパを提供）と、
+ 購入系で受注処理を扱う <code>AbstractShoppingController</code> があります。</p>
+</section>
+
+<section data-section="flow" data-customer="true">
+ <h2>代表的な処理の流れ</h2>
+ <p>1 アクションは原則として次の 4 ステップで構成されます。業務ロジックは自分で書かず委譲するのが要点です。</p>
+ <div class="flow">① リクエスト受取     Request・ルートパラメータ（$id 等）を受け取る
+② フォーム処理       createForm() → handleRequest() → isValid()（CSRF 検証込み）
+③ 委譲              Service / Repository を呼んで処理を任せる
+④ 応答組み立て       addSuccess() / redirectToRoute() / render() で結果を返す</div>
+ <p>購入手続き系（<code>ShoppingController</code> 等）は <code>AbstractShoppingController::executePurchaseFlow()</code> を通じて
+ 受注処理パイプライン（<a href="../Service/PurchaseFlow/README.html">PurchaseFlow</a>）に検証・計算を委譲します。
+ コントローラは <code>PurchaseFlow</code> の結果（warning / error）を受け取り、画面遷移に変換するだけです。</p>
+</section>
+
+<section data-section="extension" data-customer="false">
+ <h2>拡張ポイント<span class="dev-only">開発者向け</span></h2>
+ <ul>
+  <li><strong>プロジェクト固有の追加・上書きは <code>app/Customize/Controller/</code></strong> へ。コア（<code>src/Eccube/Controller/</code>）を直接改変しない（アップグレード安全のため）。</li>
+  <li><strong>プラグイン</strong>は自身のディレクトリ内にコントローラを持ち、ルーティング属性で URL を登録する。</li>
+  <li>ルーティングは <strong><code>#[Route]</code> 属性</strong>（<code>Symfony\Component\Routing\Attribute\Route</code>）。管理画面のパスは <code>%eccube_admin_route%</code> プレフィックス配下に置く。</li>
+  <li>リクエスト／レスポンスのライフサイクルへの割り込みは <strong>EventSubscriber / EventListener</strong> で行う（コントローラを直接いじらない）。</li>
+ </ul>
+ <p>実装の書き方・DO/DON'T は <a href="../../../.claude/skills/controller/SKILL.md">controller/SKILL.md</a> が正典です。</p>
+</section>
+
+<section data-section="notes" data-customer="false">
+ <h2>注意点<span class="dev-only">開発者向け</span></h2>
+ <ul>
+  <li><strong>Fat コントローラを増やさない。</strong> 金額・在庫・送料・ポイント等の計算、<code>$em->persist()</code>/<code>$em->flush()</code> を伴う業務的な永続化、複数 Repository をまたぐ処理・外部 API・メール送信・ファイル IO がアクションに混ざり始めたら Service（受注処理は PurchaseFlow）へ抽出する。行数で線引きしない。</li>
+  <li><strong>認可はファイアウォール＋ロールで制御。</strong> 管理アクションは必ず <code>%eccube_admin_route%</code> 配下に置く（admin ファイアウォールで認証が要求される）。EC-CUBE コアは個別の <code>#[IsGranted]</code> ではなくファイアウォールで守る点に注意。</li>
+  <li><strong>CSRF: GET 以外の状態変更はトークン検証。</strong> フォーム経由（<code>handleRequest()</code>＋<code>isValid()</code>）は保護込み。フォームを介さない削除・Ajax は基底の <code>$this-&gt;isTokenValid()</code> を明示的に呼ぶ（無効時は <code>AccessDeniedHttpException</code>）。<code>isTokenValid()</code> はトークンをリクエストパラメータ <code>Constant::TOKEN_NAME</code> だけでなく <code>ECCUBE-CSRF-TOKEN</code> ヘッダからも受け付けるため、Ajax はヘッダ送信でよい。</li>
+  <li><strong>フラッシュメッセージの名前空間はデフォルトが <code>front</code>。</strong> <code>addSuccess()</code>/<code>addError()</code> 等の第 2 引数を省略すると <code>eccube.front.*</code> に積まれる。管理画面では <code>addSuccess($msg, 'admin')</code> のように <code>'admin'</code> を明示しないと、メッセージが front 名前空間に入り管理画面テンプレートに表示されない。</li>
+  <li><code>AbstractController</code> が <code>#[Required]</code> セッター注入で提供する依存（<code>eventDispatcher</code>・<code>entityManager</code>・<code>translator</code>・<code>formFactory</code>・<code>session</code>・<code>router</code>・<code>eccubeConfig</code>）はコンストラクタで再注入しない。</li>
+ </ul>
+</section>
+
+</body>
+</html>

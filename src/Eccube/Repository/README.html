@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Repository — 仕様</title>
+<style>
+ /* 最小限のスタイル。§8.2 の静的サイト側で共通 CSS を上書きできるよう、
+    装飾はクラス指定に寄せ、過度なインライン装飾は避ける。 */
+ body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.7;max-width:960px;margin:0 auto;padding:2rem;color:#222}
+ h1,h2{border-bottom:1px solid #ddd;padding-bottom:.3rem}
+ h1{margin-bottom:.2rem}
+ .nav{font-size:.9rem;color:#555;margin:.2rem 0 1.5rem}
+ table{border-collapse:collapse;width:100%;margin:1rem 0}
+ th,td{border:1px solid #ccc;padding:.4rem .6rem;text-align:left;vertical-align:top}
+ th{background:#f4f4f4}
+ code{background:#f4f4f4;padding:.1rem .3rem;border-radius:3px;font-size:.92em}
+ .flow{background:#f9f9f9;border:1px solid #ddd;padding:1rem;white-space:pre;overflow-x:auto;font-family:ui-monospace,monospace;font-size:.88rem;line-height:1.5}
+ .note{background:#fff8e1;border-left:4px solid #f0c040;padding:.6rem 1rem;margin:1rem 0}
+ .dev-only{font-size:.75rem;color:#888;font-weight:normal;margin-left:.5rem}
+ .badge{display:inline-block;background:#eef;border:1px solid #ccd;border-radius:3px;padding:0 .4rem;font-size:.8rem}
+</style>
+</head>
+<body>
+
+<h1>Repository — データアクセス</h1>
+<p class="nav">
+ 索引: <a href="./README.md">README.md</a>
+ ／ 実装規約（AI・開発者向け）: <a href="../../../.claude/skills/repository/SKILL.md">repository/SKILL.md</a>
+ ／ ドメイン詳細: <a href="https://doc4.ec-cube.net/spec_order">doc4「受注」仕様</a>
+</p>
+
+<section data-section="overview" data-customer="true">
+ <h2>概要</h2>
+ <p>このディレクトリは、エンティティの<strong>取得・保存・削除といったデータアクセス</strong>を担う Doctrine リポジトリを置きます。
+ 「商品を条件で検索する」「会員の受注一覧を引く」といった DB への問い合わせは、コントローラやサービスに直接書かず、
+ 対応するリポジトリのメソッドに集約します。</p>
+ <p>各リポジトリは <code>Eccube\Repository\AbstractRepository&lt;T&gt;</code>（Symfony の <code>ServiceEntityRepository</code> を継承）を継承し、
+ コンストラクタで担当エンティティのクラスを親へ渡します。1 エンティティにつき 1 リポジトリが対応します。</p>
+ <div class="note"><strong>責務はデータアクセスのみ。</strong> 金額計算・状態遷移・在庫引当などの業務ロジックはここに書かず Service / PurchaseFlow へ寄せます。</div>
+</section>
+
+<section data-section="repositories" data-customer="true">
+ <h2>主要リポジトリ</h2>
+ <table>
+  <tr><th>リポジトリ</th><th>担当エンティティ</th><th>主な役割</th></tr>
+  <tr><td><code>ProductRepository</code></td><td><code>Product</code></td><td>店頭・管理画面の商品検索（規格の並び替え込み取得）</td></tr>
+  <tr><td><code>OrderRepository</code></td><td><code>Order</code></td><td>受注検索・ステータス変更・会員別受注一覧</td></tr>
+  <tr><td><code>CustomerRepository</code></td><td><code>Customer</code></td><td>会員検索・認証まわりの取得</td></tr>
+  <tr><td><code>CartRepository</code></td><td><code>Cart</code></td><td>カートの取得・保存</td></tr>
+  <tr><td>マスタ系（<code>Master/</code>）</td><td><code>OrderStatus</code> 等</td><td>マスタ（<code>mtb_*</code>）の取得</td></tr>
+ </table>
+ <p>検索系メソッドの定石は <code>getQueryBuilderBySearchData(array $searchData): QueryBuilder</code> を返す形で、
+ 管理画面用は <code>getQueryBuilderBySearchDataForAdmin()</code> のように分けます（<code>ProductRepository</code> / <code>OrderRepository</code> が実例）。</p>
+</section>
+
+<section data-section="query" data-customer="true">
+ <h2>クエリの書き方</h2>
+ <div class="flow">$qb = $this-&gt;createQueryBuilder('p');          // QueryBuilder / DQL を使う（生 SQL 連結はしない）
+$qb-&gt;andWhere('p.name LIKE :name')             // 検索条件を組み立て
+   -&gt;setParameter('name', '%'.$word.'%');      // 値は必ず setParameter でバインド（SQL インジェクション対策）
+return $qb-&gt;orderBy('p.id', 'DESC');           // 一覧はページング用に QueryBuilder を返すに留める</div>
+ <ul>
+  <li><strong><code>createQueryBuilder()</code> / DQL を使う。</strong> 生 SQL の文字列連結は避けます。</li>
+  <li><strong>値は必ず <code>setParameter()</code> でバインド。</strong> 検索語を文字列に直挿ししません。</li>
+  <li><strong>N+1 を避ける。</strong> 必要に応じて <code>addSelect()</code> / JOIN で関連をまとめて取得します。</li>
+  <li><strong>ページングはコントローラ/サービス側。</strong> リポジトリは <code>QueryBuilder</code> を返すに留め、<code>knp_paginator</code> は呼び出し側で適用します。</li>
+ </ul>
+</section>
+
+<section data-section="persistence" data-customer="false">
+ <h2>永続化と拡張<span class="dev-only">開発者向け</span></h2>
+ <p>保存・削除は <code>AbstractRepository</code> が提供する <code>save(AbstractEntity $entity)</code> / <code>delete(AbstractEntity $entity)</code> を使います。
+ これらをオーバーライドする場合は<strong>親クラスのシグネチャを厳守</strong>します。</p>
+ <div class="note"><strong><code>save()</code> / <code>delete()</code> は <code>flush()</code> しません。</strong> 実体は <code>persist()</code> / <code>remove()</code> の呼び出しのみで、
+ DB への確定は行いません（<code>AbstractRepository::save()</code>/<code>delete()</code>）。呼び出し側で <code>EntityManager::flush()</code> を明示的に実行するか、
+ 一連の処理をまとめて 1 回 flush します。「<code>save()</code> したのに保存されない」の多くはこの flush 漏れです。</div>
+ <p><strong>検索クエリの拡張はサービス／メソッド差し替えではなくフックで行えます。</strong> 主要な検索系メソッドは組み立てた <code>QueryBuilder</code> を
+ <code>Queries::customize(QueryKey::&lt;対象&gt;, $qb, $searchData)</code> に通してから返します（<code>ProductRepository</code> / <code>OrderRepository</code> / <code>CustomerRepository</code> 等）。
+ <code>QueryCustomizer</code> を実装して登録すると、対象の <code>QueryKey</code>（<code>QueryKey.php</code> に定義）に対して検索条件や JOIN を後付けで注入できます。
+ プラグイン／カスタマイズで検索条件を足すときはこのフックを使い、リポジトリのコアメソッド自体は書き換えません。</p>
+ <p>プロジェクト固有の検索メソッド追加は <code>app/Customize/Repository/</code> で行います。
+ 実装の書き方・DO/DON'T は <a href="../../../.claude/skills/repository/SKILL.md">repository/SKILL.md</a> が正典です。</p>
+</section>
+
+<section data-section="notes" data-customer="false">
+ <h2>注意点<span class="dev-only">開発者向け</span></h2>
+ <ul>
+  <li><strong>業務ロジックを持ち込まない。</strong> 金額計算・状態遷移・受注処理は Service / PurchaseFlow の責務です。</li>
+  <li><strong><code>ServiceEntityRepository</code> を直接継承しない。</strong> 必ず <code>AbstractRepository&lt;T&gt;</code> を継承します。</li>
+  <li><strong>全件取得を無制限にしない。</strong> 画面表示の一覧・関連取得は件数が際限なく増え得るため、ページング（QueryBuilder を返す）か上限を設けます。</li>
+  <li><strong>受注一覧は仮受注を除外する。</strong> <code>PROCESSING</code>・<code>PENDING</code> は確定前の仮受注のため、売上集計や一覧では除外します（<code>OrderStatusFilter</code>）。</li>
+ </ul>
+</section>
+
+</body>
+</html>

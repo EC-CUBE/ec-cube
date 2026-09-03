@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Twig/Extension — 仕様</title>
+<style>
+ /* 最小限のスタイル。§8.2 の静的サイト側で共通 CSS を上書きできるよう、
+    装飾はクラス指定に寄せ、過度なインライン装飾は避ける。 */
+ body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.7;max-width:960px;margin:0 auto;padding:2rem;color:#222}
+ h1,h2{border-bottom:1px solid #ddd;padding-bottom:.3rem}
+ h1{margin-bottom:.2rem}
+ .nav{font-size:.9rem;color:#555;margin:.2rem 0 1.5rem}
+ table{border-collapse:collapse;width:100%;margin:1rem 0}
+ th,td{border:1px solid #ccc;padding:.4rem .6rem;text-align:left;vertical-align:top}
+ th{background:#f4f4f4}
+ code{background:#f4f4f4;padding:.1rem .3rem;border-radius:3px;font-size:.92em}
+ .flow{background:#f9f9f9;border:1px solid #ddd;padding:1rem;white-space:pre;overflow-x:auto;font-family:ui-monospace,monospace;font-size:.88rem;line-height:1.5}
+ .note{background:#fff8e1;border-left:4px solid #f0c040;padding:.6rem 1rem;margin:1rem 0}
+ .dev-only{font-size:.75rem;color:#888;font-weight:normal;margin-left:.5rem}
+ .badge{display:inline-block;background:#eef;border:1px solid #ccd;border-radius:3px;padding:0 .4rem;font-size:.8rem}
+</style>
+</head>
+<body>
+
+<h1>Twig/Extension — Twig 拡張</h1>
+<p class="nav">
+ 索引: <a href="./README.md">README.md</a>
+ ／ 実装規約（AI・開発者向け）: <a href="../../../../.claude/skills/twig-template/SKILL.md">twig-template/SKILL.md</a>
+</p>
+
+<section data-section="overview" data-customer="true">
+ <h2>概要</h2>
+ <p>ここは <strong>Twig テンプレートから使える独自のフィルタ・関数・テスト</strong>を定義するディレクトリです。
+ 価格の表示（<code>{{ price|price }}</code>）、日付整形（<code>{{ date|date_format }}</code>）、商品取得（<code>{{ product(id) }}</code>）といった、
+ テンプレート側で頻出する処理を PHP 側にまとめて提供します。</p>
+ <p>各クラスは Twig 標準の <code>AbstractExtension</code> を継承し、<code>services.yaml</code> の <code>autoconfigure: true</code> で
+ <strong>自動的に Twig 拡張として登録</strong>されます（手動タグ不要）。提供できる要素は 3 種類です。</p>
+ <table>
+  <tr><th>提供メソッド</th><th>テンプレートでの使い方</th></tr>
+  <tr><td><code>getFilters()</code></td><td>フィルタ <code>{{ value|filter }}</code></td></tr>
+  <tr><td><code>getFunctions()</code></td><td>関数 <code>{{ func(args) }}</code></td></tr>
+  <tr><td><code>getTests()</code></td><td>テスト <code>{% if value is test %}</code></td></tr>
+ </table>
+</section>
+
+<section data-section="catalog" data-customer="true">
+ <h2>主要な拡張とその役割</h2>
+ <table>
+  <tr><th>クラス</th><th>役割</th><th>提供する主なフィルタ／関数</th></tr>
+  <tr><td><code>EccubeExtension</code></td><td>コアで最も使われる汎用拡張</td><td><code>price</code> / <code>date_format</code> / <code>ellipsis</code> / <code>file_ext_icon</code>（filter）、<code>product()</code> / <code>has_errors()</code> / <code>active_menus()</code> / <code>class_categories_as_json()</code> / <code>currency_symbol()</code>（function）</td></tr>
+  <tr><td><code>TaxExtension</code></td><td>税に関する判定</td><td><code>is_reduced_tax_rate()</code>（軽減税率対象か）</td></tr>
+  <tr><td><code>CsrfExtension</code></td><td>CSRF トークンの出力</td><td><code>csrf_token_for_anchor()</code></td></tr>
+  <tr><td><code>RepositoryExtension</code></td><td>テンプレートからリポジトリ参照</td><td><code>repository()</code></td></tr>
+  <tr><td><code>IntlExtension</code></td><td>国際化（通貨・地域表記）</td><td>Intl 系フィルタ</td></tr>
+  <tr><td><code>TemplateEventExtension</code></td><td>テンプレートイベントの差し込み基盤（NodeVisitor）</td><td>（フィルタ/関数ではなく描画フックを提供）</td></tr>
+ </table>
+ <div class="note">テンプレートの描画時に、ファイル名をイベント名として <code>TemplateEvent</code> が dispatch されます。
+ プラグイン・カスタマイズはここにアセットやスニペットを差し込みます（見た目の調整に使い、業務ロジックは書かない）。
+ 購読方法は Skill <code>event-subscriber</code> を参照。</div>
+</section>
+
+<section data-section="usage" data-customer="true">
+ <h2>使いどころ</h2>
+ <p>テンプレートで表示・整形が必要になったら、まず既存のフィルタ／関数で足りるかを確認します。
+ <strong>同じ整形ロジックをテンプレートに散らさない</strong>のが原則です。</p>
+ <table>
+  <tr><th>やりたいこと</th><th>使うもの</th></tr>
+  <tr><td>金額を通貨記号・桁区切り付きで表示</td><td><code>{{ value|price }}</code></td></tr>
+  <tr><td>日付を EC-CUBE 既定フォーマットで表示</td><td><code>{{ value|date_format }}</code></td></tr>
+  <tr><td>長い文字列を省略（…）</td><td><code>{{ value|ellipsis(length) }}</code></td></tr>
+  <tr><td>ID から商品エンティティを取得</td><td><code>{{ product(id) }}</code></td></tr>
+  <tr><td>グローバル値の参照</td><td><code>BaseInfo</code> / <code>eccube_config</code> / <code>Layout</code> / <code>Page</code>（<code>TwigInitializeListener</code> が注入）</td></tr>
+ </table>
+</section>
+
+<section data-section="extension" data-customer="false">
+ <h2>独自フィルタ／関数の追加方法<span class="dev-only">開発者向け</span></h2>
+ <p><code>AbstractExtension</code> を継承したクラスを作り、<code>getFilters()</code> / <code>getFunctions()</code> で登録します。
+ 依存はコンストラクタ DI で受けます。実装の DO/DON'T は <a href="../../../../.claude/skills/twig-template/SKILL.md">twig-template/SKILL.md</a> が正典です。</p>
+ <div class="flow">new TwigFilter('price', $this-&gt;getPriceFilter(...));
+// HTML を返すフィルタ/関数は is_safe を明示する
+new TwigFilter('file_ext_icon', $this-&gt;getExtensionIcon(...), ['is_safe' =&gt; ['html']]);
+new TwigFunction('product', $this-&gt;getProduct(...));</div>
+ <ul>
+  <li><span class="badge">コア</span> <code>src/Eccube/Twig/Extension/</code> に置く（このディレクトリ）。</li>
+  <li><span class="badge">プラグイン / Customize</span> 同じ <code>AbstractExtension</code> 継承で追加でき、<code>autoconfigure</code> で登録される。</li>
+ </ul>
+</section>
+
+<section data-section="notes" data-customer="false">
+ <h2>注意点（XSS・エスケープ）<span class="dev-only">開発者向け</span></h2>
+ <ul>
+  <li><strong>Twig は HTML オートエスケープが既定で有効</strong>。<code>{{ value }}</code> は自動でエスケープされる。<code>|raw</code> を付けない限り安全、が大原則。</li>
+  <li><strong><code>|raw</code> はエスケープ無効化</strong>。ユーザー入力・DB 由来の値に付けると XSS。管理画面テンプレートも例外ではない。</li>
+  <li><strong>コンテキストに応じたエスケープ</strong>を使う。JavaScript の中に埋めるなら <code>{{ value|escape('js') }}</code>（HTML エスケープでは JS 文脈の XSS を防げない）。</li>
+  <li><strong>HTML を返すフィルタ/関数には <code>['is_safe' =&gt; ['html']]</code> を付ける</strong>（付けないと二重エスケープ）。ただし付ける＝出力責任を負うということ。
+  中で外部入力を混ぜるなら <code>htmlspecialchars($value, ENT_QUOTES, 'UTF-8')</code> で自前エスケープしてから返す。</li>
+  <li><strong>ユーザー編集可能なテンプレート文字列（CMS・フリーエリア・メール本文）は Twig サンドボックスを通す</strong>
+  （<code>template_from_string(...)</code> ＋ <code>sandboxed = true</code>）。外すとテンプレートインジェクションになる（過去の脆弱性修正の中心領域）。</li>
+  <li><strong>サンドボックス違反は本番では例外にならず素通りする</strong>。<code>IgnoreTwigSandboxErrorExtension</code> が Twig 標準の <code>include</code> を上書きし、<code>SecurityError</code> を <code>APP_ENV=dev</code> なら再スロー、それ以外はログ出力して <code>null</code> を返す。サンドボックスが効いているかは必ず <code>dev</code> 環境で検証すること（本番では例外が出ないため気づけない）。</li>
+  <li><strong>メール本文用のエスケープ戦略は HTML とは別</strong>。<code>SafeTextmailEscaperExtension</code> が <code>safe_textmail</code> ストラテジを登録し、<code>&lt;</code> <code>&gt;</code> を <strong>実体参照ではなく全角の <code>＜</code> <code>＞</code> に置換</strong>する（プレーンテキストメールに <code>&amp;lt;</code> が出ないようにするため）。メールテンプレートで HTML 用エスケープを流用しない。</li>
+ </ul>
+</section>
+
+</body>
+</html>

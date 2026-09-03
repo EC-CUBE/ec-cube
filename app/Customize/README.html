@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>app/Customize — プロジェクト固有カスタマイズ 仕様</title>
+<style>
+ /* 最小限のスタイル。§8.2 の静的サイト側で共通 CSS を上書きできるよう、
+    装飾はクラス指定に寄せ、過度なインライン装飾は避ける。 */
+ body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.7;max-width:960px;margin:0 auto;padding:2rem;color:#222}
+ h1,h2{border-bottom:1px solid #ddd;padding-bottom:.3rem}
+ h1{margin-bottom:.2rem}
+ .nav{font-size:.9rem;color:#555;margin:.2rem 0 1.5rem}
+ table{border-collapse:collapse;width:100%;margin:1rem 0}
+ th,td{border:1px solid #ccc;padding:.4rem .6rem;text-align:left;vertical-align:top}
+ th{background:#f4f4f4}
+ code{background:#f4f4f4;padding:.1rem .3rem;border-radius:3px;font-size:.92em}
+ .flow{background:#f9f9f9;border:1px solid #ddd;padding:1rem;white-space:pre;overflow-x:auto;font-family:ui-monospace,monospace;font-size:.88rem;line-height:1.5}
+ .note{background:#fff8e1;border-left:4px solid #f0c040;padding:.6rem 1rem;margin:1rem 0}
+ .dev-only{font-size:.75rem;color:#888;font-weight:normal;margin-left:.5rem}
+ .badge{display:inline-block;background:#eef;border:1px solid #ccd;border-radius:3px;padding:0 .4rem;font-size:.8rem}
+</style>
+</head>
+<body>
+
+<h1>app/Customize — プロジェクト固有カスタマイズ</h1>
+<p class="nav">
+ 索引: <a href="./README.md">README.md</a>
+ ／ 実装規約（AI・開発者向け）: <a href="../../.claude/skills/customize/SKILL.md">customize/SKILL.md</a>
+</p>
+
+<section data-section="overview" data-customer="true">
+ <h2>概要</h2>
+ <p><code>app/Customize/</code> は、<strong>プロジェクト固有の改変</strong>を置く場所です。コア（<code>src/Eccube/</code>）を
+ 直接書き換えず、ここで<strong>拡張・上書き</strong>することで、コア改変を避けます。PSR-4 で
+ <strong><code>Customize\</code> ＝ <code>app/Customize/</code></strong> にマッピングされ、autowire / autoconfigure 済みで登録されます。</p>
+
+ <p>置けるものはコントローラ・エンティティ拡張・フォーム拡張・リポジトリ・サービス・Twig など。
+ リポジトリに実在する骨組みは次の通り（各レイヤは必要に応じて足す）。</p>
+ <div class="flow">app/Customize/
+  ├── Controller/          # #[Route] を持つコントローラ（追加）
+  ├── Entity/              # コアエンティティ拡張トレイト（#[EntityExtension]）
+  └── Resource/
+      ├── config/          # サービス定義等
+      └── locale/          # 翻訳</div>
+</section>
+
+<section data-section="positioning" data-customer="true">
+ <h2>Plugin との使い分け</h2>
+ <p><strong>プロジェクト固有・1 回限りの改変は <code>app/Customize/</code>、着脱・再配布できる機能は
+ <a href="../Plugin/README.md">app/Plugin/</a></strong>。作法（トレイト拡張・proxy 再生成等）は共通ですが、位置づけが異なります。</p>
+ <table>
+  <tr><th></th><th>app/Customize/（本ディレクトリ）</th><th>app/Plugin/{Code}/</th></tr>
+  <tr><td>名前空間</td><td><code>Customize\</code></td><td><code>Plugin\{Code}\</code>（独立）</td></tr>
+  <tr><td>想定</td><td>プロジェクト固有・1 回限り</td><td>着脱・再配布できる機能パッケージ</td></tr>
+  <tr><td>ライフサイクル</td><td>なし（常時有効）</td><td>install/enable/disable/uninstall あり</td></tr>
+  <tr><td>メタデータ</td><td>なし</td><td><code>composer.json</code> の <code>extra.code</code> 必須</td></tr>
+ </table>
+ <div class="note"><strong>「アップグレード安全」は限定的</strong>。効くのはパッチ更新まで。マイナー/メジャー更新ではコア変更で破綻し得ます。
+ サービス/テンプレートを override すると、コアに当たったセキュリティパッチが自動反映されず個別再適用が必要になるため、override は最小限に。</div>
+</section>
+
+<section data-section="patterns" data-customer="false">
+ <h2>拡張・上書きのパターン<span class="dev-only">開発者向け</span></h2>
+ <p><strong>実装の書き方・DO/DON'T は <a href="../../.claude/skills/customize/SKILL.md">customize/SKILL.md</a> が正典</strong>。ここでは全体像だけ示します。</p>
+ <table>
+  <tr><th>やりたいこと</th><th>置き場所 / 方法</th></tr>
+  <tr><td>コアエンティティにカラム追加</td><td><code>Entity/*Trait.php</code> に <code>#[EntityExtension(対象::class)]</code>＋<code>#[ORM\Column]</code>（<strong>追加のみ</strong>。既存の差し替えは不可）</td></tr>
+  <tr><td>既存フォームに項目追加</td><td><code>Form/Extension/</code> に <code>AbstractTypeExtension</code>＋<code>getExtendedTypes()</code></td></tr>
+  <tr><td>コアサービスの振る舞い変更</td><td><code>Service/</code> ＋ <code>services.yaml</code> の <code>decorates</code>／<code>@.inner</code> でデコレーション</td></tr>
+  <tr><td>コントローラ追加</td><td><code>Controller/</code> に <code>#[Route]</code>（<code>customize_controllers</code> が属性走査）</td></tr>
+  <tr><td>テンプレート上書き</td><td><code>app/template/</code> の<strong>コアと同じ相対パス</strong>に同名ファイル（フロント <code>{テーマコード}/</code>、管理画面 <code>admin/</code>）</td></tr>
+ </table>
+ <div class="note">エンティティ拡張トレイトを足したら <code>bin/console eccube:generate:proxies</code> で proxy 再生成。
+ <code>#[EntityExtension]</code> を付け忘れると proxy に乗らず、カラムが認識されません。</div>
+</section>
+
+<section data-section="notes" data-customer="false">
+ <h2>注意点<span class="dev-only">開発者向け</span></h2>
+ <ul>
+  <li><strong>コアを直接書き換えない</strong>。拡張・上書きはすべてここで行い、アップグレード安全（限定的）を保つ。</li>
+  <li>コアエンティティは<strong>置換不可</strong>。トレイト＋<code>#[EntityExtension]</code> による<strong>追加のみ</strong>。</li>
+  <li>カラム追加に <code>ALTER</code> マイグレーションは<strong>不要</strong>（属性が源泉。<code>schema:update --force</code> が反映）。型変更・データ投入は <a href="../DoctrineMigrations/README.md">app/DoctrineMigrations/</a>。</li>
+  <li>サービス上書きは <code>#[AsDecorator]</code> ではなく <code>services.yaml</code> の <code>decorates</code>（コアの作法に合わせる）。</li>
+  <li>テンプレートは<strong>コア原本を編集しない</strong>。<code>app/template/</code> に同じ相対パスで同名ファイルを置くと app 側が優先される。</li>
+  <li><strong>カスタムのサービス/バンドル定義は <code>app/Customize/Resource/config/</code> に置く</strong>。Kernel が <code>services.(php|yaml)</code>（＋<code>services_{env}</code>）を glob で自動ロードし（<code>src/Eccube/Kernel.php:185-187</code>）、<code>bundles.php</code> があれば追加 Symfony バンドルも登録する（同 <code>:115-123</code>）。<code>decorates</code> を書く services.yaml の置き場所はここ。コントローラのルートは属性走査（<code>customize_controllers</code>）だが、この <code>Resource/config</code> は Customize のルート読み込み対象ではない点に注意。</li>
+ </ul>
+</section>
+
+</body>
+</html>

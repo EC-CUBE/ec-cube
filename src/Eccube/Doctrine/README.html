@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Doctrine — 仕様</title>
+<style>
+ /* 最小限のスタイル。§8.2 の静的サイト側で共通 CSS を上書きできるよう、
+    装飾はクラス指定に寄せ、過度なインライン装飾は避ける。 */
+ body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.7;max-width:960px;margin:0 auto;padding:2rem;color:#222}
+ h1,h2{border-bottom:1px solid #ddd;padding-bottom:.3rem}
+ h1{margin-bottom:.2rem}
+ .nav{font-size:.9rem;color:#555;margin:.2rem 0 1.5rem}
+ table{border-collapse:collapse;width:100%;margin:1rem 0}
+ th,td{border:1px solid #ccc;padding:.4rem .6rem;text-align:left;vertical-align:top}
+ th{background:#f4f4f4}
+ code{background:#f4f4f4;padding:.1rem .3rem;border-radius:3px;font-size:.92em}
+ .flow{background:#f9f9f9;border:1px solid #ddd;padding:1rem;white-space:pre;overflow-x:auto;font-family:ui-monospace,monospace;font-size:.88rem;line-height:1.5}
+ .note{background:#fff8e1;border-left:4px solid #f0c040;padding:.6rem 1rem;margin:1rem 0}
+ .dev-only{font-size:.75rem;color:#888;font-weight:normal;margin-left:.5rem}
+ .badge{display:inline-block;background:#eef;border:1px solid #ccd;border-radius:3px;padding:0 .4rem;font-size:.8rem}
+</style>
+</head>
+<body>
+
+<h1>Doctrine — EC-CUBE 固有の Doctrine 拡張</h1>
+<p class="nav">
+ 索引: <a href="./README.md">README.md</a>
+</p>
+
+<section data-section="overview" data-customer="true">
+ <h2>概要</h2>
+ <p>このディレクトリは、EC-CUBE が <strong>Doctrine ORM / DBAL に被せている独自拡張</strong>を収めます。
+ エンティティ定義（<code>src/Eccube/Entity/</code>）そのものではなく、
+ 「クエリの後付け拡張」「日時の UTC 保存」「日本語検索用の DQL 関数」「表示制御用のフィルタ」「Proxy を安全に読むマッピングドライバ」
+ 「CSV からの初期データ投入」といった<strong>基盤側の仕組み</strong>が対象です。</p>
+
+ <div class="note"><strong>区分の凡例（この機構は何のためにあるか）</strong>: <span class="badge">拡張ポイント</span>＝プラグイン/Customize が介入するための仕組み ／
+ <span class="badge">ドメイン</span>＝EC 業務要件そのもの ／ <span class="badge">portability</span>＝複数 DB・タイムゾーン吸収 ／
+ <span class="badge">基盤</span>＝横断インフラ ／ <span class="badge">負債</span>＝歴史的経緯による簡素化候補。
+ 「拡張ポイントの多さ＝コアの複雑さの主因」を可視化するためのタグ。</div>
+ <table>
+  <tr><th>サブ</th><th>区分</th><th>目的</th></tr>
+  <tr><td>Query/</td><td><span class="badge">拡張ポイント</span></td><td>既存クエリに WHERE / JOIN / ORDER BY を<strong>後付けで差し込む</strong>カスタマイズ機構（プラグイン拡張の要）</td></tr>
+  <tr><td>ORM/Mapping/Driver/</td><td><span class="badge">拡張ポイント</span></td><td>エンティティプロキシ機構（trait 拡張）を成立させる属性マッピングドライバ</td></tr>
+  <tr><td>DBAL/Types/</td><td><span class="badge">portability</span></td><td>DB へは常に UTC で保存し、PHP 側でアプリのタイムゾーンへ変換するカスタム型</td></tr>
+  <tr><td>ORM/Query/</td><td><span class="badge">portability</span></td><td>日本語検索・日時抽出のための独自 DQL 関数（<code>NORMALIZE</code> / <code>EXTRACT</code>。DB 別に SQL 出し分け）</td></tr>
+  <tr><td>Filter/</td><td><span class="badge">ドメイン</span></td><td>全クエリに横断的に効く SQL フィルタ（在庫なし非表示・仮受注除外）</td></tr>
+  <tr><td>EventSubscriber/</td><td><span class="badge">基盤</span></td><td>Doctrine ライフサイクルへのフック（作成/更新日時の自動セット・税込価格算出・接続時 TZ 設定）</td></tr>
+  <tr><td>Common/CsvDataFixtures/</td><td><span class="badge">基盤</span></td><td>インストール時に CSV からマスタ等を一括投入する仕組み</td></tr>
+ </table>
+ <p>このディレクトリは <strong>7 サブ中 2 つ（Query/・Mapping Driver/）が純粋な拡張ポイント</strong>で、行数の多くを占めます。
+ 「Doctrine を薄くラップ」ではなく「<strong>Doctrine を拡張可能にするため厚く被せている</strong>」のがコアの複雑さの一因です。</p>
+</section>
+
+<section data-section="query" data-customer="true">
+ <h2>クエリカスタマイズ機構（Query/）</h2>
+ <p>EC-CUBE の一覧・検索クエリ（<code>ProductRepository</code> / <code>OrderRepository</code> / <code>CustomerRepository</code> 等）は、
+ <strong>プラグインやカスタマイズが後から条件を足せる</strong>よう作られています。中心が <code>QueryCustomizer</code> インターフェイスです。</p>
+ <div class="flow">Repository が queryKey（例: "product_search"）付きで
+     ↓ Queries::customize($queryKey, $qb, $params)
+Queries が queryKey に登録された QueryCustomizer 群を順に適用
+     ↓
+WhereCustomizer  → createStatements() が返す WhereClause[] を andWhere で追加
+JoinCustomizer   → createStatements() が返す JoinClause[] を join で追加
+OrderByCustomizer→ OrderByClause[] を addOrderBy で追加</div>
+ <table>
+  <tr><th>クラス</th><th>役割</th></tr>
+  <tr><td><code>QueryCustomizer</code>（interface）</td><td><code>customize()</code> と <code>getQueryKey()</code> を持つ。対象クエリは queryKey で識別。</td></tr>
+  <tr><td><code>Queries</code></td><td>queryKey ごとに Customizer を保持し、<code>customize()</code> で該当分をまとめて適用。</td></tr>
+  <tr><td><code>WhereCustomizer</code> / <code>JoinCustomizer</code> / <code>OrderByCustomizer</code>（abstract）</td><td>用途別の基底。<code>createStatements()</code> だけ実装すればよい。</td></tr>
+  <tr><td><code>WhereClause</code></td><td>WHERE 句のファクトリ（<code>eq</code> / <code>like</code> / <code>in</code> / <code>between</code> / <code>gt</code> …）。パラメータバインドまで自動で行う。</td></tr>
+  <tr><td><code>JoinClause</code> / <code>OrderByClause</code></td><td>JOIN / ORDER BY を組み立てる値オブジェクト。JoinClause は付随する WHERE / ORDER BY も持てる。</td></tr>
+ </table>
+ <p>登録は DI タグ <code>eccube.query_customizer</code>（<code>QueryCustomizerPass</code> が収集）。実装が <code>QueryCustomizer</code> を継承していないとコンパイル時に弾かれます。</p>
+</section>
+
+<section data-section="dbal-orm" data-customer="true">
+ <h2>DBAL 型・DQL 関数・フィルタ</h2>
+
+ <h3>DBAL カスタム型（DBAL/Types/）</h3>
+ <p><code>UTCDateTimeType</code> / <code>UTCDateTimeTzType</code> が Doctrine の <code>datetime</code> / <code>datetimetz</code> を差し替えます（<code>doctrine.yaml</code> の <code>types</code>）。
+ <strong>DB へは常に UTC で保存</strong>し、PHP 側で読むときにアプリのタイムゾーン（既定 <code>Asia/Tokyo</code>、<code>setTimeZone()</code>）へ変換します。
+ 接続時にも <code>InitSubscriber</code> がセッションのタイムゾーンを UTC に固定します。</p>
+
+ <h3>独自 DQL 関数（ORM/Query/）</h3>
+ <table>
+  <tr><th>関数</th><th>用途</th></tr>
+  <tr><td><code>NORMALIZE</code></td><td>ひらがな→カタカナ変換＋小文字化。DB 差異を吸収した<strong>あいまい検索</strong>（PostgreSQL は <code>TRANSLATE</code>、MySQL は照合順序、他は <code>LOWER</code>）。</td></tr>
+  <tr><td><code>EXTRACT</code></td><td>日時から YEAR/MONTH/DAY 等を取り出す。UTC 保存分をアプリ TZ へ補正した上で抽出（DB 別に SQL を出し分け）。</td></tr>
+ </table>
+
+ <h3>SQL フィルタ（Filter/）</h3>
+ <p>Doctrine の <code>SQLFilter</code> で、有効化すると<strong>対象エンティティの全クエリに WHERE 条件が自動付与</strong>されます。いずれも <code>doctrine.yaml</code> では既定 <code>enabled: false</code>で、必要な箇所で明示的に有効化します。</p>
+ <table>
+  <tr><th>フィルタ</th><th>効果</th></tr>
+  <tr><td><code>NoStockHiddenFilter</code>（<code>option_nostock_hidden</code>）</td><td><code>ProductClass</code> を在庫あり（または無制限）だけに絞る。</td></tr>
+  <tr><td><code>OrderStatusFilter</code>（<code>incomplete_order_status_hidden</code>）</td><td>仮受注（<code>PROCESSING</code> / <code>PENDING</code>）の <code>Order</code> を除外する。</td></tr>
+ </table>
+</section>
+
+<section data-section="mapping-lifecycle" data-customer="false">
+ <h2>マッピングドライバとライフサイクル<span class="dev-only">開発者向け</span></h2>
+
+ <h3>属性マッピングドライバ（ORM/Mapping/Driver/）</h3>
+ <p>EC-CUBE の<strong>エンティティプロキシ機構</strong>（トレイト追加で既存エンティティを拡張する仕組み）を成立させるための Doctrine <code>AttributeDriver</code> 派生です。</p>
+ <table>
+  <tr><th>ドライバ</th><th>役割</th></tr>
+  <tr><td><code>TraitProxyAttributeDriver</code></td><td>クラスをスキャンする際、対応する Proxy ファイルがあれば元エンティティの代わりにそれを読む。</td></tr>
+  <tr><td><code>ReloadSafeAttributeDriver</code></td><td>同一プロセス内で新規生成した Proxy を再読込するときの Fatal を回避（一時的にクラス名を変えてロードしメタデータ抽出）。</td></tr>
+  <tr><td><code>NopAttributeDriver</code></td><td>常に空を返す no-op ドライバ。</td></tr>
+ </table>
+
+ <h3>ライフサイクルフック（EventSubscriber/）</h3>
+ <table>
+  <tr><th>Subscriber</th><th>フック</th></tr>
+  <tr><td><code>SaveEventSubscriber</code></td><td>prePersist / preUpdate で <code>createDate</code> / <code>updateDate</code> / <code>currencyCode</code> / <code>creator</code> を自動セット（メソッドが在れば）。</td></tr>
+  <tr><td><code>TaxRuleEventSubscriber</code></td><td><code>ProductClass</code> の読込・保存時に税込価格（<code>price01IncTax</code> 等）を <code>TaxRuleService</code> で算出。</td></tr>
+  <tr><td><code>InitSubscriber</code></td><td>postConnect で DB セッションのタイムゾーンを UTC に固定。</td></tr>
+ </table>
+</section>
+
+<section data-section="notes" data-customer="false">
+ <h2>注意点<span class="dev-only">開発者向け</span></h2>
+ <ul>
+  <li><strong>日時は必ず UTC で DB に入る</strong>。生 SQL で日時を条件に使うと TZ ずれを起こす。DQL の <code>EXTRACT</code> は補正込みだが、直書き SQL は自前で補正が要る。</li>
+  <li><strong>SQL フィルタは既定で無効</strong>。「在庫なしを隠す」「仮受注を除く」は自動では効かない。フロント商品一覧や売上集計など、必要な経路で明示的に <code>enableFilter()</code> する（コアの Repository / Controller が手本）。</li>
+  <li>クエリに条件を足したいときは Repository を書き換えず、<code>QueryCustomizer</code> を <code>eccube.query_customizer</code> タグで登録して差し込む（アップグレード安全）。</li>
+  <li><code>WhereClause</code> は必ずパラメータバインドを通す。生値を DQL 文字列へ連結しない（SQL インジェクション回避）。</li>
+  <li>Mapping ドライバ／Proxy まわりは <code>app/proxy/entity/</code> 生成物と密結合。トレイト追加後の再生成は <code>bin/console eccube:generate:proxies</code>。</li>
+  <li><code>CsvDataFixtures</code> はインストール／初期データ投入専用の低レベル一括 INSERT（同階層の <code>definition.yml</code> で投入順を定義）。通常の CSV 入出力（商品・受注）は <code>Service/Csv*Service</code> 側で、これとは別物。</li>
+ </ul>
+</section>
+
+</body>
+</html>

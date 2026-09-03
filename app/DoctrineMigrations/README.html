@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>app/DoctrineMigrations — マイグレーション 仕様</title>
+<style>
+ /* 最小限のスタイル。§8.2 の静的サイト側で共通 CSS を上書きできるよう、
+    装飾はクラス指定に寄せ、過度なインライン装飾は避ける。 */
+ body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.7;max-width:960px;margin:0 auto;padding:2rem;color:#222}
+ h1,h2{border-bottom:1px solid #ddd;padding-bottom:.3rem}
+ h1{margin-bottom:.2rem}
+ .nav{font-size:.9rem;color:#555;margin:.2rem 0 1.5rem}
+ table{border-collapse:collapse;width:100%;margin:1rem 0}
+ th,td{border:1px solid #ccc;padding:.4rem .6rem;text-align:left;vertical-align:top}
+ th{background:#f4f4f4}
+ code{background:#f4f4f4;padding:.1rem .3rem;border-radius:3px;font-size:.92em}
+ .flow{background:#f9f9f9;border:1px solid #ddd;padding:1rem;white-space:pre;overflow-x:auto;font-family:ui-monospace,monospace;font-size:.88rem;line-height:1.5}
+ .note{background:#fff8e1;border-left:4px solid #f0c040;padding:.6rem 1rem;margin:1rem 0}
+ .dev-only{font-size:.75rem;color:#888;font-weight:normal;margin-left:.5rem}
+ .badge{display:inline-block;background:#eef;border:1px solid #ccd;border-radius:3px;padding:0 .4rem;font-size:.8rem}
+</style>
+</head>
+<body>
+
+<h1>app/DoctrineMigrations — マイグレーション</h1>
+<p class="nav">
+ 索引: <a href="./README.md">README.md</a>
+ ／ 実装規約（AI・開発者向け）: <a href="../../.claude/skills/migration/SKILL.md">migration/SKILL.md</a>
+</p>
+
+<section data-section="overview" data-customer="true">
+ <h2>概要</h2>
+ <p>このディレクトリは、コア本体の DB マイグレーション（<code>VersionYYYYMMDDHHMMSS.php</code>）を置く場所です。
+ 名前空間は <code>DoctrineMigrations</code>、各クラスは <code>final class VersionYYYYMMDDHHMMSS extends AbstractMigration</code>。
+ 適用状況は <code>doctrine_migration_versions</code> テーブルが管理します（doctrine-migrations-bundle 既定名。<code>migration_versions</code> は旧称で、EC-CUBE は table_name を上書きしていない）。</p>
+
+ <div class="note"><strong>最重要: スキーマの源泉は Entity の属性（<code>#[ORM\...]</code>）であって、マイグレーションではない</strong>。
+ マイグレーションは「属性＋<code>schema:update</code> では届かないもの」を補うためだけに書きます。</div>
+</section>
+
+<section data-section="when" data-customer="true">
+ <h2>いつ書くか（＝ほとんど書かない）</h2>
+ <p>EC-CUBE のスキーマ更新は 2 段構えです。単純なカラム追加・変更は <strong>①</strong> が自動反映するため、
+ マイグレーションは<strong>不要</strong>です。</p>
+ <div class="flow">① doctrine:schema:update --force   … Entity 属性から導けるカラム追加・変更を反映
+② doctrine:migrations:migrate      … ① で扱えないもの（INSERT・型変更等）を適用</div>
+ <table>
+  <tr><th>ケース</th><th>マイグレーション</th></tr>
+  <tr><td>カラム追加（属性を足すだけ）</td><td><span class="badge">不要</span> ① が反映する</td></tr>
+  <tr><td>マスタ/初期データの INSERT（<code>mtb_*</code> / <code>dtb_block</code> / <code>dtb_mail_template</code> 等）</td><td><span class="badge">必要</span> ② で投入</td></tr>
+  <tr><td>型変更・リネーム・データ移行を伴う構造変更</td><td><span class="badge">必要</span> ② で適用</td></tr>
+ </table>
+ <div class="note"><strong>マスタ/初期データは「CSV ＋ マイグレーション」の両方が必要</strong>。
+ <code>src/Eccube/Resource/doctrine/import_csv/</code> はインストール時にしか読まれないため、既存環境へは INSERT マイグレーションで届ける。
+ 新規インストールは CSV から入る。両方を同一 PR で行う。</div>
+</section>
+
+<section data-section="convention" data-customer="false">
+ <h2>作法<span class="dev-only">開発者向け</span></h2>
+ <p><strong>実装の詳細は <a href="../../.claude/skills/migration/SKILL.md">migration/SKILL.md</a> が正典</strong>。要点のみ。</p>
+ <ul>
+  <li>生成は <code>bin/console doctrine:migrations:generate</code> で<strong>空の雛形</strong>を作り、必要な SQL を手で書く。
+  <code>doctrine:migrations:diff</code> は<strong>使わない</strong>（カラム差分まで ALTER 化し、原則と矛盾するため）。</li>
+  <li><code>up()</code> と <code>down()</code> を<strong>対で</strong>実装する（確実に巻き戻せること）。</li>
+  <li><strong>冪等にする</strong>: <code>$schema->hasTable()</code> / <code>$table->hasColumn()</code> や <code>SELECT COUNT(*)</code> で存在確認し、適用済みなら早期 return。</li>
+  <li>PHP ファイル先頭に EC-CUBE ライセンスヘッダ。PostgreSQL / MySQL 双方で動く SQL を意識する。</li>
+ </ul>
+ <div class="flow">final class Version20240101000000 extends AbstractMigration
+{
+    public function up(Schema $schema): void
+    {
+        $count = $this->connection->fetchOne("SELECT COUNT(*) FROM mtb_sale_type WHERE id = 3");
+        if ($count > 0) { return; }   // 冪等
+        $this->addSql("INSERT INTO mtb_sale_type (id, name, sort_no, discriminator_type)
+                       VALUES (3, '定期購入', 3, 'saletype')");
+    }
+    public function down(Schema $schema): void
+    {
+        $this->addSql("DELETE FROM mtb_sale_type WHERE id = 3");
+    }
+}</div>
+</section>
+
+<section data-section="notes" data-customer="false">
+ <h2>注意点<span class="dev-only">開発者向け</span></h2>
+ <ul>
+  <li>❌ カラムを足したので <code>ALTER TABLE ... ADD COLUMN</code> を書く → ✅ 属性を足すだけ。<code>schema:update</code> が反映する。</li>
+  <li>❌ <code>diff</code> で ALTER を自動生成 → ✅ <code>generate</code> で空雛形＋手書き。</li>
+  <li>❌ マイグレーションでテーブルを"新規定義"して源泉にする → ✅ 源泉は Entity 属性。</li>
+  <li>❌ INSERT・構造変更でガードなし → ✅ 存在チェックで冪等に。</li>
+  <li><strong>プラグインのマイグレーションはここに置かない</strong>。各プラグインの <code>DoctrineMigrations/</code>（<code>migration_{code}</code> テーブル）で別管理。</li>
+  <li>STI テーブル（<code>mtb_*</code> / <code>dtb_block</code> 等）への INSERT は <code>discriminator_type</code> 列の指定が必須。</li>
+  <li><strong>「カラム追加＝不要」は原則だが、コアに反例が実在する</strong>。<code>Version20260316234241</code> は <code>dtb_base_info</code> に <code>ALTER TABLE ... ADD option_guest_purchase</code> でカラムを追加している（属性追加だけで済ませていない）。単純なカラム追加でも運用都合で ALTER を添えることはあり、「カラム追加なのに ALTER がある＝規約違反」と機械的に断じない。</li>
+ </ul>
+</section>
+
+</body>
+</html>
