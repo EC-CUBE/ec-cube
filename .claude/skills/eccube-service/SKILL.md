@@ -1,6 +1,7 @@
 ---
 name: eccube-service
 description: EC-CUBE 4.4 の Service を実装・改修するときの責務分離規約。「サービスを作って」「ロジックをサービスに切り出して」「このサービスを直して」「コントローラから業務処理を抽出して」などと言われたとき、または src/Eccube/Service・app/Customize/Service 配下を作成・編集するときに使用する。業務ロジックの受け皿を単一責任・HTTP非依存に保つための規約。
+
 ---
 
 # Service 規約 — 業務ロジックの置き場所（EC-CUBE 4.4）
@@ -94,6 +95,22 @@ vendor/bin/php-cs-fixer fix                     # PSR-12 整形・ライセン�
 - ❌ 1 つの Service に無関係な処理を寄せ集める → ✅ 単一責任で分割
 - ❌ `Request` を Service に渡す → ✅ 必要な値だけを引数で渡す
 - ❌ ループ内で毎回 `flush()` → ✅ まとめて `flush()`（トランザクション境界を意識）
+- ❌ `flush()` を確定として扱う → ✅ `TransactionListener` が 1 リクエスト＝1 トランザクションで包み、コミットは `kernel.terminate`。`flush` は SQL 発行のみ
+- ❌ `if` の下のロックを「条件付きだからほぼ通らない」と読む → ✅ 条件に使うプロパティが永続化されているか確かめる。非永続（transient）なら DB 読み込み直後は常に `null` で、その分岐は毎回実行される
+
+## 実行・確認方法
+
+```bash
+# サービスが登録され、依存が解決できているかを確認する
+# （ID の一部でも絞り込めるが、複数一致すると対話で選択を求められるので FQCN が確実）
+bin/console debug:container 'Eccube\Service\CartService'
+bin/console cache:clear
+
+# 該当サービスのテストだけを回す
+vendor/bin/phpunit tests/Eccube/Tests/Service/CartServiceTest.php
+```
+
+- デコレーション・差し替えをした場合は `debug:container` の出力で解決先が意図どおりか確認する。
 
 ---
 

@@ -1,6 +1,7 @@
 ---
 name: eccube-entity
 description: EC-CUBE 4.4 の Doctrine エンティティを実装・改修するときの規約。「エンティティを作って」「テーブルを追加して」「Entityにフィールドを足して」「リレーションを定義して」「マスタを追加して」などと言われたとき、または src/Eccube/Entity・app/Customize/Entity 配下を作成・編集するときに使用する。
+
 ---
 
 # Entity 規約（EC-CUBE 4.4）
@@ -104,7 +105,28 @@ class Example extends AbstractEntity
 - ❌ カラムを足したので ALTER マイグレーションを書く → ✅ 属性を足すだけ（`schema:update` が反映）。マイグレーションは INSERT・型変更等に限る
 - ❌ 在庫引当・採番・ポイント付与などの受注処理をエンティティに書く → ✅ PurchaseFlow / Service へ。エンティティは自身の状態から導く計算/判定まで
 - ❌ プロパティ/戻り値の型宣言省略 → ✅ 型を付け、PHPStan level 6 を通す
-- ❌ 金額 getter の戻り値を int/float 扱い → ✅ DECIMAL は `?string`（getter は `string`）。型宣言・代入も合わせる
-- ❌ 金額を float で四則演算（丸め誤差）→ ✅ `bcmath`（`bcadd` / `bcmul` / `bccomp`、スケール 2）で計算する
+- ❌ 金額を int/float で扱う → ✅ DECIMAL は `?string`（getter は `string`）。型宣言・代入も合わせ、四則演算は `bcmath`（`bcadd` / `bcmul` / `bccomp`、スケール 2）で行う
 - ❌ `create_date` / `update_date` を自前の `#[ORM\PrePersist]` でセット → ✅ コアの `SaveEventSubscriber` が setter を検出して自動セットするので二重実装になる
 - ❌ 他エンティティへの関連で親削除時の挙動を未決定 → ✅ FK は既定で削除を止めるので、未指定だと親の削除が FK 違反で失敗する。`onDelete` を指定するか Service 側で後始末する（コアは大半が後者）
+- ❌ `@deprecated` なゲッタを未使用と判断して削除する → ✅ CSV 出力項目（`dtb_csv`）のアクセサとして現役のことがあり、削除は仕様変更になる。先に CSV 定義と照合する
+- ❌ トレイト拡張・プロキシ絡みの不具合を「手元で再現しないから誤検知」と判断する → ✅ 対象クラスが未宣言のときだけプロキシが `require` されるので、まっさらな状態では修正の有無によらず列が出る。先にロードした状態を作って試す
+
+## 実行・確認方法
+
+```bash
+# 属性から導かれるスキーマ差分を SQL で確認（実行前に必ず目視する）
+bin/console doctrine:schema:update --dump-sql
+bin/console doctrine:schema:update --force
+
+# トレイトで拡張した場合はプロキシを再生成する（忘れると列が生えない）
+bin/console eccube:generate:proxies
+bin/console cache:clear
+```
+
+- 実装後の整形・型・静的解析・テストは **AGENTS.md「開発コマンド」** に従って実行する
+  （PHP-CS-Fixer / PHPStan level 6 / PHPUnit）。
+- カラム追加はマイグレーション不要（`schema:update` が反映する）。要否の判断は Skill `eccube-migration` を参照。
+
+---
+
+実装・改修後は、Skill `eccube-review-responsibility` で責務分離を点検すること。

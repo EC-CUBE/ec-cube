@@ -1,6 +1,7 @@
 ---
 name: eccube-repository
 description: EC-CUBE 4.4 の Doctrine リポジトリを実装・改修するときの規約。「リポジトリを作って」「検索メソッドを追加して」「クエリを書いて」「一覧の絞り込みを実装して」などと言われたとき、または src/Eccube/Repository・app/Customize/Repository 配下を作成・編集するときに使用する。
+
 ---
 
 # Repository 規約（EC-CUBE 4.4）
@@ -74,3 +75,21 @@ class ExampleRepository extends AbstractRepository
 - ❌ 画面表示の一覧・関連取得を無制限に全件取得（件数が際限なく増え得る）→ ✅ ページング（Paginator 用に QueryBuilder を返す）か上限を設ける
 - ❌ join 先への絞り込みを EXISTS 部分クエリへ移すとき、その別名に掛かっていた既存の制約を引き継がない → ✅ 同じ制約を EXISTS 内に再掲し、集計・出力側の母集団と一致させる
 - ❌ 1 対多の範囲絞り込みで下限・上限を独立した EXISTS 2 本に分ける（別々の子行が満たせばヒットしてしまう）→ ✅ 同一の子行に両条件を要求するなら EXISTS 1 本にまとめる
+
+## 実行・確認方法
+
+```bash
+# 生成される DQL / SQL を確認する（EXISTS の制約漏れ・JOIN の重複はここで気づく）
+#   → $qb->getQuery()->getDQL() / ->getSQL() をテストで出力して目視する
+vendor/bin/phpunit tests/Eccube/Tests/Repository/ProductRepositoryTest.php
+```
+
+- 実装後の整形・型・静的解析・テストは **AGENTS.md「開発コマンド」** に従って実行する
+  （PHP-CS-Fixer / PHPStan level 6 / PHPUnit）。
+- 件数・母集団が絡む変更は、**期待件数、または想定する母集団との整合性**をテストで固定する
+  （絞り込み条件を変えれば件数が変わるのは正常なので、「変更前後で件数が一致すること」を固定してはいけない）。
+- 一覧のページングは Paginator 側で適用されるため、Repository は QueryBuilder を返したままにする。
+
+---
+
+実装・改修後は、Skill `eccube-review-responsibility` で責務分離を点検すること。

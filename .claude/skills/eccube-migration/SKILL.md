@@ -1,6 +1,7 @@
 ---
 name: eccube-migration
 description: EC-CUBE 4.4 のデータベースマイグレーションを作成・編集するときの規約。「マイグレーションを作って」「マスタデータ/初期データを投入したい」「カラムの型を変えたい/リネームしたい」「スキーマを変えたい」などと言われたとき、または app/DoctrineMigrations 配下を作成・編集するときに使用する。注意: 単純なカラム追加は Entity 属性＋schema:update で反映されるためマイグレーション不要（その判断にも本 Skill を参照）。
+
 ---
 
 # マイグレーション規約（EC-CUBE 4.4）
@@ -32,6 +33,11 @@ bin/console doctrine:migrations:migrate --no-interaction
   Entity 属性を足せば、新規は `schema:create`、既存は `schema:update` が拾う。
   → 例: PR #4912（Google アナリティクス機能）は `BaseInfo` にカラムを追加したが、
     ALTER マイグレーションは作らず `schema:update` に委ねている。
+  > **ただし実際のコアには両方の前例がある**。`Version20260316234241` は `dtb_base_info` への
+  > カラム追加に対して `ALTER TABLE dtb_base_info ADD ...` を書いている。
+  > つまり「カラム追加にマイグレーションが付いている＝規約違反」とは言い切れない。
+  > レビューで「マイグレーション欠落」「マイグレーション不要」を**断定しない**こと。
+  > 既定は不要（`schema:update` に委ねる）だが、既存行へ既定値を確実に入れたい等の理由があれば付けてよい。
 - **マイグレーションを書くのは次の場合に限る**:
   1. **マスタ/初期データの INSERT**（`mtb_*` のレコード、`dtb_block` / `dtb_mail_template` / `dtb_csv` 等への初期レコード投入）。
   2. **`schema:update` が安全に扱えない構造変更**（カラムの**型変更・リネーム**、データ移行を伴う変更、
@@ -120,10 +126,32 @@ final class Version20240101000000 extends AbstractMigration
 
 ## よくある間違い
 
-- ❌ カラムを足したので `ALTER TABLE ... ADD COLUMN` のマイグレーションを書く
-  → ✅ Entity 属性を足すだけ。新規は `schema:create`、既存は `schema:update --force` が反映する。
+- ❌ カラムを足したので反射的に `ALTER TABLE ... ADD COLUMN` のマイグレーションを書く
+  → ✅ 既定は Entity 属性を足すだけ（新規は `schema:create`、既存は `schema:update --force` が反映）。
+    既存行への既定値投入など理由があれば書いてよい（上記「両方の前例がある」を参照）。
 - ❌ `doctrine:migrations:diff` で Entity 差分から ALTER を自動生成する
   → ✅ `doctrine:migrations:generate` で空の雛形を作り、必要な SQL（INSERT・型変更等）だけ手で書く。
 - ❌ マイグレーションでテーブルを"新規定義"してスキーマの源泉にする → ✅ 源泉は Entity 属性。
 - ❌ INSERT・構造変更でガードなし → 再実行や環境差で失敗。✅ 存在チェックで冪等にする。
 - ❌ `down()` 未実装 → ロールバック不能。✅ `up()`/`down()` を対で実装。
+
+## 実行・確認方法
+
+```bash
+# 属性から導ける差分（カラム追加・変更）は schema:update 側で反映される
+bin/console doctrine:schema:update --dump-sql
+
+# マイグレーション（INSERT・型変更等）を適用し、down() も往復で確かめる
+bin/console doctrine:migrations:migrate
+bin/console doctrine:migrations:migrate prev
+bin/console doctrine:migrations:migrate
+```
+
+- 実装後の整形・型・静的解析・テストは **AGENTS.md「開発コマンド」** に従って実行する
+  （PHP-CS-Fixer / PHPStan level 6 / PHPUnit）。
+- 冪等性は「同じマイグレーションを 2 回流しても失敗しない」ことで確認する。
+- 新規インストール経路（`doctrine:schema:create` ＋ 初期データ）でも通ることを確認する。
+
+---
+
+実装・改修後は、Skill `eccube-review-responsibility` で責務分離を点検すること。

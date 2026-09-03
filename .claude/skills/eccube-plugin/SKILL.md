@@ -144,6 +144,7 @@ bin/console eccube:generate:proxies   # app/proxy/entity/ を再生成
 - ❌ トレイト追加後にプロキシ再生成を忘れる → ✅ `bin/console eccube:generate:proxies`
 - ❌ プロジェクト固有の 1 回限りの改変をプラグイン化 → ✅ それは `app/Customize/`。着脱・再配布するものだけプラグイン
 - ❌ `app/Customize`（`Eccube\` を直接拡張）と `app/Plugin`（`Plugin\{Code}\` 独立名前空間）の名前空間を混同 → ✅ 置き場所で名前空間を使い分ける
+- ❌ 「無効化したプラグインは読み込まれない」と考える → ✅ `registerBundles()` は DB を見ず `app/Plugin` 直下の `bundles.php` を全て `require` する。依存欠けを 1 つ置くだけで起動ごと落ちる
 
 ## 実行・確認方法
 

@@ -1,6 +1,7 @@
 ---
 name: eccube-controller
 description: EC-CUBE 4.4 のコントローラを実装・改修するときの責務分離規約。「コントローラを作って」「アクションを追加して」「このコントローラを直して」「ルーティングを追加して」などと言われたとき、または src/Eccube/Controller・app/Customize/Controller 配下を作成・編集するときに使用する。Fat コントローラを避け業務ロジックを Service へ寄せるための規約。
+
 ---
 
 # Controller 規約 — 責務分離と Fat 化防止（EC-CUBE 4.4）
@@ -130,11 +131,26 @@ vendor/bin/php-cs-fixer fix                     # PSR-12 整形・ライセン�
 - ❌ アクション内で `$em->persist()`/`$em->flush()` を直書きして業務処理 → ✅ Service のメソッドに集約
 - ❌ 複数アクションに同じ処理をコピペ → ✅ Service の 1 メソッドに共通化
 - ❌ 具象クラス型ヒントで密結合 → ✅ インターフェース型ヒント＋コンストラクタ DI
-- ❌ 削除/Ajax 等の状態変更でトークン未検証 → ✅ `$this->isTokenValid()` を呼ぶ（GET 以外）
-- ❌ 戻り値を捨てた `isTokenValid();` を「CSRF 未検証」と誤読 → ✅ 無効時は例外を投げるので bare 呼び出しで検証は成立する。`if (!isTokenValid())` の false 分岐はデッドコード
+- ❌ 削除/Ajax 等の状態変更でトークン未検証 → ✅ `$this->isTokenValid()` を呼ぶ（GET 以外）。戻り値を捨てた bare 呼び出しでも無効時は例外なので検証は成立し、false 分岐はデッドコード
 - ❌ `#[Template]` 付きアクションが常に再描画されると前提する → ✅ engage するのは配列を返したときだけ。Response/Redirect を返すパスでは描画されない
 - ❌ 管理アクションを `%eccube_admin_route%` 配下以外に置く → ✅ admin ファイアウォール配下に置く
 - ❌ `executePurchaseFlow()` を複数回呼んで 2 回目以降の `FlowResult` を無視する → ✅ 毎回 `hasError()`/`hasWarning()` を同じに分岐させる
+- ❌ 配列が来うるリクエスト値を `getString()` でスカラーに強制する → ✅ `InputBag` は非スカラーで例外を投げるので強制できない。`all()` で受けて型を検査する
+- ❌ 削除で外部キー違反だけを狙って個別の例外型を catch する → ✅ コアは `catch (\Exception)` ＋ `delete_error_foreign_key` に統一。絞る実装は「正しいがコア非準拠」で、揃えるかは受入基準で判断
+
+## 実行・確認方法
+
+```bash
+# ルーティングが意図どおり登録されたか（#[Route] の属性ミスはここで気づく）
+bin/console debug:router | grep product_detail
+bin/console cache:clear
+
+# 該当コントローラのテストだけを回す
+vendor/bin/phpunit tests/Eccube/Tests/Web/ProductControllerTest.php
+```
+
+- 認可の入り口は `security.yaml` だけでは追えない（`access_control` は `EccubeExtension` が動的注入する）。
+  新規の管理アクションは Skill `eccube-security` の「アクセス制御モデル」を確認する。
 
 ---
 

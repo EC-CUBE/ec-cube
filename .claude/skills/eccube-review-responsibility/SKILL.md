@@ -5,6 +5,10 @@ description: EC-CUBE 4.4 で実装・改修したコードを実装直後に自�
 
 # 実装直後の自己レビュー（全層チェックリスト）
 
+**対象**: 直前の変更差分（`git diff` / `git diff --cached` で見える範囲）。
+特定のディレクトリに紐づかず、コントローラ / サービス / フォーム / テンプレート / エンティティ等の
+実装・改修が一区切りついた時点で全層を横断して使う。既存の未変更コードは対象外。
+
 実装・改修が一区切りついたら、変更差分を次の観点で横断的に点検する。
 **これは助言であり、必ずしも全件修正を要求しない**（既存コードの一括修正は求めない）。
 
@@ -65,3 +69,28 @@ description: EC-CUBE 4.4 で実装・改修したコードを実装直後に自�
 - **新規・改修したコードの指摘**を優先して提示する。
 - 既存（未変更）コードの問題は、無理に直さず「将来のリファクタ候補」として軽く触れるに留める。
 - 各指摘に「どの処理を、どこ（どの Service/Processor、どのエスケープ）へ」の具体案を添える。
+
+## 実行・確認方法
+
+```bash
+# 点検対象の差分を確定させる（レビュー範囲を「変更した箇所」に固定する）
+git diff --stat          # 変更したファイルの一覧
+git diff                 # 変更行の実体（--stat だけでは何を直したか確定できない）
+git diff --cached --stat
+git diff --cached
+
+# 機械的に判定できるものは先にツールへ委ねる（実装中は変更した範囲に絞って回す）
+vendor/bin/php-cs-fixer fix src/Eccube/Controller/ProductController.php
+vendor/bin/phpstan analyse src/Eccube/Controller
+vendor/bin/phpunit tests/Eccube/Tests/Web/ProductControllerTest.php
+
+# PR を出す前に CI と同じ範囲へ広げる
+vendor/bin/phpstan analyse src   # level 6
+```
+
+- ツールが拾えるもの（整形・型・非推奨 API）を人手で数えないこと。本 Skill の観点は
+  **ツールで検出できない責務分離・認可・エスケープ**に集中する。
+- **PHPStan を変更ファイルだけに絞ったまま push しない**。CI は `src` 全体を解析するため、
+  呼び出し側との型の不整合など「変更ファイルの外に出るエラー」を見落とす。実装中は絞って速く回し、
+  PR を出す前に一度 `vendor/bin/phpstan analyse src` を通す。
+- 各レイヤの詳細な検証手順は、該当レイヤの Skill の「実行・確認方法」に従う。

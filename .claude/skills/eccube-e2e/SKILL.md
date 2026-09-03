@@ -42,6 +42,7 @@ description: EC-CUBE 4.4 の E2E テスト（Playwright・`e2e/` 配下）を実
 - ❌ retry でプラグイン/データが残留し再失敗 → ✅ `beforeEach`/`afterEach` で cleanup（無効化 → 削除 → ディレクトリ削除）。
 - ❌ パスワードを見た目の文字数で作る → ✅ NFKC 正規化後で 15 文字以上か数える（min15。`[...str.normalize('NFKC')].length` で確認。#6488）。
 - ❌ 新規 spec を作ったのに CI で実行されない → ✅ `e2e-test.yml` の `suite:` 配列にファイル名（`.spec.ts` 抜き）を追加する。
+- ❌ 複数スイートが一斉に落ちたのを spec の不具合として追う → ✅ `setup-fixtures.php` は try-catch 無しの直列実行で、Fatal 以降のフィクスチャが未生成になる。ログ末尾の完了行を先に見る
 
 ## 実行・確認方法
 
