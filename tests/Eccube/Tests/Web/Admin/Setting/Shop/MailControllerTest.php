@@ -51,10 +51,18 @@ final class MailControllerTest extends AbstractAdminWebTestCase
         // 新規登録
         $crawler = $this->senarioCreate();
         $this->assertTrue($this->client->getResponse()->isRedirect());
+        $location = $this->client->getResponse()->headers->get('location');
+        $id = str_replace('/admin/setting/shop/mail/', '', $location);
+
         $crawler = $this->client->followRedirect();
         $this->actual = $crawler->filter('div.alert')->text();
         $this->expected = '保存しました';
         $this->verify();
+
+        // 新規登録したテンプレートは削除できる
+        $MailTemplate = $this->entityManager->find(MailTemplate::class, $id);
+        $this->assertInstanceOf(MailTemplate::class, $MailTemplate);
+        $this->assertTrue($MailTemplate->isDeletable());
     }
 
     /**
@@ -210,6 +218,45 @@ final class MailControllerTest extends AbstractAdminWebTestCase
     /**
      * 削除不可のテンプレートを削除
      */
+    /**
+     * 削除不可のテンプレートは、更新しても削除不可のままであることを確認
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/7053
+     */
+    public function testEditKeepsNotDeletable(): void
+    {
+        // 新規登録
+        $this->senarioCreate();
+        $this->assertTrue($this->client->getResponse()->isRedirect());
+        $location = $this->client->getResponse()->headers->get('location');
+        $id = str_replace('/admin/setting/shop/mail/', '', $location);
+        $this->client->followRedirect();
+
+        // deletable => falseに更新し, システム用テンプレート相当の状態にする.
+        // 実在のシステム用テンプレートを更新すると, eccube_theme_front_dir に
+        // コアのメールテンプレートを上書きするファイルが生成されてしまうため使用しない.
+        $MailTemplate = $this->entityManager->find(MailTemplate::class, $id);
+        $this->assertInstanceOf(MailTemplate::class, $MailTemplate);
+        $MailTemplate->setDeletable(false);
+        $this->entityManager->flush();
+
+        // 件名を更新
+        $subject = 'test_edit_not_deletable_mail_subject';
+        $this->senarioEdit($id, ['mail_subject' => $subject]);
+
+        $crawler = $this->client->followRedirect();
+        $this->actual = $crawler->filter('div.alert')->text();
+        $this->expected = '保存しました';
+        $this->verify();
+
+        // 更新されていることを確認
+        $this->entityManager->refresh($MailTemplate);
+        $this->assertSame($subject, $MailTemplate->getMailSubject());
+
+        // 更新しても削除不可のままであることを確認
+        $this->assertFalse($MailTemplate->isDeletable());
+    }
+
     public function testDeleteNotDeletable(): void
     {
         // 新規登録

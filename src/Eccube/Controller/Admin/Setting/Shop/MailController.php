@@ -94,7 +94,11 @@ class MailController extends AbstractController
 
             if ($form->isSubmitted() && $form->isValid()) {
                 $Mail = $form->getData();
-                $Mail->setDeletable(true);
+                // 新規登録したテンプレートのみ削除可能にする.
+                // 更新時に設定すると, 削除不可のシステム用テンプレートが削除可能になってしまう.
+                if (null === $Mail->getId()) {
+                    $Mail->setDeletable(true);
+                }
                 $this->entityManager->persist($Mail);
                 $this->entityManager->flush();
 
