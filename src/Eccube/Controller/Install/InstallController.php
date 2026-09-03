@@ -80,13 +80,22 @@ class InstallController extends AbstractController
         'cURL',
         'fileinfo',
         'intl',
-        'sodium',
     ];
     /**
      * @var string[]
      */
     protected array $recommendedModules = [
         'hash',
+        // コアは sodium を一切使わない。 一部プラグイン (Web API 等) が要求するため推奨に留める。
+        // composer.json の config.platform で ext-sodium を宣言済みで、 sodium 非搭載環境でも
+        // それらのプラグインを導入できるようにしてあるため、 必須として danger を出すのは矛盾する。
+        'sodium',
+        // bcmath は sodium とは逆に, コアが 127 箇所 / 29 ファイルで使う (Order / PurchaseFlow /
+        // TaxRuleService 等の金額計算)。 ただし nanasess/bcmath-polyfill が同名関数を提供するため
+        // 拡張が無くても動作する。 拡張があれば純 PHP 実装より速いので推奨に置く。
+        // なお polyfill は関数を定義するだけで拡張は登録しないため, extension_loaded('bcmath') は
+        // 動作する環境でも false になる。 必須にすると正常な環境で danger が出る。
+        'bcmath',
     ];
     /**
      * @var string[]
