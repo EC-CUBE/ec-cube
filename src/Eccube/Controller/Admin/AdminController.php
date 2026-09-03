@@ -23,7 +23,6 @@ use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\Member;
-use Eccube\Entity\Order;
 use Eccube\Entity\ProductStock;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -149,8 +148,10 @@ class AdminController extends AbstractController
 
         // 今日の売上/件数
         $salesToday = $this->getSalesByDay(new \DateTime());
+
         // 昨日の売上/件数
         $salesYesterday = $this->getSalesByDay(new \DateTime('-1 day'));
+
         // 今月の売上/件数
         $salesThisMonth = $this->getSalesByMonth(new \DateTime());
 
@@ -377,9 +378,9 @@ class AdminController extends AbstractController
             ->select('
             SUM(o.payment_total) AS order_amount,
             COUNT(o) AS order_count')
-            ->setParameter(':excludes', $this->excludes)
-            ->setParameter(':targetDateStart', $dateTimeStart)
-            ->setParameter(':targetDateEnd', $dateTimeEnd)
+            ->setParameter('excludes', $this->excludes)
+            ->setParameter('targetDateStart', $dateTimeStart)
+            ->setParameter('targetDateEnd', $dateTimeEnd)
             ->andWhere(':targetDateStart <= o.order_date and o.order_date < :targetDateEnd')
             ->andWhere('o.OrderStatus NOT IN (:excludes)');
         $q = $qb->getQuery();
@@ -407,16 +408,16 @@ class AdminController extends AbstractController
 
         $dateTimeEnd = clone $dateTime;
         $dateTimeEnd->setTime(0, 0, 0, 0);
-        $dateTimeEnd->modify('first day of 1 month');
+        $dateTimeEnd->modify('first day of next month');
 
         $qb = $this->orderRepository
             ->createQueryBuilder('o')
             ->select('
             SUM(o.payment_total) AS order_amount,
             COUNT(o) AS order_count')
-            ->setParameter(':excludes', $this->excludes)
-            ->setParameter(':targetDateStart', $dateTimeStart)
-            ->setParameter(':targetDateEnd', $dateTimeEnd)
+            ->setParameter('excludes', $this->excludes)
+            ->setParameter('targetDateStart', $dateTimeStart)
+            ->setParameter('targetDateEnd', $dateTimeEnd)
             ->andWhere(':targetDateStart <= o.order_date and o.order_date < :targetDateEnd')
             ->andWhere('o.OrderStatus NOT IN (:excludes)');
         $q = $qb->getQuery();
@@ -486,28 +487,24 @@ class AdminController extends AbstractController
      */
     protected function getData(Carbon $fromDate, Carbon $toDate, string $format): array
     {
-        $qb = $this->orderRepository->createQueryBuilder('o')
-            ->andWhere('o.order_date >= :fromDate')
-            ->andWhere('o.order_date <= :toDate')
-            ->andWhere('o.OrderStatus NOT IN (:excludes)')
-            ->setParameter(':excludes', $this->excludes)
-            ->setParameter(':fromDate', $fromDate->copy())
-            ->setParameter(':toDate', $toDate->copy())
-            ->orderBy('o.order_date');
+        $results = $this->orderRepository->getSalesDataGroupedByDate(
+            $fromDate->toDateTime(),
+            $toDate->toDateTime(),
+            $this->excludes,
+            $format
+        );
 
-        $result = $qb->getQuery()->getResult();
-
-        return $this->convert($result, $fromDate, $toDate, $format);
+        return $this->convert($results, $fromDate, $toDate, $format);
     }
 
     /**
      * 期間毎にデータをまとめる
      *
-     * @param array<Order>|null $result
+     * @param array<int, array<string, mixed>>|null $results
      *
      * @return array<mixed>
      */
-    protected function convert(?array $result, Carbon $fromDate, Carbon $toDate, string $format): array
+    protected function convert(?array $results, Carbon $fromDate, Carbon $toDate, string $format): array
     {
         $raw = [];
         for ($date = $fromDate; $date <= $toDate; $date = $date->addDay()) {
@@ -515,9 +512,10 @@ class AdminController extends AbstractController
             $raw[$date->format($format)]['count'] = 0;
         }
 
-        foreach ($result as $Order) {
-            $raw[$Order->getOrderDate()->format($format)]['price'] = bcadd($raw[$Order->getOrderDate()->format($format)]['price'], (string) $Order->getPaymentTotal(), 0);
-            ++$raw[$Order->getOrderDate()->format($format)]['count'];
+        foreach ($results ?? [] as $row) {
+            $dateKey = $row['date_key'];
+            $raw[$dateKey]['price'] = (string) $row['total_price'];
+            $raw[$dateKey]['count'] = (int) $row['order_count'];
         }
 
         return $raw;
