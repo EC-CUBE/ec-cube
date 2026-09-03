@@ -217,18 +217,14 @@ final class CacheBuildCommand extends Command
     }
 
     /**
-     * 実行時キャッシュのうち, ビルド結果と食い違いうるものを削除する.
+     * ビルド結果と食い違いうる実行時キャッシュ (事前コンパイル漏れのテンプレート) を削除する.
      *
      * 権限を分離した構成では Web サーバー所有のため削除できない. その場合は案内に留める.
      */
     private function clearStaleRuntimeCache(SymfonyStyle $io, string $runtimeDir): void
     {
-        $stale = array_filter(
-            array_map(static fn (string $name): string => $runtimeDir.'/'.$name, ['twig', 'translations', 'htmlpurifier']),
-            is_dir(...)
-        );
-
-        if ($stale === []) {
+        $stale = $runtimeDir.'/twig';
+        if (!is_dir($stale)) {
             return;
         }
 

@@ -3,9 +3,6 @@ framework:
     default_locale: '%locale%'
     translator:
       fallback: ['%locale%']
-      # 翻訳カタログはリクエスト処理中にも生成されるため, ランタイムディレクトリへ置く.
-      # (既定は %kernel.cache_dir%/translations)
-      cache_dir: '%eccube_runtime_dir%/translations'
     csrf_protection: { enabled: true }
     http_method_override: true
     trusted_hosts: ~

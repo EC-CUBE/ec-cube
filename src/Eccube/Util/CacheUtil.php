@@ -183,12 +183,10 @@ class CacheUtil implements EventSubscriberInterface
         $poolClearer = $this->container->get('cache.global_clearer');
         $poolClearer->clear((string) $this->eccubeConfig->get('eccube_runtime_dir'));
 
+        // 翻訳カタログや HTMLPurifier のキャッシュは kernel.cache_dir 配下のビルド生成物のため,
+        // ここでは触れない (再生成は eccube:cache:build が行う).
         $fs = new Filesystem();
-        $fs->remove([
-            $this->runtimePath('twig'),
-            $this->runtimePath('translations'),
-            $this->runtimePath('htmlpurifier'),
-        ]);
+        $fs->remove($this->runtimePath('twig'));
 
         if (function_exists('opcache_reset')) {
             opcache_reset();

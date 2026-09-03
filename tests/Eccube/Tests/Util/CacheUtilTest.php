@@ -81,20 +81,20 @@ final class CacheUtilTest extends TestCase
     public function testClearRuntimeCacheRemovesOnlyRuntimeArtifacts(): void
     {
         $runtimeDir = $this->workDir.'/runtime';
-        foreach (['twig', 'translations', 'htmlpurifier', 'mcp-sessions'] as $name) {
+        foreach (['twig', 'mcp-sessions'] as $name) {
             mkdir($runtimeDir.'/'.$name, 0755, true);
         }
         mkdir($this->workDir.'/build/twig', 0755, true);
+        mkdir($this->workDir.'/cache/htmlpurifier', 0755, true);
 
         $message = $this->cacheUtil()->clearRuntimeCache();
 
         $this->assertDirectoryDoesNotExist($runtimeDir.'/twig');
-        $this->assertDirectoryDoesNotExist($runtimeDir.'/translations');
-        $this->assertDirectoryDoesNotExist($runtimeDir.'/htmlpurifier');
         // キャッシュではないものは削除しない
         $this->assertDirectoryExists($runtimeDir.'/mcp-sessions');
         // ビルド生成物には触れない
         $this->assertDirectoryExists($this->workDir.'/build/twig');
+        $this->assertDirectoryExists($this->workDir.'/cache/htmlpurifier');
         $this->assertStringContainsString('eccube:cache:build', $message);
     }
 
