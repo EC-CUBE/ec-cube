@@ -1261,6 +1261,26 @@ admin.setting.shop.shop.email_reply_to: Emails for Replies (ReplyTo)
 admin.setting.shop.shop.email_return_path: Email for Errors (ReturnPath)
 admin.setting.shop.shop.good_traded: Product Descriptions
 admin.setting.shop.shop.message: Message from Owner
+admin.setting.shop.shop.same_as: Official URLs (SNS, etc.)
+admin.setting.shop.shop.founding_date: Founding Date
+admin.setting.shop.shop.number_of_employees: Number of Employees
+admin.setting.shop.shop.copyright_year: Copyright Start Year
+admin.setting.shop.shop.site_image: Site Image URL
+admin.setting.shop.shop.opening_hours: Opening Hours
+admin.setting.shop.opening_hours.add: Add Opening Hours
+admin.setting.shop.opening_hours.monday: Monday
+admin.setting.shop.opening_hours.tuesday: Tuesday
+admin.setting.shop.opening_hours.wednesday: Wednesday
+admin.setting.shop.opening_hours.thursday: Thursday
+admin.setting.shop.opening_hours.friday: Friday
+admin.setting.shop.opening_hours.saturday: Saturday
+admin.setting.shop.opening_hours.sunday: Sunday
+admin.setting.shop.opening_hours.public_holidays: Public Holidays
+admin.setting.shop.opening_hours.error.day_required: Please select at least one day of the week.
+admin.setting.shop.opening_hours.error.opens_required: Please enter the opening time.
+admin.setting.shop.opening_hours.error.closes_required: Please enter the closing time.
+admin.setting.shop.opening_hours.error.opens_before_closes: The opening time must be earlier than the closing time.
+admin.setting.shop.opening_hours.error.overlap: The opening hours overlap on the same day of the week.
 admin.setting.shop.shop.option_delivery_fee: Shipping Charge
 admin.setting.shop.shop.option_delivery_fee_free_amount: Free Shipping (Amount)
 admin.setting.shop.shop.option_delivery_fee_free_quantity: Free Shipping (Qty)
@@ -1862,6 +1882,12 @@ tooltip.setting.shop.shop.email_reply_to: This is the email address by which you
 tooltip.setting.shop.shop.email_return_path: This is the email address by which you will receive a notice when a transmission error occurs in sending emails from your store.
 tooltip.setting.shop.shop.good_traded: Brief descriptions of your products.
 tooltip.setting.shop.shop.message: This will be displayed on storefront. The placement varies according to the design templates.
+tooltip.setting.shop.shop.same_as: Official account URLs (SNS, etc.) output to structured data (Organization.sameAs). Enter one URL per line to specify multiple URLs.
+tooltip.setting.shop.shop.founding_date: The founding date of the shop/company, output to structured data (Organization.foundingDate).
+tooltip.setting.shop.shop.number_of_employees: The number of employees, output to structured data (Organization.numberOfEmployees).
+tooltip.setting.shop.shop.copyright_year: The starting year of the copyright notice, output to structured data (WebSite.copyrightYear).
+tooltip.setting.shop.shop.site_image: The absolute URL of the site image, output to structured data (Organization.image).
+tooltip.setting.shop.shop.opening_hours: The opening hours output to structured data (Organization.openingHoursSpecification). Set the days of the week (multiple allowed) and the opening/closing times per row.
 tooltip.setting.shop.shop.order_pdf: Items printed in the shop information area of the delivery slip PDF. Among the items turned ON, only those with a value entered are printed.
 tooltip.setting.shop.shop.option_delivery_fee_free_amount: Shipping charge will be waived if a customer purchases more than this amount.
 tooltip.setting.shop.shop.option_delivery_fee_free_quantity: Shipping charge will be waived if a customer purchases more than this quantity.

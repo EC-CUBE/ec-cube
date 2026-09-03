@@ -99,6 +99,12 @@ class SiteStructuredDataService
             ],
             'query-input' => 'required name=search_term_string',
         ];
+
+        $copyrightYear = $BaseInfo->getCopyrightYear();
+        if ($copyrightYear !== null) {
+            $data['copyrightYear'] = $copyrightYear;
+        }
+
         $data['publisher'] = ['@id' => $siteUrl.'#organization'];
 
         return $data;
@@ -131,6 +137,7 @@ class SiteStructuredDataService
         $this->addIfNotEmpty($data, 'alternateName', $BaseInfo->getShopNameEng());
         $this->addIfNotEmpty($data, 'legalName', $BaseInfo->getCompanyName());
         $this->addIfNotEmpty($data, 'description', $this->normalizeDescription($BaseInfo->getMessage()));
+        $this->addIfNotEmpty($data, 'image', $BaseInfo->getSiteImage());
         // email01 は送信元(From)かつ全送信メールの BCC 先で、送信専用や店舗内部の運用アドレスが
         // 入る前提の項目なので公開しない。公開して良い連絡先は email02（問い合わせ専用）。
         $this->addIfNotEmpty($data, 'email', $BaseInfo->getEmail02());
@@ -153,12 +160,92 @@ class SiteStructuredDataService
             $data['contactPoint'] = $contactPoint;
         }
 
+        $foundingDate = $BaseInfo->getFoundingDate();
+        if ($foundingDate !== null) {
+            $data['foundingDate'] = $foundingDate->format('Y-m-d');
+        }
+
+        $numberOfEmployees = $BaseInfo->getNumberOfEmployees();
+        if ($numberOfEmployees !== null) {
+            $data['numberOfEmployees'] = [
+                '@type' => 'QuantitativeValue',
+                'value' => $numberOfEmployees,
+            ];
+        }
+
         $invoiceRegistrationNumber = $BaseInfo->getInvoiceRegistrationNumber();
         if ($invoiceRegistrationNumber !== null && $invoiceRegistrationNumber !== '') {
             $data['iso6523Code'] = '0221:'.$invoiceRegistrationNumber;
         }
 
+        $sameAs = $this->buildSameAs($BaseInfo->getSameAs());
+        if ($sameAs !== []) {
+            $data['sameAs'] = $sameAs;
+        }
+
+        $openingHours = $this->buildOpeningHours($BaseInfo);
+        if ($openingHours !== []) {
+            $data['openingHoursSpecification'] = $openingHours;
+        }
+
         return $data;
+    }
+
+    /**
+     * 店舗設定の営業時間を OpeningHoursSpecification のリストに変換する.
+     *
+     * 曜日・開店時刻・閉店時刻がいずれも無いエントリは出力しない.
+     *
+     * @return list<array<string, mixed>>
+     */
+    private function buildOpeningHours(BaseInfo $BaseInfo): array
+    {
+        $specs = [];
+        foreach ($BaseInfo->getOpeningHours() as $OpeningHours) {
+            $spec = ['@type' => 'OpeningHoursSpecification'];
+
+            $dayOfWeek = $OpeningHours->getDayOfWeek();
+            if ($dayOfWeek !== null && $dayOfWeek !== []) {
+                $spec['dayOfWeek'] = array_values($dayOfWeek);
+            }
+
+            $opens = $OpeningHours->getOpens();
+            if ($opens !== null) {
+                $spec['opens'] = $opens->format('H:i');
+            }
+
+            $closes = $OpeningHours->getCloses();
+            if ($closes !== null) {
+                $spec['closes'] = $closes->format('H:i');
+            }
+
+            // @type 以外に情報が無いエントリは出力しない
+            if (count($spec) === 1) {
+                continue;
+            }
+
+            $specs[] = $spec;
+        }
+
+        return $specs;
+    }
+
+    /**
+     * 改行区切りの SNS 等公式 URL 文字列を、空要素を除いた URL のリストに変換する.
+     *
+     * @return list<string>
+     */
+    private function buildSameAs(?string $sameAs): array
+    {
+        if ($sameAs === null || $sameAs === '') {
+            return [];
+        }
+
+        $urls = preg_split('/\R/u', $sameAs) ?: [];
+        $urls = array_map(trim(...), $urls);
+        $urls = array_filter($urls, static fn (string $url): bool => $url !== '');
+
+        return array_values($urls);
     }
 
     /**

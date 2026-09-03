@@ -78,3 +78,10 @@ form_error.refund_request.quantity_exceed: Quantity must be {{ compared_value }}
 form_error.refund_request.max_files: You can attach up to {{ limit }} files.
 form_error.refund_request.file_size: File is too large. Max {{ limit }}.
 form_error.refund_request.file_type: File type not allowed. Please use JPEG, PNG, GIF, WebP, MP4, MOV, or AVI.
+admin.setting.shop.opening_hours.error.day_required: Please select at least one day of the week.
+admin.setting.shop.opening_hours.error.opens_required: Please enter the opening time.
+admin.setting.shop.opening_hours.error.closes_required: Please enter the closing time.
+admin.setting.shop.opening_hours.error.opens_before_closes: The opening time must be earlier than the closing time.
+admin.setting.shop.opening_hours.error.overlap: The opening hours overlap on the same day of the week.
+admin.setting.shop.same_as.error.invalid_url: Each line must be a valid URL (SNS, etc.).
+admin.setting.shop.founding_date.error.not_future: The founding date cannot be a future date.
