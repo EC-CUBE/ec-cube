@@ -95,6 +95,9 @@ file that was distributed with this source code.
             $('.ec-modal').hide()
         });
     </script>
+    {% if faq_json_ld is defined and faq_json_ld %}
+    <script type="application/ld+json">{{ faq_json_ld|json_ld }}</script>
+    {% endif %}
 {% endblock %}
 
 {% block main %}
@@ -231,4 +234,5 @@ file that was distributed with this source code.
             </div>
         {% endif %}
     {% endif %}
+    {% include '_faq_list.twig' with {'Faqs': Faqs|default([])} only %}
 {% endblock %}

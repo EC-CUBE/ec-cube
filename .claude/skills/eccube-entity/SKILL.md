@@ -107,4 +107,5 @@ class Example extends AbstractEntity
 - ❌ 金額 getter の戻り値を int/float 扱い → ✅ DECIMAL は `?string`（getter は `string`）。型宣言・代入も合わせる
 - ❌ 金額を float で四則演算（丸め誤差）→ ✅ `bcmath`（`bcadd` / `bcmul` / `bccomp`、スケール 2）で計算する
 - ❌ `create_date` / `update_date` を自前の `#[ORM\PrePersist]` でセット → ✅ コアの `SaveEventSubscriber` が setter を検出して自動セットするので二重実装になる
+- ❌ プロパティだけ `?T = null` にしてカラム属性は据え置く → ✅ `nullable: true` が無ければ DB は NOT NULL。上位層で補完する設計は、その経路を通らない永続化で INSERT が落ちる
 - ❌ 他エンティティへの関連で親削除時の挙動を未決定 → ✅ FK は既定で削除を止めるので、未指定だと親の削除が FK 違反で失敗する。`onDelete` を指定するか Service 側で後始末する（コアは大半が後者）
