@@ -1,6 +1,6 @@
 ---
 name: eccube-security
-description: EC-CUBE 4.4 の認証・認可・CSRF などセキュリティを実装・改修・点検するときの規約。「認可を追加して」「アクセス制御を直して」「このルートに権限チェックを入れて」「CSRF対策を確認して」「Voterを作って」「セキュリティ監査して」などと言われたとき、または src/Eccube/Security 配下・app/config/eccube/packages/security.yaml を作成・編集するとき、認可漏れ/CSRF漏れ/IDOR を点検するときに使用する。
+description: EC-CUBE 4.4 の認証・認可・CSRF などセキュリティを実装・改修・点検するときの規約。「認可を追加して」「アクセス制御を直して」「このルートに権限チェックを入れて」「CSRF対策を確認して」「Voterを作って」「セキュリティ監査して」などと言われたとき、または認証・認可・CSRF の実装や設定（security.yaml 等）を作成・編集するとき（コア・app/Customize・プラグインのいずれでも）、認可漏れ/CSRF漏れ/IDOR を点検するときに使用する。
 ---
 
 # セキュリティ規約 — 認証・認可・CSRF（EC-CUBE 4.4）
