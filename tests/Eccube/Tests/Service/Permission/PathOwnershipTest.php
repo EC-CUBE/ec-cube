@@ -156,16 +156,24 @@ final class PathOwnershipTest extends TestCase
         $root = sys_get_temp_dir().'/eccube-path-'.bin2hex(random_bytes(6));
         $fs = new Filesystem();
         $fs->mkdir($root.'/physical/target', 0755);
+        // mkdir() は umask の影響を受けるため, 判定に使うビットは chmod で明示する
+        $fs->chmod($root, 0755);
         $fs->chmod($root.'/physical', 0700);
         symlink($root.'/physical/target', $root.'/visible');
 
-        try {
-            $ownership = PathOwnership::of($root.'/visible');
-            $paths = array_map(static fn (PathOwnership $ancestor): string => $ancestor->path, $ownership->ancestors);
+        // 所有者と一致すると 0700 でも通り抜けられるため, テストを実行するユーザーとは別の uid / gid で判定する
+        $other = new UserIdentity((int) fileowner($root.'/physical') + 1, (int) filegroup($root.'/physical') + 1, 'test');
 
-            $this->assertContains($root, $paths, '論理パスの祖先を評価すること');
-            $this->assertContains($root.'/physical', $paths, 'リンク解決後の物理パスの祖先を評価すること');
-            $this->assertSame($root.'/physical', $ownership->unreachableAncestorFor(new UserIdentity(33, 33, 'test'))?->path);
+        try {
+            $ancestors = [];
+            foreach (PathOwnership::of($root.'/visible')->ancestors as $ancestor) {
+                $ancestors[$ancestor->path] = $ancestor;
+            }
+
+            $this->assertArrayHasKey($root, $ancestors, '論理パスの祖先を評価すること');
+            $this->assertArrayHasKey($root.'/physical', $ancestors, 'リンク解決後の物理パスの祖先を評価すること');
+            $this->assertTrue($ancestors[$root]->isTraversableBy($other));
+            $this->assertFalse($ancestors[$root.'/physical']->isTraversableBy($other), 'リンク先の親を通り抜けられない');
         } finally {
             $fs->chmod($root.'/physical', 0755);
             $fs->remove($root);
