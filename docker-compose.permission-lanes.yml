@@ -7,7 +7,10 @@ version: '3'
 #
 # --build は必須。公開イメージ (ghcr) には本リポジトリの dockerbuild/docker-php-entrypoint が
 # 含まれないため、pull されたイメージのままでは www-data がホストユーザーへリマップされ分離されない。
-# DB サーバーを重ねるのは、既定の SQLite (var/eccube.db) が var 配下にあり CLI から書き込めないため。
+#
+# DB は PostgreSQL または MySQL が必須。既定の SQLite はデータベースファイルが var 配下に置かれ、
+# Web サーバーと CLI の双方が書き込む必要があるため、権限を分離すると成立しない
+# (エントリポイントが起動時に検査し、SQLite なら起動を中止する)。
 #
 # 分離モードでは www-data は uid 33 のままとなり、CLI 用に別ユーザー (eccube) を作成する。
 # 共有グループは作らない。セキュリティポリシーで共有グループを作成できない環境があるため。
@@ -49,6 +52,12 @@ services:
   ec-cube:
     environment:
       ECCUBE_PERMISSION_LANES: 1
+      # 分離モードは prod で動かす。dev (APP_DEBUG=1) はリクエスト処理中にコンテナを再生成するため、
+      # Kernel::buildContainer() が var/cache と var/build (レーン S = CLI 所有) への書き込みを要求し、
+      # 「Unable to write in the "cache" directory」で 500 になる。
+      # prod は debug=false でコンテナを再生成しないため、eccube:cache:build の生成物を読むだけで動く。
+      APP_ENV: prod
+      APP_DEBUG: 0
       # メンテナンスファイルの生成先。既定はプロジェクトルート直下だが、
       # それだとルート自体を Web サーバーから書き込み可能にする必要があるため
       # レーン W の var/runtime 配下へ移す (管理画面から生成されるため Web サーバーの書き込み権限が要る)
