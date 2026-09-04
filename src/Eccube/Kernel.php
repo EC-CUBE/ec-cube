@@ -28,6 +28,7 @@ use Eccube\DependencyInjection\Compiler\PluginPass;
 use Eccube\DependencyInjection\Compiler\PurchaseFlowPass;
 use Eccube\DependencyInjection\Compiler\QueryCustomizerPass;
 use Eccube\DependencyInjection\Compiler\RuntimeCacheDirPass;
+use Eccube\DependencyInjection\Compiler\RuntimeCachePoolFailsafePass;
 use Eccube\DependencyInjection\Compiler\StripAutoMappedEntityPathsPass;
 use Eccube\DependencyInjection\Compiler\StripReportFieldsArgPass;
 use Eccube\DependencyInjection\Compiler\TwigBlockPass;
@@ -305,6 +306,9 @@ class Kernel extends BaseKernel
 
         // CLI からファイルへログを書けない構成 (var/log が Web サーバー所有) に対応する.
         $container->addCompilerPass(new CliFileLogHandlerPass());
+
+        // 書き込めない実行時キャッシュ (var/runtime が Web サーバー所有) に対応する.
+        $container->addCompilerPass(new RuntimeCachePoolFailsafePass());
 
         // クエリカスタマイズの拡張.
         $container->registerForAutoconfiguration(QueryCustomizer::class)

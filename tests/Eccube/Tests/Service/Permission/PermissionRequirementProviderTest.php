@@ -40,6 +40,11 @@ final class PermissionRequirementProviderTest extends TestCase
         $this->assertSame(WriteLane::SSH, $requirements['app/template']->lane);
         $this->assertSame(WriteLane::SSH, $requirements['html/user_data']->lane);
         $this->assertSame(WriteLane::SSH, $requirements['composer.json']->lane);
+        // var 自体は CLI 所有. Web サーバーが書き込むのは配下の runtime / sessions / log で,
+        // var へは通過 (r-x) できればよい
+        $this->assertSame(WriteLane::SSH, $requirements['var']->lane);
+        // 秘密鍵は CLI で配置し Web サーバーは読み取りのみ
+        $this->assertSame(WriteLane::SSH, $requirements['app/keystore']->lane);
     }
 
     public function testRuntimeGeneratedPathsAreOptional(): void
@@ -60,6 +65,8 @@ final class PermissionRequirementProviderTest extends TestCase
         $this->assertStringContainsString('メンテナンスファイル', (string) $requirements['var']->note);
         // 一方が必須なら必須として扱う
         $this->assertFalse($requirements['var']->optional);
+        // Web サーバーの書き込みが必要な役割が加わるため, レーン W が優先される
+        $this->assertSame(WriteLane::WEB, $requirements['var']->lane);
     }
 
     public function testMaintenanceFileDirectoryIsListedSeparatelyWhenItIsTheProjectRoot(): void
