@@ -144,13 +144,17 @@ trait ContentCommandTrait
      */
     protected function clearContentCache(SymfonyStyle $io): bool
     {
+        // 削除の可否は実行前に判定する. 権限が無い場合, 削除処理は例外にはならず
+        // 単に対象が残る (CacheUtil::clearTwigCache / cache:pool:clear).
         $buildDir = rtrim((string) $this->eccubeConfig->get('kernel.build_dir'), '/');
+        $runtimeDir = rtrim((string) $this->eccubeConfig->get('eccube_runtime_dir'), '/');
         $buildTwigDir = $buildDir.'/twig';
-        $buildTwigWritable = !is_dir($buildTwigDir) || is_writable($buildDir);
+        $runtimeTwigDir = $runtimeDir.'/twig';
+        $poolDir = $runtimeDir.'/pools';
 
-        // 実行時の cache pool は Web サーバー所有のため, 権限を分離した構成では CLI から削除できない.
-        // 削除の可否は実行前に判定する (cache:pool:clear は失敗しても例外にならない).
-        $poolDir = rtrim((string) $this->eccubeConfig->get('eccube_runtime_dir'), '/').'/pools';
+        $buildTwigClearable = !is_dir($buildTwigDir) || is_writable($buildDir);
+        // ディレクトリの削除には親ディレクトリの書き込み権限が必要になる
+        $runtimeTwigClearable = !is_dir($runtimeTwigDir) || is_writable($runtimeDir);
         $poolClearable = !is_dir($poolDir) || is_writable($poolDir);
 
         $this->cacheUtil->clearTwigCache();
@@ -158,7 +162,7 @@ trait ContentCommandTrait
 
         $cleared = true;
 
-        if (!$buildTwigWritable) {
+        if (!$buildTwigClearable) {
             $io->warning([
                 sprintf('%s を削除できないため, 更新したテンプレートが反映されません.', $buildTwigDir),
                 '書き込み権限のあるユーザーで bin/console eccube:cache:build を実行してください.',
@@ -166,11 +170,12 @@ trait ContentCommandTrait
             $cleared = false;
         }
 
-        if (!$poolClearable) {
+        // 実行時キャッシュは Web サーバー所有 (レーン W) のため, CLI からは削除できない.
+        if (!$runtimeTwigClearable || !$poolClearable) {
             $io->warning([
-                sprintf('%s を削除できないため, Doctrine のキャッシュに古い内容が残ります.', $poolDir),
+                sprintf('%s を削除できないため, 実行時キャッシュに古い内容が残ります.', $runtimeDir),
                 sprintf(
-                    'Web サーバーのユーザーで bin/console cache:pool:clear %s を実行してください.',
+                    'Web サーバーのユーザーで bin/console cache:pool:clear %s を実行するか, 管理画面のキャッシュ管理から削除してください.',
                     CacheUtil::DOCTRINE_APP_CACHE_KEY
                 ),
             ]);
