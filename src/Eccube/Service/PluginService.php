@@ -346,12 +346,14 @@ class PluginService
      */
     public function createTempDir(): string
     {
-        // アーカイブの展開先はリクエスト処理中にも作られるため, ランタイムディレクトリへ置く.
-        $tempDir = $this->eccubeConfig->get('eccube_runtime_dir').'/Plugin';
-        @mkdir($tempDir, 0755, true);
-        $d = ($tempDir.'/'.sha1(StringUtil::random(16)));
+        // アーカイブの検査用の一時領域. 本来の配置先へは元アーカイブから展開し直すため,
+        // ここから移動することはない (install() / update() を参照).
+        // OS の一時ディレクトリを使うことで, Web サーバーと CLI で書き込み権限を分離した構成でも
+        // 同じ経路が使える (/tmp は 1777 で, どちらのユーザーも自分のディレクトリを作成できる).
+        $d = sys_get_temp_dir().'/eccube_plugin_'.sha1(StringUtil::random(16));
 
-        if (!mkdir($d, 0755)) {
+        // 他のユーザーから展開後のファイルを読まれないよう, 所有者のみに制限する.
+        if (!mkdir($d, 0700)) {
             throw new PluginException(trans('admin.store.plugin.mkdir.error', ['%dir_name%' => $d]));
         }
 
