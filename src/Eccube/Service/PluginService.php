@@ -348,12 +348,25 @@ class PluginService
     {
         // アーカイブの検査用の一時領域. 本来の配置先へは元アーカイブから展開し直すため,
         // ここから移動することはない (install() / update() を参照).
-        // OS の一時ディレクトリを使うことで, Web サーバーと CLI で書き込み権限を分離した構成でも
-        // 同じ経路が使える (/tmp は 1777 で, どちらのユーザーも自分のディレクトリを作成できる).
-        $d = sys_get_temp_dir().'/eccube_plugin_'.sha1(StringUtil::random(16));
+        if (\PHP_SAPI === 'cli') {
+            // ランタイムディレクトリは Web サーバー所有 (レーン W) になり得るため, CLI からは
+            // OS の一時ディレクトリを使う (/tmp は 1777 で, どのユーザーも自分の領域を作れる).
+            // 他のユーザーから展開後のファイルを読まれないよう, 所有者のみに制限する.
+            $d = sys_get_temp_dir().'/eccube_plugin_'.sha1(StringUtil::random(16));
 
-        // 他のユーザーから展開後のファイルを読まれないよう, 所有者のみに制限する.
-        if (!mkdir($d, 0700)) {
+            if (!mkdir($d, 0700)) {
+                throw new PluginException(trans('admin.store.plugin.mkdir.error', ['%dir_name%' => $d]));
+            }
+
+            return $d;
+        }
+
+        // リクエスト処理中に作られる分はランタイムディレクトリへ置く.
+        $tempDir = $this->eccubeConfig->get('eccube_runtime_dir').'/Plugin';
+        @mkdir($tempDir, 0755, true);
+        $d = ($tempDir.'/'.sha1(StringUtil::random(16)));
+
+        if (!mkdir($d, 0755)) {
             throw new PluginException(trans('admin.store.plugin.mkdir.error', ['%dir_name%' => $d]));
         }
 
