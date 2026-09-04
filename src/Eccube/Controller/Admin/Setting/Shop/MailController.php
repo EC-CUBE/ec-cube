@@ -19,10 +19,9 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\MailType;
 use Eccube\Repository\MailTemplateRepository;
+use Eccube\Service\Content\MailTemplateContentService;
 use Eccube\Util\CacheUtil;
-use Eccube\Util\StringUtil;
 use Symfony\Bridge\Twig\Attribute\Template;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -38,7 +37,7 @@ class MailController extends AbstractController
     /**
      * MailController constructor.
      */
-    public function __construct(protected MailTemplateRepository $mailTemplateRepository, private readonly Environment $twig, private readonly CacheUtil $cacheUtil)
+    public function __construct(protected MailTemplateRepository $mailTemplateRepository, private readonly Environment $twig, private readonly CacheUtil $cacheUtil, private readonly MailTemplateContentService $mailTemplateContentService)
     {
     }
 
@@ -95,32 +94,17 @@ class MailController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 $Mail = $form->getData();
                 $Mail->setDeletable(true);
-                $this->entityManager->persist($Mail);
-                $this->entityManager->flush();
 
-                // ファイル生成・更新
-                $templatePath = $this->getParameter('eccube_theme_front_dir');
-                $filePath = $templatePath.'/'.$Mail->getFileName();
-
-                $fs = new Filesystem();
-                $mailData = $form->get('tpl_data')->getData();
-                $mailData = StringUtil::convertLineFeed($mailData);
-                $fs->dumpFile($filePath, $mailData);
-
-                // HTMLファイル用
+                // DB 登録とテンプレートファイルの生成は Service に委譲する.
+                // HTML 本文が null の場合は HTML パートのファイルを削除する.
                 $htmlMailData = $form->get('html_tpl_data')->getData();
-                $htmlFileName = $this->getHtmlFileName($Mail->getFileName());
-
-                if (!is_null($htmlMailData)) {
-                    $htmlMailData = StringUtil::convertLineFeed($htmlMailData);
-                    $fs->dumpFile($templatePath.'/'.$htmlFileName, $htmlMailData);
-                } else {
-                    // 空登録の場合は削除
-                    $htmlFilePath = $templatePath.'/'.$htmlFileName;
-                    if ($this->validateFilePath($htmlFilePath) && is_file($htmlFilePath)) {
-                        $fs->remove($htmlFilePath);
-                    }
-                }
+                $result = $this->mailTemplateContentService->save(
+                    $Mail,
+                    (string) $form->get('tpl_data')->getData(),
+                    null === $htmlMailData ? null : (string) $htmlMailData
+                );
+                $templatePath = $this->mailTemplateContentService->getTemplateDir();
+                $filePath = (string) $result->path();
 
                 $event = new EventArgs(
                     [
@@ -186,19 +170,7 @@ class MailController extends AbstractController
 
         log_info('メールテンプレート削除開始', [$Mail->getId()]);
 
-        $this->entityManager->remove($Mail);
-        $this->entityManager->flush();
-
-        $fs = new Filesystem();
-        $templatePath = $this->getParameter('eccube_theme_front_dir');
-        $filePath = $templatePath.'/'.$Mail->getFileName();
-        if ($this->validateFilePath($filePath) && is_file($filePath)) {
-            $fs->remove($filePath);
-        }
-        $htmlFilePath = $templatePath.'/'.$this->getHtmlFileName($Mail->getFileName());
-        if ($this->validateFilePath($htmlFilePath) && is_file($htmlFilePath)) {
-            $fs->remove($htmlFilePath);
-        }
+        $this->mailTemplateContentService->remove($Mail);
 
         $this->addSuccess('admin.common.delete_complete', 'admin');
 
@@ -212,11 +184,7 @@ class MailController extends AbstractController
      */
     protected function getHtmlFileName(string $fileName): string
     {
-        // HTMLテンプレートファイルの取得
-        $targetTemplate = pathinfo($fileName);
-        $suffix = '.html';
-
-        return $targetTemplate['dirname'].DIRECTORY_SEPARATOR.$targetTemplate['filename'].$suffix.'.'.$targetTemplate['extension'];
+        return $this->mailTemplateContentService->getHtmlFileName($fileName);
     }
 
     /**
@@ -224,9 +192,6 @@ class MailController extends AbstractController
      */
     protected function validateFilePath(string $path): bool
     {
-        $templatePath = realpath($this->getParameter('eccube_theme_front_dir'));
-        $path = realpath($path);
-
-        return \str_starts_with($path, $templatePath);
+        return $this->mailTemplateContentService->isInsideTemplateDir($path);
     }
 }

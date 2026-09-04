@@ -7,7 +7,6 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\ErrorHandler\Debug;
 
-umask(0000);
 set_time_limit(0);
 
 require __DIR__.'/../vendor/autoload.php';
@@ -35,6 +34,9 @@ if (!isset($_SERVER['APP_ENV'])) {
         (new Dotenv())->overload(__DIR__.'/../.env.install');
     }
 }
+
+// umask はコンテナ生成より前に決める必要があるため, 環境変数 ECCUBE_UMASK から読み込む.
+apply_umask();
 
 $input = new ArgvInput();
 $env = $input->getParameterOption(['--env', '-e'], $_SERVER['APP_ENV'] ?? 'dev');

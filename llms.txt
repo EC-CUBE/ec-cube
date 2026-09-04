@@ -156,9 +156,27 @@ npm run build   # Build Sass and JavaScript
 
 ### Cache Management
 
+EC-CUBE splits generated files into three directories: `var/build/{env}` (compiled container,
+routing, metadata, precompiled templates) and `var/cache/{env}` are produced by the CLI, while
+`var/runtime/{env}` (cache pools, translations, HTMLPurifier, Twig fallback) is written at request time.
+
 ```bash
-bin/console cache:clear
-bin/console cache:warmup
+bin/console eccube:cache:build      # Rebuild var/build (includes template precompilation)
+bin/console cache:pool:clear --all  # Clear the runtime cache pools
+bin/console cache:clear             # Clear everything (needs write access to build and cache)
+```
+
+### Content Management
+
+Pages, blocks and mail templates pair a database record with a Twig file, so they are managed
+through dedicated commands rather than by copying files. `apply` is an idempotent upsert and
+supports `--dry-run` and `--format=json`; `--body=-` reads the template from stdin.
+
+```bash
+bin/console eccube:page:list|show|apply|remove
+bin/console eccube:block:list|show|apply|remove
+bin/console eccube:mail-template:list|show|apply
+cat guide.twig | bin/console eccube:page:apply --url=guide --name=Guide --body=-
 ```
 
 ## Community

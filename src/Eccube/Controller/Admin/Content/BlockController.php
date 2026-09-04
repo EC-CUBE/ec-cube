@@ -21,10 +21,9 @@ use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\BlockType;
 use Eccube\Repository\BlockRepository;
 use Eccube\Repository\Master\DeviceTypeRepository;
+use Eccube\Service\Content\BlockContentService;
 use Eccube\Util\CacheUtil;
-use Eccube\Util\StringUtil;
 use Symfony\Bridge\Twig\Attribute\Template;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -34,7 +33,7 @@ use Twig\Error\LoaderError;
 
 class BlockController extends AbstractController
 {
-    public function __construct(protected BlockRepository $blockRepository, protected DeviceTypeRepository $deviceTypeRepository, private readonly Environment $twig, private readonly Filesystem $fs, private readonly CacheUtil $cacheUtil)
+    public function __construct(protected BlockRepository $blockRepository, protected DeviceTypeRepository $deviceTypeRepository, private readonly Environment $twig, private readonly CacheUtil $cacheUtil, private readonly BlockContentService $blockContentService)
     {
     }
 
@@ -129,26 +128,8 @@ class BlockController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $Block = $form->getData();
-            $this->entityManager->persist($Block);
-            $this->entityManager->flush();
-
-            $dir = sprintf('%s/app/template/%s/Block',
-                $this->getParameter('kernel.project_dir'),
-                $this->getParameter('eccube.theme'));
-
-            $file = $dir.'/'.$Block->getFileName().'.twig';
-
-            $source = $form->get('block_html')->getData();
-            $source = StringUtil::convertLineFeed($source);
-            $this->fs->dumpFile($file, $source);
-
-            // 更新でファイル名を変更した場合、以前のファイルを削除
-            if (null !== $previousFileName && $Block->getFileName() !== $previousFileName) {
-                $old = $dir.'/'.$previousFileName.'.twig';
-                if ($this->fs->exists($old)) {
-                    $this->fs->remove($old);
-                }
-            }
+            // DB 登録とテンプレートファイルの生成は Service に委譲する
+            $this->blockContentService->save($Block, (string) $form->get('block_html')->getData(), $previousFileName);
 
             // キャッシュの削除
             $this->cacheUtil->clearTwigCache();
@@ -182,18 +163,7 @@ class BlockController extends AbstractController
 
         // ユーザーが作ったブロックのみ削除する
         if ($Block->isDeletable()) {
-            $dir = sprintf('%s/app/template/%s/Block',
-                $this->getParameter('kernel.project_dir'),
-                $this->getParameter('eccube.theme'));
-
-            $file = $dir.'/'.$Block->getFileName().'.twig';
-
-            if ($this->fs->exists($file)) {
-                $this->fs->remove($file);
-            }
-
-            $this->entityManager->remove($Block);
-            $this->entityManager->flush();
+            $this->blockContentService->remove($Block);
 
             $event = new EventArgs(
                 [

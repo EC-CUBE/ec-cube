@@ -49,7 +49,7 @@ class LogType extends AbstractType
 
         // ログディレクトリが存在しない場合は作成（Monolog StreamHandlerと同様の実装）
         if (!is_dir($dirs)) {
-            mkdir($dirs, 0777, true);
+            mkdir($dirs, 0755, true);
         }
 
         foreach ($finder->in($dirs) as $file) {
