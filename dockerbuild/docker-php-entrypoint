@@ -16,6 +16,27 @@ LANE_W_DIRS="html/upload html/upload/save_image html/upload/temp_image html/uplo
 LANE_W_VAR_DIRS="var/runtime var/sessions var/log"
 LANE_S_VAR_DIRS="var/build var/cache"
 
+# 分離モードでは SQLite を使えない。データベースファイルは var 配下 (レーン W) に置かれ、
+# Web サーバーと CLI の双方が書き込む必要があるため、権限を分けると成立しないため。
+require_database_server() {
+    case "${DATABASE_URL:-}" in
+        postgres://* | postgresql://* | pgsql://* | mysql://*)
+            return 0
+            ;;
+        '')
+            echo "ECCUBE_PERMISSION_LANES=1 では DATABASE_URL の指定が必要です (PostgreSQL または MySQL)。" >&2
+            echo "docker-compose.pgsql.yml または docker-compose.mysql.yml を重ねてください。" >&2
+            exit 1
+            ;;
+        *)
+            # 値そのものは資格情報を含むためスキームのみ表示する
+            echo "ECCUBE_PERMISSION_LANES=1 では PostgreSQL または MySQL が必要です (指定されたスキーム: ${DATABASE_URL%%:*})。" >&2
+            echo "SQLite はデータベースファイルを Web サーバーと CLI の双方が書き込むため、権限を分離できません。" >&2
+            exit 1
+            ;;
+    esac
+}
+
 setup_split_users() {
     # UID / GID はシェルが export しないことが多いため, 未指定なら
     # bind mount されたファイルの所有者からホストユーザーを推定する。
@@ -69,6 +90,7 @@ apply_permission_lanes() {
 }
 
 if [ "${PERMISSION_LANES}" = "1" ]; then
+    require_database_server
     setup_split_users
 else
     if [ -n "${USER_ID}" ]; then
@@ -123,7 +145,10 @@ if [ "${PERMISSION_LANES}" = "1" ]; then
     apply_permission_lanes
 fi
 
-echo "PassEnv APP_ENV APP_DEBUG TRUSTED_PROXIES TRUSTED_HOSTS" > /etc/apache2/conf-enabled/eccube_env.conf
+# compose 等で与えた環境変数を Web サーバー (mod_php) 側にも渡す。
+# DATABASE_URL が渡らないと Web だけ .env の値 (既定は SQLite) を読み、
+# CLI と Web で接続先が食い違う。
+echo "PassEnv APP_ENV APP_DEBUG TRUSTED_PROXIES TRUSTED_HOSTS DATABASE_URL DATABASE_SERVER_VERSION DATABASE_CHARSET MAILER_DSN" > /etc/apache2/conf-enabled/eccube_env.conf
 
 # first arg is `-f` or `--some-option`
 if [ "${1#-}" != "$1" ]; then
