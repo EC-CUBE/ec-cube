@@ -105,10 +105,11 @@ final class PluginServiceTest extends AbstractServiceTestCase
 
     // テスト用のダミープラグインを配置する
     /**
-     * アーカイブの検査用の一時領域は OS の一時ディレクトリに作る.
+     * CLI 実行時, アーカイブの検査用の一時領域は OS の一時ディレクトリに作る.
      *
      * var/runtime (Web サーバー所有) に作ると, Web サーバーと CLI で書き込み権限を
      * 分離した構成でプラグイン操作が CLI から行えなくなるため.
+     * (テストは CLI で実行されるため, この経路を通る)
      */
     public function testCreateTempDirUsesSystemTempDir(): void
     {
