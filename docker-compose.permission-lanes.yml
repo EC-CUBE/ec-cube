@@ -2,7 +2,12 @@ version: '3'
 
 # Web サーバー (www-data) と CLI (SSH ログインユーザー相当) の書き込み権限を分離する override。
 #
-#   docker compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.permission-lanes.yml up -d --wait
+#   docker compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.pgsql.yml \
+#     -f docker-compose.permission-lanes.yml up -d --build --wait
+#
+# --build は必須。公開イメージ (ghcr) には本リポジトリの dockerbuild/docker-php-entrypoint が
+# 含まれないため、pull されたイメージのままでは www-data がホストユーザーへリマップされ分離されない。
+# DB サーバーを重ねるのは、既定の SQLite (var/eccube.db) が var 配下にあり CLI から書き込めないため。
 #
 # 分離モードでは www-data は uid 33 のままとなり、CLI 用に別ユーザー (eccube) を作成する。
 # 共有グループは作らない。セキュリティポリシーで共有グループを作成できない環境があるため。
@@ -48,6 +53,10 @@ services:
       # それだとルート自体を Web サーバーから書き込み可能にする必要があるため
       # レーン W の var/runtime 配下へ移す (管理画面から生成されるため Web サーバーの書き込み権限が要る)
       ECCUBE_MAINTENANCE_FILE_PATH: /var/www/html/var/runtime/.maintenance
+      # var/log はレーン W (www-data 所有) のため CLI からは書き込めない。
+      # ログ出力の失敗で本来のエラーが隠れるのを防ぐため、CLI ではファイルへ書かない。
+      # (Web リクエストのログは従来どおりファイルへ出力される)
+      ECCUBE_CLI_LOG_TO_FILE: 0
       # レーン S へ書き込む管理画面の機能を 403 で止める場合は有効にする。
       # 無効のままだと、それらの画面は書き込みエラーになる
       # ECCUBE_RESTRICT_FILE_UPLOAD: 1

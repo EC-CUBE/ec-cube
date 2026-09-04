@@ -11,6 +11,9 @@ parameters:
     env(ECCUBE_MCP_ALLOWED_ORIGINS): ''
     # MCP 監査ログ (mcp.log) の保管日数 (rotating_file の世代数)。 設計 §4.2
     env(ECCUBE_MCP_LOG_RETENTION_DAYS): '90'
+    # CLI 実行時もログをファイルへ書くか。 Web サーバーと CLI で var/log の書き込み権限を
+    # 分離した構成では 0 を設定し、 CLI のログはコンソール出力 (必要ならリダイレクト) に寄せる。
+    env(ECCUBE_CLI_LOG_TO_FILE): '1'
     locale: '%env(ECCUBE_LOCALE)%'
     timezone: '%env(ECCUBE_TIMEZONE)%'
     currency: '%env(ECCUBE_CURRENCY)%'

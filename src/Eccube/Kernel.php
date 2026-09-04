@@ -18,6 +18,7 @@ use Eccube\Common\EccubeNav;
 use Eccube\Common\EccubeTwigBlock;
 use Eccube\DependencyInjection\Compiler\AutoConfigurationTagPass;
 use Eccube\DependencyInjection\Compiler\BuildDirCacheWarmerPass;
+use Eccube\DependencyInjection\Compiler\CliFileLogHandlerPass;
 use Eccube\DependencyInjection\Compiler\McpAuditLoggerChannelLockPass;
 use Eccube\DependencyInjection\Compiler\McpCliCommandPass;
 use Eccube\DependencyInjection\Compiler\McpScopeEnforcementPass;
@@ -301,6 +302,9 @@ class Kernel extends BaseKernel
 
         // 自動 warmup をビルドディレクトリへ書くものだけに絞る.
         $container->addCompilerPass(new BuildDirCacheWarmerPass());
+
+        // CLI からファイルへログを書けない構成 (var/log が Web サーバー所有) に対応する.
+        $container->addCompilerPass(new CliFileLogHandlerPass());
 
         // クエリカスタマイズの拡張.
         $container->registerForAutoconfiguration(QueryCustomizer::class)

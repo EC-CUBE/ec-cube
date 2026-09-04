@@ -112,7 +112,11 @@ Web サーバー（`www-data`）と CLI（SSH ログインユーザー相当）�
 `docker-compose.permission-lanes.yml` を重ねる。`eccube:doctor:permissions` の動作確認に使う。
 
 ```bash
-docker compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.permission-lanes.yml up -d --wait
+# --build は必須。 公開イメージ (ghcr) には dockerbuild/docker-php-entrypoint のレーン分離が
+# 含まれないため、 pull されたイメージのままだと www-data がホストユーザーへリマップされ分離されない。
+# DB は SQLite だと var/eccube.db を CLI から書けないため、 DB サーバーを重ねる。
+docker compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.pgsql.yml \
+  -f docker-compose.permission-lanes.yml up -d --build --wait
 curl -s -o /dev/null http://127.0.0.1:8080/   # セッションを生成し Web サーバーの uid を判定可能にする
 docker compose exec -u eccube ec-cube bin/console eccube:doctor:permissions
 ```
@@ -128,6 +132,11 @@ docker compose exec -u www-data ec-cube bin/console cache:pool:clear --all    # 
 
 `cache:clear` は `var/build` と `var/cache` の双方へ書き込むため、分離モードでは使用できない。
 コンパイル済みコンテナとテンプレートの再生成は `eccube:cache:build` を使う。
+
+`var/log` はレーン W のため、CLI からはログファイルへ書き込めない。ログの出力に失敗すると本来のエラーが
+ログ書き込みエラーへすり替わるため、分離した構成では `ECCUBE_CLI_LOG_TO_FILE=0` を設定し、CLI のログを
+コンソール出力に寄せる（記録が必要な場合はリダイレクトする）。未設定なら従来どおりファイルへ書く。
+`docker-compose.permission-lanes.yml` では既に設定済み。
 
 アプリケーションが作成するファイルの umask は環境変数 `ECCUBE_UMASK`（8 進数表記）で設定する。
 未設定なら OS / PHP-FPM の既定に従う（推奨）。Web サーバーと CLI が別ユーザーで、かつ双方が同じ
