@@ -1,6 +1,6 @@
 ---
 name: eccube-repository
-description: EC-CUBE 4.4 の Doctrine リポジトリを実装・改修するときの規約。「リポジトリを作って」「検索メソッドを追加して」「クエリを書いて」「一覧の絞り込みを実装して」などと言われたとき、または src/Eccube/Repository・app/Customize/Repository 配下を作成・編集するときに使用する。
+description: EC-CUBE 4.4 の Doctrine リポジトリを実装・改修するときの規約。「リポジトリを作って」「検索メソッドを追加して」「クエリを書いて」「一覧の絞り込みを実装して」などと言われたとき、またはリポジトリを作成・編集するとき（コア・app/Customize・プラグインのいずれでも）に使用する。
 ---
 
 # Repository 規約（EC-CUBE 4.4）
