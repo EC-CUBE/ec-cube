@@ -48,20 +48,21 @@ class PluginInstallCommand extends Command
             // PluginService::install() は install(string $path, int $source = 0, bool $notExists = false)
             // のため、$source を省略すると $ifNotExists が $source に入り --if-not-exists が効かない。
             // $source は管理画面のアーカイブアップロード (PluginController::install()) と同じ 0 を渡す。
-            if ($this->pluginService->install($path, 0, $ifNotExists)) {
-                $io->success('Installed.');
+            // install() は成功時に true を返すか例外を投げるため、戻り値では分岐しない。
+            $this->pluginService->install($path, 0, $ifNotExists);
+            $cacheCleared = $this->clearCache($io);
+            $io->success('Installed.');
 
-                return 0;
-            }
+            return $cacheCleared ? 0 : self::EXIT_MANUAL_ACTION_REQUIRED;
         }
 
         // 設置済ファイルからインストール
         if ($code) {
             $this->pluginService->installWithCode($code, $ifNotExists);
-            $this->clearCache($io);
+            $cacheCleared = $this->clearCache($io);
             $io->success('Installed.');
 
-            return 0;
+            return $cacheCleared ? 0 : self::EXIT_MANUAL_ACTION_REQUIRED;
         }
 
         $io->error('path or code is required.');
