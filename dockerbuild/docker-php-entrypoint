@@ -8,7 +8,9 @@ PERMISSION_LANES="${ECCUBE_PERMISSION_LANES:-}"
 # レーン W: リクエスト処理中に Web サーバーが書き込むディレクトリ。www-data 所有とする。
 # CLI から書き込む必要がある場合は Web サーバーのユーザーで実行する (本番では sudo -u www-data)。
 # 共有グループは作らない。セキュリティポリシーで共有グループを作成できない環境があるため。
-LANE_W_DIRS="html/upload html/upload/save_image html/upload/temp_image html/upload/refund_request html/upload/refund_request/save html/upload/refund_request/temp app/keystore"
+# app/keystore はレーン S (CLI が鍵を配置し Web サーバーは読み取りのみ)。
+# 実行時に鍵を生成する機能を使う場合のみ Web サーバーの書き込み権限が必要になる。
+LANE_W_DIRS="html/upload html/upload/save_image html/upload/temp_image html/upload/refund_request html/upload/refund_request/save html/upload/refund_request/temp"
 
 # var 配下のレーン分け。
 # var/runtime (実行時キャッシュ)・var/sessions・var/log はリクエスト処理中に書き込まれる。

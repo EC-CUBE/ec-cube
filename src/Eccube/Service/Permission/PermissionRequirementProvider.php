@@ -96,7 +96,6 @@ class PermissionRequirementProvider
         $env = (string) $this->eccubeConfig->get('kernel.environment');
 
         return [
-            $this->create($projectDir.'/var', WriteLane::WEB, true),
             $this->create($this->path('eccube_runtime_dir'), WriteLane::WEB, true),
             $this->create($this->path('kernel.logs_dir'), WriteLane::WEB, true),
             $this->create($projectDir.'/var/sessions/'.$env, WriteLane::WEB, true),
@@ -104,13 +103,6 @@ class PermissionRequirementProvider
             $this->create($this->path('eccube_temp_image_dir'), WriteLane::WEB),
             $this->create($this->path('eccube_save_refund_request_file_dir'), WriteLane::WEB),
             $this->create($this->path('eccube_temp_refund_request_file_dir'), WriteLane::WEB),
-            $this->create(
-                $projectDir.'/app/keystore',
-                WriteLane::WEB,
-                true,
-                '秘密鍵の格納先. CLI で事前に配置し Web サーバーからは読み取りのみとするのが望ましい. '
-                .'実行時に鍵を生成する機能を使う場合のみ Web サーバーの書き込み権限が必要になる.'
-            ),
             $this->create(
                 dirname($this->path('eccube_content_maintenance_file_path')),
                 WriteLane::WEB,
@@ -131,6 +123,20 @@ class PermissionRequirementProvider
         $projectDir = $this->path('kernel.project_dir');
 
         return [
+            $this->create(
+                $projectDir.'/var',
+                WriteLane::SSH,
+                true,
+                'Web サーバーが書き込むのは配下の var/runtime・var/sessions・var/log で, '
+                .'var 自体へは書き込まない. Web サーバーからは通過 (r-x) できればよい.'
+            ),
+            $this->create(
+                $projectDir.'/app/keystore',
+                WriteLane::SSH,
+                true,
+                '秘密鍵の格納先. CLI で事前に配置し Web サーバーからは読み取りのみとする. '
+                .'実行時に鍵を生成する機能 (AcpMessageSigner) を使う場合のみ Web サーバーの書き込み権限が必要になる.'
+            ),
             $this->create($this->path('eccube_theme_app_dir'), WriteLane::SSH),
             $this->create($this->path('eccube_html_dir').'/user_data', WriteLane::SSH),
             $this->create($this->path('plugin_realdir'), WriteLane::SSH),
