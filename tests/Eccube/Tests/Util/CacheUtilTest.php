@@ -129,6 +129,24 @@ final class CacheUtilTest extends TestCase
         $this->assertDirectoryExists($this->workDir.'/build/twig');
     }
 
+    /**
+     * 実行時キャッシュは Web サーバー所有 (レーン W) になり得るため, CLI から削除できないことがある.
+     * その場合に例外を投げると, キャッシュ削除の失敗が本処理の失敗として現れてしまう.
+     */
+    public function testClearTwigCacheKeepsRuntimeCacheWhenRuntimeDirIsReadOnly(): void
+    {
+        $this->skipWhenRunningAsRoot();
+        mkdir($this->workDir.'/runtime/twig', 0755, true);
+        mkdir($this->workDir.'/build/twig', 0755, true);
+        chmod($this->workDir.'/runtime', 0555);
+
+        $this->cacheUtil()->clearTwigCache();
+
+        $this->assertDirectoryExists($this->workDir.'/runtime/twig');
+        // 削除できる側 (build) は削除する
+        $this->assertDirectoryDoesNotExist($this->workDir.'/build/twig');
+    }
+
     private function skipWhenRunningAsRoot(): void
     {
         if (getmyuid() === 0) {
