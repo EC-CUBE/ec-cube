@@ -1,0 +1,71 @@
+version: '3'
+
+# Web サーバー (www-data) と CLI (SSH ログインユーザー相当) の書き込み権限を分離する override。
+#
+#   docker compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.pgsql.yml \
+#     -f docker-compose.permission-lanes.yml up -d --build --wait
+#
+# --build は必須。公開イメージ (ghcr) には本リポジトリの dockerbuild/docker-php-entrypoint が
+# 含まれないため、pull されたイメージのままでは www-data がホストユーザーへリマップされ分離されない。
+#
+# DB は PostgreSQL または MySQL が必須。既定の SQLite はデータベースファイルが var 配下に置かれ、
+# Web サーバーと CLI の双方が書き込む必要があるため、権限を分離すると成立しない
+# (エントリポイントが起動時に検査し、SQLite なら起動を中止する)。
+#
+# 分離モードでは www-data は uid 33 のままとなり、CLI 用に別ユーザー (eccube) を作成する。
+# 共有グループは作らない。セキュリティポリシーで共有グループを作成できない環境があるため。
+#
+# 書き込み先は 2 つのレーンに分かれる。
+#
+#   レーン W (Web サーバーが書き込む)   var/runtime, var/sessions, var/log, html/upload/**, app/keystore
+#     → www-data 所有。CLI から書き込む必要がある場合は Web サーバーのユーザーで実行する
+#   レーン S (CLI へ移せる)             上記以外 (var/build, var/cache, app/template, html/user_data,
+#                                       app/Plugin, vendor, .env 等)
+#     → CLI ユーザー所有。www-data は読み取りのみ
+#
+# CLI の実行ユーザーは操作対象のレーンで決まる。
+#
+#   レーン S を触る   docker compose exec -u eccube   ec-cube bin/console eccube:cache:build
+#   レーン W を触る   docker compose exec -u www-data ec-cube bin/console cache:pool:clear --all
+#                     (本番では sudo -u www-data bin/console ... に相当する)
+#
+# cache:clear は var/build と var/cache の双方へ書き込むため、分離モードでは使用できない。
+# コンパイル済みコンテナとテンプレートの再生成は eccube:cache:build を使う。
+#
+# 分離すると、レーン S へ書き込む管理画面の機能は動作しなくなる。
+# (プラグインの導入・有効化、ページ/ブロック/メールテンプレートの編集、CSS/JS の編集、
+#  ファイル管理、テンプレートのアップロード)
+# CLI 側の代替導線は整備中のため、日常の開発では本ファイルを重ねないこと。
+#
+# 既定モードと分離モードを切り替えるときは、レーン W のボリュームを作り直すこと。
+# 切り替え前の www-data の uid で作成されたディレクトリが残り、切り替え後の Web サーバーから
+# 書き込めなくなる (例: var/runtime/{env}/mcp-sessions)。
+#
+#   docker compose ... down -v
+#
+# レーン W のディレクトリ (html/upload/**、app/keystore) はホスト側でも www-data の uid 所有になる。
+# 既定モードへ戻すときは所有者を元に戻すこと。
+#
+#   sudo chown -R $(id -u):$(id -g) html/upload app/keystore
+
+services:
+  ec-cube:
+    environment:
+      ECCUBE_PERMISSION_LANES: 1
+      # 分離モードは prod で動かす。dev (APP_DEBUG=1) はリクエスト処理中にコンテナを再生成するため、
+      # Kernel::buildContainer() が var/cache と var/build (レーン S = CLI 所有) への書き込みを要求し、
+      # 「Unable to write in the "cache" directory」で 500 になる。
+      # prod は debug=false でコンテナを再生成しないため、eccube:cache:build の生成物を読むだけで動く。
+      APP_ENV: prod
+      APP_DEBUG: 0
+      # メンテナンスファイルの生成先。既定はプロジェクトルート直下だが、
+      # それだとルート自体を Web サーバーから書き込み可能にする必要があるため
+      # レーン W の var/runtime 配下へ移す (管理画面から生成されるため Web サーバーの書き込み権限が要る)
+      ECCUBE_MAINTENANCE_FILE_PATH: /var/www/html/var/runtime/.maintenance
+      # var/log はレーン W (www-data 所有) のため CLI からは書き込めない。
+      # ログ出力の失敗で本来のエラーが隠れるのを防ぐため、CLI ではファイルへ書かない。
+      # (Web リクエストのログは従来どおりファイルへ出力される)
+      ECCUBE_CLI_LOG_TO_FILE: 0
+      # レーン S へ書き込む管理画面の機能を 403 で止める場合は有効にする。
+      # 無効のままだと、それらの画面は書き込みエラーになる
+      # ECCUBE_RESTRICT_FILE_UPLOAD: 1

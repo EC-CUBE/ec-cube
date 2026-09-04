@@ -1177,6 +1177,7 @@ admin.content.block_source_code: Codes
 admin.content.cache__card_title: Caches
 admin.content.cache_message: If you replaced the Twig file on the production server with FTP etc, the UI will not be updated unless you delete the Twig cache.
 admin.content.cache_delete: Delete Cache
+admin.content.cache_build_dir_not_writable: Only the runtime cache was deleted. Run "bin/console eccube:cache:build" from the CLI to rebuild the compiled container and templates.
 admin.content.news.publish_date: Published on
 admin.content.news.display_status: Display Status
 admin.content.news.display_status__show: Displayed
