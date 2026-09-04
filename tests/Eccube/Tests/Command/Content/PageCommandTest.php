@@ -163,6 +163,48 @@ final class PageCommandTest extends EccubeTestCase
         $this->assertSame(0, $tester->getStatusCode());
     }
 
+    /**
+     * 実行時の cache pool を削除できない場合 (権限を分離した構成) は,
+     * 本処理を完了させたうえで終了コード 3 と手動実行の案内を返す.
+     */
+    public function testApplyReturnsManualActionRequiredWhenCacheIsNotClearable(): void
+    {
+        if (function_exists('posix_geteuid') && 0 === posix_geteuid()) {
+            $this->markTestSkipped('root では権限による書き込み不可を再現できない');
+        }
+
+        $poolDir = rtrim((string) self::getContainer()->getParameter('eccube_runtime_dir'), '/').'/pools';
+        if (!is_dir($poolDir)) {
+            mkdir($poolDir, 0775, true);
+        }
+        chmod($poolDir, 0555);
+
+        if (is_writable($poolDir)) {
+            chmod($poolDir, 0775);
+            $this->markTestSkipped('ディレクトリを書き込み不可にできない環境');
+        }
+
+        try {
+            $tester = new CommandTester(self::getContainer()->get(PageApplyCommand::class));
+            $tester->execute([
+                '--url' => $this->url,
+                '--name' => 'テストページ',
+                '--body' => 'body',
+            ]);
+
+            $Page = $this->pageContentService->findByUrl((string) $this->url);
+            if ($Page instanceof Page) {
+                $this->createdFiles[] = $this->pageContentService->getFilePath($Page);
+            }
+
+            $this->assertSame(3, $tester->getStatusCode());
+            $this->assertInstanceOf(Page::class, $Page, '本処理は完了している');
+            $this->assertStringContainsString('cache:pool:clear', $tester->getDisplay());
+        } finally {
+            chmod($poolDir, 0775);
+        }
+    }
+
     public function testShowOutputsTemplate(): void
     {
         $this->apply(['--url' => $this->url, '--name' => 'テストページ', '--body' => 'shown body']);

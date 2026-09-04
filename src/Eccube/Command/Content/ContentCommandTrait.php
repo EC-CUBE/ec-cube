@@ -148,19 +148,36 @@ trait ContentCommandTrait
         $buildTwigDir = $buildDir.'/twig';
         $buildTwigWritable = !is_dir($buildTwigDir) || is_writable($buildDir);
 
+        // 実行時の cache pool は Web サーバー所有のため, 権限を分離した構成では CLI から削除できない.
+        // 削除の可否は実行前に判定する (cache:pool:clear は失敗しても例外にならない).
+        $poolDir = rtrim((string) $this->eccubeConfig->get('eccube_runtime_dir'), '/').'/pools';
+        $poolClearable = !is_dir($poolDir) || is_writable($poolDir);
+
         $this->cacheUtil->clearTwigCache();
         $this->cacheUtil->clearDoctrineCache();
+
+        $cleared = true;
 
         if (!$buildTwigWritable) {
             $io->warning([
                 sprintf('%s を削除できないため, 更新したテンプレートが反映されません.', $buildTwigDir),
                 '書き込み権限のあるユーザーで bin/console eccube:cache:build を実行してください.',
             ]);
-
-            return false;
+            $cleared = false;
         }
 
-        return true;
+        if (!$poolClearable) {
+            $io->warning([
+                sprintf('%s を削除できないため, Doctrine のキャッシュに古い内容が残ります.', $poolDir),
+                sprintf(
+                    'Web サーバーのユーザーで bin/console cache:pool:clear %s を実行してください.',
+                    CacheUtil::DOCTRINE_APP_CACHE_KEY
+                ),
+            ]);
+            $cleared = false;
+        }
+
+        return $cleared;
     }
 
     protected function renderResult(SymfonyStyle $io, OutputInterface $output, string $format, ContentResult $result, bool $dryRun): void
