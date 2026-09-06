@@ -12,7 +12,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.62.1",
-    "@types/node": "^26.3.0",
+    "@types/node": "^26.4.1",
     "@types/pg": "^8.23.1",
     "mysql2": "^3.24.2",
     "pg": "^8.23.0",
