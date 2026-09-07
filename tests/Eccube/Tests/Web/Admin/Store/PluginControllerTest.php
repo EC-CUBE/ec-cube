@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace Eccube\Tests\Web\Admin\Store;
 
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Plugin;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -25,6 +26,19 @@ use Symfony\Component\HttpFoundation\Response;
 #[Group('cache-clear')]
 final class PluginControllerTest extends AbstractAdminWebTestCase
 {
+    /**
+     * プラグインの有効化/無効化は処理前にメンテナンスモードへ入る.
+     * 解除はブラウザ側の JS が行うためテストでは残るので, 後続のテストに影響しないよう削除する.
+     */
+    protected function tearDown(): void
+    {
+        $maintenanceFilePath = static::getContainer()->getParameter('eccube_content_maintenance_file_path');
+        if (file_exists($maintenanceFilePath)) {
+            unlink($maintenanceFilePath);
+        }
+        parent::tearDown();
+    }
+
     public function testRoutingAuthentication()
     {
         $this->client->request(
@@ -53,6 +67,72 @@ final class PluginControllerTest extends AbstractAdminWebTestCase
         $this->expected = $form['php_path'];
         $this->actual = $this->entityManager->getRepository(BaseInfo::class)->get()->getPhpPath();
         $this->verify();
+    }
+
+    /**
+     * 既に有効なプラグインを有効化してもメンテナンスモードが解除されることを確認
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/7078
+     */
+    public function testEnableAlreadyEnabledReleasesMaintenance(): void
+    {
+        $session = $this->createSession($this->client);
+        $Plugin = $this->createPlugin('AlreadyEnabled', true);
+
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_store_plugin_enable', ['id' => $Plugin->getId()])
+        );
+
+        $redirectUrl = $this->generateUrl('admin_store_plugin');
+        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
+
+        // 「既に有効です。」でもメンテナンスモード解除のフラッシュが設定される.
+        // これが無いとメンテナンスモードが解除されず, フロントが 503 のまま残る.
+        $this->assertNotEmpty($session->getFlashBag()->get('eccube.admin.disable_maintenance'));
+    }
+
+    /**
+     * 既に無効なプラグインを無効化してもメンテナンスモードが解除されることを確認
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/7078
+     */
+    public function testDisableAlreadyDisabledReleasesMaintenance(): void
+    {
+        $session = $this->createSession($this->client);
+        $Plugin = $this->createPlugin('AlreadyDisabled', false);
+
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_store_plugin_disable', ['id' => $Plugin->getId()])
+        );
+
+        $redirectUrl = $this->generateUrl('admin_store_plugin');
+        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
+
+        // 「既に無効です。」でもメンテナンスモード解除のフラッシュが設定される
+        $this->assertNotEmpty($session->getFlashBag()->get('eccube.admin.disable_maintenance'));
+    }
+
+    /**
+     * 「既に有効/無効」の分岐は $Plugin->isEnabled() の判定だけで完結するため、
+     * プラグイン本体のファイルを設置しなくても検証できる.
+     */
+    private function createPlugin(string $code, bool $enabled): Plugin
+    {
+        $Plugin = new Plugin();
+        $Plugin
+            ->setName($code)
+            ->setCode($code)
+            ->setVersion('1.0.0')
+            ->setSource('')
+            ->setEnabled($enabled)
+            ->setInitialized(true);
+
+        $this->entityManager->persist($Plugin);
+        $this->entityManager->flush();
+
+        return $Plugin;
     }
 
     /**
