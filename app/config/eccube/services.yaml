@@ -311,6 +311,13 @@ services:
         arguments:
             $runtimeDir: '%eccube_runtime_dir%'
 
+    # cache:clear の後始末 (コンパイル済みコンテナの再生成・実行時 cache pool の削除) を案内する
+    Eccube\EventListener\RuntimeCachePoolClearListener:
+        arguments:
+            $buildDir: '%kernel.build_dir%'
+            $cacheDir: '%kernel.cache_dir%'
+            $containerClass: '%kernel.container_class%'
+
     Eccube\Asset\FilemtimeVersionStrategy:
         arguments:
             - '%eccube_html_dir%/user_data'
