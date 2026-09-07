@@ -54,6 +54,27 @@ setup_split_users() {
     if ! getent passwd "${cli_uid}" > /dev/null; then
         useradd -o -u "${cli_uid}" -g "${cli_gid}" -m -d /home/eccube -s /bin/bash eccube
     fi
+
+    # 既存の uid を再利用した場合は名前が eccube とは限らないため実際の名前を引く
+    cli_user="$(getent passwd "${cli_uid}" | cut -d: -f1)"
+}
+
+# レーン S のビルド生成物を CLI ユーザーで作っておく。
+#
+# BuildDirCacheWarmerPass が twig.template_cache_warmer のタグを外すため, composer install の
+# cache:warmup ではテンプレートが事前コンパイルされず, 初回起動時点の var/build/{env}/twig は空になる。
+# その状態で Web サーバーがページを描画すると, コンパイル結果がレーン W の var/runtime/{env}/twig へ
+# 書かれる。レーン W は CLI ユーザーから削除できないため, 以降 eccube:cache:build が
+# 削除できない旨の警告を出し続けることになる。アクセスを受ける前にここで作っておく。
+build_lane_s_cache() {
+    if runuser -u "${cli_user}" -- bin/console eccube:cache:build; then
+        return 0
+    fi
+
+    # 失敗しても起動は続ける (実行時キャッシュへフォールバックして動作するため)。
+    # 原因を潰さないと上記の警告が出続けるので, 気づけるように明示する。
+    echo "警告: eccube:cache:build に失敗しました。" >&2
+    echo "      アクセスを受ける前に ${cli_user} で bin/console eccube:cache:build を実行してください。" >&2
 }
 
 apply_permission_lanes() {
@@ -145,6 +166,8 @@ bin/console doctrine:query:sql 'select * from dtb_base_info' > /dev/null 2>&1 ||
 
 if [ "${PERMISSION_LANES}" = "1" ]; then
     apply_permission_lanes
+    # 所有者を分けた後に実行する。先に実行すると root 所有の生成物が残り, chown -R が必要になる。
+    build_lane_s_cache
 fi
 
 # compose 等で与えた環境変数を Web サーバー (mod_php) 側にも渡す。
