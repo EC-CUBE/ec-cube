@@ -24,9 +24,12 @@ use Eccube\Service\Content\ContentResult;
 use Eccube\Service\Content\ContentStatus;
 use Eccube\Service\Content\PageContentService;
 use Eccube\Tests\EccubeTestCase;
+use Eccube\Tests\EffectiveUserTrait;
 
 final class PageContentServiceTest extends EccubeTestCase
 {
+    use EffectiveUserTrait;
+
     private ?PageContentService $pageContentService = null;
 
     /**
@@ -125,9 +128,7 @@ final class PageContentServiceTest extends EccubeTestCase
      */
     public function testApplyRollsBackWhenTemplateIsNotWritable(): void
     {
-        if (0 === getmyuid()) {
-            self::markTestSkipped('root は書き込み権限の検査を通過するため検証できません.');
-        }
+        $this->skipIfRoot();
 
         $Page = new Page();
         $Page->setEditType(Page::EDIT_TYPE_USER);

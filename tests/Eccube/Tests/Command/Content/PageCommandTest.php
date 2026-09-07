@@ -22,11 +22,14 @@ use Eccube\Command\Content\PageShowCommand;
 use Eccube\Entity\Page;
 use Eccube\Service\Content\PageContentService;
 use Eccube\Tests\EccubeTestCase;
+use Eccube\Tests\EffectiveUserTrait;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
 final class PageCommandTest extends EccubeTestCase
 {
+    use EffectiveUserTrait;
+
     private ?PageContentService $pageContentService = null;
 
     /**
@@ -151,9 +154,7 @@ final class PageCommandTest extends EccubeTestCase
      */
     public function testApplyReportsWriteFailureWithGuidance(): void
     {
-        if (0 === getmyuid()) {
-            self::markTestSkipped('root は書き込み権限の検査を通過するため検証できません.');
-        }
+        $this->skipIfRoot();
 
         $Page = new Page();
         $Page->setEditType(Page::EDIT_TYPE_USER);
@@ -212,9 +213,7 @@ final class PageCommandTest extends EccubeTestCase
      */
     public function testApplyReturnsManualActionRequiredWhenCacheIsNotClearable(): void
     {
-        if (function_exists('posix_geteuid') && 0 === posix_geteuid()) {
-            $this->markTestSkipped('root では権限による書き込み不可を再現できない');
-        }
+        $this->skipIfRoot();
 
         $poolDir = rtrim((string) self::getContainer()->getParameter('eccube_runtime_dir'), '/').'/pools';
         if (!is_dir($poolDir)) {
