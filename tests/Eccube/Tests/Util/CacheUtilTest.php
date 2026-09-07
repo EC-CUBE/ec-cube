@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace Eccube\Tests\Util;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Tests\EffectiveUserTrait;
 use Eccube\Util\CacheUtil;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
@@ -29,6 +30,8 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 final class CacheUtilTest extends TestCase
 {
+    use EffectiveUserTrait;
+
     private string $workDir;
 
     protected function setUp(): void
@@ -149,9 +152,7 @@ final class CacheUtilTest extends TestCase
 
     private function skipWhenRunningAsRoot(): void
     {
-        if (getmyuid() === 0) {
-            $this->markTestSkipped('root は書き込み権限の検査を通過するため検証できません.');
-        }
+        $this->skipIfRoot();
     }
 
     private function cacheUtil(): CacheUtil

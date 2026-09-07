@@ -115,7 +115,8 @@ class PermissionDiagnostic
                 $ownership,
                 FindingSeverity::NG,
                 '任意のローカルユーザーから書き込めます (想定: 読み取りのみ)',
-                'bin/console が umask(0000) を設定するため, CLI が作成したディレクトリは 0777 になります. '
+                'ECCUBE_UMASK に 0000 を設定していると, アプリケーションが作成するディレクトリは 0777, '
+                .'ファイルは 0666 になります. 権限を分離できる環境では ECCUBE_UMASK を空にしたうえで, '
                 .'other の書き込み権限を外してください.'
             );
         }

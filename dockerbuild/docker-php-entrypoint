@@ -22,7 +22,7 @@ LANE_S_VAR_DIRS="var/build var/cache"
 # Web サーバーと CLI の双方が書き込む必要があるため、権限を分けると成立しないため。
 require_database_server() {
     case "${DATABASE_URL:-}" in
-        postgres://* | postgresql://* | pgsql://* | mysql://*)
+        postgres://* | postgresql://* | pgsql://* | mysql://* | mysql2://*)
             return 0
             ;;
         '')

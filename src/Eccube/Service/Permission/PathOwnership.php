@@ -23,7 +23,8 @@ namespace Eccube\Service\Permission;
  * Web サーバーから書けるかどうかは分からないため, パーミッションビットから推定する.
  *
  * ディレクトリはエントリの作成・削除に w と x が, 配下のファイルを開くのに x が必要になるため,
- * 自身のビットに加えて祖先ディレクトリの x も評価する.
+ * isWritableBy() / isReadableBy() は自身の x も評価する. ただし見るのは自身のビットだけで,
+ * 祖先ディレクトリを通り抜けられるかは unreachableAncestorFor() で別に確かめる必要がある.
  * 補助グループ・ACL・SELinux までは判定できないため, 結果はあくまで推定として扱うこと.
  */
 final readonly class PathOwnership

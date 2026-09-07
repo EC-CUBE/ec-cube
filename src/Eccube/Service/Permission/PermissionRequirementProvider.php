@@ -168,7 +168,8 @@ class PermissionRequirementProvider
                 $this->path('kernel.cache_dir'),
                 WriteLane::SSH,
                 true,
-                'ビルド時にのみ使用する. 実行時のキャッシュは eccube_runtime_dir 側に生成される.'
+                '翻訳カタログ・htmlpurifier の出力先. CLI が生成し, リクエスト処理中は読み取りのみ. '
+                .'リクエスト処理中に書き込まれるキャッシュは eccube_runtime_dir 側に生成される.'
             ),
             $this->create($projectDir.'/.env', WriteLane::SSH, true),
         ];
