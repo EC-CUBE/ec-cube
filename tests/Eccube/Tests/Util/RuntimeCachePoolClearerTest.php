@@ -47,9 +47,11 @@ final class RuntimeCachePoolClearerTest extends TestCase
         mkdir($this->runtimeDir.'/pools/system', 0755, true);
         file_put_contents($this->runtimeDir.'/pools/system/entry.php', '<?php return [];');
 
-        (new RuntimeCachePoolClearer($this->runtimeDir))->clear($this->runtimeDir);
+        $clearer = new RuntimeCachePoolClearer($this->runtimeDir);
+        $clearer->clear($this->runtimeDir);
 
         $this->assertDirectoryDoesNotExist($this->runtimeDir.'/pools');
+        $this->assertNull($clearer->getUnclearedPath(), '削除できた場合は未削除として報告しない');
     }
 
     /**
@@ -70,9 +72,11 @@ final class RuntimeCachePoolClearerTest extends TestCase
 
     public function testMissingPoolsDirectoryIsIgnored(): void
     {
-        (new RuntimeCachePoolClearer($this->runtimeDir))->clear($this->runtimeDir);
+        $clearer = new RuntimeCachePoolClearer($this->runtimeDir);
+        $clearer->clear($this->runtimeDir);
 
         $this->assertDirectoryExists($this->runtimeDir);
+        $this->assertNull($clearer->getUnclearedPath(), '対象が無い場合は未削除として報告しない');
     }
 
     /**
@@ -88,8 +92,14 @@ final class RuntimeCachePoolClearerTest extends TestCase
         mkdir($this->runtimeDir.'/pools/system', 0755, true);
         chmod($this->runtimeDir, 0555);
 
-        (new RuntimeCachePoolClearer($this->runtimeDir))->clear($this->runtimeDir);
+        $clearer = new RuntimeCachePoolClearer($this->runtimeDir);
+        $clearer->clear($this->runtimeDir);
 
         $this->assertDirectoryExists($this->runtimeDir.'/pools');
+        $this->assertSame(
+            $this->runtimeDir.'/pools',
+            $clearer->getUnclearedPath(),
+            '削除できなかったことを呼び出し側へ伝える (cache:clear が成功と表示しないようにするため)'
+        );
     }
 }
