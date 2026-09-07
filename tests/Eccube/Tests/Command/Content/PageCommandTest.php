@@ -219,10 +219,12 @@ final class PageCommandTest extends EccubeTestCase
         if (!is_dir($poolDir)) {
             mkdir($poolDir, 0775, true);
         }
+        // 検証後に元へ戻す. 固定値で戻すと元の権限を書き換えたまま終わる
+        $originalMode = fileperms($poolDir) & 0777;
         chmod($poolDir, 0555);
 
         if (is_writable($poolDir)) {
-            chmod($poolDir, 0775);
+            chmod($poolDir, $originalMode);
             $this->markTestSkipped('ディレクトリを書き込み不可にできない環境');
         }
 
@@ -243,7 +245,7 @@ final class PageCommandTest extends EccubeTestCase
             $this->assertInstanceOf(Page::class, $Page, '本処理は完了している');
             $this->assertStringContainsString('cache:pool:clear', $tester->getDisplay());
         } finally {
-            chmod($poolDir, 0775);
+            chmod($poolDir, $originalMode);
         }
     }
 

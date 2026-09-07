@@ -150,11 +150,17 @@ docker compose exec -u www-data ec-cube bin/console cache:pool:clear --all    # 
 ページ・ブロック・メールテンプレートは下記の CLI が代替導線になる。CSS/JS 編集とファイル管理は
 未整備のため、**日常の開発では重ねない**こと。
 
+DB レコードと twig ファイルを対で扱う。`apply` は upsert で冪等。`--dry-run` / `--format=json` に対応。
+
+| 対象 | サブコマンド |
+|---|---|
+| `bin/console eccube:page:*` | `list` / `show` / `apply` / `remove` |
+| `bin/console eccube:block:*` | `list` / `show` / `apply` / `remove` |
+| `bin/console eccube:mail-template:*` | `list` / `show` / `apply` |
+
 ```bash
-# DB レコードと twig ファイルを対で扱う（apply は upsert で冪等。--dry-run / --format=json に対応）
-bin/console eccube:page:list|show|apply|remove
-bin/console eccube:block:list|show|apply|remove
-bin/console eccube:mail-template:list|show|apply
+bin/console eccube:page:list
+bin/console eccube:page:show --route=guide > guide.twig
 cat guide.twig | bin/console eccube:page:apply --route=guide --name=ご利用ガイド --body=-
 ```
 

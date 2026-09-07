@@ -134,7 +134,7 @@ class PageContentService
 
         $previousFileName = $Page->getFileName();
         // 新規登録時は比較対象が無い (未設定のゲッタは null を返すため呼び出さない)
-        $before = $isNew ? [] : $this->snapshot($Page);
+        $before = $isNew ? [] : $this->snapshotOfCurrentLayouts($Page);
         $beforeBody = $isNew ? '' : StringUtil::convertLineFeed($this->readTemplate($Page));
 
         $form = $this->formFactory->create(MainEditType::class, $Page, ['csrf_protection' => false]);
@@ -150,7 +150,7 @@ class PageContentService
         /** @var Layout|null $SpLayout */
         $SpLayout = $form['SpLayout']->getData();
 
-        $fieldChanges = self::diffFields($before, $this->snapshot($Page, $PcLayout, $SpLayout));
+        $fieldChanges = self::diffFields($before, $this->snapshotWithLayouts($Page, $PcLayout, $SpLayout));
         $filePath = $this->getFilePath($Page);
         $fileChanges = $beforeBody === $body && $previousFileName === $Page->getFileName()
             ? []
@@ -341,11 +341,44 @@ class PageContentService
     }
 
     /**
+     * 変更前のスナップショット. レイアウトは現在紐づいているものから取得する.
+     *
      * @return array<string, string>
      */
-    private function snapshot(Page $Page, ?Layout $PcLayout = null, ?Layout $SpLayout = null): array
+    private function snapshotOfCurrentLayouts(Page $Page): array
     {
-        $snapshot = [
+        $snapshot = $this->snapshotFields($Page) + ['PcLayout' => '', 'SpLayout' => ''];
+        foreach ($Page->getLayouts() as $Layout) {
+            $field = DeviceType::DEVICE_TYPE_PC === $Layout->getDeviceType()->getId() ? 'PcLayout' : 'SpLayout';
+            $snapshot[$field] = (string) $Layout->getId();
+        }
+
+        return $snapshot;
+    }
+
+    /**
+     * 変更後のスナップショット. 引数のレイアウトをそのまま反映する.
+     *
+     * 引数の null 有無で変更前と変更後を区別してはいけない. 両方のレイアウトを外す操作では
+     * 双方が null になり, 現在の値を読み直すと差分が出ず Unchanged で早期 return してしまう
+     * (レイアウトが外れない).
+     *
+     * @return array<string, string>
+     */
+    private function snapshotWithLayouts(Page $Page, ?Layout $PcLayout, ?Layout $SpLayout): array
+    {
+        return $this->snapshotFields($Page) + [
+            'PcLayout' => null === $PcLayout ? '' : (string) $PcLayout->getId(),
+            'SpLayout' => null === $SpLayout ? '' : (string) $SpLayout->getId(),
+        ];
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function snapshotFields(Page $Page): array
+    {
+        return [
             'name' => (string) $Page->getName(),
             'route' => (string) $Page->getUrl(),
             'file_name' => (string) $Page->getFileName(),
@@ -355,23 +388,6 @@ class PageContentService
             'meta_robots' => (string) $Page->getMetaRobots(),
             'meta_tags' => (string) $Page->getMetaTags(),
         ];
-
-        if (null === $PcLayout && null === $SpLayout) {
-            // 変更前のスナップショット: 紐づいているレイアウトから取得する
-            $snapshot['PcLayout'] = '';
-            $snapshot['SpLayout'] = '';
-            foreach ($Page->getLayouts() as $Layout) {
-                $field = DeviceType::DEVICE_TYPE_PC === $Layout->getDeviceType()->getId() ? 'PcLayout' : 'SpLayout';
-                $snapshot[$field] = (string) $Layout->getId();
-            }
-
-            return $snapshot;
-        }
-
-        $snapshot['PcLayout'] = null === $PcLayout ? '' : (string) $PcLayout->getId();
-        $snapshot['SpLayout'] = null === $SpLayout ? '' : (string) $SpLayout->getId();
-
-        return $snapshot;
     }
 
     /**

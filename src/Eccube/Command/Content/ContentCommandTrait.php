@@ -136,7 +136,14 @@ trait ContentCommandTrait
                 throw new \InvalidArgumentException(sprintf('ファイルを読み込めません: %s', (string) $file));
             }
 
-            return (string) file_get_contents((string) $file);
+            // 失敗時の false を空文字列へ丸めない. 丸めるとテンプレートを空で上書きしてしまう
+            // (メールテンプレートは MailType に NotBlank が無いため検証でも止まらない).
+            $contents = file_get_contents((string) $file);
+            if (false === $contents) {
+                throw new \InvalidArgumentException(sprintf('ファイルを読み込めません: %s', (string) $file));
+            }
+
+            return $contents;
         }
 
         if ('-' === $body) {
@@ -146,12 +153,21 @@ trait ContentCommandTrait
         return null === $body ? null : (string) $body;
     }
 
+    /**
+     * @throws \InvalidArgumentException 標準入力を読めない場合
+     */
     private function readStdin(InputInterface $input): string
     {
         $stream = $input instanceof StreamableInputInterface ? $input->getStream() : null;
         $stream ??= \STDIN;
 
-        return (string) stream_get_contents($stream);
+        // readBody() と同じ理由で false を空文字列へ丸めない
+        $contents = stream_get_contents($stream);
+        if (false === $contents) {
+            throw new \InvalidArgumentException('標準入力を読み込めません.');
+        }
+
+        return $contents;
     }
 
     /**

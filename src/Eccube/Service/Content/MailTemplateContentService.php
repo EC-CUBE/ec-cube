@@ -131,7 +131,9 @@ class MailTemplateContentService
         // 新規登録時は比較対象が無い (未設定のゲッタは null を返すため呼び出さない)
         $before = $isNew ? [] : $this->snapshot($Mail);
         $beforeBody = $isNew ? '' : StringUtil::convertLineFeed($this->readTemplate($Mail));
-        $beforeHtmlBody = $isNew ? null : $this->readHtmlTemplate($Mail);
+        // 比較相手 ($newHtmlBody) は正規化されるため, ここでも揃えないと
+        // CRLF のファイルが毎回 Updated になり apply() の冪等性が壊れる.
+        $beforeHtmlBody = $isNew ? null : self::normalizeHtmlBody($this->readHtmlTemplate($Mail));
 
         $removeHtml = (bool) ($payload['remove_html'] ?? false);
         $htmlBody = $removeHtml ? null : ($payload['html_body'] ?? $beforeHtmlBody);
@@ -251,7 +253,21 @@ class MailTemplateContentService
     }
 
     /**
+     * HTML パートの改行を正規化する. 「HTML パートなし」を表す null はそのまま返す.
+     */
+    private static function normalizeHtmlBody(?string $htmlBody): ?string
+    {
+        return null === $htmlBody ? null : StringUtil::convertLineFeed($htmlBody);
+    }
+
+    /**
      * メールテンプレートとテンプレートファイルを削除する.
+     *
+     * ファイルを先に削除する. 逆順にするとレコードだけが消えてテンプレートが残り, 削除に失敗した
+     * テンプレートが一覧から消える. ファイルの削除に失敗した場合は DB を更新せずに中断するため,
+     * レコードとファイルの対は保たれる (PageContentService::remove() と同じ理由).
+     *
+     * @throws ContentWriteException テンプレートファイルを削除できない場合
      */
     public function remove(MailTemplate $Mail): ContentResult
     {
@@ -264,9 +280,6 @@ class MailTemplateContentService
         $filePath = $this->getFilePath($Mail);
         $htmlFilePath = $this->getHtmlFilePath($Mail);
 
-        $this->entityManager->remove($Mail);
-        $this->entityManager->flush();
-
         $removedPaths = [];
         foreach ([$filePath, $htmlFilePath] as $path) {
             if ($this->isInsideTemplateDir($path) && is_file($path)) {
@@ -278,6 +291,9 @@ class MailTemplateContentService
                 $removedPaths[] = $path;
             }
         }
+
+        $this->entityManager->remove($Mail);
+        $this->entityManager->flush();
 
         return new ContentResult(ContentStatus::Removed, $id, $fileName, [], $removedPaths);
     }

@@ -17,13 +17,17 @@ namespace Eccube\Tests\Service\Content;
 
 use Eccube\Entity\MailTemplate;
 use Eccube\Exception\ContentValidationException;
+use Eccube\Exception\ContentWriteException;
 use Eccube\Service\Content\ContentResult;
 use Eccube\Service\Content\ContentStatus;
 use Eccube\Service\Content\MailTemplateContentService;
 use Eccube\Tests\EccubeTestCase;
+use Eccube\Tests\EffectiveUserTrait;
 
 final class MailTemplateContentServiceTest extends EccubeTestCase
 {
+    use EffectiveUserTrait;
+
     private ?MailTemplateContentService $mailTemplateContentService = null;
 
     /**
@@ -121,6 +125,42 @@ final class MailTemplateContentServiceTest extends EccubeTestCase
 
         $this->assertSame(ContentStatus::Removed, $result->status);
         $this->assertFileDoesNotExist($path);
+    }
+
+    /**
+     * テンプレートファイルを削除できない場合はレコードも残す.
+     *
+     * 逆順にするとレコードだけが消えてテンプレートが残り, 削除に失敗したテンプレートが
+     * 一覧から消える.
+     */
+    public function testRemoveKeepsRecordWhenTemplateIsNotRemovable(): void
+    {
+        $this->skipIfRoot();
+
+        $created = $this->apply(['name' => 'テストメール', 'subject' => '件名', 'body' => 'body']);
+        $path = (string) $created->path();
+        $dir = \dirname($path);
+        $originalMode = fileperms($dir) & 0777;
+
+        $Mail = $this->mailTemplateContentService->findByFileName((string) $this->fileName);
+        $this->assertInstanceOf(MailTemplate::class, $Mail);
+
+        chmod($dir, 0555);
+        try {
+            $this->mailTemplateContentService->remove($Mail);
+            self::fail('書き込めないディレクトリのテンプレートは削除できない');
+        } catch (ContentWriteException $e) {
+            $this->assertStringContainsString($path, $e->getPath());
+        } finally {
+            chmod($dir, $originalMode);
+        }
+
+        $this->entityManager->clear();
+        $this->assertInstanceOf(
+            MailTemplate::class,
+            $this->mailTemplateContentService->findByFileName((string) $this->fileName),
+            'ファイルを削除できないときはレコードも残す'
+        );
     }
 
     /**

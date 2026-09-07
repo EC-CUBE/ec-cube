@@ -202,6 +202,30 @@ final class PageContentServiceTest extends EccubeTestCase
         $this->assertSame([$Layout->getId()], array_map(static fn (Layout $L): ?int => $L->getId(), $Page->getLayouts()));
     }
 
+    /**
+     * 両方のレイアウトを外す操作で, 変更後のスナップショットが現在の値を読み直さないこと.
+     *
+     * 読み直すと差分が出ず Unchanged で早期 return し, レイアウトが外れないまま終わる.
+     */
+    public function testApplyUnlinksBothLayouts(): void
+    {
+        $Layout = $this->findLayout();
+        $this->apply(['name' => 'テストページ', 'body' => 'body', 'pc_layout' => (string) $Layout->getId()]);
+
+        // PageLayout は Page のコレクションへ追加せず永続化するため, CLI の 2 回目の実行と
+        // 同じ状態 (DB から読み直したエンティティ) にしてから解除する
+        $this->entityManager->clear();
+
+        $result = $this->apply(['pc_layout' => '', 'sp_layout' => '']);
+
+        $this->assertSame(ContentStatus::Updated, $result->status, 'レイアウトの解除は変更として扱う');
+
+        $this->entityManager->clear();
+        $Page = $this->pageContentService->findByRoute((string) $this->route);
+        $this->assertInstanceOf(Page::class, $Page);
+        $this->assertSame([], $Page->getLayouts());
+    }
+
     public function testRemoveDeletesPageAndTemplate(): void
     {
         $created = $this->apply(['name' => 'テストページ', 'body' => 'body']);

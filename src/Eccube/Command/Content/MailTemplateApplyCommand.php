@@ -86,6 +86,14 @@ final class MailTemplateApplyCommand extends Command
 
         $removeHtml = (bool) $input->getOption('remove-html');
 
+        // 標準入力は一度しか読めない. 双方に "-" を指定すると 2 回目は EOF となり,
+        // HTML パートを空文字列 (= パートなし) で上書きしてしまう.
+        if ('-' === $input->getOption('body') && '-' === $input->getOption('html-body')) {
+            $io->error('--body と --html-body の両方に "-" は指定できません. 一方は --body-file / --html-body-file を使用してください.');
+
+            return Command::INVALID;
+        }
+
         try {
             $body = $this->readBody($input);
             $htmlBody = $this->readBody($input, 'html-body', 'html-body-file');
