@@ -229,10 +229,14 @@ final class CacheBuildCommand extends Command
         }
 
         if (!is_writable($runtimeDir)) {
+            // cache:pool:clear は cache pool だけが対象で, このディレクトリには触れない.
+            // 削除できるのは管理画面のキャッシュ管理 (CacheUtil::clearRuntimeCache) か,
+            // Web サーバーのユーザーによる直接削除のいずれか.
             $io->warning([
-                sprintf('%s へ書き込めないため, 実行時キャッシュを削除できませんでした.', $runtimeDir),
-                'Web サーバーのユーザーで次を実行するか, 管理画面のキャッシュ管理から削除してください.',
-                '    bin/console cache:pool:clear --all',
+                sprintf('%s を削除できないため, 事前コンパイル漏れのテンプレートに古い内容が残ります.', $stale),
+                '管理画面のキャッシュ管理から削除するか, Web サーバーのユーザーで次を実行してください'
+                .' (bin/console cache:pool:clear は cache pool のみが対象で, このディレクトリは削除しません).',
+                sprintf('    rm -rf %s', $stale),
             ]);
 
             return;
