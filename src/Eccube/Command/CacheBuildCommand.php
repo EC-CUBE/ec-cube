@@ -213,7 +213,9 @@ final class CacheBuildCommand extends Command
             $path = (string) $file;
             $content = str_replace($search, $replace, $this->filesystem->readFile($path), $count);
             if ($count) {
-                file_put_contents($path, $content);
+                // 書き込みに失敗したら中断する. 見逃すと不完全な成果物を
+                // ビルドディレクトリへ昇格させたまま成功として終わってしまう.
+                $this->filesystem->dumpFile($path, $content);
             }
         }
     }
