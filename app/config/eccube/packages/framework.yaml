@@ -18,11 +18,14 @@ framework:
         cookie_secure: auto
         cookie_samesite: none
 
-    # When using the HTTP Cache, ESI allows to render page fragments separately
-    # and with different cache configurations for each fragment
-    # https://symfony.com/doc/current/book/http_cache.html#edge-side-includes
-    esi: { enabled: true }
-    fragments: { enabled: true }
+    # ESI / fragments are disabled by default.
+    # The core renders blocks via the inline fragment renderer ({{ render(path(...)) }}),
+    # which does not require the fragments listener nor the public /_fragment endpoint.
+    # Keeping them disabled avoids exposing /_fragment. Enable them only if a project
+    # actually uses render_esi() / render_hinclude() with an HTTP cache (ESI) gateway.
+    # https://symfony.com/doc/current/http_cache/esi.html
+    esi: { enabled: false }
+    fragments: { enabled: false }
     php_errors:
         log: true
     assets:

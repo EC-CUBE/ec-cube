@@ -267,10 +267,16 @@ frontmatter の `description` がトリガ条件で、該当レイヤを触る�
 - **上限**: 1 Skill あたり 10 項・1 項 120 字程度に収める。超えたら**追記ではなく既存項への統合か削除**を選ぶ。
 - **頻度順**: 踏まれやすいものを上に置く。読み手の注意は前方に効くため、頻度順でないリストは下位が実質死ぬ。
 
-この歯止めは**追記するときに適用する**。本規則の導入時点で上限を超えている Skill
-（項数: `eccube-mail` 11 / `eccube-purchase-flow` 12、字数: `eccube-controller` `eccube-csv` `eccube-e2e`
-`eccube-entity` `eccube-phpunit` `eccube-purchase-flow` `eccube-security` `eccube-twig-template`）は、
-次にその節へ手を入れるときに統合・短縮する。既存の超過を理由に新規追記の歯止めを緩めない。
+この歯止めは**追記するときに適用する**。本規則の導入時点で超過していた Skill
+（項数 2 件・字数 8 件）は統合・短縮済みで、現在はすべて 10 項以内に収まっている。
+超過の有無は次で確認できる。
+
+```bash
+for f in .claude/skills/eccube-*/SKILL.md; do
+  sed -n '/よくある間違い/,/^## /p' "$f" | grep -E '^- ' \
+    | awk -v s="$(basename "$(dirname "$f")")" '{n++; if (length>m) m=length} END {if (n) printf "%-28s 項数=%-3s 最長=%s\n", s, n, m}'
+done
+```
 
 ## 主要エンティティ
 

@@ -47,12 +47,12 @@
   "devDependencies": {
     "autoprefixer": "^10.5.4",
     "cross-env": "^7.0.2",
-    "esbuild": "^0.28.1",
+    "esbuild": "^0.28.2",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
     "normalize.css": "^8.0.1",
-    "postcss": "^8.5.25",
-    "postcss-sort-media-queries": "^5.2.0",
-    "sass-embedded": "^1.99.0"
+    "postcss": "^8.5.26",
+    "postcss-sort-media-queries": "^6.7.1",
+    "sass-embedded": "^1.102.0"
   }
 }
