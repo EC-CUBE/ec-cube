@@ -191,9 +191,21 @@ trait ContentCommandTrait
         }
 
         // 実行時キャッシュは Web サーバー所有 (レーン W) のため, CLI からは削除できない.
-        if (!$runtimeTwigClearable || !$poolClearable) {
+        // twig と cache pool で削除の手段が違うため, 案内も分ける.
+        if (!$runtimeTwigClearable) {
+            // cache:pool:clear は cache pool だけが対象で, このディレクトリには触れない.
             $io->warning([
-                sprintf('%s を削除できないため, 実行時キャッシュに古い内容が残ります.', $runtimeDir),
+                sprintf('%s を削除できないため, 更新したテンプレートが反映されないことがあります.', $runtimeTwigDir),
+                '管理画面のキャッシュ管理から削除するか, Web サーバーのユーザーで次を実行してください'
+                .' (bin/console cache:pool:clear は cache pool のみが対象で, このディレクトリは削除しません).',
+                sprintf('    rm -rf %s', $runtimeTwigDir),
+            ]);
+            $cleared = false;
+        }
+
+        if (!$poolClearable) {
+            $io->warning([
+                sprintf('%s を削除できないため, 実行時キャッシュに古い内容が残ります.', $poolDir),
                 sprintf(
                     'Web サーバーのユーザーで bin/console cache:pool:clear %s を実行するか, 管理画面のキャッシュ管理から削除してください.',
                     CacheUtil::DOCTRINE_APP_CACHE_KEY
