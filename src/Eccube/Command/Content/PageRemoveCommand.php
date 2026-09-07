@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace Eccube\Command\Content;
 
 use Eccube\Entity\Page;
+use Eccube\Exception\ContentWriteException;
 use Eccube\Service\Content\PageContentService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -87,7 +88,11 @@ final class PageRemoveCommand extends Command
             return 1;
         }
 
-        $result = $this->pageContentService->remove($Page);
+        try {
+            $result = $this->pageContentService->remove($Page);
+        } catch (ContentWriteException $e) {
+            return $this->reportWriteFailure($io, sprintf('ページを削除できません: %s', (string) $Page->getUrl()), $e);
+        }
 
         $this->renderResult($io, $output, $format, $result, false);
 

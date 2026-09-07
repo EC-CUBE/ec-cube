@@ -17,6 +17,7 @@ namespace Eccube\Command\Content;
 
 use Eccube\Entity\Block;
 use Eccube\Entity\Master\DeviceType;
+use Eccube\Exception\ContentWriteException;
 use Eccube\Service\Content\BlockContentService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -97,7 +98,11 @@ final class BlockRemoveCommand extends Command
             return 1;
         }
 
-        $result = $this->blockContentService->remove($Block);
+        try {
+            $result = $this->blockContentService->remove($Block);
+        } catch (ContentWriteException $e) {
+            return $this->reportWriteFailure($io, sprintf('ブロックを削除できません: %s', $Block->getFileName()), $e);
+        }
 
         $this->renderResult($io, $output, $format, $result, false);
 

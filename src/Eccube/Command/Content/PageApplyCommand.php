@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace Eccube\Command\Content;
 
 use Eccube\Exception\ContentValidationException;
+use Eccube\Exception\ContentWriteException;
 use Eccube\Service\Content\ContentStatus;
 use Eccube\Service\Content\PageContentService;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -130,6 +131,8 @@ final class PageApplyCommand extends Command
             $io->error(array_merge([sprintf('ページを保存できません: %s', (string) $url)], $e->getErrors()));
 
             return 1;
+        } catch (ContentWriteException $e) {
+            return $this->reportWriteFailure($io, sprintf('ページを保存できません: %s', (string) $url), $e);
         }
 
         $this->renderResult($io, $output, $format, $result, $dryRun);

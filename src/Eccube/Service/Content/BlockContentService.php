@@ -20,10 +20,12 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Block;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Exception\ContentValidationException;
+use Eccube\Exception\ContentWriteException;
 use Eccube\Form\Type\Admin\BlockType;
 use Eccube\Repository\BlockRepository;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Util\StringUtil;
+use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormFactoryInterface;
 use Twig\Environment;
@@ -103,6 +105,7 @@ class BlockContentService
      * @param array{file_name: string, name?: string, body?: string, device_type?: int} $payload
      *
      * @throws ContentValidationException  入力値が不正な場合
+     * @throws ContentWriteException       テンプレートファイルを書き出せない場合
      * @throws \InvalidArgumentException   デバイス種別が存在しない場合
      */
     public function apply(array $payload, bool $dryRun = false): ContentResult
@@ -168,41 +171,62 @@ class BlockContentService
 
     /**
      * ブロックを永続化し, テンプレートファイルを書き出す.
+     *
+     * DB とファイルはトランザクションで対にする. 先にコミットするとテンプレートの書き出しに
+     * 失敗したときレコードだけが残り, そのブロックを配置したページの表示が 500 になる.
+     *
+     * @throws ContentWriteException テンプレートファイルを書き出せない場合
      */
     public function save(Block $Block, string $body, ?string $previousFileName): ContentResult
     {
         $isNew = null === $Block->getId();
 
-        $this->entityManager->persist($Block);
-        $this->entityManager->flush();
+        return $this->entityManager->wrapInTransaction(function () use ($Block, $body, $previousFileName, $isNew): ContentResult {
+            $this->entityManager->persist($Block);
+            $this->entityManager->flush();
 
-        $dir = $this->getTemplateDir();
-        $filePath = $dir.'/'.$Block->getFileName().'.twig';
-        $this->filesystem->dumpFile($filePath, StringUtil::convertLineFeed($body));
+            $dir = $this->getTemplateDir();
+            $filePath = $dir.'/'.$Block->getFileName().'.twig';
 
-        $removedPaths = [];
-        // 更新でファイル名を変更した場合, 以前のファイルを削除する
-        if (null !== $previousFileName && $Block->getFileName() !== $previousFileName) {
-            $oldFilePath = $dir.'/'.$previousFileName.'.twig';
-            if ($this->filesystem->exists($oldFilePath)) {
-                $this->filesystem->remove($oldFilePath);
-                $removedPaths[] = $oldFilePath;
+            try {
+                $this->filesystem->dumpFile($filePath, StringUtil::convertLineFeed($body));
+            } catch (IOException $e) {
+                throw ContentWriteException::forWrite($filePath, $e);
             }
-        }
 
-        return new ContentResult(
-            $isNew ? ContentStatus::Created : ContentStatus::Updated,
-            $Block->getId(),
-            $Block->getFileName(),
-            [$filePath],
-            $removedPaths
-        );
+            $removedPaths = [];
+            // 更新でファイル名を変更した場合, 以前のファイルを削除する
+            if (null !== $previousFileName && $Block->getFileName() !== $previousFileName) {
+                $oldFilePath = $dir.'/'.$previousFileName.'.twig';
+                if ($this->filesystem->exists($oldFilePath)) {
+                    try {
+                        $this->filesystem->remove($oldFilePath);
+                    } catch (IOException $e) {
+                        throw ContentWriteException::forRemove($oldFilePath, $e);
+                    }
+                    $removedPaths[] = $oldFilePath;
+                }
+            }
+
+            return new ContentResult(
+                $isNew ? ContentStatus::Created : ContentStatus::Updated,
+                $Block->getId(),
+                $Block->getFileName(),
+                [$filePath],
+                $removedPaths
+            );
+        });
     }
 
     /**
      * ブロックとテンプレートファイルを削除する.
      *
      * ユーザーが作成したブロック (deletable) のみ削除できる.
+     *
+     * ファイルを先に削除する. 削除に失敗した場合は DB を更新せずに中断するため,
+     * レコードとファイルの対は保たれる.
+     *
+     * @throws ContentWriteException テンプレートファイルを削除できない場合
      */
     public function remove(Block $Block): ContentResult
     {
@@ -216,7 +240,11 @@ class BlockContentService
 
         $removedPaths = [];
         if ($this->filesystem->exists($filePath)) {
-            $this->filesystem->remove($filePath);
+            try {
+                $this->filesystem->remove($filePath);
+            } catch (IOException $e) {
+                throw ContentWriteException::forRemove($filePath, $e);
+            }
             $removedPaths[] = $filePath;
         }
 

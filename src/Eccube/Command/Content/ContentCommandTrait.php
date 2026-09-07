@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace Eccube\Command\Content;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Exception\ContentWriteException;
 use Eccube\Service\Content\ContentResult;
 use Eccube\Service\Content\ContentStatus;
 use Eccube\Util\CacheUtil;
@@ -93,6 +94,25 @@ trait ContentCommandTrait
     protected function invalidFormat(SymfonyStyle $io): void
     {
         $io->error(sprintf('--format は %s のいずれかで指定してください.', implode(' / ', self::FORMATS)));
+    }
+
+    /**
+     * テンプレートファイルの操作に失敗したことを, 対処方法を添えて表示する.
+     *
+     * 権限を分離した構成では app/template は CLI ユーザーの所有 (レーン S) となり,
+     * Web サーバーのユーザーで実行すると書き込みだけが失敗する. 実行ユーザーの誤りが
+     * 最も多い原因のため, 確認手段を案内する.
+     */
+    protected function reportWriteFailure(SymfonyStyle $io, string $summary, ContentWriteException $e): int
+    {
+        $io->error([
+            $summary,
+            $e->getMessage(),
+            'テンプレートの配置先 (レーン S) を所有するユーザーで実行してください.'
+            .' 期待値と実際の所有者は bin/console eccube:doctor:permissions で確認できます.',
+        ]);
+
+        return 1;
     }
 
     /**

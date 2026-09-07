@@ -22,10 +22,12 @@ use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Page;
 use Eccube\Entity\PageLayout;
 use Eccube\Exception\ContentValidationException;
+use Eccube\Exception\ContentWriteException;
 use Eccube\Form\Type\Admin\MainEditType;
 use Eccube\Repository\PageLayoutRepository;
 use Eccube\Repository\PageRepository;
 use Eccube\Util\StringUtil;
+use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormFactoryInterface;
 use Twig\Environment;
@@ -113,6 +115,7 @@ class PageContentService
      * @param array{url: string, name?: string, file_name?: string, body?: string, author?: string, description?: string, keyword?: string, meta_robots?: string, meta_tags?: string, pc_layout?: string|int|null, sp_layout?: string|int|null} $payload
      *
      * @throws ContentValidationException
+     * @throws ContentWriteException      テンプレートファイルを書き出せない場合
      */
     public function apply(array $payload, bool $dryRun = false): ContentResult
     {
@@ -177,43 +180,66 @@ class PageContentService
      *
      * 検証済みのエンティティを受け取る前提のため, 管理画面からは
      * $form->isValid() を通過した後に呼び出す.
+     *
+     * DB とファイルはトランザクションで対にする. 先にコミットするとテンプレートの書き出しに
+     * 失敗したときレコードだけが残り, そのページの表示が 500 になる. 権限を分離した構成では
+     * app/template への書き込みだけが失敗し得るため, ロールバックして整合を保つ.
+     *
+     * @throws ContentWriteException テンプレートファイルを書き出せない場合
      */
     public function save(Page $Page, string $body, ?Layout $PcLayout, ?Layout $SpLayout, ?string $previousFileName): ContentResult
     {
         $isNew = null === $Page->getId();
 
-        $this->entityManager->persist($Page);
-        $this->entityManager->flush();
+        return $this->entityManager->wrapInTransaction(function () use ($Page, $body, $PcLayout, $SpLayout, $previousFileName, $isNew): ContentResult {
+            $this->entityManager->persist($Page);
+            $this->entityManager->flush();
 
-        $templateDir = $this->getTemplateDir($Page);
-        $filePath = $templateDir.'/'.$Page->getFileName().'.twig';
-        $this->filesystem->dumpFile($filePath, StringUtil::convertLineFeed($body));
+            $templateDir = $this->getTemplateDir($Page);
+            $filePath = $templateDir.'/'.$Page->getFileName().'.twig';
 
-        $removedPaths = [];
-        // 更新でファイル名を変更した場合, 以前のファイルを削除する
-        if (null !== $previousFileName && $Page->getFileName() !== $previousFileName) {
-            $oldFilePath = $templateDir.'/'.$previousFileName.'.twig';
-            if ($this->filesystem->exists($oldFilePath)) {
-                $this->filesystem->remove($oldFilePath);
-                $removedPaths[] = $oldFilePath;
+            try {
+                $this->filesystem->dumpFile($filePath, StringUtil::convertLineFeed($body));
+            } catch (IOException $e) {
+                throw ContentWriteException::forWrite($filePath, $e);
             }
-        }
 
-        $this->replaceLayouts($Page, $PcLayout, $SpLayout);
+            $removedPaths = [];
+            // 更新でファイル名を変更した場合, 以前のファイルを削除する
+            if (null !== $previousFileName && $Page->getFileName() !== $previousFileName) {
+                $oldFilePath = $templateDir.'/'.$previousFileName.'.twig';
+                if ($this->filesystem->exists($oldFilePath)) {
+                    try {
+                        $this->filesystem->remove($oldFilePath);
+                    } catch (IOException $e) {
+                        throw ContentWriteException::forRemove($oldFilePath, $e);
+                    }
+                    $removedPaths[] = $oldFilePath;
+                }
+            }
 
-        return new ContentResult(
-            $isNew ? ContentStatus::Created : ContentStatus::Updated,
-            $Page->getId(),
-            (string) $Page->getUrl(),
-            [$filePath],
-            $removedPaths
-        );
+            $this->replaceLayouts($Page, $PcLayout, $SpLayout);
+
+            return new ContentResult(
+                $isNew ? ContentStatus::Created : ContentStatus::Updated,
+                $Page->getId(),
+                (string) $Page->getUrl(),
+                [$filePath],
+                $removedPaths
+            );
+        });
     }
 
     /**
      * ページとテンプレートファイルを削除する.
      *
      * ユーザーが作成したページ (EDIT_TYPE_USER) のみ削除できる.
+     *
+     * ファイルを先に削除する. 逆順にするとレコードだけが消えてテンプレートが残り, 削除に失敗した
+     * ページが表示できないまま一覧から消える. ファイルの削除に失敗した場合は DB を更新せずに
+     * 中断するため, レコードとファイルの対は保たれる.
+     *
+     * @throws ContentWriteException テンプレートファイルを削除できない場合
      */
     public function remove(Page $Page): ContentResult
     {
@@ -227,7 +253,11 @@ class PageContentService
 
         $removedPaths = [];
         if ($this->filesystem->exists($filePath)) {
-            $this->filesystem->remove($filePath);
+            try {
+                $this->filesystem->remove($filePath);
+            } catch (IOException $e) {
+                throw ContentWriteException::forRemove($filePath, $e);
+            }
             $removedPaths[] = $filePath;
         }
 

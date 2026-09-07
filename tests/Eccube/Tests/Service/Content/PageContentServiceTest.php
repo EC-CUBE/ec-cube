@@ -19,6 +19,7 @@ use Eccube\Entity\Layout;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Page;
 use Eccube\Exception\ContentValidationException;
+use Eccube\Exception\ContentWriteException;
 use Eccube\Service\Content\ContentResult;
 use Eccube\Service\Content\ContentStatus;
 use Eccube\Service\Content\PageContentService;
@@ -114,6 +115,43 @@ final class PageContentServiceTest extends EccubeTestCase
         $this->expectException(ContentValidationException::class);
 
         $this->apply(['name' => 'テストページ', 'body' => '{% block foo %}']);
+    }
+
+    /**
+     * テンプレートを書き出せない場合は DB もロールバックする.
+     *
+     * 先にコミットするとレコードだけが残り, テンプレートの無いページとして
+     * フロントの表示が 500 になる. 権限を分離した構成では書き出しだけが失敗し得る.
+     */
+    public function testApplyRollsBackWhenTemplateIsNotWritable(): void
+    {
+        if (0 === getmyuid()) {
+            self::markTestSkipped('root は書き込み権限の検査を通過するため検証できません.');
+        }
+
+        $Page = new Page();
+        $Page->setEditType(Page::EDIT_TYPE_USER);
+        $templateDir = $this->pageContentService->getTemplateDir($Page);
+        $originalPerms = fileperms($templateDir) & 0777;
+
+        chmod($templateDir, 0555);
+
+        try {
+            $this->apply(['name' => 'テストページ', 'body' => 'body']);
+            self::fail('書き込めない場合は ContentWriteException を投げる');
+        } catch (ContentWriteException $e) {
+            $this->assertStringContainsString((string) $this->url, $e->getPath());
+        } finally {
+            chmod($templateDir, $originalPerms);
+        }
+
+        $this->entityManager->clear();
+
+        $this->assertNotInstanceOf(
+            Page::class,
+            $this->pageContentService->findByUrl((string) $this->url),
+            'テンプレートを書き出せなかったページのレコードが残ってはいけない'
+        );
     }
 
     public function testApplyRejectsDuplicatedFileName(): void

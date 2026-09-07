@@ -17,6 +17,7 @@ namespace Eccube\Command\Content;
 
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Exception\ContentValidationException;
+use Eccube\Exception\ContentWriteException;
 use Eccube\Service\Content\BlockContentService;
 use Eccube\Service\Content\ContentStatus;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -105,6 +106,8 @@ final class BlockApplyCommand extends Command
             $io->error(array_merge([sprintf('ブロックを保存できません: %s', (string) $fileName)], $e->getErrors()));
 
             return 1;
+        } catch (ContentWriteException $e) {
+            return $this->reportWriteFailure($io, sprintf('ブロックを保存できません: %s', (string) $fileName), $e);
         }
 
         $this->renderResult($io, $output, $format, $result, $dryRun);

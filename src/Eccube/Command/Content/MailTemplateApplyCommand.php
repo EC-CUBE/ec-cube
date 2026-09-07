@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace Eccube\Command\Content;
 
 use Eccube\Exception\ContentValidationException;
+use Eccube\Exception\ContentWriteException;
 use Eccube\Service\Content\ContentStatus;
 use Eccube\Service\Content\MailTemplateContentService;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -131,6 +132,8 @@ final class MailTemplateApplyCommand extends Command
             $io->error(array_merge([sprintf('メールテンプレートを保存できません: %s', (string) ($fileName ?? $id))], $e->getErrors()));
 
             return 1;
+        } catch (ContentWriteException $e) {
+            return $this->reportWriteFailure($io, sprintf('メールテンプレートを保存できません: %s', (string) ($fileName ?? $id)), $e);
         }
 
         $this->renderResult($io, $output, $format, $result, $dryRun);

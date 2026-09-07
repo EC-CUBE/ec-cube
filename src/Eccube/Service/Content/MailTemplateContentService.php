@@ -19,9 +19,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\MailTemplate;
 use Eccube\Exception\ContentValidationException;
+use Eccube\Exception\ContentWriteException;
 use Eccube\Form\Type\Admin\MailType;
 use Eccube\Repository\MailTemplateRepository;
 use Eccube\Util\StringUtil;
+use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormFactoryInterface;
 use Twig\Environment;
@@ -114,6 +116,7 @@ class MailTemplateContentService
      * @param array{file_name?: string, id?: int, name?: string, subject?: string, body?: string, html_body?: string, remove_html?: bool} $payload
      *
      * @throws ContentValidationException
+     * @throws ContentWriteException      テンプレートファイルを書き出せない場合
      */
     public function apply(array $payload, bool $dryRun = false): ContentResult
     {
@@ -195,36 +198,56 @@ class MailTemplateContentService
      * メールテンプレートを永続化し, テンプレートファイルを書き出す.
      *
      * $htmlBody に null を渡すと HTML パートのファイルを削除する (管理画面と同じ挙動).
+     *
+     * DB とファイルはトランザクションで対にする. 先にコミットするとテンプレートの書き出しに
+     * 失敗したとき, 件名だけが更新され本文が古いままという食い違いが残る.
+     *
+     * @throws ContentWriteException テンプレートファイルを書き出せない場合
      */
     public function save(MailTemplate $Mail, string $body, ?string $htmlBody): ContentResult
     {
         $isNew = null === $Mail->getId();
 
-        $this->entityManager->persist($Mail);
-        $this->entityManager->flush();
+        return $this->entityManager->wrapInTransaction(function () use ($Mail, $body, $htmlBody, $isNew): ContentResult {
+            $this->entityManager->persist($Mail);
+            $this->entityManager->flush();
 
-        $filePath = $this->getFilePath($Mail);
-        $this->filesystem->dumpFile($filePath, StringUtil::convertLineFeed($body));
+            $filePath = $this->getFilePath($Mail);
 
-        $writtenPaths = [$filePath];
-        $removedPaths = [];
-        $htmlFilePath = $this->getHtmlFilePath($Mail);
+            try {
+                $this->filesystem->dumpFile($filePath, StringUtil::convertLineFeed($body));
+            } catch (IOException $e) {
+                throw ContentWriteException::forWrite($filePath, $e);
+            }
 
-        if (null !== $htmlBody) {
-            $this->filesystem->dumpFile($htmlFilePath, StringUtil::convertLineFeed($htmlBody));
-            $writtenPaths[] = $htmlFilePath;
-        } elseif ($this->isInsideTemplateDir($htmlFilePath) && is_file($htmlFilePath)) {
-            $this->filesystem->remove($htmlFilePath);
-            $removedPaths[] = $htmlFilePath;
-        }
+            $writtenPaths = [$filePath];
+            $removedPaths = [];
+            $htmlFilePath = $this->getHtmlFilePath($Mail);
 
-        return new ContentResult(
-            $isNew ? ContentStatus::Created : ContentStatus::Updated,
-            $Mail->getId(),
-            (string) $Mail->getFileName(),
-            $writtenPaths,
-            $removedPaths
-        );
+            if (null !== $htmlBody) {
+                try {
+                    $this->filesystem->dumpFile($htmlFilePath, StringUtil::convertLineFeed($htmlBody));
+                } catch (IOException $e) {
+                    throw ContentWriteException::forWrite($htmlFilePath, $e);
+                }
+                $writtenPaths[] = $htmlFilePath;
+            } elseif ($this->isInsideTemplateDir($htmlFilePath) && is_file($htmlFilePath)) {
+                try {
+                    $this->filesystem->remove($htmlFilePath);
+                } catch (IOException $e) {
+                    throw ContentWriteException::forRemove($htmlFilePath, $e);
+                }
+                $removedPaths[] = $htmlFilePath;
+            }
+
+            return new ContentResult(
+                $isNew ? ContentStatus::Created : ContentStatus::Updated,
+                $Mail->getId(),
+                (string) $Mail->getFileName(),
+                $writtenPaths,
+                $removedPaths
+            );
+        });
     }
 
     /**
@@ -247,7 +270,11 @@ class MailTemplateContentService
         $removedPaths = [];
         foreach ([$filePath, $htmlFilePath] as $path) {
             if ($this->isInsideTemplateDir($path) && is_file($path)) {
-                $this->filesystem->remove($path);
+                try {
+                    $this->filesystem->remove($path);
+                } catch (IOException $e) {
+                    throw ContentWriteException::forRemove($path, $e);
+                }
                 $removedPaths[] = $path;
             }
         }

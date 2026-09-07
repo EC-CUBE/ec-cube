@@ -144,6 +144,49 @@ final class PageCommandTest extends EccubeTestCase
     }
 
     /**
+     * テンプレートを書き出せない場合は, 生の例外ではなく対処方法を表示して終了する.
+     *
+     * 権限を分離した構成では実行ユーザーを誤ると書き込みだけが失敗するため,
+     * 確認手段 (eccube:doctor:permissions) を案内する.
+     */
+    public function testApplyReportsWriteFailureWithGuidance(): void
+    {
+        if (0 === getmyuid()) {
+            self::markTestSkipped('root は書き込み権限の検査を通過するため検証できません.');
+        }
+
+        $Page = new Page();
+        $Page->setEditType(Page::EDIT_TYPE_USER);
+        $templateDir = $this->pageContentService->getTemplateDir($Page);
+        $originalPerms = fileperms($templateDir) & 0777;
+
+        chmod($templateDir, 0555);
+
+        try {
+            $tester = $this->apply([
+                '--url' => $this->url,
+                '--name' => 'テストページ',
+                '--body' => 'body',
+            ]);
+        } finally {
+            chmod($templateDir, $originalPerms);
+        }
+
+        $this->assertSame(1, $tester->getStatusCode());
+
+        $display = $tester->getDisplay();
+        $this->assertStringContainsString('ページを保存できません', $display);
+        $this->assertStringContainsString('eccube:doctor:permissions', $display);
+
+        $this->entityManager->clear();
+        $this->assertNotInstanceOf(
+            Page::class,
+            $this->pageContentService->findByUrl((string) $this->url),
+            '書き出せなかったページのレコードが残ってはいけない'
+        );
+    }
+
+    /**
      * キャッシュ削除まで含めて実行する (トレイトの #[Required] 注入が効いていることの確認を兼ねる).
      */
     public function testApplyClearsCache(): void
