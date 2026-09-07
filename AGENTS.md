@@ -121,9 +121,11 @@ curl -s -o /dev/null http://127.0.0.1:8080/   # セッションを生成し Web 
 docker compose exec -u eccube ec-cube bin/console eccube:doctor:permissions
 ```
 
-レーン W（`var/runtime`、`var/sessions`、`var/log`、`html/upload/**`、`app/keystore`）は `www-data` 所有とし、
+レーン W（`var/runtime`、`var/sessions`、`var/log`、`html/upload/**`）は `www-data` 所有とし、
 共有グループは作らない。CLI からレーン W を触る操作は Web サーバーのユーザーで実行する。
 本番の `sudo -u www-data` に相当する。
+`app/keystore` はレーン S。秘密鍵はデプロイ成果物で、Web サーバーから書き込めると署名鍵の
+差し替えを許すため読み取りのみとする（実行時に鍵を生成する機能を使う場合は事前に配置しておく）。
 
 ```bash
 docker compose exec -u eccube   ec-cube bin/console eccube:cache:build        # レーン S を触る操作
@@ -211,8 +213,9 @@ docker compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose
 ### キャッシュ / データベース
 
 キャッシュは 3 つのディレクトリに分かれる。`var/build/{env}`（コンパイル済みコンテナ・ルーティング・
-メタデータ・prod の twig）と `var/cache/{env}`（ビルド時のみ使用）は CLI が生成し、
-`var/runtime/{env}`（cache pool・翻訳・htmlpurifier・twig のフォールバック等）はリクエスト処理中に生成される。
+メタデータ・prod の twig）と `var/cache/{env}`（翻訳カタログ・htmlpurifier）は CLI が生成し、
+リクエスト処理中は読み取りのみ。`var/runtime/{env}`（cache pool・mcp-sessions・事前コンパイル漏れの
+twig のフォールバック等）はリクエスト処理中に生成される。
 
 ```bash
 bin/console eccube:cache:build   # var/build を再生成（テンプレートの事前コンパイルを含む）

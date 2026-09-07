@@ -98,7 +98,9 @@ final class CacheBuildCommand extends Command
         $realBuildDir = (string) $container->getParameter('kernel.build_dir');
         $realCacheDir = (string) $container->getParameter('kernel.cache_dir');
 
-        if (($unwritable = $this->findUnwritable([$realBuildDir, $realCacheDir])) !== null) {
+        // ビルドディレクトリは warmup 用の別名を同じ親へ作り, 最後に rename で差し替えるため,
+        // 親ディレクトリにも書き込み権限が要る (親を検査しないと mkdir/rename が例外になる).
+        if (($unwritable = $this->findUnwritable([dirname($realBuildDir), $realBuildDir, $realCacheDir])) !== null) {
             $this->reportUnwritable($io, $unwritable);
 
             return self::EXIT_MANUAL_ACTION_REQUIRED;
@@ -175,7 +177,7 @@ final class CacheBuildCommand extends Command
     {
         $io->error(sprintf('%s へ書き込めません.', $dir));
         $io->text([
-            'ビルドディレクトリの生成には kernel.build_dir と kernel.cache_dir の双方への書き込み権限が必要です.',
+            'ビルドディレクトリの生成には kernel.build_dir (とその親ディレクトリ) と kernel.cache_dir への書き込み権限が必要です.',
             '所有者を確認するには次を実行してください.',
             '',
             '    bin/console eccube:doctor:permissions',

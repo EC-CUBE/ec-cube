@@ -16,11 +16,14 @@ declare(strict_types=1);
 namespace Eccube\Tests\Cache;
 
 use Eccube\Cache\WriteFailsafeFilesystemAdapter;
+use Eccube\Tests\EffectiveUserTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
 final class WriteFailsafeFilesystemAdapterTest extends TestCase
 {
+    use EffectiveUserTrait;
+
     private string $workDir;
 
     protected function setUp(): void
@@ -91,8 +94,6 @@ final class WriteFailsafeFilesystemAdapterTest extends TestCase
 
     private function skipWhenRunningAsRoot(): void
     {
-        if (getmyuid() === 0) {
-            $this->markTestSkipped('root は書き込み権限の検査を通過するため検証できません.');
-        }
+        $this->skipIfRoot();
     }
 }

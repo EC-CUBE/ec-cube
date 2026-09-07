@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace Eccube\Tests\Command;
 
 use Eccube\Command\CacheBuildCommand;
+use Eccube\Tests\EffectiveUserTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -31,6 +32,8 @@ use Symfony\Component\HttpKernel\RebootableInterface;
  */
 final class CacheBuildCommandTest extends TestCase
 {
+    use EffectiveUserTrait;
+
     private string $workDir;
 
     protected function setUp(): void
@@ -43,9 +46,13 @@ final class CacheBuildCommandTest extends TestCase
     protected function tearDown(): void
     {
         // 読み取り専用にしたディレクトリを消せるよう権限を戻す
-        foreach (['build', 'cache'] as $name) {
-            if (is_dir($this->workDir.'/'.$name)) {
-                chmod($this->workDir.'/'.$name, 0755);
+        $entries = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($this->workDir, \FilesystemIterator::SKIP_DOTS),
+            \RecursiveIteratorIterator::SELF_FIRST
+        );
+        foreach ($entries as $entry) {
+            if ($entry instanceof \SplFileInfo && $entry->isDir()) {
+                chmod($entry->getPathname(), 0755);
             }
         }
         (new Filesystem())->remove($this->workDir);
@@ -54,7 +61,7 @@ final class CacheBuildCommandTest extends TestCase
 
     public function testReturnsManualActionRequiredWhenBuildDirIsNotWritable(): void
     {
-        $this->skipWhenRunningAsRoot();
+        $this->skipIfRoot();
 
         $buildDir = $this->workDir.'/build';
         $cacheDir = $this->workDir.'/cache';
@@ -73,7 +80,7 @@ final class CacheBuildCommandTest extends TestCase
      */
     public function testReturnsManualActionRequiredWhenCacheDirIsNotWritable(): void
     {
-        $this->skipWhenRunningAsRoot();
+        $this->skipIfRoot();
 
         $buildDir = $this->workDir.'/build';
         $cacheDir = $this->workDir.'/cache';
@@ -86,11 +93,28 @@ final class CacheBuildCommandTest extends TestCase
         $this->assertStringContainsString($cacheDir, $tester->getDisplay());
     }
 
-    private function skipWhenRunningAsRoot(): void
+    /**
+     * ビルドディレクトリの親にも書き込み権限が必要になる.
+     *
+     * warmup 先を同じ親に別名で作り, 最後に rename で差し替えるため, ビルドディレクトリ自体へ
+     * 書き込めても親へ書き込めなければ差し替えられない. 事前に検査しないと mkdir が例外になり,
+     * 権限の案内を出せないまま終わる.
+     */
+    public function testReturnsManualActionRequiredWhenBuildDirParentIsNotWritable(): void
     {
-        if (getmyuid() === 0) {
-            $this->markTestSkipped('root は書き込み権限の検査を通過するため検証できません.');
-        }
+        $this->skipIfRoot();
+
+        $parent = $this->workDir.'/lane-s';
+        $buildDir = $parent.'/build';
+        $cacheDir = $this->workDir.'/cache';
+        mkdir($buildDir, 0755, true);
+        mkdir($cacheDir, 0755);
+        chmod($parent, 0555);
+
+        $tester = $this->tester($buildDir, $cacheDir);
+
+        $this->assertSame(CacheBuildCommand::EXIT_MANUAL_ACTION_REQUIRED, $tester->execute([]));
+        $this->assertStringContainsString($parent, $tester->getDisplay());
     }
 
     private function tester(string $buildDir, string $cacheDir): CommandTester

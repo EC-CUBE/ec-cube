@@ -18,6 +18,7 @@ namespace Eccube\Tests\EventListener;
 use Eccube\EventListener\RuntimeCachePoolClearListener;
 use Eccube\Service\Permission\UserIdentity;
 use Eccube\Service\Permission\WebServerUserResolver;
+use Eccube\Tests\EffectiveUserTrait;
 use Eccube\Util\RuntimeCachePoolClearer;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Command\Command;
@@ -31,6 +32,8 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 final class RuntimeCachePoolClearListenerTest extends TestCase
 {
+    use EffectiveUserTrait;
+
     private const CONTAINER_CLASS = 'Eccube_KernelProdContainer';
 
     private string $runtimeDir;
@@ -98,6 +101,26 @@ final class RuntimeCachePoolClearListenerTest extends TestCase
         $this->assertStringNotContainsString('eccube:cache:build', $output['display']);
     }
 
+    /**
+     * 祖先ディレクトリを通り抜けられない場合も, Web サーバーはコンテナを作り直せない.
+     *
+     * PathOwnership::isWritableBy() が見るのは対象自身のビットだけなので,
+     * ビルドディレクトリが誰でも書ける状態でも, 親を通れなければ到達できない.
+     */
+    public function testWarnsWhenWebServerCannotTraverseAncestor(): void
+    {
+        $this->skipIfRoot();
+
+        unlink($this->buildDir.'/'.self::CONTAINER_CLASS.'.php');
+        chmod($this->buildDir, 0777);
+        // 親は所有者だけが通り抜けられる
+        chmod(\dirname($this->buildDir), 0700);
+
+        $output = $this->dispatch('cache:clear', 0, $this->foreignUser());
+
+        $this->assertStringContainsString('eccube:cache:build', $output['display']);
+    }
+
     public function testStaysSilentWhenCompiledContainerExists(): void
     {
         $output = $this->dispatch('cache:clear', 0, $this->foreignUser());
@@ -110,9 +133,7 @@ final class RuntimeCachePoolClearListenerTest extends TestCase
      */
     public function testContainerWarningComesFirst(): void
     {
-        if (0 === getmyuid()) {
-            self::markTestSkipped('root は書き込み権限の検査を通過するため検証できません.');
-        }
+        $this->skipIfRoot();
 
         unlink($this->buildDir.'/'.self::CONTAINER_CLASS.'.php');
         mkdir($this->runtimeDir.'/pools/system', 0755, true);
@@ -142,9 +163,7 @@ final class RuntimeCachePoolClearListenerTest extends TestCase
 
     public function testWarnsWhenPoolsCouldNotBeCleared(): void
     {
-        if (0 === getmyuid()) {
-            self::markTestSkipped('root は書き込み権限の検査を通過するため検証できません.');
-        }
+        $this->skipIfRoot();
 
         mkdir($this->runtimeDir.'/pools/system', 0755, true);
         chmod($this->runtimeDir, 0555);
@@ -163,9 +182,7 @@ final class RuntimeCachePoolClearListenerTest extends TestCase
      */
     public function testKeepsSuccessExitCodeForComposerScripts(): void
     {
-        if (0 === getmyuid()) {
-            self::markTestSkipped('root は書き込み権限の検査を通過するため検証できません.');
-        }
+        $this->skipIfRoot();
 
         mkdir($this->runtimeDir.'/pools/system', 0755, true);
         chmod($this->runtimeDir, 0555);
@@ -187,9 +204,7 @@ final class RuntimeCachePoolClearListenerTest extends TestCase
 
     public function testIgnoresOtherCommands(): void
     {
-        if (0 === getmyuid()) {
-            self::markTestSkipped('root は書き込み権限の検査を通過するため検証できません.');
-        }
+        $this->skipIfRoot();
 
         mkdir($this->runtimeDir.'/pools/system', 0755, true);
         chmod($this->runtimeDir, 0555);
@@ -205,9 +220,7 @@ final class RuntimeCachePoolClearListenerTest extends TestCase
      */
     public function testStaysSilentWhenCommandAlreadyFailed(): void
     {
-        if (0 === getmyuid()) {
-            self::markTestSkipped('root は書き込み権限の検査を通過するため検証できません.');
-        }
+        $this->skipIfRoot();
 
         mkdir($this->runtimeDir.'/pools/system', 0755, true);
         chmod($this->runtimeDir, 0555);

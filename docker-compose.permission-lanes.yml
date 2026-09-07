@@ -17,11 +17,15 @@ version: '3'
 #
 # 書き込み先は 2 つのレーンに分かれる。
 #
-#   レーン W (Web サーバーが書き込む)   var/runtime, var/sessions, var/log, html/upload/**, app/keystore
+#   レーン W (Web サーバーが書き込む)   var/runtime, var/sessions, var/log, html/upload/**
 #     → www-data 所有。CLI から書き込む必要がある場合は Web サーバーのユーザーで実行する
 #   レーン S (CLI へ移せる)             上記以外 (var/build, var/cache, app/template, html/user_data,
-#                                       app/Plugin, vendor, .env 等)
+#                                       app/Plugin, app/keystore, vendor, .env 等)
 #     → CLI ユーザー所有。www-data は読み取りのみ
+#
+# app/keystore はレーン S。秘密鍵はデプロイ成果物であり、Web サーバーから書き込めると
+# 署名鍵の差し替えを許すため読み取りのみとする。実行時に鍵を生成する機能
+# (AcpMessageSigner / UcpMessageSigner) を使う場合は、鍵を事前に配置しておくこと。
 #
 # CLI の実行ユーザーは操作対象のレーンで決まる。
 #
@@ -43,10 +47,10 @@ version: '3'
 #
 #   docker compose ... down -v
 #
-# レーン W のディレクトリ (html/upload/**、app/keystore) はホスト側でも www-data の uid 所有になる。
+# レーン W のディレクトリ (html/upload/**) はホスト側でも www-data の uid 所有になる。
 # 既定モードへ戻すときは所有者を元に戻すこと。
 #
-#   sudo chown -R $(id -u):$(id -g) html/upload app/keystore
+#   sudo chown -R $(id -u):$(id -g) html/upload
 
 services:
   ec-cube:

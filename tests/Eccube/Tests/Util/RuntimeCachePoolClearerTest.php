@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Util;
 
+use Eccube\Tests\EffectiveUserTrait;
 use Eccube\Util\RuntimeCachePoolClearer;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
@@ -24,6 +25,8 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 final class RuntimeCachePoolClearerTest extends TestCase
 {
+    use EffectiveUserTrait;
+
     private string $runtimeDir;
 
     protected function setUp(): void
@@ -85,9 +88,7 @@ final class RuntimeCachePoolClearerTest extends TestCase
      */
     public function testUnwritableDirectoryDoesNotThrow(): void
     {
-        if (getmyuid() === 0) {
-            $this->markTestSkipped('root は書き込み権限の検査を通過するため検証できません.');
-        }
+        $this->skipIfRoot();
 
         mkdir($this->runtimeDir.'/pools/system', 0755, true);
         chmod($this->runtimeDir, 0555);

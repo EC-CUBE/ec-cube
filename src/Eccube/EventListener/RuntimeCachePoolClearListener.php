@@ -119,7 +119,12 @@ class RuntimeCachePoolClearListener implements EventSubscriberInterface
 
         // Kernel::buildContainer() は cache と build の双方へ書き込めることを要求する.
         foreach ([$this->cacheDir, $this->buildDir] as $dir) {
-            if (!PathOwnership::of($dir)->isWritableBy($webServerUser)) {
+            $ownership = PathOwnership::of($dir);
+            // isWritableBy() が見るのは対象自身のビットだけなので, 祖先の到達可否は別に確かめる.
+            if ($ownership->unreachableAncestorFor($webServerUser) instanceof PathOwnership) {
+                return true;
+            }
+            if (!$ownership->isWritableBy($webServerUser)) {
                 return true;
             }
         }
