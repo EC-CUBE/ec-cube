@@ -20,9 +20,14 @@ LANE_S_VAR_DIRS="var/build var/cache"
 
 # 分離モードでは SQLite を使えない。データベースファイルは var 配下 (レーン W) に置かれ、
 # Web サーバーと CLI の双方が書き込む必要があるため、権限を分けると成立しないため。
+#
+# スキームは DsnParser が解釈できるものを列挙する。別名 (postgres 等) は
+# ConnectionFactory::DEFAULT_SCHEME_MAP で driver へ変換され、マップに無いものは
+# scheme の - を _ に置換して driver 名として扱われる (pdo-pgsql -> pdo_pgsql)。
 require_database_server() {
     case "${DATABASE_URL:-}" in
-        postgres://* | postgresql://* | pgsql://* | mysql://* | mysql2://*)
+        postgres://* | postgresql://* | pgsql://* | pdo-pgsql://* | \
+        mysql://* | mysql2://* | pdo-mysql://* | mysqli://*)
             return 0
             ;;
         '')
