@@ -108,7 +108,8 @@ class MemberType extends AbstractType
             ])
             ->add('two_factor_auth_reset', CheckboxType::class, [
                 'mapped' => false,
-                'label' => 'admin.setting.system.member.two_factor_auth_reset',
+                'label' => false,
+                'required' => false,
             ]);
 
         // login idの入力は新規登録時のみとし、編集時はdisabledにする
