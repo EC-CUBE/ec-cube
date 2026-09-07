@@ -13,6 +13,8 @@
 
 namespace Eccube\Service;
 
+use Eccube\Exception\ContentWriteException;
+use Eccube\Util\StringUtil;
 use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\Dotenv\Exception\FormatException;
 
@@ -129,6 +131,97 @@ class EnvFileService
     public function isEffective(array $keys = []): bool
     {
         return [] === $this->getIneffectiveReasons() && [] === $this->getOverriddenKeys($keys);
+    }
+
+    /**
+     * .env ファイルのパス.
+     */
+    public function getPath(): string
+    {
+        return $this->projectDir.'/.env';
+    }
+
+    /**
+     * .env ファイルに書かれている値をそのまま返す.
+     *
+     * 実行時に見えている値ではないことに注意する. OS のプロセス環境変数やカスケードファイルが
+     * 上書きしている場合は {@see getEffective()} と一致しない ({@see getOverriddenKeys()} で検出できる).
+     *
+     * @return string|null キーが .env に無い場合は null
+     */
+    public function get(string $key): ?string
+    {
+        $envFile = $this->getPath();
+        if (!is_file($envFile) || !is_readable($envFile)) {
+            return null;
+        }
+
+        $contents = file_get_contents($envFile);
+        if (false === $contents) {
+            return null;
+        }
+
+        // 書き込み (StringUtil::replaceOrAddEnv) と同じ行単位の表現で読み出し, 往復できるようにする
+        if (!preg_match('/^'.preg_quote($key, '/').'=(.*)$/m', $contents, $matches)) {
+            return null;
+        }
+
+        return rtrim($matches[1], "\r");
+    }
+
+    /**
+     * 実行時に見えている値を返す.
+     *
+     * Symfony Dotenv は putenv を使わないため, $_ENV / $_SERVER も参照する.
+     *
+     * @return string|null 未設定の場合は null
+     */
+    public function getEffective(string $key): ?string
+    {
+        if (isset($_ENV[$key])) {
+            return (string) $_ENV[$key];
+        }
+        if (isset($_SERVER[$key])) {
+            return (string) $_SERVER[$key];
+        }
+
+        $value = getenv($key);
+
+        return false === $value ? null : $value;
+    }
+
+    /**
+     * .env ファイルへ書き込む.
+     *
+     * 既存のキーは置換し, 無いキーは追記する (StringUtil::replaceOrAddEnv).
+     * file_put_contents() の戻り値を検査するため, 権限を分離した構成で
+     * 書き込みに失敗したことが沈黙しない.
+     *
+     * @param array<string, string> $values キー => 値 (値は .env の行にそのまま書き出す)
+     *
+     * @throws ContentWriteException .env が無い, または書き込めない場合
+     */
+    public function set(array $values): void
+    {
+        if ([] === $values) {
+            return;
+        }
+
+        $envFile = $this->getPath();
+        if (!is_file($envFile)) {
+            throw new ContentWriteException($envFile, sprintf('%s が存在しません.', $envFile));
+        }
+
+        $env = file_get_contents($envFile);
+        if (false === $env) {
+            throw new ContentWriteException($envFile, sprintf('%s を読み込めません.', $envFile));
+        }
+
+        $env = StringUtil::replaceOrAddEnv($env, $values);
+
+        if (false === file_put_contents($envFile, $env)) {
+            throw new ContentWriteException($envFile, sprintf('%s へ書き込めません. 書き込み権限のあるユーザーで実行してください.', $envFile));
+        }
     }
 
     /**

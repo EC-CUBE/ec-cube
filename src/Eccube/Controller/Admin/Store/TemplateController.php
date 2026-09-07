@@ -15,6 +15,7 @@ namespace Eccube\Controller\Admin\Store;
 
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Master\DeviceType;
+use Eccube\Exception\ContentWriteException;
 use Eccube\Form\Type\Admin\TemplateType;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\TemplateRepository;
@@ -85,14 +86,15 @@ class TemplateController extends AbstractController
 
             $Template = $this->templateRepository->find($form['selected']->getData());
 
-            $envFile = $this->getParameter('kernel.project_dir').'/.env';
-            $env = file_get_contents($envFile);
+            try {
+                // 書き込みは EnvFileService へ委譲する (file_put_contents の失敗を握り潰さない)
+                $this->envFileService->set(['ECCUBE_TEMPLATE_CODE' => (string) $Template->getCode()]);
+            } catch (ContentWriteException $e) {
+                $this->addError('admin.common.save_error', 'admin');
+                log_error($e->getMessage(), [$e->getPath()]);
 
-            $env = StringUtil::replaceOrAddEnv($env, [
-                'ECCUBE_TEMPLATE_CODE' => $Template->getCode(),
-            ]);
-
-            file_put_contents($envFile, $env);
+                return $this->redirectToRoute('admin_store_template');
+            }
 
             $this->addSuccess('admin.common.save_complete', 'admin');
 

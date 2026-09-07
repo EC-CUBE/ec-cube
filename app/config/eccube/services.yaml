@@ -75,6 +75,15 @@ services:
         arguments:
             $projectDir: '%kernel.project_dir%'
 
+    Eccube\Service\Content\UserDataFileService:
+        arguments:
+            $userDataDir: '%eccube_html_dir%/user_data'
+            $uploadableExtensions: '%eccube_file_uploadable_extensions%'
+
+    Eccube\Command\Env\EnvSetCommand:
+        arguments:
+            $projectDir: '%kernel.project_dir%'
+
     Eccube\Service\Composer\ComposerProcessService:
         lazy: true
 
