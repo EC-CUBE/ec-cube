@@ -59,7 +59,7 @@ final class PageListCommand extends Command
         foreach ($this->pageRepository->getPageList() as $Page) {
             $rows[] = [
                 'id' => $Page->getId(),
-                'url' => (string) $Page->getUrl(),
+                'route' => (string) $Page->getUrl(),
                 'name' => (string) $Page->getName(),
                 'file_name' => (string) $Page->getFileName(),
                 'editable' => $this->pageContentService->isUserDataPage($Page),
@@ -74,10 +74,10 @@ final class PageListCommand extends Command
         }
 
         $io->table(
-            ['ID', 'URL', 'ページ名', 'ファイル名', '編集可'],
+            ['ID', 'ルーティング名', 'ページ名', 'ファイル名', '編集可'],
             array_map(static fn (array $row): array => [
                 $row['id'],
-                $row['url'],
+                $row['route'],
                 $row['name'],
                 $row['file_name'],
                 $row['editable'] ? 'yes' : 'no',

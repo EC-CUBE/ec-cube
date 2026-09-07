@@ -38,7 +38,7 @@ use Twig\Error\LoaderError;
  *
  * 管理画面 (PageController) と CLI (eccube:page:*) の双方から使用する.
  * 入力値の検証は管理画面と同じ MainEditType を submit して行うため,
- * URL / ファイル名の重複チェックや TwigLint も同じものが効く.
+ * ルーティング名 / ファイル名の重複チェックや TwigLint も同じものが効く.
  */
 class PageContentService
 {
@@ -53,15 +53,21 @@ class PageContentService
     ) {
     }
 
-    public function findByUrl(string $url): ?Page
+    /**
+     * ルーティング名 (dtb_page.url) を鍵にページを取得する.
+     *
+     * dtb_page.url が保持するのは実際の URL ではなくルート名 (例: product_list) で,
+     * 管理画面のページ管理も同じ値を「ルーティング名」列に表示する.
+     */
+    public function findByRoute(string $route): ?Page
     {
-        return $this->pageRepository->findOneBy(['url' => $url]);
+        return $this->pageRepository->findOneBy(['url' => $route]);
     }
 
     /**
      * ユーザーが作成したページか.
      *
-     * 既定ページ (EDIT_TYPE_DEFAULT 以上) は URL・ファイル名を変更できず,
+     * 既定ページ (EDIT_TYPE_DEFAULT 以上) はルーティング名・ファイル名を変更できず,
      * テンプレートの配置先も user_data ではなくテーマのディレクトリになる.
      */
     public function isUserDataPage(Page $Page): bool
@@ -108,19 +114,19 @@ class PageContentService
     }
 
     /**
-     * URL を鍵にページを登録・更新する (upsert).
+     * ルーティング名を鍵にページを登録・更新する (upsert).
      *
      * 指定しなかった項目は既存の値を維持するため, 同じ入力を複数回適用しても結果は変わらない.
      *
-     * @param array{url: string, name?: string, file_name?: string, body?: string, author?: string, description?: string, keyword?: string, meta_robots?: string, meta_tags?: string, pc_layout?: string|int|null, sp_layout?: string|int|null} $payload
+     * @param array{route: string, name?: string, file_name?: string, body?: string, author?: string, description?: string, keyword?: string, meta_robots?: string, meta_tags?: string, pc_layout?: string|int|null, sp_layout?: string|int|null} $payload
      *
      * @throws ContentValidationException
      * @throws ContentWriteException      テンプレートファイルを書き出せない場合
      */
     public function apply(array $payload, bool $dryRun = false): ContentResult
     {
-        $url = $payload['url'];
-        $Page = $this->findByUrl($url);
+        $route = $payload['route'];
+        $Page = $this->findByRoute($route);
         $isNew = null === $Page;
         if (null === $Page) {
             $Page = $this->pageRepository->newPage();
@@ -159,7 +165,7 @@ class PageContentService
             return new ContentResult(
                 $this->resolveStatus($isNew, $fieldChanges, $fileChanges),
                 $Page->getId(),
-                $url,
+                $route,
                 [],
                 [],
                 $fieldChanges,
@@ -168,7 +174,7 @@ class PageContentService
         }
 
         if (!$isNew && [] === $fieldChanges && [] === $fileChanges) {
-            return new ContentResult(ContentStatus::Unchanged, $Page->getId(), $url);
+            return new ContentResult(ContentStatus::Unchanged, $Page->getId(), $route);
         }
 
         return $this->save($Page, $body, $PcLayout, $SpLayout, $isNew ? null : $previousFileName)
@@ -248,7 +254,7 @@ class PageContentService
         }
 
         $id = $Page->getId();
-        $url = (string) $Page->getUrl();
+        $route = (string) $Page->getUrl();
         $filePath = $this->getFilePath($Page);
 
         $removedPaths = [];
@@ -264,7 +270,7 @@ class PageContentService
         $this->entityManager->remove($Page);
         $this->entityManager->flush();
 
-        return new ContentResult(ContentStatus::Removed, $id, $url, [], $removedPaths);
+        return new ContentResult(ContentStatus::Removed, $id, $route, [], $removedPaths);
     }
 
     /**
@@ -309,7 +315,7 @@ class PageContentService
         $data = ['tpl_data' => (string) ($payload['body'] ?? $currentBody)];
 
         $fields = ['name', 'author', 'description', 'keyword', 'meta_robots', 'meta_tags'];
-        // 既定ページは URL・ファイル名を変更できない (管理画面と同じ制約)
+        // 既定ページはルーティング名・ファイル名を変更できない (管理画面と同じ制約)
         if ($this->isUserDataPage($Page)) {
             $fields[] = 'file_name';
         }
@@ -320,8 +326,9 @@ class PageContentService
         }
 
         if ($isNew) {
-            $data['url'] = (string) $payload['url'];
-            $data['file_name'] ??= (string) $payload['url'];
+            // フォーム側の項目名は dtb_page の列に合わせて url のまま
+            $data['url'] = (string) $payload['route'];
+            $data['file_name'] ??= (string) $payload['route'];
         }
 
         foreach (['pc_layout' => 'PcLayout', 'sp_layout' => 'SpLayout'] as $key => $field) {
@@ -340,7 +347,7 @@ class PageContentService
     {
         $snapshot = [
             'name' => (string) $Page->getName(),
-            'url' => (string) $Page->getUrl(),
+            'route' => (string) $Page->getUrl(),
             'file_name' => (string) $Page->getFileName(),
             'author' => (string) $Page->getAuthor(),
             'description' => (string) $Page->getDescription(),

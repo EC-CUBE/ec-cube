@@ -34,14 +34,14 @@ final class PageContentServiceTest extends EccubeTestCase
      */
     private ?array $createdFiles = null;
 
-    private ?string $url = null;
+    private ?string $route = null;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->pageContentService = self::getContainer()->get(PageContentService::class);
         $this->createdFiles = [];
-        $this->url = 'test_page_'.bin2hex(random_bytes(4));
+        $this->route = 'test_page_'.bin2hex(random_bytes(4));
     }
 
     protected function tearDown(): void
@@ -62,10 +62,10 @@ final class PageContentServiceTest extends EccubeTestCase
         $this->assertSame(ContentStatus::Created, $result->status);
         $this->assertNotNull($result->id);
 
-        $Page = $this->pageContentService->findByUrl((string) $this->url);
+        $Page = $this->pageContentService->findByRoute((string) $this->route);
         $this->assertInstanceOf(Page::class, $Page);
         $this->assertSame('テストページ', $Page->getName());
-        $this->assertSame($this->url, $Page->getFileName(), 'ファイル名を省略した場合は URL を既定値にする');
+        $this->assertSame($this->route, $Page->getFileName(), 'ファイル名を省略した場合はルーティング名を既定値にする');
         $this->assertSame('created body', file_get_contents((string) $result->path()));
     }
 
@@ -85,7 +85,7 @@ final class PageContentServiceTest extends EccubeTestCase
 
         $this->assertSame(ContentStatus::Updated, $result->status);
 
-        $Page = $this->pageContentService->findByUrl((string) $this->url);
+        $Page = $this->pageContentService->findByRoute((string) $this->route);
         $this->assertInstanceOf(Page::class, $Page);
         $this->assertSame('テストページ', $Page->getName());
         $this->assertSame('作者', $Page->getAuthor());
@@ -105,7 +105,7 @@ final class PageContentServiceTest extends EccubeTestCase
         $this->assertSame('body', file_get_contents($path), 'dry-run はファイルを書き換えない');
 
         $this->entityManager->clear();
-        $Page = $this->pageContentService->findByUrl((string) $this->url);
+        $Page = $this->pageContentService->findByRoute((string) $this->route);
         $this->assertInstanceOf(Page::class, $Page);
         $this->assertSame('テストページ', $Page->getName());
     }
@@ -140,7 +140,7 @@ final class PageContentServiceTest extends EccubeTestCase
             $this->apply(['name' => 'テストページ', 'body' => 'body']);
             self::fail('書き込めない場合は ContentWriteException を投げる');
         } catch (ContentWriteException $e) {
-            $this->assertStringContainsString((string) $this->url, $e->getPath());
+            $this->assertStringContainsString((string) $this->route, $e->getPath());
         } finally {
             chmod($templateDir, $originalPerms);
         }
@@ -149,7 +149,7 @@ final class PageContentServiceTest extends EccubeTestCase
 
         $this->assertNotInstanceOf(
             Page::class,
-            $this->pageContentService->findByUrl((string) $this->url),
+            $this->pageContentService->findByRoute((string) $this->route),
             'テンプレートを書き出せなかったページのレコードが残ってはいけない'
         );
     }
@@ -162,9 +162,9 @@ final class PageContentServiceTest extends EccubeTestCase
 
         try {
             $this->pageContentService->apply([
-                'url' => $other,
+                'route' => $other,
                 'name' => '別のページ',
-                'file_name' => (string) $this->url,
+                'file_name' => (string) $this->route,
                 'body' => 'body',
             ]);
             self::fail('重複したファイル名は登録できない');
@@ -178,7 +178,7 @@ final class PageContentServiceTest extends EccubeTestCase
         $created = $this->apply(['name' => 'テストページ', 'body' => 'body']);
         $oldPath = (string) $created->path();
 
-        $newFileName = $this->url.'_renamed';
+        $newFileName = $this->route.'_renamed';
         $result = $this->apply(['file_name' => $newFileName]);
         $this->createdFiles[] = (string) $result->path();
 
@@ -196,7 +196,7 @@ final class PageContentServiceTest extends EccubeTestCase
 
         // PageLayout は Page のコレクションへ追加せず永続化するため, 読み直して確認する
         $this->entityManager->clear();
-        $Page = $this->pageContentService->findByUrl((string) $this->url);
+        $Page = $this->pageContentService->findByRoute((string) $this->route);
         $this->assertInstanceOf(Page::class, $Page);
         $this->assertSame([$Layout->getId()], array_map(static fn (Layout $L): ?int => $L->getId(), $Page->getLayouts()));
     }
@@ -206,14 +206,14 @@ final class PageContentServiceTest extends EccubeTestCase
         $created = $this->apply(['name' => 'テストページ', 'body' => 'body']);
         $path = (string) $created->path();
 
-        $Page = $this->pageContentService->findByUrl((string) $this->url);
+        $Page = $this->pageContentService->findByRoute((string) $this->route);
         $this->assertInstanceOf(Page::class, $Page);
 
         $result = $this->pageContentService->remove($Page);
 
         $this->assertSame(ContentStatus::Removed, $result->status);
         $this->assertFileDoesNotExist($path);
-        $this->assertNotInstanceOf(Page::class, $this->pageContentService->findByUrl((string) $this->url));
+        $this->assertNotInstanceOf(Page::class, $this->pageContentService->findByRoute((string) $this->route));
     }
 
     public function testRemoveRejectsDefaultPage(): void
@@ -234,7 +234,7 @@ final class PageContentServiceTest extends EccubeTestCase
         $body = $this->pageContentService->readTemplate($Page);
 
         $result = $this->pageContentService->apply([
-            'url' => (string) $Page->getUrl(),
+            'route' => (string) $Page->getUrl(),
             'file_name' => 'must_be_ignored',
             'body' => $body,
         ], true);
@@ -248,8 +248,8 @@ final class PageContentServiceTest extends EccubeTestCase
      */
     private function apply(array $payload, bool $dryRun = false): ContentResult
     {
-        /** @var array{url: string} $payload */
-        $payload = ['url' => (string) $this->url] + $payload;
+        /** @var array{route: string} $payload */
+        $payload = ['route' => (string) $this->route] + $payload;
         $result = $this->pageContentService->apply($payload, $dryRun);
 
         foreach ($result->writtenPaths as $path) {

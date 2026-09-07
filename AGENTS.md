@@ -153,7 +153,7 @@ docker compose exec -u www-data ec-cube bin/console cache:pool:clear --all    # 
 bin/console eccube:page:list|show|apply|remove
 bin/console eccube:block:list|show|apply|remove
 bin/console eccube:mail-template:list|show|apply
-cat guide.twig | bin/console eccube:page:apply --url=guide --name=ご利用ガイド --body=-
+cat guide.twig | bin/console eccube:page:apply --route=guide --name=ご利用ガイド --body=-
 ```
 
 入力値の検証は管理画面と同じ FormType を通すため、重複チェックや twig の構文チェックも同じものが効く。

@@ -44,13 +44,13 @@ final class PageShowCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addOption('url', null, InputOption::VALUE_REQUIRED, '対象ページの URL')
+            ->addOption('route', null, InputOption::VALUE_REQUIRED, '対象ページのルーティング名 (例: product_list)')
             ->addOption('id', null, InputOption::VALUE_REQUIRED, '対象ページの ID');
         $this->addFormatOption();
         $this->setHelp(<<<'EOF'
             <info>%command.name%</info> は apply の逆操作です.
 
-              <info>php %command.full_name% --url=guide > guide.twig</info>
+              <info>php %command.full_name% --route=guide > guide.twig</info>
             EOF
         );
     }
@@ -67,20 +67,20 @@ final class PageShowCommand extends Command
             return Command::INVALID;
         }
 
-        $url = $input->getOption('url');
+        $route = $input->getOption('route');
         $id = $input->getOption('id');
-        if (null === $url && null === $id) {
-            $io->error('--url または --id を指定してください.');
+        if (null === $route && null === $id) {
+            $io->error('--route または --id を指定してください.');
 
             return Command::INVALID;
         }
 
         $Page = null === $id
-            ? $this->pageContentService->findByUrl((string) $url)
+            ? $this->pageContentService->findByRoute((string) $route)
             : $this->pageRepository->find((int) $id);
 
         if (!$Page instanceof Page) {
-            $io->error(sprintf('ページが見つかりません: %s', (string) ($url ?? $id)));
+            $io->error(sprintf('ページが見つかりません: %s', (string) ($route ?? $id)));
 
             return 1;
         }
@@ -90,7 +90,7 @@ final class PageShowCommand extends Command
         if ('json' === $format) {
             $output->writeln((string) json_encode([
                 'id' => $Page->getId(),
-                'url' => (string) $Page->getUrl(),
+                'route' => (string) $Page->getUrl(),
                 'name' => (string) $Page->getName(),
                 'file_name' => (string) $Page->getFileName(),
                 'author' => $Page->getAuthor(),

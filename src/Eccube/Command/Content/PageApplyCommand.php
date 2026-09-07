@@ -27,7 +27,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
- * ページ (dtb_page + twig) を URL を鍵に登録・更新する.
+ * ページ (dtb_page + twig) をルーティング名を鍵に登録・更新する.
  *
  * 指定しなかった項目は既存の値を維持するため, 同じ入力を複数回適用しても結果は変わらない.
  */
@@ -62,9 +62,9 @@ final class PageApplyCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addOption('url', null, InputOption::VALUE_REQUIRED, '対象ページの URL (登録・更新の鍵)')
+            ->addOption('route', null, InputOption::VALUE_REQUIRED, '対象ページのルーティング名 (登録・更新の鍵. 例: product_list)')
             ->addOption('name', null, InputOption::VALUE_REQUIRED, 'ページ名')
-            ->addOption('file-name', null, InputOption::VALUE_REQUIRED, 'テンプレートのファイル名 (新規登録時の既定は URL と同じ)')
+            ->addOption('file-name', null, InputOption::VALUE_REQUIRED, 'テンプレートのファイル名 (新規登録時の既定はルーティング名と同じ)')
             ->addOption('author', null, InputOption::VALUE_REQUIRED, 'author')
             ->addOption('description', null, InputOption::VALUE_REQUIRED, 'description')
             ->addOption('keyword', null, InputOption::VALUE_REQUIRED, 'keyword')
@@ -76,10 +76,11 @@ final class PageApplyCommand extends Command
         $this->setHelp(<<<'EOF'
             <info>%command.name%</info> は dtb_page とテンプレートファイルを対で登録・更新します.
 
-              <info>cat guide.twig | php %command.full_name% --url=guide --name=ご利用ガイド --body=-</info>
-              <info>php %command.full_name% --url=guide --body-file=guide.twig --dry-run</info>
+              <info>cat guide.twig | php %command.full_name% --route=guide --name=ご利用ガイド --body=-</info>
+              <info>php %command.full_name% --route=guide --body-file=guide.twig --dry-run</info>
 
-            既定ページ (EDIT_TYPE_DEFAULT 以上) は URL とファイル名を変更できません.
+            --route は dtb_page.url に保存されるルート名です (管理画面のページ管理の「ルーティング名」列).
+            既定ページ (EDIT_TYPE_DEFAULT 以上) はルーティング名とファイル名を変更できません.
             EOF
         );
     }
@@ -96,9 +97,9 @@ final class PageApplyCommand extends Command
             return Command::INVALID;
         }
 
-        $url = $input->getOption('url');
-        if (null === $url || '' === $url) {
-            $io->error('--url を指定してください.');
+        $route = $input->getOption('route');
+        if (null === $route || '' === $route) {
+            $io->error('--route を指定してください.');
 
             return Command::INVALID;
         }
@@ -111,7 +112,7 @@ final class PageApplyCommand extends Command
             return Command::INVALID;
         }
 
-        $payload = ['url' => (string) $url];
+        $payload = ['route' => (string) $route];
         if (null !== $body) {
             $payload['body'] = $body;
         }
@@ -125,14 +126,14 @@ final class PageApplyCommand extends Command
         $dryRun = (bool) $input->getOption('dry-run');
 
         try {
-            /** @var array{url: string} $payload */
+            /** @var array{route: string} $payload */
             $result = $this->pageContentService->apply($payload, $dryRun);
         } catch (ContentValidationException $e) {
-            $io->error(array_merge([sprintf('ページを保存できません: %s', (string) $url)], $e->getErrors()));
+            $io->error(array_merge([sprintf('ページを保存できません: %s', (string) $route)], $e->getErrors()));
 
             return 1;
         } catch (ContentWriteException $e) {
-            return $this->reportWriteFailure($io, sprintf('ページを保存できません: %s', (string) $url), $e);
+            return $this->reportWriteFailure($io, sprintf('ページを保存できません: %s', (string) $route), $e);
         }
 
         $this->renderResult($io, $output, $format, $result, $dryRun);

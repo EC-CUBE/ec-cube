@@ -44,7 +44,7 @@ final class PageRemoveCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addOption('url', null, InputOption::VALUE_REQUIRED, '対象ページの URL')
+            ->addOption('route', null, InputOption::VALUE_REQUIRED, '対象ページのルーティング名 (例: product_list)')
             ->addOption('force', 'f', InputOption::VALUE_NONE, '確認せずに削除する')
             ->addOption('no-cache-clear', null, InputOption::VALUE_NONE, 'キャッシュの削除を省略する');
         $this->addFormatOption();
@@ -62,27 +62,27 @@ final class PageRemoveCommand extends Command
             return Command::INVALID;
         }
 
-        $url = $input->getOption('url');
-        if (null === $url || '' === $url) {
-            $io->error('--url を指定してください.');
+        $route = $input->getOption('route');
+        if (null === $route || '' === $route) {
+            $io->error('--route を指定してください.');
 
             return Command::INVALID;
         }
 
-        $Page = $this->pageContentService->findByUrl((string) $url);
+        $Page = $this->pageContentService->findByRoute((string) $route);
         if (!$Page instanceof Page) {
-            $io->error(sprintf('ページが見つかりません: %s', (string) $url));
+            $io->error(sprintf('ページが見つかりません: %s', (string) $route));
 
             return 1;
         }
 
         if (Page::EDIT_TYPE_USER !== $Page->getEditType()) {
-            $io->error(sprintf('既定ページのため削除できません: %s', (string) $url));
+            $io->error(sprintf('既定ページのため削除できません: %s', (string) $route));
 
             return 1;
         }
 
-        if (!$input->getOption('force') && !$io->confirm(sprintf('%s を削除しますか?', (string) $url), false)) {
+        if (!$input->getOption('force') && !$io->confirm(sprintf('%s を削除しますか?', (string) $route), false)) {
             $io->text('中止しました.');
 
             return 1;

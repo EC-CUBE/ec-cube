@@ -176,7 +176,7 @@ supports `--dry-run` and `--format=json`; `--body=-` reads the template from std
 bin/console eccube:page:list|show|apply|remove
 bin/console eccube:block:list|show|apply|remove
 bin/console eccube:mail-template:list|show|apply
-cat guide.twig | bin/console eccube:page:apply --url=guide --name=Guide --body=-
+cat guide.twig | bin/console eccube:page:apply --route=guide --name=Guide --body=-
 ```
 
 ## Community

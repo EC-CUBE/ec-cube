@@ -34,14 +34,14 @@ final class PageCommandTest extends EccubeTestCase
      */
     private ?array $createdFiles = null;
 
-    private ?string $url = null;
+    private ?string $route = null;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->pageContentService = self::getContainer()->get(PageContentService::class);
         $this->createdFiles = [];
-        $this->url = 'test_page_'.bin2hex(random_bytes(4));
+        $this->route = 'test_page_'.bin2hex(random_bytes(4));
     }
 
     protected function tearDown(): void
@@ -58,7 +58,7 @@ final class PageCommandTest extends EccubeTestCase
     public function testApplyCreatesPage(): void
     {
         $tester = $this->apply([
-            '--url' => $this->url,
+            '--route' => $this->route,
             '--name' => 'テストページ',
             '--body' => 'created body',
         ]);
@@ -66,7 +66,7 @@ final class PageCommandTest extends EccubeTestCase
         $this->assertSame(0, $tester->getStatusCode());
         $this->assertStringContainsString('created', $tester->getDisplay());
 
-        $Page = $this->pageContentService->findByUrl((string) $this->url);
+        $Page = $this->pageContentService->findByRoute((string) $this->route);
         $this->assertInstanceOf(Page::class, $Page);
         $this->assertSame('created body', file_get_contents($this->pageContentService->getFilePath($Page)));
     }
@@ -74,14 +74,14 @@ final class PageCommandTest extends EccubeTestCase
     public function testApplyReadsBodyFromStdin(): void
     {
         $tester = $this->apply([
-            '--url' => $this->url,
+            '--route' => $this->route,
             '--name' => 'テストページ',
             '--body' => '-',
         ], ['body from stdin']);
 
         $this->assertSame(0, $tester->getStatusCode());
 
-        $Page = $this->pageContentService->findByUrl((string) $this->url);
+        $Page = $this->pageContentService->findByRoute((string) $this->route);
         $this->assertInstanceOf(Page::class, $Page);
         $this->assertSame('body from stdin', trim((string) file_get_contents($this->pageContentService->getFilePath($Page))));
     }
@@ -89,7 +89,7 @@ final class PageCommandTest extends EccubeTestCase
     public function testApplyDryRunDoesNotCreatePage(): void
     {
         $tester = $this->apply([
-            '--url' => $this->url,
+            '--route' => $this->route,
             '--name' => 'テストページ',
             '--body' => 'body',
             '--dry-run' => true,
@@ -97,13 +97,13 @@ final class PageCommandTest extends EccubeTestCase
 
         $this->assertSame(0, $tester->getStatusCode());
         $this->assertStringContainsString('dry-run', $tester->getDisplay());
-        $this->assertNotInstanceOf(Page::class, $this->pageContentService->findByUrl((string) $this->url));
+        $this->assertNotInstanceOf(Page::class, $this->pageContentService->findByRoute((string) $this->route));
     }
 
     public function testApplyOutputsJson(): void
     {
         $tester = $this->apply([
-            '--url' => $this->url,
+            '--route' => $this->route,
             '--name' => 'テストページ',
             '--body' => 'body',
             '--format' => 'json',
@@ -114,10 +114,10 @@ final class PageCommandTest extends EccubeTestCase
         $decoded = json_decode($tester->getDisplay(), true);
         $this->assertIsArray($decoded);
         $this->assertSame('created', $decoded['status']);
-        $this->assertSame($this->url, $decoded['identifier']);
+        $this->assertSame($this->route, $decoded['identifier']);
     }
 
-    public function testApplyReturnsInvalidWithoutUrl(): void
+    public function testApplyReturnsInvalidWithoutRoute(): void
     {
         $tester = $this->apply(['--name' => 'テストページ']);
 
@@ -126,7 +126,7 @@ final class PageCommandTest extends EccubeTestCase
 
     public function testApplyReturnsInvalidWithUnknownFormat(): void
     {
-        $tester = $this->apply(['--url' => $this->url, '--format' => 'yaml']);
+        $tester = $this->apply(['--route' => $this->route, '--format' => 'yaml']);
 
         $this->assertSame(Command::INVALID, $tester->getStatusCode());
     }
@@ -134,13 +134,13 @@ final class PageCommandTest extends EccubeTestCase
     public function testApplyFailsWithInvalidTwig(): void
     {
         $tester = $this->apply([
-            '--url' => $this->url,
+            '--route' => $this->route,
             '--name' => 'テストページ',
             '--body' => '{% block foo %}',
         ]);
 
         $this->assertSame(1, $tester->getStatusCode());
-        $this->assertNotInstanceOf(Page::class, $this->pageContentService->findByUrl((string) $this->url));
+        $this->assertNotInstanceOf(Page::class, $this->pageContentService->findByRoute((string) $this->route));
     }
 
     /**
@@ -164,7 +164,7 @@ final class PageCommandTest extends EccubeTestCase
 
         try {
             $tester = $this->apply([
-                '--url' => $this->url,
+                '--route' => $this->route,
                 '--name' => 'テストページ',
                 '--body' => 'body',
             ]);
@@ -181,7 +181,7 @@ final class PageCommandTest extends EccubeTestCase
         $this->entityManager->clear();
         $this->assertNotInstanceOf(
             Page::class,
-            $this->pageContentService->findByUrl((string) $this->url),
+            $this->pageContentService->findByRoute((string) $this->route),
             '書き出せなかったページのレコードが残ってはいけない'
         );
     }
@@ -193,12 +193,12 @@ final class PageCommandTest extends EccubeTestCase
     {
         $tester = new CommandTester(self::getContainer()->get(PageApplyCommand::class));
         $tester->execute([
-            '--url' => $this->url,
+            '--route' => $this->route,
             '--name' => 'テストページ',
             '--body' => 'body',
         ]);
 
-        $Page = $this->pageContentService->findByUrl((string) $this->url);
+        $Page = $this->pageContentService->findByRoute((string) $this->route);
         if ($Page instanceof Page) {
             $this->createdFiles[] = $this->pageContentService->getFilePath($Page);
         }
@@ -230,12 +230,12 @@ final class PageCommandTest extends EccubeTestCase
         try {
             $tester = new CommandTester(self::getContainer()->get(PageApplyCommand::class));
             $tester->execute([
-                '--url' => $this->url,
+                '--route' => $this->route,
                 '--name' => 'テストページ',
                 '--body' => 'body',
             ]);
 
-            $Page = $this->pageContentService->findByUrl((string) $this->url);
+            $Page = $this->pageContentService->findByRoute((string) $this->route);
             if ($Page instanceof Page) {
                 $this->createdFiles[] = $this->pageContentService->getFilePath($Page);
             }
@@ -250,10 +250,10 @@ final class PageCommandTest extends EccubeTestCase
 
     public function testShowOutputsTemplate(): void
     {
-        $this->apply(['--url' => $this->url, '--name' => 'テストページ', '--body' => 'shown body']);
+        $this->apply(['--route' => $this->route, '--name' => 'テストページ', '--body' => 'shown body']);
 
         $tester = new CommandTester(self::getContainer()->get(PageShowCommand::class));
-        $tester->execute(['--url' => $this->url]);
+        $tester->execute(['--route' => $this->route]);
 
         $this->assertSame(0, $tester->getStatusCode());
         $this->assertSame('shown body', $tester->getDisplay());
@@ -262,45 +262,45 @@ final class PageCommandTest extends EccubeTestCase
     public function testShowReturnsErrorWhenNotFound(): void
     {
         $tester = new CommandTester(self::getContainer()->get(PageShowCommand::class));
-        $tester->execute(['--url' => 'not_found_page']);
+        $tester->execute(['--route' => 'not_found_page']);
 
         $this->assertSame(1, $tester->getStatusCode());
     }
 
     public function testListContainsCreatedPage(): void
     {
-        $this->apply(['--url' => $this->url, '--name' => 'テストページ', '--body' => 'body']);
+        $this->apply(['--route' => $this->route, '--name' => 'テストページ', '--body' => 'body']);
 
         $tester = new CommandTester(self::getContainer()->get(PageListCommand::class));
         $tester->execute(['--format' => 'json']);
 
         $this->assertSame(0, $tester->getStatusCode());
 
-        $urls = array_column((array) json_decode($tester->getDisplay(), true), 'url');
-        $this->assertContains($this->url, $urls);
+        $routes = array_column((array) json_decode($tester->getDisplay(), true), 'route');
+        $this->assertContains($this->route, $routes);
     }
 
     public function testRemoveDeletesPage(): void
     {
-        $this->apply(['--url' => $this->url, '--name' => 'テストページ', '--body' => 'body']);
+        $this->apply(['--route' => $this->route, '--name' => 'テストページ', '--body' => 'body']);
 
         $tester = new CommandTester(self::getContainer()->get(PageRemoveCommand::class));
-        $tester->execute(['--url' => $this->url, '--force' => true, '--no-cache-clear' => true]);
+        $tester->execute(['--route' => $this->route, '--force' => true, '--no-cache-clear' => true]);
 
         $this->assertSame(0, $tester->getStatusCode());
-        $this->assertNotInstanceOf(Page::class, $this->pageContentService->findByUrl((string) $this->url));
+        $this->assertNotInstanceOf(Page::class, $this->pageContentService->findByRoute((string) $this->route));
     }
 
     public function testRemoveIsAbortedWithoutConfirmation(): void
     {
-        $this->apply(['--url' => $this->url, '--name' => 'テストページ', '--body' => 'body']);
+        $this->apply(['--route' => $this->route, '--name' => 'テストページ', '--body' => 'body']);
 
         $tester = new CommandTester(self::getContainer()->get(PageRemoveCommand::class));
         $tester->setInputs(['no']);
-        $tester->execute(['--url' => $this->url, '--no-cache-clear' => true]);
+        $tester->execute(['--route' => $this->route, '--no-cache-clear' => true]);
 
         $this->assertSame(1, $tester->getStatusCode());
-        $this->assertInstanceOf(Page::class, $this->pageContentService->findByUrl((string) $this->url));
+        $this->assertInstanceOf(Page::class, $this->pageContentService->findByRoute((string) $this->route));
     }
 
     public function testRemoveRejectsDefaultPage(): void
@@ -309,7 +309,7 @@ final class PageCommandTest extends EccubeTestCase
         $this->assertInstanceOf(Page::class, $Page);
 
         $tester = new CommandTester(self::getContainer()->get(PageRemoveCommand::class));
-        $tester->execute(['--url' => $Page->getUrl(), '--force' => true, '--no-cache-clear' => true]);
+        $tester->execute(['--route' => $Page->getUrl(), '--force' => true, '--no-cache-clear' => true]);
 
         $this->assertSame(1, $tester->getStatusCode());
     }
@@ -326,7 +326,7 @@ final class PageCommandTest extends EccubeTestCase
         }
         $tester->execute($input + ['--no-cache-clear' => true]);
 
-        $Page = $this->pageContentService->findByUrl((string) $this->url);
+        $Page = $this->pageContentService->findByRoute((string) $this->route);
         if ($Page instanceof Page) {
             $this->createdFiles[] = $this->pageContentService->getFilePath($Page);
         }
