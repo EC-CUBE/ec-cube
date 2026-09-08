@@ -132,7 +132,9 @@ docker compose exec -u eccube   ec-cube bin/console eccube:cache:build        # 
 docker compose exec -u www-data ec-cube bin/console cache:pool:clear --all    # レーン W を触る操作
 ```
 
-`cache:clear` は `var/build` と `var/cache` の双方へ書き込むため、分離モードでは使用できない。
+`cache:clear` は `var/build` と `var/cache` の双方へ書き込む。3 分割ではどちらもレーン S のため
+CLI ユーザーなら成功する（Web サーバーのユーザーでは失敗する）。ただし `--no-warmup` を付けると
+コンパイル済みコンテナが再生成されず、次のリクエストで Web サーバーが 500 になる。
 コンパイル済みコンテナとテンプレートの再生成は `eccube:cache:build` を使う。
 
 `var/log` はレーン W のため、CLI からはログファイルへ書き込めない。ログの出力に失敗すると本来のエラーが
