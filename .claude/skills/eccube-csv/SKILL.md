@@ -160,7 +160,7 @@ try {
 
 ## よくある間違い
 
-- ❌ `fgetcsv` / `fputcsv` を直書きする → ✅ `CsvImportService` / `CsvExportService::fputcsv()` に乗る。直書きなら escape まで明示（省略は PHP 8.4 で非推奨）
+- ❌ `fgetcsv` / `fputcsv` を直書きする → ✅ `CsvImportService` / `CsvExportService::fputcsv()` に乗る（数式の無害化も効く）
 - ❌ 文字コード・区切り文字をハードコードする → ✅ `EccubeConfig` の `eccube_csv_export_*` / `eccube_csv_import_*` を使う
 - ❌ エクスポートで全件を配列に貯めて一括出力する → ✅ `StreamedResponse` ＋ `exportData()` のページング（100 件ずつ `em->clear()`）で逐次出力
 - ❌ 出力項目をコントローラに `if` で羅列する → ✅ `dtb_csv` 定義（`field_name` / `sort_no` / `enabled`）で表現し `getData()` に引かせる
