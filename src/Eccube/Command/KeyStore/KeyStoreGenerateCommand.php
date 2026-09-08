@@ -158,7 +158,7 @@ final class KeyStoreGenerateCommand extends Command
         }
 
         return array_map(
-            fn (string $name): KeyPurposeInterface => $this->keyPurposeRegistry->get($name),
+            $this->keyPurposeRegistry->get(...),
             $names
         );
     }

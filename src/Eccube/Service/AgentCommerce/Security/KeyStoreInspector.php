@@ -25,12 +25,12 @@ use Eccube\Service\Permission\WebServerUserResolver;
  * eccube:keystore:* の出力源. 鍵の有無・保管先・権限に加え, 署名は実行時に行われるため
  * Web サーバーから読み取れるかを判定する (PermissionDiagnostic と同じ推定方法).
  */
-final class KeyStoreInspector
+final readonly class KeyStoreInspector
 {
     public function __construct(
-        private readonly KeyStoreInterface $keyStore,
-        private readonly KeyPurposeRegistry $keyPurposeRegistry,
-        private readonly WebServerUserResolver $webServerUserResolver,
+        private KeyStoreInterface $keyStore,
+        private KeyPurposeRegistry $keyPurposeRegistry,
+        private WebServerUserResolver $webServerUserResolver,
     ) {
     }
 
