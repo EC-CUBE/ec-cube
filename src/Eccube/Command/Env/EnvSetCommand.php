@@ -204,6 +204,9 @@ final class EnvSetCommand extends Command
             $io->text(sprintf('<info>Run %s</info>...', implode(' ', $command)));
             // cwd を明示しない場合, プロジェクトルート以外から実行すると bin/console を解決できない
             $process = new Process($command, $this->projectDir);
+            // Process の既定タイムアウトは 60 秒. 超過すると子プロセスが kill され,
+            // ビルドディレクトリが中途半端な状態のまま残る
+            $process->setTimeout(null);
             $process->mustRun();
             $io->text($process->getOutput());
 

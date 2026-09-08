@@ -195,11 +195,11 @@ class EnvFileService
      *
      * 既存のキーは置換し, 無いキーは追記する (StringUtil::replaceOrAddEnv).
      * file_put_contents() の戻り値を検査するため, 権限を分離した構成で
-     * 書き込みに失敗したことが沈黙しない.
+     * 書き込みに失敗したことが沈黙しない. 書き込めたバイト数も確かめる.
      *
      * @param array<string, string> $values キー => 値 (値は .env の行にそのまま書き出す)
      *
-     * @throws ContentWriteException .env が無い, または書き込めない場合
+     * @throws ContentWriteException .env が無い, 書き込めない, 途中までしか書き込めなかった場合
      */
     public function set(array $values): void
     {
@@ -219,8 +219,15 @@ class EnvFileService
 
         $env = StringUtil::replaceOrAddEnv($env, $values);
 
-        if (false === file_put_contents($envFile, $env)) {
+        $written = file_put_contents($envFile, $env);
+        if (false === $written) {
             throw new ContentWriteException($envFile, sprintf('%s へ書き込めません. 書き込み権限のあるユーザーで実行してください.', $envFile));
+        }
+
+        // ディスクフル等では false ではなく書き込めたバイト数が返る. .env が途中までしか
+        // 書かれていない状態のため, 成功として扱わない
+        if (strlen($env) !== $written) {
+            throw new ContentWriteException($envFile, sprintf('%s へ最後まで書き込めませんでした (%d / %d バイト). 内容を確認してください.', $envFile, $written, strlen($env)));
         }
     }
 
