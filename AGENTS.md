@@ -220,11 +220,29 @@ EC-CUBE は Symfony の EventDispatcher を拡張してカスタマイズを実�
 ## コーディング規約（レイヤ別・オンデマンド）
 
 レイヤ別の詳細規約は各 **Skill**（`.claude/skills/<name>/SKILL.md`）が本文を直接持ちます。
-frontmatter の `description` がトリガ条件で、該当レイヤを触るときだけ発火・参照されます（常時読み込まない）。
 本文は純 Markdown なので GitHub でもそのまま読めます。
+
+### 作業の進め方（規約の読み込み）
+
+レイヤ規約は **作業開始時に該当 Skill を能動的に読む** と最も確実に活用できます。
+`description` による自動発火もあるが、設計相談から入る依頼（「〜を作りたい」「〜機能を追加したい」）では発火しないことがある。
+
+1. **設計・検討フェーズ** — 新規機能の相談・設計から始まる場合
+   - まず [`eccube-pre-impl`](./.claude/skills/eccube-pre-impl/SKILL.md) を読み、触るレイヤに対応する Skill を特定する
+   - 該当 Skill を **既存コードの調査より先に** 読み、制約・罠・実装パターンを把握してから設計する
+
+2. **実装フェーズ** — コードを書く直前
+   - 触るレイヤの Skill を再確認する（自動発火に頼らない）
+
+3. **レビューフェーズ** — 実装が一区切りついたら
+   - [`eccube-review-responsibility`](./.claude/skills/eccube-review-responsibility/SKILL.md) で責務分離・セキュリティ・レイヤ違反を横断点検
+
+**Skill に書いてあるもの**: 見ても分からない罠・理由・EC-CUBE 固有の判断基準。
+**Skill に書いていないもの**: 設定ファイルや `src/Eccube/` を見れば分かること（リンターが強制する規約など）。
 
 | レイヤ / 観点 | 規約 Skill（本文） | Skill 名 |
 |--------|------------------|----------|
+| 実装前チェックリスト（設計→実装の橋渡し） | [`.claude/skills/eccube-pre-impl/SKILL.md`](./.claude/skills/eccube-pre-impl/SKILL.md) | `eccube-pre-impl` |
 | PHPUnit テスト | [`.claude/skills/eccube-phpunit/SKILL.md`](./.claude/skills/eccube-phpunit/SKILL.md) | `eccube-phpunit` |
 | E2E（Playwright・spec 作成 / flaky 対策） | [`.claude/skills/eccube-e2e/SKILL.md`](./.claude/skills/eccube-e2e/SKILL.md) | `eccube-e2e` |
 | コントローラ（責務分離・Fat化防止） | [`.claude/skills/eccube-controller/SKILL.md`](./.claude/skills/eccube-controller/SKILL.md) | `eccube-controller` |
