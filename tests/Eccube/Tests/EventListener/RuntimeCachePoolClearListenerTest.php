@@ -141,6 +141,11 @@ final class RuntimeCachePoolClearListenerTest extends TestCase
 
         $display = $this->dispatch('cache:clear', 0, $this->foreignUser())['display'];
 
+        // strpos() は見つからないと false を返し, 比較では 0 として扱われる. 案内が
+        // 欠けていても順序の検証だけは通ってしまうため, 先に双方の存在を確かめる
+        $this->assertStringContainsString('eccube:cache:build', $display);
+        $this->assertStringContainsString('cache:pool:clear', $display);
+
         $this->assertLessThan(
             strpos($display, 'cache:pool:clear'),
             strpos($display, 'eccube:cache:build'),
