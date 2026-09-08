@@ -192,9 +192,11 @@ EC-CUBE は Symfony の EventDispatcher を拡張してカスタマイズを実�
 - エンティティ・コントローラ・フォーム・テンプレート・イベントサブスクライバを追加可能
 - メタデータはプラグイン内の `composer.json` で定義
 
-### app/Customize によるカスタマイズ
+### app/Customize によるカスタマイズ（**店舗向け**。本体開発では使わない）
 
-プロジェクト固有のコードはコア改変ではなく `app/Customize/` に置き、コアアップグレードの影響を避けます。
+**この節は店舗を構築する立場の話です。** 本体へのコントリビュートでは `src/Eccube/` を改修してください。
+
+店舗のプロジェクト固有コードはコア改変ではなく `app/Customize/` に置き、コアアップグレードの影響を避けます。
 
 - **エンティティ拡張**: Doctrine トレイトで既存エンティティにフィールド追加
 - **フォーム拡張**: Symfony FormTypeExtension で既存フォームにフィールド追加
@@ -352,4 +354,6 @@ Skill（`SKILL.md`）の形式は Claude Code / Cursor / Codex / Antigravity で
 - **規約準拠**: 該当レイヤの Skill（`.claude/skills/`）に従う。
 - **静的解析**: 実装後は `vendor/bin/phpstan analyse src`（level 6）を通す。
 - **コードスタイル**: `vendor/bin/php-cs-fixer fix` で PSR-12 に整える。ライセンスヘッダ必須。
-- **app/Customize 優先**: プロジェクト固有のカスタマイズはコア改変ではなく `app/Customize/` で行う。
+- **置き場の判別**: 本体へのコントリビュート（Issue 対応・機能追加・バグ修正）は `src/Eccube/` を改修する。
+  `app/Customize/` は**店舗が自分のプロジェクト固有コードを置く場所**で、本体の機能追加には使わない。
+  依頼文からどちらの立場か判別できないときは、実装を始める前に確認する。
