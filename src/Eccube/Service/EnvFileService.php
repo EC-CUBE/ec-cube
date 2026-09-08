@@ -194,12 +194,17 @@ class EnvFileService
      * .env ファイルへ書き込む.
      *
      * 既存のキーは置換し, 無いキーは追記する (StringUtil::replaceOrAddEnv).
-     * file_put_contents() の戻り値を検査するため, 権限を分離した構成で
-     * 書き込みに失敗したことが沈黙しない. 書き込めたバイト数も確かめる.
+     * 戻り値と書き込めたバイト数を検査するため, 権限を分離した構成で
+     * 書き込みに失敗したことが沈黙しない.
+     *
+     * 既存のファイルを開いて上書きする. 一時ファイルを作って rename する方式は
+     * inode を差し替えるため, .env の所有者とモードが実行プロセスの uid / umask で
+     * 決まってしまい, レーン S として設定した所有権を失う (.env を単一ファイルとして
+     * bind mount している構成でも壊れる).
      *
      * @param array<string, string> $values キー => 値 (値は .env の行にそのまま書き出す)
      *
-     * @throws ContentWriteException .env が無い, 書き込めない, 途中までしか書き込めなかった場合
+     * @throws ContentWriteException .env が無い, 開けない, 書き込めない, 途中までしか書き込めなかった場合
      */
     public function set(array $values): void
     {
@@ -212,23 +217,61 @@ class EnvFileService
             throw new ContentWriteException($envFile, sprintf('%s が存在しません.', $envFile));
         }
 
-        $env = file_get_contents($envFile);
-        if (false === $env) {
-            throw new ContentWriteException($envFile, sprintf('%s を読み込めません.', $envFile));
-        }
-
-        $env = StringUtil::replaceOrAddEnv($env, $values);
-
-        $written = file_put_contents($envFile, $env);
-        if (false === $written) {
+        // 'r+' は新規作成しないため, inode と所有者・モードをそのまま引き継ぐ
+        $handle = @fopen($envFile, 'r+');
+        if (false === $handle) {
             throw new ContentWriteException($envFile, sprintf('%s へ書き込めません. 書き込み権限のあるユーザーで実行してください.', $envFile));
         }
 
-        // ディスクフル等では false ではなく書き込めたバイト数が返る. .env が途中までしか
-        // 書かれていない状態のため, 成功として扱わない
-        if (strlen($env) !== $written) {
-            throw new ContentWriteException($envFile, sprintf('%s へ最後まで書き込めませんでした (%d / %d バイト). 内容を確認してください.', $envFile, $written, strlen($env)));
+        try {
+            // 排他ロックを取得してから読み直す. ロックの前に読むと, 待っている間に
+            // 他のプロセスが書いた内容を上書きしてしまう (更新消失)
+            if (!flock($handle, LOCK_EX)) {
+                throw new ContentWriteException($envFile, sprintf('%s のロックを取得できません.', $envFile));
+            }
+
+            $original = stream_get_contents($handle, -1, 0);
+            if (false === $original) {
+                throw new ContentWriteException($envFile, sprintf('%s を読み込めません.', $envFile));
+            }
+
+            $updated = StringUtil::replaceOrAddEnv($original, $values);
+
+            rewind($handle);
+            $written = fwrite($handle, $updated);
+
+            // ディスクフル等では false ではなく書き込めたバイト数が返る
+            if (false === $written || strlen($updated) !== $written) {
+                $this->restore($handle, $original);
+
+                throw new ContentWriteException($envFile, sprintf('%s へ最後まで書き込めませんでした (%d / %d バイト). 内容を確認してください.', $envFile, (int) $written, strlen($updated)));
+            }
+
+            // 切り詰めは書き込みが完了してから行う. 先に切ると, 書き込みに失敗したときに
+            // 元の内容ごと失う
+            ftruncate($handle, $written);
+            fflush($handle);
+        } finally {
+            // ロックも解放される
+            fclose($handle);
         }
+    }
+
+    /**
+     * 途中まで書き込まれた .env を元の内容へ戻す.
+     *
+     * 直前までディスク上にあった内容のため, ディスクフルでも書き戻せる見込みが高い.
+     * 戻せなかった場合も呼び出し元が例外を投げるため, 失敗が沈黙することはない.
+     *
+     * @param resource $handle
+     */
+    private function restore($handle, string $original): void
+    {
+        rewind($handle);
+        if (false !== fwrite($handle, $original)) {
+            ftruncate($handle, strlen($original));
+        }
+        fflush($handle);
     }
 
     /**
