@@ -125,7 +125,8 @@ docker compose exec -u eccube ec-cube bin/console eccube:doctor:permissions
 共有グループは作らない。CLI からレーン W を触る操作は Web サーバーのユーザーで実行する。
 本番の `sudo -u www-data` に相当する。
 `app/keystore` はレーン S。秘密鍵はデプロイ成果物で、Web サーバーから書き込めると署名鍵の
-差し替えを許すため読み取りのみとする（実行時に鍵を生成する機能を使う場合は事前に配置しておく）。
+差し替えを許すため読み取りのみとする。分離した構成では Web サーバーが実行時に鍵を生成できないため、
+アクセスを受ける前に `bin/console eccube:keystore:generate` で配置しておく。
 
 ```bash
 docker compose exec -u eccube   ec-cube bin/console eccube:cache:build        # レーン S を触る操作
@@ -147,6 +148,11 @@ CLI ユーザーなら成功する（Web サーバーのユーザーでは失敗
 ファイルへ書き込む必要がある環境では `0000` を設定すると 4.3 以前と同じ挙動（ディレクトリ 0777 /
 ファイル 0666）に戻せるが、同一サーバーの他ユーザーからも書き換え可能になる。
 
+鍵はディレクトリ 0755 / ファイル 0644 で作成する。Web サーバーは署名のために鍵を読む必要があり、
+所有者専用（0700 / 0600）にすると `chgrp` できない環境で読めなくなるため。同一サーバーの他ユーザーからも
+読ませたくない場合は `ECCUBE_KEYSTORE_STRICT_PERMISSIONS=1` を設定する（この場合 Web サーバーへ
+読み取りを許す手当ては運用側で行う。`eccube:keystore:generate` は読めない状態を検出してエラーにする）。
+
 分離すると、`app/template` や `html/user_data`、`.env` へ書き込む管理画面の機能（プラグイン導入・
 ページ/ブロック/メールテンプレート編集・CSS/JS 編集・ファイル管理・セキュリティ管理・テンプレート選択）は
 動作しなくなる。下記の CLI が代替導線になる。テンプレートのアップロードは未整備。
@@ -162,6 +168,7 @@ CLI ユーザーなら成功する（Web サーバーのユーザーでは失敗
 | `bin/console eccube:asset:*` | `show` / `apply` | `html/user_data/assets/{css,js}/customize.*` |
 | `bin/console eccube:user-data:*` | `list` / `show` / `put` / `remove` | `html/user_data/**` |
 | `bin/console eccube:env:*` | `get` / `set` | `.env` |
+| `bin/console eccube:keystore:*` | `list` / `show` / `generate` | `app/keystore/**` |
 
 ```bash
 bin/console eccube:page:list
@@ -171,6 +178,7 @@ cat guide.twig | bin/console eccube:page:apply --route=guide --name=ご利用ガ
 cat customize.css | bin/console eccube:asset:apply --type=css --body=-
 cat logo.png | bin/console eccube:user-data:put --path=assets/img/logo.png --body=-
 bin/console eccube:env:set ECCUBE_TEMPLATE_CODE=default
+bin/console eccube:keystore:generate      # 未生成の鍵だけを作る（冪等）
 ```
 
 ページ・ブロック・メールテンプレートの入力値の検証は管理画面と同じ FormType を通すため、

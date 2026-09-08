@@ -178,7 +178,8 @@ idempotent upserts and support `--dry-run` and `--format=json`; `--body=-` reads
 `eccube:mail-template:*` provides `list`, `show` and `apply`;
 `eccube:asset:*` provides `show` and `apply` for `html/user_data/assets/{css,js}/customize.*`;
 `eccube:user-data:*` provides `list`, `show`, `put` and `remove` for `html/user_data/**`;
-`eccube:env:*` provides `get` and `set` for `.env`.
+`eccube:env:*` provides `get` and `set` for `.env`;
+`eccube:keystore:*` provides `list`, `show` and `generate` for the signing keys in `app/keystore/**`.
 
 ```bash
 bin/console eccube:page:list
@@ -188,12 +189,19 @@ cat guide.twig | bin/console eccube:page:apply --route=guide --name=Guide --body
 cat customize.css | bin/console eccube:asset:apply --type=css --body=-
 cat logo.png | bin/console eccube:user-data:put --path=assets/img/logo.png --body=-
 bin/console eccube:env:set ECCUBE_TEMPLATE_CODE=default
+bin/console eccube:keystore:generate
 ```
 
 `html/` is the document root, so `eccube:user-data:put` applies the same file name and
 extension allow list as the admin file manager (`eccube_file_uploadable_extensions`).
 `eccube:env:set` rebuilds the build directory in a **separate process**, because the current
 one still holds the environment it read at start-up.
+
+`eccube:keystore:generate` is idempotent and never replaces an existing key unless `--force` is
+given. Keys are created as 0755 directories and 0644 files: the web server has to read them to
+sign responses, and owner-only modes break on hosts where the deploy user cannot `chgrp`. Set
+`ECCUBE_KEYSTORE_STRICT_PERMISSIONS=1` for 0700/0600 — the command then fails when the web server
+cannot read the key it just wrote. `eccube:keystore:show` never prints key material.
 
 ## Community
 

@@ -21,6 +21,10 @@ parameters:
     env(ECCUBE_AGENT_COMMERCE_UCP_SIGNING_KEY): ''
     env(ECCUBE_AGENT_COMMERCE_ACP_FEED_BASE_URL): ''
     env(ECCUBE_AGENT_COMMERCE_ACP_FEED_API_KEY): ''
+    # 鍵を所有者専用 (0700 / 0600) で作成するか。 既定は Web サーバーからも読める 0755 / 0644。
+    # 厳格化すると、 Web サーバーと CLI を別ユーザーに分けた構成では鍵を読めなくなるため、
+    # 読み取りを許す手当て (chgrp 等) を運用側で行う必要がある。
+    env(ECCUBE_KEYSTORE_STRICT_PERMISSIONS): ''
 
 services:
     # default configuration for services in *this* file
@@ -355,9 +359,26 @@ services:
                 ucp_signing: '%env(default::string:ECCUBE_AGENT_COMMERCE_UCP_SIGNING_KEY)%'
                 # ACP Webhook (Merchant-Signature) の共有シークレット保管先 (#6776、outbound 送出は後続 PR)。
                 acp_webhook: '%env(default::string:ECCUBE_AGENT_COMMERCE_ACP_WEBHOOK_SECRET)%'
+            $strictPermissions: '%env(bool:ECCUBE_KEYSTORE_STRICT_PERMISSIONS)%'
 
     Eccube\Service\AgentCommerce\Security\KeyStoreInterface:
         alias: Eccube\Service\AgentCommerce\Security\FilesystemKeyStore
+
+    # 鍵の用途 (KeyPurposeInterface) のタグ付けは Kernel の registerForAutoconfiguration で行う。
+    # このファイルの _instanceof はファイルスコープのため、 Plugin\ glob (services.php) で
+    # 登録されるプラグインの具象クラスには届かず、 レジストリが静かに空になるため。
+    Eccube\Service\AgentCommerce\Security\KeyPurposeRegistry:
+        arguments:
+            $purposes: !tagged_iterator agent_commerce.key_purpose
+
+    # KeyPurposeInterface は実装が複数あるため、 用途ごとに明示的に束縛する。
+    Eccube\Service\AgentCommerce\Security\UcpMessageSigner:
+        arguments:
+            $keyPurpose: '@Eccube\Service\AgentCommerce\Security\UcpSigningKeyPurpose'
+
+    Eccube\Service\AgentCommerce\Acp\AcpMessageSigner:
+        arguments:
+            $keyPurpose: '@Eccube\Service\AgentCommerce\Security\AcpWebhookKeyPurpose'
 
     Eccube\Service\AgentCommerce\Security\AgentCommerceMessageSignerInterface:
         alias: Eccube\Service\AgentCommerce\Security\UcpMessageSigner

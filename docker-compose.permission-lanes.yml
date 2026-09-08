@@ -24,8 +24,11 @@ version: '3'
 #     → CLI ユーザー所有。www-data は読み取りのみ
 #
 # app/keystore はレーン S。秘密鍵はデプロイ成果物であり、Web サーバーから書き込めると
-# 署名鍵の差し替えを許すため読み取りのみとする。実行時に鍵を生成する機能
-# (AcpMessageSigner / UcpMessageSigner) を使う場合は、鍵を事前に配置しておくこと。
+# 署名鍵の差し替えを許すため読み取りのみとする。分離した構成では Web サーバーが実行時に鍵を
+# 生成できないため、アクセスを受ける前に次で配置しておく (冪等)。
+#
+#   docker compose exec -u eccube ec-cube bin/console eccube:keystore:generate
+#
 #
 # CLI の実行ユーザーは操作対象のレーンで決まる。
 #
@@ -33,7 +36,9 @@ version: '3'
 #   レーン W を触る   docker compose exec -u www-data ec-cube bin/console cache:pool:clear --all
 #                     (本番では sudo -u www-data bin/console ... に相当する)
 #
-# cache:clear は var/build と var/cache の双方へ書き込むため、分離モードでは使用できない。
+# cache:clear は var/build と var/cache の双方へ書き込む。3 分割ではどちらもレーン S のため
+# CLI ユーザーなら成功する (Web サーバーのユーザーでは失敗する)。ただし --no-warmup を付けると
+# コンパイル済みコンテナが再生成されず、次のリクエストで Web サーバーが 500 になる。
 # コンパイル済みコンテナとテンプレートの再生成は eccube:cache:build を使う。
 #
 # 分離すると、レーン S へ書き込む管理画面の機能は動作しなくなる。

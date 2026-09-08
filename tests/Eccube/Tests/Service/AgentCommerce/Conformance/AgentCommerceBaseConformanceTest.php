@@ -18,6 +18,7 @@ namespace Eccube\Tests\Service\AgentCommerce\Conformance;
 use Eccube\Service\AgentCommerce\MinorUnitConverter;
 use Eccube\Service\AgentCommerce\Security\KeyStoreInterface;
 use Eccube\Service\AgentCommerce\Security\UcpMessageSigner;
+use Eccube\Service\AgentCommerce\Security\UcpSigningKeyPurpose;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -74,7 +75,7 @@ final class AgentCommerceBaseConformanceTest extends TestCase
             }
         };
 
-        $signer = new UcpMessageSigner($store, 'ucp_signing');
+        $signer = new UcpMessageSigner($store, new UcpSigningKeyPurpose());
         $jwks = $signer->getPublicJwks();
 
         $this->assertNotEmpty($jwks, 'MUST: at least one signing key is advertised for discovery');

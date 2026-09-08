@@ -134,7 +134,8 @@ class PermissionRequirementProvider
                 $projectDir.'/app/keystore',
                 WriteLane::SSH,
                 true,
-                '秘密鍵の格納先. CLI で事前に配置し Web サーバーからは読み取りのみとする. '
+                '秘密鍵の格納先. bin/console eccube:keystore:generate で事前に配置し, '
+                .'Web サーバーからは読み取りのみとする. '
                 .'実行時に鍵を生成する機能 (AcpMessageSigner) を使う場合のみ Web サーバーの書き込み権限が必要になる.'
             ),
             $this->create($this->path('eccube_theme_app_dir'), WriteLane::SSH),
