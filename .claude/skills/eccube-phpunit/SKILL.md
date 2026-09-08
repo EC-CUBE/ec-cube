@@ -112,7 +112,7 @@ public static function provideStatuses(): array
 - ❌ ステータス値のハードコーディング（`if ($status == 1)`）→ ✅ 定数（例: `OrderStatus::NEW`）を使う。
 - ❌ 回帰テストがゲートになるか確かめない → ✅ 修正を外して落ちるか実測する。`failOnWarning` が無いので Warning では落ちず、戻り値を assert する。
 - ❌ 型宣言の省略 → ✅ 引数・戻り値に型を付け、PHPStan level 6 を通す。
-- ❌ テストのプロパティを未宣言で代入／非 nullable で宣言 → ✅ nullable で宣言する。未宣言は deprecation、非 nullable は `cleanUpProperties()` の null 代入で `TypeError`。
+- ❌ テストのプロパティを未宣言で代入／非 nullable で宣言 → ✅ nullable で宣言（`cleanUpProperties()` の null 代入で `TypeError` になる）
 - ❌ HTML パートを持たないメールに `assertEmailHtmlBodyNotContains()` → ✅ `assertNull($Message->getHtmlBody())`。前者は必ず通る空振りになる。
 
 ## 実行方法

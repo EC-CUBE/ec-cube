@@ -130,7 +130,6 @@ vendor/bin/php-cs-fixer fix                     # PSR-12 整形・ライセン�
 - ❌ アクション内で `$em->persist()`/`$em->flush()` を直書きして業務処理 → ✅ Service のメソッドに集約
 - ❌ 複数アクションに同じ処理をコピペ → ✅ Service の 1 メソッドに共通化
 - ❌ 具象クラス型ヒントで密結合 → ✅ インターフェース型ヒント＋コンストラクタ DI
-- ❌ 削除/Ajax 等の状態変更でトークン未検証 → ✅ `$this->isTokenValid()` を呼ぶ（GET 以外）
 - ❌ 戻り値を捨てた `isTokenValid();` を「CSRF 未検証」と誤読 → ✅ 無効時は例外を投げるので bare 呼び出しで検証は成立する。`if (!isTokenValid())` の false 分岐はデッドコード
 - ❌ `#[Template]` 付きアクションが常に再描画されると前提する → ✅ engage するのは配列を返したときだけ。Response/Redirect を返すパスでは描画されない
 - ❌ 管理アクションを `%eccube_admin_route%` 配下以外に置く → ✅ admin ファイアウォール配下に置く
