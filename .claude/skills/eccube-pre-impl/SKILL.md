@@ -203,27 +203,9 @@ description: 新規機能の設計・実装を始める直前のチェックリ�
 - ❌ install しただけで動くと思う → ✅ install 直後は無効。`eccube:plugin:enable --code=...` で有効化
 - ❌ エンティティトレイトに `#[EntityExtension(Target::class)]` を付け忘れ → ✅ 付けないとプロキシに乗らない
 - ❌ トレイト追加後にプロキシ再生成を忘れる → ✅ `bin/console eccube:generate:proxies`
-- ❌ プロジェクト固有の 1 回限りの改変をプラグイン化 → ✅ それは `app/Customize/`。着脱・再配布するものだけプラグイン
-- ❌ `app/Customize`（`Eccube\` を直接拡張）と `app/Plugin`（`Plugin\{Code}\` 独立名前空間）の名前空間を混同 → ✅ 置き場所で名前空間を使い分ける
 - ❌ 「無効化したプラグインは読み込まれない」と考える → ✅ `registerBundles()` は DB を見ず `app/Plugin` 直下の `bundles.php` を全て `require` する
 
 > 実装パターン・コード例・実行方法: `.claude/skills/eccube-plugin/SKILL.md`
-
-## カスタマイズ（app/Customize）
-
-**触るとき**: `app/Customize` での拡張
-
-- ❌ コア（`src/Eccube/`）を直接書き換える → ✅ `app/Customize/` で拡張・上書きし、アップグレード安全にする
-- ❌ 名前空間を `Plugin\{Code}\` と混同 → ✅ Customize は **`Customize\` ＝ `app/Customize/`**
-- ❌ エンティティ拡張の trait に `#[EntityExtension(対象::class)]` を付け忘れ → ✅ 付けないと proxy に乗らずカラムが認識されない
-- ❌ trait 追加後に proxy 再生成を忘れる → ✅ `bin/console eccube:generate:proxies`
-- ❌ カラム追加に ALTER マイグレーションを書く → ✅ 属性が源泉。`schema:update --force` が反映（マイグレーションは INSERT・型変更等に限る。Skill `eccube-migration`）
-- ❌ 既存フォームを直接改変 → ✅ `AbstractTypeExtension` ＋ `getExtendedTypes()`（`app/Customize/Form/Extension/`）で拡張
-- ❌ サービスを `#[AsDecorator]` で包む（コアの作法と不一致） → ✅ `services.yaml` で `decorates` ＋ `@.inner` 委譲
-- ❌ テンプレートを上書こうとしてコア原本側を編集 → ✅ `app/template/` に同じ相対パスで同名ファイルを置く（app 側が優先）
-- ❌ 上書きパスのテーマ名を間違える → ✅ フロントは `app/template/{ECCUBE_TEMPLATE_CODE}/`（既定 `default`）、管理画面は `app/template/admin/`
-
-> 実装パターン・コード例・実行方法: `.claude/skills/eccube-customize/SKILL.md`
 
 ## メール
 
@@ -268,6 +250,7 @@ description: 新規機能の設計・実装を始める直前のチェックリ�
 - ❌ ループ内で毎回 `flush()` してバッチが遅い → ✅ バッチサイズごとにまとめて `flush()`、端数も最後に flush
 - ❌ 「Symfony Scheduler で定期実行」と推測で書く → ✅ コアに機構は無い。OS の cron から `bin/console` を叩く前提で冪等に作る
 - ❌ コマンド名を独自の命名で付ける → ✅ `eccube:` 接頭辞のコロン区切り（既存コマンドに倣う）
+- ❌ `Process` を既定のまま長時間 subprocess を実行 → ✅ `setTimeout(null)` を設定（既定60秒で cache:build 等が kill され中途半端な成果物が残る）
 
 > 実装パターン・コード例・実行方法: `.claude/skills/eccube-command/SKILL.md`
 
@@ -283,6 +266,7 @@ description: 新規機能の設計・実装を始める直前のチェックリ�
 - ❌ HTML パートを持たないメールに `assertEmailHtmlBodyNotContains()` → ✅ `assertNull($Message->getHtmlBody())`。前者は必ず通る空振りになる。
 - ❌ ローカルだけ 500 のテストを自分の変更のせいに帰属 → ✅ `createFormData()` が送らない列で非 nullable setter に `null` が入る
 - ❌ 依存ライブラリの例外メッセージを全文アサート → ✅ 版差で変わらない部分だけ含有判定する。上流はマイナー更新で書式を足すので、lock 更新だけで全マトリクスが落ちる。
+- ❌ `strpos()` の結果を順序比較にそのまま使う → ✅ 見つからないと `false` が `0` 扱いで空振りする。比較前に双方の存在を assert する
 
 > 実装パターン・コード例・実行方法: `.claude/skills/eccube-phpunit/SKILL.md`
 

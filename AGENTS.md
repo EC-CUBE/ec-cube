@@ -259,7 +259,6 @@ EC-CUBE は Symfony の EventDispatcher を拡張してカスタマイズを実�
 | プラグイン（ライフサイクル・配置・拡張） | [`.claude/skills/eccube-plugin/SKILL.md`](./.claude/skills/eccube-plugin/SKILL.md) | `eccube-plugin` |
 | 受注処理（PurchaseFlow の Processor/Validator） | [`.claude/skills/eccube-purchase-flow/SKILL.md`](./.claude/skills/eccube-purchase-flow/SKILL.md) | `eccube-purchase-flow` |
 | メール（MailService・テンプレート・MailHistory） | [`.claude/skills/eccube-mail/SKILL.md`](./.claude/skills/eccube-mail/SKILL.md) | `eccube-mail` |
-| カスタマイズ（app/Customize での拡張・上書き・デコレーション） | [`.claude/skills/eccube-customize/SKILL.md`](./.claude/skills/eccube-customize/SKILL.md) | `eccube-customize` |
 | CSV 入出力（CsvImport/Export・CSV 定義） | [`.claude/skills/eccube-csv/SKILL.md`](./.claude/skills/eccube-csv/SKILL.md) | `eccube-csv` |
 | コンソールコマンド（Symfony Console・バッチ） | [`.claude/skills/eccube-command/SKILL.md`](./.claude/skills/eccube-command/SKILL.md) | `eccube-command` |
 | アセットビルド（SCSS / JS バンドル・生成物のコミット） | [`.claude/skills/eccube-asset/SKILL.md`](./.claude/skills/eccube-asset/SKILL.md) | `eccube-asset` |

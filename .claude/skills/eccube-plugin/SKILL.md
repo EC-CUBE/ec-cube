@@ -8,8 +8,10 @@ description: EC-CUBE 4.4 のプラグインを実装・改修するときの規�
 **対象**: `app/Plugin/{PluginCode}/**`（コア側の仕組みは `src/Eccube/Plugin/`, `src/Eccube/Service/PluginService.php`）
 **前提**: Symfony 7.4 / PHP 8.2+
 
-> 目的: 自己完結したパッケージとして機能を追加し、コアやプロジェクト固有カスタマイズ（`app/Customize/`）と混同しないこと。
-> プロジェクト固有の 1 回限りの改変は `app/Customize/`、再配布・着脱可能な機能は `app/Plugin/`。
+> 目的: プラグインの契約（配置・メタデータ・ライフサイクル）を正しく扱うこと。
+> 本体開発では、プラグイン機構そのものの改修（`src/Eccube/Plugin/`・`PluginService`）と、
+> `app/Plugin/` に置く検証用プラグイン（`AnnotatedRouting` / `EntityExtension` / `EntityForm` 等）の
+> 保守で必要になる。
 
 ## 雛形の生成（まず CLI で骨組みを作る）
 
