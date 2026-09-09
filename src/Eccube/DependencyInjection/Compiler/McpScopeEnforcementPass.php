@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Eccube\DependencyInjection\Compiler;
 
+use Eccube\Service\Mcp\McpServerDefinition;
 use Eccube\Service\Mcp\ScopeEnforcingReferenceHandler;
 use Mcp\Capability\Registry\ReferenceHandler;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -46,7 +47,7 @@ final class McpScopeEnforcementPass implements CompilerPassInterface
         // builder が無い (mcp-bundle 未配線) 環境では scope 強制を差し込む先が無い。 ここで先に
         // return しないと、 配線されない ReferenceHandler 定義だけが残り、 builder 不在構成の
         // コンテナコンパイルを乱す。 MCP サーバが無ければ守る対象も無いのでスキップしてよい。
-        if (!$container->hasDefinition('mcp.server.builder')) {
+        if (!$container->hasDefinition(McpServerDefinition::BUILDER_SERVICE_ID)) {
             return;
         }
 
@@ -60,7 +61,7 @@ final class McpScopeEnforcementPass implements CompilerPassInterface
         );
 
         // 全 Tool 呼び出しが通る referenceHandler を scope 強制版に差し替える。
-        $container->getDefinition('mcp.server.builder')
+        $container->getDefinition(McpServerDefinition::BUILDER_SERVICE_ID)
             ->addMethodCall('setReferenceHandler', [new Reference(ScopeEnforcingReferenceHandler::class)]);
     }
 
@@ -71,7 +72,7 @@ final class McpScopeEnforcementPass implements CompilerPassInterface
     private function resolveToolLocator(ContainerBuilder $container): Reference
     {
         // 呼び出し元 (process) が builder の存在を保証済み。
-        foreach ($container->getDefinition('mcp.server.builder')->getMethodCalls() as [$method, $arguments]) {
+        foreach ($container->getDefinition(McpServerDefinition::BUILDER_SERVICE_ID)->getMethodCalls() as [$method, $arguments]) {
             if ('setContainer' === $method && isset($arguments[0]) && $arguments[0] instanceof Reference) {
                 return $arguments[0];
             }

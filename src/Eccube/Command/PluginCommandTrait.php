@@ -68,6 +68,9 @@ trait PluginCommandTrait
             $io->text(sprintf('<info>Run %s</info>...', implode(' ', $command)));
             // cwd を明示しない場合, プロジェクトルート以外から実行すると bin/console を解決できない
             $process = new Process($command, (string) $this->eccubeConfig->get('kernel.project_dir'));
+            // Process の既定タイムアウトは 60 秒. 超過すると子プロセスが kill され,
+            // 削除が中途半端な状態のまま「削除できませんでした」と案内することになる
+            $process->setTimeout(null);
             $process->mustRun();
             $io->text($process->getOutput());
 
