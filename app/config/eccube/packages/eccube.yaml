@@ -181,17 +181,58 @@ parameters:
     eccube_2fa_enabled: '%env(ECCUBE_2FA_ENABLED)%'
     eccube_2fa_cookie_name: '%env(ECCUBE_2FA_COOKIE_NAME)%'
     eccube_2fa_expire: '%env(ECCUBE_2FA_EXPIRE)%'
-    eccube_restrict_file_upload: '%env(ECCUBE_RESTRICT_FILE_UPLOAD)%' # ファイルアップロード可能な機能を制限する
-    eccube_restrict_file_upload_urls: # ファイルアップロードを制限するURL
-      - admin_content_file
-      - admin_store_plugin_install
-      - admin_content_page_new
-      - admin_content_page_edit
-      - admin_content_block_new
-      - admin_content_block_edit
-      - admin_content_css
-      - admin_content_js
-      - admin_store_template_install
+    eccube_restrict_file_upload: '%env(ECCUBE_RESTRICT_FILE_UPLOAD)%' # 管理画面を読み取り専用にする
+    # 読み取り専用にする管理画面と, 代替となる CLI コマンド (~ は CLI が未整備).
+    # 安全なメソッド (GET / HEAD) は通し, 書き込みを伴うメソッドだけ 403 にする.
+    # 一覧・確認画面 (GET のみ) も, そこに置かれた操作ボタンを無効化するために登録する.
+    #
+    # 対象は「Web サーバーではなく CLI 実行ユーザーが所有するディレクトリ (app/template,
+    # html/user_data, app/Plugin, vendor, .env 等) へ書き込む画面」. 次のものは含めない.
+    #   admin_store_authentication_setting  : 認証キーの保存先は dtb_base_info で,
+    #                                         composer.json の更新は副作用. 塞ぐと登録手段が消える
+    #   admin_content_cache                 : 保存操作ではなく保守操作. 書き込めない場合は警告を出す
+    #   admin_content_maintenance           : メンテナンスファイルは Web サーバーが書き込む
+    #   admin_store_plugin_owners_search    : POST だが検索のみ
+    #   admin_setting_shop_mail_preview     : 描画のみ
+    #   *_view / *_download                 : 読み取りのみ
+    eccube_restrict_file_upload_urls:
+      # コンテンツ (app/template, html/user_data)
+      admin_content_page: 'bin/console eccube:page:apply --route=<ルート> --body=-'
+      admin_content_page_new: 'bin/console eccube:page:apply --route=<ルート> --body=-'
+      admin_content_page_edit: 'bin/console eccube:page:apply --route=<ルート> --body=-'
+      admin_content_page_delete: 'bin/console eccube:page:remove --route=<ルート>'
+      admin_content_block: 'bin/console eccube:block:apply --file-name=<ファイル名> --body=-'
+      admin_content_block_new: 'bin/console eccube:block:apply --file-name=<ファイル名> --body=-'
+      admin_content_block_edit: 'bin/console eccube:block:apply --file-name=<ファイル名> --body=-'
+      admin_content_block_delete: 'bin/console eccube:block:remove --file-name=<ファイル名>'
+      admin_content_css: 'bin/console eccube:asset:apply --type=css --body=-'
+      admin_content_js: 'bin/console eccube:asset:apply --type=js --body=-'
+      admin_content_file: 'bin/console eccube:user-data:put --path=<パス> --body=-'
+      admin_content_file_delete: 'bin/console eccube:user-data:remove --path=<パス>'
+      # メールテンプレート (削除に相当する CLI は未整備)
+      admin_setting_shop_mail: 'bin/console eccube:mail-template:apply --file-name=<ファイル名> --body=-'
+      admin_setting_shop_mail_edit: 'bin/console eccube:mail-template:apply --id=<ID> --body=-'
+      admin_setting_shop_mail_delete: ~
+      # .env
+      admin_setting_system_security: 'bin/console eccube:env:set ECCUBE_ADMIN_ROUTE=<値>'
+      admin_store_template: 'bin/console eccube:env:set ECCUBE_TEMPLATE_CODE=<コード>'
+      # テンプレート (アップロード・削除に相当する CLI は未整備)
+      admin_store_template_install: ~
+      admin_store_template_delete: ~
+      # プラグイン (app/Plugin, app/proxy, vendor, composer.json)
+      admin_store_plugin: 'bin/console eccube:plugin:enable --code=<コード>'
+      admin_store_plugin_install: 'bin/console eccube:plugin:install --path=<アーカイブ>'
+      admin_store_plugin_install_confirm: 'bin/console eccube:composer:require ec-cube/<コード>'
+      admin_store_plugin_update_confirm: 'bin/console eccube:composer:require ec-cube/<コード> <バージョン>'
+      admin_store_plugin_enable: 'bin/console eccube:plugin:enable --code=<コード>'
+      admin_store_plugin_disable: 'bin/console eccube:plugin:disable --code=<コード>'
+      admin_store_plugin_uninstall: 'bin/console eccube:plugin:uninstall --code=<コード>'
+      admin_store_plugin_update: 'bin/console eccube:plugin:update <コード>'
+      admin_store_plugin_api_install: 'bin/console eccube:composer:require ec-cube/<コード>'
+      admin_store_plugin_api_uninstall: 'bin/console eccube:plugin:uninstall --code=<コード>'
+      admin_store_plugin_api_update: 'bin/console eccube:composer:require ec-cube/<コード> <バージョン>'
+      admin_store_plugin_api_upgrade: 'bin/console eccube:composer:require ec-cube/<コード> <バージョン>'
+      admin_store_plugin_api_schema_update: 'bin/console eccube:plugin:schema-update <コード>'
     eccube_file_uploadable_extensions: # ファイル管理でアップロード可能な拡張子
       - jpg
       - jpeg

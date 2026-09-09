@@ -203,6 +203,17 @@ sign responses, and owner-only modes break on hosts where the deploy user cannot
 `ECCUBE_KEYSTORE_STRICT_PERMISSIONS=1` for 0700/0600 — the command then fails when the web server
 cannot read the key it just wrote. `eccube:keystore:show` never prints key material.
 
+### Read-only Admin Screens
+
+Setting `ECCUBE_RESTRICT_FILE_UPLOAD=1` turns every admin screen that writes outside the web
+server's lane into a **read-only** screen: the current contents stay visible, save and delete
+controls are disabled, and the screen shows the CLI command that replaces them. Requests that
+would write are rejected with 403 on the server, so paths that bypass the UI are covered too.
+The screens and their CLI equivalents are listed in `eccube_restrict_file_upload_urls`
+(route name to command) in `app/config/eccube/packages/eccube.yaml`; it covers content, mail
+templates, `.env`, templates and every plugin operation. When the variable is unset (the
+default) the screens behave as before and fail at save time.
+
 ## Community
 
 - [GitHub Repository](https://github.com/EC-CUBE/ec-cube)

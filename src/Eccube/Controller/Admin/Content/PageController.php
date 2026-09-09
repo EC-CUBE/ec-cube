@@ -71,8 +71,6 @@ class PageController extends AbstractController
     #[Template(template: '@admin/Content/page_edit.twig')]
     public function edit(Request $request, $id = null): RedirectResponse|array
     {
-        $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');
-
         if (null === $id) {
             $Page = $this->pageRepository->newPage();
         } else {

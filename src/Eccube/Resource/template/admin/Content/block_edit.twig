@@ -155,7 +155,7 @@ file that was distributed with this source code.
                     <div class="col-6">
                         <div id="ex-conversion-action" class="row align-items-center justify-content-end">
                             <div class="col-auto">
-                                <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.common.registration'|trans }}</button>
+                                <button class="btn btn-ec-conversion px-5" type="submit"{% if isReadOnlyScreen|default(false) %} disabled{% endif %}>{{ 'admin.common.registration'|trans }}</button>
                             </div>
                         </div>
                     </div>

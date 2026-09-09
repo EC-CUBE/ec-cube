@@ -45,7 +45,13 @@
         });
 
         var $save_button = $('#save-button');
+        // サーバー側で無効化されているかを JS へ渡す
+        var isReadOnly = {% if isReadOnlyScreen|default(false) %}true{% else %}false{% endif %};
         editor.getSession().on("changeAnnotation", function(){
+            // 読み取り専用のときはサーバー側で保存ボタンを無効化しているため, 構文チェックで有効へ戻さない
+            if (isReadOnly) {
+                return;
+            }
             var annot = editor.getSession().getAnnotations();
             for (var key in annot){
                 if (annot.hasOwnProperty(key)) {
@@ -122,7 +128,7 @@
                     <div class="col-6">
                         <div id="ex-conversion-action" class="row align-items-center justify-content-end">
                             <div class="col-auto">
-                                <button id="save-button" class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.common.registration'|trans }}</button>
+                                <button id="save-button" class="btn btn-ec-conversion px-5" type="submit"{% if isReadOnlyScreen|default(false) %} disabled{% endif %}>{{ 'admin.common.registration'|trans }}</button>
                             </div>
                         </div>
                     </div>

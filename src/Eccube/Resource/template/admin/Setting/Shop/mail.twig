@@ -237,7 +237,7 @@ file that was distributed with this source code.
                     <div class="col-6">
                         <div id="ex-conversion-action" class="row align-items-center justify-content-end">
                             <div class="col-auto">
-                                <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.common.registration'|trans }}</button>
+                                <button class="btn btn-ec-conversion px-5" type="submit"{% if isReadOnlyScreen|default(false) %} disabled{% endif %}>{{ 'admin.common.registration'|trans }}</button>
                             </div>
                         </div>
                     </div>
@@ -287,8 +287,9 @@ file that was distributed with this source code.
                 <div class="modal-footer">
                     <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">{{ 'admin.common.cancel'|trans }}
                     </button>
-                    <a class="btn btn-ec-delete"
+                    <a class="btn btn-ec-delete{% if isReadOnlyScreen|default(false) %} disabled{% endif %}"
                        href="{{ url('admin_setting_shop_mail_delete', {id: Mail.id}) }}"
+                        {% if isReadOnlyScreen|default(false) %}aria-disabled="true" tabindex="-1"{% endif %}
                         {{ csrf_token_for_anchor() }}
                        data-method="delete" data-confirm="false">
                         {{ 'admin.common.delete'|trans }}

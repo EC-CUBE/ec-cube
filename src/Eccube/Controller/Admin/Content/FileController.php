@@ -14,6 +14,7 @@
 namespace Eccube\Controller\Admin\Content;
 
 use Eccube\Controller\AbstractController;
+use Eccube\EventListener\RestrictFileUploadListener;
 use Eccube\Exception\ContentValidationException;
 use Eccube\Service\Content\UserDataFileService;
 use Eccube\Util\FilesystemUtil;
@@ -31,6 +32,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -62,8 +64,6 @@ class FileController extends AbstractController
     #[Template(template: '@admin/Content/file.twig')]
     public function index(Request $request): array
     {
-        $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');
-
         $form = $this->formFactory->createBuilder(FormType::class)
             ->add('file', FileType::class, [
                 'multiple' => true,
@@ -92,7 +92,16 @@ class FileController extends AbstractController
         $parentDir = substr($nowDir, 0, strrpos($nowDir, '/'));
 
         if ('POST' === $request->getMethod()) {
-            switch ($request->get('mode')) {
+            $mode = $request->get('mode');
+
+            // ディレクトリの移動も POST のため, RestrictFileUploadListener は
+            // このルートの書き込みをメソッドで判別できない. ここで書き込む操作だけを拒否する
+            if (in_array($mode, ['create', 'upload'], true)
+                && $request->attributes->getBoolean(RestrictFileUploadListener::READ_ONLY_ATTRIBUTE)) {
+                throw new AccessDeniedHttpException(trans('exception.error_message_restrict_url'));
+            }
+
+            switch ($mode) {
                 case 'create':
                     $this->create($request);
                     break;

@@ -76,8 +76,6 @@ class BlockController extends AbstractController
     #[Template(template: '@admin/Content/block_edit.twig')]
     public function edit(Request $request, $id = null): RedirectResponse|array
     {
-        $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');
-
         $DeviceType = $this->deviceTypeRepository
             ->find(DeviceType::DEVICE_TYPE_PC);
 
