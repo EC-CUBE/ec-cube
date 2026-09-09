@@ -155,7 +155,7 @@ final class MailTemplateCommandTest extends EccubeTestCase
             '--body' => 'body',
         ]);
         $Mail = $this->mailTemplateContentService->findByFileName((string) $this->fileName);
-        self::assertInstanceOf(MailTemplate::class, $Mail);
+        $this->assertInstanceOf(MailTemplate::class, $Mail);
         $filePath = $this->mailTemplateContentService->getFilePath($Mail);
 
         $tester = $this->remove(['--file-name' => $this->fileName, '--force' => true]);

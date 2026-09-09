@@ -146,8 +146,6 @@ final class ContentsArchive
 
     /**
      * 差分が安定するように書式を固定して yaml へ変換する.
-     *
-     * @param mixed $data
      */
     public static function dump(mixed $data): string
     {

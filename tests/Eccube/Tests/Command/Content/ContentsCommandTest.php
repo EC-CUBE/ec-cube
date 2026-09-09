@@ -335,7 +335,7 @@ final class ContentsCommandTest extends EccubeTestCase
         $this->export();
         $this->removeRow('pages', 'route', (string) $this->route);
         $this->removeRow('pages', 'route', (string) $CorePage->getUrl());
-        $this->removeRow('blocks', 'file_name', (string) $CoreBlock->getFileName());
+        $this->removeRow('blocks', 'file_name', $CoreBlock->getFileName());
 
         $dryRun = $this->import(['--prune' => true, '--dry-run' => true]);
         $this->assertSame(0, $dryRun->getStatusCode(), $dryRun->getDisplay());
@@ -354,7 +354,7 @@ final class ContentsCommandTest extends EccubeTestCase
         $this->assertInstanceOf(
             Block::class,
             $this->blockContentService->findByFileName(
-                (string) $CoreBlock->getFileName(),
+                $CoreBlock->getFileName(),
                 $this->blockContentService->getDeviceType(DeviceType::DEVICE_TYPE_PC)
             ),
             '削除できないブロックはアーカイブから外れていても削除しない'

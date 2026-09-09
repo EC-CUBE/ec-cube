@@ -144,7 +144,7 @@ final class ContentsImportCommand extends Command
                     static fn (ContentsImportResult $r): array => [
                         $r->section,
                         $r->identifier,
-                        $r->isError() ? '<fg=red>error: '.(string) $r->error.'</>' : (string) $r->status?->value,
+                        $r->isError() ? '<fg=red>error: '.$r->error.'</>' : (string) $r->status?->value,
                     ],
                     $changed
                 )

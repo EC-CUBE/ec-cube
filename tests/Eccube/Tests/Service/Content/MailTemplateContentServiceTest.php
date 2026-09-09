@@ -197,7 +197,7 @@ final class MailTemplateContentServiceTest extends EccubeTestCase
     private function htmlFilePath(): string
     {
         $Mail = $this->mailTemplateContentService->findByFileName((string) $this->fileName);
-        self::assertInstanceOf(MailTemplate::class, $Mail);
+        $this->assertInstanceOf(MailTemplate::class, $Mail);
 
         return $this->mailTemplateContentService->getHtmlFilePath($Mail);
     }

@@ -132,9 +132,9 @@ final class BlockContentServiceTest extends EccubeTestCase
     public function testApplyDoesNotShadowCoreTemplate(): void
     {
         $Block = $this->findCoreBlockWithoutOverride();
-        $fileName = (string) $Block->getFileName();
+        $fileName = $Block->getFileName();
         $filePath = $this->blockContentService->getFilePath($Block);
-        $original = (string) $Block->getName();
+        $original = $Block->getName();
         // 万一書き出された場合にリポジトリへ残さない
         $this->createdFiles[] = $filePath;
 
