@@ -204,7 +204,8 @@ class EnvFileService
      *
      * @param array<string, string> $values キー => 値 (値は .env の行にそのまま書き出す)
      *
-     * @throws ContentWriteException .env が無い, 開けない, 書き込めない, 途中までしか書き込めなかった場合
+     * @throws ContentWriteException .env が無い, 開けない, 書き込めない, 途中までしか書き込めなかった場合,
+     *                               切り詰めや書き出しを完了できなかった場合
      */
     public function set(array $values): void
     {
@@ -242,15 +243,16 @@ class EnvFileService
 
             // ディスクフル等では false ではなく書き込めたバイト数が返る
             if (false === $written || strlen($updated) !== $written) {
-                $this->restore($handle, $original);
-
-                throw new ContentWriteException($envFile, sprintf('%s へ最後まで書き込めませんでした (%d / %d バイト). 内容を確認してください.', $envFile, (int) $written, strlen($updated)));
+                throw new ContentWriteException($envFile, sprintf('%s へ最後まで書き込めませんでした (%d / %d バイト). %s', $envFile, (int) $written, strlen($updated), self::restoreNotice($this->restore($handle, $original))));
             }
 
             // 切り詰めは書き込みが完了してから行う. 先に切ると, 書き込みに失敗したときに
-            // 元の内容ごと失う
-            ftruncate($handle, $written);
-            fflush($handle);
+            // 元の内容ごと失う.
+            // 戻り値を捨てると, 更新後の内容が短いときに切り詰めの失敗で元の内容の末尾が残り,
+            // 不正な行が混ざったまま成功として返ることになる (書き込みバイト数の検査と同じ理由).
+            if (!ftruncate($handle, $written) || !fflush($handle)) {
+                throw new ContentWriteException($envFile, sprintf('%s の更新を完了できませんでした. %s', $envFile, self::restoreNotice($this->restore($handle, $original))));
+            }
         } finally {
             // ロックも解放される
             fclose($handle);
@@ -261,17 +263,44 @@ class EnvFileService
      * 途中まで書き込まれた .env を元の内容へ戻す.
      *
      * 直前までディスク上にあった内容のため, ディスクフルでも書き戻せる見込みが高い.
-     * 戻せなかった場合も呼び出し元が例外を投げるため, 失敗が沈黙することはない.
+     *
+     * 切り詰めに失敗した場合の呼び出しでは, ファイルの長さが元の内容以上になっているため
+     * 先頭から書き戻すだけで復元できる (切り詰めを必要としない).
      *
      * @param resource $handle
+     *
+     * @return bool 元の内容へ完全に戻せた場合 true
      */
-    private function restore($handle, string $original): void
+    private function restore($handle, string $original): bool
     {
         rewind($handle);
-        if (false !== fwrite($handle, $original)) {
-            ftruncate($handle, strlen($original));
+
+        // 書き込みと同じく, 部分書き込みは false ではなく書き込めたバイト数で返る
+        $written = fwrite($handle, $original);
+        if (false === $written || strlen($original) !== $written) {
+            return false;
         }
-        fflush($handle);
+
+        // 既に元の長さなら切り詰めは要らない. 切り詰めの失敗で呼ばれた場合でも復元できる
+        $stat = fstat($handle);
+        if (false !== $stat && $stat['size'] === $written) {
+            return fflush($handle);
+        }
+
+        return ftruncate($handle, $written) && fflush($handle);
+    }
+
+    /**
+     * 復元できたかどうかを利用者向けの案内にする.
+     *
+     * 戻せたなら原因 (ディスクの空き等) を取り除いて再実行すればよく, 戻せなかったなら
+     * .env そのものを直す必要がある. 復旧手順が変わるため区別して伝える.
+     */
+    private static function restoreNotice(bool $restored): string
+    {
+        return $restored
+            ? '内容は書き込み前の状態へ戻しました. 原因を取り除いてから再実行してください.'
+            : '内容が壊れている可能性があります. .env を確認してください.';
     }
 
     /**
