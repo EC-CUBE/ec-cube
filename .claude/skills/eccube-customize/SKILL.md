@@ -168,16 +168,8 @@ Twig の検索パスは **`app/template/...`（`eccube_theme_front_dir` / `eccub
 
 ## よくある間違い
 
-- ❌ コア（`src/Eccube/`）を直接書き換える → ✅ `app/Customize/` で拡張・上書きし、アップグレード安全にする
-- ❌ プロジェクト固有の 1 回限りの改変をプラグイン化 → ✅ それは `app/Customize/`。着脱・再配布するものだけ `app/Plugin/`
-- ❌ 名前空間を `Plugin\{Code}\` と混同 → ✅ Customize は **`Customize\` ＝ `app/Customize/`**
-- ❌ エンティティ拡張の trait に `#[EntityExtension(対象::class)]` を付け忘れ → ✅ 付けないと proxy に乗らずカラムが認識されない
-- ❌ trait 追加後に proxy 再生成を忘れる → ✅ `bin/console eccube:generate:proxies`
-- ❌ カラム追加に ALTER マイグレーションを書く → ✅ 属性が源泉。`schema:update --force` が反映（マイグレーションは INSERT・型変更等に限る。Skill `eccube-migration`）
-- ❌ 既存フォームを直接改変 → ✅ `AbstractTypeExtension` ＋ `getExtendedTypes()`（`app/Customize/Form/Extension/`）で拡張
-- ❌ サービスを `#[AsDecorator]` で包む（コアの作法と不一致） → ✅ `services.yaml` で `decorates` ＋ `@.inner` 委譲
-- ❌ テンプレートを上書こうとしてコア原本側を編集 → ✅ `app/template/` に同じ相対パスで同名ファイルを置く（app 側が優先）
-- ❌ 上書きパスのテーマ名を間違える → ✅ フロントは `app/template/{ECCUBE_TEMPLATE_CODE}/`（既定 `default`）、管理画面は `app/template/admin/`
+このレイヤの「よくある間違い」10 項は [`eccube-pre-impl`](../eccube-pre-impl/SKILL.md) の「カスタマイズ（app/Customize）」節に集約している。
+全レイヤの注意を 1 か所で読めるようにするため、ここには重複して置かない。
 
 ## 実行・確認方法
 

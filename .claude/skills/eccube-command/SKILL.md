@@ -169,16 +169,8 @@ try {
 
 ## よくある間違い
 
-整形・型・属性変換（`vendor/bin/rector` / `phpstan` / `php-cs-fixer`）が扱える範囲はここに挙げない。
-**ツールでは判断できない**観点だけ:
-
-- ❌ `execute()` に業務的な計算・判定・複数 Repository 横断処理を直書き → ✅ Service／Repository へ委譲し、コマンドは入出力と終了コードに徹する
-- ❌ コンストラクタで `parent::__construct()` を呼び忘れる → ✅ コマンドでは必須（呼ばないと実行時エラー）
-- ❌ サービス定義に手書きで `console.command` タグを足す → ✅ `#[AsCommand]` ＋ `autoconfigure` 任せ（手動登録不要）
-- ❌ `execute()` の戻り値を書かない／`void` にする → ✅ `int` を返す（正常 `0`、異常は非 0）
-- ❌ ループ内で毎回 `flush()` してバッチが遅い → ✅ バッチサイズごとにまとめて `flush()`、端数も最後に flush
-- ❌ 「Symfony Scheduler で定期実行」と推測で書く → ✅ コアに機構は無い。OS の cron から `bin/console` を叩く前提で冪等に作る
-- ❌ コマンド名を独自の命名で付ける → ✅ `eccube:` 接頭辞のコロン区切り（既存コマンドに倣う）
+このレイヤの「よくある間違い」7 項は [`eccube-pre-impl`](../eccube-pre-impl/SKILL.md) の「コンソールコマンド」節に集約している。
+全レイヤの注意を 1 か所で読めるようにするため、ここには重複して置かない。
 
 ## 実行・確認方法
 

@@ -78,20 +78,10 @@ if ($this->isGranted('IS_AUTHENTICATED_FULLY')) { ... }
 `services.yaml` の `autoconfigure: true` により `security.voter` タグは自動付与される（手動登録は不要。コアの既存 Voter に倣う）。
 **`access_decision` が unanimous なので、棄権（ABSTAIN）と拒否（DENY）の使い分けを誤ると全体が拒否になる**点に注意。
 
-## よくある間違い（認可・CSRF・IDOR — ツールでは検出できない観点）
+## よくある間違い
 
-- ❌ 管理アクションを `%eccube_admin_route%` 配下**以外**に置く → ✅ 配下に置き admin firewall の保護下にする
-- ❌ フォームを介さない POST/DELETE/Ajax で CSRF 未検証 → ✅ `$this->isTokenValid()` を呼ぶ（GET 以外）
-- ❌ Ajax 専用アクションで XHR 以外も受け付ける → ✅ CSRF 検証に加え **`$request->isXmlHttpRequest()`** を併用し XHR に限定する
-- ❌ フロントで `{id}` から取得したエンティティを所有権チェックせず編集/削除（**IDOR**）
-  → ✅ `$this->getUser()` と突き合わせ、他人のリソースなら `AccessDeniedHttpException`
-- ❌ パスワード変更・退会など重要操作を `IS_AUTHENTICATED_REMEMBERED` で許可
-  → ✅ `IS_AUTHENTICATED_FULLY` を要求（盗難 Cookie での実行を防ぐ）
-- ❌ 独自 Voter で「対象外」を `ACCESS_DENIED` で返す → ✅ 対象外は `ACCESS_ABSTAIN`（unanimous 戦略で誤拒否を防ぐ）
-- ❌ 自前でパスワードをハッシュ/平文比較 → ✅ `PasswordHasher` 経由に統一
-- ❌ ユーザー入力を Twig で `|raw` 出力 → ✅ エスケープを効かせる（Skill `eccube-twig-template`）
-- ❌ ファイル操作を伴う管理ルートを新設して `eccube_restrict_file_upload` を考慮しない → ✅ 遮断対象（`eccube_restrict_file_upload_urls`）に含めるべきか検討する
-- ❌ ユーザー指定のパスをそのまま読み書き（**ディレクトリトラバーサル**）→ ✅ `..` を拒否し `realpath()` で解決、許可ベース配下かを検証する（`FileController::checkDir()` が手本）
+このレイヤの「よくある間違い」10 項は [`eccube-pre-impl`](../eccube-pre-impl/SKILL.md) の「セキュリティ（認証・認可・CSRF・IDOR）」節に集約している。
+全レイヤの注意を 1 か所で読めるようにするため、ここには重複して置かない。
 
 ## 実行・確認方法
 

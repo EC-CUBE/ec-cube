@@ -122,20 +122,7 @@ vendor/bin/php-cs-fixer fix                     # PSR-12 整形・ライセン�
 
 > `.husky/pre-commit`（PR #6761）がマージされれば、staged な `.php` を含む commit 時に rector(dry-run)→phpstan→php-cs-fixer が自動実行される想定。
 
-## よくある間違い（責務・セキュリティの判断）
+## よくある間違い
 
-整形・変換系（`@Route`→`#[Route]` 等）は上記ツールが扱うのでここでは挙げない。**ツールでは判断できない**観点だけ:
-
-- ❌ コントローラ内に金額/在庫/送料の計算ロジック → ✅ Service に移し、コントローラは結果を受け取るだけ
-- ❌ アクション内で `$em->persist()`/`$em->flush()` を直書きして業務処理 → ✅ Service のメソッドに集約
-- ❌ 複数アクションに同じ処理をコピペ → ✅ Service の 1 メソッドに共通化
-- ❌ 具象クラス型ヒントで密結合 → ✅ インターフェース型ヒント＋コンストラクタ DI
-- ❌ 削除/Ajax 等の状態変更でトークン未検証 → ✅ `$this->isTokenValid()` を呼ぶ（GET 以外）
-- ❌ 戻り値を捨てた `isTokenValid();` を「CSRF 未検証」と誤読 → ✅ 無効時は例外を投げるので bare 呼び出しで検証は成立する。`if (!isTokenValid())` の false 分岐はデッドコード
-- ❌ `#[Template]` 付きアクションが常に再描画されると前提する → ✅ engage するのは配列を返したときだけ。Response/Redirect を返すパスでは描画されない
-- ❌ 管理アクションを `%eccube_admin_route%` 配下以外に置く → ✅ admin ファイアウォール配下に置く
-- ❌ `executePurchaseFlow()` を複数回呼んで 2 回目以降の `FlowResult` を無視する → ✅ 毎回 `hasError()`/`hasWarning()` を同じに分岐させる
-
----
-
-実装・改修後は、Skill `eccube-review-responsibility` で責務分離を点検すること。
+このレイヤの「よくある間違い」8 項は [`eccube-pre-impl`](../eccube-pre-impl/SKILL.md) の「コントローラ」節に集約している。
+全レイヤの注意を 1 か所で読めるようにするため、ここには重複して置かない。

@@ -225,16 +225,8 @@ class SaleLimitOneValidator extends ItemValidator
 
 ## よくある間違い
 
-- ❌ 在庫引当・採番・ポイント付与・送料/値引き計算をコントローラや汎用 Service に直書き → ✅ 該当 Processor/Validator を拡張する
-- ❌ 検証なのに ItemHolderPreprocessor、明細付与なのに Validator、と取り違える → ✅ パイプライン表で役割に合うコンポーネントを選ぶ
-- ❌ `execute()` の override・try-catch・`ProcessResult` の `new` → ✅ `validate()` だけ override し `InvalidItemException` を投げる
-- ❌ ItemValidator で購入を止めようとする → ✅ 常に warning。中断は `ItemHolderValidator` / `PostValidator` の error で
-- ❌ Preprocessor で明細を追加しっぱなし（再実行で多重化） → ✅ `setProcessorName(self::class)` で印を付け、毎回削除→再追加で冪等にする
-- ❌ 値引きで合計金額を超える明細を作る → ✅ 利用可能額まで丸めるかスキップし `ProcessResult::warn()` を返す
-- ❌ 金額を float / `+`・`*` で計算 → ✅ `bcadd`/`bcsub`/`bcmul`/`bccomp` を使う
-- ❌ `Cart` でも `getShippings()` / `getCustomer()` を呼ぶ → ✅ `instanceof Order` でガード（Cart には Shipping もポイントも無い）
-- ❌ PurchaseProcessor の `rollback()` を実装し忘れる → ✅ `prepare()` の逆操作（在庫戻し等）を必ず実装する
-- ❌ 属性で実行順を制御する／YAML タグと属性を両方付ける → ✅ 順序は YAML タグの `priority`（降順）。登録はどちらか一方（既定はコア=YAML / プラグイン=属性、順序が要るならプラグインも YAML）
+このレイヤの「よくある間違い」10 項は [`eccube-pre-impl`](../eccube-pre-impl/SKILL.md) の「受注処理（PurchaseFlow）」節に集約している。
+全レイヤの注意を 1 か所で読めるようにするため、ここには重複して置かない。
 
 ## 実行・確認方法
 

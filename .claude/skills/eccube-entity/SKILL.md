@@ -100,9 +100,5 @@ class Example extends AbstractEntity
 
 ## よくある間違い
 
-- ❌ カラムを足したので ALTER マイグレーションを書く → ✅ 属性を足すだけ（`schema:update` が反映）。マイグレーションは INSERT・型変更等に限る
-- ❌ 在庫引当・採番・ポイント付与などの受注処理をエンティティに書く → ✅ PurchaseFlow / Service へ。エンティティは自身の状態から導く計算/判定まで
-- ❌ 金額 getter の戻り値を int/float 扱い → ✅ DECIMAL は `?string`（getter は `string`）。型宣言・代入も合わせる
-- ❌ 金額を float で四則演算（丸め誤差）→ ✅ `bcmath`（`bcadd` / `bcmul` / `bccomp`、スケール 2）で計算する
-- ❌ `create_date` / `update_date` を自前の `#[ORM\PrePersist]` でセット → ✅ `SaveEventSubscriber` が自動セットするので二重実装
-- ❌ 他エンティティへの関連で親削除時の挙動を未決定 → ✅ FK は既定で削除を止めるので、未指定だと親の削除が FK 違反で失敗する。`onDelete` を指定するか Service 側で後始末する（コアは大半が後者）
+このレイヤの「よくある間違い」6 項は [`eccube-pre-impl`](../eccube-pre-impl/SKILL.md) の「Entity」節に集約している。
+全レイヤの注意を 1 か所で読めるようにするため、ここには重複して置かない。

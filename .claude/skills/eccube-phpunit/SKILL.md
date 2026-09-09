@@ -104,14 +104,8 @@ public static function provideStatuses(): array
 
 ## よくある間違い
 
-- ❌ `new Client()` など HTTP クライアントの自前生成 → ✅ 親クラスの `$this->client`。
-- ❌ URL の文字列直書き（`'/products/list'`）→ ✅ `$this->generateUrl('product_list')`。
-- ❌ Entity の手組み → ✅ `createXxx()` フィクスチャヘルパ。
-- ❌ 支払方法のテストで `find(1)` 等の ID 前提 → ✅ `Generator::createPayment()` で sort_no・利用条件を明示し `assertSame()` で固定する。
-- ❌ ステータス値のハードコーディング（`if ($status == 1)`）→ ✅ 定数（例: `OrderStatus::NEW`）を使う。
-- ❌ 回帰テストがゲートになるか確かめない → ✅ 修正を外して落ちるか実測する。`failOnWarning` が無いので Warning では落ちず、戻り値を assert する。
-- ❌ テストのプロパティを未宣言で代入／非 nullable で宣言 → ✅ nullable で宣言（`cleanUpProperties()` の null 代入で `TypeError` になる）
-- ❌ HTML パートを持たないメールに `assertEmailHtmlBodyNotContains()` → ✅ `assertNull($Message->getHtmlBody())`。前者は必ず通る空振りになる。
+このレイヤの「よくある間違い」8 項は [`eccube-pre-impl`](../eccube-pre-impl/SKILL.md) の「PHPUnit テスト」節に集約している。
+全レイヤの注意を 1 か所で読めるようにするため、ここには重複して置かない。
 
 ## 実行方法
 

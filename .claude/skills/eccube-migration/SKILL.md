@@ -120,10 +120,5 @@ final class Version20240101000000 extends AbstractMigration
 
 ## よくある間違い
 
-- ❌ カラムを足したので `ALTER TABLE ... ADD COLUMN` のマイグレーションを書く
-  → ✅ Entity 属性を足すだけ。新規は `schema:create`、既存は `schema:update --force` が反映する。
-- ❌ `doctrine:migrations:diff` で Entity 差分から ALTER を自動生成する
-  → ✅ `doctrine:migrations:generate` で空の雛形を作り、必要な SQL（INSERT・型変更等）だけ手で書く。
-- ❌ マイグレーションでテーブルを"新規定義"してスキーマの源泉にする → ✅ 源泉は Entity 属性。
-- ❌ INSERT・構造変更でガードなし → 再実行や環境差で失敗。✅ 存在チェックで冪等にする。
-- ❌ `down()` 未実装 → ロールバック不能。✅ `up()`/`down()` を対で実装。
+このレイヤの「よくある間違い」5 項は [`eccube-pre-impl`](../eccube-pre-impl/SKILL.md) の「マイグレーション」節に集約している。
+全レイヤの注意を 1 か所で読めるようにするため、ここには重複して置かない。

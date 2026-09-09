@@ -101,13 +101,8 @@ class ExampleDoctrineListener
 
 ## よくある間違い
 
-- ❌ `getSubscribedEvents()` を非 static で定義 → ✅ `public static function` にする（さもないと登録されない）
-- ❌ イベント名を文字列直書き（`'front.product.index.initialize'`）→ ✅ `EccubeEvents::FRONT_PRODUCT_INDEX_INITIALIZE` 定数
-- ❌ autoconfigure 済みなのに services.yaml で手動登録 → ✅ 登録しない（二重発火を防ぐ）
-- ❌ EventArgs の第1引数に値を直接渡す → ✅ `['key' => $value]` の連想配列で渡し `getArgument('key')` で取る
-- ❌ 優先度を「小さいほど先」と誤解 → ✅ **大きい数値が先**
-- ❌ Kernel イベントでサブリクエストを除外し忘れる → ✅ `if (!$event->isMainRequest()) return;`
-- ❌ テンプレートイベント／Doctrine イベントに業務ロジックを書き込む → ✅ Service へ委譲し、リスナーは薄く保つ
+このレイヤの「よくある間違い」7 項は [`eccube-pre-impl`](../eccube-pre-impl/SKILL.md) の「イベント（Subscriber）」節に集約している。
+全レイヤの注意を 1 か所で読めるようにするため、ここには重複して置かない。
 
 ## 実行・確認方法
 
