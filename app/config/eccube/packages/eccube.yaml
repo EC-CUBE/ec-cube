@@ -197,21 +197,21 @@ parameters:
     #   *_view / *_download                 : 読み取りのみ
     eccube_restrict_file_upload_urls:
       # コンテンツ (app/template, html/user_data)
-      admin_content_page: 'bin/console eccube:page:apply --route=<ルート> --body=-'
-      admin_content_page_new: 'bin/console eccube:page:apply --route=<ルート> --body=-'
-      admin_content_page_edit: 'bin/console eccube:page:apply --route=<ルート> --body=-'
+      admin_content_page: 'bin/console eccube:page:apply --route=<ルート> --body-file=<ファイルパス>'
+      admin_content_page_new: 'bin/console eccube:page:apply --route=<ルート> --body-file=<ファイルパス>'
+      admin_content_page_edit: 'bin/console eccube:page:apply --route=<ルート> --body-file=<ファイルパス>'
       admin_content_page_delete: 'bin/console eccube:page:remove --route=<ルート>'
-      admin_content_block: 'bin/console eccube:block:apply --file-name=<ファイル名> --body=-'
-      admin_content_block_new: 'bin/console eccube:block:apply --file-name=<ファイル名> --body=-'
-      admin_content_block_edit: 'bin/console eccube:block:apply --file-name=<ファイル名> --body=-'
+      admin_content_block: 'bin/console eccube:block:apply --file-name=<ファイル名> --body-file=<ファイルパス>'
+      admin_content_block_new: 'bin/console eccube:block:apply --file-name=<ファイル名> --body-file=<ファイルパス>'
+      admin_content_block_edit: 'bin/console eccube:block:apply --file-name=<ファイル名> --body-file=<ファイルパス>'
       admin_content_block_delete: 'bin/console eccube:block:remove --file-name=<ファイル名>'
-      admin_content_css: 'bin/console eccube:asset:apply --type=css --body=-'
-      admin_content_js: 'bin/console eccube:asset:apply --type=js --body=-'
-      admin_content_file: 'bin/console eccube:user-data:put --path=<パス> --body=-'
+      admin_content_css: 'bin/console eccube:asset:apply --type=css --body-file=<ファイルパス>'
+      admin_content_js: 'bin/console eccube:asset:apply --type=js --body-file=<ファイルパス>'
+      admin_content_file: 'bin/console eccube:user-data:put --path=<パス> --body-file=<ファイルパス>'
       admin_content_file_delete: 'bin/console eccube:user-data:remove --path=<パス>'
       # メールテンプレート (削除に相当する CLI は未整備)
-      admin_setting_shop_mail: 'bin/console eccube:mail-template:apply --file-name=<ファイル名> --body=-'
-      admin_setting_shop_mail_edit: 'bin/console eccube:mail-template:apply --id=<ID> --body=-'
+      admin_setting_shop_mail: 'bin/console eccube:mail-template:apply --file-name=<ファイル名> --body-file=<ファイルパス>'
+      admin_setting_shop_mail_edit: 'bin/console eccube:mail-template:apply --id=<ID> --body-file=<ファイルパス>'
       admin_setting_shop_mail_delete: ~
       # .env
       admin_setting_system_security: 'bin/console eccube:env:set ECCUBE_ADMIN_ROUTE=<値>'

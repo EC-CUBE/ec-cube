@@ -50,7 +50,7 @@ final class ReadOnlyScreenTest extends AbstractAdminWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_content_css'));
 
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
-        $this->assertStringContainsString('bin/console eccube:asset:apply --type=css --body=-', (string) $this->client->getResponse()->getContent(), '代替となる CLI コマンドが案内されていない');
+        $this->assertStringContainsString('bin/console eccube:asset:apply --type=css --body-file=&lt;ファイルパス&gt;', (string) $this->client->getResponse()->getContent(), '代替となる CLI コマンドが案内されていない');
         $this->assertCount(1, $crawler->filter('#save-button[disabled]'), '保存ボタンが無効化されていない');
     }
 
