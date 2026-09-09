@@ -49,10 +49,10 @@ class PluginUpdateCommand extends Command
 
         $config = $this->pluginService->readConfig($this->pluginService->calcPluginDir($code));
         $this->pluginService->updatePlugin($Plugin, $config);
-        $this->clearCache($io);
+        $cacheCleared = $this->clearCache($io);
 
         $io->success('Updated.');
 
-        return 0;
+        return $cacheCleared ? 0 : self::EXIT_MANUAL_ACTION_REQUIRED;
     }
 }
