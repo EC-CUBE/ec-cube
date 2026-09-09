@@ -26,7 +26,7 @@
 <h1>Service — 業務ロジックの置き場所</h1>
 <p class="nav">
  索引: <a href="./README.md">README.md</a>
- ／ 実装規約（AI・開発者向け）: <a href="../../../.claude/skills/service/SKILL.md">service/SKILL.md</a>
+ ／ 実装規約（AI・開発者向け）: <a href="../../../.claude/skills/eccube-service/SKILL.md">eccube-service/SKILL.md</a>
 </p>
 
 <section data-section="overview" data-customer="true">
@@ -70,8 +70,8 @@
  <table>
   <tr><th>領域</th><th>対象クラス</th><th>参照先（実装規約）</th></tr>
   <tr><td>受注処理パイプライン</td><td><code>PurchaseFlow/</code></td><td><a href="./PurchaseFlow/README.html">PurchaseFlow の README</a></td></tr>
-  <tr><td>CSV 入出力</td><td><code>CsvImportService</code> / <code>CsvExportService</code></td><td><a href="../../../.claude/skills/csv/SKILL.md">csv/SKILL.md</a></td></tr>
-  <tr><td>メール送信</td><td><code>MailService</code></td><td><a href="../../../.claude/skills/mail/SKILL.md">mail/SKILL.md</a></td></tr>
+  <tr><td>CSV 入出力</td><td><code>CsvImportService</code> / <code>CsvExportService</code></td><td><a href="../../../.claude/skills/eccube-csv/SKILL.md">eccube-csv/SKILL.md</a></td></tr>
+  <tr><td>メール送信</td><td><code>MailService</code></td><td><a href="../../../.claude/skills/eccube-mail/SKILL.md">eccube-mail/SKILL.md</a></td></tr>
  </table>
 </section>
 
@@ -84,7 +84,7 @@
   <tr><td>新しい業務ロジックを足す</td><td><code>app/Customize/Service/</code> に新規 Service を置き、コンストラクタ DI で利用する。</td></tr>
   <tr><td>既存 Service の一部を差し替える</td><td>サービスデコレーション（<code>#[AsDecorator]</code>）またはコンパイラパスで置換する。</td></tr>
  </table>
- <p><strong>実装の書き方・DO/DON'T は <a href="../../../.claude/skills/service/SKILL.md">service/SKILL.md</a> が正典</strong>です（app/Customize 全般は <code>customize</code> Skill）。</p>
+ <p><strong>実装の書き方・DO/DON'T は <a href="../../../.claude/skills/eccube-service/SKILL.md">eccube-service/SKILL.md</a> が正典</strong>です（app/Customize 全般は <code>customize</code> Skill）。</p>
 </section>
 
 <section data-section="notes" data-customer="false">

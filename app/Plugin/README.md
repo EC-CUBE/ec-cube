@@ -5,7 +5,7 @@ PSR-4 で `Plugin\{PluginCode}\` にマッピングされる。中身は環境�
 `.gitkeep` を除き `.gitignore` 済み。素の状態では空。
 
 - 📖 仕様（人間向け）: [README.html](./README.html)
-- 🛠 実装規約（AI 向け）: [`plugin/SKILL.md`](../../.claude/skills/plugin/SKILL.md)
+- 🛠 実装規約（AI 向け）: [`eccube-plugin/SKILL.md`](../../.claude/skills/eccube-plugin/SKILL.md)
 - 🧩 ライフサイクル基盤（コア）: [`src/Eccube/Plugin/`](../../src/Eccube/Plugin/README.md)
 
 ## ここに置かれるもの

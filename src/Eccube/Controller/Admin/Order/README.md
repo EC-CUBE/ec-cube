@@ -5,7 +5,7 @@
 受注の登録・編集は店頭購入と同じ受注処理パイプライン（PurchaseFlow）を `order` フローで実行する。
 
 - 📖 仕様（人間向け）: [README.html](./README.html)
-- 🛠 実装規約（AI 向け）: [`controller/SKILL.md`](../../../../../.claude/skills/controller/SKILL.md)
+- 🛠 実装規約（AI 向け）: [`eccube-controller/SKILL.md`](../../../../../.claude/skills/eccube-controller/SKILL.md)
 - 📚 ドメイン詳細: https://doc4.ec-cube.net/spec_order
 
 ## 主要ファイル

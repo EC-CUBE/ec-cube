@@ -26,7 +26,7 @@
 <h1>app/Customize — プロジェクト固有カスタマイズ</h1>
 <p class="nav">
  索引: <a href="./README.md">README.md</a>
- ／ 実装規約（AI・開発者向け）: <a href="../../.claude/skills/customize/SKILL.md">customize/SKILL.md</a>
+ ／ 実装規約（AI・開発者向け）: <a href="../../.claude/skills/eccube-customize/SKILL.md">eccube-customize/SKILL.md</a>
 </p>
 
 <section data-section="overview" data-customer="true">
@@ -62,7 +62,7 @@
 
 <section data-section="patterns" data-customer="false">
  <h2>拡張・上書きのパターン<span class="dev-only">開発者向け</span></h2>
- <p><strong>実装の書き方・DO/DON'T は <a href="../../.claude/skills/customize/SKILL.md">customize/SKILL.md</a> が正典</strong>。ここでは全体像だけ示します。</p>
+ <p><strong>実装の書き方・DO/DON'T は <a href="../../.claude/skills/eccube-customize/SKILL.md">eccube-customize/SKILL.md</a> が正典</strong>。ここでは全体像だけ示します。</p>
  <table>
   <tr><th>やりたいこと</th><th>置き場所 / 方法</th></tr>
   <tr><td>コアエンティティにカラム追加</td><td><code>Entity/*Trait.php</code> に <code>#[EntityExtension(対象::class)]</code>＋<code>#[ORM\Column]</code>（<strong>追加のみ</strong>。既存の差し替えは不可）</td></tr>

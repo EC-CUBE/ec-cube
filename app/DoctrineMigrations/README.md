@@ -5,7 +5,7 @@
 単純なカラム追加は不要（`schema:update` が反映）。書くのは INSERT（マスタ/初期データ）と型変更等に限る。
 
 - 📖 仕様（人間向け）: [README.html](./README.html)
-- 🛠 実装規約（AI 向け）: [`migration/SKILL.md`](../../.claude/skills/migration/SKILL.md)
+- 🛠 実装規約（AI 向け）: [`eccube-migration/SKILL.md`](../../.claude/skills/eccube-migration/SKILL.md)
 
 ## 主要ファイル / 実例
 

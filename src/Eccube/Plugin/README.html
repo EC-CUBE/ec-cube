@@ -26,7 +26,7 @@
 <h1>Plugin 基盤（コア）</h1>
 <p class="nav">
  索引: <a href="./README.md">README.md</a>
- ／ 実装規約（AI・開発者向け）: <a href="../../../.claude/skills/plugin/SKILL.md">plugin/SKILL.md</a>
+ ／ 実装規約（AI・開発者向け）: <a href="../../../.claude/skills/eccube-plugin/SKILL.md">eccube-plugin/SKILL.md</a>
 </p>
 
 <section data-section="overview" data-customer="true">
@@ -78,7 +78,7 @@
  <h2>PluginManager の書き方<span class="dev-only">開発者向け</span></h2>
  <p>ライフサイクル処理が必要なときだけ、プラグイン側に <code>Plugin\{Code}\PluginManager</code>（クラス名は固定）を作り、
  <code>AbstractPluginManager</code> を継承します。<strong>実装の書き方・DO/DON'T は
- <a href="../../../.claude/skills/plugin/SKILL.md">plugin/SKILL.md</a> が正典</strong>です。</p>
+ <a href="../../../.claude/skills/eccube-plugin/SKILL.md">eccube-plugin/SKILL.md</a> が正典</strong>です。</p>
  <div class="flow">namespace Plugin\Example;
 
 class PluginManager extends AbstractPluginManager

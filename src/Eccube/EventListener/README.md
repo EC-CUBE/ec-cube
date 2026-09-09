@@ -6,7 +6,7 @@ EC-CUBE の拡張は「コアを書き換えず、イベントを購読する」
 リクエスト／レスポンス／認証などライフサイクルの節目にフックして横断的な処理を行う。
 
 - 📖 仕様（人間向け）: [README.html](./README.html)
-- 🛠 実装規約（AI 向け）: [`event-subscriber/SKILL.md`](../../../.claude/skills/event-subscriber/SKILL.md)
+- 🛠 実装規約（AI 向け）: [`eccube-event-subscriber/SKILL.md`](../../../.claude/skills/eccube-event-subscriber/SKILL.md)
 - 📚 関連: イベント定義 [`../Event/`](../Event/)（`EccubeEvents` / `EventArgs` / `TemplateEvent`）・Doctrine イベント [`../Doctrine/EventSubscriber/`](../Doctrine/EventSubscriber/)
 
 ## 主要ファイル

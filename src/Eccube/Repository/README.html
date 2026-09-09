@@ -26,7 +26,7 @@
 <h1>Repository — データアクセス</h1>
 <p class="nav">
  索引: <a href="./README.md">README.md</a>
- ／ 実装規約（AI・開発者向け）: <a href="../../../.claude/skills/repository/SKILL.md">repository/SKILL.md</a>
+ ／ 実装規約（AI・開発者向け）: <a href="../../../.claude/skills/eccube-repository/SKILL.md">eccube-repository/SKILL.md</a>
  ／ ドメイン詳細: <a href="https://doc4.ec-cube.net/spec_order">doc4「受注」仕様</a>
 </p>
 
@@ -80,7 +80,7 @@ return $qb-&gt;orderBy('p.id', 'DESC');           // 一覧はページング用
  <code>QueryCustomizer</code> を実装して登録すると、対象の <code>QueryKey</code>（<code>QueryKey.php</code> に定義）に対して検索条件や JOIN を後付けで注入できます。
  プラグイン／カスタマイズで検索条件を足すときはこのフックを使い、リポジトリのコアメソッド自体は書き換えません。</p>
  <p>プロジェクト固有の検索メソッド追加は <code>app/Customize/Repository/</code> で行います。
- 実装の書き方・DO/DON'T は <a href="../../../.claude/skills/repository/SKILL.md">repository/SKILL.md</a> が正典です。</p>
+ 実装の書き方・DO/DON'T は <a href="../../../.claude/skills/eccube-repository/SKILL.md">eccube-repository/SKILL.md</a> が正典です。</p>
 </section>
 
 <section data-section="notes" data-customer="false">

@@ -5,7 +5,7 @@ EC-CUBE の HTTP リクエストを受け取りレスポンスを返す入口。
 Service や受注処理パイプライン（PurchaseFlow）へ委譲して薄く保つ。
 
 - 📖 仕様（人間向け）: [README.html](./README.html)
-- 🛠 実装規約（AI 向け）: [`controller/SKILL.md`](../../../.claude/skills/controller/SKILL.md)
+- 🛠 実装規約（AI 向け）: [`eccube-controller/SKILL.md`](../../../.claude/skills/eccube-controller/SKILL.md)
 
 ## 主要ファイル
 

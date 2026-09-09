@@ -5,7 +5,7 @@
 cart / shopping / order の 3 フローぶん存在する。
 
 - 📖 仕様（人間向け）: [README.html](./README.html)
-- 🛠 実装規約（AI 向け）: [`purchase-flow/SKILL.md`](../../../../.claude/skills/purchase-flow/SKILL.md)
+- 🛠 実装規約（AI 向け）: [`eccube-purchase-flow/SKILL.md`](../../../../.claude/skills/eccube-purchase-flow/SKILL.md)
 - 📚 ドメイン詳細: https://doc4.ec-cube.net/spec_order
 
 ## 主要ファイル

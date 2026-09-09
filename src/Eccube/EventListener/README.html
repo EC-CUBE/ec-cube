@@ -26,7 +26,7 @@
 <h1>EventListener — イベント購読による拡張</h1>
 <p class="nav">
  索引: <a href="./README.md">README.md</a>
- ／ 実装規約（AI・開発者向け）: <a href="../../../.claude/skills/event-subscriber/SKILL.md">event-subscriber/SKILL.md</a>
+ ／ 実装規約（AI・開発者向け）: <a href="../../../.claude/skills/eccube-event-subscriber/SKILL.md">eccube-event-subscriber/SKILL.md</a>
 </p>
 
 <section data-section="overview" data-customer="true">
@@ -98,7 +98,7 @@ Doctrine/EventSubscriber/     … エンティティ永続化前後のフック�
 <section data-section="extension" data-customer="false">
  <h2>拡張ポイント<span class="dev-only">開発者向け</span></h2>
  <p>独自の処理をフックするには、購読したいイベントに応じてリスナーを 1 つ足すだけです。
- <strong>実装の書き方・DO/DON'T は <a href="../../../.claude/skills/event-subscriber/SKILL.md">event-subscriber/SKILL.md</a> が正典</strong>です。ここでは要点だけ示します。</p>
+ <strong>実装の書き方・DO/DON'T は <a href="../../../.claude/skills/eccube-event-subscriber/SKILL.md">eccube-event-subscriber/SKILL.md</a> が正典</strong>です。ここでは要点だけ示します。</p>
  <table>
   <tr><th>やりたいこと</th><th>フックするイベント</th></tr>
   <tr><td>コントローラ処理の前後に割り込む</td><td>EC-CUBE 独自イベント（<code>EccubeEvents::XXX</code> 定数）を購読し <code>EventArgs</code> で読み書き</td></tr>

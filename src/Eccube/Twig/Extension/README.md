@@ -5,7 +5,7 @@ Twig テンプレートから使える独自のフィルタ・関数・テスト
 テンプレート頻出の処理を PHP 側に集約する。`AbstractExtension` を継承し `autoconfigure` で自動登録される。
 
 - 📖 仕様（人間向け）: [README.html](./README.html)
-- 🛠 実装規約（AI 向け）: [`twig-template/SKILL.md`](../../../../.claude/skills/twig-template/SKILL.md)
+- 🛠 実装規約（AI 向け）: [`eccube-twig-template/SKILL.md`](../../../../.claude/skills/eccube-twig-template/SKILL.md)
 
 ## 主要ファイル
 

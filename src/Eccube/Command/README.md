@@ -6,7 +6,7 @@ Web 画面を介さない運用・保守処理を集約する。コマンドは�
 業務ロジックは Service／Repository へ委譲して薄く保つ。
 
 - 📖 仕様（人間向け）: [README.html](./README.html)
-- 🛠 実装規約（AI 向け）: [`command/SKILL.md`](../../../.claude/skills/command/SKILL.md)
+- 🛠 実装規約（AI 向け）: [`eccube-command/SKILL.md`](../../../.claude/skills/eccube-command/SKILL.md)
 
 ## 主要ファイル
 

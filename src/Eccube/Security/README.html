@@ -26,7 +26,7 @@
 <h1>Security — 認証・認可</h1>
 <p class="nav">
  索引: <a href="./README.md">README.md</a>
- ／ 実装規約（AI・開発者向け）: <a href="../../../.claude/skills/security/SKILL.md">security/SKILL.md</a>
+ ／ 実装規約（AI・開発者向け）: <a href="../../../.claude/skills/eccube-security/SKILL.md">eccube-security/SKILL.md</a>
 </p>
 
 <section data-section="overview" data-customer="true">
@@ -83,7 +83,7 @@
 
 <section data-section="extension" data-customer="false">
  <h2>拡張ポイント<span class="dev-only">開発者向け</span></h2>
- <p><strong>実装の書き方・DO/DON'T は <a href="../../../.claude/skills/security/SKILL.md">security/SKILL.md</a> が正典</strong>です。ここでは全体像だけ示します。</p>
+ <p><strong>実装の書き方・DO/DON'T は <a href="../../../.claude/skills/eccube-security/SKILL.md">eccube-security/SKILL.md</a> が正典</strong>です。ここでは全体像だけ示します。</p>
  <table>
   <tr><th>やりたいこと</th><th>手段</th></tr>
   <tr><td>特定の権限にこの管理画面を見せない</td><td>コントローラ改変ではなく <code>dtb_authority_role</code> の <code>deny_url</code> 設定。<code>AuthorityVoter</code> が拾う。</td></tr>

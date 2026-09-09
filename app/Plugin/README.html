@@ -26,7 +26,7 @@
 <h1>app/Plugin — プラグイン設置先</h1>
 <p class="nav">
  索引: <a href="./README.md">README.md</a>
- ／ 実装規約（AI・開発者向け）: <a href="../../.claude/skills/plugin/SKILL.md">plugin/SKILL.md</a>
+ ／ 実装規約（AI・開発者向け）: <a href="../../.claude/skills/eccube-plugin/SKILL.md">eccube-plugin/SKILL.md</a>
 </p>
 
 <section data-section="overview" data-customer="true">
@@ -54,13 +54,13 @@ update     … 差分適用（PluginManager::update）
 uninstall  … 取り外し。app/Plugin/{code}/ ごと削除され得る</div>
  <div class="note"><strong>開発時の事故防止</strong>: <code>app/Plugin/{code}/</code> 直下で直接開発すると、
  uninstall のテストをした瞬間にソースごと消えます。実開発は別ディレクトリで行い、シンボリックリンクで配置するのが安全
- （詳細は <a href="../../.claude/skills/plugin/SKILL.md">plugin/SKILL.md</a>）。</div>
+ （詳細は <a href="../../.claude/skills/eccube-plugin/SKILL.md">eccube-plugin/SKILL.md</a>）。</div>
 </section>
 
 <section data-section="structure" data-customer="false">
  <h2>プラグインの構成<span class="dev-only">開発者向け</span></h2>
  <p>1 つのプラグインが持つ最小構成と、主な拡張点の置き場所です。<strong>実装の書き方は
- <a href="../../.claude/skills/plugin/SKILL.md">plugin/SKILL.md</a> が正典</strong>。ここでは配置だけ示します。</p>
+ <a href="../../.claude/skills/eccube-plugin/SKILL.md">eccube-plugin/SKILL.md</a> が正典</strong>。ここでは配置だけ示します。</p>
  <div class="flow">app/Plugin/{PluginCode}/
   ├── composer.json                 # 必須（version と extra.code が必須）
   ├── PluginManager.php             # 任意（ライフサイクル処理が要るときだけ）
