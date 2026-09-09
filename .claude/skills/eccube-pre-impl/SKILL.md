@@ -126,6 +126,23 @@ description: 新規機能の設計・実装を始める直前のチェックリ�
 
 > 実装パターン・コード例・実行方法: `.claude/skills/eccube-twig-template/SKILL.md`
 
+## アセットビルド（SCSS / JS）
+
+**触るとき**: スタイル・SCSS・JS バンドル・生成物のコミット
+
+- ❌ `.scss` だけ変更してコミットする → ✅ 生成物（`css/*.css` `*.min.css` `*.map`）も同じコミットに含める。含めないと実機のスタイルが変わらない
+- ❌ 反映されないので `css/style.css` を直接編集する → ✅ 次のビルドで消える。`scss/` を直して再ビルドする
+- ❌ `css/` 配下すべてを生成物と決めつける → ✅ 対応する `.scss` が無いものは手管理ファイルで、再ビルドしても更新されない。`.map` の有無と scss の実在で判別する
+- ❌ 「E2E が緑だから生成物は最新」と判断する → ✅ E2E のワークフローは自分で `npm run build` するため、コミット済み生成物が古くても緑になる
+- ❌ 部分ファイルを `_` 始まりにしない → ✅ SCSS エントリは自動検出なので、`_` を付けないと単独の CSS として出力され余計な生成物が増える
+- ❌ 生成された `css` に手で `@media` を追記する → ✅ `postcss-sort-media-queries` の並べ替えを通らず、次のビルドで消える
+- ❌ ace のモードを増やすテンプレートを足したのに `aceFiles` を更新しない → ✅ ビルドは通り、その画面を開いたときだけ壊れる
+- ❌ 生成物のパーミッション差分（`.css` は 100755 / `.map` は 100644）に気づかずモードだけ変えてコミットする → ✅ `git diff` でモード変更が出たら戻す
+- ❌ ホストとコンテナでビルドを混在させ、sass のバージョン差で無関係な行まで差分が出る → ✅ どちらかに統一する（Docker 推奨）
+- ❌ Bootstrap の dist CSS（`node_modules` 由来の生成物）に対する lint 指摘をそのまま直そうとする → ✅ 例えば `:not(:-moz-placeholder)` を「廃止予定で機能しない」とする指摘は誤検知で、Bootstrap は `:-moz-placeholder` と `:placeholder-shown` を意図的に別ルールセットへ分割出力しており実挙動は後者で正常。近傍に両方あるかを grep で確認する。そもそもビルド生成物なので手編集してはいけない
+
+> 実装パターン・コード例・実行方法: `.claude/skills/eccube-asset/SKILL.md`
+
 ## イベント（Subscriber）
 
 **触るとき**: イベント・フック・差し込み
@@ -251,14 +268,14 @@ description: 新規機能の設計・実装を始める直前のチェックリ�
 
 **触るとき**: PHPUnit テスト
 
-- ❌ `new Client()` など HTTP クライアントの自前生成 → ✅ 親クラスの `$this->client`。
-- ❌ URL の文字列直書き（`'/products/list'`）→ ✅ `$this->generateUrl('product_list')`。
-- ❌ Entity の手組み → ✅ `createXxx()` フィクスチャヘルパ。
+- ❌ HTTP クライアント・URL・Entity を自前で用意する → ✅ 親クラスの `$this->client`、`$this->generateUrl('route_name')`、`createXxx()` フィクスチャヘルパを使う。
 - ❌ 支払方法のテストで `find(1)` 等の ID 前提 → ✅ `Generator::createPayment()` で sort_no・利用条件を明示し `assertSame()` で固定する。
 - ❌ ステータス値のハードコーディング（`if ($status == 1)`）→ ✅ 定数（例: `OrderStatus::NEW`）を使う。
 - ❌ 回帰テストがゲートになるか確かめない → ✅ 修正を外して落ちるか実測する。`failOnWarning` が無いので Warning では落ちず、戻り値を assert する。
 - ❌ テストのプロパティを未宣言で代入／非 nullable で宣言 → ✅ nullable で宣言（`cleanUpProperties()` の null 代入で `TypeError` になる）
 - ❌ HTML パートを持たないメールに `assertEmailHtmlBodyNotContains()` → ✅ `assertNull($Message->getHtmlBody())`。前者は必ず通る空振りになる。
+- ❌ ローカルだけ 500 のテストを自分の変更のせいにする → ✅ `createFormData()` が送らない列で非 nullable setter に `null` が渡るのが原因。`catchExceptions(false)` で確認
+- ❌ 依存ライブラリの例外メッセージを全文アサート → ✅ 版差で変わらない部分だけ含有判定する。上流はマイナー更新で書式を足すので、lock 更新だけで全マトリクスが落ちる。
 
 > 実装パターン・コード例・実行方法: `.claude/skills/eccube-phpunit/SKILL.md`
 
