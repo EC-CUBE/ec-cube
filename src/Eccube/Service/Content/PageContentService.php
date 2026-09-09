@@ -99,6 +99,16 @@ class PageContentService
      */
     public function readTemplate(Page $Page): string
     {
+        return (string) $this->findTemplate($Page);
+    }
+
+    /**
+     * テンプレートの内容を取得する. どこからも解決できない場合は null を返す.
+     *
+     * 「解決できて中身が空」と「存在しない」を区別するため, readTemplate() と分けている.
+     */
+    public function findTemplate(Page $Page): ?string
+    {
         $filePath = $this->getFilePath($Page);
         if (is_file($filePath)) {
             return (string) file_get_contents($filePath);
@@ -109,7 +119,7 @@ class PageContentService
         // 見つからなかった問い合わせは FilesystemLoader::$errorCache に残り, 同じプロセスで
         // 書き出した直後のテンプレートを読めなくするので, 問い合わせ自体を行わない.
         if ($this->isUserDataPage($Page)) {
-            return '';
+            return null;
         }
 
         try {
@@ -117,7 +127,7 @@ class PageContentService
                 ->getSourceContext($Page->getFileName().'.twig')
                 ->getCode();
         } catch (LoaderError) {
-            return '';
+            return null;
         }
     }
 
@@ -217,13 +227,11 @@ class PageContentService
             $templateDir = $this->getTemplateDir($Page);
             $filePath = $templateDir.'/'.$Page->getFileName().'.twig';
 
-            // 本文が現在の内容と同じなら書き出さない.
-            // app/template は src/Eccube/Resource/template より優先されるため, 内容が同じ写しを
-            // 置くと upstream のテンプレート修正 (脆弱性パッチを含む) が画面へ反映されなくなる.
-            // 比較相手の readTemplate() はファイルが無ければコアのテンプレートへフォールバックするので,
+            // 本文が現在の内容と同じなら書き出さない (shouldWriteTemplate() 参照).
+            // 比較相手の findTemplate() はファイルが無ければコアのテンプレートへフォールバックするので,
             // 上書きしていないページのメタ情報だけを更新しても app/template にファイルが増えない.
             $writtenPaths = [];
-            if (self::normalizeTemplateBody($body) !== self::normalizeTemplateBody($this->readTemplate($Page))) {
+            if (self::shouldWriteTemplate($this->findTemplate($Page), $body)) {
                 try {
                     $this->filesystem->dumpFile($filePath, StringUtil::convertLineFeed($body));
                 } catch (IOException $e) {

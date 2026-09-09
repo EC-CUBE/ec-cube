@@ -223,7 +223,9 @@ app/contents/
   `src/Eccube/Resource/template/default` より**優先される**ため、内容が同じ写しを置くと
   upstream のテンプレート修正が画面へ反映されなくなる
 - 同じ理由で、`*ContentService::save()` は**本文が変わらない限りテンプレートを書き出さない**。
-  管理画面でコアページのメタ情報だけを変更しても `app/template` に写しはできない
+  管理画面でコアページのメタ情報だけを変更しても `app/template` に写しはできない。
+  ただしテンプレートをどこからも解決できない場合は必ず書き出す（書き出さないと DB のレコードだけが
+  残り、画面が「Unable to find template」で落ちる）
 - 本文を指定しない新規登録は、配置先に既にあるテンプレートを使う。`app/template/user_data/foo.twig`
   をコミットして `pages.yaml` に 1 行足せば、`import` がそのページを作る
 - レイアウトは `dtb_layout.id` が環境ごとに変わるため**名前で参照する**。名前が重複していると

@@ -228,10 +228,9 @@ class MailTemplateContentService
 
             $filePath = $this->getFilePath($Mail);
 
-            // 本文が現在の内容と同じなら書き出さない
-            // (PageContentService::save() と同じ理由).
+            // 本文が現在の内容と同じなら書き出さない (shouldWriteTemplate() 参照).
             $writtenPaths = [];
-            if (self::normalizeTemplateBody($body) !== self::normalizeTemplateBody($this->readTemplate($Mail))) {
+            if (self::shouldWriteTemplate($this->read($filePath, (string) $Mail->getFileName()), $body)) {
                 try {
                     $this->filesystem->dumpFile($filePath, StringUtil::convertLineFeed($body));
                 } catch (IOException $e) {
@@ -244,10 +243,7 @@ class MailTemplateContentService
             $htmlFilePath = $this->getHtmlFilePath($Mail);
 
             if (null !== $htmlBody) {
-                // HTML パートは「解決できない」と「空」を区別する. readHtmlTemplate() が null を
-                // 返すのはファイルもコアのテンプレートも無い状態で, この場合は必ず書き出す
-                $currentHtml = $this->readHtmlTemplate($Mail);
-                if (null === $currentHtml || self::normalizeTemplateBody($htmlBody) !== self::normalizeTemplateBody($currentHtml)) {
+                if (self::shouldWriteTemplate($this->readHtmlTemplate($Mail), $htmlBody)) {
                     try {
                         $this->filesystem->dumpFile($htmlFilePath, StringUtil::convertLineFeed($htmlBody));
                     } catch (IOException $e) {

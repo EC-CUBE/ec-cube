@@ -87,6 +87,16 @@ class BlockContentService
      */
     public function readTemplate(Block $Block): string
     {
+        return (string) $this->findTemplate($Block);
+    }
+
+    /**
+     * テンプレートの内容を取得する. どこからも解決できない場合は null を返す.
+     *
+     * 「解決できて中身が空」と「存在しない」を区別するため, readTemplate() と分けている.
+     */
+    public function findTemplate(Block $Block): ?string
+    {
         $filePath = $this->getFilePath($Block);
         if (is_file($filePath)) {
             return (string) file_get_contents($filePath);
@@ -97,7 +107,7 @@ class BlockContentService
                 ->getSourceContext('Block/'.$Block->getFileName().'.twig')
                 ->getCode();
         } catch (LoaderError) {
-            return '';
+            return null;
         }
     }
 
@@ -195,10 +205,9 @@ class BlockContentService
             $dir = $this->getTemplateDir();
             $filePath = $dir.'/'.$Block->getFileName().'.twig';
 
-            // 本文が現在の内容と同じなら書き出さない
-            // (PageContentService::save() と同じ理由).
+            // 本文が現在の内容と同じなら書き出さない (shouldWriteTemplate() 参照).
             $writtenPaths = [];
-            if (self::normalizeTemplateBody($body) !== self::normalizeTemplateBody($this->readTemplate($Block))) {
+            if (self::shouldWriteTemplate($this->findTemplate($Block), $body)) {
                 try {
                     $this->filesystem->dumpFile($filePath, StringUtil::convertLineFeed($body));
                 } catch (IOException $e) {

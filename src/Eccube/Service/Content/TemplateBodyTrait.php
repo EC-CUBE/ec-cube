@@ -65,4 +65,22 @@ trait TemplateBodyTrait
     {
         return trim(StringUtil::convertLineFeed($body));
     }
+
+    /**
+     * テンプレートを書き出す必要があるかどうかを判定する.
+     *
+     * 内容が同じなら書き出さない. app/template は src/Eccube/Resource/template より優先されるため,
+     * 内容が同じ写しを置くと upstream のテンプレート修正 (脆弱性パッチを含む) が画面へ反映されなくなる.
+     *
+     * ただしテンプレートをどこからも解決できない場合 ($current === null) は必ず書き出す.
+     * 書き出さないと DB のレコードだけが残り, 参照先が無いテンプレートとして画面が
+     * 「Unable to find template」で落ちる (本文が空の新規登録がこれに当たる).
+     *
+     * @param string|null $current 現在解決できるテンプレートの内容. 解決できない場合は null
+     */
+    private static function shouldWriteTemplate(?string $current, string $body): bool
+    {
+        return null === $current
+            || self::normalizeTemplateBody($current) !== self::normalizeTemplateBody($body);
+    }
 }

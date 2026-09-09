@@ -69,6 +69,28 @@ final class MailTemplateContentServiceTest extends EccubeTestCase
         $this->assertSame('created body', file_get_contents((string) $result->path()));
     }
 
+    /**
+     * 本文が空の新規登録でもテンプレートを書き出す.
+     *
+     * 「内容が同じなら書き出さない」判定を空文字列どうしの比較で済ませると, 参照先の無い
+     * メールテンプレートが登録され, 編集画面が Unable to find template で落ちる
+     * (管理画面から本文なしで登録したときに発生する).
+     */
+    public function testApplyWritesEmptyTemplateWhenTemplateDoesNotExist(): void
+    {
+        $result = $this->apply(['name' => 'テストメール', 'subject' => '件名', 'body' => '']);
+
+        $this->assertSame(ContentStatus::Created, $result->status);
+
+        $Mail = $this->mailTemplateContentService->findByFileName((string) $this->fileName);
+        $this->assertInstanceOf(MailTemplate::class, $Mail);
+        $filePath = $this->mailTemplateContentService->getFilePath($Mail);
+        $this->createdFiles[] = $filePath;
+
+        $this->assertFileExists($filePath, '本文が空でもテンプレートを書き出す');
+        $this->assertSame([$filePath], $result->writtenPaths);
+    }
+
     public function testApplyIsIdempotent(): void
     {
         $this->apply(['name' => 'テストメール', 'subject' => '件名', 'body' => 'same body']);

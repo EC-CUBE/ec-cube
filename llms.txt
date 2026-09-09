@@ -222,7 +222,9 @@ with `git merge` is a common setup, so duplicating a body into the archive would
 copy that `git merge` cannot reconcile. For the same reason `app/template/{theme}` shadows
 `src/Eccube/Resource/template/default` in Twig's search path, and `*ContentService::save()`
 therefore writes a template only when the body actually changes — editing the metadata of a core
-page from the admin screen no longer leaves a shadow copy behind.
+page from the admin screen no longer leaves a shadow copy behind. A template that cannot be
+resolved from anywhere is always written, otherwise only the database row would remain and the
+screen would fail with "Unable to find template".
 
 Creating a record without a body reuses the template already present at the destination, so
 committing `app/template/user_data/foo.twig` and adding one entry to `pages.yaml` is enough for
