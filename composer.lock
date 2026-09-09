@@ -2538,16 +2538,16 @@
         },
         {
             "name": "friendsofphp/php-cs-fixer",
-            "version": "v3.95.22",
+            "version": "v3.95.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer.git",
-                "reference": "482722e0783c16325a07a998a0d9eda560f9be99"
+                "reference": "9a4b8050f8768646bf3693ee7416978ceeca6206"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/zipball/482722e0783c16325a07a998a0d9eda560f9be99",
-                "reference": "482722e0783c16325a07a998a0d9eda560f9be99",
+                "url": "https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/zipball/9a4b8050f8768646bf3693ee7416978ceeca6206",
+                "reference": "9a4b8050f8768646bf3693ee7416978ceeca6206",
                 "shasum": ""
             },
             "require": {
@@ -2630,7 +2630,7 @@
             ],
             "support": {
                 "issues": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/issues",
-                "source": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/tree/v3.95.22"
+                "source": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/tree/v3.95.24"
             },
             "funding": [
                 {
@@ -2638,7 +2638,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-08-24T10:37:43+00:00"
+            "time": "2026-08-31T15:31:12+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -3490,16 +3490,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "3.10.0",
+            "version": "3.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "b321dd6749f0bf7189444158a3ce785cc16d69b0"
+                "reference": "147f303310f06334f03f409e49d7ad1e275ff05a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/b321dd6749f0bf7189444158a3ce785cc16d69b0",
-                "reference": "b321dd6749f0bf7189444158a3ce785cc16d69b0",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/147f303310f06334f03f409e49d7ad1e275ff05a",
+                "reference": "147f303310f06334f03f409e49d7ad1e275ff05a",
                 "shasum": ""
             },
             "require": {
@@ -3577,7 +3577,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Seldaek/monolog/issues",
-                "source": "https://github.com/Seldaek/monolog/tree/3.10.0"
+                "source": "https://github.com/Seldaek/monolog/tree/3.11.0"
             },
             "funding": [
                 {
@@ -3589,7 +3589,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-01-02T08:56:05+00:00"
+            "time": "2026-09-02T12:39:56+00:00"
         },
         {
             "name": "nanasess/bcmath-polyfill",
@@ -4500,16 +4500,16 @@
         },
         {
             "name": "phpstan/phpdoc-parser",
-            "version": "2.3.3",
+            "version": "2.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpdoc-parser.git",
-                "reference": "fb19eedd2bb67ff8cf7a5502ad329e701d6398a3"
+                "reference": "148cefffaf0233e4c08cc13db8a195a56dd6dfe9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/fb19eedd2bb67ff8cf7a5502ad329e701d6398a3",
-                "reference": "fb19eedd2bb67ff8cf7a5502ad329e701d6398a3",
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/148cefffaf0233e4c08cc13db8a195a56dd6dfe9",
+                "reference": "148cefffaf0233e4c08cc13db8a195a56dd6dfe9",
                 "shasum": ""
             },
             "require": {
@@ -4541,9 +4541,9 @@
             "description": "PHPDoc parser with support for nullable, intersection and generic types",
             "support": {
                 "issues": "https://github.com/phpstan/phpdoc-parser/issues",
-                "source": "https://github.com/phpstan/phpdoc-parser/tree/2.3.3"
+                "source": "https://github.com/phpstan/phpdoc-parser/tree/2.3.5"
             },
-            "time": "2026-07-08T07:01:06+00:00"
+            "time": "2026-08-31T16:05:28+00:00"
         },
         {
             "name": "psr/cache",
