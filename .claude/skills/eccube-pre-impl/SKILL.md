@@ -33,7 +33,6 @@ description: 新規機能の設計・実装を始める直前のチェックリ�
 **触るとき**: 認可・CSRF・IDOR・セキュリティ点検
 
 - ❌ 管理アクションを `%eccube_admin_route%` 配下**以外**に置く → ✅ 配下に置き admin firewall の保護下にする
-- ❌ フォームを介さない POST/DELETE/Ajax で CSRF 未検証 → ✅ `$this->isTokenValid()` を呼ぶ（GET 以外）
 - ❌ Ajax 専用アクションで XHR 以外も受け付ける → ✅ CSRF 検証に加え **`$request->isXmlHttpRequest()`** を併用し XHR に限定する
 - ❌ フロントで `{id}` から取得したエンティティを所有権チェックせず編集/削除（**IDOR**）
 - ❌ パスワード変更・退会など重要操作を `IS_AUTHENTICATED_REMEMBERED` で許可
@@ -53,10 +52,11 @@ description: 新規機能の設計・実装を始める直前のチェックリ�
 - ❌ アクション内で `$em->persist()`/`$em->flush()` を直書きして業務処理 → ✅ Service のメソッドに集約
 - ❌ 複数アクションに同じ処理をコピペ → ✅ Service の 1 メソッドに共通化
 - ❌ 具象クラス型ヒントで密結合 → ✅ インターフェース型ヒント＋コンストラクタ DI
-- ❌ 削除/Ajax 等の状態変更でトークン未検証 → ✅ `$this->isTokenValid()` を呼ぶ（GET 以外）
 - ❌ 戻り値を捨てた `isTokenValid();` を「CSRF 未検証」と誤読 → ✅ 無効時は例外を投げるので bare 呼び出しで検証は成立する。`if (!isTokenValid())` の false 分岐はデッドコード
 - ❌ `#[Template]` 付きアクションが常に再描画されると前提する → ✅ engage するのは配列を返したときだけ。Response/Redirect を返すパスでは描画されない
 - ❌ `executePurchaseFlow()` を複数回呼んで 2 回目以降の `FlowResult` を無視する → ✅ 毎回 `hasError()`/`hasWarning()` を同じに分岐させる
+- ❌ 配列が来うるリクエスト値を `getString()` でスカラーに強制する → ✅ `InputBag` は非スカラーで例外を投げるので強制できない。`all()` で受けて型を検査する
+- ❌ 削除で外部キー違反だけ個別の例外型を catch → ✅ コアは `catch (\Exception)` ＋ `delete_error_foreign_key` に統一。絞るのは正しいがコア非準拠
 
 > 実装パターン・コード例・実行方法: `.claude/skills/eccube-controller/SKILL.md`
 
@@ -68,6 +68,8 @@ description: 新規機能の設計・実装を始める直前のチェックリ�
 - ❌ 1 つの Service に無関係な処理を寄せ集める → ✅ 単一責任で分割
 - ❌ `Request` を Service に渡す → ✅ 必要な値だけを引数で渡す
 - ❌ ループ内で毎回 `flush()` → ✅ まとめて `flush()`（トランザクション境界を意識）
+- ❌ `flush()` を確定として扱う → ✅ `TransactionListener` が 1 リクエスト＝1 トランザクションで包み、コミットは `kernel.terminate`。`flush` は SQL 発行のみ
+- ❌ `if` の下のロックを「条件付きだからほぼ通らない」と読む → ✅ 条件に使うプロパティが永続化されているか確かめる。非永続（transient）なら DB 読み込み直後は常に `null` で、その分岐は毎回実行される
 
 > 実装パターン・コード例・実行方法: `.claude/skills/eccube-service/SKILL.md`
 
@@ -81,6 +83,9 @@ description: 新規機能の設計・実装を始める直前のチェックリ�
 - ❌ 金額を float で四則演算（丸め誤差）→ ✅ `bcmath`（`bcadd` / `bcmul` / `bccomp`、スケール 2）で計算する
 - ❌ `create_date` / `update_date` を自前の `#[ORM\PrePersist]` でセット → ✅ `SaveEventSubscriber` が自動セットするので二重実装
 - ❌ 他エンティティへの関連で親削除時の挙動を未決定 → ✅ FK は既定で削除を止めるので、未指定だと親の削除が FK 違反で失敗する。`onDelete` を指定するか Service 側で後始末する（コアは大半が後者）
+- ❌ 金額を int/float で扱う → ✅ DECIMAL は `?string`（getter は `string`）。四則演算は `bcmath`（`bcadd` / `bcmul` / `bccomp`、スケール 2）
+- ❌ `@deprecated` なゲッタを未使用と判断して削除する → ✅ CSV 出力項目（`dtb_csv`）のアクセサとして現役のことがあり、削除は仕様変更になる。先に CSV 定義と照合する
+- ❌ プロキシ絡みの不具合を「手元で再現しないから誤検知」と判断 → ✅ 対象クラスが未宣言のときだけプロキシが `require` される。先にロードした状態で試す
 
 > 実装パターン・コード例・実行方法: `.claude/skills/eccube-entity/SKILL.md`
 
@@ -123,6 +128,7 @@ description: 新規機能の設計・実装を始める直前のチェックリ�
 - ❌ **管理画面テンプレートだから安全**と油断して `|raw` する → ✅ admin 配下も XSS シンク（過去の XSS 修正は管理画面テンプレートに多い）。DB/入力由来の値は admin でも必ずエスケープする
 - ❌ テンプレートイベントにエンティティ永続化など業務処理を書く → ✅ 見た目調整のみ。業務は対応するコントローライベントへ
 - ❌ inline `<script>` に素の `json_encode` で埋める → ✅ `</script>` で XSS。`|json_encode_safe`（JSON-LD は `|json_ld`）を使う。属性値には不可
+- ❌ `on('show.bs.modal', …)` を「BS5 は jQuery 非対応」と書き換える → ✅ 本体は BS5.3 と jQuery を併存させ、jQuery 側にも発火する。実機で確認する
 
 > 実装パターン・コード例・実行方法: `.claude/skills/eccube-twig-template/SKILL.md`
 
@@ -139,7 +145,7 @@ description: 新規機能の設計・実装を始める直前のチェックリ�
 - ❌ ace のモードを増やすテンプレートを足したのに `aceFiles` を更新しない → ✅ ビルドは通り、その画面を開いたときだけ壊れる
 - ❌ 生成物のパーミッション差分（`.css` は 100755 / `.map` は 100644）に気づかずモードだけ変えてコミットする → ✅ `git diff` でモード変更が出たら戻す
 - ❌ ホストとコンテナでビルドを混在させ、sass のバージョン差で無関係な行まで差分が出る → ✅ どちらかに統一する（Docker 推奨）
-- ❌ Bootstrap の dist CSS（`node_modules` 由来の生成物）に対する lint 指摘をそのまま直そうとする → ✅ 例えば `:not(:-moz-placeholder)` を「廃止予定で機能しない」とする指摘は誤検知で、Bootstrap は `:-moz-placeholder` と `:placeholder-shown` を意図的に別ルールセットへ分割出力しており実挙動は後者で正常。近傍に両方あるかを grep で確認する。そもそもビルド生成物なので手編集してはいけない
+- ❌ 依存ライブラリの生成物（dist CSS 等）への lint 指摘をそのまま直す → ✅ 手編集できない生成物で、指摘自体が誤検知のこともある。上流の出力を確認する
 
 > 実装パターン・コード例・実行方法: `.claude/skills/eccube-asset/SKILL.md`
 
@@ -166,6 +172,7 @@ description: 新規機能の設計・実装を始める直前のチェックリ�
 - ❌ マイグレーションでテーブルを"新規定義"してスキーマの源泉にする → ✅ 源泉は Entity 属性。
 - ❌ INSERT・構造変更でガードなし → 再実行や環境差で失敗。✅ 存在チェックで冪等にする。
 - ❌ `down()` 未実装 → ロールバック不能。✅ `up()`/`down()` を対で実装。
+- ❌ カラムを足したので反射的に `ALTER TABLE ... ADD COLUMN` のマイグレーションを書く
 
 > 実装パターン・コード例・実行方法: `.claude/skills/eccube-migration/SKILL.md`
 
@@ -175,14 +182,14 @@ description: 新規機能の設計・実装を始める直前のチェックリ�
 
 - ❌ 在庫引当・採番・ポイント付与・送料/値引き計算をコントローラや汎用 Service に直書き → ✅ 該当 Processor/Validator を拡張する
 - ❌ 検証なのに ItemHolderPreprocessor、明細付与なのに Validator、と取り違える → ✅ パイプライン表で役割に合うコンポーネントを選ぶ
-- ❌ `execute()` の override・try-catch・`ProcessResult` の `new` → ✅ `validate()` だけ override し `InvalidItemException` を投げる
-- ❌ ItemValidator で購入を止めようとする → ✅ 常に warning。中断は `ItemHolderValidator` / `PostValidator` の error で
 - ❌ Preprocessor で明細を追加しっぱなし（再実行で多重化） → ✅ `setProcessorName(self::class)` で印を付け、毎回削除→再追加で冪等にする
 - ❌ 値引きで合計金額を超える明細を作る → ✅ 利用可能額まで丸めるかスキップし `ProcessResult::warn()` を返す
 - ❌ 金額を float / `+`・`*` で計算 → ✅ `bcadd`/`bcsub`/`bcmul`/`bccomp` を使う
 - ❌ `Cart` でも `getShippings()` / `getCustomer()` を呼ぶ → ✅ `instanceof Order` でガード（Cart には Shipping もポイントも無い）
 - ❌ PurchaseProcessor の `rollback()` を実装し忘れる → ✅ `prepare()` の逆操作（在庫戻し等）を必ず実装する
 - ❌ 属性で実行順を制御する／YAML タグと属性を両方付ける → ✅ 順序は YAML タグの `priority`（降順）。登録はどちらか一方（既定はコア=YAML / プラグイン=属性、順序が要るならプラグインも YAML）
+- ❌ `execute()` を override して自前 try-catch → ✅ `validate()` だけ実装し `InvalidItemException` を投げる。中断は Holder 側
+- ❌ 送料無料を商品単位の性質として扱う → ✅ `DeliveryFeeFreePreprocessor` はカート合計と `BaseInfo` の閾値を比べる**カート全体の条件**。確定前の商品ページでは判定できないので出さない
 
 > 実装パターン・コード例・実行方法: `.claude/skills/eccube-purchase-flow/SKILL.md`
 
@@ -198,6 +205,7 @@ description: 新規機能の設計・実装を始める直前のチェックリ�
 - ❌ トレイト追加後にプロキシ再生成を忘れる → ✅ `bin/console eccube:generate:proxies`
 - ❌ プロジェクト固有の 1 回限りの改変をプラグイン化 → ✅ それは `app/Customize/`。着脱・再配布するものだけプラグイン
 - ❌ `app/Customize`（`Eccube\` を直接拡張）と `app/Plugin`（`Plugin\{Code}\` 独立名前空間）の名前空間を混同 → ✅ 置き場所で名前空間を使い分ける
+- ❌ 「無効化したプラグインは読み込まれない」と考える → ✅ `registerBundles()` は DB を見ず `app/Plugin` 直下の `bundles.php` を全て `require` する
 
 > 実装パターン・コード例・実行方法: `.claude/skills/eccube-plugin/SKILL.md`
 
@@ -206,7 +214,6 @@ description: 新規機能の設計・実装を始める直前のチェックリ�
 **触るとき**: `app/Customize` での拡張
 
 - ❌ コア（`src/Eccube/`）を直接書き換える → ✅ `app/Customize/` で拡張・上書きし、アップグレード安全にする
-- ❌ プロジェクト固有の 1 回限りの改変をプラグイン化 → ✅ それは `app/Customize/`。着脱・再配布するものだけ `app/Plugin/`
 - ❌ 名前空間を `Plugin\{Code}\` と混同 → ✅ Customize は **`Customize\` ＝ `app/Customize/`**
 - ❌ エンティティ拡張の trait に `#[EntityExtension(対象::class)]` を付け忘れ → ✅ 付けないと proxy に乗らずカラムが認識されない
 - ❌ trait 追加後に proxy 再生成を忘れる → ✅ `bin/console eccube:generate:proxies`
@@ -268,13 +275,13 @@ description: 新規機能の設計・実装を始める直前のチェックリ�
 
 **触るとき**: PHPUnit テスト
 
-- ❌ HTTP クライアント・URL・Entity を自前で用意する → ✅ 親クラスの `$this->client`、`$this->generateUrl('route_name')`、`createXxx()` フィクスチャヘルパを使う。
+- ❌ HTTP クライアント・URL・Entity を自前で用意する → ✅ 親クラスの `$this->client`、`$this->generateUrl()`、`createXxx()` ヘルパを使う
 - ❌ 支払方法のテストで `find(1)` 等の ID 前提 → ✅ `Generator::createPayment()` で sort_no・利用条件を明示し `assertSame()` で固定する。
 - ❌ ステータス値のハードコーディング（`if ($status == 1)`）→ ✅ 定数（例: `OrderStatus::NEW`）を使う。
 - ❌ 回帰テストがゲートになるか確かめない → ✅ 修正を外して落ちるか実測する。`failOnWarning` が無いので Warning では落ちず、戻り値を assert する。
 - ❌ テストのプロパティを未宣言で代入／非 nullable で宣言 → ✅ nullable で宣言（`cleanUpProperties()` の null 代入で `TypeError` になる）
 - ❌ HTML パートを持たないメールに `assertEmailHtmlBodyNotContains()` → ✅ `assertNull($Message->getHtmlBody())`。前者は必ず通る空振りになる。
-- ❌ ローカルだけ 500 のテストを自分の変更のせいにする → ✅ `createFormData()` が送らない列で非 nullable setter に `null` が渡るのが原因。`catchExceptions(false)` で確認
+- ❌ ローカルだけ 500 のテストを自分の変更のせいに帰属 → ✅ `createFormData()` が送らない列で非 nullable setter に `null` が入る
 - ❌ 依存ライブラリの例外メッセージを全文アサート → ✅ 版差で変わらない部分だけ含有判定する。上流はマイナー更新で書式を足すので、lock 更新だけで全マトリクスが落ちる。
 
 > 実装パターン・コード例・実行方法: `.claude/skills/eccube-phpunit/SKILL.md`
@@ -291,6 +298,7 @@ description: 新規機能の設計・実装を始める直前のチェックリ�
 - ❌ retry でプラグイン/データが残留し再失敗 → ✅ `beforeEach`/`afterEach` で cleanup（無効化 → 削除 → ディレクトリ削除）。
 - ❌ パスワードを見た目の文字数で作る → ✅ NFKC 正規化後で 15 文字以上か数える（min15。`[...str.normalize('NFKC')].length` で確認。#6488）。
 - ❌ 新規 spec を作ったのに CI で実行されない → ✅ `e2e-test.yml` の `suite:` 配列にファイル名（`.spec.ts` 抜き）を追加する。
+- ❌ 複数スイートが一斉に落ちたのを spec の不具合として追う → ✅ `setup-fixtures.php` は try-catch 無しの直列実行で、Fatal 以降のフィクスチャが未生成になる。ログ末尾の完了行を先に見る
 
 > 実装パターン・コード例・実行方法: `.claude/skills/eccube-e2e/SKILL.md`
 
