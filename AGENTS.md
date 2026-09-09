@@ -286,7 +286,7 @@ EC-CUBE は Symfony の EventDispatcher を拡張してカスタマイズを実�
 - **一般化テスト**: 固有のメソッド名・列名・テーブル名を消しても項目が成立するか確認する。
   成立しないものは Skill に書かない（そのレイヤ全体に効く規約ではなく、特定の調査結果である）。
   成立するなら例示を削って一般則だけ残す。固有名を残すと、無関係な箇所へ誤って適用される。
-- **上限**: 1 Skill あたり 10 項・1 項 120 字程度に収める。超えたら**追記ではなく既存項への統合か削除**を選ぶ。
+- **上限**: 1 レイヤ節あたり 10 項・1 項 120 字程度に収める。超えたら**追記ではなく既存項への統合か削除**を選ぶ。
 - **頻度順**: 踏まれやすいものを上に置く。読み手の注意は前方に効くため、頻度順でないリストは下位が実質死ぬ。
 
 この歯止めは**追記するときに適用する**。本規則の導入時点で超過していた Skill
@@ -294,10 +294,10 @@ EC-CUBE は Symfony の EventDispatcher を拡張してカスタマイズを実�
 超過の有無は次で確認できる。
 
 ```bash
-for f in .claude/skills/eccube-*/SKILL.md; do
-  sed -n '/よくある間違い/,/^## /p' "$f" | grep -E '^- ' \
-    | awk -v s="$(basename "$(dirname "$f")")" '{n++; if (length>m) m=length} END {if (n) printf "%-28s 項数=%-3s 最長=%s\n", s, n, m}'
-done
+awk '/^## /{if(n)printf "%-34s 項数=%-3s 最長=%s\n",s,n,m; s=substr($0,4); n=0; m=0}
+     /^- /{n++; if(length>m)m=length}
+     END{if(n)printf "%-34s 項数=%-3s 最長=%s\n",s,n,m}' \
+  .claude/skills/eccube-pre-impl/SKILL.md | awk '$2!="項数=0"'
 ```
 
 ## 主要エンティティ
