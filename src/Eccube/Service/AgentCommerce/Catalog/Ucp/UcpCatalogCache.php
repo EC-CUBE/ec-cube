@@ -23,7 +23,7 @@ use Symfony\Component\Lock\LockFactory;
  *
  * UCP Catalog は POST RPC のため ETag は使えず、リクエストボディの hash をキャッシュキー
  * とする。共有レンサバ前提のため symfony/cache の FilesystemAdapter を既定とする
- * (var/cache/<env>/agent-commerce/catalog 配下)。
+ * (var/runtime/<env>/agent-commerce/catalog 配下)。
  *
  * キャッシュミス時の再生成スタンピードを防ぐため symfony/lock の LockFactory で
  * 鍵ごとに排他し、ロック取得失敗時はブロックして待機する (取得後に再度キャッシュ確認)。

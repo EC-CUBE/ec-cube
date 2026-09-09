@@ -1176,6 +1176,7 @@ admin.content.block_source_code: コード
 admin.content.cache__card_title: キャッシュ管理
 admin.content.cache_message: 本番環境にFTPなどでTwigファイルをアップロードして入れ替えた場合、画面を反映させるにはTwigキャッシュを削除する必要があります。
 admin.content.cache_delete: キャッシュ削除
+admin.content.cache_build_dir_not_writable: 実行時キャッシュのみ削除しました。コンパイル済みコンテナとテンプレートを更新するには、CLI で bin/console eccube:cache:build を実行してください。
 admin.content.news.publish_date: 公開日時
 admin.content.news.display_status: 公開状態
 admin.content.news.display_status__show: 公開

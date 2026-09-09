@@ -45,7 +45,12 @@ class CacheController extends AbstractController
 
             $this->addFlash('eccube.admin.disable_maintenance', '');
 
-            $this->addSuccess('admin.common.delete_complete', 'admin');
+            if ($this->cacheUtil->canClearBuildCache()) {
+                $this->addSuccess('admin.common.delete_complete', 'admin');
+            } else {
+                // ビルドディレクトリへ書き込めない構成では実行時キャッシュのみ削除される.
+                $this->addWarning('admin.content.cache_build_dir_not_writable', 'admin');
+            }
         }
 
         return [

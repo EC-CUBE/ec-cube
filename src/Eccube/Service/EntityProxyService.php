@@ -84,7 +84,7 @@ class EntityProxyService
             // baseDir e.g. /src/Eccube/Entity and /app/Plugin/PluginCode/Entity
             $baseDir = str_replace($projectDir, '', str_replace($baseName, '', $fileName));
             if (!file_exists($outputDir.$baseDir)) {
-                mkdir($outputDir.$baseDir, 0777, true);
+                mkdir($outputDir.$baseDir, 0755, true);
             }
 
             $file = ltrim(str_replace($projectDir, '', $fileName), '/');

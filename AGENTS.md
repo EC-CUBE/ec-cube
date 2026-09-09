@@ -112,18 +112,40 @@ Web サーバー（`www-data`）と CLI（SSH ログインユーザー相当）�
 `docker-compose.permission-lanes.yml` を重ねる。`eccube:doctor:permissions` の動作確認に使う。
 
 ```bash
-docker compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.permission-lanes.yml up -d --wait
+# --build は必須。 公開イメージ (ghcr) には dockerbuild/docker-php-entrypoint のレーン分離が
+# 含まれないため、 pull されたイメージのままだと www-data がホストユーザーへリマップされ分離されない。
+# DB は SQLite だと var/eccube.db を CLI から書けないため、 DB サーバーを重ねる。
+docker compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.pgsql.yml \
+  -f docker-compose.permission-lanes.yml up -d --build --wait
 curl -s -o /dev/null http://127.0.0.1:8080/   # セッションを生成し Web サーバーの uid を判定可能にする
 docker compose exec -u eccube ec-cube bin/console eccube:doctor:permissions
 ```
 
-レーン W（`var`、`html/upload/**`、`app/keystore`）は `www-data` 所有とし、共有グループは作らない。
-CLI からレーン W を触る操作は Web サーバーのユーザーで実行する。本番の `sudo -u www-data` に相当する。
+レーン W（`var/runtime`、`var/sessions`、`var/log`、`html/upload/**`）は `www-data` 所有とし、
+共有グループは作らない。CLI からレーン W を触る操作は Web サーバーのユーザーで実行する。
+本番の `sudo -u www-data` に相当する。
+`app/keystore` はレーン S。秘密鍵はデプロイ成果物で、Web サーバーから書き込めると署名鍵の
+差し替えを許すため読み取りのみとする（実行時に鍵を生成する機能を使う場合は事前に配置しておく）。
 
 ```bash
-docker compose exec -u eccube   ec-cube bin/console eccube:page:apply ...   # レーン S を触る操作
-docker compose exec -u www-data ec-cube bin/console cache:clear             # レーン W を触る操作
+docker compose exec -u eccube   ec-cube bin/console eccube:cache:build        # レーン S を触る操作
+docker compose exec -u www-data ec-cube bin/console cache:pool:clear --all    # レーン W を触る操作
 ```
+
+`cache:clear` は `var/build` と `var/cache` の双方へ書き込む。3 分割ではどちらもレーン S のため
+CLI ユーザーなら成功する（Web サーバーのユーザーでは失敗する）。ただし `--no-warmup` を付けると
+コンパイル済みコンテナが再生成されず、次のリクエストで Web サーバーが 500 になる。
+コンパイル済みコンテナとテンプレートの再生成は `eccube:cache:build` を使う。
+
+`var/log` はレーン W のため、CLI からはログファイルへ書き込めない。ログの出力に失敗すると本来のエラーが
+ログ書き込みエラーへすり替わるため、分離した構成では `ECCUBE_CLI_LOG_TO_FILE=0` を設定し、CLI のログを
+コンソール出力に寄せる（記録が必要な場合はリダイレクトする）。未設定なら従来どおりファイルへ書く。
+`docker-compose.permission-lanes.yml` では既に設定済み。
+
+アプリケーションが作成するファイルの umask は環境変数 `ECCUBE_UMASK`（8 進数表記）で設定する。
+未設定なら OS / PHP-FPM の既定に従う（推奨）。Web サーバーと CLI が別ユーザーで、かつ双方が同じ
+ファイルへ書き込む必要がある環境では `0000` を設定すると 4.3 以前と同じ挙動（ディレクトリ 0777 /
+ファイル 0666）に戻せるが、同一サーバーの他ユーザーからも書き換え可能になる。
 
 分離すると、`app/template` や `html/user_data` へ書き込む管理画面の機能（プラグイン導入・
 ページ/ブロック/メールテンプレート編集・CSS/JS 編集・ファイル管理）は動作しなくなる。
@@ -131,7 +153,7 @@ CLI 側の代替導線は整備中のため、**日常の開発では重ねな�
 
 既定モードと分離モードを切り替えるときはレーン W のボリュームを作り直す。切り替え前の `www-data` の
 uid で作成されたディレクトリが残り、切り替え後の Web サーバーから書き込めなくなる
-（例: `var/cache/{env}/mcp-sessions`）。
+（例: `var/runtime/{env}/mcp-sessions`）。
 
 ```bash
 docker compose ... down -v
@@ -179,9 +201,15 @@ docker compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose
 
 ### キャッシュ / データベース
 
+キャッシュは 3 つのディレクトリに分かれる。`var/build/{env}`（コンパイル済みコンテナ・ルーティング・
+メタデータ・prod の twig）と `var/cache/{env}`（翻訳カタログ・htmlpurifier）は CLI が生成し、
+リクエスト処理中は読み取りのみ。`var/runtime/{env}`（cache pool・mcp-sessions・事前コンパイル漏れの
+twig のフォールバック等）はリクエスト処理中に生成される。
+
 ```bash
-bin/console cache:clear
-bin/console cache:warmup
+bin/console eccube:cache:build   # var/build を再生成（テンプレートの事前コンパイルを含む）
+bin/console cache:pool:clear --all   # 実行時キャッシュ（cache pool）を削除
+bin/console cache:clear          # 従来どおり全体を削除（build と cache の双方に書き込み権限が必要）
 
 # スキーマは Entity 属性が源泉。アップデートは 2 段構え:
 bin/console doctrine:schema:update --dump-sql        # 属性差分の SQL プレビュー

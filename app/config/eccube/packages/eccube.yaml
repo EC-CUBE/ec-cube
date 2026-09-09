@@ -21,6 +21,12 @@ parameters:
     env(ECCUBE_2FA_COOKIE_NAME): 'eccube_2fa'
     env(ECCUBE_2FA_EXPIRE): '14'
     env(ECCUBE_RESTRICT_FILE_UPLOAD): '0'
+    # アプリケーションが作成するファイル・ディレクトリの umask (8 進数表記).
+    # 空の場合は OS / PHP-FPM の既定に従う (推奨).
+    # Web サーバーと CLI が別ユーザーで, かつ双方が同じファイルへ書き込む必要がある環境では
+    # '0000' を設定すると 4.3 以前と同じ挙動 (ディレクトリ 0777 / ファイル 0666) になるが,
+    # 同一サーバーの他ユーザーからも書き換え可能になる.
+    env(ECCUBE_UMASK): ''
 
     # EC-CUBE parameter
     eccube_database_url: '%env(DATABASE_URL)%'
@@ -38,6 +44,13 @@ parameters:
     eccube_auth_magic: '%env(ECCUBE_AUTH_MAGIC)%'
     eccube_auth_type: HMAC
     eccube_password_hash_algos: SHA256
+    # リクエスト処理中に Web サーバーが書き込むディレクトリ.
+    # kernel.cache_dir / kernel.build_dir は eccube:cache:build (CLI) が生成するため,
+    # 実行時に生成されるキャッシュ・一時ファイルはすべてここへ集約する (Eccube\Kernel::getRuntimeDir()).
+    eccube_runtime_dir: '%kernel.project_dir%/var/runtime/%kernel.environment%'
+    # 実際の適用は index.php / bin/console の apply_umask() が行う (コンテナ生成より前のため).
+    # ここでは診断・参照用にパラメータとして公開する.
+    eccube_umask: '%env(ECCUBE_UMASK)%'
     eccube_theme_app_dir: '%kernel.project_dir%/app/template'
     eccube_theme_src_dir: '%kernel.project_dir%/src/Eccube/Resource/template'
     eccube_theme_user_data_dir: '%eccube_theme_app_dir%/user_data'
@@ -60,7 +73,7 @@ parameters:
     # 本保存領域(eccube_save_refund_request_file_dir)の配下に置かない。配信検証のプレフィックス一致で一時ファイルが到達可能になるのを防ぐため、兄弟ディレクトリ(temp)に分離する
     eccube_temp_refund_request_file_dir: '%kernel.project_dir%/html/upload/refund_request/temp'
     eccube_csv_size: 5                 # post_max_size, upload_max_filesize に任せればよい？
-    eccube_csv_temp_realdir: '%kernel.cache_dir%/%kernel.environment%/eccube' # upload_tmp_dir に任せればよい？
+    eccube_csv_temp_realdir: '%eccube_runtime_dir%/eccube' # upload_tmp_dir に任せればよい？
     eccube_csv_split_lines: 100
     eccube_default_password: 'abc*********123'
     eccube_deliv_addr_max: 20

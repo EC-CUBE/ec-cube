@@ -126,7 +126,8 @@ return RectorConfig::configure()
                PHPUnitSetList::PHPUNIT_110, // PHPUnitのバージョンに合わせる
            ])
            // Symfony のコンテナ XML（EC-CUBE の構成に合わせて調整が必要な場合があります）
-           ->withSymfonyContainerXml(__DIR__.'/var/cache/dev/Eccube_KernelDevDebugContainer.xml')
+           // debug.container.dump は kernel.build_dir 配下に出力される
+           ->withSymfonyContainerXml(__DIR__.'/var/build/dev/Eccube_KernelDevDebugContainer.xml')
            // オプション: キャッシュ設定 (パフォーマンス向上のために推奨)
            ->withCache(
                cacheClass: FileCacheStorage::class,

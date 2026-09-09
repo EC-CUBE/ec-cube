@@ -48,6 +48,9 @@ class LogType extends AbstractType
         $dirs = $this->kernel->getLogDir().DIRECTORY_SEPARATOR.$this->kernel->getEnvironment();
 
         // ログディレクトリが存在しない場合は作成（Monolog StreamHandlerと同様の実装）
+        // モードを 0777 のままにするのは, 実効値を ECCUBE_UMASK に委ねるため.
+        // 0755 を直接指定すると ECCUBE_UMASK=0000 を設定しても 0777 にならず,
+        // Web サーバーと CLI が別ユーザーで同じログへ書き込む構成が成立しなくなる.
         if (!is_dir($dirs)) {
             mkdir($dirs, 0777, true);
         }
