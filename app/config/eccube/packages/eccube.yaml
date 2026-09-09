@@ -209,10 +209,10 @@ parameters:
       admin_content_js: 'bin/console eccube:asset:apply --type=js --body-file=<ファイルパス>'
       admin_content_file: 'bin/console eccube:user-data:put --path=<パス> --body-file=<ファイルパス>'
       admin_content_file_delete: 'bin/console eccube:user-data:remove --path=<パス>'
-      # メールテンプレート (削除に相当する CLI は未整備)
+      # メールテンプレート
       admin_setting_shop_mail: 'bin/console eccube:mail-template:apply --file-name=<ファイル名> --body-file=<ファイルパス>'
       admin_setting_shop_mail_edit: 'bin/console eccube:mail-template:apply --id=<ID> --body-file=<ファイルパス>'
-      admin_setting_shop_mail_delete: ~
+      admin_setting_shop_mail_delete: 'bin/console eccube:mail-template:remove --file-name=<ファイル名>'
       # .env
       admin_setting_system_security: 'bin/console eccube:env:set ECCUBE_ADMIN_ROUTE=<値>'
       admin_store_template: 'bin/console eccube:env:set ECCUBE_TEMPLATE_CODE=<コード>'

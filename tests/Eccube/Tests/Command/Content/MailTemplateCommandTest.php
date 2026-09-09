@@ -17,6 +17,7 @@ namespace Eccube\Tests\Command\Content;
 
 use Eccube\Command\Content\MailTemplateApplyCommand;
 use Eccube\Command\Content\MailTemplateListCommand;
+use Eccube\Command\Content\MailTemplateRemoveCommand;
 use Eccube\Command\Content\MailTemplateShowCommand;
 use Eccube\Entity\MailTemplate;
 use Eccube\Service\Content\MailTemplateContentService;
@@ -145,6 +146,54 @@ final class MailTemplateCommandTest extends EccubeTestCase
     /**
      * @param array<string, mixed> $input
      */
+    public function testRemoveDeletesTemplate(): void
+    {
+        $this->apply([
+            '--file-name' => $this->fileName,
+            '--name' => 'テストメール',
+            '--subject' => '件名',
+            '--body' => 'body',
+        ]);
+        $Mail = $this->mailTemplateContentService->findByFileName((string) $this->fileName);
+        self::assertInstanceOf(MailTemplate::class, $Mail);
+        $filePath = $this->mailTemplateContentService->getFilePath($Mail);
+
+        $tester = $this->remove(['--file-name' => $this->fileName, '--force' => true]);
+
+        $this->assertSame(0, $tester->getStatusCode());
+        $this->assertStringContainsString('removed', $tester->getDisplay());
+        $this->assertFileDoesNotExist($filePath);
+        $this->assertNotInstanceOf(MailTemplate::class, $this->mailTemplateContentService->findByFileName((string) $this->fileName));
+    }
+
+    public function testRemoveRejectsUndeletableTemplate(): void
+    {
+        // 初期データのテンプレートは管理画面と同じく削除できない
+        $tester = $this->remove(['--file-name' => 'order', '--force' => true]);
+
+        $this->assertSame(1, $tester->getStatusCode());
+        $this->assertStringContainsString('削除できない', $tester->getDisplay());
+        $this->assertInstanceOf(MailTemplate::class, $this->mailTemplateContentService->findByFileName('order'));
+    }
+
+    public function testRemoveReturnsInvalidWithoutTarget(): void
+    {
+        $tester = $this->remove(['--force' => true]);
+
+        $this->assertSame(Command::INVALID, $tester->getStatusCode());
+    }
+
+    /**
+     * @param array<string, mixed> $input
+     */
+    private function remove(array $input): CommandTester
+    {
+        $tester = new CommandTester(self::getContainer()->get(MailTemplateRemoveCommand::class));
+        $tester->execute($input + ['--no-cache-clear' => true]);
+
+        return $tester;
+    }
+
     private function apply(array $input): CommandTester
     {
         $tester = new CommandTester(self::getContainer()->get(MailTemplateApplyCommand::class));

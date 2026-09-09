@@ -175,7 +175,7 @@ alternative for admin screens that write outside the web server's lane. `apply` 
 idempotent upserts and support `--dry-run` and `--format=json`; `--body=-` reads from stdin.
 
 `eccube:page:*` and `eccube:block:*` provide `list`, `show`, `apply` and `remove`;
-`eccube:mail-template:*` provides `list`, `show` and `apply`;
+`eccube:mail-template:*` provides `list`, `show`, `apply` and `remove`;
 `eccube:asset:*` provides `show` and `apply` for `html/user_data/assets/{css,js}/customize.*`;
 `eccube:user-data:*` provides `list`, `show`, `put` and `remove` for `html/user_data/**`;
 `eccube:env:*` provides `get` and `set` for `.env`;
@@ -202,6 +202,35 @@ given. Keys are created as 0755 directories and 0644 files: the web server has t
 sign responses, and owner-only modes break on hosts where the deploy user cannot `chgrp`. Set
 `ECCUBE_KEYSTORE_STRICT_PERMISSIONS=1` for 0700/0600 — the command then fails when the web server
 cannot read the key it just wrote. `eccube:keystore:show` never prints key material.
+
+### Content Definitions in Git
+
+Templates are files and content definitions are database rows; only the former can live in Git.
+`eccube:contents:export` and `eccube:contents:import` move the part that cannot — pages, blocks,
+mail templates and layouts — through a directory of YAML files (`app/contents/` by default).
+
+```bash
+bin/console eccube:contents:export                     # writes app/contents/*.yaml
+bin/console eccube:contents:import --dry-run           # show the differences only
+bin/console eccube:contents:import
+bin/console eccube:contents:import --prune --dry-run   # review what would be deleted
+```
+
+**Template bodies are never copied into the archive.** Customising
+`src/Eccube/Resource/template/**` in place and pulling upstream fixes (security patches included)
+with `git merge` is a common setup, so duplicating a body into the archive would create a second
+copy that `git merge` cannot reconcile. For the same reason `app/template/{theme}` shadows
+`src/Eccube/Resource/template/default` in Twig's search path, and `*ContentService::save()`
+therefore writes a template only when the body actually changes — editing the metadata of a core
+page from the admin screen no longer leaves a shadow copy behind.
+
+Creating a record without a body reuses the template already present at the destination, so
+committing `app/template/user_data/foo.twig` and adding one entry to `pages.yaml` is enough for
+`import` to create the page. Layouts are referenced by name because `dtb_layout.id` differs
+between environments; export fails when layout names are not unique. `--prune` (off by default)
+deletes only what is deletable: user-created pages, deletable blocks and mail templates, and
+layouts no page refers to. `html/user_data` is skipped unless `--include=user_data` is given,
+since everything but `customize.css` and `customize.js` is deliberately gitignored.
 
 ### Read-only Admin Screens
 
