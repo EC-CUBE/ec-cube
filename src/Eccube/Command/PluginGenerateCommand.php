@@ -371,56 +371,54 @@ namespace Plugin\\{$code}\\Entity;
 
 use Doctrine\\ORM\\Mapping as ORM;
 
-if (!class_exists('\\Plugin\\{$code}\\Entity\\Config', false)) {
+/**
+ * Config
+ */
+#[ORM\Table(name: "plg_{$snakecased}_config")]
+#[ORM\Entity(repositoryClass: "Plugin\\{$code}\\Repository\\ConfigRepository")]
+class Config
+{
     /**
-     * Config
+     * @var int
+     *
      */
-    #[ORM\Table(name: "plg_{$snakecased}_config")]
-    #[ORM\Entity(repositoryClass: "Plugin\\{$code}\\Repository\\ConfigRepository")]
-    class Config
+    #[ORM\Id]
+    #[ORM\Column(name: "id", type: "integer", options: ["unsigned" => true])]
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
+    private \$id;
+
+    /**
+     * @var string
+     */
+    #[ORM\Column(name: "name", type: "string", length: 255)]
+    private \$name;
+
+    /**
+     * @return int
+     */
+    public function getId()
     {
-        /**
-         * @var int
-         *
-         */
-        #[ORM\Id]
-        #[ORM\Column(name: "id", type: "integer", options: ["unsigned" => true])]
-        #[ORM\GeneratedValue(strategy: "IDENTITY")]
-        private \$id;
+        return \$this->id;
+    }
 
-        /**
-         * @var string
-         */
-        #[ORM\Column(name: "name", type: "string", length: 255)]
-        private \$name;
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return \$this->name;
+    }
 
-        /**
-         * @return int
-         */
-        public function getId()
-        {
-            return \$this->id;
-        }
+    /**
+     * @param string \$name
+     *
+     * @return \$this;
+     */
+    public function setName(\$name)
+    {
+        \$this->name = \$name;
 
-        /**
-         * @return string
-         */
-        public function getName()
-        {
-            return \$this->name;
-        }
-
-        /**
-         * @param string \$name
-         *
-         * @return \$this;
-         */
-        public function setName(\$name)
-        {
-            \$this->name = \$name;
-
-            return \$this;
-        }
+        return \$this;
     }
 }
 
