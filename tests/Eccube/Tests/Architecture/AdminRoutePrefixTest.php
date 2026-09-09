@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -27,7 +29,7 @@ use PHPUnit\Framework\TestCase;
  * 実装時に気づく契機が無く（画面は動いてしまう）, レビューでも見落としやすいため機械で検査する.
  */
 #[Group('architecture')]
-class AdminRoutePrefixTest extends TestCase
+final class AdminRoutePrefixTest extends TestCase
 {
     private const ADMIN_PREFIX = '/%eccube_admin_route%';
 
@@ -64,11 +66,11 @@ class AdminRoutePrefixTest extends TestCase
         return $cases;
     }
 
-    #[DataProvider('adminControllerProvider')]
+    #[DataProvider(methodName: 'adminControllerProvider')]
     public function testAdminRoutesAreUnderAdminPrefix(string $path): void
     {
         $source = file_get_contents($path);
-        self::assertNotFalse($source);
+        $this->assertNotFalse($source);
 
         $violations = [];
         // #[Route('...')] / #[Route(path: '...')] の第1引数を拾う
@@ -83,7 +85,7 @@ class AdminRoutePrefixTest extends TestCase
             }
         }
 
-        self::assertSame([], $violations, sprintf(
+        $this->assertSame([], $violations, sprintf(
             "%s の管理ルートが %s 配下にありません: %s\n".
             '管理画面の認可は admin ファイアウォール（pattern: ^/%%eccube_admin_route%%/）が担うため、'.
             '配下から外すと未認証で到達できます。#[Route(path: \'/%%eccube_admin_route%%/...\')] に修正してください。',

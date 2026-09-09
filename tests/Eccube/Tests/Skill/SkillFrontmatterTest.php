@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -31,7 +33,7 @@ use Symfony\Component\Yaml\Yaml;
  *  - `注意: ` のコロン+空白がマッピング区切りと解釈されパースエラーになった
  */
 #[Group('architecture')]
-class SkillFrontmatterTest extends TestCase
+final class SkillFrontmatterTest extends TestCase
 {
     /**
      * @return array<string, array{string}>
@@ -48,7 +50,7 @@ class SkillFrontmatterTest extends TestCase
         return $cases;
     }
 
-    #[DataProvider('skillProvider')]
+    #[DataProvider(methodName: 'skillProvider')]
     public function testFrontmatterIsValidYaml(string $path): void
     {
         $raw = $this->extractFrontmatter($path);
@@ -64,15 +66,15 @@ class SkillFrontmatterTest extends TestCase
             ));
         }
 
-        self::assertIsArray($parsed, $path.' の frontmatter が連想配列になっていません');
-        self::assertArrayHasKey('name', $parsed, $path.' に name がありません');
-        self::assertArrayHasKey('description', $parsed, $path.' に description がありません');
+        $this->assertIsArray($parsed, $path.' の frontmatter が連想配列になっていません');
+        $this->assertArrayHasKey('name', $parsed, $path.' に name がありません');
+        $this->assertArrayHasKey('description', $parsed, $path.' に description がありません');
     }
 
     /**
      * description が途中で切り捨てられていないことを, 生の行長とパース後の長さの突合で検査する.
      */
-    #[DataProvider('skillProvider')]
+    #[DataProvider(methodName: 'skillProvider')]
     public function testDescriptionIsNotTruncated(string $path): void
     {
         $raw = $this->extractFrontmatter($path);
@@ -84,16 +86,16 @@ class SkillFrontmatterTest extends TestCase
                 break;
             }
         }
-        self::assertGreaterThan(0, $rawLength, $path.' に description 行がありません');
+        $this->assertGreaterThan(0, $rawLength, $path.' に description 行がありません');
 
         try {
             $parsed = Yaml::parse($raw);
-        } catch (ParseException $e) {
+        } catch (ParseException) {
             self::markTestSkipped($path.' は YAML として壊れています（testFrontmatterIsValidYaml が報告します）');
         }
         $parsedLength = mb_strlen((string) ($parsed['description'] ?? ''));
 
-        self::assertLessThanOrEqual(3, abs($rawLength - $parsedLength), sprintf(
+        $this->assertLessThanOrEqual(3, abs($rawLength - $parsedLength), sprintf(
             "%s の description が YAML パースで切り捨てられています（生 %d 字 → パース後 %d 字）。\n".
             '値の中の「 #」以降がコメント扱いになっている可能性があります。',
             $path, $rawLength, $parsedLength
@@ -103,7 +105,7 @@ class SkillFrontmatterTest extends TestCase
     private function extractFrontmatter(string $path): string
     {
         $content = file_get_contents($path);
-        self::assertNotFalse($content, $path.' を読み込めません');
+        $this->assertNotFalse($content, $path.' を読み込めません');
 
         if (!preg_match("/\A---\n(.*?)\n---\n/s", $content, $m)) {
             self::fail($path.' に frontmatter（--- で囲まれた領域）がありません');

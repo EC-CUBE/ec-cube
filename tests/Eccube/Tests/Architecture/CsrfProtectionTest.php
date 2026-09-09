@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -29,7 +31,7 @@ use PHPUnit\Framework\TestCase;
  * 検証漏れは画面上は正常に動くため気づく契機が無く, レビューでも見落としやすい.
  */
 #[Group('architecture')]
-class CsrfProtectionTest extends TestCase
+final class CsrfProtectionTest extends TestCase
 {
     /**
      * ブラウザセッションを使わない外部 API. CSRF の対象外.
@@ -68,11 +70,11 @@ class CsrfProtectionTest extends TestCase
         return $cases;
     }
 
-    #[DataProvider('controllerProvider')]
+    #[DataProvider(methodName: 'controllerProvider')]
     public function testStateChangingActionsAreCsrfProtected(string $path): void
     {
         $lines = file($path, FILE_IGNORE_NEW_LINES);
-        self::assertNotFalse($lines);
+        $this->assertNotFalse($lines);
 
         $violations = [];
         foreach ($lines as $i => $line) {
@@ -96,7 +98,7 @@ class CsrfProtectionTest extends TestCase
             }
         }
 
-        self::assertSame([], $violations, sprintf(
+        $this->assertSame([], $violations, sprintf(
             "%s の以下のアクションに CSRF 保護が見当たりません: %s\n".
             "GET 以外の状態変更には \$this->isTokenValid() を呼ぶか、フォーム経由（handleRequest）にしてください。\n".
             'Ajax 専用なら $request->isXmlHttpRequest() で XHR に限定してください。',
