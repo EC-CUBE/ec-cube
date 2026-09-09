@@ -267,7 +267,8 @@ services:
     # MCP: tools/list を現トークンの scope で絞る (呼べない Tool を一覧から隠す = 最小権限)。
     # call 時の fail-closed 拒否は ScopeEnforcingReferenceHandler が担う二重防御。
     Eccube\Service\Mcp\ScopeFilteringRegistry:
-        decorates: mcp.registry
+        # decorates 先は mcp-bundle がサーバ名 (mcp.yaml の mcp.servers キー) から組む registry ID
+        decorates: !php/const Eccube\Service\Mcp\McpServerDefinition::REGISTRY_SERVICE_ID
         arguments:
             $inner: '@.inner'
 

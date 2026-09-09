@@ -37,9 +37,9 @@ final class McpCliToolInvoker
     private bool $primed = false;
 
     public function __construct(
-        #[Autowire(service: 'mcp.registry')]
+        #[Autowire(service: McpServerDefinition::REGISTRY_SERVICE_ID)]
         private readonly RegistryInterface $registry,
-        #[Autowire(service: 'mcp.server.builder')]
+        #[Autowire(service: McpServerDefinition::BUILDER_SERVICE_ID)]
         private readonly Builder $builder,
         #[Autowire(service: McpScopeEnforcementPass::INNER_REFERENCE_HANDLER_ID)]
         private readonly ReferenceHandlerInterface $handler,
