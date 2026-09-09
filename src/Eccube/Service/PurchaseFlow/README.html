@@ -26,7 +26,7 @@
 <h1>PurchaseFlow — 受注処理パイプライン</h1>
 <p class="nav">
  索引: <a href="./README.md">README.md</a>
- ／ 実装規約（AI・開発者向け）: <a href="../../../../.claude/skills/purchase-flow/SKILL.md">purchase-flow/SKILL.md</a>
+ ／ 実装規約（AI・開発者向け）: <a href="../../../../.claude/skills/eccube-purchase-flow/SKILL.md">eccube-purchase-flow/SKILL.md</a>
  ／ ドメイン詳細: <a href="https://doc4.ec-cube.net/spec_order">doc4「受注」仕様</a>
 </p>
 
@@ -93,7 +93,7 @@ rollback()  仮確定の取消（在庫戻し 等）… prepare の逆操作</di
 <section data-section="extension" data-customer="false">
  <h2>拡張ポイント<span class="dev-only">開発者向け</span></h2>
  <p>受注処理へ独自の検証・計算を差し込むには、対応する部品を拡張して対象フローへ登録します。
- <strong>実装の書き方・DO/DON'T は <a href="../../../../.claude/skills/purchase-flow/SKILL.md">purchase-flow/SKILL.md</a> が正典</strong>です。ここでは全体像だけ示します。</p>
+ <strong>実装の書き方・DO/DON'T は <a href="../../../../.claude/skills/eccube-purchase-flow/SKILL.md">eccube-purchase-flow/SKILL.md</a> が正典</strong>です。ここでは全体像だけ示します。</p>
  <table>
   <tr><th>やりたいこと</th><th>拡張する部品（基底）</th></tr>
   <tr><td>明細1行の検証</td><td><code>ItemValidator</code>（abstract。常に warning 化）</td></tr>

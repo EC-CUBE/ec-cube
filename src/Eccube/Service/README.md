@@ -5,8 +5,8 @@
 受注に関わる計算・検証・確定は汎用 Service ではなく `PurchaseFlow/` が担う。
 
 - 📖 仕様（人間向け）: [README.html](./README.html)
-- 🛠 実装規約（AI 向け）: [`service/SKILL.md`](../../../.claude/skills/service/SKILL.md)
-- 📚 関連: 受注処理は [`PurchaseFlow/`](./PurchaseFlow/README.html) ／ CSV は [`csv/SKILL.md`](../../../.claude/skills/csv/SKILL.md) ／ メールは [`mail/SKILL.md`](../../../.claude/skills/mail/SKILL.md)
+- 🛠 実装規約（AI 向け）: [`eccube-service/SKILL.md`](../../../.claude/skills/eccube-service/SKILL.md)
+- 📚 関連: 受注処理は [`PurchaseFlow/`](./PurchaseFlow/README.html) ／ CSV は [`eccube-csv/SKILL.md`](../../../.claude/skills/eccube-csv/SKILL.md) ／ メールは [`eccube-mail/SKILL.md`](../../../.claude/skills/eccube-mail/SKILL.md)
 
 ## 主要ファイル
 

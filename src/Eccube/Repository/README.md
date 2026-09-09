@@ -5,7 +5,7 @@
 **責務はデータアクセスのみ**（業務ロジックは Service / PurchaseFlow へ）。
 
 - 📖 仕様（人間向け）: [README.html](./README.html)
-- 🛠 実装規約（AI 向け）: [`repository/SKILL.md`](../../../.claude/skills/repository/SKILL.md)
+- 🛠 実装規約（AI 向け）: [`eccube-repository/SKILL.md`](../../../.claude/skills/eccube-repository/SKILL.md)
 - 📚 ドメイン詳細: https://doc4.ec-cube.net/spec_order
 
 ## 主要ファイル

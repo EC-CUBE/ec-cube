@@ -26,7 +26,7 @@
 <h1>Command — コンソールコマンド／バッチ</h1>
 <p class="nav">
  索引: <a href="./README.md">README.md</a>
- ／ 実装規約（AI・開発者向け）: <a href="../../../.claude/skills/command/SKILL.md">command/SKILL.md</a>
+ ／ 実装規約（AI・開発者向け）: <a href="../../../.claude/skills/eccube-command/SKILL.md">eccube-command/SKILL.md</a>
 </p>
 
 <section data-section="overview" data-customer="true">
@@ -89,7 +89,7 @@ return 0;                            … 正常 0 / 異常は非 0（コアは 0
 <section data-section="extension" data-customer="false">
  <h2>コマンドの追加<span class="dev-only">開発者向け</span></h2>
  <p>新しいコマンドは 1 クラス足すだけです。
- <strong>実装の書き方・DO/DON'T は <a href="../../../.claude/skills/command/SKILL.md">command/SKILL.md</a> が正典</strong>です。ここでは要点だけ示します。</p>
+ <strong>実装の書き方・DO/DON'T は <a href="../../../.claude/skills/eccube-command/SKILL.md">eccube-command/SKILL.md</a> が正典</strong>です。ここでは要点だけ示します。</p>
  <table>
   <tr><th>やること</th><th>作法</th></tr>
   <tr><td>クラスを宣言する</td><td><code>Command</code> を継承し <code>#[AsCommand(name: 'eccube:...')]</code> を付ける</td></tr>

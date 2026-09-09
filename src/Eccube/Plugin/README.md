@@ -5,7 +5,7 @@
 install/enable/disable/update/uninstall の共通処理と `migration()` ヘルパを持つ。
 
 - 📖 仕様（人間向け）: [README.html](./README.html)
-- 🛠 実装規約（AI 向け）: [`plugin/SKILL.md`](../../../.claude/skills/plugin/SKILL.md)
+- 🛠 実装規約（AI 向け）: [`eccube-plugin/SKILL.md`](../../../.claude/skills/eccube-plugin/SKILL.md)
 - 📦 プラグイン本体の置き場: [`app/Plugin/`](../../../app/Plugin/README.md)
 
 ## 主要ファイル

@@ -4,7 +4,7 @@ EC-CUBE のデータ構造を表す Doctrine エンティティ。会員・商�
 PHP8 属性 `#[ORM\...]` でマッピングしたクラスとして持つ。**スキーマの源泉はこの属性**。
 
 - 📖 仕様（人間向け）: [README.html](./README.html)
-- 🛠 実装規約（AI 向け）: [`entity/SKILL.md`](../../../.claude/skills/entity/SKILL.md)
+- 🛠 実装規約（AI 向け）: [`eccube-entity/SKILL.md`](../../../.claude/skills/eccube-entity/SKILL.md)
 - 📚 ドメイン詳細: https://doc4.ec-cube.net/spec_order
 
 ## 主要ファイル

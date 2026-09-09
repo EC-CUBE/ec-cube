@@ -26,7 +26,7 @@
 <h1>Entity — Doctrine エンティティ</h1>
 <p class="nav">
  索引: <a href="./README.md">README.md</a>
- ／ 実装規約（AI・開発者向け）: <a href="../../../.claude/skills/entity/SKILL.md">entity/SKILL.md</a>
+ ／ 実装規約（AI・開発者向け）: <a href="../../../.claude/skills/eccube-entity/SKILL.md">eccube-entity/SKILL.md</a>
  ／ ドメイン詳細: <a href="https://doc4.ec-cube.net/spec_order">doc4「受注」仕様</a>
 </p>
 
@@ -93,7 +93,7 @@
  コアを書き換えずにカラムを足すための仕組みで、コアの複雑さの一因です（＝「拡張性のための複雑さ」）。</p>
  <p>既存エンティティへのフィールド追加は<strong>コアを書き換えず trait で行い</strong>、<code>app/Customize/Entity/</code> に置きます。
  反映には <code>bin/console eccube:generate:proxies</code> でプロキシを再生成します（<code>app/proxy/entity/</code> に拡張後のエンティティが生成される）。
- 実装の書き方・DO/DON'T は <a href="../../../.claude/skills/entity/SKILL.md">entity/SKILL.md</a> が正典です。</p>
+ 実装の書き方・DO/DON'T は <a href="../../../.claude/skills/eccube-entity/SKILL.md">eccube-entity/SKILL.md</a> が正典です。</p>
  <table>
   <tr><th>やりたいこと</th><th>やり方</th></tr>
   <tr><td>コアエンティティにカラムを足す</td><td>trait を作り <code>app/Customize/Entity/</code> に置く → プロキシ再生成</td></tr>

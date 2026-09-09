@@ -6,7 +6,7 @@ UserProvider（ユーザー解決）・PasswordHasher（照合）・AuthorityVot
 ログイン/ログアウトの各ハンドラを収める。
 
 - 📖 仕様（人間向け）: [README.html](./README.html)
-- 🛠 実装規約（AI 向け）: [`security/SKILL.md`](../../../.claude/skills/security/SKILL.md)
+- 🛠 実装規約（AI 向け）: [`eccube-security/SKILL.md`](../../../.claude/skills/eccube-security/SKILL.md)
 
 ## 主要ファイル
 

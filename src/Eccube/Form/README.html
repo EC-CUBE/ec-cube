@@ -26,7 +26,7 @@
 <h1>Form — フォーム</h1>
 <p class="nav">
  索引: <a href="./README.md">README.md</a>
- ／ 実装規約（AI・開発者向け）: <a href="../../../.claude/skills/formtype/SKILL.md">formtype/SKILL.md</a>
+ ／ 実装規約（AI・開発者向け）: <a href="../../../.claude/skills/eccube-formtype/SKILL.md">eccube-formtype/SKILL.md</a>
 </p>
 
 <section data-section="overview" data-customer="true">
@@ -94,7 +94,7 @@
 <section data-section="extension" data-customer="false">
  <h2>拡張ポイント：既存フォームへ項目を足す<span class="dev-only">開発者向け</span></h2>
  <p><strong>既存フォームにフィールドを追加したいときは、コアの FormType を書き換えず <code>FormTypeExtension</code> を使う</strong>のが鉄則です。
- 詳しい DO/DON'T は <a href="../../../.claude/skills/formtype/SKILL.md">formtype/SKILL.md</a> が正典です。</p>
+ 詳しい DO/DON'T は <a href="../../../.claude/skills/eccube-formtype/SKILL.md">eccube-formtype/SKILL.md</a> が正典です。</p>
  <ul>
   <li><span class="badge">コア</span> 横断的な拡張は <code>src/Eccube/Form/Extension/</code> に <code>AbstractTypeExtension</code> を継承して置く。
   <code>getExtendedTypes()</code> で対象 Type を指定する（例: <code>HelpTypeExtension</code> は全 <code>FormType</code> に <code>help</code> を追加、<code>HTMLPurifierTextTypeExtension</code> は入力を無害化）。</li>

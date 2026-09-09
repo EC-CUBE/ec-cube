@@ -26,7 +26,7 @@
 <h1>Twig/Extension — Twig 拡張</h1>
 <p class="nav">
  索引: <a href="./README.md">README.md</a>
- ／ 実装規約（AI・開発者向け）: <a href="../../../../.claude/skills/twig-template/SKILL.md">twig-template/SKILL.md</a>
+ ／ 実装規約（AI・開発者向け）: <a href="../../../../.claude/skills/eccube-twig-template/SKILL.md">eccube-twig-template/SKILL.md</a>
 </p>
 
 <section data-section="overview" data-customer="true">
@@ -77,7 +77,7 @@
 <section data-section="extension" data-customer="false">
  <h2>独自フィルタ／関数の追加方法<span class="dev-only">開発者向け</span></h2>
  <p><code>AbstractExtension</code> を継承したクラスを作り、<code>getFilters()</code> / <code>getFunctions()</code> で登録します。
- 依存はコンストラクタ DI で受けます。実装の DO/DON'T は <a href="../../../../.claude/skills/twig-template/SKILL.md">twig-template/SKILL.md</a> が正典です。</p>
+ 依存はコンストラクタ DI で受けます。実装の DO/DON'T は <a href="../../../../.claude/skills/eccube-twig-template/SKILL.md">eccube-twig-template/SKILL.md</a> が正典です。</p>
  <div class="flow">new TwigFilter('price', $this-&gt;getPriceFilter(...));
 // HTML を返すフィルタ/関数は is_safe を明示する
 new TwigFilter('file_ext_icon', $this-&gt;getExtensionIcon(...), ['is_safe' =&gt; ['html']]);

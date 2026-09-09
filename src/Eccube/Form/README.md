@@ -5,7 +5,7 @@
 送信値の前処理・値変換も同居する。
 
 - 📖 仕様（人間向け）: [README.html](./README.html)
-- 🛠 実装規約（AI 向け）: [`formtype/SKILL.md`](../../../.claude/skills/formtype/SKILL.md)
+- 🛠 実装規約（AI 向け）: [`eccube-formtype/SKILL.md`](../../../.claude/skills/eccube-formtype/SKILL.md)
 
 ## サブディレクトリ
 

@@ -5,7 +5,7 @@ PSR-4 で `Customize\` = `app/Customize/` にマッピングされ、autowire / 
 着脱・再配布できる機能は `app/Plugin/` を使う（こちらは 1 回限りの改変向け）。
 
 - 📖 仕様（人間向け）: [README.html](./README.html)
-- 🛠 実装規約（AI 向け）: [`customize/SKILL.md`](../../.claude/skills/customize/SKILL.md)
+- 🛠 実装規約（AI 向け）: [`eccube-customize/SKILL.md`](../../.claude/skills/eccube-customize/SKILL.md)
 - 🧩 着脱式の機能: [`app/Plugin/`](../Plugin/README.md)
 
 ## 主要ディレクトリ

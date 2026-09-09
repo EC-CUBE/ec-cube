@@ -26,7 +26,7 @@
 <h1>app/DoctrineMigrations — マイグレーション</h1>
 <p class="nav">
  索引: <a href="./README.md">README.md</a>
- ／ 実装規約（AI・開発者向け）: <a href="../../.claude/skills/migration/SKILL.md">migration/SKILL.md</a>
+ ／ 実装規約（AI・開発者向け）: <a href="../../.claude/skills/eccube-migration/SKILL.md">eccube-migration/SKILL.md</a>
 </p>
 
 <section data-section="overview" data-customer="true">
@@ -58,7 +58,7 @@
 
 <section data-section="convention" data-customer="false">
  <h2>作法<span class="dev-only">開発者向け</span></h2>
- <p><strong>実装の詳細は <a href="../../.claude/skills/migration/SKILL.md">migration/SKILL.md</a> が正典</strong>。要点のみ。</p>
+ <p><strong>実装の詳細は <a href="../../.claude/skills/eccube-migration/SKILL.md">eccube-migration/SKILL.md</a> が正典</strong>。要点のみ。</p>
  <ul>
   <li>生成は <code>bin/console doctrine:migrations:generate</code> で<strong>空の雛形</strong>を作り、必要な SQL を手で書く。
   <code>doctrine:migrations:diff</code> は<strong>使わない</strong>（カラム差分まで ALTER 化し、原則と矛盾するため）。</li>
