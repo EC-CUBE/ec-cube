@@ -264,6 +264,7 @@ EC-CUBE は Symfony の EventDispatcher を拡張してカスタマイズを実�
 | コンソールコマンド（Symfony Console・バッチ） | [`.claude/skills/eccube-command/SKILL.md`](./.claude/skills/eccube-command/SKILL.md) | `eccube-command` |
 | アセットビルド（SCSS / JS バンドル・生成物のコミット） | [`.claude/skills/eccube-asset/SKILL.md`](./.claude/skills/eccube-asset/SKILL.md) | `eccube-asset` |
 | 責務分離レビュー（実装直後の自己チェック・全層） | [`.claude/skills/eccube-review-responsibility/SKILL.md`](./.claude/skills/eccube-review-responsibility/SKILL.md) | `eccube-review-responsibility` |
+| コントリビューション（PR 作成・CI ゲートの再現） | [`.claude/skills/eccube-contributing/SKILL.md`](./.claude/skills/eccube-contributing/SKILL.md) | `eccube-contributing` |
 
 > 規約は必要になった時点で `.claude/skills/eccube-<name>/SKILL.md` を 1 ファイル追加して足す（`.codex`/`.agents` は symlink で自動共有）。
 > 各ファイルは frontmatter（`name` / `description`）＋本文の順で書き、本文は「対象／基本ルール／実装パターン／よくある間違い／実行・確認方法」の構成を推奨する（推測を載せず、必ず `src/Eccube/` の実コードで裏取りする）。
