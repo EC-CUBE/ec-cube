@@ -125,6 +125,67 @@ final class BlockContentServiceTest extends EccubeTestCase
     /**
      * @param array<string, string> $payload
      */
+    /**
+     * コアブロックの名前だけを更新しても app/template に写しを作らない
+     * (PageContentServiceTest::testApplyDoesNotShadowCoreTemplate と同じ理由).
+     */
+    public function testApplyDoesNotShadowCoreTemplate(): void
+    {
+        $Block = $this->findCoreBlockWithoutOverride();
+        $fileName = (string) $Block->getFileName();
+        $filePath = $this->blockContentService->getFilePath($Block);
+        $original = (string) $Block->getName();
+        // 万一書き出された場合にリポジトリへ残さない
+        $this->createdFiles[] = $filePath;
+
+        try {
+            $result = $this->blockContentService->apply(['file_name' => $fileName, 'name' => $original.' (改)']);
+
+            $this->assertSame(ContentStatus::Updated, $result->status);
+            $this->assertSame([], $result->writtenPaths);
+            $this->assertFileDoesNotExist($filePath, '名前だけの更新では app/template に写しを作らない');
+        } finally {
+            $this->blockContentService->apply(['file_name' => $fileName, 'name' => $original]);
+        }
+    }
+
+    /**
+     * 本文を指定しない新規登録は, 配置先に既にあるテンプレートを使う
+     * (PageContentServiceTest::testApplyUsesExistingTemplateWhenBodyIsNotSpecified と同じ).
+     */
+    public function testApplyUsesExistingTemplateWhenBodyIsNotSpecified(): void
+    {
+        $path = $this->blockContentService->getTemplateDir().'/'.$this->fileName.'.twig';
+        file_put_contents($path, '<p>committed</p>');
+        $this->createdFiles[] = $path;
+
+        $result = $this->apply(['name' => 'テストブロック']);
+
+        $this->assertSame(ContentStatus::Created, $result->status);
+        $this->assertSame([], $result->writtenPaths, '既にあるテンプレートは書き換えない');
+        $this->assertSame('<p>committed</p>', file_get_contents($path));
+        $this->assertInstanceOf(Block::class, $this->findBlock());
+    }
+
+    /**
+     * app/template へ上書きしておらず, コアのテンプレートを解決できるブロック.
+     */
+    private function findCoreBlockWithoutOverride(): Block
+    {
+        $DeviceType = $this->blockContentService->getDeviceType();
+        /** @var list<Block> $Blocks */
+        $Blocks = $this->entityManager->getRepository(Block::class)
+            ->findBy(['DeviceType' => $DeviceType, 'deletable' => false], ['id' => 'ASC']);
+        foreach ($Blocks as $Block) {
+            if (!is_file($this->blockContentService->getFilePath($Block))
+                && '' !== $this->blockContentService->readTemplate($Block)) {
+                return $Block;
+            }
+        }
+
+        self::fail('app/template へ上書きしていないコアブロックが見つかりません.');
+    }
+
     private function apply(array $payload, bool $dryRun = false): ContentResult
     {
         /** @var array{file_name: string} $payload */

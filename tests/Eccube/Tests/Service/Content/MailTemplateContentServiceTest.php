@@ -82,10 +82,12 @@ final class MailTemplateContentServiceTest extends EccubeTestCase
         $this->apply(['name' => 'テストメール', 'subject' => '件名', 'body' => 'body']);
 
         $result = $this->apply(['html_body' => '<p>html</p>']);
-        $htmlPath = $result->writtenPaths[1] ?? '';
+        $htmlPath = $this->htmlFilePath();
         $this->createdFiles[] = $htmlPath;
 
         $this->assertSame(ContentStatus::Updated, $result->status);
+        // 本文は変わらないため, 書き出されるのは HTML パートだけ
+        $this->assertSame([$htmlPath], $result->writtenPaths);
         $this->assertSame('<p>html</p>', file_get_contents($htmlPath));
 
         $removed = $this->apply(['remove_html' => true]);
@@ -97,8 +99,8 @@ final class MailTemplateContentServiceTest extends EccubeTestCase
     public function testApplyKeepsHtmlPartWhenNotSpecified(): void
     {
         $this->apply(['name' => 'テストメール', 'subject' => '件名', 'body' => 'body']);
-        $result = $this->apply(['html_body' => '<p>html</p>']);
-        $htmlPath = $result->writtenPaths[1] ?? '';
+        $this->apply(['html_body' => '<p>html</p>']);
+        $htmlPath = $this->htmlFilePath();
         $this->createdFiles[] = $htmlPath;
 
         $this->apply(['body' => 'updated body']);
@@ -166,6 +168,40 @@ final class MailTemplateContentServiceTest extends EccubeTestCase
     /**
      * @param array<string, mixed> $payload
      */
+    /**
+     * 本文を指定しない新規登録は, 配置先に既にあるテンプレートを使う
+     * (PageContentServiceTest::testApplyUsesExistingTemplateWhenBodyIsNotSpecified と同じ).
+     * HTML パートも同様に, 既にあれば「HTML パートなし」として消してしまわない.
+     */
+    public function testApplyUsesExistingTemplateWhenBodyIsNotSpecified(): void
+    {
+        $dir = $this->mailTemplateContentService->getTemplateDir().'/Mail';
+        $path = $dir.'/'.$this->fileName.'.twig';
+        $htmlPath = $dir.'/'.$this->fileName.'.html.twig';
+        file_put_contents($path, 'committed body');
+        file_put_contents($htmlPath, '<p>committed</p>');
+        $this->createdFiles[] = $path;
+        $this->createdFiles[] = $htmlPath;
+
+        $result = $this->apply(['name' => 'テストメール', 'subject' => '件名']);
+
+        $this->assertSame(ContentStatus::Created, $result->status);
+        $this->assertSame([], $result->writtenPaths, '既にあるテンプレートは書き換えない');
+        $this->assertSame('committed body', file_get_contents($path));
+        $this->assertSame('<p>committed</p>', file_get_contents($htmlPath), 'HTML パートを消さない');
+    }
+
+    /**
+     * HTML パートの配置先. 書き込みの有無に依らないよう ContentResult からは求めない.
+     */
+    private function htmlFilePath(): string
+    {
+        $Mail = $this->mailTemplateContentService->findByFileName((string) $this->fileName);
+        self::assertInstanceOf(MailTemplate::class, $Mail);
+
+        return $this->mailTemplateContentService->getHtmlFilePath($Mail);
+    }
+
     private function apply(array $payload, bool $dryRun = false): ContentResult
     {
         $payload = ['file_name' => (string) $this->fileName] + $payload;

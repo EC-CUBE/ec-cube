@@ -38,6 +38,8 @@ use Twig\Error\LoaderError;
  */
 class BlockContentService
 {
+    use TemplateBodyTrait;
+
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly BlockRepository $blockRepository,
@@ -121,7 +123,10 @@ class BlockContentService
 
         // 新規登録時は比較対象が無い (未設定のゲッタは null を返すため呼び出さない)
         $before = $isNew ? [] : $this->snapshot($Block);
-        $beforeBody = $isNew ? '' : StringUtil::convertLineFeed($this->readTemplate($Block));
+        // 新規登録時は, 配置先に既にあるテンプレートを本文の初期値にする
+        $beforeBody = self::normalizeTemplateBody($isNew
+            ? ($this->readExistingTemplate($this->getTemplateDir(), $fileName) ?? '')
+            : $this->readTemplate($Block));
 
         $data = [
             'file_name' => $fileName,
@@ -142,7 +147,7 @@ class BlockContentService
             throw ContentValidationException::fromForm($form);
         }
 
-        $body = StringUtil::convertLineFeed((string) $form->get('block_html')->getData());
+        $body = self::normalizeTemplateBody((string) $form->get('block_html')->getData());
         $fieldChanges = self::diffFields($before, $this->snapshot($Block));
         $fileChanges = $beforeBody === $body ? [] : [$this->getFilePath($Block) => [$beforeBody, $body]];
 
@@ -175,6 +180,8 @@ class BlockContentService
      * DB とファイルはトランザクションで対にする. 先にコミットするとテンプレートの書き出しに
      * 失敗したときレコードだけが残り, そのブロックを配置したページの表示が 500 になる.
      *
+     * 本文が現在の内容と同じ場合はファイルを書き出さない (ContentResult::$writtenPaths も空になる).
+     *
      * @throws ContentWriteException テンプレートファイルを書き出せない場合
      */
     public function save(Block $Block, string $body, ?string $previousFileName): ContentResult
@@ -188,10 +195,16 @@ class BlockContentService
             $dir = $this->getTemplateDir();
             $filePath = $dir.'/'.$Block->getFileName().'.twig';
 
-            try {
-                $this->filesystem->dumpFile($filePath, StringUtil::convertLineFeed($body));
-            } catch (IOException $e) {
-                throw ContentWriteException::forWrite($filePath, $e);
+            // 本文が現在の内容と同じなら書き出さない
+            // (PageContentService::save() と同じ理由).
+            $writtenPaths = [];
+            if (self::normalizeTemplateBody($body) !== self::normalizeTemplateBody($this->readTemplate($Block))) {
+                try {
+                    $this->filesystem->dumpFile($filePath, StringUtil::convertLineFeed($body));
+                } catch (IOException $e) {
+                    throw ContentWriteException::forWrite($filePath, $e);
+                }
+                $writtenPaths[] = $filePath;
             }
 
             $removedPaths = [];
@@ -212,7 +225,7 @@ class BlockContentService
                 $isNew ? ContentStatus::Created : ContentStatus::Updated,
                 $Block->getId(),
                 $Block->getFileName(),
-                [$filePath],
+                $writtenPaths,
                 $removedPaths
             );
         });

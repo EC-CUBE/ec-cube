@@ -104,7 +104,9 @@ class MailController extends AbstractController
                     null === $htmlMailData ? null : (string) $htmlMailData
                 );
                 $templatePath = $this->mailTemplateContentService->getTemplateDir();
-                $filePath = (string) $result->path();
+                // 本文が変わらないとテンプレートは書き出されないため, イベントには
+                // 書き込み結果ではなく書き込み先のパスを渡す
+                $filePath = $this->mailTemplateContentService->getFilePath($Mail);
 
                 $event = new EventArgs(
                     [
