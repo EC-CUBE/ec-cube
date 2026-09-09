@@ -55,10 +55,10 @@ class PluginUninstallCommand extends Command
         }
 
         $this->pluginService->uninstall($plugin, $uninstallForce);
-        $this->clearCache($io);
+        $cacheCleared = $this->clearCache($io);
 
         $io->success('Uninstalled.');
 
-        return Command::SUCCESS;
+        return $cacheCleared ? Command::SUCCESS : self::EXIT_MANUAL_ACTION_REQUIRED;
     }
 }

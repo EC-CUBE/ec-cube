@@ -106,6 +106,37 @@ composer create-project ec-cube/ec-cube ec-cube "4.4.x-dev" --keep-vcs
 bin/console eccube:install
 ```
 
+#### Web サーバーと CLI の権限を分離した環境
+
+Web サーバー（`www-data`）と CLI（SSH ログインユーザー相当）の書き込み権限を分けた状態を再現するには、
+`docker-compose.permission-lanes.yml` を重ねる。`eccube:doctor:permissions` の動作確認に使う。
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.permission-lanes.yml up -d --wait
+curl -s -o /dev/null http://127.0.0.1:8080/   # セッションを生成し Web サーバーの uid を判定可能にする
+docker compose exec -u eccube ec-cube bin/console eccube:doctor:permissions
+```
+
+レーン W（`var`、`html/upload/**`、`app/keystore`）は `www-data` 所有とし、共有グループは作らない。
+CLI からレーン W を触る操作は Web サーバーのユーザーで実行する。本番の `sudo -u www-data` に相当する。
+
+```bash
+docker compose exec -u eccube   ec-cube bin/console eccube:page:apply ...   # レーン S を触る操作
+docker compose exec -u www-data ec-cube bin/console cache:clear             # レーン W を触る操作
+```
+
+分離すると、`app/template` や `html/user_data` へ書き込む管理画面の機能（プラグイン導入・
+ページ/ブロック/メールテンプレート編集・CSS/JS 編集・ファイル管理）は動作しなくなる。
+CLI 側の代替導線は整備中のため、**日常の開発では重ねない**こと。
+
+既定モードと分離モードを切り替えるときはレーン W のボリュームを作り直す。切り替え前の `www-data` の
+uid で作成されたディレクトリが残り、切り替え後の Web サーバーから書き込めなくなる
+（例: `var/cache/{env}/mcp-sessions`）。
+
+```bash
+docker compose ... down -v
+```
+
 ### テスト
 
 ```bash

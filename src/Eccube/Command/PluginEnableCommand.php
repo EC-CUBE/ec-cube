@@ -57,10 +57,10 @@ class PluginEnableCommand extends Command
         }
 
         $this->pluginService->enable($plugin);
-        $this->clearCache($io);
+        $cacheCleared = $this->clearCache($io);
 
         $io->success('Plugin Enabled.');
 
-        return Command::SUCCESS;
+        return $cacheCleared ? Command::SUCCESS : self::EXIT_MANUAL_ACTION_REQUIRED;
     }
 }

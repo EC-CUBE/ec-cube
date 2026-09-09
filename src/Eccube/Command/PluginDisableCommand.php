@@ -53,10 +53,10 @@ class PluginDisableCommand extends Command
         }
 
         $this->pluginService->disable($plugin);
-        $this->clearCache($io);
+        $cacheCleared = $this->clearCache($io);
 
         $io->success('Plugin Disabled.');
 
-        return Command::SUCCESS;
+        return $cacheCleared ? Command::SUCCESS : self::EXIT_MANUAL_ACTION_REQUIRED;
     }
 }
