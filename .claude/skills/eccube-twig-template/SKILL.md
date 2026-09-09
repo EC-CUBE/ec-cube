@@ -1,6 +1,6 @@
 ---
 name: eccube-twig-template
-description: EC-CUBE 4.4 の Twig 拡張（Extension/Filter/Function）とテンプレートを実装・改修・点検するときの規約。「Twig拡張を作って」「フィルタ/関数を追加して」「テンプレートを上書きして」「このテンプレートを直して」「XSS/エスケープを確認して」「rawの使い方を点検して」などと言われたとき、または src/Eccube/Twig/Extension・app/template・Resource/template 配下を作成・編集するときに使用する。
+description: EC-CUBE 4.4 の Twig 拡張（Extension/Filter/Function）とテンプレートを実装・改修・点検するときの規約。「Twig拡張を作って」「フィルタ/関数を追加して」「テンプレートを上書きして」「このテンプレートを直して」「XSS/エスケープを確認して」「rawの使い方を点検して」などと言われたとき、または Twig 拡張やテンプレートを作成・編集するとき（コア・app/template・プラグインのいずれでも）に使用する。
 ---
 
 # Twig 拡張・テンプレート規約（EC-CUBE 4.4）

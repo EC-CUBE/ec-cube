@@ -1,6 +1,6 @@
 ---
 name: eccube-purchase-flow
-description: EC-CUBE 4.4 の受注処理（PurchaseFlow の Processor/Validator）を実装・改修するときの規約。「受注処理を追加して」「値引き/送料/ポイントの計算を入れて」「在庫チェックを追加して」「Processorを作って」「Validatorを作って」「PurchaseFlowにフックして」などと言われたとき、または src/Eccube/Service/PurchaseFlow・プラグインの PurchaseFlow 配下を作成・編集するときに使用する。
+description: EC-CUBE 4.4 の受注処理（PurchaseFlow の Processor/Validator）を実装・改修するときの規約。「受注処理を追加して」「値引き/送料/ポイントの計算を入れて」「在庫チェックを追加して」「Processorを作って」「Validatorを作って」「PurchaseFlowにフックして」などと言われたとき、または PurchaseFlow の Processor/Validator を作成・編集するとき（コア・プラグインのいずれでも）に使用する。
 ---
 
 # PurchaseFlow 規約 — 受注処理パイプライン（EC-CUBE 4.4）

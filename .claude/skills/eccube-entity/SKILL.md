@@ -1,6 +1,6 @@
 ---
 name: eccube-entity
-description: EC-CUBE 4.4 の Doctrine エンティティを実装・改修するときの規約。「エンティティを作って」「テーブルを追加して」「Entityにフィールドを足して」「リレーションを定義して」「マスタを追加して」などと言われたとき、または src/Eccube/Entity・app/Customize/Entity 配下を作成・編集するときに使用する。
+description: EC-CUBE 4.4 の Doctrine エンティティを実装・改修するときの規約。「エンティティを作って」「テーブルを追加して」「Entityにフィールドを足して」「リレーションを定義して」「マスタを追加して」などと言われたとき、またはエンティティを作成・編集するとき（コア・app/Customize・プラグインのいずれでも）に使用する。
 ---
 
 # Entity 規約（EC-CUBE 4.4）

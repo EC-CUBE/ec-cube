@@ -1,6 +1,6 @@
 ---
 name: eccube-command
-description: EC-CUBE 4.4 のコンソールコマンド（Symfony Console・#[AsCommand]）を実装するときの規約。「コマンドを作って」「バッチを実装して」「cronで動かす処理を作って」「コンソールコマンドを追加して」などと言われたとき、または src/Eccube/Command・プラグインの Command 配下を作成・編集するときに使用する。
+description: EC-CUBE 4.4 のコンソールコマンド（Symfony Console・#[AsCommand]）を実装するときの規約。「コマンドを作って」「バッチを実装して」「cronで動かす処理を作って」「コンソールコマンドを追加して」などと言われたとき、またはコンソールコマンドを作成・編集するとき（コア・プラグインのいずれでも）に使用する。
 ---
 
 # Command 規約 — コンソールコマンド／バッチ（EC-CUBE 4.4）

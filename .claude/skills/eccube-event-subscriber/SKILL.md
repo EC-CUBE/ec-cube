@@ -1,6 +1,6 @@
 ---
 name: eccube-event-subscriber
-description: EC-CUBE 4.4 のイベント（EventSubscriber/EventListener・EC-CUBE独自イベント・テンプレートイベント・Doctrineイベント）を実装・改修するときの規約。「イベントサブスクライバを作って」「リスナーを追加して」「このイベントを購読して」「処理にフックして」「テンプレートに差し込んで」「ログイン時に処理を足して」などと言われたとき、または src/Eccube/Event・src/Eccube/EventListener・app/Customize/EventListener 配下を作成・編集するときに使用する。
+description: EC-CUBE 4.4 のイベント（EventSubscriber/EventListener・EC-CUBE独自イベント・テンプレートイベント・Doctrineイベント）を実装・改修するときの規約。「イベントサブスクライバを作って」「リスナーを追加して」「このイベントを購読して」「処理にフックして」「テンプレートに差し込んで」「ログイン時に処理を足して」などと言われたとき、またはイベントの購読を作成・編集するとき（コア・app/Customize・プラグインのいずれでも）に使用する。
 ---
 
 # イベント規約（EC-CUBE 4.4）
