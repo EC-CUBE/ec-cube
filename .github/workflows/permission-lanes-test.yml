@@ -313,6 +313,21 @@ jobs:
           curl -fsS -k -o /dev/null "${BASE_URL}/"
           curl -fsS -k -o /dev/null "${BASE_URL}/${ADMIN_ROUTE}/login"
 
+      ## 管理画面からは作れないページを CLI で作っておき、 Playwright から
+      ## 「反映されること」と「削除操作が無効化されていること」を確認する。
+      ## 削除の UI はユーザーが作成したページ (EDIT_TYPE_USER) にしか出ないため、
+      ## 標準のフィクスチャだけでは検証できない
+      - name: Create a page from the CLI for the E2E
+        run: |
+          set +e
+          printf '<p>permission lanes</p>' | docker compose exec -T -u "${CLI_USER}" ec-cube \
+            bin/console eccube:page:apply --route=permission_lanes --name='権限分離テストページ' --body=-
+          STATUS=$?
+          set -e
+          [ "${STATUS}" -eq 0 ] || [ "${STATUS}" -eq 3 ] \
+            || { echo "::error::eccube:page:apply が終了コード ${STATUS} で終わりました"; exit 1; }
+          docker compose exec -T -u "${CLI_USER}" ec-cube bin/console eccube:cache:build
+
       - name: Install Playwright dependencies
         working-directory: e2e
         run: npm ci
@@ -347,10 +362,10 @@ jobs:
           ADMIN_USER: 'admin'
           ADMIN_PASSWORD: 'password'
           CI: 'true'
-          ## globalSetup のフィクスチャ投入はコンテナ内で実行する。 アプリはコンテナ側にあり、
-          ## ホストの php では DB もカーネルも解決できない。 -u を省くと root で走り
-          ## レーンの所有者が壊れるため必ず CLI ユーザーを指定する
-          PHP_BIN: docker compose exec -T -u ${{ env.CLI_USER }} ec-cube php
+          ## 追加フィクスチャの生成は Eccube\Tests\Fixture\Generator を必要とするが、
+          ## これはテスト環境専用のサービスで APP_ENV=prod では解決できない。
+          ## 本 spec は eccube:fixtures:load が入れた管理者とデモデータで足りるため省略する
+          SKIP_FIXTURES: '1'
         run: npx playwright test --project=setup --project=permission-lanes-tests permission-lanes.spec.ts
 
       - name: Upload Playwright report

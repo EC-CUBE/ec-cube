@@ -22,6 +22,9 @@ const READ_ONLY_NOTICE = 'この画面は読み取り専用です。';
 /** CLI で導入するプラグイン。 ワークフローが eccube:plugin:install/enable で入れておく */
 const CLI_PLUGIN_CODE = 'Boomerang';
 
+/** CLI で作成するページ名。 ワークフローが eccube:page:apply で作っておく */
+const CLI_PAGE_NAME = '権限分離テストページ';
+
 test.describe('権限を分離した構成の管理画面', () => {
   test('CSS 管理は内容を表示したまま保存だけ無効化される', async ({ page }) => {
     await page.goto(`/${adminRoute}/content/css`);
@@ -34,7 +37,7 @@ test.describe('権限を分離した構成の管理画面', () => {
     await expect(page.locator('#save-button')).toBeDisabled();
   });
 
-  test('ページ管理は一覧を表示したまま削除だけ無効化される', async ({ page }) => {
+  test('ページ管理は一覧を表示したまま保存操作だけ無効化される', async ({ page }) => {
     await page.goto(`/${adminRoute}/content/page`);
 
     await expect(page.getByText(READ_ONLY_NOTICE)).toBeVisible();
@@ -42,6 +45,17 @@ test.describe('権限を分離した構成の管理画面', () => {
     // 一覧は読める
     const rows = page.locator('tr[id^="ex-page-"]');
     expect(await rows.count()).toBeGreaterThan(0);
+  });
+
+  test('CLI で作成したページが管理画面へ反映され、削除が無効化されている', async ({ page }) => {
+    // eccube:page:apply --route=permission_lanes で作成済み (ワークフローが実行する)。
+    // 削除の UI はユーザーが作成したページ (EDIT_TYPE_USER) にしか出ないため、
+    // 標準のフィクスチャだけでは削除の無効化を検証できない
+    await page.goto(`/${adminRoute}/content/page`);
+
+    const row = page.locator('tr[id^="ex-page-"]').filter({ hasText: CLI_PAGE_NAME }).first();
+    await expect(row).toBeVisible();
+
     // 削除リンクは押せない (a 要素のため disabled クラスと aria-disabled で無効化する)
     const deleteLink = page.locator('a.btn-ec-delete[href*="/delete"]').first();
     await expect(deleteLink).toHaveClass(/disabled/);
