@@ -226,6 +226,48 @@ final class PageContentServiceTest extends EccubeTestCase
         $this->assertSame([], $Page->getLayouts());
     }
 
+    /**
+     * DB の削除に失敗したとき, 退避中に書き出された別の内容を上書きしない.
+     *
+     * 退避 -> DB 削除 の間に同じパスへ書き出しがあると, 上書き付きで復元すればその更新を失う.
+     * 競合として扱い, 退避ファイルを残して手動で復旧できる状態にする.
+     */
+    public function testRemoveDoesNotOverwriteConcurrentWriteOnRestore(): void
+    {
+        $created = $this->apply(['name' => 'テストページ', 'body' => 'original']);
+        $filePath = (string) $created->path();
+        $this->createdFiles[] = $filePath;
+
+        // removeTemplatesAround() は private のため, 退避 -> 失敗 -> 復元 の経路を直接呼び出す
+        $method = new \ReflectionMethod($this->pageContentService, 'removeTemplatesAround');
+        $commit = function () use ($filePath): void {
+            // 退避が済んだこの時点で, 別の処理が同じパスへ書き出した状況を作る
+            file_put_contents($filePath, 'written by another process');
+
+            throw new \RuntimeException('DB の削除に失敗');
+        };
+
+        try {
+            $method->invoke($this->pageContentService, [$filePath], $commit);
+            self::fail('$commit の例外はそのまま伝播する');
+        } catch (\RuntimeException $e) {
+            $this->assertSame('DB の削除に失敗', $e->getMessage());
+        }
+
+        $this->assertSame(
+            'written by another process',
+            file_get_contents($filePath),
+            '復元で他の処理の書き込みを上書きしない'
+        );
+
+        $staged = glob(dirname($filePath).'/'.basename($filePath).'.removing-*') ?: [];
+        foreach ($staged as $path) {
+            $this->createdFiles[] = $path;
+        }
+        $this->assertCount(1, $staged, '復元できなかった退避ファイルは残す');
+        $this->assertSame('original', file_get_contents($staged[0]));
+    }
+
     public function testRemoveDeletesPageAndTemplate(): void
     {
         $created = $this->apply(['name' => 'テストページ', 'body' => 'body']);
