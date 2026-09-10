@@ -40,13 +40,4 @@ class LoginHistoryStatusType extends AbstractType
     {
         return MasterType::class;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'login_history_status';
-    }
 }

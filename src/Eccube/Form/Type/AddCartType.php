@@ -64,7 +64,7 @@ class AddCartType extends AbstractType
                 'mapped' => false,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Regex(['pattern' => '/^\d+$/']),
+                    new Assert\Regex(pattern: '/^\d+$/'),
                 ], ])
             ->add(
                 $builder
@@ -88,10 +88,8 @@ class AddCartType extends AbstractType
                     ],
                     'constraints' => [
                         new Assert\NotBlank(),
-                        new Assert\GreaterThanOrEqual([
-                            'value' => 1,
-                        ]),
-                        new Assert\Regex(['pattern' => '/^\d+$/']),
+                        new Assert\GreaterThanOrEqual(value: 1),
+                        new Assert\Regex(pattern: '/^\d+$/'),
                     ],
                 ]);
             if ($Product->getProductClasses()) {
@@ -167,14 +165,5 @@ class AddCartType extends AbstractType
                 $child->vars['id'] .= $options['product']->getId();
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'add_cart';
     }
 }

@@ -76,7 +76,7 @@ class LogType extends AbstractType
                 ],
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Range(['min' => 1, 'max' => 50000]),
+                    new Assert\Range(min: 1, max: 50000),
                 ],
             ])
             ->add('log_level', ChoiceType::class, [
@@ -102,7 +102,7 @@ class LogType extends AbstractType
                     'placeholder' => 'admin.setting.system.log.keyword_placeholder',
                 ],
                 'constraints' => [
-                    new Assert\Length(['max' => 255]),
+                    new Assert\Length(max: 255),
                 ],
             ])
             ->add('download', SubmitType::class, [

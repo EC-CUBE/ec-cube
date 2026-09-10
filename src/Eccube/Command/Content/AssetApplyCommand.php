@@ -30,7 +30,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * 管理画面の CSS 管理 / JS 管理と同じファイルを対象にする.
  */
-#[AsCommand(name: 'eccube:asset:apply', description: 'カスタマイズ用の CSS / JS を保存します.')]
+#[AsCommand(name: 'eccube:asset:apply', description: 'カスタマイズ用の CSS / JS を保存します.', help: <<<'TXT'
+<info>%command.name%</info> は管理画面の CSS 管理 / JS 管理と同じファイルを保存します.
+
+  <info>cat customize.css | php %command.full_name% --type=css --body=-</info>
+  <info>php %command.full_name% --type=js --body-file=customize.js --dry-run</info>
+TXT)]
 final class AssetApplyCommand extends Command
 {
     use ContentCommandTrait;
@@ -46,13 +51,6 @@ final class AssetApplyCommand extends Command
         $this->addOption('type', null, InputOption::VALUE_REQUIRED, sprintf('対象の種別 (%s)', implode('|', $this->assetContentService->getTypes())));
         // 静的ファイルのためキャッシュの削除は不要
         $this->addWriteOptions(false);
-        $this->setHelp(<<<'EOF'
-            <info>%command.name%</info> は管理画面の CSS 管理 / JS 管理と同じファイルを保存します.
-
-              <info>cat customize.css | php %command.full_name% --type=css --body=-</info>
-              <info>php %command.full_name% --type=js --body-file=customize.js --dry-run</info>
-            EOF
-        );
     }
 
     #[\Override]
@@ -95,13 +93,13 @@ final class AssetApplyCommand extends Command
         } catch (ContentValidationException $e) {
             $io->error(array_merge([sprintf('保存できません: %s', $type)], $e->getErrors()));
 
-            return 1;
+            return Command::FAILURE;
         } catch (ContentWriteException $e) {
             return $this->reportWriteFailure($io, sprintf('保存できません: %s', $type), $e);
         }
 
         $this->renderResult($io, $output, $format, $result, $dryRun);
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

@@ -59,10 +59,8 @@ class ShippingMultipleItemType extends AbstractType
                 ],
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\GreaterThanOrEqual([
-                        'value' => 1,
-                    ]),
-                    new Assert\Regex(['pattern' => '/^\d+$/']),
+                    new Assert\GreaterThanOrEqual(value: 1),
+                    new Assert\Regex(pattern: '/^\d+$/'),
                 ],
             ])
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
@@ -131,14 +129,5 @@ class ShippingMultipleItemType extends AbstractType
                 }
                 $form['quantity']->setData($quantity);
             });
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'shipping_multiple_item';
     }
 }

@@ -30,7 +30,16 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  * 一括ダンプは提供しない. .env には DATABASE_URL 等の資格情報が含まれるため,
  * 明示的に指定したキーだけを返す.
  */
-#[AsCommand(name: 'eccube:env:get', description: '.env の値を表示します.')]
+#[AsCommand(name: 'eccube:env:get', description: '.env の値を表示します.', help: <<<'TXT'
+<info>%command.name%</info> は .env の値を表示します.
+
+  <info>php %command.full_name% ECCUBE_TEMPLATE_CODE</info>
+  <info>php %command.full_name% ECCUBE_FORCE_SSL --format=json</info>
+
+既定の出力は実行時に反映されている値のみを標準出力へ書き出すため,
+シェルの変数へそのまま代入できます. .env の値と実行時の値が食い違う場合
+(OS の環境変数などが上書きしている場合) は標準エラー出力へ警告します.
+TXT)]
 final class EnvGetCommand extends Command
 {
     public function __construct(private readonly EnvFileService $envFileService)
@@ -43,18 +52,7 @@ final class EnvGetCommand extends Command
     {
         $this
             ->addArgument('key', InputArgument::REQUIRED, '環境変数名 (例: ECCUBE_TEMPLATE_CODE)')
-            ->addOption('format', null, InputOption::VALUE_REQUIRED, '出力形式 (table|json)', 'table')
-            ->setHelp(<<<'EOF'
-                <info>%command.name%</info> は .env の値を表示します.
-
-                  <info>php %command.full_name% ECCUBE_TEMPLATE_CODE</info>
-                  <info>php %command.full_name% ECCUBE_FORCE_SSL --format=json</info>
-
-                既定の出力は実行時に反映されている値のみを標準出力へ書き出すため,
-                シェルの変数へそのまま代入できます. .env の値と実行時の値が食い違う場合
-                (OS の環境変数などが上書きしている場合) は標準エラー出力へ警告します.
-                EOF
-            );
+            ->addOption('format', null, InputOption::VALUE_REQUIRED, '出力形式 (table|json)', 'table');
     }
 
     #[\Override]
@@ -86,13 +84,13 @@ final class EnvGetCommand extends Command
                 'ineffective_reasons' => array_values($reasons),
             ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
-            return 0;
+            return Command::SUCCESS;
         }
 
         if (null === $fileValue && null === $effectiveValue) {
             $errorIo->error(sprintf('%s は設定されていません.', $key));
 
-            return 1;
+            return Command::FAILURE;
         }
 
         if ($overridden) {
@@ -105,6 +103,6 @@ final class EnvGetCommand extends Command
 
         $output->writeln($effectiveValue ?? (string) $fileValue, OutputInterface::OUTPUT_RAW);
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

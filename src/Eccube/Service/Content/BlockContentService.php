@@ -127,9 +127,7 @@ class BlockContentService
 
         $Block = $this->findByFileName($fileName, $DeviceType);
         $isNew = null === $Block;
-        if (null === $Block) {
-            $Block = $this->blockRepository->newBlock($DeviceType);
-        }
+        $Block ??= $this->blockRepository->newBlock($DeviceType);
 
         // 新規登録時は比較対象が無い (未設定のゲッタは null を返すため呼び出さない)
         $before = $isNew ? [] : $this->snapshot($Block);

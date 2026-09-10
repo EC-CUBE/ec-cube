@@ -42,14 +42,14 @@ class PluginDisableCommand extends Command
         if (empty($code)) {
             $io->error('code is required.');
 
-            return 1;
+            return Command::FAILURE;
         }
 
         $plugin = $this->pluginRepository->findByCode($code);
         if (is_null($plugin)) {
             $io->error("Plugin `$code` is not found.");
 
-            return 1;
+            return Command::FAILURE;
         }
 
         $this->pluginService->disable($plugin);
@@ -57,6 +57,6 @@ class PluginDisableCommand extends Command
 
         $io->success('Plugin Disabled.');
 
-        return $cacheCleared ? 0 : self::EXIT_MANUAL_ACTION_REQUIRED;
+        return $cacheCleared ? Command::SUCCESS : self::EXIT_MANUAL_ACTION_REQUIRED;
     }
 }

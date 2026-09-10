@@ -33,7 +33,19 @@ use Symfony\Component\Process\Process;
  * 権限を分離した構成では .env は CLI ユーザーの所有 (レーン S) となり,
  * 管理画面 (セキュリティ管理・テンプレート管理) からは書き換えられない.
  */
-#[AsCommand(name: 'eccube:env:set', description: '.env の値を設定します.')]
+#[AsCommand(name: 'eccube:env:set', description: '.env の値を設定します.', help: <<<'TXT'
+<info>%command.name%</info> は .env の値を設定します.
+
+  <info>php %command.full_name% ECCUBE_TEMPLATE_CODE=default</info>
+  <info>php %command.full_name% ECCUBE_FORCE_SSL=1 TRUSTED_HOSTS='^example\.com$' --dry-run</info>
+
+値は .env の行へそのまま書き出します. 空白や記号を含む値は
+<info>KEY="'値'"</info> のようにクォートを含めて渡してください.
+
+.env の変更はコンパイル済みコンテナへ焼き込まれる値 (テンプレートのパス等) を含むため,
+書き込みの後に eccube:cache:build を別プロセスで実行します
+(同一プロセスでは起動時に読み込んだ古い値が焼き込まれるため).
+TXT)]
 final class EnvSetCommand extends Command
 {
     /**
@@ -58,21 +70,7 @@ final class EnvSetCommand extends Command
             ->addArgument('assignments', InputArgument::IS_ARRAY | InputArgument::REQUIRED, 'KEY=VALUE 形式の設定 (複数指定可)')
             ->addOption('dry-run', null, InputOption::VALUE_NONE, '変更内容を表示するだけで適用しない')
             ->addOption('no-cache-clear', null, InputOption::VALUE_NONE, 'ビルドディレクトリの再生成を省略する')
-            ->addOption('format', null, InputOption::VALUE_REQUIRED, '出力形式 (table|json)', 'table')
-            ->setHelp(<<<'EOF'
-                <info>%command.name%</info> は .env の値を設定します.
-
-                  <info>php %command.full_name% ECCUBE_TEMPLATE_CODE=default</info>
-                  <info>php %command.full_name% ECCUBE_FORCE_SSL=1 TRUSTED_HOSTS='^example\.com$' --dry-run</info>
-
-                値は .env の行へそのまま書き出します. 空白や記号を含む値は
-                <info>KEY="'値'"</info> のようにクォートを含めて渡してください.
-
-                .env の変更はコンパイル済みコンテナへ焼き込まれる値 (テンプレートのパス等) を含むため,
-                書き込みの後に eccube:cache:build を別プロセスで実行します
-                (同一プロセスでは起動時に読み込んだ古い値が焼き込まれるため).
-                EOF
-            );
+            ->addOption('format', null, InputOption::VALUE_REQUIRED, '出力形式 (table|json)', 'table');
     }
 
     #[\Override]
@@ -101,7 +99,7 @@ final class EnvSetCommand extends Command
         if (in_array(EnvFileService::REASON_NOT_FOUND, $reasons, true)) {
             $io->error(sprintf('%s が存在しません. .env を作成してから実行してください.', $this->envFileService->getPath()));
 
-            return 1;
+            return Command::FAILURE;
         }
         if (in_array(EnvFileService::REASON_NOT_WRITABLE, $reasons, true)) {
             $io->error([
@@ -110,7 +108,7 @@ final class EnvSetCommand extends Command
                 .' 期待値と実際の所有者は bin/console eccube:doctor:permissions で確認できます.',
             ]);
 
-            return 1;
+            return Command::FAILURE;
         }
 
         $changes = [];
@@ -140,7 +138,7 @@ final class EnvSetCommand extends Command
                 $io->note('dry-run のため適用していません.');
             }
 
-            return 0;
+            return Command::SUCCESS;
         }
 
         if ([] === $changes) {
@@ -148,7 +146,7 @@ final class EnvSetCommand extends Command
                 $io->text('変更はありません.');
             }
 
-            return 0;
+            return Command::SUCCESS;
         }
 
         try {
@@ -156,7 +154,7 @@ final class EnvSetCommand extends Command
         } catch (ContentWriteException $e) {
             $io->error($e->getMessage());
 
-            return 1;
+            return Command::FAILURE;
         }
 
         if ('json' !== $format) {

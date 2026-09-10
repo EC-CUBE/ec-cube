@@ -69,7 +69,7 @@ final class MailTemplateListCommand extends Command
         if ('json' === $format) {
             $output->writeln((string) json_encode($rows, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
-            return 0;
+            return Command::SUCCESS;
         }
 
         $io->table(
@@ -82,6 +82,6 @@ final class MailTemplateListCommand extends Command
             ], $rows)
         );
 
-        return 0;
+        return Command::SUCCESS;
     }
 }
