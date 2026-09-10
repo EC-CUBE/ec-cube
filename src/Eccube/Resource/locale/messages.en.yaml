@@ -550,7 +550,9 @@ admin.common.move_to_confirm_message: "Will move to %name% Setting page. Do you 
 admin.common.move_to_confirm_move_only: Move
 admin.common.move_to_confirm_save_and_move: Save & Move
 admin.common.admin_url_warning: 'Please set the Admin Console URL that is hard to guess for security. You can set it at "<a href="%url%">Security</a>".'
-admin.common.restrict_file_upload_info: "If this feature is used infrequently, disabling it while not in use provides additional security. You can disable this feature by setting the environment variable ECCUBE_RESTRICT_FILE_UPLOAD to 1."
+admin.common.restrict_file_upload_info: "If this feature is used infrequently, disabling its save operations while not in use provides additional security. Setting the environment variable ECCUBE_RESTRICT_FILE_UPLOAD to 1 keeps the contents visible and disables only the save operations."
+admin.common.restrict_file_upload_read_only: "This screen is read-only. Save operations are disabled because the environment variable ECCUBE_RESTRICT_FILE_UPLOAD is set to 1."
+admin.common.restrict_file_upload_read_only_command: "Run the following command to make changes."
 admin.common.notice_maintenance_mode: "Currently in maintenance mode."
 admin.common.notice_debug_mode: The site is currently under debug mode.
 

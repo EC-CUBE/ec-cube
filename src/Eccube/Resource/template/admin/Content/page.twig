@@ -113,7 +113,8 @@ file that was distributed with this source code.
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
-                                                                <a class="btn btn-ec-delete" href="{{ url('admin_content_page_delete', {'id' : Page.id}) }}"
+                                                                <a class="btn btn-ec-delete{% if isReadOnlyScreen|default(false) %} disabled{% endif %}" href="{{ url('admin_content_page_delete', {'id' : Page.id}) }}"
+                                                                        {% if isReadOnlyScreen|default(false) %}aria-disabled="true" tabindex="-1"{% endif %}
                                                                         {{ csrf_token_for_anchor() }} data-method="delete" data-confirm="false">{{ 'admin.common.delete'|trans }}</a>
                                                             </div>
                                                         </div>

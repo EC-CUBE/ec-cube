@@ -153,9 +153,16 @@ CLI ユーザーなら成功する（Web サーバーのユーザーでは失敗
 読ませたくない場合は `ECCUBE_KEYSTORE_STRICT_PERMISSIONS=1` を設定する（この場合 Web サーバーへ
 読み取りを許す手当ては運用側で行う。`eccube:keystore:generate` は読めない状態を検出してエラーにする）。
 
-分離すると、`app/template` や `html/user_data`、`.env` へ書き込む管理画面の機能（プラグイン導入・
-ページ/ブロック/メールテンプレート編集・CSS/JS 編集・ファイル管理・セキュリティ管理・テンプレート選択）は
-動作しなくなる。下記の CLI が代替導線になる。テンプレートのアップロードは未整備。
+分離すると、`app/template` や `html/user_data`、`.env`、`app/Plugin` へ書き込む管理画面の機能
+（プラグイン導入・有効化・無効化・アップデート・削除、ページ/ブロック/メールテンプレート編集、
+CSS/JS 編集、ファイル管理、セキュリティ管理、テンプレート選択・追加）は動作しなくなる。
+下記の CLI が代替導線になる。テンプレートのアップロードは未整備。
+
+`ECCUBE_RESTRICT_FILE_UPLOAD=1` を設定すると、これらの画面は**読み取り専用**になる。現在の内容は
+表示したまま保存・削除の操作だけを無効化し、画面上に代替の CLI コマンドを案内する。書き込みを伴う
+リクエストはサーバー側で 403 を返すため、UI を経由しない経路も塞がる。対象の一覧は
+`app/config/eccube/packages/eccube.yaml` の `eccube_restrict_file_upload_urls`（ルート名 → CLI コマンド）。
+未設定（既定）なら従来どおり、画面は動作し保存時に書き込みエラーになる。
 
 `apply` / `put` は upsert で冪等。いずれも `--dry-run` / `--format=json` に対応し、
 `--body=-` で標準入力から本文を読み込む。
@@ -164,11 +171,12 @@ CLI ユーザーなら成功する（Web サーバーのユーザーでは失敗
 |---|---|---|
 | `bin/console eccube:page:*` | `list` / `show` / `apply` / `remove` | `dtb_page` + `app/template/**` |
 | `bin/console eccube:block:*` | `list` / `show` / `apply` / `remove` | `dtb_block` + `app/template/**` |
-| `bin/console eccube:mail-template:*` | `list` / `show` / `apply` | `dtb_mail_template` + `app/template/**` |
+| `bin/console eccube:mail-template:*` | `list` / `show` / `apply` / `remove` | `dtb_mail_template` + `app/template/**` |
 | `bin/console eccube:asset:*` | `show` / `apply` | `html/user_data/assets/{css,js}/customize.*` |
 | `bin/console eccube:user-data:*` | `list` / `show` / `put` / `remove` | `html/user_data/**` |
 | `bin/console eccube:env:*` | `get` / `set` | `.env` |
 | `bin/console eccube:keystore:*` | `list` / `show` / `generate` | `app/keystore/**` |
+| `bin/console eccube:contents:*` | `export` / `import` | `app/contents/*.yaml`（書き出し）／上記の DB とファイル（取り込み） |
 
 ```bash
 bin/console eccube:page:list
@@ -191,6 +199,41 @@ bin/console eccube:keystore:generate      # 未生成の鍵だけを作る（冪
 `eccube:env:set` は書き込み後に `eccube:cache:build` を**別プロセスで**実行する
 （同一プロセスでは起動時に読み込んだ古い `.env` が焼き込まれるため）。
 `.env.local.php` があるなど変更が実行時に反映されない場合は、書き込んだうえで終了コード `3` を返す。
+
+#### コンテンツを Git で管理する（`eccube:contents:*`）
+
+**テンプレートはファイル、コンテンツ定義は DB** に分かれており、Git に残せるのは前者だけである。
+`eccube:contents:export` / `import` は、この**残らない側（DB）**だけを yaml で入出力する。
+
+```bash
+bin/console eccube:contents:export                     # 既定は app/contents/ へ
+bin/console eccube:contents:import --dry-run           # 差分だけ表示
+bin/console eccube:contents:import                     # 反映
+bin/console eccube:contents:import --prune --dry-run   # 削除対象の確認
+```
+
+```
+app/contents/
+  manifest.yaml   pages.yaml   blocks.yaml   mail_templates.yaml   layouts.yaml
+```
+
+- **テンプレートの本文は書き出さない。** `src/Eccube/Resource/template/**` を直接カスタマイズし
+  `git merge` で upstream の修正（脆弱性パッチを含む）を取り込む運用が一般的で、本文をアーカイブへ
+  複製すると二重管理になり merge で解決できなくなる。`app/template/{theme}` は twig の探索で
+  `src/Eccube/Resource/template/default` より**優先される**ため、内容が同じ写しを置くと
+  upstream のテンプレート修正が画面へ反映されなくなる
+- 同じ理由で、`*ContentService::save()` は**本文が変わらない限りテンプレートを書き出さない**。
+  管理画面でコアページのメタ情報だけを変更しても `app/template` に写しはできない。
+  ただしテンプレートをどこからも解決できない場合は必ず書き出す（書き出さないと DB のレコードだけが
+  残り、画面が「Unable to find template」で落ちる）
+- 本文を指定しない新規登録は、配置先に既にあるテンプレートを使う。`app/template/user_data/foo.twig`
+  をコミットして `pages.yaml` に 1 行足せば、`import` がそのページを作る
+- レイアウトは `dtb_layout.id` が環境ごとに変わるため**名前で参照する**。名前が重複していると
+  export がエラーになるので一意にする
+- `--prune` はアーカイブに無いものを削除する（既定は無効）。削除できるのはユーザーが作成したページ、
+  削除可能なブロック・メールテンプレート、どのページからも参照されていないレイアウトだけ
+- `html/user_data` は `customize.css` / `customize.js` 以外が `.gitignore` で除外されているため
+  既定では扱わない。リポジトリ丸ごと管理する構成では `--include=user_data` を指定する
 
 既定モードと分離モードを切り替えるときはレーン W のボリュームを作り直す。切り替え前の `www-data` の
 uid で作成されたディレクトリが残り、切り替え後の Web サーバーから書き込めなくなる

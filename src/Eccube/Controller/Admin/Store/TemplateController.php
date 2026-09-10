@@ -229,8 +229,6 @@ class TemplateController extends AbstractController
     #[Template(template: '@admin/Store/template_add.twig')]
     public function install(Request $request): array|RedirectResponse
     {
-        $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');
-
         $form = $this->formFactory
             ->createBuilder(TemplateType::class)
             ->getForm();

@@ -311,6 +311,83 @@ final class PageContentServiceTest extends EccubeTestCase
     }
 
     /**
+     * コアページのメタ情報だけを更新しても app/template に写しを作らない.
+     *
+     * twig の探索は app/template を src/Eccube/Resource/template より優先するため,
+     * 内容が同じ写しを置くと upstream のテンプレート修正 (脆弱性パッチを含む) が
+     * 画面へ反映されなくなる.
+     */
+    public function testApplyDoesNotShadowCoreTemplate(): void
+    {
+        $Page = $this->findDefaultPageWithoutOverride();
+        $route = (string) $Page->getUrl();
+        $filePath = $this->pageContentService->getFilePath($Page);
+        $original = (string) $Page->getMetaRobots();
+        // 万一書き出された場合にリポジトリへ残さない
+        $this->createdFiles[] = $filePath;
+
+        try {
+            $result = $this->pageContentService->apply(['route' => $route, 'meta_robots' => 'noindex']);
+
+            $this->assertSame(ContentStatus::Updated, $result->status);
+            $this->assertSame([], $result->writtenPaths);
+            $this->assertFileDoesNotExist($filePath, 'メタ情報だけの更新では app/template に写しを作らない');
+        } finally {
+            $this->pageContentService->apply(['route' => $route, 'meta_robots' => $original]);
+        }
+    }
+
+    public function testApplyDoesNotRewriteTemplateWhenBodyIsUnchanged(): void
+    {
+        $created = $this->apply(['name' => 'テストページ', 'body' => 'body']);
+        $path = (string) $created->path();
+
+        $result = $this->apply(['author' => '作者']);
+
+        $this->assertSame(ContentStatus::Updated, $result->status);
+        $this->assertSame([], $result->writtenPaths, '本文が変わらなければテンプレートを書き換えない');
+        $this->assertSame('body', file_get_contents($path));
+    }
+
+    /**
+     * 本文を指定しない新規登録は, 配置先に既にあるテンプレートを使う.
+     *
+     * リポジトリへコミット済みのテンプレートに対応するレコードを作る操作
+     * (eccube:contents:import) がこれに当たる.
+     */
+    public function testApplyUsesExistingTemplateWhenBodyIsNotSpecified(): void
+    {
+        $path = $this->eccubeConfig->get('eccube_theme_user_data_dir').'/'.$this->route.'.twig';
+        file_put_contents($path, 'committed body');
+        $this->createdFiles[] = $path;
+
+        $result = $this->apply(['name' => 'テストページ']);
+
+        $this->assertSame(ContentStatus::Created, $result->status);
+        $this->assertSame([], $result->writtenPaths, '既にあるテンプレートは書き換えない');
+        $this->assertSame('committed body', file_get_contents($path));
+        $this->assertInstanceOf(Page::class, $this->pageContentService->findByRoute((string) $this->route));
+    }
+
+    /**
+     * app/template へ上書きしておらず, コアのテンプレートを解決できる既定ページ.
+     */
+    private function findDefaultPageWithoutOverride(): Page
+    {
+        /** @var list<Page> $Pages */
+        $Pages = $this->entityManager->getRepository(Page::class)
+            ->findBy(['edit_type' => Page::EDIT_TYPE_DEFAULT], ['id' => 'ASC']);
+        foreach ($Pages as $Page) {
+            if (!is_file($this->pageContentService->getFilePath($Page))
+                && '' !== $this->pageContentService->readTemplate($Page)) {
+                return $Page;
+            }
+        }
+
+        self::fail('app/template へ上書きしていない既定ページが見つかりません.');
+    }
+
+    /**
      * @param array<string, string> $payload
      */
     private function apply(array $payload, bool $dryRun = false): ContentResult

@@ -42,6 +42,7 @@ use Twig\Error\LoaderError;
  */
 class PageContentService
 {
+    use TemplateBodyTrait;
     use TemplateRemovalTrait;
 
     public function __construct(
@@ -99,19 +100,35 @@ class PageContentService
      */
     public function readTemplate(Page $Page): string
     {
+        return (string) $this->findTemplate($Page);
+    }
+
+    /**
+     * テンプレートの内容を取得する. どこからも解決できない場合は null を返す.
+     *
+     * 「解決できて中身が空」と「存在しない」を区別するため, readTemplate() と分けている.
+     */
+    public function findTemplate(Page $Page): ?string
+    {
         $filePath = $this->getFilePath($Page);
         if (is_file($filePath)) {
             return (string) file_get_contents($filePath);
         }
 
-        $namespace = $this->isUserDataPage($Page) ? '@user_data/' : '';
+        // ユーザーが作成したページは, twig の @user_data 名前空間が書き込み先と同じ
+        // ディレクトリを指すため, ローダへ問い合わせても上の is_file() 以上には見つからない.
+        // 見つからなかった問い合わせは FilesystemLoader::$errorCache に残り, 同じプロセスで
+        // 書き出した直後のテンプレートを読めなくするので, 問い合わせ自体を行わない.
+        if ($this->isUserDataPage($Page)) {
+            return null;
+        }
 
         try {
             return $this->twig->getLoader()
-                ->getSourceContext($namespace.$Page->getFileName().'.twig')
+                ->getSourceContext($Page->getFileName().'.twig')
                 ->getCode();
         } catch (LoaderError) {
-            return '';
+            return null;
         }
     }
 
@@ -135,7 +152,10 @@ class PageContentService
         $previousFileName = $Page->getFileName();
         // 新規登録時は比較対象が無い (未設定のゲッタは null を返すため呼び出さない)
         $before = $isNew ? [] : $this->snapshotOfCurrentLayouts($Page);
-        $beforeBody = $isNew ? '' : StringUtil::convertLineFeed($this->readTemplate($Page));
+        // 新規登録時は, 配置先に既にあるテンプレートを本文の初期値にする
+        $beforeBody = self::normalizeTemplateBody($isNew
+            ? ($this->readExistingTemplate($this->getTemplateDir($Page), (string) ($payload['file_name'] ?? $payload['route'])) ?? '')
+            : $this->readTemplate($Page));
 
         $form = $this->formFactory->create(MainEditType::class, $Page, ['csrf_protection' => false]);
         $form->submit($this->toFormData($payload, $Page, $isNew, $beforeBody), false);
@@ -144,7 +164,7 @@ class PageContentService
             throw ContentValidationException::fromForm($form);
         }
 
-        $body = StringUtil::convertLineFeed((string) $form->get('tpl_data')->getData());
+        $body = self::normalizeTemplateBody((string) $form->get('tpl_data')->getData());
         /** @var Layout|null $PcLayout */
         $PcLayout = $form['PcLayout']->getData();
         /** @var Layout|null $SpLayout */
@@ -191,6 +211,8 @@ class PageContentService
      * 失敗したときレコードだけが残り, そのページの表示が 500 になる. 権限を分離した構成では
      * app/template への書き込みだけが失敗し得るため, ロールバックして整合を保つ.
      *
+     * 本文が現在の内容と同じ場合はファイルを書き出さない (ContentResult::$writtenPaths も空になる).
+     *
      * @throws ContentWriteException テンプレートファイルを書き出せない場合
      */
     public function save(Page $Page, string $body, ?Layout $PcLayout, ?Layout $SpLayout, ?string $previousFileName): ContentResult
@@ -204,10 +226,17 @@ class PageContentService
             $templateDir = $this->getTemplateDir($Page);
             $filePath = $templateDir.'/'.$Page->getFileName().'.twig';
 
-            try {
-                $this->filesystem->dumpFile($filePath, StringUtil::convertLineFeed($body));
-            } catch (IOException $e) {
-                throw ContentWriteException::forWrite($filePath, $e);
+            // 本文が現在の内容と同じなら書き出さない (shouldWriteTemplate() 参照).
+            // 比較相手の findTemplate() はファイルが無ければコアのテンプレートへフォールバックするので,
+            // 上書きしていないページのメタ情報だけを更新しても app/template にファイルが増えない.
+            $writtenPaths = [];
+            if (self::shouldWriteTemplate($this->findTemplate($Page), $body)) {
+                try {
+                    $this->filesystem->dumpFile($filePath, StringUtil::convertLineFeed($body));
+                } catch (IOException $e) {
+                    throw ContentWriteException::forWrite($filePath, $e);
+                }
+                $writtenPaths[] = $filePath;
             }
 
             $removedPaths = [];
@@ -230,7 +259,7 @@ class PageContentService
                 $isNew ? ContentStatus::Created : ContentStatus::Updated,
                 $Page->getId(),
                 (string) $Page->getUrl(),
-                [$filePath],
+                $writtenPaths,
                 $removedPaths
             );
         });

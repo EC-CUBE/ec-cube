@@ -37,6 +37,7 @@ use Twig\Error\LoaderError;
  */
 class MailTemplateContentService
 {
+    use TemplateBodyTrait;
     use TemplateRemovalTrait;
 
     public function __construct(
@@ -132,10 +133,18 @@ class MailTemplateContentService
 
         // 新規登録時は比較対象が無い (未設定のゲッタは null を返すため呼び出さない)
         $before = $isNew ? [] : $this->snapshot($Mail);
-        $beforeBody = $isNew ? '' : StringUtil::convertLineFeed($this->readTemplate($Mail));
+        // 新規登録時は, 配置先に既にあるテンプレートを本文の初期値にする.
+        // MailType は新規登録時のみ file_name を受け付け, Mail/xxx.twig へ変換する
+        $mailDir = $this->getTemplateDir().'/Mail';
+        $newBaseName = isset($payload['file_name']) ? $this->toBaseName((string) $payload['file_name']) : '';
+        $beforeBody = self::normalizeTemplateBody($isNew
+            ? ($this->readExistingTemplate($mailDir, $newBaseName) ?? '')
+            : $this->readTemplate($Mail));
         // 比較相手 ($newHtmlBody) は正規化されるため, ここでも揃えないと
         // CRLF のファイルが毎回 Updated になり apply() の冪等性が壊れる.
-        $beforeHtmlBody = $isNew ? null : self::normalizeHtmlBody($this->readHtmlTemplate($Mail));
+        $beforeHtmlBody = self::normalizeHtmlBody($isNew
+            ? $this->readExistingTemplate($mailDir, $newBaseName, '.html.twig')
+            : $this->readHtmlTemplate($Mail));
 
         $removeHtml = (bool) ($payload['remove_html'] ?? false);
         $htmlBody = $removeHtml ? null : ($payload['html_body'] ?? $beforeHtmlBody);
@@ -162,9 +171,9 @@ class MailTemplateContentService
             throw ContentValidationException::fromForm($form);
         }
 
-        $body = StringUtil::convertLineFeed((string) $form->get('tpl_data')->getData());
+        $body = self::normalizeTemplateBody((string) $form->get('tpl_data')->getData());
         $newHtmlBody = $form->get('html_tpl_data')->getData();
-        $newHtmlBody = null === $newHtmlBody ? null : StringUtil::convertLineFeed((string) $newHtmlBody);
+        $newHtmlBody = null === $newHtmlBody ? null : self::normalizeTemplateBody((string) $newHtmlBody);
 
         $fieldChanges = self::diffFields($before, $this->snapshot($Mail));
         $fileChanges = [];
@@ -206,6 +215,8 @@ class MailTemplateContentService
      * DB とファイルはトランザクションで対にする. 先にコミットするとテンプレートの書き出しに
      * 失敗したとき, 件名だけが更新され本文が古いままという食い違いが残る.
      *
+     * 本文が現在の内容と同じ場合はファイルを書き出さない (ContentResult::$writtenPaths も空になる).
+     *
      * @throws ContentWriteException テンプレートファイルを書き出せない場合
      */
     public function save(MailTemplate $Mail, string $body, ?string $htmlBody): ContentResult
@@ -218,23 +229,29 @@ class MailTemplateContentService
 
             $filePath = $this->getFilePath($Mail);
 
-            try {
-                $this->filesystem->dumpFile($filePath, StringUtil::convertLineFeed($body));
-            } catch (IOException $e) {
-                throw ContentWriteException::forWrite($filePath, $e);
+            // 本文が現在の内容と同じなら書き出さない (shouldWriteTemplate() 参照).
+            $writtenPaths = [];
+            if (self::shouldWriteTemplate($this->read($filePath, (string) $Mail->getFileName()), $body)) {
+                try {
+                    $this->filesystem->dumpFile($filePath, StringUtil::convertLineFeed($body));
+                } catch (IOException $e) {
+                    throw ContentWriteException::forWrite($filePath, $e);
+                }
+                $writtenPaths[] = $filePath;
             }
 
-            $writtenPaths = [$filePath];
             $removedPaths = [];
             $htmlFilePath = $this->getHtmlFilePath($Mail);
 
             if (null !== $htmlBody) {
-                try {
-                    $this->filesystem->dumpFile($htmlFilePath, StringUtil::convertLineFeed($htmlBody));
-                } catch (IOException $e) {
-                    throw ContentWriteException::forWrite($htmlFilePath, $e);
+                if (self::shouldWriteTemplate($this->readHtmlTemplate($Mail), $htmlBody)) {
+                    try {
+                        $this->filesystem->dumpFile($htmlFilePath, StringUtil::convertLineFeed($htmlBody));
+                    } catch (IOException $e) {
+                        throw ContentWriteException::forWrite($htmlFilePath, $e);
+                    }
+                    $writtenPaths[] = $htmlFilePath;
                 }
-                $writtenPaths[] = $htmlFilePath;
             } elseif ($this->isInsideTemplateDir($htmlFilePath) && is_file($htmlFilePath)) {
                 try {
                     $this->filesystem->remove($htmlFilePath);
@@ -259,7 +276,7 @@ class MailTemplateContentService
      */
     private static function normalizeHtmlBody(?string $htmlBody): ?string
     {
-        return null === $htmlBody ? null : StringUtil::convertLineFeed($htmlBody);
+        return null === $htmlBody ? null : self::normalizeTemplateBody($htmlBody);
     }
 
     /**

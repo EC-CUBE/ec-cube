@@ -71,8 +71,6 @@ class PageController extends AbstractController
     #[Template(template: '@admin/Content/page_edit.twig')]
     public function edit(Request $request, $id = null): RedirectResponse|array
     {
-        $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');
-
         if (null === $id) {
             $Page = $this->pageRepository->newPage();
         } else {
@@ -140,7 +138,9 @@ class PageController extends AbstractController
                 $fileName
             );
             $templatePath = $this->pageContentService->getTemplateDir($Page);
-            $filePath = (string) $result->path();
+            // 本文が変わらないとテンプレートは書き出されないため, イベントには
+            // 書き込み結果ではなく書き込み先のパスを渡す
+            $filePath = $this->pageContentService->getFilePath($Page);
 
             $event = new EventArgs(
                 [

@@ -38,8 +38,6 @@ class CssController extends AbstractController
     #[Template(template: '@admin/Content/css.twig')]
     public function index(Request $request): RedirectResponse|array
     {
-        $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');
-
         $builder = $this->formFactory
             ->createBuilder(FormType::class)
             ->add('css', TextareaType::class, [
