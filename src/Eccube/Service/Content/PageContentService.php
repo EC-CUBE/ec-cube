@@ -128,9 +128,7 @@ class PageContentService
         $route = $payload['route'];
         $Page = $this->findByRoute($route);
         $isNew = null === $Page;
-        if (null === $Page) {
-            $Page = $this->pageRepository->newPage();
-        }
+        $Page ??= $this->pageRepository->newPage();
 
         $previousFileName = $Page->getFileName();
         // 新規登録時は比較対象が無い (未設定のゲッタは null を返すため呼び出さない)

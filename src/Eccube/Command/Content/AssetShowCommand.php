@@ -27,7 +27,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 /**
  * apply の逆操作. 既定では customize.css / customize.js の内容を標準出力へ書き出す.
  */
-#[AsCommand(name: 'eccube:asset:show', description: 'カスタマイズ用の CSS / JS を出力します.')]
+#[AsCommand(name: 'eccube:asset:show', description: 'カスタマイズ用の CSS / JS を出力します.', help: <<<'TXT'
+<info>%command.name%</info> は apply の逆操作です.
+
+  <info>php %command.full_name% --type=css > customize.css</info>
+TXT)]
 final class AssetShowCommand extends Command
 {
     use ContentCommandTrait;
@@ -42,12 +46,6 @@ final class AssetShowCommand extends Command
     {
         $this->addOption('type', null, InputOption::VALUE_REQUIRED, sprintf('対象の種別 (%s)', implode('|', $this->assetContentService->getTypes())));
         $this->addFormatOption();
-        $this->setHelp(<<<'EOF'
-            <info>%command.name%</info> は apply の逆操作です.
-
-              <info>php %command.full_name% --type=css > customize.css</info>
-            EOF
-        );
     }
 
     #[\Override]
@@ -74,7 +72,7 @@ final class AssetShowCommand extends Command
         } catch (ContentValidationException $e) {
             $io->error($e->getErrors());
 
-            return 1;
+            return Command::FAILURE;
         }
 
         if ('json' === $format) {
@@ -84,11 +82,11 @@ final class AssetShowCommand extends Command
                 'body' => $body,
             ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
-            return 0;
+            return Command::SUCCESS;
         }
 
         $output->write($body);
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

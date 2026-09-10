@@ -45,19 +45,13 @@ class ChangePasswordType extends AbstractType
     {
         $changePasswordConstraints = [
             new Assert\NotBlank(),
-            new Assert\Length([
-                'min' => $this->eccubeConfig['eccube_password_min_len'],
-                'max' => $this->eccubeConfig['eccube_password_max_len'],
-            ]),
-            new Assert\Regex([
-                'pattern' => $this->eccubeConfig['eccube_password_pattern'],
-                'message' => 'form_error.password_pattern_invalid',
-            ]),
+            new Assert\Length(min: $this->eccubeConfig['eccube_password_min_len'], max: $this->eccubeConfig['eccube_password_max_len']),
+            new Assert\Regex(pattern: $this->eccubeConfig['eccube_password_pattern'], message: 'form_error.password_pattern_invalid'),
             new PasswordBlocklist(),
         ];
         // NIST SP 800-63B-4 対応の漏洩パスワードチェック. 閉域網等では config で無効化できる.
         if ($this->eccubeConfig['eccube_password_compromised_check']) {
-            $changePasswordConstraints[] = new Assert\NotCompromisedPassword(['skipOnError' => true]);
+            $changePasswordConstraints[] = new Assert\NotCompromisedPassword(skipOnError: true);
         }
 
         // 検証と保存を同一の正規化済み値で行うため, 検証前(PRE_SUBMIT)に新パスワードを NFKC 正規化する.

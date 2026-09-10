@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Web\Block;
 
+use Doctrine\DBAL\Exception;
 use Eccube\Tests\Web\AbstractWebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -23,7 +24,7 @@ final class NewItemTest extends AbstractWebTestCase
     /**
      * {@inheritdoc}
      *
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws Exception
      */
     protected function setUp(): void
     {

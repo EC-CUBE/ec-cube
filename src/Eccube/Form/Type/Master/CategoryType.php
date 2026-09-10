@@ -41,10 +41,4 @@ class CategoryType extends AbstractType
     {
         return MasterType::class;
     }
-
-    #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'category';
-    }
 }

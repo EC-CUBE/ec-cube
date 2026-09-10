@@ -64,13 +64,13 @@ final class UserDataListCommand extends Command
         } catch (ContentValidationException $e) {
             $io->error($e->getErrors());
 
-            return 1;
+            return Command::FAILURE;
         }
 
         if ('json' === $format) {
             $output->writeln((string) json_encode($entries, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
-            return 0;
+            return Command::SUCCESS;
         }
 
         $io->table(
@@ -83,6 +83,6 @@ final class UserDataListCommand extends Command
             ], $entries)
         );
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

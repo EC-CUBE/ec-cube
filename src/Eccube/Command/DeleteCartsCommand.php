@@ -99,7 +99,7 @@ class DeleteCartsCommand extends Command
 
         $this->io->success('Delete carts successful.');
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     protected function deleteCarts(\DateTime $dateTime): void

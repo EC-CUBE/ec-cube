@@ -30,7 +30,15 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * html/ はドキュメントルートのため, ファイル名と拡張子は管理画面のアップロードと同じ検証を通す.
  */
-#[AsCommand(name: 'eccube:user-data:put', description: 'html/user_data 配下へファイルを配置します.')]
+#[AsCommand(name: 'eccube:user-data:put', description: 'html/user_data 配下へファイルを配置します.', help: <<<'TXT'
+<info>%command.name%</info> は html/user_data 配下へファイルを配置します.
+
+  <info>cat logo.png | php %command.full_name% --path=assets/img/logo.png --body=-</info>
+  <info>php %command.full_name% --path=guide.html --body-file=guide.html --dry-run</info>
+
+中間ディレクトリは自動で作成します. 配置できる拡張子は管理画面のファイル管理と同じで,
+eccube_file_uploadable_extensions で定義します.
+TXT)]
 final class UserDataPutCommand extends Command
 {
     use ContentCommandTrait;
@@ -46,16 +54,6 @@ final class UserDataPutCommand extends Command
         $this->addOption('path', null, InputOption::VALUE_REQUIRED, '配置先 (html/user_data からの相対パス)');
         // 静的ファイルのためキャッシュの削除は不要
         $this->addWriteOptions(false);
-        $this->setHelp(<<<'EOF'
-            <info>%command.name%</info> は html/user_data 配下へファイルを配置します.
-
-              <info>cat logo.png | php %command.full_name% --path=assets/img/logo.png --body=-</info>
-              <info>php %command.full_name% --path=guide.html --body-file=guide.html --dry-run</info>
-
-            中間ディレクトリは自動で作成します. 配置できる拡張子は管理画面のファイル管理と同じで,
-            eccube_file_uploadable_extensions で定義します.
-            EOF
-        );
     }
 
     #[\Override]
@@ -98,13 +96,13 @@ final class UserDataPutCommand extends Command
         } catch (ContentValidationException $e) {
             $io->error(array_merge([sprintf('配置できません: %s', (string) $path)], $e->getErrors()));
 
-            return 1;
+            return Command::FAILURE;
         } catch (ContentWriteException $e) {
             return $this->reportWriteFailure($io, sprintf('配置できません: %s', (string) $path), $e);
         }
 
         $this->renderResult($io, $output, $format, $result, $dryRun);
 
-        return 0;
+        return Command::SUCCESS;
     }
 }
