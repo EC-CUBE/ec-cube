@@ -121,6 +121,14 @@ curl -s -o /dev/null http://127.0.0.1:8080/   # セッションを生成し Web 
 docker compose exec -u eccube ec-cube bin/console eccube:doctor:permissions
 ```
 
+この構成は CI でも起動して検証する（`.github/workflows/permission-lanes-test.yml`）。レーンの境界、
+`eccube:doctor:permissions` の判定、読み取り専用モードの応答、CLI からのプラグイン導入までを固定する。
+Web サーバーと CLI が別 uid で、かつ Apache（mod_php）経由で動く構成でしか再現しない挙動
+（例: `PassEnv` に載っていない環境変数が Web 側にだけ届かない）は単体テストでは検出できないため。
+Playwright は `permission-lanes-tests` project で `e2e/tests/permission-lanes.spec.ts` だけを実行する。
+分離モードは `APP_ENV=prod` 固定で、prod のセッション cookie は `SameSite=None` のため
+**HTTP では管理画面にログインできない**。CI は `4430` の HTTPS（自己署名）を使う。
+
 レーン W（`var/runtime`、`var/sessions`、`var/log`、`html/upload/**`）は `www-data` 所有とし、
 共有グループは作らない。CLI からレーン W を触る操作は Web サーバーのユーザーで実行する。
 本番の `sudo -u www-data` に相当する。

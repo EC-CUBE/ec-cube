@@ -1,0 +1,363 @@
+name: Permission Lanes Test
+
+## Web サーバー (www-data) と CLI (SSH ログインユーザー相当) の書き込み権限を分けた構成
+## (docker-compose.permission-lanes.yml) を起動し、 分離した状態でしか再現しない挙動を固定する。
+##
+## Web サーバーと CLI が別 uid で、 かつ Apache (mod_php) 経由で動く構成でしか再現しない不具合
+## (例: PassEnv に載っていない環境変数が Web 側にだけ届かない) は単体テストでは検出できないため、
+## 実際にコンテナを起動して確認する。 issue #7072 Phase 6。
+
+on:
+  workflow_call:
+    inputs:
+      php-tag:
+        description: 'ベースイメージ php:<TAG> と docker-compose.yml の TAG'
+        type: string
+        default: '8.5-apache'
+  workflow_dispatch:
+    inputs:
+      php-tag:
+        description: 'ベースイメージ php:<TAG> と docker-compose.yml の TAG'
+        type: string
+        default: '8.5-apache'
+
+permissions:
+  contents: read
+
+jobs:
+  permission-lanes:
+    name: Permission Lanes
+    runs-on: ubuntu-latest
+    ## compose のビルドとコンテナ内 composer install を含むため、 既存ワークフローと違い明示する
+    timeout-minutes: 45
+    env:
+      ## AGENTS.md に記載の 4 枚重ねと同じ構成。 以降の docker compose はすべてこれを見る
+      COMPOSE_FILE: docker-compose.yml:docker-compose.dev.yml:docker-compose.pgsql.yml:docker-compose.permission-lanes.yml
+      TAG: ${{ inputs.php-tag }}
+      ## 分離モードは APP_ENV=prod 固定 (docker-compose.permission-lanes.yml)。
+      ## prod のセッション cookie は SameSite=None のため、 HTTP だとブラウザに破棄され
+      ## 管理画面へログインできない。 自己署名証明書の HTTPS (4430) を使う
+      BASE_URL: https://127.0.0.1:4430
+      ADMIN_ROUTE: admin
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v6
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020  # v7.0.0
+        with:
+          node-version: 20
+
+      - name: Cache npm dependencies
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v5
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
+      - name: Cache build artifacts
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v5
+        id: build-cache
+        with:
+          path: |
+            html/template/**/css
+            html/bundle
+          key: ${{ runner.os }}-build-${{ hashFiles('html/template/**/scss/**/*.scss', 'html/template/**/js/**/*.js', 'package-lock.json', 'esbuild.config.mjs') }}
+          restore-keys: |
+            ${{ runner.os }}-build-
+
+      ## アセットはホスト側でビルドする。 コンテナ内で npm run build すると生成物が root 所有で
+      ## バインドマウント越しにホストへ残り、 次のホスト側ビルドが EACCES で落ちる。
+      ## docker-compose.dev.yml のバインドマウント経由でコンテナから見える
+      - name: Build Sass and JavaScript
+        if: steps.build-cache.outputs.cache-hit != 'true'
+        run: |
+          npm ci
+          npm run build
+
+      ## --build は必須。 ghcr の公開イメージには dockerbuild/docker-php-entrypoint の
+      ## レーン分離が含まれず、 pull されたイメージのままだと www-data がホストユーザーへ
+      ## リマップされて分離が成立しない
+      - name: Start permission-lanes environment
+        run: docker compose up -d --build
+
+      ## --wait は使わない。 ec-cube の healthcheck は Dockerfile の `pgrep apache` だけで、
+      ## その 30 回 x 10 秒 (= 300 秒) の枠内にコンテナ内の composer install と
+      ## installer-scripts と eccube:cache:build が収まらないと unhealthy 扱いになる。
+      ## 実応答をポーリングして待つ
+      - name: Wait for EC-CUBE to respond
+        run: |
+          for _ in $(seq 1 90); do
+            if curl -fsS -k -o /dev/null "${BASE_URL}/"; then
+              echo "EC-CUBE is ready."
+              exit 0
+            fi
+            if [ -n "$(docker compose ps --status=exited --quiet ec-cube)" ]; then
+              echo "::error::ec-cube container exited during startup"
+              docker compose logs ec-cube --tail=300
+              exit 1
+            fi
+            sleep 10
+          done
+          echo "::error::EC-CUBE did not respond within 15 minutes"
+          docker compose logs ec-cube --tail=300
+          exit 1
+
+      ## CLI ユーザーの名前は uid 依存。 イメージ内に同じ uid のユーザーが既にいると
+      ## `eccube` にならないため、 決め打ちせず引く (dockerbuild/docker-php-entrypoint)
+      - name: Resolve the CLI user
+        run: |
+          CLI_UID=$(docker compose exec -T ec-cube stat -c %u composer.json | tr -d '\r')
+          CLI_USER=$(docker compose exec -T ec-cube getent passwd "${CLI_UID}" | cut -d: -f1 | tr -d '\r')
+          if [ -z "${CLI_USER}" ]; then
+            echo "::error::could not resolve the CLI user (uid=${CLI_UID})"
+            exit 1
+          fi
+          echo "CLI_UID=${CLI_UID}" >> "$GITHUB_ENV"
+          echo "CLI_USER=${CLI_USER}" >> "$GITHUB_ENV"
+          echo "CLI user: ${CLI_USER} (uid=${CLI_UID})"
+
+      ## entrypoint 側に「分離できているか」の自己検査は無い。 分離に失敗した環境では
+      ## 以降のテストがすべて通ってしまい、 検証が空虚になるためここで確かめる
+      - name: Verify the lanes are actually separated
+        run: |
+          WEB_UID=$(docker compose exec -T ec-cube id -u www-data | tr -d '\r')
+          if [ "${WEB_UID}" != "33" ]; then
+            echo "::error::www-data has been remapped to uid ${WEB_UID}; the lanes are not separated (--build を忘れていませんか)"
+            exit 1
+          fi
+          if [ "${CLI_UID}" = "${WEB_UID}" ]; then
+            echo "::error::the CLI user and www-data share uid ${WEB_UID}"
+            exit 1
+          fi
+          ## レーン W はディレクトリだけ www-data 所有、 レーン S は CLI ユーザー所有
+          for dir in var/runtime var/sessions var/log html/upload; do
+            OWNER=$(docker compose exec -T ec-cube stat -c %u "${dir}" | tr -d '\r')
+            [ "${OWNER}" = "33" ] || { echo "::error::${dir} (レーン W) の所有者が ${OWNER} です"; exit 1; }
+          done
+          for dir in var/build var/cache app/template app/keystore html/user_data app/Plugin vendor; do
+            OWNER=$(docker compose exec -T ec-cube stat -c %u "${dir}" | tr -d '\r')
+            [ "${OWNER}" = "${CLI_UID}" ] || { echo "::error::${dir} (レーン S) の所有者が ${OWNER} です"; exit 1; }
+          done
+
+      ## ECCUBE_RESTRICT_FILE_UPLOAD は docker-php-entrypoint の PassEnv に含まれていない。
+      ## php.ini-production は variables_order=GPCS で $_ENV が空のため、 Symfony 側は
+      ## EnvVarProcessor の getenv() フォールバックで拾うことになる。 実際に Apache の
+      ## プロセス環境へ渡っているかを確かめる (渡っていなければ読み取り専用モードが
+      ## Web からは効かず、 Phase 4 が Apache 経由で成立していないことになる)
+      - name: Verify ECCUBE_RESTRICT_FILE_UPLOAD reaches the web server
+        run: |
+          APACHE_ENV=$(docker compose exec -T ec-cube sh -c 'tr "\0" "\n" < /proc/$(pgrep -o apache2)/environ')
+          echo "${APACHE_ENV}" | grep -E '^ECCUBE_RESTRICT_FILE_UPLOAD=1$' || {
+            echo "::error::ECCUBE_RESTRICT_FILE_UPLOAD が Apache のプロセス環境に見当たりません"
+            echo "${APACHE_ENV}" | grep -E '^(APP_ENV|ECCUBE_)' || true
+            exit 1
+          }
+
+      - name: Verify the front and admin screens respond
+        run: |
+          set -e
+          ## セッションを作る。 eccube:doctor:permissions は var/sessions のセッションファイルから
+          ## Web サーバーの uid を判定するため、 これが無いと全 finding が WARN・終了コード 0 になり
+          ## 「見かけ上成功」してしまう
+          curl -fsS -k -o /dev/null "${BASE_URL}/"
+          curl -fsS -k -o /dev/null "${BASE_URL}/products/list"
+          curl -fsS -k -o /dev/null "${BASE_URL}/${ADMIN_ROUTE}/login"
+
+      - name: Run eccube:doctor:permissions
+        run: |
+          docker compose exec -T -u "${CLI_USER}" ec-cube \
+            bin/console eccube:doctor:permissions --format=json > doctor.json
+          cat doctor.json
+          ## NG が無いことに加えて、 Web サーバーの uid を判定できていること (判定できないと
+          ## すべて WARN になり終了コード 0 で通ってしまう) と、 CLI と別 uid であることを見る
+          jq -e '.summary.ng == 0' doctor.json > /dev/null
+          jq -e '.web_server != null' doctor.json > /dev/null
+          jq -e '.cli != null and (.cli.uid != .web_server.uid)' doctor.json > /dev/null
+          ## 表形式でも読めるようにログへ残す
+          docker compose exec -T -u "${CLI_USER}" ec-cube bin/console eccube:doctor:permissions
+
+      ## entrypoint は eccube:cache:build の失敗を握り潰して警告を出すだけなので、
+      ## 明示的に実行して終了コードを見る
+      - name: Verify eccube:cache:build succeeds as the CLI user
+        run: |
+          docker compose exec -T -u "${CLI_USER}" ec-cube bin/console eccube:cache:build
+          if docker compose logs ec-cube | grep -q 'eccube:cache:build に失敗しました'; then
+            echo "::error::起動時の eccube:cache:build が失敗しています"
+            docker compose logs ec-cube --tail=300
+            exit 1
+          fi
+
+      ## ファイルシステムの素の境界。 アプリを経由しないため解釈の余地がなく、
+      ## 分離が形だけになったときにここで落ちる
+      - name: Verify the raw lane boundaries
+        run: |
+          set -u
+          fail() { echo "::error::$1"; exit 1; }
+          denied() {  # $1=user $2=path  書き込めないことを確かめる
+            if docker compose exec -T -u "$1" ec-cube sh -c "touch '$2/.lane-probe' 2>/dev/null"; then
+              docker compose exec -T -u "$1" ec-cube sh -c "rm -f '$2/.lane-probe'" || true
+              fail "$1 が $2 へ書き込めてしまいました"
+            fi
+          }
+          allowed() {
+            docker compose exec -T -u "$1" ec-cube sh -c "touch '$2/.lane-probe' && rm -f '$2/.lane-probe'" \
+              || fail "$1 が $2 へ書き込めません"
+          }
+          ## レーン S: CLI ユーザーだけが書ける
+          for dir in app/template html/user_data app/keystore var/build; do
+            allowed "${CLI_USER}" "${dir}"
+            denied www-data "${dir}"
+          done
+          ## レーン W: Web サーバーだけが書ける
+          for dir in var/log var/runtime html/upload; do
+            allowed www-data "${dir}"
+            denied "${CLI_USER}" "${dir}"
+          done
+
+      - name: Verify the lane boundaries through the CLI
+        run: |
+          set -u
+          fail() { echo "::error::$1"; exit 1; }
+          ## インストーラや assets:install が app/template に何か置いている可能性があるため、
+          ## 「変化しないこと」を基準線との差で見る
+          BASELINE=$(git status --porcelain app/template)
+          changed() { [ "$(git status --porcelain app/template)" != "${BASELINE}" ]; }
+
+          ## (1) メタ情報だけの更新は app/template に影を作らない (Phase 5)。
+          ##     app/template は src/Eccube/Resource/template より優先されるため、
+          ##     同じ内容の写しを置くと upstream のテンプレート修正 (脆弱性パッチを含む) が
+          ##     画面へ反映されなくなる
+          docker compose exec -T -u "${CLI_USER}" ec-cube \
+            bin/console eccube:page:apply --route=entry --name='会員登録 (permission lanes CI)'
+          ! changed || fail "メタ情報だけの更新で app/template が変化しました: $(git status --porcelain app/template)"
+
+          ## (2) レーン S への書き込みは Web サーバーのユーザーでは失敗し、 doctor を案内する
+          set +e
+          OUT=$(printf '<p>lane test</p>' | docker compose exec -T -u www-data ec-cube \
+            bin/console eccube:page:apply --route=lane_test --name='レーン境界テスト' --body=- 2>&1)
+          STATUS=$?
+          set -e
+          echo "${OUT}"
+          [ "${STATUS}" -eq 1 ] || fail "www-data でのページ作成が終了コード ${STATUS} で終わりました (1 を期待)"
+          echo "${OUT}" | grep -q 'eccube:doctor:permissions' \
+            || fail "書き込み失敗時に eccube:doctor:permissions が案内されていません"
+          ! changed || fail "失敗したはずの書き込みでファイルが残りました"
+
+          ## (3) 同じ操作が CLI ユーザーでは成功し、 削除で元に戻る
+          printf '<p>lane test</p>' | docker compose exec -T -u "${CLI_USER}" ec-cube \
+            bin/console eccube:page:apply --route=lane_test --name='レーン境界テスト' --body=-
+          changed || fail "CLI ユーザーでのページ作成でテンプレートが書き出されていません"
+          docker compose exec -T -u "${CLI_USER}" ec-cube \
+            bin/console eccube:page:remove --route=lane_test --force
+          ! changed || fail "ページ削除後もテンプレートが残っています: $(git status --porcelain app/template)"
+
+          ## (4) 鍵はレーン S。 CLI ユーザーで冪等に生成でき、 所有者も CLI ユーザーになる
+          docker compose exec -T -u "${CLI_USER}" ec-cube bin/console eccube:keystore:generate
+          docker compose exec -T -u "${CLI_USER}" ec-cube bin/console eccube:keystore:generate
+          KEY_OWNER=$(docker compose exec -T ec-cube stat -c %u app/keystore | tr -d '\r')
+          [ "${KEY_OWNER}" = "${CLI_UID}" ] || fail "app/keystore の所有者が ${KEY_OWNER} です"
+
+          ## (5) レーン W の実行時キャッシュは Web サーバーのユーザーで削除する
+          docker compose exec -T -u www-data ec-cube bin/console cache:pool:clear --all
+
+      ## 管理画面からのプラグイン操作は分離すると使えない。 CLI が代替導線として成立することと、
+      ## eccube:plugin:* のあと eccube:cache:build を実行すればサイトが 500 にならないことを固定する
+      ## (eccube:plugin:* は cache:clear --no-warmup しかしないため、 挟まないと次のリクエストで
+      ##  Web サーバーがコンテナを生成しようとして var/build へ書けず 500 になる)
+      - name: Install a plugin from the CLI
+        run: |
+          set -e
+          ## アーカイブの直下にプラグインの中身が並ぶ形にする (e2e/helpers/tar-helper.ts と同じ)。
+          ## `-C dir .` だと `./` 付きのエントリになり PharData::extractTo() の展開が不安定になる
+          SRC=codeception/_data/plugins/Boomerang-1.0.0
+          tar -czf "${PWD}/Boomerang-1.0.0.tgz" -C "${SRC}" $(ls "${SRC}")
+          docker compose exec -T -u "${CLI_USER}" ec-cube \
+            bin/console eccube:plugin:install --path=Boomerang-1.0.0.tgz
+          docker compose exec -T -u "${CLI_USER}" ec-cube \
+            bin/console eccube:plugin:enable --code=Boomerang
+          docker compose exec -T -u "${CLI_USER}" ec-cube bin/console eccube:cache:build
+          curl -fsS -k -o /dev/null "${BASE_URL}/"
+          curl -fsS -k -o /dev/null "${BASE_URL}/${ADMIN_ROUTE}/login"
+
+      - name: Install Playwright dependencies
+        working-directory: e2e
+        run: npm ci
+
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v5
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('e2e/package-lock.json') }}
+
+      - name: Install Playwright browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        working-directory: e2e
+        run: npx playwright install --with-deps chromium
+
+      - name: Install Playwright system deps
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        working-directory: e2e
+        run: npx playwright install-deps chromium
+
+      - name: Cache apt packages
+        uses: awalsh128/cache-apt-pkgs-action@553a35bb8ebd9fcabcb1c9451aa4c98e1b4ca8a9  # latest
+        with:
+          packages: fonts-ipafont fonts-ipaexfont
+          version: 1.0
+
+      - name: Run Playwright tests
+        working-directory: e2e
+        env:
+          ECCUBE_ADMIN_ROUTE: ${{ env.ADMIN_ROUTE }}
+          ADMIN_USER: 'admin'
+          ADMIN_PASSWORD: 'password'
+          CI: 'true'
+          ## globalSetup のフィクスチャ投入はコンテナ内で実行する。 アプリはコンテナ側にあり、
+          ## ホストの php では DB もカーネルも解決できない。 -u を省くと root で走り
+          ## レーンの所有者が壊れるため必ず CLI ユーザーを指定する
+          PHP_BIN: docker compose exec -T -u ${{ env.CLI_USER }} ec-cube php
+        run: npx playwright test --project=setup --project=permission-lanes-tests permission-lanes.spec.ts
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
+        with:
+          name: permission-lanes-report
+          path: e2e/playwright-report/
+
+      - name: Upload ScreenShots
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
+        with:
+          name: permission-lanes-results
+          path: e2e/test-results/
+
+      ## var は名前付きボリュームでホストから見えないため、 コンテナから取り出す
+      - name: Collect logs
+        if: failure()
+        run: |
+          mkdir -p logs
+          docker compose logs ec-cube --tail=1000 > logs/container.log 2>&1 || true
+          docker compose exec -T ec-cube sh -c 'ls -1 var/log/prod 2>/dev/null' || true
+          docker compose cp ec-cube:/var/www/html/var/log logs/var-log || true
+
+      - name: Upload logs
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
+        with:
+          name: permission-lanes-logs
+          path: logs/
+
+      ## down -v でレーン W のボリュームを捨てる。 加えて html/upload はバインドマウント越しに
+      ## ホスト側でも uid 33 所有になるため、 ワークスペースの後片付けが刺さらないよう戻す
+      - name: Tear down
+        if: always()
+        run: |
+          docker compose down -v || true
+          sudo chown -R "$(id -u):$(id -g)" html/upload || true

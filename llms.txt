@@ -245,6 +245,15 @@ The screens and their CLI equivalents are listed in `eccube_restrict_file_upload
 templates, `.env`, templates and every plugin operation. When the variable is unset (the
 default) the screens behave as before and fail at save time.
 
+CI starts the separated setup and verifies it
+(`.github/workflows/permission-lanes-test.yml`): the lane boundaries, the
+`eccube:doctor:permissions` verdict, the read-only responses, and installing a plugin from the
+CLI. Behaviour that only shows up when the web server and the CLI have different uids and the
+app runs behind Apache (mod_php) — an environment variable missing from `PassEnv` reaching the
+CLI but not the web server, for instance — cannot be caught by unit tests. That setup pins
+`APP_ENV=prod`, whose session cookie uses `SameSite=None`, so the admin is unreachable over
+plain HTTP; the job talks to the self-signed HTTPS port (`4430`) instead.
+
 ## Community
 
 - [GitHub Repository](https://github.com/EC-CUBE/ec-cube)
