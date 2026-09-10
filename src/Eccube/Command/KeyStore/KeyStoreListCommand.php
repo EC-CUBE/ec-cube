@@ -26,7 +26,15 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 /**
  * キーストアが扱う鍵の用途と, それぞれの状態を一覧表示する.
  */
-#[AsCommand(name: 'eccube:keystore:list', description: '鍵の用途と保管状況を一覧表示します.')]
+#[AsCommand(name: 'eccube:keystore:list', description: '鍵の用途と保管状況を一覧表示します.', help: <<<'TXT'
+<info>%command.name%</info> は鍵の用途と保管状況を一覧表示します.
+
+  <info>php %command.full_name%</info>
+  <info>php %command.full_name% --format=json</info>
+
+鍵の値は表示しません. 公開してよい情報 (公開鍵 JWK 等) は
+eccube:keystore:show で確認できます.
+TXT)]
 final class KeyStoreListCommand extends Command
 {
     use KeyStoreCommandTrait;
@@ -40,16 +48,6 @@ final class KeyStoreListCommand extends Command
     protected function configure(): void
     {
         $this->addFormatOption();
-        $this->setHelp(<<<'EOF'
-            <info>%command.name%</info> は鍵の用途と保管状況を一覧表示します.
-
-              <info>php %command.full_name%</info>
-              <info>php %command.full_name% --format=json</info>
-
-            鍵の値は表示しません. 公開してよい情報 (公開鍵 JWK 等) は
-            eccube:keystore:show で確認できます.
-            EOF
-        );
     }
 
     #[\Override]
