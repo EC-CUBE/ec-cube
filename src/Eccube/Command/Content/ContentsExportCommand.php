@@ -31,7 +31,22 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * テンプレートの本文は複製しない (ContentsArchive のクラスコメントを参照).
  */
-#[AsCommand(name: 'eccube:contents:export', description: 'コンテンツ定義をディレクトリへ書き出します.')]
+#[AsCommand(name: 'eccube:contents:export', description: 'コンテンツ定義をディレクトリへ書き出します.', help: <<<'TXT'
+<info>%command.name%</info> は Git に残らない DB 側のコンテンツ定義を yaml へ書き出します.
+
+  <info>php %command.full_name%</info>
+  <info>php %command.full_name% --to=app/contents --only=pages,blocks</info>
+  <info>php %command.full_name% --include=user_data</info>
+
+テンプレート (twig / css / js) の本文は書き出しません. リポジトリ本来の位置
+(src/Eccube/Resource/template, app/template, html/user_data) にあるものを Git で管理し、
+本コマンドはそれと対になる dtb_page / dtb_block / dtb_mail_template / dtb_layout の
+定義だけを扱います. 本文を複製すると二重管理になり, upstream との git merge で
+解決できなくなるためです.
+
+html/user_data は customize.css / customize.js 以外が .gitignore で除外されているため
+既定では扱いません. リポジトリ丸ごと管理する構成では --include=user_data を指定します.
+TXT)]
 final class ContentsExportCommand extends Command
 {
     use ContentCommandTrait;
@@ -50,23 +65,6 @@ final class ContentsExportCommand extends Command
             ->addOption('dry-run', null, InputOption::VALUE_NONE, '書き出す内容を表示するだけで保存しない');
         $this->addSectionOptions();
         $this->addFormatOption();
-        $this->setHelp(<<<'EOF'
-            <info>%command.name%</info> は Git に残らない DB 側のコンテンツ定義を yaml へ書き出します.
-
-              <info>php %command.full_name%</info>
-              <info>php %command.full_name% --to=app/contents --only=pages,blocks</info>
-              <info>php %command.full_name% --include=user_data</info>
-
-            テンプレート (twig / css / js) の本文は書き出しません. リポジトリ本来の位置
-            (src/Eccube/Resource/template, app/template, html/user_data) にあるものを Git で管理し、
-            本コマンドはそれと対になる dtb_page / dtb_block / dtb_mail_template / dtb_layout の
-            定義だけを扱います. 本文を複製すると二重管理になり, upstream との git merge で
-            解決できなくなるためです.
-
-            html/user_data は customize.css / customize.js 以外が .gitignore で除外されているため
-            既定では扱いません. リポジトリ丸ごと管理する構成では --include=user_data を指定します.
-            EOF
-        );
     }
 
     #[\Override]
@@ -97,7 +95,7 @@ final class ContentsExportCommand extends Command
         } catch (ContentValidationException $e) {
             $io->error(array_merge(['コンテンツ定義を書き出せません.'], $e->getErrors()));
 
-            return 1;
+            return Command::FAILURE;
         } catch (ContentWriteException $e) {
             return $this->reportWriteFailure($io, 'コンテンツ定義を書き出せません.', $e);
         }
@@ -108,7 +106,7 @@ final class ContentsExportCommand extends Command
                 JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
             ));
 
-            return 0;
+            return Command::SUCCESS;
         }
 
         $io->table(
@@ -122,11 +120,11 @@ final class ContentsExportCommand extends Command
         if ($dryRun) {
             $io->note('dry-run のため書き出していません.');
 
-            return 0;
+            return Command::SUCCESS;
         }
 
         $io->success(sprintf('%s へ書き出しました.', $dir));
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

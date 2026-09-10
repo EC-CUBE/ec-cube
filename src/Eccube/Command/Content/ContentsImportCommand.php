@@ -31,7 +31,20 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 /**
  * アーカイブからコンテンツ定義を取り込む.
  */
-#[AsCommand(name: 'eccube:contents:import', description: 'ディレクトリからコンテンツ定義を取り込みます.')]
+#[AsCommand(name: 'eccube:contents:import', description: 'ディレクトリからコンテンツ定義を取り込みます.', help: <<<'TXT'
+<info>%command.name%</info> は eccube:contents:export が書き出した yaml を取り込みます.
+
+  <info>php %command.full_name% --dry-run</info>
+  <info>php %command.full_name%</info>
+  <info>php %command.full_name% --prune --dry-run</info>
+
+テンプレートの本文はアーカイブに含まれません. リポジトリ本来の位置にあるものが
+そのまま使われるため, 取り込みでは本文が変わらない限りテンプレートを書き換えません.
+
+--prune はアーカイブに無いものを削除します. 削除できるのはユーザーが作成した
+ページ (EDIT_TYPE_USER), 削除可能なブロック・メールテンプレート, どのページからも
+参照されていないレイアウトだけです. 先に --dry-run で対象を確認してください.
+TXT)]
 final class ContentsImportCommand extends Command
 {
     use ContentCommandTrait;
@@ -53,21 +66,6 @@ final class ContentsImportCommand extends Command
             ->addOption('no-cache-clear', null, InputOption::VALUE_NONE, 'キャッシュの削除を省略する');
         $this->addSectionOptions();
         $this->addFormatOption();
-        $this->setHelp(<<<'EOF'
-            <info>%command.name%</info> は eccube:contents:export が書き出した yaml を取り込みます.
-
-              <info>php %command.full_name% --dry-run</info>
-              <info>php %command.full_name%</info>
-              <info>php %command.full_name% --prune --dry-run</info>
-
-            テンプレートの本文はアーカイブに含まれません. リポジトリ本来の位置にあるものが
-            そのまま使われるため, 取り込みでは本文が変わらない限りテンプレートを書き換えません.
-
-            --prune はアーカイブに無いものを削除します. 削除できるのはユーザーが作成した
-            ページ (EDIT_TYPE_USER), 削除可能なブロック・メールテンプレート, どのページからも
-            参照されていないレイアウトだけです. 先に --dry-run で対象を確認してください.
-            EOF
-        );
     }
 
     #[\Override]
@@ -109,7 +107,7 @@ final class ContentsImportCommand extends Command
                 ['--dry-run で事前に差分を確認できます.']
             ));
 
-            return 1;
+            return Command::FAILURE;
         } catch (ContentWriteException $e) {
             return $this->reportWriteFailure($io, 'コンテンツ定義を取り込めません.', $e);
         }

@@ -452,9 +452,7 @@ class ContentsImporter
             return $isNew ? ContentStatus::Created : ContentStatus::Updated;
         }
 
-        if (null === $Layout) {
-            $Layout = new Layout();
-        }
+        $Layout ??= new Layout();
         $Layout->setName($name);
         $Layout->setDeviceType($DeviceType);
 

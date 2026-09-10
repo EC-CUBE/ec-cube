@@ -31,7 +31,14 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * 管理画面と同じく, 削除可能なテンプレートのみ削除できる.
  */
-#[AsCommand(name: 'eccube:mail-template:remove', description: 'メールテンプレートを削除します.')]
+#[AsCommand(name: 'eccube:mail-template:remove', description: 'メールテンプレートを削除します.', help: <<<'TXT'
+<info>%command.name%</info> は dtb_mail_template とテンプレートファイルを対で削除します.
+
+  <info>php %command.full_name% --file-name=custom_mail --force</info>
+
+初期データのテンプレート (deletable = false) は削除できません.
+HTML パートのファイルも併せて削除します.
+TXT)]
 final class MailTemplateRemoveCommand extends Command
 {
     use ContentCommandTrait;
@@ -52,15 +59,6 @@ final class MailTemplateRemoveCommand extends Command
             ->addOption('force', 'f', InputOption::VALUE_NONE, '確認せずに削除する')
             ->addOption('no-cache-clear', null, InputOption::VALUE_NONE, 'キャッシュの削除を省略する');
         $this->addFormatOption();
-        $this->setHelp(<<<'EOF'
-            <info>%command.name%</info> は dtb_mail_template とテンプレートファイルを対で削除します.
-
-              <info>php %command.full_name% --file-name=custom_mail --force</info>
-
-            初期データのテンプレート (deletable = false) は削除できません.
-            HTML パートのファイルも併せて削除します.
-            EOF
-        );
     }
 
     #[\Override]
@@ -90,19 +88,19 @@ final class MailTemplateRemoveCommand extends Command
         if (!$Mail instanceof MailTemplate) {
             $io->error(sprintf('メールテンプレートが見つかりません: %s', $identifier));
 
-            return 1;
+            return Command::FAILURE;
         }
 
         if (!$Mail->isDeletable()) {
             $io->error(sprintf('削除できないメールテンプレートです: %s', (string) $Mail->getFileName()));
 
-            return 1;
+            return Command::FAILURE;
         }
 
         if (!$input->getOption('force') && !$io->confirm(sprintf('%s を削除しますか?', (string) $Mail->getFileName()), false)) {
             $io->text('中止しました.');
 
-            return 1;
+            return Command::FAILURE;
         }
 
         try {
@@ -118,7 +116,7 @@ final class MailTemplateRemoveCommand extends Command
         $this->renderResult($io, $output, $format, $result, false);
 
         if ($input->getOption('no-cache-clear')) {
-            return 0;
+            return Command::SUCCESS;
         }
 
         return $this->clearContentCache($io) ? 0 : self::EXIT_MANUAL_ACTION_REQUIRED;
