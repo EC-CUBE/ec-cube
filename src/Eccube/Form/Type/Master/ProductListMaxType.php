@@ -54,15 +54,6 @@ class ProductListMaxType extends AbstractType
      * {@inheritdoc}
      */
     #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'product_list_max';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    #[\Override]
     public function getParent(): ?string
     {
         return MasterType::class;

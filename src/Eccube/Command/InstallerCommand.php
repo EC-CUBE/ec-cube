@@ -272,13 +272,13 @@ class InstallerCommand extends Command
             } catch (ProcessFailedException $e) {
                 $this->io->error($e->getMessage());
 
-                return 1;
+                return Command::FAILURE;
             }
         }
 
         $this->io->success('EC-CUBE installation successful.');
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     protected function getDatabaseName(string $databaseUrl): string

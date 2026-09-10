@@ -36,10 +36,7 @@ class TwoFactorAuthType extends AbstractType
                     'required' => true,
                     'constraints' => [
                         new Assert\NotBlank(),
-                        new Assert\Length([
-                            'max' => 6,
-                            'min' => 6,
-                        ]),
+                        new Assert\Length(max: 6, min: 6),
                     ],
                     'attr' => [
                         'maxlength' => 6,

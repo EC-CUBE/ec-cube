@@ -71,7 +71,7 @@ final class UserDataRemoveCommand extends Command
         if (!$dryRun && !$input->getOption('force') && !$io->confirm(sprintf('%s を削除しますか?', (string) $path), false)) {
             $io->text('中止しました.');
 
-            return 1;
+            return Command::FAILURE;
         }
 
         try {
@@ -83,13 +83,13 @@ final class UserDataRemoveCommand extends Command
         } catch (ContentValidationException $e) {
             $io->error(array_merge([sprintf('削除できません: %s', (string) $path)], $e->getErrors()));
 
-            return 1;
+            return Command::FAILURE;
         } catch (ContentWriteException $e) {
             return $this->reportWriteFailure($io, sprintf('削除できません: %s', (string) $path), $e);
         }
 
         $this->renderResult($io, $output, $format, $result, $dryRun);
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

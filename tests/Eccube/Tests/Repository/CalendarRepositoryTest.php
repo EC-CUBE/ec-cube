@@ -57,9 +57,7 @@ final class CalendarRepositoryTest extends EccubeTestCase
     public function createCalendar(string $title = 'title', ?\DateTime $holiday = null): Calendar
     {
         $Calendar = new Calendar();
-        if (is_null($holiday)) {
-            $holiday = $this->DateTimeNow;
-        }
+        $holiday ??= $this->DateTimeNow;
         $Calendar->setTitle($title)
             ->setHoliday($holiday);
         $this->entityManager->persist($Calendar);

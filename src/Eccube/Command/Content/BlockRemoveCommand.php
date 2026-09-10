@@ -83,19 +83,19 @@ final class BlockRemoveCommand extends Command
         if (!$Block instanceof Block) {
             $io->error(sprintf('ブロックが見つかりません: %s', (string) $fileName));
 
-            return 1;
+            return Command::FAILURE;
         }
 
         if (!$Block->isDeletable()) {
             $io->error(sprintf('削除できないブロックです: %s', (string) $fileName));
 
-            return 1;
+            return Command::FAILURE;
         }
 
         if (!$input->getOption('force') && !$io->confirm(sprintf('%s を削除しますか?', (string) $fileName), false)) {
             $io->text('中止しました.');
 
-            return 1;
+            return Command::FAILURE;
         }
 
         try {
@@ -107,7 +107,7 @@ final class BlockRemoveCommand extends Command
         $this->renderResult($io, $output, $format, $result, false);
 
         if ($input->getOption('no-cache-clear')) {
-            return 0;
+            return Command::SUCCESS;
         }
 
         return $this->clearContentCache($io) ? 0 : self::EXIT_MANUAL_ACTION_REQUIRED;

@@ -40,15 +40,6 @@ class MasterType extends AbstractType
      * {@inheritdoc}
      */
     #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'master';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    #[\Override]
     public function getParent(): string
     {
         return EntityType::class;

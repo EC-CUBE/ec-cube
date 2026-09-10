@@ -69,19 +69,13 @@ class RepeatedPasswordType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $constraints = [
-            new Assert\Length([
-                'min' => $this->eccubeConfig['eccube_password_min_len'],
-                'max' => $this->eccubeConfig['eccube_password_max_len'],
-            ]),
-            new Assert\Regex([
-                'pattern' => $this->eccubeConfig['eccube_password_pattern'],
-                'message' => 'form_error.password_pattern_invalid',
-            ]),
+            new Assert\Length(min: $this->eccubeConfig['eccube_password_min_len'], max: $this->eccubeConfig['eccube_password_max_len']),
+            new Assert\Regex(pattern: $this->eccubeConfig['eccube_password_pattern'], message: 'form_error.password_pattern_invalid'),
             new PasswordBlocklist(),
         ];
         // NIST SP 800-63B-4 対応の漏洩パスワードチェック. 閉域網等では config で無効化できる.
         if ($this->eccubeConfig['eccube_password_compromised_check']) {
-            $constraints[] = new Assert\NotCompromisedPassword(['skipOnError' => true]);
+            $constraints[] = new Assert\NotCompromisedPassword(skipOnError: true);
         }
 
         $resolver->setDefaults([
@@ -117,14 +111,5 @@ class RepeatedPasswordType extends AbstractType
     public function getParent(): ?string
     {
         return RepeatedType::class;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'repeated_password';
     }
 }

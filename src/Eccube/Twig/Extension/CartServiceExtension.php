@@ -15,26 +15,15 @@ namespace Eccube\Twig\Extension;
 
 use Eccube\Entity\Cart;
 use Eccube\Service\CartService;
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFunction;
+use Twig\Attribute\AsTwigFunction;
 
-class CartServiceExtension extends AbstractExtension
+class CartServiceExtension
 {
     public function __construct(protected CartService $cartService)
     {
     }
 
-    #[\Override]
-    public function getFunctions(): array
-    {
-        return [
-            new TwigFunction('get_cart', $this->get_cart(...), ['is_safe' => ['all']]),
-            new TwigFunction('get_all_carts', $this->get_all_carts(...), ['is_safe' => ['all']]),
-            new TwigFunction('get_carts_total_price', $this->get_carts_total_price(...), ['is_safe' => ['all']]),
-            new TwigFunction('get_carts_total_quantity', $this->get_carts_total_quantity(...), ['is_safe' => ['all']]),
-        ];
-    }
-
+    #[AsTwigFunction(name: 'get_cart', isSafe: ['all'])]
     public function get_cart(): ?Cart
     {
         return $this->cartService->getCart();
@@ -43,11 +32,13 @@ class CartServiceExtension extends AbstractExtension
     /**
      * @return Cart[]
      */
+    #[AsTwigFunction(name: 'get_all_carts', isSafe: ['all'])]
     public function get_all_carts(): array
     {
         return $this->cartService->getCarts();
     }
 
+    #[AsTwigFunction(name: 'get_carts_total_price', isSafe: ['all'])]
     public function get_carts_total_price(): string
     {
         $Carts = $this->cartService->getCarts();
@@ -55,6 +46,7 @@ class CartServiceExtension extends AbstractExtension
         return array_reduce($Carts, fn (string $total, Cart $Cart) => bcadd($total, $Cart->getTotalPrice()), '0');
     }
 
+    #[AsTwigFunction(name: 'get_carts_total_quantity', isSafe: ['all'])]
     public function get_carts_total_quantity(): string
     {
         $Carts = $this->cartService->getCarts();

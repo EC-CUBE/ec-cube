@@ -27,7 +27,7 @@ use Eccube\Twig\Extension\TaxExtension;
 /**
  * 納品書PDFの店舗情報欄の描画座標を検証する (#6197).
  *
- * PDF のバイナリからは座標を検証できないため, TCPDF へ描画する直前の座標を
+ * PDF のバイナリからは座標を検証できないため, 描画する直前の座標を
  * {@see OrderPdfLayoutProbe} で記録して検証する.
  */
 final class OrderPdfServiceTest extends AbstractServiceTestCase
@@ -193,7 +193,7 @@ final class OrderPdfServiceTest extends AbstractServiceTestCase
 /**
  * 店舗情報欄の描画座標を記録するテスト用サブクラス.
  *
- * TCPDF のページ生成を行わずに座標だけを取り出すため, 描画系のメソッドを差し替える.
+ * ページを生成せずに座標だけを取り出すため, 描画系のメソッドを差し替える.
  */
 final class OrderPdfLayoutProbe extends OrderPdfService
 {
@@ -224,7 +224,7 @@ final class OrderPdfLayoutProbe extends OrderPdfService
     }
 
     #[\Override]
-    public function Image($file, $x = null, $y = null, $w = 0, $h = 0, $type = '', $link = '', $align = '', $resize = false, $dpi = 300, $palign = '', $ismask = false, $imgmask = false, $border = 0, $fitbox = false, $hidden = false, $fitonpage = false, $alt = false, $altimgs = [])
+    protected function renderLogo(): void
     {
         // ページが無い状態では画像を描画できない
     }

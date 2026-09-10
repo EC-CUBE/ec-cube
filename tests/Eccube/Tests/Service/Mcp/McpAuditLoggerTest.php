@@ -89,8 +89,7 @@ final class McpAuditLoggerTest extends TestCase
     public function testRequestIdIsStableWithinSameRequest(): void
     {
         $logger = $this->captureLogger();
-        $stack = new RequestStack();
-        $stack->push(new Request());
+        $stack = new RequestStack([new Request()]);
         $auditLogger = new McpAuditLogger($logger, $stack);
 
         $auditLogger->logToolCall('a', [], AuditResult::Success, 1.0);
