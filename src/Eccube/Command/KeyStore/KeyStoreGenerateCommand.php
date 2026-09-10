@@ -37,7 +37,20 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * 冪等. 既にある鍵は上書きしない (--force を指定したときだけ差し替える).
  */
-#[AsCommand(name: 'eccube:keystore:generate', description: '鍵を生成してキーストアへ保管します.')]
+#[AsCommand(name: 'eccube:keystore:generate', description: '鍵を生成してキーストアへ保管します.', help: <<<'TXT'
+<info>%command.name%</info> は鍵を生成してキーストアへ保管します.
+
+  <info>php %command.full_name%</info>
+  <info>php %command.full_name% ucp_signing --dry-run</info>
+  <info>php %command.full_name% ucp_signing --force</info>
+
+既にある鍵は上書きしません. --force を指定したときだけ差し替えますが,
+署名鍵を差し替えると広告済みの公開鍵 (kid) が変わり, 旧鍵で署名した
+メッセージの検証は失敗します.
+
+生成後に Web サーバーから鍵を読み取れるかを判定します. 署名は
+リクエスト処理中に行われるため, 読み取れない状態はエラーとして扱います.
+TXT)]
 final class KeyStoreGenerateCommand extends Command
 {
     use KeyStoreCommandTrait;
@@ -58,21 +71,6 @@ final class KeyStoreGenerateCommand extends Command
             ->addOption('force', null, InputOption::VALUE_NONE, '既存の鍵を差し替える')
             ->addOption('dry-run', null, InputOption::VALUE_NONE, '対象を表示するだけで生成しない');
         $this->addFormatOption();
-        $this->setHelp(<<<'EOF'
-            <info>%command.name%</info> は鍵を生成してキーストアへ保管します.
-
-              <info>php %command.full_name%</info>
-              <info>php %command.full_name% ucp_signing --dry-run</info>
-              <info>php %command.full_name% ucp_signing --force</info>
-
-            既にある鍵は上書きしません. --force を指定したときだけ差し替えますが,
-            署名鍵を差し替えると広告済みの公開鍵 (kid) が変わり, 旧鍵で署名した
-            メッセージの検証は失敗します.
-
-            生成後に Web サーバーから鍵を読み取れるかを判定します. 署名は
-            リクエスト処理中に行われるため, 読み取れない状態はエラーとして扱います.
-            EOF
-        );
     }
 
     #[\Override]
