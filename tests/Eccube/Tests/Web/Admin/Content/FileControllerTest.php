@@ -36,7 +36,7 @@ final class FileControllerTest extends AbstractAdminWebTestCase
      * tryResolve() は配置予定のパス (未作成) も解決するため, 実在を確かめずに
      * Finder::in() へ渡すと DirectoryNotFoundException で 500 になる.
      */
-    public function testIndexWithNonExistentDirectory()
+    public function testIndexWithNonExistentDirectory(): void
     {
         $crawler = $this->client->request(
             Request::METHOD_GET,

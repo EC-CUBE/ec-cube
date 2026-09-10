@@ -91,7 +91,9 @@ trait TemplateRemovalTrait
     {
         foreach ($staged as $path => $stagedPath) {
             try {
-                $this->filesystem->rename($stagedPath, $path, true);
+                // 上書きしない (rename() の既定). 退避している間に別の処理が同じパスへ書き出して
+                // いた場合, 上書きするとその更新を失う. 競合として扱い退避ファイルを残す
+                $this->filesystem->rename($stagedPath, $path);
             } catch (IOException) {
                 // 戻せない場合は退避ファイルを残す. 消してしまうと手動でも復旧できなくなる
             }
