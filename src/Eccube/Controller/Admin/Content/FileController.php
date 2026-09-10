@@ -158,16 +158,8 @@ class FileController extends AbstractController
                 'constraints' => [
                     new Assert\NotBlank(),
                     // 検証の定義は CLI (eccube:user-data:*) と共有する
-                    new Assert\Regex([
-                        'pattern' => UserDataFileService::DIRECTORY_NAME_DENY_PATTERN,
-                        'match' => false,
-                        'message' => 'admin.content.file.folder_name_symbol_error',
-                    ]),
-                    new Assert\Regex([
-                        'pattern' => UserDataFileService::DOT_PREFIX_PATTERN,
-                        'match' => false,
-                        'message' => 'admin.content.file.folder_name_period_error',
-                    ]),
+                    new Assert\Regex(pattern: UserDataFileService::DIRECTORY_NAME_DENY_PATTERN, match: false, message: 'admin.content.file.folder_name_symbol_error'),
+                    new Assert\Regex(pattern: UserDataFileService::DOT_PREFIX_PATTERN, match: false, message: 'admin.content.file.folder_name_period_error'),
                 ],
             ])
             ->getForm();
@@ -269,9 +261,7 @@ class FileController extends AbstractController
             ->add('file', FileType::class, [
                 'multiple' => true,
                 'constraints' => [
-                    new Assert\NotBlank([
-                        'message' => 'admin.common.file_select_empty',
-                    ]),
+                    new Assert\NotBlank(message: 'admin.common.file_select_empty'),
                 ],
             ])
             ->add('create_file', TextType::class)

@@ -50,10 +50,4 @@ class CustomerStatusType extends AbstractType
     {
         return MasterType::class;
     }
-
-    #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'customer_status';
-    }
 }

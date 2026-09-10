@@ -20,6 +20,7 @@ use Eccube\Entity\Master\CheckoutSessionStatus;
 use Eccube\Entity\Order;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutMessageLevel;
 use Eccube\Service\AgentCommerce\Payment\PaymentOutcomeStatus;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -119,6 +120,7 @@ final class AgentCheckoutCoreConformanceTest extends TestCase
      * プロトコル系 (HTTP 4xx/5xx) とビジネス系 (HTTP 200 + messages[]) の 2 系統への
      * 実際の HTTP 変換は checkout controller (#6776/#6574) の責務であり中核の対象外.
      */
+    #[DoesNotPerformAssertions]
     public function testTwoTierHttpMappingIsDeferredToControllerLayer(): void
     {
         self::markTestIncomplete('HTTP ステータスと messages[] への 2 系統変換は ACP/UCP checkout controller (#6776/#6574) で検証する。');
@@ -128,6 +130,7 @@ final class AgentCheckoutCoreConformanceTest extends TestCase
      * リプレイ (Idempotency-Key) で副作用を再実行しない不変条件は、controller/middleware の
      * 冪等性処理に依存するため中核では未実装.
      */
+    #[DoesNotPerformAssertions]
     public function testIdempotentReplayIsDeferredToControllerLayer(): void
     {
         self::markTestIncomplete('Idempotency-Key によるリプレイ抑止は checkout controller (#6776/#6574) で検証する。');

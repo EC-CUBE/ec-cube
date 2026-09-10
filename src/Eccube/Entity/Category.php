@@ -16,6 +16,7 @@ namespace Eccube\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\Order;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
@@ -135,8 +136,7 @@ class Category extends AbstractEntity implements \Stringable
      */
     public function hasProductCategories(): bool
     {
-        $criteria = Criteria::create()
-        ->orderBy(['category_id' => Criteria::ASC])
+        $criteria = Criteria::create()->orderBy(['category_id' => Order::Ascending])
         ->setFirstResult(0)
         ->setMaxResults(1);
 

@@ -53,7 +53,7 @@ class PluginInstallCommand extends Command
             $cacheCleared = $this->clearCache($io);
             $io->success('Installed.');
 
-            return $cacheCleared ? 0 : self::EXIT_MANUAL_ACTION_REQUIRED;
+            return $cacheCleared ? Command::SUCCESS : self::EXIT_MANUAL_ACTION_REQUIRED;
         }
 
         // 設置済ファイルからインストール
@@ -62,11 +62,11 @@ class PluginInstallCommand extends Command
             $cacheCleared = $this->clearCache($io);
             $io->success('Installed.');
 
-            return $cacheCleared ? 0 : self::EXIT_MANUAL_ACTION_REQUIRED;
+            return $cacheCleared ? Command::SUCCESS : self::EXIT_MANUAL_ACTION_REQUIRED;
         }
 
         $io->error('path or code is required.');
 
-        return 1;
+        return Command::FAILURE;
     }
 }

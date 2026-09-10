@@ -59,9 +59,7 @@ class PostalType extends AbstractType
                 $constraints[] = new Assert\NotBlank();
             }
 
-            $constraints[] = new Assert\Length([
-                'max' => $this->eccubeConfig['eccube_postal_code'],
-            ]);
+            $constraints[] = new Assert\Length(max: $this->eccubeConfig['eccube_postal_code']);
 
             $constraints[] = new Assert\Type(
                 type: 'digit',
@@ -88,14 +86,5 @@ class PostalType extends AbstractType
     public function getParent(): ?string
     {
         return TelType::class;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'postal';
     }
 }

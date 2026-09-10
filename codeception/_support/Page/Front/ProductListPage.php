@@ -53,7 +53,7 @@ class ProductListPage extends AbstractFrontPage
         if (!is_null($category1)) {
             $this->tester->selectOption(['css' => "ul.ec-shelfGrid li.ec-shelfGrid__item:nth-child({$index}) form select[name='classcategory_id1']"], $category1);
             if (!is_null($category2)) {
-                $category2_id = current(array_keys($category2));
+                $category2_id = array_key_first($category2);
                 $this->tester->waitForElement(['xpath' => "//ul[@class='ec-shelfGrid']/li[@class='ec-shelfGrid__item'][{$index}]//select[@name='classcategory_id2']/option[@value='{$category2_id}']"]);
                 $this->tester->selectOption(['css' => "ul.ec-shelfGrid li.ec-shelfGrid__item:nth-child({$index}) form select[name='classcategory_id2']"], $category2);
             }
