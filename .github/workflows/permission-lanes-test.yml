@@ -222,12 +222,21 @@ jobs:
           BASELINE=$(git status --porcelain app/template)
           changed() { [ "$(git status --porcelain app/template)" != "${BASELINE}" ]; }
 
+          ## 分離した構成ではレーン W (var/runtime/{env}/pools) を CLI から削除できないため、
+          ## コンテンツ系コマンドは本処理を完了したうえで終了コード 3
+          ## (EXIT_MANUAL_ACTION_REQUIRED) を返す。 これは想定どおりの成功系
+          ok3() { [ "$1" -eq 0 ] || [ "$1" -eq 3 ] || fail "$2 が終了コード $1 で終わりました (0 か 3 を期待)"; }
+
           ## (1) メタ情報だけの更新は app/template に影を作らない (Phase 5)。
           ##     app/template は src/Eccube/Resource/template より優先されるため、
           ##     同じ内容の写しを置くと upstream のテンプレート修正 (脆弱性パッチを含む) が
           ##     画面へ反映されなくなる
+          set +e
           docker compose exec -T -u "${CLI_USER}" ec-cube \
             bin/console eccube:page:apply --route=entry --name='会員登録 (permission lanes CI)'
+          STATUS=$?
+          set -e
+          ok3 "${STATUS}" 'eccube:page:apply (メタ情報のみ)'
           ! changed || fail "メタ情報だけの更新で app/template が変化しました: $(git status --porcelain app/template)"
 
           ## (2) レーン S への書き込みは Web サーバーのユーザーでは失敗し、 doctor を案内する
@@ -243,11 +252,20 @@ jobs:
           ! changed || fail "失敗したはずの書き込みでファイルが残りました"
 
           ## (3) 同じ操作が CLI ユーザーでは成功し、 削除で元に戻る
+          set +e
           printf '<p>lane test</p>' | docker compose exec -T -u "${CLI_USER}" ec-cube \
             bin/console eccube:page:apply --route=lane_test --name='レーン境界テスト' --body=-
+          STATUS=$?
+          set -e
+          ok3 "${STATUS}" 'eccube:page:apply (CLI ユーザー)'
           changed || fail "CLI ユーザーでのページ作成でテンプレートが書き出されていません"
+
+          set +e
           docker compose exec -T -u "${CLI_USER}" ec-cube \
             bin/console eccube:page:remove --route=lane_test --force
+          STATUS=$?
+          set -e
+          ok3 "${STATUS}" 'eccube:page:remove'
           ! changed || fail "ページ削除後もテンプレートが残っています: $(git status --porcelain app/template)"
 
           ## (4) 鍵はレーン S。 CLI ユーザーで冪等に生成でき、 所有者も CLI ユーザーになる
@@ -270,10 +288,27 @@ jobs:
           ## `-C dir .` だと `./` 付きのエントリになり PharData::extractTo() の展開が不安定になる
           SRC=codeception/_data/plugins/Boomerang-1.0.0
           tar -czf "${PWD}/Boomerang-1.0.0.tgz" -C "${SRC}" $(ls "${SRC}")
+
+          ## 3 は「本処理は完了したがキャッシュの削除に手動操作が必要」。 分離した構成では
+          ## レーン W を CLI から削除できないため想定どおりの成功系
+          ok3() { [ "$1" -eq 0 ] || [ "$1" -eq 3 ] || { echo "::error::$2 が終了コード $1 で終わりました"; exit 1; }; }
+
+          set +e
           docker compose exec -T -u "${CLI_USER}" ec-cube \
             bin/console eccube:plugin:install --path=Boomerang-1.0.0.tgz
+          STATUS=$?
+          set -e
+          ok3 "${STATUS}" 'eccube:plugin:install'
+
+          set +e
           docker compose exec -T -u "${CLI_USER}" ec-cube \
             bin/console eccube:plugin:enable --code=Boomerang
+          STATUS=$?
+          set -e
+          ok3 "${STATUS}" 'eccube:plugin:enable'
+
+          ## eccube:plugin:* は cache:clear --no-warmup しかしないため、 ここで作り直さないと
+          ## 次のリクエストで Web サーバーが var/build へ書けず 500 になる
           docker compose exec -T -u "${CLI_USER}" ec-cube bin/console eccube:cache:build
           curl -fsS -k -o /dev/null "${BASE_URL}/"
           curl -fsS -k -o /dev/null "${BASE_URL}/${ADMIN_ROUTE}/login"
