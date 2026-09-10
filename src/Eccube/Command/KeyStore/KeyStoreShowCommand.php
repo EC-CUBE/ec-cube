@@ -30,7 +30,15 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  * 鍵素材そのものは表示しない. ACP の共有シークレットをエージェントへ渡す必要がある場合は,
  * 本コマンドが表示する保管先から直接読み出す (コマンド履歴や CI のログへ残さないため).
  */
-#[AsCommand(name: 'eccube:keystore:show', description: '鍵の状態と公開情報を表示します.')]
+#[AsCommand(name: 'eccube:keystore:show', description: '鍵の状態と公開情報を表示します.', help: <<<'TXT'
+<info>%command.name%</info> は鍵の状態と公開情報を表示します.
+
+  <info>php %command.full_name% ucp_signing</info>
+  <info>php %command.full_name% ucp_signing --format=json</info>
+
+表示するのは公開してよい情報だけです (署名鍵は公開鍵 JWK と kid,
+共有シークレットはアルゴリズムと長さ). 鍵の値は表示しません.
+TXT)]
 final class KeyStoreShowCommand extends Command
 {
     use KeyStoreCommandTrait;
@@ -47,16 +55,6 @@ final class KeyStoreShowCommand extends Command
     {
         $this->addArgument('purpose', InputArgument::REQUIRED, '鍵の用途 (eccube:keystore:list で確認できます)');
         $this->addFormatOption();
-        $this->setHelp(<<<'EOF'
-            <info>%command.name%</info> は鍵の状態と公開情報を表示します.
-
-              <info>php %command.full_name% ucp_signing</info>
-              <info>php %command.full_name% ucp_signing --format=json</info>
-
-            表示するのは公開してよい情報だけです (署名鍵は公開鍵 JWK と kid,
-            共有シークレットはアルゴリズムと長さ). 鍵の値は表示しません.
-            EOF
-        );
     }
 
     #[\Override]
