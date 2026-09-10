@@ -75,14 +75,19 @@ trait ContentCommandTrait
 
     /**
      * 本文の入力と, 副作用を制御するオプションを追加する.
+     *
+     * @param bool $cacheClearable 更新の反映にキャッシュの削除が要るか.
+     *                             静的ファイル (html/user_data 配下) はキャッシュを介さないため false にする
      */
-    protected function addWriteOptions(): void
+    protected function addWriteOptions(bool $cacheClearable = true): void
     {
         $this
             ->addOption('body', null, InputOption::VALUE_REQUIRED, '本文. "-" を指定すると標準入力から読み込む')
             ->addOption('body-file', null, InputOption::VALUE_REQUIRED, '本文を読み込むファイルのパス')
-            ->addOption('dry-run', null, InputOption::VALUE_NONE, '変更内容を表示するだけで適用しない')
-            ->addOption('no-cache-clear', null, InputOption::VALUE_NONE, 'キャッシュの削除を省略する');
+            ->addOption('dry-run', null, InputOption::VALUE_NONE, '変更内容を表示するだけで適用しない');
+        if ($cacheClearable) {
+            $this->addOption('no-cache-clear', null, InputOption::VALUE_NONE, 'キャッシュの削除を省略する');
+        }
         $this->addFormatOption();
     }
 
@@ -97,9 +102,9 @@ trait ContentCommandTrait
     }
 
     /**
-     * テンプレートファイルの操作に失敗したことを, 対処方法を添えて表示する.
+     * ファイルの操作に失敗したことを, 対処方法を添えて表示する.
      *
-     * 権限を分離した構成では app/template は CLI ユーザーの所有 (レーン S) となり,
+     * 権限を分離した構成では app/template や html/user_data は CLI ユーザーの所有 (レーン S) となり,
      * Web サーバーのユーザーで実行すると書き込みだけが失敗する. 実行ユーザーの誤りが
      * 最も多い原因のため, 確認手段を案内する.
      */
@@ -108,7 +113,7 @@ trait ContentCommandTrait
         $io->error([
             $summary,
             $e->getMessage(),
-            'テンプレートの配置先 (レーン S) を所有するユーザーで実行してください.'
+            '書き込み先 (レーン S) を所有するユーザーで実行してください.'
             .' 期待値と実際の所有者は bin/console eccube:doctor:permissions で確認できます.',
         ]);
 

@@ -75,7 +75,7 @@ final class BlockShowCommand extends Command
         if (!$Block instanceof Block) {
             $io->error(sprintf('ブロックが見つかりません: %s', (string) $fileName));
 
-            return 1;
+            return Command::FAILURE;
         }
 
         $body = $this->blockContentService->readTemplate($Block);
@@ -91,11 +91,11 @@ final class BlockShowCommand extends Command
                 'body' => $body,
             ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
-            return 0;
+            return Command::SUCCESS;
         }
 
         $output->write($body);
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

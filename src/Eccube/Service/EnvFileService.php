@@ -13,6 +13,8 @@
 
 namespace Eccube\Service;
 
+use Eccube\Exception\ContentWriteException;
+use Eccube\Util\StringUtil;
 use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\Dotenv\Exception\FormatException;
 
@@ -129,6 +131,176 @@ class EnvFileService
     public function isEffective(array $keys = []): bool
     {
         return [] === $this->getIneffectiveReasons() && [] === $this->getOverriddenKeys($keys);
+    }
+
+    /**
+     * .env ファイルのパス.
+     */
+    public function getPath(): string
+    {
+        return $this->projectDir.'/.env';
+    }
+
+    /**
+     * .env ファイルに書かれている値をそのまま返す.
+     *
+     * 実行時に見えている値ではないことに注意する. OS のプロセス環境変数やカスケードファイルが
+     * 上書きしている場合は {@see getEffective()} と一致しない ({@see getOverriddenKeys()} で検出できる).
+     *
+     * @return string|null キーが .env に無い場合は null
+     */
+    public function get(string $key): ?string
+    {
+        $envFile = $this->getPath();
+        if (!is_file($envFile) || !is_readable($envFile)) {
+            return null;
+        }
+
+        $contents = file_get_contents($envFile);
+        if (false === $contents) {
+            return null;
+        }
+
+        // 書き込み (StringUtil::replaceOrAddEnv) と同じ行単位の表現で読み出し, 往復できるようにする
+        if (!preg_match('/^'.preg_quote($key, '/').'=(.*)$/m', $contents, $matches)) {
+            return null;
+        }
+
+        return rtrim($matches[1], "\r");
+    }
+
+    /**
+     * 実行時に見えている値を返す.
+     *
+     * Symfony Dotenv は putenv を使わないため, $_ENV / $_SERVER も参照する.
+     *
+     * @return string|null 未設定の場合は null
+     */
+    public function getEffective(string $key): ?string
+    {
+        if (isset($_ENV[$key])) {
+            return (string) $_ENV[$key];
+        }
+        if (isset($_SERVER[$key])) {
+            return (string) $_SERVER[$key];
+        }
+
+        $value = getenv($key);
+
+        return false === $value ? null : $value;
+    }
+
+    /**
+     * .env ファイルへ書き込む.
+     *
+     * 既存のキーは置換し, 無いキーは追記する (StringUtil::replaceOrAddEnv).
+     * 戻り値と書き込めたバイト数を検査するため, 権限を分離した構成で
+     * 書き込みに失敗したことが沈黙しない.
+     *
+     * 既存のファイルを開いて上書きする. 一時ファイルを作って rename する方式は
+     * inode を差し替えるため, .env の所有者とモードが実行プロセスの uid / umask で
+     * 決まってしまい, レーン S として設定した所有権を失う (.env を単一ファイルとして
+     * bind mount している構成でも壊れる).
+     *
+     * @param array<string, string> $values キー => 値 (値は .env の行にそのまま書き出す)
+     *
+     * @throws ContentWriteException .env が無い, 開けない, 書き込めない, 途中までしか書き込めなかった場合,
+     *                               切り詰めや書き出しを完了できなかった場合
+     */
+    public function set(array $values): void
+    {
+        if ([] === $values) {
+            return;
+        }
+
+        $envFile = $this->getPath();
+        if (!is_file($envFile)) {
+            throw new ContentWriteException($envFile, sprintf('%s が存在しません.', $envFile));
+        }
+
+        // 'r+' は新規作成しないため, inode と所有者・モードをそのまま引き継ぐ
+        $handle = @fopen($envFile, 'r+');
+        if (false === $handle) {
+            throw new ContentWriteException($envFile, sprintf('%s へ書き込めません. 書き込み権限のあるユーザーで実行してください.', $envFile));
+        }
+
+        try {
+            // 排他ロックを取得してから読み直す. ロックの前に読むと, 待っている間に
+            // 他のプロセスが書いた内容を上書きしてしまう (更新消失)
+            if (!flock($handle, LOCK_EX)) {
+                throw new ContentWriteException($envFile, sprintf('%s のロックを取得できません.', $envFile));
+            }
+
+            $original = stream_get_contents($handle, -1, 0);
+            if (false === $original) {
+                throw new ContentWriteException($envFile, sprintf('%s を読み込めません.', $envFile));
+            }
+
+            $updated = StringUtil::replaceOrAddEnv($original, $values);
+
+            rewind($handle);
+            $written = fwrite($handle, $updated);
+
+            // ディスクフル等では false ではなく書き込めたバイト数が返る
+            if (false === $written || strlen($updated) !== $written) {
+                throw new ContentWriteException($envFile, sprintf('%s へ最後まで書き込めませんでした (%d / %d バイト). %s', $envFile, (int) $written, strlen($updated), self::restoreNotice($this->restore($handle, $original))));
+            }
+
+            // 切り詰めは書き込みが完了してから行う. 先に切ると, 書き込みに失敗したときに
+            // 元の内容ごと失う.
+            // 戻り値を捨てると, 更新後の内容が短いときに切り詰めの失敗で元の内容の末尾が残り,
+            // 不正な行が混ざったまま成功として返ることになる (書き込みバイト数の検査と同じ理由).
+            if (!ftruncate($handle, $written) || !fflush($handle)) {
+                throw new ContentWriteException($envFile, sprintf('%s の更新を完了できませんでした. %s', $envFile, self::restoreNotice($this->restore($handle, $original))));
+            }
+        } finally {
+            // ロックも解放される
+            fclose($handle);
+        }
+    }
+
+    /**
+     * 途中まで書き込まれた .env を元の内容へ戻す.
+     *
+     * 直前までディスク上にあった内容のため, ディスクフルでも書き戻せる見込みが高い.
+     *
+     * 切り詰めに失敗した場合の呼び出しでは, ファイルの長さが元の内容以上になっているため
+     * 先頭から書き戻すだけで復元できる (切り詰めを必要としない).
+     *
+     * @param resource $handle
+     *
+     * @return bool 元の内容へ完全に戻せた場合 true
+     */
+    private function restore($handle, string $original): bool
+    {
+        rewind($handle);
+
+        // 書き込みと同じく, 部分書き込みは false ではなく書き込めたバイト数で返る
+        $written = fwrite($handle, $original);
+        if (false === $written || strlen($original) !== $written) {
+            return false;
+        }
+
+        // 既に元の長さなら切り詰めは要らない. 切り詰めの失敗で呼ばれた場合でも復元できる
+        $stat = fstat($handle);
+        if (false !== $stat && $stat['size'] === $written) {
+            return fflush($handle);
+        }
+
+        return ftruncate($handle, $written) && fflush($handle);
+    }
+
+    /**
+     * 復元できたかどうかを利用者向けの案内にする.
+     *
+     * 戻せたなら原因 (ディスクの空き等) を取り除いて再実行すればよく, 戻せなかったなら
+     * .env そのものを直す必要がある. 復旧手順が変わるため区別して伝える.
+     */
+    private static function restoreNotice(bool $restored): string
+    {
+        return $restored
+            ? '内容は書き込み前の状態へ戻しました. 原因を取り除いてから再実行してください.'
+            : '内容が壊れている可能性があります. .env を確認してください.';
     }
 
     /**

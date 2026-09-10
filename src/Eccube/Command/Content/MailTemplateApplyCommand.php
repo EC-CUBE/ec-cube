@@ -31,7 +31,14 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * ファイル名は新規登録時のみ指定できる (管理画面と同じ制約).
  */
-#[AsCommand(name: 'eccube:mail-template:apply', description: 'メールテンプレートを登録・更新します.')]
+#[AsCommand(name: 'eccube:mail-template:apply', description: 'メールテンプレートを登録・更新します.', help: <<<'TXT'
+<info>%command.name%</info> は dtb_mail_template とテンプレートファイルを対で登録・更新します.
+
+  <info>cat order.twig | php %command.full_name% --file-name=order --body=-</info>
+
+HTML パートは --html-body / --html-body-file で指定し, --remove-html で削除します.
+いずれも指定しない場合は現在の内容を維持します.
+TXT)]
 final class MailTemplateApplyCommand extends Command
 {
     use ContentCommandTrait;
@@ -53,15 +60,6 @@ final class MailTemplateApplyCommand extends Command
             ->addOption('html-body-file', null, InputOption::VALUE_REQUIRED, 'HTML パートの本文を読み込むファイルのパス')
             ->addOption('remove-html', null, InputOption::VALUE_NONE, 'HTML パートを削除する');
         $this->addWriteOptions();
-        $this->setHelp(<<<'EOF'
-            <info>%command.name%</info> は dtb_mail_template とテンプレートファイルを対で登録・更新します.
-
-              <info>cat order.twig | php %command.full_name% --file-name=order --body=-</info>
-
-            HTML パートは --html-body / --html-body-file で指定し, --remove-html で削除します.
-            いずれも指定しない場合は現在の内容を維持します.
-            EOF
-        );
     }
 
     #[\Override]
@@ -139,7 +137,7 @@ final class MailTemplateApplyCommand extends Command
         } catch (ContentValidationException $e) {
             $io->error(array_merge([sprintf('メールテンプレートを保存できません: %s', (string) ($fileName ?? $id))], $e->getErrors()));
 
-            return 1;
+            return Command::FAILURE;
         } catch (ContentWriteException $e) {
             return $this->reportWriteFailure($io, sprintf('メールテンプレートを保存できません: %s', (string) ($fileName ?? $id)), $e);
         }
@@ -147,7 +145,7 @@ final class MailTemplateApplyCommand extends Command
         $this->renderResult($io, $output, $format, $result, $dryRun);
 
         if ($dryRun || ContentStatus::Unchanged === $result->status || $input->getOption('no-cache-clear')) {
-            return 0;
+            return Command::SUCCESS;
         }
 
         return $this->clearContentCache($io) ? 0 : self::EXIT_MANUAL_ACTION_REQUIRED;

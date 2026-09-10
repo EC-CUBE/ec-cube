@@ -170,17 +170,30 @@ bin/console cache:clear             # Clear everything (needs write access to bu
 ### Content Management
 
 Pages, blocks and mail templates pair a database record with a Twig file, so they are managed
-through dedicated commands rather than by copying files. `apply` is an idempotent upsert and
-supports `--dry-run` and `--format=json`; `--body=-` reads the template from stdin.
+through dedicated commands rather than by copying files. The same commands are the CLI
+alternative for admin screens that write outside the web server's lane. `apply` and `put` are
+idempotent upserts and support `--dry-run` and `--format=json`; `--body=-` reads from stdin.
 
 `eccube:page:*` and `eccube:block:*` provide `list`, `show`, `apply` and `remove`;
-`eccube:mail-template:*` provides `list`, `show` and `apply`.
+`eccube:mail-template:*` provides `list`, `show` and `apply`;
+`eccube:asset:*` provides `show` and `apply` for `html/user_data/assets/{css,js}/customize.*`;
+`eccube:user-data:*` provides `list`, `show`, `put` and `remove` for `html/user_data/**`;
+`eccube:env:*` provides `get` and `set` for `.env`.
 
 ```bash
 bin/console eccube:page:list
 bin/console eccube:page:show --route=guide > guide.twig
 cat guide.twig | bin/console eccube:page:apply --route=guide --name=Guide --body=-
+
+cat customize.css | bin/console eccube:asset:apply --type=css --body=-
+cat logo.png | bin/console eccube:user-data:put --path=assets/img/logo.png --body=-
+bin/console eccube:env:set ECCUBE_TEMPLATE_CODE=default
 ```
+
+`html/` is the document root, so `eccube:user-data:put` applies the same file name and
+extension allow list as the admin file manager (`eccube_file_uploadable_extensions`).
+`eccube:env:set` rebuilds the build directory in a **separate process**, because the current
+one still holds the environment it read at start-up.
 
 ## Community
 

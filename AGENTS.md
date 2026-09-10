@@ -147,28 +147,42 @@ CLI ユーザーなら成功する（Web サーバーのユーザーでは失敗
 ファイルへ書き込む必要がある環境では `0000` を設定すると 4.3 以前と同じ挙動（ディレクトリ 0777 /
 ファイル 0666）に戻せるが、同一サーバーの他ユーザーからも書き換え可能になる。
 
-分離すると、`app/template` や `html/user_data` へ書き込む管理画面の機能（プラグイン導入・
-ページ/ブロック/メールテンプレート編集・CSS/JS 編集・ファイル管理）は動作しなくなる。
-ページ・ブロック・メールテンプレートは下記の CLI が代替導線になる。CSS/JS 編集とファイル管理は
-未整備のため、**日常の開発では重ねない**こと。
+分離すると、`app/template` や `html/user_data`、`.env` へ書き込む管理画面の機能（プラグイン導入・
+ページ/ブロック/メールテンプレート編集・CSS/JS 編集・ファイル管理・セキュリティ管理・テンプレート選択）は
+動作しなくなる。下記の CLI が代替導線になる。テンプレートのアップロードは未整備。
 
-DB レコードと twig ファイルを対で扱う。`apply` は upsert で冪等。`--dry-run` / `--format=json` に対応。
+`apply` / `put` は upsert で冪等。いずれも `--dry-run` / `--format=json` に対応し、
+`--body=-` で標準入力から本文を読み込む。
 
-| 対象 | サブコマンド |
-|---|---|
-| `bin/console eccube:page:*` | `list` / `show` / `apply` / `remove` |
-| `bin/console eccube:block:*` | `list` / `show` / `apply` / `remove` |
-| `bin/console eccube:mail-template:*` | `list` / `show` / `apply` |
+| 対象 | サブコマンド | 書き込み先 |
+|---|---|---|
+| `bin/console eccube:page:*` | `list` / `show` / `apply` / `remove` | `dtb_page` + `app/template/**` |
+| `bin/console eccube:block:*` | `list` / `show` / `apply` / `remove` | `dtb_block` + `app/template/**` |
+| `bin/console eccube:mail-template:*` | `list` / `show` / `apply` | `dtb_mail_template` + `app/template/**` |
+| `bin/console eccube:asset:*` | `show` / `apply` | `html/user_data/assets/{css,js}/customize.*` |
+| `bin/console eccube:user-data:*` | `list` / `show` / `put` / `remove` | `html/user_data/**` |
+| `bin/console eccube:env:*` | `get` / `set` | `.env` |
 
 ```bash
 bin/console eccube:page:list
 bin/console eccube:page:show --route=guide > guide.twig
 cat guide.twig | bin/console eccube:page:apply --route=guide --name=ご利用ガイド --body=-
+
+cat customize.css | bin/console eccube:asset:apply --type=css --body=-
+cat logo.png | bin/console eccube:user-data:put --path=assets/img/logo.png --body=-
+bin/console eccube:env:set ECCUBE_TEMPLATE_CODE=default
 ```
 
-入力値の検証は管理画面と同じ FormType を通すため、重複チェックや twig の構文チェックも同じものが効く。
+ページ・ブロック・メールテンプレートの入力値の検証は管理画面と同じ FormType を通すため、
+重複チェックや twig の構文チェックも同じものが効く。
 `apply` / `remove` は build ディレクトリへ書き込めない場合、本処理を完了させたうえで終了コード `3` と
 `eccube:cache:build` の案内を返す。
+
+`html/` はドキュメントルートのため、`eccube:user-data:put` は管理画面のファイル管理と同じ
+ファイル名・拡張子の検証（`eccube_file_uploadable_extensions`）を通す。`.php` 等は配置できない。
+`eccube:env:set` は書き込み後に `eccube:cache:build` を**別プロセスで**実行する
+（同一プロセスでは起動時に読み込んだ古い `.env` が焼き込まれるため）。
+`.env.local.php` があるなど変更が実行時に反映されない場合は、書き込んだうえで終了コード `3` を返す。
 
 既定モードと分離モードを切り替えるときはレーン W のボリュームを作り直す。切り替え前の `www-data` の
 uid で作成されたディレクトリが残り、切り替え後の Web サーバーから書き込めなくなる

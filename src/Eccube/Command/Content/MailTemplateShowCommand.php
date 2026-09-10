@@ -74,7 +74,7 @@ final class MailTemplateShowCommand extends Command
         if (!$Mail instanceof MailTemplate) {
             $io->error(sprintf('メールテンプレートが見つかりません: %s', (string) ($fileName ?? $id)));
 
-            return 1;
+            return Command::FAILURE;
         }
 
         $body = $this->mailTemplateContentService->readTemplate($Mail);
@@ -93,23 +93,23 @@ final class MailTemplateShowCommand extends Command
                 'html_body' => $htmlBody,
             ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
-            return 0;
+            return Command::SUCCESS;
         }
 
         if ($input->getOption('html')) {
             if (null === $htmlBody) {
                 $io->error(sprintf('HTML パートがありません: %s', (string) $Mail->getFileName()));
 
-                return 1;
+                return Command::FAILURE;
             }
 
             $output->write($htmlBody);
 
-            return 0;
+            return Command::SUCCESS;
         }
 
         $output->write($body);
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

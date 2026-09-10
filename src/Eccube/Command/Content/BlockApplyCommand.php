@@ -30,7 +30,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 /**
  * ブロック (dtb_block + twig) をファイル名を鍵に登録・更新する.
  */
-#[AsCommand(name: 'eccube:block:apply', description: 'ブロックを登録・更新します.')]
+#[AsCommand(name: 'eccube:block:apply', description: 'ブロックを登録・更新します.', help: <<<'TXT'
+<info>%command.name%</info> は dtb_block とテンプレートファイルを対で登録・更新します.
+
+  <info>cat campaign.twig | php %command.full_name% --file-name=campaign --name=キャンペーン --body=-</info>
+TXT)]
 final class BlockApplyCommand extends Command
 {
     use ContentCommandTrait;
@@ -48,12 +52,6 @@ final class BlockApplyCommand extends Command
             ->addOption('name', null, InputOption::VALUE_REQUIRED, 'ブロック名')
             ->addOption('device-type', null, InputOption::VALUE_REQUIRED, 'デバイス種別 ID', (string) DeviceType::DEVICE_TYPE_PC);
         $this->addWriteOptions();
-        $this->setHelp(<<<'EOF'
-            <info>%command.name%</info> は dtb_block とテンプレートファイルを対で登録・更新します.
-
-              <info>cat campaign.twig | php %command.full_name% --file-name=campaign --name=キャンペーン --body=-</info>
-            EOF
-        );
     }
 
     #[\Override]
@@ -105,7 +103,7 @@ final class BlockApplyCommand extends Command
         } catch (ContentValidationException $e) {
             $io->error(array_merge([sprintf('ブロックを保存できません: %s', (string) $fileName)], $e->getErrors()));
 
-            return 1;
+            return Command::FAILURE;
         } catch (ContentWriteException $e) {
             return $this->reportWriteFailure($io, sprintf('ブロックを保存できません: %s', (string) $fileName), $e);
         }
@@ -113,7 +111,7 @@ final class BlockApplyCommand extends Command
         $this->renderResult($io, $output, $format, $result, $dryRun);
 
         if ($dryRun || ContentStatus::Unchanged === $result->status || $input->getOption('no-cache-clear')) {
-            return 0;
+            return Command::SUCCESS;
         }
 
         return $this->clearContentCache($io) ? 0 : self::EXIT_MANUAL_ACTION_REQUIRED;

@@ -73,19 +73,19 @@ final class PageRemoveCommand extends Command
         if (!$Page instanceof Page) {
             $io->error(sprintf('ページが見つかりません: %s', (string) $route));
 
-            return 1;
+            return Command::FAILURE;
         }
 
         if (Page::EDIT_TYPE_USER !== $Page->getEditType()) {
             $io->error(sprintf('既定ページのため削除できません: %s', (string) $route));
 
-            return 1;
+            return Command::FAILURE;
         }
 
         if (!$input->getOption('force') && !$io->confirm(sprintf('%s を削除しますか?', (string) $route), false)) {
             $io->text('中止しました.');
 
-            return 1;
+            return Command::FAILURE;
         }
 
         try {
@@ -97,7 +97,7 @@ final class PageRemoveCommand extends Command
         $this->renderResult($io, $output, $format, $result, false);
 
         if ($input->getOption('no-cache-clear')) {
-            return 0;
+            return Command::SUCCESS;
         }
 
         return $this->clearContentCache($io) ? 0 : self::EXIT_MANUAL_ACTION_REQUIRED;

@@ -14,9 +14,10 @@
 namespace Eccube\Controller\Admin\Content;
 
 use Eccube\Controller\AbstractController;
+use Eccube\Exception\ContentValidationException;
+use Eccube\Exception\ContentWriteException;
+use Eccube\Service\Content\AssetContentService;
 use Symfony\Bridge\Twig\Attribute\Template;
-use Symfony\Component\Filesystem\Exception\IOException;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormView;
@@ -26,6 +27,10 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class CssController extends AbstractController
 {
+    public function __construct(private readonly AssetContentService $assetContentService)
+    {
+    }
+
     /**
      * @return RedirectResponse|array<string, FormView>
      */
@@ -42,23 +47,31 @@ class CssController extends AbstractController
             ]);
         $form = $builder->getForm();
 
-        $cssPath = $this->getParameter('eccube_html_dir').'/user_data/assets/css/customize.css';
-        if (file_exists($cssPath) && is_writable($cssPath)) {
-            $form->get('css')->setData(file_get_contents($cssPath));
+        // 読み込みは書き込み権限と切り離す. 権限を分離した構成 (html/user_data がレーン S) では
+        // 書き込めないだけで, 現在の内容は表示できる必要がある.
+        try {
+            $form->get('css')->setData($this->assetContentService->read('css'));
+        } catch (ContentValidationException $e) {
+            $this->addWarning(implode(' ', $e->getErrors()), 'admin');
+            log_error('failed to read the customize file.', $e->getErrors());
         }
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $fs = new Filesystem();
             try {
-                $fs->dumpFile($cssPath, $form->get('css')->getData());
+                $this->assetContentService->apply('css', (string) $form->get('css')->getData());
                 $this->addSuccess('admin.common.save_complete', 'admin');
 
                 return $this->redirectToRoute('admin_content_css');
-            } catch (IOException $e) {
+            } catch (ContentWriteException $e) {
                 $message = trans('admin.common.save_error');
                 $this->addError($message, 'admin');
-                log_error($message, [$cssPath, $e]);
+                log_error($message, [$e->getPath(), $e]);
+            } catch (ContentValidationException $e) {
+                // 配置先の拡張子が eccube_file_uploadable_extensions から外されている場合など.
+                // 500 にせずエラーとして表示する
+                $this->addError(trans('admin.common.save_error'), 'admin');
+                $this->addError(implode(' ', $e->getErrors()), 'admin');
             }
         }
 

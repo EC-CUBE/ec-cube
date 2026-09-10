@@ -18,6 +18,7 @@ use Eccube\Rector\CodingStyle\NormalizePhpDocArrayGenericSpacingRector;
 use Rector\Arguments\Rector\ClassMethod\ArgumentAdderRector;
 use Rector\Config\RectorConfig;
 use Rector\DeadCode\Rector\Cast\RecastingRemovalRector;
+use Rector\DeadCode\Rector\ClassMethod\RemoveUnusedPublicMethodParameterRector;
 use Rector\Doctrine\Set\DoctrineSetList;
 use Rector\Php83\Rector\ClassConst\AddTypeToConstRector;
 use Rector\PHPUnit\Set\PHPUnitSetList;
@@ -56,6 +57,11 @@ return RectorConfig::configure()
                // Codeception 自動生成ファイル (codecept build で再生成されるため Rector の指摘は意味なし)
                __DIR__.'/codeception/_support/_generated',
                // 特定のルールを除外する場合
+               // ストリームラッパーのメソッドは PHP が固定のシグネチャで呼ぶ規約 (streamWrapper)
+               // であり, 本体で参照していない引数も宣言したまま残す
+               RemoveUnusedPublicMethodParameterRector::class => [
+                   __DIR__.'/tests/Eccube/Tests/Service/FailingEnvStreamWrapper.php',
+               ],
                // Codeception の grabMultiple() 等は戻り値の要素が null になり得るため、
                // NullToStrictStringFuncCallArgRector が追加する (string) キャストを
                // RecastingRemovalRector が除去しないようにスキップする
