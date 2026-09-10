@@ -153,7 +153,10 @@ final class PathOwnershipTest extends TestCase
     {
         // stat() はリンクを解決するため, 対象自身の権限はリンク先のものになる.
         // リンク先の親を通り抜けられなければ到達できない
-        $root = sys_get_temp_dir().'/eccube-path-'.bin2hex(random_bytes(6));
+        // PathOwnership::of() は realpath() で解決した祖先も評価するため, 一時ディレクトリ自体が
+        // シンボリックリンクの環境 (macOS の /var -> /private/var 等) では表記が食い違う.
+        // 論理パスのまま組むと解決後の祖先と一致しないため, 先に正規化しておく
+        $root = realpath(sys_get_temp_dir()).'/eccube-path-'.bin2hex(random_bytes(6));
         $fs = new Filesystem();
         $fs->mkdir($root.'/physical/target', 0755);
         // mkdir() は umask の影響を受けるため, 判定に使うビットは chmod で明示する

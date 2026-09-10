@@ -43,6 +43,7 @@ use Eccube\Doctrine\ORM\Mapping\Driver\TraitProxyAttributeDriver;
 use Eccube\Doctrine\Query\QueryCustomizer;
 use Eccube\Log\Logger;
 use Eccube\Service\AgentCommerce\Payment\AgentCheckoutPaymentHandlerInterface;
+use Eccube\Service\AgentCommerce\Security\KeyPurposeInterface;
 use Eccube\Service\Payment\PaymentMethodInterface;
 use Eccube\Service\PurchaseFlow\DiscountProcessor;
 use Eccube\Service\PurchaseFlow\ItemHolderPostValidator;
@@ -336,6 +337,11 @@ class Kernel extends BaseKernel
         // PaymentMethodInterface と同様にコンテナ全体へ効く registerForAutoconfiguration でタグ付けする。
         $container->registerForAutoconfiguration(AgentCheckoutPaymentHandlerInterface::class)
             ->addTag('agent_commerce.payment_handler');
+
+        // 鍵の用途 (#7072 Phase 3c)。決済ハンドラと同じ理由で registerForAutoconfiguration を使う。
+        // KeyPurposeRegistry が空になると eccube:keystore:* から鍵が見えなくなる。
+        $container->registerForAutoconfiguration(KeyPurposeInterface::class)
+            ->addTag('agent_commerce.key_purpose');
 
         // PurchaseFlow の拡張
         $container->registerForAutoconfiguration(ItemPreprocessor::class)

@@ -37,6 +37,8 @@ use Twig\Error\LoaderError;
  */
 class MailTemplateContentService
 {
+    use TemplateRemovalTrait;
+
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly MailTemplateRepository $mailTemplateRepository,
@@ -263,9 +265,7 @@ class MailTemplateContentService
     /**
      * メールテンプレートとテンプレートファイルを削除する.
      *
-     * ファイルを先に削除する. 逆順にするとレコードだけが消えてテンプレートが残り, 削除に失敗した
-     * テンプレートが一覧から消える. ファイルの削除に失敗した場合は DB を更新せずに中断するため,
-     * レコードとファイルの対は保たれる (PageContentService::remove() と同じ理由).
+     * テンプレートを一時退避してから DB を削除する (TemplateRemovalTrait 参照).
      *
      * @throws ContentWriteException テンプレートファイルを削除できない場合
      */
@@ -277,23 +277,16 @@ class MailTemplateContentService
 
         $id = $Mail->getId();
         $fileName = (string) $Mail->getFileName();
-        $filePath = $this->getFilePath($Mail);
-        $htmlFilePath = $this->getHtmlFilePath($Mail);
 
-        $removedPaths = [];
-        foreach ([$filePath, $htmlFilePath] as $path) {
-            if ($this->isInsideTemplateDir($path) && is_file($path)) {
-                try {
-                    $this->filesystem->remove($path);
-                } catch (IOException $e) {
-                    throw ContentWriteException::forRemove($path, $e);
-                }
-                $removedPaths[] = $path;
-            }
-        }
+        $paths = array_values(array_filter(
+            [$this->getFilePath($Mail), $this->getHtmlFilePath($Mail)],
+            $this->isInsideTemplateDir(...)
+        ));
 
-        $this->entityManager->remove($Mail);
-        $this->entityManager->flush();
+        $removedPaths = $this->removeTemplatesAround($paths, function () use ($Mail): void {
+            $this->entityManager->remove($Mail);
+            $this->entityManager->flush();
+        });
 
         return new ContentResult(ContentStatus::Removed, $id, $fileName, [], $removedPaths);
     }

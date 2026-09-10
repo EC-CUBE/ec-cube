@@ -17,6 +17,7 @@ namespace Eccube\Tests\Service\AgentCommerce\Security;
 
 use Eccube\Service\AgentCommerce\Security\KeyStoreInterface;
 use Eccube\Service\AgentCommerce\Security\UcpMessageSigner;
+use Eccube\Service\AgentCommerce\Security\UcpSigningKeyPurpose;
 use phpseclib3\Crypt\PublicKeyLoader;
 use PHPUnit\Framework\TestCase;
 
@@ -36,7 +37,7 @@ final class UcpMessageSignerTest extends TestCase
 
     public function testSignThenVerifyRoundTrip(): void
     {
-        $signer = new UcpMessageSigner($this->createKeyStore(), self::PURPOSE);
+        $signer = new UcpMessageSigner($this->createKeyStore(), new UcpSigningKeyPurpose());
         $base = '"@method": POST'."\n".'"@path": /checkout-sessions';
 
         $signature = $signer->sign($base);
@@ -47,7 +48,7 @@ final class UcpMessageSignerTest extends TestCase
 
     public function testVerifyFailsOnTamperedSignatureBase(): void
     {
-        $signer = new UcpMessageSigner($this->createKeyStore(), self::PURPOSE);
+        $signer = new UcpMessageSigner($this->createKeyStore(), new UcpSigningKeyPurpose());
         $base = 'original-signature-base';
 
         $signature = $signer->sign($base);
@@ -57,7 +58,7 @@ final class UcpMessageSignerTest extends TestCase
 
     public function testVerifyFailsOnTamperedSignature(): void
     {
-        $signer = new UcpMessageSigner($this->createKeyStore(), self::PURPOSE);
+        $signer = new UcpMessageSigner($this->createKeyStore(), new UcpSigningKeyPurpose());
         $base = 'signature-base';
 
         $signature = $signer->sign($base);
@@ -69,7 +70,7 @@ final class UcpMessageSignerTest extends TestCase
 
     public function testGetPublicJwksExposesEcPublicKeyOnly(): void
     {
-        $signer = new UcpMessageSigner($this->createKeyStore(), self::PURPOSE);
+        $signer = new UcpMessageSigner($this->createKeyStore(), new UcpSigningKeyPurpose());
 
         $jwks = $signer->getPublicJwks();
 
@@ -85,7 +86,7 @@ final class UcpMessageSignerTest extends TestCase
 
     public function testGetCurrentKidIsStableAndPresentInJwks(): void
     {
-        $signer = new UcpMessageSigner($this->createKeyStore(), self::PURPOSE);
+        $signer = new UcpMessageSigner($this->createKeyStore(), new UcpSigningKeyPurpose());
 
         $kid = $signer->getCurrentKid();
         $this->assertNotSame('', $kid, 'getCurrentKid must return a non-empty key id');
@@ -103,7 +104,7 @@ final class UcpMessageSignerTest extends TestCase
     {
         // Old signer with its own (auto-generated) private key.
         $oldStore = $this->createKeyStore();
-        $oldSigner = new UcpMessageSigner($oldStore, self::PURPOSE);
+        $oldSigner = new UcpMessageSigner($oldStore, new UcpSigningKeyPurpose());
         $base = 'rotation-signature-base';
         $oldSignature = $oldSigner->sign($base);
 
@@ -113,7 +114,7 @@ final class UcpMessageSignerTest extends TestCase
 
         // New signer with a fresh key, carrying the old public key in its grace set.
         $newStore = $this->createKeyStore();
-        $newSigner = new UcpMessageSigner($newStore, self::PURPOSE, [$oldPublicPem]);
+        $newSigner = new UcpMessageSigner($newStore, new UcpSigningKeyPurpose(), [$oldPublicPem]);
 
         $this->assertTrue($newSigner->verify($base, $oldSignature), 'A signature made with the rotated-out key must still verify while its public key is in the grace set');
 
