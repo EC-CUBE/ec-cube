@@ -69,8 +69,13 @@ final class PluginCommandTraitTest extends TestCase
         $this->assertSame(0, $tester->execute([], ['decorated' => false]));
 
         $display = $tester->getDisplay();
-        $this->assertStringContainsString('bin/console cache:clear --no-warmup', $display);
-        $this->assertStringContainsString('bin/console eccube:cache:build --no-twig', $display);
+        $clearedAt = strpos($display, 'bin/console cache:clear --no-warmup');
+        $builtAt = strpos($display, 'bin/console eccube:cache:build --no-twig');
+
+        $this->assertIsInt($clearedAt);
+        $this->assertIsInt($builtAt);
+        // 逆順では後続の cache:clear が再生成した build ディレクトリを消してしまうため, 順序も検証する
+        $this->assertLessThan($builtAt, $clearedAt, 'cache:clear の後に eccube:cache:build を実行すること');
     }
 
     /**
