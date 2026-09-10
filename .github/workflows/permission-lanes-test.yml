@@ -9,17 +9,7 @@ name: Permission Lanes Test
 
 on:
   workflow_call:
-    inputs:
-      php-tag:
-        description: 'ベースイメージ php:<TAG> と docker-compose.yml の TAG'
-        type: string
-        default: '8.5-apache'
   workflow_dispatch:
-    inputs:
-      php-tag:
-        description: 'ベースイメージ php:<TAG> と docker-compose.yml の TAG'
-        type: string
-        default: '8.5-apache'
 
 permissions:
   contents: read
@@ -33,7 +23,11 @@ jobs:
     env:
       ## AGENTS.md に記載の 4 枚重ねと同じ構成。 以降の docker compose はすべてこれを見る
       COMPOSE_FILE: docker-compose.yml:docker-compose.dev.yml:docker-compose.pgsql.yml:docker-compose.permission-lanes.yml
-      TAG: ${{ inputs.php-tag }}
+      ## 他のジョブ (main.yml の php-versions) と同じ PHP で回す。
+      ## 8.5 は opcache がコア組み込みのため docker-php-ext-install の対象から外す
+      ## (dockerbuild.yml の matrix と同じ値)
+      TAG: '8.5-apache'
+      EXT_INSTALL_ARGS: 'zip gd mysqli pdo_mysql intl'
       ## 分離モードは APP_ENV=prod 固定 (docker-compose.permission-lanes.yml)。
       ## prod のセッション cookie は SameSite=None のため、 HTTP だとブラウザに破棄され
       ## 管理画面へログインできない。 自己署名証明書の HTTPS (4430) を使う
