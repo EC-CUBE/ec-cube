@@ -150,9 +150,7 @@ class MasterdataController extends AbstractController
                 foreach ($data['data'] as $key => $value) {
                     if ($value['id'] !== null && $value['name'] !== null) {
                         $entity = $repository->find($value['id']);
-                        if ($entity === null) {
-                            $entity = new $entityName();
-                        }
+                        $entity ??= new $entityName();
                         $entity->setId($value['id']);
                         $entity->setName($value['name']);
                         $entity->setSortNo($sortNo++);

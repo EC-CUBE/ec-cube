@@ -471,10 +471,8 @@ class OrderController extends AbstractController
         $errors = $this->validator->validate(
             $trackingNumber,
             [
-                new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
-                new Assert\Regex(
-                    ['pattern' => '/^[0-9a-zA-Z-]+$/u', 'message' => trans('admin.order.tracking_number_error')]
-                ),
+                new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
+                new Assert\Regex(pattern: '/^[0-9a-zA-Z-]+$/u', message: trans('admin.order.tracking_number_error')),
             ]
         );
 

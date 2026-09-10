@@ -2344,7 +2344,7 @@ final class CartValidationTest extends AbstractWebTestCase
         // THEN
         // check message error (expect not contain)
         $message = $crawler->filter('#cart_box__body')->text();
-        $this->assertNotContains('この商品は同時に購入することはできません。', $message);
+        $this->assertStringNotContainsString('この商品は同時に購入することはできません。', $message);
     }
 
     protected function scenarioCartIn(Customer $Customer, ProductClass $ProductClass, int $num = 1): mixed

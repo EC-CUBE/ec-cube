@@ -298,15 +298,6 @@ class OrderItemType extends AbstractType
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'order_item';
-    }
-
     protected function addErrorsIfExists(FormInterface $form, ConstraintViolationListInterface $errors): void
     {
         if (count($errors) < 1) {

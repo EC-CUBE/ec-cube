@@ -43,7 +43,7 @@ class PluginSchemaUpdateCommand extends Command
         if (!$Plugin) {
             $io->error("No such plugin `{$code}`.");
 
-            return 1;
+            return Command::FAILURE;
         }
 
         $config = $this->pluginService->readConfig($this->pluginService->calcPluginDir($code));
@@ -52,6 +52,6 @@ class PluginSchemaUpdateCommand extends Command
 
         $io->success('Schema Updated.');
 
-        return $cacheCleared ? 0 : self::EXIT_MANUAL_ACTION_REQUIRED;
+        return $cacheCleared ? Command::SUCCESS : self::EXIT_MANUAL_ACTION_REQUIRED;
     }
 }
