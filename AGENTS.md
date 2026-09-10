@@ -149,7 +149,26 @@ CLI ユーザーなら成功する（Web サーバーのユーザーでは失敗
 
 分離すると、`app/template` や `html/user_data` へ書き込む管理画面の機能（プラグイン導入・
 ページ/ブロック/メールテンプレート編集・CSS/JS 編集・ファイル管理）は動作しなくなる。
-CLI 側の代替導線は整備中のため、**日常の開発では重ねない**こと。
+ページ・ブロック・メールテンプレートは下記の CLI が代替導線になる。CSS/JS 編集とファイル管理は
+未整備のため、**日常の開発では重ねない**こと。
+
+DB レコードと twig ファイルを対で扱う。`apply` は upsert で冪等。`--dry-run` / `--format=json` に対応。
+
+| 対象 | サブコマンド |
+|---|---|
+| `bin/console eccube:page:*` | `list` / `show` / `apply` / `remove` |
+| `bin/console eccube:block:*` | `list` / `show` / `apply` / `remove` |
+| `bin/console eccube:mail-template:*` | `list` / `show` / `apply` |
+
+```bash
+bin/console eccube:page:list
+bin/console eccube:page:show --route=guide > guide.twig
+cat guide.twig | bin/console eccube:page:apply --route=guide --name=ご利用ガイド --body=-
+```
+
+入力値の検証は管理画面と同じ FormType を通すため、重複チェックや twig の構文チェックも同じものが効く。
+`apply` / `remove` は build ディレクトリへ書き込めない場合、本処理を完了させたうえで終了コード `3` と
+`eccube:cache:build` の案内を返す。
 
 既定モードと分離モードを切り替えるときはレーン W のボリュームを作り直す。切り替え前の `www-data` の
 uid で作成されたディレクトリが残り、切り替え後の Web サーバーから書き込めなくなる

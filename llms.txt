@@ -167,6 +167,21 @@ bin/console cache:pool:clear --all  # Clear the runtime cache pools
 bin/console cache:clear             # Clear everything (needs write access to build and cache)
 ```
 
+### Content Management
+
+Pages, blocks and mail templates pair a database record with a Twig file, so they are managed
+through dedicated commands rather than by copying files. `apply` is an idempotent upsert and
+supports `--dry-run` and `--format=json`; `--body=-` reads the template from stdin.
+
+`eccube:page:*` and `eccube:block:*` provide `list`, `show`, `apply` and `remove`;
+`eccube:mail-template:*` provides `list`, `show` and `apply`.
+
+```bash
+bin/console eccube:page:list
+bin/console eccube:page:show --route=guide > guide.twig
+cat guide.twig | bin/console eccube:page:apply --route=guide --name=Guide --body=-
+```
+
 ## Community
 
 - [GitHub Repository](https://github.com/EC-CUBE/ec-cube)

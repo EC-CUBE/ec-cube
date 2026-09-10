@@ -15,17 +15,15 @@ namespace Eccube\Controller\Admin\Content;
 
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Page;
-use Eccube\Entity\PageLayout;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\MainEditType;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\PageLayoutRepository;
 use Eccube\Repository\PageRepository;
+use Eccube\Service\Content\PageContentService;
 use Eccube\Util\CacheUtil;
-use Eccube\Util\StringUtil;
 use Symfony\Bridge\Twig\Attribute\Template;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -36,7 +34,7 @@ class PageController extends AbstractController
     /**
      * PageController constructor.
      */
-    public function __construct(protected PageRepository $pageRepository, protected PageLayoutRepository $pageLayoutRepository, protected DeviceTypeRepository $deviceTypeRepository, private readonly Environment $twig, private readonly CacheUtil $cacheUtil)
+    public function __construct(protected PageRepository $pageRepository, protected PageLayoutRepository $pageLayoutRepository, protected DeviceTypeRepository $deviceTypeRepository, private readonly Environment $twig, private readonly CacheUtil $cacheUtil, private readonly PageContentService $pageContentService)
     {
     }
 
@@ -133,65 +131,16 @@ class PageController extends AbstractController
                     ->setFileName($PrevPage->getFileName())
                     ->setName($Page->getName());
             }
-            // DB登録
-            $this->entityManager->persist($Page);
-            $this->entityManager->flush();
-
-            // ファイル生成・更新
-            if ($isUserDataPage) {
-                $templatePath = $this->getParameter('eccube_theme_user_data_dir');
-            } else {
-                $templatePath = $this->getParameter('eccube_theme_front_dir');
-            }
-            $filePath = $templatePath.'/'.$Page->getFileName().'.twig';
-
-            $fs = new Filesystem();
-            $pageData = $form->get('tpl_data')->getData();
-            $pageData = StringUtil::convertLineFeed($pageData);
-            $fs->dumpFile($filePath, $pageData);
-
-            // 更新でファイル名を変更した場合、以前のファイルを削除
-            if ($Page->getFileName() != $fileName && !is_null($fileName)) {
-                $oldFilePath = $templatePath.'/'.$fileName.'.twig';
-                if ($fs->exists($oldFilePath)) {
-                    $fs->remove($oldFilePath);
-                }
-            }
-
-            foreach ($Page->getPageLayouts() as $PageLayout) {
-                $Page->removePageLayout($PageLayout);
-                $this->entityManager->remove($PageLayout);
-                $this->entityManager->flush();
-            }
-
-            $Layout = $form['PcLayout']->getData();
-            $LastPageLayout = $this->pageLayoutRepository->findOneBy([], ['sort_no' => 'DESC']);
-            $sortNo = $LastPageLayout->getSortNo();
-
-            if ($Layout) {
-                $PageLayout = new PageLayout();
-                $PageLayout->setLayoutId($Layout->getId());
-                $PageLayout->setLayout($Layout);
-                $PageLayout->setPageId($Page->getId());
-                $PageLayout->setSortNo($sortNo++);
-                $PageLayout->setPage($Page);
-
-                $this->entityManager->persist($PageLayout);
-                $this->entityManager->flush();
-            }
-
-            $Layout = $form['SpLayout']->getData();
-            if ($Layout) {
-                $PageLayout = new PageLayout();
-                $PageLayout->setLayoutId($Layout->getId());
-                $PageLayout->setLayout($Layout);
-                $PageLayout->setPageId($Page->getId());
-                $PageLayout->setSortNo($sortNo++);
-                $PageLayout->setPage($Page);
-
-                $this->entityManager->persist($PageLayout);
-                $this->entityManager->flush();
-            }
+            // DB 登録とテンプレートファイルの生成は Service に委譲する
+            $result = $this->pageContentService->save(
+                $Page,
+                (string) $form->get('tpl_data')->getData(),
+                $form['PcLayout']->getData(),
+                $form['SpLayout']->getData(),
+                $fileName
+            );
+            $templatePath = $this->pageContentService->getTemplateDir($Page);
+            $filePath = (string) $result->path();
 
             $event = new EventArgs(
                 [
@@ -254,14 +203,7 @@ class PageController extends AbstractController
 
         // ユーザーが作ったページのみ削除する
         if ($Page->getEditType() == Page::EDIT_TYPE_USER) {
-            $templatePath = $this->getParameter('eccube_theme_user_data_dir');
-            $file = $templatePath.'/'.$Page->getFileName().'.twig';
-            $fs = new Filesystem();
-            if ($fs->exists($file)) {
-                $fs->remove($file);
-            }
-            $this->entityManager->remove($Page);
-            $this->entityManager->flush();
+            $this->pageContentService->remove($Page);
 
             $event = new EventArgs(
                 [
