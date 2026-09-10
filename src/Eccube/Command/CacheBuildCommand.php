@@ -38,7 +38,15 @@ use Symfony\Component\HttpKernel\RebootableInterface;
  * 「別名のディレクトリへ warmup してから rename で差し替える」手順を build 側だけに適用し,
  * %eccube_runtime_dir% (Web サーバー所有) には触れない.
  */
-#[AsCommand(name: 'eccube:cache:build', description: 'コンパイル済みコンテナとテンプレートを生成します.')]
+#[AsCommand(name: 'eccube:cache:build', description: 'コンパイル済みコンテナとテンプレートを生成します.', help: <<<'TXT'
+<info>%command.name%</info> は kernel.build_dir のみを再生成します.
+
+  <info>php %command.full_name% --env=prod --no-debug</info>
+
+実行時キャッシュ (%eccube_runtime_dir%) は削除しません.
+Web サーバーが生成したキャッシュを削除するには, Web サーバーのユーザーで
+<info>bin/console cache:pool:clear --all</info> を実行するか, 管理画面のキャッシュ管理を使用してください.
+TXT)]
 final class CacheBuildCommand extends Command
 {
     /**
@@ -62,17 +70,7 @@ final class CacheBuildCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addOption('no-twig', null, InputOption::VALUE_NONE, 'テンプレートの事前コンパイルを省略します.')
-            ->setHelp(<<<'EOF'
-                <info>%command.name%</info> は kernel.build_dir のみを再生成します.
-
-                  <info>php %command.full_name% --env=prod --no-debug</info>
-
-                実行時キャッシュ (%eccube_runtime_dir%) は削除しません.
-                Web サーバーが生成したキャッシュを削除するには, Web サーバーのユーザーで
-                <info>bin/console cache:pool:clear --all</info> を実行するか, 管理画面のキャッシュ管理を使用してください.
-                EOF
-            );
+            ->addOption('no-twig', null, InputOption::VALUE_NONE, 'テンプレートの事前コンパイルを省略します.');
     }
 
     #[\Override]

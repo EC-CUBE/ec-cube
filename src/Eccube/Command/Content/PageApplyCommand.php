@@ -31,7 +31,15 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * 指定しなかった項目は既存の値を維持するため, 同じ入力を複数回適用しても結果は変わらない.
  */
-#[AsCommand(name: 'eccube:page:apply', description: 'ページを登録・更新します.')]
+#[AsCommand(name: 'eccube:page:apply', description: 'ページを登録・更新します.', help: <<<'TXT'
+<info>%command.name%</info> は dtb_page とテンプレートファイルを対で登録・更新します.
+
+  <info>cat guide.twig | php %command.full_name% --route=guide --name=ご利用ガイド --body=-</info>
+  <info>php %command.full_name% --route=guide --body-file=guide.twig --dry-run</info>
+
+--route は dtb_page.url に保存されるルート名です (管理画面のページ管理の「ルーティング名」列).
+既定ページ (EDIT_TYPE_DEFAULT 以上) はルーティング名とファイル名を変更できません.
+TXT)]
 final class PageApplyCommand extends Command
 {
     use ContentCommandTrait;
@@ -73,16 +81,6 @@ final class PageApplyCommand extends Command
             ->addOption('pc-layout', null, InputOption::VALUE_REQUIRED, 'PC レイアウトの ID (空文字で解除)')
             ->addOption('sp-layout', null, InputOption::VALUE_REQUIRED, 'SP レイアウトの ID (空文字で解除)');
         $this->addWriteOptions();
-        $this->setHelp(<<<'EOF'
-            <info>%command.name%</info> は dtb_page とテンプレートファイルを対で登録・更新します.
-
-              <info>cat guide.twig | php %command.full_name% --route=guide --name=ご利用ガイド --body=-</info>
-              <info>php %command.full_name% --route=guide --body-file=guide.twig --dry-run</info>
-
-            --route は dtb_page.url に保存されるルート名です (管理画面のページ管理の「ルーティング名」列).
-            既定ページ (EDIT_TYPE_DEFAULT 以上) はルーティング名とファイル名を変更できません.
-            EOF
-        );
     }
 
     #[\Override]
@@ -131,7 +129,7 @@ final class PageApplyCommand extends Command
         } catch (ContentValidationException $e) {
             $io->error(array_merge([sprintf('ページを保存できません: %s', (string) $route)], $e->getErrors()));
 
-            return 1;
+            return Command::FAILURE;
         } catch (ContentWriteException $e) {
             return $this->reportWriteFailure($io, sprintf('ページを保存できません: %s', (string) $route), $e);
         }
@@ -139,7 +137,7 @@ final class PageApplyCommand extends Command
         $this->renderResult($io, $output, $format, $result, $dryRun);
 
         if ($dryRun || ContentStatus::Unchanged === $result->status || $input->getOption('no-cache-clear')) {
-            return 0;
+            return Command::SUCCESS;
         }
 
         return $this->clearContentCache($io) ? 0 : self::EXIT_MANUAL_ACTION_REQUIRED;

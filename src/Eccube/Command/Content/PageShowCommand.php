@@ -28,7 +28,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 /**
  * apply の逆操作. 既定ではテンプレートの本文だけを標準出力へ書き出す.
  */
-#[AsCommand(name: 'eccube:page:show', description: 'ページのテンプレートを出力します.')]
+#[AsCommand(name: 'eccube:page:show', description: 'ページのテンプレートを出力します.', help: <<<'TXT'
+<info>%command.name%</info> は apply の逆操作です.
+
+  <info>php %command.full_name% --route=guide > guide.twig</info>
+TXT)]
 final class PageShowCommand extends Command
 {
     use ContentCommandTrait;
@@ -47,12 +51,6 @@ final class PageShowCommand extends Command
             ->addOption('route', null, InputOption::VALUE_REQUIRED, '対象ページのルーティング名 (例: product_list)')
             ->addOption('id', null, InputOption::VALUE_REQUIRED, '対象ページの ID');
         $this->addFormatOption();
-        $this->setHelp(<<<'EOF'
-            <info>%command.name%</info> は apply の逆操作です.
-
-              <info>php %command.full_name% --route=guide > guide.twig</info>
-            EOF
-        );
     }
 
     #[\Override]
@@ -82,7 +80,7 @@ final class PageShowCommand extends Command
         if (!$Page instanceof Page) {
             $io->error(sprintf('ページが見つかりません: %s', (string) ($route ?? $id)));
 
-            return 1;
+            return Command::FAILURE;
         }
 
         $body = $this->pageContentService->readTemplate($Page);
@@ -107,11 +105,11 @@ final class PageShowCommand extends Command
                 'body' => $body,
             ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
-            return 0;
+            return Command::SUCCESS;
         }
 
         $output->write($body);
 
-        return 0;
+        return Command::SUCCESS;
     }
 }
