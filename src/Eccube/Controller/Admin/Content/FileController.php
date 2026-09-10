@@ -81,14 +81,17 @@ class FileController extends AbstractController
         // user_data_dirの親ディレクトリ
         $htmlDir = $this->normalizePath($userDataDir.'/../');
 
-        // カレントディレクトリ. user_data の外を指す場合はルートへフォールバックする
+        // カレントディレクトリ. user_data の外を指す場合はルートへフォールバックする.
+        // tryResolve() は配置予定のパス (未作成) も解決するため, ここでは実在も確かめる.
+        // 実在しないディレクトリを Finder::in() へ渡すと DirectoryNotFoundException になる
         $selected = $this->userDataFileService->tryResolve($request->get('tree_select_file'));
-        $nowDir = null === $selected ? $topDir : $this->normalizePath($selected);
+        $nowDir = null === $selected || !is_dir($selected) ? $topDir : $this->normalizePath($selected);
 
         // パンくず表示用データ
         $nowDirList = json_encode(explode('/', trim(str_replace($htmlDir, '', $nowDir), '/')), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
         $jailNowDir = $this->userDataFileService->toRelative($nowDir);
-        $isTopDir = ($topDir === $jailNowDir);
+        // $jailNowDir は user_data からの相対表記のため, 比較相手も同じ表記へ揃える
+        $isTopDir = ($this->userDataFileService->toRelative($topDir) === $jailNowDir);
         $parentDir = substr($nowDir, 0, strrpos($nowDir, '/'));
 
         if ('POST' === $request->getMethod()) {

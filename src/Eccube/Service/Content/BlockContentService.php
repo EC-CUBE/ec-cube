@@ -39,6 +39,7 @@ use Twig\Error\LoaderError;
 class BlockContentService
 {
     use TemplateBodyTrait;
+    use TemplateRemovalTrait;
 
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
@@ -243,8 +244,7 @@ class BlockContentService
      *
      * ユーザーが作成したブロック (deletable) のみ削除できる.
      *
-     * ファイルを先に削除する. 削除に失敗した場合は DB を更新せずに中断するため,
-     * レコードとファイルの対は保たれる.
+     * テンプレートを一時退避してから DB を削除する (TemplateRemovalTrait 参照).
      *
      * @throws ContentWriteException テンプレートファイルを削除できない場合
      */
@@ -256,20 +256,11 @@ class BlockContentService
 
         $id = $Block->getId();
         $fileName = $Block->getFileName();
-        $filePath = $this->getFilePath($Block);
 
-        $removedPaths = [];
-        if ($this->filesystem->exists($filePath)) {
-            try {
-                $this->filesystem->remove($filePath);
-            } catch (IOException $e) {
-                throw ContentWriteException::forRemove($filePath, $e);
-            }
-            $removedPaths[] = $filePath;
-        }
-
-        $this->entityManager->remove($Block);
-        $this->entityManager->flush();
+        $removedPaths = $this->removeTemplatesAround([$this->getFilePath($Block)], function () use ($Block): void {
+            $this->entityManager->remove($Block);
+            $this->entityManager->flush();
+        });
 
         return new ContentResult(ContentStatus::Removed, $id, $fileName, [], $removedPaths);
     }

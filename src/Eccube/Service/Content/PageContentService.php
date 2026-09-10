@@ -43,6 +43,7 @@ use Twig\Error\LoaderError;
 class PageContentService
 {
     use TemplateBodyTrait;
+    use TemplateRemovalTrait;
 
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
@@ -269,9 +270,7 @@ class PageContentService
      *
      * ユーザーが作成したページ (EDIT_TYPE_USER) のみ削除できる.
      *
-     * ファイルを先に削除する. 逆順にするとレコードだけが消えてテンプレートが残り, 削除に失敗した
-     * ページが表示できないまま一覧から消える. ファイルの削除に失敗した場合は DB を更新せずに
-     * 中断するため, レコードとファイルの対は保たれる.
+     * テンプレートを一時退避してから DB を削除する (TemplateRemovalTrait 参照).
      *
      * @throws ContentWriteException テンプレートファイルを削除できない場合
      */
@@ -283,20 +282,11 @@ class PageContentService
 
         $id = $Page->getId();
         $route = (string) $Page->getUrl();
-        $filePath = $this->getFilePath($Page);
 
-        $removedPaths = [];
-        if ($this->filesystem->exists($filePath)) {
-            try {
-                $this->filesystem->remove($filePath);
-            } catch (IOException $e) {
-                throw ContentWriteException::forRemove($filePath, $e);
-            }
-            $removedPaths[] = $filePath;
-        }
-
-        $this->entityManager->remove($Page);
-        $this->entityManager->flush();
+        $removedPaths = $this->removeTemplatesAround([$this->getFilePath($Page)], function () use ($Page): void {
+            $this->entityManager->remove($Page);
+            $this->entityManager->flush();
+        });
 
         return new ContentResult(ContentStatus::Removed, $id, $route, [], $removedPaths);
     }

@@ -30,6 +30,25 @@ final class FileControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
+    /**
+     * 存在しないディレクトリを指定してもルートへフォールバックする.
+     *
+     * tryResolve() は配置予定のパス (未作成) も解決するため, 実在を確かめずに
+     * Finder::in() へ渡すと DirectoryNotFoundException で 500 になる.
+     */
+    public function testIndexWithNonExistentDirectory()
+    {
+        $crawler = $this->client->request(
+            Request::METHOD_GET,
+            $this->generateUrl('admin_content_file'),
+            ['tree_select_file' => 'no_such_dir_'.bin2hex(random_bytes(4))]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        // ルートへフォールバックするため, 上位階層への操作は表示されない
+        $this->assertCount(0, $crawler->filter('.c-contentsArea .fa-level-up-alt'));
+    }
+
     public function testView()
     {
         $filepath = $this->getUserDataDir().'/aaa.html';
