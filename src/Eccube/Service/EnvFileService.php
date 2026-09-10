@@ -204,13 +204,22 @@ class EnvFileService
      *
      * @param array<string, string> $values キー => 値 (値は .env の行にそのまま書き出す)
      *
-     * @throws ContentWriteException .env が無い, 開けない, 書き込めない, 途中までしか書き込めなかった場合,
-     *                               切り詰めや書き出しを完了できなかった場合
+     * @throws \InvalidArgumentException 値に改行またはヌルバイトが含まれる場合
+     * @throws ContentWriteException     .env が無い, 開けない, 書き込めない, 途中までしか書き込めなかった場合,
+     *                                   切り詰めや書き出しを完了できなかった場合
      */
     public function set(array $values): void
     {
         if ([] === $values) {
             return;
+        }
+
+        // 値は 1 行としてそのまま書き出すため, 改行を含むと後続に別のキーを差し込めてしまう.
+        // 呼び出し元 (FormType / コマンド引数) の検証に依らないよう, 書き込みの境界で拒否する
+        foreach ($values as $key => $value) {
+            if (preg_match('/[\r\n\0]/', $value)) {
+                throw new \InvalidArgumentException(sprintf('%s の値に改行またはヌルバイトは指定できません.', $key));
+            }
         }
 
         $envFile = $this->getPath();
