@@ -13,6 +13,9 @@ mcp:
                 path: '/%eccube_admin_route%/mcp'
             session:
                 store: file
+                # MCP セッションはリクエスト処理中に書き込まれるため, ランタイムディレクトリへ置く.
+                # (既定は %kernel.cache_dir%/mcp-sessions/<サーバ名>)
+                directory: '%eccube_runtime_dir%/mcp-sessions'
             # 公開するのは Tool だけ。 scope 検査 (ScopeEnforcingReferenceHandler / ScopeFilteringRegistry) は
             # Tool にしか掛からないため、 prompts / resources / resource_templates / apps はこのサーバに登録しない
             registry:

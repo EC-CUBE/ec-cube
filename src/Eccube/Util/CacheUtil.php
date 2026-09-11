@@ -13,12 +13,15 @@
 
 namespace Eccube\Util;
 
+use Eccube\Common\EccubeConfig;
 use Psr\Container\ContainerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\CacheClearer\Psr6CacheClearer;
 use Symfony\Component\HttpKernel\Event\TerminateEvent;
@@ -36,8 +39,26 @@ class CacheUtil implements EventSubscriberInterface
     /**
      * CacheUtil constructor.
      */
-    public function __construct(protected KernelInterface $kernel, private readonly ContainerInterface $container)
+    public function __construct(
+        protected KernelInterface $kernel,
+        private readonly ContainerInterface $container,
+        private readonly EccubeConfig $eccubeConfig,
+        private readonly LoggerInterface $logger,
+    ) {
+    }
+
+    /**
+     * cache:clear を実行できるか (= ビルド生成物を Web サーバーから作り直せるか).
+     *
+     * cache:clear は kernel.build_dir と kernel.cache_dir の双方へ書き込むため
+     * (CacheClearCommand.php の is_writable() 検査), 権限を分離した構成では失敗する.
+     * その場合はリクエスト処理中に生成されるキャッシュのみを削除し, ビルド生成物の
+     * 再生成は CLI の eccube:cache:build に委ねる.
+     */
+    public function canClearBuildCache(): bool
     {
+        return is_writable((string) $this->eccubeConfig->get('kernel.build_dir'))
+            && is_writable((string) $this->eccubeConfig->get('kernel.cache_dir'));
     }
 
     /**
@@ -55,6 +76,12 @@ class CacheUtil implements EventSubscriberInterface
     {
         if ($this->clearCacheAfterResponse === false) {
             return '';
+        }
+
+        // 別の環境を指定された場合 (インストーラが prod を対象にする等) は, 現在の環境の
+        // ディレクトリを見ても判定にならないため, 従来どおり cache:clear を試みる.
+        if ($this->clearCacheAfterResponse === null && !$this->canClearBuildCache()) {
+            return $this->clearRuntimeCache();
         }
 
         $console = new Application($this->kernel);
@@ -133,9 +160,69 @@ class CacheUtil implements EventSubscriberInterface
      */
     public function clearTwigCache(): void
     {
-        $cacheDir = $this->kernel->getCacheDir().'/twig';
-        $fs = new Filesystem();
-        $fs->remove($cacheDir);
+        // 実行時キャッシュは Web サーバー所有 (レーン W) になり得るため, CLI からは削除できない.
+        // 権限が無い場合に例外を投げると, キャッシュ削除の失敗が本処理の失敗として現れてしまう.
+        $this->removeIfPossible($this->runtimePath('twig'));
+
+        // prod では事前コンパイル済みのテンプレート (kernel.build_dir/twig) が読み取り専用キャッシュ
+        // として優先されるため, そちらを消さないと更新したテンプレートが反映されない.
+        // 権限を分離した構成では削除できないため, その場合は eccube:cache:build の再実行が必要になる.
+        $buildDir = rtrim((string) $this->eccubeConfig->get('kernel.build_dir'), '/');
+        if (is_writable($buildDir)) {
+            $this->removeIfPossible($buildDir.'/twig');
+        }
+    }
+
+    /**
+     * 削除できる場合のみ削除する.
+     *
+     * 権限を分離した構成では, 実行するユーザーによって削除できないディレクトリがある.
+     * 削除できたかどうかは呼び出し側が判定できる (is_dir) ため, ここでは例外にしない.
+     */
+    private function removeIfPossible(string $dir): void
+    {
+        if (!is_dir($dir)) {
+            return;
+        }
+
+        try {
+            (new Filesystem())->remove($dir);
+        } catch (IOException) {
+            // 権限が無い場合は残す. 削除は権限のあるユーザー (Web サーバー) 側に委ねる.
+        }
+    }
+
+    /**
+     * リクエスト処理中に生成されるキャッシュのみを削除します.
+     *
+     * ビルド生成物 (コンパイル済みコンテナ・ルーティング・事前コンパイル済みテンプレート) は
+     * kernel.build_dir にあり Web サーバーから書き込めないため, ここでは削除しない.
+     */
+    public function clearRuntimeCache(): string
+    {
+        /** @var Psr6CacheClearer $poolClearer */
+        $poolClearer = $this->container->get('cache.global_clearer');
+        $poolClearer->clear((string) $this->eccubeConfig->get('eccube_runtime_dir'));
+
+        // 翻訳カタログや HTMLPurifier のキャッシュは kernel.cache_dir 配下のビルド生成物のため,
+        // ここでは触れない (再生成は eccube:cache:build が行う).
+        $this->removeIfPossible($this->runtimePath('twig'));
+
+        if (function_exists('opcache_reset')) {
+            opcache_reset();
+        }
+
+        $message = 'ビルドディレクトリへ書き込めないため, 実行時キャッシュのみ削除しました.'
+            .' コンパイル済みコンテナとテンプレートを更新するには CLI で'
+            .' bin/console eccube:cache:build を実行してください.';
+        $this->logger->warning($message);
+
+        return $message;
+    }
+
+    private function runtimePath(string $name): string
+    {
+        return rtrim((string) $this->eccubeConfig->get('eccube_runtime_dir'), '/').'/'.$name;
     }
 
     /**

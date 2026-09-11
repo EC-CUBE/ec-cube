@@ -64,9 +64,7 @@ class ProductClassEditType extends AbstractType
             ->add('code', TextType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('stock', IntegerType::class, [
@@ -186,10 +184,7 @@ class ProductClassEditType extends AbstractType
 
             // 在庫数
             $errors = $this->validator->validate($data['stock'], [
-                new Assert\Regex([
-                    'pattern' => "/^\d+$/u",
-                    'message' => 'form_error.numeric_only',
-                ]),
+                new Assert\Regex(pattern: "/^\d+$/u", message: 'form_error.numeric_only'),
             ]);
             $this->addErrors('stock', $form, $errors);
 
@@ -200,16 +195,9 @@ class ProductClassEditType extends AbstractType
 
             // 販売制限数
             $errors = $this->validator->validate($data['sale_limit'], [
-                new Assert\Length([
-                    'max' => 10,
-                ]),
-                new Assert\GreaterThanOrEqual([
-                    'value' => 1,
-                ]),
-                new Assert\Regex([
-                    'pattern' => "/^\d+$/u",
-                    'message' => 'form_error.numeric_only',
-                ]),
+                new Assert\Length(max: 10),
+                new Assert\GreaterThanOrEqual(value: 1),
+                new Assert\Regex(pattern: "/^\d+$/u", message: 'form_error.numeric_only'),
             ]);
             $this->addErrors('sale_limit', $form, $errors);
 
@@ -222,11 +210,8 @@ class ProductClassEditType extends AbstractType
 
             // 税率
             $errors = $this->validator->validate($data['tax_rate'], [
-                new Assert\Range(['min' => 0, 'max' => 100]),
-                new Assert\Regex([
-                    'pattern' => "/^\d+(\.\d+)?$/",
-                    'message' => 'form_error.float_only',
-                ]),
+                new Assert\Range(min: 0, max: 100),
+                new Assert\Regex(pattern: "/^\d+(\.\d+)?$/", message: 'form_error.float_only'),
             ]);
             $this->addErrors('tax_rate', $form, $errors);
 

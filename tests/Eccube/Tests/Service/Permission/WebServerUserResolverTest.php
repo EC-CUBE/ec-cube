@@ -38,7 +38,7 @@ final class WebServerUserResolverTest extends TestCase
 
     protected function setUp(): void
     {
-        if (!function_exists('posix_geteuid')) {
+        if (!function_exists('posix_geteuid') || !function_exists('posix_getegid')) {
             self::markTestSkipped('ext-posix が無効な環境では実効 uid / gid を検証できません.');
         }
 
@@ -50,7 +50,12 @@ final class WebServerUserResolverTest extends TestCase
 
     protected function tearDown(): void
     {
-        $this->fs->remove($this->projectDir);
+        // setUp() が markTestSkipped() で中断した場合も tearDown() は実行されるため,
+        // 未初期化のプロパティを参照しないようにする (参照するとスキップに加えてエラーになる).
+        if (isset($this->fs)) {
+            $this->fs->remove($this->projectDir);
+        }
+
         parent::tearDown();
     }
 

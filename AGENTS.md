@@ -112,26 +112,132 @@ Web サーバー（`www-data`）と CLI（SSH ログインユーザー相当）�
 `docker-compose.permission-lanes.yml` を重ねる。`eccube:doctor:permissions` の動作確認に使う。
 
 ```bash
-docker compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.permission-lanes.yml up -d --wait
+# --build は必須。 公開イメージ (ghcr) には dockerbuild/docker-php-entrypoint のレーン分離が
+# 含まれないため、 pull されたイメージのままだと www-data がホストユーザーへリマップされ分離されない。
+# DB は SQLite だと var/eccube.db を CLI から書けないため、 DB サーバーを重ねる。
+docker compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.pgsql.yml \
+  -f docker-compose.permission-lanes.yml up -d --build --wait
 curl -s -o /dev/null http://127.0.0.1:8080/   # セッションを生成し Web サーバーの uid を判定可能にする
 docker compose exec -u eccube ec-cube bin/console eccube:doctor:permissions
 ```
 
-レーン W（`var`、`html/upload/**`、`app/keystore`）は `www-data` 所有とし、共有グループは作らない。
-CLI からレーン W を触る操作は Web サーバーのユーザーで実行する。本番の `sudo -u www-data` に相当する。
+レーン W（`var/runtime`、`var/sessions`、`var/log`、`html/upload/**`）は `www-data` 所有とし、
+共有グループは作らない。CLI からレーン W を触る操作は Web サーバーのユーザーで実行する。
+本番の `sudo -u www-data` に相当する。
+`app/keystore` はレーン S。秘密鍵はデプロイ成果物で、Web サーバーから書き込めると署名鍵の
+差し替えを許すため読み取りのみとする。分離した構成では Web サーバーが実行時に鍵を生成できないため、
+アクセスを受ける前に `bin/console eccube:keystore:generate` で配置しておく。
 
 ```bash
-docker compose exec -u eccube   ec-cube bin/console eccube:page:apply ...   # レーン S を触る操作
-docker compose exec -u www-data ec-cube bin/console cache:clear             # レーン W を触る操作
+docker compose exec -u eccube   ec-cube bin/console eccube:cache:build        # レーン S を触る操作
+docker compose exec -u www-data ec-cube bin/console cache:pool:clear --all    # レーン W を触る操作
 ```
 
-分離すると、`app/template` や `html/user_data` へ書き込む管理画面の機能（プラグイン導入・
-ページ/ブロック/メールテンプレート編集・CSS/JS 編集・ファイル管理）は動作しなくなる。
-CLI 側の代替導線は整備中のため、**日常の開発では重ねない**こと。
+`cache:clear` は `var/build` と `var/cache` の双方へ書き込む。3 分割ではどちらもレーン S のため
+CLI ユーザーなら成功する（Web サーバーのユーザーでは失敗する）。ただし `--no-warmup` を付けると
+コンパイル済みコンテナが再生成されず、次のリクエストで Web サーバーが 500 になる。
+コンパイル済みコンテナとテンプレートの再生成は `eccube:cache:build` を使う。
+
+`var/log` はレーン W のため、CLI からはログファイルへ書き込めない。ログの出力に失敗すると本来のエラーが
+ログ書き込みエラーへすり替わるため、分離した構成では `ECCUBE_CLI_LOG_TO_FILE=0` を設定し、CLI のログを
+コンソール出力に寄せる（記録が必要な場合はリダイレクトする）。未設定なら従来どおりファイルへ書く。
+`docker-compose.permission-lanes.yml` では既に設定済み。
+
+アプリケーションが作成するファイルの umask は環境変数 `ECCUBE_UMASK`（8 進数表記）で設定する。
+未設定なら OS / PHP-FPM の既定に従う（推奨）。Web サーバーと CLI が別ユーザーで、かつ双方が同じ
+ファイルへ書き込む必要がある環境では `0000` を設定すると 4.3 以前と同じ挙動（ディレクトリ 0777 /
+ファイル 0666）に戻せるが、同一サーバーの他ユーザーからも書き換え可能になる。
+
+鍵はディレクトリ 0755 / ファイル 0644 で作成する。Web サーバーは署名のために鍵を読む必要があり、
+所有者専用（0700 / 0600）にすると `chgrp` できない環境で読めなくなるため。同一サーバーの他ユーザーからも
+読ませたくない場合は `ECCUBE_KEYSTORE_STRICT_PERMISSIONS=1` を設定する（この場合 Web サーバーへ
+読み取りを許す手当ては運用側で行う。`eccube:keystore:generate` は読めない状態を検出してエラーにする）。
+
+分離すると、`app/template` や `html/user_data`、`.env`、`app/Plugin` へ書き込む管理画面の機能
+（プラグイン導入・有効化・無効化・アップデート・削除、ページ/ブロック/メールテンプレート編集、
+CSS/JS 編集、ファイル管理、セキュリティ管理、テンプレート選択・追加）は動作しなくなる。
+下記の CLI が代替導線になる。テンプレートのアップロードは未整備。
+
+`ECCUBE_RESTRICT_FILE_UPLOAD=1` を設定すると、これらの画面は**読み取り専用**になる。現在の内容は
+表示したまま保存・削除の操作だけを無効化し、画面上に代替の CLI コマンドを案内する。書き込みを伴う
+リクエストはサーバー側で 403 を返すため、UI を経由しない経路も塞がる。対象の一覧は
+`app/config/eccube/packages/eccube.yaml` の `eccube_restrict_file_upload_urls`（ルート名 → CLI コマンド）。
+未設定（既定）なら従来どおり、画面は動作し保存時に書き込みエラーになる。
+
+`apply` / `put` は upsert で冪等。いずれも `--dry-run` / `--format=json` に対応し、
+`--body=-` で標準入力から本文を読み込む。
+
+| 対象 | サブコマンド | 書き込み先 |
+|---|---|---|
+| `bin/console eccube:page:*` | `list` / `show` / `apply` / `remove` | `dtb_page` + `app/template/**` |
+| `bin/console eccube:block:*` | `list` / `show` / `apply` / `remove` | `dtb_block` + `app/template/**` |
+| `bin/console eccube:mail-template:*` | `list` / `show` / `apply` / `remove` | `dtb_mail_template` + `app/template/**` |
+| `bin/console eccube:asset:*` | `show` / `apply` | `html/user_data/assets/{css,js}/customize.*` |
+| `bin/console eccube:user-data:*` | `list` / `show` / `put` / `remove` | `html/user_data/**` |
+| `bin/console eccube:env:*` | `get` / `set` | `.env` |
+| `bin/console eccube:keystore:*` | `list` / `show` / `generate` | `app/keystore/**` |
+| `bin/console eccube:contents:*` | `export` / `import` | `app/contents/*.yaml`（書き出し）／上記の DB とファイル（取り込み） |
+
+```bash
+bin/console eccube:page:list
+bin/console eccube:page:show --route=guide > guide.twig
+cat guide.twig | bin/console eccube:page:apply --route=guide --name=ご利用ガイド --body=-
+
+cat customize.css | bin/console eccube:asset:apply --type=css --body=-
+cat logo.png | bin/console eccube:user-data:put --path=assets/img/logo.png --body=-
+bin/console eccube:env:set ECCUBE_TEMPLATE_CODE=default
+bin/console eccube:keystore:generate      # 未生成の鍵だけを作る（冪等）
+```
+
+ページ・ブロック・メールテンプレートの入力値の検証は管理画面と同じ FormType を通すため、
+重複チェックや twig の構文チェックも同じものが効く。
+`apply` / `remove` は build ディレクトリへ書き込めない場合、本処理を完了させたうえで終了コード `3` と
+`eccube:cache:build` の案内を返す。
+
+`html/` はドキュメントルートのため、`eccube:user-data:put` は管理画面のファイル管理と同じ
+ファイル名・拡張子の検証（`eccube_file_uploadable_extensions`）を通す。`.php` 等は配置できない。
+`eccube:env:set` は書き込み後に `eccube:cache:build` を**別プロセスで**実行する
+（同一プロセスでは起動時に読み込んだ古い `.env` が焼き込まれるため）。
+`.env.local.php` があるなど変更が実行時に反映されない場合は、書き込んだうえで終了コード `3` を返す。
+
+#### コンテンツを Git で管理する（`eccube:contents:*`）
+
+**テンプレートはファイル、コンテンツ定義は DB** に分かれており、Git に残せるのは前者だけである。
+`eccube:contents:export` / `import` は、この**残らない側（DB）**だけを yaml で入出力する。
+
+```bash
+bin/console eccube:contents:export                     # 既定は app/contents/ へ
+bin/console eccube:contents:import --dry-run           # 差分だけ表示
+bin/console eccube:contents:import                     # 反映
+bin/console eccube:contents:import --prune --dry-run   # 削除対象の確認
+```
+
+```
+app/contents/
+  manifest.yaml   pages.yaml   blocks.yaml   mail_templates.yaml   layouts.yaml
+```
+
+- **テンプレートの本文は書き出さない。** `src/Eccube/Resource/template/**` を直接カスタマイズし
+  `git merge` で upstream の修正（脆弱性パッチを含む）を取り込む運用が一般的で、本文をアーカイブへ
+  複製すると二重管理になり merge で解決できなくなる。`app/template/{theme}` は twig の探索で
+  `src/Eccube/Resource/template/default` より**優先される**ため、内容が同じ写しを置くと
+  upstream のテンプレート修正が画面へ反映されなくなる
+- 同じ理由で、`*ContentService::save()` は**本文が変わらない限りテンプレートを書き出さない**。
+  管理画面でコアページのメタ情報だけを変更しても `app/template` に写しはできない。
+  ただしテンプレートをどこからも解決できない場合は必ず書き出す（書き出さないと DB のレコードだけが
+  残り、画面が「Unable to find template」で落ちる）
+- 本文を指定しない新規登録は、配置先に既にあるテンプレートを使う。`app/template/user_data/foo.twig`
+  をコミットして `pages.yaml` に 1 行足せば、`import` がそのページを作る
+- レイアウトは `dtb_layout.id` が環境ごとに変わるため**名前で参照する**。名前が重複していると
+  export がエラーになるので一意にする
+- `--prune` はアーカイブに無いものを削除する（既定は無効）。削除できるのはユーザーが作成したページ、
+  削除可能なブロック・メールテンプレート、どのページからも参照されていないレイアウトだけ
+- `html/user_data` は `customize.css` / `customize.js` 以外が `.gitignore` で除外されているため
+  既定では扱わない。リポジトリ丸ごと管理する構成では `--include=user_data` を指定する
 
 既定モードと分離モードを切り替えるときはレーン W のボリュームを作り直す。切り替え前の `www-data` の
 uid で作成されたディレクトリが残り、切り替え後の Web サーバーから書き込めなくなる
-（例: `var/cache/{env}/mcp-sessions`）。
+（例: `var/runtime/{env}/mcp-sessions`）。
 
 ```bash
 docker compose ... down -v
@@ -179,9 +285,15 @@ docker compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose
 
 ### キャッシュ / データベース
 
+キャッシュは 3 つのディレクトリに分かれる。`var/build/{env}`（コンパイル済みコンテナ・ルーティング・
+メタデータ・prod の twig）と `var/cache/{env}`（翻訳カタログ・htmlpurifier）は CLI が生成し、
+リクエスト処理中は読み取りのみ。`var/runtime/{env}`（cache pool・mcp-sessions・事前コンパイル漏れの
+twig のフォールバック等）はリクエスト処理中に生成される。
+
 ```bash
-bin/console cache:clear
-bin/console cache:warmup
+bin/console eccube:cache:build   # var/build を再生成（テンプレートの事前コンパイルを含む）
+bin/console cache:pool:clear --all   # 実行時キャッシュ（cache pool）を削除
+bin/console cache:clear          # 従来どおり全体を削除（build と cache の双方に書き込み権限が必要）
 
 # スキーマは Entity 属性が源泉。アップデートは 2 段構え:
 bin/console doctrine:schema:update --dump-sql        # 属性差分の SQL プレビュー

@@ -32,18 +32,27 @@ final class PermissionRequirementProviderTest extends TestCase
     {
         $requirements = $this->requirementsByLabel();
 
-        $this->assertSame(WriteLane::WEB, $requirements['var/cache/prod']->lane);
+        $this->assertSame(WriteLane::WEB, $requirements['var/runtime/prod']->lane);
         $this->assertSame(WriteLane::WEB, $requirements['html/upload/save_image']->lane);
+        // ビルド生成物は CLI が生成するためレーン S
+        $this->assertSame(WriteLane::SSH, $requirements['var/build/prod']->lane);
+        $this->assertSame(WriteLane::SSH, $requirements['var/cache/prod']->lane);
         $this->assertSame(WriteLane::SSH, $requirements['app/template']->lane);
         $this->assertSame(WriteLane::SSH, $requirements['html/user_data']->lane);
         $this->assertSame(WriteLane::SSH, $requirements['composer.json']->lane);
+        // var 自体は CLI 所有. Web サーバーが書き込むのは配下の runtime / sessions / log で,
+        // var へは通過 (r-x) できればよい
+        $this->assertSame(WriteLane::SSH, $requirements['var']->lane);
+        // 秘密鍵は CLI で配置し Web サーバーは読み取りのみ
+        $this->assertSame(WriteLane::SSH, $requirements['app/keystore']->lane);
     }
 
     public function testRuntimeGeneratedPathsAreOptional(): void
     {
         $requirements = $this->requirementsByLabel();
 
-        $this->assertTrue($requirements['var/cache/prod']->optional);
+        $this->assertTrue($requirements['var/runtime/prod']->optional);
+        $this->assertTrue($requirements['var/build/prod']->optional);
         $this->assertFalse($requirements['html/upload/save_image']->optional);
     }
 
@@ -56,6 +65,8 @@ final class PermissionRequirementProviderTest extends TestCase
         $this->assertStringContainsString('メンテナンスファイル', (string) $requirements['var']->note);
         // 一方が必須なら必須として扱う
         $this->assertFalse($requirements['var']->optional);
+        // Web サーバーの書き込みが必要な役割が加わるため, レーン W が優先される
+        $this->assertSame(WriteLane::WEB, $requirements['var']->lane);
     }
 
     public function testMaintenanceFileDirectoryIsListedSeparatelyWhenItIsTheProjectRoot(): void
@@ -66,6 +77,23 @@ final class PermissionRequirementProviderTest extends TestCase
         $this->assertArrayHasKey('.', $requirements);
         $this->assertSame(WriteLane::WEB, $requirements['.']->lane);
         $this->assertSame(self::PROJECT_DIR, $requirements['.']->path);
+    }
+
+    public function testWarmupFallbackIsTheRuntimeTwigDirectory(): void
+    {
+        $requirement = $this->provider()->warmupFallbackRequirement();
+
+        $this->assertInstanceOf(PermissionRequirement::class, $requirement);
+        $this->assertSame(self::PROJECT_DIR.'/var/runtime/prod/twig', $requirement->path);
+        $this->assertSame(WriteLane::WEB, $requirement->lane);
+    }
+
+    /**
+     * dev は auto_reload により twig が 2 層構成にならないため, 生成物があっても warmup 漏れではない.
+     */
+    public function testWarmupFallbackIsNotDetectedInDebugMode(): void
+    {
+        $this->assertNotInstanceOf(PermissionRequirement::class, $this->provider(null, true)->warmupFallbackRequirement());
     }
 
     public function testPathsAreUnique(): void
@@ -91,12 +119,15 @@ final class PermissionRequirementProviderTest extends TestCase
         return $requirements;
     }
 
-    private function provider(?string $maintenanceFilePath = null): PermissionRequirementProvider
+    private function provider(?string $maintenanceFilePath = null, bool $debug = false): PermissionRequirementProvider
     {
         $values = [
             'kernel.project_dir' => self::PROJECT_DIR,
             'kernel.environment' => 'prod',
+            'kernel.debug' => $debug,
             'kernel.cache_dir' => self::PROJECT_DIR.'/var/cache/prod',
+            'kernel.build_dir' => self::PROJECT_DIR.'/var/build/prod',
+            'eccube_runtime_dir' => self::PROJECT_DIR.'/var/runtime/prod',
             'kernel.logs_dir' => self::PROJECT_DIR.'/var/log',
             'eccube_save_image_dir' => self::PROJECT_DIR.'/html/upload/save_image',
             'eccube_temp_image_dir' => self::PROJECT_DIR.'/html/upload/temp_image',

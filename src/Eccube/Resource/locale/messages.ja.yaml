@@ -549,7 +549,9 @@ admin.common.move_to_confirm_message: "%name%に移動します。編集内容�
 admin.common.move_to_confirm_move_only: 保存せずに移動
 admin.common.move_to_confirm_save_and_move: 保存して移動
 admin.common.admin_url_warning: '管理画面URLは、セキュリティのため推測されにくいものを設定してください。「<a href="%url%">セキュリティ管理</a>」から設定できます。'
-admin.common.restrict_file_upload_info: "この機能の利用頻度が低い場合、使用しない間は無効化することでセキュリティを更に向上させることができます。環境変数 ECCUBE_RESTRICT_FILE_UPLOAD を 1 に設定することで機能を無効化することが可能です。"
+admin.common.restrict_file_upload_info: "この機能の利用頻度が低い場合、使用しない間は保存操作を無効化することでセキュリティを更に向上させることができます。環境変数 ECCUBE_RESTRICT_FILE_UPLOAD を 1 に設定すると、内容の表示は残したまま保存操作のみを無効化できます。"
+admin.common.restrict_file_upload_read_only: "この画面は読み取り専用です。環境変数 ECCUBE_RESTRICT_FILE_UPLOAD が 1 に設定されているため、保存操作は無効化されています。"
+admin.common.restrict_file_upload_read_only_command: "変更するには、次のコマンドを実行してください。"
 admin.common.notice_maintenance_mode: "現在メンテナンスモード中です。"
 admin.common.notice_debug_mode: "デバッグモードが有効になっています。"
 
@@ -1176,6 +1178,7 @@ admin.content.block_source_code: コード
 admin.content.cache__card_title: キャッシュ管理
 admin.content.cache_message: 本番環境にFTPなどでTwigファイルをアップロードして入れ替えた場合、画面を反映させるにはTwigキャッシュを削除する必要があります。
 admin.content.cache_delete: キャッシュ削除
+admin.content.cache_build_dir_not_writable: 実行時キャッシュのみ削除しました。コンパイル済みコンテナとテンプレートを更新するには、CLI で bin/console eccube:cache:build を実行してください。
 admin.content.news.publish_date: 公開日時
 admin.content.news.display_status: 公開状態
 admin.content.news.display_status__show: 公開

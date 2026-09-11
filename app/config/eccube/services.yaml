@@ -11,6 +11,9 @@ parameters:
     env(ECCUBE_MCP_ALLOWED_ORIGINS): ''
     # MCP 監査ログ (mcp.log) の保管日数 (rotating_file の世代数)。 設計 §4.2
     env(ECCUBE_MCP_LOG_RETENTION_DAYS): '90'
+    # CLI 実行時もログをファイルへ書くか。 Web サーバーと CLI で var/log の書き込み権限を
+    # 分離した構成では 0 を設定し、 CLI のログはコンソール出力 (必要ならリダイレクト) に寄せる。
+    env(ECCUBE_CLI_LOG_TO_FILE): '1'
     locale: '%env(ECCUBE_LOCALE)%'
     timezone: '%env(ECCUBE_TIMEZONE)%'
     currency: '%env(ECCUBE_CURRENCY)%'
@@ -18,6 +21,10 @@ parameters:
     env(ECCUBE_AGENT_COMMERCE_UCP_SIGNING_KEY): ''
     env(ECCUBE_AGENT_COMMERCE_ACP_FEED_BASE_URL): ''
     env(ECCUBE_AGENT_COMMERCE_ACP_FEED_API_KEY): ''
+    # 鍵を所有者専用 (0700 / 0600) で作成するか。 既定は Web サーバーからも読める 0755 / 0644。
+    # 厳格化すると、 Web サーバーと CLI を別ユーザーに分けた構成では鍵を読めなくなるため、
+    # 読み取りを許す手当て (chgrp 等) を運用側で行う必要がある。
+    env(ECCUBE_KEYSTORE_STRICT_PERMISSIONS): ''
 
 services:
     # default configuration for services in *this* file
@@ -69,6 +76,15 @@ services:
         public: true
 
     Eccube\Service\EnvFileService:
+        arguments:
+            $projectDir: '%kernel.project_dir%'
+
+    Eccube\Service\Content\UserDataFileService:
+        arguments:
+            $userDataDir: '%eccube_html_dir%/user_data'
+            $uploadableExtensions: '%eccube_file_uploadable_extensions%'
+
+    Eccube\Command\Env\EnvSetCommand:
         arguments:
             $projectDir: '%kernel.project_dir%'
 
@@ -303,6 +319,18 @@ services:
         arguments:
             $container: !tagged_locator { tag: 'cache.pool.clearer' }
 
+    # cache:clear で %eccube_runtime_dir%/pools を削除する (kernel.cache_clearer は autoconfigure で付与).
+    Eccube\Util\RuntimeCachePoolClearer:
+        arguments:
+            $runtimeDir: '%eccube_runtime_dir%'
+
+    # cache:clear の後始末 (コンパイル済みコンテナの再生成・実行時 cache pool の削除) を案内する
+    Eccube\EventListener\RuntimeCachePoolClearListener:
+        arguments:
+            $buildDir: '%kernel.build_dir%'
+            $cacheDir: '%kernel.cache_dir%'
+            $containerClass: '%kernel.container_class%'
+
     Eccube\Asset\FilemtimeVersionStrategy:
         arguments:
             - '%eccube_html_dir%/user_data'
@@ -331,9 +359,26 @@ services:
                 ucp_signing: '%env(default::string:ECCUBE_AGENT_COMMERCE_UCP_SIGNING_KEY)%'
                 # ACP Webhook (Merchant-Signature) の共有シークレット保管先 (#6776、outbound 送出は後続 PR)。
                 acp_webhook: '%env(default::string:ECCUBE_AGENT_COMMERCE_ACP_WEBHOOK_SECRET)%'
+            $strictPermissions: '%env(bool:ECCUBE_KEYSTORE_STRICT_PERMISSIONS)%'
 
     Eccube\Service\AgentCommerce\Security\KeyStoreInterface:
         alias: Eccube\Service\AgentCommerce\Security\FilesystemKeyStore
+
+    # 鍵の用途 (KeyPurposeInterface) のタグ付けは Kernel の registerForAutoconfiguration で行う。
+    # このファイルの _instanceof はファイルスコープのため、 Plugin\ glob (services.php) で
+    # 登録されるプラグインの具象クラスには届かず、 レジストリが静かに空になるため。
+    Eccube\Service\AgentCommerce\Security\KeyPurposeRegistry:
+        arguments:
+            $purposes: !tagged_iterator agent_commerce.key_purpose
+
+    # KeyPurposeInterface は実装が複数あるため、 用途ごとに明示的に束縛する。
+    Eccube\Service\AgentCommerce\Security\UcpMessageSigner:
+        arguments:
+            $keyPurpose: '@Eccube\Service\AgentCommerce\Security\UcpSigningKeyPurpose'
+
+    Eccube\Service\AgentCommerce\Acp\AcpMessageSigner:
+        arguments:
+            $keyPurpose: '@Eccube\Service\AgentCommerce\Security\AcpWebhookKeyPurpose'
 
     Eccube\Service\AgentCommerce\Security\AgentCommerceMessageSignerInterface:
         alias: Eccube\Service\AgentCommerce\Security\UcpMessageSigner
@@ -404,7 +449,7 @@ services:
     # Agent Commerce: UCP Catalog (pull / REST) (#6794)
     Eccube\Service\AgentCommerce\Catalog\Ucp\UcpCatalogCache:
         arguments:
-            $cacheDir: '%kernel.cache_dir%'
+            $cacheDir: '%eccube_runtime_dir%'
 
     # Agent Commerce: UCP Discovery (/.well-known/ucp) (#6794 / #6777)
     # payment_handlers は決済ハンドラプラグインが tagged service で寄与する (既定は空 {}).

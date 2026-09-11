@@ -20,6 +20,7 @@ use Eccube\Service\AgentCommerce\Catalog\AgentCatalogItemDto;
 use Eccube\Service\AgentCommerce\Catalog\AgentCatalogVariantDto;
 use Eccube\Service\AgentCommerce\Catalog\AvailabilityStatus;
 use JsonSchema\Validator;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -225,6 +226,7 @@ final class AcpFeedConformanceTest extends TestCase
      *
      * @see https://github.com/agentic-commerce-protocol/agentic-commerce-protocol/blob/main/spec/2026-04-17/openapi/openapi.feed.yaml
      */
+    #[DoesNotPerformAssertions]
     public function testFeedPushTransportRequirementsAreDeferredToLayer9(): void
     {
         self::markTestIncomplete('Feed push transport (POST /feeds, PATCH /feeds/{id}/products, outbound Bearer api_key, idempotency) は国内 GA 前で活用不可のため Layer 9 (ACP push) で検証する。');

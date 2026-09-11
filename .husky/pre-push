@@ -22,14 +22,15 @@ case "${ECCUBE_HOOK_RUNNER:-auto}" in
 esac
 [ -n "$RUN" ] && echo "pre-push: running in Docker ($SVC)" || echo "pre-push: running on host"
 
-# rector.php は dev の Symfony コンテナ XML (var/cache/dev/Eccube_KernelDevDebugContainer.xml) を
+# rector.php は dev の Symfony コンテナ XML (var/build/dev/Eccube_KernelDevDebugContainer.xml) を
 # 参照する。fresh clone / cache:clear 直後など XML が無い cold 状態だと rector が全ファイルで
 # read error → exit 非ゼロになり push がブロックされる。無ければ dev キャッシュを生成しておく。
-# （cache:warmup では XML が再生成されないため cache:clear を使う）
-CONTAINER_XML="var/cache/dev/Eccube_KernelDevDebugContainer.xml"
+# XML (debug.container.dump) はデバッグ用コンテナのコンパイル時にのみ出力されるため、
+# .env で APP_DEBUG=0 の環境でも生成されるよう APP_DEBUG=1 を明示する。
+CONTAINER_XML="var/build/dev/Eccube_KernelDevDebugContainer.xml"
 if ! $RUN test -f "$CONTAINER_XML"; then
-  echo "pre-push: dev container XML 不在のため cache:clear --env=dev で生成"
-  if ! $RUN bin/console cache:clear --env=dev; then
+  echo "pre-push: dev container XML 不在のため cache:clear (dev/debug) で生成"
+  if ! $RUN env APP_ENV=dev APP_DEBUG=1 bin/console cache:clear; then
     echo "FAIL: cache:clear（dev コンテナ XML を生成できませんでした）"
     exit 1
   fi

@@ -8,7 +8,41 @@ PERMISSION_LANES="${ECCUBE_PERMISSION_LANES:-}"
 # レーン W: リクエスト処理中に Web サーバーが書き込むディレクトリ。www-data 所有とする。
 # CLI から書き込む必要がある場合は Web サーバーのユーザーで実行する (本番では sudo -u www-data)。
 # 共有グループは作らない。セキュリティポリシーで共有グループを作成できない環境があるため。
-LANE_W_DIRS="html/upload html/upload/save_image html/upload/temp_image html/upload/refund_request html/upload/refund_request/save html/upload/refund_request/temp app/keystore"
+# app/keystore はレーン S (CLI が鍵を配置し Web サーバーは読み取りのみ)。
+# 実行時に鍵を生成する機能を使う場合のみ Web サーバーの書き込み権限が必要になる。
+LANE_W_DIRS="html/upload html/upload/save_image html/upload/temp_image html/upload/refund_request html/upload/refund_request/save html/upload/refund_request/temp"
+
+# var 配下のレーン分け。
+# var/runtime (実行時キャッシュ)・var/sessions・var/log はリクエスト処理中に書き込まれる。
+# var/build (コンパイル済みコンテナ・テンプレート)・var/cache は eccube:cache:build が生成する。
+LANE_W_VAR_DIRS="var/runtime var/sessions var/log"
+LANE_S_VAR_DIRS="var/build var/cache"
+
+# 分離モードでは SQLite を使えない。データベースファイルは var 配下 (レーン W) に置かれ、
+# Web サーバーと CLI の双方が書き込む必要があるため、権限を分けると成立しないため。
+#
+# スキームは DsnParser が解釈できるものを列挙する。別名 (postgres 等) は
+# ConnectionFactory::DEFAULT_SCHEME_MAP で driver へ変換され、マップに無いものは
+# scheme の - を _ に置換して driver 名として扱われる (pdo-pgsql -> pdo_pgsql)。
+require_database_server() {
+    case "${DATABASE_URL:-}" in
+        postgres://* | postgresql://* | pgsql://* | pdo-pgsql://* | \
+        mysql://* | mysql2://* | pdo-mysql://* | mysqli://*)
+            return 0
+            ;;
+        '')
+            echo "ECCUBE_PERMISSION_LANES=1 では DATABASE_URL の指定が必要です (PostgreSQL または MySQL)。" >&2
+            echo "docker-compose.pgsql.yml または docker-compose.mysql.yml を重ねてください。" >&2
+            exit 1
+            ;;
+        *)
+            # 値そのものは資格情報を含むためスキームのみ表示する
+            echo "ECCUBE_PERMISSION_LANES=1 では PostgreSQL または MySQL が必要です (指定されたスキーム: ${DATABASE_URL%%:*})。" >&2
+            echo "SQLite はデータベースファイルを Web サーバーと CLI の双方が書き込むため、権限を分離できません。" >&2
+            exit 1
+            ;;
+    esac
+}
 
 setup_split_users() {
     # UID / GID はシェルが export しないことが多いため, 未指定なら
@@ -25,6 +59,27 @@ setup_split_users() {
     if ! getent passwd "${cli_uid}" > /dev/null; then
         useradd -o -u "${cli_uid}" -g "${cli_gid}" -m -d /home/eccube -s /bin/bash eccube
     fi
+
+    # 既存の uid を再利用した場合は名前が eccube とは限らないため実際の名前を引く
+    cli_user="$(getent passwd "${cli_uid}" | cut -d: -f1)"
+}
+
+# レーン S のビルド生成物を CLI ユーザーで作っておく。
+#
+# BuildDirCacheWarmerPass が twig.template_cache_warmer のタグを外すため, composer install の
+# cache:warmup ではテンプレートが事前コンパイルされず, 初回起動時点の var/build/{env}/twig は空になる。
+# その状態で Web サーバーがページを描画すると, コンパイル結果がレーン W の var/runtime/{env}/twig へ
+# 書かれる。レーン W は CLI ユーザーから削除できないため, 以降 eccube:cache:build が
+# 削除できない旨の警告を出し続けることになる。アクセスを受ける前にここで作っておく。
+build_lane_s_cache() {
+    if runuser -u "${cli_user}" -- bin/console eccube:cache:build; then
+        return 0
+    fi
+
+    # 失敗しても起動は続ける (実行時キャッシュへフォールバックして動作するため)。
+    # 原因を潰さないと上記の警告が出続けるので, 気づけるように明示する。
+    echo "警告: eccube:cache:build に失敗しました。" >&2
+    echo "      アクセスを受ける前に ${cli_user} で bin/console eccube:cache:build を実行してください。" >&2
 }
 
 apply_permission_lanes() {
@@ -46,12 +101,24 @@ apply_permission_lanes() {
         chown www-data:www-data "${target}"
     done
 
-    # var は名前付きボリュームで配布物を含まないため配下ごと Web サーバー所有にする.
+    # var は名前付きボリュームで配布物を含まないため, 配下をレーンごとに所有者を分ける.
     # パーミッションは変更しない. 変更するとセッションファイルの 0600 を緩めてしまうため.
-    chown -R www-data:www-data "${APACHE_DOCUMENT_ROOT}/var"
+    # var 自体は CLI ユーザー所有にする (eccube:cache:build が var/build を作り直せるように).
+    chown "${cli_uid}:${cli_gid}" "${APACHE_DOCUMENT_ROOT}/var"
+    for dir in ${LANE_S_VAR_DIRS}; do
+        target="${APACHE_DOCUMENT_ROOT}/${dir}"
+        mkdir -p "${target}"
+        chown -R "${cli_uid}:${cli_gid}" "${target}"
+    done
+    for dir in ${LANE_W_VAR_DIRS}; do
+        target="${APACHE_DOCUMENT_ROOT}/${dir}"
+        mkdir -p "${target}"
+        chown -R www-data:www-data "${target}"
+    done
 }
 
 if [ "${PERMISSION_LANES}" = "1" ]; then
+    require_database_server
     setup_split_users
 else
     if [ -n "${USER_ID}" ]; then
@@ -104,9 +171,14 @@ bin/console doctrine:query:sql 'select * from dtb_base_info' > /dev/null 2>&1 ||
 
 if [ "${PERMISSION_LANES}" = "1" ]; then
     apply_permission_lanes
+    # 所有者を分けた後に実行する。先に実行すると root 所有の生成物が残り, chown -R が必要になる。
+    build_lane_s_cache
 fi
 
-echo "PassEnv APP_ENV APP_DEBUG TRUSTED_PROXIES TRUSTED_HOSTS" > /etc/apache2/conf-enabled/eccube_env.conf
+# compose 等で与えた環境変数を Web サーバー (mod_php) 側にも渡す。
+# DATABASE_URL が渡らないと Web だけ .env の値 (既定は SQLite) を読み、
+# CLI と Web で接続先が食い違う。
+echo "PassEnv APP_ENV APP_DEBUG TRUSTED_PROXIES TRUSTED_HOSTS DATABASE_URL DATABASE_SERVER_VERSION DATABASE_CHARSET MAILER_DSN" > /etc/apache2/conf-enabled/eccube_env.conf
 
 # first arg is `-f` or `--some-option`
 if [ "${1#-}" != "$1" ]; then

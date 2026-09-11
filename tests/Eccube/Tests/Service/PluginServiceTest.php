@@ -104,6 +104,26 @@ final class PluginServiceTest extends AbstractServiceTestCase
      */
 
     // テスト用のダミープラグインを配置する
+    /**
+     * CLI 実行時, アーカイブの検査用の一時領域は OS の一時ディレクトリに作る.
+     *
+     * var/runtime (Web サーバー所有) に作ると, Web サーバーと CLI で書き込み権限を
+     * 分離した構成でプラグイン操作が CLI から行えなくなるため.
+     * (テストは CLI で実行されるため, この経路を通る)
+     */
+    public function testCreateTempDirUsesSystemTempDir(): void
+    {
+        $dir = $this->service->createTempDir();
+
+        try {
+            $this->assertDirectoryExists($dir);
+            $this->assertStringStartsWith(realpath(sys_get_temp_dir()), (string) realpath($dir));
+            $this->assertSame('0700', substr(sprintf('%o', fileperms($dir)), -4), '所有者のみに制限する');
+        } finally {
+            rmdir($dir);
+        }
+    }
+
     private function createTempDir()
     {
         $t = sys_get_temp_dir().'/plugintest.'.sha1((string) mt_rand());

@@ -50,10 +50,4 @@ class SexType extends AbstractType
     {
         return MasterType::class;
     }
-
-    #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'sex';
-    }
 }

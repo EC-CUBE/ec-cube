@@ -117,13 +117,16 @@ test.describe('Plugin Misc', () => {
     // この環境変数はPHPサーバー側で設定される
     await page.goto(`/${config.adminRoute}/store/plugin/install`);
 
-    // 制限がかかっている場合は制限メッセージが表示される
+    // 制限がかかっている場合は画面を表示したうえで読み取り専用の案内が出る
     // 制限がない場合はスキップ
-    const restrictedText = page.getByText('この機能は管理者によって制限されています。');
-    const isRestricted = await restrictedText.isVisible({ timeout: 5000 }).catch(() => false);
+    const readOnlyText = page.getByText('この画面は読み取り専用です。');
+    const isRestricted = await readOnlyText.isVisible({ timeout: 5000 }).catch(() => false);
     if (!isRestricted) {
       test.skip(true, 'ECCUBE_RESTRICT_FILE_UPLOAD=0 のためスキップします');
     }
-    await expect(restrictedText).toBeVisible();
+    await expect(readOnlyText).toBeVisible();
+    // 代替の CLI コマンドが案内され、アップロードは無効化されている
+    await expect(page.getByText('bin/console eccube:plugin:install')).toBeVisible();
+    await expect(page.getByRole('button', { name: 'アップロード' })).toBeDisabled();
   });
 });

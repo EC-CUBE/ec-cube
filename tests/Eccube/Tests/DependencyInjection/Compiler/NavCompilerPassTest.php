@@ -31,7 +31,7 @@ final class NavCompilerPassTest extends EccubeTestCase
         $container = $this->createContainer();
 
         $container->addCompilerPass(new NavCompilerPass());
-        $container->compile();
+        $container->compile(true);
 
         $eccubeNav = $container->getParameter('eccube_nav');
 
@@ -57,7 +57,7 @@ final class NavCompilerPassTest extends EccubeTestCase
             ->addTag(NavCompilerPass::NAV_TAG);
 
         $container->addCompilerPass(new NavCompilerPass());
-        $container->compile();
+        $container->compile(true);
 
         $eccubeNav = $container->getParameter('eccube_nav');
 
@@ -85,7 +85,7 @@ final class NavCompilerPassTest extends EccubeTestCase
             ->addTag(NavCompilerPass::NAV_TAG);
 
         $container->addCompilerPass(new NavCompilerPass());
-        $container->compile();
+        $container->compile(true);
 
         $eccubeNav = $container->getParameter('eccube_nav');
 

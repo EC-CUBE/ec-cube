@@ -66,7 +66,7 @@ class ProductDetailPage extends AbstractFrontPage
         if (!is_null($category1)) {
             $this->tester->selectOption(['id' => 'classcategory_id1'], $category1);
             if (!is_null($category2)) {
-                $category2_id = current(array_keys($category2));
+                $category2_id = array_key_first($category2);
                 $this->tester->waitForElement(['xpath' => "//*[@id='classcategory_id2']/option[@value='{$category2_id}']"]);
                 $this->tester->selectOption(['id' => 'classcategory_id2'], $category2);
             }
